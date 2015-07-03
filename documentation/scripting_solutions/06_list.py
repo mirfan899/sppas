@@ -1,0 +1,68 @@
+# ----------------------------------------------------------------------------
+# Author: Brigitte Bigi
+# Date: April,17th,2015
+# Brief: Simple script to get how many vowels are in a list of phonemes.
+# ----------------------------------------------------------------------------
+
+import codecs
+import sys
+import codecs
+
+# ----------------------------------------------------------------------------
+# Variables
+# ----------------------------------------------------------------------------
+
+#myfile="C:\Users\Brigitte\Desktop\pythonscripts\phonemes.csv"
+myfile="phonemes.csv"
+
+# ----------------------------------------------------------------------------
+
+def read_file(filename):
+    """
+    Read the whole file, return lines into a list.
+
+    @param filename (string) Name of the file to read, including path.
+    @return List of lines
+
+    """
+    with codecs.open(filename, 'r', encoding="utf8") as f:
+        return f.readlines()
+
+# ----------------------------------------------------------------------------
+
+def extract_list_from_lines(lines, pattern):
+    """ Extract a list from lines if lines match with pattern. """
+    mylist = []
+    for l in lines:
+        columns = l.split(';')
+        if columns[0].strip() == pattern:
+            mylist.append(columns[1].strip())
+    return mylist
+
+# ----------------------------------------------------------------------------
+
+def count_elements(referencelist, tocountlist):
+    """ Return how many elements of a list are in the reference list. """
+    n = 0
+    for x in tocountlist:
+        if x in referencelist:
+            n = n + 1
+    return n
+
+# ----------------------------------------------------------------------------
+
+
+lines = read_file(myfile)
+
+# before doing something, check the data!
+if not len(lines):
+    print 'Hum... the file was empty!'
+    sys.exit(0)
+
+vowels = extract_list_from_lines(lines, "vowels")
+mylist = ['a', 'b', 'c', 'd', 'e', 'f', 'E', 'g', 'a~', 'S']
+
+print "In my list, there are",count_elements(vowels,mylist)," vowels."
+print "In my list, there are",count_elements(extract_list_from_lines(lines, "fricatives"),mylist)," fricatives."
+
+# ----------------------------------------------------------------------------

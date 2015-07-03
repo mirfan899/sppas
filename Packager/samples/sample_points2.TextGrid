@@ -1,0 +1,44 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0.0
+xmax = 2.807
+tiers? <exists>
+size = 1
+item []:
+    item [1]:
+        class = "TextTier"
+        name = "Test"
+        xmin = 0.534000
+        xmax = 2.807000
+        intervals: size = 10
+        points [1]:
+            time = 0.534
+            mark = "110"
+        points [2]:
+            time = 1.053
+            mark = "288"
+        points [3]:
+            time = 1.258
+            mark = "296"
+        points [4]:
+            time = 1.423
+            mark = "319"
+        points [5]:
+            time = 1.709
+            mark = "184"
+        points [6]:
+            time = 1.832
+            mark = "166"
+        points [7]:
+            time = 2.253
+            mark = "174"
+        points [8]:
+            time = 2.355
+            mark = "241"
+        points [9]:
+            time = 2.536
+            mark = "310"
+        points [10]:
+            time = 2.807
+            mark = "261"

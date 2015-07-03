@@ -1,0 +1,645 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>src.annotationdata.io.text</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.lpl-aix.fr/~bigi/sppas/">SPPAS</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;src ::
+        <a href="src.annotationdata-module.html">Package&nbsp;annotationdata</a> ::
+        <a href="src.annotationdata.io-module.html">Package&nbsp;io</a> ::
+        Module&nbsp;text
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="src.annotationdata.io.text-module.html">Module src.annotationdata.io.text</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment">#!/usr/bin/env python2</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: UTF-8 -*-</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment"># ---------------------------------------------------------------------------</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment">#            ___   __    __    __    ___</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment">#           /     |  \  |  \  |  \  /        Automatic</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment">#           \__   |__/  |__/  |___| \__      Annotation</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment">#              \  |     |     |   |    \     of</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment">#           ___/  |     |     |   | ___/     Speech</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment">#           =============================</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment">#           http://sldr.org/sldr000800/preview/</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment"># ---------------------------------------------------------------------------</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment"># developed at:</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-comment">#       Laboratoire Parole et Langage</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-comment">#       Copyright (C) 2015  Brigitte Bigi</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-comment">#       Use of this software is governed by the GPL, v3</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-comment">#       This banner notice must not be removed</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-comment"># ---------------------------------------------------------------------------</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-comment"># SPPAS is free software: you can redistribute it and/or modify</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-comment"># it under the terms of the GNU General Public License as published by</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-comment"># the Free Software Foundation, either version 3 of the License, or</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-comment"># (at your option) any later version.</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-comment"># SPPAS is distributed in the hope that it will be useful,</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-comment"># but WITHOUT ANY WARRANTY; without even the implied warranty of</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-comment"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-comment"># GNU General Public License for more details.</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-comment"># You should have received a copy of the GNU General Public License</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-comment"># along with SPPAS. If not, see &lt;http://www.gnu.org/licenses/&gt;.</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">re</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">codecs</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">csv</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">cStringIO</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package src.annotationdata=src.annotationdata-module.html"><a title="src.annotationdata" class="py-name" href="#" onclick="return doclink('link-0', 'annotationdata', 'link-0');">annotationdata</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module src.annotationdata.transcription=src.annotationdata.transcription-module.html"><a title="src.annotationdata.transcription" class="py-name" href="#" onclick="return doclink('link-1', 'transcription', 'link-1');">transcription</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class src.annotationdata.transcription.Transcription=src.annotationdata.transcription.Transcription-class.html"><a title="src.annotationdata.transcription.Transcription" class="py-name" href="#" onclick="return doclink('link-2', 'Transcription', 'link-2');">Transcription</a></tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-3" class="py-name"><a title="src.annotationdata" class="py-name" href="#" onclick="return doclink('link-3', 'annotationdata', 'link-0');">annotationdata</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Package src.annotationdata.label=src.annotationdata.label-module.html,Module src.annotationdata.label.label=src.annotationdata.label.label-module.html"><a title="src.annotationdata.label
+src.annotationdata.label.label" class="py-name" href="#" onclick="return doclink('link-4', 'label', 'link-4');">label</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name"><a title="src.annotationdata.label
+src.annotationdata.label.label" class="py-name" href="#" onclick="return doclink('link-5', 'label', 'link-4');">label</a></tt> <tt class="py-keyword">import</tt> <tt id="link-6" class="py-name" targets="Method src.annotationdata.filter.Filter.Label()=src.annotationdata.filter.Filter-class.html#Label,Method src.annotationdata.filter.filters.Filter.Label()=src.annotationdata.filter.filters.Filter-class.html#Label,Class src.annotationdata.io.htk.Label=src.annotationdata.io.htk.Label-class.html,Class src.annotationdata.label.label.Label=src.annotationdata.label.label.Label-class.html"><a title="src.annotationdata.filter.Filter.Label
+src.annotationdata.filter.filters.Filter.Label
+src.annotationdata.io.htk.Label
+src.annotationdata.label.label.Label" class="py-name" href="#" onclick="return doclink('link-6', 'Label', 'link-6');">Label</a></tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-7" class="py-name"><a title="src.annotationdata" class="py-name" href="#" onclick="return doclink('link-7', 'annotationdata', 'link-0');">annotationdata</a></tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Package src.annotationdata.ptime=src.annotationdata.ptime-module.html"><a title="src.annotationdata.ptime" class="py-name" href="#" onclick="return doclink('link-8', 'ptime', 'link-8');">ptime</a></tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Module src.annotationdata.ptime.point=src.annotationdata.ptime.point-module.html"><a title="src.annotationdata.ptime.point" class="py-name" href="#" onclick="return doclink('link-9', 'point', 'link-9');">point</a></tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-10" class="py-name"><a title="src.annotationdata" class="py-name" href="#" onclick="return doclink('link-10', 'annotationdata', 'link-0');">annotationdata</a></tt><tt class="py-op">.</tt><tt id="link-11" class="py-name"><a title="src.annotationdata.ptime" class="py-name" href="#" onclick="return doclink('link-11', 'ptime', 'link-8');">ptime</a></tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Module src.annotationdata.ptime.interval=src.annotationdata.ptime.interval-module.html"><a title="src.annotationdata.ptime.interval" class="py-name" href="#" onclick="return doclink('link-12', 'interval', 'link-12');">interval</a></tt> <tt class="py-keyword">import</tt> <tt id="link-13" class="py-name" targets="Class src.annotationdata.ptime.interval.TimeInterval=src.annotationdata.ptime.interval.TimeInterval-class.html"><a title="src.annotationdata.ptime.interval.TimeInterval" class="py-name" href="#" onclick="return doclink('link-13', 'TimeInterval', 'link-13');">TimeInterval</a></tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-14" class="py-name"><a title="src.annotationdata" class="py-name" href="#" onclick="return doclink('link-14', 'annotationdata', 'link-0');">annotationdata</a></tt><tt class="py-op">.</tt><tt id="link-15" class="py-name"><a title="src.annotationdata.ptime" class="py-name" href="#" onclick="return doclink('link-15', 'ptime', 'link-8');">ptime</a></tt><tt class="py-op">.</tt><tt id="link-16" class="py-name" targets="Module src.annotationdata.ptime.framepoint=src.annotationdata.ptime.framepoint-module.html"><a title="src.annotationdata.ptime.framepoint" class="py-name" href="#" onclick="return doclink('link-16', 'framepoint', 'link-16');">framepoint</a></tt> <tt class="py-keyword">import</tt> <tt id="link-17" class="py-name" targets="Class src.annotationdata.ptime.framepoint.FramePoint=src.annotationdata.ptime.framepoint.FramePoint-class.html"><a title="src.annotationdata.ptime.framepoint.FramePoint" class="py-name" href="#" onclick="return doclink('link-17', 'FramePoint', 'link-17');">FramePoint</a></tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-18" class="py-name"><a title="src.annotationdata" class="py-name" href="#" onclick="return doclink('link-18', 'annotationdata', 'link-0');">annotationdata</a></tt><tt class="py-op">.</tt><tt id="link-19" class="py-name" targets="Module src.annotationdata.annotation=src.annotationdata.annotation-module.html"><a title="src.annotationdata.annotation" class="py-name" href="#" onclick="return doclink('link-19', 'annotation', 'link-19');">annotation</a></tt> <tt class="py-keyword">import</tt> <tt id="link-20" class="py-name" targets="Class src.annotationdata.annotation.Annotation=src.annotationdata.annotation.Annotation-class.html"><a title="src.annotationdata.annotation.Annotation" class="py-name" href="#" onclick="return doclink('link-20', 'Annotation', 'link-20');">Annotation</a></tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">re</tt> <tt class="py-keyword">import</tt> <tt class="py-name">split</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt id="link-21" class="py-name" targets="Variable src.annotationdata.io.text.TEXT_RADIUS=src.annotationdata.io.text-module.html#TEXT_RADIUS"><a title="src.annotationdata.io.text.TEXT_RADIUS" class="py-name" href="#" onclick="return doclink('link-21', 'TEXT_RADIUS', 'link-21');">TEXT_RADIUS</a></tt> <tt class="py-op">=</tt> <tt class="py-number">0.0005</tt> </tt>
+<a name="TimePoint"></a><div id="TimePoint-def"><a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt> <a class="py-toggle" href="#" id="TimePoint-toggle" onclick="return toggle('TimePoint');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.io.text-module.html#TimePoint">TimePoint</a><tt class="py-op">(</tt><tt class="py-param">time</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="TimePoint-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="TimePoint-expanded"><a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-22" class="py-name"><a title="src.annotationdata" class="py-name" href="#" onclick="return doclink('link-22', 'annotationdata', 'link-0');">annotationdata</a></tt><tt class="py-op">.</tt><tt id="link-23" class="py-name"><a title="src.annotationdata.ptime" class="py-name" href="#" onclick="return doclink('link-23', 'ptime', 'link-8');">ptime</a></tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="src.annotationdata.ptime.point" class="py-name" href="#" onclick="return doclink('link-24', 'point', 'link-9');">point</a></tt><tt class="py-op">.</tt><tt id="link-25" class="py-name" targets="Function src.annotationdata.io.anvil.TimePoint()=src.annotationdata.io.anvil-module.html#TimePoint,Function src.annotationdata.io.elan.TimePoint()=src.annotationdata.io.elan-module.html#TimePoint,Function src.annotationdata.io.htk.TimePoint()=src.annotationdata.io.htk-module.html#TimePoint,Function src.annotationdata.io.praat.TimePoint()=src.annotationdata.io.praat-module.html#TimePoint,Function src.annotationdata.io.sclite.TimePoint()=src.annotationdata.io.sclite-module.html#TimePoint,Function src.annotationdata.io.subtitle.TimePoint()=src.annotationdata.io.subtitle-module.html#TimePoint,Function src.annotationdata.io.text.TimePoint()=src.annotationdata.io.text-module.html#TimePoint,Class src.annotationdata.ptime.point.TimePoint=src.annotationdata.ptime.point.TimePoint-class.html"><a title="src.annotationdata.io.anvil.TimePoint
+src.annotationdata.io.elan.TimePoint
+src.annotationdata.io.htk.TimePoint
+src.annotationdata.io.praat.TimePoint
+src.annotationdata.io.sclite.TimePoint
+src.annotationdata.io.subtitle.TimePoint
+src.annotationdata.io.text.TimePoint
+src.annotationdata.ptime.point.TimePoint" class="py-name" href="#" onclick="return doclink('link-25', 'TimePoint', 'link-25');">TimePoint</a></tt><tt class="py-op">(</tt><tt class="py-name">time</tt><tt class="py-op">,</tt> <tt id="link-26" class="py-name"><a title="src.annotationdata.io.text.TEXT_RADIUS" class="py-name" href="#" onclick="return doclink('link-26', 'TEXT_RADIUS', 'link-21');">TEXT_RADIUS</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"> </tt>
+<a name="RawText"></a><div id="RawText-def"><a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt> <a class="py-toggle" href="#" id="RawText-toggle" onclick="return toggle('RawText');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="src.annotationdata.io.text.RawText-class.html">RawText</a><tt class="py-op">(</tt><tt class="py-base-class">Transcription</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RawText-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="RawText-expanded"><a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="RawText.detect"></a><div id="RawText.detect-def"><a name="L61"></a><tt class="py-lineno"> 61</tt> <a class="py-toggle" href="#" id="RawText.detect-toggle" onclick="return toggle('RawText.detect');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.io.text.RawText-class.html#detect">detect</a><tt class="py-op">(</tt><tt class="py-param">filename</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RawText.detect-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="RawText.detect-expanded"><a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">        <tt class="py-keyword">with</tt> <tt class="py-name">codecs</tt><tt class="py-op">.</tt><tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">,</tt> <tt class="py-string">'r'</tt><tt class="py-op">,</tt> <tt class="py-string">'utf-8'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">            <tt class="py-keyword">pass</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+</div><a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">    <tt class="py-comment"># End detect</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">    <tt class="py-comment"># -----------------------------------------------------------------</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"> </tt>
+<a name="RawText.__init__"></a><div id="RawText.__init__-def"><a name="L69"></a><tt class="py-lineno"> 69</tt> <a class="py-toggle" href="#" id="RawText.__init__-toggle" onclick="return toggle('RawText.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.io.text.RawText-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">=</tt><tt class="py-string">"NoName"</tt><tt class="py-op">,</tt> <tt class="py-param">coeff</tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-param">mintime</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">maxtime</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RawText.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="RawText.__init__-expanded"><a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"><tt class="py-docstring">        Creates a new Transcription instance.</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">        <tt id="link-27" class="py-name"><a title="src.annotationdata.transcription.Transcription" class="py-name" href="#" onclick="return doclink('link-27', 'Transcription', 'link-2');">Transcription</a></tt><tt class="py-op">.</tt><tt id="link-28" class="py-name" targets="Method src.annotationdata.annotation.Annotation.__init__()=src.annotationdata.annotation.Annotation-class.html#__init__,Method src.annotationdata.filter.Filter.__init__()=src.annotationdata.filter.Filter-class.html#__init__,Method src.annotationdata.filter.LabelFilter.__init__()=src.annotationdata.filter.LabelFilter-class.html#__init__,Method src.annotationdata.filter.Predicate.__init__()=src.annotationdata.filter.Predicate-class.html#__init__,Method src.annotationdata.filter.RelationFilter.__init__()=src.annotationdata.filter.RelationFilter-class.html#__init__,Method src.annotationdata.filter.RelationPredicate.__init__()=src.annotationdata.filter.RelationPredicate-class.html#__init__,Method src.annotationdata.filter.filters.Filter.__init__()=src.annotationdata.filter.filters.Filter-class.html#__init__,Method src.annotationdata.filter.filters.RelationFilter.__init__()=src.annotationdata.filter.filters.RelationFilter-class.html#__init__,Method src.annotationdata.filter.filters.SingleFilter.__init__()=src.annotationdata.filter.filters.SingleFilter-class.html#__init__,Method src.annotationdata.filter.predicate.Predicate.__init__()=src.annotationdata.filter.predicate.Predicate-class.html#__init__,Method src.annotationdata.filter.predicate.RelationPredicate.__init__()=src.annotationdata.filter.predicate.RelationPredicate-class.html#__init__,Method src.annotationdata.hierarchy.Hierarchy.__init__()=src.annotationdata.hierarchy.Hierarchy-class.html#__init__,Method src.annotationdata.io.anvil.Anvil.__init__()=src.annotationdata.io.anvil.Anvil-class.html#__init__,Method src.annotationdata.io.htk.Label.__init__()=src.annotationdata.io.htk.Label-class.html#__init__,Method src.annotationdata.io.htk.MasterLabel.__init__()=src.annotationdata.io.htk.MasterLabel-class.html#__init__,Method src.annotationdata.io.phonedit.Phonedit.__init__()=src.annotationdata.io.phonedit.Phonedit-class.html#__init__,Method src.annotationdata.io.praat.IntensityTier.__init__()=src.annotationdata.io.praat.IntensityTier-class.html#__init__,Method src.annotationdata.io.praat.PitchTier.__init__()=src.annotationdata.io.praat.PitchTier-class.html#__init__,Method src.annotationdata.io.praat.TextGrid.__init__()=src.annotationdata.io.praat.TextGrid-class.html#__init__,Method src.annotationdata.io.sclite.SegmentTimeMark.__init__()=src.annotationdata.io.sclite.SegmentTimeMark-class.html#__init__,Method src.annotationdata.io.sclite.TimeMarkedConversation.__init__()=src.annotationdata.io.sclite.TimeMarkedConversation-class.html#__init__,Method src.annotationdata.io.signaix.HzPitch.__init__()=src.annotationdata.io.signaix.HzPitch-class.html#__init__,Method src.annotationdata.io.subtitle.SubRip.__init__()=src.annotationdata.io.subtitle.SubRip-class.html#__init__,Method src.annotationdata.io.subtitle.SubViewer.__init__()=src.annotationdata.io.subtitle.SubViewer-class.html#__init__,Method src.annotationdata.io.text.CSV.UnicodeReader.__init__()=src.annotationdata.io.text.CSV.UnicodeReader-class.html#__init__,Method src.annotationdata.io.text.CSV.UnicodeWriter.__init__()=src.annotationdata.io.text.CSV.UnicodeWriter-class.html#__init__,Method src.annotationdata.io.text.CSV.__init__()=src.annotationdata.io.text.CSV-class.html#__init__,Method src.annotationdata.io.text.RawText.__init__()=src.annotationdata.io.text.RawText-class.html#__init__,Method src.annotationdata.io.transcriber.Transcriber.__init__()=src.annotationdata.io.transcriber.Transcriber-class.html#__init__,Method src.annotationdata.io.xra.XRA.__init__()=src.annotationdata.io.xra.XRA-class.html#__init__,Method src.annotationdata.label.label.Label.__init__()=src.annotationdata.label.label.Label-class.html#__init__,Method src.annotationdata.label.text.Text.__init__()=src.annotationdata.label.text.Text-class.html#__init__,Method src.annotationdata.meta.MetaObject.__init__()=src.annotationdata.meta.MetaObject-class.html#__init__,Method src.annotationdata.pitch.Pitch.__init__()=src.annotationdata.pitch.Pitch-class.html#__init__,Method src.annotationdata.ptime.baseplacement.BasePlacement.__init__()=src.annotationdata.ptime.baseplacement.BasePlacement-class.html#__init__,Method src.annotationdata.ptime.disjoint.TimeDisjoint.__init__()=src.annotationdata.ptime.disjoint.TimeDisjoint-class.html#__init__,Method src.annotationdata.ptime.framedisjoint.FrameDisjoint.__init__()=src.annotationdata.ptime.framedisjoint.FrameDisjoint-class.html#__init__,Method src.annotationdata.ptime.frameinterval.FrameInterval.__init__()=src.annotationdata.ptime.frameinterval.FrameInterval-class.html#__init__,Method src.annotationdata.ptime.framepoint.FramePoint.__init__()=src.annotationdata.ptime.framepoint.FramePoint-class.html#__init__,Method src.annotationdata.ptime.interval.TimeInterval.__init__()=src.annotationdata.ptime.interval.TimeInterval-class.html#__init__,Method src.annotationdata.ptime.localization.Localization.__init__()=src.annotationdata.ptime.localization.Localization-class.html#__init__,Method src.annotationdata.ptime.location.Location.__init__()=src.annotationdata.ptime.location.Location-class.html#__init__,Method src.annotationdata.ptime.point.TimePoint.__init__()=src.annotationdata.ptime.point.TimePoint-class.html#__init__,Method src.annotationdata.statistics.descriptives.DescriptiveStatistics.__init__()=src.annotationdata.statistics.descriptives.DescriptiveStatistics-class.html#__init__,Method src.annotationdata.statistics.kappa.DataConverter.__init__()=src.annotationdata.statistics.kappa.DataConverter-class.html#__init__,Method src.annotationdata.statistics.kappa.Kappa.__init__()=src.annotationdata.statistics.kappa.Kappa-class.html#__init__,Method src.annotationdata.tier.Tier.__init__()=src.annotationdata.tier.Tier-class.html#__init__,Method src.annotationdata.transcription.Transcription.__init__()=src.annotationdata.transcription.Transcription-class.html#__init__,Method src.annotationdata.utils.tiermapping.tierMapping.__init__()=src.annotationdata.utils.tiermapping.tierMapping-class.html#__init__,Method src.annotationdata.utils.tierstats.TierStats.__init__()=src.annotationdata.utils.tierstats.TierStats-class.html#__init__"><a title="src.annotationdata.annotation.Annotation.__init__
+src.annotationdata.filter.Filter.__init__
+src.annotationdata.filter.LabelFilter.__init__
+src.annotationdata.filter.Predicate.__init__
+src.annotationdata.filter.RelationFilter.__init__
+src.annotationdata.filter.RelationPredicate.__init__
+src.annotationdata.filter.filters.Filter.__init__
+src.annotationdata.filter.filters.RelationFilter.__init__
+src.annotationdata.filter.filters.SingleFilter.__init__
+src.annotationdata.filter.predicate.Predicate.__init__
+src.annotationdata.filter.predicate.RelationPredicate.__init__
+src.annotationdata.hierarchy.Hierarchy.__init__
+src.annotationdata.io.anvil.Anvil.__init__
+src.annotationdata.io.htk.Label.__init__
+src.annotationdata.io.htk.MasterLabel.__init__
+src.annotationdata.io.phonedit.Phonedit.__init__
+src.annotationdata.io.praat.IntensityTier.__init__
+src.annotationdata.io.praat.PitchTier.__init__
+src.annotationdata.io.praat.TextGrid.__init__
+src.annotationdata.io.sclite.SegmentTimeMark.__init__
+src.annotationdata.io.sclite.TimeMarkedConversation.__init__
+src.annotationdata.io.signaix.HzPitch.__init__
+src.annotationdata.io.subtitle.SubRip.__init__
+src.annotationdata.io.subtitle.SubViewer.__init__
+src.annotationdata.io.text.CSV.UnicodeReader.__init__
+src.annotationdata.io.text.CSV.UnicodeWriter.__init__
+src.annotationdata.io.text.CSV.__init__
+src.annotationdata.io.text.RawText.__init__
+src.annotationdata.io.transcriber.Transcriber.__init__
+src.annotationdata.io.xra.XRA.__init__
+src.annotationdata.label.label.Label.__init__
+src.annotationdata.label.text.Text.__init__
+src.annotationdata.meta.MetaObject.__init__
+src.annotationdata.pitch.Pitch.__init__
+src.annotationdata.ptime.baseplacement.BasePlacement.__init__
+src.annotationdata.ptime.disjoint.TimeDisjoint.__init__
+src.annotationdata.ptime.framedisjoint.FrameDisjoint.__init__
+src.annotationdata.ptime.frameinterval.FrameInterval.__init__
+src.annotationdata.ptime.framepoint.FramePoint.__init__
+src.annotationdata.ptime.interval.TimeInterval.__init__
+src.annotationdata.ptime.localization.Localization.__init__
+src.annotationdata.ptime.location.Location.__init__
+src.annotationdata.ptime.point.TimePoint.__init__
+src.annotationdata.statistics.descriptives.DescriptiveStatistics.__init__
+src.annotationdata.statistics.kappa.DataConverter.__init__
+src.annotationdata.statistics.kappa.Kappa.__init__
+src.annotationdata.tier.Tier.__init__
+src.annotationdata.transcription.Transcription.__init__
+src.annotationdata.utils.tiermapping.tierMapping.__init__
+src.annotationdata.utils.tierstats.TierStats.__init__" class="py-name" href="#" onclick="return doclink('link-28', '__init__', 'link-28');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">,</tt> <tt class="py-name">coeff</tt><tt class="py-op">,</tt> <tt class="py-name">mintime</tt><tt class="py-op">,</tt> <tt class="py-name">maxtime</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">    <tt class="py-comment"># End __init__</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">    <tt class="py-comment"># -----------------------------------------------------------------</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="RawText.__read_annotation"></a><div id="RawText.__read_annotation-def"><a name="L80"></a><tt class="py-lineno"> 80</tt> <a class="py-toggle" href="#" id="RawText.__read_annotation-toggle" onclick="return toggle('RawText.__read_annotation');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.io.text.RawText-class.html#__read_annotation">__read_annotation</a><tt class="py-op">(</tt><tt class="py-param">phrase</tt><tt class="py-op">,</tt> <tt class="py-param">number</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RawText.__read_annotation-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="RawText.__read_annotation-expanded"><a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-29" class="py-name"><a title="src.annotationdata.annotation.Annotation" class="py-name" href="#" onclick="return doclink('link-29', 'Annotation', 'link-20');">Annotation</a></tt><tt class="py-op">(</tt><tt id="link-30" class="py-name"><a title="src.annotationdata.ptime.framepoint.FramePoint" class="py-name" href="#" onclick="return doclink('link-30', 'FramePoint', 'link-17');">FramePoint</a></tt><tt class="py-op">(</tt><tt class="py-name">number</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt id="link-31" class="py-name"><a title="src.annotationdata.filter.Filter.Label
+src.annotationdata.filter.filters.Filter.Label
+src.annotationdata.io.htk.Label
+src.annotationdata.label.label.Label" class="py-name" href="#" onclick="return doclink('link-31', 'Label', 'link-6');">Label</a></tt><tt class="py-op">(</tt><tt class="py-name">phrase</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">    <tt class="py-comment"># End __read_annotation</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">    <tt class="py-comment"># -----------------------------------------------------------------</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"> </tt>
+<a name="RawText.read"></a><div id="RawText.read-def"><a name="L86"></a><tt class="py-lineno"> 86</tt> <a class="py-toggle" href="#" id="RawText.read-toggle" onclick="return toggle('RawText.read');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.io.text.RawText-class.html#read">read</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">filename</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RawText.read-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="RawText.read-expanded"><a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"><tt class="py-docstring">        Read a raw text.</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"><tt class="py-docstring">        Each CR/LF is a unit separator (not added in the Transcription()).</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"><tt class="py-docstring">        Each # is also a unit separator (added in the Transcription()).</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">        <tt class="py-comment"># Remark: here we use FramePoint() as a "rank" function</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">        <tt class="py-keyword">with</tt> <tt class="py-name">codecs</tt><tt class="py-op">.</tt><tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">,</tt> <tt class="py-string">'r'</tt><tt class="py-op">,</tt> <tt class="py-string">'utf-8'</tt><tt class="py-op">)</tt> <tt class="py-keyword">as</tt> <tt class="py-name">fp</tt><tt class="py-op">:</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">            <tt id="link-32" class="py-name" targets="Module src.annotationdata.tier=src.annotationdata.tier-module.html"><a title="src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-32', 'tier', 'link-32');">tier</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-33" class="py-name" targets="Method src.annotationdata.transcription.Transcription.NewTier()=src.annotationdata.transcription.Transcription-class.html#NewTier"><a title="src.annotationdata.transcription.Transcription.NewTier" class="py-name" href="#" onclick="return doclink('link-33', 'NewTier', 'link-33');">NewTier</a></tt><tt class="py-op">(</tt><tt class="py-string">'RawTrs'</tt><tt class="py-op">)</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">            <tt class="py-name">n</tt> <tt class="py-op">=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">line</tt> <tt class="py-keyword">in</tt> <tt class="py-name">fp</tt><tt class="py-op">:</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">                <tt class="py-name">line</tt> <tt class="py-op">=</tt> <tt class="py-name">line</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">                <tt class="py-comment"># we ought not to have to remove the BOM</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">                <tt class="py-comment"># line.lstrip(unicode(codecs.BOM_UTF8, "utf8"))</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">line</tt><tt class="py-op">.</tt><tt class="py-name">find</tt><tt class="py-op">(</tt><tt class="py-string">"#"</tt><tt class="py-op">)</tt> <tt class="py-op">&gt;</tt> <tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">                    <tt class="py-name">phrases</tt> <tt class="py-op">=</tt> <tt class="py-name">map</tt><tt class="py-op">(</tt><tt class="py-keyword">lambda</tt> <tt class="py-name">s</tt><tt class="py-op">:</tt> <tt class="py-name">s</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">'(#)'</tt><tt class="py-op">,</tt> <tt class="py-name">line</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">                    <tt class="py-keyword">for</tt> <tt class="py-name">phrase</tt> <tt class="py-keyword">in</tt> <tt class="py-name">phrases</tt><tt class="py-op">:</tt>  <tt class="py-comment"># keep '#' in the tab</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt id="link-34" class="py-name" targets="Method src.annotationdata.statistics.descriptives.DescriptiveStatistics.len()=src.annotationdata.statistics.descriptives.DescriptiveStatistics-class.html#len"><a title="src.annotationdata.statistics.descriptives.DescriptiveStatistics.len" class="py-name" href="#" onclick="return doclink('link-34', 'len', 'link-34');">len</a></tt><tt class="py-op">(</tt><tt class="py-name">phrase</tt><tt class="py-op">)</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">                            <tt id="link-35" class="py-name"><a title="src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-35', 'tier', 'link-32');">tier</a></tt><tt class="py-op">.</tt><tt id="link-36" class="py-name" targets="Method src.annotationdata.ptime.disjoint.TimeDisjoint.Append()=src.annotationdata.ptime.disjoint.TimeDisjoint-class.html#Append,Method src.annotationdata.ptime.framedisjoint.FrameDisjoint.Append()=src.annotationdata.ptime.framedisjoint.FrameDisjoint-class.html#Append,Method src.annotationdata.tier.Tier.Append()=src.annotationdata.tier.Tier-class.html#Append,Method src.annotationdata.transcription.Transcription.Append()=src.annotationdata.transcription.Transcription-class.html#Append"><a title="src.annotationdata.ptime.disjoint.TimeDisjoint.Append
+src.annotationdata.ptime.framedisjoint.FrameDisjoint.Append
+src.annotationdata.tier.Tier.Append
+src.annotationdata.transcription.Transcription.Append" class="py-name" href="#" onclick="return doclink('link-36', 'Append', 'link-36');">Append</a></tt><tt class="py-op">(</tt><tt id="link-37" class="py-name" targets="Class src.annotationdata.io.text.RawText=src.annotationdata.io.text.RawText-class.html"><a title="src.annotationdata.io.text.RawText" class="py-name" href="#" onclick="return doclink('link-37', 'RawText', 'link-37');">RawText</a></tt><tt class="py-op">.</tt><tt class="py-name">__read_annotation</tt><tt class="py-op">(</tt><tt class="py-name">phrase</tt><tt class="py-op">,</tt> <tt class="py-name">n</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">                            <tt class="py-name">n</tt> <tt class="py-op">+=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">                <tt class="py-keyword">elif</tt> <tt id="link-38" class="py-name"><a title="src.annotationdata.statistics.descriptives.DescriptiveStatistics.len" class="py-name" href="#" onclick="return doclink('link-38', 'len', 'link-34');">len</a></tt><tt class="py-op">(</tt><tt class="py-name">line</tt><tt class="py-op">)</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">                    <tt id="link-39" class="py-name"><a title="src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-39', 'tier', 'link-32');">tier</a></tt><tt class="py-op">.</tt><tt id="link-40" class="py-name"><a title="src.annotationdata.ptime.disjoint.TimeDisjoint.Append
+src.annotationdata.ptime.framedisjoint.FrameDisjoint.Append
+src.annotationdata.tier.Tier.Append
+src.annotationdata.transcription.Transcription.Append" class="py-name" href="#" onclick="return doclink('link-40', 'Append', 'link-36');">Append</a></tt><tt class="py-op">(</tt><tt id="link-41" class="py-name"><a title="src.annotationdata.io.text.RawText" class="py-name" href="#" onclick="return doclink('link-41', 'RawText', 'link-37');">RawText</a></tt><tt class="py-op">.</tt><tt class="py-name">__read_annotation</tt><tt class="py-op">(</tt><tt class="py-name">line</tt><tt class="py-op">,</tt> <tt class="py-name">n</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">                    <tt class="py-name">n</tt> <tt class="py-op">+=</tt> <tt class="py-number">1</tt> </tt>
+</div><a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">    <tt class="py-comment"># End read</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">    <tt class="py-comment"># -----------------------------------------------------------------</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"> </tt>
+<a name="RawText.write"></a><div id="RawText.write-def"><a name="L119"></a><tt class="py-lineno">119</tt> <a class="py-toggle" href="#" id="RawText.write-toggle" onclick="return toggle('RawText.write');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.io.text.RawText-class.html#write">write</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">filename</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RawText.write-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="RawText.write-expanded"><a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"><tt class="py-docstring">        Write an ascii file, as txt file.</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"><tt class="py-docstring">        @param filename: (String) is the output file name, ending with ".txt"</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">        <tt class="py-keyword">with</tt> <tt class="py-name">codecs</tt><tt class="py-op">.</tt><tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">,</tt> <tt class="py-string">'w'</tt><tt class="py-op">,</tt> <tt class="py-string">'utf-8'</tt><tt class="py-op">,</tt> <tt class="py-name">buffering</tt><tt class="py-op">=</tt><tt class="py-number">8096</tt><tt class="py-op">)</tt> <tt class="py-keyword">as</tt> <tt class="py-name">fp</tt><tt class="py-op">:</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name" targets="Method src.annotationdata.label.label.Label.GetSize()=src.annotationdata.label.label.Label-class.html#GetSize,Method src.annotationdata.ptime.disjoint.TimeDisjoint.GetSize()=src.annotationdata.ptime.disjoint.TimeDisjoint-class.html#GetSize,Method src.annotationdata.ptime.framedisjoint.FrameDisjoint.GetSize()=src.annotationdata.ptime.framedisjoint.FrameDisjoint-class.html#GetSize,Method src.annotationdata.tier.Tier.GetSize()=src.annotationdata.tier.Tier-class.html#GetSize,Method src.annotationdata.transcription.Transcription.GetSize()=src.annotationdata.transcription.Transcription-class.html#GetSize"><a title="src.annotationdata.label.label.Label.GetSize
+src.annotationdata.ptime.disjoint.TimeDisjoint.GetSize
+src.annotationdata.ptime.framedisjoint.FrameDisjoint.GetSize
+src.annotationdata.tier.Tier.GetSize
+src.annotationdata.transcription.Transcription.GetSize" class="py-name" href="#" onclick="return doclink('link-42', 'GetSize', 'link-42');">GetSize</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">!=</tt> <tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt class="py-name">Exception</tt><tt class="py-op">(</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">                    <tt class="py-string">"Cannot write a multi tier annotation to a txt."</tt><tt class="py-op">)</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt id="link-43" class="py-name"><a title="src.annotationdata.annotation" class="py-name" href="#" onclick="return doclink('link-43', 'annotation', 'link-19');">annotation</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">                <tt class="py-name">fp</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name" targets="Method src.annotationdata.io.elan.Elan.write()=src.annotationdata.io.elan.Elan-class.html#write,Method src.annotationdata.io.htk.Label.write()=src.annotationdata.io.htk.Label-class.html#write,Method src.annotationdata.io.htk.MasterLabel.write()=src.annotationdata.io.htk.MasterLabel-class.html#write,Method src.annotationdata.io.phonedit.Phonedit.write()=src.annotationdata.io.phonedit.Phonedit-class.html#write,Method src.annotationdata.io.praat.IntensityTier.write()=src.annotationdata.io.praat.IntensityTier-class.html#write,Method src.annotationdata.io.praat.PitchTier.write()=src.annotationdata.io.praat.PitchTier-class.html#write,Method src.annotationdata.io.praat.TextGrid.write()=src.annotationdata.io.praat.TextGrid-class.html#write,Method src.annotationdata.io.sclite.SegmentTimeMark.write()=src.annotationdata.io.sclite.SegmentTimeMark-class.html#write,Method src.annotationdata.io.sclite.TimeMarkedConversation.write()=src.annotationdata.io.sclite.TimeMarkedConversation-class.html#write,Method src.annotationdata.io.signaix.HzPitch.write()=src.annotationdata.io.signaix.HzPitch-class.html#write,Method src.annotationdata.io.subtitle.SubRip.write()=src.annotationdata.io.subtitle.SubRip-class.html#write,Method src.annotationdata.io.subtitle.SubViewer.write()=src.annotationdata.io.subtitle.SubViewer-class.html#write,Method src.annotationdata.io.text.CSV.write()=src.annotationdata.io.text.CSV-class.html#write,Method src.annotationdata.io.text.RawText.write()=src.annotationdata.io.text.RawText-class.html#write,Method src.annotationdata.io.xra.XRA.write()=src.annotationdata.io.xra.XRA-class.html#write,Method src.annotationdata.transcription.Transcription.write()=src.annotationdata.transcription.Transcription-class.html#write"><a title="src.annotationdata.io.elan.Elan.write
+src.annotationdata.io.htk.Label.write
+src.annotationdata.io.htk.MasterLabel.write
+src.annotationdata.io.phonedit.Phonedit.write
+src.annotationdata.io.praat.IntensityTier.write
+src.annotationdata.io.praat.PitchTier.write
+src.annotationdata.io.praat.TextGrid.write
+src.annotationdata.io.sclite.SegmentTimeMark.write
+src.annotationdata.io.sclite.TimeMarkedConversation.write
+src.annotationdata.io.signaix.HzPitch.write
+src.annotationdata.io.subtitle.SubRip.write
+src.annotationdata.io.subtitle.SubViewer.write
+src.annotationdata.io.text.CSV.write
+src.annotationdata.io.text.RawText.write
+src.annotationdata.io.xra.XRA.write
+src.annotationdata.transcription.Transcription.write" class="py-name" href="#" onclick="return doclink('link-44', 'write', 'link-44');">write</a></tt><tt class="py-op">(</tt><tt id="link-45" class="py-name"><a title="src.annotationdata.annotation" class="py-name" href="#" onclick="return doclink('link-45', 'annotation', 'link-19');">annotation</a></tt><tt class="py-op">.</tt><tt id="link-46" class="py-name" targets="Method src.annotationdata.annotation.Annotation.GetLabel()=src.annotationdata.annotation.Annotation-class.html#GetLabel,Method src.annotationdata.label.label.Label.GetLabel()=src.annotationdata.label.label.Label-class.html#GetLabel"><a title="src.annotationdata.annotation.Annotation.GetLabel
+src.annotationdata.label.label.Label.GetLabel" class="py-name" href="#" onclick="return doclink('link-46', 'GetLabel', 'link-46');">GetLabel</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name" targets="Method src.annotationdata.label.label.Label.GetValue()=src.annotationdata.label.label.Label-class.html#GetValue,Method src.annotationdata.label.text.Text.GetValue()=src.annotationdata.label.text.Text-class.html#GetValue,Method src.annotationdata.ptime.framepoint.FramePoint.GetValue()=src.annotationdata.ptime.framepoint.FramePoint-class.html#GetValue,Method src.annotationdata.ptime.location.Location.GetValue()=src.annotationdata.ptime.location.Location-class.html#GetValue,Method src.annotationdata.ptime.point.TimePoint.GetValue()=src.annotationdata.ptime.point.TimePoint-class.html#GetValue"><a title="src.annotationdata.label.label.Label.GetValue
+src.annotationdata.label.text.Text.GetValue
+src.annotationdata.ptime.framepoint.FramePoint.GetValue
+src.annotationdata.ptime.location.Location.GetValue
+src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-47', 'GetValue', 'link-47');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-string">'\n'</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"> </tt>
+<a name="CSV"></a><div id="CSV-def"><a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">    <tt class="py-comment"># End write</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">    <tt class="py-comment"># -----------------------------------------------------------------</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line"> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line"> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt> <a class="py-toggle" href="#" id="CSV-toggle" onclick="return toggle('CSV');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="src.annotationdata.io.text.CSV-class.html">CSV</a><tt class="py-op">(</tt><tt class="py-base-class">Transcription</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CSV-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="CSV-expanded"><a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="CSV.detect"></a><div id="CSV.detect-def"><a name="L140"></a><tt class="py-lineno">140</tt> <a class="py-toggle" href="#" id="CSV.detect-toggle" onclick="return toggle('CSV.detect');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.io.text.CSV-class.html#detect">detect</a><tt class="py-op">(</tt><tt class="py-param">filename</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CSV.detect-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="CSV.detect-expanded"><a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">        <tt class="py-name">csvLine</tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">compile</tt><tt class="py-op">(</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">            <tt class="py-string">'^(("([^"]|"")*"|[^",]*),)+("([^"]|"")*"|[^",]*)$'</tt><tt class="py-op">)</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">        <tt class="py-keyword">with</tt> <tt class="py-name">codecs</tt><tt class="py-op">.</tt><tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">,</tt> <tt class="py-string">'r'</tt><tt class="py-op">,</tt> <tt class="py-string">'utf-8'</tt><tt class="py-op">)</tt> <tt class="py-keyword">as</tt> <tt class="py-name">fp</tt><tt class="py-op">:</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">            <tt class="py-name">detected</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">range</tt><tt class="py-op">(</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-number">10</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">csvLine</tt><tt class="py-op">.</tt><tt class="py-name">match</tt><tt class="py-op">(</tt><tt class="py-name">fp</tt><tt class="py-op">.</tt><tt id="link-48" class="py-name" targets="Method src.annotationdata.io.text.CSV.UnicodeReader.next()=src.annotationdata.io.text.CSV.UnicodeReader-class.html#next"><a title="src.annotationdata.io.text.CSV.UnicodeReader.next" class="py-name" href="#" onclick="return doclink('link-48', 'next', 'link-48');">next</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">                    <tt class="py-name">detected</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">detected</tt> </tt>
+</div><a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">    <tt class="py-comment"># End detect</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">    <tt class="py-comment"># -----------------------------------------------------------------</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"> </tt>
+<a name="CSV.UnicodeReader"></a><div id="CSV.UnicodeReader-def"><a name="L155"></a><tt class="py-lineno">155</tt> <a class="py-toggle" href="#" id="CSV.UnicodeReader-toggle" onclick="return toggle('CSV.UnicodeReader');">-</a><tt class="py-line">    <tt class="py-keyword">class</tt> <a class="py-def-name" href="src.annotationdata.io.text.CSV.UnicodeReader-class.html">UnicodeReader</a><tt class="py-op">:</tt> </tt>
+</div><div id="CSV.UnicodeReader-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="CSV.UnicodeReader-expanded"><a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"><tt class="py-docstring">        A CSV reader which will iterate over lines in the CSV file "f",</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"><tt class="py-docstring">        which is encoded in the given encoding.</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">        <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="CSV.UnicodeReader.utf_8_encoder"></a><div id="CSV.UnicodeReader.utf_8_encoder-def"><a name="L161"></a><tt class="py-lineno">161</tt> <a class="py-toggle" href="#" id="CSV.UnicodeReader.utf_8_encoder-toggle" onclick="return toggle('CSV.UnicodeReader.utf_8_encoder');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.io.text.CSV.UnicodeReader-class.html#utf_8_encoder">utf_8_encoder</a><tt class="py-op">(</tt><tt class="py-param">unicode_csv_data</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CSV.UnicodeReader.utf_8_encoder-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="CSV.UnicodeReader.utf_8_encoder-expanded"><a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">line</tt> <tt class="py-keyword">in</tt> <tt class="py-name">unicode_csv_data</tt><tt class="py-op">:</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">                <tt class="py-keyword">yield</tt> <tt class="py-name">line</tt><tt class="py-op">.</tt><tt class="py-name">encode</tt><tt class="py-op">(</tt><tt class="py-string">'utf-8'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line"> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line">        <tt class="py-comment"># End utf_8_encoder</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">        <tt class="py-comment"># -----------------------------------------------------------------</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line"> </tt>
+<a name="CSV.UnicodeReader.__init__"></a><div id="CSV.UnicodeReader.__init__-def"><a name="L168"></a><tt class="py-lineno">168</tt> <a class="py-toggle" href="#" id="CSV.UnicodeReader.__init__-toggle" onclick="return toggle('CSV.UnicodeReader.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.io.text.CSV.UnicodeReader-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">f</tt><tt class="py-op">,</tt> <tt class="py-param">dialect</tt><tt class="py-op">=</tt><tt class="py-name">csv</tt><tt class="py-op">.</tt><tt class="py-name">excel</tt><tt class="py-op">,</tt> <tt class="py-param">encoding</tt><tt class="py-op">=</tt><tt class="py-string">"utf-8"</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwds</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CSV.UnicodeReader.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="CSV.UnicodeReader.__init__-expanded"><a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line"> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">reader</tt> <tt class="py-op">=</tt> <tt class="py-name">csv</tt><tt class="py-op">.</tt><tt class="py-name">reader</tt><tt class="py-op">(</tt><tt id="link-49" class="py-name" targets="Class src.annotationdata.io.text.CSV=src.annotationdata.io.text.CSV-class.html"><a title="src.annotationdata.io.text.CSV" class="py-name" href="#" onclick="return doclink('link-49', 'CSV', 'link-49');">CSV</a></tt><tt class="py-op">.</tt><tt id="link-50" class="py-name" targets="Class src.annotationdata.io.text.CSV.UnicodeReader=src.annotationdata.io.text.CSV.UnicodeReader-class.html"><a title="src.annotationdata.io.text.CSV.UnicodeReader" class="py-name" href="#" onclick="return doclink('link-50', 'UnicodeReader', 'link-50');">UnicodeReader</a></tt><tt class="py-op">.</tt><tt id="link-51" class="py-name" targets="Static Method src.annotationdata.io.text.CSV.UnicodeReader.utf_8_encoder()=src.annotationdata.io.text.CSV.UnicodeReader-class.html#utf_8_encoder"><a title="src.annotationdata.io.text.CSV.UnicodeReader.utf_8_encoder" class="py-name" href="#" onclick="return doclink('link-51', 'utf_8_encoder', 'link-51');">utf_8_encoder</a></tt><tt class="py-op">(</tt><tt class="py-name">f</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">                                     <tt class="py-name">dialect</tt><tt class="py-op">=</tt><tt class="py-name">dialect</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwds</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line"> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">        <tt class="py-comment"># End __init__</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">        <tt class="py-comment"># -----------------------------------------------------------------</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line"> </tt>
+<a name="CSV.UnicodeReader.next"></a><div id="CSV.UnicodeReader.next-def"><a name="L176"></a><tt class="py-lineno">176</tt> <a class="py-toggle" href="#" id="CSV.UnicodeReader.next-toggle" onclick="return toggle('CSV.UnicodeReader.next');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.io.text.CSV.UnicodeReader-class.html#next">next</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CSV.UnicodeReader.next-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="CSV.UnicodeReader.next-expanded"><a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line">            <tt class="py-name">row</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">reader</tt><tt class="py-op">.</tt><tt id="link-52" class="py-name"><a title="src.annotationdata.io.text.CSV.UnicodeReader.next" class="py-name" href="#" onclick="return doclink('link-52', 'next', 'link-48');">next</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-op">[</tt><tt class="py-name">unicode</tt><tt class="py-op">(</tt><tt class="py-name">s</tt><tt class="py-op">,</tt> <tt class="py-string">"utf-8"</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">s</tt> <tt class="py-keyword">in</tt> <tt class="py-name">row</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line"> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line">        <tt class="py-comment"># End next</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line">        <tt class="py-comment"># -----------------------------------------------------------------</tt> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line"> </tt>
+<a name="CSV.UnicodeReader.__iter__"></a><div id="CSV.UnicodeReader.__iter__-def"><a name="L183"></a><tt class="py-lineno">183</tt> <a class="py-toggle" href="#" id="CSV.UnicodeReader.__iter__-toggle" onclick="return toggle('CSV.UnicodeReader.__iter__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.io.text.CSV.UnicodeReader-class.html#__iter__">__iter__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CSV.UnicodeReader.__iter__-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="CSV.UnicodeReader.__iter__-expanded"><a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">self</tt> </tt>
+</div></div><a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line"> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line">        <tt class="py-comment"># End __iter__</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line">        <tt class="py-comment"># -----------------------------------------------------------------</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"> </tt>
+<a name="CSV.UnicodeWriter"></a><div id="CSV.UnicodeWriter-def"><a name="L189"></a><tt class="py-lineno">189</tt> <a class="py-toggle" href="#" id="CSV.UnicodeWriter-toggle" onclick="return toggle('CSV.UnicodeWriter');">-</a><tt class="py-line">    <tt class="py-keyword">class</tt> <a class="py-def-name" href="src.annotationdata.io.text.CSV.UnicodeWriter-class.html">UnicodeWriter</a><tt class="py-op">:</tt> </tt>
+</div><div id="CSV.UnicodeWriter-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="CSV.UnicodeWriter-expanded"><a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line"><tt class="py-docstring">        A CSV writer which will write rows to CSV file "f",</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line"><tt class="py-docstring">        which is encoded in the given encoding.</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line"> </tt>
+<a name="CSV.UnicodeWriter.__init__"></a><div id="CSV.UnicodeWriter.__init__-def"><a name="L195"></a><tt class="py-lineno">195</tt> <a class="py-toggle" href="#" id="CSV.UnicodeWriter.__init__-toggle" onclick="return toggle('CSV.UnicodeWriter.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.io.text.CSV.UnicodeWriter-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">f</tt><tt class="py-op">,</tt> <tt class="py-param">dialect</tt><tt class="py-op">=</tt><tt class="py-name">csv</tt><tt class="py-op">.</tt><tt class="py-name">excel</tt><tt class="py-op">,</tt> <tt class="py-param">encoding</tt><tt class="py-op">=</tt><tt class="py-string">"utf-8"</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwds</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CSV.UnicodeWriter.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="CSV.UnicodeWriter.__init__-expanded"><a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line">            <tt class="py-comment"># Redirect output to a queue</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">queue</tt> <tt class="py-op">=</tt> <tt class="py-name">cStringIO</tt><tt class="py-op">.</tt><tt class="py-name">StringIO</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">writer</tt> <tt class="py-op">=</tt> <tt class="py-name">csv</tt><tt class="py-op">.</tt><tt class="py-name">writer</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">queue</tt><tt class="py-op">,</tt> <tt class="py-name">dialect</tt><tt class="py-op">=</tt><tt class="py-name">dialect</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwds</tt><tt class="py-op">)</tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">stream</tt> <tt class="py-op">=</tt> <tt class="py-name">f</tt> </tt>
+</div><a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line"> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line">        <tt class="py-comment"># End __init__</tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line">        <tt class="py-comment"># -----------------------------------------------------------------</tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line"> </tt>
+<a name="CSV.UnicodeWriter.writerow"></a><div id="CSV.UnicodeWriter.writerow-def"><a name="L204"></a><tt class="py-lineno">204</tt> <a class="py-toggle" href="#" id="CSV.UnicodeWriter.writerow-toggle" onclick="return toggle('CSV.UnicodeWriter.writerow');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.io.text.CSV.UnicodeWriter-class.html#writerow">writerow</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">row</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CSV.UnicodeWriter.writerow-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="CSV.UnicodeWriter.writerow-expanded"><a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">writer</tt><tt class="py-op">.</tt><tt id="link-53" class="py-name" targets="Method src.annotationdata.io.text.CSV.UnicodeWriter.writerow()=src.annotationdata.io.text.CSV.UnicodeWriter-class.html#writerow"><a title="src.annotationdata.io.text.CSV.UnicodeWriter.writerow" class="py-name" href="#" onclick="return doclink('link-53', 'writerow', 'link-53');">writerow</a></tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-name">s</tt><tt class="py-op">.</tt><tt class="py-name">encode</tt><tt class="py-op">(</tt><tt class="py-string">"utf-8"</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">s</tt> <tt class="py-keyword">in</tt> <tt class="py-name">row</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line">            <tt class="py-comment"># Fetch UTF-8 output from the queue ...</tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line">            <tt class="py-name">data</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">queue</tt><tt class="py-op">.</tt><tt class="py-name">getvalue</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line">            <tt class="py-name">data</tt> <tt class="py-op">=</tt> <tt class="py-name">data</tt><tt class="py-op">.</tt><tt class="py-name">decode</tt><tt class="py-op">(</tt><tt class="py-string">"utf-8"</tt><tt class="py-op">)</tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line">            <tt class="py-comment"># write to the target stream</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">stream</tt><tt class="py-op">.</tt><tt id="link-54" class="py-name"><a title="src.annotationdata.io.elan.Elan.write
+src.annotationdata.io.htk.Label.write
+src.annotationdata.io.htk.MasterLabel.write
+src.annotationdata.io.phonedit.Phonedit.write
+src.annotationdata.io.praat.IntensityTier.write
+src.annotationdata.io.praat.PitchTier.write
+src.annotationdata.io.praat.TextGrid.write
+src.annotationdata.io.sclite.SegmentTimeMark.write
+src.annotationdata.io.sclite.TimeMarkedConversation.write
+src.annotationdata.io.signaix.HzPitch.write
+src.annotationdata.io.subtitle.SubRip.write
+src.annotationdata.io.subtitle.SubViewer.write
+src.annotationdata.io.text.CSV.write
+src.annotationdata.io.text.RawText.write
+src.annotationdata.io.xra.XRA.write
+src.annotationdata.transcription.Transcription.write" class="py-name" href="#" onclick="return doclink('link-54', 'write', 'link-44');">write</a></tt><tt class="py-op">(</tt><tt class="py-name">data</tt><tt class="py-op">)</tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line">            <tt class="py-comment"># empty queue</tt> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">queue</tt><tt class="py-op">.</tt><tt class="py-name">truncate</tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line"> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line">        <tt class="py-comment"># End writerow</tt> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line">        <tt class="py-comment"># -----------------------------------------------------------------</tt> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line"> </tt>
+<a name="CSV.UnicodeWriter.writerows"></a><div id="CSV.UnicodeWriter.writerows-def"><a name="L217"></a><tt class="py-lineno">217</tt> <a class="py-toggle" href="#" id="CSV.UnicodeWriter.writerows-toggle" onclick="return toggle('CSV.UnicodeWriter.writerows');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.io.text.CSV.UnicodeWriter-class.html#writerows">writerows</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">rows</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CSV.UnicodeWriter.writerows-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="CSV.UnicodeWriter.writerows-expanded"><a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">row</tt> <tt class="py-keyword">in</tt> <tt class="py-name">rows</tt><tt class="py-op">:</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-55" class="py-name"><a title="src.annotationdata.io.text.CSV.UnicodeWriter.writerow" class="py-name" href="#" onclick="return doclink('link-55', 'writerow', 'link-53');">writerow</a></tt><tt class="py-op">(</tt><tt class="py-name">row</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line"> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line">        <tt class="py-comment"># End writerows</tt> </tt>
+<a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line">        <tt class="py-comment"># -----------------------------------------------------------------</tt> </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line"> </tt>
+<a name="CSV.__init__"></a><div id="CSV.__init__-def"><a name="L224"></a><tt class="py-lineno">224</tt> <a class="py-toggle" href="#" id="CSV.__init__-toggle" onclick="return toggle('CSV.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.io.text.CSV-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">=</tt><tt class="py-string">"NoName"</tt><tt class="py-op">,</tt> <tt class="py-param">coeff</tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-param">mintime</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">maxtime</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CSV.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="CSV.__init__-expanded"><a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line"><tt class="py-docstring">        Creates a new CSV Transcription instance.</tt> </tt>
+<a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-56" class="py-name"><a title="src.annotationdata.io.text.CSV" class="py-name" href="#" onclick="return doclink('link-56', 'CSV', 'link-49');">CSV</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-57" class="py-name"><a title="src.annotationdata.annotation.Annotation.__init__
+src.annotationdata.filter.Filter.__init__
+src.annotationdata.filter.LabelFilter.__init__
+src.annotationdata.filter.Predicate.__init__
+src.annotationdata.filter.RelationFilter.__init__
+src.annotationdata.filter.RelationPredicate.__init__
+src.annotationdata.filter.filters.Filter.__init__
+src.annotationdata.filter.filters.RelationFilter.__init__
+src.annotationdata.filter.filters.SingleFilter.__init__
+src.annotationdata.filter.predicate.Predicate.__init__
+src.annotationdata.filter.predicate.RelationPredicate.__init__
+src.annotationdata.hierarchy.Hierarchy.__init__
+src.annotationdata.io.anvil.Anvil.__init__
+src.annotationdata.io.htk.Label.__init__
+src.annotationdata.io.htk.MasterLabel.__init__
+src.annotationdata.io.phonedit.Phonedit.__init__
+src.annotationdata.io.praat.IntensityTier.__init__
+src.annotationdata.io.praat.PitchTier.__init__
+src.annotationdata.io.praat.TextGrid.__init__
+src.annotationdata.io.sclite.SegmentTimeMark.__init__
+src.annotationdata.io.sclite.TimeMarkedConversation.__init__
+src.annotationdata.io.signaix.HzPitch.__init__
+src.annotationdata.io.subtitle.SubRip.__init__
+src.annotationdata.io.subtitle.SubViewer.__init__
+src.annotationdata.io.text.CSV.UnicodeReader.__init__
+src.annotationdata.io.text.CSV.UnicodeWriter.__init__
+src.annotationdata.io.text.CSV.__init__
+src.annotationdata.io.text.RawText.__init__
+src.annotationdata.io.transcriber.Transcriber.__init__
+src.annotationdata.io.xra.XRA.__init__
+src.annotationdata.label.label.Label.__init__
+src.annotationdata.label.text.Text.__init__
+src.annotationdata.meta.MetaObject.__init__
+src.annotationdata.pitch.Pitch.__init__
+src.annotationdata.ptime.baseplacement.BasePlacement.__init__
+src.annotationdata.ptime.disjoint.TimeDisjoint.__init__
+src.annotationdata.ptime.framedisjoint.FrameDisjoint.__init__
+src.annotationdata.ptime.frameinterval.FrameInterval.__init__
+src.annotationdata.ptime.framepoint.FramePoint.__init__
+src.annotationdata.ptime.interval.TimeInterval.__init__
+src.annotationdata.ptime.localization.Localization.__init__
+src.annotationdata.ptime.location.Location.__init__
+src.annotationdata.ptime.point.TimePoint.__init__
+src.annotationdata.statistics.descriptives.DescriptiveStatistics.__init__
+src.annotationdata.statistics.kappa.DataConverter.__init__
+src.annotationdata.statistics.kappa.Kappa.__init__
+src.annotationdata.tier.Tier.__init__
+src.annotationdata.transcription.Transcription.__init__
+src.annotationdata.utils.tiermapping.tierMapping.__init__
+src.annotationdata.utils.tierstats.TierStats.__init__" class="py-name" href="#" onclick="return doclink('link-57', '__init__', 'link-28');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">name</tt><tt class="py-op">,</tt> <tt class="py-name">coeff</tt><tt class="py-op">,</tt> <tt class="py-name">mintime</tt><tt class="py-op">,</tt> <tt class="py-name">maxtime</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line"> </tt>
+<a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line">    <tt class="py-comment"># End __init__</tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line">    <tt class="py-comment"># -----------------------------------------------------------------</tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line"> </tt>
+<a name="CSV.read"></a><div id="CSV.read-def"><a name="L234"></a><tt class="py-lineno">234</tt> <a class="py-toggle" href="#" id="CSV.read-toggle" onclick="return toggle('CSV.read');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.io.text.CSV-class.html#read">read</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">filename</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CSV.read-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="CSV.read-expanded"><a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line"><tt class="py-docstring">        Read a CSV file.</tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line"><tt class="py-docstring">        Support tiers of types: TimeInterval or TimePoint</tt> </tt>
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line"><tt class="py-docstring">        (3rd or 4th column with an empty field).</tt> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line"><tt class="py-docstring">        @param filename: is the input file name</tt> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line"><tt class="py-docstring">        @param fill_gaps: (Boolean) if it is set to True,</tt> </tt>
+<a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line"><tt class="py-docstring">                          the input is supposed to be time-continued and gaps</tt> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line"><tt class="py-docstring">                          will be filled with a non-labelled annotation</tt> </tt>
+<a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line"> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line">        <tt class="py-keyword">with</tt> <tt class="py-name">codecs</tt><tt class="py-op">.</tt><tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">,</tt> <tt class="py-string">"r"</tt><tt class="py-op">,</tt> <tt class="py-string">'utf-8-sig'</tt><tt class="py-op">)</tt> <tt class="py-keyword">as</tt> <tt class="py-name">fp</tt><tt class="py-op">:</tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line"> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line">            <tt class="py-name">reader</tt> <tt class="py-op">=</tt> <tt id="link-58" class="py-name"><a title="src.annotationdata.io.text.CSV" class="py-name" href="#" onclick="return doclink('link-58', 'CSV', 'link-49');">CSV</a></tt><tt class="py-op">.</tt><tt id="link-59" class="py-name"><a title="src.annotationdata.io.text.CSV.UnicodeReader" class="py-name" href="#" onclick="return doclink('link-59', 'UnicodeReader', 'link-50');">UnicodeReader</a></tt><tt class="py-op">(</tt><tt class="py-name">fp</tt><tt class="py-op">)</tt> </tt>
+<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line">            <tt id="link-60" class="py-name"><a title="src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-60', 'tier', 'link-32');">tier</a></tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line"> </tt>
+<a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">row</tt> <tt class="py-keyword">in</tt> <tt class="py-name">reader</tt><tt class="py-op">:</tt> </tt>
+<a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt id="link-61" class="py-name"><a title="src.annotationdata.statistics.descriptives.DescriptiveStatistics.len" class="py-name" href="#" onclick="return doclink('link-61', 'len', 'link-34');">len</a></tt><tt class="py-op">(</tt><tt class="py-name">row</tt><tt class="py-op">)</tt> <tt class="py-op">!=</tt> <tt class="py-number">4</tt><tt class="py-op">:</tt> </tt>
+<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line">                    <tt class="py-keyword">raise</tt> <tt class="py-name">Exception</tt><tt class="py-op">(</tt><tt class="py-string">'Invalid row in CSV file: %r'</tt> <tt class="py-op">%</tt> <tt class="py-name">row</tt><tt class="py-op">)</tt> </tt>
+<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line"> </tt>
+<a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line">                <tt class="py-name">name</tt><tt class="py-op">,</tt> <tt class="py-name">begin</tt><tt class="py-op">,</tt> <tt class="py-name">end</tt><tt class="py-op">,</tt> <tt id="link-62" class="py-name"><a title="src.annotationdata.label
+src.annotationdata.label.label" class="py-name" href="#" onclick="return doclink('link-62', 'label', 'link-4');">label</a></tt> <tt class="py-op">=</tt> <tt class="py-name">row</tt> </tt>
+<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line"> </tt>
+<a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt id="link-63" class="py-name"><a title="src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-63', 'tier', 'link-32');">tier</a></tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt> <tt class="py-keyword">or</tt> <tt class="py-name">name</tt> <tt class="py-op">!=</tt> <tt id="link-64" class="py-name"><a title="src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-64', 'tier', 'link-32');">tier</a></tt><tt class="py-op">.</tt><tt id="link-65" class="py-name" targets="Method src.annotationdata.tier.Tier.GetName()=src.annotationdata.tier.Tier-class.html#GetName,Method src.annotationdata.transcription.Transcription.GetName()=src.annotationdata.transcription.Transcription-class.html#GetName"><a title="src.annotationdata.tier.Tier.GetName
+src.annotationdata.transcription.Transcription.GetName" class="py-name" href="#" onclick="return doclink('link-65', 'GetName', 'link-65');">GetName</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line">                    <tt id="link-66" class="py-name"><a title="src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-66', 'tier', 'link-32');">tier</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-67" class="py-name"><a title="src.annotationdata.transcription.Transcription.NewTier" class="py-name" href="#" onclick="return doclink('link-67', 'NewTier', 'link-33');">NewTier</a></tt><tt class="py-op">(</tt><tt class="py-name">name</tt><tt class="py-op">)</tt> </tt>
+<a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line"> </tt>
+<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line">                <tt class="py-name">hasBegin</tt> <tt class="py-op">=</tt> <tt id="link-68" class="py-name"><a title="src.annotationdata.statistics.descriptives.DescriptiveStatistics.len" class="py-name" href="#" onclick="return doclink('link-68', 'len', 'link-34');">len</a></tt><tt class="py-op">(</tt><tt class="py-name">begin</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">0</tt> </tt>
+<a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line">                <tt class="py-name">hasEnd</tt> <tt class="py-op">=</tt> <tt id="link-69" class="py-name"><a title="src.annotationdata.statistics.descriptives.DescriptiveStatistics.len" class="py-name" href="#" onclick="return doclink('link-69', 'len', 'link-34');">len</a></tt><tt class="py-op">(</tt><tt class="py-name">end</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">0</tt> </tt>
+<a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line"> </tt>
+<a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">hasBegin</tt> <tt class="py-keyword">and</tt> <tt class="py-name">hasEnd</tt><tt class="py-op">:</tt> </tt>
+<a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line">                    <tt class="py-name">time</tt> <tt class="py-op">=</tt> <tt id="link-70" class="py-name"><a title="src.annotationdata.ptime.interval.TimeInterval" class="py-name" href="#" onclick="return doclink('link-70', 'TimeInterval', 'link-13');">TimeInterval</a></tt><tt class="py-op">(</tt><tt id="link-71" class="py-name"><a title="src.annotationdata.io.anvil.TimePoint
+src.annotationdata.io.elan.TimePoint
+src.annotationdata.io.htk.TimePoint
+src.annotationdata.io.praat.TimePoint
+src.annotationdata.io.sclite.TimePoint
+src.annotationdata.io.subtitle.TimePoint
+src.annotationdata.io.text.TimePoint
+src.annotationdata.ptime.point.TimePoint" class="py-name" href="#" onclick="return doclink('link-71', 'TimePoint', 'link-25');">TimePoint</a></tt><tt class="py-op">(</tt><tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">begin</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line">                                        <tt id="link-72" class="py-name"><a title="src.annotationdata.io.anvil.TimePoint
+src.annotationdata.io.elan.TimePoint
+src.annotationdata.io.htk.TimePoint
+src.annotationdata.io.praat.TimePoint
+src.annotationdata.io.sclite.TimePoint
+src.annotationdata.io.subtitle.TimePoint
+src.annotationdata.io.text.TimePoint
+src.annotationdata.ptime.point.TimePoint" class="py-name" href="#" onclick="return doclink('link-72', 'TimePoint', 'link-25');">TimePoint</a></tt><tt class="py-op">(</tt><tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">end</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line">                <tt class="py-keyword">elif</tt> <tt class="py-name">hasBegin</tt><tt class="py-op">:</tt> </tt>
+<a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line">                    <tt class="py-name">time</tt> <tt class="py-op">=</tt> <tt id="link-73" class="py-name"><a title="src.annotationdata.io.anvil.TimePoint
+src.annotationdata.io.elan.TimePoint
+src.annotationdata.io.htk.TimePoint
+src.annotationdata.io.praat.TimePoint
+src.annotationdata.io.sclite.TimePoint
+src.annotationdata.io.subtitle.TimePoint
+src.annotationdata.io.text.TimePoint
+src.annotationdata.ptime.point.TimePoint" class="py-name" href="#" onclick="return doclink('link-73', 'TimePoint', 'link-25');">TimePoint</a></tt><tt class="py-op">(</tt><tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">begin</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line"> </tt>
+<a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line">                <tt class="py-keyword">elif</tt> <tt class="py-name">hasEnd</tt><tt class="py-op">:</tt> </tt>
+<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line">                    <tt class="py-name">time</tt> <tt class="py-op">=</tt> <tt id="link-74" class="py-name"><a title="src.annotationdata.io.anvil.TimePoint
+src.annotationdata.io.elan.TimePoint
+src.annotationdata.io.htk.TimePoint
+src.annotationdata.io.praat.TimePoint
+src.annotationdata.io.sclite.TimePoint
+src.annotationdata.io.subtitle.TimePoint
+src.annotationdata.io.text.TimePoint
+src.annotationdata.ptime.point.TimePoint" class="py-name" href="#" onclick="return doclink('link-74', 'TimePoint', 'link-25');">TimePoint</a></tt><tt class="py-op">(</tt><tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">end</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line"> </tt>
+<a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line">                <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line">                    <tt class="py-keyword">raise</tt> <tt class="py-name">Exception</tt><tt class="py-op">(</tt><tt class="py-string">'No valid timepoint in CSV file row: %r'</tt> </tt>
+<a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line">                                    <tt class="py-op">%</tt> <tt class="py-name">row</tt><tt class="py-op">)</tt> </tt>
+<a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line"> </tt>
+<a name="L278"></a><tt class="py-lineno">278</tt>  <tt class="py-line">                <tt id="link-75" class="py-name"><a title="src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-75', 'tier', 'link-32');">tier</a></tt><tt class="py-op">.</tt><tt id="link-76" class="py-name" targets="Method src.annotationdata.tier.Tier.Add()=src.annotationdata.tier.Tier-class.html#Add,Method src.annotationdata.transcription.Transcription.Add()=src.annotationdata.transcription.Transcription-class.html#Add"><a title="src.annotationdata.tier.Tier.Add
+src.annotationdata.transcription.Transcription.Add" class="py-name" href="#" onclick="return doclink('link-76', 'Add', 'link-76');">Add</a></tt><tt class="py-op">(</tt><tt id="link-77" class="py-name"><a title="src.annotationdata.annotation.Annotation" class="py-name" href="#" onclick="return doclink('link-77', 'Annotation', 'link-20');">Annotation</a></tt><tt class="py-op">(</tt><tt class="py-name">time</tt><tt class="py-op">,</tt> <tt id="link-78" class="py-name"><a title="src.annotationdata.filter.Filter.Label
+src.annotationdata.filter.filters.Filter.Label
+src.annotationdata.io.htk.Label
+src.annotationdata.label.label.Label" class="py-name" href="#" onclick="return doclink('link-78', 'Label', 'link-6');">Label</a></tt><tt class="py-op">(</tt><tt id="link-79" class="py-name"><a title="src.annotationdata.label
+src.annotationdata.label.label" class="py-name" href="#" onclick="return doclink('link-79', 'label', 'link-4');">label</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line"> </tt>
+<a name="L280"></a><tt class="py-lineno">280</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-80" class="py-name" targets="Method src.annotationdata.transcription.Transcription.SetMinTime()=src.annotationdata.transcription.Transcription-class.html#SetMinTime"><a title="src.annotationdata.transcription.Transcription.SetMinTime" class="py-name" href="#" onclick="return doclink('link-80', 'SetMinTime', 'link-80');">SetMinTime</a></tt><tt class="py-op">(</tt><tt class="py-number">0.</tt><tt class="py-op">)</tt> </tt>
+<a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-81" class="py-name" targets="Method src.annotationdata.transcription.Transcription.SetMaxTime()=src.annotationdata.transcription.Transcription-class.html#SetMaxTime"><a title="src.annotationdata.transcription.Transcription.SetMaxTime" class="py-name" href="#" onclick="return doclink('link-81', 'SetMaxTime', 'link-81');">SetMaxTime</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-82" class="py-name" targets="Method src.annotationdata.ptime.disjoint.TimeDisjoint.GetEnd()=src.annotationdata.ptime.disjoint.TimeDisjoint-class.html#GetEnd,Method src.annotationdata.ptime.framedisjoint.FrameDisjoint.GetEnd()=src.annotationdata.ptime.framedisjoint.FrameDisjoint-class.html#GetEnd,Method src.annotationdata.ptime.frameinterval.FrameInterval.GetEnd()=src.annotationdata.ptime.frameinterval.FrameInterval-class.html#GetEnd,Method src.annotationdata.ptime.interval.TimeInterval.GetEnd()=src.annotationdata.ptime.interval.TimeInterval-class.html#GetEnd,Method src.annotationdata.ptime.localization.Localization.GetEnd()=src.annotationdata.ptime.localization.Localization-class.html#GetEnd,Method src.annotationdata.ptime.location.Location.GetEnd()=src.annotationdata.ptime.location.Location-class.html#GetEnd,Method src.annotationdata.tier.Tier.GetEnd()=src.annotationdata.tier.Tier-class.html#GetEnd,Method src.annotationdata.transcription.Transcription.GetEnd()=src.annotationdata.transcription.Transcription-class.html#GetEnd"><a title="src.annotationdata.ptime.disjoint.TimeDisjoint.GetEnd
+src.annotationdata.ptime.framedisjoint.FrameDisjoint.GetEnd
+src.annotationdata.ptime.frameinterval.FrameInterval.GetEnd
+src.annotationdata.ptime.interval.TimeInterval.GetEnd
+src.annotationdata.ptime.localization.Localization.GetEnd
+src.annotationdata.ptime.location.Location.GetEnd
+src.annotationdata.tier.Tier.GetEnd
+src.annotationdata.transcription.Transcription.GetEnd" class="py-name" href="#" onclick="return doclink('link-82', 'GetEnd', 'link-82');">GetEnd</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line"> </tt>
+<a name="L283"></a><tt class="py-lineno">283</tt>  <tt class="py-line">    <tt class="py-comment"># End read</tt> </tt>
+<a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line">    <tt class="py-comment"># -----------------------------------------------------------------</tt> </tt>
+<a name="L285"></a><tt class="py-lineno">285</tt>  <tt class="py-line"> </tt>
+<a name="CSV.write"></a><div id="CSV.write-def"><a name="L286"></a><tt class="py-lineno">286</tt> <a class="py-toggle" href="#" id="CSV.write-toggle" onclick="return toggle('CSV.write');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.io.text.CSV-class.html#write">write</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">filename</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CSV.write-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="CSV.write-expanded"><a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line"><tt class="py-docstring">        Write a csv file.</tt> </tt>
+<a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L290"></a><tt class="py-lineno">290</tt>  <tt class="py-line"><tt class="py-docstring">        @param filename: is the output file name, ending with ".csv"</tt> </tt>
+<a name="L291"></a><tt class="py-lineno">291</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L293"></a><tt class="py-lineno">293</tt>  <tt class="py-line">        <tt class="py-keyword">with</tt> <tt class="py-name">codecs</tt><tt class="py-op">.</tt><tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">,</tt> <tt class="py-string">'w'</tt><tt class="py-op">,</tt> <tt class="py-string">'utf-8-sig'</tt><tt class="py-op">,</tt> <tt class="py-name">buffering</tt><tt class="py-op">=</tt><tt class="py-number">8096</tt><tt class="py-op">)</tt> <tt class="py-keyword">as</tt> <tt class="py-name">fp</tt><tt class="py-op">:</tt> </tt>
+<a name="L294"></a><tt class="py-lineno">294</tt>  <tt class="py-line"> </tt>
+<a name="L295"></a><tt class="py-lineno">295</tt>  <tt class="py-line">            <tt class="py-name">writer</tt> <tt class="py-op">=</tt> <tt id="link-83" class="py-name"><a title="src.annotationdata.io.text.CSV" class="py-name" href="#" onclick="return doclink('link-83', 'CSV', 'link-49');">CSV</a></tt><tt class="py-op">.</tt><tt id="link-84" class="py-name" targets="Class src.annotationdata.io.text.CSV.UnicodeWriter=src.annotationdata.io.text.CSV.UnicodeWriter-class.html"><a title="src.annotationdata.io.text.CSV.UnicodeWriter" class="py-name" href="#" onclick="return doclink('link-84', 'UnicodeWriter', 'link-84');">UnicodeWriter</a></tt><tt class="py-op">(</tt><tt class="py-name">fp</tt><tt class="py-op">)</tt> </tt>
+<a name="L296"></a><tt class="py-lineno">296</tt>  <tt class="py-line"> </tt>
+<a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt id="link-85" class="py-name"><a title="src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-85', 'tier', 'link-32');">tier</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">:</tt> </tt>
+<a name="L298"></a><tt class="py-lineno">298</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt id="link-86" class="py-name"><a title="src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-86', 'tier', 'link-32');">tier</a></tt><tt class="py-op">.</tt><tt id="link-87" class="py-name" targets="Method src.annotationdata.label.label.Label.IsEmpty()=src.annotationdata.label.label.Label-class.html#IsEmpty,Method src.annotationdata.tier.Tier.IsEmpty()=src.annotationdata.tier.Tier-class.html#IsEmpty,Method src.annotationdata.transcription.Transcription.IsEmpty()=src.annotationdata.transcription.Transcription-class.html#IsEmpty"><a title="src.annotationdata.label.label.Label.IsEmpty
+src.annotationdata.tier.Tier.IsEmpty
+src.annotationdata.transcription.Transcription.IsEmpty" class="py-name" href="#" onclick="return doclink('link-87', 'IsEmpty', 'link-87');">IsEmpty</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L299"></a><tt class="py-lineno">299</tt>  <tt class="py-line">                    <tt class="py-keyword">continue</tt> </tt>
+<a name="L300"></a><tt class="py-lineno">300</tt>  <tt class="py-line"> </tt>
+<a name="L301"></a><tt class="py-lineno">301</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt id="link-88" class="py-name"><a title="src.annotationdata.annotation" class="py-name" href="#" onclick="return doclink('link-88', 'annotation', 'link-19');">annotation</a></tt> <tt class="py-keyword">in</tt> <tt id="link-89" class="py-name"><a title="src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-89', 'tier', 'link-32');">tier</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L302"></a><tt class="py-lineno">302</tt>  <tt class="py-line"> </tt>
+<a name="L303"></a><tt class="py-lineno">303</tt>  <tt class="py-line">                    <tt class="py-name">name</tt> <tt class="py-op">=</tt> <tt id="link-90" class="py-name"><a title="src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-90', 'tier', 'link-32');">tier</a></tt><tt class="py-op">.</tt><tt id="link-91" class="py-name"><a title="src.annotationdata.tier.Tier.GetName
+src.annotationdata.transcription.Transcription.GetName" class="py-name" href="#" onclick="return doclink('link-91', 'GetName', 'link-65');">GetName</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L304"></a><tt class="py-lineno">304</tt>  <tt class="py-line"> </tt>
+<a name="L305"></a><tt class="py-lineno">305</tt>  <tt class="py-line">                    <tt class="py-keyword">if</tt> <tt id="link-92" class="py-name"><a title="src.annotationdata.annotation" class="py-name" href="#" onclick="return doclink('link-92', 'annotation', 'link-19');">annotation</a></tt><tt class="py-op">.</tt><tt id="link-93" class="py-name" targets="Method src.annotationdata.annotation.Annotation.GetLocation()=src.annotationdata.annotation.Annotation-class.html#GetLocation"><a title="src.annotationdata.annotation.Annotation.GetLocation" class="py-name" href="#" onclick="return doclink('link-93', 'GetLocation', 'link-93');">GetLocation</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-94" class="py-name" targets="Method src.annotationdata.ptime.frameinterval.FrameInterval.IsInterval()=src.annotationdata.ptime.frameinterval.FrameInterval-class.html#IsInterval,Method src.annotationdata.ptime.interval.TimeInterval.IsInterval()=src.annotationdata.ptime.interval.TimeInterval-class.html#IsInterval,Method src.annotationdata.ptime.location.Location.IsInterval()=src.annotationdata.ptime.location.Location-class.html#IsInterval,Method src.annotationdata.tier.Tier.IsInterval()=src.annotationdata.tier.Tier-class.html#IsInterval"><a title="src.annotationdata.ptime.frameinterval.FrameInterval.IsInterval
+src.annotationdata.ptime.interval.TimeInterval.IsInterval
+src.annotationdata.ptime.location.Location.IsInterval
+src.annotationdata.tier.Tier.IsInterval" class="py-name" href="#" onclick="return doclink('link-94', 'IsInterval', 'link-94');">IsInterval</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L306"></a><tt class="py-lineno">306</tt>  <tt class="py-line">                        <tt class="py-name">begin</tt> <tt class="py-op">=</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt> </tt>
+<a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line">                            <tt id="link-95" class="py-name"><a title="src.annotationdata.annotation" class="py-name" href="#" onclick="return doclink('link-95', 'annotation', 'link-19');">annotation</a></tt><tt class="py-op">.</tt><tt id="link-96" class="py-name"><a title="src.annotationdata.annotation.Annotation.GetLocation" class="py-name" href="#" onclick="return doclink('link-96', 'GetLocation', 'link-93');">GetLocation</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-97" class="py-name" targets="Method src.annotationdata.ptime.location.Location.GetBeginMidpoint()=src.annotationdata.ptime.location.Location-class.html#GetBeginMidpoint"><a title="src.annotationdata.ptime.location.Location.GetBeginMidpoint" class="py-name" href="#" onclick="return doclink('link-97', 'GetBeginMidpoint', 'link-97');">GetBeginMidpoint</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line">                        <tt class="py-name">end</tt> <tt class="py-op">=</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt> </tt>
+<a name="L309"></a><tt class="py-lineno">309</tt>  <tt class="py-line">                            <tt id="link-98" class="py-name"><a title="src.annotationdata.annotation" class="py-name" href="#" onclick="return doclink('link-98', 'annotation', 'link-19');">annotation</a></tt><tt class="py-op">.</tt><tt id="link-99" class="py-name"><a title="src.annotationdata.annotation.Annotation.GetLocation" class="py-name" href="#" onclick="return doclink('link-99', 'GetLocation', 'link-93');">GetLocation</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-100" class="py-name" targets="Method src.annotationdata.ptime.location.Location.GetEndMidpoint()=src.annotationdata.ptime.location.Location-class.html#GetEndMidpoint"><a title="src.annotationdata.ptime.location.Location.GetEndMidpoint" class="py-name" href="#" onclick="return doclink('link-100', 'GetEndMidpoint', 'link-100');">GetEndMidpoint</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L310"></a><tt class="py-lineno">310</tt>  <tt class="py-line">                    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line">                        <tt class="py-name">begin</tt> <tt class="py-op">=</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt> </tt>
+<a name="L312"></a><tt class="py-lineno">312</tt>  <tt class="py-line">                            <tt id="link-101" class="py-name"><a title="src.annotationdata.annotation" class="py-name" href="#" onclick="return doclink('link-101', 'annotation', 'link-19');">annotation</a></tt><tt class="py-op">.</tt><tt id="link-102" class="py-name"><a title="src.annotationdata.annotation.Annotation.GetLocation" class="py-name" href="#" onclick="return doclink('link-102', 'GetLocation', 'link-93');">GetLocation</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-103" class="py-name" targets="Method src.annotationdata.ptime.location.Location.GetPointMidpoint()=src.annotationdata.ptime.location.Location-class.html#GetPointMidpoint"><a title="src.annotationdata.ptime.location.Location.GetPointMidpoint" class="py-name" href="#" onclick="return doclink('link-103', 'GetPointMidpoint', 'link-103');">GetPointMidpoint</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L313"></a><tt class="py-lineno">313</tt>  <tt class="py-line">                        <tt class="py-name">end</tt> <tt class="py-op">=</tt> <tt class="py-string">''</tt> </tt>
+<a name="L314"></a><tt class="py-lineno">314</tt>  <tt class="py-line"> </tt>
+<a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line">                    <tt id="link-104" class="py-name"><a title="src.annotationdata.label
+src.annotationdata.label.label" class="py-name" href="#" onclick="return doclink('link-104', 'label', 'link-4');">label</a></tt> <tt class="py-op">=</tt> <tt id="link-105" class="py-name"><a title="src.annotationdata.annotation" class="py-name" href="#" onclick="return doclink('link-105', 'annotation', 'link-19');">annotation</a></tt><tt class="py-op">.</tt><tt id="link-106" class="py-name"><a title="src.annotationdata.annotation.Annotation.GetLabel
+src.annotationdata.label.label.Label.GetLabel" class="py-name" href="#" onclick="return doclink('link-106', 'GetLabel', 'link-46');">GetLabel</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-107" class="py-name"><a title="src.annotationdata.label.label.Label.GetValue
+src.annotationdata.label.text.Text.GetValue
+src.annotationdata.ptime.framepoint.FramePoint.GetValue
+src.annotationdata.ptime.location.Location.GetValue
+src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-107', 'GetValue', 'link-47');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L316"></a><tt class="py-lineno">316</tt>  <tt class="py-line"> </tt>
+<a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line">                    <tt class="py-name">row</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">name</tt><tt class="py-op">,</tt> <tt class="py-name">begin</tt><tt class="py-op">,</tt> <tt class="py-name">end</tt><tt class="py-op">,</tt> <tt id="link-108" class="py-name"><a title="src.annotationdata.label
+src.annotationdata.label.label" class="py-name" href="#" onclick="return doclink('link-108', 'label', 'link-4');">label</a></tt><tt class="py-op">]</tt> </tt>
+<a name="L318"></a><tt class="py-lineno">318</tt>  <tt class="py-line">                    <tt class="py-name">writer</tt><tt class="py-op">.</tt><tt id="link-109" class="py-name"><a title="src.annotationdata.io.text.CSV.UnicodeWriter.writerow" class="py-name" href="#" onclick="return doclink('link-109', 'writerow', 'link-53');">writerow</a></tt><tt class="py-op">(</tt><tt class="py-name">row</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L319"></a><tt class="py-lineno">319</tt>  <tt class="py-line"> </tt>
+<a name="L320"></a><tt class="py-lineno">320</tt>  <tt class="py-line">    <tt class="py-comment"># End write</tt> </tt>
+<a name="L321"></a><tt class="py-lineno">321</tt>  <tt class="py-line">    <tt class="py-comment"># -----------------------------------------------------------------</tt> </tt>
+<a name="L322"></a><tt class="py-lineno">322</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.lpl-aix.fr/~bigi/sppas/">SPPAS</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Fri Jul  3 13:42:47 2015
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

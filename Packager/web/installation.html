@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html lang='en'>
+
+<head>
+
+    <title>SPPAS</title>
+
+    <meta charset='utf-8' />
+    <meta name="keywords" content="research, speech, phonetization, alignment, syllabification, brigitte, bigi, parole, langage, lpl, corpus, julius, htk, segmentation, forced-alignment, resource, sldr, ortolang" />
+
+    <link href="./etc/styles/sppas.css" media="screen" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Jura">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Maven Pro">
+
+    <link rel="icon" href="etc/icons/sppas.ico" />
+
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-38055333-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+
+</head>
+
+<body id='installation'>
+
+    <header>
+        <a href="index.html">
+            <img src="./etc/logos/sppas-logo.png" width="64" height="64" alt="Home" />
+        </a>
+        <span id='tagline'>
+          Automatic Annotation of Speech <br />
+          <font size=-1><a href="http://www.lpl-aix.fr/~bigi/">Brigitte Bigi</a> - Laboratoire Parole et Langage - Aix-en-Provence - France</font>
+        </span>
+    </header>
+
+    <table align="center"  cellpadding="15px;" cellspacing="20px;">
+    <tr>
+        <td >
+            <a href="installation.html">
+                <figure>
+                <img src="./etc/icons/install.png" width="64" height="64" />
+                <figcaption>Installation</figcaption>
+                </figure>
+            </a>
+        </td>
+
+        <td >
+            <a href="download.html">
+                <figure>
+                <img src="./etc/icons/download.png" width="64" height="64" />
+                <figcaption>Download</figcaption>
+                </figure>
+            </a>
+        </td>
+
+        <td >
+            <a href="documentation.html">
+                <figure>
+                <img src="./etc/icons/help.png" width="64" height="64" />
+                <figcaption>Documentation</figcaption>
+                </figure>
+            </a>
+        </td>
+
+        <td >
+            <a href="https://groups.google.com/forum/?fromgroups#!forum/sppas-users">
+                <figure>
+                <img src="./etc/icons/community.png" width="64" height="64" />
+                <figcaption>User's group</figcaption>
+                </figure>
+            </a>
+        </td>
+    </tr>
+    </table>
+
+
+    <h1>Installation</h1>
+
+    <p>SPPAS installation only consists to unpack the package.
+
+    <p>
+        In order to work, external programs must be installed <b>before</b>
+        installing SPPAS.
+        <i>Administrator rights are required to perform these installations.</i>
+        Follow <b>carefully</b> instructions of this page to download and install all of them:
+    </p>
+    <ul>
+        <li> Python 2.7</li>
+        <li> wxPython </li>
+        <li> Julius </li>
+    </ul>
+
+
+    <h1>Installing dependencies on Windows</h1>
+
+        <h4>How to know if my computer is a 32-bits or 64-bits architecture?</h4>
+
+        <h5>Method 1: automatically </h5>
+        <p>
+        <a href="http://support.microsoft.com/kb/827218">Just follow this link...</a> and
+        it will be printed in blue color in the page.
+        </p>
+
+        <h5>Method 2: manually </h5>
+        <p>
+        <i>Windows >= 8:</i>
+        Go to start and search for this pc and go to properties.
+        Then you can find the architecture in section "System", line "System type:".
+        </p>
+        <p>
+        <i>Windows Vista or Windows 7: </i>
+        Click on Start, type system in the Start Search box, and then click system in the Programs list.
+        For a 64-bits version operating system: 64-bits Operating System appears for the System type under System.
+        For a 32-bits version operating system: 32-bits Operating System appears for the System type under System.
+        </p>
+        <p>
+        <i>Windows XP: </i>
+        Click on Start and then click on Run.
+        Type sysdm.cpl, and then click on OK.
+        Click on the General tab.
+        For a 64-bits version operating system: Windows XP Professional x64 Edition Version appears under System.
+        For a 32-bits version operating system: Windows XP Professional Version appears under System.
+        </p>
+
+        <h2>Python</h2>
+
+        <p>
+            <a href="https://www.python.org/downloads/release/python-2710/">Click here to download <b> Python </b></a>
+        </p>
+        <ul>
+            <li> If you have a 32-bits computer, download and execute Python 2.7.9 "Windows x86 MSI Installer".</li>
+            <li> Else if you have a 64-bits computer, download and execute Python 2.7.9 "Windows x86-64 MSI Installer". </li>
+        </ul>
+        <p>
+        During  the installation, click three times on the "Next" button and then on "Finish".
+        </p>
+
+        <h2>WxPython</h2>
+
+        <p>
+            <a href="http://www.wxpython.org/download.php#msw">Click here to download <b> wxPython </b></a>
+        </p>
+        <ul>
+            <li>If you have a 32-bits computer, download and execute wxPython with version name: "-win32-py27". </li>
+            <li>Else if you have a 64-bits computer, download and execute wxPython with version name: "-win64-py27". </li>
+        </ul>
+        <p>
+            During  the installation, click on the "Next" button and then on "Finish".
+        </p>
+
+<!--
+        <h2>Sox installation:</h2>
+
+        <p>
+            <a href="http://sourceforge.net/projects/sox/files/sox/14.4.1/">Click here to download <b> Sox </b></a>
+        </p>
+        <p>
+            Open the Explorer and go into the sox directory location.
+            Select the file "sox.exe" and the .dll files.
+            <b>Copy these files into C:\WINDOWS\</b>
+        </p>
+-->
+
+        <h2>Julius installation:</h2>
+
+        <p>
+            <a href="http://sourceforge.jp/projects/julius/downloads/60273/julius-4.3.1-win32bin.zip/">Click here to download <b> Julius (release >= 4.1)</b></a>
+        </p>
+
+        <p>
+            Open the Explorer and go to into the julius installation directory.
+            Open the "bin" directory then select the file "julius.exe".
+            <b>Copy this file into C:\WINDOWS\ </b><br>
+            Take care: the file name must be STRICTLY julius.exe, and nothing else
+            (you'll have to rename it by removing the version number if any).
+        </p>
+
+
+    <h1>Dependencies installation on Linux</h1>
+
+        <p>
+            For <b>Linux Ubuntu</b> users, there are <i>deb</i> packages for
+            all dependencies (python2.7, wxpython, julius). <br>
+
+            python-wxgtk-media and gstreamer must be installed too.
+        </p>
+
+        <p>
+            For <b>Linux Fedora</b> users, there are <i>rpm</i> packages for
+            python2.7 and wxpython. The Julius tool will have to be installed
+            from sources.
+        </p>
+
+
+    <h1>Dependencies installation on MacOS</h1>
+    <!-- <img src="images/macos.png" width="40"/> -->
+
+        <h2>Python</h2>
+
+            <p>
+                <a href="https://www.python.org/downloads/release/python-2710/">Click here to download <b> Python </b></a>
+            </p>
+            <p>
+              Click on the package and follow instructions.
+            </p>
+
+        <h2>WxPython</h2>
+            <p>
+              <a href="http://downloads.sourceforge.net/wxpython/wxPython3.0-osx-3.0.2.0-cocoa-py2.7.dmg">Click here to download <b> wxPython </b></a>
+            </p>
+            <p>
+              Click on the package and follow instructions.
+            </p>
+
+<!--
+        <h2>Sox installation: </h2>
+
+            <p>
+                <a href="http://sourceforge.net/projects/sox/14.4.1/">Click here to download <b> Sox </b></a>
+            </p>
+            <p>
+            Download sox, unpack. Then open the Finder. Click on the menu "Go to a location (shift-cmd-G)"
+            then write the destination <i>/usr/local/bin</i> <br>
+            Finally drag-and-drop the file "sox" of the sox package into the <b>/usr/local/bin</b> directory.
+            </p>
+-->
+
+        <h2>Julius installation: </h2>
+
+            <p>
+            I compiled a 64-bits version which include a ready-to-use version of Julius for MacOS.
+            This version is available here:
+            </p>
+            <p>
+            <a href="http://hdl.handle.net/11041/sldr000800/Julius-MacOS-10.7.3.tgz">Julius for MacOS (515Ko)</a>
+            </p>
+            <p>
+            Download, extract the archive and drag-and-drop the package content into the <b>/usr/local/bin</b> directory.
+            </p>
+
+    <hr />
+
+    <footer>
+        <p style="text-align:right">
+        <a herf="mailto:brigitte.bigi@gmail.com">Brigitte Bigi</a> &copy; 2011-2015
+        </p>
+    </footer>
+
+</body>
+</html>

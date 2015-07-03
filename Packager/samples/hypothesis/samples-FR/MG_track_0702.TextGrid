@@ -1,0 +1,48 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0.0
+xmax = 6.76
+tiers? <exists>
+size = 4
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "transcription"
+        xmin = 0.0
+        xmax = 6.76
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 6.76
+            text = "elle habite sur Arles depuis que je la connais mais je crois qu' elle a pas toujours habité là-bas enfin je sais plus exactement je connais pas très très bien son parcours @ mais euh"
+    item [2]:
+        class = "IntervalTier"
+        name = "transcription"
+        xmin = 0.0
+        xmax = 6.76
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 6.76
+            text = "elle habite sur Arles depuis que je la connais mais je crois qu' elle a pas toujours habité là-bas enfin je sais plus exactement je connais pas très très bien son parcours @ mais euh"
+    item [3]:
+        class = "IntervalTier"
+        name = "transcription"
+        xmin = 0.0
+        xmax = 6.76
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 6.76
+            text = "elle habite sur Arles depuis que je la connais mais je crois qu' elle a pas toujours habité là-bas enfin je sais plus exactement je connais pas très très bien son parcours @ mais euh"
+    item [4]:
+        class = "IntervalTier"
+        name = "transcription"
+        xmin = 0.0
+        xmax = 6.76
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 6.76
+            text = "elle habite sur Arles depuis que je la connais mais je crois qu' elle a pas toujours habité là-bas enfin je sais plus exactement je connais pas très très bien son parcours @ mais euh"

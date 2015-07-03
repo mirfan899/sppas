@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html lang='en'>
+
+  <head>
+
+    <title>SPPAS</title>
+
+    <meta charset='utf-8' />
+    <meta name="keywords" content="research, speech, phonetization, alignment, syllabification, brigitte, bigi, parole, langage, lpl, corpus, julius, htk, segmentation, forced-alignment, resource" />
+
+    <link href="./etc/styles/sppas.css" media="screen" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Jura">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Maven Pro">
+
+    <link rel="icon" href="./etc/icons/sppas.ico" />
+
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-38055333-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+
+    </head>
+
+  <body id="download">
+
+    <header>
+        <a href="index.html">
+            <img src="etc/logos/sppas-logo.png" width="64" height="64" alt="Home" />
+        </a>
+        <span id='tagline'>
+          Automatic Annotation of Speech <br />
+          <font size=-1><a href="http://www.lpl-aix.fr/~bigi/">Brigitte Bigi</a> - Laboratoire Parole et Langage - Aix-en-Provence - France</font>
+        </span>
+    </header>
+
+    <table align="center"  cellpadding="15px;" cellspacing="20px;">
+    <tr>
+        <td >
+            <a href="installation.html">
+                <figure>
+                <img src="./etc/icons/install.png" width="64" height="64" />
+                <figcaption>Installation</figcaption>
+                </figure>
+            </a>
+        </td>
+
+        <td >
+            <a href="download.html">
+                <figure>
+                <img src="./etc/icons/download.png" width="64" height="64" />
+                <figcaption>Download</figcaption>
+                </figure>
+            </a>
+        </td>
+
+        <td >
+            <a href="documentation.html">
+                <figure>
+                <img src="./etc/icons/help.png" width="64" height="64" />
+                <figcaption>Documentation</figcaption>
+                </figure>
+            </a>
+        </td>
+
+        <td>
+            <a href="https://groups.google.com/forum/?fromgroups#!forum/sppas-users">
+                <figure>
+                <img src="./etc/icons/community.png" width="64" height="64" />
+                <figcaption>User's group</figcaption>
+                </figure>
+            </a>
+        </td>
+    </tr>
+    </table>
+
+
+    <p style="text-align:center">
+        <a class="button button_red" href="http://hdl.handle.net/11041/sldr000800/SPPAS-1.7.0.zip">Download SPPAS - Version 1.7.0 <br>(2015-07-03)</a>
+    </p>
+
+
+    <h1>Plugins</h1>
+
+
+    <figure>
+    <img src="./etc/figures/plugin-workflow.bmp" width='700' alt="Plugin installation workflow"/>
+    <figcaption>Plugins installation workflow</figcaption>
+    </figure>
+
+    <h2>Marsatag Plug-in</h2>
+
+    <p>
+        MarsaTag-Plugin is a plugin to use the French POS-tagger
+        <a href="http://sldr.org/sldr000841/">MarsaTag</a> directly from SPPAS.
+        Notice that <b>you have to install MarsaTag</b> first.
+    </p>
+
+    <p>
+        By using the plugin, you'll get the following advantages:
+    </p>
+    <ol>
+        <li> The POS-Tags are time-aligned; and </li>
+        <li> it is ready-to-use (all steps to execute MarsaTag are pre-configured).</li>
+    </ol>
+
+    <p style="text-align:center;">
+        <a class="button button_blue" href="http://hdl.handle.net/11041/sldr000800/marsatag-plugin.zip">Download MarsaTag-PlugIn</a>
+    </p>
+
+
+    <h2>TierMapping Plug-in</h2>
+
+    <p>
+        Create new tiers by mapping the labels of an existing tier, with new labels.
+    </p>
+    <p>
+        The following mapping tables are proposed:
+    </p>
+    <ol>
+        <li>map the phonemes of the tier "PhonAlign" from SAMPA to IPA, </li>
+        <li>map the phonemes of the tier "PhonAlign" to their properties (voiced/unvoiced, vowel/consonant, palatal/affricate etc).</li>
+    </ol>
+    <p>
+        Such tables are UTF-8 encoded in a CSV file, with columns separated by semicolon.
+        They can be imported/modified/saved with OpenOffice, LibreOffice or Excel.
+        The most important is to not change its properties (UTF8, semicolon) and location (in the plugin directory).
+    </p>
+
+    <p style="text-align:center;">
+        <a class="button button_blue" href="http://hdl.handle.net/11041/sldr000800/TierMapping.zip">Download TierMapping-PlugIn</a>
+    </p>
+
+<p></p>
+<hr/>
+<p></p>
+
+
+    <h1>SPPAS: the History of versions...</h1>
+
+    <p>Contact the author if you want a specific version that is not available 
+    for download in this list. </p>
+
+    <h3>the Prehistory</h3>
+    
+    <p>
+      SPPAS 1.0 to 1.3 was made only of tcsh and gawk scripts.
+      Here is the list of versions:
+    </p>
+
+    <ul>
+        <li> Version 1.0 (2011-03-09) </li>
+        <li> Version 1.1 (2011-06-07) </li>
+        <li> Version 1.2 (2011-07-23) </li>
+        <li> Version 1.3 (2011-12-16) </li>
+    </ul>
+
+
+    <h3>the Middle Ages</h3>
+    <p> Since version 1.4, SPPAS is python made only.
+    It uses python 2.7.x and wxpython 2.8.x or 2.9.x. 
+    Remark for MacOS users: wxpython must be 32 bits. 
+    SPPAS requires sox and julius free software to be installed.</p>
+
+    <ul>
+        <li> SPPAS version 1.4   (2012-06-14) </li>
+        <li> SPPAS version 1.4.1 (2012-07-13) </li>
+        <li> SPPAS version 1.4.2 (2012-08-02) </li>
+        <li> SPPAS version 1.4.3 (2012-10-10) </li>
+        <li> SPPAS version 1.4.4 (2012-12-06) </li>
+        <li> SPPAS version 1.4.5 (2013-01-15) </li>
+        <li> SPPAS version 1.4.6 (2013-02-12) </li>
+        <li> SPPAS version 1.4.7 (2013-03-25) </li>
+        <li> SPPAS version 1.4.8 (2013-05-30) </li>
+        <li> SPPAS version 1.4.9 (2013-07-03) </li>
+        <li> SPPAS version 1.5   (2013-08-02) </li>
+        <li> SPPAS version 1.5.1 (2013-08-29) </li>
+        <li> SPPAS version 1.5.2 (2013-09-27) </li>
+        <li> SPPAS version 1.5.3 (2013-10-25) </li>
+        <li> <a href="http://hdl.handle.net/11041/sldr000800/sppas-1.5.4.zip"> SPPAS version 1.5.4 (2013-12-03) </a> </li>
+        <li> SPPAS version 1.5.5 (2013-12-23) </li>
+        <li> SPPAS version 1.5.6 (2014-01-28) </li>
+        <li> SPPAS version 1.5.7 (2014-02-18) </li>
+        <li> SPPAS version 1.5.8 (2014-03-18) </li>
+        <li> SPPAS version 1.5.9 (2014-04-15) </li>
+        <li> SPPAS version 1.6   (2014-05-22) </li>
+        <li> SPPAS version 1.6.1 (2014-09-26) </li>
+        <li> SPPAS version 1.6.2 (2014-10-21) </li>
+        <li> <a href="http://hdl.handle.net/11041/sldr000800/sppas-1.6.3.zip">SPPAS version 1.6.3 (2014-11-02)</a> </li>
+    </ul>
+
+
+    <h3>the Renaissance</h3>
+    <p> Since version 1.6.4, SPPAS is still using python 2.7.x, but SPPAS requires wxpython > 3.0. 
+    For MacOS users: wxpython must be installed in 64 bits (cocoa).</p>
+
+    <ul>
+        <li> SPPAS version 1.6.4 (2014-12-05)</li>
+        <li> SPPAS version 1.6.5 (2014-12-17)</li>
+        <li> SPPAS version 1.6.6 (2015-01-19)</li>
+        <li> SPPAS version 1.6.7 (2015-02-16)</li>
+        <li> <a href="http://hdl.handle.net/11041/sldr000800/SPPAS-1.6.8.zip">SPPAS version 1.6.8 (2015-04-09)</a> </li>
+    </ul>
+
+
+    <h3>the Early modern period</h3>
+    <p>Since version 1.6.9, the installation is simplified: sox is unnecessary.</p>
+
+    <ul>
+        <li><a href="http://hdl.handle.net/11041/sldr000800/SPPAS-1.6.9.zip">SPPAS version 1.6.9 (2015-05-14)</a></li>
+    </ul>
+
+    <p></p>
+    
+    
+
+    <h2 id="anchoresp">ESPPAS: deprecated</h2>
+
+        <p>
+            ESPPAS (in 2012) was supported by ANR <a href="http://www.lpl-aix.fr/~otim/"> OTIM </a>project Ref Nr ANR-08-BLAN-0239.
+            This was an add-on to <em>SPPAS</em> to deal with <i>Enriched Orthographic Transcriptions</i>, using LIA_Phon
+            to perform grapheme-to-phoneme conversion.
+        </p>
+        <p>
+        Send an e-mail to the author to get a version -- not compatible with current version of SPPAS. 
+        </p>
+
+    <hr />
+
+    <footer>
+        <p style="text-align:right">
+        <a href="mailto:brigitte.bigi@gmail.com">Brigitte Bigi</a> &copy; 2011-2015
+        </p>
+    </footer>
+
+</body>
+</html>

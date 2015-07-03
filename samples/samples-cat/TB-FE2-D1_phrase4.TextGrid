@@ -1,0 +1,18 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0 
+xmax = 8 
+tiers? <exists> 
+size = 1 
+item []: 
+    item [1]:
+        class = "IntervalTier" 
+        name = "Orthographic_transcription" 
+        xmin = 0 
+        xmax = 8 
+        intervals: size = 1 
+        intervals [1]:
+            xmin = 0 
+            xmax = 8 
+            text = "aquell any va se(r) + una mica caòtic perquè nosaltres no [som,soms] un país que nevi ni que estiguem preparats per la neu" 

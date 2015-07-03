@@ -1,0 +1,498 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0.0
+xmax = 2.328813
+tiers? <exists>
+size = 12
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "transcription"
+        xmin = 0.0
+        xmax = 2.328813
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 2.328813
+            text = "une classe entière qui a bien vu comment ça s'est passé"
+    item [2]:
+        class = "IntervalTier"
+        name = "Tokens"
+        xmin = 0.0
+        xmax = 2.328813
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 2.328813
+            text = "une classe entière qui a bien vu comment ça s'est_passé"
+    item [3]:
+        class = "IntervalTier"
+        name = "Phonetization"
+        xmin = 0.0
+        xmax = 2.328813
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 2.328813
+            text = "y.n.eu|y.n k.l.a.s.eu|k.l.a.s|k.l.a.s|k.l.a.s.eu a~.t.j.E.R|a~.t.j.E.R.eu k.i|k.j|k a b.j.U~.n|b.j.U~ v.y k.o.m.a~.t|k.o.m.a~|k.o.m.a~|k.o.m.a~|k.o.m.a~.t s.a|s s.e.p.a.s.e|s.e.p.a.s.e"
+    item [4]:
+        class = "IntervalTier"
+        name = "PhonAlign"
+        xmin = 0.0
+        xmax = 2.3288
+        intervals: size = 30
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.125
+            text = "y"
+        intervals [2]:
+            xmin = 0.125
+            xmax = 0.195
+            text = "n"
+        intervals [3]:
+            xmin = 0.195
+            xmax = 0.305
+            text = "k"
+        intervals [4]:
+            xmin = 0.305
+            xmax = 0.335
+            text = "l"
+        intervals [5]:
+            xmin = 0.335
+            xmax = 0.405
+            text = "a"
+        intervals [6]:
+            xmin = 0.405
+            xmax = 0.495
+            text = "s"
+        intervals [7]:
+            xmin = 0.495
+            xmax = 0.615
+            text = "a~"
+        intervals [8]:
+            xmin = 0.615
+            xmax = 0.755
+            text = "t"
+        intervals [9]:
+            xmin = 0.755
+            xmax = 0.805
+            text = "j"
+        intervals [10]:
+            xmin = 0.805
+            xmax = 0.895
+            text = "E"
+        intervals [11]:
+            xmin = 0.895
+            xmax = 0.945
+            text = "R"
+        intervals [12]:
+            xmin = 0.945
+            xmax = 1.075
+            text = "k"
+        intervals [13]:
+            xmin = 1.075
+            xmax = 1.125
+            text = "a"
+        intervals [14]:
+            xmin = 1.125
+            xmax = 1.205
+            text = "b"
+        intervals [15]:
+            xmin = 1.205
+            xmax = 1.295
+            text = "j"
+        intervals [16]:
+            xmin = 1.295
+            xmax = 1.365
+            text = "U~"
+        intervals [17]:
+            xmin = 1.365
+            xmax = 1.445
+            text = "v"
+        intervals [18]:
+            xmin = 1.445
+            xmax = 1.495
+            text = "y"
+        intervals [19]:
+            xmin = 1.495
+            xmax = 1.555
+            text = "k"
+        intervals [20]:
+            xmin = 1.555
+            xmax = 1.585
+            text = "o"
+        intervals [21]:
+            xmin = 1.585
+            xmax = 1.615
+            text = "m"
+        intervals [22]:
+            xmin = 1.615
+            xmax = 1.645
+            text = "a~"
+        intervals [23]:
+            xmin = 1.645
+            xmax = 1.695
+            text = "t"
+        intervals [24]:
+            xmin = 1.695
+            xmax = 1.765
+            text = "s"
+        intervals [25]:
+            xmin = 1.765
+            xmax = 1.875
+            text = "s"
+        intervals [26]:
+            xmin = 1.875
+            xmax = 1.905
+            text = "e"
+        intervals [27]:
+            xmin = 1.905
+            xmax = 1.975
+            text = "p"
+        intervals [28]:
+            xmin = 1.975
+            xmax = 2.055
+            text = "a"
+        intervals [29]:
+            xmin = 2.055
+            xmax = 2.175
+            text = "s"
+        intervals [30]:
+            xmin = 2.175
+            xmax = 2.3288
+            text = "e"
+    item [5]:
+        class = "IntervalTier"
+        name = "PhnTokAlign"
+        xmin = 0.0
+        xmax = 2.3288
+        intervals: size = 10
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.195
+            text = "y.n"
+        intervals [2]:
+            xmin = 0.195
+            xmax = 0.495
+            text = "k.l.a.s"
+        intervals [3]:
+            xmin = 0.495
+            xmax = 0.945
+            text = "a~.t.j.E.R"
+        intervals [4]:
+            xmin = 0.945
+            xmax = 1.075
+            text = "k"
+        intervals [5]:
+            xmin = 1.075
+            xmax = 1.125
+            text = "a"
+        intervals [6]:
+            xmin = 1.125
+            xmax = 1.365
+            text = "b.j.U~"
+        intervals [7]:
+            xmin = 1.365
+            xmax = 1.495
+            text = "v.y"
+        intervals [8]:
+            xmin = 1.495
+            xmax = 1.695
+            text = "k.o.m.a~.t"
+        intervals [9]:
+            xmin = 1.695
+            xmax = 1.765
+            text = "s"
+        intervals [10]:
+            xmin = 1.765
+            xmax = 2.3288
+            text = "s.e.p.a.s.e"
+    item [6]:
+        class = "IntervalTier"
+        name = "TokensAlign"
+        xmin = 0.0
+        xmax = 2.3288
+        intervals: size = 10
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.195
+            text = "une"
+        intervals [2]:
+            xmin = 0.195
+            xmax = 0.495
+            text = "classe"
+        intervals [3]:
+            xmin = 0.495
+            xmax = 0.945
+            text = "entière"
+        intervals [4]:
+            xmin = 0.945
+            xmax = 1.075
+            text = "qui"
+        intervals [5]:
+            xmin = 1.075
+            xmax = 1.125
+            text = "a"
+        intervals [6]:
+            xmin = 1.125
+            xmax = 1.365
+            text = "bien"
+        intervals [7]:
+            xmin = 1.365
+            xmax = 1.495
+            text = "vu"
+        intervals [8]:
+            xmin = 1.495
+            xmax = 1.695
+            text = "comment"
+        intervals [9]:
+            xmin = 1.695
+            xmax = 1.765
+            text = "ça"
+        intervals [10]:
+            xmin = 1.765
+            xmax = 2.3288
+            text = "s'est_passé"
+    item [7]:
+        class = "IntervalTier"
+        name = "Syllables"
+        xmin = 0.0
+        xmax = 2.3288
+        intervals: size = 12
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.195
+            text = "yn"
+        intervals [2]:
+            xmin = 0.195
+            xmax = 0.405
+            text = "kla"
+        intervals [3]:
+            xmin = 0.405
+            xmax = 0.615
+            text = "sa~"
+        intervals [4]:
+            xmin = 0.615
+            xmax = 0.945
+            text = "tjER"
+        intervals [5]:
+            xmin = 0.945
+            xmax = 1.125
+            text = "ka"
+        intervals [6]:
+            xmin = 1.125
+            xmax = 1.365
+            text = "bjU~"
+        intervals [7]:
+            xmin = 1.365
+            xmax = 1.495
+            text = "vy"
+        intervals [8]:
+            xmin = 1.495
+            xmax = 1.585
+            text = "ko"
+        intervals [9]:
+            xmin = 1.585
+            xmax = 1.695
+            text = "ma~t"
+        intervals [10]:
+            xmin = 1.695
+            xmax = 1.905
+            text = "sse"
+        intervals [11]:
+            xmin = 1.905
+            xmax = 2.055
+            text = "pa"
+        intervals [12]:
+            xmin = 2.055
+            xmax = 2.3288
+            text = "se"
+    item [8]:
+        class = "IntervalTier"
+        name = "Classes"
+        xmin = 0.0
+        xmax = 2.3288
+        intervals: size = 12
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.195
+            text = "VN"
+        intervals [2]:
+            xmin = 0.195
+            xmax = 0.405
+            text = "OLV"
+        intervals [3]:
+            xmin = 0.405
+            xmax = 0.615
+            text = "FV"
+        intervals [4]:
+            xmin = 0.615
+            xmax = 0.945
+            text = "OGVL"
+        intervals [5]:
+            xmin = 0.945
+            xmax = 1.125
+            text = "OV"
+        intervals [6]:
+            xmin = 1.125
+            xmax = 1.365
+            text = "OGV"
+        intervals [7]:
+            xmin = 1.365
+            xmax = 1.495
+            text = "FV"
+        intervals [8]:
+            xmin = 1.495
+            xmax = 1.585
+            text = "OV"
+        intervals [9]:
+            xmin = 1.585
+            xmax = 1.695
+            text = "NVO"
+        intervals [10]:
+            xmin = 1.695
+            xmax = 1.905
+            text = "FFV"
+        intervals [11]:
+            xmin = 1.905
+            xmax = 2.055
+            text = "OV"
+        intervals [12]:
+            xmin = 2.055
+            xmax = 2.3288
+            text = "FV"
+    item [9]:
+        class = "IntervalTier"
+        name = "Structures"
+        xmin = 0.0
+        xmax = 2.3288
+        intervals: size = 12
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.195
+            text = "VC"
+        intervals [2]:
+            xmin = 0.195
+            xmax = 0.405
+            text = "CCV"
+        intervals [3]:
+            xmin = 0.405
+            xmax = 0.615
+            text = "CV"
+        intervals [4]:
+            xmin = 0.615
+            xmax = 0.945
+            text = "CCVC"
+        intervals [5]:
+            xmin = 0.945
+            xmax = 1.125
+            text = "CV"
+        intervals [6]:
+            xmin = 1.125
+            xmax = 1.365
+            text = "CCV"
+        intervals [7]:
+            xmin = 1.365
+            xmax = 1.495
+            text = "CV"
+        intervals [8]:
+            xmin = 1.495
+            xmax = 1.585
+            text = "CV"
+        intervals [9]:
+            xmin = 1.585
+            xmax = 1.695
+            text = "CVC"
+        intervals [10]:
+            xmin = 1.695
+            xmax = 1.905
+            text = "CCV"
+        intervals [11]:
+            xmin = 1.905
+            xmax = 2.055
+            text = "CV"
+        intervals [12]:
+            xmin = 2.055
+            xmax = 2.3288
+            text = "CV"
+    item [10]:
+        class = "TextTier"
+        name = "Momel"
+        xmin = 0.1538453443
+        xmax = 2.1587867047
+        points: size = 9
+        points [1]:
+            time = 0.1538453443
+            mark = "183"
+        points [2]:
+            time = 0.2446326069
+            mark = "531"
+        points [3]:
+            time = 0.5642374248
+            mark = "193"
+        points [4]:
+            time = 0.8819363606
+            mark = "230"
+        points [5]:
+            time = 1.1211077943
+            mark = "168"
+        points [6]:
+            time = 1.438526863
+            mark = "207"
+        points [7]:
+            time = 1.7411644476
+            mark = "158"
+        points [8]:
+            time = 1.9502711377
+            mark = "159"
+        points [9]:
+            time = 2.1587867047
+            mark = "285"
+    item [11]:
+        class = "TextTier"
+        name = "Intsint"
+        xmin = 0.1538453443
+        xmax = 2.1587867047
+        points: size = 9
+        points [1]:
+            time = 0.1538453443
+            mark = "M"
+        points [2]:
+            time = 0.2446326069
+            mark = "T"
+        points [3]:
+            time = 0.5642374248
+            mark = "L"
+        points [4]:
+            time = 0.8819363606
+            mark = "U"
+        points [5]:
+            time = 1.1211077943
+            mark = "L"
+        points [6]:
+            time = 1.438526863
+            mark = "U"
+        points [7]:
+            time = 1.7411644476
+            mark = "D"
+        points [8]:
+            time = 1.9502711377
+            mark = "S"
+        points [9]:
+            time = 2.1587867047
+            mark = "H"
+    item [12]:
+        class = "IntervalTier"
+        name = "Information"
+        xmin = 0.0
+        xmax = 2.328813
+        intervals: size = 2
+        intervals [1]:
+            xmin = 0.0
+            xmax = 1.1644065
+            text = "This annotation was produced by SPPAS 1.6.8 on 2015-05-07"
+        intervals [2]:
+            xmin = 1.1644065
+            xmax = 2.328813
+            text = "Copyright (C) 2011-2015 Brigitte Bigi"

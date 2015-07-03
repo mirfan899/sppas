@@ -1,0 +1,1028 @@
+# [#] #
+0 [0] sil
++ [+] sil
+<turn> [] gb
+SENT-END [] sil
+SENT_START [] sil
+UNK [] gb
+dummy [dummy] dummy
+* [*] gb
+@ [@] @@
+a [a] a
+aah [aah] a a
+ah [ah] a
+ahnn [ahnn] a~
+ai [ai] a i
+ainn [ainn] a i~
+ak [ak] a k
+am [am] a m
+an [an] a n
+ang [ang] a N
+ann [ann] a~
+ap [ap] a p
+ar [ar] a @
+au [au] a u
+b [b] b
+ba [ba] b a
+bah [bah] b a
+bai [bai] b a i
+bak [bak] b a k
+ban [ban] b a n
+bang [bang] b a N
+bao [bao] b a o
+bat [bat] b a t
+bau [bau] b a u
+bauh [bauh] b a u
+be [be] b e
+beh [beh] b e
+bei [bei] b e i
+bek [bek] b e k
+ben [ben] b e n
+beng [beng] b e N
+bi [bi] b i
+bian [bian] b i a n
+biao [biao] p i a u
+biau [biau] b i a u
+bie [bie] p i e
+bien [bien] b i e n
+bih [bih] b i
+bin [bin] b i n
+bing [bing] b i N
+bio [bio] b i o
+bit [bit] b i t
+bng [bng] b N
+bo [bo] b o
+boan [boan] b o a n
+boe [boe] b o e
+boeh [boeh] b o e
+bok [bok] b o k
+bong [bong] b o N
+bou [bou] b O
+bu [bu] b u
+bun [bun] b u n
+but [but] b u t
+c [c] ts_h
+cai [cai] ts_h a i
+can [can] ts_h a n
+cang [cang] ts_h a N
+cao [cao] ts_h a o
+cau [cau] ts_h a u
+ce [ce] ts_h e
+ceng [ceng] ts_h e N
+cing [cing] ts_h i N
+ch [ch] ts
+cha [cha] ts a
+chah [chah] ts a
+chai [chai] ts a i
+chak [chak] ts a k
+cham [cham] ts a m
+chan [chan] ts a n
+chang [chang] ts a N
+chao [chao] ts a o
+chap [chap] ts a p
+chat [chat] ts a t
+chau [chau] ts a u
+che [che] ts e
+cheh [cheh] ts e
+chek [chek] ts e k
+chen [chen] ts e n
+cheng [cheng] ts e N
+chenn [chenn] ts e~
+chh [chh] ts_h
+chha [chha] ts_h a
+chhai [chhai] ts_h a i
+chhak [chhak] ts_h a k
+chham [chham] ts_h a m
+chhan [chhan] ts_h a n
+chhang [chhang] ts_h a N
+chhap [chhap] ts_h a p
+chhat [chhat] ts_h a t
+chhau [chhau] ts_h a u
+chhe [chhe] ts_h e
+chheh [chheh] ts_h e
+chhek [chhek] ts_h e k
+chheng [chheng] ts_h e N
+chhenn [chhenn] ts_h e~
+chhi [chhi] ts_h i
+chhia [chhia] ts_h i a
+chhiah [chhiah] ts_h i a
+chhiam [chhiam] ts_h i a m
+chhian [chhian] ts_h i a n
+chhiang [chhiang] ts_h i a N
+chhiann [chhiann] ts_h i a~
+chhiat [chhiat] ts_h i a t
+chhiau [chhiau] ts_h i a u
+chhih [chhih] ts_h i
+chhim [chhim] ts_h i m
+chhin [chhin] ts_h i n
+chhinn [chhinn] ts_h i~
+chhio [chhio] ts_h i o
+chhioh [chhioh] ts_h i o
+chhiong [chhiong] ts_h i o N
+chhit [chhit] ts_h i t
+chhiu [chhiu] ts_h i u
+chhiumm [chhiumm] ts_h i u m m
+chhiunn [chhiunn] ts_h i u~
+chhng [chhng] ts_h N
+chho [chho] ts_h o
+chhoa [chhoa] ts_h o a
+chhoah [chhoah] ts_h o a
+chhoan [chhoan] ts_h o a n
+chhoe [chhoe] ts_h o e
+chhong [chhong] ts_h o N
+chhou [chhou] ts_h O
+chhu [chhu] ts_h u
+chhui [chhui] ts_h u i
+chhun [chhun] ts_h u n
+chhut [chhut] ts_h u t
+chi [chi] ts i
+chia [chia] ts i a
+chiah [chiah] ts i a
+chiam [chiam] ts i a m
+chian [chian] ts i a n
+chiang [chiang] ts i a N
+chiann [chiann] ts i a~
+chiap [chiap] ts i a p
+chiat [chiat] ts i a t
+chiau [chiau] ts i a u
+chien [chien] ts i e n
+chih [chih] ts i
+chim [chim] ts i m
+chin [chin] ts i n
+chinn [chinn] ts i~
+chio [chio] ts i o
+chioh [chioh] ts i o
+chioik [chioik] ts i o i k
+chiok [chiok] ts i o k
+chiong [chiong] ts i o N
+chip [chip] ts i p
+chit [chit] ts i t
+chiu [chiu] ts i u
+chiunn [chiunn] ts i u~
+chng [chng] ts N
+cho [cho] ts o
+choa [choa] ts o a
+choah [choah] ts o a
+choan [choan] ts o a n
+choann [choann] ts o a~
+choat [choat] ts o a t
+choe [choe] ts o e
+choeh [choeh] ts o e
+choh [choh] ts o
+chok [chok] ts o k
+chong [chong] ts o N
+chou [chou] ts O
+chu [chu] ts u
+chuan [chuan] ts u a n
+chuang [chuang] ts u a N
+chui [chui] ts u i
+chun [chun] ts u n
+chut [chut] ts u t
+ci [ci] ts_h i
+cky [cky] ts_h k y
+cool [cool] k u l
+cou [cou] ts_h o u
+cong [cong] ts_h o N
+cu [cu] ts_h u
+cuan [cuan] ts_h u a n
+cui [cui] ts_h u e i
+cun [cun] ts_h u n
+cuo [cuo] ts_h u o
+d [d] d
+da [da] d a
+dai [dai] d a i
+dan [dan] d a n
+dang [dang] d a N
+danr [danr] t a @
+dao [dao] d a o
+de [de] d e
+dei [dei] t e i
+deng [deng] d e N
+di [di] d i
+dian [dian] d i a n
+dianr [dianr] t i a @
+diao [diao] d i a o
+die [die] d i e
+ding [ding] d i N
+diu [diu] t i o u
+dong [dong] d o N
+dou [dou] d O
+du [du] d u
+duan [duan] d u a n
+dui [dui] d u i
+dun [dun] d u n
+duo [duo] t u o
+e [e] e
+eN [eN] e n
+eh [eh] e
+ehh [ehh] e h
+ehnn [ehnn] e~
+ei [ei] e i
+ek [ek] e k
+eks [eks] e k s
+em [em] e m
+en [en] e n
+eng [eng] e N
+enn [enn] e~
+er [er] @
+es [es] e s
+fa [fa] f a
+fan [fan] f a n
+fang [fang] f a N
+fei [fei] f e i
+fen [fen] f e n
+feng [feng] f e N
+fong [fong] f o N
+fu [fu] f u
+g [g] g
+ga [ga] g a
+gai [gai] g a i
+gak [gak] g a k
+gam [gam] g a m
+gan [gan] g a n
+gang [gang] g a N
+ganr [ganr] k a @
+gao [gao] g a o
+gau [gau] g a u
+ge [ge] g e
+geh [geh] g e
+gei [gei] g e i
+gek [gek] g e k
+gen [gen] g e n
+geng [geng] g e N
+ger [ger] k S @
+gi [gi] g i
+gia [gia] g i a
+giah [giah] g i a
+giam [giam] g i a m
+gian [gian] g i a n
+giap [giap] g i a p
+giau [giau] g i a u
+gin [gin] g i n
+ginn [ginn] g i~
+gio [gio] g i o
+gioh [gioh] g i o
+giok [giok] g i o k
+giong [giong] g i o N
+giu [giu] g i u
+go [go] g o
+goa [goa] g o a
+goan [goan] g o a n
+goann [goann] g o a~
+goeh [goeh] g o e
+gong [gong] g o N
+gou [gou] g O
+gu [gu] g u
+gua [gua] k u a
+guan [guan] g u a n
+guang [guang] g u a N
+guanr [guanr] k u a @
+gui [gui] g u i
+gun [gun] g u n
+guo [guo] g u o
+h [h] h
+ha [ha] h a
+hah [hah] h a
+hai [hai] h a i
+hainn [hainn] h a i~
+hair [hair] x a @
+hak [hak] h a k
+ham [ham] h a m
+han [han] h a n
+hang [hang] h a N
+hann [hann] h a~
+hao [hao] h a o
+hap [hap] h a p
+hau [hau] h a u
+he [he] h e
+heN [heN] h e n
+hei [hei] h e i
+hen [hen] h e n
+heng [heng] h e N
+henn [henn] h e~
+hi [hi] h i
+hia [hia] h i a
+hiah [hiah] h i a
+hiam [hiam] h i a m
+hian [hian] h i a n
+hiang [hiang] h i a N
+hiann [hiann] h i a~
+hiau [hiau] h i a u
+him [him] h i m
+hinn [hinn] h i~
+hioh [hioh] h i o
+hiong [hiong] h i o N
+hiou [hiou] h i O
+hip [hip] h i p
+hit [hit] h i t
+hiu [hiu] h i u
+hiunn [hiunn] h i u~
+hmm [hmm] h m m
+hng [hng] h N
+hnn [hnn] h n n
+ho [ho] h o
+hoN [hoN] h o n
+hoa [hoa] h o a
+hoah [hoah] h o a
+hoai [hoai] h o a i
+hoainn [hoainn] h o a i~
+hoan [hoan] h o a n
+hoann [hoann] h o a~
+hoat [hoat] h o a t
+hoe [hoe] h o e
+hoeh [hoeh] h o e
+hok [hok] h o k
+hon [hon] h o n
+hong [hong] h o N
+honn [honn] h o~
+hou [hou] h O
+house [house] h O s e
+hu [hu] h u
+hua [hua] h u a
+huai [huai] x u a i
+huan [huan] h u a n
+huang [huang] h u a N
+huann [huann] h u a~
+huh [huh] h u
+hui [hui] h u i
+huih [huih] h u i
+hun [hun] h u n
+huo [huo] h u o
+hut [hut] h u t
+i [i] i
+ia [ia] i a
+iah [iah] i a
+iam [iam] i a m
+ian [ian] i a n
+iang [iang] i a N
+iann [iann] i a~
+iap [iap] i a p
+iau [iau] i a u
+ih [ih] i
+ihnn [ihnn] i~
+ii [ii] i i
+im [im] i m
+in [in] i n
+inn [inn] i~
+io [io] i o
+ioh [ioh] i o
+iok [iok] i o k
+iong [iong] i o N
+iou [iou] i O
+it [it] i t
+iu [iu] i u
+iunn [iunn] i u~
+j [j] dz 
+ji [ji] dz i
+jia [jia] dz i a
+jiam [jiam] dz i a m
+jian [jian] dz i a n
+jiang [jiang] dz i a N
+jiao [jiao] dz i a o
+jiat [jiat] dz i a t
+jiau [jiau] dz i a u
+jie [jie] dz i e
+jih [jih] dz i
+jim [jim] dz i m
+jin [jin] dz i n
+jing [jing] dz i N
+jio [jio] dz i o
+jiok [jiok] dz i o k
+jiong [jiong] dz i o N
+jip [jip] dz i p
+jit [jit] dz i t
+jiu [jiu] dz i u
+joa [joa] dz o a
+joah [joah] dz o a
+ju [ju] dz u
+juan [juan] dz u a n
+jue [jue] dz u e
+jun [jun] dz u n
+k [k] k
+ka [ka] k a
+kah [kah] k a
+kai [kai] k a i
+kak [kak] k a k
+kam [kam] k a m
+kan [kan] k a n
+kang [kang] k a N
+kann [kann] k a~
+kao [kao] k a o
+kap [kap] k a p
+kau [kau] k a u
+ke [ke] k e
+keh [keh] k e
+kek [kek] k e k
+keng [keng] k e N
+kenn [kenn] k e~
+kh [kh] k_h
+kha [kha] k_h a
+khah [khah] k_h a
+khai [khai] k_h a i
+khak [khak] k_h a k
+kham [kham] k_h a m
+khan [khan] k_h a n
+khang [khang] k_h a N
+khann [khann] k_h a~
+khat [khat] k_h a t
+khau [khau] k_h a u
+khe [khe] k_h e
+kheh [kheh] k_h e
+kheng [kheng] k_h e N
+khenn [khenn] k_h e~
+khha [khha] k_h h a
+khi [khi] k_h i
+khia [khia] k_h i a
+khiam [khiam] k_h i a m
+khian [khian] k_h i a n
+khiau [khiau] k_h i a u
+khim [khim] k_h i m
+khin [khin] k_h i n
+khinn [khinn] k_h i~
+khioh [khioh] k_h i o
+khiong [khiong] k_h i o N
+khip [khip] k_h i p
+khiu [khiu] k_h i u
+khiunn [khiunn] k_h i u~
+khng [khng] k_h N
+kho [kho] k_h o
+khoa [khoa] k_h o a
+khoah [khoah] k_h o a
+khoai [khoai] k_h o a i
+khoan [khoan] k_h o a n
+khoann [khoann] k_h o a~
+khoe [khoe] k_h o e
+khoeh [khoeh] k_h o e
+khok [khok] k_h o k
+khong [khong] k_h o N
+khou [khou] k_h O
+khu [khu] k_h u
+khui [khui] k_h u i
+khuinn [khuinn] k_h u i~
+khun [khun] k_h u n
+khut [khut] k_h u t
+ki [ki] k i
+kia [kia] k i a
+kiam [kiam] k i a m
+kian [kian] k i a n
+kiann [kiann] k i a~
+kiap [kiap] k i a p
+kiat [kiat] k i a t
+kiau [kiau] k i a u
+kim [kim] k i m
+kin [kin] k i n
+kio [kio] k i o
+kiok [kiok] k i o k
+kiong [kiong] k i o N
+kionn [kionn] k i o~
+kip [kip] k i p
+kiu [kiu] k i u
+kke [kke] k k e
+kng [kng] k N
+ko [ko] k o
+koa [koa] k o a
+koah [koah] k o a
+koai [koai] k o a i
+koain [koain] k o a i n
+koainn [koainn] k o a i~
+koan [koan] k o a n
+koang [koang] k o a N
+koann [koann] k o a~
+koat [koat] k o a t
+koe [koe] k o e
+koh [koh] k o
+kok [kok] k o k
+kong [kong] k o N
+kou [kou] k O
+ku [ku] k u
+kua [kua] k u a
+kuai [kuai] k u a i
+kuan [kuan] k u a n
+kuang [kuang] k u a N
+kui [kui] k u i
+kuinn [kuinn] k u i~
+kun [kun] k u n
+kuo [kuo] k u o
+kut [kut] k u t
+l [l] l
+la [la] l a
+lah [lah] l a
+lai [lai] l a i
+lam [lam] l a m
+lan [lan] l a n
+lang [lang] l a N
+lanr [lanr] l a @
+lao [lao] l a o
+lap [lap] l a p
+lat [lat] l a t
+lau [lau] l a u
+le [le] l e
+leh [leh] l e
+lei [lei] l e i
+lek [lek] l e k
+len [len] l e n
+leng [leng] l e N
+li [li] l i
+liah [liah] l i a
+liak [liak] l i a k
+liam [liam] l i a m
+lian [lian] l i a n
+liang [liang] l i a N
+liao [liao] l i a o
+liap [liap] l i a p
+liat [liat] l i a t
+liau [liau] l i a u
+lie [lie] l i e
+lih [lih] l i
+lim [lim] l i m
+limm [limm] l i m m
+lin [lin] l i n
+ling [ling] l i N
+lio [lio] l i o
+lioh [lioh] l i o
+liok [liok] l i o k
+liong [liong] l i o N
+lip [lip] l i p
+lit [lit] l i t
+liu [liu] l i u
+lo [lo] l o
+loa [loa] l o a
+loah [loah] l o a
+loan [loan] l o a n
+loh [loh] l o
+lok [lok] l o k
+long [long] l o N
+lou [lou] l O
+lu [lu] l u
+luan [luan] l u a n
+lui [lui] l u i
+lun [lun] l u n
+luo [luo] l u o
+lut [lut] l u t
+lü [lü] l y
+m [m] m
+ma [ma] m a
+mah [mah] m a
+mai [mai] m a i
+mail [mail] m a i l
+man [man] m a n
+mang [mang] m a N
+mao [mao] m a o
+mar [mar] m a @
+mau [mau] m a u
+me [me] m e
+meh [meh] m e
+mei [mei] m e i
+men [men] m e n
+men's [men's] m e n s
+meng [meng] m e N
+mi [mi] m i
+mia [mia] m i a
+mian [mian] m i a n
+miann [miann] m i a~
+miao [miao] m i a o
+miau [miau] m i a u
+mien [mien] m i e n
+mih [mih] m i
+min [min] m i n
+ming [ming] m i N
+mm [mm] m m
+mng [mng] m N
+mo [mo] m o
+moa [moa] m o a
+moai [moai] m o a i
+moe [moe] m o e
+mok [mok] m o k
+mou [mou] m O
+mu [mu] m u
+mui [mui] m u i
+n [n] n
+na [na] n a
+nai [nai] n a i
+nan [nan] n a n
+nann [nann] n a~
+nao [nao] n a o
+nar [nar] n a @
+nau [nau] n a u
+ne [ne] n e
+neh [neh] n e
+nei [nei] n e i
+neng [neng] n e N
+nese [nese] n e s e
+ng [ng] N
+ngai [ngai] N a i
+nge [nge] N e
+ngeh [ngeh] N e
+ngi [ngi] N i
+ngou [ngou] N O
+ni [ni] n i
+nia [nia] n i a
+nian [nian] n i a n
+niang [niang] n i a N
+niao [niao] n i a u
+niau [niau] n i a u
+nien [nien] n i e n
+nih [nih] n i
+nin [nin] n i n
+ning [ning] n i N
+niu [niu] n i u
+nng [nng] n N
+no [no] n o
+noa [noa] n o a
+noh [noh] n o
+nong [nong] n o N
+nu [nu] n u
+nü [nü] n y
+o [o] o
+oa [oa] o a
+oah [oah] o a
+oan [oan] o a n
+oann [oann] o a~
+oat [oat] o a t
+oe [oe] o e
+oh [oh] o
+ohnn [ohnn] o~
+ohunn [ohunn] O~
+ok [ok] o k
+om [om] o m
+one [one] o n e
+ong [ong] o N
+onn [onn] o~
+ou [ou] O
+ouh [ouh] O
+ounn [ounn] O~
+p [p] p
+pa [pa] p a
+pah [pah] p a
+pai [pai] p a i
+pak [pak] p a k
+pan [pan] p a n
+pang [pang] p a N
+pao [pao] p a o
+pat [pat] p a t
+pau [pau] p a u
+pe [pe] p e
+peh [peh] p e
+pei [pei] p_h e i
+pek [pek] p e k
+pen [pen] p e n
+peng [peng] p e N
+penn [penn] p e~
+ph [ph] p_h
+pha [pha] p_h a
+phah [phah] p_h a
+phai [phai] p_h a i
+phainn [phainn] p_h a i~
+phak [phak] p_h a k
+phang [phang] p_h a N
+phau [phau] p_h a u
+phe [phe] p_h e
+phek [phek] p_h e k
+pheng [pheng] p_h e N
+phenn [phenn] p_h e~
+phhah [phhah] p_h h a
+phi [phi] p_h i
+phian [phian] p_h i a n
+phiann [phiann] p_h i a~
+phiau [phiau] p_h i a u
+phin [phin] p_h i n
+phinn [phinn] p_h i~
+phio [phio] p_h i o
+pho [pho] p_h o
+phoa [phoa] p_h o a
+phoah [phoah] p_h o a
+phoann [phoann] p_h o a~
+phoat [phoat] p_h o a t
+phoe [phoe] p_h o e
+phong [phong] p_h o N
+phou [phou] p_h O
+phu [phu] p_h u
+phun [phun] p_h u n
+phut [phut] p_h u t
+pi [pi] p i
+piah [piah] p i a
+pian [pian] p i a n
+piann [piann] p i a~
+pianr [pianr] p_h i a @
+piao [piao] p_h i a u
+piat [piat] p i a t
+piau [piau] p i a u
+pien [pien] p i e n
+pin [pin] p i n
+ping [ping] p i N
+pinn [pinn] p i~
+pio [pio] p i o
+pit [pit] p i t
+png [png] p N
+po [po] p o
+poa [poa] p o a
+poah [poah] p o a
+poan [poan] p o a n
+poann [poann] p o a~
+poe [poe] p o e
+poeh [poeh] p o e
+poh [poh] p o
+pong [pong] p o N
+pou [pou] p O
+pu [pu] p u
+pui [pui] p u i
+pun [pun] p u n
+put [put] p u t
+q [q] ts_h
+qai [qai] ts_h a i
+qi [qi] ts_h i
+qian [qian] ts_h i a n
+qiang [qiang]	 ts_h i a N
+qiao [qiao] ts_h i a u
+qie [qie] ts_h i e
+qin [qin] ts_h i n
+qing [qing] ts_h i N
+qiu [qiu] ts_h i o u
+qu [qu] ts_h y
+quan [quan] ts_h y a n
+que [que] ts_h y e
+r [r] z
+rau [rau] z a u
+ran [ran] z a n
+rang [rang] z a N
+rong [rong] z o N
+rao [rao] z a u
+re [re] z S
+ren [ren] z S n
+ri [ri] z i
+rou [rou] z o u
+ru [ru] z u
+ruan [ruan] z u a n
+ruo [ruo] z u o
+s [s] s
+si [si] s i
+sa [sa] s a
+sah [sah] s a
+sahnn [sahnn] s a~
+sai [sai] s a i
+sak [sak] s a k
+sam [sam] s a m
+san [san] s a n
+sang [sang] s a N
+sann [sann] s a~
+sannh [sannh] s a~ h
+sap [sap] s a p
+sat [sat] s a t
+sau [sau] s a u
+se [se] s e
+seh [seh] s e
+sek [sek] s e k
+sen [sen] s e n
+seng [seng] s e N
+senn [senn] s e~
+sha [sha] s h a
+shai [shai] s h a i
+shan [shan] s h a n
+shang [shang] s h a N
+shao [shao] s h a o
+shau [shau] s h a u
+she [she] s h e
+shei [shei] s e i
+shen [shen] s h e n
+sheng [sheng] s h e N
+shi [shi] s h i
+shong [shong] s o N
+shou [shou] s h O
+shu [shu] s h u
+shuai [shuai] s u a i
+shuan [shuan] s u a n
+shuang [shuang] s h u a N
+shui [shui] s h u i
+shun [shun] s h u n
+shuo [shuo] s h u o
+sia [sia] s i a
+siah [siah] s i a
+siahn [siahn] s i a n
+siahnn [siahnn] s i a~
+sian [sian] s i a n
+siang [siang] s i a N
+siann [siann] s i a~
+siannh [siannh] s i a~ h
+siao [siao] s i a o
+siat [siat] s i a t
+siau [siau] s i a u
+sih [sih] s i
+sim [sim] s i m
+sin [sin] s i n
+sing [sing] s i N
+sinn [sinn] s i~
+sio [sio] s i o
+sioh [sioh] s i o
+siok [siok] s i o k
+siong [siong] s i o N
+sip [sip] s i p
+sit [sit] s i t
+siu [siu] s i u
+siunn [siunn] s i u~
+sng [sng] s N
+so [so] s o
+soa [soa] s o a
+soah [soah] s o a
+soainn [soainn] s o a i~
+soan [soan] s o a n
+soann [soann] s o a~
+soe [soe] s o e
+soeh [soeh] s o e
+soh [soh] s o
+sok [sok] s o k
+song [song] s o N
+sou [sou] s O
+su [su] s u
+suai [suai] s u a i
+suan [suan] s u a n
+sue [sue] s u e
+sui [sui] s u i
+sun [sun] s u n
+suo [suo] s u o
+sut [sut] s u t
+t [t] t
+ta [ta] t a
+tah [tah] t a
+tai [tai] t a i
+tak [tak] t a k
+tam [tam] t a m
+tan [tan] t a n
+tang [tang] t a N
+tann [tann] t a~
+tao [tao] t a o
+tap [tap] t a p
+tat [tat] t a t
+tau [tau] t a u
+tauh [tauh] t a u
+te [te] t e
+teh [teh] t e
+tek [tek] t e k
+teng [teng] t e N
+tenn [tenn] t e~
+th [th] t_h
+tha [tha] t_h a
+thah [thah] t_h a
+thai [thai] t_h a i
+thak [thak] t_h a k
+tham [tham] t_h a m
+than [than] t_h a n
+thang [thang] t_h a N
+that [that] t_h a t
+thau [thau] t_h a u
+the [the] t_h e
+theh [theh] t_h e
+theng [theng] t_h e N
+thi [thi] t_h i
+thiam [thiam] t_h i a m
+thian [thian] t_h i a n
+thiann [thiann] t_h i a~
+thiap [thiap] t_h i a p
+thiau [thiau] t_h i a u
+thih [thih] t_h i
+thinn [thinn] t_h i~
+thiu [thiu] t_h i u
+thng [thng] t_h N
+tho [tho] t_h o
+thoa [thoa] t_h o a
+thoan [thoan] t_h o a n
+thoat [thoat] t_h o a t
+thoe [thoe] t_h o e
+thok [thok] t_h o k
+thong [thong] t_h o N
+thou [thou] t_h O
+thuh [thuh] t_h u
+thui [thui] t_h u i
+ti [ti] t i
+tia [tia] t i a
+tiam [tiam] t i a m
+tian [tian] t i a n
+tiann [tiann] t i a~
+tianr [tianr] t_h i a @
+tiao [tiao] t i a o
+tiap [tiap] t i a p
+tiau [tiau] t i a u
+tie [tie] t_h i e
+tih [tih] t i
+tin [tin] t i n
+ting [ting] t i N
+tinn [tinn] t i~
+tio [tio] t i o
+tioh [tioh] t i o
+tiok [tiok] t i o k
+tiong [tiong] t i o N
+tit [tit] t i t
+tiu [tiu] t i u
+tiunn [tiunn] t i u~
+tng [tng] t N
+to [to] t o
+toa [toa] t o a
+toan [toan] t o a n
+toann [toann] t o a~
+toe [toe] t o e
+toh [toh] t o
+tok [tok] t o k
+tong [tong] t o N
+totohio [totohio] t o t o i o
+tou [tou] t O
+tu [tu] t u
+tuan [tuan] t u a n
+tuei [tuei] t u e i
+tui [tui] t u i
+tun [tun] t u n
+tuo [tuo] t u o
+tut [tut] t u t
+u [u] u
+uai [uai] u a i
+uan [uan] u a n
+uei [uei] u e i
+uen [uen] u e n
+uh [uh] u
+uhnn [uhnn] u~
+ui [ui] u i
+um [um] u m
+un [un] u n
+unn [unn] u~
+vai [vai] v a i
+van [van] v a n
+vang [vang] v a N
+vanr [vanr] v a @
+vei [vei] v e i
+ven [ven] v S n
+vu [vu] v u
+w [w] u
+wai [wai] u a i
+wan [wan] u a n
+wang [wang] u a N
+wanr [wanr] w a @
+wei [wei] u e i
+wen [wen] u S n
+wo [wo] u o
+wu [wu] u
+x [x] ss
+xi [xi] ss i
+xia [xia] ss i a
+xian [xian] ss i a n
+xiang [xiang] ss i a N
+xiao [xiao] ss i a o
+xiau [xiau] ss i a u
+xiar [xiar] ss i a @
+xie [xie] ss i e
+xin [xin] ss i n
+xing [xing] ss i N
+xiong [xiong] ss i o N
+xiu [xiu] ss i o u
+xu [xu] ss y
+xuan [xuan] ss y a n
+xue [xue] ss y e
+xun [xun] ss y n
+y [y] i
+ya [ya] i a
+yan [yan] i a n
+yang [yang] i a N
+yao [yao] i a u
+ye [ye] i e
+yen [yen] i e n
+yi [yi] i
+yia [yia] i a
+yin [yin] i n
+ying [ying] i N
+yiu [yia] i u
+yo [yo] i o
+yong [yong] y u N
+you [you] i o u
+yu [yu] y
+yuan [yuan] y a n
+yuanr [yuanr] y a @
+yue [yue] y e
+yun [yun] y u n
+z [z] ts
+za [za] ts a
+zai [zai] ts a i
+zan [zan] ts a n
+zao [zao] ts a u
+zau [zau] ts a u
+ze [ze] ts S
+zen [zen] ts S n
+zha [zha] ts a
+zhan [zhan] ts a n
+zhang [zhang] ts a N
+zhao [zhao] ts a u
+zhe [zhe] ts S
+zhei [zhei] ts e i
+zhen [zhen] ts S n
+zheng [zheng] ts S N
+zhi [zhi] ts i
+zhong [zhong] ts o N
+zhou [zhou] ts o u
+zhu [zhu] ts u
+zhuan [zhuan] ts u a n
+zhuang [zhuang] ts u a N
+zhui [zhui] ts u e i
+zhun [zhun] ts u n
+zi [zi] ts i
+zong [zong] ts o N
+zou [zou] ts o u
+zu [zu] ts u
+zui [zui] ts u e i
+zuo [zuo] ts u o
+zza [zza] ts a

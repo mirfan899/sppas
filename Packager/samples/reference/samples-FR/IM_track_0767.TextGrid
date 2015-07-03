@@ -1,0 +1,48 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0.0
+xmax = 8.84
+tiers? <exists>
+size = 4
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "transcription"
+        xmin = 0.0
+        xmax = 8.84
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 8.84
+            text = "alors euh elle pour la photo + elle lui avait mis de force le feutre dans la main droite ouvert et tout comme s'il était en train de dessiner ce qui était impossible chez lui il est absolument incapable de dessiner de la main droite"
+    item [2]:
+        class = "IntervalTier"
+        name = "transcription"
+        xmin = 0.0
+        xmax = 8.84
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 8.84
+            text = "alors euh elle pour la photo + elle lui avait mis de force le feutre dans la main droite ouvert et tout comme s'il était en train de dessiner ce qui était impossible chez lui il est absolument incapable de dessiner de la main droite"
+    item [3]:
+        class = "IntervalTier"
+        name = "transcription"
+        xmin = 0.0
+        xmax = 8.84
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 8.84
+            text = "alors euh elle pour la photo + elle lui avait mis de force le feutre dans la main droite ouvert et tout comme s'il était en train de dessiner ce qui était impossible chez lui il est absolument incapable de dessiner de la main droite"
+    item [4]:
+        class = "IntervalTier"
+        name = "transcription"
+        xmin = 0.0
+        xmax = 8.84
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 8.84
+            text = "alors euh elle pour la photo + elle lui avait mis de force le feutre dans la main droite ouvert et tout comme s'il était en train de dessiner ce qui était impossible chez lui il est absolument incapable de dessiner de la main droite"

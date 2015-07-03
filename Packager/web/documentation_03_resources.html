@@ -1,0 +1,1840 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="author" content="Brigitte Bigi">
+  <title>SPPAS Documentation</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="etc/styles/sppas.css">
+      <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Jura">
+      <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Maven Pro">
+      <link rel="icon" href="../etc/icons/sppas.ico" />
+  
+      <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-38055333-1']);
+          _gaq.push(['_trackPageview']);
+  
+          (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+      </script>
+</head>
+<body>
+    <header>
+        <a href="index.html">
+            <img src="./etc/logos/sppas-logo.png" width="64" height="64" alt="Home" />
+        </a>
+        <span id='tagline'>
+          Automatic Annotation of Speech <br />
+          <font size=-1><a href="http://www.lpl-aix.fr/~bigi/">Brigitte Bigi</a> - Laboratoire Parole et Langage - Aix-en-Provence - France</font>
+        </span>
+    </header>
+
+    <table align="center"  cellpadding="15px;" cellspacing="20px;">
+    <tr>
+        <td >
+            <a href="installation.html">
+                <figure>
+                <img src="./etc/icons/install.png" width="64" height="64" />
+                <figcaption>Installation</figcaption>
+                </figure>
+            </a>
+        </td>
+
+        <td >
+            <a href="download.html">
+                <figure>
+                <img src="./etc/icons/download.png" width="64" height="64" />
+                <figcaption>Download</figcaption>
+                </figure>
+            </a>
+        </td>
+
+        <td >
+            <a href="documentation.html">
+                <figure>
+                <img src="./etc/icons/help.png" width="64" height="64" />
+                <figcaption>Documentation</figcaption>
+                </figure>
+            </a>
+        </td>
+
+        <td >
+            <a href="https://groups.google.com/forum/?fromgroups#!forum/sppas-users">
+                <figure>
+                <img src="./etc/icons/community.png" width="64" height="64" />
+                <figcaption>User's group</figcaption>
+                </figure>
+            </a>
+        </td>
+    </tr>
+    </table>
+<header>
+<h1 class="title">SPPAS Documentation</h1>
+<h2 class="author">Brigitte Bigi</h2>
+<h3 class="date">Version 1.7.0</h3>
+</header>
+<nav id="TOC">
+<ul>
+<li><a href="#resources-for-automatic-annotations">Resources for Automatic Annotations</a><ul>
+<li><a href="#what-are-sppas-resources-and-where-they-come-from">What are SPPAS resources and where they come from?</a><ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#about-the-phone-sets">About the phone sets</a></li>
+<li><a href="#how-to-add-a-new-language">How to add a new language</a></li>
+</ul></li>
+<li><a href="#french-resources">French Resources</a><ul>
+<li><a href="#pronunciation-dictionary">Pronunciation Dictionary</a></li>
+<li><a href="#acoustic-model">Acoustic Model</a></li>
+<li><a href="#syllabification-configuration">Syllabification configuration</a></li>
+</ul></li>
+<li><a href="#italian-resources">Italian resources</a><ul>
+<li><a href="#pronunciation-dictionary-1">Pronunciation Dictionary</a></li>
+<li><a href="#acoustic-model-1">Acoustic Model</a></li>
+<li><a href="#syllabification-configuration-1">Syllabification configuration</a></li>
+</ul></li>
+<li><a href="#spanish-resources">Spanish resources</a><ul>
+<li><a href="#pronunciation-dictionary-2">Pronunciation Dictionary</a></li>
+<li><a href="#acoustic-model-2">Acoustic Model</a></li>
+</ul></li>
+<li><a href="#catalan-resources">Catalan resources</a><ul>
+<li><a href="#pronunciation-dictionary-3">Pronunciation Dictionary</a></li>
+<li><a href="#acoustic-model-3">Acoustic Model</a></li>
+</ul></li>
+<li><a href="#english">English</a><ul>
+<li><a href="#dictionary">Dictionary</a></li>
+<li><a href="#acoustic-model-4">Acoustic Model</a></li>
+</ul></li>
+<li><a href="#mandarin-chinese">Mandarin Chinese</a><ul>
+<li><a href="#pronunciation-dictionary-4">Pronunciation dictionary</a></li>
+<li><a href="#acoustic-model-5">Acoustic model</a></li>
+</ul></li>
+<li><a href="#southern-min-or-min-nan-resources">Southern Min (or Min Nan) resources</a></li>
+<li><a href="#cantonese-resources">Cantonese resources</a><ul>
+<li><a href="#dictionary-1">Dictionary</a></li>
+<li><a href="#acoustic-model-6">Acoustic Model</a></li>
+</ul></li>
+<li><a href="#polish-resources">Polish Resources</a><ul>
+<li><a href="#pronunciation-dictionary-5">Pronunciation Dictionary</a></li>
+<li><a href="#acoustic-model-7">Acoustic Model</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<hr />
+<h1 id="resources-for-automatic-annotations">Resources for Automatic Annotations</h1>
+<h2 id="what-are-sppas-resources-and-where-they-come-from">What are SPPAS resources and where they come from?</h2>
+<h3 id="overview">Overview</h3>
+<p>All automatic annotations included in SPPAS are implemented with language-independent algorithms... this means that adding a new language in SPPAS only consists in adding resources related to the annotation (like lexicons, dictionaries, models, set of rules, etc).</p>
+<p>All available resources to perform automatic annotations are located in the sub-directory 'resources'. There are 5 sub-directories:</p>
+<ul>
+<li>Lexicon (list of words used during Tokenization) are located in the <em>vocab</em> sub-directory.</li>
+<li>A list of replacements to perform during tokenization in the <em>repl</em> sub-directory.</li>
+<li>Pronunciation dictionaries (used during Phonetization) are located in the <em>dict</em> sub-directory.</li>
+<li>The acoustic models (used during Alignment) are located in the <em>models</em> directory.</li>
+<li>The Syllabification configuration files are located in the <em>syll</em> directory.</li>
+</ul>
+<blockquote>
+<p>All resources can be edited, modified, changed or deleted by any user.</p>
+</blockquote>
+<blockquote>
+<p>Caution: all the files are in UTF-8, and this encoding must not be changed.</p>
+</blockquote>
+<p>The language names are based on the ISO639-3 international standard. See <a href="http://www-01.sil.org/iso639-3/">http://www-01.sil.org/iso639-3/</a> for the list of all languages and codes. Here is the list of available languages in SPPAS resources:</p>
+<ul>
+<li>French: fra</li>
+<li>English: eng</li>
+<li>Spanish: spa</li>
+<li>Italian: ita</li>
+<li>Catalan: cat</li>
+<li>Japanese: jpn</li>
+<li>Mandarin Chinese: cmn</li>
+<li>Southern Min (or Min Nan): nan</li>
+<li>Cantonese: yue</li>
+</ul>
+<p>SPPAS can deal with a new language by simply adding the language resources to the appropriate sub-directories. Of course, file formats must corresponds to which expected by SPPAS! Lexicon and dictionaries can be edited/modified/saved with a simple-editor as <strong>Notepad++</strong> for example (<em>under Windows: above all, don't use the windows' notepad</em>). Idem for the syllabification rules.</p>
+<p>The only step in the procedure which is probably beyond the means of a linguist without external aid is the creation of a new acoustic model when it does not yet exist for the language being analysed. This only needs to carried out once for each language, though, and we provide detailed specifications of the information needed to train an acoustic model on an appropriate set of recordings and dictionaries or transcriptions. Acoustic models obtained by such a collaborative process will be made freely available to the scientific community.</p>
+<p>The current acoustic models can be improved too (except for eng and jpn): send your data (wav and transcription files) to the author. Notice that such data will not be published in any form without your authorization. They will be included in the training procedure to create a new (and better) acoustic model, that will be distributed in the next version of SPPAS.</p>
+<h3 id="about-the-phone-sets">About the phone sets</h3>
+<blockquote>
+<p>Most of the resources are using SAMPA to represent phonemes.</p>
+</blockquote>
+<p>In addition, all models (except jpn and yue) include the following fillers:</p>
+<ul>
+<li>dummy: untranscribed speech</li>
+<li>gb: garbage</li>
+<li>@@: laughting</li>
+</ul>
+<h3 id="how-to-add-a-new-language">How to add a new language</h3>
+<ol type="1">
+<li><p>Dictionary and lexicon:</p>
+<p>1.1 Copy the phonetic dictionary <code>LANG.dict</code> in the <code>dict</code> directory</p>
+<p>1.2 Copy the vocabulary list <code>LANG.vocab</code> in the <code>vocab</code> directory</p></li>
+<li><p>Create a directory <code>models/models-LANG</code>; then copy the acoustic model in this directory</p></li>
+<li><p>Optionally, copy the file <code>syllConfig-LANG.txt</code> in the syll directory.</p></li>
+</ol>
+<p>Required Input Data formats:</p>
+<ul>
+<li>The dictionary is HTK ASCII, like: word [word] phon1 phon2 phon3 Columns are separated by spaces.</li>
+<li>Acoustic models are in HTK ASCII format (16bits,16000hz).</li>
+</ul>
+<p>Notice that the Graphical User Interface dynamically creates the list of available languages by exploring the sub-directory &quot;resources&quot; included in the SPPAS package. This means that all changes in the &quot;resources&quot; directory will be automatically take into account.</p>
+<h2 id="french-resources">French Resources</h2>
+<p><em>(C) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
+<h3 id="pronunciation-dictionary">Pronunciation Dictionary</h3>
+<p>The French dictionary is under the terms of the &quot;GNU Public License&quot;.</p>
+<p>The French pronunciation dictionary was created by Brigitte Bigi by merging a some free dictionaries loaded from the web. Some word pronunciations were added using the LIA_Phon tool. Many words were manually corrected and a large set of missing words and pronunciation variants were added.</p>
+<h3 id="acoustic-model">Acoustic Model</h3>
+<p>See COPYRIGHT.txt (in the &quot;model-fra&quot; directory) for the details of the license: &quot;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License&quot;.</p>
+<p>The French acoustic model was created by Brigitte Bigi from various corpora recorded at Laboratoire Parole et Langage (see the &quot;References&quot; section of this documentation). It includes:</p>
+<ul>
+<li>CID - Corpus of Interactional Data (7h30) <a href="http://www.sldr.org/sldr000027/">http://www.sldr.org/sldr000027/</a>,</li>
+<li>Grenelle (7min) <a href="http://www.sldr.org/sldr000729/">http://www.sldr.org/sldr000729/</a>,</li>
+<li>Broadcast news (40min) and Read speech (not public).</li>
+</ul>
+<p>References to these corpora:</p>
+<blockquote>
+<p><strong>P. Blache, R. Bertrand, B. Bigi, E. Bruno, E. Cela, R. Espesser, G. Ferré, M. Guardiola, D. Hirst, E.-P. Magro, J.-C. Martin, C. Meunier, M.-A. Morel, E. Murisasco, I Nesterenko, P. Nocera, B. Pallaud, L. Prévot, B. Priego-Valverde, J. Seinturier, N. Tan, M. Tellier, S. Rauzy</strong> (2010). <em>Multimodal Annotation of Conversational Data</em>, The Fourth Linguistic Annotation Workshop, ACL 2010, pages 186-191, Uppsala, Sueden.</p>
+</blockquote>
+<blockquote>
+<p><strong>B. Bigi, C. Portes, A. Steuckardt, M. Tellier</strong> (2011). <em>Multimodal Annotations and Categorization for Political Debates</em>, ICMI Workshop on Multimodal Corpora for Machine learning (ICMI-MMC), Alicante, Spain.</p>
+</blockquote>
+<p>Here is the phoneset used in the acoustic model:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">SPPAS</th>
+<th style="text-align: center;">- IPA -</th>
+<th style="text-align: left;">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: left;">beau</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">d</td>
+<td style="text-align: center;">d</td>
+<td style="text-align: left;">doux</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">f</td>
+<td style="text-align: center;">f</td>
+<td style="text-align: left;">fête pharmacie</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">g</td>
+<td style="text-align: center;">ɡ</td>
+<td style="text-align: left;">gain guerre second</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">k</td>
+<td style="text-align: center;">k</td>
+<td style="text-align: left;">cabas psychologie quatre kelvin</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">l</td>
+<td style="text-align: center;">l</td>
+<td style="text-align: left;">loup</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">m</td>
+<td style="text-align: center;">m</td>
+<td style="text-align: left;">mou femme</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">n</td>
+<td style="text-align: center;">n</td>
+<td style="text-align: left;">nous bonne</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">p</td>
+<td style="text-align: center;">p</td>
+<td style="text-align: left;">passé</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">ʁ</td>
+<td style="text-align: left;">roue rhume</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">s</td>
+<td style="text-align: center;">s</td>
+<td style="text-align: left;">sa hausse ce garçon option scie</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">S</td>
+<td style="text-align: center;">ʃ</td>
+<td style="text-align: left;">choux schème shampooing</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">t</td>
+<td style="text-align: center;">t</td>
+<td style="text-align: left;">tout thé grand-oncle</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">v</td>
+<td style="text-align: center;">v</td>
+<td style="text-align: left;">vous wagon neuf heures</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">z</td>
+<td style="text-align: center;">z</td>
+<td style="text-align: left;">hasard zéro transit</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Z</td>
+<td style="text-align: center;">ʒ</td>
+<td style="text-align: left;">joue geai</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">ŋ</td>
+<td style="text-align: left;">camping bingo</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">j</td>
+<td style="text-align: center;">j</td>
+<td style="text-align: left;">fief payer fille travail</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">w</td>
+<td style="text-align: center;">w</td>
+<td style="text-align: left;">oui loi moyen web whisky wagon</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">h</td>
+<td style="text-align: center;">ɥ</td>
+<td style="text-align: left;">huit Puy</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: left;">patte là</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">ɑ</td>
+<td style="text-align: left;">pâte glas</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">e</td>
+<td style="text-align: center;">e</td>
+<td style="text-align: left;">clé les chez aller pied journée</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">E</td>
+<td style="text-align: center;">ɛ</td>
+<td style="text-align: left;">crème est faite peine</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">E</td>
+<td style="text-align: center;">ɛː</td>
+<td style="text-align: left;">fête maître mètre reître reine caisse Lemaistre Lévesque</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">eu</td>
+<td style="text-align: center;">ə</td>
+<td style="text-align: left;">le reposer monsieur faisons</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">eu</td>
+<td style="text-align: center;">ø</td>
+<td style="text-align: left;">ceux jeûner queue deux</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">œ</td>
+<td style="text-align: left;">sœur jeune neuf</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">i</td>
+<td style="text-align: center;">i</td>
+<td style="text-align: left;">si île régie y</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">o</td>
+<td style="text-align: center;">o</td>
+<td style="text-align: left;">sot hôtel haut bureau</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">o</td>
+<td style="text-align: center;">ɔ</td>
+<td style="text-align: left;">sort minimum</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">u</td>
+<td style="text-align: center;">u</td>
+<td style="text-align: left;">coup clown roue</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">y</td>
+<td style="text-align: center;">y</td>
+<td style="text-align: left;">tu sûr rue</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">a~</td>
+<td style="text-align: center;">ɑ̃</td>
+<td style="text-align: left;">sans champ vent temps Jean taon</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">U~</td>
+<td style="text-align: center;">ɛ̃</td>
+<td style="text-align: left;">vin impair pain daim plein Reims synthèse sympa</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">U~</td>
+<td style="text-align: center;">œ̃</td>
+<td style="text-align: left;">un parfum</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">o~</td>
+<td style="text-align: center;">ɔ̃</td>
+<td style="text-align: left;">son nom</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">fp</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">euh</td>
+</tr>
+</tbody>
+</table>
+<h3 id="syllabification-configuration">Syllabification configuration</h3>
+<p>The syllabification configuration file corresponds to the rules defined in the following paper:</p>
+<blockquote>
+<p><em>B. Bigi, C. Meunier, I. Nesterenko, R. Bertrand</em> (2010). <strong>Automatic detection of syllable boundaries in spontaneous speech</strong>, Language Resource and Evaluation Conference, pp 3285-3292, La Valetta, Malte.</p>
+</blockquote>
+<h2 id="italian-resources">Italian resources</h2>
+<p><em>(C) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
+<h3 id="pronunciation-dictionary-1">Pronunciation Dictionary</h3>
+<p>The Italian dictionary is under the terms of the &quot;GNU Public License&quot;.</p>
+<p>The Italian dictionary was downloaded from the Festival synthetizer tool. A part of the phonetization were manually corrected and a large set of missing words and pronunciation variants were added.</p>
+<h3 id="acoustic-model-1">Acoustic Model</h3>
+<p>See COPYRIGHT.txt (in the &quot;model-ita&quot; directory) for the details of the license: &quot;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License&quot;.</p>
+<p>The Italian acoustic model were created during the Evalita 2011 evaluation campaign, from the CLIPS MapTask corpus (3h30).</p>
+<p>Here is the phoneset used in the acoustic model:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">SPPAS</th>
+<th style="text-align: center;">- IPA -</th>
+<th style="text-align: left;">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: left;">banca cibo</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">d</td>
+<td style="text-align: center;">d</td>
+<td style="text-align: left;">dove idra</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">dz</td>
+<td style="text-align: center;">dz</td>
+<td style="text-align: left;">zaino zelare mezzo</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">dZ</td>
+<td style="text-align: center;">dʒ</td>
+<td style="text-align: left;">giungla magia fingere pagina</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">f</td>
+<td style="text-align: center;">f</td>
+<td style="text-align: left;">fatto fosforo</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">g</td>
+<td style="text-align: center;">ɡ</td>
+<td style="text-align: left;">gatto agro glifo ghetto</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">k</td>
+<td style="text-align: center;">k</td>
+<td style="text-align: left;">cavolo acuto anche quei</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">l</td>
+<td style="text-align: center;">l</td>
+<td style="text-align: left;">lato lievemente</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">L</td>
+<td style="text-align: center;">ʎ</td>
+<td style="text-align: left;">gli glielo maglia</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">m</td>
+<td style="text-align: center;">m</td>
+<td style="text-align: left;">mano amare campo</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">n</td>
+<td style="text-align: center;">n</td>
+<td style="text-align: left;">nano punto pensare anfibio</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">ŋ</td>
+<td style="text-align: left;">fango unghia panchina dunque</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">J</td>
+<td style="text-align: center;">ɲ</td>
+<td style="text-align: left;">gnocco ogni</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">p</td>
+<td style="text-align: center;">p</td>
+<td style="text-align: left;">primo ampio copertura</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">r</td>
+<td style="text-align: center;">r</td>
+<td style="text-align: left;">Roma quattro morte</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">s</td>
+<td style="text-align: center;">s</td>
+<td style="text-align: left;">sano scatola presentire pasto</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">S</td>
+<td style="text-align: center;">ʃ</td>
+<td style="text-align: left;">scena sciame pesci</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">t</td>
+<td style="text-align: center;">t</td>
+<td style="text-align: left;">tranne mito</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ts</td>
+<td style="text-align: center;">ts</td>
+<td style="text-align: left;">sozzo canzone marzo</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">tS</td>
+<td style="text-align: center;">tʃ</td>
+<td style="text-align: left;">Cennini cinque ciao</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">v</td>
+<td style="text-align: center;">v</td>
+<td style="text-align: left;">vado povero</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">z</td>
+<td style="text-align: center;">z</td>
+<td style="text-align: left;">sbavare presentare asma</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">j</td>
+<td style="text-align: center;">j</td>
+<td style="text-align: left;">ieri scoiattolo più Jesi</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">w</td>
+<td style="text-align: center;">w</td>
+<td style="text-align: left;">uovo fuoco qui</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: left;">alto sarà</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">e</td>
+<td style="text-align: center;">e</td>
+<td style="text-align: left;">vero perché</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">E</td>
+<td style="text-align: center;">ɛ</td>
+<td style="text-align: left;">elica cioè</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">i</td>
+<td style="text-align: center;">i</td>
+<td style="text-align: left;">imposta colibrì zie</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">o</td>
+<td style="text-align: center;">o</td>
+<td style="text-align: left;">ombra come</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">o</td>
+<td style="text-align: center;">ɔ</td>
+<td style="text-align: left;">otto posso sarò</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">u</td>
+<td style="text-align: center;">u</td>
+<td style="text-align: left;">ultimo caucciù tuo</td>
+</tr>
+</tbody>
+</table>
+<h3 id="syllabification-configuration-1">Syllabification configuration</h3>
+<p>The syllabification configuration file corresponds to the rules defined in the following paper:</p>
+<blockquote>
+<p><em>B. Bigi, C. Petrone</em> (2014). <strong>A generic tool for the automatic syllabification of Italian</strong>, Proceedings of the first Italian Computational Linguistics Conference, Pisa, Italy.</p>
+</blockquote>
+<h2 id="spanish-resources">Spanish resources</h2>
+<h3 id="pronunciation-dictionary-2">Pronunciation Dictionary</h3>
+<p>The pronunciation dictionary was downloaded from the CMU web page. Brigitte Bigi converted this CMU phoneset to SAMPA, and changed the file format.</p>
+<h3 id="acoustic-model-2">Acoustic Model</h3>
+<p><em>(C) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
+<p>See COPYRIGHT.txt (in the &quot;model-spa&quot; directory) for the details of the license: &quot;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License&quot;.</p>
+<p>The acoustic model was trained from Glissando. We address special thanks to Juan-Maria Garrido for giving us access to this corpus: <a href="http://veus.barcelonamedia.org/glissando/node/10">http://veus.barcelonamedia.org/glissando/node/10</a></p>
+<blockquote>
+<p><strong>GARRIDO, J. M. - ESCUDERO, D. - AGUILAR, L. -CARDEÑOSO, V. - RODERO, E. - DE-LA-MOTA, C. - GONZÁLEZ, C. - RUSTULLET, S. - LARREA, O. - LAPLAZA, Y. - VIZCAÍNO, F. - CABRERA, M. - BONAFONTE, A.</strong> (2013). <em>Glissando: a corpus for multidisciplinary prosodic studies in Spanish and Catalan</em>, Language Resources and Evaluation, DOI 10.1007/s10579-012-9213-0.</p>
+</blockquote>
+<p>Here is the phoneset used in the acoustic model:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">SPPAS</th>
+<th style="text-align: center;">- IPA -</th>
+<th style="text-align: left;">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: left;">bestia embuste vaca</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">β</td>
+<td style="text-align: left;">bebé obtuso vivir curva</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">d</td>
+<td style="text-align: center;">d</td>
+<td style="text-align: left;">dedo cuando aldaba</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">d</td>
+<td style="text-align: center;">ð</td>
+<td style="text-align: left;">dádiva arder anddmirar</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">f</td>
+<td style="text-align: center;">f</td>
+<td style="text-align: left;">fase café</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">g</td>
+<td style="text-align: center;">ɡ</td>
+<td style="text-align: left;">gato lengua gatouerra</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">g</td>
+<td style="text-align: center;">ɣ</td>
+<td style="text-align: left;">trigo amargo sigue signo</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">h</td>
+<td style="text-align: center;">h</td>
+<td style="text-align: left;">jamón eje reloj general México</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">k</td>
+<td style="text-align: center;">k</td>
+<td style="text-align: left;">caña laca quise kilo</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">l</td>
+<td style="text-align: center;">l</td>
+<td style="text-align: left;">lino alhaja principal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">L</td>
+<td style="text-align: center;">ʎ</td>
+<td style="text-align: left;">llave pollo roughly</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">m</td>
+<td style="text-align: center;">m</td>
+<td style="text-align: left;">madre completelymer campo convertir</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">n</td>
+<td style="text-align: center;">n</td>
+<td style="text-align: left;">nido anillo anhelo sin álbum</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">J</td>
+<td style="text-align: center;">ɲ</td>
+<td style="text-align: left;">ñandú cañón enyesar</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">ŋ</td>
+<td style="text-align: left;">cinco venga conquista</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">p</td>
+<td style="text-align: center;">p</td>
+<td style="text-align: left;">pozo topo</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">rr</td>
+<td style="text-align: center;">r</td>
+<td style="text-align: left;">rumbo carro honra subrayo amor</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">r</td>
+<td style="text-align: center;">ʁ</td>
+<td style="text-align: left;">caro bravo amor eterno</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">s</td>
+<td style="text-align: center;">s</td>
+<td style="text-align: left;">saco zapato cientos espita xenón</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">T</td>
+<td style="text-align: center;">θ</td>
+<td style="text-align: left;">xenón cereal encima zorro enzima paz</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">t</td>
+<td style="text-align: center;">t</td>
+<td style="text-align: left;">tamiz átomo</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">tS</td>
+<td style="text-align: center;">tʃ</td>
+<td style="text-align: left;">chubasco acechar</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">x</td>
+<td style="text-align: center;">x</td>
+<td style="text-align: left;">jamón eje reloj general México</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">z</td>
+<td style="text-align: center;">z</td>
+<td style="text-align: left;">isla mismo deshuesar</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">S</td>
+<td style="text-align: center;">ʃ</td>
+<td style="text-align: left;">English abacaxi Shakira</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ts</td>
+<td style="text-align: center;">ts</td>
+<td style="text-align: left;">Ertzaintza abertzale Pátzcuaro</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">j</td>
+<td style="text-align: center;">j</td>
+<td style="text-align: left;">aliada cielo amplio ciudad</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">w</td>
+<td style="text-align: center;">w</td>
+<td style="text-align: left;">cuadro fuego</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: left;">azahar</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">e</td>
+<td style="text-align: center;">e</td>
+<td style="text-align: left;">vehemente</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">i</td>
+<td style="text-align: center;">i</td>
+<td style="text-align: left;">dimitir mío</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">o</td>
+<td style="text-align: center;">o</td>
+<td style="text-align: left;">boscoso</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">u</td>
+<td style="text-align: center;">u</td>
+<td style="text-align: left;">cucurucho dúo</td>
+</tr>
+</tbody>
+</table>
+<h2 id="catalan-resources">Catalan resources</h2>
+<h3 id="pronunciation-dictionary-3">Pronunciation Dictionary</h3>
+<p>The Catalan dictionary is under the terms of the &quot;GNU Public License&quot;.</p>
+<p>The catalan pronunciation dictionary was downloaded from the Ralf catalog of dictionaries for the Simon ASR system at <a href="http://spirit.blau.in/simon/import-pls-dictionary/">http://spirit.blau.in/simon/import-pls-dictionary/</a>. It was then converted (format and phoneset) by Brigitte Bigi. Some new words were also added and phonetized manually.</p>
+<h3 id="acoustic-model-3">Acoustic Model</h3>
+<p><em>(C) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
+<p>See COPYRIGHT.txt (in the &quot;model-cat&quot; directory) for the details of the license: &quot;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License&quot;.</p>
+<p>The acoustic model was <em>not</em> trained from data. Monophones of other models were cut and pasted to create this one.</p>
+<p>Here is the phoneset used in the acoustic model:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">SPPAS</th>
+<th style="text-align: center;">- IPA -</th>
+<th style="text-align: left;">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">@</td>
+<td style="text-align: center;">ə</td>
+<td style="text-align: left;">sec</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">E</td>
+<td style="text-align: center;">ɛ</td>
+<td style="text-align: left;">sec</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">D</td>
+<td style="text-align: center;">ð</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">ŋ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">J</td>
+<td style="text-align: center;">ɲ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">L</td>
+<td style="text-align: center;">ʎ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">S</td>
+<td style="text-align: center;">ʃ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">O</td>
+<td style="text-align: center;">ɔ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Z</td>
+<td style="text-align: center;">ʒ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">U</td>
+<td style="text-align: center;">ʊ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: left;">sac</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">β</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">v</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">d</td>
+<td style="text-align: center;">d</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">d</td>
+<td style="text-align: center;">ð</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">e</td>
+<td style="text-align: center;">e</td>
+<td style="text-align: left;">séc</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">f</td>
+<td style="text-align: center;">f</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">g</td>
+<td style="text-align: center;">g</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">g</td>
+<td style="text-align: center;">ʝ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">k</td>
+<td style="text-align: center;">k</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">l</td>
+<td style="text-align: center;">l</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">m</td>
+<td style="text-align: center;">m</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">n</td>
+<td style="text-align: center;">n</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">i</td>
+<td style="text-align: center;">ɪ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">i</td>
+<td style="text-align: center;">i</td>
+<td style="text-align: left;">sic</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">o</td>
+<td style="text-align: center;">o</td>
+<td style="text-align: left;">sóc</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">o</td>
+<td style="text-align: center;">ɔ</td>
+<td style="text-align: left;">soc</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">p</td>
+<td style="text-align: center;">p</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">rr</td>
+<td style="text-align: center;">r</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">r</td>
+<td style="text-align: center;">ʀ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">ɾ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">s</td>
+<td style="text-align: center;">s</td>
+<td style="text-align: left;">si</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">t</td>
+<td style="text-align: center;">t</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">tS</td>
+<td style="text-align: center;">tʃ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">x</td>
+<td style="text-align: center;">x</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">x</td>
+<td style="text-align: center;">ɣ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">z</td>
+<td style="text-align: center;">z</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">j</td>
+<td style="text-align: center;">j</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">w</td>
+<td style="text-align: center;">w</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">u</td>
+<td style="text-align: center;">u</td>
+<td style="text-align: left;">suc</td>
+</tr>
+</tbody>
+</table>
+<h2 id="english">English</h2>
+<h3 id="dictionary">Dictionary</h3>
+<p>The CMU Pronouncing Dictionary (also known as CMUdict) is a public domain pronouncing dictionary created by Carnegie Mellon University (CMU). It defines a mapping from English words to their North American pronunciations; it contains over 125,000 words and their transcriptions. See <a href="http://www.speech.cs.cmu.edu/cgi-bin/cmudict">http://www.speech.cs.cmu.edu/cgi-bin/cmudict</a> for details.</p>
+<p>The Carnegie Mellon Pronouncing Dictionary, in its current and previous versions is Copyright (C) 1993-2008 by Carnegie Mellon University.<br />Use of this dictionary for any research or commercial purpose is completely unrestricted. If you make use of or redistribute this material, the CMU requests that you acknowledge its origin in your descriptions.</p>
+<h3 id="acoustic-model-4">Acoustic Model</h3>
+<p>The acoustic model distributed in SPPAS resources were downloaded (in 2013) from the VoxForge project at <a href="http://www.voxforge.org/">http://www.voxforge.org/</a>. It was then converted to SAMPA by Brigitte Bigi.</p>
+<p>The English acoustic model is under the terms of the &quot;GNU Public License&quot;.</p>
+<p>Here is the phoneset used in the acoustic model:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">SPPAS</th>
+<th style="text-align: center;">- IPA -</th>
+<th style="text-align: left;">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: left;">buy cab</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">d</td>
+<td style="text-align: center;">d</td>
+<td style="text-align: left;">dye cad do</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">D</td>
+<td style="text-align: center;">ð</td>
+<td style="text-align: left;">thy breathe father</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">dZ</td>
+<td style="text-align: center;">dʒ</td>
+<td style="text-align: left;">giant badge jam</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">f</td>
+<td style="text-align: center;">f</td>
+<td style="text-align: left;">phi caff fan</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">g</td>
+<td style="text-align: center;">ɡ</td>
+<td style="text-align: left;">guy bag</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">h</td>
+<td style="text-align: center;">h</td>
+<td style="text-align: left;">high ahead</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">j</td>
+<td style="text-align: center;">j</td>
+<td style="text-align: left;">yes yacht</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">k</td>
+<td style="text-align: center;">k</td>
+<td style="text-align: left;">sky crack</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">l</td>
+<td style="text-align: center;">l</td>
+<td style="text-align: left;">lie sly gal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">m</td>
+<td style="text-align: center;">m</td>
+<td style="text-align: left;">my smile cam</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">n</td>
+<td style="text-align: center;">n</td>
+<td style="text-align: left;">nigh snide can</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">ŋ</td>
+<td style="text-align: left;">sang sink singer</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">T</td>
+<td style="text-align: center;">θ</td>
+<td style="text-align: left;">thigh math</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">p</td>
+<td style="text-align: center;">p</td>
+<td style="text-align: left;">pie spy cap</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">r</td>
+<td style="text-align: center;">r</td>
+<td style="text-align: left;">rye try very</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">s</td>
+<td style="text-align: center;">s</td>
+<td style="text-align: left;">sigh mass</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">S</td>
+<td style="text-align: center;">ʃ</td>
+<td style="text-align: left;">shy cash emotion</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">t</td>
+<td style="text-align: center;">t</td>
+<td style="text-align: left;">tie sty cat atom</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">tS</td>
+<td style="text-align: center;">tʃ</td>
+<td style="text-align: left;">China catch</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">v</td>
+<td style="text-align: center;">v</td>
+<td style="text-align: left;">vie have</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">w</td>
+<td style="text-align: center;">w</td>
+<td style="text-align: left;">wye swine</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">hw</td>
+<td style="text-align: center;">hw</td>
+<td style="text-align: left;">why</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">z</td>
+<td style="text-align: center;">z</td>
+<td style="text-align: left;">zoo has</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Z</td>
+<td style="text-align: center;">ʒ</td>
+<td style="text-align: left;">equation pleasure vision beige</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">x</td>
+<td style="text-align: center;">x</td>
+<td style="text-align: left;">ugh loch Chanukah</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">A</td>
+<td style="text-align: center;">ɑː</td>
+<td style="text-align: left;">PALM father bra</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">A</td>
+<td style="text-align: center;">ɒ</td>
+<td style="text-align: left;">LOT pod John</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">{</td>
+<td style="text-align: center;">æ</td>
+<td style="text-align: left;">TRAP pad shall ban</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">aI</td>
+<td style="text-align: center;">aɪ</td>
+<td style="text-align: left;">PRICE ride file fine pie</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">aU</td>
+<td style="text-align: center;">aʊ</td>
+<td style="text-align: left;">MOUTH loud foul down how</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">@</td>
+<td style="text-align: center;">ɛ</td>
+<td style="text-align: left;">DRESS bed fell men</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">eI</td>
+<td style="text-align: center;">eɪ</td>
+<td style="text-align: left;">FACE made fail vein pay</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">I</td>
+<td style="text-align: center;">ɪ</td>
+<td style="text-align: left;">KIT lid fill bin</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">O:</td>
+<td style="text-align: center;">ɔː</td>
+<td style="text-align: left;">THOUGHT Maud dawn fall straw</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">OI</td>
+<td style="text-align: center;">ɔɪ</td>
+<td style="text-align: left;">CHOICE void foil coin boy</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="citation" data-cites="U">@U</span></td>
+<td style="text-align: center;">oʊ</td>
+<td style="text-align: left;">GOAT code foal bone go</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">U</td>
+<td style="text-align: center;">ʊ</td>
+<td style="text-align: left;">FOOT good full woman</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">u:</td>
+<td style="text-align: center;">uː</td>
+<td style="text-align: left;">GOOSE food soon chew do</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">V</td>
+<td style="text-align: center;">ʌ</td>
+<td style="text-align: left;">STRUT mud dull gun</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">i</td>
+<td style="text-align: center;">i</td>
+<td style="text-align: left;">HAPPY serious</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">i:</td>
+<td style="text-align: center;">iː</td>
+<td style="text-align: left;">FLEECE seed feel mean sea</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3:r</td>
+<td style="text-align: center;">ɜ:r</td>
+<td style="text-align: left;">LINER foundered current</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">ɾ</td>
+<td style="text-align: left;">Adam atom coda</td>
+</tr>
+</tbody>
+</table>
+<h2 id="mandarin-chinese">Mandarin Chinese</h2>
+<p><em>(C) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
+<h3 id="pronunciation-dictionary-4">Pronunciation dictionary</h3>
+<p>The pronunciation dictionary was manually created for the syllables by Zhi Na.</p>
+<h3 id="acoustic-model-5">Acoustic model</h3>
+<p>The acoustic model was created by Brigitte Bigi from data recorded at Shanghai by Zhi Na, and another one by Hongwei Ding. We address special thanks to hers for giving us access to the corpus. These recordings are a Chinese version of the Eurom1 corpus. See the following publication for details:</p>
+<blockquote>
+<p><strong>Daniel Hirst, Brigitte Bigi, Hyongsil Cho, Hongwei Ding, Sophie Herment, Ting Wang</strong> (2013). <em>Building OMProDat: an open multilingual prosodic database</em>, Proceedings of Tools ans Resources for the Analysis of Speech Prosody, Aix-en-Provence, France, Eds B. Bigi and D. Hirst, ISBN: 978-2-7466-6443-2, pp. 11-14.</p>
+</blockquote>
+<p>Notice that the current model was trained from a very small amount of data: this will impact on the results: Do not expect to get good performances for the automatic alignment.</p>
+<p><strong>More Mandarin Chinese data are welcome!</strong></p>
+<p>Here is the phoneset used in the acoustic model:</p>
+<p>| SPPAS | - IPA - | Examples | |:-----:|:-------:|:-------------------| | @<code>|    |  |  |  N    | ŋ  |  |  |  S    | ʃ  |  |  |  a    | a  |  |  |  e    | e  |  |  |  f    | f  | 访  |  |  i    | i  | 一 诒  |  |  i_d  |    | 三次  |  |  i</code> | | 三河市 | | k | k | 诰 | | k_h | | | | l | l | 论 | | m | m | | | n | n | | | o | o | 讴 | | p | p | 诐 | | p_h | | | | s | s | 诉 | | S | | 讹 | | s<code>|    | 识 说  |  |  ss   |    | 许  |  |  t    | t  | 掉 诋 |  |  t_h  |    | 一统  一通 |  |  ts   | ts | 诅  |  | ts_h  |    | 䌽 吹  |  | ts_h</code> | | 串 吹 | | ts_hs | | 诎 㐤 | | ts<code>|    | 证 诊  |  |  tss  |    | 讵  讲 |   |  u    | u  | 诬     |  |  x    | x  | 诨 诲  |  |  y    | y  | 诩 语  |   |  z</code> | | |</p>
+<h2 id="southern-min-or-min-nan-resources">Southern Min (or Min Nan) resources</h2>
+<p><em>(C) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
+<p>We address special thanks to S-F Wang for giving us access to the corpus.</p>
+<blockquote>
+<p><strong>S-F Wang, J. Fon</strong> (2013). <em>A Taiwan Southern Min spontaneous speech corpus for discourse prosody</em>, Proceedings of Tools ans Resources for the Analysis of Speech Prosody, Aix-en-Provence, France, Eds B. Bigi and D. Hirst, ISBN: 978-2-7466-6443-2, pp. 20-23.</p>
+</blockquote>
+<h2 id="cantonese-resources">Cantonese resources</h2>
+<h3 id="dictionary-1">Dictionary</h3>
+<p>Here is the phoneset used in the dictionary:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">SPPAS</th>
+<th style="text-align: center;">- IPA -</th>
+<th style="text-align: left;">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">b</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">c</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">d</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">f</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">g</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">gw</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">h</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">j</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">k</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">kw</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">l</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">m</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">n</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ng</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">p</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">s</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">t</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">w</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">z</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">aa</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">aai</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">aak</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">aam</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">aan</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">aang</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">aap</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">aat</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">aau</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ai</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ak</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">am</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">an</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ang</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ap</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">at</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">au</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">e</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ei</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ek</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">eng</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">eoi</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">eon</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">eot</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">i</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ik</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">im</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">in</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ing</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ip</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">it</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">iu</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">m</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ng</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">o</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">oe</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">oek</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">oeng</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">oi</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ok</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">on</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ong</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ot</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ou</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">u</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ui</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">uk</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">un</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ung</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ut</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yu</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yun</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yut</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="acoustic-model-6">Acoustic Model</h3>
+<p><em>(C) DSP and Speech Technology Laboratory, Department of Electronic Engineering, the Chinese University of Hong Kong.</em></p>
+<p>This is a monophone Cantonese acoustic model, based on Jyutping of the Linguistic Society of Hong Kong (LSHK). Each state is trained with 32 Gaussian mixtures. The model is trained with HTK 3.4.1. The corpus for training is CUSENT, also developed in our laboratory.</p>
+<p>Generally speaking, you may use the model for non-commercial, academic or personal use.</p>
+<p>See COPYRIGHT for the details of the license: &quot;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License&quot;.</p>
+<p>We also have other well-trained Cantonese acoustic models. If you would like to use the models and/or the CUSENT corpus for commercial applications or development, please contact Professor Tan LEE for appropriate license terms.</p>
+<p>The character pronunciation comes from Jyutping phrase box from the Linguistic Society of Hong Kong.</p>
+<p>&quot;The copyright of the Jyutping phrase box belongs to the Linguistic Society of Hong Kong. We would like to thank the Jyutping Group of the Linguistic Society of Hong Kong for permission to use the electronic file in our research and/or product development.&quot;</p>
+<p>If you use the Cantonese acoustic model for academic research, please cite:</p>
+<blockquote>
+<p><strong>Tan Lee, W.K. Lo, P.C. Ching, Helen Meng</strong> (2002). <em>Spoken language resources for Cantonese speech processing</em>, Speech Communication, Volume 36, Issues 3–4, Pages 327-342</p>
+</blockquote>
+<ul>
+<li>Website: <a href="http://dsp.ee.cuhk.edu.hk">http://dsp.ee.cuhk.edu.hk</a></li>
+<li>Email: tanlee@ee.cuhk.edu.hk</li>
+</ul>
+<h2 id="polish-resources">Polish Resources</h2>
+<p>*(C) Brigitte Bigi</p>
+<h3 id="pronunciation-dictionary-5">Pronunciation Dictionary</h3>
+<p>The Polish dictionary is under the terms of the &quot;GNU Public License&quot;, v3.</p>
+<p>The Polish pronunciation dictionary was downloaded from the Ralf catalog of dictionaries for the Simon ASR system at <a href="http://spirit.blau.in/simon/import-pls-dictionary/">http://spirit.blau.in/simon/import-pls-dictionary/</a>. It was then converted (format and phoneset) and corrected by Brigitte Bigi, thanks to the help of Katarzyna Klessa.</p>
+<h3 id="acoustic-model-7">Acoustic Model</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">SPPAS</th>
+<th style="text-align: center;">- IPA -</th>
+<th style="text-align: left;">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">c</td>
+<td style="text-align: center;">c</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">x</td>
+<td style="text-align: center;">ç</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">d</td>
+<td style="text-align: center;">d</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">dz</td>
+<td style="text-align: center;">d͡z</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">dZ</td>
+<td style="text-align: center;">d͡ʒ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">E</td>
+<td style="text-align: center;">ɛ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">E~</td>
+<td style="text-align: center;">ɛ ̃</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">f</td>
+<td style="text-align: center;">f</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">g</td>
+<td style="text-align: center;">g</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">x</td>
+<td style="text-align: center;">h</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">i</td>
+<td style="text-align: center;">i</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">j</td>
+<td style="text-align: center;">j</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">n</td>
+<td style="text-align: center;">ɲ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">k</td>
+<td style="text-align: center;">k</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">l</td>
+<td style="text-align: center;">l</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">m</td>
+<td style="text-align: center;">m</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">n</td>
+<td style="text-align: center;">n</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">ŋ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">O</td>
+<td style="text-align: center;">ɔ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">O</td>
+<td style="text-align: center;">ɔː</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">o~</td>
+<td style="text-align: center;">ɔ ̃</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">p</td>
+<td style="text-align: center;">p</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Q</td>
+<td style="text-align: center;">Q</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">r</td>
+<td style="text-align: center;">r</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">r</td>
+<td style="text-align: center;">ʀ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">s</td>
+<td style="text-align: center;">s</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">s<code>|   ɕ     | |  |   S   |   ʃ     | |  |   t   |   t     | |  |   v   |   v     | |  |   w   |   w     | |  |   x   |   x     | |  |   y   |   y     | |  |   z   |   z     | |  |   ts  |   t͡s    | |  |   tS  |   t͡ʃ    | |  |   s</code></td>
+<td style="text-align: center;">ʂ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">u</td>
+<td style="text-align: center;">u</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">z`</td>
+<td style="text-align: center;">ʑ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Z</td>
+<td style="text-align: center;">ʒ</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<hr />
+    <footer>
+        <p style="text-align:right">
+        Brigitte Bigi &copy; 2011-2015
+        </p>
+    </footer>
+</body>
+</html>

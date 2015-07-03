@@ -1,0 +1,926 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0 
+xmax = 881.501 
+tiers? <exists> 
+size = 13 
+item []: 
+    item [1]:
+        class = "IntervalTier" 
+        name = "BER [main]" 
+        xmin = 0 
+        xmax = 881.501 
+        intervals: size = 53 
+        intervals [1]:
+            xmin = 0 
+            xmax = 402.679 
+            text = "" 
+        intervals [2]:
+            xmin = 402.679 
+            xmax = 408.66 
+            text = "… beaucoup de fort la / l’ [orej] de: *como* [s apel] de la ^mer" 
+        intervals [3]:
+            xmin = 408.66 
+            xmax = 409.819 
+            text = "" 
+        intervals [4]:
+            xmin = 409.819 
+            xmax = 411.798 
+            text = "[se] fort la *como* [s apel] \" 
+        intervals [5]:
+            xmin = 411.798 
+            xmax = 412.599 
+            text = "" 
+        intervals [6]:
+            xmin = 412.599 
+            xmax = 413.812 
+            text = "les vagues?" 
+        intervals [7]:
+            xmin = 413.812 
+            xmax = 417.85 
+            text = "" 
+        intervals [8]:
+            xmin = 417.85 
+            xmax = 419.857 
+            text = "= ^^oui:: ^^ah ouais =  +" 
+        intervals [9]:
+            xmin = 419.857 
+            xmax = 423.664 
+            text = "eh + [θe] hm + quand eh petit +" 
+        intervals [10]:
+            xmin = 423.664 
+            xmax = 425.46 
+            text = "la mer comme ^ça" 
+        intervals [11]:
+            xmin = 425.46 
+            xmax = 427.45 
+            text = "= mais = moi la ^mer +" 
+        intervals [12]:
+            xmin = 427.45 
+            xmax = 428.024 
+            text = "" 
+        intervals [13]:
+            xmin = 428.024 
+            xmax = 436.169 
+            text = "mais: + *como se llama* les [βaɣa] *como* [se di] ? ++ [me: ] ++ ah! +" 
+        intervals [14]:
+            xmin = 436.169 
+            xmax = 439.976 
+            text = "" 
+        intervals [15]:
+            xmin = 439.976 
+            xmax = 441.309 
+            text = "= X ?=  oui oui" 
+        intervals [16]:
+            xmin = 441.309 
+            xmax = 441.898 
+            text = "" 
+        intervals [17]:
+            xmin = 441.898 
+            xmax = 446.939 
+            text = "*y* moi *me afirmé de un* pied *de un* ^garçon" 
+        intervals [18]:
+            xmin = 446.939 
+            xmax = 450.369 
+            text = "" 
+        intervals [19]:
+            xmin = 450.369 
+            xmax = 453.188 
+            text = "*y él* ^[sorti s ] \" 
+        intervals [20]:
+            xmin = 453.188 
+            xmax = 456.26 
+            text = "" 
+        intervals [21]:
+            xmin = 456.26 
+            xmax = 458.711 
+            text = "et ^maman + &quot;[a parti] tout ^suite!&quot;" 
+        intervals [22]:
+            xmin = 458.711 
+            xmax = 460.7 
+            text = "" 
+        intervals [23]:
+            xmin = 460.7 
+            xmax = 466.579 
+            text = "^^oui^^   maman [ne pa de] la mer ^^jamais = jamais ^ = eh" 
+        intervals [24]:
+            xmin = 466.579 
+            xmax = 467.534 
+            text = "" 
+        intervals [25]:
+            xmin = 467.534 
+            xmax = 468.709 
+            text = "&quot;[sorti(r)] ^^tout suite ici ^^&quot; . . ." 
+        intervals [26]:
+            xmin = 468.709 
+            xmax = 470.408 
+            text = "" 
+        intervals [27]:
+            xmin = 470.408 
+            xmax = 473.307 
+            text = "sept [añ]" 
+        intervals [28]:
+            xmin = 473.307 
+            xmax = 476.298 
+            text = "" 
+        intervals [29]:
+            xmin = 476.298 
+            xmax = 479.505 
+            text = "^^ non ^^+ *qué horror* (rire)" 
+        intervals [30]:
+            xmin = 479.505 
+            xmax = 481.499 
+            text = "" 
+        intervals [31]:
+            xmin = 481.499 
+            xmax = 482.334 
+            text = "^^oui ^^" 
+        intervals [32]:
+            xmin = 482.334 
+            xmax = 483.497 
+            text = "" 
+        intervals [33]:
+            xmin = 483.497 
+            xmax = 493.173 
+            text = "avec + des sœurs des: / garçons des: / [kom se di] ++ des f/  [fre] ? +" 
+        intervals [34]:
+            xmin = 493.173 
+            xmax = 494.601 
+            text = "" 
+        intervals [35]:
+            xmin = 494.601 
+            xmax = 495.805 
+            text = "des [fre]? = [fre]? = des [fre]" 
+        intervals [36]:
+            xmin = 495.805 
+            xmax = 496.679 
+            text = "" 
+        intervals [37]:
+            xmin = 496.679 
+            xmax = 499.522 
+            text = "et les [do:] sœurs" 
+        intervals [38]:
+            xmin = 499.522 
+            xmax = 500.591 
+            text = "" 
+        intervals [39]:
+            xmin = 500.591 
+            xmax = 501.52 
+            text = "ouaiss" 
+        intervals [40]:
+            xmin = 501.52 
+            xmax = 503.917 
+            text = "" 
+        intervals [41]:
+            xmin = 503.917 
+            xmax = 506.997 
+            text = "*si*et moi à côté: +  [θue] = (x) la^[orij] =" 
+        intervals [42]:
+            xmin = 506.997 
+            xmax = 507.407 
+            text = "" 
+        intervals [43]:
+            xmin = 507.407 
+            xmax = 509.576 
+            text = "*y* après comme ^ça et::\" 
+        intervals [44]:
+            xmin = 509.576 
+            xmax = 513.233 
+            text = "" 
+        intervals [45]:
+            xmin = 513.233 
+            xmax = 515.065 
+            text = "(rire)" 
+        intervals [46]:
+            xmin = 515.065 
+            xmax = 816.354 
+            text = "" 
+        intervals [47]:
+            xmin = 816.354 
+            xmax = 821.471 
+            text = "oui + [ne pa] beaucoup{descendant} hein [paske θe] peur à la mer (rire)" 
+        intervals [48]:
+            xmin = 821.471 
+            xmax = 824.862 
+            text = "" 
+        intervals [49]:
+            xmin = 824.862 
+            xmax = 828.302 
+            text = "ah: [paske:  + kand θo: ete] petit" 
+        intervals [50]:
+            xmin = 828.302 
+            xmax = 831.928 
+            text = "[θe:] un acciden:t dans la mer{descendant}" 
+        intervals [51]:
+            xmin = 831.928 
+            xmax = 863.601 
+            text = "" 
+        intervals [52]:
+            xmin = 863.601 
+            xmax = 867.64 
+            text = "*y::* + [me a tumbe] = = *y* après [θe swe] dans l::/ dans la mer" 
+        intervals [53]:
+            xmin = 867.64 
+            xmax = 881.501 
+            text = "" 
+    item [2]:
+        class = "IntervalTier" 
+        name = "BER [%com]" 
+        xmin = 0 
+        xmax = 881.501 
+        intervals: size = 5 
+        intervals [1]:
+            xmin = 0 
+            xmax = 456.26 
+            text = "" 
+        intervals [2]:
+            xmin = 456.26 
+            xmax = 458.711 
+            text = "(= il m'a sorti (de là) et maman (a dit) : &quot;partons d'ici tout de suite&quot;)" 
+        intervals [3]:
+            xmin = 458.711 
+            xmax = 467.534 
+            text = "" 
+        intervals [4]:
+            xmin = 467.534 
+            xmax = 468.709 
+            text = "(= maman a dit &quot;je (n'aime pas / ne reviendrai pas à) la mer du  tout, partons d'ici tout de suite)" 
+        intervals [5]:
+            xmin = 468.709 
+            xmax = 881.501 
+            text = "" 
+    item [3]:
+        class = "IntervalTier" 
+        name = "OBS [main]" 
+        xmin = 0 
+        xmax = 881.501 
+        intervals: size = 41 
+        intervals [1]:
+            xmin = 0 
+            xmax = 408.66 
+            text = "" 
+        intervals [2]:
+            xmin = 408.66 
+            xmax = 409.819 
+            text = "oui" 
+        intervals [3]:
+            xmin = 409.819 
+            xmax = 411.798 
+            text = "" 
+        intervals [4]:
+            xmin = 411.798 
+            xmax = 412.599 
+            text = "\ ah les vagues" 
+        intervals [5]:
+            xmin = 412.599 
+            xmax = 413.812 
+            text = "" 
+        intervals [6]:
+            xmin = 413.812 
+            xmax = 417.85 
+            text = "les vagues + les vagues ++ elles sont très fortes hein et elles  entraînent +  = dans le fond = comme ça" 
+        intervals [7]:
+            xmin = 417.85 
+            xmax = 427.45 
+            text = "" 
+        intervals [8]:
+            xmin = 427.45 
+            xmax = 428.024 
+            text = "= oui =" 
+        intervals [9]:
+            xmin = 428.024 
+            xmax = 436.169 
+            text = "" 
+        intervals [10]:
+            xmin = 436.169 
+            xmax = 439.976 
+            text = "t'entraînait?= = la mer t'emportait?" 
+        intervals [11]:
+            xmin = 439.976 
+            xmax = 441.309 
+            text = "" 
+        intervals [12]:
+            xmin = 441.309 
+            xmax = 441.898 
+            text = "et alors?" 
+        intervals [13]:
+            xmin = 441.898 
+            xmax = 446.939 
+            text = "" 
+        intervals [14]:
+            xmin = 446.939 
+            xmax = 450.369 
+            text = "ah tu t’es accrochée? (rire)  oui oui tu as bien fait" 
+        intervals [15]:
+            xmin = 450.369 
+            xmax = 453.188 
+            text = "" 
+        intervals [16]:
+            xmin = 453.188 
+            xmax = 456.26 
+            text = "\ il t’a sortie sinon euh + tu étais emportée + oh là là" 
+        intervals [17]:
+            xmin = 456.26 
+            xmax = 458.711 
+            text = "" 
+        intervals [18]:
+            xmin = 458.711 
+            xmax = 460.7 
+            text = "oh là là là là + tu as eu peur hein" 
+        intervals [19]:
+            xmin = 460.7 
+            xmax = 466.579 
+            text = "" 
+        intervals [20]:
+            xmin = 466.579 
+            xmax = 467.534 
+            text = "= hho là là =" 
+        intervals [21]:
+            xmin = 467.534 
+            xmax = 468.709 
+            text = "" 
+        intervals [22]:
+            xmin = 468.709 
+            xmax = 470.408 
+            text = "ah là là + quel âge tu avais? tu étais petite petite" 
+        intervals [23]:
+            xmin = 470.408 
+            xmax = 473.307 
+            text = "" 
+        intervals [24]:
+            xmin = 473.307 
+            xmax = 476.298 
+            text = "^^oh petite ^^petite + et tu savais nager?" 
+        intervals [25]:
+            xmin = 476.298 
+            xmax = 479.505 
+            text = "" 
+        intervals [26]:
+            xmin = 479.505 
+            xmax = 481.499 
+            text = "quelle horreur!  + et ta mère l’a vu?" 
+        intervals [27]:
+            xmin = 481.499 
+            xmax = 482.334 
+            text = "" 
+        intervals [28]:
+            xmin = 482.334 
+            xmax = 483.497 
+            text = "oh là là là là" 
+        intervals [29]:
+            xmin = 483.497 
+            xmax = 493.173 
+            text = "" 
+        intervals [30]:
+            xmin = 493.173 
+            xmax = 494.601 
+            text = "hm?" 
+        intervals [31]:
+            xmin = 494.601 
+            xmax = 495.805 
+            text = "" 
+        intervals [32]:
+            xmin = 495.805 
+            xmax = 496.679 
+            text = "= des frères = + oui + des frères" 
+        intervals [33]:
+            xmin = 496.679 
+            xmax = 499.522 
+            text = "" 
+        intervals [34]:
+            xmin = 499.522 
+            xmax = 500.591 
+            text = "et les deux sœurs" 
+        intervals [35]:
+            xmin = 500.591 
+            xmax = 501.52 
+            text = "" 
+        intervals [36]:
+            xmin = 501.52 
+            xmax = 503.917 
+            text = "et tout le monde a vu?  (soupir)" 
+        intervals [37]:
+            xmin = 503.917 
+            xmax = 506.997 
+            text = "" 
+        intervals [38]:
+            xmin = 506.997 
+            xmax = 507.407 
+            text = "= hmhm =" 
+        intervals [39]:
+            xmin = 507.407 
+            xmax = 509.576 
+            text = "" 
+        intervals [40]:
+            xmin = 509.576 
+            xmax = 513.233 
+            text = "hho là là là là <shff> + quelle terreur! (rire)" 
+        intervals [41]:
+            xmin = 513.233 
+            xmax = 881.501 
+            text = "" 
+    item [4]:
+        class = "IntervalTier" 
+        name = "NNN [main]" 
+        xmin = 0 
+        xmax = 881.501 
+        intervals: size = 16 
+        intervals [1]:
+            xmin = 0 
+            xmax = 517.781 
+            text = "" 
+        intervals [2]:
+            xmin = 517.781 
+            xmax = 519.696 
+            text = "< et alors + ça s'est bien passé ces vacances? >" 
+        intervals [3]:
+            xmin = 519.696 
+            xmax = 539.839 
+            text = "" 
+        intervals [4]:
+            xmin = 539.839 
+            xmax = 542.789 
+            text = "< ouah! comment elle a fait ça? comment c'est arrivé? >" 
+        intervals [5]:
+            xmin = 542.789 
+            xmax = 807.52 
+            text = "" 
+        intervals [6]:
+            xmin = 807.52 
+            xmax = 816.354 
+            text = "et alors la mer vous vous baignez? ou /" 
+        intervals [7]:
+            xmin = 816.354 
+            xmax = 821.471 
+            text = "" 
+        intervals [8]:
+            xmin = 821.471 
+            xmax = 824.862 
+            text = "ah bon  + pourquoi?" 
+        intervals [9]:
+            xmin = 824.862 
+            xmax = 831.928 
+            text = "" 
+        intervals [10]:
+            xmin = 831.928 
+            xmax = 833.691 
+            text = "†hmm" 
+        intervals [11]:
+            xmin = 833.691 
+            xmax = 861.964 
+            text = "" 
+        intervals [12]:
+            xmin = 861.964 
+            xmax = 863.601 
+            text = "= hmhm =" 
+        intervals [13]:
+            xmin = 863.601 
+            xmax = 867.64 
+            text = "" 
+        intervals [14]:
+            xmin = 867.64 
+            xmax = 869.604 
+            text = "= hm =    (soupir)" 
+        intervals [15]:
+            xmin = 869.604 
+            xmax = 878.702 
+            text = "" 
+        intervals [16]:
+            xmin = 878.702 
+            xmax = 881.501 
+            text = "= (rire rentré) =   vous nagez pas quoi" 
+    item [5]:
+        class = "IntervalTier" 
+        name = "be [main]" 
+        xmin = 0 
+        xmax = 881.501 
+        intervals: size = 18 
+        intervals [1]:
+            xmin = 0 
+            xmax = 519.696 
+            text = "" 
+        intervals [2]:
+            xmin = 519.696 
+            xmax = 521.656 
+            text = "1 oui oui  [se] bien  [pase] la vacance" 
+        intervals [3]:
+            xmin = 521.656 
+            xmax = 525.484 
+            text = "2  [solamã] que …  [ne pa] de chance *por* G [ke] …" 
+        intervals [4]:
+            xmin = 525.484 
+            xmax = 539.839 
+            text = "3 la jambe [se kase] en deux fois" 
+        intervals [5]:
+            xmin = 539.839 
+            xmax = 542.789 
+            text = "" 
+        intervals [6]:
+            xmin = 542.789 
+            xmax = 543.631 
+            text = "4 *en* le ski" 
+        intervals [7]:
+            xmin = 543.631 
+            xmax = 547.372 
+            text = "5  elle [mõt] *en* la montagne" 
+        intervals [8]:
+            xmin = 547.372 
+            xmax = 551.045 
+            text = "6 *y* après *se desliza* seule  * y *" 
+        intervals [9]:
+            xmin = 551.045 
+            xmax = 555.528 
+            text = "7 *y* elle [tõb / tõbe] *y* …" 
+        intervals [10]:
+            xmin = 555.528 
+            xmax = 563.55 
+            text = "8 *y* après elle(s) [returno] *al* centre" 
+        intervals [11]:
+            xmin = 563.55 
+            xmax = 567.555 
+            text = "9 *una* personne [di]" 
+        intervals [12]:
+            xmin = 567.555 
+            xmax = 576.731 
+            text = "9.1 &quot;la / l'amie de nous [se tombe]&quot;" 
+        intervals [13]:
+            xmin = 576.731 
+            xmax = 578.685 
+            text = "9.2 &quot;*y* [kase] de la jambe&quot;" 
+        intervals [14]:
+            xmin = 578.685 
+            xmax = 582.877 
+            text = "10 *y* la personne [di] que" 
+        intervals [15]:
+            xmin = 582.877 
+            xmax = 587.16 
+            text = "10.1 &quot;elle [return] / elle [reste] *en el hospital* de par ici&quot;" 
+        intervals [16]:
+            xmin = 587.16 
+            xmax = 591.548 
+            text = "10.2 qu'elle [returna] *en* la nuit …" 
+        intervals [17]:
+            xmin = 591.548 
+            xmax = 599.517 
+            text = "11 *y* après elle [rœturn] *al centro*" 
+        intervals [18]:
+            xmin = 599.517 
+            xmax = 881.501 
+            text = "" 
+    item [6]:
+        class = "IntervalTier" 
+        name = "o [main]" 
+        xmin = 0 
+        xmax = 881.501 
+        intervals: size = 6 
+        intervals [1]:
+            xmin = 0 
+            xmax = 605.911 
+            text = "" 
+        intervals [2]:
+            xmin = 605.911 
+            xmax = 616.432 
+            text = "<le métro ça va à peu près .. par contre en banlieue  on se perd facilement (..) tout se ressemble>" 
+        intervals [3]:
+            xmin = 616.432 
+            xmax = 679.856 
+            text = "" 
+        intervals [4]:
+            xmin = 679.856 
+            xmax = 683.175 
+            text = "<vous saviez où aller quand vous êtes arrivée>" 
+        intervals [5]:
+            xmin = 683.175 
+            xmax = 683.375 
+            text = "<ah bon + pourquoi?>" 
+        intervals [6]:
+            xmin = 683.375 
+            xmax = 881.501 
+            text = "" 
+    item [7]:
+        class = "IntervalTier" 
+        name = "b [main]" 
+        xmin = 0 
+        xmax = 881.501 
+        intervals: size = 54 
+        intervals [1]:
+            xmin = 0 
+            xmax = 616.432 
+            text = "" 
+        intervals [2]:
+            xmin = 616.432 
+            xmax = 617.75 
+            text = "pasque ['θe θe swi perdy] ((rit))" 
+        intervals [3]:
+            xmin = 617.75 
+            xmax = 620.589 
+            text = "[θe 'prande] un autobus" 
+        intervals [4]:
+            xmin = 620.589 
+            xmax = 624.573 
+            text = "[ne pa] le autobus [ke θe] la habitude de ['pronde]" 
+        intervals [5]:
+            xmin = 624.573 
+            xmax = 627.058 
+            text = "pasque [θe swi trompe] *en* la *letra*" 
+        intervals [6]:
+            xmin = 627.058 
+            xmax = 629.749 
+            text = "[θe 'prande] l'autobus A" 
+        intervals [7]:
+            xmin = 629.749 
+            xmax = 632.146 
+            text = "*y* [θe me truve]  (x) le autobus B (..)" 
+        intervals [8]:
+            xmin = 632.146 
+            xmax = 641.088 
+            text = "le chauffeur [me di]" 
+        intervals [9]:
+            xmin = 641.088 
+            xmax = 642.856 
+            text = "&quot;madame [se] la fin [se] le [terminu]&quot; (..)" 
+        intervals [10]:
+            xmin = 642.856 
+            xmax = 648.512 
+            text = "&quot;oh là là - où [ale]?&quot;" 
+        intervals [11]:
+            xmin = 648.512 
+            xmax = 651.605 
+            text = "oh [θe ale] à G  [ne pa] à M (..)" 
+        intervals [12]:
+            xmin = 651.605 
+            xmax = 653.873 
+            text = "*él* [m esplike]" 
+        intervals [13]:
+            xmin = 653.873 
+            xmax = 669.712 
+            text = "&quot;[se] *al otro* côté [ke se 'pronde] l' *otro* autobus" 
+        intervals [14]:
+            xmin = 669.712 
+            xmax = 674.241 
+            text = "[no se pa] problème&quot;" 
+        intervals [15]:
+            xmin = 674.241 
+            xmax = 683.175 
+            text = "" 
+        intervals [16]:
+            xmin = 683.175 
+            xmax = 688.208 
+            text = "oui mais [se] très difficile pasque" 
+        intervals [17]:
+            xmin = 688.208 
+            xmax = 690.439 
+            text = "quand [θe swi arrive]" 
+        intervals [18]:
+            xmin = 690.439 
+            xmax = 694.284 
+            text = "[θe swi arrive] à F (..) dans un foyer de transit (..)" 
+        intervals [19]:
+            xmin = 694.284 
+            xmax = 704.386 
+            text = "*y* après la *familia* elle [a'bita] à M" 
+        intervals [20]:
+            xmin = 704.386 
+            xmax = 709.436 
+            text = "[se] un petit [po] loin (..)" 
+        intervals [21]:
+            xmin = 709.436 
+            xmax = 718.734 
+            text = "*y* [θe reste dus] semanes dans le foyer" 
+        intervals [22]:
+            xmin = 718.734 
+            xmax = 720.756 
+            text = "*y* [θe me di]" 
+        intervals [23]:
+            xmin = 720.756 
+            xmax = 721.962 
+            text = "(1) [se] pas possible [reste] tout la journée ici" 
+        intervals [24]:
+            xmin = 721.962 
+            xmax = 724.407 
+            text = "(2) [ilja de sortir] de ici sinon .." 
+        intervals [25]:
+            xmin = 724.407 
+            xmax = 728.222 
+            text = "après [θe komense] à sortir tout [sol]" 
+        intervals [26]:
+            xmin = 728.222 
+            xmax = 732.34 
+            text = "*y* jamais jamais [θe swi perdu] dans le métro (..)" 
+        intervals [27]:
+            xmin = 732.34 
+            xmax = 738.261 
+            text = "mais *cuando* la *primer* fois que [θe sorti]" 
+        intervals [28]:
+            xmin = 738.261 
+            xmax = 740.138 
+            text = "oh là là  beaucoup de peur (rire) .." 
+        intervals [29]:
+            xmin = 740.138 
+            xmax = 749.725 
+            text = "beaucoup de *mundo* beaucoup de gens - [se] différent (..)" 
+        intervals [30]:
+            xmin = 749.725 
+            xmax = 755.62 
+            text = ".. après ça (va aller) tout seul .." 
+        intervals [31]:
+            xmin = 755.62 
+            xmax = 756.113 
+            text = "[se] pas problème" 
+        intervals [32]:
+            xmin = 756.113 
+            xmax = 762.388 
+            text = "pasque sinon si [θe ne sorte] pas de dans le foyer" 
+        intervals [33]:
+            xmin = 762.388 
+            xmax = 766.896 
+            text = "[θe krwa ke] après [se] plus difficile *por* [sorti]" 
+        intervals [34]:
+            xmin = 766.896 
+            xmax = 770.842 
+            text = "pasque tous les personnes [ne pa sorti]" 
+        intervals [35]:
+            xmin = 770.842 
+            xmax = 777.371 
+            text = "pasque  [son / il son por] des [votjur] dans le métro .." 
+        intervals [36]:
+            xmin = 777.371 
+            xmax = 790.576 
+            text = "j'avais un ami comme ça i venait du /" 
+        intervals [37]:
+            xmin = 790.576 
+            xmax = 794.105 
+            text = "enfin c'était quelqu'un de sa famille qui venait du Maroc (..)" 
+        intervals [38]:
+            xmin = 794.105 
+            xmax = 798.098 
+            text = "il a pre/ il est allé prendre le métro .. le RER^" 
+        intervals [39]:
+            xmin = 798.098 
+            xmax = 799.691 
+            text = "il est arrivé sur le quai" 
+        intervals [40]:
+            xmin = 799.691 
+            xmax = 800.937 
+            text = "il a vu le métro arriver" 
+        intervals [41]:
+            xmin = 800.937 
+            xmax = 802.292 
+            text = "et il a eu tellement peur^" 
+        intervals [42]:
+            xmin = 802.292 
+            xmax = 802.489 
+            text = "il est rentré chez lui" 
+        intervals [43]:
+            xmin = 802.489 
+            xmax = 807.52 
+            text = "i n'est plus arrivé à ressortir {descendant} (rire)" 
+        intervals [44]:
+            xmin = 807.52 
+            xmax = 807.72 
+            text = "...[paske θe] peur à la mer" 
+        intervals [45]:
+            xmin = 807.72 
+            xmax = 807.92 
+            text = "ouais [paske  + kwand θo ete] petit" 
+        intervals [46]:
+            xmin = 807.92 
+            xmax = 808.12 
+            text = "[θe] un accident dans la mer  †hmm" 
+        intervals [47]:
+            xmin = 808.12 
+            xmax = 808.32 
+            text = "ouais [paske se] très fort la mer *en* au Chili" 
+        intervals [48]:
+            xmin = 808.32 
+            xmax = 808.52 
+            text = "*y yo* [θe] peur" 
+        intervals [49]:
+            xmin = 808.52 
+            xmax = 808.72 
+            text = "[paske] la mer [me a me a tumb ]/ …    *el* comment [se apel] la / *no sé cómo* [s apel el] /    *cuando* [ko'mensa] à [sortir] (= les vagues)" 
+        intervals [50]:
+            xmin = 808.72 
+            xmax = 808.92 
+            text = "*y* [me a tumbe]" 
+        intervals [51]:
+            xmin = 808.92 
+            xmax = 809.12 
+            text = "*y* après [θe swe] dans la mer" 
+        intervals [52]:
+            xmin = 809.12 
+            xmax = 809.32 
+            text = "*y por* ça [ke θe] peur à la mer" 
+        intervals [53]:
+            xmin = 809.32 
+            xmax = 809.52 
+            text = "et [solamã] à côté" 
+        intervals [54]:
+            xmin = 809.52 
+            xmax = 881.501 
+            text = "" 
+    item [8]:
+        class = "IntervalTier" 
+        name = "3 [main]" 
+        xmin = 0 
+        xmax = 881.501 
+        intervals: size = 3 
+        intervals [1]:
+            xmin = 0 
+            xmax = 833.691 
+            text = "" 
+        intervals [2]:
+            xmin = 833.691 
+            xmax = 837.944 
+            text = "ouais [paske + se: se] très très très fort la mer *en* le Chili ++" 
+        intervals [3]:
+            xmin = 837.944 
+            xmax = 881.501 
+            text = "" 
+    item [9]:
+        class = "IntervalTier" 
+        name = "4 [main]" 
+        xmin = 0 
+        xmax = 881.501 
+        intervals: size = 3 
+        intervals [1]:
+            xmin = 0 
+            xmax = 837.944 
+            text = "" 
+        intervals [2]:
+            xmin = 837.944 
+            xmax = 861.964 
+            text = "*y:  yo::* [θe] peur [paske] +  la mer: + [me a me a tumb ]/  *el* comment [se apel] la:: / ++  *no sé cómo* [se apel el:] hm / ++   *en* la mer [kand ko'men=sa:] à = [sortir] (= les vagues)" 
+        intervals [3]:
+            xmin = 861.964 
+            xmax = 881.501 
+            text = "" 
+    item [10]:
+        class = "IntervalTier" 
+        name = "8 [main]" 
+        xmin = 0 
+        xmax = 881.501 
+        intervals: size = 3 
+        intervals [1]:
+            xmin = 0 
+            xmax = 869.604 
+            text = "" 
+        intervals [2]:
+            xmin = 869.604 
+            xmax = 873.035 
+            text = "*y por* ça [ke θe θe ne / θe] peur à la mer {descendant}" 
+        intervals [3]:
+            xmin = 873.035 
+            xmax = 881.501 
+            text = "" 
+    item [11]:
+        class = "IntervalTier" 
+        name = "9 [main]" 
+        xmin = 0 
+        xmax = 881.501 
+        intervals: size = 3 
+        intervals [1]:
+            xmin = 0 
+            xmax = 873.035 
+            text = "" 
+        intervals [2]:
+            xmin = 873.035 
+            xmax = 878.702 
+            text = "et [solamã] + eh:: = à côté =" 
+        intervals [3]:
+            xmin = 878.702 
+            xmax = 881.501 
+            text = "" 
+    item [12]:
+        class = "IntervalTier" 
+        name = "[MAIN-CHAT-HEADERS]" 
+        xmin = 0 
+        xmax = 881.501 
+        intervals: size = 2 
+        intervals [1]:
+            xmin = 0 
+            xmax = 0.001 
+            text = "@UTF8>@Participants:BER Target, OBS Colette Observer>@Comment:BERTA 19 (+13)  Récit : Les vagues (1e version)  6m45s – 8m35s>@Media:tousrecitsBE_famono audio" 
+        intervals [2]:
+            xmin = 0.001 
+            xmax = 881.501 
+            text = "" 
+    item [13]:
+        class = "IntervalTier" 
+        name = "[aud]" 
+        xmin = 0 
+        xmax = 881.501 
+        intervals: size = 3 
+        intervals [1]:
+            xmin = 0 
+            xmax = 402.679 
+            text = "" 
+        intervals [2]:
+            xmin = 402.679 
+            xmax = 408.66 
+            text = "tousrecitsBE_famono.wav" 
+        intervals [3]:
+            xmin = 408.66 
+            xmax = 881.501 
+            text = "" 

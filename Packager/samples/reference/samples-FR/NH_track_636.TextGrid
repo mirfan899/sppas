@@ -1,0 +1,48 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0.0
+xmax = 6.28
+tiers? <exists>
+size = 4
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "transcription"
+        xmin = 0.0
+        xmax = 6.28
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 6.28
+            text = "elle divisait tout tu vois par exemple une série de casseroles en cuivre elle disait c'est pas tu pars avec la série de casseroles non on la divise tu vois on divisait tout en deux"
+    item [2]:
+        class = "IntervalTier"
+        name = "transcription"
+        xmin = 0.0
+        xmax = 6.28
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 6.28
+            text = "elle divisait tout tu vois par exemple une série de casseroles en cuivre elle disait c'est pas tu pars avec la série de casseroles non on la divise tu vois on divisait tout en deux"
+    item [3]:
+        class = "IntervalTier"
+        name = "transcription"
+        xmin = 0.0
+        xmax = 6.28
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 6.28
+            text = "elle divisait tout tu vois par exemple une série de casseroles en cuivre elle disait c'est pas tu pars avec la série de casseroles non on la divise tu vois on divisait tout en deux"
+    item [4]:
+        class = "IntervalTier"
+        name = "transcription"
+        xmin = 0.0
+        xmax = 6.28
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 6.28
+            text = "elle divisait tout tu vois par exemple une série de casseroles en cuivre elle disait c'est pas tu pars avec la série de casseroles non on la divise tu vois on divisait tout en deux"

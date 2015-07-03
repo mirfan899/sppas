@@ -1,0 +1,49 @@
+    <header>
+        <a href="index.html">
+            <img src="./etc/logos/sppas-logo.png" width="64" height="64" alt="Home" />
+        </a>
+        <span id='tagline'>
+          Automatic Annotation of Speech <br />
+          <font size=-1><a href="http://www.lpl-aix.fr/~bigi/">Brigitte Bigi</a> - Laboratoire Parole et Langage - Aix-en-Provence - France</font>
+        </span>
+    </header>
+
+    <table align="center"  cellpadding="15px;" cellspacing="20px;">
+    <tr>
+        <td >
+            <a href="installation.html">
+                <figure>
+                <img src="./etc/icons/install.png" width="64" height="64" />
+                <figcaption>Installation</figcaption>
+                </figure>
+            </a>
+        </td>
+
+        <td >
+            <a href="download.html">
+                <figure>
+                <img src="./etc/icons/download.png" width="64" height="64" />
+                <figcaption>Download</figcaption>
+                </figure>
+            </a>
+        </td>
+
+        <td >
+            <a href="documentation.html">
+                <figure>
+                <img src="./etc/icons/help.png" width="64" height="64" />
+                <figcaption>Documentation</figcaption>
+                </figure>
+            </a>
+        </td>
+
+        <td >
+            <a href="https://groups.google.com/forum/?fromgroups#!forum/sppas-users">
+                <figure>
+                <img src="./etc/icons/community.png" width="64" height="64" />
+                <figcaption>User's group</figcaption>
+                </figure>
+            </a>
+        </td>
+    </tr>
+    </table>

@@ -1,0 +1,18 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0.0
+xmax = 7.460500
+tiers? <exists>
+size = 1
+item []:
+        item [1]:
+        class = "IntervalTier"
+        name = "transcription"
+                xmin = 0.0
+                xmax = 7.460500
+                intervals: size = 1
+        intervals [0]:
+                xmin = 0.0000
+                xmax = 7.460500
+                text = "et euh donc donc du coup c'est toi c'est un peu toi qui a les premiers contacts avec le avec le gosse quoi + et puis là ils te demandent le prénom donc faut ce soit prêt là @ parce que putain"

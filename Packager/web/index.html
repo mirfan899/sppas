@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<html lang='en'>
+
+  <head>
+
+    <title>SPPAS</title>
+
+    <meta charset='utf-8' />
+    <meta name="keywords" content="SPPAS, spass, spas, research, speech, phonetization, alignment, syllabification, brigitte, bigi, parole, langage, lpl, corpus, julius, htk, segmentation, forced-alignment, resource, sldr, ortolang" />
+
+    <link href="./etc/styles/sppas.css" media="screen" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Jura">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Maven Pro">
+
+    <link rel="icon" href="./etc/icons/sppas.ico" />
+
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-38055333-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+
+    </head>
+
+    
+    <body id='index'>
+
+    <header>
+        <a href="index.html">
+            <img src="./etc/logos/sppas-logo.png" width="64" height="64" alt="Home" />
+        </a>
+        <span id='tagline'>
+          Automatic Annotation of Speech <br />
+          <font size=-1><a href="http://www.lpl-aix.fr/~bigi/">Brigitte Bigi</a> - Laboratoire Parole et Langage - Aix-en-Provence - France</font>
+        </span>
+    </header>
+
+    <p>
+        SPPAS is a free audio annotation tool that allows you to create,
+        visualize and search annotations for audio data.
+        This software is issued under the terms of the
+        <a href="http://www.gnu.org/licenses/gpl-3.0-standalone.html">
+        GNU Public License.
+        </a>
+        It is able to produce <i>automatically</i> speech segmentation
+        annotations from a recorded speech sound and its transcription.
+        Some special features are also offered for managing corpora of
+        annotated files.
+    </p>
+    
+    <p>
+        SPPAS's data files are XML-based, however SPPAS is compatible with
+        Praat, Elan, Transcriber, and many others.
+        SPPAS is written in Python and runs on Windows, Macintosh and Unix
+        platforms.
+    </p>
+
+    <p>
+        <b>By using SPPAS, you agree to cite one reference in your publications.</b>
+        See the <a href="documentation_07_references.html">references page</a>
+        for information on how to cite SPPAS, and for published related work.
+    </p>
+
+    <table align="center"  cellpadding="15px;" cellspacing="20px;">
+    <tr>
+        <td >
+            <a href="installation.html">
+                <figure>
+                <img src="./etc/icons/install.png" width="64" height="64" />
+                <figcaption>Installation</figcaption>
+                </figure>
+            </a>
+        </td>
+
+        <td >
+            <a href="download.html">
+                <figure>
+                <img src="./etc/icons/download.png" width="64" height="64" />
+                <figcaption>Download<br>Last Version: 1.7.0</figcaption>
+                </figure>
+            </a>
+        </td>
+
+        <td >
+            <a href="documentation.html">
+                <figure>
+                <img src="./etc/icons/help.png" width="64" height="64" />
+                <figcaption>Documentation</figcaption>
+                </figure>
+            </a>
+        </td>
+
+        <td >
+            <a href="https://groups.google.com/forum/?fromgroups#!forum/sppas-users">
+                <figure>
+                <img src="./etc/icons/community.png" width="64" height="64" />
+                <figcaption>User's group</figcaption>
+                </figure>
+            </a>
+        </td>
+    </tr>
+    </table>
+
+
+    <figure>
+        <img class="illustration" src="./etc/screenshots/sppas-1-6-7.png" width="500" />
+        <figcaption>Screenshot of the main frame on MacOS, with default icons theme</figcaption>
+    </figure>
+    <figure>
+        <img class="illustration" src="./etc/screenshots/sppas-1-6-6.png" width="500" />
+        <figcaption>Screenshot of the main frame on Windows, with CrystalClear icons theme</figcaption>
+    </figure>
+
+
+    <h2>Important information:</h2>
+
+    <p>
+        After installing SPPAS, open the "documentation" folder, then read the
+        document
+        <a href="./SPPAS-for-dummies.html">"SPPAS for dummies"</a>
+        and practice with the proposed set of samples!
+    </p>
+    <p>
+        To <b>update</b> your version, put the old one into the Trash,
+        then download and unpack the new one.
+    </p>
+
+    <h2>Questions, problems, solutions:</h2>
+
+    <ol>
+        <li>
+        Make sure you have closely follow the installation guide and documentation.
+        </li>
+        <li>
+        Many problems can be solved by updating your version.
+        </li>
+        <li>
+        Have a look on the
+        <a href="https://groups.google.com/forum/?fromgroups#!forum/sppas-users"> SPPAS User's group</a>.
+        </li>
+        <li>
+        If none of the above helps, you may send mail to the author. Indicate
+        your operating system and versions, send the log file, and send a
+        sample of the data on which a problem occurs.
+        </li>
+    </ol>
+
+
+    <h2>Restrictions:</h2>
+
+    <ul>
+        <li><i>wav</i>, <i>aiff</i> or <i>au</i>, <b>mono</b>, speech files only, <b>16 bits</b>;</li>
+        <li>Annotation files: <b>UTF-8 encoding</b> only;</li>
+        <li>File names without special characters (no spaces, no accents, etc); </li>
+        <li>Exactly the same file name for the sound and for the transcription (except the extension).</li>
+    </ul>
+
+
+    <h2>Supports:</h2>
+
+    <p>Project developped and maintained by Brigitte Bigi (Researcher at CNRS),
+    at Laboratoire Parole et Langage, Aix-en-Provence, France. </p>
+
+    <p>
+        SPPAS is partly carried out thanks to the support of the French state
+        program
+        <a href="http://www.ortolang.fr/index.php?page=accueil&lang=en">ORTOLANG</a>
+        (Ref. Nr. ANR-11-EQPX-0032) funded by the « Investissements d'Avenir »
+        French Government program, managed by the French National Research Agency (ANR).
+    </p>
+
+    <p align="center">
+        <img src="./etc/logos/Ortolang-logo.png" width="50"/>&nbsp;
+        <img src="./etc/logos/InvestissementAvenir-logo.png" width="50"/>&nbsp;
+        <img src="./etc/logos/ANR-logo.gif" width="50"/>
+    </p>
+
+    <p>
+        SPPAS is also partly carried out thanks to the support of the
+        following projects:
+    </p>
+    <ul>
+        <li><a href="http://cofee.hypotheses.org">CoFee - Conversational Feedback</a></li>
+        <li><a href="http://variamu.hypotheses.org">Variamu - Variations in Action: a MUltilingual approach</a></li>
+        <li><a href="http://www.lpl-aix.fr/~c3i/">Team C3i of LPL</a></li>
+    </ul>
+
+    <hr>
+
+    <footer>
+        <p style="text-align:right">
+        <a href="mailto:brigitte.bigi@gmail.com">Brigitte Bigi</a> &copy; 2011-2015
+        </p>
+    </footer>
+
+</body>
+
+</html>

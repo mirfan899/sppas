@@ -1,0 +1,98 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0.0
+xmax = 2.328813
+tiers? <exists>
+size = 4
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "transcription"
+        xmin = 0.0
+        xmax = 2.328813
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 2.328813
+            text = "une classe entière qui a bien vu comment ça s'est passé"
+    item [2]:
+        class = "TextTier"
+        name = "Momel"
+        xmin = 0.1538453443
+        xmax = 2.1587867047
+        points: size = 9
+        points [1]:
+            time = 0.1538453443
+            mark = "183"
+        points [2]:
+            time = 0.2446326069
+            mark = "531"
+        points [3]:
+            time = 0.5642374248
+            mark = "193"
+        points [4]:
+            time = 0.8819363606
+            mark = "230"
+        points [5]:
+            time = 1.1211077943
+            mark = "168"
+        points [6]:
+            time = 1.438526863
+            mark = "207"
+        points [7]:
+            time = 1.7411644476
+            mark = "158"
+        points [8]:
+            time = 1.9502711377
+            mark = "159"
+        points [9]:
+            time = 2.1587867047
+            mark = "285"
+    item [3]:
+        class = "TextTier"
+        name = "Intsint"
+        xmin = 0.1538453443
+        xmax = 2.1587867047
+        points: size = 9
+        points [1]:
+            time = 0.1538453443
+            mark = "M"
+        points [2]:
+            time = 0.2446326069
+            mark = "T"
+        points [3]:
+            time = 0.5642374248
+            mark = "L"
+        points [4]:
+            time = 0.8819363606
+            mark = "U"
+        points [5]:
+            time = 1.1211077943
+            mark = "L"
+        points [6]:
+            time = 1.438526863
+            mark = "U"
+        points [7]:
+            time = 1.7411644476
+            mark = "D"
+        points [8]:
+            time = 1.9502711377
+            mark = "S"
+        points [9]:
+            time = 2.1587867047
+            mark = "H"
+    item [4]:
+        class = "IntervalTier"
+        name = "Information"
+        xmin = 0.0
+        xmax = 2.328813
+        intervals: size = 2
+        intervals [1]:
+            xmin = 0.0
+            xmax = 1.1644065
+            text = "This annotation was produced by SPPAS 1.6.8 on 2015-04-22"
+        intervals [2]:
+            xmin = 1.1644065
+            xmax = 2.328813
+            text = "Copyright (C) 2011-2015 Brigitte Bigi"

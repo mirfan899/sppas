@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="author" content="Brigitte Bigi">
+  <title>SPPAS Documentation</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="etc/styles/sppas.css">
+      <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Jura">
+      <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Maven Pro">
+      <link rel="icon" href="../etc/icons/sppas.ico" />
+  
+      <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-38055333-1']);
+          _gaq.push(['_trackPageview']);
+  
+          (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+      </script>
+</head>
+<body>
+    <header>
+        <a href="index.html">
+            <img src="./etc/logos/sppas-logo.png" width="64" height="64" alt="Home" />
+        </a>
+        <span id='tagline'>
+          Automatic Annotation of Speech <br />
+          <font size=-1><a href="http://www.lpl-aix.fr/~bigi/">Brigitte Bigi</a> - Laboratoire Parole et Langage - Aix-en-Provence - France</font>
+        </span>
+    </header>
+
+    <table align="center"  cellpadding="15px;" cellspacing="20px;">
+    <tr>
+        <td >
+            <a href="installation.html">
+                <figure>
+                <img src="./etc/icons/install.png" width="64" height="64" />
+                <figcaption>Installation</figcaption>
+                </figure>
+            </a>
+        </td>
+
+        <td >
+            <a href="download.html">
+                <figure>
+                <img src="./etc/icons/download.png" width="64" height="64" />
+                <figcaption>Download</figcaption>
+                </figure>
+            </a>
+        </td>
+
+        <td >
+            <a href="documentation.html">
+                <figure>
+                <img src="./etc/icons/help.png" width="64" height="64" />
+                <figcaption>Documentation</figcaption>
+                </figure>
+            </a>
+        </td>
+
+        <td >
+            <a href="https://groups.google.com/forum/?fromgroups#!forum/sppas-users">
+                <figure>
+                <img src="./etc/icons/community.png" width="64" height="64" />
+                <figcaption>User's group</figcaption>
+                </figure>
+            </a>
+        </td>
+    </tr>
+    </table>
+<header>
+<h1 class="title">SPPAS Documentation</h1>
+<h2 class="author">Brigitte Bigi</h2>
+<h3 class="date">Version 1.7.0</h3>
+</header>
+<nav id="TOC">
+<ul>
+<li><a href="#command-line-user-interface---cli">Command-Line user Interface - CLI</a><ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#programs-to-perform-an-automatic-annotation">Programs to perform an automatic annotation</a><ul>
+<li><a href="#annotation.py">annotation.py</a></li>
+<li><a href="#wavsplit.py">wavsplit.py</a></li>
+<li><a href="#tokenize.py">tokenize.py</a></li>
+<li><a href="#phonetize.py">phonetize.py</a></li>
+<li><a href="#alignment.py">alignment.py</a></li>
+<li><a href="#syllabify.py">syllabify.py</a></li>
+<li><a href="#repetition.py">repetition.py</a></li>
+<li><a href="#momel-and-intsint">Momel and INTSINT</a></li>
+</ul></li>
+<li><a href="#programs-to-execute-a-gui">Programs to execute a GUI</a><ul>
+<li><a href="#sppasgui.py">sppasgui.py</a></li>
+<li><a href="#dataroamer.py">dataroamer.py</a></li>
+<li><a href="#wavplayer.py">wavplayer.py</a></li>
+<li><a href="#iputranscriber.py">iputranscriber.py</a></li>
+<li><a href="#dataeditor.py">dataeditor.py</a></li>
+<li><a href="#datafilter.py">datafilter.py</a></li>
+<li><a href="#stats.py">stats.py</a></li>
+</ul></li>
+<li><a href="#other-programs">Other Programs</a><ul>
+<li><a href="#merge-annotation-files">Merge annotation files</a></li>
+<li><a href="#convert-annotation-files">Convert annotation files</a></li>
+<li><a href="#get-information-about-a-tier-of-an-annotated-file.">Get information about a tier of an annotated file.</a></li>
+<li><a href="#extract.py">extract.py</a></li>
+<li><a href="#reformat.py">reformat.py</a></li>
+<li><a href="#equalize.py">equalize.py</a></li>
+<li><a href="#channelsmixer.py">channelsmixer.py</a></li>
+<li><a href="#channelsmixersimulator.py">channelsmixersimulator.py</a></li>
+<li><a href="#fragmentextracter.py">fragmentextracter.py</a></li>
+<li><a href="#audiotoaster">audiotoaster</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<hr />
+<h1 id="command-line-user-interface---cli">Command-Line user Interface - CLI</h1>
+<h2 id="overview">Overview</h2>
+<p>A command-line interface (CLI), also known as command-line user interface, is a means of interacting with a computer program where the user issues commands to the program in the form of successive lines of text (command lines). Command-line interfaces provide a more concise and powerful means to control the program than the GUI. Operating system command line interfaces are called a command-line interpreter, command processor or shell. It displays a prompt, accept a &quot;command line&quot; typed by the user terminated by the Enter key, then execute the specified command and provide textual display of results or error messages. When a shell is active a program is typically invoked by typing its name followed by command-line arguments (if any).</p>
+<p>Each capability implemented in SPPAS corresponds to a program that can be invoked by its name in a shell. Such programs are located in the <code>bin</code> sub-directory of the <code>sppas</code> directory included in the SPPAS package. It is usual for a program to be able to display a brief summary of its parameters. Each program included in SPPAS provides its usage by using the option <code>--help</code>, as for example:</p>
+<pre><code>bin&gt; annotation.py --help</code></pre>
+<p>There are 2 types of programs in the <code>sppas</code> then <code>bin</code> sub-directory:</p>
+<ol type="1">
+<li>programs to execute an automatic annotation;</li>
+<li>programs to execute a GUI (i.e. the SPPAS main frame or a component)</li>
+</ol>
+<p>All programs are written with the programming language Python. <strong>The version of Python must be 2.7.something.</strong> Nothing will work with Python &gt;= 3.0!</p>
+<h2 id="programs-to-perform-an-automatic-annotation">Programs to perform an automatic annotation</h2>
+<p>This chapter describes how to use the automatic annotations of SPPAS with a Command-Line Interface. It describes all available command and how to use it. However, for scripts that execute an automatic annotation, refer to the chapter &quot;Automatic Annotation&quot; to understand exactly each option!</p>
+<p>Generally, resources are given to the CLI with the argument &quot;-r&quot;, an input wav file is given with &quot;-w&quot; option, an input annotated file is given with &quot;-i&quot; and the output is specified with &quot;-o&quot;.</p>
+<h3 id="annotation.py">annotation.py</h3>
+<p>This program performs automatic annotations on a given file or on all files of a directory. It strictly corresponds to the button <code>Annotate</code> of the GUI. All annotations are pre-configured: no specific option can be used.</p>
+<pre><code>usage: annotation.py -w file|folder [options]</code></pre>
+<pre><code>optional arguments:
+   -h, --help      show this help message and exit
+   -w file|folder  Input wav file name, or folder
+   -l lang         Input language, using iso639-3 code
+   -e extension    Output extension. One of: xra, textgrid, eaf, csv.
+   --momel         Activate Momel and INTSINT
+   --ipu           Activate IPUs Segmentation
+   --tok           Activate Tokenization
+   --phon          Activate Phonetization
+   --align         Activate Alignment
+   --syll          Activate Syllabification
+   --rep           Activate Repetitions
+   --all           Activate ALL automatic annotations</code></pre>
+<p>Examples of use:</p>
+<pre><code>./sppas/bin/annotation.py ./samples/samples-eng
+                    -l eng
+                    --ipu --tok --phon --align</code></pre>
+<p>A progress bar is displayed for each annotation. At the end of the process, a message indicates the name of the procedure outcome report file, which is <code>./samples/samples-eng.log</code> in our example. This file can be opened with any text editor (as Notepad++, vim, TextEdit, ...).</p>
+<figure>
+<img src="./etc/screenshots/CLI-example.png" alt="CLI: annotation.py output example" /><figcaption>CLI: annotation.py output example</figcaption>
+</figure>
+<h3 id="wavsplit.py">wavsplit.py</h3>
+<p>This program performs the IPU-segmentation, i.e. silence/speech segmentation. When this program is used from an audio speech sound and eventually a transcription, it consists in aligning macro-units of a document with the corresponding sound.</p>
+<blockquote>
+<p>Notice that all time values are indicated in seconds.</p>
+</blockquote>
+<pre><code>usage: wavsplit.py -w file [options]</code></pre>
+<p>Generic options:</p>
+<pre><code>    -w file         audio input file name
+    -d delta shift  Add this time value to each start/end
+                    bounds of the IPUs (for -o option only)
+    -h, --help      show the help message and exit</code></pre>
+<p>Options that can be fixed for the Speech/Silence segmentation:</p>
+<pre><code>    -r float    Window size to estimate rms, in seconds
+                (default value is: 0.010)
+    -m value    Drop speech shorter than m seconds long
+                (default value is: 0.300)
+    -s value    Drop silences shorter than s seconds long
+                (default value is: 0.200)
+    -v value    Assume that a rms lower than v is a silence
+                (default value is: 0 which means to auto-adjust)</code></pre>
+<p>Options that can be fixed for the Speech/Silence segmentation with a given orthographic transcription. It must be choose one of -t or -n options:</p>
+<pre><code>    -t file     Input transcription file with txt or
+                textgrid extension (default: None)
+    -n value    Input transcription tier number
+                (in case of input as textgrid) (default: 0)
+    -N          Adjust the volume cap until it splits
+                into nb tracks (default: 0)</code></pre>
+<p>Output options:</p>
+<pre><code>    -o dir      Output directory name       (default: None)
+    -e ext      Output tracks extension     (default: txt)
+    -l file     File with units&#39; boundaries (default: None)
+    -p file     File with the segmentation  (default: None)</code></pre>
+<p>Examples of use to get each IPU in a wav file and its corresponding textgrid:</p>
+<pre><code>./sppas/bin/wavsplit.py -w ./samples/samples-eng/oriana1.WAV
+-d 0.02
+-t ./samples/samples-eng/oriana1.txt
+-p ./samples/samples-eng/oriana1.xra
+
+./sppas/bin/wavsplit.py -w ./samples/samples-eng/oriana1.WAV
+-t ./samples/samples-eng/oriana1.xra
+-o ./samples/samples-eng/oriana1
+-e textgrid</code></pre>
+<h3 id="tokenize.py">tokenize.py</h3>
+<p>This program performs Tokenization, i.e. text normalization on a given file.</p>
+<pre><code>usage: tokenize.py -r vocab [options]
+
+optional arguments:
+    -r vocab         Vocabulary file name
+    -i file          Input file name
+    -o file          Output file name
+    --delimiter char Use a delimiter character instead of a space for word delimiter.
+    -h, --help       Show the help message and exit</code></pre>
+<p>The following situations are possible:</p>
+<ol type="1">
+<li><p>no input is given: the input is stdin and the output is stdout (if an output file name is given, it is ignored). In case of enriched orthographic transcription, only the faked tokenization is printed.</p></li>
+<li><p>an input is given, but no output: the result of the tokenization is added to the input file.</p></li>
+<li><p>an input and an output are given: the output file is created (or erased if the file already exists) and the result of the tokenization is added to this file..</p></li>
+</ol>
+<p>Example of use, using stdin/stdout:</p>
+<pre><code>$ echo &quot;The te(xt) to normalize 123.&quot; |\
+  ./sppas/bin/tokenize.py
+  -r ./resources/vocab/eng.vocab
+$ the te to normalize one_hundred_twenty-three</code></pre>
+<p>In that case, the elision mentionned with the parentheses is removed and the number is converted to its written form. The character &quot;_&quot; is used for compound words (it replaces the whitespace).</p>
+<p>Example of use on a transcribed file:</p>
+<pre><code>$ ./sppas/bin/tokenize.py -r ./resources/vocab/eng.vocab
+  -i ./samples/samples-eng/oriana1.xra
+  -o ./samples/samples-eng/oriana1-token.xra</code></pre>
+<h3 id="phonetize.py">phonetize.py</h3>
+<p>This program performs Phonetization, i.e. grapheme to phoneme conversion on a given file.</p>
+<pre><code>usage: phonetize.py -r dict [options]
+
+optional arguments:
+    -r dict      Pronunciation dictionary file name
+    -i file      Input file name
+    -o file      Output file name
+    --nounk      Disable unknown word phonetization
+    -h, --help   Show the help message and exit</code></pre>
+<p>Examples of use: <sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub>~</sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub>~<sub><sub><sub><sub><sub>~</sub></sub></sub></sub></sub></sub>~ $ echo &quot;the te to normalize one_hundred_twenty-three&quot; |<br /> ./sppas/bin/phonetize.py -d ./resources/dict/eng.dict --unk $ D.@|D.V|D.i: t.i: t.u|t.i|t.@ n.O:.r.m.@.l.aI.z UNK <sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub>~</sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub>~<sub><sub><sub><sub><sub>~</sub></sub></sub></sub></sub></sub>~</p>
+<p>Example of use on a tokenized file: <sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub>~</sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub>~<sub><sub><sub><sub><sub>~</sub></sub></sub></sub></sub></sub>~ ./sppas/bin/phonetize.py -d ../resources/dict/eng.dict -i ../samples/samples-eng/oriana1-token.xra -o ../samples/samples-eng/oriana1-phon.xra <sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub>~</sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub>~<sub><sub><sub><sub><sub>~</sub></sub></sub></sub></sub></sub>~</p>
+<h3 id="alignment.py">alignment.py</h3>
+<p>This program performs automatic speech segmentation on a given file.</p>
+<pre><code>usage: alignment.py -w file -i file -r file -o file [options]
+
+optional arguments:
+    -w file     Input wav file name
+    -i file     Input file name with the phonetization
+    -I file     Input file name with the tokenization
+    -r file     Model directory
+    -o file     Output file name with alignments
+    -a name     Aligner name. One of: julius, hvite, basic (default: julius)
+    --extend    Extend last phoneme/token to the wav duration
+    -h, --help  Show the help message and exit</code></pre>
+<p>Typical usage:</p>
+<pre><code>./sppas/bin/alignment.py
+-r ./resources/models/models-eng
+-w ./samples/samples-eng/oriana1.WAV
+-i ./samples/samples-eng/oriana1-phon.xra
+-I ./samples/samples-eng/oriana1-token.xra
+-o ./samples/samples-eng/oriana1-palign.xra</code></pre>
+<h3 id="syllabify.py">syllabify.py</h3>
+<p>This program performs automatic syllabification on a given file.</p>
+<pre><code>usage: syllabify.py -r config [options]
+
+optional arguments:
+    -r config   Rules configuration file name
+    -i file     Input file name (time-aligned phonemes)
+    -o file     Output file name
+    -e file     Reference file name to syllabify between intervals
+    -t string   Reference tier name to syllabify between intervals
+    --nophn     Disable the output of the result that does not use the reference  tier
+    -h, --help   Show the help message and exit</code></pre>
+<h3 id="repetition.py">repetition.py</h3>
+<p>This program performs automatic detection of self-repetitions or other-repetitions if a second speaker is given.</p>
+<p>It can be language-dependent (better results) or language-independent.</p>
+<p>If an input is given, but no output: the result is appended to the input file.</p>
+<pre><code>usage: repetition.py -i file [options]
+
+optional arguments:
+  -h, --help  show this help message and exit
+  -i file     Input file name with time-aligned tokens of the self-speaker
+  -r folder   Directory with resources
+  -l lang     Language code in iso639-3
+  -I file     Input file name with time-aligned tokens of the echoing-speaker
+              (if ORs)
+  -o file     Output file name</code></pre>
+<h3 id="momel-and-intsint">Momel and INTSINT</h3>
+<pre><code>usage: momel-intsint.py [options] -i file
+
+optional arguments:
+  -i file            Input file name (extension: .hz or .PitchTier)
+  -o file            Output file name (default: stdout)
+  --win1 WIN1        Target window length (default: 30)
+  --lo LO            f0 threshold (default: 50)
+  --hi HI            f0 ceiling (default: 600)
+  --maxerr MAXERR    Maximum error (default: 1.04)
+  --win2 WIN2        Reduct window length (default: 20)
+  --mind MIND        Minimal distance (default: 5)
+  --minr MINR        Minimal frequency ratio (default: 0.05)
+  --non-elim-glitch
+  -h, --help         Show the help message and exit</code></pre>
+<h2 id="programs-to-execute-a-gui">Programs to execute a GUI</h2>
+<p>Each program opens a frame. The option <code>-i</code> allows to add a file in the frame; it can be added as many times as wanted.</p>
+<p>THIS DOCUMENTATION IS TO DO... Any help is welcome!!!</p>
+<h3 id="sppasgui.py">sppasgui.py</h3>
+<h3 id="dataroamer.py">dataroamer.py</h3>
+<h3 id="wavplayer.py">wavplayer.py</h3>
+<h3 id="iputranscriber.py">iputranscriber.py</h3>
+<h3 id="dataeditor.py">dataeditor.py</h3>
+<h3 id="datafilter.py">datafilter.py</h3>
+<h3 id="stats.py">stats.py</h3>
+<h2 id="other-programs">Other Programs</h2>
+<p>Some scripts are also available to be used with the Command-Line Interface. They are located in the <code>scripts</code> sub-directory.</p>
+<h3 id="merge-annotation-files">Merge annotation files</h3>
+<pre><code>usage: trsmerge.py -i file -o file [options]
+
+optional arguments:
+  -h, --help  show this help message and exit
+  -i file     Input annotated file name (as many as wanted)
+  -o file     Output annotated file name
+  --quiet     Disable the verbosity
+</code></pre>
+<h3 id="convert-annotation-files">Convert annotation files</h3>
+<pre><code>usage: trsconvert.py -i file -o file [options]
+
+optional arguments:
+  -h, --help  show this help message and exit
+  -i file     Input annotated file name
+  -o file     Output annotated file name
+  -t value    A tier number (use as many -t options as wanted). Positive or
+              negative value: 1=first tier, -1=last tier.
+  --quiet     Disable the verbosity</code></pre>
+<h3 id="get-information-about-a-tier-of-an-annotated-file.">Get information about a tier of an annotated file.</h3>
+<pre><code>usage: tierinfo.py -i file [options]
+
+optional arguments:
+  -h, --help  show this help message and exit
+  -i file     Input annotated file file name
+  -t value    Tier number (default: 1)</code></pre>
+<h3 id="extract.py">extract.py</h3>
+<p>This script extract the channel chosen from the input file and write it in an output file.</p>
+<pre><code>usage: extract.py -w inputfile -o outputfile -c channel</code></pre>
+<pre><code>optional arguments:
+   -h, --help      show this help message and exit</code></pre>
+<h3 id="reformat.py">reformat.py</h3>
+<p>This script extract the channel chosen from input file and write the result in an output file. It can be:</p>
+<ul>
+<li>change framerate (-r)</li>
+<li>change sample width (-s)</li>
+<li>multiply by a factor each frame (-m)</li>
+<li>bias each frame by a value (-b)</li>
+</ul>
+<p>or any combination of such options.</p>
+<pre><code>usage: reformat.py -w inputfile -o outputfile [options] </code></pre>
+<pre><code>optional arguments:
+    -h, --help      show this help message and exit
+    -c              Channel (default 1)
+    -r              Framerate
+    -s              Sample width
+    -m              Factor to multiply each frame
+    -b              Value to bias each frame</code></pre>
+<h3 id="equalize.py">equalize.py</h3>
+<p>This script equalize the number of frames of each mono channel input files and write the results in output files.</p>
+<pre><code>usage: equalize.py -w inputfile [inputfile]* </code></pre>
+<pre><code>optional arguments:
+   -h, --help      show this help message and exit</code></pre>
+<h3 id="channelsmixer.py">channelsmixer.py</h3>
+<p>This script mix all channels from mono input files and write the channel result in an output file.</p>
+<pre><code>usage: channelsmixer.py -w input_file [inputfile]* -o outputfile</code></pre>
+<pre><code>optional arguments:
+   -h, --help      show this help message and exit</code></pre>
+<h3 id="channelsmixersimulator.py">channelsmixersimulator.py</h3>
+<p>This script simulate a mix of all channels from input files and print the maximum value of the result.</p>
+<pre><code>usage: channelsmixer.py -w input_file [inputfile]*</code></pre>
+<pre><code>optional arguments:
+   -h, --help      show this help message and exit</code></pre>
+<h3 id="fragmentextracter.py">fragmentextracter.py</h3>
+<p>This script extract a fragment from an audio file.</p>
+<pre><code>usage: ./scripts/fragmentextracter.py -w inputfile -o outputfile [options]</code></pre>
+<pre><code>optional arguments:
+    -h, --help      show this help message and exit
+    -bs             The position (in seconds) when begins the mix
+    -bf             The position (in number of frames) when begins the mix
+    -es             The position (in seconds) when ends the mix
+    -ef             The position (in number of frames) when ends the mix</code></pre>
+<p>Example of use:</p>
+<pre><code>usage: ./scripts/fragmentextracter.py -w audiofile.wav -o fragment.wav -bs 2 -es 4</code></pre>
+<h3 id="audiotoaster">audiotoaster</h3>
+<p>This script performs a mix according to the settings given in parameter. A factor permits to attenuate the separation between the two output channels (the value is from 0 to 1).</p>
+<p>Settings file must have the requered format:</p>
+<ul>
+<li>a header: <strong>file speaker volume panoramic</strong></li>
+<li>a line by channel for example: <strong>TRACK0_0.wav HB 100 R100</strong></li>
+</ul>
+<p>The programm will look for each file by the filename found on each line. Audio files have to be in the same folder as the settings file.</p>
+<pre><code>usage: ./scripts/audiotoaster.py -s settingfile -o outputfile [options]</code></pre>
+<pre><code>optional arguments:
+    -h, --help      show this help message and exit
+    -l              Factor to attenuate the difference between the two output
+                    channels. (default value : 0)
+                    x = 0 will perform two channels as asked in the settings
+                    0 &lt; x &lt; 1 will attenuate the difference
+                    x = 1 will perform two identical channels
+    -b              The position (in seconds) when begins the mix
+    -e              The position (in seconds) when ends the mix
+    -v              Verbosity level: 0, 1 or 2 (default=1)</code></pre>
+<p>Example of use:</p>
+<pre><code>usage: ./scripts/audiotoaster.py -s ./samples/settings.txt -o mix.wav -l 0</code></pre>
+<hr />
+    <footer>
+        <p style="text-align:right">
+        Brigitte Bigi &copy; 2011-2015
+        </p>
+    </footer>
+</body>
+</html>

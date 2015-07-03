@@ -1,0 +1,52 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0.0
+xmax = 7.782
+tiers? <exists>
+size = 2
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "Sources"
+        xmin = 0.0
+        xmax = 7.782
+        intervals: size = 3
+        intervals [1]:
+            xmin = 0.0
+            xmax = 3.045
+            text = ""
+        intervals [2]:
+            xmin = 3.045
+            xmax = 3.695
+            text = "S1"
+        intervals [3]:
+            xmin = 3.695
+            xmax = 7.782
+            text = ""
+    item [2]:
+        class = "IntervalTier"
+        name = "Repetitions"
+        xmin = 0.0
+        xmax = 7.782
+        intervals: size = 5
+        intervals [1]:
+            xmin = 0.0
+            xmax = 5.615
+            text = ""
+        intervals [2]:
+            xmin = 5.615
+            xmax = 6.165
+            text = "R1"
+        intervals [3]:
+            xmin = 6.165
+            xmax = 7.115
+            text = ""
+        intervals [4]:
+            xmin = 7.115
+            xmax = 7.145
+            text = "R1"
+        intervals [5]:
+            xmin = 7.145
+            xmax = 7.782
+            text = ""

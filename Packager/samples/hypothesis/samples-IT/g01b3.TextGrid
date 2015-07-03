@@ -1,0 +1,112 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0.0
+xmax = 3.6666893424
+tiers? <exists>
+size = 4
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "IPU"
+        xmin = 0.0
+        xmax = 3.6666893424
+        intervals: size = 5
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.589931972789
+            text = "che bello"
+        intervals [2]:
+            xmin = 0.589931972789
+            xmax = 0.939160997732
+            text = "#"
+        intervals [3]:
+            xmin = 0.939160997732
+            xmax = 1.84403628118
+            text = "domani e domenica"
+        intervals [4]:
+            xmin = 1.84403628118
+            xmax = 2.38283446712
+            text = "#"
+        intervals [5]:
+            xmin = 2.38283446712
+            xmax = 3.6666893424
+            text = "dormiremo fino a mezzogiorno"
+    item [2]:
+        class = "IntervalTier"
+        name = "IPU"
+        xmin = 0.0
+        xmax = 3.6666893424
+        intervals: size = 5
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.589931972789
+            text = "che bello"
+        intervals [2]:
+            xmin = 0.589931972789
+            xmax = 0.939160997732
+            text = "#"
+        intervals [3]:
+            xmin = 0.939160997732
+            xmax = 1.84403628118
+            text = "domani e domenica"
+        intervals [4]:
+            xmin = 1.84403628118
+            xmax = 2.38283446712
+            text = "#"
+        intervals [5]:
+            xmin = 2.38283446712
+            xmax = 3.6666893424
+            text = "dormiremo fino a mezzogiorno"
+    item [3]:
+        class = "IntervalTier"
+        name = "IPU"
+        xmin = 0.0
+        xmax = 3.6666893424
+        intervals: size = 5
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.589931972789
+            text = "che bello"
+        intervals [2]:
+            xmin = 0.589931972789
+            xmax = 0.939160997732
+            text = "#"
+        intervals [3]:
+            xmin = 0.939160997732
+            xmax = 1.84403628118
+            text = "domani e domenica"
+        intervals [4]:
+            xmin = 1.84403628118
+            xmax = 2.38283446712
+            text = "#"
+        intervals [5]:
+            xmin = 2.38283446712
+            xmax = 3.6666893424
+            text = "dormiremo fino a mezzogiorno"
+    item [4]:
+        class = "IntervalTier"
+        name = "IPU"
+        xmin = 0.0
+        xmax = 3.6666893424
+        intervals: size = 5
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.589931972789
+            text = "che bello"
+        intervals [2]:
+            xmin = 0.589931972789
+            xmax = 0.939160997732
+            text = "#"
+        intervals [3]:
+            xmin = 0.939160997732
+            xmax = 1.84403628118
+            text = "domani e domenica"
+        intervals [4]:
+            xmin = 1.84403628118
+            xmax = 2.38283446712
+            text = "#"
+        intervals [5]:
+            xmin = 2.38283446712
+            xmax = 3.6666893424
+            text = "dormiremo fino a mezzogiorno"

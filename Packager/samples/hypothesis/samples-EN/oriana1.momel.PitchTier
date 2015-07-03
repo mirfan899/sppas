@@ -1,0 +1,114 @@
+File type = "ooTextFile"
+Object class = "PitchTier"
+
+xmin = 1.59046532408
+xmax = 14.6059772865
+points: size = 36
+points [1]:
+    number = 1.59046532408
+    value = 282
+points [2]:
+    number = 1.75677333789
+    value = 238
+points [3]:
+    number = 1.96624108193
+    value = 268
+points [4]:
+    number = 2.11115244902
+    value = 221
+points [5]:
+    number = 2.43530366531
+    value = 252
+points [6]:
+    number = 3.02256366347
+    value = 165
+points [7]:
+    number = 3.37991034877
+    value = 169
+points [8]:
+    number = 3.89118162603
+    value = 178
+points [9]:
+    number = 4.25486895112
+    value = 113
+points [10]:
+    number = 4.3290232123
+    value = 90
+points [11]:
+    number = 6.41550554306
+    value = 208
+points [12]:
+    number = 6.58577257201
+    value = 265
+points [13]:
+    number = 6.8157939749
+    value = 592
+points [14]:
+    number = 7.14862400746
+    value = 229
+points [15]:
+    number = 7.38988797815
+    value = 220
+points [16]:
+    number = 7.61656466275
+    value = 165
+points [17]:
+    number = 8.22891430533
+    value = 197
+points [18]:
+    number = 8.37845730583
+    value = 195
+points [19]:
+    number = 8.56101025188
+    value = 185
+points [20]:
+    number = 8.77060043569
+    value = 213
+points [21]:
+    number = 9.05608252225
+    value = 143
+points [22]:
+    number = 9.46538605627
+    value = 60
+points [23]:
+    number = 11.3629522524
+    value = 194
+points [24]:
+    number = 11.4415724885
+    value = 220
+points [25]:
+    number = 11.6737703323
+    value = 390
+points [26]:
+    number = 11.9778073985
+    value = 227
+points [27]:
+    number = 12.1400305942
+    value = 226
+points [28]:
+    number = 12.371968502
+    value = 168
+points [29]:
+    number = 12.7344176025
+    value = 165
+points [30]:
+    number = 12.9979791304
+    value = 152
+points [31]:
+    number = 13.2072695219
+    value = 198
+points [32]:
+    number = 13.4844687992
+    value = 205
+points [33]:
+    number = 13.7826364784
+    value = 227
+points [34]:
+    number = 14.1350682127
+    value = 188
+points [35]:
+    number = 14.4192737396
+    value = 162
+points [36]:
+    number = 14.6059772865
+    value = 195

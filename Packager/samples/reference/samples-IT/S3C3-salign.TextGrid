@@ -1,0 +1,122 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0.0
+xmax = 1.1751
+tiers? <exists>
+size = 3
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "Syllables"
+        xmin = 0.0
+        xmax = 1.1751
+        intervals: size = 8
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.155
+            text = "bo"
+        intervals [2]:
+            xmin = 0.155
+            xmax = 0.275
+            text = "ve"
+        intervals [3]:
+            xmin = 0.275
+            xmax = 0.405
+            text = "da"
+        intervals [4]:
+            xmin = 0.405
+            xmax = 0.565
+            text = "do"
+        intervals [5]:
+            xmin = 0.565
+            xmax = 0.645
+            text = "ma"
+        intervals [6]:
+            xmin = 0.645
+            xmax = 0.745
+            text = "ra"
+        intervals [7]:
+            xmin = 0.745
+            xmax = 0.965
+            text = "le"
+        intervals [8]:
+            xmin = 0.965
+            xmax = 1.1751
+            text = "go"
+    item [2]:
+        class = "IntervalTier"
+        name = "Classes"
+        xmin = 0.0
+        xmax = 1.1751
+        intervals: size = 8
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.155
+            text = "OV"
+        intervals [2]:
+            xmin = 0.155
+            xmax = 0.275
+            text = "FV"
+        intervals [3]:
+            xmin = 0.275
+            xmax = 0.405
+            text = "OV"
+        intervals [4]:
+            xmin = 0.405
+            xmax = 0.565
+            text = "OV"
+        intervals [5]:
+            xmin = 0.565
+            xmax = 0.645
+            text = "NV"
+        intervals [6]:
+            xmin = 0.645
+            xmax = 0.745
+            text = "LV"
+        intervals [7]:
+            xmin = 0.745
+            xmax = 0.965
+            text = "LV"
+        intervals [8]:
+            xmin = 0.965
+            xmax = 1.1751
+            text = "OV"
+    item [3]:
+        class = "IntervalTier"
+        name = "Structures"
+        xmin = 0.0
+        xmax = 1.1751
+        intervals: size = 8
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.155
+            text = "CV"
+        intervals [2]:
+            xmin = 0.155
+            xmax = 0.275
+            text = "CV"
+        intervals [3]:
+            xmin = 0.275
+            xmax = 0.405
+            text = "CV"
+        intervals [4]:
+            xmin = 0.405
+            xmax = 0.565
+            text = "CV"
+        intervals [5]:
+            xmin = 0.565
+            xmax = 0.645
+            text = "CV"
+        intervals [6]:
+            xmin = 0.645
+            xmax = 0.745
+            text = "CV"
+        intervals [7]:
+            xmin = 0.745
+            xmax = 0.965
+            text = "CV"
+        intervals [8]:
+            xmin = 0.965
+            xmax = 1.1751
+            text = "CV"

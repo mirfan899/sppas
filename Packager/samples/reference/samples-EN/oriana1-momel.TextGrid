@@ -1,0 +1,236 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0.0
+xmax = 14.6059772865
+tiers? <exists>
+size = 2
+item []:
+    item [1]:
+        class = "TextTier"
+        name = "Momel"
+        xmin = 1.59046532408
+        xmax = 14.6059772865
+        points: size = 36
+        points [1]:
+            time = 1.59046532408
+            mark = "282"
+        points [2]:
+            time = 1.75677333789
+            mark = "238"
+        points [3]:
+            time = 1.96624108193
+            mark = "268"
+        points [4]:
+            time = 2.11115244902
+            mark = "221"
+        points [5]:
+            time = 2.43530366531
+            mark = "252"
+        points [6]:
+            time = 3.02256366347
+            mark = "165"
+        points [7]:
+            time = 3.37991034877
+            mark = "169"
+        points [8]:
+            time = 3.89118162603
+            mark = "178"
+        points [9]:
+            time = 4.25486895112
+            mark = "113"
+        points [10]:
+            time = 4.3290232123
+            mark = "90"
+        points [11]:
+            time = 6.41550554306
+            mark = "208"
+        points [12]:
+            time = 6.58577257201
+            mark = "265"
+        points [13]:
+            time = 6.8157939749
+            mark = "592"
+        points [14]:
+            time = 7.14862400746
+            mark = "229"
+        points [15]:
+            time = 7.38988797815
+            mark = "220"
+        points [16]:
+            time = 7.61656466275
+            mark = "165"
+        points [17]:
+            time = 8.22891430533
+            mark = "197"
+        points [18]:
+            time = 8.37845730583
+            mark = "195"
+        points [19]:
+            time = 8.56101025188
+            mark = "185"
+        points [20]:
+            time = 8.77060043569
+            mark = "213"
+        points [21]:
+            time = 9.05608252225
+            mark = "143"
+        points [22]:
+            time = 9.46538605627
+            mark = "60"
+        points [23]:
+            time = 11.3629522524
+            mark = "194"
+        points [24]:
+            time = 11.4415724885
+            mark = "220"
+        points [25]:
+            time = 11.6737703323
+            mark = "390"
+        points [26]:
+            time = 11.9778073985
+            mark = "227"
+        points [27]:
+            time = 12.1400305942
+            mark = "226"
+        points [28]:
+            time = 12.371968502
+            mark = "168"
+        points [29]:
+            time = 12.7344176025
+            mark = "165"
+        points [30]:
+            time = 12.9979791304
+            mark = "152"
+        points [31]:
+            time = 13.2072695219
+            mark = "198"
+        points [32]:
+            time = 13.4844687992
+            mark = "205"
+        points [33]:
+            time = 13.7826364784
+            mark = "227"
+        points [34]:
+            time = 14.1350682127
+            mark = "188"
+        points [35]:
+            time = 14.4192737396
+            mark = "162"
+        points [36]:
+            time = 14.6059772865
+            mark = "195"
+    item [2]:
+        class = "TextTier"
+        name = "Intsint"
+        xmin = 1.59046532408
+        xmax = 14.6059772865
+        points: size = 36
+        points [1]:
+            time = 1.59046532408
+            mark = "M"
+        points [2]:
+            time = 1.75677333789
+            mark = "U"
+        points [3]:
+            time = 1.96624108193
+            mark = "U"
+        points [4]:
+            time = 2.11115244902
+            mark = "D"
+        points [5]:
+            time = 2.43530366531
+            mark = "U"
+        points [6]:
+            time = 3.02256366347
+            mark = "M"
+        points [7]:
+            time = 3.37991034877
+            mark = "D"
+        points [8]:
+            time = 3.89118162603
+            mark = "M"
+        points [9]:
+            time = 4.25486895112
+            mark = "L"
+        points [10]:
+            time = 4.3290232123
+            mark = "B"
+        points [11]:
+            time = 6.41550554306
+            mark = "M"
+        points [12]:
+            time = 6.58577257201
+            mark = "U"
+        points [13]:
+            time = 6.8157939749
+            mark = "T"
+        points [14]:
+            time = 7.14862400746
+            mark = "L"
+        points [15]:
+            time = 7.38988797815
+            mark = "S"
+        points [16]:
+            time = 7.61656466275
+            mark = "D"
+        points [17]:
+            time = 8.22891430533
+            mark = "M"
+        points [18]:
+            time = 8.37845730583
+            mark = "S"
+        points [19]:
+            time = 8.56101025188
+            mark = "S"
+        points [20]:
+            time = 8.77060043569
+            mark = "S"
+        points [21]:
+            time = 9.05608252225
+            mark = "L"
+        points [22]:
+            time = 9.46538605627
+            mark = "B"
+        points [23]:
+            time = 11.3629522524
+            mark = "M"
+        points [24]:
+            time = 11.4415724885
+            mark = "S"
+        points [25]:
+            time = 11.6737703323
+            mark = "T"
+        points [26]:
+            time = 11.9778073985
+            mark = "L"
+        points [27]:
+            time = 12.1400305942
+            mark = "U"
+        points [28]:
+            time = 12.371968502
+            mark = "D"
+        points [29]:
+            time = 12.7344176025
+            mark = "D"
+        points [30]:
+            time = 12.9979791304
+            mark = "S"
+        points [31]:
+            time = 13.2072695219
+            mark = "U"
+        points [32]:
+            time = 13.4844687992
+            mark = "S"
+        points [33]:
+            time = 13.7826364784
+            mark = "U"
+        points [34]:
+            time = 14.1350682127
+            mark = "D"
+        points [35]:
+            time = 14.4192737396
+            mark = "D"
+        points [36]:
+            time = 14.6059772865
+            mark = "U"

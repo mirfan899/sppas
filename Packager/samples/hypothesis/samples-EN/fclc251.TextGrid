@@ -1,0 +1,80 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0.0
+xmax = 3.497125
+tiers? <exists>
+size = 4
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "IPU"
+        xmin = 0.0
+        xmax = 3.497125
+        intervals: size = 3
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.865
+            text = "#"
+        intervals [2]:
+            xmin = 0.865
+            xmax = 1.79
+            text = "Are you angry at me?"
+        intervals [3]:
+            xmin = 1.79
+            xmax = 3.497125
+            text = "#"
+    item [2]:
+        class = "IntervalTier"
+        name = "IPU"
+        xmin = 0.0
+        xmax = 3.497125
+        intervals: size = 3
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.865
+            text = "#"
+        intervals [2]:
+            xmin = 0.865
+            xmax = 1.79
+            text = "Are you angry at me?"
+        intervals [3]:
+            xmin = 1.79
+            xmax = 3.497125
+            text = "#"
+    item [3]:
+        class = "IntervalTier"
+        name = "IPU"
+        xmin = 0.0
+        xmax = 3.497125
+        intervals: size = 3
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.865
+            text = "#"
+        intervals [2]:
+            xmin = 0.865
+            xmax = 1.79
+            text = "Are you angry at me?"
+        intervals [3]:
+            xmin = 1.79
+            xmax = 3.497125
+            text = "#"
+    item [4]:
+        class = "IntervalTier"
+        name = "IPU"
+        xmin = 0.0
+        xmax = 3.497125
+        intervals: size = 3
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.865
+            text = "#"
+        intervals [2]:
+            xmin = 0.865
+            xmax = 1.79
+            text = "Are you angry at me?"
+        intervals [3]:
+            xmin = 1.79
+            xmax = 3.497125
+            text = "#"

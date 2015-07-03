@@ -1,0 +1,150 @@
+# ---------------------------------------------------------------------------
+#
+# This is the description file syllConfig.txt, made by Brigitte Bigi.
+# It defines the phonemes, their classes, and rules to find automatically 
+# syllable boundaries by the Syllabeur-v2.2 java program.
+#
+# If you want to change this file, please read documentation before!
+# ---------------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------------
+# Here is the list of phonemes and their class. 
+# ---------------------------------------------------------------------------
+# It is important to note that:
+# 	- a vowel must be mentioned with the class-symbol "V"
+#	- a pause must be mentioned with the class-symbol "#"
+#	- if a phoneme contains the character '=', it will be removed!
+#	- the letter "X" means "a non-vowel" phoneme and so, it cannot be 
+#         used as a single class-symbol.
+# So... the couples phoneme/class are made as 3 columns:
+# 	- first  column is the key-word "PHONCLASS",
+#	- second column is the phoneme symbol,
+#	- third  column is the class symbol.
+# 
+# the pause (or equivalents)
+PHONCLASS # #
+PHONCLASS ## #
+PHONCLASS + #
+PHONCLASS * #
+PHONCLASS @@ #
+PHONCLASS sp #
+PHONCLASS gb #
+PHONCLASS sil #
+PHONCLASS dummy #
+PHONCLASS fp #
+
+# list of vowels
+PHONCLASS i V
+PHONCLASS e V
+PHONCLASS E V
+PHONCLASS a V
+PHONCLASS A V
+PHONCLASS O V
+PHONCLASS o V
+PHONCLASS u V
+PHONCLASS y V
+PHONCLASS 2 V
+PHONCLASS 9 V
+PHONCLASS @ V
+PHONCLASS e~ V
+PHONCLASS E~ V
+PHONCLASS a~ V
+PHONCLASS o~ V
+PHONCLASS 9~ V
+PHONCLASS U~ V
+PHONCLASS EU V
+PHONCLASS eu V
+PHONCLASS oe V
+# list of glides, use G symbol
+PHONCLASS j G
+PHONCLASS H G
+PHONCLASS w G
+# list of liquids, use L symbol
+PHONCLASS l L
+PHONCLASS R L
+PHONCLASS r L
+# list of occlusives, use O symbol
+PHONCLASS p O
+PHONCLASS t O
+PHONCLASS k O
+PHONCLASS b O
+PHONCLASS d O
+PHONCLASS g O
+# list of nasals, use N symbol
+PHONCLASS n N
+PHONCLASS m N
+PHONCLASS N N
+PHONCLASS J N
+# list of fricatives, use F symbol
+PHONCLASS s F
+PHONCLASS S F
+PHONCLASS z F
+PHONCLASS Z F
+PHONCLASS v F
+PHONCLASS f F
+# unknown phoneme (do not remove this entry)
+PHONCLASS UNK #
+# ---------------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------------
+# Here is the list of rules
+# ---------------------------------------------------------------------------
+#
+# The rules are made as:
+# 	- first  column is a rule-type,
+#	- second column is the classes between two vowels,
+#	- third  column is the boundary location.
+# First column can be: GENRULE, EXCRULE, OTHRULE.
+# In the third column, 0 means the boundary is after the first vowel, 
+# 1 means the boundary is one phoneme after the first vowel, etc.
+#
+# General rules contains only X between vowels 
+# class symbols are forbidden
+# -------------
+GENRULE VV 0
+GENRULE VXV 0 
+GENRULE VXXV 1
+GENRULE VXXXV 1
+GENRULE VXXXXV 1
+GENRULE VXXXXXV 2
+GENRULE VXXXXXXV 3
+#
+# Exceptions rules contains only class symbols 
+# the use of X is forbidden
+# ----------------
+# rule: VCGV -> V.CGV
+EXCRULE VLGV 0
+EXCRULE VOGV 0
+EXCRULE VNGV 0
+EXCRULE VFGV 0
+EXCRULE VGGV 0
+
+EXCRULE VOLV 0
+EXCRULE VFLV 0
+
+EXCRULE VOLGV 0
+EXCRULE VFLGV 0
+EXCRULE VOLOV 2
+#
+# Specific rules are used to define which phoneme sequences must not be cut.
+# Specific rules contains only phonemes or the symbol "ANY" which means 
+# "any phoneme". Classes are forbidden. It is made with 6 columns: first one is
+# the key-word "OTHRULE", 4 following column are a phoneme sequence where the 
+# boundary of general or exception rule will cut at the third one, last column
+# is the shift to apply to the boundary.
+# For example, the line "OTHRULE ANY ANY p t 0" means that the boundary will
+# be applied between the 'p' and 't' phoneme. Replacing 0 by -1 means the
+# boundary will be between 'ANY' and 'p'. 
+# "petit", "peut-être"
+OTHRULE ANY ANY p t ANY -1
+# "faisai[en]t"
+OTHRULE ANY ANY f s e -1
+# "parce que", "puisque", "pense que"
+OTHRULE ANY p s k ANY -2 
+OTHRULE p ANY s k ANY 0
+# "d[i]sonst"
+OTHRULE ANY ANY d z o~ -1
+# ---------------------------------------------------------------------------
+

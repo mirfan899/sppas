@@ -1,0 +1,486 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0.0
+xmax = 10.0
+tiers? <exists>
+size = 3
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "PhonAlign"
+        xmin = 0.0
+        xmax = 10.0
+        intervals: size = 69
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.065
+            text = "a"
+        intervals [2]:
+            xmin = 0.065
+            xmax = 0.165
+            text = "s"
+        intervals [3]:
+            xmin = 0.165
+            xmax = 0.245
+            text = "t"
+        intervals [4]:
+            xmin = 0.245
+            xmax = 0.315
+            text = "r"
+        intervals [5]:
+            xmin = 0.315
+            xmax = 0.415
+            text = "i"
+        intervals [6]:
+            xmin = 0.415
+            xmax = 0.615
+            text = "S"
+        intervals [7]:
+            xmin = 0.615
+            xmax = 0.795
+            text = "a"
+        intervals [8]:
+            xmin = 0.795
+            xmax = 1.1
+            text = "#"
+        intervals [9]:
+            xmin = 1.1
+            xmax = 1.155
+            text = "l"
+        intervals [10]:
+            xmin = 1.155
+            xmax = 1.215
+            text = "a"
+        intervals [11]:
+            xmin = 1.215
+            xmax = 1.305
+            text = "s"
+        intervals [12]:
+            xmin = 1.305
+            xmax = 1.405
+            text = "t"
+        intervals [13]:
+            xmin = 1.405
+            xmax = 1.475
+            text = "r"
+        intervals [14]:
+            xmin = 1.475
+            xmax = 1.575
+            text = "i"
+        intervals [15]:
+            xmin = 1.575
+            xmax = 1.775
+            text = "S"
+        intervals [16]:
+            xmin = 1.775
+            xmax = 1.97
+            text = "a"
+        intervals [17]:
+            xmin = 1.97
+            xmax = 2.28
+            text = "#"
+        intervals [18]:
+            xmin = 2.28
+            xmax = 2.315
+            text = "l"
+        intervals [19]:
+            xmin = 2.315
+            xmax = 2.375
+            text = "a"
+        intervals [20]:
+            xmin = 2.375
+            xmax = 2.495
+            text = "s"
+        intervals [21]:
+            xmin = 2.495
+            xmax = 2.585
+            text = "t"
+        intervals [22]:
+            xmin = 2.585
+            xmax = 2.655
+            text = "r"
+        intervals [23]:
+            xmin = 2.655
+            xmax = 2.755
+            text = "i"
+        intervals [24]:
+            xmin = 2.755
+            xmax = 2.955
+            text = "S"
+        intervals [25]:
+            xmin = 2.955
+            xmax = 3.135
+            text = "a"
+        intervals [26]:
+            xmin = 3.135
+            xmax = 3.555
+            text = "#"
+        intervals [27]:
+            xmin = 3.555
+            xmax = 3.6
+            text = "l"
+        intervals [28]:
+            xmin = 3.6
+            xmax = 3.66
+            text = "a"
+        intervals [29]:
+            xmin = 3.66
+            xmax = 3.79
+            text = "s"
+        intervals [30]:
+            xmin = 3.79
+            xmax = 3.87
+            text = "t"
+        intervals [31]:
+            xmin = 3.87
+            xmax = 3.93
+            text = "r"
+        intervals [32]:
+            xmin = 3.93
+            xmax = 4.05
+            text = "i"
+        intervals [33]:
+            xmin = 4.05
+            xmax = 4.24
+            text = "S"
+        intervals [34]:
+            xmin = 4.24
+            xmax = 4.425
+            text = "a"
+        intervals [35]:
+            xmin = 4.425
+            xmax = 4.89
+            text = "#"
+        intervals [36]:
+            xmin = 4.89
+            xmax = 4.995
+            text = "a"
+        intervals [37]:
+            xmin = 4.995
+            xmax = 5.045
+            text = "s"
+        intervals [38]:
+            xmin = 5.045
+            xmax = 5.215
+            text = "t"
+        intervals [39]:
+            xmin = 5.215
+            xmax = 5.265
+            text = "r"
+        intervals [40]:
+            xmin = 5.265
+            xmax = 5.385
+            text = "i"
+        intervals [41]:
+            xmin = 5.385
+            xmax = 5.575
+            text = "S"
+        intervals [42]:
+            xmin = 5.575
+            xmax = 5.77
+            text = "a"
+        intervals [43]:
+            xmin = 5.77
+            xmax = 6.24
+            text = "#"
+        intervals [44]:
+            xmin = 6.24
+            xmax = 6.275
+            text = "l"
+        intervals [45]:
+            xmin = 6.275
+            xmax = 6.345
+            text = "a"
+        intervals [46]:
+            xmin = 6.345
+            xmax = 6.405
+            text = "s"
+        intervals [47]:
+            xmin = 6.405
+            xmax = 6.585
+            text = "t"
+        intervals [48]:
+            xmin = 6.585
+            xmax = 6.675
+            text = "r"
+        intervals [49]:
+            xmin = 6.675
+            xmax = 6.785
+            text = "i"
+        intervals [50]:
+            xmin = 6.785
+            xmax = 6.975
+            text = "S"
+        intervals [51]:
+            xmin = 6.975
+            xmax = 7.175
+            text = "a"
+        intervals [52]:
+            xmin = 7.175
+            xmax = 7.61
+            text = "#"
+        intervals [53]:
+            xmin = 7.61
+            xmax = 7.645
+            text = "l"
+        intervals [54]:
+            xmin = 7.645
+            xmax = 7.715
+            text = "a"
+        intervals [55]:
+            xmin = 7.715
+            xmax = 7.835
+            text = "s"
+        intervals [56]:
+            xmin = 7.835
+            xmax = 7.915
+            text = "t"
+        intervals [57]:
+            xmin = 7.915
+            xmax = 8.005
+            text = "r"
+        intervals [58]:
+            xmin = 8.005
+            xmax = 8.115
+            text = "i"
+        intervals [59]:
+            xmin = 8.115
+            xmax = 8.315
+            text = "S"
+        intervals [60]:
+            xmin = 8.315
+            xmax = 8.505
+            text = "a"
+        intervals [61]:
+            xmin = 8.505
+            xmax = 9.07
+            text = "#"
+        intervals [62]:
+            xmin = 9.07
+            xmax = 9.105
+            text = "l"
+        intervals [63]:
+            xmin = 9.105
+            xmax = 9.185
+            text = "a"
+        intervals [64]:
+            xmin = 9.185
+            xmax = 9.315
+            text = "s"
+        intervals [65]:
+            xmin = 9.315
+            xmax = 9.395
+            text = "t"
+        intervals [66]:
+            xmin = 9.395
+            xmax = 9.465
+            text = "r"
+        intervals [67]:
+            xmin = 9.465
+            xmax = 9.545
+            text = "i"
+        intervals [68]:
+            xmin = 9.545
+            xmax = 9.745
+            text = "S"
+        intervals [69]:
+            xmin = 9.745
+            xmax = 10.0
+            text = "a"
+    item [2]:
+        class = "IntervalTier"
+        name = "PhnTokAlign"
+        xmin = 0.0
+        xmax = 10.0
+        intervals: size = 23
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.065
+            text = "a"
+        intervals [2]:
+            xmin = 0.065
+            xmax = 0.795
+            text = "s.t.r.i.S.a"
+        intervals [3]:
+            xmin = 0.795
+            xmax = 1.1
+            text = "#"
+        intervals [4]:
+            xmin = 1.1
+            xmax = 1.215
+            text = "l.a"
+        intervals [5]:
+            xmin = 1.215
+            xmax = 1.97
+            text = "s.t.r.i.S.a"
+        intervals [6]:
+            xmin = 1.97
+            xmax = 2.28
+            text = "#"
+        intervals [7]:
+            xmin = 2.28
+            xmax = 2.375
+            text = "l.a"
+        intervals [8]:
+            xmin = 2.375
+            xmax = 3.135
+            text = "s.t.r.i.S.a"
+        intervals [9]:
+            xmin = 3.135
+            xmax = 3.555
+            text = "#"
+        intervals [10]:
+            xmin = 3.555
+            xmax = 3.66
+            text = "l.a"
+        intervals [11]:
+            xmin = 3.66
+            xmax = 4.425
+            text = "s.t.r.i.S.a"
+        intervals [12]:
+            xmin = 4.425
+            xmax = 4.89
+            text = "#"
+        intervals [13]:
+            xmin = 4.89
+            xmax = 4.995
+            text = "a"
+        intervals [14]:
+            xmin = 4.995
+            xmax = 5.77
+            text = "s.t.r.i.S.a"
+        intervals [15]:
+            xmin = 5.77
+            xmax = 6.24
+            text = "#"
+        intervals [16]:
+            xmin = 6.24
+            xmax = 6.345
+            text = "l.a"
+        intervals [17]:
+            xmin = 6.345
+            xmax = 7.175
+            text = "s.t.r.i.S.a"
+        intervals [18]:
+            xmin = 7.175
+            xmax = 7.61
+            text = "#"
+        intervals [19]:
+            xmin = 7.61
+            xmax = 7.715
+            text = "l.a"
+        intervals [20]:
+            xmin = 7.715
+            xmax = 8.505
+            text = "s.t.r.i.S.a"
+        intervals [21]:
+            xmin = 8.505
+            xmax = 9.07
+            text = "#"
+        intervals [22]:
+            xmin = 9.07
+            xmax = 9.185
+            text = "l.a"
+        intervals [23]:
+            xmin = 9.185
+            xmax = 10.0
+            text = "s.t.r.i.S.a"
+    item [3]:
+        class = "IntervalTier"
+        name = "TokensAlign"
+        xmin = 0.0
+        xmax = 10.0
+        intervals: size = 23
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.065
+            text = "la"
+        intervals [2]:
+            xmin = 0.065
+            xmax = 0.795
+            text = "striscia"
+        intervals [3]:
+            xmin = 0.795
+            xmax = 1.1
+            text = "#"
+        intervals [4]:
+            xmin = 1.1
+            xmax = 1.215
+            text = "la"
+        intervals [5]:
+            xmin = 1.215
+            xmax = 1.97
+            text = "striscia"
+        intervals [6]:
+            xmin = 1.97
+            xmax = 2.28
+            text = "#"
+        intervals [7]:
+            xmin = 2.28
+            xmax = 2.375
+            text = "la"
+        intervals [8]:
+            xmin = 2.375
+            xmax = 3.135
+            text = "striscia"
+        intervals [9]:
+            xmin = 3.135
+            xmax = 3.555
+            text = "#"
+        intervals [10]:
+            xmin = 3.555
+            xmax = 3.66
+            text = "la"
+        intervals [11]:
+            xmin = 3.66
+            xmax = 4.425
+            text = "striscia"
+        intervals [12]:
+            xmin = 4.425
+            xmax = 4.89
+            text = "#"
+        intervals [13]:
+            xmin = 4.89
+            xmax = 4.995
+            text = "la"
+        intervals [14]:
+            xmin = 4.995
+            xmax = 5.77
+            text = "striscia"
+        intervals [15]:
+            xmin = 5.77
+            xmax = 6.24
+            text = "#"
+        intervals [16]:
+            xmin = 6.24
+            xmax = 6.345
+            text = "la"
+        intervals [17]:
+            xmin = 6.345
+            xmax = 7.175
+            text = "striscia"
+        intervals [18]:
+            xmin = 7.175
+            xmax = 7.61
+            text = "#"
+        intervals [19]:
+            xmin = 7.61
+            xmax = 7.715
+            text = "la"
+        intervals [20]:
+            xmin = 7.715
+            xmax = 8.505
+            text = "striscia"
+        intervals [21]:
+            xmin = 8.505
+            xmax = 9.07
+            text = "#"
+        intervals [22]:
+            xmin = 9.07
+            xmax = 9.185
+            text = "la"
+        intervals [23]:
+            xmin = 9.185
+            xmax = 10.0
+            text = "striscia"
