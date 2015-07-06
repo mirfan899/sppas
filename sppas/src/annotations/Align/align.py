@@ -61,12 +61,12 @@ import utils.name
 import annotationdata.io
 from annotationdata.transcription import Transcription
 
-import audioop
 import signals
-from signals.channel import Channel
+from signals.channel    import Channel
 from signals.channelsil import ChannelSil
-from signals.audiosilencepresenter import AudioSilencePresenter
-from signals.audiosppaspresenter import AudioSppasPresenter
+
+from presenters.audiosilencepresenter import AudioSilencePresenter
+from presenters.audiosppaspresenter   import AudioSppasPresenter
 
 from juliusalign    import juliusAligner
 from hvitealign     import hviteAligner
@@ -319,7 +319,7 @@ class sppasAlign:
         try:
             tmpname = utils.name.genName().get_name() + ".wav"
             converter = AudioSppasPresenter(self._logfile)
-            isconverted = converter.export(self.inputaudio, tmpname)    
+            isconverted = converter.export(self.inputaudio, tmpname)
             if isconverted:
                 self.inputaudio = tmpname
         except Exception:
@@ -424,7 +424,7 @@ class sppasAlign:
         """
         fileName, fileExtension = os.path.splitext(inputaudio)
         tiedfile = os.path.join(self._model, "tiedlist")
-        dictfile = inputaudio[:-len(fileExtension)] + ".dict" 
+        dictfile = inputaudio[:-len(fileExtension)] + ".dict"
 
         # Create a new Tiedlist instance and backup the current tiedlist file
         today          = str(date.today())
@@ -468,7 +468,7 @@ class sppasAlign:
 
         """
         fileName, fileExtension = os.path.splitext(audiofilename)
-        
+
         with codecs.open(phonname, 'r', ENCODING) as fp:
             # Get the phoneme sequence
             phones = fp.readline()
@@ -489,9 +489,9 @@ class sppasAlign:
 
         else:
             # Create the dictionary and the grammar
-            dictname = audiofilename[:-len(fileExtension)] + ".dict" 
+            dictname = audiofilename[:-len(fileExtension)] + ".dict"
             if self._alignerid == "julius":
-                grammarname = audiofilename[:-len(fileExtension)] + ".dfa" 
+                grammarname = audiofilename[:-len(fileExtension)] + ".dfa"
                 basename = audiofilename[:-len(fileExtension)]
             elif self._alignerid == "hvite":
                 grammarname = audiofilename[:-len(fileExtension)] + ".lab"
@@ -766,7 +766,7 @@ class sppasAlign:
         except Exception as e:
             if self._options['clean'] is True:
                 shutil.rmtree( diralign )
-            raise 
+            raise
         else:
             if self._logfile:
                 self._logfile.print_message("",indent=2,status=0)

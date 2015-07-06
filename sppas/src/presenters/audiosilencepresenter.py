@@ -46,9 +46,10 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import signals
-from audio import Audio
-from annotationdata.transcription import Transcription
 import annotationdata.io
+
+from signals.audio import Audio
+from annotationdata.transcription import Transcription
 
 import os
 import codecs
@@ -72,7 +73,7 @@ class AudioSilencePresenter:
         """
         self.channelsil = channelsil
         self.logfile = logfile
-    
+
     def write_tracks(self, trstracks, output, ext="txt", trsunits=[], trsnames=[], logfile=None):
         """
         Write tracks in an output directory.

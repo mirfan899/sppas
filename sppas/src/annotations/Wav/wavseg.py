@@ -49,18 +49,19 @@ import os
 import codecs
 
 import signals
-from signals.channel import Channel
+from signals.channel    import Channel
 from signals.channelsil import ChannelSil
-from signals.audiosilencepresenter import AudioSilencePresenter
-from annotationdata.utils.tierutils import TierUtils
-from annotationdata.transcription import Transcription
-from annotationdata.ptime.point import TimePoint
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.label.label import Label
-from annotationdata.annotation import Annotation
-from annotationdata.io.praat import TextGrid
+
+from presenters.audiosilencepresenter import AudioSilencePresenter
+
 import annotationdata.io
 import annotationdata.utils.trsutils as trsutils
+from annotationdata.utils.tierutils import TierUtils
+from annotationdata.transcription   import Transcription
+from annotationdata.ptime.point     import TimePoint
+from annotationdata.ptime.interval  import TimeInterval
+from annotationdata.label.label     import Label
+from annotationdata.annotation      import Annotation
 
 
 # ######################################################################### #

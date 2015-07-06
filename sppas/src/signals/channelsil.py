@@ -69,7 +69,7 @@ class ChannelSil:
 
     def __init__(self, channel, m=0.3):
         """
-        Create a WaveSil audio instance.
+        Create a ChannelSil audio instance.
 
         @param channel (Channel) the input channel object
         @param m (float) is the minimum track duration (in seconds)

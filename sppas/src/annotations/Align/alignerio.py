@@ -141,7 +141,7 @@ class AlignerIO( Transcription ):
         except Exception as e:
             raise IOError("Get list of tracks: "+str(e))
 
-        # Get all unit alignment file names (default file names of wavsil.write_tracks())
+        # Get all unit alignment file names (default file names of write_tracks())
         dirlist = glob.glob(os.path.join(dirname, "track_*palign"))
         dirlist += glob.glob(os.path.join(dirname, "track_*mlf"))
         ntracks = len(dirlist)
