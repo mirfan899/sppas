@@ -260,7 +260,7 @@ class TestTier(unittest.TestCase):
         annotations = tier.Find(TimePoint(3), TimePoint(4), overlaps=False)
         self.assertEquals(annotations, [])
 
-        annotations = tier.Find(TimePoint(6), TimePoint(7))
+        annotations = tier.Find(TimePoint(6), TimePoint(7), overlaps=True)
         self.assertEquals(annotations, [])
 
         annotations = tier.Find(TimePoint(6), TimePoint(7), overlaps=False)

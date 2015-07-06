@@ -433,6 +433,8 @@ class Tier(MetaObject):
             end = self.GetEnd() #self.GetEndValue()
 
         if overlaps is True:
+            if begin > self.GetEnd() or end < self.GetBegin():
+                return []
             index = self.__find(begin)
             anns = list()
             for a in self.__ann[index:]:
