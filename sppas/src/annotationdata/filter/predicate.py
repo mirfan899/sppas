@@ -45,7 +45,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-import itertools
+
 import operator
 
 import _bools
@@ -119,9 +119,8 @@ class Sel(object):
     """
     Predicate Factory.
 
-    Sel is a predicate for SingleFilter().
-    Sel is used to fix whether an annotation is valid or not.
-    It is used on the label content, the duration or on the time values.
+    Sel is used to fix whether a label is valid or not.
+    It is used on a text, a duration or on a time values.
 
     """
     def __new__(cls, **kwargs):
@@ -130,8 +129,8 @@ class Sel(object):
 
         @param kwargs:
 
-            exact (str):  annotation label exact match
-            iexact (str): annotation label case-insensitive exact match
+            exact (str):  label exact match
+            iexact (str): label case-insensitive exact match
             startswith (str):
             istartswith (str): Case-insensitive startswith
             endswith (str):
@@ -140,18 +139,18 @@ class Sel(object):
             icontains: Case-insensitive contains
             regexp (str): regular expression
 
-            begin_eq (float): annotation location begin time value equal to
-            begin_lt (float): annotation location begin time value lower than
+            begin_eq (float): begin time value equal to
+            begin_lt (float): begin time value lower than
             begin_le (float):
             begin_gt (float):
             begin_ge (float):
-            end_eq (float): annotation location end time value equal to
-            end_lt (float): annotation location end time value lower than
+            end_eq (float): end time value equal to
+            end_lt (float): end time value lower than
             end_le (float):
             end_gt (float):
             end_ge (float):
 
-            duration_eq (float): annotation location duration equal to
+            duration_eq (float): duration equal to
             duration_lt (float):
             duration_le (float):
             duration_gt (float):
@@ -194,7 +193,6 @@ class Rel(object):
     """
     RelationPredicate Factory.
 
-    Rel is a predicate for RelationFilter().
     Rel is used to fix whether an annotation is valid or not.
     It is used on the time-relation with another annotation.
 

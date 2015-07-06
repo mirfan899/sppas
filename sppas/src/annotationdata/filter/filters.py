@@ -46,7 +46,6 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 from annotationdata.tier import Tier
-from annotationdata.ptime.interval import TimeInterval
 
 from predicate import Predicate,RelationPredicate,Sel,Rel
 
