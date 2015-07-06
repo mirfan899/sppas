@@ -32,13 +32,6 @@ class TestAnnotation(unittest.TestCase):
     def test___init__(self):
         pass
 
-    def test_Set(self):
-        """
-        Raise TypeError if the argument is not an instance of Annotation.
-        """
-        with self.assertRaises(TypeError):
-            self.annotationI.Set("a string")
-
     def test_GetBegin(self):
         """
         Raise AttributeError if the attribute Time is an instance of TimePoint.
@@ -67,7 +60,7 @@ class TestAnnotation(unittest.TestCase):
             self.annotationP.GetLocation().GetBeginValue()
 
         with self.assertRaises(ValueError):
-            self.annotationI.GetLocation().SetBegin( TimePoint(4) ) 
+            self.annotationI.GetLocation().SetBegin( TimePoint(4) )
         self.annotationI.GetLocation().GetBegin().SetMidpoint( 4 ) #### MUST BE FORBIDDEN...
 
     def test_GetEnd(self):

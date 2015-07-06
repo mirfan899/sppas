@@ -151,35 +151,6 @@ class TestTimeInterval(unittest.TestCase):
         interval1 = TimeInterval(self.point1000, self.point1002)
         self.assertEqual(round(interval1.Duration(), 3), 0.002)
 
-    def test_parents(self):
-        # normal situations
-        point0 = TimePoint(0)
-        point1 = TimePoint(1, 0.001)
-        point2 = TimePoint(2)
-        point3 = TimePoint(3, 0.001)
-        interval01 = TimeInterval(point0,point1)
-        interval23 = TimeInterval(point2,point3)
-        intervalp  = TimeInterval(point0,point1)
-        self.assertTrue(point0 is intervalp.GetBegin()) 
-        self.assertTrue(point1 is intervalp.GetEnd()) 
-        self.assertEqual(point0.GetParent(), intervalp.GetBegin().GetParent()) # both None
-        intervalp.SetParents((point2,point3)) # change begin and end!!
-        self.assertTrue(point2 is intervalp.GetBegin().GetParent()) 
-        self.assertTrue(point3 is intervalp.GetEnd().GetParent()) 
-
-        # critical situations
-        # assign myself has parent
-        with self.assertRaises(BaseException):
-            interval01.SetParents((point0,point1))
-        # not assign a tuple of TimePoint...
-        with self.assertRaises(TypeError):
-            interval01.SetParents(point0)
-        # Circular parents....
-        interval01 = TimeInterval(point0,point1)
-        interval23 = TimeInterval(point2,point3)
-        interval01.SetParents( (point2,point3) )
-        with self.assertRaises(BaseException):
-            interval23.SetParent( (point0,point1) )
 
     def test_others(self):
         point0 = TimePoint(0)

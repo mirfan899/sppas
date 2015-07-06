@@ -50,7 +50,7 @@ from resources.mapping import Mapping
 # ----------------------------------------------------------------------------
 
 
-class tierMapping( Mapping ):
+class TierMapping( Mapping ):
     """
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -62,7 +62,7 @@ class tierMapping( Mapping ):
 
     def __init__(self, dictname=None):
         """
-        Create a new tierMapping instance.
+        Create a new TierMapping instance.
 
         @param dictname (string) is the file name with the mapping table (2 columns),
 

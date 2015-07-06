@@ -119,8 +119,6 @@ def lzs (items):
 
 if __name__=="__main__":
 
-    import datetime
-
     l = [x*x for x in range(1,11)]
     print l
     print 'mean:'

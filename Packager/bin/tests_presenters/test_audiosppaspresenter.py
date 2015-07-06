@@ -1,15 +1,21 @@
 #!/usr/bin/env python2
 # -*- coding: utf8 -*-
 
+from os.path import abspath, dirname, join
+import sys
+
+SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
+sys.path.append(join(SPPAS, 'sppas', 'src'))
+samples = join(dirname(dirname(dirname(abspath(__file__)))), 'samples')
+
 import unittest
 import os
-import paths
 import signals
-from signals.audiosppaspresenter import AudioSppasPresenter
+from presenters.audiosppaspresenter import AudioSppasPresenter
 
 class TestExport(unittest.TestCase):
-    _sample_path_1 = os.path.join(paths.samples, "oriana1.WAV")
-    _sample_path_2 = os.path.join(paths.samples, "F_F_B003-P9.wav")
+    _sample_path_1 = os.path.join(samples, "oriana1.WAV")
+    _sample_path_2 = os.path.join(samples, "F_F_B003-P9.wav")
     
     def setUp(self):
         self._converter = AudioSppasPresenter()
@@ -17,7 +23,7 @@ class TestExport(unittest.TestCase):
         self._sample_1 = signals.open(TestExport._sample_path_1)
         self._sample_2 = signals.open(TestExport._sample_path_2)
         
-        self._sample_path_new = os.path.join(paths.samples, "converted.wav")
+        self._sample_path_new = os.path.join(samples, "converted.wav")
         if os.path.exists(self._sample_path_new):
             os.remove(self._sample_path_new)
         

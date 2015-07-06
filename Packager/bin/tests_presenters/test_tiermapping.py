@@ -9,8 +9,8 @@ from os.path import *
 SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
 sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
-from annotationdata.utils.tiermapping import tierMapping
-from annotationdata.io.textgrid import TextGrid
+from presenters.tiermapping import TierMapping
+from annotationdata.io.praat import TextGrid
 from annotationdata.tier import Tier
 from annotationdata.annotation import Annotation
 from annotationdata.ptime.interval import TimeInterval
@@ -34,7 +34,7 @@ class TestTierMapping(unittest.TestCase):
         self.tierI.Append(Annotation(TimeInterval(TimePoint(9), TimePoint(10)), Label("quatre-vingts-dix|nonante")))
 
         # Create TierMapping
-        self.tiermap = tierMapping()
+        self.tiermap = TierMapping()
         self.tiermap.repl.add( "1", "un" )
         self.tiermap.repl.add( "2", "deux" )
         self.tiermap.repl.add( "3", "trois" )
@@ -76,7 +76,7 @@ class TestTierMapping(unittest.TestCase):
         tg = TextGrid()
         tg.read(os.path.join(SAMPLES,"DGtdA05Np1_95-phon.TextGrid"))
         self.tier = tg.Find('Phonetization')
-        tiermap = tierMapping( os.path.join(SAMPLES,"ita_mapping.repl") )
+        tiermap = TierMapping( os.path.join(SAMPLES,"ita_mapping.repl") )
 
         tiermap.set_keepmiss( True )
         tiermap.set_reverse( False )
@@ -92,7 +92,7 @@ class TestTierMapping(unittest.TestCase):
         tg = TextGrid()
         tg.read(os.path.join(SAMPLES,"DGtdA05Np1_95-palign.TextGrid"))
         self.tier = tg.Find('PhonAlign')
-        tiermap = tierMapping( os.path.join(SAMPLES,"ita_mapping.repl") )
+        tiermap = TierMapping( os.path.join(SAMPLES,"ita_mapping.repl") )
 
         tiermap.set_keepmiss( True )
         t1 = tiermap.run( self.tier )

@@ -16,8 +16,10 @@ from annotationdata.label.text  import Text
 from annotationdata.ptime.interval import TimeInterval
 from annotationdata.ptime.point import TimePoint
 from annotationdata.tier        import Tier
-from annotationdata.statistics  import DescriptiveStatistics
-from annotationdata.utils.tierstats import TierStats
+
+from stats.descriptivesstats  import DescriptiveStatistics
+
+from presenters.tierstats import TierStats
 
 
 class TestStatistics(unittest.TestCase):

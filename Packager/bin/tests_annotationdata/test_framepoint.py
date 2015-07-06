@@ -54,33 +54,6 @@ class TestFramePoint(unittest.TestCase):
         self.assertGreaterEqual(self.pointZ, self.pointW)
         self.assertGreaterEqual(self.pointV, self.pointW)
 
-    def test_parent(self):
-        # normal situations
-        self.point0 = FramePoint(0)
-        self.pointV = FramePoint(0, 1)
-        self.assertEqual(self.pointV.GetParent(), None)
-        self.assertEqual(self.point0.GetParent(), None)
-        self.pointV.SetParent(self.point0)
-        self.pointV.SetParent(self.point0)
-        self.assertEqual(self.pointV.GetParent(), self.point0)
-        self.assertEqual(self.pointV.GetMidpoint(), self.point0.GetMidpoint())
-        self.assertEqual(self.pointV.GetRadius(), self.point0.GetRadius())
-        # errors:
-        self.point0 = FramePoint(0)
-        self.pointV = FramePoint(1, 1)
-        # assign myself has parent
-        with self.assertRaises(BaseException):
-            self.point0.SetParent(point0)
-        # not assign a FramePoint...
-        with self.assertRaises(TypeError):
-            self.point0.SetParent(50)
-        # Circular parents....
-        self.point0 = FramePoint(0)
-        self.pointV.SetParent(None)
-        self.pointV = FramePoint(1)
-        self.pointV.SetParent(self.point0)
-        with self.assertRaises(BaseException):
-            self.point0.SetParent(self.pointV)
 
     def test_others(self):
         point0 = FramePoint(1, 2)

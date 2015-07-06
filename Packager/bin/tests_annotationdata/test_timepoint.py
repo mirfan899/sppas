@@ -69,40 +69,6 @@ class TestTimePoint(unittest.TestCase):
         self.assertGreaterEqual(self.pointX, self.pointV)
         self.assertGreaterEqual(self.pointV, self.pointW)
 
-    def test_parent(self):
-        # normal situations
-        self.point0 = TimePoint(0)
-        self.pointV = self.point0.Copy()
-        self.pointV.SetParent(self.point0)
-        self.pointV.SetParent(self.point0)
-        self.assertTrue(self.pointV.GetParent() is self.point0)
-        self.assertEqual(self.pointV.GetParent(),   self.point0)
-        self.assertEqual(self.pointV.GetMidpoint(), self.point0.GetMidpoint())
-        self.assertEqual(self.pointV.GetRadius(),   self.point0.GetRadius())
-        self.point0.Set(TimePoint(1.000, 0.001)) # change the parent... change children! 
-        self.assertEqual(self.pointV.GetMidpoint(), self.point0.GetMidpoint())
-        self.assertEqual(self.pointV.GetRadius(),   self.point0.GetRadius())
-        self.pointV.SetParent(None) # Break link!
-        self.assertEqual(self.pointV.GetMidpoint(), self.point0.GetMidpoint())
-        self.assertEqual(self.pointV.GetRadius(),   self.point0.GetRadius())
-
-        # errors:
-        self.point0 = TimePoint(0)
-        self.pointV = TimePoint(1.000, 0.001)
-        # assign myself has parent
-        with self.assertRaises(BaseException):
-            self.point0.SetParent(self.point0)
-        # not assign a TimePoint...
-        with self.assertRaises(TypeError):
-            self.point0.SetParent(50)
-        # Circular parents....
-        self.point0 = TimePoint(0)
-        self.pointV.SetParent(None)
-        self.pointV = TimePoint(1.000, 0.001)
-        self.pointV.SetParent(self.point0)
-        with self.assertRaises(BaseException):
-            self.point0.SetParent(self.pointV)
-
     def test_others(self):
         point0 = TimePoint(0.1, 0.2)
         self.assertEqual(point0.GetMidpoint(), 0.1)

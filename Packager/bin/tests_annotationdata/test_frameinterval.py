@@ -149,41 +149,6 @@ class TestFrameInterval(unittest.TestCase):
         interval1 = FrameInterval(self.point1000, self.point1007)
         self.assertEqual(interval1.Duration(), 7)
         self.assertEqual(interval1.TotalDuration(), 8)
-        
-    def test_parent(self):
-        # normal situations
-        point0 = FramePoint(0)
-        point00 = FramePoint(0)
-        point1 = FramePoint(1, 1)
-        point11 = FramePoint(1, 1)
-        point2 = FramePoint(2)
-        point3 = FramePoint(3, 1)
-        interval01 = FrameInterval(point0,point1)
-        interval23 = FrameInterval(point2,point3)
-        intervalp  = FrameInterval(point0,point1)
-        self.assertTrue(point0 is intervalp.GetBegin()) 
-        self.assertTrue(point1 is intervalp.GetEnd()) 
-        self.assertEqual(point0.GetParent(), intervalp.GetBegin().GetParent()) # both None
-        intervalp.SetParents((point2,point3)) # change begin and end!!
-        self.assertTrue(point2 is intervalp.GetBegin().GetParent()) 
-        self.assertTrue(point3 is intervalp.GetEnd().GetParent()) 
-        interval01.SetBeginParent(point00)
-        interval01.SetEndParent(point11)
-        # critical situations
-        # assign myself has parent
-        with self.assertRaises(BaseException):
-            interval01.SetParents((point0,point1))
-        with self.assertRaises(BaseException):
-            interval01.SetBeginParent(point0)
-        # not assign a FrameInterval...
-        with self.assertRaises(TypeError):
-            interval01.SetParents(point0)
-        # Circular parents....
-        interval01 = FrameInterval(point0,point1)
-        interval23 = FrameInterval(point2,point3)
-        interval01.SetParents( (point2,point3) )
-        with self.assertRaises(BaseException):
-            interval23.SetParents( (point0,point1) )
 
     def test_others(self):
         point0 = FramePoint(0)

@@ -16,7 +16,8 @@ from annotationdata.label.text  import Text
 from annotationdata.ptime.interval import TimeInterval
 from annotationdata.ptime.point import TimePoint
 from annotationdata.tier        import Tier
-from annotationdata.statistics import Kappa
+
+from calculus.kappa import Kappa
 
 class TestVectorKappa(unittest.TestCase):
 

@@ -48,7 +48,7 @@ A collection of basic statistical functions for python.
 
 Function List
 =============
-    - euclidian
+    - squared_euclidian
 
 """
 

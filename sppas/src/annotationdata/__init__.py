@@ -50,9 +50,6 @@ from annotationdata.filter.filters   import Filter
 from annotationdata.filter.filters   import SingleFilter
 from annotationdata.filter.filters   import RelationFilter
 
-from annotationdata.statistics.descriptives import DescriptiveStatistics
-from annotationdata.statistics.kappa        import Kappa
-
 import annotationdata.io as io
 
 __all__ = [
@@ -69,7 +66,5 @@ __all__ = [
 'Filter',
 'SingleFilter',
 'RelationFilter',
-'DescriptiveStatistics',
-'Kappa',
 'io'
 ]

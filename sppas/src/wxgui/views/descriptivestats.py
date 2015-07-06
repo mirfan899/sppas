@@ -52,7 +52,7 @@ import wx
 import logging
 import os.path
 
-from annotationdata.utils.tierstats import TierStats
+from presenters.tierstats import TierStats
 from utils import fileutils
 
 from wxgui.sp_icons import STATISTICS_APP_ICON

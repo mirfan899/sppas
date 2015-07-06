@@ -772,7 +772,7 @@ class Tier(MetaObject):
                 -    regexp (str): regular expression
 
         """
-        from filter import Sel
+        from filter.filters import Sel
 
         hi = self.GetSize()
         lo = -1

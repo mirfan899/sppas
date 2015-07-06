@@ -44,8 +44,8 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 
 # ----------------------------------------------------------------------------
-import logging
-from annotationdata.statistics import DescriptiveStatistics
+
+from calculus.descriptivesstats import DescriptiveStatistics
 
 # ----------------------------------------------------------------------------
 

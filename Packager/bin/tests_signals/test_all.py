@@ -3,7 +3,6 @@
 
 import unittest
 
-from test_audiosppaspresenter       import TestExport
 from test_audioutils                import TestAudioUtils
 from test_audio_io                  import TestInformation, TestData
 from test_channel                   import TestChannel
@@ -14,7 +13,6 @@ from test_monofragment              import TestMonoFragment
 from test_channelfragmentextracter  import TestChannelFragmentExtracter
 
 testsuite = unittest.TestSuite()
-testsuite.addTest(unittest.makeSuite(TestExport))
 testsuite.addTest(unittest.makeSuite(TestAudioUtils))
 testsuite.addTest(unittest.makeSuite(TestInformation))
 testsuite.addTest(unittest.makeSuite(TestData))
