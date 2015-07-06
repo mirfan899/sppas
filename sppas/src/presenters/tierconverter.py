@@ -61,6 +61,22 @@ def normalize_annotation(ann):
 
     raise TypeError('Expect scores as probabilities or percentages.')
 
+
+def has_bound(tier, bound):
+    """
+    Return True if bound is part of one of the best localizations.
+    """
+    if tier.IsPoint():
+        i = tier.Index( bound )
+        if i == -1:
+            return False
+        return True
+
+    for a in tier:
+        if a.GetLocation().GetBegin() == bound or a.GetLocation().GetEnd() == bound:
+            return True
+    return False
+
 # ----------------------------------------------------------------------------
 
 
@@ -119,7 +135,23 @@ class TierConverter:
 
     # -----------------------------------------------------------------------
 
-    def bounds_to_vector(self, tier):
-        raise NotImplementedError
+    def bounds_to_vector(self, othertier):
+        """
+        Create two vectors of tuples from the boundaries of a tier and another one.
+
+        """
+        p = []
+        q = []
+
+        listone = self.tier.GetAllPoints()
+        listtwo = othertier.GetAllPoints()
+
+        for point in list(set(listone + listtwo)):
+            b1 = float( has_bound( self.tier, point ) )
+            b2 = float( has_bound( othertier, point ) )
+            p.append( (b1,1.-b1) )
+            q.append( (b2,1.-b2) )
+
+        return (p,q)
 
 # ----------------------------------------------------------------------------

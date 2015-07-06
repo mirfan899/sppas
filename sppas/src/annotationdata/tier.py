@@ -493,8 +493,7 @@ class Tier(MetaObject):
                 else: break
         else:
             index = self.Lindex(time)
-            if index == -1:
-                return annotations
+            if index == -1: return []
             for i in range(index, self.GetSize()):
                 a = self.__ann[i]
                 if a.GetLocation().GetBegin() == time:
@@ -567,6 +566,7 @@ class Tier(MetaObject):
         """
         Return the index of the time point (int), or -1.
         Only is tier.IsPoint() is True.
+        Only on the localization with the best score.
 
         @param time: (TimePoint)
 
@@ -606,6 +606,7 @@ class Tier(MetaObject):
     def Lindex(self, time):
         """
         Return the index of the interval starting at the given time point, or -1.
+        Only on the localization with the best score.
 
         @param time (TimePoint)
 
@@ -643,6 +644,7 @@ class Tier(MetaObject):
     def Mindex(self, time, direction):
         """
         Return the index of the interval containing the given time point, or -1.
+        Only on the localization with the best score.
 
         @param time: (TimePoint)
         @param direction: (int)

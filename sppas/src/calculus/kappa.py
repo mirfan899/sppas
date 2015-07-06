@@ -188,6 +188,8 @@ class Kappa:
         if sum(row) != sum(col):
             raise Exception('Hum... error while estimating euclidian distances.')
         r = sum(row) / float(len(self.p)**2)
+        if r == 0.:
+            return 1.
 
         return 1.0 - v/r
 

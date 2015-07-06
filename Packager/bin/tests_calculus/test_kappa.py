@@ -51,7 +51,7 @@ class TestTierKappa(unittest.TestCase):
         self.tier.Append(self.a)
         self.tier.Append(self.b)
 
-    def testValue(self):
+    def testLabelValue(self):
         d = TierConverter( self.tier )
         items1 = d.tier_to_items( )
         items2 = d.tier_to_items( ) # ... !!! with same tier, expect kappa=1
@@ -65,6 +65,34 @@ class TestTierKappa(unittest.TestCase):
         self.assertTrue(k.check_vector(q))
         self.assertTrue(k.check()) # check both p and q
         self.assertEqual(k.evaluate(), 1.)
+
+    def testBoundValue(self):
+        d = TierConverter( self.tier )
+        p,q = d.bounds_to_vector( self.tier )
+        print "\n Vector p:",p
+        print "\n Vector q:",q
+
+        k = Kappa(p,q)
+        self.assertTrue(k.check_vector(p))
+        self.assertTrue(k.check_vector(q))
+        self.assertTrue(k.check()) # check both p and q
+        self.assertEqual(k.evaluate(), 1.)
+
+        othertier = Tier()
+        othertier.Append(self.x)
+        othertier.Append(self.y)
+        othertier.Append(self.b)
+        p,q = d.bounds_to_vector( othertier )
+        print "\n Vector p:",p
+        print "\n Vector q:",q
+
+        kb = Kappa(p,q)
+        self.assertTrue(kb.check_vector(p))
+        self.assertTrue(kb.check_vector(q))
+        self.assertTrue(kb.check()) # check both p and q
+        self.assertEqual(kb.evaluate(), 0.)
+
+
 
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestVectorKappa)
