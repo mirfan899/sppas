@@ -18,6 +18,8 @@ from annotationdata.ptime.point import TimePoint
 from annotationdata.tier        import Tier
 
 from calculus.kappa import Kappa
+from presenters.tierconverter import TierConverter
+
 
 class TestVectorKappa(unittest.TestCase):
 
@@ -35,6 +37,7 @@ class TestVectorKappa(unittest.TestCase):
         v = kappa.evaluate()
         self.assertEqual(0.54545, round(v,5))
 
+
 class TestTierKappa(unittest.TestCase):
 
     def setUp(self):
@@ -48,6 +51,24 @@ class TestTierKappa(unittest.TestCase):
         self.tier.Append(self.a)
         self.tier.Append(self.b)
 
+    def testValue(self):
+        d = TierConverter( self.tier )
+        items1 = d.tier_to_items( )
+        items2 = d.tier_to_items( ) # ... !!! with same tier, expect kappa=1
+        items = sorted(list(set(items1+items2)))
+
+        p = d.labels_to_vector( items )
+        q = d.labels_to_vector( items )
+
+        k = Kappa(p,q)
+        self.assertTrue(k.check_vector(p))
+        self.assertTrue(k.check_vector(q))
+        self.assertTrue(k.check()) # check both p and q
+        self.assertEqual(k.evaluate(), 1.)
+
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestVectorKappa)
     unittest.TextTestRunner(verbosity=2).run(suite)
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestTierKappa)
+    unittest.TextTestRunner(verbosity=2).run(suite)
+

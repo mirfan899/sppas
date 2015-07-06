@@ -32,9 +32,9 @@ if platform.system() == "Windows":
 # ---------------------------------------------------------------------------
 
 def setup_logging(log_level, filename):
-    """ 
+    """
     Setup default logger to log to stderr or and possible also to a file.
-    
+
     The default logger is used like this:
         >>> import logging
         >>> logging.error(text message)
@@ -75,20 +75,19 @@ def test_factory( argv ):
         # Print help information and exit:
         quit("Error: "+str(err)+".\nUse option --help for any help.\n", 1)
 
+    # Args
+    arguments = {}
+    arguments['files'] = []
+    arguments['title'] = "SndRoamer"
+    arguments['FILESTYPE']  = "SOUND_FILES"
+
     # Extract options
     for o, a in opts:
         if o == "-t":
             arguments['title'] = a
         elif o == "--help": # need help
             print 'Help'
-            usage(sys.stdout)
             sys.exit(0)
-
-    # Args
-    arguments = {}
-    arguments['files'] = []
-    arguments['title'] = "SndRoamer"    
-    arguments['FILESTYPE']  = "SOUND_FILES"
 
 
     # App
@@ -96,7 +95,7 @@ def test_factory( argv ):
     frame = wx.Frame(None, -1, 'player test')
     player = SndPlayer(frame)
     frame.Show(True)
-        
+
     app.SetTopWindow(frame)
 
     app.MainLoop()
@@ -106,7 +105,7 @@ def test_factory( argv ):
 
 if __name__ == '__main__':
 
-    if len(sys.argv) < 1:  
+    if len(sys.argv) < 1:
         # stop the program and print an error message
         usage(sys.stderr)
         sys.exit(1)

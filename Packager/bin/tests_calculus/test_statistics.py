@@ -17,7 +17,7 @@ from annotationdata.ptime.interval import TimeInterval
 from annotationdata.ptime.point import TimePoint
 from annotationdata.tier        import Tier
 
-from stats.descriptivesstats  import DescriptiveStatistics
+from calculus.descriptivesstats  import DescriptiveStatistics
 
 from presenters.tierstats import TierStats
 
@@ -65,10 +65,6 @@ class TestStatistics(unittest.TestCase):
 
         coefvariation = ds.coefvariation()
         self.assertEqual(56.773, round(coefvariation[totoidx][1],3))
-
-        for i,item in enumerate(total):
-            print "ITEM:", item
-            print item[0], item[1], mean[i][1], median[i][1]
 
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestStatistics)

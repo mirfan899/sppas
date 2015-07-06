@@ -132,7 +132,6 @@ if __name__ == '__main__':
 
     if len(sys.argv) < 1:
         # stop the program and print an error message
-        usage(sys.stderr)
         sys.exit(1)
 
     test_component( sys.argv )

@@ -57,7 +57,6 @@ from annotationdata.ptime.point import TimePoint
 from annotationdata.ptime.interval import TimeInterval
 from annotationdata.label.label import Label
 from annotationdata.tier import Tier
-from annotationdata.utils.tierutils import TierUtils
 
 # ----------------------------------------------------------------------------
 
@@ -250,7 +249,7 @@ class Syllabification:
     def is_consonant(self, string):
         """
         Return true if string is not a vowel nor a silence.
-        
+
         """
         return string not in ("V", "W", "#")
 
