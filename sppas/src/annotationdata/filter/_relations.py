@@ -36,7 +36,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: _bools.py
+# File: _relations.py
 # ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
@@ -49,11 +49,30 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 #---------------------------------------------------------------
 # Allen's interval relations
 #---------------------------------------------------------------
-# James Allen, in 1983, proposed an algebraic framework named Interval Algebra
-# (IA), for qualitative reasoning with time intervals where the binary
-# relationship between a pair of intervals is represented  by a subset of 13
-# atomic relation.
-#---------------------------------------------------------------
+"""
+James Allen, in 1983, proposed an algebraic framework named Interval Algebra
+(IA), for qualitative reasoning with time intervals where the binary
+relationship between a pair of intervals is represented  by a subset of 13
+atomic relation.
+
+In 1983 James F. Allen published a paper in which he proposed 13 basic relations
+between time intervals that are distinct, exhaustive, and qualitative:
+  - distinct because no pair of definite intervals can be related
+  by more than one of the relationships;
+  - exhaustive because any pair of definite intervals are described
+  by one of the relations;
+  - qualitative (rather than quantitative) because no numeric time
+  spans are considered.
+
+These relations and the operations on them form Allen's Interval Algebra.
+Using this calculus, given facts can be formalized and then used for
+automatic reasoning.
+Temporal representation and reasoning is an important facet in the design
+of many intelligent systems. For example, question answering systems require
+at least some basic temporal representation scheme to answer temporal
+questions.
+
+"""
 
 
 def before(x1, x2, y1, y2):
@@ -283,7 +302,7 @@ def convergent(x1, x2, y1, y2):
 
 
 #---------------------------------------------------------------
-# Extension about duration (just for convenience reasons)
+# Extension about duration
 #---------------------------------------------------------------
 
 def le(x1, x2, y1, y2):
@@ -429,7 +448,7 @@ def create(name, *args):
         return allen.__name__ if ret else ret
 
     wrap.__name__ = allen.__name__
-    wrap.__doc__ = allen.__doc__
+    wrap.__doc__  = allen.__doc__
     return wrap
 
 #---------------------------------------------------------------

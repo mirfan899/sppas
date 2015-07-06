@@ -65,6 +65,8 @@ import signals
 from signals.channel    import Channel
 from signals.channelsil import ChannelSil
 
+from resources.mapping import Mapping
+
 from presenters.audiosilencepresenter import AudioSilencePresenter
 from presenters.audiosppaspresenter   import AudioSppasPresenter
 
@@ -74,7 +76,6 @@ from basicalign     import basicAligner
 from tiedlist       import Tiedlist
 from alignerio      import AlignerIO
 
-from resources.mapping import Mapping
 
 
 # ----------------------------------------------------------------------------

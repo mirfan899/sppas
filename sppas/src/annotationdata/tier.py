@@ -130,6 +130,7 @@ class Tier(MetaObject):
     # End SetDataType
     # -----------------------------------------------------------------------
 
+
     def GetTranscription(self):
         """
         Return the parent of the tier (Transcription).
@@ -427,14 +428,16 @@ class Tier(MetaObject):
             return []
 
         if begin is None:
-            begin = self.GetBegin() #self.GetBeginValue()
+            begin = self.GetBegin()
 
         if end is None:
-            end = self.GetEnd() #self.GetEndValue()
+            end = self.GetEnd()
+
+        # Out of interval!
+        if begin > self.GetEnd() or end < self.GetBegin():
+            return []
 
         if overlaps is True:
-            if begin > self.GetEnd() or end < self.GetBegin():
-                return []
             index = self.__find(begin)
             anns = list()
             for a in self.__ann[index:]:

@@ -214,7 +214,7 @@ class DAG:
 class PhonUnk:
     """
     @authors: Brigitte Bigi
-    @contact: brigitte.bigi((AATT))lpl-aix.fr
+    @contact: brigitte.bigi@gmail.com
     @license: GPL
     @summary: Perform a G2P conversion for unknown entries.
 

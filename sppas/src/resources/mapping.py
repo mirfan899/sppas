@@ -47,9 +47,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 import re
 
-from resources.dictrepl import DictRepl
-from annotationdata.tier import Tier
-from annotationdata.label.label import Label
+from resources.dictrepl  import DictRepl
 
 # ----------------------------------------------------------------------------
 
