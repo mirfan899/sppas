@@ -134,7 +134,7 @@ def step_gradient(b_current, m_current, points, learning_rate):
     new_m = m_current - (learning_rate * m_gradient)
     return [new_b, new_m]
 
-def gradient_descent(points, starting_b, starting_m, learning_rate, num_iterations):
+def gradient_descent_linear_regression(points, starting_b, starting_m, learning_rate, num_iterations):
     """
     Gradient descent is an algorithm that minimizes functions.
     Given a function defined by a set of parameters, gradient descent starts
@@ -143,43 +143,84 @@ def gradient_descent(points, starting_b, starting_m, learning_rate, num_iteratio
     is achieved using calculus, taking steps in the negative direction of
     the function gradient.
     """
+    if len(points)==0:
+        return 0.
     b = starting_b
     m = starting_m
     for i in xrange(num_iterations):
         b, m = step_gradient(b, m, points, learning_rate)
-    return [b, m]
+    return b, m
 
 
 """
-Another solution
+Another solution: Linear Regression in TGA, by Dafydd Gibbon
 """
-# def llinregress(x,y):
-#     """
-#     Calculates a regression line on x,y pairs.
-#
-#     Usage:   llinregress(x,y)      x,y are equal-length lists of x-y coordinates
-#     Returns: slope, intercept
-#     """
-#     TINY = 1.0e-20
-#     if len(x) <> len(y):
-#         raise ValueError, 'Input values not paired in linregress.  Aborting.'
-#     n = len(x)
-#     x = map(float,x)
-#     y = map(float,y)
-#     xmean = mean(x)
-#     ymean = mean(y)
-#     r_num = float(n*(summult(x,y)) - sum(x)*sum(y))
-#     r_den = math.sqrt((n*ss(x) - square_of_sums(x))*(n*ss(y)-square_of_sums(y)))
-#     r = r_num / r_den
-#     z = 0.5*math.log((1.0+r+TINY)/(1.0-r+TINY))
-#     df = n-2
-#     t = r*math.sqrt(df/((1.0-r+TINY)*(1.0+r+TINY)))
-#     prob = betai(0.5*df,0.5,df/(df+t*t))
-#     slope = r_num / float(n*ss(x) - square_of_sums(x))
-#     intercept = ymean - slope*xmean
-#     sterrest = math.sqrt(1-r*r)*samplestdev(y)
-#     return slope, intercept
+def tga_linear_regression(points):
+    """
+    to be commented.
+    """
+    if len(points)==0:
+        return 0.
+    # Set x_points
+    x_points = [x for x,y in points]
+    y_points = [y for x,y in points]
 
+    # Fix means
+    meanx = central.lmean(x_points)
+    meany = central.lmean(y_points)
+
+    xysum = 0.
+    xsqsum = 0.
+    for x,y in zip(x_points,y_points):
+        dx = x - meanx
+        dy = y - meany
+        xysum  += (dx*dy)
+        xsqsum += (dx*dx)
+
+    # Intercept
+    if xsqsum == 0:
+        b = xysum
+    else:
+        b = xysum / xsqsum
+    # Slope
+    m = meany - b * meanx
+    return b,m
+
+"""
+Another solution, translated from C# code, by https://gist.github.com/tansey/1375526
+"""
+
+def tansey_linear_regression(points, inc_from, exc_to):
+    """
+    to be commented.
+    """
+    if len(points)==0:
+        return 0.
+    sum_x  = 0.
+    sum_y  = 0.
+    xsqsum = 0.
+    ysqsum = 0.
+    n = float(exc_to - inc_from)
+    sum_codev = 0.
+
+    for i in range(inc_from, exc_to):
+        x = points[i][0]
+        y = points[i][1]
+        sum_codev += (x*y)
+        sum_x += x
+        sum_y += y
+        xsqsum += (x*x)
+        ysqsum += (y*y)
+
+    ssx = xsqsum - ((sum_x*sum_x) / n)
+    sco = sum_codev - ((sum_x * sum_y) / n)
+
+    meanx = sum_x / n
+    meany = sum_y / n
+    b = meany - ((sco / ssx) * meanx)
+    m = sco / ssx
+
+    return b, m
 
 
 if __name__ == '__main__':
@@ -193,12 +234,12 @@ if __name__ == '__main__':
     points.append( (55.142188413943821 ,   78.211518270799232) )
     points.append( (52.211796692214001 ,   79.64197304980874) )
     points.append( (39.299566694317065 ,   59.171489321869508) )
-    points.append( (48.10504169176825  ,  75.331242297063056) )
+    points.append( (48.10504169176825  ,   75.331242297063056) )
     points.append( (52.550014442733818 ,   71.300879886850353) )
     points.append( (45.419730144973755 ,   55.165677145959123) )
     points.append( (54.351634881228918 ,   82.478846757497919) )
     points.append( (44.164049496773352 ,   62.008923245725825) )
-    points.append( (58.16847071685779  ,  75.392870425994957) )
+    points.append( (58.16847071685779  ,   75.392870425994957) )
     points.append( (56.727208057096611 ,   81.43619215887864) )
     points.append( (48.955888566093719 ,   60.723602440673965) )
     points.append( (44.687196231480904 ,   82.892503731453715) )
@@ -207,9 +248,9 @@ if __name__ == '__main__':
     points.append( (38.816817537445637 ,   56.877213186268506) )
     points.append( (66.189816606752601 ,   83.878564664602763) )
     points.append( (65.41605174513407  ,  118.59121730252249) )
-    points.append( (47.48120860786787  ,  57.251819462268969) )
-    points.append( (41.57564261748702  ,  51.391744079832307) )
-    points.append( (51.84518690563943  ,  75.380651665312357) )
+    points.append( (47.48120860786787  ,   57.251819462268969) )
+    points.append( (41.57564261748702  ,   51.391744079832307) )
+    points.append( (51.84518690563943  ,   75.380651665312357) )
     points.append( (59.370822011089523 ,   74.765564032151374) )
     points.append( (57.31000343834809  ,  95.455052922574737) )
     points.append( (63.615561251453308 ,   95.229366017555307) )
@@ -256,7 +297,7 @@ if __name__ == '__main__':
     points.append( (60.269214393997906 ,   70.251934419771587) )
     points.append( (35.678093889410732 ,   52.721734964774988) )
     points.append( (31.588116998132829 ,   50.392670135079896) )
-    points.append( (53.66093226167304  ,  63.642398775657753) )
+    points.append( (53.66093226167304  ,   63.642398775657753) )
     points.append( (46.682228649471917 ,   72.247251068662365) )
     points.append( (43.107820219102464 ,   57.812512976181402) )
     points.append( (70.34607561504933  ,  104.25710158543822) )
@@ -291,15 +332,40 @@ if __name__ == '__main__':
     initial_m = 0 # initial slope guess
     num_iterations = 50000
     import datetime
+
+    print "Method 1: gradient descent"
+    print "--------------------------"
     print "Starting gradient descent at b = {0}, m = {1}, error = {2}".format(initial_b, initial_m, compute_error_for_line_given_points(initial_b, initial_m, points))
     print "Running..."
 
-    print datetime.datetime.now()
-    [b, m] = gradient_descent(points, initial_b, initial_m, learning_rate, num_iterations)
-    print datetime.datetime.now()
+    print " ... start time: ",datetime.datetime.now()
+    b, m = gradient_descent_linear_regression(points, initial_b, initial_m, learning_rate, num_iterations)
+    print " ... end time: ",datetime.datetime.now()
 
     print "After {0} iterations b(intercept) = {1}, m(slope) = {2}, error = {3}".format(num_iterations, b, m, compute_error_for_line_given_points(b, m, points))
 
-    print "Slope:", slope((32.5,31.7),(53.4,68.8))
-    print "Inter:", intercept((32.5,31.7),(53.4,68.8))
 
+    print "Method 2: TGA"
+    print "--------------------------"
+
+    print " ... start time: ",datetime.datetime.now()
+    b, m = tga_linear_regression(points)
+    print " ... end time: ",datetime.datetime.now()
+
+    print "TGA b(intercept) = ",b," m(slope) = ",m
+
+
+    print "Method 3: from C#"
+    print "--------------------------"
+
+    print " ... start time: ",datetime.datetime.now()
+    b, m = tansey_linear_regression(points, 0, len(points))
+    print " ... end time: ",datetime.datetime.now()
+
+    print "C# b(intercept) = ",b," m(slope) = ",m
+
+
+
+
+    #print "Test Slope:", slope((32.5,31.7),(53.4,68.8))
+    #print "Test Inter:", intercept((32.5,31.7),(53.4,68.8))
