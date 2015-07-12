@@ -70,7 +70,7 @@ def lmoment(items,moment=1):
     """
     if moment == 1:
         return 0.
-    mn = central.lmean(items)
+    mn = central.fmean(items)
     momentlist = [ (i-mn)**moment for i in items ]
     return sum(momentlist) / float(len(items))
 
@@ -83,7 +83,7 @@ def lvariation(items):
     @param items (list) list of data values
     @return (float)
     """
-    return variability.lstdev(items) / float(central.lmean(items)) * 100.
+    return variability.lstdev(items) / float(central.fmean(items)) * 100.
 
 
 def lskew(items):
@@ -122,7 +122,7 @@ if __name__=="__main__":
     print 'moment:'
     print datetime.datetime.now().isoformat()
     moment = 10
-    mn = central.lmean(l)
+    mn = central.fmean(l)
     s = 0
     for x in l:
         s = s + (x-mn)**moment

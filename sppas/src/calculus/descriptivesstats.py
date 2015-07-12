@@ -89,31 +89,31 @@ class DescriptiveStatistics( object ):
     def total(self):
         """
         Estimates the sum of data values.
-        @return (tuple): a tuple of (key, total)
+        @return (tuple): a tuple of (key, total) of float values
         """
-        return tuple( (key, sum(values)) for key,values in self.items.iteritems() )
+        return tuple( (key, stats.central.fsum(values)) for key,values in self.items.iteritems() )
 
 
     def mean(self):
         """
         Estimates the arithmetic mean of data values.
-        @return (tuple): a tuple of (key, mean)
+        @return (tuple): a tuple of (key, mean) of float values
         """
-        return tuple( (key, stats.central.lmean(values)) for key,values in self.items.iteritems() )
+        return tuple( (key, stats.central.fmean(values)) for key,values in self.items.iteritems() )
 
 
     def median(self):
         """
         Estimates the 'middle' score of the data values.
-        @return (tuple): a tuple of (key, mean)
+        @return (tuple): a tuple of (key, mean) of float values
         """
-        return tuple( (key, stats.central.lmedian(values)) for key,values in self.items.iteritems() )
+        return tuple( (key, stats.central.fmedian(values)) for key,values in self.items.iteritems() )
 
 
     def variance(self):
         """
         Estimates the unbiased sample variance of data values.
-        @return (tuple): a tuple of (key, variance)
+        @return (tuple): a tuple of (key, variance) of float values
         """
         return tuple( (key, stats.variability.lvariance(values)) for key,values in self.items.iteritems() )
 
@@ -121,7 +121,7 @@ class DescriptiveStatistics( object ):
     def stdev(self):
         """
         Estimates the standard deviation of data values.
-        @return (tuple): a tuple of (key, stddev)
+        @return (tuple): a tuple of (key, stddev) of float values
         """
         return tuple( (key, stats.variability.lstdev(values)) for key,values in self.items.iteritems() )
 
@@ -129,7 +129,7 @@ class DescriptiveStatistics( object ):
     def coefvariation(self):
         """
         Estimates the coefficient of variation of data values (given as a percentage).
-        @return (tuple): a tuple of (key, coefvariation)
+        @return (tuple): a tuple of (key, coefvariation) of float values
         """
         return tuple( (key, stats.moment.lvariation(values)) for key,values in self.items.iteritems() )
 

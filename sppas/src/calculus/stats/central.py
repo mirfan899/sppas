@@ -38,6 +38,10 @@
 # File: central.py
 # ----------------------------------------------------------------------------
 
+import math
+
+# ----------------------------------------------------------------------------
+
 """
 @authors: Brigitte Bigi
 @contact: brigitte.bigi@gmail.com
@@ -49,19 +53,36 @@ A collection of basic statistical functions for python.
 Function List
 =============
 
-    - geometricmean
-    - harmonicmean
-    - lmean
-    - lmedian
-    - lmode
+    - fsum
+    - fmult
+    - fgeometricmean
+    - fharmonicmean
+    - fmean
+    - fmedian
 
 """
 
-def mult(items):
+def fsum(items):
+    """
+    Estimates the sum of a list of data values.
+
+    @param items (list) list of data values
+    @return (float)
+    """
+    return math.fsum(items)
+
+
+def fmult(items):
+    """
+    Estimates the product of a list of data values.
+
+    @param items (list) list of data values
+    @return (float)
+    """
     return reduce(lambda x, y: x*y, items)
 
 
-def lgeometricmean (items):
+def fgeometricmean (items):
     """
     Calculates the geometric mean of the data values:
     n-th root of (x1 * x2 * ... * xn).
@@ -76,7 +97,7 @@ def lgeometricmean (items):
     return m
 
 
-def lharmonicmean (items):
+def fharmonicmean (items):
     """
     Calculates the harmonic mean of the data values:
     C{n / (1/x1 + 1/x2 + ... + 1/xn)}.
@@ -91,7 +112,7 @@ def lharmonicmean (items):
     return float(len(items)) / s
 
 
-def lmean (items):
+def fmean (items):
     """
     Calculates the arithmetic mean of the data values:
     sum(items)/len(items)
@@ -99,10 +120,10 @@ def lmean (items):
     @return (float)
     """
     if not len(items): return 0.
-    return (sum(items) / float(len(items)))
+    return (fsum(items) / float(len(items)))
 
 
-def lmedian (items):
+def fmedian (items):
     """
     Calculates the 'middle' score of the data values. If there is an even
     number of scores, the mean of the 2 middle scores is returned.
@@ -127,7 +148,7 @@ if __name__=="__main__":
 
     l = [x*x for x in range(1,500)]
 
-    print 'lgeometricmean:'
+    print 'geometricmean:'
     print datetime.datetime.now().isoformat()
     one_over_n = 1./len(l)
     m = 1.0
@@ -137,28 +158,28 @@ if __name__=="__main__":
     print datetime.datetime.now().isoformat()
     one_over_n = 1.0/float(len(l))
     powlist = [ pow(i,one_over_n) for i in l ]
-    print mult(powlist)
+    print fmult(powlist)
     print datetime.datetime.now().isoformat()
     print
 
-    print 'lharmonician:'
+    print 'harmonician:'
     print datetime.datetime.now().isoformat()
     s = 0
     for item in l:
         s = s + 1.0/item
     print len(l)/s
     print datetime.datetime.now().isoformat()
-    print lharmonicmean(l)
+    print fharmonicmean(l)
     print datetime.datetime.now().isoformat()
     print
 
-    print 'lmean:'
+    print 'mean:'
     print datetime.datetime.now().isoformat()
     s = 0
     for item in l:
         s = s + item
     print s / float(len(l))
     print datetime.datetime.now().isoformat()
-    print lmean(l)
+    print fmean(l)
     print datetime.datetime.now().isoformat()
     print

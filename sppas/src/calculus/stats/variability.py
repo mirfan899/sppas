@@ -71,8 +71,8 @@ def lvariance (items):
     """
     if len(items)<2:
         return 0.
-    mn = central.lmean(items)
-    return sum(pow(i-mn, 2) for i in items) / (len(items)-1)
+    mn = central.fmean(items)
+    return central.fsum(pow(i-mn, 2) for i in items) / (len(items)-1)
 
 
 def lstdev (items):
@@ -104,7 +104,7 @@ def lz (items, score):
     @param items (list) list of data values
     @return (float)
     """
-    return (score - central.lmean(items)) / lstdev(items)
+    return (score - central.fmean(items)) / lstdev(items)
 
 
 def lzs (items):
@@ -122,10 +122,10 @@ if __name__=="__main__":
     l = [x*x for x in range(1,11)]
     print l
     print 'mean:'
-    print central.lmean(l)
+    print central.fmean(l)
 
     print 'median:'
-    print central.lmedian(l)
+    print central.fmedian(l)
 
     print 'variance:'
     print lvariance(l)
