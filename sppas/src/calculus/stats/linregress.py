@@ -190,11 +190,11 @@ def tga_linear_regression(points):
 
     # Intercept
     if xsqsum == 0:
-        b = xysum
+        m = xysum
     else:
-        b = xysum / xsqsum
+        m = xysum / xsqsum
     # Slope
-    m = mean_y - b * mean_x
+    b = mean_y - m * mean_x
     return b,m
 
 """
@@ -346,9 +346,24 @@ if __name__ == '__main__':
     print "--------------------------"
 
     print " ... start time: ",datetime.datetime.now()
-    b, m = gradient_descent_linear_regression(points)
-    print " ... end time: ",datetime.datetime.now()
-    print "Gradient descent b(intercept) = ",b, " m(slope) = ",m," error = ",compute_error_for_line_given_points(b, m, points)
+    b, m = gradient_descent_linear_regression(points, num_iterations=50000)
+    print " ... end time:   ",datetime.datetime.now()
+    print "Gradient descent 50000, b(intercept) = ",b, " m(slope) = ",m," error = ",compute_error_for_line_given_points(b, m, points)
+    print
+    print " ... start time: ",datetime.datetime.now()
+    b, m = gradient_descent_linear_regression(points, num_iterations=100000)
+    print " ... end time:   ",datetime.datetime.now()
+    print "Gradient descent 100000, b(intercept) = ",b, " m(slope) = ",m," error = ",compute_error_for_line_given_points(b, m, points)
+    print
+    print " ... start time: ",datetime.datetime.now()
+    b, m = gradient_descent_linear_regression(points, num_iterations=150000)
+    print " ... end time:   ",datetime.datetime.now()
+    print "Gradient descent 150000, b(intercept) = ",b, " m(slope) = ",m," error = ",compute_error_for_line_given_points(b, m, points)
+    print
+    print " ... start time: ",datetime.datetime.now()
+    b, m = gradient_descent_linear_regression(points, num_iterations=200000)
+    print " ... end time:   ",datetime.datetime.now()
+    print "Gradient descent 150000, b(intercept) = ",b, " m(slope) = ",m," error = ",compute_error_for_line_given_points(b, m, points)
     print
 
     print "Method 2: TGA"
@@ -356,7 +371,7 @@ if __name__ == '__main__':
 
     print " ... start time: ",datetime.datetime.now()
     b, m = tga_linear_regression(points)
-    print " ... end time: ",datetime.datetime.now()
+    print " ... end time:   ",datetime.datetime.now()
     print "TGA b(intercept) = ",b," m(slope) = ",m
     print
 
@@ -366,8 +381,19 @@ if __name__ == '__main__':
 
     print " ... start time: ",datetime.datetime.now()
     b, m = tansey_linear_regression(points)
-    print " ... end time: ",datetime.datetime.now()
+    print " ... end time:   ",datetime.datetime.now()
     print "C# b(intercept) = ",b," m(slope) = ",m
+    print
+
+
+    print "Method 4: Mix: gradient descent initialized with the result of the other methods"
+    print "--------------------------"
+
+    print " ... start time: ",datetime.datetime.now()
+    b, m = gradient_descent(points, b, m, learning_rate=0.0001, num_iterations=50000)
+    print " ... end time:   ",datetime.datetime.now()
+    print "Mix b(intercept) = ",b," m(slope) = ",m," error = ",compute_error_for_line_given_points(b, m, points)
+    print
     print
 
     #print "Test Slope:", slope((32.5,31.7),(53.4,68.8))
