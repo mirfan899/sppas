@@ -73,11 +73,7 @@ from wxgui.cutils.ctrlutils  import CreateGenButton
 from wxgui.ui.CustomListCtrl import SortListCtrl
 from sp_glob import ICONS_PATH
 
-
 # ----------------------------------------------------------------------------
-# Constants
-# ----------------------------------------------------------------------------
-
 
 # ----------------------------------------------------------------------------
 # class DescriptivesStatsDialog
@@ -95,49 +91,39 @@ class DescriptivesStatsDialog( wx.Dialog ):
 
     """
 
-    def __init__(self, parent, prefsIO, filemanager):
+    def __init__(self, parent, prefsIO, tiers={}):
         """
         Create a new dialog.
 
+        @param tiers: a dictionary with key=filename, value=list of selected tiers
         """
 
         wx.Dialog.__init__(self, parent, title=FRAME_TITLE+" - Descriptives Statistics", style=FRAME_STYLE)
 
         # Members
         self.preferences = prefsIO
-        self._data = {}
         # Options to evaluate stats:
         self.n=1
         self.withradius=0
         self.withalt=False
 
-        self._create_tierstats( filemanager )
+        self._data = {} # to store stats
+        for k,v in tiers.items():
+            for tier in v:
+                ts = TierStats( tier, self.n, self.withradius, self.withalt )
+                self._data[ts]=k
+                # remark: statistics are not estimated yet.
+
         self._create_gui()
 
         # Events of this frame
         wx.EVT_CLOSE(self, self.onClose)
 
-    # End __init__
     # ------------------------------------------------------------------------
-
-    def _create_tierstats(self, filemanager):
-        self._data = {}
-        for i in range(filemanager.GetSize()):
-            # obj is a TrsList instance
-            obj = filemanager.GetObject(i)
-            trs = obj.GetTranscription()
-            for tier in trs:
-                logging.debug(' ... ... tier %s...'%tier.GetName())
-                if obj.IsSelected(tier.GetName()):
-                    logging.debug(' ... ... is added to the selection')
-                    ts = TierStats( tier, self.n, self.withradius, self.withalt )
-                    self._data[ts]=filemanager.GetFilename(i)
-                    # remark: statistics are not estimated yet.
 
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
-
 
     def _create_gui(self):
         self._init_infos()
@@ -172,7 +158,6 @@ class DescriptivesStatsDialog( wx.Dialog ):
         self.title_label.SetFont( font )
         self.title_layout.Add(bmp,  flag=wx.TOP|wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, border=5)
         self.title_layout.Add(self.title_label, flag=wx.EXPAND|wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
-
 
     def _create_toolbar(self):
         iconSize = (TB_ICONSIZE, TB_ICONSIZE)
@@ -324,7 +309,6 @@ class DescriptivesStatsDialog( wx.Dialog ):
 
     #-------------------------------------------------------------------------
 
-
 # ----------------------------------------------------------------------------
 
 
@@ -351,11 +335,9 @@ class BaseStatPanel( wx.Panel ):
         self.sizer = wx.BoxSizer(wx.HORIZONTAL)
         self.SetSizer(self.sizer)
         self.ShowNothing()
-        self.sizer.Fit(self)
+        self.sizer.FitInside(self)
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def ShowNothing(self):
         """
@@ -364,9 +346,9 @@ class BaseStatPanel( wx.Panel ):
         """
         self.sizer.DeleteWindows()
         self.sizer.Add(wx.StaticText(self, -1, "Nothing to view!"), 1, flag=wx.ALL|wx.EXPAND, border=5)
+        self.SendSizeEvent()
 
     # ------------------------------------------------------------------------
-
 
     def ShowStats(self, tier):
         """
@@ -376,7 +358,6 @@ class BaseStatPanel( wx.Panel ):
         self.ShowNothing()
 
     # ------------------------------------------------------------------------
-
 
     def SaveAs(self):
         dlg = wx.FileDialog(self,
@@ -429,9 +410,7 @@ class SummaryPanel( BaseStatPanel ):
         BaseStatPanel.__init__(self, parent, prefsIO, name)
         self.cols = ("Label", "Occurrences", "Total durations", "Mean durations", "Median durations", "Std dev. durations")
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def ShowStats(self, data):
         """
@@ -472,10 +451,10 @@ class SummaryPanel( BaseStatPanel ):
 
         self.sizer.DeleteWindows()
         self.sizer.Add(self.statctrl, 1, flag=wx.ALL|wx.EXPAND, border=5)
-        self.sizer.Fit(self)
+        self.sizer.FitInside(self)
+        self.SendSizeEvent()
 
     # ------------------------------------------------------------------------
-
 
     def __get_ts(self, data):
         tiers=[]
@@ -513,9 +492,7 @@ class DetailedPanel( BaseStatPanel ):
         BaseStatPanel.__init__(self, parent, prefsIO, name)
         self.cols = ('',)
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def ShowStats(self, data):
         """
@@ -573,8 +550,8 @@ class DetailedPanel( BaseStatPanel ):
 
         self.sizer.DeleteWindows()
         self.sizer.Add(self.statctrl, 1, flag=wx.ALL|wx.EXPAND, border=5)
-        self.sizer.Fit(self)
-
+        self.sizer.FitInside(self)
+        self.SendSizeEvent()
 
     # ------------------------------------------------------------------------
 

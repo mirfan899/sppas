@@ -73,8 +73,9 @@ from wxgui.structs.prefs     import Preferences
 from wxgui.cutils.imageutils import spBitmap
 import wxgui.dialogs.filedialogs as filedialogs
 
-from wxgui.panels.trslist        import TrsList
+from wxgui.panels.trslist         import TrsList
 from wxgui.views.descriptivestats import DescriptivesStatsDialog
+from wxgui.views.useragreement    import UserAgreementDialog
 
 # ----------------------------------------------------------------------------
 # Constants
@@ -384,47 +385,47 @@ class Statistics( scrolled.ScrolledPanel ):
 
     def OnPreview(self, event):
         """ Open a frame to view a tier. """
-        nb = 0
-        for i in range(self._filetrs.GetSize()):
-            p = self._filetrs.GetObject(i)
-            if p == self._selection:
-                nb = p.tier_list.GetSelectedItemCount()
+        nb = self._get_nbselectedtiers()
 
         if nb == 1:
-            for i in range(self._filetrs.GetSize()):
-                p = self._filetrs.GetObject(i)
-                if p == self._selection:
-                    p.Preview()
-
-        elif nb == 0:
-            self.__display_text_in_statusbar("Nothing to view: one tier must be selected.")
-
+            self._selection.Preview()
         else:
-            wx.MessageBox('You must check only one tier to view...', 'Warning', wx.OK | wx.ICON_INFORMATION)
+            wx.MessageBox('You must check one tier to view...', 'Warning', wx.OK | wx.ICON_INFORMATION)
+            self.__display_text_in_statusbar('You must check only one tier to view...')
 
 
     # ----------------------------------------------------------------------
 
     def OnDescriptivesStats(self, event):
         """ Descriptives Statistics ."""
-        logging.debug('Descriptives statistics')
-
-        dlg = DescriptivesStatsDialog(self, self._prefsIO, self._filetrs)
-        dlg.ShowModal()
-        dlg.Destroy()
-
-
-    def OnTimeGroupAnalysis(self, event):
-        """ Time Group Analysis ."""
-        logging.debug('Time Group Analysis')
-        dlg = wx.MessageBox("TGA will come soon in SPPAS!\nTGA is available here: http://wwwhomes.uni-bielefeld.de/gibbon/TGA/.", "Not Implemented (yet!)", wx.OK| wx.ICON_INFORMATION)
-
+        nb = self._get_nbselectedtiers()
+        if nb > 0:
+            dlg = DescriptivesStatsDialog(self, self._prefsIO, self._get_selectedtiers())
+            dlg.ShowModal()
+            dlg.Destroy()
+        else:
+            wx.MessageBox('You must check at least one tier...', 'Warning', wx.OK | wx.ICON_INFORMATION)
+            self.__display_text_in_statusbar('You must check at least one tier...')
 
     def OnUserAgreement(self, event):
         """ User agreement ."""
-        logging.debug('User agreement')
+        nb = self._get_nbselectedtiers()
+        if nb == 2:
+            dlg = UserAgreementDialog(self, self._prefsIO, self._get_selectedtiers())
+            dlg.ShowModal()
+            dlg.Destroy()
+        else:
+            wx.MessageBox('You must check two tiers...', 'Warning', wx.OK | wx.ICON_INFORMATION)
+            self.__display_text_in_statusbar('You must check two tiers...')
 
-        dlg = wx.MessageBox("User agreement estimations will come soon in SPPAS!", "Not Implemented (yet!)", wx.OK| wx.ICON_INFORMATION)
+    def OnTimeGroupAnalysis(self, event):
+        """ Time Group Analysis ."""
+        nb = self._get_nbselectedtiers()
+        if nb > 0:
+            wx.MessageBox("TGA will come soon in SPPAS!\nTGA is available in-line here: http://wwwhomes.uni-bielefeld.de/gibbon/TGA/.", "Not Implemented (yet!)", wx.OK| wx.ICON_INFORMATION)
+        else:
+            wx.MessageBox('You must check at least one tier...', 'Warning', wx.OK | wx.ICON_INFORMATION)
+            self.__display_text_in_statusbar('You must check at least one tier...')
 
     # ----------------------------------------------------------------------
 
@@ -599,6 +600,30 @@ class Statistics( scrolled.ScrolledPanel ):
                     tiersY.append(name)
 
         return (sorted(tiersX),sorted(tiersY))
+
+    def _get_selectedtiers(self):
+        """ Create a list of selected tiers for each file. """
+        data = {}
+        for i in range(self._filetrs.GetSize()):
+            fname = self._filetrs.GetFilename(i)
+            # obj is a TrsList instance
+            obj = self._filetrs.GetObject(i)
+            trs = obj.GetTranscription()
+            for tier in trs:
+                if obj.IsSelected(tier.GetName()):
+                    if not fname in data.keys():
+                        data[fname] = []
+                    data[fname].append(tier)
+        return data
+
+    def _get_nbselectedtiers(self):
+        """ Get the number of selected tiers. """
+        nb = 0
+        for i in range(self._filetrs.GetSize()):
+            p = self._filetrs.GetObject(i)
+            if p == self._selection:
+                nb = p.tier_list.GetSelectedItemCount()
+        return nb
 
 # ----------------------------------------------------------------------------
 
