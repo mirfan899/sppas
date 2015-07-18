@@ -35,7 +35,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: tierstats.py
+# File: tiertga.py
 # ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
@@ -45,37 +45,35 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-from calculus.descriptivesstats import DescriptiveStatistics
+from calculus.timegroupanalysis import TimeGroupAnalysis
+from annotationdata.tier import Tier
 
 # ----------------------------------------------------------------------------
 
-class TierStats( object ):
+class TierTGA( object ):
     """
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
-    @summary: Estimates descriptives statistics of annotations of a tier.
+    @summary: Estimates TGA on a tier.
 
-    Map a tier into a dictionary where:
-    - key is a label
-    - value is the list of observed durations for this label
+    Create time groups then map them into a dictionary where:
+    - key is a label assigned to the time group
+    - value is the list of observed durations of segments in this time group
 
     """
 
-    def __init__(self, tier=None, n=1, withradius=0, withalt=False):
+    def __init__(self, tier=None, withradius=0):
         """
-        Create a new TierStats instance.
+        Create a new TierTGA instance.
 
-        @param tier (either Tier or list of tiers)
-        @param n (int): n-gram value
+        @param tier (Tier)
         @param withradius (int): 0 means to use Midpoint, negative value means to use R-, positive radius means to use R+
-        @param withalt (boolean): Use or not use of alternative labels
 
         """
         self.tier         = tier
         self.__withradius = withradius
-        self.__withalt    = withalt
-        self.__n          = n
+        self.__separators = []
 
     # ------------------------------------------------------------------
 
@@ -83,14 +81,8 @@ class TierStats( object ):
     # Getters
     # ------------------------------------------------------------------
 
-    def get_ngram(self):
-        return self.__n
-
     def get_withradius(self):
         return self.__withradius
-
-    def get_withalt(self):
-        return self.__withalt
 
     # ------------------------------------------------------------------
     # Setters
@@ -105,96 +97,60 @@ class TierStats( object ):
         """
         self.__withradius = int(withradius)
 
-    def set_withalt(self, withalt):
+    def append_separator(self, sepstr):
         """
-        Set the withalt option, used to select the labels
-            - False means to use only the label with the higher score of each annotation
-            - True means to use all labels of each annotation
+        Append a time group separator.
         """
-        self.__withalt = withalt
-
-    def set_ngram(self, n):
-        """
-        Set the n value of the n-grams, used to fix the history size (at least =1).
-        """
-        if int(n) < 1:
-            raise ValueError('An n-gram must be at least of size 1, got %d'%n)
-        self.__n = int(n)
-
+        if not sepstr in self.__separators:
+            self.__separators.append(sepstr)
 
     # ------------------------------------------------------------------
     # Workers
     # ------------------------------------------------------------------
 
-    def ds(self):
+    def tga(self):
         """
-        Create then return the DescriptiveStatistic object corresponding to the tier.
+        Create then return the TimeGroupAnalysis object corresponding to the tier.
         """
-        tup   = self.__tier_to_tuple()
-        items = self.__tuple_to_dict(self.__ngrams(tup))
-        return DescriptiveStatistics(items)
+        items = self.__tier_to_tg()
+        return TimeGroupAnalysis( items )
 
     # ------------------------------------------------------------------
-
 
     # ------------------------------------------------------------------
     # Private
     # ------------------------------------------------------------------
 
-    def __tier_to_tuple(self):
+    def __tier_to_tg(self):
         """
         Return a tuple of label/duration pairs.
         """
-        tiers = self.tier
-        if not isinstance(self.tier,list):
-            tiers = [self.tier]
+        i = 1
+        tglabel = "tg_1"
+        tg = {}
 
-        l = list()
-        for tier in tiers:
-            for a in tier:
-                if self.__withalt is False:
-                    textes = [ a.GetLabel().GetValue() ]
-                else:
-                    textes = [ t.GetValue() for t in a.GetLabels() ]
+        for a in self.tier:
+            alabel = a.GetLabel().GetValue()
+            # a TG separator (create a new tg if previous tg was used!)
+            if a.GetLabel().IsSilence() or a.GetLabel().IsDummy() or alabel in self.__separators:
+                if tglabel in tg.keys():
+                    i = i+1
+                    tglabel = "tg_"+str(i)
 
+            # a TG continuum
+            else:
+                # Get the duration
                 duration = a.GetLocation().GetDuration()
                 if a.GetLocation().IsInterval():
                     if self.__withradius < 0:
                         duration = duration + a.GetLocation().GetBegin().GetRadius() + a.GetLocation().GetEnd().GetRadius()
                     elif self.__withradius > 0:
                         duration = duration - a.GetLocation().GetBegin().GetRadius() - a.GetLocation().GetEnd().GetRadius()
+                # Append in the list of values of this TG
+                if not tglabel in tg.keys():
+                    tg[tglabel] = []
+                tg[tglabel].append( duration )
 
-                for texte in textes:
-                    l.append( (texte,duration) )
+        return tg
 
-        return tuple(l)
-
-    def __ngrams(self,items):
-        """
-        Yield a sequences of ngrams.
-        """
-        size = len(items)
-        if (size - self.__n) < 0:
-            yield items[:]
-        else:
-            limit = size - self.__n + 1
-            for i in xrange(limit):
-                yield items[i:i + self.__n]
-
-    def __tuple_to_dict(self,items):
-        """
-        Convert into a dictionary.
-        @param items (tuple) the ngram items
-        @return: dictionary key=text, value=list of durations.
-        """
-        d = {}
-        for item in items:
-            dur = sum([i[1] for i in item])
-            text = " ".join([i[0] for i in item])
-            if not text in d:
-                d[text] = []
-            d[text].append(dur)
-        return d
-
-# End TierStats
 # ---------------------------------------------------------------------------

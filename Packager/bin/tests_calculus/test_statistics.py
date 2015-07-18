@@ -18,7 +18,6 @@ from annotationdata.ptime.point import TimePoint
 from annotationdata.tier        import Tier
 
 from calculus.descriptivesstats  import DescriptiveStatistics
-
 from presenters.tierstats import TierStats
 
 
@@ -65,6 +64,7 @@ class TestStatistics(unittest.TestCase):
 
         coefvariation = ds.coefvariation()
         self.assertEqual(56.773, round(coefvariation[totoidx][1],3))
+
 
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestStatistics)

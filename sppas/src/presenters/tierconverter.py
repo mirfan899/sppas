@@ -50,21 +50,34 @@ def normalize_text(text):
     return text.lower().strip()
 
 def normalize_annotation(ann):
+    """
+    Create a list of tuples (label,score) from an annotation, with normalized labels.
+    Raise an exception if scores of labels can not be interpreted.
+
+    @param ann (Annotation)
+    @return List of tuples
+    """
+    # Put all scores in a list
     scores = [ t.Score for t in ann.GetLabel().GetLabels() ]
+    # Put all normalized labels in a list
     labels = [ normalize_text(t.Value) for t in ann.GetLabel().GetLabels() ]
 
+    # Check if scores are relevant (probabilities or percentages),
+    # and return the list of tuples (label,score) if they are
     probas = all( list( (v>=0. and v<=1.) for v in scores) ) and sum(scores)==1.
     if probas: return [ (labels[i],scores[i]) for i in range(len(scores)) ]
 
     percentage = all( list( (v>=0. and v<=100.) for v in scores)) and sum(scores)==100.
     if percentage: return [ (labels[i],float(scores[i])/100.) for i in range(len(scores)) ]
 
+    # hum... scores wasn't appropriate...
     raise TypeError('Expect scores as probabilities or percentages.')
 
 
 def has_bound(tier, bound):
     """
-    Return True if bound is part of one of the best localizations.
+    Return True if bound is part of one of the best localizations
+    (alternative localizations are not tested).
     """
     if tier.IsPoint():
         i = tier.Index( bound )
@@ -89,11 +102,11 @@ class TierConverter:
 
     def tier_to_counter(self):
         """
-        Return a counter with label/count.
+        Return a counter with label/count, with normalized labels.
         """
         labels = list()
-        for a in self.tier:
-            texts = a.GetLabel().GetLabels()
+        for ann in self.tier:
+            texts = ann.GetLabel().GetLabels()
             labels.extend(normalize_text(t.GetValue()) for t in texts )
 
         return collections.Counter(labels)
@@ -101,6 +114,9 @@ class TierConverter:
     # -----------------------------------------------------------------------
 
     def tier_to_items(self):
+        """
+        Return the list of normalized labels.
+        """
         c = self.tier_to_counter()
         return c.keys()
 
@@ -111,24 +127,22 @@ class TierConverter:
         Create a vector of tuples from the annotations of a tier.
 
         @param items: list of normalized labels to be used for the tuples
-
+        @return list of tuples like for example [ (1.0,0.0), (1.0,0.0), (0.0,1.0) ] if there are 2 possible items in 3 annotations
         """
         nb = len(items)
         v = []
 
-        for a in self.tier:
-            # because tuples are immutable, we use a list.
+        for ann in self.tier:
+            # sc will be the tuple for this annotation.
+            # however, tuples are immutable so we use a list and we will convert later.
             sc = [0.]*nb
-
-            # get a list of tuples label/score with normalized scores
-            adata = normalize_annotation(a)
-
+            # get a list of tuples label/score with normalized labels
+            adata = normalize_annotation(ann)
             # assign real scores
             for l,s in adata:
                 i = items.index(l)
                 sc[i] = s
-
-            # add into the vector of tuples
+            # add into the vector of tuples (then, sc is converted to a tuple)
             v.append( tuple(sc) )
 
         return v
@@ -138,7 +152,10 @@ class TierConverter:
     def bounds_to_vector(self, othertier):
         """
         Create two vectors of tuples from the boundaries of a tier and another one.
+        NOT VALIDATED.
 
+        @param tier (Tier)
+        @return p,q
         """
         p = []
         q = []

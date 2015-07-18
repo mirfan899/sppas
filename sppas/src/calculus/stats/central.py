@@ -139,8 +139,27 @@ def fmedian (items):
     newlist = sorted(items)
     return float(newlist[middle] + newlist[middle-1]) / 2.
 
-# ----------------------------------------------------------------------------
 
+def fmin (items):
+    """
+    Return the minimum of the data values.
+    @param items (list) list of data values
+    @return (float)
+    """
+    if not len(items): return 0.
+    return min(items)
+
+
+def fmax (items):
+    """
+    Return the maximum of the data values.
+    @param items (list) list of data values
+    @return (float)
+    """
+    if not len(items): return 0.
+    return max(items)
+
+# ----------------------------------------------------------------------------
 
 if __name__=="__main__":
 

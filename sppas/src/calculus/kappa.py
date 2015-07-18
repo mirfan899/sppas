@@ -39,7 +39,7 @@
 # ----------------------------------------------------------------------------
 
 from __future__ import division
-from stats.distances import squared_euclidian as sq
+from geometry.distances import squared_euclidian as sq
 
 # ----------------------------------------------------------------------------
 

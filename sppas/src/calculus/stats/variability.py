@@ -115,21 +115,48 @@ def lzs (items):
     """
     return [ lz(items,i) for i in items ]
 
+
+def rPVI(items):
+    """
+    Calculates the Raw Pairwise Variability Index
+    @param items (list) list of data values
+    @return (float)
+    """
+    if len(items)<2:
+        return 0.
+    n = len(items)-1
+    sumd = central.fsum( [ math.fabs(items[i]-items[i+1]) for i in range(n) ]  )
+    return sumd / n
+
+
+def nPVI(items):
+    """
+    Calculates the Normalized Pairwise Variability Index
+    @param items (list) list of data values
+    @return (float)
+    """
+    if len(items)<2:
+        return 0.
+    n = len(items)-1
+    sumd = 0.
+    for i in range(n):
+        d1 = items[i]
+        d2 = items[i+1]
+        delta = math.fabs(d1 - d2)
+        meand = (d1 + d2) / 2.
+        sumd += delta / meand
+
+    return 100. * sumd / n
+
 # ----------------------------------------------------------------------------
 
 if __name__=="__main__":
 
     l = [x*x for x in range(1,11)]
     print l
-    print 'mean:'
-    print central.fmean(l)
-
-    print 'median:'
-    print central.fmedian(l)
-
-    print 'variance:'
-    print lvariance(l)
-
-    print 'standard deviation:'
-    print lstdev(l)
-
+    print 'mean:',central.fmean(l)
+    print 'median:',central.fmedian(l)
+    print 'variance:',lvariance(l)
+    print 'standard deviation:',lstdev(l)
+    print 'rPVI:',rPVI(l)
+    print 'nPVI:',nPVI(l)
