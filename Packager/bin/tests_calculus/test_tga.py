@@ -39,21 +39,19 @@ class TestStatistics(unittest.TestCase):
         tga = t.tga()
 
         occurrences = tga.len()
-        tg1 = map(operator.itemgetter(0), occurrences).index('tg_1')
-        tg2 = map(operator.itemgetter(0), occurrences).index('tg_2')
-
-        self.assertEqual(2, occurrences[tg1][1])
-        self.assertEqual(2, occurrences[tg2][1])
+        self.assertEqual(2, occurrences['tg_1'])
+        self.assertEqual(2, occurrences['tg_2'])
 
         total = tga.total()
-        self.assertEqual(2.0, total[tg1][1])
-        self.assertEqual(4.5, total[tg2][1])
+        self.assertEqual(2.0, total['tg_1'])
+        self.assertEqual(4.5, total['tg_2'])
 
         mean = tga.mean()
-        self.assertEqual(1.0, mean[tg1][1])
-        self.assertEqual(2.25, mean[tg2][1])
+        self.assertEqual(1.0, mean['tg_1'])
+        self.assertEqual(2.25, mean['tg_2'])
 
     def testTGA(self):
+        # This is one of the samples proposed in-line by Dafydd
         path = os.path.join(SAMPLES,"tga.TextGrid")
         trs = annotationdata.io.read(path)
         tier = trs.Find('Syllables')
@@ -70,24 +68,22 @@ class TestStatistics(unittest.TestCase):
         npvi   = tga.nPVI()
         reglin = tga.intercept_slope_original()
 
-        tg1 = map(operator.itemgetter(0), occurrences).index('tg_1')
-        self.assertEqual(3,    occurrences[tg1][1])
-        self.assertEqual(0.57, round(total[tg1][1],2))
-        self.assertEqual(0.19, round(mean[tg1][1],2))
-        self.assertEqual(0.14, round(median[tg1][1],2))
+        self.assertEqual(3,    occurrences['tg_1'])
+        self.assertEqual(0.57, round(total['tg_1'],2))
+        self.assertEqual(0.19, round(mean['tg_1'],2))
+        self.assertEqual(0.14, round(median['tg_1'],2))
         #self.assertEqual(0.13928, round(stdev[tg1][1],5))
-        self.assertEqual(94, round(npvi[tg1][1],0))
-        i,s = reglin[tg1][1]
+        self.assertEqual(94, round(npvi['tg_1'],0))
+        i,s = reglin['tg_1']
         self.assertEqual(0.025, round(i,3))
         self.assertEqual(0.165, round(s,3))
 
-        tg33 = map(operator.itemgetter(0), occurrences).index('tg_33')
-        self.assertEqual(4,     occurrences[tg33][1])
-        self.assertEqual(0.78,  round(total[tg33][1],2))
-        self.assertEqual(0.195, round(mean[tg33][1],3))
-        #self.assertEqual(0.06062, round(stdev[tg33][1],5))
-        self.assertEqual(53,    round(npvi[tg33][1],0))
-        i,s = reglin[tg33][1]
+        self.assertEqual(4,     occurrences['tg_33'])
+        self.assertEqual(0.78,  round(total['tg_33'],2))
+        self.assertEqual(0.195, round(mean['tg_33'],3))
+        #self.assertEqual(0.06062, round(stdev['tg_33'][1],5))
+        self.assertEqual(53,    round(npvi['tg_33'],0))
+        i,s = reglin['tg_33']
         self.assertEqual(0.156, round(i,3))
         self.assertEqual(0.026, round(s,3))
 

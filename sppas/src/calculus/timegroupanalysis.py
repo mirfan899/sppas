@@ -83,14 +83,14 @@ class TimeGroupAnalysis( DescriptiveStatistics ):
         Estimates the Raw Pairwise Variability Index of data values.
         @return (tuple): a tuple of (key, nPVI) of float values
         """
-        return tuple( (key, stats.variability.rPVI(values)) for key,values in self.items.iteritems() )
+        return dict( (key, stats.variability.rPVI(values)) for key,values in self.items.iteritems() )
 
     def nPVI(self):
         """
         Estimates the Normalized Pairwise Variability Index of data values.
         @return (tuple): a tuple of (key, nPVI) of float values
         """
-        return tuple( (key, stats.variability.nPVI(values)) for key,values in self.items.iteritems() )
+        return dict( (key, stats.variability.nPVI(values)) for key,values in self.items.iteritems() )
 
     def intercept_slope_original(self):
         """
@@ -104,7 +104,7 @@ class TimeGroupAnalysis( DescriptiveStatistics ):
         for key,values in self.items.iteritems():
             points = [ (position,duration) for position,duration in enumerate(values) ]
             linreg.append( (key, (stats.linregress.tga_linear_regression(points))) )
-        return tuple(linreg)
+        return dict(linreg)
 
     def intercept_slope(self):
         """
@@ -122,6 +122,6 @@ class TimeGroupAnalysis( DescriptiveStatistics ):
                 points.append( (timestamp,duration) )
                 timestamp += duration
             linreg.append( (key, (stats.linregress.tga_linear_regression(points))) )
-        return tuple(linreg)
+        return dict(linreg)
 
     # -----------------------------------------------------------------------

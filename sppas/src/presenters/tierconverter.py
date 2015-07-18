@@ -107,7 +107,7 @@ class TierConverter:
         labels = list()
         for ann in self.tier:
             texts = ann.GetLabel().GetLabels()
-            labels.extend(normalize_text(t.GetValue()) for t in texts )
+            labels.extend( normalize_text(t.GetValue()) for t in texts )
 
         return collections.Counter(labels)
 

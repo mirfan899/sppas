@@ -39,31 +39,29 @@ class TestStatistics(unittest.TestCase):
         ds = t.ds()
 
         occurrences = ds.len()
-        totoidx = map(operator.itemgetter(0), occurrences).index('toto')
-        titiidx = map(operator.itemgetter(0), occurrences).index('titi')
-        self.assertEqual(3, occurrences[totoidx][1])
-        self.assertEqual(1, occurrences[titiidx][1])
+        self.assertEqual(3, occurrences['toto'])
+        self.assertEqual(1, occurrences['titi'])
 
         total = ds.total()
-        self.assertEqual(5.5, total[totoidx][1])
-        self.assertEqual(1.0, total[titiidx][1])
+        self.assertEqual(5.5, total['toto'])
+        self.assertEqual(1.0, total['titi'])
 
         mean = ds.mean()
-        self.assertEqual(1.833, round(mean[totoidx][1],3))
-        self.assertEqual(1.0, mean[titiidx][1])
+        self.assertEqual(1.833, round(mean['toto'],3))
+        self.assertEqual(1.0, mean['titi'])
 
         median = ds.median()
-        self.assertEqual(1.5, median[totoidx][1])
-        self.assertEqual(1.0, median[titiidx][1])
+        self.assertEqual(1.5, median['toto'])
+        self.assertEqual(1.0, median['titi'])
 
         variance = ds.variance()
-        self.assertEqual(1.083, round(variance[totoidx][1],3))
+        self.assertEqual(1.083, round(variance['toto'],3))
 
         stdev = ds.stdev()
-        self.assertEqual(1.041, round(stdev[totoidx][1],3))
+        self.assertEqual(1.041, round(stdev['toto'],3))
 
         coefvariation = ds.coefvariation()
-        self.assertEqual(56.773, round(coefvariation[totoidx][1],3))
+        self.assertEqual(56.773, round(coefvariation['toto'],3))
 
 
 if __name__ == '__main__':

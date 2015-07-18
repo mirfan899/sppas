@@ -60,10 +60,8 @@ class DescriptiveStatistics( object ):
     >>> d = { 'apples':[1,2,3,4] , 'peers':[2,3,3,5] }
     >>> s = DescriptiveStatistics(d)
     >>> total = s.total()
-    >>> print total['apples']
-    >>> 10
-    >>> print total['peers']
-    >>> 13
+    >>> print total
+    >>> (('peers', 13.0), ('apples', 10.0))
 
     """
 
@@ -71,7 +69,7 @@ class DescriptiveStatistics( object ):
         """
         Descriptive statistics.
 
-        @param dictitems (list): a dict of list of tuple (key, values)
+        @param dictitems: a dict of tuples (key, [values])
         """
         self.items = dictitems
 
@@ -82,7 +80,7 @@ class DescriptiveStatistics( object ):
         Estimates the number of occurrences of data values.
         @return (tuple): a tuple of tuples (key, len)
         """
-        return tuple( (key, len(values)) for key,values in self.items.iteritems() )
+        return dict( (key, len(values)) for key,values in self.items.iteritems() )
 
 
     def total(self):
@@ -90,7 +88,7 @@ class DescriptiveStatistics( object ):
         Estimates the sum of data values.
         @return (tuple): a tuple of tuples (key, total) of float values
         """
-        return tuple( (key, stats.central.fsum(values)) for key,values in self.items.iteritems() )
+        return dict( (key, stats.central.fsum(values)) for key,values in self.items.iteritems() )
 
 
     def min(self):
@@ -98,7 +96,7 @@ class DescriptiveStatistics( object ):
         Returns the minimum of data values.
         @return (tuple): a tuple of tuples (key, min) of float values
         """
-        return tuple( (key, stats.central.fmin(values)) for key,values in self.items.iteritems() )
+        return dict( (key, stats.central.fmin(values)) for key,values in self.items.iteritems() )
 
 
     def max(self):
@@ -106,7 +104,7 @@ class DescriptiveStatistics( object ):
         Returns the maximum of data values.
         @return (tuple): a tuple of tuples (key, max) of float values
         """
-        return tuple( (key, stats.central.fmax(values)) for key,values in self.items.iteritems() )
+        return dict( (key, stats.central.fmax(values)) for key,values in self.items.iteritems() )
 
 
     def mean(self):
@@ -114,7 +112,7 @@ class DescriptiveStatistics( object ):
         Estimates the arithmetic mean of data values.
         @return (tuple): a tuple of tuples (key, mean) of float values
         """
-        return tuple( (key, stats.central.fmean(values)) for key,values in self.items.iteritems() )
+        return dict( (key, stats.central.fmean(values)) for key,values in self.items.iteritems() )
 
 
     def median(self):
@@ -122,7 +120,7 @@ class DescriptiveStatistics( object ):
         Estimates the 'middle' score of the data values.
         @return (tuple): a tuple of tuples (key, mean) of float values
         """
-        return tuple( (key, stats.central.fmedian(values)) for key,values in self.items.iteritems() )
+        return dict( (key, stats.central.fmedian(values)) for key,values in self.items.iteritems() )
 
 
     def variance(self):
@@ -130,7 +128,7 @@ class DescriptiveStatistics( object ):
         Estimates the unbiased sample variance of data values.
         @return (tuple): a tuple of tuples (key, variance) of float values
         """
-        return tuple( (key, stats.variability.lvariance(values)) for key,values in self.items.iteritems() )
+        return dict( (key, stats.variability.lvariance(values)) for key,values in self.items.iteritems() )
 
 
     def stdev(self):
@@ -138,7 +136,7 @@ class DescriptiveStatistics( object ):
         Estimates the standard deviation of data values.
         @return (tuple): a tuple of tuples (key, stddev) of float values
         """
-        return tuple( (key, stats.variability.lstdev(values)) for key,values in self.items.iteritems() )
+        return dict( (key, stats.variability.lstdev(values)) for key,values in self.items.iteritems() )
 
 
     def coefvariation(self):
@@ -146,7 +144,7 @@ class DescriptiveStatistics( object ):
         Estimates the coefficient of variation of data values (given as a percentage).
         @return (tuple): a tuple of tuples (key, coefvariation) of float values
         """
-        return tuple( (key, stats.moment.lvariation(values)) for key,values in self.items.iteritems() )
+        return dict( (key, stats.moment.lvariation(values)) for key,values in self.items.iteritems() )
 
     # -----------------------------------------------------------------------
 
@@ -154,3 +152,5 @@ class DescriptiveStatistics( object ):
         return ", ".join( [x for x,y in DescriptiveStatistics.__dict__.items() if (type(y) == FunctionType and not x.startswith('_')) ] )
 
     # -----------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------

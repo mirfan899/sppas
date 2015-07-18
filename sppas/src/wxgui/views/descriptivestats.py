@@ -435,15 +435,15 @@ class SummaryPanel( BaseStatPanel ):
         # estimates descriptives statistics
         ds = ts.ds()
         occurrences = ds.len()
-        total = ds.total()
-        mean = ds.mean()
-        median = ds.median()
-        stdev = ds.stdev()
+        total       = ds.total()
+        mean        = ds.mean()
+        median      = ds.median()
+        stdev       = ds.stdev()
 
         # fill rows
         self.rowdata = []
-        for i,item in enumerate(occurrences):
-            row = [ item[0], occurrences[i][1], total[i][1], mean[i][1], median[i][1], stdev[i][1] ]
+        for i,key in enumerate(occurrences.keys()):
+            row = [ key, occurrences[key], total[key], mean[key], median[key], stdev[key] ]
             # add the data content in rowdata
             self.rowdata.append( row )
             # add into the listctrl
@@ -514,7 +514,7 @@ class DetailedPanel( BaseStatPanel ):
 
         # estimates descriptives statistics
         statvalues = []
-        for ts,f in data.items():
+        for ts in data.keys():
             ds = ts.ds()
             if self.name == "occurrences":
                 statvalues.append( ds.len() )
@@ -528,24 +528,13 @@ class DetailedPanel( BaseStatPanel ):
                 statvalues.append( ds.stdev() )
 
         # get the list of labels
-        items = []
-        for t in statvalues:
-            # t is a tuple of tuples, representing the stats of each item of a tier
-            for s in t:
-                if not s[0] in items:
-                    items.append(s[0])
+        items = ds.len().keys()
 
         # fill rows
         self.rowdata = []
         for i,item in enumerate(items):
-            # add the data content in rowdata
-            row = [item] + [0]*len(data.values())
-            for j,t in enumerate(statvalues):
-                for s in t:
-                    if s[0] == item:
-                        row[j+1] = s[1]
+            row = [item] + [ statvalues[i].get(item,0) for i in range(len(statvalues)) ]
             self.rowdata.append(row)
-
             self.AppendRow(i, row, self.statctrl)
 
         self.sizer.DeleteWindows()
