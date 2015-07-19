@@ -52,6 +52,29 @@ import logging
 
 # ----------------------------------------------------------------------------
 
+class BasicTextValidator(wx.PyValidator):
+    """ Check if the TextCtrl contains characters. """
+
+    def __init__(self):
+        wx.PyValidator.__init__(self)
+
+    def Clone(self): # Required method for validator
+        return BasicTextValidator()
+
+    def TransferToWindow(self):
+        return True # Prevent wxDialog from complaining.
+
+    def TransferFromWindow(self):
+        return True # Prevent wxDialog from complaining.
+
+    def Validate(self, win):
+        textCtrl = self.GetWindow()
+        text = textCtrl.GetValue().strip()
+        textCtrl.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
+        textCtrl.Refresh()
+        return True
+
+
 
 class TextValidator(wx.PyValidator):
     """ Check if the TextCtrl contains characters. """

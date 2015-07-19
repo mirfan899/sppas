@@ -98,6 +98,12 @@ class TierTGA( object ):
         """
         self.__withradius = int(withradius)
 
+    def remove_separators(self):
+        """
+        Remove all time group separators.
+        """
+        self.__separators = []
+
     def append_separator(self, sepstr):
         """
         Append a time group separator.

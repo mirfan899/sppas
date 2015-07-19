@@ -76,6 +76,7 @@ import wxgui.dialogs.filedialogs as filedialogs
 from wxgui.panels.trslist         import TrsList
 from wxgui.views.descriptivestats import DescriptivesStatsDialog
 from wxgui.views.useragreement    import UserAgreementDialog
+from wxgui.views.tga              import TGADialog
 
 # ----------------------------------------------------------------------------
 # Constants
@@ -422,7 +423,9 @@ class Statistics( scrolled.ScrolledPanel ):
         """ Time Group Analysis ."""
         nb = self._get_nbselectedtiers()
         if nb > 0:
-            wx.MessageBox("TGA will come soon in SPPAS!\nTGA is available in-line here: http://wwwhomes.uni-bielefeld.de/gibbon/TGA/.", "Not Implemented (yet!)", wx.OK| wx.ICON_INFORMATION)
+            dlg = TGADialog(self, self._prefsIO, self._get_selectedtiers())
+            dlg.ShowModal()
+            dlg.Destroy()
         else:
             wx.MessageBox('You must check at least one tier...', 'Warning', wx.OK | wx.ICON_INFORMATION)
             self.__display_text_in_statusbar('You must check at least one tier...')
