@@ -59,9 +59,9 @@ class TimeGroupAnalysis( DescriptiveStatistics ):
     >>> tga = TimeGroupAnalyses(d)
     >>> total = tga.total()
     >>> slope = tga.slope()
-    >>> print slope['tg1']
+    >>> print slope['tg_1']
     >>>
-    >>> print slope['tg2']
+    >>> print slope['tg_2']
     >>>
 
     """
@@ -81,21 +81,21 @@ class TimeGroupAnalysis( DescriptiveStatistics ):
     def rPVI(self):
         """
         Estimates the Raw Pairwise Variability Index of data values.
-        @return (tuple): a tuple of (key, nPVI) of float values
+        @return (dict): a dictionary of (key, nPVI) of float values
         """
         return dict( (key, stats.variability.rPVI(values)) for key,values in self.items.iteritems() )
 
     def nPVI(self):
         """
         Estimates the Normalized Pairwise Variability Index of data values.
-        @return (tuple): a tuple of (key, nPVI) of float values
+        @return (dict): a dictionary of (key, nPVI) of float values
         """
         return dict( (key, stats.variability.nPVI(values)) for key,values in self.items.iteritems() )
 
     def intercept_slope_original(self):
         """
         Estimates the intercept like the original TGA of data values.
-        @return (tuple): a tuple of (key, (intercept,slope)) of float values
+        @return (dict): a dictionary of (key, (intercept,slope)) of float values
         """
         # Create the list of points (x,y) of each TG where:
         # x is the position
@@ -109,7 +109,7 @@ class TimeGroupAnalysis( DescriptiveStatistics ):
     def intercept_slope(self):
         """
         Estimates the intercept like AnnotationPro of data values.
-        @return (tuple): a tuple of (key, (intercept,slope)) of float values
+        @return (dict): a dictionary of (key, (intercept,slope)) of float values
         """
         # Create the list of points (x,y) of each TG where:
         # x is the timestamps

@@ -154,35 +154,35 @@ class DescriptivesStatsDialog( wx.Dialog ):
         font = self.preferences.GetValue('M_FONT')
         font.SetWeight(wx.BOLD)
         font.SetPointSize(font.GetPointSize() + 2)
-        self.title_label = wx.StaticText(self, label="Descriptives Statistics of a set of tiers", style=wx.ALIGN_CENTER)
-        self.title_label.SetFont( font )
+        title_label = wx.StaticText(self, label="Descriptives Statistics of a set of tiers", style=wx.ALIGN_CENTER)
+        title_label.SetFont( font )
         self.title_layout.Add(bmp,  flag=wx.TOP|wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, border=5)
-        self.title_layout.Add(self.title_label, flag=wx.EXPAND|wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
+        self.title_layout.Add(title_label, flag=wx.EXPAND|wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
 
     def _create_toolbar(self):
-        iconSize = (TB_ICONSIZE, TB_ICONSIZE)
-        self.toolbar = wx.ToolBar( self, -1, style=wx.TB_TEXT )
-        self.toolbar.SetToolBitmapSize(iconSize)
-        self.toolbar.SetFont( self.preferences.GetValue('M_FONT') )
-
-        self.toolbar.AddControl(wx.StaticText(self.toolbar, label="N-gram:"))
-        self.ngrambox = wx.ComboBox(self.toolbar, -1, choices=['1','2','3','4','5'], style=wx.CB_READONLY)
-        self.ngrambox.SetSelection(0)
-        self.toolbar.AddControl(self.ngrambox)
-        self.toolbar.Bind( wx.EVT_COMBOBOX, self.OnNgram, self.ngrambox )
-        self.toolbar.AddStretchableSpace()
-
+        self.toolbar_layout = wx.BoxSizer(wx.HORIZONTAL)
+        font = self.preferences.GetValue('M_FONT')
+        font.SetPointSize(font.GetPointSize() - 2)
+        title_label = wx.StaticText(self, label="N-gram:", style=wx.ALIGN_CENTER)
+        title_label.SetFont( font )
+        ngrambox = wx.ComboBox(self, -1, choices=['1','2','3','4','5'], style=wx.CB_READONLY)
+        ngrambox.SetSelection(0)
+        ngrambox.SetFont( font )
+        self.Bind( wx.EVT_COMBOBOX, self.OnNgram, ngrambox )
         lablist = ['Use only the label with the best score', 'Include also alternative labels']
-        self.withaltbox = wx.RadioBox(self.toolbar, -1, label="Annotation labels:", choices=lablist, majorDimension=1, style=wx.RA_SPECIFY_COLS)
-        self.toolbar.AddControl(self.withaltbox)
-        self.toolbar.Bind(wx.EVT_RADIOBOX, self.OnWithAlt, self.withaltbox)
+        withaltbox = wx.RadioBox(self, -1, label="Annotation labels:", choices=lablist, majorDimension=1, style=wx.RA_SPECIFY_COLS)
+        withaltbox.SetFont( font )
+        self.Bind(wx.EVT_RADIOBOX, self.OnWithAlt, withaltbox)
+        durlist = ['Use only Midpoint value', 'Add the Radius value', 'Deduct the Radius value']
+        withradiusbox = wx.RadioBox(self, -1, label="Annotation durations:", choices=durlist, majorDimension=1, style=wx.RA_SPECIFY_COLS)
+        withradiusbox.SetFont( font )
+        self.Bind(wx.EVT_RADIOBOX, self.OnWithRadius, withradiusbox)
 
-        durlist = ['Use only Midpoint value', 'Add the radius value', 'Deduct the radius value']
-        self.withradiusbox = wx.RadioBox(self.toolbar, -1, label="Annotation durations:", choices=durlist, majorDimension=1, style=wx.RA_SPECIFY_COLS)
-        self.toolbar.AddControl(self.withradiusbox)
-        self.toolbar.Bind(wx.EVT_RADIOBOX, self.OnWithRadius, self.withradiusbox)
-
-        self.toolbar.Realize()
+        self.toolbar_layout.Add(title_label, flag=wx.EXPAND|wx.ALL|wx.TOP, border=5)
+        self.toolbar_layout.Add(ngrambox,    flag=wx.TOP, border=5)
+        self.toolbar_layout.AddStretchSpacer()
+        self.toolbar_layout.Add(withaltbox,  flag=wx.EXPAND|wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
+        self.toolbar_layout.Add(withradiusbox, flag=wx.EXPAND|wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
 
 
     def _create_content(self):
@@ -237,9 +237,9 @@ class DescriptivesStatsDialog( wx.Dialog ):
 
     def _layout_components(self):
         vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.title_layout, 0, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self.toolbar,      0, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self.notebook,     1, flag=wx.ALL|wx.EXPAND, border=5)
+        vbox.Add(self.title_layout,   0, flag=wx.ALL|wx.EXPAND, border=5)
+        vbox.Add(self.toolbar_layout, 1, flag=wx.ALL|wx.EXPAND, border=5)
+        vbox.Add(self.notebook,       2, flag=wx.ALL|wx.EXPAND, border=5)
         vbox.Add(self._create_button_box(), 0, flag=wx.ALL|wx.EXPAND, border=5)
         self.SetSizerAndFit(vbox)
 
@@ -420,7 +420,6 @@ class SummaryPanel( BaseStatPanel ):
         if not data or len(data)==0:
             self.ShowNothing()
             return
-        logging.debug('Summary show stats')
 
         self.statctrl = SortListCtrl(self, size=(-1,400))
 

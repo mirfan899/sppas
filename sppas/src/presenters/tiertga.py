@@ -62,6 +62,7 @@ class TierTGA( object ):
     - value is the list of observed durations of segments in this time group
 
     """
+    TG_LABEL = "tg_"
 
     def __init__(self, tier=None, withradius=0):
         """
@@ -111,9 +112,18 @@ class TierTGA( object ):
     def tga(self):
         """
         Create then return the TimeGroupAnalysis object corresponding to the tier.
+        @return TimeGroupAnalysis
         """
         items = self.__tier_to_tg()
         return TimeGroupAnalysis( items )
+
+    def labels(self):
+        """
+        Create then return the sequence of labels of each tg of the tier.
+        @return dict: a dictionary with key=time group name and value=list of labels
+        """
+        lbls = self.__tier_to_labels()
+        return lbls
 
     # ------------------------------------------------------------------
 
@@ -123,7 +133,7 @@ class TierTGA( object ):
 
     def __tier_to_tg(self):
         """
-        Return a tuple of label/duration pairs.
+        Return a dict of tg_label/duration pairs.
         """
         i = 1
         tglabel = "tg_1"
@@ -131,11 +141,12 @@ class TierTGA( object ):
 
         for a in self.tier:
             alabel = a.GetLabel().GetValue()
+
             # a TG separator (create a new tg if previous tg was used!)
             if a.GetLabel().IsSilence() or a.GetLabel().IsDummy() or alabel in self.__separators:
                 if tglabel in tg.keys():
                     i = i+1
-                    tglabel = "tg_"+str(i)
+                    tglabel = TierTGA.TG_LABEL+str(i)
 
             # a TG continuum
             else:
@@ -152,5 +163,30 @@ class TierTGA( object ):
                 tg[tglabel].append( duration )
 
         return tg
+
+    def __tier_to_labels(self):
+        """
+        Return a dict of tg_label/labels pairs.
+        """
+        i = 1
+        tglabel = "tg_1"
+        labels = {}
+
+        for a in self.tier:
+            alabel = a.GetLabel().GetValue()
+
+            # a TG separator (create a new tg if previous tg was used!)
+            if a.GetLabel().IsSilence() or a.GetLabel().IsDummy() or alabel in self.__separators:
+                if tglabel in labels.keys():
+                    i = i+1
+                    tglabel = TierTGA.TG_LABEL+str(i)
+
+            # a TG continuum
+            else:
+                if not tglabel in labels.keys():
+                    labels[tglabel] = []
+                labels[tglabel].append( alabel )
+
+        return labels
 
 # ---------------------------------------------------------------------------
