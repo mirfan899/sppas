@@ -52,6 +52,7 @@ import wx
 import logging
 import os.path
 
+from calculus.descriptivesstats import DescriptiveStatistics
 from presenters.tiertga import TierTGA
 from utils import fileutils
 
@@ -200,10 +201,10 @@ class TGADialog( wx.Dialog ):
     def _create_content(self):
         self.notebook = wx.Notebook(self)
         page1 = TotalPanel(  self.notebook, self.preferences, "total")
-        page2 = SummaryPanel(self.notebook, self.preferences, "summary")
+        page2 = MeansPanel(self.notebook, self.preferences, "means")
         # add the pages to the notebook with the label to show on the tab
         self.notebook.AddPage(page1, "   Total   " )
-        self.notebook.AddPage(page2, "  Summary  " )
+        self.notebook.AddPage(page2, "   Means  " )
         page1.ShowStats( self._data )
         self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.OnNotebookPageChanged)
 
@@ -329,55 +330,12 @@ class TGADialog( wx.Dialog ):
 # Panels
 # ----------------------------------------------------------------------------
 
-class SummaryPanel( BaseStatPanel ):
-    """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL
-    @summary: The whole table with TG descriptions.
-
-    """
-
-    def __init__(self, parent, prefsIO, name):
-        BaseStatPanel.__init__(self, parent, prefsIO, name)
-        self.cols = ('',)
-
-    # ------------------------------------------------------------------------
-
-    def ShowStats(self, data):
-        """
-        Show descriptive statistics of set of tiers as list.
-
-        """
-        if not data or len(data)==0:
-            self.ShowNothing()
-            return
-
-        self.statctrl = SortListCtrl(self, size=(-1,480))
-
-        # create columns
-        self.cols = ("Filename",) + tuple( os.path.basename(v) for v in data.values() )
-        for i,col in enumerate(self.cols):
-            self.statctrl.InsertColumn(i,col)
-            self.statctrl.SetColumnWidth(i, 120)
-        self.statctrl.SetColumnWidth(0, 200)
-
-
-        self.sizer.DeleteWindows()
-        self.sizer.Add(self.statctrl, 1, flag=wx.ALL|wx.EXPAND, border=5)
-        self.sizer.FitInside(self)
-        self.SendSizeEvent()
-
-    # ------------------------------------------------------------------------
-
-# ----------------------------------------------------------------------------
-
 class TotalPanel( BaseStatPanel ):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL
-    @summary: Summary of descriptive stats of all merged-tiers.
+    @summary: TGA of all tiers, in details.
 
     """
 
@@ -389,7 +347,7 @@ class TotalPanel( BaseStatPanel ):
 
     def ShowStats(self, data):
         """
-        Show descriptive statistics of set of tiers as list.
+        Show TGA of set of tiers as list.
 
         """
         if not data or len(data)==0:
@@ -437,3 +395,76 @@ class TotalPanel( BaseStatPanel ):
     # ------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
+
+class MeansPanel( BaseStatPanel ):
+    """
+    @author:  Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL
+    @summary: The means of TGA for each tier.
+
+    """
+
+    def __init__(self, parent, prefsIO, name):
+        BaseStatPanel.__init__(self, parent, prefsIO, name)
+        self.cols = ("Filename", "Tier", "Length", "Total", "Mean", "Median", "Std dev.", "nPVI", "Intercept-Pos","Slope-Pos", "Intercept-Time","Slope-Time")
+
+    # ------------------------------------------------------------------------
+
+    def ShowStats(self, data):
+        """
+        Show descriptive statistics of set of tiers as list.
+
+        """
+        if not data or len(data)==0:
+            self.ShowNothing()
+            return
+
+        self.statctrl = SortListCtrl(self, size=(-1,480))
+
+        # create columns
+        for i,col in enumerate(self.cols):
+            self.statctrl.InsertColumn(i,col)
+            self.statctrl.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER)
+        self.statctrl.SetColumnWidth(0, 200)
+
+        self.rowdata = []
+        i = 0
+        # estimates TGA, store results in a dict
+        for tg,filename in data.items():
+            ds = tg.tga()
+            tgdict = {'len':[], 'total':[], 'mean':[], 'median':[], 'stdev':[], 'npvi':[], 'interceptp':[], 'slopep':[], 'interceptt':[], 'slopet':[]}
+            tgdict['len']    = list(ds.len().values())
+            tgdict['total']  = list(ds.total().values())
+            tgdict['mean']   = list(ds.mean().values())
+            tgdict['median'] = list(ds.median().values())
+            tgdict['stdev']  = list(ds.stdev().values())
+            tgdict['npvi']   = list(ds.nPVI().values())
+            regressp = ds.intercept_slope_original()
+            regresst = ds.intercept_slope()
+            tgdict['interceptp'] = [intercept for intercept,slope in list(regressp.values())]
+            tgdict['slopep']     = [slope     for intercept,slope in list(regressp.values())]
+            tgdict['interceptt'] = [intercept for intercept,slope in list(regresst.values())]
+            tgdict['slopet']     = [slope     for intercept,slope in list(regresst.values())]
+
+            stats = DescriptiveStatistics( tgdict )
+            means = stats.mean()
+
+            # fill rows
+            row = [ filename, tg.tier.GetName() ] + [ means[key] for key in means.keys() ]
+            # add the data content in rowdata
+            self.rowdata.append( row )
+            # add into the listctrl
+            self.AppendRow(i, row, self.statctrl)
+            i = i+1
+
+
+        self.sizer.DeleteWindows()
+        self.sizer.Add(self.statctrl, 1, flag=wx.ALL|wx.EXPAND, border=5)
+        self.sizer.FitInside(self)
+        self.SendSizeEvent()
+
+    # ------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------
+
