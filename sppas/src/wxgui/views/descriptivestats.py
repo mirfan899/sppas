@@ -53,7 +53,6 @@ import logging
 import os.path
 
 from presenters.tierstats import TierStats
-from utils import fileutils
 
 from wxgui.sp_icons import STATISTICS_APP_ICON
 from wxgui.sp_icons import SPREADSHEETS
@@ -71,6 +70,7 @@ from wxgui.cutils.imageutils import spBitmap
 from wxgui.cutils.ctrlutils  import CreateGenButton
 
 from wxgui.ui.CustomListCtrl import SortListCtrl
+from wxgui.panels.basestats import BaseStatPanel
 from sp_glob import ICONS_PATH
 
 # ----------------------------------------------------------------------------
@@ -223,7 +223,6 @@ class DescriptivesStatsDialog( wx.Dialog ):
         self.btn_save = CreateGenButton(self, wx.ID_SAVE, bmp, text=" Save sheet ", tooltip="Save the currently displayed sheet", colour=color)
         self.btn_save.SetFont( self.preferences.GetValue('M_FONT'))
         self.btn_save.SetDefault()
-        self.btn_save.SetFocus()
 
 
     def _create_button_box(self):
@@ -257,7 +256,7 @@ class DescriptivesStatsDialog( wx.Dialog ):
 
     def onButtonSave(self, event):
         page = self.notebook.GetPage( self.notebook.GetSelection() )
-        page.SaveAs()
+        page.SaveAs(outfilename="stats-%s.csv"%page.name)
 
     def OnNotebookPageChanged(self, event):
         oldselection = event.GetOldSelection()
@@ -312,86 +311,6 @@ class DescriptivesStatsDialog( wx.Dialog ):
 # ----------------------------------------------------------------------------
 
 
-# ----------------------------------------------------------------------------
-# Base Stat Panel
-# ----------------------------------------------------------------------------
-
-class BaseStatPanel( wx.Panel ):
-    """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL
-    @summary: Base stat panel.
-
-    """
-
-    def __init__(self, parent, prefsIO, name):
-
-        wx.Panel.__init__(self, parent)
-        self.preferences = prefsIO
-        self.name = name.lower()
-        self.rowdata = []
-
-        self.sizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.SetSizer(self.sizer)
-        self.ShowNothing()
-        self.sizer.FitInside(self)
-
-    # ------------------------------------------------------------------------
-
-    def ShowNothing(self):
-        """
-        Method to show a message in the panel.
-
-        """
-        self.sizer.DeleteWindows()
-        self.sizer.Add(wx.StaticText(self, -1, "Nothing to view!"), 1, flag=wx.ALL|wx.EXPAND, border=5)
-        self.SendSizeEvent()
-
-    # ------------------------------------------------------------------------
-
-    def ShowStats(self, tier):
-        """
-        Base method to show a tier in the panel.
-
-        """
-        self.ShowNothing()
-
-    # ------------------------------------------------------------------------
-
-    def SaveAs(self):
-        dlg = wx.FileDialog(self,
-                           "Save as",
-                           "Save as",
-                           "stats.csv",
-                           "Excel UTF-16 (*.csv)|*.csv |Excel UTF-8 (*.csv)|*.csv",
-                           wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
-        if dlg.ShowModal() != wx.ID_OK:
-            dlg.Destroy()
-            return
-
-        path, index = dlg.GetPath(), dlg.GetFilterIndex()
-        dlg.Destroy()
-        encoding = "utf-16" if index == 0 else "utf-8"
-
-        self.rowdata.insert(0, self.cols)
-        fileutils.writecsv(path, self.rowdata, separator=";", encoding=encoding)
-        self.rowdata.pop(0)
-
-    # ------------------------------------------------------------------------
-
-    def AppendRow(self, i, row, listctrl):
-        # append the row in the list
-        pos = self.statctrl.InsertStringItem(i, row[0])
-        for j in range(1,len(row)):
-            s = row[j]
-            if isinstance(s, float):
-                s = str(round(s,4))
-            elif isinstance(s, int):
-                s = str(s)
-            listctrl.SetStringItem(pos, j, s)
-
-# ----------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
 # First tab: summary

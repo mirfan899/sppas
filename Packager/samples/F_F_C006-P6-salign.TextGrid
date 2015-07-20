@@ -1,0 +1,1502 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0.0
+xmax = 33.2598
+tiers? <exists>
+size = 3
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "Syllables"
+        xmin = 0.000000
+        xmax = 33.259800
+        intervals: size = 123
+        intervals [1]:
+            xmin = 0.0
+            xmax = 1.1349
+            text = "#"
+        intervals [2]:
+            xmin = 1.1349
+            xmax = 1.2499
+            text = "ma"
+        intervals [3]:
+            xmin = 1.2499
+            xmax = 1.3899
+            text = "ga"
+        intervals [4]:
+            xmin = 1.3899
+            xmax = 1.5799
+            text = "zU~"
+        intervals [5]:
+            xmin = 1.5799
+            xmax = 1.6399
+            text = "RE"
+        intervals [6]:
+            xmin = 1.6399
+            xmax = 1.7499
+            text = "y"
+        intervals [7]:
+            xmin = 1.7499
+            xmax = 1.8999
+            text = "ni"
+        intervals [8]:
+            xmin = 1.8999
+            xmax = 2.3999
+            text = "zU~"
+        intervals [9]:
+            xmin = 2.3999
+            xmax = 2.5699
+            text = "va~"
+        intervals [10]:
+            xmin = 2.5699
+            xmax = 2.7899
+            text = "tER"
+        intervals [11]:
+            xmin = 2.7899
+            xmax = 3.1299
+            text = "dsis"
+        intervals [12]:
+            xmin = 3.1299
+            xmax = 3.5099
+            text = "maR"
+        intervals [13]:
+            xmin = 3.5099
+            xmax = 3.7999
+            text = "smil"
+        intervals [14]:
+            xmin = 3.7999
+            xmax = 3.9699
+            text = "n9f"
+        intervals [15]:
+            xmin = 3.9699
+            xmax = 4.1199
+            text = "sa~"
+        intervals [16]:
+            xmin = 4.1199
+            xmax = 4.3599
+            text = "kat"
+        intervals [17]:
+            xmin = 4.3599
+            xmax = 4.5499
+            text = "RvU~"
+        intervals [18]:
+            xmin = 4.5499
+            xmax = 5.0599
+            text = "n9f"
+        intervals [19]:
+            xmin = 5.0599
+            xmax = 5.1499
+            text = "#"
+        intervals [20]:
+            xmin = 5.1499
+            xmax = 5.2899
+            text = "E"
+        intervals [21]:
+            xmin = 5.2899
+            xmax = 5.5799
+            text = "taZ"
+        intervals [22]:
+            xmin = 5.5799
+            xmax = 5.7099
+            text = "#"
+        intervals [23]:
+            xmin = 5.7099
+            xmax = 6.0699
+            text = "om"
+        intervals [24]:
+            xmin = 6.0699
+            xmax = 6.0899
+            text = "#"
+        intervals [25]:
+            xmin = 6.0899
+            xmax = 6.1699
+            text = "e"
+        intervals [26]:
+            xmin = 6.1699
+            xmax = 6.3999
+            text = "gaR"
+        intervals [27]:
+            xmin = 6.3999
+            xmax = 6.5499
+            text = "so"
+        intervals [28]:
+            xmin = 6.5499
+            xmax = 6.6299
+            text = "nE"
+        intervals [29]:
+            xmin = 6.6299
+            xmax = 7.2699
+            text = "#"
+        intervals [30]:
+            xmin = 7.2699
+            xmax = 7.4099
+            text = "RE"
+        intervals [31]:
+            xmin = 7.4099
+            xmax = 7.5399
+            text = "jo~"
+        intervals [32]:
+            xmin = 7.5399
+            xmax = 7.7499
+            text = "Seu"
+        intervals [33]:
+            xmin = 7.7499
+            xmax = 7.9799
+            text = "mi"
+        intervals [34]:
+            xmin = 7.9799
+            xmax = 8.1099
+            text = "ze"
+        intervals [35]:
+            xmin = 8.1099
+            xmax = 8.2699
+            text = "su"
+        intervals [36]:
+            xmin = 8.2699
+            xmax = 8.4399
+            text = "vE"
+        intervals [37]:
+            xmin = 8.4399
+            xmax = 8.5699
+            text = "teu"
+        intervals [38]:
+            xmin = 8.5699
+            xmax = 8.7344
+            text = "ma~z"
+        intervals [39]:
+            xmin = 8.7344
+            xmax = 9.2685
+            text = "#"
+        intervals [40]:
+            xmin = 9.2685
+            xmax = 9.5335
+            text = "Seu"
+        intervals [41]:
+            xmin = 9.5335
+            xmax = 9.7935
+            text = "miz"
+        intervals [42]:
+            xmin = 9.7935
+            xmax = 10.0135
+            text = "ma~S"
+        intervals [43]:
+            xmin = 10.0135
+            xmax = 10.4735
+            text = "zlo~g"
+        intervals [44]:
+            xmin = 10.4735
+            xmax = 10.8635
+            text = "#"
+        intervals [45]:
+            xmin = 10.8635
+            xmax = 11.4635
+            text = "ssU~"
+        intervals [46]:
+            xmin = 11.4635
+            xmax = 11.8935
+            text = "tRe"
+        intervals [47]:
+            xmin = 11.8935
+            xmax = 12.2635
+            text = "#"
+        intervals [48]:
+            xmin = 12.2635
+            xmax = 12.6935
+            text = "sta"
+        intervals [49]:
+            xmin = 12.6935
+            xmax = 13.0435
+            text = "tyR"
+        intervals [50]:
+            xmin = 13.0435
+            xmax = 13.2635
+            text = "sa~"
+        intervals [51]:
+            xmin = 13.2635
+            xmax = 13.4835
+            text = "tRa~"
+        intervals [52]:
+            xmin = 13.4835
+            xmax = 13.6835
+            text = "ty"
+        intervals [53]:
+            xmin = 13.6835
+            xmax = 13.8535
+            text = "i"
+        intervals [54]:
+            xmin = 13.8535
+            xmax = 14.1235
+            text = "#"
+        intervals [55]:
+            xmin = 14.1235
+            xmax = 14.3735
+            text = "di"
+        intervals [56]:
+            xmin = 14.3735
+            xmax = 14.7335
+            text = "za~"
+        intervals [57]:
+            xmin = 14.7335
+            xmax = 15.1935
+            text = "*"
+        intervals [58]:
+            xmin = 15.1935
+            xmax = 15.3135
+            text = "a"
+        intervals [59]:
+            xmin = 15.3135
+            xmax = 15.5335
+            text = "sa~"
+        intervals [60]:
+            xmin = 15.5335
+            xmax = 15.6535
+            text = "swa"
+        intervals [61]:
+            xmin = 15.6535
+            xmax = 15.9435
+            text = "sa~t"
+        intervals [62]:
+            xmin = 15.9435
+            xmax = 16.1635
+            text = "deu"
+        intervals [63]:
+            xmin = 16.1635
+            xmax = 16.3935
+            text = "#"
+        intervals [64]:
+            xmin = 16.3935
+            xmax = 16.5535
+            text = "ka"
+        intervals [65]:
+            xmin = 16.5535
+            xmax = 16.7535
+            text = "toR"
+        intervals [66]:
+            xmin = 16.7535
+            xmax = 16.8712
+            text = "za~"
+        intervals [67]:
+            xmin = 16.8712
+            xmax = 17.8169
+            text = "#"
+        intervals [68]:
+            xmin = 17.8169
+            xmax = 18.1519
+            text = "tRwa"
+        intervals [69]:
+            xmin = 18.1519
+            xmax = 18.2419
+            text = "deu"
+        intervals [70]:
+            xmin = 18.2419
+            xmax = 18.4719
+            text = "Sak"
+        intervals [71]:
+            xmin = 18.4719
+            xmax = 18.7119
+            text = "ta"
+        intervals [72]:
+            xmin = 18.7119
+            xmax = 18.8819
+            text = "ja~"
+        intervals [73]:
+            xmin = 18.8819
+            xmax = 19.3619
+            text = "bla~"
+        intervals [74]:
+            xmin = 19.3619
+            xmax = 19.5119
+            text = "#"
+        intervals [75]:
+            xmin = 19.5119
+            xmax = 19.7219
+            text = "bleu"
+        intervals [76]:
+            xmin = 19.7219
+            xmax = 20.1119
+            text = "klER"
+        intervals [77]:
+            xmin = 20.1119
+            xmax = 20.3519
+            text = "#"
+        intervals [78]:
+            xmin = 20.3519
+            xmax = 20.4419
+            text = "e"
+        intervals [79]:
+            xmin = 20.4419
+            xmax = 21.0525
+            text = "bEZ"
+        intervals [80]:
+            xmin = 21.0525
+            xmax = 21.7518
+            text = "#"
+        intervals [81]:
+            xmin = 21.7518
+            xmax = 21.9568
+            text = "pul"
+        intervals [82]:
+            xmin = 21.9568
+            xmax = 22.1468
+            text = "SE"
+        intervals [83]:
+            xmin = 22.1468
+            xmax = 22.6568
+            text = "tla~d"
+        intervals [84]:
+            xmin = 22.6568
+            xmax = 22.8668
+            text = "taj"
+        intervals [85]:
+            xmin = 22.8668
+            xmax = 23.0868
+            text = "tRa~t"
+        intervals [86]:
+            xmin = 23.0868
+            xmax = 23.2068
+            text = "si"
+        intervals [87]:
+            xmin = 23.2068
+            xmax = 23.3868
+            text = "za"
+        intervals [88]:
+            xmin = 23.3868
+            xmax = 23.5768
+            text = "ka"
+        intervals [89]:
+            xmin = 23.5768
+            xmax = 23.6768
+            text = "Ra~t"
+        intervals [90]:
+            xmin = 23.6768
+            xmax = 24.086
+            text = "sis"
+        intervals [91]:
+            xmin = 24.086
+            xmax = 24.752
+            text = "#"
+        intervals [92]:
+            xmin = 24.752
+            xmax = 24.937
+            text = "ply"
+        intervals [93]:
+            xmin = 24.937
+            xmax = 25.037
+            text = "deu"
+        intervals [94]:
+            xmin = 25.037
+            xmax = 25.257
+            text = "gRi"
+        intervals [95]:
+            xmin = 25.257
+            xmax = 25.447
+            text = "fo~"
+        intervals [96]:
+            xmin = 25.447
+            xmax = 25.737
+            text = "se"
+        intervals [97]:
+            xmin = 25.737
+            xmax = 25.877
+            text = "ni"
+        intervals [98]:
+            xmin = 25.877
+            xmax = 26.017
+            text = "deu"
+        intervals [99]:
+            xmin = 26.017
+            xmax = 26.217
+            text = "bE"
+        intervals [100]:
+            xmin = 26.217
+            xmax = 26.397
+            text = "Za~"
+        intervals [101]:
+            xmin = 26.397
+            xmax = 26.987
+            text = "tReu"
+        intervals [102]:
+            xmin = 26.987
+            xmax = 27.247
+            text = "a~"
+        intervals [103]:
+            xmin = 27.247
+            xmax = 27.467
+            text = "tRa~"
+        intervals [104]:
+            xmin = 27.467
+            xmax = 27.607
+            text = "ty"
+        intervals [105]:
+            xmin = 27.607
+            xmax = 27.677
+            text = "i"
+        intervals [106]:
+            xmin = 27.677
+            xmax = 27.717
+            text = "e"
+        intervals [107]:
+            xmin = 27.717
+            xmax = 27.877
+            text = "ka"
+        intervals [108]:
+            xmin = 27.877
+            xmax = 27.937
+            text = "Ra~"
+        intervals [109]:
+            xmin = 27.937
+            xmax = 28.187
+            text = "teu"
+        intervals [110]:
+            xmin = 28.187
+            xmax = 29.107
+            text = "#"
+        intervals [111]:
+            xmin = 29.107
+            xmax = 29.417
+            text = "ka"
+        intervals [112]:
+            xmin = 29.417
+            xmax = 29.607
+            text = "tReu"
+        intervals [113]:
+            xmin = 29.607
+            xmax = 29.697
+            text = "deu"
+        intervals [114]:
+            xmin = 29.697
+            xmax = 29.967
+            text = "Sak"
+        intervals [115]:
+            xmin = 29.967
+            xmax = 30.107
+            text = "ku"
+        intervals [116]:
+            xmin = 30.107
+            xmax = 30.387
+            text = "l9R"
+        intervals [117]:
+            xmin = 30.387
+            xmax = 30.617
+            text = "puR"
+        intervals [118]:
+            xmin = 30.617
+            xmax = 30.737
+            text = "tu"
+        intervals [119]:
+            xmin = 30.737
+            xmax = 30.957
+            text = "tle"
+        intervals [120]:
+            xmin = 30.957
+            xmax = 31.087
+            text = "zo"
+        intervals [121]:
+            xmin = 31.087
+            xmax = 31.277
+            text = "tReu"
+        intervals [122]:
+            xmin = 31.277
+            xmax = 31.4726
+            text = "taj"
+        intervals [123]:
+            xmin = 31.4726
+            xmax = 33.2598
+            text = "#"
+    item [2]:
+        class = "IntervalTier"
+        name = "Classes"
+        xmin = 0.000000
+        xmax = 33.259800
+        intervals: size = 123
+        intervals [1]:
+            xmin = 0.0
+            xmax = 1.1349
+            text = "#"
+        intervals [2]:
+            xmin = 1.1349
+            xmax = 1.2499
+            text = "NV"
+        intervals [3]:
+            xmin = 1.2499
+            xmax = 1.3899
+            text = "OV"
+        intervals [4]:
+            xmin = 1.3899
+            xmax = 1.5799
+            text = "FV"
+        intervals [5]:
+            xmin = 1.5799
+            xmax = 1.6399
+            text = "LV"
+        intervals [6]:
+            xmin = 1.6399
+            xmax = 1.7499
+            text = "V"
+        intervals [7]:
+            xmin = 1.7499
+            xmax = 1.8999
+            text = "NV"
+        intervals [8]:
+            xmin = 1.8999
+            xmax = 2.3999
+            text = "FV"
+        intervals [9]:
+            xmin = 2.3999
+            xmax = 2.5699
+            text = "FV"
+        intervals [10]:
+            xmin = 2.5699
+            xmax = 2.7899
+            text = "OVL"
+        intervals [11]:
+            xmin = 2.7899
+            xmax = 3.1299
+            text = "OFVF"
+        intervals [12]:
+            xmin = 3.1299
+            xmax = 3.5099
+            text = "NVL"
+        intervals [13]:
+            xmin = 3.5099
+            xmax = 3.7999
+            text = "FNVL"
+        intervals [14]:
+            xmin = 3.7999
+            xmax = 3.9699
+            text = "NVF"
+        intervals [15]:
+            xmin = 3.9699
+            xmax = 4.1199
+            text = "FV"
+        intervals [16]:
+            xmin = 4.1199
+            xmax = 4.3599
+            text = "OVO"
+        intervals [17]:
+            xmin = 4.3599
+            xmax = 4.5499
+            text = "LFV"
+        intervals [18]:
+            xmin = 4.5499
+            xmax = 5.0599
+            text = "NVF"
+        intervals [19]:
+            xmin = 5.0599
+            xmax = 5.1499
+            text = "#"
+        intervals [20]:
+            xmin = 5.1499
+            xmax = 5.2899
+            text = "V"
+        intervals [21]:
+            xmin = 5.2899
+            xmax = 5.5799
+            text = "OVF"
+        intervals [22]:
+            xmin = 5.5799
+            xmax = 5.7099
+            text = "#"
+        intervals [23]:
+            xmin = 5.7099
+            xmax = 6.0699
+            text = "VN"
+        intervals [24]:
+            xmin = 6.0699
+            xmax = 6.0899
+            text = "#"
+        intervals [25]:
+            xmin = 6.0899
+            xmax = 6.1699
+            text = "V"
+        intervals [26]:
+            xmin = 6.1699
+            xmax = 6.3999
+            text = "OVL"
+        intervals [27]:
+            xmin = 6.3999
+            xmax = 6.5499
+            text = "FV"
+        intervals [28]:
+            xmin = 6.5499
+            xmax = 6.6299
+            text = "NV"
+        intervals [29]:
+            xmin = 6.6299
+            xmax = 7.2699
+            text = "#"
+        intervals [30]:
+            xmin = 7.2699
+            xmax = 7.4099
+            text = "LV"
+        intervals [31]:
+            xmin = 7.4099
+            xmax = 7.5399
+            text = "GV"
+        intervals [32]:
+            xmin = 7.5399
+            xmax = 7.7499
+            text = "FV"
+        intervals [33]:
+            xmin = 7.7499
+            xmax = 7.9799
+            text = "NV"
+        intervals [34]:
+            xmin = 7.9799
+            xmax = 8.1099
+            text = "FV"
+        intervals [35]:
+            xmin = 8.1099
+            xmax = 8.2699
+            text = "FV"
+        intervals [36]:
+            xmin = 8.2699
+            xmax = 8.4399
+            text = "FV"
+        intervals [37]:
+            xmin = 8.4399
+            xmax = 8.5699
+            text = "OV"
+        intervals [38]:
+            xmin = 8.5699
+            xmax = 8.7344
+            text = "NVF"
+        intervals [39]:
+            xmin = 8.7344
+            xmax = 9.2685
+            text = "#"
+        intervals [40]:
+            xmin = 9.2685
+            xmax = 9.5335
+            text = "FV"
+        intervals [41]:
+            xmin = 9.5335
+            xmax = 9.7935
+            text = "NVF"
+        intervals [42]:
+            xmin = 9.7935
+            xmax = 10.0135
+            text = "NVF"
+        intervals [43]:
+            xmin = 10.0135
+            xmax = 10.4735
+            text = "FLVO"
+        intervals [44]:
+            xmin = 10.4735
+            xmax = 10.8635
+            text = "#"
+        intervals [45]:
+            xmin = 10.8635
+            xmax = 11.4635
+            text = "FFV"
+        intervals [46]:
+            xmin = 11.4635
+            xmax = 11.8935
+            text = "OLV"
+        intervals [47]:
+            xmin = 11.8935
+            xmax = 12.2635
+            text = "#"
+        intervals [48]:
+            xmin = 12.2635
+            xmax = 12.6935
+            text = "FOV"
+        intervals [49]:
+            xmin = 12.6935
+            xmax = 13.0435
+            text = "OVL"
+        intervals [50]:
+            xmin = 13.0435
+            xmax = 13.2635
+            text = "FV"
+        intervals [51]:
+            xmin = 13.2635
+            xmax = 13.4835
+            text = "OLV"
+        intervals [52]:
+            xmin = 13.4835
+            xmax = 13.6835
+            text = "OV"
+        intervals [53]:
+            xmin = 13.6835
+            xmax = 13.8535
+            text = "V"
+        intervals [54]:
+            xmin = 13.8535
+            xmax = 14.1235
+            text = "#"
+        intervals [55]:
+            xmin = 14.1235
+            xmax = 14.3735
+            text = "OV"
+        intervals [56]:
+            xmin = 14.3735
+            xmax = 14.7335
+            text = "FV"
+        intervals [57]:
+            xmin = 14.7335
+            xmax = 15.1935
+            text = "*"
+        intervals [58]:
+            xmin = 15.1935
+            xmax = 15.3135
+            text = "V"
+        intervals [59]:
+            xmin = 15.3135
+            xmax = 15.5335
+            text = "FV"
+        intervals [60]:
+            xmin = 15.5335
+            xmax = 15.6535
+            text = "FGV"
+        intervals [61]:
+            xmin = 15.6535
+            xmax = 15.9435
+            text = "FVO"
+        intervals [62]:
+            xmin = 15.9435
+            xmax = 16.1635
+            text = "OV"
+        intervals [63]:
+            xmin = 16.1635
+            xmax = 16.3935
+            text = "#"
+        intervals [64]:
+            xmin = 16.3935
+            xmax = 16.5535
+            text = "OV"
+        intervals [65]:
+            xmin = 16.5535
+            xmax = 16.7535
+            text = "OVL"
+        intervals [66]:
+            xmin = 16.7535
+            xmax = 16.8712
+            text = "FV"
+        intervals [67]:
+            xmin = 16.8712
+            xmax = 17.8169
+            text = "#"
+        intervals [68]:
+            xmin = 17.8169
+            xmax = 18.1519
+            text = "OLGV"
+        intervals [69]:
+            xmin = 18.1519
+            xmax = 18.2419
+            text = "OV"
+        intervals [70]:
+            xmin = 18.2419
+            xmax = 18.4719
+            text = "FVO"
+        intervals [71]:
+            xmin = 18.4719
+            xmax = 18.7119
+            text = "OV"
+        intervals [72]:
+            xmin = 18.7119
+            xmax = 18.8819
+            text = "GV"
+        intervals [73]:
+            xmin = 18.8819
+            xmax = 19.3619
+            text = "OLV"
+        intervals [74]:
+            xmin = 19.3619
+            xmax = 19.5119
+            text = "#"
+        intervals [75]:
+            xmin = 19.5119
+            xmax = 19.7219
+            text = "OLV"
+        intervals [76]:
+            xmin = 19.7219
+            xmax = 20.1119
+            text = "OLVL"
+        intervals [77]:
+            xmin = 20.1119
+            xmax = 20.3519
+            text = "#"
+        intervals [78]:
+            xmin = 20.3519
+            xmax = 20.4419
+            text = "V"
+        intervals [79]:
+            xmin = 20.4419
+            xmax = 21.0525
+            text = "OVF"
+        intervals [80]:
+            xmin = 21.0525
+            xmax = 21.7518
+            text = "#"
+        intervals [81]:
+            xmin = 21.7518
+            xmax = 21.9568
+            text = "OVL"
+        intervals [82]:
+            xmin = 21.9568
+            xmax = 22.1468
+            text = "FV"
+        intervals [83]:
+            xmin = 22.1468
+            xmax = 22.6568
+            text = "OLVO"
+        intervals [84]:
+            xmin = 22.6568
+            xmax = 22.8668
+            text = "OVG"
+        intervals [85]:
+            xmin = 22.8668
+            xmax = 23.0868
+            text = "OLVO"
+        intervals [86]:
+            xmin = 23.0868
+            xmax = 23.2068
+            text = "FV"
+        intervals [87]:
+            xmin = 23.2068
+            xmax = 23.3868
+            text = "FV"
+        intervals [88]:
+            xmin = 23.3868
+            xmax = 23.5768
+            text = "OV"
+        intervals [89]:
+            xmin = 23.5768
+            xmax = 23.6768
+            text = "LVO"
+        intervals [90]:
+            xmin = 23.6768
+            xmax = 24.086
+            text = "FVF"
+        intervals [91]:
+            xmin = 24.086
+            xmax = 24.752
+            text = "#"
+        intervals [92]:
+            xmin = 24.752
+            xmax = 24.937
+            text = "OLV"
+        intervals [93]:
+            xmin = 24.937
+            xmax = 25.037
+            text = "OV"
+        intervals [94]:
+            xmin = 25.037
+            xmax = 25.257
+            text = "OLV"
+        intervals [95]:
+            xmin = 25.257
+            xmax = 25.447
+            text = "FV"
+        intervals [96]:
+            xmin = 25.447
+            xmax = 25.737
+            text = "FV"
+        intervals [97]:
+            xmin = 25.737
+            xmax = 25.877
+            text = "NV"
+        intervals [98]:
+            xmin = 25.877
+            xmax = 26.017
+            text = "OV"
+        intervals [99]:
+            xmin = 26.017
+            xmax = 26.217
+            text = "OV"
+        intervals [100]:
+            xmin = 26.217
+            xmax = 26.397
+            text = "FV"
+        intervals [101]:
+            xmin = 26.397
+            xmax = 26.987
+            text = "OLV"
+        intervals [102]:
+            xmin = 26.987
+            xmax = 27.247
+            text = "V"
+        intervals [103]:
+            xmin = 27.247
+            xmax = 27.467
+            text = "OLV"
+        intervals [104]:
+            xmin = 27.467
+            xmax = 27.607
+            text = "OV"
+        intervals [105]:
+            xmin = 27.607
+            xmax = 27.677
+            text = "V"
+        intervals [106]:
+            xmin = 27.677
+            xmax = 27.717
+            text = "V"
+        intervals [107]:
+            xmin = 27.717
+            xmax = 27.877
+            text = "OV"
+        intervals [108]:
+            xmin = 27.877
+            xmax = 27.937
+            text = "LV"
+        intervals [109]:
+            xmin = 27.937
+            xmax = 28.187
+            text = "OV"
+        intervals [110]:
+            xmin = 28.187
+            xmax = 29.107
+            text = "#"
+        intervals [111]:
+            xmin = 29.107
+            xmax = 29.417
+            text = "OV"
+        intervals [112]:
+            xmin = 29.417
+            xmax = 29.607
+            text = "OLV"
+        intervals [113]:
+            xmin = 29.607
+            xmax = 29.697
+            text = "OV"
+        intervals [114]:
+            xmin = 29.697
+            xmax = 29.967
+            text = "FVO"
+        intervals [115]:
+            xmin = 29.967
+            xmax = 30.107
+            text = "OV"
+        intervals [116]:
+            xmin = 30.107
+            xmax = 30.387
+            text = "LVL"
+        intervals [117]:
+            xmin = 30.387
+            xmax = 30.617
+            text = "OVL"
+        intervals [118]:
+            xmin = 30.617
+            xmax = 30.737
+            text = "OV"
+        intervals [119]:
+            xmin = 30.737
+            xmax = 30.957
+            text = "OLV"
+        intervals [120]:
+            xmin = 30.957
+            xmax = 31.087
+            text = "FV"
+        intervals [121]:
+            xmin = 31.087
+            xmax = 31.277
+            text = "OLV"
+        intervals [122]:
+            xmin = 31.277
+            xmax = 31.4726
+            text = "OVG"
+        intervals [123]:
+            xmin = 31.4726
+            xmax = 33.2598
+            text = "#"
+    item [3]:
+        class = "IntervalTier"
+        name = "Structures"
+        xmin = 0.000000
+        xmax = 33.259800
+        intervals: size = 123
+        intervals [1]:
+            xmin = 0.0
+            xmax = 1.1349
+            text = "#"
+        intervals [2]:
+            xmin = 1.1349
+            xmax = 1.2499
+            text = "CV"
+        intervals [3]:
+            xmin = 1.2499
+            xmax = 1.3899
+            text = "CV"
+        intervals [4]:
+            xmin = 1.3899
+            xmax = 1.5799
+            text = "CV"
+        intervals [5]:
+            xmin = 1.5799
+            xmax = 1.6399
+            text = "CV"
+        intervals [6]:
+            xmin = 1.6399
+            xmax = 1.7499
+            text = "V"
+        intervals [7]:
+            xmin = 1.7499
+            xmax = 1.8999
+            text = "CV"
+        intervals [8]:
+            xmin = 1.8999
+            xmax = 2.3999
+            text = "CV"
+        intervals [9]:
+            xmin = 2.3999
+            xmax = 2.5699
+            text = "CV"
+        intervals [10]:
+            xmin = 2.5699
+            xmax = 2.7899
+            text = "CVC"
+        intervals [11]:
+            xmin = 2.7899
+            xmax = 3.1299
+            text = "CCVC"
+        intervals [12]:
+            xmin = 3.1299
+            xmax = 3.5099
+            text = "CVC"
+        intervals [13]:
+            xmin = 3.5099
+            xmax = 3.7999
+            text = "CCVC"
+        intervals [14]:
+            xmin = 3.7999
+            xmax = 3.9699
+            text = "CVC"
+        intervals [15]:
+            xmin = 3.9699
+            xmax = 4.1199
+            text = "CV"
+        intervals [16]:
+            xmin = 4.1199
+            xmax = 4.3599
+            text = "CVC"
+        intervals [17]:
+            xmin = 4.3599
+            xmax = 4.5499
+            text = "CCV"
+        intervals [18]:
+            xmin = 4.5499
+            xmax = 5.0599
+            text = "CVC"
+        intervals [19]:
+            xmin = 5.0599
+            xmax = 5.1499
+            text = "#"
+        intervals [20]:
+            xmin = 5.1499
+            xmax = 5.2899
+            text = "V"
+        intervals [21]:
+            xmin = 5.2899
+            xmax = 5.5799
+            text = "CVC"
+        intervals [22]:
+            xmin = 5.5799
+            xmax = 5.7099
+            text = "#"
+        intervals [23]:
+            xmin = 5.7099
+            xmax = 6.0699
+            text = "VC"
+        intervals [24]:
+            xmin = 6.0699
+            xmax = 6.0899
+            text = "#"
+        intervals [25]:
+            xmin = 6.0899
+            xmax = 6.1699
+            text = "V"
+        intervals [26]:
+            xmin = 6.1699
+            xmax = 6.3999
+            text = "CVC"
+        intervals [27]:
+            xmin = 6.3999
+            xmax = 6.5499
+            text = "CV"
+        intervals [28]:
+            xmin = 6.5499
+            xmax = 6.6299
+            text = "CV"
+        intervals [29]:
+            xmin = 6.6299
+            xmax = 7.2699
+            text = "#"
+        intervals [30]:
+            xmin = 7.2699
+            xmax = 7.4099
+            text = "CV"
+        intervals [31]:
+            xmin = 7.4099
+            xmax = 7.5399
+            text = "CV"
+        intervals [32]:
+            xmin = 7.5399
+            xmax = 7.7499
+            text = "CV"
+        intervals [33]:
+            xmin = 7.7499
+            xmax = 7.9799
+            text = "CV"
+        intervals [34]:
+            xmin = 7.9799
+            xmax = 8.1099
+            text = "CV"
+        intervals [35]:
+            xmin = 8.1099
+            xmax = 8.2699
+            text = "CV"
+        intervals [36]:
+            xmin = 8.2699
+            xmax = 8.4399
+            text = "CV"
+        intervals [37]:
+            xmin = 8.4399
+            xmax = 8.5699
+            text = "CV"
+        intervals [38]:
+            xmin = 8.5699
+            xmax = 8.7344
+            text = "CVC"
+        intervals [39]:
+            xmin = 8.7344
+            xmax = 9.2685
+            text = "#"
+        intervals [40]:
+            xmin = 9.2685
+            xmax = 9.5335
+            text = "CV"
+        intervals [41]:
+            xmin = 9.5335
+            xmax = 9.7935
+            text = "CVC"
+        intervals [42]:
+            xmin = 9.7935
+            xmax = 10.0135
+            text = "CVC"
+        intervals [43]:
+            xmin = 10.0135
+            xmax = 10.4735
+            text = "CCVC"
+        intervals [44]:
+            xmin = 10.4735
+            xmax = 10.8635
+            text = "#"
+        intervals [45]:
+            xmin = 10.8635
+            xmax = 11.4635
+            text = "CCV"
+        intervals [46]:
+            xmin = 11.4635
+            xmax = 11.8935
+            text = "CCV"
+        intervals [47]:
+            xmin = 11.8935
+            xmax = 12.2635
+            text = "#"
+        intervals [48]:
+            xmin = 12.2635
+            xmax = 12.6935
+            text = "CCV"
+        intervals [49]:
+            xmin = 12.6935
+            xmax = 13.0435
+            text = "CVC"
+        intervals [50]:
+            xmin = 13.0435
+            xmax = 13.2635
+            text = "CV"
+        intervals [51]:
+            xmin = 13.2635
+            xmax = 13.4835
+            text = "CCV"
+        intervals [52]:
+            xmin = 13.4835
+            xmax = 13.6835
+            text = "CV"
+        intervals [53]:
+            xmin = 13.6835
+            xmax = 13.8535
+            text = "V"
+        intervals [54]:
+            xmin = 13.8535
+            xmax = 14.1235
+            text = "#"
+        intervals [55]:
+            xmin = 14.1235
+            xmax = 14.3735
+            text = "CV"
+        intervals [56]:
+            xmin = 14.3735
+            xmax = 14.7335
+            text = "CV"
+        intervals [57]:
+            xmin = 14.7335
+            xmax = 15.1935
+            text = "*"
+        intervals [58]:
+            xmin = 15.1935
+            xmax = 15.3135
+            text = "V"
+        intervals [59]:
+            xmin = 15.3135
+            xmax = 15.5335
+            text = "CV"
+        intervals [60]:
+            xmin = 15.5335
+            xmax = 15.6535
+            text = "CCV"
+        intervals [61]:
+            xmin = 15.6535
+            xmax = 15.9435
+            text = "CVC"
+        intervals [62]:
+            xmin = 15.9435
+            xmax = 16.1635
+            text = "CV"
+        intervals [63]:
+            xmin = 16.1635
+            xmax = 16.3935
+            text = "#"
+        intervals [64]:
+            xmin = 16.3935
+            xmax = 16.5535
+            text = "CV"
+        intervals [65]:
+            xmin = 16.5535
+            xmax = 16.7535
+            text = "CVC"
+        intervals [66]:
+            xmin = 16.7535
+            xmax = 16.8712
+            text = "CV"
+        intervals [67]:
+            xmin = 16.8712
+            xmax = 17.8169
+            text = "#"
+        intervals [68]:
+            xmin = 17.8169
+            xmax = 18.1519
+            text = "CCCV"
+        intervals [69]:
+            xmin = 18.1519
+            xmax = 18.2419
+            text = "CV"
+        intervals [70]:
+            xmin = 18.2419
+            xmax = 18.4719
+            text = "CVC"
+        intervals [71]:
+            xmin = 18.4719
+            xmax = 18.7119
+            text = "CV"
+        intervals [72]:
+            xmin = 18.7119
+            xmax = 18.8819
+            text = "CV"
+        intervals [73]:
+            xmin = 18.8819
+            xmax = 19.3619
+            text = "CCV"
+        intervals [74]:
+            xmin = 19.3619
+            xmax = 19.5119
+            text = "#"
+        intervals [75]:
+            xmin = 19.5119
+            xmax = 19.7219
+            text = "CCV"
+        intervals [76]:
+            xmin = 19.7219
+            xmax = 20.1119
+            text = "CCVC"
+        intervals [77]:
+            xmin = 20.1119
+            xmax = 20.3519
+            text = "#"
+        intervals [78]:
+            xmin = 20.3519
+            xmax = 20.4419
+            text = "V"
+        intervals [79]:
+            xmin = 20.4419
+            xmax = 21.0525
+            text = "CVC"
+        intervals [80]:
+            xmin = 21.0525
+            xmax = 21.7518
+            text = "#"
+        intervals [81]:
+            xmin = 21.7518
+            xmax = 21.9568
+            text = "CVC"
+        intervals [82]:
+            xmin = 21.9568
+            xmax = 22.1468
+            text = "CV"
+        intervals [83]:
+            xmin = 22.1468
+            xmax = 22.6568
+            text = "CCVC"
+        intervals [84]:
+            xmin = 22.6568
+            xmax = 22.8668
+            text = "CVC"
+        intervals [85]:
+            xmin = 22.8668
+            xmax = 23.0868
+            text = "CCVC"
+        intervals [86]:
+            xmin = 23.0868
+            xmax = 23.2068
+            text = "CV"
+        intervals [87]:
+            xmin = 23.2068
+            xmax = 23.3868
+            text = "CV"
+        intervals [88]:
+            xmin = 23.3868
+            xmax = 23.5768
+            text = "CV"
+        intervals [89]:
+            xmin = 23.5768
+            xmax = 23.6768
+            text = "CVC"
+        intervals [90]:
+            xmin = 23.6768
+            xmax = 24.086
+            text = "CVC"
+        intervals [91]:
+            xmin = 24.086
+            xmax = 24.752
+            text = "#"
+        intervals [92]:
+            xmin = 24.752
+            xmax = 24.937
+            text = "CCV"
+        intervals [93]:
+            xmin = 24.937
+            xmax = 25.037
+            text = "CV"
+        intervals [94]:
+            xmin = 25.037
+            xmax = 25.257
+            text = "CCV"
+        intervals [95]:
+            xmin = 25.257
+            xmax = 25.447
+            text = "CV"
+        intervals [96]:
+            xmin = 25.447
+            xmax = 25.737
+            text = "CV"
+        intervals [97]:
+            xmin = 25.737
+            xmax = 25.877
+            text = "CV"
+        intervals [98]:
+            xmin = 25.877
+            xmax = 26.017
+            text = "CV"
+        intervals [99]:
+            xmin = 26.017
+            xmax = 26.217
+            text = "CV"
+        intervals [100]:
+            xmin = 26.217
+            xmax = 26.397
+            text = "CV"
+        intervals [101]:
+            xmin = 26.397
+            xmax = 26.987
+            text = "CCV"
+        intervals [102]:
+            xmin = 26.987
+            xmax = 27.247
+            text = "V"
+        intervals [103]:
+            xmin = 27.247
+            xmax = 27.467
+            text = "CCV"
+        intervals [104]:
+            xmin = 27.467
+            xmax = 27.607
+            text = "CV"
+        intervals [105]:
+            xmin = 27.607
+            xmax = 27.677
+            text = "V"
+        intervals [106]:
+            xmin = 27.677
+            xmax = 27.717
+            text = "V"
+        intervals [107]:
+            xmin = 27.717
+            xmax = 27.877
+            text = "CV"
+        intervals [108]:
+            xmin = 27.877
+            xmax = 27.937
+            text = "CV"
+        intervals [109]:
+            xmin = 27.937
+            xmax = 28.187
+            text = "CV"
+        intervals [110]:
+            xmin = 28.187
+            xmax = 29.107
+            text = "#"
+        intervals [111]:
+            xmin = 29.107
+            xmax = 29.417
+            text = "CV"
+        intervals [112]:
+            xmin = 29.417
+            xmax = 29.607
+            text = "CCV"
+        intervals [113]:
+            xmin = 29.607
+            xmax = 29.697
+            text = "CV"
+        intervals [114]:
+            xmin = 29.697
+            xmax = 29.967
+            text = "CVC"
+        intervals [115]:
+            xmin = 29.967
+            xmax = 30.107
+            text = "CV"
+        intervals [116]:
+            xmin = 30.107
+            xmax = 30.387
+            text = "CVC"
+        intervals [117]:
+            xmin = 30.387
+            xmax = 30.617
+            text = "CVC"
+        intervals [118]:
+            xmin = 30.617
+            xmax = 30.737
+            text = "CV"
+        intervals [119]:
+            xmin = 30.737
+            xmax = 30.957
+            text = "CCV"
+        intervals [120]:
+            xmin = 30.957
+            xmax = 31.087
+            text = "CV"
+        intervals [121]:
+            xmin = 31.087
+            xmax = 31.277
+            text = "CCV"
+        intervals [122]:
+            xmin = 31.277
+            xmax = 31.4726
+            text = "CVC"
+        intervals [123]:
+            xmin = 31.4726
+            xmax = 33.2598
+            text = "#"

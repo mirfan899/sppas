@@ -60,6 +60,7 @@ from wxgui.sp_icons  import TIMEANALYSIS
 from wxgui.sp_icons  import CANCEL_ICON
 from wxgui.sp_icons  import SAVE_AS_FILE
 from wxgui.sp_icons  import BROOM_ICON
+from wxgui.sp_icons  import APPLY_ICON
 
 from wxgui.sp_consts import TB_ICONSIZE
 from wxgui.sp_consts import TB_FONTSIZE
@@ -73,22 +74,14 @@ from wxgui.cutils.imageutils import spBitmap
 from wxgui.cutils.ctrlutils  import CreateGenButton
 
 from wxgui.ui.CustomListCtrl import SortListCtrl
+from wxgui.panels.basestats import BaseStatPanel
 from sp_glob import ICONS_PATH
-
-from descriptivestats import BaseStatPanel
 
 # ----------------------------------------------------------------------------
 
 DEFAULT_SEP = 'sep1, sep2, etc'
 
 # ----------------------------------------------------------------------------
-
-def compare(self, object):
-    # Check if it has been modified
-    if object.GetValue() == object.string:
-        return 1
-    else:
-        return 0
 
 # ----------------------------------------------------------------------------
 # class TGADialog
@@ -184,10 +177,11 @@ class TGADialog( wx.Dialog ):
         self.septext.SetValue(DEFAULT_SEP)
         self.septext.Bind(wx.EVT_TEXT, self.OnTextChanged)
         self.septext.Bind(wx.EVT_SET_FOCUS, self.OnTextClick)
-        self.septext.Bind(wx.EVT_TEXT_ENTER, self.OnTextEnter)
 
         broom = wx.BitmapButton(self, bitmap=spBitmap(BROOM_ICON, 16, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
         broom.Bind(wx.EVT_BUTTON, self.OnTextErase)
+        apply = wx.BitmapButton(self, bitmap=spBitmap(APPLY_ICON, 16, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
+        apply.Bind(wx.EVT_BUTTON, self.OnSeparatorChanged)
 
         font.SetPointSize(font.GetPointSize() - 2)
         durlist = ['Use only Midpoint value', 'Add the Radius value', 'Deduct the Radius value']
@@ -198,20 +192,19 @@ class TGADialog( wx.Dialog ):
         self.toolbar_layout.Add(sep_label,    0, flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
         self.toolbar_layout.Add(self.septext, 1, flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
         self.toolbar_layout.Add(broom, 0, flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
+        self.toolbar_layout.Add(apply, 0, flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
         self.toolbar_layout.AddStretchSpacer()
         self.toolbar_layout.Add(withradiusbox, 0, flag=wx.EXPAND|wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
 
+
     def _create_content(self):
         self.notebook = wx.Notebook(self)
-
-        page1 = SummaryPanel(self.notebook, self.preferences, "summary")
-        page2 = TotalPanel(  self.notebook, self.preferences, "total")
-
+        page1 = TotalPanel(  self.notebook, self.preferences, "total")
+        page2 = SummaryPanel(self.notebook, self.preferences, "summary")
         # add the pages to the notebook with the label to show on the tab
-        self.notebook.AddPage(page1, "  Summary  " )
-        self.notebook.AddPage(page2, "   Total   " )
-
-        page2.ShowStats( self._data )
+        self.notebook.AddPage(page1, "   Total   " )
+        self.notebook.AddPage(page2, "  Summary  " )
+        page1.ShowStats( self._data )
         self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.OnNotebookPageChanged)
 
 
@@ -231,12 +224,11 @@ class TGADialog( wx.Dialog ):
         self.btn_save = CreateGenButton(self, wx.ID_SAVE, bmp, text=" Save sheet ", tooltip="Save the currently displayed sheet", colour=color)
         self.btn_save.SetFont( self.preferences.GetValue('M_FONT'))
         self.btn_save.SetDefault()
-        self.btn_save.SetFocus()
 
 
     def _create_button_box(self):
         button_box = wx.BoxSizer(wx.HORIZONTAL)
-        #button_box.Add(self.btn_save,  flag=wx.LEFT, border=5)
+        button_box.Add(self.btn_save,  flag=wx.LEFT, border=5)
         button_box.AddStretchSpacer()
         button_box.Add(self.btn_close, flag=wx.RIGHT, border=5)
         self.btn_save.Bind(wx.EVT_BUTTON, self.onButtonSave)
@@ -245,9 +237,9 @@ class TGADialog( wx.Dialog ):
 
     def _layout_components(self):
         vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.title_layout,   0, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self.toolbar_layout, 1, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self.notebook,       2, flag=wx.ALL|wx.EXPAND, border=5)
+        vbox.Add(self.title_layout,   0, flag=wx.ALL, border=5)
+        vbox.Add(self.toolbar_layout, 0, flag=wx.ALL, border=5)
+        vbox.Add(self.notebook,       1, flag=wx.ALL|wx.EXPAND, border=5)
         vbox.Add(self._create_button_box(), 0, flag=wx.ALL|wx.EXPAND, border=5)
         self.SetSizerAndFit(vbox)
 
@@ -264,8 +256,9 @@ class TGADialog( wx.Dialog ):
         self.SetEscapeId( wx.ID_CANCEL )
 
     def onButtonSave(self, event):
-        page = self.notebook.GetPage( self.notebook.GetSelection() )
-        page.SaveAs()
+        idx = self.notebook.GetSelection()
+        page = self.notebook.GetPage( idx )
+        page.SaveAs(outfilename="tga-%s.csv"%page.name)
 
     def OnNotebookPageChanged(self, event):
         oldselection = event.GetOldSelection()
@@ -290,7 +283,7 @@ class TGADialog( wx.Dialog ):
                 self.withradius = 1
             else:
                 return
-        # update infos of TierStats objects
+        # update infos of TierTGA objects
         for ts in self._data:
             ts.set_withradius( self.withradius )
         page = self.notebook.GetPage( self.notebook.GetSelection() )
@@ -305,13 +298,13 @@ class TGADialog( wx.Dialog ):
         #self.text.SetFocus()
 
     def OnTextChanged(self, event):
+        logging.debug('Text changed event: %s'%self.septext.GetValue())
         self.septext.SetFocus()
         self.septext.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
         self.septext.Refresh()
 
-    def OnTextEnter(self, event):
-        if self.compare(self.septext):
-            return
+    def OnSeparatorChanged(self, event):
+        logging.debug('Enter event: %s'%self.septext.GetValue())
         seps = self.septext.GetValue().strip().split()
         # update infos of TierTGA objects
         for ts in self._data:
@@ -356,43 +349,19 @@ class SummaryPanel( BaseStatPanel ):
         Show descriptive statistics of set of tiers as list.
 
         """
-        #if not data or len(data)==0:
-        self.ShowNothing()
-        return
+        if not data or len(data)==0:
+            self.ShowNothing()
+            return
 
-        self.statctrl = SortListCtrl(self, size=(-1,400))
+        self.statctrl = SortListCtrl(self, size=(-1,480))
 
         # create columns
-        self.cols = ("Labels",) + tuple( os.path.basename(v) for v in data.values() )
+        self.cols = ("Filename",) + tuple( os.path.basename(v) for v in data.values() )
         for i,col in enumerate(self.cols):
             self.statctrl.InsertColumn(i,col)
             self.statctrl.SetColumnWidth(i, 120)
         self.statctrl.SetColumnWidth(0, 200)
 
-        # estimates descriptives statistics
-        statvalues = []
-        for ts in data.keys():
-            ds = ts.ds()
-            if self.name == "occurrences":
-                statvalues.append( ds.len() )
-            elif self.name == "total":
-                statvalues.append( ds.total() )
-            elif self.name == "mean":
-                statvalues.append( ds.mean() )
-            elif self.name == "median":
-                statvalues.append( ds.median() )
-            elif self.name == "stdev":
-                statvalues.append( ds.stdev() )
-
-        # get the list of labels
-        items = ds.len().keys()
-
-        # fill rows
-        self.rowdata = []
-        for i,item in enumerate(items):
-            row = [item] + [ statvalues[i].get(item,0) for i in range(len(statvalues)) ]
-            self.rowdata.append(row)
-            self.AppendRow(i, row, self.statctrl)
 
         self.sizer.DeleteWindows()
         self.sizer.Add(self.statctrl, 1, flag=wx.ALL|wx.EXPAND, border=5)
@@ -414,7 +383,7 @@ class TotalPanel( BaseStatPanel ):
 
     def __init__(self, parent, prefsIO, name):
         BaseStatPanel.__init__(self, parent, prefsIO, name)
-        self.cols = ("Label", "Occurrences", "Total durations", "Mean durations", "Median durations", "Std dev. durations")
+        self.cols = ("Filename", "Tier", "TG name", "TG segments", "Length", "Total", "Mean", "Median", "Std dev.", "nPVI", "Intercept-Pos","Slope-Pos", "Intercept-Time","Slope-Time")
 
     # ------------------------------------------------------------------------
 
@@ -427,30 +396,33 @@ class TotalPanel( BaseStatPanel ):
             self.ShowNothing()
             return
 
-        self.statctrl = SortListCtrl(self, size=(-1,400))
+        self.statctrl = SortListCtrl(self, size=(-1,-1))
 
         for i,col in enumerate(self.cols):
             self.statctrl.InsertColumn(i,col)
             self.statctrl.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER)
         self.statctrl.SetColumnWidth(0, 200)
 
-        # create a list of TierTGA
-        tabts = self.__get_ts(data)
-
-        # estimates descriptives statistics
+        self.rowdata = []
         i = 0
-        for ts in tabts:
-            ds = ts.tga()
+        for tg,filename in data.items():
+            # estimates TGA
+            ds = tg.tga()    # durations data
+            ls = tg.labels() # labels data
             occurrences = ds.len()
             total       = ds.total()
             mean        = ds.mean()
             median      = ds.median()
             stdev       = ds.stdev()
+            npvi        = ds.nPVI()
+            regressp    = ds.intercept_slope_original()
+            regresst    = ds.intercept_slope()
 
             # fill rows
-            self.rowdata = []
             for key in occurrences.keys():
-                row = [ key, occurrences[key], total[key], mean[key], median[key], stdev[key] ]
+                # create the row, as a list of column items
+                segs = " ".join(ls[key])
+                row = [ filename, tg.tier.GetName(), key, segs, occurrences[key], total[key], mean[key], median[key], stdev[key], npvi[key], regressp[key][0], regressp[key][1], regresst[key][0], regresst[key][1] ]
                 # add the data content in rowdata
                 self.rowdata.append( row )
                 # add into the listctrl
@@ -463,19 +435,5 @@ class TotalPanel( BaseStatPanel ):
         self.SendSizeEvent()
 
     # ------------------------------------------------------------------------
-
-    def __get_ts(self, data):
-        TGA=[]
-        withradius=0
-        for ts in data.keys():
-            if not isinstance( ts.tier,list ):
-                TGA.append( TierTGA(ts.tier,withradius) )
-            else:
-                for tier in ts.tier:
-                    TGA.append( TierTGA(tier,withradius) )
-            # TODO:check if all withradius are the same
-            # (it can happen for now, so it's a todo!)
-            withradius = ts.get_withradius()
-        return TGA
 
 # ----------------------------------------------------------------------------
