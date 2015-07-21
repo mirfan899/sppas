@@ -80,6 +80,7 @@ from wxgui.cutils.ctrlutils  import CreateGenButton
 from wxgui.ui.CustomListCtrl import SortListCtrl
 from wxgui.panels.basestats import BaseStatPanel
 from sp_glob import ICONS_PATH
+from wxgui.views.processprogress import ProcessProgressDialog
 
 # ----------------------------------------------------------------------------
 
@@ -278,13 +279,30 @@ class TGADialog( wx.Dialog ):
         page.SaveAs(outfilename="tga-%s.csv"%page.name)
 
     def onButtonExport(self, event):
+        # Create the progress bar then run the annotations
+        wx.BeginBusyCursor()
+        p = ProcessProgressDialog(self, self.preferences)
+        p.set_title("Time Group Analysis...")
+        p.set_header("Annotation generation")
+        p.update(0,"")
+        total = len(self._data.items())
+        i = 0
+        # Work: Generate TGA annotations for each of the given files
         for tg,filename in self._data.items():
+            p.set_text( filename )
             # estimates TGA
             trs = tg.tga_as_transcription()
+            # save as file
             infile, ext = os.path.splitext(filename)
             outfile = infile + "-tga" + ext
             logging.debug('Export file: %s'%outfile)
             annotationdata.io.write(outfile,trs)
+            # uppdate progress bar
+            i = i+1
+            p.set_fraction(float((i+1))/float(total))
+        # Close progress bar
+        p.close()
+        wx.EndBusyCursor()
 
     def OnNotebookPageChanged(self, event):
         oldselection = event.GetOldSelection()

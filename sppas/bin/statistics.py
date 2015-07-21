@@ -116,7 +116,7 @@ setup_logging(log_level, log_file)
 # Arguments
 # ------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s files" % os.path.basename(PROGRAM), description="DataRoamer graphical user interface.")
+parser = ArgumentParser(usage="%s files" % os.path.basename(PROGRAM), description="Statistics graphical user interface.")
 parser.add_argument("files", nargs="*", help='Input file name(s)')
 args = parser.parse_args()
 

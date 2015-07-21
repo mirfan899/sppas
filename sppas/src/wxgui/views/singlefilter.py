@@ -510,7 +510,7 @@ class SingleFilterPanel(wx.Panel):
         else:
             values = str(data['value'][0])
 
-        if data['opt'] == "any":
+        if 'opt' in data.keys() and data['opt'] == "any":
             opt += " Alternatives"
 
         return (data['type'], data['name'], values, opt)
@@ -538,7 +538,8 @@ class _genPredicateSel(object):
         for v in self.value:
             kwargs = {}
             kwargs[ self.function ] = v
-            kwargs[ 'opt' ] = self.opt
+            if 'opt' in kwargs.keys():
+                kwargs[ 'opt' ] = self.opt
             preds.append( Sel(**kwargs) )
 
         pred  = reduce(operator.or_, preds)
