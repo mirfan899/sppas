@@ -2,6 +2,7 @@
 
 PDF versions of the publications are available in the SPPAS package
 (folder `documentation`, sub-folder `references`).
+
 **By using SPPAS, you agree to cite one of these references.**
 
 
@@ -71,6 +72,29 @@ described version.
 >3rd Less-Resourced Languages workshop, 6th Language & Technology Conference, Poznan (Poland).
 
 
+>*Dafydd Gibbon* (2013).
+>**TGA: a web tool for Time Group Analysis**,
+> Tools ans Resources for the Analysis of Speech Prosody, Aix-en-Provence, France, pp. 66-69.
+
+Summary:
+Speech timing analysis in linguistic phonetics often relies on
+annotated data in  de facto  standard formats, such as Praat
+TextGrids, and much of the analysis is still done largely by
+hand, with spreadsheets, or with specialised scripting (e.g.
+Praat scripting), or relies on cooperation with programmers.
+The  TGA  (Time   Group   Analyser)   tool   provides   efficient
+ubiquitous   web-based   computational   support   for   those
+without   such   computational   facilities.   The   input   module
+extracts   a   specified   tier   (e.g.   phone,   syllable,   foot)  from
+inputs   in   common   formats;   user-defined   settings   permit
+selection of sub-sequences such as inter-pausal groups, and
+duration   difference   thresholds.   Tabular   outputs   provide
+descriptive  statistics (including modified deviation models
+like  PIM,  PFD,  nPVI,  rPVI), linear regression, and novel
+structural   information   about   duration   patterns,   including
+difference n-grams and Time Trees (temporal parse trees).
+
+
 >*Brigitte Bigi* (2014).
 >**Automatic Speech Segmentation of French: Corpus Adaptation**.
 >2nd Asian Pacific Corpus Linguistics Conference, p. 32, Hong Kong. 
@@ -80,15 +104,47 @@ described version.
 >**Automatic detection of other-repetition occurrences: application to French conversational speech**,
 >9th International conference on Language Resources and Evaluation (LREC), Reykjavik (Iceland), pages 2648-2652. ISBN: 978-2-9517408-8-4.
 
+Summary:
+This  paper  investigates  the  discursive  phenomenon  called  other-repetitions  
+(OR),  particularly  in  the  context  of  spontaneous  French dialogues. 
+It focuses on their automatic detection and characterization. 
+A method is proposed to retrieve automatically OR: this detection
+is based on rules that are applied on the lexical material only. 
+This automatic detection process has been used to label other-repetitions on
+8 dialogues of CID - Corpus of Interactional Data. Evaluations performed on 
+one speaker are good with a F1-measure of 0.85. Retrieved
+OR occurrences are then statistically described: number of words, distance, etc.
+
 
 >*Brigitte Bigi, Tatsuya Watanabe, Laurent Prévot* (2014).
 >**Representing Multimodal Linguistics Annotated Data**,
 >9th International conference on Language Resources and Evaluation (LREC), Reykjavik (Iceland), pages 3386-3392. ISBN: 978-2-9517408-8-4.
 
+Summary:
+The question of interoperability for linguistic annotated resources requires to cover different aspects.  First, it requires a representation
+framework making it possible to compare, and potentially merge, different annotation schema. In this paper, a general description level
+representing the multimodal linguistic annotations is proposed. It focuses on time and data content representation: This paper reconsiders
+and enhances the current and generalized representation of annotations.  An XML schema of such annotations is proposed.  A Python
+API is also proposed.  This framework is implemented in a multi-platform software and distributed under the terms of the GNU Public
+License.
 
->*Brigitte Bigi* (2014 - To appear).
+
+>*Brigitte Bigi* (2014).
 >**A Multilingual Text Normalization Approach**,
->Human Language Technologies. LNAI 8387, Springer, Heidelberg.
+>Human Language Technologies Challenges for Computer Science and Linguistics LNAI 8387, Springer, Heidelberg. ISBN: 978-3-319-14120-6. Pages 515-526.
+
+Summary:
+The creation of text corpora requires a sequence of processing steps in order 
+to constitute, normalize, and then to directly exploit it by a given application. 
+This paper presents a generic approach for text normalization and concentrates 
+on the aspects of methodology and linguistic engineering, which serve to develop 
+a multi-purpose multilingual text corpus. This approach was applied on written 
+texts of French, English, Spanish, Vietnamese, Khmer and Chinese and on speech 
+transcriptions of French, English, Italian, Chinese and Taiwanese. It consists 
+in splitting the text normalization problem in a set of minor sub-problems as 
+language-independent as possible. A set of text corpus normalization tools with 
+linked resources and a document structuring method are proposed and distributed 
+under the terms of the GPL license.
 
 
 >*Brigitte Bigi, Caterina Petrone, Leonardo Lancia* (2014).
