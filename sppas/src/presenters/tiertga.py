@@ -45,6 +45,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
+import logging
 from calculus.timegroupanalysis import TimeGroupAnalysis
 from annotationdata.tier import Tier
 
@@ -131,6 +132,14 @@ class TierTGA( object ):
         lbls = self.__tier_to_labels()
         return lbls
 
+    def deltadurations(self):
+        """
+        Create then return the sequence of deltadurations of each tg of the tier.
+        @return dict: a dictionary with key=time group name and value=list of delta values
+        """
+        lbls = self.__tier_to_deltadurations()
+        return lbls
+
     # ------------------------------------------------------------------
 
     # ------------------------------------------------------------------
@@ -192,6 +201,46 @@ class TierTGA( object ):
                 if not tglabel in labels.keys():
                     labels[tglabel] = []
                 labels[tglabel].append( alabel )
+
+        return labels
+
+    def __tier_to_deltadurations(self):
+        """
+        Return a dict of tg_label/delta pairs.
+        """
+        i = 1
+        tglabel = "tg_1"
+        labels = {}
+        previousduration = 0.
+
+        for a in self.tier:
+            alabel = a.GetLabel().GetValue()
+
+            # a TG separator (create a new tg if previous tg was used!)
+            if a.GetLabel().IsSilence() or a.GetLabel().IsDummy() or alabel in self.__separators:
+                if tglabel in labels.keys():
+                    i = i+1
+                    tglabel = TierTGA.TG_LABEL+str(i)
+                previousduration = 0.
+
+            # a TG continuum
+            else:
+                # Get the duration
+                duration = a.GetLocation().GetDuration()
+                if a.GetLocation().IsInterval():
+                    if self.__withradius < 0:
+                        duration = duration + a.GetLocation().GetBegin().GetRadius() + a.GetLocation().GetEnd().GetRadius()
+                    elif self.__withradius > 0:
+                        duration = duration - a.GetLocation().GetBegin().GetRadius() - a.GetLocation().GetEnd().GetRadius()
+
+                if not tglabel in labels.keys():
+                    labels[tglabel] = []
+                    logging.debug('... %s is first segment of this TG'%alabel)
+                else:
+                    logging.debug('... %s is segment prec=%f dur=%f'%(alabel,previousduration,duration))
+                    labels[tglabel].append( previousduration-duration )
+
+                previousduration = duration
 
         return labels
 

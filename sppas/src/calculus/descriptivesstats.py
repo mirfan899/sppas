@@ -148,4 +148,13 @@ class DescriptiveStatistics( object ):
 
     # -----------------------------------------------------------------------
 
+    def zscore(self):
+        """
+        Estimates the z-scores of data values.
+        The z-score determines the relative location of a data value.
+        @return (dict): a dictionary of (key, [z-scores]) of float values
+        """
+        return dict( (key, stats.variability.lzs(values)) for key,values in self.items.iteritems() )
+
+
 # ----------------------------------------------------------------------------

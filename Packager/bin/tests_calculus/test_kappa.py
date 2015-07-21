@@ -37,6 +37,12 @@ class TestVectorKappa(unittest.TestCase):
         v = kappa.evaluate()
         self.assertEqual(0.54545, round(v,5))
 
+    def testKappa3(self):
+        p = [ (1.,0.,0.) , (0.,0.,1.) , (0.,1.,0.) , (1.,0.,0.) , (0.,0.,1.) ]
+        q = [ (0.,0.,1.) , (0.,0.,1.) , (1.,0.,0.) , (0.,1.,0.) , (0.,0.,1.) ]
+        kappa = Kappa(p,q)
+        v = kappa.evaluate()
+        self.assertEqual(0.0625, round(v,5))
 
 class TestTierKappa(unittest.TestCase):
 

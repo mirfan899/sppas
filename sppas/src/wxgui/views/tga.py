@@ -166,6 +166,7 @@ class TGADialog( wx.Dialog ):
         self.title_layout.Add(bmp,  flag=wx.TOP|wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, border=5)
         self.title_layout.Add(title_label, flag=wx.EXPAND|wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
 
+
     def _create_toolbar(self):
         self.toolbar_layout = wx.BoxSizer(wx.HORIZONTAL)
         font = self.preferences.GetValue('M_FONT')
@@ -202,9 +203,11 @@ class TGADialog( wx.Dialog ):
         self.notebook = wx.Notebook(self)
         page1 = TotalPanel(  self.notebook, self.preferences, "total")
         page2 = MeansPanel(self.notebook, self.preferences, "means")
+        page3 = DeltaDurationsPanel(self.notebook, self.preferences, "delta")
         # add the pages to the notebook with the label to show on the tab
         self.notebook.AddPage(page1, "   Total   " )
         self.notebook.AddPage(page2, "   Means  " )
+        self.notebook.AddPage(page3, " DeltaDurations " )
         page1.ShowStats( self._data )
         self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.OnNotebookPageChanged)
 
@@ -451,7 +454,7 @@ class MeansPanel( BaseStatPanel ):
             means = stats.mean()
 
             # fill rows
-            row = [ filename, tg.tier.GetName() ] + [ means[key] for key in means.keys() ]
+            row = [ filename, tg.tier.GetName(), means['len'], means['total'], means['mean'], means['median'], means['stdev'], means['npvi'], means['interceptp'], means['slopep'], means['interceptt'], means['slopet'] ]
             # add the data content in rowdata
             self.rowdata.append( row )
             # add into the listctrl
@@ -468,3 +471,56 @@ class MeansPanel( BaseStatPanel ):
 
 # ----------------------------------------------------------------------------
 
+class DeltaDurationsPanel( BaseStatPanel ):
+    """
+    @author:  Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL
+    @summary: TGA related to delta durations.
+
+    """
+
+    def __init__(self, parent, prefsIO, name):
+        BaseStatPanel.__init__(self, parent, prefsIO, name)
+        self.cols = ("Filename", "Tier", "TG name", "Delta Durations")
+
+    # ------------------------------------------------------------------------
+
+    def ShowStats(self, data):
+        """
+        Show TGA of set of tiers as list.
+
+        """
+        if not data or len(data)==0:
+            self.ShowNothing()
+            return
+
+        self.statctrl = SortListCtrl(self, size=(-1,-1))
+
+        for i,col in enumerate(self.cols):
+            self.statctrl.InsertColumn(i,col)
+            self.statctrl.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER)
+        self.statctrl.SetColumnWidth(0, 200)
+
+        self.rowdata = []
+        i = 0
+        for tg,filename in data.items():
+            # estimates TGA
+            #ds = tg.tga()    # durations data
+            #ls = tg.labels() # labels data
+            dd = tg.deltadurations()
+            # fill rows
+            for key in dd.keys():
+                # create the row, as a list of column items
+                segs = " ".join( "%10.3f" % x for x in dd[key] )
+                row = [ filename, tg.tier.GetName(), key, segs ]
+                # add the data content in rowdata
+                self.rowdata.append( row )
+                # add into the listctrl
+                self.AppendRow(i, row, self.statctrl)
+                i = i+1
+
+        self.sizer.DeleteWindows()
+        self.sizer.Add(self.statctrl, 1, flag=wx.ALL|wx.EXPAND, border=5)
+        self.sizer.FitInside(self)
+        self.SendSizeEvent()

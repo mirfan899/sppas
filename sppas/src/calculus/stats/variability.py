@@ -102,8 +102,11 @@ def lz (items, score):
     data values from which that score came.
     The z-score determines the relative location of a data value.
     @param items (list) list of data values
+    @param score (float) a score of any items
     @return (float)
     """
+    if len(items)<2:
+        return 0.
     return (score - central.fmean(items)) / lstdev(items)
 
 
