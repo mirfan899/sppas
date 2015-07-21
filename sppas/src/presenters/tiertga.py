@@ -251,6 +251,9 @@ class TierTGA( object ):
                     logging.debug('... %s is first segment of this TG'%alabel)
                 else:
                     logging.debug('... %s is segment prec=%f dur=%f'%(alabel,previousduration,duration))
+                    # delta=duration(i)-duration(i+1)
+                    #   positive => deceleration
+                    #   negative => acceleration
                     labels[tglabel].append( previousduration-duration )
 
                 previousduration = duration
@@ -282,14 +285,78 @@ class TierTGA( object ):
                     tglabel = TierTGA.TG_LABEL+str(i)
                     seglabels = ""
                 tgann = a
-
             # a TG continuum
             else:
                 seglabels += alabel + " "
 
+        ds = self.tga()
+        occurrences = ds.len()
+        total       = ds.total()
+        mean        = ds.mean()
+        median      = ds.median()
+        stdev       = ds.stdev()
+        npvi        = ds.nPVI()
+        regressp    = ds.intercept_slope_original()
+        regresst    = ds.intercept_slope()
+
+        lentier    = Tier('TGA-occurrences')
+        totaltier  = Tier('TGA-total')
+        meantier   = Tier('TGA-mean')
+        mediantier = Tier('TGA-median')
+        stdevtier  = Tier('TGA-median')
+        npvitier   = Tier('TGA-npvi')
+        interceptptier = Tier('TGA-intercept-with-X-as-position')
+        slopeptier     = Tier('TGA-slope-with-X-as-position')
+        interceptttier = Tier('TGA-intercept-with-X-as-timestamp')
+        slopettier     = Tier('TGA-slope-with-X-as-timestamp')
+
+        for a in tgtier:
+            alabel = a.GetLabel().GetValue()
+            anew = a.Copy()
+            anew.GetLabel().SetValue( str(occurrences[alabel]) )
+            lentier.Append( anew )
+            anew = a.Copy()
+            anew.GetLabel().SetValue( str(total[alabel]) )
+            totaltier.Append( anew )
+            anew = a.Copy()
+            anew.GetLabel().SetValue( str(mean[alabel]) )
+            meantier.Append( anew )
+            anew = a.Copy()
+            anew.GetLabel().SetValue( str(median[alabel]) )
+            mediantier.Append( anew )
+            anew = a.Copy()
+            anew.GetLabel().SetValue( str(stdev[alabel]) )
+            stdevtier.Append( anew )
+            anew = a.Copy()
+            anew.GetLabel().SetValue( str(npvi[alabel]) )
+            npvitier.Append( anew )
+            anew = a.Copy()
+            anew.GetLabel().SetValue( str(regressp[alabel][0]) )
+            interceptptier.Append( anew )
+            anew = a.Copy()
+            anew.GetLabel().SetValue( str(regressp[alabel][1]) )
+            slopeptier.Append( anew )
+            anew = a.Copy()
+            anew.GetLabel().SetValue( str(regresst[alabel][0]) )
+            interceptttier.Append( anew )
+            anew = a.Copy()
+            anew.GetLabel().SetValue( str(regresst[alabel][1]) )
+            slopettier.Append( anew )
+
         trs = Transcription("TGA")
         trs.Append( tgtier )
         trs.Append( segstier )
+        trs.Append( lentier )
+        trs.Append( totaltier )
+        trs.Append( meantier )
+        trs.Append( mediantier )
+        trs.Append( stdevtier )
+        trs.Append( npvitier )
+        trs.Append( interceptptier )
+        trs.Append( slopeptier )
+        trs.Append( interceptttier )
+        trs.Append( slopettier )
+
         return trs
 
 # ---------------------------------------------------------------------------

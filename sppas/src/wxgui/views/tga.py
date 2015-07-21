@@ -278,7 +278,6 @@ class TGADialog( wx.Dialog ):
         page.SaveAs(outfilename="tga-%s.csv"%page.name)
 
     def onButtonExport(self, event):
-        #wx.MessageBox('Sorry, not implemented yet!')
         for tg,filename in self._data.items():
             # estimates TGA
             trs = tg.tga_as_transcription()

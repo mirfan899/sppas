@@ -64,7 +64,7 @@ class TestStatistics(unittest.TestCase):
         total  = tga.total()
         mean   = tga.mean()
         median = tga.median()
-        stdev  = tga.stdev()# there are differences because we estimate the unbiased variance
+        stdev  = tga.stdev()
         npvi   = tga.nPVI()
         reglin = tga.intercept_slope_original()
 
@@ -72,7 +72,7 @@ class TestStatistics(unittest.TestCase):
         self.assertEqual(0.57, round(total['tg_1'],2))
         self.assertEqual(0.19, round(mean['tg_1'],2))
         self.assertEqual(0.14, round(median['tg_1'],2))
-        #self.assertEqual(0.13928, round(stdev[tg1][1],5))
+        self.assertEqual(0.13928, round(stdev['tg_1'],5))
         self.assertEqual(94, round(npvi['tg_1'],0))
         i,s = reglin['tg_1']
         self.assertEqual(0.025, round(i,3))
@@ -81,7 +81,7 @@ class TestStatistics(unittest.TestCase):
         self.assertEqual(4,     occurrences['tg_33'])
         self.assertEqual(0.78,  round(total['tg_33'],2))
         self.assertEqual(0.195, round(mean['tg_33'],3))
-        #self.assertEqual(0.06062, round(stdev['tg_33'][1],5))
+        self.assertEqual(0.06062, round(stdev['tg_33'],5))
         self.assertEqual(53,    round(npvi['tg_33'],0))
         i,s = reglin['tg_33']
         self.assertEqual(0.156, round(i,3))

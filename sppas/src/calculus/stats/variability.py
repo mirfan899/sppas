@@ -61,7 +61,7 @@ Function List
 
 """
 
-def lvariance (items):
+def lunbiasedvariance (items):
     """
     Calculates the unbiased sample variance of the data values,
     using N-1 for the denominator.
@@ -75,9 +75,35 @@ def lvariance (items):
     return central.fsum(pow(i-mn, 2) for i in items) / (len(items)-1)
 
 
-def lstdev (items):
+def lvariance (items):
+    """
+    Calculates the variance of the data values,
+    using N for the denominator.
+    The variance is a measure of dispersion near the mean.
+    @param items (list) list of data values
+    @return (float)
+    """
+    if len(items)<2:
+        return 0.
+    mn = central.fmean(items)
+    return central.fsum(pow(i-mn, 2) for i in items) / (len(items))
+
+
+def lunbiasedstdev (items):
     """
     Calculates the standard deviation of the data values, using N-1 for the denominator.
+    The standard deviation is the positive square root of the variance.
+    @param items (list) list of data values
+    @return (float)
+    """
+    if len(items)<2:
+        return 0.
+    return math.sqrt(lunbiasedvariance(items))
+
+
+def lstdev (items):
+    """
+    Calculates the standard deviation of the data values, using N for the denominator.
     The standard deviation is the positive square root of the variance.
     @param items (list) list of data values
     @return (float)
