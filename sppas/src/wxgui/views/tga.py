@@ -52,6 +52,8 @@ import wx
 import logging
 import os.path
 
+import annotationdata.io
+
 from calculus.descriptivesstats import DescriptiveStatistics
 from presenters.tiertga import TierTGA
 from utils import fileutils
@@ -62,6 +64,7 @@ from wxgui.sp_icons  import CANCEL_ICON
 from wxgui.sp_icons  import SAVE_AS_FILE
 from wxgui.sp_icons  import BROOM_ICON
 from wxgui.sp_icons  import APPLY_ICON
+from wxgui.sp_icons  import EXPORT_ICON
 
 from wxgui.sp_consts import TB_ICONSIZE
 from wxgui.sp_consts import TB_FONTSIZE
@@ -139,6 +142,7 @@ class TGADialog( wx.Dialog ):
         self._create_content()
         self._create_close_button()
         self._create_save_button()
+        self._create_export_button()
         self._layout_components()
         self._set_focus_component()
 
@@ -172,7 +176,7 @@ class TGADialog( wx.Dialog ):
         font = self.preferences.GetValue('M_FONT')
         sep_label = wx.StaticText(self, label="Time group separators:", style=wx.ALIGN_CENTER)
         sep_label.SetFont( font )
-        self.septext = wx.TextCtrl(self, -1)
+        self.septext = wx.TextCtrl(self, -1, size=(150,24))
         self.septext.SetInsertionPoint(0)
         self.septext.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
         self.septext.SetForegroundColour(wx.Colour(128,128,128))
@@ -180,10 +184,10 @@ class TGADialog( wx.Dialog ):
         self.septext.Bind(wx.EVT_TEXT, self.OnTextChanged)
         self.septext.Bind(wx.EVT_SET_FOCUS, self.OnTextClick)
 
-        broom = wx.BitmapButton(self, bitmap=spBitmap(BROOM_ICON, 16, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
-        broom.Bind(wx.EVT_BUTTON, self.OnTextErase)
-        apply = wx.BitmapButton(self, bitmap=spBitmap(APPLY_ICON, 16, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
-        apply.Bind(wx.EVT_BUTTON, self.OnSeparatorChanged)
+        broomb = wx.BitmapButton(self, bitmap=spBitmap(BROOM_ICON, 24, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
+        broomb.Bind(wx.EVT_BUTTON, self.OnTextErase)
+        applyb = wx.BitmapButton(self, bitmap=spBitmap(APPLY_ICON, 24, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
+        applyb.Bind(wx.EVT_BUTTON, self.OnSeparatorChanged)
 
         font.SetPointSize(font.GetPointSize() - 2)
         durlist = ['Use only Midpoint value', 'Add the Radius value', 'Deduct the Radius value']
@@ -191,12 +195,15 @@ class TGADialog( wx.Dialog ):
         withradiusbox.SetFont( font )
         self.Bind(wx.EVT_RADIOBOX, self.OnWithRadius, withradiusbox)
 
-        self.toolbar_layout.Add(sep_label,    0, flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
-        self.toolbar_layout.Add(self.septext, 1, flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
-        self.toolbar_layout.Add(broom, 0, flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
-        self.toolbar_layout.Add(apply, 0, flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
+        sepsizer = wx.BoxSizer(wx.HORIZONTAL)
+        sepsizer.Add(sep_label,    0, flag=wx.ALL, border=5)
+        sepsizer.Add(broomb,       0, flag=wx.ALL, border=5)
+        sepsizer.Add(self.septext, 1, flag=wx.EXPAND|wx.ALL, border=5)
+        sepsizer.Add(applyb,       0, flag=wx.ALL, border=5)
+
+        self.toolbar_layout.Add(sepsizer, 1, flag=wx.LEFT|wx.ALIGN_CENTER_VERTICAL, border=5)
         self.toolbar_layout.AddStretchSpacer()
-        self.toolbar_layout.Add(withradiusbox, 0, flag=wx.EXPAND|wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
+        self.toolbar_layout.Add(withradiusbox, flag=wx.RIGHT, border=5)
 
 
     def _create_content(self):
@@ -221,7 +228,6 @@ class TGADialog( wx.Dialog ):
         self.btn_close.SetFocus()
         self.SetAffirmativeId(wx.ID_OK)
 
-
     def _create_save_button(self):
         bmp = spBitmap(SAVE_AS_FILE, theme=self.preferences.GetValue('M_ICON_THEME'))
         color = self.preferences.GetValue('M_BG_COLOUR')
@@ -229,13 +235,20 @@ class TGADialog( wx.Dialog ):
         self.btn_save.SetFont( self.preferences.GetValue('M_FONT'))
         self.btn_save.SetDefault()
 
+    def _create_export_button(self):
+        bmp = spBitmap(EXPORT_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
+        color = self.preferences.GetValue('M_BG_COLOUR')
+        self.btn_export = CreateGenButton(self, wx.ID_SAVEAS, bmp, text=" Export as annotation ", tooltip="Save the TGA results as annotations", colour=color)
+        self.btn_export.SetFont( self.preferences.GetValue('M_FONT'))
 
     def _create_button_box(self):
         button_box = wx.BoxSizer(wx.HORIZONTAL)
-        button_box.Add(self.btn_save,  flag=wx.LEFT, border=5)
+        button_box.Add(self.btn_save,   flag=wx.LEFT, border=5)
+        button_box.Add(self.btn_export, flag=wx.LEFT, border=5)
         button_box.AddStretchSpacer()
         button_box.Add(self.btn_close, flag=wx.RIGHT, border=5)
         self.btn_save.Bind(wx.EVT_BUTTON, self.onButtonSave)
+        self.btn_export.Bind(wx.EVT_BUTTON, self.onButtonExport)
         return button_box
 
 
@@ -263,6 +276,16 @@ class TGADialog( wx.Dialog ):
         idx = self.notebook.GetSelection()
         page = self.notebook.GetPage( idx )
         page.SaveAs(outfilename="tga-%s.csv"%page.name)
+
+    def onButtonExport(self, event):
+        #wx.MessageBox('Sorry, not implemented yet!')
+        for tg,filename in self._data.items():
+            # estimates TGA
+            trs = tg.tga_as_transcription()
+            infile, ext = os.path.splitext(filename)
+            outfile = infile + "-tga" + ext
+            logging.debug('Export file: %s'%outfile)
+            annotationdata.io.write(outfile,trs)
 
     def OnNotebookPageChanged(self, event):
         oldselection = event.GetOldSelection()

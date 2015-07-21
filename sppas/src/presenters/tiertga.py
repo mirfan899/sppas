@@ -47,7 +47,12 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 import logging
 from calculus.timegroupanalysis import TimeGroupAnalysis
-from annotationdata.tier import Tier
+
+from annotationdata.transcription import Transcription
+from annotationdata.tier          import Tier
+from annotationdata.annotation    import Annotation
+from annotationdata.label.label   import Label
+from annotationdata.ptime.interval import TimeInterval
 
 # ----------------------------------------------------------------------------
 
@@ -139,6 +144,14 @@ class TierTGA( object ):
         """
         lbls = self.__tier_to_deltadurations()
         return lbls
+
+    def tga_as_transcription(self):
+        """
+        Create then return the sequence of labels of each tg of the tier as a Transcription() object.
+        @return Transcrirption()
+        """
+        trs = self.__tier_to_transcription()
+        return trs
 
     # ------------------------------------------------------------------
 
@@ -243,5 +256,40 @@ class TierTGA( object ):
                 previousduration = duration
 
         return labels
+
+    def __tier_to_transcription(self):
+        """
+        Return a Transcription() of tiers with tg_labels.
+        """
+        i = 1
+        tglabel = "tg_1"
+        seglabels = ""
+        tgann = None
+        tgtier   = Tier('TGA-TimeGroups')
+        segstier = Tier('TGA-Segments')
+
+        for a in self.tier:
+            alabel = a.GetLabel().GetValue()
+
+            # a TG separator (create a new tg if previous tg was used!)
+            if a.GetLabel().IsSilence() or a.GetLabel().IsDummy() or alabel in self.__separators:
+                if len(seglabels)>0:
+                    newa = Annotation(TimeInterval(tgann.GetLocation().GetEnd(),a.GetLocation().GetBegin()), Label(tglabel))
+                    tgtier.Append( newa )
+                    newa = Annotation(TimeInterval(tgann.GetLocation().GetEnd(),a.GetLocation().GetBegin()), Label( " ".join( seglabels )))
+                    segstier.Append( newa )
+                    i = i+1
+                    tglabel = TierTGA.TG_LABEL+str(i)
+                    seglabels = ""
+                tgann = a
+
+            # a TG continuum
+            else:
+                seglabels += alabel + " "
+
+        trs = Transcription("TGA")
+        trs.Append( tgtier )
+        trs.Append( segstier )
+        return trs
 
 # ---------------------------------------------------------------------------
