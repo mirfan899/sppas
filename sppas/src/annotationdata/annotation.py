@@ -51,11 +51,12 @@ import copy
 
 from label.label         import Label
 from ptime.location      import Location
+from meta import MetaObject
 
 # ----------------------------------------------------------------------------
 
 
-class Annotation(object):
+class Annotation( MetaObject ):
     """
     @authors: Brigitte Bigi, Tatsuya Watanabe
     @contact: brigitte.bigi@gmail.com
@@ -95,8 +96,9 @@ class Annotation(object):
         @raise TypeError
 
         """
-        # Assign the label
+        super(Annotation, self).__init__()
 
+        # Assign the label
         if not text:
             text = Label("")
 

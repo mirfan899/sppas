@@ -135,10 +135,11 @@ ext_sclite =      ['.stm', '.ctm', '.[sScC][tT][mM]']
 ext_htk =         ['.lab', '.mlf']
 ext_subtitles =   ['.sub', '.srt', '.[sS][uU][bB]', '.[sS][rR][tT]']
 ext_anvil =       ['.anvil', '.[aA][aN][vV][iI][lL]']
+ext_annotationpro = ['antx', '.[aA][aN][tT][xX]']
 
 extensions     = ['.xra', '.textgrid', '.pitchtier', '.eaf', '.trs', '.csv', '.mrk', '.txt', '.mrk', '.stm', '.ctm', '.lab', '.mlf', '.sub', '.srt', 'anvil' ]
 extensionsul   = ext_sppas + ext_praat + ext_transcriber + ext_elan + ext_ascii + ext_phonedit + ext_signaix + ext_sclite + ext_htk + ext_subtitles + ext_anvil
-extensions_in  = ['.xra', '.TextGrid', '.hz', '.PitchTier', '.eaf', '.trs', '.csv', '.mrk', '.txt', '.stm', '.ctm', '.lab', '.mlf', '.sub', '.srt', '.anvil']
+extensions_in  = ['.xra', '.TextGrid', '.hz', '.PitchTier', '.eaf', '.trs', '.csv', '.mrk', '.txt', '.stm', '.ctm', '.lab', '.mlf', '.sub', '.srt', '.anvil', 'antx']
 extensions_out = ['.xra', '.TextGrid', '.eaf', '.csv', '.mrk', '.stm', '.ctm', '.lab', '.mlf', '.sub', '.srt' ]
 extensions_out_multitiers = ['.xra', '.TextGrid', '.eaf', '.csv', '.mrk', '.stm', '.ctm', '.mlf' ]
 

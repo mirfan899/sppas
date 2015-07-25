@@ -46,7 +46,7 @@ from subtitle import SubRip, SubViewer
 from sclite import TimeMarkedConversation, SegmentTimeMark
 from elan import Elan
 from anvil import Anvil
-
+from annotationpro import Antx
 
 class TrsFactory(object):
     """
@@ -71,7 +71,8 @@ class TrsFactory(object):
         "ctm": TimeMarkedConversation,
         "stm": SegmentTimeMark,
         "eaf": Elan,
-        "anvil": Anvil
+        "anvil": Anvil,
+        "antx": Antx
     }
 
     @staticmethod

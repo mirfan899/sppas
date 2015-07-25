@@ -77,7 +77,7 @@
            <Localization score="1.0">
              <TimeInterval>
                  <Begin midpoint="0.8700" radius="0.005" />
-                 <End   midpoint="0.2340" radius="0.0001" />
+                 <End   midpoint="0.9340" radius="0.0001" />
              </TimeInterval>
            </Localization>
         </Location>
