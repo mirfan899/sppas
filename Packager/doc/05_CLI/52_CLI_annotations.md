@@ -26,7 +26,7 @@ optional arguments:
    -h, --help      show this help message and exit
    -w file|folder  Input wav file name, or folder
    -l lang         Input language, using iso639-3 code
-   -e extension    Output extension. One of: xra, textgrid, eaf, csv.
+   -e extension    Output extension. One of: xra, textgrid, eaf, csv, ...
    --momel         Activate Momel and INTSINT
    --ipu           Activate IPUs Segmentation
    --tok           Activate Tokenization

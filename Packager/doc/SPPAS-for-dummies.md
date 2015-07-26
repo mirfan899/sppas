@@ -78,6 +78,9 @@ France.
     - Excel/OpenOffice/R/...: csv
     - subtitles: sub, srt
 
+* Supported file formats to import/export (software, extension):
+    - AnnotationPro: antx
+
 * Supported file formats to import (software, extension):
     - Transcriber: trs
     - Anvil: anvil

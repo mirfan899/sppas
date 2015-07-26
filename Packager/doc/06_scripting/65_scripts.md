@@ -93,18 +93,23 @@ Currently, accepted input file extensions are:
 
 * xra
 * csv, txt
-* TextGrid, PitchTier
+* TextGrid, PitchTier, IntensityTier
 * eaf
 * trs
 * mrk
+* sub, srt
+* hz
+* antx
 
 Possible output file extensions are:
 
 * xra
-* csv, txt, lab
+* csv, txt, lab, ctm, stm
 * TextGrid, PitchTier
 * eaf
 * mrk
+* sub, srt
+* antx
 
 >Practice:
 >Write a script to convert a TextGrid file into CSV
