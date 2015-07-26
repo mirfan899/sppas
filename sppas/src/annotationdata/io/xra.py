@@ -34,9 +34,11 @@
 # You should have received a copy of the GNU General Public License
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
+# ---------------------------------------------------------------------------
 
 from datetime import datetime
 import xml.etree.cElementTree as ET
+
 from annotationdata.transcription import Transcription
 from annotationdata.label.label import Label
 from annotationdata.label.text import Text
@@ -51,7 +53,9 @@ from annotationdata.ptime.localization import Localization
 from annotationdata.annotation import Annotation
 from annotationdata.hierarchy import Hierarchy
 from utils import indent
+from utils import gen_id
 
+# ---------------------------------------------------------------------------
 
 class XRA(Transcription):
     """
@@ -122,7 +126,6 @@ class XRA(Transcription):
 
             self._hierarchy.addLink(type, former, latter)
 
-    # End __read_hierarchy
     # -----------------------------------------------------------------
 
     def __read_vocabulary(self, vocabularyRoot):
@@ -135,7 +138,6 @@ class XRA(Transcription):
             tier = self.__id_tier_map[tierNode.attrib['ID']]
             tier.ctrlvocab = vocab
 
-    # End __read_vocabulary
     # -----------------------------------------------------------------
 
     def __read_tier(self, tierRoot):
@@ -154,7 +156,6 @@ class XRA(Transcription):
         for annotationRoot in tierRoot.findall('Annotation'):
             XRA.__read_annotation(tier, annotationRoot)
 
-    # End __read_tier
     # -----------------------------------------------------------------
 
     @staticmethod
@@ -169,7 +170,6 @@ class XRA(Transcription):
         annotation = Annotation(location, label)
         tier.Add(annotation)
 
-    # End __read_annotation
     # -----------------------------------------------------------------
 
     @staticmethod
@@ -186,7 +186,6 @@ class XRA(Transcription):
 
         return location
 
-    # End __parse_location
     # -----------------------------------------------------------------
 
     @staticmethod
@@ -222,7 +221,6 @@ class XRA(Transcription):
 
         return localization
 
-    # End __parse_localization
     # -----------------------------------------------------------------
 
     @staticmethod
@@ -232,7 +230,6 @@ class XRA(Transcription):
 
         return TimePoint(midpoint, radius)
 
-    # End __parse_time_point
     # -----------------------------------------------------------------
 
     @staticmethod
@@ -242,7 +239,6 @@ class XRA(Transcription):
 
         return FramePoint(midpoint, radius)
 
-    # End __parse_frame_point
     # -----------------------------------------------------------------
 
     @staticmethod
@@ -263,7 +259,6 @@ class XRA(Transcription):
                 isTimeInterval else
                 FrameInterval(begin, end))
 
-    # End __parse_interval
     # -----------------------------------------------------------------
 
     @staticmethod
@@ -283,7 +278,6 @@ class XRA(Transcription):
                 isTimeDisjoint else
                 FrameDisjoint(*intervalList))
 
-    # End __parse_disjoint
     # -----------------------------------------------------------------
 
     @staticmethod
@@ -310,17 +304,15 @@ class XRA(Transcription):
 
         return label
 
-    # End __parse_label
     # -----------------------------------------------------------------
 
     @staticmethod
     def __read_metadata(metaObject, metadataRoot):
         for entryNode in metadataRoot.findall('Entry'):
-            key = entryNode.attrib['Key']
+            key = entryNode.attrib['Key'].lower()
             value = entryNode.text
             metaObject.metadata[key] = value
 
-    # End __read_metadata
     # -----------------------------------------------------------------
 
     def write(self, filename, encoding='UTF-8'):
@@ -336,7 +328,6 @@ class XRA(Transcription):
             self.__tier_id_map = {}
             self.__tier_counter = 0
 
-            print "SELF METADATA:", self.metadata
             metadataRoot = ET.SubElement(root, 'Metadata')
             XRA.__format_metadata(metadataRoot, self)
             if len(metadataRoot.findall('Entry')) == 0:
@@ -356,7 +347,8 @@ class XRA(Transcription):
             indent(root)
 
             tree = ET.ElementTree(root)
-            tree.write(filename, encoding='utf-8', method="xml")
+            tree.write(filename, encoding=encoding, method="xml")
+
         except Exception:
             #import traceback
             #print(traceback.format_exc())
@@ -377,7 +369,6 @@ class XRA(Transcription):
         except KeyError:
             #print('The current Hierarchy is invalid.')
             hierarchyRoot.clear()
-            # FIXME: We REALLY shouldn't use IDs
 
     # End __format_hierarchy
     # -----------------------------------------------------------------
@@ -393,23 +384,21 @@ class XRA(Transcription):
             tierNode = ET.SubElement(vocabularyRoot, 'Tier')
             tierNode.set('ID', self.__tier_id_map[tier])
 
-    # End __format_vocabulary
     # -----------------------------------------------------------------
 
     @staticmethod
     def __format_metadata(metadataRoot, metaObject):
         for key, value in metaObject.metadata.iteritems():
-            print " Got metadata to write: ", key, " -> ", value
             entry = ET.SubElement(metadataRoot, 'Entry')
             entry.set('Key', key)
             entry.text = unicode(value)
 
-    # End __format_metadata
     # -----------------------------------------------------------------
 
     def __format_tier(self, tierRoot, tier):
-        id = 't%d' % self.__tier_counter
+        id = gen_id() #'t%d' % self.__tier_counter
         tierRoot.set("ID", id)
+        tier.metadata [ 'id' ] = id
         self.__tier_id_map[tier] = id
         self.__tier_counter += 1
         tierRoot.set("tiername", tier.GetName())
@@ -425,7 +414,6 @@ class XRA(Transcription):
 
         # TODO: add medias somehow
 
-    # End __format_tier
     # -----------------------------------------------------------------
 
     @staticmethod
@@ -437,7 +425,6 @@ class XRA(Transcription):
         labelRoot = ET.SubElement(annotationRoot, 'Label')
         XRA.__format_label(labelRoot, annotation.GetLabel())
 
-    # End __format_annotation
     # -----------------------------------------------------------------
 
     @staticmethod
@@ -447,7 +434,6 @@ class XRA(Transcription):
             textNode = ET.SubElement(labelRoot, 'Text')
             XRA.__format_text(textNode, text)
 
-    # End __format_label
     # -----------------------------------------------------------------
 
     @staticmethod
@@ -466,7 +452,6 @@ class XRA(Transcription):
 
         textNode.text = text.GetValue()
 
-    # End __format_text
     # -----------------------------------------------------------------
 
     @staticmethod
@@ -476,7 +461,6 @@ class XRA(Transcription):
                                              'Localization')
             XRA.__format_localization(localizationRoot, localization)
 
-    # End __format_location
     # -----------------------------------------------------------------
 
     @staticmethod
@@ -509,7 +493,6 @@ class XRA(Transcription):
         else:
             raise Exception("Localization is not a valid type")
 
-    # End __format_localization
     # -----------------------------------------------------------------
 
     @staticmethod
@@ -517,7 +500,6 @@ class XRA(Transcription):
         pointNode.set('midpoint', unicode(point.GetMidpoint()))
         pointNode.set('radius', unicode(point.GetRadius()))
 
-    # End __format_point
     # -----------------------------------------------------------------
 
     @staticmethod
@@ -528,7 +510,6 @@ class XRA(Transcription):
         end = ET.SubElement(intervalRoot, 'End')
         XRA.__format_point(end, interval.GetEnd())
 
-    # End __format_interval
     # -----------------------------------------------------------------
 
     @staticmethod
@@ -537,5 +518,4 @@ class XRA(Transcription):
             intervalRoot = ET.SubElement(disjointRoot, 'Interval')
             XRA.__format_interval(intervalRoot, interval)
 
-    # End __format_disjoint
     # -----------------------------------------------------------------

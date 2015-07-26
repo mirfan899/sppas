@@ -34,12 +34,28 @@
 # You should have received a copy of the GNU General Public License
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
+# ---------------------------------------------------------------------------
 
 from annotationdata.ptime.point import TimePoint
 from annotationdata.label.label import Label
 from annotationdata.ptime.interval import TimeInterval
 from annotationdata.annotation import Annotation
 from annotationdata.tier import Tier
+
+import random
+import string
+
+# ---------------------------------------------------------------------------
+
+def random_char(y, lowercase=True):
+    if lowercase:
+        return ''.join(random.choice(string.ascii_lowercase) for x in range(y))
+    return ''.join(random.choice(string.ascii_letters) for x in range(y))
+
+def random_int(y):
+    return ''.join(str(random.randint(0,9)) for x in range(y))
+
+# ---------------------------------------------------------------------------
 
 
 def indent(elem, level=0):
@@ -63,6 +79,44 @@ def indent(elem, level=0):
 
 # End indent
 # -----------------------------------------------------------------
+
+
+def gen_id( ):
+    """
+    Generate a unique ID.
+    """
+    s = ''
+    s += random_int(1)
+    s += random_char(1)
+    s += random_int(3)
+    s += random_char(1)
+    s += random_int(1)
+    s += random_char(1)
+    s += "-"
+    s += random_int(1)
+    s += random_char(1)
+    s += random_int(2)
+    s += "-"
+    s += random_int(1)
+    s += random_char(1)
+    s += random_int(2)
+    s += "-"
+    s += random_int(1)
+    s += random_char(2)
+    s += random_int(1)
+    s += "-"
+    s += random_int(4)
+    s += random_char(2)
+    s += random_int(1)
+    s += random_char(1)
+    s += random_int(3)
+    s += random_char(1)
+
+    return s
+
+# End gen_id
+# -----------------------------------------------------------------
+
 
 def format_float( f ):
     return round(float(f),4)
