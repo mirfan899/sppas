@@ -108,10 +108,11 @@ class Antx(Transcription):
     # -----------------------------------------------------------------
 
     def __read_configuration(self, configurationRoot, uri):
-        newkey   = configurationRoot.find(uri+'Key').text
+        newkey   = configurationRoot.find(uri+'Key').text.replace(uri,'')
         newvalue = configurationRoot.find(uri+'Value').text
         if newkey is not None:
-            self.metadata[newkey] = newvalue
+            self.metadata[ newkey ] = newvalue
+            print "New metadata:",newkey, " -> ", newvalue
 
     # End __read_configuration
     # -----------------------------------------------------------------
@@ -125,7 +126,7 @@ class Antx(Transcription):
                 elif 'id' in node.tag.lower():
                     self.__id_tier_map[node.text] = tier
                 else:
-                    tier.metadata[ node.tag ] = node.text
+                    tier.metadata[ node.tag.replace(uri,'') ] = node.text
 
     # End __read_tier
     # -----------------------------------------------------------------
@@ -138,8 +139,8 @@ class Antx(Transcription):
 
         if tier is not None:
             end = start + duration
-            #start = start / float(self.metadata['Samplerate'])
-            #end   = end / float(self.metadata['Samplerate'])
+            start = start / 1000.  #float(self.metadata['Samplerate'])
+            end   = end / 1000.    # float(self.metadata['Samplerate'])
             if end > start:
                 location = Location(Localization(TimeInterval(TimePoint(start/1000.), TimePoint(end/1000.))))
             else:

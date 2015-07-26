@@ -336,6 +336,7 @@ class XRA(Transcription):
             self.__tier_id_map = {}
             self.__tier_counter = 0
 
+            print "SELF METADATA:", self.metadata
             metadataRoot = ET.SubElement(root, 'Metadata')
             XRA.__format_metadata(metadataRoot, self)
             if len(metadataRoot.findall('Entry')) == 0:
@@ -397,7 +398,8 @@ class XRA(Transcription):
 
     @staticmethod
     def __format_metadata(metadataRoot, metaObject):
-        for key, value in metaObject.metadata:
+        for key, value in metaObject.metadata.iteritems():
+            print " Got metadata to write: ", key, " -> ", value
             entry = ET.SubElement(metadataRoot, 'Entry')
             entry.set('Key', key)
             entry.text = unicode(value)

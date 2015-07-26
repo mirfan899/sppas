@@ -57,9 +57,6 @@ class Hierarchy(object):
     - TimeAlignment:
         the points of a child tier are all included
         in the points of a reference tier.
-    - Constituency:
-        TimeAlignment + the labels of the child tier are
-        a concatenation of the labels of the reference tier.
 
     Examples:
     Lemmas are child of Tokens,      with TimeAssociation.

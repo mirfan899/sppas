@@ -74,7 +74,7 @@ class Transcription(MetaObject):
     >>> transcription = Transcription()
     >>> tier1 = transcription.NewTier("tier1")
     >>> tier2 = transcription.NewTier("tier2")
-    >>> transcription.AddSubdivision(tier1, tier2, type="alignment")
+    >>> transcription.GetHierarchy().addLink(type="TimeAlignment", tier1, tier2)
 
     Currently, meta-data are:
         - TIME_UNITS
@@ -103,6 +103,15 @@ class Transcription(MetaObject):
     # End __init__
     # ------------------------------------------------------------------------------------
 
+    def GetHierarchy(self):
+        """
+        Return the Hierarchy.
+
+        """
+        return self._hierarchy
+
+    # ------------------------------------------------------------------------------------
+
     def GetName(self):
         """
         Return the string of the name of the transcription.
@@ -112,9 +121,6 @@ class Transcription(MetaObject):
 
     # End GetName
     # ------------------------------------------------------------------------------------
-
-    def GetHierarchy(self):
-        return self._hierarchy
 
     def SetName(self, name):
         """
@@ -162,7 +168,7 @@ class Transcription(MetaObject):
 
     def GetCtrlVocabs(self):
         """
-        Return a dictionnary-mapped tiers vocabularies
+        Return a dictionary-mapped tiers vocabularies
         for instance:
         {
             {elem1, elem2, elem3}:[tier1, tier2]
@@ -182,7 +188,6 @@ class Transcription(MetaObject):
 
     # End GetCtrlVocabs
     # ------------------------------------------------------------------------------------
-
 
     def GetMaxTime(self):
         """
@@ -216,48 +221,29 @@ class Transcription(MetaObject):
     # End SetMaxTime
     # ------------------------------------------------------------------------------------
 
-    def Set(self, tiers, name='empty'):
+    def Set(self, tiers, name='NoName'):
         """
         Set a transcription.
 
-        @param tiers: tiers is a transcription or list of tiers.
-
+        @param tiers: Transcription or list of Tier instances.
         @raise TypeError:
 
         """
-        if(isinstance(tiers, Transcription)):
-            self.__name = tiers.__name
-            self.metadata = tiers.metadata
-            self.__mintime = tiers.__mintime
-            self.__maxtime = tiers.__maxtime
-            self.__coeff = tiers.__coeff
-            self.__tiers = tiers.__tiers
+        if isinstance(tiers, Transcription):
+            self.metadata   = tiers.metadata
             self._hierarchy = tiers._hierarchy
-        if all(isinstance(tier, Tier) for tier in tiers) is False:
-            raise TypeError("Tier argument required, not %r" % tiers)
+            self.__name     = tiers.__name
+            self.__mintime  = tiers.__mintime
+            self.__maxtime  = tiers.__maxtime
+            self.__coeff    = tiers.__coeff
+            self.__tiers    = tiers.__tiers
 
-        tiers = [tier for tier in tiers]
-        self.__name = name
-        self.__tiers = tiers
+        if all(isinstance(tier, Tier) for tier in tiers) is False:
+            raise TypeError("Transcription or List of Tier instances argument required, not %r" % tiers)
+        self.__tiers = [tier for tier in tiers]
+        self.__name  = name
 
     # End Set
-    # ------------------------------------------------------------------------------------
-
-    @deprecated
-    def GetMetadata(self, key):
-        if(key not in self.metadata):
-            return ''
-        else:
-            return self.metadata[key]
-
-    # End GetMetadata
-    # ------------------------------------------------------------------------------------
-
-    @deprecated
-    def SetMetadata(self, key, value):
-        self.metadata[key] = value
-
-    # End SetMetadata
     # ------------------------------------------------------------------------------------
 
     def GetSize(self):

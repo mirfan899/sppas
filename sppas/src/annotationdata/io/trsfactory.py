@@ -88,7 +88,7 @@ class TrsFactory(object):
         try:
             return TrsFactory.__TRS[trs_type]()
         except KeyError:
-            raise KeyError("Unrecognised Transcription type: %s" % trs_type)
+            raise KeyError("Unrecognized Transcription type: %s" % trs_type)
 
     # End NewTrs
     # -----------------------------------------------------------------

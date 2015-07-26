@@ -97,7 +97,9 @@ elif args.t:
     tiersnumbs = args.t
 
 # Select tiers to create output
-trsoutput = Transcription()
+trsoutput = Transcription( name=trsinput.GetName() )
+
+# Add selected tiers into output
 for i in tiersnumbs:
     if not args.quiet is True: sys.stdout.write( " -> Tier "+str(i)+":" )
     if i > 0:
@@ -120,6 +122,9 @@ if args.n:
         else:
             if not args.quiet is True: print " [IGNORED] Wrong tier name."
 
+# Set the other members
+trsoutput.metadata = trsinput.metadata
+#TODO: copy relevant hierarchy links
 
 # ----------------------------------------------------------------------------
 # Write
