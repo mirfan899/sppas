@@ -34,6 +34,7 @@
 # You should have received a copy of the GNU General Public License
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
+# ---------------------------------------------------------------------------
 
 import datetime
 import xml.etree.cElementTree as ET
@@ -44,9 +45,11 @@ from annotationdata.ptime.interval import TimeInterval
 from annotationdata.annotation import Annotation
 from utils import indent
 
+# -----------------------------------------------------------------
 
 ELAN_RADIUS = 0.02
 
+# -----------------------------------------------------------------
 
 def TimePoint(time, radius=ELAN_RADIUS):
     return annotationdata.ptime.point.TimePoint(time, radius)
@@ -62,6 +65,7 @@ def linguistic_type_from_tier(tier):
 
 
 class Elan(Transcription):
+
     def read(self, filename):
         tree = ET.parse(filename)
         root = tree.getroot()
@@ -193,6 +197,8 @@ class Elan(Transcription):
         endKey = alignableAnnotationRoot.attrib['TIME_SLOT_REF2']
         end = self.timeSlots[endKey]
 
+        ###print " in __parse_alignable_annotation, add annotation with label=",label
+
         return Annotation(TimeInterval(begin,
                                        end),
                           Label(label))
@@ -263,7 +269,7 @@ class Elan(Transcription):
 
     def write(self, filename):
         root = ET.Element('ANNOTATION_DOCUMENT')
-        root.set('AUTHOR', 'SPPAS')
+        root.set('AUTHOR', 'SPPAS by Brigitte Bigi')
         root.set('DATE',
                  str(datetime.datetime.now()).replace(' ', 'T'))
         root.set('FORMAT', '2.7')
@@ -442,11 +448,11 @@ class Elan(Transcription):
         alignableRoot.set('ANNOTATION_ID', self.annotationIds[annotation])
 
         begin = str(
-            self.timeSlotIds[annotation.GetLocation().GetBeginMidpoint()])
+            self.timeSlotIds[round(annotation.GetLocation().GetBeginMidpoint(),4)])
         alignableRoot.set('TIME_SLOT_REF1', begin)
 
         end = str(
-            self.timeSlotIds[annotation.GetLocation().GetEndMidpoint()])
+            self.timeSlotIds[round(annotation.GetLocation().GetEndMidpoint(),4)])
         alignableRoot.set('TIME_SLOT_REF2', end)
 
         label = annotation.GetLabel().GetValue()
@@ -469,21 +475,23 @@ class Elan(Transcription):
     # -----------------------------------------------------------------
 
     def __build_timeslots(self):
-        self.timeSlotIds = {}
-        i = 0
+        timevalues = []
         for tier in self:
             for annotation in tier:
                 location = annotation.GetLocation()
+                #What about PointTiers???????
+                #TODO !!
+                begin = round(location.GetBeginMidpoint(),4)
+                end   = round(location.GetEndMidpoint(),4)
+                if not begin in timevalues:
+                    timevalues.append(begin)
 
-                begin = location.GetBeginMidpoint()
-                if begin not in self.timeSlotIds:
-                    self.timeSlotIds[begin] = 't%s' % i
-                    i += 1
+                if not end in timevalues:
+                    timevalues.append(end)
 
-                end = location.GetEndMidpoint()
-                if end not in self.timeSlotIds:
-                    self.timeSlotIds[end] = 't%s' % i
-                    i += 1
+        self.timeSlotIds = {}
+        for i,v in enumerate(timevalues):
+            self.timeSlotIds[v] = 't%s' % i
 
     # End __build_timeslots
     # -----------------------------------------------------------------
