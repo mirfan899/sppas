@@ -42,6 +42,8 @@ import xml.etree.cElementTree as ET
 from annotationdata.transcription       import Transcription
 from annotationdata.hierarchy           import Hierarchy
 from annotationdata.media               import Media
+from annotationdata.ctrlvocab           import CtrlVocab
+
 from annotationdata.annotation          import Annotation
 from annotationdata.label.label         import Label
 from annotationdata.label.text          import Text
@@ -83,9 +85,14 @@ class XRA(Transcription):
 
     # -----------------------------------------------------------------
 
+    # -----------------------------------------------------------------
+    # Read XRA 1.1 and 1.2
+    # -----------------------------------------------------------------
+
     def read(self, filename):
         """
-        Import a transcription from a .xra file.
+        Import a Transcription() from a .xra file.
+
         @type filename: str
         @param filename: filename
         """
@@ -121,7 +128,6 @@ class XRA(Transcription):
         mediamime = ''
         if 'mimetype' in mediaRoot.attrib:
             mediamime = mediaRoot.attrib['mimetype']
-
         media = Media( mediaid,mediaurl,mediamime )
 
         # Add content if any
@@ -137,6 +143,7 @@ class XRA(Transcription):
     # -----------------------------------------------------------------
 
     def __read_hierarchy(self, hierarchyRoot):
+
         for linkNode in hierarchyRoot.findall('Link'):
             try:
                 htype = linkNode.attrib['type']
@@ -156,20 +163,35 @@ class XRA(Transcription):
     # -----------------------------------------------------------------
 
     def __read_vocabulary(self, vocabularyRoot):
-        vocab = {}
-        for entryNode in vocabularyRoot.findall('Entry'):
-            t = Text(entryNode.text)
-            vocab[t] = None
-            # TODO: add descriptions
+        # Create a CtrlVocab instance
+        if 'id' in vocabularyRoot.attrib:
+            idvocab = vocabularyRoot.attrib['id']
+        else:
+            # XRA < 1.2
+            idvocab = vocabularyRoot.attrib['ID']
+        ctrlvocab = CtrlVocab(idvocab)
 
+        # Description
+        if "description" in vocabularyRoot.attrib:
+            ctrlvocab.desc = vocabularyRoot.attrib['description']
+
+        # Add the list of entries
+        for entryNode in vocabularyRoot.findall('Entry'):
+            entrytext = entryNode.text
+            entrydesc = ""
+            if "description" in entryNode.attrib:
+                entrydesc = entryNode.attrib['description']
+            ctrlvocab.Append( entrytext,entrydesc )
+
+        # link to tiers
         for tierNode in vocabularyRoot.findall('Tier'):
-            try:
+            if 'id' in tierNode.attrib:
                 idtier = tierNode.attrib['id']
-            except Exception:
+            else:
                 # XRA < 1.2
                 idtier = tierNode.attrib['ID']
             tier = self.__id_tier_map[idtier]
-            tier.ctrlvocab = vocab
+            tier.SetCtrlVocab( ctrlvocab )
 
     # -----------------------------------------------------------------
 
@@ -354,6 +376,8 @@ class XRA(Transcription):
             metaObject.metadata[key] = value
 
     # -----------------------------------------------------------------
+    # Write XRA 1.2
+    # -----------------------------------------------------------------
 
     def write(self, filename, encoding='UTF-8'):
         """
@@ -385,9 +409,10 @@ class XRA(Transcription):
             hierarchyRoot = ET.SubElement(root, 'Hierarchy')
             self.__format_hierarchy(hierarchyRoot, self._hierarchy)
 
-            for vocabulary, tierList in self.GetCtrlVocabs():
-                vocabularyRoot = ET.SubElement(root, 'Vocabulary')
-                XRA.__format_vocabulary(vocabularyRoot, vocabulary, tierList)
+            for vocabulary in self.GetCtrlVocab():
+                if vocabulary:
+                    vocabularyRoot = ET.SubElement(root, 'Vocabulary')
+                    self.__format_vocabulary(vocabularyRoot, vocabulary)
 
             indent(root)
 
@@ -441,16 +466,24 @@ class XRA(Transcription):
 
     # -----------------------------------------------------------------
 
-    @staticmethod
-    def __format_vocabulary(vocabularyRoot, vocabulary, tierList):
-        vocabularyRoot.set('id', vocabulary.GetIdentifier())
-        vocabularyRoot.set('description', vocabulary.GetDescription())
+    def __format_vocabulary(self, vocabularyRoot, vocabulary):
+        # Set attribute
+        vocabularyRoot.set('id', vocabulary.id)
+        if len(vocabulary.desc)>0:
+            vocabularyRoot.set('description', vocabulary.desc)
+
+        # Write the list of entries
         for entry in vocabulary:
             entryNode = ET.SubElement(vocabularyRoot, 'Entry')
-            entryNode.text = unicode(entry.Value)
-        for tier in tierList:
-            tierNode = ET.SubElement(vocabularyRoot, 'Tier')
-            tierNode.set('id', self.__tier_id_map[tier])
+            entryNode.text = entry.Text.GetValue()
+            if len(entry.desc)>0:
+                entryNode.set('description',entry.desc)
+
+        # Element Tier
+        for tier in self:
+            if tier.GetCtrlVocab() == vocabulary:
+                tierNode = ET.SubElement(vocabularyRoot, 'Tier')
+                tierNode.set('id', self.__tier_id_map[tier])
 
     # -----------------------------------------------------------------
 
@@ -479,8 +512,6 @@ class XRA(Transcription):
         for annotation in tier:
             annotationRoot = ET.SubElement(tierRoot, 'Annotation')
             XRA.__format_annotation(annotationRoot, annotation)
-
-        # TODO: add medias somehow
 
     # -----------------------------------------------------------------
 

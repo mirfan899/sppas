@@ -48,6 +48,10 @@ class TestXRA(unittest.TestCase):
                 else:
                     self.assertEqual(a1.GetLocation().GetBegin(), a2.GetLocation().GetBegin())
                     self.assertEqual(a1.GetLocation().GetEnd(), a2.GetLocation().GetEnd())
+        # Compare media
+        # Compare hierarchy
+        # Compare controlled vocabularies
+        os.remove( os.path.join(SAMPLES, "sample-1.2.xra") )
 
 # End TestXRA
 # ---------------------------------------------------------------------------

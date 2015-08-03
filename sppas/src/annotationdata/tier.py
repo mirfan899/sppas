@@ -95,15 +95,13 @@ class Tier( MetaObject ):
 
     # -----------------------------------------------------------------------
 
-    def SetCtrlVocab(self, vocab):
+    def SetCtrlVocab(self, ctrlvocab):
         for annotation in self:
             for word in annotation.GetLabel().GetLabels():
-                if word not in vocab.keys():
+                if ctrlvocab.Contains(word) is False:
                     raise Exception("Trying to set an invalid dictionary")
-        self.__ctrlvocab = vocab
+        self.__ctrlvocab = ctrlvocab
 
-    # -----------------------------------------------------------------------
-    ctrlvocab = property(GetCtrlVocab, SetCtrlVocab)
     # -----------------------------------------------------------------------
 
     def GetMedia(self):
@@ -922,8 +920,7 @@ class Tier( MetaObject ):
         # Check if controlled vocabulary
         if self.__ctrlvocab is not None:
             for word in annotation.GetLabel().GetLabels():
-                if(word.GetValue() not in self.__ctrlvocab and
-                   word.GetValue() != ''):  # praat needs empty values
+                if self.__ctrlvocab.Contains(word.GetValue()) is False and word.GetValue() != '':  # praat needs empty values
                     raise ValueError(
                         "Attempt to append a free-annotation-label"
                         " in a controlled vocabulary tier.")

@@ -138,8 +138,8 @@
   </Hierarchy>
 
 
-  <Vocabulary id="v0" description="une courte description">
-      <Entry>
+  <Vocabulary id="v0" description="un short description">
+      <Entry description="details about this specific controlled entry">
         le
       </Entry>
       <Entry>

@@ -52,6 +52,7 @@ from meta      import MetaObject
 from tier      import Tier
 from hierarchy import Hierarchy
 from media     import Media
+from ctrlvocab import CtrlVocab
 
 from utils.deprecated import deprecated
 
@@ -96,12 +97,13 @@ class Transcription( MetaObject ):
 
         """
         super(Transcription, self).__init__()
-        self.__name = u'NoName'
-        self.__mintime = mintime
-        self.__maxtime = maxtime
-        self.__tiers    = [] # a list of Tier() instances
-        self.__media    = [] # a list of Media() instances
-        self._hierarchy = Hierarchy()
+        self.__name      = u'NoName'
+        self.__mintime   = mintime
+        self.__maxtime   = maxtime
+        self.__tiers     = [] # a list of Tier() instances
+        self.__media     = [] # a list of Media() instances
+        self.__ctrlvocab = [] # a list of CtrlVocab() instances
+        self._hierarchy  = Hierarchy()
 
         self.SetName(name)
 
@@ -143,6 +145,103 @@ class Transcription( MetaObject ):
             except UnicodeDecodeError as e:
                 raise e
 
+    # ------------------------------------------------------------------------
+
+    def Set(self, tiers, name='NoName'):
+        """
+        Set a transcription.
+
+        @param tiers: Transcription or list of Tier instances.
+        @raise TypeError:
+
+        """
+        if isinstance(tiers, Transcription):
+            self.metadata    = tiers.metadata
+            self._hierarchy  = tiers._hierarchy
+            self.__media     = tiers.__media
+            self.__ctrlvocab = tiers.__ctrlvocab
+            self.__name      = tiers.__name
+            self.__mintime   = tiers.__mintime
+            self.__maxtime   = tiers.__maxtime
+            self.__tiers     = tiers.__tiers
+
+        if all(isinstance(tier, Tier) for tier in tiers) is False:
+            raise TypeError("Transcription or List of Tier instances argument required, not %r" % tiers)
+
+        self.__tiers = [tier for tier in tiers]
+        self.__media     = set( [tier.GetMedia() for tier in tiers] )
+        self.__ctrlvocab = set( [tier.GetCtrlVocab() for tier in tiers] )
+
+        self.__name  = name
+
+    # ------------------------------------------------------------------------
+
+    def Copy(self):
+        """
+        Return a copy of the transcription.
+
+        """
+        return copy.deepcopy(self)
+
+    # ------------------------------------------------------------------------
+    # Media
+    # ------------------------------------------------------------------------
+
+    def GetMedia(self):
+        return self.__media
+
+    def GetMediaFromId(self, idm):
+        idt = idm.strip()
+        for m in self.__media:
+            if m.id == idt:
+                return m
+        return None
+
+    def AddMedia(self, newmedia):
+        if not isinstance(newmedia, Media):
+            raise TypeError("Can not add media in Transcription.")
+        ids = [ m.id for m in self.__media ]
+        if newmedia.id in ids:
+            raise ValueError('A media is already defined with the same identifier %s'%newmedia.id)
+        self.__media.append( newmedia )
+
+    def RemoveMedia(self, oldmedia):
+        if not isinstance(oldmedia, Media) or not oldmedia in self.__media:
+            raise TypeError("Can not remove media of Transcription.")
+        self.__media.remove( oldmedia )
+        for tier in self.__tiers:
+            if tier.GetMedia() == oldmedia:
+                tier.SetMedia(None)
+
+    # ------------------------------------------------------------------------
+    # Controlled vocabularies
+    # ------------------------------------------------------------------------
+
+    def GetCtrlVocab(self):
+        return self.__ctrlvocab
+
+    def GetCtrlVocabFromId(self, idt):
+        idt = idt.strip()
+        for c in self.__ctrlvocab:
+            if c.id == idt:
+                return c
+        return None
+
+    def AddCtrlVocab(self, ctrlvocab):
+        if not isinstance(ctrlvocab, CtrlVocab):
+            raise TypeError("Unknown controlled vocabulary error in transcription.py.")
+        self.__ctrlvocab.append(ctrlvocab)
+
+    def RemoveCtrlVocab(self, ctrlvocab):
+        if not isinstance(ctrlvocab, CtrlVocab):
+            raise TypeError("Unknown controlled vocabulary error in transcription.py.")
+        self.__ctrlvocab.remove(ctrlvocab)
+        for tier in self.__tiers:
+            if tier.GetCtrlVocab() == ctrlvocab:
+                tier.SetCtrlVocab(None)
+
+    # -----------------------------------------------------------------------
+    # Tiers
     # ------------------------------------------------------------------------
 
     def GetMinTime(self):
@@ -196,78 +295,12 @@ class Transcription( MetaObject ):
 
     # ------------------------------------------------------------------------
 
-    def Set(self, tiers, name='NoName'):
-        """
-        Set a transcription.
-
-        @param tiers: Transcription or list of Tier instances.
-        @raise TypeError:
-
-        """
-        if isinstance(tiers, Transcription):
-            self.metadata   = tiers.metadata
-            self._hierarchy = tiers._hierarchy
-            self.__media    = tiers.__media
-            self.__name     = tiers.__name
-            self.__mintime  = tiers.__mintime
-            self.__maxtime  = tiers.__maxtime
-            self.__tiers    = tiers.__tiers
-
-        if all(isinstance(tier, Tier) for tier in tiers) is False:
-            raise TypeError("Transcription or List of Tier instances argument required, not %r" % tiers)
-
-        self.__tiers = [tier for tier in tiers]
-        self.__media = set( [tier.GetMedia() for tier in tiers] )
-        self.__name  = name
-
-    # ------------------------------------------------------------------------
-
     def GetSize(self):
         """
         Return the number of tiers in the transcription.
 
         """
         return len(self.__tiers)
-
-    # ------------------------------------------------------------------------
-
-    def GetMedia(self):
-        return self.__media
-
-    def AddMedia(self, newmedia):
-        ids = [ m.id for m in self.__media ]
-        if newmedia.id in ids:
-            raise ValueError('A media is already defined with the same identifier %s'%newmedia.id)
-        self.__media.append( newmedia )
-
-    def RemoveMedia(self, oldmedia):
-        self.__media.remove( oldmedia )
-        for tier in self.__tiers:
-            if tier.GetMedia() == oldmedia:
-                tier.SetMedia(None)
-
-    # ------------------------------------------------------------------------
-
-    def GetCtrlVocabs(self):
-        """
-        Return a dictionary-mapped tiers vocabularies.
-        for instance:
-        {
-            {elem1, elem2, elem3}:[tier1, tier2]
-            {elem4}: [tier3]
-        }
-        """
-        result = {}
-
-        for tier in self.__tiers:
-            if tier.ctrlvocab is not None:
-                return {}
-                if tier.ctrlvocab in result:
-                    result[tier.ctrlvocab].append(tier)
-                else:
-                    result[tier.ctrlvocab] = [tier]
-
-        return result
 
     # ------------------------------------------------------------------------
 
@@ -458,14 +491,6 @@ class Transcription( MetaObject ):
         """
         return len(self.__tiers) == 0
 
-    # ------------------------------------------------------------------------
-
-    def Copy(self):
-        """
-        Return a copy of the transcription.
-
-        """
-        return copy.deepcopy(self)
 
     # ------------------------------------------------------------------------
     # Input/Output

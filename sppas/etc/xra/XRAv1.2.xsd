@@ -278,13 +278,20 @@
 -->
     <xsd:complexType name="vocabType">
         <xsd:sequence>
-            <xsd:element name="Entry" type="stringType" minOccurs="1" maxOccurs="unbounded" />
+            <xsd:element name="Entry" type="vocabEntryType" minOccurs="1" maxOccurs="unbounded" />
             <xsd:element name="Tier"  type="idTierType" minOccurs="1" maxOccurs="unbounded" />
         </xsd:sequence>
-        <xsd:attribute name="id"          type="xsd:IDREF" use="required" />
-        <xsd:attribute name="description" type="stringType" use="required" />
+        <xsd:attribute name="id"          type="xsd:IDREF"  use="required" />
+        <xsd:attribute name="description" type="stringType" use="optional" />
     </xsd:complexType>
 
+    <xsd:complexType name="vocabEntryType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+        		<xsd:attribute name="description" type="stringType" use="optional" />
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 

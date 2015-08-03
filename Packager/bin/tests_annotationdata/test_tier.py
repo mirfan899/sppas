@@ -16,6 +16,7 @@ from annotationdata.ptime.point    import TimePoint
 from annotationdata.ptime.interval import TimeInterval
 from annotationdata.annotation     import Annotation
 from annotationdata.media          import Media
+from annotationdata.ctrlvocab      import CtrlVocab
 
 class TestTier(unittest.TestCase):
     """ Represents a tier.
@@ -42,24 +43,24 @@ class TestTier(unittest.TestCase):
         self.assertEqual(self.tierI.GetMetadata('toto'), '')
 
 
-#     def test_CtrlVocab(self):
-#         tiercv = Tier("CtrlVocabTier")
-#
-#         a1 = Annotation(TimeInterval(TimePoint(1), TimePoint(3)), Label("definition"))
-#         a2 = Annotation(TimeInterval(TimePoint(6), TimePoint(7)), Label("gap filling with sound"))
-#         a3 = Annotation(TimeInterval(TimePoint(7), TimePoint(9)), Label("biz"))
-#
-#         voc = CtrlVocab("Verbal Strategies")
-#         self.assertTrue(voc.Append("definition"))
-#         self.assertTrue(voc.Append("example"))
-#         self.assertTrue(voc.Append("comparison"))
-#         self.assertTrue(voc.Append("gap filling with sound"))
-#
-#         tiercv.SetCtrlVocab(voc)
-#         tiercv.Append(a1)
-#         tiercv.Append(a2)
-#         with self.assertRaises(ValueError):
-#             tiercv.Append(a3)
+    def test_CtrlVocab(self):
+        tiercv = Tier("CtrlVocabTier")
+
+        a1 = Annotation(TimeInterval(TimePoint(1), TimePoint(3)), Label("definition"))
+        a2 = Annotation(TimeInterval(TimePoint(6), TimePoint(7)), Label("gap filling with sound"))
+        a3 = Annotation(TimeInterval(TimePoint(7), TimePoint(9)), Label("biz"))
+
+        voc = CtrlVocab("Verbal Strategies")
+        self.assertTrue(voc.Append("definition"))
+        self.assertTrue(voc.Append("example"))
+        self.assertTrue(voc.Append("comparison"))
+        self.assertTrue(voc.Append("gap filling with sound"))
+
+        tiercv.SetCtrlVocab(voc)
+        tiercv.Append(a1)
+        tiercv.Append(a2)
+        with self.assertRaises(ValueError):
+            tiercv.Append(a3)
 
 
     def test_Media(self):

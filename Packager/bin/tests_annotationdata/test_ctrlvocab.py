@@ -10,12 +10,13 @@ SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
 sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 
-from annotationdata.ctrlvocab import CtrlVocab
-from annotationdata.tier import Tier
-from annotationdata.label.label import Label
-from annotationdata.ptime.point import TimePoint
+from annotationdata.ctrlvocab      import CtrlVocab
+from annotationdata.tier           import Tier
+from annotationdata.label.label    import Label
+from annotationdata.ptime.point    import TimePoint
 from annotationdata.ptime.interval import TimeInterval
-from annotationdata.annotation import Annotation
+from annotationdata.annotation     import Annotation
+
 
 class TestCtrlVocab(unittest.TestCase):
 
@@ -24,12 +25,7 @@ class TestCtrlVocab(unittest.TestCase):
 
     def test_Identifier(self):
         voc = CtrlVocab(u"être être")
-        self.assertEquals(voc.GetIdentifier(), u"être être")
-
-    def test_Description(self):
-        voc = CtrlVocab("être être")
-        voc.SetDescription("description être")
-        self.assertIsInstance(voc.GetDescription(), unicode)
+        self.assertEquals(voc.id, u"être être")
 
     def test_Append(self):
         voc = CtrlVocab("Verbal Strategies")
@@ -40,7 +36,7 @@ class TestCtrlVocab(unittest.TestCase):
         self.assertFalse(voc.Append(" gap filling with sound "))
         self.assertTrue(voc.Append("contrast"))
         self.assertFalse(voc.Append("definition"))
-        self.assertTrue(voc.In("   \t  definition\r\n"))
+        self.assertTrue(voc.Contains("   \t  definition\r\n"))
 
     def test_Add(self):
         voc = CtrlVocab("Verbal Strategies")

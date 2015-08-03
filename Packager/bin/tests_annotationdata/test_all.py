@@ -17,7 +17,7 @@ from test_label         import TestLabel
 from test_annotation    import TestAnnotation
 from test_tier          import TestTier
 from test_transcription import TestTranscription
-#from test_ctrlvocab     import TestCtrlVocab
+from test_ctrlvocab     import TestCtrlVocab
 #from test_hierarchy     import TestHierarchy
 
 
@@ -35,7 +35,7 @@ testsuite.addTest(unittest.makeSuite(TestLabel))
 testsuite.addTest(unittest.makeSuite(TestAnnotation))
 testsuite.addTest(unittest.makeSuite(TestTier))
 testsuite.addTest(unittest.makeSuite(TestTranscription))
-#testsuite.addTest(unittest.makeSuite(TestCtrlVocab))
+testsuite.addTest(unittest.makeSuite(TestCtrlVocab))
 #testsuite.addTest(unittest.makeSuite(TestHierarchy))
 
 unittest.TextTestRunner(verbosity=2).run(testsuite)
