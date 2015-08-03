@@ -45,7 +45,7 @@ class TestAntx(unittest.TestCase):
                 self.assertEqual(a1.GetLocation().GetBegin(), a2.GetLocation().GetBegin())
                 self.assertEqual(a1.GetLocation().GetEnd(), a2.GetLocation().GetEnd())
 
-        os.remove( os.path.join(SAMPLES, "Example.antx") )
+        #os.remove( os.path.join(SAMPLES, "Example.antx") )
 
     def test_Read_ExportSppas_Read(self):
         tg1 = Antx()

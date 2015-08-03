@@ -75,6 +75,59 @@ ELT_REQUIRED_Media = {'id':None, 'name':'NoName', 'filename':None, 'external':'f
 ANTX_RADIUS = 0.0005
 
 # ---------------------------------------------------------------------------
+# XML is case-sensitive.
+# While reading, we lowerise everything, for compatibility reasons...
+# for example "DATE" in ELan eaf files is "date" in SPPAS xra files!
+# But... when writing, we have to write the appropriate lower/upper cases.
+UpperLowerDict={}
+UpperLowerDict['version']="Version"
+UpperLowerDict['created']="Created"
+UpperLowerDict['modified']="Modified"
+UpperLowerDict['samplerate']="SampleRate"
+UpperLowerDict['author']="Author"
+UpperLowerDict['name']="Name"
+UpperLowerDict['forecolor']="ForeColor"
+UpperLowerDict['backcolor']="BackColor"
+UpperLowerDict['isselected']="IsSelected"
+UpperLowerDict['height']="Height"
+UpperLowerDict['coordinatecontrolstyle']="CoordinateControlStyle"
+UpperLowerDict['islocked']="IsLocked"
+UpperLowerDict['isclosed']="IsClosed"
+UpperLowerDict['showonspectrogram']="ShowOnSpectrogram"
+UpperLowerDict['showaschart']="ShowAsChart"
+UpperLowerDict['chartminimum']="ChartMinimum"
+UpperLowerDict['showboundaries']="ShowBoundaries"
+UpperLowerDict['includeinfrequency']="IncludeInFrequency"
+UpperLowerDict['parameter1name']="Parameter1Name"
+UpperLowerDict['parameter2name']="Parameter2Name"
+UpperLowerDict['parameter3name']="Parameter3Name"
+UpperLowerDict['isvisible']="IsVisible"
+UpperLowerDict['fontsize']="FontSize"
+UpperLowerDict['bordercolor']="BorderColor"
+UpperLowerDict['feature']="Feature"
+UpperLowerDict['language']="Language"
+UpperLowerDict['group']="Group"
+UpperLowerDict['parameter1']="Parameter1"
+UpperLowerDict['parameter2']="Parameter2"
+UpperLowerDict['parameter3']="Parameter3"
+UpperLowerDict['ismarker']="IsMarker"
+UpperLowerDict['marker']="Marker"
+UpperLowerDict['rscript']="RScript"
+UpperLowerDict['filename']="FileName"
+UpperLowerDict['external']="External"
+UpperLowerDict['current']="Current"
+UpperLowerDict['chartmaximum']="ChartMaximum"
+UpperLowerDict['fileversion']="FileVersion"
+UpperLowerDict['projectdescription']="ProjectDescription"
+UpperLowerDict['projectcorpusowner']="ProjectCorpusOwner"
+UpperLowerDict['projectcorpustype']="ProjectCorpusType"
+UpperLowerDict['projectlicense']="ProjectLicense"
+UpperLowerDict['projectenvironment']="ProjectEnvironment"
+UpperLowerDict['projectcollection']="ProjectCollection"
+UpperLowerDict['projecttitle']="ProjectTitle"
+UpperLowerDict['projectnoises']="ProjectNoises"
+
+# ---------------------------------------------------------------------------
 
 def TimePoint(time):
     return annotationdata.ptime.point.TimePoint(time, ANTX_RADIUS)
@@ -185,7 +238,7 @@ class Antx(Transcription):
             # Put the other information in metadata
             for node in annotationRoot:
                 if node.text:
-                    if not node.tag.lower() in ['idlayer','start','duration', 'label']:
+                    if not node.tag.lower() in ['idlayer', 'start', 'duration', 'label']:
                         annotation.metadata[ node.tag.replace(uri,'').lower() ] = node.text
 
             # Add Annotation into Tier
@@ -235,9 +288,15 @@ class Antx(Transcription):
 
     @staticmethod
     def __format_configuration(root, key, value):
+        # Write the Configuration element
         configuration_root = ET.SubElement(root, 'Configuration')
+
+        # Write the Key element
         child_key = ET.SubElement(configuration_root, 'Key')
-        child_key.text = key
+        # here, we have to restore original upper/lower case
+        child_key.text = UpperLowerDict[key]
+
+        # Write the Value element
         child_value = ET.SubElement(configuration_root, 'Value')
         if value:
             if key.lower() == 'modified':
@@ -249,9 +308,10 @@ class Antx(Transcription):
 
     @staticmethod
     def __format_tier(root, tier):
+        # Write the Layer element
         tier_root = ET.SubElement(root, 'Layer')
 
-        # The elements SPPAS has interpretated
+        # Write all the elements SPPAS has interpreted
         child_id = ET.SubElement(tier_root, 'Id')
         tier_id = tier.metadata.get( 'id', gen_id() ) # get either the id we have or create one
         tier.metadata[ 'id' ] = tier_id               # it ensures the tier has really an id
@@ -262,13 +322,15 @@ class Antx(Transcription):
 
         # Either get metadata in tier or assign the default value
         for key,value in ELT_REQUIRED_Layer.iteritems():
-            if not key in [ 'id','name' ]:
-                child = ET.SubElement(tier_root, key)
+            if not key in [ 'id', 'name' ]:
+                # here, we have to restore original upper/lower case for the key
+                child = ET.SubElement(tier_root, UpperLowerDict[key])
                 child.text = tier.metadata.get( key, value )
 
         # We also add all Antx optional elements
         for key,value in ELT_OPTIONAL_Layer.iteritems():
-            child = ET.SubElement(tier_root, key)
+            # here, we have to restore original upper/lower case for the key
+            child = ET.SubElement(tier_root, UpperLowerDict[key])
             child.text = tier.metadata.get( key, value )
 
     # -----------------------------------------------------------------
@@ -276,7 +338,7 @@ class Antx(Transcription):
     def __format_segment(self, root, tier, ann):
         segment_root = ET.SubElement(root, 'Segment')
 
-        # The elements SPPAS has interpretated
+        # Write all the elements SPPAS has interpretated
         child_id = ET.SubElement(segment_root, 'Id')            # Id
         child_id.text = ann.metadata.get( 'id', gen_id() )
 
@@ -301,12 +363,12 @@ class Antx(Transcription):
         # Antx required elements
         for key,value in ELT_REQUIRED_Segment.iteritems():
             if not key in [ 'id','idlayer', 'label', 'start', 'duration' ]:
-                child = ET.SubElement(segment_root, key)
+                child = ET.SubElement(segment_root, UpperLowerDict[key])
                 child.text = ann.metadata.get( key, value )
 
         # We also add all Antx optional elements
         for key,value in ELT_OPTIONAL_Segment.iteritems():
-            child = ET.SubElement(segment_root, key)
+            child = ET.SubElement(segment_root, UpperLowerDict[key])
             child.text = ann.metadata.get( key, value )
 
     # ---------------------------------------------------------------------
