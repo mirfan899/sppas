@@ -234,17 +234,17 @@ class Transcription( MetaObject ):
     def GetMedia(self):
         return self.__media
 
-    def RemoveMedia(self, oldmedia):
-        self.__media.remove( oldmedia )
-        for tier in self.__tiers:
-            if tier.GetMedia() == oldmedia:
-                tier.SetMedia(None)
-
     def AddMedia(self, newmedia):
         ids = [ m.id for m in self.__media ]
         if newmedia.id in ids:
             raise ValueError('A media is already defined with the same identifier %s'%newmedia.id)
         self.__media.append( newmedia )
+
+    def RemoveMedia(self, oldmedia):
+        self.__media.remove( oldmedia )
+        for tier in self.__tiers:
+            if tier.GetMedia() == oldmedia:
+                tier.SetMedia(None)
 
     # ------------------------------------------------------------------------
 
@@ -261,6 +261,7 @@ class Transcription( MetaObject ):
 
         for tier in self.__tiers:
             if tier.ctrlvocab is not None:
+                return {}
                 if tier.ctrlvocab in result:
                     result[tier.ctrlvocab].append(tier)
                 else:

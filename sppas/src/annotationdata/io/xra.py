@@ -39,19 +39,21 @@
 from datetime import datetime
 import xml.etree.cElementTree as ET
 
-from annotationdata.transcription import Transcription
-from annotationdata.label.label import Label
-from annotationdata.label.text import Text
-from annotationdata.ptime.location import Location
-from annotationdata.ptime.point import TimePoint
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.disjoint import TimeDisjoint
-from annotationdata.ptime.framepoint import FramePoint
+from annotationdata.transcription       import Transcription
+from annotationdata.hierarchy           import Hierarchy
+from annotationdata.media               import Media
+from annotationdata.annotation          import Annotation
+from annotationdata.label.label         import Label
+from annotationdata.label.text          import Text
+from annotationdata.ptime.location      import Location
+from annotationdata.ptime.localization  import Localization
+from annotationdata.ptime.point         import TimePoint
+from annotationdata.ptime.interval      import TimeInterval
+from annotationdata.ptime.disjoint      import TimeDisjoint
+from annotationdata.ptime.framepoint    import FramePoint
 from annotationdata.ptime.frameinterval import FrameInterval
 from annotationdata.ptime.framedisjoint import FrameDisjoint
-from annotationdata.ptime.localization import Localization
-from annotationdata.annotation import Annotation
-from annotationdata.hierarchy import Hierarchy
+
 from utils import indent
 from utils import gen_id
 
@@ -99,6 +101,9 @@ class XRA(Transcription):
         for tierRoot in root.findall('Tier'):
             self.__read_tier(tierRoot)
 
+        for mediaRoot in root.findall('Media'):
+            self.__read_media(mediaRoot)
+
         hierarchyRoot = root.find('Hierarchy')
         if hierarchyRoot is not None:
             self.__read_hierarchy(hierarchyRoot)
@@ -109,28 +114,61 @@ class XRA(Transcription):
     # End read
     # -----------------------------------------------------------------
 
+    def __read_media(self, mediaRoot):
+        # Create a Media instance
+        mediaid   = mediaRoot.attrib['id']
+        mediaurl  = mediaRoot.attrib['url']
+        mediamime = ''
+        if 'mimetype' in mediaRoot.attrib:
+            mediamime = mediaRoot.attrib['mimetype']
+
+        media = Media( mediaid,mediaurl,mediamime )
+
+        # Add content if any
+        contentRoot = mediaRoot.find('Content')
+        if contentRoot:
+            media.content = contentRoot.text
+
+        # link to tiers
+        for tierNode in mediaRoot.findall('Tier'):
+            tier = self.__id_tier_map[tierNode.attrib['id']]
+            tier.SetMedia( media )
+
+    # -----------------------------------------------------------------
+
     def __read_hierarchy(self, hierarchyRoot):
         for linkNode in hierarchyRoot.findall('Link'):
-            type = linkNode.attrib['Type']
+            try:
+                htype = linkNode.attrib['type']
+                formerID = linkNode.attrib['from']
+                latterID = linkNode.attrib['to']
+            except Exception:
+                # XRA < 1.2
+                htype = linkNode.attrib['Type']
+                formerID = linkNode.attrib['From']
+                latterID = linkNode.attrib['To']
 
-            formerID = linkNode.attrib['From']
             former = self.__id_tier_map[formerID]
-
-            latterID = linkNode.attrib['To']
             latter = self.__id_tier_map[latterID]
 
-            self._hierarchy.addLink(type, former, latter)
+            self._hierarchy.addLink(htype, former, latter)
 
     # -----------------------------------------------------------------
 
     def __read_vocabulary(self, vocabularyRoot):
         vocab = {}
         for entryNode in vocabularyRoot.findall('Entry'):
-            vocab[entryNode.text] = None
+            t = Text(entryNode.text)
+            vocab[t] = None
             # TODO: add descriptions
 
         for tierNode in vocabularyRoot.findall('Tier'):
-            tier = self.__id_tier_map[tierNode.attrib['ID']]
+            try:
+                idtier = tierNode.attrib['id']
+            except Exception:
+                # XRA < 1.2
+                idtier = tierNode.attrib['ID']
+            tier = self.__id_tier_map[idtier]
             tier.ctrlvocab = vocab
 
     # -----------------------------------------------------------------
@@ -139,8 +177,12 @@ class XRA(Transcription):
         name = tierRoot.attrib['tiername']
         tier = self.NewTier(name)
 
-        id = tierRoot.attrib['ID']
-        self.__id_tier_map[id] = tier
+        try:
+            tid = tierRoot.attrib['id']
+        except Exception:
+            # XRA < 1.2
+            tid = tierRoot.attrib['ID']
+        self.__id_tier_map[tid] = tier
 
         metadataRoot = tierRoot.find('Metadata')
         if metadataRoot is not None:
@@ -187,22 +229,21 @@ class XRA(Transcription):
     def __parse_localization(localizationRoot):
 
         underlyingNode = localizationRoot.find('*')
+        locstr = underlyingNode.tag.lower()
 
-        if underlyingNode.tag == 'TimePoint':
+        if locstr == 'timepoint':
             point = XRA.__parse_time_point(underlyingNode)
             localization = Localization(point)
 
-        elif underlyingNode.tag == 'FramePoint':
+        elif locstr == 'framepoint':
             point = XRA.__parse_frame_point(underlyingNode)
             localization = Localization(point)
 
-        elif(underlyingNode.tag == 'TimeInterval' or
-             underlyingNode.tag == 'FrameInterval'):
+        elif locstr in ['timeinterval', 'frameinterval' ]:
             interval = XRA.__parse_interval(underlyingNode)
             localization = Localization(interval)
 
-        elif(underlyingNode.tag == 'TimeDisjoint' or
-             underlyingNode.tag == 'FrameDisjoint'):
+        elif locstr in [ 'timedisjoint', 'framedisjoint' ]:
             disjoint = XRA.__parse_disjoint(underlyingNode)
             localization = Localization(disjoint)
 
@@ -230,7 +271,7 @@ class XRA(Transcription):
     @staticmethod
     def __parse_frame_point(framePointNode):
         midpoint = int(framePointNode.attrib['midpoint'])
-        radius = int(framePointNode.attrib['radius'])
+        radius   = int(framePointNode.attrib['radius'])
 
         return FramePoint(midpoint, radius)
 
@@ -238,7 +279,7 @@ class XRA(Transcription):
 
     @staticmethod
     def __parse_interval(intervalRoot):
-        isTimeInterval = intervalRoot.tag == 'TimeInterval'
+        isTimeInterval = intervalRoot.tag.lower() == 'timeinterval'
 
         beginNode = intervalRoot.find('Begin')
         begin = (XRA.__parse_time_point(beginNode) if
@@ -258,7 +299,7 @@ class XRA(Transcription):
 
     @staticmethod
     def __parse_disjoint(disjointRoot):
-        isTimeDisjoint = disjointRoot.tag == 'TimeDisjoint'
+        isTimeDisjoint = disjointRoot.tag.lower() == 'timedisjoint'
         intervalList = []
 
         for intervalRoot in (
@@ -304,7 +345,11 @@ class XRA(Transcription):
     @staticmethod
     def __read_metadata(metaObject, metadataRoot):
         for entryNode in metadataRoot.findall('Entry'):
-            key = entryNode.attrib['Key'].lower()
+            try:
+                key = entryNode.attrib['Key'].lower()
+            except Exception:
+                # XRA 1.1
+                key = entryNode.attrib['key'].lower()
             value = entryNode.text
             metaObject.metadata[key] = value
 
@@ -332,6 +377,11 @@ class XRA(Transcription):
                 tierRoot = ET.SubElement(root, 'Tier')
                 self.__format_tier(tierRoot, tier)
 
+            for media in self.GetMedia():
+                if media:
+                    mediaRoot = ET.SubElement(root, 'Media')
+                    self.__format_media(mediaRoot, media)
+
             hierarchyRoot = ET.SubElement(root, 'Hierarchy')
             self.__format_hierarchy(hierarchyRoot, self._hierarchy)
 
@@ -352,32 +402,55 @@ class XRA(Transcription):
     # End write
     # -----------------------------------------------------------------
 
+    def __format_media(self, mediaRoot, media):
+        # Set attribute
+        mediaRoot.set('id', media.id)
+        mediaRoot.set('url', media.url)
+        mediaRoot.set('mimetype', media.mime)
+
+        # Element Tier
+        for tier in self:
+            if tier.GetMedia() == media:
+                tierNode = ET.SubElement(mediaRoot, 'Tier')
+                tierNode.set('id', self.__tier_id_map[tier])
+
+        # Element Metadata
+        if len(media.metadata.keys())>0:
+            metadataRoot = ET.SubElement(mediaRoot, 'Metadata')
+            self.__format_metadata(metadataRoot, media.metadata)
+
+        # Element Content
+        if len(media.content)>0:
+            contentNode = ET.SubElement(mediaRoot, 'Content')
+            contentNode.text = media.content
+
+    # -----------------------------------------------------------------
+
     def __format_hierarchy(self, hierarchyRoot, hierarchy):
         try:
             for type in Hierarchy.hierarchy_types:
                 for (former, latter) in hierarchy.getHierarchy(type):
                     link = ET.SubElement(hierarchyRoot, 'Link')
-                    link.set('Type', type)
+                    link.set('type', type)
                     # FIXME: this shouldn't be used because it breaks transaction unicity
-                    link.set('From', self.__tier_id_map[former])
-                    link.set('To', self.__tier_id_map[latter])
+                    link.set('from', self.__tier_id_map[former])
+                    link.set('to', self.__tier_id_map[latter])
         except KeyError:
             #print('The current Hierarchy is invalid.')
             hierarchyRoot.clear()
 
-    # End __format_hierarchy
     # -----------------------------------------------------------------
 
     @staticmethod
     def __format_vocabulary(vocabularyRoot, vocabulary, tierList):
-        vocabularyRoot.set('ID', vocabulary.GetIdentifier())
+        vocabularyRoot.set('id', vocabulary.GetIdentifier())
         vocabularyRoot.set('description', vocabulary.GetDescription())
         for entry in vocabulary:
             entryNode = ET.SubElement(vocabularyRoot, 'Entry')
             entryNode.text = unicode(entry.Value)
         for tier in tierList:
             tierNode = ET.SubElement(vocabularyRoot, 'Tier')
-            tierNode.set('ID', self.__tier_id_map[tier])
+            tierNode.set('id', self.__tier_id_map[tier])
 
     # -----------------------------------------------------------------
 
@@ -385,14 +458,14 @@ class XRA(Transcription):
     def __format_metadata(metadataRoot, metaObject):
         for key, value in metaObject.metadata.iteritems():
             entry = ET.SubElement(metadataRoot, 'Entry')
-            entry.set('Key', key)
+            entry.set('key', key)
             entry.text = unicode(value)
 
     # -----------------------------------------------------------------
 
     def __format_tier(self, tierRoot, tier):
         id = gen_id() #'t%d' % self.__tier_counter
-        tierRoot.set("ID", id)
+        tierRoot.set("id", id)
         tier.metadata [ 'id' ] = id
         self.__tier_id_map[tier] = id
         self.__tier_counter += 1
@@ -462,27 +535,27 @@ class XRA(Transcription):
     def __format_localization(localizationRoot, localization):
         localizationRoot.set('score', unicode(localization.GetScore()))
         if localization.IsTimePoint():
-            point = ET.SubElement(localizationRoot, 'TimePoint')
+            point = ET.SubElement(localizationRoot, 'timepoint')
             XRA.__format_point(point, localization.GetPoint())
 
         elif localization.IsTimeInterval():
-            intervalRoot = ET.SubElement(localizationRoot, 'TimeInterval')
+            intervalRoot = ET.SubElement(localizationRoot, 'timeinterval')
             XRA.__format_interval(intervalRoot, localization.GetPlace())
 
         elif localization.IsTimeDisjoint():
-            disjointRoot = ET.SubElement(localizationRoot, 'TimeDisjoint')
+            disjointRoot = ET.SubElement(localizationRoot, 'timedisjoint')
             XRA.__format_disjoint(disjointRoot, localization.GetPlace())
 
         elif localization.IsFramePoint():
-            framePoint = ET.SubElement(localizationRoot, 'FramePoint')
+            framePoint = ET.SubElement(localizationRoot, 'framepoint')
             XRA.__format_point(framePoint, localization.GetPoint())
 
         elif localization.IsFrameInterval():
-            intervalRoot = ET.SubElement(localizationRoot, 'FrameInterval')
+            intervalRoot = ET.SubElement(localizationRoot, 'frameinterval')
             XRA.__format_interval(intervalRoot, localization.GetPlace())
 
         elif localization.IsFrameDisjoint():
-            disjointRoot = ET.SubElement(localizationRoot, 'FrameDisjoint')
+            disjointRoot = ET.SubElement(localizationRoot, 'framedisjoint')
             XRA.__format_disjoint(disjointRoot, localization.GetPlace())
 
         else:

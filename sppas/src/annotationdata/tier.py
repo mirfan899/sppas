@@ -98,7 +98,7 @@ class Tier( MetaObject ):
     def SetCtrlVocab(self, vocab):
         for annotation in self:
             for word in annotation.GetLabel().GetLabels():
-                if word not in vocab:
+                if word not in vocab.keys():
                     raise Exception("Trying to set an invalid dictionary")
         self.__ctrlvocab = vocab
 
