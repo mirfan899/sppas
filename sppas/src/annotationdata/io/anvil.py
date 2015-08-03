@@ -51,12 +51,12 @@ def TimePoint(time):
 
 
 class Anvil(Transcription):
-    def __init__(self, name="NoName", coeff=1, mintime=0., maxtime=0.):
+    def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
         Create a new Transcription instance.
 
         """
-        Transcription.__init__(self, name, coeff, mintime, maxtime)
+        Transcription.__init__(self, name, mintime, maxtime)
 
     # End __init__
     # -----------------------------------------------------------------

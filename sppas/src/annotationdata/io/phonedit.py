@@ -68,11 +68,11 @@ class Phonedit(Transcription):
                                      (\S+)  # end time
                                      """, re.VERBOSE)
 
-    def __init__(self, name="NoName", coeff=1, mintime=None, maxtime=None):
+    def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
         Creates a new Phonedit Transcription instance.
         """
-        Transcription.__init__(self, name, coeff, mintime, maxtime)
+        Transcription.__init__(self, name, mintime, maxtime)
 
     # End __init__
     # ------------------------------------------------------------------

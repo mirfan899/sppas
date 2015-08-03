@@ -62,19 +62,15 @@ class XRA(Transcription):
     xra files are the native file format of the GPL tool SPPAS.
     """
 
-    __format = '1.1'
+    __format = '1.2'
 
-    def __init__(self, name="NoName", mintime=None, maxtime=None):
+    def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
         Initialize a new XRA instance.
-        @type name: str
-        @param name: the name of the transcription
-        @type coeff: float
-        @param coeff: the time coefficient (coeff=1 is seconds)
+
         """
         Transcription.__init__(self, name, mintime, maxtime)
 
-    # End __init__
     # -----------------------------------------------------------------
 
     @staticmethod
@@ -83,7 +79,6 @@ class XRA(Transcription):
         root = tree.getroot()
         return root.find('Tier') is not None
 
-    # End detect
     # -----------------------------------------------------------------
 
     def read(self, filename):

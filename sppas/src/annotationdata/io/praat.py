@@ -144,12 +144,12 @@ class TextGrid(Transcription):
         be lost).
 
     """
-    def __init__(self, name="NoName", coeff=1, mintime=0., maxtime=0.):
+    def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
         Create a new TextGrid Transcription instance.
 
         """
-        Transcription.__init__(self, name, coeff, mintime, maxtime)
+        Transcription.__init__(self, name, mintime, maxtime)
 
     # End __init__
     # ------------------------------------------------------------------
@@ -488,12 +488,12 @@ class IntensityTier(Transcription):
 
     """
 
-    def __init__(self, name="NoName", coeff=1, mintime=None, maxtime=None):
+    def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
         Creates a new Intensity Transcription instance.
 
         """
-        Transcription.__init__(self, name, coeff, mintime, maxtime)
+        Transcription.__init__(self, name, mintime, maxtime)
         self._tier = Tier()
 
     # End __init__

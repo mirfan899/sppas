@@ -53,12 +53,12 @@ def TimePoint(time):
 
 
 class SubRip(Transcription):
-    def __init__(self, name="NoName", coeff=1, mintime=None, maxtime=None):
+    def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
         Creates a new Transcription instance.
 
         """
-        Transcription.__init__(self, name, coeff, mintime, maxtime)
+        Transcription.__init__(self, name, mintime, maxtime)
 
     # End __init__
     # -----------------------------------------------------------------
@@ -159,12 +159,12 @@ class SubViewer(Transcription):
         'filepath',
         'comment']
 
-    def __init__(self, name="NoName", coeff=1, mintime=None, maxtime=None):
+    def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
         Creates a new Transcription instance.
 
         """
-        Transcription.__init__(self, name, coeff, mintime, maxtime)
+        Transcription.__init__(self, name, mintime, maxtime)
 
     # End __init__
     # -----------------------------------------------------------------

@@ -52,8 +52,8 @@ def TimePoint(time):
 
 class TimeMarkedConversation(Transcription):
 
-    def __init__(self, name="NoName", coeff=1, mintime=None, maxtime=None):
-        Transcription.__init__(self, name, coeff, mintime, maxtime)
+    def __init__(self, name="NoName", mintime=0., maxtime=0.):
+        Transcription.__init__(self, name, mintime, maxtime)
 
     # End __init__
     # -----------------------------------------------------------------
@@ -142,8 +142,8 @@ class TimeMarkedConversation(Transcription):
 
 
 class SegmentTimeMark(Transcription):
-    def __init__(self, name="NoName", coeff=1, mintime=None, maxtime=None):
-        Transcription.__init__(self, name, coeff, mintime, maxtime)
+    def __init__(self, name="NoName", mintime=0., maxtime=0.):
+        Transcription.__init__(self, name, mintime, maxtime)
 
     # End __init__
     # -----------------------------------------------------------------

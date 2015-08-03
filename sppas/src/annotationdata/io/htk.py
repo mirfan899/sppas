@@ -100,8 +100,8 @@ def line_from_annotation(annotation):
 
 
 class Label(Transcription):
-    def __init__(self, name="NoName", coeff=1, mintime=None, maxtime=None):
-        super(Label, self).__init__(name, coeff, mintime, maxtime)
+    def __init__(self, name="NoName", mintime=0., maxtime=0.):
+        super(Label, self).__init__(name, mintime, maxtime)
 
     # End __init__
     # -----------------------------------------------------------------
@@ -139,8 +139,8 @@ class Label(Transcription):
 
 
 class MasterLabel(Transcription):
-    def __init__(self, name="NoName", coeff=1, mintime=None, maxtime=None):
-        super(MasterLabel, self).__init__(name, coeff, mintime, maxtime)
+    def __init__(self, name="NoName", mintime=0., maxtime=0.):
+        super(MasterLabel, self).__init__(name, mintime, maxtime)
 
     # End __init__
     # -----------------------------------------------------------------
