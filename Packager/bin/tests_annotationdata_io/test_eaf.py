@@ -11,7 +11,7 @@ SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
 sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 import annotationdata.io
-from annotationdata.io.eaf import Elan
+from annotationdata.io.elan import Elan
 from annotationdata.transcription import Transcription
 from annotationdata.label.label import Label
 from annotationdata.label.text import Text
@@ -36,11 +36,14 @@ class TestEAF(unittest.TestCase):
         tg1.read(os.path.join(SAMPLES,"sample.eaf"))
         tg1.write(os.path.join(SAMPLES,"sample2.eaf"))
         tg2.read(os.path.join(SAMPLES,"sample2.eaf"))
+
+        # Compare annotations of tg1 and tg2
         for t1, t2 in zip(tg1, tg2):
             self.assertEqual(t1.GetSize(), t2.GetSize())
             for a1, a2 in zip(t1, t2):
-                self.assertEqual(a1.TextValue, a2.TextValue)
-                self.assertEqual(a1.Time, a2.Time)
+                self.assertEqual(a1.GetLabel().GetValue(),    a2.GetLabel().GetValue())
+                self.assertEqual(a1.GetLocation().GetBegin(), a2.GetLocation().GetBegin())
+                self.assertEqual(a1.GetLocation().GetEnd(),   a2.GetLocation().GetEnd())
         # to do: compare controlled vocab
 
     # def test_ReadWrite(self):
@@ -55,8 +58,8 @@ class TestEAF(unittest.TestCase):
                 # self.assertEqual(a1.TextValue, a2.TextValue)
                 # self.assertEqual(a1.Time, a2.Time)
 
-    
-    
+
+
 # End TestEAF
 # ---------------------------------------------------------------------------
 
@@ -64,4 +67,4 @@ if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestEAF)
     unittest.TextTestRunner(verbosity=2).run(suite)
 
-    
+

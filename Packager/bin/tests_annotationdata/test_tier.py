@@ -11,10 +11,11 @@ sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 from annotationdata.tier import Tier
 
-from annotationdata.label.label import Label
-from annotationdata.ptime.point import TimePoint
+from annotationdata.label.label    import Label
+from annotationdata.ptime.point    import TimePoint
 from annotationdata.ptime.interval import TimeInterval
-from annotationdata.annotation import Annotation
+from annotationdata.annotation     import Annotation
+from annotationdata.media          import Media
 
 class TestTier(unittest.TestCase):
     """ Represents a tier.
@@ -34,12 +35,38 @@ class TestTier(unittest.TestCase):
             self.tierI.Append(Annotation(TimeInterval(TimePoint(i), TimePoint(i+1)), Label("label"+str(i))))
 
 
-    def test_GetMetadata(self):
-        pass
+    def test_Metadata(self):
+        self.tierP.metadata['key']="value"
+        self.tierI.SetMetadata('key',"value")
+        self.assertEqual(self.tierI.GetMetadata('key'), self.tierP.GetMetadata('key'))
+        self.assertEqual(self.tierI.GetMetadata('toto'), '')
 
 
-    def test_SetMetadata(self):
-        pass
+#     def test_CtrlVocab(self):
+#         tiercv = Tier("CtrlVocabTier")
+#
+#         a1 = Annotation(TimeInterval(TimePoint(1), TimePoint(3)), Label("definition"))
+#         a2 = Annotation(TimeInterval(TimePoint(6), TimePoint(7)), Label("gap filling with sound"))
+#         a3 = Annotation(TimeInterval(TimePoint(7), TimePoint(9)), Label("biz"))
+#
+#         voc = CtrlVocab("Verbal Strategies")
+#         self.assertTrue(voc.Append("definition"))
+#         self.assertTrue(voc.Append("example"))
+#         self.assertTrue(voc.Append("comparison"))
+#         self.assertTrue(voc.Append("gap filling with sound"))
+#
+#         tiercv.SetCtrlVocab(voc)
+#         tiercv.Append(a1)
+#         tiercv.Append(a2)
+#         with self.assertRaises(ValueError):
+#             tiercv.Append(a3)
+
+
+    def test_Media(self):
+        m = Media('abcd', '/path/file.wav', 'audio/wav')
+        self.tierP.SetMedia(m)
+        self.tierI.SetMedia(m)
+        self.assertEqual(self.tierI.GetMedia(), self.tierP.GetMedia())
 
 
     def test_GetName(self):
@@ -75,7 +102,6 @@ class TestTier(unittest.TestCase):
         a = Annotation(TimePoint(2.4))
         tier.Add(a)
         self.assertEqual(tier.GetEndValue(), 2.4)
-
 
 
     def test_IsInterval(self):
@@ -123,7 +149,6 @@ class TestTier(unittest.TestCase):
             tier.Remove(TimePoint(2), TimePoint(3))
 
 
-
     def test_Append(self):
         tier = Tier()
         a1 = Annotation(TimeInterval(TimePoint(1), TimePoint(3)), Label("foo"))
@@ -135,26 +160,6 @@ class TestTier(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             tier.Append(a3)
-
-
-#     def test_CtrlVocab(self):
-#         tiercv = Tier("CtrlVocabTier")
-#
-#         a1 = Annotation(TimeInterval(TimePoint(1), TimePoint(3)), Label("definition"))
-#         a2 = Annotation(TimeInterval(TimePoint(6), TimePoint(7)), Label("gap filling with sound"))
-#         a3 = Annotation(TimeInterval(TimePoint(7), TimePoint(9)), Label("biz"))
-#
-#         voc = CtrlVocab("Verbal Strategies")
-#         self.assertTrue(voc.Append("definition"))
-#         self.assertTrue(voc.Append("example"))
-#         self.assertTrue(voc.Append("comparison"))
-#         self.assertTrue(voc.Append("gap filling with sound"))
-#
-#         tiercv.SetCtrlVocab(voc)
-#         tiercv.Append(a1)
-#         tiercv.Append(a2)
-#         with self.assertRaises(ValueError):
-#             tiercv.Append(a3)
 
 
     # TODO when a tier is mixed, it can not insert annotation correctly.

@@ -21,7 +21,6 @@ class TestCtrlVocab(unittest.TestCase):
 
     def setUp(self):
         pass
-    
 
     def test_Identifier(self):
         voc = CtrlVocab(u"être être")

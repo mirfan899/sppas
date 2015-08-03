@@ -37,20 +37,23 @@
 # File: tier.py
 # ----------------------------------------------------------------------------
 
-from annotation import Annotation
-from ptime.point import TimePoint
-from meta import MetaObject
-
 __docformat__ = """epytext"""
-__authors__   = """Tatsuya Watanabe, Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ---------------------------------------------------------------------------
 
+from annotation  import Annotation
+from ptime.point import TimePoint
+from meta        import MetaObject
 
-class Tier(MetaObject):
+from utils.deprecated import deprecated
+
+# ---------------------------------------------------------------------------
+
+class Tier( MetaObject ):
     """
-    @authors: Tatsuya Watanabe, Brigitte Bigi
+    @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
     @summary: Represents a tier.
@@ -68,19 +71,19 @@ class Tier(MetaObject):
         """
         Create a new Tier instance.
 
-        @param name: (String) is the tier name.
+        @param name (str) is the tier name. It is used as identifier.
 
         """
         super(Tier, self).__init__()
         self.__ann = []
-        self.__parent = None
+        self.__parent    = None
         self.__data_type = "str"
         self.__ctrlvocab = None
+        self.__media     = None
 
         self.SetDataType(data_type)
         self.SetName( name )
 
-    # End __init__
     # -----------------------------------------------------------------------
 
     # -----------------------------------------------------------------------
@@ -90,20 +93,34 @@ class Tier(MetaObject):
     def GetCtrlVocab(self):
         return self.__ctrlvocab
 
-    # End GetCtrlVocab
     # -----------------------------------------------------------------------
 
     def SetCtrlVocab(self, vocab):
         for annotation in self:
             for word in annotation.GetLabel().GetLabels():
                 if word not in vocab:
-                    raise Exception("trying to set an invalid dictionnary")
+                    raise Exception("Trying to set an invalid dictionary")
         self.__ctrlvocab = vocab
 
-    # End SetCtrlVocab
+    # -----------------------------------------------------------------------
+    ctrlvocab = property(GetCtrlVocab, SetCtrlVocab)
     # -----------------------------------------------------------------------
 
-    ctrlvocab = property(GetCtrlVocab, SetCtrlVocab)
+    def GetMedia(self):
+        return self.__media
+
+    # -----------------------------------------------------------------------
+
+    def SetMedia(self, media):
+        self.__media = media
+        if self.__parent:
+            try:
+                self.__parent.AddMedia(media)
+            except Exception:
+                # this media was already set to the parent
+                pass
+
+    # -----------------------------------------------------------------------
 
     def GetDataType(self):
         """
@@ -112,9 +129,7 @@ class Tier(MetaObject):
         """
         return self.__data_type
 
-    # End GetDataType
     # -----------------------------------------------------------------------
-
 
     def SetDataType(self, data_type):
         """
@@ -127,9 +142,7 @@ class Tier(MetaObject):
             raise TypeError("Unknown data type error: %r" % data_type)
         self.__data_type = data_type
 
-    # End SetDataType
     # -----------------------------------------------------------------------
-
 
     def GetTranscription(self):
         """
@@ -138,9 +151,7 @@ class Tier(MetaObject):
         """
         return self.__parent
 
-    # End GetTranscription
     # -----------------------------------------------------------------------
-
 
     def SetTranscription(self, parent):
         """
@@ -155,9 +166,7 @@ class Tier(MetaObject):
 
         self.__parent = parent
 
-    # End SetTranscription
     # -----------------------------------------------------------------------
-
 
     def GetName(self):
         """
@@ -166,9 +175,7 @@ class Tier(MetaObject):
         """
         return self.__name
 
-    # End GetName
     # -----------------------------------------------------------------------
-
 
     def SetName(self, name):
         """
@@ -187,9 +194,7 @@ class Tier(MetaObject):
             except UnicodeDecodeError as e:
                 raise e
 
-    # End SetName
     # -----------------------------------------------------------------------
-
 
     def SetRadius(self, radius):
         """
@@ -209,9 +214,7 @@ class Tier(MetaObject):
                 annotation.GetLocation().SetBeginRadius( radius )
                 annotation.GetLocation().SetEndRadius( radius )
 
-    # End SetRadius
     # -----------------------------------------------------------------------
-
 
     def GetSize(self):
         """
@@ -220,9 +223,7 @@ class Tier(MetaObject):
         """
         return len(self.__ann)
 
-    # end GetSize
     # -----------------------------------------------------------------------
-
 
     def GetAllPoints(self):
         """
@@ -259,9 +260,7 @@ class Tier(MetaObject):
 
         return points
 
-    # end GetAllPoints
     # -----------------------------------------------------------------------
-
 
     def GetBeginValue(self):
         """
@@ -270,9 +269,7 @@ class Tier(MetaObject):
         """
         return self.GetBegin().GetMidpoint()
 
-    # end GetBeginValue
     # -----------------------------------------------------------------------
-
 
     def GetEndValue(self):
         """
@@ -281,9 +278,7 @@ class Tier(MetaObject):
         """
         return self.GetEnd().GetMidpoint()
 
-    # end GetEndValue
     # -----------------------------------------------------------------------
-
 
     def GetBegin(self):
         """
@@ -299,10 +294,7 @@ class Tier(MetaObject):
         # Interval of Disjoint
         return self.__ann[0].GetLocation().GetBegin()
 
-
-    # end GetBegin
     # -----------------------------------------------------------------------
-
 
     def GetEnd(self):
         """
@@ -318,9 +310,7 @@ class Tier(MetaObject):
         # Interval or Disjoint
         return self.__ann[-1].GetLocation().GetEnd()
 
-    # end GetEnd
     # -----------------------------------------------------------------------
-
 
     def HasPoint(self, point):
         """
@@ -329,9 +319,7 @@ class Tier(MetaObject):
         """
         return point in self.GetAllPoints()
 
-    # end HasPoint
     # -----------------------------------------------------------------------
-
 
     def IsSuperset(self, tier):
         """
@@ -358,9 +346,7 @@ class Tier(MetaObject):
 
         return True
 
-    # end IsSuperset
     # -----------------------------------------------------------------------
-
 
     def IsEmpty(self):
         """
@@ -369,9 +355,7 @@ class Tier(MetaObject):
         """
         return len(self.__ann) == 0
 
-    # End IsEmpty
     # -----------------------------------------------------------------------
-
 
     def IsDisjoint(self):
         """
@@ -383,9 +367,7 @@ class Tier(MetaObject):
 
         return all(a.GetLocation().IsDisjoint() for a in self.__ann)
 
-    # End IsDisjoint
     # -----------------------------------------------------------------------
-
 
     def IsInterval(self):
         """
@@ -397,9 +379,7 @@ class Tier(MetaObject):
 
         return all(a.GetLocation().IsInterval() for a in self.__ann)
 
-    # End IsInterval
     # -----------------------------------------------------------------------
-
 
     def IsPoint(self):
         """
@@ -411,9 +391,7 @@ class Tier(MetaObject):
 
         return all(a.GetLocation().IsPoint() for a in self.__ann)
 
-    # End IsPoint
     # -----------------------------------------------------------------------
-
 
     def Find(self, begin, end, overlaps=True):
         """
@@ -475,7 +453,6 @@ class Tier(MetaObject):
 
     # -----------------------------------------------------------------------
 
-
     def GetAnnotationsStartAt(self, time):
         """
         Return a list of annotations, starting at the specified time.
@@ -501,9 +478,7 @@ class Tier(MetaObject):
                 else: break
         return annotations
 
-    # End GetAnnotationsStartAt
     # -----------------------------------------------------------------------
-
 
     def GetAnnotationsEndAt(self, time):
         """
@@ -526,9 +501,7 @@ class Tier(MetaObject):
 
         return annotations
 
-    # end GetAnnotationsEndAt
     # -----------------------------------------------------------------------
-
 
     def __find(self, x):
         """
@@ -558,9 +531,7 @@ class Tier(MetaObject):
                     lo = mid + 1
         return hi
 
-    # end Find
     # -----------------------------------------------------------------------
-
 
     def Index(self, time):
         """
@@ -599,9 +570,7 @@ class Tier(MetaObject):
 
         return first
 
-    # End Index
     # ------------------------------------------------------------------------
-
 
     def Lindex(self, time):
         """
@@ -637,9 +606,7 @@ class Tier(MetaObject):
             else: break
         return first
 
-    # End Lindex
     # ------------------------------------------------------------------------
-
 
     def Mindex(self, time, direction):
         """
@@ -662,9 +629,7 @@ class Tier(MetaObject):
                     return i
         return -1
 
-    # End Mindex
     # ------------------------------------------------------------------------
-
 
     def Rindex(self, time):
         """
@@ -702,9 +667,7 @@ class Tier(MetaObject):
 
         return first
 
-    # End Rindex
     # ------------------------------------------------------------------------
-
 
     def Near(self, time, direction=1):
         """
@@ -755,9 +718,7 @@ class Tier(MetaObject):
             else:
                 return _next
 
-    # end Near
     # -----------------------------------------------------------------------
-
 
     def Search(self, patterns, function='exact', pos=0, forward=True, reverse=False):
         """
@@ -803,9 +764,7 @@ class Tier(MetaObject):
             pos += inc
         return -1
 
-    # end Search
     # -----------------------------------------------------------------------
-
 
     def Remove(self, begin, end, overlaps=False):
         """
@@ -827,9 +786,7 @@ class Tier(MetaObject):
         for a in annotations:
             self.__ann.remove(a)
 
-    # end Remove
     # -----------------------------------------------------------------------
-
 
     def Pop(self, i=-1):
         """
@@ -845,9 +802,7 @@ class Tier(MetaObject):
         except IndexError:
             raise IndexError("Pop from empty tier.")
 
-    # end Pop
     # -----------------------------------------------------------------------
-
 
     def Append(self, annotation):
         """
@@ -913,7 +868,6 @@ class Tier(MetaObject):
             else:
                 self.__ann.append(annotation)
 
-    # end Append
     # -----------------------------------------------------------------------
 
     def Add(self, annotation):
@@ -958,7 +912,6 @@ class Tier(MetaObject):
             self.__ann.pop(lo)
             return False
 
-    # End Add
     # -----------------------------------------------------------------------
 
     def __validate_annotation(self, annotation):
@@ -1011,7 +964,7 @@ class Tier(MetaObject):
                                 % (
                                     former.GetLocation().GetEndMidpoint(),
                                     latter.GetLocation().GetEndMidpoint()))
-    # End __validate_annotation
+
     # -----------------------------------------------------------------------
 
     def Copy(self):
@@ -1025,9 +978,8 @@ class Tier(MetaObject):
         newTier.__data_type = copy.deepcopy(self.__data_type)
         newTier.__name = copy.deepcopy(self.__name)
         return newTier
-    # End Copy
-    # -----------------------------------------------------------------------
 
+    # -----------------------------------------------------------------------
 
     def GetReferenceTier(self):
         """
@@ -1047,7 +999,6 @@ class Tier(MetaObject):
     # Overloads
     # -----------------------------------------------------------------------
 
-
     def __iter__(self):
         for a in self.__ann:
             yield a
@@ -1060,15 +1011,10 @@ class Tier(MetaObject):
     def __len__(self):
         return len(self.__ann)
 
-
-
+    @deprecated
     def __call__(self, *args, **kwargs):
-        """
-        @deprecated
-        """
         from filter import FilterFactory
         return FilterFactory(self, *args, **kwargs)
-
 
     # -----------------------------------------------------------------------
 

@@ -39,17 +39,6 @@ class TestHierarchy(unittest.TestCase):
 
         un Tokens ne peut pas avoir une frontière qui n'existe pas dans Phonemes
 
-
-      - Constituence :
-        par exemple Phoneme (tier référente) et Syllabes (tier enfant)
-
-        Phonemes:    | l | S | a | e | l | a |
-        Syllabes:    |           |   |       |
-
-        une Syllabe ne peut pas avoir une frontière qui n'existe pas dans Phonemes
-        une Syllabe n'a pas de Label (GetTextValue ira chercher dans les phonèmes).
-
-
     """
     def test_Superset(self):
         """

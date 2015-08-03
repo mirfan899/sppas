@@ -34,41 +34,41 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: meta.py
+# File: media.py
 # ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
-__authors__   = """Jibril Saffi, Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-class MetaObject(object):
+from meta import MetaObject
+
+# ----------------------------------------------------------------------------
+
+class Media( MetaObject ):
     """
-    @authors: Jibril Saffi, Brigitte Bigi
+    @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
-    @summary: Dictionary of meta data.
+    @summary: Generic representation of a media file.
     """
 
-    def __init__(self):
-        self.metadata = {}
-
-    # ------------------------------------------------------------------------
-
-    def GetMetadata(self, key):
+    def __init__(self, mediaid, fileurl, mimetype):
         """
-        Return the value or an empty string if key if not a key of metadata.
-        """
-        return self.metadata.get(key, "")
 
-    # ------------------------------------------------------------------------
+        @param mediaid (str) Identifier of the media
+        @param fileurl (str) filename of the media
+        @param mimetype (str) Mime type of the media
 
-    def SetMetadata(self, key, value):
         """
-        Set or update a tuple key/value.
-        """
-        self.metadata[key] = value
+        super(Media, self).__init__()
+        self.id   = mediaid
+        self.url  = fileurl
+        self.mime = mimetype
+
+        self.content = "" # for embedded media
 
     # ------------------------------------------------------------------------
 

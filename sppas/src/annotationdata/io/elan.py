@@ -54,7 +54,6 @@ ELAN_RADIUS = 0.02
 def TimePoint(time, radius=ELAN_RADIUS):
     return annotationdata.ptime.point.TimePoint(time, radius)
 
-
 def linguistic_type_from_tier(tier):
     return (tier.metadata['LINGUISTIC_TYPE_REF']
             if 'LINGUISTIC_TYPE_REF' in tier.metadata else

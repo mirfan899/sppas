@@ -75,9 +75,9 @@ class TestAntx(unittest.TestCase):
         for t1, t2 in zip(tg1, tg2):
             self.assertEqual(t1.GetSize(), t2.GetSize())
             for a1, a2 in zip(t1, t2):
-                self.assertEqual(a1.GetLabel().GetValue(), a2.GetLabel().GetValue())
+                self.assertEqual(a1.GetLabel().GetValue(),    a2.GetLabel().GetValue())
                 self.assertEqual(a1.GetLocation().GetBegin(), a2.GetLocation().GetBegin())
-                self.assertEqual(a1.GetLocation().GetEnd(), a2.GetLocation().GetEnd())
+                self.assertEqual(a1.GetLocation().GetEnd(),   a2.GetLocation().GetEnd())
 
         #os.remove( os.path.join(SAMPLES, "Example.eaf") )
 

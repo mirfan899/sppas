@@ -12,24 +12,20 @@ sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 from annotationdata.tier import Tier
 from annotationdata.transcription import Transcription
 #from annotationdata.ctrlvocab import CtrlVocab
-
+from annotationdata.media import Media
 
 class TestTranscription(unittest.TestCase):
 
+    def setUp(self):
+        self.trs = Transcription()
+        self.tier1 = self.trs.NewTier(name="tier")
+        self.tier2 = self.trs.NewTier(name=" Tier")
+        self.tier3 = self.trs.NewTier(name=" Tier2")
+
     def test_Find(self):
-        trs = Transcription()
-        tier1 = trs.NewTier(name="tier")
-        tier2 = trs.NewTier(name=" Tier")
-        tier3 = trs.NewTier(name=" Tier2")
-
-        tier = trs.Find(name="Tier ")
-        self.assertEquals(tier, tier2)
-
-        tier = trs.Find(name="tier2 ", case_sensitive=True)
-        self.assertEquals(tier, None)
-
-        tier = trs.Find(name="tier2 ", case_sensitive=False)
-        self.assertEquals(tier, tier3)
+        self.assertEquals(self.trs.Find(name="Tier "), self.tier2)
+        self.assertEquals(self.trs.Find(name="tier2 ", case_sensitive=True), None)
+        self.assertEquals(self.trs.Find(name="tier2 ", case_sensitive=False), self.tier3)
 
     def test_rename(self):
         trs = Transcription()
@@ -74,6 +70,21 @@ class TestTranscription(unittest.TestCase):
 #         self.assertEquals( t2.GetCtrlVocab(), voc2 )
 #
 #         self.assertEquals(trs.GetCtrlVocab("N'importe quoi"),voc2)
+
+    def test_media(self):
+        m1 = Media('abc', 'filename', 'mime')
+        self.trs.AddMedia(m1)
+        self.assertEquals(len(self.trs.GetMedia()), 1)
+        m2 = Media('def', 'filename.avi', 'video/avi')
+        self.trs.AddMedia(m2)
+        self.assertEquals(len(self.trs.GetMedia()), 2)
+        #with self.assertRaises(ValueError):
+        #    self.trs.AddMedia(m1)
+
+        self.tier1.SetMedia( m1 )
+        self.assertEquals(self.tier1.GetMedia(), m1)
+        self.trs.RemoveMedia( m1 )
+        self.assertEquals(self.tier1.GetMedia(), None)
 
 # End TestTranscription
 # ---------------------------------------------------------------------------

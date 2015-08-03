@@ -37,30 +37,38 @@
 #
 # ---------------------------------------------------------------------------
 # File: transcription.py
-# ----------------------------------------------------------------------------
-
-import copy
-from utils.deprecated import deprecated
-from meta import MetaObject
-from tier import Tier
-from hierarchy import Hierarchy
+# ---------------------------------------------------------------------------
+from numpy.ma.core import ids
 
 __docformat__ = """epytext"""
-__authors__ = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
+# ---------------------------------------------------------------------------
 
-class Transcription(MetaObject):
+import copy
+
+from meta      import MetaObject
+from tier      import Tier
+from hierarchy import Hierarchy
+from media     import Media
+
+from utils.deprecated import deprecated
+
+# ----------------------------------------------------------------------------
+
+class Transcription( MetaObject ):
     """
-    @authors: Brigitte Bigi, Tatsuya Watanabe
+    @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
     @summary: Generic representation of an annotated file.
 
     Transcriptions in SPPAS are represented with:
-        - a name
+        - meta data: a serie of tuple key/value
+        - a name (used as Id)
         - tiers
-        - meta-data
+        - a hierarchy
         - controlled vocabularies (yet not used)
 
     Inter-tier relations are managed by establishing alignment or constituency
@@ -76,41 +84,37 @@ class Transcription(MetaObject):
     >>> tier2 = transcription.NewTier("tier2")
     >>> transcription.GetHierarchy().addLink(type="TimeAlignment", tier1, tier2)
 
-    Currently, meta-data are:
-        - TIME_UNITS
-        - MEDIA_FILE
-
     """
 
-    def __init__(self, name="NoName", coeff=1, mintime=0., maxtime=0.):
+    def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
         Creates a new Transcription instance.
 
         @param name: (str) the name of the transcription
-        @param coeff: (float) the time coefficient (coeff=1 is seconds)
+        @param mintime in seconds
+        @param maxtime in seconds
 
         """
         super(Transcription, self).__init__()
         self.__name = u'NoName'
         self.__mintime = mintime
         self.__maxtime = maxtime
-        self.__coeff = coeff
-        self.__tiers = []
+        self.__tiers    = [] # a list of Tier() instances
+        self.__media    = [] # a list of Media() instances
         self._hierarchy = Hierarchy()
 
         self.SetName(name)
 
-    # End __init__
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def GetHierarchy(self):
         """
-        Return the Hierarchy.
+        Return the Hierarchy instance.
 
         """
         return self._hierarchy
 
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def GetName(self):
         """
@@ -119,16 +123,14 @@ class Transcription(MetaObject):
         """
         return self.__name
 
-    # End GetName
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def SetName(self, name):
         """
-        Set a new name.
+        Set a new name (the name is also used as Id, to identify a Transcription)
 
-        @param name: (str)
-
-        @raise UnicodeDecodeError:
+        @param name (str)
+        @raise UnicodeDecodeError
 
         """
         name = ' '.join(name.split())
@@ -141,8 +143,7 @@ class Transcription(MetaObject):
             except UnicodeDecodeError as e:
                 raise e
 
-    # End SetName
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def GetMinTime(self):
         """
@@ -152,8 +153,7 @@ class Transcription(MetaObject):
 
         return self.__mintime
 
-    # End GetMinTime
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def SetMinTime(self, mintime):
         """
@@ -161,33 +161,10 @@ class Transcription(MetaObject):
 
         """
         self.__mintime = mintime
-        # TODO: Must check if min < max
+        if self.__mintime > self.__maxtime:
+            raise ValueError('Min time value must be lower than max time value')
 
-    # End SetMinTime
-    # ------------------------------------------------------------------------------------
-
-    def GetCtrlVocabs(self):
-        """
-        Return a dictionary-mapped tiers vocabularies
-        for instance:
-        {
-            {elem1, elem2, elem3}:[tier1, tier2]
-            {elem4}: [tier3]
-        }
-        """
-        result = {}
-
-        for tier in self:
-            if tier.ctrlvocab is not None:
-                if tier.ctrlvocab in result:
-                    result[tier.ctrlvocab].append(tier)
-                else:
-                    result[tier.ctrlvocab] = [tier]
-
-        return result
-
-    # End GetCtrlVocabs
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def GetMaxTime(self):
         """
@@ -203,8 +180,7 @@ class Transcription(MetaObject):
 
         return self.__maxtime
 
-    # End def GetMaxTime
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def SetMaxTime(self, maxtime):
         """
@@ -218,8 +194,7 @@ class Transcription(MetaObject):
                 'Impossible to fix a max time value '
                 'lesser than the end of annotations.')
 
-    # End SetMaxTime
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def Set(self, tiers, name='NoName'):
         """
@@ -232,19 +207,20 @@ class Transcription(MetaObject):
         if isinstance(tiers, Transcription):
             self.metadata   = tiers.metadata
             self._hierarchy = tiers._hierarchy
+            self.__media    = tiers.__media
             self.__name     = tiers.__name
             self.__mintime  = tiers.__mintime
             self.__maxtime  = tiers.__maxtime
-            self.__coeff    = tiers.__coeff
             self.__tiers    = tiers.__tiers
 
         if all(isinstance(tier, Tier) for tier in tiers) is False:
             raise TypeError("Transcription or List of Tier instances argument required, not %r" % tiers)
+
         self.__tiers = [tier for tier in tiers]
+        self.__media = set( [tier.GetMedia() for tier in tiers] )
         self.__name  = name
 
-    # End Set
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def GetSize(self):
         """
@@ -253,15 +229,52 @@ class Transcription(MetaObject):
         """
         return len(self.__tiers)
 
-    # End GetSize
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
+
+    def GetMedia(self):
+        return self.__media
+
+    def RemoveMedia(self, oldmedia):
+        self.__media.remove( oldmedia )
+        for tier in self.__tiers:
+            if tier.GetMedia() == oldmedia:
+                tier.SetMedia(None)
+
+    def AddMedia(self, newmedia):
+        ids = [ m.id for m in self.__media ]
+        if newmedia.id in ids:
+            raise ValueError('A media is already defined with the same identifier %s'%newmedia.id)
+        self.__media.append( newmedia )
+
+    # ------------------------------------------------------------------------
+
+    def GetCtrlVocabs(self):
+        """
+        Return a dictionary-mapped tiers vocabularies.
+        for instance:
+        {
+            {elem1, elem2, elem3}:[tier1, tier2]
+            {elem4}: [tier3]
+        }
+        """
+        result = {}
+
+        for tier in self.__tiers:
+            if tier.ctrlvocab is not None:
+                if tier.ctrlvocab in result:
+                    result[tier.ctrlvocab].append(tier)
+                else:
+                    result[tier.ctrlvocab] = [tier]
+
+        return result
+
+    # ------------------------------------------------------------------------
 
     def NewTier(self, name="Empty"):
         """
         Add a new empty tier at the end of the transcription.
 
         @param name: (str) the name of the tier to create
-
         @return: newly created empty tier
 
         """
@@ -272,8 +285,7 @@ class Transcription(MetaObject):
 
         return tier
 
-    # End NewTier
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def Add(self, tier, index=None):
         """
@@ -282,11 +294,9 @@ class Transcription(MetaObject):
         Index must be lower than the transcription size.
         By default, the tier is appended at the end of the list.
 
-        @param tier: (Tier) the tier to add to the transcription
-        @param index: (int) the position in the list of tiers
-
-        @raise IndexError:
-
+        @param tier (Tier) the tier to add to the transcription
+        @param index (int) the position in the list of tiers
+        @raise IndexError
         @return: Tier index
 
         """
@@ -303,8 +313,7 @@ class Transcription(MetaObject):
 
         return index
 
-    # End Add
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def Append(self, tier):
         """
@@ -323,16 +332,14 @@ class Transcription(MetaObject):
 
         return len(self.__tiers)-1
 
-    # End Append
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def Pop(self, index=-1):
         """
         Pop a tier of the transcription.
 
         @param index: the index of the tier to pop. Default is the last one.
-        @raise IndexError:
-
+        @raise IndexError
         @return: Return the removed tier
 
         """
@@ -345,15 +352,13 @@ class Transcription(MetaObject):
         except IndexError as e:
             raise e
 
-    # End Pop
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def Remove(self, index):
         """
         Remove a tier of the transcription.
 
         @param index: the index of the tier to remove.
-
         @raise IndexError:
 
         """
@@ -363,8 +368,7 @@ class Transcription(MetaObject):
         self._hierarchy.removeTier(self.__tiers[index])
         del self.__tiers[index]
 
-    # End Remove
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def GetIndex(self, name, case_sensitive=True):
         """
@@ -372,7 +376,6 @@ class Transcription(MetaObject):
 
         @param name: (str) EXACT name of the tier
         @param case_sensitive: (bool)
-
         @return: Return the tier index or -1
 
         """
@@ -383,8 +386,7 @@ class Transcription(MetaObject):
 
         return -1
 
-    # End GetIndex
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def Find(self, name, case_sensitive=True):
         """
@@ -392,7 +394,6 @@ class Transcription(MetaObject):
 
         @param name: (str) EXACT name of the tier
         @param case_sensitive: (bool)
-
         @return: Return the tier or None
 
         """
@@ -406,14 +407,12 @@ class Transcription(MetaObject):
 
         return None
 
-    # End Find
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
-    def GetBegin(self):
+    def GetBeginValue(self):
         """
         Return the smaller begin time value of all tiers.
-        ATTENTION: RETURN THE BEGIN MIDPOINT VALUE (NOT THE BEGIN)!!!!!!!!!
-        MUST BE CHANGED!!!
+        Return 0 if the transcription contains no tiers.
 
         @return: Float value, or 0 if the transcription contains no tiers.
 
@@ -421,17 +420,18 @@ class Transcription(MetaObject):
         if self.IsEmpty():
             return 0.
 
-        return min(tier.GetBeginValue() for tier in self)
+        return min(tier.GetBeginValue() for tier in self.__tiers)
 
-    # End GetBegin
-    # ------------------------------------------------------------------------------------
+    @deprecated
+    def GetBegin(self):
+        return self.GetBeginValue()
 
-    def GetEnd(self):
+    # ------------------------------------------------------------------------
+
+    def GetEndValue(self):
         """
         Return the higher end time value of all tiers.
         Return 0 if the transcription contains no tiers.
-        ATTENTION: RETURN THE END MIDPOINT VALUE (NOT THE END)!!!!!!!!!
-        MUST BE CHANGED!!!
 
         @return: Float value, or 0 if the transcription contains no tiers.
 
@@ -439,10 +439,13 @@ class Transcription(MetaObject):
         if self.IsEmpty():
             return 0.
 
-        return max(tier.GetEndValue() for tier in self)
+        return max(tier.GetEndValue() for tier in self.__tiers)
 
-    # End GetEnd
-    # ------------------------------------------------------------------------------------
+    @deprecated
+    def GetEnd(self):
+        return self.GetEndValue()
+
+    # ------------------------------------------------------------------------
 
     def IsEmpty(self):
         """
@@ -454,8 +457,7 @@ class Transcription(MetaObject):
         """
         return len(self.__tiers) == 0
 
-    # End IsEmpty
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def Copy(self):
         """
@@ -464,22 +466,23 @@ class Transcription(MetaObject):
         """
         return copy.deepcopy(self)
 
-    # End Copy
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
+    # Input/Output
+    # ------------------------------------------------------------------------
 
     def read(self):
         name = self.__class__.__name__
         raise NotImplementedError("%s does not support read()." % name)
 
-    # End read
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def write(self):
         name = self.__class__.__name__
         raise NotImplementedError("%s does not support write()." % name)
 
-    # End write
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
+    # Private
+    # ------------------------------------------------------------------------
 
     def __rename(self, tier):
         name = tier.GetName()
@@ -489,24 +492,22 @@ class Transcription(MetaObject):
             i += 1
         tier.SetName(name)
 
-    # End __rename
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
+    # Overloads
+    # ------------------------------------------------------------------------
 
     def __len__(self):
         return len(self.__tiers)
 
-    # End __len__
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def __iter__(self):
         for x in self.__tiers:
             yield x
 
-    # End __iter__
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def __getitem__(self, i):
         return self.__tiers[i]
 
-    # End __getitem__
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
