@@ -221,12 +221,12 @@ class CSV(Transcription):
         # End writerows
         # -----------------------------------------------------------------
 
-    def __init__(self, name="NoName", coeff=1, mintime=None, maxtime=None):
+    def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
         Creates a new CSV Transcription instance.
 
         """
-        super(CSV, self).__init__(name, coeff, mintime, maxtime)
+        super(CSV, self).__init__(name, mintime, maxtime)
 
     # End __init__
     # -----------------------------------------------------------------

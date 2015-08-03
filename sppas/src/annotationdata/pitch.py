@@ -25,14 +25,14 @@ class Pitch(Transcription):
     """
     def __init__(self,
                  name="Pitch",
-                 coeff=1, delta=0.01,
-                 mintime=None, maxtime=None):
+                 delta=0.01,
+                 mintime=0., maxtime=0.):
 
         """
         Creates a new Pitch Tier instance.
 
         """
-        Transcription.__init__(self, name, coeff, mintime, maxtime)
+        Transcription.__init__(self, name, mintime, maxtime)
 
     # End __init__
     # ------------------------------------------------------------------------------------

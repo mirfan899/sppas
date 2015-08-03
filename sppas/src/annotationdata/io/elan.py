@@ -38,11 +38,13 @@
 
 import datetime
 import xml.etree.cElementTree as ET
-from annotationdata.transcription import Transcription
-from annotationdata.label.label import Label
+
+from annotationdata.transcription  import Transcription
+from annotationdata.label.label    import Label
 import annotationdata.ptime.point
 from annotationdata.ptime.interval import TimeInterval
-from annotationdata.annotation import Annotation
+from annotationdata.annotation     import Annotation
+
 from utils import indent
 
 # -----------------------------------------------------------------
@@ -108,8 +110,8 @@ class Elan(Transcription):
         tier = self.NewTier(tierRoot.attrib['TIER_ID'])
 
         linguisticType = tierRoot.attrib['LINGUISTIC_TYPE_REF']
-        if linguisticType in self.ctrlVocabs:
-            tier.SetCtrlVocab(self.ctrlVocabs[linguisticType])
+        #if linguisticType in self.ctrlVocabs:
+        #    tier.SetCtrlVocab(self.ctrlVocabs[linguisticType])
         tier.metadata['LINGUISTIC_TYPE_REF'] = linguisticType
 
         if 'PARENT_REF' in tierRoot.attrib:

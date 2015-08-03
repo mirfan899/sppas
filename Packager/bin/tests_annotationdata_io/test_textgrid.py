@@ -22,7 +22,6 @@ class TestTextGrid(unittest.TestCase):
         TextGrid in SPPAS are represented as:
             - a name
             - an array of tiers
-            - a time coefficient (1=seconds).
     """
 
     def test_ReadIntervalsLong(self):
@@ -250,18 +249,13 @@ class TestTextGrid(unittest.TestCase):
         tg = TextGrid()
         self.assertTrue(tg.IsEmpty())
 
-    def test_MinTime(self):
-        tg = TextGrid(mintime=None, maxtime=None)
-        self.assertTrue(tg.GetMinTime() is None)
-        tg.SetMinTime(3000)
-        self.assertEqual(tg.GetMinTime(), 3000)
-
-    def test_MaxTime(self):
-        tg = TextGrid()
-        self.assertEqual(tg.GetMaxTime(), tg.GetEnd())
+    def test_MinMaxTime(self):
+        tg = TextGrid(mintime=0., maxtime=0.)
+        self.assertTrue(tg.GetMinTime()==0.)
         tg.SetMaxTime(3000)
         self.assertEqual(tg.GetMaxTime(), 3000)
-
+        tg.SetMinTime(3000)
+        self.assertEqual(tg.GetMinTime(), 3000)
 
 # End TestTextGrid
 # ---------------------------------------------------------------------------
