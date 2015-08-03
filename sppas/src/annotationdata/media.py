@@ -55,7 +55,7 @@ class Media( MetaObject ):
     @summary: Generic representation of a media file.
     """
 
-    def __init__(self, mediaid, fileurl, mimetype):
+    def __init__(self, mediaid, fileurl, mimetype=''):
         """
 
         @param mediaid (str) Identifier of the media
@@ -68,7 +68,7 @@ class Media( MetaObject ):
         self.url  = fileurl
         self.mime = mimetype
 
-        self.content = "" # for embedded media
+        self.content = "" # for embedded media, currently not used by SPPAS
 
     # ------------------------------------------------------------------------
 

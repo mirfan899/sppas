@@ -45,14 +45,16 @@ from annotationdata.label.label    import Label
 from annotationdata.label.text     import Text
 from annotationdata.ptime.location import Location
 import annotationdata.ptime.point
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.disjoint import TimeDisjoint
-from annotationdata.ptime.framepoint import FramePoint
+from annotationdata.ptime.interval      import TimeInterval
+from annotationdata.ptime.disjoint      import TimeDisjoint
+from annotationdata.ptime.framepoint    import FramePoint
 from annotationdata.ptime.frameinterval import FrameInterval
 from annotationdata.ptime.framedisjoint import FrameDisjoint
-from annotationdata.ptime.localization import Localization
-from annotationdata.annotation import Annotation
-from annotationdata.hierarchy import Hierarchy
+from annotationdata.ptime.localization  import Localization
+from annotationdata.annotation          import Annotation
+#from annotationdata.hierarchy import Hierarchy
+from annotationdata.media import Media
+
 from utils import indent
 from utils import gen_id
 
@@ -70,7 +72,7 @@ ELT_OPTIONAL_Layer = {'coordinatecontrolstyle':"0", 'islocked':"false", 'isclose
 ELT_REQUIRED_Segment = {'id':None, 'idlayer':None, 'label':None, 'forecolor':'-16777216', 'backcolor':'-1', 'bordercolor':'-16777216', 'start':None, 'duration':None, 'isselected':'false'}
 ELT_OPTIONAL_Segment = {'feature':None, 'language':None, 'group':None, 'name':None, 'parameter1':None, 'parameter2':None, 'parameter3':None, 'ismarker':"false", 'marker':None, 'rscript':None}
 
-ELT_REQUIRED_Media = {'id':None, 'name':'NoName', 'filename':None, 'external':'false', 'current':'false'}
+ELT_REQUIRED_Media = {'id':None, 'filename':None, 'name':'NoName', 'external':'false', 'current':'false'}
 
 ANTX_RADIUS = 0.0005
 
@@ -139,7 +141,7 @@ class Antx(Transcription):
     AnnotationPro stand-alone files.
     """
 
-    def __init__(self, name="AnnotationSystemDataSet", coeff=1, mintime=None, maxtime=None):
+    def __init__(self, name="AnnotationSystemDataSet"):
         """
         Initialize a new instance.
 
@@ -148,7 +150,7 @@ class Antx(Transcription):
         @type coeff: float
         @param coeff: the time coefficient (coeff=1 is seconds)
         """
-        Transcription.__init__(self, name, coeff, mintime, maxtime)
+        Transcription.__init__(self, name)
 
     # -----------------------------------------------------------------
 
@@ -182,8 +184,8 @@ class Antx(Transcription):
         for child in tree.iter( tag=uri+'Configuration'):
             self.__read_configuration(child, uri)
 
-        #for child in tree.iter( tag=uri+"AudioFile" ):
-        #    self.__read_audiofile(child, uri)
+        for child in tree.iter( tag=uri+"AudioFile" ):
+            self.__read_audiofile(child, uri)
 
         for child in tree.iter( tag=uri+"Layer" ):
             self.__read_tier(child, uri)
@@ -203,11 +205,24 @@ class Antx(Transcription):
 
     # -----------------------------------------------------------------
 
+    def __read_audiofile(self, audioRoot, uri):
+        # Create a Media instance
+        mediaid  = audioRoot.find(uri+'Id').text.replace(uri,'')
+        mediaurl = audioRoot.find(uri+'FileName').text
+        media = Media( mediaid,mediaurl )
+        # Put all other information in metadata of Media
+        for node in audioRoot:
+            if node.text:
+                media.metadata[ node.tag.replace(uri,'').lower() ] = node.text
+        self.AddMedia( media )
+
+    # -----------------------------------------------------------------
+
     def __read_tier(self, tierRoot, uri):
         # Get the elements Tier instance need
         tier = self.NewTier( name=tierRoot.find(uri+'Name').text )
 
-        # Put all information in metadata
+        # Put all other information in metadata
         for node in tierRoot:
             if node.text:
                 tier.metadata[ node.tag.replace(uri,'').lower() ] = node.text
@@ -263,6 +278,11 @@ class Antx(Transcription):
                 for ann in tier:
                     self.__format_segment(root, tier, ann)
 
+            # Write media
+            if len(self.GetMedia()) > 0:
+                for media in self.GetMedia():
+                    if media: Antx.__format_media(root, media)
+
             # Write configurations
             for key,value in ELT_REQUIRED_Configuration.iteritems():
                 Antx.__format_configuration(root, key, self.metadata.get(key,value))
@@ -284,6 +304,27 @@ class Antx(Transcription):
             raise
 
     # End write
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def __format_media(root, media):
+        # Write the Media element
+        media_root = ET.SubElement(root, 'AudioFile')
+
+        # Write all the elements SPPAS has interpreted
+        child_id = ET.SubElement(media_root, 'Id')
+        child_id.text = media.id
+        child_id = ET.SubElement(media_root, 'FileName')
+        child_id.text = media.url
+
+        # Antx required elements
+        for key,value in ELT_REQUIRED_Segment.iteritems():
+            if not key in [ 'id','filename' ]:
+                child = ET.SubElement(media_root, UpperLowerDict[key])
+                child.text = media.metadata.get( key, value )
+
+        # There isn't optional elements in AudioFile
+
     # -----------------------------------------------------------------
 
     @staticmethod

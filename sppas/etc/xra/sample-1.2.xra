@@ -7,20 +7,29 @@
 
 
   <Metadata>
-      <Entry key="a metatada key">the value for this metadata</Entry>
+      <Entry key="created">2015-08-03</Entry>
+      <Entry key="license">GPL v3</Entry>
   </Metadata>
 
 
-  <Mediadata>
-     <Media id="m1" url="file:///file.wav" mimetype="audio/wav" />
-     <Media id="m2" url="file:///file.avi" mimetype="video/avi">
-     	<Metadata>
-      		<Entry key="resolution">320x200</Entry>
-      		<Entry key="timeorigin">0.32</Entry>
-      		<Entry key="display">true</Entry>
-     	</Metadata>
-     </Media>
-  </Mediadata>
+  <Media id="m1" url="file:///file.wav" mimetype="audio/wav">
+      <Tier id="t2"/>
+      <Content>
+      the media source file could also be embedded here
+      </Content>
+  </Media>
+
+  <Media id="m2" url="file:///file.avi" mimetype="video/avi">
+     <Metadata>
+      	<Entry key="samplerate">25</Entry>
+      	<Entry key="resolution">320x200</Entry>
+      	<Entry key="timeorigin">0.32</Entry>
+      	<Entry key="display">true</Entry>
+     </Metadata>
+     <Tier id="t1"/>
+  </Media>
+
+  <Media id="m3" url="file:///file.wav" />
 
 
   <Tier id="t1" tiername="Intonation">
@@ -29,8 +38,6 @@
         <Entry key="author">first name</Entry>
         <Entry key="expert">2</Entry>
      </Metadata>
-
-     <Media link="m1" />
 
      <Annotation>
         <Location>
@@ -57,8 +64,6 @@
 
 
   <Tier id="t2" tiername="TokensAlign">
-
-    <Media link="m2" />
 
      <Annotation>
         <Location>
@@ -103,8 +108,6 @@
 
 
   <Tier id="t3" tiername="IPU">
-
-     <Media link="m1" />
 
      <Annotation>
         <Location>

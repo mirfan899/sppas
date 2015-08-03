@@ -57,7 +57,7 @@
         <xsd:complexType>
             <xsd:sequence>
                 <xsd:element name="Metadata"    type="metadataType"   minOccurs="0" maxOccurs="1"/>
-                <xsd:element name="Mediadata"   type="mediadataType"  minOccurs="0" maxOccurs="1"/>
+                <xsd:element name="Media"       type="mediaType"      minOccurs="0" maxOccurs="unbounded"/>
                 <xsd:element name="Tier"        type="tierType"       minOccurs="0" maxOccurs="unbounded"/>
                 <xsd:element name="Hierarchy"   type="hierarchyType"  minOccurs="0" maxOccurs="1"/>
                 <xsd:element name="Vocabulary"  type="vocabType"      minOccurs="0" maxOccurs="unbounded"/>
@@ -104,19 +104,21 @@
 <!--
         Mediadata
 -->
-    <xsd:complexType name="mediadataType">
+    <xsd:complexType name="mediaType">
       <xsd:sequence>
-        <xsd:element name="Media" type="mediaEntryType" minOccurs="1" maxOccurs="unbounded"/>
-      </xsd:sequence>
-    </xsd:complexType>
-
-    <xsd:complexType name="mediaEntryType">
-      <xsd:sequence>
-         <xsd:element name="Metadata" type="metadataType"  minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="Metadata" type="metadataType" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="Tier"     type="idTierType"   minOccurs="0" maxOccurs="unbounded" />
+         <xsd:element name="Content"  type="stringType"   minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attribute name="id"        type="xsd:ID"     use="required"/>
       <xsd:attribute name="url"       type="xsd:anyURI" use="required"/>
       <xsd:attribute name="mimetype"  type="stringType" use="optional"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="mediaEntryType">
+      <xsd:sequence>
+      </xsd:sequence>
+
     </xsd:complexType>
 
 
@@ -133,18 +135,10 @@
     <xsd:complexType name="tierType">
         <xsd:sequence>
           <xsd:element name="Metadata"   type="metadataType"   minOccurs="0" maxOccurs="1"/>
-          <xsd:element name="Media"      type="mediatierType"  minOccurs="0" maxOccurs="1"/>
           <xsd:element name="Annotation" type="annotationType" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
         <xsd:attribute name="id"       type="xsd:ID"     use="required"/>
         <xsd:attribute name="tiername" type="stringType" use="required"/>
-    </xsd:complexType>
-
-<!--
-        Link the tier to a media
--->
-    <xsd:complexType name="mediatierType">
-        <xsd:attribute name="link" type="xsd:IDREF" use="required" />
     </xsd:complexType>
 
 
@@ -285,15 +279,20 @@
     <xsd:complexType name="vocabType">
         <xsd:sequence>
             <xsd:element name="Entry" type="stringType" minOccurs="1" maxOccurs="unbounded" />
-            <xsd:element name="Tier"  type="vocabTierType" minOccurs="1" maxOccurs="unbounded" />
+            <xsd:element name="Tier"  type="idTierType" minOccurs="1" maxOccurs="unbounded" />
         </xsd:sequence>
         <xsd:attribute name="id"          type="xsd:IDREF" use="required" />
         <xsd:attribute name="description" type="stringType" use="required" />
     </xsd:complexType>
 
-    <xsd:complexType name="vocabTierType">
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+    <xsd:complexType name="idTierType">
         <xsd:attribute name="id" type="xsd:IDREF" use="required" />
     </xsd:complexType>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
  </xsd:schema>
 

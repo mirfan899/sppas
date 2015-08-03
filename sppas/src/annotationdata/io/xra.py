@@ -64,7 +64,7 @@ class XRA(Transcription):
 
     __format = '1.1'
 
-    def __init__(self, name="NoName", coeff=1, mintime=None, maxtime=None):
+    def __init__(self, name="NoName", mintime=None, maxtime=None):
         """
         Initialize a new XRA instance.
         @type name: str
@@ -72,7 +72,7 @@ class XRA(Transcription):
         @type coeff: float
         @param coeff: the time coefficient (coeff=1 is seconds)
         """
-        Transcription.__init__(self, name, coeff, mintime, maxtime)
+        Transcription.__init__(self, name, mintime, maxtime)
 
     # End __init__
     # -----------------------------------------------------------------
