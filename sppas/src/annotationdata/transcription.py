@@ -38,7 +38,6 @@
 # ---------------------------------------------------------------------------
 # File: transcription.py
 # ---------------------------------------------------------------------------
-from numpy.ma.core import ids
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
