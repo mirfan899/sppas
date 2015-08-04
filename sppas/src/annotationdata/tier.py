@@ -96,10 +96,13 @@ class Tier( MetaObject ):
     # -----------------------------------------------------------------------
 
     def SetCtrlVocab(self, ctrlvocab):
-        for annotation in self:
-            for word in annotation.GetLabel().GetLabels():
-                if ctrlvocab.Contains(word) is False:
-                    raise Exception("Trying to set an invalid controlled vocabulary: the word %s is not in the dictionary %s"%(word,ctrlvocab.id))
+        # In case we just want to disable the controlled vocabulary
+        if ctrlvocab is not None:
+            # Check all annotation labels to validate the ctrlvocab before assignment
+            for annotation in self:
+                for word in annotation.GetLabel().GetLabels():
+                    if ctrlvocab.Contains(word) is False:
+                        raise Exception("Trying to set an invalid controlled vocabulary: the word %s is not in the dictionary %s"%(word,ctrlvocab.id))
         self.__ctrlvocab = ctrlvocab
 
     # -----------------------------------------------------------------------

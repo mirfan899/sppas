@@ -30,7 +30,7 @@ class TestIO(unittest.TestCase):
             for a1, a2 in zip(tier1, tier2):
                 self.assertEqual(a1.GetLabel().GetValue(), a2.GetLabel().GetValue())
                 self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
-
+        os.remove(os.path.join(SAMPLES,"sample2.TextGrid"))
 
     def test_IOAscii(self):
         tg1 = annotationdata.io.read(os.path.join(SAMPLES,"sample.TextGrid"))
@@ -47,6 +47,7 @@ class TestIO(unittest.TestCase):
             for a1, a2 in zip(tier1, tier2):
                 self.assertEqual(a1.GetLabel().GetValue(), a2.GetLabel().GetValue())
                 self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
+        os.remove(os.path.join(SAMPLES,"sampleascii.csv"))
 
 
     def test_IOPitch(self):

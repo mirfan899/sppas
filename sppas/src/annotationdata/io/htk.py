@@ -34,49 +34,71 @@
 # You should have received a copy of the GNU General Public License
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
+# ---------------------------------------------------------------------------
+# File: htk.py
+# ---------------------------------------------------------------------------
+
+__docformat__ = """epytext"""
+__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+
+
+# ----------------------------------------------------------------------------
+# Imports
+# ----------------------------------------------------------------------------
+
 import codecs
-from annotationdata.transcription import Transcription
-from annotationdata.label.label import Label as AnnotationLabel
+from annotationdata.transcription    import Transcription
+from annotationdata.label.label      import Label
 import annotationdata.ptime.point
 from annotationdata.ptime.framepoint import FramePoint
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.annotation import Annotation
+from annotationdata.ptime.interval   import TimeInterval
+from annotationdata.annotation       import Annotation
 
+#TODO: check whether lab and mlf files can support time overlaps
+#from utils import merge_overlapping_annotations
+
+# ----------------------------------------------------------------------------
 
 HTK_RADIUS = 0.0005
+
 # time values are in multiples of 100ns
 TIME_UNIT = pow(10, -7)
 
+# ----------------------------------------------------------------------------
+# Useful functions
+# ----------------------------------------------------------------------------
 
 def TimePoint(time):
     return annotationdata.ptime.point.TimePoint(time, HTK_RADIUS)
 
+# ----------------------------------------------------------------------------
 
 def annotation_from_line(line, number):
     try:
         line = line.strip().split()
 
         hasBegin = len(line) > 0 and line[0].isdigit()
-        hasEnd = len(line) > 1 and line[1].isdigit()
+        hasEnd   = len(line) > 1 and line[1].isdigit()
 
         if hasBegin and hasEnd:
             time = TimeInterval(TimePoint(float(line[0]) * TIME_UNIT),
                                 TimePoint(float(line[1]) * TIME_UNIT))
             label = " ".join(line[2:])
+
         elif hasBegin:
             time = TimePoint(float(line[0])*TIME_UNIT)
             label = " ".join(line[1:])
+
         else:  # default to FramePoint
             time = FramePoint(number)
             label = " ".join(line)
 
-        return Annotation(time, AnnotationLabel(label))
+        return Annotation(time, Label(label))
     except:
         raise Exception("Could not read line:%s" % repr(line))
 
-# End annotation_from_line
-# -----------------------------------------------------------------
-
+# ---------------------------------------------------------------------------
 
 def line_from_annotation(annotation):
     label = annotation.GetLabel().GetValue()
@@ -85,26 +107,28 @@ def line_from_annotation(annotation):
         raise Exception("lab files do not support empty labels")
 
     if annotation.GetLocation().IsInterval():
-        begin = str(int(
-            1/TIME_UNIT * annotation.GetLocation().GetBeginMidpoint()))
-        end = str(int(
-            1/TIME_UNIT * annotation.GetLocation().GetEndMidpoint()))
+        begin = str(int(1/TIME_UNIT * annotation.GetLocation().GetBeginMidpoint()))
+        end = str(int(1/TIME_UNIT * annotation.GetLocation().GetEndMidpoint()))
         return "%s %s %s\n" % (begin, end, label)
     else:
-        point = str(int(
-            1/TIME_UNIT * annotation.GetLocation().GetPointMidpoint()))
+        point = str(int(1/TIME_UNIT * annotation.GetLocation().GetPointMidpoint()))
         return "%s %s\n" % (point, label)
 
-# End line_from_annotation
-# -----------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
-class Label(Transcription):
+class HTKLabel( Transcription ):
+    """
+    @authors: Jibril Saffi, Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: Represents HTK lab files.
+    """
+
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
-        super(Label, self).__init__(name, mintime, maxtime)
+        super(HTKLabel, self).__init__(name, mintime, maxtime)
 
-    # End __init__
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def read(self, filename):
         with codecs.open(filename, "r", 'utf-8') as fp:
@@ -120,7 +144,7 @@ class Label(Transcription):
         self.SetMaxTime(self.GetEnd())
 
     # End read
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def write(self, filename):
         with codecs.open(filename, 'w', 'utf-8', buffering=8096) as fp:
@@ -131,26 +155,32 @@ class Label(Transcription):
             tier = self[0]
 
             for annotation in tier:
-                if(annotation.GetLabel().GetValue() != ''):
+                if annotation.GetLabel().GetValue() != '':
                     fp.write(line_from_annotation(annotation))
 
     # End write
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------
 
-class MasterLabel(Transcription):
+class MasterLabel( Transcription ):
+    """
+    @authors: Jibril Saffi, Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: Represents HTK mlf files.
+    """
+
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
         super(MasterLabel, self).__init__(name, mintime, maxtime)
 
-    # End __init__
     # -----------------------------------------------------------------
 
     def read(self, filename):
         with codecs.open(filename, "r", 'utf-8') as fp:
             line = ''
             number = 1
-            while(not (line.strip().startswith('"') and
-                       line.strip().endswith('"'))):
+            while (not (line.strip().startswith('"') and line.strip().endswith('"'))):
                 line = fp.next()
 
             try:

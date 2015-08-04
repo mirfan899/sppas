@@ -83,6 +83,9 @@ class TestEAF(unittest.TestCase):
                     p = round( a1.GetLocation().GetPoint().GetMidpoint()-0.02, 3)
                     self.assertEqual(p, round(a2.GetLocation().GetBegin().GetMidpoint(),3))
 
+        os.remove( os.path.join(SAMPLES, "sample-1.2.xra") )
+        os.remove( os.path.join(SAMPLES, "sample-1.2.eaf") )
+
 # End TestEAF
 # ---------------------------------------------------------------------------
 

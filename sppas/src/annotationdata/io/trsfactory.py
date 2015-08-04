@@ -34,24 +34,40 @@
 # You should have received a copy of the GNU General Public License
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
+# ---------------------------------------------------------------------------
+# File: trsfactory.py
+# ---------------------------------------------------------------------------
 
-from text import RawText, CSV
-from praat import TextGrid, PitchTier, IntensityTier
-from signaix import HzPitch
-from transcriber import Transcriber
-from xra import XRA
-from phonedit import Phonedit
-from htk import Label, MasterLabel
-from subtitle import SubRip, SubViewer
-from sclite import TimeMarkedConversation, SegmentTimeMark
-from elan import Elan
-from anvil import Anvil
+__docformat__ = """epytext"""
+__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+
+
+# ----------------------------------------------------------------------------
+# Imports
+# ----------------------------------------------------------------------------
+
+from text          import RawText, CSV
+from praat         import TextGrid, PitchTier, IntensityTier
+from signaix       import HzPitch
+from transcriber   import Transcriber
+from xra           import XRA
+from phonedit      import Phonedit
+from htk           import HTKLabel, MasterLabel
+from subtitle      import SubRip, SubViewer
+from sclite        import TimeMarkedConversation, SegmentTimeMark
+from elan          import Elan
+from anvil         import Anvil
 from annotationpro import Antx
+
+# ----------------------------------------------------------------------------
 
 class TrsFactory(object):
     """
-    Factory for Transcription.
-
+    @authors: Tatsuya Watanabe, Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: Factory for Transcription.
     """
 
     __TRS = {
@@ -64,7 +80,7 @@ class TrsFactory(object):
         "trs": Transcriber,
         "xra": XRA,
         "mrk": Phonedit,
-        "lab": Label,
+        "lab": HTKLabel,
         "mlf": MasterLabel,
         "srt": SubRip,
         "sub": SubViewer,
@@ -80,15 +96,15 @@ class TrsFactory(object):
         """
         Return a new Transcription.
 
-        @param trs_type:
-
+        @param trs_type
         @return Transcription
-
         """
         try:
             return TrsFactory.__TRS[trs_type]()
         except KeyError:
-            raise KeyError("Unrecognized Transcription type: %s" % trs_type)
+            raise KeyError("Unrecognised Transcription type: %s" % trs_type)
 
     # End NewTrs
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------

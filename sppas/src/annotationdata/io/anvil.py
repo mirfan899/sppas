@@ -34,6 +34,18 @@
 # You should have received a copy of the GNU General Public License
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
+# ---------------------------------------------------------------------------
+# File: anvil.py
+# ---------------------------------------------------------------------------
+
+__docformat__ = """epytext"""
+__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+
+
+# ----------------------------------------------------------------------------
+# Imports
+# ----------------------------------------------------------------------------
 
 from annotationdata.transcription import Transcription
 from annotationdata.ptime.interval import TimeInterval
@@ -42,13 +54,16 @@ from annotationdata.label.label import Label
 import annotationdata.ptime.point
 import xml.etree.cElementTree as ET
 
+# ----------------------------------------------------------------------------
 
 ANVIL_RADIUS = 0.02
 
+# ----------------------------------------------------------------------------
 
 def TimePoint(time):
     return annotationdata.ptime.point.TimePoint(time, ANVIL_RADIUS)
 
+# ----------------------------------------------------------------------------
 
 class Anvil(Transcription):
     def __init__(self, name="NoName", mintime=0., maxtime=0.):

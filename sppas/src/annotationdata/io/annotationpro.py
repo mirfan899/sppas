@@ -35,6 +35,17 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
+# File: annotationpro.py
+# ---------------------------------------------------------------------------
+
+__docformat__ = """epytext"""
+__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+
+
+# ----------------------------------------------------------------------------
+# Imports
+# ----------------------------------------------------------------------------
 
 import xml.etree.cElementTree as ET
 import datetime
@@ -52,11 +63,12 @@ from annotationdata.ptime.frameinterval import FrameInterval
 from annotationdata.ptime.framedisjoint import FrameDisjoint
 from annotationdata.ptime.localization  import Localization
 from annotationdata.annotation          import Annotation
-#from annotationdata.hierarchy import Hierarchy
-from annotationdata.media import Media
+from annotationdata.media               import Media
 
 from utils import indent
 from utils import gen_id
+from utils import merge_overlapping_annotations
+from utils import point2interval
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -79,7 +91,7 @@ ANTX_RADIUS = 0.0005
 # ---------------------------------------------------------------------------
 # XML is case-sensitive.
 # While reading, we lowerise everything, for compatibility reasons...
-# for example "DATE" in ELan eaf files is "date" in SPPAS xra files!
+# for example "DATE" in Elan eaf files is "date" in SPPAS xra files!
 # But... when writing, we have to write the appropriate lower/upper cases.
 UpperLowerDict={}
 UpperLowerDict['version']="Version"
@@ -138,7 +150,10 @@ def TimePoint(time):
 
 class Antx(Transcription):
     """
-    AnnotationPro stand-alone files.
+    @authors: Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: Represents the native format of AnnotationPro stand-alone files.
     """
 
     def __init__(self, name="AnnotationSystemDataSet"):
@@ -147,8 +162,7 @@ class Antx(Transcription):
 
         @type name: str
         @param name: the name of the transcription
-        @type coeff: float
-        @param coeff: the time coefficient (coeff=1 is seconds)
+
         """
         Transcription.__init__(self, name)
 
@@ -167,6 +181,10 @@ class Antx(Transcription):
         return "AnnotationSystemDataSetroot" in root.tag
 
     # End detect
+    # -----------------------------------------------------------------
+
+    # -----------------------------------------------------------------
+    # Reader
     # -----------------------------------------------------------------
 
     def read(self, filename):
@@ -260,6 +278,8 @@ class Antx(Transcription):
             tier.Add(annotation)
 
     # -----------------------------------------------------------------
+    # Writer
+    # -----------------------------------------------------------------
 
     def write(self, filename, encoding='UTF-8'):
         """
@@ -275,6 +295,11 @@ class Antx(Transcription):
 
             # Write segments
             for tier in self:
+
+                if tier.IsPoint():
+                    tier = point2interval(tier, ANTX_RADIUS)
+                tier = merge_overlapping_annotations(tier)
+
                 for ann in tier:
                     self.__format_segment(root, tier, ann)
 

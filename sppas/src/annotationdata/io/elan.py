@@ -35,6 +35,17 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
+# File: elan.py
+# ---------------------------------------------------------------------------
+
+__docformat__ = """epytext"""
+__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+
+
+# ----------------------------------------------------------------------------
+# Imports
+# ----------------------------------------------------------------------------
 
 import datetime
 import xml.etree.cElementTree as ET
@@ -54,13 +65,13 @@ from utils import point2interval
 
 # -----------------------------------------------------------------
 
-ELAN_RADIUS = 0.02
-
 CONSTRAINTS = {}
 CONSTRAINTS["Time subdivision of parent annotation's time interval, no time gaps allowed within this interval"]="Time_Subdivision"
 CONSTRAINTS["Symbolic subdivision of a parent annotation. Annotations refering to the same parent are ordered"]="Symbolic_Subdivision"
 CONSTRAINTS["1-1 association with a parent annotation"]="Symbolic_Association"
 CONSTRAINTS["Time alignable annotations within the parent annotation's time interval, gaps are allowed"]="Included_In"
+
+ELAN_RADIUS = 0.02
 
 # -----------------------------------------------------------------
 
@@ -75,6 +86,12 @@ def linguistic_type_from_tier(tier):
 # -----------------------------------------------------------------
 
 class Elan( Transcription ):
+    """
+    @authors: Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: Represents the native format of Elan annotated files.
+    """
 
     def read(self, filename):
         tree = ET.parse(filename)

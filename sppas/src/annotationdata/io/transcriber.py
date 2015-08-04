@@ -34,15 +34,28 @@
 # You should have received a copy of the GNU General Public License
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
+# ---------------------------------------------------------------------------
+# File: transcriber.py
+# ---------------------------------------------------------------------------
 
+__docformat__ = """epytext"""
+__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+
+
+# ----------------------------------------------------------------------------
+# Imports
+# ----------------------------------------------------------------------------
 
 import xml.etree.cElementTree as ET
-from annotationdata.transcription import Transcription
-from annotationdata.label.label import Label
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.point import TimePoint
-from annotationdata.annotation import Annotation
 
+from annotationdata.transcription  import Transcription
+from annotationdata.label.label    import Label
+from annotationdata.ptime.interval import TimeInterval
+from annotationdata.ptime.point    import TimePoint
+from annotationdata.annotation     import Annotation
+
+# ----------------------------------------------------------------------------
 
 def add_at_label_end(tier, annotation, labelString):
     oldlabel = annotation.GetLabel().GetValue()
@@ -57,28 +70,29 @@ def add_at_label_end(tier, annotation, labelString):
     tier.Add(newAnnotation)
 
 # End add_at_label_end
-# -----------------------------------------------------------------
-
+# ----------------------------------------------------------------------------
 
 class Transcriber(Transcription):
     """
-    Represents a Transcription from Transcriber.
+    @authors: Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: Represents a Transcription from Transcriber.
 
     trs files are the native file format of the GPL tool Transcriber:
     a tool for segmenting, labelling and transcribing speech.
 
     See http://trans.sourceforge.net/en/presentation.php
+    Notice that Transcriber is a very old software... deprecated!
 
     """
 
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
         Creates a new Transcriber Transcription instance.
-
         """
         Transcription.__init__(self, name, mintime, maxtime)
 
-    # End __init__
     # ------------------------------------------------------------------------
 
     @staticmethod
@@ -90,7 +104,7 @@ class Transcriber(Transcription):
         return doctypeLine == '<!DOCTYPE Trans SYSTEM "trans-14.dtd">'
 
     # End detect
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def __read_turn(self, turnRoot):
         turnBegin = float(turnRoot.attrib['startTime'])
@@ -161,8 +175,7 @@ class Transcriber(Transcription):
                 # end the previous annotation
                 prevAnnotation = newAnnotation
 
-    # End __read_turn
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def read(self, filename):
         """
@@ -196,6 +209,6 @@ class Transcriber(Transcription):
         self.SetMaxTime(self.GetEnd())
 
     # End read
-    # ------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
-    # ------------------------------------------------------------------
+# ----------------------------------------------------------------------------

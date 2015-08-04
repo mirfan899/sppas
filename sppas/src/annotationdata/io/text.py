@@ -34,6 +34,18 @@
 # You should have received a copy of the GNU General Public License
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
+# ---------------------------------------------------------------------------
+# File: text.py
+# ---------------------------------------------------------------------------
+
+__docformat__ = """epytext"""
+__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+
+
+# ----------------------------------------------------------------------------
+# Imports
+# ----------------------------------------------------------------------------
 
 import re
 import codecs
@@ -47,15 +59,24 @@ from annotationdata.ptime.framepoint import FramePoint
 from annotationdata.annotation import Annotation
 from re import split
 
+# ----------------------------------------------------------------------------
 
 TEXT_RADIUS = 0.0005
 
+# ----------------------------------------------------------------------------
 
 def TimePoint(time):
     return annotationdata.ptime.point.TimePoint(time, TEXT_RADIUS)
 
+# ----------------------------------------------------------------------------
 
 class RawText(Transcription):
+    """
+    @authors: Jibril Saffi, Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: Represents a simple text file.
+    """
 
     @staticmethod
     def detect(filename):
@@ -63,25 +84,21 @@ class RawText(Transcription):
             pass
         return True
 
-    # End detect
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
         Creates a new Transcription instance.
-
         """
         Transcription.__init__(self, name, mintime, maxtime)
 
-    # End __init__
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     @staticmethod
     def __read_annotation(phrase, number):
         return Annotation(FramePoint(number), Label(phrase))
 
-    # End __read_annotation
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def read(self, filename):
         """
@@ -114,14 +131,12 @@ class RawText(Transcription):
                     n += 1
 
     # End read
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def write(self, filename):
         """
         Write an ascii file, as txt file.
-
         @param filename: (String) is the output file name, ending with ".txt"
-
         """
         with codecs.open(filename, 'w', 'utf-8', buffering=8096) as fp:
             if self.GetSize() != 1:
@@ -132,10 +147,18 @@ class RawText(Transcription):
                 fp.write(annotation.GetLabel().GetValue() + '\n')
 
     # End write
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------
 
 class CSV(Transcription):
+    """
+    @authors: Jibril Saffi, Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: Represents a simple CSV file with 4 columns.
+    """
+
     @staticmethod
     def detect(filename):
         csvLine = re.compile(
@@ -150,7 +173,7 @@ class CSV(Transcription):
         return detected
 
     # End detect
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     class UnicodeReader:
         """
@@ -162,29 +185,25 @@ class CSV(Transcription):
             for line in unicode_csv_data:
                 yield line.encode('utf-8')
 
-        # End utf_8_encoder
-        # -----------------------------------------------------------------
+        # --------------------------------------------------------------------
 
         def __init__(self, f, dialect=csv.excel, encoding="utf-8", **kwds):
 
             self.reader = csv.reader(CSV.UnicodeReader.utf_8_encoder(f),
                                      dialect=dialect, **kwds)
 
-        # End __init__
-        # -----------------------------------------------------------------
+        # --------------------------------------------------------------------
 
         def next(self):
             row = self.reader.next()
             return [unicode(s, "utf-8") for s in row]
 
-        # End next
-        # -----------------------------------------------------------------
+        # --------------------------------------------------------------------
 
         def __iter__(self):
             return self
 
-        # End __iter__
-        # -----------------------------------------------------------------
+        # --------------------------------------------------------------------
 
     class UnicodeWriter:
         """
@@ -198,8 +217,7 @@ class CSV(Transcription):
             self.writer = csv.writer(self.queue, dialect=dialect, **kwds)
             self.stream = f
 
-        # End __init__
-        # -----------------------------------------------------------------
+        # --------------------------------------------------------------------
 
         def writerow(self, row):
             self.writer.writerow([s.encode("utf-8") for s in row])
@@ -211,30 +229,25 @@ class CSV(Transcription):
             # empty queue
             self.queue.truncate(0)
 
-        # End writerow
-        # -----------------------------------------------------------------
+        # --------------------------------------------------------------------
 
         def writerows(self, rows):
             for row in rows:
                 self.writerow(row)
 
-        # End writerows
-        # -----------------------------------------------------------------
+        # --------------------------------------------------------------------
 
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
         Creates a new CSV Transcription instance.
-
         """
         super(CSV, self).__init__(name, mintime, maxtime)
 
-    # End __init__
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def read(self, filename):
         """
         Read a CSV file.
-
         Support tiers of types: TimeInterval or TimePoint
         (3rd or 4th column with an empty field).
 
@@ -281,14 +294,12 @@ class CSV(Transcription):
         self.SetMaxTime(self.GetEnd())
 
     # End read
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def write(self, filename):
         """
         Write a csv file.
-
         @param filename: is the output file name, ending with ".csv"
-
         """
         with codecs.open(filename, 'w', 'utf-8-sig', buffering=8096) as fp:
 
@@ -318,4 +329,4 @@ class CSV(Transcription):
                     writer.writerow(row)
 
     # End write
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------

@@ -34,29 +34,57 @@
 # You should have received a copy of the GNU General Public License
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
+# ---------------------------------------------------------------------------
+# File: sclite.py
+# ---------------------------------------------------------------------------
+
+__docformat__ = """epytext"""
+__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+
+
+# ----------------------------------------------------------------------------
+# Imports
+# ----------------------------------------------------------------------------
 
 import codecs
-from annotationdata.transcription import Transcription
-from annotationdata.label.label import Label
+
+from annotationdata.transcription  import Transcription
+from annotationdata.media          import Media
+from annotationdata.label.label    import Label
 import annotationdata.ptime.point
 from annotationdata.ptime.interval import TimeInterval
-from annotationdata.annotation import Annotation
+from annotationdata.annotation     import Annotation
 
+from utils import point2interval
+from utils import gen_id
+
+# ----------------------------------------------------------------------------
 
 SCLITE_RADIUS = 0.0005
 
+# ----------------------------------------------------------------------------
 
 def TimePoint(time):
     return annotationdata.ptime.point.TimePoint(time, SCLITE_RADIUS)
 
+# ----------------------------------------------------------------------------
 
 class TimeMarkedConversation(Transcription):
+    """
+    @authors: Jibril Saffi, Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: Represents one of the native format of Sclite tool.
+
+    http://www.itl.nist.gov/iad/mig/tools/
+
+    """
 
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
         Transcription.__init__(self, name, mintime, maxtime)
 
-    # End __init__
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def read(self, filename):
         with codecs.open(filename, 'r', 'utf-8') as fp:
@@ -64,8 +92,7 @@ class TimeMarkedConversation(Transcription):
             channels = {}
 
             for line in fp:
-                if(line.strip().startswith(';;') or
-                   line.strip() == ''):
+                if line.strip().startswith(';;') or line.strip() == '':
                     continue
 
                 line = line.strip().split()
@@ -86,12 +113,16 @@ class TimeMarkedConversation(Transcription):
                     TimePoint(float(begin) + float(duration)))
 
                 label = Label(word)
-                if(score is not None):
+                if score is not None:
                     label.Get()[0].SetScore(float(score))
 
                 tier.Add(Annotation(interval, label))
 
-        self.SetName(wavname)
+        m = Media(gen_id(), wavname)
+        self.SetMedia( m )
+        for tier in self:
+            tier.SetMedia( m )
+        self.SetName( wavname )
         self.SetMinTime(0.)
         self.SetMaxTime(self.GetEnd())
 
@@ -113,39 +144,45 @@ class TimeMarkedConversation(Transcription):
     # End write
     # -----------------------------------------------------------------
 
-    def __write_tier(self, tier, file, channel):
-            for annotation in tier:
-                wavname = self.GetName()
+    def __write_tier(self, tier, filefp, channel):
 
-                if annotation.GetLocation().IsInterval():
-                    begin = annotation.GetLocation().GetBeginMidpoint()
-                    duration = (
-                        annotation.GetLocation().GetEndMidpoint() - begin)
-                else:
-                    raise Exception(
-                        "Can't export point annotations to ctm file")
+        if tier.IsPoint():
+            tier = point2interval(tier, SCLITE_RADIUS)
 
-                word = annotation.GetLabel().GetValue()
+        for annotation in tier:
+            wavname  = tier.GetMedia().url if tier.GetMedia() is not None else self.GetName()
+            begin    = annotation.GetLocation().GetBeginMidpoint()
+            duration = annotation.GetLocation().GetDuration()
+            word     = annotation.GetLabel().GetValue()
+            score    = annotation.GetLabel().GetLabel().GetScore()
 
-                score = annotation.GetLabel().GetLabel().GetScore()
-
-                file.write('%s %s %s %s %s %s\n' % (
-                    wavname,
-                    channel,
-                    begin,
-                    duration,
-                    word,
-                    score))
+            filefp.write('%s %s %s %s %s %s\n' % (
+                wavname,
+                channel,
+                begin,
+                duration,
+                word,
+                score))
 
     # End __write_tier
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------
 
 class SegmentTimeMark(Transcription):
+    """
+    @authors: Jibril Saffi, Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: Represents one of the native format of Sclite tool.
+
+    http://www.itl.nist.gov/iad/mig/tools/
+
+    """
+
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
         Transcription.__init__(self, name, mintime, maxtime)
 
-    # End __init__
     # -----------------------------------------------------------------
 
     def read(self, filename):
@@ -176,7 +213,11 @@ class SegmentTimeMark(Transcription):
 
                 tier.Add(Annotation(interval, label))
 
-        self.SetName(wavname)
+        m = Media(gen_id(), wavname)
+        self.SetMedia( m )
+        for tier in self:
+            tier.SetMedia( m )
+        self.SetName( wavname )
         self.SetMinTime(0.)
         self.SetMaxTime(self.GetEnd())
 
@@ -191,33 +232,30 @@ class SegmentTimeMark(Transcription):
     # End write
     # -----------------------------------------------------------------
 
-    def __write_tier(self, tier, file):
-            for annotation in tier:
-                wavname = self.GetName()
+    def __write_tier(self, tier, filefp):
 
-                if annotation.GetLocation().IsInterval():
-                    begin = annotation.GetLocation().GetBeginMidpoint()
-                    end = annotation.GetLocation().GetEndMidpoint()
-                else:
-                    raise Exception(
-                        "Can't export point annotations to stm file")
+        if tier.IsPoint():
+            tier = point2interval(tier, SCLITE_RADIUS)
 
-                word = annotation.GetLabel().GetValue()
+        for annotation in tier:
+            wavname  = tier.GetMedia().url if tier.GetMedia() is not None else self.GetName()
+            begin    = annotation.GetLocation().GetBeginMidpoint()
+            end      = annotation.GetLocation().GetEndMidpoint()
+            word = annotation.GetLabel().GetValue()
 
-                if('speaker' not in tier.metadata):
-                    speaker = 'none'
-                else:
-                    speaker = tier.metadata['speaker']
+            if('speaker' not in tier.metadata):
+                speaker = 'none'
+            else:
+                speaker = tier.metadata['speaker']
 
-                channel = tier.GetName()
+            channel = tier.GetName()
 
-                file.write('%s %s %s %s %s %s\n' % (
-                    wavname,
-                    channel,
-                    speaker,
-                    begin,
-                    end,
-                    word))
+            filefp.write('%s %s %s %s %s %s\n' % (
+                wavname,
+                channel,
+                speaker,
+                begin,
+                end,
+                word))
 
-    # End __write_tier
     # -----------------------------------------------------------------

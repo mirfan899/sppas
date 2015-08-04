@@ -34,34 +34,54 @@
 # You should have received a copy of the GNU General Public License
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
+# ---------------------------------------------------------------------------
+# File: annotationpro.py
+# ---------------------------------------------------------------------------
 
+__docformat__ = """epytext"""
+__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+
+
+# ----------------------------------------------------------------------------
+# Imports
+# ----------------------------------------------------------------------------
 
 import codecs
 import datetime
-from annotationdata.transcription import Transcription
-from annotationdata.label.label import Label
+
+from annotationdata.transcription  import Transcription
+from annotationdata.label.label    import Label
 import annotationdata.ptime.point
 from annotationdata.ptime.interval import TimeInterval
-from annotationdata.annotation import Annotation
+from annotationdata.annotation     import Annotation
 
+# ----------------------------------------------------------------------------
 
-SUBTITLE_RADIUS = 0.0005
+SUBTITLE_RADIUS = 0.005
 
+# ----------------------------------------------------------------------------
 
 def TimePoint(time):
     return annotationdata.ptime.point.TimePoint(time, SUBTITLE_RADIUS)
 
+# ----------------------------------------------------------------------------
 
 class SubRip(Transcription):
+    """
+    @authors: Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: Represents one of the subtitles file formats.
+    """
+
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
         Creates a new Transcription instance.
-
         """
         Transcription.__init__(self, name, mintime, maxtime)
 
-    # End __init__
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     @staticmethod
     def __parseTime(timestring):
@@ -70,16 +90,14 @@ class SubRip(Transcription):
               datetime.datetime.strptime('', ''))
         return dt.total_seconds()
 
-    # End __parseTime
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     @staticmethod
     def __formatTime(secondCount):
         dt = datetime.datetime.utcfromtimestamp(secondCount)
         return dt.strftime('%H:%M:%S,%f')[:-3]
 
-    # End __formatTime
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def read(self, filename):
         with codecs.open(filename, 'r', 'utf-8') as fp:
@@ -115,7 +133,9 @@ class SubRip(Transcription):
         self.SetMaxTime(self.GetEnd())
 
     # End read
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
+
+    # ------------------------------------------------------------------------
 
     def write(self, filename):
         with codecs.open(filename, 'w', 'utf-8', buffering=8096) as fp:
@@ -148,10 +168,17 @@ class SubRip(Transcription):
                 fp.write('%s\n\n' % annotation.GetLabel().GetValue())
 
     # End write
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------
 
 class SubViewer(Transcription):
+    """
+    @authors: Jibril Saffi, Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: Represents one of the subtitles file formats.
+    """
 
     __metadataTypes = [
         'author',
@@ -166,8 +193,7 @@ class SubViewer(Transcription):
         """
         Transcription.__init__(self, name, mintime, maxtime)
 
-    # End __init__
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     @staticmethod
     def __parseTime(timestring):
@@ -176,16 +202,14 @@ class SubViewer(Transcription):
               datetime.datetime.strptime('', ''))
         return dt.total_seconds()
 
-    # End __parseTime
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     @staticmethod
     def __formatTime(secondCount):
         dt = datetime.datetime.utcfromtimestamp(secondCount)
         return dt.strftime('%H:%M:%S.%f')[:-4]
 
-    # End __formatTime
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def read(self, filename):
         with codecs.open(filename, 'r', 'utf-8') as fp:
@@ -234,7 +258,7 @@ class SubViewer(Transcription):
         self.SetMaxTime(self.GetEnd())
 
     # End read
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def write(self, filename):
         with codecs.open(filename, 'w', 'utf-8', buffering=8096) as fp:
@@ -279,4 +303,4 @@ class SubViewer(Transcription):
                 fp.write('%s\n\n' % annotation.GetLabel().GetValue())
 
     # End write
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------

@@ -34,33 +34,58 @@
 # You should have received a copy of the GNU General Public License
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
+# ---------------------------------------------------------------------------
+# File: phonedit.py
+# ---------------------------------------------------------------------------
 
-__author__ = "Tatsuya Watanabe"
+__docformat__ = """epytext"""
+__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
+
+# ----------------------------------------------------------------------------
+# Imports
+# ----------------------------------------------------------------------------
 
 import codecs
 from datetime import datetime
 import re
 
-from annotationdata.transcription import Transcription
-from annotationdata.label.label import Label
+from annotationdata.transcription  import Transcription
+from annotationdata.annotation     import Annotation
+from annotationdata.label.label    import Label
 from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.point import TimePoint
-from annotationdata.annotation import Annotation
+import annotationdata.ptime.point
 
+# ----------------------------------------------------------------------------
 
+PHONEDIT_RADIUS = 0.0005
 
+# ----------------------------------------------------------------------------
 
-class Phonedit(Transcription):
+def TimePoint(time):
+    return annotationdata.ptime.point.TimePoint(time, PHONEDIT_RADIUS)
+
+# ----------------------------------------------------------------------------
+
+class Phonedit( Transcription ):
     """
+    @authors: Tatusya Watanabe, Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: Represents the native format of Phonedit software.
+
     PHONEDIT Signaix is a software for the analysis of sound, aerodynamic,
-     articulatory and electro-physiological signals developped
-     by the Parole et Langage Laboratory, Aix-en-Provence, France.
-     It provides a complete environment for the recording,
-     the playback, the display, the analysis, the labeling
-     of multiparametric data. http://www.lpl-aix.fr/~lpldev/phonedit/
+    articulatory and electro-physiological signals developped
+    by the Parole et Langage Laboratory, Aix-en-Provence, France.
+    It provides a complete environment for the recording,
+    the playback, the display, the analysis, the labeling
+    of multiparametric data.
+
+    http://www.lpl-aix.fr/~lpldev/phonedit/
 
     """
+
     PATTERN_ANNOTATION = re.compile(r"""
                                      LBL_LEVEL_[A-Z]{2}_\d{6}=\s?
                                      (\".*\"|\S+|[ ]?)\s  # label
@@ -68,15 +93,15 @@ class Phonedit(Transcription):
                                      (\S+)  # end time
                                      """, re.VERBOSE)
 
+    # -----------------------------------------------------------------------
+
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
         Creates a new Phonedit Transcription instance.
         """
         Transcription.__init__(self, name, mintime, maxtime)
 
-    # End __init__
-    # ------------------------------------------------------------------
-
+    # -----------------------------------------------------------------------
 
     def read(self, filename, encoding="iso8859-1"):
         """
@@ -100,19 +125,24 @@ class Phonedit(Transcription):
                     if match:
                         label = Label(match.group(1).strip('"'))
                         begin = TimePoint(float(match.group(2)) / 1000)
-                        end = TimePoint(float(match.group(3)) / 1000)
-                        interval = TimeInterval(begin, end)
-                        new_ann = Annotation(interval, label)
+                        end   = TimePoint(float(match.group(3)) / 1000)
+                        # annotationdata does not support degenerated intervals.
+                        # then we replace interval by point
+                        if begin == end:
+                            time = begin
+                        else:
+                            time = TimeInterval(begin, end)
+                        new_ann = Annotation(time, label)
                         if new_tier is not None:
-                            new_tier.Append(new_ann)
+                            # Add and not Append: because Phonedit supports overlaps!
+                            new_tier.Add(new_ann)
 
         # Update
         self.SetMinTime(0)
         self.SetMaxTime( self.GetEnd() )
 
     # End read
-    # ------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def write(self, filename, encoding="iso8859-1"):
         """
@@ -136,6 +166,7 @@ class Phonedit(Transcription):
                     fp.write("LBL_%s_%06d= \"%s\" " % (
                         level, index_ann, ann.GetLabel().GetValue()))
                     if ann.GetLocation().IsPoint():
+                        # Phonedit supports degenerated intervals
                         begin = ann.GetLocation().GetPointMidpoint() * 1000
                         end   = begin
                     else:
@@ -144,4 +175,4 @@ class Phonedit(Transcription):
                     fp.write("%f %f\n" %  (begin, end))
 
     # End write
-    # ------------------------------------------------------------------
+    # ------------------------------------------------------------------------

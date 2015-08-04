@@ -34,22 +34,42 @@
 # You should have received a copy of the GNU General Public License
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
+# ---------------------------------------------------------------------------
+# File: signaix.py
+# ---------------------------------------------------------------------------
 
-from annotationdata.pitch import Pitch
+__docformat__ = """epytext"""
+__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+
+
+# ----------------------------------------------------------------------------
+# Imports
+# ----------------------------------------------------------------------------
+
+from annotationdata.pitch       import Pitch
 from annotationdata.label.label import Label
 from annotationdata.ptime.point import TimePoint
-from annotationdata.annotation import Annotation
+from annotationdata.annotation  import Annotation
 
+# ----------------------------------------------------------------------------
 
-class HzPitch(Pitch):
+class HzPitch( Pitch ):
+    """
+    @authors: Jibril Saffi, Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: Represents the format of pitch values for signaix.
+    """
 
     __delta = 0.01
+
+    # ------------------------------------------------------------------------
 
     def __init__(self):
         Pitch.__init__(self)
 
-    # End __init__
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     @staticmethod
     def detect(filename):
@@ -61,14 +81,12 @@ class HzPitch(Pitch):
                     return False
         return True
 
-    # End detect
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def read(self, filename):
         """
         Read pitch values from an ascii file (one column)
         and set a value each 0.01 ms.
-
         """
         with open(filename, "r") as pitchfile:
             try:
@@ -88,14 +106,12 @@ class HzPitch(Pitch):
                 self.SetMaxTime(self.GetEnd())
 
     # End read
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def write(self, filename):
         """
         Write a .hz file.
-
         @param filename: is the output file name
-
         """
         with open(filename, "w", buffering=8096) as fp:
             __pitcharray = self.get_pitch_list()
@@ -103,4 +119,4 @@ class HzPitch(Pitch):
                 fp.write("%f\n" % __pitcharray[i])
 
     # End write
-    # -----------------------------------------------------------------
+    # ------------------------------------------------------------------------

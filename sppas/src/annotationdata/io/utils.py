@@ -172,6 +172,11 @@ def merge_overlapping_annotations(tier, separator=' '):
         return tier
 
     new_tier = Tier(tier.GetName())
+    new_tier.metadata = tier.metadata
+    new_tier.SetMedia( tier.GetMedia() )
+    new_tier.SetDataType( tier.GetDataType() )
+    new_tier.SetTranscription( tier.GetTranscription() )
+    new_tier.SetCtrlVocab( tier.GetCtrlVocab() )
     prev = None
 
     for a in tier:
@@ -181,6 +186,7 @@ def merge_overlapping_annotations(tier, separator=' '):
             prev = a
             continue
 
+        #TW:
         # test whether prev overlaps with a
         #if prev and prev.Begin < a.End and a.Begin < prev.End:
             # Interval containing both prev and a
@@ -200,6 +206,8 @@ def merge_overlapping_annotations(tier, separator=' '):
 
         # prev and a start at the same time
         elif a.GetLocation().GetBegin() == prev.GetLocation().GetBegin():
+            new_tier.SetCtrlVocab( None )
+            # must disable CtrlVocab or, eventually, add new labels in its entries...
 
             if a.GetLocation().GetEnd() > prev.GetLocation().GetEnd():
                 a.GetLocation().SetBegin( prev.GetLocation().GetEnd() )
@@ -219,6 +227,8 @@ def merge_overlapping_annotations(tier, separator=' '):
 
         # a starts inside prev
         elif a.GetLocation().GetBegin() < prev.GetLocation().GetEnd():
+            new_tier.SetCtrlVocab( None )
+            # must disable CtrlVocab or, eventually, add new labels in its entries...
 
             if a.GetLocation().GetEnd() < prev.GetLocation().GetEnd():
                 a2 = Annotation(TimeInterval(a.GetLocation().GetEnd(),prev.GetLocation().GetEnd()),Label(prev.GetLabel().GetValue()))

@@ -72,7 +72,6 @@ class TestAntx(unittest.TestCase):
         annotationdata.io.write( os.path.join(SAMPLES, "Example.eaf"), tg1 )
         tg2 = Elan()
         tg2.read(os.path.join(SAMPLES, "Example.eaf"))
-
         os.remove( os.path.join(SAMPLES, "Example.eaf") )
 
 # End TestAntx
