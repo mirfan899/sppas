@@ -51,6 +51,15 @@ class TestXRA(unittest.TestCase):
         # Compare media
         # Compare hierarchy
         # Compare controlled vocabularies
+        for t1, t2 in zip(tg1, tg2):
+            ctrl1 = t1.GetCtrlVocab() # a CtrlVocab() instance or None
+            ctrl2 = t2.GetCtrlVocab() # a CtrlVocab() instance or None
+            if ctrl1 is None and ctrl2 is None:
+                continue
+            self.assertEqual(ctrl1.GetSize(), ctrl2.GetSize())
+            for entry in ctrl1:
+                self.assertTrue(ctrl2.Contains(entry.Text))
+
         os.remove( os.path.join(SAMPLES, "sample-1.2.xra") )
 
 # End TestXRA

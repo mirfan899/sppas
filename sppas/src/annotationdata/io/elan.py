@@ -40,16 +40,27 @@ import datetime
 import xml.etree.cElementTree as ET
 
 from annotationdata.transcription  import Transcription
+from annotationdata.ctrlvocab      import CtrlVocab
+from annotationdata.media          import Media
 from annotationdata.label.label    import Label
 import annotationdata.ptime.point
 from annotationdata.ptime.interval import TimeInterval
 from annotationdata.annotation     import Annotation
 
 from utils import indent
+from utils import gen_id
+from utils import merge_overlapping_annotations
+from utils import point2interval
 
 # -----------------------------------------------------------------
 
 ELAN_RADIUS = 0.02
+
+CONSTRAINTS = {}
+CONSTRAINTS["Time subdivision of parent annotation's time interval, no time gaps allowed within this interval"]="Time_Subdivision"
+CONSTRAINTS["Symbolic subdivision of a parent annotation. Annotations refering to the same parent are ordered"]="Symbolic_Subdivision"
+CONSTRAINTS["1-1 association with a parent annotation"]="Symbolic_Association"
+CONSTRAINTS["Time alignable annotations within the parent annotation's time interval, gaps are allowed"]="Included_In"
 
 # -----------------------------------------------------------------
 
@@ -61,32 +72,42 @@ def linguistic_type_from_tier(tier):
             if 'LINGUISTIC_TYPE_REF' in tier.metadata else
             'SPPAS_%s' % tier.GetName())
 
-# End linguistic_type_from_tier
 # -----------------------------------------------------------------
 
-
-class Elan(Transcription):
+class Elan( Transcription ):
 
     def read(self, filename):
         tree = ET.parse(filename)
         root = tree.getroot()
 
+        # Read the main header
         headerRoot = root.find('HEADER')
+        self.__read_unit(headerRoot)
         if 'MEDIA_FILE' in headerRoot.attrib:
             self.metadata['MEDIA_FILE'] = headerRoot.attrib['MEDIA_FILE']
-        self.metadata['HEADER_CONTENTS'] = headerRoot
-        self.__read_unit(headerRoot)
+        for mediaRoot in headerRoot.findall('MEDIA_DESCRIPTOR'):
+            self.__read_media(mediaRoot)
+        propertyRoot = headerRoot.find('PROPERTY')
+        if propertyRoot is not None:
+            self.metadata['PROPERTY_NAME']=propertyRoot.attrib['NAME']
+            self.metadata['PROPERTY_VALUE']=propertyRoot.text
 
         timeOrderRoot = root.find('TIME_ORDER')
         self.__read_time_slots(timeOrderRoot)
 
         self.hierarchyLinks = {}
 
-        # associate vocabs with linguistic types
-        self.__read_ctrl_vocabs(root)
+        # Read all controlled vocabularies, stored in self
+        for vocabularyRoot in root.findall('CONTROLLED_VOCABULARY'):
+            self.__read_ctrl_vocab(vocabularyRoot, root)
 
+        # Read tiers
         for tierRoot in root.findall('TIER'):
             self.__read_tier(tierRoot, root)
+
+        # Read tier properties (including controlled vocabularies)
+        for linguisticRoot in root.findall('LINGUISTIC_TYPE'):
+            self.__read_linguistic_type(linguisticRoot, root)
 
         # manage hierarchyLinks
         for parentTierRef in self.hierarchyLinks:
@@ -101,18 +122,57 @@ class Elan(Transcription):
         del self.hierarchyLinks
         del self.unit
         del self.timeSlots
-        del self.ctrlVocabs
 
     # End read
+    # -----------------------------------------------------------------
+
+    def __read_media(self, mediaRoot):
+        # Create a Media instance
+        mediaid   = gen_id()
+        mediaurl  = mediaRoot.attrib['MEDIA_URL']
+        mediamime = ''
+        if 'MIME_TYPE' in mediaRoot.attrib:
+            mediamime = mediaRoot.attrib['MIME_TYPE']
+        media = Media( mediaid,mediaurl,mediamime )
+        # Add metadata
+        if 'RELATIVE_MEDIA_URL' in mediaRoot.attrib:
+            media.metadata['RELATIVE_MEDIA_URL'] = mediaRoot.attrib['RELATIVE_MEDIA_URL']
+        # Add media into Transcription();
+        # but media not linked to tiers... Elan doesn't propose it
+        self.AddMedia( media )
+
+    # -----------------------------------------------------------------
+
+    def __read_ctrl_vocab(self, vocabularyRoot, root):
+        # Create a CtrlVocab instance
+        idvocab = vocabularyRoot.attrib['CV_ID']
+        ctrlvocab = CtrlVocab(idvocab)
+
+        # Description
+        if "DESCRIPTION" in vocabularyRoot.attrib:
+            ctrlvocab.desc = vocabularyRoot.attrib['DESCRIPTION']
+
+        # Add the list of entries
+        for entryNode in vocabularyRoot.findall('CV_ENTRY'):
+            entrytext = entryNode.text
+            entrydesc = ""
+            if "DESCRIPTION" in entryNode.attrib:
+                entrydesc = entryNode.attrib['DESCRIPTION']
+            ctrlvocab.Append( entrytext,entrydesc )
+
+        self.AddCtrlVocab( ctrlvocab )
+
     # -----------------------------------------------------------------
 
     def __read_tier(self, tierRoot, root):
         tier = self.NewTier(tierRoot.attrib['TIER_ID'])
 
         linguisticType = tierRoot.attrib['LINGUISTIC_TYPE_REF']
-        #if linguisticType in self.ctrlVocabs:
-        #    tier.SetCtrlVocab(self.ctrlVocabs[linguisticType])
         tier.metadata['LINGUISTIC_TYPE_REF'] = linguisticType
+
+        for key in ['DEFAULT_LOCALE', 'PARTICIPANT']:
+            if key in tierRoot.attrib:
+                tier.metadata[key] = tierRoot.attrib[key]
 
         if 'PARENT_REF' in tierRoot.attrib:
             parentRef = tierRoot.attrib['PARENT_REF']
@@ -121,7 +181,31 @@ class Elan(Transcription):
         else:
             self.__read_alignable_tier(tier, tierRoot)
 
-    # End __read_tier
+    # -----------------------------------------------------------------
+
+    def __read_linguistic_type(self, linguisticRoot, root):
+        linguisticType = linguisticRoot.attrib['LINGUISTIC_TYPE_ID']
+
+        # which tier is using this linguistic type?
+        found = False
+        for tier in self:
+            if linguisticType == tier.metadata['LINGUISTIC_TYPE_REF']:
+                for key in ['CONSTRAINTS', 'GRAPHIC_REFERENCES', 'TIME_ALIGNABLE' ]:
+                    if key in linguisticRoot.attrib:
+                        tier.metadata[key] = linguisticRoot.attrib[key]
+                # Associate tier with a controlled vocabulary
+                if 'CONTROLLED_VOCABULARY_REF' in linguisticRoot.attrib:
+                    ctrlvocabid = linguisticRoot.attrib['CONTROLLED_VOCABULARY_REF']
+                    ctrlvocab = self.GetCtrlVocabFromId( ctrlvocabid )
+                    if ctrlvocab is not None:
+                        tier.SetCtrlVocab( ctrlvocab )
+
+                found = True
+
+        # what to do with unused linguistic types???????????
+        if not found:
+            pass
+
     # -----------------------------------------------------------------
 
     def __read_ref_tier(self, tier, tierRoot, parentTierRef, root):
@@ -132,7 +216,7 @@ class Elan(Transcription):
         batches = {}
         for annotationRoot in tierRoot.findall('ANNOTATION'):
             if annotationRoot[0].tag == 'ALIGNABLE_ANNOTATION':
-                tier.Add(self.__parse_alignable_annotation(annotationRoot[0]))
+                tier.Add( self.__parse_alignable_annotation(annotationRoot[0]) )
             else:
                 ref = annotationRoot[0].attrib['ANNOTATION_REF']
                 if ref not in batches:
@@ -158,13 +242,11 @@ class Elan(Transcription):
             x2 = begin + increment
             for annotationRoot in batches[ref]:
                 label = annotationRoot[0].find('ANNOTATION_VALUE').text
-                tier.Add(Annotation(TimeInterval(TimePoint(x1),
-                                                 TimePoint(x2)),
+                tier.Add(Annotation(TimeInterval(TimePoint(x1),TimePoint(x2)),
                                     Label(label)))
                 x1 += increment
                 x2 += increment
 
-    # End __read_ref_tier
     # -----------------------------------------------------------------
 
     @staticmethod
@@ -178,15 +260,13 @@ class Elan(Transcription):
                     else:
                         return annotationRoot[0]
 
-    # End __find_real_ref
     # -----------------------------------------------------------------
 
     def __read_alignable_tier(self, tier, tierRoot):
         for annotationRoot in tierRoot.findall('ANNOTATION'):
-            tier.Add(self.__parse_alignable_annotation(
-                annotationRoot.find('ALIGNABLE_ANNOTATION')))
+            new_a = self.__parse_alignable_annotation(annotationRoot.find('ALIGNABLE_ANNOTATION'))
+            tier.Add( new_a )
 
-    # End __read_alignable_tier
     # -----------------------------------------------------------------
 
     def __parse_alignable_annotation(self, alignableAnnotationRoot):
@@ -198,35 +278,8 @@ class Elan(Transcription):
         endKey = alignableAnnotationRoot.attrib['TIME_SLOT_REF2']
         end = self.timeSlots[endKey]
 
-        ###print " in __parse_alignable_annotation, add annotation with label=",label
+        return Annotation(TimeInterval(begin,end), Label(label))
 
-        return Annotation(TimeInterval(begin,
-                                       end),
-                          Label(label))
-
-    # End __parse_alignable_annotation
-    # -----------------------------------------------------------------
-
-    def __read_ctrl_vocabs(self, root):
-        self.ctrlVocabs = {}
-
-        for ctrlVocabRoot in root.findall('CONTROLLED_VOCABULARY'):
-            vocab = {}
-            for entryNode in ctrlVocabRoot.findall('CV_ENTRY'):
-
-                vocab[entryNode.text] = None
-                if 'DESCRIPTION' in entryNode.attrib:
-                    vocab[entryNode.text] = entryNode.attrib['DESCRIPTION']
-
-            linguisticNode = root.find(
-                'LINGUISTIC_TYPE[@CONTROLLED_VOCABULARY_REF=\'%s\']' % (
-                    ctrlVocabRoot.attrib['CV_ID'])
-            )
-            linguisticId = linguisticNode.attrib['LINGUISTIC_TYPE_ID']
-
-            self.ctrlVocabs[linguisticId] = vocab
-
-    # End __read_ctrl_vocabs
     # -----------------------------------------------------------------
 
     def __read_unit(self, headerRoot):
@@ -236,7 +289,6 @@ class Elan(Transcription):
         elif unitString == 'seconds':
             self.unit = 1.0
 
-    # End __read_unit
     # -----------------------------------------------------------------
 
     def __read_time_slots(self, timeOrderRoot):
@@ -265,7 +317,8 @@ class Elan(Transcription):
 
             self.timeSlots = dict(timeSlotCouples)
 
-    # End __read_time_slots
+    # -----------------------------------------------------------------
+    # Writer
     # -----------------------------------------------------------------
 
     def write(self, filename):
@@ -281,32 +334,40 @@ class Elan(Transcription):
             'xsi:noNamespaceSchemaLocation',
             'http://www.mpi.nl.tools/elan/EAFv2.7.xsd')
 
+        # The Header
         headerRoot = ET.SubElement(root, 'HEADER')
         mediaFile = (self.metadata['MEDIA_FILE']
                      if 'MEDIA_FILE' in self.metadata
                      else '')
         headerRoot.set('MEDIA_FILE', mediaFile)
         headerRoot.set('TIME_UNITS', 'milliseconds')
+        # Media in Elan are sub-elements of the header
+        self.__write_media(headerRoot)
+        # Property
+        if 'PROPERTY_NAME' in self.metadata.keys():
+            propertyRoot = ET.SubElement(headerRoot, 'PROPERTY')
+            propertyRoot.set( 'NAME', self.metadata['PROPERTY_NAME'])
+            propertyRoot.text = self.metadata['PROPERTY_VALUE']
 
-        if 'HEADER_CONTENTS' in self.metadata:
-            for node in self.metadata['HEADER_CONTENTS']:
-                headerRoot.append(node)
-
+        # The list of Time slots
         self.__build_timeslots()
         timeOrderRoot = ET.SubElement(root, 'TIME_ORDER')
         self.__format_timeslots(timeOrderRoot)
 
+        # Add an id in each annotation (in its metadata)
         self.__build_annotation_ids()
 
+        # Tiers
         for tier in self:
             tierRoot = ET.SubElement(root, 'TIER')
             self.__format_tier(tierRoot, tier)
 
+        # Ctrl Vocab and tier properties
         self.__write_linguistic_types(root)
+        self.__write_constraints(root)
         self.__write_ctrl_vocabs(root)
 
         del self.timeSlotIds
-        del self.annotationIds
 
         indent(root)
         tree = ET.ElementTree(root)
@@ -315,56 +376,78 @@ class Elan(Transcription):
     # End write
     # -----------------------------------------------------------------
 
+    def __write_media(self, root):
+        for media in self.GetMedia():
+            if media:
+                mediaRoot = ET.SubElement(root, 'MEDIA_DESCRIPTOR')
+                mediaRoot.set( 'MEDIA_URL', media.url )
+                mediaRoot.set( 'MIME_TYPE', media.mime )
+                # other...
+                if 'RELATIVE_MEDIA_URL' in media.metadata.keys():
+                    mediaRoot.set( 'RELATIVE_MEDIA_URL', media.metadata['RELATIVE_MEDIA_URL'] )
+
+    # -----------------------------------------------------------------
+
     def __write_linguistic_types(self, root):
+        # Create the list of nodes for linguistic types
         types = set()
         for tier in self:
             types.add(linguistic_type_from_tier(tier))
 
-        for type in types:
+        for ltype in types:
             typeRoot = ET.SubElement(root, 'LINGUISTIC_TYPE')
-            typeRoot.set('LINGUISTIC_TYPE_ID', type)
+            typeRoot.set('LINGUISTIC_TYPE_ID', ltype)
 
-    # End __write_linguistic_types
+        # Add attributes
+        for tier in self:
+            linguisticType = linguistic_type_from_tier(tier)
+            linguisticTypeRoot = root.find(
+                'LINGUISTIC_TYPE[@LINGUISTIC_TYPE_ID=\'%s\']' %linguisticType)
+
+            # required attribute
+            if not 'TIME_ALIGNABLE' in linguisticTypeRoot.attrib:
+                linguisticTypeRoot.set('TIME_ALIGNABLE', tier.metadata.get('TIME_ALIGNABLE', "true"))
+
+            # Optional attributes
+            for key in ['CONSTRAINTS', 'GRAPHIC_REFERENCES' ]:
+                if not key in linguisticTypeRoot.attrib and key in tier.metadata.keys():
+                    linguisticTypeRoot.set(key, tier.metadata[key])
+
+            ctrlvocab = tier.GetCtrlVocab()
+            if ctrlvocab is not None:
+                # add reference to ctlrvocab in linguisticType
+                if not 'CONTROLLED_VOCABULARY_REF' in linguisticTypeRoot.attrib:
+                    linguisticTypeRoot.set('CONTROLLED_VOCABULARY_REF', ctrlvocab.id)
+
     # -----------------------------------------------------------------
 
     def __write_ctrl_vocabs(self, root):
-        i = 0
-        for tier in self:
-            ctrlVocab = tier.GetCtrlVocab()
-            if ctrlVocab is not None:
-                # add reference to ctlrVocab in linguisticType
-                linguisticType = linguistic_type_from_tier(tier)
-                linguisticTypeRoot = root.find(
-                    'LINGUISTIC_TYPE[@LINGUISTIC_TYPE_ID=\'%s\']' %
-                    linguisticType)
+        for vocabulary in self.GetCtrlVocab():
+            if vocabulary is None:
+                continue
 
-                if('CONTROLLED_VOCABULARY_REF' not in
-                   linguisticTypeRoot.attrib):
+            vocabularyRoot = ET.SubElement(root, 'CONTROLLED_VOCABULARY')
 
-                    ctrlVocabRoot = ET.SubElement(root,
-                                                  'CONTROLLED_VOCABULARY')
-                    ctrlVocabId = 'cv%s' % i
-                    ctrlVocabRoot.set('CV_ID', ctrlVocabId)
-                    i += 1
+            # Set attribute
+            vocabularyRoot.set('CV_ID', vocabulary.id)
+            if len(vocabulary.desc)>0:
+                vocabularyRoot.set('DESCRIPTION', vocabulary.desc)
 
-                    linguisticTypeRoot.set(
-                        'CONTROLLED_VOCABULARY_REF',
-                        ctrlVocabId)
+            # Write the list of entries
+            for entry in vocabulary:
+                entryNode = ET.SubElement(vocabularyRoot, 'CV_ENTRY')
+                entryNode.text = entry.Text.GetValue()
+                if len(entry.desc)>0:
+                    entryNode.set('DESCRIPTION',entry.desc)
 
-                    Elan.__format_ctrl_vocab(ctrlVocabRoot, ctrlVocab)
-
-    # End __write_ctrl_vocabs
     # -----------------------------------------------------------------
 
-    @staticmethod
-    def __format_ctrl_vocab(ctrlVocabRoot, ctrlVocab):
-        for value in ctrlVocab:
-            valueNode = ET.SubElement(ctrlVocabRoot, 'CV_ENTRY')
-            valueNode.text = value
-            if ctrlVocab[value] is not None:
-                valueNode.set('DESCRIPTION', ctrlVocab[value])
+    def __write_constraints(self, root):
+        for desc,stereotype in CONSTRAINTS.iteritems():
+            typeRoot = ET.SubElement(root, 'CONSTRAINT')
+            typeRoot.set('DESCRIPTION', desc)
+            typeRoot.set('STEREOTYPE', stereotype)
 
-    # End __format_ctrl_vocab
     # -----------------------------------------------------------------
 
     def __format_timeslots(self, timeOrderRoot):
@@ -374,39 +457,43 @@ class Elan(Transcription):
             timeSlotNode.set('TIME_SLOT_ID', timeSlotId)
             timeSlotNode.set('TIME_VALUE', str(int(timeSlot*1000)))
 
-    # End __format_timeslots
     # -----------------------------------------------------------------
 
     def __format_tier(self, tierRoot, tier):
         linguisticType = linguistic_type_from_tier(tier)
 
         tierRoot.set('LINGUISTIC_TYPE_REF', linguisticType)
-
         tierRoot.set('TIER_ID', tier.GetName())
+        for key in ['DEFAULT_LOCALE', 'PARTICIPANT']:
+            if key in tier.metadata.keys():
+                tierRoot.set(key, tier.metadata[key])
+
+        if tier.IsPoint():
+            tier = point2interval(tier, ELAN_RADIUS)
+        tier = merge_overlapping_annotations(tier)
 
         parentTier = self._hierarchy.getParent(tier)
         if parentTier is not None:
             tierRoot.set('PARENT_REF', parentTier.GetName())
             self.previousRefId = None
+
             for annotation in tier:
-                annotationRoot = ET.SubElement(tierRoot,
-                                               'ANNOTATION')
-                self.__format_ref_annotation(annotationRoot,
-                                             annotation,
-                                             parentTier)
+                annotationRoot = ET.SubElement(tierRoot, 'ANNOTATION')
+                self.__format_ref_annotation(annotationRoot, annotation, parentTier)
             del self.previousRefId
+
         else:
             for annotation in tier:
-                annotationRoot = ET.SubElement(tierRoot,
-                                               'ANNOTATION')
-                self.__format_alignable_annotation(annotationRoot, annotation)
+                annotationRoot = ET.SubElement(tierRoot, 'ANNOTATION')
+                created = self.__format_alignable_annotation(annotationRoot, annotation)
+                if created is False:
+                    tierRoot.remove(annotationRoot)
 
-    # End __format_tier
     # -----------------------------------------------------------------
 
     def __format_ref_annotation(self, annotationRoot, annotation, parentTier):
         begin = annotation.GetLocation().GetBeginMidpoint()
-        end = annotation.GetLocation().GetEndMidpoint()
+        end   = annotation.GetLocation().GetEndMidpoint()
 
         parentAnnotation = None
         for parentTierAnnotation in parentTier:
@@ -423,10 +510,10 @@ class Elan(Transcription):
 
         refRoot = ET.SubElement(annotationRoot, 'REF_ANNOTATION')
 
-        id = self.annotationIds[annotation]
-        refRoot.set('ANNOTATION_ID', id)
+        ida = annotation.metadata['id']
+        refRoot.set('ANNOTATION_ID', ida)
 
-        parentAnnotationId = self.annotationIds[parentAnnotation]
+        parentAnnotationId = parentAnnotation.metadata['id']
         refRoot.set('ANNOTATION_REF',
                     parentAnnotationId)
 
@@ -440,44 +527,45 @@ class Elan(Transcription):
 
         self.previousRefId = id
 
-    # End __format_ref_annotation
     # -----------------------------------------------------------------
 
     def __format_alignable_annotation(self, annotationRoot, annotation):
+        # the interval is too small???
+        begin = str(self.timeSlotIds[round(annotation.GetLocation().GetBeginMidpoint(),4)])
+        end   = str(self.timeSlotIds[round(annotation.GetLocation().GetEndMidpoint(),4)])
+        if begin == end:
+            return False
         alignableRoot = ET.SubElement(annotationRoot, 'ALIGNABLE_ANNOTATION')
-
-        alignableRoot.set('ANNOTATION_ID', self.annotationIds[annotation])
-
-        begin = str(
-            self.timeSlotIds[round(annotation.GetLocation().GetBeginMidpoint(),4)])
+        alignableRoot.set('ANNOTATION_ID', annotation.metadata['id'] )
         alignableRoot.set('TIME_SLOT_REF1', begin)
-
-        end = str(
-            self.timeSlotIds[round(annotation.GetLocation().GetEndMidpoint(),4)])
         alignableRoot.set('TIME_SLOT_REF2', end)
 
         label = annotation.GetLabel().GetValue()
         valueRoot = ET.SubElement(alignableRoot, 'ANNOTATION_VALUE')
         valueRoot.text = label
+        return True
 
-    # End __format_alignable_annotation
     # -----------------------------------------------------------------
 
     def __build_annotation_ids(self):
-        self.annotationIds = {}
         i = 0
         for tier in self:
             for annotation in tier:
-                id = 'a%s' % i
+                ida = 'a%s' % i
                 i += 1
-                self.annotationIds[annotation] = id
+                annotation.metadata['id'] = ida
 
-    # End __build_annotation_ids
     # -----------------------------------------------------------------
 
     def __build_timeslots(self):
         timevalues = []
+
         for tier in self:
+
+            if tier.IsPoint():
+                tier = point2interval(tier,ELAN_RADIUS)
+            tier = merge_overlapping_annotations(tier)
+
             for annotation in tier:
                 location = annotation.GetLocation()
                 #What about PointTiers???????
@@ -494,5 +582,4 @@ class Elan(Transcription):
         for i,v in enumerate(timevalues):
             self.timeSlotIds[v] = 't%s' % i
 
-    # End __build_timeslots
     # -----------------------------------------------------------------

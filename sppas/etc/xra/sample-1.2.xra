@@ -95,7 +95,7 @@
         <Location>
            <Localization score="1.0">
              <Timeinterval>
-                 <Begin midpoint="0.8700" radius="0.005" />
+                 <Begin midpoint="0.6000" radius="0.005" />
                  <End   midpoint="0.9340" radius="0.0001" />
              </Timeinterval>
            </Localization>

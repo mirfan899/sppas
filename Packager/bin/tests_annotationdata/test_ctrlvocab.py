@@ -13,6 +13,7 @@ sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 from annotationdata.ctrlvocab      import CtrlVocab
 from annotationdata.tier           import Tier
 from annotationdata.label.label    import Label
+from annotationdata.label.text     import Text
 from annotationdata.ptime.point    import TimePoint
 from annotationdata.ptime.interval import TimeInterval
 from annotationdata.annotation     import Annotation
@@ -26,6 +27,29 @@ class TestCtrlVocab(unittest.TestCase):
     def test_Identifier(self):
         voc = CtrlVocab(u"être être")
         self.assertEquals(voc.id, u"être être")
+
+    def test_Contains(self):
+        tiercv = Tier("CtrlVocabTier")
+
+        a1 = Annotation(TimeInterval(TimePoint(1), TimePoint(3)), Label("definition"))
+        a2 = Annotation(TimeInterval(TimePoint(6), TimePoint(7)), Label("example"))
+        a3 = Annotation(TimeInterval(TimePoint(7), TimePoint(9)), Label("biz"))
+
+        voc = CtrlVocab("Verbal Strategies")
+        self.assertTrue(voc.Append("definition"))
+        self.assertTrue(voc.Append("example"))
+        self.assertTrue(voc.Append("comparison"))
+        self.assertTrue(voc.Append("gap filling with sound"))
+
+        tiercv.SetCtrlVocab(voc)
+        tiercv.Append(a1)
+        tiercv.Append(a2)
+        with self.assertRaises(ValueError):
+            tiercv.Append(a3)
+
+        self.assertTrue(tiercv.GetCtrlVocab().Contains("   \t  definition\r\n"))
+        self.assertTrue(tiercv.GetCtrlVocab().Contains(a1.GetLabel().GetValue()))
+        self.assertTrue(tiercv.GetCtrlVocab().Contains(Text("   \t  definition\r\n")))
 
     def test_Append(self):
         voc = CtrlVocab("Verbal Strategies")

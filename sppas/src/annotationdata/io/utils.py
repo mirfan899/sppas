@@ -36,11 +36,12 @@
 #
 # ---------------------------------------------------------------------------
 
-from annotationdata.ptime.point import TimePoint
-from annotationdata.label.label import Label
+from annotationdata.ptime.point    import TimePoint
+from annotationdata.label.label    import Label
 from annotationdata.ptime.interval import TimeInterval
-from annotationdata.annotation import Annotation
-from annotationdata.tier import Tier
+from annotationdata.ptime.interval import TimePoint
+from annotationdata.annotation     import Annotation
+from annotationdata.tier           import Tier
 
 import random
 import string
@@ -56,7 +57,6 @@ def random_int(y):
     return ''.join(str(random.randint(0,9)) for x in range(y))
 
 # ---------------------------------------------------------------------------
-
 
 def indent(elem, level=0):
     """
@@ -79,7 +79,6 @@ def indent(elem, level=0):
 
 # End indent
 # -----------------------------------------------------------------
-
 
 def gen_id( ):
     """
@@ -117,13 +116,11 @@ def gen_id( ):
 # End gen_id
 # -----------------------------------------------------------------
 
-
 def format_float( f ):
     return round(float(f),4)
 
 # End format_float
 # -----------------------------------------------------------------
-
 
 def fill_gaps(tier, mintime, maxtime):
     """
@@ -160,15 +157,20 @@ def fill_gaps(tier, mintime, maxtime):
 # End fill_gaps
 # ------------------------------------------------------------------------
 
-
 def merge_overlapping_annotations(tier, separator=' '):
     """
     Merge overlapping annotations.
     The values of the labels are concatenated.
 
+    Do not pay attention to alternatives.
+
     @param tier: (Tier)
+    @return Tier
 
     """
+    if tier.IsInterval() is False:
+        return tier
+
     new_tier = Tier(tier.GetName())
     prev = None
 
@@ -245,4 +247,43 @@ def merge_overlapping_annotations(tier, separator=' '):
 # End merge_overlapping_annotations
 # ------------------------------------------------------------------------
 
+def point2interval(tier, fixradius=None):
+    """
+    Convert localization.
+    Ensure the radius to be always >= 1 millisecond.
 
+    Do not convert alternatives.
+
+    @param tier: (Tier)
+    @return Tier
+
+    """
+    if tier.IsInterval():
+        return tier.Copy()
+
+    new_tier = Tier(tier.GetName())
+    new_tier.metadata = tier.metadata
+    new_tier.SetMedia( tier.GetMedia() )
+    new_tier.SetCtrlVocab( tier.GetCtrlVocab() )
+    new_tier.SetDataType( tier.GetDataType() )
+    #new_tier.SetTranscription( tier.GetTranscription() ) # no need
+    new_tier.metadata['TIER_TYPE']="TimePoint"
+
+    for a in tier:
+        # get point with the best score for this annotation
+        point = a.GetLocation().GetPoint()
+        midpoint = point.GetMidpoint()
+        radius = fixradius if fixradius is not None else point.GetRadius()
+        if radius < 0.001:
+            radius = 0.001
+
+        begin = TimePoint(midpoint-radius,radius)
+        end   = TimePoint(midpoint+radius,radius)
+
+        new_a=Annotation(TimeInterval(begin,end),Label(a.GetLabel().GetValue()))
+        new_a.metadata = a.metadata
+        new_tier.Append( new_a )
+
+    return new_tier
+
+# ------------------------------------------------------------------------

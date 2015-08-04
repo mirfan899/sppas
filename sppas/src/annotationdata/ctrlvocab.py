@@ -168,7 +168,7 @@ class CtrlVocab( object ):
         @param ctrlid (str) Identifier of the controlled vocabulary
 
         """
-        self.id        = ctrlid
+        self.id        = ctrlid.strip()
         self.__desc    = ""
         self.__entries = list()
 

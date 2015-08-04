@@ -99,7 +99,7 @@ class Tier( MetaObject ):
         for annotation in self:
             for word in annotation.GetLabel().GetLabels():
                 if ctrlvocab.Contains(word) is False:
-                    raise Exception("Trying to set an invalid dictionary")
+                    raise Exception("Trying to set an invalid controlled vocabulary: the word %s is not in the dictionary %s"%(word,ctrlvocab.id))
         self.__ctrlvocab = ctrlvocab
 
     # -----------------------------------------------------------------------
@@ -922,8 +922,8 @@ class Tier( MetaObject ):
             for word in annotation.GetLabel().GetLabels():
                 if self.__ctrlvocab.Contains(word.GetValue()) is False and word.GetValue() != '':  # praat needs empty values
                     raise ValueError(
-                        "Attempt to append a free-annotation-label"
-                        " in a controlled vocabulary tier.")
+                        "Attempt to append a free-annotation-label %s"
+                        " in a controlled vocabulary tier."%(word.GetValue()))
 
         if self.GetTranscription() is not None:
             hierarchy = self.GetTranscription().GetHierarchy()
