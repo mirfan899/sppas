@@ -63,7 +63,11 @@ the expected extension:
 * Signaix: hz
 * Excel/OpenOffice/R: csv
 
-It can also import data from:
+It can also import and export data from:
+
+* Annotation Pro: antx
+
+And it can also import data from:
 
 * ANVIL: anvil
 * Transcriber: trs

@@ -51,140 +51,88 @@
 </b></center><br />
 <h1 class="epydoc">Class Hierarchy</h1>
 <ul class="nomargin-top">
-    <li> <strong class="uidlink"><a href="src.annotationdata.statistics.kappa.DataConverter-class.html">src.annotationdata.statistics.kappa.DataConverter</a></strong>
-    </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.statistics.kappa.Kappa-class.html">src.annotationdata.statistics.kappa.Kappa</a></strong>:
-      <em class="summary">Inter-observer variation estimation.
-        <p>Inter-observer variation can be measured in any situation in 
-        which two or more independent observers are evaluating the same 
-        thing. The Kappa statistic seems the most commonly used measure of 
-        inter-rater agreement in Computational Linguistics.</p>
-        <p>Kappa is intended to give the reader a quantitative measure of 
-        the magnitude of agreement between observers. The calculation is 
-        based on the difference between how much agreement is actually 
-        present (&#8220;observed&#8221; agreement) compared to how much agreement would
-        be expected to be present by chance alone (&#8220;expected&#8221; 
-        agreement).</p>
-<pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span>p = [ (1.0,0.0) , (0.0,1.0) , (0.0,1.0) , (1.0,0.0) , (1.0,0.0) ]
-<span class="py-prompt">&gt;&gt;&gt; </span>q = [ (1.0,0.0) , (0.0,1.0) , (1.0,0.0) , (1.0,0.0) , (1.0,0.0) ]
-<span class="py-prompt">&gt;&gt;&gt; </span>kappa = Kappa(p,q)
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> p, <span class="py-string">&quot;is ok? (expect true):&quot;</span>, kappa.check_vector(p)
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> q, <span class="py-string">&quot;is ok? (expect true):&quot;</span>, kappa.check_vector(q)
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">&quot;Kappa value:&quot;</span>,kappa.evaluate()</pre></em>
-    </li>
-    <li> <strong class="uidlink">src.resources.mapping.Mapping</strong>
-    </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.io.text.CSV.UnicodeReader-class.html">src.annotationdata.io.text.CSV.UnicodeReader</a></strong>:
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.io.text.CSV.UnicodeReader-class.html">sppas.src.annotationdata.io.text.CSV.UnicodeReader</a></strong>:
       <em class="summary">A CSV reader which will iterate over lines in the CSV file 
         &quot;f&quot;, which is encoded in the given encoding.</em>
     </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.io.text.CSV.UnicodeWriter-class.html">src.annotationdata.io.text.CSV.UnicodeWriter</a></strong>:
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.io.text.CSV.UnicodeWriter-class.html">sppas.src.annotationdata.io.text.CSV.UnicodeWriter</a></strong>:
       <em class="summary">A CSV writer which will write rows to CSV file &quot;f&quot;, which
         is encoded in the given encoding.</em>
     </li>
     <li> <strong class="uidlink">object</strong>:
       <em class="summary">The most base type</em>
     <ul>
-    <li> <strong class="uidlink"><a href="src.annotationdata.annotation.Annotation-class.html">src.annotationdata.annotation.Annotation</a></strong>:
-      <em class="summary">Represents an annotation.
-        <p>An annotation in SPPAS is a container for:</p>
-        <ul>
-          <li>
-            a Location()
-          </li>
-          <li>
-            a Label()
-          </li>
-        </ul>
-<pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span>tier = Tier()
-<span class="py-prompt">&gt;&gt;&gt; </span>p1 = TimePoint(1.5, radius=0.01)
-<span class="py-prompt">&gt;&gt;&gt; </span>p2 = TimePoint(1.6, radius=0.01)
-<span class="py-prompt">&gt;&gt;&gt; </span>t = TimeInterval(p1, p2)
-<span class="py-prompt">&gt;&gt;&gt; </span>l = Label(<span class="py-string">&quot;foo&quot;</span>)
-<span class="py-prompt">&gt;&gt;&gt; </span>ann = Annotation(t, l)
-<span class="py-prompt">&gt;&gt;&gt; </span>tier.Add(ann)
-<span class="py-output">True</span>
-<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span>ann.GetLocation().GetBeginMidpoint()
-<span class="py-output">1.5</span>
-<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span>ann.GetLocation().GetEndMidpoint()
-<span class="py-output">1.6</span>
-<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span>ann.GetLabel().GetValue()
-<span class="py-output">foo</span>
-<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span>ann.GetLocation().SetBegin( TimePoint( 1.2 ) )</pre></em>
-    </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.ptime.baseplacement.BasePlacement-class.html">src.annotationdata.ptime.baseplacement.BasePlacement</a></strong>:
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html">sppas.src.annotationdata.ptime.baseplacement.BasePlacement</a></strong>:
       <em class="summary">This class represents a Generic Placement of an annotation.</em>
     </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.filter.Bool-class.html">src.annotationdata.filter.Bool</a></strong>:
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.filter.Bool-class.html">sppas.src.annotationdata.filter.Bool</a></strong>:
       <em class="summary">Predicate Factory.</em>
     </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.statistics.descriptives.DescriptiveStatistics-class.html">src.annotationdata.statistics.descriptives.DescriptiveStatistics</a></strong>:
-      <em class="summary">@authors: Brigitte Bigi
-@contact: brigitte.bigi@gmail.com
-@license: GPL, v3
-@summary: Descriptives statistics estimator class.</em>
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.ctrlvocab.CtrlVocab-class.html">sppas.src.annotationdata.ctrlvocab.CtrlVocab</a></strong>:
+      <em class="summary">Generic representation of a media file.</em>
     </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.filter.filters.Filter-class.html">src.annotationdata.filter.filters.Filter</a></strong>:
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.ctrlvocab.CtrlVocabEntry-class.html">sppas.src.annotationdata.ctrlvocab.CtrlVocabEntry</a></strong>:
+      <em class="summary">Represents an entry of a controlled vocabulary.
+        <p>An entry of a controlled vocabulary is a pair 
+        Text/description.</p></em>
+    </li>
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.filter.filters.Filter-class.html">sppas.src.annotationdata.filter.filters.Filter</a></strong>:
       <em class="summary">Create an empty Filter.</em>
     </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.filter.Filter-class.html">src.annotationdata.filter.Filter</a></strong>
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.filter.Filter-class.html">sppas.src.annotationdata.filter.Filter</a></strong>
     </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.filter.FilterFactory-class.html">src.annotationdata.filter.FilterFactory</a></strong>:
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.filter.FilterFactory-class.html">sppas.src.annotationdata.filter.FilterFactory</a></strong>:
       <em class="summary">@deprecated</em>
     </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.filter.filters.FilterFactory-class.html">src.annotationdata.filter.filters.FilterFactory</a></strong>:
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.filter.filters.FilterFactory-class.html">sppas.src.annotationdata.filter.filters.FilterFactory</a></strong>:
       <em class="summary">@deprecated</em>
     </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.io.heuristic.HeuristicFactory-class.html">src.annotationdata.io.heuristic.HeuristicFactory</a></strong>
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.io.heuristic.HeuristicFactory-class.html">sppas.src.annotationdata.io.heuristic.HeuristicFactory</a></strong>
     </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.hierarchy.Hierarchy-class.html">src.annotationdata.hierarchy.Hierarchy</a></strong>:
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.hierarchy.Hierarchy-class.html">sppas.src.annotationdata.hierarchy.Hierarchy</a></strong>:
       <em class="summary">@authors: Brigitte Bigi
 @contact: brigitte.bigi@gmail.com
 @license: GPL, v3
 @summary: Generic representation of a hierarchy between tiers.</em>
     </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.label.label.Label-class.html">src.annotationdata.label.label.Label</a></strong>:
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.label.label.Label-class.html">sppas.src.annotationdata.label.label.Label</a></strong>:
       <em class="summary">Represents a label.
         <p>A label is a list of possible Text(), represented as a UNICODE 
         string. A data type can be associated, as Text() can be 'int', 
         'float' or 'bool'.</p></em>
     </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.ptime.localization.Localization-class.html">src.annotationdata.ptime.localization.Localization</a></strong>:
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.ptime.localization.Localization-class.html">sppas.src.annotationdata.ptime.localization.Localization</a></strong>:
       <em class="summary">This class represents a Localization of an annotation.</em>
     </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.ptime.location.Location-class.html">src.annotationdata.ptime.location.Location</a></strong>:
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.ptime.location.Location-class.html">sppas.src.annotationdata.ptime.location.Location</a></strong>:
       <em class="summary">Base class for the Location of an annotation.</em>
     </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.meta.MetaObject-class.html">src.annotationdata.meta.MetaObject</a></strong>
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.meta.MetaObject-class.html">sppas.src.annotationdata.meta.MetaObject</a></strong>:
+      <em class="summary">Dictionary of meta data.</em>
     </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.filter.Predicate-class.html">src.annotationdata.filter.Predicate</a></strong>
-    </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.filter.predicate.Predicate-class.html">src.annotationdata.filter.predicate.Predicate</a></strong>:
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.filter.predicate.Predicate-class.html">sppas.src.annotationdata.filter.predicate.Predicate</a></strong>:
       <em class="summary">Predicate allows to fix if an assumption is True or False.</em>
     </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.filter.Rel-class.html">src.annotationdata.filter.Rel</a></strong>:
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.filter.Predicate-class.html">sppas.src.annotationdata.filter.Predicate</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.filter.predicate.Rel-class.html">sppas.src.annotationdata.filter.predicate.Rel</a></strong>:
       <em class="summary">RelationPredicate Factory.</em>
     </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.filter.predicate.Rel-class.html">src.annotationdata.filter.predicate.Rel</a></strong>:
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.filter.Rel-class.html">sppas.src.annotationdata.filter.Rel</a></strong>:
       <em class="summary">RelationPredicate Factory.</em>
     </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.filter.predicate.Sel-class.html">src.annotationdata.filter.predicate.Sel</a></strong>:
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.filter.predicate.Sel-class.html">sppas.src.annotationdata.filter.predicate.Sel</a></strong>:
       <em class="summary">Predicate Factory.</em>
     </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.label.text.Text-class.html">src.annotationdata.label.text.Text</a></strong>
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.label.text.Text-class.html">sppas.src.annotationdata.label.text.Text</a></strong>
     </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.utils.tierstats.TierStats-class.html">src.annotationdata.utils.tierstats.TierStats</a></strong>:
-      <em class="summary">Map a tier into a dictionary of durations.</em>
-    </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.utils.tierutils.TierUtils-class.html">src.annotationdata.utils.tierutils.TierUtils</a></strong>:
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.utils.tierutils.TierUtils-class.html">sppas.src.annotationdata.utils.tierutils.TierUtils</a></strong>:
       <em class="summary">Provides utility methods for Tier instances.</em>
     </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.io.trsfactory.TrsFactory-class.html">src.annotationdata.io.trsfactory.TrsFactory</a></strong>:
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.io.trsfactory.TrsFactory-class.html">sppas.src.annotationdata.io.trsfactory.TrsFactory</a></strong>:
       <em class="summary">Factory for Transcription.</em>
     </li>
-    <li> <strong class="uidlink"><a href="src.annotationdata.utils.trsutils.TrsUtils-class.html">src.annotationdata.utils.trsutils.TrsUtils</a></strong>:
+    <li> <strong class="uidlink"><a href="sppas.src.annotationdata.utils.trsutils.TrsUtils-class.html">sppas.src.annotationdata.utils.trsutils.TrsUtils</a></strong>:
       <em class="summary">Provides utility methods for Transcription instances.</em>
     </li>
     </ul>
@@ -218,7 +166,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Jul  3 13:42:45 2015
+    Generated by Epydoc 3.0.1 on Tue Aug  4 17:58:01 2015
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

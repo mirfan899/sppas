@@ -14,7 +14,7 @@ software for the automatic annotation and for the exploitation of
 annotated-data.
 
 >This documentation will assume that you are using a relatively recent
->version of SPPAS (1.7.0).
+>version of SPPAS (1.7.1).
 
 There's no reason not to download the latest version whenever released:
 it's easy and fast!

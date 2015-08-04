@@ -50,7 +50,7 @@ The "File" menu can be used to manage files (add, remove, ...) and to exit the p
 In the "Preferences" menu, check boxes allow to show/hide the toolbar 
 and the status bar, and to fix settings (see below for details).
 
-Since version 1.6.6, the "Help" menu includes an item to open the SPPAS website
+The "Help" menu includes an item to open the SPPAS website
 in a web browser, to access inline documentation, to declare a bug and to send
 feedback to the author. In the latter case, replace the text "Describe what you
 did here..." by your own comment, question or suggestion and choose how to send

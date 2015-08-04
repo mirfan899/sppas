@@ -790,7 +790,37 @@ Annotations:
     the IPUs segmentation itself, and the Transcription time-aligned
     at the IPUs level.
 
-   
+
+=============================================================================
+SPPAS-1.7.1
+=============================================================================
+
+Development:
+    - package re-organisation:
+        - package signal is now standalone
+        - package resources is now standalone
+        - package presenters created
+    - updated statistics estimations
+    - package annotationdata:
+        - add Media object
+        - add CtrlVocab object
+        - add inheritance of MetaObject for Annotation
+    - package annotationdata.io: 
+        - complete debug of all file formats
+        - add comments and documentation
+        - add also some tests
+        - add Media/CtrlVocab in some file formats
+        - add Annotation Pro support of antx files
+
+Components:
+    - add Time Group Analyser (TGA) in Statistics
+    - add Kappa estimation on labels of 2 tiers with the same number of intervals
+
+Annotations:
+    - New version of XRA: 1.2
+    - Make XRA the default input/output file format
+
+
 =============================================================================
 *****************************************************************************
 =============================================================================

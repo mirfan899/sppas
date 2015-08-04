@@ -17,6 +17,7 @@ body {
 }
 
 header{
+    background: url('./etc/img/header.png');
     position:       relative;
     margin-top:     10px;
     padding-top:    10px;

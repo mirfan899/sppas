@@ -1,0 +1,918 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>sppas.src.annotationdata.ptime.location</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.lpl-aix.fr/~bigi/sppas/">SPPAS</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;sppas ::
+        Package&nbsp;src ::
+        <a href="sppas.src.annotationdata-module.html">Package&nbsp;annotationdata</a> ::
+        <a href="sppas.src.annotationdata.ptime-module.html">Package&nbsp;ptime</a> ::
+        Module&nbsp;location
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="sppas.src.annotationdata.ptime.location-module.html">Module sppas.src.annotationdata.ptime.location</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment">#!/usr/bin/env python2</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: UTF-8 -*-</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment"># ---------------------------------------------------------------------------</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment">#            ___   __    __    __    ___</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment">#           /     |  \  |  \  |  \  /        Automatic</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment">#           \__   |__/  |__/  |___| \__      Annotation</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment">#              \  |     |     |   |    \     of</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment">#           ___/  |     |     |   | ___/     Speech</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment">#           =============================</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment">#           http://sldr.org/sldr000800/preview/</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment"># ---------------------------------------------------------------------------</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment"># developed at:</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-comment">#       Laboratoire Parole et Langage</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-comment">#       Copyright (C) 2011-2015  Brigitte Bigi</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-comment">#       Use of this software is governed by the GPL, v3</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-comment">#       This banner notice must not be removed</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-comment"># ---------------------------------------------------------------------------</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-comment"># SPPAS is free software: you can redistribute it and/or modify</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-comment"># it under the terms of the GNU General Public License as published by</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-comment"># the Free Software Foundation, either version 3 of the License, or</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-comment"># (at your option) any later version.</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-comment"># SPPAS is distributed in the hope that it will be useful,</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-comment"># but WITHOUT ANY WARRANTY; without even the implied warranty of</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-comment"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-comment"># GNU General Public License for more details.</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-comment"># You should have received a copy of the GNU General Public License</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-comment"># along with SPPAS. If not, see &lt;http://www.gnu.org/licenses/&gt;.</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-comment"># ---------------------------------------------------------------------------</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-comment"># File: location.py</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-comment"># ----------------------------------------------------------------------------</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-name">__docformat__</tt> <tt class="py-op">=</tt> <tt class="py-docstring">"""epytext"""</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-name">__authors__</tt>   <tt class="py-op">=</tt> <tt class="py-string">"""Brigitte Bigi (brigitte.bigi@gmail.com)"""</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt id="link-0" class="py-name" targets="Variable sppas.src.annotationdata.filter._relations.__copyright__=sppas.src.annotationdata.filter._relations-module.html#__copyright__,Variable sppas.src.annotationdata.io.__copyright__=sppas.src.annotationdata.io-module.html#__copyright__"><a title="sppas.src.annotationdata.filter._relations.__copyright__
+sppas.src.annotationdata.io.__copyright__" class="py-name" href="#" onclick="return doclink('link-0', '__copyright__', 'link-0');">__copyright__</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"""Copyright (C) 2011-2015  Brigitte Bigi"""</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-comment"># ----------------------------------------------------------------------------</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-comment"># Imports</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-comment"># ----------------------------------------------------------------------------</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-1" class="py-name" targets="Module sppas.src.annotationdata.ptime.baseplacement=sppas.src.annotationdata.ptime.baseplacement-module.html"><a title="sppas.src.annotationdata.ptime.baseplacement" class="py-name" href="#" onclick="return doclink('link-1', 'baseplacement', 'link-1');">baseplacement</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class sppas.src.annotationdata.ptime.baseplacement.BasePlacement=sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html"><a title="sppas.src.annotationdata.ptime.baseplacement.BasePlacement" class="py-name" href="#" onclick="return doclink('link-2', 'BasePlacement', 'link-2');">BasePlacement</a></tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-3" class="py-name" targets="Module sppas.src.annotationdata.ptime.localization=sppas.src.annotationdata.ptime.localization-module.html"><a title="sppas.src.annotationdata.ptime.localization" class="py-name" href="#" onclick="return doclink('link-3', 'localization', 'link-3');">localization</a></tt> <tt class="py-keyword">import</tt> <tt id="link-4" class="py-name" targets="Class sppas.src.annotationdata.ptime.localization.Localization=sppas.src.annotationdata.ptime.localization.Localization-class.html"><a title="sppas.src.annotationdata.ptime.localization.Localization" class="py-name" href="#" onclick="return doclink('link-4', 'Localization', 'link-4');">Localization</a></tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">copy</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"><tt class="py-comment"># ----------------------------------------------------------------------------</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"> </tt>
+<a name="Location"></a><div id="Location-def"><a name="L57"></a><tt class="py-lineno"> 57</tt> <a class="py-toggle" href="#" id="Location-toggle" onclick="return toggle('Location');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html">Location</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Location-expanded"><a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"><tt class="py-docstring">    @authors: Brigitte Bigi, Tatsuya Watanabe</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"><tt class="py-docstring">    @contact: brigitte.bigi@gmail.com</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-docstring">    @license: GPL, v3</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-docstring">    @summary: Base class for the Location of an annotation.</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"> </tt>
+<a name="Location.__init__"></a><div id="Location.__init__-def"><a name="L66"></a><tt class="py-lineno"> 66</tt> <a class="py-toggle" href="#" id="Location.__init__-toggle" onclick="return toggle('Location.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">entry</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.__init__-expanded"><a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"><tt class="py-docstring">        Create a new Location instance and add the entry.</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"><tt class="py-docstring">        @param entry (one of the Placements or Localization or Location)</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"><tt class="py-docstring">        is the entry to add for this location.</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__locs</tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__fct</tt> <tt class="py-op">=</tt> <tt class="py-name">max</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">entry</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Method sppas.src.annotationdata.label.label.Label.AddValue()=sppas.src.annotationdata.label.label.Label-class.html#AddValue,Method sppas.src.annotationdata.ptime.location.Location.AddValue()=sppas.src.annotationdata.ptime.location.Location-class.html#AddValue"><a title="sppas.src.annotationdata.label.label.Label.AddValue
+sppas.src.annotationdata.ptime.location.Location.AddValue" class="py-name" href="#" onclick="return doclink('link-5', 'AddValue', 'link-5');">AddValue</a></tt><tt class="py-op">(</tt><tt class="py-name">entry</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">    <tt class="py-comment"># End __init__</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"> </tt>
+<a name="Location.Copy"></a><div id="Location.Copy-def"><a name="L83"></a><tt class="py-lineno"> 83</tt> <a class="py-toggle" href="#" id="Location.Copy-toggle" onclick="return toggle('Location.Copy');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#Copy">Copy</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.Copy-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.Copy-expanded"><a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">copy</tt><tt class="py-op">.</tt><tt class="py-name">deepcopy</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"> </tt>
+<a name="Location.Set"></a><div id="Location.Set-def"><a name="L86"></a><tt class="py-lineno"> 86</tt> <a class="py-toggle" href="#" id="Location.Set-toggle" onclick="return toggle('Location.Set');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#Set">Set</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">place</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.Set-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.Set-expanded"><a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"><tt class="py-docstring">        Set a new location.</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"><tt class="py-docstring">        @param place (Location)</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Method sppas.src.annotationdata.label.label.Label.SetValue()=sppas.src.annotationdata.label.label.Label-class.html#SetValue,Method sppas.src.annotationdata.label.text.Text.SetValue()=sppas.src.annotationdata.label.text.Text-class.html#SetValue,Method sppas.src.annotationdata.ptime.framepoint.FramePoint.SetValue()=sppas.src.annotationdata.ptime.framepoint.FramePoint-class.html#SetValue,Method sppas.src.annotationdata.ptime.location.Location.SetValue()=sppas.src.annotationdata.ptime.location.Location-class.html#SetValue,Method sppas.src.annotationdata.ptime.point.TimePoint.SetValue()=sppas.src.annotationdata.ptime.point.TimePoint-class.html#SetValue"><a title="sppas.src.annotationdata.label.label.Label.SetValue
+sppas.src.annotationdata.label.text.Text.SetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.SetValue
+sppas.src.annotationdata.ptime.location.Location.SetValue
+sppas.src.annotationdata.ptime.point.TimePoint.SetValue" class="py-name" href="#" onclick="return doclink('link-6', 'SetValue', 'link-6');">SetValue</a></tt><tt class="py-op">(</tt><tt class="py-name">place</tt><tt class="py-op">)</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__fct</tt> <tt class="py-op">=</tt> <tt class="py-name">place</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Method sppas.src.annotationdata.label.label.Label.GetFunctionScore()=sppas.src.annotationdata.label.label.Label-class.html#GetFunctionScore,Method sppas.src.annotationdata.ptime.location.Location.GetFunctionScore()=sppas.src.annotationdata.ptime.location.Location-class.html#GetFunctionScore"><a title="sppas.src.annotationdata.label.label.Label.GetFunctionScore
+sppas.src.annotationdata.ptime.location.Location.GetFunctionScore" class="py-name" href="#" onclick="return doclink('link-7', 'GetFunctionScore', 'link-7');">GetFunctionScore</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">    <tt class="py-comment"># End Set</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"> </tt>
+<a name="Location.AddValue"></a><div id="Location.AddValue-def"><a name="L99"></a><tt class="py-lineno"> 99</tt> <a class="py-toggle" href="#" id="Location.AddValue-toggle" onclick="return toggle('Location.AddValue');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#AddValue">AddValue</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">place</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.AddValue-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.AddValue-expanded"><a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-docstring">        Add an entry into the list of possible localizations.</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"><tt class="py-docstring">        @param place is the new placement/localization</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">place</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt id="link-8" class="py-name"><a title="sppas.src.annotationdata.ptime.baseplacement.BasePlacement" class="py-name" href="#" onclick="return doclink('link-8', 'BasePlacement', 'link-2');">BasePlacement</a></tt><tt class="py-op">,</tt> <tt id="link-9" class="py-name"><a title="sppas.src.annotationdata.ptime.localization.Localization" class="py-name" href="#" onclick="return doclink('link-9', 'Localization', 'link-4');">Localization</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-keyword">is</tt> <tt class="py-name">False</tt><tt class="py-op">:</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">TypeError</tt><tt class="py-op">(</tt><tt class="py-string">"One placement argument required, not %r"</tt> <tt class="py-op">%</tt> <tt class="py-name">place</tt><tt class="py-op">)</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">place</tt><tt class="py-op">,</tt> <tt id="link-10" class="py-name"><a title="sppas.src.annotationdata.ptime.baseplacement.BasePlacement" class="py-name" href="#" onclick="return doclink('link-10', 'BasePlacement', 'link-2');">BasePlacement</a></tt><tt class="py-op">)</tt> <tt class="py-keyword">is</tt> <tt class="py-name">True</tt><tt class="py-op">:</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">            <tt class="py-name">place</tt> <tt class="py-op">=</tt> <tt id="link-11" class="py-name"><a title="sppas.src.annotationdata.ptime.localization.Localization" class="py-name" href="#" onclick="return doclink('link-11', 'Localization', 'link-4');">Localization</a></tt><tt class="py-op">(</tt><tt class="py-name">place</tt><tt class="py-op">,</tt> <tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">place</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__locs</tt><tt class="py-op">:</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__locs</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">place</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line"> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">    <tt class="py-comment"># End AddValue</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"> </tt>
+<a name="Location.SetValue"></a><div id="Location.SetValue-def"><a name="L118"></a><tt class="py-lineno">118</tt> <a class="py-toggle" href="#" id="Location.SetValue-toggle" onclick="return toggle('Location.SetValue');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#SetValue">SetValue</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">entry</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.SetValue-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.SetValue-expanded"><a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"><tt class="py-docstring">        Remove all localizations and append the new one.</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"><tt class="py-docstring">        @param entry is the new placement/localization</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Method sppas.src.annotationdata.label.label.Label.UnsetValue()=sppas.src.annotationdata.label.label.Label-class.html#UnsetValue,Method sppas.src.annotationdata.ptime.location.Location.UnsetValue()=sppas.src.annotationdata.ptime.location.Location-class.html#UnsetValue"><a title="sppas.src.annotationdata.label.label.Label.UnsetValue
+sppas.src.annotationdata.ptime.location.Location.UnsetValue" class="py-name" href="#" onclick="return doclink('link-12', 'UnsetValue', 'link-12');">UnsetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-13" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.AddValue
+sppas.src.annotationdata.ptime.location.Location.AddValue" class="py-name" href="#" onclick="return doclink('link-13', 'AddValue', 'link-5');">AddValue</a></tt><tt class="py-op">(</tt><tt class="py-name">entry</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">    <tt class="py-comment"># End SetValue</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"> </tt>
+<a name="Location.UnsetValue"></a><div id="Location.UnsetValue-def"><a name="L131"></a><tt class="py-lineno">131</tt> <a class="py-toggle" href="#" id="Location.UnsetValue-toggle" onclick="return toggle('Location.UnsetValue');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#UnsetValue">UnsetValue</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.UnsetValue-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.UnsetValue-expanded"><a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"><tt class="py-docstring">        Remove all localizations.</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__locs</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line"> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">    <tt class="py-comment"># End UnsetValue</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"> </tt>
+<a name="Location.GetFunctionScore"></a><div id="Location.GetFunctionScore-def"><a name="L141"></a><tt class="py-lineno">141</tt> <a class="py-toggle" href="#" id="Location.GetFunctionScore-toggle" onclick="return toggle('Location.GetFunctionScore');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#GetFunctionScore">GetFunctionScore</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.GetFunctionScore-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.GetFunctionScore-expanded"><a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"><tt class="py-docstring">        Return the function used to compare scores.</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__fct</tt> </tt>
+</div><a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">    <tt class="py-comment"># End GetFunctionScore</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line"> </tt>
+<a name="Location.SetFunctionScore"></a><div id="Location.SetFunctionScore-def"><a name="L151"></a><tt class="py-lineno">151</tt> <a class="py-toggle" href="#" id="Location.SetFunctionScore-toggle" onclick="return toggle('Location.SetFunctionScore');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#SetFunctionScore">SetFunctionScore</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">fctname</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.SetFunctionScore-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.SetFunctionScore-expanded"><a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line"><tt class="py-docstring">        Set a new function to compare scores.</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line"><tt class="py-docstring">        @param fctname is one of min or max.</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">fctname</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-op">(</tt><tt class="py-name">min</tt><tt class="py-op">,</tt> <tt class="py-name">max</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">TypeError</tt><tt class="py-op">(</tt><tt class="py-string">'Expected min or max not %r'</tt> <tt class="py-op">%</tt> <tt class="py-name">fctname</tt><tt class="py-op">)</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line"> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__fct</tt> <tt class="py-op">=</tt> <tt class="py-name">fctname</tt> </tt>
+</div><a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line"> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">    <tt class="py-comment"># End SetFunctionScore</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line"> </tt>
+<a name="Location.GetLocalizations"></a><div id="Location.GetLocalizations-def"><a name="L166"></a><tt class="py-lineno">166</tt> <a class="py-toggle" href="#" id="Location.GetLocalizations-toggle" onclick="return toggle('Location.GetLocalizations');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#GetLocalizations">GetLocalizations</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.GetLocalizations-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.GetLocalizations-expanded"><a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line"><tt class="py-docstring">        Return a copy of all placements included into this location.</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__locs</tt> </tt>
+</div><a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line"> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">    <tt class="py-comment"># End GetLocalizations</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line"> </tt>
+<a name="Location.GetPlaces"></a><div id="Location.GetPlaces-def"><a name="L176"></a><tt class="py-lineno">176</tt> <a class="py-toggle" href="#" id="Location.GetPlaces-toggle" onclick="return toggle('Location.GetPlaces');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#GetPlaces">GetPlaces</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.GetPlaces-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.GetPlaces-expanded"><a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line"><tt class="py-docstring">        Return a copy of all placements included into this location.</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-op">[</tt><tt class="py-name">l</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Method sppas.src.annotationdata.ptime.localization.Localization.GetPlace()=sppas.src.annotationdata.ptime.localization.Localization-class.html#GetPlace"><a title="sppas.src.annotationdata.ptime.localization.Localization.GetPlace" class="py-name" href="#" onclick="return doclink('link-14', 'GetPlace', 'link-14');">GetPlace</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">l</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__locs</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line"> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">    <tt class="py-comment"># End GetPlaces</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line"> </tt>
+<a name="Location.GetValue"></a><div id="Location.GetValue-def"><a name="L186"></a><tt class="py-lineno">186</tt> <a class="py-toggle" href="#" id="Location.GetValue-toggle" onclick="return toggle('Location.GetValue');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#GetValue">GetValue</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.GetValue-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.GetValue-expanded"><a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"><tt class="py-docstring">        Return the best Localization, i.e.</tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line"><tt class="py-docstring">        the localization with the better score.</tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line"><tt class="py-docstring">        @return Localization instance</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__locs</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">None</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line"> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__fct</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__locs</tt><tt class="py-op">,</tt> <tt class="py-name">key</tt><tt class="py-op">=</tt><tt class="py-keyword">lambda</tt> <tt class="py-name">x</tt><tt class="py-op">:</tt> <tt class="py-name">x</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name" targets="Method sppas.src.annotationdata.label.text.Text.GetScore()=sppas.src.annotationdata.label.text.Text-class.html#GetScore,Method sppas.src.annotationdata.ptime.localization.Localization.GetScore()=sppas.src.annotationdata.ptime.localization.Localization-class.html#GetScore"><a title="sppas.src.annotationdata.label.text.Text.GetScore
+sppas.src.annotationdata.ptime.localization.Localization.GetScore" class="py-name" href="#" onclick="return doclink('link-15', 'GetScore', 'link-15');">GetScore</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line"> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line">    <tt class="py-comment"># End GetValue</tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line"> </tt>
+<a name="Location.GetDuration"></a><div id="Location.GetDuration-def"><a name="L202"></a><tt class="py-lineno">202</tt> <a class="py-toggle" href="#" id="Location.GetDuration-toggle" onclick="return toggle('Location.GetDuration');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#GetDuration">GetDuration</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.GetDuration-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.GetDuration-expanded"><a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-16" class="py-name" targets="Method sppas.src.annotationdata.label.label.Label.GetValue()=sppas.src.annotationdata.label.label.Label-class.html#GetValue,Method sppas.src.annotationdata.label.text.Text.GetValue()=sppas.src.annotationdata.label.text.Text-class.html#GetValue,Method sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue()=sppas.src.annotationdata.ptime.framepoint.FramePoint-class.html#GetValue,Method sppas.src.annotationdata.ptime.location.Location.GetValue()=sppas.src.annotationdata.ptime.location.Location-class.html#GetValue,Method sppas.src.annotationdata.ptime.point.TimePoint.GetValue()=sppas.src.annotationdata.ptime.point.TimePoint-class.html#GetValue"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-16', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Method sppas.src.annotationdata.ptime.baseplacement.BasePlacement.Duration()=sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html#Duration,Method sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.Duration()=sppas.src.annotationdata.ptime.disjoint.TimeDisjoint-class.html#Duration,Method sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.Duration()=sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint-class.html#Duration,Method sppas.src.annotationdata.ptime.frameinterval.FrameInterval.Duration()=sppas.src.annotationdata.ptime.frameinterval.FrameInterval-class.html#Duration,Method sppas.src.annotationdata.ptime.framepoint.FramePoint.Duration()=sppas.src.annotationdata.ptime.framepoint.FramePoint-class.html#Duration,Method sppas.src.annotationdata.ptime.interval.TimeInterval.Duration()=sppas.src.annotationdata.ptime.interval.TimeInterval-class.html#Duration,Method sppas.src.annotationdata.ptime.localization.Localization.Duration()=sppas.src.annotationdata.ptime.localization.Localization-class.html#Duration,Method sppas.src.annotationdata.ptime.point.TimePoint.Duration()=sppas.src.annotationdata.ptime.point.TimePoint-class.html#Duration"><a title="sppas.src.annotationdata.ptime.baseplacement.BasePlacement.Duration
+sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.Duration
+sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.Duration
+sppas.src.annotationdata.ptime.frameinterval.FrameInterval.Duration
+sppas.src.annotationdata.ptime.framepoint.FramePoint.Duration
+sppas.src.annotationdata.ptime.interval.TimeInterval.Duration
+sppas.src.annotationdata.ptime.localization.Localization.Duration
+sppas.src.annotationdata.ptime.point.TimePoint.Duration" class="py-name" href="#" onclick="return doclink('link-17', 'Duration', 'link-17');">Duration</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line"> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line">    <tt class="py-comment"># End GetDuration</tt> </tt>
+<a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line"> </tt>
+<a name="Location.GetBeginMidpoint"></a><div id="Location.GetBeginMidpoint-def"><a name="L208"></a><tt class="py-lineno">208</tt> <a class="py-toggle" href="#" id="Location.GetBeginMidpoint-toggle" onclick="return toggle('Location.GetBeginMidpoint');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#GetBeginMidpoint">GetBeginMidpoint</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.GetBeginMidpoint-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.GetBeginMidpoint-expanded"><a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line"><tt class="py-docstring">        Return the begin midpoint value of the best localization</tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line"><tt class="py-docstring">        (the localization with the better score), except for points.</tt> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-18', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-19" class="py-name" targets="Method sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.GetBegin()=sppas.src.annotationdata.ptime.disjoint.TimeDisjoint-class.html#GetBegin,Method sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.GetBegin()=sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint-class.html#GetBegin,Method sppas.src.annotationdata.ptime.frameinterval.FrameInterval.GetBegin()=sppas.src.annotationdata.ptime.frameinterval.FrameInterval-class.html#GetBegin,Method sppas.src.annotationdata.ptime.interval.TimeInterval.GetBegin()=sppas.src.annotationdata.ptime.interval.TimeInterval-class.html#GetBegin,Method sppas.src.annotationdata.ptime.localization.Localization.GetBegin()=sppas.src.annotationdata.ptime.localization.Localization-class.html#GetBegin,Method sppas.src.annotationdata.ptime.location.Location.GetBegin()=sppas.src.annotationdata.ptime.location.Location-class.html#GetBegin,Method sppas.src.annotationdata.tier.Tier.GetBegin()=sppas.src.annotationdata.tier.Tier-class.html#GetBegin,Method sppas.src.annotationdata.transcription.Transcription.GetBegin()=sppas.src.annotationdata.transcription.Transcription-class.html#GetBegin"><a title="sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.GetBegin
+sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.GetBegin
+sppas.src.annotationdata.ptime.frameinterval.FrameInterval.GetBegin
+sppas.src.annotationdata.ptime.interval.TimeInterval.GetBegin
+sppas.src.annotationdata.ptime.localization.Localization.GetBegin
+sppas.src.annotationdata.ptime.location.Location.GetBegin
+sppas.src.annotationdata.tier.Tier.GetBegin
+sppas.src.annotationdata.transcription.Transcription.GetBegin" class="py-name" href="#" onclick="return doclink('link-19', 'GetBegin', 'link-19');">GetBegin</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-20" class="py-name" targets="Method sppas.src.annotationdata.ptime.framepoint.FramePoint.GetMidpoint()=sppas.src.annotationdata.ptime.framepoint.FramePoint-class.html#GetMidpoint,Method sppas.src.annotationdata.ptime.point.TimePoint.GetMidpoint()=sppas.src.annotationdata.ptime.point.TimePoint-class.html#GetMidpoint"><a title="sppas.src.annotationdata.ptime.framepoint.FramePoint.GetMidpoint
+sppas.src.annotationdata.ptime.point.TimePoint.GetMidpoint" class="py-name" href="#" onclick="return doclink('link-20', 'GetMidpoint', 'link-20');">GetMidpoint</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line"> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line">    <tt class="py-comment"># End GetBeginMidpoint</tt> </tt>
+<a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line"> </tt>
+<a name="Location.GetEndMidpoint"></a><div id="Location.GetEndMidpoint-def"><a name="L219"></a><tt class="py-lineno">219</tt> <a class="py-toggle" href="#" id="Location.GetEndMidpoint-toggle" onclick="return toggle('Location.GetEndMidpoint');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#GetEndMidpoint">GetEndMidpoint</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.GetEndMidpoint-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.GetEndMidpoint-expanded"><a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line"><tt class="py-docstring">        Return the end instance of the best localization (the localization</tt> </tt>
+<a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line"><tt class="py-docstring">        with the better score), except for points.</tt> </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-21', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Method sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.GetEnd()=sppas.src.annotationdata.ptime.disjoint.TimeDisjoint-class.html#GetEnd,Method sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.GetEnd()=sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint-class.html#GetEnd,Method sppas.src.annotationdata.ptime.frameinterval.FrameInterval.GetEnd()=sppas.src.annotationdata.ptime.frameinterval.FrameInterval-class.html#GetEnd,Method sppas.src.annotationdata.ptime.interval.TimeInterval.GetEnd()=sppas.src.annotationdata.ptime.interval.TimeInterval-class.html#GetEnd,Method sppas.src.annotationdata.ptime.localization.Localization.GetEnd()=sppas.src.annotationdata.ptime.localization.Localization-class.html#GetEnd,Method sppas.src.annotationdata.ptime.location.Location.GetEnd()=sppas.src.annotationdata.ptime.location.Location-class.html#GetEnd,Method sppas.src.annotationdata.tier.Tier.GetEnd()=sppas.src.annotationdata.tier.Tier-class.html#GetEnd,Method sppas.src.annotationdata.transcription.Transcription.GetEnd()=sppas.src.annotationdata.transcription.Transcription-class.html#GetEnd"><a title="sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.GetEnd
+sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.GetEnd
+sppas.src.annotationdata.ptime.frameinterval.FrameInterval.GetEnd
+sppas.src.annotationdata.ptime.interval.TimeInterval.GetEnd
+sppas.src.annotationdata.ptime.localization.Localization.GetEnd
+sppas.src.annotationdata.ptime.location.Location.GetEnd
+sppas.src.annotationdata.tier.Tier.GetEnd
+sppas.src.annotationdata.transcription.Transcription.GetEnd" class="py-name" href="#" onclick="return doclink('link-22', 'GetEnd', 'link-22');">GetEnd</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name"><a title="sppas.src.annotationdata.ptime.framepoint.FramePoint.GetMidpoint
+sppas.src.annotationdata.ptime.point.TimePoint.GetMidpoint" class="py-name" href="#" onclick="return doclink('link-23', 'GetMidpoint', 'link-20');">GetMidpoint</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line"> </tt>
+<a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line">    <tt class="py-comment"># End GetEndMidpoint</tt> </tt>
+<a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line"> </tt>
+<a name="Location.GetBeginRadius"></a><div id="Location.GetBeginRadius-def"><a name="L230"></a><tt class="py-lineno">230</tt> <a class="py-toggle" href="#" id="Location.GetBeginRadius-toggle" onclick="return toggle('Location.GetBeginRadius');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#GetBeginRadius">GetBeginRadius</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.GetBeginRadius-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.GetBeginRadius-expanded"><a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line"><tt class="py-docstring">        Return the begin radius value of the best localization</tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line"><tt class="py-docstring">        (the localization with the better score), except for points.</tt> </tt>
+<a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-24', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.GetBegin
+sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.GetBegin
+sppas.src.annotationdata.ptime.frameinterval.FrameInterval.GetBegin
+sppas.src.annotationdata.ptime.interval.TimeInterval.GetBegin
+sppas.src.annotationdata.ptime.localization.Localization.GetBegin
+sppas.src.annotationdata.ptime.location.Location.GetBegin
+sppas.src.annotationdata.tier.Tier.GetBegin
+sppas.src.annotationdata.transcription.Transcription.GetBegin" class="py-name" href="#" onclick="return doclink('link-25', 'GetBegin', 'link-19');">GetBegin</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name" targets="Method sppas.src.annotationdata.ptime.framepoint.FramePoint.GetRadius()=sppas.src.annotationdata.ptime.framepoint.FramePoint-class.html#GetRadius,Method sppas.src.annotationdata.ptime.point.TimePoint.GetRadius()=sppas.src.annotationdata.ptime.point.TimePoint-class.html#GetRadius"><a title="sppas.src.annotationdata.ptime.framepoint.FramePoint.GetRadius
+sppas.src.annotationdata.ptime.point.TimePoint.GetRadius" class="py-name" href="#" onclick="return doclink('link-26', 'GetRadius', 'link-26');">GetRadius</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line"> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line">    <tt class="py-comment"># End GetBeginRadius</tt> </tt>
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line"> </tt>
+<a name="Location.GetEndRadius"></a><div id="Location.GetEndRadius-def"><a name="L241"></a><tt class="py-lineno">241</tt> <a class="py-toggle" href="#" id="Location.GetEndRadius-toggle" onclick="return toggle('Location.GetEndRadius');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#GetEndRadius">GetEndRadius</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.GetEndRadius-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.GetEndRadius-expanded"><a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line"><tt class="py-docstring">        Return the end instance of the best localization (the localization</tt> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line"><tt class="py-docstring">        with the better score), except for points.</tt> </tt>
+<a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-27" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-27', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name"><a title="sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.GetEnd
+sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.GetEnd
+sppas.src.annotationdata.ptime.frameinterval.FrameInterval.GetEnd
+sppas.src.annotationdata.ptime.interval.TimeInterval.GetEnd
+sppas.src.annotationdata.ptime.localization.Localization.GetEnd
+sppas.src.annotationdata.ptime.location.Location.GetEnd
+sppas.src.annotationdata.tier.Tier.GetEnd
+sppas.src.annotationdata.transcription.Transcription.GetEnd" class="py-name" href="#" onclick="return doclink('link-28', 'GetEnd', 'link-22');">GetEnd</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name"><a title="sppas.src.annotationdata.ptime.framepoint.FramePoint.GetRadius
+sppas.src.annotationdata.ptime.point.TimePoint.GetRadius" class="py-name" href="#" onclick="return doclink('link-29', 'GetRadius', 'link-26');">GetRadius</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line"> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line">    <tt class="py-comment"># End GetEndRadius</tt> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line"> </tt>
+<a name="Location.GetBegin"></a><div id="Location.GetBegin-def"><a name="L252"></a><tt class="py-lineno">252</tt> <a class="py-toggle" href="#" id="Location.GetBegin-toggle" onclick="return toggle('Location.GetBegin');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#GetBegin">GetBegin</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.GetBegin-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.GetBegin-expanded"><a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line"><tt class="py-docstring">        Return the begin instance of the best localization (the localization</tt> </tt>
+<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line"><tt class="py-docstring">        with the better score), except for points.</tt> </tt>
+<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-30" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-30', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name"><a title="sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.GetBegin
+sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.GetBegin
+sppas.src.annotationdata.ptime.frameinterval.FrameInterval.GetBegin
+sppas.src.annotationdata.ptime.interval.TimeInterval.GetBegin
+sppas.src.annotationdata.ptime.localization.Localization.GetBegin
+sppas.src.annotationdata.ptime.location.Location.GetBegin
+sppas.src.annotationdata.tier.Tier.GetBegin
+sppas.src.annotationdata.transcription.Transcription.GetBegin" class="py-name" href="#" onclick="return doclink('link-31', 'GetBegin', 'link-19');">GetBegin</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line"> </tt>
+<a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line">    <tt class="py-comment"># End GetBegin</tt> </tt>
+<a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line"> </tt>
+<a name="Location.GetEnd"></a><div id="Location.GetEnd-def"><a name="L263"></a><tt class="py-lineno">263</tt> <a class="py-toggle" href="#" id="Location.GetEnd-toggle" onclick="return toggle('Location.GetEnd');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#GetEnd">GetEnd</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.GetEnd-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.GetEnd-expanded"><a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line"><tt class="py-docstring">        Return the end instance of the best localization (the localization</tt> </tt>
+<a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line"><tt class="py-docstring">        with the better score), except for points.</tt> </tt>
+<a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-32" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-32', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-33" class="py-name"><a title="sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.GetEnd
+sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.GetEnd
+sppas.src.annotationdata.ptime.frameinterval.FrameInterval.GetEnd
+sppas.src.annotationdata.ptime.interval.TimeInterval.GetEnd
+sppas.src.annotationdata.ptime.localization.Localization.GetEnd
+sppas.src.annotationdata.ptime.location.Location.GetEnd
+sppas.src.annotationdata.tier.Tier.GetEnd
+sppas.src.annotationdata.transcription.Transcription.GetEnd" class="py-name" href="#" onclick="return doclink('link-33', 'GetEnd', 'link-22');">GetEnd</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line"> </tt>
+<a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line">    <tt class="py-comment"># End GetEnd</tt> </tt>
+<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line"> </tt>
+<a name="Location.SetBegin"></a><div id="Location.SetBegin-def"><a name="L274"></a><tt class="py-lineno">274</tt> <a class="py-toggle" href="#" id="Location.SetBegin-toggle" onclick="return toggle('Location.SetBegin');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#SetBegin">SetBegin</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">point</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.SetBegin-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.SetBegin-expanded"><a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line"><tt class="py-docstring">        Set the begin instance of the best localization (the localization</tt> </tt>
+<a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line"><tt class="py-docstring">        with the better score), except for points.</tt> </tt>
+<a name="L278"></a><tt class="py-lineno">278</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L280"></a><tt class="py-lineno">280</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-34', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-35" class="py-name" targets="Method sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.SetBegin()=sppas.src.annotationdata.ptime.disjoint.TimeDisjoint-class.html#SetBegin,Method sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.SetBegin()=sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint-class.html#SetBegin,Method sppas.src.annotationdata.ptime.frameinterval.FrameInterval.SetBegin()=sppas.src.annotationdata.ptime.frameinterval.FrameInterval-class.html#SetBegin,Method sppas.src.annotationdata.ptime.interval.TimeInterval.SetBegin()=sppas.src.annotationdata.ptime.interval.TimeInterval-class.html#SetBegin,Method sppas.src.annotationdata.ptime.localization.Localization.SetBegin()=sppas.src.annotationdata.ptime.localization.Localization-class.html#SetBegin,Method sppas.src.annotationdata.ptime.location.Location.SetBegin()=sppas.src.annotationdata.ptime.location.Location-class.html#SetBegin"><a title="sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.SetBegin
+sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.SetBegin
+sppas.src.annotationdata.ptime.frameinterval.FrameInterval.SetBegin
+sppas.src.annotationdata.ptime.interval.TimeInterval.SetBegin
+sppas.src.annotationdata.ptime.localization.Localization.SetBegin
+sppas.src.annotationdata.ptime.location.Location.SetBegin" class="py-name" href="#" onclick="return doclink('link-35', 'SetBegin', 'link-35');">SetBegin</a></tt><tt class="py-op">(</tt><tt id="link-36" class="py-name" targets="Module sppas.src.annotationdata.ptime.point=sppas.src.annotationdata.ptime.point-module.html"><a title="sppas.src.annotationdata.ptime.point" class="py-name" href="#" onclick="return doclink('link-36', 'point', 'link-36');">point</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line"> </tt>
+<a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line">    <tt class="py-comment"># End SetBegin</tt> </tt>
+<a name="L283"></a><tt class="py-lineno">283</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line"> </tt>
+<a name="Location.SetBeginMidpoint"></a><div id="Location.SetBeginMidpoint-def"><a name="L285"></a><tt class="py-lineno">285</tt> <a class="py-toggle" href="#" id="Location.SetBeginMidpoint-toggle" onclick="return toggle('Location.SetBeginMidpoint');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#SetBeginMidpoint">SetBeginMidpoint</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.SetBeginMidpoint-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.SetBeginMidpoint-expanded"><a name="L286"></a><tt class="py-lineno">286</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line"><tt class="py-docstring">        Set the begin midpoint value of the best localization (the localization</tt> </tt>
+<a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line"><tt class="py-docstring">        with the better score), except for points.</tt> </tt>
+<a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L290"></a><tt class="py-lineno">290</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L291"></a><tt class="py-lineno">291</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-37', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-38" class="py-name"><a title="sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.GetBegin
+sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.GetBegin
+sppas.src.annotationdata.ptime.frameinterval.FrameInterval.GetBegin
+sppas.src.annotationdata.ptime.interval.TimeInterval.GetBegin
+sppas.src.annotationdata.ptime.localization.Localization.GetBegin
+sppas.src.annotationdata.ptime.location.Location.GetBegin
+sppas.src.annotationdata.tier.Tier.GetBegin
+sppas.src.annotationdata.transcription.Transcription.GetBegin" class="py-name" href="#" onclick="return doclink('link-38', 'GetBegin', 'link-19');">GetBegin</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-39" class="py-name" targets="Method sppas.src.annotationdata.ptime.framepoint.FramePoint.SetMidpoint()=sppas.src.annotationdata.ptime.framepoint.FramePoint-class.html#SetMidpoint,Method sppas.src.annotationdata.ptime.point.TimePoint.SetMidpoint()=sppas.src.annotationdata.ptime.point.TimePoint-class.html#SetMidpoint"><a title="sppas.src.annotationdata.ptime.framepoint.FramePoint.SetMidpoint
+sppas.src.annotationdata.ptime.point.TimePoint.SetMidpoint" class="py-name" href="#" onclick="return doclink('link-39', 'SetMidpoint', 'link-39');">SetMidpoint</a></tt><tt class="py-op">(</tt><tt class="py-name">value</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line"> </tt>
+<a name="L293"></a><tt class="py-lineno">293</tt>  <tt class="py-line"> </tt>
+<a name="Location.SetBeginRadius"></a><div id="Location.SetBeginRadius-def"><a name="L294"></a><tt class="py-lineno">294</tt> <a class="py-toggle" href="#" id="Location.SetBeginRadius-toggle" onclick="return toggle('Location.SetBeginRadius');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#SetBeginRadius">SetBeginRadius</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.SetBeginRadius-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.SetBeginRadius-expanded"><a name="L295"></a><tt class="py-lineno">295</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L296"></a><tt class="py-lineno">296</tt>  <tt class="py-line"><tt class="py-docstring">        Set the begin midpoint value of the best localization (the localization</tt> </tt>
+<a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line"><tt class="py-docstring">        with the better score), except for points.</tt> </tt>
+<a name="L298"></a><tt class="py-lineno">298</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L299"></a><tt class="py-lineno">299</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L300"></a><tt class="py-lineno">300</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-40" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-40', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-41" class="py-name"><a title="sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.GetBegin
+sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.GetBegin
+sppas.src.annotationdata.ptime.frameinterval.FrameInterval.GetBegin
+sppas.src.annotationdata.ptime.interval.TimeInterval.GetBegin
+sppas.src.annotationdata.ptime.localization.Localization.GetBegin
+sppas.src.annotationdata.ptime.location.Location.GetBegin
+sppas.src.annotationdata.tier.Tier.GetBegin
+sppas.src.annotationdata.transcription.Transcription.GetBegin" class="py-name" href="#" onclick="return doclink('link-41', 'GetBegin', 'link-19');">GetBegin</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name" targets="Method sppas.src.annotationdata.ptime.framepoint.FramePoint.SetRadius()=sppas.src.annotationdata.ptime.framepoint.FramePoint-class.html#SetRadius,Method sppas.src.annotationdata.ptime.point.TimePoint.SetRadius()=sppas.src.annotationdata.ptime.point.TimePoint-class.html#SetRadius,Method sppas.src.annotationdata.tier.Tier.SetRadius()=sppas.src.annotationdata.tier.Tier-class.html#SetRadius"><a title="sppas.src.annotationdata.ptime.framepoint.FramePoint.SetRadius
+sppas.src.annotationdata.ptime.point.TimePoint.SetRadius
+sppas.src.annotationdata.tier.Tier.SetRadius" class="py-name" href="#" onclick="return doclink('link-42', 'SetRadius', 'link-42');">SetRadius</a></tt><tt class="py-op">(</tt><tt class="py-name">value</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L301"></a><tt class="py-lineno">301</tt>  <tt class="py-line"> </tt>
+<a name="Location.SetEnd"></a><div id="Location.SetEnd-def"><a name="L302"></a><tt class="py-lineno">302</tt> <a class="py-toggle" href="#" id="Location.SetEnd-toggle" onclick="return toggle('Location.SetEnd');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#SetEnd">SetEnd</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">point</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.SetEnd-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.SetEnd-expanded"><a name="L303"></a><tt class="py-lineno">303</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L304"></a><tt class="py-lineno">304</tt>  <tt class="py-line"><tt class="py-docstring">        Set the end instance of the best localization (the localization</tt> </tt>
+<a name="L305"></a><tt class="py-lineno">305</tt>  <tt class="py-line"><tt class="py-docstring">        with the better score), except for points.</tt> </tt>
+<a name="L306"></a><tt class="py-lineno">306</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-43" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-43', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name" targets="Method sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.SetEnd()=sppas.src.annotationdata.ptime.disjoint.TimeDisjoint-class.html#SetEnd,Method sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.SetEnd()=sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint-class.html#SetEnd,Method sppas.src.annotationdata.ptime.frameinterval.FrameInterval.SetEnd()=sppas.src.annotationdata.ptime.frameinterval.FrameInterval-class.html#SetEnd,Method sppas.src.annotationdata.ptime.interval.TimeInterval.SetEnd()=sppas.src.annotationdata.ptime.interval.TimeInterval-class.html#SetEnd,Method sppas.src.annotationdata.ptime.localization.Localization.SetEnd()=sppas.src.annotationdata.ptime.localization.Localization-class.html#SetEnd,Method sppas.src.annotationdata.ptime.location.Location.SetEnd()=sppas.src.annotationdata.ptime.location.Location-class.html#SetEnd"><a title="sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.SetEnd
+sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.SetEnd
+sppas.src.annotationdata.ptime.frameinterval.FrameInterval.SetEnd
+sppas.src.annotationdata.ptime.interval.TimeInterval.SetEnd
+sppas.src.annotationdata.ptime.localization.Localization.SetEnd
+sppas.src.annotationdata.ptime.location.Location.SetEnd" class="py-name" href="#" onclick="return doclink('link-44', 'SetEnd', 'link-44');">SetEnd</a></tt><tt class="py-op">(</tt><tt id="link-45" class="py-name"><a title="sppas.src.annotationdata.ptime.point" class="py-name" href="#" onclick="return doclink('link-45', 'point', 'link-36');">point</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L309"></a><tt class="py-lineno">309</tt>  <tt class="py-line"> </tt>
+<a name="L310"></a><tt class="py-lineno">310</tt>  <tt class="py-line">    <tt class="py-comment"># End SetEnd</tt> </tt>
+<a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L312"></a><tt class="py-lineno">312</tt>  <tt class="py-line"> </tt>
+<a name="Location.SetEndMidpoint"></a><div id="Location.SetEndMidpoint-def"><a name="L313"></a><tt class="py-lineno">313</tt> <a class="py-toggle" href="#" id="Location.SetEndMidpoint-toggle" onclick="return toggle('Location.SetEndMidpoint');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#SetEndMidpoint">SetEndMidpoint</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.SetEndMidpoint-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.SetEndMidpoint-expanded"><a name="L314"></a><tt class="py-lineno">314</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line"><tt class="py-docstring">        Set the end midpoint value of the best localization (the localization</tt> </tt>
+<a name="L316"></a><tt class="py-lineno">316</tt>  <tt class="py-line"><tt class="py-docstring">        with the better score), except for points.</tt> </tt>
+<a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L318"></a><tt class="py-lineno">318</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L319"></a><tt class="py-lineno">319</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-46" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-46', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name"><a title="sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.GetEnd
+sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.GetEnd
+sppas.src.annotationdata.ptime.frameinterval.FrameInterval.GetEnd
+sppas.src.annotationdata.ptime.interval.TimeInterval.GetEnd
+sppas.src.annotationdata.ptime.localization.Localization.GetEnd
+sppas.src.annotationdata.ptime.location.Location.GetEnd
+sppas.src.annotationdata.tier.Tier.GetEnd
+sppas.src.annotationdata.transcription.Transcription.GetEnd" class="py-name" href="#" onclick="return doclink('link-47', 'GetEnd', 'link-22');">GetEnd</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-48" class="py-name"><a title="sppas.src.annotationdata.ptime.framepoint.FramePoint.SetMidpoint
+sppas.src.annotationdata.ptime.point.TimePoint.SetMidpoint" class="py-name" href="#" onclick="return doclink('link-48', 'SetMidpoint', 'link-39');">SetMidpoint</a></tt><tt class="py-op">(</tt><tt class="py-name">value</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L320"></a><tt class="py-lineno">320</tt>  <tt class="py-line"> </tt>
+<a name="Location.SetEndRadius"></a><div id="Location.SetEndRadius-def"><a name="L321"></a><tt class="py-lineno">321</tt> <a class="py-toggle" href="#" id="Location.SetEndRadius-toggle" onclick="return toggle('Location.SetEndRadius');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#SetEndRadius">SetEndRadius</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.SetEndRadius-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.SetEndRadius-expanded"><a name="L322"></a><tt class="py-lineno">322</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L323"></a><tt class="py-lineno">323</tt>  <tt class="py-line"><tt class="py-docstring">        Set the end midpoint value of the best localization (the localization</tt> </tt>
+<a name="L324"></a><tt class="py-lineno">324</tt>  <tt class="py-line"><tt class="py-docstring">        with the better score), except for points.</tt> </tt>
+<a name="L325"></a><tt class="py-lineno">325</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L326"></a><tt class="py-lineno">326</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L327"></a><tt class="py-lineno">327</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-49" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-49', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-50" class="py-name"><a title="sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.GetEnd
+sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.GetEnd
+sppas.src.annotationdata.ptime.frameinterval.FrameInterval.GetEnd
+sppas.src.annotationdata.ptime.interval.TimeInterval.GetEnd
+sppas.src.annotationdata.ptime.localization.Localization.GetEnd
+sppas.src.annotationdata.ptime.location.Location.GetEnd
+sppas.src.annotationdata.tier.Tier.GetEnd
+sppas.src.annotationdata.transcription.Transcription.GetEnd" class="py-name" href="#" onclick="return doclink('link-50', 'GetEnd', 'link-22');">GetEnd</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-51" class="py-name"><a title="sppas.src.annotationdata.ptime.framepoint.FramePoint.SetRadius
+sppas.src.annotationdata.ptime.point.TimePoint.SetRadius
+sppas.src.annotationdata.tier.Tier.SetRadius" class="py-name" href="#" onclick="return doclink('link-51', 'SetRadius', 'link-42');">SetRadius</a></tt><tt class="py-op">(</tt><tt class="py-name">value</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L328"></a><tt class="py-lineno">328</tt>  <tt class="py-line"> </tt>
+<a name="Location.GetPoint"></a><div id="Location.GetPoint-def"><a name="L329"></a><tt class="py-lineno">329</tt> <a class="py-toggle" href="#" id="Location.GetPoint-toggle" onclick="return toggle('Location.GetPoint');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#GetPoint">GetPoint</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.GetPoint-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.GetPoint-expanded"><a name="L330"></a><tt class="py-lineno">330</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L331"></a><tt class="py-lineno">331</tt>  <tt class="py-line"><tt class="py-docstring">        Return the point instance of the best localization (the localization</tt> </tt>
+<a name="L332"></a><tt class="py-lineno">332</tt>  <tt class="py-line"><tt class="py-docstring">        with the better score), except for intervals.</tt> </tt>
+<a name="L333"></a><tt class="py-lineno">333</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L334"></a><tt class="py-lineno">334</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L335"></a><tt class="py-lineno">335</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-52" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-52', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-53" class="py-name" targets="Method sppas.src.annotationdata.ptime.localization.Localization.GetPoint()=sppas.src.annotationdata.ptime.localization.Localization-class.html#GetPoint,Method sppas.src.annotationdata.ptime.location.Location.GetPoint()=sppas.src.annotationdata.ptime.location.Location-class.html#GetPoint,Method sppas.src.annotationdata.ptime.point.TimePoint.GetPoint()=sppas.src.annotationdata.ptime.point.TimePoint-class.html#GetPoint"><a title="sppas.src.annotationdata.ptime.localization.Localization.GetPoint
+sppas.src.annotationdata.ptime.location.Location.GetPoint
+sppas.src.annotationdata.ptime.point.TimePoint.GetPoint" class="py-name" href="#" onclick="return doclink('link-53', 'GetPoint', 'link-53');">GetPoint</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L336"></a><tt class="py-lineno">336</tt>  <tt class="py-line"> </tt>
+<a name="L337"></a><tt class="py-lineno">337</tt>  <tt class="py-line">    <tt class="py-comment"># End GetPoint</tt> </tt>
+<a name="L338"></a><tt class="py-lineno">338</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L339"></a><tt class="py-lineno">339</tt>  <tt class="py-line"> </tt>
+<a name="Location.GetPointMidpoint"></a><div id="Location.GetPointMidpoint-def"><a name="L340"></a><tt class="py-lineno">340</tt> <a class="py-toggle" href="#" id="Location.GetPointMidpoint-toggle" onclick="return toggle('Location.GetPointMidpoint');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#GetPointMidpoint">GetPointMidpoint</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.GetPointMidpoint-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.GetPointMidpoint-expanded"><a name="L341"></a><tt class="py-lineno">341</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L342"></a><tt class="py-lineno">342</tt>  <tt class="py-line"><tt class="py-docstring">        Return the midpoint value of the best localization (the localization</tt> </tt>
+<a name="L343"></a><tt class="py-lineno">343</tt>  <tt class="py-line"><tt class="py-docstring">        with the better score), except for intervals.</tt> </tt>
+<a name="L344"></a><tt class="py-lineno">344</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L345"></a><tt class="py-lineno">345</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L346"></a><tt class="py-lineno">346</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-54" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-54', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-55" class="py-name"><a title="sppas.src.annotationdata.ptime.localization.Localization.GetPoint
+sppas.src.annotationdata.ptime.location.Location.GetPoint
+sppas.src.annotationdata.ptime.point.TimePoint.GetPoint" class="py-name" href="#" onclick="return doclink('link-55', 'GetPoint', 'link-53');">GetPoint</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-56" class="py-name"><a title="sppas.src.annotationdata.ptime.framepoint.FramePoint.GetMidpoint
+sppas.src.annotationdata.ptime.point.TimePoint.GetMidpoint" class="py-name" href="#" onclick="return doclink('link-56', 'GetMidpoint', 'link-20');">GetMidpoint</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L347"></a><tt class="py-lineno">347</tt>  <tt class="py-line"> </tt>
+<a name="L348"></a><tt class="py-lineno">348</tt>  <tt class="py-line">    <tt class="py-comment"># End GetPointMidpoint</tt> </tt>
+<a name="L349"></a><tt class="py-lineno">349</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L350"></a><tt class="py-lineno">350</tt>  <tt class="py-line"> </tt>
+<a name="Location.GetPointRadius"></a><div id="Location.GetPointRadius-def"><a name="L351"></a><tt class="py-lineno">351</tt> <a class="py-toggle" href="#" id="Location.GetPointRadius-toggle" onclick="return toggle('Location.GetPointRadius');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#GetPointRadius">GetPointRadius</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.GetPointRadius-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.GetPointRadius-expanded"><a name="L352"></a><tt class="py-lineno">352</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L353"></a><tt class="py-lineno">353</tt>  <tt class="py-line"><tt class="py-docstring">        Return the radius value of the best localization (the localization</tt> </tt>
+<a name="L354"></a><tt class="py-lineno">354</tt>  <tt class="py-line"><tt class="py-docstring">        with the better score), except for intervals.</tt> </tt>
+<a name="L355"></a><tt class="py-lineno">355</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L356"></a><tt class="py-lineno">356</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L357"></a><tt class="py-lineno">357</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-57" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-57', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-58" class="py-name"><a title="sppas.src.annotationdata.ptime.localization.Localization.GetPoint
+sppas.src.annotationdata.ptime.location.Location.GetPoint
+sppas.src.annotationdata.ptime.point.TimePoint.GetPoint" class="py-name" href="#" onclick="return doclink('link-58', 'GetPoint', 'link-53');">GetPoint</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-59" class="py-name"><a title="sppas.src.annotationdata.ptime.framepoint.FramePoint.GetRadius
+sppas.src.annotationdata.ptime.point.TimePoint.GetRadius" class="py-name" href="#" onclick="return doclink('link-59', 'GetRadius', 'link-26');">GetRadius</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L358"></a><tt class="py-lineno">358</tt>  <tt class="py-line"> </tt>
+<a name="L359"></a><tt class="py-lineno">359</tt>  <tt class="py-line">    <tt class="py-comment"># End GetPointRadius</tt> </tt>
+<a name="L360"></a><tt class="py-lineno">360</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L361"></a><tt class="py-lineno">361</tt>  <tt class="py-line"> </tt>
+<a name="Location.SetPoint"></a><div id="Location.SetPoint-def"><a name="L362"></a><tt class="py-lineno">362</tt> <a class="py-toggle" href="#" id="Location.SetPoint-toggle" onclick="return toggle('Location.SetPoint');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#SetPoint">SetPoint</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">point</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.SetPoint-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.SetPoint-expanded"><a name="L363"></a><tt class="py-lineno">363</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L364"></a><tt class="py-lineno">364</tt>  <tt class="py-line"><tt class="py-docstring">        Set the point instance of the best localization (the localization</tt> </tt>
+<a name="L365"></a><tt class="py-lineno">365</tt>  <tt class="py-line"><tt class="py-docstring">        with the better score), except for intervals.</tt> </tt>
+<a name="L366"></a><tt class="py-lineno">366</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L367"></a><tt class="py-lineno">367</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L368"></a><tt class="py-lineno">368</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-60" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-60', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-61" class="py-name" targets="Method sppas.src.annotationdata.ptime.localization.Localization.SetPoint()=sppas.src.annotationdata.ptime.localization.Localization-class.html#SetPoint,Method sppas.src.annotationdata.ptime.location.Location.SetPoint()=sppas.src.annotationdata.ptime.location.Location-class.html#SetPoint"><a title="sppas.src.annotationdata.ptime.localization.Localization.SetPoint
+sppas.src.annotationdata.ptime.location.Location.SetPoint" class="py-name" href="#" onclick="return doclink('link-61', 'SetPoint', 'link-61');">SetPoint</a></tt><tt class="py-op">(</tt><tt id="link-62" class="py-name"><a title="sppas.src.annotationdata.ptime.point" class="py-name" href="#" onclick="return doclink('link-62', 'point', 'link-36');">point</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L369"></a><tt class="py-lineno">369</tt>  <tt class="py-line"> </tt>
+<a name="L370"></a><tt class="py-lineno">370</tt>  <tt class="py-line">    <tt class="py-comment"># End SetPoint</tt> </tt>
+<a name="L371"></a><tt class="py-lineno">371</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L372"></a><tt class="py-lineno">372</tt>  <tt class="py-line"> </tt>
+<a name="Location.SetPointMidpoint"></a><div id="Location.SetPointMidpoint-def"><a name="L373"></a><tt class="py-lineno">373</tt> <a class="py-toggle" href="#" id="Location.SetPointMidpoint-toggle" onclick="return toggle('Location.SetPointMidpoint');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#SetPointMidpoint">SetPointMidpoint</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.SetPointMidpoint-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.SetPointMidpoint-expanded"><a name="L374"></a><tt class="py-lineno">374</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L375"></a><tt class="py-lineno">375</tt>  <tt class="py-line"><tt class="py-docstring">        Set the point value of the best localization (the localization</tt> </tt>
+<a name="L376"></a><tt class="py-lineno">376</tt>  <tt class="py-line"><tt class="py-docstring">        with the better score), except for intervals.</tt> </tt>
+<a name="L377"></a><tt class="py-lineno">377</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L378"></a><tt class="py-lineno">378</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L379"></a><tt class="py-lineno">379</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-63" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-63', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-64" class="py-name"><a title="sppas.src.annotationdata.ptime.localization.Localization.GetPoint
+sppas.src.annotationdata.ptime.location.Location.GetPoint
+sppas.src.annotationdata.ptime.point.TimePoint.GetPoint" class="py-name" href="#" onclick="return doclink('link-64', 'GetPoint', 'link-53');">GetPoint</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-65" class="py-name"><a title="sppas.src.annotationdata.ptime.framepoint.FramePoint.SetMidpoint
+sppas.src.annotationdata.ptime.point.TimePoint.SetMidpoint" class="py-name" href="#" onclick="return doclink('link-65', 'SetMidpoint', 'link-39');">SetMidpoint</a></tt><tt class="py-op">(</tt><tt class="py-name">value</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L380"></a><tt class="py-lineno">380</tt>  <tt class="py-line"> </tt>
+<a name="L381"></a><tt class="py-lineno">381</tt>  <tt class="py-line"> </tt>
+<a name="Location.SetPointRadius"></a><div id="Location.SetPointRadius-def"><a name="L382"></a><tt class="py-lineno">382</tt> <a class="py-toggle" href="#" id="Location.SetPointRadius-toggle" onclick="return toggle('Location.SetPointRadius');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#SetPointRadius">SetPointRadius</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.SetPointRadius-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.SetPointRadius-expanded"><a name="L383"></a><tt class="py-lineno">383</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L384"></a><tt class="py-lineno">384</tt>  <tt class="py-line"><tt class="py-docstring">        Set the point radius of the best localization (the localization</tt> </tt>
+<a name="L385"></a><tt class="py-lineno">385</tt>  <tt class="py-line"><tt class="py-docstring">        with the better score), except for intervals.</tt> </tt>
+<a name="L386"></a><tt class="py-lineno">386</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L387"></a><tt class="py-lineno">387</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L388"></a><tt class="py-lineno">388</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-66" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-66', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-67" class="py-name"><a title="sppas.src.annotationdata.ptime.localization.Localization.GetPoint
+sppas.src.annotationdata.ptime.location.Location.GetPoint
+sppas.src.annotationdata.ptime.point.TimePoint.GetPoint" class="py-name" href="#" onclick="return doclink('link-67', 'GetPoint', 'link-53');">GetPoint</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-68" class="py-name"><a title="sppas.src.annotationdata.ptime.framepoint.FramePoint.SetRadius
+sppas.src.annotationdata.ptime.point.TimePoint.SetRadius
+sppas.src.annotationdata.tier.Tier.SetRadius" class="py-name" href="#" onclick="return doclink('link-68', 'SetRadius', 'link-42');">SetRadius</a></tt><tt class="py-op">(</tt><tt class="py-name">value</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L389"></a><tt class="py-lineno">389</tt>  <tt class="py-line"> </tt>
+<a name="L390"></a><tt class="py-lineno">390</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------</tt> </tt>
+<a name="L391"></a><tt class="py-lineno">391</tt>  <tt class="py-line"> </tt>
+<a name="Location.IsPoint"></a><div id="Location.IsPoint-def"><a name="L392"></a><tt class="py-lineno">392</tt> <a class="py-toggle" href="#" id="Location.IsPoint-toggle" onclick="return toggle('Location.IsPoint');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#IsPoint">IsPoint</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.IsPoint-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.IsPoint-expanded"><a name="L393"></a><tt class="py-lineno">393</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L394"></a><tt class="py-lineno">394</tt>  <tt class="py-line"><tt class="py-docstring">        Check if the Localization attribute is</tt> </tt>
+<a name="L395"></a><tt class="py-lineno">395</tt>  <tt class="py-line"><tt class="py-docstring">        an instance of TimePoint or FramePoint.</tt> </tt>
+<a name="L396"></a><tt class="py-lineno">396</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L397"></a><tt class="py-lineno">397</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L398"></a><tt class="py-lineno">398</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-69" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-69', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-70" class="py-name" targets="Method sppas.src.annotationdata.ptime.baseplacement.BasePlacement.IsTimePoint()=sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html#IsTimePoint,Method sppas.src.annotationdata.ptime.localization.Localization.IsTimePoint()=sppas.src.annotationdata.ptime.localization.Localization-class.html#IsTimePoint,Method sppas.src.annotationdata.ptime.location.Location.IsTimePoint()=sppas.src.annotationdata.ptime.location.Location-class.html#IsTimePoint,Method sppas.src.annotationdata.ptime.point.TimePoint.IsTimePoint()=sppas.src.annotationdata.ptime.point.TimePoint-class.html#IsTimePoint"><a title="sppas.src.annotationdata.ptime.baseplacement.BasePlacement.IsTimePoint
+sppas.src.annotationdata.ptime.localization.Localization.IsTimePoint
+sppas.src.annotationdata.ptime.location.Location.IsTimePoint
+sppas.src.annotationdata.ptime.point.TimePoint.IsTimePoint" class="py-name" href="#" onclick="return doclink('link-70', 'IsTimePoint', 'link-70');">IsTimePoint</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-71" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-71', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-72" class="py-name" targets="Method sppas.src.annotationdata.ptime.baseplacement.BasePlacement.IsFramePoint()=sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html#IsFramePoint,Method sppas.src.annotationdata.ptime.framepoint.FramePoint.IsFramePoint()=sppas.src.annotationdata.ptime.framepoint.FramePoint-class.html#IsFramePoint,Method sppas.src.annotationdata.ptime.localization.Localization.IsFramePoint()=sppas.src.annotationdata.ptime.localization.Localization-class.html#IsFramePoint,Method sppas.src.annotationdata.ptime.location.Location.IsFramePoint()=sppas.src.annotationdata.ptime.location.Location-class.html#IsFramePoint"><a title="sppas.src.annotationdata.ptime.baseplacement.BasePlacement.IsFramePoint
+sppas.src.annotationdata.ptime.framepoint.FramePoint.IsFramePoint
+sppas.src.annotationdata.ptime.localization.Localization.IsFramePoint
+sppas.src.annotationdata.ptime.location.Location.IsFramePoint" class="py-name" href="#" onclick="return doclink('link-72', 'IsFramePoint', 'link-72');">IsFramePoint</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L399"></a><tt class="py-lineno">399</tt>  <tt class="py-line"> </tt>
+<a name="L400"></a><tt class="py-lineno">400</tt>  <tt class="py-line">    <tt class="py-comment"># End IsPoint</tt> </tt>
+<a name="L401"></a><tt class="py-lineno">401</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L402"></a><tt class="py-lineno">402</tt>  <tt class="py-line"> </tt>
+<a name="Location.IsInterval"></a><div id="Location.IsInterval-def"><a name="L403"></a><tt class="py-lineno">403</tt> <a class="py-toggle" href="#" id="Location.IsInterval-toggle" onclick="return toggle('Location.IsInterval');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#IsInterval">IsInterval</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.IsInterval-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.IsInterval-expanded"><a name="L404"></a><tt class="py-lineno">404</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L405"></a><tt class="py-lineno">405</tt>  <tt class="py-line"><tt class="py-docstring">        Check if the Localization attribute is</tt> </tt>
+<a name="L406"></a><tt class="py-lineno">406</tt>  <tt class="py-line"><tt class="py-docstring">        an instance of TimeInterval or FrameInterval.</tt> </tt>
+<a name="L407"></a><tt class="py-lineno">407</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L408"></a><tt class="py-lineno">408</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L409"></a><tt class="py-lineno">409</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-73" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-73', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-74" class="py-name" targets="Method sppas.src.annotationdata.ptime.baseplacement.BasePlacement.IsTimeInterval()=sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html#IsTimeInterval,Method sppas.src.annotationdata.ptime.interval.TimeInterval.IsTimeInterval()=sppas.src.annotationdata.ptime.interval.TimeInterval-class.html#IsTimeInterval,Method sppas.src.annotationdata.ptime.localization.Localization.IsTimeInterval()=sppas.src.annotationdata.ptime.localization.Localization-class.html#IsTimeInterval,Method sppas.src.annotationdata.ptime.location.Location.IsTimeInterval()=sppas.src.annotationdata.ptime.location.Location-class.html#IsTimeInterval"><a title="sppas.src.annotationdata.ptime.baseplacement.BasePlacement.IsTimeInterval
+sppas.src.annotationdata.ptime.interval.TimeInterval.IsTimeInterval
+sppas.src.annotationdata.ptime.localization.Localization.IsTimeInterval
+sppas.src.annotationdata.ptime.location.Location.IsTimeInterval" class="py-name" href="#" onclick="return doclink('link-74', 'IsTimeInterval', 'link-74');">IsTimeInterval</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> </tt>
+<a name="L410"></a><tt class="py-lineno">410</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-75" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-75', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-76" class="py-name" targets="Method sppas.src.annotationdata.ptime.baseplacement.BasePlacement.IsFrameInterval()=sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html#IsFrameInterval,Method sppas.src.annotationdata.ptime.frameinterval.FrameInterval.IsFrameInterval()=sppas.src.annotationdata.ptime.frameinterval.FrameInterval-class.html#IsFrameInterval,Method sppas.src.annotationdata.ptime.localization.Localization.IsFrameInterval()=sppas.src.annotationdata.ptime.localization.Localization-class.html#IsFrameInterval,Method sppas.src.annotationdata.ptime.location.Location.IsFrameInterval()=sppas.src.annotationdata.ptime.location.Location-class.html#IsFrameInterval"><a title="sppas.src.annotationdata.ptime.baseplacement.BasePlacement.IsFrameInterval
+sppas.src.annotationdata.ptime.frameinterval.FrameInterval.IsFrameInterval
+sppas.src.annotationdata.ptime.localization.Localization.IsFrameInterval
+sppas.src.annotationdata.ptime.location.Location.IsFrameInterval" class="py-name" href="#" onclick="return doclink('link-76', 'IsFrameInterval', 'link-76');">IsFrameInterval</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L411"></a><tt class="py-lineno">411</tt>  <tt class="py-line"> </tt>
+<a name="L412"></a><tt class="py-lineno">412</tt>  <tt class="py-line">    <tt class="py-comment"># End IsInterval</tt> </tt>
+<a name="L413"></a><tt class="py-lineno">413</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L414"></a><tt class="py-lineno">414</tt>  <tt class="py-line"> </tt>
+<a name="Location.IsDisjoint"></a><div id="Location.IsDisjoint-def"><a name="L415"></a><tt class="py-lineno">415</tt> <a class="py-toggle" href="#" id="Location.IsDisjoint-toggle" onclick="return toggle('Location.IsDisjoint');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#IsDisjoint">IsDisjoint</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.IsDisjoint-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.IsDisjoint-expanded"><a name="L416"></a><tt class="py-lineno">416</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L417"></a><tt class="py-lineno">417</tt>  <tt class="py-line"><tt class="py-docstring">        Check if the attribute Localization is</tt> </tt>
+<a name="L418"></a><tt class="py-lineno">418</tt>  <tt class="py-line"><tt class="py-docstring">        an instance of TimeDisjoint or FrameDisjoint.</tt> </tt>
+<a name="L419"></a><tt class="py-lineno">419</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L420"></a><tt class="py-lineno">420</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L421"></a><tt class="py-lineno">421</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-77" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-77', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-78" class="py-name" targets="Method sppas.src.annotationdata.ptime.baseplacement.BasePlacement.IsTimeDisjoint()=sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html#IsTimeDisjoint,Method sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.IsTimeDisjoint()=sppas.src.annotationdata.ptime.disjoint.TimeDisjoint-class.html#IsTimeDisjoint,Method sppas.src.annotationdata.ptime.localization.Localization.IsTimeDisjoint()=sppas.src.annotationdata.ptime.localization.Localization-class.html#IsTimeDisjoint,Method sppas.src.annotationdata.ptime.location.Location.IsTimeDisjoint()=sppas.src.annotationdata.ptime.location.Location-class.html#IsTimeDisjoint"><a title="sppas.src.annotationdata.ptime.baseplacement.BasePlacement.IsTimeDisjoint
+sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.IsTimeDisjoint
+sppas.src.annotationdata.ptime.localization.Localization.IsTimeDisjoint
+sppas.src.annotationdata.ptime.location.Location.IsTimeDisjoint" class="py-name" href="#" onclick="return doclink('link-78', 'IsTimeDisjoint', 'link-78');">IsTimeDisjoint</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> </tt>
+<a name="L422"></a><tt class="py-lineno">422</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-79" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-79', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-80" class="py-name" targets="Method sppas.src.annotationdata.ptime.baseplacement.BasePlacement.IsFrameDisjoint()=sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html#IsFrameDisjoint,Method sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.IsFrameDisjoint()=sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint-class.html#IsFrameDisjoint,Method sppas.src.annotationdata.ptime.localization.Localization.IsFrameDisjoint()=sppas.src.annotationdata.ptime.localization.Localization-class.html#IsFrameDisjoint,Method sppas.src.annotationdata.ptime.location.Location.IsFrameDisjoint()=sppas.src.annotationdata.ptime.location.Location-class.html#IsFrameDisjoint"><a title="sppas.src.annotationdata.ptime.baseplacement.BasePlacement.IsFrameDisjoint
+sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.IsFrameDisjoint
+sppas.src.annotationdata.ptime.localization.Localization.IsFrameDisjoint
+sppas.src.annotationdata.ptime.location.Location.IsFrameDisjoint" class="py-name" href="#" onclick="return doclink('link-80', 'IsFrameDisjoint', 'link-80');">IsFrameDisjoint</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L423"></a><tt class="py-lineno">423</tt>  <tt class="py-line"> </tt>
+<a name="L424"></a><tt class="py-lineno">424</tt>  <tt class="py-line">    <tt class="py-comment"># End IsDisjoint</tt> </tt>
+<a name="L425"></a><tt class="py-lineno">425</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L426"></a><tt class="py-lineno">426</tt>  <tt class="py-line"> </tt>
+<a name="Location.IsTimePoint"></a><div id="Location.IsTimePoint-def"><a name="L427"></a><tt class="py-lineno">427</tt> <a class="py-toggle" href="#" id="Location.IsTimePoint-toggle" onclick="return toggle('Location.IsTimePoint');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#IsTimePoint">IsTimePoint</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.IsTimePoint-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.IsTimePoint-expanded"><a name="L428"></a><tt class="py-lineno">428</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L429"></a><tt class="py-lineno">429</tt>  <tt class="py-line"><tt class="py-docstring">        Check if the best location is an instance of TimePoint.</tt> </tt>
+<a name="L430"></a><tt class="py-lineno">430</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L431"></a><tt class="py-lineno">431</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L432"></a><tt class="py-lineno">432</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-81" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-81', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-82" class="py-name"><a title="sppas.src.annotationdata.ptime.baseplacement.BasePlacement.IsTimePoint
+sppas.src.annotationdata.ptime.localization.Localization.IsTimePoint
+sppas.src.annotationdata.ptime.location.Location.IsTimePoint
+sppas.src.annotationdata.ptime.point.TimePoint.IsTimePoint" class="py-name" href="#" onclick="return doclink('link-82', 'IsTimePoint', 'link-70');">IsTimePoint</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L433"></a><tt class="py-lineno">433</tt>  <tt class="py-line"> </tt>
+<a name="L434"></a><tt class="py-lineno">434</tt>  <tt class="py-line">    <tt class="py-comment"># End IsTimePoint</tt> </tt>
+<a name="L435"></a><tt class="py-lineno">435</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L436"></a><tt class="py-lineno">436</tt>  <tt class="py-line"> </tt>
+<a name="Location.IsTimeInterval"></a><div id="Location.IsTimeInterval-def"><a name="L437"></a><tt class="py-lineno">437</tt> <a class="py-toggle" href="#" id="Location.IsTimeInterval-toggle" onclick="return toggle('Location.IsTimeInterval');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#IsTimeInterval">IsTimeInterval</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.IsTimeInterval-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.IsTimeInterval-expanded"><a name="L438"></a><tt class="py-lineno">438</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L439"></a><tt class="py-lineno">439</tt>  <tt class="py-line"><tt class="py-docstring">        Check if the best location is an instance of TimeInterval.</tt> </tt>
+<a name="L440"></a><tt class="py-lineno">440</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L441"></a><tt class="py-lineno">441</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L442"></a><tt class="py-lineno">442</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-83" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-83', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-84" class="py-name"><a title="sppas.src.annotationdata.ptime.baseplacement.BasePlacement.IsTimeInterval
+sppas.src.annotationdata.ptime.interval.TimeInterval.IsTimeInterval
+sppas.src.annotationdata.ptime.localization.Localization.IsTimeInterval
+sppas.src.annotationdata.ptime.location.Location.IsTimeInterval" class="py-name" href="#" onclick="return doclink('link-84', 'IsTimeInterval', 'link-74');">IsTimeInterval</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L443"></a><tt class="py-lineno">443</tt>  <tt class="py-line"> </tt>
+<a name="L444"></a><tt class="py-lineno">444</tt>  <tt class="py-line">    <tt class="py-comment"># End IsTimeInterval</tt> </tt>
+<a name="L445"></a><tt class="py-lineno">445</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L446"></a><tt class="py-lineno">446</tt>  <tt class="py-line"> </tt>
+<a name="Location.IsTimeDisjoint"></a><div id="Location.IsTimeDisjoint-def"><a name="L447"></a><tt class="py-lineno">447</tt> <a class="py-toggle" href="#" id="Location.IsTimeDisjoint-toggle" onclick="return toggle('Location.IsTimeDisjoint');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#IsTimeDisjoint">IsTimeDisjoint</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.IsTimeDisjoint-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.IsTimeDisjoint-expanded"><a name="L448"></a><tt class="py-lineno">448</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L449"></a><tt class="py-lineno">449</tt>  <tt class="py-line"><tt class="py-docstring">        Check if the best location is an instance of TimeDisjoint.</tt> </tt>
+<a name="L450"></a><tt class="py-lineno">450</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L451"></a><tt class="py-lineno">451</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L452"></a><tt class="py-lineno">452</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-85" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-85', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-86" class="py-name"><a title="sppas.src.annotationdata.ptime.baseplacement.BasePlacement.IsTimeDisjoint
+sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.IsTimeDisjoint
+sppas.src.annotationdata.ptime.localization.Localization.IsTimeDisjoint
+sppas.src.annotationdata.ptime.location.Location.IsTimeDisjoint" class="py-name" href="#" onclick="return doclink('link-86', 'IsTimeDisjoint', 'link-78');">IsTimeDisjoint</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L453"></a><tt class="py-lineno">453</tt>  <tt class="py-line"> </tt>
+<a name="L454"></a><tt class="py-lineno">454</tt>  <tt class="py-line">    <tt class="py-comment"># End IsTimeDisjoint</tt> </tt>
+<a name="L455"></a><tt class="py-lineno">455</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L456"></a><tt class="py-lineno">456</tt>  <tt class="py-line"> </tt>
+<a name="Location.IsFramePoint"></a><div id="Location.IsFramePoint-def"><a name="L457"></a><tt class="py-lineno">457</tt> <a class="py-toggle" href="#" id="Location.IsFramePoint-toggle" onclick="return toggle('Location.IsFramePoint');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#IsFramePoint">IsFramePoint</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.IsFramePoint-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.IsFramePoint-expanded"><a name="L458"></a><tt class="py-lineno">458</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L459"></a><tt class="py-lineno">459</tt>  <tt class="py-line"><tt class="py-docstring">        Check if the best location is an instance of FramePoint.</tt> </tt>
+<a name="L460"></a><tt class="py-lineno">460</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L461"></a><tt class="py-lineno">461</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L462"></a><tt class="py-lineno">462</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-87" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-87', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-88" class="py-name"><a title="sppas.src.annotationdata.ptime.baseplacement.BasePlacement.IsFramePoint
+sppas.src.annotationdata.ptime.framepoint.FramePoint.IsFramePoint
+sppas.src.annotationdata.ptime.localization.Localization.IsFramePoint
+sppas.src.annotationdata.ptime.location.Location.IsFramePoint" class="py-name" href="#" onclick="return doclink('link-88', 'IsFramePoint', 'link-72');">IsFramePoint</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L463"></a><tt class="py-lineno">463</tt>  <tt class="py-line"> </tt>
+<a name="L464"></a><tt class="py-lineno">464</tt>  <tt class="py-line">    <tt class="py-comment"># End IsFramePoint</tt> </tt>
+<a name="L465"></a><tt class="py-lineno">465</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L466"></a><tt class="py-lineno">466</tt>  <tt class="py-line"> </tt>
+<a name="Location.IsFrameInterval"></a><div id="Location.IsFrameInterval-def"><a name="L467"></a><tt class="py-lineno">467</tt> <a class="py-toggle" href="#" id="Location.IsFrameInterval-toggle" onclick="return toggle('Location.IsFrameInterval');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#IsFrameInterval">IsFrameInterval</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.IsFrameInterval-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.IsFrameInterval-expanded"><a name="L468"></a><tt class="py-lineno">468</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L469"></a><tt class="py-lineno">469</tt>  <tt class="py-line"><tt class="py-docstring">        Check if the best location is an instance of FrameInterval.</tt> </tt>
+<a name="L470"></a><tt class="py-lineno">470</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L471"></a><tt class="py-lineno">471</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L472"></a><tt class="py-lineno">472</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-89" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-89', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-90" class="py-name"><a title="sppas.src.annotationdata.ptime.baseplacement.BasePlacement.IsFrameInterval
+sppas.src.annotationdata.ptime.frameinterval.FrameInterval.IsFrameInterval
+sppas.src.annotationdata.ptime.localization.Localization.IsFrameInterval
+sppas.src.annotationdata.ptime.location.Location.IsFrameInterval" class="py-name" href="#" onclick="return doclink('link-90', 'IsFrameInterval', 'link-76');">IsFrameInterval</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L473"></a><tt class="py-lineno">473</tt>  <tt class="py-line"> </tt>
+<a name="L474"></a><tt class="py-lineno">474</tt>  <tt class="py-line">    <tt class="py-comment"># End IsFrameInterval</tt> </tt>
+<a name="L475"></a><tt class="py-lineno">475</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L476"></a><tt class="py-lineno">476</tt>  <tt class="py-line"> </tt>
+<a name="Location.IsFrameDisjoint"></a><div id="Location.IsFrameDisjoint-def"><a name="L477"></a><tt class="py-lineno">477</tt> <a class="py-toggle" href="#" id="Location.IsFrameDisjoint-toggle" onclick="return toggle('Location.IsFrameDisjoint');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#IsFrameDisjoint">IsFrameDisjoint</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.IsFrameDisjoint-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.IsFrameDisjoint-expanded"><a name="L478"></a><tt class="py-lineno">478</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L479"></a><tt class="py-lineno">479</tt>  <tt class="py-line"><tt class="py-docstring">        Check if the best location is an instance of TimeDisjoint.</tt> </tt>
+<a name="L480"></a><tt class="py-lineno">480</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L481"></a><tt class="py-lineno">481</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L482"></a><tt class="py-lineno">482</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-91" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.GetValue
+sppas.src.annotationdata.label.text.Text.GetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.GetValue
+sppas.src.annotationdata.ptime.location.Location.GetValue
+sppas.src.annotationdata.ptime.point.TimePoint.GetValue" class="py-name" href="#" onclick="return doclink('link-91', 'GetValue', 'link-16');">GetValue</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-92" class="py-name"><a title="sppas.src.annotationdata.ptime.baseplacement.BasePlacement.IsFrameDisjoint
+sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.IsFrameDisjoint
+sppas.src.annotationdata.ptime.localization.Localization.IsFrameDisjoint
+sppas.src.annotationdata.ptime.location.Location.IsFrameDisjoint" class="py-name" href="#" onclick="return doclink('link-92', 'IsFrameDisjoint', 'link-80');">IsFrameDisjoint</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L483"></a><tt class="py-lineno">483</tt>  <tt class="py-line"> </tt>
+<a name="L484"></a><tt class="py-lineno">484</tt>  <tt class="py-line">    <tt class="py-comment"># End IsFrameDisjoint</tt> </tt>
+<a name="L485"></a><tt class="py-lineno">485</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L486"></a><tt class="py-lineno">486</tt>  <tt class="py-line"> </tt>
+<a name="Location.__repr__"></a><div id="Location.__repr__-def"><a name="L487"></a><tt class="py-lineno">487</tt> <a class="py-toggle" href="#" id="Location.__repr__-toggle" onclick="return toggle('Location.__repr__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#__repr__">__repr__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.__repr__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.__repr__-expanded"><a name="L488"></a><tt class="py-lineno">488</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">"Locations:%s"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-string">"; "</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">i</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__locs</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L489"></a><tt class="py-lineno">489</tt>  <tt class="py-line"> </tt>
+<a name="L490"></a><tt class="py-lineno">490</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------</tt> </tt>
+<a name="L491"></a><tt class="py-lineno">491</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------</tt> </tt>
+<a name="L492"></a><tt class="py-lineno">492</tt>  <tt class="py-line"> </tt>
+<a name="L493"></a><tt class="py-lineno">493</tt>  <tt class="py-line"> </tt>
+<a name="Location.__repr__"></a><div id="Location.__repr__-def"><a name="L494"></a><tt class="py-lineno">494</tt> <a class="py-toggle" href="#" id="Location.__repr__-toggle" onclick="return toggle('Location.__repr__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#__repr__">__repr__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.__repr__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.__repr__-expanded"><a name="L495"></a><tt class="py-lineno">495</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">"%s"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-string">"; "</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">i</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__locs</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L496"></a><tt class="py-lineno">496</tt>  <tt class="py-line"> </tt>
+<a name="L497"></a><tt class="py-lineno">497</tt>  <tt class="py-line">    <tt class="py-comment"># End __repr__</tt> </tt>
+<a name="L498"></a><tt class="py-lineno">498</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L499"></a><tt class="py-lineno">499</tt>  <tt class="py-line"> </tt>
+<a name="Location.__str__"></a><div id="Location.__str__-def"><a name="L500"></a><tt class="py-lineno">500</tt> <a class="py-toggle" href="#" id="Location.__str__-toggle" onclick="return toggle('Location.__str__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.__str__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.__str__-expanded"><a name="L501"></a><tt class="py-lineno">501</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">"Locations:%s"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-string">"; "</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">i</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__locs</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L502"></a><tt class="py-lineno">502</tt>  <tt class="py-line"> </tt>
+<a name="Location.__iter__"></a><div id="Location.__iter__-def"><a name="L503"></a><tt class="py-lineno">503</tt> <a class="py-toggle" href="#" id="Location.__iter__-toggle" onclick="return toggle('Location.__iter__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#__iter__">__iter__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.__iter__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.__iter__-expanded"><a name="L504"></a><tt class="py-lineno">504</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">a</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__locs</tt><tt class="py-op">:</tt> </tt>
+<a name="L505"></a><tt class="py-lineno">505</tt>  <tt class="py-line">            <tt class="py-keyword">yield</tt> <tt class="py-name">a</tt> </tt>
+</div><a name="L506"></a><tt class="py-lineno">506</tt>  <tt class="py-line"> </tt>
+<a name="L507"></a><tt class="py-lineno">507</tt>  <tt class="py-line">    <tt class="py-comment"># End __iter__</tt> </tt>
+<a name="L508"></a><tt class="py-lineno">508</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L509"></a><tt class="py-lineno">509</tt>  <tt class="py-line"> </tt>
+<a name="Location.__getitem__"></a><div id="Location.__getitem__-def"><a name="L510"></a><tt class="py-lineno">510</tt> <a class="py-toggle" href="#" id="Location.__getitem__-toggle" onclick="return toggle('Location.__getitem__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#__getitem__">__getitem__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">i</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.__getitem__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.__getitem__-expanded"><a name="L511"></a><tt class="py-lineno">511</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__locs</tt><tt class="py-op">[</tt><tt class="py-name">i</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L512"></a><tt class="py-lineno">512</tt>  <tt class="py-line"> </tt>
+<a name="L513"></a><tt class="py-lineno">513</tt>  <tt class="py-line">    <tt class="py-comment"># End __getitem__</tt> </tt>
+<a name="L514"></a><tt class="py-lineno">514</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L515"></a><tt class="py-lineno">515</tt>  <tt class="py-line"> </tt>
+<a name="Location.__len__"></a><div id="Location.__len__-def"><a name="L516"></a><tt class="py-lineno">516</tt> <a class="py-toggle" href="#" id="Location.__len__-toggle" onclick="return toggle('Location.__len__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.ptime.location.Location-class.html#__len__">__len__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Location.__len__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Location.__len__-expanded"><a name="L517"></a><tt class="py-lineno">517</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__locs</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L518"></a><tt class="py-lineno">518</tt>  <tt class="py-line"> </tt>
+<a name="L519"></a><tt class="py-lineno">519</tt>  <tt class="py-line">    <tt class="py-comment"># End __len__</tt> </tt>
+<a name="L520"></a><tt class="py-lineno">520</tt>  <tt class="py-line">    <tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L521"></a><tt class="py-lineno">521</tt>  <tt class="py-line"> </tt>
+<a name="L522"></a><tt class="py-lineno">522</tt>  <tt class="py-line"><tt class="py-comment"># End Location</tt> </tt>
+<a name="L523"></a><tt class="py-lineno">523</tt>  <tt class="py-line"><tt class="py-comment"># ------------------------------------------------------------------------------------</tt> </tt>
+<a name="L524"></a><tt class="py-lineno">524</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.lpl-aix.fr/~bigi/sppas/">SPPAS</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Aug  4 17:58:02 2015
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

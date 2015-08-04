@@ -1,219 +1,0 @@
-<?xml version="1.0" encoding="ascii"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-          "DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-  <title>src.annotationdata.statistics.stats.linregress</title>
-  <link rel="stylesheet" href="epydoc.css" type="text/css" />
-  <script type="text/javascript" src="epydoc.js"></script>
-</head>
-
-<body bgcolor="white" text="black" link="blue" vlink="#204080"
-      alink="#204080">
-<!-- ==================== NAVIGATION BAR ==================== -->
-<table class="navbar" border="0" width="100%" cellpadding="0"
-       bgcolor="#a0c0ff" cellspacing="0">
-  <tr valign="middle">
-
-  <!-- Tree link -->
-      <th>&nbsp;&nbsp;&nbsp;<a
-        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
-
-  <!-- Index link -->
-      <th>&nbsp;&nbsp;&nbsp;<a
-        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
-
-  <!-- Help link -->
-      <th>&nbsp;&nbsp;&nbsp;<a
-        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
-
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            ><a href="http://www.lpl-aix.fr/~bigi/sppas/">SPPAS</a></th>
-          </tr></table></th>
-  </tr>
-</table>
-<table width="100%" cellpadding="0" cellspacing="0">
-  <tr valign="top">
-    <td width="100%">
-      <span class="breadcrumbs">
-        Package&nbsp;src ::
-        <a href="src.annotationdata-module.html">Package&nbsp;annotationdata</a> ::
-        <a href="src.annotationdata.statistics-module.html">Package&nbsp;statistics</a> ::
-        <a href="src.annotationdata.statistics.stats-module.html">Package&nbsp;stats</a> ::
-        Module&nbsp;linregress
-      </span>
-    </td>
-    <td>
-      <table cellpadding="0" cellspacing="0">
-        <!-- hide/show private -->
-      </table>
-    </td>
-  </tr>
-</table>
-<h1 class="epydoc">Source Code for <a href="src.annotationdata.statistics.stats.linregress-module.html">Module src.annotationdata.statistics.stats.linregress</a></h1>
-<pre class="py-src">
-<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># def llinregress(x,y):</tt> </tt>
-<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment">#     """</tt> </tt>
-<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment">#     Calculates a regression line on x,y pairs.</tt> </tt>
-<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
-<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment">#     Usage:   llinregress(x,y)      x,y are equal-length lists of x-y coordinates</tt> </tt>
-<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment">#     Returns: slope, intercept, r, two-tailed prob, sterr-of-estimate</tt> </tt>
-<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment">#     """</tt> </tt>
-<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment">#     TINY = 1.0e-20</tt> </tt>
-<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment">#     if len(x) &lt;&gt; len(y):</tt> </tt>
-<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment">#         raise ValueError, 'Input values not paired in linregress.  Aborting.'</tt> </tt>
-<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment">#     n = len(x)</tt> </tt>
-<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment">#     x = map(float,x)</tt> </tt>
-<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment">#     y = map(float,y)</tt> </tt>
-<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment">#     xmean = mean(x)</tt> </tt>
-<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment">#     ymean = mean(y)</tt> </tt>
-<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-comment">#     r_num = float(n*(summult(x,y)) - sum(x)*sum(y))</tt> </tt>
-<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-comment">#     r_den = math.sqrt((n*ss(x) - square_of_sums(x))*(n*ss(y)-square_of_sums(y)))</tt> </tt>
-<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-comment">#     r = r_num / r_den</tt> </tt>
-<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-comment">#     z = 0.5*math.log((1.0+r+TINY)/(1.0-r+TINY))</tt> </tt>
-<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-comment">#     df = n-2</tt> </tt>
-<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-comment">#     t = r*math.sqrt(df/((1.0-r+TINY)*(1.0+r+TINY)))</tt> </tt>
-<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-comment">#     prob = betai(0.5*df,0.5,df/(df+t*t))</tt> </tt>
-<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-comment">#     slope = r_num / float(n*ss(x) - square_of_sums(x))</tt> </tt>
-<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-comment">#     intercept = ymean - slope*xmean</tt> </tt>
-<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-comment">#     sterrest = math.sqrt(1-r*r)*samplestdev(y)</tt> </tt>
-<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-comment">#     return slope, intercept, r, prob, sterrest</tt> </tt>
-<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"> </tt>
-<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Module src.annotationdata.statistics.stats.central=src.annotationdata.statistics.stats.central-module.html"><a title="src.annotationdata.statistics.stats.central" class="py-name" href="#" onclick="return doclink('link-0', 'central', 'link-0');">central</a></tt> </tt>
-<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"> </tt>
-<a name="slope"></a><div id="slope-def"><a name="L30"></a><tt class="py-lineno"> 30</tt> <a class="py-toggle" href="#" id="slope-toggle" onclick="return toggle('slope');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.statistics.stats.linregress-module.html#slope">slope</a> <tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-param">x1</tt><tt class="py-op">,</tt> <tt class="py-param">y1</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt class="py-param">x2</tt><tt class="py-op">,</tt> <tt class="py-param">y2</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-</div><div id="slope-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="slope-expanded"><a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
-<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-docstring">    Estimates the slope between 2 points (x1,y1) and (x2,y2).</tt> </tt>
-<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
-<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">    <tt class="py-name">x2</tt> <tt class="py-op">=</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">x2</tt> <tt class="py-op">-</tt> <tt class="py-name">x1</tt><tt class="py-op">)</tt> </tt>
-<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">    <tt class="py-name">y2</tt> <tt class="py-op">=</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">y2</tt> <tt class="py-op">-</tt> <tt class="py-name">y1</tt><tt class="py-op">)</tt> </tt>
-<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"> </tt>
-<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">    <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-name">y2</tt><tt class="py-op">/</tt><tt class="py-name">x2</tt><tt class="py-op">)</tt> </tt>
-<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">m</tt> </tt>
-</div><a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"> </tt>
-<a name="intercept"></a><div id="intercept-def"><a name="L40"></a><tt class="py-lineno"> 40</tt> <a class="py-toggle" href="#" id="intercept-toggle" onclick="return toggle('intercept');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.statistics.stats.linregress-module.html#intercept">intercept</a><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-param">x1</tt><tt class="py-op">,</tt> <tt class="py-param">y1</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt class="py-param">x2</tt><tt class="py-op">,</tt> <tt class="py-param">y2</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-</div><div id="intercept-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="intercept-expanded"><a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">    <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt id="link-1" class="py-name" targets="Function src.annotationdata.statistics.stats.linregress.slope()=src.annotationdata.statistics.stats.linregress-module.html#slope"><a title="src.annotationdata.statistics.stats.linregress.slope" class="py-name" href="#" onclick="return doclink('link-1', 'slope', 'link-1');">slope</a></tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">x1</tt><tt class="py-op">,</tt><tt class="py-name">y1</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-op">(</tt><tt class="py-name">x2</tt><tt class="py-op">,</tt><tt class="py-name">y2</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
-<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">    <tt class="py-name">b</tt> <tt class="py-op">=</tt> <tt class="py-name">y2</tt> <tt class="py-op">-</tt> <tt class="py-op">(</tt><tt class="py-name">m</tt><tt class="py-op">*</tt><tt class="py-name">x2</tt><tt class="py-op">)</tt> </tt>
-<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">b</tt> </tt>
-</div><a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"> </tt>
-<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"> </tt>
-<a name="slopelist"></a><div id="slopelist-def"><a name="L46"></a><tt class="py-lineno"> 46</tt> <a class="py-toggle" href="#" id="slopelist-toggle" onclick="return toggle('slopelist');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.statistics.stats.linregress-module.html#slopelist">slopelist</a><tt class="py-op">(</tt><tt class="py-param">x</tt><tt class="py-op">,</tt><tt class="py-param">y</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-</div><div id="slopelist-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="slopelist-expanded"><a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-2" class="py-name" targets="Method src.annotationdata.statistics.descriptives.DescriptiveStatistics.len()=src.annotationdata.statistics.descriptives.DescriptiveStatistics-class.html#len"><a title="src.annotationdata.statistics.descriptives.DescriptiveStatistics.len" class="py-name" href="#" onclick="return doclink('link-2', 'len', 'link-2');">len</a></tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">)</tt> <tt class="py-op">!=</tt> <tt id="link-3" class="py-name"><a title="src.annotationdata.statistics.descriptives.DescriptiveStatistics.len" class="py-name" href="#" onclick="return doclink('link-3', 'len', 'link-2');">len</a></tt><tt class="py-op">(</tt><tt class="py-name">y</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">Exception</tt><tt class="py-op">(</tt><tt class="py-string">'Both x and y must have the same length (got respectively %d and %d).'</tt><tt class="py-op">%</tt><tt class="py-op">(</tt><tt id="link-4" class="py-name"><a title="src.annotationdata.statistics.descriptives.DescriptiveStatistics.len" class="py-name" href="#" onclick="return doclink('link-4', 'len', 'link-2');">len</a></tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt id="link-5" class="py-name"><a title="src.annotationdata.statistics.descriptives.DescriptiveStatistics.len" class="py-name" href="#" onclick="return doclink('link-5', 'len', 'link-2');">len</a></tt><tt class="py-op">(</tt><tt class="py-name">y</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
-<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">    <tt class="py-name">n</tt> <tt class="py-op">=</tt> <tt id="link-6" class="py-name"><a title="src.annotationdata.statistics.descriptives.DescriptiveStatistics.len" class="py-name" href="#" onclick="return doclink('link-6', 'len', 'link-2');">len</a></tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">)</tt> </tt>
-<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">    <tt class="py-name">r_num</tt> <tt class="py-op">=</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">n</tt><tt class="py-op">*</tt><tt class="py-op">(</tt><tt class="py-name">summult</tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">,</tt><tt class="py-name">y</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-op">-</tt> <tt class="py-name">sum</tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">)</tt><tt class="py-op">*</tt><tt class="py-name">sum</tt><tt class="py-op">(</tt><tt class="py-name">y</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
-<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">r_num</tt> <tt class="py-op">/</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">n</tt><tt class="py-op">*</tt><tt class="py-name">ss</tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">)</tt> <tt class="py-op">-</tt> <tt class="py-name">square_of_sums</tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
-</div><a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"> </tt>
-<a name="interceptlist"></a><div id="interceptlist-def"><a name="L53"></a><tt class="py-lineno"> 53</tt> <a class="py-toggle" href="#" id="interceptlist-toggle" onclick="return toggle('interceptlist');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.statistics.stats.linregress-module.html#interceptlist">interceptlist</a><tt class="py-op">(</tt><tt class="py-param">x</tt><tt class="py-op">,</tt><tt class="py-param">y</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-</div><div id="interceptlist-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="interceptlist-expanded"><a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-7" class="py-name"><a title="src.annotationdata.statistics.descriptives.DescriptiveStatistics.len" class="py-name" href="#" onclick="return doclink('link-7', 'len', 'link-2');">len</a></tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">)</tt> <tt class="py-op">!=</tt> <tt id="link-8" class="py-name"><a title="src.annotationdata.statistics.descriptives.DescriptiveStatistics.len" class="py-name" href="#" onclick="return doclink('link-8', 'len', 'link-2');">len</a></tt><tt class="py-op">(</tt><tt class="py-name">y</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">Exception</tt><tt class="py-op">(</tt><tt class="py-string">'Both x and y must have the same length (got respectively %d and %d).'</tt><tt class="py-op">%</tt><tt class="py-op">(</tt><tt id="link-9" class="py-name"><a title="src.annotationdata.statistics.descriptives.DescriptiveStatistics.len" class="py-name" href="#" onclick="return doclink('link-9', 'len', 'link-2');">len</a></tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt id="link-10" class="py-name"><a title="src.annotationdata.statistics.descriptives.DescriptiveStatistics.len" class="py-name" href="#" onclick="return doclink('link-10', 'len', 'link-2');">len</a></tt><tt class="py-op">(</tt><tt class="py-name">y</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
-<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"> </tt>
-<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">    <tt class="py-name">x</tt> <tt class="py-op">=</tt> <tt class="py-name">map</tt><tt class="py-op">(</tt><tt class="py-name">float</tt><tt class="py-op">,</tt><tt class="py-name">x</tt><tt class="py-op">)</tt> </tt>
-<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">    <tt class="py-name">y</tt> <tt class="py-op">=</tt> <tt class="py-name">map</tt><tt class="py-op">(</tt><tt class="py-name">float</tt><tt class="py-op">,</tt><tt class="py-name">y</tt><tt class="py-op">)</tt> </tt>
-<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">    <tt class="py-name">xmean</tt> <tt class="py-op">=</tt> <tt id="link-11" class="py-name"><a title="src.annotationdata.statistics.stats.central" class="py-name" href="#" onclick="return doclink('link-11', 'central', 'link-0');">central</a></tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Function src.annotationdata.statistics.stats.central.lmean()=src.annotationdata.statistics.stats.central-module.html#lmean"><a title="src.annotationdata.statistics.stats.central.lmean" class="py-name" href="#" onclick="return doclink('link-12', 'lmean', 'link-12');">lmean</a></tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">)</tt> </tt>
-<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">    <tt class="py-name">ymean</tt> <tt class="py-op">=</tt> <tt id="link-13" class="py-name"><a title="src.annotationdata.statistics.stats.central" class="py-name" href="#" onclick="return doclink('link-13', 'central', 'link-0');">central</a></tt><tt class="py-op">.</tt><tt id="link-14" class="py-name"><a title="src.annotationdata.statistics.stats.central.lmean" class="py-name" href="#" onclick="return doclink('link-14', 'lmean', 'link-12');">lmean</a></tt><tt class="py-op">(</tt><tt class="py-name">y</tt><tt class="py-op">)</tt> </tt>
-</div><a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"> </tt>
-<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"> </tt>
-<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-comment"># y = mx + b</tt> </tt>
-<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-comment"># m is slope, b is y-intercept</tt> </tt>
-<a name="compute_error_for_line_given_points"></a><div id="compute_error_for_line_given_points-def"><a name="L65"></a><tt class="py-lineno"> 65</tt> <a class="py-toggle" href="#" id="compute_error_for_line_given_points-toggle" onclick="return toggle('compute_error_for_line_given_points');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.statistics.stats.linregress-module.html#compute_error_for_line_given_points">compute_error_for_line_given_points</a><tt class="py-op">(</tt><tt class="py-param">b</tt><tt class="py-op">,</tt> <tt class="py-param">m</tt><tt class="py-op">,</tt> <tt class="py-param">points</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-</div><div id="compute_error_for_line_given_points-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="compute_error_for_line_given_points-expanded"><a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">    <tt class="py-name">totalError</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
-<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">range</tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">,</tt> <tt id="link-15" class="py-name"><a title="src.annotationdata.statistics.descriptives.DescriptiveStatistics.len" class="py-name" href="#" onclick="return doclink('link-15', 'len', 'link-2');">len</a></tt><tt class="py-op">(</tt><tt class="py-name">points</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">        <tt class="py-name">x</tt> <tt class="py-op">=</tt> <tt class="py-name">points</tt><tt class="py-op">[</tt><tt class="py-name">i</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
-<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">        <tt class="py-name">y</tt> <tt class="py-op">=</tt> <tt class="py-name">points</tt><tt class="py-op">[</tt><tt class="py-name">i</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
-<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">        <tt class="py-name">totalError</tt> <tt class="py-op">+=</tt> <tt class="py-op">(</tt><tt class="py-name">y</tt> <tt class="py-op">-</tt> <tt class="py-op">(</tt><tt class="py-name">m</tt> <tt class="py-op">*</tt> <tt class="py-name">x</tt> <tt class="py-op">+</tt> <tt class="py-name">b</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-op">**</tt> <tt class="py-number">2</tt> </tt>
-<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">totalError</tt> <tt class="py-op">/</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt><tt id="link-16" class="py-name"><a title="src.annotationdata.statistics.descriptives.DescriptiveStatistics.len" class="py-name" href="#" onclick="return doclink('link-16', 'len', 'link-2');">len</a></tt><tt class="py-op">(</tt><tt class="py-name">points</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
-</div><a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"> </tt>
-<a name="step_gradient"></a><div id="step_gradient-def"><a name="L73"></a><tt class="py-lineno"> 73</tt> <a class="py-toggle" href="#" id="step_gradient-toggle" onclick="return toggle('step_gradient');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.statistics.stats.linregress-module.html#step_gradient">step_gradient</a><tt class="py-op">(</tt><tt class="py-param">b_current</tt><tt class="py-op">,</tt> <tt class="py-param">m_current</tt><tt class="py-op">,</tt> <tt class="py-param">points</tt><tt class="py-op">,</tt> <tt class="py-param">learningRate</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-</div><div id="step_gradient-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="step_gradient-expanded"><a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">    <tt class="py-name">b_gradient</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
-<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">    <tt class="py-name">m_gradient</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
-<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">    <tt class="py-name">N</tt> <tt class="py-op">=</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt><tt id="link-17" class="py-name"><a title="src.annotationdata.statistics.descriptives.DescriptiveStatistics.len" class="py-name" href="#" onclick="return doclink('link-17', 'len', 'link-2');">len</a></tt><tt class="py-op">(</tt><tt class="py-name">points</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
-<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">range</tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">,</tt> <tt id="link-18" class="py-name"><a title="src.annotationdata.statistics.descriptives.DescriptiveStatistics.len" class="py-name" href="#" onclick="return doclink('link-18', 'len', 'link-2');">len</a></tt><tt class="py-op">(</tt><tt class="py-name">points</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">        <tt class="py-name">x</tt> <tt class="py-op">=</tt> <tt class="py-name">points</tt><tt class="py-op">[</tt><tt class="py-name">i</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
-<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">        <tt class="py-name">y</tt> <tt class="py-op">=</tt> <tt class="py-name">points</tt><tt class="py-op">[</tt><tt class="py-name">i</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
-<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">        <tt class="py-name">b_gradient</tt> <tt class="py-op">+=</tt> <tt class="py-op">-</tt><tt class="py-op">(</tt><tt class="py-number">2</tt><tt class="py-op">/</tt><tt class="py-name">N</tt><tt class="py-op">)</tt> <tt class="py-op">*</tt> <tt class="py-op">(</tt><tt class="py-name">y</tt> <tt class="py-op">-</tt> <tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">m_current</tt> <tt class="py-op">*</tt> <tt class="py-name">x</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-name">b_current</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
-<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">        <tt class="py-name">m_gradient</tt> <tt class="py-op">+=</tt> <tt class="py-op">-</tt><tt class="py-op">(</tt><tt class="py-number">2</tt><tt class="py-op">/</tt><tt class="py-name">N</tt><tt class="py-op">)</tt> <tt class="py-op">*</tt> <tt class="py-name">x</tt> <tt class="py-op">*</tt> <tt class="py-op">(</tt><tt class="py-name">y</tt> <tt class="py-op">-</tt> <tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">m_current</tt> <tt class="py-op">*</tt> <tt class="py-name">x</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-name">b_current</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
-<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">    <tt class="py-name">new_b</tt> <tt class="py-op">=</tt> <tt class="py-name">b_current</tt> <tt class="py-op">-</tt> <tt class="py-op">(</tt><tt class="py-name">learningRate</tt> <tt class="py-op">*</tt> <tt class="py-name">b_gradient</tt><tt class="py-op">)</tt> </tt>
-<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">    <tt class="py-name">new_m</tt> <tt class="py-op">=</tt> <tt class="py-name">m_current</tt> <tt class="py-op">-</tt> <tt class="py-op">(</tt><tt class="py-name">learningRate</tt> <tt class="py-op">*</tt> <tt class="py-name">m_gradient</tt><tt class="py-op">)</tt> </tt>
-<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-op">[</tt><tt class="py-name">new_b</tt><tt class="py-op">,</tt> <tt class="py-name">new_m</tt><tt class="py-op">]</tt> </tt>
-</div><a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"> </tt>
-<a name="gradient_descent_runner"></a><div id="gradient_descent_runner-def"><a name="L86"></a><tt class="py-lineno"> 86</tt> <a class="py-toggle" href="#" id="gradient_descent_runner-toggle" onclick="return toggle('gradient_descent_runner');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="src.annotationdata.statistics.stats.linregress-module.html#gradient_descent_runner">gradient_descent_runner</a><tt class="py-op">(</tt><tt class="py-param">points</tt><tt class="py-op">,</tt> <tt class="py-param">starting_b</tt><tt class="py-op">,</tt> <tt class="py-param">starting_m</tt><tt class="py-op">,</tt> <tt class="py-param">learning_rate</tt><tt class="py-op">,</tt> <tt class="py-param">num_iterations</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-</div><div id="gradient_descent_runner-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="gradient_descent_runner-expanded"><a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">    <tt class="py-name">b</tt> <tt class="py-op">=</tt> <tt class="py-name">starting_b</tt> </tt>
-<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">    <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt class="py-name">starting_m</tt> </tt>
-<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">range</tt><tt class="py-op">(</tt><tt class="py-name">num_iterations</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">        <tt class="py-name">b</tt><tt class="py-op">,</tt> <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt id="link-19" class="py-name" targets="Function src.annotationdata.statistics.stats.linregress.step_gradient()=src.annotationdata.statistics.stats.linregress-module.html#step_gradient"><a title="src.annotationdata.statistics.stats.linregress.step_gradient" class="py-name" href="#" onclick="return doclink('link-19', 'step_gradient', 'link-19');">step_gradient</a></tt><tt class="py-op">(</tt><tt class="py-name">b</tt><tt class="py-op">,</tt> <tt class="py-name">m</tt><tt class="py-op">,</tt> <tt class="py-name">points</tt><tt class="py-op">,</tt> <tt class="py-name">learning_rate</tt><tt class="py-op">)</tt> </tt>
-<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-op">[</tt><tt class="py-name">b</tt><tt class="py-op">,</tt> <tt class="py-name">m</tt><tt class="py-op">]</tt> </tt>
-</div><a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"> </tt>
-<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"> </tt>
-<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt class="py-name">__name__</tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
-<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"> </tt>
-<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">    <tt class="py-name">points</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">(</tt><tt class="py-number">32.5</tt><tt class="py-op">,</tt> <tt class="py-number">31.7</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-op">(</tt><tt class="py-number">53.4</tt><tt class="py-op">,</tt> <tt class="py-number">68.8</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
-<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">    <tt class="py-name">learning_rate</tt> <tt class="py-op">=</tt> <tt class="py-number">0.0001</tt> </tt>
-<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">    <tt class="py-name">initial_b</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> <tt class="py-comment"># initial y-intercept guess</tt> </tt>
-<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">    <tt class="py-name">initial_m</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> <tt class="py-comment"># initial slope guess</tt> </tt>
-<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">    <tt class="py-name">num_iterations</tt> <tt class="py-op">=</tt> <tt class="py-number">500000</tt> </tt>
-<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-string">"Starting gradient descent at b = {0}, m = {1}, error = {2}"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-name">initial_b</tt><tt class="py-op">,</tt> <tt class="py-name">initial_m</tt><tt class="py-op">,</tt> <tt id="link-20" class="py-name" targets="Function src.annotationdata.statistics.stats.linregress.compute_error_for_line_given_points()=src.annotationdata.statistics.stats.linregress-module.html#compute_error_for_line_given_points"><a title="src.annotationdata.statistics.stats.linregress.compute_error_for_line_given_points" class="py-name" href="#" onclick="return doclink('link-20', 'compute_error_for_line_given_points', 'link-20');">compute_error_for_line_given_points</a></tt><tt class="py-op">(</tt><tt class="py-name">initial_b</tt><tt class="py-op">,</tt> <tt class="py-name">initial_m</tt><tt class="py-op">,</tt> <tt class="py-name">points</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
-<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-string">"Running..."</tt> </tt>
-<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">    <tt class="py-op">[</tt><tt class="py-name">b</tt><tt class="py-op">,</tt> <tt class="py-name">m</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt id="link-21" class="py-name" targets="Function src.annotationdata.statistics.stats.linregress.gradient_descent_runner()=src.annotationdata.statistics.stats.linregress-module.html#gradient_descent_runner"><a title="src.annotationdata.statistics.stats.linregress.gradient_descent_runner" class="py-name" href="#" onclick="return doclink('link-21', 'gradient_descent_runner', 'link-21');">gradient_descent_runner</a></tt><tt class="py-op">(</tt><tt class="py-name">points</tt><tt class="py-op">,</tt> <tt class="py-name">initial_b</tt><tt class="py-op">,</tt> <tt class="py-name">initial_m</tt><tt class="py-op">,</tt> <tt class="py-name">learning_rate</tt><tt class="py-op">,</tt> <tt class="py-name">num_iterations</tt><tt class="py-op">)</tt> </tt>
-<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-string">"After {0} iterations b(intercept) = {1}, m(slope) = {2}, error = {3}"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-name">num_iterations</tt><tt class="py-op">,</tt> <tt class="py-name">b</tt><tt class="py-op">,</tt> <tt class="py-name">m</tt><tt class="py-op">,</tt> <tt id="link-22" class="py-name"><a title="src.annotationdata.statistics.stats.linregress.compute_error_for_line_given_points" class="py-name" href="#" onclick="return doclink('link-22', 'compute_error_for_line_given_points', 'link-20');">compute_error_for_line_given_points</a></tt><tt class="py-op">(</tt><tt class="py-name">b</tt><tt class="py-op">,</tt> <tt class="py-name">m</tt><tt class="py-op">,</tt> <tt class="py-name">points</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
-<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"> </tt>
-<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-string">"Slope:"</tt><tt class="py-op">,</tt> <tt id="link-23" class="py-name"><a title="src.annotationdata.statistics.stats.linregress.slope" class="py-name" href="#" onclick="return doclink('link-23', 'slope', 'link-1');">slope</a></tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-number">32.5</tt><tt class="py-op">,</tt><tt class="py-number">31.7</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-op">(</tt><tt class="py-number">53.4</tt><tt class="py-op">,</tt><tt class="py-number">68.8</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
-<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-string">"Inter:"</tt><tt class="py-op">,</tt> <tt id="link-24" class="py-name" targets="Function src.annotationdata.statistics.stats.linregress.intercept()=src.annotationdata.statistics.stats.linregress-module.html#intercept"><a title="src.annotationdata.statistics.stats.linregress.intercept" class="py-name" href="#" onclick="return doclink('link-24', 'intercept', 'link-24');">intercept</a></tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-number">32.5</tt><tt class="py-op">,</tt><tt class="py-number">31.7</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-op">(</tt><tt class="py-number">53.4</tt><tt class="py-op">,</tt><tt class="py-number">68.8</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
-<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"> </tt><script type="text/javascript">
-<!--
-expandto(location.href);
-// -->
-</script>
-</pre>
-<br />
-<!-- ==================== NAVIGATION BAR ==================== -->
-<table class="navbar" border="0" width="100%" cellpadding="0"
-       bgcolor="#a0c0ff" cellspacing="0">
-  <tr valign="middle">
-
-  <!-- Tree link -->
-      <th>&nbsp;&nbsp;&nbsp;<a
-        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
-
-  <!-- Index link -->
-      <th>&nbsp;&nbsp;&nbsp;<a
-        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
-
-  <!-- Help link -->
-      <th>&nbsp;&nbsp;&nbsp;<a
-        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
-
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            ><a href="http://www.lpl-aix.fr/~bigi/sppas/">SPPAS</a></th>
-          </tr></table></th>
-  </tr>
-</table>
-<table border="0" cellpadding="0" cellspacing="0" width="100%%">
-  <tr>
-    <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Jul  3 13:42:46 2015
-    </td>
-    <td align="right" class="footer">
-      <a target="mainFrame" href="http://epydoc.sourceforge.net"
-        >http://epydoc.sourceforge.net</a>
-    </td>
-  </tr>
-</table>
-
-<script type="text/javascript">
-  <!--
-  // Private objects are initially displayed (because if
-  // javascript is turned off then we want them to be
-  // visible); but by default, we want to hide them.  So hide
-  // them unless we have a cookie that says to show them.
-  checkCookie();
-  // -->
-</script>
-</body>
-</html>
