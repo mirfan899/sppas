@@ -66,6 +66,7 @@ from annotationdata.label.label import Label
 from annotationdata.ptime.point import TimePoint
 from annotationdata.ptime.interval import TimeInterval
 import annotationdata.io
+import signals
 
 from annotations.Momel.momel     import sppasMomel
 from annotations.Wav.wavseg      import sppasSeg
@@ -104,9 +105,7 @@ class sppasProcess( Thread ):
 
         self.start()
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def set_filelist(self, extension, not_ext=[], not_start=[]):
         """
@@ -115,7 +114,6 @@ class sppasProcess( Thread ):
         @param extension: expected file extension
         @param not_ext: list of extension of files that must not be treated
         @param not_start: list of start of filenames that must not be treated
-
         @return a list of strings
 
         """
@@ -123,12 +121,14 @@ class sppasProcess( Thread ):
         try:
             for sinput in self.parameters.get_sppasinput():
 
+                inputfilename, inputfileextension = os.path.splitext(sinput)
+
                 # Input is a file (and not a directory)
-                if extension.lower() in ['.wav','.wave'] and os.path.isfile(sinput) is True:
+                if extension.lower() in signals.extensions and os.path.isfile(sinput) is True:
                     filelist.append( sinput )
 
-                elif sinput.lower().endswith('.wav') is True or sinput.lower().endswith('.wave') is True:
-                    sinput = os.path.splitext( sinput )[0] + extension
+                elif inputfileextension.lower() in signals.extensions:
+                    sinput = inputfilename + extension
                     if os.path.isfile(sinput) is True:
                         filelist.append( sinput )
                     else:
@@ -168,9 +168,7 @@ class sppasProcess( Thread ):
 
         return fl2
 
-    # End set_filelist
     # ------------------------------------------------------------------------
-
 
     def _get_filename(self, filename, extensions):
         """
@@ -192,7 +190,8 @@ class sppasProcess( Thread ):
         return None
 
     # ------------------------------------------------------------------------
-
+    # Run annotations.
+    # ------------------------------------------------------------------------
 
     def run_momel(self, stepidx):
         """
@@ -240,7 +239,7 @@ class sppasProcess( Thread ):
 
                 # Fix output file names
                 outname = os.path.splitext(f)[0]+"-momel.PitchTier"
-                textgridoutname = os.path.splitext(f)[0] + "-momel.TextGrid"
+                textgridoutname = os.path.splitext(f)[0] + '-momel' + self.parameters.get_output_format()
 
                 # Execute annotation
                 try:
@@ -268,7 +267,6 @@ class sppasProcess( Thread ):
 
     # End run_momel
     # ------------------------------------------------------------------------
-
 
     def run_ipusegmentation(self, stepidx):
         """
@@ -375,7 +373,6 @@ class sppasProcess( Thread ):
     # End run_ipusegmentation
     # ------------------------------------------------------------------------
 
-
     def run_tokenization(self, stepidx):
         """
         Execute the SPPAS-Tokenization program.
@@ -417,7 +414,7 @@ class sppasProcess( Thread ):
                 self._logfile.print_message(stepname+" of file " + f, indent=1 )
 
             # Get the input file
-            inname = self._get_filename(f, [self.parameters.get_output_format(), '.xra', '.TextGrid', '.eaf', '.trs', '.csv', '.mrk'])
+            inname = self._get_filename(f, [self.parameters.get_output_format()] + annotationdata.io.extensions_out_multitiers) # '.xra', '.TextGrid', '.eaf', '.trs', '.csv', '.mrk'])
             if inname is not None:
 
                 # Fix output file name
@@ -451,7 +448,6 @@ class sppasProcess( Thread ):
 
     # End run_tokenization
     # ------------------------------------------------------------------------
-
 
     def run_phonetization(self, stepidx):
         """
@@ -495,7 +491,11 @@ class sppasProcess( Thread ):
                 self._logfile.print_message(stepname+" of file " + f, indent=1)
 
             # Get the input file
-            inname = self._get_filename(f, ['-token'+self.parameters.get_output_format(), '-token.xra', '-token.TextGrid', '-token.eaf', '-token.csv', '-token.mrk'])
+            ext = ['-token'+self.parameters.get_output_format()]
+            for e in annotationdata.io.extensions_out_multitiers:
+                ext.append( '-token'+e )
+
+            inname = self._get_filename(f, ext)
             if inname is not None:
 
                 # Fix output file name
@@ -529,7 +529,6 @@ class sppasProcess( Thread ):
 
     # End run_phonetization
     # ------------------------------------------------------------------------
-
 
     def run_alignment(self, stepidx):
         """
@@ -569,8 +568,14 @@ class sppasProcess( Thread ):
                 self._logfile.print_message(stepname+" of file " + f, indent=1 )
 
             # Get the input file
-            inname = self._get_filename(f, ['-phon'+self.parameters.get_output_format(), '-phon.xra', '-phon.TextGrid', '-phon.eaf', '-phon.csv', '-phon.mrk'])
-            intok = self._get_filename(f, ['-token'+self.parameters.get_output_format(), '-token.xra', '-token.TextGrid', '-token.eaf', '-token.csv', '-token.mrk'])
+            extt = ['-token'+self.parameters.get_output_format()]
+            extp = ['-phon'+self.parameters.get_output_format()]
+            for e in annotationdata.io.extensions_out_multitiers:
+                extt.append( '-token'+e )
+                extp.append( '-phon'+e )
+
+            inname = self._get_filename(f, extp)
+            intok  = self._get_filename(f, extt)
             if inname is not None:
 
                 # Fix output file name
@@ -605,7 +610,6 @@ class sppasProcess( Thread ):
 
     # End run_alignment
     # ------------------------------------------------------------------------
-
 
     def run_syllabification(self, stepidx):
         """
@@ -644,7 +648,11 @@ class sppasProcess( Thread ):
                 self._logfile.print_message(stepname+" of file " + f, indent=1 )
 
             # Get the input file
-            inname = self._get_filename(f, ['-palign'+self.parameters.get_output_format(), '-palign.xra', '-palign.TextGrid', '-palign.eaf', '-palign.csv', '-palign.mrk'])
+            ext = ['-palign'+self.parameters.get_output_format()]
+            for e in annotationdata.io.extensions_out_multitiers:
+                ext.append( '-palign'+e )
+
+            inname = self._get_filename(f,ext)
             if inname is not None:
 
                 # Fix output file name
@@ -677,7 +685,6 @@ class sppasProcess( Thread ):
 
     # End run_syllabification
     # ------------------------------------------------------------------------
-
 
     def run_repetition(self, stepidx):
         """
@@ -717,7 +724,11 @@ class sppasProcess( Thread ):
                 self._logfile.print_message(stepname+" of file " + f, indent=1 )
 
             # Get the input file
-            inname = self._get_filename(f, ['-palign'+self.parameters.get_output_format(), '-palign.xra', '-palign.TextGrid', '-palign.eaf', '-palign.csv', '-palign.mrk'])
+            ext = ['-palign'+self.parameters.get_output_format()]
+            for e in annotationdata.io.extensions_out_multitiers:
+                ext.append( '-palign'+e )
+
+            inname = self._get_filename(f, ext)
             if inname is not None:
 
                 # Fix output file name
@@ -751,7 +762,6 @@ class sppasProcess( Thread ):
     # End run_repetition
     # ------------------------------------------------------------------------
 
-
     def __add_trs(self, trs, trsinputfile):
         trsinput = annotationdata.io.read( trsinputfile )
         try:
@@ -769,11 +779,14 @@ class sppasProcess( Thread ):
 
     # ------------------------------------------------------------------------
 
-
     def merge(self):
         """
         Merge all annotated files.
-        Create a TextGrid.
+        Force output format to TextGrid.
+        It will be changed to XRA as soon as SppasEdit will allow to view:
+            - annotation overlaps
+            - alternative labels
+            - hierarchy
 
         """
 
@@ -828,7 +841,7 @@ class sppasProcess( Thread ):
             except Exception:
                 pass
             try:
-                self.__add_trs(trs, basef + "-momel.TextGrid") # Momel, INTSINT
+                self.__add_trs(trs, basef + "-momel" + output_format) # Momel, INTSINT
                 nbfiles = nbfiles + 1
             except Exception:
                 pass
@@ -859,7 +872,6 @@ class sppasProcess( Thread ):
 
     # End merge
     # ------------------------------------------------------------------------
-
 
     def run_annotations(self, progress):
         """
@@ -925,7 +937,7 @@ class sppasProcess( Thread ):
                 elif self.parameters.get_step_key(i) == "repetition":
                     nbruns[i] = self.run_repetition(i)
                 elif self._logfile is not None:
-                    self._logfile.print_message('Unrecognized annotation step:%s'%self.parameters.get_step_name(i))
+                    self._logfile.print_message('Unrecognised annotation step:%s'%self.parameters.get_step_name(i))
 
         if self._logfile is not None:
             self._logfile.print_separator()
@@ -945,7 +957,6 @@ class sppasProcess( Thread ):
                 self._logfile.print_stat( i,nbruns[i] )
             self._logfile.print_separator()
             self._logfile.close()
-
 
     # End run
     # ------------------------------------------------------------------------

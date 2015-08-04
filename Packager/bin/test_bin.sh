@@ -542,7 +542,7 @@ function annotation {
     echo "ok"
 
     echo -n " ... test ipu, tok, phon, align: "
-    $BIN_DIR/annotation.py -w $SAMPLES_DIR/oriana1.WAV -l eng --ipu --tok --phon --align >> /dev/null &> /dev/null
+    $BIN_DIR/annotation.py -w $SAMPLES_DIR/oriana1.WAV -l eng --ipu --tok --phon --align -e TextGrid >> /dev/null &> /dev/null
     if [ -e $SAMPLES_DIR/oriana1-merge.TextGrid ]; then
         rm $SAMPLES_DIR/oriana1-palign.TextGrid
         fct_echo_status 0

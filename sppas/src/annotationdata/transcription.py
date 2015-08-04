@@ -260,8 +260,6 @@ class Transcription( MetaObject ):
 
         """
         self.__mintime = mintime
-        if self.__mintime > self.__maxtime:
-            raise ValueError('Min time value must be lower than max time value: %f %f'%(mintime,self.__maxtime))
 
     # ------------------------------------------------------------------------
 

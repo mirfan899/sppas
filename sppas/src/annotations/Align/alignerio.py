@@ -50,11 +50,11 @@ import codecs
 import re
 import glob
 
-from annotationdata.transcription import Transcription
+from annotationdata.transcription  import Transcription
 from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.point import TimePoint
-from annotationdata.annotation import Annotation
-from annotationdata.label.label import Label
+from annotationdata.ptime.point    import TimePoint
+from annotationdata.annotation     import Annotation
+from annotationdata.label.label    import Label
 
 # ----------------------------------------------------------------------------
 ENCODING='utf-8'
@@ -66,14 +66,14 @@ class AlignerIO( Transcription ):
 
     """
 
-    def __init__(self, name="NoName", coeff=1, mintime=None, maxtime=None):
+    def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
         Creates a new Aligner IO instance.
 
         @param alignerid (string) name of the aligner
 
         """
-        Transcription.__init__(self, name, coeff, mintime, maxtime)
+        Transcription.__init__(self, name, mintime, maxtime)
 
     # End __init__
     # ------------------------------------------------------------------------

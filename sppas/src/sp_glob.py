@@ -62,10 +62,13 @@ SETTINGS_FILE  = os.path.join(BASE_PATH, "etc", "settings.dump")
 
 
 # ---------------------------------------------------------------------------
-# Define configuration files
+# Define configuration
 # ---------------------------------------------------------------------------
 
 ANNOTATIONS_LIST_FILE = os.path.join( BASE_PATH, "etc", "annotations.conf")
+
+# Default output extension must be one of annotationdata.io.extensions_out_multitiers
+DEFAULT_OUTPUT_EXTENSION = ".xra"
 
 
 # ---------------------------------------------------------------------------

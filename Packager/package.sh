@@ -165,8 +165,9 @@ function fct_clean_test {
     rm  -r $SAMPLES_DIR/hypothesis/samples*/*-palign.*  &> /dev/null
     rm  -r $SAMPLES_DIR/hypothesis/samples*/*-salign.*  &> /dev/null
     rm  -r $SAMPLES_DIR/hypothesis/samples*/*-ralign.*  &> /dev/null
-    rm  -r $SAMPLES_DIR/hypothesis/samples*/*-momel.*  &> /dev/null
+    rm  -r $SAMPLES_DIR/hypothesis/samples*/*-momel.*   &> /dev/null
     rm  -r $SAMPLES_DIR/hypothesis/samples*/*-merge.*   &> /dev/null
+    rm  -r $SAMPLES_DIR/hypothesis/samples*/*.xra       &> /dev/null
     rm $SAMPLES_DIR/sample2.*     &> /dev/null
     rm $SAMPLES_DIR/*.log         &> /dev/null
     rm $SAMPLES_DIR/test_xra.xra       &> /dev/null
@@ -189,10 +190,11 @@ function fct_clean_sppas {
     rm  -r $PROGRAM_DIR/samples/*/*-merge*          &> /dev/null
     rm  -r $PROGRAM_DIR/samples/*/*log              &> /dev/null
     rm  -r $PROGRAM_DIR/samples/*/*.list            &> /dev/null
-    rm  -r $PROGRAM_DIR/samples/*/*.momel.TextGrid  &> /dev/null
+    rm  -r $PROGRAM_DIR/samples/*/*.momel.*         &> /dev/null
     rm  -r $PROGRAM_DIR/samples/*/*.momel           &> /dev/null
     rm  -r $PROGRAM_DIR/samples/*/*-ipu.TextGrid    &> /dev/null
     rm  -r $PROGRAM_DIR/samples/*.log               &> /dev/null
+    rm  -r $PROGRAM_DIR/samples/*/*.xra               &> /dev/null
     rm $PROGRAM_DIR/sppas/*/*.pyc                   &> /dev/null
     rm $PROGRAM_DIR/sppas/*/*/*.pyc                 &> /dev/null
     rm $PROGRAM_DIR/sppas/*/*/*/*.pyc               &> /dev/null
@@ -303,13 +305,13 @@ function fct_get_args {
 function fct_exec_sppas {
 
     echo " ... Test automatic annotation of French"
-    $PROGRAM_DIR/sppas/bin/annotation.py -w $SAMPLES_DIR/hypothesis/samples-FR -l fra --all  >> $LOG_DIAGNOSIS
+    $PROGRAM_DIR/sppas/bin/annotation.py -w $SAMPLES_DIR/hypothesis/samples-FR -l fra -e TextGrid --all  >> $LOG_DIAGNOSIS
 
     echo " ... Test automatic annotation of Italian"
-    $PROGRAM_DIR/sppas/bin/annotation.py -w $SAMPLES_DIR/hypothesis/samples-IT -l ita --all  >> $LOG_DIAGNOSIS
+    $PROGRAM_DIR/sppas/bin/annotation.py -w $SAMPLES_DIR/hypothesis/samples-IT -l ita -e TextGrid --all  >> $LOG_DIAGNOSIS
 
     echo " ... Test automatic annotation of English"
-    $PROGRAM_DIR/sppas/bin/annotation.py -w $SAMPLES_DIR/hypothesis/samples-EN -l eng --all  >> $LOG_DIAGNOSIS
+    $PROGRAM_DIR/sppas/bin/annotation.py -w $SAMPLES_DIR/hypothesis/samples-EN -l eng -e TextGrid --all  >> $LOG_DIAGNOSIS
 }
 
 

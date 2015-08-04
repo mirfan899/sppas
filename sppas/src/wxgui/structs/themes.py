@@ -194,13 +194,12 @@ class BaseTheme( Theme ):
         self._choice['M_FONT_COLOUR'] = Option('wx.Colour', (15,15,15), "Font color")
 
         self._choice['M_TIPS']        = Option('bool', True, 'Show tips at start-up')
-        self._choice['M_OUTPUT_EXT']  = Option('str',  '.TextGrid', "Output file format")
+        self._choice['M_OUTPUT_EXT']  = Option('str',  '.xra', "Output file format")
         self._choice['M_ICON_THEME']  = Option('str',  'Default', "Icons theme")
 
         # For the File Manager
         # ====================
         self._choice['F_SPACING'] = Option('int', 2)
-
 
         # wx.FONTFAMILY_DEFAULT     Chooses a default font.
         # wx.FONTFAMILY_DECORATIVE     A decorative font.

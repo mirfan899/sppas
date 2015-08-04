@@ -52,6 +52,8 @@ import os.path
 
 from sp_glob import RESOURCES_PATH
 from sp_glob import ANNOTATIONS_LIST_FILE
+from sp_glob import DEFAULT_OUTPUT_EXTENSION
+
 import utils.fileutils
 
 # ----------------------------------------------------------------------------
@@ -316,7 +318,7 @@ class sppasParam():
 
         # User
         self.logfilename = ""
-        self.output_format = ".TextGrid"
+        self.output_format = DEFAULT_OUTPUT_EXTENSION
 
         # Annotation steps
         self.annotations = []
