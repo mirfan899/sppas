@@ -1,167 +1,242 @@
-html {
-    background-color:#f8f8f2;
-    }
-    
-body {
-    background-color: white; 
-    max-width:     80%;  /* largeur du corps de texte par rapport à la page */
-    border-left:   1px solid blue; /* bordure, verticale, a gauche */
-    border-right:  1px solid red;  /* bordure, verticale, a droite */
-    margin:        auto;
-    padding-right: 10px; /* espace entre la bordure et le texte, a droite */
-    padding-left:  15px; /* espace entre la bordure et le texte, a gauche */
-    font-family:   "Maven Pro", serif;
-    font-size:     100%;
-    line-height:   110%;
-    color:         black; 
+/*===========================  DEFINITIONS  ===============================*/
+
+:root{
+    --main-color:rgba(216,129,69,0.7);
+    --text-color:rgba(200,200,200,0.8)
 }
 
-header{
-    position:       relative;
-    margin-top:     10px;
+/*===========================  MAIN PAGE  =================================*/
+
+html {
+    background:       url('../../etc/img/backbackground-motif.png') repeat 0 0;
+    background-color: rgb(25,28,37);
+}
+
+
+body {
+    background:      url('../../etc/img/background-motif.png') repeat 0 0;
+    max-width:       80%;
+
+    border-left:     1px solid var(--main-color);
+    border-right:    1px solid var(--main-color);
+
+    margin:          auto;
+    padding-top:     7px;
+    padding-bottom:  7px;
+    padding-right:   15px;
+    padding-left:    25px;
+
+    font-family:     "Maven Pro", serif;
+    font-size:       100%;
+    line-height:     110%;
+
+    color:           var(--text-color);
+
+    /* Effects: */
+    background-clip: content-box;
+    transition:      border-color 0.3s;
+    box-shadow:      0 0 10px 0px var(--main-color), inset 0 0 10px 0px var(--main-color);
+}
+
+
+/*================================  HEADER  ===============================*/
+
+.header{
+    background:        url('../../etc/img/header.png') no-repeat center;
+    background-color:  rgba(100,100,100, 0.1);
+    
+    border-top:        1px solid var(--main-color); 
+    border-bottom:     1px solid var(--main-color); 
+    margin-top:        auto;
+    margin-bottom:     auto;
+    padding-top:       10px;
+    padding-bottom:    10px;
+    
+    font-family:       Jura, serif;
+    font-weight:       bold;
+    text-align:        center;
+}
+
+/*==========  TITLE  ==========*/
+
+.title {
+    color: var(--main-color);
+}
+
+.h1title {
+    margin-top:     30px;
+    margin-bottom:  20px;
     padding-top:    10px;
     padding-bottom: 10px;
-    color:          #9E060E; /* some dark red */
+    font-size:      500%;
 }
 
-header #tagline{
-    font-weight: bold;
-    display:     block;
-    position:    absolute;
-    top:         10px;
-    left:        90px;
-    font-size:   180%;
-    line-height: 100%;
+.h2title {
+    margin-top:     20px;
+    margin-bottom:  10px;
+    padding-top:    10px;
+    padding-bottom: 10px;
+    font-size:      200%;
 }
 
-pre {
-    border: 1px dotted gray;
-    background-color: #ececec;
-    color: #1111111;
-    padding: 0.5em;
+.h3title {
+    margin-top:     10px;
+    margin-bottom:  10px;
+    padding-top:    10px;
+    padding-bottom: 80px;
+    font-size:      100%;
 }
 
-code {
-    font-family: monospace;
+/*==========  MENU  ==========*/
+
+.menu {
+    text-align:      center;
+    min-height:      80px;
+    margin-top:      40px;
+    font-size:       100%;
 }
 
-blockquote {
-	background-color: #F2F2E6;
-	margin-left:   1em;
-	margin-top:    1em;
-	margin-bottom: 1em;
-	margin-right:  1em;
-
-	/*width: 		40em;*/
-	min-height:	24px;
-
-	clear: 		none;
-	text-align:	justify;
-	vertical-align: middle;
-
-	padding-top:    10px;
-	padding-right:  15px;
-	padding-bottom: 10px;
-	padding-left:   15px;
-
-    -moz-border-radius:10px; /* Firefox */
-    border-radius:10px;
-	border-collapse: collapse;
-    border: 1px solid #C8C9B9;
+.menu a {
+    background-color:  rgba(100,100,100, 0.4);
+    margin-top:      10px;
+    margin-bottom:   10px;
+    margin-right:    20px;
+    margin-left:     20px;
+    
+    padding-top:     20px;
+    padding-right:   15px;
+    padding-bottom:  20px;
+    padding-left:    15px;
 }
 
+a.neonOrange  {
+    box-shadow:     0 0 10px rgba(240,240,69,0.7), inset 0 0 10px rgba(240,240,69,0.7);
+}
+
+a.neonOrange:hover{
+    box-shadow:     0 0 10px rgba(240,240,69,1), inset 0 0 10px rgba(240,240,69,1);
+}
+
+a.neonRed  {
+    box-shadow:     0 0 10px rgba(205,38,38,0.7), inset 0 0 10px rgba(205,38,38,0.7);
+}
+
+a.neonRed:hover {
+    box-shadow:     0 0 10px rgba(205,38,38,1), inset 0 0 10px rgba(205,38,38,1);
+}
+
+a.neonBlue {
+    box-shadow:     0 0 10px rgba(38,38,205,0.7), inset 0 0 10px rgba(38,38,205,0.7); 
+}
+
+a.neonBlue:hover {
+    box-shadow:     0 0 10px rgba(38,38,205,1), inset 0 0 10px rgba(38,38,205,1); 
+}
+
+a.neonGreen  {
+    box-shadow:     0 0 10px rgba(50,196,69,0.5), inset 0 0 10px rgba(50,196,69,0.5); 
+}
+
+a.neonGreen:hover {
+    box-shadow:     0 0 10px rgba(50,196,69,0.8), inset 0 0 10px rgba(50,196,69,0.8); 
+}
+
+a.neonViolet  {
+    box-shadow:     0 0 10px rgba(150,56,185,0.7), inset 0 0 10px rgba(150,56,185,0.7); 
+}
+
+a.neonViolet:hover {
+    box-shadow:     0 0 10px rgba(150,56,185,1), inset 0 0 10px rgba(150,56,185,1); 
+}
+
+/*=============================  END HEADER  ===============================*/
+
+
+/*===========================  HTML ELEMENTS  ==============================*/
 
 h1 a, h2 a, h3 a, h4 a, h5 a { 
     text-decoration: none;
-    color: #7a5ada; 
 }
 
 h1, h2, h3, h4, h5 { 
     font-family: Jura, serif;
     font-weight: bold;
-    border-bottom: 2px dotted black;
-    color:#4e443c;
-    background-color:#f8f8f2;
-    text-rendering:optimizelegibility
+    padding:7px;
+    border:1px solid #757575;
+    background-clip:content-box;
+    transition:border-color 0.3s;
 }
 
 h1 {
     font-size:      140%;
-	margin-top:     1em;
-	margin-bottom:  1em;
-	margin-right:   auto;
-	padding-top:    20px;
-	padding-right:  15px;
-	padding-bottom: 20px;
-	padding-left:   15px;
-    text-align: left;
-    border-bottom: 2px dotted black;
-    border-left: 2px dotted black;
-    border-right: 2px dotted black;
-    border-top: 2px dotted black;
-    border-color:#b31414;
+    text-align:     center;
+    margin-top:     40px;
+    margin-bottom:  35px;
+    margin-right:   auto;
+    padding-top:    20px;
+    padding-right:  15px;
+    padding-bottom: 20px;
+    padding-left:   15px;
+    box-shadow:     0 0 11px rgba(205,38,38,0.7), inset 0 0 11px rgba(205,38,38,0.7); /* red */
     }
 
 h2 {
     font-size:      120%;
-	margin-top:     1em;
-	margin-bottom:  1em;
-	margin-right:   auto;
-	padding-top:    15px;
-	padding-right:  15px;
-	padding-bottom: 15px;
-	padding-left:   15px;
-    text-align: left;
-    border-bottom: 2px dotted black;
-    border-color:#1414b3;
+    text-align:     left;
+    margin-top:     30px;
+    margin-bottom:  25px;
+    margin-right:   auto;
+    padding-top:    15px;
+    padding-right:  15px;
+    padding-bottom: 15px;
+    padding-left:   15px;
+    box-shadow:     0 0 11px #3a38c0, inset 0 0 11px #3a38c0; /* blue */
     }
 
 h3 {
     font-size:      100%;
-	margin-top:     1em;
-	margin-bottom:  1em;
-	margin-right:   auto;
-	padding-top:    5px;
-	padding-right:  15px;
-	padding-bottom: 5px;
-	padding-left:   15px;
-    text-align: left;
-    border-bottom: 2px dotted black;
-    border-color:#2c9145;
+    margin-top:     20px;
+    margin-bottom:  15px;
+    margin-right:   auto;
+    padding-top:    5px;
+    padding-right:  15px;
+    padding-bottom: 5px;
+    padding-left:   15px;
+    text-align:     left;
+    box-shadow:     0 0 11px rgba(50,196,69,0.5), inset 0 0 11px rgba(50,196,69,0.5);
 }
 
 h4 {
-        font-size: 90%;
-        /*font-style: italic;*/
+    font-size: 90%;
 }
 
 h5 {
-        font-size: 90%;
-        font-style: italic;
+    font-size: 90%;
+    font-style: italic;
 }
 
 h1.title {
-    font-size: 200%;
-    font-weight: bold;
-	margin-top:     1em;
-	margin-bottom:  1em;
-	margin-right:   auto;
-	padding-top:    20px;
-	padding-right:  15px;
-	padding-bottom: 20px;
-	padding-left:   15px;
-    text-align: center;
-    border-bottom: 2px solid;
-    border-left: 2px solid;
-    border-right: 2px solid;
-    border-top: 2px solid;
-    border-color:#b31414;
+    font-size:      200%;
+    font-weight:    bold;
+    text-align:     center;
+    margin-top:     1em;
+    margin-bottom:  1em;
+    margin-right:   auto;
+    padding-top:    20px;
+    padding-right:  15px;
+    padding-bottom: 20px;
+    padding-left:   15px;
+    border-bottom:  2px solid;
+    border-left:    2px solid;
+    border-right:   2px solid;
+    border-top:     2px solid;
+    border-color:   #b31414;
 }
 
 h2.author, h3.date {
-    background-color:#f8f8f2;
     border:none;
     text-align: center;
+    border: 0px;
     }
    
 p {
@@ -177,21 +252,21 @@ dd p {
 }
 
 a{
-color:#160ab9;
-text-decoration:none;
--webkit-transition-property:color;
--moz-transition-property:color;
--ms-transition-property:color;
--o-transition-property:color;
-transition-property:color;
--webkit-transition-duration:0.3s;
--moz-transition-duration:0.3s;
--ms-transition-duration:0.3s;
--o-transition-duration:0.3s;
-transition-duration:0.3s
+    color: rgb(102,125,149);
+    text-decoration:none;
+    -webkit-transition-property:color;
+    -moz-transition-property:color;
+    -ms-transition-property:color;
+    -o-transition-property:color;
+    transition-property:color;
+    -webkit-transition-duration:0.3s;
+    -moz-transition-duration:0.3s;
+    -ms-transition-duration:0.3s;
+    -o-transition-duration:0.3s;
+    transition-duration:0.3s
 }
 a:hover{
-color:#04b1d8
+    color: rgb(40,95,149);
 }
 
 ul,ol{
@@ -216,6 +291,40 @@ font-weight:normal;
 }
 
 
+pre {
+    border: 1px dotted gray;
+    background-color: #ececec;
+    color: #1111111;
+    padding: 0.5em;
+}
+
+code {
+    font-family: monospace;
+}
+
+blockquote {
+    margin-left:   1em;
+    margin-top:    1em;
+    margin-bottom: 1em;
+    margin-right:  1em;
+
+    min-height: 24px;
+
+    clear:      none;
+    text-align: justify;
+    vertical-align: middle;
+
+    padding-top:    10px;
+    padding-right:  15px;
+    padding-bottom: 10px;
+    padding-left:   15px;
+
+    -moz-border-radius:10px; /* Firefox */
+    border-radius:10px;
+    border-collapse: collapse;
+    border: 1px solid #C8C9B9;
+}
+
 hr{
 margin:22px 0;
 border:0;
@@ -225,6 +334,7 @@ border-top:1px solid #d8d7cf
 strong{
 font-weight:bold
 }
+
 em{
 font-style:italic
 }
@@ -238,6 +348,9 @@ figure {
     text-align: center;
     color: #808080; 
     }
+
+
+/*==============================  BUTTONS  =================================*/
 
 .button {
     padding: 10px;
@@ -293,9 +406,49 @@ figure {
     filter:alpha(opacity=80);
 }
 
+
+/*==============================  FOOTER  ==================================*/
+
 #footer {
-    padding-top: 1em;
-    font-size: 70%;
-    color: gray;
-    text-align: right;
-    }
+    display:     block;
+    background-color: rgba(100,100,100, 0.1); 
+    width:       auto;
+    min-height:  100px;
+    padding-top: 15px;
+    border-top:        1px solid  #757575;  /* bordure, verticale, a gauche */
+}
+
+#footer img {
+    display:    block;
+    margin:     0 auto;
+    padding:    15px;
+    height:     64px;
+    width:      auto;
+}
+
+.copyright {
+    color: #f8f8f8;
+    display:    block;
+    margin:     0 auto;
+    text-align:  center;
+    padding-bottom: 15px;
+}
+
+
+.scrollT{
+    display: block;
+    width: 50px;
+    height: 50px;
+    position: fixed;
+    bottom: 0px;
+    right: 5px;
+    background: url('../../etc/img/up.png') no-repeat 50% 50% #f8f8f8;
+    -webkit-background-size: 100% 100%;
+            background-size: 100%;
+    opacity: 0.8; -webkit-transition-duration: 0.4s; transition-duration: 0.4s;
+}
+
+.scrollT:hover {
+    cursor: pointer;
+}
+

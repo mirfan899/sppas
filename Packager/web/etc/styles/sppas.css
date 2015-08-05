@@ -1,15 +1,5 @@
 /*===========================  DEFINITIONS  ===============================*/
 
-@font-face {
-    font-family: FontTitle;
-    src: url(../../etc/font/FiraSans-Bold.ttf);
-}
-
-@font-face {
-    font-family: sans;
-    src: url(../../etc/font/FiraSans-Regular.ttf);
-}
-
 :root{
     --main-color:rgba(216,129,69,0.7);
     --text-color:rgba(200,200,200,0.8)
@@ -18,33 +8,34 @@
 /*===========================  MAIN PAGE  =================================*/
 
 html {
-    background-image: url('../../etc/img/background-motif.png') repeat 0 0;
+    background:       url('../../etc/img/backbackground-motif.png') repeat 0 0;
     background-color: rgb(25,28,37);
 }
 
 
 body {
-    max-width:      80%;  /* largeur du corps de texte par rapport à la page */
+    background:      url('../../etc/img/background-motif.png') repeat 0 0;
+    max-width:       80%;
 
-    border-left:    1px solid var(--main-color);  /* bordure, verticale, a gauche */
-    border-right:   1px solid var(--main-color);  /* bordure, verticale, a droite */
+    border-left:     1px solid var(--main-color);
+    border-right:    1px solid var(--main-color);
 
-    margin:         auto;
-    padding-top:    7px; /* espace minimum requis */
-    padding-bottom: 7px; /* espace minimum requis */
-    padding-right: 15px; /* espace entre la bordure et le texte, a droite */
-    padding-left:  25px; /* espace entre la bordure et le texte, a gauche */
+    margin:          auto;
+    padding-top:     7px;
+    padding-bottom:  7px;
+    padding-right:   15px;
+    padding-left:    25px;
 
-    font-family:   "Maven Pro", serif;
-    font-size:     100%;
-    line-height:   110%;
+    font-family:     "Maven Pro", serif;
+    font-size:       100%;
+    line-height:     110%;
 
-    color:         var(--text-color);
+    color:           var(--text-color);
 
     /* Effects: */
     background-clip: content-box;
     transition:      border-color 0.3s;
-    box-shadow:     0 0 10px 0px var(--main-color), inset 0 0 10px 0px var(--main-color);
+    box-shadow:      0 0 10px 0px var(--main-color), inset 0 0 10px 0px var(--main-color);
 }
 
 
@@ -52,17 +43,18 @@ body {
 
 .header{
     background:        url('../../etc/img/header.png') no-repeat center;
-    background-color:  rgba(100,100,100, 0.1); /* the image has a transparent background */
-    border-top:        1px solid var(--main-color);     /* bordure, verticale, a gauche */
-    border-bottom:     1px solid var(--main-color);     /* bordure, verticale, a droite */
+    background-color:  rgba(100,100,100, 0.1);
+    
+    border-top:        1px solid var(--main-color); 
+    border-bottom:     1px solid var(--main-color); 
     margin-top:        auto;
     margin-bottom:     auto;
     padding-top:       10px;
     padding-bottom:    10px;
-    font-family:       Jura, serif; /*FontTitle;*/
+    
+    font-family:       Jura, serif;
     font-weight:       bold;
     text-align:        center;
-
 }
 
 /*==========  TITLE  ==========*/
@@ -76,7 +68,7 @@ body {
     margin-bottom:  20px;
     padding-top:    10px;
     padding-bottom: 10px;
-    font-size:      400%;
+    font-size:      500%;
 }
 
 .h2title {
@@ -162,17 +154,17 @@ a.neonViolet:hover {
 
 /*===========================  HTML ELEMENTS  ==============================*/
 
+/*<========== Titles =======>*/
+
 h1 a, h2 a, h3 a, h4 a, h5 a { 
     text-decoration: none;
 }
 
 h1, h2, h3, h4, h5 { 
-    font-family: Jura, serif;
-    font-weight: bold;
-    padding:7px;
-    border:1px solid #757575;
-    background-clip:content-box;
-    transition:border-color 0.3s;
+    font-family:     Jura, serif;
+    font-weight:     bold;
+    padding:         7px;
+    border:          1px solid #757575;
 }
 
 h1 {
@@ -216,6 +208,13 @@ h3 {
 
 h4 {
     font-size: 90%;
+    margin-top:     10px;
+    margin-bottom:  10px;
+    margin-right:   auto;
+    padding-top:    5px;
+    padding-right:  15px;
+    padding-bottom: 5px;
+    padding-left:   15px;
 }
 
 h5 {
@@ -223,41 +222,31 @@ h5 {
     font-style: italic;
 }
 
-h1.title {
-    font-size:      200%;
-    font-weight:    bold;
-    text-align:     center;
-    margin-top:     1em;
-    margin-bottom:  1em;
-    margin-right:   auto;
-    padding-top:    20px;
-    padding-right:  15px;
-    padding-bottom: 20px;
-    padding-left:   15px;
-    border-bottom:  2px solid;
-    border-left:    2px solid;
-    border-right:   2px solid;
-    border-top:     2px solid;
-    border-color:   #b31414;
-}
+/*Hide pandoc generated title*/
 
-h2.author, h3.date {
-    border:none;
+h1.title, h2.author, h3.date{
+    color: transparent;
+    font-size:  0px;
+    border:     none;
     text-align: center;
-    border: 0px;
+    height:     10px;
+    margin-top:     0px;
+    margin-bottom:  0px;
+    padding-top:    0px;
+    padding-bottom: 0px;
+    box-shadow:none;
     }
-   
+
+/*<========== Text content =======>*/
+ 
 p {
-    text-align:justify;
-    text-justify:inter-word;
+    text-align:   justify;
+    text-justify: inter-word;
 }
 
-dt code {
-        font-weight: bold;
-}
-dd p {
-        margin-top: 0;
-}
+dt code { font-weight: bold;}
+
+dd p {  margin-top: 0;}
 
 a{
     color: rgb(102,125,149);
@@ -273,6 +262,7 @@ a{
     -o-transition-duration:0.3s;
     transition-duration:0.3s
 }
+
 a:hover{
     color: rgb(40,95,149);
 }
@@ -282,35 +272,27 @@ ul,ol{
     margin:0 0 11px 25px
 }
 
-ul ul,ul ol,ol ol,ol ul{
-margin-bottom:0
-}
+ul ul,ul ol,ol ol,ol ul{ margin-bottom:0px; }
 
-li{
-line-height:22px
-}
+li{ line-height:22px;}
 
-ul a {
-font-weight:bold
-}
+ul a { font-weight:bold;}
 
-ul ul a {
-font-weight:normal;
-}
+ul ul a {font-weight:normal;}
 
+
+/*<==========  highlight facts =======>*/
 
 pre {
     border: 1px dotted gray;
-    background-color: #ececec;
-    color: #1111111;
+    background-color:  rgba(100,100,100, 0.1);
     padding: 0.5em;
 }
 
-code {
-    font-family: monospace;
-}
+code {font-family: monospace;}
 
 blockquote {
+    background-color:  rgba(100,100,100, 0.1);
     margin-left:   1em;
     margin-top:    1em;
     margin-bottom: 1em;
@@ -318,25 +300,25 @@ blockquote {
 
     min-height: 24px;
 
-    clear:      none;
-    text-align: justify;
+    clear:          none;
+    text-align:     justify;
     vertical-align: middle;
 
-    padding-top:    10px;
-    padding-right:  15px;
-    padding-bottom: 10px;
-    padding-left:   15px;
+    padding-top:    5px;
+    padding-right:  10px;
+    padding-bottom: 5px;
+    padding-left:   10px;
 
     -moz-border-radius:10px; /* Firefox */
-    border-radius:10px;
-    border-collapse: collapse;
-    border: 1px solid #C8C9B9;
+    border-radius:     10px;
+    border-collapse:   collapse;
+    border:            1px solid rgba(100,100,100, 0.5);
 }
 
 hr{
 margin:22px 0;
 border:0;
-border-top:1px solid #d8d7cf
+border-top:1px solid var(--main-color);
 }
 
 strong{
@@ -357,6 +339,23 @@ figure {
     color: #808080; 
     }
 
+/*<============ Table =========>*/
+tr.header {
+    background:  rgba(100,100,100, 0.1);
+}
+th {
+    padding: 7px;
+}
+table {
+    margin-left: 15px;
+    background:  rgba(100,100,100, 0.1);
+}
+
+.doc {
+    background:  transparent;
+
+    text-align: center;
+}
 
 /*==============================  BUTTONS  =================================*/
 
