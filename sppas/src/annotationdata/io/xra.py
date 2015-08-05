@@ -251,7 +251,7 @@ class XRA(Transcription):
     def __parse_localization(localizationRoot):
 
         underlyingNode = localizationRoot.find('*')
-        locstr = underlyingNode.tag.lower()
+        locstr = underlyingNode.tag.lower() # lowerise to be compatible with all versions
 
         if locstr == 'timepoint':
             point = XRA.__parse_time_point(underlyingNode)
@@ -566,27 +566,27 @@ class XRA(Transcription):
     def __format_localization(localizationRoot, localization):
         localizationRoot.set('score', unicode(localization.GetScore()))
         if localization.IsTimePoint():
-            point = ET.SubElement(localizationRoot, 'timepoint')
+            point = ET.SubElement(localizationRoot, 'Timepoint')
             XRA.__format_point(point, localization.GetPoint())
 
         elif localization.IsTimeInterval():
-            intervalRoot = ET.SubElement(localizationRoot, 'timeinterval')
+            intervalRoot = ET.SubElement(localizationRoot, 'Timeinterval')
             XRA.__format_interval(intervalRoot, localization.GetPlace())
 
         elif localization.IsTimeDisjoint():
-            disjointRoot = ET.SubElement(localizationRoot, 'timedisjoint')
+            disjointRoot = ET.SubElement(localizationRoot, 'Timedisjoint')
             XRA.__format_disjoint(disjointRoot, localization.GetPlace())
 
         elif localization.IsFramePoint():
-            framePoint = ET.SubElement(localizationRoot, 'framepoint')
+            framePoint = ET.SubElement(localizationRoot, 'Framepoint')
             XRA.__format_point(framePoint, localization.GetPoint())
 
         elif localization.IsFrameInterval():
-            intervalRoot = ET.SubElement(localizationRoot, 'frameinterval')
+            intervalRoot = ET.SubElement(localizationRoot, 'Frameinterval')
             XRA.__format_interval(intervalRoot, localization.GetPlace())
 
         elif localization.IsFrameDisjoint():
-            disjointRoot = ET.SubElement(localizationRoot, 'framedisjoint')
+            disjointRoot = ET.SubElement(localizationRoot, 'Framedisjoint')
             XRA.__format_disjoint(disjointRoot, localization.GetPlace())
 
         else:
