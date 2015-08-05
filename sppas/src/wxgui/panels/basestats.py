@@ -47,9 +47,6 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # Imports
 # ----------------------------------------------------------------------------
 
-import os
-import os.path
-
 import wx
 from utils import fileutils
 

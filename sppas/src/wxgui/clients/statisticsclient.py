@@ -359,16 +359,17 @@ class Statistics( scrolled.ScrolledPanel ):
         """ Choose tiers to check. """
 
         nb = 0
-        dlg = wx.TextEntryDialog(self,'What is name of tier(s) to check?','Tier checker', '')
+        dlg = wx.TextEntryDialog(self,'What is the name of tier(s) to check?','Tier checker', '')
+        case_sensitive=False # TODO: add a check button in the entry dialog
         ret = dlg.ShowModal()
+
         # Let's check if user clicked OK or pressed ENTER
         if ret == wx.ID_OK:
             tiername = dlg.GetValue()
             for i in range(self._filetrs.GetSize()):
                 p = self._filetrs.GetObject(i)
-                r = p.Select( tiername )
-                if r:
-                    nb = nb+1
+                r = p.Select( tiername, case_sensitive )
+                if r: nb = nb+1
         dlg.Destroy()
 
         if nb == 0:
@@ -381,25 +382,37 @@ class Statistics( scrolled.ScrolledPanel ):
         """ Un-check all tiers in all files. """
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
-            d = p.Deselect()
+            p.Deselect()
 
 
     def OnPreview(self, event):
         """ Open a frame to view a tier. """
-        nb = self._get_nbselectedtiers()
-
+        # Show the tier which is checked in the selected files
+        nb = self._get_nbselectedtiers(inselection=True)
         if nb == 1:
             self._selection.Preview()
         else:
-            wx.MessageBox('You must check one tier to view...', 'Warning', wx.OK | wx.ICON_INFORMATION)
-            self.__display_text_in_statusbar('You must check only one tier to view...')
+            # show the tier which is checked... even if it's not in a selected file
+            nb = self._get_nbselectedtiers(inselection=False)
+            if nb == 0:
+                wx.MessageBox('You must check at least one tier to view...', 'Warning', wx.OK | wx.ICON_INFORMATION)
+                self.__display_text_in_statusbar('You must at least one tier to view...')
+            elif nb == 1:
+                for i in range(self._filetrs.GetSize()):
+                    p = self._filetrs.GetObject(i)
+                    if p.tier_list.GetSelectedItemCount()==1:
+                        p.Preview()
+            else:
+                wx.MessageBox('Too many selected tiers to view...', 'Warning', wx.OK | wx.ICON_INFORMATION)
+                self.__display_text_in_statusbar('Too many selected tiers to view...')
 
 
     # ----------------------------------------------------------------------
 
     def OnDescriptivesStats(self, event):
         """ Descriptives Statistics ."""
-        nb = self._get_nbselectedtiers()
+        nb = self._get_nbselectedtiers(inselection=False)
+        logging.debug(' OnDescriptivesStats: %d tier(s) selected'%nb)
         if nb > 0:
             dlg = DescriptivesStatsDialog(self, self._prefsIO, self._get_selectedtiers())
             dlg.ShowModal()
@@ -410,7 +423,8 @@ class Statistics( scrolled.ScrolledPanel ):
 
     def OnUserAgreement(self, event):
         """ User agreement ."""
-        nb = self._get_nbselectedtiers()
+        nb = self._get_nbselectedtiers(inselection=False)
+        logging.debug(' OnUserAgreement: %d tier(s) selected'%nb)
         if nb == 2:
             dlg = UserAgreementDialog(self, self._prefsIO, self._get_selectedtiers())
             dlg.ShowModal()
@@ -421,7 +435,8 @@ class Statistics( scrolled.ScrolledPanel ):
 
     def OnTimeGroupAnalysis(self, event):
         """ Time Group Analysis ."""
-        nb = self._get_nbselectedtiers()
+        nb = self._get_nbselectedtiers(inselection=False)
+        logging.debug(' OnTimeGroupAnalysis: %d tier(s) selected'%nb)
         if nb > 0:
             dlg = TGADialog(self, self._prefsIO, self._get_selectedtiers())
             dlg.ShowModal()
@@ -619,13 +634,13 @@ class Statistics( scrolled.ScrolledPanel ):
                     data[fname].append(tier)
         return data
 
-    def _get_nbselectedtiers(self):
+    def _get_nbselectedtiers(self, inselection=False):
         """ Get the number of selected tiers. """
         nb = 0
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
-            if p == self._selection:
-                nb = p.tier_list.GetSelectedItemCount()
+            if inselection is False or (inselection is True and p == self._selection):
+                nb = nb + p.tier_list.GetSelectedItemCount()
         return nb
 
 # ----------------------------------------------------------------------------

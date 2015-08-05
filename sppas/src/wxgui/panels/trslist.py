@@ -308,14 +308,13 @@ class TrsList( wx.Panel ):
     # ----------------------------------------------------------------------
 
 
-    def IsSelected(self, tiername):
+    def IsSelected(self, tiername, case_sensitive=False):
         """
         Return True if the tier is selected.
         """
-        i = self._transcription.GetIndex(tiername)
+        i = self._transcription.GetIndex(tiername, case_sensitive)
         if i != -1:
             return self.tier_list.IsSelected(i)
-
         return False
 
     # End IsSelected

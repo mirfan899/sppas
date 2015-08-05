@@ -1,4 +1,4 @@
-/*Inclusion des polices */
+/*===========================  DEFINITIONS  ===============================*/
 
 @font-face {
     font-family: FontTitle;
@@ -10,28 +10,41 @@
     src: url(../../etc/font/FiraSans-Regular.ttf);
 }
 
+:root{
+    --main-color:rgba(216,129,69,0.7);
+    --text-color:rgba(200,200,200,0.8)
+}
+
+/*===========================  MAIN PAGE  =================================*/
+
 html {
     background-image: url('../../etc/img/background-motif.png') repeat 0 0;
     background-color: rgb(25,28,37);
 }
 
+
 body {
     max-width:      80%;  /* largeur du corps de texte par rapport à la page */
-    border-left:    1px solid  #757575;  /* bordure, verticale, a gauche */
-    border-right:   1px solid  #757575;  /* bordure, verticale, a droite */
+
+    border-left:    1px solid var(--main-color);  /* bordure, verticale, a gauche */
+    border-right:   1px solid var(--main-color);  /* bordure, verticale, a droite */
+
     margin:         auto;
     padding-top:    7px; /* espace minimum requis */
     padding-bottom: 7px; /* espace minimum requis */
     padding-right: 15px; /* espace entre la bordure et le texte, a droite */
     padding-left:  25px; /* espace entre la bordure et le texte, a gauche */
+
     font-family:   "Maven Pro", serif;
     font-size:     100%;
     line-height:   110%;
+
+    color:         var(--text-color);
+
+    /* Effects: */
     background-clip: content-box;
     transition:      border-color 0.3s;
-    /* For the "neon effect" of the border: */
-    box-shadow:      0 0 10px 0px rgba(216,129,69,0.7), inset 0 0 10px 0px rgba(216,129,69,0.7);
-    color: rgb(200,200,200);
+    box-shadow:     0 0 10px 0px var(--main-color), inset 0 0 10px 0px var(--main-color);
 }
 
 
@@ -39,21 +52,23 @@ body {
 
 .header{
     background:        url('../../etc/img/header.png') no-repeat center;
-    background-color:  rgba(25,28,37,0.6);
-    border-top:        1px solid  #757575;  /* bordure, verticale, a gauche */
-    border-bottom:     1px solid  #757575;  /* bordure, verticale, a droite */
+    background-color:  rgba(100,100,100, 0.1); /* the image has a transparent background */
+    border-top:        1px solid var(--main-color);     /* bordure, verticale, a gauche */
+    border-bottom:     1px solid var(--main-color);     /* bordure, verticale, a droite */
     margin-top:        auto;
     margin-bottom:     auto;
     padding-top:       10px;
     padding-bottom:    10px;
+    font-family:       Jura, serif; /*FontTitle;*/
+    font-weight:       bold;
+    text-align:        center;
+
 }
 
 /*==========  TITLE  ==========*/
 
 .title {
-    color:           rgba(216,129,69,0.7);
-    font-family:     FontTitle;
-    text-align:      center;
+    color: var(--main-color);
 }
 
 .h1title {
@@ -83,15 +98,14 @@ body {
 /*==========  MENU  ==========*/
 
 .menu {
-    text-align:    center;
-    min-height:    80px;
-    margin-top:    40px;
+    text-align:      center;
+    min-height:      80px;
+    margin-top:      40px;
+    font-size:       100%;
 }
 
 .menu a {
-    text-decoration: none;
-    font-family:     FontTitle;
-    font-size:       100%;
+    background-color:  rgba(100,100,100, 0.4);
     margin-top:      10px;
     margin-bottom:   10px;
     margin-right:    20px;
@@ -104,82 +118,49 @@ body {
 }
 
 a.neonOrange  {
-    box-shadow:     0 0 11px rgba(216,129,69,0.7), inset 0 0 11px rgba(216,129,69,0.7);
+    box-shadow:     0 0 10px rgba(240,240,69,0.7), inset 0 0 10px rgba(240,240,69,0.7);
 }
 
 a.neonOrange:hover{
-    box-shadow:     0 0 11px rgba(216,129,69,1), inset 0 0 11px rgba(216,129,69,1);
+    box-shadow:     0 0 10px rgba(240,240,69,1), inset 0 0 10px rgba(240,240,69,1);
 }
 
 a.neonRed  {
-    box-shadow:     0 0 11px rgba(205,38,38,0.7), inset 0 0 11px rgba(205,38,38,0.7);
+    box-shadow:     0 0 10px rgba(205,38,38,0.7), inset 0 0 10px rgba(205,38,38,0.7);
 }
 
 a.neonRed:hover {
-    box-shadow:     0 0 11px rgba(205,38,38,1), inset 0 0 11px rgba(205,38,38,1);
+    box-shadow:     0 0 10px rgba(205,38,38,1), inset 0 0 10px rgba(205,38,38,1);
 }
 
 a.neonBlue {
-    box-shadow:     0 0 11px rgba(38,38,205,0.7), inset 0 0 11px rgba(38,38,205,0.7); 
+    box-shadow:     0 0 10px rgba(38,38,205,0.7), inset 0 0 10px rgba(38,38,205,0.7); 
 }
 
 a.neonBlue:hover {
-    box-shadow:     0 0 11px rgba(38,38,205,1), inset 0 0 11px rgba(38,38,205,1); 
+    box-shadow:     0 0 10px rgba(38,38,205,1), inset 0 0 10px rgba(38,38,205,1); 
 }
 
 a.neonGreen  {
-    box-shadow:     0 0 11px rgba(50,196,69,0.5), inset 0 0 11px rgba(50,196,69,0.5); 
+    box-shadow:     0 0 10px rgba(50,196,69,0.5), inset 0 0 10px rgba(50,196,69,0.5); 
 }
 
 a.neonGreen:hover {
-    box-shadow:     0 0 11px rgba(50,196,69,0.8), inset 0 0 11px rgba(50,196,69,0.8); 
+    box-shadow:     0 0 10px rgba(50,196,69,0.8), inset 0 0 10px rgba(50,196,69,0.8); 
 }
 
 a.neonViolet  {
-    box-shadow:     0 0 11px rgba(150,56,185,0.7), inset 0 0 11px rgba(150,56,185,0.7); 
+    box-shadow:     0 0 10px rgba(150,56,185,0.7), inset 0 0 10px rgba(150,56,185,0.7); 
 }
 
 a.neonViolet:hover {
-    box-shadow:     0 0 11px rgba(150,56,185,1), inset 0 0 11px rgba(150,56,185,1); 
+    box-shadow:     0 0 10px rgba(150,56,185,1), inset 0 0 10px rgba(150,56,185,1); 
 }
 
 /*=============================  END HEADER  ===============================*/
 
 
-pre {
-    border: 1px dotted gray;
-    background-color: #ececec;
-    color: #1111111;
-    padding: 0.5em;
-}
-
-code {
-    font-family: monospace;
-}
-
-blockquote {
-    margin-left:   1em;
-    margin-top:    1em;
-    margin-bottom: 1em;
-    margin-right:  1em;
-
-    min-height: 24px;
-
-    clear:      none;
-    text-align: justify;
-    vertical-align: middle;
-
-    padding-top:    10px;
-    padding-right:  15px;
-    padding-bottom: 10px;
-    padding-left:   15px;
-
-    -moz-border-radius:10px; /* Firefox */
-    border-radius:10px;
-    border-collapse: collapse;
-    border: 1px solid #C8C9B9;
-}
-
+/*===========================  HTML ELEMENTS  ==============================*/
 
 h1 a, h2 a, h3 a, h4 a, h5 a { 
     text-decoration: none;
@@ -318,6 +299,40 @@ font-weight:normal;
 }
 
 
+pre {
+    border: 1px dotted gray;
+    background-color: #ececec;
+    color: #1111111;
+    padding: 0.5em;
+}
+
+code {
+    font-family: monospace;
+}
+
+blockquote {
+    margin-left:   1em;
+    margin-top:    1em;
+    margin-bottom: 1em;
+    margin-right:  1em;
+
+    min-height: 24px;
+
+    clear:      none;
+    text-align: justify;
+    vertical-align: middle;
+
+    padding-top:    10px;
+    padding-right:  15px;
+    padding-bottom: 10px;
+    padding-left:   15px;
+
+    -moz-border-radius:10px; /* Firefox */
+    border-radius:10px;
+    border-collapse: collapse;
+    border: 1px solid #C8C9B9;
+}
+
 hr{
 margin:22px 0;
 border:0;
@@ -327,6 +342,7 @@ border-top:1px solid #d8d7cf
 strong{
 font-weight:bold
 }
+
 em{
 font-style:italic
 }
@@ -340,6 +356,9 @@ figure {
     text-align: center;
     color: #808080; 
     }
+
+
+/*==============================  BUTTONS  =================================*/
 
 .button {
     padding: 10px;
@@ -396,10 +415,11 @@ figure {
 }
 
 
-/*==========  FOOTER  ==========*/
+/*==============================  FOOTER  ==================================*/
 
 #footer {
     display:     block;
+    background-color: rgba(100,100,100, 0.1); 
     width:       auto;
     min-height:  100px;
     padding-top: 15px;
