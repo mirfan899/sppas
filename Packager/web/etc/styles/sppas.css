@@ -154,17 +154,17 @@ a.neonViolet:hover {
 
 /*===========================  HTML ELEMENTS  ==============================*/
 
-/*<========== Titles =======>*/
-
 h1 a, h2 a, h3 a, h4 a, h5 a { 
     text-decoration: none;
 }
 
 h1, h2, h3, h4, h5 { 
-    font-family:     Jura, serif;
-    font-weight:     bold;
-    padding:         7px;
-    border:          1px solid #757575;
+    font-family: Jura, serif;
+    font-weight: bold;
+    padding:7px;
+    border:1px solid #757575;
+    background-clip:content-box;
+    transition:border-color 0.3s;
 }
 
 h1 {
@@ -208,13 +208,6 @@ h3 {
 
 h4 {
     font-size: 90%;
-    margin-top:     10px;
-    margin-bottom:  10px;
-    margin-right:   auto;
-    padding-top:    5px;
-    padding-right:  15px;
-    padding-bottom: 5px;
-    padding-left:   15px;
 }
 
 h5 {
@@ -222,31 +215,41 @@ h5 {
     font-style: italic;
 }
 
-/*Hide pandoc generated title*/
-
-h1.title, h2.author, h3.date{
-    color: transparent;
-    font-size:  0px;
-    border:     none;
-    text-align: center;
-    height:     10px;
-    margin-top:     0px;
-    margin-bottom:  0px;
-    padding-top:    0px;
-    padding-bottom: 0px;
-    box-shadow:none;
-    }
-
-/*<========== Text content =======>*/
- 
-p {
-    text-align:   justify;
-    text-justify: inter-word;
+h1.title {
+    font-size:      200%;
+    font-weight:    bold;
+    text-align:     center;
+    margin-top:     1em;
+    margin-bottom:  1em;
+    margin-right:   auto;
+    padding-top:    20px;
+    padding-right:  15px;
+    padding-bottom: 20px;
+    padding-left:   15px;
+    border-bottom:  2px solid;
+    border-left:    2px solid;
+    border-right:   2px solid;
+    border-top:     2px solid;
+    border-color:   #b31414;
 }
 
-dt code { font-weight: bold;}
+h2.author, h3.date {
+    border:none;
+    text-align: center;
+    border: 0px;
+    }
+   
+p {
+    text-align:justify;
+    text-justify:inter-word;
+}
 
-dd p {  margin-top: 0;}
+dt code {
+        font-weight: bold;
+}
+dd p {
+        margin-top: 0;
+}
 
 a{
     color: rgb(102,125,149);
@@ -262,7 +265,6 @@ a{
     -o-transition-duration:0.3s;
     transition-duration:0.3s
 }
-
 a:hover{
     color: rgb(40,95,149);
 }
@@ -272,27 +274,35 @@ ul,ol{
     margin:0 0 11px 25px
 }
 
-ul ul,ul ol,ol ol,ol ul{ margin-bottom:0px; }
+ul ul,ul ol,ol ol,ol ul{
+margin-bottom:0
+}
 
-li{ line-height:22px;}
+li{
+line-height:22px
+}
 
-ul a { font-weight:bold;}
+ul a {
+font-weight:bold
+}
 
-ul ul a {font-weight:normal;}
+ul ul a {
+font-weight:normal;
+}
 
-
-/*<==========  highlight facts =======>*/
 
 pre {
     border: 1px dotted gray;
-    background-color:  rgba(100,100,100, 0.1);
+    background-color: #ececec;
+    color: #1111111;
     padding: 0.5em;
 }
 
-code {font-family: monospace;}
+code {
+    font-family: monospace;
+}
 
 blockquote {
-    background-color:  rgba(100,100,100, 0.1);
     margin-left:   1em;
     margin-top:    1em;
     margin-bottom: 1em;
@@ -300,25 +310,25 @@ blockquote {
 
     min-height: 24px;
 
-    clear:          none;
-    text-align:     justify;
+    clear:      none;
+    text-align: justify;
     vertical-align: middle;
 
-    padding-top:    5px;
-    padding-right:  10px;
-    padding-bottom: 5px;
-    padding-left:   10px;
+    padding-top:    10px;
+    padding-right:  15px;
+    padding-bottom: 10px;
+    padding-left:   15px;
 
     -moz-border-radius:10px; /* Firefox */
-    border-radius:     10px;
-    border-collapse:   collapse;
-    border:            1px solid rgba(100,100,100, 0.5);
+    border-radius:10px;
+    border-collapse: collapse;
+    border: 1px solid #C8C9B9;
 }
 
 hr{
 margin:22px 0;
 border:0;
-border-top:1px solid var(--main-color);
+border-top:1px solid #d8d7cf
 }
 
 strong{
@@ -339,76 +349,62 @@ figure {
     color: #808080; 
     }
 
-/*<============ Table =========>*/
-tr.header {
-    background:  rgba(100,100,100, 0.1);
-}
-th {
-    padding: 7px;
-}
-table {
-    margin-left: 15px;
-    background:  rgba(100,100,100, 0.1);
-}
-
-.doc {
-    background:  transparent;
-
-    text-align: center;
-}
 
 /*==============================  BUTTONS  =================================*/
 
 .button {
-    padding: 10px;
-    margin-right: 5px;
-    margin-left: 5px;
-    margin-bottom:20px;
-    text-shadow:0 1px 1px rgba(0, 0, 0, 0.25);
-    display: inline-block;
-    white-space: nowrap;
-    line-height:1em;
-    position:relative;
-    outline: none;
-    overflow: visible;
-    cursor: pointer;
-    border-radius: 4px;
-    -moz-border-radius: 4px;
-    -webkit-border-radius:4px;
-    box-shadow:1px 1px 2px 0 #CCCCCC;
-    -moz-box-shadow: 1px 1px 2px 0 #CCCCCC;
+    padding-left:   40px;
+    padding-right:  40px;
+    padding-top:    15px;
+    padding-bottom: 15px;
+
+    margin-right:   5px;
+    margin-left:    5px;
+    margin-top:    10px;
+    margin-bottom: 20px;
+    
+    display:       inline-block;
+    white-space:    nowrap;
+    line-height:    1em;
+    position:       relative;
+    outline:        none;
+    overflow:       visible;
+    cursor:         pointer;
+    border-radius:        6px;
+    -moz-border-radius:   6px;
+    -webkit-border-radius:6px;
+    
+    box-shadow:         1px 1px 2px 0 #CCCCCC;
+    -moz-box-shadow:    1px 1px 2px 0 #CCCCCC;
     -webkit-box-shadow: 1px 1px 2px 0 #CCCCCC;
 
-    font-size: 100%;
+    font-size:   110%;
     font-weight: bold;
     text-align: center;
     background: url('http://www.lpl-aix.fr/~bigi/sppas/etc/icons/download.png') 3px 5px no-repeat;
     background-size: auto 60%; /* Width: auto is to keep aspect ratio */
-    padding-left: 50px;
-    padding-right: 15px;
-
 }
 
 .button_red {
-    border: 1px solid #755830;
-    color: #FBFBFB;
-    background-color: #b31414;
+    border:           1px solid var(--text-color);
+    color:            var(--text-color);
+    background-color: rgba(205,38,38,0.7);
 }
 
 .button_red:hover {
-    color: #FBFBFB;
+    color:  var(--text-color);
     opacity:0.9;
     filter:alpha(opacity=90);
 }
 
 .button_blue {
     border: 1px solid #305875;
-    color: #FBFBFB;
+    color: var(--text-color);
     background-color: #3D6E97;
 }
 
-.button_red:hover {
-    color: #FBFBFB;
+.button_blue:hover {
+    color: var(--text-color);
     opacity:0.9;
     filter:alpha(opacity=80);
 }

@@ -353,55 +353,58 @@ figure {
 /*==============================  BUTTONS  =================================*/
 
 .button {
-    padding: 10px;
-    margin-right: 5px;
-    margin-left: 5px;
-    margin-bottom:20px;
-    text-shadow:0 1px 1px rgba(0, 0, 0, 0.25);
-    display: inline-block;
-    white-space: nowrap;
-    line-height:1em;
-    position:relative;
-    outline: none;
-    overflow: visible;
-    cursor: pointer;
-    border-radius: 4px;
-    -moz-border-radius: 4px;
-    -webkit-border-radius:4px;
-    box-shadow:1px 1px 2px 0 #CCCCCC;
-    -moz-box-shadow: 1px 1px 2px 0 #CCCCCC;
+    padding-left:   40px;
+    padding-right:  40px;
+    padding-top:    15px;
+    padding-bottom: 15px;
+
+    margin-right:   5px;
+    margin-left:    5px;
+    margin-top:    10px;
+    margin-bottom: 20px;
+    
+    display:       inline-block;
+    white-space:    nowrap;
+    line-height:    1em;
+    position:       relative;
+    outline:        none;
+    overflow:       visible;
+    cursor:         pointer;
+    border-radius:        6px;
+    -moz-border-radius:   6px;
+    -webkit-border-radius:6px;
+    
+    box-shadow:         1px 1px 2px 0 #CCCCCC;
+    -moz-box-shadow:    1px 1px 2px 0 #CCCCCC;
     -webkit-box-shadow: 1px 1px 2px 0 #CCCCCC;
 
-    font-size: 100%;
+    font-size:   110%;
     font-weight: bold;
     text-align: center;
     background: url('http://www.lpl-aix.fr/~bigi/sppas/etc/icons/download.png') 3px 5px no-repeat;
     background-size: auto 60%; /* Width: auto is to keep aspect ratio */
-    padding-left: 50px;
-    padding-right: 15px;
-
 }
 
 .button_red {
-    border: 1px solid #755830;
-    color: #FBFBFB;
-    background-color: #b31414;
+    border:           1px solid var(--text-color);
+    color:            var(--text-color);
+    background-color: rgba(205,38,38,0.7);
 }
 
 .button_red:hover {
-    color: #FBFBFB;
+    color:  var(--text-color);
     opacity:0.9;
     filter:alpha(opacity=90);
 }
 
 .button_blue {
     border: 1px solid #305875;
-    color: #FBFBFB;
+    color: var(--text-color);
     background-color: #3D6E97;
 }
 
-.button_red:hover {
-    color: #FBFBFB;
+.button_blue:hover {
+    color: var(--text-color);
     opacity:0.9;
     filter:alpha(opacity=80);
 }
