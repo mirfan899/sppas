@@ -44,9 +44,9 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-import sys
 import os
 import codecs
+import logging
 
 import signals
 from signals.channel    import Channel
@@ -55,9 +55,11 @@ from signals.channelsil import ChannelSil
 from presenters.audiosilencepresenter import AudioSilencePresenter
 
 import annotationdata.io
+from annotationdata.io.utils import gen_id
 import annotationdata.utils.trsutils as trsutils
 from annotationdata.utils.tierutils import TierUtils
 from annotationdata.transcription   import Transcription
+from annotationdata.media           import Media
 from annotationdata.ptime.point     import TimePoint
 from annotationdata.ptime.interval  import TimeInterval
 from annotationdata.label.label     import Label
@@ -529,7 +531,7 @@ class sppasSeg:
     # ------------------------------------------------------------------
 
 
-    def write_textgrid(self,filename,trstracks):
+    def write_textgrid(self,filename,trstracks,inputaudioname=None):
         if trstracks is None:
             raise Exception('No tracks found to be written.\n')
 
@@ -587,6 +589,14 @@ class sppasSeg:
         except Exception as e:
             logging.info('Error while assigning hierarchy between IPU tier and Transcription tier: %s'%(str(e)))
             pass
+
+        # Set media
+        if inputaudioname is not None:
+            extm = os.path.splitext(inputaudioname)[1].lower()[1:]
+            media = Media( gen_id(), inputaudioname, "audio/"+extm )
+            trs.AddMedia( media )
+            for tier in trs:
+                tier.SetMedia( media )
 
         # Write the transcription
         try:
@@ -711,7 +721,7 @@ class sppasSeg:
 
         # Write silences/units into a transcription file
         if textgridoutput is not None:
-            self.write_textgrid(textgridoutput,trstracks)
+            self.write_textgrid(textgridoutput,trstracks,audiofile)
 
         # Write speech into track files with a given file extension
         if diroutput is not None or self.dirtracks is True:

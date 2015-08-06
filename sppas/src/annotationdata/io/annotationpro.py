@@ -343,7 +343,7 @@ class Antx(Transcription):
         child_id.text = media.url
 
         # Antx required elements
-        for key,value in ELT_REQUIRED_Segment.iteritems():
+        for key,value in ELT_REQUIRED_Media.iteritems():
             if not key in [ 'id','filename' ]:
                 child = ET.SubElement(media_root, UpperLowerDict[key])
                 child.text = media.metadata.get( key, value )

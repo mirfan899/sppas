@@ -37,6 +37,7 @@
 # ---------------------------------------------------------------------------
 # File: align.py
 # ----------------------------------------------------------------------------
+from distutils import emxccompiler
 
 
 __docformat__ = """epytext"""
@@ -60,6 +61,8 @@ import utils.name
 
 import annotationdata.io
 from annotationdata.transcription import Transcription
+from annotationdata.media         import Media
+from annotationdata.io.utils      import gen_id
 
 import signals
 from signals.channel    import Channel
@@ -76,10 +79,7 @@ from basicalign     import basicAligner
 from tiedlist       import Tiedlist
 from alignerio      import AlignerIO
 
-
-
 # ----------------------------------------------------------------------------
-
 
 # ----------------------------------------------------------------------------
 
@@ -91,7 +91,6 @@ ALIGNERS = ['julius', 'hvite', 'basic']
 ENCODING = 'utf-8'
 
 # ----------------------------------------------------------------------------
-
 
 # ----------------------------------------------------------------------------
 
@@ -800,6 +799,12 @@ class sppasAlign:
                 shutil.rmtree( diralign )
             raise IOError("align.py. AlignerIO. Error while reading aligned tracks: " + str(e))
 
+        # Set media
+        extm = os.path.splitext(inputaudioname)[1].lower()[1:]
+        media = Media( gen_id(), inputaudioname, "audio/"+extm )
+        trsoutput.AddMedia( media )
+        for tier in trsoutput:
+            tier.SetMedia( media )
 
         # Save results
         try:
@@ -903,7 +908,6 @@ class sppasAlign:
 
         tierphon   = trs.Find("PhonAlign")
         tiertokens = trs.Find("TokensAlign")
-        tierphntok = trs.Find("PhnTokAlign")
         if tiertokens is None or tierphon is None:
             return trs
 
@@ -918,12 +922,12 @@ class sppasAlign:
                     if len(lastchar)>0:
                         lastchar = lastchar[-1]
                     if a.GetLocation().GetEnd() == t.GetLocation().GetEnd() and a.GetLocation().GetBegin() != t.GetLocation().GetBegin() and not lastchar in ["a", "e", "i", "o", "u", u"é", u"à", u"è"] :
-                       # Remove a and extend previous annotation
-                       prev = tierphon[i-1]
-                       a = tierphon.Pop(i)
-                       prev.GetLocation().SetEndMidpoint( a.GetLocation().GetEndMidpoint() )
-                       #self._logfile.print_message( "Liaison removed: %s " % a)
-                       # Enlever le phoneme de tierphntok!
+                        # Remove a and extend previous annotation
+                        prev = tierphon[i-1]
+                        a = tierphon.Pop(i)
+                        prev.GetLocation().SetEndMidpoint( a.GetLocation().GetEndMidpoint() )
+                        #self._logfile.print_message( "Liaison removed: %s " % a)
+                        # Enlever le phoneme de tierphntok!
 
         return trs
 
