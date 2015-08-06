@@ -48,6 +48,11 @@ import string
 
 # ---------------------------------------------------------------------------
 
+def random_hexachar(y, lowercase=True):
+    if lowercase:
+        return ''.join(random.choice('abcdef') for x in range(y))
+    return ''.join(random.choice('ABCDEF') for x in range(y))
+
 def random_char(y, lowercase=True):
     if lowercase:
         return ''.join(random.choice(string.ascii_lowercase) for x in range(y))
@@ -82,34 +87,38 @@ def indent(elem, level=0):
 
 def gen_id( ):
     """
-    Generate a unique ID.
+    Generate a unique ID, of type GUID - globally unique identifier.
+
+    GUIDs are usually stored as 128-bit values, and are commonly
+    displayed as 32 hexadecimal digits with groups separated by hyphens,
+    such as {21EC2020-3AEA-4069-A2DD-08002B30309D}.
     """
     s = ''
     s += random_int(1)
-    s += random_char(1)
+    s += random_hexachar(1)
     s += random_int(3)
-    s += random_char(1)
+    s += random_hexachar(1)
     s += random_int(1)
-    s += random_char(1)
+    s += random_hexachar(1)
     s += "-"
     s += random_int(1)
-    s += random_char(1)
+    s += random_hexachar(1)
     s += random_int(2)
     s += "-"
     s += random_int(1)
-    s += random_char(1)
+    s += random_hexachar(1)
     s += random_int(2)
     s += "-"
     s += random_int(1)
-    s += random_char(2)
+    s += random_hexachar(2)
     s += random_int(1)
     s += "-"
     s += random_int(4)
-    s += random_char(2)
+    s += random_hexachar(2)
     s += random_int(1)
-    s += random_char(1)
+    s += random_hexachar(1)
     s += random_int(3)
-    s += random_char(1)
+    s += random_hexachar(1)
 
     return s
 

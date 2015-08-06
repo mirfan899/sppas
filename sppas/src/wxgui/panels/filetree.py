@@ -73,6 +73,7 @@ from wxgui.sp_icons import MIME_XRA
 from wxgui.sp_icons import MIME_MRK
 from wxgui.sp_icons import MIME_SUBTITLES
 from wxgui.sp_icons import MIME_ANVIL
+from wxgui.sp_icons import MIME_ANTX
 
 from wxgui.sp_icons import ADD_FILE_ICON
 from wxgui.sp_icons import ADD_DIR_ICON
@@ -214,7 +215,8 @@ class FiletreePanel( wx.Panel ):
         self.xrafileidx   = il.Add(spBitmap(MIME_XRA, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
         self.mrkfileidx   = il.Add(spBitmap(MIME_MRK, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
         self.subfileidx   = il.Add(spBitmap(MIME_SUBTITLES, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
-        self.anvil        = il.Add(spBitmap(MIME_ANVIL, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
+        self.anvilfileidx = il.Add(spBitmap(MIME_ANVIL, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
+        self.antxfileidx  = il.Add(spBitmap(MIME_ANTX, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
 
         t.AssignImageList(il)
 
@@ -622,7 +624,7 @@ class FiletreePanel( wx.Panel ):
         @return the child
         """
         fileName, fileExtension = os.path.splitext(son.lower())
-        
+
         if isdir:
             child = self._filestree.AppendItem(parent, son)
             self._filestree.SetPyData(child, None)
@@ -682,7 +684,12 @@ class FiletreePanel( wx.Panel ):
         elif fileExtension == ".anvil":
             child = self._filestree.AppendItem(parent, son)
             self._filestree.SetPyData(child, None)
-            self._filestree.SetItemImage(child, self.anvil, wx.TreeItemIcon_Normal)
+            self._filestree.SetItemImage(child, self.anvilfileidx, wx.TreeItemIcon_Normal)
+
+        elif fileExtension == ".antx":
+            child = self._filestree.AppendItem(parent, son)
+            self._filestree.SetPyData(child, None)
+            self._filestree.SetItemImage(child, self.antxfileidx, wx.TreeItemIcon_Normal)
 
         else:
             return wx.TreeItemId()

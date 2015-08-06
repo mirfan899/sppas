@@ -116,6 +116,7 @@ MIME_XRA            = os.path.join( "files", "mime_xra.png")
 MIME_MRK            = os.path.join( "files", "mime_mrk.png")
 MIME_SUBTITLES      = os.path.join( "files", "mime_subtitles.png")
 MIME_ANVIL          = os.path.join( "files", "mime_anvil.png")
+MIME_ANTX           = os.path.join( "files", "mime_antx.png")
 
 
 # ---------------------------------------------------------------------------
