@@ -79,7 +79,7 @@ code > span.er { font-weight: bold; }
         <td >
             <a href="SPPAS-for-dummies.html">
                 <figure>
-                <img src="./etc/icons/dummies.png" width="96" height="96" />
+                <img src="./etc/icons/dummies.png" width="64" height="64" />
                 <figcaption>Slideshow: SPPAS for dummies</figcaption>
                 </figure>
             </a>
@@ -88,7 +88,7 @@ code > span.er { font-weight: bold; }
         <td >
             <a href="http://hdl.handle.net/11041/sldr000800/documentation.pdf">
                 <figure>
-                <img src="./etc/icons/PDF.jpg" width="96" height="96" />
+                <img src="./etc/icons/PDF.jpg" width="64" height="64" />
                 <figcaption>Printable version of the documentation</figcaption>
                 </figure>
             </a>

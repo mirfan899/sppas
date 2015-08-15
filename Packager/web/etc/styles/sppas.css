@@ -1,9 +1,39 @@
-/*===========================  DEFINITIONS  ===============================*/
+/*============================   slides.css  ===============================
+ * Brigitte Bigi                                                           
+ * Style to be used for SPPAS web site              
+ * -------------------------------------------------------------------------
+ * 
+ * This style expect the following files to be available...
+ *
+ * Fonts:
+ *  - etc/font/Jura-DemiBold.ttf
+ *  - etc/font/MavenPro-Regular.ttf
+ *  - etc/font/data-latin.ttf
+ *
+ * Images:
+ *  - etc/img/background-motif.png
+ *  - etc/img/background-motif.png
+ *
+ *==========================================================================*/
 
-:root{
-    --main-color:rgba(216,129,69,0.7);
-    --text-color:rgba(200,200,200,0.8)
-}
+
+/* ===========================  DEFINITIONS  ===============================*/
+
+@font-face {
+    font-family: HeaderFont;
+    src: url(../../etc/font/Jura-DemiBold.ttf);
+    }
+
+@font-face {
+    font-family: NormalFont;
+    src: url(../../etc/font/MavenPro-Regular.ttf);
+    }
+
+@font-face {
+    font-family: FooterFont;
+    src: url(../../etc/font/data-latin.ttf);
+    }
+
 
 /*===========================  MAIN PAGE  =================================*/
 
@@ -14,28 +44,28 @@ html {
 
 
 body {
-    background:      url('../../etc/img/background-motif.png') repeat 0 0;
+    background:      url('../../etc/img/background-lightmotif.png') repeat 0 0;
     max-width:       80%;
 
-    border-left:     1px solid var(--main-color);
-    border-right:    1px solid var(--main-color);
+    border-left:     1px solid rgba(216,129,69,0.7); 
+    border-right:    1px solid rgba(216,129,69,0.7); 
 
-    margin:          auto;
+    margin:          auto; /* used to center the body in the html page */
     padding-top:     7px;
     padding-bottom:  7px;
-    padding-right:   15px;
-    padding-left:    25px;
+    padding-right:   2px;
+    padding-left:    2px;
 
-    font-family:     "Maven Pro", serif;
+    font-family:     NormalFont, "Maven Pro", serif;
     font-size:       100%;
     line-height:     110%;
 
-    color:           var(--text-color);
+    color:           rgba(200,200,200,0.8);
 
     /* Effects: */
     background-clip: content-box;
     transition:      border-color 0.3s;
-    box-shadow:      0 0 10px 0px var(--main-color), inset 0 0 10px 0px var(--main-color);
+    box-shadow:      0 0 10px 0px rgba(216,129,69,0.7), inset 0 0 10px 0px rgba(216,129,69,0.7);
 }
 
 
@@ -45,8 +75,8 @@ body {
     background:        url('../../etc/img/header.png') no-repeat center;
     background-color:  rgba(100,100,100, 0.1);
     
-    border-top:        1px solid var(--main-color); 
-    border-bottom:     1px solid var(--main-color); 
+    border-top:        1px solid rgba(216,129,69,0.7); 
+    border-bottom:     1px solid rgba(216,129,69,0.7); 
     margin-top:        auto;
     margin-bottom:     auto;
     padding-top:       10px;
@@ -60,7 +90,7 @@ body {
 /*==========  TITLE  ==========*/
 
 .title {
-    color: var(--main-color);
+    color: rgba(216,129,69,0.7);
 }
 
 .h1title {
@@ -109,20 +139,14 @@ body {
     padding-left:    15px;
 }
 
-a.neonOrange  {
-    box-shadow:     0 0 10px rgba(240,240,69,0.7), inset 0 0 10px rgba(240,240,69,0.7);
+/* 7 possible colors for the buttons of a menu */
+
+a.neonViolet  {
+    box-shadow:     0 0 10px rgba(150,56,185,0.7), inset 0 0 10px rgba(150,56,185,0.7); 
 }
 
-a.neonOrange:hover{
-    box-shadow:     0 0 10px rgba(240,240,69,1), inset 0 0 10px rgba(240,240,69,1);
-}
-
-a.neonRed  {
-    box-shadow:     0 0 10px rgba(205,38,38,0.7), inset 0 0 10px rgba(205,38,38,0.7);
-}
-
-a.neonRed:hover {
-    box-shadow:     0 0 10px rgba(205,38,38,1), inset 0 0 10px rgba(205,38,38,1);
+a.neonViolet:hover {
+    box-shadow:     0 0 10px rgba(150,56,185,1), inset 0 0 10px rgba(150,56,185,1); 
 }
 
 a.neonBlue {
@@ -133,6 +157,14 @@ a.neonBlue:hover {
     box-shadow:     0 0 10px rgba(38,38,205,1), inset 0 0 10px rgba(38,38,205,1); 
 }
 
+a.neonCyan  {
+    box-shadow:     0 0 10px rgba(70,165,230,0.7), inset 0 0 10px rgba(70,165,230,0.7);
+}
+
+a.neonCyan:hover {
+    box-shadow:     0 0 10px rgba(70,165,230,1), inset 0 0 10px rgba(70,165,230,1);
+}
+
 a.neonGreen  {
     box-shadow:     0 0 10px rgba(50,196,69,0.5), inset 0 0 10px rgba(50,196,69,0.5); 
 }
@@ -141,12 +173,28 @@ a.neonGreen:hover {
     box-shadow:     0 0 10px rgba(50,196,69,0.8), inset 0 0 10px rgba(50,196,69,0.8); 
 }
 
-a.neonViolet  {
-    box-shadow:     0 0 10px rgba(150,56,185,0.7), inset 0 0 10px rgba(150,56,185,0.7); 
+a.neonYellow  {
+    box-shadow:     0 0 10px rgba(240,240,69,0.7), inset 0 0 10px rgba(240,240,69,0.7);
 }
 
-a.neonViolet:hover {
-    box-shadow:     0 0 10px rgba(150,56,185,1), inset 0 0 10px rgba(150,56,185,1); 
+a.neonYellow:hover{
+    box-shadow:     0 0 10px rgba(240,240,69,1), inset 0 0 10px rgba(240,240,69,1);
+}
+
+a.neonOrange  {
+    box-shadow:     0 0 10px rgba(216,129,69,0.7), inset 0 0 10px rgba(216,129,69,0.7);
+}
+
+a.neonOrange:hover{
+    box-shadow:     0 0 10px rgba(216,129,69,1), inset 0 0 10px rgba(216,129,69,1);
+}
+
+a.neonRed  {
+    box-shadow:     0 0 10px rgba(205,38,38,0.7), inset 0 0 10px rgba(205,38,38,0.7);
+}
+
+a.neonRed:hover {
+    box-shadow:     0 0 10px rgba(205,38,38,1), inset 0 0 10px rgba(205,38,38,1);
 }
 
 /*=============================  END HEADER  ===============================*/
@@ -159,12 +207,13 @@ h1 a, h2 a, h3 a, h4 a, h5 a {
 }
 
 h1, h2, h3, h4, h5 { 
-    font-family: Jura, serif;
-    font-weight: bold;
-    padding:7px;
-    border:1px solid #757575;
+    font-family:    HeaderFont, Jura, serif; 
+    font-weight:    bold;
+    margin-left:    10px;
+    margin-right:   10px;
+    padding:        7px;
     background-clip:content-box;
-    transition:border-color 0.3s;
+    transition:     border-color 0.3s;
 }
 
 h1 {
@@ -172,12 +221,12 @@ h1 {
     text-align:     center;
     margin-top:     40px;
     margin-bottom:  35px;
-    margin-right:   auto;
     padding-top:    20px;
     padding-right:  15px;
     padding-bottom: 20px;
     padding-left:   15px;
-    box-shadow:     0 0 11px rgba(205,38,38,0.7), inset 0 0 11px rgba(205,38,38,0.7); /* red */
+    border:         1px solid rgba(205,38,38,0.8);
+    box-shadow:     0 0 12px rgba(205,38,38,0.8), inset 0 0 12px rgba(205,38,38,0.8); /* red */
     }
 
 h2 {
@@ -185,34 +234,39 @@ h2 {
     text-align:     left;
     margin-top:     30px;
     margin-bottom:  25px;
-    margin-right:   auto;
     padding-top:    15px;
     padding-right:  15px;
     padding-bottom: 15px;
     padding-left:   15px;
-    box-shadow:     0 0 11px #3a38c0, inset 0 0 11px #3a38c0; /* blue */
+    border:         1px solid rgba(60,60,190,0.8);
+    box-shadow:     0 0 12px rgba(60,60,190,0.8), inset 0 0 12px rgba(60,60,190,0.8); /* blue */
     }
 
 h3 {
     font-size:      100%;
     margin-top:     20px;
     margin-bottom:  15px;
-    margin-right:   auto;
     padding-top:    5px;
     padding-right:  15px;
     padding-bottom: 5px;
     padding-left:   15px;
     text-align:     left;
-    box-shadow:     0 0 11px rgba(50,196,69,0.5), inset 0 0 11px rgba(50,196,69,0.5);
-}
+    border:         1px solid rgba(60,160,60,0.8);
+    box-shadow:     0 0 12px rgba(60,160,60,0.8), inset 0 0 12px rgba(60,160,60,0.8); /* green */
+    }
 
 h4 {
-    font-size: 90%;
+    margin-top:     20px;
+    margin-bottom:  15px;
+    font-size:      90%;
+    border:         1px solid rgb(120,120,120);
 }
 
 h5 {
-    font-size: 90%;
-    font-style: italic;
+    margin-top:     20px;
+    margin-bottom:  15px;
+    font-size:      90%;
+    font-style:     italic;
 }
 
 h1.title {
@@ -240,7 +294,9 @@ h2.author, h3.date {
     }
    
 p {
-    text-align:justify;
+    margin-left:    20px;
+    margin-right:   20px;
+    text-align:  justify;
     text-justify:inter-word;
 }
 
@@ -265,21 +321,27 @@ a{
     -o-transition-duration:0.3s;
     transition-duration:0.3s
 }
+
 a:hover{
     color: rgb(40,95,149);
 }
 
-ul,ol{
-    padding:0;
-    margin:0 0 11px 25px
+ul, ol{
+    margin-left:    40px;
+    margin-right:   20px;
+    margin-top:     12px;
+    margin-bottom:  12px;
+    padding:        0;
 }
 
 ul ul,ul ol,ol ol,ol ul{
-margin-bottom:0
+margin-bottom:5px;
 }
 
 li{
-line-height:22px
+    margin-left:    20px;
+    margin-right:   20px;
+    line-height:    20px
 }
 
 ul a {
@@ -303,10 +365,10 @@ code {
 }
 
 blockquote {
-    margin-left:   1em;
+    margin-left:   40px;
+    margin-right:  40px;
     margin-top:    1em;
     margin-bottom: 1em;
-    margin-right:  1em;
 
     min-height: 24px;
 
@@ -326,27 +388,29 @@ blockquote {
 }
 
 hr{
-margin:22px 0;
-border:0;
-border-top:1px solid #d8d7cf
+    margin-left:   20px;
+    margin-right:  20px;
+    margin-bottom: 40px;
+    border:0;
+    border-top:1px solid #d8d7cf
 }
 
 strong{
-font-weight:bold
+    font-weight:bold
 }
 
 em{
-font-style:italic
+    font-style:italic
 }
 
 figure {
-    display: block;
-    margin-left: auto;
+    display:      block;
+    margin-left:  auto;
     margin-right: auto;
-    text-align: center;
-    font-size: 80%;
-    text-align: center;
-    color: #808080; 
+    text-align:   center;
+    font-size:    80%;
+    text-align:   center;
+    color:        rgb(120,120,120); 
     }
 
 
@@ -386,25 +450,25 @@ figure {
 }
 
 .button_red {
-    border:           1px solid var(--text-color);
-    color:            var(--text-color);
+    border:           1px solid rgba(200,200,200,0.8);
+    color:            rgba(200,200,200,0.8);
     background-color: rgba(205,38,38,0.7);
 }
 
 .button_red:hover {
-    color:  var(--text-color);
+    color:  rgba(200,200,200,0.8);
     opacity:0.9;
     filter:alpha(opacity=90);
 }
 
 .button_blue {
     border: 1px solid #305875;
-    color: var(--text-color);
+    color: rgba(200,200,200,0.8);
     background-color: #3D6E97;
 }
 
 .button_blue:hover {
-    color: var(--text-color);
+    color: rgba(200,200,200,0.8);
     opacity:0.9;
     filter:alpha(opacity=80);
 }
