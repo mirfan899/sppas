@@ -123,12 +123,13 @@ sppas.src.annotationdata.io.transcriber.add_at_label_end	sppas.src.annotationdat
 sppas.src.annotationdata.io.trsfactory	sppas.src.annotationdata.io.trsfactory-module.html
 sppas.src.annotationdata.io.utils	sppas.src.annotationdata.io.utils-module.html
 sppas.src.annotationdata.io.utils.indent	sppas.src.annotationdata.io.utils-module.html#indent
+sppas.src.annotationdata.io.utils.fill_gaps	sppas.src.annotationdata.io.utils-module.html#fill_gaps
 sppas.src.annotationdata.io.utils.merge_overlapping_annotations	sppas.src.annotationdata.io.utils-module.html#merge_overlapping_annotations
 sppas.src.annotationdata.io.utils.gen_id	sppas.src.annotationdata.io.utils-module.html#gen_id
 sppas.src.annotationdata.io.utils.point2interval	sppas.src.annotationdata.io.utils-module.html#point2interval
-sppas.src.annotationdata.io.utils.random_char	sppas.src.annotationdata.io.utils-module.html#random_char
+sppas.src.annotationdata.io.utils.random_hexachar	sppas.src.annotationdata.io.utils-module.html#random_hexachar
 sppas.src.annotationdata.io.utils.random_int	sppas.src.annotationdata.io.utils-module.html#random_int
-sppas.src.annotationdata.io.utils.fill_gaps	sppas.src.annotationdata.io.utils-module.html#fill_gaps
+sppas.src.annotationdata.io.utils.random_char	sppas.src.annotationdata.io.utils-module.html#random_char
 sppas.src.annotationdata.io.utils.format_float	sppas.src.annotationdata.io.utils-module.html#format_float
 sppas.src.annotationdata.io.xra	sppas.src.annotationdata.io.xra-module.html
 sppas.src.annotationdata.label	sppas.src.annotationdata.label-module.html

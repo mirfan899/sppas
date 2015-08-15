@@ -264,7 +264,8 @@ search data from annotated data.
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="sppas.src.annotationdata.io-module.html#extensions" class="summary-name">extensions</a> = <code title="['.xra', '.textgrid', '.pitchtier', '.eaf', '.trs', '.csv', '.mrk', '.\
-txt', '.mrk', '.stm', '.ctm', '.lab', '.mlf', '.sub', '.srt', 'anvil']">['.xra', '.textgrid', '.pitchtier', '.eaf', '.trs<code class="variable-ellipsis">...</code></code>
+txt', '.mrk', '.stm', '.ctm', '.lab', '.mlf', '.sub', '.srt', 'anvil',\
+ '.antx']">['.xra', '.textgrid', '.pitchtier', '.eaf', '.trs<code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 <tr>
@@ -272,7 +273,8 @@ txt', '.mrk', '.stm', '.ctm', '.lab', '.mlf', '.sub', '.srt', 'anvil']">['.xra',
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="sppas.src.annotationdata.io-module.html#extensionsul" class="summary-name">extensionsul</a> = <code title="ext_sppas+ ext_praat+ ext_transcriber+ ext_elan+ ext_ascii+ ext_phoned\
-it+ ext_signaix+ ext_sclite+ ext_htk+ ext_subtitles+ ext_anvil">ext_sppas+ ext_praat+ ext_transcriber+ ext_elan<code class="variable-ellipsis">...</code></code>
+it+ ext_signaix+ ext_sclite+ ext_htk+ ext_subtitles+ ext_anvil+ ext_an\
+notationpro">ext_sppas+ ext_praat+ ext_transcriber+ ext_elan<code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 <tr>
@@ -281,7 +283,7 @@ it+ ext_signaix+ ext_sclite+ ext_htk+ ext_subtitles+ ext_anvil">ext_sppas+ ext_p
     </td><td class="summary">
         <a href="sppas.src.annotationdata.io-module.html#extensions_in" class="summary-name">extensions_in</a> = <code title="['.xra', '.TextGrid', '.hz', '.PitchTier', '.eaf', '.trs', '.csv', '.m\
 rk', '.txt', '.stm', '.ctm', '.lab', '.mlf', '.sub', '.srt', '.anvil',\
- 'antx']">['.xra', '.TextGrid', '.hz', '.PitchTier', '.e<code class="variable-ellipsis">...</code></code>
+ '.antx']">['.xra', '.TextGrid', '.hz', '.PitchTier', '.e<code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 <tr>
@@ -289,14 +291,14 @@ rk', '.txt', '.stm', '.ctm', '.lab', '.mlf', '.sub', '.srt', '.anvil',\
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="sppas.src.annotationdata.io-module.html#extensions_out" class="summary-name">extensions_out</a> = <code title="['.xra', '.TextGrid', '.eaf', '.csv', '.mrk', '.stm', '.ctm', '.lab', \
-'.mlf', '.sub', '.srt']">['.xra', '.TextGrid', '.eaf', '.csv', '.mrk',<code class="variable-ellipsis">...</code></code>
+'.mlf', '.sub', '.srt', '.antx']">['.xra', '.TextGrid', '.eaf', '.csv', '.mrk',<code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="sppas.src.annotationdata.io-module.html#extensions_out_multitiers" class="summary-name">extensions_out_multitiers</a> = <code title="['.xra', '.TextGrid', '.eaf', '.csv', '.mrk', '.mlf']">['.xra', '.TextGrid', '.eaf', '.cs<code class="variable-ellipsis">...</code></code>
+        <a href="sppas.src.annotationdata.io-module.html#extensions_out_multitiers" class="summary-name">extensions_out_multitiers</a> = <code title="['.xra', '.TextGrid', '.eaf', '.csv', '.mrk', '.antx', '.mlf']">['.xra', '.TextGrid', '.eaf', '.cs<code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 </table>
@@ -530,7 +532,8 @@ To get the list of extensions currently supported for reading and writing:
     <dt>Value:</dt>
       <dd><table><tr><td><pre class="variable">
 ['.xra', '.textgrid', '.pitchtier', '.eaf', '.trs', '.csv', '.mrk', '.<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-txt', '.mrk', '.stm', '.ctm', '.lab', '.mlf', '.sub', '.srt', 'anvil']
+txt', '.mrk', '.stm', '.ctm', '.lab', '.mlf', '.sub', '.srt', 'anvil',<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+ '.antx']
 </pre></td></tr></table>
 </dd>
   </dl>
@@ -549,7 +552,8 @@ txt', '.mrk', '.stm', '.ctm', '.lab', '.mlf', '.sub', '.srt', 'anvil']
     <dt>Value:</dt>
       <dd><table><tr><td><pre class="variable">
 ext_sppas+ ext_praat+ ext_transcriber+ ext_elan+ ext_ascii+ ext_phoned<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-it+ ext_signaix+ ext_sclite+ ext_htk+ ext_subtitles+ ext_anvil
+it+ ext_signaix+ ext_sclite+ ext_htk+ ext_subtitles+ ext_anvil+ ext_an<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+notationpro
 </pre></td></tr></table>
 </dd>
   </dl>
@@ -569,7 +573,7 @@ it+ ext_signaix+ ext_sclite+ ext_htk+ ext_subtitles+ ext_anvil
       <dd><table><tr><td><pre class="variable">
 ['.xra', '.TextGrid', '.hz', '.PitchTier', '.eaf', '.trs', '.csv', '.m<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
 rk', '.txt', '.stm', '.ctm', '.lab', '.mlf', '.sub', '.srt', '.anvil',<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
- 'antx']
+ '.antx']
 </pre></td></tr></table>
 </dd>
   </dl>
@@ -588,7 +592,7 @@ rk', '.txt', '.stm', '.ctm', '.lab', '.mlf', '.sub', '.srt', '.anvil',<span clas
     <dt>Value:</dt>
       <dd><table><tr><td><pre class="variable">
 ['.xra', '.TextGrid', '.eaf', '.csv', '.mrk', '.stm', '.ctm', '.lab', <span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-'.mlf', '.sub', '.srt']
+'.mlf', '.sub', '.srt', '.antx']
 </pre></td></tr></table>
 </dd>
   </dl>
@@ -606,7 +610,7 @@ rk', '.txt', '.stm', '.ctm', '.lab', '.mlf', '.sub', '.srt', '.anvil',<span clas
   <dl class="fields">
     <dt>Value:</dt>
       <dd><table><tr><td><pre class="variable">
-['.xra', '.TextGrid', '.eaf', '.csv', '.mrk', '.mlf']
+['.xra', '.TextGrid', '.eaf', '.csv', '.mrk', '.antx', '.mlf']
 </pre></td></tr></table>
 </dd>
   </dl>
@@ -641,7 +645,7 @@ rk', '.txt', '.stm', '.ctm', '.lab', '.mlf', '.sub', '.srt', '.anvil',<span clas
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Aug  5 11:06:50 2015
+    Generated by Epydoc 3.0.1 on Sat Aug 15 13:25:16 2015
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
