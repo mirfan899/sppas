@@ -131,7 +131,8 @@ class basicAligner( baseAligner ):
         delta = ( duration / float(len(phoneslist)) ) * 100.0
         if delta < 1.:
             #raise Exception('Segmentation error: phones shorter than 10ms.')
-            self._logfile.print_message('Phones shorter than 10ms.', indent=3, status=-1)
+            if self._logfile:
+                self._logfile.print_message('Phones shorter than 10ms.', indent=3, status=-1)
             alignments = [(0., duration, "")]
             self.write_palign([], alignments, outputalign)
             return
