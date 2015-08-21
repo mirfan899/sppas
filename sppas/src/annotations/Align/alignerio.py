@@ -55,6 +55,7 @@ from annotationdata.ptime.interval import TimeInterval
 from annotationdata.ptime.point    import TimePoint
 from annotationdata.annotation     import Annotation
 from annotationdata.label.label    import Label
+from annotationdata.label.text     import Text
 
 # ----------------------------------------------------------------------------
 ENCODING='utf-8'
@@ -203,7 +204,7 @@ class AlignerIO( Transcription ):
                 mapping.set_reverse( False )
                 i = 0
                 for t in _phonannots:
-                    _phonannots[i] = (t[0], t[1], mapping.map_entry(t[2]))
+                    _phonannots[i] = (t[0], t[1], mapping.map_entry(t[2]), t[3])
                     i = i+1
 
                 # Map-back the phoneset
@@ -214,7 +215,7 @@ class AlignerIO( Transcription ):
 
                 # phonemes
                 idx = 1
-                for loc_s,loc_e,label in _phonannots:
+                for loc_s,loc_e,label,score in _phonannots:
 
                     # Assign real end value
                     loc_s += unitstart
@@ -227,9 +228,8 @@ class AlignerIO( Transcription ):
                     else:
                         loc_e += unitstart
 
-                    annotation = Annotation(TimeInterval(TimePoint(loc_s,radius), TimePoint(loc_e,radius)), Label(label))
+                    annotation = Annotation(TimeInterval(TimePoint(loc_s,radius), TimePoint(loc_e,radius)), Label(Text(label,score)))
                     itemp.Append(annotation)
-                    #print "Append in phonemes 3:",annotation
                     idx += 1
             except Exception:
                 if unitstart<unitend:
@@ -332,7 +332,7 @@ class AlignerIO( Transcription ):
         @param filename: is the input file (a Julius output).
         @raise IOError:
         @return: 2 lists of tuples:
-            - (start-time end-time phoneme)
+            - (start-time end-time phoneme score)
             - (start-time end-time word)
 
         """
@@ -369,21 +369,25 @@ class AlignerIO( Transcription ):
                 phonlist = line.split(' ')
             elif line.startswith('[') and phonidx>-1:
                 # New phonemes
-                line = line[:line.find(']')]
                 line = line.replace("[","")
                 line = line.replace("]","")
                 line = self.__clean(line)
                 tab = line.split(" ")
-                # Column 1: begin time ; column 2: end time;
+                # Column 1: begin time
+                # Column 2: end time
+                # Column 3: score
+                # Column 4: triphone used
                 # ATTENTION: Julius indicates time in centiseconds!
-                loc_s = (float( tab[0] ) / 100.0)
-                loc_e = (float( tab[1] ) / 100.0)
-                _phonalign.append( (loc_s, loc_e) )
+                loc_s = (float( tab[0] ) / 100.)
+                loc_e = (float( tab[1] ) / 100.)
+                _phonalign.append( (loc_s, loc_e, tab[3], tab[2]) )
+
         fp.close()
 
+        # Put real phoneme and adjust time values
         wordidx = 0      # word index
         wordloc_s  = 0.  # word start time
-        _modifiedphonalign = []
+        _modifiedphonalign = [] # the real phoneme (not the triphone)
         loc_s = 0
         loc_e = 0
         nextloc_s = 0
@@ -404,7 +408,7 @@ class AlignerIO( Transcription ):
                 # AND FINALLY, THE BEST IS:
                 loc_e = nextloc_s + ( ( nextloc_s - loc_e) / 2.0 )
 
-            _modifiedphonalign.append( (loc_s, loc_e, phonlist[phonidx]) )
+            _modifiedphonalign.append( (loc_s, loc_e, phonlist[phonidx], _phonalign[phonidx][3]) )
             loc_s = loc_e
             # add also the word?
             if phonidx == wordlist[wordidx]:
@@ -461,7 +465,7 @@ class AlignerIO( Transcription ):
                                 pmin = round(float(line[0]) / samplerate, 5) + 0.005
                             pmax = round(float(line[1]) / samplerate, 5) + 0.005
                             if pmin != pmax: # for sp
-                                phon.append( (pmin, pmax, line[2]) )
+                                phon.append( (pmin, pmax, line[2], -30.) )
                             if wmrk:
                                 wmrkp = wmrkp[:-1]
                                 word.append( ( wsrt, wend, wmrk) )
@@ -489,7 +493,7 @@ class AlignerIO( Transcription ):
                                 wsrt = pmin
                                 wend = pmax
                             elif pmin != pmax: # for sp
-                                phon.append( (pmin, pmax, line[2]) )
+                                phon.append( (pmin, pmax, line[2], -30) )
                             wend = pmax
 
                         else: # it's a period
@@ -505,7 +509,7 @@ class AlignerIO( Transcription ):
         if len(word)>0:
             if "SENT" in word[0][2]:
                 newword = (phontok[0][0], phontok[1][1], phontok[1][2])
-                newphon = (phon[0][0], phon[1][1], phon[1][2])
+                newphon = (phon[0][0], phon[1][1], phon[1][2], phon[1][3])
                 phontok.pop(0)
                 phon.pop(0)
                 phontok.pop(0)
