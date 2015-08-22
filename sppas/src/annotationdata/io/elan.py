@@ -134,6 +134,7 @@ class Elan( Transcription ):
             try:
                 self._hierarchy.addLink('TimeAlignment', child, parent)
             except:
+                # TODO: to send a warning
                 pass
 
         del self.hierarchyLinks
@@ -177,6 +178,15 @@ class Elan( Transcription ):
                 entrydesc = entryNode.attrib['DESCRIPTION']
             ctrlvocab.Append( entrytext,entrydesc )
 
+        # if Elan eaf format = 2.8
+        for entryNode in vocabularyRoot.findall('CV_ENTRY_ML'):
+            entryValueNode = entryNode.find('CVE_VALUE')
+            entrytext = entryValueNode.text
+            entrydesc = ""
+            if "DESCRIPTION" in entryValueNode.attrib:
+                entrydesc = entryValueNode.attrib['DESCRIPTION']
+            ctrlvocab.Append( entrytext,entrydesc )
+
         self.AddCtrlVocab( ctrlvocab )
 
     # -----------------------------------------------------------------
@@ -215,7 +225,12 @@ class Elan( Transcription ):
                     ctrlvocabid = linguisticRoot.attrib['CONTROLLED_VOCABULARY_REF']
                     ctrlvocab = self.GetCtrlVocabFromId( ctrlvocabid )
                     if ctrlvocab is not None:
-                        tier.SetCtrlVocab( ctrlvocab )
+                        try:
+                            tier.SetCtrlVocab( ctrlvocab )
+                        except Exception:
+                            # TODO: to send a warning
+                            # Because it's a bug in Elan (accept non-controlled text in controlled tier)
+                            pass
 
                 found = True
 

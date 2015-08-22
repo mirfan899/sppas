@@ -59,11 +59,11 @@ class CtrlVocabEntry(object):
     An entry of a controlled vocabulary is a pair Text/description.
 
     """
-    def __init__(self, str, desc=""):
+    def __init__(self, stre, desc=""):
         """
         Create a new CtrlVocabEntry instance.
         """
-        self.__text = self.__entry2text(str)
+        self.__text = self.__entry2text(stre)
         self.__desc = ' '.join(desc.split())
 
     # -----------------------------------------------------------------------
