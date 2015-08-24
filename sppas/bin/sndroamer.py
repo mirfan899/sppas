@@ -51,38 +51,36 @@ import sys
 import os
 import os.path
 from argparse import ArgumentParser
-import tkMessageBox
+import traceback
 
 
 # VERIFY PYTHON
 # -------------
 if sys.version_info < (2, 7):
-    tkMessageBox.showwarning(
-        "Python Error...",
-        "Your python version is too old. SndRoamer requires 2.7\n. Verify your python installation and try again."
-        )
+    print "Your python version is too old. SPPAS requires 2.7\n. Verify your python installation and try again."
     sys.exit(1)
 
 if sys.version_info >= (3, 0):
-    tkMessageBox.showwarning(
-        "Python Error...",
-        "Your python version is not appropriate. SndRoamer requires 2.7\n. Verify your python installation and try again."
-        )
+    print "Your python version is not appropriate. SPPAS requires 2.7\n. Verify your python installation and try again."
     sys.exit(1)
 
 
 # VERIFY WXPYTHON
 # ----------------
-
 try:
     import wx
 except ImportError:
-    import tkMessageBox
-    tkMessageBox.showwarning(
-        "WxPython Error...",
-        "WxPython is not installed on your system.\n. Verify your installation and try again."
-        )
+    print "WxPython is not installed on your system\n. Verify your installation and try again."
     sys.exit(1)
+
+try:
+    wxv = wx.version().split()[0]
+except Exception:
+    wxv = '2'
+
+if int(wxv[0]) < 3:
+    print 'Your version of wxpython is too old. You could encounter problem while using SPPAS.\nPlease, perform the update at http://wxpython.org/download.php and restart SPPAS.\n\nFor any help, see SPPAS installation page.'
+
 
 # THEN, VERIFY SPPAS
 # ------------------
@@ -97,11 +95,8 @@ try:
     from wxgui.sp_icons import SNDROAMER_APP_ICON
     from utils.commons import setup_logging
 except ImportError as e:
-    import tkMessageBox
-    tkMessageBox.showwarning(
-        "Error...",
-        "A problem occurred.\nVerify your installation and try again.\n\nThe system error message is: %s" % str(e)
-        )
+    print traceback.format_exc()
+    print "A problem occurred when launching SPPAS.\nVerify your SPPAS installation directory and try again. The error is: %s"%(str(e))
     sys.exit(1)
 
 

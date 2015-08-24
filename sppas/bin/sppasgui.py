@@ -52,23 +52,16 @@ import os
 import os.path
 from argparse import ArgumentParser
 import traceback
-import tkMessageBox
 
 
 # VERIFY PYTHON
 # -------------
 if sys.version_info < (2, 7):
-    tkMessageBox.showwarning(
-        "Python Error...",
-        "Your python version is too old. SPPAS requires 2.7\n. Verify your python installation and try again."
-        )
+    print "Your python version is too old. SPPAS requires 2.7\n. Verify your python installation and try again."
     sys.exit(1)
 
 if sys.version_info >= (3, 0):
-    tkMessageBox.showwarning(
-        "Python Error...",
-        "Your python version is not appropriate. SPPAS requires 2.7\n. Verify your python installation and try again."
-        )
+    print "Your python version is not appropriate. SPPAS requires 2.7\n. Verify your python installation and try again."
     sys.exit(1)
 
 
@@ -77,10 +70,7 @@ if sys.version_info >= (3, 0):
 try:
     import wx
 except ImportError:
-    tkMessageBox.showwarning(
-        "WxPython Error...",
-        "WxPython is not installed on your system\n. Verify your installation and try again."
-        )
+    print "WxPython is not installed on your system\n. Verify your installation and try again."
     sys.exit(1)
 
 try:
@@ -89,11 +79,7 @@ except Exception:
     wxv = '2'
 
 if int(wxv[0]) < 3:
-    tkMessageBox.showwarning(
-        "WxPython Warning...",
-        'Your version of wxpython is too old. You could encounter problem while using SPPAS.\n'
-        'Please, perform the update at http://wxpython.org/download.php and restart SPPAS.\n\n'
-        'For any help, see SPPAS installation page.')
+    print 'Your version of wxpython is too old. You could encounter problem while using SPPAS.\nPlease, perform the update at http://wxpython.org/download.php and restart SPPAS.\n\nFor any help, see SPPAS installation page.'
 
 
 # THEN, VERIFY SPPAS
@@ -106,13 +92,10 @@ sys.path.insert(0,SPPAS)
 
 try:
     from wxgui.frames.mainframe import FrameSPPAS
-    from utils.commons import setup_logging
+    from utils.commons          import setup_logging
 except ImportError as e:
     print traceback.format_exc()
-    tkMessageBox.showwarning(
-        "SPPAS installation Error...",
-        "A problem occurred when launching SPPAS.\nVerify your SPPAS installation directory and try again. The error is: %s"%(str(e))
-        )
+    print "A problem occurred when launching SPPAS.\nVerify your SPPAS installation directory and try again. The error is: %s"%(str(e))
     sys.exit(1)
 
 
