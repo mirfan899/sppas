@@ -1,182 +1,182 @@
 File type = "ooTextFile"
 Object class = "TextGrid"
 
-xmin = 0.0
-xmax = 23.5716
-tiers? <exists>
-size = 3
-item []:
+xmin = 0 
+xmax = 23.5716 
+tiers? <exists> 
+size = 3 
+item []: 
     item [1]:
-        class = "IntervalTier"
-        name = "transcription"
-        xmin = 0.000000
-        xmax = 23.571600
-        intervals: size = 13
+        class = "IntervalTier" 
+        name = "transcription" 
+        xmin = 0 
+        xmax = 23.5716 
+        intervals: size = 13 
         intervals [1]:
-            xmin = 0.0
-            xmax = 1.0236208367
-            text = "#"
+            xmin = 0 
+            xmax = 1.0236208367 
+            text = "#" 
         intervals [2]:
-            xmin = 1.0236208367
-            xmax = 3.4553591886
-            text = "my wife has a complicated flight schedule next month"
+            xmin = 1.0236208367 
+            xmax = 3.4553591886 
+            text = "my wife has a ""complicated"" flight schedule next month" 
         intervals [3]:
-            xmin = 3.4553591886
-            xmax = 4.1918285181
-            text = "#"
+            xmin = 3.4553591886 
+            xmax = 4.1918285181 
+            text = "#" 
         intervals [4]:
-            xmin = 4.1918285181
-            xmax = 7.026540654
-            text = "would you please advise me on the most economical arrangements"
+            xmin = 4.1918285181 
+            xmax = 7.026540654 
+            text = "would you please advise me on the most economical arrangements" 
         intervals [5]:
-            xmin = 7.026540654
-            xmax = 7.790801279
-            text = "#"
+            xmin = 7.026540654 
+            xmax = 7.790801279 
+            text = "#" 
         intervals [6]:
-            xmin = 7.790801279
-            xmax = 10.9207959291
-            text = "she has a series of meetings + nine am to five pm"
+            xmin = 7.790801279 
+            xmax = 10.9207959291 
+            text = "she has a series of meetings + nine am to five pm" 
         intervals [7]:
-            xmin = 10.9207959291
-            xmax = 11.4488305427
-            text = ""
+            xmin = 10.9207959291 
+            xmax = 11.4488305427 
+            text = "" 
         intervals [8]:
-            xmin = 11.4488305427
-            xmax = 16.0726073233
-            text = "in paris + bruges + frankfurt + rome and hamburg + on consecutive days"
+            xmin = 11.4488305427 
+            xmax = 16.0726073233 
+            text = "in paris + bruges + frankfurt + rome and hamburg + on consecutive days" 
         intervals [9]:
-            xmin = 16.0726073233
-            xmax = 16.872
-            text = "#"
+            xmin = 16.0726073233 
+            xmax = 16.872 
+            text = "#" 
         intervals [10]:
-            xmin = 16.872
-            xmax = 20.1996146977
-            text = "can you suggest convenient evening flights and suitable accommodation"
+            xmin = 16.872 
+            xmax = 20.1996146977 
+            text = "can you suggest convenient evening flights and suitable accommodation" 
         intervals [11]:
-            xmin = 20.1996146977
-            xmax = 20.808
-            text = "#"
+            xmin = 20.1996146977 
+            xmax = 20.808 
+            text = "#" 
         intervals [12]:
-            xmin = 20.808
-            xmax = 22.8119964701
-            text = "she doesn t like large anonymous hotels"
+            xmin = 20.808 
+            xmax = 22.8119964701 
+            text = "she doesn t like large anonymous hotels" 
         intervals [13]:
-            xmin = 22.8119964701
-            xmax = 23.5716
-            text = "#"
+            xmin = 22.8119964701 
+            xmax = 23.5716 
+            text = "#" 
     item [2]:
-        class = "IntervalTier"
-        name = "Tokens-Faked"
-        xmin = 0.000000
-        xmax = 23.571600
-        intervals: size = 13
+        class = "IntervalTier" 
+        name = "Tokens-Faked" 
+        xmin = 0 
+        xmax = 23.5716 
+        intervals: size = 13 
         intervals [1]:
-            xmin = 0.0
-            xmax = 1.0236208367
-            text = "#"
+            xmin = 0 
+            xmax = 1.0236208367 
+            text = "#" 
         intervals [2]:
-            xmin = 1.0236208367
-            xmax = 3.4553591886
-            text = "my wife has a complicated flight schedule next month"
+            xmin = 1.0236208367 
+            xmax = 3.4553591886 
+            text = "my wife has a complicated flight schedule next month" 
         intervals [3]:
-            xmin = 3.4553591886
-            xmax = 4.1918285181
-            text = "#"
+            xmin = 3.4553591886 
+            xmax = 4.1918285181 
+            text = "#" 
         intervals [4]:
-            xmin = 4.1918285181
-            xmax = 7.026540654
-            text = "would you please advise me on the most economical arrangements"
+            xmin = 4.1918285181 
+            xmax = 7.026540654 
+            text = "would you please advise me on the most economical arrangements" 
         intervals [5]:
-            xmin = 7.026540654
-            xmax = 7.790801279
-            text = "#"
+            xmin = 7.026540654 
+            xmax = 7.790801279 
+            text = "#" 
         intervals [6]:
-            xmin = 7.790801279
-            xmax = 10.9207959291
-            text = "she has a series of meetings + nine am to five pm"
+            xmin = 7.790801279 
+            xmax = 10.9207959291 
+            text = "she has a series of meetings + nine am to five pm" 
         intervals [7]:
-            xmin = 10.9207959291
-            xmax = 11.4488305427
-            text = ""
+            xmin = 10.9207959291 
+            xmax = 11.4488305427 
+            text = "" 
         intervals [8]:
-            xmin = 11.4488305427
-            xmax = 16.0726073233
-            text = "in paris + bruges + frankfurt + rome and hamburg + on consecutive days"
+            xmin = 11.4488305427 
+            xmax = 16.0726073233 
+            text = "in paris + bruges + frankfurt + rome and hamburg + on consecutive days" 
         intervals [9]:
-            xmin = 16.0726073233
-            xmax = 16.872
-            text = "#"
+            xmin = 16.0726073233 
+            xmax = 16.872 
+            text = "#" 
         intervals [10]:
-            xmin = 16.872
-            xmax = 20.1996146977
-            text = "can you suggest convenient evening flights and suitable accommodation"
+            xmin = 16.872 
+            xmax = 20.1996146977 
+            text = "can you suggest convenient evening flights and suitable accommodation" 
         intervals [11]:
-            xmin = 20.1996146977
-            xmax = 20.808
-            text = "#"
+            xmin = 20.1996146977 
+            xmax = 20.808 
+            text = "#" 
         intervals [12]:
-            xmin = 20.808
-            xmax = 22.8119964701
-            text = "she doesn t like large anonymous hotels"
+            xmin = 20.808 
+            xmax = 22.8119964701 
+            text = "she doesn t like large anonymous hotels" 
         intervals [13]:
-            xmin = 22.8119964701
-            xmax = 23.5716
-            text = "#"
+            xmin = 22.8119964701 
+            xmax = 23.5716 
+            text = "#" 
     item [3]:
-        class = "IntervalTier"
-        name = "Tokens-Std"
-        xmin = 0.000000
-        xmax = 23.571600
-        intervals: size = 13
+        class = "IntervalTier" 
+        name = "Tokens-Std" 
+        xmin = 0 
+        xmax = 23.5716 
+        intervals: size = 13 
         intervals [1]:
-            xmin = 0.0
-            xmax = 1.0236208367
-            text = "#"
+            xmin = 0 
+            xmax = 1.0236208367 
+            text = "#" 
         intervals [2]:
-            xmin = 1.0236208367
-            xmax = 3.4553591886
-            text = "my wife has a complicated flight schedule next month"
+            xmin = 1.0236208367 
+            xmax = 3.4553591886 
+            text = "my wife has a complicated flight schedule next month" 
         intervals [3]:
-            xmin = 3.4553591886
-            xmax = 4.1918285181
-            text = "#"
+            xmin = 3.4553591886 
+            xmax = 4.1918285181 
+            text = "#" 
         intervals [4]:
-            xmin = 4.1918285181
-            xmax = 7.026540654
-            text = "would you please advise me on the most economical arrangements"
+            xmin = 4.1918285181 
+            xmax = 7.026540654 
+            text = "would you please advise me on the most economical arrangements" 
         intervals [5]:
-            xmin = 7.026540654
-            xmax = 7.790801279
-            text = "#"
+            xmin = 7.026540654 
+            xmax = 7.790801279 
+            text = "#" 
         intervals [6]:
-            xmin = 7.790801279
-            xmax = 10.9207959291
-            text = "she has a series of meetings + nine am to five pm"
+            xmin = 7.790801279 
+            xmax = 10.9207959291 
+            text = "she has a series of meetings + nine am to five pm" 
         intervals [7]:
-            xmin = 10.9207959291
-            xmax = 11.4488305427
-            text = ""
+            xmin = 10.9207959291 
+            xmax = 11.4488305427 
+            text = "" 
         intervals [8]:
-            xmin = 11.4488305427
-            xmax = 16.0726073233
-            text = "in paris + bruges + frankfurt + rome and hamburg + on consecutive days"
+            xmin = 11.4488305427 
+            xmax = 16.0726073233 
+            text = "in paris + bruges + frankfurt + rome and hamburg + on consecutive days" 
         intervals [9]:
-            xmin = 16.0726073233
-            xmax = 16.872
-            text = "#"
+            xmin = 16.0726073233 
+            xmax = 16.872 
+            text = "#" 
         intervals [10]:
-            xmin = 16.872
-            xmax = 20.1996146977
-            text = "can you suggest convenient evening flights and suitable accommodation"
+            xmin = 16.872 
+            xmax = 20.1996146977 
+            text = "can you suggest convenient evening flights and suitable accommodation" 
         intervals [11]:
-            xmin = 20.1996146977
-            xmax = 20.808
-            text = "#"
+            xmin = 20.1996146977 
+            xmax = 20.808 
+            text = "#" 
         intervals [12]:
-            xmin = 20.808
-            xmax = 22.8119964701
-            text = "she doesn t like large anonymous hotels"
+            xmin = 20.808 
+            xmax = 22.8119964701 
+            text = "she doesn t like large anonymous hotels" 
         intervals [13]:
-            xmin = 22.8119964701
-            xmax = 23.5716
-            text = "#"
+            xmin = 22.8119964701 
+            xmax = 23.5716 
+            text = "#" 

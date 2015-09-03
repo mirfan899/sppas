@@ -47,6 +47,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import codecs
+import re
 
 from utils import merge_overlapping_annotations
 from utils import fill_gaps
@@ -105,7 +106,7 @@ def parse_string(iterator):
     """
     try:
         firstLine = iterator.next()
-        if(firstLine.rstrip().endswith('"')):
+        if firstLine.rstrip().endswith('"'):
             firstLine = firstLine.rstrip()
             return firstLine[firstLine.find('"')+1:-1]
         else:
@@ -113,7 +114,7 @@ def parse_string(iterator):
 
         currentLine = iterator.next()
 
-        while(not currentLine.rstrip().endswith('"')):
+        while not currentLine.rstrip().endswith('"'):
             firstLine += currentLine
             currentLine = iterator.next()
 
@@ -278,6 +279,7 @@ class TextGrid(Transcription):
         end = TimePoint(parse_float(it.next()))
 
         label = parse_string(it)
+        label = label.replace('""', '"') # praat double quotes.
 
         interval = TimeInterval(beg, end)
         tier.Add(Annotation(interval, Label(label)))
@@ -364,6 +366,9 @@ class TextGrid(Transcription):
         Formats an annotation consisting of intervals to the TextGrid format.
         @param number: The position of the annotation in the list of all annotations.
         """
+        label = annotation.GetLabel().GetValue()
+        if '"' in label:
+            label = re.sub('([^"])["]([^"])', '\\1""\\2', label)
         return (
             '        intervals [%d]:\n'
             '            xmin = %s\n'
@@ -372,7 +377,7 @@ class TextGrid(Transcription):
                 number,
                 annotation.GetLocation().GetBeginMidpoint(),
                 annotation.GetLocation().GetEndMidpoint(),
-                annotation.GetLabel().GetValue())
+                label)
 
     # ------------------------------------------------------------------------
 
