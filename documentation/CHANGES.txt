@@ -810,7 +810,7 @@ Development:
         - add comments and documentation
         - add also some tests
         - add Media/CtrlVocab in some file formats
-        - add Annotation Pro support of antx files
+        - add Annotation Pro support of antx files (in API)
 
 Components:
     - add Time Group Analyser (TGA) in Statistics
@@ -820,6 +820,18 @@ Annotations:
     - New version of XRA: 1.2
     - Make XRA the default input/output file format
 
+
+=============================================================================
+SPPAS-1.7.2
+=============================================================================
+
+Development:
+    - updated XRA reader/writer to solve problems with upper/lower cases of elements
+    - updated Elan reader to be compatible with format 2.8
+    - updated Praat reader/writer for single/double quotes
+    - support of antx files in the GUI
+    - add the julius score in PhonAlign annotation (can be seen only if XRA)
+    - remove tk dependencies
 
 =============================================================================
 *****************************************************************************
