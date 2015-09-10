@@ -2,7 +2,7 @@
 #
 # This is the description file syllConfig.txt, made by Brigitte Bigi.
 # It defines the phonemes, their classes, and rules to find automatically
-# syllable boundaries by the Syllabeur-v2.2 java program.
+# syllable boundaries by either the Syllabeur-v2.2 java program or SPPAS.
 #
 # If you want to change this file, please read documentation before!
 # ---------------------------------------------------------------------------
@@ -35,34 +35,21 @@ PHONCLASS dummy #
 PHONCLASS fp #
 
 # list of vowels
-PHONCLASS i V
-PHONCLASS e V
-PHONCLASS E V
 PHONCLASS a V
-PHONCLASS A V
+PHONCLASS E V
+PHONCLASS E~ V
+PHONCLASS i V
 PHONCLASS O V
 PHONCLASS o V
+PHONCLASS o~ V
 PHONCLASS u V
 PHONCLASS y V
-PHONCLASS 2 V
-PHONCLASS 9 V
-PHONCLASS @ V
-PHONCLASS e~ V
-PHONCLASS E~ V
-PHONCLASS a~ V
-PHONCLASS o~ V
-PHONCLASS 9~ V
-PHONCLASS U~ V
-PHONCLASS EU V
-PHONCLASS eu V
-PHONCLASS oe V
 # list of glides, use G symbol
 PHONCLASS j G
 PHONCLASS H G
 PHONCLASS w G
 # list of liquids, use L symbol
 PHONCLASS l L
-PHONCLASS R L
 PHONCLASS r L
 # list of occlusives, use O symbol
 PHONCLASS p O
@@ -71,18 +58,30 @@ PHONCLASS k O
 PHONCLASS b O
 PHONCLASS d O
 PHONCLASS g O
+PHONCLASS Q O
+PHONCLASS c O
 # list of nasals, use N symbol
 PHONCLASS n N
 PHONCLASS m N
 PHONCLASS N N
 PHONCLASS J N
 # list of fricatives, use F symbol
-PHONCLASS s F
-PHONCLASS S F
-PHONCLASS z F
-PHONCLASS Z F
-PHONCLASS v F
+PHONCLASS dz F
+PHONCLASS dZ F
 PHONCLASS f F
+PHONCLASS v F
+PHONCLASS x F
+PHONCLASS tS F
+PHONCLASS ts F
+PHONCLASS ts` F
+PHONCLASS z F
+PHONCLASS z` F
+PHONCLASS Z F
+
+PHONCLASS s S
+PHONCLASS S S
+PHONCLASS s` S
+
 # unknown phoneme (do not remove this entry)
 PHONCLASS UNK #
 # ---------------------------------------------------------------------------
@@ -100,9 +99,8 @@ PHONCLASS UNK #
 # In the third column, 0 means the boundary is after the first vowel,
 # 1 means the boundary is one phoneme after the first vowel, etc.
 #
-
 # General rules contains only X between vowels
-# Here, class symbols are forbidden
+# class symbols are forbidden
 # -------------
 GENRULE VV 0
 GENRULE VXV 0
@@ -110,30 +108,40 @@ GENRULE VXXV 1
 GENRULE VXXXV 1
 GENRULE VXXXXV 1
 GENRULE VXXXXXV 2
-GENRULE VXXXXXXV 3
+GENRULE VXXXXXXV 2
 
 #
 # Exceptions rules contains only class symbols
-# Here, the use of X is forbidden
+# the use of X is forbidden
 # ----------------
-# rule: VCGV -> V.CGV
-EXCRULE VLGV 0
+# rule: VONV -> V.ONV
+EXCRULE VONV 0
+EXCRULE VOLV 0
+EXCRULE VOPV 0
+EXCRULE VOFV 0
+EXCRULE VOSV 0
 EXCRULE VOGV 0
+EXCRULE VLGV 0
 EXCRULE VNGV 0
 EXCRULE VFGV 0
-EXCRULE VGGV 0
-
-EXCRULE VOLV 0
+EXCRULE VSGV 0
+EXCRULE VPGV 0
+EXCRULE VPLV 0
+EXCRULE VPNV 0
+EXCRULE VPOV 0
+EXCRULE VPFV 0
+EXCRULE VPSV 0
+EXCRULE VFGV 0
 EXCRULE VFLV 0
+EXCRULE VFOV 0
+EXCRULE VFNV 0
+EXCRULE VFFV 0
+EXCRULE VFPV 0
 
-EXCRULE VOLGV 0
-EXCRULE VFLGV 0
-EXCRULE VOLOV 2
+EXCRULE VFFGV 0
 
 #
 # Specific rules are used to define which phoneme sequences must not be cut.
-# Class symbols are forbidden, except V (since SPPAS-1.7.3)
-# ----------------
 # Specific rules contains only phonemes or the symbol "ANY" which means
 # "any phoneme". Classes are forbidden. It is made with 6 columns: first one is
 # the key-word "OTHRULE", 4 following column are a phoneme sequence where the
@@ -142,14 +150,59 @@ EXCRULE VOLOV 2
 # For example, the line "OTHRULE ANY ANY p t 0" means that the boundary will
 # be applied between the 'p' and 't' phoneme. Replacing 0 by -1 means the
 # boundary will be between 'ANY' and 'p'.
-# "petit", "peut-etre"
-OTHRULE ANY ANY ANY p t -1
-# "faisai[en]t"
-OTHRULE ANY ANY V f s -1
-# "parce que", "puisque", "pense que"
-OTHRULE ANY ANY p s k -2
-OTHRULE ANY p s k ANY -2
-OTHRULE p s k ANY ANY 1
-# "d[i]sonst"
-OTHRULE ANY ANY V d z -1
+# CHANGES from SPPAS 1.7.3:
+#  1. we can force the phoneme to be a vowel
+#  2. the last phoneme (not mentionned in the sequence) is the vowel
+
+# for VCCV
+OTHRULE ANY ANY V d g -1
+OTHRULE ANY ANY V v dz 1
+OTHRULE ANY ANY V b dz 1
+OTHRULE ANY ANY V b f 1
+OTHRULE ANY ANY V b m 1
+OTHRULE ANY ANY V dZ b 1
+OTHRULE ANY ANY V dZ dZ 1
+OTHRULE ANY ANY V dZ Z 1
+OTHRULE ANY ANY V d dz 1
+OTHRULE ANY ANY V d J 1
+OTHRULE ANY ANY V d s 1
+OTHRULE ANY ANY V d z 1
+OTHRULE ANY ANY V d z` 1
+OTHRULE ANY ANY V f f 1
+OTHRULE ANY ANY V f m 1
+OTHRULE ANY ANY V f t 1
+OTHRULE ANY ANY V g J 1
+OTHRULE ANY ANY V g s 1
+OTHRULE ANY ANY V p ts 1
+OTHRULE ANY ANY V p z 1
+OTHRULE ANY ANY V tS g 1
+OTHRULE ANY ANY V tS p 1
+OTHRULE ANY ANY V tS tS 1
+OTHRULE ANY ANY V ts ts 1
+OTHRULE ANY ANY V ts tS 1
+OTHRULE ANY ANY V t s 1
+OTHRULE ANY ANY V t ts 1
+OTHRULE ANY ANY V t tS 1
+OTHRULE ANY ANY V v b 1
+OTHRULE ANY ANY V v g 1
+OTHRULE ANY ANY V v N 1
+OTHRULE ANY ANY V v v 1
+OTHRULE ANY ANY V x b 1
+OTHRULE ANY ANY V x d 1
+OTHRULE ANY ANY V x k 1
+OTHRULE ANY ANY V x p 1
+OTHRULE ANY ANY V z` b 1
+OTHRULE ANY ANY V z` g 1
+OTHRULE ANY ANY V z` Z 1
+OTHRULE ANY ANY V Z b 1
+OTHRULE ANY ANY V Z g 1
+OTHRULE ANY ANY V z g 1
+OTHRULE ANY ANY V z J 1
+OTHRULE ANY ANY V z z 1
+OTHRULE ANY ANY V z Z 1
+
+# for VCCCV
+OTHRULE ANY ANY b z n -1
+OTHRULE ANY ANY r w S 1
+
 # ---------------------------------------------------------------------------

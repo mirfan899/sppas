@@ -215,24 +215,37 @@ class Syllabification:
         """
         # if the limit is between two indivisible phonemes,
         # it will be moved except if the move reach the previous syllable
-        if (self.vow2-self.vow1) > 2 and self.rules.get_class(self.phonemes[self.vow2].GetLabel().GetValue()) != "#" and self.vow2 != self.phonemes.GetSize()-1:
+        if self.rules.get_class(self.phonemes[self.vow2].GetLabel().GetValue()) != "#" :
             _str = ""
-            if (limit - 2) > 0 and (limit + 2) < self.phonemes.GetSize():
-                _str = self.phonemes[limit - 2].GetLabel().GetValue()\
-                        + " " + self.phonemes[limit - 1].GetLabel().GetValue()\
-                        + " " + self.phonemes[limit].GetLabel().GetValue()\
-                        + " " + self.phonemes[limit + 1].GetLabel().GetValue()\
-                        + " " + self.phonemes[limit + 2].GetLabel().GetValue()
-            elif (limit - 1) > 0:
-                _str = "ANY " + self.phonemes[limit - 1].GetLabel().GetValue()\
-                        + " " + self.phonemes[limit].GetLabel().GetValue()\
-                        + " " + self.phonemes[limit + 1].GetLabel().GetValue()\
-                        + " " + self.phonemes[limit + 2].GetLabel().GetValue()
+            nb = self.vow2-self.vow1
+            if nb > 1:
+                if nb<5:# specific rules are sequences of 5 consonants max
+                    _str = "ANY "*(5-nb) + "V "
+                for i in range(1,nb):
+                    _str = _str + self.phonemes[self.vow1+i].GetLabel().GetValue() + " "
+            _str = _str.strip()
 
-            d = self.rules.get_gap( _str )
-            if d!=0:
-                if limit+d >= self.vow1:
-                    limit += d
+# version (until SPPAS-1.7.2):
+#        if (self.vow2-self.vow1) > 2 and self.rules.get_class(self.phonemes[self.vow2].GetLabel().GetValue()) != "#" and self.vow2 != self.phonemes.GetSize()-1:
+#            _str = ""
+#             if (limit - 2) > 0 and (limit + 2) < self.phonemes.GetSize():
+#                 _str = self.phonemes[limit - 2].GetLabel().GetValue()\
+#                         + " " + self.phonemes[limit - 1].GetLabel().GetValue()\
+#                         + " " + self.phonemes[limit].GetLabel().GetValue()\
+#                         + " " + self.phonemes[limit + 1].GetLabel().GetValue()\
+#                         + " " + self.phonemes[limit + 2].GetLabel().GetValue()
+#             elif (limit - 1) >= 0  and (limit + 2) < self.phonemes.GetSize():
+#                 _str = "ANY " + self.phonemes[limit - 1].GetLabel().GetValue()\
+#                         + " " + self.phonemes[limit].GetLabel().GetValue()\
+#                         + " " + self.phonemes[limit + 1].GetLabel().GetValue()\
+#                         + " " + self.phonemes[limit + 2].GetLabel().GetValue()
+
+            if len(_str)>0:
+                d = self.rules.get_gap( _str )
+                print "str=",_str,"gap=",d
+                if d != 0:
+                    if limit+d >= self.vow1 and limit+d <= self.vow2:
+                        limit += d
 
         # Adding the syllable
         self.add_syllable( limit )

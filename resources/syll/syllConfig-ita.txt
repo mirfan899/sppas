@@ -1,44 +1,44 @@
 # ---------------------------------------------------------------------------
 #
 # This is the description file syllConfig-IT.txt, made by Brigitte Bigi.
-# It defines the phonemes, their classes, and rules to find automatically 
+# It defines the phonemes, their classes, and rules to find automatically
 # syllable boundaries by the Syllabeur-v2.2 java program.
 #
 # If you want to change this file, please read documentation before!
 # ---------------------------------------------------------------------------
 
 
-# une consonne simple appartient toujours à la syllabe suivante : 
+# une consonne simple appartient toujours ï¿½ la syllabe suivante :
 #   exemple : a-mi-co, pe-ri-co-lo-so
-# pour les consonnes géminées, on coupe entre les deux consonnes : 
-#   exemple : bel-lo, cit-tà
-# lorsqu'il y a 2 consonnes, on coupe généralement entre les deux consonnes :
+# pour les consonnes gï¿½minï¿½es, on coupe entre les deux consonnes :
+#   exemple : bel-lo, cit-tï¿½
+# lorsqu'il y a 2 consonnes, on coupe gï¿½nï¿½ralement entre les deux consonnes :
 #   exemple : ar-ti-co-lo, for-ma-zio-ne,
 # quel que soit la longueur du groupe de consonne, la suite consonne + r ou l
-# est toujours indivisible : 
+# est toujours indivisible :
 #   exemples : com-pli-ca-re, ap-pren-de-re, di-plo-ma.
-# les groupements avec un s impur sont indivisibles : 
+# les groupements avec un s impur sont indivisibles :
 #   exemples : a-sco-lta-re ; --le s impur est un s suivi d'une consonne--
-## dans le groupe consonantique rst, on coupe entre la première et la deuxième consonne
+## dans le groupe consonantique rst, on coupe entre la premiï¿½re et la deuxiï¿½me consonne
 ## (par ex. avec les prefixes inter- iper- super-): inter-sti-zio, i-per-tro-fi-co
 
 
 
 
 # ---------------------------------------------------------------------------
-# Here is the list of phonemes and their class. 
+# Here is the list of phonemes and their class.
 # ---------------------------------------------------------------------------
 # It is important to note that:
 # 	- a vowel must be mentioned with the class-symbol "V"
 #	- a pause must be mentioned with the class-symbol "#"
 #	- if a phoneme contains the character '=', this char will be removed!
-#	- the letter "X" means "a non-vowel" phoneme and so, it cannot be 
+#	- the letter "X" means "a non-vowel" phoneme and so, it cannot be
 #         used as a single class-symbol.
 # So... the couples phoneme/class are made as 3 columns:
 # 	- first  column is the key-word "PHONCLASS",
 #	- second column is the phoneme symbol,
 #	- third  column is the class symbol.
-# 
+#
 # the pause
 PHONCLASS # #
 PHONCLASS ## #
@@ -124,14 +124,14 @@ PHONCLASS UNK #
 #	- second column is the classes between two vowels,
 #	- third  column is the boundary location.
 # First column can be: GENRULE, EXCRULE, OTHRULE.
-# In the third column, 0 means the boundary is after the first vowel, 
+# In the third column, 0 means the boundary is after the first vowel,
 # 1 means the boundary is one phoneme after the first vowel, etc.
 #
-# General rules contains only X between vowels 
+# General rules contains only X between vowels
 # class symbols are forbidden
 # -------------
 GENRULE VV 0
-GENRULE VXV 0 
+GENRULE VXV 0
 GENRULE VXXV 1
 GENRULE VXXXV 1
 GENRULE VXXXXV 1
@@ -140,7 +140,7 @@ GENRULE VXXXXXXV 3
 
 
 #
-# Exceptions rules contains only class symbols 
+# Exceptions rules contains only class symbols
 # the use of X is forbidden
 # ----------------
 
@@ -164,16 +164,16 @@ EXCRULE VFLGV 0
 
 #
 # Specific rules are used to define which phoneme sequences must not be cut.
-# Specific rules contains only phonemes or the symbol "ANY" which means 
+# Specific rules contains only phonemes or the symbol "ANY" which means
 # "any phoneme". Classes are forbidden. It is made with 6 columns: first one is
-# the key-word "OTHRULE", 4 following column are a phoneme sequence where the 
+# the key-word "OTHRULE", 4 following column are a phoneme sequence where the
 # boundary of general or exception rule will cut at the third one, last column
 # is the shift to apply to the boundary.
 # For example, the line "OTHRULE ANY ANY p t 0" means that the boundary will
 # be applied between the 'p' and 't' phoneme. Replacing 0 by -1 means the
-# boundary will be between 'ANY' and 'p'. 
+# boundary will be between 'ANY' and 'p'.
 # pasta --> pa.sta
-# OTHRULE ANY ANY s t ANY -1
+OTHRULE ANY ANY V s t -1
 # ---------------------------------------------------------------------------
 
 
