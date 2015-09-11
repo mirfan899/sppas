@@ -9,8 +9,8 @@ item []:
     item [1]:
         class = "IntervalTier"
         name = "IPU"
-        xmin = 0.0
-        xmax = 14.9184583333
+        xmin = 0.000000
+        xmax = 14.918458
         intervals: size = 11
         intervals [1]:
             xmin = 0.0
@@ -19,7 +19,7 @@ item []:
         intervals [2]:
             xmin = 0.9
             xmax = 2.87
-            text = "ウォーターソフトナーの調子が悪いのですが。"
+            text = "ipu_1 ウォーターソフトナーの調子が悪いのですが。"
         intervals [3]:
             xmin = 2.87
             xmax = 3.79
@@ -27,7 +27,7 @@ item []:
         intervals [4]:
             xmin = 3.79
             xmax = 6.795
-            text = "水位が高すぎて排水口から水が滴り落ちています。"
+            text = "ipu_2 水位が高すぎて排水口から水が滴り落ちています。"
         intervals [5]:
             xmin = 6.795
             xmax = 7.425
@@ -35,7 +35,7 @@ item []:
         intervals [6]:
             xmin = 7.425
             xmax = 9.92
-            text = "火曜日の午前中に見に来ていただけますか。"
+            text = "ipu_3 火曜日の午前中に見に来ていただけますか。"
         intervals [7]:
             xmin = 9.92
             xmax = 10.51
@@ -43,7 +43,7 @@ item []:
         intervals [8]:
             xmin = 10.51
             xmax = 12.045
-            text = "今週はその日しか空いていません。"
+            text = "ipu_4 今週はその日しか空いていません。"
         intervals [9]:
             xmin = 12.045
             xmax = 12.68

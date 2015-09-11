@@ -139,7 +139,7 @@ class DictTok:
         self.repl    = DictRepl(None)
         self.punct   = WordsList(None)
         self.vocab   = vocab
-        self.speech  = True   # transcribed speech (and not written text) is to be tokenized 
+        self.speech  = True   # transcribed speech (and not written text) is to be tokenized
         if vocab is None:
             self.vocab = WordsList(None)
 
@@ -237,7 +237,7 @@ class DictTok:
 
         # split all characters except numbers and ascii characters
         sstr = re.sub(u"([０-９0-9a-zA-ZＡ-Ｔ\s]+\.?[０-９0-9a-zA-ZＡ-Ｔ\s]+)", lambda o: u" %s " % o.group(0).replace(" ",""), tmp)
-        # and dates... 
+        # and dates...
         if not self.speech:
             sstr = re.sub(u"([０-９0-9\s]+\.?[月年日\s]+)", lambda o: u" %s " % o.group(0).replace(" ",""), sstr)
         # and ・
@@ -494,8 +494,9 @@ class DictTok:
         entry = re.sub(u',\s?[PTS]+\s?[\\/\\\]+\s?\\$', ur'', entry, re.UNICODE)
         entry = re.sub(ur'\$', ur'', entry, re.UNICODE)
 
-        entry = re.sub(u'(gpd_[0-9]+)', ur"\1 ", entry, re.UNICODE)
-        entry = re.sub(u'(ipu_[0-9]+)', ur"\1 ", entry, re.UNICODE)
+        entry = re.sub(u'(gpd_[0-9]+)', ur" ", entry, re.UNICODE)
+        entry = re.sub(u'(gpf_[0-9]+)', ur" ", entry, re.UNICODE)
+        entry = re.sub(u'(ipu_[0-9]+)', ur" ", entry, re.UNICODE)
 
         # Remove invalid parenthesis content
         entry = re.sub(ur'\s+\([\w\xaa-\xff]+\)\s+', ' ', entry, re.UNICODE)
@@ -677,7 +678,7 @@ class DictTok:
 
 
 
-         
+
     def tokenize(self, entry, std=False):
         """
         Tokenize an utterrance.
@@ -717,7 +718,7 @@ class DictTok:
         # THE ENTRY IS NOW A LIST OF STRINGS.
         # ---------------------------------------------------
         return self.tokenize_list(utt, std)
-        
+
     # End tokenize
     # ------------------------------------------------------------------------
 

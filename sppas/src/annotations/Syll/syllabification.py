@@ -242,7 +242,6 @@ class Syllabification:
 
             if len(_str)>0:
                 d = self.rules.get_gap( _str )
-                print "str=",_str,"gap=",d
                 if d != 0:
                     if limit+d >= self.vow1 and limit+d <= self.vow2:
                         limit += d
