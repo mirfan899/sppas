@@ -136,6 +136,14 @@ class TestSyll(unittest.TestCase):
         self.assertEqual("arw|Sa", syll)
 
 
+    def testVCCCCV(self):
+        tierP = labels2tier( ['a','b','r','v','j','a'] )
+        self.assertIsNotNone(tierP)
+        trsS = self.syllabifierPOL.syllabify( tierP )
+        syll = get_syll(trsS)
+        self.assertEqual("a|brvja", syll)
+
+
     def testVCCCCCV(self):
         tierP = labels2tier( ['a','p','s','k','m','w','a'] )
         self.assertIsNotNone(tierP)

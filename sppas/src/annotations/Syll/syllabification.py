@@ -219,7 +219,10 @@ class Syllabification:
             _str = ""
             nb = self.vow2-self.vow1
             if nb > 1:
-                if nb<5:# specific rules are sequences of 5 consonants max
+                # specific rules are sequences of 5 consonants max
+                if nb == 5:
+                    _str = "V "
+                if nb<5:
                     _str = "ANY "*(5-nb) + "V "
                 for i in range(1,nb):
                     _str = _str + self.phonemes[self.vow1+i].GetLabel().GetValue() + " "
