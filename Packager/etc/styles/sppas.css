@@ -94,15 +94,15 @@ body {
 }
 
 .h1title {
-    margin-top:     30px;
-    margin-bottom:  20px;
-    padding-top:    10px;
+    margin-top:     10px;
+    margin-bottom:  10px;
+    padding-top:    40px;
     padding-bottom: 10px;
     font-size:      500%;
 }
 
 .h2title {
-    margin-top:     20px;
+    margin-top:     10px;
     margin-bottom:  10px;
     padding-top:    10px;
     padding-bottom: 10px;
@@ -113,7 +113,7 @@ body {
     margin-top:     10px;
     margin-bottom:  10px;
     padding-top:    10px;
-    padding-bottom: 80px;
+    padding-bottom: 40px;
     font-size:      100%;
 }
 
@@ -121,13 +121,13 @@ body {
 
 .menu {
     text-align:      center;
-    min-height:      80px;
-    margin-top:      40px;
+    min-height:      60px;
+    padding-top:      40px;
     font-size:       100%;
 }
 
 .menu a {
-    background-color:  rgba(100,100,100, 0.4);
+    background-color:  rgba(20,20,20,0.5);
     margin-top:      10px;
     margin-bottom:   10px;
     margin-right:    20px;
@@ -142,59 +142,59 @@ body {
 /* 7 possible colors for the buttons of a menu */
 
 a.neonViolet  {
-    box-shadow:     0 0 10px rgba(150,56,185,0.7), inset 0 0 10px rgba(150,56,185,0.7); 
+    box-shadow: 0 0 2px rgba(150,56,185,0.7), inset 0 0 10px rgba(150,56,185,0.7); 
 }
 
 a.neonViolet:hover {
-    box-shadow:     0 0 10px rgba(150,56,185,1), inset 0 0 10px rgba(150,56,185,1); 
+    box-shadow: 0 0 10px rgba(150,56,185,1), inset 0 0 10px rgba(150,56,185,1); 
 }
 
 a.neonBlue {
-    box-shadow:     0 0 10px rgba(38,38,205,0.7), inset 0 0 10px rgba(38,38,205,0.7); 
+    box-shadow: 0 0 2px rgba(38,38,205,0.7), inset 0 0 10px rgba(38,38,205,0.7); 
 }
 
 a.neonBlue:hover {
-    box-shadow:     0 0 10px rgba(38,38,205,1), inset 0 0 10px rgba(38,38,205,1); 
+    box-shadow: 0 0 10px rgba(38,38,205,1), inset 0 0 10px rgba(38,38,205,1); 
 }
 
 a.neonCyan  {
-    box-shadow:     0 0 10px rgba(70,165,230,0.7), inset 0 0 10px rgba(70,165,230,0.7);
+    box-shadow: 0 0 2px rgba(70,165,230,0.7), inset 0 0 10px rgba(70,165,230,0.7);
 }
 
 a.neonCyan:hover {
-    box-shadow:     0 0 10px rgba(70,165,230,1), inset 0 0 10px rgba(70,165,230,1);
+    box-shadow: 0 0 10px rgba(70,165,230,1), inset 0 0 10px rgba(70,165,230,1);
 }
 
 a.neonGreen  {
-    box-shadow:     0 0 10px rgba(50,196,69,0.5), inset 0 0 10px rgba(50,196,69,0.5); 
+    box-shadow: 0 0 2px rgba(50,196,69,0.5), inset 0 0 10px rgba(50,196,69,0.5); 
 }
 
 a.neonGreen:hover {
-    box-shadow:     0 0 10px rgba(50,196,69,0.8), inset 0 0 10px rgba(50,196,69,0.8); 
+    box-shadow: 0 0 10px rgba(50,196,69,0.8), inset 0 0 10px rgba(50,196,69,0.8); 
 }
 
 a.neonYellow  {
-    box-shadow:     0 0 10px rgba(240,240,69,0.7), inset 0 0 10px rgba(240,240,69,0.7);
+    box-shadow: 0 0 2px rgba(240,240,69,0.7), inset 0 0 10px rgba(240,240,69,0.7);
 }
 
 a.neonYellow:hover{
-    box-shadow:     0 0 10px rgba(240,240,69,1), inset 0 0 10px rgba(240,240,69,1);
+    box-shadow: 0 0 10px rgba(240,240,69,1), inset 0 0 10px rgba(240,240,69,1);
 }
 
 a.neonOrange  {
-    box-shadow:     0 0 10px rgba(216,129,69,0.7), inset 0 0 10px rgba(216,129,69,0.7);
+    box-shadow: 0 0 2px rgba(216,129,69,0.7), inset 0 0 10px rgba(216,129,69,0.7);
 }
 
 a.neonOrange:hover{
-    box-shadow:     0 0 10px rgba(216,129,69,1), inset 0 0 10px rgba(216,129,69,1);
+    box-shadow: 0 0 10px rgba(216,129,69,1), inset 0 0 10px rgba(216,129,69,1);
 }
 
 a.neonRed  {
-    box-shadow:     0 0 10px rgba(205,38,38,0.7), inset 0 0 10px rgba(205,38,38,0.7);
+    box-shadow: 0 0 2px rgba(205,38,38,0.7), inset 0 0 10px rgba(205,38,38,0.7);
 }
 
 a.neonRed:hover {
-    box-shadow:     0 0 10px rgba(205,38,38,1), inset 0 0 10px rgba(205,38,38,1);
+    box-shadow: 0 0 10px rgba(205,38,38,1), inset 0 0 10px rgba(205,38,38,1);
 }
 
 /*=============================  END HEADER  ===============================*/
