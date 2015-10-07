@@ -833,6 +833,20 @@ Development:
     - add the julius score in PhonAlign annotation (can be seen only if XRA)
     - remove tk dependencies
 
+
+=============================================================================
+SPPAS-1.7.3
+=============================================================================
+
+Resources:
+    - New word-based vocab for Cantonese
+    - New word-based dict for Cantonese
+    - New phoneme-based acoustic model for Cantonese
+
+Development:
+    - Descriptive statistics debugged for detailed panels.
+
+
 =============================================================================
 *****************************************************************************
 =============================================================================

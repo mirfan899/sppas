@@ -429,6 +429,7 @@ class DetailedPanel( BaseStatPanel ):
 
         # estimates descriptives statistics
         statvalues = []
+        items = [] # the list of labels
         for ts in data.keys():
             ds = ts.ds()
             if self.name == "occurrences":
@@ -441,13 +442,11 @@ class DetailedPanel( BaseStatPanel ):
                 statvalues.append( ds.median() )
             elif self.name == "stdev":
                 statvalues.append( ds.stdev() )
-
-        # get the list of labels
-        items = ds.len().keys()
+            items.extend( ds.len().keys() )
 
         # fill rows
         self.rowdata = []
-        for i,item in enumerate(items):
+        for i,item in enumerate(sorted(set(items))):
             row = [item] + [ statvalues[i].get(item,0) for i in range(len(statvalues)) ]
             self.rowdata.append(row)
             self.AppendRow(i, row, self.statctrl)
