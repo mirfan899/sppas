@@ -4,7 +4,7 @@ author:     Brigitte Bigi
 contact:    brigite.bigi@gmail.com
 program:    SPPAS - Automatic Annotation of Speech
 date:       2015-09-03
-version:    1.7.2
+version:    1.7.3
 copyright:  Copyright (C) 2011-2015  Brigitte Bigi
 url:        http://sldr.org/sldr000800/preview/
 license:    GNU Public License
