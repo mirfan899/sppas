@@ -15,17 +15,7 @@
 
     <link rel="icon" href="etc/icons/sppas.ico" />
 
-    <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-38055333-1']);
-        _gaq.push(['_trackPageview']);
-
-        (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-    </script>
+    <script type="text/javascript" src="./etc/scripts/analytics.js"></script>
 
 </head>
 
@@ -206,11 +196,12 @@
             <a href="mailto:brigitte.bigi@gmail.com">Brigitte Bigi</a> &copy; 2011-2015
         </p>
     </div>
+    
+    <!----------------------------------------------------------------->
 
-    <span class="scrollT"></span>
-    <script type="text/javascript" src="./etc/scripts/fn.scrollT.js"></script>
-    <script type="text/javascript" src="./etc/scripts/fn.center.js"></script>
-    <script type="text/javascript" src="./etc/scripts/main.js"></script>
+    <a onclick="window.top.window.scrollTo(0,0);" href=""><span class="scrollT"></span></a>
+
+    <!----------------------------------------------------------------->
 
 </body>
 </html>
