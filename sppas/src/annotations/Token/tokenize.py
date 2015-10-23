@@ -80,7 +80,20 @@ class DictReplUTF8( DictRepl ):
 # ---------------------------------------------------------------------------
 
 
+def character_based( lang ):
+    """
+    Return true if lang is known as a character-based language, 
+    as Mandarin Chinese or Japanese for example.
+    """
+    langlist = [ "cmn", "jpn", "yue" ] # TODO: add languages
+    for l in langlist:
+        if l in lang:
+            return True
+    return False
 
+# ---------------------------------------------------------------------------
+
+    
 # ---------------------------------------------------------------------------
 # DictTok main class
 # ---------------------------------------------------------------------------
@@ -258,7 +271,7 @@ class DictTok:
         """
 
         s = utt
-        if self.lang == "cmn" or self.lang == "jpn" or self.lang == "yue":
+        if character_based(self.lang): 
             s = self.split_characters( s )
 
         toks = s.split()
@@ -266,7 +279,7 @@ class DictTok:
         for t in toks:
             if not "/" in t: #if not a phonetized entry
                 if std is False:
-                    if self.lang != "cmn" and self.lang != "jpn" and self.lang != "yue":
+                    if not character_based(self.lang): 
                         # Split numbers if sticked to characters
                         # attention: do not replace [a-zA-Z] by [\w] (because \w includes numbers)
                         # and not on asian languages: it can be a tone!
@@ -633,12 +646,11 @@ class DictTok:
         # Step 4: stick (using the dictionary)
         try:
             attachement = "_"
-            if (self.lang=="cmn" or self.lang == "jpn" or self.lang == "yue"):
+            if character_based(self.lang): 
                 attachement = ""
             utt = self.stick( utt,attachement )
         except Exception as e:
             raise Exception(" *in stick* "+str(e)+'\n')
-
 
         # Step 5: num2letter
         try:
