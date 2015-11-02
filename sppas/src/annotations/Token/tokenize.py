@@ -274,24 +274,30 @@ class DictTok:
         if character_based(self.lang): 
             s = self.split_characters( s )
 
-        toks = s.split()
-        s = ""
-        for t in toks:
+        toks = []
+        for t in s.split():
             if not "/" in t: #if not a phonetized entry
                 if std is False:
                     if not character_based(self.lang): 
                         # Split numbers if sticked to characters
                         # attention: do not replace [a-zA-Z] by [\w] (because \w includes numbers)
                         # and not on asian languages: it can be a tone!
-                        s = re.sub(u'([0-9])([a-zA-Z])', ur'\1 \2', s)
-                        s = re.sub(u'([a-zA-Z])([0-9])', ur'\1 \2', s)
+                        t = re.sub(u'([0-9])([a-zA-Z])', ur'\1 \2', t)
+                        t = re.sub(u'([a-zA-Z])([0-9])', ur'\1 \2', t)
 
                 # Split some punctuation
-                s = re.sub(u'\\[\\]', ur'\\] \\[', s)
+                t = re.sub(u'\\[\\]', ur'\\] \\[', t)
 
                 # Split dots if sticked to a word
-                s = re.sub(u' \.([\w-])', ur'. \1', s)
-                s = re.sub(u'^\.([\w-])', ur'. \1', s)
+                t = re.sub(u' \.([\w-])', ur'. \1', t)
+                t = re.sub(u'^\.([\w-])', ur'. \1', t)
+                
+                # Split replacement characters
+                for r in self.repl.get_keys():
+                    if t.endswith(r):
+                        t = t[:-len(r)]
+                        t = t + ' ' + r
+            toks.append(t)
 
         s = " ".join(toks)
 
@@ -388,6 +394,7 @@ class DictTok:
         @return A list of strings
 
         """
+
         _utt = []
         for tok in utt:
             # a missing compound word?
@@ -395,6 +402,7 @@ class DictTok:
             #   --> containing a special character
             #   --> that is not a truncated word!
             if self.vocab.is_unk(tok.lower().strip()) is True and (tok.find("-")>-1 or tok.find("'")>-1 or tok.find(".")>-1) and not tok.endswith('-'):
+                
                 # Split the unknown token into a list
                 # KEEP special chars ('-.) in the array!
                 _tabtoks = re.split("([-'.])",tok)
@@ -417,11 +425,13 @@ class DictTok:
                             _token = _tabtoks[t1]
                         i -= 1
                     t1 += i_ok
-                    _utt.append( rutils.ToStrip( _token ))
+                    t2 = rutils.ToStrip( _token )
+                    if len(t2)>0:
+                        _utt.append( t2 )
 
             else:
                 _utt.append( rutils.ToStrip( tok ))
-
+        
         return _utt
 
     # End compound
