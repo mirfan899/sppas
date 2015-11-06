@@ -59,6 +59,5 @@ thanks to the help of Katarzyna Klessa.
 |   s`  |   ʂ     | | 
 |   u   |    u    | | 
 |   z`  |   ʑ     | | 
-|   Z   |   ʒ     |  | 
-
+|   Z   |   ʒ     | | 
 

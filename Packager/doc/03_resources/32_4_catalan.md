@@ -52,7 +52,6 @@ Here is the phoneset used in the acoustic model:
 | i | ɪ |  |  
 | i | i | sic |   
 | o | o | sóc |
-| o | ɔ | soc | 
 | p | p |  |   
 | rr | r |  |   
 | r | ʀ |  |  
