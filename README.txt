@@ -4,7 +4,7 @@ author:     Brigitte Bigi
 contact:    brigite.bigi@gmail.com
 program:    SPPAS - Automatic Annotation of Speech
 date:       2015-10-09
-version:    1.7.3
+version:    1.7.4
 copyright:  Copyright (C) 2011-2015  Brigitte Bigi
 url:        http://sldr.org/sldr000800/preview/
 license:    GNU Public License
@@ -15,9 +15,6 @@ brief:      SPPAS produces automatically annotations from a recorded speech
 ------------------------------------------------------------------------------
 
 obligation: By using SPPAS, you agree to cite a reference in your publications.
-
-------------------------------------------------------------------------------
-
 references:
     * Brigitte BIGI, Daniel HIRST (2012).
       SPeech Phonetization Alignment and Syllabification (SPPAS): a tool for

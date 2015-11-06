@@ -848,6 +848,23 @@ Development:
 
 
 =============================================================================
+SPPAS-1.7.4
+=============================================================================
+
+Resources:
+    - Add a vocab for Portuguese
+    - Add a dict for Portuguese
+    - Add an acoustic model for Portuguese. It has to be noticed that
+    it was constructed from French/Spanish/Italian models, not trained from data.
+
+Samples:
+    - Add Portuguese
+    - Change some samples in various languages
+
+Development:
+    - Debug of the Tokenizer.
+
+=============================================================================
 *****************************************************************************
 =============================================================================
 
