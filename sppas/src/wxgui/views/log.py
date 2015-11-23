@@ -83,7 +83,7 @@ ID_CLOSE  = wx.NewId()
 
 
 # ----------------------------------------------------------------------------
-# class LogFrame
+# class LogDialog
 # ----------------------------------------------------------------------------
 
 class LogDialog( wx.Dialog ):
@@ -231,11 +231,11 @@ class LogDialog( wx.Dialog ):
         Save the content in a text file.
         """
         filesel = None
-        wildcard = "SPPAS log file(*.log)|*.log"
+        wildcard = "SPPAS log files (*-sppas.log)|*-sppas.log"
         fileName, fileExtension = os.path.splitext(self.filename)
         defaultDir  = os.path.dirname(self.filename)
-        defaultFile = os.path.basename(fileName+".log")
-        
+        defaultFile = os.path.basename("Annotations-sppas.log")
+
         dlg = wx.FileDialog(
             self, message = "Save as...",
             defaultDir  = defaultDir,
@@ -251,18 +251,21 @@ class LogDialog( wx.Dialog ):
         dlg.Destroy()
 
         if filesel:
-            # OK, save the file!
-            #shutil.move(self.filename, filesel)
+            # OK. We have a filename...
+            # but if this is the default, don't do anything!
+            if self.filename == filesel:
+                return
+            # or copy the file!
             try:
                 shutil.copy(self.filename, filesel)
             # eg. src and dest are the same file
             except shutil.Error as e:
-                dlg = wx.MessageDialog(self.GetParent(), message, 'Error while saving: %s'%e, wx.OK | wx.ICON_INFORMATION)
+                dlg = wx.MessageDialog(self.GetParent(), 'Error: %s'%e, "Error while saving", wx.OK | wx.ICON_INFORMATION)
                 dlg.ShowModal()
                 dlg.Destroy()
             # eg. source or destination doesn't exist
             except IOError as e:
-                dlg = wx.MessageDialog(self.GetParent(), message, 'Error while saving: %s'%e.strerror, wx.OK | wx.ICON_INFORMATION)
+                dlg = wx.MessageDialog(self.GetParent(), 'Error: %s'%e, "Error while saving", wx.OK | wx.ICON_INFORMATION)
                 dlg.ShowModal()
                 dlg.Destroy()
 

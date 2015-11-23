@@ -39,7 +39,7 @@
 # ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi, Cazembe Henry"""
+__authors__   = """Brigitte Bigi"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 
@@ -47,37 +47,64 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # Imports
 # ----------------------------------------------------------------------------
 
-# General libraries import
+# Python libraries
 import datetime
 import codecs
 import logging
+import os
 
+# Local libraries
 from sp_glob import program, version, copyright, url, author, contact
+from sp_glob import encoding
 
-# ----------------------------------------------------------------------------
-# Constants
-
-encoding='utf-8'
 
 # ----------------------------------------------------------------------------
 
 class sppasLog:
     """
-    Class to manage the Automatic Annotations log file, also called
-    Procedure Outcome Report.
+    @authors: Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: A log file utility class.
+
+    Class to manage the SPPAS automatic annotations log file, which is also
+    called the "Procedure Outcome Report".
 
     """
 
-    # ###################### #
-    # Constructor
-    # ###################### #
     def __init__(self, parameters):
+        """
+        Constructor.
+
+        @param parameters (sppasParam)
+
+        """
         self.parameters = parameters
+        self.logfp = codecs.open(os.devnull, 'w', encoding)
+
+    # End __init__
+    # ------------------------------------------------------------------------
 
 
-    # ###################### #
-    # Print
-    # ###################### #
+    # ----------------------------------------------------------------------
+    # File management
+    # ----------------------------------------------------------------------
+
+    def close(self):
+        self.logfp.close()
+
+
+    def open_new(self, logfilename):
+        self.logfp = codecs.open(logfilename, 'w', encoding)
+
+
+    def open(self, logfilename):
+        self.logfp = codecs.open(logfilename, 'a+', encoding)
+
+
+    # ----------------------------------------------------------------------
+    # Write data
+    # ----------------------------------------------------------------------
 
     def print_step(self, stepnumber):
         """
@@ -86,13 +113,14 @@ class sppasLog:
         @param stepnumber (1..6)
         """
         try:
-            self.logfp.seek(0, 2) # write at the end of the file
+            self.logfp.seek(0, 2) # force to write at the end of the file
             self.logfp.write('-----------------------------------------------------------------------\n')
             self.logfp.write('                       ' + self.parameters.get_step_name(stepnumber) + '\n')
             self.logfp.write('-----------------------------------------------------------------------\n')
         except Exception as e:
             logging.debug( "log.py Print ERROR. Message: %s" % e)
 
+    # ----------------------------------------------------------------------
 
     def print_message(self, message, indent=0, status=None):
         """
@@ -114,12 +142,13 @@ class sppasLog:
                 elif status==2: statustext="[ IGNORED ] "
                 elif status==3: statustext="[   INFO  ] "
                 else:           statustext="[  ERROR  ] "
-            m = message # unicode(message).encode(encoding)
-            self.logfp.write(strindent + statustext + m + "\n")
-        except Exception as e:
+            #m = unicode(message).encode(encoding)
+            self.logfp.write(strindent + statustext + message + "\n")
+        except Exception:
             logging.debug( "Procedure Outcome Report Message: %s"%message)
             self.logfp.write(strindent + statustext + "See the reason in the console.\n")
 
+    # ----------------------------------------------------------------------
 
     def print_rawtext(self, text):
         """
@@ -134,20 +163,23 @@ class sppasLog:
         except Exception as e:
             logging.debug( "log.py Print ERROR. Message: %s"%str(e))
 
+    # ----------------------------------------------------------------------
 
     def print_newline(self):
         try:
             self.logfp.write('\n')
-        except Exception as e:
+        except Exception:
             pass
 
+    # ----------------------------------------------------------------------
 
     def print_separator(self):
         try:
             self.logfp.write('-----------------------------------------------------------------------\n')
-        except Exception as e:
+        except Exception:
             pass
 
+    # ----------------------------------------------------------------------
 
     def print_stat(self, stepnumber, value):
         """
@@ -167,6 +199,7 @@ class sppasLog:
         except Exception as e:
             logging.debug( "log.py Print ERROR. Message: "%str(e))
 
+    # ----------------------------------------------------------------------
 
     def print_header(self):
         """
@@ -206,23 +239,6 @@ class sppasLog:
         self.print_separator()
         self.print_newline()
 
-
-    # ###################### #
-    # File management
-    # ###################### #
-
-
-    def close(self):
-        self.logfp.close()
-
-
-    def open_new(self, logfilename):
-        self.logfp = codecs.open(logfilename, 'w', encoding)
-
-
-    def open(self, logfilename):
-        self.logfp = codecs.open(logfilename, 'a+', encoding)
-
-    # ###################### #
+    # ----------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
