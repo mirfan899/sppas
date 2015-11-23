@@ -67,6 +67,7 @@ import wxgui.cutils.colorutils as co
 from wxgui.panels.sndplayer     import SndPlayer
 from wxgui.ui.CustomEvents      import FileWanderEvent, spEVT_FILE_WANDER
 from wxgui.structs.themes       import BaseTheme
+from wxgui.structs.prefs        import Preferences
 
 import annotationdata.io
 
@@ -307,12 +308,22 @@ class IPUscribe( wx.Panel ):
             prefs = Preferences( BaseTheme() )
         else:
             try:
-                bg = prefs.GetValue( 'M_BG_COLOUR' )
-                fg = prefs.GetValue( 'M_FG_COLOUR' )
-                font = prefs.GetValue( 'M_FONT' )
-                icons = prefs.GetValue( 'M_ICON_THEME' )
+                a = prefs.GetValue( 'M_BG_COLOUR' )
+                a = prefs.GetValue( 'M_FG_COLOUR' )
+                a = prefs.GetValue( 'M_FONT' )
+                a = prefs.GetValue( 'M_ICON_THEME' )
             except Exception:
                 self._prefsIO.SetTheme( BaseTheme() )
+                prefs = self._prefsIO
+
+        prefs.SetValue('SND_AUTOREPLAY', 'bool', True)
+        prefs.SetValue('SND_INFO', 'bool', True)
+        prefs.SetValue('SND_PLAY', 'bool', True)
+        prefs.SetValue('SND_PAUSE', 'bool', True)
+        prefs.SetValue('SND_STOP', 'bool', True)
+        prefs.SetValue('SND_NEXT', 'bool', False)
+        prefs.SetValue('SND_REWIND', 'bool', False)
+
         return prefs
 
     #-------------------------------------------------------------------------

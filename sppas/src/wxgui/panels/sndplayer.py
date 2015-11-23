@@ -63,6 +63,8 @@ from wxgui.sp_icons          import PLAYER_REWIND
 from wxgui.sp_icons          import PLAYER_REWIND_DISABLED
 from wxgui.sp_icons          import PLAYER_PLAY
 from wxgui.sp_icons          import PLAYER_PLAY_DISABLED
+from wxgui.sp_icons          import PLAYER_REPLAY
+from wxgui.sp_icons          import PLAYER_REPLAY_DISABLED
 from wxgui.sp_icons          import PLAYER_PAUSE
 from wxgui.sp_icons          import PLAYER_PAUSE_DISABLED
 from wxgui.sp_icons          import PLAYER_STOP
@@ -111,6 +113,10 @@ class SndPlayer( wx.Panel ):
         self._knob           = None  # volume control
         self._offsets        = (0,0) # from/to offsets
 
+        self._autoreplay = False
+
+        logging.debug(' ... SndPlayer Autoreplay = %s'%str(self._autoreplay))
+
         self.BMP_PLAYER_INFO            = spBitmap( PLAYER_INFO, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
         self.BMP_PLAYER_INFO_DISABLED   = spBitmap( PLAYER_INFO_DISABLED, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
         self.BMP_PLAYER_EJECT           = spBitmap( PLAYER_EJECT, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
@@ -121,6 +127,8 @@ class SndPlayer( wx.Panel ):
         self.BMP_PLAYER_REWIND_DISABLED = spBitmap( PLAYER_REWIND_DISABLED, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
         self.BMP_PLAYER_PLAY            = spBitmap( PLAYER_PLAY, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
         self.BMP_PLAYER_PLAY_DISABLED   = spBitmap( PLAYER_PLAY_DISABLED, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
+        self.BMP_PLAYER_REPLAY          = spBitmap( PLAYER_REPLAY, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
+        self.BMP_PLAYER_REPLAY_DISABLED = spBitmap( PLAYER_REPLAY_DISABLED, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
         self.BMP_PLAYER_PAUSE           = spBitmap( PLAYER_PAUSE, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
         self.BMP_PLAYER_PAUSE_DISABLED  = spBitmap( PLAYER_PAUSE_DISABLED, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
         self.BMP_PLAYER_STOP            = spBitmap( PLAYER_STOP, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
@@ -225,6 +233,16 @@ class SndPlayer( wx.Panel ):
 
     #----------------------------------------------------------------------
 
+    def __create_audio_button(self, name, preftag, bmp, method, sizer):
+        try:
+            info = self._prefs.GetValue(preftag)
+        except Exception:
+            info = False
+        else:
+            if info is True:
+                self._buttons[name] = CreateButton(self, bmp, method, sizer)
+                sizer.Add(self._buttons[name], 1, flag=wx.ALL, border=2)
+
 
     def _build_audiosimple(self):
         """ Build the audio controls. """
@@ -238,18 +256,13 @@ class SndPlayer( wx.Panel ):
         sizer = wx.BoxSizer( wx.HORIZONTAL )
 
         # create the audio bar
-        self._buttons['info']     = CreateButton(self, self.BMP_PLAYER_INFO_DISABLED,  self.onInfo,  sizer)
-        self._buttons['play']     = CreateButton(self, self.BMP_PLAYER_PLAY_DISABLED,  self.onPlay,  sizer)
-        self._buttons['pause']    = CreateButton(self, self.BMP_PLAYER_PAUSE_DISABLED, self.onPause, sizer)
-
-        #self._buttons['next']     = CreateButton(self, self.BMP_PLAYER_NEXT_DISABLED,  self.onNext,  sizer)
-        #self._buttons['previous'] = CreateButton(self, self.BMP_PLAYER_REWIND_DISABLED,self.onRewind,sizer)
-        #self._buttons['stop']     = CreateButton(self, self.BMP_PLAYER_STOP_DISABLED,  self.onStop,  sizer)
-
-        # sizer
-        sizer.Add(self._buttons['info'],    1, flag=wx.ALL, border=2)
-        sizer.Add(self._buttons['play'],    1, flag=wx.ALL, border=2)
-        sizer.Add(self._buttons['pause'],   1, flag=wx.ALL, border=2)
+        self.__create_audio_button('info',   'SND_INFO',   self.BMP_PLAYER_INFO_DISABLED, self.onInfo, sizer)
+        self.__create_audio_button('play',   'SND_PLAY',   self.BMP_PLAYER_PLAY_DISABLED, self.onPlay, sizer)
+        self.__create_audio_button('replay', 'SND_AUTOREPLAY', self.BMP_PLAYER_REPLAY_DISABLED, self.onAutoPlay, sizer)
+        self.__create_audio_button('pause',  'SND_PAUSE',  self.BMP_PLAYER_PAUSE_DISABLED, self.onPause, sizer)
+        self.__create_audio_button('stop',   'SND_STOP',   self.BMP_PLAYER_STOP_DISABLED, self.onStop, sizer)
+        self.__create_audio_button('next',   'SND_NEXT',   self.BMP_PLAYER_NEXT_DISABLED, self.onNext, sizer)
+        self.__create_audio_button('rewind', 'SND_REWIND', self.BMP_PLAYER_REWIND_DISABLED, self.onRewind, sizer)
 
         return sizer
 
@@ -493,6 +506,15 @@ class SndPlayer( wx.Panel ):
     #----------------------------------------------------------------------
 
 
+    def onAutoPlay(self, event):
+        """ Plays the music and re-play from the beginning. """
+        self._autoreplay = True
+        self.onPlay(event)
+
+    # End onAutoPlay
+    #----------------------------------------------------------------------
+
+
     def onPlay(self, event):
         """ Plays the music. """
 
@@ -551,6 +573,7 @@ class SndPlayer( wx.Panel ):
 
         self._buttons['play'].SetBitmapLabel( self.BMP_PLAYER_PLAY )
         self._buttons['pause'].SetBitmapLabel( self.BMP_PLAYER_PAUSE )
+        self._autoreplay = False
 
     # End onStop
     #----------------------------------------------------------------------
@@ -576,14 +599,19 @@ class SndPlayer( wx.Panel ):
 
         offset = self._mediaplayer.Tell()
         # On MacOS, it seems that offset is not so precise we could expect...
-        # It can be + or - 2 compared to the expected value!
+        # It can be + or - 3 compared to the expected value!
 
         if self._mediaplayer.GetState() == wx.media.MEDIASTATE_PLAYING and self._playbackSlider is not None:
             self._playbackSlider.SetValue( offset )
 
         omin,omax = self._offsets
         if self._mediaplayer.GetState() == wx.media.MEDIASTATE_PLAYING and (offset < omin-3 or offset > omax+3):
-            self.onStop(event)
+            if self._autoreplay is True:
+                self.onStop(event)
+                self._autoreplay = True
+                self.onPlay(event)
+            else:
+                self.onStop(event)
 
     # End onTimer
     #----------------------------------------------------------------------
@@ -696,6 +724,11 @@ class SndPlayer( wx.Panel ):
                 self._buttons['stop'].SetBitmapLabel(  self.BMP_PLAYER_STOP )
             except Exception:
                 pass
+            try:
+                self._buttons['replay'].SetBitmapLabel(  self.BMP_PLAYER_REPLAY )
+            except Exception:
+                pass
+
         else:
             self._buttons['play'].SetBitmapLabel(  self.BMP_PLAYER_PLAY_DISABLED )
             self._buttons['pause'].SetBitmapLabel( self.BMP_PLAYER_PAUSE_DISABLED )
@@ -716,6 +749,11 @@ class SndPlayer( wx.Panel ):
                 self._buttons['next'].SetBitmapLabel(  self.BMP_PLAYER_NEXT_DISABLED )
             except Exception:
                 pass
+            try:
+                self._buttons['replay'].SetBitmapLabel( self.BMP_PLAYER_REPLAY_DISABLED )
+            except Exception:
+                pass
+
 
     def EnableButtons(self, value=True):
         for b in self._buttons:
