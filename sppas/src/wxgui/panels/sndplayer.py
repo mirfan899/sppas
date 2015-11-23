@@ -197,7 +197,7 @@ class SndPlayer( wx.Panel ):
         self._build_showpanel( None )
 
         # 3rd column
-        self._buttons['play']  = CreateButton(self, self.BMP_PLAYER_PLAY_DISABLED,  self.onPlay,  sizer, colour=bgcolour)
+        self._buttons['play']  = CreateButton(self, self.BMP_PLAYER_PLAY_DISABLED,  self.onNormalPlay,  sizer, colour=bgcolour)
         self._buttons['stop']  = CreateButton(self, self.BMP_PLAYER_STOP_DISABLED,  self.onStop,  sizer, colour=bgcolour)
         self._buttons['pause'] = CreateButton(self, self.BMP_PLAYER_PAUSE_DISABLED, self.onPause, sizer, colour=bgcolour)
 
@@ -257,7 +257,7 @@ class SndPlayer( wx.Panel ):
 
         # create the audio bar
         self.__create_audio_button('info',   'SND_INFO',   self.BMP_PLAYER_INFO_DISABLED, self.onInfo, sizer)
-        self.__create_audio_button('play',   'SND_PLAY',   self.BMP_PLAYER_PLAY_DISABLED, self.onPlay, sizer)
+        self.__create_audio_button('play',   'SND_PLAY',   self.BMP_PLAYER_PLAY_DISABLED, self.onNormalPlay, sizer)
         self.__create_audio_button('replay', 'SND_AUTOREPLAY', self.BMP_PLAYER_REPLAY_DISABLED, self.onAutoPlay, sizer)
         self.__create_audio_button('pause',  'SND_PAUSE',  self.BMP_PLAYER_PAUSE_DISABLED, self.onPause, sizer)
         self.__create_audio_button('stop',   'SND_STOP',   self.BMP_PLAYER_STOP_DISABLED, self.onStop, sizer)
@@ -508,10 +508,20 @@ class SndPlayer( wx.Panel ):
 
     def onAutoPlay(self, event):
         """ Plays the music and re-play from the beginning. """
+
         self._autoreplay = True
         self.onPlay(event)
 
     # End onAutoPlay
+    #----------------------------------------------------------------------
+
+    def onNormalPlay(self, event):
+        """ Plays the music once. """
+
+        self._autoreplay = False
+        self.onPlay(event)
+
+    # End onNormalPlay
     #----------------------------------------------------------------------
 
 
@@ -608,8 +618,7 @@ class SndPlayer( wx.Panel ):
         if self._mediaplayer.GetState() == wx.media.MEDIASTATE_PLAYING and (offset < omin-3 or offset > omax+3):
             if self._autoreplay is True:
                 self.onStop(event)
-                self._autoreplay = True
-                self.onPlay(event)
+                self.onAutoPlay(event)
             else:
                 self.onStop(event)
 

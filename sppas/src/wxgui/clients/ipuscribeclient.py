@@ -186,6 +186,7 @@ class IPUscribe( wx.Panel ):
         # Bind events
         self.Bind(spEVT_FILE_WANDER, self.OnFileWander)
         self.Bind(wx.EVT_SET_FOCUS,  self.OnFocus)
+        self.GetTopLevelParent().Bind(wx.EVT_CHAR_HOOK, self.OnKeyPress)
 
         self.SetSizer(sizer)
         self.SetAutoLayout( True )
@@ -586,6 +587,26 @@ class IPUscribe( wx.Panel ):
     # End FileDeSelected
     # ------------------------------------------------------------------------
 
+    def OnKeyPress(self, event):
+        """
+        Respond to a keypress event.
+        """
+        keycode = event.GetKeyCode()
+
+        # Media player
+        #     TAB -> PLay
+        #     F1 -> Pause
+        #     ESC -> Stop
+        if keycode == wx.WXK_TAB:
+            self._mediaPanel.onPlay( event )
+        elif keycode == wx.WXK_F1:
+            self._mediaPanel.onPause( event )
+        elif keycode == wx.WXK_ESCAPE:
+            self._mediaPanel.onStop( event )
+        else:
+            event.Skip()
+
+    # ------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
 
