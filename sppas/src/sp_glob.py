@@ -52,13 +52,14 @@ BASE_PATH = os.path.dirname( os.path.dirname( os.path.abspath(__file__) ) )
 # Define all paths (relatively to BASE_SPPAS)
 # ---------------------------------------------------------------------------
 
-PLUGIN_PATH    = os.path.join( BASE_PATH , "plugins" )
-ICONS_PATH     = os.path.join( BASE_PATH , "etc", "icons" )
+PLUGIN_PATH    = os.path.join( BASE_PATH, "plugins" )
+ICONS_PATH     = os.path.join( BASE_PATH, "etc", "icons" )
+TIPS_ICON_PATH = os.path.join( BASE_PATH, "etc","tips", "christmast") #
+TIPS_FILE      = os.path.join( BASE_PATH, "etc","tips","tips.txt")
+SETTINGS_FILE  = os.path.join( BASE_PATH, "etc", "settings.dump")
+
 RESOURCES_PATH = os.path.join( os.path.dirname(BASE_PATH), "resources" )
 SAMPLES_PATH   = os.path.join( os.path.dirname(BASE_PATH), "samples" )
-TIPS_ICON_PATH = os.path.join(BASE_PATH, "etc","tips")
-TIPS_FILE      = os.path.join(BASE_PATH, "etc","tips","tips.txt")
-SETTINGS_FILE  = os.path.join(BASE_PATH, "etc", "settings.dump")
 
 
 # ---------------------------------------------------------------------------
