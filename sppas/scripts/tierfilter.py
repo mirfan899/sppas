@@ -83,7 +83,6 @@ parser.add_argument("-n", metavar="str",  default="filtered", help='Output tier 
 parser.add_argument("-p", metavar="pattern", required=True, action="append", help='One pattern to find (as many -p options as needed)')
 parser.add_argument("-m", metavar="value", type=int, help=modeshelp)
 
-
 parser.add_argument("--reverse", action='store_true', help="Reverse the result" )
 parser.add_argument("--no-case-sensitive", dest="nocasesensitive", action='store_true' )
 parser.add_argument("--no-merge", dest="nomerge", action='store_true', help="Keep only the first pattern in the result" )

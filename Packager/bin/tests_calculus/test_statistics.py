@@ -6,6 +6,7 @@ import os
 import sys
 import operator
 from os.path import *
+import csv
 
 SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
 sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
