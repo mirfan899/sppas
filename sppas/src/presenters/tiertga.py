@@ -148,7 +148,7 @@ class TierTGA( object ):
     def tga_as_transcription(self):
         """
         Create then return the sequence of labels of each tg of the tier as a Transcription() object.
-        @return Transcrirption()
+        @return Transcription()
         """
         trs = self.__tier_to_transcription()
         return trs

@@ -35,11 +35,11 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ----------------------------------------------------------------------------
-# File: stats.py
+# File: tga.py
 # ----------------------------------------------------------------------------
 # Author: Brigitte Bigi
-# Date: November, 25, 2015
-# Brief: Produce a csv file with stats of one tier of a file.
+# Date: November, 30, 2015
+# Brief: Produce an annotated file with TGA of syllables of the input file.
 # ----------------------------------------------------------------------------
 
 
@@ -58,27 +58,19 @@ SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
 import annotationdata.io
-from presenters.tierstats import TierStats
+from presenters.tiertga import TierTGA
 
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-modeshelp =  "Stat to estimate, in:\n"
-modeshelp += "  0 = ALL,\n"
-modeshelp += "  1 = Occurrences,\n"
-modeshelp += '  2 = Total duration,\n'
-modeshelp += '  3 = Average duration,\n'
-modeshelp += '  4 = Median duration,\n'
-modeshelp += '  5 = Standard deviation duration.'
+parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM), description="... a script to estimates TGA of syllables from a tier of an annotated file.")
 
-parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM), description="... a script to estimates stats of a tier of an annotated file.")
-
-parser.add_argument("-i", metavar="file",  required=True,  help='Input annotated file file name')
-parser.add_argument("-t", metavar="value", default=1, type=int, help='Tier number (default: 1=first tier)')
-parser.add_argument("-s", metavar="stat",  type=int, action="append", help=modeshelp)
-parser.add_argument("-n", metavar="ngram", default=1, type=int, help='Value of N of the Ngram sequence (default: 1)')
+parser.add_argument("-i", metavar="file",      required=True,  help='Input annotated file file name')
+parser.add_argument("-o", metavar="file",      required=True,  help='Output file name (csv or annotated file)')
+parser.add_argument("-t", metavar="value",     default=1, type=int, help='Tier number (default: 1=first tier)')
+parser.add_argument("-s", metavar="separator", type=str, action="append", help="Add a Time Group separator (already included: silence,dummy,laughter,noise)")
 
 
 if len(sys.argv) <= 1:
@@ -90,19 +82,11 @@ args = parser.parse_args()
 
 tieridx    = args.t-1
 fileinput  = args.i
+fileoutput = args.o
 filename, fileextension = os.path.splitext(fileinput)
-
-ngram      = args.n
-mode       = args.s
-stats_mode = (0, 1, 2, 3, 4, 5)
-if mode:
-    for m in stats_mode:
-        if m not in stats_mode:
-            print "Unknown stat:", m
-            sys.exit(1)
-else:
-    mode = []
-    mode.append(0)
+separators = ['*', 'gb','@@']
+if args.s:
+    separators = set(separators + args.s)
 
 # ----------------------------------------------------------------------------
 
@@ -113,63 +97,62 @@ if tieridx < 0 or tieridx > trs.GetSize():
     sys.exit(1)
 
 tier = trs[tieridx]
-tiername = tier.GetName().replace (' ','_')
 
 # ----------------------------------------------------------------------------
 
-t = TierStats( tier )
-t.set_ngram( ngram )
+tg = TierTGA( tier )
+for s in separators:
+    tg.append_separator( s )
 
-ds = t.ds()
-title = [ "filename", "tier", "annotation label" ]
-stats = {} # used just to get the list of keys
-if 0 in mode or 1 in mode:
-    occurrences = ds.len()
-    title.append('occurrences')
-    stats = occurrences
-if 0 in mode or 2 in mode:
-    total = ds.total()
-    title.append('total duration')
-    if not stats: stats = total
-if 0 in mode or 3 in mode:
-    mean = ds.mean()
-    title.append('mean duration')
-    if not stats: stats = mean
-if 0 in mode or 4 in mode:
-    median = ds.median()
-    title.append('median duration')
-    if not stats: stats = median
-if 0 in mode or 5 in mode:
-    stdev = ds.stdev()
-    title.append('Std dev duration')
-    if not stats: stats = stdev
+ds = tg.tga()
+ls = tg.labels()
+
+occurrences = ds.len()
+total       = ds.total()
+mean        = ds.mean()
+median      = ds.median()
+stdev       = ds.stdev()
+npvi        = ds.nPVI()
+regressp    = ds.intercept_slope_original()
+regresst    = ds.intercept_slope()
+
 
 # ----------------------------------------------------------------------------
+filename, fileextension = os.path.splitext(fileoutput)
 
-rowdata = []
-rowdata.append(title)
+if fileextension.lower() == '.csv':
+    title = ["Filename", "Tier", "TG name", "TG segments", "Length", "Total", "Mean", "Median", "Std dev.", "nPVI", "Intercept-Pos","Slope-Pos", "Intercept-Time","Slope-Time"]
 
-for i,key in enumerate(stats.keys()):
-    if len(key)==0: # ignore empty label
-        continue
-    row = [ filename, tiername, key ]
-    if 0 in mode or 1 in mode:
+    rowdata = []
+    rowdata.append(title)
+
+    for i,key in enumerate(sorted(ls)):
+        if len(key)==0: # ignore empty label
+            continue
+        segs = " ".join(ls[key])
+        row = [ ]
+        row.append( fileinput )
+        row.append( tier.GetName() )
+        row.append( key )
+        row.append( " ".join(ls[key]) )
         row.append( str(occurrences[key]) )
-    if 0 in mode or 2 in mode:
-        row.append( str(round(total[key],3)) )
-    if 0 in mode or 3 in mode:
-        row.append( str(round(mean[key],3)) )
-    if 0 in mode or 4 in mode:
-        row.append( str(round(median[key],3)) )
-    if 0 in mode or 5 in mode:
-        row.append( str(round(stdev[key],3)) )
-    rowdata.append( row )
+        row.append( str(round(total[key],       3)) )
+        row.append( str(round(mean[key],        3)) )
+        row.append( str(round(median[key],      3)) )
+        row.append( str(round(stdev[key],       3)) )
+        row.append( str(round(npvi[key],        3)) )
+        row.append( str(round(regressp[key][0], 3)) )
+        row.append( str(round(regressp[key][1], 3)) )
+        row.append( str(round(regresst[key][0], 3)) )
+        row.append( str(round(regresst[key][1], 3)) )
+        rowdata.append( row )
 
-fileoutput = filename + "-" + tiername + "-stats-" + str(ngram)+ ".csv"
-with codecs.open(fileoutput, 'w', encoding="utf-8") as fp:
-    for row in rowdata:
-        s = ','.join( row )
-        fp.write( s )
-        fp.write('\n')
+    with codecs.open(fileoutput, 'w', encoding="utf-8") as fp:
+        for row in rowdata:
+            s = ','.join( row )
+            fp.write( s )
+            fp.write('\n')
 
-# ----------------------------------------------------------------------------
+else:
+    trs = tg.tga_as_transcription()
+    annotationdata.io.write(fileoutput,trs)
