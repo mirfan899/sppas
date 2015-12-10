@@ -42,6 +42,7 @@ __docformat__ = """epytext"""
 __authors__ = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
+# ----------------------------------------------------------------------------
 
 class BasePlacement(object):
     """
@@ -59,7 +60,6 @@ class BasePlacement(object):
         """
         raise NotImplementedError
 
-    # End __init__
     # ---------------------------------------------------------------------
 
     def __eq__(self, other):
@@ -73,7 +73,6 @@ class BasePlacement(object):
         """
         raise NotImplementedError
 
-    # End __eq__
     # ---------------------------------------------------------------------
 
     def __lt__(self, other):
@@ -85,7 +84,6 @@ class BasePlacement(object):
         """
         raise NotImplementedError
 
-    # End __lt__
     # ---------------------------------------------------------------------
 
     def __gt__(self, other):
@@ -97,25 +95,21 @@ class BasePlacement(object):
         """
         raise NotImplementedError
 
-    # End __gt__
     # ---------------------------------------------------------------------
 
     def __ne__(self, other):
         return not self == other
 
-    # End __ne__
     # ---------------------------------------------------------------------
 
     def __le__(self, other):
         return self < other or self == other
 
-    # End __le__
     # ---------------------------------------------------------------------
 
     def __ge__(self, other):
         return self > other or self == other
 
-    # End __ge__
     # ---------------------------------------------------------------------
 
     def Duration(self):
@@ -126,7 +120,6 @@ class BasePlacement(object):
         """
         raise NotImplementedError
 
-    # End Duration
     # ---------------------------------------------------------------------
 
     def IsTimePoint(self):
@@ -137,7 +130,6 @@ class BasePlacement(object):
         """
         return False
 
-    # End IsTimePoint
     # ---------------------------------------------------------------------
 
     def IsTimeInterval(self):
@@ -148,7 +140,6 @@ class BasePlacement(object):
         """
         return False
 
-    # End IsTimeInterval
     # ---------------------------------------------------------------------
 
     def IsTimeDisjoint(self):
@@ -159,7 +150,6 @@ class BasePlacement(object):
         """
         return False
 
-    # End IsTimePoint
     # ---------------------------------------------------------------------
 
     def IsFramePoint(self):
@@ -170,7 +160,6 @@ class BasePlacement(object):
         """
         return False
 
-    # End IsFramePoint
     # ---------------------------------------------------------------------
 
     def IsFrameInterval(self):
@@ -181,7 +170,6 @@ class BasePlacement(object):
         """
         return False
 
-    # End IsFrameInterval
     # ---------------------------------------------------------------------
 
     def IsFrameDisjoint(self):
@@ -192,8 +180,6 @@ class BasePlacement(object):
         """
         return False
 
-    # End IsFrameDisjoint
     # ---------------------------------------------------------------------
 
-# End BasePlacement
 # ------------------------------------------------------------------------------------
