@@ -272,6 +272,8 @@ class TimeInterval(baseplacement.BasePlacement):
         return TimeInterval(self.__begin, other.GetEnd())
 
     # -----------------------------------------------------------------------
+    # Overloads
+    # -----------------------------------------------------------------------
 
     def __repr__(self):
         return "TimeInterval: [%s,%s]" % (self.__begin, self.__end)

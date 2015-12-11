@@ -54,9 +54,10 @@ class TestDuration(unittest.TestCase):
         """
         # 1.003 - (0.001 + 0.001) > 1.001
         self.assertGreater(self.pointZ, self.pointV)
-
         # 1.002 - (0.001 + 0.001) > 1.001
         self.assertGreater(self.pointX, self.pointV)
+        self.assertGreater(self.pointX, 1.001)
+
 
     def test__ne__(self):
         self.assertNotEqual(self.pointV, self.pointX)
@@ -72,7 +73,7 @@ class TestDuration(unittest.TestCase):
         self.assertEqual(self.pointV, 1)
         self.assertEqual(self.pointV, 1.001)
         self.assertGreaterEqual(self.pointV, 1.001)
-        self.assertGreaterEqual(self.pointV, 1.002)
+        self.assertGreaterEqual(self.pointV, 0.999)
         self.assertEqual(self.pointV, self.pointW)
         self.assertGreaterEqual(self.pointV, self.pointV)
         self.assertGreaterEqual(self.pointV, self.pointW)

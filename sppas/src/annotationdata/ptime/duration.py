@@ -212,7 +212,7 @@ class Duration( object ):
         if isinstance(other, Duration) is True:
             return self != other and self.__value < other.GetValue()
 
-        return self != other and self.__value < other
+        return (self != other) and (self.__value < other)
 
     # -----------------------------------------------------------------------
 
@@ -228,6 +228,30 @@ class Duration( object ):
         if isinstance(other, Duration) is True:
             return self != other and self.__value > other.GetValue()
 
-        return self != other and self.__value > other
+        return (self != other) and (self.__value > other)
+
+    # ------------------------------------------------------------------------
+
+    def __ne__(self, other):
+        """
+        Not equals.
+        """
+        return not (self == other)
+
+    # ------------------------------------------------------------------------
+
+    def __le__(self, other):
+        """
+        Lesser or equal.
+        """
+        return (self < other) or (self == other)
+
+    # ------------------------------------------------------------------------
+
+    def __ge__(self, other):
+        """
+        Greater or equal.
+        """
+        return (self > other) or (self == other)
 
     # ------------------------------------------------------------------------

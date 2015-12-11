@@ -286,7 +286,7 @@ class FramePoint(baseplacement.BasePlacement):
         if isinstance(other, FramePoint) is True:
             return self != other and self.__frame < other.GetMidpoint()
 
-        return self != other and self.__frame < other
+        return (self != other) and (self.__frame < other)
 
     # -----------------------------------------------------------------------
 

@@ -297,7 +297,7 @@ class TimePoint(baseplacement.BasePlacement):
         if isinstance(other, TimePoint) is True:
             return self != other and self.__midpoint < other.GetMidpoint()
 
-        return self != other and self.__midpoint < other
+        return (self != other) and (self.__midpoint < other)
 
     # -----------------------------------------------------------------------
 
@@ -313,6 +313,6 @@ class TimePoint(baseplacement.BasePlacement):
         if isinstance(other, TimePoint) is True:
             return self != other and self.__midpoint > other.GetMidpoint()
 
-        return self != other and self.__midpoint > other
+        return (self != other) and (self.__midpoint > other)
 
     # -----------------------------------------------------------------------
