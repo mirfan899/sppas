@@ -74,8 +74,10 @@ one file to another one, etc.
 ![Component: IPUTranscriber](./etc/screenshots/IPUscribe.png)
 
 To transcribe an IPU, click on the IPU box, play sound and write 
-the corresponding text: refer to the transcription convention of this document.
-To manage sound, use green buttons just at the bottom of the IPUs list (from left to right):
+the corresponding text: refer to the transcription convention of 
+this document.
+To manage sound, use green buttons just at the bottom of the IPUs 
+list (from left to right):
 
 - information about the file
 - play sound

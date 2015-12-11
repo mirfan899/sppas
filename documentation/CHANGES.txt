@@ -864,6 +864,23 @@ Samples:
 Development:
     - Debug of the Tokenizer.
 
+
+=============================================================================
+SPPAS-1.7.5
+=============================================================================
+
+Development:
+    - Add vagueness to the annotation duration estimation
+    - Bug correction while saving the procedure outcome report in the GUI
+
+GUI:
+    - Changed all pictures to remove the problem with colorset of some of them
+    - Add a christmast theme for the pictures of tips
+    - IPUscribe improvements: 
+        - add keyboard shortcuts to play/pause/stop the sound
+        - add a new button to auto-play the sound 
+
+
 =============================================================================
 *****************************************************************************
 =============================================================================
