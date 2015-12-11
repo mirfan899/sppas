@@ -39,12 +39,17 @@
 # ----------------------------------------------------------------------------
 
 import baseplacement
+import duration
+
 from ..utils.deprecated import deprecated
 
+# ----------------------------------------------------------------------------
+
 __docformat__ = """epytext"""
-__authors__ = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
+# ----------------------------------------------------------------------------
 
 class FramePoint(baseplacement.BasePlacement):
     """
@@ -90,7 +95,6 @@ class FramePoint(baseplacement.BasePlacement):
 
         @param frame (int) rank of the frame in the media.
         @param radius (int) represents the vagueness of the point.
-
         @raise TypeError
         @raise ValueError
 
@@ -101,15 +105,13 @@ class FramePoint(baseplacement.BasePlacement):
         self.SetMidpoint(frame)
         self.SetRadius(radius)
 
-    # End __init__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def Set(self, other):
         """
         Set the frame/radius of another FramePoint instance.
 
         @param other (FramePoint)
-
         @raise TypeError
 
         """
@@ -122,16 +124,13 @@ class FramePoint(baseplacement.BasePlacement):
         self.__radius = other.__radius
 
     # End Set
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @deprecated
     def GetValue(self):
-        """
-        """
         self.GetMidpoint()
 
-    # End GetValue
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetMidpoint(self):
         """
@@ -140,25 +139,19 @@ class FramePoint(baseplacement.BasePlacement):
         """
         return self.__frame
 
-    # End GetMidpoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @deprecated
     def SetValue(self, frame):
-        """
-        @deprecated: replaced by SetMidpoint
-        """
         self.SetMidpoint(frame)
 
-    # End SetValue
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def SetMidpoint(self, frame):
         """
         Set this FramePoint to a new value.
 
         @param frame (int) is the new frame to set.
-
         @raise TypeError (if frame is not int)
 
         """
@@ -170,8 +163,7 @@ class FramePoint(baseplacement.BasePlacement):
 
         self.__frame = frame
 
-    # End SetMidpoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetRadius(self):
         """
@@ -180,15 +172,13 @@ class FramePoint(baseplacement.BasePlacement):
         """
         return self.__radius
 
-    # End GetRadius
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def SetRadius(self, radius):
         """
         Fix the radius, in number of frames.
 
-        @param radius (int) is the vagueness of the localization.
-
+        @param radius (int) is the vagueness of the point.
         @raise TypeError (if radius is not int)
 
         """
@@ -200,33 +190,27 @@ class FramePoint(baseplacement.BasePlacement):
                 "The vagueness of a frame point can't be negative: %r"
                 % radius)
 
-        if self.__frame < radius:
-            radius = self.__frame
-
         self.__radius = radius
 
-    # End SetRadius
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def IsPoint(self):
         """
-        Return True, as this object is representing a Point.
+        Return True, because self is representing a Point.
 
         """
         return True
 
-    # End IsPoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def IsFramePoint(self):
         """
-        Return True, as this object is an instance of FramePoint.
+        Return True, because self is an instance of FramePoint.
 
         """
         return True
 
-    # End IsFramePoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def Duration(self):
         """
@@ -235,10 +219,9 @@ class FramePoint(baseplacement.BasePlacement):
 
         """
 
-        return 2*self.__radius
+        return duration.Duration(0, 2*self.__radius)
 
-    # End Duration
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def Copy(self):
         """
@@ -249,26 +232,24 @@ class FramePoint(baseplacement.BasePlacement):
         r = self.__radius
         return FramePoint(t, r)
 
-    # End Copy
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
+    # Overloads
+    # ------------------------------------------------------------------------
 
     def __repr__(self):
         return "FramePoint: (%d,%d)" % (self.__frame, self.__radius)
 
-    # End __repr__
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def __str__(self):
         return "(%d,%d)" % (self.__frame, self.__radius)
 
-    # End __str__
-    # ------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def __hash__(self):
         return hash((self.__frame, self.__radius))
 
-    # End __hash__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __eq__(self, other):
         """
@@ -291,8 +272,7 @@ class FramePoint(baseplacement.BasePlacement):
             radius = self.__radius
             return delta <= radius
 
-    # End __eq__
-    # ------------------------------------------------------------------------------------
+    # ----------------------------------------------------------------------
 
     def __lt__(self, other):
         """
@@ -308,8 +288,7 @@ class FramePoint(baseplacement.BasePlacement):
 
         return self != other and self.__frame < other
 
-    # End __lt__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __gt__(self, other):
         """
@@ -325,8 +304,4 @@ class FramePoint(baseplacement.BasePlacement):
 
         return self != other and self.__frame > other
 
-    # End __gt__
-    # ------------------------------------------------------------------------------------
-
-# End FramePoint
-# ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------

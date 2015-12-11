@@ -30,7 +30,8 @@ class TestFrameDisjoint(unittest.TestCase):
     def test_Duration(self):
         intervals = [FrameInterval(FramePoint(i), FramePoint(i+1)) for i in range(5)]
         t_disjoint = FrameDisjoint(*intervals)
-        self.assertEquals(t_disjoint.Duration(), 5)
+        self.assertEquals(t_disjoint.Duration().GetValue(), 5)
+        self.assertEquals(t_disjoint.Duration().GetMargin(), 0)
 
     def test_GetInterval(self):
         t_disjoint = FrameDisjoint(*[FrameInterval(FramePoint(i), FramePoint(i+1)) for i in range(10)])

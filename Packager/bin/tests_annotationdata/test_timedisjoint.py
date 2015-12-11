@@ -30,7 +30,8 @@ class TestTimeDisjoint(unittest.TestCase):
     def test_Duration(self):
         intervals = [TimeInterval(TimePoint(i), TimePoint(i+1)) for i in range(5)]
         t_disjoint = TimeDisjoint(*intervals)
-        self.assertEquals(t_disjoint.Duration(), 5)
+        self.assertEquals(t_disjoint.Duration().GetValue(), 5)
+        self.assertEquals(t_disjoint.Duration().GetMargin(), 0)
 
     def test_GetInterval(self):
         t_disjoint = TimeDisjoint(*[TimeInterval(TimePoint(i), TimePoint(i+1)) for i in range(10)])

@@ -10,6 +10,7 @@ from test_framepoint     import TestFramePoint
 from test_frameinterval  import TestFrameInterval
 from test_framedisjoint  import TestFrameDisjoint
 from test_localization   import TestLocalization
+from test_duration       import TestDuration
 
 from test_text          import TestText
 from test_silence       import TestSilence
@@ -29,6 +30,7 @@ testsuite.addTest(unittest.makeSuite(TestFramePoint))
 testsuite.addTest(unittest.makeSuite(TestFrameInterval))
 testsuite.addTest(unittest.makeSuite(TestFrameDisjoint))
 testsuite.addTest(unittest.makeSuite(TestLocalization))
+testsuite.addTest(unittest.makeSuite(TestDuration))
 testsuite.addTest(unittest.makeSuite(TestText))
 testsuite.addTest(unittest.makeSuite(TestSilence))
 testsuite.addTest(unittest.makeSuite(TestLabel))

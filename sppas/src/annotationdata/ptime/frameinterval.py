@@ -39,12 +39,16 @@
 # ----------------------------------------------------------------------------
 
 import baseplacement
+import duration
 from framepoint import FramePoint
+
+# ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
 __authors__ = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
+# ----------------------------------------------------------------------------
 
 class FrameInterval(baseplacement.BasePlacement):
     """
@@ -53,11 +57,10 @@ class FrameInterval(baseplacement.BasePlacement):
     @license: GPL, version 3
     @summary: This class is the FrameInterval representation.
 
-    A frame interval is identified by two objects:
+    A frame interval is identified by two FramePoint objects:
         - a begin frame;
         - an end frame.
 
-    Each frame is represented by a FramePoint instance.
     """
 
     def __init__(self, begin, end):
@@ -66,7 +69,6 @@ class FrameInterval(baseplacement.BasePlacement):
 
         @param begin (FramePoint) start frame in seconds
         @param end (FramePoint) end frame in seconds
-
         @raise TypeError:
         @raise ValueError
 
@@ -92,8 +94,7 @@ class FrameInterval(baseplacement.BasePlacement):
         self.__begin = begin
         self.__end = end
 
-    # End __init__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def Set(self, other):
         """
@@ -109,8 +110,7 @@ class FrameInterval(baseplacement.BasePlacement):
         self.__begin = other.__begin
         self.__end = other.__end
 
-    # End Set
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetBegin(self):
         """
@@ -119,8 +119,7 @@ class FrameInterval(baseplacement.BasePlacement):
         """
         return self.__begin
 
-    # End GetBegin
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def SetBegin(self, fp):
         """
@@ -148,8 +147,7 @@ class FrameInterval(baseplacement.BasePlacement):
 
         self.__begin = fp  # assign the reference
 
-    # End SetBegin
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetEnd(self):
         """
@@ -158,8 +156,7 @@ class FrameInterval(baseplacement.BasePlacement):
         """
         return self.__end
 
-    # End GetEnd
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def SetEnd(self, fp):
         """
@@ -182,28 +179,25 @@ class FrameInterval(baseplacement.BasePlacement):
 
         self.__end = fp  # assign the reference
 
-    # End SetEnd
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def IsInterval(self):
         """
-        Return True, as this object is representing an Interval.
+        Return True, because self is representing an interval.
 
         """
         return True
 
-    # End IsInterval
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def IsFrameInterval(self):
         """
-        Return True, as this object is an instance of FrameInterval.
+        Return True, because self is an instance of FrameInterval.
 
         """
         return True
 
-    # End IsFrameInterval
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def Copy(self):
         """
@@ -214,8 +208,7 @@ class FrameInterval(baseplacement.BasePlacement):
         e = self.__end.Copy()
         return FrameInterval(b, e)
 
-    # End Copy
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def Duration(self):
         """
@@ -223,21 +216,13 @@ class FrameInterval(baseplacement.BasePlacement):
         without taking into account the radius.
 
         """
-        return self.__end.GetMidpoint() - self.__begin.GetMidpoint()
+        # duration is the difference between the midpoints
+        value = self.__end.GetMidpoint() - self.__begin.GetMidpoint()
+        # vagueness of the duration is based on begin/end radius values
+        vagueness = self.__begin.GetRadius() + self.__end.GetRadius()
 
-    # End Duration
-    # ------------------------------------------------------------------------------------
+        return duration.Duration(value,vagueness)
 
-    def TotalDuration(self):
-        """
-        Return the duration of the interval by taking the radius into account.
-
-        """
-        return (self.__end.GetMidpoint() - self.__begin.GetMidpoint() +
-                self.__end.GetRadius() +
-                self.__begin.GetRadius())
-
-    # End TotalDuration
     # ------------------------------------------------------------------------------------
 
     def Combine(self, other):
@@ -259,8 +244,7 @@ class FrameInterval(baseplacement.BasePlacement):
 
         return FrameInterval(other.GetBegin(), self.__end)
 
-    # End Combine
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def Union(self, other):
         """
@@ -277,20 +261,19 @@ class FrameInterval(baseplacement.BasePlacement):
 
         return FrameInterval(self.__begin, other.GetEnd())
 
-    # End Union
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+    # Overloads
+    # -----------------------------------------------------------------------
 
     def __repr__(self):
         return "FrameInterval: [%s,%s]" % (self.__begin, self.__end)
 
-    # End __repr__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __str__(self):
         return "[%s,%s]" % (self.__begin, self.__end)
 
-    # End __str__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __contains__(self, other):
         """
@@ -309,8 +292,7 @@ class FrameInterval(baseplacement.BasePlacement):
 
         return self.__begin <= other <= self.__end
 
-    # End __contains__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __eq__(self, other):
         """
@@ -325,8 +307,7 @@ class FrameInterval(baseplacement.BasePlacement):
         return (self.__begin == other.GetBegin() and
                 self.__end == other.GetEnd())
 
-    # End __eq__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __lt__(self, other):
         """
@@ -344,8 +325,7 @@ class FrameInterval(baseplacement.BasePlacement):
 
         return self.__begin < other.GetBegin()
 
-    # End __lt__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __gt__(self, other):
         """
@@ -363,8 +343,4 @@ class FrameInterval(baseplacement.BasePlacement):
 
         return self.__begin > other.GetBegin()
 
-    # End __gt__
-    # ------------------------------------------------------------------------------------
-
-# End FrameInterval
-# ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------

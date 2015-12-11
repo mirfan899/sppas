@@ -40,14 +40,18 @@
 # ----------------------------------------------------------------------------
 
 import baseplacement
+import duration
 
-from point import TimePoint
+from point    import TimePoint
 from interval import TimeInterval
 
+# ----------------------------------------------------------------------------
+
 __docformat__ = """epytext"""
-__authors__ = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
+# ----------------------------------------------------------------------------
 
 class TimeDisjoint(baseplacement.BasePlacement):
     """
@@ -65,7 +69,6 @@ class TimeDisjoint(baseplacement.BasePlacement):
         Creates a new TimeDisjoint instance.
 
         @param intervals (sequence of TimeInterval)
-
         @raise TypeError
 
         """
@@ -80,8 +83,7 @@ class TimeDisjoint(baseplacement.BasePlacement):
 
         self.__intervals = list(intervals)
 
-    # End __init__
-    # --------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetSize(self):
         """
@@ -90,8 +92,7 @@ class TimeDisjoint(baseplacement.BasePlacement):
         """
         return len(self.__intervals)
 
-    # End GetSize
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetBegin(self):
         """
@@ -103,8 +104,7 @@ class TimeDisjoint(baseplacement.BasePlacement):
 
         return _min.GetBegin()
 
-    # End GetBegin
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def SetBegin(self, time):
         """
@@ -114,11 +114,9 @@ class TimeDisjoint(baseplacement.BasePlacement):
 
         """
         _min = min(interval for interval in self.__intervals)
-
         _min.SetBegin(time)
 
-    # End SetBegin
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetEnd(self):
         """
@@ -130,8 +128,7 @@ class TimeDisjoint(baseplacement.BasePlacement):
 
         return _max.GetEnd()
 
-    # End GetEnd
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def SetEnd(self, time):
         """
@@ -142,11 +139,9 @@ class TimeDisjoint(baseplacement.BasePlacement):
         """
         # get the last interval (interval ending the last)
         _max = max(interval for interval in self.__intervals)
-
         _max.SetEnd(time)
 
-    # End SetEnd
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetInterval(self, index):
         """
@@ -157,54 +152,50 @@ class TimeDisjoint(baseplacement.BasePlacement):
         """
         return self.__intervals[index]
 
-    # End GetInterval
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def IsDisjoint(self):
         """
-        Return True as this object is representing Disjoint intervals.
+        Return True because self is representing a disjoint intervals.
 
         """
         return True
 
-    # End IsDisjoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def IsTimeDisjoint(self):
         """
-        Return True as this object is an instance of TimeDisjoint.
+        Return True because self is an instance of TimeDisjoint.
 
         """
         return True
 
-    # End IsTimeDisjoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def Duration(self):
         """
-        Return the duration, in seconds, from Begin to End,
-        without taking radius into account.
+        Return the duration, in seconds, from Begin to End.
 
         """
-        return sum(interval.Duration() for interval in self.__intervals)
+        value     = sum( interval.Duration().GetValue()  for interval in self.__intervals)
+        vagueness = sum( interval.Duration().GetMargin() for interval in self.__intervals)
 
-    # End Duration
-    # ------------------------------------------------------------------------------------
+        return duration.Duration( value,vagueness )
+
+    # -----------------------------------------------------------------------
 
     def Append(self, interval):
         self.__intervals.append(interval)
 
-    # End Append
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+    # Overloads
+    # -----------------------------------------------------------------------
 
     def __repr__(self):
         return "TimeDisjoint: {%s}" % ("".join([str(i)
                                                 for i in self.__intervals]))
 
-        return "{%s}" % ("".join([str(i) for i in self.__intervals]))
-
-    # End __repr__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __eq__(self, other):
         """
@@ -223,8 +214,7 @@ class TimeDisjoint(baseplacement.BasePlacement):
         return all(self.GetInterval(i) == other.GetInterval(i)
                    for i in range(self.GetSize()))
 
-    # End __eq__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __lt__(self, other):
         """
@@ -241,8 +231,7 @@ class TimeDisjoint(baseplacement.BasePlacement):
 
         return self.GetBegin() < other.GetBegin()
 
-    # End __lt__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __gt__(self, other):
         """
@@ -259,27 +248,20 @@ class TimeDisjoint(baseplacement.BasePlacement):
 
         return self.GetBegin() > other.GetBegin()
 
-    # End __gt__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __iter__(self):
         for a in self.__intervals:
             yield a
 
-    # End __iter__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __getitem__(self, i):
         return self.__intervals[i]
 
-    # End __getitem__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __len__(self):
         return len(self.__intervals)
 
-    # End __len__
-    # ------------------------------------------------------------------------------------
-
-# End TimeDisjoint
-# ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------

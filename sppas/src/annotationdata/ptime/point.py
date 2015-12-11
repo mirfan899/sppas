@@ -40,13 +40,16 @@
 # ----------------------------------------------------------------------------
 
 import baseplacement
+import duration
 from ..utils.deprecated import deprecated
 
+# ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
-__authors__ = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
+# ----------------------------------------------------------------------------
 
 class TimePoint(baseplacement.BasePlacement):
     """
@@ -97,7 +100,6 @@ class TimePoint(baseplacement.BasePlacement):
 
         @param time (float) time value in seconds.
         @param radius (float) represents the vagueness of the point.
-
         @raise TypeError
         @raise ValueError
 
@@ -108,15 +110,13 @@ class TimePoint(baseplacement.BasePlacement):
         self.SetMidpoint(time)
         self.SetRadius(radius)
 
-    # End __init__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def Set(self, other):
         """
         Set the time/radius of another TimePoint instance.
 
         @param other (TimePoint)
-
         @raise TypeError:
 
         """
@@ -127,8 +127,7 @@ class TimePoint(baseplacement.BasePlacement):
         self.__midpoint = other.__midpoint
         self.__radius = other.__radius
 
-    # End Set
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetPoint(self):
         """
@@ -137,50 +136,35 @@ class TimePoint(baseplacement.BasePlacement):
         """
         return self
 
-    # End GetPoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @deprecated
     def GetValue(self):
-        """
-        Return the Time value (float), in seconds.
-
-        """
         return self.GetMidpoint()
 
-    # End GetValue
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetMidpoint(self):
         """
-        Return the Time value (float) of the midpoint.
+        Return the time value (float) of the midpoint.
 
         """
         return self.__midpoint
 
-    # End GetMidpoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
+    @deprecated
     def SetValue(self, time):
-        """
-        @deprecated: replaced by SetMidpoint
-        Set the Time to a new value.
-
-        @param time (float) is the new time to set the midpoint.
-
-        @raise TypeError (if time is not float)
-
-        """
         self.SetMidpoint(time)
 
-    # End SetValue
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def SetMidpoint(self, time):
         """
-        Set the Time to a new value.
+        Set the time to a new value, in seconds.
 
         @param time (float) is the new time to set the midpoint.
+        @raise ValueError
 
         """
         if time < 0.:
@@ -188,25 +172,22 @@ class TimePoint(baseplacement.BasePlacement):
 
         self.__midpoint = float(time)
 
-    # End SetMidpoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetRadius(self):
         """
-        Return the radius, in seconds (float).
+        Return the radius value, in seconds (float).
 
         """
         return self.__radius
 
-    # End GetRadius
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def SetRadius(self, radius):
         """
         Fix the radius, in seconds.
 
         @param radius (float) is the radius (in seconds)
-
         @raise TypeError (if radius is not float)
 
         """
@@ -219,40 +200,36 @@ class TimePoint(baseplacement.BasePlacement):
 
         self.__radius = radius
 
-    # End SetRadius
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def IsPoint(self):
         """
-        Return True, as this object is representing a Point.
+        Return True, because self is representing a Point.
 
         """
         return True
 
-    # End IsPoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def IsTimePoint(self):
         """
-        Return True, as this object is an instance of TimePoint.
+        Return True, because self is an instance of TimePoint.
 
         """
         return True
 
-    # End IsTimePoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def Duration(self):
         """
         Return the duration of the time point, in seconds.
-        Represents the duration of the vagueness.
 
+        @return (Duration) the duration and its vagueness
         """
 
-        return 2.0*self.__radius
+        return duration.Duration(0., 2.0*self.__radius)
 
-    # End Duration
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def Copy(self):
         """
@@ -263,26 +240,25 @@ class TimePoint(baseplacement.BasePlacement):
         r = self.__radius
         return TimePoint(t, r)
 
-    # End Copy
-    # ------------------------------------------------------------------------------------
+
+    # -----------------------------------------------------------------------
+    # Overloads
+    # -----------------------------------------------------------------------
 
     def __repr__(self):
         return "TimePoint: %f,%f" % (self.__midpoint, self.__radius)
 
-    # End __repr__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __str__(self):
         return "(%f,%f)" % (self.GetMidpoint(), self.GetRadius())
 
-    # End __str__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __hash__(self):
         return hash((self.__midpoint, self.__radius))
 
-    # End __hash__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __eq__(self, other):
         """
@@ -307,8 +283,7 @@ class TimePoint(baseplacement.BasePlacement):
             radius = self.__radius
             return delta <= radius
 
-    # End __eq__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __lt__(self, other):
         """
@@ -324,8 +299,7 @@ class TimePoint(baseplacement.BasePlacement):
 
         return self != other and self.__midpoint < other
 
-    # End __lt__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __gt__(self, other):
         """
@@ -341,5 +315,4 @@ class TimePoint(baseplacement.BasePlacement):
 
         return self != other and self.__midpoint > other
 
-    # End __gt__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------

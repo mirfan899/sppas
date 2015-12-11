@@ -82,8 +82,10 @@ class TestTimePoint(unittest.TestCase):
         point3 = TimePoint(0.1, 0.2)
         point2.Set( point3 )
         self.assertFalse(point2 is point3)
-
-
+        self.assertEqual(point0.Duration(),0.)
+        pointd = TimePoint(0.3,0.1)
+        self.assertEqual(pointd.Duration(),0.)
+        self.assertEqual(pointd.Duration(),0.1)
 
 # End TestTimePoint
 # ---------------------------------------------------------------------------

@@ -148,8 +148,14 @@ class TestTimeInterval(unittest.TestCase):
         self.assertFalse(interval1 >= interval2)
 
     def test_Duration(self):
-        interval1 = TimeInterval(self.point1000, self.point1002)
-        self.assertEqual(round(interval1.Duration(), 3), 0.002)
+        point1 = TimePoint(1, 0.001)
+        point3 = TimePoint(3, 0.001)
+        interval13 = TimeInterval(point1,point3)
+        self.assertEqual(interval13.Duration(), 2)
+        self.assertEqual(interval13.Duration(), 2.0)
+        self.assertEqual(interval13.Duration(), 1.999)
+        self.assertEqual(interval13.Duration(), 2.001)
+        self.assertGreaterEqual(interval13.Duration(), 2.002)
 
 
     def test_others(self):

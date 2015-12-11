@@ -147,8 +147,10 @@ class TestFrameInterval(unittest.TestCase):
 
     def test_Duration(self):
         interval1 = FrameInterval(self.point1000, self.point1007)
+        self.assertEqual(interval1.Duration().GetValue(), 7)
+        self.assertEqual(interval1.Duration(), 6)
         self.assertEqual(interval1.Duration(), 7)
-        self.assertEqual(interval1.TotalDuration(), 8)
+        self.assertEqual(interval1.Duration(), 8)
 
     def test_others(self):
         point0 = FramePoint(0)

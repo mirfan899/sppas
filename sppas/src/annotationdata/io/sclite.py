@@ -152,7 +152,7 @@ class TimeMarkedConversation(Transcription):
         for annotation in tier:
             wavname  = tier.GetMedia().url if tier.GetMedia() is not None else self.GetName()
             begin    = annotation.GetLocation().GetBeginMidpoint()
-            duration = annotation.GetLocation().GetDuration()
+            duration = annotation.GetLocation().GetDuration().GetValue()
             word     = annotation.GetLabel().GetValue()
             score    = annotation.GetLabel().GetLabel().GetScore()
 

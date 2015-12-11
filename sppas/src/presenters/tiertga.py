@@ -179,12 +179,12 @@ class TierTGA( object ):
             # a TG continuum
             else:
                 # Get the duration
-                duration = a.GetLocation().GetDuration()
+                duration = a.GetLocation().GetDuration().GetValue()
                 if a.GetLocation().IsInterval():
                     if self.__withradius < 0:
-                        duration = duration + a.GetLocation().GetBegin().GetRadius() + a.GetLocation().GetEnd().GetRadius()
+                        duration = duration + a.GetLocation().GetDuration().GetMargin()
                     elif self.__withradius > 0:
-                        duration = duration - a.GetLocation().GetBegin().GetRadius() - a.GetLocation().GetEnd().GetRadius()
+                        duration = duration - a.GetLocation().GetDuration().GetMargin()
                 # Append in the list of values of this TG
                 if not tglabel in tg.keys():
                     tg[tglabel] = []

@@ -81,7 +81,7 @@ class TestDuration(unittest.TestCase):
     def test_others(self):
         point0 = Duration(0.1, 0.2)
         self.assertEqual(point0.GetValue(), 0.1)
-        self.assertEqual(point0.GetMargin(),0.1)
+        self.assertEqual(point0.GetMargin(),0.2)
         point1 = point0
         self.assertEqual(point0,point1)
         self.assertTrue(point1 is point0)

@@ -420,7 +420,7 @@ class Antx(Transcription):
             start = ann.GetLocation().GetPoint().GetMidpoint()
         else:
             start = ann.GetLocation().GetBegin().GetMidpoint()
-        duration = ann.GetLocation().GetDuration()
+        duration = ann.GetLocation().GetDuration().GetValue()
         start    = start    * float( self.metadata.get('samplerate', 44100) )
         duration = duration * float( self.metadata.get('samplerate', 44100) )
         child_idstart.text = str(start)

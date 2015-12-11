@@ -157,12 +157,12 @@ class TierStats( object ):
                 else:
                     textes = [ t.GetValue() for t in a.GetLabels() ]
 
-                duration = a.GetLocation().GetDuration()
+                duration = a.GetLocation().GetDuration().GetValue()
                 if a.GetLocation().IsInterval():
                     if self.__withradius < 0:
-                        duration = duration + a.GetLocation().GetBegin().GetRadius() + a.GetLocation().GetEnd().GetRadius()
+                        duration = duration + a.GetLocation().GetDuration().GetMargin()
                     elif self.__withradius > 0:
-                        duration = duration - a.GetLocation().GetBegin().GetRadius() - a.GetLocation().GetEnd().GetRadius()
+                        duration = duration - a.GetLocation().GetDuration().GetMargin()
 
                 for texte in textes:
                     l.append( (texte,duration) )

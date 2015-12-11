@@ -40,13 +40,16 @@
 
 import logging
 import baseplacement
-
+import duration
 from point import TimePoint
 
+# ----------------------------------------------------------------------------
+
 __docformat__ = """epytext"""
-__authors__ = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
+# ----------------------------------------------------------------------------
 
 class TimeInterval(baseplacement.BasePlacement):
     """
@@ -55,11 +58,9 @@ class TimeInterval(baseplacement.BasePlacement):
     @license: GPL, version 3
     @summary: This class is the TimeInterval representation.
 
-    A time interval is identified by two objects:
+    A time interval is identified by two TimePoint objects:
         - a begin time;
         - an end time.
-
-    Time is represented by a TimePoint instance, in seconds.
 
     """
 
@@ -69,7 +70,6 @@ class TimeInterval(baseplacement.BasePlacement):
 
         @param begin (TimePoint) start time in seconds
         @param end (TimePoint) end time in seconds
-
         @raise TypeError:
         @raise ValueError
 
@@ -97,13 +97,11 @@ class TimeInterval(baseplacement.BasePlacement):
         self.__begin = begin
         self.__end = end
 
-    # End __init__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def Set(self, other):
         """
         Set the TimeInterval instance to new TimeInterval.
-
         Attention: it is a value assignment (other is copied).
 
         @param other (TimeInterval)
@@ -116,8 +114,7 @@ class TimeInterval(baseplacement.BasePlacement):
         self.__begin = other.__begin
         self.__end = other.__end
 
-    # End Set
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetBegin(self):
         """
@@ -127,8 +124,7 @@ class TimeInterval(baseplacement.BasePlacement):
         """
         return self.__begin
 
-    # End GetBegin
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def SetBegin(self, tp):
         """
@@ -156,8 +152,7 @@ class TimeInterval(baseplacement.BasePlacement):
 
         self.__begin = tp  # assign the reference
 
-    # End SetBegin
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetEnd(self):
         """
@@ -166,8 +161,7 @@ class TimeInterval(baseplacement.BasePlacement):
         """
         return self.__end
 
-    # End GetEnd
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def SetEnd(self, tp):
         """
@@ -196,28 +190,25 @@ class TimeInterval(baseplacement.BasePlacement):
         # assign the reference
         self.__end = tp
 
-    # End SetEnd
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def IsInterval(self):
         """
-        Return True, as this object is representing an Interval.
+        Return True, because self is representing an interval.
 
         """
         return True
 
-    # End IsInterval
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def IsTimeInterval(self):
         """
-        Return True, as this object is an instance of TimeInterval.
+        Return True, because self is an instance of TimeInterval.
 
         """
         return True
 
-    # End IsTimeInterval
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def Copy(self):
         """
@@ -228,32 +219,21 @@ class TimeInterval(baseplacement.BasePlacement):
         e = self.__end.Copy()
         return TimeInterval(b, e)
 
-    # End Copy
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def Duration(self):
         """
-        Return the duration of the interval, in seconds,
-        by using the MidPoint value of each TimePoint.
+        Return the duration of the interval, in seconds.
 
         """
-        return self.__end.GetMidpoint() - self.__begin.GetMidpoint()
+        # duration is the difference between the midpoints
+        value = self.__end.GetMidpoint() - self.__begin.GetMidpoint()
+        # vagueness of the duration is based on begin/end radius values
+        vagueness = self.__begin.GetRadius() + self.__end.GetRadius()
 
-    # End Duration
-    # ------------------------------------------------------------------------------------
+        return duration.Duration(value,vagueness)
 
-    def TotalDuration(self):
-        """
-        Return the duration of the interval, in seconds, by taking
-        the radius of each TimePoint into account.
-
-        """
-        return (self.__end.GetMidpoint() - self.__begin.GetMidpoint() +
-                self.__end.GetRadius() +
-                self.__begin.GetRadius())
-
-    # End TotalDuration
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def Combine(self, other):
         """
@@ -274,8 +254,7 @@ class TimeInterval(baseplacement.BasePlacement):
 
         return TimeInterval(other.GetBegin(), self.__end)
 
-    # End Combine
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def Union(self, other):
         """
@@ -292,16 +271,14 @@ class TimeInterval(baseplacement.BasePlacement):
 
         return TimeInterval(self.__begin, other.GetEnd())
 
-    # End Union
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __repr__(self):
         return "TimeInterval: [%s,%s]" % (self.__begin, self.__end)
 
         return "[%s,%s]" % (self.__begin, self.__end)
 
-    # End __repr__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __contains__(self, other):
         """
@@ -319,8 +296,7 @@ class TimeInterval(baseplacement.BasePlacement):
 
         return self.__begin <= other <= self.__end
 
-    # End __contains__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __eq__(self, other):
         """
@@ -335,8 +311,7 @@ class TimeInterval(baseplacement.BasePlacement):
         return (self.__begin == other.GetBegin() and
                 self.__end == other.GetEnd())
 
-    # End __eq__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __lt__(self, other):
         """
@@ -354,8 +329,7 @@ class TimeInterval(baseplacement.BasePlacement):
 
         return self.__begin < other.GetBegin()
 
-    # End __lt__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __gt__(self, other):
         """
@@ -373,8 +347,4 @@ class TimeInterval(baseplacement.BasePlacement):
 
         return self.__begin > other.GetBegin()
 
-    # End __gt__
-    # ------------------------------------------------------------------------------------
-
-# End TimeInterval
-# ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------

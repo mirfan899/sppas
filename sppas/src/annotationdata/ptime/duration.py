@@ -145,9 +145,6 @@ class Duration( object ):
             raise ValueError(
                 "The vagueness of a duration can't be negative: %r" % vagueness)
 
-        if self.__value < vagueness:
-            vagueness = self.__value
-
         self.__margin = vagueness
 
     # -----------------------------------------------------------------------

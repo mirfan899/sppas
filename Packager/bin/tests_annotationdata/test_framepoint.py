@@ -58,7 +58,7 @@ class TestFramePoint(unittest.TestCase):
     def test_others(self):
         point0 = FramePoint(1, 2)
         self.assertEqual(point0.GetMidpoint(), 1)
-        self.assertEqual(point0.GetRadius(),   1)
+        self.assertEqual(point0.GetRadius(),   2)
         point1 = point0
         point2 = point0.Copy()
         self.assertEqual(point0,point1)
@@ -66,6 +66,10 @@ class TestFramePoint(unittest.TestCase):
         self.assertTrue(point1 is point0)
         self.assertFalse(point2 is point0)
 
+    def test_duration(self):
+        point0 = FramePoint(10, 1)
+        self.assertEqual(point0.Duration().GetValue(),0)
+        self.assertEqual(point0.Duration().GetMargin(),2)
 
 # End TestFramePoint
 # ---------------------------------------------------------------------------
