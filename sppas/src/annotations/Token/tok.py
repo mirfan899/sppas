@@ -347,19 +347,13 @@ class sppasTok(object):
 
         for tier in trsinput:
             tiername = tier.GetName().lower()
-            print "TIERNAME=",tiername
-            print "TIERNAME=",tiername
             if "transcription" in tiername:
-                print "FOUND TIERNAME=",tiername
-                print "FOUND TIERNAME=",tiername
                 tierinput = tier
                 break
 
         if tierinput is None:
             for tier in trsinput:
                 tiername = tier.GetName().lower()
-                print "FIND AGAIN TIERNAME=",tiername
-                print "FIND AGAIN TIERNAME=",tiername
                 if "trs" in tiername:
                     tierinput = tier
                     break
