@@ -342,34 +342,43 @@ class sppasTok(object):
 
         """
         # Get input tier to tokenize
-        transtier = -1 # First tier
         trsinput  = annotationdata.io.read(inputfilename)
         tierinput = None
 
         for tier in trsinput:
             tiername = tier.GetName().lower()
-            if "trs" in tiername:
+            print "TIERNAME=",tiername
+            print "TIERNAME=",tiername
+            if "transcription" in tiername:
+                print "FOUND TIERNAME=",tiername
+                print "FOUND TIERNAME=",tiername
                 tierinput = tier
                 break
-            elif "trans" in tiername:
-                tierinput = tier
-                break
-            elif "ipu" in tiername:
-                tierinput = tier
-                break
-            elif "ortho" in tiername:
-                tierinput = tier
-            elif "toe" in tiername:
-                tierinput = tier
-                break
-                break
+
+        if tierinput is None:
+            for tier in trsinput:
+                tiername = tier.GetName().lower()
+                print "FIND AGAIN TIERNAME=",tiername
+                print "FIND AGAIN TIERNAME=",tiername
+                if "trs" in tiername:
+                    tierinput = tier
+                    break
+                elif "trans" in tiername:
+                    tierinput = tier
+                    break
+                elif "ipu" in tiername:
+                    tierinput = tier
+                    break
+                elif "ortho" in tiername:
+                    tierinput = tier
+                elif "toe" in tiername:
+                    tierinput = tier
+                    break
 
         if tierinput is None:
             raise Exception("Transcription tier not found. "
                             "Tier name must contain "
                             "'trans' or 'trs' or 'ipu' 'ortho' or 'toe'.")
-
-        tierinput = trsinput[transtier]
 
         # Tokenize the tier
         tiertokens, tierStokens = self.convert( tierinput )
