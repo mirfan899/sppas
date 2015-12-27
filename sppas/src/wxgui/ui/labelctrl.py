@@ -34,27 +34,24 @@
 # You should have received a copy of the GNU General Public License
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # File: labelctrl.py
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-
 # ----------------------------------------------------------------------------
 # Imports
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
-import logging
 import wx
 import wx.lib.newevent
 
-
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Constants
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 MIN_W=2
 MIN_H=6
@@ -65,23 +62,27 @@ FG_COLOUR=wx.BLACK
 
 STYLE=wx.NO_BORDER|wx.NO_FULL_REPAINT_ON_RESIZE
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Events
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+
+# While the LabelCtrl is left-clicked, the event is sent,
+# with the Label as parameter.
 
 LabelLeftEvent, spEVT_LABEL_LEFT = wx.lib.newevent.NewEvent()
 LabelLeftCommandEvent, spEVT_LABEL_LEFT_COMMAND = wx.lib.newevent.NewCommandEvent()
 
+# While the LabelCtrl is right-clicked, the event is sent,
+# with the Label as parameter.
+
 LabelRightEvent, spEVT_LABEL_RIGHT = wx.lib.newevent.NewEvent()
 LabelRightCommandEvent, spEVT_LABEL_RIGHT_COMMAND = wx.lib.newevent.NewCommandEvent()
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
-
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Class LabelCtrl
-# ----------------------------------------------------------------------------
-
+# ---------------------------------------------------------------------------
 
 class LabelCtrl( wx.Window ):
     """
@@ -103,7 +104,7 @@ class LabelCtrl( wx.Window ):
         Notice that each change of the object implies a refresh.
 
         Non-wxpython related parameter:
-            - label (Label) the Label of an annotation.
+            - label (Label) the Label of an annotation. It is never modified.
 
         """
         wx.Window.__init__(self, parent, id, pos, size, STYLE)
@@ -127,9 +128,7 @@ class LabelCtrl( wx.Window ):
         wx.EVT_RIGHT_UP(self, self.OnMouseLeftUp)
         wx.EVT_MOTION(self, self.OnMouseMotion)
 
-    # End __init__
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def Reset(self, size=None):
         """
@@ -138,34 +137,31 @@ class LabelCtrl( wx.Window ):
         @param size (wx.Size)
 
         """
-
         self.__initializeColours()
         self.__initializeStyle()
         if size:
             self.__initialSize(size)
 
-    # End Reset
-    #-------------------------------------------------------------------------
+    #------------------------------------------------------------------------
 
-
-    #-------------------------------------------------------------------------
+    #------------------------------------------------------------------------
     # Members: Getters and Setters
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def SetValue(self, label):
         """
-        Sets the LabelCtrl label. Strip the new label.
+        Sets the label.
 
         @param label (Label)
 
         """
-
         if not (label is self._label):
             self._label = label
-            if self._label.GetSize()>1:
+            if self._label.GetSize() > 1: # ambiguous label
                 self._underlined = True
-            self.SetToolTip(wx.ToolTip(self.__tooltip()))
+            else:
+                self._underlined = False
+            self.SetToolTip( wx.ToolTip(self.__tooltip()) )
 
 
     def GetValue(self):
@@ -175,8 +171,7 @@ class LabelCtrl( wx.Window ):
         """
         return self._label
 
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def SetUnderlined(self, underlined=False):
         """
@@ -190,7 +185,6 @@ class LabelCtrl( wx.Window ):
             self._underlined = underlined
             self.Refresh()
 
-
     def GetUnderlined(self):
         """
         Returns whether a label has to be underlined or not.
@@ -198,8 +192,7 @@ class LabelCtrl( wx.Window ):
         """
         return self._underlined
 
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def SetBold(self, bold=False):
         """
@@ -212,7 +205,6 @@ class LabelCtrl( wx.Window ):
             self._bold = bold
             self.Refresh()
 
-
     def GetBold(self):
         """
         Returns whether the label has to be bold or not.
@@ -220,8 +212,7 @@ class LabelCtrl( wx.Window ):
         """
         return self._bold
 
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def SetAlign(self, value=wx.ALIGN_CENTRE):
         """
@@ -234,7 +225,6 @@ class LabelCtrl( wx.Window ):
             self._align = value
             self.Refresh()
 
-
     def GetAlign(self):
         """
         Returns the label alignment value.
@@ -244,20 +234,18 @@ class LabelCtrl( wx.Window ):
         """
         return self._align
 
-    #-------------------------------------------------------------------------
+    #------------------------------------------------------------------------
 
-
-    #-------------------------------------------------------------------------
+    #------------------------------------------------------------------------
     # Look & style
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def SetColours(self, bgcolour=None, fontcolour=None):
         """
         Change the main colors of the LabelCtrl.
 
-        @param bgcolour (wx.Colour)
-        @param fontcolour (wx.Colour)
+        @param bgcolour (wx.Colour)   Background color
+        @param fontcolour (wx.Colour) Font color
 
         """
 
@@ -270,28 +258,25 @@ class LabelCtrl( wx.Window ):
         if fontcolour is not None and fontcolour != self.GetForegroundColour():
             self.SetForegroundColour(fontcolour)
 
-    # End SetColour
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def SetFont(self, font):
         """
-        Override. Set font.
+        Override. Set a new font.
 
         """
         if font != self.GetFont():
             wx.Window.SetFont(self,font)
 
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     # -----------------------------------------------------------------------
     # Callbacks
     # -----------------------------------------------------------------------
 
     def OnMouseMotion(self, event):
+        """ Mouse is moving. """
         wx.PostEvent(self.GetParent().GetEventHandler(), event)
-
 
     def OnMouseEntering(self, event):
         """ Mouse is Entering on the LabelCtrl, then starts to highlight. """
@@ -300,14 +285,12 @@ class LabelCtrl( wx.Window ):
             self.Refresh()
         event.Skip()
 
-
     def OnMouseLeaving(self, event):
         """ Mouse is Entering on the LabelCtrl, then stops to highlight. """
         if self._highlight is True:
             self._highlight = False
             self.Refresh()
         event.Skip()
-
 
     def OnMouseLeftUp(self, event):
         """ Left Button was Pressed. """
@@ -316,7 +299,6 @@ class LabelCtrl( wx.Window ):
         wx.PostEvent(self.GetParent(), evt)
         event.Skip()
 
-
     def OnMouseRightUp(self, event):
         """ Right Button was Pressed. """
         evt = LabelRightEvent(label=self._label)
@@ -324,9 +306,7 @@ class LabelCtrl( wx.Window ):
         wx.PostEvent(self.GetParent(), evt)
         event.Skip()
 
-    # End OnMouseEvent
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def SetHeight(self, height):
         """
@@ -339,9 +319,7 @@ class LabelCtrl( wx.Window ):
             self.SetSize( wx.Size(self.GetSize().width, int(height)) )
             self.Refresh()
 
-    # End SetHeight
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def MoveWindow(self, pos, size):
         """
@@ -365,27 +343,21 @@ class LabelCtrl( wx.Window ):
             self.SetPosition(pos)
             #self.Refresh()
 
-    # End MoveWindow
-    #-------------------------------------------------------------------------
+    #------------------------------------------------------------------------
 
-
-    #-------------------------------------------------------------------------
+    #------------------------------------------------------------------------
     # Painting
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def OnPaint(self, event):
         """
         Handles the wx.EVT_PAINT event for LabelCtrl.
 
         """
-
         dc = wx.BufferedPaintDC(self)
         self.Draw(dc)
 
-    # OnPaint
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def Draw(self, dc):
         """
@@ -438,14 +410,11 @@ class LabelCtrl( wx.Window ):
             dc.DrawLine(0,0,w,0)
             dc.DrawLine(0,h-1,w,h-1)
 
-    # End Draw
-    #-------------------------------------------------------------------------
+    #------------------------------------------------------------------------
 
-
-    #-------------------------------------------------------------------------
+    #------------------------------------------------------------------------
     # Private
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def __initializeStyle(self):
         """ Initializes the label style. """
@@ -455,9 +424,7 @@ class LabelCtrl( wx.Window ):
         self._bold       = False
         self._highlight  = False
 
-    # End InitializeStyle
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def __initializeColours(self):
         """ Initializes the pens. """
@@ -469,9 +436,7 @@ class LabelCtrl( wx.Window ):
         self.SetBackgroundColour( BG_COLOUR )
         self.SetForegroundColour( FG_COLOUR )
 
-    # End InitializeColours
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def __initialSize(self, size):
         """ Initialize the size. """
@@ -479,24 +444,21 @@ class LabelCtrl( wx.Window ):
         self.SetMinSize(wx.Size(MIN_W,MIN_H))
         self.SetSize(size)
 
-    # End InitialSize
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def __tooltip(self):
         """ Set a tooltip string with the label. """
 
         if self._label is not None:
-            if self._label.GetSize()>1:
+            if self._label.GetSize() > 1:
                 alltexts = self._label.GetLabels()
                 s = ""
                 for t in alltexts:
-                    s += str(t.Score) + " " + t.Value + "\n"
-                return s
+                    s += str(t.Score) + " - " + t.Value + "\n"
+                return s[:-1]
             return self._label.GetValue()
         return ""
 
-    #-------------------------------------------------------------------------
+    #------------------------------------------------------------------------
 
-
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------

@@ -34,20 +34,19 @@
 # You should have received a copy of the GNU General Public License
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # File: pointctrl.py
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
 
-import logging
+#import logging
 
 # wxPython imports
 import wx
@@ -56,7 +55,6 @@ import wx.lib.newevent
 # local imports
 import wxgui.cutils.imageutils as imageutils
 import wxgui.cutils.colorutils as colorutils
-
 
 # ----------------------------------------------------------------------------
 # Constants
@@ -69,7 +67,6 @@ COLOUR_MID=wx.Colour(20,20,20)
 COLOUR_RADIUS=wx.Colour(170,170,250)
 
 STYLE=wx.NO_BORDER|wx.NO_FULL_REPAINT_ON_RESIZE
-
 
 # ----------------------------------------------------------------------------
 # Events
@@ -84,7 +81,6 @@ PointMovingCommandEvent, spEVT_MOVING_COMMAND = wx.lib.newevent.NewCommandEvent(
 PointMovedEvent, spEVT_MOVED = wx.lib.newevent.NewEvent()
 PointMovedCommandEvent, spEVT_MOVED_COMMAND = wx.lib.newevent.NewCommandEvent()
 
-
 # While the point is resizing, the event is sent,
 # with the new position and the new size as attribute.
 
@@ -94,12 +90,11 @@ PointResizingCommandEvent, spEVT_RESIZING_COMMAND = wx.lib.newevent.NewCommandEv
 PointResizedEvent, spEVT_RESIZED = wx.lib.newevent.NewEvent()
 PointResizedCommandEvent, spEVT_RESIZED_COMMAND = wx.lib.newevent.NewCommandEvent()
 
-
-# PointCtrl is clicked with the left button
+# While the point is clicked with the left button, the event is sent,
+# without attribute.
 
 PointLeftEvent, spEVT_POINT_LEFT = wx.lib.newevent.NewEvent()
 PointLeftCommandEvent, spEVT_POINT_LEFT_COMMAND = wx.lib.newevent.NewCommandEvent()
-
 
 # ----------------------------------------------------------------------------
 # Pixmaps
@@ -149,11 +144,9 @@ cursor_expand = [
 "      .  .      "
 ]
 
-
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Class PointCtrl
-# ----------------------------------------------------------------------------
-
+# ---------------------------------------------------------------------------
 
 class PointCtrl( wx.Window ):
     """
@@ -169,7 +162,7 @@ class PointCtrl( wx.Window ):
         - a midpoint value m (float),
         - a radius value r (float).
 
-    A PointCtrl displays the interval [m-r, m+r],
+    A PointCtrl displays the interval [m-r,m+r],
     and fill with a gradient color from the midpoint to the bounds.
 
     """
@@ -184,8 +177,10 @@ class PointCtrl( wx.Window ):
 
         Non-wxpython related parameters:
 
-        @param point (TimePoint) the TimePoint to be represented, indicating
-        the midpoint value and the radius value.
+        @param point (TimePoint) the TimePoint to be represented,
+        indicating the midpoint value and the radius value.
+        point will only be used to display the time values in the
+        tooltip. It is never modified.
 
         """
         wx.Window.__init__( self, parent, id, pos, size, STYLE )
@@ -207,9 +202,7 @@ class PointCtrl( wx.Window ):
         wx.EVT_ERASE_BACKGROUND(self, lambda event: None)
         wx.EVT_MOUSE_EVENTS(self, self.OnMouseEvents)
 
-    # End __init__
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def Reset(self, size=None):
         """
@@ -218,20 +211,17 @@ class PointCtrl( wx.Window ):
         @param size (wx.Size)
 
         """
-
         self.__initializeColours()
         self.__initializeCursors()
         if size:
             self.__initialSize(size)
 
-    # End Reset
-    #-------------------------------------------------------------------------
+    #------------------------------------------------------------------------
 
 
-    #-------------------------------------------------------------------------
+    #------------------------------------------------------------------------
     # Members: Getters and Setters
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def SetValue(self, point):
         """
@@ -250,20 +240,21 @@ class PointCtrl( wx.Window ):
         Retrieve the point associated to the PointCtrl.
 
         @return TimePoint instance.
+
         """
         return self._point
 
-    #-------------------------------------------------------------------------
+    #------------------------------------------------------------------------
 
 
-    #-------------------------------------------------------------------------
+    #------------------------------------------------------------------------
     # Look & style
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def SetColours(self, colourmidpoint=None, colourradius=None):
         """
         Change the color settings of the PointCtrl.
+        Repaint only if necessary.
 
         @param colourmidpoint (wx.Colour) Color to fill the center
         @param colourradius (wx.Colour) Color to fill the gradient
@@ -283,25 +274,22 @@ class PointCtrl( wx.Window ):
 
         if torepaint: self.Refresh()
 
-    # End SetColours
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def SetWidth(self, width):
         """
-        Change the width of the PointCtrl (it means a different radius value).
+        Change the width of the PointCtrl, only if necessary.
+        Changing the width means that a different radius value was set to the
+        TimePoint.
 
         @param width (int) is the new width.
 
         """
-
         if self.GetSize().width != width:
             self.SetSize(wx.Size(int(width),self.GetSize().height))
             self.Refresh()
 
-    # End SetWidth
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def GetWidth(self):
         """
@@ -310,12 +298,9 @@ class PointCtrl( wx.Window ):
         @return (int) the current width in pixels.
 
         """
-
         return self.GetSize().width
 
-    # End GetWidth
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def SetHeight(self, height):
         """
@@ -328,9 +313,7 @@ class PointCtrl( wx.Window ):
             self.SetSize( wx.Size(self.GetSize().width, int(height)) )
             self.Refresh()
 
-    # End SetHeight
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def MoveWindow(self, pos, size):
         """
@@ -340,7 +323,6 @@ class PointCtrl( wx.Window ):
         @param size (wx.Size)
 
         """
-
         (w,h) = size
         (x,y) = pos
         (ow,oh) = self.GetSize()
@@ -353,18 +335,17 @@ class PointCtrl( wx.Window ):
         if ox != x or oy != y:
             self.SetPosition(pos)
 
-    # End MoveWindow
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     # -----------------------------------------------------------------------
     # Callbacks
     # -----------------------------------------------------------------------
 
-
     def OnMouseEvents(self, event):
-        """ Handles the wx.EVT_MOUSE_EVENTS event for PointCtrl. """
+        """
+        Handles the wx.EVT_MOUSE_EVENTS event for PointCtrl.
 
+        """
         if event.Entering():
             # change cursor to something else to denote possible event capture
             if self._ml_dragging is None and self._shift_ml_dragging is None:
@@ -399,15 +380,13 @@ class PointCtrl( wx.Window ):
 
         event.Skip()
 
-    # End OnMouseEvents
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def OnMouseLeftDown(self, event):
         """
         Respond to mouse events.
-        """
 
+        """
         self._ml_dragging = None
         self._shift_ml_dragging = None
 
@@ -418,21 +397,20 @@ class PointCtrl( wx.Window ):
         if event.ShiftDown():
             self.SetCursor(self._cursorexpand)
             self._shift_ml_dragging = x + ex
-            logging.debug('PointCtrl. MouseLeftDown + Shift. %d'%self._shift_ml_dragging)
+            #logging.debug('PointCtrl. MouseLeftDown + Shift. %d'%self._shift_ml_dragging)
         else:
             self.SetCursor(self._cursormove)
             self._ml_dragging = x + ex
-            logging.debug('PointCtrl. MouseLeftDown. %d'%self._ml_dragging)
+            #logging.debug('PointCtrl. MouseLeftDown. %d'%self._ml_dragging)
 
-    # End onMouseLeftDown
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def OnMouseLeftUp(self, event):
         """
         Respond to mouse events.
 
         Send spEVT_MOVED to the parent.
+
         """
         (x,y) = self.GetPosition()
         (ex,ey) = event.GetPosition()
@@ -462,38 +440,22 @@ class PointCtrl( wx.Window ):
             evt.SetEventObject(self)
             wx.PostEvent(self.GetParent(), evt)
 
-    # End onMouseLeftUp
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def OnMouseDragging(self, event):
-        """ Respond to mouse events. """
+        """
+        Respond to mouse events.
 
+        """
         x,y = self.GetPosition()    # absolute
         ex,ey = event.GetPosition() # relative
 
-#         if self._ml_dragging is not None:
-#             direction = self._ml_dragging - ex
-#
-#             if direction > 0 or self._ml_dragging==0:
-#                 self._ml_dragging = x + ex
-#             elif direction < 0:
-#                 self._ml_dragging = x - ex
-#             # adjust:
-#             self._ml_dragging = max(self._ml_dragging,0)
-#
-#             # send the event to the parent.
-#             # The parent will decide to move, or not!
-#             evt = PointMovingEvent(pos=wx.Point(self._ml_dragging,y))
-#             evt.SetEventObject(self)
-#             wx.PostEvent(self.GetParent(), evt)
-#             self.Refresh()
         if self._ml_dragging is None:
             self.SetCursor(self._cursormove)
             self._ml_dragging = x
 
         shift = x + ex - self._ml_dragging
-        logging.debug('PointCtrl. MouseDragging. -->> x=%d ; ex=%d ; ml_dragging=%d, shift=%d '%(x,ex,self._ml_dragging,shift))
+        #logging.debug('PointCtrl. MouseDragging. -->> x=%d ; ex=%d ; ml_dragging=%d, shift=%d '%(x,ex,self._ml_dragging,shift))
 
         if shift != 0:
             self._ml_dragging = self._ml_dragging + shift
@@ -504,13 +466,13 @@ class PointCtrl( wx.Window ):
             evt.SetEventObject(self)
             wx.PostEvent(self.GetParent(), evt)
 
-    # End onMouseDragging
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def OnResize(self, event):
-        """ Respond to mouse events. """
+        """
+        Respond to mouse events.
 
+        """
         x,y = self.GetPosition()    # absolute
         ex,ey = event.GetPosition() # relative
         (w,h) = self.GetSize()
@@ -532,26 +494,21 @@ class PointCtrl( wx.Window ):
             evt.SetEventObject(self)
             wx.PostEvent(self.GetParent(), evt)
 
-    # End OnResize
-    #-------------------------------------------------------------------------
+    #------------------------------------------------------------------------
 
-
-    #-------------------------------------------------------------------------
+    #------------------------------------------------------------------------
     # Painting
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def OnPaint(self, event):
         """
         Handles the wx.EVT_PAINT event for PointCtrl.
-        """
 
+        """
         dc = wx.BufferedPaintDC(self)
         self.Draw(dc)
 
-    # OnPaint
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def Draw(self, dc):
         """
@@ -592,14 +549,11 @@ class PointCtrl( wx.Window ):
             for i in range(w):
                 dc.DrawLine(i, 0, i, h)
 
-    # End Draw
-    #-------------------------------------------------------------------------
+    #------------------------------------------------------------------------
 
-
-    #-------------------------------------------------------------------------
+    #------------------------------------------------------------------------
     # Private
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def __initializeColours(self):
         """ Create the pens and brush with default colors. """
@@ -611,9 +565,7 @@ class PointCtrl( wx.Window ):
         self._penmidpoint = wx.Pen(COLOUR_MID,1,wx.SOLID)
         self._penbounds   = wx.Pen(colorutils.ContrastiveColour(COLOUR_RADIUS),1,wx.SOLID)
 
-    # End __initializeColours
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def __initializeCursors(self):
         """ Create new cursors to be used while Moving or Resizing. """
@@ -624,9 +576,7 @@ class PointCtrl( wx.Window ):
         # Cursor while resizing
         self._cursorexpand = imageutils.CreateCursorFromXPMData(cursor_expand, 8)
 
-    # End __initializeCursors
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def __initialSize(self, size):
         """ Initialize the size. """
@@ -635,9 +585,7 @@ class PointCtrl( wx.Window ):
         if size:
             self.SetSize(size)
 
-    # End __initialSize
-    #-------------------------------------------------------------------------
-
+    #------------------------------------------------------------------------
 
     def __tooltip(self):
         """ Set a tooltip string indicating the midpoint and the radius values. """
@@ -647,8 +595,6 @@ class PointCtrl( wx.Window ):
 
         return ""
 
-    # End tooltip
-    #-------------------------------------------------------------------------
+    #------------------------------------------------------------------------
 
-
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
