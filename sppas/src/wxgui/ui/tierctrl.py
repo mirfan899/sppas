@@ -1,24 +1,46 @@
-# coding=UTF8
-# Copyright (C) 2014  Brigitte Bigi
+#!/usr/bin/env python2
+# -*- coding: UTF-8 -*-
+# ---------------------------------------------------------------------------
+#            ___   __    __    __    ___
+#           /     |  \  |  \  |  \  /        Automatic
+#           \__   |__/  |__/  |___| \__      Annotation
+#              \  |     |     |   |    \     of
+#           ___/  |     |     |   | ___/     Speech
+#           =============================
 #
-# This file is part of DataEditor.
+#           http://sldr.org/sldr000800/preview/
 #
-# DataEditor is free software: you can redistribute it and/or modify
+# ---------------------------------------------------------------------------
+# developed at:
+#
+#       Laboratoire Parole et Langage
+#
+#       Copyright (C) 2011-2014  Brigitte Bigi
+#
+#       Use of this software is governed by the GPL, v3
+#       This banner notice must not be removed
+# ---------------------------------------------------------------------------
+#
+# SPPAS is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# DataEditor is distributed in the hope that it will be useful,
+# SPPAS is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with DataEditor.  If not, see <http://www.gnu.org/licenses/>.
+# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
+# ----------------------------------------------------------------------------
+# File: tierctrl.py
+# ----------------------------------------------------------------------------
 
 __docformat__ = "epytext"
-
+__authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__copyright__ = "Copyright (C) 2011-2015  Brigitte Bigi"
 
 # ----------------------------------------------------------------------------
 # Imports
@@ -29,7 +51,8 @@ import logging
 import wx
 import wx.lib.newevent
 
-from spControl import spControl
+from wxgui.cutils.colorutils import PickRandomColour, ContrastiveColour
+from wxgui.cutils.textutils  import TextAsNumericValidator
 
 from pointctrl import PointCtrl
 from pointctrl import spEVT_MOVING,spEVT_MOVED,spEVT_RESIZING,spEVT_RESIZED, spEVT_POINT_LEFT
@@ -38,35 +61,36 @@ from pointctrl import MIN_W as pointctrlMinWidth
 from labelctrl import LabelCtrl
 from labelctrl import spEVT_LABEL_LEFT
 
-from wxgui.cutils.textutils import TextAsNumericValidator
-from wxgui.cutils.colorutils import PickRandomColour, ContrastiveColour
-
 # ----------------------------------------------------------------------------
-
 
 # ----------------------------------------------------------------------------
 # Constants
 # ----------------------------------------------------------------------------
 
 MIN_W=2
-MIN_H=6
+MIN_H=8
 
-NORMAL_COLOUR    = wx.Colour(20,20,20)
+NORMAL_COLOUR    = wx.Colour(0,0,0)
 UNCERTAIN_COLOUR = wx.Colour(70,70,180)
 
+STYLE=wx.NO_BORDER|wx.NO_FULL_REPAINT_ON_RESIZE
+
+FONT_SIZE_MIN = 6
+FONT_SIZE_MAX = 32
+
+PANE_WIDTH  = 100
+
 # ----------------------------------------------------------------------------
-
-
 
 # ----------------------------------------------------------------------------
 # Class TierCtrl
 # ----------------------------------------------------------------------------
 
-class TierCtrl( spControl ):
+class TierCtrl( wx.Window ):
     """
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi((AATT))lpl-aix.fr
-    @license: GPL
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
     @summary: This class is used to display a Tier (see annotationdata for details).
 
     """
@@ -82,41 +106,22 @@ class TierCtrl( spControl ):
             - tier (Tier) the Tier to draw (see annotationdata library for details).
 
         """
-        self._tier = tier
-        spControl.__init__(self, parent, id, pos, size)
-
-        self.isselectable = False
+        wx.Window.__init__(self, parent, id, pos, size, STYLE)
+        self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
+        self.SetDoubleBuffered(True)
 
         # Tier Members
+        self._tier = tier
         self._pointsctrl = list()
         self._labelsctrl = list()
         self._anns = {} # To link the annotations to the displayed controls
 
-        # disable margins (then handles)
-        self._margins.Left  = 0
-        self._margins.Right = 0
-
-        self._bgcolor = self.GetParent().GetBackgroundColour()
-        self._bgpen   = wx.Pen( self._bgcolor, 1, wx.SOLID )
-        self._bgbrush = wx.Brush( self._bgcolor, wx.SOLID )
-
-        self._fgcolor = PickRandomColour(180,250)
-        self._fgpen   = wx.Pen( self._fgcolor, 1, wx.SOLID )
-        self._fgbrush = wx.Brush( self._fgcolor, wx.SOLID )
-
-        self._midpointcolor = wx.BLACK
-
-        if self._tier is not None and self._tier.IsPoint():
-            self._labelalign = wx.ALIGN_LEFT # Label in each annotation
-        else:
-            self._labelalign = wx.ALIGN_CENTRE # Label in each annotation
-        self._labelbgcolor  = self._fgcolor
-        self._labelfgucolor = None # uncertain label
-
-        self._fontsizeauto = True
-        self.AutoAdjustFont()
+        self.Reset( size )
 
         # Bind the events related to our control:
+        wx.EVT_PAINT(self, self.OnPaint)
+        wx.EVT_ERASE_BACKGROUND(self, lambda event: None)
+
         #spEVT_LABEL_LEFT(self, self.OnLabelEdit)
         #spEVT_POINT_LEFT(self, self.OnPointEdit)
         #spEVT_RESIZING(self,   self.OnPointResizing)
@@ -127,18 +132,96 @@ class TierCtrl( spControl ):
         # Bind the events related to our control
         #wx.EVT_MOUSE_EVENTS(self, self.OnMouseEvent)
 
-    # End __init__
     #-------------------------------------------------------------------------
-
 
     #-------------------------------------------------------------------------
     # Members
     #-------------------------------------------------------------------------
 
-    def GetTier(self):
-        return self._tier
+    def Reset(self, size):
+        """
+        Reset all members to their default.
+
+        @param size (wx.Size)
+
+        """
+        self.SetMinSize(wx.Size(MIN_W,MIN_H))
+        if size:
+            self.SetSize(size)
+
+        # Displayed period of time (can be taken from the Parent)
+        self._mintime = 0.
+        self._maxtime = 2.
+
+        # A pane that can be placed at left or right (or nowhere).
+        self._infopanep = wx.ALIGN_LEFT   # position (CENTRE means nowhere)
+        try:
+            self._infopanew = self.GetParent().GetPaneWidth()
+        except Exception:
+            self._infopanew = PANE_WIDTH # width
+
+        self._bgcolor = self.GetParent().GetBackgroundColour()
+        self._bgpen   = wx.Pen( self._bgcolor, 1, wx.SOLID )
+        self._bgbrush = wx.Brush( self._bgcolor, wx.SOLID )
+
+        self._bgdarkencolor = ContrastiveColour(self._bgcolor)
+        self._bgdarkenpen   = wx.Pen( self._bgdarkencolor, 1, wx.SOLID )
+
+        self._fgcolor = PickRandomColour(180,250)
+        self._fgpen   = wx.Pen( self._fgcolor, 1, wx.SOLID )
+        self._fgbrush = wx.Brush( self._fgcolor, wx.SOLID )
+
+        self._midpointcolor = wx.BLACK
+
+        self._textcolor = self.GetParent().GetForegroundColour()
+        if self._tier is not None and self._tier.IsPoint():
+            self._labelalign = wx.ALIGN_LEFT # Label in each annotation
+        else:
+            self._labelalign = wx.ALIGN_CENTRE # Label in each annotation
+        self._labelbgcolor  = self._fgcolor
+        self._labelfgucolor = None # uncertain label
+
+        # Adjust font size when self is resized or when a new font is fixed:
+        self._fontsizeauto = True
+        self.AutoAdjustFont()
+
     #-------------------------------------------------------------------------
 
+    def GetTier(self):
+        """
+        Return the tier to draw.
+        """
+        return self._tier
+
+    #-------------------------------------------------------------------------
+
+    def SetTime(self, start, end):
+        """
+        Define a new period to display.
+        Request to redraw only if the period has changed.
+
+        @param start (float) begin time value
+        @param end (float) end time value
+
+        """
+        torepaint = False
+
+        if start > end:
+            b = start
+            end = start
+            start = b
+
+        if self._mintime != start:
+            self._mintime = start
+            torepaint = True
+
+        if self._maxtime != end:
+            self._maxtime = end
+            torepaint = True
+
+        if torepaint is True: self.Refresh()
+
+    #-------------------------------------------------------------------------
 
     def SetLabelAlign(self, value):
         """
@@ -157,24 +240,46 @@ class TierCtrl( spControl ):
             for label in self._labelsctrl:
                 label.SetAlign( value )
 
-    # End SetLabelAlign
     #------------------------------------------------------------------------
-
 
     def SetFont(self, font):
         """
-        Override. Change the font of all texts (self and labels).
+        Fix a font.
+        Automatically adjust the size (compared to the previous one).
+
+        @param font (wx.Font)
+
         """
+        if font == self.GetFont():
+            return
+
         # Apply this new font to self.
-        spControl.SetFont( self,font )
+        wx.Window.SetFont( self,font )
+
+        if self._fontsizeauto:
+            self.AutoAdjustFont()
 
         # propagate to all label controls
         for label in self._labelsctrl:
-            label.SetFont(self._font)
+            label.SetFont( self.GetFont() )
 
-    # End SetFont
+        self.Refresh()
+
     #------------------------------------------------------------------------
 
+    def SetTextColour(self, colour):
+        """
+        Sets the tier text color.
+
+        @param colour (wx.Colour)
+
+        """
+        if colour != self._textcolor:
+            self._textcolor = colour
+            self._textpen   = wx.Pen(colour,1,wx.SOLID)
+            self.Refresh()
+
+    #-------------------------------------------------------------------------
 
     def SetLabelColours(self, bgcolour=None, fontnormalcolour=None, fontuncertaincolour=None):
         """
@@ -210,11 +315,9 @@ class TierCtrl( spControl ):
 
             redraw = True
 
-        if redraw: self.RequestRedraw()
+        if redraw: self.Refresh()
 
-    # End SetLabelColours
     #------------------------------------------------------------------------
-
 
     def SetPointColour(self, colourmidpoint=None):
         """
@@ -233,41 +336,142 @@ class TierCtrl( spControl ):
 
     #------------------------------------------------------------------------
 
+    def SetBackgroundColour(self, colour):
+        """
+        Sets the tier background color.
+
+        @param colour (wx.Colour)
+
+        """
+
+        if colour != self._bgcolor:
+            self._bgcolor = colour
+            self._bgpen   = wx.Pen(colour,1,wx.SOLID)
+            self._bgbrush = wx.Brush(colour, wx.SOLID)
+            self.Refresh()
+
+    #-------------------------------------------------------------------------
+
+    def SetForegroundColour(self, colour):
+        """
+        Sets the tier foreground color.
+
+        @param colour (wx.Colour)
+
+        """
+
+        if colour != self._fgcolor:
+            self._fgcolor = colour
+            self._fgpen   = wx.Pen(colour,1,wx.SOLID)
+            self._fgbrush = wx.Brush(colour, wx.SOLID)
+            self.Refresh()
+
+    #-------------------------------------------------------------------------
 
     def GetLabelAlign(self):
+        """
+        Get the position of the text of an annotation (left/center/right).
+
+        """
         return self._labelalign
 
     # -----------------------------------------------------------------------
 
+    def GetPanePosition(self):
+        """
+        Return the position of the information pane.
+
+        The position is one of wx.ALIGN_LEFT, wx.ALIGN_CENTRE or wx.ALIGN_RIGHT
+
+        """
+        return self._infopanep
+
+    #-------------------------------------------------------------------------
+
+    def SetPanePosition(self, value):
+        """
+        Fix the position of the information pane.
+
+        @param value is one of wx.ALIGN_LEFT, wx.ALIGN_CENTRE or wx.ALIGN_RIGHT
+
+        """
+        if value not in [ wx.ALIGN_LEFT, wx.ALIGN_RIGHT, wx.ALIGN_CENTRE ]:
+            raise TypeError
+
+        if self._infopanep != value:
+            self._infopanep = value
+            self.Refresh()
+
+    #-------------------------------------------------------------------------
+
+    def GetPaneWidth(self):
+        """
+        Return the width of the information pane.
+
+        """
+        return self._infopanew
+
+    # -----------------------------------------------------------------------
+
+    def SetPaneWidth(self, value):
+        """
+        Fix the width of the information pane.
+
+        @param value (int) is between 10 and 200.
+
+        """
+
+        value = min(200, max(10, int(value)))
+        if self._infopanew != value:
+            self._infopanew = value
+            self.Refresh()
+
+    #-------------------------------------------------------------------------
 
     def MoveWindow(self, pos, size):
         """
-        Override. Define a new position and/or size to display.
+        Define a new position and/or size to display.
         Ask to redraw only if something has changed.
 
         @param pos (wx.Point)
         @param size (wx.Size)
 
         """
+        torepaint = False
+        (w,h) = size
+        (x,y) = pos
+        (ow,oh) = self.GetSize()
+        (ox,oy) = self.GetPosition()
 
-        fsize = self._font.GetPointSize()
-        spControl.MoveWindow(self, pos, size)
+        # New width
+        if ow != w:
+            self.SetSize( wx.Size(w,oh) )
+            torepaint = True
+
+        # New height
+        if oh != h:
+            self.SetHeight(h)
+            torepaint = True
+
+        # New position (x and/or y)
+        if ox != x or oy != y:
+            self.Move(pos)
+            torepaint = True
+
+        if torepaint is True: self.Refresh()
 
         # If MoveWindow has changed the font size:
-        if self._fontsizeauto and fsize != self._font.GetPointSize():
+        if self._fontsizeauto and size != self.GetFont().GetPointSize():
             for label in self._labelsctrl:
-                label.SetFont(self._font)
+                label.SetFont(self.GetFont())
 
-    # End MoveWindow
     #-------------------------------------------------------------------------
-
 
     def VertZoom(self, z):
         """
-        Override. Apply a vertical zoom to the spControl.
+        Apply a vertical zoom to the TierCtrl.
         """
-        f = self._font
-        spControl.VertZoom(self, z)
+        self.SetHeight( int(z * self.GetHeight()) )
 
         h = self.GetSize().height
 
@@ -276,11 +480,18 @@ class TierCtrl( spControl ):
 
         for label in self._labelsctrl:
             label.SetHeight( h )
-            label.SetFont( self._font )
+            label.SetFont( self.GetFont() )
 
-    # End VertZoom
     # -----------------------------------------------------------------------
 
+    def GetHeight(self):
+        """
+        Return the current height.
+
+        """
+        return self.GetSize()[1]
+
+    # -----------------------------------------------------------------------
 
     def SetHeight(self, height):
         """
@@ -290,7 +501,17 @@ class TierCtrl( spControl ):
         @param height (int) in pixels
 
         """
-        spControl.SetHeight(self, height)
+        w,h = self.GetSize()
+
+        if h != height:
+
+            # apply new height
+            new_height = max(MIN_H, height)
+            self.SetSize(wx.Size(w,int(new_height)))
+
+            # adjust font size
+            if self._fontsizeauto: # and new_height>0:
+                self.AutoAdjustFont()
 
         h = self.GetSize().height
 
@@ -299,17 +520,35 @@ class TierCtrl( spControl ):
 
         for label in self._labelsctrl:
             label.SetHeight( h )
-            label.SetFont( self._font )
+            label.SetFont( self.GetFont() )
 
-    # End SetHeight
+        #self.Refresh()
     # -----------------------------------------------------------------------
 
+    def AutoAdjustFont(self):
+        """
+        Fix the biggest font size (depending on the available height).
 
+        """
+
+        h = self.GetDrawingSize()[1]
+        if not h: return
+
+        fontsize = FONT_SIZE_MIN
+        self.GetFont().SetPointSize(fontsize)
+
+        pxh = self.__getTextHeight()
+        pxmax = int(0.6*h)
+        while fontsize < FONT_SIZE_MAX and pxh<pxmax:
+            fontsize = fontsize + 1
+            self.GetFont().SetPointSize(fontsize)
+            pxh = self.__getTextHeight()
+
+    #-------------------------------------------------------------------------
 
     # -----------------------------------------------------------------------
     # Callbacks
     # -----------------------------------------------------------------------
-
 
     def OnPointEdit(self, event):
         """ Point Edit. Open a dialog to edit the point values. """
@@ -319,16 +558,14 @@ class TierCtrl( spControl ):
         # get point from the event
         point = event.GetEventObject()
         # show point editor
-        dlg = PointEditor( self, point.GetMidpoint(), point.GetRadius() )
+        dlg = PointEditor( self, point.GetValue(), point.GetRadius() )
         if dlg.ShowModal() == wx.ID_OK:
             (m,r) = dlg.GetValues()
             # do something with the new value (accept or reject)
 
         dlg.Destroy()
 
-
     # ------------------------------------------------------------------------
-
 
     def OnPointResizing(self, event):
         """ Point Resizing means a new radius value for the TimePoint. """
@@ -344,9 +581,7 @@ class TierCtrl( spControl ):
         sx,sy = self.GetPosition()
         sw,sh = self.GetSize()
 
-    # End OnPointResizing
     # ------------------------------------------------------------------------
-
 
     def OnPointMoving(self, event):
         logging.info('TIER. OnPointMoving. Disabled.')
@@ -358,9 +593,8 @@ class TierCtrl( spControl ):
         sx,sy = self.GetPosition()
         sw,sh = self.GetSize()
 
-        self.Repaint()
+        self.Refresh()
 
-    # End OnPointMoving
     # ------------------------------------------------------------------------
 
 
@@ -368,6 +602,61 @@ class TierCtrl( spControl ):
     # Painting
     #-------------------------------------------------------------------------
 
+    def OnPaint(self, event):
+        """
+        Handles the wx.EVT_PAINT event for PointCtrl.
+        """
+
+        dc = wx.BufferedPaintDC(self)
+        self.Draw(dc)
+
+    #-------------------------------------------------------------------------
+
+    def Draw(self, dc):
+        """
+        Draw the TierCtrl on the DC.
+
+        1. fill the background,
+        2. draw the pane,
+        3. draw the content,
+
+        @param dc (wx.DC) The device context to draw on.
+
+        """
+        if not self._tier:     return # not declared
+        if self._tier is None: return # not initialized
+
+        # Get the actual client size of ourselves
+        w,h = self.GetClientSize()
+        logging.debug(' Tier %s. Draw  w=%d, h=%d'%(self._tier.GetName(),w,h))
+
+        # Nothing to do, we still don't have dimensions!
+        if w*h==0: return
+
+        # Get the actual position of ourselves
+        (x,y) = self.GetDrawingPosition()
+
+        # Initialize the DC
+        if self._bgcolor is None:
+            dc.SetBackgroundMode( wx.TRANSPARENT )
+        else:
+            dc.SetBackground( self._bgbrush )
+        dc.Clear()
+
+        try:
+            # Info Pane
+            if self._infopanep == wx.ALIGN_LEFT:
+                self.DrawPane(dc, 0, 0, self._infopanew, h)
+            elif self._infopanep == wx.ALIGN_RIGHT:
+                self.DrawPane(dc, w-self._infopanew, y, self._infopanew, h)
+            # Content
+            if w*h > 0:
+                self.DrawContent(dc, x,y, w,h)
+        except Exception as e:
+            logging.info(' [ERROR]. Got exception %s'%e)
+            pass
+
+    #-------------------------------------------------------------------------
 
     def DrawBackground(self, dc, x,y, w, h):
         """
@@ -378,10 +667,10 @@ class TierCtrl( spControl ):
 
         """
         # Gradient background
-        mid = h / 5
+        mid = h / 3
         box_rect = wx.Rect(x, y, w, mid)
         dc.GradientFillLinear(box_rect, self._bgcolor, self._fgcolor, wx.NORTH)
-        box_rect = wx.Rect(x, 4*mid, w, mid)#+1)
+        box_rect = wx.Rect(x, 2*mid, w, mid+1)
         dc.GradientFillLinear(box_rect, self._bgcolor, self._fgcolor, wx.SOUTH)
 
         dc.SetPen( self._bgpen )
@@ -389,13 +678,11 @@ class TierCtrl( spControl ):
         dc.DrawRectangle(x, mid, w, mid)
 
         # Top and Bottom lines
-        dc.SetPen( self._bgpen )
+        dc.SetPen( self._bgdarkenpen )
         dc.DrawLine(x,y,x+w,y)
         dc.DrawLine(x,h-1,x+w,h-1)
 
-    # End DrawBackground
     #-------------------------------------------------------------------------
-
 
     def DrawPane(self, dc, x,y, w,h):
         """
@@ -406,14 +693,7 @@ class TierCtrl( spControl ):
         @param w,h (int,int) are width and height available for drawing.
 
         """
-        if self._tier is None: return # not initialized
-
-        #self.DrawBackground(dc, x, y, w, h)
-
-        # Top and Bottom lines
-        dc.SetPen( self._fgpen )
-        dc.DrawLine(x,y+1,x+w,y+1)
-        dc.DrawLine(x,h-2,x+w,h-2)
+        self.DrawBackground(dc, x, y, w, h)
 
         # Write the tier name
         textwidth, textheight = dc.GetTextExtent( self._tier.GetName() )
@@ -422,13 +702,11 @@ class TierCtrl( spControl ):
         # Write text
         dc.SetBackgroundMode( wx.TRANSPARENT )
         dc.SetTextBackground( wx.NullColour )
-        dc.SetFont( self._font )
+        dc.SetFont( self.GetFont() )
         dc.SetTextForeground( self._textcolor )
         dc.DrawText(self._tier.GetName(), x+1, y)
 
-    # End DrawPane
     #-------------------------------------------------------------------------
-
 
     def DrawContent(self, dc, x,y, w,h):
         """
@@ -439,16 +717,10 @@ class TierCtrl( spControl ):
         @param w,h (int,int) are width and height available for drawing.
 
         """
-        if not self._tier:     return # not declared
-        if self._tier is None: return # not initialized
+        tierbegin = self._tier.GetBeginValue()
+        tierend   = self._tier.GetEndValue()
 
-        # Nothing to do, we still don't have dimensions!
-        if not w or not h: return
-
-        tierbegin = self._tier.GetBegin().GetMidpoint()
-        tierend   = self._tier.GetEnd().GetMidpoint()
-
-        # the period is overlaping this tier: draw partly
+        # the period is overlapping this tier: draw partly
 
         # Adjust width, if tier ends before the max
         if self._mintime < tierend and self._maxtime > tierend:
@@ -478,19 +750,52 @@ class TierCtrl( spControl ):
             if not ann in self._anns.keys():
                 if self._tier.IsPoint():
                     self._addAnnotationPoint(ann)
-                else:
+                elif self._tier.IsInterval():
                     self._addAnnotationInterval(ann)
+                else:
+                    logging.info(' Can NOT draw annotation: bad type.')
             # Show controls
             self._drawAnnotation( ann )
 
-    # End DrawContent
     #-------------------------------------------------------------------------
 
+    def GetDrawingSize(self):
+        """
+        Return the size available to draw (without the pane and without margins).
+        """
+
+        # Get the actual client size of ourselves
+        (w,h) = self.GetClientSize()
+
+        # Adjust width
+        if self._infopanep == wx.ALIGN_LEFT:
+            w = w - self._infopanew
+        elif self._infopanep == wx.ALIGN_RIGHT:
+            w = w - self._infopanew
+
+        return (max(0,w), max(0,h))
+
+    #-------------------------------------------------------------------------
+
+    def GetDrawingPosition(self):
+        """
+        Return the position to draw (without the pane).
+        """
+
+        # Get the actual position of ourselves
+        (x,y) = (0,0)
+
+        # Adjust x
+        if self._infopanep == wx.ALIGN_LEFT:
+            x = x + self._infopanew
+
+        return (x,y)
+
+    #-------------------------------------------------------------------------
 
     # ----------------------------------------------------------------------------
     # Private
     # ----------------------------------------------------------------------------
-
 
     def _drawPoint(self, point, x,y,h):
         """ Display a point. """
@@ -498,13 +803,12 @@ class TierCtrl( spControl ):
         xpt, wpt = self._calcPointXW( point.GetValue() )
 
         if self._tier.IsPoint():
-            point.MoveWindow(wx.Point(x+xpt,y+1), wx.Size(wpt,int(h*0.65)))
+            point.MoveWindow(wx.Point(x+xpt,y), wx.Size(wpt,int(h*0.65)))
         else:
-            point.MoveWindow(wx.Point(x+xpt,y+1), wx.Size(wpt,h-2))
+            point.MoveWindow(wx.Point(x+xpt,y), wx.Size(wpt,h))
         point.Show()
 
     # -----------------------------------------------------------------------
-
 
     def _drawAnnotation(self, ann):
         """ Display an existing annotation. """
@@ -514,15 +818,18 @@ class TierCtrl( spControl ):
         point2 = self._anns[ann][2]
 
         (tw,th) = self.GetDrawingSize()
+        th=th-2
         (tx,ty) = self.GetDrawingPosition()
+        ty=ty+1
 
         # Draw the label
         xpt1, wpt1 = self._calcPointXW(point.GetValue())
         if self._tier.IsPoint():
-            label.MoveWindow(wx.Point(tx+xpt1+wpt1,ty+1), wx.Size(50,th))
+            label.MoveWindow(wx.Point(tx+xpt1+wpt1,ty), wx.Size(50,th))
+
         else:
             xpt2, wpt2 = self._calcPointXW(point2.GetValue())
-            label.MoveWindow(wx.Point(tx+xpt1+wpt1,ty+1), wx.Size(xpt2-xpt1-wpt1,th-2))
+            label.MoveWindow(wx.Point(tx+xpt1+wpt1,ty), wx.Size(xpt2-xpt1-wpt1,th))
         label.Show()
 
         # Draw the points
@@ -530,9 +837,7 @@ class TierCtrl( spControl ):
         if self._tier.IsInterval():
             self._drawPoint(point2, tx,ty,th)
 
-
     # -----------------------------------------------------------------------
-
 
     def _addAnnotationInterval(self, ann):
         """ Create new controls for an annotation, or link to existing controls. """
@@ -565,8 +870,8 @@ class TierCtrl( spControl ):
         self._anns[ann] = [ label, p1, p2 ]
 
         # Fix properties
-        label.SetAlign(self._labelalign)
-        label.SetFont(self._font)
+        label.SetAlign( self._labelalign )
+        label.SetFont( self.GetFont() )
         if label.GetValue().GetSize() == 1:
             label.SetColours(self._labelbgcolor, self._textcolor)
         else:
@@ -577,7 +882,6 @@ class TierCtrl( spControl ):
 
     # -----------------------------------------------------------------------
 
-
     def _addAnnotationPoint(self, ann):
         """ Create new controls for an annotation, or link to existing controls. """
 
@@ -587,7 +891,7 @@ class TierCtrl( spControl ):
 
         # Is there a pointctrl at the same place?
         for point in self._pointsctrl:
-            if tp.GetMidpoint() == point.GetValue().GetMidpoint():
+            if tp.GetValue() == point.GetValue().GetValue():
                 p = point
                 break
 
@@ -602,22 +906,21 @@ class TierCtrl( spControl ):
 
         # Fix properties
         label.SetAlign(self._labelalign)
-        label.SetFont(self._font)
+        label.SetFont( self.GetFont() )
         if label.GetValue().GetSize() == 1:
             label.SetColours(self._labelbgcolor, self._textcolor)
         else:
             label.SetColours(self._labelbgcolor, self._labelfgucolor)
+
         p.SetColours(colourmidpoint=self._midpointcolor,colourradius=self._labelbgcolor)
 
-
     # -----------------------------------------------------------------------
-
 
     def _calcPointXW(self, point):
 
         # Get information
         tierwidth,tierheight = self.GetDrawingSize()
-        tiermintime,tiermaxtime = self.GetTime()
+        tiermintime,tiermaxtime = self._mintime,self._maxtime
         tierduration = tiermaxtime - tiermintime
 
         # Fix position and width of the point
@@ -632,19 +935,22 @@ class TierCtrl( spControl ):
         delta = max(0., e - tiermintime)
         ptex =  delta * float(tierwidth) / tierduration
 
-        x = round(ptbx,0)#int(ptbx) #
+        x = int(ptbx) #round(ptbx,0)
         w = max(int(ptex-ptbx), pointctrlMinWidth)
 
         return x,w
 
     #-------------------------------------------------------------------------
 
+    def __getTextHeight(self):
+        dc = wx.ClientDC( self )
+        dc.SetFont(self.GetFont())
+        return dc.GetTextExtent('azertyuiopqsdfghjklmwxcvbn')[1]
+
 
 # ----------------------------------------------------------------------------
 
-
 # ----------------------------------------------------------------------------
-
 
 class PointEditor( wx.Dialog ):
     """
@@ -665,9 +971,9 @@ class PointEditor( wx.Dialog ):
         # create the main sizer.
         gbs = wx.GridBagSizer(hgap=5, vgap=5)
 
-        txtfrom = wx.StaticText(self, label="  Middle: ", size=(80, 24))
+        txtfrom = wx.StaticText(self, label="  MidPoint: ", size=(80, 24))
         txtfrom.SetFont( font )
-        txtto   = wx.StaticText(self, label="  Radius: ", size=(80, 24))
+        txtto   = wx.StaticText(self, label="  Radius:   ", size=(80, 24))
         txtto.SetFont( font )
 
         self.fieldfrom = wx.TextCtrl(self, -1, str(self.start), size=(150, 24), validator=TextAsNumericValidator())
@@ -696,9 +1002,7 @@ class PointEditor( wx.Dialog ):
         self.Layout()
         self.Refresh()
 
-    # End __init__
     #-------------------------------------------------------------------------
-
 
     def GetValues(self):
         """
@@ -706,6 +1010,5 @@ class PointEditor( wx.Dialog ):
         """
         return self.fieldfrom.GetValue(), self.fieldto.GetValue()
 
-    # End GetValues
     #-------------------------------------------------------------------------
 
