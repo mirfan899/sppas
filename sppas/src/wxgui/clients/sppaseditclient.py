@@ -247,21 +247,22 @@ class SppasEdit( wx.Panel ):
             prefs = Preferences( BaseTheme() )
         else:
             try:
-                a = prefs.GetValue( 'M_BG_COLOUR' )
-                a = prefs.GetValue( 'M_FG_COLOUR' )
-                a = prefs.GetValue( 'M_FONT' )
-                a = prefs.GetValue( 'M_ICON_THEME' )
+                prefs.GetValue( 'M_BG_COLOUR' )
+                prefs.GetValue( 'M_FG_COLOUR' )
+                prefs.GetValue( 'M_FONT' )
+                prefs.GetValue( 'M_ICON_THEME' )
             except Exception:
                 self._prefsIO.SetTheme( BaseTheme() )
                 prefs = self._prefsIO
 
-        prefs.SetValue('SND_INFO', 'bool', True)
-        prefs.SetValue('SND_PLAY', 'bool', True)
+        prefs.SetValue('SND_INFO',       'bool', True)
+        prefs.SetValue('SND_PLAY',       'bool', True)
         prefs.SetValue('SND_AUTOREPLAY', 'bool', False)
-        prefs.SetValue('SND_PAUSE', 'bool', True)
-        prefs.SetValue('SND_STOP', 'bool', False)
-        prefs.SetValue('SND_NEXT', 'bool', False)
-        prefs.SetValue('SND_REWIND', 'bool', False)
+        prefs.SetValue('SND_PAUSE',      'bool', True)
+        prefs.SetValue('SND_STOP',       'bool', False)
+        prefs.SetValue('SND_NEXT',       'bool', False)
+        prefs.SetValue('SND_REWIND',     'bool', False)
+        prefs.SetValue('SND_EJECT',      'bool', False)
 
         return prefs
 

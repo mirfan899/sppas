@@ -74,6 +74,7 @@ from wxgui.sp_consts         import TB_ICONSIZE
 
 from wxgui.ui.CustomEvents import FileWanderEvent
 import wxgui.ui.KnobCtrl as KC
+
 from wxgui.structs.prefs   import Preferences
 from wxgui.structs.themes  import BaseTheme
 
@@ -95,44 +96,33 @@ BACKWARD_STEP  = 1000  # backward step (in milliseconds)
 
 class SndPlayer( wx.Panel ):
     """
-    Sound Player.
+    @author:  Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, version 3
+    @summary: This class is a generic Sound Player.
     """
 
     def __init__(self, parent, orient=wx.VERTICAL, refreshtimer=TIMER_STEP, prefsIO=None):
-        """ Create a new WavProperty instance. """
+        """
+        Creates a new SndPlayer instance.
 
+        @param refreshtimer (int) Timer refresh value in milliseconds. The timer is used to update the playing state.
+        @param prefsIO (PreferencesIO) Fix preferences for colors, fonts, etc. and for the list of buttons to display.
+
+        """
         wx.Panel.__init__(self, parent)
 
         # members
-        self._prefs = self._check_prefs(prefsIO)
+        self._prefs          = self._check_prefs(prefsIO)
         self._filename       = None
         self._mediaplayer    = None
-        self._buttons        = {}
         self._showpanel      = None  # panel to show information (clock, peakmeter, signal, ...)
         self._playbackSlider = None  # slider (to change the position with the mouse)
         self._knob           = None  # volume control
         self._offsets        = (0,0) # from/to offsets
+        self._autoreplay     = False
 
-        self._autoreplay = False
-
-        logging.debug(' ... SndPlayer Autoreplay = %s'%str(self._autoreplay))
-
-        self.BMP_PLAYER_INFO            = spBitmap( PLAYER_INFO, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
-        self.BMP_PLAYER_INFO_DISABLED   = spBitmap( PLAYER_INFO_DISABLED, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
-        self.BMP_PLAYER_EJECT           = spBitmap( PLAYER_EJECT, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
-        self.BMP_PLAYER_EJECT_DISABLED  = spBitmap( PLAYER_EJECT_DISABLED, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
-        self.BMP_PLAYER_NEXT            = spBitmap( PLAYER_NEXT, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
-        self.BMP_PLAYER_NEXT_DISABLED   = spBitmap( PLAYER_NEXT_DISABLED, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
-        self.BMP_PLAYER_REWIND          = spBitmap( PLAYER_REWIND, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
-        self.BMP_PLAYER_REWIND_DISABLED = spBitmap( PLAYER_REWIND_DISABLED, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
-        self.BMP_PLAYER_PLAY            = spBitmap( PLAYER_PLAY, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
-        self.BMP_PLAYER_PLAY_DISABLED   = spBitmap( PLAYER_PLAY_DISABLED, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
-        self.BMP_PLAYER_REPLAY          = spBitmap( PLAYER_REPLAY, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
-        self.BMP_PLAYER_REPLAY_DISABLED = spBitmap( PLAYER_REPLAY_DISABLED, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
-        self.BMP_PLAYER_PAUSE           = spBitmap( PLAYER_PAUSE, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
-        self.BMP_PLAYER_PAUSE_DISABLED  = spBitmap( PLAYER_PAUSE_DISABLED, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
-        self.BMP_PLAYER_STOP            = spBitmap( PLAYER_STOP, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
-        self.BMP_PLAYER_STOP_DISABLED   = spBitmap( PLAYER_STOP_DISABLED, TB_ICONSIZE, theme=self._prefs.GetValue('M_ICON_THEME') )
+        self._init_buttons()
 
         # create the audio bar
         if orient == wx.VERTICAL:
@@ -156,50 +146,101 @@ class SndPlayer( wx.Panel ):
         self.SetAutoLayout( True )
         self.Layout()
 
-    # End __init__
+    # -----------------------------------------------------------------------
+    # Build and check methods (private)
     # -----------------------------------------------------------------------
 
+    def _init_buttons(self):
+        """
+        Initialize members for audio button creations.
+
+        """
+        self._buttons              = {}
+        self._dict_buttons_enable  = {}
+        self._dict_buttons_disable = {}
+
+        __theme = self._prefs.GetValue('M_ICON_THEME')
+        self.BMP_PLAYER_INFO            = spBitmap( PLAYER_INFO,            TB_ICONSIZE, theme=__theme )
+        self.BMP_PLAYER_INFO_DISABLED   = spBitmap( PLAYER_INFO_DISABLED,   TB_ICONSIZE, theme=__theme )
+        self.BMP_PLAYER_EJECT           = spBitmap( PLAYER_EJECT,           TB_ICONSIZE, theme=__theme )
+        self.BMP_PLAYER_EJECT_DISABLED  = spBitmap( PLAYER_EJECT_DISABLED,  TB_ICONSIZE, theme=__theme )
+        self.BMP_PLAYER_NEXT            = spBitmap( PLAYER_NEXT,            TB_ICONSIZE, theme=__theme )
+        self.BMP_PLAYER_NEXT_DISABLED   = spBitmap( PLAYER_NEXT_DISABLED,   TB_ICONSIZE, theme=__theme )
+        self.BMP_PLAYER_REWIND          = spBitmap( PLAYER_REWIND,          TB_ICONSIZE, theme=__theme )
+        self.BMP_PLAYER_REWIND_DISABLED = spBitmap( PLAYER_REWIND_DISABLED, TB_ICONSIZE, theme=__theme )
+        self.BMP_PLAYER_PLAY            = spBitmap( PLAYER_PLAY,            TB_ICONSIZE, theme=__theme )
+        self.BMP_PLAYER_PLAY_DISABLED   = spBitmap( PLAYER_PLAY_DISABLED,   TB_ICONSIZE, theme=__theme )
+        self.BMP_PLAYER_REPLAY          = spBitmap( PLAYER_REPLAY,          TB_ICONSIZE, theme=__theme )
+        self.BMP_PLAYER_REPLAY_DISABLED = spBitmap( PLAYER_REPLAY_DISABLED, TB_ICONSIZE, theme=__theme )
+        self.BMP_PLAYER_PAUSE           = spBitmap( PLAYER_PAUSE,           TB_ICONSIZE, theme=__theme )
+        self.BMP_PLAYER_PAUSE_DISABLED  = spBitmap( PLAYER_PAUSE_DISABLED,  TB_ICONSIZE, theme=__theme )
+        self.BMP_PLAYER_STOP            = spBitmap( PLAYER_STOP,            TB_ICONSIZE, theme=__theme )
+        self.BMP_PLAYER_STOP_DISABLED   = spBitmap( PLAYER_STOP_DISABLED,   TB_ICONSIZE, theme=__theme )
+
+    # -----------------------------------------------------------------------
+
+    def __create_audio_button(self, name, preftag, bmpe, bmpd, method, sizer):
+        """
+        Build an audio button, iff prefs is set to True for that preftag.
+
+        """
+        bgcolour = self._prefs.GetValue('M_BG_COLOUR')
+        try:
+            info = self._prefs.GetValue(preftag)
+        except Exception:
+            info = False
+        if info is True:
+            logging.info(' ... Sndplayer: create button: %s'%(name))
+            self._buttons[name] = CreateButton(self, bmpd, method, sizer, colour=bgcolour)
+            self._dict_buttons_enable[self._buttons[name]]  = bmpe
+            self._dict_buttons_disable[self._buttons[name]] = bmpd
+        else:
+            logging.info(' ... Sndplayer: ignore button: %s'%(name))
+
+    # -----------------------------------------------------------------------
 
     def _build_showpanel(self, wave):
-        """ Build or change the show panel. """
+        """
+        Build or change the show panel.
 
+        """
         # a showpanel is already existing
         if self._showpanel is not None:
             self._showpanel.Destroy()
 
-        # no wav: show a nice picture
         if wave is None:
+            # no wav: show a nice picture
             self._showpanel = wx.Panel(self, size=(320,120))
             img  = wx.Image(PLAYER_BACKGROUND, wx.BITMAP_TYPE_ANY)
-            img2 = wx.StaticBitmap(self._showpanel, wx.ID_ANY, wx.BitmapFromImage(img))
+            wx.StaticBitmap(self._showpanel, wx.ID_ANY, wx.BitmapFromImage(img))
         else:
-            # a wave is given:
-            # show dynamic information while playing (clock, peakmeter, ...)
+            # a wave is given: show dynamic information while playing (clock, peakmeter, ...)
             # TO DO
             self._showpanel = wx.Panel(self, size=(320,120))
             img  = wx.Image(PLAYER_BACKGROUND, wx.BITMAP_TYPE_ANY)
-            img2 = wx.StaticBitmap(self._showpanel, wx.ID_ANY, wx.BitmapFromImage(img))
+            wx.StaticBitmap(self._showpanel, wx.ID_ANY, wx.BitmapFromImage(img))
 
 
     def _build_audioadvanced(self):
-        """ Build the audio controls. """
+        """
+        Build an advanced audio controls sizer.
 
+        """
         # create the main sizer.
         sizer = wx.GridBagSizer(4, 4)
-        bgcolour = self._prefs.GetValue('M_BG_COLOUR')
 
         # 1st column
-        self._buttons['eject']    = CreateButton(self, self.BMP_PLAYER_EJECT_DISABLED, self.onEject,  sizer, colour=bgcolour)
-        self._buttons['next']     = CreateButton(self, self.BMP_PLAYER_NEXT_DISABLED,  self.onNext,   sizer, colour=bgcolour)
-        self._buttons['previous'] = CreateButton(self, self.BMP_PLAYER_REWIND_DISABLED,self.onRewind, sizer, colour=bgcolour)
+        self.__create_audio_button('eject',  'SND_EJECT',  self.BMP_PLAYER_EJECT,  self.BMP_PLAYER_EJECT_DISABLED, self.onEject, sizer)
+        self.__create_audio_button('next',   'SND_NEXT',   self.BMP_PLAYER_NEXT,   self.BMP_PLAYER_NEXT_DISABLED, self.onNext, sizer)
+        self.__create_audio_button('rewind', 'SND_REWIND', self.BMP_PLAYER_REWIND, self.BMP_PLAYER_REWIND_DISABLED, self.onRewind, sizer)
 
         # 2nd column
         self._build_showpanel( None )
 
         # 3rd column
-        self._buttons['play']  = CreateButton(self, self.BMP_PLAYER_PLAY_DISABLED,  self.onNormalPlay,  sizer, colour=bgcolour)
-        self._buttons['stop']  = CreateButton(self, self.BMP_PLAYER_STOP_DISABLED,  self.onStop,  sizer, colour=bgcolour)
-        self._buttons['pause'] = CreateButton(self, self.BMP_PLAYER_PAUSE_DISABLED, self.onPause, sizer, colour=bgcolour)
+        self.__create_audio_button('play',   'SND_PLAY',   self.BMP_PLAYER_PLAY, self.BMP_PLAYER_PLAY_DISABLED, self.onNormalPlay, sizer)
+        self.__create_audio_button('stop',   'SND_STOP',   self.BMP_PLAYER_STOP,   self.BMP_PLAYER_STOP_DISABLED, self.onStop, sizer)
+        self.__create_audio_button('pause',  'SND_PAUSE',  self.BMP_PLAYER_PAUSE,  self.BMP_PLAYER_PAUSE_DISABLED, self.onPause, sizer)
 
         # 4th column
         minvalue = 0
@@ -214,39 +255,31 @@ class SndPlayer( wx.Panel ):
         self.Bind(KC.KC_EVENT_ANGLE_CHANGED, self.onAngleChanged, self._knob)
         self._knobtracker = wx.StaticText(self, -1, "Volume = %d" % int((minvalue+maxvalue)/2))
 
-        # sizer
-        sizer.Add(self._buttons['eject'],   (0,0), flag=wx.ALL, border=4)
-        sizer.Add(self._buttons['next'],    (1,0), flag=wx.ALL, border=4)
-        sizer.Add(self._buttons['previous'],(2,0), flag=wx.ALL, border=4)
-        sizer.Add(self._showpanel, (0,1),(3,1),    flag=wx.EXPAND|wx.ALL, border=4)
-        sizer.Add(self._buttons['play'],  (0,2), flag=wx.ALL, border=4)
-        sizer.Add(self._buttons['stop'],  (1,2), flag=wx.ALL, border=4)
-        sizer.Add(self._buttons['pause'], (2,2), flag=wx.ALL, border=4)
-        sizer.Add(self._knob, (0,3), (2,1),  flag=wx.EXPAND|wx.TOP, border=4)
-        sizer.Add(self._knobtracker, (2,3), flag=wx.TOP, border=4)
-
         # create playback slider
         self._playbackSlider = wx.Slider(self, wx.ID_ANY, size=wx.DefaultSize, style=wx.SL_HORIZONTAL|wx.SL_AUTOTICKS)
-        sizer.Add(self._playbackSlider, (3,0), (1,4), wx.ALL|wx.EXPAND, border=4)
+
+        # sizer
+        if 'eject'  in self._buttons.keys(): sizer.Add(self._buttons['eject'],  (0,0), flag=wx.ALL, border=4)
+        if 'next'   in self._buttons.keys(): sizer.Add(self._buttons['next'],   (1,0), flag=wx.ALL, border=4)
+        if 'rewind' in self._buttons.keys(): sizer.Add(self._buttons['rewind'], (2,0), flag=wx.ALL, border=4)
+        if 'play'   in self._buttons.keys(): sizer.Add(self._buttons['play'],   (0,2), flag=wx.ALL, border=4)
+        if 'stop'   in self._buttons.keys(): sizer.Add(self._buttons['stop'],   (1,2), flag=wx.ALL, border=4)
+        if 'pause'  in self._buttons.keys(): sizer.Add(self._buttons['pause'],  (2,2), flag=wx.ALL, border=4)
+
+        sizer.Add(self._showpanel,      (0,1),(3,1), flag=wx.EXPAND|wx.ALL, border=4)
+        sizer.Add(self._knob,           (0,3),(2,1), flag=wx.EXPAND|wx.TOP, border=4)
+        sizer.Add(self._knobtracker,    (2,3), flag=wx.TOP, border=4)
+        sizer.Add(self._playbackSlider, (3,0),(1,4), flag=wx.ALL|wx.EXPAND, border=4)
 
         return sizer
 
     #----------------------------------------------------------------------
 
-    def __create_audio_button(self, name, preftag, bmp, method, sizer):
-        try:
-            info = self._prefs.GetValue(preftag)
-        except Exception:
-            info = False
-        else:
-            if info is True:
-                self._buttons[name] = CreateButton(self, bmp, method, sizer)
-                sizer.Add(self._buttons[name], 1, flag=wx.ALL, border=2)
-
-
     def _build_audiosimple(self):
-        """ Build the audio controls. """
+        """
+        Build a simple audio controls sizer.
 
+        """
         self._showpanel      = None
         self._playbackSlider = None
         self._knob           = None
@@ -255,24 +288,32 @@ class SndPlayer( wx.Panel ):
         # create the main sizer.
         sizer = wx.BoxSizer( wx.HORIZONTAL )
 
-        # create the audio bar
-        self.__create_audio_button('info',   'SND_INFO',   self.BMP_PLAYER_INFO_DISABLED, self.onInfo, sizer)
-        self.__create_audio_button('play',   'SND_PLAY',   self.BMP_PLAYER_PLAY_DISABLED, self.onNormalPlay, sizer)
-        self.__create_audio_button('replay', 'SND_AUTOREPLAY', self.BMP_PLAYER_REPLAY_DISABLED, self.onAutoPlay, sizer)
-        self.__create_audio_button('pause',  'SND_PAUSE',  self.BMP_PLAYER_PAUSE_DISABLED, self.onPause, sizer)
-        self.__create_audio_button('stop',   'SND_STOP',   self.BMP_PLAYER_STOP_DISABLED, self.onStop, sizer)
-        self.__create_audio_button('next',   'SND_NEXT',   self.BMP_PLAYER_NEXT_DISABLED, self.onNext, sizer)
-        self.__create_audio_button('rewind', 'SND_REWIND', self.BMP_PLAYER_REWIND_DISABLED, self.onRewind, sizer)
+        self.__create_audio_button('info',   'SND_INFO',   self.BMP_PLAYER_INFO, self.BMP_PLAYER_INFO_DISABLED, self.onInfo, sizer)
+        self.__create_audio_button('play',   'SND_PLAY',   self.BMP_PLAYER_PLAY, self.BMP_PLAYER_PLAY_DISABLED, self.onNormalPlay, sizer)
+        self.__create_audio_button('replay', 'SND_AUTOREPLAY', self.BMP_PLAYER_REPLAY, self.BMP_PLAYER_REPLAY_DISABLED, self.onAutoPlay, sizer)
+        self.__create_audio_button('pause',  'SND_PAUSE',  self.BMP_PLAYER_PAUSE,  self.BMP_PLAYER_PAUSE_DISABLED, self.onPause, sizer)
+        self.__create_audio_button('stop',   'SND_STOP',   self.BMP_PLAYER_STOP,   self.BMP_PLAYER_STOP_DISABLED, self.onStop, sizer)
+        self.__create_audio_button('next',   'SND_NEXT',   self.BMP_PLAYER_NEXT,   self.BMP_PLAYER_NEXT_DISABLED, self.onNext, sizer)
+        self.__create_audio_button('rewind', 'SND_REWIND', self.BMP_PLAYER_REWIND, self.BMP_PLAYER_REWIND_DISABLED, self.onRewind, sizer)
+        self.__create_audio_button('eject',  'SND_EJECT', self.BMP_PLAYER_EJECT, self.BMP_PLAYER_EJECT_DISABLED, self.onEject, sizer)
+
+        if 'info'   in self._buttons.keys(): sizer.Add(self._buttons['info'],   1, flag=wx.ALL, border=0)
+        if 'play'   in self._buttons.keys(): sizer.Add(self._buttons['play'],   1, flag=wx.ALL, border=0)
+        if 'replay' in self._buttons.keys(): sizer.Add(self._buttons['replay'], 1, flag=wx.ALL, border=0)
+        if 'pause'  in self._buttons.keys(): sizer.Add(self._buttons['pause'],  1, flag=wx.ALL, border=0)
+        if 'stop'   in self._buttons.keys(): sizer.Add(self._buttons['stop'],   1, flag=wx.ALL, border=0)
+        if 'next'   in self._buttons.keys(): sizer.Add(self._buttons['next'],   1, flag=wx.ALL, border=0)
+        if 'rewind' in self._buttons.keys(): sizer.Add(self._buttons['rewind'], 1, flag=wx.ALL, border=0)
+        if 'eject'  in self._buttons.keys(): sizer.Add(self._buttons['eject'],  1, flag=wx.ALL, border=0)
 
         return sizer
 
-    # End _build_audiosimple
     #-------------------------------------------------------------------------
-
 
     def _check_prefs(self, prefs):
         """
-        Check if preferences are set properly. Set new ones if required.
+        Check if preferences are set properly.
+        Set new ones if required.
         Return the new version.
         """
         if prefs is None:
@@ -280,31 +321,30 @@ class SndPlayer( wx.Panel ):
 
         else:
             try:
-                bg = prefs.GetValue( 'M_BG_COLOUR' )
-                fg = prefs.GetValue( 'M_FG_COLOUR' )
-                font = prefs.GetValue( 'M_FONT' )
-                icons = prefs.GetValue( 'M_ICON_THEME' )
+                prefs.GetValue( 'M_BG_COLOUR' )
+                prefs.GetValue( 'M_FG_COLOUR' )
+                prefs.GetValue( 'M_FONT' )
+                prefs.GetValue( 'M_ICON_THEME' )
             except Exception:
                 self._prefsIO.SetTheme( BaseTheme() )
         return prefs
 
     #-------------------------------------------------------------------------
 
-
-
     #----------------------------------------------------------------------
-    # Methods
+    # Public methods
     #----------------------------------------------------------------------
-
 
     def FileSelected(self, filename):
         """
         Set a sound file.
+
+        @param filename (string) is an audio file name (a wave is expected).
+
         """
-        logging.debug(' ... sndplayer file selected ...')
-        # do not assign the same file!!!
+        # we already opened the same file
         if filename == self._filename and self._mediaplayer is not None:
-            logging.debug(' same file name/ Return!!!')
+            logging.info(' ... SndPlayer: file %s was already opened. [WARNING]'%(filename))
             return
 
         try:
@@ -315,16 +355,15 @@ class SndPlayer( wx.Panel ):
                 import wave
                 w = wave.Wave_read(filename)
                 self._length = int( 1000 * float(w.getnframes())/float(w.getframerate()) )
+            logging.info(" ... File %s successfully loaded. [  OK  ]" %(filename))
         except Exception as e:
-            logging.info(" ... Error loading: %s" % filename)
+            logging.info(" ... File %s not loaded.  [ ERROR ]" %(filename))
             wx.MessageBox('Error loading: '+filename+' '+str(e), 'Info', wx.OK | wx.ICON_INFORMATION)
             return False
 
         # set mediaplayer with the new one
         self._filename = filename
         self._mediaplayer = m
-
-        #self._mediaplayer.SetInitialSize()
         self.ActivateButtons(True)
         self._offsets = (0,self._length)
         if self._playbackSlider is not None:
@@ -332,16 +371,14 @@ class SndPlayer( wx.Panel ):
             self._playbackSlider.SetTickFreq(int(self._length/10), 1)
 
         self._timer.Start( self._refreshTimer )
-
         self.Refresh()
 
-    # End FileSelected
     #------------------------------------------------------------------------
-
 
     def FileDeSelected(self):
         """
         Reset information.
+
         """
         # take care... the current mediaplayer can be playing. Unset properly!!
         if self._mediaplayer is not None and self._mediaplayer.GetState() != wx.media.MEDIASTATE_STOPPED :
@@ -366,13 +403,12 @@ class SndPlayer( wx.Panel ):
         self.Layout()
         self.Refresh()
 
-    # End FileDeSelected
     # -----------------------------------------------------------------------
-
 
     def SetOffsetPeriod(self, start, end):
         """
         Fix a start position and a end position to play the sound.
+
         """
         if self._mediaplayer is not None and self._mediaplayer.GetState() == wx.media.MEDIASTATE_PLAYING:
             self.onStop(None)
@@ -384,7 +420,6 @@ class SndPlayer( wx.Panel ):
         if self._playbackSlider is not None:
             self._playbackSlider.SetRange(start,end)
 
-    # End SetOffsetPeriod
     #----------------------------------------------------------------------
 
 
@@ -392,27 +427,26 @@ class SndPlayer( wx.Panel ):
     # Callbacks
     #----------------------------------------------------------------------
 
-
     def onInfo(self, event):
-        """ Display information about the selected Wave. """
+        """
+        Display information about the selected Wave.
 
-        if self._mediaplayer is None:
-            return
-        pass
+        """
+        if self._mediaplayer is None: return
+
         try:
-            dlg = SndInfoDialog( self, self._prefs, self._filename )
+            SndInfoDialog( self, self._prefs, self._filename )
         except Exception as e:
             wx.MessageBox('No information available. %s'%str(e), 'Info', wx.OK | wx.ICON_INFORMATION)
 
-    # End onInfo
     #-------------------------------------------------------------------------
 
-
     def onSeek(self,event):
-        """ Seeks the media file according to the amount the slider has been adjusted. """
+        """
+        Seeks the media file according to the amount the slider has been adjusted.
 
-        if self._mediaplayer is None:
-            return
+        """
+        if self._mediaplayer is None: return
 
         if self._playbackSlider is not None:
             offset = self._playbackSlider.GetValue()
@@ -421,31 +455,29 @@ class SndPlayer( wx.Panel ):
 
         self._mediaplayer.Seek( offset, mode=wx.FromStart )
 
-    # End onSeek
     #----------------------------------------------------------------------
 
-
     def onEject(self, event):
-        """ Eject the music. """
+        """
+        Eject the music.
 
-        if self._mediaplayer is None:
-            return
+        """
+        if self._mediaplayer is None: return
 
-        evt = FileWanderEvent()
+        evt = FileWanderEvent(filename=self._filename,status=False)
         evt.SetEventObject(self)
         wx.PostEvent(self.GetParent(), evt)
 
-        #self.FileDeSelected()
+        self.FileDeSelected()
 
-    # End onEject
     #----------------------------------------------------------------------
 
-
     def onNext(self, event):
-        """ Go forward in the music. """
+        """
+        Go forward in the music.
 
-        if self._mediaplayer is None:
-            return
+        """
+        if self._mediaplayer is None: return
 
         offset = self._mediaplayer.Tell()
         forward = offset + FORWARD_STEP
@@ -458,15 +490,14 @@ class SndPlayer( wx.Panel ):
 
         self._mediaplayer.Seek( forward, mode=wx.FromStart )
 
-    # End onNext
     #----------------------------------------------------------------------
 
-
     def onRewind(self, event):
-        """ Go backward in the music. """
+        """
+        Go backward in the music.
 
-        if self._mediaplayer is None:
-            return
+        """
+        if self._mediaplayer is None: return
 
         offset = self._mediaplayer.Tell()
         backward = offset - BACKWARD_STEP
@@ -479,15 +510,14 @@ class SndPlayer( wx.Panel ):
 
         self._mediaplayer.Seek( backward, mode=wx.FromStart )
 
-    # End onRewind
     #----------------------------------------------------------------------
 
-
     def onPause(self, event):
-        """ Pauses the music. """
+        """
+        Pauses the music.
 
-        if self._mediaplayer is None:
-            return
+        """
+        if self._mediaplayer is None: return
 
         logging.debug(' PAUSE EVENT RECEIVED ')
 
@@ -495,39 +525,40 @@ class SndPlayer( wx.Panel ):
 
         if state == wx.media.MEDIASTATE_PLAYING:
             self._mediaplayer.Pause()
-            self._buttons['pause'].SetBitmapLabel( self.BMP_PLAYER_PAUSE_DISABLED )
+            if 'pause' in self._buttons.keys(): self._buttons['pause'].SetBitmapLabel( self._dict_buttons_disable[self._buttons['pause']] )
 
         elif state == wx.media.MEDIASTATE_PAUSED:
             self.onPlay(event)
-            self._buttons['play'].SetBitmapLabel( self.BMP_PLAYER_PLAY )
-            self._buttons['pause'].SetBitmapLabel( self.BMP_PLAYER_PAUSE )
+            if 'play'  in self._buttons.keys(): self._buttons['play'].SetBitmapLabel( self._dict_buttons_enable[self._buttons['play']] )
+            if 'pause' in self._buttons.keys(): self._buttons['pause'].SetBitmapLabel( self._dict_buttons_enable[self._buttons['pause']] )
 
-    # End onPause
     #----------------------------------------------------------------------
 
-
     def onAutoPlay(self, event):
-        """ Plays the music and re-play from the beginning. """
+        """
+        Plays the music and re-play from the beginning.
 
+        """
         self._autoreplay = True
         self.onPlay(event)
 
-    # End onAutoPlay
     #----------------------------------------------------------------------
 
     def onNormalPlay(self, event):
-        """ Plays the music once. """
+        """
+        Plays the music once.
 
+        """
         self._autoreplay = False
         self.onPlay(event)
 
-    # End onNormalPlay
     #----------------------------------------------------------------------
 
-
     def onPlay(self, event):
-        """ Plays the music. """
+        """
+        Plays the music.
 
+        """
         if self._mediaplayer is None:
             logging.debug('onPlay. Unable to play: No media player.')
             return
@@ -556,20 +587,19 @@ class SndPlayer( wx.Panel ):
         if self._knob is not None:
             self._mediaplayer.SetVolume( float(self._knob.GetValue())/100.0 )
 
-        self._buttons['play'].SetBitmapLabel( self.BMP_PLAYER_PLAY )
-        self._buttons['pause'].SetBitmapLabel( self.BMP_PLAYER_PAUSE )
+        if 'play'  in self._buttons.keys(): self._buttons['play'].SetBitmapLabel( self._dict_buttons_enable[self._buttons['play']] )
+        if 'pause' in self._buttons.keys(): self._buttons['pause'].SetBitmapLabel( self._dict_buttons_enable[self._buttons['pause']] )
 
         self.Refresh()
 
-    # End onPlay
     #----------------------------------------------------------------------
 
-
     def onStop(self, event):
-        """ Stops the music and resets the play button. """
+        """
+        Stops the music and resets the play button.
 
-        if self._mediaplayer is None:
-            return
+        """
+        if self._mediaplayer is None: return
 
         try:
             self._mediaplayer.Stop()
@@ -581,13 +611,11 @@ class SndPlayer( wx.Panel ):
             # provide errors like:"ressource temporairement indisponible"
             pass
 
-        self._buttons['play'].SetBitmapLabel( self.BMP_PLAYER_PLAY )
-        self._buttons['pause'].SetBitmapLabel( self.BMP_PLAYER_PAUSE )
+        if 'play'  in self._buttons.keys(): self._buttons['play'].SetBitmapLabel( self._dict_buttons_enable[self._buttons['play']] )
+        if 'pause' in self._buttons.keys(): self._buttons['pause'].SetBitmapLabel( self._dict_buttons_enable[self._buttons['pause']] )
         self._autoreplay = False
 
-    # End onStop
     #----------------------------------------------------------------------
-
 
     def onAngleChanged(self, event):
         """ Change the volume value. """
@@ -597,9 +625,7 @@ class SndPlayer( wx.Panel ):
         if self._mediaplayer:
             self._mediaplayer.SetVolume( float(value)/100.0 )
 
-    # End onAngleChanged
     #----------------------------------------------------------------------
-
 
     def onTimer(self, event):
         """ Keeps the player slider updated. """
@@ -622,29 +648,28 @@ class SndPlayer( wx.Panel ):
             else:
                 self.onStop(event)
 
-    # End onTimer
     #----------------------------------------------------------------------
-
 
     def onClose(self, event):
         """
         Close (destructor).
+
         """
         self._timer.Stop()
         self.Destroy()
 
-    # End Close
     # ------------------------------------------------------------------------
-
 
     # -----------------------------------------------------------------------
     # GUI
     # -----------------------------------------------------------------------
 
-
     def SetPreferences(self, prefs):
-        """ Set new preferences. """
+        """
+        Set new preferences.
+        Do not consider changing buttons!!!
 
+        """
         self._prefs = prefs
         self.SetBackgroundColour( self._prefs.GetValue("M_BG_COLOUR") )
         self.SetForegroundColour( self._prefs.GetValue("M_FG_COLOUR") )
@@ -657,19 +682,21 @@ class SndPlayer( wx.Panel ):
 
 
     def SetFont(self, font):
-        """ Change font of all texts. """
+        """
+        Change font of all texts.
 
+        """
         wx.Window.SetFont( self,font )
         if self._knobtracker is not None:
             self._knobtracker.SetFont( font )
 
-    # End SetFont
     # -----------------------------------------------------------------------
 
-
     def SetBackgroundColour(self, colour):
-        """ Change the background color of all objects. """
+        """
+        Change the background color of all objects.
 
+        """
         wx.Window.SetBackgroundColour( self,colour )
 
         for b in self._buttons:
@@ -684,13 +711,13 @@ class SndPlayer( wx.Panel ):
 
         self.Refresh()
 
-    # End SetForegroundColour
     # -----------------------------------------------------------------------
 
-
     def SetForegroundColour(self, colour):
-        """ Change the foreground color of all objects. """
+        """
+        Change the foreground color of all objects.
 
+        """
         wx.Window.SetForegroundColour( self,colour )
 
         for b in self._buttons:
@@ -705,66 +732,29 @@ class SndPlayer( wx.Panel ):
 
         self.Refresh()
 
-    # End SetForegroundColour
     # -----------------------------------------------------------------------
 
-
-    # ------------------------------------------------------------------------
-
     def ActivateButtons(self, value=True):
-        self.EnableButtons(False)
+        """
+        Activates and enables all buttons.
+
+        """
+
+        self.EnableButtons( False )
         if value is True:
-            self._buttons['play'].SetBitmapLabel(  self.BMP_PLAYER_PLAY )
-            self._buttons['pause'].SetBitmapLabel( self.BMP_PLAYER_PAUSE )
-            try:
-                self._buttons['eject'].SetBitmapLabel( self.BMP_PLAYER_EJECT )
-            except Exception:
-                pass
-            try:
-                self._buttons['info'].SetBitmapLabel( self.BMP_PLAYER_INFO )
-            except Exception:
-                pass
-            try:
-                self._buttons['next'].SetBitmapLabel( self.BMP_PLAYER_NEXT )
-                self._buttons['previous'].SetBitmapLabel( self.BMP_PLAYER_REWIND )
-            except Exception:
-                pass
-            try:
-                self._buttons['stop'].SetBitmapLabel(  self.BMP_PLAYER_STOP )
-            except Exception:
-                pass
-            try:
-                self._buttons['replay'].SetBitmapLabel(  self.BMP_PLAYER_REPLAY )
-            except Exception:
-                pass
-
+            for b in self._buttons:
+                self._buttons[b].SetBitmapLabel( self._dict_buttons_enable[self._buttons[b]] )
         else:
-            self._buttons['play'].SetBitmapLabel(  self.BMP_PLAYER_PLAY_DISABLED )
-            self._buttons['pause'].SetBitmapLabel( self.BMP_PLAYER_PAUSE_DISABLED )
-            try:
-                self._buttons['eject'].SetBitmapLabel( self.BMP_PLAYER_EJECT_DISABLED )
-            except Exception:
-                pass
-            try:
-                self._buttons['info'].SetBitmapLabel( self.BMP_PLAYER_INFO_DISABLED )
-            except Exception:
-                pass
-            try:
-                self._buttons['stop'].SetBitmapLabel(  self.BMP_PLAYER_STOP_DISABLED )
-            except Exception:
-                pass
-            try:
-                self._buttons['previous'].SetBitmapLabel( self.BMP_PLAYER_REWIND_DISABLED )
-                self._buttons['next'].SetBitmapLabel(  self.BMP_PLAYER_NEXT_DISABLED )
-            except Exception:
-                pass
-            try:
-                self._buttons['replay'].SetBitmapLabel( self.BMP_PLAYER_REPLAY_DISABLED )
-            except Exception:
-                pass
+            for b in self._buttons:
+                self._buttons[b].SetBitmapLabel( self._dict_buttons_disable[self._buttons[b]] )
 
+    # -----------------------------------------------------------------------
 
     def EnableButtons(self, value=True):
+        """
+        Enables or disables all buttons.
+
+        """
         for b in self._buttons:
             self._buttons[b].Enable( not value )
 

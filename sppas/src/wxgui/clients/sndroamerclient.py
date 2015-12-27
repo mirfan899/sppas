@@ -111,13 +111,12 @@ class SndRoamer( scrolled.ScrolledPanel ):
 
         # members
         self._prefsIO = self._check_prefs(prefsIO)
-        self._filename  = None
+        self._filename = None
 
         # create the panels
         self._propertyPanel = SndProperty(self)
         self._propertyPanel.SetPreferences(self._prefsIO)
-        self._playerPanel   = SndPlayer(self)
-        self._playerPanel.SetPreferences(self._prefsIO)
+        self._playerPanel   = SndPlayer(self, prefsIO=self._prefsIO)
 
         sizer.Add(self._propertyPanel, proportion=0, flag=wx.LEFT|wx.TOP|wx.EXPAND, border=5 )
         sizer.Add(self._playerPanel,   proportion=0, flag=wx.CENTRE|wx.TOP, border=5 )
@@ -143,15 +142,25 @@ class SndRoamer( scrolled.ScrolledPanel ):
         """
         if prefs is None:
             prefs = Preferences( BaseTheme() )
-
         else:
             try:
-                bg = prefs.GetValue( 'M_BG_COLOUR' )
-                fg = prefs.GetValue( 'M_FG_COLOUR' )
-                font = prefs.GetValue( 'M_FONT' )
-                icons = prefs.GetValue( 'M_ICON_THEME' )
+                prefs.GetValue( 'M_BG_COLOUR' )
+                prefs.GetValue( 'M_FG_COLOUR' )
+                prefs.GetValue( 'M_FONT' )
+                prefs.GetValue( 'M_ICON_THEME' )
             except Exception:
                 self._prefsIO.SetTheme( BaseTheme() )
+                prefs = self._prefsIO
+
+        prefs.SetValue('SND_INFO',       'bool', False)
+        prefs.SetValue('SND_PLAY',       'bool', True)
+        prefs.SetValue('SND_AUTOREPLAY', 'bool', False)
+        prefs.SetValue('SND_PAUSE',      'bool', True)
+        prefs.SetValue('SND_STOP',       'bool', True)
+        prefs.SetValue('SND_NEXT',       'bool', True)
+        prefs.SetValue('SND_REWIND',     'bool', True)
+        prefs.SetValue('SND_EJECT',      'bool', True)
+
         return prefs
 
     #-----------------------------------------------------------------------
