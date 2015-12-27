@@ -465,7 +465,7 @@ class TrsList( wx.Panel ):
             return
 
         # Append clipboard to the transcription
-        tier = clipboard.Copy()
+        tier = clipboard #.Copy()
 
         self.Append(tier)
 
@@ -558,9 +558,7 @@ class TrsList( wx.Panel ):
             return
 
         tier = self._transcription[sellist]
-        newtier = tier.Copy()
-
-        self.Append(tier)
+        self.Append(tier.Copy())
 
         # give information
         self.__display_text_in_statusbar('Tier '+tier.GetName()+ ' successfully duplicated.')

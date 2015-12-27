@@ -1017,31 +1017,29 @@ class MediaPanel( SndPlayer ):
     @license: GPL, v3
     @summary: This class is used to display an audio player panel.
 
-    Display an audio player panel, used to play media files.
+    Display an audio player panel, used to play media files (wave only).
 
     """
 
     def __init__(self, parent, prefsIO):
         """
-        Constructor.
-        """
-        self._prefsIO = prefsIO
+        Creates a new MediaPanel instance.
 
-        SndPlayer.__init__(self, parent, orient=wx.HORIZONTAL, refreshtimer=5, prefsIO=self._prefsIO)
-        self.ActivateButtons(False)
+        @param prefsIO (PreferencesIO) Fix preferences for colors, fonts, etc.
+
+        """
+        SndPlayer.__init__(self, parent, orient=wx.HORIZONTAL, refreshtimer=10, prefsIO=prefsIO)
+        self.ActivateButtons( False )
 
         # members
         self._display = None
         self.SetBackgroundColour( self.GetParent().GetBackgroundColour() )
 
-    # End __init__
     #-------------------------------------------------------------------------
-
 
     #-------------------------------------------------------------------------
     # Callbacks
     #-------------------------------------------------------------------------
-
 
     def onNext(self, event):
         """ Go forward in the music. """
@@ -1049,9 +1047,7 @@ class MediaPanel( SndPlayer ):
         SndPlayer.onNext(self,event)
         self.UpdateRuler()
 
-    # End onNext
     #-------------------------------------------------------------------------
-
 
     def onRewind(self, event):
         """ Go backward in the music. """
@@ -1059,9 +1055,7 @@ class MediaPanel( SndPlayer ):
         SndPlayer.onRewind(self,event)
         self.UpdateRuler()
 
-    # End onRewind
     #-------------------------------------------------------------------------
-
 
     def onPause(self, event):
         """ Pauses the music. """
@@ -1069,12 +1063,10 @@ class MediaPanel( SndPlayer ):
         SndPlayer.onPause(self,event)
         self.UpdateRuler()
 
-    # End onPause
     #-------------------------------------------------------------------------
 
-
     def onPlay(self, event):
-        """ Plays the music. """
+        """ Fix the period to play then Plays the music. """
 
         if self._mediaplayer is None and self._display is None:
             return
@@ -1082,14 +1074,8 @@ class MediaPanel( SndPlayer ):
             self.SetMedia() # now, a selection?
         if self._dcobj != self._display.GetSelectedObject():
             self.SetMedia() # selection has changed since last play...
-        if self._mediaplayer is None:
-            logging.debug('onPlay error. unable to play: finally ... no media. ')
-            return
 
-        if self._mediaplayer.GetState() == wx.media.MEDIASTATE_PLAYING:
-            return
-
-        # the period on screen
+        # The period on screen
         start,end = self._display.GetPeriodValues()
         self.SetOffsetPeriod( int(start*1000.), int(end*1000.) )
 
@@ -1097,53 +1083,49 @@ class MediaPanel( SndPlayer ):
         v = self._display.GetRuler().GetPlayerIndicatorValue()
         if v is not None:
             offset = int(v*1000.0)
-            # was required in previous wx versions (wnds bug)
-            #if offset == 0: offset = 1
+            # is required in some wx versions (bug)
+            if offset == 0: offset = 1
         else:
             offset = int(start*1000.)
         if offset == -1:
             offset = int(start*1000.)
 
         self._mediaplayer.Seek( offset, mode=wx.FromStart )
-
-        #
         SndPlayer.onPlay(self,event)
 
-    # End onPlay
     #-------------------------------------------------------------------------
-
 
     def onStop(self, event):
         """ Stops the music and resets the play button. """
 
-        if self._mediaplayer is None:  return
+        if self._mediaplayer is None: return
 
-        if self._display:
+        self._offsets = (0,0)
+        if self._display is not None:
             self._offsets = self._display.GetPeriodValues()
-        else:
-            self._offsets = (0,0)
 
         SndPlayer.onStop(self,event)
         self.UpdateRuler()
 
-    # End onStop
     #-------------------------------------------------------------------------
 
-
     def onTimer(self, event):
-        """ Keeps the player updated. OVERRIDE. """
+        """
+        Keeps the player updated.
+        OVERRIDE because we dont stop at the end of the displayed period fixed by self._offsets:
+        instead we update the period and continue to play.
+        """
 
-        if self._mediaplayer is None:
-            return
+        if self._mediaplayer is None: return
 
         # Get current position
         offset = self._mediaplayer.Tell()
         # Allowed position
         try:
             (s,e) = self._display.GetPeriodValues()
+            # Quick and dirty:
             delta = (e-s)*100
             maxoffset = int(e*1000)
-            # Quick and dirty:
             if offset >= ( maxoffset - delta ) and self._mediaplayer.GetState() != wx.media.MEDIASTATE_STOPPED:
                 m = (e-s)/2
                 self._display.SetPeriodValues( s+m, e+m )
@@ -1157,9 +1139,7 @@ class MediaPanel( SndPlayer ):
         if self._mediaplayer.GetState() != wx.media.MEDIASTATE_STOPPED:
             self.UpdateRuler()
 
-    # End onTimer
     #-------------------------------------------------------------------------
-
 
     def UpdateRuler(self):
         offset = self._mediaplayer.Tell()
@@ -1170,11 +1150,9 @@ class MediaPanel( SndPlayer ):
     #-------------------------------------------------------------------------
 
 
-
     #-------------------------------------------------------------------------
     # Data management
     #-------------------------------------------------------------------------
-
 
     def SetDisplay(self, d):
 
@@ -1186,9 +1164,7 @@ class MediaPanel( SndPlayer ):
         else:
             self.SetMedia()
 
-    # End SetDisplay
     #-------------------------------------------------------------------------
-
 
     def SetMedia(self):
         """ Set a new mediaplayer. """
@@ -1202,20 +1178,16 @@ class MediaPanel( SndPlayer ):
         if self._dcobj is None:
             self.FileDeSelected()
 
-        logging.debug("SET-MEDIA to: %s"%self._dcobj)
         if not isinstance(self._dcobj,WaveCtrl):
             self.FileDeSelected()
             return
 
         filename = self._display.GetSelectionFilename()
-        logging.debug('  Media file name=%s'%filename)
         SndPlayer.FileSelected( self,filename )
 
         self.Refresh()
 
-    # End SetMedia
     #-------------------------------------------------------------------------
-
 
     def FileDeSelected(self):
         """ Unset the current mediaplayer. """
@@ -1224,8 +1196,6 @@ class MediaPanel( SndPlayer ):
         #self._display = None
         SndPlayer.FileDeSelected(self)
 
-    # End FileDeSelected
     #-------------------------------------------------------------------------
-
 
 # ----------------------------------------------------------------------------

@@ -630,8 +630,7 @@ class SndPlayer( wx.Panel ):
     def onTimer(self, event):
         """ Keeps the player slider updated. """
 
-        if self._mediaplayer is None:
-            return
+        if self._mediaplayer is None: return
 
         offset = self._mediaplayer.Tell()
         # On MacOS, it seems that offset is not so precise we could expect...
