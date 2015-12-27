@@ -20,15 +20,15 @@
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
-
+from os.path import abspath, dirname, join
 import sys
-import os.path
-sys.path.append(os.path.dirname( os.path.dirname( os.path.abspath(__file__) )))
-sys.path.append(os.path.dirname( os.path.dirname( os.path.dirname( os.path.abspath(__file__)))))
+
+SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
+sys.path.append(join(SPPAS, 'sppas', 'src'))
 
 import wx
 from test_utils import *
-from demo.RulerCtrlDemo import RulerCtrlFrame
+from wxgui.demo.RulerCtrlDemo import RulerCtrlFrame
 
 # ----------------------------------------------------------------------------
 

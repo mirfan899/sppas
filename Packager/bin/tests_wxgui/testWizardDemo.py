@@ -1,14 +1,14 @@
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
+from os.path import abspath, dirname, join
+import sys
+
+SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
+sys.path.append(join(SPPAS, 'sppas', 'src'))
 
 import wx
-import sys
-import os.path
-sys.path.append(os.path.dirname( os.path.dirname( os.path.abspath(__file__) )))
-sys.path.append(os.path.dirname( os.path.dirname( os.path.dirname( os.path.abspath(__file__)))))
-
-from demo.wizardDemo import WizardDemo
+from wxgui.demo.wizardDemo import WizardDemo
 
 # ----------------------------------------------------------------------------
 

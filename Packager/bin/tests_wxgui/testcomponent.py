@@ -8,13 +8,14 @@ from logging import info as loginfo
 import getopt
 import wx
 
+from os.path import abspath, dirname, join
 import sys
-import os.path
-sys.path.append( os.path.dirname(os.path.dirname(os.path.abspath(__file__) )))
-sys.path.append( os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__) ))))
 
-from frames.baseframe   import ComponentFrame
-from clients.baseclient import BaseClient
+SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
+sys.path.append(join(SPPAS, 'sppas', 'src'))
+
+from wxgui.frames.baseframe   import ComponentFrame
+from wxgui.clients.baseclient import BaseClient
 
 
 # ---------------------------------------------------------------------------

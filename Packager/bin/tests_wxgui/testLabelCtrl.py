@@ -20,22 +20,22 @@
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
-
+from os.path import abspath, dirname, join
 import sys
-import os.path
-sys.path.append(os.path.dirname( os.path.dirname( os.path.dirname(os.path.abspath(__file__)))))
-sys.path.append(os.path.dirname( os.path.dirname( os.path.abspath(__file__) )))
+
+SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
+sys.path.append(join(SPPAS, 'sppas', 'src'))
 
 import wx
 from test_utils import *
-from demo.WaveCtrlDemo import WaveCtrlFrame
+from wxgui.demo.LabelCtrlDemo import LabelCtrlFrame
 
 # ----------------------------------------------------------------------------
 
 
 class MyApp(wx.App):
     def OnInit(self):
-        frame = WaveCtrlFrame(None, -1, 'Wave Demo')
+        frame = LabelCtrlFrame(None, -1, 'Label Demo')
         frame.Show(True)
         return True
 
@@ -47,9 +47,8 @@ if __name__ == '__main__':
     log_file  = None
     setup_logging(log_level, log_file)
 
-# ----------------------------------------------------------------------------
-
     app = MyApp(0)
     app.MainLoop()
 
 # ---------------------------------------------------------------------------
+

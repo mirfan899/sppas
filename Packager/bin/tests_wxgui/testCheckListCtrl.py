@@ -5,21 +5,22 @@
 # Imports
 # ----------------------------------------------------------------------------
 
+from os.path import abspath, dirname, join
 import sys
-import os.path
-sys.path.append( os.path.dirname(os.path.dirname(os.path.abspath(__file__) )))
-sys.path.append( os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__) ))))
+
+SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
+sys.path.append(join(SPPAS, 'sppas', 'src'))
 
 import wx
 from test_utils import setup_logging
-from ui.CustomListCtrl import LineListCtrl
+from wxgui.ui.CustomListCtrl import CheckListCtrl
 
 # ----------------------------------------------------------------------------
 
 class DemoFrame(wx.Frame):
     def __init__(self):
         wx.Frame.__init__(self, None, -1,
-                          "A wx.ListCtrl customized to indicate line numbers in first column",
+                          "A wx.ListCtrl customized to be a CheckList",
                           size=(700,500))
         self.MakeMenu()
         self.MakeListCtrl()
@@ -28,7 +29,7 @@ class DemoFrame(wx.Frame):
     def MakeListCtrl(self):
 
         # create the list control
-        self.list = LineListCtrl(self, -1, style=wx.LC_REPORT)#|wx.LC_SINGLE_SEL)
+        self.list = CheckListCtrl(self, -1, style=wx.LC_REPORT)#|wx.LC_SINGLE_SEL)
 
         # Add some columns
         for col in range(3):
@@ -44,11 +45,10 @@ class DemoFrame(wx.Frame):
         for col in range(1,3):
             self.list.SetStringItem(5, col, "ro5-%d"%(col+1))
 
+
         # set the width of the columns in various ways
         for col in range(3):
             self.list.SetColumnWidth(col, wx.LIST_AUTOSIZE)
-
-        self.list.DeleteItem(5)
 
         # in case we are recreating the list tickle the frame a bit so
         # it will redo the layout
@@ -142,7 +142,7 @@ class DemoApp(wx.App):
 
 # ----------------------------------------------------------------------------
 
-app = DemoApp(redirect=True, filename="testlinelistctrl.log")
+app = DemoApp(redirect=True, filename="testchecklistctrl.log")
 app.MainLoop()
 
 # ----------------------------------------------------------------------------

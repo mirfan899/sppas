@@ -4,14 +4,15 @@
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
-
+from os.path import abspath, dirname, join
 import sys
-import os.path
-sys.path.append(os.path.dirname( os.path.dirname(os.path.abspath(__file__) )))
+
+SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
+sys.path.append(join(SPPAS, 'sppas', 'src'))
 
 import wx
 from test_utils import setup_logging
-from demo.PointCtrlDemo import PointCtrlFrame
+from wxgui.demo.PointCtrlDemo import PointCtrlFrame
 
 # ----------------------------------------------------------------------------
 

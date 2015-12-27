@@ -20,21 +20,23 @@
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
+
+from os.path import abspath, dirname, join
 import sys
-import os.path
-sys.path.append(os.path.dirname( os.path.dirname( os.path.dirname(os.path.abspath(__file__)))))
-sys.path.append(os.path.dirname( os.path.dirname( os.path.abspath(__file__) )))
+
+SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
+sys.path.append(join(SPPAS, 'sppas', 'src'))
 
 import wx
 from test_utils import *
-from demo.TierCtrlDemo import TierCtrlFrame
+from wxgui.demo.TrsCtrlDemo import TrsCtrlFrame
 
 # ----------------------------------------------------------------------------
 
 
 class MyApp(wx.App):
     def OnInit(self):
-        frame = TierCtrlFrame(None, -1, 'Tier Demo')
+        frame = TrsCtrlFrame(None, -1, 'Transcription Demo')
         frame.Show(True)
         return True
 

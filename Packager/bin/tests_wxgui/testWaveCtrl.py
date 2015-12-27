@@ -20,22 +20,22 @@
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
-
+from os.path import abspath, dirname, join
 import sys
-import os.path
-sys.path.append(os.path.dirname( os.path.dirname( os.path.dirname(os.path.abspath(__file__)))))
-sys.path.append(os.path.dirname( os.path.dirname( os.path.abspath(__file__) )))
+
+SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
+sys.path.append(join(SPPAS, 'sppas', 'src'))
 
 import wx
 from test_utils import *
-from demo.TrsCtrlDemo import TrsCtrlFrame
+from wxgui.demo.WaveCtrlDemo import WaveCtrlFrame
 
 # ----------------------------------------------------------------------------
 
 
 class MyApp(wx.App):
     def OnInit(self):
-        frame = TrsCtrlFrame(None, -1, 'Transcription Demo')
+        frame = WaveCtrlFrame(None, -1, 'Wave Demo')
         frame.Show(True)
         return True
 

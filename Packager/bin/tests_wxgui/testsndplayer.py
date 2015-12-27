@@ -8,13 +8,14 @@ from logging import info as loginfo
 import getopt
 import wx
 
+from os.path import abspath, dirname, join
 import sys
-import os.path
-sys.path.append( os.path.dirname(os.path.dirname(os.path.abspath(__file__) )))
 
+SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
+sys.path.append(join(SPPAS, 'sppas', 'src'))
 
-from panels.sndplayer import SndPlayer
-from consts import *
+from wxgui.panels.sndplayer import SndPlayer
+from wxgui.sp_consts import *
 
 
 # ---------------------------------------------------------------------------
