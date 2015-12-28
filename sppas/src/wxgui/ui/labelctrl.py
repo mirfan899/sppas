@@ -124,9 +124,9 @@ class LabelCtrl( wx.Window ):
 
         wx.EVT_ENTER_WINDOW(self, self.OnMouseEntering)
         wx.EVT_LEAVE_WINDOW(self, self.OnMouseLeaving)
-        wx.EVT_LEFT_UP(self, self.OnMouseLeftUp)
-        wx.EVT_RIGHT_UP(self, self.OnMouseLeftUp)
-        wx.EVT_MOTION(self, self.OnMouseMotion)
+        wx.EVT_LEFT_UP(self,      self.OnMouseLeftUp)
+        wx.EVT_RIGHT_UP(self,     self.OnMouseRightUp)
+        wx.EVT_MOTION(self,       self.OnMouseMotion)
 
     #------------------------------------------------------------------------
 
@@ -297,6 +297,7 @@ class LabelCtrl( wx.Window ):
         evt = LabelLeftEvent(label=self._label)
         evt.SetEventObject(self)
         wx.PostEvent(self.GetParent(), evt)
+        wx.PostEvent(self.GetParent(), event)
         event.Skip()
 
     def OnMouseRightUp(self, event):
@@ -315,6 +316,8 @@ class LabelCtrl( wx.Window ):
         @param height (int) is the new height.
 
         """
+        if height < MIN_H:
+            height = MIN_H
         if self.GetSize().height != height:
             self.SetSize( wx.Size(self.GetSize().width, int(height)) )
             self.Refresh()

@@ -60,7 +60,9 @@ class TrsCtrlDemo(wx.Window):
 
     def repaint1(self, event):
         """ Pane. """
-        p = random.sample(range(0,3),  1)[0]
+        w = random.sample(range(10,200), 1)[0]
+        self.trsctrl.SetPaneWidth( w )
+        p = random.sample(range(0,3), 1)[0]
         if p==0:
             self.trsctrl.SetPanePosition( wx.ALIGN_LEFT )
         elif p==1:

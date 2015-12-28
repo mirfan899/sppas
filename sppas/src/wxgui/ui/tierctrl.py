@@ -78,9 +78,284 @@ STYLE=wx.NO_BORDER|wx.NO_FULL_REPAINT_ON_RESIZE
 FONT_SIZE_MIN = 6
 FONT_SIZE_MAX = 32
 
-PANE_WIDTH  = 100
+PANE_WIDTH_MIN = 10
+PANE_WIDTH_MAX = 200
+PANE_WIDTH     = 100
 
 # ----------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------
+# Class PaneTierCtrl
+# ----------------------------------------------------------------------------
+
+class PaneTierCtrl( wx.Window ):
+    """
+    @author:  Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: This class is used to display a pane for a TierCtrl.
+
+    """
+
+    def __init__(self, parent, id=wx.ID_ANY,
+                 pos=wx.DefaultPosition,
+                 size=wx.DefaultSize,
+                 text=""):
+        """
+        Constructor.
+
+        Non-wxpython related parameters:
+
+        @param text (str) the text to write in the pane.
+
+        """
+        wx.Window.__init__( self, parent, id, pos, size, STYLE )
+        self.SetBackgroundStyle( wx.BG_STYLE_CUSTOM )
+        self.SetDoubleBuffered( True )
+
+        # Members, Initializations
+        self._text = text
+        self.SetToolTip( wx.ToolTip(self.__tooltip()) )
+        self.Reset( size )
+
+        # Bind the events related to our control
+        wx.EVT_PAINT(self, self.OnPaint)
+        wx.EVT_ERASE_BACKGROUND(self, lambda event: None)
+        wx.EVT_MOUSE_EVENTS(self, self.OnMouseEvents)
+
+    #------------------------------------------------------------------------
+
+    def Reset(self, size=None):
+        """
+        Reset all members to their default.
+
+        @param size (wx.Size)
+
+        """
+        self._align = wx.ALIGN_LEFT
+        self.__initializeColours()
+        if size:
+            self.__initialSize(size)
+
+    #------------------------------------------------------------------------
+
+    #------------------------------------------------------------------------
+    # Look & style
+    #------------------------------------------------------------------------
+
+    def SetFont(self, font):
+        """
+        Override. Set a new font.
+
+        """
+        if font != self.GetFont():
+            wx.Window.SetFont(self,font)
+
+    #------------------------------------------------------------------------
+
+    def SetTextAlign(self, value=wx.ALIGN_CENTRE):
+        """
+        Fix the position of the text.
+
+        @param value is one of wx.ALIGN_LEFT, wx.ALIGN_CENTRE or wx.ALIGN_RIGHT
+
+        """
+        if value != self._align:
+            self._align = value
+
+    #------------------------------------------------------------------------
+
+    def GetTextAlign(self):
+        """
+        Returns the text position.
+
+        @return one of: wx.ALIGN_LEFT, wx.ALIGN_CENTRE or wx.ALIGN_RIGHT
+
+        """
+        return self._align
+
+    #------------------------------------------------------------------------
+
+    def SetBorderColour(self, colour):
+        """
+        Fix the color of the top/bottom lines.
+
+        """
+        self._penbordercolor = wx.Pen(colour,1,wx.SOLID)
+
+    #------------------------------------------------------------------------
+
+    def SetWidth(self, width):
+        """
+        Change the width of the PaneTierCtrl, only if necessary.
+
+        @param width (int) is the new width.
+
+        """
+        if width < PANE_WIDTH_MIN:
+            width = PANE_WIDTH_MIN
+        if self.GetSize().width != width:
+            self.SetSize(wx.Size(int(width),self.GetSize().height))
+            self._width = width
+
+    #------------------------------------------------------------------------
+
+    def GetWidth(self):
+        """
+        Return the defined width.
+        It can un-match with the current width.
+
+        @return (int) the current width in pixels.
+
+        """
+        return self._width
+
+    #------------------------------------------------------------------------
+
+    def SetHeight(self, height):
+        """
+        Change the height of the PointCtrl.
+
+        @param height (int) is the new height.
+
+        """
+        if height < MIN_H:
+            height = MIN_H
+        if self.GetSize().height != height:
+            self.SetSize( wx.Size(self.GetSize().width, int(height)) )
+            self.Refresh()
+
+    #------------------------------------------------------------------------
+
+    def SetText(self, text):
+        """
+        Change the text to write.
+
+        """
+        self._text = text
+
+    #------------------------------------------------------------------------
+
+    def MoveWindow(self, pos, size):
+        """
+        Define a new position and/or size to display.
+
+        @param pos (wx.Point)
+        @param size (wx.Size)
+
+        """
+        (w,h) = size
+        (x,y) = pos
+        (ow,oh) = self.GetSize()
+        (ox,oy) = self.GetPosition()
+
+        if ow != w or oh != h:
+            self.SetSize(size)
+            self.Refresh()
+
+        if ox != x or oy != y:
+            self.SetPosition(pos)
+
+    #------------------------------------------------------------------------
+
+    #------------------------------------------------------------------------
+    # Callbacks
+    #------------------------------------------------------------------------
+
+    def OnMouseEvents(self, event):
+        """
+        Handles the wx.EVT_MOUSE_EVENTS event for PaneTierCtrl.
+
+        """
+        wx.PostEvent(self.GetParent(), event)
+        event.Skip()
+
+    # -----------------------------------------------------------------------
+
+    #------------------------------------------------------------------------
+    # Painting
+    #------------------------------------------------------------------------
+
+    def OnPaint(self, event):
+        """
+        Handles the wx.EVT_PAINT event for PointCtrl.
+
+        """
+        dc = wx.BufferedPaintDC(self)
+        self.Draw(dc)
+
+    #------------------------------------------------------------------------
+
+    def Draw(self, dc):
+        """
+        Draw the PointCtrl on the DC.
+
+        @param dc (wx.DC) The device context to draw on.
+
+        """
+        # Get the actual client size of ourselves
+        w,h = self.GetClientSize()
+
+        # Nothing to do, we still don't have dimensions!
+        if w*h==0: return
+
+        # Write the tier name
+        textwidth, textheight = dc.GetTextExtent( self._text )
+
+        # Vertical position of the text
+        y = int( (h - textheight)/2 ) - 1
+
+        # Write text
+        dc.Clear()
+        dc.SetBackground( wx.Brush( self.GetBackgroundColour(), wx.SOLID ) )
+        dc.SetTextBackground( wx.NullColour )
+        dc.SetFont( self.GetFont() )
+        dc.SetTextForeground( self.GetForegroundColour() )
+
+        textwidth, textheight = dc.GetTextExtent( self._text )
+        if self._align == wx.ALIGN_LEFT:
+            x=2
+        elif self._align == wx.ALIGN_RIGHT:
+            x=max(1,w-textwidth-1)
+        else:
+            x=(w-textwidth)/2
+        y = (h-textheight)/2
+        dc.DrawText(self._text, x, y)
+
+        # Top and Bottom lines
+        x,y=self.GetPosition()
+        dc.SetPen( self._penbordercolor )
+        dc.DrawLine(0,y,w,y)
+        dc.DrawLine(0,h-1,w,h-1)
+
+    #------------------------------------------------------------------------
+    # Private
+    #------------------------------------------------------------------------
+
+    def __initializeColours(self):
+        """ Create the pens and brush with default colors. """
+        self.SetBackgroundColour(self.GetParent().GetBackgroundColour())
+        self._penbordercolor = wx.Pen(wx.BLACK,1,wx.SOLID)
+
+    #------------------------------------------------------------------------
+
+    def __initialSize(self, size):
+        """ Initialize the size. """
+
+        self.SetMinSize(wx.Size(MIN_W,MIN_H))
+        if size:
+            self.SetSize(size)
+
+    #------------------------------------------------------------------------
+
+    def __tooltip(self):
+        """ Set a tooltip string indicating the text content. """
+
+        return self._text
+
+    #------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
 # Class TierCtrl
@@ -106,36 +381,53 @@ class TierCtrl( wx.Window ):
             - tier (Tier) the Tier to draw (see annotationdata library for details).
 
         """
+        self._pointsctrl = []
+        self._labelsctrl = []
+        self._panectrl = None
+        self._anns = {} # To link the annotations to the displayed controls
+        self._tier = tier
+
         wx.Window.__init__(self, parent, id, pos, size, STYLE)
         self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
         self.SetDoubleBuffered(True)
 
-        # Tier Members
-        self._tier = tier
-        self._pointsctrl = list()
-        self._labelsctrl = list()
-        self._anns = {} # To link the annotations to the displayed controls
-
         self.Reset( size )
+        self._buildpanectrl()
 
         # Bind the events related to our control:
         wx.EVT_PAINT(self, self.OnPaint)
         wx.EVT_ERASE_BACKGROUND(self, lambda event: None)
 
+        wx.EVT_MOUSE_EVENTS(self, self.OnMouseEvents)
+
         #spEVT_LABEL_LEFT(self, self.OnLabelEdit)
         #spEVT_POINT_LEFT(self, self.OnPointEdit)
         #spEVT_RESIZING(self,   self.OnPointResizing)
         #spEVT_RESIZED(self,    self.OnPointResized)
-        #spEVT_MOVING(self,     self.OnPointMoving)
+        spEVT_MOVING(self,     self.OnPointMoving)
         #spEVT_MOVED(self,      self.OnPointMoved)
 
-        # Bind the events related to our control
-        #wx.EVT_MOUSE_EVENTS(self, self.OnMouseEvent)
-
     #-------------------------------------------------------------------------
 
+    def _buildpanectrl(self):
+        """
+        Construct the left pane.
+
+        """
+        if not self._tier:
+            text="" # not declared
+        elif self._tier is None:
+            text="" # not initialized
+        else:
+            text=self._tier.GetName()
+        self._panectrl = PaneTierCtrl(self, text=text)
+        self._panectrl.SetBackgroundColour( self.GetBackgroundColour() )
+        self._panectrl.SetForegroundColour( self.GetForegroundColour() )
+        self._panectrl.SetWidth( PANE_WIDTH )
+        self._panectrl.SetBorderColour( self._bgdarkencolor )
+
     #-------------------------------------------------------------------------
-    # Members
+    # Getters and Setters
     #-------------------------------------------------------------------------
 
     def Reset(self, size):
@@ -147,19 +439,18 @@ class TierCtrl( wx.Window ):
         """
         self.SetMinSize(wx.Size(MIN_W,MIN_H))
         if size:
-            self.SetSize(size)
+            (w,h) = size
+            if w < MIN_W: w = MIN_W
+            if h < MIN_H: h = MIN_H
+            self.SetSize(wx.Size(w,h))
 
         # Displayed period of time (can be taken from the Parent)
         self._mintime = 0.
         self._maxtime = 2.
 
-        # A pane that can be placed at left or right (or nowhere).
-        self._infopanep = wx.ALIGN_LEFT   # position (CENTRE means nowhere)
-        try:
-            self._infopanew = self.GetParent().GetPaneWidth()
-        except Exception:
-            self._infopanew = PANE_WIDTH # width
+        self._panepos = wx.ALIGN_LEFT
 
+        # Colors
         self._bgcolor = self.GetParent().GetBackgroundColour()
         self._bgpen   = wx.Pen( self._bgcolor, 1, wx.SOLID )
         self._bgbrush = wx.Brush( self._bgcolor, wx.SOLID )
@@ -173,35 +464,28 @@ class TierCtrl( wx.Window ):
 
         self._midpointcolor = wx.BLACK
 
+        # Label in each annotation
         self._textcolor = self.GetParent().GetForegroundColour()
         if self._tier is not None and self._tier.IsPoint():
-            self._labelalign = wx.ALIGN_LEFT # Label in each annotation
+            self._labelalign = wx.ALIGN_LEFT
         else:
-            self._labelalign = wx.ALIGN_CENTRE # Label in each annotation
-        self._labelbgcolor  = self._fgcolor
-        self._labelfgucolor = None # uncertain label
+            self._labelalign = wx.ALIGN_CENTRE
+        self._labelbgcolor  = self._fgcolor #
+        self._labelfgucolor = None          # uncertain label
 
-        # Adjust font size when self is resized or when a new font is fixed:
+        # &²Adjust font size when self is resized or when a new font is fixed:
         self._fontsizeauto = True
         self.AutoAdjustFont()
-
-    #-------------------------------------------------------------------------
-
-    def GetTier(self):
-        """
-        Return the tier to draw.
-        """
-        return self._tier
 
     #-------------------------------------------------------------------------
 
     def SetTime(self, start, end):
         """
         Define a new period to display.
-        Request to redraw only if the period has changed.
+        Redraw only if the period has changed.
 
-        @param start (float) begin time value
-        @param end (float) end time value
+        @param start (float) begin time value, in seconds.
+        @param end (float) end time value, in seconds.
 
         """
         torepaint = False
@@ -230,8 +514,7 @@ class TierCtrl( wx.Window ):
         @param value is one of wx.ALIGN_LEFT, wx.ALIGN_CENTRE or wx.ALIGN_RIGHT
 
         """
-        if self._tier.IsPoint():
-            return
+        if self._tier.IsPoint(): return
 
         if self._labelalign != value:
             # Apply this new value to self.
@@ -245,21 +528,23 @@ class TierCtrl( wx.Window ):
     def SetFont(self, font):
         """
         Fix a font.
+        Redraw only if the font has changed.
         Automatically adjust the size (compared to the previous one).
 
         @param font (wx.Font)
 
         """
-        if font == self.GetFont():
-            return
+        if font == self.GetFont(): return
+
+        # TODO: check font size (more than min, less than max!)
 
         # Apply this new font to self.
         wx.Window.SetFont( self,font )
-
         if self._fontsizeauto:
             self.AutoAdjustFont()
 
-        # propagate to all label controls
+        # propagate to all controls
+        self._panectrl.SetFont( self.GetFont() )
         for label in self._labelsctrl:
             label.SetFont( self.GetFont() )
 
@@ -275,6 +560,7 @@ class TierCtrl( wx.Window ):
 
         """
         if colour != self._textcolor:
+            self._panectrl.SetForegroundColour( colour )
             self._textcolor = colour
             self._textpen   = wx.Pen(colour,1,wx.SOLID)
             self.Refresh()
@@ -284,12 +570,12 @@ class TierCtrl( wx.Window ):
     def SetLabelColours(self, bgcolour=None, fontnormalcolour=None, fontuncertaincolour=None):
         """
         Change the main colors of the Labels.
+        Notice that uncertain labels can be of a different color,
+        like links in web browsers.
 
         @param bgcolour (wx.Colour)
         @param fontcolour (wx.Colour)
         @param fontuncertaincolour (wx.Colour)
-
-        Notice that uncertain labels are of a different color (like links in web browsers).
 
         """
         redraw = False
@@ -348,6 +634,7 @@ class TierCtrl( wx.Window ):
             self._bgcolor = colour
             self._bgpen   = wx.Pen(colour,1,wx.SOLID)
             self._bgbrush = wx.Brush(colour, wx.SOLID)
+            self._panectrl.SetBackgroundColour( colour )
             self.Refresh()
 
     #-------------------------------------------------------------------------
@@ -368,50 +655,24 @@ class TierCtrl( wx.Window ):
 
     #-------------------------------------------------------------------------
 
-    def GetLabelAlign(self):
-        """
-        Get the position of the text of an annotation (left/center/right).
-
-        """
-        return self._labelalign
-
-    # -----------------------------------------------------------------------
-
-    def GetPanePosition(self):
-        """
-        Return the position of the information pane.
-
-        The position is one of wx.ALIGN_LEFT, wx.ALIGN_CENTRE or wx.ALIGN_RIGHT
-
-        """
-        return self._infopanep
-
-    #-------------------------------------------------------------------------
-
     def SetPanePosition(self, value):
         """
         Fix the position of the information pane.
+        It also fixes the position of the text inside the pane...
 
-        @param value is one of wx.ALIGN_LEFT, wx.ALIGN_CENTRE or wx.ALIGN_RIGHT
+        @param value is one of wx.ALIGN_LEFT, wx.ALIGN_CENTRE or wx.ALIGN_RIGHT.
+        @raise TypeError
 
         """
         if value not in [ wx.ALIGN_LEFT, wx.ALIGN_RIGHT, wx.ALIGN_CENTRE ]:
             raise TypeError
 
-        if self._infopanep != value:
-            self._infopanep = value
+        if self._panepos != value:
+            self._panepos = value
+            self._panectrl.SetTextAlign( value )
             self.Refresh()
 
     #-------------------------------------------------------------------------
-
-    def GetPaneWidth(self):
-        """
-        Return the width of the information pane.
-
-        """
-        return self._infopanew
-
-    # -----------------------------------------------------------------------
 
     def SetPaneWidth(self, value):
         """
@@ -420,13 +681,91 @@ class TierCtrl( wx.Window ):
         @param value (int) is between 10 and 200.
 
         """
+        self._panectrl.SetWidth(value)
+        self.Refresh()
 
-        value = min(200, max(10, int(value)))
-        if self._infopanew != value:
-            self._infopanew = value
-            self.Refresh()
+    # -----------------------------------------------------------------------
+
+    def GetPanePosition(self):
+        """
+        Return the position of the information pane.
+        The position is one of wx.ALIGN_LEFT, wx.ALIGN_CENTRE or wx.ALIGN_RIGHT.
+
+        """
+        return self._panepos
 
     #-------------------------------------------------------------------------
+
+    def GetLabelAlign(self):
+        """
+        Get the position of the text of an annotation.
+        The position is one of wx.ALIGN_LEFT, wx.ALIGN_CENTRE or wx.ALIGN_RIGHT.
+
+        """
+        return self._labelalign
+
+    # -----------------------------------------------------------------------
+
+    def GetPaneWidth(self):
+        """
+        Return the width of the information pane.
+
+        """
+        return self._panectrl.GetWidth()
+
+    # -----------------------------------------------------------------------
+
+    def GetHeight(self):
+        """
+        Return the current height.
+
+        """
+        return self.GetSize().height
+
+    # -----------------------------------------------------------------------
+
+    def GetTier(self):
+        """
+        Return the tier to draw.
+
+        """
+        return self._tier
+
+    #-------------------------------------------------------------------------
+
+    #------------------------------------------------------------------------
+    # Methods to move/zoom/resize objects
+    #------------------------------------------------------------------------
+
+    def SetHeight(self, height):
+        """
+        Set the height (int).
+        Ask to redraw only if height is different of the actual one.
+
+        @param height (int) in pixels
+
+        """
+        w,h = self.GetSize()
+
+        if h != height:
+            # apply new height
+            new_height = max(MIN_H, height)
+            self.SetSize(wx.Size(w,int(new_height)))
+            # adjust font size
+            if self._fontsizeauto:
+                self.AutoAdjustFont()
+
+        # Apply to all objects of the tier
+        h = self.GetHeight()
+
+        self._panectrl.SetHeight( h )
+        for point in self._pointsctrl:
+            point.SetHeight( h )
+        for label in self._labelsctrl:
+            label.SetHeight( h )
+            label.SetFont( self.GetFont() )
+
+    # -----------------------------------------------------------------------
 
     def MoveWindow(self, pos, size):
         """
@@ -470,75 +809,29 @@ class TierCtrl( wx.Window ):
     def VertZoom(self, z):
         """
         Apply a vertical zoom to the TierCtrl.
-        """
-        self.SetHeight( int(z * self.GetHeight()) )
 
-        h = self.GetSize().height
-
-        for point in self._pointsctrl:
-            point.SetHeight( h )
-
-        for label in self._labelsctrl:
-            label.SetHeight( h )
-            label.SetFont( self.GetFont() )
-
-    # -----------------------------------------------------------------------
-
-    def GetHeight(self):
-        """
-        Return the current height.
+        @param z (float) is the zoom coefficient.
 
         """
-        return self.GetSize()[1]
+        h = int(z * self.GetHeight())
+        self.SetHeight(h)
 
-    # -----------------------------------------------------------------------
-
-    def SetHeight(self, height):
-        """
-        Set the height (int).
-        Ask to redraw only if height is different of the actual one.
-
-        @param height (int) in pixels
-
-        """
-        w,h = self.GetSize()
-
-        if h != height:
-
-            # apply new height
-            new_height = max(MIN_H, height)
-            self.SetSize(wx.Size(w,int(new_height)))
-
-            # adjust font size
-            if self._fontsizeauto: # and new_height>0:
-                self.AutoAdjustFont()
-
-        h = self.GetSize().height
-
-        for point in self._pointsctrl:
-            point.SetHeight( h )
-
-        for label in self._labelsctrl:
-            label.SetHeight( h )
-            label.SetFont( self.GetFont() )
-
-        #self.Refresh()
     # -----------------------------------------------------------------------
 
     def AutoAdjustFont(self):
         """
-        Fix the biggest font size (depending on the available height).
+        Fix and apply the most appropriate font size,
+        depending on the available height.
 
         """
-
-        h = self.GetDrawingSize()[1]
+        h = self.GetHeight()
         if not h: return
 
         fontsize = FONT_SIZE_MIN
         self.GetFont().SetPointSize(fontsize)
 
         pxh = self.__getTextHeight()
-        pxmax = int(0.6*h)
+        pxmax = int(0.7*h)
         while fontsize < FONT_SIZE_MAX and pxh<pxmax:
             fontsize = fontsize + 1
             self.GetFont().SetPointSize(fontsize)
@@ -548,6 +841,16 @@ class TierCtrl( wx.Window ):
 
     # -----------------------------------------------------------------------
     # Callbacks
+    # -----------------------------------------------------------------------
+
+    def OnMouseEvents(self, event):
+        """
+        Handles the wx.EVT_MOUSE_EVENTS event for PointCtrl.
+
+        """
+        wx.PostEvent(self.GetParent(), event)
+        event.Skip()
+
     # -----------------------------------------------------------------------
 
     def OnPointEdit(self, event):
@@ -569,6 +872,7 @@ class TierCtrl( wx.Window ):
 
     def OnPointResizing(self, event):
         """ Point Resizing means a new radius value for the TimePoint. """
+        # TODO
         logging.info('TIER. OnPointResizing. Disabled.')
         return
 
@@ -584,19 +888,54 @@ class TierCtrl( wx.Window ):
     # ------------------------------------------------------------------------
 
     def OnPointMoving(self, event):
-        logging.info('TIER. OnPointMoving. Disabled.')
+        logging.info('TIER. OnPointMoving.')
         return
 
+        # which point is moving and what is new size?
         ptr = event.GetEventObject()
         (x,y) = event.pos
         (w,h) = ptr.GetSize()
+
+        # self coordinates
         sx,sy = self.GetPosition()
         sw,sh = self.GetSize()
+
+        # get new time value
+        # b =
+        # e =
+
+        # get annotations related to this pointctrl
+        # _newanns = {}
+        # _newok = True
+        # for ann in self._anns.keys()
+        #    label, p1, p2 = self._anns[ann]
+        #    if p1 == ptr:
+        #        # try to fix the new value to this timepoint
+        #        try:
+        #            p = TimePoint( b, ptr.GetValue().GetRadius() )
+        #            ann.GetLocation().SetBegin( p )
+        #        except Exception:
+        #            _newok = False
+        #    if p2 == ptr:
+        #        # try to fix the new value to this timepoint
+        #        try:
+        #            p = TimePoint( e, ptr.GetValue().GetRadius() )
+        #            ann.GetLocation().SetEnd( p )
+        #        except Exception:
+        #            _newok = False
+        #    _newanns[ann] = [ label, p1, p2 ]
+        #
+        # if _newok is True:
+        #    self._anns = _newanns
+        #    # accept new pos...
+        #    ptr.Move(event.pos)
+
+        logging.debug(' ... new point pos: %d,%d'%(x,y))
+        self.GetTopLevelParent().GetStatusBar().SetStatusText('Point is moving: %d'%x)
 
         self.Refresh()
 
     # ------------------------------------------------------------------------
-
 
     #-------------------------------------------------------------------------
     # Painting
@@ -604,9 +943,9 @@ class TierCtrl( wx.Window ):
 
     def OnPaint(self, event):
         """
-        Handles the wx.EVT_PAINT event for PointCtrl.
-        """
+        Handles the wx.EVT_PAINT event for TierCtrl.
 
+        """
         dc = wx.BufferedPaintDC(self)
         self.Draw(dc)
 
@@ -626,15 +965,12 @@ class TierCtrl( wx.Window ):
         if not self._tier:     return # not declared
         if self._tier is None: return # not initialized
 
-        # Get the actual client size of ourselves
+        # Get the actual client size and position of ourselves
         w,h = self.GetClientSize()
-        logging.debug(' Tier %s. Draw  w=%d, h=%d'%(self._tier.GetName(),w,h))
 
         # Nothing to do, we still don't have dimensions!
         if w*h==0: return
-
-        # Get the actual position of ourselves
-        (x,y) = self.GetDrawingPosition()
+        logging.debug(' TierCtrl %s. Draw with size=(%d,%d)'%(self._tier.GetName(),w,h))
 
         # Initialize the DC
         if self._bgcolor is None:
@@ -643,18 +979,20 @@ class TierCtrl( wx.Window ):
             dc.SetBackground( self._bgbrush )
         dc.Clear()
 
-        try:
-            # Info Pane
-            if self._infopanep == wx.ALIGN_LEFT:
-                self.DrawPane(dc, 0, 0, self._infopanew, h)
-            elif self._infopanep == wx.ALIGN_RIGHT:
-                self.DrawPane(dc, w-self._infopanew, y, self._infopanew, h)
-            # Content
-            if w*h > 0:
-                self.DrawContent(dc, x,y, w,h)
-        except Exception as e:
-            logging.info(' [ERROR]. Got exception %s'%e)
-            pass
+        # Pane
+        x=0
+        if self._panepos == wx.ALIGN_LEFT:
+            self._panectrl.MoveWindow(pos=(0,0),size=(self._panectrl.GetWidth(),h))
+            x=self._panectrl.GetWidth()
+            w=w-self._panectrl.GetWidth()
+        elif self._panepos == wx.ALIGN_RIGHT:
+            self._panectrl.MoveWindow(pos=(w-self._panectrl.GetWidth(),0),size=(self._panectrl.GetWidth(),h))
+            w=w-self._panectrl.GetWidth()
+        else:
+            self._panectrl.MoveWindow(pos=(0,0),size=(0,0))
+
+        # Content
+        self.DrawContent(dc, x,0, w,h)
 
     #-------------------------------------------------------------------------
 
@@ -684,30 +1022,6 @@ class TierCtrl( wx.Window ):
 
     #-------------------------------------------------------------------------
 
-    def DrawPane(self, dc, x,y, w,h):
-        """
-        Draw a pane with the tier name.
-
-        @param dc (PaintDC, MemoryDC, BufferedDC...)
-        @param x,y (int,int) are coord. of top left corner from which drawing
-        @param w,h (int,int) are width and height available for drawing.
-
-        """
-        self.DrawBackground(dc, x, y, w, h)
-
-        # Write the tier name
-        textwidth, textheight = dc.GetTextExtent( self._tier.GetName() )
-        # Vertical position
-        y = (h - textheight)/2
-        # Write text
-        dc.SetBackgroundMode( wx.TRANSPARENT )
-        dc.SetTextBackground( wx.NullColour )
-        dc.SetFont( self.GetFont() )
-        dc.SetTextForeground( self._textcolor )
-        dc.DrawText(self._tier.GetName(), x+1, y)
-
-    #-------------------------------------------------------------------------
-
     def DrawContent(self, dc, x,y, w,h):
         """
         Draw the tier on the DC.
@@ -721,17 +1035,16 @@ class TierCtrl( wx.Window ):
         tierend   = self._tier.GetEndValue()
 
         # the period is overlapping this tier: draw partly
-
-        # Adjust width, if tier ends before the max
-        if self._mintime < tierend and self._maxtime > tierend:
-            ## reduce w (to cover until the end of the tier)
-            missing = self._maxtime - tierend
-            w = w - int ((missing * float(w) ) / (self._maxtime-self._mintime))
-
-        # Adjust x if tier starts after the min
-        if self._maxtime > tierbegin and self._mintime < tierbegin:
-            missing = tierbegin - self._mintime
-            x = x + int ((missing * float(w) ) / (self._maxtime-self._mintime))
+        if self._tier.IsPoint() is False:
+            # Adjust width, if tier ends before the max
+            if self._mintime < tierend and self._maxtime > tierend:
+                ## reduce w (to cover until the end of the tier)
+                missing = self._maxtime - tierend
+                w = w - int ((missing * float(w) ) / (self._maxtime-self._mintime))
+            # Adjust x if tier starts after the min
+            if self._maxtime > tierbegin and self._mintime < tierbegin:
+                missing = tierbegin - self._mintime
+                x = x + int ((missing * float(w) ) / (self._maxtime-self._mintime))
 
         self.DrawBackground(dc, x,y, w,h)
 
@@ -753,43 +1066,9 @@ class TierCtrl( wx.Window ):
                 elif self._tier.IsInterval():
                     self._addAnnotationInterval(ann)
                 else:
-                    logging.info(' Can NOT draw annotation: bad type.')
+                    logging.info(' TierCtrl [WARNING] Can NOT draw annotation: bad type. %s'%ann)
             # Show controls
-            self._drawAnnotation( ann )
-
-    #-------------------------------------------------------------------------
-
-    def GetDrawingSize(self):
-        """
-        Return the size available to draw (without the pane and without margins).
-        """
-
-        # Get the actual client size of ourselves
-        (w,h) = self.GetClientSize()
-
-        # Adjust width
-        if self._infopanep == wx.ALIGN_LEFT:
-            w = w - self._infopanew
-        elif self._infopanep == wx.ALIGN_RIGHT:
-            w = w - self._infopanew
-
-        return (max(0,w), max(0,h))
-
-    #-------------------------------------------------------------------------
-
-    def GetDrawingPosition(self):
-        """
-        Return the position to draw (without the pane).
-        """
-
-        # Get the actual position of ourselves
-        (x,y) = (0,0)
-
-        # Adjust x
-        if self._infopanep == wx.ALIGN_LEFT:
-            x = x + self._infopanew
-
-        return (x,y)
+            self._drawAnnotation( ann, x,y, w,h )
 
     #-------------------------------------------------------------------------
 
@@ -797,45 +1076,57 @@ class TierCtrl( wx.Window ):
     # Private
     # ----------------------------------------------------------------------------
 
-    def _drawPoint(self, point, x,y,h):
+    def _drawPoint(self, point, x,y, w,h):
         """ Display a point. """
 
-        xpt, wpt = self._calcPointXW( point.GetValue() )
+        xpt, wpt = self._calcPointXW( point.GetValue(), w,h )
+        # Do not draw if point is outsite the available area!
+        if xpt>w:
+            point.Hide()
+            return
 
         if self._tier.IsPoint():
-            point.MoveWindow(wx.Point(x+xpt,y), wx.Size(wpt,int(h*0.65)))
+            point.MoveWindow(wx.Point(x+xpt,y), wx.Size(wpt,int(h/2)))
         else:
             point.MoveWindow(wx.Point(x+xpt,y), wx.Size(wpt,h))
         point.Show()
 
     # -----------------------------------------------------------------------
 
-    def _drawAnnotation(self, ann):
+    def _drawAnnotation(self, ann, x,y, w,h):
         """ Display an existing annotation. """
 
         label  = self._anns[ann][0]
         point  = self._anns[ann][1]
         point2 = self._anns[ann][2]
 
-        (tw,th) = self.GetDrawingSize()
-        th=th-2
-        (tx,ty) = self.GetDrawingPosition()
-        ty=ty+1
+        th=h-2 # 2 is top/bottom lines of 1 pixel each
+        ty=y+1
 
         # Draw the label
-        xpt1, wpt1 = self._calcPointXW(point.GetValue())
+        xpt1, wpt1 = self._calcPointXW(point.GetValue(), w,h)
+        if xpt1>w: return
+
         if self._tier.IsPoint():
-            label.MoveWindow(wx.Point(tx+xpt1+wpt1,ty), wx.Size(50,th))
+            tw = min(50, self.__getTextWidth(label.GetValue().GetValue())+2 )
+            if (xpt1+wpt1+tw) > w: # ensure to stay in our allocated area
+                tw = w - (xpt1+wpt1) # reduce width to the available area
+            label.MoveWindow(wx.Point(x+xpt1+wpt1,ty), wx.Size(tw,th))
 
         else:
-            xpt2, wpt2 = self._calcPointXW(point2.GetValue())
-            label.MoveWindow(wx.Point(tx+xpt1+wpt1,ty), wx.Size(xpt2-xpt1-wpt1,th))
+            xpt2, wpt2 = self._calcPointXW(point2.GetValue(), w,h)
+            tx = x+xpt1+wpt1
+            tw = xpt2-xpt1-wpt1
+            if (tx+tw) > (x+w):  # ensure to stay in our allocated area
+                tw = tw - ((tx+tw)-(w+x)) # reduce width to the available area
+            label.MoveWindow(wx.Point(tx,ty), wx.Size(tw,th))
+
         label.Show()
 
         # Draw the points
-        self._drawPoint(point, tx,ty,th)
+        self._drawPoint(point, x,ty, w,th)
         if self._tier.IsInterval():
-            self._drawPoint(point2, tx,ty,th)
+            self._drawPoint(point2, x,ty, w,th)
 
     # -----------------------------------------------------------------------
 
@@ -848,12 +1139,12 @@ class TierCtrl( wx.Window ):
         p1 = None
         p2 = None
 
-        # Is there a pointctrl at the same place?
+        # Is there a pointctrl at the same place? .
         for point in self._pointsctrl:
-            if tp1.GetValue() == point.GetValue().GetValue():
+            if tp1.GetValue() == point.GetValue().GetMidpoint():
                 p1 = point
                 break
-            if tp2.GetValue() == point.GetValue().GetValue():
+            if tp2.GetValue() == point.GetValue().GetMidpoint():
                 p2 = point
 
         if p1 is None:
@@ -891,7 +1182,7 @@ class TierCtrl( wx.Window ):
 
         # Is there a pointctrl at the same place?
         for point in self._pointsctrl:
-            if tp.GetValue() == point.GetValue().GetValue():
+            if tp.GetValue() == point.GetValue().GetMidpoint():
                 p = point
                 break
 
@@ -916,10 +1207,9 @@ class TierCtrl( wx.Window ):
 
     # -----------------------------------------------------------------------
 
-    def _calcPointXW(self, point):
+    def _calcPointXW(self, point, tierwidth, tierheight):
 
         # Get information
-        tierwidth,tierheight = self.GetDrawingSize()
         tiermintime,tiermaxtime = self._mintime,self._maxtime
         tierduration = tiermaxtime - tiermintime
 
@@ -946,6 +1236,11 @@ class TierCtrl( wx.Window ):
         dc = wx.ClientDC( self )
         dc.SetFont(self.GetFont())
         return dc.GetTextExtent('azertyuiopqsdfghjklmwxcvbn')[1]
+
+    def __getTextWidth(self, text):
+        dc = wx.ClientDC( self )
+        dc.SetFont(self.GetFont())
+        return dc.GetTextExtent(text)[0]
 
 
 # ----------------------------------------------------------------------------

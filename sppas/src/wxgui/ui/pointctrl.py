@@ -60,7 +60,7 @@ import wxgui.cutils.colorutils as colorutils
 # Constants
 # ----------------------------------------------------------------------------
 
-MIN_W=1
+MIN_W=3
 MIN_H=6
 
 COLOUR_MID=wx.Colour(20,20,20)
@@ -218,7 +218,6 @@ class PointCtrl( wx.Window ):
 
     #------------------------------------------------------------------------
 
-
     #------------------------------------------------------------------------
     # Members: Getters and Setters
     #------------------------------------------------------------------------
@@ -285,6 +284,8 @@ class PointCtrl( wx.Window ):
         @param width (int) is the new width.
 
         """
+        if width < MIN_W:
+            width = MIN_W
         if self.GetSize().width != width:
             self.SetSize(wx.Size(int(width),self.GetSize().height))
             self.Refresh()
@@ -309,6 +310,8 @@ class PointCtrl( wx.Window ):
         @param height (int) is the new height.
 
         """
+        if height < MIN_H:
+            height = MIN_H
         if self.GetSize().height != height:
             self.SetSize( wx.Size(self.GetSize().width, int(height)) )
             self.Refresh()
@@ -375,9 +378,8 @@ class PointCtrl( wx.Window ):
             # moving while a button is pressed
             self.OnMouseDragging(event)
 
-        elif event.Moving():
-            wx.PostEvent(self.GetParent().GetEventHandler(), event)
-
+        #elif event.Moving():
+        wx.PostEvent(self.GetParent().GetEventHandler(), event)
         event.Skip()
 
     #------------------------------------------------------------------------
@@ -470,7 +472,7 @@ class PointCtrl( wx.Window ):
 
     def OnResize(self, event):
         """
-        Respond to mouse events.
+        Respond to mouse events: dragging.
 
         """
         x,y = self.GetPosition()    # absolute

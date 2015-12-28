@@ -49,6 +49,8 @@ class TierCtrlDemo(wx.Window):
         self.b3 = wx.Button(self, -1, " Tier Size ", (210, 40))
         self.b4 = wx.Button(self, -1, " Font ", (310, 40))
 
+        tier = trs[2]
+        tier.SetRadius(0.005)
         self.t1 = TierCtrl(self, id=-1, pos=(10,80),  size=wx.Size(400,30), tier=trs[2])
         self.t1.SetTime(1.5,2.5)
         self.t2 = TierCtrl(self, id=-1, pos=(10,115), size=wx.Size(400,30), tier=trs[3])
