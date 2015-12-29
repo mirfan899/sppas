@@ -61,6 +61,7 @@ from pointctrl import MIN_W as pointctrlMinWidth
 from labelctrl import LabelCtrl
 from labelctrl import spEVT_LABEL_LEFT
 
+from annotationdata.ptime.point import TimePoint
 # ----------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
@@ -899,50 +900,108 @@ class TierCtrl( wx.Window ):
     # -----------------------------------------------------------------------
 
     def OnPointMoving(self, event):
-        logging.debug('TIER. OnPointMoving. Not implemented.')
+        logging.debug('TIER. OnPointMoving.')
 
         # which point is moving and what is new size?
         ptr = event.GetEventObject()
         (x,y) = event.pos
+        x = x - self._panectrl.GetSize().width
         (w,h) = ptr.GetSize()
 
         # self coordinates
-        sx,sy = self.GetPosition()
-        sw,sh = self.GetSize()
-
-        return
+        sw,sh = self.GetClientSize()
+        #logging.debug(' ... Client width=%d'%sw)
+        sw = sw - self._panectrl.GetSize().width
+        #logging.debug(' ... Real width=%d'%sw)
+        #logging.debug(' ... Displayed time: %f,%f'%(self._mintime,self._maxtime))
 
         # get new time value
-        # b =
-        # e =
+        b = self._calcT(x  , sw)
+        e = self._calcT(x+w, sw)
+        midpoint = b + ((e-b)/2.)
+        radius   = ptr.GetValue().GetRadius()
 
-        # get annotations related to this pointctrl
-        # _newanns = {}
-        # _newok = True
-        # for ann in self._anns.keys()
-        #    label, p1, p2 = self._anns[ann]
-        #    if p1 == ptr:
-        #        # try to fix the new value to this timepoint
-        #        try:
-        #            p = TimePoint( b, ptr.GetValue().GetRadius() )
-        #            ann.GetLocation().SetBegin( p )
-        #        except Exception:
-        #            _newok = False
-        #    if p2 == ptr:
-        #        # try to fix the new value to this timepoint
-        #        try:
-        #            p = TimePoint( e, ptr.GetValue().GetRadius() )
-        #            ann.GetLocation().SetEnd( p )
-        #        except Exception:
-        #            _newok = False
-        #    _newanns[ann] = [ label, p1, p2 ]
-        #
-        # if _newok is True:
-        #    self._anns = _newanns
-        #    # accept new pos...
-        #    ptr.Move(event.pos)
+        #logging.debug(' ... moving point %s: %f,%f, pos=%d,%d'%(ptr.GetValue(),b,e,x,y))
 
-        logging.debug(' ... new point pos: %d,%d'%(x,y))
+        # Get only annotations related to this pointctrl
+        _sub1anns = {}
+        _sub2anns = {}
+        for ann in self._anns.keys():
+            label, p1, p2 = self._anns[ann]
+            if p1 == ptr:
+                _sub1anns[ann] = [ label, p1, p2 ]
+            elif p2 is not None and p2 == ptr:
+                _sub2anns[ann] = [ label, p1, p2 ]
+
+        # Keep a copy of the current point, before any modification.
+        pointcopy = ptr.GetValue().Copy()
+
+        # Apply the modification to the annotations points
+        ptr.GetValue().SetMidpoint( midpoint )
+        _newok = True
+
+        for ann in _sub1anns.keys():
+            label, p1, p2 = _sub1anns[ann]
+            #logging.debug(' ... ... p1 is ptr in ann=%s'%ann)
+            # try to fix the new value to this timepoint
+            try:
+                p = TimePoint( midpoint, radius )
+                if self._tier.IsPoint():
+                    ann.GetLocation().SetPoint( p )
+                else:
+                    ann.GetLocation().SetBegin( p )
+                p1.SetValue( p )
+                _sub1anns[ann] = [ label, p1, p2 ]
+            except Exception as e:
+                _newok = False
+                #logging.debug(' ... Exception p1: %s'%e)
+
+        for ann in _sub2anns.keys():
+            label, p1, p2 = _sub2anns[ann]
+            #logging.debug(' ... ... p2 is ptr in ann=%s'%ann)
+            # try to fix the new value to this timepoint
+            try:
+                p = TimePoint( midpoint, radius )
+                ann.GetLocation().SetEnd( p )
+                p2.SetValue( p )
+                _sub2anns[ann] = [ label, p1, p2 ]
+            except Exception as e:
+                _newok = False
+                #logging.debug(' ... Exception p2: %s'%e)
+
+        # accept new pos...
+        if _newok is True:
+            #logging.debug(' ... -> new point: %s, pos=%d,%d'%(ptr.GetValue(),x,y))
+            ptr.Move(event.pos)
+            # update labels
+            for ann in _sub1anns.keys():
+                label, p1, p2 = _sub1anns[ann]
+                lx = p1.GetPosition().x + p1.GetSize().width
+                label.MoveWindow( (lx,label.GetPosition().y), label.GetSize() )
+                #logging.debug(' ... ... label %s move p1'%(label.GetValue()))
+            for ann in _sub2anns.keys():
+                label, p1, p2 = _sub2anns[ann]
+                lw = p2.GetPosition().x - p1.GetPosition().x - p1.GetSize().width
+                label.MoveWindow( label.GetPosition(), (lw,label.GetSize().height) )
+                #logging.debug(' ... ... label %s move p2, p2x=%d, p1x=%d, w=%d'%(label.GetValue(),p2.GetPosition().x,p1.GetPosition().x,lw))
+        else:
+        # switch back to ptr...
+            ptr.SetValue( pointcopy )
+            for ann in _sub1anns.keys():
+                label, p1, p2 = _sub1anns[ann]
+                #logging.debug(' ... ... BACK p1 is ptr in ann=%s'%ann)
+                if self._tier.IsPoint():
+                    ann.GetLocation().SetPoint( pointcopy )
+                else:
+                    ann.GetLocation().SetBegin( pointcopy )
+                p1.SetValue( pointcopy )
+            for ann in _sub2anns.keys():
+                label, p1, p2 = _sub2anns[ann]
+                #logging.debug(' ... ... BACK p2 is ptr in ann=%s'%ann)
+                p = pointcopy.Copy()
+                ann.GetLocation().SetEnd( p )
+                p2.SetValue( p )
+
         self.GetTopLevelParent().GetStatusBar().SetStatusText('Point is moving: %d'%x)
 
         self.Refresh()
@@ -1051,12 +1110,12 @@ class TierCtrl( wx.Window ):
             if self._mintime < tierend and self._maxtime > tierend:
                 ## reduce w (to cover until the end of the tier)
                 missingtime = self._maxtime - tierend
-                w = w - self._calcW(w, missingtime)
+                w = w - self._calcW(missingtime, w)
 
             # Adjust x if tier starts after the min
             if self._maxtime > tierbegin and self._mintime < tierbegin:
                 missingtime = tierbegin - self._mintime
-                x = x + self._calcW(w, missingtime)
+                x = x + self._calcW(missingtime, w)
 
         self.DrawBackground(dc, x,y, w,h)
 
@@ -1091,7 +1150,7 @@ class TierCtrl( wx.Window ):
     def _drawPoint(self, point, x,y, w,h):
         """ Display a point. """
 
-        xpt, wpt = self._calcPointXW( point.GetValue(), w,h )
+        xpt, wpt = self._calcPointXW( point.GetValue(), w )
         # Do not draw if point is outsite the available area!
         if xpt>w:
             point.Hide()
@@ -1116,7 +1175,7 @@ class TierCtrl( wx.Window ):
         ty=y+1
 
         # Draw the label
-        xpt1, wpt1 = self._calcPointXW(point.GetValue(), w,h)
+        xpt1, wpt1 = self._calcPointXW(point.GetValue(), w)
         if xpt1>w: return
 
         if self._tier.IsPoint():
@@ -1126,7 +1185,7 @@ class TierCtrl( wx.Window ):
             tw = max(0,tw)
             label.MoveWindow(wx.Point(x+xpt1+wpt1,ty), wx.Size(tw,th))
         else:
-            xpt2, wpt2 = self._calcPointXW(point2.GetValue(), w,h)
+            xpt2, wpt2 = self._calcPointXW(point2.GetValue(), w)
             tx = x+xpt1+wpt1
             tw = xpt2-xpt1-wpt1
             if (tx+tw) > (x+w):  # ensure to stay in our allocated area
@@ -1220,7 +1279,7 @@ class TierCtrl( wx.Window ):
 
     # -----------------------------------------------------------------------
 
-    def _calcPointXW(self, point, tierwidth, tierheight):
+    def _calcPointXW(self, point, tierwidth):
         """
         tierwidth is always corresponding to the real width of the tier
         (the width of its duration, even if the sreen displays a larger width).
@@ -1257,9 +1316,15 @@ class TierCtrl( wx.Window ):
 
     #------------------------------------------------------------------------
 
-    def _calcW(self, tierwidth, time):
+    def _calcW(self, time, width):
         tierduration = self._maxtime - self._mintime
-        return int(time * float(tierwidth) / tierduration)
+        return int(time * float(width) / tierduration)
+
+    #------------------------------------------------------------------------
+
+    def _calcT(self, x, width):
+        tierduration = self._maxtime - self._mintime
+        return self._mintime + (float(x) * tierduration / float(width))
 
     #------------------------------------------------------------------------
 

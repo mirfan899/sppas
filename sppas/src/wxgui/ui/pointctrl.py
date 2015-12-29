@@ -232,7 +232,7 @@ class PointCtrl( wx.Window ):
         """
         if point != self._point:
             self._point = point
-            self.SetToolTip( wx.ToolTip(self._tooltip()) )
+            self.SetToolTip( wx.ToolTip(self.__tooltip()) )
 
     def GetValue(self):
         """
