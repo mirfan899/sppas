@@ -585,7 +585,10 @@ class PointCtrl( wx.Window ):
 
         self.SetMinSize(wx.Size(MIN_W,MIN_H))
         if size:
-            self.SetSize(size)
+            (w,h) = size
+            if w < MIN_W: w = MIN_W
+            if h < MIN_H: h = MIN_H
+            self.SetSize(wx.Size(w,h))
 
     #------------------------------------------------------------------------
 

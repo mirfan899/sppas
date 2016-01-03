@@ -1,2 +1,6 @@
+.project
+.pydevproject
 *.pyc
 .DS_Store
+*.dump
+*tiedlist.*

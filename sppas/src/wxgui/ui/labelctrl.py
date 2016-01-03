@@ -283,6 +283,7 @@ class LabelCtrl( wx.Window ):
         if self._highlight is False:
             self._highlight = True
             self.Refresh()
+        wx.PostEvent(self.GetParent().GetEventHandler(), event)
         event.Skip()
 
     def OnMouseLeaving(self, event):
@@ -290,6 +291,7 @@ class LabelCtrl( wx.Window ):
         if self._highlight is True:
             self._highlight = False
             self.Refresh()
+        wx.PostEvent(self.GetParent().GetEventHandler(), event)
         event.Skip()
 
     def OnMouseLeftUp(self, event):
@@ -445,7 +447,11 @@ class LabelCtrl( wx.Window ):
         """ Initialize the size. """
 
         self.SetMinSize(wx.Size(MIN_W,MIN_H))
-        self.SetSize(size)
+        if size:
+            (w,h) = size
+            if w < MIN_W: w = MIN_W
+            if h < MIN_H: h = MIN_H
+            self.SetSize(wx.Size(w,h))
 
     #------------------------------------------------------------------------
 

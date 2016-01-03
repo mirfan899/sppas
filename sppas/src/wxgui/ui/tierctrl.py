@@ -15,7 +15,7 @@
 #
 #       Laboratoire Parole et Langage
 #
-#       Copyright (C) 2011-2014  Brigitte Bigi
+#       Copyright (C) 2011-2016  Brigitte Bigi
 #
 #       Use of this software is governed by the GPL, v3
 #       This banner notice must not be removed
@@ -38,9 +38,9 @@
 # File: tierctrl.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = "epytext"
+__docformat__ = """epytext"""
 __authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = "Copyright (C) 2011-2015  Brigitte Bigi"
+__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 # Imports
@@ -436,41 +436,19 @@ class TierCtrl( wx.Window ):
         @param size (wx.Size)
 
         """
-        self.SetMinSize(wx.Size(MIN_W,MIN_H))
+        self.__initializeColours()
         if size:
-            (w,h) = size
-            if w < MIN_W: w = MIN_W
-            if h < MIN_H: h = MIN_H
-            self.SetSize(wx.Size(w,h))
+            self.__initialSize(size)
 
         # Displayed period of time (can be taken from the Parent)
         self._mintime = 0.
         self._maxtime = 2.
 
         self._panepos = wx.ALIGN_LEFT
-
-        # Colors
-        self._bgcolor = self.GetParent().GetBackgroundColour()
-        self._bgpen   = wx.Pen( self._bgcolor, 1, wx.SOLID )
-        self._bgbrush = wx.Brush( self._bgcolor, wx.SOLID )
-
-        self._bgdarkencolor = ContrastiveColour(self._bgcolor)
-        self._bgdarkenpen   = wx.Pen( self._bgdarkencolor, 1, wx.SOLID )
-
-        self._fgcolor = PickRandomColour(180,250)
-        self._fgpen   = wx.Pen( self._fgcolor, 1, wx.SOLID )
-        self._fgbrush = wx.Brush( self._fgcolor, wx.SOLID )
-
-        self._midpointcolor = wx.BLACK
-
-        # Label in each annotation
-        self._textcolor = self.GetParent().GetForegroundColour()
         if self._tier is not None and self._tier.IsPoint():
             self._labelalign = wx.ALIGN_LEFT
         else:
             self._labelalign = wx.ALIGN_CENTRE
-        self._labelbgcolor  = self._fgcolor #
-        self._labelfgucolor = None          # uncertain label
 
         # &²Adjust font size when self is resized or when a new font is fixed:
         self._fontsizeauto = True
@@ -1049,7 +1027,7 @@ class TierCtrl( wx.Window ):
             dc.SetBackground( self._bgbrush )
         dc.Clear()
 
-        # Pane
+        # Draw Pane and adjust position/size for the content
         x=0
         if self._panepos == wx.ALIGN_LEFT:
             self._panectrl.MoveWindow(pos=(0,0),size=(self._panectrl.GetWidth(),h))
@@ -1338,6 +1316,42 @@ class TierCtrl( wx.Window ):
         dc.SetFont(self.GetFont())
         return dc.GetTextExtent(text)[0]
 
+    #------------------------------------------------------------------------
+
+    def __initializeColours(self):
+        """ Create the pens and brush with default colors. """
+
+        # Colors
+        self._bgcolor = self.GetParent().GetBackgroundColour()
+        self._bgpen   = wx.Pen( self._bgcolor, 1, wx.SOLID )
+        self._bgbrush = wx.Brush( self._bgcolor, wx.SOLID )
+
+        self._bgdarkencolor = ContrastiveColour(self._bgcolor)
+        self._bgdarkenpen   = wx.Pen( self._bgdarkencolor, 1, wx.SOLID )
+
+        self._fgcolor = PickRandomColour(180,250)
+        self._fgpen   = wx.Pen( self._fgcolor, 1, wx.SOLID )
+        self._fgbrush = wx.Brush( self._fgcolor, wx.SOLID )
+
+        self._midpointcolor = wx.BLACK
+
+        self._textcolor = self.GetParent().GetForegroundColour()
+        self._labelbgcolor  = self._fgcolor #
+        self._labelfgucolor = None          # uncertain label
+
+    #------------------------------------------------------------------------
+
+    def __initialSize(self, size):
+        """ Initialize the size. """
+
+        self.SetMinSize(wx.Size(MIN_W,MIN_H))
+        if size:
+            (w,h) = size
+            if w < MIN_W: w = MIN_W
+            if h < MIN_H: h = MIN_H
+            self.SetSize(wx.Size(w,h))
+
+    #------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------
 
