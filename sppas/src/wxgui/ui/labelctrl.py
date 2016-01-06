@@ -62,23 +62,6 @@ FG_COLOUR=wx.BLACK
 
 STYLE=wx.NO_BORDER|wx.NO_FULL_REPAINT_ON_RESIZE
 
-# ---------------------------------------------------------------------------
-# Events
-# ---------------------------------------------------------------------------
-
-# While the LabelCtrl is left-clicked, the event is sent,
-# with the Label as parameter.
-
-LabelLeftEvent, spEVT_LABEL_LEFT = wx.lib.newevent.NewEvent()
-LabelLeftCommandEvent, spEVT_LABEL_LEFT_COMMAND = wx.lib.newevent.NewCommandEvent()
-
-# While the LabelCtrl is right-clicked, the event is sent,
-# with the Label as parameter.
-
-LabelRightEvent, spEVT_LABEL_RIGHT = wx.lib.newevent.NewEvent()
-LabelRightCommandEvent, spEVT_LABEL_RIGHT_COMMAND = wx.lib.newevent.NewCommandEvent()
-
-# ---------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------
 # Class LabelCtrl
@@ -121,12 +104,7 @@ class LabelCtrl( wx.Window ):
         # Bind the events related to our control
         wx.EVT_PAINT(self, self.OnPaint)
         wx.EVT_ERASE_BACKGROUND(self, lambda event: None)
-
-        wx.EVT_ENTER_WINDOW(self, self.OnMouseEntering)
-        wx.EVT_LEAVE_WINDOW(self, self.OnMouseLeaving)
-        wx.EVT_LEFT_UP(self,      self.OnMouseLeftUp)
-        wx.EVT_RIGHT_UP(self,     self.OnMouseRightUp)
-        wx.EVT_MOTION(self,       self.OnMouseMotion)
+        wx.EVT_MOUSE_EVENTS(self, self.OnMouseEvents)
 
     #------------------------------------------------------------------------
 
@@ -274,39 +252,16 @@ class LabelCtrl( wx.Window ):
     # Callbacks
     # -----------------------------------------------------------------------
 
-    def OnMouseMotion(self, event):
-        """ Mouse is moving. """
-        wx.PostEvent(self.GetParent().GetEventHandler(), event)
+    def OnMouseEvents(self, event):
+        """
+        Handles the wx.EVT_MOUSE_EVENTS event for PointCtrl.
 
-    def OnMouseEntering(self, event):
-        """ Mouse is Entering on the LabelCtrl, then starts to highlight. """
-        if self._highlight is False:
-            self._highlight = True
+        """
+        if event.Entering() or event.Leaving():
+            self._highlight = not self._highlight
             self.Refresh()
+
         wx.PostEvent(self.GetParent().GetEventHandler(), event)
-        event.Skip()
-
-    def OnMouseLeaving(self, event):
-        """ Mouse is Entering on the LabelCtrl, then stops to highlight. """
-        if self._highlight is True:
-            self._highlight = False
-            self.Refresh()
-        wx.PostEvent(self.GetParent().GetEventHandler(), event)
-        event.Skip()
-
-    def OnMouseLeftUp(self, event):
-        """ Left Button was Pressed. """
-        evt = LabelLeftEvent(label=self._label)
-        evt.SetEventObject(self)
-        wx.PostEvent(self.GetParent(), evt)
-        wx.PostEvent(self.GetParent(), event)
-        event.Skip()
-
-    def OnMouseRightUp(self, event):
-        """ Right Button was Pressed. """
-        evt = LabelRightEvent(label=self._label)
-        evt.SetEventObject(self)
-        wx.PostEvent(self.GetParent(), evt)
         event.Skip()
 
     #------------------------------------------------------------------------
@@ -322,7 +277,7 @@ class LabelCtrl( wx.Window ):
             height = MIN_H
         if self.GetSize().height != height:
             self.SetSize( wx.Size(self.GetSize().width, int(height)) )
-            self.Refresh()
+            #elf.Refresh()
 
     #------------------------------------------------------------------------
 

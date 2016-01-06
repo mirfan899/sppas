@@ -24,7 +24,7 @@
 import wx
 import random
 
-from wxgui.ui.labelctrl import LabelCtrl, spEVT_LABEL_LEFT, spEVT_LABEL_RIGHT
+from wxgui.ui.labelctrl import LabelCtrl
 from annotationdata.label.label import Label
 from annotationdata.label.text import Text
 
@@ -58,8 +58,6 @@ class LabelCtrlDemo(wx.Window):
         self.l2 = LabelCtrl(self, id=-1, label=Label("label 2 is a long long label."))
         self.l2.MoveWindow(pos=(150,110), size=wx.Size(100,40))
         self.l2.Refresh()
-
-        self.Bind(spEVT_LABEL_LEFT, self.OnLabelLeftClick)
 
         self.Bind(wx.EVT_BUTTON, self.repaint1, self.b1)
         self.Bind(wx.EVT_BUTTON, self.repaint2, self.b2)

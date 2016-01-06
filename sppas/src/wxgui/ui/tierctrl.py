@@ -59,7 +59,6 @@ from pointctrl import spEVT_MOVING,spEVT_MOVED,spEVT_RESIZING,spEVT_RESIZED, spE
 from pointctrl import MIN_W as pointctrlMinWidth
 
 from labelctrl import LabelCtrl
-from labelctrl import spEVT_LABEL_LEFT
 
 from annotationdata.ptime.point import TimePoint
 # ----------------------------------------------------------------------------

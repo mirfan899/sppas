@@ -378,8 +378,8 @@ class PointCtrl( wx.Window ):
             # moving while a button is pressed
             self.OnMouseDragging(event)
 
-        #elif event.Moving():
-        wx.PostEvent(self.GetParent().GetEventHandler(), event)
+        else:
+            wx.PostEvent(self.GetParent().GetEventHandler(), event)
         event.Skip()
 
     #------------------------------------------------------------------------

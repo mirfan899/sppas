@@ -59,7 +59,6 @@ from pointctrl import spEVT_MOVING,spEVT_MOVED,spEVT_RESIZING,spEVT_RESIZED, spE
 from pointctrl import MIN_W as pointctrlMinWidth
 
 from labelctrl import LabelCtrl
-from labelctrl import spEVT_LABEL_LEFT
 
 # ----------------------------------------------------------------------------
 
@@ -67,7 +66,7 @@ from labelctrl import spEVT_LABEL_LEFT
 # Constants
 # ----------------------------------------------------------------------------
 
-MIN_W=2
+MIN_W=4
 MIN_H=8
 
 NORMAL_COLOUR    = wx.Colour(0,0,0)
@@ -81,6 +80,8 @@ FONT_SIZE_MAX = 32
 PANE_WIDTH_MIN = 10
 PANE_WIDTH_MAX = 200
 PANE_WIDTH     = 100
+
+BORDER_WIDTH = 2
 
 # ----------------------------------------------------------------------------
 
@@ -159,7 +160,8 @@ class AnnotationCtrl( wx.Window ):
 
         """
 
-        if self._labelctrl: self._labelctrl.SetFont( self.GetFont() )
+        if self._labelctrl:
+            self._labelctrl.SetFont( font )
 
     #------------------------------------------------------------------------
 
@@ -233,7 +235,7 @@ class AnnotationCtrl( wx.Window ):
         except Exception:
             self._pointctrl1 = PointCtrl(self, id=-1, point=ann.GetLocation().GetPoint())
             self._pointctrl1 = None
-        self._labelctrl  = LabelCtrl(self, id=-1, label=ann.GetLabel())
+        self._labelctrl = LabelCtrl(self, id=-1, label=ann.GetLabel())
         self._ann = ann
 
     #------------------------------------------------------------------------
@@ -255,9 +257,14 @@ class AnnotationCtrl( wx.Window ):
         @param height (int) in pixels
 
         """
-        if self._pointctrl1: self._pointctrl1.SetHeight( height )
-        if self._pointctrl2: self._pointctrl2.SetHeight( height )
-        if self._labelctrl:  self._labelctrl.SetHeight( height )
+        if height < MIN_H:
+            height = MIN_H
+
+        w,h=self.GetSize()
+        if h != height:
+            if self._labelctrl:
+                self._labelctrl.SetHeight( height )
+            self.SetSize(wx.Size(w,height))
 
     #------------------------------------------------------------------------
 
@@ -276,6 +283,8 @@ class AnnotationCtrl( wx.Window ):
 
         # New width
         if ow != w:
+            if w < MIN_W:
+                w = MIN_W
             self.SetSize( wx.Size(w,oh) )
 
         # New height
@@ -286,10 +295,7 @@ class AnnotationCtrl( wx.Window ):
         if ox != x or oy != y:
             self.Move(pos)
 
-
-
     #------------------------------------------------------------------------
-
 
     #------------------------------------------------------------------------
     # Callbacks
@@ -297,18 +303,15 @@ class AnnotationCtrl( wx.Window ):
 
     def OnMouseEvents(self, event):
         """
-        Handles the wx.EVT_MOUSE_EVENTS event for PaneTierCtrl.
+        Handles the wx.EVT_MOUSE_EVENTS event for AnnotationCtrl.
 
         """
 
-        if event.Entering():
-            if self._selected is False:
-                self._selected = True
-                self.Refresh()
-
-        elif event.Leaving():
-            self._selected = False
-            self.Refresh()
+        if (event.Entering() and not self._selected) or (event.Leaving() and self._selected):
+            logging.debug(' event entering or leaving (selected=%s)'%self._selected)
+            self._selected = not self._selected
+            logging.debug('  --> (selected=%s)'%self._selected)
+            self.OnPaint(event)
 
         wx.PostEvent(self.GetParent(), event)
         event.Skip()
@@ -321,7 +324,7 @@ class AnnotationCtrl( wx.Window ):
 
     def OnPaint(self, event):
         """
-        Handles the wx.EVT_PAINT event for PointCtrl.
+        Handles the wx.EVT_PAINT event for AnnotationCtrl.
 
         """
         dc = wx.BufferedPaintDC(self)
@@ -331,7 +334,7 @@ class AnnotationCtrl( wx.Window ):
 
     def Draw(self, dc):
         """
-        Draw the PointCtrl on the DC.
+        Draw the AnnotationCtrl on the DC.
 
         @param dc (wx.DC) The device context to draw on.
 
@@ -351,15 +354,24 @@ class AnnotationCtrl( wx.Window ):
         dc.SetBackgroundMode( wx.TRANSPARENT )
         dc.Clear()
 
-        # Content
-        self.DrawContent(dc, w,h)
+        x=0
+        y=0
+        if self._selected is True:
+            # Draw borders: simply a rectangle
+            self.DrawBorders(dc, w, h)
 
-        if self._selected:
-            self.DrawBorder(dc, w,h)
+            # Update position and size for the points and the label
+            x=BORDER_WIDTH
+            y=BORDER_WIDTH
+            w=w-(2*BORDER_WIDTH)
+            h=h-(2*BORDER_WIDTH)
+
+        # Content
+        self.DrawContent(dc, x,y, w,h)
 
     #------------------------------------------------------------------------
 
-    def DrawContent(self, dc, w,h):
+    def DrawContent(self, dc, x,y, w,h):
         """
         Draw the annotation on the DC.
 
@@ -370,15 +382,10 @@ class AnnotationCtrl( wx.Window ):
         """
         if self._ann is None: return
 
-        h = h-4
-
-        logging.debug('  Draw content for ann %s: w=%d, h=%d'%(self._ann,w,h))
-        y=2
+        logging.debug('  Draw content for ann %s: x=%d,y=%d,  w=%d, h=%d'%(self._ann,x,y,w,h))
 
         wpt1 = max(pointctrlMinWidth,self._calcW(self._pointctrl1.GetValue().Duration().GetValue()))
         if wpt1>w: wpt1=w
-
-        logging.debug('  ... Draw content: wpt1=%d'%wpt1)
 
         if self._pointctrl2 is None:
             tw = min(50, self.__getTextWidth(self._labelctrl.GetValue().GetValue())+2 )
@@ -397,32 +404,38 @@ class AnnotationCtrl( wx.Window ):
             if (tx+tw) > w:           # ensure to stay in our allocated area
                 tw = tw - ((tx+tw)-w) # reduce width to the available area
             tw = max(0,tw)
-            logging.debug('  ... Draw label: tw=%d, xpt2=%d'%(tw,xpt2))
             self._labelctrl.MoveWindow(wx.Point(tx,y), wx.Size(tw,h))
         self._labelctrl.Show()
 
         # Draw the points
-        self._drawPoint(self._pointctrl1, 0,y, w,h)
+        self._drawPoint(self._pointctrl1, x,y, w,h)
         if self._pointctrl2 is not None:
             self._drawPoint(self._pointctrl2, xpt2,y, wpt2,h)
 
     #------------------------------------------------------------------------
 
-    def DrawBorder(self, dc, w,h):
+    def DrawBorders(self, dc, w,h):
         """
-        """
-        x=0
-        y=0
-        logging.debug('  Draw border: x=%d,y=%d,w=%d,h=%d'%(x,y,w,h))
-        # Top and Bottom lines
-        dc.SetPen( self._penbordercolor )
-        dc.DrawLine(x,y,  x+w,y)       # horizontal, top
-        dc.DrawLine(x,h-2,x+w,h-2)     # horizontal, bottom
-        dc.DrawLine(x,y,  x,y+h)       # vertical, left
-        dc.DrawLine(x+w-2,y,x+w-2,y+h) # vertical, right
+        Draw the borders on the DC.
 
-        dc.SetBrush(wx.Brush(wx.RED, wx.BDIAGONAL_HATCH))
-        dc.DrawRectangle(x, y, w, h)
+        @param dc (PaintDC, MemoryDC, BufferedDC...)
+        @param x,y (int,int) are coord. of top left corner from which drawing
+        @param w,h (int,int) are width and height available for drawing.
+
+        """
+        x=int(BORDER_WIDTH / 2)
+        y=int(BORDER_WIDTH / 2)
+        bw=w-x
+        bh=h-y
+
+        dc.SetBackgroundMode( wx.TRANSPARENT )
+        dc.Clear()
+
+        dc.SetPen( self._penbordercolor )
+        dc.SetBrush(wx.TRANSPARENT_BRUSH)
+        dc.DrawRectangle(x, y, bw, bh)
+
+    #------------------------------------------------------------------------
 
     #------------------------------------------------------------------------
     # Private
@@ -471,3 +484,157 @@ class AnnotationCtrl( wx.Window ):
         return dc.GetTextExtent(text)[0]
 
     #------------------------------------------------------------------------
+
+#----------------------------------------------------------------------------
+# class BorderCtrl
+#----------------------------------------------------------------------------
+
+class BorderCtrl( wx.Window ):
+    """
+    @author:  Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: This class is used to display a border as an object.
+
+    BorderCtrl implements a transparent rectangle line that can be placed
+    anywhere to any wxPython widget.
+
+    """
+
+    def __init__(self, parent, id=wx.ID_ANY,
+                 pos=wx.DefaultPosition,
+                 size=wx.DefaultSize):
+        """
+        BorderCtrl constructor.
+
+        """
+        wx.Window.__init__( self, parent, id, pos, size, STYLE )
+        self.SetBackgroundStyle( wx.BG_STYLE_CUSTOM )
+        self.SetDoubleBuffered( True )
+
+        # Members, Initializations
+        self.Reset( size )
+
+        # Bind the events related to our control
+        wx.EVT_PAINT(self, self.OnPaint)
+        wx.EVT_ERASE_BACKGROUND(self, lambda event: None)
+
+    #------------------------------------------------------------------------
+
+    def Reset(self, size=None):
+        """
+        Reset all members to their default.
+
+        @param size (wx.Size)
+
+        """
+        self.__initializeColours()
+        if size:
+            self.__initialSize(size)
+
+    #------------------------------------------------------------------------
+
+    def SetHeight(self, height):
+        """
+        Change the height of the PointCtrl.
+
+        @param height (int) is the new height.
+
+        """
+        if self.GetSize().height != height:
+            self.SetSize( wx.Size(self.GetSize().width, int(height)) )
+            self.Refresh()
+
+    #------------------------------------------------------------------------
+
+    #------------------------------------------------------------------------
+    # Look & style
+    #------------------------------------------------------------------------
+
+
+    def SetBorderColour(self, colour):
+        """
+        Fix the color of the border lines while annotation is highlighted.
+
+        """
+        self._penbordercolor = wx.Pen(colour,1,wx.SOLID)
+        self.Refresh()
+
+    #------------------------------------------------------------------------
+
+
+    #------------------------------------------------------------------------
+    # Painting
+    #------------------------------------------------------------------------
+
+    def OnPaint(self, event):
+        """
+        Handles the wx.EVT_PAINT event for PointCtrl.
+
+        """
+        dc = wx.BufferedPaintDC(self)
+        self.Draw(dc)
+
+    #------------------------------------------------------------------------
+
+    def Draw(self, dc):
+        """
+        Draw the BorderCtrl on the DC.
+
+        @param dc (wx.DC) The device context to draw on.
+
+        """
+        logging.debug('Draw in BorderCtrl...')
+
+        # Get the actual client size of ourselves
+        # Notice that the size is corresponding to the available size on screen
+        # for that annotation. It can often happen that the annotation-duration
+        # is larger than the available width.
+        w,h = self.GetClientSize()
+        # Nothing to do, we still don't have dimensions!
+        if w*h==0: return
+
+        x=int(BORDER_WIDTH / 2)
+        y=int(BORDER_WIDTH / 2)
+        w=w-x
+        h=h-y
+        logging.debug('  Draw Border, w=%d,h=%d'%(w,h))
+
+        # Initialize the DC
+        dc.SetBackgroundMode( wx.TRANSPARENT )
+        dc.Clear()
+
+        logging.debug('  Draw border: x=%d,y=%d,w=%d,h=%d'%(x,y,w,h))
+        # Top and Bottom lines
+        dc.SetPen( self._penbordercolor )
+        dc.SetBrush(wx.TRANSPARENT_BRUSH)
+        dc.DrawRectangle(x, y, w, h)
+
+
+    #------------------------------------------------------------------------
+
+    #------------------------------------------------------------------------
+    # Private
+    #------------------------------------------------------------------------
+
+    def __initializeColours(self):
+        """ Create the pens and brush with default colors. """
+
+        self._penbordercolor = wx.Pen(wx.RED,2,wx.SOLID)
+
+    #------------------------------------------------------------------------
+
+    def __initialSize(self, size):
+        """ Initialize the size. """
+
+        mins = BORDER_WIDTH*2
+
+        self.SetMinSize(wx.Size(mins,mins))
+        if size:
+            (w,h) = size
+            if w < mins: w = mins
+            if h < mins: h = mins
+            self.SetSize(wx.Size(w,h))
+
+    #------------------------------------------------------------------------
+
