@@ -51,14 +51,13 @@ import logging
 import wx
 import wx.lib.newevent
 
-from wxgui.cutils.colorutils import PickRandomColour, ContrastiveColour
-from wxgui.cutils.textutils  import TextAsNumericValidator
-
 from pointctrl import PointCtrl
-from pointctrl import spEVT_MOVING,spEVT_MOVED,spEVT_RESIZING,spEVT_RESIZED, spEVT_POINT_LEFT
+from pointctrl import spEVT_MOVING,spEVT_MOVED,spEVT_RESIZING,spEVT_RESIZED,spEVT_POINT_LEFT
 from pointctrl import MIN_W as pointctrlMinWidth
 
 from labelctrl import LabelCtrl
+
+from annotationdata.ptime.point import TimePoint
 
 # ----------------------------------------------------------------------------
 
@@ -133,6 +132,12 @@ class AnnotationCtrl( wx.Window ):
         wx.EVT_PAINT(self, self.OnPaint)
         wx.EVT_ERASE_BACKGROUND(self, lambda event: None)
         wx.EVT_MOUSE_EVENTS(self, self.OnMouseEvents)
+
+        #spEVT_POINT_LEFT(self, self.OnPointEdit)
+        #spEVT_RESIZING(self,   self.OnPointResizing)
+        #spEVT_RESIZED(self,    self.OnPointResized)
+        spEVT_MOVING(self,     self.OnPointMoving)
+        #spEVT_MOVED(self,      self.OnPointMoved)
 
     #------------------------------------------------------------------------
 
@@ -318,6 +323,60 @@ class AnnotationCtrl( wx.Window ):
 
     # -----------------------------------------------------------------------
 
+    def OnPointMoving(self, event):
+        logging.debug('ANNOTAION. OnPointMoving.')
+
+        # which point is moving and what is new size?
+        ptr = event.GetEventObject()
+        (x,y) = event.pos
+        (w,h) = ptr.GetSize()
+        logging.debug(' ... point %s: x=%f,y=%f, w=%d,h=%d'%(ptr.GetValue(),x,y,w,h))
+
+        # self coordinates
+        sw,sh = self.GetClientSize()
+
+        # get new time value
+        b = ptr.GetValue().GetMidpoint() - ptr.GetValue().GetRadius()
+        e = ptr.GetValue().GetMidpoint() + ptr.GetValue().GetRadius()
+        logging.debug(' ... moving point %s: FROM b=%f,e=%f'%(ptr.GetValue(),b,e))
+        logging.debug(' ... ... calcT x =%f'%self._calcT(x))
+        if (x<0):
+            x = -x
+            b = b - self._calcT(x)
+        else:
+            b = b + self._calcT(x)
+        e = e + self._calcT(w)
+
+        midpoint = b + ((e-b)/2.)
+        radius   = ptr.GetValue().GetRadius()
+
+        logging.debug(' ... moving point %s: TO b=%f,e=%f'%(ptr.GetValue(),b,e))
+
+        # Create a copy of the current point, then apply the modification.
+        pointcopy = ptr.GetValue().Copy()
+        pointcopy.SetMidpoint( midpoint )
+
+        # try to fix the new point to this annotation
+        try:
+            if self._ann.GetLocation().IsPoint():
+                self._ann.GetLocation().SetPoint( pointcopy )
+            else:
+                self._ann.GetLocation().SetBegin( pointcopy )
+            ptr.SetValue( pointcopy )
+            ptr.Move(event.pos)
+            lx = ptr.GetPosition().x + ptr.GetSize().width
+            self._labelctrl.MoveWindow( (lx,self._labelctrl.GetPosition().y), self._labelctrl.GetSize() )
+
+        except Exception as e:
+            logging.debug(' ... Exception: %s'%e)
+            pass
+
+        self.GetTopLevelParent().GetStatusBar().SetStatusText('Point is moving: %d'%x)
+
+        self.Refresh()
+
+    # -----------------------------------------------------------------------
+
     #------------------------------------------------------------------------
     # Painting
     #------------------------------------------------------------------------
@@ -476,6 +535,9 @@ class AnnotationCtrl( wx.Window ):
     def _calcW(self, duration):
         return int( duration * float(self._pxsec))
 
+    def _calcT(self, width):
+        return float(width) / float(self._pxsec)
+
     #------------------------------------------------------------------------
 
     def __getTextWidth(self, text):
@@ -486,7 +548,7 @@ class AnnotationCtrl( wx.Window ):
     #------------------------------------------------------------------------
 
 #----------------------------------------------------------------------------
-# class BorderCtrl
+# class BorderCtrl (un-used)
 #----------------------------------------------------------------------------
 
 class BorderCtrl( wx.Window ):
@@ -638,3 +700,4 @@ class BorderCtrl( wx.Window ):
 
     #------------------------------------------------------------------------
 
+#------------------------------------------------------------------------

@@ -61,6 +61,7 @@ from pointctrl import MIN_W as pointctrlMinWidth
 from labelctrl import LabelCtrl
 
 from annotationdata.ptime.point import TimePoint
+
 # ----------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
