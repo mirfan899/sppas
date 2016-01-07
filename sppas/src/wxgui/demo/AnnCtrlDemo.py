@@ -60,14 +60,17 @@ class AnnCtrlDemo(wx.Window):
         time0 = a0.GetLocation().GetEnd().GetMidpoint() - a0.GetLocation().GetEnd().GetRadius()
         for i in range(1,7):
             ann = trs[1][i]
+            logging.debug('  New annotation: %s'%(ann))
+
             time1 = ann.GetLocation().GetBegin().GetMidpoint() - ann.GetLocation().GetBegin().GetRadius()
             time2 = ann.GetLocation().GetEnd().GetMidpoint()   + ann.GetLocation().GetEnd().GetRadius()
+            logging.debug('  --> time0=%f, time1=%f, time2=%f '%(time0,time1,time2))
             x = round( (time1-time0) * float(pxsec)) + 10
             y = 80
             h = 30
             duration = time2 - time1
-            w = int( duration * float(pxsec))
-            logging.debug('  New annotation: %s / x=%d,w=%d'%(ann,x,w))
+            w = round( duration * float(pxsec))
+            logging.debug('  ==> x=%d,w=%d'%(x,w))
             if (x+w) > 400:
                 w = w + (400-x-w)
                 logging.debug('  -> w was adjusted!')

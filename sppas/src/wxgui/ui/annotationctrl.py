@@ -330,16 +330,17 @@ class AnnotationCtrl( wx.Window ):
         ptr = event.GetEventObject()
         (x,y) = event.pos
         (w,h) = ptr.GetSize()
-        logging.debug(' ... point %s: x=%f,y=%f, w=%d,h=%d'%(ptr.GetValue(),x,y,w,h))
+        logging.debug(' ... point %s: x=%d,y=%d, w=%d,h=%d'%(ptr.GetValue(),x,y,w,h))
 
         # self coordinates
         sw,sh = self.GetClientSize()
+        sx,sy = self.GetPosition()
 
         # get new time value
         b = ptr.GetValue().GetMidpoint() - ptr.GetValue().GetRadius()
         e = ptr.GetValue().GetMidpoint() + ptr.GetValue().GetRadius()
         logging.debug(' ... moving point %s: FROM b=%f,e=%f'%(ptr.GetValue(),b,e))
-        logging.debug(' ... ... calcT x =%f'%self._calcT(x))
+        logging.debug(' ... ... calcT=%f'%self._calcT(x))
         if (x<0):
             x = -x
             b = b - self._calcT(x)
@@ -348,8 +349,6 @@ class AnnotationCtrl( wx.Window ):
         e = e + self._calcT(w)
 
         midpoint = b + ((e-b)/2.)
-        radius   = ptr.GetValue().GetRadius()
-
         logging.debug(' ... moving point %s: TO b=%f,e=%f'%(ptr.GetValue(),b,e))
 
         # Create a copy of the current point, then apply the modification.
@@ -363,17 +362,16 @@ class AnnotationCtrl( wx.Window ):
             else:
                 self._ann.GetLocation().SetBegin( pointcopy )
             ptr.SetValue( pointcopy )
-            ptr.Move(event.pos)
-            lx = ptr.GetPosition().x + ptr.GetSize().width
-            self._labelctrl.MoveWindow( (lx,self._labelctrl.GetPosition().y), self._labelctrl.GetSize() )
-
+            if ptr is self._pointctrl1:
+                sx = sx + event.pos.x
+            sw = sw - event.pos.x
+            logging.debug(' ---> new content sx=%d, sw=%d'%(sx,sw))
+            self.MoveWindow(pos=(sx,sy), size=(sw,sh))
         except Exception as e:
             logging.debug(' ... Exception: %s'%e)
             pass
 
-        self.GetTopLevelParent().GetStatusBar().SetStatusText('Point is moving: %d'%x)
-
-        self.Refresh()
+        self.GetTopLevelParent().GetStatusBar().SetStatusText('Point moving: %d'%sx)
 
     # -----------------------------------------------------------------------
 
@@ -451,23 +449,21 @@ class AnnotationCtrl( wx.Window ):
             if (wpt1+tw) > w: # ensure to stay in our allocated area
                 tw = w - wpt1 # reduce width to the available area
             tw = max(0,tw)
-            logging.debug('  ... Draw content: tw=%d'%wpt1)
             self._labelctrl.MoveWindow(wx.Point(wpt1,y), wx.Size(tw,h))
         else:
-            xtime1 = self._pointctrl1.GetValue().GetMidpoint() - self._pointctrl1.GetValue().GetRadius()
-            xtime2 = self._pointctrl2.GetValue().GetMidpoint() + self._pointctrl2.GetValue().GetRadius()
             wpt2 = max(pointctrlMinWidth, self._calcW(self._pointctrl2.GetValue().Duration().GetValue()))
-            xpt2 = self._calcW(xtime2-xtime1) - wpt2
-            tx = wpt1
-            tw = xpt2-wpt1
+            xpt2 = w-wpt2+1
+            tx = x + wpt1
+            tw = xpt2 - tx
             if (tx+tw) > w:           # ensure to stay in our allocated area
                 tw = tw - ((tx+tw)-w) # reduce width to the available area
             tw = max(0,tw)
+            logging.debug(' ...draw label: x=%d, w=%d'%(tx,tw))
             self._labelctrl.MoveWindow(wx.Point(tx,y), wx.Size(tw,h))
         self._labelctrl.Show()
 
         # Draw the points
-        self._drawPoint(self._pointctrl1, x,y, w,h)
+        self._drawPoint(self._pointctrl1, x,y, wpt1,h)
         if self._pointctrl2 is not None:
             self._drawPoint(self._pointctrl2, xpt2,y, wpt2,h)
 
@@ -484,7 +480,7 @@ class AnnotationCtrl( wx.Window ):
         """
         x=int(BORDER_WIDTH / 2)
         y=int(BORDER_WIDTH / 2)
-        bw=w-x
+        bw=w-BORDER_WIDTH
         bh=h-y
 
         dc.SetBackgroundMode( wx.TRANSPARENT )
@@ -502,9 +498,10 @@ class AnnotationCtrl( wx.Window ):
 
     def _drawPoint(self, point, x,y, w,h):
         """ Display a point. """
-
+        logging.debug(' ...draw point: x=%d, w=%d'%(x,w))
+        sw=self.GetSize().width
         # Do not draw if point is outsite the available area!
-        if x>w:
+        if x>sw:
             point.Hide()
             return
         point.MoveWindow(wx.Point(x,y), wx.Size(w,h))

@@ -351,18 +351,16 @@ class PointCtrl( wx.Window ):
         """
         if event.Entering():
             # change cursor to something else to denote possible event capture
-            if self._ml_dragging is None and self._shift_ml_dragging is None:
-                self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
             if self._highlight is False:
                 self._highlight = True
-            self.Refresh()
+                self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
 
         elif event.Leaving():
-            # change cursor to normal
-            self.SetCursor(wx.NullCursor)
             if self._highlight is True:
                 self._highlight = False
-                self.Refresh()
+                self.SetCursor(wx.NullCursor)
+                self._ml_dragging = None
+                self._shift_ml_dragging = None
 
         elif event.LeftDown():
             self.OnMouseLeftDown(event)
@@ -378,8 +376,7 @@ class PointCtrl( wx.Window ):
             # moving while a button is pressed
             self.OnMouseDragging(event)
 
-        else:
-            wx.PostEvent(self.GetParent().GetEventHandler(), event)
+        wx.PostEvent(self.GetParent().GetEventHandler(), event)
         event.Skip()
 
     #------------------------------------------------------------------------
