@@ -3,7 +3,7 @@
           "DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>sppas.src.annotationdata.ptime.point.TimePoint</title>
+  <title>sppas.src.annotationdata.ptime.duration.Duration</title>
   <link rel="stylesheet" href="epydoc.css" type="text/css" />
   <script type="text/javascript" src="epydoc.js"></script>
 </head>
@@ -43,8 +43,8 @@
         Package&nbsp;src ::
         <a href="sppas.src.annotationdata-module.html">Package&nbsp;annotationdata</a> ::
         <a href="sppas.src.annotationdata.ptime-module.html">Package&nbsp;ptime</a> ::
-        <a href="sppas.src.annotationdata.ptime.point-module.html">Module&nbsp;point</a> ::
-        Class&nbsp;TimePoint
+        <a href="sppas.src.annotationdata.ptime.duration-module.html">Module&nbsp;duration</a> ::
+        Class&nbsp;Duration
       </span>
     </td>
     <td>
@@ -55,19 +55,17 @@
   </tr>
 </table>
 <!-- ==================== CLASS DESCRIPTION ==================== -->
-<h1 class="epydoc">Class TimePoint</h1><p class="nomargin-top"><span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint">source&nbsp;code</a></span></p>
+<h1 class="epydoc">Class Duration</h1><p class="nomargin-top"><span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration">source&nbsp;code</a></span></p>
 <pre class="base-tree">
-                 object --+    
-                          |    
-<a href="sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html">baseplacement.BasePlacement</a> --+
-                              |
-                             <strong class="uidshort">TimePoint</strong>
+object --+
+         |
+        <strong class="uidshort">Duration</strong>
 </pre>
 
 <hr />
 <hr />
 <div class="fields">      <p><strong>Author:</strong>
-        Brigitte Bigi, Tatsuya Watanabe
+        Brigitte Bigi
       </p>
       <p><strong>Contact:</strong>
         brigitte.bigi@gmail.com
@@ -89,12 +87,12 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.point.TimePoint-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">time</span>,
-        <span class="summary-sig-arg">radius</span>=<span class="summary-sig-default">0.0</span>)</span><br />
-      Create a new TimePoint instance.</td>
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.duration.Duration-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">value</span>,
+        <span class="summary-sig-arg">vagueness</span>=<span class="summary-sig-default">0.0</span>)</span><br />
+      Create a new Duration instance.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.__init__">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.__init__">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -108,11 +106,11 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.point.TimePoint-class.html#Set" class="summary-sig-name">Set</a>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.duration.Duration-class.html#Set" class="summary-sig-name">Set</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">other</span>)</span><br />
-      Set the time/radius of another TimePoint instance.</td>
+      Set the value/vagueness of another Duration instance.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.Set">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.Set">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -126,10 +124,10 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="GetPoint"></a><span class="summary-sig-name">GetPoint</span>(<span class="summary-sig-arg">self</span>)</span><br />
+          <td><span class="summary-sig"><a name="GetDuration"></a><span class="summary-sig-name">GetDuration</span>(<span class="summary-sig-arg">self</span>)</span><br />
       Return myself.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.GetPoint">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.GetDuration">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -143,9 +141,10 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.point.TimePoint-class.html#GetValue" class="summary-sig-name">GetValue</a>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a name="GetValue"></a><span class="summary-sig-name">GetValue</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the duration value (float), in seconds.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.GetValue">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.GetValue">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -159,10 +158,11 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="GetMidpoint"></a><span class="summary-sig-name">GetMidpoint</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      Return the time value (float) of the midpoint.</td>
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.duration.Duration-class.html#SetValue" class="summary-sig-name">SetValue</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">value</span>)</span><br />
+      Set the duration to a new value.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.GetMidpoint">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.SetValue">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -176,10 +176,10 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.point.TimePoint-class.html#SetValue" class="summary-sig-name">SetValue</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">time</span>)</span></td>
+          <td><span class="summary-sig"><a name="GetMargin"></a><span class="summary-sig-name">GetMargin</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the vagueness of the duration, in seconds (float).</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.SetValue">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.GetMargin">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -193,97 +193,11 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.point.TimePoint-class.html#SetMidpoint" class="summary-sig-name">SetMidpoint</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">time</span>)</span><br />
-      Set the time to a new value, in seconds.</td>
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.duration.Duration-class.html#SetMargin" class="summary-sig-name">SetMargin</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">vagueness</span>)</span><br />
+      Fix the vagueness of the duration, in seconds.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.SetMidpoint">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="GetRadius"></a><span class="summary-sig-name">GetRadius</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      Return the radius value, in seconds (float).</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.GetRadius">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.point.TimePoint-class.html#SetRadius" class="summary-sig-name">SetRadius</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">radius</span>)</span><br />
-      Fix the radius, in seconds.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.SetRadius">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="IsPoint"></a><span class="summary-sig-name">IsPoint</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      Return True, because self is representing a Point.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.IsPoint">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.point.TimePoint-class.html#IsTimePoint" class="summary-sig-name">IsTimePoint</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Return True, because self is an instance of TimePoint.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.IsTimePoint">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.point.TimePoint-class.html#Duration" class="summary-sig-name">Duration</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Return the duration of the time point, in seconds.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.Duration">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.SetMargin">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -300,7 +214,7 @@
           <td><span class="summary-sig"><a name="Copy"></a><span class="summary-sig-name">Copy</span>(<span class="summary-sig-arg">self</span>)</span><br />
       Return a deep copy of self.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.Copy">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.Copy">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -314,10 +228,10 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.point.TimePoint-class.html#__repr__" class="summary-sig-name">__repr__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.duration.Duration-class.html#__repr__" class="summary-sig-name">__repr__</a>(<span class="summary-sig-arg">self</span>)</span><br />
       repr(x)</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.__repr__">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.__repr__">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -331,10 +245,10 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.point.TimePoint-class.html#__str__" class="summary-sig-name">__str__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.duration.Duration-class.html#__str__" class="summary-sig-name">__str__</a>(<span class="summary-sig-arg">self</span>)</span><br />
       str(x)</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.__str__">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.__str__">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -348,10 +262,10 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.point.TimePoint-class.html#__hash__" class="summary-sig-name">__hash__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.duration.Duration-class.html#__hash__" class="summary-sig-name">__hash__</a>(<span class="summary-sig-arg">self</span>)</span><br />
       hash(x)</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.__hash__">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.__hash__">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -365,12 +279,12 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.point.TimePoint-class.html#__eq__" class="summary-sig-name">__eq__</a>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.duration.Duration-class.html#__eq__" class="summary-sig-name">__eq__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">other</span>)</span><br />
-      Equal is required to use '==' between 2 TimePoint instances or 
-      between a TimePoint and an other object representing time.</td>
+      Equal is required to use '==' between 2 Duration instances or between
+      a Duration and an other object representing time.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.__eq__">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.__eq__">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -384,12 +298,12 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.point.TimePoint-class.html#__lt__" class="summary-sig-name">__lt__</a>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.duration.Duration-class.html#__lt__" class="summary-sig-name">__lt__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">other</span>)</span><br />
-      LowerThan is required to use '&lt;' between 2 TimePoint instances or 
-      between a TimePoint and an other time object.</td>
+      LowerThan is required to use '&lt;' between 2 Duration instances or 
+      between a Duration and an other time object.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.__lt__">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.__lt__">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -403,12 +317,66 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.point.TimePoint-class.html#__gt__" class="summary-sig-name">__gt__</a>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.ptime.duration.Duration-class.html#__gt__" class="summary-sig-name">__gt__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">other</span>)</span><br />
-      GreaterThan is required to use '&gt;' between 2 TimePoint instances 
-      or between a TimePoint and an other time object.</td>
+      GreaterThan is required to use '&gt;' between 2 Duration instances or
+      between a Duration and an other time object.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.__gt__">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.__gt__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__ne__"></a><span class="summary-sig-name">__ne__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Not equals.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.__ne__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__le__"></a><span class="summary-sig-name">__le__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Lesser or equal.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.__le__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__ge__"></a><span class="summary-sig-name">__ge__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Greater or equal.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.__ge__">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -418,16 +386,6 @@
   </tr>
   <tr>
     <td colspan="2" class="summary">
-    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html">baseplacement.BasePlacement</a></code></b>:
-      <code><a href="sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html#IsFrameDisjoint">IsFrameDisjoint</a></code>,
-      <code><a href="sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html#IsFrameInterval">IsFrameInterval</a></code>,
-      <code><a href="sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html#IsFramePoint">IsFramePoint</a></code>,
-      <code><a href="sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html#IsTimeDisjoint">IsTimeDisjoint</a></code>,
-      <code><a href="sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html#IsTimeInterval">IsTimeInterval</a></code>,
-      <code><a href="sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html#__ge__">__ge__</a></code>,
-      <code><a href="sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html#__le__">__le__</a></code>,
-      <code><a href="sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html#__ne__">__ne__</a></code>
-      </p>
     <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
       <code>__delattr__</code>,
       <code>__format__</code>,
@@ -475,18 +433,18 @@
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">time</span>,
-        <span class="sig-arg">radius</span>=<span class="sig-default">0.0</span>)</span>
+        <span class="sig-arg">value</span>,
+        <span class="sig-arg">vagueness</span>=<span class="sig-default">0.0</span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.__init__">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.__init__">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
-  <p>Create a new TimePoint instance.</p>
-  <p>@param time (float) time value in seconds. @param radius (float) 
-  represents the vagueness of the point. @raise TypeError @raise 
+  <p>Create a new Duration instance.</p>
+  <p>@param value (float)  value in seconds. @param margin (float) 
+  represents the vagueness of the value. @raise TypeError @raise 
   ValueError</p>
   <dl class="fields">
     <dt>Overrides:
@@ -506,40 +464,13 @@
         <span class="sig-arg">other</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.Set">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.Set">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
-  <p>Set the time/radius of another TimePoint instance.</p>
-  <p>@param other (TimePoint)</p>
+  <p>Set the value/vagueness of another Duration instance.</p>
+  <p>@param other (Duration) @raise TypeError</p>
   <dl class="fields">
-    <dt>Raises:</dt>
-    <dd><ul class="nomargin-top">
-        <li><code><strong class='fraise'>TypeError</strong></code></li>
-    </ul></dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="GetValue"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">GetValue</span>(<span class="sig-arg">self</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.GetValue">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  
-  <dl class="fields">
-    <dt>Decorators:</dt>
-    <dd><ul class="nomargin-top">
-        <li><code>@deprecated</code></li>
-    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -551,108 +482,38 @@
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">SetValue</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">time</span>)</span>
+        <span class="sig-arg">value</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.SetValue">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.SetValue">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
-  
+  <p>Set the duration to a new value.</p>
+  <p>@param value (float) is the new duration value. @raise TypeError</p>
   <dl class="fields">
-    <dt>Decorators:</dt>
-    <dd><ul class="nomargin-top">
-        <li><code>@deprecated</code></li>
-    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
-<a name="SetMidpoint"></a>
+<a name="SetMargin"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">SetMidpoint</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">time</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">SetMargin</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">vagueness</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.SetMidpoint">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.SetMargin">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
-  <p>Set the time to a new value, in seconds.</p>
-  <p>@param time (float) is the new time to set the midpoint. @raise 
-  ValueError</p>
+  <p>Fix the vagueness of the duration, in seconds.</p>
+  <p>@param vagueness (float) is the margin (in seconds) @raise 
+  TypeError</p>
   <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
-<a name="SetRadius"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">SetRadius</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">radius</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.SetRadius">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Fix the radius, in seconds.</p>
-  <p>@param radius (float) is the radius (in seconds) @raise TypeError (if 
-  radius is not float)</p>
-  <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
-<a name="IsTimePoint"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">IsTimePoint</span>(<span class="sig-arg">self</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.IsTimePoint">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Return True, because self is an instance of TimePoint.</p>
-  <dl class="fields">
-    <dt>Overrides:
-        <a href="sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html#IsTimePoint">baseplacement.BasePlacement.IsTimePoint</a>
-    </dt>
-  </dl>
-</td></tr></table>
-</div>
-<a name="Duration"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">Duration</span>(<span class="sig-arg">self</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.Duration">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Return the duration of the time point, in seconds.</p>
-  <p>@return (Duration) the duration and its vagueness</p>
-  <dl class="fields">
-    <dt>Overrides:
-        <a href="sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html#Duration">baseplacement.BasePlacement.Duration</a>
-    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -667,7 +528,7 @@
     <br /><em class="fname">(Representation operator)</em>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.__repr__">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.__repr__">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
@@ -691,7 +552,7 @@
     <br /><em class="fname">(Informal representation operator)</em>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.__str__">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.__str__">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
@@ -715,7 +576,7 @@
     <br /><em class="fname">(Hashing function)</em>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.__hash__">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.__hash__">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
@@ -740,19 +601,16 @@
     <br /><em class="fname">(Equality operator)</em>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.__eq__">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.__eq__">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
-  <p>Equal is required to use '==' between 2 TimePoint instances or between
-  a TimePoint and an other object representing time. This relationship 
-  takes into account the radius.</p>
-  <p>@param other (TimePoint, float, int) is the other time point to 
-  compare with.</p>
+  <p>Equal is required to use '==' between 2 Duration instances or between 
+  a Duration and an other object representing time. This relationship takes
+  into account the vagueness.</p>
+  <p>@param other (Duration, float, int) is the other duration to compare 
+  with.</p>
   <dl class="fields">
-    <dt>Overrides:
-        <a href="sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html#__eq__">baseplacement.BasePlacement.__eq__</a>
-    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -768,18 +626,15 @@
     <br /><em class="fname">(Less-than operator)</em>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.__lt__">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.__lt__">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
-  <p>LowerThan is required to use '&lt;' between 2 TimePoint instances or 
-  between a TimePoint and an other time object.</p>
-  <p>@param other (TimePoint, float, int) is the other time point to 
-  compare with.</p>
+  <p>LowerThan is required to use '&lt;' between 2 Duration instances or 
+  between a Duration and an other time object.</p>
+  <p>@param other (Duration, float, int) is the other duration to compare 
+  with.</p>
   <dl class="fields">
-    <dt>Overrides:
-        <a href="sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html#__lt__">baseplacement.BasePlacement.__lt__</a>
-    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -795,18 +650,15 @@
     <br /><em class="fname">(Greater-than operator)</em>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.point-pysrc.html#TimePoint.__gt__">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="sppas.src.annotationdata.ptime.duration-pysrc.html#Duration.__gt__">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
-  <p>GreaterThan is required to use '&gt;' between 2 TimePoint instances or
-  between a TimePoint and an other time object.</p>
-  <p>@param other (TimePoint, float, int) is the other time point to 
-  compare with.</p>
+  <p>GreaterThan is required to use '&gt;' between 2 Duration instances or 
+  between a Duration and an other time object.</p>
+  <p>@param other (Duration, float, int) is the other duration to compare 
+  with.</p>
   <dl class="fields">
-    <dt>Overrides:
-        <a href="sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html#__gt__">baseplacement.BasePlacement.__gt__</a>
-    </dt>
   </dl>
 </td></tr></table>
 </div>

@@ -16,14 +16,10 @@ brief:      SPPAS produces automatically annotations from a recorded speech
 
 obligation: By using SPPAS, you agree to cite a reference in your publications.
 references:
-    * Brigitte BIGI, Daniel HIRST (2012).
-      SPeech Phonetization Alignment and Syllabification (SPPAS): a tool for
-      the automatic analysis of speech prosody, Speech Prosody, Tongji
-      University Press, ISBN 978-7-5608-4869-3, pages 19-22, Shanghai (China).
-    * Brigitte BIGI (2012).
-      SPPAS: a tool for Speech Phonetic Alignments,
-      The eighth international conference on Language Resources and Evaluation,
-      pages 1748-1755, ISBN 978-2-9517408-7-7, Istanbul (Turkey).
+    * Brigitte BIGI (2015 - to appear).
+      SPPAS - Multi-lingual Approaches to the Automatic Annotation of Speech.
+      the Phonetician - International Society of Phonetic Sciences, 
+      Volume 111-112, Pages 55-69.
     * OTHER REFERENCES ARE AVAILABLE in the directory "documentation",
       sub-directory "references".
 

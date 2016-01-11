@@ -533,15 +533,10 @@ function fct_sppas_doc {
     echo ' SPPAS for dummies, web version';
     pandoc -s --mathjax -t dzslides --css $ETC_DIR/styles/dummies.css --slide-level=2 -H $DOC_DIR/include-scripts.txt $DOC_DIR/SPPAS-for-dummies.md -o $WEB_DIR/SPPAS-for-dummies.html
 
-    echo ' SPPAS for dummies, package version';
-    pandoc -s --mathjax -t dzslides --css $ETC_DIR/styles/dummies.css --slide-level=2 $DOC_DIR/SPPAS-for-dummies.md -o $PROGRAM_DIR/documentation/SPPAS-for-dummies.html
-
     # Package: erase old then copy new
     rm -rf $WEB_DIR/$ETC_DIR
     rm -rf $PROGRAM_DIR/documentation/$ETC_DIR
     cp -r $ETC_DIR $WEB_DIR
-    cp -r $ETC_DIR $PROGRAM_DIR/documentation
-    cp -r $DOC_DIR $PROGRAM_DIR/documentation/$ETC_DIR
 
     echo " The ${PROGRAM_NAME} documentation folder and the web directory were both updated."
 }
