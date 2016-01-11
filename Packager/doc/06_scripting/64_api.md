@@ -107,7 +107,7 @@ A `BasePlacement` object is one of:
 ![API class diagram](./etc/figures/annotationdata.png)
 
 > **The whole API documentation is available at the following URL:**
-> <http://sldr.org/000800/preview/manual/module-tree.html>
+> <http://sldr.org/sldr000800/preview/manual/module-tree.html>
 
 
 #### Label representation

@@ -59,26 +59,6 @@ The corpus was a set of Dialogues, map-tasks:
 * 15% phones are: "sil", filled-pauses, garbage.
 
 
-###Orthographic Transcription: Impact on Phonetization 
-
-SPPAS Phonetization was evaluated on a French Corpus (MARC-Fr).
-SPPAS Alignment was also evaluated on this corpus.
-
-Results are reported in the following publications: 
-
->*B. Bigi, P. Péri R. Bertrand* (2012).
->**Orthographic Transcription: Which Enrichment is required for Phonetization?**,
->Language Resources and Evaluation Conference, Istanbul (Turkey), May 2012
-
->*Brigitte Bigi* (2014).
->Automatic Speech Segmentation of French: Corpus Adaptation.
->2nd Asian Pacific Corpus Linguistics Conference, p. 32, Hong Kong. 
-
-
-After registration, MARC-Fr can be freely downloaded at: 
-<http://www.sldr.fr/sldr000786/fr>
-
-
 ###Cofee: Conversational Feedback 
 
 In a conversation, feedback is mostly performed through short utterances 

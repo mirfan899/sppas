@@ -28,7 +28,7 @@ France.
 
 ## Download, install and update
 
-* Web site: <http://sldr.org/sldr00800/preview/>
+* Web site: <http://sldr.org/sldr000800/preview/>
 
     1. Follow *carefully* instructions of the installation page
     2. Download the last package
