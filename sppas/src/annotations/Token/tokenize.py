@@ -82,7 +82,7 @@ class DictReplUTF8( DictRepl ):
 
 def character_based( lang ):
     """
-    Return true if lang is known as a character-based language, 
+    Return true if lang is known as a character-based language,
     as Mandarin Chinese or Japanese for example.
     """
     langlist = [ "cmn", "jpn", "yue" ] # TODO: add languages
@@ -93,7 +93,7 @@ def character_based( lang ):
 
 # ---------------------------------------------------------------------------
 
-    
+
 # ---------------------------------------------------------------------------
 # DictTok main class
 # ---------------------------------------------------------------------------
@@ -271,14 +271,14 @@ class DictTok:
         """
 
         s = utt
-        if character_based(self.lang): 
+        if character_based(self.lang):
             s = self.split_characters( s )
 
         toks = []
         for t in s.split():
             if not "/" in t: #if not a phonetized entry
                 if std is False:
-                    if not character_based(self.lang): 
+                    if not character_based(self.lang):
                         # Split numbers if sticked to characters
                         # attention: do not replace [a-zA-Z] by [\w] (because \w includes numbers)
                         # and not on asian languages: it can be a tone!
@@ -291,7 +291,7 @@ class DictTok:
                 # Split dots if sticked to a word
                 t = re.sub(u' \.([\w-])', ur'. \1', t)
                 t = re.sub(u'^\.([\w-])', ur'. \1', t)
-                
+
                 # Split replacement characters
                 for r in self.repl.get_keys():
                     if t.endswith(r):
@@ -402,7 +402,7 @@ class DictTok:
             #   --> containing a special character
             #   --> that is not a truncated word!
             if self.vocab.is_unk(tok.lower().strip()) is True and (tok.find("-")>-1 or tok.find("'")>-1 or tok.find(".")>-1) and not tok.endswith('-'):
-                
+
                 # Split the unknown token into a list
                 # KEEP special chars ('-.) in the array!
                 _tabtoks = re.split("([-'.])",tok)
@@ -431,7 +431,7 @@ class DictTok:
 
             else:
                 _utt.append( rutils.ToStrip( tok ))
-        
+
         return _utt
 
     # End compound
@@ -656,7 +656,7 @@ class DictTok:
         # Step 4: stick (using the dictionary)
         try:
             attachement = "_"
-            if character_based(self.lang): 
+            if character_based(self.lang):
                 attachement = ""
             utt = self.stick( utt,attachement )
         except Exception as e:

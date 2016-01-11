@@ -101,7 +101,7 @@ class sppasTok(object):
         self.tokenizer = DictTok(pvoc, lang)
 
         try:
-            repl = DictRepl(os.path.join(RESOURCES_PATH, "repl", self.lang + ".repl"), nodump=True)
+            repl = DictRepl(os.path.join(RESOURCES_PATH, "repl", lang + ".repl"), nodump=True)
             self.tokenizer.set_repl( repl )
         except Exception:
             pass
