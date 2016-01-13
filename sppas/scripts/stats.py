@@ -62,8 +62,7 @@ from presenters.tierstats import TierStats
 
 
 # ----------------------------------------------------------------------------
-# Verify and extract args:
-# ----------------------------------------------------------------------------
+# Check args:
 
 modeshelp =  "Stat to estimate, in:\n"
 modeshelp += "  0 = ALL,\n"
@@ -73,12 +72,13 @@ modeshelp += '  3 = Average duration,\n'
 modeshelp += '  4 = Median duration,\n'
 modeshelp += '  5 = Standard deviation duration.'
 
-parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM), description="... a script to estimates stats of a tier of an annotated file.")
+parser = ArgumentParser(usage="%s -i file [options]" % os.path.basename(PROGRAM), description="... a script to estimates stats of a tier of an/several annotated file.")
 
-parser.add_argument("-i", metavar="file",  required=True,  help='Input annotated file file name')
+parser.add_argument("-i", metavar="file",  action='append', required=True,  help='Input annotated file name (as many as wanted)')
 parser.add_argument("-t", metavar="value", default=1, type=int, help='Tier number (default: 1=first tier)')
 parser.add_argument("-s", metavar="stat",  type=int, action="append", help=modeshelp)
 parser.add_argument("-n", metavar="ngram", default=1, type=int, help='Value of N of the Ngram sequence (default: 1)')
+parser.add_argument("-o", metavar="file",  required=False,  help='Output annotated file name')
 
 
 if len(sys.argv) <= 1:
@@ -87,10 +87,11 @@ if len(sys.argv) <= 1:
 args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
+# Extrac args
 
 tieridx    = args.t-1
 fileinput  = args.i
-filename, fileextension = os.path.splitext(fileinput)
+filename, fileextension = os.path.splitext(fileinput[0])
 
 ngram      = args.n
 mode       = args.s
@@ -105,19 +106,27 @@ else:
     mode.append(0)
 
 # ----------------------------------------------------------------------------
+# Read data
 
-trs = annotationdata.io.read(fileinput)
+tiername = None
+tiers = []
+for trs in args.i:
 
-if tieridx < 0 or tieridx > trs.GetSize():
-    print 'Error: Bad tier number.\n'
-    sys.exit(1)
+    trsinput = annotationdata.io.read(trs)
 
-tier = trs[tieridx]
-tiername = tier.GetName().replace (' ','_')
+    if tieridx < 0 or tieridx > trsinput.GetSize():
+        print 'Error: Bad tier number.\n'
+        sys.exit(1)
+
+    tier = trsinput[tieridx]
+    if tiername is None:
+        tiername = tier.GetName().replace (' ','_')
+    tiers.append( tier )
 
 # ----------------------------------------------------------------------------
+# Estimates stats
 
-t = TierStats( tier )
+t = TierStats( tiers )
 t.set_ngram( ngram )
 
 ds = t.ds()
@@ -145,6 +154,7 @@ if 0 in mode or 5 in mode:
     if not stats: stats = stdev
 
 # ----------------------------------------------------------------------------
+# Format stats
 
 rowdata = []
 rowdata.append(title)
@@ -165,7 +175,12 @@ for i,key in enumerate(stats.keys()):
         row.append( str(round(stdev[key],3)) )
     rowdata.append( row )
 
-fileoutput = filename + "-" + tiername + "-stats-" + str(ngram)+ ".csv"
+# ----------------------------------------------------------------------------
+# Save stats
+if args.o:
+    fileoutput = args.o
+else:
+    fileoutput = filename + "-" + tiername + "-stats-" + str(ngram)+ ".csv"
 with codecs.open(fileoutput, 'w', encoding="utf-8") as fp:
     for row in rowdata:
         s = ','.join( row )
