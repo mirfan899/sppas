@@ -82,9 +82,10 @@ body {
     padding-top:       10px;
     padding-bottom:    10px;
     
-    font-family:       Jura, serif;
+    font-family:       HeaderFont, serif;
     font-weight:       bold;
     text-align:        center;
+
 }
 
 /*==========  TITLE  ==========*/
@@ -98,7 +99,7 @@ body {
     margin-bottom:  10px;
     padding-top:    40px;
     padding-bottom: 10px;
-    font-size:      500%;
+    font-size:      400%;
 }
 
 .h2title {
@@ -106,7 +107,7 @@ body {
     margin-bottom:  10px;
     padding-top:    10px;
     padding-bottom: 10px;
-    font-size:      200%;
+    font-size:      180%;
 }
 
 .h3title {
@@ -121,18 +122,19 @@ body {
 
 .menu {
     text-align:      center;
-    min-height:      60px;
-    padding-top:      40px;
     font-size:       100%;
+    min-height:      40px;
+    padding-top:     40px;
+    padding-bottom:  40px;
+    vertical-align: middle;
+    line-height:    60px;
 }
 
 .menu a {
-    background-color:  rgba(20,20,20,0.5);
-    margin-top:      10px;
-    margin-bottom:   10px;
-    margin-right:    20px;
-    margin-left:     20px;
-    
+    background-color: rgba(10,10,10,0.5);
+    margin-top:      100px;
+    margin-right:    10px;
+    margin-left:     5px;
     padding-top:     20px;
     padding-right:   15px;
     padding-bottom:  20px;
@@ -292,7 +294,16 @@ h2.author, h3.date {
     text-align: center;
     border: 0px;
     }
-   
+
+img {
+    max-width: 95%;
+}
+
+table {
+    max-width: 80%;
+    display: block;
+}
+
 p {
     margin-left:    20px;
     margin-right:   20px;
@@ -352,12 +363,19 @@ ul ul a {
 font-weight:normal;
 }
 
-
 pre {
     border: 1px dotted gray;
     background-color: #ececec;
-    color: #1111111;
-    padding: 0.5em;
+    color: #404040;
+    margin-left:   10px;
+    margin-right:  10px;
+    margin-top:    20px;
+    margin-bottom: 20px;
+    padding-top:    5px;
+    padding-right:  15px;
+    padding-bottom: 5px;
+    padding-left:   15px;
+    max-width: 95%;
 }
 
 code {
@@ -365,10 +383,12 @@ code {
 }
 
 blockquote {
+    background-color:  rgba(100,100,100, 0.5);
+
     margin-left:   40px;
     margin-right:  40px;
-    margin-top:    1em;
-    margin-bottom: 1em;
+    margin-top:    10px;
+    margin-bottom: 15px;
 
     min-height: 24px;
 
@@ -376,10 +396,10 @@ blockquote {
     text-align: justify;
     vertical-align: middle;
 
-    padding-top:    10px;
-    padding-right:  15px;
-    padding-bottom: 10px;
-    padding-left:   15px;
+    padding-top:    0px;
+    padding-right:  0px;
+    padding-bottom: 0x;
+    padding-left:   0px;
 
     -moz-border-radius:10px; /* Firefox */
     border-radius:10px;

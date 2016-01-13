@@ -13,7 +13,20 @@
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Maven Pro">
     <link rel="icon" href="./etc/icons/sppas.ico" />
 
-    <script type="text/javascript" src="./etc/scripts/analytics.js"></script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-38055333-4']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
 
 </head>
 
@@ -30,7 +43,7 @@
         </div>
         
     </div>
-
+    
     <div class="menu">
         <a class="neonBlue"    href="index.html">Home</a>
         <a class="neonGreen"   href="installation.html">Installation</a>
@@ -81,11 +94,11 @@
             </a>
         </td>
         <td>
-        <b>Introduction:</b><br>
-        What is SPPAS? <br>
-        Getting and installing.<br>
-        How to use SPPAS. <br>
-        Main and Important recommendations.<br>
+        <b><a href="documentation_01_introduction.html">Introduction:</a></b><br>
+        &nbsp;&nbsp;What is SPPAS? <br>
+        &nbsp;&nbsp;Getting and installing.<br>
+        &nbsp;&nbsp;How to use SPPAS. <br>
+        &nbsp;&nbsp;Main and Important recommendations.<br>
         </td>
     </tr>
 
@@ -99,9 +112,9 @@
             </a>
         </td>
         <td>
-        <b>Automatic Speech Segmentation and Annotation:</b><br>
-        What are automatic annotations in SPPAS? <br>
-        How do they work? <br>
+        <b><a href="documentation_02_annotations.html">Automatic Speech Segmentation and Annotation:</a></b><br>
+        &nbsp;&nbsp;What are automatic annotations in SPPAS? <br>
+        &nbsp;&nbsp;How do they work? <br>
         </td>
     </tr>
 
@@ -116,10 +129,10 @@
             </a>
         </td>
         <td>
-        <b>Resources required by Automatic annotations:</b><br>
-        What are SPPAS resources? What's for?<br>
-        What is the phoneset used for each language?<br>
-        What are the licenses?<br>
+        <b><a href="documentation_03_resources.html">Resources required by Automatic annotations:</a></b><br>
+        &nbsp;&nbsp;What are SPPAS resources? What's for?<br>
+        &nbsp;&nbsp;What is the phoneset used for each language?<br>
+        &nbsp;&nbsp;What are the licenses?<br>
         </td>
     </tr>
 
@@ -133,10 +146,10 @@
             </a>
         </td>
         <td>
-        <b>The Graphical User Interface:</b><br>
-        Getting started with SPPAS... <br>
-        How to perform an automatic annotation? <br>
-        How to use components and plugins?<br>
+        <b><a href="documentation_04_GUI.html">The Graphical User Interface:</a></b><br>
+        &nbsp;&nbsp;Getting started with SPPAS... <br>
+        &nbsp;&nbsp;How to perform an automatic annotation? <br>
+        &nbsp;&nbsp;How to use components and plugins?<br>
         </td>
     </tr>
 
@@ -150,8 +163,8 @@
             </a>
         </td>
         <td>
-        <b>The Command-line User Interface:</b><br>
-        How to use SPPAS in a terminal
+        <b><a href="documentation_05_CLI.html">The Command-line User Interface:</a></b><br>
+        &nbsp;&nbsp;How to use SPPAS in a terminal
         </td>
     </tr>
 
@@ -165,11 +178,11 @@
             </a>
         </td>
         <td>
-        <b>Scripting with Python and SPPAS:</b><br>
-        A gentle introduction to programming <br>
-        Scripting with Python <br>
-        SPPAS Application Programming Interface (API)<br>
-        Creating scripts with Python and the SPPAS API <br>
+        <b><a href="documentation_06_scripting.html">Scripting with Python and SPPAS:</a></b><br>
+        &nbsp;&nbsp;A gentle introduction to programming <br>
+        &nbsp;&nbsp;Scripting with Python <br>
+        &nbsp;&nbsp;SPPAS Application Programming Interface (API)<br>
+        &nbsp;&nbsp;Creating scripts with Python and the SPPAS API <br>
         </td>
     </tr>
 
@@ -183,10 +196,10 @@
             </a>
         </td>
         <td>
-        <b>References:</b><br>
-        Publications about SPPAS<br>
-        Corpora annotated with SPPAS<br>
-        Projects involving SPPAS<br>
+        <b><a href="documentation_07_references.html">References:</a></b><br>
+        &nbsp;&nbsp;Publications about SPPAS<br>
+        &nbsp;&nbsp;Corpora annotated with SPPAS<br>
+        &nbsp;&nbsp;Projects involving SPPAS<br>
         </td>
     </tr>
 
@@ -198,13 +211,13 @@
     <div id="footer">
         <a href="index.html"><img src="./etc/logos/sppas-logo.png" alt="SPPAS"></a>
         <p class="copyright">
-            <a href="mailto:brigitte.bigi@gmail.com">Brigitte Bigi</a> &copy; 2011-2015
+            <a href="mailto:brigitte.bigi@gmail.com">Brigitte Bigi</a> &copy; 2011-2016
         </p>
     </div>
 
     <!----------------------------------------------------------------->
 
-    <a onclick="window.top.window.scrollTo(0,0);" href=""><span class="scrollT"></span></a>
+    <a onclick="window.top.window.scrollTo(0,0);" href="documentation.html"><span class="scrollT"></span></a>
 
     <!----------------------------------------------------------------->
 

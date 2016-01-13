@@ -28,18 +28,20 @@ code > span.er { font-weight: bold; }
       <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Jura">
       <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Maven Pro">
       <link rel="icon" href="../etc/icons/sppas.ico" />
-  
-      <script type="text/javascript">
-          var _gaq = _gaq || [];
-          _gaq.push(['_setAccount', 'UA-38055333-1']);
-          _gaq.push(['_trackPageview']);
-  
-          (function() {
-          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-          })();
-      </script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-38055333-4']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
 </head>
 <body>
 
@@ -60,7 +62,7 @@ code > span.er { font-weight: bold; }
 <header>
 <h1 class="title">SPPAS Documentation</h1>
 <h2 class="author">Brigitte Bigi</h2>
-<h3 class="date">Version 1.7.3</h3>
+<h3 class="date">Version 1.7.5</h3>
 </header>
 <nav id="TOC">
 <ul>
@@ -108,7 +110,7 @@ code > span.er { font-weight: bold; }
 <p><em>annotationdata</em> is based on the Programming Language Python, version 2.7. This chapter firstly introduces basic programming concepts, then it will gradually introduce how to write scripts with Python. Those who are familiar with programming in Python can directly go to the last section related to the description of the <em>annotationdata</em> API and how to use it in Python scripts.</p>
 <p>In this chapter, it is assumed that Python 2.7 is already installed and configured. It is also assumed that the Python IDLE is ready-to-use. For more details about Python, see:</p>
 <blockquote>
-<p>The Python Website: <a href="http://www.python.org">http://www.python.org</a></p>
+<p>The Python Website: <a href="http://www.python.org" class="uri">http://www.python.org</a></p>
 </blockquote>
 <h2 id="a-gentle-introduction-to-programming">A gentle introduction to programming</h2>
 <p>This section is partially made of selected parts of <em>the Python website</em> and <em>wikipedia</em>.</p>
@@ -269,7 +271,7 @@ code > span.er { font-weight: bold; }
 <p>This ready-to-use script is available in the SPPAS package, its name is <code>skeleton.py</code>.</p>
 <p>In the example above, the main function is documented: documentation is the text between &quot;&quot;&quot;. In this chapter, all these &quot;docstrings&quot; follow a convention, named &quot;The Epytext Markup Language&quot;. Epytext is a simple lightweight markup language that lets you add formatting and structure to docstrings. The software Epydoc uses that formatting and structure to produce nicely formatted API documentation. For details, see:</p>
 <blockquote>
-<p>Epydoc web site: <a href="http://epydoc.sourceforge.net/manual-epytext.html">http://epydoc.sourceforge.net/manual-epytext.html</a></p>
+<p>Epydoc web site: <a href="http://epydoc.sourceforge.net/manual-epytext.html" class="uri">http://epydoc.sourceforge.net/manual-epytext.html</a></p>
 </blockquote>
 <h3 id="functions">Functions</h3>
 <h4 id="simple-function">Simple function</h4>
@@ -421,7 +423,7 @@ vowels ; e ; e </code></pre>
     <span class="kw">for</span> l in lines:
         <span class="dt">print</span> l.strip()</code></pre></td></tr></table>
 <p>See the file 05_reading_file.py for the whole program, and try-it (do not forget to change the file name to your own file!).</p>
-<p>Notice that Python <code>os</code> module provides methods that can help you to perform file-processing operations, such as renaming and deleting files. See Python documentation for details: <a href="https://docs.python.org/2/">https://docs.python.org/2/</a></p>
+<p>Notice that Python <code>os</code> module provides methods that can help you to perform file-processing operations, such as renaming and deleting files. See Python documentation for details: <a href="https://docs.python.org/2/" class="uri">https://docs.python.org/2/</a></p>
 <h4 id="writing-files">Writing files</h4>
 <p>Writing a file requires to open it in a writing mode:</p>
 <ul>
@@ -498,7 +500,7 @@ file_output = codecs.<span class="dt">open</span>(file_location+<span class="st"
 <img src="./etc/figures/annotationdata.png" alt="API class diagram" /><figcaption>API class diagram</figcaption>
 </figure>
 <blockquote>
-<p><strong>The whole API documentation is available at the following URL:</strong> <a href="http://sldr.org/000800/preview/manual/module-tree.html">http://sldr.org/000800/preview/manual/module-tree.html</a></p>
+<p><strong>The whole API documentation is available at the following URL:</strong> <a href="http://sldr.org/000800/preview/manual/module-tree.html" class="uri">http://sldr.org/000800/preview/manual/module-tree.html</a></p>
 </blockquote>
 <h4 id="label-representation">Label representation</h4>
 <p>Each annotation holds at least one label, mainly represented in the form of a string, freely written by the annotator or selected from a list of categories, depending on the annotation tool. The <em>&quot;annotationdata&quot;</em> API, aiming at representing any kind of linguistic annotations, allows to assign a score to each label, and allows multiple labels for one annotation. The API also allows to define a controlled vocabulary.</p>
