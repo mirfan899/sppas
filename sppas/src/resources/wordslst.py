@@ -15,7 +15,7 @@
 #
 #       Laboratoire Parole et Langage
 #
-#       Copyright (C) 2011-2015  Brigitte Bigi
+#       Copyright (C) 2011-2016  Brigitte Bigi
 #
 #       Use of this software is governed by the GPL, v3
 #       This banner notice must not be removed
@@ -36,21 +36,19 @@
 #
 # ---------------------------------------------------------------------------
 # File: wordslst.py
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 import codecs
 import logging
 import rutils
 
-
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 class WordsList( object ):
     """
@@ -65,21 +63,22 @@ class WordsList( object ):
         """
         Create a new WordsList instance.
 
-        @param filename is the word list file name (1 column)
-        @param nodump (Boolean) disable the creation of a dump file
+        @param filename (str) is the word list file name, i.e. a file with 1 column.
+        @param nodump (Boolean) allows t  disable the creation of a dump file.
 
         """
 
         self._stw = {}
-        # a list is enough but:
-        # a dictionary is used because it is faster (to read tokens from
-        # a file / to find a token in this list).
+        # a list is relevant but a dictionary is used because:
+        # a dictionary is faster to read tokens from a file and is also
+        # faster to find a token in it.
 
         if filename is not None:
 
             data = None
             if nodump is False:
-                # Try first to get the dict from a dump file (at least 2 times faster)
+                # Try first to get the dict from a dump file
+                # (at least 2 times faster than the ascii one)
                 data = rutils.load_from_dump( filename )
 
             # Load from ascii if: 1st load, or, dump load error, or dump older than ascii
@@ -87,22 +86,24 @@ class WordsList( object ):
                 self.load_from_ascii( filename )
                 if nodump is False:
                     rutils.save_as_dump( self._stw, filename )
-                logging.info('Get word list from ASCII file.')
+                logging.info('Got word list from ASCII file.')
 
             else:
                 self._stw = data
-                logging.info('Get word list from dumped file.')
+                logging.info('Got word list from dumped file.')
 
-    # End __init__
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
+    # -----------------------------------------------------------------------
+    # Data management
+    # -----------------------------------------------------------------------
 
     def add(self, entry):
         """
-        Add an entry into the list except if the entry is already in.
+        Add an entry into the list except if the entry is already inside.
 
-        @param entry (String)
-        @return Boolean
+        @param entry (str) the entry to add in the word list.
+        @return (Boolean)
 
         """
 
@@ -115,9 +116,7 @@ class WordsList( object ):
 
         return False
 
-    # End add
-    # ------------------------------------------------------------------
-
+    # -----------------------------------------------------------------------
 
     def get_size(self):
         """
@@ -126,22 +125,18 @@ class WordsList( object ):
         """
         return len(self._stw)
 
-    # End get_size
-    # ------------------------------------------------------------------
-
+    # -----------------------------------------------------------------------
 
     def get_list(self):
         """
-        Return the list of words.
+        Return the list of words, sorted in alpha-numeric order.
 
         @return (list)
 
         """
         return sorted(self._stw.keys())
 
-    # End get_list
-    # ------------------------------------------------------------------
-
+    # -----------------------------------------------------------------------
 
     def is_in(self,entry):
         """
@@ -152,9 +147,7 @@ class WordsList( object ):
         """
         return self._stw.has_key( entry )
 
-    # End is_in
-    # ------------------------------------------------------------------
-
+    # -----------------------------------------------------------------------
 
     def is_unk(self,entry):
         """
@@ -165,9 +158,7 @@ class WordsList( object ):
         """
         return not self.is_in(entry)
 
-    # End is_unk
-    # ------------------------------------------------------------------
-
+    # -----------------------------------------------------------------------
 
     def copy(self):
         """
@@ -182,20 +173,18 @@ class WordsList( object ):
 
         return s
 
-    # End copy
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
-
-    # ------------------------------------------------------------------------
-    # File
-    # ------------------------------------------------------------------------
-
+    # -----------------------------------------------------------------------
+    # File management
+    # -----------------------------------------------------------------------
 
     def load_from_ascii(self, filename):
         """
         Read words from a file: one per line.
 
-        @param filename (string) is the file name
+        @param filename (str) is the file name.
+        @raise Exception
 
         """
         with codecs.open(filename, 'r', rutils.ENCODING) as fd:
@@ -203,17 +192,16 @@ class WordsList( object ):
                 try:
                     self.add( line )
                 except Exception as e:
-                    raise Exception("Read error at %s: %s" % (nbl,str(e)))
+                    raise Exception("Read file failed due to the following error at line %s: %s" % (nbl,str(e)))
 
-    # End load_from_ascii
-    # ------------------------------------------------------------------
-
+    # -----------------------------------------------------------------------
 
     def save(self, filename):
         """
         Save the list of words in a file.
 
-        @param filename (string)
+        @param filename (str)
+        @return (Boolean)
 
         """
         try:
@@ -222,13 +210,11 @@ class WordsList( object ):
                     fd.write("%s\n"%word)
 
         except Exception as e:
-            logging.debug('Save an ascii file failed: %s'%str(e))
+            logging.debug('Save file failed due to the following error: %s'%str(e))
             return False
 
         return True
 
-    # End save
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
-# End WordsList
-# ----------------------------------------------------------------------
+# ---------------------------------------------------------------------------
