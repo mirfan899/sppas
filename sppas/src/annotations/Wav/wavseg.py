@@ -456,12 +456,22 @@ class sppasSeg:
 
         # Input tier
         if tieridx is None:
-            trstier = trsinput[0]
+            trstier = None
+            # priority: try to find a transcription.
             for tier in trsinput:
                 tiername = tier.GetName().lower()
-                if "trs" in tiername or "trans" in tiername or "ipu" in tiername:
+                if "trans" in tiername:
                     trstier = tier
                     break
+            if trstier is None:
+                # try other tier names
+                for tier in trsinput:
+                    tiername = tier.GetName().lower()
+                    if "trs" in tiername or "ortho" in tiername or "toe" in tiername or "ipu" in tiername:
+                        trstier = tier
+                        break
+            if trstier is None:
+                trstier = trsinput[0]
         else:
             trstier = trsinput[tieridx]
 
@@ -736,7 +746,7 @@ class sppasSeg:
         # ###############################################################
 
         if trstracks is None:
-            trstracks = self.audiosil.tracks( )
+            trstracks = self.audiosil.tracks()
 
         # Write silences/units into a transcription file
         if textgridoutput is not None:
