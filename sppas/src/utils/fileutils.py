@@ -48,6 +48,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import os
 import random
 import codecs
+import re
 
 # ----------------------------------------------------------------------------
 
@@ -137,5 +138,22 @@ def writecsv(filename, rows, separator="\t", encoding="utf-8-sig"):
                     s = '"%s"' % s
                 tmp.append(s)
             f.write('%s\n' % separator.join(tmp))
+
+# ----------------------------------------------------------------------------
+
+def format_filename(entry):
+    # Remove multiple spaces
+    __str = re.sub(u"[\s]+", ur" ", entry)
+    # Spaces at beginning and end
+    __str = re.sub(u"^[ ]+", ur"", __str)
+    __str = re.sub(u"[ ]+$", ur"", __str)
+    # Replace spaces by underscores
+    __str = re.sub(u'\s', ur'_', __str)
+
+    return __str
+
+def string_to_ascii(entry):
+    # Replace non-ASCII characters by underscores
+    return re.sub(r'[^\x00-\x7F]','_', entry)
 
 # ----------------------------------------------------------------------------

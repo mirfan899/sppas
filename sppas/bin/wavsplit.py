@@ -76,7 +76,7 @@ parser.add_argument("-v", "--minrms", type=int, default=0, help='Assume everythi
 
 # Controlled search, choose one of -t or -n options:
 parser.add_argument("-t", metavar="file", help='Input transcription (default: None)')
-parser.add_argument("-n", type=int, default=0, help='Input transcription tier number (if any, default = 0 = first tier).')
+parser.add_argument("-n", type=int, default=-1, help='Input transcription tier number (if any, default = 0 = first tier).')
 parser.add_argument("-N", type=int, help='Adjust the volume cap until it splits into N tracks. (default = 0 = do not do that).')
 
 # Other options:
@@ -119,8 +119,12 @@ if args.minrms: w.set_min_speech( args.minrms )
 if args.o: w.set_dirtracks( True )
 if args.p: w.set_save_as_trs( True )
 if args.e: w.set_save_as_trs( True )
+if args.n == -1:
+    tieridx=None
+else:
+    tieridx=0
 
-w.run(args.w, args.t, args.n, args.N, args.o, args.e, args.l, args.p)
+w.run(args.w, args.t, tieridx, args.N, args.o, args.e, args.l, args.p)
 
 #     - wavfile is the wav input file name
 #     - trsinputfile is a transcription (or 'None')

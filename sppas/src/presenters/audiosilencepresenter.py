@@ -74,6 +74,13 @@ class AudioSilencePresenter:
         self.channelsil = channelsil
         self.logfile = logfile
 
+
+    def __write_track(self, tracktxtname, trackcontent):
+        encoding='utf-8'
+        with codecs.open(tracktxtname,"w", encoding) as fp:
+            fp.write(trackcontent)
+
+
     def write_tracks(self, trstracks, output, ext="txt", trsunits=[], trsnames=[], logfile=None):
         """
         Write tracks in an output directory.
@@ -108,9 +115,7 @@ class AudioSilencePresenter:
                     if isinstance(trsunits[0], Transcription):
                         annotationdata.io.write(tracktxtname, trsunits[i])
                     else:
-                        encoding='utf-8'
-                        with codecs.open(tracktxtname,"w", encoding) as fp:
-                            fp.write(trsunits[i])
+                        self.__write_track(tracktxtname, trsunits[i])
                 elif logfile is not None:
                     logfile.print_message( "Writing track "+tracktxtname,indent=3,status=-1 )
                 else:
@@ -152,5 +157,6 @@ class AudioSilencePresenter:
 
     # End write_tracks
     # ------------------------------------------------------------------
+
 
 # ----------------------------------------------------------------------------

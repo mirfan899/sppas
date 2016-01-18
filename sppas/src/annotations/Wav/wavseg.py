@@ -65,6 +65,7 @@ from annotationdata.ptime.interval  import TimeInterval
 from annotationdata.label.label     import Label
 from annotationdata.annotation      import Annotation
 
+from utils.fileutils import format_filename
 
 # ######################################################################### #
 
@@ -426,18 +427,6 @@ class sppasSeg:
 
     # ##################################################################
 
-    def __format_names(self,entry):
-        import re
-        # Remove multiple spaces
-        __str = re.sub(u"[\s]+", ur" ", entry)
-        # Spaces at beginning and end
-        __str = re.sub(u"^[ ]+", ur"", __str)
-        __str = re.sub(u"[ ]+$", ur"", __str)
-        # Replace spaces by underscores
-        __str = re.sub(u'\s', ur'_', __str)
-        # Replace non-ASCII characters by underscores
-        return re.sub(r'[^\x00-\x7F]','_', __str)
-
 
     def get_from_transcription(self, inputfilename, tieridx=None):
         """ Extract silences and transcription units from a transcription
@@ -521,8 +510,7 @@ class sppasSeg:
                         trstracks.pop()
                         self.trsunits.pop()
                     else:
-                        iname = aname[0].GetLabel().GetValue()
-                        self.trsnames.append( self.__format_names(iname) )
+                        self.trsnames.append( format_filename(aname[0].GetLabel().GetValue()) )
 
             # Continue
             i = i + 1
@@ -545,7 +533,8 @@ class sppasSeg:
                 # Print informations on stdout
                 fp.write( "%.4f %.4f " %( float(from_pos)/float(self.audiospeech.get_framerate()) , float(to_pos)/float(self.audiospeech.get_framerate()) ))
                 if len(self.trsnames)>0 and idx < len(self.trsnames):
-                    fp.write( self.trsnames[idx].encode(encoding)+"\n" )
+                    ustr = self.trsnames[idx].encode('utf8')
+                    fp.write( ustr.decode(encoding)+"\n" )
                 else:
                     fp.write( "\n" )
                 idx = idx+1
@@ -760,9 +749,10 @@ class sppasSeg:
                 self.logfile.print_message(str(len(self.trsunits))+" units to write.", indent=3)
                 self.logfile.print_message(str(len(self.silence))+" silences.", indent=3)
             # Automatically Activate the list output file
-            if listoutput is None and self.logfile is not None:
+            if listoutput is None:
                 listoutput = os.path.join(diroutput, "index.txt")
-                self.logfile.print_message(listoutput, indent=3)
+                if self.logfile is not None:
+                    self.logfile.print_message(listoutput, indent=3)
 
             # Fix output files format (txt or TextGrid)
             if tracksext is None:

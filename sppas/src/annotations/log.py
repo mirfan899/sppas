@@ -57,6 +57,7 @@ import os
 from sp_glob import program, version, copyright, url, author, contact
 from sp_glob import encoding
 
+from utils.fileutils import string_to_ascii
 
 # ----------------------------------------------------------------------------
 
@@ -145,8 +146,11 @@ class sppasLog:
             #m = unicode(message).encode(encoding)
             self.logfp.write(strindent + statustext + message + "\n")
         except Exception:
-            logging.debug( "Procedure Outcome Report Message: %s"%message)
-            self.logfp.write(strindent + statustext + "See the reason in the console.\n")
+            try:
+                self.logfp.write(strindent + statustext + string_to_ascii(message) + "\n")
+            except Exception:
+                logging.debug( "Procedure Outcome Report Message: %s"%message)
+                self.logfp.write(strindent + statustext + "See the reason in the console.\n")
 
     # ----------------------------------------------------------------------
 
