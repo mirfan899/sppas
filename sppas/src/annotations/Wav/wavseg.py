@@ -103,6 +103,7 @@ class sppasSeg:
         self.audiosil      = None
         self.dirtracks     = False
         self.save_as_trs   = False
+        self.addipuidx     = True  # Add IPU index in transcription tier (if any)
 
     # End restaure_default
     # ------------------------------------------------------------------
@@ -153,6 +154,17 @@ class sppasSeg:
         """
         return self.save_as_trs
 
+    def set_add_ipu_idx_in_trs(self, value):
+        """ Fix the "add IPU index in the transcription output" option (boolean).
+        """
+        self.addipuidx = value
+
+    def get_add_ipu_idx_in_trs(self):
+        """
+        Get the "add IPU index in the transcription output" option (boolean).
+        """
+        return self.addipuidx
+
     # End OPTIONS
     # ------------------------------------------------------------------
 
@@ -180,6 +192,9 @@ class sppasSeg:
 
             elif "save_as_trs" == opt.get_key():
                 self.set_save_as_trs(opt.get_value())
+
+            elif "add_ipu_idx" == opt.get_key():
+                self.set_add_ipu_idx_in_trs(opt.get_value())
 
     # End fix_options
     # ------------------------------------------------------------------
@@ -559,9 +574,13 @@ class sppasSeg:
                 # New track with speech
                 begin = float(from_pos)/float(self.audiospeech.get_framerate())
                 end   = float(to_pos)/float(self.audiospeech.get_framerate())
+                # ... IPU tier
                 label = "ipu_%d"%(i+1)
                 a  = Annotation(TimeInterval(TimePoint(begin,radius), TimePoint(end,radius)), Label(label))
                 tieripu.Append(a)
+                # ... Transcription tier
+                if self.addipuidx is False:
+                    label = ""
                 if self.trsunits:
                     label = label + " " + self.trsunits[i]
                 a  = Annotation(TimeInterval(TimePoint(begin,radius), TimePoint(end,radius)), Label(label))
