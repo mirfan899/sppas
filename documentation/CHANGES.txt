@@ -882,6 +882,30 @@ GUI:
 
 
 =============================================================================
+SPPAS-1.7.6
+=============================================================================
+
+Development:
+    - IPU segmentation:
+        - bug correction with option "split into tracks"
+        - new option to add or not add the IPU index of each IPU into the 
+        transcription tier
+    - Tokenization:
+        - bug correction in input tier selection
+        - bug correction for replacements
+
+Resources:
+    - add a vocabulary of Korean
+    - add an acoustic model for Korean (made from the English and the Taiwanese ones).
+
+GUI:
+    - DataRoamer: bug correction of "Duplicate"
+
+Others:
+    - Add a sample in Korean
+    - Updated references to cite SPPAS in publications
+
+=============================================================================
 *****************************************************************************
 =============================================================================
 

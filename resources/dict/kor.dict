@@ -36,6 +36,7 @@
 아이 [] A i
 ㅂ [] b
 ㅂ(2) [] p
+다 [] d A
 보다 [] b o d A
 본다 [] b o n d A
 ㄷ [] d
@@ -43,6 +44,7 @@
 달 [] d A l 
 ㅈ [] dZ 
 주 [] dz u
+잔 [] dz V n 
 전달한다 [] dZ V n d A l h A n d A
 종이 [] dZ u N i
 준다 [] dZ u n d A 
@@ -104,6 +106,7 @@
 ㅟ [] w i
 여자 [] j V dZ A   
 연필 [] j V n p i l
+연필 [] j V 
 요리사 [] j o r i s A
 n [] n
 a [] A
@@ -120,3 +123,6 @@ d [] d
 yeo [] j o
 ja [] dZ A
 lul [] rr u l
+* [] *
+dummy [] dummy
+@ [] @@

@@ -18,7 +18,7 @@ e e
 m m
 N N
 t_h t_h
-ae }
+ae {
 dz dz
 k k
 p p
@@ -30,6 +30,7 @@ k_h k_h
 b b
 g g
 ts_h ts_h
+tS_h ts_h
 k_> k_>
 ts_> tS_>
 t_> t_>
@@ -38,3 +39,4 @@ p_> p_>
 dummy dummy
 @@ @@
 sil #
+gb *
