@@ -15,20 +15,19 @@
       <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Maven Pro">
       <link rel="icon" href="../etc/icons/sppas.ico" />
   
-
-<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-38055333-4']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
+  <script type="text/javascript">
+  
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-38055333-4']);
+    _gaq.push(['_trackPageview']);
+  
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  
+  </script>
 </head>
 <body>
 
@@ -59,11 +58,7 @@
 <li><a href="#about-the-phone-sets">About the phone sets</a></li>
 <li><a href="#how-to-add-a-new-language">How to add a new language</a></li>
 </ul></li>
-<li><a href="#french-resources">French Resources</a><ul>
-<li><a href="#pronunciation-dictionary">Pronunciation Dictionary</a></li>
-<li><a href="#acoustic-model">Acoustic Model</a></li>
-<li><a href="#syllabification-configuration">Syllabification configuration</a></li>
-</ul></li>
+<li><a href="#french-resources">French Resources</a></li>
 <li><a href="#italian-resources">Italian resources</a><ul>
 <li><a href="#pronunciation-dictionary-1">Pronunciation Dictionary</a></li>
 <li><a href="#acoustic-model-1">Acoustic Model</a></li>
@@ -120,13 +115,12 @@
 <blockquote>
 <p>Caution: all the files are in UTF-8, and this encoding must not be changed.</p>
 </blockquote>
-<p>The language names are based on the ISO639-3 international standard. See <a href="http://www-01.sil.org/iso639-3/" class="uri">http://www-01.sil.org/iso639-3/</a> for the list of all languages and codes. Here is the list of available languages in SPPAS resources:</p>
+<p>The language names are based on the ISO639-3 international standard. See <a href="http://www-01.sil.org/iso639-3/" class="uri">http://www-01.sil.org/iso639-3/</a> for the list of all languages and codes. Here is the list of some available languages in SPPAS resources:</p>
 <ul>
 <li>French: fra</li>
 <li>English: eng</li>
 <li>Spanish: spa</li>
 <li>Italian: ita</li>
-<li>Catalan: cat</li>
 <li>Japanese: jpn</li>
 <li>Mandarin Chinese: cmn</li>
 <li>Southern Min (or Min Nan): nan</li>
@@ -136,14 +130,12 @@
 <p>The only step in the procedure which is probably beyond the means of a linguist without external aid is the creation of a new acoustic model when it does not yet exist for the language being analysed. This only needs to carried out once for each language, though, and we provide detailed specifications of the information needed to train an acoustic model on an appropriate set of recordings and dictionaries or transcriptions. Acoustic models obtained by such a collaborative process will be made freely available to the scientific community.</p>
 <p>The current acoustic models can be improved too (except for eng and jpn): send your data (wav and transcription files) to the author. Notice that such data will not be published in any form without your authorization. They will be included in the training procedure to create a new (and better) acoustic model, that will be distributed in the next version of SPPAS.</p>
 <h3 id="about-the-phone-sets">About the phone sets</h3>
-<blockquote>
-<p>Most of the resources are using SAMPA to represent phonemes.</p>
-</blockquote>
-<p>In addition, all models (except jpn and yue) include the following fillers:</p>
+<p>Most of the resources are using the international standard X-SAMPA to represent phonemes. See <a href="https://en.wikipedia.org/wiki/X-SAMPA" class="uri">https://en.wikipedia.org/wiki/X-SAMPA</a> for details.</p>
+<p>In addition, all models (except eng, jpn and yue) include the following fillers:</p>
 <ul>
 <li>dummy: untranscribed speech</li>
 <li>gb: garbage</li>
-<li>@@: laughting</li>
+<li>@@: laughter</li>
 </ul>
 <h3 id="how-to-add-a-new-language">How to add a new language</h3>
 <ol type="1">
@@ -160,135 +152,16 @@
 </ul>
 <p>Notice that the Graphical User Interface dynamically creates the list of available languages by exploring the sub-directory &quot;resources&quot; included in the SPPAS package. This means that all changes in the &quot;resources&quot; directory will be automatically take into account.</p>
 <h2 id="french-resources">French Resources</h2>
-<p><em>(C) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
-<h3 id="pronunciation-dictionary">Pronunciation Dictionary</h3>
-<p>The French dictionary is under the terms of the &quot;GNU Public License&quot;.</p>
-<p>The French pronunciation dictionary was created by Brigitte Bigi by merging a some free dictionaries loaded from the web. Some word pronunciations were added using the LIA_Phon tool. Many words were manually corrected and a large set of missing words and pronunciation variants were added.</p>
-<h3 id="acoustic-model">Acoustic Model</h3>
-<p>See COPYRIGHT.txt (in the &quot;model-fra&quot; directory) for the details of the license: &quot;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License&quot;.</p>
-<p>The French acoustic model was created by Brigitte Bigi from various corpora recorded at Laboratoire Parole et Langage (see the &quot;References&quot; section of this documentation). It includes:</p>
-<ul>
-<li>CID - Corpus of Interactional Data (7h30) <a href="http://www.sldr.org/sldr000027/" class="uri">http://www.sldr.org/sldr000027/</a>,</li>
-<li>Grenelle (7min) <a href="http://www.sldr.org/sldr000729/" class="uri">http://www.sldr.org/sldr000729/</a>,</li>
-<li>Broadcast news (40min) and Read speech (not public).</li>
-</ul>
-<p>References to these corpora:</p>
-<blockquote>
-<p><strong>P. Blache, R. Bertrand, B. Bigi, E. Bruno, E. Cela, R. Espesser, G. Ferré, M. Guardiola, D. Hirst, E.-P. Magro, J.-C. Martin, C. Meunier, M.-A. Morel, E. Murisasco, I Nesterenko, P. Nocera, B. Pallaud, L. Prévot, B. Priego-Valverde, J. Seinturier, N. Tan, M. Tellier, S. Rauzy</strong> (2010). <em>Multimodal Annotation of Conversational Data</em>, The Fourth Linguistic Annotation Workshop, ACL 2010, pages 186-191, Uppsala, Sueden.</p>
-</blockquote>
-<blockquote>
-<p><strong>B. Bigi, C. Portes, A. Steuckardt, M. Tellier</strong> (2011). <em>Multimodal Annotations and Categorization for Political Debates</em>, ICMI Workshop on Multimodal Corpora for Machine learning (ICMI-MMC), Alicante, Spain.</p>
-</blockquote>
-<p>Here is the phoneset used in the acoustic model:</p>
+<h4 id="list-of-phonemes">List of phonemes</h4>
 <table>
 <thead>
 <tr class="header">
 <th style="text-align: center;">SPPAS</th>
-<th style="text-align: center;">- IPA -</th>
+<th style="text-align: center;">IPA</th>
 <th style="text-align: left;">Examples</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td style="text-align: center;">b</td>
-<td style="text-align: center;">b</td>
-<td style="text-align: left;">beau</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">d</td>
-<td style="text-align: center;">d</td>
-<td style="text-align: left;">doux</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">f</td>
-<td style="text-align: center;">f</td>
-<td style="text-align: left;">fête pharmacie</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">g</td>
-<td style="text-align: center;">ɡ</td>
-<td style="text-align: left;">gain guerre second</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">k</td>
-<td style="text-align: center;">k</td>
-<td style="text-align: left;">cabas psychologie quatre kelvin</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">l</td>
-<td style="text-align: center;">l</td>
-<td style="text-align: left;">loup</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">m</td>
-<td style="text-align: center;">m</td>
-<td style="text-align: left;">mou femme</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">n</td>
-<td style="text-align: center;">n</td>
-<td style="text-align: left;">nous bonne</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">p</td>
-<td style="text-align: center;">p</td>
-<td style="text-align: left;">passé</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">R</td>
-<td style="text-align: center;">ʁ</td>
-<td style="text-align: left;">roue rhume</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">s</td>
-<td style="text-align: center;">s</td>
-<td style="text-align: left;">sa hausse ce garçon option scie</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">S</td>
-<td style="text-align: center;">ʃ</td>
-<td style="text-align: left;">choux schème shampooing</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">t</td>
-<td style="text-align: center;">t</td>
-<td style="text-align: left;">tout thé grand-oncle</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">v</td>
-<td style="text-align: center;">v</td>
-<td style="text-align: left;">vous wagon neuf heures</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">z</td>
-<td style="text-align: center;">z</td>
-<td style="text-align: left;">hasard zéro transit</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Z</td>
-<td style="text-align: center;">ʒ</td>
-<td style="text-align: left;">joue geai</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">N</td>
-<td style="text-align: center;">ŋ</td>
-<td style="text-align: left;">camping bingo</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">j</td>
-<td style="text-align: center;">j</td>
-<td style="text-align: left;">fief payer fille travail</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">w</td>
-<td style="text-align: center;">w</td>
-<td style="text-align: left;">oui loi moyen web whisky wagon</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">h</td>
-<td style="text-align: center;">ɥ</td>
-<td style="text-align: left;">huit Puy</td>
-</tr>
 <tr class="odd">
 <td style="text-align: center;">a</td>
 <td style="text-align: center;">a</td>
@@ -337,7 +210,7 @@
 <tr class="even">
 <td style="text-align: center;">o</td>
 <td style="text-align: center;">o</td>
-<td style="text-align: left;">sot hôtel haut bureau</td>
+<td style="text-align: left;">sot hôtel haut</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">o</td>
@@ -375,17 +248,153 @@
 <td style="text-align: left;">son nom</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">fp</td>
-<td style="text-align: center;"></td>
-<td style="text-align: left;">euh</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: left;">beau</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">d</td>
+<td style="text-align: center;">d</td>
+<td style="text-align: left;">doux</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">f</td>
+<td style="text-align: center;">f</td>
+<td style="text-align: left;">fête pharmacie</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">g</td>
+<td style="text-align: center;">ɡ</td>
+<td style="text-align: left;">gain guerre second</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">k</td>
+<td style="text-align: center;">k</td>
+<td style="text-align: left;">cabas psychologie quatre kelvin</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">l</td>
+<td style="text-align: center;">l</td>
+<td style="text-align: left;">le loup elle</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">m</td>
+<td style="text-align: center;">m</td>
+<td style="text-align: left;">mou femme</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">n</td>
+<td style="text-align: center;">n</td>
+<td style="text-align: left;">nous bonne</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">p</td>
+<td style="text-align: center;">p</td>
+<td style="text-align: left;">passé</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">ʁ</td>
+<td style="text-align: left;">roue rhume</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">s</td>
+<td style="text-align: center;">s</td>
+<td style="text-align: left;">sa hausse ce garçon option scie</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">S</td>
+<td style="text-align: center;">ʃ</td>
+<td style="text-align: left;">choux schème shampooing</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">t</td>
+<td style="text-align: center;">t</td>
+<td style="text-align: left;">tout thé grand-oncle</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">v</td>
+<td style="text-align: center;">v</td>
+<td style="text-align: left;">vous wagon neuf heures</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">z</td>
+<td style="text-align: center;">z</td>
+<td style="text-align: left;">hasard zéro transit</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Z</td>
+<td style="text-align: center;">ʒ</td>
+<td style="text-align: left;">joue geai</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">ŋ</td>
+<td style="text-align: left;">camping bingo</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">j</td>
+<td style="text-align: center;">j</td>
+<td style="text-align: left;">fief payer fille travail</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">w</td>
+<td style="text-align: center;">w</td>
+<td style="text-align: left;">oui loi moyen web whisky wagon</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">h</td>
+<td style="text-align: center;">ɥ</td>
+<td style="text-align: left;">huit Puy</td>
 </tr>
 </tbody>
 </table>
-<h3 id="syllabification-configuration">Syllabification configuration</h3>
-<p>The syllabification configuration file corresponds to the rules defined in the following paper:</p>
-<blockquote>
-<p><em>B. Bigi, C. Meunier, I. Nesterenko, R. Bertrand</em> (2010). <strong>Automatic detection of syllable boundaries in spontaneous speech</strong>, Language Resource and Evaluation Conference, pp 3285-3292, La Valetta, Malte.</p>
-</blockquote>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">SPPAS</th>
+<th style="text-align: center;">- IPA -</th>
+<th style="text-align: left;">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">fp</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">euh (filled pause)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">@@</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">laughter item</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">gb</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">(garbage: for noises)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">dummy</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">(dummy: for untranscribed speech)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pronunciation-dictionary">Pronunciation Dictionary</h4>
+<p><em>(c) Laboratoire Parole et Langage, Aix-en-Provence, France</em></p>
+<p><em>GNU Public License</em></p>
+<p>The French pronunciation dictionary was created by Brigitte Bigi by merging a some free dictionaries loaded from the web. Some word pronunciations were added using the LIA_Phon tool. Many words were manually corrected and a large set of missing words and pronunciation variants were added manually.</p>
+<h4 id="acoustic-model">Acoustic Model</h4>
+<p><em>(c) Laboratoire Parole et Langage, Aix-en-Provence, France</em></p>
+<p><em>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License</em></p>
+<p>The French acoustic model was created by Brigitte Bigi from various corpora mainly recorded at Laboratoire Parole et Langage. For example, it includes:</p>
+<ul>
+<li>CID - Corpus of Interactional Data <a href="http://www.sldr.org/sldr000027/" class="uri">http://www.sldr.org/sldr000027/</a>,</li>
+<li>Grenelle <a href="http://www.sldr.org/sldr000729/" class="uri">http://www.sldr.org/sldr000729/</a>,</li>
+<li>Broadcast news and Read speech (not public).</li>
+</ul>
+<h4 id="syllabification-configuration">Syllabification configuration</h4>
+<p>The syllabification configuration file corresponds to the rules defined in the paper (Bigi et al. 2010).</p>
 <h2 id="italian-resources">Italian resources</h2>
 <p><em>(C) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
 <h3 id="pronunciation-dictionary-1">Pronunciation Dictionary</h3>
@@ -1624,9 +1633,7 @@
 <p>The Portuguese dictionary is under the terms of the &quot;GNU Public License&quot;, v3.</p>
 <p>The Portuguese pronunciation dictionary was downloaded from the Ralf catalog of dictionaries for the Simon ASR system at <a href="http://spirit.blau.in/simon/import-pls-dictionary/" class="uri">http://spirit.blau.in/simon/import-pls-dictionary/</a>. It was then converted (format and phoneset) and corrected by Brigitte Bigi.</p>
 <h3 id="acoustic-model-8">Acoustic Model</h3>
-<p><em>(C) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
-<p>See COPYRIGHT.txt (in the &quot;model-cat&quot; directory) for the details of the license: &quot;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License&quot;.</p>
-<p>The acoustic model was <em>not</em> trained from data. Monophones of other models were cut and pasted to create this one.</p>
+<p>The acoustic model was <em>not</em> trained from data. Monophones of other models were cut and pasted to create this one, maily the Spanish and French models.</p>
 <p>Here is the phoneset used in the acoustic model:</p>
 <table>
 <thead>
@@ -1660,6 +1667,7 @@
 <tr class="odd">
 <td style="text-align: center;">e</td>
 <td style="text-align: center;">e</td>
+<td style="text-align: left;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">E</td>

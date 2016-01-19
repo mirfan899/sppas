@@ -1,30 +1,10 @@
-##Italian resources
+## Italian resources
 
-*(C) Laboratoire Parole et Langage, Aix-en-Provence, France.*
-
-
-###Pronunciation Dictionary
-
-The Italian dictionary is under the terms of the "GNU Public License".
-
-The Italian dictionary was downloaded from the Festival synthetizer tool. 
-A part of the phonetization were manually corrected and a large set of missing
-words and pronunciation variants were added.
-
-
-###Acoustic Model
-
-See COPYRIGHT.txt (in the "model-ita" directory) for the details of the license: 
-"Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License".
-
-The Italian acoustic model were created during the Evalita 2011 evaluation 
-campaign, from the CLIPS MapTask corpus (3h30).
-
-Here is the phoneset used in the acoustic model: 
+#### List of phonemes
 
 | SPPAS | - IPA - | Examples             |
-|:-----:|:-------:|:---------------------| 
-|  b |  b |     banca  cibo  | 
+|:-----:|:-------:|:---------------------|
+|  b |  b |     banca  cibo  |
 |  d |  d |     dove  idra   |
 | dz | dz |    zaino  zelare  mezzo  |
 | dZ | dʒ |    giungla  magia  fingere  pagina     |
@@ -55,7 +35,33 @@ Here is the phoneset used in the acoustic model:
 |  o |  o |     ombra  come      |
 |  o |  ɔ |     otto  posso  sarò     |
 |  u |  u |     ultimo  caucciù  tuo    |
+| @@    |         | laughter item        |
+| fp    |         | eh, ah (filled pause) |
+| gb    |         | (garbage: for noises) |
+| dummy |         | (dummy: for untranscribed speech) |
 
+
+
+#### Pronunciation dictionary
+
+*(c) Laboratoire Parole et Langage, Aix-en-Provence, France.*
+
+*GNU Public License*
+
+The Italian dictionary was downloaded from the Festival synthetizer tool.
+A part of the phonetization were manually corrected and a large set of missing
+words and pronunciation variants were added.
+
+
+#### Acoustic Model
+
+See COPYRIGHT.txt (in the "model-ita" directory) for the details of the license:
+"Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License".
+
+The Italian acoustic model were created during the Evalita 2011 evaluation
+campaign, from the CLIPS MapTask corpus (3h30).
+
+Here is the phoneset used in the acoustic model:
 
 ### Syllabification configuration
 

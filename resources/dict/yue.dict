@@ -1,762 +1,762 @@
-#  [#]  sil
-+  [+]	sil
-*  [*]	sil
-gb  [gb] sil
-dummy [dummy] sil
-@@ [@@] sil
-aa  [aa]  a:
-aai  [aai]  a: i:
-aak  [aak]  a: k
-aam  [aam]  a: m
-aan  [aan]  a: n
-aang  [aang]  a: N
-aap  [aap]  a: p
-aat  [aat]  a: t
-aau  [aau]  a: u:
-ai  [ai]  6 i:
-ak  [ak]  6 k
-am  [am]  6 m
-an  [an]  6 n
-ang  [ang]  6 N
-at  [at]  6 t
-au  [au]  6 u:
-baa  [baa]  p a:
-baai  [baai]  p a: i:
-baak  [baak]  p a: k
-baan  [baan]  p a: n
-baap  [baap]  p a: p
-baat  [baat]  p a: t
-baau  [baau]  p a: u:
-bai  [bai]  p 6 i:
-bak  [bak]  p 6 k
-bam  [bam]  p 6 m
-ban  [ban]  p 6 n
-bang  [bang]  p 6 N
-bat  [bat]  p 6 t
-be  [be]  p E:
-bei  [bei]  p e i:
-ben  [ben]  p E: N
-beng  [beng]  p E: N
-bik  [bik]  p I k
-bin  [bin]  p i: n
-bing  [bing]  p I N
-bit  [bit]  p i: t
-biu  [biu]  p i: u:
-bo  [bo]  p O:
-bok  [bok]  p O: k
-bon  [bon]  p O: k
-bong  [bong]  p O: N
-book  [book]  p U k
-bou  [bou]  p o u:
-bou(2) [bou]  p U u:
-bu  [bu]  p u:
-bui  [bui]  p u: i:
-buk  [buk]  p U k
-bum  [bum]  p u: n
-bun  [bun]  p u: n
-bung  [bung]  p U N
-but  [but]  p u: t
-caa  [caa]  ts_h a:
-caai  [caai]  ts_h a: i:
-caak  [caak]  ts_h a: k
-caam  [caam]  ts_h a: m
-caan  [caan]  ts_h a: n
-caang  [caang]  ts_h a: N
-caap  [caap]  ts_h a: p
-caat  [caat]  ts_h a: t
-caau  [caau]  ts_h a: u:
-cai  [cai]  ts_h 6 i:
-cak  [cak]  ts_h 6 k
-call  [call]  k_h O:
-cam  [cam]  ts_h 6 m
-can  [can]  ts_h 6 n
-cancer  [cancer]  k_h E: n s a:
-cang  [cang]  ts_h 6 N
-cap  [cap]  ts_h 6 p
-cash  [cash]  k_h E: s y:
-cat  [cat]  ts_h 6 t
-cau  [cau]  ts_h 6 u:
-ce  [ce]  ts_h E:
-cek  [cek]  ts_h E: k
-ceng  [ceng]  ts_h E: N
-ceoi  [ceoi]  ts_h 8 i:
-ceon  [ceon]  ts_h 8 n
-ceot  [ceot]  ts_h 8 t
-cet  [cet]  ts_h E: k
-cheap  [cheap]  ts_h i: p
-check  [check]  ts_h E: k
-ci  [ci]  ts_h i:
-cik  [cik]  ts_h I k
-cim  [cim]  ts_h i: m
-cin  [cin]  ts_h i: n
-cing  [cing]  ts_h I N
-cip  [cip]  ts_h i: p
-cit  [cit]  ts_h i: t
-ciu  [ciu]  ts_h i: u:
-claim  [claim]  k_h E: m
-click  [click]  k_h I k
-co  [co]  ts_h O:
-coe  [coe]  ts_h 9:
-coek  [coek]  ts_h 9: k
-coen  [coen]  ts_h 9: N
-coeng  [coeng]  ts_h 9: N
-coi  [coi]  ts_h O: i:
-con  [con]  ts_h O: n
-cong  [cong]  ts_h O: N
-cool  [cool]  k_h u:
-cou  [cou]  ts_h o u:
-cou(2) [cou]  ts_h U u:
-cuk  [cuk]  ts_h U k
-cung  [cung]  ts_h U N
-cut  [cut]  k_h 6 t
-cute  [cute]  k_h i: u:
-cyu  [cyu]  ts_h y:
-cyum  [cyum]  ts_h y: n
-cyun  [cyun]  ts_h y: n
-cyut  [cyut]  ts_h y: t
-daa  [daa]  t a:
-daai  [daai]  t a: i:
-daak  [daak]  t a: k
-daam  [daam]  t a: m
-daan  [daan]  t a: n
-daang  [daang]  t a: N
-daap  [daap]  t a: p
-daat  [daat]  t a: t
-dai  [dai]  t 6 i:
-dak  [dak]  t 6 k
-dam  [dam]  t 6 m
-dan  [dan]  t 6 n
-dang  [dang]  t 6 N
-dap  [dap]  t 6 p
-dat  [dat]  t 6 t
-dau  [dau]  t 6 u:
-de  [de]  t E:
-dei  [dei]  t e i:
-dek  [dek]  t E: k
-deng  [deng]  t E: N
-deoi  [deoi]  t 8 i:
-deon  [deon]  t 8 n
-di  [di]  t i:
-dik  [dik]  t I k
-dim  [dim]  t i: m
-din  [din]  t i: n
-ding  [ding]  t I N
-dip  [dip]  t i: p
-dit  [dit]  t i: t
-diu  [diu]  t i: u:
-do  [do]  t O:
-doe  [doe]  t 9:
-doek  [doek]  t 9: k
-doeng  [doeng]  t 9: N
-doi  [doi]  t O: i:
-dok  [dok]  t O: k
-don  [don]  t O: n
-dong  [dong]  t O: N
-dou  [dou]  t o u:
-dou(2) [dou]  t U u:
-duk  [duk]  t U k
-dum  [dum]  t u: n
-dung  [dung]  t U N
-dyun  [dyun]  t y: n
-dyut  [dyut]  t y: t
-faa  [faa]  f a:
-faai  [faai]  f a: i:
-faak  [faak]  f a: k
-faan  [faan]  f a: n
-faat  [faat]  f a: t
-faau  [faau]  f a: u:
-fai  [fai]  f 6 i:
-fan  [fan]  f 6 n
-fang  [fang]  f 6 N
-fat  [fat]  f 6 t
-fau  [fau]  f 6 u:
-fax  [fax]  f E: t s i:
-feel  [feel]  f i: u:
-fe  [fe]  f E:
-fei  [fei]  f e i:
+#  []  sil
++  []	sil
+*  []	sil
+gb  [] sil
+dummy [] sil
+@@ [] sil
+aa  []  a:
+aai  []  a: i:
+aak  []  a: k
+aam  []  a: m
+aan  []  a: n
+aang  []  a: N
+aap  []  a: p
+aat  []  a: t
+aau  []  a: u:
+ai  []  6 i:
+ak  []  6 k
+am  []  6 m
+an  []  6 n
+ang  []  6 N
+at  []  6 t
+au  []  6 u:
+baa  []  p a:
+baai  []  p a: i:
+baak  []  p a: k
+baan  []  p a: n
+baap  []  p a: p
+baat  []  p a: t
+baau  []  p a: u:
+bai  []  p 6 i:
+bak  []  p 6 k
+bam  []  p 6 m
+ban  []  p 6 n
+bang  []  p 6 N
+bat  []  p 6 t
+be  []  p E:
+bei  []  p e i:
+ben  []  p E: N
+beng  []  p E: N
+bik  []  p I k
+bin  []  p i: n
+bing  []  p I N
+bit  []  p i: t
+biu  []  p i: u:
+bo  []  p O:
+bok  []  p O: k
+bon  []  p O: k
+bong  []  p O: N
+book  []  p U k
+bou  []  p o u:
+bou(2) []  p U u:
+bu  []  p u:
+bui  []  p u: i:
+buk  []  p U k
+bum  []  p u: n
+bun  []  p u: n
+bung  []  p U N
+but  []  p u: t
+caa  []  ts_h a:
+caai  []  ts_h a: i:
+caak  []  ts_h a: k
+caam  []  ts_h a: m
+caan  []  ts_h a: n
+caang  []  ts_h a: N
+caap  []  ts_h a: p
+caat  []  ts_h a: t
+caau  []  ts_h a: u:
+cai  []  ts_h 6 i:
+cak  []  ts_h 6 k
+call  []  k_h O:
+cam  []  ts_h 6 m
+can  []  ts_h 6 n
+cancer  []  k_h E: n s a:
+cang  []  ts_h 6 N
+cap  []  ts_h 6 p
+cash  []  k_h E: s y:
+cat  []  ts_h 6 t
+cau  []  ts_h 6 u:
+ce  []  ts_h E:
+cek  []  ts_h E: k
+ceng  []  ts_h E: N
+ceoi  []  ts_h 8 i:
+ceon  []  ts_h 8 n
+ceot  []  ts_h 8 t
+cet  []  ts_h E: k
+cheap  []  ts_h i: p
+check  []  ts_h E: k
+ci  []  ts_h i:
+cik  []  ts_h I k
+cim  []  ts_h i: m
+cin  []  ts_h i: n
+cing  []  ts_h I N
+cip  []  ts_h i: p
+cit  []  ts_h i: t
+ciu  []  ts_h i: u:
+claim  []  k_h E: m
+click  []  k_h I k
+co  []  ts_h O:
+coe  []  ts_h 9:
+coek  []  ts_h 9: k
+coen  []  ts_h 9: N
+coeng  []  ts_h 9: N
+coi  []  ts_h O: i:
+con  []  ts_h O: n
+cong  []  ts_h O: N
+cool  []  k_h u:
+cou  []  ts_h o u:
+cou(2) []  ts_h U u:
+cuk  []  ts_h U k
+cung  []  ts_h U N
+cut  []  k_h 6 t
+cute  []  k_h i: u:
+cyu  []  ts_h y:
+cyum  []  ts_h y: n
+cyun  []  ts_h y: n
+cyut  []  ts_h y: t
+daa  []  t a:
+daai  []  t a: i:
+daak  []  t a: k
+daam  []  t a: m
+daan  []  t a: n
+daang  []  t a: N
+daap  []  t a: p
+daat  []  t a: t
+dai  []  t 6 i:
+dak  []  t 6 k
+dam  []  t 6 m
+dan  []  t 6 n
+dang  []  t 6 N
+dap  []  t 6 p
+dat  []  t 6 t
+dau  []  t 6 u:
+de  []  t E:
+dei  []  t e i:
+dek  []  t E: k
+deng  []  t E: N
+deoi  []  t 8 i:
+deon  []  t 8 n
+di  []  t i:
+dik  []  t I k
+dim  []  t i: m
+din  []  t i: n
+ding  []  t I N
+dip  []  t i: p
+dit  []  t i: t
+diu  []  t i: u:
+do  []  t O:
+doe  []  t 9:
+doek  []  t 9: k
+doeng  []  t 9: N
+doi  []  t O: i:
+dok  []  t O: k
+don  []  t O: n
+dong  []  t O: N
+dou  []  t o u:
+dou(2) []  t U u:
+duk  []  t U k
+dum  []  t u: n
+dung  []  t U N
+dyun  []  t y: n
+dyut  []  t y: t
+faa  []  f a:
+faai  []  f a: i:
+faak  []  f a: k
+faan  []  f a: n
+faat  []  f a: t
+faau  []  f a: u:
+fai  []  f 6 i:
+fan  []  f 6 n
+fang  []  f 6 N
+fat  []  f 6 t
+fau  []  f 6 u:
+fax  []  f E: t s i:
+feel  []  f i: u:
+fe  []  f E:
+fei  []  f e i:
 嗀  [嗀]  f O:
-fo  [fo]  f O:
-fok  [fok]  f O: k
-fon  [fon]  f O: n
-fong  [fong]  f O: N
-foul  [foul]  f 6 u:
-friend  [friend]  f E: n
-fu  [fu]  f u:
-fui  [fui]  f u: i:
-fuk  [fuk]  f U k
-fun  [fun]  f u: n
-fung  [fung]  f U N
-fut  [fut]  f u: t
-gaa  [gaa]  k a:
-gaai  [gaai]  k a: i:
-gaak  [gaak]  k a: k
-gaam  [gaam]  k a: m
-gaan  [gaan]  k a: n
-gaang  [gaang]  k a: N
-gaap  [gaap]  k a: p
-gaat  [gaat]  k a: t
-gaau  [gaau]  k a: u:
-gag  [gag]  k E: k
-gai  [gai]  k 6 i:
-gak  [gak]  k 6 k
-gam  [gam]  k 6 m
-gan  [gan]  k 6 n
-gang  [gang]  k 6 N
-gap  [gap]  k 6 p
-gat  [gat]  k 6 t
-gau  [gau]  k 6 u:
-ge  [ge]  k E:
-gei  [gei]  k e i:
-gek  [gek]  k E: k
-geng  [geng]  k E: N
-geoi  [geoi]  k 8 i:
-gik  [gik]  k I k
-gim  [gim]  k i: m
-ging  [ging]  k I N
-gin  [gin]  k i: n
-gip  [gip]  k i: p
-git  [git]  k i: t
-giu  [giu]  k i: u:
-goe  [goe]  k 9:
-goek  [goek]  k 9: k
-goeng  [goeng]  k 9: N
-go  [go]  k O:
-goi  [goi]  k O: i:
-gok  [gok]  k O: k
-gong  [gong]  k O: N
-gon  [gon]  k O: n
-got  [got]  k O: t
-gou  [gou]  k o u:
-gou(2) [gou]  k U u:
-gu  [gu]  k u:
-guk  [guk]  k U k
-gum  [gum]  k u: n
-gung  [gung]  k U N
-gun  [gun]  k u: n
-gwaa  [gwaa]  k_w a:
-gwaai  [gwaai]  k_w a: i:
-gwaak  [gwaak]  k_w a: k
-gwaam  [gwaam]  k_w a: m
-gwaan  [gwaan]  k_w a: n
-gwaat  [gwaat]  k_w a: t
-gwai  [gwai]  k_w 6 i:
-gwang  [gwang]  k_w 6 N
-gwan  [gwan]  k_w 6 n
-gwat  [gwat]  k_w 6 t
-gwing  [gwing]  k_w I N
-gwo  [gwo]  k_w O:
-gwok  [gwok]  k_w O: k
-gwong  [gwong]  k_w O: N
-gwon  [gwon]  k_w O: n
-gyun  [gyun]  k y: n
-haa  [haa]  h a:
-haai  [haai]  h a: i:
-haak  [haak]  h a: k
-haam  [haam]  h a: m
-haang  [haang]  h a: N
-haan  [haan]  h a: n
-haap  [haap]  h a: p
-haat  [haat]  h a: t
-haau  [haau]  h a: u:
-hai  [hai]  h 6 i:
-hak  [hak]  h 6 k
-ham  [ham]  h 6 m
-hang  [hang]  h 6 N
-han  [han]  h 6 n
-hap  [hap]  h 6 p
-hat  [hat]  h 6 t
-hau  [hau]  h 6 u:
-hei  [hei]  h e i:
-hek  [hek]  h E: k
-heng  [heng]  h E: N
-hen  [hen]  h E: N
-heoi  [heoi]  h 8 i:
-high  [high]  h a: i:
-him  [him]  h i: m
-hing  [hing]  h I N
-hin  [hin]  h i: n
-hip  [hip]  h i: p
-hit  [hit]  h i: t
-hiu  [hiu]  h i: u:
-hoe  [hoe]  h 9:
-hoek  [hoek]  h 9: k
-hoeng  [hoeng]  h 9: N
-hoen  [hoen]  h 9: N
-ho  [ho]  h O:
-hoi  [hoi]  h O: i:
-hok  [hok]  h O: k
-hong  [hong]  h O: N
-hon  [hon]  h O: n
-hot  [hot]  h O: t
-hou  [hou]  h o u:
-hou(2) [hou]  h U u:
-huk  [huk]  h U k
-hum  [hum]  h u: n
-hung  [hung]  h U N
-hyun  [hyun]  h y: n
-hyut  [hyut]  h y: t
-in  [in]  i: n
-ip  [ip]  6 i: p i:
-jaa  [jaa]  j a:
-jaau  [jaau]  j a: u:
-jacket  [jacket]  ts E: k k_h E: k
-jai  [jai]  j 6 i:
-jak  [jak]  j 6 k
-jam  [jam]  j 6 m
-jan  [jan]  j 6 n
-jap  [jap]  j 6 p
-jat  [jat]  j 6 t
-jau  [jau]  j 6 u:
-je  [je]  j E:
-jeng  [jeng]  j E: N
-jeoi  [jeoi]  j 8 i:
-jeon  [jeon]  j 8 n
-ji  [ji]  j i:
-jik  [jik]  j I k
-jim  [jim]  j i: m
-jing  [jing]  j I N
-jin  [jin]  j i: n
-jip  [jip]  j i: p
-jit  [jit]  j i: t
-jiu  [jiu]  j i: u:
-joe  [joe]  j 9:
-joek  [joek]  j 9: k
-joeng  [joeng]  j 9: N
-joen  [joen]  j 9: N
-juk  [juk]  j U k
-jung  [jung]  j U N
-jyu  [jyu]  j y:
-jyun  [jyun]  j y: n
-jyut  [jyut]  j y: t
+fo  []  f O:
+fok  []  f O: k
+fon  []  f O: n
+fong  []  f O: N
+foul  []  f 6 u:
+friend  []  f E: n
+fu  []  f u:
+fui  []  f u: i:
+fuk  []  f U k
+fun  []  f u: n
+fung  []  f U N
+fut  []  f u: t
+gaa  []  k a:
+gaai  []  k a: i:
+gaak  []  k a: k
+gaam  []  k a: m
+gaan  []  k a: n
+gaang  []  k a: N
+gaap  []  k a: p
+gaat  []  k a: t
+gaau  []  k a: u:
+gag  []  k E: k
+gai  []  k 6 i:
+gak  []  k 6 k
+gam  []  k 6 m
+gan  []  k 6 n
+gang  []  k 6 N
+gap  []  k 6 p
+gat  []  k 6 t
+gau  []  k 6 u:
+ge  []  k E:
+gei  []  k e i:
+gek  []  k E: k
+geng  []  k E: N
+geoi  []  k 8 i:
+gik  []  k I k
+gim  []  k i: m
+ging  []  k I N
+gin  []  k i: n
+gip  []  k i: p
+git  []  k i: t
+giu  []  k i: u:
+goe  []  k 9:
+goek  []  k 9: k
+goeng  []  k 9: N
+go  []  k O:
+goi  []  k O: i:
+gok  []  k O: k
+gong  []  k O: N
+gon  []  k O: n
+got  []  k O: t
+gou  []  k o u:
+gou(2) []  k U u:
+gu  []  k u:
+guk  []  k U k
+gum  []  k u: n
+gung  []  k U N
+gun  []  k u: n
+gwaa  []  k_w a:
+gwaai  []  k_w a: i:
+gwaak  []  k_w a: k
+gwaam  []  k_w a: m
+gwaan  []  k_w a: n
+gwaat  []  k_w a: t
+gwai  []  k_w 6 i:
+gwang  []  k_w 6 N
+gwan  []  k_w 6 n
+gwat  []  k_w 6 t
+gwing  []  k_w I N
+gwo  []  k_w O:
+gwok  []  k_w O: k
+gwong  []  k_w O: N
+gwon  []  k_w O: n
+gyun  []  k y: n
+haa  []  h a:
+haai  []  h a: i:
+haak  []  h a: k
+haam  []  h a: m
+haang  []  h a: N
+haan  []  h a: n
+haap  []  h a: p
+haat  []  h a: t
+haau  []  h a: u:
+hai  []  h 6 i:
+hak  []  h 6 k
+ham  []  h 6 m
+hang  []  h 6 N
+han  []  h 6 n
+hap  []  h 6 p
+hat  []  h 6 t
+hau  []  h 6 u:
+hei  []  h e i:
+hek  []  h E: k
+heng  []  h E: N
+hen  []  h E: N
+heoi  []  h 8 i:
+high  []  h a: i:
+him  []  h i: m
+hing  []  h I N
+hin  []  h i: n
+hip  []  h i: p
+hit  []  h i: t
+hiu  []  h i: u:
+hoe  []  h 9:
+hoek  []  h 9: k
+hoeng  []  h 9: N
+hoen  []  h 9: N
+ho  []  h O:
+hoi  []  h O: i:
+hok  []  h O: k
+hong  []  h O: N
+hon  []  h O: n
+hot  []  h O: t
+hou  []  h o u:
+hou(2) []  h U u:
+huk  []  h U k
+hum  []  h u: n
+hung  []  h U N
+hyun  []  h y: n
+hyut  []  h y: t
+in  []  i: n
+ip  []  6 i: p i:
+jaa  []  j a:
+jaau  []  j a: u:
+jacket  []  ts E: k k_h E: k
+jai  []  j 6 i:
+jak  []  j 6 k
+jam  []  j 6 m
+jan  []  j 6 n
+jap  []  j 6 p
+jat  []  j 6 t
+jau  []  j 6 u:
+je  []  j E:
+jeng  []  j E: N
+jeoi  []  j 8 i:
+jeon  []  j 8 n
+ji  []  j i:
+jik  []  j I k
+jim  []  j i: m
+jing  []  j I N
+jin  []  j i: n
+jip  []  j i: p
+jit  []  j i: t
+jiu  []  j i: u:
+joe  []  j 9:
+joek  []  j 9: k
+joeng  []  j 9: N
+joen  []  j 9: N
+juk  []  j U k
+jung  []  j U N
+jyu  []  j y:
+jyun  []  j y: n
+jyut  []  j y: t
 䀹  [䀹]  k 6 p
-kaa  [kaa]  k_h a:
-kaak  [kaak]  k_h a: k
-kaan  [kaan]  k_h a: n
-kaat  [kaat]  k_h a: t
-kaau  [kaau]  k_h a: u:
-kai  [kai]  k_h 6 i:
-kam  [kam]  k_h 6 m
-kang  [kang]  k_h 6 N
-kan  [kan]  k_h 6 n
-kap  [kap]  k_h 6 p
-kat  [kat]  k_h 6 t
-kau  [kau]  k_h 6 u:
-keep  [keep]  k_h i: p
-kei  [kei]  k_h e i:
-ke  [ke]  k_h E:
-kek  [kek]  k_h E: k
-keoi  [keoi]  k_h 8 i:
-kik  [kik]  k_h I k
-kim  [kim]  k_h i: m
-king  [king]  k_h I N
-kin  [kin]  k_h i: n
-kit  [kit]  k_h i: t
-kiu  [kiu]  k_h i: u:
-koek  [koek]  k_h 9: k
-koe  [koe]  k_h 9:
-koeng  [koeng]  k_h 9: N
-koi  [koi]  k_h O: i:
-kok  [kok]  k_h O: k
-ko  [ko]  k_h O:
-kong  [kong]  k_h O: N
-kon  [kon]  k_h O: n
-kou  [kou]  k_h o u:
-kou(2) [kou]  k_h U u:
-kui  [kui]  k_h u: i:
-kuk  [kuk]  k_h U k
-ku  [ku]  k_h u:
-kung  [kung]  k_h U N
-kut  [kut]  k_h u: t
-kwaak  [kwaak]  k_h_w a: k
-kwaa  [kwaa]  k_h_w a:
-kwaang  [kwaang]  k_h_w a: N
-kwaan  [kwaan]  k_h_w a: n
-kwai  [kwai]  k_h_w 6 i:
-kwan  [kwan]  k_h_w 6 n
-kwik  [kwik]  k_h_w I k
-kwok  [kwok]  k_h_w O: k
-kwong  [kwong]  k_h_w O: N
-kyun  [kyun]  k_h y: n
-kyut  [kyut]  k_h y: t
-laai  [laai]  l a: i:
-laak  [laak]  l a: k
-laa  [laa]  l a:
-laam  [laam]  l a: m
-laang  [laang]  l a: N
-laan  [laan]  l a: n
-laap  [laap]  l a: p
-laat  [laat]  l a: t
-laau  [laau]  l a: u:
-label  [label]  l e i: p o u:
-label(2) [label]  l e i: p U u:
-lai  [lai]  l 6 i:
-lak  [lak]  l 6 k
-lam  [lam]  l 6 m
-lang  [lang]  l 6 N
-lan  [lan]  l 6 n
-lap  [lap]  l 6 p
-lat  [lat]  l 6 t
-lau  [lau]  l 6 u:
-lei  [lei]  l e i:
-lek  [lek]  l E: k
-le  [le]  l E:
-lem  [lem]  l E: N
-leng  [leng]  l E: N
-len  [len]  l E: N
-leoi  [leoi]  l 8 i:
-leon  [leon]  l 8 n
-leot  [leot]  l 8 t
-lik  [lik]  l I k
-li  [li]  l i:
-lim  [lim]  l i: m
-ling  [ling]  l I N
-lin  [lin]  l i: n
-lip  [lip]  l i: p
-lit  [lit]  l i: t
-liu  [liu]  l i: u:
-loek  [loek]  l 9: k
-loe  [loe]  l 9:
-loeng  [loeng]  l 9: N
-loi  [loi]  l O: i:
-lok  [lok]  l O: k
-lo  [lo]  l O:
-long  [long]  l O: N
-lon  [lon]  l O: n
-lou  [lou]  l o u:
-lou(2) [lou]  l U u:
-luk  [luk]  l U k
-lu  [lu]  l u:
-lung  [lung]  l U N
-lyun  [lyun]  l y: n
-lyut  [lyut]  l y: t
-maai  [maai]  m a: i:
-maak  [maak]  m a: k
-maa  [maa]  m a:
-maang  [maang]  m a: N
-maan  [maan]  m a: n
-maat  [maat]  m a: t
-maau  [maau]  m a: u:
-mai  [mai]  m 6 i:
-mak  [mak]  m 6 k
-mang  [mang]  m 6 N
-man  [man]  m 6 n
-mat  [mat]  m 6 t
-mau  [mau]  m 6 u:
-mei  [mei]  m e i:
-me  [me]  m E:
-meng  [meng]  m E: N
-men  [men]  m E: N
-mik  [mik]  m I k
-mi  [mi]  m i:
-ming  [ming]  m I N
-min  [min]  m i: n
-miss  [miss]  m i: s i:
-mit  [mit]  m i: t
-miu  [miu]  m i: u:
-m  [m]  m
-mok  [mok]  m O: k
-mo  [mo]  m O:
-mong  [mong]  m O: N
-mon  [mon]  m O: n
-mou  [mou]  m o u:
-mou(2) [mou]  m U u:
-mui  [mui]  m u: i:
-muk  [muk]  m U k
-mu  [mu]  m u:
-mung  [mung]  m U N
-mun  [mun]  m u: n
-mut  [mut]  m u: t
-naai  [naai]  n a: i:
-naak  [naak]  n a: k
-naam  [naam]  n a: m
-naa  [naa]  n a:
-naan  [naan]  n a: n
-naap  [naap]  n a: p
-naat  [naat]  n a: t
-naau  [naau]  n a: u:
-nai  [nai]  n 6 i:
-nam  [nam]  n 6 m
-nang  [nang]  n 6 N
-nan  [nan]  n 6 n
-nap  [nap]  n 6 p
-nau  [nau]  n 6 u:
-nei  [nei]  n e i:
-ne  [ne]  n E:
-neng  [neng]  n E: N
-neoi  [neoi]  n 8 i:
-neon  [neon]  n 8 n
-ngaai  [ngaai]  N a: i:
-ngaak  [ngaak]  N a: k
-ngaam  [ngaam]  N a: m
-ngaa  [ngaa]  N a:
-ngaang  [ngaang]  N a: N
-ngaan  [ngaan]  N a: n
-ngaap  [ngaap]  N a: p
-ngaat  [ngaat]  N a: t
-ngaau  [ngaau]  N a: u:
-ngai  [ngai]  N 6 i:
-ngak  [ngak]  N 6 k
-ngam  [ngam]  N 6 m
-ngang  [ngang]  N 6 N
-ngan  [ngan]  N 6 n
-ngat  [ngat]  N 6 t
-ngau  [ngau]  N 6 u:
-ng  [ng]  N
-ngoi  [ngoi]  N O: i:
-ngok  [ngok]  N O: k
-ngong  [ngong]  N O: N
-ngo  [ngo]  N O:
-ngon  [ngon]  N O: n
-ngou  [ngou]  N o u:
-ngou(2) [ngou]  N U u:
-nguk  [nguk]  N U k
-nik  [nik]  n I k
-nim  [nim]  n i: m
-ning  [ning]  n I N
-ni  [ni]  n i:
-nin  [nin]  n i: n
-nip  [nip]  n i: p
-nit  [nit]  n i: t
-niu  [niu]  n i: u:
-noek  [noek]  n 9: k
-noeng  [noeng]  n 9: N
-noe  [noe]  n 9:
-noi  [noi]  n O: i:
-nok  [nok]  n O: k
-nong  [nong]  n O: N
-no  [no]  n O:
-nou  [nou]  n o u:
-nou(2) [nou]  n U u:
-nuk  [nuk]  n U k
-nung  [nung]  n U N
-nyun  [nyun]  n y: n
-nyut  [nyut]  n y: t
-oi  [oi]  O: i:
-ok  [ok]  O: k
-ok(2) [ok]  O: k_h e i:
-ong  [ong]  O: N
-on  [on]  O: n
-o  [o]  O:
-o(2) [o]  o u:
-o(3) [o]  U u:
-o.t.  [o.t.]  o u: t_h i:
-o.t.(2) [o.t.]  U u: t_h i:
-ou  [ou]  o u:
-ou(2) [ou]  U u:
-out  [out]  6 u:
-paai  [paai]  p_h a: i:
-paak  [paak]  p_h a: k
-paang  [paang]  p_h a: N
-paan  [paan]  p_h a: n
-paa  [paa]  p_h a:
-paat  [paat]  p_h a: t
-paau  [paau]  p_h a: u:
-pai  [pai]  p_h 6 i:
-pang  [pang]  p_h 6 N
-pan  [pan]  p_h 6 n
-paper  [paper]  p_h e i: p_h a:
-part-time  [part-time]  p_h a: k t_h a: i:
-party  [party]  p a: t t_h i:
-passport  [passport]  p_h a: s i: p O: t
-pat pat  [pat pat]  p_h E: t p_h E: t
-pat  [pat]  p_h 6 t
-pc  [pc]  p i: s i:
-pei  [pei]  p_h e i:
-pek  [pek]  p_h E: k
-peng  [peng]  p_h E: N
-pen  [pen]  p_h E: N
-pe  [pe]  p_h E:
-pik  [pik]  p_h I k
-ping  [ping]  p_h I N
-pin  [pin]  p_h i: n
-pit  [pit]  p_h i: t
-piu  [piu]  p_h i: u:
-pizza  [pizza]  p i: s a:
-pok  [pok]  p_h O: k
-pong  [pong]  p_h O: N
-pon  [pon]  p_h O: n
-po  [po]  p_h O:
-pou  [pou]  p_h o u:
-pou(2) [pou]  p_h U u:
-ptu  [ptu]  p i: t_h i: j i: u:
-pui  [pui]  p_h u: i:
-puk  [puk]  p_h U k
-pung  [pung]  p_h U N
-pun  [pun]  p_h u: n
-put  [put]  p_h u: t
-quali  [quali]  k_h O: l i:
-saai  [saai]  s a: i:
-saak  [saak]  s a: k
-saam  [saam]  s a: m
-saang  [saang]  s a: N
-saan  [saan]  s a: n
-saap  [saap]  s a: p
-saa  [saa]  s a:
-saat  [saat]  s a: t
-saau  [saau]  s a: u:
-sai  [sai]  s 6 i:
-sak  [sak]  s 6 k
-sam  [sam]  s 6 m
-sang  [sang]  s 6 N
-san  [san]  s 6 n
-sap  [sap]  s 6 p
-sat  [sat]  s 6 t
-sau  [sau]  s 6 u:
-sei  [sei]  s e i:
-sek  [sek]  s E: k
-seng  [seng]  s E: N
-SENT-END  [SENT-END]  s i: l
-SENT_START  [SENT_START]  s i: l
-seoi  [seoi]  s 8 i:
-seon  [seon]  s 8 n
-seot  [seot]  s 8 t
-se  [se]  s E:
-short  [short]  s O: t
-sik  [sik]  s I k
+kaa  []  k_h a:
+kaak  []  k_h a: k
+kaan  []  k_h a: n
+kaat  []  k_h a: t
+kaau  []  k_h a: u:
+kai  []  k_h 6 i:
+kam  []  k_h 6 m
+kang  []  k_h 6 N
+kan  []  k_h 6 n
+kap  []  k_h 6 p
+kat  []  k_h 6 t
+kau  []  k_h 6 u:
+keep  []  k_h i: p
+kei  []  k_h e i:
+ke  []  k_h E:
+kek  []  k_h E: k
+keoi  []  k_h 8 i:
+kik  []  k_h I k
+kim  []  k_h i: m
+king  []  k_h I N
+kin  []  k_h i: n
+kit  []  k_h i: t
+kiu  []  k_h i: u:
+koek  []  k_h 9: k
+koe  []  k_h 9:
+koeng  []  k_h 9: N
+koi  []  k_h O: i:
+kok  []  k_h O: k
+ko  []  k_h O:
+kong  []  k_h O: N
+kon  []  k_h O: n
+kou  []  k_h o u:
+kou(2) []  k_h U u:
+kui  []  k_h u: i:
+kuk  []  k_h U k
+ku  []  k_h u:
+kung  []  k_h U N
+kut  []  k_h u: t
+kwaak  []  k_h_w a: k
+kwaa  []  k_h_w a:
+kwaang  []  k_h_w a: N
+kwaan  []  k_h_w a: n
+kwai  []  k_h_w 6 i:
+kwan  []  k_h_w 6 n
+kwik  []  k_h_w I k
+kwok  []  k_h_w O: k
+kwong  []  k_h_w O: N
+kyun  []  k_h y: n
+kyut  []  k_h y: t
+laai  []  l a: i:
+laak  []  l a: k
+laa  []  l a:
+laam  []  l a: m
+laang  []  l a: N
+laan  []  l a: n
+laap  []  l a: p
+laat  []  l a: t
+laau  []  l a: u:
+label  []  l e i: p o u:
+label(2) []  l e i: p U u:
+lai  []  l 6 i:
+lak  []  l 6 k
+lam  []  l 6 m
+lang  []  l 6 N
+lan  []  l 6 n
+lap  []  l 6 p
+lat  []  l 6 t
+lau  []  l 6 u:
+lei  []  l e i:
+lek  []  l E: k
+le  []  l E:
+lem  []  l E: N
+leng  []  l E: N
+len  []  l E: N
+leoi  []  l 8 i:
+leon  []  l 8 n
+leot  []  l 8 t
+lik  []  l I k
+li  []  l i:
+lim  []  l i: m
+ling  []  l I N
+lin  []  l i: n
+lip  []  l i: p
+lit  []  l i: t
+liu  []  l i: u:
+loek  []  l 9: k
+loe  []  l 9:
+loeng  []  l 9: N
+loi  []  l O: i:
+lok  []  l O: k
+lo  []  l O:
+long  []  l O: N
+lon  []  l O: n
+lou  []  l o u:
+lou(2) []  l U u:
+luk  []  l U k
+lu  []  l u:
+lung  []  l U N
+lyun  []  l y: n
+lyut  []  l y: t
+maai  []  m a: i:
+maak  []  m a: k
+maa  []  m a:
+maang  []  m a: N
+maan  []  m a: n
+maat  []  m a: t
+maau  []  m a: u:
+mai  []  m 6 i:
+mak  []  m 6 k
+mang  []  m 6 N
+man  []  m 6 n
+mat  []  m 6 t
+mau  []  m 6 u:
+mei  []  m e i:
+me  []  m E:
+meng  []  m E: N
+men  []  m E: N
+mik  []  m I k
+mi  []  m i:
+ming  []  m I N
+min  []  m i: n
+miss  []  m i: s i:
+mit  []  m i: t
+miu  []  m i: u:
+m  []  m
+mok  []  m O: k
+mo  []  m O:
+mong  []  m O: N
+mon  []  m O: n
+mou  []  m o u:
+mou(2) []  m U u:
+mui  []  m u: i:
+muk  []  m U k
+mu  []  m u:
+mung  []  m U N
+mun  []  m u: n
+mut  []  m u: t
+naai  []  n a: i:
+naak  []  n a: k
+naam  []  n a: m
+naa  []  n a:
+naan  []  n a: n
+naap  []  n a: p
+naat  []  n a: t
+naau  []  n a: u:
+nai  []  n 6 i:
+nam  []  n 6 m
+nang  []  n 6 N
+nan  []  n 6 n
+nap  []  n 6 p
+nau  []  n 6 u:
+nei  []  n e i:
+ne  []  n E:
+neng  []  n E: N
+neoi  []  n 8 i:
+neon  []  n 8 n
+ngaai  []  N a: i:
+ngaak  []  N a: k
+ngaam  []  N a: m
+ngaa  []  N a:
+ngaang  []  N a: N
+ngaan  []  N a: n
+ngaap  []  N a: p
+ngaat  []  N a: t
+ngaau  []  N a: u:
+ngai  []  N 6 i:
+ngak  []  N 6 k
+ngam  []  N 6 m
+ngang  []  N 6 N
+ngan  []  N 6 n
+ngat  []  N 6 t
+ngau  []  N 6 u:
+ng  []  N
+ngoi  []  N O: i:
+ngok  []  N O: k
+ngong  []  N O: N
+ngo  []  N O:
+ngon  []  N O: n
+ngou  []  N o u:
+ngou(2) []  N U u:
+nguk  []  N U k
+nik  []  n I k
+nim  []  n i: m
+ning  []  n I N
+ni  []  n i:
+nin  []  n i: n
+nip  []  n i: p
+nit  []  n i: t
+niu  []  n i: u:
+noek  []  n 9: k
+noeng  []  n 9: N
+noe  []  n 9:
+noi  []  n O: i:
+nok  []  n O: k
+nong  []  n O: N
+no  []  n O:
+nou  []  n o u:
+nou(2) []  n U u:
+nuk  []  n U k
+nung  []  n U N
+nyun  []  n y: n
+nyut  []  n y: t
+oi  []  O: i:
+ok  []  O: k
+ok(2) []  O: k_h e i:
+ong  []  O: N
+on  []  O: n
+o  []  O:
+o(2) []  o u:
+o(3) []  U u:
+o.t.  []  o u: t_h i:
+o.t.(2) []  U u: t_h i:
+ou  []  o u:
+ou(2) []  U u:
+out  []  6 u:
+paai  []  p_h a: i:
+paak  []  p_h a: k
+paang  []  p_h a: N
+paan  []  p_h a: n
+paa  []  p_h a:
+paat  []  p_h a: t
+paau  []  p_h a: u:
+pai  []  p_h 6 i:
+pang  []  p_h 6 N
+pan  []  p_h 6 n
+paper  []  p_h e i: p_h a:
+part-time  []  p_h a: k t_h a: i:
+party  []  p a: t t_h i:
+passport  []  p_h a: s i: p O: t
+pat pat  []  p_h E: t p_h E: t
+pat  []  p_h 6 t
+pc  []  p i: s i:
+pei  []  p_h e i:
+pek  []  p_h E: k
+peng  []  p_h E: N
+pen  []  p_h E: N
+pe  []  p_h E:
+pik  []  p_h I k
+ping  []  p_h I N
+pin  []  p_h i: n
+pit  []  p_h i: t
+piu  []  p_h i: u:
+pizza  []  p i: s a:
+pok  []  p_h O: k
+pong  []  p_h O: N
+pon  []  p_h O: n
+po  []  p_h O:
+pou  []  p_h o u:
+pou(2) []  p_h U u:
+ptu  []  p i: t_h i: j i: u:
+pui  []  p_h u: i:
+puk  []  p_h U k
+pung  []  p_h U N
+pun  []  p_h u: n
+put  []  p_h u: t
+quali  []  k_h O: l i:
+saai  []  s a: i:
+saak  []  s a: k
+saam  []  s a: m
+saang  []  s a: N
+saan  []  s a: n
+saap  []  s a: p
+saa  []  s a:
+saat  []  s a: t
+saau  []  s a: u:
+sai  []  s 6 i:
+sak  []  s 6 k
+sam  []  s 6 m
+sang  []  s 6 N
+san  []  s 6 n
+sap  []  s 6 p
+sat  []  s 6 t
+sau  []  s 6 u:
+sei  []  s e i:
+sek  []  s E: k
+seng  []  s E: N
+SENT-END  []  s i: l
+SENT_START  []  s i: l
+seoi  []  s 8 i:
+seon  []  s 8 n
+seot  []  s 8 t
+se  []  s E:
+short  []  s O: t
+sik  []  s I k
 #  [#]  s i: l
-sil  [sil]  s i: l
-sim  [sim]  s i: m
-sing  [sing]  s I N
-sin  [sin]  s i: n
-sip  [sip]  s i: p
-si  [si]  s i:
-sit  [sit]  s i: t
-siu  [siu]  s i: u:
-soek  [soek]  s 9: k
-soeng  [soeng]  s 9: N
-soen  [soen]  s 9: N
-soe  [soe]  s 9:
-soet  [soet]  s 9: k
-soi  [soi]  s O: i:
-sok  [sok]  s O: k
-song  [song]  s O: N
-son  [son]  s O: n
-sorry  [sorry]  s O: l i:
-so  [so]  s O:
-sou  [sou]  s o u:
-sou(2) [sou]  s U u:
-suk  [suk]  s U k
-sung  [sung]  s U N
-syun  [syun]  s y: n
-syu  [syu]  s y:
-syut  [syut]  s y: t
-taai  [taai]  t_h a: i:
-taam  [taam]  t_h a: m
-taan  [taan]  t_h a: n
-taap  [taap]  t_h a: p
-taa  [taa]  t_h a:
-taat  [taat]  t_h a: t
-taau  [taau]  t_h a: u:
-tai  [tai]  t_h 6 i:
-talk  [talk]  t_h O: k
-tam  [tam]  t_h 6 m
-tang  [tang]  t_h 6 N
-tan  [tan]  t_h 6 n
-tap  [tap]  t_h 6 p
-tau  [tau]  t_h 6 u:
-tei  [tei]  t_h e i:
-tek  [tek]  t_h E: k
-teng  [teng]  t_h E: N
-ten  [ten]  t_h E: N
-teoi  [teoi]  t_h 8 i:
-teon  [teon]  t_h 8 n
-te  [te]  t_h E:
-tik  [tik]  t_h I k
-tim  [tim]  t_h i: m
-ting  [ting]  t_h I N
-tin  [tin]  t_h i: n
-tip  [tip]  t_h i: p
-tissue  [tissue]  t_h i: s u:
-ti  [ti]  t_h i:
-title  [title]  t_h a: i: t_h o u:
-title(2) [title]  t_h a: i: t_h U u:
-tit  [tit]  t_h i: t
-tiu  [tiu]  t_h i: u:
-toe  [toe]  t_h 9:
-toi  [toi]  t_h O: i:
-tok  [tok]  t_h O: k
-tong  [tong]  t_h O: N
-ton  [ton]  t_h O: n
-to  [to]  t_h O:
-tou  [tou]  t_h o u:
-tou(2) [tou]  t_h U u:
-tuk  [tuk]  t_h U k
-tung  [tung]  t_h U N
-tut  [tut]  t_h u: t
-tyun  [tyun]  t_h y: n
-tyut  [tyut]  t_h y: t
-uk  [uk]  U k
-van  [van]  w E: n
-waai  [waai]  w a: i:
-waak  [waak]  w a: k
-waang  [waang]  w a: N
-waan  [waan]  w a: n
-waat  [waat]  w a: t
-waa  [waa]  w a:
-wai  [wai]  w 6 i:
-wang  [wang]  w 6 N
-wan  [wan]  w 6 n
-wat  [wat]  w 6 t
-wei  [wei]  w e i:
-wik  [wik]  w I k
-wing  [wing]  w I N
-wok  [wok]  w O: k
-wong  [wong]  w O: N
-won  [won]  w O: n
-wo  [wo]  w O:
-wui  [wui]  w u: i:
-wun  [wun]  w u: n
-wut  [wut]  w u: t
-wu  [wu]  w u:
-yun  [yun]  j y: n
-zaai  [zaai]  ts a: i:
-zaak  [zaak]  ts a: k
-zaam  [zaam]  ts a: m
-zaang  [zaang]  ts a: N
-zaan  [zaan]  ts a: n
-zaap  [zaap]  ts a: p
-zaat  [zaat]  ts a: t
-zaau  [zaau]  ts a: u:
-zaa  [zaa]  ts a:
-zai  [zai]  ts 6 i:
-zak  [zak]  ts 6 k
-zam  [zam]  ts 6 m
-zang  [zang]  ts 6 N
-zan  [zan]  ts 6 n
-zap  [zap]  ts 6 p
-zat  [zat]  ts 6 t
-zau  [zau]  ts 6 u:
-zek  [zek]  ts E: k
-zeng  [zeng]  ts E: N
-zen  [zen]  ts E: N
-zeoi  [zeoi]  ts 8 i:
-zeon  [zeon]  ts 8 n
-zeot  [zeot]  ts 8 t
-ze  [ze]  ts E:
-zik  [zik]  ts I k
-zim  [zim]  ts i: m
-zing  [zing]  ts I N
-zin  [zin]  ts i: n
-zip  [zip]  ts i: p
-zit  [zit]  ts i: t
-ziu  [ziu]  ts i: u:
-zi  [zi]  ts i:
-zoek  [zoek]  ts 9: k
-zoeng  [zoeng]  ts 9: N
-zoen  [zoen]  ts 9: N
-zoe  [zoe]  ts 9:
-zoi  [zoi]  ts O: i:
-zok  [zok]  ts O: k
-zong  [zong]  ts O: N
-zon  [zon]  ts O: n
-zou  [zou]  ts o u:
-zou(2) [zou]  ts U u:
-zo  [zo]  ts O:
-zuk  [zuk]  ts U k
-zung  [zung]  ts U N
-zyun  [zyun]  ts y: n
-zyut  [zyut]  ts y: t
-zyu  [zyu]  ts y:
+sil  []  s i: l
+sim  []  s i: m
+sing  []  s I N
+sin  []  s i: n
+sip  []  s i: p
+si  []  s i:
+sit  []  s i: t
+siu  []  s i: u:
+soek  []  s 9: k
+soeng  []  s 9: N
+soen  []  s 9: N
+soe  []  s 9:
+soet  []  s 9: k
+soi  []  s O: i:
+sok  []  s O: k
+song  []  s O: N
+son  []  s O: n
+sorry  []  s O: l i:
+so  []  s O:
+sou  []  s o u:
+sou(2) []  s U u:
+suk  []  s U k
+sung  []  s U N
+syun  []  s y: n
+syu  []  s y:
+syut  []  s y: t
+taai  []  t_h a: i:
+taam  []  t_h a: m
+taan  []  t_h a: n
+taap  []  t_h a: p
+taa  []  t_h a:
+taat  []  t_h a: t
+taau  []  t_h a: u:
+tai  []  t_h 6 i:
+talk  []  t_h O: k
+tam  []  t_h 6 m
+tang  []  t_h 6 N
+tan  []  t_h 6 n
+tap  []  t_h 6 p
+tau  []  t_h 6 u:
+tei  []  t_h e i:
+tek  []  t_h E: k
+teng  []  t_h E: N
+ten  []  t_h E: N
+teoi  []  t_h 8 i:
+teon  []  t_h 8 n
+te  []  t_h E:
+tik  []  t_h I k
+tim  []  t_h i: m
+ting  []  t_h I N
+tin  []  t_h i: n
+tip  []  t_h i: p
+tissue  []  t_h i: s u:
+ti  []  t_h i:
+title  []  t_h a: i: t_h o u:
+title(2) []  t_h a: i: t_h U u:
+tit  []  t_h i: t
+tiu  []  t_h i: u:
+toe  []  t_h 9:
+toi  []  t_h O: i:
+tok  []  t_h O: k
+tong  []  t_h O: N
+ton  []  t_h O: n
+to  []  t_h O:
+tou  []  t_h o u:
+tou(2) []  t_h U u:
+tuk  []  t_h U k
+tung  []  t_h U N
+tut  []  t_h u: t
+tyun  []  t_h y: n
+tyut  []  t_h y: t
+uk  []  U k
+van  []  w E: n
+waai  []  w a: i:
+waak  []  w a: k
+waang  []  w a: N
+waan  []  w a: n
+waat  []  w a: t
+waa  []  w a:
+wai  []  w 6 i:
+wang  []  w 6 N
+wan  []  w 6 n
+wat  []  w 6 t
+wei  []  w e i:
+wik  []  w I k
+wing  []  w I N
+wok  []  w O: k
+wong  []  w O: N
+won  []  w O: n
+wo  []  w O:
+wui  []  w u: i:
+wun  []  w u: n
+wut  []  w u: t
+wu  []  w u:
+yun  []  j y: n
+zaai  []  ts a: i:
+zaak  []  ts a: k
+zaam  []  ts a: m
+zaang  []  ts a: N
+zaan  []  ts a: n
+zaap  []  ts a: p
+zaat  []  ts a: t
+zaau  []  ts a: u:
+zaa  []  ts a:
+zai  []  ts 6 i:
+zak  []  ts 6 k
+zam  []  ts 6 m
+zang  []  ts 6 N
+zan  []  ts 6 n
+zap  []  ts 6 p
+zat  []  ts 6 t
+zau  []  ts 6 u:
+zek  []  ts E: k
+zeng  []  ts E: N
+zen  []  ts E: N
+zeoi  []  ts 8 i:
+zeon  []  ts 8 n
+zeot  []  ts 8 t
+ze  []  ts E:
+zik  []  ts I k
+zim  []  ts i: m
+zing  []  ts I N
+zin  []  ts i: n
+zip  []  ts i: p
+zit  []  ts i: t
+ziu  []  ts i: u:
+zi  []  ts i:
+zoek  []  ts 9: k
+zoeng  []  ts 9: N
+zoen  []  ts 9: N
+zoe  []  ts 9:
+zoi  []  ts O: i:
+zok  []  ts O: k
+zong  []  ts O: N
+zon  []  ts O: n
+zou  []  ts o u:
+zou(2) []  ts U u:
+zo  []  ts O:
+zuk  []  ts U k
+zung  []  ts U N
+zyun  []  ts y: n
+zyut  []  ts y: t
+zyu  []  ts y:
 一  [一]  @
 一(2) [一]  6 k
 一(3) [一]  6 t
