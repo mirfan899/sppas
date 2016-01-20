@@ -2,10 +2,10 @@
 
 ### What SPPAS can do?
 
-Here is the list of functionalities available to annotate automatically 
+Here is the list of functionalities available to annotate automatically
 speech data and to analyse annotated files:
 
-1. **Automatic Annotations**
+1. **Automatic and semi-automatic annotations**
 
     - **Momel/INTSINT**:     modelling melody
     - **IPUs segmentation**: utterance level segmentation
@@ -19,7 +19,7 @@ speech data and to analyse annotated files:
 2. **Components**
 
     - *IPUScribe*:      Manual orthographic transcription
-    - *SndPlayer*:      Play sounds (mono wav) and display main information
+    - *SndRoamer*:      Play sounds and display information about audio files
     - *Statistics*:     Estimates/Save statistics on annotated files
     - *DataRoamer*:     Manipulate annotated files
     - *DataFilter*:     Extract data from annotated files
@@ -41,9 +41,9 @@ There are three main ways to use SPPAS:
     * double-click on the `sppas.bat` file, under Windows;
     * double-click on the `sppas.command` file, under MacOS or Linux.
 
-2. The Command-line User Interface (CLI), with a set of programs, each one 
-essentially independent of the others, that can be run on its own at the level 
-of the shell. 
+2. The Command-line User Interface (CLI), with a set of programs, each one
+essentially independent of the others, that can be run on its own at the level
+of the shell.
 
 3. Scripting with Python and SPPAS provides the more powerful way.
 
@@ -56,16 +56,14 @@ the expected extension:
 
 * Praat: TextGrid, PitchTier, IntensityTier
 * Elan: eaf
+* Annotation Pro: antx
+* Phonedit: mrk
 * Sclite: ctm, stm
 * HTK: lab, mlf
 * Subtitles: srt, sub
-* Phonedit: mrk
 * Signaix: hz
 * Excel/OpenOffice/R: csv
 
-It can also import and export data from:
-
-* Annotation Pro: antx
 
 And it can also import data from:
 

@@ -1,23 +1,6 @@
-##Portuguese Resources
+## Portuguese Resources
 
-*(C) Brigitte Bigi
-
-###Pronunciation Dictionary
-
-The Portuguese dictionary is under the terms of the "GNU Public License", v3.
-
-The Portuguese pronunciation dictionary was downloaded from the Ralf catalog
-of dictionaries for the Simon ASR system at
-<http://spirit.blau.in/simon/import-pls-dictionary/>.
-It was then converted (format and phoneset) and corrected by Brigitte Bigi.
-
-
-###Acoustic Model
-
-The acoustic model was *not* trained from data. Monophones of other models were
-cut and pasted to create this one, maily the Spanish and French models.
-
-Here is the phoneset used in the acoustic model:
+#### List of phonemes
 
 | SPPAS | - IPA - | Examples             |
 |:-----:|:-------:|:---------------------|
@@ -56,5 +39,29 @@ Here is the phoneset used in the acoustic model:
 |   y   |   y     | |
 |   z   |   z     | |
 |   Z   |   ʒ     | |
+| @@    |         | laughter item        |
+| gb    |         | (garbage: for noises) |
+| dummy |         | (dummy: for untranscribed speech) |
 
 
+#### Pronunciation Dictionary
+
+*GNU Public License*
+
+The Portuguese pronunciation dictionary was downloaded from the Ralf catalog
+of dictionaries for the Simon ASR system at
+<http://spirit.blau.in/simon/import-pls-dictionary/>.
+It was then converted (format and phoneset) and corrected by Brigitte Bigi.
+
+
+#### Acoustic Model
+
+*(c) Laboratoire Parole et Langage, Aix-en-Provence, France*
+
+*Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License*
+
+The acoustic model was *not* trained from data. Monophones of other models were
+cut and pasted to create this one, maily the Spanish and French models.
+
+**Portuguese data are welcome!**
+Because data implies a better acoustic model then better alignments...

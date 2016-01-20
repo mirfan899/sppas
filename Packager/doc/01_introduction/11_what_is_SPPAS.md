@@ -22,32 +22,31 @@ it's easy and fast!
 
 ### Copyright and Licenses
 
-*(c) 2011-2015 Brigitte Bigi, Laboratoire Parole et Langage, Aix-en-Provence, France*
+*(c) 2011-2016 Brigitte Bigi, Laboratoire Parole et Langage, Aix-en-Provence, France*
 
 SPPAS software is distributed under the terms of the **GNU GENERAL PUBLIC
 LICENSE**.
 
 SPPAS resources are distributed:
 
-- under the terms of the GNU GENERAL PUBLIC LICENSE, or
-- on the terms of the **"Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License"**
+- under the terms of the "GNU GENERAL PUBLIC LICENSE", or
+- on the terms of the "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License".
 
 A copy of both licenses is available in the package.
 See the "Resources" chapter for details about the license of each proposed
 resource.
 
 
-### User engagement
+### User engagement: how to cite SPPAS
 
 >By using SPPAS, **you agree to cite references in your publications**.
 
-See the "References" section of this documentation and/or see PDF 
-files included in the package.
+See the "References" chapter of this documentation.
 
 
 ### Need help
 
-1. When looking for more detail about some subject, one can search this 
+1. When looking for more detail about some subject, one can search this
 documentation. This documentation is available in-line (see the SPPAS website),
 it is also included in the package (in PDF format) and it can also be explored
 with the Graphical User Interface by clicking on the 'Help' button.
@@ -57,23 +56,23 @@ with the Graphical User Interface by clicking on the 'Help' button.
 3. There is a SPPAS Users discussion group where queries and allied topics
 are discussed, with responses from colleagues or from the author.
 Topics can range from elementary "how do I" queries to advanced
-issues in scriptwriting. 
+issues in scriptwriting.
 There's (or there will be) something there for everybody.
-It is recommended to sign up to become a member on the website: 
+It is recommended to sign up to become a member on the website:
 <https://groups.google.com/forum/#!forum/sppas-users>
 (neither spam or e-mails will be sent directly to members).
 
-4. If none of the above helps, you may send e-mail to the author. 
-It is very important to indicate clearly: 
+4. If none of the above helps, you may send e-mail to the author.
+It is very important to indicate clearly:
 
-    1/ your operating system and its version, 
-    2/ the version of SPPAS (supposed to be the last one), and 
-    3/ for automatic annotations, send the log file, and a sample of the data 
+    1/ your operating system and its version,
+    2/ the version of SPPAS (supposed to be the last one), and
+    3/ for automatic annotations, send the log file, and a sample of the data
     on which a problem occurs.
- 
+
 And/Or, if you have any question, if you want to contribute to SPPAS either
 to improve the quality of resources or to help in development, or anything else,
-do not hesitate to contact the author by e-mail at: 
+do not hesitate to contact the author by e-mail at:
 `brigitte.bigi@gmail.com`.
 
 
@@ -82,7 +81,7 @@ do not hesitate to contact the author by e-mail at:
 
 #### 2011-2012:
 
-Partly supported by ANR OTIM project (Ref. Nr. ANR-08-BLAN-0239), 
+Partly supported by ANR OTIM project (Ref. Nr. ANR-08-BLAN-0239),
 Tools for Multimodal Information Processing.
 
 Read more at: <http://www.lpl-aix.fr/~otim/>
@@ -90,8 +89,8 @@ Read more at: <http://www.lpl-aix.fr/~otim/>
 
 #### 2013-2015:
 
-Partly supported by ORTOLANG (Ref. Nr. ANR-11-EQPX-0032) funded by the 
-« Investissements d'Avenir » French Government program managed by the 
+Partly supported by ORTOLANG (Ref. Nr. ANR-11-EQPX-0032) funded by the
+« Investissements d'Avenir » French Government program managed by the
 French National Research Agency (ANR).
 
 Read more at: <http://www.ortolang.fr/index.php?page=accueil&lang=en>

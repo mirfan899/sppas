@@ -56,11 +56,13 @@ They will be included in the training procedure to create a new (and better)
 acoustic model, that will be distributed in the next version of SPPAS.
 
 
-### About the phone sets
+### About the phonemes
 
-Most of the resources are using the international standard
+Most of the dictionaries are using the international standard
 X-SAMPA to represent phonemes.
 See <https://en.wikipedia.org/wiki/X-SAMPA> for details.
+The list of all phonemes for each language is available in this documentation,
+in the section related to a given language.
 
 In addition, all models (except eng, jpn and yue) include the following fillers:
 

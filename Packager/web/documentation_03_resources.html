@@ -55,44 +55,19 @@
 <li><a href="#resources-for-automatic-annotations">Resources for Automatic Annotations</a><ul>
 <li><a href="#what-are-sppas-resources-and-where-they-come-from">What are SPPAS resources and where they come from?</a><ul>
 <li><a href="#overview">Overview</a></li>
-<li><a href="#about-the-phone-sets">About the phone sets</a></li>
+<li><a href="#about-the-phonemes">About the phonemes</a></li>
 <li><a href="#how-to-add-a-new-language">How to add a new language</a></li>
 </ul></li>
 <li><a href="#french-resources">French Resources</a></li>
-<li><a href="#italian-resources">Italian resources</a><ul>
-<li><a href="#pronunciation-dictionary-1">Pronunciation Dictionary</a></li>
-<li><a href="#acoustic-model-1">Acoustic Model</a></li>
-<li><a href="#syllabification-configuration-1">Syllabification configuration</a></li>
-</ul></li>
-<li><a href="#spanish-resources">Spanish resources</a><ul>
-<li><a href="#pronunciation-dictionary-2">Pronunciation Dictionary</a></li>
-<li><a href="#acoustic-model-2">Acoustic Model</a></li>
-</ul></li>
-<li><a href="#catalan-resources">Catalan resources</a><ul>
-<li><a href="#pronunciation-dictionary-3">Pronunciation Dictionary</a></li>
-<li><a href="#acoustic-model-3">Acoustic Model</a></li>
-</ul></li>
-<li><a href="#english">English</a><ul>
-<li><a href="#dictionary">Dictionary</a></li>
-<li><a href="#acoustic-model-4">Acoustic Model</a></li>
-</ul></li>
-<li><a href="#mandarin-chinese">Mandarin Chinese</a><ul>
-<li><a href="#pronunciation-dictionary-4">Pronunciation dictionary</a></li>
-<li><a href="#acoustic-model-5">Acoustic model</a></li>
-</ul></li>
+<li><a href="#italian-resources">Italian resources</a></li>
+<li><a href="#spanish-resources">Spanish resources</a></li>
+<li><a href="#catalan-resources">Catalan resources</a></li>
+<li><a href="#english">English</a></li>
+<li><a href="#mandarin-chinese">Mandarin Chinese</a></li>
 <li><a href="#southern-min-or-min-nan-resources">Southern Min (or Min Nan) resources</a></li>
-<li><a href="#cantonese-resources">Cantonese resources</a><ul>
-<li><a href="#dictionary-1">Dictionary</a></li>
-<li><a href="#acoustic-model-6">Acoustic Model</a></li>
-</ul></li>
-<li><a href="#polish-resources">Polish Resources</a><ul>
-<li><a href="#pronunciation-dictionary-5">Pronunciation Dictionary</a></li>
-<li><a href="#acoustic-model-7">Acoustic Model</a></li>
-</ul></li>
-<li><a href="#portuguese-resources">Portuguese Resources</a><ul>
-<li><a href="#pronunciation-dictionary-6">Pronunciation Dictionary</a></li>
-<li><a href="#acoustic-model-8">Acoustic Model</a></li>
-</ul></li>
+<li><a href="#cantonese-resources">Cantonese resources</a></li>
+<li><a href="#polish-resources">Polish Resources</a></li>
+<li><a href="#portuguese-resources">Portuguese Resources</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -129,8 +104,8 @@
 <p>SPPAS can deal with a new language by simply adding the language resources to the appropriate sub-directories. Of course, file formats must corresponds to which expected by SPPAS! Lexicon and dictionaries can be edited/modified/saved with a simple-editor as <strong>Notepad++</strong> for example (<em>under Windows: above all, don't use the windows' notepad</em>). Idem for the syllabification rules.</p>
 <p>The only step in the procedure which is probably beyond the means of a linguist without external aid is the creation of a new acoustic model when it does not yet exist for the language being analysed. This only needs to carried out once for each language, though, and we provide detailed specifications of the information needed to train an acoustic model on an appropriate set of recordings and dictionaries or transcriptions. Acoustic models obtained by such a collaborative process will be made freely available to the scientific community.</p>
 <p>The current acoustic models can be improved too (except for eng and jpn): send your data (wav and transcription files) to the author. Notice that such data will not be published in any form without your authorization. They will be included in the training procedure to create a new (and better) acoustic model, that will be distributed in the next version of SPPAS.</p>
-<h3 id="about-the-phone-sets">About the phone sets</h3>
-<p>Most of the resources are using the international standard X-SAMPA to represent phonemes. See <a href="https://en.wikipedia.org/wiki/X-SAMPA" class="uri">https://en.wikipedia.org/wiki/X-SAMPA</a> for details.</p>
+<h3 id="about-the-phonemes">About the phonemes</h3>
+<p>Most of the dictionaries are using the international standard X-SAMPA to represent phonemes. See <a href="https://en.wikipedia.org/wiki/X-SAMPA" class="uri">https://en.wikipedia.org/wiki/X-SAMPA</a> for details. The list of all phonemes for each language is available in this documentation, in the section related to a given language.</p>
 <p>In addition, all models (except eng, jpn and yue) include the following fillers:</p>
 <ul>
 <li>dummy: untranscribed speech</li>
@@ -347,33 +322,22 @@
 <td style="text-align: center;">ɥ</td>
 <td style="text-align: left;">huit Puy</td>
 </tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: center;">SPPAS</th>
-<th style="text-align: center;">- IPA -</th>
-<th style="text-align: left;">Examples</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: center;">fp</td>
 <td style="text-align: center;"></td>
 <td style="text-align: left;">euh (filled pause)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: center;">@@</td>
 <td style="text-align: center;"></td>
 <td style="text-align: left;">laughter item</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: center;">gb</td>
 <td style="text-align: center;"></td>
 <td style="text-align: left;">(garbage: for noises)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: center;">dummy</td>
 <td style="text-align: center;"></td>
 <td style="text-align: left;">(dummy: for untranscribed speech)</td>
@@ -396,14 +360,7 @@
 <h4 id="syllabification-configuration">Syllabification configuration</h4>
 <p>The syllabification configuration file corresponds to the rules defined in the paper (Bigi et al. 2010).</p>
 <h2 id="italian-resources">Italian resources</h2>
-<p><em>(C) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
-<h3 id="pronunciation-dictionary-1">Pronunciation Dictionary</h3>
-<p>The Italian dictionary is under the terms of the &quot;GNU Public License&quot;.</p>
-<p>The Italian dictionary was downloaded from the Festival synthetizer tool. A part of the phonetization were manually corrected and a large set of missing words and pronunciation variants were added.</p>
-<h3 id="acoustic-model-1">Acoustic Model</h3>
-<p>See COPYRIGHT.txt (in the &quot;model-ita&quot; directory) for the details of the license: &quot;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License&quot;.</p>
-<p>The Italian acoustic model were created during the Evalita 2011 evaluation campaign, from the CLIPS MapTask corpus (3h30).</p>
-<p>Here is the phoneset used in the acoustic model:</p>
+<h4 id="list-of-phonemes-1">List of phonemes</h4>
 <table>
 <thead>
 <tr class="header">
@@ -568,24 +525,40 @@
 <td style="text-align: center;">u</td>
 <td style="text-align: left;">ultimo caucciù tuo</td>
 </tr>
+<tr class="even">
+<td style="text-align: center;">@@</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">laughter item</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">fp</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">eh, ah (filled pause)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">gb</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">(garbage: for noises)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">dummy</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">(dummy: for untranscribed speech)</td>
+</tr>
 </tbody>
 </table>
-<h3 id="syllabification-configuration-1">Syllabification configuration</h3>
-<p>The syllabification configuration file corresponds to the rules defined in the following paper:</p>
-<blockquote>
-<p><em>B. Bigi, C. Petrone</em> (2014). <strong>A generic tool for the automatic syllabification of Italian</strong>, Proceedings of the first Italian Computational Linguistics Conference, Pisa, Italy.</p>
-</blockquote>
+<h4 id="pronunciation-dictionary-1">Pronunciation dictionary</h4>
+<p><em>(c) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
+<p><em>GNU Public License</em></p>
+<p>The Italian dictionary was downloaded from the Festival synthetizer tool. A part of the phonetization were manually corrected by Brigitte Bigi and a large set of missing words and pronunciation variants were added manually.</p>
+<h4 id="acoustic-model-1">Acoustic Model</h4>
+<p><em>(c) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
+<p><em>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License</em></p>
+<p>The Italian acoustic model were created during the Evalita 2011 evaluation campaign, from the CLIPS MapTask corpus (3h30), and updated during the Evalita 2014 evaluation campaign.</p>
+<h4 id="syllabification-configuration-1">Syllabification configuration</h4>
+<p>The syllabification configuration file corresponds to the rules defined in the paper (Bigi and Petrone, 2014).</p>
 <h2 id="spanish-resources">Spanish resources</h2>
-<h3 id="pronunciation-dictionary-2">Pronunciation Dictionary</h3>
-<p>The pronunciation dictionary was downloaded from the CMU web page. Brigitte Bigi converted this CMU phoneset to SAMPA, and changed the file format.</p>
-<h3 id="acoustic-model-2">Acoustic Model</h3>
-<p><em>(C) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
-<p>See COPYRIGHT.txt (in the &quot;model-spa&quot; directory) for the details of the license: &quot;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License&quot;.</p>
-<p>The acoustic model was trained from Glissando. We address special thanks to Juan-Maria Garrido for giving us access to this corpus: <a href="http://veus.barcelonamedia.org/glissando/node/10" class="uri">http://veus.barcelonamedia.org/glissando/node/10</a></p>
-<blockquote>
-<p><strong>GARRIDO, J. M. - ESCUDERO, D. - AGUILAR, L. -CARDEÑOSO, V. - RODERO, E. - DE-LA-MOTA, C. - GONZÁLEZ, C. - RUSTULLET, S. - LARREA, O. - LAPLAZA, Y. - VIZCAÍNO, F. - CABRERA, M. - BONAFONTE, A.</strong> (2013). <em>Glissando: a corpus for multidisciplinary prosodic studies in Spanish and Catalan</em>, Language Resources and Evaluation, DOI 10.1007/s10579-012-9213-0.</p>
-</blockquote>
-<p>Here is the phoneset used in the acoustic model:</p>
+<h4 id="list-of-phonemes-2">List of phonemes</h4>
 <table>
 <thead>
 <tr class="header">
@@ -762,15 +735,17 @@
 </tr>
 </tbody>
 </table>
-<h2 id="catalan-resources">Catalan resources</h2>
-<h3 id="pronunciation-dictionary-3">Pronunciation Dictionary</h3>
-<p>The Catalan dictionary is under the terms of the &quot;GNU Public License&quot;.</p>
-<p>The catalan pronunciation dictionary was downloaded from the Ralf catalog of dictionaries for the Simon ASR system at <a href="http://spirit.blau.in/simon/import-pls-dictionary/" class="uri">http://spirit.blau.in/simon/import-pls-dictionary/</a>. It was then converted (format and phoneset) by Brigitte Bigi. Some new words were also added and phonetized manually.</p>
-<h3 id="acoustic-model-3">Acoustic Model</h3>
+<h4 id="pronunciation-dictionary-2">Pronunciation Dictionary</h4>
+<p>The pronunciation dictionary was downloaded from the CMU web page. Brigitte Bigi converted this CMU phoneset to X-SAMPA, and changed the file format.</p>
+<h4 id="acoustic-model-2">Acoustic Model</h4>
 <p><em>(C) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
-<p>See COPYRIGHT.txt (in the &quot;model-cat&quot; directory) for the details of the license: &quot;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License&quot;.</p>
-<p>The acoustic model was <em>not</em> trained from data. Monophones of other models were cut and pasted to create this one.</p>
-<p>Here is the phoneset used in the acoustic model:</p>
+<p><em>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License</em></p>
+<p>The acoustic model was trained from Glissando corpus. We address special thanks to Juan-Maria Garrido for giving us access to this corpus: <a href="http://veus.barcelonamedia.org/glissando/node/10" class="uri">http://veus.barcelonamedia.org/glissando/node/10</a></p>
+<blockquote>
+<p><strong>GARRIDO, J. M. - ESCUDERO, D. - AGUILAR, L. -CARDEÑOSO, V. - RODERO, E. - DE-LA-MOTA, C. - GONZÁLEZ, C. - RUSTULLET, S. - LARREA, O. - LAPLAZA, Y. - VIZCAÍNO, F. - CABRERA, M. - BONAFONTE, A.</strong> (2013). <em>Glissando: a corpus for multidisciplinary prosodic studies in Spanish and Catalan</em>, Language Resources and Evaluation, DOI 10.1007/s10579-012-9213-0.</p>
+</blockquote>
+<h2 id="catalan-resources">Catalan resources</h2>
+<h4 id="list-of-phonemes-3">List of phonemes</h4>
 <table>
 <thead>
 <tr class="header">
@@ -982,14 +957,15 @@
 </tr>
 </tbody>
 </table>
+<h4 id="pronunciation-dictionary-3">Pronunciation dictionary</h4>
+<p><em>GNU Public License</em></p>
+<p>The catalan pronunciation dictionary was downloaded from the Ralf catalog of dictionaries for the Simon ASR system at <a href="http://spirit.blau.in/simon/import-pls-dictionary/" class="uri">http://spirit.blau.in/simon/import-pls-dictionary/</a>. It was then converted (format and phoneset) by Brigitte Bigi. Some new words were also added and phonetized manually.</p>
+<h4 id="acoustic-model-3">Acoustic Model</h4>
+<p><em>(C) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
+<p><em>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License</em></p>
+<p>The acoustic model was <em>not</em> trained from data. Monophones of other models were cut and pasted to create this one.</p>
 <h2 id="english">English</h2>
-<h3 id="dictionary">Dictionary</h3>
-<p>The CMU Pronouncing Dictionary (also known as CMUdict) is a public domain pronouncing dictionary created by Carnegie Mellon University (CMU). It defines a mapping from English words to their North American pronunciations; it contains over 125,000 words and their transcriptions. See <a href="http://www.speech.cs.cmu.edu/cgi-bin/cmudict" class="uri">http://www.speech.cs.cmu.edu/cgi-bin/cmudict</a> for details.</p>
-<p>The Carnegie Mellon Pronouncing Dictionary, in its current and previous versions is Copyright (C) 1993-2008 by Carnegie Mellon University.<br />Use of this dictionary for any research or commercial purpose is completely unrestricted. If you make use of or redistribute this material, the CMU requests that you acknowledge its origin in your descriptions.</p>
-<h3 id="acoustic-model-4">Acoustic Model</h3>
-<p>The acoustic model distributed in SPPAS resources were downloaded (in 2013) from the VoxForge project at <a href="http://www.voxforge.org/" class="uri">http://www.voxforge.org/</a>. It was then converted to SAMPA by Brigitte Bigi.</p>
-<p>The English acoustic model is under the terms of the &quot;GNU Public License&quot;.</p>
-<p>Here is the phoneset used in the acoustic model:</p>
+<h4 id="list-of-phonemes-4">List of phonemes</h4>
 <table>
 <thead>
 <tr class="header">
@@ -1221,28 +1197,452 @@
 </tr>
 </tbody>
 </table>
+<h4 id="pronunciation-dictionary-4">Pronunciation dictionary</h4>
+<p>The CMU Pronouncing Dictionary (also known as CMUdict) is a public domain pronouncing dictionary created by Carnegie Mellon University (CMU). It defines a mapping from English words to their North American pronunciations; it contains over 125,000 words and their transcriptions. See <a href="http://www.speech.cs.cmu.edu/cgi-bin/cmudict" class="uri">http://www.speech.cs.cmu.edu/cgi-bin/cmudict</a> for details.</p>
+<p>The Carnegie Mellon Pronouncing Dictionary, in its current and previous versions is Copyright (C) 1993-2008 by Carnegie Mellon University. Use of this dictionary for any research or commercial purpose is completely unrestricted. If you make use of or redistribute this material, the CMU requests that you acknowledge its origin in your descriptions.</p>
+<p>Brigitte Bigi converted the original CMUdict into X-SAMPA.</p>
+<h4 id="acoustic-model-4">Acoustic Model</h4>
+<p>The acoustic model distributed in SPPAS resources were downloaded (in 2014) from the VoxForge project at <a href="http://www.voxforge.org/" class="uri">http://www.voxforge.org/</a>. It was then converted to X-SAMPA by Brigitte Bigi.</p>
+<p>The English acoustic model is under the terms of the &quot;GNU Public License&quot;.</p>
 <h2 id="mandarin-chinese">Mandarin Chinese</h2>
+<h4 id="list-of-phonemes-5">List of phonemes</h4>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">SPPAS</th>
+<th style="text-align: center;">IPA</th>
+<th style="text-align: left;">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">ŋ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">S</td>
+<td style="text-align: center;">ʃ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">e</td>
+<td style="text-align: center;">e</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">f</td>
+<td style="text-align: center;">f</td>
+<td style="text-align: left;">访</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">i</td>
+<td style="text-align: center;">i</td>
+<td style="text-align: left;">一 诒</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">i_d</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">三次</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">k</td>
+<td style="text-align: center;">k</td>
+<td style="text-align: left;">诰</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">k_h</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">l</td>
+<td style="text-align: center;">l</td>
+<td style="text-align: left;">论</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">m</td>
+<td style="text-align: center;">m</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">n</td>
+<td style="text-align: center;">n</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">o</td>
+<td style="text-align: center;">o</td>
+<td style="text-align: left;">讴</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">p</td>
+<td style="text-align: center;">p</td>
+<td style="text-align: left;">诐</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">p_h</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">s</td>
+<td style="text-align: center;">s</td>
+<td style="text-align: left;">诉</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ts</td>
+<td style="text-align: center;">ts</td>
+<td style="text-align: left;">诅</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ts_h</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">䌽 吹</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">S</td>
+<td style="text-align: center;">ʃ</td>
+<td style="text-align: left;">讹</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ss</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">许</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">t</td>
+<td style="text-align: center;">t</td>
+<td style="text-align: left;">掉 诋</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">tss</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">讵 讲</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">u</td>
+<td style="text-align: center;">u</td>
+<td style="text-align: left;">诬</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">x</td>
+<td style="text-align: center;">x</td>
+<td style="text-align: left;">诨 诲</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">y</td>
+<td style="text-align: center;">y</td>
+<td style="text-align: left;">诩 语</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ts_hs</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">诎 㐤</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">t_h</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">一统 一通</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">@`</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">i`</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">三河市</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">s`</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">识 说</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ts_h`</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">串 吹</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ts`</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">证 诊</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">z`</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">@@</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">laughter item</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">gb</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">(garbage: for noises)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">dummy</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">(dummy: for untranscribed speech)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pronunciation-dictionary-5">Pronunciation dictionary</h4>
 <p><em>(C) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
-<h3 id="pronunciation-dictionary-4">Pronunciation dictionary</h3>
+<p><em>GNU Public License</em></p>
 <p>The pronunciation dictionary was manually created for the syllables by Zhi Na.</p>
-<h3 id="acoustic-model-5">Acoustic model</h3>
+<h4 id="acoustic-model-5">Acoustic model</h4>
 <p>The acoustic model was created by Brigitte Bigi from data recorded at Shanghai by Zhi Na, and another one by Hongwei Ding. We address special thanks to hers for giving us access to the corpus. These recordings are a Chinese version of the Eurom1 corpus. See the following publication for details:</p>
 <blockquote>
 <p><strong>Daniel Hirst, Brigitte Bigi, Hyongsil Cho, Hongwei Ding, Sophie Herment, Ting Wang</strong> (2013). <em>Building OMProDat: an open multilingual prosodic database</em>, Proceedings of Tools ans Resources for the Analysis of Speech Prosody, Aix-en-Provence, France, Eds B. Bigi and D. Hirst, ISBN: 978-2-7466-6443-2, pp. 11-14.</p>
 </blockquote>
-<p>Notice that the current model was trained from a very small amount of data: this will impact on the results: Do not expect to get good performances for the automatic alignment.</p>
-<p><strong>More Mandarin Chinese data are welcome!</strong></p>
-<p>Here is the phoneset used in the acoustic model:</p>
-<p>| SPPAS | - IPA - | Examples | |:-----:|:-------:|:-------------------| | @<code>|    |  |  |  N    | ŋ  |  |  |  S    | ʃ  |  |  |  a    | a  |  |  |  e    | e  |  |  |  f    | f  | 访  |  |  i    | i  | 一 诒  |  |  i_d  |    | 三次  |  |  i</code> | | 三河市 | | k | k | 诰 | | k_h | | | | l | l | 论 | | m | m | | | n | n | | | o | o | 讴 | | p | p | 诐 | | p_h | | | | s | s | 诉 | | S | | 讹 | | s<code>|    | 识 说  |  |  ss   |    | 许  |  |  t    | t  | 掉 诋 |  |  t_h  |    | 一统  一通 |  |  ts   | ts | 诅  |  | ts_h  |    | 䌽 吹  |  | ts_h</code> | | 串 吹 | | ts_hs | | 诎 㐤 | | ts<code>|    | 证 诊  |  |  tss  |    | 讵  讲 |   |  u    | u  | 诬     |  |  x    | x  | 诨 诲  |  |  y    | y  | 诩 语  |   |  z</code> | | |</p>
+<p>Notice that the current model was trained from a very small amount of data: this will impact on the results. Do not expect to get good performances for the automatic alignment.</p>
+<p><strong>More Mandarin Chinese data are welcome!</strong> Because more data implies a better acoustic model then better alignments...</p>
 <h2 id="southern-min-or-min-nan-resources">Southern Min (or Min Nan) resources</h2>
-<p><em>(C) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
-<p>We address special thanks to S-F Wang for giving us access to the corpus.</p>
+<h4 id="list-of-phonemes-6">List of phonemes</h4>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">SPPAS</th>
+<th style="text-align: center;">- IPA -</th>
+<th style="text-align: left;">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">@</td>
+<td style="text-align: center;">ə</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">ŋ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">O</td>
+<td style="text-align: center;">ɔ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">O~</td>
+<td style="text-align: center;">ɔ̃</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">S</td>
+<td style="text-align: center;">ʃ</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">a</td>
+<td style="text-align: center;">a</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">a~</td>
+<td style="text-align: center;">ɑ̃</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">b</td>
+<td style="text-align: center;">b</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">d</td>
+<td style="text-align: center;">d</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">dz</td>
+<td style="text-align: center;">dz</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">e</td>
+<td style="text-align: center;">e</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">e~</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">f</td>
+<td style="text-align: center;">f</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">g</td>
+<td style="text-align: center;">g</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">h</td>
+<td style="text-align: center;">h</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">i</td>
+<td style="text-align: center;">i</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">i~</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">k</td>
+<td style="text-align: center;">k</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">k_h</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">l</td>
+<td style="text-align: center;">l</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">m</td>
+<td style="text-align: center;">m</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">n</td>
+<td style="text-align: center;">n</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">o</td>
+<td style="text-align: center;">o</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">o~</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">p</td>
+<td style="text-align: center;">p</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">p_h</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">s</td>
+<td style="text-align: center;">s</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ss</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">t</td>
+<td style="text-align: center;">t</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">t_h</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ts</td>
+<td style="text-align: center;">ts</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ts_h</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">u</td>
+<td style="text-align: center;">u</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">u~</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">v</td>
+<td style="text-align: center;">v</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">w</td>
+<td style="text-align: center;">w</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">x</td>
+<td style="text-align: center;">x</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">y</td>
+<td style="text-align: center;">y</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">z</td>
+<td style="text-align: center;">z</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">@@</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">laughter item</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">gb</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">(garbage: for noises)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">dummy</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">(dummy: for untranscribed speech)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pronunciation-dictionary-6">Pronunciation Dictionary</h4>
+<p><em>(c) Laboratoire Parole et Langage, Aix-en-Provence, France</em></p>
+<p><em>GNU Public License</em></p>
+<h4 id="acoustic-model-6">Acoustic Model</h4>
+<p><em>(c) Laboratoire Parole et Langage, Aix-en-Provence, France</em></p>
+<p><em>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License</em></p>
+<p>We address special thanks to S-F Wang for giving us access to a corpus.</p>
 <blockquote>
 <p><strong>S-F Wang, J. Fon</strong> (2013). <em>A Taiwan Southern Min spontaneous speech corpus for discourse prosody</em>, Proceedings of Tools ans Resources for the Analysis of Speech Prosody, Aix-en-Provence, France, Eds B. Bigi and D. Hirst, ISBN: 978-2-7466-6443-2, pp. 20-23.</p>
 </blockquote>
 <h2 id="cantonese-resources">Cantonese resources</h2>
-<h3 id="dictionary-1">Dictionary</h3>
-<p>Here is the phoneset used in the dictionary:</p>
+<h4 id="list-of-phonemes-7">List of phonemes</h4>
 <table>
 <thead>
 <tr class="header">
@@ -1434,7 +1834,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="acoustic-model-6">Acoustic Model</h3>
+<h4 id="acoustic-model-7">Acoustic Model</h4>
 <p><em>(C) DSP and Speech Technology Laboratory, Department of Electronic Engineering, the Chinese University of Hong Kong.</em></p>
 <p>This is a monophone Cantonese acoustic model, based on Jyutping of the Linguistic Society of Hong Kong (LSHK). Each state is trained with 32 Gaussian mixtures. The model is trained with HTK 3.4.1. The corpus for training is CUSENT, also developed in our laboratory.</p>
 <p>Generally speaking, you may use the model for non-commercial, academic or personal use.</p>
@@ -1451,11 +1851,7 @@
 <li>Email: tanlee@ee.cuhk.edu.hk</li>
 </ul>
 <h2 id="polish-resources">Polish Resources</h2>
-<p>*(C) Brigitte Bigi</p>
-<h3 id="pronunciation-dictionary-5">Pronunciation Dictionary</h3>
-<p>The Polish dictionary is under the terms of the &quot;GNU Public License&quot;, v3.</p>
-<p>The Polish pronunciation dictionary was downloaded from the Ralf catalog of dictionaries for the Simon ASR system at <a href="http://spirit.blau.in/simon/import-pls-dictionary/" class="uri">http://spirit.blau.in/simon/import-pls-dictionary/</a>. It was then converted (format and phoneset) and corrected by Brigitte Bigi, thanks to the help of Katarzyna Klessa.</p>
-<h3 id="acoustic-model-7">Acoustic Model</h3>
+<h4 id="list-of-phonemes-8">List of phonemes</h4>
 <table>
 <thead>
 <tr class="header">
@@ -1507,7 +1903,7 @@
 </tr>
 <tr class="odd">
 <td style="text-align: center;">E~</td>
-<td style="text-align: center;">ɛ ̃</td>
+<td style="text-align: center;">ɛ̃</td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
@@ -1577,7 +1973,7 @@
 </tr>
 <tr class="odd">
 <td style="text-align: center;">o~</td>
-<td style="text-align: center;">ɔ ̃</td>
+<td style="text-align: center;">ɔ̃</td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
@@ -1606,7 +2002,7 @@
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">s<code>|   ɕ     | |  |   S   |   ʃ     | |  |   t   |   t     | |  |   v   |   v     | |  |   w   |   w     | |  |   x   |   x     | |  |   y   |   y     | |  |   z   |   z     | |  |   ts  |   t͡s    | |  |   tS  |   t͡ʃ    | |  |   s</code></td>
+<td style="text-align: center;">s<code>|   ɕ     | | |   S   |   ʃ     | | |   t   |   t     | | |   v   |   v     | | |   w   |   w     | | |   x   |   x     | | |   y   |   y     | | |   z   |   z     | | |   ts  |   t͡s    | | |   tS  |   t͡ʃ    | | |   s</code></td>
 <td style="text-align: center;">ʂ</td>
 <td style="text-align: left;"></td>
 </tr>
@@ -1627,14 +2023,15 @@
 </tr>
 </tbody>
 </table>
+<h4 id="pronunciation-dictionary-7">Pronunciation Dictionary</h4>
+<p><em>GNU Public License</em></p>
+<p>The Polish pronunciation dictionary was downloaded from the Ralf catalog of dictionaries for the Simon ASR system at <a href="http://spirit.blau.in/simon/import-pls-dictionary/" class="uri">http://spirit.blau.in/simon/import-pls-dictionary/</a>. It was then converted (format and phoneset) and corrected by Brigitte Bigi, thanks to the help of Katarzyna Klessa <a href="http://katarzyna.klessa.pl/" class="uri">http://katarzyna.klessa.pl/</a>.</p>
+<h4 id="acoustic-model-8">Acoustic Model</h4>
+<p><em>(c) Laboratoire Parole et Langage, Aix-en-Provence, France</em></p>
+<p><em>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License</em></p>
+<p>The acoustic model was created by Brigitte Bigi. We address special thanks to Katarzyna Klessa for giving us access to a corpus.</p>
 <h2 id="portuguese-resources">Portuguese Resources</h2>
-<p>*(C) Brigitte Bigi</p>
-<h3 id="pronunciation-dictionary-6">Pronunciation Dictionary</h3>
-<p>The Portuguese dictionary is under the terms of the &quot;GNU Public License&quot;, v3.</p>
-<p>The Portuguese pronunciation dictionary was downloaded from the Ralf catalog of dictionaries for the Simon ASR system at <a href="http://spirit.blau.in/simon/import-pls-dictionary/" class="uri">http://spirit.blau.in/simon/import-pls-dictionary/</a>. It was then converted (format and phoneset) and corrected by Brigitte Bigi.</p>
-<h3 id="acoustic-model-8">Acoustic Model</h3>
-<p>The acoustic model was <em>not</em> trained from data. Monophones of other models were cut and pasted to create this one, maily the Spanish and French models.</p>
-<p>Here is the phoneset used in the acoustic model:</p>
+<h4 id="list-of-phonemes-9">List of phonemes</h4>
 <table>
 <thead>
 <tr class="header">
@@ -1819,8 +2216,31 @@
 <td style="text-align: center;">ʒ</td>
 <td style="text-align: left;"></td>
 </tr>
+<tr class="even">
+<td style="text-align: center;">@@</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">laughter item</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">gb</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">(garbage: for noises)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">dummy</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;">(dummy: for untranscribed speech)</td>
+</tr>
 </tbody>
 </table>
+<h4 id="pronunciation-dictionary-8">Pronunciation Dictionary</h4>
+<p><em>GNU Public License</em></p>
+<p>The Portuguese pronunciation dictionary was downloaded from the Ralf catalog of dictionaries for the Simon ASR system at <a href="http://spirit.blau.in/simon/import-pls-dictionary/" class="uri">http://spirit.blau.in/simon/import-pls-dictionary/</a>. It was then converted (format and phoneset) and corrected by Brigitte Bigi.</p>
+<h4 id="acoustic-model-9">Acoustic Model</h4>
+<p><em>(c) Laboratoire Parole et Langage, Aix-en-Provence, France</em></p>
+<p><em>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License</em></p>
+<p>The acoustic model was <em>not</em> trained from data. Monophones of other models were cut and pasted to create this one, maily the Spanish and French models.</p>
+<p><strong>Portuguese data are welcome!</strong> Because data implies a better acoustic model then better alignments...</p>
 <hr />
 
     <div id="footer">
