@@ -181,10 +181,10 @@ class sppasTok(object):
             raise Exception('convert. Error: Empty input tier.\n')
 
         if self.std:
-            tokensFaked = Tier("Tokens-Faked")
-            tokensStd   = Tier("Tokens-Std")
+            tokensFaked = Tier("Tokenization-Fake")
+            tokensStd   = Tier("Tokenization-Standard")
         else:
-            tokensFaked = Tier("Tokens")
+            tokensFaked = Tier("Tokenization")
             tokensStd=None
 
         for a in tier:

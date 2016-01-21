@@ -15,7 +15,7 @@
 #
 #       Laboratoire Parole et Langage
 #
-#       Copyright (C) 2011-2015  Brigitte Bigi
+#       Copyright (C) 2011-2016  Brigitte Bigi
 #
 #       Use of this software is governed by the GPL, v3
 #       This banner notice must not be removed
@@ -40,7 +40,7 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 
 # ---------------------------------------------------------------------------
@@ -54,9 +54,6 @@ from annotationdata.transcription import Transcription
 from resources.dictpron import DictPron
 from phonetize import DictPhon
 
-
-# ---------------------------------------------------------------------------
-# sppasPhon main class
 # ---------------------------------------------------------------------------
 
 class sppasPhon( object ):
@@ -77,25 +74,21 @@ class sppasPhon( object ):
         """
         Create a new sppasPhon instance.
 
-        @param dictascii is the dictionary file name (HTK-ASCII format, utf8).
-        @param logfile
+        @param dictascii (str) is the dictionary file name (HTK-ASCII format, utf8).
+        @param logfile (sppasLog) is a log file utility class member.
 
         """
-
-        self.pdict   = DictPron(dictascii)
+        self.pdict   = DictPron(dictascii, unkstamp="UNK", nodump=False)
         self.logfile = logfile
 
         self.opt_phonunk      = False # Phonetize missing tokens
         self.opt_usestdtokens = False # Phonetize standard spelling
 
-    # End __init__
     # -----------------------------------------------------------------------
-
 
     # -----------------------------------------------------------------------
     # Methods to fix options
     # -----------------------------------------------------------------------
-
 
     def fix_options(self, options):
         """
@@ -108,7 +101,6 @@ class sppasPhon( object ):
         @param options (option)
 
         """
-
         for opt in options:
 
             key = opt.get_key()
@@ -120,65 +112,53 @@ class sppasPhon( object ):
                 self.set_usestdtokens( opt.get_value() )
 
             else:
-                raise Exception('Unknow key option: %s'%key)
+                raise Exception('Unknown key option: %s'%key)
 
-    # End fix_options
     # -----------------------------------------------------------------------
-
 
     def set_unk(self, unk):
         """
         Fix the unk option value.
 
-        If unk is set to True, the system will attempt to phonetize unknown
-        entries (i.e. tokens missing of the dictionary). Otherwise,
-        the phonetization of an unknown entry unit is set to the default
-        string.
-        Default is set to True (= try to phonetize missing tokens).
-
-        @param unk is a boolean
+        @param unk (Boolean) If unk is set to True, the system will attempt to
+        phonetize unknown entries (i.e. tokens missing of the dictionary).
+        Otherwise, the phonetization of an unknown entry unit is set to the
+        default string.
+        By default, unk is set to True (= try to phonetize missing tokens).
 
         """
         self.opt_phonunk = unk
 
-    # End set_unk
     # -----------------------------------------------------------------------
 
 
     def set_usestdtokens(self,stdtokens):
         """
-        Fix the usestdtokens option.
+        Fix the stdtokens option.
 
-        If usestdtokens is set to True, the phonetization will use the
-        standard transcription as input, instead of the faked transcription.
-        This option does make sense only for an Enriched Orthographic Trans.
-        Default is set to False (= align from faked spelling).
-
-        @param stdtokens is a Boolean
+        @param stdtokens (Boolean) If it is set to True, the phonetization
+        will use the standard transcription as input, instead of the faked
+        transcription. This option does make sense only for an Enriched
+        Orthographic Transcription.
+        By default it is set to False (= align from faked spelling).
 
         """
         self.opt_usestdtokens = stdtokens
 
-    # End set_usestdtokens
     # -----------------------------------------------------------------------
-
-
 
     # -----------------------------------------------------------------------
     # Methods to phonetize series of data
     # -----------------------------------------------------------------------
 
-
     def convert(self, tier):
         """
         Phonetize all labels of a tier.
 
-        @param tier (Tier) contains the orthohraphic transcription (previously tokenized)
-
-        @return A tier named "Phonetization"
+        @param tier (Tier) contains the orthohraphic transcription previously tokenized.
+        @return A tier with name "Phonetization"
 
         """
-
         t = Tier("Phonetization")
         if tier is None: return t
 
@@ -206,9 +186,7 @@ class sppasPhon( object ):
 
         return t
 
-    # End convert
     # -----------------------------------------------------------------------
-
 
     def save(self, trsinput, inputfilename, trsoutput, outputfile=None):
         """
@@ -223,7 +201,6 @@ class sppasPhon( object ):
         @param outputfile (String)
 
         """
-
         # Append to the input
         if outputfile is None:
             for tier in trsoutput:
@@ -234,9 +211,7 @@ class sppasPhon( object ):
         # Save in a file
         annotationdata.io.write( outputfile,trsoutput )
 
-    # End save
     # -----------------------------------------------------------------------
-
 
     def run( self, inputfilename, outputfile=None ):
         """
@@ -247,9 +222,9 @@ class sppasPhon( object ):
 
         """
         # Get the input tier to phonetize
-        pattern = "faked"
+        pattern = "fake"
         if self.opt_usestdtokens is True: # Phonetize standard spelling
-            pattern = "std"
+            pattern = "standard"
 
         trsinput = annotationdata.io.read( inputfilename )
         tierinput = None
@@ -261,13 +236,19 @@ class sppasPhon( object ):
 
         if tierinput is None:
             for tier in trsinput:
-                if "tok" in tier.GetName().lower() or "trans" in tier.GetName().lower():
+                if "tok" in tier.GetName().lower():
                     tierinput = tier
                     break
 
         if tierinput is None:
-            raise Exception("No tokenized tier found. "
-                            "A Tier name must contain 'trans' or 'tok'.")
+            for tier in trsinput:
+                if "trans" in tier.GetName().lower():
+                    tierinput = tier
+                    break
+
+        if tierinput is None:
+            raise Exception("No tier found with tokenization. "
+                            "One of the tier names must contain 'tok' (or 'trans').")
 
         # Phonetize the tier
         tierphon = self.convert( tierinput )
@@ -277,8 +258,4 @@ class sppasPhon( object ):
         trsoutput.Append( tierphon )
         self.save(trsinput, inputfilename, trsoutput, outputfile)
 
-    # End run
     # -----------------------------------------------------------------------
-
-# End sppasPhon
-# ---------------------------------------------------------------------------

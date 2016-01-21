@@ -236,7 +236,7 @@ function wavsplit {
     $BIN_DIR/wavsplit.py -w $SAMPLES_DIR/oriana1.WAV -o oriana1 -N 3 &> /dev/null
     if [ -d oriana1 ]; then
         s=1
-        if [ "`ls oriana1 | wc -l`" == "3" ]; then s=0; fi
+        if [ "`ls oriana1/*.wav | wc -l`" == "3" ]; then s=0; fi
         rm -rf oriana1;
         fct_echo_status $s
     else
@@ -277,7 +277,7 @@ function wavsplit {
     $BIN_DIR/wavsplit.py -w $SAMPLES_DIR/oriana1.WAV -t $SAMPLES_DIR/oriana1.txt -o oriana1 &> /dev/null
     if [ -d oriana1 ]; then
         s=1
-        if [ "`ls oriana1 | wc -l`" == "6" ]; then s=0; fi
+        if [ "`ls oriana1 | grep -v index.txt | wc -l`" == "6" ]; then s=0; fi
         rm -rf oriana1;
         fct_echo_status $s
     else
@@ -289,7 +289,7 @@ function wavsplit {
     if [ -d oriana1 ]; then
         s=1
         if [ "`ls oriana1 | wc -l`" == "6" ]; then s=0; fi
-        if [ "`ls oriana1/*.txt | wc -l`" == "3" ]; then s=0; fi
+        if [ "`ls oriana1/*.txt | grep -v index.txt | wc -l`" == "3" ]; then s=0; fi
         rm -rf oriana1;
         fct_echo_status $s
     else

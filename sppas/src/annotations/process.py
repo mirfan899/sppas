@@ -49,8 +49,6 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 import sys
 import os
-import shlex
-import subprocess
 import datetime
 
 from sp_glob import program, version, copyright
@@ -77,6 +75,7 @@ from annotations.Syll.syll       import sppasSyll
 from annotations.Repetitions.repetition  import sppasRepetition
 
 from threading import Thread
+
 # ----------------------------------------------------------------------------
 
 class sppasProcess( Thread ):
@@ -209,7 +208,7 @@ class sppasProcess( Thread ):
         self._progress.update(0,"")
 
         # Get the list of input file names, with the ".wav" (or ".wave") extension
-        filelist = self.set_filelist(".wav",not_start=["track_"])
+        filelist = self.set_filelist(".wav")#,not_start=["track_"])
         if len(filelist) == 0:
             return 0
         total = len(filelist)
@@ -293,7 +292,7 @@ class sppasProcess( Thread ):
             seg = sppasSeg(self._logfile)
         except Exception as e:
             if self._logfile is not None:
-                self._logfile.print_message( "%s\n"%str(e), indent=1,status=1 )
+                self._logfile.print_message( "%s\n"%str(e), indent=1,status=4 )
             return 0
 
         # Execute the annotation for each file in the list
@@ -388,7 +387,7 @@ class sppasProcess( Thread ):
         self._progress.update(0,"")
 
         # Get the list of input file names, with the ".wav" (or ".wave") extension
-        filelist = self.set_filelist(".wav",not_start=["track_"])
+        filelist = self.set_filelist(".wav")#,not_start=["track_"])
         if len(filelist) == 0:
             return 0
         total = len(filelist)
@@ -399,7 +398,7 @@ class sppasProcess( Thread ):
             t = sppasTok( step.get_langresource(), logfile=self._logfile, lang=step.get_lang() )
         except Exception as e:
             if self._logfile is not None:
-                self._logfile.print_message( "%s\n"%str(e), indent=1,status=1 )
+                self._logfile.print_message( "%s\n"%str(e), indent=1,status=4 )
             return 0
 
         # Execute the annotation for each file in the list
@@ -464,7 +463,7 @@ class sppasProcess( Thread ):
         self._progress.update(0,"")
 
         # Get the list of input file names, with the ".wav" (or ".wave") extension
-        filelist = self.set_filelist(".wav",not_start=["track_"])
+        filelist = self.set_filelist(".wav")#,not_start=["track_"])
         if len(filelist) == 0:
             return 0
         total = len(filelist)
@@ -475,8 +474,7 @@ class sppasProcess( Thread ):
             p = sppasPhon( step.get_langresource(), logfile=self._logfile )
         except Exception as e:
             if self._logfile is not None:
-                stre = unicode(e.message).encode("utf-8")
-                self._logfile.print_message( "%s\n"%stre, indent=1,status=1 )
+                self._logfile.print_message( "%s\n"%e, indent=1,status=4 )
             return 0
 
         # Execute the annotation for each file in the list
@@ -543,7 +541,7 @@ class sppasProcess( Thread ):
         self._progress.update(0,"")
 
         # Get the list of input file names, with the ".wav" (or ".wave") extension
-        filelist = self.set_filelist(".wav",not_start=["track_"])
+        filelist = self.set_filelist(".wav")#,not_start=["track_"])
         if len(filelist) == 0:
             return 0
         total = len(filelist)
@@ -553,7 +551,7 @@ class sppasProcess( Thread ):
             a = sppasAlign( step.get_langresource(), logfile=self._logfile )
         except Exception as e:
             if self._logfile is not None:
-                self._logfile.print_message( "%s\n"%str(e), indent=1,status=1 )
+                self._logfile.print_message( "%s\n"%str(e), indent=1,status=4 )
             return 0
 
         # Execute the annotation for each file in the list
@@ -634,7 +632,7 @@ class sppasProcess( Thread ):
             s = sppasSyll( step.get_langresource(), self._logfile )
         except Exception as e:
             if self._logfile is not None:
-                self._logfile.print_message( "%s\n"%str(e), indent=1,status=1 )
+                self._logfile.print_message( "%s\n"%str(e), indent=1,status=4 )
             return 0
 
         for i,f in enumerate(filelist):
@@ -710,7 +708,7 @@ class sppasProcess( Thread ):
             r = sppasRepetition( step.get_langresource(), self._logfile )
         except Exception as e:
             if self._logfile is not None:
-                self._logfile.print_message( "%s\n"%str(e), indent=1,status=1 )
+                self._logfile.print_message( "%s\n"%str(e), indent=1,status=4 )
             return 0
 
         for i,f in enumerate(filelist):

@@ -143,7 +143,6 @@ class sppasLog:
                 elif status==2: statustext="[ IGNORED ] "
                 elif status==3: statustext="[   INFO  ] "
                 else:           statustext="[  ERROR  ] "
-            #m = unicode(message).encode(encoding)
             self.logfp.write(strindent + statustext + message + "\n")
         except Exception:
             try:

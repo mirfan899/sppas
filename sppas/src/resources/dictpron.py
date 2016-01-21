@@ -36,28 +36,26 @@
 #
 # ---------------------------------------------------------------------------
 # File: dictpron.py
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
 __authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 import codecs
 import logging
 import rutils
 
-# ----------------------------------------------------------------------------
-
+# ---------------------------------------------------------------------------
 
 class DictPron:
     """
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
-    @summary: Pronunciation Dictionary.
+    @summary: Pronunciation dictionary.
 
     A pronunciation dictionary contains a list of words, each one with a
     list of possible pronunciations. DictPron gets the dictionary from an
@@ -76,8 +74,8 @@ class DictPron:
     In this class, the following convention is adopted to represent the
     pronunciation variants:
 
-        - a '.' separates the phonemes
-        - a '|' separates the variants
+        - '.' separates the phonemes
+        - '|' separates the variants
 
     Then, the pronunciation can be accessed with get_pron:
 
@@ -94,15 +92,16 @@ class DictPron:
         @param unkstamp is the string used to represent a missing pronunciation
 
         """
-
+        self._filename = dictfilename
         # Symbol to represent missing entries in the dictionary
         # (also called unknown entries)
         self._unkstamp = unkstamp
-        self._filename = dictfilename
 
         # The pronunciation dictionary
         self._dict = {}
 
+        # Either read the dictionary from a dumped file or from the original
+        # ASCII one.
         if dictfilename is not None:
 
             data = None
@@ -110,7 +109,8 @@ class DictPron:
                 # Try first to get the dict from a dump file (at least 2 times faster)
                 data = rutils.load_from_dump( dictfilename )
 
-            # Load from ascii if: 1st load, or, dump load error, or dump older than ascii
+            # Load from ascii if:
+            # 1st load, or, dump load error, or dump older than ascii
             if data is None:
                 self.load_from_ascii( dictfilename )
                 if nodump is False:
@@ -121,14 +121,11 @@ class DictPron:
                 self._dict = data
                 logging.info('Get dictionary from dumped file.')
 
-    # End __init__
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
-
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Getters
-    # ------------------------------------------------------------------------
-
+    # -----------------------------------------------------------------------
 
     def get_pron(self, entry):
         """
@@ -137,9 +134,7 @@ class DictPron:
         """
         return self._dict.get( rutils.ToLower(entry),self._unkstamp )
 
-    # End get_pron
-    # ------------------------------------------------------------------
-
+    # -----------------------------------------------------------------------
 
     def is_unk(self,entry):
         """
@@ -148,9 +143,7 @@ class DictPron:
         """
         return not self._dict.has_key( rutils.ToLower(entry) )
 
-    # End is_unk
-    # ------------------------------------------------------------------
-
+    # -----------------------------------------------------------------------
 
     def get_dictsize(self):
         """
@@ -160,9 +153,7 @@ class DictPron:
         """
         return len(self._dict)
 
-    # End get_dictsize
-    # ------------------------------------------------------------------
-
+    # -----------------------------------------------------------------------
 
     def get_dict(self):
         """
@@ -171,9 +162,7 @@ class DictPron:
         """
         return self._dict
 
-    # End get_dict
-    # ------------------------------------------------------------------
-
+    # -----------------------------------------------------------------------
 
     def get_keys(self):
         """
@@ -182,14 +171,11 @@ class DictPron:
         """
         return self._dict.keys()
 
-    # End get_keys
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
-
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Setters
-    # ------------------------------------------------------------------
-
+    # -----------------------------------------------------------------------
 
     def add_pron(self, token, pron):
         """
@@ -210,24 +196,22 @@ class DictPron:
         new_value = previous_value + separator + variant
         self._dict[token] = new_value
 
-    # End add_pron
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
-
-
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # File
-    # ------------------------------------------------------------------
-
+    # -----------------------------------------------------------------------
 
     def load_from_ascii(self, filename):
         """
         Load a dict from an HTK-ASCII file.
 
         """
-
-        with codecs.open(filename, 'r', rutils.ENCODING) as fd:
-            lines = fd.readlines()
+        try:
+            with codecs.open(filename, 'r', rutils.ENCODING) as fd:
+                lines = fd.readlines()
+        except ValueError as e:
+            raise ValueError('Expected HTK ASCII dictionary format, in UTF-8 encoding. Error while trying to open and read the file: %s'%e)
 
         for l,line in enumerate(lines):
             if len(line.strip()) == 0:
@@ -237,7 +221,6 @@ class DictPron:
                 line.index(u"]")
             except ValueError:
                 raise ValueError('Expected HTK ASCII dictionary format. Error at line number %d: %s'%(l,line))
-                # --> encoding error if "Error with line: %s '%line"
 
             # The entry is before the "[" and the pronunciation is after the "]"
             __entry = line[:line.find(u"[")]
@@ -266,9 +249,7 @@ class DictPron:
             # Add (or change) the entry in the dict
             self._dict[entry] = pron
 
-    # End load_from_ascii
-    # ------------------------------------------------------------------------
-
+    # -----------------------------------------------------------------------
 
     def save_as_ascii(self, filename):
         """
@@ -295,8 +276,4 @@ class DictPron:
 
         return True
 
-    # End save_as_ascii
-    # ------------------------------------------------------------------
-
-# End DictPron
-# ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
