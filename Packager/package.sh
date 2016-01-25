@@ -531,7 +531,7 @@ function fct_sppas_doc {
 
     echo ' Version PDF';
     pandoc -N --template=$DOC_DIR/mytemplate.tex -V geometry:a4paper -V geometry:"top=3cm, bottom=3cm, left=3cm, right=2.5cm" --variable documentclass="report" --variable classoption="twoside, openright" --variable mainfont="FreeSerif" --variable sansfont="FreeSans" --variable monofont="FreeMono" --variable fontsize=11pt --variable version="$PROGRAM_VERSION" --variable frontpage="`pwd`/doc/frontpage.pdf" $files --latex-engine=xelatex --toc -o $PROGRAM_DIR/documentation/documentation.pdf
-    cp $PROGRAM_DIR/documentation/documentation.pdf $WEB_DIR
+    cp $PROGRAM_DIR/documentation/documentation.pdf $WEB_DIR/doc
 
     echo ' SPPAS for dummies, web version';
     pandoc -s --mathjax -t dzslides --css $ETC_DIR/styles/dummies.css --slide-level=2 -H $DOC_DIR/include-scripts.txt $DOC_DIR/SPPAS-for-dummies.md -o $WEB_DIR/SPPAS-for-dummies.html
