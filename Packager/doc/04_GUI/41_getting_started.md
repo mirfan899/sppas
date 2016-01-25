@@ -39,7 +39,7 @@ the next version.
 The main frame is made of a menu, a toolbar and the main content. All of them
 are described in the next sub-sections.
 
-![The Main Frame of version 1.6.7](./etc/screenshots/sppas-1-6-7.png)
+![The Main Frame of version 1.7.6](./etc/screenshots/sppas-1-7-6.png)
 
 #### The menu
 

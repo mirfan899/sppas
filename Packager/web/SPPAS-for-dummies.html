@@ -29,8 +29,8 @@
   <h2 class="author">Brigitte Bigi</h2>
   <h3 class="date">Use the left/right arrow keys to show slides</h3>
 </section>
-<section id="last-update-july-2015" class="slide level2">
-<h1>Last update, July, 2015</h1>
+<section id="last-update-january-2016" class="slide level2">
+<h1>Last update: January 2016</h1>
 <p>-<img src="./etc/img/for-dummies.jpg" /></p>
 </section>
 <section id="introduction" class="titleslide slide level1"><h1>Introduction</h1></section><section id="overview" class="slide level2">
@@ -80,15 +80,12 @@
 <li>SPPAS: xra</li>
 <li>Praat: TextGrid, PitchTier, IntensityTier</li>
 <li>Elan: eaf</li>
+<li>AnnotationPro: antx</li>
 <li>HTK: lab, mlf</li>
 <li>Sclite: ctm, stm</li>
 <li>Phonedit: mrk</li>
 <li>Excel/OpenOffice/R/...: csv</li>
 <li>subtitles: sub, srt</li>
-</ul></li>
-<li>Supported file formats to import/export (software, extension):
-<ul>
-<li>AnnotationPro: antx</li>
 </ul></li>
 <li>Supported file formats to import (software, extension):
 <ul>
@@ -96,25 +93,29 @@
 <li>Anvil: anvil</li>
 </ul></li>
 </ul>
-</section><section id="by-using-sppas-you-agree-to-cite-references-in-your-publications" class="slide level2">
-<h1>By using SPPAS, you agree to cite references in your publications</h1>
+</section><section class="slide level2">
+
+<h3 id="supported-file-formats">Supported file formats</h3>
+<figure>
+<img src="./etc/figures/sppas-formats.png" />
+</figure>
+</section><section id="how-to-cite-sppas" class="slide level2">
+<h1>How to cite SPPAS</h1>
 <ul>
-<li>As for example:</li>
+<li><p>By using SPPAS, you agree to cite any of the references in your publications</p></li>
+<li><p>Main reference is:</p></li>
 </ul>
 <blockquote>
-<p><em>Brigitte Bigi</em> (2012). <strong>“SPPAS: a tool for the phonetic segmentations of Speech”</strong>, Language Resources and Evaluation Conference, ISBN 978-2-9517408-7-7, pages 1748-1755, Istanbul (Turkey).</p>
-</blockquote>
-<blockquote>
-<p><em>Brigitte Bigi, Daniel Hirst</em> (2012). <strong>“SPeech Phonetization Alignment and Syllabification (SPPAS): a tool for the automatic analysis of speech prosody”</strong>, Speech Prosody, Tongji University Press, ISBN 978-7-5608-4869-3, pages 19-22, Shanghai (China).</p>
+<p><em>Brigitte Bigi (2015).</em> <strong>SPPAS - Multi-lingual Approaches to the Automatic Annotation of Speech</strong>. In &quot;the Phonetician&quot;, International Society of Phonetic Sciences, Volume 111-112, Pages 55-69.</p>
 </blockquote>
 <ul>
-<li>Other references are available in the documentation, and related PDF files are included in the package.</li>
+<li>Other references are available in the documentation.</li>
 </ul>
 </section>
 <section id="what-sppas-can-do" class="titleslide slide level1"><h1>What SPPAS can do?</h1></section><section id="what-sppas-can-do-1" class="slide level2">
 <h1>What SPPAS can do?</h1>
 <ul>
-<li><p><strong>Automatic Annotations:</strong></p>
+<li><p><strong>Automatic and semi-automatic annotations:</strong></p>
 <ul>
 <li><strong>Momel/INTSINT</strong>: Modelling melody</li>
 <li><strong>IPUs segmentation</strong>: utterance level segmentation</li>
@@ -134,9 +135,9 @@
 
 <h3 id="components-and-plugins">Components and plugins</h3>
 <ul>
-<li><p><em>IPUScribe</em>: Manual transcription</p></li>
+<li><p><em>IPUScribe</em>: Orthographic manual transcription</p></li>
 <li><p><em>SndRoamer</em>: Play sound (mono wav)</p></li>
-<li><p><em>Statistics</em>: Estimates/Save statistics of tiers</p></li>
+<li><p><em>Statistics</em>: Estimates/Save statistics of tiers, TGA...</p></li>
 <li><p><em>DataRoamer</em>: Manipulate annotated files</p></li>
 <li><p><em>DataFilter</em>: Select/Filter annotations of tiers</p></li>
 <li><p><em>SppasEdit</em>: Display wav and annotated files</p></li>
@@ -147,7 +148,7 @@
 <h1>Usage: GUI, CLI or Python Scripts</h1>
 <ul>
 <li>Read documentation for command-line interface and python scripts</li>
-<li>Graphical User Interface: -<img src="./etc/screenshots/sppas-1-6-9.png" /></li>
+<li>Graphical User Interface: -<img src="./etc/screenshots/sppas-1-7-6.png" /></li>
 </ul>
 </section><section id="gui-usage-1" class="slide level2">
 <h1>GUI Usage (1)</h1>
@@ -167,8 +168,8 @@
 <h1>GUI Usage (2)</h1>
 <ul>
 <li><p>Click on the 'Add File' button</p></li>
-<li><p>Explore the <code>samples</code> folder and choose as many <em>wav</em> files as expected</p></li>
-<li><p>All files with the same name as the selected wav files will be added into the list</p></li>
+<li><p>Explore the <code>samples</code> folder and choose as many audio files as expected</p></li>
+<li><p>All files with the same name as the audio files will be added into the list</p></li>
 <li><p>Click (and/or ctrl+click) on some files in this list</p></li>
 <li><p>Choose what you want to do with your selection (a component, automatic annotations, plugin)</p></li>
 </ul>
@@ -182,12 +183,30 @@
 <ul>
 <li><p>This means:</p>
 <ol type="1">
-<li>adding a new language consist in adding related resources (lexicons, dictionaries, etc)</li>
-<li>any user can edit resources to modify them to adapt automatic annotations to its own requirements</li>
+<li>adding a new language consist ONLY in adding related resources (lexicons, dictionaries, etc)</li>
+<li>any user can edit resources to modify them to its own requirements</li>
 </ol></li>
 </ul>
-</section><section id="phonetic-segmentation" class="slide level2">
-<h1>Phonetic Segmentation</h1>
+</section><section class="slide level2">
+
+<h3 id="inputs-orthographic-transcription-speech-signal">Inputs: Orthographic Transcription / Speech signal</h3>
+<ul>
+<li><p>Enriched Orthographic transcription:</p>
+<ul>
+<li>Representation of what is &quot;perceived&quot; in the signal</li>
+<li>Already time-aligned at the utterance level (IPUs segmentation)</li>
+<li><p>It <strong>must</strong> includes:</p>
+<ul>
+<li>Filled pauses</li>
+<li>Short pauses</li>
+<li>Repeats</li>
+<li>Noises and Laugh</li>
+</ul></li>
+</ul></li>
+<li><p>Audio: mono wav file, 16KHz, 16 bits</p></li>
+</ul>
+</section><section id="phonetic-segmentation-overview" class="slide level2">
+<h1>Phonetic Segmentation: Overview</h1>
 <ul>
 <li>Definition:</li>
 </ul>
@@ -200,29 +219,11 @@
 <p>-<img src="./etc/screenshots/compare-manual-auto.png" /></p>
 </section><section class="slide level2">
 
-<h3 id="automatic-speech-segmentation-in-3-steps">Automatic Speech segmentation: in 3 steps</h3>
+<h3 id="phonetic-segmentation-in-3-steps">Phonetic Segmentation: in 3 steps</h3>
 <p>-<img src="./etc/figures/speech-seg-process.bmp" /></p>
 </section><section class="slide level2">
 
-<h3 id="inputs-orthographic-transcription-speech-signal">Inputs: Orthographic Transcription / Speech signal</h3>
-<ul>
-<li><p>Enriched Orthographic transcription:</p>
-<ul>
-<li>Representation of what is “perceived” in the signal</li>
-<li>Already time-aligned at the utterance level (IPUs segmentation)</li>
-<li><p>It <strong>must</strong> includes:</p>
-<ul>
-<li>Filled pauses</li>
-<li>Short pauses</li>
-<li>Repeats</li>
-<li>Noises and Laugh</li>
-</ul></li>
-</ul></li>
-<li><p>Audio: mono wav file, 16KHz, 16 bits</p></li>
-</ul>
-</section><section class="slide level2">
-
-<h3 id="tokenization-automatic-step-1">Tokenization (automatic step 1)</h3>
+<h3 id="tokenization-phonetic-segmentation-step-1">Tokenization (Phonetic Segmentation step 1)</h3>
 <ul>
 <li><p>Tokenization requires <em>a list of words</em> (lexicon)</p></li>
 <li><p>To create/edit a lexicon:</p>
@@ -241,7 +242,7 @@
 </ul>
 </section><section class="slide level2">
 
-<h3 id="phonetization-automatic-step-2">Phonetization (automatic step 2)</h3>
+<h3 id="phonetization-phonetic-segmentation-step-2">Phonetization (Phonetic Segmentation step 2)</h3>
 <ul>
 <li><p>Phonetization requires a pronunciation dictionary</p></li>
 <li><p>To create/edit a dictionary:</p>
@@ -258,7 +259,7 @@
 </ul>
 </section><section class="slide level2">
 
-<h3 id="alignment-automatic-step-3">Alignment (automatic step 3)</h3>
+<h3 id="alignment-phonetic-segmentation-step-3">Alignment (Phonetic Segmentation step 3)</h3>
 <ul>
 <li>Alignment requires an acoustic model</li>
 </ul>
@@ -266,22 +267,36 @@
 </section><section id="outputsresults" class="slide level2">
 <h1>Outputs/Results</h1>
 <ul>
-<li><p>Each automatic annotation generates a file and...</p>
+<li><p>Each automatic annotation generates a file</p>
 <ul>
-<li>A “merged” file is also created</li>
+<li>the file format can be fixed in the &quot;Settings&quot;</li>
 </ul></li>
-<li><p>Open such file(s) in the SppasEdit component, or Praat, or Elan, ...</p>
+<li><p>a &quot;merged&quot; file is created, in TextGrid format</p></li>
+<li><p>Save/Export any file into any format (XRA, TextGrid, EAF, CSV) either with the 'Export' or 'Save' buttons</p></li>
+</ul>
+</section><section class="slide level2">
+
+<h3 id="look-at-the-outputsresults">Look at the Outputs/Results</h3>
+<ul>
+<li><p>Open file(s) in the SppasEdit component, or Praat, or Elan, ...</p>
 <p>-<img src="./etc/screenshots/SpeechSeg.png" /></p></li>
-<li><p>Save/Export any file into any format (XRA, TextGrid, EAF, CSV) with one of the 'Export' buttons</p></li>
 </ul>
 </section>
-<section id="thats-all" class="titleslide slide level1"><h1>That's all!</h1></section><section id="thats-all-1" class="slide level2">
+<section id="and..." class="titleslide slide level1"><h1>And...</h1></section><section id="thats-all" class="slide level2">
 <h1>That's all!</h1>
 <ul>
-<li><p>You are now ready to test SPPAS with the proposed set of samples...</p></li>
-<li><p>... and do not forget to <strong>read the documentation</strong>: it contains most of the answers to your questions!</p></li>
+<li><p>You are now ready <em>to test</em> SPPAS with the proposed set of samples...</p></li>
+<li><p>Need help?</p>
+<ol type="1">
+<li>the documentation contains most of the answers to your questions!</li>
+<li>most of the problems can be solved by updating the version of SPPAS.</li>
+<li>there is a SPPAS Users discussion group:
+<ul>
+<li><a href="https://groups.google.com/forum/#!forum/sppas-users" class="uri">https://groups.google.com/forum/#!forum/sppas-users</a></li>
+</ul></li>
+</ol>
+<p>-<img src="./etc/logos/sppas-logo.png" /></p></li>
 </ul>
-<p>-<img src="./etc/logos/sppas-logo.png" /></p>
 </section>
 <!-- {{{{ dzslides core
 #

@@ -1,11 +1,11 @@
 ## Tokenization
 
 Tokenization is also known as "Text Normalization" the process of segmenting a
-text into tokens. 
-In principle, any system that deals with unrestricted text need the text to 
+text into tokens.
+In principle, any system that deals with unrestricted text need the text to
 be normalized. Texts contain a variety of "non-standard" token types such as
 digit sequences, words, acronyms and letter sequences in all capitals, mixed
-case words, abbreviations, roman numerals, URL's and e-mail addresses... 
+case words, abbreviations, roman numerals, URL's and e-mail addresses...
 Normalizing or rewriting such texts using ordinary words is then an important
 issue. The main steps of the text normalization proposed in SPPAS are:
 
@@ -28,12 +28,12 @@ For more details, see the following reference:
 
 ![Text normalization workflow](./etc/figures/tokworkflow.bmp)
 
-The SPPAS Tokenization system takes as input a file including a tier 
+The SPPAS Tokenization system takes as input a file including a tier
 with the orthographic transcription. The name of this tier must contains
 one of the following strings:
 
-- trs
 - trans
+- trs
 - ipu
 - ortho
 - toe
