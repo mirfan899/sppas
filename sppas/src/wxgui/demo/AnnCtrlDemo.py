@@ -91,13 +91,14 @@ class AnnCtrlDemo(wx.Window):
         (q,r,s) = random.sample(range(0,150),  3)
         for ann in self._anns:
             ann.SetLabelColours(bgcolour=wx.Colour(a,b,c),fontnormalcolour=wx.Colour(q,r,s))
+            ann.Refresh()
 
     def repaint2(self, event):
         """ Move. """
         y1 = random.sample(range(70,120), 2)[0]
-        for a in self._anns:
-            x,y=a.GetPosition()
-            a.MoveWindow(pos=(x,y1), size=a.GetSize())
+        for ann in self._anns:
+            x,y=ann.GetPosition()
+            ann.MoveWindow(pos=(x,y1), size=ann.GetSize())
         self.GetTopLevelParent().GetStatusBar().SetStatusText('Annotations re-sized: %d'%y1)
 
     def repaint3(self, event):
@@ -116,6 +117,7 @@ class AnnCtrlDemo(wx.Window):
             font   = data.GetChosenFont()
             for a in self._anns:
                 a.SetLabelFont(font)
+                a.Refresh()
         dlg.Destroy()
 
 

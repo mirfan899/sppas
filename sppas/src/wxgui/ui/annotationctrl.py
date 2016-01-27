@@ -165,8 +165,7 @@ class AnnotationCtrl( wx.Window ):
 
         """
 
-        if self._labelctrl:
-            self._labelctrl.SetFont( font )
+        if self._labelctrl: self._labelctrl.SetFont( font )
 
     #------------------------------------------------------------------------
 
@@ -178,6 +177,18 @@ class AnnotationCtrl( wx.Window ):
 
         """
         if self._labelctrl: self._labelctrl.SetAlign( value )
+
+    #------------------------------------------------------------------------
+
+    def SetPointColours(self, colourmidpoint=None, colourradius=None):
+        """
+        Change the main colors of the Points.
+
+        """
+        if self._pointctrl1:
+            self._pointctrl1.SetColours(colourmidpoint, colourradius)
+        if self._pointctrl2:
+            self._pointctrl2.SetColours(colourmidpoint, colourradius)
 
     #------------------------------------------------------------------------
 
@@ -239,7 +250,7 @@ class AnnotationCtrl( wx.Window ):
             self._pointctrl2 = PointCtrl(self, id=-1, point=ann.GetLocation().GetEnd())
         except Exception:
             self._pointctrl1 = PointCtrl(self, id=-1, point=ann.GetLocation().GetPoint())
-            self._pointctrl1 = None
+            self._pointctrl2 = None
         self._labelctrl = LabelCtrl(self, id=-1, label=ann.GetLabel())
         self._ann = ann
 
@@ -316,7 +327,8 @@ class AnnotationCtrl( wx.Window ):
             logging.debug(' event entering or leaving (selected=%s)'%self._selected)
             self._selected = not self._selected
             logging.debug('  --> (selected=%s)'%self._selected)
-            self.OnPaint(event)
+            #self.OnPaint(event)
+            self.Refresh()
 
         wx.PostEvent(self.GetParent(), event)
         event.Skip()
@@ -396,7 +408,7 @@ class AnnotationCtrl( wx.Window ):
         @param dc (wx.DC) The device context to draw on.
 
         """
-        logging.debug('Draw...')
+        logging.debug('AnnotationCtrl.Draw...')
 
         # Get the actual client size of ourselves
         # Notice that the size is corresponding to the available size on screen
@@ -439,7 +451,7 @@ class AnnotationCtrl( wx.Window ):
         """
         if self._ann is None: return
 
-        logging.debug('  Draw content for ann %s: x=%d,y=%d,  w=%d, h=%d'%(self._ann,x,y,w,h))
+        #logging.debug('  Draw content for ann %s: x=%d,y=%d,  w=%d, h=%d'%(self._ann,x,y,w,h))
 
         wpt1 = max(pointctrlMinWidth,self._calcW(self._pointctrl1.GetValue().Duration().GetValue()))
         if wpt1>w: wpt1=w
@@ -458,7 +470,7 @@ class AnnotationCtrl( wx.Window ):
             if (tx+tw) > w:           # ensure to stay in our allocated area
                 tw = tw - ((tx+tw)-w) # reduce width to the available area
             tw = max(0,tw)
-            logging.debug(' ...draw label: x=%d, w=%d'%(tx,tw))
+            #logging.debug(' ...draw label: x=%d, w=%d'%(tx,tw))
             self._labelctrl.MoveWindow(wx.Point(tx,y), wx.Size(tw,h))
         self._labelctrl.Show()
 
@@ -498,7 +510,7 @@ class AnnotationCtrl( wx.Window ):
 
     def _drawPoint(self, point, x,y, w,h):
         """ Display a point. """
-        logging.debug(' ...draw point: x=%d, w=%d'%(x,w))
+        #logging.debug(' ...draw point: x=%d, w=%d'%(x,w))
         sw=self.GetSize().width
         # Do not draw if point is outsite the available area!
         if x>sw:
@@ -643,7 +655,6 @@ class BorderCtrl( wx.Window ):
         @param dc (wx.DC) The device context to draw on.
 
         """
-        logging.debug('Draw in BorderCtrl...')
 
         # Get the actual client size of ourselves
         # Notice that the size is corresponding to the available size on screen
@@ -657,13 +668,11 @@ class BorderCtrl( wx.Window ):
         y=int(BORDER_WIDTH / 2)
         w=w-x
         h=h-y
-        logging.debug('  Draw Border, w=%d,h=%d'%(w,h))
 
         # Initialize the DC
         dc.SetBackgroundMode( wx.TRANSPARENT )
         dc.Clear()
 
-        logging.debug('  Draw border: x=%d,y=%d,w=%d,h=%d'%(x,y,w,h))
         # Top and Bottom lines
         dc.SetPen( self._penbordercolor )
         dc.SetBrush(wx.TRANSPARENT_BRUSH)
