@@ -82,7 +82,6 @@ class TierCtrlDemo(wx.Window):
         self.t1.SetTime(s,s+d)
         self.t2.SetTime(s,s+d)
 
-
     def repaint3(self, event):
         """ Size. """
         y1,y2 = random.sample(range(15,30),  2)

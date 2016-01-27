@@ -1,0 +1,689 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document Author="SPPAS" Date="2016-01-27" Format="1.2">
+  <Tier id="1f068f1d-1e71-7f69-6fd8-6196ae5b357b" tiername="IPU">
+    <Metadata>
+      <Entry key="id">1f068f1d-1e71-7f69-6fd8-6196ae5b357b</Entry>
+    </Metadata>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="0.0" radius="0.0" />
+            <End midpoint="1.24714285714" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="1.24714285714" radius="2.26757369615e-05" />
+            <End midpoint="4.79659863946" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">ipu_1</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.79659863946" radius="2.26757369615e-05" />
+            <End midpoint="8.59789115646" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="8.59789115646" radius="2.26757369615e-05" />
+            <End midpoint="11.9172789116" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">ipu_2</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="11.9172789116" radius="2.26757369615e-05" />
+            <End midpoint="15.9081405896" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="15.9081405896" radius="2.26757369615e-05" />
+            <End midpoint="19.6526303855" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">ipu_3</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="19.6526303855" radius="2.26757369615e-05" />
+            <End midpoint="22.9650340136" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="22.9650340136" radius="2.26757369615e-05" />
+            <End midpoint="25.4148979592" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">ipu_4</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="25.4148979592" radius="2.26757369615e-05" />
+            <End midpoint="28.6474829932" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="28.6474829932" radius="2.26757369615e-05" />
+            <End midpoint="34.1919047619" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">ipu_5</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="34.1919047619" radius="2.26757369615e-05" />
+            <End midpoint="38.3224489796" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="38.3224489796" radius="2.26757369615e-05" />
+            <End midpoint="41.581814059" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">ipu_6</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="41.581814059" radius="2.26757369615e-05" />
+            <End midpoint="44.6198412698" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="44.6198412698" radius="2.26757369615e-05" />
+            <End midpoint="47.0996598639" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">ipu_7</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="47.0996598639" radius="2.26757369615e-05" />
+            <End midpoint="51.2252154195" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="51.2252154195" radius="2.26757369615e-05" />
+            <End midpoint="56.324829932" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">ipu_8</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="56.324829932" radius="2.26757369615e-05" />
+            <End midpoint="57.6105668934" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+  </Tier>
+  <Tier id="1b024c9b-8a74-6b59-7bf1-2402cc4d562f" tiername="Transcription">
+    <Metadata>
+      <Entry key="id">1b024c9b-8a74-6b59-7bf1-2402cc4d562f</Entry>
+    </Metadata>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="0.0" radius="0.0" />
+            <End midpoint="1.24714285714" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="1.24714285714" radius="2.26757369615e-05" />
+            <End midpoint="4.79659863946" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">바람과 햇님이 서로 힘이 더 세다고 다투고 있을 때</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.79659863946" radius="2.26757369615e-05" />
+            <End midpoint="8.59789115646" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="8.59789115646" radius="2.26757369615e-05" />
+            <End midpoint="11.9172789116" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">한 나그네가 따뜻한 외투를 입고 걸어 왔습니다</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="11.9172789116" radius="2.26757369615e-05" />
+            <End midpoint="15.9081405896" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="15.9081405896" radius="2.26757369615e-05" />
+            <End midpoint="19.6526303855" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">그들은 누구든지 나그네의 외투를 먼저 번기는 이가</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="19.6526303855" radius="2.26757369615e-05" />
+            <End midpoint="22.9650340136" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="22.9650340136" radius="2.26757369615e-05" />
+            <End midpoint="25.4148979592" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">힘이 더 세다고 하기로 결정했습니다</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="25.4148979592" radius="2.26757369615e-05" />
+            <End midpoint="28.6474829932" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="28.6474829932" radius="2.26757369615e-05" />
+            <End midpoint="34.1919047619" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">북풍은 힘껏 불었으나 불면 불수록 나그네는 외투를 힘껏 여몄습니다</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="34.1919047619" radius="2.26757369615e-05" />
+            <End midpoint="38.3224489796" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="38.3224489796" radius="2.26757369615e-05" />
+            <End midpoint="41.581814059" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">그 때에 햇님이 뜨거운 햇빛을 가만히 내리쬐니</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="41.581814059" radius="2.26757369615e-05" />
+            <End midpoint="44.6198412698" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="44.6198412698" radius="2.26757369615e-05" />
+            <End midpoint="47.0996598639" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">나그네는 외투를 얼른 벗었습니다</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="47.0996598639" radius="2.26757369615e-05" />
+            <End midpoint="51.2252154195" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="51.2252154195" radius="2.26757369615e-05" />
+            <End midpoint="56.324829932" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">이리하여 북풍은 햇님이 둘 중에 힘이 더 세다고 인정하지 않을 수 없었습니다</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="56.324829932" radius="2.26757369615e-05" />
+            <End midpoint="57.6105668934" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+  </Tier>
+  <Tier id="8d265b9a-8d04-1d16-5bd5-3977ad1e771a" tiername="Name">
+    <Metadata>
+      <Entry key="id">8d265b9a-8d04-1d16-5bd5-3977ad1e771a</Entry>
+    </Metadata>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="0.0" radius="0.0" />
+            <End midpoint="1.24714285714" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="1.24714285714" radius="2.26757369615e-05" />
+            <End midpoint="4.79659863946" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">바람과 햇님이 서로 힘이 더 세다고 다투고 있을 때</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.79659863946" radius="2.26757369615e-05" />
+            <End midpoint="8.59789115646" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="8.59789115646" radius="2.26757369615e-05" />
+            <End midpoint="11.9172789116" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">한 나그네가 따뜻한 외투를 입고 걸어 왔습니다</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="11.9172789116" radius="2.26757369615e-05" />
+            <End midpoint="15.9081405896" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="15.9081405896" radius="2.26757369615e-05" />
+            <End midpoint="19.6526303855" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">그들은 누구든지 나그네의 외투를 먼저 번기는 이가</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="19.6526303855" radius="2.26757369615e-05" />
+            <End midpoint="22.9650340136" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="22.9650340136" radius="2.26757369615e-05" />
+            <End midpoint="25.4148979592" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">힘이 더 세다고 하기로 결정했습니다</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="25.4148979592" radius="2.26757369615e-05" />
+            <End midpoint="28.6474829932" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="28.6474829932" radius="2.26757369615e-05" />
+            <End midpoint="34.1919047619" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">북풍은 힘껏 불었으나 불면 불수록 나그네는 외투를 힘껏 여몄습니다</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="34.1919047619" radius="2.26757369615e-05" />
+            <End midpoint="38.3224489796" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="38.3224489796" radius="2.26757369615e-05" />
+            <End midpoint="41.581814059" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">그 때에 햇님이 뜨거운 햇빛을 가만히 내리쬐니</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="41.581814059" radius="2.26757369615e-05" />
+            <End midpoint="44.6198412698" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="44.6198412698" radius="2.26757369615e-05" />
+            <End midpoint="47.0996598639" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">나그네는 외투를 얼른 벗었습니다</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="47.0996598639" radius="2.26757369615e-05" />
+            <End midpoint="51.2252154195" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="51.2252154195" radius="2.26757369615e-05" />
+            <End midpoint="56.324829932" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">이리하여 북풍은 햇님이 둘 중에 힘이 더 세다고 인정하지 않을 수 없었습니다</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="56.324829932" radius="2.26757369615e-05" />
+            <End midpoint="57.6105668934" radius="2.26757369615e-05" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">#</Text>
+      </Label>
+    </Annotation>
+  </Tier>
+  <Media id="1a748d9d-4e32-6d67-9ca9-0181ed2e987f" mimetype="audio/wav" url="/home/bigi/Workspace/sppas/samples/samples-kor/sample-korean.wav">
+    <Tier id="1f068f1d-1e71-7f69-6fd8-6196ae5b357b" />
+    <Tier id="1b024c9b-8a74-6b59-7bf1-2402cc4d562f" />
+    <Tier id="8d265b9a-8d04-1d16-5bd5-3977ad1e771a" />
+  </Media>
+  <Hierarchy>
+    <Link from="1f068f1d-1e71-7f69-6fd8-6196ae5b357b" to="1b024c9b-8a74-6b59-7bf1-2402cc4d562f" type="TimeAssociation" />
+  </Hierarchy>
+</Document>

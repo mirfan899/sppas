@@ -466,7 +466,9 @@ class TierCtrl( wx.Window ):
             self._maxtime = end
             torepaint = True
 
-        if torepaint is True: self.Refresh()
+        if torepaint is True:
+            logging.debug('***** NEW TIME INTERVAL %s: %f - %f'%(self._tier.GetName(),self._mintime,self._maxtime))
+            self.Refresh()
 
     #------------------------------------------------------------------------
 
@@ -560,11 +562,11 @@ class TierCtrl( wx.Window ):
         if bgcolour is not None and bgcolour != self._labelbgcolor:
             self._labelbgcolor = bgcolour
 
-            for ann in self._dictanns.values():
-                if ann.GetAnn().GetLabel().GetValue().GetSize() == 1:
-                    ann.SetLabelColours(bgcolour,fontnormalcolour)
+            for ann in self._dictanns.keys():
+                if ann.GetLabel().GetSize() == 1:
+                    self._dictanns[ann].SetLabelColours(bgcolour,fontnormalcolour)
                 else:
-                    ann.SetLabelColours(bgcolour,fontuncertaincolour)
+                    self._dictanns[ann].SetLabelColours(bgcolour,fontuncertaincolour)
 
             redraw = True
 
@@ -584,8 +586,8 @@ class TierCtrl( wx.Window ):
         if colourmidpoint is not None:
             self._midpointcolor = colourmidpoint
 
-        for ann in self._dictanns.values():
-            ann.SetPointColours(self._midpointcolor, colourradius=None)
+        for annctrl in self._dictanns.values():
+            annctrl.SetPointColours(self._midpointcolor, colourradius=None)
 
     #------------------------------------------------------------------------
 
@@ -735,8 +737,8 @@ class TierCtrl( wx.Window ):
         h = self.GetHeight()
 
         self._panectrl.SetHeight( h )
-        for ann in self._dictanns.values():
-            ann.SetHeight( h )
+        for annctrl in self._dictanns.values():
+            annctrl.SetHeight( h )
 
     # -----------------------------------------------------------------------
 
@@ -774,8 +776,8 @@ class TierCtrl( wx.Window ):
 
         # If MoveWindow has changed the font size:
         if self._fontsizeauto and size != self.GetFont().GetPointSize():
-            for ann in self._dictanns.values():
-                ann.SetLabelFont(self.GetFont())
+            for annctrl in self._dictanns.values():
+                annctrl.SetLabelFont(self.GetFont())
 
     #------------------------------------------------------------------------
 
@@ -851,6 +853,8 @@ class TierCtrl( wx.Window ):
         """
         if not self._tier:     return # not declared
         if self._tier is None: return # not initialized
+
+        logging.debug(' Draw. %s'%self._tier.GetName())
 
         # Get the actual client size and position of ourselves
         w,h = self.GetClientSize()
@@ -940,10 +944,10 @@ class TierCtrl( wx.Window ):
         annotations = self._tier.Find(self._mintime, self._maxtime, overlaps=True)
 
         # from the current list of all created controls, hide the unused ones.
-        for a in self._dictanns.values():
-            if not a.GetAnn() in annotations:
-                a.Hide()
-                logging.debug(' ** Hide: %s'%a.GetAnn())
+        for a in self._dictanns.keys():
+            #if not a in annotations:
+            self._dictanns[a].Hide()
+            #logging.debug(' ** Hide: %s'%a.GetAnn())
 
         # display annotations (create if required)
         for ann in annotations:
@@ -988,6 +992,7 @@ class TierCtrl( wx.Window ):
             w = w + (wT-x-w)
         annctrl.MoveWindow(pos=(x+xT,yT), size=wx.Size(w,hT))
         annctrl.SetPxSec( pxsec )
+        annctrl.Show()
 
     #------------------------------------------------------------------------
 
