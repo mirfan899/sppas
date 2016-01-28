@@ -3,7 +3,7 @@
 
 ### Main features
 
-SPPAS - Automatic Annotation of Speech is a scientific computer software
+**SPPAS - Automatic Annotation of Speech** is a scientific computer software
 package written and maintained by Brigitte Bigi of
 the Laboratoire Parole et Langage, in Aix-en-Provence, France.
 
@@ -18,6 +18,7 @@ annotated-data.
 
 There's no reason not to download the latest version whenever released:
 it's easy and fast!
+
 
 
 ### Copyright and Licenses
@@ -74,6 +75,8 @@ And/Or, if you have any question, if you want to contribute to SPPAS either
 to improve the quality of resources or to help in development, or anything else,
 do not hesitate to contact the author by e-mail at:
 `brigitte.bigi@gmail.com`.
+
+**Any and all constructive comments are welcome.**
 
 
 ### Supports
