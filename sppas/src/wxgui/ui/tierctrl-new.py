@@ -54,11 +54,8 @@ import wx.lib.newevent
 from wxgui.cutils.colorutils import PickRandomColour, ContrastiveColour
 from wxgui.cutils.textutils  import TextAsNumericValidator
 
-from pointctrl import PointCtrl
-from pointctrl import spEVT_MOVING,spEVT_MOVED,spEVT_RESIZING,spEVT_RESIZED, spEVT_POINT_LEFT
-from pointctrl import MIN_W as pointctrlMinWidth
-
-from labelctrl import LabelCtrl
+from annotationctrl import AnnotationCtrl
+from annotationctrl import MIN_W as annctrlMinWidth
 
 from annotationdata.ptime.point import TimePoint
 
@@ -380,10 +377,8 @@ class TierCtrl( wx.Window ):
             - tier (Tier) the Tier to draw (see annotationdata library for details).
 
         """
-        self._pointsctrl = []
-        self._labelsctrl = []
         self._panectrl = None
-        self._anns = {} # To link the annotations to the displayed controls
+        self._dictanns = {}
         self._tier = tier
 
         wx.Window.__init__(self, parent, id, pos, size, STYLE)
@@ -396,15 +391,6 @@ class TierCtrl( wx.Window ):
         # Bind the events related to our control:
         wx.EVT_PAINT(self, self.OnPaint)
         wx.EVT_ERASE_BACKGROUND(self, lambda event: None)
-
-        wx.EVT_MOUSE_EVENTS(self, self.OnMouseEvents)
-
-        #spEVT_LABEL_LEFT(self, self.OnLabelEdit)
-        #spEVT_POINT_LEFT(self, self.OnPointEdit)
-        #spEVT_RESIZING(self,   self.OnPointResizing)
-        #spEVT_RESIZED(self,    self.OnPointResized)
-        spEVT_MOVING(self,     self.OnPointMoving)
-        #spEVT_MOVED(self,      self.OnPointMoved)
 
     #------------------------------------------------------------------------
 
@@ -480,7 +466,9 @@ class TierCtrl( wx.Window ):
             self._maxtime = end
             torepaint = True
 
-        if torepaint is True: self.Refresh()
+        if torepaint is True:
+            logging.debug('***** NEW TIME INTERVAL %s: %f - %f'%(self._tier.GetName(),self._mintime,self._maxtime))
+            self.Refresh()
 
     #------------------------------------------------------------------------
 
@@ -497,8 +485,9 @@ class TierCtrl( wx.Window ):
             # Apply this new value to self.
             self._labelalign = value
             # propagate to all label controls
-            for label in self._labelsctrl:
-                label.SetAlign( value )
+            for ann in self._dictanns.values():
+                ann.SetLabelAlign( value )
+                ann.Refresh()
 
     #------------------------------------------------------------------------
 
@@ -527,8 +516,9 @@ class TierCtrl( wx.Window ):
 
         # propagate to all controls
         self._panectrl.SetFont( self.GetFont() )
-        for label in self._labelsctrl:
-            label.SetFont( self.GetFont() )
+        for ann in self._dictanns.values():
+            ann.SetLabelFont( self.GetFont() )
+            ann.Refresh()
 
         self.Refresh()
 
@@ -572,14 +562,11 @@ class TierCtrl( wx.Window ):
         if bgcolour is not None and bgcolour != self._labelbgcolor:
             self._labelbgcolor = bgcolour
 
-            for label in self._labelsctrl:
-                if label.GetValue().GetSize() == 1:
-                    label.SetColours(bgcolour,fontnormalcolour)
+            for ann in self._dictanns.keys():
+                if ann.GetLabel().GetSize() == 1:
+                    self._dictanns[ann].SetLabelColours(bgcolour,fontnormalcolour)
                 else:
-                    label.SetColours(bgcolour,fontuncertaincolour)
-
-            for point in self._pointsctrl:
-                point.SetColours(self._midpointcolor, colourradius=bgcolour)
+                    self._dictanns[ann].SetLabelColours(bgcolour,fontuncertaincolour)
 
             redraw = True
 
@@ -599,8 +586,8 @@ class TierCtrl( wx.Window ):
         if colourmidpoint is not None:
             self._midpointcolor = colourmidpoint
 
-        for point in self._pointsctrl:
-            point.SetColours(self._midpointcolor, colourradius=None)
+        for annctrl in self._dictanns.values():
+            annctrl.SetPointColours(self._midpointcolor, colourradius=None)
 
     #------------------------------------------------------------------------
 
@@ -706,6 +693,15 @@ class TierCtrl( wx.Window ):
 
     # -----------------------------------------------------------------------
 
+    def GetAnnotationWidth(self):
+        """
+        Return the width available to draw annotations of the tier.
+
+        """
+        return  self.GetSize().width - self.GetPaneWidth()
+
+    # -----------------------------------------------------------------------
+
     def GetTier(self):
         """
         Return the tier to draw.
@@ -741,11 +737,8 @@ class TierCtrl( wx.Window ):
         h = self.GetHeight()
 
         self._panectrl.SetHeight( h )
-        for point in self._pointsctrl:
-            point.SetHeight( h )
-        for label in self._labelsctrl:
-            label.SetHeight( h )
-            label.SetFont( self.GetFont() )
+        for annctrl in self._dictanns.values():
+            annctrl.SetHeight( h )
 
     # -----------------------------------------------------------------------
 
@@ -783,8 +776,8 @@ class TierCtrl( wx.Window ):
 
         # If MoveWindow has changed the font size:
         if self._fontsizeauto and size != self.GetFont().GetPointSize():
-            for label in self._labelsctrl:
-                label.SetFont(self.GetFont())
+            for annctrl in self._dictanns.values():
+                annctrl.SetLabelFont(self.GetFont())
 
     #------------------------------------------------------------------------
 
@@ -833,159 +826,6 @@ class TierCtrl( wx.Window ):
     # Callbacks
     # -----------------------------------------------------------------------
 
-    def OnMouseEvents(self, event):
-        """
-        Handles the wx.EVT_MOUSE_EVENTS event for PointCtrl.
-
-        """
-        wx.PostEvent(self.GetParent(), event)
-        event.Skip()
-
-    # -----------------------------------------------------------------------
-
-    def OnPointEdit(self, event):
-        """ Point Edit. Open a dialog to edit the point values. """
-
-        logging.debug('TIER. OnPointEdit. Not implemented.')
-        return
-        # get point from the event
-        point = event.GetEventObject()
-        # show point editor
-        dlg = PointEditor( self, point.GetValue(), point.GetRadius() )
-        if dlg.ShowModal() == wx.ID_OK:
-            (m,r) = dlg.GetValues()
-            # do something with the new value (accept or reject)
-
-        dlg.Destroy()
-
-    # -----------------------------------------------------------------------
-
-    def OnPointResizing(self, event):
-        """ Point Resizing means a new radius value for the TimePoint. """
-        # TODO
-        logging.debug('TIER. OnPointResizing. Not implemented.')
-        return
-
-        # which point is resized and what are new coordinates?
-        ptr = event.GetEventObject()
-        (x,y) = event.pos
-        (w,h) = event.size
-
-        # self coordinates
-        sx,sy = self.GetPosition()
-        sw,sh = self.GetSize()
-
-    # -----------------------------------------------------------------------
-
-    def OnPointMoving(self, event):
-        logging.debug('TIER. OnPointMoving.')
-
-        # which point is moving and what is new size?
-        ptr = event.GetEventObject()
-        (x,y) = event.pos
-        x = x - self._panectrl.GetSize().width
-        (w,h) = ptr.GetSize()
-
-        # self coordinates
-        sw,sh = self.GetClientSize()
-        #logging.debug(' ... Client width=%d'%sw)
-        sw = sw - self._panectrl.GetSize().width
-        #logging.debug(' ... Real width=%d'%sw)
-        #logging.debug(' ... Displayed time: %f,%f'%(self._mintime,self._maxtime))
-
-        # get new time value
-        b = self._calcT(x  , sw)
-        e = self._calcT(x+w, sw)
-        midpoint = b + ((e-b)/2.)
-        radius   = ptr.GetValue().GetRadius()
-
-        #logging.debug(' ... moving point %s: %f,%f, pos=%d,%d'%(ptr.GetValue(),b,e,x,y))
-
-        # Get only annotations related to this pointctrl
-        _sub1anns = {}
-        _sub2anns = {}
-        for ann in self._anns.keys():
-            label, p1, p2 = self._anns[ann]
-            if p1 == ptr:
-                _sub1anns[ann] = [ label, p1, p2 ]
-            elif p2 is not None and p2 == ptr:
-                _sub2anns[ann] = [ label, p1, p2 ]
-
-        # Keep a copy of the current point, before any modification.
-        pointcopy = ptr.GetValue().Copy()
-
-        # Apply the modification to the annotations points
-        ptr.GetValue().SetMidpoint( midpoint )
-        _newok = True
-
-        for ann in _sub1anns.keys():
-            label, p1, p2 = _sub1anns[ann]
-            #logging.debug(' ... ... p1 is ptr in ann=%s'%ann)
-            # try to fix the new value to this timepoint
-            try:
-                p = TimePoint( midpoint, radius )
-                if self._tier.IsPoint():
-                    ann.GetLocation().SetPoint( p )
-                else:
-                    ann.GetLocation().SetBegin( p )
-                p1.SetValue( p )
-                _sub1anns[ann] = [ label, p1, p2 ]
-            except Exception as e:
-                _newok = False
-                #logging.debug(' ... Exception p1: %s'%e)
-
-        for ann in _sub2anns.keys():
-            label, p1, p2 = _sub2anns[ann]
-            #logging.debug(' ... ... p2 is ptr in ann=%s'%ann)
-            # try to fix the new value to this timepoint
-            try:
-                p = TimePoint( midpoint, radius )
-                ann.GetLocation().SetEnd( p )
-                p2.SetValue( p )
-                _sub2anns[ann] = [ label, p1, p2 ]
-            except Exception as e:
-                _newok = False
-                #logging.debug(' ... Exception p2: %s'%e)
-
-        # accept new pos...
-        if _newok is True:
-            #logging.debug(' ... -> new point: %s, pos=%d,%d'%(ptr.GetValue(),x,y))
-            ptr.Move(event.pos)
-            # update labels
-            for ann in _sub1anns.keys():
-                label, p1, p2 = _sub1anns[ann]
-                lx = p1.GetPosition().x + p1.GetSize().width
-                label.MoveWindow( (lx,label.GetPosition().y), label.GetSize() )
-                #logging.debug(' ... ... label %s move p1'%(label.GetValue()))
-            for ann in _sub2anns.keys():
-                label, p1, p2 = _sub2anns[ann]
-                lw = p2.GetPosition().x - p1.GetPosition().x - p1.GetSize().width
-                label.MoveWindow( label.GetPosition(), (lw,label.GetSize().height) )
-                #logging.debug(' ... ... label %s move p2, p2x=%d, p1x=%d, w=%d'%(label.GetValue(),p2.GetPosition().x,p1.GetPosition().x,lw))
-        else:
-        # switch back to ptr...
-            ptr.SetValue( pointcopy )
-            for ann in _sub1anns.keys():
-                label, p1, p2 = _sub1anns[ann]
-                #logging.debug(' ... ... BACK p1 is ptr in ann=%s'%ann)
-                if self._tier.IsPoint():
-                    ann.GetLocation().SetPoint( pointcopy )
-                else:
-                    ann.GetLocation().SetBegin( pointcopy )
-                p1.SetValue( pointcopy )
-            for ann in _sub2anns.keys():
-                label, p1, p2 = _sub2anns[ann]
-                #logging.debug(' ... ... BACK p2 is ptr in ann=%s'%ann)
-                p = pointcopy.Copy()
-                ann.GetLocation().SetEnd( p )
-                p2.SetValue( p )
-
-        self.GetTopLevelParent().GetStatusBar().SetStatusText('Point is moving: %d'%x)
-
-        self.Refresh()
-
-    # -----------------------------------------------------------------------
-
     #------------------------------------------------------------------------
     # Painting
     #------------------------------------------------------------------------
@@ -1013,6 +853,8 @@ class TierCtrl( wx.Window ):
         """
         if not self._tier:     return # not declared
         if self._tier is None: return # not initialized
+
+        logging.debug(' Draw. %s'%self._tier.GetName())
 
         # Get the actual client size and position of ourselves
         w,h = self.GetClientSize()
@@ -1044,7 +886,7 @@ class TierCtrl( wx.Window ):
 
     #------------------------------------------------------------------------
 
-    def DrawBackground(self, dc, x,y, w, h):
+    def DrawBackground(self, dc, x,y, w,h):
         """
         Draw the background of the tier.
 
@@ -1079,6 +921,7 @@ class TierCtrl( wx.Window ):
         @param w,h (int,int) are width and height available for drawing.
 
         """
+        logging.debug(' DrawContent for tier: %s'%self._tier.GetName())
         tierbegin = self._tier.GetBeginValue()
         tierend   = self._tier.GetEndValue()
 
@@ -1097,27 +940,25 @@ class TierCtrl( wx.Window ):
 
         self.DrawBackground(dc, x,y, w,h)
 
-        # keep in memory the current list of all created controls, just hide them
-        for point in self._pointsctrl:
-            point.Hide()
-        for label in self._labelsctrl:
-            label.Hide()
-
         # get the list of annotations to display
         annotations = self._tier.Find(self._mintime, self._maxtime, overlaps=True)
 
-        # displayed annotations
+        # from the current list of all created controls, hide the unused ones.
+        for a in self._dictanns.keys():
+            #if not a in annotations:
+            self._dictanns[a].Hide()
+            #logging.debug(' ** Hide: %s'%a.GetAnn())
+
+        # display annotations (create if required)
         for ann in annotations:
-            # Must create new controls
-            if not ann in self._anns.keys():
-                if self._tier.IsPoint():
-                    self._addAnnotationPoint(ann)
-                elif self._tier.IsInterval():
-                    self._addAnnotationInterval(ann)
-                else:
-                    logging.info(' TierCtrl [WARNING] Can NOT draw annotation: bad type. %s'%ann)
-            # Show controls
-            self._drawAnnotation( ann, x,y, w,h )
+            if not ann in self._dictanns.keys():
+                annctrl = self._createAnnotationCtrl(ann, x,y, w,h)
+                self._dictanns[ann] = annctrl
+                logging.debug(' ** Create: %s'%ann)
+            else:
+                logging.debug(' ** Show: %s'%ann)
+                annctrl = self._dictanns[ann]
+            self._drawAnnotationCtrl(annctrl, x, y, w, h)
 
     #------------------------------------------------------------------------
 
@@ -1125,174 +966,57 @@ class TierCtrl( wx.Window ):
     # Private
     # -----------------------------------------------------------------------
 
-    def _drawPoint(self, point, x,y, w,h):
-        """ Display a point. """
-
-        xpt, wpt = self._calcPointXW( point.GetValue(), w )
-        # Do not draw if point is outsite the available area!
-        if xpt>w:
-            point.Hide()
-            return
-
-        if self._tier.IsPoint():
-            point.MoveWindow(wx.Point(x+xpt,y), wx.Size(wpt,int(h/2)))
-        else:
-            point.MoveWindow(wx.Point(x+xpt,y), wx.Size(wpt,h))
-        point.Show()
-
-    # -----------------------------------------------------------------------
-
-    def _drawAnnotation(self, ann, x,y, w,h):
-        """ Display an existing annotation. """
-
-        label  = self._anns[ann][0]
-        point  = self._anns[ann][1]
-        point2 = self._anns[ann][2]
-
-        th=h-2 # 2 is top/bottom lines of 1 pixel each
-        ty=y+1
-
-        # Draw the label
-        xpt1, wpt1 = self._calcPointXW(point.GetValue(), w)
-        if xpt1>w: return
-
-        if self._tier.IsPoint():
-            tw = min(50, self.__getTextWidth(label.GetValue().GetValue())+2 )
-            if (xpt1+wpt1+tw) > w: # ensure to stay in our allocated area
-                tw = w - (xpt1+wpt1) # reduce width to the available area
-            tw = max(0,tw)
-            label.MoveWindow(wx.Point(x+xpt1+wpt1,ty), wx.Size(tw,th))
-        else:
-            xpt2, wpt2 = self._calcPointXW(point2.GetValue(), w)
-            tx = x+xpt1+wpt1
-            tw = xpt2-xpt1-wpt1
-            if (tx+tw) > (x+w):  # ensure to stay in our allocated area
-                tw = tw - ((tx+tw)-(w+x)) # reduce width to the available area
-            tw = max(0,tw)
-            label.MoveWindow(wx.Point(tx,ty), wx.Size(tw,th))
-
-        label.Show()
-
-        # Draw the points
-        self._drawPoint(point, x,ty, w,th)
-        if self._tier.IsInterval():
-            self._drawPoint(point2, x,ty, w,th)
-
-    # -----------------------------------------------------------------------
-
-    def _addAnnotationInterval(self, ann):
-        """ Create new controls for an annotation, or link to existing controls. """
-
-        tp1 = ann.GetLocation().GetBegin()
-        tp2 = ann.GetLocation().GetEnd()
-
-        p1 = None
-        p2 = None
-
-        # Is there a pointctrl at the same place? .
-        for point in self._pointsctrl:
-            if tp1.GetValue() == point.GetValue().GetMidpoint():
-                p1 = point
-                break
-            if tp2.GetValue() == point.GetValue().GetMidpoint():
-                p2 = point
-
-        if p1 is None:
-            p1 = PointCtrl(self, id=-1, point=tp1)
-            self._pointsctrl.append( p1 )
-
-        if p2 is None:
-            p2 = PointCtrl(self, id=-1, point=tp2)
-            self._pointsctrl.append( p2 )
-
-        label = LabelCtrl(self, id=-1, label=ann.GetLabel())
-        self._labelsctrl.append( label )
-
-        self._anns[ann] = [ label, p1, p2 ]
-
-        # Fix properties
-        label.SetAlign( self._labelalign )
-        label.SetFont( self.GetFont() )
-        if label.GetValue().GetSize() == 1:
-            label.SetColours(self._labelbgcolor, self._textcolor)
-        else:
-            label.SetColours(self._labelbgcolor, self._labelfgucolor)
-        p1.SetColours(colourmidpoint=self._midpointcolor,colourradius=self._labelbgcolor)
-        if self._tier.IsPoint():
-            p2.SetColours(colourmidpoint=self._midpointcolor,colourradius=self._labelbgcolor)
-
-    # -----------------------------------------------------------------------
-
-    def _addAnnotationPoint(self, ann):
-        """ Create new controls for an annotation, or link to existing controls. """
-
-        tp = ann.GetLocation().GetPoint()
-
-        p = None
-
-        # Is there a pointctrl at the same place?
-        for point in self._pointsctrl:
-            if tp.GetValue() == point.GetValue().GetMidpoint():
-                p = point
-                break
-
-        if p is None:
-            p = PointCtrl(self, id=-1, point=tp)
-            self._pointsctrl.append( p )
-
-        label = LabelCtrl(self, id=-1, label=ann.GetLabel())
-        self._labelsctrl.append( label )
-
-        self._anns[ann] = [ label, p, None ]
-
-        # Fix properties
-        label.SetAlign(self._labelalign)
-        label.SetFont( self.GetFont() )
-        if label.GetValue().GetSize() == 1:
-            label.SetColours(self._labelbgcolor, self._textcolor)
-        else:
-            label.SetColours(self._labelbgcolor, self._labelfgucolor)
-
-        p.SetColours(colourmidpoint=self._midpointcolor,colourradius=self._labelbgcolor)
-
-    # -----------------------------------------------------------------------
-
-    def _calcPointXW(self, point, tierwidth):
+    def _drawAnnotationCtrl(self, annctrl, xT,yT, wT,hT):
         """
-        tierwidth is always corresponding to the real width of the tier
-        (the width of its duration, even if the sreen displays a larger width).
+        Draw an AnnotationCtrl.
         """
-        tiermintime,tiermaxtime = self._mintime,self._maxtime
+        ann = annctrl.GetAnn()
+        # Then... draw at the right position with the right size!
+        pxsec = self._calcPxSec(wT)
+        time0 = self._mintime
 
-        # adjust if required
-        tierbegin = self._tier.GetBeginValue()
-        tierend   = self._tier.GetEndValue()
-        if self._mintime < tierend and self._maxtime > tierend:
-            tiermaxtime = tierend
-        if self._maxtime > tierbegin and self._mintime < tierbegin:
-            tiermintime = tierbegin
+        if self._tier.IsPoint() is False:
+            time1 = ann.GetLocation().GetBegin().GetMidpoint() - ann.GetLocation().GetBegin().GetRadius()
+            time2 = ann.GetLocation().GetEnd().GetMidpoint()   + ann.GetLocation().GetEnd().GetRadius()
+            duration = time2 - time1
+            w = round( duration * float(pxsec))
+        else:
+            time1 = ann.GetLocation().GetPoint().GetMidpoint() - ann.GetLocation().GetPoint().GetRadius()
+            w = 50
 
-        # Get information
-        tierduration = tiermaxtime - tiermintime
-
-        # Fix position and width of the point
-        b = point.GetMidpoint() - point.GetRadius()
-        e = point.GetMidpoint() + point.GetRadius()
-        # hum.... take care:
-        # b can be "before" tiermintime
-        # e can be "after" tiermaxtime
-
-        delta = max(0., b - tiermintime)
-        ptbx =  delta * float(tierwidth) / tierduration
-        delta = max(0., e - tiermintime)
-        ptex =  delta * float(tierwidth) / tierduration
-
-        x = int(ptbx) #round(ptbx,0)
-        w = max(int(ptex-ptbx), pointctrlMinWidth)
-
-        return x,w
+        x = round( (time1-time0) * float(pxsec))
+        if x < 0: # annotation starts before the displayed min time
+            w = w+x
+            x = 0
+        if (x+w) > wT:
+            w = w + (wT-x-w)
+        annctrl.MoveWindow(pos=(x+xT,yT), size=wx.Size(w,hT))
+        annctrl.SetPxSec( pxsec )
+        annctrl.Show()
 
     #------------------------------------------------------------------------
+
+    def _createAnnotationCtrl(self, ann, xT,yT, wT,hT):
+        """ Create new controls for an annotation, or link to existing controls. """
+
+        annctrl = AnnotationCtrl(self, id=-1, ann=ann)
+
+        # Fix properties
+        annctrl.SetLabelAlign( self._labelalign )
+        annctrl.SetLabelFont( self.GetFont() )
+        if ann.GetLabel().GetSize() == 1:
+            annctrl.SetLabelColours(self._labelbgcolor, self._textcolor)
+        else:
+            annctrl.SetLabelColours(self._labelbgcolor, self._labelfgucolor)
+        annctrl.SetPointColours(colourmidpoint=self._midpointcolor,colourradius=self._labelbgcolor)
+
+        return annctrl
+
+    #------------------------------------------------------------------------
+
+    def _calcPxSec(self, width):
+        duration = self._maxtime - self._mintime
+        return int(float(width)/duration)
 
     def _calcW(self, time, width):
         tierduration = self._maxtime - self._mintime
