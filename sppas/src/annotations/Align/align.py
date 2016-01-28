@@ -58,6 +58,7 @@ import codecs
 from datetime import date
 
 import utils.name
+import utils.fileutils as fileutils
 
 import annotationdata.io
 from annotationdata.transcription import Transcription
@@ -316,15 +317,22 @@ class sppasAlign:
 
         """
         isconverted = False
+        tmpname = utils.name.genName().get_name() + ".wav"
         try:
-            tmpname = utils.name.genName().get_name() + ".wav"
             converter = AudioSppasPresenter(self._logfile)
             isconverted = converter.export(self.inputaudio, tmpname)
-            if isconverted:
-                self.inputaudio = tmpname
         except Exception:
-            # hum...
-            pass
+            pass # hum... TODO something better...
+
+        if isconverted is False:
+            testname = fileutils.string_to_ascii(fileutils.format_filename(self.inputaudio))
+            if testname != self.inputaudio:
+                shutil.copy(self.inputaudio, tmpname)
+                isconverted = True
+
+        if isconverted is True:
+            self.inputaudio = tmpname
+
         return isconverted
 
     # End audioinput
@@ -467,48 +475,49 @@ class sppasAlign:
         @param alignname is the output file name to save alignment
 
         """
-        fileName, fileExtension = os.path.splitext(audiofilename)
-
         with codecs.open(phonname, 'r', ENCODING) as fp:
             # Get the phoneme sequence
             phones = fp.readline()
             # Remove multiple spaces
             phones = re.sub("[ ]+", " ", phones)
 
-        ret = 0
-
+        # Do not align nothing!
         if len(phones)==0:
             if self._logfile:
                 self._logfile.print_message('Nothing to do: empty unit!!!', indent=3,status=1)
-            return -1 #
+            return -1
 
         # Do not ask Aligner to align only one phoneme!
-        elif len(phones.split()) <= 1 and '.' not in phones:
-            if self._logfile: self._logfile.print_message('Execute Basic Align', indent=3)
+        if len(phones.split()) <= 1 and '.' not in phones:
+            if self._logfile:
+                self._logfile.print_message('Execute Basic Align', indent=3)
             self._basicaligner.run_alignment(audiofilename, phonname, alignname)
+            return 0
 
+        fileName, fileExtension = os.path.splitext(audiofilename)
+        ret = 0
+
+        # Create the dictionary and the grammar
+        dictname = audiofilename[:-len(fileExtension)] + ".dict"
+        if self._alignerid == "julius":
+            grammarname = audiofilename[:-len(fileExtension)] + ".dfa"
+            basename = audiofilename[:-len(fileExtension)]
+        elif self._alignerid == "hvite":
+            grammarname = audiofilename[:-len(fileExtension)] + ".lab"
+            basename = dictname
         else:
-            # Create the dictionary and the grammar
-            dictname = audiofilename[:-len(fileExtension)] + ".dict"
-            if self._alignerid == "julius":
-                grammarname = audiofilename[:-len(fileExtension)] + ".dfa"
-                basename = audiofilename[:-len(fileExtension)]
-            elif self._alignerid == "hvite":
-                grammarname = audiofilename[:-len(fileExtension)] + ".lab"
-                basename = dictname
-            else:
-                grammarname = ''
+            grammarname = ''
 
-            # Map phonemes to the appropriate phoneset
+        # Map phonemes to the appropriate phoneset
 
-            # Generate dependencies (grammar, dict...)
-            self._aligner.gen_dependencies(phones,grammarname,dictname)
+        # Generate dependencies (grammar, dict...)
+        self._aligner.gen_dependencies(phones,grammarname,dictname)
 
-            # Execute Alignment
-            if self._logfile: self._logfile.print_message('Execute '+self._alignerid+' Align',indent=3)
-            ret = self._aligner.run_alignment(audiofilename, basename, alignname)
+        # Execute Alignment
+        if self._logfile: self._logfile.print_message('Execute '+self._alignerid+' Align',indent=3)
+        ret = self._aligner.run_alignment(audiofilename, basename, alignname)
 
-            # Map-back the phoneset
+        # Map-back the phoneset
 
         return ret
 
@@ -592,8 +601,8 @@ class sppasAlign:
             else:
                 print ' ... Align unit number '+str(track)
 
-            audiofilename   = os.path.join(diralign, "track_%06d.wav"%track)
-            phonname  = os.path.join(diralign, "track_%06d.phon"%track)
+            audiofilename = os.path.join(diralign, "track_%06d.wav"%track)
+            phonname = os.path.join(diralign, "track_%06d.phon"%track)
             if self._alignerid == 'julius' or self._alignerid == 'basic':
                 alignname = os.path.join(diralign, "track_%06d.palign"%track)
             elif self._alignerid == 'hvite':
@@ -677,7 +686,6 @@ class sppasAlign:
         @param outputfilename is the file name with the result (3 tiers)
 
         """
-
         # Get input data and merge tokenization/phonetization in a Transcription()
         trsinput = Transcription()
 
@@ -685,7 +693,7 @@ class sppasAlign:
             phontier = self.__get_phonestier( inputphonesname )
             inputphonesidx = trsinput.Add( phontier )
         except Exception as e:
-            raise IOError(' [ERROR] Input Error. Not a valid input file: '+str(e))
+            raise IOError(' Not a valid input file: '+str(e))
 
         toktier = self.__get_tokenstier( inputtokensname )
         if toktier is not None:
@@ -694,14 +702,8 @@ class sppasAlign:
             if self._logfile:
                 self._logfile.print_message("Tokens alignment disabled: no tokenization available",indent=2,status=3)
 
-        # Get the input file name without extension, and get the extension!
-        diralign, fileExt = os.path.splitext( inputphonesname )
-
         # Set local file names
         self.inputaudio = inputaudioname
-        if not os.path.exists( diralign ):
-            os.mkdir( diralign )
-        listfilename = os.path.join(diralign, "tracks.list")
 
         # Start processing...
         # ####################
@@ -719,6 +721,15 @@ class sppasAlign:
                     self._logfile.print_message("The file was converted to the required format.",indent=3,status=3)
         except IOError as e:
             raise IOError('Not a valid audio file: '+str(e))
+
+        # Fix the working directory name
+        # ------------------------------
+        # we use inputaudio instead of inputphonesname because it contains
+        # only ascii characters in filename (required under windows).
+        diralign, fileExt = os.path.splitext( self.inputaudio )
+        if not os.path.exists( diralign ):
+            os.mkdir( diralign )
+        listfilename = os.path.join(diralign, "tracks.list")
 
         # Split input into inter-pausal units
         # --------------------------------------------------------------
