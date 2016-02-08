@@ -95,7 +95,7 @@ class AcModel:
                     comments_re="\(\*.*?\*\)",
                     trace=False)
 
-        print self.serialize_model()
+        #print self.serialize_model()
 
     # -----------------------------------------------------------------------
 
@@ -358,7 +358,7 @@ class AcModel:
     def _matrix_to_htk(self, mat):
         result = ''
         for arr in mat:
-            self._array_to_htk(arr)
+            result = result + self._array_to_htk(arr)
         return result
 
 # ---------------------------------------------------------------------------
@@ -399,13 +399,14 @@ class HtkModelSemantics(object):
         d = _to_ordered_dict(ast)
         d['matrix'] = []
         aarray = []
+        d['array'].append(None)# for the last serie to be appended!
         for a in d['array']:
             if len(aarray) == ast['dim']:
                 d['matrix'].append(aarray)
                 aarray = [a]
             else:
                 aarray.append(a)
-        #numpy:
+        #numpy solution:
         #d['matrix'] = d['array'].reshape((ast['dim'], ast['dim']))
         d.pop('array')
         return d
