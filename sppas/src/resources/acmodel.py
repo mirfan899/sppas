@@ -48,6 +48,7 @@ import codecs
 import logging
 import rutils
 import collections
+import json
 
 from dependencies.grako.parsing import graken, Parser
 
@@ -69,14 +70,32 @@ class AcModel:
     HMM-based acoustic model, from an HTK-ASCII file.
 
     A model is made of:
-       - a dictionary of hmms models (one per phoneme);
-       - macros.
+       - a 'macro'.
+       - 'hmms' models (one per phoneme): OrderedDict
+
+    Each hmm model of a phoneme is made of:
+       - a 'name': str
+       - a 'definition': OrderedDict
+
+    Each definition is made of:
+        - state_count: int
+        - states: list
+        - transition: OrderedDict
+        - options
+        - regression_tree
+        - duration
+
+    Each element of the states list is:
+        - an index: int
+        - a state: OrderedDict
+
+    ... and so on!
 
     """
 
     def __init__(self, *args):
         """
-        Load an HTK model from one ore more files.
+        Load an HTK model from one or more files.
 
         @param args: Filenames of the model (e.g. macros hmmdefs)
 
@@ -95,7 +114,74 @@ class AcModel:
                     comments_re="\(\*.*?\*\)",
                     trace=False)
 
-        #print self.serialize_model()
+    # -----------------------------------------------------------------------
+
+    def get_hmm(self, phoneme):
+        """
+        Return the hmm corresponding to the given phoneme.
+
+        @param phoneme (str) the phoneme to get hmm
+        @raise ValueError if phoneme is not in the model
+
+        """
+        hmms = self.model['hmms']
+        hmm = [h for h in hmms if h['name']==phoneme]
+        if len(hmm) == 1:
+            return hmm[0]
+        raise ValueError('%s not in the model'%phoneme)
+
+    # -----------------------------------------------------------------------
+
+    def append_hmm(self, hmm):
+        """
+        Append an HMM to the model.
+
+        @param hmm (OrderedDict)
+        @raise TypeError, ValueError
+        """
+        if type(hmm) != collections.OrderedDict:
+            raise TypeError('Expected a collections.OrderedDict. Got %s'%type(hmm))
+
+        name = hmm.get('name',None)
+        if name is None:
+            raise TypeError('Expected an hmm with a name as key.')
+        for h in self.model['hmms']:
+            if h['name'] == name:
+                raise ValueError('Duplicate HMM is forbidden. %s already in the model.'%name)
+
+        definition = hmm.get('definition',None)
+        if definition is None:
+            raise TypeError('Expected an hmm with a definition as key.')
+        if definition.get('states',None) is None or definition.get('transition',None) is None:
+            raise TypeError('Expected an hmm with a definition including states and transitions.')
+
+        self.model['hmms'].append(hmm)
+
+    # -----------------------------------------------------------------------
+
+    def pop_hmm(self, phoneme):
+        """
+        Remove an HMM of the model.
+
+        @param phoneme (str) the phoneme to get hmm
+        @raise ValueError if phoneme is not in the model
+
+        """
+        hmm = self.get_hmm(phoneme)
+        idx = self.model['hmms'].index(hmm)
+        self.model['hmms'].pop(idx)
+
+    # -----------------------------------------------------------------------
+
+    def static_linear_interpolation(self, other, gamma):
+        """
+        Static Linear Interpolation.
+
+        @param other (AcModel) the AcModel to be interpolated with.
+        @param gamma (float) coefficient to apply to the other model.
+
+        """
+        raise NotImplementedError
 
     # -----------------------------------------------------------------------
 
@@ -355,11 +441,15 @@ class AcModel:
     def _array_to_htk(self, arr):
         return ' {}\n'.format(' '.join(['{:2.6e}'.format(value) for value in arr]))
 
+
     def _matrix_to_htk(self, mat):
         result = ''
         for arr in mat:
             result = result + self._array_to_htk(arr)
         return result
+
+    def __repr__(self):
+        return json.dumps(self.model,indent=2)
 
 # ---------------------------------------------------------------------------
 
