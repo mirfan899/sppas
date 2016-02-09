@@ -139,6 +139,19 @@ class AcModel:
 
     # -----------------------------------------------------------------------
 
+    def save_hmm(self, phone, filename):
+        """
+        Save the hmm into the given filename.
+
+        """
+        hmm = self.get_hmm(phone)
+        result  = '~h "{}"\n'.format( hmm['name'] )
+        result += self._serialize_hmm( hmm['definition'] )
+        with open(filename, 'w') as f:
+            f.write( result )
+
+    # -----------------------------------------------------------------------
+
     def get_hmm(self, phone):
         """
         Return the hmm corresponding to the given phoneme.
@@ -196,14 +209,16 @@ class AcModel:
 
     # -----------------------------------------------------------------------
 
-    def _interpolate_values(self, v1, v2, gamma):
-        p1 = gamma * v1
-        p2 = (1.-gamma) * v2
+    def _interpolate_values(self, value1, value2, gamma):
+        p1 = gamma * value1
+        p2 = (1.-gamma) * value2
         return p1 + p2
 
     def _interpolate_vectors(self, vector1, vector2, gamma):
+        v = []
         for v1,v2 in zip(vector1,vector2):
-            v1 = self._interpolate_values(v1, v2, gamma)
+            v.append( self._interpolate_values(v1, v2, gamma) )
+        return v
 
 
     def static_linear_interpolation_hmm(self, phone, hmm, gamma):
@@ -219,7 +234,7 @@ class AcModel:
         @param gamma (float) coefficient to apply to the model of phoneme.
 
         """
-        # MUST COMPARE DICT STRUCTURES HERE
+        # TODO: MUST COMPARE DICT STRUCTURES HERE
 
         shmm = self.get_hmm(phone)
 
@@ -249,15 +264,11 @@ class AcModel:
 
                     svector = spdf['mean']['vector']
                     ovector = opdf['mean']['vector']
-                    #print "SELF,  MEAN VECTOR:", svector
-                    #print "OTHER, MEAN VECTOR:", ovector
-                    self._interpolate_vectors(svector,ovector,gamma)
+                    spdf['mean']['vector'] = self._interpolate_vectors(svector,ovector,gamma)
 
                     svector = spdf['covariance']['variance']['vector']
                     ovector = opdf['covariance']['variance']['vector']
-                    #print "SELF,  VARIANCE VECTOR:", svector
-                    #print "OTHER, VARIANCE VECTOR:", ovector
-                    self._interpolate_vectors(svector,ovector,gamma)
+                    spdf['covariance']['variance']['vector'] = self._interpolate_vectors(svector,ovector,gamma)
 
                     spdf['gconst'] = self._interpolate_values(spdf['gconst'], opdf['gconst'], gamma)
 
@@ -267,11 +278,10 @@ class AcModel:
             raise TypeError
         smatrix = stransition['matrix']
         omatrix = otransition['matrix']
+        matrix = []
         for svector,ovector in zip(smatrix,omatrix):
-            #print "SELF,  TRANSITION VECTOR:", svector
-            #print "OTHER, TRANSITION VECTOR:", ovector
-            self._interpolate_vectors(svector,ovector,gamma)
-            #print "NEW TRANSITION VECTOR: ",svector
+            matrix.append( self._interpolate_vectors(svector,ovector,gamma) )
+        stransition['matrix'] = matrix
 
     # -----------------------------------------------------------------------
 
@@ -295,7 +305,7 @@ class AcModel:
 
         appended = 0
         interpolated = 0
-        keeped = 0
+        keeped = len(self.model['hmms'])
         changed = 0
         for hmm in other.model['hmms']:
             name = hmm['name']
@@ -304,14 +314,16 @@ class AcModel:
                 if h['name'] == name:
                     got = True
                     if gamma == 1.0:
-                        keeped= keeped + 1
+                        pass
                     elif gamma == 0.:
                         self.pop_hmm( name )
                         self.append_hmm( hmm )
                         changed = changed + 1
+                        keeped  = keeped  - 1
                     else:
                         self.static_linear_interpolation_hmm(name, hmm, gamma)
                         interpolated = interpolated + 1
+                        keeped       = keeped       - 1
                     break
             if got is False:
                 self.append_hmm(hmm)

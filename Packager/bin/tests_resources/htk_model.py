@@ -32,81 +32,56 @@ class TestAcModel(unittest.TestCase):
 #             acmodel = AcModel( hmmdefs )
 #             self._test_load_save( acmodel )
 
-#     def test_load_save(self):
-#         self._test_load_save( self.hmmdefs )
-#
-#
-#     def _test_load_save(self, acmodel):
-#
-#         # Save temporarilly the loaded model into a file
-#         tmpfile = self.hmmdefs+".copy"
-#         self.acmodel.save_model( tmpfile )
-#
-#         # Load the temporary file into a new model
-#         acmodelcopy = AcModel( tmpfile )
-#
-#         # Compare original and copy
-#         self.assertTrue(compare_dictionaries(self.acmodel.model,acmodelcopy.model))
-#         os.remove(tmpfile)
-#
-#
-#     def test_get_hmm(self):
-#
-#         # get an hmm not in the model
-#         with self.assertRaises(ValueError):
-#             self.acmodel.get_hmm('Q')
-#
-#         Nhmm = self.acmodel.get_hmm('N')
-#         definition = Nhmm['definition']
-#
-#         states = definition['states']
-#         for item in states: # a dict
-#             state = item['state']
-#             streams = state['streams']
-#             for s in streams: # a list
-#                 mixtures = s['mixtures']
-#                 for mixture in mixtures: # a list of dict
-#                     self.assertEqual(type(mixture['weight']),float)
-#                     pdf = mixture['pdf']
-#                     self.assertEqual(pdf['mean']['dim'], 25)
-#                     self.assertEqual(len(pdf['mean']['vector']),25)
-#                     self.assertEqual(pdf['covariance']['variance']['dim'], 25)
-#                     self.assertEqual(len(pdf['covariance']['variance']['vector']), 25)
-#                     self.assertEqual(type(pdf['gconst']),float)
-#
-#         transition = definition['transition']
-#         self.assertEqual(transition['dim'], 5)
-#         matrix = transition['matrix']
-#         for i in range(len(matrix)-1):
-#             # the last vector is always 0.!
-#             vector=matrix[i]
-#             self.assertEqual(1.0, sum(vector))
-#
-#
-#     def test_append_hmm(self):
-#         with self.assertRaises(TypeError):
-#             self.acmodel.append_hmm({'toto':None})
-#         hmm = collections.OrderedDict()
-#
-#         with self.assertRaises(TypeError):
-#             self.acmodel.append_hmm(hmm)
-#
-#         Nhmm = self.acmodel.get_hmm('N')
-#         with self.assertRaises(ValueError):
-#             self.acmodel.append_hmm(Nhmm)
-#
-#         Newhmm = copy.deepcopy(Nhmm)
-#         Newhmm['name'] = "NewN"
-#         self.acmodel.append_hmm(Newhmm)
-#
-#
-#     def test_pop_hmm(self):
-#         self.acmodel.pop_hmm("N")
-#         with self.assertRaises(ValueError):
-#             self.acmodel.get_hmm( "N" )
+    def test_load_save(self):
+        self._test_load_save( self.hmmdefs )
 
 
-    def test_merge(self):
+    def _test_load_save(self, acmodel):
+
+        # Save temporarilly the loaded model into a file
+        tmpfile = self.hmmdefs+".copy"
+        self.acmodel.save_model( tmpfile )
+
+        # Load the temporary file into a new model
+        acmodelcopy = AcModel( tmpfile )
+
+        # Compare original and copy
+        self.assertTrue(compare_dictionaries(self.acmodel.model,acmodelcopy.model))
+        os.remove(tmpfile)
+
+
+    def test_get_hmm(self):
+        with self.assertRaises(ValueError):
+            self.acmodel.get_hmm('Q')
+        Nhmm = self.acmodel.get_hmm('N')
+        self.__test_states( Nhmm )
+        self.__test_transition( Nhmm )
+
+
+    def test_append_hmm(self):
+        with self.assertRaises(TypeError):
+            self.acmodel.append_hmm({'toto':None})
+        hmm = collections.OrderedDict()
+
+        with self.assertRaises(TypeError):
+            self.acmodel.append_hmm(hmm)
+
+        Nhmm = self.acmodel.get_hmm('N')
+        with self.assertRaises(ValueError):
+            self.acmodel.append_hmm(Nhmm)
+
+        Newhmm = copy.deepcopy(Nhmm)
+        Newhmm['name'] = "NewN"
+        self.acmodel.append_hmm(Newhmm)
+
+
+    def test_pop_hmm(self):
+        self.acmodel.pop_hmm("N")
+        with self.assertRaises(ValueError):
+            self.acmodel.get_hmm( "N" )
+
+
+    def test_no_merge(self):
         nbhmms = len(self.acmodel.model['hmms'])
 
         # Try to merge with the same model!
@@ -130,7 +105,8 @@ class TestAcModel(unittest.TestCase):
         self.assertEqual(keeped, 0)
         self.assertEqual(changed, nbhmms)
 
-        #
+
+    def test_merge(self):
         acmodel1 = AcModel( "1-hmmdefs" )
         acmodel2 = AcModel( "2-hmmdefs" )
 
@@ -140,11 +116,51 @@ class TestAcModel(unittest.TestCase):
         self.assertEqual(keeped, 1)
         self.assertEqual(changed, 0)
 
-    def test_load_hmm(self):
-        pass
+        self.__test_states( acmodel2.get_hmm('a') )
+        self.__test_transition( acmodel2.get_hmm('a') )
 
-    def test_linear_interpolation(self):
-        pass
+
+    def test_load_hmm(self):
+        acmodel = AcModel()
+        hmm = acmodel.load_hmm("N-hmm")
+        acmodel.append_hmm( hmm )
+        self.__test_states( hmm )
+        self.__test_transition( hmm )
+
+
+    def test_save_hmm(self):
+        Nhmm = self.acmodel.get_hmm('N')
+        self.acmodel.save_hmm('N', 'N-hmm-copy')
+        acmodel = AcModel()
+        NewNhmm = acmodel.load_hmm("N-hmm-copy")
+        self.assertTrue(compare_dictionaries(Nhmm,NewNhmm))
+        os.remove('N-hmm-copy')
+
+
+    def __test_transition(self, hmm):
+        transition = hmm['definition']['transition']
+        self.assertEqual(transition['dim'], 5)
+        matrix = transition['matrix']
+        for i in range(len(matrix)-1):
+            # the last vector is always 0.!
+            vector=matrix[i]
+            self.assertEqual(1.0, round(sum(vector),4))
+
+    def __test_states(self, hmm):
+        states = hmm['definition']['states']
+        for item in states: # a dict
+            state = item['state']
+            streams = state['streams']
+            for s in streams: # a list
+                mixtures = s['mixtures']
+                for mixture in mixtures: # a list of dict
+                    #self.assertEqual(type(mixture['weight']),float)
+                    pdf = mixture['pdf']
+                    self.assertEqual(pdf['mean']['dim'], 25)
+                    self.assertEqual(len(pdf['mean']['vector']),25)
+                    self.assertEqual(pdf['covariance']['variance']['dim'], 25)
+                    self.assertEqual(len(pdf['covariance']['variance']['vector']), 25)
+                    self.assertEqual(type(pdf['gconst']),float)
 
 # End TestAcModel
 # ---------------------------------------------------------------------------

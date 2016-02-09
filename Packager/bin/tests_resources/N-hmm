@@ -1,7 +1,3 @@
-~o <StreamInfo> 1 25
-<VecSize> 25
-<nulld>
-<mfcc_E_D_N_Z>
 ~h "N"
 <BeginHMM>
 <NumStates> 5
