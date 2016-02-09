@@ -67,7 +67,18 @@ class AcModel:
     @license: GPL, v3
     @summary: Acoustic model representation.
 
-    HMM-based acoustic model, from an HTK-ASCII file.
+    Hidden Markov Models (HMMs) provide a simple and effective framework for
+    modeling time-varying spectral vector sequences. As a consequence, most
+    of speech technology systems are based on HMMs.
+    Each base phone is represented by a continuous density HMM, with transition
+    probability parameters and output observation distributions.
+    One of the most commonly used extensions to standard HMMs is to model the
+    state-output distribution as a mixture model, a mixture of Gaussians is a
+    highly flexible distribution able to model, for example, asymmetric and
+    multi-modal distributed data.
+
+    This class is able to load and save HMM-based acoustic models from
+    an HTK-ASCII file.
 
     A model is made of:
        - a 'macro'.
@@ -97,7 +108,7 @@ class AcModel:
         """
         Load an HTK model from one or more files.
 
-        @param args: Filenames of the model (e.g. macros hmmdefs)
+        @param args: Filenames of the model (e.g. macros and/or hmmdefs)
 
         """
         text = ''
@@ -116,19 +127,31 @@ class AcModel:
 
     # -----------------------------------------------------------------------
 
-    def get_hmm(self, phoneme):
+    def load_hmm(self, filename):
+        """
+        Return the hmm described into the given filename.
+
+        """
+        acmodel = AcModel( filename )
+        if len(acmodel.model['hmms']) != 1:
+            raise IOError
+        return acmodel.model['hmms'][0]
+
+    # -----------------------------------------------------------------------
+
+    def get_hmm(self, phone):
         """
         Return the hmm corresponding to the given phoneme.
 
-        @param phoneme (str) the phoneme to get hmm
+        @param phone (str) the phoneme name to get hmm
         @raise ValueError if phoneme is not in the model
 
         """
         hmms = self.model['hmms']
-        hmm = [h for h in hmms if h['name']==phoneme]
+        hmm = [h for h in hmms if h['name']==phone]
         if len(hmm) == 1:
             return hmm[0]
-        raise ValueError('%s not in the model'%phoneme)
+        raise ValueError('%s not in the model'%phone)
 
     # -----------------------------------------------------------------------
 
@@ -159,29 +182,142 @@ class AcModel:
 
     # -----------------------------------------------------------------------
 
-    def pop_hmm(self, phoneme):
+    def pop_hmm(self, phone):
         """
         Remove an HMM of the model.
 
-        @param phoneme (str) the phoneme to get hmm
+        @param phone (str) the phoneme name to get hmm
         @raise ValueError if phoneme is not in the model
 
         """
-        hmm = self.get_hmm(phoneme)
+        hmm = self.get_hmm(phone)
         idx = self.model['hmms'].index(hmm)
         self.model['hmms'].pop(idx)
 
     # -----------------------------------------------------------------------
 
-    def static_linear_interpolation(self, other, gamma):
-        """
-        Static Linear Interpolation.
+    def _interpolate_values(self, v1, v2, gamma):
+        p1 = gamma * v1
+        p2 = (1.-gamma) * v2
+        return p1 + p2
 
-        @param other (AcModel) the AcModel to be interpolated with.
-        @param gamma (float) coefficient to apply to the other model.
+    def _interpolate_vectors(self, vector1, vector2, gamma):
+        for v1,v2 in zip(vector1,vector2):
+            v1 = self._interpolate_values(v1, v2, gamma)
+
+
+    def static_linear_interpolation_hmm(self, phone, hmm, gamma):
+        """
+        Static Linear Interpolation is perhaps one of the most straightforward
+        manner to combine models. This is an efficient way for merging the GMMs
+        of the component models.
+
+        Gamma coefficient is applied to self and (1-Gamma) to the other hmm.
+
+        @param phone (str) the name of the phoneme to interpolate.
+        @param hmm (OrderedDict) the hmm to be interpolated with.
+        @param gamma (float) coefficient to apply to the model of phoneme.
 
         """
-        raise NotImplementedError
+        # MUST COMPARE DICT STRUCTURES HERE
+
+        shmm = self.get_hmm(phone)
+
+        sstates = shmm['definition']['states']
+        ostates = hmm['definition']['states']
+
+        for sitem,oitem in zip(sstates,ostates): # a dict
+            sstreams = sitem['state']['streams']
+            ostreams = oitem['state']['streams']
+
+            for ss,os in zip(sstreams,ostreams): # a list
+                smixtures = ss['mixtures']
+                omixtures = os['mixtures']
+
+                for smixture,omixture in zip(smixtures,omixtures): # a list of dict
+
+                    if smixture['weight'] is not None:
+                        smixture['weight'] = self._interpolate_values(smixture['weight'],omixture['weight'],gamma)
+
+                    spdf = smixture['pdf']
+                    opdf = omixture['pdf']
+
+                    if spdf['mean']['dim'] != opdf['mean']['dim']:
+                        raise TypeError
+                    if spdf['covariance']['variance']['dim'] != opdf['covariance']['variance']['dim']:
+                        raise TypeError
+
+                    svector = spdf['mean']['vector']
+                    ovector = opdf['mean']['vector']
+                    #print "SELF,  MEAN VECTOR:", svector
+                    #print "OTHER, MEAN VECTOR:", ovector
+                    self._interpolate_vectors(svector,ovector,gamma)
+
+                    svector = spdf['covariance']['variance']['vector']
+                    ovector = opdf['covariance']['variance']['vector']
+                    #print "SELF,  VARIANCE VECTOR:", svector
+                    #print "OTHER, VARIANCE VECTOR:", ovector
+                    self._interpolate_vectors(svector,ovector,gamma)
+
+                    spdf['gconst'] = self._interpolate_values(spdf['gconst'], opdf['gconst'], gamma)
+
+        stransition = shmm['definition']['transition']
+        otransition = hmm['definition']['transition']
+        if stransition['dim'] != otransition['dim']:
+            raise TypeError
+        smatrix = stransition['matrix']
+        omatrix = otransition['matrix']
+        for svector,ovector in zip(smatrix,omatrix):
+            #print "SELF,  TRANSITION VECTOR:", svector
+            #print "OTHER, TRANSITION VECTOR:", ovector
+            self._interpolate_vectors(svector,ovector,gamma)
+            #print "NEW TRANSITION VECTOR: ",svector
+
+    # -----------------------------------------------------------------------
+
+    def merge_model(self, other, gamma=1.):
+        """
+        Merge an other model with self.
+        All new phonemes are added and the shared ones are merged, using
+        a static linear interpolation.
+
+        @param other (AcModel) the AcModel to be merged with.
+        @param gamma (float) coefficient to apply to the model: between 0.
+        and 1. This means that a coefficient value of 1. indicates to keep
+        the current version of each shared hmm.
+        @return a tuple indicating the number of hmms: (appended,interpolated,keeped,changed)
+
+        """
+        if gamma < 0. or gamma > 1.:
+            raise ValueError('Gamma coefficient must be between 0. and 1. Got %f'%gamma)
+        if isinstance(other, AcModel) is False:
+            raise TypeError('Expected an AcModel instance.')
+
+        appended = 0
+        interpolated = 0
+        keeped = 0
+        changed = 0
+        for hmm in other.model['hmms']:
+            name = hmm['name']
+            got = False
+            for h in self.model['hmms']:
+                if h['name'] == name:
+                    got = True
+                    if gamma == 1.0:
+                        keeped= keeped + 1
+                    elif gamma == 0.:
+                        self.pop_hmm( name )
+                        self.append_hmm( hmm )
+                        changed = changed + 1
+                    else:
+                        self.static_linear_interpolation_hmm(name, hmm, gamma)
+                        interpolated = interpolated + 1
+                    break
+            if got is False:
+                self.append_hmm(hmm)
+                appended = appended + 1
+
+        return (appended,interpolated,keeped,changed)
 
     # -----------------------------------------------------------------------
 
