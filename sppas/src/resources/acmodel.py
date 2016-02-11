@@ -15,7 +15,7 @@
 #
 #       Laboratoire Parole et Langage
 #
-#       Copyright (C) 2011-2015  Brigitte Bigi
+#       Copyright (C) 2011-2016  Brigitte Bigi
 #
 #       Use of this software is governed by the GPL, v3
 #       This banner notice must not be removed
@@ -53,58 +53,42 @@ import json
 from dependencies.grako.parsing import graken, Parser
 
 __all__ = [
+    'HMM',
     'AcModel',
+    'HtkIO',
     'HtkModelSemantics',
     'HtkModelParser'
 ]
 
 # ---------------------------------------------------------------------------
 
-class AcModel:
+class HtkIO:
     """
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
-    @summary: Acoustic model representation.
-
-    Hidden Markov Models (HMMs) provide a simple and effective framework for
-    modeling time-varying spectral vector sequences. As a consequence, most
-    of speech technology systems are based on HMMs.
-    Each base phone is represented by a continuous density HMM, with transition
-    probability parameters and output observation distributions.
-    One of the most commonly used extensions to standard HMMs is to model the
-    state-output distribution as a mixture model, a mixture of Gaussians is a
-    highly flexible distribution able to model, for example, asymmetric and
-    multi-modal distributed data.
+    @summary: HTK-ASCII acoustic models reader/writer.
 
     This class is able to load and save HMM-based acoustic models from
     an HTK-ASCII file.
 
-    A model is made of:
-       - a 'macro'.
-       - 'hmms' models (one per phoneme): OrderedDict
-
-    Each hmm model of a phoneme is made of:
-       - a 'name': str
-       - a 'definition': OrderedDict
-
-    Each definition is made of:
-        - state_count: int
-        - states: list
-        - transition: OrderedDict
-        - options
-        - regression_tree
-        - duration
-
-    Each element of the states list is:
-        - an index: int
-        - a state: OrderedDict
-
-    ... and so on!
-
     """
-
     def __init__(self, *args):
+        """
+        Create an HtkIO instance and eventually,
+        load a model from one or more files.
+
+        @param args: Filenames of the model (e.g. macros and/or hmmdefs)
+
+        """
+        self.macros = None
+        self.hmms   = None
+        if args:
+            self.load(*args)
+
+    # -----------------------------------------------------------------------
+
+    def load(self, *args):
         """
         Load an HTK model from one or more files.
 
@@ -118,265 +102,23 @@ class AcModel:
 
         parser   = HtkModelParser()
         htkmodel = HtkModelSemantics()  # OrderedDict()
-        self.model = parser.parse(text,
+        model = parser.parse(text,
                     rule_name='model',
                     ignorecase=True,
                     semantics=htkmodel,
                     comments_re="\(\*.*?\*\)",
                     trace=False)
+        self.macros = model['macros']
+        self.hmms   = []
+        for hmm in model['hmms']:
+            newhmm = HMM()
+            newhmm.set_name(hmm['name'])
+            newhmm.set_definition(hmm['definition'])
+            self.hmms.append(newhmm)
 
     # -----------------------------------------------------------------------
 
-    def load_hmm(self, filename):
-        """
-        Return the hmm described into the given filename.
-
-        """
-        acmodel = AcModel( filename )
-        if len(acmodel.model['hmms']) != 1:
-            raise IOError
-        return acmodel.model['hmms'][0]
-
-    # -----------------------------------------------------------------------
-
-    def save_hmm(self, phone, filename):
-        """
-        Save the hmm into the given filename.
-
-        """
-        hmm = self.get_hmm(phone)
-        result  = '~h "{}"\n'.format( hmm['name'] )
-        result += self._serialize_hmm( hmm['definition'] )
-        with open(filename, 'w') as f:
-            f.write( result )
-
-    # -----------------------------------------------------------------------
-
-    def get_hmm(self, phone):
-        """
-        Return the hmm corresponding to the given phoneme.
-
-        @param phone (str) the phoneme name to get hmm
-        @raise ValueError if phoneme is not in the model
-
-        """
-        hmms = self.model['hmms']
-        hmm = [h for h in hmms if h['name']==phone]
-        if len(hmm) == 1:
-            return hmm[0]
-        raise ValueError('%s not in the model'%phone)
-
-    # -----------------------------------------------------------------------
-
-    def append_hmm(self, hmm):
-        """
-        Append an HMM to the model.
-
-        @param hmm (OrderedDict)
-        @raise TypeError, ValueError
-        """
-        if type(hmm) != collections.OrderedDict:
-            raise TypeError('Expected a collections.OrderedDict. Got %s'%type(hmm))
-
-        name = hmm.get('name',None)
-        if name is None:
-            raise TypeError('Expected an hmm with a name as key.')
-        for h in self.model['hmms']:
-            if h['name'] == name:
-                raise ValueError('Duplicate HMM is forbidden. %s already in the model.'%name)
-
-        definition = hmm.get('definition',None)
-        if definition is None:
-            raise TypeError('Expected an hmm with a definition as key.')
-        if definition.get('states',None) is None or definition.get('transition',None) is None:
-            raise TypeError('Expected an hmm with a definition including states and transitions.')
-
-        self.model['hmms'].append(hmm)
-
-    # -----------------------------------------------------------------------
-
-    def pop_hmm(self, phone):
-        """
-        Remove an HMM of the model.
-
-        @param phone (str) the phoneme name to get hmm
-        @raise ValueError if phoneme is not in the model
-
-        """
-        hmm = self.get_hmm(phone)
-        idx = self.model['hmms'].index(hmm)
-        self.model['hmms'].pop(idx)
-
-    # -----------------------------------------------------------------------
-
-    def create_hmm(self, states, transition, name=None):
-        """
-        Create an empty hmm and return it. It won't be appended in the model.
-
-        @param states (OrderedDict)
-        @param transition (OrderedDict)
-        @param name (string)
-        @return OrderedDict representing an hmm
-
-        """
-        hmm = self._create_default()
-        hmm['name'] = name
-        hmm['definition'] = self._create_default()
-
-        hmm['definition']['state_count'] = len(states) + 2
-        hmm['definition']['states'] = []
-        for i, state in enumerate(states):
-            hmm_state = self._create_default()
-
-            hmm_state['index'] = i + 2
-            hmm_state['state'] = state
-
-            hmm['definition']['states'].append(hmm_state)
-
-        hmm['definition']['transition'] = transition
-
-        return hmm
-
-    # -----------------------------------------------------------------------
-
-    def _interpolate_values(self, value1, value2, gamma):
-        p1 = gamma * value1
-        p2 = (1.-gamma) * value2
-        return p1 + p2
-
-    def _interpolate_vectors(self, vector1, vector2, gamma):
-        v = []
-        for v1,v2 in zip(vector1,vector2):
-            v.append( self._interpolate_values(v1, v2, gamma) )
-        return v
-
-
-    def static_linear_interpolation_hmm(self, phone, hmm, gamma):
-        """
-        Static Linear Interpolation is perhaps one of the most straightforward
-        manner to combine models. This is an efficient way for merging the GMMs
-        of the component models.
-
-        Gamma coefficient is applied to self and (1-Gamma) to the other hmm.
-
-        @param phone (str) the name of the phoneme to interpolate.
-        @param hmm (OrderedDict) the hmm to be interpolated with.
-        @param gamma (float) coefficient to apply to the model of phoneme.
-
-        """
-        # TODO: MUST COMPARE DICT STRUCTURES HERE
-
-        shmm = self.get_hmm(phone)
-
-        sstates = shmm['definition']['states']
-        ostates = hmm['definition']['states']
-
-        for sitem,oitem in zip(sstates,ostates): # a dict
-            sstreams = sitem['state']['streams']
-            ostreams = oitem['state']['streams']
-
-            for ss,os in zip(sstreams,ostreams): # a list
-                smixtures = ss['mixtures']
-                omixtures = os['mixtures']
-
-                for smixture,omixture in zip(smixtures,omixtures): # a list of dict
-
-                    if smixture['weight'] is not None:
-                        smixture['weight'] = self._interpolate_values(smixture['weight'],omixture['weight'],gamma)
-
-                    spdf = smixture['pdf']
-                    opdf = omixture['pdf']
-
-                    if spdf['mean']['dim'] != opdf['mean']['dim']:
-                        raise TypeError
-                    if spdf['covariance']['variance']['dim'] != opdf['covariance']['variance']['dim']:
-                        raise TypeError
-
-                    svector = spdf['mean']['vector']
-                    ovector = opdf['mean']['vector']
-                    spdf['mean']['vector'] = self._interpolate_vectors(svector,ovector,gamma)
-
-                    svector = spdf['covariance']['variance']['vector']
-                    ovector = opdf['covariance']['variance']['vector']
-                    spdf['covariance']['variance']['vector'] = self._interpolate_vectors(svector,ovector,gamma)
-
-                    spdf['gconst'] = self._interpolate_values(spdf['gconst'], opdf['gconst'], gamma)
-
-        stransition = shmm['definition']['transition']
-        otransition = hmm['definition']['transition']
-        if stransition['dim'] != otransition['dim']:
-            raise TypeError
-        smatrix = stransition['matrix']
-        omatrix = otransition['matrix']
-        matrix = []
-        for svector,ovector in zip(smatrix,omatrix):
-            matrix.append( self._interpolate_vectors(svector,ovector,gamma) )
-        stransition['matrix'] = matrix
-
-    # -----------------------------------------------------------------------
-
-    def create_model(self, macros, hmms):
-        """
-        Create an empty AcModel and return it.
-
-        """
-        model = self._create_default()
-        model['macros'] = macros
-        model['hmms']   = hmms
-
-        return model
-
-    # -----------------------------------------------------------------------
-
-    def merge_model(self, other, gamma=1.):
-        """
-        Merge an other model with self.
-        All new phonemes are added and the shared ones are merged, using
-        a static linear interpolation.
-
-        @param other (AcModel) the AcModel to be merged with.
-        @param gamma (float) coefficient to apply to the model: between 0.
-        and 1. This means that a coefficient value of 1. indicates to keep
-        the current version of each shared hmm.
-        @return a tuple indicating the number of hmms: (appended,interpolated,keeped,changed)
-
-        """
-        if gamma < 0. or gamma > 1.:
-            raise ValueError('Gamma coefficient must be between 0. and 1. Got %f'%gamma)
-        if isinstance(other, AcModel) is False:
-            raise TypeError('Expected an AcModel instance.')
-
-        appended = 0
-        interpolated = 0
-        keeped = len(self.model['hmms'])
-        changed = 0
-        for hmm in other.model['hmms']:
-            name = hmm['name']
-            got = False
-            for h in self.model['hmms']:
-                if h['name'] == name:
-                    got = True
-                    if gamma == 1.0:
-                        pass
-                    elif gamma == 0.:
-                        self.pop_hmm( name )
-                        self.append_hmm( hmm )
-                        changed = changed + 1
-                        keeped  = keeped  - 1
-                    else:
-                        self.static_linear_interpolation_hmm(name, hmm, gamma)
-                        interpolated = interpolated + 1
-                        keeped       = keeped       - 1
-                    break
-            if got is False:
-                self.append_hmm(hmm)
-                appended = appended + 1
-
-        return (appended,interpolated,keeped,changed)
-
-    # -----------------------------------------------------------------------
-
-    def save_model(self, filename):
+    def save(self, filename):
         """
         Save the model into a file, in HTK-ASCII standard format.
 
@@ -384,21 +126,34 @@ class AcModel:
 
         """
         with open(filename, 'w') as f:
-            f.write(self.serialize_model())
+            if self.macros: f.write(self.serialize_macros())
+            if self.hmms:   f.write(self.serialize_hmms())
 
     # -----------------------------------------------------------------------
 
-    def serialize_model(self):
-        """
-        Serialize the model into a string, in HTK-ASCII standard format.
+    def set(self,macros,hmms):
+        self.macros = macros
+        self.hmms = hmms
 
-        @return The HTK-ASCII model as a string.
+    def set_macros(self,macros):
+        self.macros = macros
+
+    def set_hmms(self,hmms):
+        self.hmms = hmms
+
+    # -----------------------------------------------------------------------
+
+    def serialize_macros(self):
+        """
+        Serialize macros into a string, in HTK-ASCII standard format.
+
+        @return The HTK-ASCII macros as a string.
 
         """
         result = ''
 
         # First serialize the macros
-        for macro in self.model['macros']:
+        for macro in self.macros:
             if macro.get('options', None):
                 result += '~o '
                 for option in macro['options']['definition']:
@@ -427,99 +182,31 @@ class AcModel:
             else:
                 raise NotImplementedError('Cannot serialize {}'.format(macro))
 
-        for hmm in self.model['hmms']:
-            if hmm.get('name', None) is not None:
-                result += '~h "{}"\n'.format( hmm['name'] )
-            result += self._serialize_hmm( hmm['definition'] )
+        return result
+
+
+    def serialize_hmms(self):
+        """
+        Serialize macros into a string, in HTK-ASCII standard format.
+
+        @return The HTK-ASCII model as a string.
+
+        """
+        result= ''
+        for hmm in self.hmms:
+            if hmm.name is not None:
+                result += self._serialize_name( hmm.name )
+            result += self._serialize_definition( hmm.definition )
 
         return result
 
     # -----------------------------------------------------------------------
-    # Private
-    # -----------------------------------------------------------------------
 
-    def _create_default(self):
-        return collections.defaultdict(lambda: None)
+    def _serialize_name(self,name):
+        return '~h "{}"\n'.format( name )
 
 
-    def _create_vector(self, vector):
-        return {'dim': vector.size, 'vector': vector}
-
-
-    def _create_square_matrix(self, mat):
-        return {'dim': mat.shape[0], 'matrix': mat}
-
-
-    def _create_transition(self, state_stay_probabilites=[0.6, 0.6, 0.7]):
-        n_states = len(state_stay_probabilites) + 2
-        transitions = []
-        for i in range(n_states):
-            transitions.append([ 0.]*n_states)
-        transitions[0][1] = 1.
-        for i, p in enumerate(state_stay_probabilites):
-            transitions[i+1][i+1] = p
-            transitions[i+1][i+2] = 1 - p
-
-        return self.create_square_matrix(transitions)
-
-
-    def _create_parameter_kind(self, base=None, options=[]):
-        result = self.create_default()
-        result['base'] = base
-        result['options'] = options
-        return result
-
-
-    def _create_options(self, vector_size=None, parameter_kind=None):
-        macro = self.create_default()
-        options = []
-
-        if vector_size:
-            option = self.create_default()
-            option['vector_size'] = vector_size
-            options.append(option)
-        if parameter_kind:
-            option = self.create_default()
-            option['parameter_kind'] = parameter_kind
-            options.append(option)
-
-        macro['options'] = {'definition': options}
-
-        return macro
-
-
-    def _create_gmm(self, means, variances, gconsts=None, weights=None):
-        mixtures = []
-
-        if means.ndim == 1:
-            means = means[None, :]
-            variances = variances[None, :]
-
-        gmm = self.create_default()
-
-        for i in range(means.shape[0]):
-            mixture = self.create_default()
-            mixture['pdf'] = self.create_default()
-            mixture['pdf']['mean'] = self.create_vector(means[i])
-            mixture['pdf']['covariance'] = self.create_default()
-            mixture['pdf']['covariance']['variance'] = self.create_vector(variances[i])
-
-            if gconsts is not None:
-                mixture['pdf']['gconst'] = gconsts[i]
-            if weights is not None:
-                mixture['weight'] = weights[i]
-
-            mixtures.append(mixture)
-
-        stream = self.create_default()
-        stream['mixtures'] = mixtures
-        gmm['streams'] = [stream]
-
-        return gmm
-
-    # ----------------------------------
-
-    def _serialize_hmm(self,definition):
+    def _serialize_definition(self,definition):
         result = ''
 
         result += '<BeginHMM>\n'
@@ -719,6 +406,444 @@ class AcModel:
         for arr in mat:
             result = result + self._array_to_htk(arr)
         return result
+
+
+# ---------------------------------------------------------------------------
+
+class HMM:
+    """
+    @authors: Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: HMM representation for one phone.
+
+    Each hmm model of a phoneme is made of:
+       - a 'name': str
+       - a 'definition': OrderedDict
+
+    Each definition is made of:
+        - state_count: int
+        - states: list
+        - transition: OrderedDict
+        - options
+        - regression_tree
+        - duration
+
+    Each element of the states list is:
+        - an index: int
+        - a state: OrderedDict
+
+    ... and so on!
+
+    """
+    def __init__(self):
+        self.name = ""
+        self.definition = None
+
+    # -----------------------------------------------------------------------
+
+    def set_name(self, name):
+        self.name = name
+
+    def set_definition(self, definition):
+        self.definition = definition
+
+    # -----------------------------------------------------------------------
+
+    def create(self, states, transition, name=None):
+        """
+        Create the hmm and set it.
+
+        @param states (OrderedDict)
+        @param transition (OrderedDict)
+        @param name (string)
+
+        """
+        self.name = name
+        self.definition = self._create_default()
+
+        self.definition['state_count'] = len(states) + 2
+        self.definition['states'] = []
+        for i, state in enumerate(states):
+            hmm_state = self._create_default()
+            hmm_state['index'] = i + 2
+            hmm_state['state'] = state
+            self.definition['states'].append(hmm_state)
+
+        self.definition['transition'] = transition
+
+    # -----------------------------------------------------------------------
+
+    def load(self, filename):
+        """
+        Return the hmm described into the given filename.
+
+        @return filename (str) File to read.
+
+        """
+        htkmodel = HtkIO( filename  )
+        hmms = htkmodel.hmms
+        if len(hmms) != 1:
+            raise IOError
+
+        htkhmm = hmms[0]
+        self.name = htkhmm.name
+        self.definition = htkhmm.definition
+
+    # -----------------------------------------------------------------------
+
+    def save(self, filename):
+        """
+        Save the hmm into the given filename.
+
+        @return filename (str) File to write.
+
+        """
+        htkio = HtkIO()
+        htkio.set_hmms([self])
+        result = htkio.serialize_hmms()
+        with open(filename, 'w') as f:
+            f.write( result )
+
+    # -----------------------------------------------------------------------
+
+    def _create_default(self):
+        return collections.defaultdict(lambda: None)
+
+
+# ---------------------------------------------------------------------------
+
+class AcModel:
+    """
+    @authors: Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: Acoustic model representation.
+
+    Hidden Markov Models (HMMs) provide a simple and effective framework for
+    modeling time-varying spectral vector sequences. As a consequence, most
+    of speech technology systems are based on HMMs.
+    Each base phone is represented by a continuous density HMM, with transition
+    probability parameters and output observation distributions.
+    One of the most commonly used extensions to standard HMMs is to model the
+    state-output distribution as a mixture model, a mixture of Gaussians is a
+    highly flexible distribution able to model, for example, asymmetric and
+    multi-modal distributed data.
+
+    A model is made of:
+       - a 'macro'.
+       - 'hmms' models (one per phoneme): OrderedDict of HMM instances
+
+    """
+
+    def __init__(self):
+        """
+        Load an HTK model from one or more files.
+
+        @param args: Filenames of the model (e.g. macros and/or hmmdefs)
+
+        """
+        self.macros = None
+        self.hmms   = []
+
+    # -----------------------------------------------------------------------
+
+    def load_htk(self, *args):
+        """
+        """
+        htkmodel = HtkIO( *args )
+        self.macros = htkmodel.macros
+        self.hmms   = htkmodel.hmms
+
+    # -----------------------------------------------------------------------
+
+    def get_hmm(self, phone):
+        """
+        Return the hmm corresponding to the given phoneme.
+
+        @param phone (str) the phoneme name to get hmm
+        @raise ValueError if phoneme is not in the model
+
+        """
+        hmms = [h for h in self.hmms if h.name==phone]
+        if len(hmms) == 1:
+            return hmms[0]
+        raise ValueError('%s not in the model'%phone)
+
+    # -----------------------------------------------------------------------
+
+    def append_hmm(self, hmm):
+        """
+        Append an HMM to the model.
+
+        @param hmm (OrderedDict)
+        @raise TypeError, ValueError
+
+        """
+        if isinstance(hmm,HMM) is False:
+            raise TypeError('Expected an HMM instance. Got %s'%type(hmm))
+
+        if hmm.name is None:
+            raise TypeError('Expected an hmm with a name as key.')
+        for h in self.hmms:
+            if h.name == hmm.name:
+                raise ValueError('Duplicate HMM is forbidden. %s already in the model.'%hmm.name)
+
+        if hmm.definition is None:
+            raise TypeError('Expected an hmm with a definition as key.')
+        if hmm.definition.get('states',None) is None or hmm.definition.get('transition',None) is None:
+            raise TypeError('Expected an hmm with a definition including states and transitions.')
+
+        self.hmms.append(hmm)
+
+    # -----------------------------------------------------------------------
+
+    def pop_hmm(self, phone):
+        """
+        Remove an HMM of the model.
+
+        @param phone (str) the phoneme name to get hmm
+        @raise ValueError if phoneme is not in the model
+
+        """
+        hmm = self.get_hmm(phone)
+        idx = self.hmms.index(hmm)
+        self.hmms.pop(idx)
+
+    # -----------------------------------------------------------------------
+
+    def _interpolate_values(self, value1, value2, gamma):
+        p1 = gamma * value1
+        p2 = (1.-gamma) * value2
+        return p1 + p2
+
+    def _interpolate_vectors(self, vector1, vector2, gamma):
+        v = []
+        for v1,v2 in zip(vector1,vector2):
+            v.append( self._interpolate_values(v1, v2, gamma) )
+        return v
+
+
+    def static_linear_interpolation_hmm(self, phone, hmm, gamma):
+        """
+        Static Linear Interpolation is perhaps one of the most straightforward
+        manner to combine models. This is an efficient way for merging the GMMs
+        of the component models.
+
+        Gamma coefficient is applied to self and (1-Gamma) to the other hmm.
+
+        @param phone (str) the name of the phoneme to interpolate.
+        @param hmm (HMM) the hmm to be interpolated with.
+        @param gamma (float) coefficient to apply to the model of phoneme.
+
+        """
+        # TODO: MUST COMPARE DICT STRUCTURES HERE
+
+        shmm = self.get_hmm(phone)
+
+        sstates = shmm.definition['states']
+        ostates = hmm.definition['states']
+
+        for sitem,oitem in zip(sstates,ostates): # a dict
+            sstreams = sitem['state']['streams']
+            ostreams = oitem['state']['streams']
+
+            for ss,os in zip(sstreams,ostreams): # a list
+                smixtures = ss['mixtures']
+                omixtures = os['mixtures']
+
+                for smixture,omixture in zip(smixtures,omixtures): # a list of dict
+
+                    if smixture['weight'] is not None:
+                        smixture['weight'] = self._interpolate_values(smixture['weight'],omixture['weight'],gamma)
+
+                    spdf = smixture['pdf']
+                    opdf = omixture['pdf']
+
+                    if spdf['mean']['dim'] != opdf['mean']['dim']:
+                        raise TypeError
+                    if spdf['covariance']['variance']['dim'] != opdf['covariance']['variance']['dim']:
+                        raise TypeError
+
+                    svector = spdf['mean']['vector']
+                    ovector = opdf['mean']['vector']
+                    spdf['mean']['vector'] = self._interpolate_vectors(svector,ovector,gamma)
+
+                    svector = spdf['covariance']['variance']['vector']
+                    ovector = opdf['covariance']['variance']['vector']
+                    spdf['covariance']['variance']['vector'] = self._interpolate_vectors(svector,ovector,gamma)
+
+                    spdf['gconst'] = self._interpolate_values(spdf['gconst'], opdf['gconst'], gamma)
+
+        stransition = shmm.definition['transition']
+        otransition = hmm.definition['transition']
+        if stransition['dim'] != otransition['dim']:
+            raise TypeError
+        smatrix = stransition['matrix']
+        omatrix = otransition['matrix']
+        matrix = []
+        for svector,ovector in zip(smatrix,omatrix):
+            matrix.append( self._interpolate_vectors(svector,ovector,gamma) )
+        stransition['matrix'] = matrix
+
+    # -----------------------------------------------------------------------
+
+    def create_model(self, macros, hmms):
+        """
+        Create an empty AcModel and return it.
+
+        """
+        model = AcModel()
+        model.macros = macros
+        model.hmms   = hmms
+        return model
+
+    # -----------------------------------------------------------------------
+
+    def merge_model(self, other, gamma=1.):
+        """
+        Merge an other model with self.
+        All new phonemes are added and the shared ones are merged, using
+        a static linear interpolation.
+
+        @param other (AcModel) the AcModel to be merged with.
+        @param gamma (float) coefficient to apply to the model: between 0.
+        and 1. This means that a coefficient value of 1. indicates to keep
+        the current version of each shared hmm.
+        @return a tuple indicating the number of hmms: (appended,interpolated,keeped,changed)
+
+        """
+        if gamma < 0. or gamma > 1.:
+            raise ValueError('Gamma coefficient must be between 0. and 1. Got %f'%gamma)
+        if isinstance(other, AcModel) is False:
+            raise TypeError('Expected an AcModel instance.')
+
+        appended = 0
+        interpolated = 0
+        keeped = len(self.hmms)
+        changed = 0
+        for hmm in other.hmms:
+            got = False
+            for h in self.hmms:
+                if h.name == hmm.name:
+                    got = True
+                    if gamma == 1.0:
+                        pass
+                    elif gamma == 0.:
+                        self.pop_hmm( hmm.name )
+                        self.append_hmm( hmm )
+                        changed = changed + 1
+                        keeped  = keeped  - 1
+                    else:
+                        self.static_linear_interpolation_hmm(hmm.name, hmm, gamma)
+                        interpolated = interpolated + 1
+                        keeped       = keeped       - 1
+                    break
+            if got is False:
+                self.append_hmm(hmm)
+                appended = appended + 1
+
+        return (appended,interpolated,keeped,changed)
+
+    # -----------------------------------------------------------------------
+
+    def save_htk(self, filename):
+        """
+        Save the model into a file, in HTK-ASCII standard format.
+
+        @param filename: File where to save the model.
+
+        """
+        htkmodel = HtkIO()
+        htkmodel.set(self.macros,self.hmms)
+        htkmodel.save( filename )
+
+    # -----------------------------------------------------------------------
+
+    # -----------------------------------------------------------------------
+    # Private
+    # -----------------------------------------------------------------------
+
+    def _create_default(self):
+        return collections.defaultdict(lambda: None)
+
+
+    def _create_vector(self, vector):
+        return {'dim': vector.size, 'vector': vector}
+
+
+    def _create_square_matrix(self, mat):
+        return {'dim': mat.shape[0], 'matrix': mat}
+
+
+    def _create_transition(self, state_stay_probabilites=[0.6, 0.6, 0.7]):
+        n_states = len(state_stay_probabilites) + 2
+        transitions = []
+        for i in range(n_states):
+            transitions.append([ 0.]*n_states)
+        transitions[0][1] = 1.
+        for i, p in enumerate(state_stay_probabilites):
+            transitions[i+1][i+1] = p
+            transitions[i+1][i+2] = 1 - p
+
+        return self.create_square_matrix(transitions)
+
+
+    def _create_parameter_kind(self, base=None, options=[]):
+        result = self.create_default()
+        result['base'] = base
+        result['options'] = options
+        return result
+
+
+    def _create_options(self, vector_size=None, parameter_kind=None):
+        macro = self.create_default()
+        options = []
+
+        if vector_size:
+            option = self.create_default()
+            option['vector_size'] = vector_size
+            options.append(option)
+        if parameter_kind:
+            option = self.create_default()
+            option['parameter_kind'] = parameter_kind
+            options.append(option)
+
+        macro['options'] = {'definition': options}
+
+        return macro
+
+
+    def _create_gmm(self, means, variances, gconsts=None, weights=None):
+        mixtures = []
+
+        if means.ndim == 1:
+            means = means[None, :]
+            variances = variances[None, :]
+
+        gmm = self.create_default()
+
+        for i in range(means.shape[0]):
+            mixture = self.create_default()
+            mixture['pdf'] = self.create_default()
+            mixture['pdf']['mean'] = self.create_vector(means[i])
+            mixture['pdf']['covariance'] = self.create_default()
+            mixture['pdf']['covariance']['variance'] = self.create_vector(variances[i])
+
+            if gconsts is not None:
+                mixture['pdf']['gconst'] = gconsts[i]
+            if weights is not None:
+                mixture['weight'] = weights[i]
+
+            mixtures.append(mixture)
+
+        stream = self.create_default()
+        stream['mixtures'] = mixtures
+        gmm['streams'] = [stream]
+
+        return gmm
+
+    # ----------------------------------
 
     def __repr__(self):
         return json.dumps(self.model,indent=2)

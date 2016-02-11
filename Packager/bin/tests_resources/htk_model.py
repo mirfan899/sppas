@@ -12,9 +12,8 @@ import copy
 SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
 sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
-from resources.acmodel import AcModel
-from utils.type import compare_dictionaries
-
+from resources.acmodel import AcModel, HMM
+from utils.type import compare_dictionaries, compare_lists
 
 MODEL_PATH = os.path.join(SPPAS, "resources", "models")
 
@@ -24,7 +23,8 @@ class TestAcModel(unittest.TestCase):
 
     def setUp(self):
         self.hmmdefs = os.path.join(MODEL_PATH,"models-jpn","hmmdefs")
-        self.acmodel = AcModel( self.hmmdefs )
+        self.acmodel = AcModel()
+        self.acmodel.load_htk( self.hmmdefs )
 
 #     def test_load_all_models(self):
 #         models = glob.glob(os.path.join(MODEL_PATH,"models-*","hmmdefs"))
@@ -38,15 +38,21 @@ class TestAcModel(unittest.TestCase):
 
     def _test_load_save(self, acmodel):
 
-        # Save temporarilly the loaded model into a file
+        # Save temporary the loaded model into a file
         tmpfile = self.hmmdefs+".copy"
-        self.acmodel.save_model( tmpfile )
+        self.acmodel.save_htk( tmpfile )
 
         # Load the temporary file into a new model
-        acmodelcopy = AcModel( tmpfile )
+        acmodelcopy = AcModel()
+        acmodelcopy.load_htk(tmpfile)
 
         # Compare original and copy
-        self.assertTrue(compare_dictionaries(self.acmodel.model,acmodelcopy.model))
+        self.assertEqual(len(self.acmodel.hmms),len(acmodelcopy.hmms))
+        for hmm,hmmcopy in zip(self.acmodel.hmms,acmodelcopy.hmms):
+            self.assertEqual(hmm.name,hmmcopy.name)
+            self.assertTrue(compare_dictionaries(hmm.definition,hmmcopy.definition))
+        self.assertTrue(compare_lists(self.acmodel.macros,acmodelcopy.macros))
+
         os.remove(tmpfile)
 
 
@@ -54,14 +60,14 @@ class TestAcModel(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.acmodel.get_hmm('Q')
         Nhmm = self.acmodel.get_hmm('N')
-        self.__test_states( Nhmm )
-        self.__test_transition( Nhmm )
+        self.__test_states( Nhmm.definition['states'] )
+        self.__test_transition( Nhmm.definition['transition'] )
 
 
     def test_append_hmm(self):
         with self.assertRaises(TypeError):
             self.acmodel.append_hmm({'toto':None})
-        hmm = collections.OrderedDict()
+        hmm = HMM()
 
         with self.assertRaises(TypeError):
             self.acmodel.append_hmm(hmm)
@@ -71,7 +77,7 @@ class TestAcModel(unittest.TestCase):
             self.acmodel.append_hmm(Nhmm)
 
         Newhmm = copy.deepcopy(Nhmm)
-        Newhmm['name'] = "NewN"
+        Newhmm.name = "NewN"
         self.acmodel.append_hmm(Newhmm)
 
 
@@ -82,10 +88,11 @@ class TestAcModel(unittest.TestCase):
 
 
     def test_no_merge(self):
-        nbhmms = len(self.acmodel.model['hmms'])
+        nbhmms = len(self.acmodel.hmms)
 
         # Try to merge with the same model!
-        acmodel2 = AcModel( self.hmmdefs )
+        acmodel2 = AcModel()
+        acmodel2.load_htk(self.hmmdefs)
 
         (appended,interpolated,keeped,changed) = acmodel2.merge_model(self.acmodel,gamma=1.)
         self.assertEqual(interpolated, 0)
@@ -107,8 +114,10 @@ class TestAcModel(unittest.TestCase):
 
 
     def test_merge(self):
-        acmodel1 = AcModel( "1-hmmdefs" )
-        acmodel2 = AcModel( "2-hmmdefs" )
+        acmodel1 = AcModel()
+        acmodel1.load_htk( "1-hmmdefs" )
+        acmodel2 = AcModel()
+        acmodel2.load_htk( "2-hmmdefs" )
 
         (appended,interpolated,keeped,changed) = acmodel2.merge_model(acmodel1,gamma=0.5)
         self.assertEqual(interpolated, 1)
@@ -116,29 +125,29 @@ class TestAcModel(unittest.TestCase):
         self.assertEqual(keeped, 1)
         self.assertEqual(changed, 0)
 
-        self.__test_states( acmodel2.get_hmm('a') )
-        self.__test_transition( acmodel2.get_hmm('a') )
+        self.__test_states( acmodel2.get_hmm('a').definition['states'] )
+        self.__test_transition( acmodel2.get_hmm('a').definition['transition'] )
 
 
     def test_load_hmm(self):
-        acmodel = AcModel()
-        hmm = acmodel.load_hmm("N-hmm")
-        acmodel.append_hmm( hmm )
-        self.__test_states( hmm )
-        self.__test_transition( hmm )
+        hmm = HMM()
+        hmm.load( "N-hmm" )
+        self.__test_states( hmm.definition['states'] )
+        self.__test_transition( hmm.definition['transition'] )
 
 
     def test_save_hmm(self):
-        Nhmm = self.acmodel.get_hmm('N')
-        self.acmodel.save_hmm('N', 'N-hmm-copy')
-        acmodel = AcModel()
-        NewNhmm = acmodel.load_hmm("N-hmm-copy")
-        self.assertTrue(compare_dictionaries(Nhmm,NewNhmm))
+        hmm = HMM()
+        hmm.load( "N-hmm" )
+        hmm.save("N-hmm-copy")
+        newhmm = HMM()
+        newhmm.load("N-hmm-copy")
+        self.assertEqual(hmm.name,newhmm.name)
+        self.assertTrue(compare_dictionaries(hmm.definition,newhmm.definition))
         os.remove('N-hmm-copy')
 
 
-    def __test_transition(self, hmm):
-        transition = hmm['definition']['transition']
+    def __test_transition(self, transition):
         self.assertEqual(transition['dim'], 5)
         matrix = transition['matrix']
         for i in range(len(matrix)-1):
@@ -146,8 +155,7 @@ class TestAcModel(unittest.TestCase):
             vector=matrix[i]
             self.assertEqual(1.0, round(sum(vector),4))
 
-    def __test_states(self, hmm):
-        states = hmm['definition']['states']
+    def __test_states(self, states):
         for item in states: # a dict
             state = item['state']
             streams = state['streams']
