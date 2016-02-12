@@ -48,6 +48,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import wx
+import os.path
 import logging
 
 import annotationdata.io
@@ -777,16 +778,18 @@ class TrsList( wx.Panel ):
 
         """
         self._filename = filename
+        if os.path.exists(filename) is False:
+            self._transcription = Transcription("Empty")
+            return
         try:
             self._transcription = annotationdata.io.read( filename )
             self._dirty = False
             self._boxtitle.SetForegroundColour( FG_FILE_COLOUR )
             self.Refresh()
-
         except Exception as e:
-             logging.info('Error loading file %s: %s'%(filename,str(e)))
-             self._transcription = Transcription("IO-Error")
-             #raise
+            logging.info('Error loading file %s: %s'%(filename,str(e)))
+            self._transcription = Transcription("IO-Error")
+            #raise
 
     # End LoadFile
     # ----------------------------------------------------------------------

@@ -50,12 +50,12 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import wx
 import logging
 
-from wxgui.sp_icons                  import IPUSCRIBE_APP_ICON
-from wxgui.sp_icons                  import SAVE_FILE
-from wxgui.sp_icons                  import SAVE_ALL_FILE
-from wxgui.sp_consts                    import TB_ICONSIZE
+from wxgui.sp_icons   import IPUSCRIBE_APP_ICON
+from wxgui.sp_icons   import SAVE_FILE
+from wxgui.sp_icons   import SAVE_ALL_FILE
+from wxgui.sp_consts  import TB_ICONSIZE
 
-from baseframe            import ComponentFrame
+from baseframe                     import ComponentFrame
 from wxgui.clients.ipuscribeclient import IPUscribeClient
 from wxgui.cutils.imageutils       import spBitmap
 

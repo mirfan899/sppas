@@ -15,7 +15,7 @@
 #
 #       Laboratoire Parole et Langage
 #
-#       Copyright (C) 2011-2015  Brigitte Bigi
+#       Copyright (C) 2011-2016  Brigitte Bigi
 #
 #       Use of this software is governed by the GPL, v3
 #       This banner notice must not be removed
@@ -40,7 +40,7 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 
 # ----------------------------------------------------------------------------
@@ -48,13 +48,26 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import wx
-import logging
 
 from baseframe import ComponentFrame
 
-from wxgui.sp_icons                 import DATAROAMER_APP_ICON
+from wxgui.sp_icons   import DATAROAMER_APP_ICON
+from wxgui.sp_icons   import NEW_FILE
+from wxgui.sp_icons   import SAVE_FILE
+from wxgui.sp_icons   import SAVE_AS_FILE
+from wxgui.sp_icons   import SAVE_ALL_FILE
+from wxgui.sp_consts  import TB_ICONSIZE
+
 from wxgui.cutils.imageutils        import spBitmap
 from wxgui.clients.dataroamerclient import DataRoamerClient
+
+# ----------------------------------------------------------------------------
+# Constants
+# ----------------------------------------------------------------------------
+
+NEW_ID      = wx.NewId()
+SAVE_AS_ID  = wx.NewId()
+SAVE_ALL_ID = wx.NewId()
 
 # ----------------------------------------------------------------------------
 
@@ -77,9 +90,7 @@ class DataRoamerFrame( ComponentFrame ):
         self._append_in_menu()
         self._append_in_toolbar()
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def _update_about(self):
         """
@@ -93,9 +104,7 @@ class DataRoamerFrame( ComponentFrame ):
         _icon.CopyFromBitmap( spBitmap(DATAROAMER_APP_ICON) )
         self._about.SetIcon(_icon)
 
-    # End _update_about
     # ------------------------------------------------------------------------
-
 
     def _append_in_menu(self):
         """
@@ -108,9 +117,7 @@ class DataRoamerFrame( ComponentFrame ):
         # http://www.wxpython.org/docs/api/wx.MenuBar-class.html
         # http://xoomer.virgilio.it/infinity77/wxPython/Widgets/wx.Menu.html
 
-    # End _append_in_menu
     # ------------------------------------------------------------------------
-
 
     def _append_in_toolbar(self):
         """
@@ -118,15 +125,42 @@ class DataRoamerFrame( ComponentFrame ):
         """
         toolbar = self.GetToolBar()
 
-        # nothing to add for now! but it's possible and it works (tested).
-        # see documentation:
-        # http://xoomer.virgilio.it/infinity77/wxPython/Widgets/wx.ToolBar.html
+        # Define the size of the icons and buttons
+        #iconSize = (TB_ICONSIZE, TB_ICONSIZE)
 
+        toolbar.InsertLabelTool(8, NEW_ID,       "New",      spBitmap(NEW_FILE,      TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')) )
+        toolbar.InsertLabelTool(9, wx.ID_SAVE,   "Save",     spBitmap(SAVE_FILE,     TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')) )
+        toolbar.InsertLabelTool(10, SAVE_AS_ID,  "Save as",  spBitmap(SAVE_AS_FILE,  TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')) )
+        toolbar.InsertLabelTool(11, SAVE_ALL_ID, "Save all", spBitmap(SAVE_ALL_FILE, TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')) )
+
+        toolbar.InsertSeparator(12)
         toolbar.Realize()
 
-    # End _append_in_toolbar
+        # events
+        eventslist = [ NEW_ID, wx.ID_SAVE, SAVE_AS_ID, SAVE_ALL_ID ]
+        for event in eventslist:
+            wx.EVT_TOOL(self, event, self.DataRoamerProcessEvent)
+
     # ------------------------------------------------------------------------
 
+    def _add_accelerator(self):
+        """
+        Replace the accelerator table.
+        """
+
+        # New with CTRL+N
+        accelN = wx.AcceleratorEntry(wx.ACCEL_CTRL, ord('N'), NEW_ID)
+        # Save with CTRL+S
+        accelS = wx.AcceleratorEntry(wx.ACCEL_CTRL, ord('S'), wx.ID_SAVE)
+        # Save all with CTRL+SHIFT+S
+        accelSS = wx.AcceleratorEntry(wx.ACCEL_CTRL|wx.ACCEL_SHIFT, ord('S'), SAVE_ALL_ID)
+        # Quit with ATL+F4
+        accelQ = wx.AcceleratorEntry(wx.ACCEL_NORMAL, wx.WXK_F4, wx.ID_EXIT)
+
+        accel_tbl = wx.AcceleratorTable([ accelQ, accelN, accelS, accelSS ])
+        self.SetAcceleratorTable(accel_tbl)
+
+    # ------------------------------------------------------------------------
 
     def CreateClient(self, parent, prefsIO):
         """
@@ -134,7 +168,56 @@ class DataRoamerFrame( ComponentFrame ):
         """
         return DataRoamerClient( parent,prefsIO )
 
-    # End CreateClient
     # ------------------------------------------------------------------------
+
+    def DataRoamerProcessEvent(self, event):
+        """
+        Processes an event, searching event tables and calling zero or more
+        suitable event handler function(s).  Note that the ProcessEvent
+        method is called from the wxPython docview framework directly since
+        wxPython does not have a virtual ProcessEvent function.
+        """
+        ide = event.GetId()
+
+        if ide == NEW_ID:
+            self.OnNew(event)
+            return True
+        elif ide == wx.ID_SAVE:
+            self.OnSave(event)
+            return True
+        elif ide == SAVE_AS_ID:
+            self.OnSaveAs(event)
+            return True
+        elif ide == SAVE_ALL_ID:
+            self.OnSaveAll(event)
+            return True
+
+        return wx.GetApp().ProcessEvent(event)
+
+    # ------------------------------------------------------------------------
+
+    def OnNew(self, event):
+        """
+        Ask the client to add a new file.
+        """
+        self._clientpanel.New()
+
+    def OnSave(self, event):
+        """
+        Ask the client to save the current file.
+        """
+        self._clientpanel.Save()
+
+    def OnSaveAs(self, event):
+        """
+        Ask the client to save the current file, propose to change the name.
+        """
+        self._clientpanel.SaveAs()
+
+    def OnSaveAll(self, event):
+        """
+        Ask the client to save all opened files.
+        """
+        self._clientpanel.SaveAll()
 
 # ----------------------------------------------------------------------------

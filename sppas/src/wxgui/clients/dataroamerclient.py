@@ -15,7 +15,7 @@
 #
 #       Laboratoire Parole et Langage
 #
-#       Copyright (C) 2011-2015  Brigitte Bigi
+#       Copyright (C) 2011-2016  Brigitte Bigi
 #
 #       Use of this software is governed by the GPL, v3
 #       This banner notice must not be removed
@@ -40,8 +40,7 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 # Imports
@@ -63,11 +62,6 @@ from wxgui.sp_icons import TIER_MOVE_DOWN
 from wxgui.sp_icons import TIER_PREVIEW
 from wxgui.sp_icons import TIER_RADIUS
 
-from wxgui.sp_icons import NEW_FILE
-from wxgui.sp_icons import SAVE_FILE
-from wxgui.sp_icons import SAVE_ALL_FILE
-from wxgui.sp_icons import SAVE_AS_FILE
-
 from wxgui.sp_consts import TB_ICONSIZE
 from wxgui.sp_consts import TB_FONTSIZE
 
@@ -83,24 +77,18 @@ from wxgui.cutils.imageutils import spBitmap
 import wxgui.dialogs.filedialogs as filedialogs
 from wxgui.structs.themes    import BaseTheme
 
-
 # ----------------------------------------------------------------------------
 # Constants
 # ----------------------------------------------------------------------------
 
-NEW_ID         = wx.NewId()
-SAVE_AS_ID     = wx.NewId()
-SAVE_ALL_ID    = wx.NewId()
 RENAME_ID      = wx.NewId()
 DUPLICATE_ID   = wx.NewId()
 PREVIEW_ID     = wx.NewId()
 TIER_RADIUS_ID = wx.NewId()
 
-
 # ----------------------------------------------------------------------------
 # Main class that manage the notebook
 # ----------------------------------------------------------------------------
-
 
 class DataRoamerClient( BaseClient ):
     """
@@ -119,9 +107,7 @@ class DataRoamerClient( BaseClient ):
         BaseClient.__init__( self, parent, prefsIO )
         self._update_members()
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def _update_members(self):
         """
@@ -132,20 +118,66 @@ class DataRoamerClient( BaseClient ):
         # Quick and dirty solution to communicate to the file manager:
         self._prefsIO.SetValue( 'F_CCB_MULTIPLE', t='bool', v=True, text='')
 
-    # End _update_members
     # ------------------------------------------------------------------------
-
 
     def CreateComponent(self, parent, prefsIO ):
         return DataRoamer(parent, prefsIO)
 
     # ------------------------------------------------------------------------
 
+    def New(self):
+        """
+        Add a new file into the current page.
+        """
+        page = self._notebook.GetCurrentPage()
+        # Ask for the new file name
+        filename = filedialogs.SaveAsAnnotationFile()
+        if filename is None:
+            return
+        # Add the newly created file in the file manager and that's all!
+        evt = FileWanderEvent(filename=filename,status=False)
+        evt.SetEventObject(self)
+        wx.PostEvent(self.GetTopLevelParent(), evt)
+
+    # ------------------------------------------------------------------------
+
+    def Save(self):
+        """
+        Save the current file(s).
+        """
+        page = self._notebook.GetCurrentPage()
+        for i in range(self._xfiles.GetSize()):
+            if self._xfiles.GetOther(i) == page:
+                o = self._xfiles.GetObject(i)
+                o.Save()
+
+    # ------------------------------------------------------------------------
+
+    def SaveAs(self):
+        """
+        Save the current file(s).
+        """
+        page = self._notebook.GetCurrentPage()
+        for i in range(self._xfiles.GetSize()):
+            if self._xfiles.GetOther(i) == page:
+                o = self._xfiles.GetObject(i)
+                o.SaveAs()
+
+    # ------------------------------------------------------------------------
+
+    def SaveAll(self):
+        """
+        Save all files (one per page).
+        """
+        for i in range(self._xfiles.GetSize()):
+            o = self._xfiles.GetObject(i)
+            o.Save()
+
+    # ------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
 # The Component is the content of one page of the notebook.
 # ----------------------------------------------------------------------------
-
 
 class DataRoamer( scrolled.ScrolledPanel ):
     """
@@ -168,7 +200,7 @@ class DataRoamer( scrolled.ScrolledPanel ):
 
         self._prefsIO = self._check_prefs(prefsIO)
 
-        # imitate the behaviour of a toolbar, with buttons
+        # imitate the behavior of a toolbar, with buttons
         toolbar = self._create_toolbar()
         sizer.Add(toolbar, proportion=0, flag=wx.ALL|wx.EXPAND, border=1 )
 
@@ -186,16 +218,13 @@ class DataRoamer( scrolled.ScrolledPanel ):
         self.Layout()
         self.SetupScrolling()
 
-    # End __init__
     # ----------------------------------------------------------------------
-
 
     def __display_text_in_statusbar(self, text):
         wx.GetTopLevelParent(self).SetStatusText(text,0)
 
     def __reset_text_in_statusbar(self):
         wx.GetTopLevelParent(self).SetStatusText('', 0)
-
 
     #-------------------------------------------------------------------------
 
@@ -218,7 +247,6 @@ class DataRoamer( scrolled.ScrolledPanel ):
 
     #-------------------------------------------------------------------------
 
-
     def _create_toolbar(self):
         """ Creates a toolbar panel. """
         # Define the size of the icons and buttons
@@ -229,11 +257,6 @@ class DataRoamer( scrolled.ScrolledPanel ):
         toolbar.SetToolBitmapSize(iconSize)
         toolbar.SetFont(wx.Font(TB_FONTSIZE, wx.DEFAULT, wx.NORMAL, wx.NORMAL))
 
-        toolbar.AddLabelTool(NEW_ID,      'New',      spBitmap(NEW_FILE,      TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')),   shortHelp="Create an empty new file")
-        toolbar.AddLabelTool(wx.ID_SAVE,  'Save',     spBitmap(SAVE_FILE,     TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')),   shortHelp="Save the selected file")
-        toolbar.AddLabelTool(SAVE_AS_ID,  'Save as',  spBitmap(SAVE_AS_FILE,  TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')),   shortHelp="Save as... the selected file")
-        toolbar.AddLabelTool(SAVE_ALL_ID, 'Save All', spBitmap(SAVE_ALL_FILE, TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')),   shortHelp="Save all the files")
-        toolbar.AddSeparator()
         toolbar.AddLabelTool(RENAME_ID,    'Rename',    spBitmap(TIER_RENAME, TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')),    shortHelp="Rename the selected tier")
         toolbar.AddLabelTool(wx.ID_DELETE, 'Delete',    spBitmap(TIER_DELETE, TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')),    shortHelp="Delete the selected tier")
         toolbar.AddLabelTool(wx.ID_CUT,    'Cut',       spBitmap(TIER_CUT,    TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')),    shortHelp="Cut the selected tier")
@@ -250,20 +273,17 @@ class DataRoamer( scrolled.ScrolledPanel ):
         toolbar.Realize()
 
         # events
-        eventslist = [ NEW_ID, wx.ID_SAVE, SAVE_AS_ID, SAVE_ALL_ID, RENAME_ID, wx.ID_DELETE, wx.ID_CUT, wx.ID_COPY, wx.ID_PASTE, DUPLICATE_ID, wx.ID_UP, wx.ID_DOWN, PREVIEW_ID, TIER_RADIUS_ID ]
+        eventslist = [ RENAME_ID, wx.ID_DELETE, wx.ID_CUT, wx.ID_COPY, wx.ID_PASTE, DUPLICATE_ID, wx.ID_UP, wx.ID_DOWN, PREVIEW_ID, TIER_RADIUS_ID ]
         for event in eventslist:
             wx.EVT_TOOL(self, event, self.ProcessEvent)
 
         return toolbar
 
-    # End _create_toolbar
     # ------------------------------------------------------------------------
-
 
     # ------------------------------------------------------------------------
     # Callbacks to any kind of event
     # ------------------------------------------------------------------------
-
 
     def ProcessEvent(self, event):
         """
@@ -272,62 +292,43 @@ class DataRoamer( scrolled.ScrolledPanel ):
         method is called from the wxPython docview framework directly since
         wxPython does not have a virtual ProcessEvent function.
         """
-        id = event.GetId()
-        logging.debug('DataRoamer. Event received %d' % id)
+        ide = event.GetId()
 
-        if id == NEW_ID:
-            self.OnNew(event)
-            return True
-        elif id == wx.ID_SAVE:
-            self.OnSave(event)
-            return True
-        elif id == SAVE_AS_ID:
-            self.OnSaveAs(event)
-            return True
-        elif id == SAVE_ALL_ID:
-            self.OnSaveAll(event)
-            return True
-
-        elif id == RENAME_ID:
+        if ide == RENAME_ID:
             self.OnRename(event)
             return True
-        elif id == wx.ID_DELETE:
+        elif ide == wx.ID_DELETE:
             self.OnDelete(event)
             return True
-        elif id == wx.ID_CUT:
+        elif ide == wx.ID_CUT:
             self.OnCut(event)
             return True
-        elif id == wx.ID_COPY:
+        elif ide == wx.ID_COPY:
             self.OnCopy(event)
             return True
-        elif id == wx.ID_PASTE:
+        elif ide == wx.ID_PASTE:
             self.OnPaste(event)
             return True
-        elif id == DUPLICATE_ID:
+        elif ide == DUPLICATE_ID:
             self.OnDuplicate(event)
             return True
-        elif id == wx.ID_UP:
+        elif ide == wx.ID_UP:
             self.OnMoveUp(event)
             return True
-        elif id == wx.ID_DOWN:
+        elif ide == wx.ID_DOWN:
             self.OnMoveDown(event)
             return True
-        elif id == PREVIEW_ID:
+        elif ide == PREVIEW_ID:
             self.OnPreview(event)
             return True
-        elif id == TIER_RADIUS_ID:
+        elif ide == TIER_RADIUS_ID:
             self.OnRadius(event)
             return True
         return wx.GetApp().ProcessEvent(event)
 
-    # End ProcessEvent
-    # ------------------------------------------------------------------------
-
-
     # ----------------------------------------------------------------------
     # Callbacks
     # ----------------------------------------------------------------------
-
 
     def OnFileWander(self, event):
         """
@@ -343,20 +344,16 @@ class DataRoamer( scrolled.ScrolledPanel ):
                 evt = FileWanderEvent(filename=f, status=False)
                 evt.SetEventObject(self)
                 wx.PostEvent( self.GetParent().GetParent().GetParent(), evt )
-
         else:
             if f is None:
                 self.UnsetAllData( )
-
             else:
                 self.UnsetData( f )
                 evt = FileWanderEvent(filename=f, status=False)
                 evt.SetEventObject(self)
                 wx.PostEvent( self.GetParent().GetParent().GetParent(), evt )
 
-    # End OnFileWander
     # ------------------------------------------------------------------------
-
 
     def OnPanelSelection(self, event):
         """ Change the current selection (the transcription file that was clicked on). """
@@ -375,9 +372,7 @@ class DataRoamer( scrolled.ScrolledPanel ):
                 self._selection = p
                 p.SetBackgroundColour(wx.Colour(215,215,240))
 
-    # End OnPanelSelection
     # -----------------------------------------------------------------------
-
 
     def OnRename(self, event):
         """ Rename a tier. """
@@ -453,32 +448,7 @@ class DataRoamer( scrolled.ScrolledPanel ):
     # Functions...
     # ----------------------------------------------------------------------
 
-
-    def OnNew(self, event):
-        """ Create a new empty file and add it. """
-
-        # Ask for the new file name
-        filename = filedialogs.SaveAsAnnotationFile()
-        if filename is None:
-            return
-
-        # Add it in the roamer
-        #self.SetData( filename )
-        evt = FileWanderEvent(filename=filename, status=True)
-        evt.SetEventObject(self)
-        wx.PostEvent( self.GetParent().GetParent().GetParent(), evt )
-
-        # Add the newly created file in the file manager and check it.
-        evt = FileWanderEvent(filename=filename,status=True)
-        evt.SetEventObject(self)
-        wx.PostEvent(self.GetTopLevelParent(), evt)
-
-
-    # End OnNew
-    # ----------------------------------------------------------------------
-
-
-    def OnSave(self, event):
+    def Save(self):
         """ Save the selected file. """
 
         if self._selection is None:
@@ -490,11 +460,9 @@ class DataRoamer( scrolled.ScrolledPanel ):
             if p == self._selection:
                 p.Save()
 
-    # End OnSave
     # ----------------------------------------------------------------------
 
-
-    def OnSaveAs(self, event):
+    def SaveAs(self):
         """ Save as... the selected file. """
 
         if self._selection is None:
@@ -535,25 +503,20 @@ class DataRoamer( scrolled.ScrolledPanel ):
                 evt.SetEventObject(self)
                 wx.PostEvent( self.GetParent().GetParent().GetParent(), evt )
 
-    # End OnSaveAs
     # ----------------------------------------------------------------------
 
-
-    def OnSaveAll(self, event):
+    def SaveAll(self):
         """ Save all files. """
 
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
             p.Save()
 
-    # End SaveAll
     # ----------------------------------------------------------------------
-
 
     # ----------------------------------------------------------------------
     # GUI
     # ----------------------------------------------------------------------
-
 
     def OnSettings(self, event):
         """
@@ -574,9 +537,7 @@ class DataRoamer( scrolled.ScrolledPanel ):
         self.Layout()
         self.Refresh()
 
-    # End OnSettings
     # ----------------------------------------------------------------------
-
 
     def SetFont(self, font):
         """ Change font of all texts. """
@@ -587,9 +548,7 @@ class DataRoamer( scrolled.ScrolledPanel ):
             p = self._filetrs.GetObject(i)
             p.SetFont( font )
 
-    # End SetFont
     # ----------------------------------------------------------------------
-
 
     def SetBackgroundColour(self, color):
         """ Change background of all texts. """
@@ -600,9 +559,7 @@ class DataRoamer( scrolled.ScrolledPanel ):
             p = self._filetrs.GetObject(i)
             p.SetBackgroundColour(color)
 
-    # End SetBackgroundColour
     # ----------------------------------------------------------------------
-
 
     def SetForegroundColour(self, color):
         """ Change foreground of all texts. """
@@ -613,24 +570,20 @@ class DataRoamer( scrolled.ScrolledPanel ):
             p = self._filetrs.GetObject(i)
             p.SetForegroundColour(color)
 
-    # End SetForegroundColour
     # ----------------------------------------------------------------------
-
 
     # ----------------------------------------------------------------------
     # Manage the data
     # ----------------------------------------------------------------------
 
-
     def SetData(self, filename):
         """ Add a file. """
 
-        # Do not add an existing file
+        # Do not add an already loaded file
         if self._filetrs.Exists( filename ):
             return False
 
         # Add the file...
-        #try:
         logging.debug('Add file in data roamer: '+filename)
         # create the object
         newtrs = TrsList(self, filename)
@@ -651,9 +604,7 @@ class DataRoamer( scrolled.ScrolledPanel ):
 
         return True
 
-    # End SetData
     # ----------------------------------------------------------------------
-
 
     def UnsetData(self, f):
         """ Remove the given file. """
@@ -677,9 +628,7 @@ class DataRoamer( scrolled.ScrolledPanel ):
         #self.Refresh()
         self.SendSizeEvent()
 
-    # End UnsetData
     # ----------------------------------------------------------------------
-
 
     def UnsetAllData(self):
         """ Clean information and destroy all data. """
@@ -689,16 +638,13 @@ class DataRoamer( scrolled.ScrolledPanel ):
 
         self.Layout()
 
-    # End UnsetAllData
     # ----------------------------------------------------------------------
-
 
     def GetSelection(self):
         """ Return the current selection (the panel TrsList witch is selected). """
 
         return self._selection
 
-    # End GetSelection
     # -----------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------

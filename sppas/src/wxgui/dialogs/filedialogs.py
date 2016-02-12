@@ -138,7 +138,7 @@ def SaveAsAnnotationFile(defaultdir=None,defaultfile=None):
     Return an annotation file name.
     """
     if defaultdir is None:
-        defaultdir = sp_glob.BASE_PATH
+        defaultdir = os.path.dirname(sp_glob.BASE_PATH)
 
     if defaultfile is None:
         defaultfile = "newfile.xra"
