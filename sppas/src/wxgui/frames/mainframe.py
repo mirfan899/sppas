@@ -15,7 +15,7 @@
 #
 #       Laboratoire Parole et Langage
 #
-#       Copyright (C) 2011-2015  Brigitte Bigi
+#       Copyright (C) 2011-2016  Brigitte Bigi
 #
 #       Use of this software is governed by the GPL, v3
 #       This banner notice must not be removed
@@ -40,8 +40,7 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 # Imports
@@ -58,7 +57,7 @@ import webbrowser
 import annotationdata.io
 import signals
 
-from sp_glob import program,version
+from sp_glob import program,version,copyright,license
 from sp_glob import PLUGIN_PATH
 from sp_glob import SETTINGS_FILE
 
@@ -113,7 +112,6 @@ from wxgui.sp_icons import DELETE_ICON
 from wxgui.sp_icons import EXPORT_AS_ICON
 from wxgui.sp_icons import EXPORT_ICON
 
-
 # -----------------------------------------------------------------------
 # Constants
 # -----------------------------------------------------------------------
@@ -129,18 +127,16 @@ ID_DOC             = wx.NewId()
 ID_TRACK           = wx.NewId()
 ID_FEEDBACK        = wx.NewId()
 
-
 # -----------------------------------------------------------------------
 # S P P A S  Graphical User Interface... is here!
 # -----------------------------------------------------------------------
-
 
 class FrameSPPAS( wx.Frame ):
     """
     @authors: Brigitte Bigi, Cazembe Henry, Tatsuya Watanabe
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
-    @summary: SPPAS  Main frame.
+    @summary: SPPAS Main frame.
 
     SPPAS Graphical User Interface... is here!
 
@@ -151,7 +147,6 @@ class FrameSPPAS( wx.Frame ):
         Constructor, with default parameters and preferences.
 
         """
-
         wx.Frame.__init__(self, None, -1, title=FRAME_TITLE, style=FRAME_STYLE)
 
         # To enable translations of wx stock items.
@@ -163,8 +158,7 @@ class FrameSPPAS( wx.Frame ):
         # Set title and icon of the frame
         self._init_infos()
 
-        # Creates the default menubar, toolbar, and status bar
-        # and the client panel
+        # Creates the menubar, toolbar, status bar and the client panel
         self._init_frame()
 
         # Frame properties
@@ -173,49 +167,37 @@ class FrameSPPAS( wx.Frame ):
         # Events of this frame
         wx.EVT_CLOSE(self, self.OnExit)
 
-        #self._LayoutFrame()
         self.Show(True)
 
         # tips
         showtips = self._prefsIO.GetValue('M_TIPS')
         if showtips is True:
-            #if wx.Platform != '__WXMAC__':
             ShowTipsDialog(None, self._prefsIO)
 
-    # End init
     # ------------------------------------------------------------------------
-
 
     # ------------------------------------------------------------------------
     # Private methods to create the GUI and initialize members
     # ------------------------------------------------------------------------
 
-
     def _init_members( self ):
         """
-        Sets the members settings.
+        Fix the members.
 
         """
-
         # Try to get prefs from a file
         self._prefsIO = Preferences_IO( SETTINGS_FILE )
-
-        # No settings. Use the Default Theme
+        # No settings file was previously saved. Use the Default Theme
         if self._prefsIO.Read() is False:
             self._prefsIO.SetTheme( BaseTheme() )
 
-    # End _init_prefs
     # ------------------------------------------------------------------------
-
 
     def _init_infos( self ):
         """
         Set the title and the icon.
 
-        If args contains title, get it... or use the default.
-
         """
-
         wx.GetApp().SetAppName( "sppas" )
 
         # icon
@@ -226,22 +208,18 @@ class FrameSPPAS( wx.Frame ):
         # colors
         self.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR'))
 
-    # End _init_infos
     # ------------------------------------------------------------------------
-
 
     def _init_frame(self):
         """
         Initializes the frame.
-
         Creates the default about, menubar, toolbar and status bar.
 
         """
-
         # Create the about box
         self._about = AboutBox()
 
-        # the menu
+        # Create the menu
         menubar = self._create_menu()
 
         # Create the status bar
@@ -250,30 +228,24 @@ class FrameSPPAS( wx.Frame ):
         # Create the toolbar
         self._create_toolbar()
 
+        # wxBug: Have to set the menubar at the very end or the automatic
+        # MDI "window" menu doesn't get put in the right place when the
+        # services add new menus to the menubar
         if wx.Platform == '__WXMAC__':
             self.SetMenuBar(menubar)
-            # wxBug: Have to set the menubar at the very end or the automatic
-            # MDI "window" menu doesn't get put in the right place when the
-            # services add new menus to the menubar
 
         self._mainpanel = self._create_content( self )
 
         if wx.Platform != '__WXMAC__':
             self.SetMenuBar(menubar)
-            # wxBug: Have to set the menubar at the very end or the automatic
-            # MDI "window" menu doesn't get put in the right place when the
-            # services add new menus to the menubar
 
-    # End _init_frame
     # ------------------------------------------------------------------------
-
 
     def _frame_properties(self):
         """
         Fix frame size (adjust size depending on screen capabilities).
 
         """
-
         self.SetSizeHints(MIN_FRAME_W, MIN_FRAME_H)
         (w,h) = wx.GetDisplaySize()
         height = min(FRAME_H, h)
@@ -284,16 +256,13 @@ class FrameSPPAS( wx.Frame ):
         self.Enable()
         self.SetFocus()
 
-    # End _frame_properties
     # ------------------------------------------------------------------------
-
 
     def _create_menu(self):
         """
         Create the menu bar and return it.
 
         """
-
         menubar = wx.MenuBar()
 
         # All Menus
@@ -302,7 +271,6 @@ class FrameSPPAS( wx.Frame ):
         helpMenu = wx.Menu()
 
         # Items of the menu "File"
-
         addfileItem = wx.MenuItem(fileMenu, wx.ID_ADD,    'Add file\tCtrl+A', 'Add files into the list')
         adddirItem  = wx.MenuItem(fileMenu, ID_ADDDIR,    'Add directory\tCtrl+Shift+A')
         removeItem  = wx.MenuItem(fileMenu, wx.ID_REMOVE, "Remove files\tDel")
@@ -332,7 +300,6 @@ class FrameSPPAS( wx.Frame ):
         fileMenu.AppendItem(exitItem)
 
         # Items of the menu "Preferences"
-
         settingItem = wx.MenuItem(prefMenu, wx.ID_PREFERENCES, 'Settings',  'Fix settings (colors, fonts...)')
         settingItem.SetBitmap( spBitmap(SETTINGS_ICON, MENU_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')) )
 
@@ -341,7 +308,7 @@ class FrameSPPAS( wx.Frame ):
         prefMenu.AppendCheckItem(VIEW_STATUSBAR_ID, '&Status Bar', 'Shows or hides the status bar')
         prefMenu.AppendCheckItem(VIEW_TOOLBAR_ID,   '&Toolbar',    'Shows or hides the toolbar')
 
-        # Menu Help
+        # Items of the menu Help
         helpItem  = wx.MenuItem(helpMenu, wx.ID_HELP,  '&Help browser...\tF1')
         aboutItem = wx.MenuItem(helpMenu, wx.ID_ABOUT, '&About' + ' ' + wx.GetApp().GetAppName()+"...\tF2")
         homeItem  = wx.MenuItem(helpMenu, ID_HOME,     'Project Homepage...' , 'Visit the project homepage.')
@@ -389,31 +356,28 @@ class FrameSPPAS( wx.Frame ):
 
     # -----------------------------------------------------------------------
 
-
     def _create_statusbar(self):
         """
         Creates a customized a StatusBar.
 
         """
-
         sb = CustomStatusBar(self)
         sb.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
         sb.SetForegroundColour(self._prefsIO.GetValue('M_FG_COLOUR'))
         sb.SetFont(self._prefsIO.GetValue('M_FONT'))
-        sb.SetStatusText("...", 0)
+        sb.SetStatusText("Welcome to "+program+" - version "+version, 0)
+        sb.SetStatusText(copyright, 1)
+        sb.SetStatusText(license, 2)
         self.SetStatusBar(sb)
         self.GetStatusBar().Show(wx.ConfigBase_Get().ReadInt("ViewStatusBar", True))
 
-    # End _create_statusbar
     # ------------------------------------------------------------------------
-
 
     def _create_toolbar(self):
         """
         Creates the default toolbar.
 
         """
-
         toolbar = self.CreateToolBar(style=wx.TB_TEXT|wx.TB_FLAT|wx.TB_DOCKABLE|wx.TB_NODIVIDER)
 
         toolbar.AddLabelTool(wx.ID_EXIT, 'Exit', spBitmap(EXIT_ICON, TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
@@ -437,9 +401,7 @@ class FrameSPPAS( wx.Frame ):
         for event in eventslist:
             wx.EVT_TOOL(self, event, self.ProcessEvent)
 
-    # End _create_toolbar
     # ------------------------------------------------------------------------
-
 
     def _create_accelerators(self):
         """
@@ -449,23 +411,19 @@ class FrameSPPAS( wx.Frame ):
         through convoluted menus or icons.
 
         """
-
         # Quit with ATL+F4
         accelQ = wx.AcceleratorEntry(wx.ACCEL_NORMAL, wx.WXK_F4, wx.ID_EXIT)
 
         accel_tbl = wx.AcceleratorTable([ accelQ ])
         self.SetAcceleratorTable(accel_tbl)
 
-    # End _create_accelerators
     # ------------------------------------------------------------------------
-
 
     def _create_content(self, parent):
         """
         Create the frame content.
 
         """
-
         panel = wx.SplitterWindow(parent, -1, style=wx.SP_3DSASH)
         #panel.SetMinimumPaneSize( 200 )
         panel.SetSashGravity(0.3)
@@ -495,28 +453,22 @@ class FrameSPPAS( wx.Frame ):
 
         return panel
 
-    # End _create_content
     # ------------------------------------------------------------------------
-
 
     def _LayoutFrame(self):
         """
         Lays out the frame.
 
         """
-
         wx.LayoutAlgorithm().LayoutFrame(self, self._mainpanel)
         self._right_panel.SendSizeEvent()
         self.Refresh()
 
-    # End _LayoutFrame
     # ------------------------------------------------------------------------
-
 
     # ------------------------------------------------------------------------
     # Callbacks to any kind of event
     # ------------------------------------------------------------------------
-
 
     def ProcessEvent(self, event):
         """
@@ -527,59 +479,57 @@ class FrameSPPAS( wx.Frame ):
 
         """
 
-        id = event.GetId()
+        ide = event.GetId()
 
-        if id == wx.ID_EXIT:
+        if ide == wx.ID_EXIT:
             self.OnExit(event)
             return True
-        elif id == wx.ID_PREFERENCES:
+        elif ide == wx.ID_PREFERENCES:
             self.OnSettings(event)
             return True
-        elif id == wx.ID_ABOUT:
+        elif ide == wx.ID_ABOUT:
             wx.AboutBox( self._about )
             return True
-        elif id == VIEW_TOOLBAR_ID:
+        elif ide == VIEW_TOOLBAR_ID:
             self.OnViewToolBar(event)
             return True
-        elif id == VIEW_STATUSBAR_ID:
+        elif ide == VIEW_STATUSBAR_ID:
             self.OnViewStatusBar(event)
             return True
-        elif id == wx.ID_ADD:
+        elif ide == wx.ID_ADD:
             self.flp.OnAddFile(event)
             return True
-        elif id == ID_ADDDIR:
+        elif ide == ID_ADDDIR:
             self.flp.OnAddDir(event)
             return True
-        elif id == wx.ID_REMOVE:
+        elif ide == wx.ID_REMOVE:
             self.flp.OnRemove(event)
             return True
-        elif id == wx.ID_DELETE:
+        elif ide == wx.ID_DELETE:
             self.flp.OnDelete(event)
             return True
-        elif id == wx.ID_COPY:
+        elif ide == wx.ID_COPY:
             self.flp.OnSaveAs(event)
             return True
-        elif id == ID_EXPORT:
+        elif ide == ID_EXPORT:
             self.flp.OnExport(event)
             return True
-        elif id == ID_FRAME_PLUGIN:
+        elif ide == ID_FRAME_PLUGIN:
             self.ppp.Import()
             return True
-        elif id == wx.ID_HELP:
+        elif ide == wx.ID_HELP:
             HelpBrowser( self, self._prefsIO )
             return True
-        elif id == wx.ID_HELP or id == ID_DOC or id == ID_HOME or id == ID_TRACK:
+        elif ide == wx.ID_HELP or id == ID_DOC or id == ID_HOME or id == ID_TRACK:
             self.OnExternalLink(event)
             return True
-        elif id == ID_FEEDBACK:
+        elif ide == ID_FEEDBACK:
             ShowFeedbackDialog(self, preferences=self._prefsIO)
             return True
 
         return wx.GetApp().ProcessEvent(event)
 
-    # End ProcessEvent
     # ------------------------------------------------------------------------
-
 
     def ProcessUpdateUIEvent(self, event):
         """
@@ -589,33 +539,28 @@ class FrameSPPAS( wx.Frame ):
         wxPython does not have a virtual ProcessEvent function.
 
         """
+        ide = event.GetId()
 
-        id = event.GetId()
-
-        if id == VIEW_TOOLBAR_ID:
+        if ide == VIEW_TOOLBAR_ID:
             self.OnUpdateViewToolBar(event)
             return True
-        elif id == VIEW_STATUSBAR_ID:
+        elif ide == VIEW_STATUSBAR_ID:
             self.OnUpdateViewStatusBar(event)
             return True
 
         return wx.GetApp().ProcessUpdateUIEvent(event)
 
-    # End ProcessUpdateUIEvent
     # ------------------------------------------------------------------------
-
 
     # -----------------------------------------------------------------------
     # Callbacks
     # -----------------------------------------------------------------------
-
 
     def OnViewToolBar(self, event):
         """
         Toggles whether the ToolBar is visible.
 
         """
-
         try:
             t = self.GetToolBar()
         except Exception:
@@ -626,16 +571,13 @@ class FrameSPPAS( wx.Frame ):
         # send size event to force the whole frame layout
         self.SendSizeEvent()
 
-    # End OnViewToolBar
     # ------------------------------------------------------------------------
-
 
     def OnUpdateViewToolBar(self, event):
         """
         Updates the View ToolBar menu item.
 
         """
-
         try:
             t = self.GetToolBar()
             if t is None: return False
@@ -643,21 +585,18 @@ class FrameSPPAS( wx.Frame ):
             # the toolbar was not created with the frame
             return False
 
-        r = t.IsShown()
+        t.IsShown()
         event.Check(t.IsShown())
         # send size event to force the whole frame layout
         self.SendSizeEvent()
 
-    # End OnUpdateViewToolBar
     # ------------------------------------------------------------------------
-
 
     def OnViewStatusBar(self, event):
         """
         Toggles whether the StatusBar is visible.
 
         """
-
         try:
             s = self.GetStatusBar()
             if s is None: return False
@@ -668,16 +607,13 @@ class FrameSPPAS( wx.Frame ):
         s.Show(not self.GetStatusBar().IsShown())
         self._LayoutFrame()
 
-    # End OnViewStatusBar
     # ------------------------------------------------------------------------
-
 
     def OnUpdateViewStatusBar(self, event):
         """
         Updates the View StatusBar menu item.
 
         """
-
         try:
             s = self.GetStatusBar()
             if s is None: return False
@@ -688,9 +624,7 @@ class FrameSPPAS( wx.Frame ):
         event.Check(s.IsShown())
         self._LayoutFrame()
 
-    # End OnUpdateViewStatusBar
     # ------------------------------------------------------------------------
-
 
     def OnSettings(self, event):
         """
@@ -708,31 +642,27 @@ class FrameSPPAS( wx.Frame ):
 
         prefdlg.Destroy()
 
-    # End OnSettings
     # ------------------------------------------------------------------------
-
 
     def OnExternalLink(self, evt):
         """
-        Open the web browser.
+        Open the web browser, go to a specific location.
 
         """
-
         eid = evt.GetId()
 
         if eid == ID_HOME:
-            url="http://sldr.org/sldr000800/preview/"
+            url="http://www.sppas.org/"
 
         elif eid == ID_DOC:
-            url="http://sldr.org/sldr000800/preview/documentation.html"
+            url="http://www.sppas.org/documentation.html"
 
         elif eid == ID_TRACK:
-            url="http://code.google.com/p/sppas/issues/"
+            url="https://github.com/brigittebigi/sppas/issues/"
             wx.MessageBox('Your web browser will be opened.\n'
                           'First, check if the issue is not already declared in the list.\n'
                           'Then, declare an issue by clicking on the button "New Issue"',
                              'Info', wx.OK | wx.ICON_INFORMATION)
-
         else:
             evt.Skip()
             return
@@ -747,34 +677,27 @@ class FrameSPPAS( wx.Frame ):
             pass#self.SetStatusText("Error: Unable to open %s" % url)
         wx.EndBusyCursor()
 
-    # End OnExternalLink
     # -----------------------------------------------------------------------
-
 
     def OnExit(self, evt):
         """
         Close the frame.
 
         """
-
         logging.info("Good bye... Hope to see you soon!")
         self.Destroy()
 
-    # End OnExit
     # -----------------------------------------------------------------------
-
 
     # -----------------------------------------------------------------------
     # Functions
     # -----------------------------------------------------------------------
-
 
     def SetPrefs(self, prefs):
         """
         Set new preferences.
 
         """
-
         self._prefsIO = prefs
         self.GetToolBar().SetBackgroundColour(   self._prefsIO.GetValue( 'M_BG_COLOUR' ))
         self.GetStatusBar().SetBackgroundColour( self._prefsIO.GetValue( 'M_BG_COLOUR' ))
@@ -795,21 +718,16 @@ class FrameSPPAS( wx.Frame ):
         self.ppp.SetPrefs( self._prefsIO )
         self._LayoutFrame()
 
-    # End SetPrefs
     # -----------------------------------------------------------------------
-
 
     def GetSelected(self, extension):
         """
         Return the list of selected files in FLP.
 
         """
-
         return self.flp.GetSelected(extension)
 
-    # End GetSelected
     # -----------------------------------------------------------------------
-
 
     def GetTrsSelection(self):
         """
@@ -822,9 +740,7 @@ class FrameSPPAS( wx.Frame ):
             selection.extend(self.flp.GetSelected(ext))
         return selection
 
-    # End GetTrsSelection
     # -----------------------------------------------------------------------
-
 
     def GetAudioSelection(self):
         """
@@ -836,9 +752,7 @@ class FrameSPPAS( wx.Frame ):
             selection.extend( self.flp.GetSelected(ext) )
         return selection
 
-    # End GetAudioSelection
     # -----------------------------------------------------------------------
-
 
     def RefreshTree(self, filelist=None):
         """
@@ -847,8 +761,6 @@ class FrameSPPAS( wx.Frame ):
         """
         self.flp.RefreshTree(filelist)
 
-
-    # End RefreshTree
     # -----------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------
