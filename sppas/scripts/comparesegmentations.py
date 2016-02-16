@@ -481,9 +481,9 @@ fpd.close()
 # Estimates the Unit Boundary Positioning Accuracy
 
 ubpa(deltaposB,"PositionStart", outname+"-eval-position-start.txt", summary=not args.quiet)
-ubpa(deltaposE,"PositionEnd",   outname+"-eval-position-end.txt",   summary=not args.quiet)
-ubpa(deltaposM,"PositionMiddle",outname+"-eval-position-middle.txt")
-ubpa(deltadur, "Duration",      outname+"-eval-duration.txt")
+ubpa(deltaposE,"PositionEnd",   outname+"-eval-position-end.txt",   summary=False)
+ubpa(deltaposM,"PositionMiddle",outname+"-eval-position-middle.txt",summary=False)
+ubpa(deltadur, "Duration",      outname+"-eval-duration.txt",       summary=False)
 
 # ----------------------------------------------------------------------------
 # Draw BoxPlots of the accuracy via an R script

@@ -165,8 +165,7 @@ class juliusAligner( baseAligner ):
         tiedlist = os.path.join(self._model, "tiedlist")
         hmmdefs  = os.path.join(self._model, "hmmdefs")
 
-        """ By David Yeung, force Julius to use configuration file of HTK
-        """
+        # By David Yeung, force Julius to use configuration file of HTK
         config = os.path.join(self._model, "config")
 
         command = 'echo '
@@ -228,19 +227,25 @@ class juliusAligner( baseAligner ):
         except Exception as e:
             if self._logfile:
                 self._logfile.print_message(str(e),indent=3,status=-1)
-            else:
-                print "Julius command: Unknown error!"
+            #else:
+            #    print "Julius command: Unknown error!"
 
         err = 2
         if os.path.isfile(outputalign):
             with codecs.open(outputalign, 'r', self._encoding) as f:
                 for line in f:
-                    if (line.find("Error: voca_load_htkdict")>-1):
+                    if line.find("Error: voca_load_htkdict") > -1:
+                        if self._logfile:
+                            message="The reported error is:\n"
+                            for line in f:
+                                if line.find("Error: ") > -1:
+                                    message = message + line
+                            self._logfile.print_message(message,indent=3,status=-1)
                         if os.path.isfile(tiedlist):
                             err += 3
                         else:
                             return 1
-                    elif (line.find("forced alignment ==="))>-1:
+                    elif line.find("forced alignment ===") > -1:
                         err -= 1
         return err
 
