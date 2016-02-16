@@ -114,7 +114,7 @@ def _inc(vector,idx):
         vector.extend([0]*toadd)
     vector[idx] = vector[idx] + 1
 
-def ubpa(vector,text,filename):
+def ubpa(vector,text,filename,summary=False):
     """
     Estimates the Unit Boundary Positioning Accuracy,
     and write the result into a file.
@@ -122,6 +122,7 @@ def ubpa(vector,text,filename):
     @param vector contains the list of the delta values.
     @param text is one of "Duration", "Position Start", ...
     @param filename is the file to write the result.
+    @param summary (bool) print a summary on stdout.
     """
     step = 0.01
     tabNeg = []
@@ -152,6 +153,32 @@ def ubpa(vector,text,filename):
             fp.write( "|  Delta-%s < +%.3f: "%(text,((i+1)*step)) )
             fp.write( "%d (%.2f%%)\n"%(value,percent) )
         fp.write( "|--------------------------------------------| \n" )
+
+    if summary is True:
+        print "|--------------------------------------------| "
+        print "|      Unit Boundary Positioning Accuracy    | "
+        print "|            Delta=T(hyp)-T(ref)             | "
+        print "|--------------------------------------------| "
+        i=len(tabNeg)-1
+        percentsum = 0
+        for value in reversed(tabNeg):
+            if (i+1)*step < 0.05:
+                percent = ((value*100.)/(len(vector)-1))
+                print "|  Delta-%s < -%.3f: "%(text,((i+1)*step)),
+                print "%d (%.2f%%)"%(value,percent)
+                percentsum = percentsum+percent
+            i = i - 1
+        print "|--------------------------------------------| "
+        for i,value in enumerate(tabPos):
+            if (i+1)*step < 0.05:
+                percent = round(((value*100.)/(len(vector)-1)),3)
+                print "|  Delta-%s < +%.3f: "%(text,((i+1)*step)),
+                print "%d (%.2f%%)"%(value,percent)
+                percentsum = percentsum+percent
+        print "|--------------------------------------------| "
+        print "| Total:",round(percentsum,3),"%%"
+        print "|--------------------------------------------| "
+
 
 # ----------------------------------------------------------------------------
 # Function to draw the evaluation as BoxPlots (using an R script)
@@ -437,6 +464,7 @@ fpd.write("Phone Delta Filename\n")
 for i,extra in enumerate(extras):
     etiquette = extra[0]
     filename  = extra[1]
+    tag = extra[2]
     if tag != 0:
         fpb.write("%s %f %s\n"%(etiquette,deltaposB[i],filename))
     if tag != -1:
@@ -452,9 +480,9 @@ fpd.close()
 # ----------------------------------------------------------------------------
 # Estimates the Unit Boundary Positioning Accuracy
 
-ubpa(deltaposB,"PositionStart", outname+"-eval-position-start.txt")
-ubpa(deltaposE,"PositionEnd",   outname+"-eval-position-end.txt")
-ubpa(deltaposE,"PositionMiddle",outname+"-eval-position-middle.txt")
+ubpa(deltaposB,"PositionStart", outname+"-eval-position-start.txt", summary=not args.quiet)
+ubpa(deltaposE,"PositionEnd",   outname+"-eval-position-end.txt",   summary=not args.quiet)
+ubpa(deltaposM,"PositionMiddle",outname+"-eval-position-middle.txt")
 ubpa(deltadur, "Duration",      outname+"-eval-duration.txt")
 
 # ----------------------------------------------------------------------------

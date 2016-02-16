@@ -101,10 +101,48 @@ class sppasProcess( Thread ):
         self.parameters = parameters
         self._progress = None
         self._logfile  = None
+        self._domerge  = True
 
         self.start()
 
     # ------------------------------------------------------------------------
+
+    def fix_options(self, options):
+        """
+        Fix all options.
+
+        Available options are:
+            - domerge
+
+        @param options (option)
+
+        """
+
+        for opt in options:
+
+            key = opt.get_key()
+
+            if key == "domerge":
+                self.set_domerge(opt.get_value())
+
+            else:
+                raise Exception('Unknown key option: %s'%key)
+
+    # -----------------------------------------------------------------------
+
+    def set_domerge(self, domerge):
+        """
+        Fix the domerge option.
+        If domerge is set to True, a merged TextGrid file is created.
+
+        @param domerge (Boolean)
+
+        """
+        self._domerge = domerge
+
+    # ----------------------------------------------------------------------
+
+    # -----------------------------------------------------------------------
 
     def set_filelist(self, extension, not_ext=[], not_start=[]):
         """
@@ -942,7 +980,7 @@ class sppasProcess( Thread ):
             self._logfile.print_newline()
             self._logfile.print_separator()
 
-        self.merge()
+        if self._domerge: self.merge()
 
         # ##################################################################### #
         # Log file: Final information
