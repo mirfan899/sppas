@@ -15,7 +15,7 @@
 #
 #       Laboratoire Parole et Langage
 #
-#       Copyright (C) 2011-2014  Brigitte Bigi
+#       Copyright (C) 2011-2016  Brigitte Bigi
 #
 #       Use of this software is governed by the GPL, v3
 #       This banner notice must not be removed
@@ -38,11 +38,9 @@
 # File: annotation.py
 # ----------------------------------------------------------------------------
 
-
 __docformat__ = """epytext"""
 __authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2014  Brigitte Bigi"""
-
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 # Imports
@@ -58,6 +56,7 @@ SPPAS = os.path.join( os.path.dirname( os.path.dirname( PROGRAM_PATH ) ), "src" 
 sys.path.append(SPPAS)
 
 from sp_glob import program, author, version, copyright, url
+from annotationdata.io import extensions_out_multitiers
 from annotations.param import sppasParam
 from annotations.process import sppasProcess
 from term.textprogress import TextProgress
@@ -71,10 +70,10 @@ from term.terminalcontroller import TerminalController
 parameters = sppasParam()
 parser = ArgumentParser(usage="%s -w file|folder [options]" % os.path.basename(PROGRAM_PATH), prog=PROGRAM_PATH, description="Automatic annotations command line interface.")
 
-parser.add_argument("-w", required=True, metavar="file|folder", help='Input wav file name, or folder')
+parser.add_argument("-w", required=True, metavar="file|folder", help='Input wav file name, or directory')
 
 parser.add_argument("-l", metavar="lang", help='Input language, using iso639-3 code')
-parser.add_argument("-e", metavar="extension", help='Output extension. One of: xra, textgrid, eaf, csv.')
+parser.add_argument("-e", metavar="extension", help='Output extension. One of: %s'%" ".join(extensions_out_multitiers))
 parser.add_argument("--momel", action='store_true', help="Activate Momel and INTSINT" )
 parser.add_argument("--ipu",   action='store_true', help="Activate IPUs Segmentation" )
 parser.add_argument("--tok",   action='store_true', help="Activate Tokenization" )
@@ -83,6 +82,8 @@ parser.add_argument("--align", action='store_true', help="Activate Alignment" )
 parser.add_argument("--syll",  action='store_true', help="Activate Syllabification" )
 parser.add_argument("--rep",   action='store_true', help="Activate Repetitions" )
 parser.add_argument("--all",   action='store_true', help="Activate ALL automatic annotations" )
+parser.add_argument("--merge", action='store_true', help="Create a merged TextGrid file, if more than two automatic annotations. (this is the default)" )
+parser.add_argument("--nomerge", action='store_true', help="Do not create a merged TextGrid file." )
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -97,7 +98,12 @@ args = parser.parse_args()
 parameters.add_sppasinput( os.path.abspath(args.w) )
 
 if args.l: parameters.set_lang( args.l )
-if args.e: parameters.set_output_format('.'+args.e )
+if args.e:
+    extensions = [e.lower() for e in extensions_out_multitiers]
+    if not args.e in extensions:
+        print "[WARNING] Unknown extension:",args.e,". Extension is set to its default value."
+    else:
+        parameters.set_output_format( args.e )
 
 if args.momel: parameters.activate_step(0)
 if args.ipu:   parameters.activate_step(1)
@@ -130,7 +136,11 @@ except:
 # ----------------------------------------------------------------------------
 
 p = TextProgress()
-process = sppasProcess(parameters)
+process = sppasProcess( parameters )
+if args.nomerge:
+    process.set_domerge( False )
+if args.merge:
+    process.set_domerge( True )
 process.run_annotations( p )
 
 try:

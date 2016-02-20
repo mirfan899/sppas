@@ -342,8 +342,8 @@ class AlignerIO( Transcription ):
 
         # Each line is either a new annotation or nothing interesting!
         phonidx = -1     # phoneme index
-        loc_s = 0        # phoneme start time
-        loc_e = 0        # phoneme end time
+        loc_s = 0.       # phoneme start time
+        loc_e = 0.       # phoneme end time
         phonlist = []
         for line in fp:
             if line.find("=== begin forced alignment ===")>-1:
@@ -398,12 +398,12 @@ class AlignerIO( Transcription ):
             # But difficulty to interpret Julius values...
             if loc_e < nextloc_s:
                 # Since SPPAS 1.4.4, I was setting next loc_s to the current loc_e
-                # I tried to the average between both values.
-                # loc_e = ( nextloc_s + loc_e ) / 2.0
-                # I got better results if I set the current loc_e as the next loc_s
-                # loc_e = nextloc_s
-                # AND FINALLY, THE BEST IS:
-                loc_e = nextloc_s + ( ( nextloc_s - loc_e) / 2.0 )
+                # I tried to the average between both values, but did not got better results:.
+                #loc_e = ( nextloc_s + loc_e ) / 2.0
+                # For READ SPEECH, I got better results if I set the current loc_e as the next loc_s:
+                loc_e = nextloc_s
+                # For CONVERSATIONAL SPPECG, the better is::
+                #loc_e = nextloc_s + ( ( nextloc_s - loc_e) / 2.0 )
 
             _modifiedphonalign.append( (loc_s, loc_e, phonlist[phonidx], _phonalign[phonidx][3]) )
             loc_s = loc_e

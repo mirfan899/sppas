@@ -547,6 +547,10 @@ class AcModel:
 
     def load_htk(self, *args):
         """
+        Load an HTK model from one or more files.
+
+        @param args: Filenames of the model (e.g. macros and/or hmmdefs)
+
         """
         htkmodel = HtkIO( *args )
         self.macros = htkmodel.macros
@@ -642,8 +646,12 @@ class AcModel:
         ostates = hmm.definition['states']
 
         for sitem,oitem in zip(sstates,ostates): # a dict
-            sstreams = sitem['state']['streams']
-            ostreams = oitem['state']['streams']
+            sstate = sitem['state']
+            ostate = oitem['state']
+            if type(sstate) != collections.OrderedDict or type(ostate) != collections.OrderedDict:
+                continue
+            sstreams = sstate['streams']
+            ostreams = ostate['streams']
 
             for ss,os in zip(sstreams,ostreams): # a list
                 smixtures = ss['mixtures']
@@ -674,6 +682,8 @@ class AcModel:
 
         stransition = shmm.definition['transition']
         otransition = hmm.definition['transition']
+        if type(stransition) != collections.OrderedDict or type(otransition) != collections.OrderedDict:
+            return
         if stransition['dim'] != otransition['dim']:
             raise TypeError
         smatrix = stransition['matrix']
@@ -699,9 +709,11 @@ class AcModel:
 
     def merge_model(self, other, gamma=1.):
         """
-        Merge an other model with self.
+        Merge another model with self.
         All new phonemes are added and the shared ones are merged, using
         a static linear interpolation.
+
+        Efficient ONLY on MONOPHONES models.
 
         @param other (AcModel) the AcModel to be merged with.
         @param gamma (float) coefficient to apply to the model: between 0.
@@ -760,17 +772,18 @@ class AcModel:
     # -----------------------------------------------------------------------
     # Private
     # -----------------------------------------------------------------------
+    # TODO: Test all the create methods
 
     def _create_default(self):
         return collections.defaultdict(lambda: None)
 
 
     def _create_vector(self, vector):
-        return {'dim': vector.size, 'vector': vector}
+        return {'dim': len(vector), 'vector': vector}
 
 
     def _create_square_matrix(self, mat):
-        return {'dim': mat.shape[0], 'matrix': mat}
+        return {'dim': len(mat[0]), 'matrix': mat}
 
 
     def _create_transition(self, state_stay_probabilites=[0.6, 0.6, 0.7]):
