@@ -2,24 +2,21 @@
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /        Automatic
-#           \__   |__/  |__/  |___| \__      Annotation
-#              \  |     |     |   |    \     of
-#           ___/  |     |     |   | ___/     Speech
-#           =============================
+#           /     |  \  |  \  |  \  /              Automatic
+#           \__   |__/  |__/  |___| \__             Annotation
+#              \  |     |     |   |    \             of
+#           ___/  |     |     |   | ___/              Speech
 #
-#           http://sldr.org/sldr000800/preview/
+#
+#                           http://www.sppas.org/
 #
 # ---------------------------------------------------------------------------
-# developed at:
+#            Laboratoire Parole et Langage, Aix-en-Provence, France
+#                   Copyright (C) 2011-2016  Brigitte Bigi
 #
-#       Laboratoire Parole et Langage
-#
-#       Copyright (C) 2011-2015  Brigitte Bigi
-#
-#       Use of this software is governed by the GPL, v3
-#       This banner notice must not be removed
+#                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
+# Use of this software is governed by the GNU Public License, version 3.
 #
 # SPPAS is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -93,7 +90,7 @@ class AiffIO( Audio ):
         self.nbreadframes = int(self.frameduration * self.audiofp.getframerate())
 
     # -----------------------------------------------------------------------
-    
+
     # ----------------------------------------------------------------------
     # Read content, for audiofp
     # ----------------------------------------------------------------------
@@ -101,15 +98,15 @@ class AiffIO( Audio ):
     def read_frames(self, nframes):
         """
         Specific frame reader for aiff files, because their data is in big endian and we need little endian
-        
+
         @param nframes (int) the the number of frames wanted
-        @return the frames read 
-        
+        @return the frames read
+
         """
         if not self.audiofp:
             raise Exception(NO_AUDIO_MSG)
         data = self.audiofp.readframes(nframes)
-        
+
         if self.get_sampwidth() == 4 :
             data = struct.unpack(">%ul" % (len(data) / 4), data)
             return struct.pack("<%ul" % (len(data)), *data)
@@ -118,14 +115,14 @@ class AiffIO( Audio ):
             return struct.pack("<%uh" % (len(data)), *data)
 
     # ----------------------------------------------------------------------
-    
+
     def _write_frames(self, file, data):
         """
         Specific writer for aiff files, because data is in little endian and aiff files need data in big endian
-        
+
         @param file (Audio object) the audio file pointer to write in
         @param data (string) the frames to write
-        
+
         """
         if file.getsampwidth() == 4 :
             data = struct.unpack("<%ul" % (len(data) / 4), data)
@@ -162,7 +159,7 @@ class AiffIO( Audio ):
 
         else:
             self.verify_channels()
-            
+
             frames = ""
             for i in xrange(0, self.channels[0].get_nframes()*self.channels[0].get_sampwidth(), self.channels[0].get_sampwidth()):
                 for j in xrange(len(self.channels)):

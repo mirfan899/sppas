@@ -2,24 +2,21 @@
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /        Automatic
-#           \__   |__/  |__/  |___| \__      Annotation
-#              \  |     |     |   |    \     of
-#           ___/  |     |     |   | ___/     Speech
-#           =============================
+#           /     |  \  |  \  |  \  /              Automatic
+#           \__   |__/  |__/  |___| \__             Annotation
+#              \  |     |     |   |    \             of
+#           ___/  |     |     |   | ___/              Speech
 #
-#           http://sldr.org/sldr000800/preview/
+#
+#                           http://www.sppas.org/
 #
 # ---------------------------------------------------------------------------
-# developed at:
+#            Laboratoire Parole et Langage, Aix-en-Provence, France
+#                   Copyright (C) 2011-2016  Brigitte Bigi
 #
-#       Laboratoire Parole et Langage
-#
-#       Copyright (C) 2011-2015  Brigitte Bigi
-#
-#       Use of this software is governed by the GPL, v3
-#       This banner notice must not be removed
+#                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
+# Use of this software is governed by the GNU Public License, version 3.
 #
 # SPPAS is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -63,37 +60,37 @@ class ChannelsEqualizer:
 
         """
         self.channels = []
-        
+
     def append_channel(self, channel):
         """
         Append a channel in the list of channels
-        
+
         @param channel (Channel object) the channel to append
-        
+
         """
         self.channels.append(channel)
-        
+
     def equalize(self):
         """
         Equalize the number of frames of all the channels by appending silence at the end.
-        
+
         """
         nframes = 0
         for i in xrange(len(self.channels)):
             nframes = max(nframes, self.channels[i].get_nframes())
-            
+
         for i in xrange(len(self.channels)):
             if self.channels[i].get_nframes() < nframes:
                 fragment = MonoFragment(self.channels[i].frames)
                 fragment.create_silence(nframes - self.channels[i].get_nframes())
                 self.channels[i] = Channel(self.channels[i].get_framerate(), self.channels[i].get_sampwidth(), fragment.get_frames())
-            
+
     def get_channel(self, idx):
         """
         Return the channel wanted
-        
+
         @param idx (int) the index of the channel to return
         @return the channel wanted
-        
+
         """
         return self.channels[idx]

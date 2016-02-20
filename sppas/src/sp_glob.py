@@ -2,24 +2,21 @@
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /        Automatic
-#           \__   |__/  |__/  |___| \__      Annotation
-#              \  |     |     |   |    \     of
-#           ___/  |     |     |   | ___/     Speech
-#           =============================
+#           /     |  \  |  \  |  \  /              Automatic
+#           \__   |__/  |__/  |___| \__             Annotation
+#              \  |     |     |   |    \             of
+#           ___/  |     |     |   | ___/              Speech
 #
-#           http://sldr.org/sldr00800/preview/
+#
+#                           http://www.sppas.org/
 #
 # ---------------------------------------------------------------------------
-# developed at:
+#            Laboratoire Parole et Langage, Aix-en-Provence, France
+#                   Copyright (C) 2011-2016  Brigitte Bigi
 #
-#       Laboratoire Parole et Langage
-#
-#       Copyright (C) 2011-2015  Brigitte Bigi
-#
-#       Use of this software is governed by the GPL, v3
-#       This banner notice must not be removed
+#                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
+# Use of this software is governed by the GNU Public License, version 3.
 #
 # SPPAS is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -34,19 +31,17 @@
 # You should have received a copy of the GNU General Public License
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # File: sp_glob.py
 # ----------------------------------------------------------------------------
 
 import os.path
-
 
 # ---------------------------------------------------------------------------
 # Define the base path of SPPAS sources
 # ---------------------------------------------------------------------------
 
 BASE_PATH = os.path.dirname( os.path.dirname( os.path.abspath(__file__) ) )
-
 
 # ---------------------------------------------------------------------------
 # Define all paths (relatively to BASE_SPPAS)
@@ -61,7 +56,6 @@ SETTINGS_FILE  = os.path.join( BASE_PATH, "etc", "settings.dump")
 RESOURCES_PATH = os.path.join( os.path.dirname(BASE_PATH), "resources" )
 SAMPLES_PATH   = os.path.join( os.path.dirname(BASE_PATH), "samples" )
 
-
 # ---------------------------------------------------------------------------
 # Define configuration
 # ---------------------------------------------------------------------------
@@ -75,7 +69,6 @@ DEFAULT_OUTPUT_EXTENSION = ".xra"
 # Default output encoding
 encoding = 'utf-8'
 
-
 # ---------------------------------------------------------------------------
 # Constants: ID
 # ---------------------------------------------------------------------------
@@ -87,7 +80,6 @@ IGNORE_ID  = 2
 WARNING_ID = 1
 OK_ID      = 0
 
-
 # ---------------------------------------------------------------------------
 # Constants: SPPAS Information
 # ---------------------------------------------------------------------------
@@ -97,7 +89,7 @@ contact    = "brigite.bigi@gmail.com"
 program    = "SPPAS"
 version    = "1.7.6"
 copyright  = "Copyright (C) 2011-2016 Brigitte Bigi"
-url        = "http://sldr.org/sldr000800/preview/"
+url        = "http://www.sppas.org/"
 brief      = "SPPAS produces automatically annotations\nfrom a recorded speech sound and its transcription\nand helps to perform the analysis of annotated data."
 docformat  = "epytext"
 license    = "GNU Public License, version 3"
@@ -105,8 +97,7 @@ license_text = """
 ------------------------------------------------------------
 
 By using SPPAS, you agree to cite a reference in your publications.
-See the documentation to get the list of references, or get the PDF
-files in the documentation/references sub-folder.
+See the documentation to get the list of references.
 
 ------------------------------------------------------------
 

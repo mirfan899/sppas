@@ -1,9 +1,22 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
+# ---------------------------------------------------------------------------
+#            ___   __    __    __    ___
+#           /     |  \  |  \  |  \  /              Automatic
+#           \__   |__/  |__/  |___| \__             Annotation
+#              \  |     |     |   |    \             of
+#           ___/  |     |     |   | ___/              Speech
 #
-# Copyright (C) 2013  Brigitte Bigi
 #
-# This file is part of SPPAS.
+#                           http://www.sppas.org/
+#
+# ---------------------------------------------------------------------------
+#            Laboratoire Parole et Langage, Aix-en-Provence, France
+#                   Copyright (C) 2011-2016  Brigitte Bigi
+#
+#                   This banner notice must not be removed
+# ---------------------------------------------------------------------------
+# Use of this software is governed by the GNU Public License, version 3.
 #
 # SPPAS is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,9 +29,12 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with SPPAS.  If not, see <http://www.gnu.org/licenses/>.
+# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+#
+# ---------------------------------------------------------------------------
 
-""" This package includes the SPPAS implementation of Momel and INTSINT.
+"""
+    This package includes the SPPAS implementation of Momel and INTSINT.
 
     Different versions of the Momel and Intsint algorithms have been developed
     in the LPL in Aix en Provence over the last twenty years and have been

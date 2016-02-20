@@ -2,24 +2,21 @@
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /        Automatic
-#           \__   |__/  |__/  |___| \__      Annotation
-#              \  |     |     |   |    \     of
-#           ___/  |     |     |   | ___/     Speech
-#           =============================
+#           /     |  \  |  \  |  \  /              Automatic
+#           \__   |__/  |__/  |___| \__             Annotation
+#              \  |     |     |   |    \             of
+#           ___/  |     |     |   | ___/              Speech
 #
-#           http://sldr.org/sldr000800/preview/
+#
+#                           http://www.sppas.org/
 #
 # ---------------------------------------------------------------------------
-# developed at:
+#            Laboratoire Parole et Langage, Aix-en-Provence, France
+#                   Copyright (C) 2011-2016  Brigitte Bigi
 #
-#       Laboratoire Parole et Langage
-#
-#       Copyright (C) 2011-2015  Brigitte Bigi
-#
-#       Use of this software is governed by the GPL, v3
-#       This banner notice must not be removed
+#                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
+# Use of this software is governed by the GNU Public License, version 3.
 #
 # SPPAS is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -37,7 +34,6 @@
 # ---------------------------------------------------------------------------
 # File: channelformatter.py
 # ----------------------------------------------------------------------------
-
 
 __docformat__ = """epytext"""
 __authors__   = """Nicolas Chazeau (n.chazeau94@gmail.com)"""
@@ -77,9 +73,9 @@ class ChannelFormatter:
         Return the expected frame rate for the channel.
         Notice that while convert is not applied, it can be different of the
         current one of the channel.
-        
+
         @return the frame rate that will be used by the converter
-        
+
         """
         return self.framerate
 
@@ -88,9 +84,9 @@ class ChannelFormatter:
         Return the expected sample width for the channel.
         Notice that while convert is not applied, it can be different of the
         current one  of the channel.
-        
+
         @return the sample width that will be used by the converter
-        
+
         """
         return self.sampwidth
 
@@ -105,9 +101,9 @@ class ChannelFormatter:
         Return the expected frame rate for the channel.
         Notice that while convert is not applied, it can be different of the
         current one  of the channel.
-        
+
         @param the frame rate that will be used by the converter
-        
+
         """
         self.framerate = framerate
 
@@ -116,9 +112,9 @@ class ChannelFormatter:
         Fix the expected sample width for the channel.
         Notice that while convert is not applied, it can be different of the
         current one  of the channel.
-        
+
         @param the sample width that will be used by the converter
-        
+
         """
         self.sampwidth = sampwidth
 
@@ -126,13 +122,13 @@ class ChannelFormatter:
     # ----------------------------------------------------------------------
     # Workers
     # ----------------------------------------------------------------------
-    
+
     def sync(self, channel):
         """
         Convert the channel owned by the ChannelFormatter with the parameters from the channel put in input
-        
+
         @param channel (Channel object) the channel used as a model
-        
+
         """
         self.sampwidth = channel.get_sampwidth()
         self.framerate = channel.get_framerate()
@@ -141,82 +137,82 @@ class ChannelFormatter:
     def remove_frames(self, begin, end):
         """
         Convert the channel by removing frames.
-        
+
         @param begin (int) the position of the beggining of the frames to remove
         @param end (int) the position of the end of the frames to remove
-        
+
         """
         newchannel = Channel()
         newchannel.set_frames( self.channel.frames[:begin*self.sampwidth] + self.channel.frames[end*self.sampwidth:] )
         newchannel.sampwidth = self.sampwidth
         newchannel.framerate = self.framerate
         self.channel = newchannel
-        
+
     def add_frames(self, frames, position):
         """
         Convert the channel by adding frames.
-        
+
         @param position (int) the position where the frames will be inserted
-        
+
         """
         newchannel = Channel()
         newchannel.set_frames( self.channel.frames[:position*self.sampwidth] + frames + self.channel.frames[position*self.sampwidth:] )
         newchannel.sampwidth = self.sampwidth
         newchannel.framerate = self.framerate
         self.channel = newchannel
-    
+
     def append_frames(self, frames):
         """
         Convert the channel by appending frames.
-        
+
         @param frames (string) the frames to append
-        
+
         """
         newchannel = Channel()
         newchannel.set_frames( self.channel.frames + frames )
         newchannel.sampwidth = self.sampwidth
         newchannel.framerate = self.framerate
         self.channel = newchannel
-        
+
     def bias(self, bias):
         """
         Apply a bias on the frames
-        
+
         @param bias (int) the value to bias the frames
-        
+
         """
         newchannel = Channel()
         newchannel.sampwidth = self.sampwidth
         newchannel.framerate = self.framerate
         newchannel.set_frames(audioutils.bias(self.channel.frames, self.sampwidth, bias))
-        
+
         self.channel = newchannel
-        
+
     def mul(self, factor):
         """
         Multiply the frames by the factor
-        
+
         @param bias (int) the factor to multiply the frames
-        
+
         """
         newchannel = Channel()
         newchannel.sampwidth = self.sampwidth
         newchannel.framerate = self.framerate
         newchannel.set_frames(audioutils.mul(self.channel.frames, self.sampwidth, factor))
-        
+
         self.channel = newchannel
-        
+
     def remove_offset(self):
         """
         Remove the offset in the channel
-        
+
         """
         newchannel = Channel()
         newchannel.sampwidth = self.sampwidth
         newchannel.framerate = self.framerate
         avg = audioutils.avg(self.channel.frames, self.sampwidth)
         newchannel.set_frames(audioutils.bias(self.channel.frames, self.sampwidth, - avg))
-        
+
         self.channel = newchannel
 
     # ----------------------------------------------------------------------
@@ -224,7 +220,7 @@ class ChannelFormatter:
     def convert(self):
         """
         Convert the channel to the expected sample width and frame rate.
-        
+
         """
         newchannel = Channel()
         newchannel.set_frames( self.__convert_frames( self.channel.frames ) )
@@ -241,9 +237,9 @@ class ChannelFormatter:
     def __convert_frames(self, frames):
         """
         Convert frames to the expected sample width and frame rate.
-        
+
         @param frames (string) the frames to convert
-        
+
         """
         f = frames
         fragment = MonoFragment(f)

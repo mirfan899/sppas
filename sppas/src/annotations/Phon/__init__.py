@@ -1,9 +1,22 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
+# ---------------------------------------------------------------------------
+#            ___   __    __    __    ___
+#           /     |  \  |  \  |  \  /              Automatic
+#           \__   |__/  |__/  |___| \__             Annotation
+#              \  |     |     |   |    \             of
+#           ___/  |     |     |   | ___/              Speech
 #
-# Copyright (C) 2013  Brigitte Bigi
 #
-# This file is part of SPPAS.
+#                           http://www.sppas.org/
+#
+# ---------------------------------------------------------------------------
+#            Laboratoire Parole et Langage, Aix-en-Provence, France
+#                   Copyright (C) 2011-2016  Brigitte Bigi
+#
+#                   This banner notice must not be removed
+# ---------------------------------------------------------------------------
+# Use of this software is governed by the GNU Public License, version 3.
 #
 # SPPAS is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,9 +29,12 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with SPPAS.  If not, see <http://www.gnu.org/licenses/>.
+# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+#
+# ---------------------------------------------------------------------------
 
-""" This package is the SPPAS implementation of the Phonetization annotation.
+"""
+    This package is the SPPAS implementation of the Phonetization annotation.
 
     Phonetization is the process of representing sounds with phonetic
     signs. There are two general ways to construct a phonetization process:
@@ -31,7 +47,7 @@
     is language-independent unlike rule-based systems. The SPPAS
     phonetization of the orthographic transcription produces a phonetic
     transcription based on a phonetic dictionary. The phonetization is
-    the equivalent of a sequence of dictionary look-ups. 
+    the equivalent of a sequence of dictionary look-ups.
 
     It is assumed that all words of the speech transcription are mentioned
     in the pronunciation dictionary. Otherwise, SPPAS implements a
@@ -59,4 +75,4 @@
         - pipes separate phonetic variants.
 """
 # Fix the list of public classes:
-__all__ = ['phon', 'esppasphon']
+__all__ = ['phon']

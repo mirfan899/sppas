@@ -2,24 +2,21 @@
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /        Automatic
-#           \__   |__/  |__/  |___| \__      Annotation
-#              \  |     |     |   |    \     of
-#           ___/  |     |     |   | ___/     Speech
-#           =============================
+#           /     |  \  |  \  |  \  /              Automatic
+#           \__   |__/  |__/  |___| \__             Annotation
+#              \  |     |     |   |    \             of
+#           ___/  |     |     |   | ___/              Speech
 #
-#           http://sldr.org/sldr000800/preview/
+#
+#                           http://www.sppas.org/
 #
 # ---------------------------------------------------------------------------
-# developed at:
+#            Laboratoire Parole et Langage, Aix-en-Provence, France
+#                   Copyright (C) 2011-2016  Brigitte Bigi
 #
-#       Laboratoire Parole et Langage
-#
-#       Copyright (C) 2011-2015  Brigitte Bigi
-#
-#       Use of this software is governed by the GPL, v3
-#       This banner notice must not be removed
+#                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
+# Use of this software is governed by the GNU Public License, version 3.
 #
 # SPPAS is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -66,7 +63,7 @@ class Channel:
         self.framerate = framerate
         self.sampwidth = sampwidth
         self.position  = 0
-        
+
         self.frameduration = 0.01
         self.nbreadframes = int(self.frameduration*self.framerate)
 
@@ -78,9 +75,9 @@ class Channel:
         """
         Set new frames to the channel.
         It is supposed the sampwidth and framerate are the same as the current ones.
-        
+
         @param frames (string) the new frames
-        
+
         """
         self.frames = frames
 
@@ -91,10 +88,10 @@ class Channel:
     def get_frames(self, chuncksize):
         """
         Return chuncksize frames from the current position.
-        
+
         @param chuncksize (int) the size of the chunk to return
         @return the frames
-        
+
         """
         p = self.position
         m = len(self.frames)
@@ -107,9 +104,9 @@ class Channel:
     def get_nframes(self):
         """
         Return the number of frames (A frame has a length of (sampwidth) bytes).
-        
+
         @return the total number of frames
-        
+
         """
         return len(self.frames)/self.sampwidth
 
@@ -118,9 +115,9 @@ class Channel:
     def get_framerate(self):
         """
         Return the frame rate.
-        
+
         @return the frame rate of the channel
-        
+
         """
         return self.framerate
 
@@ -129,9 +126,9 @@ class Channel:
     def get_sampwidth(self):
         """
         Return the sample width.
-        
+
         @return the sample width of the channel
-        
+
         """
         return self.sampwidth
 
@@ -140,9 +137,9 @@ class Channel:
     def get_cross(self):
         """
         Return the number of zero crossings.
-        
+
         @return number of zero crossing
-        
+
         """
         return audioop.cross( self.frames )
 
@@ -151,9 +148,9 @@ class Channel:
     def get_rms(self):
         """
         Return the root mean square of the channel.
-        
+
         @return the root mean square of the channel
-        
+
         """
         return audioutils.get_rms( self.frames, self.sampwidth )
 
@@ -162,32 +159,32 @@ class Channel:
     def get_frameduration(self):
         """
         Return the frame-duration set by default used to perform windowing method.
-        
+
         @return the frame duration
-        
+
         """
         return self.frameduration
 
     # -----------------------------------------------------------------------
-    
+
     def get_clipping_rate(self, factor):
         """
         Return the clipping rate of the frames
-        
+
         @param factor (float) An interval to be more precise on clipping rate. It will consider that all frames outside the interval are clipped. Factor has to be between 0 and 1.
-        @return the clipping rate 
-        
+        @return the clipping rate
+
         """
         return audioutils.get_clipping_rate(self.frames, self.sampwidth, factor)
 
     # -----------------------------------------------------------------------
-    
+
     def get_duration(self):
         """
         Return the duration of the channel.
-        
+
         @return the duration of the channel
-        
+
         """
         return float(self.get_nframes())/float(self.get_framerate())
 
@@ -198,25 +195,25 @@ class Channel:
     def tell(self):
         """
         Return the current position.
-        
+
         @return the current position
-        
+
         """
         return self.position
 
     def rewind(self):
         """
         Return at the beginning of the frames.
-                
+
         """
         self.position = 0
 
     def seek(self, position):
         """
         Fix the current position.
-        
+
         @param the position to set
-        
+
         """
         self.position = max(0, min(position, len(self.frames)/self.sampwidth))
 

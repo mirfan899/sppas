@@ -2,24 +2,21 @@
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /        Automatic
-#           \__   |__/  |__/  |___| \__      Annotation
-#              \  |     |     |   |    \     of
-#           ___/  |     |     |   | ___/     Speech
-#           =============================
+#           /     |  \  |  \  |  \  /              Automatic
+#           \__   |__/  |__/  |___| \__             Annotation
+#              \  |     |     |   |    \             of
+#           ___/  |     |     |   | ___/              Speech
 #
-#           http://sldr.org/sldr000800/preview/
+#
+#                           http://www.sppas.org/
 #
 # ---------------------------------------------------------------------------
-# developed at:
+#            Laboratoire Parole et Langage, Aix-en-Provence, France
+#                   Copyright (C) 2011-2016  Brigitte Bigi
 #
-#       Laboratoire Parole et Langage
-#
-#       Copyright (C) 2011-2015  Brigitte Bigi
-#
-#       Use of this software is governed by the GPL, v3
-#       This banner notice must not be removed
+#                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
+# Use of this software is governed by the GNU Public License, version 3.
 #
 # SPPAS is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -66,21 +63,21 @@ class MonoFragment:
 
     # End __init__
     # -----------------------------------------------------------------------
-    
+
     def create_silence(self, nframes):
         """
         Create nframes of silence and append it to the frames
-        
+
         @param the number of frames of silence to create
-        
+
         """
         silence = ""
         for i in range(nframes):
             silence += " \x00"
         self.frames += silence
-        
+
     # ----------------------------------------------------------------------------
-        
+
     def resample(self, sampwidth, rate, newrate):
         """
         Resample the frames with a new frame rate
@@ -88,12 +85,12 @@ class MonoFragment:
         @param sampwidth (int) sample width of the frames.
         @param rate (int) current frame rate of the frames
         @param newrate (int) new frame rate of the frames
-        
+
         """
         self.frames = audioutils.resample(self.frames, sampwidth, 1, rate, newrate)
-        
+
     # ----------------------------------------------------------------------------
-        
+
     def changesampwidth(self, sampwidth, newsampwidth):
         """
         Change the number of bytes used to encode the frames
@@ -103,28 +100,28 @@ class MonoFragment:
 
         """
         self.frames = audioutils.changesampwidth(self.frames, sampwidth, newsampwidth)
-        
+
     # ----------------------------------------------------------------------------
-        
+
     def get_frames(self):
         """
         Return the frames
-        
+
         @return the frames
-        
+
         """
-        return self.frames 
-    
+        return self.frames
+
     # ----------------------------------------------------------------------------
-    
+
     def set_frames(self, frames):
         """
         Set the frames of the MonoFragment
-        
+
         @param the frames to set
-        
+
         """
         self.frames = frames
-    
+
     # ----------------------------------------------------------------------------
         # ----------------------------------------------------------------------------

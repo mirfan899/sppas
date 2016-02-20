@@ -2,24 +2,21 @@
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /        Automatic
-#           \__   |__/  |__/  |___| \__      Annotation
-#              \  |     |     |   |    \     of
-#           ___/  |     |     |   | ___/     Speech
-#           =============================
+#           /     |  \  |  \  |  \  /              Automatic
+#           \__   |__/  |__/  |___| \__             Annotation
+#              \  |     |     |   |    \             of
+#           ___/  |     |     |   | ___/              Speech
 #
-#           http://sldr.org/sldr000800/preview/
+#
+#                           http://www.sppas.org/
 #
 # ---------------------------------------------------------------------------
-# developed at:
+#            Laboratoire Parole et Langage, Aix-en-Provence, France
+#                   Copyright (C) 2011-2016  Brigitte Bigi
 #
-#       Laboratoire Parole et Langage
-#
-#       Copyright (C) 2011-2015  Brigitte Bigi
-#
-#       Use of this software is governed by the GPL, v3
-#       This banner notice must not be removed
+#                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
+# Use of this software is governed by the GNU Public License, version 3.
 #
 # SPPAS is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -343,7 +340,7 @@ class sppasNum:
             elif number == 19: return u"dezenove"
         n = (number / 10) * 10
         r = number % 10
-        if 19 < n < 30:    dizaine = u"vinte"        
+        if 19 < n < 30:    dizaine = u"vinte"
         elif 29 < n < 40:  dizaine = u"trinta"
         elif 39 < n < 50:  dizaine = u"quarenta"
         elif 49 < n < 60:  dizaine = u"cinquenta"
@@ -611,7 +608,7 @@ class sppasNum:
         elif 499 < number < 600:  s = u"quinhentos"
         elif 599 < number < 700:  s = u"seiscentos"
         elif 699 < number < 800:  s = u"setecentos"
-        elif 799 < number < 900:  s = u"oitocentos"            
+        elif 799 < number < 900:  s = u"oitocentos"
         elif 899 < number < 1000: s = u"novecentos"
         if r == 0: return s
         return u"%s-e-%s" % (s, self.dizaine(r))
@@ -732,7 +729,7 @@ class sppasNum:
         if self._lang=="pol":
             return self.__centaine_pol(number)
         if self._lang=="por":
-            return self.__centaine_por(number)            
+            return self.__centaine_por(number)
         if self._lang=="und":
             return str(number)
 

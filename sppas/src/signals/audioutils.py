@@ -2,24 +2,21 @@
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /        Automatic
-#           \__   |__/  |__/  |___| \__      Annotation
-#              \  |     |     |   |    \     of
-#           ___/  |     |     |   | ___/     Speech
-#           =============================
+#           /     |  \  |  \  |  \  /              Automatic
+#           \__   |__/  |__/  |___| \__             Annotation
+#              \  |     |     |   |    \             of
+#           ___/  |     |     |   | ___/              Speech
 #
-#           http://sldr.org/sldr000800/preview/
+#
+#                           http://www.sppas.org/
 #
 # ---------------------------------------------------------------------------
-# developed at:
+#            Laboratoire Parole et Langage, Aix-en-Provence, France
+#                   Copyright (C) 2011-2016  Brigitte Bigi
 #
-#       Laboratoire Parole et Langage
-#
-#       Copyright (C) 2011-2015  Brigitte Bigi
-#
-#       Use of this software is governed by the GPL, v3
-#       This banner notice must not be removed
+#                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
+# Use of this software is governed by the GNU Public License, version 3.
 #
 # SPPAS is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -52,7 +49,7 @@ def samples2frames(samples, sampwidth, nchannel=1):
     @param sampwidth (int) sample width of the frames.
     @param nchannel (int) number of channels in the samples
     @return frames
-    
+
     """
     nframes = len(samples[0])
     frames = ""
@@ -83,7 +80,7 @@ def resample(frames, sampwidth, nchannels, rate, newrate):
     @param rate (int) current framerate of the frames
     @param newrate (int) new framerate of the frames
     @return converted frames
-    
+
     """
     return audioop.ratecv(frames, sampwidth, nchannels, rate, newrate, None)[0]
 
@@ -144,7 +141,7 @@ def get_minval(size, signed=True):
         return -0x8000
     elif size == 4:
         return -0x80000000
-    
+
 # ----------------------------------------------------------------------------
 
 def db2mel(value):
@@ -168,7 +165,7 @@ def mel2db(value):
 
     """
     return 700*(10**(float(value)/2595)-1)
-    
+
 # ----------------------------------------------------------------------------
 
 def bias(fragment, sampwidth, bias):
@@ -246,7 +243,7 @@ def get_rms(frames, sampwidth, nchannels = 1):
                     newFrames = newFrames + frames[j+k]
             sum = sum + audioop.rms(newFrames, sampwidth)
         return sum/nchannels
-    
+
 # ----------------------------------------------------------------------------
 
 def get_clipping_rate(frames, sampwidth, factor):
@@ -266,17 +263,17 @@ def get_clipping_rate(frames, sampwidth, factor):
     else :
         data = struct.unpack("%uB"  %  len(frames),      frames)
         data = [ s - 128 for s in data ]
-        
+
     maxval = get_maxval(sampwidth)*(factor/2.)
     minval = get_minval(sampwidth)*(factor/2.)
-    
+
     nbclipping = 0
-    
+
     for i in xrange(len(data)):
         if data[i] >= maxval or data[i] <= minval:
             nbclipping = nbclipping + 1
-    
-    return float(nbclipping)/len(data)  
-        
-    
+
+    return float(nbclipping)/len(data)
+
+
 # ----------------------------------------------------------------------------

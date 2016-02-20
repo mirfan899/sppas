@@ -2,24 +2,21 @@
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /        Automatic
-#           \__   |__/  |__/  |___| \__      Annotation
-#              \  |     |     |   |    \     of
-#           ___/  |     |     |   | ___/     Speech
-#           =============================
+#           /     |  \  |  \  |  \  /              Automatic
+#           \__   |__/  |__/  |___| \__             Annotation
+#              \  |     |     |   |    \             of
+#           ___/  |     |     |   | ___/              Speech
 #
-#           http://sldr.org/sldr000800/preview/
+#
+#                           http://www.sppas.org/
 #
 # ---------------------------------------------------------------------------
-# developed at:
+#            Laboratoire Parole et Langage, Aix-en-Provence, France
+#                   Copyright (C) 2011-2016  Brigitte Bigi
 #
-#       Laboratoire Parole et Langage
-#
-#       Copyright (C) 2011-2015  Brigitte Bigi
-#
-#       Use of this software is governed by the GPL, v3
-#       This banner notice must not be removed
+#                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
+# Use of this software is governed by the GNU Public License, version 3.
 #
 # SPPAS is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -70,18 +67,18 @@ class ChannelFragmentExtracter:
 
     # End __init__
     # -----------------------------------------------------------------------
-    
+
     def extract_fragment(self, begin, end = 0):
         """
         Extract a fragment between the beginning and the end chosen
-        
+
         @param begin (int : number of frames) the beggining of the fragment to extract
         @param end (int: number of frames) the end of the fragment to extract
-        
+
         @return the fragment extracted in an Channel object
-        
+
         """
-        
+
         if begin > self.nframes:
             raise NameError("The beginning can't be upper than the duration")
         elif end > self.nframes:
@@ -90,14 +87,14 @@ class ChannelFragmentExtracter:
             raise NameError("The end can't be upper than the beginning")
         elif begin < 0 or end < 0:
             raise NameError("Beginning and End can't be negative values")
-        
+
         posbegin = int(begin*self.channel.get_sampwidth())
         if end == 0:
             frames = self.channel.frames[posbegin:]
         else:
             posend = int(end*self.channel.get_sampwidth())
             frames = self.channel.frames[posbegin:posend]
-        
-        
+
+
         return Channel(self.channel.get_framerate(), self.channel.get_sampwidth(), frames)
-            
+

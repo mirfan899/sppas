@@ -2,24 +2,21 @@
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /        Automatic
-#           \__   |__/  |__/  |___| \__      Annotation
-#              \  |     |     |   |    \     of
-#           ___/  |     |     |   | ___/     Speech
-#           =============================
+#           /     |  \  |  \  |  \  /              Automatic
+#           \__   |__/  |__/  |___| \__             Annotation
+#              \  |     |     |   |    \             of
+#           ___/  |     |     |   | ___/              Speech
 #
-#           http://sldr.org/sldr000800/preview/
+#
+#                           http://www.sppas.org/
 #
 # ---------------------------------------------------------------------------
-# developed at:
+#            Laboratoire Parole et Langage, Aix-en-Provence, France
+#                   Copyright (C) 2011-2016  Brigitte Bigi
 #
-#       Laboratoire Parole et Langage
-#
-#       Copyright (C) 2011-2015  Brigitte Bigi
-#
-#       Use of this software is governed by the GPL, v3
-#       This banner notice must not be removed
+#                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
+# Use of this software is governed by the GNU Public License, version 3.
 #
 # SPPAS is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -93,9 +90,9 @@ class Audio( object ):
     def Set(self, audio):
         """
         Set a new Audio() instance either with an audiofp, or channels or both.
-        
+
         @param audio (Audio) audio object
-        
+
         """
         self.__reset()
         self.audiofp = audio.get_audiofp()
@@ -108,18 +105,18 @@ class Audio( object ):
     def get_channels(self):
         """
         Return the list of uploaded channels.
-        
+
         @return the list of channels
-        
+
         """
         return self.channels
 
     def get_audiofp(self):
         """
         Return the audio file pointer.
-        
+
         @return the audio file pointer
-        
+
         """
         return self.audiofp
 
@@ -133,47 +130,47 @@ class Audio( object ):
     def remove_channel(self, channel):
         """
         Remove the channel from the list of uploaded channels
-        
+
         @param channel (Channel) the channel to remove
-        
+
         """
         self.channels.pop(channel)
-        
+
     def pop_channel(self, idx):
         """
         Pop the channel at the position given from the list of uploaded channels
-        
+
         @param idx (int) the index of the channel to remove
-        
+
         """
         self.channels.pop(idx)
-        
+
     def insert_channel(self, idx, channel):
         """
         Insert a channel at the position given in the list of uploaded channels
-        
+
         @param channel (Channel) the channel to insert
         @param idx (int) the index where the channel has to be inserted
-        
+
         """
         self.channels.insert(idx, channel)
 
     def get_channel(self, idx):
         """
         Get an uploaded channel.
-        
+
         @param idx (int) the index of the channel to return
         @return channel (Channel) the channel wanted
-        
+
         """
         return self.channels[idx]
 
     def append_channel(self, channel):
         """
         Append a channel to the list of uploaded channels.
-        
+
         @param channel (Channel) the channel to append
-        
+
         """
         self.channels.append(channel)
 
@@ -202,7 +199,7 @@ class Audio( object ):
             channel = Channel( self.get_framerate(), self.get_sampwidth(), frames )
         else:
             channel = Channel( self.get_framerate(), self.get_sampwidth(), data )
-        
+
         self.append_channel( channel )
 
         return len(self.channels)-1
@@ -217,19 +214,19 @@ class Audio( object ):
     def read(self):
         """
         Read a certain amount of frames, depending on frame-duration value.
-        
+
         @return the frames
-        
+
         """
         return self.read_frames(self.nbreadframes)
 
     def read_frames(self, nframes):
         """
         Read the frames from the audio file.
-        
+
         @param nframes (int) the number of frames to read
         @return the frames
-        
+
         """
         if not self.audiofp:
             raise Exception(NO_AUDIO_MSG)
@@ -238,10 +235,10 @@ class Audio( object ):
     def read_samples(self, nframes):
         """
         Read the samples from the wave file.
-        
+
         @param nframes (int) the number of frames to read
         @return the samples
-        
+
         """
         if not self.audiofp:
             raise Exception(NO_AUDIO_MSG)
@@ -278,9 +275,9 @@ class Audio( object ):
     def get_sampwidth(self):
         """
         Return the sample width of the Audio file pointer.
-        
+
         @return the sample width of the audio file
-        
+
         """
         if not self.audiofp:
             if len(self.channels) > 0:
@@ -292,7 +289,7 @@ class Audio( object ):
     def get_framerate(self):
         """
         Return the frame rate of the Audio file pointer.
-        
+
         @return the frame rate of the audio file
 
         """
@@ -306,9 +303,9 @@ class Audio( object ):
     def get_nframes(self):
         """
         Return the number of frames of the Audio file pointer.
-        
+
         @return the number of frames of the audio file
-        
+
         """
         if not self.audiofp:
             if len(self.channels) > 0:
@@ -320,9 +317,9 @@ class Audio( object ):
     def get_nchannels(self):
         """
         Return the number of channels of the Audio file pointer.
-        
+
         @return the number of channels of the audio file
-        
+
         """
         if not self.audiofp:
             if len(self.channels) > 0:
@@ -334,9 +331,9 @@ class Audio( object ):
     def get_duration(self):
         """
         Return the duration of the Audio file pointer.
-        
+
         @return the duration of the audio file
-        
+
         """
         if not self.audiofp:
             if len(self.channels) > 0:
@@ -353,9 +350,9 @@ class Audio( object ):
         """
         Return the frame-duration used to estimate min, max, mean volumes
         of the Audio file pointer.
-        
+
         @return the frameduration set by default
-        
+
         """
         if not self.audiofp:
             raise Exception(NO_AUDIO_MSG)
@@ -364,9 +361,9 @@ class Audio( object ):
     def get_minvolume(self):
         """
         Return the min volume of the Audio file pointer.
-        
+
         @return the minimum volume
-        
+
         """
         if not self.audiofp:
             raise Exception(NO_AUDIO_MSG)
@@ -376,9 +373,9 @@ class Audio( object ):
     def get_maxvolume(self):
         """
         Return the max volume of the Audio file pointer.
-        
+
         @return the maximum volume
-        
+
         """
         if not self.audiofp:
             raise Exception(NO_AUDIO_MSG)
@@ -388,9 +385,9 @@ class Audio( object ):
     def get_meanvolume(self):
         """
         Return the mean volume of the Audio file pointer.
-        
+
         @return the mean volume
-        
+
         """
         if not self.audiofp:
             raise Exception(NO_AUDIO_MSG)
@@ -402,9 +399,9 @@ class Audio( object ):
     def get_volumes(self):
         """
         Return an array containing the volume of each frame of the Audio file pointer.
-        
+
         @return an array containing the volume of each frame of the audio file
-        
+
         """
         if not self.audiofp:
             raise Exception(NO_AUDIO_MSG)
@@ -419,23 +416,23 @@ class Audio( object ):
     def get_rms(self):
         """
         Return the root mean square of the whole file
-        
+
         @return the root mean square of the audio file
-        
+
         """
         return audioutils.get_rms(self.read_frames(self.get_nframes()), self.get_sampwidth(), self.get_nchannels())
-    
+
     # -----------------------------------------------------------------------
-    
+
     def get_clipping_rate(self, factor):
         """
         Return the clipping rate of the frames
-        
+
         @param factor (float) An interval to be more precise on clipping rate. It will consider that all frames outside the interval are clipped. Factor has to be between 0 and 1.
-        
+
         """
         return audioutils.get_clipping_rate(self.read_frames(self.get_nframes()), self.get_sampwidth(), factor)
-    
+
     # ----------------------------------------------------------------------
 
 
@@ -446,9 +443,9 @@ class Audio( object ):
     def set_pos(self, pos):
         """
         Fix reader position.
-        
+
         @param pos (int) the position to set
-        
+
         """
         if not self.audiofp:
             raise Exception(NO_AUDIO_MSG)
@@ -457,9 +454,9 @@ class Audio( object ):
     def tell(self):
         """
         Get reader position.
-        
+
         @return the current position
-        
+
         """
         if not self.audiofp:
             raise Exception(NO_AUDIO_MSG)
@@ -468,7 +465,7 @@ class Audio( object ):
     def rewind(self):
         """
         Get reader position at the beginning of the file.
-        
+
         """
         if not self.audiofp:
             raise Exception(NO_AUDIO_MSG)
@@ -482,15 +479,15 @@ class Audio( object ):
     def verify_channels(self):
         """
         Verify that the channels have the same framerate, sample width and number of frames.
-        
+
         """
         if len(self.channels) == 0:
             raise NameError("No channel detected !")
-        
+
         sampwidth = self.channels[0].get_sampwidth()
         framerate = self.channels[0].get_framerate()
         nframes = self.channels[0].get_nframes()
-            
+
         for i in xrange(1, len(self.channels)):
             if self.channels[i].get_sampwidth() != sampwidth:
                 raise NameError("Channels have not the same sampwidth ! Convert them before mix.")
@@ -500,7 +497,7 @@ class Audio( object ):
                 raise NameError("Channels have not the same number of frames ! Convert them before mix.")
 
     # ----------------------------------------------------------------------
-    
+
     # ----------------------------------------------------------------------
     # The sad death of this audiofp...
     # ----------------------------------------------------------------------
@@ -508,7 +505,7 @@ class Audio( object ):
     def close(self):
         """
         Close the audiofp.
-        
+
         """
         if not self.audiofp:
             raise Exception(NO_AUDIO_MSG)
@@ -525,7 +522,7 @@ class Audio( object ):
     def __reset(self):
         """
         Reset all members to a default value.
-        
+
         """
 
         # The audio file pointer
@@ -546,7 +543,7 @@ class Audio( object ):
         """
         Set the max volume of the file.
         Max volume for the whole file is the max rms of each frame.
-        
+
         """
         # Max volume was already estimated
         if self.maxvolume is not None:
@@ -573,7 +570,7 @@ class Audio( object ):
     def __set_minvolume(self):
         """
         Min volume for the whole file is the min rms of each frame.
-        
+
         """
         # Min volume was already estimated
         if self.minvolume is not None:
@@ -600,7 +597,7 @@ class Audio( object ):
     def __set_meanvolume(self):
         """
         Calculate the mean volume of the adio file (the mean of rms of the whole file).
-        
+
         """
         # Median volume was already estimated
         if self.meanvolume is not None:
