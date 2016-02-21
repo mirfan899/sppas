@@ -50,7 +50,7 @@ import shutil
 import codecs
 import wx
 
-from wxgui.dialogs.basedialog import BaseDialog
+from wxgui.dialogs.basedialog import spBaseDialog
 from wxgui.sp_icons import REPORT_ICON
 
 from wxgui.sp_consts import MAIN_FONTSIZE
@@ -67,7 +67,7 @@ from sp_glob import encoding
 # class LogDialog
 # ----------------------------------------------------------------------------
 
-class LogDialog( BaseDialog ):
+class LogDialog( spBaseDialog ):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -85,7 +85,7 @@ class LogDialog( BaseDialog ):
         @param filename (str) the file to display in this frame.
 
         """
-        BaseDialog.__init__(self, parent, preferences, title=" - Report")
+        spBaseDialog.__init__(self, parent, preferences, title=" - Report")
         wx.GetApp().SetAppName( "log" )
 
         self.filename = filename
@@ -195,7 +195,7 @@ def ShowLogDialog(parent, preferences, filename):
 
 if __name__ == "__main__":
     app = wx.PySimpleApp()
-    ShowLogDialog(None, preferences=None,filename="log.py")
+    ShowLogDialog(None,None,filename="log.py")
     app.MainLoop()
 
 # ---------------------------------------------------------------------------

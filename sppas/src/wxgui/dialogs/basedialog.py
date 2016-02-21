@@ -46,12 +46,11 @@ import sys
 import os
 import os.path
 sys.path.append(  os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) )
-print os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import wx
 
 from wxgui.sp_icons import APP_ICON
-from wxgui.sp_icons import CANCEL_ICON
+from wxgui.sp_icons import CLOSE_ICON
 from wxgui.sp_icons import SAVE_FILE
 
 from wxgui.cutils.ctrlutils  import CreateGenButton
@@ -68,7 +67,7 @@ import wxgui.structs.prefs
 # class BaseDialog
 # ----------------------------------------------------------------------------
 
-class BaseDialog( wx.Dialog ):
+class spBaseDialog( wx.Dialog ):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -90,6 +89,9 @@ class BaseDialog( wx.Dialog ):
         if preferences is None:
             preferences = wxgui.structs.prefs.Preferences()
         self.preferences = preferences
+
+        # menu and toolbar
+        self.toolbar = None
 
         # icon
         _icon = wx.EmptyIcon()
@@ -141,7 +143,7 @@ class BaseDialog( wx.Dialog ):
         return self.CreateButton(SAVE_FILE, "Save", tooltip)
 
     def CreateCloseButton(self, tooltip=""):
-        btn = self.CreateButton(CANCEL_ICON, "Close", tooltip, wx.ID_CLOSE)
+        btn = self.CreateButton(CLOSE_ICON, "Close", tooltip, wx.ID_CLOSE)
         btn.SetDefault()
         btn.SetFocus()
         self.SetAffirmativeId(wx.ID_CLOSE)
@@ -152,17 +154,34 @@ class BaseDialog( wx.Dialog ):
         if len(leftbuttons)>0:
             for button in leftbuttons:
                 button_box.Add(button, flag=wx.LEFT, border=2)
-            if len(rightbuttons)>0:
-                button_box.AddStretchSpacer()
+            #if len(rightbuttons)>0:
+                #button_box.AddStretchSpacer()
         if len(rightbuttons)>0:
+            button_box.AddStretchSpacer()
             for button in rightbuttons:
                 button_box.Add(button, flag=wx.RIGHT, border=2)
         return button_box
 
 
+    def AddToolbar(self, leftobjects,rightobjects):
+        if len(leftobjects+rightobjects)==0:
+            return
+        self.toolbar = wx.BoxSizer(wx.HORIZONTAL)
+        if len(leftobjects)>0:
+            for button in leftobjects:
+                self.toolbar.Add(button, flag=wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, border=2)
+            if len(rightobjects)>0:
+                self.toolbar.AddStretchSpacer()
+        if len(rightobjects)>0:
+            for button in rightobjects:
+                self.toolbar.Add(button, flag=wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, border=2)
+
+
     def LayoutComponents(self, title, content, buttonbox):
         vbox = wx.BoxSizer(wx.VERTICAL)
         vbox.Add(title,     0, flag=wx.ALL|wx.EXPAND, border=4)
+        if self.toolbar is not None:
+            vbox.Add(self.toolbar, 0, flag=wx.LEFT|wx.RIGHT|wx.EXPAND, border=4)
         vbox.Add(content,   1, flag=wx.ALL|wx.EXPAND, border=4)
         vbox.Add(buttonbox, 0, flag=wx.ALL|wx.EXPAND, border=4)
         self.SetSizerAndFit(vbox)
@@ -171,12 +190,13 @@ class BaseDialog( wx.Dialog ):
 # ---------------------------------------------------------------------------
 
 def ShowBaseDialog(parent, preferences=None):
-    frame = BaseDialog(parent, preferences)
+    frame = spBaseDialog(parent, preferences)
     title = frame.CreateTitle(APP_ICON,"This is a BaseDialog frame...")
     btnsave  = frame.CreateButton(SAVE_FILE,"Save button", "Save something!")
     btnclose = frame.CreateCloseButton()
     btnbox   = frame.CreateButtonBox( [btnsave],[btnclose] )
-    frame.LayoutComponents( title, wx.BoxSizer(wx.HORIZONTAL), btnbox )
+    frame.AddToolbar([wx.StaticText(frame, label="toolbar is here", style=wx.ALIGN_CENTER)],[])
+    frame.LayoutComponents( title, wx.Panel(frame, -1, size=(320,200)), btnbox )
     frame.ShowModal()
     frame.Destroy()
 

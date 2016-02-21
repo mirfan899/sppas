@@ -39,7 +39,6 @@ __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi, Cazembe Henry"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
@@ -53,20 +52,12 @@ import wx
 import wx.lib.agw.floatspin
 import wx.lib.scrolledpanel as scrolled
 
-from wxgui.sp_icons import APP_ICON
+from wxgui.dialogs.basedialog import spBaseDialog
+
 from wxgui.sp_icons import ANNOTATE_CONFIG_ICON
-from wxgui.sp_icons import APPLY_ICON
-from wxgui.sp_icons import CANCEL_ICON
 from wxgui.sp_icons import RESTORE_ICON
-
-from wxgui.cutils.imageutils import spBitmap
-from wxgui.sp_consts import FRAME_STYLE
-from wxgui.sp_consts import FRAME_TITLE
-from wxgui.cutils.ctrlutils import CreateGenButton
-
-# ----------------------------------------------------------------------------
-
-ID_RESTORE = wx.NewId()
+from wxgui.sp_icons import CANCEL_ICON
+from wxgui.sp_icons import APPLY_ICON
 
 # ----------------------------------------------------------------------------
 
@@ -198,13 +189,13 @@ class optionsPanel( scrolled.ScrolledPanel ):
 
 # ----------------------------------------------------------------------------
 
-
-class spAnnotationConfig( wx.Frame ):
+class spAnnotationConfig( spBaseDialog ):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
-    @summary: Frame allowing to configure the annotation' options.
+    @summary: Dialog to configure the automatic annotation options.
+
     Parent must be a sppasFrame.
 
     """
@@ -213,125 +204,55 @@ class spAnnotationConfig( wx.Frame ):
         """
         Constructor.
 
-        @param parent is the sppas main frame
+        @param parent must be the sppas main frame
 
         """
-        wx.Frame.__init__(self, parent, -1,  title=FRAME_TITLE+" - Options", style=FRAME_STYLE)
+        spBaseDialog.__init__(self, parent, preferences, title=" - Options")
+        wx.GetApp().SetAppName( "option"+str(stepidx) )
 
         self.step        = step
         self.stepid      = stepidx
-
         self.preferences = preferences
-        self._create_gui()
 
-        self.Bind(wx.EVT_CLOSE, self.on_close)
+        titlebox   = self._create_title()
+        contentbox = self._create_content()
+        buttonbox  = self._create_buttons()
 
-    # End __init__
-    # ------------------------------------------------------------------------
-
+        self.LayoutComponents( titlebox,
+                               contentbox,
+                               buttonbox )
 
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
 
-
-    def _create_gui(self):
-        self._init_infos()
-        self._create_title_label()
-        self._create_options()
-        self._create_restore_button()
-        self._create_cancel_button()
-        self._create_close_button()
-        self._layout_components()
-        self._set_focus_component()
-
-
-    def _init_infos( self ):
-        wx.GetApp().SetAppName( "option"+str(self.stepid) )
-        # icon
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(APP_ICON) )
-        self.SetIcon(_icon)
-        # colors
-        self.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
-        self.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR'))
-        self.SetFont( self.preferences.GetValue('M_FONT'))
-
-
-    def _create_title_label(self):
-        self.title_layout = wx.BoxSizer(wx.HORIZONTAL)
-        bmp = wx.BitmapButton(self, bitmap=spBitmap(ANNOTATE_CONFIG_ICON, 32, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
-        font = self.preferences.GetValue('M_FONT')
-        font.SetWeight(wx.BOLD)
-        font.SetPointSize(font.GetPointSize() + 2)
+    def _create_title(self):
         text = self.GetParent().parameters.get_step_name(self.stepid)+" Configuration"
-        self.title_label = wx.StaticText(self, label=text, style=wx.ALIGN_CENTER)
-        self.title_label.SetFont( font )
-        self.title_layout.Add(bmp,  flag=wx.TOP|wx.RIGHT|wx.ALIGN_RIGHT, border=5)
-        self.title_layout.Add(self.title_label, flag=wx.EXPAND|wx.ALL|wx.wx.ALIGN_CENTER_VERTICAL, border=5)
+        return self.CreateTitle(ANNOTATE_CONFIG_ICON, text)
 
+    def _create_content(self):
+        options_panel = optionsPanel(self, self.step.get_options())
+        options_panel.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
+        options_panel.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
+        options_panel.SetFont( self.preferences.GetValue('M_FONT') )
+        self.items = options_panel.GetItems()
+        return options_panel
 
-    def _create_options(self):
-        self.options_panel = optionsPanel(self, self.step.get_options())
-        self.options_panel.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
-        self.options_panel.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
-        self.options_panel.SetFont( self.preferences.GetValue('M_FONT') )
-        self.items = self.options_panel.GetItems()
+    def _create_buttons(self):
+        btn_restore = self.CreateButton( RESTORE_ICON, " Restore defaults ", "Reset options to their default values" )
+        btn_cancel  = self.CreateButton( CANCEL_ICON,  " Cancel " )
+        btn_okay    = self.CreateButton( APPLY_ICON,   " Okay" )
+        btn_okay.SetDefault()
+        self.Bind(wx.EVT_BUTTON, self._on_restore, btn_restore)
+        self.Bind(wx.EVT_BUTTON, self._on_cancel, btn_cancel)
+        self.Bind(wx.EVT_BUTTON, self._on_close, btn_okay)
+        return self.CreateButtonBox( [btn_restore],[btn_cancel,btn_okay] )
 
+    # ------------------------------------------------------------------------
+    # Callbacks to events
+    # ------------------------------------------------------------------------
 
-    def _create_restore_button(self):
-        bmp = spBitmap(RESTORE_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        self.btn_restore = CreateGenButton(self, ID_RESTORE, bmp, text=" Restore defaults", tooltip="Reset options to their default values", colour=None)
-        self.btn_restore.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
-        self.btn_restore.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
-        self.btn_restore.SetFont( self.preferences.GetValue('M_FONT') )
-        self.Bind(wx.EVT_BUTTON, self.on_restore, self.btn_restore, ID_RESTORE)
-
-
-    def _create_cancel_button(self):
-        bmp = spBitmap(CANCEL_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        self.btn_cancel = CreateGenButton(self, wx.ID_CANCEL, bmp, text=" Cancel", tooltip="Reset options to their default values", colour=None)
-        self.btn_cancel.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
-        self.btn_cancel.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
-        self.btn_restore.SetFont( self.preferences.GetValue('M_FONT') )
-        self.Bind(wx.EVT_BUTTON, self.on_cancel, self.btn_cancel, wx.ID_CANCEL)
-
-
-    def _create_close_button(self):
-        bmp = spBitmap(APPLY_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        self.btn_close = CreateGenButton(self, wx.ID_CLOSE, bmp, text=" Close", tooltip="Close this frame", colour=None)
-        self.btn_close.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
-        self.btn_close.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
-        self.btn_close.SetFont( self.preferences.GetValue('M_FONT') )
-        self.btn_close.SetDefault()
-        self.Bind(wx.EVT_BUTTON, self.on_close, self.btn_close, wx.ID_CLOSE)
-
-
-    def _layout_components(self):
-        vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.title_layout,  flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self.options_panel, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self._create_button_box(), flag=wx.EXPAND, border=5)
-        self.SetSizerAndFit(vbox)
-        self.Show(True)
-
-
-    def _create_button_box(self):
-        button_box = wx.BoxSizer(wx.HORIZONTAL)
-        button_box.Add(self.btn_restore, flag=wx.RIGHT, border=5)
-        button_box.AddStretchSpacer()
-        button_box.Add(self.btn_cancel, flag=wx.CENTRE, border=5)
-        button_box.AddStretchSpacer()
-        button_box.Add(self.btn_close, flag=wx.LEFT, border=5)
-        return button_box
-
-
-    def _set_focus_component(self):
-        self.btn_close.SetFocus()
-
-    # -----------------------------------------------------------------------
-
-    def on_close(self, evt):
+    def _on_close(self, evt):
         # Save options
         for i in range( len( self.step.get_options() ) ):
             self.step.get_option(i).set_value(self.items[i].GetValue())
@@ -340,13 +261,13 @@ class spAnnotationConfig( wx.Frame ):
         del self.GetParent().opened_frames[self.GetParent().ID_FRAME_ANNOTATION_CFG+self.stepid]
         self.Destroy()
 
-    def on_restore(self, evt):
+    def _on_restore(self, evt):
         #restore options in the frame using the parameters
         for i in range(len( self.step.get_options() )):
             self.items[i].SetValue( self.step.get_option(i).get_value() )
 
-    def on_cancel(self, evt):
+    def _on_cancel(self, evt):
         del self.GetParent().opened_frames[self.GetParent().ID_FRAME_ANNOTATION_CFG+self.stepid]
         self.Destroy()
 
-    # -----------------------------------------------------------------------
+# ----------------------------------------------------------------------------

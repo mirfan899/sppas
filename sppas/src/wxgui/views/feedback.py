@@ -47,7 +47,7 @@ import wx
 import urllib
 import webbrowser
 
-from wxgui.dialogs.basedialog import BaseDialog
+from wxgui.dialogs.basedialog import spBaseDialog
 
 from wxgui.sp_icons import FEEDBACK_ICON
 from wxgui.sp_icons import MAIL_DEFAULT_ICON
@@ -104,7 +104,7 @@ class FeedbackForm(object):
 
 # ----------------------------------------------------------------------------
 
-class FeedbackDialog( BaseDialog ):
+class FeedbackDialog( spBaseDialog ):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -113,13 +113,13 @@ class FeedbackDialog( BaseDialog ):
 
     """
 
-    def __init__(self, parent=None, preferences=None):
-        BaseDialog.__init__(self, parent, preferences, title=" - Feedback")
+    def __init__(self, parent, preferences):
+        spBaseDialog.__init__(self, parent, preferences, title=" - Feedback")
+        wx.GetApp().SetAppName( "feedback" )
 
         self.controller = FeedbackForm(self, webbrowser)
-        wx.GetApp().SetAppName( "log" )
 
-        titlebox = self.CreateTitle(FEEDBACK_ICON,"Email Feedback")
+        titlebox   = self.CreateTitle(FEEDBACK_ICON,"Email Feedback")
         contentbox = self._create_content()
         buttonbox  = self._create_buttons()
 
@@ -135,11 +135,11 @@ class FeedbackDialog( BaseDialog ):
         self.btn_default = self.CreateButton(MAIL_DEFAULT_ICON, " Default ", "Send with your default email client.")
         self.btn_gmail   = self.CreateButton(MAIL_GMAIL_ICON,   " Gmail ",   "Send with Gmail.")
         self.btn_other   = self.CreateButton(MAIL_OTHER_ICON,   " Other ",   "Send with another email client.")
-        self.btn_close   = self.CreateCloseButton()
+        btn_close        = self.CreateCloseButton()
         self.Bind(wx.EVT_BUTTON, self._on_send, self.btn_default)
         self.Bind(wx.EVT_BUTTON, self._on_send, self.btn_other)
         self.Bind(wx.EVT_BUTTON, self._on_send, self.btn_gmail)
-        return self.CreateButtonBox( [self.btn_default,self.btn_gmail,self.btn_other], [self.btn_close])
+        return self.CreateButtonBox( [self.btn_default,self.btn_gmail,self.btn_other], [btn_close])
 
     def _create_content(self):
         self.to_text = wx.TextCtrl(self, wx.ID_ANY, style=wx.TE_READONLY)
@@ -234,7 +234,7 @@ def ShowFeedbackDialog(parent, preferences=None):
 
 if __name__ == "__main__":
     app = wx.PySimpleApp()
-    ShowFeedbackDialog(None)
+    ShowFeedbackDialog(None,None)
     app.MainLoop()
 
 # ---------------------------------------------------------------------------

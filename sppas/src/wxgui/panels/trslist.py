@@ -740,7 +740,8 @@ class TrsList( wx.Panel ):
 
         tier = self._transcription[sellist]
 
-        PreviewTierDialog(self, self._prefs, tiers=[tier])
+        dlg = PreviewTierDialog(self, self._prefs, tiers=[tier])
+        dlg.Show()
 
     # End Preview
     # ----------------------------------------------------------------------
