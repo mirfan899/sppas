@@ -54,7 +54,6 @@ from wxgui.sp_consts          import MAIN_FONTSIZE
 
 # ----------------------------------------------------------------------------
 
-
 def AskQuestion(question, parent=None):
     """
     Ask a yes/no question and return the reply.

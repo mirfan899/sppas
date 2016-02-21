@@ -50,7 +50,7 @@ import pickle
 import wx
 
 from option import Option
-from themes import Themes
+from themes import Themes, BaseTheme
 
 # ----------------------------------------------------------------------------
 
@@ -80,7 +80,7 @@ class Preferences:
         if theme is not None:
             self.SetTheme( theme )
         else:
-            self._prefs['THEME'] = None
+            self.SetTheme( BaseTheme() )
 
     # End __init__
     # ------------------------------------------------------------------------
