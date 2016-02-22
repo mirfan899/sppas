@@ -41,11 +41,9 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ---------------------------------------------------------------------------
 
-import codecs
-import logging
-import rutils
 import collections
 import json
+import copy
 
 from dependencies.grako.parsing import graken, Parser
 
@@ -67,13 +65,12 @@ class HtkIO:
     @summary: HTK-ASCII acoustic models reader/writer.
 
     This class is able to load and save HMM-based acoustic models from
-    an HTK-ASCII file.
+    a HTK-ASCII files.
 
     """
     def __init__(self, *args):
         """
-        Create an HtkIO instance and eventually,
-        load a model from one or more files.
+        Create an HtkIO instance, and optionnaly load a model from some files.
 
         @param args: Filenames of the model (e.g. macros and/or hmmdefs)
 
@@ -105,6 +102,7 @@ class HtkIO:
                     semantics=htkmodel,
                     comments_re="\(\*.*?\*\)",
                     trace=False)
+
         self.macros = model['macros']
         self.hmms   = []
         for hmm in model['hmms']:
@@ -129,13 +127,36 @@ class HtkIO:
     # -----------------------------------------------------------------------
 
     def set(self,macros,hmms):
+        """
+        Set the model of the HMM.
+
+        """
         self.macros = macros
         self.hmms = hmms
 
+    # -----------------------------------------------------------------------
+
     def set_macros(self,macros):
+        """
+        Set the macros of the model.
+
+        @param macros (OrderedDict)
+
+        """
         self.macros = macros
 
+    # -----------------------------------------------------------------------
+
     def set_hmms(self,hmms):
+        """
+        Set the list of HMMs the model.
+
+        @param hmms (list)
+
+        """
+        if not (isinstance(hmms, list) and all([isinstance(h,HMM) for h in hmms])):
+            raise TypeError('Expected a list of HMMs instances.')
+
         self.hmms = hmms
 
     # -----------------------------------------------------------------------
@@ -181,6 +202,7 @@ class HtkIO:
 
         return result
 
+    # -----------------------------------------------------------------------
 
     def serialize_hmms(self):
         """
@@ -197,6 +219,8 @@ class HtkIO:
 
         return result
 
+    # -----------------------------------------------------------------------
+    # Private
     # -----------------------------------------------------------------------
 
     def _serialize_name(self,name):
@@ -414,7 +438,7 @@ class HMM:
     @license: GPL, v3
     @summary: HMM representation for one phone.
 
-    Each hmm model of a phoneme is made of:
+    Each hmm model is a phone representation made of:
        - a 'name': str
        - a 'definition': OrderedDict
 
@@ -434,15 +458,45 @@ class HMM:
 
     """
     def __init__(self):
+        """
+        Constructor.
+        """
         self.name = ""
         self.definition = None
 
     # -----------------------------------------------------------------------
 
+    def set(self, name, definition):
+        """
+        Set the HMM.
+        """
+        self.set_name( name )
+        self.set_definition( definition )
+
+    # -----------------------------------------------------------------------
+
     def set_name(self, name):
+        """
+        Set the name of the HMM.
+
+        @param name (str)
+
+        """
+        if isinstance(name, (str,unicode)) is False:
+            raise TypeError('Expected a name of type string for the HMM. Got: %s'%type(name))
         self.name = name
 
+    # -----------------------------------------------------------------------
+
     def set_definition(self, definition):
+        """
+        Set the definition of the HMM.
+
+        @param definition (OrderedDict)
+
+        """
+        if isinstance(definition, collections.OrderedDict) is False:
+            raise TypeError('Expected a definition of type collections.OrderedDict for the HMM. Got: %s'%type(definition))
         self.definition = definition
 
     # -----------------------------------------------------------------------
@@ -504,9 +558,236 @@ class HMM:
 
     # -----------------------------------------------------------------------
 
+    def static_linear_interpolation(self, hmm, gamma):
+        """
+        Static Linear Interpolation is perhaps one of the most straightforward
+        manner to combine models. This is an efficient way for merging the GMMs
+        of the component models.
+
+        Gamma coefficient is applied to self and (1-Gamma) to the other hmm.
+
+        @param hmm (HMM) the hmm to be interpolated with.
+        @param gamma (float) coefficient to apply to self.
+
+        """
+        # TODO: MUST COMPARE DICT STRUCTURES HERE
+
+        lin = HMMInterpolation()
+
+        sstates = self.definition['states']
+        ostates = hmm.definition['states']
+        intsts  = lin.linear_states([sstates,ostates], [gamma,1.-gamma])
+        if intsts is None:
+            return
+
+        stransition = self.definition['transition']
+        otransition = hmm.definition['transition']
+        inttrs = lin.linear_transitions([stransition,otransition], [gamma,1.-gamma])
+        if inttrs is None:
+            return
+
+        self.definition['states']     = intsts
+        self.definition['transition'] = inttrs
+
+    # -----------------------------------------------------------------------
+
     def _create_default(self):
         return collections.defaultdict(lambda: None)
 
+    # -----------------------------------------------------------------------
+
+    def __repr__(self):
+        return "Name:"+self.name+"\n"+json.dumps(self.definition,indent=2)
+
+# ---------------------------------------------------------------------------
+
+class HMMInterpolation:
+
+
+    def __init__(self):
+        pass
+
+
+    def linear_states(self, states, coefficients):
+        """
+        Linear interpolation of a set of states.
+
+        @param states (OrderedDict)
+        @param coefficients: List of coefficients (must sum to 1.)
+
+        @return state (OrderedDict)
+
+        """
+        if all( type(s)==list for s in states ) is False:
+            return None
+        if len(states) != len(coefficients):
+            return None
+        if len(states)==0:
+            return None
+        if len(states)==1:
+            return states[0]
+
+        intsts = []
+        for i in range(len(states[0])):
+            indexstates = [ v[i] for v in states ]
+            intsts.append( self._linear_interpolate_states( indexstates,coefficients ) )
+
+        return intsts
+
+
+
+    def linear_transitions(self, transitions, coefficients):
+        """
+        Linear interpolation of a set of transitions.
+
+        @param transitions (OrderedDict): with key='dim' and key='matrix'
+        @param coefficients: List of coefficients (must sum to 1.)
+
+        @return transition (OrderedDict)
+
+        """
+        if all( type(t)==collections.OrderedDict for t in transitions ) is False:
+            return None
+        if len(transitions) != len(coefficients):
+            return None
+        if len(transitions)==0:
+            return None
+        if len(transitions)==1:
+            return transitions[0]
+
+        if transitions[0].has_key('definition'):
+            # this is the transition of a macro
+            definitions = [ t['definition'] for t in transitions ]
+            intdef =  self._linear_interpolate_transitions(definitions, coefficients)
+            if intdef is None: return None
+            t = copy.deepcopy(transitions[0])
+            t['definition'] = intdef
+            return t
+
+        return self._linear_interpolate_transitions(transitions, coefficients)
+
+
+    # -----------------------------------------------------------------------
+    # Private
+    # -----------------------------------------------------------------------
+
+    def _linear_interpolate_values(self, values, gammas):
+        """
+        Interpolate linearly values with gamma coefficients.
+
+        @param values: List of values
+        @param gammas: List of coefficients (must sum to 1.)
+        """
+        intval = [ v*g for (v,g) in zip(values,gammas) ]
+        return sum( intval )
+
+
+    def _linear_interpolate_vectors(self, vectors, gammas):
+        """
+        Interpolate linearly vectors with gamma coefficients.
+
+        @param values: List of vectors
+        @param gammas: List of coefficients (must sum to 1.)
+        """
+        intvec = []
+        for i in range(len(vectors[0])):
+            values = [ v[i] for v in vectors ]
+            intvec.append( self._linear_interpolate_values(values, gammas) )
+        return intvec
+
+
+    def _linear_interpolate_matrix(self, matrices, gammas):
+        """
+        Interpolate linearly matrix with gamma coefficients.
+
+        @param values: List of matrix
+        @param gammas: List of coefficients (must sum to 1.)
+        """
+        intmat = []
+        for i in range(len(matrices[0])):
+            vectors = [ m[i] for m in matrices ]
+            intmat.append( self._linear_interpolate_vectors(vectors,gammas) )
+        return intmat
+
+
+    def _linear_interpolate_transitions(self, transitions, gammas):
+        """
+        Linear interpolation of a set of transitions, of an hmm.
+
+        @param transitions (OrderedDict): with key='dim' and key='matrix'
+        @param coefficients: List of coefficients (must sum to 1.)
+
+        @return transition (OrderedDict)
+
+        """
+        if all( t['dim']==transitions[0]['dim'] for t in transitions ) is False:
+            return None
+
+        transmatrix = [ t['matrix'] for t in transitions ]
+        if len(transmatrix) != len(gammas):
+            return None
+
+        matrix = self._linear_interpolate_matrix(transmatrix, gammas)
+
+        t = collections.OrderedDict
+        t = copy.deepcopy(transitions[0])
+        t['matrix']=matrix
+        return t
+
+
+    def _linear_interpolate_states(self, states, gammas):
+        """
+        Linear interpolation of a set of states, of one index only.
+
+        @param states (OrderedDict)
+        @param coefficients: List of coefficients (must sum to 1.)
+
+        @return state (OrderedDict)
+
+        """
+        onestate = [ item['state'] for item in states ]
+        if all( type(item)==collections.OrderedDict for item in onestate) is False:
+            return None
+
+        streams   = [ item['streams'] for item in onestate ]
+        mixtures  = [ item['mixtures'] for item in streams[0] ]
+        pdfs      = [ item['pdf'] for item in mixtures[0] ]
+        means     = [ item['mean']['vector'] for item in pdfs ]
+        variances = [ item['covariance']['variance']['vector'] for item in pdfs ]
+        gconsts   = [ item['gconst'] for item in pdfs ]
+
+        dim = pdfs[0]['mean']['dim']
+        if all( item['mean']['dim']==dim for item in pdfs) is False:
+            return None
+        dim = pdfs[0]['covariance']['variance']['dim']
+        if all( item['covariance']['variance']['dim']==dim for item in pdfs) is False:
+            return None
+
+        # interpolate weights
+        intwgt = None
+        w = []
+        for m in mixtures[0]:
+            if m['weight'] is not None:
+                w.append(m['weight'])
+        if len(w)==len(mixtures[0]):
+            intwgt = self._linear_interpolate_values( w,gammas )
+
+        # interpolate means, variance and gconsts
+        intmean = self._linear_interpolate_vectors( means,gammas )
+        intvari = self._linear_interpolate_vectors( variances,gammas )
+        intgcst = self._linear_interpolate_values( gconsts,gammas )
+
+        # Assign to a new state
+        if intmean is None or intvari is None or intgcst is None:
+            return None
+
+        intstate = copy.deepcopy(states[0])
+        intstate['state']['streams'][0]['mixtures'][0]['weight'] = intwgt
+        intstate['state']['streams'][0]['mixtures'][0]['pdf']['mean']['vector'] = intmean
+        intstate['state']['streams'][0]['mixtures'][0]['pdf']['covariance']['variance']['vector'] = intvari
+        intstate['state']['streams'][0]['mixtures'][0]['pdf']['gconst'] = intgcst
+
+        return intstate
 
 # ---------------------------------------------------------------------------
 
@@ -529,7 +810,7 @@ class AcModel:
 
     A model is made of:
        - a 'macro'.
-       - 'hmms' models (one per phoneme): OrderedDict of HMM instances
+       - 'hmms' models (one per phoneme): list of HMM instances
 
     """
 
@@ -613,88 +894,6 @@ class AcModel:
 
     # -----------------------------------------------------------------------
 
-    def _interpolate_values(self, value1, value2, gamma):
-        p1 = gamma * value1
-        p2 = (1.-gamma) * value2
-        return p1 + p2
-
-    def _interpolate_vectors(self, vector1, vector2, gamma):
-        v = []
-        for v1,v2 in zip(vector1,vector2):
-            v.append( self._interpolate_values(v1, v2, gamma) )
-        return v
-
-
-    def static_linear_interpolation_hmm(self, phone, hmm, gamma):
-        """
-        Static Linear Interpolation is perhaps one of the most straightforward
-        manner to combine models. This is an efficient way for merging the GMMs
-        of the component models.
-
-        Gamma coefficient is applied to self and (1-Gamma) to the other hmm.
-
-        @param phone (str) the name of the phoneme to interpolate.
-        @param hmm (HMM) the hmm to be interpolated with.
-        @param gamma (float) coefficient to apply to the model of phoneme.
-
-        """
-        # TODO: MUST COMPARE DICT STRUCTURES HERE
-
-        shmm = self.get_hmm(phone)
-
-        sstates = shmm.definition['states']
-        ostates = hmm.definition['states']
-
-        for sitem,oitem in zip(sstates,ostates): # a dict
-            sstate = sitem['state']
-            ostate = oitem['state']
-            if type(sstate) != collections.OrderedDict or type(ostate) != collections.OrderedDict:
-                continue
-            sstreams = sstate['streams']
-            ostreams = ostate['streams']
-
-            for ss,os in zip(sstreams,ostreams): # a list
-                smixtures = ss['mixtures']
-                omixtures = os['mixtures']
-
-                for smixture,omixture in zip(smixtures,omixtures): # a list of dict
-
-                    if smixture['weight'] is not None:
-                        smixture['weight'] = self._interpolate_values(smixture['weight'],omixture['weight'],gamma)
-
-                    spdf = smixture['pdf']
-                    opdf = omixture['pdf']
-
-                    if spdf['mean']['dim'] != opdf['mean']['dim']:
-                        raise TypeError
-                    if spdf['covariance']['variance']['dim'] != opdf['covariance']['variance']['dim']:
-                        raise TypeError
-
-                    svector = spdf['mean']['vector']
-                    ovector = opdf['mean']['vector']
-                    spdf['mean']['vector'] = self._interpolate_vectors(svector,ovector,gamma)
-
-                    svector = spdf['covariance']['variance']['vector']
-                    ovector = opdf['covariance']['variance']['vector']
-                    spdf['covariance']['variance']['vector'] = self._interpolate_vectors(svector,ovector,gamma)
-
-                    spdf['gconst'] = self._interpolate_values(spdf['gconst'], opdf['gconst'], gamma)
-
-        stransition = shmm.definition['transition']
-        otransition = hmm.definition['transition']
-        if type(stransition) != collections.OrderedDict or type(otransition) != collections.OrderedDict:
-            return
-        if stransition['dim'] != otransition['dim']:
-            raise TypeError
-        smatrix = stransition['matrix']
-        omatrix = otransition['matrix']
-        matrix = []
-        for svector,ovector in zip(smatrix,omatrix):
-            matrix.append( self._interpolate_vectors(svector,ovector,gamma) )
-        stransition['matrix'] = matrix
-
-    # -----------------------------------------------------------------------
-
     def create_model(self, macros, hmms):
         """
         Create an empty AcModel and return it.
@@ -744,7 +943,8 @@ class AcModel:
                         changed = changed + 1
                         keeped  = keeped  - 1
                     else:
-                        self.static_linear_interpolation_hmm(hmm.name, hmm, gamma)
+                        selfhmm = self.get_hmm( hmm.name )
+                        selfhmm.static_linear_interpolation(hmm, gamma)
                         interpolated = interpolated + 1
                         keeped       = keeped       - 1
                     break
@@ -772,6 +972,14 @@ class AcModel:
     # -----------------------------------------------------------------------
     # Private
     # -----------------------------------------------------------------------
+
+    def __str__(self):
+        strmacros=json.dumps(self.macros,indent=2)
+        strhmms="\n".join( [str(h) for h in self.hmms] )
+        return "MACROS:"+strmacros+"HMMS:"+strhmms
+
+
+    # ----------------------------------
     # TODO: Test all the create methods
 
     def _create_default(self):
@@ -853,10 +1061,6 @@ class AcModel:
 
         return gmm
 
-    # ----------------------------------
-
-    def __repr__(self):
-        return json.dumps(self.model,indent=2)
 
 # ---------------------------------------------------------------------------
 

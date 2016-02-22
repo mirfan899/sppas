@@ -12,7 +12,7 @@ import copy
 SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
 sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
-from resources.acmodel import AcModel, HMM
+from resources.acmodel import AcModel, HMM, HMMInterpolation
 from utils.type import compare_dictionaries, compare_lists
 
 MODEL_PATH = os.path.join(SPPAS, "resources", "models")
@@ -21,16 +21,68 @@ MODEL_PATH = os.path.join(SPPAS, "resources", "models")
 
 class TestAcModel(unittest.TestCase):
 
-    def setUp(self):
-        self.hmmdefs = os.path.join(MODEL_PATH,"models-jpn","hmmdefs")
-        self.acmodel = AcModel()
-        self.acmodel.load_htk( self.hmmdefs )
-
+# This one takes too much time
 #     def test_load_all_models(self):
 #         models = glob.glob(os.path.join(MODEL_PATH,"models-*","hmmdefs"))
 #         for hmmdefs in models:
 #             acmodel = AcModel( hmmdefs )
 #             self._test_load_save( acmodel )
+
+
+    def test_interpolate_simple(self):
+        vec1 = [0,0.2,0.8,0]
+        vec2 = [0,0.4,0.6,0]
+        lin = HMMInterpolation()
+        v = lin._linear_interpolate_vectors( [vec1,vec2], [1,0] )
+        self.assertEqual(v, vec1)
+        v = lin._linear_interpolate_vectors( [vec1,vec2], [0,1] )
+        self.assertEqual(v, vec2)
+        v = lin._linear_interpolate_vectors( [vec1,vec2], [0.5,0.5] )
+        v = [round(value,1) for value in v]
+        self.assertEqual(v, [0,0.3,0.7,0])
+
+        mat1 = [vec1,vec1]
+        mat2 = [vec2,vec2]
+        m = lin._linear_interpolate_matrix( [mat1,mat2], [1,0] )
+        self.assertEqual(m, mat1)
+        m = lin._linear_interpolate_matrix( [mat1,mat2], [0,1] )
+        self.assertEqual(m, mat2)
+        m = lin._linear_interpolate_matrix( [mat1,mat2], [0.5,0.5] )
+        m[0] = [round(value,1) for value in m[0]]
+        m[1] = [round(value,1) for value in m[1]]
+        self.assertEqual(m, [[0,0.3,0.7,0],[0,0.3,0.7,0]])
+
+
+    def test_interpolate_hmm(self):
+        lin = HMMInterpolation()
+        acmodel1 = AcModel()
+        acmodel1.load_htk( "1-hmmdefs" )
+        acmodel2 = AcModel()
+        acmodel2.load_htk( "2-hmmdefs" )
+        ahmm1=acmodel1.get_hmm('a')
+        ahmm2=acmodel2.get_hmm('a')
+
+        # transitions
+        transitions = [ ahmm1.definition['transition'],ahmm2.definition['transition'] ]
+        trs = lin.linear_transitions( transitions, [1,0])
+        self.assertTrue(compare_dictionaries(trs,ahmm1.definition['transition']))
+        trs = lin.linear_transitions( transitions, [0,1])
+        self.assertTrue(compare_dictionaries(trs,ahmm2.definition['transition']))
+
+        # states
+        states = [ ahmm1.definition['states'],ahmm2.definition['states'] ]
+        sts = lin.linear_states( states, [1,0])
+        #self.assertTrue(compare_dictionaries(sts,ahmm1.definition['states']))
+
+        sts = lin.linear_states( states, [0,1])
+        #self.assertTrue(compare_dictionaries(sts,ahmm2.definition['states']))
+
+
+    def setUp(self):
+        self.hmmdefs = os.path.join(MODEL_PATH,"models-jpn","hmmdefs")
+        self.acmodel = AcModel()
+        self.acmodel.load_htk( self.hmmdefs )
+
 
     def test_load_save(self):
         self._test_load_save( self.hmmdefs )
