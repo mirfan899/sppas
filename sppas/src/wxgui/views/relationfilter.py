@@ -39,7 +39,6 @@ __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
@@ -52,6 +51,7 @@ import logging
 
 from annotationdata.filter.predicate import Rel
 
+from wxgui.dialogs.basedialog import spBaseDialog
 from wxgui.sp_icons import DATAFILTER_APP_ICON
 from wxgui.sp_icons import FILTER_RELATION
 from wxgui.sp_icons import APPLY_ICON
@@ -77,12 +77,11 @@ from sp_glob import ICONS_PATH
 
 DEFAULT_TIERNAME = "Filtered tier"
 
-
 # ----------------------------------------------------------------------------
 # class RelationFilterDialog
 # ----------------------------------------------------------------------------
 
-class RelationFilterDialog( wx.Dialog ):
+class RelationFilterDialog( spBaseDialog ):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -94,71 +93,45 @@ class RelationFilterDialog( wx.Dialog ):
 
     """
 
-    def __init__(self, parent, prefsIO, tierX=[], tierY=[]):
+    def __init__(self, parent, preferences, tierX=[], tierY=[]):
         """
         Create a new dialog.
 
         """
-        wx.Dialog.__init__(self, parent, title=FRAME_TITLE+" - RelationFilter", style=FRAME_STYLE)
+        spBaseDialog.__init__(self, parent, preferences, title=" - RelationFilter")
+        wx.GetApp().SetAppName( "relationfilter" )
 
         # Members
-        self.preferences = prefsIO
         self.tierX = tierX
         self.tierY = tierY
 
-        self._create_gui()
+        titlebox   = self.CreateTitle(FILTER_RELATION,"Filter a tier X, depending on time-relations with a tier Y")
+        contentbox = self._create_content()
+        buttonbox  = self._create_buttons()
 
-        # Events of this frame
-        wx.EVT_CLOSE(self, self.onClose)
-
-    # End __init__
-    # ------------------------------------------------------------------------
-
+        self.LayoutComponents( titlebox,
+                               contentbox,
+                               buttonbox )
 
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
 
-
-    def _create_gui(self):
-        self._init_infos()
-        self._create_title_label()
-        self._create_content()
-        self._create_cancel_button()
-        self._create_apply_button()
-        self._layout_components()
-        self._set_focus_component()
-
-
-    def _init_infos( self ):
-        wx.GetApp().SetAppName( "relationfilter" )
-        # icon
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(DATAFILTER_APP_ICON) )
-        self.SetIcon(_icon)
-        # colors
-        self.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
-        self.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR'))
-        self.SetFont( self.preferences.GetValue('M_FONT'))
-
-
-    def _create_title_label(self):
-        self.title_layout = wx.BoxSizer(wx.HORIZONTAL)
-        bmp = wx.BitmapButton(self, bitmap=spBitmap(FILTER_RELATION, 32, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
-        font = self.preferences.GetValue('M_FONT')
-        font.SetWeight(wx.BOLD)
-        font.SetPointSize(font.GetPointSize() + 2)
-        self.title_label = wx.StaticText(self, label="Filter a tier X, depending on time-relations with a tier Y", style=wx.ALIGN_CENTER)
-        self.title_label.SetFont( font )
-        self.title_layout.Add(bmp,  flag=wx.TOP|wx.RIGHT|wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL, border=5)
-        self.title_layout.Add(self.title_label, flag=wx.EXPAND|wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
-
+    def _create_buttons(self):
+        btn_cancel = self.CreateCancelButton( )
+        btn_close  = self.CreateCloseButton( )
+        return self.CreateButtonBox( [btn_cancel],[btn_close] )
 
     def _create_content(self):
         self.xy_layout       = self._create_xy_layout()
         self.filterpanel     = RelationFilterPanel(self, self.preferences)
         self.tiername_layout = self._create_tiername_layout()
 
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        vbox.Add(self.xy_layout,       0, flag=wx.ALL|wx.EXPAND, border=5)
+        vbox.Add(self.filterpanel,     1, flag=wx.ALL|wx.EXPAND, border=10)
+        vbox.Add(self.tiername_layout, 0, flag=wx.ALL|wx.EXPAND, border=5)
+        return vbox
 
     def _create_tiername_layout(self):
         sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -173,7 +146,6 @@ class RelationFilterDialog( wx.Dialog ):
         sizer.Add(title_tiername,  flag=wx.ALL|wx.wx.ALIGN_CENTER_VERTICAL, border=5)
         sizer.Add(self.text_outtiername, flag=wx.EXPAND|wx.ALL|wx.wx.ALIGN_CENTER_VERTICAL, border=5)
         return  sizer
-
 
     def _create_xy_layout(self):
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -208,15 +180,6 @@ class RelationFilterDialog( wx.Dialog ):
         btn.Bind(wx.EVT_BUTTON, self.OnChooseY)
         return s
 
-
-    def _create_cancel_button(self):
-        bmp = spBitmap(CANCEL_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_cancel = CreateGenButton(self, wx.ID_CLOSE, bmp, text=" Cancel ", tooltip="Close this frame", colour=color)
-        self.btn_cancel.SetFont( self.preferences.GetValue('M_FONT'))
-        self.SetEscapeId(wx.ID_CLOSE)
-
-
     def _create_apply_button(self):
         bmp = spBitmap(APPLY_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
         color = self.preferences.GetValue('M_BG_COLOUR')
@@ -225,35 +188,9 @@ class RelationFilterDialog( wx.Dialog ):
         self.btn_apply.SetDefault()
         self.btn_apply.SetFocus()
 
-
-    def _create_button_box(self):
-        button_box = wx.BoxSizer(wx.HORIZONTAL)
-        button_box.Add(self.btn_cancel,   flag=wx.LEFT,  border=5)
-        button_box.AddStretchSpacer()
-        button_box.Add(self.btn_apply, flag=wx.RIGHT, border=5)
-        return button_box
-
-
-    def _layout_components(self):
-        vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.title_layout,    0, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self.xy_layout,       0, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self.filterpanel,     1, flag=wx.ALL|wx.EXPAND, border=10)
-        vbox.Add(self.tiername_layout, 0, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self._create_button_box(), 0, flag=wx.ALL|wx.EXPAND, border=5)
-        self.SetSizerAndFit(vbox)
-
-
-    def _set_focus_component(self):
-        self.filterpanel.SetFocus()
-
-
     #-------------------------------------------------------------------------
     # Callbacks
     #-------------------------------------------------------------------------
-
-    def onClose(self, event):
-        self.SetEscapeId( wx.ID_CANCEL )
 
     def OnChooseY(self, event):
         logging.debug("choices are: %s"%self.tierY)
@@ -290,11 +227,9 @@ class RelationFilterDialog( wx.Dialog ):
 
     #-------------------------------------------------------------------------
 
-
     #-------------------------------------------------------------------------
     # Getters...
     #-------------------------------------------------------------------------
-
 
     def GetPredicate(self):
         """

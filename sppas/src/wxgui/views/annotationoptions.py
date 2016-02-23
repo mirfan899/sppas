@@ -57,7 +57,7 @@ from wxgui.dialogs.basedialog import spBaseDialog
 from wxgui.sp_icons import ANNOTATE_CONFIG_ICON
 from wxgui.sp_icons import RESTORE_ICON
 from wxgui.sp_icons import CANCEL_ICON
-from wxgui.sp_icons import APPLY_ICON
+from wxgui.sp_icons import CLOSE_ICON
 
 # ----------------------------------------------------------------------------
 
@@ -241,12 +241,12 @@ class spAnnotationConfig( spBaseDialog ):
     def _create_buttons(self):
         btn_restore = self.CreateButton( RESTORE_ICON, " Restore defaults ", "Reset options to their default values" )
         btn_cancel  = self.CreateButton( CANCEL_ICON,  " Cancel " )
-        btn_okay    = self.CreateButton( APPLY_ICON,   " Okay" )
-        btn_okay.SetDefault()
+        btn_close   = self.CreateButton( CLOSE_ICON,   " Close" )
+        btn_close.SetDefault()
         self.Bind(wx.EVT_BUTTON, self._on_restore, btn_restore)
         self.Bind(wx.EVT_BUTTON, self._on_cancel, btn_cancel)
-        self.Bind(wx.EVT_BUTTON, self._on_close, btn_okay)
-        return self.CreateButtonBox( [btn_restore],[btn_cancel,btn_okay] )
+        self.Bind(wx.EVT_BUTTON, self._on_close, btn_close)
+        return self.CreateButtonBox( [btn_restore],[btn_cancel,btn_close] )
 
     # ------------------------------------------------------------------------
     # Callbacks to events

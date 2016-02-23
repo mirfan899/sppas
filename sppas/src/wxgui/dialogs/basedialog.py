@@ -51,6 +51,7 @@ import wx
 
 from wxgui.sp_icons import APP_ICON
 from wxgui.sp_icons import CLOSE_ICON
+from wxgui.sp_icons import CANCEL_ICON
 from wxgui.sp_icons import SAVE_FILE
 
 from wxgui.cutils.ctrlutils  import CreateGenButton
@@ -141,6 +142,11 @@ class spBaseDialog( wx.Dialog ):
 
     def CreateSaveButton(self, tooltip=""):
         return self.CreateButton(SAVE_FILE, "Save", tooltip)
+
+    def CreateCancelButton(self, tooltip=""):
+        btn = self.CreateButton(CANCEL_ICON, "Cancel", tooltip, wx.ID_CANCEL)
+        self.SetAffirmativeId(wx.ID_CANCEL)
+        return btn
 
     def CreateCloseButton(self, tooltip=""):
         btn = self.CreateButton(CLOSE_ICON, "Close", tooltip, wx.ID_CLOSE)
