@@ -111,7 +111,7 @@ def compare_dictionaries(dict1,dict2,case_sensitive=False,verbose=False):
         return False
 
     if type(dict1) != type(dict2) or type_dict(dict1) is not True or type_dict(dict2) is not True:
-        if verbose: print "FALSE: Not same type as input."
+        if verbose: print "FALSE: Not same type as input (expected two dictionaries)."
         return False
 
     shared_keys = set(dict2.keys()) & set(dict2.keys())
