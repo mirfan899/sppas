@@ -109,7 +109,7 @@ class LemmaDict:
         """
         return len(self.lemdict)
 
-    # End get_dictsize
+    # End get_size
     # ------------------------------------------------------------------
 
 

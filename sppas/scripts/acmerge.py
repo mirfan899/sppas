@@ -59,13 +59,17 @@ from resources.acmodel import AcModel
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -i file1 -I file2 -g gamma -o file" % os.path.basename(PROGRAM), description="... a script to merge 2 hmmdefs files.")
+parser = ArgumentParser(usage="%s -i file1/dir1 -I file2/dir2 -g gamma -o file" % os.path.basename(PROGRAM), description="... a script to merge 2 hmmdefs files.")
 
-parser.add_argument("-i", metavar="file", required=True,  help='Input file name')
-parser.add_argument("-I", metavar="file", required=True,  help='Input file name')
+parser.add_argument("-i", metavar="file", required=True,  help='Input file/directory name')
+parser.add_argument("-I", metavar="file", required=True,  help='Input file/directory name')
 parser.add_argument("-g", metavar="value", type=float, default=0.5, help='Gamma coefficient, for the file of -i option')
-parser.add_argument("-o", metavar="file", required=True,  help='Output file name')
 parser.add_argument("--quiet", action='store_true', help="Disable the verbosity" )
+
+mxg = parser.add_mutually_exclusive_group(required=True)
+mxg.add_argument("-o", metavar="file", required=False,  help='Output file name')
+mxg.add_argument("-O", metavar="file", required=False,  help='Output directory name')
+
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -75,16 +79,22 @@ args = parser.parse_args()
 # ----------------------------------------------------------------------------
 
 if not args.quiet is True:
-    print "Loading AC ",
+    print "Loading AC 1:",
 acmodel1 = AcModel()
-acmodel1.load_htk( args.i )
+if os.path.isfile( args.i ):
+    acmodel1.load_htk( args.i )
+else:
+    acmodel1.load( args.i )
 if not args.quiet is True:
     print "... done"
 
 if not args.quiet is True:
-    print "Loading AC ",
+    print "Loading AC 2:",
 acmodel2 = AcModel()
-acmodel2.load_htk( args.I )
+if os.path.isfile( args.I ):
+    acmodel2.load_htk( args.I )
+else:
+    acmodel2.load( args.I )
 if not args.quiet is True:
     print "... done"
 
@@ -95,6 +105,9 @@ if not args.quiet is True:
     print "Number of keeped HMMs:       ",keeped
     print "Number of changed HMMs:      ",changed
 
-acmodel1.save_htk( args.o )
+if args.o:
+    acmodel1.save_htk( args.o )
+if args.O:
+    acmodel1.save( args.O )
 
 # ----------------------------------------------------------------------------

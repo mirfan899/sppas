@@ -109,6 +109,7 @@ class juliusAligner( baseAligner ):
         """
         self._mapping.set_keepmiss(True)
         self._mapping.set_reverse( True )
+
         phones = self._mapping.map(phones)
 
         with codecs.open(grammarname, 'w', self._encoding) as fdfa,\
@@ -230,20 +231,21 @@ class juliusAligner( baseAligner ):
         err = 2
         if os.path.isfile(outputalign):
             with codecs.open(outputalign, 'r', self._encoding) as f:
-                for line in f:
-                    if line.find("Error: voca_load_htkdict") > -1:
-                        if self._logfile:
-                            message="The reported error is:\n"
-                            for line in f:
-                                if line.find("Error: ") > -1:
-                                    message = message + line
-                            self._logfile.print_message(message,indent=3,status=-1)
-                        if os.path.isfile(tiedlist):
-                            err += 3
-                        else:
-                            return 1
-                    elif line.find("forced alignment ===") > -1:
-                        err -= 1
+                lines = f.readlines()
+            for line in lines:
+                if line.startswith("Error: voca_load_htkdict"):
+                    if self._logfile:
+                        message="The reported error is:\n"
+                        for l in lines:
+                            if l.startswith("Error:"):
+                                message = message + l
+                        self._logfile.print_message(message,indent=3,status=-1)
+                    if os.path.isfile(tiedlist):
+                        err += 3
+                    else:
+                        return 1
+                elif line.find("forced alignment ===") > -1:
+                    err -= 1
         return err
 
     # End run_julius

@@ -49,6 +49,7 @@ import random
 import glob
 import string
 import codecs
+import os.path
 from datetime import date
 
 import utils.name
@@ -127,9 +128,10 @@ class sppasAlign:
         self._model   = model
         self._logfile = logfile
 
-        try:
-            self._mapping = Mapping( os.path.join( self._model, "monophones.repl") )
-        except Exception:
+        mappingfilename = os.path.join( self._model, "monophones.repl")
+        if os.path.isfile( mappingfilename ):
+            self._mapping = Mapping( mappingfilename )
+        else:
             self._mapping = Mapping()
 
         # List of options to configure this automatic annotation
@@ -631,8 +633,10 @@ class sppasAlign:
 
             # Execute BasicAlign
             if ret != 0:
-                if os.path.exists(alignname): os.rename(alignname, alignname+'.backup')
-                if self._logfile: self._logfile.print_message('Execute a Basic Alignment - same duration for each phoneme:',indent=3)
+                if os.path.exists(alignname):
+                    os.rename(alignname, alignname+'.backup')
+                if self._logfile:
+                    self._logfile.print_message('Execute a Basic Alignment - same duration for each phoneme:',indent=3)
                 alignname = os.path.join(diralign, "track_%06d.palign"%track)
                 self._basicaligner.run_alignment(audiofilename, phonname, alignname)
 

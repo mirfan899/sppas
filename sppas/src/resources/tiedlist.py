@@ -93,6 +93,30 @@ class TiedList:
 
     # -----------------------------------------------------------------------
 
+    def save(self, filename):
+        """
+        Save the tiedlist into a file.
+
+        @param filename is the tiedlist file name
+
+        """
+        with codecs.open(filename, 'w', rutils.ENCODING) as fp:
+            for triphone in self.observed:
+                fp.write( triphone + "\n" )
+            for k,v in sorted(self.tied.items()):
+                fp.write( k + " " + v + "\n")
+
+    # -----------------------------------------------------------------------
+
+    def is_empty(self):
+        """
+        Return True if the TiedList() is empty.
+
+        """
+        return len(self.observed)==0 and len(self.tied)==0
+
+    # -----------------------------------------------------------------------
+
     def is_observed(self, entry):
         """
         Return True if entry is really observed (not tied!).
@@ -112,21 +136,6 @@ class TiedList:
 
         """
         return self.tied.has_key( entry )
-
-    # -----------------------------------------------------------------------
-
-    def save(self, filename):
-        """
-        Save the tiedlist in a file.
-
-        @param filename is the tiedlist file name
-
-        """
-        with codecs.open(filename, 'w', rutils.ENCODING) as fp:
-            for triphone in self.observed:
-                fp.write( triphone + "\n" )
-            for k,v in sorted(self.tied.items()):
-                fp.write( k + " " + v + "\n")
 
     # -----------------------------------------------------------------------
 
@@ -169,6 +178,24 @@ class TiedList:
             self.observed.append( entry )
             return True
         return False
+
+    # -----------------------------------------------------------------------
+
+    def merge(self, other):
+        """
+        Merge self with another tiedlist.
+
+        @param other (TiedList)
+
+        """
+        if isinstance(other,TiedList) is False:
+            raise TypeError('A TiedList can only be merged with another TiedList. Got %s.'%type(other))
+
+        for obs in other.observed:
+            self.add_observed( obs )
+
+        for tie,obs in other.tied.items():
+            self.add_tied(tie, obs)
 
     # -----------------------------------------------------------------------
     # Private

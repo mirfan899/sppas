@@ -37,52 +37,40 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
 import re
-
-from resources.dictrepl  import DictRepl
+from dictrepl  import DictRepl
 
 # ----------------------------------------------------------------------------
 
-
-class Mapping(object):
+class Mapping( DictRepl ):
     """
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
     @summary: Mapping of any string.
 
+    A mapping is an extended replacement dictionary.
 
     """
-
     def __init__(self, dictname=None):
         """
         Create a new Mapping instance.
 
-        @param dictname (string) is the file name with the mapping table (2 columns),
+        @param dictname (string) is the file name with the mapping data (2 columns),
 
         """
-
-        try:
-            self.repl = DictRepl(dictname, nodump=True)
-        except Exception:
-            self.repl = DictRepl()
+        DictRepl.__init__( self,dictname,nodump=True )
 
         self.keepmiss = True  # remove or not missing values
-        self.reverse  = False # replace value by key instead of replacing key by value
-
-    # End __init__
-    # ------------------------------------------------------------------
-
+        self.reverse  = False # will replace value by key instead of replacing key by value
 
     # -----------------------------------------------------------------------
     # Methods to fix options
     # -----------------------------------------------------------------------
-
 
     def fix_options(self, options):
         """
@@ -90,11 +78,11 @@ class Mapping(object):
 
         Available options are:
             - keepmiss
+            - reverse
 
         @param options (option)
 
         """
-
         for opt in options:
 
             key = opt.get_key()
@@ -106,11 +94,9 @@ class Mapping(object):
                 self.set_reverse(opt.get_value())
 
             else:
-                raise Exception('Unknown key option: %s'%key)
+                raise ValueError('Unknown option: %s'%key)
 
-    # End fix_options
     # -----------------------------------------------------------------------
-
 
     def set_keepmiss(self, keepmiss):
         """
@@ -123,9 +109,7 @@ class Mapping(object):
         """
         self.keepmiss = keepmiss
 
-    # End set_keepmiss
-    # ----------------------------------------------------------------------
-
+    # -----------------------------------------------------------------------
 
     def set_reverse(self, reverse):
         """
@@ -138,9 +122,7 @@ class Mapping(object):
         """
         self.reverse = reverse
 
-    # End set_reverse
-    # ----------------------------------------------------------------------
-
+    # -----------------------------------------------------------------------
 
     def map_entry(self, entry):
         """
@@ -150,48 +132,47 @@ class Mapping(object):
         @return a string
 
         """
-        if self.repl.get_dictsize() == 0:
+        if self.get_size() == 0:
             return entry
 
         if self.reverse is False:
-            if self.repl.is_key( entry ):
-                return self.repl.replace( entry )
+            if self.is_key( entry ):
+                return self.replace( entry )
         else:
-            if self.repl.is_value( entry ):
-                return self.repl.replace_reversed( entry )
+            return self.replace_reversed( entry )
 
         if self.keepmiss is False:
             return ''
         return entry
 
-    # End map_entry
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
-
-    def map( self, str ):
+    def map( self, mstr, delimiters=None ):
         """
         Run the Mapping process on an input string.
 
         @param str is the input string to map
+        @param delimiters (list) list of character delimiters. Default is:
+               [';', ',', '\s', '.', '|', '+', '-']
         @return a string
 
         """
-        if self.repl.get_dictsize() == 0:
-            return str
+        if self.get_size() == 0:
+            return mstr
 
         # suppose that some punctuation are like a separator
         # and we have to replace all strings between them
-        tab = re.split(r'(;|,|\s|\.|\|)\s*', str)
+        if delimiters is None:
+            delimiters = [';', ',', ' ', '.', '|', '+', '-']
+        pattern = '|'.join(map(re.escape, delimiters))
+        pattern = "("+pattern+")\s*"
+        tab = re.split(pattern, mstr)
 
         for i,v in enumerate(tab):
-            if v in [';', ',', '\s', '.', '|']:
+            if v in delimiters:
                 continue
             tab[i] = self.map_entry(v)
 
         return ''.join(tab)
 
-    # End map
-    # ----------------------------------------------------------------------
-
-# End Mapping
-# ---------------------------------------------------------------------------
+    # -----------------------------------------------------------------------

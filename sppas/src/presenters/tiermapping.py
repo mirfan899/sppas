@@ -91,7 +91,7 @@ class TierMapping( Mapping ):
         outtier.SetName( name )
 
         # hum... nothing to do!
-        if tierinput.GetSize() == 0 or self.repl.get_dictsize() == 0:
+        if tierinput.GetSize() == 0 or self.repl.get_size() == 0:
             return outtier
 
         # map

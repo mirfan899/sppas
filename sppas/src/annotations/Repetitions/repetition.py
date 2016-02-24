@@ -285,7 +285,7 @@ class sppasRepetition( ):
 
         # Estimate if a token is relevant, put in the stoplist
         for token in u.get_tokens():
-            freq  = u.get_value(token)
+            freq  = u.get_count(token)
             proba = float(freq) / float(u.get_sum())
             relevant = 1.0 / (float(u.get_size())*float(self._alpha))
             if proba > relevant:

@@ -44,9 +44,13 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 import collections
 import json
 import copy
+import glob
+import os.path
 
 from acmodelhtkio import HtkIO
-from hmm import HMM, HMMInterpolation
+from tiedlist     import TiedList
+from hmm          import HMM
+
 from utils.type import compare_dictionaries
 
 # ---------------------------------------------------------------------------
@@ -69,8 +73,86 @@ class AcModel:
         Constructor.
 
         """
-        self.macros = None
-        self.hmms   = []
+        self.macros   = None
+        self.hmms     = []
+        self.tiedlist = TiedList()
+
+    # -----------------------------------------------------------------------
+    # Files
+    # -----------------------------------------------------------------------
+
+    def load(self, directory):
+        """
+        Load all known data from a directory.
+        The default file names are:
+            - hmmdefs for an HTK-ASCII acoustic model
+            - tiedlist
+
+        @param directory (str)
+        @return list of loaded file names
+
+        """
+        l = []
+        hmmdefsfiles = glob.glob(os.path.join(directory,'hmmdefs'))
+        if len( hmmdefsfiles ) == 0:
+            raise IOError('Missing hmmdefs file in %s'%directory)
+        self.load_htk( hmmdefsfiles[0] )
+        l.append( hmmdefsfiles[0] )
+
+        tiedlistfiles = glob.glob(os.path.join(directory,'tiedlist'))
+        if len( tiedlistfiles ) == 1:
+            self.load_tiedlist( tiedlistfiles[0] )
+            l.append( tiedlistfiles[0] )
+
+        return l
+
+    # -----------------------------------------------------------------------
+
+    def save(self, directory):
+        """
+        Save all data into a directory.
+
+        @param directory (str)
+        @return list of saved file names
+
+        """
+        l = []
+        self.save_htk( os.path.join(directory,'hmmdefs') )
+        l.append( os.path.join(directory,'hmmdefs') )
+
+        if self.tiedlist.is_empty() is False:
+            self.save_tiedlist( os.path.join(directory,'tiedlist') )
+            l.append( os.path.join(directory,'tiedlist') )
+
+        return l
+
+    # -----------------------------------------------------------------------
+
+    def load_tiedlist(self, filename):
+        """
+        Load a tiedlist from a file.
+
+        @param filename (str)
+
+        """
+        try:
+            self.tiedlist.load( filename )
+        except Exception:
+            pass
+
+    # -----------------------------------------------------------------------
+
+    def save_tiedlist(self, filename):
+        """
+        Save a tiedlist into a file.
+
+        @param filename (str)
+
+        """
+        try:
+            self.tiedlist.save( filename )
+        except Exception:
+            pass
 
     # -----------------------------------------------------------------------
 
@@ -85,6 +167,21 @@ class AcModel:
         self.macros = htkmodel.macros
         self.hmms   = htkmodel.hmms
 
+    # -----------------------------------------------------------------------
+
+    def save_htk(self, filename):
+        """
+        Save the model into a file, in HTK-ASCII standard format.
+
+        @param filename: File where to save the model.
+
+        """
+        htkmodel = HtkIO()
+        htkmodel.set(self.macros,self.hmms)
+        htkmodel.save( filename )
+
+    # -----------------------------------------------------------------------
+    # HMM
     # -----------------------------------------------------------------------
 
     def get_hmm(self, phone):
@@ -139,6 +236,42 @@ class AcModel:
         hmm = self.get_hmm(phone)
         idx = self.hmms.index(hmm)
         self.hmms.pop(idx)
+
+    # -----------------------------------------------------------------------
+    # Manage the model
+    # -----------------------------------------------------------------------
+
+    def fill_hmms(self):
+        """
+        Fill HMM states and transitions, i.e.:
+           - replace all the "ST_..." by the corresponding macro, for states.
+           - replace all the "T_..." by the corresponding macro, for transitions.
+        """
+        for hmm in self.hmms:
+
+            states     = hmm.definition['states']
+            transition = hmm.definition['transition']
+
+            if all(isinstance(state['state'],collections.OrderedDict) for state in states) is False:
+                newstates = self._fill_states( states )
+                if all(s is not None for s in newstates):
+                    hmm.definition['states'] = newstates
+                else:
+                    raise ValueError('No corresponding macro for states: %s'%states)
+
+            if isinstance(transition, collections.OrderedDict) is False:
+                newtrs = self._fill_transition( transition )
+                if newtrs is not None:
+                    hmm.definition['transition'] = newtrs
+                else:
+                    raise ValueError('No corresponding macro for transition: %s'%transition)
+
+        # No more need of states and transitions in macros
+        newmacros = []
+        for m in self.macros:
+            if m.get('transition',None) is None and m.get('state',None) is None:
+                newmacros.append( m )
+        self.macros = newmacros
 
     # -----------------------------------------------------------------------
 
@@ -251,54 +384,10 @@ class AcModel:
                 self.append_hmm(hmm)
                 appended = appended + 1
 
+        # Merge the tiedlists
+        self.tiedlist.merge( other.tiedlist )
+
         return (appended,interpolated,keeped,changed)
-
-    # -----------------------------------------------------------------------
-
-    def save_htk(self, filename):
-        """
-        Save the model into a file, in HTK-ASCII standard format.
-
-        @param filename: File where to save the model.
-
-        """
-        htkmodel = HtkIO()
-        htkmodel.set(self.macros,self.hmms)
-        htkmodel.save( filename )
-
-    # -----------------------------------------------------------------------
-
-    def fill_hmms(self):
-        """
-        Fill HMM states and transitions, i.e.:
-           - replace all the "ST_..." by the corresponding macro, for states.
-           - replace all the "T_..." by the corresponding macro, for transitions.
-        """
-        for hmm in self.hmms:
-
-            states     = hmm.definition['states']
-            transition = hmm.definition['transition']
-
-            if all(isinstance(state['state'],collections.OrderedDict) for state in states) is False:
-                newstates = self._fill_states( states )
-                if all(s is not None for s in newstates):
-                    hmm.definition['states'] = newstates
-                else:
-                    raise ValueError('No corresponding macro for states: %s'%states)
-
-            if isinstance(transition, collections.OrderedDict) is False:
-                newtrs = self._fill_transition( transition )
-                if newtrs is not None:
-                    hmm.definition['transition'] = newtrs
-                else:
-                    raise ValueError('No corresponding macro for transition: %s'%transition)
-
-        # No more need of states and transitions in macros
-        newmacros = []
-        for m in self.macros:
-            if m.get('transition',None) is None and m.get('state',None) is None:
-                newmacros.append( m )
-        self.macros = newmacros
 
     # -----------------------------------------------------------------------
     # Private
