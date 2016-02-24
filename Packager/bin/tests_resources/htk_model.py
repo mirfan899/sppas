@@ -13,8 +13,9 @@ sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 from resources.acmodel import AcModel
 from resources.hmm     import HMM, HMMInterpolation
 from utils.type import compare_dictionaries, compare_lists
+from sp_glob import RESOURCES_PATH
 
-MODEL_PATH = os.path.join(SPPAS, "resources", "models")
+MODEL_PATH = os.path.join(RESOURCES_PATH, "models")
 
 # ---------------------------------------------------------------------------
 
@@ -164,9 +165,9 @@ class TestAcModel(unittest.TestCase):
         hmm.save("N-hmm-copy")
         newhmm = HMM()
         newhmm.load("N-hmm-copy")
+        os.remove('N-hmm-copy')
         self.assertEqual(hmm.name,newhmm.name)
         self.assertTrue(compare_dictionaries(hmm.definition,newhmm.definition))
-        os.remove('N-hmm-copy')
 
 
     def test_fill(self):

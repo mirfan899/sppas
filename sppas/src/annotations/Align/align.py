@@ -34,13 +34,10 @@
 # ---------------------------------------------------------------------------
 # File: align.py
 # ----------------------------------------------------------------------------
-from distutils import emxccompiler
-
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
 
 # ----------------------------------------------------------------------------
 
@@ -66,7 +63,8 @@ import signals
 from signals.channel    import Channel
 from signals.channelsil import ChannelSil
 
-from resources.mapping import Mapping
+from resources.mapping  import Mapping
+from resources.tiedlist import TiedList
 
 from presenters.audiosilencepresenter import AudioSilencePresenter
 from presenters.audiosppaspresenter   import AudioSppasPresenter
@@ -74,7 +72,6 @@ from presenters.audiosppaspresenter   import AudioSppasPresenter
 from juliusalign    import juliusAligner
 from hvitealign     import hviteAligner
 from basicalign     import basicAligner
-from tiedlist       import Tiedlist
 from alignerio      import AlignerIO
 
 # ----------------------------------------------------------------------------
@@ -432,15 +429,13 @@ class sppasAlign:
         dictfile = inputaudio[:-len(fileExtension)] + ".dict"
 
         # Create a new Tiedlist instance and backup the current tiedlist file
-        today          = str(date.today())
-        randval        = str(int(random.random()*10000))
-        backuptiedfile = os.path.join(self._model, "tiedlist."+today+"."+randval)
-        tie = Tiedlist( tiedfile )
-        tie.save( backuptiedfile )
+        tie = TiedList( )
+        tie.load( tiedfile )
+        dirty = False
 
         with codecs.open(outputalign, 'r', ENCODING) as f:
             for line in f:
-                if (line.find("Error: voca_load_htkdict")>-1) and line.find("not found")>-1:
+                if line.find("Error: voca_load_htkdict")>-1 and line.find("not found")>-1:
                     line = re.sub("[ ]+", " ", line)
                     line = line.strip()
                     line = line[line.find('"')+1:]
@@ -448,16 +443,22 @@ class sppasAlign:
                     if len(line)>0:
                         entries = line.split(" ")
                         for entry in entries:
-                            if tie.is_observed( entry )==False and tie.is_tied( entry )==False:
-                                ret = tie.add( entry )
-                                if ret==True:
+                            if tie.is_observed( entry ) is False and tie.is_tied( entry ) is False:
+                                ret = tie.add_tied( entry )
+                                if ret is True:
+                                    dirty = True
                                     if self._logfile:
                                         self._logfile.print_message(entry+" successfully added in the tiedlist.",indent=4,status=3)
                                 else:
                                     if self._logfile:
                                         self._logfile.print_message("I do not know how to add "+entry+" in the tiedlist.",indent=4,status=3)
 
-        tie.save( tiedfile )
+        if dirty is True:
+            today          = str(date.today())
+            randval        = str(int(random.random()*10000))
+            backuptiedfile = os.path.join(self._model, "tiedlist."+today+"."+randval)
+            shutil.copy( tiedfile,backuptiedfile )
+            tie.save( tiedfile )
 
     # End add_tiedlist
     # ------------------------------------------------------------------------

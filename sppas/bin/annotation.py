@@ -100,7 +100,7 @@ parameters.add_sppasinput( os.path.abspath(args.w) )
 if args.l: parameters.set_lang( args.l )
 if args.e:
     extensions = [e.lower() for e in extensions_out_multitiers]
-    if not args.e in extensions:
+    if not args.e.lower() in extensions:
         print "[WARNING] Unknown extension:",args.e,". Extension is set to its default value."
     else:
         parameters.set_output_format( args.e )

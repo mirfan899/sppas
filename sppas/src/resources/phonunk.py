@@ -39,7 +39,6 @@ __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-
 # ----------------------------------------------------------------------------
 
 import sys
@@ -47,7 +46,6 @@ import os
 from os.path import *
 
 import re
-
 
 # ----------------------------------------------------------------------------
 

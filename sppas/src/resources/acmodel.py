@@ -34,7 +34,6 @@
 # ---------------------------------------------------------------------------
 # File: acmodel.py
 # ---------------------------------------------------------------------------
-from copy import deepcopy
 
 __docformat__ = """epytext"""
 __authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
