@@ -48,8 +48,9 @@ import glob
 import os.path
 
 from acmodelhtkio import HtkIO
-from tiedlist     import TiedList
 from hmm          import HMM
+from tiedlist     import TiedList
+from mapping      import Mapping
 
 from utils.type import compare_dictionaries
 
@@ -65,6 +66,8 @@ class AcModel:
     A model is made of:
        - 'macros' is an OrderedDict of options, transitions, states, ...
        - 'hmms' models (one per phone/biphone/triphone): list of HMM instances
+       - a tiedlist (if any)
+       - a mapping table to replace phone names.
 
     """
 
@@ -76,6 +79,7 @@ class AcModel:
         self.macros   = None
         self.hmms     = []
         self.tiedlist = TiedList()
+        self.repllist = Mapping()
 
     # -----------------------------------------------------------------------
     # Files
@@ -104,6 +108,11 @@ class AcModel:
             self.load_tiedlist( tiedlistfiles[0] )
             l.append( tiedlistfiles[0] )
 
+        replfiles = glob.glob(os.path.join(directory,'monophones.repl'))
+        if len( replfiles ) == 1:
+            self.load_phonesrepl( replfiles[0] )
+            l.append( replfiles[0] )
+
         return l
 
     # -----------------------------------------------------------------------
@@ -116,6 +125,9 @@ class AcModel:
         @return list of saved file names
 
         """
+        if os.path.isdir( directory ) is False:
+            os.mkdir( directory )
+
         l = []
         self.save_htk( os.path.join(directory,'hmmdefs') )
         l.append( os.path.join(directory,'hmmdefs') )
@@ -124,7 +136,45 @@ class AcModel:
             self.save_tiedlist( os.path.join(directory,'tiedlist') )
             l.append( os.path.join(directory,'tiedlist') )
 
+        if self.repllist.is_empty() is False:
+            self.save_phonesrepl( os.path.join(directory,'monophones.repl') )
+            l.append( os.path.join(directory,'monophones.repl') )
+
         return l
+
+    # -----------------------------------------------------------------------
+
+    def load_phonesrepl(self, filename):
+        """
+        Load a replacement table of phone names from a file.
+
+        @param filename (str)
+
+        """
+        try:
+            self.repllist.load_from_ascii( filename )
+            # Some HACK...
+            # because '+' and '-' are the biphones/triphones delimiters,
+            # they can't be used as phone name.
+            self.repllist.remove('+')
+            self.repllist.remove('-')
+
+        except Exception:
+            pass
+
+    # -----------------------------------------------------------------------
+
+    def save_phonesrepl(self, filename):
+        """
+        Save a replacement table of phone names into a file.
+
+        @param filename (str)
+
+        """
+        try:
+            self.repllist.save_as_ascii( filename )
+        except Exception:
+            pass
 
     # -----------------------------------------------------------------------
 
@@ -241,11 +291,69 @@ class AcModel:
     # Manage the model
     # -----------------------------------------------------------------------
 
+    def replace_phones(self, reverse=False ):
+        """
+        Replace the phones by using a mapping table.
+
+        This is mainly useful due to restrictions in some acoustic model toolkits:
+        X-SAMPA can't be fully used and a "mapping" is required.
+        As for example, the /2/ or /9/ can't be represented directly in an
+        HTK-ASCII acoustic model. We commonly replace respectively by /eu/ and
+        /oe/.
+
+        Notice that '+' and '-' can't be used as a phone name.
+
+        @param reverse (bool) reverse the replacement direction.
+
+        """
+        if self.repllist.get_size() == 0:
+            return
+        delimiters = ['-','+']
+
+        oldreverse=self.repllist.reverse
+        self.repllist.set_reverse(reverse)
+
+        # Replace in the tiedlist
+        newtied = TiedList()
+
+        for observed in self.tiedlist.observed:
+            mapped = self.repllist.map( observed,delimiters )
+            newtied.add_observed( mapped )
+        for tied,observed in self.tiedlist.tied.items():
+            mappedtied     = self.repllist.map( tied, delimiters)
+            mappedobserved = self.repllist.map( observed, delimiters)
+            newtied.add_tied(mappedtied, mappedobserved)
+        self.tiedlist = newtied
+
+        # Replace in HMMs
+        for hmm in self.hmms:
+
+            hmm.set_name( self.repllist.map( hmm.name, delimiters) )
+
+            states = hmm.definition['states']
+            if all(isinstance(state['state'],collections.OrderedDict) for state in states) is False:
+                for state in states:
+                    if isinstance(state['state'], collections.OrderedDict) is False:
+                        tab = state['state'].split('_')
+                        tab[1] = self.repllist.map_entry( tab[1] )
+                        state['state'] = "_".join(tab)
+
+            transition = hmm.definition['transition']
+            if isinstance(transition, collections.OrderedDict) is False:
+                tab = transition.split('_')
+                tab[1] = self.repllist.map_entry( tab[1] )
+                transition = "_".join(tab)
+
+        self.repllist.set_reverse(oldreverse)
+
+    # -----------------------------------------------------------------------
+
     def fill_hmms(self):
         """
         Fill HMM states and transitions, i.e.:
            - replace all the "ST_..." by the corresponding macro, for states.
            - replace all the "T_..." by the corresponding macro, for transitions.
+
         """
         for hmm in self.hmms:
 
@@ -287,6 +395,34 @@ class AcModel:
         model.macros = macros
         model.hmms   = hmms
         return model
+
+    # -----------------------------------------------------------------------
+
+    def extract_monophones(self):
+        """
+        Return an Acoustic Model that includes only monophones:
+            - hmms and macros are selected,
+            - repllist is copied,
+            - tiedlist is ignored.
+
+        @return AcModel
+
+        """
+        ac = AcModel()
+
+        # The macros
+        ac.macros = copy.deepcopy( self.macros )
+
+        # The HMMs
+        for h in self.hmms:
+            if not "+" in h.name and not "-" in h.name:
+                ac.append_hmm( copy.deepcopy(h) )
+        ac.fill_hmms()
+
+        # The repl mapping table
+        ac.repllist = copy.deepcopy( self.repllist )
+
+        return ac
 
     # -----------------------------------------------------------------------
 
@@ -387,6 +523,11 @@ class AcModel:
         # Merge the tiedlists
         self.tiedlist.merge( other.tiedlist )
 
+        # Merge the replacement mapping tables.
+        for k,v in other.repllist.get_dict().items():
+            if self.repllist.is_value_of(k,v) is False:
+                self.repllist.add(k,v)
+
         return (appended,interpolated,keeped,changed)
 
     # -----------------------------------------------------------------------
@@ -432,7 +573,7 @@ class AcModel:
         return newtransition
 
     # ----------------------------------
-    # TODO: Test all the create methods
+    # TO DO: Test all the create methods
 
     def _create_default(self):
         return collections.defaultdict(lambda: None)

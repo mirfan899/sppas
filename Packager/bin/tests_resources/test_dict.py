@@ -66,8 +66,20 @@ class TestDictRepl(unittest.TestCase):
     def test_init_with_dict(self):
         dict1 = DictRepl( self.replfile,nodump=True )
 
-    def test_init_without_dict(self):
-        dict2 = DictRepl( )
+    def test_dict_simple(self):
+        d = DictRepl()
+        d.add("key1","v1")
+        d.add("key1","v2")
+        d.add("key2","v2")
+
+        self.assertEqual( d.get("key1"), "v1|v2" )
+        self.assertTrue(d.is_value("v1"))
+        self.assertTrue(d.is_value("v2"))
+        self.assertTrue(d.is_value_of("key1","v1"))
+        self.assertTrue(d.is_value_of("key1","v2"))
+        self.assertFalse(d.is_value("v1|v2"))
+        self.assertTrue(d.is_value_of("key2","v2"))
+        self.assertFalse(d.is_value_of("key2","v1"))
 
 # End TestDictRepl
 # ---------------------------------------------------------------------------

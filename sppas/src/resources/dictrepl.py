@@ -53,6 +53,19 @@ class DictRepl:
     @license: GPL, v3
     @summary: Replacements dictionary.
 
+    This is an extended version of a dictionary.
+    Values are "accumulated".
+    Example:
+        >>>d = DictRepl()
+        >>>d.add("key","v1")
+        >>>d.add("key","v2")
+        >>>print d.get("key")
+        >>>v1|v2
+        >>>print d.is_value("v1")
+        >>>True
+        >>>print d.is_value("v1|v2")
+        >>>False
+
     """
 
     def __init__(self, dictfilename=None, nodump=False):
@@ -63,7 +76,6 @@ class DictRepl:
         @param nodump (Boolean) disable the creation of a dump file
 
         """
-        self._filename = dictfilename
         self._dict = {}
 
         if dictfilename is not None:
@@ -100,7 +112,28 @@ class DictRepl:
         Return True if entry is a value in the dictionary.
 
         """
-        return entry in self._dict.values()
+        for v in self._dict.values():
+            values = v.split('|')
+            for val in values:
+                if val == entry:
+                    return True
+
+        return False
+
+    # ------------------------------------------------------------------------
+
+    def is_value_of(self,key,entry):
+        """
+        Return True if entry is a value of a given key in the dictionary.
+
+        """
+        v = self._dict.get(key, "")
+        values = v.split('|')
+        for val in values:
+            if val == entry:
+                return True
+
+        return False
 
     # ------------------------------------------------------------------------
 
@@ -110,6 +143,15 @@ class DictRepl:
 
         """
         return not self.is_key( entry )
+
+    # ------------------------------------------------------------------------
+
+    def is_empty(self):
+        """
+        Return True if there is no entry in the dictionary.
+
+        """
+        return len(self._dict) == 0
 
     # ------------------------------------------------------------------------
 
@@ -140,6 +182,15 @@ class DictRepl:
 
     # ------------------------------------------------------------------------
 
+    def get(self, key):
+        """
+        Return the value of a key of the dictionary or None.
+
+        """
+        return self._dict.get(key, None)
+
+    # ------------------------------------------------------------------------
+
     def replace(self, key):
         """
         Return the replacement value of a key or None if key has no replacement.
@@ -151,7 +202,8 @@ class DictRepl:
 
     def replace_reversed(self, value):
         """
-        Return the replacement key of a value or None if value does not exists.
+        Return the replacement key of a value or an empty
+        if value does not exists.
 
         @return a string with all keys, separated by '_'.
 
@@ -163,7 +215,6 @@ class DictRepl:
             for val in values:
                 if val == value:
                     keys.append( k )
-        #keys = [k for k,v in self._dict.items() if v == value]
         if len(keys) == 0:
             return ''
         return "|".join(keys)
@@ -191,6 +242,20 @@ class DictRepl:
         self._dict[key] = value
 
     # ------------------------------------------------------------------------
+
+    def remove(self, entry):
+        """
+        Remove an entry, as key or value.
+
+        @param token (string) unicode string of the entry to remove
+
+        """
+
+        for k in self._dict.keys():
+            if k == entry or self.is_value_of(k,entry):
+                self._dict.pop( k )
+
+    # ------------------------------------------------------------------------
     # File
     # ------------------------------------------------------------------------
 
@@ -215,7 +280,7 @@ class DictRepl:
 
             # Add (or modify) the entry in the dict
             key = tabline[0]
-            value = "_".join(tabline[1:])
+            value = "|".join(tabline[1:])
             self.add( key,value )
 
     # ------------------------------------------------------------------------
@@ -232,7 +297,7 @@ class DictRepl:
                 for entry, value in sorted(self._dict.iteritems(), key=lambda x:x[0]):
                     values = value.split('|')
                     for v in values:
-                        output.write("%s %s"%(entry,v.strip()))
+                        output.write("%s %s\n"%(entry,v.strip()))
         except Exception:
             return False
 

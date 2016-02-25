@@ -139,7 +139,9 @@ class Mapping( DictRepl ):
             if self.is_key( entry ):
                 return self.replace( entry )
         else:
-            return self.replace_reversed( entry )
+            s = self.replace_reversed( entry )
+            if len(s)>0:
+                return s
 
         if self.keepmiss is False:
             return ''

@@ -166,7 +166,7 @@ class Unigram:
         try:
             with codecs.open(filename, 'w', encoding=rutils.ENCODING) as output:
                 for entry, value in sorted(self._dict.iteritems(), key=lambda x:x[0]):
-                    output.write("%s %d"%(entry,value))
+                    output.write("%s %d\n"%(entry,value))
         except Exception:
             return False
 

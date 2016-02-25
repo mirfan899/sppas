@@ -198,6 +198,27 @@ class TiedList:
             self.add_tied(tie, obs)
 
     # -----------------------------------------------------------------------
+
+    def remove(self, entry, propagate=False):
+        """
+        Remove an entry of the list of observed or tied entries.
+
+        @param entry (str) the entry to be removed
+        @param propagate (bool) if entry is an observed item, remove all tied
+        that are using this observed item.
+
+        """
+        if entry in self.observed:
+            self.observed.remove( entry )
+            if propagate is True:
+                for k,v in self.tied.items():
+                    if v == entry:
+                        self.tied.pop( k )
+
+        if entry in self.tied.keys():
+            self.tied.pop( entry )
+
+    # -----------------------------------------------------------------------
     # Private
     # -----------------------------------------------------------------------
 
