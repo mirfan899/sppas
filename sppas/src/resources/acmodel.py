@@ -426,35 +426,24 @@ class AcModel:
 
     # -----------------------------------------------------------------------
 
-    def check_parameter_kind(self, other):
+    def get_mfcc_parameter_kind(self):
         """
-        Check if other MFCC parameter kind is same as self.
-
-        @param other (AcModel) the AcModel to be compared with.
+        Return the MFCC parameter kind, as a string, or an empty string.
 
         """
-        return True
-        #TODO
-#         for macro in other.macros:
-#             for m in self.macros:
-#                 if macro.get('options',None) and m.get('options',None):
-#                     # Check MFCC type.
-#                     print
-#                     print "------------------------------------------------"
-#                     for sd in macro["options"]["definition"]:
-#                         if 'parameter_kind' in sd:
-#                             print " ----->>>>>>>",sd
-#
-#                     print "------------------------------------------------"
-#                     print m["options"]["definition"][0]
-#                     print "------------------------------------------------"
-#                     print
-#                     oparam = macro["options"]["definition"][0]["parameter_kind"]
-#                     sparam = m["options"]["definition"][0]["parameter_kind"]
-#
-#                     res = compare_dictionaries( oparam,sparam,verbose=True )
-#                     if res is False:
-#                         raise TypeError('Can only merge models of identical MFCC parameter kind.')
+        for m in self.macros:
+            option = m.get('options',None)
+            if option is not None:
+                definition = option.get('definition',None)
+                if definition is not None:
+                    for defn in definition:
+                        parameter_kind = defn.get('parameter_kind', None)
+                        if parameter_kind is not None:
+                            # Check if of MFCC type...
+                            if parameter_kind['base'].lower() == "mfcc":
+                                return "mfcc_" + "".join(parameter_kind['options'])
+
+        return ""
 
     # -----------------------------------------------------------------------
 
@@ -482,7 +471,7 @@ class AcModel:
 
         # Check the MFCC parameter kind:
         # we can only interpolate identical models.
-        if self.check_parameter_kind(other) is False:
+        if self.get_mfcc_parameter_kind() != other.get_mfcc_parameter_kind() :
             raise TypeError('Can only merge models of identical MFCC parameter kind.')
 
         # Fill HMM states and transitions, i.e.:
