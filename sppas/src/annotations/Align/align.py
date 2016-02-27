@@ -803,6 +803,7 @@ class sppasAlign:
 
             if self._alignerid != 'basic':
                 trsoutput = self.rustine_liaisons(trsoutput)
+                trsoutput = self.rustine_others(trsoutput)
 
             if self._logfile:
                 self._logfile.print_message("",indent=4,status=0)
@@ -866,7 +867,6 @@ class sppasAlign:
 
     # ------------------------------------------------------------------------
 
-
     def __get_phonestier(self, inputname):
         """ Return the tier with phonemes. """
 
@@ -913,6 +913,28 @@ class sppasAlign:
         return toktier
 
     # ------------------------------------------------------------------------
+
+    def rustine_others(self, trs):
+        """ veritable rustine pour decaler la fin des non-phonemes. """
+        tierphon   = trs.Find("PhonAlign")
+        if tierphon is None:
+            return trs
+
+        imax = tierphon.GetSize() - 1
+        for i, a in reversed(list(enumerate(tierphon))):
+            if i < imax:
+                nexta = tierphon[i+1]
+                durnexta = nexta.GetLocation().GetDuration()
+
+                if a.GetLabel().GetValue() == "sil" and durnexta > 0.04:
+                    a.GetLocation().SetEndMidpoint( a.GetLocation().GetEndMidpoint() + 0.03 )
+
+                if a.GetLabel().GetValue() in [ "gb", "@@", "fp", "dummy" ]:
+                    a.GetLocation().SetEndMidpoint( a.GetLocation().GetEndMidpoint() + 0.02 )
+
+                nexta.GetLocation().SetBeginMidpoint( a.GetLocation().GetEndMidpoint() )
+
+        return trs
 
     def rustine_liaisons(self, trs):
         """ veritable rustine pour supprimer qqs liaisons en trop. """
