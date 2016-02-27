@@ -34,13 +34,10 @@
 # ---------------------------------------------------------------------------
 # File: align.py
 # ----------------------------------------------------------------------------
-from distutils import emxccompiler
-
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
 
 # ----------------------------------------------------------------------------
 
@@ -52,6 +49,7 @@ import random
 import glob
 import string
 import codecs
+import os.path
 from datetime import date
 
 import utils.name
@@ -66,7 +64,8 @@ import signals
 from signals.channel    import Channel
 from signals.channelsil import ChannelSil
 
-from resources.mapping import Mapping
+from resources.mapping  import Mapping
+from resources.tiedlist import TiedList
 
 from presenters.audiosilencepresenter import AudioSilencePresenter
 from presenters.audiosppaspresenter   import AudioSppasPresenter
@@ -74,7 +73,6 @@ from presenters.audiosppaspresenter   import AudioSppasPresenter
 from juliusalign    import juliusAligner
 from hvitealign     import hviteAligner
 from basicalign     import basicAligner
-from tiedlist       import Tiedlist
 from alignerio      import AlignerIO
 
 # ----------------------------------------------------------------------------
@@ -130,9 +128,10 @@ class sppasAlign:
         self._model   = model
         self._logfile = logfile
 
-        try:
-            self._mapping = Mapping( os.path.join( self._model, "monophones.repl") )
-        except Exception:
+        mappingfilename = os.path.join( self._model, "monophones.repl")
+        if os.path.isfile( mappingfilename ):
+            self._mapping = Mapping( mappingfilename )
+        else:
             self._mapping = Mapping()
 
         # List of options to configure this automatic annotation
@@ -432,15 +431,13 @@ class sppasAlign:
         dictfile = inputaudio[:-len(fileExtension)] + ".dict"
 
         # Create a new Tiedlist instance and backup the current tiedlist file
-        today          = str(date.today())
-        randval        = str(int(random.random()*10000))
-        backuptiedfile = os.path.join(self._model, "tiedlist."+today+"."+randval)
-        tie = Tiedlist( tiedfile )
-        tie.save( backuptiedfile )
+        tie = TiedList( )
+        tie.load( tiedfile )
+        dirty = False
 
         with codecs.open(outputalign, 'r', ENCODING) as f:
             for line in f:
-                if (line.find("Error: voca_load_htkdict")>-1) and line.find("not found")>-1:
+                if line.find("Error: voca_load_htkdict")>-1 and line.find("not found")>-1:
                     line = re.sub("[ ]+", " ", line)
                     line = line.strip()
                     line = line[line.find('"')+1:]
@@ -448,16 +445,22 @@ class sppasAlign:
                     if len(line)>0:
                         entries = line.split(" ")
                         for entry in entries:
-                            if tie.is_observed( entry )==False and tie.is_tied( entry )==False:
-                                ret = tie.add( entry )
-                                if ret==True:
+                            if tie.is_observed( entry ) is False and tie.is_tied( entry ) is False:
+                                ret = tie.add_tied( entry )
+                                if ret is True:
+                                    dirty = True
                                     if self._logfile:
                                         self._logfile.print_message(entry+" successfully added in the tiedlist.",indent=4,status=3)
                                 else:
                                     if self._logfile:
                                         self._logfile.print_message("I do not know how to add "+entry+" in the tiedlist.",indent=4,status=3)
 
-        tie.save( tiedfile )
+        if dirty is True:
+            today          = str(date.today())
+            randval        = str(int(random.random()*10000))
+            backuptiedfile = os.path.join(self._model, "tiedlist."+today+"."+randval)
+            shutil.copy( tiedfile,backuptiedfile )
+            tie.save( tiedfile )
 
     # End add_tiedlist
     # ------------------------------------------------------------------------
@@ -630,8 +633,10 @@ class sppasAlign:
 
             # Execute BasicAlign
             if ret != 0:
-                if os.path.exists(alignname): os.rename(alignname, alignname+'.backup')
-                if self._logfile: self._logfile.print_message('Execute a Basic Alignment - same duration for each phoneme:',indent=3)
+                if os.path.exists(alignname):
+                    os.rename(alignname, alignname+'.backup')
+                if self._logfile:
+                    self._logfile.print_message('Execute a Basic Alignment - same duration for each phoneme:',indent=3)
                 alignname = os.path.join(diralign, "track_%06d.palign"%track)
                 self._basicaligner.run_alignment(audiofilename, phonname, alignname)
 
@@ -798,6 +803,7 @@ class sppasAlign:
 
             if self._alignerid != 'basic':
                 trsoutput = self.rustine_liaisons(trsoutput)
+                trsoutput = self.rustine_others(trsoutput)
 
             if self._logfile:
                 self._logfile.print_message("",indent=4,status=0)
@@ -861,7 +867,6 @@ class sppasAlign:
 
     # ------------------------------------------------------------------------
 
-
     def __get_phonestier(self, inputname):
         """ Return the tier with phonemes. """
 
@@ -908,6 +913,28 @@ class sppasAlign:
         return toktier
 
     # ------------------------------------------------------------------------
+
+    def rustine_others(self, trs):
+        """ veritable rustine pour decaler la fin des non-phonemes. """
+        tierphon   = trs.Find("PhonAlign")
+        if tierphon is None:
+            return trs
+
+        imax = tierphon.GetSize() - 1
+        for i, a in reversed(list(enumerate(tierphon))):
+            if i < imax:
+                nexta = tierphon[i+1]
+                durnexta = nexta.GetLocation().GetDuration()
+
+                if a.GetLabel().GetValue() == "sil" and durnexta > 0.04:
+                    a.GetLocation().SetEndMidpoint( a.GetLocation().GetEndMidpoint() + 0.03 )
+
+                if a.GetLabel().GetValue() in [ "gb", "@@", "fp", "dummy" ]:
+                    a.GetLocation().SetEndMidpoint( a.GetLocation().GetEndMidpoint() + 0.02 )
+
+                nexta.GetLocation().SetBeginMidpoint( a.GetLocation().GetEndMidpoint() )
+
+        return trs
 
     def rustine_liaisons(self, trs):
         """ veritable rustine pour supprimer qqs liaisons en trop. """

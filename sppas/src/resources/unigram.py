@@ -37,11 +37,14 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
+import codecs
+import rutils
+
+# ----------------------------------------------------------------------------
 
 class Unigram:
     """
@@ -52,7 +55,7 @@ class Unigram:
 
     """
 
-    def __init__(self):
+    def __init__(self, filename=None, nodump=True):
         """
         Constructor.
 
@@ -60,41 +63,47 @@ class Unigram:
         self._sum  = 0
         self._dict = {}
 
-    # End __init__
+        if filename is not None:
+
+            data = None
+            if nodump is False:
+                # Try first to get the dict from a dump file (at least 2 times faster)
+                data = rutils.load_from_dump( filename )
+
+            # Load from ascii if: 1st load, or, dump load error, or dump older than ascii
+            if data is None:
+                self.load_from_ascii( filename )
+                if nodump is False:
+                    rutils.save_as_dump( self._dict, filename )
+
+            else:
+                self._dict = data
+
     # -------------------------------------------------------------------------
 
-
-    def add(self, token):
+    def add(self, token, value=1):
         """
         Add or increment a token in the unigram.
 
-        @param token
+        @param token (str)
+        @param value (int)
 
         """
-        v = 1
-        if self._dict.has_key(token):
-            v = self._dict[token] + 1
-        self._dict[token] = v
-        self._sum = self._sum + 1
+        self._dict[token] = self._dict.get(token,0) + value
+        self._sum += value
 
-    # End add
     # -------------------------------------------------------------------------
 
-
-    def get_value(self, token):
+    def get_count(self, token):
         """
         Get the count of a token.
 
         @param token
 
         """
-        if self._dict.has_key(token):
-            return self._dict[token]
-        return 0
+        return self._dict.get( token,0 )
 
-    # End get_value
     # -------------------------------------------------------------------------
-
 
     def get_sum(self):
         """
@@ -103,9 +112,7 @@ class Unigram:
         """
         return self._sum
 
-    # End get_sum
     # -------------------------------------------------------------------------
-
 
     def get_tokens(self):
         """
@@ -114,17 +121,55 @@ class Unigram:
         """
         return self._dict.keys()
 
-    # End get_tokens
     # -------------------------------------------------------------------------
-
 
     def get_size(self):
         """
         Get the number of tokens (vocab size).
 
         """
-        return len(self._dict.keys())
+        return len(self._dict)
 
-    # End get_size
+    # ------------------------------------------------------------------------
+    # File
+    # ------------------------------------------------------------------------
+
+    def load_from_ascii(self, filename):
+        """
+        Load a unigram from a file with two columns: word freq.
+
+        """
+        with codecs.open(filename, 'r', rutils.ENCODING) as fd:
+            lines = fd.readlines()
+
+        for line in lines:
+            line  = " ".join(line.split())
+            if len(line) == 0:
+                continue
+
+            tabline = line.split()
+            if len(tabline) < 2:
+                continue
+
+            # Add (or modify) the entry in the dict
+            key = tabline[0]
+            value = int(tabline[1])
+            self.add( key,value )
+
     # -------------------------------------------------------------------------
 
+    def save_as_ascii(self, filename):
+        """
+        Save a unigram into a file with two columns: word freq.
+
+        """
+        try:
+            with codecs.open(filename, 'w', encoding=rutils.ENCODING) as output:
+                for entry, value in sorted(self._dict.iteritems(), key=lambda x:x[0]):
+                    output.write("%s %d\n"%(entry,value))
+        except Exception:
+            return False
+
+        return True
+
+    # ------------------------------------------------------------------------

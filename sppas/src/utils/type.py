@@ -54,6 +54,31 @@ def type_dict(d):
 
 # ---------------------------------------------------------------------------
 
+def compare(data1,data2,case_sensitive=False,verbose=False):
+    """
+    Compare two data of any type.
+    """
+    if data1 == None or data2 == None:
+        if verbose: print "FALSE: None instead of data."
+        return False
+
+    if type(data1) != type(data2):
+        if verbose: print "FALSE: Not same types as input."
+        return False
+
+    if type(data1) is list:
+        return compare_lists(data1,data2,case_sensitive,verbose)
+
+    if type_dict(data1) is True:
+        return compare_dictionaries(data1,data2,case_sensitive,verbose)
+
+    if case_sensitive is True and type(data1) is str:
+        return (data1.lower() == data2.lower())
+
+    return data1 == data2
+
+# ---------------------------------------------------------------------------
+
 def compare_lists(list1,list2,case_sensitive=False,verbose=False):
     """
     Compare two lists.
@@ -111,7 +136,7 @@ def compare_dictionaries(dict1,dict2,case_sensitive=False,verbose=False):
         return False
 
     if type(dict1) != type(dict2) or type_dict(dict1) is not True or type_dict(dict2) is not True:
-        if verbose: print "FALSE: Not same type as input."
+        if verbose: print "FALSE: Not same type as input (expected two dictionaries)."
         return False
 
     shared_keys = set(dict2.keys()) & set(dict2.keys())

@@ -30,13 +30,9 @@
 # ---------------------------------------------------------------------------
 #
 #  After packaging, I have just to (manually) update my webpage:
-#    - edit/update the index.html page (version number)
-#    - edit/update the download.html page (version)
-#    - copy the zip file on the server,
-#    - replace the "sppas" sub-directory of the server by the "web"
-#      directory of this package.
-#
-#  And don't forget to clean the current dir (remove .log files).
+#    - edit/update the download.html page
+#    - copy the zip file on the server: http://www.sppas.org/
+#    - replace the content of the server by the "web" directory of this package.
 #
 # ---------------------------------------------------------------------------
 
@@ -130,12 +126,13 @@ function fct_exit_error {
 
 
 # Is a program currently running? Stop this script if yes.
+# Exclude this script PID in case this function is applied to this script!
 # Parameter:
 #  $1: program name
 function fct_test_running {
-    isrun=`ps aux | grep -c "$1"`
+    isrun=`ps ax | grep -v "$BASHPID" | awk '{print $5}' | grep -c "$1"`
     if [ $isrun -gt 1 ]; then
-        fct_exit_error "${PROGRAM_NAME} must be stopped before using this script."
+        fct_exit_error "Another instance of the program $1 is running, it must be stopped before using it again."
     fi
 }
 
@@ -214,13 +211,15 @@ function fct_clean_sppas {
 # Print the Usage message on stdout
 function fct_echo_usage {
     fct_echo_header
-    echo -e "${CYAN}Usage: $0 [-p|-d|-m|-a]${NC}"
-    echo -e "where:${LIGHT_CYAN}"
-    echo -e "    -p: package"
-    echo -e "    -d: diagnosis"
-    echo -e "    -m: manual and documentation"
-    echo -e "    -c: clean (remove all un-necessary files)"
-    echo -e "    -a: all (package+diagnosis+manual)${NC}"
+    echo -e "${CYAN}Usage: $0 [options]${NC}"
+    echo
+    echo -e "where options are:${LIGHT_CYAN}"
+    echo -e "    -p|--package     package"
+    echo -e "    -d|--diagnosis   diagnosis"
+    echo -e "    -m|--manual      manual and documentation"
+    echo -e "    -c|--clean       clean (remove all un-necessary files)"
+    echo -e "    -a|--all         (package+diagnosis+manual+clean)"
+    echo -e "    -h|--help        print this help${NC}"
     echo
 }
 
@@ -228,7 +227,7 @@ function fct_echo_usage {
 # Parameters:
 #   $1: nb args
 function fct_test_nb_args {
-    local maxargs=1
+    local maxargs=6
     local minargs=1
     # The command is given without args: print usage
     if [ "$1" -eq 0 ]
@@ -258,41 +257,39 @@ function fct_test_nb_args {
 # Parameters:
 #   $1: all the arguments
 function fct_get_args {
-    if [ "$1" == "-a" ];
-    then
-        DO_PACKAGE="True";
-        DO_DISGNOSIS="True";
-        DO_MANUAL="True";
-        DO_CLEAN="True";
-    elif [ "$1" == "-p" ];
-    then
-        DO_PACKAGE="True";
-        DO_DISGNOSIS="False";
-        DO_MANUAL="False";
-        DO_CLEAN="False";
-    elif [ "$1" == "-d" ];
-    then
-        DO_PACKAGE="False";
-        DO_DISGNOSIS="True";
-        DO_MANUAL="False";
-        DO_CLEAN="False";
-    elif  [ "$1" == "-m" ];
-    then
-        DO_PACKAGE="False";
-        DO_DISGNOSIS="False";
-        DO_MANUAL="True";
-        DO_CLEAN="False";
-    elif  [ "$1" == "-c" ];
-    then
-        DO_PACKAGE="False";
-        DO_DISGNOSIS="False";
-        DO_MANUAL="False";
-        DO_CLEAN="True";
-    else
-        echo -e "${DARK_BLUE}Unregognized option $1.${NC}"
-        fct_echo_usage
-        exit 1
-    fi
+
+    for arg in $@; do
+        case $arg in
+            -h|--help)
+                fct_echo_usage
+                exit 0
+                ;;
+            -c|--clean)
+                DO_CLEAN="True";
+                ;;
+            -a|--all)
+                DO_PACKAGE="True";
+                DO_DIAGNOSIS="True";
+                DO_MANUAL="True";
+                DO_CLEAN="True";
+                ;;
+            -p|--package)
+                DO_PACKAGE="True";
+                ;;
+            -d|--diagnosis)
+                DO_DIAGNOSIS="True";
+                ;;
+            -m|--manual)
+                DO_MANUAL="True";
+                ;;
+            *)
+                #unknown option
+                echo -e "${DARK_BLUE}Unregognized option $1.${NC}"
+                fct_echo_usage
+                exit 1
+            ;;
+        esac
+        done
 }
 
 
@@ -305,13 +302,13 @@ function fct_get_args {
 function fct_exec_sppas {
 
     echo " ... Test automatic annotation of French"
-    $PROGRAM_DIR/sppas/bin/annotation.py -w $SAMPLES_DIR/hypothesis/samples-FR -l fra -e TextGrid --all  >> $LOG_DIAGNOSIS
+    $PROGRAM_DIR/sppas/bin/annotation.py -w $SAMPLES_DIR/hypothesis/samples-FR -l fra -e .TextGrid --all  >> $LOG_DIAGNOSIS
 
     echo " ... Test automatic annotation of Italian"
-    $PROGRAM_DIR/sppas/bin/annotation.py -w $SAMPLES_DIR/hypothesis/samples-IT -l ita -e TextGrid --all  >> $LOG_DIAGNOSIS
+    $PROGRAM_DIR/sppas/bin/annotation.py -w $SAMPLES_DIR/hypothesis/samples-IT -l ita -e .TextGrid --all  >> $LOG_DIAGNOSIS
 
     echo " ... Test automatic annotation of English"
-    $PROGRAM_DIR/sppas/bin/annotation.py -w $SAMPLES_DIR/hypothesis/samples-EN -l eng -e TextGrid --all  >> $LOG_DIAGNOSIS
+    $PROGRAM_DIR/sppas/bin/annotation.py -w $SAMPLES_DIR/hypothesis/samples-EN -l eng -e .TextGrid --all  >> $LOG_DIAGNOSIS
 }
 
 
@@ -396,7 +393,7 @@ function fct_test_api {
 
     echo " ... Test Resources "
     $BIN_DIR/tests_resources/test_all.py 2>> $TEMP
-    
+
     echo " ... Test Signals "
     $BIN_DIR/tests_signals/test_all.py 2>> $TEMP
 
@@ -549,7 +546,7 @@ function fct_sppas_doc {
 function fct_documentation {
     fct_echo_title "${PROGRAM_NAME} - API Manual and Documentation (package and web)"
     fct_api_manual
-    fct_uml_diagrams 
+    fct_uml_diagrams
     fct_sppas_doc
 }
 
@@ -607,7 +604,7 @@ fct_test_nb_args "$#"     # Test if this scripts has the expected number of argu
 fct_get_args "$@"         # Fix options from arguments
 fct_echo_header           # Print the header message on stdout
 
-if [ $DO_DISGNOSIS == "True" ]; then fct_diagnosis; fi
+if [ $DO_DIAGNOSIS == "True" ]; then fct_diagnosis; fi
 if [ $DO_MANUAL == "True" ];    then fct_documentation; fi
 if [ $DO_PACKAGE == "True" ];   then fct_clean_sppas; fct_package; fi
 if [ $DO_CLEAN == "True" ];   then fct_clean_all; fi
