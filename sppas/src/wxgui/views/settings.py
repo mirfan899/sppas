@@ -37,8 +37,7 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 # Imports
@@ -50,37 +49,21 @@ from wx.lib import stattext
 
 from annotationdata.io import extensions_out_multitiers as extensions_out
 
+from wxgui.dialogs.basedialog import spBaseDialog
+from wxgui.sp_icons import SETTINGS_ICON
 from wxgui.sp_icons import BG_COLOR_ICON
 from wxgui.sp_icons import FG_COLOR_ICON
 from wxgui.sp_icons import FONT_ICON
 
-from wxgui.sp_icons import SETTINGS_ICON
-from wxgui.sp_icons import SAVE_FILE
-from wxgui.sp_icons import APPLY_ICON
-from wxgui.sp_icons import CANCEL_ICON
-from wxgui.sp_icons import APP_ICON
-
 from wxgui.cutils.imageutils import spBitmap
-from wxgui.cutils.ctrlutils import CreateGenButton
-
-from wxgui.sp_consts import FRAME_STYLE
-from wxgui.sp_consts import FRAME_TITLE
 
 from sp_glob import ICONS_PATH
-
-
-# ----------------------------------------------------------------------------
-# Constants
-# ----------------------------------------------------------------------------
-
-ID_SAVE   = wx.NewId()
-
 
 # ----------------------------------------------------------------------------
 # class SettingsDialog
 # ----------------------------------------------------------------------------
 
-class SettingsDialog( wx.Dialog ):
+class SettingsDialog( spBaseDialog ):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -91,66 +74,34 @@ class SettingsDialog( wx.Dialog ):
 
     """
 
-    def __init__(self, parent, prefsIO):
+    def __init__(self, parent, preferences):
         """
         Create a new dialog fo fix preferences, sorted in a notebook.
 
         """
+        spBaseDialog.__init__(self, parent, preferences, title=" - Settings")
+        wx.GetApp().SetAppName( "settings" )
 
-        wx.Dialog.__init__(self, parent, title=FRAME_TITLE+" - Settings", style=FRAME_STYLE)
+        titlebox   = self.CreateTitle(SETTINGS_ICON,"User settings")
+        contentbox = self._create_content()
+        buttonbox  = self._create_buttons()
 
-        # Members
-        self.preferences = prefsIO
-        self._create_gui()
-
-        # Events of this frame
-        wx.EVT_CLOSE(self, self.onClose)
-
-    # End __init__
-    # ------------------------------------------------------------------------
-
+        self.LayoutComponents( titlebox,
+                               contentbox,
+                               buttonbox )
 
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
 
+    def _create_buttons(self):
+        btn_save   = self.CreateSaveButton("Save the settings.")
+        btn_cancel = self.CreateCancelButton()
+        btn_okay   = self.CreateOkayButton()
+        self.Bind(wx.EVT_BUTTON, self._on_save, btn_save)
+        return self.CreateButtonBox( [btn_save],[btn_cancel,btn_okay] )
 
-    def _create_gui(self):
-        self._init_infos()
-        self._create_title_label()
-        self._create_notebook()
-        self._create_save_button()
-        self._create_cancel_button()
-        self._create_close_button()
-        self._layout_components()
-        self._set_focus_component()
-
-
-    def _init_infos( self ):
-        wx.GetApp().SetAppName( "settings" )
-        # icon
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(APP_ICON) )
-        self.SetIcon(_icon)
-        # colors
-        self.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
-        self.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR'))
-        self.SetFont( self.preferences.GetValue('M_FONT'))
-
-
-    def _create_title_label(self):
-        self.title_layout = wx.BoxSizer(wx.HORIZONTAL)
-        bmp = wx.BitmapButton(self, bitmap=spBitmap(SETTINGS_ICON, 32, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
-        font = self.preferences.GetValue('M_FONT')
-        font.SetWeight(wx.BOLD)
-        font.SetPointSize(font.GetPointSize() + 2)
-        self.title_label = wx.StaticText(self, label="User settings", style=wx.ALIGN_CENTER)
-        self.title_label.SetFont( font )
-        self.title_layout.Add(bmp,  flag=wx.TOP|wx.RIGHT|wx.ALIGN_RIGHT, border=5)
-        self.title_layout.Add(self.title_label, flag=wx.EXPAND|wx.ALL|wx.wx.ALIGN_CENTER_VERTICAL, border=5)
-
-
-    def _create_notebook(self):
+    def _create_content(self):
         self.notebook = wx.Notebook(self)
         page1 = PrefsGeneralPanel(self.notebook, self.preferences)
         page2 = PrefsThemePanel(self.notebook, self.preferences)
@@ -159,71 +110,15 @@ class SettingsDialog( wx.Dialog ):
         self.notebook.AddPage(page1, "General")
         self.notebook.AddPage(page2, "Icons Theme")
         self.notebook.AddPage(page3, "Annotation")
-
-
-    def _create_save_button(self):
-        bmp = spBitmap(SAVE_FILE, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_save = CreateGenButton(self, wx.ID_SAVE, bmp, text="Save", tooltip="Save the settings", colour=color)
-        self.btn_save.SetFont( self.preferences.GetValue('M_FONT'))
-        self.Bind(wx.EVT_BUTTON, self.onSave, self.btn_save, wx.ID_SAVE)
-
-
-    def _create_cancel_button(self):
-        bmp = spBitmap(CANCEL_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_cancel = CreateGenButton(self, wx.ID_CANCEL, bmp, text=" Cancel", tooltip="Close this frame", colour=color)
-        self.btn_cancel.SetFont( self.preferences.GetValue('M_FONT'))
-        self.SetEscapeId(wx.ID_CANCEL)
-
-
-    def _create_close_button(self):
-        bmp = spBitmap(APPLY_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_close = CreateGenButton(self, wx.ID_OK, bmp, text=" Close", tooltip="Close this frame", colour=color)
-        self.btn_close.SetFont( self.preferences.GetValue('M_FONT'))
-        self.btn_close.SetDefault()
-        self.btn_close.SetFocus()
-        self.SetAffirmativeId(wx.ID_OK)
-
-
-    def _create_button_box(self):
-        button_box = wx.BoxSizer(wx.HORIZONTAL)
-        button_box.Add(self.btn_save, flag=wx.RIGHT, border=5)
-        button_box.AddStretchSpacer()
-        button_box.Add(self.btn_cancel, flag=wx.RIGHT, border=5)
-        button_box.Add(self.btn_close, flag=wx.RIGHT, border=5)
-        return button_box
-
-
-    def _layout_components(self):
-        vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.title_layout, 0, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self.notebook, 1, flag=wx.ALL|wx.EXPAND, border=0)
-        vbox.Add(self._create_button_box(), 0, flag=wx.ALL|wx.EXPAND, border=5)
-        self.SetSizerAndFit(vbox)
-
-
-    def _set_focus_component(self):
-        self.notebook.SetFocus()
-
+        return self.notebook
 
     #-------------------------------------------------------------------------
     # Callbacks
     #-------------------------------------------------------------------------
 
-
-    def onSave(self, event):
+    def _on_save(self, event):
         """ Save preferences in a file. """
         self.preferences.Write()
-
-    #-------------------------------------------------------------------------
-
-    def onClose(self, event):
-        self.SetEscapeId(wx.ID_CANCEL)
-
-    #-------------------------------------------------------------------------
-
 
     #-------------------------------------------------------------------------
     # Getters...
@@ -233,15 +128,12 @@ class SettingsDialog( wx.Dialog ):
         """ Return the preferences. """
         return self.preferences
 
-    #-------------------------------------------------------------------------
-
-
 # ----------------------------------------------------------------------------
-
 
 class PrefsGeneralPanel( wx.Panel ):
     """
     Main Frame settings: background color, foreground color and font, etc.
+
     """
 
     def __init__(self, parent, prefsIO):
@@ -254,9 +146,7 @@ class PrefsGeneralPanel( wx.Panel ):
         self.UpdateUI()
         self.SetSizer(gbs)
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def __create_sizer(self):
 
@@ -316,7 +206,6 @@ class PrefsGeneralPanel( wx.Panel ):
 
     # ------------------------------------------------------------------------
 
-
     def UpdateUI(self):
         """
         Update the sample to look like the chosen decoration.
@@ -326,10 +215,6 @@ class PrefsGeneralPanel( wx.Panel ):
         self.sampleText.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
 
         self.Layout()
-
-    # End UpdateUI
-    #-------------------------------------------------------------------------
-
 
     #-------------------------------------------------------------------------
     # Callbacks
@@ -360,9 +245,7 @@ class PrefsGeneralPanel( wx.Panel ):
 
         dlg.Destroy()
 
-    # End onColorDlg
     #-------------------------------------------------------------------------
-
 
     def onSelectFont(self, event):
         """
@@ -385,26 +268,18 @@ class PrefsGeneralPanel( wx.Panel ):
 
         dlg.Destroy()
 
-    # End onSelectFont
     #-------------------------------------------------------------------------
-
 
     def onTipsChecked(self, event):
         """ Tips at start-up. """
         self.preferences.SetValue( 'M_TIPS', 'bool', event.GetEventObject().GetValue() )
 
-    # End onTipsChecked
-    #-------------------------------------------------------------------------
-
-
-#-----------------------------------------------------------------------------
-
-
 # ----------------------------------------------------------------------------
 
-
 class PrefsAnnotationPanel( wx.Panel ):
-    """ Panel to fix prefs for annotations. """
+    """
+    Panel to fix prefs for annotations.
+    """
 
     def __init__(self, parent, prefsIO):
 
@@ -435,15 +310,12 @@ class PrefsAnnotationPanel( wx.Panel ):
         idx = self.radiobox.GetSelection()
         self.preferences.SetValue( 'M_OUTPUT_EXT', 'str', extensions_out[idx] )
 
-    # End onOutputFormat
-    #-------------------------------------------------------------------------
-
-
 # ----------------------------------------------------------------------------
 
-
 class PrefsThemePanel( wx.Panel ):
-    """ Panel with a radiobox to choose the theme of the icons. """
+    """
+    Panel with a radiobox to choose the theme of the icons.
+    """
 
     def __init__(self, parent, prefsIO):
 
@@ -476,12 +348,9 @@ class PrefsThemePanel( wx.Panel ):
 
     #-------------------------------------------------------------------------
 
-
     def onIconThemeClick(self, event):
         """ Set the new theme. """
         idxtheme = self.radiobox.GetSelection()
         self.preferences.SetValue( 'M_ICON_THEME', 'str', self.iconthemes[idxtheme] )
-
-    #-------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------

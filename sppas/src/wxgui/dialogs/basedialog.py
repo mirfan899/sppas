@@ -51,6 +51,7 @@ import wx
 
 from wxgui.sp_icons import APP_ICON
 from wxgui.sp_icons import CLOSE_ICON
+from wxgui.sp_icons import APPLY_ICON
 from wxgui.sp_icons import CANCEL_ICON
 from wxgui.sp_icons import SAVE_FILE
 
@@ -120,7 +121,6 @@ class spBaseDialog( wx.Dialog ):
         title_layout.Add(self.title_label, flag=wx.EXPAND|wx.ALL|wx.wx.ALIGN_CENTER_VERTICAL, border=5)
         return title_layout
 
-
     def CreateButton(self, icon, text, tooltip="", btnid=None):
         """
         Create a button and return it.
@@ -155,19 +155,23 @@ class spBaseDialog( wx.Dialog ):
         self.SetAffirmativeId(wx.ID_CLOSE)
         return btn
 
+    def CreateOkayButton(self, tooltip=""):
+        btn = self.CreateButton(APPLY_ICON, " OK ", tooltip, wx.ID_OK)
+        btn.SetDefault()
+        btn.SetFocus()
+        self.SetAffirmativeId(wx.ID_OK)
+        return btn
+
     def CreateButtonBox(self, leftbuttons,rightbuttons):
         button_box = wx.BoxSizer(wx.HORIZONTAL)
         if len(leftbuttons)>0:
             for button in leftbuttons:
                 button_box.Add(button, flag=wx.LEFT, border=2)
-            #if len(rightbuttons)>0:
-                #button_box.AddStretchSpacer()
         if len(rightbuttons)>0:
             button_box.AddStretchSpacer()
             for button in rightbuttons:
                 button_box.Add(button, flag=wx.RIGHT, border=2)
         return button_box
-
 
     def AddToolbar(self, leftobjects,rightobjects):
         if len(leftobjects+rightobjects)==0:

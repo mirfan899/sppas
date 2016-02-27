@@ -34,12 +34,10 @@
 # ---------------------------------------------------------------------------
 # File: singlefilter.py
 # ----------------------------------------------------------------------------
-#from _dbus_bindings import Boolean
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 # Imports
@@ -49,39 +47,33 @@ import os
 import wx
 import re
 import operator
-import logging
 
 from annotationdata.filter.predicate import Sel
+
+from wxgui.dialogs.basedialog import spBaseDialog
 
 from wxgui.sp_icons import DATAFILTER_APP_ICON
 from wxgui.sp_icons import FILTER_SINGLE
 from wxgui.sp_icons import APPLY_ICON
-from wxgui.sp_icons import CANCEL_ICON
 from wxgui.sp_icons import FILTER_ADD_LABEL
 from wxgui.sp_icons import FILTER_ADD_DURATION
 from wxgui.sp_icons import FILTER_ADD_TIME
 from wxgui.sp_icons import FILTER_REMOVE
 
 from wxgui.sp_consts import TB_ICONSIZE
-from wxgui.sp_consts import TB_FONTSIZE
 
 from wxgui.cutils.imageutils import spBitmap
 from wxgui.cutils.ctrlutils import CreateGenButton
 from wxgui.cutils.textutils import TextValidator
 
-from wxgui.sp_consts import FRAME_STYLE
-from wxgui.sp_consts import FRAME_TITLE
-
 from wxgui.ui.CustomListCtrl import CheckListCtrl
 
 from sp_glob import ICONS_PATH
-
 
 try:
     from agw import floatspin as FS
 except ImportError:
     import wx.lib.agw.floatspin as FS
-
 
 # ----------------------------------------------------------------------------
 # Constants
@@ -93,14 +85,13 @@ ID_ADD_DURATION = wx.NewId()
 ID_CLEAR        = wx.NewId()
 
 DEFAULT_TIERNAME = "Filtered tier"
-
-
+DEFAULT_LABEL = "label1, label2..."
 
 # ----------------------------------------------------------------------------
 # class SingleFilterDialog
 # ----------------------------------------------------------------------------
 
-class SingleFilterDialog( wx.Dialog ):
+class SingleFilterDialog( spBaseDialog ):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -112,65 +103,37 @@ class SingleFilterDialog( wx.Dialog ):
 
     """
 
-    def __init__(self, parent, prefsIO):
+    def __init__(self, parent, preferences):
         """
         Create a new dialog.
 
         """
-
-        wx.Dialog.__init__(self, parent, title=FRAME_TITLE+" - SingleFilter", style=FRAME_STYLE)
+        spBaseDialog.__init__(self, parent, preferences, title=" - SingleFilter")
+        wx.GetApp().SetAppName( "singlefilter" )
 
         # Members
-        self.preferences = prefsIO
         self.match_all = False
-        self._create_gui()
 
-        # Events of this frame
-        wx.EVT_CLOSE(self, self.onClose)
+        titlebox   = self.CreateTitle(FILTER_SINGLE,"Filter annotations of a tier")
+        contentbox = self._create_content()
+        buttonbox  = self._create_buttons()
 
-    # End __init__
-    # ------------------------------------------------------------------------
-
+        self.LayoutComponents( titlebox,
+                               contentbox,
+                               buttonbox )
 
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
 
-
-    def _create_gui(self):
-        self._init_infos()
-        self._create_title_label()
-        self._create_content()
-        self._create_cancel_button()
-        self._create_applyall_button()
-        self._create_applyany_button()
-        self._layout_components()
-        self._set_focus_component()
-
-
-    def _init_infos( self ):
-        wx.GetApp().SetAppName( "singlefilter" )
-        # icon
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(DATAFILTER_APP_ICON) )
-        self.SetIcon(_icon)
-        # colors
-        self.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
-        self.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR'))
-        self.SetFont( self.preferences.GetValue('M_FONT'))
-
-
-    def _create_title_label(self):
-        self.title_layout = wx.BoxSizer(wx.HORIZONTAL)
-        bmp = wx.BitmapButton(self, bitmap=spBitmap(FILTER_SINGLE, 32, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
-        font = self.preferences.GetValue('M_FONT')
-        font.SetWeight(wx.BOLD)
-        font.SetPointSize(font.GetPointSize() + 2)
-        self.title_label = wx.StaticText(self, label="Filter annotations of a tier", style=wx.ALIGN_CENTER)
-        self.title_label.SetFont( font )
-        self.title_layout.Add(bmp,  flag=wx.TOP|wx.RIGHT|wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL, border=5)
-        self.title_layout.Add(self.title_label, flag=wx.EXPAND|wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
-
+    def _create_buttons(self):
+        btn_cancel   = self.CreateCancelButton( )
+        btn_applyany = self.CreateButton(APPLY_ICON, "Apply any", btnid=wx.ID_OK )
+        btn_applyall = self.CreateButton(APPLY_ICON, "Apply all", btnid=wx.ID_OK )
+        self.SetAffirmativeId(wx.ID_OK)
+        btn_applyall.SetDefault()
+        btn_applyall.Bind(wx.EVT_BUTTON, self._on_button_all, btn_applyall)
+        return self.CreateButtonBox( [btn_cancel],[btn_applyany,btn_applyall] )
 
     def _create_content(self):
         self.filterpanel = SingleFilterPanel(self, self.preferences)
@@ -187,67 +150,18 @@ class SingleFilterDialog( wx.Dialog ):
         self.tiername_layout.Add(title_tiername,  flag=wx.ALL|wx.wx.ALIGN_CENTER_VERTICAL, border=5)
         self.tiername_layout.Add(self.text_tiername, flag=wx.EXPAND|wx.ALL|wx.wx.ALIGN_CENTER_VERTICAL, border=5)
 
-
-    def _create_cancel_button(self):
-        bmp = spBitmap(CANCEL_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_cancel = CreateGenButton(self, wx.ID_CLOSE, bmp, text=" Cancel ", tooltip="Close this frame", colour=color)
-        self.btn_cancel.SetFont( self.preferences.GetValue('M_FONT'))
-        self.SetEscapeId(wx.ID_CLOSE)
-
-
-    def _create_applyany_button(self):
-        bmp = spBitmap(APPLY_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_applyany = CreateGenButton(self, wx.ID_OK, bmp, text=" Apply any ", tooltip="Apply any of the filters and close the frame", colour=color)
-        self.btn_applyany.SetFont( self.preferences.GetValue('M_FONT'))
-
-
-    def _create_applyall_button(self):
-        bmp = spBitmap(APPLY_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_applyall = CreateGenButton(self, wx.ID_OK, bmp, text=" Apply all ", tooltip="Apply all filters and close the frame", colour=color)
-        self.btn_applyall.SetFont( self.preferences.GetValue('M_FONT'))
-        self.btn_applyall.SetDefault()
-        self.btn_applyall.SetFocus()
-
-
-    def _create_button_box(self):
-        button_box = wx.BoxSizer(wx.HORIZONTAL)
-        button_box.Add(self.btn_cancel,   flag=wx.LEFT,  border=5)
-        button_box.AddStretchSpacer()
-        button_box.Add(self.btn_applyany, flag=wx.RIGHT, border=5)
-        button_box.Add(self.btn_applyall, flag=wx.RIGHT, border=5)
-
-        self.btn_applyall.Bind(wx.EVT_BUTTON, self.onButtonAll)
-
-        return button_box
-
-
-    def _layout_components(self):
         vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.title_layout, 0, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self.filterpanel,  1, flag=wx.ALL|wx.EXPAND, border=0)
-        vbox.Add(self.tiername_layout, 0, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self._create_button_box(), 0, flag=wx.ALL|wx.EXPAND, border=5)
-        self.SetSizerAndFit(vbox)
-
-
-    def _set_focus_component(self):
-        self.filterpanel.SetFocus()
-
+        vbox.Add(self.filterpanel,     1, flag=wx.ALL|wx.EXPAND, border=0)
+        vbox.Add(self.tiername_layout, 0, flag=wx.ALL|wx.EXPAND, border=0)
+        return vbox
 
     #-------------------------------------------------------------------------
     # Callbacks
     #-------------------------------------------------------------------------
 
-    def onClose(self, event):
-        self.SetEscapeId( wx.ID_CANCEL )
-
-    def onButtonAll(self, event):
+    def _on_button_all(self, event):
         self.match_all = True
         event.Skip()
-
 
     def OnTextClick(self, event):
         self.text_tiername.SetForegroundColour( wx.BLACK )
@@ -266,14 +180,11 @@ class SingleFilterDialog( wx.Dialog ):
         self.text_tiername.SetBackgroundColour( wx.Colour(245,220,240) )
         self.text_tiername.Refresh()
 
-
     #-------------------------------------------------------------------------
-
 
     #-------------------------------------------------------------------------
     # Getters...
     #-------------------------------------------------------------------------
-
 
     def GetPredicates(self):
         """
@@ -281,13 +192,11 @@ class SingleFilterDialog( wx.Dialog ):
         """
         return self.filterpanel.GetPredicates()
 
-
     def GetFiltererdTierName(self):
         """
         Return the future name for the filtered tier.
         """
         return self.text_tiername.GetValue().strip()
-
 
     def GetMatchAll(self):
         """
@@ -295,11 +204,7 @@ class SingleFilterDialog( wx.Dialog ):
         """
         return self.match_all
 
-    #-------------------------------------------------------------------------
-
-
 # ----------------------------------------------------------------------------
-
 
 class SingleFilterPanel(wx.Panel):
     """
@@ -317,10 +222,6 @@ class SingleFilterPanel(wx.Panel):
         self.preferences = prefsIO
         self.data = []
 
-        self._create_gui()
-
-
-    def _create_gui(self):
         self._create_toolbar()
         self._create_filterlist()
         self._layout_components()
@@ -368,7 +269,6 @@ class SingleFilterPanel(wx.Panel):
             self.filterlist.InsertColumn(i, col)
             self.filterlist.SetColumnWidth(i, 120)
 
-
     def _layout_components(self):
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.toolbar, proportion=0, flag=wx.EXPAND|wx.ALL, border=1 )
@@ -376,15 +276,12 @@ class SingleFilterPanel(wx.Panel):
         self.SetSizer(sizer)
         self.SetAutoLayout( True )
 
-
     def _set_focus_component(self):
         self.filterlist.SetFocus()
-
 
     # ------------------------------------------------------------------------
     # Callbacks to any kind of event
     # ------------------------------------------------------------------------
-
 
     def ProcessEvent(self, event):
         """
@@ -410,10 +307,6 @@ class SingleFilterPanel(wx.Panel):
 
         return wx.GetApp().ProcessEvent(event)
 
-    # End ProcessEvent
-    # ------------------------------------------------------------------------
-
-
     # ----------------------------------------------------------------------
     # Callbacks
     # ----------------------------------------------------------------------
@@ -426,7 +319,6 @@ class SingleFilterPanel(wx.Panel):
             self.data.append( data )
         dlg.Destroy()
 
-
     def OnAddTime(self, event):
         dlg = TimeFilterDialog(self, self.preferences)
         if dlg.ShowModal() == wx.ID_OK:
@@ -435,15 +327,14 @@ class SingleFilterPanel(wx.Panel):
             self.data.append( data )
         dlg.Destroy()
 
-
     def OnAddDuration(self, event):
         dlg = DurationFilterDialog(self, self.preferences)
+        dlg.Show()
         if dlg.ShowModal() == wx.ID_OK:
             data = dlg.GetData()
             self._add_filter( data )
             self.data.append( data )
         dlg.Destroy()
-
 
     def OnClear(self, event):
         sellist = self.filterlist.GetFirstSelected()
@@ -453,11 +344,9 @@ class SingleFilterPanel(wx.Panel):
             self.data.pop( sellist )
             sellist = next
 
-
     # ----------------------------------------------------------------------
     # Public Methods
     # ----------------------------------------------------------------------
-
 
     def GetPredicates(self):
         """
@@ -474,11 +363,9 @@ class SingleFilterPanel(wx.Panel):
 
         return predicates
 
-
     # ----------------------------------------------------------------------
     # Private methods
     # ----------------------------------------------------------------------
-
 
     def _add_filter(self, data):
         """
@@ -491,7 +378,6 @@ class SingleFilterPanel(wx.Panel):
         for i in range(1,len(row)):
             self.filterlist.SetStringItem( index, i, row[i] )
         self.filterlist.Select( index,on=True )
-
 
     def _format_data(self, data):
         """
@@ -512,11 +398,7 @@ class SingleFilterPanel(wx.Panel):
 
         return (data['type'], data['name'], values, opt)
 
-    # ----------------------------------------------------------------------
-
-
 # --------------------------------------------------------------------------
-
 
 class _genPredicateSel(object):
     """
@@ -545,13 +427,9 @@ class _genPredicateSel(object):
             return ~pred
         return pred
 
-    # ----------------------------------------------------------------------
-
-
 # ----------------------------------------------------------------------------
 
-
-class LabelFilterDialog(wx.Dialog):
+class LabelFilterDialog( spBaseDialog ):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -562,7 +440,6 @@ class LabelFilterDialog(wx.Dialog):
     of annotations.
 
     """
-
     choices = (
                ("exact", "exact"),
                ("not exact", "exact"),
@@ -581,54 +458,27 @@ class LabelFilterDialog(wx.Dialog):
         Constructor.
 
         """
-        wx.Dialog.__init__(self, parent, -1, title=FRAME_TITLE+" - Label Filter", style=FRAME_STYLE)
+        spBaseDialog.__init__(self, parent, preferences, title=" - Label Filter")
+        wx.GetApp().SetAppName( "labelfilter" )
 
-        self.preferences = preferences
-        self._create_gui()
+        titlebox   = self.CreateTitle(FILTER_ADD_LABEL,"Label-based single filter")
+        contentbox = self._create_content()
+        buttonbox  = self._create_buttons()
 
-        # Events of this frame
-        wx.EVT_CLOSE(self, self.OnClose)
-
-    # End __init__
-    # ------------------------------------------------------------------------
+        self.LayoutComponents( titlebox,
+                               contentbox,
+                               buttonbox )
 
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
 
-    def _create_gui(self):
-        self._init_infos()
-        self._create_title_label()
-        self._create_notebook()
-        self._create_apply_button()
-        self._create_close_button()
-        self._layout_components()
-        self._set_focus_component()
+    def _create_buttons(self):
+        btn_cancel = self.CreateCancelButton( )
+        btn_okay   = self.CreateOkayButton( )
+        return self.CreateButtonBox( [btn_cancel],[btn_okay] )
 
-    def _init_infos( self ):
-        wx.GetApp().SetAppName( "label" )
-        # icon
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(DATAFILTER_APP_ICON) )
-        self.SetIcon(_icon)
-        # colors
-        self.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
-        self.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR'))
-        self.SetFont( self.preferences.GetValue('M_FONT'))
-
-    def _create_title_label(self):
-        self.title_layout = wx.BoxSizer(wx.HORIZONTAL)
-        bmp = wx.BitmapButton(self, bitmap=spBitmap(FILTER_ADD_LABEL, 32, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
-        font = self.preferences.GetValue('M_FONT')
-        font.SetWeight(wx.BOLD)
-        font.SetPointSize(font.GetPointSize() + 2)
-        self.title_label = wx.StaticText(self, label="Label-based filter", style=wx.ALIGN_CENTER)
-        self.title_label.SetFont( font )
-        self.title_layout.Add(bmp,  flag=wx.TOP|wx.RIGHT|wx.ALIGN_RIGHT|wx.wx.ALIGN_CENTER_VERTICAL, border=5)
-        self.title_layout.Add(self.title_label, flag=wx.EXPAND|wx.ALL|wx.wx.ALIGN_CENTER_VERTICAL, border=5)
-
-
-    def _create_notebook(self):
+    def _create_content(self):
         self.notebook = wx.Notebook(self)
         page1 = LabelString(self.notebook, self.preferences)
         page2 = LabelNumber(self.notebook, self.preferences)
@@ -641,57 +491,12 @@ class LabelFilterDialog(wx.Dialog):
         self.checkbox = wx.CheckBox(self, label="Search also in alternative labels")
         self.checkbox.SetValue(False)
 
-
-    def _create_apply_button(self):
-        bmp = spBitmap(APPLY_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_apply = CreateGenButton(self, wx.ID_OK, bmp, text=" Apply ", tooltip="Add filters and close this frame", colour=color)
-        self.btn_apply.SetFont( self.preferences.GetValue('M_FONT'))
-        self.btn_apply.SetDefault()
-        self.btn_apply.SetFocus()
-        self.SetAffirmativeId(wx.ID_OK)
-
-    def _create_close_button(self):
-        bmp = spBitmap(CANCEL_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_close = CreateGenButton(self, wx.ID_CLOSE, bmp, text=" Cancel", tooltip="Close this frame", colour=color)
-        self.btn_close.SetFont( self.preferences.GetValue('M_FONT'))
-        self.btn_close.SetDefault()
-        self.btn_close.SetFocus()
-        self.SetEscapeId(wx.ID_CLOSE)
-
-    def _create_button_box(self):
-        button_box = wx.BoxSizer(wx.HORIZONTAL)
-        button_box.Add(self.btn_close, flag=wx.LEFT, border=5)
-        button_box.AddStretchSpacer()
-        button_box.Add(self.btn_apply, flag=wx.RIGHT, border=5)
-        return button_box
-
-    def _layout_components(self):
         vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.title_layout,         0, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self.notebook,             1, flag=wx.ALL|wx.EXPAND, border=0)
-        vbox.Add(self.checkbox,             0, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self._create_button_box(), 0, flag=wx.ALL|wx.EXPAND, border=5)
-        self.SetSizerAndFit(vbox)
-#         self.SetMinSize((420,380))
-#         self.SetSizer( vbox )
-#         self.Centre()
-#         self.Enable()
-#         self.SetAutoLayout(True)
-#         self.SetFocus()
-#         self.Layout()
-        self.Show(True)
-
-
-    def _set_focus_component(self):
-        self.notebook.SetFocus()
+        vbox.Add(self.notebook, 1, flag=wx.ALL|wx.EXPAND, border=0)
+        vbox.Add(self.checkbox, 0, flag=wx.ALL|wx.EXPAND, border=0)
+        return vbox
 
     # -----------------------------------------------------------------------
-
-    def OnClose(self, event):
-        self.SetEscapeId(wx.ID_CANCEL)
-
 
     def GetData(self):
         pageidx = self.notebook.GetSelection()
@@ -702,9 +507,7 @@ class LabelFilterDialog(wx.Dialog):
             data['opt'] = "best"
         return data
 
-    # -----------------------------------------------------------------------
-
-
+# ---------------------------------------------------------------------------
 
 class LabelString( wx.Panel ):
     """
@@ -719,7 +522,7 @@ class LabelString( wx.Panel ):
         # Widgets
         msg = "Patterns to find (separated by commas):"
         self.label = wx.StaticText(self, label=msg)
-        self.text = wx.TextCtrl(self, value="", validator=TextValidator())
+        self.text = wx.TextCtrl(self, value=DEFAULT_LABEL, validator=TextValidator())
         self.text.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
 
         choices = [row[0] for row in LabelFilterDialog.choices]
@@ -730,16 +533,14 @@ class LabelString( wx.Panel ):
 
         # Layout
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.label,     flag=wx.EXPAND|wx.ALL, border=5)
-        sizer.Add(self.text,      flag=wx.EXPAND|wx.ALL, border=5)
-        sizer.Add(self.radiobox,  flag=wx.EXPAND|wx.ALL, border=5)
-        sizer.Add(self.checkbox,  flag=wx.EXPAND|wx.ALL, border=5)
+        sizer.Add(self.label,     flag=wx.EXPAND|wx.ALL, border=4)
+        sizer.Add(self.text,      flag=wx.EXPAND|wx.ALL, border=4)
+        sizer.Add(self.radiobox,  flag=wx.EXPAND|wx.ALL, border=4)
+        sizer.Add(self.checkbox,  flag=wx.EXPAND|wx.ALL, border=4)
 
         self.SetSizer( sizer )
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def OnTextClick(self, event):
         self.text.SetForegroundColour( wx.BLACK )
@@ -791,9 +592,7 @@ class LabelString( wx.Panel ):
 
         return data
 
-    # End GetData
     # -----------------------------------------------------------------------
-
 
 class LabelNumber( wx.Panel ):
     """
@@ -823,9 +622,11 @@ class LabelNumber( wx.Panel ):
         hbox.Add(self.ctrl, flag=wx.EXPAND|wx.ALL, border=5)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.radiobox, 1, flag=wx.EXPAND|wx.ALL, border=5)
-        sizer.Add(hbox, 0, flag=wx.EXPAND|wx.ALL, border=5)
+        sizer.Add(self.radiobox, 1, flag=wx.EXPAND|wx.ALL, border=4)
+        sizer.Add(hbox,          0, flag=wx.EXPAND|wx.ALL, border=4)
         self.SetSizer( sizer )
+
+    # -----------------------------------------------------------------------
 
     def GetData(self):
         data = {}
@@ -837,9 +638,7 @@ class LabelNumber( wx.Panel ):
         data['reverse']  = False
         return data
 
-    # End GetData
-    # -----------------------------------------------------------------------
-
+# ---------------------------------------------------------------------------
 
 class LabelBoolean( wx.Panel ):
     """
@@ -858,6 +657,7 @@ class LabelBoolean( wx.Panel ):
         self.radiobox = wx.RadioBox(self, label="The label ",
                                     choices=choices, majorDimension=1, style=wx.RA_SPECIFY_COLS)
 
+    # -----------------------------------------------------------------------
 
     def GetData(self):
         data = {}
@@ -870,12 +670,9 @@ class LabelBoolean( wx.Panel ):
         data['reverse']  = False
         return data
 
-    # End GetData
-    # -----------------------------------------------------------------------
-
 # ---------------------------------------------------------------------------
 
-class TimeFilterDialog(wx.Dialog):
+class TimeFilterDialog( spBaseDialog ):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -886,7 +683,6 @@ class TimeFilterDialog(wx.Dialog):
     of annotations.
 
     """
-
     choices = (
                (" is starting at...", "begin_ge"),
                (" is ending at...",   "end_le")
@@ -894,51 +690,25 @@ class TimeFilterDialog(wx.Dialog):
 
     def __init__(self, parent, preferences):
         """ Constructor. """
-        wx.Dialog.__init__(self, parent, -1, title=FRAME_TITLE+" - Time Filter", style=FRAME_STYLE)
+        spBaseDialog.__init__(self, parent, preferences, title=" - Time Filter")
+        wx.GetApp().SetAppName( "timefilter" )
 
-        self.preferences = preferences
-        self._create_gui()
+        titlebox   = self.CreateTitle(FILTER_ADD_TIME,"Time-based single filter")
+        contentbox = self._create_content()
+        buttonbox  = self._create_buttons()
 
-        # Events of this frame
-        wx.EVT_CLOSE(self, self.OnClose)
-
-    # End __init__
-    # ------------------------------------------------------------------------
+        self.LayoutComponents( titlebox,
+                               contentbox,
+                               buttonbox )
 
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
 
-    def _create_gui(self):
-        self._init_infos()
-        self._create_title_label()
-        self._create_content()
-        self._create_apply_button()
-        self._create_close_button()
-        self._layout_components()
-        self._set_focus_component()
-
-    def _init_infos( self ):
-        wx.GetApp().SetAppName( "time" )
-        # icon
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(DATAFILTER_APP_ICON) )
-        self.SetIcon(_icon)
-        # colors
-        self.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
-        self.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR'))
-        self.SetFont( self.preferences.GetValue('M_FONT'))
-
-    def _create_title_label(self):
-        self.title_layout = wx.BoxSizer(wx.HORIZONTAL)
-        bmp = wx.BitmapButton(self, bitmap=spBitmap(FILTER_ADD_TIME, 32, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
-        font = self.preferences.GetValue('M_FONT')
-        font.SetWeight(wx.BOLD)
-        font.SetPointSize(font.GetPointSize() + 2)
-        self.title_label = wx.StaticText(self, label="Time-based filter", style=wx.ALIGN_CENTER)
-        self.title_label.SetFont( font )
-        self.title_layout.Add(bmp,  flag=wx.TOP|wx.RIGHT|wx.ALIGN_RIGHT|wx.wx.ALIGN_CENTER_VERTICAL, border=5)
-        self.title_layout.Add(self.title_label, flag=wx.EXPAND|wx.ALL|wx.wx.ALIGN_CENTER_VERTICAL, border=5)
+    def _create_buttons(self):
+        btn_cancel = self.CreateCancelButton( )
+        btn_okay   = self.CreateOkayButton( )
+        return self.CreateButtonBox( [btn_cancel],[btn_okay] )
 
     def _create_content(self):
         # Widgets
@@ -951,56 +721,11 @@ class TimeFilterDialog(wx.Dialog):
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         hbox.Add(label, flag=wx.EXPAND|wx.ALL, border=5)
         hbox.Add(self.ctrl, flag=wx.EXPAND|wx.ALL, border=5)
-        self.content_layout = wx.BoxSizer(wx.VERTICAL)
-        self.content_layout.Add(self.radiobox,1, flag=wx.EXPAND|wx.ALL, border=5)
-        self.content_layout.Add(hbox,         0, flag=wx.EXPAND|wx.ALL, border=5)
 
-    def _create_apply_button(self):
-        bmp = spBitmap(APPLY_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_apply = CreateGenButton(self, wx.ID_OK, bmp, text=" Apply ", tooltip="Add filters and close this frame", colour=color)
-        self.btn_apply.SetFont( self.preferences.GetValue('M_FONT'))
-        self.btn_apply.SetDefault()
-        self.btn_apply.SetFocus()
-        self.SetAffirmativeId(wx.ID_OK)
-
-    def _create_close_button(self):
-        bmp = spBitmap(CANCEL_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_close = CreateGenButton(self, wx.ID_CLOSE, bmp, text=" Cancel", tooltip="Close this frame", colour=color)
-        self.btn_close.SetFont( self.preferences.GetValue('M_FONT'))
-        self.btn_close.SetDefault()
-        self.btn_close.SetFocus()
-        self.SetEscapeId(wx.ID_CLOSE)
-
-    def _create_button_box(self):
-        button_box = wx.BoxSizer(wx.HORIZONTAL)
-        button_box.Add(self.btn_close, flag=wx.LEFT, border=5)
-        button_box.AddStretchSpacer()
-        button_box.Add(self.btn_apply, flag=wx.RIGHT, border=5)
-        return button_box
-
-    def _layout_components(self):
-        vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.title_layout,         0, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self.content_layout,       1, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self._create_button_box(), 0, flag=wx.ALL|wx.EXPAND, border=5)
-        self.SetMinSize((320,280))
-        self.SetSizer( vbox )
-        self.Centre()
-        self.Enable()
-        self.SetAutoLayout(True)
-        self.SetFocus()
-        self.Layout()
-        self.Show(True)
-
-    def _set_focus_component(self):
-        self.btn_apply.SetFocus()
-
-    # -----------------------------------------------------------------------
-
-    def OnClose(self, event):
-        self.SetEscapeId(wx.ID_CANCEL)
+        content_layout = wx.BoxSizer(wx.VERTICAL)
+        content_layout.Add(self.radiobox,1, flag=wx.EXPAND|wx.ALL, border=0)
+        content_layout.Add(hbox,         0, flag=wx.EXPAND|wx.ALL, border=0)
+        return content_layout
 
     # -----------------------------------------------------------------------
 
@@ -1022,13 +747,9 @@ class TimeFilterDialog(wx.Dialog):
         data['reverse']  = False
         return data
 
-    # End GetData
-    # -----------------------------------------------------------------------
-
 # ---------------------------------------------------------------------------
 
-
-class DurationFilterDialog(wx.Dialog):
+class DurationFilterDialog( spBaseDialog):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -1049,51 +770,24 @@ class DurationFilterDialog(wx.Dialog):
 
     def __init__(self, parent, preferences):
         """ Constructor. """
-        wx.Dialog.__init__(self, parent, -1, title=FRAME_TITLE+" - Duration Filter", style=FRAME_STYLE)
+        spBaseDialog.__init__(self, parent, preferences, title=" - Duration Filter")
+        wx.GetApp().SetAppName( "durationfilter" )
 
-        self.preferences = preferences
-        self._create_gui()
+        titlebox   = self.CreateTitle(FILTER_ADD_DURATION,"Duration-based single filter")
+        contentbox = self._create_content()
+        buttonbox  = self._create_buttons()
 
-        # Events of this frame
-        wx.EVT_CLOSE(self, self.OnClose)
-
-    # End __init__
-    # ------------------------------------------------------------------------
-
+        self.LayoutComponents( titlebox,
+                               contentbox,
+                               buttonbox )
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
 
-    def _create_gui(self):
-        self._init_infos()
-        self._create_title_label()
-        self._create_content()
-        self._create_apply_button()
-        self._create_close_button()
-        self._layout_components()
-        self._set_focus_component()
-
-    def _init_infos( self ):
-        wx.GetApp().SetAppName( "duration" )
-        # icon
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(DATAFILTER_APP_ICON) )
-        self.SetIcon(_icon)
-        # colors
-        self.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
-        self.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR'))
-        self.SetFont( self.preferences.GetValue('M_FONT'))
-
-    def _create_title_label(self):
-        self.title_layout = wx.BoxSizer(wx.HORIZONTAL)
-        bmp = wx.BitmapButton(self, bitmap=spBitmap(FILTER_ADD_DURATION, 32, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
-        font = self.preferences.GetValue('M_FONT')
-        font.SetWeight(wx.BOLD)
-        font.SetPointSize(font.GetPointSize() + 2)
-        self.title_label = wx.StaticText(self, label="Duration-based filter", style=wx.ALIGN_CENTER)
-        self.title_label.SetFont( font )
-        self.title_layout.Add(bmp,  flag=wx.TOP|wx.RIGHT|wx.ALIGN_RIGHT|wx.wx.ALIGN_CENTER_VERTICAL, border=5)
-        self.title_layout.Add(self.title_label, flag=wx.EXPAND|wx.ALL|wx.wx.ALIGN_CENTER_VERTICAL, border=5)
+    def _create_buttons(self):
+        btn_cancel = self.CreateCancelButton( )
+        btn_okay   = self.CreateOkayButton( )
+        return self.CreateButtonBox( [btn_cancel],[btn_okay] )
 
     def _create_content(self):
         # Widgets
@@ -1107,56 +801,10 @@ class DurationFilterDialog(wx.Dialog):
         hbox.Add(label,     flag=wx.EXPAND|wx.ALL, border=5)
         hbox.Add(self.ctrl, flag=wx.EXPAND|wx.ALL, border=5)
 
-        self.content_layout = wx.BoxSizer(wx.VERTICAL)
-        self.content_layout.Add(self.radiobox, 1, flag=wx.EXPAND|wx.ALL, border=5)
-        self.content_layout.Add(hbox,          0, flag=wx.EXPAND|wx.ALL, border=5)
-
-    def _create_apply_button(self):
-        bmp = spBitmap(APPLY_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_apply = CreateGenButton(self, wx.ID_OK, bmp, text=" Apply ", tooltip="Add filters and close this frame", colour=color)
-        self.btn_apply.SetFont( self.preferences.GetValue('M_FONT'))
-        self.btn_apply.SetDefault()
-        self.btn_apply.SetFocus()
-        self.SetAffirmativeId(wx.ID_OK)
-
-    def _create_close_button(self):
-        bmp = spBitmap(CANCEL_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_close = CreateGenButton(self, wx.ID_CLOSE, bmp, text=" Cancel", tooltip="Close this frame", colour=color)
-        self.btn_close.SetFont( self.preferences.GetValue('M_FONT'))
-        self.btn_close.SetDefault()
-        self.btn_close.SetFocus()
-        self.SetEscapeId(wx.ID_CLOSE)
-
-    def _create_button_box(self):
-        button_box = wx.BoxSizer(wx.HORIZONTAL)
-        button_box.Add(self.btn_close, flag=wx.LEFT, border=5)
-        button_box.AddStretchSpacer()
-        button_box.Add(self.btn_apply, flag=wx.RIGHT, border=5)
-        return button_box
-
-    def _layout_components(self):
-        vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.title_layout,         0, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self.content_layout,       1, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self._create_button_box(), 0, flag=wx.ALL|wx.EXPAND, border=5)
-        self.SetMinSize((380,340))
-        self.SetSizer( vbox )
-        self.Centre()
-        self.Enable()
-        self.SetAutoLayout(True)
-        self.SetFocus()
-        self.Layout()
-        self.Show(True)
-
-    def _set_focus_component(self):
-        self.btn_apply.SetFocus()
-
-    # -----------------------------------------------------------------------
-
-    def OnClose(self, event):
-        self.SetEscapeId(wx.ID_CANCEL)
+        content_layout = wx.BoxSizer(wx.VERTICAL)
+        content_layout.Add(self.radiobox, 1, flag=wx.EXPAND|wx.ALL, border=0)
+        content_layout.Add(hbox,          0, flag=wx.EXPAND|wx.ALL, border=0)
+        return content_layout
 
     # -----------------------------------------------------------------------
 
@@ -1178,7 +826,4 @@ class DurationFilterDialog(wx.Dialog):
         data['reverse']  = False
         return data
 
-    # End GetData
     # -----------------------------------------------------------------------
-
-

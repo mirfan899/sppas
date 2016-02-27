@@ -43,33 +43,16 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # Imports
 # ----------------------------------------------------------------------------
 
-import os
 import wx
-import re
-import operator
-import logging
 
 from annotationdata.filter.predicate import Rel
 
 from wxgui.dialogs.basedialog import spBaseDialog
 from wxgui.sp_icons import DATAFILTER_APP_ICON
 from wxgui.sp_icons import FILTER_RELATION
-from wxgui.sp_icons import APPLY_ICON
-from wxgui.sp_icons import CANCEL_ICON
 
-from wxgui.sp_consts import TB_ICONSIZE
-from wxgui.sp_consts import TB_FONTSIZE
-
-from wxgui.cutils.imageutils import spBitmap
-from wxgui.cutils.ctrlutils import CreateGenButton
 from wxgui.cutils.textutils import TextValidator
-
-from wxgui.sp_consts import FRAME_STYLE
-from wxgui.sp_consts import FRAME_TITLE
-
 from wxgui.panels.relationstable import AllensRelationsTable
-
-from sp_glob import ICONS_PATH
 
 # ----------------------------------------------------------------------------
 # Constants
@@ -119,8 +102,8 @@ class RelationFilterDialog( spBaseDialog ):
 
     def _create_buttons(self):
         btn_cancel = self.CreateCancelButton( )
-        btn_close  = self.CreateCloseButton( )
-        return self.CreateButtonBox( [btn_cancel],[btn_close] )
+        btn_okay   = self.CreateOkayButton( )
+        return self.CreateButtonBox( [btn_cancel],[btn_okay] )
 
     def _create_content(self):
         self.xy_layout       = self._create_xy_layout()
@@ -128,9 +111,9 @@ class RelationFilterDialog( spBaseDialog ):
         self.tiername_layout = self._create_tiername_layout()
 
         vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.xy_layout,       0, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self.filterpanel,     1, flag=wx.ALL|wx.EXPAND, border=10)
-        vbox.Add(self.tiername_layout, 0, flag=wx.ALL|wx.EXPAND, border=5)
+        vbox.Add(self.xy_layout,       0, flag=wx.ALL|wx.EXPAND, border=0)
+        vbox.Add(self.filterpanel,     1, flag=wx.ALL|wx.EXPAND, border=4)
+        vbox.Add(self.tiername_layout, 0, flag=wx.ALL|wx.EXPAND, border=0)
         return vbox
 
     def _create_tiername_layout(self):
@@ -180,20 +163,11 @@ class RelationFilterDialog( spBaseDialog ):
         btn.Bind(wx.EVT_BUTTON, self.OnChooseY)
         return s
 
-    def _create_apply_button(self):
-        bmp = spBitmap(APPLY_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_apply = CreateGenButton(self, wx.ID_OK, bmp, text=" Apply ", tooltip="Apply all filters and close the frame", colour=color)
-        self.btn_apply.SetFont( self.preferences.GetValue('M_FONT'))
-        self.btn_apply.SetDefault()
-        self.btn_apply.SetFocus()
-
     #-------------------------------------------------------------------------
     # Callbacks
     #-------------------------------------------------------------------------
 
     def OnChooseY(self, event):
-        logging.debug("choices are: %s"%self.tierY)
         dlg = wx.SingleChoiceDialog( self,
                                    "Fix Y tier from this list:",
                                    "RelationFilter", self.tierY)
@@ -251,9 +225,7 @@ class RelationFilterDialog( spBaseDialog ):
         """
         return self.texttierY.GetValue().strip()
 
-
 # ----------------------------------------------------------------------------
-
 
 class RelationFilterPanel(wx.Panel):
     """
@@ -271,11 +243,6 @@ class RelationFilterPanel(wx.Panel):
         self.preferences = prefsIO
         self.data = []
 
-        self._create_gui()
-
-
-    def _create_gui(self):
-
         self.relTable = AllensRelationsTable(self)
         self.opt = wx.CheckBox(self, label='Replace annotation label of X by the relation name.')
 
@@ -285,7 +252,6 @@ class RelationFilterPanel(wx.Panel):
         self.SetSizer(sizer)
         self.SetMinSize((380, 280))
         self.Center()
-
 
     # ----------------------------------------------------------------------
     # Public Methods
