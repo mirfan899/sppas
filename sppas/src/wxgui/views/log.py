@@ -75,7 +75,6 @@ class LogDialog( spBaseDialog ):
     @summary: Dialog to show/save the log file of automatic annotations.
 
     """
-
     def __init__(self, parent, preferences, filename):
         """
         Constructor.

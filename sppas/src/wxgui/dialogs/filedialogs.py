@@ -47,7 +47,8 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import os
 import wx
 
-from wxgui.cutils.dialogutils import create_wildcard
+from wxgui.cutils.dialogutils import create_wildcard, extend_path
+from basedialog import ShowYesNoQuestion
 
 import annotationdata.io as io
 import signals
@@ -56,7 +57,6 @@ import sp_glob
 # ----------------------------------------------------------------------------
 # Open
 # ----------------------------------------------------------------------------
-
 
 def OpenAnnotationFiles(multiple=True):
     """
@@ -89,7 +89,6 @@ def OpenAnnotationFiles(multiple=True):
 
 # ----------------------------------------------------------------------------
 
-
 def OpenSoundFiles():
     """
     Return a list of sound file names.
@@ -109,7 +108,6 @@ def OpenSoundFiles():
 
 # ----------------------------------------------------------------------------
 
-
 def OpenAnyFiles():
     """
     Return a list of annotation file names.
@@ -124,11 +122,9 @@ def OpenAnyFiles():
     dlg.Destroy()
     return files
 
-
 # ----------------------------------------------------------------------------
 # Save
 # ----------------------------------------------------------------------------
-
 
 def SaveAsAnnotationFile(defaultdir=None,defaultfile=None):
     """
@@ -164,3 +160,30 @@ def SaveAsAnnotationFile(defaultdir=None,defaultfile=None):
     return file
 
 # ----------------------------------------------------------------------------
+
+def SaveAsImageFile(preferences, image):
+    """
+    Save the current image as a PNG picture.
+    """
+
+    extension_map = {"png": wx.BITMAP_TYPE_PNG}
+    extensions    = extension_map.keys()
+    wildcard      = create_wildcard("Image files", extensions)
+
+    dialog = wx.FileDialog(None, message="Export to Image",
+                           wildcard=wildcard, style=wx.FD_SAVE)
+
+    saved = False
+    if dialog.ShowModal() == wx.ID_OK:
+        path, extension = extend_path(dialog.GetPath(), extensions, "png")
+        overwrite_question = "File '%s' exists. Overwrite?" % path
+
+        if not os.path.exists(path) or ShowYesNoQuestion(dialog, preferences, overwrite_question) == wx.YES:
+            image.SaveFile(path, extension_map[extension])
+            saved = True
+
+    dialog.Destroy()
+    return saved
+
+# ----------------------------------------------------------------------------
+

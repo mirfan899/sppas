@@ -54,6 +54,9 @@ from wxgui.sp_icons import CLOSE_ICON
 from wxgui.sp_icons import APPLY_ICON
 from wxgui.sp_icons import CANCEL_ICON
 from wxgui.sp_icons import SAVE_FILE
+from wxgui.sp_icons import YES_ICON
+from wxgui.sp_icons import NO_ICON
+from wxgui.sp_icons import MESSAGE_ICON
 
 from wxgui.cutils.ctrlutils  import CreateGenButton
 from wxgui.cutils.imageutils import spBitmap
@@ -162,6 +165,17 @@ class spBaseDialog( wx.Dialog ):
         self.SetAffirmativeId(wx.ID_OK)
         return btn
 
+    def CreateYesButton(self, tooltip=""):
+        btn = self.CreateButton(YES_ICON, " Yes ", tooltip, wx.ID_YES)
+        btn.SetDefault()
+        btn.SetFocus()
+        return btn
+
+    def CreateNoButton(self, tooltip=""):
+        btn = self.CreateButton(NO_ICON, " No ", tooltip, wx.ID_NO)
+        btn.SetFocus()
+        return btn
+
     def CreateButtonBox(self, leftbuttons,rightbuttons):
         button_box = wx.BoxSizer(wx.HORIZONTAL)
         if len(leftbuttons)>0:
@@ -199,14 +213,104 @@ class spBaseDialog( wx.Dialog ):
 
 # ---------------------------------------------------------------------------
 
-def ShowBaseDialog(parent, preferences=None):
+class spBaseSimpleDialog( spBaseDialog ):
+
+    def __init__(self, parent, preferences, headermsg, contentmsg):
+        """
+        Constructor.
+
+        @param parent is the parent wx object.
+        @param preferences (Preferences)
+        @param filename (str) the file to display in this frame.
+
+        """
+        spBaseDialog.__init__(self, parent, preferences, title=" - Message")
+        wx.GetApp().SetAppName( "question" )
+
+        titlebox   = self.CreateTitle(MESSAGE_ICON,headermsg)
+        contentbox = self._create_content(contentmsg)
+        buttonbox  = self._create_buttons()
+
+        self.LayoutComponents( titlebox,
+                               contentbox,
+                               buttonbox )
+
+    def _create_content(self,message):
+        txt = wx.TextCtrl(self, value=message, style=wx.TE_READONLY|wx.TE_MULTILINE|wx.NO_BORDER)
+        font = wx.Font(MAIN_FONTSIZE, wx.FONTFAMILY_TELETYPE, wx.NORMAL, wx.NORMAL)
+        txt.SetFont(font)
+        txt.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
+        txt.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
+        txt.SetMinSize((300,-1))
+        return txt
+
+    def _create_buttons(self):
+        raise NotImplementedError
+
+# ---------------------------------------------------------------------------
+
+class YesNoQuestion( spBaseSimpleDialog ):
+    def __init__(self, parent, preferences, contentmsg):
+        spBaseSimpleDialog.__init__(self, parent, preferences, "Question", contentmsg)
+
+    def _create_buttons(self):
+        yes = self.CreateYesButton()
+        no  = self.CreateNoButton()
+        self.Bind( wx.EVT_BUTTON, self._on_no,  no,  wx.ID_NO  )
+        self.Bind( wx.EVT_BUTTON, self._on_yes, yes, wx.ID_YES )
+        return self.CreateButtonBox( [no],[yes] )
+
+    def _on_no(self, evt):
+        self.SetReturnCode( wx.ID_NO )
+        self.Destroy()
+
+    def _on_yes(self, evt):
+        self.SetReturnCode( wx.ID_YES )
+        self.Destroy()
+
+# ---------------------------------------------------------------------------
+
+class Information( spBaseSimpleDialog ):
+    def __init__(self, parent, preferences, contentmsg):
+        spBaseSimpleDialog.__init__(self, parent, preferences, "Information", contentmsg)
+
+    def _create_buttons(self):
+        yes = self.CreateYesButton()
+        self.SetAffirmativeId( wx.ID_YES )
+        return self.CreateButtonBox( [],[yes] )
+
+# ---------------------------------------------------------------------------
+
+def ShowYesNoQuestion(parent, preferences, contentmsg):
+    dlg = YesNoQuestion( parent, preferences, contentmsg )
+    return dlg.ShowModal()
+
+# ---------------------------------------------------------------------------
+
+def ShowInformation(parent, preferences, contentmsg):
+    dlg = Information( parent, preferences, contentmsg )
+    return dlg.ShowModal()
+
+# ---------------------------------------------------------------------------
+
+def DemoBaseDialog(parent, preferences=None):
+    def _on_apply(evt):
+        res = ShowYesNoQuestion( frame, preferences, "This is the message to show.")
+        if res == wx.ID_YES:
+            ShowInformation( frame, preferences, "You clicked the ""Yes"" button")
+        elif res == wx.ID_NO:
+            ShowInformation( frame, preferences, "You clicked the ""No"" button")
+        else:
+            print "there's a bug! return value is %s"%res
+
     frame = spBaseDialog(parent, preferences)
     title = frame.CreateTitle(APP_ICON,"This is a BaseDialog frame...")
-    btnsave  = frame.CreateButton(SAVE_FILE,"Save button", "Save something!")
-    btnclose = frame.CreateCloseButton()
-    btnbox   = frame.CreateButtonBox( [btnsave],[btnclose] )
+    btnaction = frame.CreateButton(APPLY_ICON,"Open Yes/no", "This is a tooltip!", btnid=wx.ID_APPLY)
+    btnclose  = frame.CreateCloseButton()
+    btnbox    = frame.CreateButtonBox( [btnaction],[btnclose] )
     frame.AddToolbar([wx.StaticText(frame, label="toolbar is here", style=wx.ALIGN_CENTER)],[])
     frame.LayoutComponents( title, wx.Panel(frame, -1, size=(320,200)), btnbox )
+    btnaction.Bind( wx.EVT_BUTTON, _on_apply )
     frame.ShowModal()
     frame.Destroy()
 
@@ -214,7 +318,7 @@ def ShowBaseDialog(parent, preferences=None):
 
 if __name__ == "__main__":
     app = wx.PySimpleApp()
-    ShowBaseDialog(None)
+    DemoBaseDialog(None)
     app.MainLoop()
 
 # ---------------------------------------------------------------------------

@@ -55,7 +55,7 @@ from wxgui.ui.CustomEvents import PanelSelectedEvent
 from wxgui.structs.prefs   import Preferences
 from wxgui.structs.themes  import BaseTheme
 from wxgui.views.preview   import PreviewTierDialog
-from wxgui.dialogs.commondialogs import RadiusChooser
+from wxgui.dialogs.choosers import RadiusChooser
 
 from wxgui.ui.CustomListCtrl import CheckListCtrl
 

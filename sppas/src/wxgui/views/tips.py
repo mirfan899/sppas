@@ -55,7 +55,7 @@ from wxgui.cutils.imageutils import GetBitmap
 from sp_glob import TIPS_ICON_PATH
 from sp_glob import TIPS_FILE
 
-from wxgui.sp_icons import TIPS_ICON
+from wxgui.sp_icons import MESSAGE_ICON
 from wxgui.sp_icons import FORWARD_ICON
 from wxgui.sp_consts import MAIN_FONTSIZE
 
@@ -79,7 +79,7 @@ class TipsDialog( spBaseDialog ):
         spBaseDialog.__init__(self, parent, preferences, title=" - Tips")
         wx.GetApp().SetAppName( "tips" )
 
-        titlebox   = self.CreateTitle(TIPS_ICON,"Tips and tricks")
+        titlebox   = self.CreateTitle(MESSAGE_ICON,"Tips and tricks")
         contentbox = self._create_content()
         buttonbox  = self._create_buttons()
 

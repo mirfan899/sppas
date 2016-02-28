@@ -79,9 +79,7 @@ from wxgui.ui.displayctrl    import DisplayCtrl
 from wxgui.ui.trsctrl        import TranscriptionCtrl
 from wxgui.ui.wavectrl       import WaveCtrl
 
-from wxgui.dialogs.trsinfodialog import TrsInfoDialog
-from wxgui.dialogs.sndinfodialog import SndInfoDialog
-from wxgui.dialogs.commondialogs import ZoomChooser
+from wxgui.dialogs.choosers      import ZoomChooser
 from wxgui.views.search          import SearchDialog, spEVT_SEARCHED
 from wxgui.panels.sndplayer      import SndPlayer
 from wxgui.structs.themes        import BaseTheme
