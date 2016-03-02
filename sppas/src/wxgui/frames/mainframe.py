@@ -64,12 +64,12 @@ from wxgui.panels.aannotations import AnnotationsPanel
 from wxgui.panels.components   import ComponentsPanel
 from wxgui.panels.plugins      import PluginPanel
 
-# views
+# views and frames
 from wxgui.views.about         import AboutBox
 from wxgui.views.tips          import ShowTipsDialog
 from wxgui.views.feedback      import ShowFeedbackDialog
-from wxgui.views.helpbrowser   import HelpBrowser
 from wxgui.views.settings      import SettingsDialog
+from wxgui.frames.helpbrowser   import HelpBrowser
 
 from wxgui.structs.prefs       import Preferences_IO
 from wxgui.structs.themes      import Themes, BaseTheme
@@ -83,7 +83,6 @@ from wxgui.sp_consts import MIN_FRAME_H
 from wxgui.sp_consts import FRAME_H
 from wxgui.sp_consts import PANEL_W
 from wxgui.sp_consts import PREFS_FILE
-from wxgui.sp_consts import DOC_FILE
 from wxgui.sp_consts import TB_ICONSIZE
 from wxgui.sp_consts import MENU_ICONSIZE
 

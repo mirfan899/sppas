@@ -46,10 +46,10 @@ from sp_glob import program, version
 # ---------------------------------------------------------------------------
 
 PREFS_FILE = os.path.join( BASE_PATH , "etc", "sppas.prefs")
-DOC_FILE   = os.path.join( os.path.dirname(BASE_PATH), "documentation", "documentation.html")
-HELP_PATH  = os.path.join( os.path.dirname(BASE_PATH), "documentation", "etc")
-DOC_IDX    = os.path.join( HELP_PATH, "doc", "markdown.idx")
 
+HELP_PATH     = os.path.join( BASE_PATH, "doc" )
+HELP_IMG_PATH = os.path.join( HELP_PATH, "img" )
+DOC_IDX    = os.path.join( HELP_PATH, "markdown.idx" )
 HELP_IDX_EXT = ".idx"
 
 

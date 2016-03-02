@@ -47,7 +47,6 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import codecs
 import os.path
 import re
-import wx
 import wx.html
 import webbrowser
 
@@ -65,15 +64,18 @@ from wxgui.sp_icons import NEXT_ICON
 from wxgui.sp_icons import PREVIOUS_ICON
 from wxgui.cutils.imageutils import spBitmap
 
-
 from wxgui.sp_consts import HELP_PATH
+from wxgui.sp_consts import HELP_IMG_PATH
 from wxgui.sp_consts import DOC_IDX
 from wxgui.sp_consts import HELP_IDX_EXT
+
 from wxgui.sp_consts import BUTTON_ICONSIZE
 from wxgui.sp_icons  import APP_ICON
 
 from wxgui.sp_consts import FRAME_STYLE
 from wxgui.sp_consts import FRAME_TITLE
+
+from sp_glob import encoding
 
 
 # ---------------------------------------------------------------------------
@@ -121,11 +123,9 @@ def load_page(url_md):
 # ---------------------------------------------------------------------------
 
 
-
 # ---------------------------------------------------------------------------
 # One page of the HelpSystem
 # ---------------------------------------------------------------------------
-
 
 class HelpPage( object ):
     """
@@ -137,29 +137,27 @@ class HelpPage( object ):
     Convert the original markdown file into html.
 
     """
-
-    def __init__(self, help_system, id, header, body):
+    def __init__(self, help_system, idp, header, body):
         """
         Create a page.
 
         @param help_system (HelpSystem) is the parent
-        @param id (string) identifier of the page
+        @param idp (string) identifier of the page
         @param header (string) top header of the page
         @param body(string) body of the page (markdown format)
 
         """
         self.help_system = help_system
-        self.id     = id
+        self.id     = idp
         self.header = header
         self.body   = body
 
-    # End __init__
     # -----------------------------------------------------------------------
-
 
     def _patch_html(self, html_body):
         """
         Patch html for blocks of code.
+
         """
         # Patch for Source code
         incode = ""
@@ -213,6 +211,7 @@ class HelpPage( object ):
 
         return html_body
 
+    # -----------------------------------------------------------------------
 
     def GetHtml(self):
         """
@@ -221,7 +220,6 @@ class HelpPage( object ):
         @return string
 
         """
-
         html_body = markdown(self.body, output_format="html4", extensions=[TableExtension()]) #,FencedCodeExtension()])
 
         # Change headers
@@ -250,21 +248,19 @@ class HelpPage( object ):
                 break
 
         # Ensure image path (in our md files, each image path starts by "./etc")
-        html_body = html_body.replace('./etc', HELP_PATH)
+        html_body = html_body.replace('./etc', HELP_IMG_PATH)
 
         # Code
         html_body = self._patch_html(html_body)
 
         return u"<h1>%s</h1>\n%s" % (self.header,html_body)
 
-# End HelpPage
 # ---------------------------------------------------------------------------
 
 
 # ---------------------------------------------------------------------------
 # HelpSystem
 # ---------------------------------------------------------------------------
-
 
 class HelpSystem( object ):
     """
@@ -287,11 +283,9 @@ class HelpSystem( object ):
         self.ranks = [] # used if pages are ranked
         self.resources_prefix = resources_prefix
         self.page_prefix = page_prefix
-        self._install_page(id=str(HOME_ID), header="Help content", body="")
+        self._install_page(idp=str(HOME_ID), header="Help content", body="")
 
-    # End __init__
     # -----------------------------------------------------------------------
-
 
     def _get_pages_matching_search(self, search):
         search_words = search.split(" ")
@@ -310,21 +304,20 @@ class HelpSystem( object ):
 
     # ------------------------------------------------------------------------
 
-
-    def _install_page(self, id, header="", body=""):
+    def _install_page(self, idp, header="", body=""):
         """
         Create a new HelpPage and store it into the dict of pages.
-        """
-        self.pages[id] = HelpPage(self, id, header, body)
-        self.ranks.append(id)
 
+        """
+        self.pages[idp] = HelpPage(self, idp, header, body)
+        self.ranks.append(idp)
 
     # ------------------------------------------------------------------------
-
 
     def _install_sections_of_chapter(self, chapterid, body=[], whereiam=""):
         """
         Install all sections of a chapter: one section=one page.
+
         """
         toc = ""
         sectionid = ""
@@ -353,10 +346,12 @@ class HelpSystem( object ):
 
         return toc
 
+    # ------------------------------------------------------------------------
 
     def _install_chapter(self, url_idx, c):
         """
         Load a chapter of the documentation, from an index file.
+
         """
         toc = ""
         base_path = os.path.dirname(url_idx)
@@ -365,7 +360,8 @@ class HelpSystem( object ):
 
                 # Read the index (the list of files of this chapter, one file=one section)
                 lines = fd.readlines()
-                if len(lines)==0: raise Exception('No content at url: %s'%url_idx)
+                if len(lines)==0:
+                    raise Exception('No content at url: %s'%url_idx)
 
                 urls = list()
                 for line in lines:
@@ -399,24 +395,23 @@ class HelpSystem( object ):
 
     # -----------------------------------------------------------------------
 
-
-    def Install(self, doc_idx, id, header="Help"):
+    def Install(self, doc_idx, header="Help"):
         """
         Load the documentation, from an index file: load all found pages.
 
         @param doc_idx (string) Documentation index file name
-        @param id (string)
         @param header (string) Header of the TOC
 
         """
         toc_body = ""
         base_path = os.path.dirname(doc_idx)
         try:
-            with codecs.open(doc_idx, 'r', 'utf-8') as fd:
+            with codecs.open(doc_idx, 'r', encoding) as fd:
 
                 # Read the index (the list of chapters of this documentation, one file=one chapter)
                 lines = fd.readlines()
-                if len(lines)==0: raise Exception('No content at url: %s'%doc_idx)
+                if len(lines)==0:
+                    raise Exception('No content at url: %s'%doc_idx)
 
                 urls = list()
                 for line in lines:
@@ -427,15 +422,13 @@ class HelpSystem( object ):
                 for c,chapter_idx in enumerate(urls):
                     toc_body += self._install_chapter(chapter_idx,c)
 
-        except Exception:
-            toc_body = ""
+        except Exception as e:
+            toc_body = "No help is available due to the following error:\n%s"%str(e)
 
         # Then, append this TOC to main one
         self.GetPage(str(HOME_ID)).body += toc_body
 
-    # End Install
     # -----------------------------------------------------------------------
-
 
     def GetSearchSesultsPage(self, search):
         """
@@ -459,66 +452,59 @@ class HelpSystem( object ):
             tex)
         return search_page_html
 
-    # End GetSearchSesultsPage
     # -----------------------------------------------------------------------
 
-
-    def GetPage(self, id):
+    def GetPage(self, idp):
         """
         Return the page with the given id, or None.
 
         @return HelpPage
 
         """
-        return self.pages.get(id, None)
+        return self.pages.get(idp, None)
 
-    # GetPage
     # -----------------------------------------------------------------------
 
-
-    def GetNextPageId(self, id):
+    def GetNextPageId(self, idp):
         """
         Return the page following the page with the given id, or None.
 
         @return HelpPage
 
         """
-        if id == str(HOME_ID):
+        if idp == str(HOME_ID):
             return None
 
-        if not id in self.ranks:
+        if not idp in self.ranks:
             return None
 
-        idx = self.ranks.index(id)
+        idx = self.ranks.index(idp)
         if ( idx+1 < len(self.ranks) ): # not the last index!
             return self.ranks[idx+1]
 
         return None
 
-    # GetNextPage
     # -----------------------------------------------------------------------
 
-
-    def GetPreviousPageId(self, id):
+    def GetPreviousPageId(self, idp):
         """
         Return the page preceding the page with the given id, or None.
 
         @return HelpPage
 
         """
-        if id == str(HOME_ID):
+        if idp == str(HOME_ID):
             return None
 
-        if not id in self.ranks:
+        if not idp in self.ranks:
             return None
 
-        idx = self.ranks.index(id)
+        idx = self.ranks.index(idp)
         if ( idx > 0 ): # not the first index!
             return self.ranks[idx-1]
 
         return None
 
-    # GetNextPage
     # -----------------------------------------------------------------------
 
 # End HelpSystem
@@ -542,61 +528,57 @@ class HelpBrowser( wx.Frame ):
     def __init__(self, parent, preferences):
         """
         Create a wiki-like help browser.
+
         """
         wx.Frame.__init__(self, parent, title=FRAME_TITLE+" - Help browser", size=(600, 550), style=FRAME_STYLE)
 
         self.preferences = preferences
         self.history = []
         self.current_pos = -1
-        self._create_help_system()
+
+        self.help_system = HelpSystem(HELP_PATH, "page:")
+        self.help_system.Install(DOC_IDX)
 
         self._create_gui()
         self._update_buttons()
 
-
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     # ------------------------------------------------------------------------
     # Help system, help pages
     # ------------------------------------------------------------------------
 
-    def _create_help_system(self):
-        self.help_system = HelpSystem(HELP_PATH, "page:")
-        self.help_system.Install(DOC_IDX, "documentation", "Documentation")
-
-
-    def _show_page(self, id, type="page", change_history=True):
+    def _show_page(self, idp, typep="page", change_history=True):
         """
         Where which is a tuple (type, id):
 
           * (page, page_id)
           * (search, search_string)
+
         """
         if change_history:
             same_page_as_last = False
             if self.current_pos != -1:
                 current_type, current_id = self.history[self.current_pos]
-                if id == current_id:
+                if idp == current_id:
                     same_page_as_last = True
             if same_page_as_last == False:
                 self.history = self.history[:self.current_pos + 1]
-                self.history.append((type, id))
+                self.history.append((typep, idp))
                 self.current_pos += 1
         self._update_buttons()
-        if type == "page":
-            self.html_window.SetPage(self._generate_page(id))
-        elif type == "search":
-            self.html_window.SetPage(self.help_system.GetSearchSesultsPage(id))
+
+        if typep == "page":
+            self.html_window.SetPage(self._generate_page(idp))
+        elif typep == "search":
+            self.html_window.SetPage(self.help_system.GetSearchSesultsPage(idp))
+
         self.Show()
         self.Raise()
-
 
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
-
 
     def _create_gui(self):
         self._init_infos()
@@ -673,13 +655,12 @@ class HelpBrowser( wx.Frame ):
 
         self.toolbar.Realize()
 
-        self.Bind(wx.EVT_TOOL, self.OnClose, id=wx.ID_CLOSE)
+        self.Bind(wx.EVT_TOOL, self.OnClose,          id=wx.ID_CLOSE)
         self.Bind(wx.EVT_TOOL, self.OnToolbarClicked, id=PREVIOUS_ID)
         self.Bind(wx.EVT_TOOL, self.OnToolbarClicked, id=NEXT_ID)
         self.Bind(wx.EVT_TOOL, self.OnToolbarClicked, id=FORWARD_ID)
         self.Bind(wx.EVT_TOOL, self.OnToolbarClicked, id=BACKWARD_ID)
         self.Bind(wx.EVT_TOOL, self.OnToolbarClicked, id=HOME_ID)
-
         self.Bind(wx.EVT_TEXT_ENTER, self.OnSearchText, self.search)
 
 
@@ -690,8 +671,6 @@ class HelpBrowser( wx.Frame ):
 
         self.Bind(wx.html.EVT_HTML_LINK_CLICKED, self.OnLinkClicked, self.html_window)
 
-
-
     # -----------------------------------------------------------------------
     # Callbacks to events
     # -----------------------------------------------------------------------
@@ -700,11 +679,10 @@ class HelpBrowser( wx.Frame ):
         """
         Event handler used to hide the frame.
         """
-        self.Show(False)
+        #self.Show(False)
+        self.Destroy()
 
-    # End OnClose
     # -----------------------------------------------------------------------
-
 
     def OnKeyDown(self, evt):
         """
@@ -714,15 +692,14 @@ class HelpBrowser( wx.Frame ):
         Key         Action
         --------    ------------------------------------
         Backspace   Go to previous page
+
         """
         keycode = evt.GetKeyCode()
         if keycode == wx.WXK_BACK:
             self._go_back()
         evt.Skip()
 
-    # End OnKeyDown
     # -----------------------------------------------------------------------
-
 
     def OnToolbarClicked(self, e):
         """
@@ -740,9 +717,7 @@ class HelpBrowser( wx.Frame ):
         elif bid == NEXT_ID:
             self._go_next()
 
-    # End OnToolbarClicked
     # -----------------------------------------------------------------------
-
 
     def OnSearchText(self, e):
         """
@@ -750,9 +725,7 @@ class HelpBrowser( wx.Frame ):
         """
         self._search(self.search.GetValue())
 
-    # End OnSearchText
     # -----------------------------------------------------------------------
-
 
     def OnLinkClicked(self, e):
         url = e.GetLinkInfo().GetHref()
@@ -761,18 +734,12 @@ class HelpBrowser( wx.Frame ):
         else:
             webbrowser.open(url)
 
-    # End OnLinkClicked
-    # -----------------------------------------------------------------------
-
-
     # -----------------------------------------------------------------------
     # Private
     # -----------------------------------------------------------------------
 
-
     def _go_home(self):
         self._show_page(str(HOME_ID))
-
 
     def _go_back(self):
         if self.current_pos > 0:
@@ -780,13 +747,11 @@ class HelpBrowser( wx.Frame ):
             current_type, current_id = self.history[self.current_pos]
             self._show_page(current_id, type=current_type, change_history=False)
 
-
     def _go_forward(self):
         if self.current_pos < len(self.history) - 1:
             self.current_pos += 1
             current_type, current_id = self.history[self.current_pos]
             self._show_page(current_id, type=current_type, change_history=False)
-
 
     def _go_previous(self):
         if self.current_pos != -1:
@@ -795,7 +760,6 @@ class HelpBrowser( wx.Frame ):
             if prev_id:
                 self._show_page(prev_id)
 
-
     def _go_next(self):
         if self.current_pos != -1:
             current_type, current_id = self.history[self.current_pos]
@@ -803,18 +767,15 @@ class HelpBrowser( wx.Frame ):
             if next_id:
                 self._show_page(next_id)
 
-
     def _search(self, string):
         string = string.strip()
         if len(string) > 0:
             self._show_page(string, type="search")
 
-
     def _update_buttons(self):
         current_id = -1
         if self.current_pos != -1:
             current_type, current_id = self.history[self.current_pos]
-
         history_len = len(self.history)
         enable_backward = history_len > 1 and self.current_pos > 0
         enable_forward = history_len > 1 and self.current_pos < history_len - 1
@@ -825,7 +786,6 @@ class HelpBrowser( wx.Frame ):
         self.toolbar.EnableTool(PREVIOUS_ID, enable_prev)
         self.toolbar.EnableTool(NEXT_ID, enable_next)
 
-
     def _generate_page(self, id):
         page = self.help_system.GetPage(id)
         if page == None:
@@ -835,7 +795,6 @@ class HelpBrowser( wx.Frame ):
             return self._wrap_in_html(error_page_html)
         else:
             return self._wrap_in_html(page.GetHtml())
-
 
     def _wrap_in_html(self, content):
         HTML_SKELETON = """
