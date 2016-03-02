@@ -39,13 +39,13 @@ __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-
 # ----------------------------------------------------------------------------
 
 import os
 import random
 import codecs
 import re
+import logging
 
 # ----------------------------------------------------------------------------
 
@@ -115,7 +115,6 @@ def set_tmpfilename():
 
 # ----------------------------------------------------------------------------
 
-
 def writecsv(filename, rows, separator="\t", encoding="utf-8-sig"):
     """
     Write the rows to the file.
@@ -155,3 +154,31 @@ def string_to_ascii(entry):
 
 # ----------------------------------------------------------------------------
 
+def setup_logging(log_level, filename):
+    """
+    Setup default logger to log to stderr or and possible also to a file.
+
+    The default logger is used like this:
+        >>> import logging
+        >>> logging.error(text message)
+
+    """
+    formatmsg = "%(asctime)s [%(levelname)s] %(message)s"
+
+    # Setup logging to file if filename is specified
+    if filename is not None:
+        file_handler = logging.FileHandler(filename, "a+")
+        file_handler.setFormatter(logging.Formatter(formatmsg))
+        file_handler.setLevel(log_level)
+        logging.getLogger().addHandler(file_handler)
+    else:
+        # Setup logging to stderr
+        console_handler = logging.StreamHandler()
+        console_handler.setFormatter(logging.Formatter(formatmsg))
+        console_handler.setLevel(log_level)
+        logging.getLogger().addHandler(console_handler)
+
+    logging.getLogger().setLevel(log_level)
+    logging.info("Logging set up with log level=%s, filename=%s", log_level,filename)
+
+# ----------------------------------------------------------------------------
