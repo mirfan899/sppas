@@ -51,7 +51,7 @@ from annotations.process import sppasProcess
 
 from wxgui.views.log import ShowLogDialog
 from wxgui.views.processprogress import ProcessProgressDialog
-
+from wxgui.dialogs.msgdialogs import ShowInformation
 
 # ----------------------------------------------------------------------------
 
@@ -63,7 +63,6 @@ class AnnotateProcess( object ):
     @summary: Automatic annotation process, with progress bar.
 
     """
-
     def __init__(self, preferences):
         """
         Constructor.
@@ -92,13 +91,12 @@ class AnnotateProcess( object ):
     def Run(self, parent, filelist, activeannot, parameters):
         """
         Execute the automatic annotations.
+
         """
         # Check input files
         if len(filelist) == 0:
             message = "Empty selection! Select audio file(s) to annotate."
-            dlg = wx.MessageDialog(parent, message, 'Warning', wx.OK | wx.ICON_WARNING)
-            dlg.ShowModal()
-            dlg.Destroy()
+            ShowInformation( None, self.preferences, message )
             return
 
         # Fix options
@@ -110,18 +108,14 @@ class AnnotateProcess( object ):
                 #if there are languages available and none of them is selected, print an error
                 if len(parameters.get_langlist(i)) > 0 and parameters.get_lang(i) == None:
                     message = "There isn't any language selected for the annotation \"%s\"" % parameters.get_step_name(i)
-                    dlg = wx.MessageDialog(parent, message, 'Warning', wx.OK | wx.ICON_WARNING)
-                    dlg.ShowModal()
-                    dlg.Destroy()
+                    ShowInformation( None, self.preferences, message )
                     return
             else:
                 parameters.disable_step(i)
 
         if not nbsteps:
             message = "No annotation selected! Check steps to annotate."
-            dlg = wx.MessageDialog(parent, message, 'Warning', wx.OK | wx.ICON_WARNING)
-            dlg.ShowModal()
-            dlg.Destroy()
+            ShowInformation( None, self.preferences, message )
             return
 
         parameters.set_sppasinput(filelist)
@@ -145,10 +139,8 @@ class AnnotateProcess( object ):
             #import traceback
             #print traceback.format_exc()
             logging.debug('Log Error: %s'%str(e))
-            message = "SPPAS finished.\nSee " + parameters.get_logfilename() + " for details.\nThanks for using SPPAS.\n"
-            dlg = wx.MessageDialog(parent, message, 'SPPAS automatic annotation finished', wx.OK | wx.ICON_INFORMATION)
-            dlg.ShowModal()
-            dlg.Destroy()
+            message = "Automatic annotation finished.\nSee " + parameters.get_logfilename() + " for details.\nThanks for using SPPAS.\n"
+            ShowInformation( None, self.preferences, message )
 
         try:
             os.remove(parameters.get_logfilename())

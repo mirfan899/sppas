@@ -169,10 +169,6 @@ class ComponentsPanel( wx.Panel ):
         Open the DataRoamer component.
         """
         selection = self.GetTopLevelParent().GetTrsSelection()
-        if not len(selection):
-            dial = wx.MessageDialog(None, 'No annotated file selected.', 'Information', wx.OK | wx.ICON_ERROR)
-            dial.ShowModal()
-            return
 
         arguments = {}
         arguments['title'] = 'SPPAS - Data Roamer'
@@ -192,7 +188,8 @@ class ComponentsPanel( wx.Panel ):
         if ID_FRAME_DATAROAMER not in self.opened_frames.keys():
             self.opened_frames[ID_FRAME_DATAROAMER] = DataRoamerFrame(self.GetTopLevelParent(), ID_FRAME_IPUSCRIBE, arguments)
 
-        self.opened_frames[ID_FRAME_DATAROAMER].AddFiles( selection )
+        if len(selection)>0:
+            self.opened_frames[ID_FRAME_DATAROAMER].AddFiles( selection )
         self.opened_frames[ID_FRAME_DATAROAMER].SetFocus()
         self.opened_frames[ID_FRAME_DATAROAMER].Raise()
 
@@ -205,10 +202,6 @@ class ComponentsPanel( wx.Panel ):
         Open the SndRoamer component.
         """
         selection = self.GetTopLevelParent().GetAudioSelection()
-        if not len(selection):
-            dial = wx.MessageDialog(None, 'No sound file selected.', 'Information', wx.OK | wx.ICON_ERROR)
-            dial.ShowModal()
-            return
 
         arguments = {}
         arguments['title'] = 'SPPAS - SndRoamer'
@@ -227,7 +220,8 @@ class ComponentsPanel( wx.Panel ):
         if ID_FRAME_SNDROAMER not in self.opened_frames.keys():
             self.opened_frames[ID_FRAME_SNDROAMER] = SndRoamerFrame(self.GetTopLevelParent(), ID_FRAME_IPUSCRIBE, arguments)
 
-        self.opened_frames[ID_FRAME_SNDROAMER].AddFiles( selection )
+        if len(selection)>0:
+            self.opened_frames[ID_FRAME_SNDROAMER].AddFiles( selection )
         self.opened_frames[ID_FRAME_SNDROAMER].SetFocus()
         self.opened_frames[ID_FRAME_SNDROAMER].Raise()
 
@@ -241,10 +235,6 @@ class ComponentsPanel( wx.Panel ):
         """
         selection = self.GetTopLevelParent().GetTrsSelection()
         selection += self.GetTopLevelParent().GetAudioSelection()
-        if not len(selection):
-            dial = wx.MessageDialog(None, 'No file selected.', 'Information', wx.OK | wx.ICON_ERROR)
-            dial.ShowModal()
-            return
 
         arguments = {}
         arguments['title'] = 'SPPAS - SppasEdit'
@@ -256,14 +246,15 @@ class ComponentsPanel( wx.Panel ):
         try:
             if ID_FRAME_SPPASEDIT in self.opened_frames.keys():
                 self.opened_frames[ID_FRAME_SPPASEDIT].SetFocus()
-        except Exception as e:
+        except Exception:
             del self.opened_frames[ID_FRAME_SPPASEDIT]
 
         # Create (or not) and Add files. Give the focus to this frame.
         if ID_FRAME_SPPASEDIT not in self.opened_frames.keys():
             self.opened_frames[ID_FRAME_SPPASEDIT] = SppasEditFrame(self.GetTopLevelParent(), ID_FRAME_IPUSCRIBE, arguments)
 
-        self.opened_frames[ID_FRAME_SPPASEDIT].AddFiles( selection )
+        if len(selection)>0:
+            self.opened_frames[ID_FRAME_SPPASEDIT].AddFiles( selection )
         self.opened_frames[ID_FRAME_SPPASEDIT].SetFocus()
         self.opened_frames[ID_FRAME_SPPASEDIT].Raise()
 
@@ -276,10 +267,6 @@ class ComponentsPanel( wx.Panel ):
         Open the IPU Transcriber component.
         """
         selection = self.GetTopLevelParent().GetAudioSelection()
-        if not len(selection):
-            dial = wx.MessageDialog(None, 'No sound file selected.', 'Information', wx.OK | wx.ICON_ERROR)
-            dial.ShowModal()
-            return
 
         arguments = {}
         arguments['title'] = 'SPPAS - IPUscribe'
@@ -298,7 +285,8 @@ class ComponentsPanel( wx.Panel ):
         if ID_FRAME_IPUSCRIBE not in self.opened_frames.keys():
             self.opened_frames[ID_FRAME_IPUSCRIBE] = IPUscribeFrame(self.GetTopLevelParent(), ID_FRAME_IPUSCRIBE, arguments)
 
-        self.opened_frames[ID_FRAME_IPUSCRIBE].AddFiles( selection )
+        if len(selection)>0:
+            self.opened_frames[ID_FRAME_IPUSCRIBE].AddFiles( selection )
         self.opened_frames[ID_FRAME_IPUSCRIBE].SetFocus()
         self.opened_frames[ID_FRAME_IPUSCRIBE].Raise()
 
@@ -311,10 +299,6 @@ class ComponentsPanel( wx.Panel ):
         Open the DataFilter component.
         """
         selection = self.GetTopLevelParent().GetTrsSelection()
-        if not len(selection):
-            dial = wx.MessageDialog(None, 'No file selected.', 'Information', wx.OK | wx.ICON_ERROR)
-            dial.ShowModal()
-            return
 
         arguments = {}
         arguments['title'] = 'SPPAS - DataFilter'
@@ -333,7 +317,8 @@ class ComponentsPanel( wx.Panel ):
         if ID_FRAME_DATAFILTER not in self.opened_frames.keys():
             self.opened_frames[ID_FRAME_DATAFILTER] = DataFilterFrame(self.GetTopLevelParent(), ID_FRAME_DATAFILTER, arguments)
 
-        self.opened_frames[ID_FRAME_DATAFILTER].AddFiles( selection )
+        if len(selection)>0:
+            self.opened_frames[ID_FRAME_DATAFILTER].AddFiles( selection )
         self.opened_frames[ID_FRAME_DATAFILTER].SetFocus()
         self.opened_frames[ID_FRAME_DATAFILTER].Raise()
 
@@ -346,10 +331,6 @@ class ComponentsPanel( wx.Panel ):
         Open the Statistics component.
         """
         selection = self.GetTopLevelParent().GetTrsSelection()
-        if not len(selection):
-            dial = wx.MessageDialog(None, 'No file selected.', 'Information', wx.OK | wx.ICON_ERROR)
-            dial.ShowModal()
-            return
 
         arguments = {}
         arguments['title'] = 'SPPAS - Statistics'
@@ -368,7 +349,8 @@ class ComponentsPanel( wx.Panel ):
         if ID_FRAME_STATISTICS not in self.opened_frames.keys():
             self.opened_frames[ID_FRAME_STATISTICS] = StatisticsFrame(self.GetTopLevelParent(), ID_FRAME_STATISTICS, arguments)
 
-        self.opened_frames[ID_FRAME_STATISTICS].AddFiles( selection )
+        if len(selection)>0:
+            self.opened_frames[ID_FRAME_STATISTICS].AddFiles( selection )
         self.opened_frames[ID_FRAME_STATISTICS].SetFocus()
         self.opened_frames[ID_FRAME_STATISTICS].Raise()
 

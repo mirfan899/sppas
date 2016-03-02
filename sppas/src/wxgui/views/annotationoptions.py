@@ -43,11 +43,6 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # Imports
 # ----------------------------------------------------------------------------
 
-import sys
-import os
-from os.path import *
-
-import re
 import wx
 import wx.lib.agw.floatspin
 import wx.lib.scrolledpanel as scrolled
@@ -56,8 +51,6 @@ from wxgui.dialogs.basedialog import spBaseDialog
 
 from wxgui.sp_icons import ANNOTATE_CONFIG_ICON
 from wxgui.sp_icons import RESTORE_ICON
-from wxgui.sp_icons import CANCEL_ICON
-from wxgui.sp_icons import CLOSE_ICON
 
 # ----------------------------------------------------------------------------
 
@@ -69,7 +62,6 @@ class optionsPanel( scrolled.ScrolledPanel ):
     @summary: Create dynamically a panel depending on a list of options.
 
     """
-
     def __init__(self, parent, options):
         """
         Constructor.
@@ -102,6 +94,7 @@ class optionsPanel( scrolled.ScrolledPanel ):
         self.SetSizer(self.option_sizer)
         self.SetupScrolling()
 
+    # ------------------------------------------------------------------------
 
     def AddIntSpinner(self, label, smin=0, smax=2000, value=1, width=130):
         """
@@ -124,6 +117,7 @@ class optionsPanel( scrolled.ScrolledPanel ):
 
         self.items.append(sc)
 
+    # ------------------------------------------------------------------------
 
     def AddFloatSpinner(self, label, smin=0, smax=2000, incr=0.01, value=1.0, width=130):
         """
@@ -146,6 +140,7 @@ class optionsPanel( scrolled.ScrolledPanel ):
 
         self.items.append(fsc)
 
+    # ------------------------------------------------------------------------
 
     def AddCheckbox(self, label, value=True):
         """
@@ -161,6 +156,7 @@ class optionsPanel( scrolled.ScrolledPanel ):
 
         self.items.append(cb)
 
+    # ------------------------------------------------------------------------
 
     def AddTextctrl(self, label, value=""):
         """
@@ -182,10 +178,10 @@ class optionsPanel( scrolled.ScrolledPanel ):
 
         self.items.append(textctrl)
 
+    # ------------------------------------------------------------------------
 
     def GetItems(self):
         return self.items
-
 
 # ----------------------------------------------------------------------------
 
@@ -240,19 +236,18 @@ class spAnnotationConfig( spBaseDialog ):
 
     def _create_buttons(self):
         btn_restore = self.CreateButton( RESTORE_ICON, " Restore defaults ", "Reset options to their default values" )
-        btn_cancel  = self.CreateButton( CANCEL_ICON,  " Cancel " )
-        btn_close   = self.CreateButton( CLOSE_ICON,   " Close" )
-        btn_close.SetDefault()
+        btn_cancel  = self.CreateCancelButton()
+        btn_okay    = self.CreateOkayButton()
         self.Bind(wx.EVT_BUTTON, self._on_restore, btn_restore)
         self.Bind(wx.EVT_BUTTON, self._on_cancel, btn_cancel)
-        self.Bind(wx.EVT_BUTTON, self._on_close, btn_close)
-        return self.CreateButtonBox( [btn_restore],[btn_cancel,btn_close] )
+        self.Bind(wx.EVT_BUTTON, self._on_okay, btn_okay)
+        return self.CreateButtonBox( [btn_restore],[btn_cancel,btn_okay] )
 
     # ------------------------------------------------------------------------
     # Callbacks to events
     # ------------------------------------------------------------------------
 
-    def _on_close(self, evt):
+    def _on_okay(self, evt):
         # Save options
         for i in range( len( self.step.get_options() ) ):
             self.step.get_option(i).set_value(self.items[i].GetValue())

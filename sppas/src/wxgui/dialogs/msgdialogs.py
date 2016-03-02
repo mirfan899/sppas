@@ -49,27 +49,41 @@ sys.path.append(  os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspat
 import wx
 from basedialog import spBaseDialog
 
-from wxgui.sp_icons import APP_ICON
 from wxgui.sp_icons import MESSAGE_ICON
+
+from wxgui.sp_icons import DLG_INFO_ICON
+from wxgui.sp_icons import DLG_WARN_ICON
+from wxgui.sp_icons import DLG_ERR_ICON
+from wxgui.sp_icons import DLG_QUEST_ICON
+
 from wxgui.sp_consts import MAIN_FONTSIZE
 
 # ----------------------------------------------------------------------------
 
 class spBaseMessageDialog( spBaseDialog ):
 
-    def __init__(self, parent, preferences, headermsg, contentmsg):
+    def __init__(self, parent, preferences, contentmsg, style=wx.ICON_INFORMATION):
         """
         Constructor.
 
         @param parent is the parent wx object.
         @param preferences (Preferences)
         @param filename (str) the file to display in this frame.
+        @param style: ONE of wx.ICON_INFORMATION, wx.ICON_ERROR, wx.ICON_EXCLAMATION, wx.YES_NO
 
         """
         spBaseDialog.__init__(self, parent, preferences, title=" - Message")
         wx.GetApp().SetAppName( "question" )
 
-        titlebox   = self.CreateTitle(MESSAGE_ICON,headermsg)
+        if style == wx.ICON_ERROR:
+            titlebox = self.CreateTitle(DLG_ERR_ICON, "Error")
+        elif style == wx.ICON_WARNING:
+            titlebox = self.CreateTitle(DLG_WARN_ICON, "Warning")
+        elif style == wx.YES_NO:
+            titlebox = self.CreateTitle(DLG_QUEST_ICON, "Question")
+        else:
+            titlebox = self.CreateTitle(DLG_INFO_ICON, "Information")
+
         contentbox = self._create_content(contentmsg)
         buttonbox  = self._create_buttons()
 
@@ -93,7 +107,7 @@ class spBaseMessageDialog( spBaseDialog ):
 
 class YesNoQuestion( spBaseMessageDialog ):
     def __init__(self, parent, preferences, contentmsg):
-        spBaseMessageDialog.__init__(self, parent, preferences, "Question", contentmsg)
+        spBaseMessageDialog.__init__(self, parent, preferences, contentmsg, style=wx.YES_NO)
 
     def _create_buttons(self):
         yes = self.CreateYesButton()
@@ -113,8 +127,8 @@ class YesNoQuestion( spBaseMessageDialog ):
 # ---------------------------------------------------------------------------
 
 class Information( spBaseMessageDialog ):
-    def __init__(self, parent, preferences, contentmsg):
-        spBaseMessageDialog.__init__(self, parent, preferences, "Information", contentmsg)
+    def __init__(self, parent, preferences, contentmsg, style=wx.ICON_INFORMATION):
+        spBaseMessageDialog.__init__(self, parent, preferences, contentmsg, style)
 
     def _create_buttons(self):
         yes = self.CreateYesButton()
@@ -124,13 +138,13 @@ class Information( spBaseMessageDialog ):
 # ---------------------------------------------------------------------------
 
 def ShowYesNoQuestion(parent, preferences, contentmsg):
-    dlg = YesNoQuestion( parent, preferences, contentmsg )
+    dlg = YesNoQuestion( parent, preferences, contentmsg)
     return dlg.ShowModal()
 
 # ---------------------------------------------------------------------------
 
-def ShowInformation(parent, preferences, contentmsg):
-    dlg = Information( parent, preferences, contentmsg )
+def ShowInformation(parent, preferences, contentmsg, style=wx.ICON_INFORMATION):
+    dlg = Information( parent, preferences, contentmsg, style )
     return dlg.ShowModal()
 
 # ---------------------------------------------------------------------------
@@ -146,20 +160,28 @@ def DemoBaseDialog(parent, preferences=None):
             print "there's a bug! return value is %s"%res
 
     def _on_info(evt):
-        ShowInformation( frame, preferences, "This is an information message.")
+        ShowInformation( frame, preferences, "This is an information message.", style=wx.ICON_INFORMATION)
+    def _on_error(evt):
+        ShowInformation( frame, preferences, "This is an error message.", style=wx.ICON_ERROR)
+    def _on_warning(evt):
+        ShowInformation( frame, preferences, "This is a warning message.", style=wx.ICON_WARNING)
 
     frame = spBaseDialog(parent, preferences)
-    title = frame.CreateTitle(APP_ICON,"Message dialogs demonstration")
-    btninfo   = frame.CreateButton(MESSAGE_ICON,"Test 1", "This is a tooltip!", btnid=wx.NewId())
-    btnyesno  = frame.CreateButton(MESSAGE_ICON,"Test 2", "This is a tooltip!", btnid=wx.NewId())
+    title = frame.CreateTitle(MESSAGE_ICON,"Message dialogs demonstration")
+    btninfo   = frame.CreateButton(DLG_INFO_ICON,"Test info", "This is a tooltip!", btnid=wx.NewId())
+    btnyesno  = frame.CreateButton(DLG_QUEST_ICON,"Test yes-no", "This is a tooltip!", btnid=wx.NewId())
+    btnerror  = frame.CreateButton(DLG_ERR_ICON,"Test error", "This is a tooltip!", btnid=wx.NewId())
+    btnwarn   = frame.CreateButton(DLG_WARN_ICON,"Test warning", "This is a tooltip!", btnid=wx.NewId())
 
     btnclose  = frame.CreateCloseButton()
-    btnbox    = frame.CreateButtonBox( [btninfo,btnyesno],[btnclose] )
+    btnbox    = frame.CreateButtonBox( [btnyesno,btninfo,btnwarn,btnerror],[btnclose] )
 
     frame.LayoutComponents( title, wx.Panel(frame, -1, size=(320,200)), btnbox )
 
     btninfo.Bind( wx.EVT_BUTTON, _on_info )
     btnyesno.Bind( wx.EVT_BUTTON, _on_yesno )
+    btnerror.Bind( wx.EVT_BUTTON, _on_error )
+    btnwarn.Bind( wx.EVT_BUTTON, _on_warning )
 
     frame.ShowModal()
     frame.Destroy()

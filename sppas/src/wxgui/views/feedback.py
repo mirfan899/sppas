@@ -48,6 +48,7 @@ import urllib
 import webbrowser
 
 from wxgui.dialogs.basedialog import spBaseDialog
+from wxgui.dialogs.msgdialogs import ShowInformation
 
 from wxgui.sp_icons import FEEDBACK_ICON
 from wxgui.sp_icons import MAIL_DEFAULT_ICON
@@ -72,7 +73,6 @@ class FeedbackForm(object):
     @summary: This class is used to send feedback to the author.
 
     """
-
     def __init__(self, dialog, webbrowser):
         self.dialog = dialog
         self.webbrowser = webbrowser
@@ -99,8 +99,7 @@ class FeedbackForm(object):
             urllib.quote(self.dialog.GetBodyText())))
 
     def SendWithOther(self):
-        wx.MessageBox("Copy and paste this email into your favorite email client and send it from there.",
-                "Other email client", wx.OK | wx.ICON_INFORMATION)
+        ShowInformation( self.dialog, self.dialog.preferences, "Copy and paste this email into your favorite email client and send it from there.")
 
 # ----------------------------------------------------------------------------
 

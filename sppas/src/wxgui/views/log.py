@@ -51,6 +51,8 @@ import codecs
 import wx
 
 from wxgui.dialogs.basedialog import spBaseDialog
+from wxgui.dialogs.msgdialogs import ShowInformation
+
 from wxgui.sp_icons import REPORT_ICON
 
 from wxgui.sp_consts import MAIN_FONTSIZE
@@ -174,14 +176,10 @@ class LogDialog( spBaseDialog ):
                 shutil.copy(self.filename, filesel)
             # eg. src and dest are the same file
             except shutil.Error as e:
-                dlg = wx.MessageDialog(self.GetParent(), 'Error: %s'%e, "Error while saving", wx.OK | wx.ICON_INFORMATION)
-                dlg.ShowModal()
-                dlg.Destroy()
+                ShowInformation( self, self.preferences, "Error while saving: %s"%str(e), wx.ICON_ERROR)
             # eg. source or destination doesn't exist
             except IOError as e:
-                dlg = wx.MessageDialog(self.GetParent(), 'Error: %s'%e, "Error while saving", wx.OK | wx.ICON_INFORMATION)
-                dlg.ShowModal()
-                dlg.Destroy()
+                ShowInformation( self, self.preferences, "Error while saving: %s"%str(e), wx.ICON_ERROR)
 
 # ----------------------------------------------------------------------------
 
