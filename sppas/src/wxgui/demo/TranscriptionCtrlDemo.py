@@ -38,7 +38,6 @@ import sys
 import os.path
 import random
 import wx
-import logging
 
 
 # ----------------------------------------------------------------------------
@@ -82,7 +81,6 @@ class MyFrame(wx.Frame):
     def repaint2(self, event):
         s = float(random.sample(range(0,600), 1)[0])
         d = float(random.sample(range(1,50), 1)[0])/10.
-        logging.debug('New period: %f,%f'%(s,s+d))
         self.w1.SetTime(s,s+d)
         self.w2.SetTime(s,s+d)
 
@@ -95,27 +93,7 @@ class MyApp(wx.App):
         return True
 
 
-def setup_logging(log_level):
-    """
-    Setup default logger to log to stderr or and possible also to a file.
-
-    The default logger is used like this:
-        >>> import logging
-        >>> logging.error(text message)
-    """
-    format= "%(asctime)s [%(levelname)s] %(message)s"
-    # Setup logging to stderr
-    console_handler = logging.StreamHandler()
-    console_handler.setFormatter(logging.Formatter(format))
-    console_handler.setLevel(log_level)
-    logging.getLogger().addHandler(console_handler)
-
-    logging.getLogger().setLevel(log_level)
-    logging.info("Logging set up with log level=%s", log_level)
-
-
 if __name__ == '__main__':
-    setup_logging(1)
     app = MyApp(0)
     app.MainLoop()
 
