@@ -37,8 +37,7 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 # Imports
@@ -46,11 +45,12 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 import os
 import wx
+import shutil
+
 from annotations.process import sppasProcess
 
-from wxgui.views.log import LogDialog
+from wxgui.views.log import ShowLogDialog
 from wxgui.views.processprogress import ProcessProgressDialog
-from wxgui.sp_consts import FRAME_TITLE
 
 
 # ----------------------------------------------------------------------------
@@ -67,26 +67,27 @@ class AnnotateProcess( object ):
     def __init__(self, preferences):
         """
         Constructor.
+
+        @param preferences (Preferences)
+
         """
         self.process = None
         self.preferences = preferences
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def IsRunning(self):
         """
         Return True if the process is running.
-        Returns: (bool)
+
+        @return (bool)
+
         """
         if self.process is None:
             return False
         return True
 
-    # End IsRunning
     # ------------------------------------------------------------------------
-
 
     def Run(self, parent, filelist, activeannot, parameters):
         """
@@ -94,7 +95,7 @@ class AnnotateProcess( object ):
         """
         # Check input files
         if len(filelist) == 0:
-            message = "Empty selection! Select WAV file(s) to annotate."
+            message = "Empty selection! Select audio file(s) to annotate."
             dlg = wx.MessageDialog(parent, message, 'Warning', wx.OK | wx.ICON_WARNING)
             dlg.ShowModal()
             dlg.Destroy()
@@ -138,9 +139,7 @@ class AnnotateProcess( object ):
 
         # Show report
         try:
-            logframe = LogDialog(parent, self.preferences, parameters.get_logfilename())
-            logframe.ShowModal()
-            logframe.Destroy()
+            ShowLogDialog(parent, self.preferences, parameters.get_logfilename())
         except Exception as e:
             import logging
             #import traceback
@@ -163,7 +162,3 @@ class AnnotateProcess( object ):
             parent.GetTopLevelParent().RefreshTree()
         except Exception:
             pass
-
-
-    # -----------------------------------------------------------------------
-

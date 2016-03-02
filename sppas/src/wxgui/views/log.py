@@ -37,30 +37,22 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
 
 # General libraries import
-import sys
 import os
 import os.path
 import shutil
 import codecs
 import wx
 
-from wxgui.cutils.imageutils import spBitmap
+from wxgui.dialogs.basedialog import spBaseDialog
 from wxgui.sp_icons import REPORT_ICON
-from wxgui.sp_icons import SAVE_FILE
-from wxgui.sp_icons import CANCEL_ICON
-from wxgui.sp_icons import APP_ICON
-from wxgui.cutils.ctrlutils import CreateGenButton
 
-from wxgui.sp_consts import FRAME_STYLE
-from wxgui.sp_consts import FRAME_TITLE
 from wxgui.sp_consts import MAIN_FONTSIZE
 
 from wxgui.sp_consts import ERROR_COLOUR
@@ -69,92 +61,55 @@ from wxgui.sp_consts import IGNORE_COLOUR
 from wxgui.sp_consts import WARNING_COLOUR
 from wxgui.sp_consts import OK_COLOUR
 
-
-# ----------------------------------------------------------------------------
-# Constants
-# ----------------------------------------------------------------------------
-
-ENCODING = 'utf-8'
-ID_SAVE   = wx.NewId()
-ID_CLOSE  = wx.NewId()
-
+from sp_glob import encoding
 
 # ----------------------------------------------------------------------------
 # class LogDialog
 # ----------------------------------------------------------------------------
 
-class LogDialog( wx.Dialog ):
+class LogDialog( spBaseDialog ):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
-    @license: GPL
-    @summary: Frame allowing to show/save the procedure outcome report.
+    @license: GPL, v3
+    @summary: Dialog to show/save the log file of automatic annotations.
 
     """
-
     def __init__(self, parent, preferences, filename):
         """
         Constructor.
 
-        @param parent is the sppas main frame (must contains preferences and
-        parameters members).
+        @param parent is the parent wx object.
+        @param preferences (Preferences)
+        @param filename (str) the file to display in this frame.
 
         """
-        wx.Dialog.__init__(self, parent, -1, title=FRAME_TITLE+" - Report", style=FRAME_STYLE)
+        spBaseDialog.__init__(self, parent, preferences, title=" - Report")
+        wx.GetApp().SetAppName( "log" )
 
-        self.filename    = filename
-        self.preferences = preferences
-        self._create_gui()
+        self.filename = filename
 
-        # Events of this frame
-        #wx.EVT_CLOSE(self, self.OnClose)
+        titlebox   = self.CreateTitle(REPORT_ICON,"Procedure outcome report")
+        contentbox = self._create_content()
+        buttonbox  = self._create_buttons()
 
-    # End __init__
-    # ------------------------------------------------------------------------
-
+        self.LayoutComponents( titlebox,
+                               contentbox,
+                               buttonbox )
 
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
 
+    def _create_buttons(self):
+        btn_save  = self.CreateSaveButton("Save the procedure outcome report.")
+        btn_close = self.CreateCloseButton()
+        self.Bind(wx.EVT_BUTTON, self._on_save, btn_save)
+        return self.CreateButtonBox( [btn_save],[btn_close] )
 
-    def _create_gui(self):
-        self._init_infos()
-        self._create_title_label()
-        self._create_save_button()
-        self._create_close_button()
-        self._create_text_content() # after the creation of save button (to disable it if problem)
-        self._layout_components()
-        self._set_focus_component()
-
-
-    def _init_infos( self ):
-        wx.GetApp().SetAppName( "log" )
-        # icon
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(APP_ICON) )
-        self.SetIcon(_icon)
-        # colors
-        self.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
-        self.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR'))
-        self.SetFont( self.preferences.GetValue('M_FONT'))
-
-
-    def _create_title_label(self):
-        self.title_layout = wx.BoxSizer(wx.HORIZONTAL)
-        bmp = wx.BitmapButton(self, bitmap=spBitmap(REPORT_ICON, 32, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
-        font = self.preferences.GetValue('M_FONT')
-        font.SetWeight(wx.BOLD)
-        font.SetPointSize(font.GetPointSize() + 2)
-        self.title_label = wx.StaticText(self, label="Procedure outcome report", style=wx.ALIGN_CENTER)
-        self.title_label.SetFont( font )
-        self.title_layout.Add(bmp,  flag=wx.TOP|wx.RIGHT|wx.ALIGN_RIGHT, border=5)
-        self.title_layout.Add(self.title_label, flag=wx.EXPAND|wx.ALL|wx.wx.ALIGN_CENTER_VERTICAL, border=5)
-
-
-    def _create_text_content(self):
+    def _create_content(self):
         try:
-            with codecs.open(self.filename, 'r', ENCODING) as fp:
+            with codecs.open(self.filename, 'r', encoding) as fp:
                 logcontent = fp.read()
         except Exception as e:
             logcontent = "No report available...\n* * * Probably you don't have permission to write in the directory. Change the access rigth to solve the problem. * * *\n\nError is: %s"%str(e)
@@ -179,57 +134,19 @@ class LogDialog( wx.Dialog ):
                 self.log_txt.SetStyle(i,i+12, wx.TextAttr( IGNORE_COLOUR ) )
             oldi=i+13
 
-
-    def _create_save_button(self):
-        bmp = spBitmap(SAVE_FILE, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_save = CreateGenButton(self, ID_SAVE, bmp, text="Save report as...", tooltip="Save the procedure outcome report", colour=color)
-        self.btn_save.SetFont( self.preferences.GetValue('M_FONT'))
-        self.Bind(wx.EVT_BUTTON, self.OnSave, self.btn_save, ID_SAVE)
-
-
-    def _create_close_button(self):
-        bmp = spBitmap(CANCEL_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_close = CreateGenButton(self, wx.ID_CLOSE, bmp, text=" Close", tooltip="Close this frame and apply changes", colour=color)
-        self.btn_close.SetFont( self.preferences.GetValue('M_FONT'))
-        self.btn_close.SetDefault()
-        self.btn_close.SetFocus()
-        self.SetAffirmativeId(wx.ID_CLOSE)
-
-
-    def _create_button_box(self):
-        button_box = wx.BoxSizer(wx.HORIZONTAL)
-        button_box.Add(self.btn_save,  flag=wx.RIGHT, border=5)
-        button_box.AddStretchSpacer()
-        button_box.Add(self.btn_close, flag=wx.RIGHT, border=5)
-        return button_box
-
-
-    def _layout_components(self):
-        vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.title_layout, 0, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self.log_txt, 1, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self._create_button_box(), 0, flag=wx.ALL|wx.EXPAND, border=5)
-        self.SetSizerAndFit(vbox)
-
-
-    def _set_focus_component(self):
-        self.log_txt.SetFocus()
-
+        return self.log_txt
 
     # ------------------------------------------------------------------------
     # Callbacks to events
     # ------------------------------------------------------------------------
 
-
-    def OnSave(self, evt):
+    def _on_save(self, evt):
         """
         Save the content in a text file.
         """
         filesel = None
         wildcard = "SPPAS log files (*-sppas.log)|*-sppas.log"
-        fileName, fileExtension = os.path.splitext(self.filename)
+        #fileName, fileExtension = os.path.splitext(self.filename)
         defaultDir  = os.path.dirname(self.filename)
         defaultFile = os.path.basename("Annotations-sppas.log")
 
@@ -267,3 +184,17 @@ class LogDialog( wx.Dialog ):
                 dlg.Destroy()
 
 # ----------------------------------------------------------------------------
+
+def ShowLogDialog(parent, preferences, filename):
+    dialog = LogDialog(parent, preferences, filename)
+    dialog.ShowModal()
+    dialog.Destroy()
+
+# ---------------------------------------------------------------------------
+
+if __name__ == "__main__":
+    app = wx.PySimpleApp()
+    ShowLogDialog(None,None,filename="log.py")
+    app.MainLoop()
+
+# ---------------------------------------------------------------------------

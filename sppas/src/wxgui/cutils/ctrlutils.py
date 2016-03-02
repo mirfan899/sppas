@@ -73,6 +73,7 @@ def CreateGenButton(parent, id, bmp, text=None, tooltip=None, colour=None, SIZE=
         if font: button.SetFont( font )
 
     button.SetBezelWidth(1)
+    button.SetUseFocusIndicator(False)
 
     if tooltip is not None:
         button.SetToolTipString( tooltip )

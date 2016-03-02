@@ -67,7 +67,7 @@ from presenters.tierconverter import TierConverter
 # ----------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
-# class PreviewTierDialog
+# class UserAgreementDialog
 # ----------------------------------------------------------------------------
 
 class UserAgreementDialog( wx.Dialog ):

@@ -525,9 +525,7 @@ class DataFilter( scrolled.ScrolledPanel ):
     def OnSingleFilter(self, event):
         """ Filter selected tiers with Sel predicate."""
         dlg = SingleFilterDialog(self, self._prefsIO)
-        res = dlg.ShowModal()
-
-        if res != wx.ID_CANCEL:
+        if dlg.ShowModal() == wx.ID_OK:
 
             # Match all or match any of the predicates
             match_all = dlg.GetMatchAll()
@@ -553,13 +551,9 @@ class DataFilter( scrolled.ScrolledPanel ):
     def OnRelationFilter(self, event):
         """ Filter selected tiers with Rel predicate."""
         (tiersX,tiersY) = self._get_tiernames()
-        logging.debug(' fixed  X: %s'%tiersX)
-        logging.debug(' choice Y: %s'%tiersY)
-
         dlg = RelationFilterDialog(self, self._prefsIO, tiersX, tiersY)
-        res = dlg.ShowModal()
 
-        if res == wx.ID_OK:
+        if dlg.ShowModal() == wx.ID_OK:
             # Output tier name
             tiername = dlg.GetFiltererdTierName()
             # Relation Tier name

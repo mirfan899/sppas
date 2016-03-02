@@ -78,7 +78,7 @@ from wxgui.structs.themes  import BaseTheme
 from wxgui.cutils.ctrlutils  import CreateButton
 from wxgui.cutils.imageutils import spBitmap
 
-from wxgui.dialogs.sndinfodialog import SndInfoDialog
+from wxgui.dialogs.sndinfodialog import ShowAudioInfo
 
 
 # ---------------------------------------------------------------------------
@@ -432,7 +432,7 @@ class SndPlayer( wx.Panel ):
         if self._mediaplayer is None: return
 
         try:
-            SndInfoDialog( self, self._prefs, self._filename )
+            ShowAudioInfo( self, self._prefs, self._filename )
         except Exception as e:
             wx.MessageBox('No information available. %s'%str(e), 'Info', wx.OK | wx.ICON_INFORMATION)
 
