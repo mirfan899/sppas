@@ -43,7 +43,6 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 # Imports
 # ----------------------------------------------------------------------------
 import sys
-import os
 import os.path
 sys.path.append(  os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) )
 

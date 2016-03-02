@@ -75,7 +75,10 @@ class TipsDialog( spBaseDialog ):
     """
 
     def __init__(self, parent, preferences):
+        """"
+        Constructor.
 
+        """
         spBaseDialog.__init__(self, parent, preferences, title=" - Tips")
         wx.GetApp().SetAppName( "tips" )
 

@@ -37,19 +37,22 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
+import sys
+import os.path
+sys.path.append(  os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) )
 
-import os
 import wx
 import logging
 import os.path
 
 import annotationdata.io
+
+from wxgui.dialogs.basedialog import spBaseDialog
 
 from calculus.descriptivesstats import DescriptiveStatistics
 from presenters.tiertga import TierTGA
@@ -57,39 +60,27 @@ from utils import fileutils
 
 from wxgui.sp_icons  import STATISTICS_APP_ICON
 from wxgui.sp_icons  import TIMEANALYSIS
-from wxgui.sp_icons  import CANCEL_ICON
-from wxgui.sp_icons  import SAVE_AS_FILE
 from wxgui.sp_icons  import BROOM_ICON
 from wxgui.sp_icons  import APPLY_ICON
 from wxgui.sp_icons  import EXPORT_ICON
 
-from wxgui.sp_consts import TB_ICONSIZE
-from wxgui.sp_consts import TB_FONTSIZE
-
-from wxgui.sp_consts import TB_ICONSIZE
-from wxgui.sp_consts import TB_FONTSIZE
-from wxgui.sp_consts import FRAME_STYLE
-from wxgui.sp_consts import FRAME_TITLE
-
 from wxgui.cutils.imageutils import spBitmap
-from wxgui.cutils.ctrlutils  import CreateGenButton
 
 from wxgui.ui.CustomListCtrl import SortListCtrl
 from wxgui.panels.basestats import BaseStatPanel
-from sp_glob import ICONS_PATH
 from wxgui.views.processprogress import ProcessProgressDialog
 
+# ----------------------------------------------------------------------------
+# Constants
 # ----------------------------------------------------------------------------
 
 DEFAULT_SEP = 'sep1, sep2, etc'
 
 # ----------------------------------------------------------------------------
-
-# ----------------------------------------------------------------------------
 # class TGADialog
 # ----------------------------------------------------------------------------
 
-class TGADialog( wx.Dialog ):
+class TGADialog( spBaseDialog ):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -101,17 +92,17 @@ class TGADialog( wx.Dialog ):
 
     """
 
-    def __init__(self, parent, prefsIO, tiers={}):
+    def __init__(self, parent, preferences, tiers={}):
         """
         Create a new dialog.
 
         @param tiers: a dictionary with key=filename, value=list of selected tiers
-        """
 
-        wx.Dialog.__init__(self, parent, title=FRAME_TITLE+" - Time Group Analysis", style=FRAME_STYLE)
+        """
+        spBaseDialog.__init__(self, parent, preferences, title=" - Time Group Analysis")
+        wx.GetApp().SetAppName( "tga" )
 
         # Members
-        self.preferences = prefsIO
         # Options to evaluate stats:
         self.withradius=0
 
@@ -122,22 +113,30 @@ class TGADialog( wx.Dialog ):
                 self._data[ts]=k
                 # remark: TGA are not estimated yet.
 
-        self._create_gui()
+        titlebox   = self.CreateTitle(TIMEANALYSIS, "Time Group Analysis of a set of tiers")
+        contentbox = self._create_content()
+        buttonbox  = self._create_buttons()
 
-        # Events of this frame
-        wx.EVT_CLOSE(self, self.onClose)
-
-    # ------------------------------------------------------------------------
+        self.LayoutComponents( titlebox,
+                               contentbox,
+                               buttonbox )
 
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
 
-    def _create_gui(self):
-        self._init_infos()
-        self._create_title_label()
+    def _create_buttons(self):
+        btn_export = self.CreateButton( EXPORT_ICON, "Export", tooltip="Show a random tip")
+        btn_save   = self.CreateSaveButton()
+        btn_close  = self.CreateCloseButton( )
+        self.Bind(wx.EVT_BUTTON, self._on_save, btn_save)
+        self.Bind(wx.EVT_BUTTON, self._on_export, btn_export)
+        return self.CreateButtonBox( [btn_save,btn_export],[btn_close] )
+
+
         self._create_toolbar()
         self._create_content()
+
         self._create_close_button()
         self._create_save_button()
         self._create_export_button()
@@ -145,66 +144,38 @@ class TGADialog( wx.Dialog ):
         self._set_focus_component()
 
 
-    def _init_infos( self ):
-        wx.GetApp().SetAppName( "tga" )
-        # icon
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(STATISTICS_APP_ICON) )
-        self.SetIcon(_icon)
-        # colors
-        self.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
-        self.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR'))
-        self.SetFont( self.preferences.GetValue('M_FONT'))
-
-
-    def _create_title_label(self):
-        self.title_layout = wx.BoxSizer(wx.HORIZONTAL)
-        bmp = wx.BitmapButton(self, bitmap=spBitmap(TIMEANALYSIS, 32, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
-        font = self.preferences.GetValue('M_FONT')
-        font.SetWeight(wx.BOLD)
-        font.SetPointSize(font.GetPointSize() + 2)
-        title_label = wx.StaticText(self, label="Time Group Analysis of a set of tiers", style=wx.ALIGN_CENTER)
-        title_label.SetFont( font )
-        self.title_layout.Add(bmp,  flag=wx.TOP|wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, border=5)
-        self.title_layout.Add(title_label, flag=wx.EXPAND|wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
-
-
     def _create_toolbar(self):
-        self.toolbar_layout = wx.BoxSizer(wx.HORIZONTAL)
+        """ Simulate a toolbar."""
         font = self.preferences.GetValue('M_FONT')
+        font.SetPointSize(font.GetPointSize() - 2)
+
         sep_label = wx.StaticText(self, label="Time group separators:", style=wx.ALIGN_CENTER)
         sep_label.SetFont( font )
+
         self.septext = wx.TextCtrl(self, -1, size=(150,24))
+        self.septext.SetFont( font )
         self.septext.SetInsertionPoint(0)
         self.septext.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
         self.septext.SetForegroundColour(wx.Colour(128,128,128))
         self.septext.SetValue(DEFAULT_SEP)
-        self.septext.Bind(wx.EVT_TEXT, self.OnTextChanged)
-        self.septext.Bind(wx.EVT_SET_FOCUS, self.OnTextClick)
 
         broomb = wx.BitmapButton(self, bitmap=spBitmap(BROOM_ICON, 24, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
-        broomb.Bind(wx.EVT_BUTTON, self.OnTextErase)
         applyb = wx.BitmapButton(self, bitmap=spBitmap(APPLY_ICON, 24, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
-        applyb.Bind(wx.EVT_BUTTON, self.OnSeparatorChanged)
 
-        font.SetPointSize(font.GetPointSize() - 2)
         durlist = ['Use only Midpoint value', 'Add the Radius value', 'Deduct the Radius value']
         withradiusbox = wx.RadioBox(self, -1, label="Annotation durations:", choices=durlist, majorDimension=1, style=wx.RA_SPECIFY_COLS)
         withradiusbox.SetFont( font )
+
+        self.AddToolbar( [sep_label, broomb, self.septext, applyb],[withradiusbox] )
+
+        self.septext.Bind(wx.EVT_TEXT, self.OnTextChanged)
+        self.septext.Bind(wx.EVT_SET_FOCUS, self.OnTextClick)
+        self.Bind(wx.EVT_BUTTON, self.OnTextErase, broomb)
+        self.Bind(wx.EVT_BUTTON, self.OnSeparatorChanged, applyb)
         self.Bind(wx.EVT_RADIOBOX, self.OnWithRadius, withradiusbox)
 
-        sepsizer = wx.BoxSizer(wx.HORIZONTAL)
-        sepsizer.Add(sep_label,    0, flag=wx.ALL, border=5)
-        sepsizer.Add(broomb,       0, flag=wx.ALL, border=5)
-        sepsizer.Add(self.septext, 1, flag=wx.EXPAND|wx.ALL, border=5)
-        sepsizer.Add(applyb,       0, flag=wx.ALL, border=5)
-
-        self.toolbar_layout.Add(sepsizer, 1, flag=wx.LEFT|wx.ALIGN_CENTER_VERTICAL, border=5)
-        self.toolbar_layout.AddStretchSpacer()
-        self.toolbar_layout.Add(withradiusbox, flag=wx.RIGHT, border=5)
-
-
     def _create_content(self):
+        self._create_toolbar()
         self.notebook = wx.Notebook(self)
         page1 = TotalPanel(  self.notebook, self.preferences, "total")
         page2 = MeansPanel(self.notebook, self.preferences, "means")
@@ -215,67 +186,18 @@ class TGADialog( wx.Dialog ):
         self.notebook.AddPage(page3, " DeltaDurations " )
         page1.ShowStats( self._data )
         self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.OnNotebookPageChanged)
-
-
-    def _create_close_button(self):
-        bmp = spBitmap(CANCEL_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_close = CreateGenButton(self, wx.ID_OK, bmp, text=" Close", tooltip="Close this frame", colour=color)
-        self.btn_close.SetFont( self.preferences.GetValue('M_FONT'))
-        self.btn_close.SetDefault()
-        self.btn_close.SetFocus()
-        self.SetAffirmativeId(wx.ID_OK)
-
-    def _create_save_button(self):
-        bmp = spBitmap(SAVE_AS_FILE, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_save = CreateGenButton(self, wx.ID_SAVE, bmp, text=" Save sheet ", tooltip="Save the currently displayed sheet", colour=color)
-        self.btn_save.SetFont( self.preferences.GetValue('M_FONT'))
-        self.btn_save.SetDefault()
-
-    def _create_export_button(self):
-        bmp = spBitmap(EXPORT_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_export = CreateGenButton(self, wx.ID_SAVEAS, bmp, text=" Export as annotation ", tooltip="Save the TGA results as annotations", colour=color)
-        self.btn_export.SetFont( self.preferences.GetValue('M_FONT'))
-
-    def _create_button_box(self):
-        button_box = wx.BoxSizer(wx.HORIZONTAL)
-        button_box.Add(self.btn_save,   flag=wx.LEFT, border=5)
-        button_box.Add(self.btn_export, flag=wx.LEFT, border=5)
-        button_box.AddStretchSpacer()
-        button_box.Add(self.btn_close, flag=wx.RIGHT, border=5)
-        self.btn_save.Bind(wx.EVT_BUTTON, self.onButtonSave)
-        self.btn_export.Bind(wx.EVT_BUTTON, self.onButtonExport)
-        return button_box
-
-
-    def _layout_components(self):
-        vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.title_layout,   0, flag=wx.ALL, border=5)
-        vbox.Add(self.toolbar_layout, 0, flag=wx.ALL, border=5)
-        vbox.Add(self.notebook,       1, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self._create_button_box(), 0, flag=wx.ALL|wx.EXPAND, border=5)
-        self.SetSizerAndFit(vbox)
-
-
-    def _set_focus_component(self):
-        self.notebook.SetFocus()
-
+        return self.notebook
 
     #-------------------------------------------------------------------------
     # Callbacks
     #-------------------------------------------------------------------------
 
-    def onClose(self, event):
-        self.SetEscapeId( wx.ID_CANCEL )
-
-    def onButtonSave(self, event):
+    def _on_save(self, event):
         idx = self.notebook.GetSelection()
         page = self.notebook.GetPage( idx )
         page.SaveAs(outfilename="tga-%s.csv"%page.name)
 
-    def onButtonExport(self, event):
+    def _on_export(self, event):
         # Create the progress bar then run the annotations
         wx.BeginBusyCursor()
         p = ProcessProgressDialog(self, self.preferences)
@@ -561,3 +483,19 @@ class DeltaDurationsPanel( BaseStatPanel ):
         self.sizer.Add(self.statctrl, 1, flag=wx.ALL|wx.EXPAND, border=5)
         self.sizer.FitInside(self)
         self.SendSizeEvent()
+
+# ----------------------------------------------------------------------------
+
+def ShowTgaDialog(parent, preferences, tiers):
+    dialog = TGADialog(parent, preferences, tiers)
+    dialog.ShowModal()
+    dialog.Destroy()
+
+# ---------------------------------------------------------------------------
+
+if __name__ == "__main__":
+    app = wx.PySimpleApp()
+    ShowTgaDialog(None,None,tiers={})
+    app.MainLoop()
+
+# ---------------------------------------------------------------------------
