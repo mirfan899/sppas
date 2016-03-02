@@ -37,7 +37,7 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
@@ -53,9 +53,8 @@ from annotationdata.ptime.point    import TimePoint
 from annotationdata.annotation     import Annotation
 from annotationdata.label.label    import Label
 from annotationdata.label.text     import Text
+from sp_glob import encoding
 
-# ----------------------------------------------------------------------------
-ENCODING='utf-8'
 # ----------------------------------------------------------------------------
 
 class AlignerIO( Transcription ):
@@ -73,9 +72,7 @@ class AlignerIO( Transcription ):
         """
         Transcription.__init__(self, name, mintime, maxtime)
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def read_list(self,filename):
         """
@@ -86,7 +83,7 @@ class AlignerIO( Transcription ):
 
         """
         try:
-            fp = codecs.open(filename, 'r', ENCODING)
+            fp = codecs.open(filename, 'r', encoding)
         except IOError,e:
             raise IOError("Input IPUs read list error: " + str(e) + "\n")
 
@@ -102,11 +99,10 @@ class AlignerIO( Transcription ):
                 # last line indicates the duration of the wav file.
                 _units.append( (float(_tab[0]),0.) )
         fp.close()
+
         return _units
 
-    # End read_list
     # ------------------------------------------------------------------
-
 
     def read(self, dirname, listfilename, mapping, expend=True, extend=False, tokens=True):
         """
@@ -123,8 +119,8 @@ class AlignerIO( Transcription ):
         radius = 0.005
 
         # Verify if the directory exists
-        if not os.path.exists( dirname):
-            raise IOError("Missing directory " + dirname+". \n")
+        if not os.path.exists( dirname ):
+            raise IOError("Missing directory: " + dirname+".\n")
 
         # Create 3 new tiers
         itemp = self.NewTier("PhonAlign")
@@ -140,16 +136,16 @@ class AlignerIO( Transcription ):
             raise IOError("Get list of tracks: "+str(e))
 
         # Get all unit alignment file names (default file names of write_tracks())
-        dirlist = glob.glob(os.path.join(dirname, "track_*palign"))
-        dirlist += glob.glob(os.path.join(dirname, "track_*mlf"))
+        dirlist  = glob.glob( os.path.join(dirname, "track_*palign") )
+        dirlist += glob.glob( os.path.join(dirname, "track_*mlf") )
         ntracks = len(dirlist)
-        if ntracks==0:
-            raise IOError('No tracks aligned')
+        if ntracks == 0:
+            raise IOError('No tracks were time-aligned.')
 
         # The number of alignment files must correspond
         # to the number of units in the "list" file.
         if (len(units)-1) != ntracks:
-            raise IOError('inconsistency between expected nb of tracks '+str(len(units)-1)+' and nb track files '+str(ntracks))
+            raise IOError('Inconsistency between expected nb of tracks '+str(len(units)-1)+' and nb track files '+str(ntracks))
 
         # Explore each unit to get alignments
         wavend,unitend = units[ntracks] # Get the wav duration
@@ -160,29 +156,23 @@ class AlignerIO( Transcription ):
             # Get real start and end time values of this unit.
             unitstart,unitend = units[(track-1)]
 
-            if track==1:
+            if track == 1:
                 # A silence to start?
-                if unitstart>0.:
+                if unitstart > 0.:
                     time = TimeInterval(TimePoint(0.,0.), TimePoint(unitstart,radius))
                     annotation = Annotation(time, Label("#"))
                     itemp.Append(annotation)
-                    #print "Append in phonemes 1:",annotation
-
                     if tokens is True:
-                        #print "Append in tokensw and tokenst 1:",annotation
                         itemt.Append(annotation.Copy())
                         itemw.Append(annotation.Copy())
 
             else:
                 if loc_e < unitstart:
-                    # Add an empty interval between 2 units...
+                    # An empty interval between 2 units...
                     time = TimeInterval(TimePoint(loc_e,radius), TimePoint(unitstart,radius))
-                    annotation = Annotation(time, Label("#"))
-                    #print "Append in phonemes 2:",annotation
+                    annotation = Annotation(time, Label(""))
                     itemp.Append(annotation)
-
                     if tokens is True:
-                        #print "Append in tokensw and tokenst 2:",annotation
                         itemt.Append(annotation.Copy())
                         itemw.Append(annotation.Copy())
 
@@ -196,7 +186,7 @@ class AlignerIO( Transcription ):
                 else:
                     (_phonannots,_wordannots) = self.read_palign( trackname )
 
-                # Map-back the phoneset
+                # Map-back the phoneset for phonemes
                 mapping.set_keepmiss( True )
                 mapping.set_reverse( False )
                 i = 0
@@ -204,7 +194,7 @@ class AlignerIO( Transcription ):
                     _phonannots[i] = (t[0], t[1], mapping.map_entry(t[2]), t[3])
                     i = i+1
 
-                # Map-back the phoneset
+                # Map-back the phoneset for tokens too
                 i = 0
                 for t in _wordannots:
                     _wordannots[i] = (t[0], t[1], mapping.map(t[2]))
@@ -228,7 +218,7 @@ class AlignerIO( Transcription ):
                     annotation = Annotation(TimeInterval(TimePoint(loc_s,radius), TimePoint(loc_e,radius)), Label(Text(label,score)))
                     itemp.Append(annotation)
                     idx += 1
-            except Exception:
+            except Exception as e:
                 if unitstart<unitend:
                     annotation = Annotation(TimeInterval(TimePoint(unitstart,radius), TimePoint(unitend,radius)), Label(""))
                     itemp.Append(annotation)
@@ -240,7 +230,7 @@ class AlignerIO( Transcription ):
                 try:
                     # for tokens
                     transname = os.path.join(dirname, "track_%06d.trans"%track)
-                    f = codecs.open(transname, 'r', ENCODING)
+                    f = codecs.open(transname, 'r', encoding)
                     readtokens = f.readline()
                     # Remove multiple spaces
                     f.close()
@@ -283,7 +273,6 @@ class AlignerIO( Transcription ):
                 time = TimeInterval(TimePoint(loc_e,radius), TimePoint(wavend,0.))
                 annotation = Annotation(time, Label("#"))
                 itemp.Append(annotation)
-                #itemp.SetRadius(0.005)
             except Exception as e:
                 raise IOError('Error %s with the wav duration, for track %d.'%(str(e),(track-1)))
             if tokens is True:
@@ -295,15 +284,9 @@ class AlignerIO( Transcription ):
 
         # Adjust Radius
         if itemp.GetSize()>1:
-#             itemp.SetRadius(0.005)
-#             itemp[0].GetLocation().GetBegin().SetRadius(0.)
             itemp[-1].GetLocation().SetEndRadius(0.)
             if tokens is True:
-#                 itemt.SetRadius(0.005)
-#                 itemw.SetRadius(0.005)
-#                 itemt[0].GetLocation().GetBegin().SetRadius(0.) # first timepoint
                 itemt[-1].GetLocation().SetEndRadius(0.)  # last
-#                 itemw[0].GetLocation().GetBegin().SetRadius(0.)
                 itemw[-1].GetLocation().SetEndRadius(0.)
 
         if tokens is True:
@@ -318,9 +301,7 @@ class AlignerIO( Transcription ):
                 logging.info('Error while assigning hierarchy between tokens and phntokens: %s'%(str(e)))
                 pass
 
-    # End read
     # ------------------------------------------------------------------
-
 
     def read_palign(self, filename):
         """
@@ -336,7 +317,7 @@ class AlignerIO( Transcription ):
         _phonalign = []
         _wordalign = []
         try:
-            fp = codecs.open(filename, 'r', ENCODING)
+            fp = codecs.open(filename, 'r', encoding)
         except IOError,e:
             raise IOError("Input error with file " + filename + ": " + str(e) + "\n")
 
@@ -377,7 +358,10 @@ class AlignerIO( Transcription ):
                 # ATTENTION: Julius indicates time in centiseconds!
                 loc_s = (float( tab[0] ) / 100.)
                 loc_e = (float( tab[1] ) / 100.)
-                _phonalign.append( (loc_s, loc_e, tab[3], tab[2]) )
+                if len(tab)>3:
+                    _phonalign.append( (loc_s, loc_e, tab[3], tab[2]) )
+                else:
+                    _phonalign.append( (loc_s, loc_e, "", tab[2]) )
 
         fp.close()
 
@@ -419,9 +403,7 @@ class AlignerIO( Transcription ):
 
         return (_modifiedphonalign,_wordalign)
 
-    # End read_palign
     # ------------------------------------------------------------------
-
 
     def read_mlf(self, filename):
         """
@@ -439,7 +421,7 @@ class AlignerIO( Transcription ):
         phontok = []
         samplerate=10e6
 
-        with codecs.open(filename, 'r', ENCODING) as source:
+        with codecs.open(filename, 'r', encoding) as source:
 
             line = source.readline() # header
             while True: # loop over text
@@ -519,9 +501,7 @@ class AlignerIO( Transcription ):
 
         return (phon,phontok)
 
-    # End read_mlf
     # ------------------------------------------------------------------
-
 
     # ------------------------------------------------------------------
 
