@@ -77,6 +77,7 @@ from wxgui.ui.CustomEvents              import SettingsEvent
 
 from wxgui.ui.CustomStatus              import CustomStatusBar
 
+from wxgui.dialogs.msgdialogs        import ShowYesNoQuestion
 from wxgui.views.about                  import AboutBox
 from wxgui.views.settings               import SettingsDialog
 
@@ -101,7 +102,6 @@ TAB_NEW_ID          = wx.NewId()
 TAB_CLOSE_ID        = wx.NewId()
 
 # ----------------------------------------------------------------------------
-
 
 class ComponentFrame( wx.Frame ):
     """
@@ -152,14 +152,9 @@ class ComponentFrame( wx.Frame ):
         self._LayoutFrame()
         self.Show(True)
 
-    # End __init__
-    # ------------------------------------------------------------------------
-
-
     # ------------------------------------------------------------------------
     # Private methods to create the GUI and initialise members
     # ------------------------------------------------------------------------
-
 
     def _init_members( self, args ):
         """
@@ -180,9 +175,7 @@ class ComponentFrame( wx.Frame ):
             self._fmtype = args['type']
             # expected: "DATAFILES", "SOUNDFILES", "ANYFILES"
 
-    # End _init_members
     # ------------------------------------------------------------------------
-
 
     def _init_infos( self, args ):
         """
@@ -191,7 +184,6 @@ class ComponentFrame( wx.Frame ):
         If args contains title, get it... or use the default.
 
         """
-
         # Set title
         _app = DEFAULT_APP_NAME
         if "title" in args.keys():
@@ -211,9 +203,7 @@ class ComponentFrame( wx.Frame ):
         # colors
         self.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR'))
 
-    # End _init_infos
     # ------------------------------------------------------------------------
-
 
     def _init_frame(self):
         """
@@ -222,7 +212,6 @@ class ComponentFrame( wx.Frame ):
         Creates the default about, menubar, toolbar and status bar.
 
         """
-
         # Create the about box
         self._about = AboutBox()
 
@@ -248,9 +237,7 @@ class ComponentFrame( wx.Frame ):
         # Create the status bar
         self._create_statusbar()
 
-    # End _init_frame
     # ------------------------------------------------------------------------
-
 
     def _frame_properties(self):
         """
@@ -265,9 +252,7 @@ class ComponentFrame( wx.Frame ):
         self.Enable()
         self.SetFocus()
 
-    # End _frame_properties
     # ------------------------------------------------------------------------
-
 
     def _create_menu(self):
         """
@@ -288,7 +273,6 @@ class ComponentFrame( wx.Frame ):
             - About
 
         """
-
         menubar = wx.MenuBar()
 
         # All Menus
@@ -357,9 +341,7 @@ class ComponentFrame( wx.Frame ):
 
         return menubar
 
-    # End _create_menubar
     # ------------------------------------------------------------------------
-
 
     def _create_toolbar(self):
         """
@@ -403,9 +385,7 @@ class ComponentFrame( wx.Frame ):
         for event in eventslist:
             wx.EVT_TOOL(self, event, self.ProcessEvent)
 
-    # End _create_toolbar
     # ------------------------------------------------------------------------
-
 
     def _create_accelerators(self):
         """
@@ -415,16 +395,13 @@ class ComponentFrame( wx.Frame ):
         through convoluted menus or icons.
 
         """
-
         # Quit with ATL+F4
         accelQ = wx.AcceleratorEntry(wx.ACCEL_NORMAL, wx.WXK_F4, wx.ID_EXIT)
 
         accel_tbl = wx.AcceleratorTable([ accelQ ])
         self.SetAcceleratorTable(accel_tbl)
 
-    # End _create_accelerators
     # ------------------------------------------------------------------------
-
 
     def _create_statusbar(self):
         """
@@ -441,9 +418,7 @@ class ComponentFrame( wx.Frame ):
         self.SetStatusBar(sb)
         self.GetStatusBar().Show(wx.ConfigBase_Get().ReadInt("ViewStatusBar", True))
 
-    # End _create_statusbar
     # ------------------------------------------------------------------------
-
 
     def _create_panels(self, parent):
         """
@@ -452,7 +427,6 @@ class ComponentFrame( wx.Frame ):
             - clientpanel (right).
 
         """
-
         _panel = wx.SplitterWindow(parent, -1)
         _panel.SetMinimumPaneSize( MIN_PANEL_W )
 
@@ -472,9 +446,7 @@ class ComponentFrame( wx.Frame ):
 
         return _panel
 
-    # End _create_panels
     # ------------------------------------------------------------------------
-
 
     def _LayoutFrame(self):
         """
@@ -486,15 +458,9 @@ class ComponentFrame( wx.Frame ):
         self._clientpanel.SendSizeEvent()
         self.Refresh()
 
-    # End _LayoutFrame
-    # ------------------------------------------------------------------------
-
-
-
     # ------------------------------------------------------------------------
     # Public method to create the GUI
     # ------------------------------------------------------------------------
-
 
     def CreateClient(self, parent, prefsIO):
         """
@@ -510,9 +476,7 @@ class ComponentFrame( wx.Frame ):
 
         raise NotImplementedError
 
-    # End CreateClient
     # ------------------------------------------------------------------------
-
 
     def CreateFileManager(self, parent, prefsIO):
         """
@@ -528,14 +492,9 @@ class ComponentFrame( wx.Frame ):
 
         return FileManager( parent, prefsIO=self._prefsIO)
 
-    # End CreateFileManager
-    # ------------------------------------------------------------------------
-
-
     # ------------------------------------------------------------------------
     # Callbacks to any kind of event
     # ------------------------------------------------------------------------
-
 
     def ProcessEvent(self, event):
         """
@@ -545,7 +504,6 @@ class ComponentFrame( wx.Frame ):
         wxPython does not have a virtual ProcessEvent function.
 
         """
-
         id = event.GetId()
 
         if id == wx.ID_ADD:
@@ -588,9 +546,7 @@ class ComponentFrame( wx.Frame ):
 
         return wx.GetApp().ProcessEvent(event)
 
-    # End ProcessEvent
     # ------------------------------------------------------------------------
-
 
     def ProcessUpdateUIEvent(self, event):
         """
@@ -600,7 +556,6 @@ class ComponentFrame( wx.Frame ):
         wxPython does not have a virtual ProcessEvent function.
 
         """
-
         id = event.GetId()
 
         if id == VIEW_TOOLBAR_ID:
@@ -612,21 +567,15 @@ class ComponentFrame( wx.Frame ):
 
         return wx.GetApp().ProcessUpdateUIEvent(event)
 
-    # End ProcessUpdateUIEvent
-    # ------------------------------------------------------------------------
-
-
     # ------------------------------------------------------------------------
     # File management... Callbacks to menu/toolbar/accelerator
     # ------------------------------------------------------------------------
-
 
     def OnAdd(self, event):
         """
         Received an event to add new files.
 
         """
-
         if self._fmtype == "DATAFILES":
             self.AddFiles( filedialogs.OpenAnnotationFiles() )
 
@@ -636,9 +585,7 @@ class ComponentFrame( wx.Frame ):
         else:
             self.AddFiles( filedialogs.OpenAnyFiles() )
 
-    # End OnAdd
     # ------------------------------------------------------------------------
-
 
     def OnRemove(self, event):
         """
@@ -651,9 +598,7 @@ class ComponentFrame( wx.Frame ):
         evt.SetEventObject(self)
         wx.PostEvent(self._filepanel, evt)
 
-    # End OnRemove
     # ------------------------------------------------------------------------
-
 
     def OnExitApp(self, event):
         """
@@ -661,47 +606,35 @@ class ComponentFrame( wx.Frame ):
         Destroy without worrying about anything!
 
         """
-
-        dialog = wx.MessageDialog(self, message = "Are you sure you want to quit?", caption = "Exit?", style = wx.YES_NO, pos = wx.DefaultPosition)
-        response = dialog.ShowModal()
-
+        response = ShowYesNoQuestion( self, self._prefsIO, "Are you sure you want to quit?")
         if response == wx.ID_YES:
             logging.info('Bye bye... Hope to see you again!')
             self.Destroy()
         else:
             event.StopPropagation()
 
-    # End OnExitApp
     # ------------------------------------------------------------------------
-
 
     def OnClose(self, event):
         """
         Close properly the client then exit.
 
         """
-
         closeEvent = wx.CloseEvent(wx.wxEVT_CLOSE_WINDOW, self.GetId())
         closeEvent.SetEventObject(self)
         wx.PostEvent(self._clientpanel, closeEvent)
         #self.Destroy() # this causes troubles to the client (access to dead objects)!
         self.Close()
 
-    # End OnClose
-    #-------------------------------------------------------------------------
-
-
     #-------------------------------------------------------------------------
     # Preferences... Callbacks
     #-------------------------------------------------------------------------
-
 
     def OnViewToolBar(self, event):
         """
         Toggles whether the ToolBar is visible.
 
         """
-
         try:
             t = self.GetToolBar()
         except Exception:
@@ -713,9 +646,7 @@ class ComponentFrame( wx.Frame ):
         # send size event to force the whole frame layout
         self.SendSizeEvent()
 
-    # End OnViewToolBar
     # ------------------------------------------------------------------------
-
 
     def OnUpdateViewToolBar(self, event):
         """
@@ -735,9 +666,7 @@ class ComponentFrame( wx.Frame ):
         # send size event to force the whole frame layout
         self.SendSizeEvent()
 
-    # End OnUpdateViewToolBar
     # ------------------------------------------------------------------------
-
 
     def OnViewStatusBar(self, event):
         """
@@ -748,9 +677,7 @@ class ComponentFrame( wx.Frame ):
         self.GetStatusBar().Show(not self.GetStatusBar().IsShown())
         self._LayoutFrame()
 
-    # End OnViewStatusBar
     # ------------------------------------------------------------------------
-
 
     def OnUpdateViewStatusBar(self, event):
         """
@@ -760,29 +687,20 @@ class ComponentFrame( wx.Frame ):
 
         event.Check(self.GetStatusBar().IsShown())
 
-    # End OnUpdateViewStatusBar
-    # ------------------------------------------------------------------------
-
-
-
     #-------------------------------------------------------------------------
     # Client Callbacks
     #-------------------------------------------------------------------------
-
 
     def OnNewTab(self, event):
         """
         Add a page in the client.
 
         """
-
         evt = NotebookNewPageEvent()
         evt.SetEventObject(self)
         wx.PostEvent(self._clientpanel, evt)
 
-    # End OnNewTab
     #-------------------------------------------------------------------------
-
 
     def OnCloseTab(self, event):
         """
@@ -794,28 +712,22 @@ class ComponentFrame( wx.Frame ):
         evt.SetEventObject(self)
         wx.PostEvent(self._clientpanel, evt)
 
-    # End OnCloseTab
     #-------------------------------------------------------------------------
-
 
     def OnFileAdded(self, event):
         """
         Add a file of the file manager.
 
         """
-
         self.AddFiles( [event.filename] )
 
-    # End OnFileAdded
     #-------------------------------------------------------------------------
-
 
     def OnFileClosed(self, event):
         """
         Remove of the file manager.
 
         """
-
         # Get the list of closed files and remove them of the file manager
         files = event.filenames
 
@@ -825,33 +737,24 @@ class ComponentFrame( wx.Frame ):
             evt.SetEventObject(self)
             wx.PostEvent(self._filepanel, evt)
 
-    # End OnFilesClosed
-    #-------------------------------------------------------------------------
-
-
     #-------------------------------------------------------------------------
     # Help... Callbacks
     #-------------------------------------------------------------------------
-
 
     def OnAbout(self, event):
         """
         Open the About box.
 
         """
-
         wx.AboutBox( self._about )
 
-    # End OnAbout
     # ------------------------------------------------------------------------
-
 
     def OnSettings(self, event):
         """
         Open the Settings box.
 
         """
-
         import copy
         p = copy.deepcopy( self._prefsIO )
         #p = self._prefsIO.Copy() # does not work.
@@ -868,14 +771,9 @@ class ComponentFrame( wx.Frame ):
         prefdlg.Destroy()
         self._LayoutFrame()
 
-    # End OnSettings
-    # ------------------------------------------------------------------------
-
-
     #-------------------------------------------------------------------------
     # Data management
     #-------------------------------------------------------------------------
-
 
     def AddFiles(self, files):
         """
@@ -884,7 +782,6 @@ class ComponentFrame( wx.Frame ):
         @param files (list of String)
 
         """
-
         if len(files) > 0:
             # Get the list of files to open/view
             for f in files:
@@ -895,16 +792,13 @@ class ComponentFrame( wx.Frame ):
 
             self.Refresh()
 
-    # End AddFiles
     # ------------------------------------------------------------------------
-
 
     def OnFileWander(self, event):
         """
         We received an event: a file was added/removed.
 
         """
-
         owner = event.GetEventObject()
         f = event.filename
         s = event.status
@@ -917,21 +811,15 @@ class ComponentFrame( wx.Frame ):
             evt.SetEventObject(self)
             wx.PostEvent(self._filepanel, evt)
 
-    # End OnFileWander
-    #-------------------------------------------------------------------------
-
-
     #-------------------------------------------------------------------------
     # Other
     #-------------------------------------------------------------------------
-
 
     def DisplayTextInStatusbar(self, text):
         """
         Display a text in the default field of the status bar.
 
         """
-
         try:
             text = text.decode('utf8')
         except Exception:
@@ -942,40 +830,31 @@ class ComponentFrame( wx.Frame ):
         except Exception:
             logging.info('Got StatusText message: %s'%text)
 
-    # End DisplayTextInStatusbar
     #-------------------------------------------------------------------------
-
 
     def StartTimeInStatusBar(self):
         """
         Start the date of the StatusBar.
 
         """
-
         self.GetStatusBar().StartTime()
 
-    # End StartTimeInStatusBar
     #-------------------------------------------------------------------------
-
 
     def StopTimeInStatusBar(self):
         """
         Stop the date of the StatusBar.
 
         """
-
         self.GetStatusBar().StopTime()
 
-    # End StopTimeInStatusBar
     #-------------------------------------------------------------------------
-
 
     def SetPrefs(self, prefs):
         """
         Fix new preferences.
 
         """
-
         self._prefsIO = prefs
         self.GetToolBar().SetBackgroundColour( self._prefsIO.GetValue( 'M_BG_COLOUR' ))
         self.GetStatusBar().SetBackgroundColour( self._prefsIO.GetValue( 'M_BG_COLOUR' ))
@@ -995,7 +874,6 @@ class ComponentFrame( wx.Frame ):
         wx.PostEvent(self._filepanel, evt)
         wx.PostEvent(self._clientpanel, evt)
 
-    # End SetPrefs
     #-------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------

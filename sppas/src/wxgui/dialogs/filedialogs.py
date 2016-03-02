@@ -48,7 +48,7 @@ import os
 import wx
 
 from wxgui.cutils.dialogutils import create_wildcard, extend_path
-from basedialog import ShowYesNoQuestion
+from msgdialogs import ShowYesNoQuestion
 
 import annotationdata.io as io
 import signals

@@ -65,11 +65,12 @@ from wxgui.panels.components   import ComponentsPanel
 from wxgui.panels.plugins      import PluginPanel
 
 # views and frames
+from wxgui.dialogs.msgdialogs  import ShowInformation
 from wxgui.views.about         import AboutBox
 from wxgui.views.tips          import ShowTipsDialog
 from wxgui.views.feedback      import ShowFeedbackDialog
 from wxgui.views.settings      import SettingsDialog
-from wxgui.frames.helpbrowser   import HelpBrowser
+from wxgui.frames.helpbrowser  import HelpBrowser
 
 from wxgui.structs.prefs       import Preferences_IO
 from wxgui.structs.themes      import Themes, BaseTheme
@@ -655,10 +656,9 @@ class FrameSPPAS( wx.Frame ):
 
         elif eid == ID_TRACK:
             url="https://github.com/brigittebigi/sppas/issues/"
-            wx.MessageBox('Your web browser will be opened.\n'
-                          'First, check if the issue is not already declared in the list.\n'
-                          'Then, declare an issue by clicking on the button "New Issue"',
-                             'Info', wx.OK | wx.ICON_INFORMATION)
+            message= 'Your web browser will be opened.\nFirst, check if the issue is not already declared in the list.\nThen, declare an issue by clicking on the button "New Issue"'
+            ShowInformation( self, self._prefsIO, message)
+
         else:
             evt.Skip()
             return

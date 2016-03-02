@@ -39,13 +39,11 @@ __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
 
 import wx
-import logging
 
 from baseframe import ComponentFrame
 
@@ -63,7 +61,6 @@ class DataFilterFrame( ComponentFrame ):
     @summary: DataFilter allows to filter tiers of annotated files.
 
     """
-
     def __init__(self, parent, id, args={}):
         """
         Creates a new ComponentFrame instance for DataFilter component.
