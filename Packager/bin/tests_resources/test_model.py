@@ -10,8 +10,9 @@ import copy
 SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
 sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
-from resources.acmodel import AcModel
-from resources.hmm     import HMM, HMMInterpolation
+from resources.acm.acmodel import AcModel
+from resources.acm.hmm     import HMM, HMMInterpolation
+
 from utils.type import compare
 from sp_glob import RESOURCES_PATH
 

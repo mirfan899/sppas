@@ -42,7 +42,8 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import re
-from dictrepl  import DictRepl
+
+from resources.dictrepl  import DictRepl
 
 # ----------------------------------------------------------------------------
 

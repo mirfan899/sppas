@@ -44,7 +44,8 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 # ---------------------------------------------------------------------------
 
 import codecs
-import rutils
+
+import resources.rutils as rutils
 
 # ---------------------------------------------------------------------------
 

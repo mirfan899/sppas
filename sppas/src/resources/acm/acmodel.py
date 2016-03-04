@@ -52,7 +52,7 @@ from hmm          import HMM
 from tiedlist     import TiedList
 from mapping      import Mapping
 
-from utils.type import compare_dictionaries
+from utils.type   import compare_dictionaries
 
 # ---------------------------------------------------------------------------
 
