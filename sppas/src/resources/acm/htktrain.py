@@ -46,10 +46,13 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 import logging
 import os
 import subprocess
+import shutil
 
 import utils.fileutils
 
 from resources.dictpron import DictPron
+from resources.wordslst import WordsList
+
 from hmm        import HMM
 from htkscripts import HtkScripts
 
@@ -77,7 +80,16 @@ class DataTrainer(object):
     """
     def __init__(self):
         """
-        Constructor.
+        Constructor: init all members to None.
+
+        """
+        self.reset()
+
+    # -----------------------------------------------------------------------
+
+    def reset(self):
+        """
+        Fix all members to None.
 
         """
         # The directory with all HMM prototypes, and the default proto file.
@@ -88,27 +100,36 @@ class DataTrainer(object):
         self.workdir    = None
         self.scriptsdir = None
         self.logdir     = None
-        self.dictdir    = None
 
     # -----------------------------------------------------------------------
 
-    def default_init(self):
+    def create(self):
         """
         Create all directories and their content (if possible) with their
         default names.
 
         """
-        self.init_working_dir()
-        self.init_proto_dir()
+        self.fix_working_dir()
+        self.fix_proto()
         self.check()
 
     # -----------------------------------------------------------------------
 
-    def init_working_dir(self, workdir=None, scriptsdir=DEFAULT_SCRIPTS_DIR, logdir=DEFAULT_LOG_DIR):
+    def delete(self):
         """
-        Initialize the working directory and its folders if necessary.
-        Notice that the working directory is normally deleted at the end
-        of the training procedure.
+        Delete all directories and their content.
+
+        """
+        if self.workdir is not None:
+            shutil.rmtree( self.workdir )
+        self.reset()
+
+    # -----------------------------------------------------------------------
+
+    def fix_working_dir(self, workdir=None, scriptsdir=DEFAULT_SCRIPTS_DIR, logdir=DEFAULT_LOG_DIR):
+        """
+        Set the working directory and its folders.
+        Create ell of them if necessary.
 
         """
         if self.workdir is None:
@@ -132,13 +153,15 @@ class DataTrainer(object):
 
     # -----------------------------------------------------------------------
 
-    def init_proto_dir(self):
+    def fix_proto(self, protodir=DEFAULT_PROTO_DIR):
         """
-        Create a proto directory and add the default proto file.
+        Create a `protos` directory and add the default proto file.
 
         """
-        self.protodir = os.path.join(self.workdir, DEFAULT_PROTO_DIR)
-        os.mkdir( self.protodir )
+        if os.path.exists( protodir ) is False:
+            protodir = os.path.join(self.workdir, DEFAULT_PROTO_DIR)
+            os.mkdir( protodir )
+        self.protodir = protodir
 
         self.write_htk_proto( 25 )
 
@@ -201,6 +224,79 @@ class DataTrainer(object):
 
 # ---------------------------------------------------------------------------
 
+class PhoneSet( WordsList ):
+    """
+    @authors: Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: Manager of the list of phonemes.
+
+    This class allows to manage the list of phonemes:
+
+    - get it from a pronunciation dictionary,
+    - read it from a file,
+    - write it into a file,
+    - check if a phone string is valid to be used with HTK toolkit.
+
+    """
+    def __init__(self, filename=None):
+        """
+        Constructor.
+
+        Add events to the list: laughter, dummy, noise, silence.
+
+        @param filename (str) is the phoneset file name, i.e. a file with 1 column.
+
+        """
+        WordsList.__init__(self, filename, nodump=True, casesensitive=True)
+        self.add("@@")
+        self.add("dummy")
+        self.add("gb")
+        self.add("sil")
+
+    # -----------------------------------------------------------------------
+
+    def add_from_dict(self, dictfilename):
+        """
+        Add the list of phones from a pronunciation dictionary.
+
+        """
+        d = DictPron( dictfilename ).get_dict()
+        for value in d.values():
+            variants = value.split("|")
+            for variant in variants:
+                phones = variant.split(".")
+                for phone in phones:
+                    self.add( phone )
+
+    # -----------------------------------------------------------------------
+
+    def check(self, phone):
+        """
+        Check if a phone is correct to be used with HTK toolkit.
+
+        """
+        # TODO: Verify if the following rules are really the good ones!
+
+        # Must contain characters!
+        if len(phone) == 0:
+            return False
+
+        # Must not start with a number
+        # Include only ASCII characters
+        try:
+            int(phone[0])
+            str(phone)
+        except Exception:
+            return False
+
+        return True
+
+    # -----------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------------
+
 class HTKModelTrainer(object):
     """
     @authors: Brigitte Bigi
@@ -220,39 +316,20 @@ class HTKModelTrainer(object):
         Constructor.
 
         """
-        # Prepare or set a data directory.
+        # Prepare or set all directories to work with.
         self.data = datatrainer
         if self.data is None:
             self.data = DataTrainer()
         try:
             self.data.check()
         except IOError:
-            self.data.default_init()
+            self.data.create()
+
+        self.monophones = PhoneSet()
 
         # Epoch directories (the content of one round of train)
         self.epochs = 0
         self.curdir = None
-
-    # -----------------------------------------------------------------------
-
-    def write_monophones(self, dictfilename, monophonesfilename=DEFAULT_MONOPHONES_FILENAME):
-        """
-        Write the monophones file, created from a pronunciation dictionary.
-        Add events to this list (laughter, dummy, noise, silence).
-
-        """
-        d = DictPron( dictfilename ).get_dict()
-        phoneset = ["@@", "dummy", "gb", "sil"]
-        for value in d.values():
-            variants = value.split("|")
-            for phone in variants.split("."):
-                if not phone in phoneset:
-                    phoneset.append( phone )
-
-        self.monophones = os.path.join(self.hmmdir, monophonesfilename)
-        with open(self.monophones, "w") as fp:
-            for phone in sorted(phoneset):
-                fp.write('%s\n'%phone)
 
     # -----------------------------------------------------------------------
 

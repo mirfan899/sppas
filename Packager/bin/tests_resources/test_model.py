@@ -13,7 +13,7 @@ sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 from resources.acm.acmodel  import AcModel, HtkIO
 from resources.acm.hmm      import HMM, HMMInterpolation
-from resources.acm.htktrain import HTKModelTrainer, DataTrainer
+from resources.acm.htktrain import HTKModelTrainer, DataTrainer, PhoneSet
 
 from utils.type import compare
 from sp_glob import RESOURCES_PATH
@@ -26,9 +26,28 @@ class TestTrainer(unittest.TestCase):
     def setUp(self):
         self.trainer = HTKModelTrainer()
 
-    def test_init(self):
-        self.assertTrue( os.path.exists( self.trainer.data.workdir ) )
-        shutil.rmtree( self.trainer.data.workdir )
+    def test_datatrainer(self):
+        datatrainer = DataTrainer()
+        datatrainer.create()
+        dire = datatrainer.workdir
+        self.assertTrue( os.path.exists( dire ) )
+        datatrainer.delete()
+        self.assertFalse( os.path.exists( dire ) )
+
+    def test_phoneset(self):
+        pho = PhoneSet( )
+        self.assertEqual( pho.get_size(), 4 )
+        pho.add_from_dict( os.path.join(RESOURCES_PATH, "dict", "fra.dict") )
+        self.assertEqual( pho.get_size(), 38 )
+        pho.save( "monophones" )
+
+        pho2 = PhoneSet( "monophones" )
+        for phone in pho.get_list():
+            self.assertTrue( pho2.is_in( phone ))
+        for phone in pho2.get_list():
+            self.assertTrue( pho.is_in( phone ))
+
+        os.remove( "monophones" )
 
 # ---------------------------------------------------------------------------
 
