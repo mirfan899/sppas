@@ -96,7 +96,7 @@ Partly supported by ORTOLANG (Ref. Nr. ANR-11-EQPX-0032) funded by the
 « Investissements d'Avenir » French Government program managed by the
 French National Research Agency (ANR).
 
-Read more at: <http://www.ortolang.fr/index.php?page=accueil&lang=en>
+Read more at: <http://www.ortolang.fr/>
 
 
 #### 2014-2015:
