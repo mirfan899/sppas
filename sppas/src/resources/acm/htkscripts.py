@@ -64,12 +64,13 @@ class HtkScripts:
         Create an HtkScripts instance.
 
         """
-        self.win_length_ms = 25   # The window length of the cepstral analysis in milliseconds
-        self.win_shift_ms  = 10   # The window shift of the cepstral analysis in milliseconds
-        self.num_chans     = 26   # Number of filterbank channels
-        self.num_lift_ceps = 22   # Length of cepstral liftering
-        self.num_ceps      = 12   # The number of cepstral coefficients
-        self.pre_em_coef   = 0.97 # The coefficient used for the pre-emphasis
+        self.configfile = ""
+        self.globalfile = ""
+        self.mkphones0file = ""
+        self.mkphones1file = ""
+        self.mktrifile = ""
+        self.maketriphonesfile = ""
+        self.silfile = ""
 
     # -----------------------------------------------------------------------
 
@@ -84,57 +85,12 @@ class HtkScripts:
         if os.path.exists( dirname ) is False:
             os.mkdir( dirname )
 
-        self.write_wav_config( os.path.join(dirname, "wav_config") )
-        self.write_config( os.path.join(dirname, "config") )
         self.write_global_ded( os.path.join(dirname, "global.ded") )
         self.write_mkphones0_led( os.path.join(dirname, "mkphones0.led") )
         self.write_mkphones1_led( os.path.join(dirname, "mkphones1.led") )
         self.write_mktri_led( os.path.join(dirname, "mktri.led") )
         self.write_maketriphones_ded( os.path.join(dirname, "maketriphones.ded") )
         self.write_sil_hed( os.path.join(dirname, "sil.hed") )
-
-    # -----------------------------------------------------------------------
-
-    def write_wav_config(self, filename):
-        """
-        Write the wav config into a file.
-
-        """
-        with open( filename, "w") as fp:
-            fp.write("SOURCEFORMAT = WAV\n")
-            fp.write("SOURCEKIND = WAVEFORM\n")
-            fp.write("TARGETFORMAT = HTK\n")
-            fp.write("TARGETKIND = MFCC_0_D\n")
-            fp.write("TARGETRATE = %.1f\n"%(self.win_shift_ms*100000))
-            fp.write("SAVECOMPRESSED = T\n")
-            fp.write("SAVEWITHCRC = T\n")
-            fp.write("WINDOWSIZE = %.1f\n"%(self.win_length_ms*100000))
-            fp.write("USEHAMMING = T\n")
-            fp.write("PREEMCOEF = %f\n"%self.pre_em_coef)
-            fp.write("NUMCHANS = %d\n"%self.num_chans)
-            fp.write("CEPLIFTER = %d\n"%self.num_lift_ceps)
-            fp.write("NUMCEPS = %d\n"%self.num_ceps)
-            fp.write("ENORMALISE = F\n")
-
-    # -----------------------------------------------------------------------
-
-    def write_config(self, filename):
-        """
-        Write the config into a file.
-
-        """
-        with open( filename, "w") as fp:
-            fp.write("TARGETKIND = MFCC_0_D_N_Z\n")
-            fp.write("TARGETRATE = %.1f\n"%(self.win_shift_ms*100000))
-            fp.write("SAVECOMPRESSED = T\n")
-            fp.write("SAVEWITHCRC = T\n")
-            fp.write("WINDOWSIZE = %.1f\n"%(self.win_length_ms*100000))
-            fp.write("USEHAMMING = T\n")
-            fp.write("PREEMCOEF = %f\n"%self.pre_em_coef)
-            fp.write("NUMCHANS = %d\n"%self.num_chans)
-            fp.write("CEPLIFTER = %d\n"%self.num_lift_ceps)
-            fp.write("NUMCEPS = %d\n"%self.num_ceps)
-            fp.write("ENORMALISE = F\n")
 
     # -----------------------------------------------------------------------
 
@@ -147,6 +103,7 @@ class HtkScripts:
             fp.write("RS cmu\n")
             fp.write("MP sil sil sp\n")
             fp.write("\n")
+        self.globalfile = filename
 
     # -----------------------------------------------------------------------
 
@@ -159,6 +116,7 @@ class HtkScripts:
             fp.write("IS sil sil\n")
             fp.write("DE sp\n")
             fp.write("\n")
+        self.mkphones0file = filename
 
     # -----------------------------------------------------------------------
 
@@ -170,6 +128,7 @@ class HtkScripts:
             fp.write("EX\n")
             fp.write("IS sil sil\n")
             fp.write("\n")
+        self.mkphones1file = filename
 
     # -----------------------------------------------------------------------
 
@@ -183,6 +142,7 @@ class HtkScripts:
             fp.write("WB sil\n")
             fp.write("TC\n")
             fp.write("\n")
+        self.mktrifile = filename
 
     # -----------------------------------------------------------------------
 
@@ -195,6 +155,7 @@ class HtkScripts:
             fp.write("MP sil sil sp\n")
             fp.write("TC\n")
             fp.write("\n")
+        self.maketriphonesfile = filename
 
     # -----------------------------------------------------------------------
 
@@ -208,10 +169,6 @@ class HtkScripts:
             fp.write("AT 1 3 0.3 {sp.transP}\n")
             fp.write("TI silst {sil.state[3],sp.state[2]}\n")
             fp.write("\n")
-
-    # -----------------------------------------------------------------------
-
-if __name__=="__main__":
-    HtkScripts().write_all(".")
+        self.silfile = filename
 
     # -----------------------------------------------------------------------

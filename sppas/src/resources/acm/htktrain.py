@@ -60,17 +60,109 @@ from htkscripts import HtkScripts
 # Constants
 # ---------------------------------------------------------------------------
 
-DEFAULT_PROTO_FILENAME="proto"
-DEFAULT_MONOPHONES_FILENAME="monophones"
+DEFAULT_HMMDEFS_FILENAME    = "hmmdefs"
+DEFAULT_MACROS_FILENAME     = "macros"
+DEFAULT_PROTO_FILENAME      = "proto"
+DEFAULT_MONOPHONES_FILENAME = "monophones"
 
 DEFAULT_PROTO_DIR="protos"
 DEFAULT_SCRIPTS_DIR="scripts"
+DEFAULT_FEATURES_DIR="features"
 DEFAULT_LOG_DIR="log"
-DEFAULT_DICT_DIR="dict"
 
 # ---------------------------------------------------------------------------
 
-class DataTrainer(object):
+class Features( object ):
+    """
+    @authors: Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: Acoustic model features.
+
+    """
+    def __init__(self):
+        """
+        Constructor.
+
+        """
+        self.win_length_ms = 25   # The window length of the cepstral analysis in milliseconds
+        self.win_shift_ms  = 10   # The window shift of the cepstral analysis in milliseconds
+        self.num_chans     = 26   # Number of filterbank channels
+        self.num_lift_ceps = 22   # Length of cepstral liftering
+        self.num_ceps      = 12   # The number of cepstral coefficients
+        self.pre_em_coef   = 0.97 # The coefficient used for the pre-emphasis
+
+        self.nbmv= 25   # The number of means and variances. It's commonly either 25 or 39.
+
+        self.wavconfigfile = ""
+        self.configfile = ""
+
+    # -----------------------------------------------------------------------
+
+    def write_all(self, dirname):
+        """
+        Write all files at once, with their default name, in the given
+        directory.
+
+        @param dirname (str) a directory name (existing or to be created).
+
+        """
+        if os.path.exists( dirname ) is False:
+            os.mkdir( dirname )
+
+        self.write_wav_config( os.path.join( dirname, "wav_config") )
+        self.write_config( os.path.join( dirname, "config") )
+
+    # -----------------------------------------------------------------------
+
+    def write_wav_config(self, filename):
+        """
+        Write the wav config into a file.
+
+        """
+        with open( filename, "w") as fp:
+            fp.write("SOURCEFORMAT = WAV\n")
+            fp.write("SOURCEKIND = WAVEFORM\n")
+            fp.write("TARGETFORMAT = HTK\n")
+            fp.write("TARGETKIND = MFCC_0_D\n")
+            fp.write("TARGETRATE = %.1f\n"%(self.win_shift_ms*100000))
+            fp.write("SAVECOMPRESSED = T\n")
+            fp.write("SAVEWITHCRC = T\n")
+            fp.write("WINDOWSIZE = %.1f\n"%(self.win_length_ms*100000))
+            fp.write("USEHAMMING = T\n")
+            fp.write("PREEMCOEF = %f\n"%self.pre_em_coef)
+            fp.write("NUMCHANS = %d\n"%self.num_chans)
+            fp.write("CEPLIFTER = %d\n"%self.num_lift_ceps)
+            fp.write("NUMCEPS = %d\n"%self.num_ceps)
+            fp.write("ENORMALISE = F\n")
+        self.wavconfigfile = filename
+
+    # -----------------------------------------------------------------------
+
+    def write_config(self, filename):
+        """
+        Write the config into a file.
+
+        """
+        with open( filename, "w") as fp:
+            fp.write("TARGETKIND = MFCC_0_D_N_Z\n")
+            fp.write("TARGETRATE = %.1f\n"%(self.win_shift_ms*100000))
+            fp.write("SAVECOMPRESSED = T\n")
+            fp.write("SAVEWITHCRC = T\n")
+            fp.write("WINDOWSIZE = %.1f\n"%(self.win_length_ms*100000))
+            fp.write("USEHAMMING = T\n")
+            fp.write("PREEMCOEF = %f\n"%self.pre_em_coef)
+            fp.write("NUMCHANS = %d\n"%self.num_chans)
+            fp.write("CEPLIFTER = %d\n"%self.num_lift_ceps)
+            fp.write("NUMCEPS = %d\n"%self.num_ceps)
+            fp.write("ENORMALISE = F\n")
+        self.configfile = filename
+
+    # -----------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+
+class DataTrainer( object ):
     """
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -92,14 +184,17 @@ class DataTrainer(object):
         Fix all members to None.
 
         """
+        # The working directory. Commonly temporary, used to stash everything
+        self.workdir    = None
+        self.featsdir   = None
+        self.scriptsdir = None
+        self.logdir     = None
+        self.htkscripts = HtkScripts()
+        self.features   = Features()
+
         # The directory with all HMM prototypes, and the default proto file.
         self.protodir  = None
         self.protofile = None
-
-        # The working directory. Commonly temporary, used to stash everything
-        self.workdir    = None
-        self.scriptsdir = None
-        self.logdir     = None
 
     # -----------------------------------------------------------------------
 
@@ -126,7 +221,7 @@ class DataTrainer(object):
 
     # -----------------------------------------------------------------------
 
-    def fix_working_dir(self, workdir=None, scriptsdir=DEFAULT_SCRIPTS_DIR, logdir=DEFAULT_LOG_DIR):
+    def fix_working_dir(self, workdir=None, scriptsdir=DEFAULT_SCRIPTS_DIR, featsdir=DEFAULT_FEATURES_DIR, logdir=DEFAULT_LOG_DIR):
         """
         Set the working directory and its folders.
         Create ell of them if necessary.
@@ -138,17 +233,18 @@ class DataTrainer(object):
 
         if os.path.exists( scriptsdir ) is False:
             scriptsdir = os.path.join(self.workdir,scriptsdir)
-            h = HtkScripts()
-            h.write_all( scriptsdir )
-        else:
-            # TODO: check scriptsdir file by file...
-            pass
+            self.htkscripts.write_all( scriptsdir )
+
+        if os.path.exists( featsdir ) is False:
+            featsdir = os.path.join(self.workdir,featsdir)
+            self.features.write_all( featsdir )
 
         if os.path.exists( logdir ) is False:
             logdir = os.path.join(self.workdir,logdir)
             os.mkdir( logdir )
 
         self.scriptsdir = scriptsdir
+        self.featsdir   = featsdir
         self.logdir     = logdir
 
     # -----------------------------------------------------------------------
@@ -163,7 +259,7 @@ class DataTrainer(object):
             os.mkdir( protodir )
         self.protodir = protodir
 
-        self.write_htk_proto( 25 )
+        self.write_htk_proto()
 
     # -----------------------------------------------------------------------
 
@@ -192,6 +288,11 @@ class DataTrainer(object):
         if os.path.isdir( self.scriptsdir ) is False:
             raise IOError("Bad scripts directory.")
 
+        if self.featsdir is None:
+            raise IOError("No features directory defined.")
+        if os.path.isdir( self.featsdir ) is False:
+            raise IOError("Bad features directory.")
+
         if self.logdir is None:
             raise IOError("No log directory defined.")
         if os.path.isdir( self.logdir ) is False:
@@ -199,13 +300,11 @@ class DataTrainer(object):
 
     # -----------------------------------------------------------------------
 
-    def write_htk_proto(self, protosize, protofilename=DEFAULT_PROTO_FILENAME):
+    def write_htk_proto(self, protofilename=DEFAULT_PROTO_FILENAME):
         """
         Write the `proto` file into the proto directory.
         The proto is based on a 5-states HMM.
 
-        @param protosize (int) Number of mean and variance values. It's commonly
-        either 25 or 39, it depends on the MFCC parameters.
         @param protofilename (str) Name of the prototype to write (without the path).
 
         """
@@ -215,7 +314,7 @@ class DataTrainer(object):
             raise IOError("Bad proto directory.")
 
         h = HMM()
-        h.create_proto( protosize )
+        h.create_proto( self.features.nbmv )
         h.save( os.path.join( self.protodir, protofilename ) )
 
         self.protofile = protofilename
@@ -294,10 +393,67 @@ class PhoneSet( WordsList ):
 
     # -----------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+
+class HTKModelInitializer( object ):
+    """
+    @authors: Brigitte Bigi
+    @contact: brigitte.bigi@gmail.com
+    @license: GPL, v3
+    @summary: Acoustic model initializer.
+
+    Monophones initialization is the step 2 of the acoustic model training
+    procedure.
+
+    """
+    def __init__(self, datatrainer, directory):
+        """
+        Constructor.
+
+        """
+        self.datatrainer = datatrainer
+        self.directory = directory
+
+    # -----------------------------------------------------------------------
+
+    def create_vFloors(self):
+        """
+        Create a new version of proto in the directory with `HCompV`.
+        This creates two files in the directory:
+            * proto
+            * vFloors
+
+        """
+        scpfile = "./mfcc-phon/train0.scp"
+        subprocess.check_call(["HCompV", "-A -D -T 1 -m",
+                              "-f", str(0.01),
+                              "-C", self.datatrainer.features.configfile,
+                              "-S", scpfile,
+                              "-M", self.directory, self.datatrainer.protofile])
+
+    # -----------------------------------------------------------------------
+
+    def create_model(self):
+        """
+        """
+        raise NotImplementedError
+
+    # -----------------------------------------------------------------------
+
+    def create_macros(self):
+        """
+        Create macros File
+            * create a new file called macros in directory;
+            * copy the first 3 lines of proto, add them to the top of the macros file;
+            * copy vFloors to macros.
+        """
+        raise NotImplementedError
+
+    # -----------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------
 
-class HTKModelTrainer(object):
+class HTKModelTrainer( object ):
     """
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -307,10 +463,58 @@ class HTKModelTrainer(object):
     This class allows to train an acoustic model from audio data and their
     transcriptions (either phonetic or orthographic or both).
 
-    It is based on the HTK toolbox.
+    Acoustic models are trained with HTK toolbox using a training corpus of
+    speech, previously segmented in utterances and transcribed.
+    The trained models are Hidden Markov models (HMMs).
+    Typically, the HMM states are modeled by Gaussian mixture densities
+    whose parameters are estimated using an expectation maximization procedure.
+    The outcome of this training procedure is dependent on the availability
+    of accurately annotated data and on good initialization.
+
+    Acoustic models are trained from 16 bits, 16000 hz wav files.
+    The Mel-frequency cepstrum coefficients (MFCC) along with their first
+    and second derivatives are extracted from the speech.
+
+    Step 1 is the data preparation. It establishes the list of phonemes.
+    It converts the input data into the HTK-specific data format (MLF files).
+    It codes the audio data, also called "parameterizing the raw speech
+    waveforms into sequences of feature vectors" (i.e. convert from wav
+    to MFCC format).
+
+    Step 2 is the monophones initialization.
+    In order to create a HMM definition, it is first necessary to produce a
+    prototype definition. The function of a prototype definition is to describe
+    the form and topology of the HMM, the actual numbers used in the definition
+    are not important.
+    Having set up an appropriate prototype, an HMM can be initialized by both
+    methods:
+    1. create a flat start monophones model, a prototype trained from
+       phonetized data, and copied for each phoneme (using `HCompV` command).
+       It reads in a prototype HMM definition and some training data and outputs
+       a new definition in which every mean and covariance is equal to the
+       global speech mean and covariance.
+    2. create a prototype for each phoneme using time-aligned data (using
+       `Hinit` command). Firstly, the Viterbi algorithm is used to find the most
+       likely state sequence corresponding to each training example, then the
+       HMM parameters are estimated. As a side-effect of finding the Viterbi
+       state alignment, the log likelihood of the training data can be computed.
+        Hence, the whole estimation process can be repeated until no further
+       increase in likelihood is obtained.
+    This program trains the flat start model and fall back on this model
+    for each phoneme that fails to be trained with `Hinit` (if there are not
+    enough occurrences).
+
+    Step 3 is the monophones generation.
+    This first model is re-estimated using the MFCC files
+    to create a new model, using ``HERest''. Then, it fixes the ``sp''
+    model from the ``sil'' model by extracting only 3 states of the initial
+    5-states model. Finally, this monophone model is re-estimated using the
+    MFCC files and the training data.
+
+    Step 4 creates tied-state triphones from monophones and from some language
+    specificities defined by means of a configuration file.
 
     """
-
     def __init__(self, datatrainer=None):
         """
         Constructor.
@@ -356,10 +560,38 @@ class HTKModelTrainer(object):
             # copy macros ??
             pass
 
-        self.curdir = nextdir
+        self.prevdir = self.curdir
+        self.curdir  = nextdir
 
     # -----------------------------------------------------------------------
 
+    def train(self, rounds=2):
+        """
+        Perform one or more rounds of HERest estimation.
+
+        @param rounds (int) Number of times HERest is called.
+
+        """
+        corpus = None ########################
+        for _ in range(rounds):
+            logging.debug("Training iteration {}.".format(self.epochs))
+            self.init_epoch_dir()
+
+            subprocess.check_call(["HERest", "-C", self.HERest_cfg,
+                        "-S", corpus.feature_scp,
+                        "-I", corpus.phon_mlf,
+                        "-M", self.curdir,
+                        "-H", os.path.join(self.prevdir, DEFAULT_MACROS_FILENAME),
+                        "-H", os.path.join(self.prevdir, DEFAULT_HMMDEFS_FILENAME),
+                        "-t"] + self.pruning + [corpus.phons],
+                       stdout=subprocess.PIPE)
+
+            # Check if we got the expected files.
+
+            # OK, we can go to the next round
+            self.epochs = self.epochs + 1
+
+    # -----------------------------------------------------------------------
 
     def training_recipe(self, corpus):
         #if flatstart:
@@ -380,5 +612,11 @@ class HTKModelTrainer(object):
 
         logging.info("Final training.")
         self.train(corpus)
+
+    # -----------------------------------------------------------------------
+
+    def __del__(self):
+        self.data.delete()
+
 
 # ---------------------------------------------------------------------------
