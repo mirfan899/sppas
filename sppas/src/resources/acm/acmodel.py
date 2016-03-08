@@ -562,50 +562,30 @@ class AcModel:
         return newtransition
 
     # ----------------------------------
-    # TO DO: Test all the create methods
 
     def _create_default(self):
         return collections.defaultdict(lambda: None)
 
-
-    def _create_vector(self, vector):
-        return {'dim': len(vector), 'vector': vector}
-
-
-    def _create_square_matrix(self, mat):
-        return {'dim': len(mat[0]), 'matrix': mat}
-
-
-    def _create_transition(self, state_stay_probabilites=[0.6, 0.6, 0.7]):
-        n_states = len(state_stay_probabilites) + 2
-        transitions = []
-        for i in range(n_states):
-            transitions.append([ 0.]*n_states)
-        transitions[0][1] = 1.
-        for i, p in enumerate(state_stay_probabilites):
-            transitions[i+1][i+1] = p
-            transitions[i+1][i+2] = 1 - p
-
-        return self.create_square_matrix(transitions)
-
+    # ----------------------------------
 
     def _create_parameter_kind(self, base=None, options=[]):
-        result = self.create_default()
+        result = self._create_default()
         result['base'] = base
         result['options'] = options
         return result
 
+    # ----------------------------------
 
     def _create_options(self, vector_size=None, parameter_kind=None):
-        macro = self.create_default()
+        macro = self._create_default()
         options = []
 
         if vector_size:
-            option = self.create_default()
+            option = self._create_default()
             option['vector_size'] = vector_size
             options.append(option)
         if parameter_kind:
-            option = self.create_default()
+            option = self._create_default()
             option['parameter_kind'] = parameter_kind
             options.append(option)
 
@@ -613,34 +593,5 @@ class AcModel:
 
         return macro
 
-
-    def _create_gmm(self, means, variances, gconsts=None, weights=None):
-        mixtures = []
-
-        if means.ndim == 1:
-            means = means[None, :]
-            variances = variances[None, :]
-
-        gmm = self.create_default()
-
-        for i in range(means.shape[0]):
-            mixture = self.create_default()
-            mixture['pdf'] = self.create_default()
-            mixture['pdf']['mean'] = self.create_vector(means[i])
-            mixture['pdf']['covariance'] = self.create_default()
-            mixture['pdf']['covariance']['variance'] = self.create_vector(variances[i])
-
-            if gconsts is not None:
-                mixture['pdf']['gconst'] = gconsts[i]
-            if weights is not None:
-                mixture['weight'] = weights[i]
-
-            mixtures.append(mixture)
-
-        stream = self.create_default()
-        stream['mixtures'] = mixtures
-        gmm['streams'] = [stream]
-
-        return gmm
 
 # ---------------------------------------------------------------------------

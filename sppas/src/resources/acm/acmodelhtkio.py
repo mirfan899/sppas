@@ -47,8 +47,8 @@ __all__       = [
 # ---------------------------------------------------------------------------
 
 import collections
-from dependencies.grako.parsing import graken, Parser
 
+from dependencies.grako.parsing import graken, Parser
 from hmm import HMM
 
 # ---------------------------------------------------------------------------
@@ -70,7 +70,7 @@ class HtkIO:
     @summary: HTK-ASCII acoustic models reader/writer.
 
     This class is able to load and save HMM-based acoustic models from
-    a HTK-ASCII files.
+    HTK-ASCII files.
 
     """
     def __init__(self, *args):
@@ -228,12 +228,47 @@ class HtkIO:
         return result
 
     # -----------------------------------------------------------------------
+
+    def write_hmm_proto(self, protosize, protofilename):
+        """
+        Write a `proto` file. The proto is based on a 5-states HMM.
+
+        @param protosize (int) Number of mean and variance values. It's commonly
+        either 25 or 39, it depends on the MFCC parameters.
+        @param protofilename (str) Full name of the prototype to write.
+
+        """
+        with open(protofilename, "w") as fp:
+            means     = "0.0 "*protosize
+            variances = "1.0 "*protosize
+            means = means.strip()
+            variances = variances.strip()
+
+            fp.write("~h \"proto\"\n")
+            fp.write("<BeginHMM>\n")
+            fp.write("<NumStates> 5\n")
+            for i in range(2, 5):
+                fp.write("<State> {}\n".format(i))
+                fp.write("<Mean> %d\n"%protosize)
+                fp.write("%s\n"%means)
+                fp.write("<Variance> %d\n"%protosize)
+                fp.write("%s\n"%variances)
+            fp.write("<Transp> 5\n")
+            fp.write(" 0.0 1.0 0.0 0.0 0.0\n")
+            fp.write(" 0.0 0.6 0.4 0.0 0.0\n")
+            fp.write(" 0.0 0.0 0.6 0.4 0.0\n")
+            fp.write(" 0.0 0.0 0.0 0.7 0.3\n")
+            fp.write(" 0.0 0.0 0.0 0.0 0.0\n")
+            fp.write("<EndHMM>\n")
+
+    # -----------------------------------------------------------------------
     # Private
     # -----------------------------------------------------------------------
 
     def _serialize_name(self,name):
         return '~h "{}"\n'.format( name )
 
+    # ----------------------------------
 
     def _serialize_definition(self,definition):
         result = ''
@@ -260,6 +295,7 @@ class HtkIO:
 
         return result
 
+    # ----------------------------------
 
     def _serialize_option(self, option):
         result = ''
@@ -292,6 +328,7 @@ class HtkIO:
         result += '\n'
         return result
 
+    # ----------------------------------
 
     def _serialize_transp(self, definition):
         if isinstance(definition, basestring):
@@ -302,6 +339,7 @@ class HtkIO:
         result += '{}'.format(self._matrix_to_htk(definition['matrix']))
         return result
 
+    # ----------------------------------
 
     def _serialize_variance(self, definition):
         if isinstance(definition, basestring):
@@ -312,6 +350,7 @@ class HtkIO:
         result += '{}'.format(self._array_to_htk(definition['vector']))
         return result
 
+    # ----------------------------------
 
     def _serialize_mean(self, definition):
         if isinstance(definition, basestring):
@@ -322,6 +361,7 @@ class HtkIO:
         result += '{}'.format(self._array_to_htk(definition['vector']))
         return result
 
+    # ----------------------------------
 
     def _serialize_duration(self, definition):
         if isinstance(definition, basestring):
@@ -332,6 +372,7 @@ class HtkIO:
         result += '{}'.format(self._array_to_htk(definition['vector']))
         return result
 
+    # ----------------------------------
 
     def _serialize_weights(self, definition):
         if isinstance(definition, basestring):
@@ -342,6 +383,7 @@ class HtkIO:
         result += '{}'.format(self._array_to_htk(definition['vector']))
         return result
 
+    # ----------------------------------
 
     def _serialize_covariance(self, definition):
         result = ''
@@ -353,6 +395,7 @@ class HtkIO:
 
         return result
 
+    # ----------------------------------
 
     def _serialize_mixpdf(self, definition):
         if isinstance(definition, basestring):
@@ -370,6 +413,7 @@ class HtkIO:
 
         return result
 
+    # ----------------------------------
 
     def _serialize_mixture(self, definition):
         result = ''
@@ -380,6 +424,7 @@ class HtkIO:
         result += self._serialize_mixpdf(definition['pdf'])
         return result
 
+    # ----------------------------------
 
     def _serialize_stream(self, definition):
         result = ''
@@ -396,6 +441,7 @@ class HtkIO:
 
         return result
 
+    # ----------------------------------
 
     def _serialize_stateinfo(self, definition):
         if isinstance(definition, basestring):
@@ -416,6 +462,7 @@ class HtkIO:
 
         return result
 
+    # ----------------------------------
 
     def _serialize_state(self, definition):
         result = ''
@@ -425,10 +472,12 @@ class HtkIO:
 
         return result
 
+    # ----------------------------------
 
     def _array_to_htk(self, arr):
         return ' {}\n'.format(' '.join(['{:2.6e}'.format(value) for value in arr]))
 
+    # ----------------------------------
 
     def _matrix_to_htk(self, mat):
         result = ''

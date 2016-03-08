@@ -171,6 +171,35 @@ class HMM( BaseModel ):
 
     # -----------------------------------------------------------------------
 
+    def create_proto(self, protosize):
+        """
+        Create the hmm `proto` and set it.
+        The proto is based on a 5-states HMM.
+
+        @param protosize (int) Number of mean and variance values.
+        It's commonly either 25 or 39, it depends on the MFCC parameters.
+
+        """
+        self.name = "proto"
+        self.definition = self._create_default()
+
+        means     = [0.0]*protosize
+        variances = [1.0]*protosize
+
+        # Define states
+        self.definition['state_count'] = 5
+        self.definition['states'] = []
+        for i in range(3):
+            hmm_state = self._create_default()
+            hmm_state['index'] = i + 2
+            hmm_state['state'] = self._create_gmm([means], [variances])
+            self.definition['states'].append(hmm_state)
+
+        # Define transitions
+        self.definition['transition'] = self._create_transition()
+
+    # -----------------------------------------------------------------------
+
     def load(self, filename):
         """
         Return the hmm described into the given filename.
@@ -233,12 +262,70 @@ class HMM( BaseModel ):
 
         self.definition['states']     = intsts
         self.definition['transition'] = inttrs
+
         return True
 
     # -----------------------------------------------------------------------
 
     def _create_default(self):
         return collections.defaultdict(lambda: None)
+
+    # ----------------------------------
+
+    def _create_vector(self, vector):
+        return {'dim': len(vector), 'vector': vector}
+
+    # ----------------------------------
+
+    def _create_square_matrix(self, mat):
+        return {'dim': len(mat[0]), 'matrix': mat}
+
+    # ----------------------------------
+
+    def _create_transition(self, state_stay_probabilites=[0.6, 0.6, 0.7]):
+        n_states = len(state_stay_probabilites) + 2
+        transitions = []
+        for i in range(n_states):
+            transitions.append([ 0.]*n_states)
+        transitions[0][1] = 1.
+        for i, p in enumerate(state_stay_probabilites):
+            transitions[i+1][i+1] = p
+            transitions[i+1][i+2] = 1 - p
+
+        return self._create_square_matrix(transitions)
+
+    # ----------------------------------
+
+    def _create_gmm(self, means, variances, gconsts=None, weights=None):
+        mixtures = []
+
+        if len(means[0]) == 1:
+            means = means[None, :]
+            variances = variances[None, :]
+
+        print "Means",means
+
+        gmm = self._create_default()
+
+        for i in range(len(means)):
+            mixture = self._create_default()
+            mixture['pdf'] = self._create_default()
+            mixture['pdf']['mean'] = self._create_vector(means[i])
+            mixture['pdf']['covariance'] = self._create_default()
+            mixture['pdf']['covariance']['variance'] = self._create_vector(variances[i])
+
+            if gconsts is not None:
+                mixture['pdf']['gconst'] = gconsts[i]
+            if weights is not None:
+                mixture['weight'] = weights[i]
+
+            mixtures.append(mixture)
+
+        stream = self._create_default()
+        stream['mixtures'] = mixtures
+        gmm['streams'] = [stream]
+
+        return gmm
 
     # -----------------------------------------------------------------------
 
