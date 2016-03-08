@@ -52,7 +52,6 @@ import codecs
 import os.path
 from datetime import date
 
-import utils.name
 import utils.fileutils as fileutils
 
 import annotationdata.io
@@ -313,7 +312,7 @@ class sppasAlign:
 
         """
         isconverted = False
-        tmpname = utils.name.genName().get_name() + ".wav"
+        tmpname = fileutils.gen_name() + ".wav"
         try:
             converter = AudioSppasPresenter(self._logfile)
             isconverted = converter.export(self.inputaudio, tmpname)

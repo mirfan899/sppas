@@ -303,8 +303,6 @@ class HMM( BaseModel ):
             means = means[None, :]
             variances = variances[None, :]
 
-        print "Means",means
-
         gmm = self._create_default()
 
         for i in range(len(means)):

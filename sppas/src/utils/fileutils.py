@@ -46,6 +46,8 @@ import random
 import codecs
 import re
 import logging
+import tempfile
+from datetime import date
 
 # ----------------------------------------------------------------------------
 
@@ -134,6 +136,32 @@ def writecsv(filename, rows, separator="\t", encoding="utf-8-sig"):
                     s = '"%s"' % s
                 tmp.append(s)
             f.write('%s\n' % separator.join(tmp))
+
+# ----------------------------------------------------------------------------
+
+def gen_name():
+    """
+    Set a new file name.
+    Generates a random name of a non-existing file or directory.
+    """
+    name = "/"
+    while os.path.exists(name) is True:
+
+        # random float value
+        randval  = str(int(random.random()*10000))
+        # process pid
+        pid      = str(os.getpid())
+        # today's date
+        today    = str(date.today())
+
+        # filename
+        filename = "sppas_tmp_"+today+"_"+pid+"_"+randval
+
+        # final file name is path/filename
+        tempdir = tempfile.gettempdir() # get the system temporary directory
+        name = os.path.join(tempdir,filename)
+
+    return name
 
 # ----------------------------------------------------------------------------
 
