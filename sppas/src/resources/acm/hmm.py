@@ -210,7 +210,7 @@ class HMM( BaseModel ):
         htkmodel = acmodelhtkio.HtkIO( filename  )
         hmms = htkmodel.hmms
         if len(hmms) != 1:
-            raise IOError
+            raise IOError('HMM not loaded.')
 
         htkhmm = hmms[0]
         self.name = htkhmm.name

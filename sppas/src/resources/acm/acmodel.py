@@ -564,11 +564,11 @@ class AcModel:
     # ----------------------------------
 
     def _create_default(self):
-        return collections.defaultdict(lambda: None)
+        return collections.OrderedDict()
 
     # ----------------------------------
 
-    def _create_parameter_kind(self, base=None, options=[]):
+    def create_parameter_kind(self, base=None, options=[]):
         result = self._create_default()
         result['base'] = base
         result['options'] = options
@@ -576,22 +576,36 @@ class AcModel:
 
     # ----------------------------------
 
-    def _create_options(self, vector_size=None, parameter_kind=None):
+    def create_options(self, vector_size, parameter_kind=None, stream_info=None, duration_kind="nulld", covariance_kind="diagc"):
         macro = self._create_default()
         options = []
 
-        if vector_size:
+        if stream_info:
             option = self._create_default()
-            option['vector_size'] = vector_size
+            option['stream_info'] = self._create_default()
+            option['stream_info']['count'] = len(stream_info)
+            option['stream_info']['sizes'] = stream_info
             options.append(option)
+
+        option = self._create_default()
+        option['vector_size'] = vector_size
+        options.append(option)
+
+        option = self._create_default()
+        option['duration_kind'] = duration_kind
+        options.append(option)
+
         if parameter_kind:
             option = self._create_default()
             option['parameter_kind'] = parameter_kind
             options.append(option)
 
+        option = self._create_default()
+        option['covariance_kind'] = covariance_kind
+        options.append(option)
+
         macro['options'] = {'definition': options}
 
         return macro
-
 
 # ---------------------------------------------------------------------------

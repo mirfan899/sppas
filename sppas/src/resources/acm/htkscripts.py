@@ -43,6 +43,7 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 import os
 import os.path
+import logging
 
 # ---------------------------------------------------------------------------
 
@@ -98,6 +99,7 @@ class HtkScripts:
         """
         Write an htk script.
         """
+        logging.info('Write script file: %s'%filename)
         with open( filename, "w") as fp:
             fp.write("AS sp\n")
             fp.write("RS cmu\n")
@@ -111,6 +113,7 @@ class HtkScripts:
         """
         Write an htk script.
         """
+        logging.info('Write script file: %s'%filename)
         with open( filename, "w") as fp:
             fp.write("EX\n")
             fp.write("IS sil sil\n")
@@ -124,6 +127,7 @@ class HtkScripts:
         """
         Write an htk script.
         """
+        logging.info('Write script file: %s'%filename)
         with open( filename, "w") as fp:
             fp.write("EX\n")
             fp.write("IS sil sil\n")
@@ -137,6 +141,7 @@ class HtkScripts:
         Write an htk script.
         Remove the sp state if it already exists in the phonetisation.
         """
+        logging.info('Write script file: %s'%filename)
         with open( filename, "w") as fp:
             fp.write("WB sp\n")
             fp.write("WB sil\n")
@@ -150,6 +155,7 @@ class HtkScripts:
         """
         Write an htk script.
         """
+        logging.info('Write script file: %s'%filename)
         with open( filename, "w") as fp:
             fp.write("AS sp\n")
             fp.write("MP sil sil sp\n")
@@ -163,6 +169,7 @@ class HtkScripts:
         """
         Write an htk script.
         """
+        logging.info('Write script file: %s'%filename)
         with open( filename, "w") as fp:
             fp.write("AT 2 4 0.2 {sil.transP}\n")
             fp.write("AT 4 2 0.2 {sil.transP}\n")

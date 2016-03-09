@@ -13,9 +13,10 @@ sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 from resources.acm.acmodel  import AcModel, HtkIO
 from resources.acm.hmm      import HMM, HMMInterpolation
-from resources.acm.htktrain import HTKModelTrainer, DataTrainer, PhoneSet
+from resources.acm.htktrain import HTKModelTrainer, DataTrainer, PhoneSet, TrainingCorpus, HTKModelInitializer
 
 from utils.type import compare
+from utils.fileutils import setup_logging
 from sp_glob import RESOURCES_PATH
 
 MODEL_PATH = os.path.join(RESOURCES_PATH, "models")
@@ -29,16 +30,20 @@ class TestTrainer(unittest.TestCase):
     def test_datatrainer(self):
         datatrainer = DataTrainer()
         datatrainer.create()
+        self.assertEqual( datatrainer.check(), None )
         dire = datatrainer.workdir
         self.assertTrue( os.path.exists( dire ) )
         datatrainer.delete()
         self.assertFalse( os.path.exists( dire ) )
 
+        datatrainer.create( dictfile=os.path.join(RESOURCES_PATH, "dict", "nan.dict") )
+        self.assertEqual( datatrainer.monophones.get_size(), 44 )
+
     def test_phoneset(self):
         pho = PhoneSet( )
         self.assertEqual( pho.get_size(), 4 )
-        pho.add_from_dict( os.path.join(RESOURCES_PATH, "dict", "fra.dict") )
-        self.assertEqual( pho.get_size(), 38 )
+        pho.add_from_dict( os.path.join(RESOURCES_PATH, "dict", "nan.dict") )
+        self.assertEqual( pho.get_size(), 44 )
         pho.save( "monophones" )
 
         pho2 = PhoneSet( "monophones" )
@@ -48,6 +53,48 @@ class TestTrainer(unittest.TestCase):
             self.assertTrue( pho.is_in( phone ))
 
         os.remove( "monophones" )
+
+    def test_initializer(self):
+        #setup_logging(2,None)
+        corpus  = TrainingCorpus()
+
+        os.mkdir( "working" )
+        shutil.copy( os.path.join("protos","vFloors"), "working" )
+
+        initial = HTKModelInitializer(corpus,"working")
+
+        # Will create a model for all the fillers which are systematically
+        # added into the list of monophones: sil, gb, dummy, @@
+        # or use the proto if it is available.
+
+        corpus.datatrainer.protodir = "protos"
+        initial.create_model()
+
+        hmm1 = HMM()
+        hmm2 = HMM()
+
+        hmm1.load( os.path.join("working", "@@.hmm") )
+        hmm2.load( os.path.join("protos", "@@.hmm") )
+        self.assertTrue(compare(hmm1.definition,hmm2.definition))
+
+        hmm1.load( os.path.join("working", "sil.hmm") )
+        hmm2.load( os.path.join("protos", "sil.hmm") )
+
+        corpus.datatrainer.fix_proto(protofilename=os.path.join("proto.hmm"))
+        hmm2.load( os.path.join("protos", "proto.hmm") )
+
+        hmm1.load( os.path.join("working", "gb.hmm") )
+        self.assertTrue(compare(hmm1.definition,hmm2.definition))
+
+        hmm1.load( os.path.join("working", "dummy.hmm") )
+        self.assertTrue(compare(hmm1.definition,hmm2.definition))
+
+        acmodel = AcModel()
+        acmodel.load_htk( os.path.join( "working","hmmdefs") )
+
+        # Make some clean
+        shutil.rmtree("working")
+        os.remove( os.path.join("protos", "proto.hmm") )
 
 # ---------------------------------------------------------------------------
 
@@ -341,7 +388,7 @@ class TestAcModel(unittest.TestCase):
 
 if __name__ == '__main__':
     testsuite = unittest.TestSuite()
-    #testsuite.addTest(unittest.makeSuite(TestInterpolate))
-    #testsuite.addTest(unittest.makeSuite(TestAcModel))
+    testsuite.addTest(unittest.makeSuite(TestInterpolate))
+    testsuite.addTest(unittest.makeSuite(TestAcModel))
     testsuite.addTest(unittest.makeSuite(TestTrainer))
     unittest.TextTestRunner(verbosity=2).run(testsuite)

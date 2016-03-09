@@ -126,8 +126,11 @@ class HtkIO:
 
         """
         with open(filename, 'w') as f:
-            if self.macros: f.write(self.serialize_macros())
-            if self.hmms:   f.write(self.serialize_hmms())
+            if self.macros:
+                f.write(self.serialize_macros())
+
+            if self.hmms:
+                f.write(self.serialize_hmms())
 
     # -----------------------------------------------------------------------
 
@@ -180,6 +183,7 @@ class HtkIO:
 
         # First serialize the macros
         for macro in self.macros:
+
             if macro.get('options', None):
                 result += '~o '
                 for option in macro['options']['definition']:
