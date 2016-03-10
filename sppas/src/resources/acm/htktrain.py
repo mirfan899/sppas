@@ -360,6 +360,12 @@ class DataTrainer( object ):
 
     # -----------------------------------------------------------------------
 
+    def __del__(self):
+        if self.workdir is not None:
+            shutil.rmtree( self.workdir )
+
+    # -----------------------------------------------------------------------
+
 # ---------------------------------------------------------------------------
 
 class PhoneSet( WordsList ):
@@ -746,11 +752,11 @@ class HTKModelTrainer( object ):
         """
         Constructor.
 
+        @param corpus (TrainingCorpus)
+
         """
         # Prepare or set all directories to work with.
         self.corpus = corpus
-        if self.corpus is None:
-            self.corpus = TrainingCorpus()
 
         # Epoch directories (the content of one round of train)
         self.epochs  = 0    # Number of the current epoch
@@ -764,7 +770,7 @@ class HTKModelTrainer( object ):
         Create an epoch directory to work with.
 
         """
-        nextdir = os.path.join(self.corpus.datatrainer.workdir, "hmm", str(self.epochs).zfill(3))
+        nextdir = os.path.join(self.corpus.datatrainer.workdir, "hmm" + str(self.epochs).zfill(2))
         os.mkdir(nextdir)
 
         if self.curdir is not None:
@@ -773,10 +779,27 @@ class HTKModelTrainer( object ):
 
         self.prevdir = self.curdir
         self.curdir  = nextdir
+        self.epochs  = self.epochs + 1
 
     # -----------------------------------------------------------------------
 
-    def train(self, rounds=2):
+    def small_pause(self):
+        """
+        """
+        self.init_epoch_dir()
+        raise NotImplementedError
+
+    # -----------------------------------------------------------------------
+
+    def realign(self):
+        """
+        """
+        self.init_epoch_dir()
+        raise NotImplementedError
+
+    # -----------------------------------------------------------------------
+
+    def train_step(self, rounds=2):
         """
         Perform one or more rounds of HERest estimation.
 
@@ -784,7 +807,7 @@ class HTKModelTrainer( object ):
 
         """
         for _ in range(rounds):
-            logging.debug("Training iteration {}.".format(self.epochs))
+            logging.info("Training iteration {}.".format(self.epochs))
             self.init_epoch_dir()
 
             subprocess.check_call(["HERest", "-C", self.HERest_cfg,
@@ -797,39 +820,70 @@ class HTKModelTrainer( object ):
                        stdout=subprocess.PIPE)
 
             # Check if we got the expected files.
-
-            # OK, we can go to the next round
-            self.epochs = self.epochs + 1
+            if os.path.exists(os.path.join( self.curdir,DEFAULT_HMMDEFS_FILENAME)) is False:
+                raise IOError('Training failed.')
 
     # -----------------------------------------------------------------------
 
-    def training_recipe(self, corpus):
-        #if flatstart:
-        #    logging.info("Flat start training.")
-        #    self.flatstart(corpus)
+    def training_recipe(self):
+        """
+        Create an acoustic model and return it.
+        A corpus (TrainingCorpus) must be previously defined.
 
-        initial = HTKModelInitializer( self.corpus )
+        """
+        model = AcModel()
+
+        # Step 1: Data preparation
+        # --------------------------
+
+        if self.corpus is None: return model
+        if self.corpus.datatrainer.workdir is None:
+            self.corpus.datatrainer.workdir = fileutils.gen_name()
+            os.mkdir( self.corpus.datatrainer.workdir )
+
+        # Step 2: Monophones initialization
+        # --------------------------
+
+        logging.info("Monophones initialization.")
+        self.init_epoch_dir()
+        initial = HTKModelInitializer( self.corpus, self.curdir )
         initial.create_model()
 
+        if os.path.exists(os.path.join( self.curdir,DEFAULT_HMMDEFS_FILENAME)) is False:
+            raise IOError('Monophones initialization failed.')
+
+        if len(self.corpus.audiofiles) == 0:
+            model.load_htk( os.path.join( self.curdir,DEFAULT_HMMDEFS_FILENAME) )
+            self.corpus.datatrainer.delete()
+            return model
+
+        # Step 3: Monophone training
+        # --------------------------
+
         logging.info("Initial training.")
-        self.train(corpus)
+        self.train_step()
 
         logging.info("Modeling silence.")
-        self.small_pause(corpus)
+        self.small_pause()
 
         logging.info("Additional training.")
-        self.train(corpus)
+        self.train_step()
 
-        logging.info("Realigning.")
-        self.realign(corpus)
+        logging.info("Re-aligning.")
+        self.realign()
 
         logging.info("Final training.")
-        self.train(corpus)
+        self.train_step()
+
+        # --------------------------
+
+        model.load_htk( os.path.join( self.curdir,DEFAULT_HMMDEFS_FILENAME) )
+        return model
 
     # -----------------------------------------------------------------------
 
     def __del__(self):
-        self.corpus.datatrainer.delete()
-
+        if self.corpus is not None:
+            self.corpus.datatrainer.delete()
 
 # ---------------------------------------------------------------------------

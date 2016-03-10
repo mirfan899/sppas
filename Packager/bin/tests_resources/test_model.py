@@ -24,8 +24,15 @@ MODEL_PATH = os.path.join(RESOURCES_PATH, "models")
 # ---------------------------------------------------------------------------
 
 class TestTrainer(unittest.TestCase):
-    def setUp(self):
-        self.trainer = HTKModelTrainer()
+
+    def test_modeltrainer(self):
+        trainer = HTKModelTrainer()
+        model = trainer.training_recipe()
+        self.assertEqual( len(model.hmms),0 )
+
+        trainer.corpus = TrainingCorpus()
+        model = trainer.training_recipe()
+        self.assertEqual( len(model.hmms),4 )
 
     def test_datatrainer(self):
         datatrainer = DataTrainer()
@@ -388,7 +395,7 @@ class TestAcModel(unittest.TestCase):
 
 if __name__ == '__main__':
     testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestInterpolate))
-    testsuite.addTest(unittest.makeSuite(TestAcModel))
+    #testsuite.addTest(unittest.makeSuite(TestInterpolate))
+    #testsuite.addTest(unittest.makeSuite(TestAcModel))
     testsuite.addTest(unittest.makeSuite(TestTrainer))
     unittest.TextTestRunner(verbosity=2).run(testsuite)
