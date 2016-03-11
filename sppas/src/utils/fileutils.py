@@ -56,6 +56,7 @@ def exists(filename):
     os.path.exists() revisited!
         - case-insensitive
         - return the filename or None
+
     """
     for x in os.listdir( os.path.dirname(filename)):
         if os.path.basename(filename.lower()) == x.lower():
@@ -125,6 +126,7 @@ def writecsv(filename, rows, separator="\t", encoding="utf-8-sig"):
         rows (list):
         separator (string):
         encoding (string):
+
     """
     with codecs.open(filename, "w+", encoding) as f:
         for row in rows:
@@ -139,10 +141,11 @@ def writecsv(filename, rows, separator="\t", encoding="utf-8-sig"):
 
 # ----------------------------------------------------------------------------
 
-def gen_name():
+def gen_name( root="sppas_tmp", addtoday=True, addpid=True ):
     """
     Set a new file name.
     Generates a random name of a non-existing file or directory.
+
     """
     name = "/"
     while os.path.exists(name) is True:
@@ -154,8 +157,13 @@ def gen_name():
         # today's date
         today    = str(date.today())
 
-        # filename
-        filename = "sppas_tmp_"+today+"_"+pid+"_"+randval
+        # fix filename
+        filename = root + "_"
+        if addtoday:
+            filename = filename + today + "_"
+        if addpid:
+            filename = filename + pid + "_"
+        filename = filename + randval
 
         # final file name is path/filename
         tempdir = tempfile.gettempdir() # get the system temporary directory

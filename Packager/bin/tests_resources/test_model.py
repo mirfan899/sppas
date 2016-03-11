@@ -43,9 +43,6 @@ class TestTrainer(unittest.TestCase):
         datatrainer.delete()
         self.assertFalse( os.path.exists( dire ) )
 
-        datatrainer.create( dictfile=os.path.join(RESOURCES_PATH, "dict", "nan.dict") )
-        self.assertEqual( datatrainer.monophones.get_size(), 44 )
-
     def test_phoneset(self):
         pho = PhoneSet( )
         self.assertEqual( pho.get_size(), 4 )
@@ -61,18 +58,23 @@ class TestTrainer(unittest.TestCase):
 
         os.remove( "monophones" )
 
-    def test_initializer(self):
-        #setup_logging(2,None)
+    def test_trainingcorpus(self):
+        corpus = TrainingCorpus()
+
+        corpus.fix_resources(dictfile=os.path.join(RESOURCES_PATH, "dict", "nan.dict") )
+        self.assertEqual( corpus.monophones.get_size(), 44 )
+
+        self.assertFalse( corpus.add_file( "toto", "toto" ) )
+        self.assertTrue( corpus.add_file( "F_F_B003-P8.TextGrid", "F_F_B003-P8.wav" ) )
+        self.assertTrue( corpus.add_file( "F_F_B003-P8.TextGrid", "F_F_B003-P8.wav" ) )
+
+    def test_initializer_without_corpus(self):
         corpus  = TrainingCorpus()
 
         os.mkdir( "working" )
         shutil.copy( os.path.join("protos","vFloors"), "working" )
 
         initial = HTKModelInitializer(corpus,"working")
-
-        # Will create a model for all the fillers which are systematically
-        # added into the list of monophones: sil, gb, dummy, @@
-        # or use the proto if it is available.
 
         corpus.datatrainer.protodir = "protos"
         initial.create_model()
@@ -99,9 +101,21 @@ class TestTrainer(unittest.TestCase):
         acmodel = AcModel()
         acmodel.load_htk( os.path.join( "working","hmmdefs") )
 
-        # Make some clean
         shutil.rmtree("working")
         os.remove( os.path.join("protos", "proto.hmm") )
+
+    def test_trainer(self):
+        #setup_logging(1,None)
+
+        corpus = TrainingCorpus()
+        corpus.fix_resources(dictfile=os.path.join(RESOURCES_PATH, "dict", "fra.dict") )
+        corpus.datatrainer.protodir = "protos"
+        corpus.add_file( "F_F_B003-P8.TextGrid", "F_F_B003-P8.wav" )
+        corpus.add_file( "F_F_B003-P8.TextGrid", "F_F_B003-P8.wav" )
+
+        trainer = HTKModelTrainer(corpus)
+        acmodel = trainer.training_recipe()
+        #acmodel.save_htk('TEST-HMMDEFS')
 
 # ---------------------------------------------------------------------------
 

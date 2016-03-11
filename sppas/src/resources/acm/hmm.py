@@ -202,14 +202,14 @@ class HMM( BaseModel ):
 
     def load(self, filename):
         """
-        Return the hmm described into the given filename.
+        Return the (first) HMM described into the given filename.
 
         @return filename (str) File to read.
 
         """
         htkmodel = acmodelhtkio.HtkIO( filename  )
         hmms = htkmodel.hmms
-        if len(hmms) != 1:
+        if len(hmms) < 1:
             raise IOError('HMM not loaded.')
 
         htkhmm = hmms[0]

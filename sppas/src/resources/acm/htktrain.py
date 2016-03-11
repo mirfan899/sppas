@@ -49,13 +49,22 @@ import subprocess
 import shutil
 
 import utils.fileutils
+from utils.type import test_command
+
+import annotationdata.io
+import signals
+
+from annotationdata.transcription import Transcription
+from signals.audio                import Audio
+from signals.channelformatter     import ChannelFormatter
+from signals.channelmfcc          import ChannelMFCC
 
 from resources.dictpron import DictPron
 from resources.wordslst import WordsList
 
-from hmm        import HMM
-from htkscripts import HtkScripts
-from acmodel    import AcModel
+from hmm          import HMM
+from htkscripts   import HtkScripts
+from acmodel      import AcModel
 from acmodelhtkio import HtkIO
 
 # ---------------------------------------------------------------------------
@@ -72,19 +81,6 @@ DEFAULT_SCRIPTS_DIR="scripts"
 DEFAULT_FEATURES_DIR="features"
 DEFAULT_LOG_DIR="log"
 
-# ---------------------------------------------------------------------------
-
-def test_command( command ):
-    """
-    Test if a command is available.
-
-    """
-    try:
-        NULL = open(os.devnull, "w")
-        subprocess.call([command], stdout=NULL, stderr=subprocess.STDOUT)
-    except OSError:
-        return False
-    return True
 
 # ---------------------------------------------------------------------------
 
@@ -108,11 +104,13 @@ class Features( object ):
         self.num_ceps      = 12   # The number of cepstral coefficients
         self.pre_em_coef   = 0.97 # The coefficient used for the pre-emphasis
         self.targetkind    = "MFCC_0_D_N_Z"
-
         self.nbmv= 25   # The number of means and variances. It's commonly either 25 or 39.
 
         self.wavconfigfile = ""
         self.configfile = ""
+
+        self.framerate     = 16000 # Hz
+        self.sampwidth     = 2     # 16 bits
 
     # -----------------------------------------------------------------------
 
@@ -186,7 +184,15 @@ class DataTrainer( object ):
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
-    @summary: Acoustic model trainer: data manager.
+    @summary: Acoustic model trainer: temporary data manager.
+
+    This class manage the data created at each step of the acoustic training
+    model procedure, including:
+
+        - HTK scripts
+        - phoneme prototypes
+        - log files
+        - features
 
     """
     def __init__(self):
@@ -203,7 +209,7 @@ class DataTrainer( object ):
         Fix all members to None.
 
         """
-        # The working directory. Commonly temporary, used to stash everything
+        # The working directory.
         self.workdir    = None
         self.featsdir   = None
         self.scriptsdir = None
@@ -211,16 +217,16 @@ class DataTrainer( object ):
         self.htkscripts = HtkScripts()
         self.features   = Features()
 
+        # The data storage directories, for transcribed speech and audio files.
+        self.storetrs = None
+        self.storewav = None
+        self.storemfc = None
+
         # The directory with all HMM prototypes, and the default proto file.
         self.protodir  = None
         self.protofile = None
         self.proto     = HMM()
         self.proto.create_proto( self.features.nbmv )
-
-        # The lexicon, the pronunciation dictionary and the phoneset
-        self.vocabfile  = None
-        self.dictfile   = None
-        self.monophones = PhoneSet()
 
     # -----------------------------------------------------------------------
 
@@ -234,9 +240,9 @@ class DataTrainer( object ):
             - scriptsdir=DEFAULT_SCRIPTS_DIR,
             - featsdir=DEFAULT_FEATURES_DIR,
             - logdir=DEFAULT_LOG_DIR,
-            - dictfile=None,
             - protodir=DEFAULT_PROTO_DIR,
             - protofilename=DEFAULT_PROTO_FILENAME
+            - dictfile=None,
 
         """
         protodir=None
@@ -266,10 +272,10 @@ class DataTrainer( object ):
 
     # -----------------------------------------------------------------------
 
-    def fix_working_dir(self, workdir=None, scriptsdir=DEFAULT_SCRIPTS_DIR, featsdir=DEFAULT_FEATURES_DIR, logdir=DEFAULT_LOG_DIR, dictfile=None):
+    def fix_working_dir(self, workdir=None, scriptsdir=DEFAULT_SCRIPTS_DIR, featsdir=DEFAULT_FEATURES_DIR, logdir=DEFAULT_LOG_DIR):
         """
         Set the working directory and its folders.
-        Create ell of them if necessary.
+        Create all of them if necessary.
 
         """
         if self.workdir is None:
@@ -292,9 +298,29 @@ class DataTrainer( object ):
         self.featsdir   = featsdir
         self.logdir     = logdir
 
-        if dictfile is not None and os.path.exists( dictfile ) is True:
-            self.dictfile = dictfile
-            self.monophones.add_from_dict( self.dictfile )
+    # -----------------------------------------------------------------------
+
+    def fix_storage_dirs(self, basename):
+        """
+        Fix the directories to store annotated speech and audio files.
+
+        """
+        if basename is None:
+            self.storetrs = None
+            self.storeaudio = None
+            return
+
+        if self.workdir is None:
+            raise IOError("A working directory must be fixed.")
+
+        self.storetrs = os.path.join(self.workdir,"trs-"+basename)
+        self.storewav = os.path.join(self.workdir,"wav-"+basename)
+        self.storemfc = os.path.join(self.workdir,"mfc-"+basename)
+
+        if os.path.exists( self.storetrs ) is False:
+            os.mkdir( self.storetrs )
+            os.mkdir( self.storewav )
+            os.mkdir( self.storemfc )
 
     # -----------------------------------------------------------------------
 
@@ -319,7 +345,16 @@ class DataTrainer( object ):
         if self.protodir is not None:
             self.protofile = os.path.join( self.protodir, protofilename)
             logging.info('Write proto file: %s'%self.protofile)
-            self.proto.save( self.protofile )
+
+            protomodel = AcModel()
+
+            vectorsize = self.features.nbmv
+            targetkind = self.features.targetkind
+            paramkind  = protomodel.create_parameter_kind("mfcc", targetkind[4:])
+
+            protomodel.macros = [ protomodel.create_options( vector_size=vectorsize, parameter_kind=paramkind,stream_info=[vectorsize]) ]
+            protomodel.append_hmm( self.proto )
+            protomodel.save_htk( self.protofile )
 
     # -----------------------------------------------------------------------
 
@@ -445,7 +480,20 @@ class TrainingCorpus( object ):
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
-    @summary: Manager of a corpus during acoustic model training procedure.
+    @summary: Manager of a training corpus.
+
+    Data preparation is the step 1 of the acoustic model training procedure.
+
+    It establishes the list of phonemes.
+    It converts the input data into the HTK-specific data format (MLF files).
+    It codes the audio data, also called "parameterizing the raw speech
+    waveforms into sequences of feature vectors" (i.e. convert from wav
+    to MFCC format).
+
+    Accepted input:
+
+        - annotated files: one of annotationdata.io.extensions_in
+        - audio files: one of signals.extensions
 
     """
     def __init__(self, datatrainer=None):
@@ -466,12 +514,34 @@ class TrainingCorpus( object ):
         self.audiofiles = {}  # Key=annotated file, value=audio file
 
         # HTK-specific files
-        self.scp0file = None
-        self.scp1file = None
+        self.scpfile = None
 
         self.phonmlffile  = None
         self.transmlffile = None
         self.alignmlffile = None
+
+        # The lexicon, the pronunciation dictionary and the phoneset
+        self.vocabfile  = None
+        self.dictfile   = None
+        self.monophones = PhoneSet()
+
+    # -----------------------------------------------------------------------
+
+    def fix_resources(self, vocabfile=None, dictfile=None):
+        """
+        Fix resources.
+
+        @param vocabfile (str) The lexicon, used during tokenization of the corpus.
+        @param dictfile (str) The pronunciation dictionary, used both to
+        generate the list of phones and to perform phonetization of the corpus.
+
+        """
+        if dictfile is not None and os.path.exists( dictfile ) is True:
+            self.dictfile = dictfile
+            self.monophones.add_from_dict( self.dictfile )
+
+        if vocabfile is not None:
+            self.vocabfile = vocabfile
 
     # -----------------------------------------------------------------------
 
@@ -491,14 +561,166 @@ class TrainingCorpus( object ):
 
     # -----------------------------------------------------------------------
 
-    def write_mlf(self, corpusdir, tiername, mlffilename):
+    def create(self):
         """
-        Write a mlf file from a corpus.
-        All annotated files are loaded and examined to get the given tier
-        and to append it into the mlf file.
+        """
+        if self.datatrainer.workdir is None:
+            logging.info('Create a temporary working directory: ')
+            self.datatrainer.create()
+
+        self.alignmlffile = os.path.join( self.datatrainer.workdir, "PhonAlign.mlf")
+        self.phonmlffile  = os.path.join( self.datatrainer.workdir, "Phonetized.mlf")
+        self.transmlffile = os.path.join( self.datatrainer.workdir, "Transcribed.mlf")
+
+        with open( self.alignmlffile, "w") as fp:
+            fp.write('#!MLF!#\n')
+        with open( self.phonmlffile, "w") as fp:
+            fp.write('#!MLF!#\n')
+        with open( self.transmlffile, "w") as fp:
+            fp.write('#!MLF!#\n')
+
+        self.scpfile = os.path.join( self.datatrainer.workdir, "train.scp")
+
+    # -----------------------------------------------------------------------
+
+    def add_file(self, trsfilename, audiofilename):
+        """
+        Add a new couple of files to deal with.
+
+        @param trsfilename (str) The annotated file.
+        @param audiofilename (str) The audio file.
+        @param Bool
 
         """
-        pass
+        if self.datatrainer.workdir is None:
+            self.create()
+
+        try:
+            trs = annotationdata.io.read( trsfilename )
+            tier = trs.Find('PhonAlign', case_sensitive=False)
+        except Exception:
+            logging.info('No tier PhonAlign was found in %s'%trsfilename)
+            return False
+
+        if tier is not None:
+            if self.datatrainer.storetrs is None:
+                logging.info('Fix storage directory name to "align"')
+                self.datatrainer.fix_storage_dirs("align")
+            outfile = os.path.basename(utils.fileutils.gen_name(root="track_aligned", addtoday=False, addpid=False))
+
+            ret = self._add_tier( tier, outfile )
+            if ret is True:
+
+                ret = self._add_audio( audiofilename, outfile )
+                if ret is True:
+
+                    ret = self._append_mlf( self.alignmlffile, outfile )
+                    if ret is True:
+
+                        self._append_scp( outfile )
+                        logging.info('Files %s / %s appended as %s.'%(trsfilename,audiofilename,outfile))
+                        return True
+                    else:
+                        self._pop_tier( outfile )
+                        self._pop_audio( outfile )
+                else:
+                    self._pop_tier( outfile )
+
+        logging.info('Files %s / %s rejected.'%(trsfilename,audiofilename))
+        return False
+
+    # -----------------------------------------------------------------------
+
+    def _add_tier( self, tier, outfile ):
+        try:
+            trs = Transcription()
+            trs.Append( tier )
+            annotationdata.io.write( os.path.join(self.datatrainer.storetrs, outfile+".lab"), trs )
+        except Exception as e:
+            print str(e)
+            return False
+        return True
+
+    # -----------------------------------------------------------------------
+
+    def _pop_tier( self, outfile ):
+        try:
+            os.remove( os.path.join(self.datatrainer.storetrs, outfile + ".lab" ))
+        except IOError:
+            pass
+
+    # -----------------------------------------------------------------------
+
+    def _add_audio( self, audiofilename, outfile ):
+        # Get the first channel
+        try:
+            audio = signals.open( audiofilename )
+            audio.extract_channel(0)
+            formatter = ChannelFormatter( audio.get_channel(0) )
+        except Exception as e:
+            print str(e)
+            return False
+
+        # Check/Convert
+        formatter.set_framerate( self.datatrainer.features.framerate )
+        formatter.set_sampwidth( self.datatrainer.features.sampwidth )
+        formatter.convert()
+        audio.close()
+
+        # Save the converted channel
+        audio_out = Audio()
+        audio_out.append_channel( formatter.channel )
+        signals.save( os.path.join(self.datatrainer.storewav, outfile + ".wav" ), audio_out )
+
+        # Generate MFCC
+        wav = os.path.join(self.datatrainer.storewav, outfile + ".wav" )
+        mfc = os.path.join(self.datatrainer.storemfc, outfile + ".mfc" )
+        tmpfile = utils.fileutils.gen_name(root="scp", addtoday=False, addpid=False)
+        with open( tmpfile, "w") as fp:
+            fp.write('%s %s\n'%(wav,mfc))
+
+        cmfc = ChannelMFCC( formatter.channel )
+        cmfc.hcopy( self.datatrainer.features.wavconfigfile, tmpfile)
+        os.remove(tmpfile)
+
+        return True
+
+    # -----------------------------------------------------------------------
+
+    def _pop_audio( self, outfile ):
+        try:
+            os.remove( os.path.join(self.datatrainer.storewav, outfile + ".wav" ))
+        except IOError:
+            pass
+
+    # -----------------------------------------------------------------------
+
+    def _append_mlf(self, filename, outfile):
+        """
+        Append a transcription in a mlf file from a prepared corpus.
+
+        """
+        lab = ""
+        with open( os.path.join(self.datatrainer.storetrs,outfile+".lab"), "r") as fp:
+            lab = "".join(fp.readlines()).strip()
+        if len(lab) == 0:
+            return False
+
+        with open( filename, "a+") as fp:
+            fp.write('"*/%s/%s.lab"\n'%(os.path.basename(self.datatrainer.storetrs),os.path.basename(outfile)))
+            fp.write('%s\n'%lab)
+
+        return True
+
+    # -----------------------------------------------------------------------
+
+    def _append_scp(self, outfile):
+        """
+
+        """
+        with open( self.scpfile, "w+") as fp:
+            #fp.write('./%s/%s.mfc\n'%(os.path.basename(self.datatrainer.storemfc),outfile))
+            fp.write('%s.mfc\n'%os.path.join(self.datatrainer.storemfc,outfile))
 
     # -----------------------------------------------------------------------
 
@@ -552,7 +774,7 @@ class HTKModelInitializer( object ):
         Main method to create the initial acoutic model.
 
         """
-        if self.trainingcorpus.datatrainer.monophones is None:
+        if self.trainingcorpus.monophones is None:
             raise IOError('A list of monophones must be defined in order to initialize the model.')
 
         self.create_models(hack)
@@ -571,11 +793,15 @@ class HTKModelInitializer( object ):
         """
         if test_command("HCompV") is False: return
 
-        subprocess.check_call(["HCompV", "-A -D -T 1 -m",
-                              "-f", str(0.01),
-                              "-C", self.trainingcorpus.datatrainer.features.configfile,
-                              "-S", self.trainingcorpus.scp0file,
-                              "-M", self.directory, self.trainingcorpus.datatrainer.protofile])
+        try:
+            subprocess.check_call(["HCompV", "-T", "0", "-m",
+                                  "-f", str(0.01),
+                                  "-C", self.trainingcorpus.datatrainer.features.configfile,
+                                  "-S", self.trainingcorpus.scpfile,
+                                  "-M", self.directory, self.trainingcorpus.datatrainer.protofile], stdout=open(os.devnull, 'wb'), stderr=open(os.devnull, 'wb'))
+        except subprocess.CalledProcessError as e:
+            logging.info('HCompV failed: %s'%str(e))
+            pass
 
     # -----------------------------------------------------------------------
 
@@ -586,15 +812,18 @@ class HTKModelInitializer( object ):
         """
         if test_command("HInit") is False: return
 
-        subprocess.check_call(["HInit", "-T 1 -A -i 20",
-                               "-D -m 1",
-                               "-v 0.0001",
-                               "-I", self.trainingcorpus.alignmlffile,
-                               "-l", phone,
-                               "-o", outfile,
-                               "-C", self.trainingcorpus.datatrainer.features.configfile,
-                               "-S", self.trainingcorpus.scp0file,
-                               "-M", self.directory, self.trainingcorpus.datatrainer.protofile])
+        try:
+            subprocess.check_call(["HInit", "-T", "0", "-i", "20",
+                                   "-m", "1",
+                                   "-v", "0.0001",
+                                   "-l", phone,
+                                   "-o", outfile,
+                                   "-C", self.trainingcorpus.datatrainer.features.configfile,
+                                   "-L", self.trainingcorpus.datatrainer.storetrs,
+                                   "-S", self.trainingcorpus.scpfile,
+                                   "-M", self.directory, self.trainingcorpus.datatrainer.protofile], stdout=open(os.devnull, 'wb'), stderr=open(os.devnull, 'wb'))
+        except subprocess.CalledProcessError:
+            pass
 
     # -----------------------------------------------------------------------
 
@@ -605,7 +834,7 @@ class HTKModelInitializer( object ):
 
         """
         # Adapt the proto file from the corpus (if any)
-        if self.trainingcorpus.scp0file is not None:
+        if self.trainingcorpus.scpfile is not None:
             if self.trainingcorpus.datatrainer.protofile is not None:
                 logging.info(' ... Train proto model:')
                 self._create_flat_start_model()
@@ -619,12 +848,12 @@ class HTKModelInitializer( object ):
         # ... or use the prototype trained by HCompV (flat-start-model)
         # ... ... or use the existing saved prototype
         # ... ... ... or use the default prototype.
-        for phone in self.trainingcorpus.datatrainer.monophones.get_list():
+        for phone in self.trainingcorpus.monophones.get_list():
 
             logging.info(' ... Train initial model of %s: '%phone)
             outfile = os.path.join( self.directory, phone + ".hmm" )
 
-            if self.trainingcorpus.scp0file is not None:
+            if self.trainingcorpus.scpfile is not None:
                 self._create_start_model( phone, outfile )
 
             # the start model was not created.
@@ -647,6 +876,11 @@ class HTKModelInitializer( object ):
                 h.save( outfile )
                 h.set_name( "proto" )
             else:
+                # HInit gives a bad name (it's the filename, including path!!)!
+                h = HMM()
+                h.load( outfile )
+                h.set_name( phone )
+                h.save( outfile )
                 logging.info(' ... ... [ DATA ]')
 
         # Some hack...
@@ -673,7 +907,7 @@ class HTKModelInitializer( object ):
 
         acmodel.macros = [ acmodel.create_options(vector_size=vectorsize, parameter_kind=paramkind,stream_info=[vectorsize]) ]
 
-        for phone in self.trainingcorpus.datatrainer.monophones.get_list():
+        for phone in self.trainingcorpus.monophones.get_list():
             filename = os.path.join( self.directory, phone + ".hmm" )
             h = HMM()
             h.load( filename )
@@ -729,11 +963,7 @@ class HTKModelTrainer( object ):
     The Mel-frequency cepstrum coefficients (MFCC) along with their first
     and second derivatives are extracted from the speech.
 
-    Step 1 is the data preparation. It establishes the list of phonemes.
-    It converts the input data into the HTK-specific data format (MLF files).
-    It codes the audio data, also called "parameterizing the raw speech
-    waveforms into sequences of feature vectors" (i.e. convert from wav
-    to MFCC format).
+    Step 1 is the data preparation.
 
     Step 2 is the monophones initialization.
 
@@ -755,7 +985,6 @@ class HTKModelTrainer( object ):
         @param corpus (TrainingCorpus)
 
         """
-        # Prepare or set all directories to work with.
         self.corpus = corpus
 
         # Epoch directories (the content of one round of train)
@@ -810,18 +1039,19 @@ class HTKModelTrainer( object ):
             logging.info("Training iteration {}.".format(self.epochs))
             self.init_epoch_dir()
 
-            subprocess.check_call(["HERest", "-C", self.HERest_cfg,
-                        "-S", self.corpus.scp0file,
-                        "-I", self.corpus.alignmlffile,
-                        "-M", self.curdir,
-                        "-H", os.path.join(self.prevdir, DEFAULT_MACROS_FILENAME),
-                        "-H", os.path.join(self.prevdir, DEFAULT_HMMDEFS_FILENAME),
-                        "-t"] + self.pruning + [self.corpus.monophones.get_list()],
-                       stdout=subprocess.PIPE)
-
-            # Check if we got the expected files.
-            if os.path.exists(os.path.join( self.curdir,DEFAULT_HMMDEFS_FILENAME)) is False:
-                raise IOError('Training failed.')
+            try:
+                subprocess.check_call(["HERest", "-C", self.HERest_cfg,
+                            "-S", self.corpus.scpfile,
+                            "-I", self.corpus.alignmlffile,
+                            "-M", self.curdir,
+                            "-H", os.path.join(self.prevdir, DEFAULT_MACROS_FILENAME),
+                            "-H", os.path.join(self.prevdir, DEFAULT_HMMDEFS_FILENAME),
+                            "-t"] + self.pruning + [self.corpus.monophones.get_list()],
+                           stdout=subprocess.PIPE)
+            except subprocess.CalledProcessError as e:
+                logging.info('HERest failed: %s'%str(e))
+                return False
+        return True
 
     # -----------------------------------------------------------------------
 
@@ -857,11 +1087,15 @@ class HTKModelTrainer( object ):
             self.corpus.datatrainer.delete()
             return model
 
+        return model
+
         # Step 3: Monophone training
         # --------------------------
 
         logging.info("Initial training.")
-        self.train_step()
+        ret = self.train_step()
+        if ret is False:
+            return model
 
         logging.info("Modeling silence.")
         self.small_pause()
