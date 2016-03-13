@@ -32,7 +32,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: basedialog.py
+# File: msgdialogs.py
 # ---------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
@@ -122,6 +122,7 @@ class YesNoQuestion( spBaseMessageDialog ):
 
     def _on_yes(self, evt):
         self.SetReturnCode( wx.ID_YES )
+        self.SetAffirmativeId( wx.ID_YES )
         self.Destroy()
 
 # ---------------------------------------------------------------------------
@@ -131,9 +132,9 @@ class Information( spBaseMessageDialog ):
         spBaseMessageDialog.__init__(self, parent, preferences, contentmsg, style)
 
     def _create_buttons(self):
-        yes = self.CreateYesButton()
-        self.SetAffirmativeId( wx.ID_YES )
-        return self.CreateButtonBox( [],[yes] )
+        okay = self.CreateOkayButton()
+        self.SetAffirmativeId( wx.ID_OK )
+        return self.CreateButtonBox( [],[okay] )
 
 # ---------------------------------------------------------------------------
 

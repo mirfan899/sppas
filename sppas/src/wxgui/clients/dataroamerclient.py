@@ -70,9 +70,12 @@ from baseclient              import BaseClient
 from wxgui.panels.trslist    import TrsList
 from wxgui.structs.files     import xFiles
 from wxgui.structs.prefs     import Preferences
+from wxgui.structs.themes    import BaseTheme
 from wxgui.cutils.imageutils import spBitmap
 import wxgui.dialogs.filedialogs as filedialogs
-from wxgui.structs.themes    import BaseTheme
+from wxgui.dialogs.msgdialogs import ShowInformation
+from wxgui.dialogs.msgdialogs import ShowYesNoQuestion
+
 
 # ----------------------------------------------------------------------------
 # Constants
@@ -449,7 +452,7 @@ class DataRoamer( scrolled.ScrolledPanel ):
         """ Save the selected file. """
 
         if self._selection is None:
-            wx.MessageBox('No file selected!\nClick on a tier to select a file...', 'Information', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation( self, self._prefsIO, "No file selected!\nClick on a tier to select a file...", style=wx.ICON_INFORMATION)
             return
 
         for i in range(self._filetrs.GetSize()):
@@ -463,7 +466,7 @@ class DataRoamer( scrolled.ScrolledPanel ):
         """ Save as... the selected file. """
 
         if self._selection is None:
-            wx.MessageBox('No file selected!\nClick on a tier to select a file...', 'Information', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation( self, self._prefsIO, "No file selected!\nClick on a tier to select a file...", style=wx.ICON_INFORMATION)
             return
 
         found = -1
@@ -486,7 +489,7 @@ class DataRoamer( scrolled.ScrolledPanel ):
             # do not erase the file if it is already existing!
             if os.path.exists( filename ) and f != filename:
                 self.__display_text_in_statusbar('File not saved.')
-                wx.MessageBox('File not saved: this file name is already existing!', 'Information', wx.OK | wx.ICON_INFORMATION)
+                ShowInformation( self, self._prefsIO, "File not saved: this file name is already existing!", style=wx.ICON_INFORMATION)
             elif f == filename :
                 p.Save()
             else:
@@ -586,7 +589,7 @@ class DataRoamer( scrolled.ScrolledPanel ):
         newtrs = TrsList(self, filename)
         newtrs.SetPreferences( self._prefsIO )
         if newtrs.GetTranscription().GetName() == "IO-Error":
-            wx.MessageBox('Error loading: '+filename, 'Info', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation( self, self._prefsIO, 'Error loading: '+filename, style=wx.ICON_ERROR)
 
         # put the new trs in a sizer (required to enable sizer.Remove())
         s = wx.BoxSizer( wx.HORIZONTAL )
@@ -612,8 +615,7 @@ class DataRoamer( scrolled.ScrolledPanel ):
 
             if o._dirty is True:
                 # dlg to ask to save or not
-                dial = wx.MessageDialog(None, 'Do you want to save changes on the transcription of\n%s?'%f, 'Question', wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION)
-                userChoice = dial.ShowModal()
+                userChoice = ShowYesNoQuestion( None, self._prefsIO, "Do you want to save changes on the transcription of\n%s?"%f)
                 if userChoice == wx.ID_YES:
                     o.Save()
 

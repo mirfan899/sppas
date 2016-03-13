@@ -37,7 +37,7 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi, Cazembe Henry"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 # Imports

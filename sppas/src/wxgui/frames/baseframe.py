@@ -395,6 +395,7 @@ class ComponentFrame( wx.Frame ):
         through convoluted menus or icons.
 
         """
+        return
         # Quit with ATL+F4
         accelQ = wx.AcceleratorEntry(wx.ACCEL_NORMAL, wx.WXK_F4, wx.ID_EXIT)
 

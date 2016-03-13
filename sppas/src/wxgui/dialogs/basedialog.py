@@ -55,6 +55,7 @@ from wxgui.sp_icons import CANCEL_ICON
 from wxgui.sp_icons import SAVE_FILE
 from wxgui.sp_icons import YES_ICON
 from wxgui.sp_icons import NO_ICON
+from wxgui.sp_icons import OKAY_ICON
 
 from wxgui.cutils.ctrlutils  import CreateGenButton
 from wxgui.cutils.imageutils import spBitmap
@@ -112,14 +113,18 @@ class spBaseDialog( wx.Dialog ):
         Create a layout including a nice bold-title with an icon.
         """
         title_layout = wx.BoxSizer(wx.HORIZONTAL)
-        bmp = wx.BitmapButton(self, bitmap=spBitmap(titleicon, BUTTON_ICONSIZE, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
+        bmp = spBitmap(titleicon, BUTTON_ICONSIZE, theme=self.preferences.GetValue('M_ICON_THEME'))
+        pan = wx.Panel(self,-1)
+        pic = wx.StaticBitmap(pan)
+        pic.SetBitmap(bmp)
+
         font = self.preferences.GetValue('M_FONT')
         font.SetWeight(wx.BOLD)
         font.SetPointSize(font.GetPointSize() + 2)
         self.title_label = wx.StaticText(self, label=titletext, style=wx.ALIGN_CENTER)
         self.title_label.SetFont( font )
-        title_layout.Add(bmp,  flag=wx.TOP|wx.RIGHT|wx.ALIGN_RIGHT, border=5)
-        title_layout.Add(self.title_label, flag=wx.EXPAND|wx.ALL|wx.wx.ALIGN_CENTER_VERTICAL, border=5)
+        title_layout.Add(pan,  flag=wx.ALL, border=4)
+        title_layout.Add(self.title_label, flag=wx.EXPAND|wx.ALL|wx.wx.ALIGN_CENTER_VERTICAL, border=4)
         return title_layout
 
     def CreateButton(self, icon, text, tooltip="", btnid=None):
@@ -157,7 +162,7 @@ class spBaseDialog( wx.Dialog ):
         return btn
 
     def CreateOkayButton(self, tooltip=""):
-        btn = self.CreateButton(APPLY_ICON, " OK ", tooltip, wx.ID_OK)
+        btn = self.CreateButton(OKAY_ICON, " OK ", tooltip, wx.ID_OK)
         btn.SetDefault()
         btn.SetFocus()
         self.SetAffirmativeId(wx.ID_OK)
