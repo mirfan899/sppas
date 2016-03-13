@@ -151,6 +151,7 @@ def ShowInformation(parent, preferences, contentmsg, style=wx.ICON_INFORMATION):
 # ---------------------------------------------------------------------------
 
 def DemoBaseDialog(parent, preferences=None):
+    """ A simple demonstration of SPPAS message dialogs."""
     def _on_yesno(evt):
         res = ShowYesNoQuestion( frame, preferences, "This is the message to show.")
         if res == wx.ID_YES:
@@ -159,7 +160,6 @@ def DemoBaseDialog(parent, preferences=None):
             ShowInformation( frame, preferences, "You clicked the ""No"" button")
         else:
             print "there's a bug! return value is %s"%res
-
     def _on_info(evt):
         ShowInformation( frame, preferences, "This is an information message.", style=wx.ICON_INFORMATION)
     def _on_error(evt):

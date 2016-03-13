@@ -79,7 +79,7 @@ from wxgui.cutils.ctrlutils  import CreateButton
 from wxgui.cutils.imageutils import spBitmap
 
 from wxgui.dialogs.sndinfodialog import ShowAudioInfo
-
+from wxgui.dialogs.msgdialogs import ShowInformation
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -355,7 +355,7 @@ class SndPlayer( wx.Panel ):
             logging.info(" ... File %s successfully loaded. [  OK  ]" %(filename))
         except Exception as e:
             logging.info(" ... File %s not loaded.  [ ERROR ]" %(filename))
-            wx.MessageBox('Error loading: '+filename+' '+str(e), 'Info', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation( self, self._prefs, 'Error loading: '+filename+': '+str(e), style=wx.ICON_ERROR)
             return False
 
         # set mediaplayer with the new one
@@ -434,7 +434,7 @@ class SndPlayer( wx.Panel ):
         try:
             ShowAudioInfo( self, self._prefs, self._filename )
         except Exception as e:
-            wx.MessageBox('No information available. %s'%str(e), 'Info', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation( self, self._prefs, 'No information available: %s'%str(e), style=wx.ICON_ERROR)
 
     #-------------------------------------------------------------------------
 
@@ -573,9 +573,7 @@ class SndPlayer( wx.Panel ):
 
         if not self._mediaplayer.Play():
             logging.debug('onPlay. Unable to play. offset=%d'%offset)
-            wx.MessageBox("Unable to Play. Offset=%d"%offset,
-                          "ERROR",
-                          wx.ICON_ERROR | wx.OK)
+            ShowInformation( self, self._prefs, "Unable to Play. Offset=%d"%offset, style=wx.ICON_ERROR)
             return
 
         # force to play at the good position

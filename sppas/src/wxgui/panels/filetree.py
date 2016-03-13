@@ -55,6 +55,9 @@ from wx.lib.buttons import GenBitmapButton, GenBitmapTextButton
 from wxgui.cutils.imageutils import spBitmap
 from wxgui.dialogs.filedialogs import OpenSoundFiles
 from wxgui.dialogs.filedialogs import SaveAsAnnotationFile
+from wxgui.dialogs.msgdialogs import ShowInformation
+from wxgui.dialogs.msgdialogs import ShowYesNoQuestion
+
 import annotationdata.io
 
 from wxgui.sp_icons import TREE_ROOT
@@ -293,11 +296,9 @@ class FiletreePanel( wx.Panel ):
             str_list = ("Are you sure you want to delete definitively "
                         "the following file(s) of the file system?\n%s" % str_list)
 
-        dlg = wx.MessageDialog(self, str_list, "SPPAS Question",
-                               wx.YES | wx.NO | wx.ICON_QUESTION )
-
+        dlg = ShowYesNoQuestion( self, self._prefsIO, str_list)
         # Yes, the user wants to delete...
-        if dlg.ShowModal() == wx.ID_YES:
+        if dlg == wx.ID_YES:
 
             errors = [] # list of not deleted files
             for filename in selection:
@@ -313,17 +314,11 @@ class FiletreePanel( wx.Panel ):
             # some files were not deleted
             if len(errors)>0:
                 errormsg="\n".join(errors)
-                d = wx.MessageDialog(self, "Some files were not deleted.\n"
-                        "Probably you don't have access right to do so...\n%s"%errormsg,
-                        "SPPAS Error",
-                        wx.OK | wx.ICON_EXCLAMATION)
-                d.ShowModal()
-                d.Destroy()
+                ShowInformation( self, self._prefsIO, "Some files were not deleted.\n"
+                        "Probably you don't have access right to do so...\n%s"%errormsg, style=wx.ICON_WARNING)
 
             # Remove deleted files of the tree
             self._remove()
-
-        dlg.Destroy()
 
     # End OnDelete
     # -----------------------------------------------------------------------
@@ -357,9 +352,7 @@ class FiletreePanel( wx.Panel ):
                     trs = annotationdata.io.read( filename )
                     annotationdata.io.write(newfilename, trs)
                 except Exception as e:
-                    dlg = wx.MessageDialog(self, "Export failed for file %s: %s" % (filename,e), 'Error', wx.OK | wx.ICON_ERROR)
-                    dlg.ShowModal()
-                    dlg.Destroy()
+                    ShowInformation( self, self._prefsIO, "Export failed for file %s: %s" % (filename,e), style=wx.ICON_ERROR)
                     errors = True
                 else:
                     self._append_file(newfilename)
@@ -369,9 +362,7 @@ class FiletreePanel( wx.Panel ):
         dlg.Destroy()
 
         if errors is False:
-            dlg = wx.MessageDialog(self, "Export with success.", 'Info', wx.OK)
-            dlg.ShowModal()
-            dlg.Destroy()
+            ShowInformation( self, self._prefsIO, "Export with success.", style=wx.ICON_INFORMATION)
 
     # End OnExport
     # -----------------------------------------------------------------------
@@ -397,7 +388,7 @@ class FiletreePanel( wx.Panel ):
                     trs = annotationdata.io.read(filename)
                     annotationdata.io.write(newfilename, trs)
                 except Exception as e:
-                    dlg = wx.MessageBox("Copy/Export failed: %s" % e, 'Error', wx.OK | wx.ICON_ERROR)
+                    ShowInformation( self, self._prefsIO, "Copy/Export failed: %s" % e, style=wx.ICON_ERROR)
                 else:
                     self._append_file(newfilename)
 
@@ -467,9 +458,7 @@ class FiletreePanel( wx.Panel ):
             try:
                 IsDir = os.path.isdir(filename)
             except UnicodeEncodeError:
-                dlg = wx.MessageDialog(None, "File names can only contain ASCII characters", 'Error', wx.OK | wx.ICON_ERROR)
-                dlg.ShowModal()
-                dlg.Destroy()
+                ShowInformation( None, self._prefsIO, "File names can only contain ASCII characters", style=wx.ICON_INFORMATION)
                 continue
 
             if item == self._filestree.GetRootItem():
