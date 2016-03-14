@@ -105,7 +105,7 @@ class TestTrainer(unittest.TestCase):
         os.remove( os.path.join("protos", "proto.hmm") )
 
     def test_trainer(self):
-        #setup_logging(1,None)
+        setup_logging(1,None)
 
         corpus = TrainingCorpus()
         corpus.fix_resources(dictfile=os.path.join(RESOURCES_PATH, "dict", "fra.dict") )
@@ -115,7 +115,7 @@ class TestTrainer(unittest.TestCase):
 
         trainer = HTKModelTrainer(corpus)
         acmodel = trainer.training_recipe()
-        #acmodel.save_htk('TEST-HMMDEFS')
+        acmodel.save_htk('TEST-HMMDEFS')
 
 # ---------------------------------------------------------------------------
 

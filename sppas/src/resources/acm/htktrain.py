@@ -197,7 +197,7 @@ class DataTrainer( object ):
     """
     def __init__(self):
         """
-        Constructor: init all members to None.
+        Constructor: initialize all members to None.
 
         """
         self.reset()
@@ -244,6 +244,8 @@ class DataTrainer( object ):
             - protofilename=DEFAULT_PROTO_FILENAME
             - dictfile=None,
 
+        @raise IOError
+
         """
         protodir=None
         protofilename=DEFAULT_PROTO_FILENAME
@@ -256,14 +258,13 @@ class DataTrainer( object ):
 
         self.fix_working_dir( **kwargs )
         self.fix_proto( protodir,protofilename  )
-
         self.check()
 
     # -----------------------------------------------------------------------
 
     def delete(self):
         """
-        Delete all directories and their content.
+        Delete all directories and their content, then reset members.
 
         """
         if self.workdir is not None:
@@ -274,10 +275,15 @@ class DataTrainer( object ):
 
     def fix_working_dir(self, workdir=None, scriptsdir=DEFAULT_SCRIPTS_DIR, featsdir=DEFAULT_FEATURES_DIR, logdir=DEFAULT_LOG_DIR):
         """
-        Set the working directory and its folders.
-        Create all of them if necessary.
+        Set the working directory and its folders. Create all of them if necessary.
+
+        @param workdir (str) The working main directory
+        @param scriptsdir (str) The folder for HTK scripts
+        @param featsdir (str) The folder for features
+        @param logdir (str) The folder to write output logs
 
         """
+        # The working directory will be located in the system temporary directory
         if self.workdir is None:
             self.workdir = utils.fileutils.gen_name()
             os.mkdir( self.workdir )
@@ -304,6 +310,8 @@ class DataTrainer( object ):
         """
         Fix the directories to store annotated speech and audio files.
 
+        @param basename (str) indicates a name to identify storage dirs (like: algn, phon, trans, ...)
+
         """
         if basename is None:
             self.storetrs = None
@@ -328,6 +336,9 @@ class DataTrainer( object ):
         """
         (Re-)Create the proto, then if relevant only, create a `protos` directory
         and add the proto file.
+
+        @param protodir (str) Directory in which prototypes will be stored
+        @param protofilename (str) File name of the default prototype
 
         """
         self.proto.create_proto( self.features.nbmv )
@@ -360,7 +371,10 @@ class DataTrainer( object ):
 
     def check(self):
         """
-        Check is all members are initialized with appropriate values.
+        Check if all members are initialized with appropriate values.
+        Return None if success.
+
+        @raise IOError
 
         """
         if self.protodir is None:
@@ -396,6 +410,7 @@ class DataTrainer( object ):
     # -----------------------------------------------------------------------
 
     def __del__(self):
+        return
         if self.workdir is not None:
             shutil.rmtree( self.workdir )
 
@@ -421,7 +436,6 @@ class PhoneSet( WordsList ):
     def __init__(self, filename=None):
         """
         Constructor.
-
         Add events to the list: laughter, dummy, noise, silence.
 
         @param filename (str) is the phoneset file name, i.e. a file with 1 column.
@@ -439,6 +453,8 @@ class PhoneSet( WordsList ):
         """
         Add the list of phones from a pronunciation dictionary.
 
+        @param dictfilename (str) is the name of an HTK-ASCII pronunciation dictionary
+
         """
         d = DictPron( dictfilename ).get_dict()
         for value in d.values():
@@ -453,16 +469,17 @@ class PhoneSet( WordsList ):
     def check(self, phone):
         """
         Check if a phone is correct to be used with HTK toolkit.
+        A phone can't start by a digit nor '-' nor '+', and must be ASCII.
+
+        @param phone (str) the phone to be checked
 
         """
-        # TODO: Verify if the following rules are really the good ones!
-
         # Must contain characters!
         if len(phone) == 0:
             return False
 
-        # Must not start with a number
-        # Include only ASCII characters
+        if phone[0] in ['-', '+']:
+            return False
         try:
             int(phone[0])
             str(phone)
@@ -480,12 +497,12 @@ class TrainingCorpus( object ):
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
-    @summary: Manager of a training corpus.
+    @summary: Manager of a training corpus, to prepare such a set of data.
 
     Data preparation is the step 1 of the acoustic model training procedure.
 
     It establishes the list of phonemes.
-    It converts the input data into the HTK-specific data format (MLF files).
+    It converts the input data into the HTK-specific data format.
     It codes the audio data, also called "parameterizing the raw speech
     waveforms into sequences of feature vectors" (i.e. convert from wav
     to MFCC format).
@@ -523,13 +540,17 @@ class TrainingCorpus( object ):
         # The lexicon, the pronunciation dictionary and the phoneset
         self.vocabfile  = None
         self.dictfile   = None
+        self.phonesfile = None
         self.monophones = PhoneSet()
+
+        # TODO: Add a mapping table --> training data are not consistent with the dictionary
+        # Ex: /@/ in data and /eu/ in dict.
 
     # -----------------------------------------------------------------------
 
     def fix_resources(self, vocabfile=None, dictfile=None):
         """
-        Fix resources.
+        Fix resources using default values.
 
         @param vocabfile (str) The lexicon, used during tokenization of the corpus.
         @param dictfile (str) The pronunciation dictionary, used both to
@@ -543,26 +564,16 @@ class TrainingCorpus( object ):
         if vocabfile is not None:
             self.vocabfile = vocabfile
 
-    # -----------------------------------------------------------------------
-
-    def add_corpus(self, directory):
-        """
-        Add a new corpus to deal with.
-
-        """
-        raise NotImplementedError
-
-        # If annotated file / audio file couple is checked:
-        # Create lab files
-        # Append into mlf file
-        # Append into scp file
-        # Convert audio into 16bits-16000hz
-        # Generates mfcc
+        if self.datatrainer.workdir is not None:
+            self.phonesfile = os.path.join(self.datatrainer.workdir, "monophones")
+            self.monophones.save( self.phonesfile )
 
     # -----------------------------------------------------------------------
 
     def create(self):
         """
+        Create MLF files and SCP file.
+
         """
         if self.datatrainer.workdir is None:
             logging.info('Create a temporary working directory: ')
@@ -583,6 +594,24 @@ class TrainingCorpus( object ):
 
     # -----------------------------------------------------------------------
 
+    def add_corpus(self, directory):
+        """
+        Add a new corpus to deal with.
+
+        """
+        raise NotImplementedError
+
+        # For each audio file of the directory:
+        # Get transcription file
+        # If annotated file / audio file couple is checked:
+        # Create lab files
+        # Append into mlf file
+        # Append into scp file
+        # Convert audio into 16bits-16000hz
+        # Generates mfcc
+
+    # -----------------------------------------------------------------------
+
     def add_file(self, trsfilename, audiofilename):
         """
         Add a new couple of files to deal with.
@@ -590,6 +619,8 @@ class TrainingCorpus( object ):
         @param trsfilename (str) The annotated file.
         @param audiofilename (str) The audio file.
         @param Bool
+
+        TODO: Add phonetized data, Add transcribed data.
 
         """
         if self.datatrainer.workdir is None:
@@ -619,6 +650,7 @@ class TrainingCorpus( object ):
 
                         self._append_scp( outfile )
                         logging.info('Files %s / %s appended as %s.'%(trsfilename,audiofilename,outfile))
+                        self.audiofiles[ trsfilename ] = audiofilename
                         return True
                     else:
                         self._pop_tier( outfile )
@@ -716,6 +748,7 @@ class TrainingCorpus( object ):
 
     def _append_scp(self, outfile):
         """
+        Append a MFC file into the SCP file.
 
         """
         with open( self.scpfile, "w+") as fp:
@@ -763,15 +796,22 @@ class HTKModelInitializer( object ):
         """
         Constructor.
 
+        @param trainingcorpus (TrainingCorpus) The data prepared during strep 1.
+        @param directory (str) The current directory to write the result of this step.
+
         """
         self.trainingcorpus = trainingcorpus
         self.directory = directory
+        if os.path.exists( directory ) is False:
+            raise IOError('A valid directory must be defined in order to initialize the model.')
 
     # -----------------------------------------------------------------------
 
     def create_model(self, hack=True):
         """
         Main method to create the initial acoutic model.
+
+        @param hack (bool) Force to use the given prototype (if any) for the fillers.
 
         """
         if self.trainingcorpus.monophones is None:
@@ -798,7 +838,10 @@ class HTKModelInitializer( object ):
                                   "-f", str(0.01),
                                   "-C", self.trainingcorpus.datatrainer.features.configfile,
                                   "-S", self.trainingcorpus.scpfile,
-                                  "-M", self.directory, self.trainingcorpus.datatrainer.protofile], stdout=open(os.devnull, 'wb'), stderr=open(os.devnull, 'wb'))
+                                  "-M", self.directory,
+                                  self.trainingcorpus.datatrainer.protofile],
+                                  stdout=open(os.devnull, 'wb'),
+                                  stderr=open(os.devnull, 'wb'))
         except subprocess.CalledProcessError as e:
             logging.info('HCompV failed: %s'%str(e))
             pass
@@ -821,7 +864,10 @@ class HTKModelInitializer( object ):
                                    "-C", self.trainingcorpus.datatrainer.features.configfile,
                                    "-L", self.trainingcorpus.datatrainer.storetrs,
                                    "-S", self.trainingcorpus.scpfile,
-                                   "-M", self.directory, self.trainingcorpus.datatrainer.protofile], stdout=open(os.devnull, 'wb'), stderr=open(os.devnull, 'wb'))
+                                   "-M", self.directory,
+                                   self.trainingcorpus.datatrainer.protofile],
+                                  stdout=open(os.devnull, 'wb'),
+                                  stderr=open(os.devnull, 'wb'))
         except subprocess.CalledProcessError:
             pass
 
@@ -829,8 +875,12 @@ class HTKModelInitializer( object ):
 
     def create_models(self, hack=True):
         """
-        Create an initial model for each phoneme,
-        either by using a prototype or a start model.
+        Create an initial model for each phoneme.
+
+        Create a start model for each phoneme from time-aligned data,
+        or use the prototype trained by HCompV (i.e. a flat-start-model),
+        or use the existing saved prototype,
+        or use the default prototype.
 
         """
         # Adapt the proto file from the corpus (if any)
@@ -845,9 +895,6 @@ class HTKModelInitializer( object ):
                     logging.info(' [ FAIL ] ')
 
         # Create a start model for each phoneme
-        # ... or use the prototype trained by HCompV (flat-start-model)
-        # ... ... or use the existing saved prototype
-        # ... ... ... or use the default prototype.
         for phone in self.trainingcorpus.monophones.get_list():
 
             logging.info(' ... Train initial model of %s: '%phone)
@@ -883,7 +930,7 @@ class HTKModelInitializer( object ):
                 h.save( outfile )
                 logging.info(' ... ... [ DATA ]')
 
-        # Some hack...
+        # Hack for the fillers...
         if hack is True and self.trainingcorpus.datatrainer.protodir is not None:
             for phone in PhoneSet().get_list():
                 infile  = os.path.join( self.trainingcorpus.datatrainer.protodir, phone + ".hmm" )
@@ -896,7 +943,7 @@ class HTKModelInitializer( object ):
 
     def create_hmmdefs(self):
         """
-        Create hmmdefs file from a set of separated monophones.
+        Create an hmmdefs file from a set of separated hmm files.
 
         """
         acmodel = AcModel()
@@ -1003,7 +1050,7 @@ class HTKModelTrainer( object ):
         os.mkdir(nextdir)
 
         if self.curdir is not None:
-            # copy macros ??
+            # TODO: copy macros ??
             pass
 
         self.prevdir = self.curdir
@@ -1014,6 +1061,19 @@ class HTKModelTrainer( object ):
 
     def small_pause(self):
         """
+        TODO
+        Fixing the Silence Models
+             * get sil HMM model
+             * create a "silst" macro, using state 3 of the "sil" HMM.
+             * Adapt "sil" HMM definition, of course!
+             * Create a "sp" HMM with 3 states, state 2 is the macro "silst"
+             * Set a 3x3 transition matrix as follow:
+               0.0 1.0 0.0
+               0.0 0.9 0.1
+               0.0 0.0 0.0
+
+        Add sp into monophones list.
+
         """
         self.init_epoch_dir()
         raise NotImplementedError
@@ -1022,13 +1082,14 @@ class HTKModelTrainer( object ):
 
     def realign(self):
         """
+        TODO
         """
         self.init_epoch_dir()
         raise NotImplementedError
 
     # -----------------------------------------------------------------------
 
-    def train_step(self, rounds=2):
+    def train_step(self, rounds=3):
         """
         Perform one or more rounds of HERest estimation.
 
@@ -1040,14 +1101,17 @@ class HTKModelTrainer( object ):
             self.init_epoch_dir()
 
             try:
-                subprocess.check_call(["HERest", "-C", self.HERest_cfg,
+                subprocess.check_call(["HERest", "-T", "0",
+                            "-C", self.corpus.datatrainer.features.configfile,
                             "-S", self.corpus.scpfile,
-                            "-I", self.corpus.alignmlffile,
+                            "-L", self.corpus.datatrainer.storetrs,
                             "-M", self.curdir,
                             "-H", os.path.join(self.prevdir, DEFAULT_MACROS_FILENAME),
                             "-H", os.path.join(self.prevdir, DEFAULT_HMMDEFS_FILENAME),
-                            "-t"] + self.pruning + [self.corpus.monophones.get_list()],
-                           stdout=subprocess.PIPE)
+                            "-t", "250.0", "150.0", "1000.0",
+                            self.corpus.phonesfile],
+                            stdout=open(os.devnull, 'wb'),
+                            stderr=open(os.devnull, 'wb'))
             except subprocess.CalledProcessError as e:
                 logging.info('HERest failed: %s'%str(e))
                 return False
@@ -1070,6 +1134,8 @@ class HTKModelTrainer( object ):
         if self.corpus.datatrainer.workdir is None:
             self.corpus.datatrainer.workdir = fileutils.gen_name()
             os.mkdir( self.corpus.datatrainer.workdir )
+        if self.corpus.phonesfile is None:
+            self.corpus.fix_resources()
 
         # Step 2: Monophones initialization
         # --------------------------
@@ -1083,11 +1149,10 @@ class HTKModelTrainer( object ):
             raise IOError('Monophones initialization failed.')
 
         if len(self.corpus.audiofiles) == 0:
+            logging.info('No audio file: Monophone training performed only from prototypes.')
             model.load_htk( os.path.join( self.curdir,DEFAULT_HMMDEFS_FILENAME) )
             self.corpus.datatrainer.delete()
             return model
-
-        return model
 
         # Step 3: Monophone training
         # --------------------------
@@ -1095,7 +1160,11 @@ class HTKModelTrainer( object ):
         logging.info("Initial training.")
         ret = self.train_step()
         if ret is False:
+            logging.info(' * * * * * * * * * * *  INITIAL TRAINING: FAILED * * * * ')
             return model
+
+        logging.info(' * * * * * * * * * * *  INITIAL TRAINING: SUCCESS * * * * ')
+        return model
 
         logging.info("Modeling silence.")
         self.small_pause()
@@ -1117,6 +1186,7 @@ class HTKModelTrainer( object ):
     # -----------------------------------------------------------------------
 
     def __del__(self):
+        return
         if self.corpus is not None:
             self.corpus.datatrainer.delete()
 
