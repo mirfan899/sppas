@@ -80,8 +80,7 @@ class DictPron:
         >>> {.k.t.e.d|{.k.t.i.d
 
     """
-
-    def __init__(self, dictfilename, unkstamp=u"UNK", nodump=False):
+    def __init__(self, dictfilename=None, unkstamp=u"UNK", nodump=False):
         """
         Constructor.
 
@@ -192,6 +191,25 @@ class DictPron:
         separator = "|" if previous_value else ""
         new_value = previous_value + separator + variant
         self._dict[token] = new_value
+
+    # -----------------------------------------------------------------------
+
+    def map_phones(self, maptable):
+        """
+        Create a new dictionary by changing the phoneme strings depending on a mapping table.
+
+        @param maptable (Mapping) A mapping table.
+        @return a DictPron with mapped phones.
+
+        """
+        maptable.set_reverse(True)
+        delimiters = ['.','|']
+        newdict = DictPron()
+
+        for key,value in self._dict.items():
+            newdict._dict[key] = maptable.map( value,delimiters )
+
+        return newdict
 
     # -----------------------------------------------------------------------
 
