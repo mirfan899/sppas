@@ -61,12 +61,18 @@ class TestTrainer(unittest.TestCase):
     def test_trainingcorpus(self):
         corpus = TrainingCorpus()
 
-        corpus.fix_resources(dictfile=os.path.join(RESOURCES_PATH, "dict", "nan.dict") )
+        self.assertEqual( corpus.phonemap.map_entry('#'), "#" )
+
+        corpus.fix_resources(dictfile=os.path.join(RESOURCES_PATH, "dict", "nan.dict"))
         self.assertEqual( corpus.monophones.get_size(), 44 )
+
+        corpus.fix_resources(dictfile=os.path.join(RESOURCES_PATH, "dict", "nan.dict"), mappingfile=os.path.join(RESOURCES_PATH,"models","models-nan","monophones.repl" ))
+        self.assertEqual( corpus.phonemap.map_entry('#'), "sil" )
 
         self.assertFalse( corpus.add_file( "toto", "toto" ) )
         self.assertTrue( corpus.add_file( "F_F_B003-P8.TextGrid", "F_F_B003-P8.wav" ) )
         self.assertTrue( corpus.add_file( "F_F_B003-P8.TextGrid", "F_F_B003-P8.wav" ) )
+        corpus.datatrainer.delete()
 
     def test_initializer_without_corpus(self):
         corpus  = TrainingCorpus()
@@ -106,9 +112,8 @@ class TestTrainer(unittest.TestCase):
 
     def test_trainer(self):
         setup_logging(1,None)
-
         corpus = TrainingCorpus()
-        corpus.fix_resources(dictfile=os.path.join(RESOURCES_PATH, "dict", "fra.dict") )
+        corpus.fix_resources(dictfile=os.path.join(RESOURCES_PATH, "dict", "fra.dict"), mappingfile=os.path.join(RESOURCES_PATH,"models","models-fra","monophones.repl" ))
         corpus.datatrainer.protodir = "protos"
         corpus.add_file( "F_F_B003-P8.TextGrid", "F_F_B003-P8.wav" )
         corpus.add_file( "F_F_B003-P8.TextGrid", "F_F_B003-P8.wav" )

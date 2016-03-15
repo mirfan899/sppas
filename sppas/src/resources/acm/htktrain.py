@@ -47,6 +47,8 @@ import logging
 import os
 import subprocess
 import shutil
+import copy
+import collections
 
 import utils.fileutils
 from utils.type import test_command
@@ -66,6 +68,8 @@ from hmm          import HMM
 from htkscripts   import HtkScripts
 from acmodel      import AcModel
 from acmodelhtkio import HtkIO
+from mapping      import Mapping
+
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -520,9 +524,24 @@ class TrainingCorpus( object ):
         @param datatrainer (DataTrainer)
 
         """
+        self.datatrainer = None
+        self.reset()
+
         self.datatrainer = datatrainer
         if datatrainer is None:
             self.datatrainer = DataTrainer()
+
+        self.create()
+
+    # -----------------------------------------------------------------------
+
+    def reset(self):
+        """
+        Fix all members to None or to their default values.
+
+        """
+        if self.datatrainer is not None:
+            self.datatrainer.reset()
 
         # Selection of the input data files.
         self.transfiles = {}  # Time-aligned at the utterance level, orthography
@@ -533,64 +552,74 @@ class TrainingCorpus( object ):
         # HTK-specific files
         self.scpfile = None
 
-        self.phonmlffile  = None
-        self.transmlffile = None
-        self.alignmlffile = None
-
         # The lexicon, the pronunciation dictionary and the phoneset
         self.vocabfile  = None
         self.dictfile   = None
         self.phonesfile = None
         self.monophones = PhoneSet()
-
-        # TODO: Add a mapping table --> training data are not consistent with the dictionary
-        # Ex: /@/ in data and /eu/ in dict.
-
-    # -----------------------------------------------------------------------
-
-    def fix_resources(self, vocabfile=None, dictfile=None):
-        """
-        Fix resources using default values.
-
-        @param vocabfile (str) The lexicon, used during tokenization of the corpus.
-        @param dictfile (str) The pronunciation dictionary, used both to
-        generate the list of phones and to perform phonetization of the corpus.
-
-        """
-        if dictfile is not None and os.path.exists( dictfile ) is True:
-            self.dictfile = dictfile
-            self.monophones.add_from_dict( self.dictfile )
-
-        if vocabfile is not None:
-            self.vocabfile = vocabfile
-
-        if self.datatrainer.workdir is not None:
-            self.phonesfile = os.path.join(self.datatrainer.workdir, "monophones")
-            self.monophones.save( self.phonesfile )
+        self.phonemap   = Mapping()
 
     # -----------------------------------------------------------------------
 
     def create(self):
         """
-        Create MLF files and SCP file.
+        Create files and directories.
 
         """
         if self.datatrainer.workdir is None:
             logging.info('Create a temporary working directory: ')
             self.datatrainer.create()
 
-        self.alignmlffile = os.path.join( self.datatrainer.workdir, "PhonAlign.mlf")
-        self.phonmlffile  = os.path.join( self.datatrainer.workdir, "Phonetized.mlf")
-        self.transmlffile = os.path.join( self.datatrainer.workdir, "Transcribed.mlf")
-
-        with open( self.alignmlffile, "w") as fp:
-            fp.write('#!MLF!#\n')
-        with open( self.phonmlffile, "w") as fp:
-            fp.write('#!MLF!#\n')
-        with open( self.transmlffile, "w") as fp:
-            fp.write('#!MLF!#\n')
+#         self.alignmlffile = os.path.join( self.datatrainer.workdir, "PhonAlign.mlf")
+#         self.phonmlffile  = os.path.join( self.datatrainer.workdir, "Phonetized.mlf")
+#         self.transmlffile = os.path.join( self.datatrainer.workdir, "Transcribed.mlf")
+#
+#         with open( self.alignmlffile, "w") as fp:
+#             fp.write('#!MLF!#\n')
+#         with open( self.phonmlffile, "w") as fp:
+#             fp.write('#!MLF!#\n')
+#         with open( self.transmlffile, "w") as fp:
+#             fp.write('#!MLF!#\n')
 
         self.scpfile = os.path.join( self.datatrainer.workdir, "train.scp")
+
+    # -----------------------------------------------------------------------
+
+    def fix_resources(self, vocabfile=None, dictfile=None, mappingfile=None):
+        """
+        Fix resources using default values.
+        Ideally, resources are fixed *after* the datatrainer.
+
+        @param vocabfile (str) The lexicon, used during tokenization of the corpus.
+        @param dictfile (str) The pronunciation dictionary, used both to
+        generate the list of phones and to perform phonetization of the corpus.
+        @param mappingfile (str) file that contains the mapping table for the phone set.
+
+        """
+        if vocabfile is not None:
+            self.vocabfile = vocabfile
+
+        if self.datatrainer.workdir is not None and mappingfile is not None:
+            self._create_phonemap( mappingfile )
+
+        if dictfile is not None and os.path.exists( dictfile ) is True:
+            # Map the phoneme strings of the dictionary. Save the mapped version.
+            if self.datatrainer.workdir is not None:
+                logging.info('Write a mapped dictionary.')
+                pdict = DictPron( dictfile )
+                mapdict = pdict.map_phones( self.phonemap )
+                dictfile = os.path.join(self.datatrainer.workdir, "pron.dict")
+                mapdict.save_as_ascii( dictfile )
+
+            logging.info('Pronunciation dictionary: %s'%dictfile)
+            self.dictfile = dictfile
+            self.monophones.add_from_dict( self.dictfile )
+        else:
+            logging.info('No pronunciation dictionary was defined.')
+
+        if self.datatrainer.workdir is not None:
+            self.phonesfile = os.path.join(self.datatrainer.workdir, "monophones")
+            self.monophones.save( self.phonesfile )
 
     # -----------------------------------------------------------------------
 
@@ -620,7 +649,7 @@ class TrainingCorpus( object ):
         @param audiofilename (str) The audio file.
         @param Bool
 
-        TODO: Add phonetized data, Add transcribed data.
+        TODO: Add transcribed data.
 
         """
         if self.datatrainer.workdir is None:
@@ -628,35 +657,92 @@ class TrainingCorpus( object ):
 
         try:
             trs = annotationdata.io.read( trsfilename )
-            tier = trs.Find('PhonAlign', case_sensitive=False)
         except Exception:
-            logging.info('No tier PhonAlign was found in %s'%trsfilename)
+            logging.info('Error reading file %s'%trsfilename)
             return False
 
+        tier = trs.Find('PhonAlign', case_sensitive=False)
         if tier is not None:
-            if self.datatrainer.storetrs is None:
-                logging.info('Fix storage directory name to "align"')
-                self.datatrainer.fix_storage_dirs("align")
-            outfile = os.path.basename(utils.fileutils.gen_name(root="track_aligned", addtoday=False, addpid=False))
+            return self._append_phonalign(tier, trsfilename, audiofilename)
+        else:
+            tier = trs.Find('Phonetization', case_sensitive=False)
+            if tier is not None:
+                return self._append_phonetization(tier, trsfilename, audiofilename)
+            else:
+                logging.info('None of the expected tier was found in %s'%trsfilename)
 
-            ret = self._add_tier( tier, outfile )
+        return False
+
+    # -----------------------------------------------------------------------
+
+    def _append_phonalign(self, tier, trsfilename, audiofilename):
+        """
+        Append a PhonAlign tier in the set of known data.
+
+        """
+        # Map phonemes.
+        for ann in tier:
+            label = ann.GetLabel().GetValue()
+            if label == "sp":
+                newlabel = "sil"
+            else:
+                newlabel = self.phonemap.map_entry( label )
+            if label != newlabel:
+                ann.GetLabel().SetValue( newlabel )
+
+        # Fix current storage dir.
+        if self.datatrainer.storetrs is None:
+            logging.info('Fix storage directory name to "align"')
+            self.datatrainer.fix_storage_dirs("align")
+        outfile = os.path.basename(utils.fileutils.gen_name(root="track_aligned", addtoday=False, addpid=False))
+
+        # Add the tier
+        return self._append_tier( tier, outfile, trsfilename,audiofilename )
+
+
+    def _append_phonetization(self, tier, trsfilename, audiofilename):
+        """
+        Append a Phonetization tier in the set of known data.
+
+        """
+        # Map phonemes.
+        for ann in tier:
+            label = ann.GetLabel().GetValue()
+            label = label.replace('sp',"sil")
+            newlabel = self.phonemap.map( label, delimiters=[' ','.','|'] )
+            if label != newlabel:
+                ann.GetLabel().SetValue( newlabel )
+
+        # Fix current storage dir.
+        if self.datatrainer.storetrs is None:
+            logging.info('Fix storage directory name to "align"')
+            self.datatrainer.fix_storage_dirs("phon")
+        outfile = os.path.basename(utils.fileutils.gen_name(root="track_phonetized", addtoday=False, addpid=False))
+
+        # Add the tier
+        return self._append_tier( tier, outfile, trsfilename, audiofilename )
+
+
+    def _append_tier( self, tier, outfile, trsfilename,audiofilename ):
+        ret = self._add_tier( tier, outfile )
+        if ret is True:
+
+            ret = self._add_audio( audiofilename, outfile )
             if ret is True:
 
-                ret = self._add_audio( audiofilename, outfile )
-                if ret is True:
+                #ret = self._append_mlf( self.alignmlffile, outfile )
+                #if ret is True:
 
-                    ret = self._append_mlf( self.alignmlffile, outfile )
-                    if ret is True:
+                self._append_scp( outfile )
+                logging.info('Files %s / %s appended as %s.'%(trsfilename,audiofilename,outfile))
+                self.audiofiles[ trsfilename ] = audiofilename
+                return True
 
-                        self._append_scp( outfile )
-                        logging.info('Files %s / %s appended as %s.'%(trsfilename,audiofilename,outfile))
-                        self.audiofiles[ trsfilename ] = audiofilename
-                        return True
-                    else:
-                        self._pop_tier( outfile )
-                        self._pop_audio( outfile )
-                else:
-                    self._pop_tier( outfile )
+                #else:
+                #    self._pop_tier( outfile )
+                #    self._pop_audio( outfile )
+            else:
+                self._pop_tier( outfile )
 
         logging.info('Files %s / %s rejected.'%(trsfilename,audiofilename))
         return False
@@ -756,6 +842,24 @@ class TrainingCorpus( object ):
             fp.write('%s.mfc\n'%os.path.join(self.datatrainer.storemfc,outfile))
 
     # -----------------------------------------------------------------------
+
+    def _create_phonemap(self, mapfile):
+        """
+        Create the default mapping table, and/or get from a file.
+
+        """
+        self.phonemap = Mapping( mapfile )
+
+        if self.phonemap.is_key("sil") is False:
+            self.phonemap.add('sil','#')
+
+        if self.phonemap.is_key("sp") is False:
+            self.phonemap.add('sp','+')
+
+        if self.phonemap.is_key("gb") is False:
+            self.phonemap.add('gb','*')
+
+        self.phonemap.set_reverse( True )
 
 # ---------------------------------------------------------------------------
 
@@ -901,7 +1005,8 @@ class HTKModelInitializer( object ):
             outfile = os.path.join( self.directory, phone + ".hmm" )
 
             if self.trainingcorpus.scpfile is not None:
-                self._create_start_model( phone, outfile )
+                if os.path.exists( self.trainingcorpus.scpfile ):
+                    self._create_start_model( phone, outfile )
 
             # the start model was not created.
             if os.path.exists( outfile ) is False:
@@ -1050,8 +1155,7 @@ class HTKModelTrainer( object ):
         os.mkdir(nextdir)
 
         if self.curdir is not None:
-            # TODO: copy macros ??
-            pass
+            shutil.copy( os.path.join(self.curdir,DEFAULT_MACROS_FILENAME), nextdir)
 
         self.prevdir = self.curdir
         self.curdir  = nextdir
@@ -1061,22 +1165,44 @@ class HTKModelTrainer( object ):
 
     def small_pause(self):
         """
-        TODO
-        Fixing the Silence Models
-             * get sil HMM model
+        Fixing the Silence Models:
+
              * create a "silst" macro, using state 3 of the "sil" HMM.
-             * Adapt "sil" HMM definition, of course!
-             * Create a "sp" HMM with 3 states, state 2 is the macro "silst"
-             * Set a 3x3 transition matrix as follow:
-               0.0 1.0 0.0
-               0.0 0.9 0.1
-               0.0 0.0 0.0
+             * adapt state 3 of the "sil" HMM definition, to use "silst".
+             * create a "sp" HMM.
 
         Add sp into monophones list.
 
         """
+        # Load current acoustic model and prepare the new working directory
+        model = AcModel()
+        model.load_htk( os.path.join( self.curdir,DEFAULT_HMMDEFS_FILENAME) )
         self.init_epoch_dir()
-        raise NotImplementedError
+
+        # Manage sil
+        sil = model.get_hmm("sil")
+        silst = copy.deepcopy( sil.get_state(3) )
+        states = sil.definition['states']
+        for item in states:
+            if int(item['index']) == 3:
+                item['state'] = "silst"
+
+        macro = collections.defaultdict(lambda: None)
+        option = collections.defaultdict(lambda: None)
+        option['name'] = "silst"
+        option['definition'] = silst
+        macro['state'] = option
+        model.macros.append( macro )
+
+        # Manage sp
+        sp = HMM()
+        sp.create_sp()
+        model.append_hmm(sp)
+
+        # Finally, save the model with the new sp HMM.
+        model.save_htk( os.path.join( self.curdir,DEFAULT_HMMDEFS_FILENAME) )
+        self.corpus.monophones.add("sp")
+        self.corpus.monophones.save( self.corpus.phonesfile )
 
     # -----------------------------------------------------------------------
 
@@ -1084,7 +1210,7 @@ class HTKModelTrainer( object ):
         """
         TODO
         """
-        self.init_epoch_dir()
+        #self.init_epoch_dir()
         raise NotImplementedError
 
     # -----------------------------------------------------------------------
@@ -1138,7 +1264,7 @@ class HTKModelTrainer( object ):
             self.corpus.fix_resources()
 
         # Step 2: Monophones initialization
-        # --------------------------
+        # ---------------------------------
 
         logging.info("Monophones initialization.")
         self.init_epoch_dir()
@@ -1149,7 +1275,7 @@ class HTKModelTrainer( object ):
             raise IOError('Monophones initialization failed.')
 
         if len(self.corpus.audiofiles) == 0:
-            logging.info('No audio file: Monophone training performed only from prototypes.')
+            logging.info('No audio file: the model was created only from prototypes.')
             model.load_htk( os.path.join( self.curdir,DEFAULT_HMMDEFS_FILENAME) )
             self.corpus.datatrainer.delete()
             return model
@@ -1157,20 +1283,32 @@ class HTKModelTrainer( object ):
         # Step 3: Monophone training
         # --------------------------
 
+        # Step 3.1 From time-aligned data.
+        # --------------------------------
+
         logging.info("Initial training.")
         ret = self.train_step()
         if ret is False:
-            logging.info(' * * * * * * * * * * *  INITIAL TRAINING: FAILED * * * * ')
+            logging.info('Initial training failed.')
+            model.load_htk( os.path.join( self.prevdir,DEFAULT_HMMDEFS_FILENAME) )
             return model
-
-        logging.info(' * * * * * * * * * * *  INITIAL TRAINING: SUCCESS * * * * ')
-        return model
 
         logging.info("Modeling silence.")
         self.small_pause()
 
+        # Step 3.2 From utterrance-aligned data: previously phonetized.
+        # -------------------------------------------------------------
+
         logging.info("Additional training.")
-        self.train_step()
+        ret = self.train_step()
+        if ret is False:
+            logging.info('Additional training failed.')
+            model.load_htk( os.path.join( self.prevdir,DEFAULT_HMMDEFS_FILENAME) )
+            return model
+
+        logging.info(' * * * * * * * * * * *  TRAINING SUCCESS * * * * ')
+        model.load_htk( os.path.join( self.curdir,DEFAULT_HMMDEFS_FILENAME) )
+        return model
 
         logging.info("Re-aligning.")
         self.realign()

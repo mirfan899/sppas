@@ -200,6 +200,33 @@ class HMM( BaseModel ):
 
     # -----------------------------------------------------------------------
 
+    def create_sp(self):
+        """
+        Create the hmm `sp` and set it.
+
+        The sp is based on a 3-state HMM with string "silst" as state 2, and
+        a 3x3 transition matrix as follow:
+           0.0 1.0 0.0
+           0.0 0.9 0.1
+           0.0 0.0 0.0
+
+        """
+        self.name = "sp"
+        self.definition = self._create_default()
+
+        # Define states
+        self.definition['state_count'] = 3
+        self.definition['states'] = []
+        hmm_state = self._create_default()
+        hmm_state['index'] = 2
+        hmm_state['state'] = "silst"
+        self.definition['states'].append(hmm_state)
+
+        # Define transitions
+        self.definition['transition'] = self._create_transition([0.9])
+
+    # -----------------------------------------------------------------------
+
     def load(self, filename):
         """
         Return the (first) HMM described into the given filename.
@@ -230,6 +257,23 @@ class HMM( BaseModel ):
         result = htkio.serialize_hmms()
         with open(filename, 'w') as f:
             f.write( result )
+
+    # -----------------------------------------------------------------------
+
+    def get_state(self, index):
+        """
+        Return the state of a given index of None if index is not found.
+
+        @param index (int) State index (commonly between 1 and 5)
+        @return collections.OrderedDict or None
+
+        """
+        states = self.definition['states']
+        for item in states:
+            if int(item['index']) == index:
+                return item['state']
+
+        return None
 
     # -----------------------------------------------------------------------
 
