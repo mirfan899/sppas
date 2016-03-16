@@ -115,7 +115,7 @@ class TestTrainer(unittest.TestCase):
         corpus.fix_resources(dictfile=os.path.join(RESOURCES_PATH, "dict", "fra.dict"), mappingfile=os.path.join(RESOURCES_PATH,"models","models-fra","monophones.repl" ))
         corpus.datatrainer.protodir = "protos"
         corpus.add_file( "F_F_B003-P8-palign.TextGrid", "F_F_B003-P8.wav" )
-        corpus.add_file( "track_0001.lab", "track_0001.wav" )
+        corpus.add_file( "track_0001-phon.xra", "track_0001.wav" )
 
         trainer = HTKModelTrainer(corpus)
         acmodel = trainer.training_recipe()

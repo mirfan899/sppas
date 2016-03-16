@@ -684,7 +684,7 @@ class TrainingCorpus( object ):
                         files = True
 
             if phonetized is True:
-                for trsfile in self.phonesfiles.keys():
+                for trsfile in self.phonfiles.keys():
                     mfcfile = self.mfcfiles[ trsfile ]
                     fp.write('%s\n'%mfcfile)
                     files = True
@@ -697,6 +697,30 @@ class TrainingCorpus( object ):
 
         if files is True: return scpfile
         return None
+
+    # -----------------------------------------------------------------------
+
+    def get_mlf(self):
+        """
+        Fix the mlf file by choosing the files to add.
+
+        """
+        files = False
+        mlffile = os.path.join( self.datatrainer.workdir, "train.mlf")
+
+        with open( mlffile, "w") as fp:
+            fp.write('#!MLF!#\n')
+            for i,trsdir in enumerate(self.datatrainer.storetrs):
+                mfcdir = self.datatrainer.storemfc[i]
+                mfc = os.path.basename( mfcdir )
+                fp.write('"*/%s/*" => "%s"\n' % (mfc, trsdir))
+                files = True
+
+        if files is True: return mlffile
+        return None
+
+        # Expected is:
+        #"*/mfc-align/*" => "/tmp/sppas_tmp_2016-03-16_16990_2284/trs-align"
 
     # -----------------------------------------------------------------------
 
@@ -798,7 +822,7 @@ class TrainingCorpus( object ):
         # Add the tier
         res =  self._append_tier( tier, outfile, trsfilename, audiofilename )
         if res is True:
-            self.phonesfile[ trsfilename ] = os.path.join(self.datatrainer.get_storetrs(), outfile+".lab")
+            self.phonfiles[ trsfilename ] = os.path.join(self.datatrainer.get_storetrs(), outfile+".lab")
         return res
 
 
@@ -1021,17 +1045,13 @@ class HTKModelInitializer( object ):
         if test_command("HCompV") is False: return
         scpfile = self.trainingcorpus.get_scp( aligned=True, phonetized=False, transcribed=False )
 
-        labfiles = []
-        for d in self.trainingcorpus.datatrainer.storetrs:
-            labfiles.append("-L")
-            labfiles.append(d)
-
         try:
             subprocess.check_call(["HCompV", "-T", "0", "-m",
+                                  "-I", self.trainingcorpus.get_mlf(),
                                   "-f", str(0.01),
                                   "-C", self.trainingcorpus.datatrainer.features.configfile,
                                   "-S", scpfile,
-                                  "-M", self.directory] + labfiles + [
+                                  "-M", self.directory,
                                   self.trainingcorpus.datatrainer.protofile],
                                   stdout=open(os.devnull, 'wb'),
                                   stderr=open(os.devnull, 'wb'))
@@ -1049,20 +1069,16 @@ class HTKModelInitializer( object ):
         if test_command("HInit") is False: return
         scpfile = self.trainingcorpus.get_scp( aligned=True, phonetized=False, transcribed=False )
 
-        labfiles = []
-        for d in self.trainingcorpus.datatrainer.storetrs:
-            labfiles.append("-L")
-            labfiles.append(d)
-
         try:
             subprocess.check_call(["HInit", "-T", "0", "-i", "20",
                                    "-m", "1",
                                    "-v", "0.0001",
+                                   "-I", self.trainingcorpus.get_mlf(),
                                    "-l", phone,
                                    "-o", outfile,
                                    "-C", self.trainingcorpus.datatrainer.features.configfile,
                                    "-S", scpfile,
-                                   "-M", self.directory] + labfiles + [
+                                   "-M", self.directory,
                                    self.trainingcorpus.datatrainer.protofile],
                                 stdout=open(os.devnull, 'wb'),
                                 stderr=open(os.devnull, 'wb'))
@@ -1251,7 +1267,8 @@ class HTKModelTrainer( object ):
         os.mkdir(nextdir)
 
         if self.curdir is not None:
-            shutil.copy( os.path.join(self.curdir,DEFAULT_MACROS_FILENAME), nextdir)
+            if os.path.exists(os.path.join(self.curdir,DEFAULT_MACROS_FILENAME)):
+                shutil.copy( os.path.join(self.curdir,DEFAULT_MACROS_FILENAME), nextdir)
 
         self.prevdir = self.curdir
         self.curdir  = nextdir
@@ -1320,23 +1337,19 @@ class HTKModelTrainer( object ):
         """
         if test_command("HERest") is False: return
 
-        labfiles = []
-        for d in self.corpus.datatrainer.storetrs:
-            labfiles.append("-L")
-            labfiles.append(d)
-
         for _ in range(rounds):
             logging.info("Training iteration {}.".format(self.epochs))
             self.init_epoch_dir()
 
             try:
                 subprocess.check_call(["HERest", "-T", "0",
+                            "-I", self.corpus.get_mlf(),
                             "-C", self.corpus.datatrainer.features.configfile,
                             "-S", scpfile,
                             "-M", self.curdir,
                             "-H", os.path.join(self.prevdir, DEFAULT_MACROS_FILENAME),
                             "-H", os.path.join(self.prevdir, DEFAULT_HMMDEFS_FILENAME),
-                            "-t", "250.0", "150.0", "1000.0"] + labfiles + [
+                            "-t", "250.0", "150.0", "1000.0",
                             self.corpus.phonesfile],
                             stdout=open(os.devnull, 'wb'),
                             stderr=open(os.devnull, 'wb'))
