@@ -34,8 +34,6 @@
 # ---------------------------------------------------------------------------
 # File: htktrain.py
 # ---------------------------------------------------------------------------
-from _snack import size
-from sppas.src.utils import fileutils
 
 __docformat__ = """epytext"""
 __authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
@@ -222,9 +220,10 @@ class DataTrainer( object ):
         self.features   = Features()
 
         # The data storage directories, for transcribed speech and audio files.
-        self.storetrs = None
-        self.storewav = None
-        self.storemfc = None
+        self.storetrs = []
+        self.storewav = []
+        self.storemfc = []
+        self.storeidx = -1
 
         # The directory with all HMM prototypes, and the default proto file.
         self.protodir  = None
@@ -314,25 +313,61 @@ class DataTrainer( object ):
         """
         Fix the directories to store annotated speech and audio files.
 
-        @param basename (str) indicates a name to identify storage dirs (like: algn, phon, trans, ...)
+        @param basename (str) indicates a name to identify storage dirs (like: align, phon, trans, ...)
 
         """
         if basename is None:
-            self.storetrs = None
-            self.storeaudio = None
+            self.storeidx = -1
             return
 
         if self.workdir is None:
             raise IOError("A working directory must be fixed.")
 
-        self.storetrs = os.path.join(self.workdir,"trs-"+basename)
-        self.storewav = os.path.join(self.workdir,"wav-"+basename)
-        self.storemfc = os.path.join(self.workdir,"mfc-"+basename)
+        storetrs = os.path.join(self.workdir,"trs-"+basename)
+        storewav = os.path.join(self.workdir,"wav-"+basename)
+        storemfc = os.path.join(self.workdir,"mfc-"+basename)
 
-        if os.path.exists( self.storetrs ) is False:
-            os.mkdir( self.storetrs )
-            os.mkdir( self.storewav )
-            os.mkdir( self.storemfc )
+        if os.path.exists( storetrs ) is False:
+            os.mkdir( storetrs )
+            os.mkdir( storewav )
+            os.mkdir( storemfc )
+
+        if not storetrs in self.storetrs:
+            self.storetrs.append( storetrs )
+            self.storewav.append( storewav )
+            self.storemfc.append( storemfc )
+
+        self.storeidx = self.storetrs.index( storetrs )
+
+    # -----------------------------------------------------------------------
+
+    def get_storetrs(self):
+        """
+        Return the current directory to store transcribed data files, or None.
+
+        """
+        if self.storeidx == -1: return None
+        return self.storetrs[self.storeidx]
+
+    # -----------------------------------------------------------------------
+
+    def get_storewav(self):
+        """
+        Return the current directory to store audio data files, or None.
+
+        """
+        if self.storeidx == -1: return None
+        return self.storewav[self.storeidx]
+
+    # -----------------------------------------------------------------------
+
+    def get_storemfc(self):
+        """
+        Return the current directory to store MFCC data files, or None.
+
+        """
+        if self.storeidx == -1: return None
+        return self.storemfc[self.storeidx]
 
     # -----------------------------------------------------------------------
 
@@ -544,13 +579,13 @@ class TrainingCorpus( object ):
             self.datatrainer.reset()
 
         # Selection of the input data files.
+        #   - Key   = original file
+        #   - Value = working file
         self.transfiles = {}  # Time-aligned at the utterance level, orthography
         self.phonfiles  = {}  # Time-aligned at the utterance level, phonetization
         self.alignfiles = {}  # Time-aligned at the phone level
-        self.audiofiles = {}  # Key=annotated file, value=audio file
-
-        # HTK-specific files
-        self.scpfile = None
+        self.audiofiles = {}  #
+        self.mfcfiles   = {}  #
 
         # The lexicon, the pronunciation dictionary and the phoneset
         self.vocabfile  = None
@@ -570,19 +605,6 @@ class TrainingCorpus( object ):
             logging.info('Create a temporary working directory: ')
             self.datatrainer.create()
 
-#         self.alignmlffile = os.path.join( self.datatrainer.workdir, "PhonAlign.mlf")
-#         self.phonmlffile  = os.path.join( self.datatrainer.workdir, "Phonetized.mlf")
-#         self.transmlffile = os.path.join( self.datatrainer.workdir, "Transcribed.mlf")
-#
-#         with open( self.alignmlffile, "w") as fp:
-#             fp.write('#!MLF!#\n')
-#         with open( self.phonmlffile, "w") as fp:
-#             fp.write('#!MLF!#\n')
-#         with open( self.transmlffile, "w") as fp:
-#             fp.write('#!MLF!#\n')
-
-        self.scpfile = os.path.join( self.datatrainer.workdir, "train.scp")
-
     # -----------------------------------------------------------------------
 
     def fix_resources(self, vocabfile=None, dictfile=None, mappingfile=None):
@@ -596,30 +618,85 @@ class TrainingCorpus( object ):
         @param mappingfile (str) file that contains the mapping table for the phone set.
 
         """
-        if vocabfile is not None:
-            self.vocabfile = vocabfile
+        logging.info('Fix resources: ')
 
+        # The mapping table (required to convert the dictionary)
         if self.datatrainer.workdir is not None and mappingfile is not None:
             self._create_phonemap( mappingfile )
 
+        # The pronunciation dictionary (also used to construct the vocab if required)
         if dictfile is not None and os.path.exists( dictfile ) is True:
             # Map the phoneme strings of the dictionary. Save the mapped version.
+            pdict = DictPron( dictfile )
             if self.datatrainer.workdir is not None:
-                logging.info('Write a mapped dictionary.')
-                pdict = DictPron( dictfile )
                 mapdict = pdict.map_phones( self.phonemap )
-                dictfile = os.path.join(self.datatrainer.workdir, "pron.dict")
+                dictfile = os.path.join(self.datatrainer.workdir, "working.dict")
                 mapdict.save_as_ascii( dictfile )
-
-            logging.info('Pronunciation dictionary: %s'%dictfile)
+            if vocabfile is None:
+                tokenslist = pdict.get_keys()
+                vocabfile = os.path.join(self.datatrainer.workdir, "working.vocab")
+                w = WordsList()
+                for token in tokenslist:
+                    if not '(' in token and not ')' in token:
+                        w.add( token )
+                w.save( vocabfile )
+            logging.info(' - pronunciation dictionary: %s'%dictfile)
             self.dictfile = dictfile
             self.monophones.add_from_dict( self.dictfile )
         else:
-            logging.info('No pronunciation dictionary was defined.')
+            logging.info(' - no pronunciation dictionary is defined.')
 
+        # Either the given vocab or the constructed one
+        if vocabfile is not None:
+            logging.info('- vocabulary: %s'%vocabfile)
+            self.vocabfile = vocabfile
+        else:
+            logging.info(' - no vocabulary is defined.')
+
+        # The list of monophones included in the dict
         if self.datatrainer.workdir is not None:
             self.phonesfile = os.path.join(self.datatrainer.workdir, "monophones")
             self.monophones.save( self.phonesfile )
+
+    # -----------------------------------------------------------------------
+
+    def get_scp(self, aligned=True, phonetized=False, transcribed=False ):
+        """
+        Fix the scp file by choosing the files to add.
+
+        @param aligned (bool) Add time-aligned data in the scp file
+        @param phonetized (bool) Add phonetized data in the scp file
+        @param transcribed (bool) Add transcribed data in the scp file
+
+        @return filename or None if no data is available.
+
+        """
+        files = False
+        scpfile = os.path.join( self.datatrainer.workdir, "train.scp")
+
+        with open( scpfile, "w") as fp:
+
+            if transcribed is True:
+                for trsfile,workfile in self.transfiles.items():
+                    if workfile.endswith(".lab"):
+                        mfcfile = self.mfcfiles[ trsfile ]
+                        fp.write('%s\n'%mfcfile)
+                        files = True
+
+            if phonetized is True:
+                for trsfile in self.phonesfiles.keys():
+                    mfcfile = self.mfcfiles[ trsfile ]
+                    fp.write('%s\n'%mfcfile)
+                    files = True
+
+            if aligned is True:
+                for trsfile in self.alignfiles.keys():
+                    mfcfile = self.mfcfiles[ trsfile ]
+                    fp.write('%s\n'%mfcfile)
+                    files = True
+
+        if files is True: return scpfile
+        return None
 
     # -----------------------------------------------------------------------
 
@@ -649,16 +726,13 @@ class TrainingCorpus( object ):
         @param audiofilename (str) The audio file.
         @param Bool
 
-        TODO: Add transcribed data.
-
         """
-        if self.datatrainer.workdir is None:
-            self.create()
+        if self.datatrainer.workdir is None: self.create()
 
         try:
             trs = annotationdata.io.read( trsfilename )
         except Exception:
-            logging.info('Error reading file %s'%trsfilename)
+            logging.info('Error reading file: %s'%trsfilename)
             return False
 
         tier = trs.Find('PhonAlign', case_sensitive=False)
@@ -669,8 +743,11 @@ class TrainingCorpus( object ):
             if tier is not None:
                 return self._append_phonetization(tier, trsfilename, audiofilename)
             else:
-                logging.info('None of the expected tier was found in %s'%trsfilename)
+                for tier in trs:
+                    if "trans" in tier.GetName().lower():
+                        return self._append_transcription(tier, trsfilename, audiofilename)
 
+        logging.info('None of the expected tier was found in %s'%trsfilename)
         return False
 
     # -----------------------------------------------------------------------
@@ -691,13 +768,14 @@ class TrainingCorpus( object ):
                 ann.GetLabel().SetValue( newlabel )
 
         # Fix current storage dir.
-        if self.datatrainer.storetrs is None:
-            logging.info('Fix storage directory name to "align"')
-            self.datatrainer.fix_storage_dirs("align")
+        self.datatrainer.fix_storage_dirs("align")
         outfile = os.path.basename(utils.fileutils.gen_name(root="track_aligned", addtoday=False, addpid=False))
 
         # Add the tier
-        return self._append_tier( tier, outfile, trsfilename,audiofilename )
+        res = self._append_tier( tier, outfile, trsfilename, audiofilename )
+        if res is True:
+            self.alignfiles[ trsfilename ] = os.path.join(self.datatrainer.get_storetrs(), outfile+".lab")
+        return res
 
 
     def _append_phonetization(self, tier, trsfilename, audiofilename):
@@ -714,33 +792,49 @@ class TrainingCorpus( object ):
                 ann.GetLabel().SetValue( newlabel )
 
         # Fix current storage dir.
-        if self.datatrainer.storetrs is None:
-            logging.info('Fix storage directory name to "align"')
-            self.datatrainer.fix_storage_dirs("phon")
+        self.datatrainer.fix_storage_dirs("phon")
         outfile = os.path.basename(utils.fileutils.gen_name(root="track_phonetized", addtoday=False, addpid=False))
 
         # Add the tier
-        return self._append_tier( tier, outfile, trsfilename, audiofilename )
+        res =  self._append_tier( tier, outfile, trsfilename, audiofilename )
+        if res is True:
+            self.phonesfile[ trsfilename ] = os.path.join(self.datatrainer.get_storetrs(), outfile+".lab")
+        return res
 
 
-    def _append_tier( self, tier, outfile, trsfilename,audiofilename ):
-        ret = self._add_tier( tier, outfile )
+    def _append_transcription(self, tier, trsfilename, audiofilename):
+        """
+        Append a Transcription tier in the set of known data.
+
+        """
+        # Fix current storage dir.
+        self.datatrainer.fix_storage_dirs("trans")
+        outfile = os.path.basename(utils.fileutils.gen_name(root="track_transcribed", addtoday=False, addpid=False))
+
+        # Add the tier
+        res =  self._append_tier( tier, outfile, trsfilename, audiofilename, ext=".xra" )
+        if res is True:
+            # no lab file created (it needs sppas... a vocab, a dict and an acoustic model).
+            self.transfiles[ trsfilename ] = os.path.join(self.datatrainer.get_storetrs(), outfile+".xra")
+        return res
+
+
+    def _append_tier( self, tier, outfile, trsfilename, audiofilename, ext=".lab" ):
+        """
+        Append a Transcription (orthography) tier in the set of known data.
+
+        """
+        ret = self._add_tier( tier, outfile, ext )
         if ret is True:
 
             ret = self._add_audio( audiofilename, outfile )
             if ret is True:
 
-                #ret = self._append_mlf( self.alignmlffile, outfile )
-                #if ret is True:
-
-                self._append_scp( outfile )
                 logging.info('Files %s / %s appended as %s.'%(trsfilename,audiofilename,outfile))
-                self.audiofiles[ trsfilename ] = audiofilename
+                self.audiofiles[ trsfilename ] = os.path.join(self.datatrainer.get_storewav(), outfile + ".wav" )
+                self.mfcfiles[ trsfilename ]   = os.path.join(self.datatrainer.get_storemfc(), outfile + ".mfc" )
                 return True
 
-                #else:
-                #    self._pop_tier( outfile )
-                #    self._pop_audio( outfile )
             else:
                 self._pop_tier( outfile )
 
@@ -749,11 +843,11 @@ class TrainingCorpus( object ):
 
     # -----------------------------------------------------------------------
 
-    def _add_tier( self, tier, outfile ):
+    def _add_tier( self, tier, outfile, ext ):
         try:
             trs = Transcription()
             trs.Append( tier )
-            annotationdata.io.write( os.path.join(self.datatrainer.storetrs, outfile+".lab"), trs )
+            annotationdata.io.write( os.path.join(self.datatrainer.get_storetrs(), outfile+ext), trs )
         except Exception as e:
             print str(e)
             return False
@@ -763,7 +857,7 @@ class TrainingCorpus( object ):
 
     def _pop_tier( self, outfile ):
         try:
-            os.remove( os.path.join(self.datatrainer.storetrs, outfile + ".lab" ))
+            os.remove( os.path.join(self.datatrainer.get_storetrs(), outfile + ".lab" ))
         except IOError:
             pass
 
@@ -788,11 +882,11 @@ class TrainingCorpus( object ):
         # Save the converted channel
         audio_out = Audio()
         audio_out.append_channel( formatter.channel )
-        signals.save( os.path.join(self.datatrainer.storewav, outfile + ".wav" ), audio_out )
+        signals.save( os.path.join(self.datatrainer.get_storewav(), outfile + ".wav" ), audio_out )
 
         # Generate MFCC
-        wav = os.path.join(self.datatrainer.storewav, outfile + ".wav" )
-        mfc = os.path.join(self.datatrainer.storemfc, outfile + ".mfc" )
+        wav = os.path.join(self.datatrainer.get_storewav(), outfile + ".wav" )
+        mfc = os.path.join(self.datatrainer.get_storemfc(), outfile + ".mfc" )
         tmpfile = utils.fileutils.gen_name(root="scp", addtoday=False, addpid=False)
         with open( tmpfile, "w") as fp:
             fp.write('%s %s\n'%(wav,mfc))
@@ -807,7 +901,7 @@ class TrainingCorpus( object ):
 
     def _pop_audio( self, outfile ):
         try:
-            os.remove( os.path.join(self.datatrainer.storewav, outfile + ".wav" ))
+            os.remove( os.path.join(self.datatrainer.get_storewav(), outfile + ".wav" ))
         except IOError:
             pass
 
@@ -819,27 +913,16 @@ class TrainingCorpus( object ):
 
         """
         lab = ""
-        with open( os.path.join(self.datatrainer.storetrs,outfile+".lab"), "r") as fp:
+        with open( os.path.join(self.datatrainer.get_storetrs(),outfile+".lab"), "r") as fp:
             lab = "".join(fp.readlines()).strip()
         if len(lab) == 0:
             return False
 
         with open( filename, "a+") as fp:
-            fp.write('"*/%s/%s.lab"\n'%(os.path.basename(self.datatrainer.storetrs),os.path.basename(outfile)))
+            fp.write('"*/%s/%s.lab"\n'%(os.path.basename(self.datatrainer.get_storetrs()),os.path.basename(outfile)))
             fp.write('%s\n'%lab)
 
         return True
-
-    # -----------------------------------------------------------------------
-
-    def _append_scp(self, outfile):
-        """
-        Append a MFC file into the SCP file.
-
-        """
-        with open( self.scpfile, "w+") as fp:
-            #fp.write('./%s/%s.mfc\n'%(os.path.basename(self.datatrainer.storemfc),outfile))
-            fp.write('%s.mfc\n'%os.path.join(self.datatrainer.storemfc,outfile))
 
     # -----------------------------------------------------------------------
 
@@ -936,13 +1019,19 @@ class HTKModelInitializer( object ):
 
         """
         if test_command("HCompV") is False: return
+        scpfile = self.trainingcorpus.get_scp( aligned=True, phonetized=False, transcribed=False )
+
+        labfiles = []
+        for d in self.trainingcorpus.datatrainer.storetrs:
+            labfiles.append("-L")
+            labfiles.append(d)
 
         try:
             subprocess.check_call(["HCompV", "-T", "0", "-m",
                                   "-f", str(0.01),
                                   "-C", self.trainingcorpus.datatrainer.features.configfile,
-                                  "-S", self.trainingcorpus.scpfile,
-                                  "-M", self.directory,
+                                  "-S", scpfile,
+                                  "-M", self.directory] + labfiles + [
                                   self.trainingcorpus.datatrainer.protofile],
                                   stdout=open(os.devnull, 'wb'),
                                   stderr=open(os.devnull, 'wb'))
@@ -958,6 +1047,12 @@ class HTKModelInitializer( object ):
 
         """
         if test_command("HInit") is False: return
+        scpfile = self.trainingcorpus.get_scp( aligned=True, phonetized=False, transcribed=False )
+
+        labfiles = []
+        for d in self.trainingcorpus.datatrainer.storetrs:
+            labfiles.append("-L")
+            labfiles.append(d)
 
         try:
             subprocess.check_call(["HInit", "-T", "0", "-i", "20",
@@ -966,12 +1061,11 @@ class HTKModelInitializer( object ):
                                    "-l", phone,
                                    "-o", outfile,
                                    "-C", self.trainingcorpus.datatrainer.features.configfile,
-                                   "-L", self.trainingcorpus.datatrainer.storetrs,
-                                   "-S", self.trainingcorpus.scpfile,
-                                   "-M", self.directory,
+                                   "-S", scpfile,
+                                   "-M", self.directory] + labfiles + [
                                    self.trainingcorpus.datatrainer.protofile],
-                                  stdout=open(os.devnull, 'wb'),
-                                  stderr=open(os.devnull, 'wb'))
+                                stdout=open(os.devnull, 'wb'),
+                                stderr=open(os.devnull, 'wb'))
         except subprocess.CalledProcessError:
             pass
 
@@ -987,8 +1081,10 @@ class HTKModelInitializer( object ):
         or use the default prototype.
 
         """
+        scpfile = self.trainingcorpus.get_scp( aligned=True, phonetized=False, transcribed=False )
+
         # Adapt the proto file from the corpus (if any)
-        if self.trainingcorpus.scpfile is not None:
+        if scpfile is not None:
             if self.trainingcorpus.datatrainer.protofile is not None:
                 logging.info(' ... Train proto model:')
                 self._create_flat_start_model()
@@ -1004,8 +1100,8 @@ class HTKModelInitializer( object ):
             logging.info(' ... Train initial model of %s: '%phone)
             outfile = os.path.join( self.directory, phone + ".hmm" )
 
-            if self.trainingcorpus.scpfile is not None:
-                if os.path.exists( self.trainingcorpus.scpfile ):
+            if scpfile is not None:
+                if os.path.exists( scpfile ):
                     self._create_start_model( phone, outfile )
 
             # the start model was not created.
@@ -1206,7 +1302,7 @@ class HTKModelTrainer( object ):
 
     # -----------------------------------------------------------------------
 
-    def realign(self):
+    def align_trs(self):
         """
         TODO
         """
@@ -1215,13 +1311,20 @@ class HTKModelTrainer( object ):
 
     # -----------------------------------------------------------------------
 
-    def train_step(self, rounds=3):
+    def train_step(self, scpfile, rounds=3):
         """
         Perform one or more rounds of HERest estimation.
 
         @param rounds (int) Number of times HERest is called.
 
         """
+        if test_command("HERest") is False: return
+
+        labfiles = []
+        for d in self.corpus.datatrainer.storetrs:
+            labfiles.append("-L")
+            labfiles.append(d)
+
         for _ in range(rounds):
             logging.info("Training iteration {}.".format(self.epochs))
             self.init_epoch_dir()
@@ -1229,12 +1332,11 @@ class HTKModelTrainer( object ):
             try:
                 subprocess.check_call(["HERest", "-T", "0",
                             "-C", self.corpus.datatrainer.features.configfile,
-                            "-S", self.corpus.scpfile,
-                            "-L", self.corpus.datatrainer.storetrs,
+                            "-S", scpfile,
                             "-M", self.curdir,
                             "-H", os.path.join(self.prevdir, DEFAULT_MACROS_FILENAME),
                             "-H", os.path.join(self.prevdir, DEFAULT_HMMDEFS_FILENAME),
-                            "-t", "250.0", "150.0", "1000.0",
+                            "-t", "250.0", "150.0", "1000.0"] + labfiles + [
                             self.corpus.phonesfile],
                             stdout=open(os.devnull, 'wb'),
                             stderr=open(os.devnull, 'wb'))
@@ -1258,7 +1360,7 @@ class HTKModelTrainer( object ):
 
         if self.corpus is None: return model
         if self.corpus.datatrainer.workdir is None:
-            self.corpus.datatrainer.workdir = fileutils.gen_name()
+            self.corpus.datatrainer.workdir = utils.fileutils.gen_name()
             os.mkdir( self.corpus.datatrainer.workdir )
         if self.corpus.phonesfile is None:
             self.corpus.fix_resources()
@@ -1287,7 +1389,7 @@ class HTKModelTrainer( object ):
         # --------------------------------
 
         logging.info("Initial training.")
-        ret = self.train_step()
+        ret = self.train_step( self.corpus.get_scp( aligned=True, phonetized=False, transcribed=False ) )
         if ret is False:
             logging.info('Initial training failed.')
             model.load_htk( os.path.join( self.prevdir,DEFAULT_HMMDEFS_FILENAME) )
@@ -1296,11 +1398,11 @@ class HTKModelTrainer( object ):
         logging.info("Modeling silence.")
         self.small_pause()
 
-        # Step 3.2 From utterrance-aligned data: previously phonetized.
-        # -------------------------------------------------------------
+        # Step 3.2 From utterrance-aligned data with phonetization.
+        # ---------------------------------------------------------
 
         logging.info("Additional training.")
-        ret = self.train_step()
+        ret = self.train_step( self.corpus.get_scp( aligned=True, phonetized=True, transcribed=False ) )
         if ret is False:
             logging.info('Additional training failed.')
             model.load_htk( os.path.join( self.prevdir,DEFAULT_HMMDEFS_FILENAME) )
@@ -1310,11 +1412,20 @@ class HTKModelTrainer( object ):
         model.load_htk( os.path.join( self.curdir,DEFAULT_HMMDEFS_FILENAME) )
         return model
 
-        logging.info("Re-aligning.")
-        self.realign()
+        # Step 3.3 From utterrance-aligned data with orthography.
+        # -------------------------------------------------------
+
+        logging.info("Aligning transcribed files.")
+        self.align_trs()
+
+        logging.info("Intermediate training.")
+        self.train_step( self.corpus.get_scp( aligned=True, phonetized=True, transcribed=True ) )
+
+        logging.info("Re-Aligning transcribed files.")
+        self.align_trs()
 
         logging.info("Final training.")
-        self.train_step()
+        self.train_step( self.corpus.get_scp( aligned=True, phonetized=True, transcribed=True ) )
 
         # --------------------------
 

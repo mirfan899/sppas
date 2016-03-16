@@ -25,15 +25,6 @@ MODEL_PATH = os.path.join(RESOURCES_PATH, "models")
 
 class TestTrainer(unittest.TestCase):
 
-    def test_modeltrainer(self):
-        trainer = HTKModelTrainer()
-        model = trainer.training_recipe()
-        self.assertEqual( len(model.hmms),0 )
-
-        trainer.corpus = TrainingCorpus()
-        model = trainer.training_recipe()
-        self.assertEqual( len(model.hmms),4 )
-
     def test_datatrainer(self):
         datatrainer = DataTrainer()
         datatrainer.create()
@@ -70,8 +61,7 @@ class TestTrainer(unittest.TestCase):
         self.assertEqual( corpus.phonemap.map_entry('#'), "sil" )
 
         self.assertFalse( corpus.add_file( "toto", "toto" ) )
-        self.assertTrue( corpus.add_file( "F_F_B003-P8.TextGrid", "F_F_B003-P8.wav" ) )
-        self.assertTrue( corpus.add_file( "F_F_B003-P8.TextGrid", "F_F_B003-P8.wav" ) )
+        self.assertTrue( corpus.add_file( "F_F_B003-P8-palign.TextGrid", "F_F_B003-P8.wav" ) )
         corpus.datatrainer.delete()
 
     def test_initializer_without_corpus(self):
@@ -110,13 +100,22 @@ class TestTrainer(unittest.TestCase):
         shutil.rmtree("working")
         os.remove( os.path.join("protos", "proto.hmm") )
 
-    def test_trainer(self):
+    def test_trainer_without_data(self):
+        trainer = HTKModelTrainer()
+        model = trainer.training_recipe()
+        self.assertEqual( len(model.hmms),0 )
+
+        trainer.corpus = TrainingCorpus()
+        model = trainer.training_recipe()
+        self.assertEqual( len(model.hmms),4 )
+
+    def test_trainer_with_data(self):
         setup_logging(1,None)
         corpus = TrainingCorpus()
         corpus.fix_resources(dictfile=os.path.join(RESOURCES_PATH, "dict", "fra.dict"), mappingfile=os.path.join(RESOURCES_PATH,"models","models-fra","monophones.repl" ))
         corpus.datatrainer.protodir = "protos"
-        corpus.add_file( "F_F_B003-P8.TextGrid", "F_F_B003-P8.wav" )
-        corpus.add_file( "F_F_B003-P8.TextGrid", "F_F_B003-P8.wav" )
+        corpus.add_file( "F_F_B003-P8-palign.TextGrid", "F_F_B003-P8.wav" )
+        corpus.add_file( "track_0001.lab", "track_0001.wav" )
 
         trainer = HTKModelTrainer(corpus)
         acmodel = trainer.training_recipe()
