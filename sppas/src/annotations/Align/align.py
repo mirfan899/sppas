@@ -49,6 +49,7 @@ import random
 import glob
 import string
 import codecs
+import logging
 import os.path
 from datetime import date
 
@@ -248,7 +249,7 @@ class sppasAlign:
         """
         Fix the infersp option.
         If infersp is set to True, sppasAlign() will add a short pause at
-        the en of each token, and the automatic aligner will infer if it is
+        the end of each token, and the automatic aligner will infer if it is
         appropriate or not.
 
         @param infersp is a Boolean
@@ -306,7 +307,7 @@ class sppasAlign:
         """
         Fix the self.inputaudio value.
         Verify if a audio file corresponds to the expected
-        input format and convert if it is needed.
+        input format and convert_tracks if it is needed.
 
         @return Boolean value (the input audio file was converted or not).
 
@@ -569,9 +570,9 @@ class sppasAlign:
             i = i + 1
 
 
-    def convert(self, diralign, trstier):
+    def convert_tracks(self, diralign, trstier):
         """
-        Call the Aligner to align each unit in a directory.
+        Call the Aligner to align each unit of a directory.
 
         @param diralign is the directory to get units and put alignments.
         @param trstier (Tier) required only if basic alignment.
@@ -598,7 +599,7 @@ class sppasAlign:
             if self._logfile:
                 self._logfile.print_message('Align unit number '+str(track), indent=3)
             else:
-                print ' ... Align unit number '+str(track)
+                logging.info( ' ... Align unit number %d'%track)
 
             audiofilename = os.path.join(diralign, "track_%06d.wav"%track)
             phonname = os.path.join(diralign, "track_%06d.phon"%track)
@@ -624,7 +625,7 @@ class sppasAlign:
                     if self._logfile:
                         self._logfile.print_message(self._alignerid+' failed to perform segmentation.',indent=3,status=1)
                     else:
-                        print ' ... ... [ ERROR ] '+self._alignerid+' failed to perform segmentation.'
+                        logging.info( ' ... ... [ ERROR ] %s failed to perform segmentation.'%self._alignerid)
             except Exception as e:
                 ret = 1
                 if self._logfile:
@@ -644,7 +645,7 @@ class sppasAlign:
 
             track = track + 1
 
-    # End convert
+    # End convert_tracks
     # ------------------------------------------------------------------------
 
 
@@ -676,38 +677,11 @@ class sppasAlign:
     # End save
     # ------------------------------------------------------------------------
 
-    # ------------------------------------------------------------------------
-
-    def run(self, inputphonesname, inputtokensname, inputaudioname, outputfilename=None):
+    def convert( self, phontier, toktier, inputaudioname ):
         """
-        Execute SPPAS Alignment.
-
-        @param inputphonesname is the file containing the phonetization
-        @param inputtokensname is the file containing the tokenization
-        @param outputfilename is the file name with the result (3 tiers)
-
         """
-        # Get input data and merge tokenization/phonetization in a Transcription()
-        trsinput = Transcription()
-
-        try:
-            phontier = self.__get_phonestier( inputphonesname )
-            inputphonesidx = trsinput.Add( phontier )
-        except Exception as e:
-            raise IOError(' Not a valid input file: '+str(e))
-
-        toktier = self.__get_tokenstier( inputtokensname )
-        if toktier is not None:
-            inputtokensidx = trsinput.Add( toktier )
-        else:
-            if self._logfile:
-                self._logfile.print_message("Tokens alignment disabled: no tokenization available",indent=2,status=3)
-
         # Set local file names
         self.inputaudio = inputaudioname
-
-        # Start processing...
-        # ####################
 
         # Verify the input audio file (and optionally convert it...)
         # --------------------------------------------------------------
@@ -774,7 +748,7 @@ class sppasAlign:
         if self._logfile:
             self._logfile.print_message("Align each inter-pausal unit: ",indent=2)
         try:
-            self.convert( diralign , phontier)
+            self.convert_tracks( diralign , phontier)
         except Exception as e:
             if self._options['clean'] is True:
                 shutil.rmtree( diralign )
@@ -783,8 +757,7 @@ class sppasAlign:
             if self._logfile:
                 self._logfile.print_message("",indent=2,status=0)
 
-
-        # Merge unit alignments and save result
+        # Merge unit alignments
         # --------------------------------------------------------------
         if self._logfile:
             self._logfile.print_message("Merge unit's alignment and save into a file ",indent=2)
@@ -819,6 +792,38 @@ class sppasAlign:
         for tier in trsoutput:
             tier.SetMedia( media )
 
+        return trsoutput
+
+    # ------------------------------------------------------------------------
+
+    def run(self, inputphonesname, inputtokensname, inputaudioname, outputfilename=None):
+        """
+        Execute SPPAS Alignment.
+
+        @param inputphonesname is the file containing the phonetization
+        @param inputtokensname is the file containing the tokenization
+        @param outputfilename is the file name with the result (3 tiers)
+
+        """
+        # Get input data and merge tokenization/phonetization in a Transcription()
+        trsinput = Transcription()
+
+        try:
+            phontier = self.__get_phonestier( inputphonesname )
+            trsinput.Add( phontier )
+        except Exception as e:
+            raise IOError(' Not a valid input file: '+str(e))
+
+        toktier = self.__get_tokenstier( inputtokensname )
+        if toktier is not None:
+            trsinput.Add( toktier )
+        else:
+            if self._logfile:
+                self._logfile.print_message("Tokens alignment disabled: no tokenization available",indent=2,status=3)
+
+        # Processing...
+        trsoutput = self.convert( phontier,toktier,inputaudioname )
+
         # Save results
         try:
             if self._logfile:
@@ -830,6 +835,7 @@ class sppasAlign:
 
         except Exception as e:
             if self._options['clean'] is True:
+                diralign, fileExt = os.path.splitext( self.inputaudio )
                 shutil.rmtree( diralign )
             raise IOError("align.py. Save. Error while saving file: " + str(e))
 
@@ -838,11 +844,11 @@ class sppasAlign:
         if self.inputaudio != inputaudioname:
             os.remove(self.inputaudio)
         if self._options['clean'] is True:
+            diralign, fileExt = os.path.splitext( self.inputaudio )
             shutil.rmtree( diralign )
 
     # End run
     # ------------------------------------------------------------------------
-
 
 
     # ###################################################################### #

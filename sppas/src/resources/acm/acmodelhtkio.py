@@ -49,7 +49,7 @@ __all__       = [
 import collections
 
 from dependencies.grako.parsing import graken, Parser
-from hmm import HMM
+import hmm
 
 # ---------------------------------------------------------------------------
 
@@ -110,10 +110,10 @@ class HtkIO:
 
         self.macros = model['macros']
         self.hmms   = []
-        for hmm in model['hmms']:
-            newhmm = HMM()
-            newhmm.set_name(hmm['name'])
-            newhmm.set_definition(hmm['definition'])
+        for h in model['hmms']:
+            newhmm = hmm.HMM()
+            newhmm.set_name(h['name'])
+            newhmm.set_definition(h['definition'])
             self.hmms.append(newhmm)
 
     # -----------------------------------------------------------------------
@@ -165,7 +165,7 @@ class HtkIO:
         @param hmms (list) List of HMM instances
 
         """
-        if not (isinstance(hmms, list) and all([isinstance(h,HMM) for h in hmms])):
+        if not (isinstance(hmms, list) and all([isinstance(h,hmm.HMM) for h in hmms])):
             raise TypeError('Expected a list of HMMs instances.')
 
         self.hmms = hmms

@@ -17,13 +17,24 @@ from resources.acm.htktrain import HTKModelTrainer, DataTrainer, PhoneSet, Train
 
 from utils.type import compare
 from utils.fileutils import setup_logging
-from sp_glob import RESOURCES_PATH
+from sp_glob import RESOURCES_PATH, SAMPLES_PATH
 
 MODEL_PATH = os.path.join(RESOURCES_PATH, "models")
 
 # ---------------------------------------------------------------------------
 
 class TestTrainer(unittest.TestCase):
+
+    def test_add_corpus(self):
+        corpus = TrainingCorpus()
+        nb = corpus.add_corpus( os.path.join(SAMPLES_PATH,"samples-eng") )
+        self.assertEqual(nb, 0)
+        nb = corpus.add_corpus( os.path.join(SAMPLES_PATH,"samples-ita") )
+        self.assertEqual(nb, 4)
+        corpus.add_corpus( SAMPLES_PATH )
+        self.assertGreater(len(corpus.transfiles), 10)
+        self.assertEqual(len(corpus.phonfiles), 0)
+        self.assertEqual(len(corpus.alignfiles), 0)
 
     def test_datatrainer(self):
         datatrainer = DataTrainer()
@@ -110,16 +121,19 @@ class TestTrainer(unittest.TestCase):
         self.assertEqual( len(model.hmms),4 )
 
     def test_trainer_with_data(self):
-        setup_logging(1,None)
+        #setup_logging(1,None)
         corpus = TrainingCorpus()
         corpus.fix_resources(dictfile=os.path.join(RESOURCES_PATH, "dict", "fra.dict"), mappingfile=os.path.join(RESOURCES_PATH,"models","models-fra","monophones.repl" ))
+        corpus.lang = "fra"
         corpus.datatrainer.protodir = "protos"
         corpus.add_file( "F_F_B003-P8-palign.TextGrid", "F_F_B003-P8.wav" )
         corpus.add_file( "track_0001-phon.xra", "track_0001.wav" )
+        corpus.add_corpus( os.path.join(SAMPLES_PATH,"samples-fra") )
 
         trainer = HTKModelTrainer(corpus)
-        acmodel = trainer.training_recipe()
-        acmodel.save_htk('TEST-HMMDEFS')
+        acmodel = trainer.training_recipe( delete=True )
+        # TODO: Test the models
+        #acmodel.save_htk('TEST-HMMDEFS')
 
 # ---------------------------------------------------------------------------
 
@@ -408,12 +422,9 @@ class TestAcModel(unittest.TestCase):
 # End TestAcModel
 # ---------------------------------------------------------------------------
 
-
-# ---------------------------------------------------------------------------
-
 if __name__ == '__main__':
     testsuite = unittest.TestSuite()
-    #testsuite.addTest(unittest.makeSuite(TestInterpolate))
-    #testsuite.addTest(unittest.makeSuite(TestAcModel))
+    testsuite.addTest(unittest.makeSuite(TestInterpolate))
+    testsuite.addTest(unittest.makeSuite(TestAcModel))
     testsuite.addTest(unittest.makeSuite(TestTrainer))
     unittest.TextTestRunner(verbosity=2).run(testsuite)
