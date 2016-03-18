@@ -2,24 +2,21 @@
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /        Automatic
-#           \__   |__/  |__/  |___| \__      Annotation
-#              \  |     |     |   |    \     of
-#           ___/  |     |     |   | ___/     Speech
-#           =============================
+#           /     |  \  |  \  |  \  /              Automatic
+#           \__   |__/  |__/  |___| \__             Annotation
+#              \  |     |     |   |    \             of
+#           ___/  |     |     |   | ___/              Speech
 #
-#           http://www.lpl-aix.fr/~bigi/sppas
+#
+#                           http://www.sppas.org/
 #
 # ---------------------------------------------------------------------------
-# developed at:
+#            Laboratoire Parole et Langage, Aix-en-Provence, France
+#                   Copyright (C) 2011-2016  Brigitte Bigi
 #
-#       Laboratoire Parole et Langage
-#
-#       Copyright (C) 2011-2014  Brigitte Bigi
-#
-#       Use of this software is governed by the GPL, v3
-#       This banner notice must not be removed
+#                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
+# Use of this software is governed by the GNU Public License, version 3.
 #
 # SPPAS is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -40,8 +37,7 @@
 
 __docformat__ = """epytext"""
 __authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2014  Brigitte Bigi"""
-
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ---------------------------------------------------------------------------
 # Imports
@@ -50,28 +46,29 @@ __copyright__ = """Copyright (C) 2011-2014  Brigitte Bigi"""
 import sys
 import os
 import os.path
-from argparse import ArgumentParser
 import traceback
+import time
+from argparse import ArgumentParser
 
+def exit_error( msg ):
+    print "[ ERROR ] ",msg
+    time.sleep( 5 )
+    sys.exit(1)
 
 # VERIFY PYTHON
 # -------------
 if sys.version_info < (2, 7):
-    print "Your python version is too old. SPPAS requires 2.7\n. Verify your python installation and try again."
-    sys.exit(1)
+    exit_error(" The version of Python is too old: SPPAS requires exactly the version 2.7.something.")
 
 if sys.version_info >= (3, 0):
-    print "Your python version is not appropriate. SPPAS requires 2.7\n. Verify your python installation and try again."
-    sys.exit(1)
-
+    exit_error( "The version of Python is not the right one: SPPAS requires exactly the version 2.7.something.")
 
 # VERIFY WXPYTHON
 # ----------------
 try:
     import wx
 except ImportError:
-    print "WxPython is not installed on your system\n. Verify your installation and try again."
-    sys.exit(1)
+    exit_error( "WxPython is not installed on your system\n. The Graphical User Interface of SPPAS can't work. Refer to the installation instructions of the SPPAS web site.")
 
 try:
     wxv = wx.version().split()[0]
@@ -79,13 +76,12 @@ except Exception:
     wxv = '2'
 
 if int(wxv[0]) < 3:
-    print 'Your version of wxpython is too old. You could encounter problem while using SPPAS.\nPlease, perform the update at http://wxpython.org/download.php and restart SPPAS.\n\nFor any help, see SPPAS installation page.'
-
+    print "[ WARNING ] The version of WxPython is too old.\n\tThe Graphical User Interface will not display properly.\n\tUpdate at http://wxpython.org/ and restart SPPAS.\n\tFor any help, see SPPAS installation page.\n"
+    time.sleep( 20 )
 
 # THEN, VERIFY SPPAS
 # ------------------
 
-# Make sure that we can import libraries
 PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.insert(0,SPPAS)
@@ -93,11 +89,10 @@ sys.path.insert(0,SPPAS)
 try:
     from wxgui.frames.dataroamerframe import DataRoamerFrame
     from wxgui.sp_icons import DATAROAMER_APP_ICON
-    from utils.commons import setup_logging
+    from utils.fileutils import setup_logging
 except ImportError as e:
     print traceback.format_exc()
-    print "A problem occurred when launching SPPAS.\nVerify your SPPAS installation directory and try again. The error is: %s"%(str(e))
-    sys.exit(1)
+    exit_error( "A problem occurred when launching DataRoamer.\nThe error is: %s.\nVerify the SPPAS installation directory and try again."%(str(e)))
 
 
 # ---------------------------------------------------------------------------
@@ -107,7 +102,13 @@ except ImportError as e:
 # Log
 log_level = 0
 log_file  = None
-setup_logging(log_level, log_file)
+
+try:
+    setup_logging(log_level, log_file)
+except Exception:
+    # stdin is not available if pythonw is used on Windows!
+    log_file = os.path.join( os.path.dirname( os.path.dirname( os.path.dirname( PROGRAM ) )), "sppas.log")
+    setup_logging(log_level, log_file)
 
 
 # Arguments
@@ -133,10 +134,13 @@ arguments['type']  = "DATAFILES"
 arguments['icon']  = DATAROAMER_APP_ICON
 
 app = wx.App()
-frame = DataRoamerFrame(None, -1, arguments)
-app.SetTopWindow(frame)
-
-frame.AddFiles( filenames )
+try:
+    frame = DataRoamerFrame(None, -1, arguments)
+    app.SetTopWindow(frame)
+    frame.AddFiles( filenames )
+except Exception as e:
+    print traceback.format_exc()
+    exit_error("A problem occurred when creating the Graphical User Interface.\nThe error is: %s"%(str(e)) )
 
 app.MainLoop()
 

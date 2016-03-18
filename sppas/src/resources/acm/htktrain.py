@@ -702,7 +702,10 @@ class TrainingCorpus( object ):
 
     def get_mlf(self):
         """
-        Fix the mlf file by choosing the files to add.
+        Fix the mlf file by defining the directories to add.
+
+        Example of a line of the MLF file is:
+        "*/mfc-align/*" => "workdir/trs-align"
 
         """
         files = False
@@ -718,9 +721,6 @@ class TrainingCorpus( object ):
 
         if files is True: return mlffile
         return None
-
-        # Expected is:
-        #"*/mfc-align/*" => "/tmp/sppas_tmp_2016-03-16_16990_2284/trs-align"
 
     # -----------------------------------------------------------------------
 
