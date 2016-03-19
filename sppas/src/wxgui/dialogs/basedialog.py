@@ -79,7 +79,6 @@ class spBaseDialog( wx.Dialog ):
     @summary: Base class for dialogs in SPPAS.
 
     """
-
     def __init__(self, parent, preferences=None, title=""):
         """
         Constructor.
@@ -107,12 +106,17 @@ class spBaseDialog( wx.Dialog ):
         self.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR'))
         self.SetFont( self.preferences.GetValue('M_FONT'))
 
+    # -----------------------------------------------------------------------
 
-    def CreateTitle(self, titleicon, titletext):
+    def CreateTitle(self, titleicon=APP_ICON, titletext="It's coffee time!"):
         """
         Create a layout including a nice bold-title with an icon.
+
+        @param titleicon Name of the icon (see sp_icons)
+        @param titletext String of the title
+        @return Sizer
+
         """
-        title_layout = wx.BoxSizer(wx.HORIZONTAL)
         bmp = spBitmap(titleicon, BUTTON_ICONSIZE, theme=self.preferences.GetValue('M_ICON_THEME'))
         pan = wx.Panel(self,-1)
         pic = wx.StaticBitmap(pan)
@@ -121,11 +125,17 @@ class spBaseDialog( wx.Dialog ):
         font = self.preferences.GetValue('M_FONT')
         font.SetWeight(wx.BOLD)
         font.SetPointSize(font.GetPointSize() + 2)
-        self.title_label = wx.StaticText(self, label=titletext, style=wx.ALIGN_CENTER)
-        self.title_label.SetFont( font )
-        title_layout.Add(pan,  flag=wx.ALL, border=4)
-        title_layout.Add(self.title_label, flag=wx.EXPAND|wx.ALL|wx.wx.ALIGN_CENTER_VERTICAL, border=4)
+
+        title_label = wx.StaticText(self, label=titletext, style=wx.ALIGN_CENTER)
+        title_label.SetFont( font )
+
+        title_layout = wx.BoxSizer(wx.HORIZONTAL)
+        title_layout.Add(pan, flag=wx.ALL, border=4)
+        title_layout.Add(title_label, flag=wx.EXPAND|wx.ALL|wx.wx.ALIGN_CENTER_VERTICAL, border=4)
+
         return title_layout
+
+    # -----------------------------------------------------------------------
 
     def CreateButton(self, icon, text, tooltip="", btnid=None):
         """
@@ -139,77 +149,129 @@ class spBaseDialog( wx.Dialog ):
         """
         if btnid is None:
             btnid = wx.NewId()
-        bmp = spBitmap(icon, theme=self.preferences.GetValue('M_ICON_THEME'))
+        bmp = spBitmap(icon, BUTTON_ICONSIZE, theme=self.preferences.GetValue('M_ICON_THEME'))
         btn = CreateGenButton(self, btnid, bmp, text=text, tooltip=tooltip, colour=None)
         btn.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
         btn.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
         btn.SetFont( self.preferences.GetValue('M_FONT') )
+
         return btn
 
-    def CreateSaveButton(self, tooltip=""):
-        return self.CreateButton(SAVE_FILE, "Save", tooltip)
+    # -----------------------------------------------------------------------
 
-    def CreateCancelButton(self, tooltip=""):
+    def CreateSaveButton(self, tooltip="Save"):
+        return self.CreateButton(SAVE_FILE, "Save", tooltip, wx.ID_SAVE)
+
+    def CreateCancelButton(self, tooltip="Cancel"):
         btn = self.CreateButton(CANCEL_ICON, "Cancel", tooltip, wx.ID_CANCEL)
         self.SetAffirmativeId(wx.ID_CANCEL)
         return btn
 
-    def CreateCloseButton(self, tooltip=""):
+    def CreateCloseButton(self, tooltip="Close"):
         btn = self.CreateButton(CLOSE_ICON, "Close", tooltip, wx.ID_CLOSE)
         btn.SetDefault()
         btn.SetFocus()
         self.SetAffirmativeId(wx.ID_CLOSE)
         return btn
 
-    def CreateOkayButton(self, tooltip=""):
+    def CreateOkayButton(self, tooltip="Okay"):
         btn = self.CreateButton(OKAY_ICON, " OK ", tooltip, wx.ID_OK)
         btn.SetDefault()
         btn.SetFocus()
         self.SetAffirmativeId(wx.ID_OK)
         return btn
 
-    def CreateYesButton(self, tooltip=""):
+    def CreateYesButton(self, tooltip="Yes"):
         btn = self.CreateButton(YES_ICON, " Yes ", tooltip, wx.ID_YES)
         btn.SetDefault()
         btn.SetFocus()
         return btn
 
-    def CreateNoButton(self, tooltip=""):
+    def CreateNoButton(self, tooltip="No"):
         btn = self.CreateButton(NO_ICON, " No ", tooltip, wx.ID_NO)
         btn.SetFocus()
         return btn
 
-    def CreateButtonBox(self, leftbuttons,rightbuttons):
+    # -----------------------------------------------------------------------
+
+    def CreateButtonBox(self, leftbuttons=[],rightbuttons=[]):
+        """
+        Create a button box, with buttons to put at left and others at right.
+
+        @param leftbuttons (list)
+        @param rightbuttons (list)
+        @return Sizer.
+
+        """
         button_box = wx.BoxSizer(wx.HORIZONTAL)
+
         if len(leftbuttons)>0:
             for button in leftbuttons:
                 button_box.Add(button, flag=wx.LEFT, border=2)
+
         if len(rightbuttons)>0:
             button_box.AddStretchSpacer()
             for button in rightbuttons:
                 button_box.Add(button, flag=wx.RIGHT, border=2)
+
         return button_box
 
+    # -----------------------------------------------------------------------
+
+    def CreateTextCtrl(self, text, style=wx.TE_MULTILINE|wx.NO_BORDER):
+        """
+        Return a wx.TextCtrl with appropriate font and style.
+
+        """
+        txt = wx.TextCtrl(self, wx.ID_ANY, value=text, style=style)
+        font = self.preferences.GetValue('M_FONT')
+        txt.SetFont(font)
+        txt.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
+        txt.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
+
+        return txt
+
+    # -----------------------------------------------------------------------
+
     def AddToolbar(self, leftobjects,rightobjects):
-        if len(leftobjects+rightobjects)==0:
-            return
+        """
+        Add a toolbar to the dialog.
+
+        @param leftobjects (list)
+        @param rightobjects (list)
+
+        """
+        if len(leftobjects+rightobjects) == 0: return
+
         self.toolbar = wx.BoxSizer(wx.HORIZONTAL)
+
         if len(leftobjects)>0:
             for button in leftobjects:
                 self.toolbar.Add(button, flag=wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, border=2)
             if len(rightobjects)>0:
                 self.toolbar.AddStretchSpacer()
+
         if len(rightobjects)>0:
             for button in rightobjects:
                 self.toolbar.Add(button, flag=wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, border=2)
 
+    # -----------------------------------------------------------------------
+
     def LayoutComponents(self, title, content, buttonbox):
+        """
+        Layout the components of the dialog.
+          - title at the top
+          - then eventually the toolbar
+          - then the content
+          - and a button box at the bottom.
+
+        """
         vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(title,     0, flag=wx.ALL|wx.EXPAND, border=4)
+        vbox.Add(title,     0, flag=wx.ALL|wx.EXPAND, border=2)
         if self.toolbar is not None:
-            vbox.Add(self.toolbar, 0, flag=wx.LEFT|wx.RIGHT|wx.EXPAND, border=4)
-        vbox.Add(content,   1, flag=wx.ALL|wx.EXPAND, border=4)
-        vbox.Add(buttonbox, 0, flag=wx.ALL|wx.EXPAND, border=4)
+            vbox.Add(self.toolbar, 0, flag=wx.LEFT|wx.RIGHT|wx.EXPAND, border=2)
+        vbox.Add(content,   1, flag=wx.ALL|wx.EXPAND, border=2)
+        vbox.Add(buttonbox, 0, flag=wx.LEFT|wx.RIGHT|wx.BOTTOM|wx.EXPAND, border=2)
         self.SetSizerAndFit(vbox)
 
 # ---------------------------------------------------------------------------

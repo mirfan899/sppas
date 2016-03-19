@@ -77,8 +77,8 @@ class SearchDialog( spBaseDialog ):
     @summary: This class is used to display a Search dialog.
 
     Open a frame to search patterns in a transcription.
-    """
 
+    """
     def __init__(self, parent, preferences, trs):
         """
         Constructor.
@@ -152,6 +152,7 @@ class SearchDialog( spBaseDialog ):
         vbox = wx.BoxSizer(wx.VERTICAL)
         vbox.Add(self.pattern_layout, 0, wx.EXPAND|wx.ALL, border=5)
         vbox.Add(self.sh_layout,      1, flag=wx.ALL|wx.EXPAND|wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_CENTER_HORIZONTAL, border=5)
+
         return vbox
 
     #-------------------------------------------------------------------------
@@ -192,8 +193,8 @@ class SearchDialog( spBaseDialog ):
     def OnFind(self, event):
         """
         Search after or before the current position.
-        """
 
+        """
         # Firstly, check if a text to find is given!
         success = self.text.GetValidator().Validate(self.text)
         if success is False:
@@ -259,8 +260,10 @@ class SearchDialog( spBaseDialog ):
     #-------------------------------------------------------------------------
 
     def SetTranscription(self, trs):
-        """ Set a new transcription. """
+        """
+        Set a new transcription.
 
+        """
         if trs != self._trs:
             self._trs = trs
             self.sh.Remove(1)

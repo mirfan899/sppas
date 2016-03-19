@@ -49,15 +49,15 @@ PREFS_FILE = os.path.join( BASE_PATH , "etc", "sppas.prefs")
 
 HELP_PATH     = os.path.join( BASE_PATH, "doc" )
 HELP_IMG_PATH = os.path.join( HELP_PATH, "img" )
-DOC_IDX    = os.path.join( HELP_PATH, "markdown.idx" )
-HELP_IDX_EXT = ".idx"
+DOC_IDX       = os.path.join( HELP_PATH, "markdown.idx" )
+HELP_IDX_EXT  = ".idx"
 
 
 # ---------------------------------------------------------------------------
 # Base components:
 
 FRAME_STYLE = wx.DEFAULT_FRAME_STYLE|wx.CLOSE_BOX
-FRAME_TITLE = program + " - " + version
+FRAME_TITLE = " " + program + " " + version + " "
 
 DEFAULT_APP_NAME = program + "Component"
 
@@ -84,22 +84,22 @@ if wx.Platform == "__WXMSW__":
     FRAME_H  = 600   # expected "good" height
     PANEL_W  = 320   # Left/Right panel (FLP)
 else:
-    FRAME_H  = 520   # expected "good" height
+    FRAME_H  = 540   # expected "good" height
     PANEL_W  = 380
 
 TREE_ICONSIZE   = 16
 MENU_ICONSIZE   = 16
 TB_ICONSIZE     = 24
-BUTTON_ICONSIZE = 32
+BUTTON_ICONSIZE = 24
 
 # ---------------------------------------------------------------------------
 
 if wx.Platform == '__WXMAC__':
     MAIN_FONTSIZE = 12
 elif wx.Platform == '__WXGTK__':
-    MAIN_FONTSIZE = 9
+    MAIN_FONTSIZE = 8
 else:
-    MAIN_FONTSIZE = 10
+    MAIN_FONTSIZE = 9
 
 TB_FONTSIZE     = MAIN_FONTSIZE - 2
 HEADER_FONTSIZE = MAIN_FONTSIZE + 4

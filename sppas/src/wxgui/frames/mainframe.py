@@ -164,12 +164,12 @@ class FrameSPPAS( wx.Frame ):
         # Events of this frame
         wx.EVT_CLOSE(self, self.OnExit)
 
-        self.Show(True)
-
         # tips
         showtips = self._prefsIO.GetValue('M_TIPS')
         if showtips is True:
             ShowTipsDialog(None, self._prefsIO)
+
+        self.Show(True)
 
     # ------------------------------------------------------------------------
 
@@ -730,7 +730,6 @@ class FrameSPPAS( wx.Frame ):
         Return the list of annotated files selected in the FLP.
 
         """
-
         selection = []
         for ext in annotationdata.io.extensions:
             selection.extend(self.flp.GetSelected(ext))

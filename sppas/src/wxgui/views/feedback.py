@@ -113,7 +113,7 @@ class FeedbackDialog( spBaseDialog ):
     """
 
     def __init__(self, parent, preferences):
-        spBaseDialog.__init__(self, parent, preferences, title=" - Feedback")
+        spBaseDialog.__init__(self, parent, preferences, title="Feedback")
         wx.GetApp().SetAppName( "feedback" )
 
         self.controller = FeedbackForm(self, webbrowser)
@@ -141,16 +141,11 @@ class FeedbackDialog( spBaseDialog ):
         return self.CreateButtonBox( [self.btn_default,self.btn_gmail,self.btn_other], [btn_close])
 
     def _create_content(self):
-        self.to_text = wx.TextCtrl(self, wx.ID_ANY, style=wx.TE_READONLY)
-
-        self.subject_text = wx.TextCtrl(self, wx.ID_ANY)
-        self.subject_text.SetValue(program+" "+version+" - Feedback...")
-
-        self.body_text = wx.TextCtrl(self, size=(-1, -1), style=wx.TE_MULTILINE)
+        self.to_text      = self.CreateTextCtrl("", style=wx.TE_READONLY)
+        self.subject_text = self.CreateTextCtrl(program+" "+version+" - Feedback...", style=wx.TE_READONLY)
+        self.body_text    = self.CreateTextCtrl(DESCRIBE_TEXT, style=wx.TE_MULTILINE)
         self.body_text.SetMinSize((300,200))
         self.body_text.SetForegroundColour(wx.Colour(128,128,128))
-        self.body_text.SetBackgroundColour( wx.WHITE )
-        self.body_text.SetValue(DESCRIBE_TEXT)
         self.body_text.Bind(wx.EVT_CHAR, self._on_char)
 
         grid = wx.FlexGridSizer(4, 2, 5, 5)
@@ -160,9 +155,10 @@ class FeedbackDialog( spBaseDialog ):
         grid.Add(self.to_text, flag=wx.EXPAND)
         grid.Add(wx.StaticText(self, label="Subject: "), flag=wx.ALIGN_CENTER_VERTICAL)
         grid.Add(self.subject_text, flag=wx.EXPAND)
-        grid.Add(wx.StaticText(self, label="Body: "), flag=0)
+        grid.Add(wx.StaticText(self, label="Body: "), flag=wx.TOP)
         grid.Add(self.body_text, flag=wx.EXPAND)
         grid.Add(wx.StaticText(self, label="Send with: "), flag=wx.ALIGN_CENTER_VERTICAL)
+
         return grid
 
     # ------------------------------------------------------------------------
@@ -170,12 +166,9 @@ class FeedbackDialog( spBaseDialog ):
     # ------------------------------------------------------------------------
 
     def _on_char(self, evt):
-        self.body_text.SetForegroundColour(wx.BLACK)
-        if self.body_text.GetValue() == DESCRIBE_TEXT:
+        if self.body_text.GetValue().strip() == DESCRIBE_TEXT:
+            self.body_text.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
             self.body_text.SetValue('')
-            self.body_text.SetFocus()
-            self.body_text.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
-            self.body_text.Refresh()
         if self._ctrl_a(evt):
             self.body_text.SelectAll()
         else:

@@ -73,10 +73,12 @@ class SettingsDialog( spBaseDialog ):
     Dialog for the user to fix all preferences.
 
     """
-
     def __init__(self, parent, preferences):
         """
         Create a new dialog fo fix preferences, sorted in a notebook.
+
+        @param parent is a wx window.
+        @param preferences (Preferences)
 
         """
         spBaseDialog.__init__(self, parent, preferences, title=" - Settings")
@@ -117,7 +119,10 @@ class SettingsDialog( spBaseDialog ):
     #-------------------------------------------------------------------------
 
     def _on_save(self, event):
-        """ Save preferences in a file. """
+        """
+        Save preferences in a file.
+
+        """
         self.preferences.Write()
 
     #-------------------------------------------------------------------------
@@ -125,7 +130,10 @@ class SettingsDialog( spBaseDialog ):
     #-------------------------------------------------------------------------
 
     def GetPreferences(self):
-        """ Return the preferences. """
+        """
+        Return the preferences.
+
+        """
         return self.preferences
 
 # ----------------------------------------------------------------------------
@@ -135,9 +143,13 @@ class PrefsGeneralPanel( wx.Panel ):
     Main Frame settings: background color, foreground color and font, etc.
 
     """
-
     def __init__(self, parent, prefsIO):
+        """
 
+        @param parent is a wx object.
+        @param prefsIO (Preferences)
+
+        """
         wx.Panel.__init__(self, parent)
         self.preferences = prefsIO
 
@@ -209,6 +221,7 @@ class PrefsGeneralPanel( wx.Panel ):
     def UpdateUI(self):
         """
         Update the sample to look like the chosen decoration.
+
         """
         self.sampleText.SetFont( self.preferences.GetValue('M_FONT') )
         self.sampleText.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
@@ -223,6 +236,7 @@ class PrefsGeneralPanel( wx.Panel ):
     def onColorDlg(self, event):
         """
         Open a dialog to choose a color, then fix it.
+
         """
         # get the button that was clicked
         button = event.GetEventObject()
@@ -250,6 +264,7 @@ class PrefsGeneralPanel( wx.Panel ):
     def onSelectFont(self, event):
         """
         Open a dialog to choose a font, then fix it.
+
         """
         data = wx.FontData()
         data.EnableEffects(True)
@@ -271,7 +286,10 @@ class PrefsGeneralPanel( wx.Panel ):
     #-------------------------------------------------------------------------
 
     def onTipsChecked(self, event):
-        """ Tips at start-up. """
+        """
+        Tips at start-up.
+
+        """
         self.preferences.SetValue( 'M_TIPS', 'bool', event.GetEventObject().GetValue() )
 
 # ----------------------------------------------------------------------------
@@ -279,8 +297,8 @@ class PrefsGeneralPanel( wx.Panel ):
 class PrefsAnnotationPanel( wx.Panel ):
     """
     Panel to fix prefs for annotations.
-    """
 
+    """
     def __init__(self, parent, prefsIO):
 
         wx.Panel.__init__(self, parent)
@@ -306,7 +324,10 @@ class PrefsAnnotationPanel( wx.Panel ):
     #-------------------------------------------------------------------------
 
     def onOutputFormat(self, event):
-        """ File format of automatic annotations."""
+        """
+        File format of automatic annotations.
+
+        """
         idx = self.radiobox.GetSelection()
         self.preferences.SetValue( 'M_OUTPUT_EXT', 'str', extensions_out[idx] )
 
@@ -315,8 +336,8 @@ class PrefsAnnotationPanel( wx.Panel ):
 class PrefsThemePanel( wx.Panel ):
     """
     Panel with a radiobox to choose the theme of the icons.
-    """
 
+    """
     def __init__(self, parent, prefsIO):
 
         wx.Panel.__init__(self, parent)
@@ -349,7 +370,10 @@ class PrefsThemePanel( wx.Panel ):
     #-------------------------------------------------------------------------
 
     def onIconThemeClick(self, event):
-        """ Set the new theme. """
+        """
+        Set the new theme.
+
+        """
         idxtheme = self.radiobox.GetSelection()
         self.preferences.SetValue( 'M_ICON_THEME', 'str', self.iconthemes[idxtheme] )
 
