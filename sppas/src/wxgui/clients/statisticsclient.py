@@ -68,7 +68,10 @@ from wxgui.structs.themes    import BaseTheme
 from wxgui.structs.files     import xFiles
 from wxgui.structs.prefs     import Preferences
 from wxgui.cutils.imageutils import spBitmap
+
 import wxgui.dialogs.filedialogs as filedialogs
+from wxgui.dialogs.msgdialogs    import ShowInformation
+from wxgui.dialogs.msgdialogs    import ShowYesNoQuestion
 
 from wxgui.panels.trslist         import TrsList
 from wxgui.views.descriptivestats import DescriptivesStatsDialog
@@ -392,7 +395,7 @@ class Statistics( scrolled.ScrolledPanel ):
             # show the tier which is checked... even if it's not in a selected file
             nb = self._get_nbselectedtiers(inselection=False)
             if nb == 0:
-                wx.MessageBox('You must check at least one tier to view...', 'Warning', wx.OK | wx.ICON_INFORMATION)
+                ShowInformation(self, self._prefsIO, "One tier must be checked.", wx.ICON_INFORMATION)
                 self.__display_text_in_statusbar('You must at least one tier to view...')
             elif nb == 1:
                 for i in range(self._filetrs.GetSize()):
@@ -400,7 +403,7 @@ class Statistics( scrolled.ScrolledPanel ):
                     if p.tier_list.GetSelectedItemCount()==1:
                         p.Preview()
             else:
-                wx.MessageBox('Too many selected tiers to view...', 'Warning', wx.OK | wx.ICON_INFORMATION)
+                ShowInformation(self, self._prefsIO, "Only one tier must be checked.", wx.ICON_INFORMATION)
                 self.__display_text_in_statusbar('Too many selected tiers to view...')
 
 
@@ -415,31 +418,29 @@ class Statistics( scrolled.ScrolledPanel ):
             dlg.ShowModal()
             dlg.Destroy()
         else:
-            wx.MessageBox('You must check at least one tier...', 'Warning', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation(self, self._prefsIO, "At least one tier must be checked!", wx.ICON_INFORMATION)
             self.__display_text_in_statusbar('You must check at least one tier...')
 
     def OnUserAgreement(self, event):
         """ User agreement ."""
         nb = self._get_nbselectedtiers(inselection=False)
-        logging.debug(' OnUserAgreement: %d tier(s) selected'%nb)
         if nb == 2:
             dlg = UserAgreementDialog(self, self._prefsIO, self._get_selectedtiers())
             dlg.ShowModal()
             dlg.Destroy()
         else:
-            wx.MessageBox('You must check two tiers...', 'Warning', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation(self, self._prefsIO, "Two tiers must be checked!", wx.ICON_WARNING)
             self.__display_text_in_statusbar('You must check two tiers...')
 
     def OnTimeGroupAnalysis(self, event):
         """ Time Group Analysis ."""
         nb = self._get_nbselectedtiers(inselection=False)
-        logging.debug(' OnTimeGroupAnalysis: %d tier(s) selected'%nb)
         if nb > 0:
             dlg = TGADialog(self, self._prefsIO, self._get_selectedtiers())
             dlg.ShowModal()
             dlg.Destroy()
         else:
-            wx.MessageBox('You must check at least one tier...', 'Warning', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation(self, self._prefsIO, "At least one tier must be checked!", wx.ICON_INFORMATION)
             self.__display_text_in_statusbar('You must check at least one tier...')
 
     # ----------------------------------------------------------------------
@@ -537,7 +538,7 @@ class Statistics( scrolled.ScrolledPanel ):
         newtrs.SetPreferences( self._prefsIO )
         newtrs.Protect()
         if newtrs.GetTranscription().GetName() == "IO-Error":
-            wx.MessageBox('Error loading: '+filename, 'Info', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation(self, self._prefsIO, 'Error loading: '+filename, style=wx.ICON_ERROR)
 
         # put the new trs in a sizer (required to enable sizer.Remove())
         s = wx.BoxSizer( wx.HORIZONTAL )
@@ -565,8 +566,7 @@ class Statistics( scrolled.ScrolledPanel ):
 
             if o._dirty is True:
                 # dlg to ask to save or not
-                dial = wx.MessageDialog(None, 'Do you want to save changes on the transcription of\n%s?'%f, 'Question', wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION)
-                userChoice = dial.ShowModal()
+                userChoice = ShowYesNoQuestion( None, self._prefsIO, "Do you want to save changes of the file %s?"%f)
                 if userChoice == wx.ID_YES:
                     o.Save()
 

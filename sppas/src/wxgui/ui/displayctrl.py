@@ -54,13 +54,15 @@ import annotationdata.io
 import signals
 
 # and temporary.......
-from  annotationdata.label.label import *
-from  annotationdata.label.text  import *
+from  annotationdata.label.label import Label
+from  annotationdata.label.text  import Text
 # end temporary
 
 from wxgui.structs.files      import xFiles
 from wxgui.structs.dataperiod import DataPeriod
 from wxgui.cutils.imageutils  import TakeScreenShot
+from wxgui.dialogs.msgdialogs import ShowInformation
+
 from timerulerctrl import TimeRulerCtrl
 from trsctrl       import TranscriptionCtrl
 from wavectrl      import WaveCtrl
@@ -312,8 +314,7 @@ class DisplayCtrl( wx.Window ):
             try:
                 wf = signals.open( f )
             except Exception as e:
-                msg = "The following error occurred while loading file "+f+".\n"+str(e)
-                wx.MessageBox(msg, 'Info', wx.OK | wx.ICON_INFORMATION)
+                ShowInformation(self, self._prefsIO,"The following error occurred while loading file "+f+".\n"+str(e), style=wx.ICON_INFORMATION)
                 raise Exception('Display. SetData. Error while loading the sound: %s.'%str(e))
             h = self.FixWaveHeight(wf)
             dcobj = WaveCtrl( self, -1, pos=wx.Point(0,self._ymax), size=wx.Size(s.width,h), audio=wf )
@@ -323,9 +324,7 @@ class DisplayCtrl( wx.Window ):
             try:
                 tf = annotationdata.io.read( f )
             except Exception as e:
-
-                msg = "The following error occurred while loading file "+f+".\n"+str(e)
-                wx.MessageBox(msg, 'Info', wx.OK | wx.ICON_INFORMATION)
+                ShowInformation(self, self._prefsIO,"The following error occurred while loading file "+f+".\n"+str(e), style=wx.ICON_INFORMATION)
                 raise Exception('Display. SetData. Error while loading the file: %s.'%str(e))
             if "devel" in version:
                 self.__uncertaintyCooking(tf)

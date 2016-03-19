@@ -32,7 +32,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: basedialog.py
+# File: msgdialogs.py
 # ---------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
@@ -122,6 +122,7 @@ class YesNoQuestion( spBaseMessageDialog ):
 
     def _on_yes(self, evt):
         self.SetReturnCode( wx.ID_YES )
+        self.SetAffirmativeId( wx.ID_YES )
         self.Destroy()
 
 # ---------------------------------------------------------------------------
@@ -131,9 +132,9 @@ class Information( spBaseMessageDialog ):
         spBaseMessageDialog.__init__(self, parent, preferences, contentmsg, style)
 
     def _create_buttons(self):
-        yes = self.CreateYesButton()
-        self.SetAffirmativeId( wx.ID_YES )
-        return self.CreateButtonBox( [],[yes] )
+        okay = self.CreateOkayButton()
+        self.SetAffirmativeId( wx.ID_OK )
+        return self.CreateButtonBox( [],[okay] )
 
 # ---------------------------------------------------------------------------
 
@@ -150,6 +151,7 @@ def ShowInformation(parent, preferences, contentmsg, style=wx.ICON_INFORMATION):
 # ---------------------------------------------------------------------------
 
 def DemoBaseDialog(parent, preferences=None):
+    """ A simple demonstration of SPPAS message dialogs."""
     def _on_yesno(evt):
         res = ShowYesNoQuestion( frame, preferences, "This is the message to show.")
         if res == wx.ID_YES:
@@ -158,7 +160,6 @@ def DemoBaseDialog(parent, preferences=None):
             ShowInformation( frame, preferences, "You clicked the ""No"" button")
         else:
             print "there's a bug! return value is %s"%res
-
     def _on_info(evt):
         ShowInformation( frame, preferences, "This is an information message.", style=wx.ICON_INFORMATION)
     def _on_error(evt):

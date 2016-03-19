@@ -85,6 +85,7 @@ LOGOUT_ICON         = os.path.join( "actions", "logout.png" )
 INFO_ICON           = os.path.join( "actions", "info.png" )
 YES_ICON            = os.path.join( "actions", "yes.png")
 NO_ICON             = os.path.join( "actions", "no.png")
+OKAY_ICON           = os.path.join( "actions", "okay.png")
 
 DLG_INFO_ICON       = os.path.join( "actions", "dialog-information.png")
 DLG_WARN_ICON       = os.path.join( "actions", "dialog-warning.png")

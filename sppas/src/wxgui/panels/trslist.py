@@ -56,6 +56,8 @@ from wxgui.structs.prefs   import Preferences
 from wxgui.structs.themes  import BaseTheme
 from wxgui.views.preview   import PreviewTierDialog
 from wxgui.dialogs.choosers import RadiusChooser
+from wxgui.dialogs.msgdialogs import ShowInformation
+from wxgui.dialogs.msgdialogs import ShowYesNoQuestion
 
 from wxgui.ui.CustomListCtrl import CheckListCtrl
 
@@ -355,12 +357,12 @@ class TrsList( wx.Panel ):
             return
         # Too many selected items
         if self.tier_list.GetSelectedItemCount()>1:
-            wx.MessageBox('You must check only one tier to rename...', 'Info', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation(self, self._prefs, 'You must check only one tier to rename...', style=wx.ICON_INFORMATION)
             return
 
         tier = self._transcription[sellist]
         if tier in self._protected:
-            wx.MessageBox('You are attempting to rename a protected tier. Forbidden!', 'Info', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation(self, self._prefs, "You are attempting to rename a protected tier. It's forbidden!", style=wx.ICON_INFORMATION)
             return
 
         # Ask the user to enter a new name
@@ -394,13 +396,13 @@ class TrsList( wx.Panel ):
             return
         # Too many selected items
         if self.tier_list.GetSelectedItemCount()>1:
-            wx.MessageBox('You must check only one tier to cut...', 'Info', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation( self, self._prefs, 'One tier must be checked.', style=wx.ICON_INFORMATION)
             return
 
         # Copy the tier to the clipboard
         tier = self._transcription[sellist]
         if tier in self._protected:
-            wx.MessageBox('You are attempting to cut a protected tier. Forbidden!', 'Info', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation( self, self._prefs, "You are attempting to cut a protected tier. It's forbidden!", style=wx.ICON_INFORMATION)
             return
 
         clipboard = tier.Copy()
@@ -440,7 +442,7 @@ class TrsList( wx.Panel ):
             return
         # Too many selected items
         if self.tier_list.GetSelectedItemCount()>1:
-            wx.MessageBox('You must check only one tier to copy...', 'Info', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation( self, self._prefs, "One tier must be checked", style=wx.ICON_INFORMATION)
             return
 
         # Copy the tier to the clipboard
@@ -504,9 +506,8 @@ class TrsList( wx.Panel ):
         # Ask the user to confirm before deleting
         delete = 0
         message = 'Are you sure you want to definitively delete:\n%d tiers in %s?'%(len(indexes),self._filename)
-        dlg = wx.MessageDialog(self, message, caption='Tier Delete', style = wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION)
-        if dlg.ShowModal() == wx.ID_YES:
-
+        dlg = ShowYesNoQuestion(self, self._prefs, message)
+        if dlg == wx.ID_YES:
             for sellist in reversed( sorted(indexes) ):
 
                 item = self.tier_list.GetItem(sellist)
@@ -526,8 +527,6 @@ class TrsList( wx.Panel ):
                     # Update tier numbers of next items in the list.
                     for i in range(sellist,self.tier_list.GetItemCount()):
                         self.tier_list.SetStringItem(i, 0, str(i+1))
-
-        dlg.Destroy()
 
         self._dirty = True
         self._boxtitle.SetForegroundColour( FG_FILE_DIRTY_COLOUR )
@@ -552,7 +551,7 @@ class TrsList( wx.Panel ):
             return
         # Too many selected items
         if self.tier_list.GetSelectedItemCount()>1:
-            wx.MessageBox('You must check only one tier to duplicate...', 'Info', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation(self, self._prefs, "One tier must be checked", style=wx.ICON_INFORMATION)
             return
 
         tier = self._transcription[sellist]
@@ -577,13 +576,13 @@ class TrsList( wx.Panel ):
             return
         # Too many selected items
         if self.tier_list.GetSelectedItemCount()>1:
-            wx.MessageBox('You must check only one tier to move up...', 'Info', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation( self, self._prefs, "One tier must be checked", style=wx.ICON_INFORMATION)
             return
 
         #
         tier = self._transcription[sellist]
         if tier in self._protected:
-            wx.MessageBox('You are attempting to move a protected tier. Forbidden!', 'Info', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation(self, self._prefs, "You are attempting to move a protected tier. It's forbidden!", style=wx.ICON_INFORMATION)
             return
 
         #Impossible to move up the first tier.
@@ -633,13 +632,13 @@ class TrsList( wx.Panel ):
 
         # Too many selected items
         if self.tier_list.GetSelectedItemCount()>1:
-            wx.MessageBox('You must check only one tier to move down...', 'Info', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation(self, self._prefs, "One tier must be checked", style=wx.ICON_INFORMATION)
             return
 
         #
         tier = self._transcription[sellist]
         if tier in self._protected:
-            wx.MessageBox('You are attempting to move a protected tier. Forbidden!', 'Info', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation(self, self._prefs, "You are attempting to move a protected tier. It's forbidden!", style=wx.ICON_INFORMATION)
             return
 
         # Impossible to move down the last tier.
@@ -694,7 +693,7 @@ class TrsList( wx.Panel ):
         #
         tier = self._transcription[sellist]
         if tier in self._protected:
-            wx.MessageBox('You are attempting to modify a protected tier. Forbidden!', 'Info', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation(self, self._prefs, "You are attempting to modify a protected tier. It's forbidden!", style=wx.ICON_INFORMATION)
             return
 
         # Open a dialog to ask the new radius value
@@ -735,7 +734,7 @@ class TrsList( wx.Panel ):
 
         # Too many selected items
         if self.tier_list.GetSelectedItemCount()>1:
-            wx.MessageBox('You must check only one tier to view...', 'Info', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation(self, self._prefs, "One tier only must be checked", style=wx.ICON_INFORMATION)
             return
 
         tier = self._transcription[sellist]
@@ -808,7 +807,7 @@ class TrsList( wx.Panel ):
             self.__display_text_in_statusbar('File '+ self._filename + " saved.")
         except Exception as e:
             # give information
-            wx.MessageBox('File not saved: %s'%str(e), 'Information', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation(self, self._prefs, 'File not saved: %s'%str(e), style=wx.ICON_ERROR)
 
     # End Save
     # ----------------------------------------------------------------------
@@ -823,7 +822,7 @@ class TrsList( wx.Panel ):
             annotationdata.io.write(filename, self._transcription)
         except Exception as e:
             # give information
-            wx.MessageBox('File not saved: %s'%str(e), 'Information', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation(self, self._prefs, 'File not saved: %s'%str(e), style=wx.ICON_ERROR)
 
     # End SaveAs
     # ----------------------------------------------------------------------

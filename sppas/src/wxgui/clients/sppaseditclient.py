@@ -80,6 +80,9 @@ from wxgui.ui.trsctrl        import TranscriptionCtrl
 from wxgui.ui.wavectrl       import WaveCtrl
 
 from wxgui.dialogs.choosers      import ZoomChooser
+from wxgui.dialogs.trsinfodialog import TrsInfoDialog
+from wxgui.dialogs.msgdialogs    import ShowInformation
+
 from wxgui.views.search          import SearchDialog, spEVT_SEARCHED
 from wxgui.panels.sndplayer      import SndPlayer
 from wxgui.structs.themes        import BaseTheme
@@ -818,7 +821,7 @@ class TrsPanel( wx.Panel ):
             checked = [lst[x] for x in selections]
 
             if len(checked) == 0:
-                wx.MessageBox("At least one tier must be checked!", "ERROR", wx.ICON_ERROR | wx.OK)
+                ShowInformation(self, self._prefsIO, "At least one tier must be checked!", wx.ICON_INFORMATION)
             else:
                 # send the list to the trsctrl instance, then redraw
                 self._trsctrl.SetTierChecked( checked )
