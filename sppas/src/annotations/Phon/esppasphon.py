@@ -35,7 +35,7 @@ SPPAS = dirname( dirname( dirname( dirname( abspath(__file__) ) ) ))
 import annotations.log
 from annotationdata.transcription import Transcription
 import annotationdata.io
-from utils.name import genName
+import utils.fileutils
 
 
 # ######################################################################### #
@@ -96,7 +96,7 @@ class esppasPhon:
         command += " -s " + etc
         command += " -i " + inputfilename
         command += " -t 1 "
-        tmpoutput = genName().get_name() + ".TextGrid"
+        tmpoutput = utils.fileutils.gen_name() + ".TextGrid"
         command += " -o " + tmpoutput
         command += " -w " + outputtokensfile
         command += " -v 0 "
@@ -151,7 +151,7 @@ class esppasPhon:
         # Write the appropriate tier in a LIA-style text file
         # it also will convert input from UTF8 to iso8859-1
         try:
-            inputok = genName().get_name() + ".liatxt"
+            inputok = utils.fileutils.get_name() + ".liatxt"
             trs = Transcription()
             trs.Append( inputfilename.get_tier(1) )
             annotationdata.io.write(inputok,trs)

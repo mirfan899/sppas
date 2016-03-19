@@ -41,6 +41,25 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ---------------------------------------------------------------------------
 
+import os
+import subprocess
+
+# ---------------------------------------------------------------------------
+
+def test_command( command ):
+    """
+    Test if a command is available.
+
+    """
+    try:
+        NULL = open(os.devnull, "w")
+        subprocess.call([command], stdout=NULL, stderr=subprocess.STDOUT)
+    except OSError:
+        return False
+    return True
+
+# ---------------------------------------------------------------------------
+
 def type_dict(d):
     """
     Return True if d is of type dictionary.

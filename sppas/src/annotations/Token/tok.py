@@ -165,7 +165,7 @@ class sppasTok(object):
     # -----------------------------------------------------------------------
 
 
-    def convert(self, tier):
+    def convert_tracks(self, tier):
         """
         Tokenize labels of a tier.
 
@@ -175,7 +175,7 @@ class sppasTok(object):
 
         """
         if tier.IsEmpty() is True:
-            raise Exception('convert. Error: Empty input tier.\n')
+            raise Exception('convert_tracks. Error: Empty input tier.\n')
 
         if self.std:
             tokensFaked = Tier("Tokenization-Fake")
@@ -201,7 +201,7 @@ class sppasTok(object):
                     if self.std:
                         _labels = Label(self.tokenizer.tokenize( a.GetLabel().GetValue(), std=True ))
                 except Exception as e:
-                    raise Exception('convert. tokenize error in interval: '+str(a)+'. Error: '+str(e)+'\n')
+                    raise Exception('convert_tracks. tokenize error in interval: '+str(a)+'. Error: '+str(e)+'\n')
 
             try:
                 b = Annotation(a.GetLocation().Copy(), _labelf)
@@ -210,11 +210,11 @@ class sppasTok(object):
                     c = Annotation(a.GetLocation().Copy(), _labels)
                     tokensStd.Append(c)
             except Exception as e:
-                raise Exception('convert. Tier insertion error: '+str(e)+'\n')
+                raise Exception('convert_tracks. Tier insertion error: '+str(e)+'\n')
 
         return (tokensFaked, tokensStd)
 
-    # End convert
+    # End convert_tracks
     # ------------------------------------------------------------------------
 
 
@@ -372,7 +372,7 @@ class sppasTok(object):
                             "'trans' or 'trs' or 'ipu' 'ortho' or 'toe'.")
 
         # Tokenize the tier
-        tiertokens, tierStokens = self.convert( tierinput )
+        tiertokens, tierStokens = self.convert_tracks( tierinput )
 
         # Align Faked and Standard
         if tierStokens is not None:

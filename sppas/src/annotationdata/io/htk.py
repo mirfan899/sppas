@@ -71,33 +71,11 @@ def TimePoint(time):
 
 # ----------------------------------------------------------------------------
 
-def annotation_from_line(line, number):
-    try:
-        line = line.strip().split()
-
-        hasBegin = len(line) > 0 and line[0].isdigit()
-        hasEnd   = len(line) > 1 and line[1].isdigit()
-
-        if hasBegin and hasEnd:
-            time = TimeInterval(TimePoint(float(line[0]) * TIME_UNIT),
-                                TimePoint(float(line[1]) * TIME_UNIT))
-            label = " ".join(line[2:])
-
-        elif hasBegin:
-            time = TimePoint(float(line[0])*TIME_UNIT)
-            label = " ".join(line[1:])
-
-        else:  # default to FramePoint
-            time = FramePoint(number)
-            label = " ".join(line)
-
-        return Annotation(time, Label(label))
-    except:
-        raise Exception("Could not read line:%s" % repr(line))
-
-# ---------------------------------------------------------------------------
-
 def line_from_annotation(annotation):
+    """
+    Convert an annotation into a line for HTK lab of mlf files.
+
+    """
     label = annotation.GetLabel().GetValue()
 
     if label == '':
@@ -105,8 +83,13 @@ def line_from_annotation(annotation):
 
     if annotation.GetLocation().IsInterval():
         begin = str(int(1/TIME_UNIT * annotation.GetLocation().GetBeginMidpoint()))
-        end = str(int(1/TIME_UNIT * annotation.GetLocation().GetEndMidpoint()))
-        return "%s %s %s\n" % (begin, end, label)
+        end   = str(int(1/TIME_UNIT * annotation.GetLocation().GetEndMidpoint()))
+        if not ' ' in label:
+            return "%s %s %s\n" % (begin, end, label)
+        else:
+            s = "%s " % (begin)
+            s = s + label.replace(' ','\n')
+            return s+"\n"
     else:
         point = str(int(1/TIME_UNIT * annotation.GetLocation().GetPointMidpoint()))
         return "%s %s\n" % (point, label)
@@ -120,6 +103,10 @@ class HTKLabel( Transcription ):
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
     @summary: Represents HTK lab files.
+
+    Corrected version (2016-03-16)!!
+    The previous one was totally wrong...
+
     """
 
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
@@ -131,11 +118,32 @@ class HTKLabel( Transcription ):
         with codecs.open(filename, "r", 'utf-8') as fp:
 
             tier = self.NewTier()
+            label = ""
+            prevend = 0.
 
-            number = 1
             for line in fp:
-                tier.Add(annotation_from_line(line, number))
-                number += 1
+                line = line.strip().split()
+                hasBegin = len(line) > 0 and line[0].isdigit()
+                hasEnd   = len(line) > 1 and line[1].isdigit()
+
+                if hasBegin and hasEnd:
+                    if len(label)>0:
+                        time = TimeInterval(prevend,
+                                            TimePoint(float(line[0]) * TIME_UNIT))
+                        tier.Add(Annotation(time, Label(label)))
+
+                    time = TimeInterval(TimePoint(float(line[0]) * TIME_UNIT),
+                                        TimePoint(float(line[1]) * TIME_UNIT))
+                    label = " ".join(line[2:])
+                    tier.Add(Annotation(time, Label(label)))
+                    label = ""
+                    prevend = TimePoint(float(line[1]) * TIME_UNIT)
+
+                elif hasBegin:
+                    label = label +" "+ " ".join(line[1:])
+
+                else:
+                    label = label +" "+ " ".join(line)
 
         self.SetMinTime(0.)
         self.SetMaxTime(self.GetEnd())
@@ -176,23 +184,46 @@ class MasterLabel( Transcription ):
     def read(self, filename):
         with codecs.open(filename, "r", 'utf-8') as fp:
             line = ''
-            number = 1
             while (not (line.strip().startswith('"') and line.strip().endswith('"'))):
                 line = fp.next()
 
             try:
                 while True:
                     tierName = line.strip()[1:-1]
-
                     tier = self.NewTier(tierName)
+                    label = ""
+                    prevend = 0.
 
                     line = fp.next()
                     while(line and
                           not (line.strip().startswith('"') and
                                line.strip().endswith('"'))):
-                        tier.Add(annotation_from_line(line, number))
-                        number += 1
+
+                        line = line.strip().split()
+                        hasBegin = len(line) > 0 and line[0].isdigit()
+                        hasEnd   = len(line) > 1 and line[1].isdigit()
+
+                        if hasBegin and hasEnd:
+                            if len(label)>0:
+                                time = TimeInterval(prevend,
+                                                    TimePoint(float(line[0]) * TIME_UNIT))
+                                tier.Add(Annotation(time, Label(label)))
+
+                            time = TimeInterval(TimePoint(float(line[0]) * TIME_UNIT),
+                                                TimePoint(float(line[1]) * TIME_UNIT))
+                            label = " ".join(line[2:])
+                            tier.Add(Annotation(time, Label(label)))
+                            label = ""
+                            prevend = TimePoint(float(line[1]) * TIME_UNIT)
+
+                        elif hasBegin:
+                            label = label +" "+ " ".join(line[1:])
+
+                        else:
+                            label = label +" "+ " ".join(line)
+
                         line = fp.next()
+
             except StopIteration:
                 pass
 

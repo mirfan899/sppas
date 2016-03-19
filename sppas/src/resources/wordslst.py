@@ -37,7 +37,7 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ---------------------------------------------------------------------------
 
@@ -56,12 +56,12 @@ class WordsList( object ):
 
     """
 
-    def __init__(self, filename=None, nodump=False):
+    def __init__(self, filename=None, nodump=False, casesensitive=False):
         """
         Create a new WordsList instance.
 
         @param filename (str) is the word list file name, i.e. a file with 1 column.
-        @param nodump (Boolean) allows t  disable the creation of a dump file.
+        @param nodump (Boolean) allows to disable the creation of a dump file.
 
         """
 
@@ -69,6 +69,9 @@ class WordsList( object ):
         # a list is relevant but a dictionary is used because:
         # a dictionary is faster to read tokens from a file and is also
         # faster to find a token in it.
+
+        # Do the list of word is case-sensitive or not.
+        self.casesensitive = casesensitive
 
         if filename is not None:
 
@@ -105,7 +108,8 @@ class WordsList( object ):
         """
 
         entry = entry.strip()
-        entry = rutils.ToLower(entry)
+        if self.casesensitive is False:
+            entry = rutils.ToLower(entry)
 
         if self._stw.has_key( entry ) is False:
             self._stw[ entry ] = 0

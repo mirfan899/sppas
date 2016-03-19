@@ -11,7 +11,7 @@ sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 from resources.dictpron import DictPron
 from resources.dictrepl import DictRepl
-from resources.mapping  import Mapping
+from resources.acm.mapping  import Mapping
 from resources.unigram  import Unigram
 
 import resources.rutils as rutils
@@ -38,6 +38,17 @@ class TestDictPron(unittest.TestCase):
         for w in d.get_keys():
             self.assertEqual( d.get_pron(w), d2.get_pron(w) )
         os.remove( DICT_FRA+".copy" )
+
+    def test_map(self):
+        d = DictPron( DICT_FRA )
+        replfile = os.path.join(RESOURCES_PATH,"models","models-fra","monophones.repl")
+        mapd = Mapping( replfile )
+        dm = d.map_phones(mapd)
+
+        self.assertEqual( d.get_pron(u'veuf'),   "v.9.f" )
+        self.assertEqual( dm.get_pron(u'veuf'),  "v.oe.f" )
+        self.assertEqual( d.get_pron(u'veufs'),  "v.9.f.z|v.9.f" )
+        self.assertEqual( dm.get_pron(u'veufs'), "v.oe.f.z|v.oe.f" )
 
 # ---------------------------------------------------------------------------
 

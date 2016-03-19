@@ -46,6 +46,8 @@ import random
 import codecs
 import re
 import logging
+import tempfile
+from datetime import date
 
 # ----------------------------------------------------------------------------
 
@@ -54,6 +56,7 @@ def exists(filename):
     os.path.exists() revisited!
         - case-insensitive
         - return the filename or None
+
     """
     for x in os.listdir( os.path.dirname(filename)):
         if os.path.basename(filename.lower()) == x.lower():
@@ -123,6 +126,7 @@ def writecsv(filename, rows, separator="\t", encoding="utf-8-sig"):
         rows (list):
         separator (string):
         encoding (string):
+
     """
     with codecs.open(filename, "w+", encoding) as f:
         for row in rows:
@@ -134,6 +138,38 @@ def writecsv(filename, rows, separator="\t", encoding="utf-8-sig"):
                     s = '"%s"' % s
                 tmp.append(s)
             f.write('%s\n' % separator.join(tmp))
+
+# ----------------------------------------------------------------------------
+
+def gen_name( root="sppas_tmp", addtoday=True, addpid=True ):
+    """
+    Set a new file name.
+    Generates a random name of a non-existing file or directory.
+
+    """
+    name = "/"
+    while os.path.exists(name) is True:
+
+        # random float value
+        randval  = str(int(random.random()*10000))
+        # process pid
+        pid      = str(os.getpid())
+        # today's date
+        today    = str(date.today())
+
+        # fix filename
+        filename = root + "_"
+        if addtoday:
+            filename = filename + today + "_"
+        if addpid:
+            filename = filename + pid + "_"
+        filename = filename + randval
+
+        # final file name is path/filename
+        tempdir = tempfile.gettempdir() # get the system temporary directory
+        name = os.path.join(tempdir,filename)
+
+    return name
 
 # ----------------------------------------------------------------------------
 

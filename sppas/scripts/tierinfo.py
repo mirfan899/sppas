@@ -79,7 +79,7 @@ trs = annotationdata.io.read(args.i)
 if args.t <= 0 or args.t > trs.GetSize():
     print 'Error: Bad tier number.\n'
     sys.exit(1)
-tier = trs[args.t]
+tier = trs[args.t-1]
 
 if tier.IsPoint() is True:
     tier_type = "Point"
@@ -90,12 +90,12 @@ elif tier.IsDisjoint() is True:
 else:
     tier_type = "Unknown"
 
-nb_silence = len([a for a in tier if a.IsSilence()])
-nb_empty = len([a for a in tier if a.Text.IsEmpty()])
-dur_silence = sum(a.GetLocation().GetValue().Duration() for a in tier if a.IsSilence())
-dur_empty = sum(a.GetLocation().GetValue().Duration() for a in tier if a.Text.IsEmpty())
+nb_silence = len([a for a in tier if a.GetLabel().IsSilence()])
+nb_empty = len([a for a in tier if a.GetLabel().IsEmpty()])
+dur_silence = sum(a.GetLocation().GetValue().Duration().GetValue() for a in tier if a.GetLabel().IsSilence())
+dur_empty = sum(a.GetLocation().GetValue().Duration().GetValue() for a in tier if a.GetLabel().IsEmpty())
 
-print "Tier name: ", tier.Name
+print "Tier name: ", tier.GetName()
 print "Tier type: ", tier_type
 print "Tier size: ", tier.GetSize()
 print "   - Number of silences:         ", nb_silence

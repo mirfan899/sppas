@@ -148,7 +148,7 @@ class sppasPhon( object ):
     # Methods to phonetize series of data
     # -----------------------------------------------------------------------
 
-    def convert(self, tier):
+    def convert_tracks(self, tier):
         """
         Phonetize all labels of a tier.
 
@@ -248,7 +248,7 @@ class sppasPhon( object ):
                             "One of the tier names must contain 'tok' (or 'trans').")
 
         # Phonetize the tier
-        tierphon = self.convert( tierinput )
+        tierphon = self.convert_tracks( tierinput )
 
         # Save
         trsoutput = Transcription()

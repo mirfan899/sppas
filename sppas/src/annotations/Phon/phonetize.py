@@ -46,10 +46,9 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 import re
 
-from resources.dictpron import DictPron
-from resources.phonunk  import PhonUnk
-import resources.rutils as rutils
+from phonunk  import PhonUnk
 
+import resources.rutils as rutils
 
 
 # ---------------------------------------------------------------------------

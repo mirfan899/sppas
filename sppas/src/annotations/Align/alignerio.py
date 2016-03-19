@@ -170,7 +170,7 @@ class AlignerIO( Transcription ):
                 if loc_e < unitstart:
                     # An empty interval between 2 units...
                     time = TimeInterval(TimePoint(loc_e,radius), TimePoint(unitstart,radius))
-                    annotation = Annotation(time, Label(""))
+                    annotation = Annotation(time, Label("#"))
                     itemp.Append(annotation)
                     if tokens is True:
                         itemt.Append(annotation.Copy())

@@ -664,7 +664,7 @@ class DictTok:
             _utt = []
             for i in utt:
                 if not "/" in utt:
-                    _utt.append( self.num2letter.convert( i ) )
+                    _utt.append( self.num2letter.convert_tracks( i ) )
                 else:
                     _utt.append( i )
             utt = _utt
