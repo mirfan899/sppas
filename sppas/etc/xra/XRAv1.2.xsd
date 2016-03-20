@@ -3,8 +3,8 @@
     <xsd:annotation>
         <xsd:documentation xml:lang="en">
             XRA Annotation Format
-            Version 1.1
-            October 2014
+            Version 1.2
+            April 2015
             Original Schema by Brigitte Bigi, Laboratoire Parole et Langage, Aix-en-Provence, France
             Contact: brigitte.bigi@gmail.com
             License: Public (GPL v3.0)
