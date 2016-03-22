@@ -144,9 +144,22 @@ function fct_clean_temp {
 fct_echo_title $MSG_HEADER  # Print the header message on stdout
 fct_clean_temp              # Remove temporary files (if any)
 
+# Test python
+PYTHON="python2"
+$PYTHON --version >> /dev/null &> /dev/null
+if [ $? != "0" ]; then
+    PYTHON="python"
+    $PYTHON --version >> /dev/null &> /dev/null
+    if [ $? != "0" ]; then
+        fct_exit_error "Python is not an internal command of your operating system. For any help, have a look on the SPPAS installation page on http://www.sppas.org."
+    fi
+fi
 
 # get the name of the SE
 unamestr="`uname`"
+
+echo "Command: "$PYTHON
+echo "System:  "$unamestr
 
 # Linux
 if [[ "$unamestr" == 'Linux' ]]; then
