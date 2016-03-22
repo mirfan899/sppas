@@ -57,10 +57,11 @@ RESOURCES_PATH = os.path.join( os.path.dirname(BASE_PATH), "resources" )
 SAMPLES_PATH   = os.path.join( os.path.dirname(BASE_PATH), "samples" )
 
 # ---------------------------------------------------------------------------
-# Define configuration
+# Define configuration for annotations
 # ---------------------------------------------------------------------------
 
 ANNOTATIONS_LIST_FILE = os.path.join( BASE_PATH, "etc", "annotations.conf")
+UNKSTAMP="UNK"
 
 # Default output extension must be one of the list:
 #  annotationdata.io.extensions_out_multitiers

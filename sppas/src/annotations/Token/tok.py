@@ -165,7 +165,7 @@ class sppasTok(object):
     # -----------------------------------------------------------------------
 
 
-    def convert_tracks(self, tier):
+    def convert(self, tier):
         """
         Tokenize labels of a tier.
 
@@ -175,14 +175,14 @@ class sppasTok(object):
 
         """
         if tier.IsEmpty() is True:
-            raise Exception('convert_tracks. Error: Empty input tier.\n')
+            raise Exception('convert. Error: Empty input tier.\n')
 
         if self.std:
             tokensFaked = Tier("Tokenization-Fake")
             tokensStd   = Tier("Tokenization-Standard")
         else:
             tokensFaked = Tier("Tokenization")
-            tokensStd=None
+            tokensStd   = None
 
         for a in tier:
             # Do not tokenize an empty label
@@ -201,7 +201,7 @@ class sppasTok(object):
                     if self.std:
                         _labels = Label(self.tokenizer.tokenize( a.GetLabel().GetValue(), std=True ))
                 except Exception as e:
-                    raise Exception('convert_tracks. tokenize error in interval: '+str(a)+'. Error: '+str(e)+'\n')
+                    raise Exception('convert. Tokenize error in interval: '+str(a)+'. Error: '+str(e)+'\n')
 
             try:
                 b = Annotation(a.GetLocation().Copy(), _labelf)
@@ -210,11 +210,11 @@ class sppasTok(object):
                     c = Annotation(a.GetLocation().Copy(), _labels)
                     tokensStd.Append(c)
             except Exception as e:
-                raise Exception('convert_tracks. Tier insertion error: '+str(e)+'\n')
+                raise Exception('convert. Tier insertion error: '+str(e)+'\n')
 
         return (tokensFaked, tokensStd)
 
-    # End convert_tracks
+    # End convert
     # ------------------------------------------------------------------------
 
 
@@ -372,7 +372,7 @@ class sppasTok(object):
                             "'trans' or 'trs' or 'ipu' 'ortho' or 'toe'.")
 
         # Tokenize the tier
-        tiertokens, tierStokens = self.convert_tracks( tierinput )
+        tiertokens, tierStokens = self.convert( tierinput )
 
         # Align Faked and Standard
         if tierStokens is not None:

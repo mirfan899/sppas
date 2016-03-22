@@ -91,7 +91,7 @@ class DictPron:
         self._filename = dictfilename
         # Symbol to represent missing entries in the dictionary
         # (also called unknown entries)
-        self._unkstamp = unkstamp
+        self.unkstamp = unkstamp
 
         # The pronunciation dictionary
         self._dict = {}
@@ -128,7 +128,7 @@ class DictPron:
         Return the phonetization of an entry in the dictionary.
 
         """
-        return self._dict.get( rutils.ToLower(entry),self._unkstamp )
+        return self._dict.get( rutils.ToLower(entry),self.unkstamp )
 
     # -----------------------------------------------------------------------
 

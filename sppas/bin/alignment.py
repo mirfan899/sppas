@@ -71,6 +71,7 @@ parser.add_argument("-r", metavar="file", required=True,  help='Directory of the
 parser.add_argument("-o", metavar="file", required=True,  help='Output file name with estimated alignments')
 parser.add_argument("-a", metavar="name", required=False, choices='["julius","hvite","basic"]', default="julius", help='Aligner name. One of: julius, hvite, basic (default: julius)')
 parser.add_argument("--extend", action='store_true', help="Extend last phoneme/token to the wav duration" )
+parser.add_argument("--noclean", action='store_true', help="Do not remove temporary data" )
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -84,8 +85,9 @@ args = parser.parse_args()
 
 a = sppasAlign( args.r )
 
-a.set_aligner( args.a )
+if args.noclean: a.set_clean( False )
 if args.extend: a.set_extend( True )
+a.set_aligner( args.a )
 
 a.run( args.i, args.I, args.w, args.o )
 

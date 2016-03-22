@@ -51,6 +51,8 @@ from annotationdata.transcription import Transcription
 from resources.dictpron import DictPron
 from phonetize import DictPhon
 
+from sp_glob import UNKSTAMP
+
 # ---------------------------------------------------------------------------
 
 class sppasPhon( object ):
@@ -75,7 +77,7 @@ class sppasPhon( object ):
         @param logfile (sppasLog) is a log file utility class member.
 
         """
-        self.pdict   = DictPron(dictascii, unkstamp="UNK", nodump=False)
+        self.pdict   = DictPron(dictascii, unkstamp=UNKSTAMP, nodump=False)
         self.logfile = logfile
 
         self.opt_phonunk      = False # Phonetize missing tokens
@@ -148,7 +150,7 @@ class sppasPhon( object ):
     # Methods to phonetize series of data
     # -----------------------------------------------------------------------
 
-    def convert_tracks(self, tier):
+    def convert(self, tier):
         """
         Phonetize all labels of a tier.
 
@@ -248,7 +250,7 @@ class sppasPhon( object ):
                             "One of the tier names must contain 'tok' (or 'trans').")
 
         # Phonetize the tier
-        tierphon = self.convert_tracks( tierinput )
+        tierphon = self.convert( tierinput )
 
         # Save
         trsoutput = Transcription()

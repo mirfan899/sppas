@@ -132,8 +132,7 @@ class TestTrainer(unittest.TestCase):
 
         trainer = HTKModelTrainer(corpus)
         acmodel = trainer.training_recipe( delete=True )
-        # TODO: Test the models
-        #acmodel.save_htk('TEST-HMMDEFS')
+        # TODO: Test the model
 
 # ---------------------------------------------------------------------------
 

@@ -64,7 +64,7 @@ class baseAligner:
 
         self._mapping = mapping
         self._mappingpatch = {}
-        self._mappingpatch["UNK"] = "sil"
+        self._mappingpatch["UNK"] = "dummy"
 
     # End __init__
     # ------------------------------------------------------------------------
