@@ -1,0 +1,126 @@
+#!/usr/bin/env python2
+# -*- coding:utf-8 -*-
+# ---------------------------------------------------------------------------
+#            ___   __    __    __    ___
+#           /     |  \  |  \  |  \  /              Automatic
+#           \__   |__/  |__/  |___| \__             Annotation
+#              \  |     |     |   |    \             of
+#           ___/  |     |     |   | ___/              Speech
+#
+#
+#                           http://www.sppas.org/
+#
+# ---------------------------------------------------------------------------
+#            Laboratoire Parole et Langage, Aix-en-Provence, France
+#                   Copyright (C) 2011-2016  Brigitte Bigi
+#
+#                   This banner notice must not be removed
+# ---------------------------------------------------------------------------
+# Use of this software is governed by the GNU Public License, version 3.
+#
+# SPPAS is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# SPPAS is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+#
+# ---------------------------------------------------------------------------
+# File: trainacm.py
+# ---------------------------------------------------------------------------
+
+__docformat__ = """epytext"""
+__authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
+
+# ---------------------------------------------------------------------------
+# Imports
+# ---------------------------------------------------------------------------
+
+import sys
+import os
+import os.path
+import logging
+from argparse import ArgumentParser
+
+PROGRAM = os.path.abspath(__file__)
+SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
+sys.path.append(SPPAS)
+
+#sys.path.append( os.path.join(os.getenv('SPPAS'), "sppas", "src") )
+
+from resources.acm.htktrain import HTKModelTrainer, TrainingCorpus, DataTrainer
+from utils.fileutils        import setup_logging
+
+# ----------------------------------------------------------------------------
+# Verify and extract args:
+# ----------------------------------------------------------------------------
+
+parser = ArgumentParser(usage="%s -r dict " % os.path.basename(PROGRAM), description="... a script to an acoustic model.")
+parser.add_argument("-r", metavar="dict",   required=True,  help='Pronunciation dictionary (HTK-ASCII format).')
+parser.add_argument("-m", metavar="map",    required=False, default=None,  help='Phoneset mapping table SAMPA <-> Model, if dict is based on SAMPA phoneme encoding.')
+parser.add_argument("-p", metavar="protos", required=False, default=None,  help='Directory with HMM prototypes.')
+parser.add_argument("-i", metavar="input",  required=False, action='append', help='Input directory name of the training corpus.')
+parser.add_argument("-l", metavar="lang",   required=False, default="und", help='Language code in ISO639-3 format. Default: und')
+parser.add_argument("-t", metavar="temp",   required=False, default=None,  help='Working directory name.')
+parser.add_argument("-o", metavar="output", required=False, default=None,  help='Output directory name.')
+
+parser.add_argument("--quiet", action='store_true', help="Disable the verbosity." )
+
+if len(sys.argv) <= 1:
+    sys.argv.append('-h')
+
+args = parser.parse_args()
+
+# ----------------------------------------------------------------------------
+# Main program
+# ----------------------------------------------------------------------------
+
+if not args.quiet is True:
+    setup_logging(1,None)
+else:
+    setup_logging(None,None)
+
+
+# ---------------------------------
+# 1. Create a Data Manager
+# it manages the data created at each step of the acm training procedure
+
+datatrainer = DataTrainer()
+datatrainer.create( workdir=args.t, protodir=args.p)
+
+
+# ---------------------------------
+# 2. Create a Corpus Manager
+# it manages the set of training data:
+#   - establishes the list of phonemes (from the dict);
+#   - converts the input annotated data into the HTK-specific data format;
+#   - codes the audio data.
+
+corpus = TrainingCorpus( datatrainer, lang=args.l)
+corpus.fix_resources( dictfile=args.r, mappingfile=args.m )
+
+if args.i:
+    for entry in args.i:
+        if os.path.isdir( entry ):
+            corpus.add_corpus( entry )
+        else:
+            logging.info('[ WARNING ] Ignore the given entry: %s'%entry)
+
+
+# ---------------------------------
+# 3. Acoustic Model Training
+
+trainer = HTKModelTrainer( corpus )
+DELETE = False
+if args.t is None:
+    DELETE = True
+trainer.training_recipe( outdir=args.o, delete=DELETE )
+
+# ---------------------------------------------------------------------------

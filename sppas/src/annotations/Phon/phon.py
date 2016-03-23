@@ -150,7 +150,7 @@ class sppasPhon( object ):
     # Methods to phonetize series of data
     # -----------------------------------------------------------------------
 
-    def convert(self, tier):
+    def convert(self, tier, variants=True):
         """
         Phonetize all labels of a tier.
 

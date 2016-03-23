@@ -171,13 +171,14 @@ class HMM( BaseModel ):
 
     # -----------------------------------------------------------------------
 
-    def create_proto(self, protosize):
+    def create_proto(self, protosize, nbmix=1):
         """
         Create the hmm `proto` and set it.
         The proto is based on a 5-states HMM.
 
         @param protosize (int) Number of mean and variance values.
         It's commonly either 25 or 39, it depends on the MFCC parameters.
+        @param nbmix (int) Number of mixtures (i.e. the number of times means and variances occur)
 
         """
         self.name = "proto"
@@ -192,7 +193,7 @@ class HMM( BaseModel ):
         for i in range(3):
             hmm_state = self._create_default()
             hmm_state['index'] = i + 2
-            hmm_state['state'] = self._create_gmm([means], [variances])
+            hmm_state['state'] = self._create_gmm( [means]*nbmix, [variances]*nbmix )
             self.definition['states'].append(hmm_state)
 
         # Define transitions
@@ -341,6 +342,7 @@ class HMM( BaseModel ):
     # ----------------------------------
 
     def _create_gmm(self, means, variances, gconsts=None, weights=None):
+
         mixtures = []
 
         if len(means[0]) == 1:
@@ -349,7 +351,7 @@ class HMM( BaseModel ):
 
         gmm = self._create_default()
 
-        for i in range(len(means)):
+        for i in range( len(means) ):
             mixture = self._create_default()
             mixture['pdf'] = self._create_default()
             mixture['pdf']['mean'] = self._create_vector(means[i])
@@ -360,12 +362,16 @@ class HMM( BaseModel ):
                 mixture['pdf']['gconst'] = gconsts[i]
             if weights is not None:
                 mixture['weight'] = weights[i]
+            else:
+                mixture['weight'] = 1.0/len(means)
+            mixture['index'] = i+1
 
-            mixtures.append(mixture)
+            mixtures.append( mixture )
 
         stream = self._create_default()
         stream['mixtures'] = mixtures
-        gmm['streams'] = [stream]
+        gmm['streams'] = [ stream ]
+        gmm['streams_mixcount'] = [ len(means) ]
 
         return gmm
 

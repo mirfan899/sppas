@@ -115,11 +115,12 @@ class HTKLabel( Transcription ):
     # ------------------------------------------------------------------------
 
     def read(self, filename):
+
         with codecs.open(filename, "r", 'utf-8') as fp:
 
             tier = self.NewTier()
             label = ""
-            prevend = 0.
+            prevend = TimePoint(0.)
 
             for line in fp:
                 line = line.strip().split()
@@ -128,12 +129,10 @@ class HTKLabel( Transcription ):
 
                 if hasBegin and hasEnd:
                     if len(label)>0:
-                        time = TimeInterval(prevend,
-                                            TimePoint(float(line[0]) * TIME_UNIT))
+                        time = TimeInterval(prevend, TimePoint(float(line[0]) * TIME_UNIT))
                         tier.Add(Annotation(time, Label(label)))
 
-                    time = TimeInterval(TimePoint(float(line[0]) * TIME_UNIT),
-                                        TimePoint(float(line[1]) * TIME_UNIT))
+                    time = TimeInterval(TimePoint(float(line[0]) * TIME_UNIT), TimePoint(float(line[1]) * TIME_UNIT))
                     label = " ".join(line[2:])
                     tier.Add(Annotation(time, Label(label)))
                     label = ""
@@ -148,11 +147,12 @@ class HTKLabel( Transcription ):
         self.SetMinTime(0.)
         self.SetMaxTime(self.GetEnd())
 
-    # End read
     # ------------------------------------------------------------------------
 
     def write(self, filename):
+
         with codecs.open(filename, 'w', 'utf-8', buffering=8096) as fp:
+
             if self.GetSize() != 1:
                 raise Exception(
                     "Cannot write a multi tier annotation to a lab file.")
@@ -163,7 +163,6 @@ class HTKLabel( Transcription ):
                 if annotation.GetLabel().GetValue() != '':
                     fp.write(line_from_annotation(annotation))
 
-    # End write
     # ------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------

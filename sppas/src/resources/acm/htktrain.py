@@ -199,7 +199,8 @@ class DataTrainer( object ):
 
         if os.path.exists( logdir ) is False:
             logdir = os.path.join(self.workdir,logdir)
-            os.mkdir( logdir )
+            if os.path.exists( logdir ) is False:
+                os.mkdir( logdir )
 
         self.scriptsdir = scriptsdir
         self.featsdir   = featsdir
@@ -319,39 +320,32 @@ class DataTrainer( object ):
         if self.protodir is None:
             raise IOError("No proto directory defined.")
         if os.path.isdir( self.protodir ) is False:
-            raise IOError("Bad proto directory.")
+            raise IOError("Bad proto directory: %s."%self.protodir)
 
         if self.protofile is None:
             raise IOError("No proto file defined.")
-        if os.path.isfile( os.path.join( self.protodir, self.protofile) ) is False:
-            raise IOError("Bad proto file name.")
+        if os.path.isfile( self.protofile ) is False:
+            raise IOError("Bad proto file name: %s."%self.protofile)
 
         if self.workdir is None:
             raise IOError("No working directory defined.")
         if os.path.isdir( self.workdir ) is False:
-            raise IOError("Bad working directory.")
+            raise IOError("Bad working directory: %s."%self.workdir)
 
         if self.scriptsdir is None:
             raise IOError("No scripts directory defined.")
         if os.path.isdir( self.scriptsdir ) is False:
-            raise IOError("Bad scripts directory.")
+            raise IOError("Bad scripts directory: %s."%self.scriptsdir)
 
         if self.featsdir is None:
             raise IOError("No features directory defined.")
         if os.path.isdir( self.featsdir ) is False:
-            raise IOError("Bad features directory.")
+            raise IOError("Bad features directory: %s."%self.featsdir)
 
         if self.logdir is None:
             raise IOError("No log directory defined.")
         if os.path.isdir( self.logdir ) is False:
-            raise IOError("Bad log directory.")
-
-    # -----------------------------------------------------------------------
-
-    def __del__(self):
-        return
-        if self.workdir is not None:
-            shutil.rmtree( self.workdir )
+            raise IOError("Bad log directory: %s."%self.logdir)
 
     # -----------------------------------------------------------------------
 
@@ -457,11 +451,11 @@ class TrainingCorpus( object ):
             pdict = DictPron( dictfile )
             if self.datatrainer.workdir is not None:
                 mapdict = pdict.map_phones( self.phonemap )
-                dictfile = os.path.join(self.datatrainer.workdir, "working.dict")
+                dictfile = os.path.join(self.datatrainer.workdir, self.lang+".dict")
                 mapdict.save_as_ascii( dictfile )
             if vocabfile is None:
                 tokenslist = pdict.get_keys()
-                vocabfile = os.path.join(self.datatrainer.workdir, "working.vocab")
+                vocabfile = os.path.join(self.datatrainer.workdir, self.lang+".vocab")
                 w = WordsList()
                 for token in tokenslist:
                     if not '(' in token and not ')' in token:
@@ -674,8 +668,9 @@ class TrainingCorpus( object ):
         # Map phonemes.
         for ann in tier:
             label = ann.GetLabel().GetValue()
-            label = label.replace('sp',"sil")
-            newlabel = self.phonemap.map( label, delimiters=[' ','.','|'] )
+            newlabel = label.replace('sp',"sil")
+            newlabel = self.phonemap.map( newlabel, delimiters=[' ','.','|'] )
+            newlabel = self._format_phonetization( newlabel )
             if label != newlabel:
                 ann.GetLabel().SetValue( newlabel )
 
@@ -831,6 +826,29 @@ class TrainingCorpus( object ):
             self.phonemap.add('gb','*')
 
         self.phonemap.set_reverse( True )
+
+    # -----------------------------------------------------------------------
+
+    def _format_phonetization(self, ipu):
+        """
+        Remove variants of a phonetized ipu, replace dots by whitespaces.
+
+        @return the ipu without pronunciation variants.
+
+        """
+        selectlist = []
+        for pron in ipu.split(' '):
+            tab = pron.split("|")
+            i=0
+            m=len(tab[0])
+            for n,p in enumerate(tab):
+                if len(p)<m:
+                    i = n
+                    m = len(p)
+            selectlist.append( tab[i].replace('.',' ') )
+        return " ".join( selectlist )
+
+    # -----------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------
 
@@ -1184,11 +1202,9 @@ class HTKModelTrainer( object ):
         """
         Alignment of the transcribed speech using the current model.
 
-        If infersp is set to True, sppasAlign() will add a short pause at
-        the end of each token, and the automatic aligner will infer if it is
-        appropriate or not.
-
-        @param infersp is a Boolean
+        @param infersp (bool) If infersp is set to True, sppasAlign() will add
+        a short pause at the end of each token, and the automatic aligner will
+        infer if it is appropriate or not.
 
         """
         # Nothing to do!
@@ -1364,8 +1380,8 @@ class HTKModelTrainer( object ):
         """
         logging.info("Step 3. Monophones training.")
 
-        # Step 3.1 From time-aligned data.
-        # --------------------------------
+        # Step 3.1 Train from time-aligned data.
+        # ---------------------------------------
 
         logging.info("Initial training.")
         scpfile = self.corpus.get_scp( aligned=True, phonetized=False, transcribed=False )
@@ -1374,11 +1390,14 @@ class HTKModelTrainer( object ):
             logging.info('Initial training failed.')
             return False
 
+        # Step 3.2 Modeling silence.
+        # --------------------------
+
         logging.info("Modeling silence.")
         self.small_pause()
 
-        # Step 3.2 From utterrance-aligned data with phonetization.
-        # ---------------------------------------------------------
+        # Step 3.3 Train from utterrance-aligned data with phonetization.
+        # ---------------------------------------------------------------
 
         logging.info("Additional training.")
         scpfile = self.corpus.get_scp( aligned=True, phonetized=True, transcribed=False )
@@ -1387,11 +1406,11 @@ class HTKModelTrainer( object ):
             logging.info('Additional training failed.')
             return False
 
-        # Step 3.3 From utterrance-aligned data with orthography.
-        # -------------------------------------------------------
+        # Step 3.4 Train from utterrance-aligned data with orthography.
+        # -------------------------------------------------------------
 
         logging.info("Aligning transcribed files.")
-        self.align_trs()
+        self.align_trs( infersp=False )
 
         logging.info("Intermediate training.")
         ret = self.train_step( self.corpus.get_scp( aligned=True, phonetized=True, transcribed=True ) )
@@ -1400,7 +1419,7 @@ class HTKModelTrainer( object ):
             return False
 
         logging.info("Re-Aligning transcribed files.")
-        self.align_trs()
+        self.align_trs( infersp=True )
 
         logging.info("Final training.")
         ret = self.train_step( self.corpus.get_scp( aligned=True, phonetized=True, transcribed=True ) )
@@ -1490,7 +1509,7 @@ class HTKModelTrainer( object ):
                     macro.save_htk( os.path.join(outdir, DEFAULT_MACROS_FILENAME ))
                 self.corpus.monophones.save( os.path.join(outdir, DEFAULT_MONOPHONES_FILENAME) )
                 self.corpus.phonemap.save_as_ascii( os.path.join(outdir, DEFAULT_MAPPINGMONOPHONES_FILENAME) )
-                self.corpus.datatrainer.features.write_wav_config( os.path.join(outdir, "wav_config") )
+                self.corpus.datatrainer.features.write_wav_config( os.path.join(outdir, "config") )
 
         if delete is True:
             self.corpus.datatrainer.delete()

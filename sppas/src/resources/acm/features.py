@@ -169,8 +169,9 @@ class Features( object ):
         self.num_lift_ceps = 22   # Length of cepstral liftering
         self.num_ceps      = 12   # The number of cepstral coefficients
         self.pre_em_coef   = 0.97 # The coefficient used for the pre-emphasis
-        self.targetkind    = "MFCC_0_D_N_Z"
-        self.nbmv= 25   # The number of means and variances. It's commonly either 25 or 39.
+        self.targetkindw   = "MFCC_0_E"     #"MFCC_0_D"
+        self.targetkind    = "MFCC_E_D_A_Z" #"MFCC_0_D_N_Z"
+        self.nbmv          = 39   # The number of means and variances. It's commonly either 25 or 39.
 
         self.wavconfigfile = ""
         self.configfile = ""
@@ -205,8 +206,9 @@ class Features( object ):
         with open( filename, "w") as fp:
             fp.write("SOURCEFORMAT = WAV\n")
             fp.write("SOURCEKIND = WAVEFORM\n")
+            fp.write("SOURCERATE = %d\n"%( (1000./float(self.framerate))*10000) )
             fp.write("TARGETFORMAT = HTK\n")
-            fp.write("TARGETKIND = MFCC_0_D\n")
+            fp.write("TARGETKIND = %s\n"%self.targetkindw)
             fp.write("TARGETRATE = %.1f\n"%(self.win_shift_ms*10000))
             fp.write("SAVECOMPRESSED = T\n")
             fp.write("SAVEWITHCRC = T\n")

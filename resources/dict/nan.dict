@@ -2,7 +2,7 @@
 0 [] sil
 + [] sil
 <turn> [] gb
-SENT-END [] sil
+SENT_END [] sil
 SENT_START [] sil
 UNK [] gb
 dummy [] dummy
