@@ -132,7 +132,7 @@ def test_julius(parent):
 # ---------------------------------------------------------------------------
 
 # Log
-log_level = 0
+log_level = 1
 log_file  = None
 
 try:
