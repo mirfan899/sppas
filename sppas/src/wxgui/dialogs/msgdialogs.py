@@ -112,18 +112,13 @@ class YesNoQuestion( spBaseMessageDialog ):
     def _create_buttons(self):
         yes = self.CreateYesButton()
         no  = self.CreateNoButton()
-        self.Bind( wx.EVT_BUTTON, self._on_no,  no,  wx.ID_NO  )
-        self.Bind( wx.EVT_BUTTON, self._on_yes, yes, wx.ID_YES )
+        no.Bind( wx.EVT_BUTTON, self._on_no, no )
+        self.SetAffirmativeId( wx.ID_YES )
         return self.CreateButtonBox( [no],[yes] )
 
     def _on_no(self, evt):
+        self.Destroy()
         self.SetReturnCode( wx.ID_NO )
-        self.Destroy()
-
-    def _on_yes(self, evt):
-        self.SetReturnCode( wx.ID_YES )
-        self.SetAffirmativeId( wx.ID_YES )
-        self.Destroy()
 
 # ---------------------------------------------------------------------------
 

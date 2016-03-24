@@ -58,6 +58,7 @@ HELP_IDX_EXT  = ".idx"
 
 FRAME_STYLE = wx.DEFAULT_FRAME_STYLE|wx.CLOSE_BOX
 FRAME_TITLE = " " + program + " " + version + " "
+DIALOG_STYLE = wx.CAPTION|wx.RESIZE_BORDER|wx.THICK_FRAME
 
 DEFAULT_APP_NAME = program + "Component"
 

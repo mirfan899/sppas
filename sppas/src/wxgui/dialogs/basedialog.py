@@ -60,7 +60,7 @@ from wxgui.sp_icons import OKAY_ICON
 from wxgui.cutils.ctrlutils  import CreateGenButton
 from wxgui.cutils.imageutils import spBitmap
 
-from wxgui.sp_consts import FRAME_STYLE
+from wxgui.sp_consts import DIALOG_STYLE
 from wxgui.sp_consts import FRAME_TITLE
 from wxgui.sp_consts import MAIN_FONTSIZE
 from wxgui.sp_consts import BUTTON_ICONSIZE
@@ -87,7 +87,7 @@ class spBaseDialog( wx.Dialog ):
         @param preferences (Preferences)
 
         """
-        wx.Dialog.__init__(self, parent, -1, title=FRAME_TITLE+title, style=FRAME_STYLE)
+        wx.Dialog.__init__(self, parent, -1, title=FRAME_TITLE+title, style=DIALOG_STYLE)
 
         if preferences is None:
             preferences = wxgui.structs.prefs.Preferences()
@@ -160,36 +160,34 @@ class spBaseDialog( wx.Dialog ):
     # -----------------------------------------------------------------------
 
     def CreateSaveButton(self, tooltip="Save"):
-        return self.CreateButton(SAVE_FILE, "Save", tooltip, wx.ID_SAVE)
+        return self.CreateButton(SAVE_FILE, "Save", tooltip, btnid=wx.ID_SAVE)
 
     def CreateCancelButton(self, tooltip="Cancel"):
-        btn = self.CreateButton(CANCEL_ICON, "Cancel", tooltip, wx.ID_CANCEL)
+        btn = self.CreateButton(CANCEL_ICON, "Cancel", tooltip, btnid=wx.ID_CANCEL)
         self.SetAffirmativeId(wx.ID_CANCEL)
         return btn
 
     def CreateCloseButton(self, tooltip="Close"):
-        btn = self.CreateButton(CLOSE_ICON, "Close", tooltip, wx.ID_CLOSE)
+        btn = self.CreateButton(CLOSE_ICON, "Close", tooltip, btnid=wx.ID_CLOSE)
         btn.SetDefault()
         btn.SetFocus()
         self.SetAffirmativeId(wx.ID_CLOSE)
         return btn
 
     def CreateOkayButton(self, tooltip="Okay"):
-        btn = self.CreateButton(OKAY_ICON, " OK ", tooltip, wx.ID_OK)
+        btn = self.CreateButton(OKAY_ICON, " OK ", tooltip, btnid=wx.ID_OK)
         btn.SetDefault()
         btn.SetFocus()
         self.SetAffirmativeId(wx.ID_OK)
         return btn
 
     def CreateYesButton(self, tooltip="Yes"):
-        btn = self.CreateButton(YES_ICON, " Yes ", tooltip, wx.ID_YES)
+        btn = self.CreateButton(YES_ICON, " Yes ", tooltip, btnid=wx.ID_YES)
         btn.SetDefault()
-        btn.SetFocus()
         return btn
 
     def CreateNoButton(self, tooltip="No"):
-        btn = self.CreateButton(NO_ICON, " No ", tooltip, wx.ID_NO)
-        btn.SetFocus()
+        btn = self.CreateButton(NO_ICON, " No ", tooltip, btnid=wx.ID_NO)
         return btn
 
     # -----------------------------------------------------------------------
@@ -273,6 +271,7 @@ class spBaseDialog( wx.Dialog ):
         vbox.Add(content,   1, flag=wx.ALL|wx.EXPAND, border=2)
         vbox.Add(buttonbox, 0, flag=wx.LEFT|wx.RIGHT|wx.BOTTOM|wx.EXPAND, border=2)
         self.SetSizerAndFit(vbox)
+        self.DoLayoutAdaptation()
 
 # ---------------------------------------------------------------------------
 
