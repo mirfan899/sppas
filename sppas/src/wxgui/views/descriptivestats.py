@@ -37,68 +37,55 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
 
-import os
-import wx
-import logging
 import os.path
+import wx
 
 from presenters.tierstats import TierStats
 
+from wxgui.dialogs.basedialog import spBaseDialog
+
 from wxgui.sp_icons import STATISTICS_APP_ICON
 from wxgui.sp_icons import SPREADSHEETS
-from wxgui.sp_icons import CANCEL_ICON
-from wxgui.sp_icons import SAVE_AS_FILE
 from wxgui.sp_consts import TB_ICONSIZE
 from wxgui.sp_consts import TB_FONTSIZE
-
-from wxgui.sp_consts import TB_ICONSIZE
-from wxgui.sp_consts import TB_FONTSIZE
-from wxgui.sp_consts import FRAME_STYLE
-from wxgui.sp_consts import FRAME_TITLE
-
-from wxgui.cutils.imageutils import spBitmap
-from wxgui.cutils.ctrlutils  import CreateGenButton
 
 from wxgui.ui.CustomListCtrl import SortListCtrl
 from wxgui.panels.basestats import BaseStatPanel
-from sp_glob import ICONS_PATH
-
-# ----------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
 # class DescriptivesStatsDialog
 # ----------------------------------------------------------------------------
 
-class DescriptivesStatsDialog( wx.Dialog ):
+class DescriptivesStatsDialog( spBaseDialog ):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
-    @summary: This class is used to display descriptives stats of tiers.
+    @summary: Display descriptives stats of tiers.
 
     Dialog for the user to display and save various descriptive statistics
     of a set of tiers.
 
     """
 
-    def __init__(self, parent, prefsIO, tiers={}):
+    def __init__(self, parent, preferences, tiers={}):
         """
-        Create a new dialog.
+        Constructor.
 
+        @param parent is the parent wx object.
+        @param preferences (Preferences)
         @param tiers: a dictionary with key=filename, value=list of selected tiers
+
         """
+        spBaseDialog.__init__(self, parent, preferences, title=" - Descriptive statistics")
+        wx.GetApp().SetAppName( "descriptivesstats" )
 
-        wx.Dialog.__init__(self, parent, title=FRAME_TITLE+" - Descriptives Statistics", style=FRAME_STYLE)
-
-        # Members
-        self.preferences = prefsIO
         # Options to evaluate stats:
         self.n=1
         self.withradius=0
@@ -111,78 +98,47 @@ class DescriptivesStatsDialog( wx.Dialog ):
                 self._data[ts]=k
                 # remark: statistics are not estimated yet.
 
-        self._create_gui()
+        titlebox   = self.CreateTitle(SPREADSHEETS,"Descriptives statistics of a set of tiers")
+        contentbox = self._create_content()
+        buttonbox  = self._create_buttons()
 
-        # Events of this frame
-        wx.EVT_CLOSE(self, self.onClose)
+        self.LayoutComponents( titlebox,
+                               contentbox,
+                               buttonbox )
 
     # ------------------------------------------------------------------------
+
 
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
 
-    def _create_gui(self):
-        self._init_infos()
-        self._create_title_label()
-        self._create_toolbar()
-        self._create_content()
-        self._create_close_button()
-        self._create_save_button()
-        self._layout_components()
-        self._set_focus_component()
-
-
-    def _init_infos( self ):
-        wx.GetApp().SetAppName( "descriptivesstats" )
-        # icon
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(STATISTICS_APP_ICON) )
-        self.SetIcon(_icon)
-        # colors
-        self.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
-        self.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR'))
-        self.SetFont( self.preferences.GetValue('M_FONT'))
-
-
-    def _create_title_label(self):
-        self.title_layout = wx.BoxSizer(wx.HORIZONTAL)
-        bmp = wx.BitmapButton(self, bitmap=spBitmap(SPREADSHEETS, 32, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
-        font = self.preferences.GetValue('M_FONT')
-        font.SetWeight(wx.BOLD)
-        font.SetPointSize(font.GetPointSize() + 2)
-        title_label = wx.StaticText(self, label="Descriptives Statistics of a set of tiers", style=wx.ALIGN_CENTER)
-        title_label.SetFont( font )
-        self.title_layout.Add(bmp,  flag=wx.TOP|wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, border=5)
-        self.title_layout.Add(title_label, flag=wx.EXPAND|wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
-
     def _create_toolbar(self):
-        self.toolbar_layout = wx.BoxSizer(wx.HORIZONTAL)
         font = self.preferences.GetValue('M_FONT')
         font.SetPointSize(font.GetPointSize() - 2)
+
         title_label = wx.StaticText(self, label="N-gram:", style=wx.ALIGN_CENTER)
         title_label.SetFont( font )
         ngrambox = wx.ComboBox(self, -1, choices=['1','2','3','4','5'], style=wx.CB_READONLY)
         ngrambox.SetSelection(0)
         ngrambox.SetFont( font )
-        self.Bind( wx.EVT_COMBOBOX, self.OnNgram, ngrambox )
+
         lablist = ['Use only the label with the best score', 'Include also alternative labels']
         withaltbox = wx.RadioBox(self, -1, label="Annotation labels:", choices=lablist, majorDimension=1, style=wx.RA_SPECIFY_COLS)
         withaltbox.SetFont( font )
-        self.Bind(wx.EVT_RADIOBOX, self.OnWithAlt, withaltbox)
+
         durlist = ['Use only Midpoint value', 'Add the Radius value', 'Deduct the Radius value']
         withradiusbox = wx.RadioBox(self, -1, label="Annotation durations:", choices=durlist, majorDimension=1, style=wx.RA_SPECIFY_COLS)
         withradiusbox.SetFont( font )
+
+        self.AddToolbar([title_label,ngrambox],[withaltbox,withradiusbox])
+
+        self.Bind(wx.EVT_COMBOBOX, self.OnNgram, ngrambox )
+        self.Bind(wx.EVT_RADIOBOX, self.OnWithAlt, withaltbox)
         self.Bind(wx.EVT_RADIOBOX, self.OnWithRadius, withradiusbox)
 
-        self.toolbar_layout.Add(title_label, flag=wx.EXPAND|wx.ALL|wx.TOP, border=5)
-        self.toolbar_layout.Add(ngrambox,    flag=wx.TOP, border=5)
-        self.toolbar_layout.AddStretchSpacer()
-        self.toolbar_layout.Add(withaltbox,  flag=wx.EXPAND|wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
-        self.toolbar_layout.Add(withradiusbox, flag=wx.EXPAND|wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
-
-
     def _create_content(self):
+        self._create_toolbar()
         self.notebook = wx.Notebook(self)
 
         page1 = SummaryPanel(self.notebook,  self.preferences, "summary")
@@ -203,55 +159,19 @@ class DescriptivesStatsDialog( wx.Dialog ):
         page1.ShowStats( self._data )
         self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.OnNotebookPageChanged)
 
+        return self.notebook
 
-    def _create_close_button(self):
-        bmp = spBitmap(CANCEL_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_close = CreateGenButton(self, wx.ID_OK, bmp, text=" Close", tooltip="Close this frame", colour=color)
-        self.btn_close.SetFont( self.preferences.GetValue('M_FONT'))
-        self.btn_close.SetDefault()
-        self.btn_close.SetFocus()
-        self.SetAffirmativeId(wx.ID_OK)
-
-
-    def _create_save_button(self):
-        bmp = spBitmap(SAVE_AS_FILE, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_save = CreateGenButton(self, wx.ID_SAVE, bmp, text=" Save sheet ", tooltip="Save the currently displayed sheet", colour=color)
-        self.btn_save.SetFont( self.preferences.GetValue('M_FONT'))
-        self.btn_save.SetDefault()
-
-
-    def _create_button_box(self):
-        button_box = wx.BoxSizer(wx.HORIZONTAL)
-        button_box.Add(self.btn_save,  flag=wx.LEFT, border=5)
-        button_box.AddStretchSpacer()
-        button_box.Add(self.btn_close, flag=wx.RIGHT, border=5)
-        self.btn_save.Bind(wx.EVT_BUTTON, self.onButtonSave)
-        return button_box
-
-
-    def _layout_components(self):
-        vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.title_layout,   0, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self.toolbar_layout, 1, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self.notebook,       2, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self._create_button_box(), 0, flag=wx.ALL|wx.EXPAND, border=5)
-        self.SetSizerAndFit(vbox)
-
-
-    def _set_focus_component(self):
-        self.notebook.SetFocus()
-
+    def _create_buttons(self):
+        btn_save  = self.CreateSaveButton("Save the currently displayed sheet")
+        btn_close = self.CreateCloseButton()
+        self.Bind(wx.EVT_BUTTON, self._on_save, btn_save)
+        return self.CreateButtonBox( [btn_save],[btn_close] )
 
     #-------------------------------------------------------------------------
-    # Callbacks
+    # Callbacks to events
     #-------------------------------------------------------------------------
 
-    def onClose(self, event):
-        self.SetEscapeId( wx.ID_CANCEL )
-
-    def onButtonSave(self, event):
+    def _on_save(self, event):
         page = self.notebook.GetPage( self.notebook.GetSelection() )
         page.SaveAs(outfilename="stats-%s.csv"%page.name)
 
@@ -456,3 +376,17 @@ class DetailedPanel( BaseStatPanel ):
     # ------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
+
+def ShowStatsDialog(parent, preferences, tiers):
+    dialog = DescriptivesStatsDialog(parent, preferences, tiers)
+    dialog.ShowModal()
+    dialog.Destroy()
+
+# ---------------------------------------------------------------------------
+
+if __name__ == "__main__":
+    app = wx.PySimpleApp()
+    ShowStatsDialog(None,None,tiers={})
+    app.MainLoop()
+
+# ---------------------------------------------------------------------------

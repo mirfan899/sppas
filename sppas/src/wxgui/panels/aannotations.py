@@ -167,7 +167,9 @@ class sppasStepPanel( wx.Panel ):
         annotId = self.step_idx
         frameId = self.ID_FRAME_ANNOTATION_CFG + annotId
         if frameId not in self.opened_frames.keys():
-            self.opened_frames[frameId] = spAnnotationConfig(self, self._prefsIO, self.parameters.annotations[annotId], annotId)
+            dlg = spAnnotationConfig(self, self._prefsIO, self.parameters.annotations[annotId], annotId)
+            dlg.Show()
+            self.opened_frames[frameId] = dlg
         else:
             self.opened_frames[frameId].SetFocus()
             self.opened_frames[frameId].Raise()

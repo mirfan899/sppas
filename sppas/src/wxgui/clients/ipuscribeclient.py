@@ -66,6 +66,9 @@ from wxgui.ui.CustomEvents      import FileWanderEvent, spEVT_FILE_WANDER
 from wxgui.structs.themes       import BaseTheme
 from wxgui.structs.prefs        import Preferences
 
+from wxgui.dialogs.msgdialogs import ShowInformation
+from wxgui.dialogs.msgdialogs import ShowYesNoQuestion
+
 import annotationdata.io
 
 
@@ -545,11 +548,7 @@ class IPUscribe( wx.Panel ):
                     self._trsPanel.UnsetData()
 
         if got is False:
-            dlg = wx.MessageDialog(self,
-                    "Error. Missing IPUs: A file with an IPUs segmentation is required.",
-                    "IPUScribe error", wx.OK | wx.ICON_EXCLAMATION)
-            dlg.ShowModal()
-            dlg.Destroy()
+            ShowInformation(self, self._prefsIO, "Missing IPUs: A file with an IPUs segmentation is required.", wx.ICON_ERROR)
             self.FileDeSelected()
             return
 
@@ -565,8 +564,7 @@ class IPUscribe( wx.Panel ):
         """
         if self._trsPanel._dirty is True:
             # dlg to ask to save or not
-            dial = wx.MessageDialog(None, 'Do you want to save changes on the transcription of\n%s?'%self._sndname, 'Question', wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION)
-            userChoice = dial.ShowModal()
+            userChoice = ShowYesNoQuestion( None, self._prefsIO, "Do you want to save changes on the transcription of audio file %s?"%self._sndname)
             if userChoice == wx.ID_YES:
                 self._trsPanel.Save()
 
@@ -761,21 +759,22 @@ class IPUscribeData( scrolled.ScrolledPanel ):
         @param trsname: Transcription file name
 
         """
-
         # What to do with the current opened transcription
         if len(self._ipupanels) > 0:
             if self._dirty is True:
-                pass # TODO: a dialog box asking to save, or not!
+                pass
+                # TODO: a dialog box asking to save, or not!
+                #userChoice = ShowYesNoQuestion( None, self._prefsIO, "Do you want to save changes on the transcription of\n%s?"%f)
+                #if userChoice == wx.ID_YES:
+                #    fix o object!!!
+                #    o.Save()
+
             self.UnsetData()
 
         # Transcription retrieval
         (tieridx,trs) = self.__TierSelection(trsname)
         if trs is None or trs[tieridx].IsEmpty():
-            dlg = wx.MessageDialog(self,
-                    "Error",
-                    "IPUScribe error", wx.OK | wx.ICON_EXCLAMATION)
-            dlg.ShowModal()
-            dlg.Destroy()
+            ShowInformation( self, self._prefsIO, 'Error loading: '+trsname, style=wx.ICON_ERROR)
             return False
 
         # Gauge... to be patient!
@@ -908,11 +907,7 @@ class IPUscribeData( scrolled.ScrolledPanel ):
                 self._dirty = False
             except Exception as e:
                 self.__display_text_in_statusbar("File NOT saved: %s" % str(e))
-                dlg = wx.MessageDialog(self,
-                                  "Error while writing the transcription %s: %s" % (self._trsname, str(e)),
-                                  "ERROR", wx.OK | wx.ICON_EXCLAMATION)
-                dlg.ShowModal()
-                dlg.Destroy()
+                ShowInformation( self, self._prefsIO, "Transcription %s not saved: %s" % (self._trsname, str(e)), style=wx.ICON_ERROR)
                 return None
         else:
             self.__display_text_in_statusbar("Nothing changed. Nothing to save.")
@@ -931,17 +926,13 @@ class IPUscribeData( scrolled.ScrolledPanel ):
         Return the tier containing the orthographic transcription.
         It is then supposed that only one tier concerns orthographic
         transcription... which is a serious limitation of this tool.
-        """
 
+        """
         transtier = -1
         try:
             trsinput = annotationdata.io.read(trsname)
         except:
-            dlg = wx.MessageDialog(self,
-                              "Error while reading the transcription %s" % trsname,
-                              "ERROR", wx.OK | wx.ICON_EXCLAMATION)
-            dlg.ShowModal()
-            dlg.Destroy()
+            ShowInformation( self, self._prefsIO, "Transcription %s not loaded"%self._trsname, style=wx.ICON_ERROR)
             return None
         if trsinput.IsEmpty():
             return None

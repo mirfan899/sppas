@@ -37,8 +37,7 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 # Imports
@@ -49,15 +48,8 @@ import wx
 import wx.richtext
 import wx.lib.mixins.listctrl as listmix # for large tiers!
 
-from wxgui.sp_icons import APP_ICON
-from wxgui.sp_icons import TIER_PREVIEW
-from wxgui.sp_icons import CANCEL_ICON
-
-from wxgui.cutils.ctrlutils import spBitmap
-from wxgui.cutils.ctrlutils import CreateGenButton
-
-from wxgui.sp_consts import FRAME_STYLE
-from wxgui.sp_consts import FRAME_TITLE
+from wxgui.dialogs.basedialog import spBaseDialog
+from wxgui.sp_icons  import TIER_PREVIEW
 from wxgui.sp_consts import MAIN_FONTSIZE
 
 from wxgui.ui.CustomListCtrl import LineListCtrl
@@ -71,7 +63,6 @@ LIGHT_GRAY = wx.Colour(235,235,235)
 LIGHT_BLUE = wx.Colour(230,230,250)
 LIGHT_RED  = wx.Colour(250,230,230)
 
-
 SILENCE_FG_COLOUR = wx.Colour(45,45,190)
 SILENCE_BG_COLOUR = wx.Colour(230,230,250)
 LAUGH_FG_COLOUR   = wx.Colour(190,45,45)
@@ -79,12 +70,11 @@ LAUGH_BG_COLOUR   = wx.Colour(250,230,230)
 NOISE_FG_COLOUR   = wx.Colour(45,190,45)
 NOISE_BG_COLOUR   = wx.Colour(230,250,230)
 
-
 # ----------------------------------------------------------------------------
 # class PreviewTierDialog
 # ----------------------------------------------------------------------------
 
-class PreviewTierDialog( wx.Dialog ):
+class PreviewTierDialog( spBaseDialog ):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -102,58 +92,28 @@ class PreviewTierDialog( wx.Dialog ):
         @param tiers is a list of tiers to display
 
         """
-        wx.Dialog.__init__(self, parent, -1, title=FRAME_TITLE+" - Preview", size=(640, 480), style=FRAME_STYLE)
+        spBaseDialog.__init__(self, parent, preferences, title=" - Preview")
+        wx.GetApp().SetAppName( "log" )
 
         self.tiers = tiers
-        self.preferences = preferences
-        self._create_gui()
 
-        # Events of this frame
-        wx.EVT_CLOSE(self, self.OnClose)
+        titlebox   = self.CreateTitle(TIER_PREVIEW,"Preview of tier(s)")
+        contentbox = self._create_content()
+        buttonbox  = self._create_buttons()
 
-    # End __init__
-    # ------------------------------------------------------------------------
-
+        self.LayoutComponents( titlebox,
+                               contentbox,
+                               buttonbox )
 
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
 
+    def _create_buttons(self):
+        btn_close = self.CreateCloseButton()
+        return self.CreateButtonBox( [],[btn_close] )
 
-    def _create_gui(self):
-        self._init_infos()
-        self._create_title_label()
-        self._create_notebook()
-        self._create_close_button()
-        self._layout_components()
-        self._set_focus_component()
-
-
-    def _init_infos( self ):
-        wx.GetApp().SetAppName( "preview" )
-        # icon
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(APP_ICON) )
-        self.SetIcon(_icon)
-        # colors
-        self.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
-        self.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR'))
-        self.SetFont( self.preferences.GetValue('M_FONT'))
-
-
-    def _create_title_label(self):
-        self.title_layout = wx.BoxSizer(wx.HORIZONTAL)
-        bmp = wx.BitmapButton(self, bitmap=spBitmap(TIER_PREVIEW, 32, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
-        font = self.preferences.GetValue('M_FONT')
-        font.SetWeight(wx.BOLD)
-        font.SetPointSize(font.GetPointSize() + 2)
-        self.title_label = wx.StaticText(self, label="Preview of tier(s)", style=wx.ALIGN_CENTER)
-        self.title_label.SetFont( font )
-        self.title_layout.Add(bmp,  flag=wx.TOP|wx.RIGHT|wx.ALIGN_RIGHT, border=5)
-        self.title_layout.Add(self.title_label, flag=wx.EXPAND|wx.ALL|wx.wx.ALIGN_CENTER_VERTICAL, border=5)
-
-
-    def _create_notebook(self):
+    def _create_content(self):
         self.notebook = wx.Notebook(self)
 
         page1 = TierAsListPanel(self.notebook, self.preferences)
@@ -165,40 +125,15 @@ class PreviewTierDialog( wx.Dialog ):
         self.notebook.AddPage(page2, "Detailed view" )
         self.notebook.AddPage(page3, "Graphic view"  )
 
-        # LIMITATION / TODO: view all tiers
-        page1.ShowTier( self.tiers[0] )
+        # TODO: view all tiers
+        if len(self.tiers) > 0:
+            page1.ShowTier( self.tiers[0] )
         self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.OnNotebookPageChanged)
-
-
-    def _create_close_button(self):
-        bmp = spBitmap(CANCEL_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_close = CreateGenButton(self, wx.ID_OK, bmp, text=" Close", tooltip="Close this frame", colour=color)
-        self.btn_close.SetFont( self.preferences.GetValue('M_FONT'))
-        self.btn_close.SetDefault()
-        self.btn_close.SetFocus()
-        self.SetAffirmativeId(wx.ID_OK)
-
-
-    def _layout_components(self):
-        vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.title_layout, 0, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self.notebook,     1, flag=wx.ALL|wx.EXPAND, border=0)
-        vbox.Add(self.btn_close,    0, flag=wx.ALL|wx.EXPAND, border=5)
-        self.SetSizerAndFit(vbox)
-        self.ShowModal()
-
-
-    def _set_focus_component(self):
-        self.notebook.SetFocus()
-
+        return self.notebook
 
     # ------------------------------------------------------------------------
     # Callbacks to events
     # ------------------------------------------------------------------------
-
-    def OnClose(self, event):
-        self.SetEscapeId(wx.ID_CANCEL)
 
     def OnNotebookPageChanged(self, event):
         oldselection = event.GetOldSelection()
@@ -206,9 +141,8 @@ class PreviewTierDialog( wx.Dialog ):
         if oldselection != newselection:
             page = self.notebook.GetPage( newselection )
             # LIMITATION / TODO: view all tiers
-            page.ShowTier( self.tiers[0] )
-
-    # ------------------------------------------------------------------------
+            if len(self.tiers)>0:
+                page.ShowTier( self.tiers[0] )
 
 # ----------------------------------------------------------------------------
 
@@ -236,9 +170,7 @@ class BaseTierPanel( wx.Panel ):
         self.ShowNothing()
         self.sizer.Fit(self)
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def ShowNothing(self):
         """
@@ -246,10 +178,11 @@ class BaseTierPanel( wx.Panel ):
 
         """
         self.sizer.DeleteWindows()
-        self.sizer.Add(wx.StaticText(self, -1, "Nothing to view!"), 1, flag=wx.ALL|wx.EXPAND, border=5)
+        st = wx.StaticText(self, -1, "Nothing to view!")
+        st.SetMinSize((320,200))
+        self.sizer.Add(st, 1, flag=wx.ALL|wx.EXPAND, border=5)
 
     # ------------------------------------------------------------------------
-
 
     def ShowTier(self, tier):
         """
@@ -265,7 +198,6 @@ class BaseTierPanel( wx.Panel ):
 # First tab: simple list view
 # ----------------------------------------------------------------------------
 
-
 class TierAsListPanel( BaseTierPanel ):
     """
     @author:  Brigitte Bigi
@@ -278,9 +210,7 @@ class TierAsListPanel( BaseTierPanel ):
     def __init__(self, parent, prefsIO):
         BaseTierPanel.__init__(self, parent, prefsIO)
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def ShowTier(self, tier):
         """
@@ -342,7 +272,6 @@ class TierAsListPanel( BaseTierPanel ):
 
 # ----------------------------------------------------------------------------
 
-
 # ----------------------------------------------------------------------------
 # Second tab: Details of each annotation
 # ----------------------------------------------------------------------------
@@ -359,9 +288,7 @@ class TierDetailsPanel( BaseTierPanel ):
     def __init__(self, parent, prefsIO):
         BaseTierPanel.__init__(self, parent, prefsIO)
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def ShowTier(self, tier):
         """
@@ -380,9 +307,7 @@ class TierDetailsPanel( BaseTierPanel ):
         self.sizer.Add(self.text_ctrl, 1, flag=wx.ALL|wx.EXPAND, border=5)
         self.sizer.Fit(self)
 
-    # End ShowTier
     # ------------------------------------------------------------------------
-
 
     def _set_styles(self):
         """
@@ -404,7 +329,6 @@ class TierDetailsPanel( BaseTierPanel ):
         self.timeStyle.SetBackgroundColour( LIGHT_BLUE )
         self.timeStyle.SetTextColour( wx.BLACK )
         self.timeStyle.SetFont(wx.Font(MAIN_FONTSIZE, wx.SWISS, wx.NORMAL, wx.NORMAL, False, u'Courier New'))
-
 
     def _create_text_content(self, tier):
         """
@@ -485,7 +409,6 @@ class TierDetailsPanel( BaseTierPanel ):
 
 # ----------------------------------------------------------------------------
 
-
 # ----------------------------------------------------------------------------
 # Third tab: Graphic view of each tier
 # ----------------------------------------------------------------------------
@@ -502,7 +425,21 @@ class TierGraphicPanel( BaseTierPanel ):
     def __init__(self, parent, prefsIO):
         BaseTierPanel.__init__(self, parent, prefsIO)
 
-    # End __init__
     # ------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
+
+def ShowPreviewDialog(parent, preferences, tiers):
+    dialog = PreviewTierDialog(parent, preferences,tiers)
+    dialog.ShowModal()
+    dialog.Destroy()
+
+# ---------------------------------------------------------------------------
+
+if __name__ == "__main__":
+    app = wx.PySimpleApp()
+    ShowPreviewDialog(None,None,[])
+    app.MainLoop()
+
+# ---------------------------------------------------------------------------
+

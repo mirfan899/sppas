@@ -37,30 +37,28 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
+import sys
+import os
+import os.path
+sys.path.append(  os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) )
 
 import wx
 import wx.lib.newevent as newevent
 
-#import logging
-from wxgui.cutils.imageutils import spBitmap
-from wxgui.cutils.textutils import TextValidator
-from wxgui.cutils.ctrlutils import CreateGenButton
+from wxgui.dialogs.basedialog import spBaseDialog
+from wxgui.cutils.imageutils  import spBitmap
+from wxgui.cutils.textutils   import TextValidator
 
-from wxgui.sp_icons  import TIER_SEARCH
-from wxgui.sp_icons  import BROOM_ICON
-from wxgui.sp_icons  import APP_ICON
+from wxgui.sp_icons import TIER_SEARCH
+from wxgui.sp_icons import BROOM_ICON
 from wxgui.sp_icons import BACKWARD_ICON
 from wxgui.sp_icons import FORWARD_ICON
-from wxgui.sp_icons import CANCEL_ICON
-
-from wxgui.sp_consts import FRAME_STYLE
-from wxgui.sp_consts import FRAME_TITLE
+from wxgui.sp_icons import CLOSE_ICON
 
 # ----------------------------------------------------------------------------
 
@@ -71,7 +69,7 @@ SearchedCommandEvent, spEVT_SEARCHED_COMMAND = newevent.NewCommandEvent()
 
 # ----------------------------------------------------------------------------
 
-class Search( wx.Dialog ):
+class SearchDialog( spBaseDialog ):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -79,62 +77,51 @@ class Search( wx.Dialog ):
     @summary: This class is used to display a Search dialog.
 
     Open a frame to search patterns in a transcription.
-    """
 
-    def __init__(self, parent, prefsIO, trs):
-        """ Constructor. """
-        wx.Dialog.__init__(self, parent, title=FRAME_TITLE+" - Search", style=FRAME_STYLE)
+    """
+    def __init__(self, parent, preferences, trs):
+        """
+        Constructor.
+
+        @param parent is the parent wx object.
+        @param preferences (Preferences)
+        @param trs (Transcription)
+
+        """
+        spBaseDialog.__init__(self, parent, preferences, title=" - Search")
+        wx.GetApp().SetAppName( "search" )
 
         # Members
         self._trs  = trs
         self._pmin = 0.
         self._pmax = 0.
-        self.preferences = prefsIO
 
-        self._create_gui()
+        titlebox   = self.CreateTitle(TIER_SEARCH,"Search patterns in a tier")
+        contentbox = self._create_content()
+        buttonbox  = self._create_buttons()
 
-    # End __init__
-    # ------------------------------------------------------------------------
-
+        self.LayoutComponents( titlebox,
+                               contentbox,
+                               buttonbox )
 
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
 
+    def _create_buttons(self):
+        btn_next     = self.CreateButton(FORWARD_ICON, " Search forward", "Search after the current position.")
+        btn_previous = self.CreateButton(BACKWARD_ICON," Search backward", "Search before the current position.")
+        btn_close    = self.CreateButton(CLOSE_ICON,   " Close" )
+        btn_close.SetDefault()
+        self.Bind(wx.EVT_BUTTON, self.OnFind, btn_next, wx.ID_FORWARD)
+        self.Bind(wx.EVT_BUTTON, self.OnFind, btn_previous, wx.ID_BACKWARD)
+        self.Bind(wx.EVT_BUTTON, self._on_close, btn_close)
+        return self.CreateButtonBox( [btn_previous,btn_next],[btn_close] )
+
     def _create_gui(self):
-        self._init_infos()
-        self._create_title_label()
-        self._create_content()
         self._create_next_button()
         self._create_previous_button()
         self._create_close_button()
-        self._layout_components()
-        self._set_focus_component()
-
-
-    def _init_infos( self ):
-        wx.GetApp().SetAppName( "search" )
-        # icon
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(APP_ICON) )
-        self.SetIcon(_icon)
-        # colors
-        self.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
-        self.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR'))
-        self.SetFont( self.preferences.GetValue('M_FONT'))
-
-
-    def _create_title_label(self):
-        self.title_layout = wx.BoxSizer(wx.HORIZONTAL)
-        bmp = wx.BitmapButton(self, bitmap=spBitmap(TIER_SEARCH, 32, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
-        font = self.preferences.GetValue('M_FONT')
-        font.SetWeight(wx.BOLD)
-        font.SetPointSize(font.GetPointSize() + 2)
-        self.title_label = wx.StaticText(self, label="Search patterns in a tier", style=wx.ALIGN_CENTER)
-        self.title_label.SetFont( font )
-        self.title_layout.Add(bmp,  flag=wx.TOP|wx.RIGHT|wx.ALIGN_RIGHT, border=5)
-        self.title_layout.Add(self.title_label, flag=wx.EXPAND|wx.ALL|wx.wx.ALIGN_CENTER_VERTICAL, border=5)
-
 
     def _create_content(self):
         label = wx.StaticText(self, label="Search for:", pos=wx.DefaultPosition, size=wx.DefaultSize)
@@ -162,69 +149,20 @@ class Search( wx.Dialog ):
         self.sh_layout.Add(self.lp, 1, wx.EXPAND|wx.LEFT,  0)
         self.sh_layout.Add(self.tp, 2, wx.EXPAND|wx.RIGHT, 0)
 
-
-    def _create_previous_button(self):
-        bmp = spBitmap(BACKWARD_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_previous = CreateGenButton(self, wx.ID_BACKWARD, bmp, text=" Search backward", tooltip="Search before the current position.", colour=color)
-        self.btn_previous.SetFont( self.preferences.GetValue('M_FONT'))
-        self.Bind(wx.EVT_BUTTON, self.OnFind, self.btn_previous, wx.ID_BACKWARD)
-
-    def _create_next_button(self):
-        bmp = spBitmap(FORWARD_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_next = CreateGenButton(self, wx.ID_FORWARD, bmp, text=" Search forward", tooltip="Search after the current position.", colour=color)
-        self.btn_next.SetFont( self.preferences.GetValue('M_FONT'))
-        self.Bind(wx.EVT_BUTTON, self.OnFind, self.btn_next, wx.ID_FORWARD)
-
-    def _create_close_button(self):
-        bmp = spBitmap(CANCEL_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_close = CreateGenButton(self, wx.ID_CLOSE, bmp, text=" Close", tooltip="Close this frame", colour=color)
-        self.btn_close.SetFont( self.preferences.GetValue('M_FONT'))
-        self.btn_close.SetDefault()
-        self.btn_close.SetFocus()
-        self.SetAffirmativeId(wx.ID_CLOSE)
-
-    def _create_button_box(self):
-        button_box = wx.BoxSizer(wx.HORIZONTAL)
-        button_box.Add(self.btn_previous,  flag=wx.LEFT, border=5)
-        button_box.Add(self.btn_next,      flag=wx.LEFT, border=5)
-        button_box.AddStretchSpacer()
-        button_box.Add(self.btn_close, flag=wx.RIGHT, border=5)
-
-        return button_box
-
-
-    def _layout_components(self):
         vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.title_layout,   0, flag=wx.ALL|wx.EXPAND, border=5)
         vbox.Add(self.pattern_layout, 0, wx.EXPAND|wx.ALL, border=5)
-        vbox.Add(self.sh_layout,      2, flag=wx.ALL|wx.EXPAND|wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_CENTER_HORIZONTAL, border=5)
-        vbox.Add(self._create_button_box(), 0, flag=wx.ALL|wx.EXPAND, border=5)
-        self.SetMinSize((420,300))
-        self.SetSizer( vbox )
-        self.Centre()
-        self.Enable()
-        self.SetAutoLayout(True)
-        self.SetFocus()
-        self.Layout()
-        self.Show(True)
+        vbox.Add(self.sh_layout,      1, flag=wx.ALL|wx.EXPAND|wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_CENTER_HORIZONTAL, border=5)
 
-
-    def _set_focus_component(self):
-        self.btn_next.SetFocus()
+        return vbox
 
     #-------------------------------------------------------------------------
-
 
     # ------------------------------------------------------------------------
     # Callbacks
     # ------------------------------------------------------------------------
 
-    def OnClose(self, event):
+    def _on_close(self,event):
         self.Destroy()
-
 
     def OnTextClick(self, event):
         self.text.SetForegroundColour( wx.BLACK )
@@ -233,19 +171,16 @@ class Search( wx.Dialog ):
         event.Skip()
         #self.text.SetFocus()
 
-
     def OnTextChanged(self, event):
         self.text.SetFocus()
         self.text.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
         self.text.Refresh()
-
 
     def OnTextErase(self, event):
         self.text.SetValue('')
         self.text.SetFocus()
         self.text.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
         self.text.Refresh()
-
 
     #-------------------------------------------------------------------------
 #
@@ -255,12 +190,11 @@ class Search( wx.Dialog ):
 
     #-------------------------------------------------------------------------
 
-
     def OnFind(self, event):
         """
         Search after or before the current position.
-        """
 
+        """
         # Firstly, check if a text to find is given!
         success = self.text.GetValidator().Validate(self.text)
         if success is False:
@@ -321,16 +255,15 @@ class Search( wx.Dialog ):
 
     #-------------------------------------------------------------------------
 
-
-
     #-------------------------------------------------------------------------
     # Getters and Setters
     #-------------------------------------------------------------------------
 
-
     def SetTranscription(self, trs):
-        """ Set a new transcription. """
+        """
+        Set a new transcription.
 
+        """
         if trs != self._trs:
             self._trs = trs
             self.sh.Remove(1)
@@ -344,9 +277,7 @@ class Search( wx.Dialog ):
 
     #-------------------------------------------------------------------------
 
-
 #-----------------------------------------------------------------------------
-
 
 class LabelPanel(wx.Panel):
     """ A panel with the search modes. """
@@ -388,7 +319,6 @@ class LabelPanel(wx.Panel):
         self.SetAutoLayout(True)
         self.Layout()
 
-
     def GetCriteria(self):
         criteria = {}
         idx = self.radiobox.GetSelection()
@@ -398,9 +328,7 @@ class LabelPanel(wx.Panel):
         criteria['reverse']   = idx % 2 != 0
         return criteria
 
-
 #-----------------------------------------------------------------------------
-
 
 class TierPanel(wx.Panel):
     """ A panel with the radiolist of tiers of the given transcription. """
@@ -408,12 +336,13 @@ class TierPanel(wx.Panel):
     def __init__(self, parent, trs):
 
         wx.Panel.__init__(self, parent)
-        #self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
-        #self.SetBackgroundColour( FRAME_BG_COLOR )
 
         choices = []
-        for t in trs:
-            choices.append( t.GetName() )
+        if trs:
+            for t in trs:
+                choices.append( t.GetName() )
+        else:
+            choices.append('Empty transcription')
 
         self.radiobox = wx.RadioBox(self, label="Tier:",
                                     choices=choices, majorDimension=1)
@@ -428,5 +357,18 @@ class TierPanel(wx.Panel):
     def GetSelection(self):
         return self.radiobox.GetSelection()
 
-
 #-----------------------------------------------------------------------------
+
+def ShowSearchDialog(parent, preferences, trs):
+    dialog = SearchDialog(parent, preferences, trs)
+    dialog.ShowModal()
+    dialog.Destroy()
+
+# ---------------------------------------------------------------------------
+
+if __name__ == "__main__":
+    app = wx.PySimpleApp()
+    ShowSearchDialog(None,None,None)
+    app.MainLoop()
+
+# ---------------------------------------------------------------------------

@@ -37,8 +37,7 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 # Imports
@@ -48,29 +47,17 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import wx
 import wx.richtext
 
-from wxgui.sp_icons import APP_ICON
+from wxgui.dialogs.basedialog import spBaseDialog
 from wxgui.sp_icons import USERCHECK
-from wxgui.sp_icons import CANCEL_ICON
-
-from wxgui.cutils.ctrlutils import spBitmap
-from wxgui.cutils.ctrlutils import CreateGenButton
-
-from wxgui.sp_consts import FRAME_STYLE
-from wxgui.sp_consts import FRAME_TITLE
-from wxgui.sp_consts import MAIN_FONTSIZE
-
-from wxgui.ui.CustomListCtrl import LineListCtrl
 
 from calculus.kappa           import Kappa
 from presenters.tierconverter import TierConverter
 
 # ----------------------------------------------------------------------------
-
-# ----------------------------------------------------------------------------
-# class PreviewTierDialog
+# class UserAgreementDialog
 # ----------------------------------------------------------------------------
 
-class UserAgreementDialog( wx.Dialog ):
+class UserAgreementDialog( spBaseDialog ):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -78,7 +65,6 @@ class UserAgreementDialog( wx.Dialog ):
     @summary: Frame allowing to show user agreements between 2 tiers.
 
     """
-
     def __init__(self, parent, preferences, tiers={}):
         """
         Constructor.
@@ -88,55 +74,28 @@ class UserAgreementDialog( wx.Dialog ):
         @param tiers: a dictionary with key=filename, value=list of selected tiers
 
         """
-        wx.Dialog.__init__(self, parent, -1, title=FRAME_TITLE+" - User Agreement", size=(640, 480), style=FRAME_STYLE)
+        spBaseDialog.__init__(self, parent, preferences, title=" - User Agreement")
+        wx.GetApp().SetAppName( "useragreement" )
 
         self.tiers = tiers
-        self.preferences = preferences
-        self._create_gui()
 
-        # Events of this frame
-        wx.EVT_CLOSE(self, self.OnClose)
+        titlebox   = self.CreateTitle(USERCHECK, "User agreement of 2 tiers")
+        contentbox = self._create_content()
+        buttonbox  = self._create_buttons()
 
-    # ------------------------------------------------------------------------
+        self.LayoutComponents( titlebox,
+                               contentbox,
+                               buttonbox )
 
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
 
-    def _create_gui(self):
-        self._init_infos()
-        self._create_title_label()
-        self._create_notebook()
-        self._create_close_button()
-        self._layout_components()
-        self._set_focus_component()
+    def _create_buttons(self):
+        btn_close = self.CreateCloseButton( )
+        return self.CreateButtonBox( [],[btn_close] )
 
-
-    def _init_infos( self ):
-        wx.GetApp().SetAppName( "useragreement" )
-        # icon
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(APP_ICON) )
-        self.SetIcon(_icon)
-        # colors
-        self.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
-        self.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR'))
-        self.SetFont( self.preferences.GetValue('M_FONT'))
-
-
-    def _create_title_label(self):
-        self.title_layout = wx.BoxSizer(wx.HORIZONTAL)
-        bmp = wx.BitmapButton(self, bitmap=spBitmap(USERCHECK, 32, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
-        font = self.preferences.GetValue('M_FONT')
-        font.SetWeight(wx.BOLD)
-        font.SetPointSize(font.GetPointSize() + 2)
-        self.title_label = wx.StaticText(self, label="User agreement of 2 tiers", style=wx.ALIGN_CENTER)
-        self.title_label.SetFont( font )
-        self.title_layout.Add(bmp,  flag=wx.TOP|wx.RIGHT|wx.ALIGN_RIGHT, border=5)
-        self.title_layout.Add(self.title_label, flag=wx.EXPAND|wx.ALL|wx.wx.ALIGN_CENTER_VERTICAL, border=5)
-
-
-    def _create_notebook(self):
+    def _create_content(self):
         self.notebook = wx.Notebook(self)
 
         page1 = InformationPanel(self.notebook, self.preferences)
@@ -149,36 +108,11 @@ class UserAgreementDialog( wx.Dialog ):
         page1.ShowContent(self.tiers)
         self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.OnNotebookPageChanged)
 
-
-    def _create_close_button(self):
-        bmp = spBitmap(CANCEL_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        color = self.preferences.GetValue('M_BG_COLOUR')
-        self.btn_close = CreateGenButton(self, wx.ID_OK, bmp, text=" Close", tooltip="Close this frame", colour=color)
-        self.btn_close.SetFont( self.preferences.GetValue('M_FONT'))
-        self.btn_close.SetDefault()
-        self.btn_close.SetFocus()
-        self.SetAffirmativeId(wx.ID_OK)
-
-
-    def _layout_components(self):
-        vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.title_layout, 0, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self.notebook,     1, flag=wx.ALL|wx.EXPAND, border=0)
-        vbox.Add(self.btn_close,    0, flag=wx.ALL|wx.EXPAND, border=5)
-        self.SetSizerAndFit(vbox)
-        self.ShowModal()
-
-
-    def _set_focus_component(self):
-        self.notebook.SetFocus()
-
+        return self.notebook
 
     # ------------------------------------------------------------------------
     # Callbacks to events
     # ------------------------------------------------------------------------
-
-    def OnClose(self, event):
-        self.SetEscapeId(wx.ID_CANCEL)
 
     def OnNotebookPageChanged(self, event):
         oldselection = event.GetOldSelection()
@@ -186,10 +120,6 @@ class UserAgreementDialog( wx.Dialog ):
         if oldselection != newselection:
             page = self.notebook.GetPage( newselection )
             page.ShowContent( self.tiers )
-
-    # ------------------------------------------------------------------------
-
-# ----------------------------------------------------------------------------
 
 
 # ----------------------------------------------------------------------------
@@ -233,8 +163,6 @@ class BaseTierPanel( wx.Panel ):
         """
         self.ShowNothing()
 
-    # ------------------------------------------------------------------------
-
 # ----------------------------------------------------------------------------
 # First tab: information
 # ----------------------------------------------------------------------------
@@ -256,6 +184,7 @@ class InformationPanel( BaseTierPanel ):
     def ShowContent(self, tiers):
         """
         Show a tier as list.
+
         """
         if not tiers:
             self.ShowNothing()
@@ -278,8 +207,8 @@ class InformationPanel( BaseTierPanel ):
     def _create_text_content(self, tiers):
         """
         Add the content in the RichTextCtrl.
-        """
 
+        """
         if not tiers:
             self.text_ctrl.WriteText( "Nothing to view!" )
             return
@@ -294,10 +223,6 @@ class InformationPanel( BaseTierPanel ):
 
         self.text_ctrl.WriteText( "Confusion matrix:\n" )
         self.text_ctrl.WriteText( "\n" )
-
-    # ------------------------------------------------------------------------
-
-# ----------------------------------------------------------------------------
 
 
 # ----------------------------------------------------------------------------
@@ -321,6 +246,7 @@ class KappaPanel( BaseTierPanel ):
     def ShowContent(self, tiers):
         """
         Show the Cohen's Kappa result, with detailed information.
+
         """
         self.text_ctrl = wx.richtext.RichTextCtrl(self, style=wx.VSCROLL|wx.HSCROLL|wx.NO_BORDER)
         self.text_ctrl.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
@@ -371,7 +297,5 @@ class KappaPanel( BaseTierPanel ):
         kappa = Kappa(p,q)
         v = kappa.evaluate()
         self.text_ctrl.WriteText( "value = "+str(v)+"\n" )
-
-    # ------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------

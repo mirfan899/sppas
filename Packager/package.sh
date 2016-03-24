@@ -535,8 +535,15 @@ function fct_sppas_doc {
 
     # Package: erase old then copy new
     rm -rf $WEB_DIR/$ETC_DIR
-    rm -rf $PROGRAM_DIR/documentation/$ETC_DIR
     cp -r $ETC_DIR $WEB_DIR
+
+    rm -rf $PROGRAM_DIR/sppas/doc
+    cp -r doc $PROGRAM_DIR/sppas
+    mkdir $PROGRAM_DIR/sppas/doc/img
+    cp -r $ETC_DIR/logos       $PROGRAM_DIR/sppas/doc/img/
+    cp -r $ETC_DIR/img         $PROGRAM_DIR/sppas/doc/img/
+    cp -r $ETC_DIR/figures     $PROGRAM_DIR/sppas/doc/img/
+    cp -r $ETC_DIR/screenshots $PROGRAM_DIR/sppas/doc/img/
 
     echo " The ${PROGRAM_NAME} documentation folder and the web directory were both updated."
 }

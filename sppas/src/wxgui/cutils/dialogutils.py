@@ -49,60 +49,30 @@ import wx
 
 # ----------------------------------------------------------------------------
 
-
 def create_wildcard(text, extensions):
     """
     Create wildcard for use in open/save dialogs.
-    """
 
+    """
     return "%s (%s)|%s" % (text,
                            ", ".join(["*" + e for e in extensions]),
                            ";".join(["*" + e for e in extensions]))
 
 # ----------------------------------------------------------------------------
 
-
 def get_extension(filename):
     return os.path.splitext(filename)[1][1:]
 
 # ----------------------------------------------------------------------------
 
-
 def extend_path(path, valid_extensions, default_extension):
     """
     Return tuple (path, extension) ensuring that path has extension.
-    """
 
+    """
     for extension in valid_extensions:
         if path.endswith("." + extension):
             return (path, extension)
     return (path + "." + default_extension, default_extension)
 
 # ----------------------------------------------------------------------------
-
-
-class spMessageDialog( wx.Dialog ):
-
-    def __init__(self, parent, message, title, type):
-        wx.Dialog.__init__(self, parent, -1, title)
-        if type == "WARNING":
-            dlg = wx.MessageDialog(parent, message,
-                                   title,
-                                   wx.OK | wx.ICON_EXCLAMATION
-                                   )
-        elif type == "ERROR":
-            dlg = wx.MessageDialog(parent, message,
-                                   title,
-                                   wx.OK | wx.ICON_ERROR
-                                   )
-        else:
-            dlg = wx.MessageDialog(parent, message,
-                                   title,
-                                   wx.OK | wx.ICON_INFORMATION
-                                   )
-        dlg.ShowModal()
-        dlg.Destroy()
-        self.Close(True)
-
-# ----------------------------------------------------------------------------
-

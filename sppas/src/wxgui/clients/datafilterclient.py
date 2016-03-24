@@ -37,8 +37,7 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 # Imports
@@ -74,12 +73,13 @@ from wxgui.structs.files     import xFiles
 from wxgui.structs.prefs     import Preferences
 from wxgui.cutils.imageutils import spBitmap
 import wxgui.dialogs.filedialogs as filedialogs
+from wxgui.dialogs.msgdialogs import ShowInformation
+from wxgui.dialogs.msgdialogs import ShowYesNoQuestion
 
 from wxgui.panels.trslist        import TrsList
 from wxgui.views.singlefilter    import SingleFilterDialog
 from wxgui.views.relationfilter  import RelationFilterDialog
 from wxgui.process.filterprocess import FilterProcess
-
 
 # ----------------------------------------------------------------------------
 # Constants
@@ -93,11 +93,9 @@ FILTER_UNCHECK_ID = wx.NewId()
 FILTER_SEL_ID = wx.NewId()
 FILTER_REL_ID = wx.NewId()
 
-
 # ----------------------------------------------------------------------------
 # Main class that manage the notebook
 # ----------------------------------------------------------------------------
-
 
 class DataFilterClient( BaseClient ):
     """
@@ -111,14 +109,11 @@ class DataFilterClient( BaseClient ):
     Each page (except if empty...) contains an instance of a DataFilter.
 
     """
-
     def __init__( self, parent, prefsIO ):
         BaseClient.__init__( self, parent, prefsIO )
         self._update_members()
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def _update_members(self):
         """
@@ -129,20 +124,15 @@ class DataFilterClient( BaseClient ):
         # Quick and dirty solution to communicate to the file manager:
         self._prefsIO.SetValue( 'F_CCB_MULTIPLE', t='bool', v=True, text='')
 
-    # End _update_members
     # ------------------------------------------------------------------------
-
 
     def CreateComponent(self, parent, prefsIO ):
         return DataFilter(parent, prefsIO)
-
-    # ------------------------------------------------------------------------
 
 
 # ----------------------------------------------------------------------------
 # The Component is the content of one page of the notebook.
 # ----------------------------------------------------------------------------
-
 
 class DataFilter( scrolled.ScrolledPanel ):
     """
@@ -154,7 +144,6 @@ class DataFilter( scrolled.ScrolledPanel ):
     It is used to select which tiers will be filtered.
 
     """
-
     def __init__(self, parent, prefsIO):
 
         scrolled.ScrolledPanel.__init__(self, parent, -1)
@@ -185,9 +174,7 @@ class DataFilter( scrolled.ScrolledPanel ):
 
         self.SetupScrolling()
 
-    # End __init__
     # ----------------------------------------------------------------------
-
 
     def __display_text_in_statusbar(self, text):
         wx.GetTopLevelParent(self).SetStatusText(text,0)
@@ -195,14 +182,13 @@ class DataFilter( scrolled.ScrolledPanel ):
     def __reset_text_in_statusbar(self):
         wx.GetTopLevelParent(self).SetStatusText('', 0)
 
-
     #-------------------------------------------------------------------------
-
 
     def _check_prefs(self, prefs):
         """
         Check if preferences are set properly. Set new ones if required.
         Return the new version.
+
         """
         if prefs is None:
             prefs = Preferences( BaseTheme() )
@@ -218,9 +204,11 @@ class DataFilter( scrolled.ScrolledPanel ):
 
     #-------------------------------------------------------------------------
 
-
     def _create_toolbar(self):
-        """ Creates a toolbar panel. """
+        """
+        Creates a toolbar panel.
+
+        """
         # Define the size of the icons and buttons
         iconSize = (TB_ICONSIZE, TB_ICONSIZE)
 
@@ -272,14 +260,10 @@ class DataFilter( scrolled.ScrolledPanel ):
 
         return toolbar
 
-    # End _create_toolbar
-    # ------------------------------------------------------------------------
-
 
     # ------------------------------------------------------------------------
     # Callbacks to any kind of event
     # ------------------------------------------------------------------------
-
 
     def ProcessEvent(self, event):
         """
@@ -287,51 +271,48 @@ class DataFilter( scrolled.ScrolledPanel ):
         suitable event handler function(s).  Note that the ProcessEvent
         method is called from the wxPython docview framework directly since
         wxPython does not have a virtual ProcessEvent function.
-        """
-        id = event.GetId()
-        logging.debug('DataFilter. Event received %d' % id)
 
-        if id == wx.ID_SAVE:
+        """
+        ide = event.GetId()
+
+        if ide == wx.ID_SAVE:
             self.OnSave(event)
             return True
-        elif id == SAVE_AS_ID:
+        elif ide == SAVE_AS_ID:
             self.OnSaveAs(event)
             return True
-        elif id == SAVE_ALL_ID:
+        elif ide == SAVE_ALL_ID:
             self.OnSaveAll(event)
             return True
 
-        elif id == wx.ID_DELETE:
+        elif ide == wx.ID_DELETE:
             self.OnDelete(event)
             return True
-        elif id == PREVIEW_ID:
+        elif ide == PREVIEW_ID:
             self.OnPreview(event)
             return True
 
-        elif id == FILTER_CHECK_ID:
+        elif ide == FILTER_CHECK_ID:
             self.OnCheck(event)
             return True
-        elif id == FILTER_UNCHECK_ID:
+        elif ide == FILTER_UNCHECK_ID:
             self.OnUncheck(event)
             return True
 
-        elif id == FILTER_SEL_ID:
+        elif ide == FILTER_SEL_ID:
             self.OnSingleFilter(event)
             return True
-        elif id == FILTER_REL_ID:
+        elif ide == FILTER_REL_ID:
             self.OnRelationFilter(event)
             return True
 
         return wx.GetApp().ProcessEvent(event)
 
-    # End ProcessEvent
     # ------------------------------------------------------------------------
 
-
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Callbacks
-    # ----------------------------------------------------------------------
-
+    # -----------------------------------------------------------------------
 
     def OnFileWander(self, event):
         """
@@ -361,12 +342,13 @@ class DataFilter( scrolled.ScrolledPanel ):
                 except Exception:
                     pass
 
-    # End OnFileWander
     # ------------------------------------------------------------------------
 
-
     def OnPanelSelection(self, event):
-        """ Change the current selection (the transcription file that was clicked on). """
+        """
+        Change the current selection (the transcription file that was clicked on).
+
+        """
         self._selection = event.panel
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
@@ -375,17 +357,16 @@ class DataFilter( scrolled.ScrolledPanel ):
             else:
                 p.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR'))
 
-    # End OnPanelSelection
-    # -----------------------------------------------------------------------
-
 
     # -----------------------------------------------------------------------
     # Toolbar actions...
     # -----------------------------------------------------------------------
 
     def OnCheck(self, event):
-        """ Choose tiers to check. """
+        """
+        Choose tiers to check.
 
+        """
         nb = 0
         dlg = wx.TextEntryDialog(self,'What is name of tier(s) to check?','Tier checker', '')
         ret = dlg.ShowModal()
@@ -406,14 +387,20 @@ class DataFilter( scrolled.ScrolledPanel ):
 
 
     def OnUncheck(self, event):
-        """ Un-check all tiers in all files. """
+        """
+        Un-check all tiers in all files.
+
+        """
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
-            d = p.Deselect()
+            p.Deselect()
 
 
     def OnDelete(self, event):
-        """ Delete all checked tiers of all panels. """
+        """
+        Delete all checked tiers of all panels.
+
+        """
         delete = 0
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
@@ -427,7 +414,10 @@ class DataFilter( scrolled.ScrolledPanel ):
 
 
     def OnPreview(self, event):
-        """ Open a frame to view a tier. """
+        """
+        Open a frame to view a tier.
+
+        """
         nb = 0
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
@@ -444,17 +434,18 @@ class DataFilter( scrolled.ScrolledPanel ):
             self.__display_text_in_statusbar("Nothing to view: one tier must be selected.")
 
         else:
-            wx.MessageBox('You must check only one tier to view...', 'Warning', wx.OK | wx.ICON_INFORMATION)
-
+            ShowInformation( self, self._prefsIO, "You must check only one tier to view...", style=wx.ICON_WARNING)
 
     # ----------------------------------------------------------------------
 
-
     def OnSave(self, event):
-        """ Save the selected file. """
+        """
+        Save the selected file.
+
+        """
 
         if self._selection is None:
-            wx.MessageBox('No file selected!\nClick on a tier to select a file...', 'Information', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation( self, self._prefsIO, "No file selected!\nClick on a tier to select a file...", style=wx.ICON_INFORMATION)
             return
 
         for i in range(self._filetrs.GetSize()):
@@ -462,15 +453,15 @@ class DataFilter( scrolled.ScrolledPanel ):
             if p == self._selection:
                 p.Save()
 
-    # End OnSave
     # ----------------------------------------------------------------------
 
-
     def OnSaveAs(self, event):
-        """ Save as... the selected file. """
+        """
+        Save as... the selected file.
 
+        """
         if self._selection is None:
-            wx.MessageBox('No file selected!\nClick on a tier to select a file...', 'Information', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation( self, self._prefsIO, 'No file selected!\nClick on a tier to select a file...', style=wx.ICON_INFORMATION)
             return
 
         found = -1
@@ -493,7 +484,7 @@ class DataFilter( scrolled.ScrolledPanel ):
             # do not erase the file if it is already existing!
             if os.path.exists( filename ) and f != filename:
                 self.__display_text_in_statusbar('File not saved.')
-                wx.MessageBox('File not saved: this file name is already existing!', 'Information', wx.OK | wx.ICON_INFORMATION)
+                ShowInformation( self, self._prefsIO, "File not saved: this file name is already existing!", style=wx.ICON_INFORMATION)
             elif f == filename :
                 p.Save()
             else:
@@ -507,27 +498,26 @@ class DataFilter( scrolled.ScrolledPanel ):
                 evt.SetEventObject(self)
                 wx.PostEvent( self.GetParent().GetParent().GetParent(), evt )
 
-    # End OnSaveAs
     # ----------------------------------------------------------------------
 
-
     def OnSaveAll(self, event):
-        """ Save all files. """
+        """
+        Save all files.
 
+        """
         for i in range(self._filetrs.GetSize()):
             o = self._filetrs.GetObject(i)
             o.Save()
 
-    # End SaveAll
     # ----------------------------------------------------------------------
 
-
     def OnSingleFilter(self, event):
-        """ Filter selected tiers with Sel predicate."""
-        dlg = SingleFilterDialog(self, self._prefsIO)
-        res = dlg.ShowModal()
+        """
+        Filter selected tiers with Sel predicate.
 
-        if res != wx.ID_CANCEL:
+        """
+        dlg = SingleFilterDialog(self, self._prefsIO)
+        if dlg.ShowModal() == wx.ID_OK:
 
             # Match all or match any of the predicates
             match_all = dlg.GetMatchAll()
@@ -551,15 +541,14 @@ class DataFilter( scrolled.ScrolledPanel ):
 
 
     def OnRelationFilter(self, event):
-        """ Filter selected tiers with Rel predicate."""
+        """
+        Filter selected tiers with Rel predicate.
+
+        """
         (tiersX,tiersY) = self._get_tiernames()
-        logging.debug(' fixed  X: %s'%tiersX)
-        logging.debug(' choice Y: %s'%tiersY)
-
         dlg = RelationFilterDialog(self, self._prefsIO, tiersX, tiersY)
-        res = dlg.ShowModal()
 
-        if res == wx.ID_OK:
+        if dlg.ShowModal() == wx.ID_OK:
             # Output tier name
             tiername = dlg.GetFiltererdTierName()
             # Relation Tier name
@@ -580,19 +569,16 @@ class DataFilter( scrolled.ScrolledPanel ):
 
         dlg.Destroy()
 
-    # ----------------------------------------------------------------------
-
 
     # ----------------------------------------------------------------------
     # GUI
     # ----------------------------------------------------------------------
 
-
     def OnSettings(self, event):
         """
         Set new preferences, then apply them.
-        """
 
+        """
         self._prefsIO = event.prefsIO
 
         # Apply the changes on self
@@ -607,13 +593,13 @@ class DataFilter( scrolled.ScrolledPanel ):
         self.Layout()
         self.Refresh()
 
-    # End OnSettings
     # ----------------------------------------------------------------------
 
-
     def SetFont(self, font):
-        """ Change font of all texts. """
+        """
+        Change font of all texts.
 
+        """
         wx.Window.SetFont( self,font )
         self.toolbar.SetFont( font )
 
@@ -622,13 +608,13 @@ class DataFilter( scrolled.ScrolledPanel ):
             p = self._filetrs.GetObject(i)
             p.SetFont( font )
 
-    # End SetFont
     # ----------------------------------------------------------------------
 
-
     def SetBackgroundColour(self, color):
-        """ Change background of all texts. """
+        """
+        Change background of all texts.
 
+        """
         wx.Window.SetBackgroundColour( self,color )
         self.toolbar.SetBackgroundColour( color )
 
@@ -637,13 +623,13 @@ class DataFilter( scrolled.ScrolledPanel ):
             p = self._filetrs.GetObject(i)
             p.SetBackgroundColour(color)
 
-    # End SetBackgroundColour
     # ----------------------------------------------------------------------
 
-
     def SetForegroundColour(self, color):
-        """ Change foreground of all texts. """
+        """
+        Change foreground of all texts.
 
+        """
         wx.Window.SetForegroundColour( self,color )
         self.toolbar.SetForegroundColour( color )
 
@@ -652,18 +638,15 @@ class DataFilter( scrolled.ScrolledPanel ):
             p = self._filetrs.GetObject(i)
             p.SetForegroundColour(color)
 
-    # End SetForegroundColour
-    # ----------------------------------------------------------------------
-
-
     # ----------------------------------------------------------------------
     # Manage the data
     # ----------------------------------------------------------------------
 
-
     def SetData(self, filename):
-        """ Add a file. """
+        """
+        Add a file.
 
+        """
         # Do not add an existing file
         if self._filetrs.Exists( filename ):
             return False
@@ -675,7 +658,7 @@ class DataFilter( scrolled.ScrolledPanel ):
         newtrs.SetPreferences( self._prefsIO )
         newtrs.Protect()
         if newtrs.GetTranscription().GetName() == "IO-Error":
-            wx.MessageBox('Error loading: '+filename, 'Info', wx.OK | wx.ICON_INFORMATION)
+            ShowInformation( self, self._prefsIO, 'Error loading: '+filename, style=wx.ICON_ERROR)
 
         # put the new trs in a sizer (required to enable sizer.Remove())
         s = wx.BoxSizer( wx.HORIZONTAL )
@@ -690,21 +673,20 @@ class DataFilter( scrolled.ScrolledPanel ):
 
         return True
 
-    # End SetData
     # ----------------------------------------------------------------------
 
-
     def UnsetData(self, f):
-        """ Remove the given file. """
+        """
+        Remove the given file.
 
+        """
         if self._filetrs.Exists(f):
             i = self._filetrs.GetIndex(f)
             o = self._filetrs.GetObject(i)
 
             if o._dirty is True:
                 # dlg to ask to save or not
-                dial = wx.MessageDialog(None, 'Do you want to save changes on the transcription of\n%s?'%f, 'Question', wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION)
-                userChoice = dial.ShowModal()
+                userChoice = ShowYesNoQuestion( None, self._prefsIO, "Do you want to save changes on the transcription of\n%s?"%f)
                 if userChoice == wx.ID_YES:
                     o.Save()
 
@@ -716,20 +698,17 @@ class DataFilter( scrolled.ScrolledPanel ):
         #self.Refresh()
         self.SendSizeEvent()
 
-    # End UnsetData
     # ----------------------------------------------------------------------
 
-
     def UnsetAllData(self):
-        """ Clean information and destroy all data. """
+        """
+        Clean information and destroy all data.
 
+        """
         self._filetrs.RemoveAll()
         self._trssizer.DeleteWindows()
 
         self.Layout()
-
-    # End UnsetAllData
-    # ----------------------------------------------------------------------
 
     # -----------------------------------------------------------------------
     # Private

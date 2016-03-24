@@ -67,7 +67,7 @@ UNKSTAMP="UNK"
 #  annotationdata.io.extensions_out_multitiers
 DEFAULT_OUTPUT_EXTENSION = ".xra"
 
-# Default output encoding
+# Default input/output encoding
 encoding = 'utf-8'
 
 # ---------------------------------------------------------------------------
@@ -88,10 +88,10 @@ OK_ID      = 0
 author     = "Brigitte Bigi"
 contact    = "brigite.bigi@gmail.com"
 program    = "SPPAS"
-version    = "1.7.6"
+version    = "1.7.7"
 copyright  = "Copyright (C) 2011-2016 Brigitte Bigi"
 url        = "http://www.sppas.org/"
-brief      = "SPPAS produces automatically annotations\nfrom a recorded speech sound and its transcription\nand helps to perform the analysis of annotated data."
+brief      = "SPPAS produces automatically annotations\nfrom a recorded speech sound and its transcription\nand performs the analysis of any annotated data."
 docformat  = "epytext"
 license    = "GNU Public License, version 3"
 license_text = """

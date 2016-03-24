@@ -64,12 +64,13 @@ from wxgui.panels.aannotations import AnnotationsPanel
 from wxgui.panels.components   import ComponentsPanel
 from wxgui.panels.plugins      import PluginPanel
 
-# views
+# views and frames
+from wxgui.dialogs.msgdialogs  import ShowInformation
 from wxgui.views.about         import AboutBox
 from wxgui.views.tips          import ShowTipsDialog
 from wxgui.views.feedback      import ShowFeedbackDialog
-from wxgui.views.helpbrowser   import HelpBrowser
 from wxgui.views.settings      import SettingsDialog
+from wxgui.frames.helpbrowser  import HelpBrowser
 
 from wxgui.structs.prefs       import Preferences_IO
 from wxgui.structs.themes      import Themes, BaseTheme
@@ -83,7 +84,6 @@ from wxgui.sp_consts import MIN_FRAME_H
 from wxgui.sp_consts import FRAME_H
 from wxgui.sp_consts import PANEL_W
 from wxgui.sp_consts import PREFS_FILE
-from wxgui.sp_consts import DOC_FILE
 from wxgui.sp_consts import TB_ICONSIZE
 from wxgui.sp_consts import MENU_ICONSIZE
 
@@ -164,12 +164,12 @@ class FrameSPPAS( wx.Frame ):
         # Events of this frame
         wx.EVT_CLOSE(self, self.OnExit)
 
-        self.Show(True)
-
         # tips
         showtips = self._prefsIO.GetValue('M_TIPS')
         if showtips is True:
             ShowTipsDialog(None, self._prefsIO)
+
+        self.Show(True)
 
     # ------------------------------------------------------------------------
 
@@ -656,10 +656,9 @@ class FrameSPPAS( wx.Frame ):
 
         elif eid == ID_TRACK:
             url="https://github.com/brigittebigi/sppas/issues/"
-            wx.MessageBox('Your web browser will be opened.\n'
-                          'First, check if the issue is not already declared in the list.\n'
-                          'Then, declare an issue by clicking on the button "New Issue"',
-                             'Info', wx.OK | wx.ICON_INFORMATION)
+            message= 'Your web browser will be opened.\nFirst, check if the issue is not already declared in the list.\nThen, declare an issue by clicking on the button "New Issue"'
+            ShowInformation( self, self._prefsIO, message)
+
         else:
             evt.Skip()
             return
@@ -731,7 +730,6 @@ class FrameSPPAS( wx.Frame ):
         Return the list of annotated files selected in the FLP.
 
         """
-
         selection = []
         for ext in annotationdata.io.extensions:
             selection.extend(self.flp.GetSelected(ext))

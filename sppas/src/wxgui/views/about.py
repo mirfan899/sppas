@@ -37,8 +37,7 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # -------------------------------------------------------------------------
 # Imports
@@ -47,9 +46,10 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import wx
 
 from sp_glob import program, version, author, copyright, brief, url, license_text
-from wxgui.sp_icons import APP_ICON
-from wxgui.cutils.imageutils import spBitmap
 
+from wxgui.sp_icons import APP_ICON
+
+from wxgui.cutils.imageutils import spBitmap
 
 # ----------------------------------------------------------------------------
 
@@ -63,13 +63,14 @@ class AboutBox( wx.AboutDialogInfo ):
     """
 
     def __init__(self):
-        """ Constructor. """
+        """
+        Constructor.
 
+        """
         wx.AboutDialogInfo.__init__(self)
-        BMP_APP_ICON = spBitmap( APP_ICON )
 
         _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( BMP_APP_ICON )
+        _icon.CopyFromBitmap( spBitmap( APP_ICON ) )
         self.SetIcon(_icon)
 
         self.SetName( program )
@@ -81,7 +82,3 @@ class AboutBox( wx.AboutDialogInfo ):
         self.AddDeveloper( author )
         self.AddDocWriter( author )
         self.AddArtist('')
-
-    #---------------------------------------------------------------------
-
-# ----------------------------------------------------------------------------

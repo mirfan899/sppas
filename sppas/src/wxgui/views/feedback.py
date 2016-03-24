@@ -37,8 +37,7 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # -------------------------------------------------------------------------
 # Imports
@@ -48,30 +47,21 @@ import wx
 import urllib
 import webbrowser
 
+from wxgui.dialogs.basedialog import spBaseDialog
+from wxgui.dialogs.msgdialogs import ShowInformation
+
 from wxgui.sp_icons import FEEDBACK_ICON
-from wxgui.sp_icons import APP_ICON
 from wxgui.sp_icons import MAIL_DEFAULT_ICON
 from wxgui.sp_icons import MAIL_GMAIL_ICON
 from wxgui.sp_icons import MAIL_OTHER_ICON
-from wxgui.sp_icons import CANCEL_ICON
-from wxgui.cutils.imageutils import spBitmap
 
-from wxgui.cutils.ctrlutils import CreateGenButton
-
-from wxgui.sp_consts import FRAME_STYLE
-from wxgui.sp_consts import FRAME_TITLE
-
+from sp_glob import program,version
 
 # -------------------------------------------------------------------------
 # Constants
 # -------------------------------------------------------------------------
 
 DESCRIBE_TEXT = "Describe what you did here..."
-
-ID_DEFAULT = wx.NewId()
-ID_GMAIL   = wx.NewId()
-ID_OTHER   = wx.NewId()
-
 
 # -------------------------------------------------------------------------
 
@@ -83,11 +73,9 @@ class FeedbackForm(object):
     @summary: This class is used to send feedback to the author.
 
     """
-
     def __init__(self, dialog, webbrowser):
         self.dialog = dialog
         self.webbrowser = webbrowser
-
 
     def Populate(self, subject=None, body=None):
         self.dialog.SetToText("brigitte.bigi@gmail.com")
@@ -110,91 +98,77 @@ class FeedbackForm(object):
             urllib.quote(self.dialog.GetSubjectText()),
             urllib.quote(self.dialog.GetBodyText())))
 
+    def SendWithOther(self):
+        ShowInformation( self.dialog, self.dialog.preferences, "Copy and paste this email into your favorite email client and send it from there.")
+
 # ----------------------------------------------------------------------------
 
-
-class FeedbackDialog( wx.Dialog ):
+class FeedbackDialog( spBaseDialog ):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL
-    @summary: This class is used to send feedback to the author.
+    @summary: Dialog to send feedback comments by email to the author.
 
     """
 
-    def __init__(self, parent=None, preferences=None):
-        wx.Dialog.__init__(self, parent, title=FRAME_TITLE+" - Feedback", style=FRAME_STYLE)
+    def __init__(self, parent, preferences):
+        spBaseDialog.__init__(self, parent, preferences, title="Feedback")
+        wx.GetApp().SetAppName( "feedback" )
 
         self.controller = FeedbackForm(self, webbrowser)
-        self.preferences = preferences
-        self._create_gui()
 
-    # End __init__
-    # ------------------------------------------------------------------------
+        titlebox   = self.CreateTitle(FEEDBACK_ICON,"Email Feedback")
+        contentbox = self._create_content()
+        buttonbox  = self._create_buttons()
 
+        self.LayoutComponents( titlebox,
+                               contentbox,
+                               buttonbox )
 
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
 
-    def _create_gui(self):
-        self._init_infos()
-        self._create_title_label()
-        self._create_to_text_field()
-        self._create_subject_text_field()
-        self._create_body_text_field()
-        self._create_send_default_button()
-        self._create_send_gmail_button()
-        self._create_send_other_button()
-        self._create_close_button()
-        self._layout_components()
-        self._set_focus_component()
+    def _create_buttons(self):
+        self.btn_default = self.CreateButton(MAIL_DEFAULT_ICON, " Default ", "Send with your default email client.")
+        self.btn_gmail   = self.CreateButton(MAIL_GMAIL_ICON,   " Gmail ",   "Send with Gmail.")
+        self.btn_other   = self.CreateButton(MAIL_OTHER_ICON,   " Other ",   "Send with another email client.")
+        btn_close        = self.CreateCloseButton()
+        self.Bind(wx.EVT_BUTTON, self._on_send, self.btn_default)
+        self.Bind(wx.EVT_BUTTON, self._on_send, self.btn_other)
+        self.Bind(wx.EVT_BUTTON, self._on_send, self.btn_gmail)
+        return self.CreateButtonBox( [self.btn_default,self.btn_gmail,self.btn_other], [btn_close])
 
-
-    def _init_infos( self ):
-        wx.GetApp().SetAppName( "feedback" )
-        # icon
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(APP_ICON) )
-        self.SetIcon(_icon)
-        # colors
-        self.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
-        self.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR'))
-        self.SetFont( self.preferences.GetValue('M_FONT'))
-
-
-    def _create_title_label(self):
-        self.title_layout = wx.BoxSizer(wx.HORIZONTAL)
-        bmp = wx.BitmapButton(self,bitmap=spBitmap(FEEDBACK_ICON, 32, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
-        font = self.preferences.GetValue('M_FONT')
-        font.SetWeight(wx.BOLD)
-        font.SetPointSize(font.GetPointSize() + 2)
-        self.title_label = wx.StaticText(self, label="Email Feedback", style=wx.ALIGN_CENTER)
-        self.title_label.SetFont( font )
-        self.title_layout.Add(bmp, flag=wx.TOP|wx.RIGHT|wx.ALIGN_RIGHT, border=5)
-        self.title_layout.Add(self.title_label, flag=wx.EXPAND|wx.ALL, border=5)
-
-    def _create_to_text_field(self):
-        self.to_text = wx.TextCtrl(self, wx.ID_ANY, style=wx.TE_READONLY)
-
-    def _create_subject_text_field(self):
-        self.subject_text = wx.TextCtrl(self, wx.ID_ANY)
-        self.subject_text.SetValue("SPPAS Feedback")
-
-    def _create_body_text_field(self):
-        self.body_text = wx.TextCtrl(self, size=(-1, 200), style=wx.TE_MULTILINE)
+    def _create_content(self):
+        self.to_text      = self.CreateTextCtrl("", style=wx.TE_READONLY)
+        self.subject_text = self.CreateTextCtrl(program+" "+version+" - Feedback...", style=wx.TE_READONLY)
+        self.body_text    = self.CreateTextCtrl(DESCRIBE_TEXT, style=wx.TE_MULTILINE)
+        self.body_text.SetMinSize((300,200))
         self.body_text.SetForegroundColour(wx.Colour(128,128,128))
-        self.body_text.SetBackgroundColour( wx.WHITE )
-        self.body_text.SetValue(DESCRIBE_TEXT)
         self.body_text.Bind(wx.EVT_CHAR, self._on_char)
 
+        grid = wx.FlexGridSizer(4, 2, 5, 5)
+        grid.AddGrowableCol(1)
+        grid.AddGrowableRow(2)
+        grid.Add(wx.StaticText(self, label="To: "), flag=wx.ALIGN_CENTER_VERTICAL)
+        grid.Add(self.to_text, flag=wx.EXPAND)
+        grid.Add(wx.StaticText(self, label="Subject: "), flag=wx.ALIGN_CENTER_VERTICAL)
+        grid.Add(self.subject_text, flag=wx.EXPAND)
+        grid.Add(wx.StaticText(self, label="Body: "), flag=wx.TOP)
+        grid.Add(self.body_text, flag=wx.EXPAND)
+        grid.Add(wx.StaticText(self, label="Send with: "), flag=wx.ALIGN_CENTER_VERTICAL)
+
+        return grid
+
+    # ------------------------------------------------------------------------
+    # Callback to events
+    # ------------------------------------------------------------------------
+
     def _on_char(self, evt):
-        self.body_text.SetForegroundColour(wx.BLACK)
-        if self.body_text.GetValue() == DESCRIBE_TEXT:
+        if self.body_text.GetValue().strip() == DESCRIBE_TEXT:
+            self.body_text.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
             self.body_text.SetValue('')
-            self.body_text.SetFocus()
-            self.body_text.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
-            self.body_text.Refresh()
         if self._ctrl_a(evt):
             self.body_text.SelectAll()
         else:
@@ -204,81 +178,19 @@ class FeedbackDialog( wx.Dialog ):
         KEY_CODE_A = 1
         return evt.ControlDown() and evt.KeyCode == KEY_CODE_A
 
-    def _create_send_default_button(self):
-        def on_click(event):
+    def _on_send(self, event):
+        idb = event.GetId()
+        if idb == self.btn_default.GetId():
             self.controller.SendWithDefault()
-        bmp = spBitmap(MAIL_DEFAULT_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        self.btn_default_client = CreateGenButton(self, ID_DEFAULT, bmp, text=" Default", tooltip="Send with your default email client.", colour=None)#wx.Colour(220,120,180))
-        self.btn_default_client.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
-        self.btn_default_client.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
-        self.btn_default_client.SetFont( self.preferences.GetValue('M_FONT') )
-        self.Bind(wx.EVT_BUTTON, on_click, self.btn_default_client, ID_DEFAULT)
-
-    def _create_send_gmail_button(self):
-        def on_click(event):
+        elif idb == self.btn_gmail.GetId():
             self.controller.SendWithGmail()
-        bmp = spBitmap(MAIL_GMAIL_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        self.btn_gmail = CreateGenButton(self, ID_GMAIL, bmp, text=" Gmail", tooltip="Send with Gmail.", colour=None)#wx.Colour(220,120,180))
-        self.btn_gmail.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
-        self.btn_gmail.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
-        self.btn_gmail.SetFont( self.preferences.GetValue('M_FONT') )
-        self.Bind(wx.EVT_BUTTON, on_click, self.btn_gmail, ID_GMAIL)
-
-    def _create_send_other_button(self):
-        def on_click(evt):
-            wx.MessageBox("Copy and paste this email into your favorite email client and send it from there.",
-                "Other email client", wx.OK | wx.ICON_INFORMATION)
-        bmp = spBitmap(MAIL_OTHER_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        self.btn_other = CreateGenButton(self,ID_OTHER, bmp, text=" Other", tooltip="Send with another email client.", colour=None)#wx.Colour(220,120,180))
-        self.btn_other.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
-        self.btn_other.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
-        self.btn_other.SetFont( self.preferences.GetValue('M_FONT') )
-        self.Bind(wx.EVT_BUTTON, on_click, self.btn_other, ID_OTHER)
-
-    def _create_close_button(self):
-        bmp = spBitmap(CANCEL_ICON, theme=self.preferences.GetValue('M_ICON_THEME'))
-        self.btn_close = CreateGenButton(self, wx.ID_CLOSE, bmp, text=" Close", tooltip="Close this frame", colour=None)
-        self.btn_close.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
-        self.btn_close.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
-        self.btn_close.SetFont( self.preferences.GetValue('M_FONT') )
-        self.btn_close.SetDefault()
-        self.btn_close.SetFocus()
-        self.SetAffirmativeId(wx.ID_CLOSE)
-
-    def _layout_components(self):
-        vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.title_layout, flag=wx.ALL|wx.EXPAND, border=5)
-        vbox.Add(self._create_layout_grid(), flag=wx.ALL|wx.EXPAND, border=5)
-        self.SetSizerAndFit(vbox)
-
-    def _create_layout_grid(self):
-        grid = wx.FlexGridSizer(4, 2, 5, 5)
-        grid.AddGrowableCol(1)
-        grid.Add(wx.StaticText(self, label="To: "), flag=wx.ALIGN_CENTER_VERTICAL)
-        grid.Add(self.to_text, flag=wx.EXPAND)
-        grid.Add(wx.StaticText(self, label="Subject: "), flag=wx.ALIGN_CENTER_VERTICAL)
-        grid.Add(self.subject_text, flag=wx.EXPAND)
-        grid.Add(wx.StaticText(self, label="Body: "), flag=0)
-        grid.Add(self.body_text, flag=wx.EXPAND)
-        grid.Add(wx.StaticText(self, label="Send with: "), flag=wx.ALIGN_CENTER_VERTICAL)
-        grid.Add(self._create_button_box(), flag=wx.EXPAND)
-        return grid
-
-    def _create_button_box(self):
-        button_box = wx.BoxSizer(wx.HORIZONTAL)
-        button_box.Add(self.btn_default_client, flag=wx.RIGHT, border=5)
-        button_box.Add(self.btn_gmail, flag=wx.RIGHT, border=5)
-        button_box.Add(self.btn_other, flag=wx.RIGHT, border=5)
-        button_box.AddStretchSpacer()
-        button_box.Add(self.btn_close, flag=wx.LEFT, border=5)
-        return button_box
-
-    def _set_focus_component(self):
-        self.body_text.SetFocus()
-
+        elif idb == self.btn_other.GetId():
+            self.controller.SendWithOther()
+        else:
+            event.Skip()
 
     # ------------------------------------------------------------------------
-    # Available methods
+    # Public methods
     # ------------------------------------------------------------------------
 
     def GetToText(self):
@@ -302,14 +214,19 @@ class FeedbackDialog( wx.Dialog ):
     def SetBodySelection(self, start, end):
         self.body_text.SetSelection(start, end)
 
-
 # ----------------------------------------------------------------------------
-
 
 def ShowFeedbackDialog(parent, preferences=None):
     dialog = FeedbackDialog(parent, preferences)
     dialog.controller.Populate(None, None)
     dialog.ShowModal()
     dialog.Destroy()
+
+# ---------------------------------------------------------------------------
+
+if __name__ == "__main__":
+    app = wx.PySimpleApp()
+    ShowFeedbackDialog(None,None)
+    app.MainLoop()
 
 # ---------------------------------------------------------------------------
