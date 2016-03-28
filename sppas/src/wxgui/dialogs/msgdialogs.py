@@ -42,9 +42,6 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
-import sys
-import os.path
-sys.path.append(  os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) )
 
 import wx
 from basedialog import spBaseDialog
@@ -183,6 +180,9 @@ def DemoBaseDialog(parent, preferences=None):
     frame.Destroy()
 
 # ---------------------------------------------------------------------------
+# import sys
+# import os.path
+# sys.path.append(  os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) )
 
 if __name__ == "__main__":
     app = wx.PySimpleApp()

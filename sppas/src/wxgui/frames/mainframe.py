@@ -517,7 +517,7 @@ class FrameSPPAS( wx.Frame ):
         elif ide == wx.ID_HELP:
             HelpBrowser( self, self._prefsIO )
             return True
-        elif ide == wx.ID_HELP or id == ID_DOC or id == ID_HOME or id == ID_TRACK:
+        elif ide == wx.ID_HELP or ide == ID_DOC or ide == ID_HOME or ide == ID_TRACK:
             self.OnExternalLink(event)
             return True
         elif ide == ID_FEEDBACK:

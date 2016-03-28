@@ -745,13 +745,13 @@ class HelpBrowser( wx.Frame ):
         if self.current_pos > 0:
             self.current_pos -= 1
             current_type, current_id = self.history[self.current_pos]
-            self._show_page(current_id, type=current_type, change_history=False)
+            self._show_page(current_id, typep=current_type, change_history=False)
 
     def _go_forward(self):
         if self.current_pos < len(self.history) - 1:
             self.current_pos += 1
             current_type, current_id = self.history[self.current_pos]
-            self._show_page(current_id, type=current_type, change_history=False)
+            self._show_page(current_id, typep=current_type, change_history=False)
 
     def _go_previous(self):
         if self.current_pos != -1:
@@ -770,7 +770,7 @@ class HelpBrowser( wx.Frame ):
     def _search(self, string):
         string = string.strip()
         if len(string) > 0:
-            self._show_page(string, type="search")
+            self._show_page(string, typep="search")
 
     def _update_buttons(self):
         current_id = -1
