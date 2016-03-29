@@ -268,7 +268,6 @@ class spBaseDialog( wx.Dialog ):
         vbox.Add(content,   1, flag=wx.ALL|wx.EXPAND, border=2)
         vbox.Add(buttonbox, 0, flag=wx.LEFT|wx.RIGHT|wx.BOTTOM|wx.EXPAND, border=2)
         self.SetSizerAndFit(vbox)
-        self.DoLayoutAdaptation()
 
 # ---------------------------------------------------------------------------
 

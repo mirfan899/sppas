@@ -44,43 +44,22 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 # ---------------------------------------------------------------------------
 
 import sys
-import os
 import os.path
 import traceback
-import time
 from argparse import ArgumentParser
 
-def exit_error( msg ):
-    print "[ ERROR ] ",msg
-    time.sleep( 5 )
-    sys.exit(1)
+from butils import exit_error, check_python, install_gettext
+from checkwx import get_wx_version
 
-# VERIFY PYTHON
-# -------------
-if sys.version_info < (2, 7):
-    exit_error(" The version of Python is too old: SPPAS requires exactly the version 2.7.something.")
+check_python()
 
-if sys.version_info >= (3, 0):
-    exit_error( "The version of Python is not the right one: SPPAS requires exactly the version 2.7.something.")
-
-# VERIFY WXPYTHON
-# ----------------
 try:
     import wx
 except ImportError:
     exit_error( "WxPython is not installed on your system\n. The Graphical User Interface of SPPAS can't work. Refer to the installation instructions of the SPPAS web site.")
 
-try:
-    wxv = wx.version().split()[0]
-except Exception:
-    wxv = '2'
-
-if int(wxv[0]) < 3:
-    print "[ WARNING ] The version of WxPython is too old.\n\tThe Graphical User Interface will not display properly.\n\tUpdate at http://wxpython.org/ and restart SPPAS.\n\tFor any help, see SPPAS installation page.\n"
-    time.sleep( 20 )
-
-# THEN, VERIFY SPPAS
-# ------------------
+# import SPPAS Application Programming Interface
+# ----------------------------------------------
 
 PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
@@ -90,26 +69,17 @@ try:
     from wxgui.frames.ipuscribeframe import IPUscribeFrame
     from wxgui.sp_icons import IPUSCRIBE_APP_ICON
     from utils.fileutils import setup_logging
-except ImportError as e:
-    print traceback.format_exc()
-    exit_error( "A problem occurred when launching IPUScribe.\nThe error is: %s.\nVerify the SPPAS installation directory and try again."%(str(e)))
-
+    from wxgui.dialogs.msgdialogs  import ShowInformation
+    from wxgui.structs.prefs       import Preferences_IO
+    from wxgui.structs.themes      import BaseTheme
+    from utils.fileutils           import setup_logging
+    from sp_glob                   import SETTINGS_FILE
+except ImportError:
+    exit_error( "An error occurred.\nVerify the SPPAS installation and try again. Full error message is:"%traceback.format_exc() )
 
 # ---------------------------------------------------------------------------
 # Main application
 # ---------------------------------------------------------------------------
-
-# Log
-log_level = 0
-log_file  = None
-
-try:
-    setup_logging(log_level, log_file)
-except Exception:
-    # stdin is not available if pythonw is used on Windows!
-    log_file = os.path.join( os.path.dirname( os.path.dirname( os.path.dirname( PROGRAM ) )), "sppas.log")
-    setup_logging(log_level, log_file)
-
 
 # Arguments
 # ------------------------------------------------------------------------
@@ -126,23 +96,48 @@ for f in args.files:
         p = os.getcwd()
     filenames.append( os.path.abspath(os.path.join(p,b) ))
 
+# Logging and Gettext
+# ----------------------------------------------------------------------------
+
+log_level = 1
+log_file  = None
+try:
+    setup_logging(log_level, log_file)
+except Exception:
+    # stdin is not available if pythonw is used instead of python, on Windows!
+    log_file = os.path.join( os.path.dirname( os.path.dirname( os.path.dirname( PROGRAM ) )), "sppas.log")
+    setup_logging(log_level, log_file)
+
+install_gettext()
+
+# GUI is here:
+# ----------------------------------------------------------------------------
+
+app = wx.App( redirect=True )
+
+# Fix preferences
+prefsIO = Preferences_IO( SETTINGS_FILE )
+if prefsIO.Read() is False:
+    prefsIO.SetTheme( BaseTheme() )
+
+# Tests
+v = get_wx_version()
+if v < 3:
+    message = "The version of WxPython is too old.\n\tThe Graphical User Interface will not display properly.\n\tUpdate at http://wxpython.org/ and restart SPPAS.\n\tFor any help, see SPPAS installation page.\n"
+    ShowInformation( None, prefsIO, message, style=wx.ICON_WARNING)
+
 # App
 arguments = {}
 arguments['files'] = []
 arguments['title'] = "IPUscribe"
 arguments['type']  = "SOUNDFILES"
 arguments['icon']  = IPUSCRIBE_APP_ICON
+arguments['prefs'] = prefsIO
 
-app = wx.App()
-try:
-    frame = IPUscribeFrame(None, -1, arguments)
-    app.SetTopWindow(frame)
-    frame.AddFiles( filenames )
-except Exception as e:
-    print traceback.format_exc()
-    exit_error("A problem occurred when creating the Graphical User Interface.\nThe error is: %s"%(str(e)) )
+frame = IPUscribeFrame(None, -1, arguments)
+frame.AddFiles( filenames )
 
+app.SetTopWindow(frame)
 app.MainLoop()
-
 
 # ---------------------------------------------------------------------------

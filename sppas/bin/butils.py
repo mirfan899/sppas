@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
@@ -32,7 +32,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: checkwx.py
+# File: butils.py
 # ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
@@ -41,23 +41,71 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-import wx
+import os
+import sys
+import time
+import subprocess
+
+EXIT_DELAY=20
+EXIT_STATUS=1
 
 # ----------------------------------------------------------------------------
 
-def get_wx_version():
+def exit_error( msg="Unknown." ):
+    """
+    Exit the program with status 1 and an error message.
+
+    @param msg (str) Message to print on stdout.
+
+    """
+    print "[ ERROR ] ",msg
+    time.sleep( EXIT_DELAY )
+    sys.exit( EXIT_STATUS )
+
+# ----------------------------------------------------------------------------
+
+def check_python():
+    """
+    Check if the current python in use is the right one: 2.7.something.
+    Exit if it's not the case.
+
+    """
+    if sys.version_info < (2, 7):
+        exit_error(" The version of Python is too old: SPPAS requires exactly the version 2.7.something.")
+
+    if sys.version_info >= (3, 0):
+        exit_error( "The version of Python is not the right one: SPPAS requires exactly the version 2.7.something.")
+
+# ----------------------------------------------------------------------------
+
+def check_aligner( ):
+    """
+    Test if one of julius/HVite is available.
+
+    """
+    julius = True
+    hvite  = True
     try:
-        wxv = wx.version().split()[0]
-    except Exception:
-        wxv = '2'
-    return int( wxv[0] )
+        NULL = open(os.devnull, "w")
+        subprocess.call(['julius'], stdout=NULL, stderr=subprocess.STDOUT)
+    except OSError:
+        julius = False
+
+    try:
+        NULL = open(os.devnull, "w")
+        subprocess.call(['HVite'], stdout=NULL, stderr=subprocess.STDOUT)
+    except OSError:
+        hvite = False
+
+    return not (julius or hvite)
 
 # ----------------------------------------------------------------------------
 
-if __name__=="__main__":
-    version = get_wx_version()
-    if version >= 3:
-        exit(0)
-    exit(1)
+def install_gettext():
+    def _(message):
+        return message
+    import __builtin__
+    if not "_" in __builtin__.__dict__:
+        __builtin__.__dict__["_"] = _
 
 # ----------------------------------------------------------------------------

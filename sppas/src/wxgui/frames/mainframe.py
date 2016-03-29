@@ -43,20 +43,15 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 # Imports
 # ----------------------------------------------------------------------------
 
-import sys
 import wx
-import os
 import webbrowser
 import logging
-import os.path
-import webbrowser
 
 import annotationdata.io
 import signals
 
 from sp_glob import program,version,copyright,license
 from sp_glob import PLUGIN_PATH
-from sp_glob import SETTINGS_FILE
 
 # panels
 from wxgui.panels.filetree     import FiletreePanel
@@ -67,13 +62,9 @@ from wxgui.panels.plugins      import PluginPanel
 # views and frames
 from wxgui.dialogs.msgdialogs  import ShowInformation
 from wxgui.views.about         import AboutBox
-from wxgui.views.tips          import ShowTipsDialog
 from wxgui.views.feedback      import ShowFeedbackDialog
 from wxgui.views.settings      import SettingsDialog
 from wxgui.frames.helpbrowser  import HelpBrowser
-
-from wxgui.structs.prefs       import Preferences_IO
-from wxgui.structs.themes      import Themes, BaseTheme
 
 from wxgui.ui.CustomStatus     import CustomStatusBar
 
@@ -139,9 +130,11 @@ class FrameSPPAS( wx.Frame ):
 
     """
 
-    def __init__(self):
+    def __init__( self, preferencesIO ):
         """
         Constructor, with default parameters and preferences.
+
+        @param preferences (Preferences_IO)
 
         """
         wx.Frame.__init__(self, None, -1, title=FRAME_TITLE, style=FRAME_STYLE)
@@ -150,7 +143,7 @@ class FrameSPPAS( wx.Frame ):
         #self.locale = wx.Locale(wx.LANGUAGE_DEFAULT)
 
         # Members
-        self._init_members()
+        self._prefsIO = preferencesIO
 
         # Set title and icon of the frame
         self._init_infos()
@@ -164,30 +157,12 @@ class FrameSPPAS( wx.Frame ):
         # Events of this frame
         wx.EVT_CLOSE(self, self.OnExit)
 
-        # tips
-        showtips = self._prefsIO.GetValue('M_TIPS')
-        if showtips is True:
-            ShowTipsDialog(None, self._prefsIO)
-
-        self.Show(True)
+        self.Show( True )
 
     # ------------------------------------------------------------------------
 
     # ------------------------------------------------------------------------
     # Private methods to create the GUI and initialize members
-    # ------------------------------------------------------------------------
-
-    def _init_members( self ):
-        """
-        Fix the members.
-
-        """
-        # Try to get prefs from a file
-        self._prefsIO = Preferences_IO( SETTINGS_FILE )
-        # No settings file was previously saved. Use the Default Theme
-        if self._prefsIO.Read() is False:
-            self._prefsIO.SetTheme( BaseTheme() )
-
     # ------------------------------------------------------------------------
 
     def _init_infos( self ):
