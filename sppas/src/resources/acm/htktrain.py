@@ -71,7 +71,7 @@ from hmm          import HMM
 from htkscripts   import HtkScripts
 from acmodel      import AcModel
 from acmodelhtkio import HtkIO
-from mapping      import Mapping
+from ..mapping      import Mapping
 from features     import Features
 from phoneset     import PhoneSet
 

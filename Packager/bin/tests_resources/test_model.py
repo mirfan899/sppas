@@ -8,7 +8,8 @@ from os.path import *
 import copy
 import shutil
 
-SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
+HERE = abspath(__file__)
+SPPAS = dirname(dirname(dirname(dirname(HERE))))
 sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 from resources.acm.acmodel  import AcModel, HtkIO
@@ -50,7 +51,7 @@ class TestTrainer(unittest.TestCase):
         self.assertEqual( pho.get_size(), 4 )
         pho.add_from_dict( os.path.join(RESOURCES_PATH, "dict", "nan.dict") )
         self.assertEqual( pho.get_size(), 44 )
-        pho.save( "monophones" )
+        pho.save( os.path.join(HERE,"monophones") )
 
         pho2 = PhoneSet( "monophones" )
         for phone in pho.get_list():
@@ -58,7 +59,7 @@ class TestTrainer(unittest.TestCase):
         for phone in pho2.get_list():
             self.assertTrue( pho.is_in( phone ))
 
-        os.remove( "monophones" )
+        os.remove( os.path.join(HERE,"monophones") )
 
     def test_trainingcorpus(self):
         corpus = TrainingCorpus()
@@ -78,10 +79,10 @@ class TestTrainer(unittest.TestCase):
     def test_initializer_without_corpus(self):
         corpus  = TrainingCorpus()
 
-        os.mkdir( "working" )
-        shutil.copy( os.path.join("protos","vFloors"), "working" )
+        os.mkdir( os.path.join(HERE,"working") )
+        shutil.copy( os.path.join("protos","vFloors"), os.path.join(HERE,"working") )
 
-        initial = HTKModelInitializer(corpus,"working")
+        initial = HTKModelInitializer(corpus,os.path.join(HERE,"working"))
 
         corpus.datatrainer.protodir = "protos"
         initial.create_model()
@@ -89,26 +90,26 @@ class TestTrainer(unittest.TestCase):
         hmm1 = HMM()
         hmm2 = HMM()
 
-        hmm1.load( os.path.join("working", "@@.hmm") )
+        hmm1.load( os.path.join(HERE, "working", "@@.hmm") )
         hmm2.load( os.path.join("protos", "@@.hmm") )
         self.assertTrue(compare(hmm1.definition,hmm2.definition))
 
-        hmm1.load( os.path.join("working", "sil.hmm") )
+        hmm1.load( os.path.join(HERE, "working", "sil.hmm") )
         hmm2.load( os.path.join("protos", "sil.hmm") )
 
         corpus.datatrainer.fix_proto(protofilename=os.path.join("proto.hmm"))
         hmm2.load( os.path.join("protos", "proto.hmm") )
 
-        hmm1.load( os.path.join("working", "gb.hmm") )
+        hmm1.load( os.path.join(HERE, "working", "gb.hmm") )
         self.assertTrue(compare(hmm1.definition,hmm2.definition))
 
-        hmm1.load( os.path.join("working", "dummy.hmm") )
+        hmm1.load( os.path.join(HERE, "working", "dummy.hmm") )
         self.assertTrue(compare(hmm1.definition,hmm2.definition))
 
         acmodel = AcModel()
-        acmodel.load_htk( os.path.join( "working","hmmdefs") )
+        acmodel.load_htk( os.path.join( HERE, "working","hmmdefs") )
 
-        shutil.rmtree("working")
+        shutil.rmtree(HERE, "working")
         os.remove( os.path.join("protos", "proto.hmm") )
 
     def test_trainer_without_data(self):
@@ -165,9 +166,9 @@ class TestInterpolate(unittest.TestCase):
 
     def test_interpolate_hmm(self):
         acmodel1 = AcModel()
-        acmodel1.load_htk( "1-hmmdefs" )
+        acmodel1.load_htk( os.path.join(HERE, "1-hmmdefs") )
         acmodel2 = AcModel()
-        acmodel2.load_htk( "2-hmmdefs" )
+        acmodel2.load_htk( os.path.join(HERE,"2-hmmdefs") )
         ahmm1=acmodel1.get_hmm('a')
         ahmm2=acmodel2.get_hmm('a')
 
@@ -271,7 +272,7 @@ class TestAcModel(unittest.TestCase):
 
     def test_load_hmm(self):
         hmm = HMM()
-        hmm.load( "N-hmm" )
+        hmm.load( os.path.join(HERE,"N-hmm") )
         self.__test_states( hmm.definition['states'] )
         self.__test_transition( hmm.definition['transition'] )
 
@@ -279,17 +280,17 @@ class TestAcModel(unittest.TestCase):
     def test_save_hmm(self):
         hmm = HMM()
         hmm.load( "N-hmm" )
-        hmm.save("N-hmm-copy")
+        hmm.save(os.path.join(HERE,"N-hmm-copy"))
         newhmm = HMM()
-        newhmm.load("N-hmm-copy")
-        os.remove('N-hmm-copy')
+        newhmm.load(os.path.join(HERE,"N-hmm-copy"))
+        os.remove(os.path.join(HERE,'N-hmm-copy'))
         self.assertEqual(hmm.name,newhmm.name)
         self.assertTrue(compare(hmm.definition,newhmm.definition))
 
 
     def test_fill(self):
         acmodel1 = AcModel()
-        acmodel1.load_htk( "1-hmmdefs" )
+        acmodel1.load_htk( os.path.join(HERE,"1-hmmdefs") )
         ahmm1=acmodel1.get_hmm('a')
         a1transition = [macro["transition"] for macro in acmodel1.macros if macro.get('transition',None)][0]
 
@@ -331,9 +332,9 @@ class TestAcModel(unittest.TestCase):
 
     def test_merge(self):
         acmodel1 = AcModel()
-        acmodel1.load_htk( "1-hmmdefs" )
+        acmodel1.load_htk( os.path.join(HERE,"1-hmmdefs") )
         acmodel2 = AcModel()
-        acmodel2.load_htk( "2-hmmdefs" )
+        acmodel2.load_htk( os.path.join(HERE,"2-hmmdefs") )
 
         (appended,interpolated,keeped,changed) = acmodel2.merge_model(acmodel1,gamma=0.5)
         self.assertEqual(interpolated, 2) # acopy, a
@@ -365,13 +366,13 @@ class TestAcModel(unittest.TestCase):
         acmodel1.load( os.path.join(MODEL_PATH,"models-fra") )
 
         acmodel2 = acmodel1.extract_monophones()
-        acmodel2.save('fra-mono')
-        self.assertTrue(  os.path.isfile( os.path.join('fra-mono','hmmdefs')) )
-        self.assertTrue(  os.path.isfile( os.path.join('fra-mono','monophones.repl')) )
-        self.assertFalse( os.path.isfile( os.path.join('fra-mono','tiedlist')) )
-        os.remove( os.path.join('fra-mono','hmmdefs') )
-        os.remove( os.path.join('fra-mono','monophones.repl') )
-        os.rmdir( 'fra-mono' )
+        acmodel2.save(os.path.join(HERE,'fra-mono'))
+        self.assertTrue(  os.path.isfile( os.path.join(HERE, 'fra-mono','hmmdefs')) )
+        self.assertTrue(  os.path.isfile( os.path.join(HERE, 'fra-mono','monophones.repl')) )
+        self.assertFalse( os.path.isfile( os.path.join(HERE, 'fra-mono','tiedlist')) )
+        os.remove( os.path.join(HERE, 'fra-mono','hmmdefs') )
+        os.remove( os.path.join(HERE, 'fra-mono','monophones.repl') )
+        os.rmdir( os.path.join(HERE,'fra-mono') )
         self.assertEqual( len(acmodel2.hmms), 38 )
 
 

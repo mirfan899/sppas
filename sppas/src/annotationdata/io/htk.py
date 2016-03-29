@@ -159,6 +159,10 @@ class HTKLabel( Transcription ):
 
             tier = self[0]
 
+            if tier.IsInterval() is False:
+                raise Exception(
+                    "Can write only interval tiers in lab file.")
+
             for annotation in tier:
                 if annotation.GetLabel().GetValue() != '':
                     fp.write(line_from_annotation(annotation))
@@ -191,7 +195,7 @@ class MasterLabel( Transcription ):
                     tierName = line.strip()[1:-1]
                     tier = self.NewTier(tierName)
                     label = ""
-                    prevend = 0.
+                    prevend = TimePoint(0.)
 
                     line = fp.next()
                     while(line and
@@ -204,12 +208,10 @@ class MasterLabel( Transcription ):
 
                         if hasBegin and hasEnd:
                             if len(label)>0:
-                                time = TimeInterval(prevend,
-                                                    TimePoint(float(line[0]) * TIME_UNIT))
+                                time = TimeInterval(prevend, TimePoint(float(line[0]) * TIME_UNIT))
                                 tier.Add(Annotation(time, Label(label)))
 
-                            time = TimeInterval(TimePoint(float(line[0]) * TIME_UNIT),
-                                                TimePoint(float(line[1]) * TIME_UNIT))
+                            time = TimeInterval(TimePoint(float(line[0]) * TIME_UNIT), TimePoint(float(line[1]) * TIME_UNIT))
                             label = " ".join(line[2:])
                             tier.Add(Annotation(time, Label(label)))
                             label = ""
@@ -235,6 +237,9 @@ class MasterLabel( Transcription ):
             fp.write('#!MLF!#\n')
 
             for tier in self:
+                if tier.IsInterval() is False:
+                    continue
+
                 fp.write('"%s"\n' % tier.GetName())
 
                 for annotation in tier:

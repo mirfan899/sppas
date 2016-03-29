@@ -351,10 +351,10 @@ class sppasTok(object):
         if tierinput is None:
             for tier in trsinput:
                 tiername = tier.GetName().lower()
-                if "trs" in tiername:
+                if "trans" in tiername:
                     tierinput = tier
                     break
-                elif "trans" in tiername:
+                elif "trs" in tiername:
                     tierinput = tier
                     break
                 elif "ipu" in tiername:

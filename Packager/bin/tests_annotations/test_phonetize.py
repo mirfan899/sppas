@@ -27,7 +27,7 @@ class TestPhonetize(unittest.TestCase):
         self.assertEqual(result, u'UNK')
 
         result = grph.phonetize('pas_de', phonunk=True)
-        self.assertEqual(result, "p.a.t|p.a.d|p.a.z.t|p.a.z.d")
+        self.assertEqual(result, "p.a.t|p.a.d|p.a.z.t|p.a.d.eu")
 
         result = grph.phonetize(u'/lemot/', phonunk=True)
         self.assertEqual(result, u"lemot")

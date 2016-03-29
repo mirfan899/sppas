@@ -764,7 +764,7 @@ class sppasNum:
         if number < 2000:
             s = u"mil"
         else:
-            s = u"%s-millas" % self.centaine(n)
+            s = u"%s-mil" % self.centaine(n)
         if r == 0:
             return s
         return u"%s-%s" % (s, self.centaine(r))

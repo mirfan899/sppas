@@ -64,7 +64,7 @@ import signals
 from signals.channel    import Channel
 from signals.channelsil import ChannelSil
 
-from resources.acm.mapping  import Mapping
+from resources.mapping  import Mapping
 from resources.acm.tiedlist import TiedList
 
 from presenters.audiosilencepresenter import AudioSilencePresenter

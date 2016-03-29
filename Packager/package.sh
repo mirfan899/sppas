@@ -386,10 +386,10 @@ function fct_test_api {
     $BIN_DIR/tests_annotations/test_all.py    2>>  $TEMP
 
     echo " ... Test Analysis tools "
-    $BIN_DIR/tests_annotationdata_calculus/test_all.py 2>> $TEMP
+    $BIN_DIR/tests_calculus/test_all.py 2>> $TEMP
 
     echo " ... Test Presenters "
-    $BIN_DIR/tests_annotationdata_presenters/test_all.py 2>> $TEMP
+    $BIN_DIR/tests_presenters/test_all.py 2>> $TEMP
 
     echo " ... Test Resources "
     $BIN_DIR/tests_resources/test_all.py 2>> $TEMP

@@ -50,7 +50,7 @@ import os.path
 from acmodelhtkio import HtkIO
 from hmm          import HMM
 from tiedlist     import TiedList
-from mapping      import Mapping
+from ..mapping      import Mapping
 
 from utils.type   import compare_dictionaries
 

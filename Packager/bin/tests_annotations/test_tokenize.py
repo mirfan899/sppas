@@ -106,7 +106,7 @@ class TestDictTok(unittest.TestCase):
         self.assertEqual(s, u"(pu)tai(n) j'ai")
 
         s = self.tok.clean_toe(u"gpd_100y en a un  qu(i) est devenu complèt(e)ment  ")
-        self.assertEqual(s, u"gpd_100 y en a un qu(i) est devenu complèt(e)ment")
+        self.assertEqual(s, u"y en a un qu(i) est devenu complèt(e)ment")
 
         s = self.tok.clean_toe(u"[$Londre, T/$, Londreu]")
         self.assertEqual(s, u"[Londre,Londreu]")
@@ -141,7 +141,7 @@ class TestDictTok(unittest.TestCase):
 
         wds = WordsList(vocabfra)
         wds.load_from_ascii( vocabcmn )
-        self.assertEquals( wds.get_size(), 434333)
+        self.assertEquals( wds.get_size(), 458002)
 
         self.tok.set_vocab( wds )
         splitswitch = self.tok.tokenize(u'et il m\'a dit : "《干脆就把那部蒙人的闲法给废了拉倒！》RT @laoshipukong : 27日"')
