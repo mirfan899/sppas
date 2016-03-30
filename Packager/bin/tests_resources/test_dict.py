@@ -11,7 +11,7 @@ sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 from resources.dictpron import DictPron
 from resources.dictrepl import DictRepl
-from resources.acm.mapping  import Mapping
+from resources.mapping  import Mapping
 from resources.unigram  import Unigram
 
 import resources.rutils as rutils

@@ -377,24 +377,31 @@ function fct_test_api {
     echo >> $LOG_DIAGNOSIS
 
     echo " ... Test annotationdata "
+    echo " ... Test annotationdata " >>  $TEMP
     $BIN_DIR/tests_annotationdata/test_all.py    >&  $TEMP
 
     echo " ... Test I/O "
+    echo " ... Test I/O " >>  $TEMP
     $BIN_DIR/tests_annotationdata_io/test_all.py 2>> $TEMP
 
     echo " ... Test annotations "
+    echo " ... Test annotations " >>  $TEMP
     $BIN_DIR/tests_annotations/test_all.py    2>>  $TEMP
 
     echo " ... Test Analysis tools "
+    echo " ... Test Calculus " >>  $TEMP
     $BIN_DIR/tests_calculus/test_all.py 2>> $TEMP
 
     echo " ... Test Presenters "
+    echo " ... Test Presenters " >>  $TEMP
     $BIN_DIR/tests_presenters/test_all.py 2>> $TEMP
 
     echo " ... Test Resources "
+    echo " ... Test Resources " >>  $TEMP
     $BIN_DIR/tests_resources/test_all.py 2>> $TEMP
 
     echo " ... Test Signals "
+    echo " ... Test Signals ">>  $TEMP
     $BIN_DIR/tests_signals/test_all.py 2>> $TEMP
 
     local error=`grep -c '... ERROR' $TEMP`

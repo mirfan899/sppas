@@ -8,8 +8,8 @@ from os.path import *
 import copy
 import shutil
 
-HERE = abspath(__file__)
-SPPAS = dirname(dirname(dirname(dirname(HERE))))
+HERE = dirname(abspath(__file__))
+SPPAS = dirname(dirname(dirname(HERE)))
 sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 from resources.acm.acmodel  import AcModel, HtkIO
@@ -53,7 +53,7 @@ class TestTrainer(unittest.TestCase):
         self.assertEqual( pho.get_size(), 44 )
         pho.save( os.path.join(HERE,"monophones") )
 
-        pho2 = PhoneSet( "monophones" )
+        pho2 = PhoneSet( os.path.join(HERE,"monophones") )
         for phone in pho.get_list():
             self.assertTrue( pho2.is_in( phone ))
         for phone in pho2.get_list():
@@ -73,44 +73,45 @@ class TestTrainer(unittest.TestCase):
         self.assertEqual( corpus.phonemap.map_entry('#'), "sil" )
 
         self.assertFalse( corpus.add_file( "toto", "toto" ) )
-        self.assertTrue( corpus.add_file( "F_F_B003-P8-palign.TextGrid", "F_F_B003-P8.wav" ) )
+        self.assertTrue( corpus.add_file( os.path.join(HERE,"F_F_B003-P8-palign.TextGrid"), os.path.join(HERE,"F_F_B003-P8.wav") ) )
         corpus.datatrainer.delete()
 
     def test_initializer_without_corpus(self):
         corpus  = TrainingCorpus()
+        workdir = os.path.join(HERE,"working")
 
-        os.mkdir( os.path.join(HERE,"working") )
-        shutil.copy( os.path.join("protos","vFloors"), os.path.join(HERE,"working") )
+        os.mkdir( workdir )
+        shutil.copy( os.path.join(HERE, "protos","vFloors"), workdir )
 
-        initial = HTKModelInitializer(corpus,os.path.join(HERE,"working"))
+        initial = HTKModelInitializer( corpus, workdir )
 
-        corpus.datatrainer.protodir = "protos"
+        corpus.datatrainer.protodir = os.path.join(HERE, "protos")
         initial.create_model()
 
         hmm1 = HMM()
         hmm2 = HMM()
 
-        hmm1.load( os.path.join(HERE, "working", "@@.hmm") )
-        hmm2.load( os.path.join("protos", "@@.hmm") )
+        hmm1.load( os.path.join( workdir, "@@.hmm") )
+        hmm2.load( os.path.join(HERE, "protos", "@@.hmm") )
         self.assertTrue(compare(hmm1.definition,hmm2.definition))
 
-        hmm1.load( os.path.join(HERE, "working", "sil.hmm") )
-        hmm2.load( os.path.join("protos", "sil.hmm") )
+        hmm1.load( os.path.join( workdir, "sil.hmm") )
+        hmm2.load( os.path.join(HERE, "protos", "sil.hmm") )
 
-        corpus.datatrainer.fix_proto(protofilename=os.path.join("proto.hmm"))
-        hmm2.load( os.path.join("protos", "proto.hmm") )
+        corpus.datatrainer.fix_proto(protofilename=os.path.join(HERE, "protos", "proto.hmm"))
+        hmm2.load( os.path.join(HERE, "protos", "proto.hmm") )
 
-        hmm1.load( os.path.join(HERE, "working", "gb.hmm") )
+        hmm1.load( os.path.join(workdir, "gb.hmm") )
         self.assertTrue(compare(hmm1.definition,hmm2.definition))
 
-        hmm1.load( os.path.join(HERE, "working", "dummy.hmm") )
+        hmm1.load( os.path.join(workdir, "dummy.hmm") )
         self.assertTrue(compare(hmm1.definition,hmm2.definition))
 
         acmodel = AcModel()
-        acmodel.load_htk( os.path.join( HERE, "working","hmmdefs") )
+        acmodel.load_htk( os.path.join( workdir,"hmmdefs") )
 
-        shutil.rmtree(HERE, "working")
-        os.remove( os.path.join("protos", "proto.hmm") )
+        shutil.rmtree( workdir )
+        os.remove( os.path.join(HERE, "protos", "proto.hmm") )
 
     def test_trainer_without_data(self):
         trainer = HTKModelTrainer()
@@ -121,19 +122,20 @@ class TestTrainer(unittest.TestCase):
         model = trainer.training_recipe()
         self.assertEqual( len(model.hmms),4 )
 
+
     def test_trainer_with_data(self):
         #setup_logging(1,None)
         corpus = TrainingCorpus()
         corpus.fix_resources(dictfile=os.path.join(RESOURCES_PATH, "dict", "fra.dict"), mappingfile=os.path.join(RESOURCES_PATH,"models","models-fra","monophones.repl" ))
         corpus.lang = "fra"
-        corpus.datatrainer.protodir = "protos"
-        corpus.add_file( "F_F_B003-P8-palign.TextGrid", "F_F_B003-P8.wav" )
-        corpus.add_file( "track_0001-phon.xra", "track_0001.wav" )
+        corpus.datatrainer.protodir = os.path.join(HERE,"protos")
+        corpus.add_file( os.path.join(HERE,"F_F_B003-P8-palign.TextGrid"), os.path.join(HERE,"F_F_B003-P8.wav") )
+        corpus.add_file( os.path.join(HERE,"track_0001-phon.xra"), os.path.join(HERE,"track_0001.wav") )
         corpus.add_corpus( os.path.join(SAMPLES_PATH,"samples-fra") )
 
-        trainer = HTKModelTrainer(corpus)
-        acmodel = trainer.training_recipe( delete=False )
-        # TODO: Test the model
+        trainer = HTKModelTrainer( corpus )
+        acmodel = trainer.training_recipe( delete=True )
+        ## TODO: Test the model
 
 # ---------------------------------------------------------------------------
 
@@ -279,7 +281,7 @@ class TestAcModel(unittest.TestCase):
 
     def test_save_hmm(self):
         hmm = HMM()
-        hmm.load( "N-hmm" )
+        hmm.load( os.path.join(HERE,"N-hmm") )
         hmm.save(os.path.join(HERE,"N-hmm-copy"))
         newhmm = HMM()
         newhmm.load(os.path.join(HERE,"N-hmm-copy"))
@@ -378,23 +380,24 @@ class TestAcModel(unittest.TestCase):
 
     def test_proto(self):
         h1 = HtkIO()
-        h1.write_hmm_proto( 25, "proto_from_htkio" )
+        h1.write_hmm_proto( 25, os.path.join(HERE,"proto_from_htkio") )
 
         h2 = HMM()
         h2.create_proto( 25 )
-        h2.save( "proto_from_hmm" )
+        h2.save( os.path.join(HERE,"proto_from_hmm") )
 
         m1 = HMM()
-        m1.load( "proto_from_htkio" )
+        m1.load( os.path.join(HERE,"proto_from_htkio") )
 
         m2 = HMM()
-        m2.load( "proto_from_hmm" )
+        m2.load( os.path.join(HERE,"proto_from_hmm") )
 
         self.assertTrue(compare(m1.definition['transition'],m2.definition['transition']))
         self.assertTrue(compare(m1.definition['states'],m2.definition['states']))
 
-        os.remove( "proto_from_hmm" )
-        os.remove( "proto_from_htkio" )
+        os.remove( os.path.join(HERE,"proto_from_hmm") )
+        os.remove( os.path.join(HERE,"proto_from_htkio") )
+
 
     def __test_transition(self, transition):
         self.assertEqual(transition['dim'], 5)

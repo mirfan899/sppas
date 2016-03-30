@@ -335,7 +335,7 @@ function tokenize {
 
     echo -n " ... inline tokenization (2): "
     inline=`echo "《干脆就把那部蒙人的闲法给废了拉倒！》RT @laoshipukong : 27日，全国人大常委会第三次审议侵权责任法草案，删除了有关医疗损害责任“举证倒置”的规定。" | $BIN_DIR/tokenize.py -r $RESOURCES_DIR/vocab/cmn.vocab`
-    if [ "$inline" == "干脆 就 把 那 部 蒙 人 的 闲 法 给 废 了 拉倒 rt @ laoshipukong 二十七 日 全国人大常委会 第三次 审议 侵权 责任 法 草案 删除 了 有关 医疗 损 害 责任 举证 倒置 的 规定" ]; then
+    if [ "$inline" == "干脆 就 把 那 部 蒙 人 的 闲 法 给 废 了 拉倒 rt @ laoshipukong 二十七 日 全国人大常委会 第 三次 审议 侵权 责任 法 草案 删除 了 有关 医疗 损害 责任 举证 倒置 的 规定" ]; then
         fct_echo_status 0
     else
         fct_echo_status 1

@@ -913,6 +913,22 @@ SPPAS-1.7.7
 Resources:
     - Correction of errors in most of the acoustics models, 
       for /@@/ and /dummy/ models
+    - New vocabulary and pronunciation dictionary for Mandarin Chinese.
+
+GUI:
+    - Dialogs are customized
+    - DataRoamer debug and changes: save buttons moved in the main toolbar.
+    - HelpSystem is back.
+
+Development:
+    - Add the API and a script to train acoustic models with HTK.
+    - Add Kullback-Leibler distance estimator.
+    - Add a script to compare 2 segmentations (of 2 tiers).
+    - Classes of the package resources are debugged, improved and extended.
+    - Automatic annotation alignment: 
+	- bug correction is input starts by an empty interval.
+    - sppas.command modified for MacOS-X (use python if python2 not available)
+    - GUIs in bin directory are updated (test of python, wxpython, and so on).
 
 
 =============================================================================

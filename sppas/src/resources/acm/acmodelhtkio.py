@@ -253,6 +253,8 @@ class HtkIO:
             fp.write("<NumStates> 5\n")
             for i in range(2, 5):
                 fp.write("<State> {}\n".format(i))
+                fp.write("<NumMixes> 1\n")
+                fp.write("<Mixture> 1 1.0\n")
                 fp.write("<Mean> %d\n"%protosize)
                 fp.write("%s\n"%means)
                 fp.write("<Variance> %d\n"%protosize)
