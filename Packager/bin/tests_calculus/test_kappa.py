@@ -75,8 +75,6 @@ class TestTierKappa(unittest.TestCase):
     def testBoundValue(self):
         d = TierConverter( self.tier )
         p,q = d.bounds_to_vector( self.tier )
-        print "\n Vector p:",p
-        print "\n Vector q:",q
 
         k = Kappa(p,q)
         self.assertTrue(k.check_vector(p))
@@ -89,8 +87,6 @@ class TestTierKappa(unittest.TestCase):
         othertier.Append(self.y)
         othertier.Append(self.b)
         p,q = d.bounds_to_vector( othertier )
-        print "\n Vector p:",p
-        print "\n Vector q:",q
 
         kb = Kappa(p,q)
         self.assertTrue(kb.check_vector(p))

@@ -35,25 +35,25 @@ class TestTierMapping(unittest.TestCase):
 
         # Create TierMapping
         self.tiermap = TierMapping()
-        self.tiermap.repl.add( "1", "un" )
-        self.tiermap.repl.add( "2", "deux" )
-        self.tiermap.repl.add( "3", "trois" )
-        self.tiermap.repl.add( "4", "quatre" )
-        self.tiermap.repl.add( "5", "cinq" )
-        self.tiermap.repl.add( "6", "six" )
-        self.tiermap.repl.add( "7", "sept" )
-        self.tiermap.repl.add( "8", "huit" )
-        self.tiermap.repl.add( "9", "neuf" )
-        self.tiermap.repl.add( "10", "dix" )
-        self.tiermap.repl.add( "20", "vingt" )
-        self.tiermap.repl.add( "30", "trente" )
-        self.tiermap.repl.add( "40", "quarante" )
-        self.tiermap.repl.add( "50", "cinquante" )
-        self.tiermap.repl.add( "60", "soixante" )
-        self.tiermap.repl.add( "70", "soixante-dix" )
-        self.tiermap.repl.add( "70", "septante" )
-        self.tiermap.repl.add( "80", "quatre-vingts" )
-        self.tiermap.repl.add( "80", "octante" )
+        self.tiermap.add( "1", "un" )
+        self.tiermap.add( "2", "deux" )
+        self.tiermap.add( "3", "trois" )
+        self.tiermap.add( "4", "quatre" )
+        self.tiermap.add( "5", "cinq" )
+        self.tiermap.add( "6", "six" )
+        self.tiermap.add( "7", "sept" )
+        self.tiermap.add( "8", "huit" )
+        self.tiermap.add( "9", "neuf" )
+        self.tiermap.add( "10", "dix" )
+        self.tiermap.add( "20", "vingt" )
+        self.tiermap.add( "30", "trente" )
+        self.tiermap.add( "40", "quarante" )
+        self.tiermap.add( "50", "cinquante" )
+        self.tiermap.add( "60", "soixante" )
+        self.tiermap.add( "70", "septante" )
+        self.tiermap.add( "70", "soixante-dix" )
+        self.tiermap.add( "80", "octante" )
+        self.tiermap.add( "80", "quatre-vingts" )
 
 
     def test_run(self):
@@ -68,7 +68,9 @@ class TestTierMapping(unittest.TestCase):
             self.assertEqual(a1.GetLabel().GetValue(), a2.GetLabel().GetValue())
             self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
         for a1, a2 in zip(tI, self.tierI):
-            self.assertEqual(a1.GetLabel().GetValue(), a2.GetLabel().GetValue())
+            l1 = a1.GetLabel().GetValue().split('|')
+            l2 = a2.GetLabel().GetValue().split('|')
+            self.assertEqual(sorted(list(set(l1))),sorted(l2))
             self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
 
 
@@ -81,10 +83,11 @@ class TestTierMapping(unittest.TestCase):
         tiermap.set_keepmiss( True )
         tiermap.set_reverse( False )
         t = tiermap.run( self.tier )
+
         tiermap.set_reverse( True )
         tp = tiermap.run( t )
         for a1, a2 in zip(tp, self.tier):
-            self.assertEqual(a1.GetLabel().GetValue(), a2.GetLabel().GetValue())
+            self.assertEqual(a1.GetLabel().GetValue(),a2.GetLabel().GetValue())
             self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
 
 
@@ -99,7 +102,7 @@ class TestTierMapping(unittest.TestCase):
         tiermap.set_keepmiss( False )
         t2 = tiermap.run( self.tier )
         for a1, a2 in zip(t1, t2):
-            if a1.GetLabel().IsSilence() is True:
+            if a1.GetLabel().IsSilence() is True or a1.GetLabel().IsNoise() is True:
                 self.assertNotEqual(a1.GetLabel().GetValue(), a2.GetLabel().GetValue())
                 self.assertNotEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
             else:
@@ -112,6 +115,3 @@ class TestTierMapping(unittest.TestCase):
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestTierMapping)
     unittest.TextTestRunner(verbosity=2).run(suite)
-
-
-

@@ -132,7 +132,7 @@ class TestTrainer(unittest.TestCase):
         corpus.add_corpus( os.path.join(SAMPLES_PATH,"samples-fra") )
 
         trainer = HTKModelTrainer(corpus)
-        acmodel = trainer.training_recipe( delete=True )
+        acmodel = trainer.training_recipe( delete=False )
         # TODO: Test the model
 
 # ---------------------------------------------------------------------------

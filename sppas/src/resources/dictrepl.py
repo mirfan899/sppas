@@ -238,7 +238,8 @@ class DictRepl:
 
         # Add in the dict
         if self._dict.has_key(key):
-            value = u"{0}|{1}".format(self._dict.get(key), value)
+            if self.is_value_of(key,value) is False:
+                value = u"{0}|{1}".format(self._dict.get(key), value)
         self._dict[key] = value
 
     # ------------------------------------------------------------------------

@@ -141,6 +141,19 @@ class DictPron:
 
     # -----------------------------------------------------------------------
 
+    def is_pron_of(self,entry,pron):
+        """
+        Return True if pron is a pronunciation of entry.
+
+        """
+        prons = self._dict.get( rutils.ToLower(entry),None )
+        if prons is None:
+            return False
+
+        return pron in prons.split('|')
+
+    # -----------------------------------------------------------------------
+
     def get_dictsize(self):
         """
         Return the number of entries in the dictionary.
@@ -181,16 +194,23 @@ class DictPron:
         @param pron (string) the pronunciation with phonemes separated by spaces
 
         """
-        # Remove multiple spaces and replace spaces with '.'
-        variant = " ".join(pron.split()).replace(" ", ".")
+        # Remove the CR/LF, tabs, multiple spaces and others... and lowerise
+        entry   = rutils.ToStrip(token)
+        entry   = rutils.ToLower(entry)
+        newpron = rutils.ToStrip(pron)
+        newpron = newpron.replace(" ", ".")
 
-        # Remove multiple spaces
-        token = " ".join(token.split())
+        # Find a previous pronunciation in the dictionary... or not!
+        curpron = ""
+        if self._dict.has_key(entry):
+            if self.is_pron_of(entry, pron) is False:
+                curpron = self.get_pron( entry ) + "|"
 
-        previous_value = self._dict.get(token, "")
-        separator = "|" if previous_value else ""
-        new_value = previous_value + separator + variant
-        self._dict[token] = new_value
+        # Get the current pronunciation and append the new one
+        newpron = curpron + newpron
+
+        # Add (or change) the entry in the dict
+        self._dict[entry] = newpron
 
     # -----------------------------------------------------------------------
 
@@ -219,7 +239,9 @@ class DictPron:
 
     def load_from_ascii(self, filename):
         """
-        Load a dict from an HTK-ASCII file.
+        Load a pronunciation dictionary from an HTK-ASCII file.
+
+        @param filename (str) Pronunciation dictionary file name.
 
         """
         try:
@@ -238,31 +260,16 @@ class DictPron:
                 raise ValueError('Expected HTK ASCII dictionary format. Error at line number %d: %s'%(l,line))
 
             # The entry is before the "[" and the pronunciation is after the "]"
-            __entry = line[:line.find(u"[")]
-            __pron  = line[line.find(u"]")+1:]
-
-            # Remove the CR/LF, tabs, multiple spaces and others...
-            __entry = rutils.ToStrip(__entry)
-            __pron  = rutils.ToStrip(__pron)
+            entry = line[:line.find(u"[")]
+            newpron  = line[line.find(u"]")+1:]
 
             # Find if it is a new entry or a phonetic variant
-            i = __entry.find(u"(")
-            if( i>-1 and __entry.find(u"(")>-1 ):
+            i = entry.find(u"(")
+            if( i>-1 and entry.find(u"(")>-1 ):
                 # Phonetic variant of an entry (i.e. entry ended with (XX))
-                entry = rutils.ToLower(__entry[:i])
-            else:
-                entry = rutils.ToLower(__entry)
+                entry = entry[:i]
 
-            # Find a previous pronunciation in the dictionary... or not!
-            if self._dict.has_key(entry):
-                pron = self.get_pron( entry ) + "|"
-            else:
-                pron = ""
-
-            # Get the current pronunciation
-            pron = pron + __pron.replace(" ",".")
-            # Add (or change) the entry in the dict
-            self._dict[entry] = pron
+            self.add_pron(entry, newpron)
 
     # -----------------------------------------------------------------------
 

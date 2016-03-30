@@ -37,8 +37,7 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
@@ -46,29 +45,24 @@ from resources.mapping import Mapping
 
 # ----------------------------------------------------------------------------
 
-
 class TierMapping( Mapping ):
     """
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
-    @summary: Mapping of labels of annotations of a tier.
-
+    @summary: Mapping labels of annotations of a tier.
 
     """
-
     def __init__(self, dictname=None):
         """
-        Create a new TierMapping instance.
+        Create a TierMapping instance.
 
         @param dictname (string) is the file name with the mapping table (2 columns),
 
         """
         Mapping.__init__(self, dictname)
 
-    # End __init__
     # ------------------------------------------------------------------
-
 
     def run( self, tierinput, outtiername=None ):
         """
@@ -79,9 +73,8 @@ class TierMapping( Mapping ):
         @return a new tier
 
         """
-
         if tierinput is None:
-            raise Exception("Input tier is None.")
+            raise Exception("Run mapping failed: input tier is None.")
 
         # Create the output tier
         name = outtiername
@@ -91,19 +84,15 @@ class TierMapping( Mapping ):
         outtier.SetName( name )
 
         # hum... nothing to do!
-        if tierinput.GetSize() == 0 or self.repl.get_size() == 0:
+        if tierinput.GetSize() == 0 or self.get_size() == 0:
             return outtier
 
         # map
         for a in outtier:
-            # For each Text instance of this label
             for t in a.GetLabel().GetLabels():
-                t.SetValue( self.map( t.GetValue()) )
+                l = self.map( t.GetValue(), delimiters=[' ', '|', '.'])
+                t.SetValue( l )
 
         return outtier
 
-    # End run
     # ------------------------------------------------------------------------
-
-# End tierMapping
-# ---------------------------------------------------------------------------

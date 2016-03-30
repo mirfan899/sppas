@@ -115,7 +115,7 @@ class TestDictTok(unittest.TestCase):
         self.assertEqual(s, u"t(u) vois [Isabelle,isabelleu] Armelle t(out) ça")
 
         s = self.tok.clean_toe(u"gpd_1324ah euh")
-        self.assertEqual(s, u"gpd_1324 ah euh")
+        self.assertEqual(s, u"ah euh")
 
 
     def test_sampa(self):

@@ -43,7 +43,7 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 import re
 
-from resources.dictrepl  import DictRepl
+from dictrepl  import DictRepl
 
 # ----------------------------------------------------------------------------
 
@@ -78,8 +78,8 @@ class Mapping( DictRepl ):
         Fix all options.
 
         Available options are:
-            - keepmiss
-            - reverse
+            - keepmiss (bool)
+            - reverse (bool)
 
         @param options (option)
 
@@ -102,10 +102,9 @@ class Mapping( DictRepl ):
     def set_keepmiss(self, keepmiss):
         """
         Fix the keepmiss option.
-        If keepmiss is set to True, each missing entry is kept without change.
-        If keepmiss is set to False, each missing entry is deleted.
 
-        @param keepmiss (Boolean)
+        @param keepmiss (bool) If keepmiss is set to True, each missing entry
+        is kept without change; instead each missing entry is deleted.
 
         """
         self.keepmiss = keepmiss
@@ -115,10 +114,9 @@ class Mapping( DictRepl ):
     def set_reverse(self, reverse):
         """
         Fix the reverse option.
-        If replace is set to True, mapping will replace value by key
-        instead of replacing key by value.
 
-        @param reverse (Boolean)
+        @param reverse (bool) If replace is set to True, mapping will replace value by key
+        instead of replacing key by value.
 
         """
         self.reverse = reverse
@@ -156,7 +154,7 @@ class Mapping( DictRepl ):
 
         @param str is the input string to map
         @param delimiters (list) list of character delimiters. Default is:
-               [';', ',', '\s', '.', '|', '+', '-']
+               [';', ',', ' ', '.', '|', '+', '-']
         @return a string
 
         """
@@ -170,12 +168,14 @@ class Mapping( DictRepl ):
         pattern = '|'.join(map(re.escape, delimiters))
         pattern = "("+pattern+")\s*"
         tab = re.split(pattern, mstr)
+        maptab = []
 
-        for i,v in enumerate(tab):
+        for v in tab:
             if v in delimiters:
-                continue
-            tab[i] = self.map_entry(v)
+                maptab.append(v)
+            else:
+                maptab.append( self.map_entry(v) )
 
-        return ''.join(tab)
+        return ''.join(maptab)
 
     # -----------------------------------------------------------------------
