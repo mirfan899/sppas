@@ -94,7 +94,6 @@ sppas.src.annotationdata.io.elan.CONSTRAINTS	sppas.src.annotationdata.io.elan-mo
 sppas.src.annotationdata.io.heuristic	sppas.src.annotationdata.io.heuristic-module.html
 sppas.src.annotationdata.io.htk	sppas.src.annotationdata.io.htk-module.html
 sppas.src.annotationdata.io.htk.line_from_annotation	sppas.src.annotationdata.io.htk-module.html#line_from_annotation
-sppas.src.annotationdata.io.htk.annotation_from_line	sppas.src.annotationdata.io.htk-module.html#annotation_from_line
 sppas.src.annotationdata.io.htk.HTK_RADIUS	sppas.src.annotationdata.io.htk-module.html#HTK_RADIUS
 sppas.src.annotationdata.io.htk.TIME_UNIT	sppas.src.annotationdata.io.htk-module.html#TIME_UNIT
 sppas.src.annotationdata.io.htk.TimePoint	sppas.src.annotationdata.io.htk-module.html#TimePoint
@@ -155,6 +154,9 @@ sppas.src.annotationdata.utils	sppas.src.annotationdata.utils-module.html
 sppas.src.annotationdata.utils.deprecated	sppas.src.annotationdata.utils.deprecated-module.html
 sppas.src.annotationdata.utils.deprecated.deprecated	sppas.src.annotationdata.utils.deprecated-module.html#deprecated
 sppas.src.annotationdata.utils.tierutils	sppas.src.annotationdata.utils.tierutils-module.html
+sppas.src.annotationdata.utils.tierutils.DEFAULT_SEP	sppas.src.annotationdata.utils.tierutils-module.html#DEFAULT_SEP
+sppas.src.annotationdata.utils.tierutils.align2phon	sppas.src.annotationdata.utils.tierutils-module.html#align2phon
+sppas.src.annotationdata.utils.tierutils.__authors___	sppas.src.annotationdata.utils.tierutils-module.html#__authors___
 sppas.src.annotationdata.utils.trsutils	sppas.src.annotationdata.utils.trsutils-module.html
 sppas.src.annotationdata.utils.trsutils.overlaps	sppas.src.annotationdata.utils.trsutils-module.html#overlaps
 sppas.src.annotationdata.annotation.Annotation	sppas.src.annotationdata.annotation.Annotation-class.html

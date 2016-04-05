@@ -3,11 +3,11 @@
 author:     Brigitte Bigi
 contact:    brigite.bigi@gmail.com
 program:    SPPAS - Automatic Annotation of Speech
-date:       2016-01-28
+date:       2016-03-30
 version:    1.7.7
 copyright:  Copyright (C) 2011-2016  Brigitte Bigi
 url:        http://www.sppas.org/
-license:    GNU Public License
+license:    GNU Public License, v3
 brief:      SPPAS produces automatically annotations from a recorded speech
             sound and its transcription and performs the analysis of any
             annotated data.
@@ -16,18 +16,20 @@ brief:      SPPAS produces automatically annotations from a recorded speech
 
 By using SPPAS, you agree to cite a reference in your publications.
 
-references:
-    * Brigitte BIGI (2015).
-      SPPAS - Multi-lingual Approaches to the Automatic Annotation of Speech.
-      the Phonetician - International Society of Phonetic Sciences,
-      ISSN 0741-6164, Number 111-112 / 2015-I-II, pages 54-69.
-    * OTHER REFERENCES ARE AVAILABLE in the directory "documentation",
-      sub-directory "references".
+main references:
+
+    >>> Brigitte BIGI (2015).
+    >>> SPPAS - Multi-lingual Approaches to the Automatic Annotation of Speech.
+    >>> the Phonetician - International Society of Phonetic Sciences,
+    >>> ISSN 0741-6164, Number 111-112 / 2015-I-II, pages 54-69.
+
+other references are mentioned in the chapter "References" of the documentation.
 
 ------------------------------------------------------------------------------
 
 usage: Execute the Graphical User Interface by clicking on
-    * sppas.bat under Windows
-    * sppas.command under MacOS or Linux
+
+    - `sppas.bat` under Windows
+    - `sppas.command` under MacOS or Linux
 
 ------------------------------------------------------------------------------

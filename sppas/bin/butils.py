@@ -78,9 +78,10 @@ def check_python():
 
 # ----------------------------------------------------------------------------
 
-def check_aligner( ):
+def check_aligner():
     """
     Test if one of julius/HVite is available.
+    Return False if none of them are available.
 
     """
     julius = True
@@ -97,7 +98,7 @@ def check_aligner( ):
     except OSError:
         hvite = False
 
-    return not (julius or hvite)
+    return (julius or hvite)
 
 # ----------------------------------------------------------------------------
 

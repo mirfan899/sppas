@@ -29,24 +29,27 @@ For more details, see the following reference:
 ![Text normalization workflow](./etc/figures/tokworkflow.bmp)
 
 The SPPAS Tokenization system takes as input a file including a tier
-with the orthographic transcription. The name of this tier must contains
+with the orthographic transcription. 
+At a first stage, SPPAS tries to find a tier with `transcription` as name.
+If such a tier does not exist, SPPAS tries to find a tier that contains
 one of the following strings:
 
-- trans
-- trs
-- ipu
-- ortho
-- toe
+1. trans
+2. trs
+3. ipu
+4. ortho
+5. toe
 
-The first tier that matches is used (case insensitive search).
+The first tier that matches is used (case in-sensitive search).
 
 By default, it produces a file including only one tier with the
-tokens. To get both transcription tiers faked and standard,
-check such option!
+tokens. 
+
+In case of an Enriched Orthographic Transcription, to get both faked 
+and standard tokenized tiers, check the corresponding option.
 
 - Tokens-std: the text normalization of the standard transcription,
 - Tokens-faked: the text normalization of the faked transcription.
 
-Read the "Introduction" of this chapter to understand the difference
-between "standard" and "faked" transcriptions.
-
+Read the "Introduction" of this chapter for a better understanding of the 
+difference between "standard" and "faked" transcriptions.
