@@ -46,6 +46,7 @@ import os
 from os.path import *
 
 import re
+import resources.rutils as rutils
 
 # ----------------------------------------------------------------------------
 
@@ -414,7 +415,12 @@ class PhonUnk:
         @raise Exception if the word can NOT be phonetized
 
         """
-        __str = re.sub("[\s]+", " ", entry)
+        __str = rutils.ToStrip( entry )
+        __str = rutils.ToLower( __str )
+        if len(__str) == 0:
+            return ""
+
+        #__str = re.sub("[\s]+", " ", entry)
         __str = re.sub("-$", "", __str)  # rustine
         __str = re.sub("'$", "", __str)  # rustine
 

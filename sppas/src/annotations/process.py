@@ -538,6 +538,8 @@ class sppasProcess( Thread ):
                 try:
                     p.run( inname, outputfile=outname )
                 except Exception as e:
+                    import traceback
+                    print traceback.format_exc()
                     if self._logfile is not None:
                         self._logfile.print_message( "%s for file %s\n"%(str(e),outname), indent=2,status=-1 )
                 else:

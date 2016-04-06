@@ -57,7 +57,6 @@ import os.path
 
 DUMP_FILENAME_EXT = ".dump"
 ENCODING          = 'utf-8'
-UNKNOWN_SYMBOL    = u"UNK"
 
 # ----------------------------------------------------------------------------
 

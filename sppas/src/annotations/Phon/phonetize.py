@@ -37,8 +37,7 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ---------------------------------------------------------------------------
 # Imports
@@ -46,13 +45,10 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 import re
 
-from phonunk  import PhonUnk
-
 import resources.rutils as rutils
+from phonunk import PhonUnk
+from sp_glob import ERROR_ID, WARNING_ID, OK_ID
 
-
-# ---------------------------------------------------------------------------
-# sppasPhon main class
 # ---------------------------------------------------------------------------
 
 class DictPhon:
@@ -83,169 +79,150 @@ class DictPhon:
 
     See the whole description in the following reference:
 
-    Brigitte Bigi (2013).
-    A phonetization approach for the forced-alignment task.
-    3rd Less-Resourced Languages workshop,
-    6th Language & Technology Conference, Poznan (Poland).
+        > Brigitte Bigi (2013).
+        > A phonetization approach for the forced-alignment task.
+        > 3rd Less-Resourced Languages workshop,
+        > 6th Language & Technology Conference, Poznan (Poland).
+
+    DictPhon is using the following convention:
+        - dots separate phones,
+        - pipes separate pronunciation variants.
 
     """
-
-    def __init__(self, pdict, logfile=None):
+    def __init__(self, pdict):
         """
-        Create a new instance.
+        Constructor.
 
-        @param pdict (DictPron) is the dictionary.
-        @param logfile
+        @param pdict (DictPron) is the pronunciations dictionary.
 
         """
+        self.set_dict( pdict )
 
-        # Log output to print warnings
-        self._logfile = logfile
-
-        # Symbol to represent missing entries in the dictionary
-        # (also called unknown entries)
-        self._unk = rutils.UNKNOWN_SYMBOL
-
-        # Assign the dictionary, without loading it.
-        self.pdict = pdict
-
-    # End __init__
     # -----------------------------------------------------------------------
 
-
-    def set_dict(self,pdict):
+    def set_dict(self, pdict):
         """
         Set the dictionary.
 
-        @param pdict is a DictPron().
+        @param pdict (DictPron) The pronunciation dictionary.
 
         """
-        self.pdict = pdict
+        self._pdict = pdict
+        self._phonunk = PhonUnk( self._pdict.get_dict() )
 
     # -------------------------------------------------------------------------
 
-
-    def get_phon(self,entry):
+    def get_phon_entry(self, entry):
         """
         Return the phonetization of an entry or the symbol for unknown entries.
 
-        @param entry (String) The token to phonetize
+        @param `entry` (str) The token to phonetize
+        @return A string with the phonetization of `entry`
 
         """
         entry = rutils.ToStrip(entry)
         entry = re.sub(u"\-+$", ur"", entry)
 
-        # Specific strings... for the italian transcription... (CLIPS-Evalita)
-        idx = entry.find(u"<")
-        if idx>1 and entry.find(u">")>-1:
-            entry = entry[:idx]
+        # Specific strings... for the italian transcription...
+        # For the participation at the CLIPS-Evalita 2011 campaign.
+        if entry.startswith(u"<") is True and entry.endswith(u">") is True:
+            entry = entry[1:-1]
 
-        # No entry!!
+        # No entry! Nothing to do.
         if len(entry) == 0:
             return ""
 
-        # Stecific strings... for the CID transcription...
-        if entry.find(u"gpd_")>-1 or entry.find(u"gpf_")>-1:
+        # Specific strings used in the CID transcription...
+        # CID is Corpus of Interactional Data, http://sldr.org/sldr000720
+        if entry.startswith(u"gpd_") is True or entry.startswith(u"gpf_") is True:
             return ""
 
-        # SPPAS convention for IPU segmentation
+        # Specific strings used in SPPAS IPU segmentation...
         if entry.find(u"ipu_")>-1:
             return ""
 
         # Find entry in the dict as it is given
-        _strphon = self.pdict.get_pron( entry )
+        _strphon = self._pdict.get_pron( entry )
 
         # OK, the entry is in the dictionary
-        if _strphon != self._unk:
+        if _strphon != self._pdict.unkstamp:
             return _strphon
 
         # A missing compound word?
-        if entry.find(u"-")>-1 or entry.find(u"'")>-1 or entry.find(u"_")>-1:
+        if "-" in entry or "'" in entry or "_" in entry:
             _strphon = ""
             _tabstr = re.split(u"[-'_]",entry)
             # ATTENTION: each part can have variants!
-            for _w in _tabstr:
-                _strphon = _strphon + " " + self.pdict.get_pron( _w )
+            for w in _tabstr:
+                _strphon = _strphon + " " + self._pdict.get_pron( w )
 
         # OK, finally the entry is in the dictionary?
-        if _strphon.find( self._unk )>-1:
-            return self._unk
+        if self._pdict.unkstamp in _strphon:
+            return self._pdict.unkstamp
 
-        return _strphon
+        return rutils.ToStrip(_strphon)
 
-    # End get_phon
     # -----------------------------------------------------------------------
 
+    def get_phon_tokens(self, tokens, phonunk=True):
+        """
+        Return the phonetization of a list of tokens, with the status.
 
-    def phonetize(self, unit, phonunk):
+        @param `tokens` (list) is the list of tokens to phonetize.
+        @param `phonunk` (bool) Phonetize unknown words (or not).
+
+        @return A list with the tuple (token, phon, status).
+
+        """
+        tab = []
+
+        for entry in tokens:
+            phon   = self._pdict.unkstamp
+            status = OK_ID
+
+            # Convention TOE: entry is already in SAMPA
+            if entry.startswith("/") is True and entry.endswith("/") is True:
+                phon = entry.strip("/")
+                # Must be converted to our convention (dots to separate phones)
+                # TODO
+
+            else:
+
+                if self._pdict.is_unk( entry ) is True:
+                    status = ERROR_ID
+                    if phonunk is True:
+                        try:
+                            phon   = self._phonunk.get_phon( entry )
+                            status = WARNING_ID
+                        except Exception:
+                            pass
+
+                else:
+                    phon = self.get_phon_entry(entry)
+
+            tab.append( (entry,phon,status) )
+
+        return tab
+
+    # -----------------------------------------------------------------------
+
+    def phonetize(self, utterance, phonunk=True, delimiter=" "):
         """
         Return the phonetization of an utterance.
 
-        It is supposed that words of the utterance are separated by spaces.
+        @param `utterance` (str) is the utterance to phonetize.
+        @param `phonunk` (bool) Phonetize unknown words (or not).
+        @param `delimiter` (char) The character to use as tokens separator in `utterance`.
 
-        @param unit (String) is the utterance to phonetize
-        @return A string with the phonetization, with the following convention:
-                - spaces separate words,
-                - dots separate phones,
-                - pipes separate pronunciation variants.
+        @return A string with the phonetization of `utterance`.
 
         """
-        # Clean the unit
-        _s = rutils.ToStrip(unit)
+        if len(delimiter) > 1:
+            raise TypeError('Delimiter must be a character.')
 
-        # Verification
-        if len(unit)==0:
-            return ""
+        tab = self.get_phon_tokens( utterance.split(delimiter), phonunk)
+        tabphon = [t[1] for t in tab]
 
-        # EXCEPTION: specific case of "+", which is phonetized by #...
-        if _s=="+": # only one short pause in the unit
-            return "sp"
+        return delimiter.join( tabphon ).strip()
 
-        # Array with each entry to phonetize
-        entries = _s.split(" ")
-        tabphon = []
-        unkinst = PhonUnk( self.pdict.get_dict() )
-
-        # Phonetize each entry
-        for entry in entries:
-            _phon = ""
-            entry = rutils.ToLower(entry)
-
-            # convention TOE: enrty in sampa (the entry is already phonetized)
-            if entry.startswith("/") and entry.endswith("/"):
-                _phon = entry.strip("/")
-                # Must convert SAMPA to SPPAS: phoneset and convention
-                # TO DO
-
-            elif self.pdict.is_unk( entry ) is True and phonunk is True:
-                # Create an instance to phonetize unknown entries of the unit
-                try:
-                    _phon = unkinst.get_phon( entry )
-                except Exception:
-                    _phon = self._unk
-                if self._logfile:
-                    self._logfile.print_message('Unknown word phonetization: '+entry,indent=3,status=1)
-                    self._logfile.print_message('Proposed phonetization is: '+_phon,indent=3,status=3)
-
-            elif self.pdict.is_unk( entry ) is True:
-                _phon = self._unk
-                if self._logfile:
-                    try:
-                        self._logfile.print_message('Unknown word phonetization: '+entry,indent=3,status=1)
-                    except Exception:
-                        pass
-
-            else:
-                _phon = self.pdict.get_pron( entry )
-
-            tabphon.append( _phon )
-
-        # Concatenate entries into a phonetized string
-        _s = " "
-        return _s.join(tabphon)
-
-    # End phonetize
     # -----------------------------------------------------------------------
-
-# End DictPhon
-# ---------------------------------------------------------------------------

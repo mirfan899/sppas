@@ -15,15 +15,15 @@ brief:      SPPAS produces automatically annotations from a recorded speech
 ------------------------------------------------------------------------------
 
 By using SPPAS, you agree to cite a reference in your publications.
+The main reference is:
 
-main references:
+    > Brigitte BIGI (2015).
+    > SPPAS - Multi-lingual Approaches to the Automatic Annotation of Speech.
+    > the Phonetician - International Society of Phonetic Sciences,
+    > ISSN 0741-6164, Number 111-112 / 2015-I-II, pages 54-69.
 
-    >>> Brigitte BIGI (2015).
-    >>> SPPAS - Multi-lingual Approaches to the Automatic Annotation of Speech.
-    >>> the Phonetician - International Society of Phonetic Sciences,
-    >>> ISSN 0741-6164, Number 111-112 / 2015-I-II, pages 54-69.
-
-other references are mentioned in the chapter "References" of the documentation.
+A list of other references is available in the chapter "References" of the
+documentation.
 
 ------------------------------------------------------------------------------
 

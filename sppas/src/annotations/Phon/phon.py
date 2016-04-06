@@ -51,6 +51,7 @@ from annotationdata.transcription import Transcription
 from resources.dictpron import DictPron
 from phonetize import DictPhon
 
+from sp_glob import ERROR_ID, WARNING_ID, OK_ID
 from sp_glob import UNKSTAMP
 
 # ---------------------------------------------------------------------------
@@ -150,6 +151,33 @@ class sppasPhon( object ):
     # Methods to phonetize series of data
     # -----------------------------------------------------------------------
 
+    def phonetize(self, label):
+        """
+        Phonetize a label of an annotation.
+
+        """
+        phonetizer = DictPhon(self.pdict)
+        #phon = phonetizer.phonetize( label, phonunk=self.opt_phonunk, delimiter=" " )
+        tab = phonetizer.get_phon_tokens( label.split(), phonunk=self.opt_phonunk)
+        tabphon = []
+        for t,p,s in tab:
+            message = None
+            if s == ERROR_ID:
+                message = "%s is missing in the dictionary and can't be phonetized automatically."%t
+            else:
+                tabphon.append( p )
+                if s == WARNING_ID:
+                    message = "%s is missing in the dictionary. It was automatically phonetized as: %s"%(t,p)
+
+            if message:
+                self.logfile.print_message(message, indent=3, status=s)
+
+        del phonetizer
+
+        return " ".join(tabphon)
+
+    # -----------------------------------------------------------------------
+
     def convert(self, tier, variants=True):
         """
         Phonetize all labels of a tier.
@@ -173,9 +201,7 @@ class sppasPhon( object ):
                         _label = a.GetLabel().GetValue()
                         # Do not phonetize empty intervals!
                         if len(_label)>0:
-                            phonetizer = DictPhon(self.pdict,self.logfile)
-                            phon = phonetizer.phonetize( _label, self.opt_phonunk )
-                            del phonetizer
+                            phon = self.phonetize( _label )
                 except Exception as e:
                     raise Exception('Phonetization error of %s. Error: %s'%(a,str(e)))
 
