@@ -1,5 +1,5 @@
 #!/usr/bin/env python2
-# vim: set fileencoding=UTF-8 ts=4 sw=4:
+# vim: set fileencoding=UTF-8 ts=4 sw=4 expandtab:
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
 #           /     |  \  |  \  |  \  /              Automatic
@@ -203,9 +203,9 @@ class RelationFilter(Filter):
         self.filter2 = filter2
 
     def __iter__(self):
-		"""
-		Iterator
-		@return: a tuple (x, rel, y) with the annotations and their relation (type: (Annotation, string, Annotation))
+        """
+        Iterator
+        @return: a tuple (x, rel, y) with the annotations and their relation (type: (Annotation, string, Annotation))
         """
         if not isinstance(self.filter1, RelationFilter):
             f1 = [x for x in self.filter1 if not x.GetLabel().IsEmpty()]
@@ -229,25 +229,25 @@ class RelationFilter(Filter):
         """
         Apply the predicate on all annotations of the tier defined in the filter.
 
-		@type annotformat:	str
-		@param annotformat:	format of the resulting annotation label.
-			Use {x}, {y} for each annotation's label and {rel} for the relation.
-			By default we keep the x label (equivalent to "{x}").
-		@type replace:Boolean
-		@param replace:	(deprecated) when True, equivalent of annotformat="{rel}"
+        @type annotformat:	str
+        @param annotformat:	format of the resulting annotation label.
+            Use {x}, {y} for each annotation's label and {rel} for the relation.
+            By default we keep the x label (equivalent to "{x}").
+        @type replace:Boolean
+        @param replace:	(deprecated) when True, equivalent of annotformat="{rel}"
         @return: (Tier)
         """
         tier = Tier()
-		if replace:
-			 annotformat="{rel}"
-		# feed the tier
-		for x, rel, y in self:
-        	a = x.Copy()
-			if annotformat: # change the annotation label
-				annotlabel = annotformat.format(x=x.GetLabel(), rel=rel, y=y.GetLabel())
-           		a.GetLabel().SetValue( annotlabel )
-           	try:
-           		tier.Append(a)
+        if replace:
+            annotformat="{rel}"
+        # feed the tier
+        for x, rel, y in self:
+            a = x.Copy()
+            if annotformat: # change the annotation label
+                annotlabel = annotformat.format(x=x.GetLabel(), rel=rel, y=y.GetLabel())
+                a.GetLabel().SetValue( annotlabel )
+            try:
+                tier.Append(a)
             except:
                 pass
         return tier
