@@ -35,12 +35,6 @@
 # File: mapping.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
-
-# ----------------------------------------------------------------------------
-
 import re
 
 from dictrepl  import DictRepl
@@ -49,10 +43,12 @@ from dictrepl  import DictRepl
 
 class Mapping( DictRepl ):
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: Mapping of any string.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Mapping table of any set of strings.
 
     A mapping is an extended replacement dictionary.
 

@@ -75,7 +75,7 @@ try:
     from utils.fileutils           import setup_logging
     from sp_glob                   import SETTINGS_FILE
 except ImportError:
-    exit_error( "An error occurred.\nVerify the SPPAS installation and try again. Full error message is:"%traceback.format_exc() )
+    exit_error( "An error occurred.\nVerify the SPPAS installation and try again. Full error message is: %s"%traceback.format_exc() )
 
 # ---------------------------------------------------------------------------
 # Main application

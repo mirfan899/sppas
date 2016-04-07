@@ -35,12 +35,6 @@
 # File: dictpron.py
 # ---------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-# ---------------------------------------------------------------------------
-
 import codecs
 import logging
 import rutils
@@ -49,35 +43,38 @@ import rutils
 
 class DictPron:
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: Pronunciation dictionary.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Pronunciation dictionary manager.
 
     A pronunciation dictionary contains a list of words, each one with a
     list of possible pronunciations. DictPron gets the dictionary from an
     HTK-ASCII file, as for example, the following lines:
         acted [] { k t e d
         acted(2) [] { k t i d
-    The second column (with brackets) is ignored.
-    There is also the possibility to add new entries.
+    The first columns indicates the tokens, eventually followed by the variant
+    number into braces. The second column (with brackets) is ignored. It can
+    contain the token. Other columns are the phones separated by whitespace.
 
     DictPron is instantiated as:
 
         >>> d = DictPron('eng.dict')
-        >>> d.add_pron( 'acted', '{ k t e d' )
-        >>> d.add_pron( 'acted', '{ k t i d' )
+        >>> d.add_pron( 'acted', '{ k t e' )
+        >>> d.add_pron( 'acted', '{ k t i' )
 
     In this class, the following convention is adopted to represent the
     pronunciation variants:
 
-        - '.' separates the phonemes
+        - '.' separates the phones
         - '|' separates the variants
 
-    Then, the pronunciation can be accessed with get_pron:
+    Then, the pronunciation can be accessed with get_pron() method:
 
         >>> print d.get_pron('acted')
-        >>> {.k.t.e.d|{.k.t.i.d
+        {.k.t.e.d|{.k.t.i.d|{ k t e|{ k t i
 
     """
     def __init__(self, dictfilename=None, unkstamp=u"UNK", nodump=False):
@@ -89,8 +86,8 @@ class DictPron:
 
         """
         self._filename = dictfilename
+
         # Symbol to represent missing entries in the dictionary
-        # (also called unknown entries)
         self.unkstamp = unkstamp
 
         # The pronunciation dictionary
@@ -116,8 +113,6 @@ class DictPron:
             else:
                 self._dict = data
                 logging.info('Get dictionary from dumped file.')
-
-    # -----------------------------------------------------------------------
 
     # -----------------------------------------------------------------------
     # Getters
@@ -181,8 +176,6 @@ class DictPron:
         return self._dict.keys()
 
     # -----------------------------------------------------------------------
-
-    # -----------------------------------------------------------------------
     # Setters
     # -----------------------------------------------------------------------
 
@@ -216,7 +209,8 @@ class DictPron:
 
     def map_phones(self, maptable):
         """
-        Create a new dictionary by changing the phoneme strings depending on a mapping table.
+        Create a new dictionary by changing the phoneme strings
+        depending on a mapping table.
 
         @param maptable (Mapping) A mapping table.
         @return a DictPron with mapped phones.
@@ -232,9 +226,7 @@ class DictPron:
         return newdict
 
     # -----------------------------------------------------------------------
-
-    # -----------------------------------------------------------------------
-    # File
+    # File management
     # -----------------------------------------------------------------------
 
     def load_from_ascii(self, filename):
@@ -293,7 +285,7 @@ class DictPron:
                         output.write(line)
 
         except Exception as e:
-            logging.debug('Save an ascii dict failed: %s'%str(e))
+            logging.info('Save the dict in ASCII failed: %s'%str(e))
             return False
 
         return True

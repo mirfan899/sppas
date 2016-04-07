@@ -35,28 +35,27 @@
 # File: phonetize.py
 # ---------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
-
-# ---------------------------------------------------------------------------
-# Imports
-# ---------------------------------------------------------------------------
-
 import re
 
-import resources.rutils as rutils
 from phonunk import PhonUnk
+from dagphon import DAGPhon
+
+from resources.rutils   import ToStrip
+from resources.mapping  import Mapping
+from resources.dictpron import DictPron
+
 from sp_glob import ERROR_ID, WARNING_ID, OK_ID
 
 # ---------------------------------------------------------------------------
 
 class DictPhon:
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: Phonetization automatic annotation.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Dictionary-based automatic phonetization.
 
     Grapheme-to-phoneme conversion is a complex task, for which a number of
     diverse solutions have been proposed. It is a structure prediction task;
@@ -89,14 +88,17 @@ class DictPhon:
         - pipes separate pronunciation variants.
 
     """
-    def __init__(self, pdict):
+    def __init__(self, pdict, maptable=None):
         """
         Constructor.
 
         @param pdict (DictPron) is the pronunciations dictionary.
+        @param maptable (Mapping) is a mapping table for phones.
 
         """
         self.set_dict( pdict )
+        self._maptable = maptable
+        self._dagphon  = DAGPhon(variants=4)
 
     # -----------------------------------------------------------------------
 
@@ -107,10 +109,27 @@ class DictPhon:
         @param pdict (DictPron) The pronunciation dictionary.
 
         """
+        if isinstance(pdict, DictPron) is False:
+            raise TypeError('Expected a DictPron instance.')
+
         self._pdict = pdict
         self._phonunk = PhonUnk( self._pdict.get_dict() )
 
-    # -------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+
+    def set_maptable(self, maptable):
+        """
+        Set the dictionary.
+
+        @param pdict (DictPron) The pronunciation dictionary.
+
+        """
+        if isinstance(maptable, Mapping) is False:
+            raise TypeError('Expected a Mapping instance.')
+
+        self._maptable = maptable
+
+    # -----------------------------------------------------------------------
 
     def get_phon_entry(self, entry):
         """
@@ -120,7 +139,7 @@ class DictPhon:
         @return A string with the phonetization of `entry`
 
         """
-        entry = rutils.ToStrip(entry)
+        entry = ToStrip(entry)
         entry = re.sub(u"\-+$", ur"", entry)
 
         # Specific strings... for the italian transcription...
@@ -144,23 +163,20 @@ class DictPhon:
         # Find entry in the dict as it is given
         _strphon = self._pdict.get_pron( entry )
 
-        # OK, the entry is in the dictionary
+        # OK, the entry is properly phonetized.
         if _strphon != self._pdict.unkstamp:
-            return _strphon
+            return self._map_phones( _strphon )
 
         # A missing compound word?
         if "-" in entry or "'" in entry or "_" in entry:
-            _strphon = ""
-            _tabstr = re.split(u"[-'_]",entry)
-            # ATTENTION: each part can have variants!
-            for w in _tabstr:
-                _strphon = _strphon + " " + self._pdict.get_pron( w )
+            _tabpron = [ self.get_phon_entry( w ) for w in re.split(u"[-'_]",entry) ]
 
-        # OK, finally the entry is in the dictionary?
-        if self._pdict.unkstamp in _strphon:
-            return self._pdict.unkstamp
+            # OK, finally the entry is in the dictionary?
+            if not self._pdict.unkstamp in _tabpron:
+                # ATTENTION: each part can have variants! must be decomposed.
+                return ToStrip(self._dagphon.decompose(" ".join(_tabpron)))
 
-        return rutils.ToStrip(_strphon)
+        return self._pdict.unkstamp
 
     # -----------------------------------------------------------------------
 
@@ -170,6 +186,7 @@ class DictPhon:
 
         @param `tokens` (list) is the list of tokens to phonetize.
         @param `phonunk` (bool) Phonetize unknown words (or not).
+        @todo EOT is not fully supported.
 
         @return A list with the tuple (token, phon, status).
 
@@ -180,7 +197,8 @@ class DictPhon:
             phon   = self._pdict.unkstamp
             status = OK_ID
 
-            # Convention TOE: entry is already in SAMPA
+            # Enriched Orthographic Transcription Convention:
+            # entry can be already in SAMPA.
             if entry.startswith("/") is True and entry.endswith("/") is True:
                 phon = entry.strip("/")
                 # Must be converted to our convention (dots to separate phones)
@@ -188,7 +206,8 @@ class DictPhon:
 
             else:
 
-                if self._pdict.is_unk( entry ) is True:
+                phon = self.get_phon_entry(entry)
+                if phon == self._pdict.unkstamp:
                     status = ERROR_ID
                     if phonunk is True:
                         try:
@@ -196,9 +215,6 @@ class DictPhon:
                             status = WARNING_ID
                         except Exception:
                             pass
-
-                else:
-                    phon = self.get_phon_entry(entry)
 
             tab.append( (entry,phon,status) )
 
@@ -220,9 +236,23 @@ class DictPhon:
         if len(delimiter) > 1:
             raise TypeError('Delimiter must be a character.')
 
-        tab = self.get_phon_tokens( utterance.split(delimiter), phonunk)
+        tab = self.get_phon_tokens( utterance.split(delimiter), phonunk )
         tabphon = [t[1] for t in tab]
 
         return delimiter.join( tabphon ).strip()
+
+    # -----------------------------------------------------------------------
+    # Private
+    # -----------------------------------------------------------------------
+
+    def _map_phones(self, phonentry):
+        """
+        Map phonemes of a phonetized entry.
+
+        @param phonentry (str) Phonetization of an entry.
+
+        """
+        if self._maptable is None:
+            return phonentry
 
     # -----------------------------------------------------------------------
