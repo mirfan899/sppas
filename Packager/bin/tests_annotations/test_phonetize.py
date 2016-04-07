@@ -13,6 +13,7 @@ from annotations.Phon.phonetize import DictPhon
 from annotations.Phon.dagphon   import DAGPhon
 
 from resources.dictpron import DictPron
+from resources.mapping import Mapping
 
 from sp_glob import RESOURCES_PATH
 from sp_glob import UNKSTAMP
@@ -40,18 +41,16 @@ class TestPhonetize(unittest.TestCase):
         self.assertEqual(self.grph.get_phon_entry("ipu"), UNKSTAMP)
         self.assertEqual(self.grph.get_phon_entry("gpd"), UNKSTAMP)
         self.assertEqual(self.grph.get_phon_entry("gpf"), UNKSTAMP)
-
         self.assertEqual(self.grph.get_phon_entry("a"), "a")
-        self.assertEqual(self.grph.get_phon_entry("a-b"), "a.b")
-        self.assertEqual(self.grph.get_phon_entry("a_b"), "a.b")
-        self.assertEqual(self.grph.get_phon_entry("a'b"), "a.b")
-        self.assertEqual(self.grph.get_phon_entry("a'd"), UNKSTAMP)
+        self.assertEqual(self.grph.get_phon_entry("aa"), UNKSTAMP)
+        self.assertEqual(self.grph.get_phon_entry("a-a"), UNKSTAMP)
 
     def test_get_phon_tokens(self):
         self.assertEqual(self.grph.get_phon_tokens([' \n \t']), [(' \n \t', '', OK_ID)])
         self.assertEqual(self.grph.get_phon_tokens(['a']), [('a','a',OK_ID)])
         self.assertEqual(self.grph.get_phon_tokens(['a','b']), [('a','a',OK_ID),('b','b',OK_ID)])
-        self.assertEqual(self.grph.get_phon_tokens(['a-a','b']), [('a-a','a.a',OK_ID),('b','b',OK_ID)])
+        self.assertEqual(self.grph.get_phon_tokens(['a-a','b']), [('a-a','a.a',WARNING_ID),('b','b',OK_ID)])
+        self.assertEqual(self.grph.get_phon_tokens(['a-']), [('a-','a',WARNING_ID)])
         self.assertEqual(self.grph.get_phon_tokens(['A','B']), [('A','a',OK_ID),('B','b',OK_ID)])
         self.assertEqual(self.grph.get_phon_tokens(['a','aa']), [('a','a',OK_ID),('aa','a.a',WARNING_ID)])
         self.assertEqual(self.grph.get_phon_tokens(['a','aa'], phonunk=False), [('a','a',OK_ID),('aa',UNKSTAMP,ERROR_ID)])
@@ -73,6 +72,30 @@ class TestPhonetize(unittest.TestCase):
         self.assertEqual( self.grph.phonetize("ipu_4 a'b-a c"), "a.b.a c" )
         self.assertEqual( self.grph.phonetize("gpd_4 a'b-a + c"), "a.b.a sp c" )
         self.assertEqual( self.grph.phonetize("gpd_4 aa'b-a"), "a.a.b.a" )
+
+    def test_map_entry(self):
+        mapt = Mapping()
+        mapt.add('a','A')
+        mapt.add('b','B')
+        mapt.add('b','v')
+        mapt.add('a.c','a.C')
+        self.grph.set_maptable( mapt )
+        self.assertEqual(self.grph._map_phonentry("c"), "c")
+        self.assertEqual(self.grph._map_phonentry("a"), "a|A")
+        self.assertEqual(self.grph._map_phonentry("b"), "B|b|v")
+        self.assertEqual(self.grph._map_phonentry("c.c"), 'c.c')
+        self.assertEqual(self.grph._map_phonentry("a.b"), 'a.b|a.B|A.b|A.B|A.v|a.v')
+        self.assertEqual(self.grph._map_phonentry("a.c"), "a.c|a.C")
+        self.assertEqual(self.grph._map_phonentry("a.c.a"), "a.c.A|a.c.a|a.C.A|a.C.a")
+        self.assertEqual(self.grph._map_phonentry("c.a.c"), "c.a.c|c.a.C")
+        mapt.add('a','a')
+        mapt.add('b','b')
+        mapt.add('c','c')
+        self.assertEqual(self.grph._map_phonentry("c"), "c")
+        self.assertEqual(self.grph._map_phonentry("a"), "a|A")
+        self.assertEqual(self.grph._map_phonentry("b"), "B|b|v")
+
+        self.grph.set_maptable( None )
 
 # ---------------------------------------------------------------------------
 

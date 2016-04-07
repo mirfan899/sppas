@@ -157,7 +157,6 @@ class sppasPhon( object ):
 
         """
         phonetizer = DictPhon(self.pdict)
-        #phon = phonetizer.phonetize( label, phonunk=self.opt_phonunk, delimiter=" " )
         tab = phonetizer.get_phon_tokens( label.split(), phonunk=self.opt_phonunk)
         tabphon = []
         for t,p,s in tab:

@@ -97,7 +97,7 @@ class DictPhon:
 
         """
         self.set_dict( pdict )
-        self._maptable = maptable
+        self.set_maptable( maptable )
         self._dagphon  = DAGPhon(variants=4)
 
     # -----------------------------------------------------------------------
@@ -124,23 +124,29 @@ class DictPhon:
         @param pdict (DictPron) The pronunciation dictionary.
 
         """
-        if isinstance(maptable, Mapping) is False:
-            raise TypeError('Expected a Mapping instance.')
+        if maptable is not None:
+            if isinstance(maptable, Mapping) is False:
+                raise TypeError('Expected a Mapping instance.')
+        else:
+            maptable = Mapping()
 
         self._maptable = maptable
+        self._maptable.set_keepmiss( False )
 
     # -----------------------------------------------------------------------
 
     def get_phon_entry(self, entry):
         """
-        Return the phonetization of an entry or the symbol for unknown entries.
+        Return the phonetization of an entry.
+        Unknown entries are not automatically phonetized.
+        This is a pure dictionary-based method.
 
-        @param `entry` (str) The token to phonetize
-        @return A string with the phonetization of `entry`
+        @param `entry` (str) The token to phonetize.
+        @return A string with the phonetization of `entry` or
+        the unknown symbol.
 
         """
         entry = ToStrip(entry)
-        entry = re.sub(u"\-+$", ur"", entry)
 
         # Specific strings... for the italian transcription...
         # For the participation at the CLIPS-Evalita 2011 campaign.
@@ -165,16 +171,7 @@ class DictPhon:
 
         # OK, the entry is properly phonetized.
         if _strphon != self._pdict.unkstamp:
-            return self._map_phones( _strphon )
-
-        # A missing compound word?
-        if "-" in entry or "'" in entry or "_" in entry:
-            _tabpron = [ self.get_phon_entry( w ) for w in re.split(u"[-'_]",entry) ]
-
-            # OK, finally the entry is in the dictionary?
-            if not self._pdict.unkstamp in _tabpron:
-                # ATTENTION: each part can have variants! must be decomposed.
-                return ToStrip(self._dagphon.decompose(" ".join(_tabpron)))
+            return self._map_phonentry( _strphon )
 
         return self._pdict.unkstamp
 
@@ -183,6 +180,7 @@ class DictPhon:
     def get_phon_tokens(self, tokens, phonunk=True):
         """
         Return the phonetization of a list of tokens, with the status.
+        Unknown entries are automatically phonetized if `phonunk` is set to True.
 
         @param `tokens` (list) is the list of tokens to phonetize.
         @param `phonunk` (bool) Phonetize unknown words (or not).
@@ -207,11 +205,24 @@ class DictPhon:
             else:
 
                 phon = self.get_phon_entry(entry)
+
                 if phon == self._pdict.unkstamp:
                     status = ERROR_ID
-                    if phonunk is True:
+
+                    # A missing compound word?
+                    if "-" in entry or "'" in entry or "_" in entry:
+                        _tabpron = [ self.get_phon_entry( w ) for w in re.split(u"[-'_]",entry) ]
+
+                        # OK, finally the entry is in the dictionary?
+                        if not self._pdict.unkstamp in _tabpron:
+                            # ATTENTION: each part can have variants! must be decomposed.
+                            self._dagphon.variants = 4
+                            phon = ToStrip(self._dagphon.decompose(" ".join(_tabpron)))
+                            status = WARNING_ID
+
+                    if phon == self._pdict.unkstamp and phonunk is True:
                         try:
-                            phon   = self._phonunk.get_phon( entry )
+                            phon = self._phonunk.get_phon( entry )
                             status = WARNING_ID
                         except Exception:
                             pass
@@ -245,14 +256,84 @@ class DictPhon:
     # Private
     # -----------------------------------------------------------------------
 
-    def _map_phones(self, phonentry):
+    def _map_phonentry(self, phonentry):
         """
         Map phonemes of a phonetized entry.
 
         @param phonentry (str) Phonetization of an entry.
 
         """
-        if self._maptable is None:
+        if self._maptable.is_empty() is True:
             return phonentry
+
+        tab = [ self._map_variant(v) for v in phonentry.split("|") ]
+
+        return "|".join( tab )
+
+    # -----------------------------------------------------------------------
+
+    def _map_variant(self, phonvariant):
+        """
+        Map phonemes of only one variant of a phonetized entry.
+
+        @param phonvariant (str) One phonetization variant of an entry.
+
+        """
+        phones = self._map_split_variant(phonvariant)
+        subs = []
+        # Single phonemes
+        for p in phones:
+            mapped = self._maptable.map_entry(p)
+            if len(mapped)>0:
+                subs.append( p+"|"+mapped )
+            else:
+                subs.append( p )
+
+        self._dagphon.variants = 0
+        phon = ToStrip( self._dagphon.decompose(" ".join(subs)) )
+
+        return phon
+
+    # -----------------------------------------------------------------------
+
+    def _map_split_variant(self, phonvariant):
+        """
+        Return a list of the longest phone sequences.
+
+        """
+        tab = []
+        phones = phonvariant.split('.')
+        if len(phones) == 1:
+            return phones
+
+        idx = 0
+        maxidx = len(phones)
+
+        while idx < maxidx:
+            # Find the index of the longest phone sequence that can be mapped
+            leftindex = self.__longestlr( phones[idx:maxidx] )
+            # Append such a longest sequence in tab
+            tab.append( ".".join(phones[idx:idx+leftindex]) )
+            idx = idx + leftindex
+
+        return tab
+
+    # -----------------------------------------------------------------------
+
+    def __longestlr(self, tabentry):
+        """
+        Select the longest map of an entry.
+
+        """
+        i = len(tabentry)
+        while i > 0:
+            # Find in the map table a substring from 0 to i
+            entry = ".".join(tabentry[:i])
+            if self._maptable.is_key( entry ):
+                return i
+            i = i - 1
+
+        # Did not find any map for this entry! Return the shortest.
+        return 1
 
     # -----------------------------------------------------------------------
