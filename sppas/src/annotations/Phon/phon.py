@@ -35,15 +35,6 @@
 # File: phon.py
 # ---------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
-
-
-# ---------------------------------------------------------------------------
-# Imports
-# ---------------------------------------------------------------------------
-
 import annotationdata.io
 from annotationdata.tier import Tier
 from annotationdata.transcription import Transcription
@@ -58,10 +49,14 @@ from sp_glob import UNKSTAMP
 
 class sppasPhon( object ):
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: SPPAS integration of the Phonetization automatic annotation.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      SPPAS integration of the Phonetization automatic annotation.
+
+    See DictPhon class for details about automatic phonetization.
 
     How to use sppasPhon?
 
@@ -69,22 +64,20 @@ class sppasPhon( object ):
     >>> p.run(inputtrsname, outputphonfile, outputtokensfile)
 
     """
-
-    def __init__(self, dictascii, logfile=None):
+    def __init__(self, dictascii, slog=None):
         """
-        Create a new sppasPhon instance.
+        Constructor.
 
-        @param dictascii (str) is the dictionary file name (HTK-ASCII format, utf8).
-        @param logfile (sppasLog) is a log file utility class member.
+        @param dictascii (str) is the pronunciation dictionary file name
+        (HTK-ASCII format, utf8).
+        @param slog (sppasLog) is a log file utility class member.
 
         """
         self.pdict   = DictPron(dictascii, unkstamp=UNKSTAMP, nodump=False)
-        self.logfile = logfile
+        self.logfile = slog
 
         self.opt_phonunk      = False # Phonetize missing tokens
         self.opt_usestdtokens = False # Phonetize standard spelling
-
-    # -----------------------------------------------------------------------
 
     # -----------------------------------------------------------------------
     # Methods to fix options
@@ -120,7 +113,7 @@ class sppasPhon( object ):
         """
         Fix the unk option value.
 
-        @param unk (Boolean) If unk is set to True, the system will attempt to
+        @param unk (bool) If unk is set to True, the system will attempt to
         phonetize unknown entries (i.e. tokens missing of the dictionary).
         Otherwise, the phonetization of an unknown entry unit is set to the
         default string.
@@ -131,12 +124,11 @@ class sppasPhon( object ):
 
     # -----------------------------------------------------------------------
 
-
     def set_usestdtokens(self,stdtokens):
         """
         Fix the stdtokens option.
 
-        @param stdtokens (Boolean) If it is set to True, the phonetization
+        @param stdtokens (bool) If it is set to True, the phonetization
         will use the standard transcription as input, instead of the faked
         transcription. This option does make sense only for an Enriched
         Orthographic Transcription.
@@ -146,14 +138,15 @@ class sppasPhon( object ):
         self.opt_usestdtokens = stdtokens
 
     # -----------------------------------------------------------------------
-
-    # -----------------------------------------------------------------------
     # Methods to phonetize series of data
     # -----------------------------------------------------------------------
 
     def phonetize(self, label):
         """
-        Phonetize a label of an annotation.
+        Phonetize a text label of an annotation.
+
+        @param label (str) The string to be phonetized.
+        @return phonetization of `label`.
 
         """
         phonetizer = DictPhon(self.pdict)

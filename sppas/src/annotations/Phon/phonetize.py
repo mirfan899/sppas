@@ -98,7 +98,7 @@ class DictPhon:
         """
         self.set_dict( pdict )
         self.set_maptable( maptable )
-        self._dagphon  = DAGPhon(variants=4)
+        self._dagphon = DAGPhon()
 
     # -----------------------------------------------------------------------
 

@@ -46,10 +46,12 @@ import resources.rutils as rutils
 
 class PhonUnk:
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL
-    @summary: Perform a G2P conversion for unknown entries.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Perform a G2P conversion for unknown entries.
 
     Phonetization, also called grapheme-phoneme conversion, is the process of
     representing sounds with phonetic signs. This class implements a

@@ -22,7 +22,7 @@ from sp_glob import ERROR_ID, WARNING_ID, OK_ID
 
 # ---------------------------------------------------------------------------
 
-class TestPhonetize(unittest.TestCase):
+class TestPhonetize( unittest.TestCase ):
 
     def setUp(self):
         self.dd   = DictPron()
@@ -94,8 +94,24 @@ class TestPhonetize(unittest.TestCase):
         self.assertEqual(self.grph._map_phonentry("c"), "c")
         self.assertEqual(self.grph._map_phonentry("a"), "a|A")
         self.assertEqual(self.grph._map_phonentry("b"), "B|b|v")
-
         self.grph.set_maptable( None )
+
+    def test_data(self):
+        dictfile  = os.path.join(RESOURCES_PATH, "dict", "eng.dict")
+        map_table = os.path.join(RESOURCES_PATH, "dict", "eng-fra.map")
+        mapt = Mapping( map_table )
+        dd   = DictPron(dictfile)
+        grph = DictPhon(dd)
+        self.assertEqual(grph.get_phon_entry("THE"), "D.@|D.V|D.i:")
+        self.assertEqual(grph.get_phon_entry("UR"), "3:r|U.r")
+        self.assertEqual(grph.get_phon_entry("ARE"), "A.r|3:r")
+        self.assertEqual(grph.get_phon_entry("BANC"), "b.{.N.k")
+
+        grph.set_maptable( mapt )
+        self.assertEqual(grph.get_phon_entry("THE"), "z.@|D.@|v.@|v.V|D.V|z.V|z.9|D.9|v.9|z.i:|z.i|D.i|v.i|D.i:|v.i:")
+        self.assertEqual(grph.get_phon_entry("UR"), "3:r|9.R|u.r|U.w|u.w|U.R|U.r|u.R")
+        self.assertEqual(grph.get_phon_entry("ARE"), "a.R|A.R|a.w|A.w|a.r|A.r|3:r|9.R")
+        self.assertEqual(grph.get_phon_entry("BANC"), "b.{.N.k|b.a.N.k|b.a.n.k|b.{.n.k")
 
 # ---------------------------------------------------------------------------
 
