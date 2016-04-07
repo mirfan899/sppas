@@ -4,20 +4,21 @@
 import unittest
 import os
 import sys
-from os.path import *
+from os.path import dirname,abspath
 
 SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
 sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 from annotations.Phon.phonetize import DictPhon
 from annotations.Phon.dagphon   import DAGPhon
+from annotations.Phon.phonunk   import PhonUnk
+from annotations.Phon.phon      import sppasPhon
 
 from resources.dictpron import DictPron
 from resources.mapping import Mapping
 
 from sp_glob import RESOURCES_PATH
 from sp_glob import UNKSTAMP
-
 from sp_glob import ERROR_ID, WARNING_ID, OK_ID
 
 # ---------------------------------------------------------------------------
@@ -130,9 +131,43 @@ class TestDAGPhon(unittest.TestCase):
 
 # ---------------------------------------------------------------------------
 
+class TestSppasPhon(unittest.TestCase):
+
+    def setUp(self):
+        dictfile = os.path.join(RESOURCES_PATH, "dict", "eng.dict")
+        self.sp = sppasPhon( dictfile )
+
+    def test_phonetize(self):
+        self.sp.set_unk(True)
+        self.assertEqual(self.sp.phonetize("THE"), "D.@|D.V|D.i:")
+        self.assertEqual(self.sp.phonetize("THE BANC"), "D.@|D.V|D.i: b.{.N.k")
+        self.assertEqual(self.sp.phonetize("THE BANCI THE"), "D.@|D.V|D.i: b.{.N.k.aI D.@|D.V|D.i:")
+        self.assertEqual(self.sp.phonetize("#"), "sil")
+        self.assertEqual(self.sp.phonetize("+"), "sil")
+        self.assertEqual(self.sp.phonetize("é à"), "")
+        self.sp.set_unk(False)
+        self.assertEqual(self.sp.phonetize("THE BANCI THE"), "")
+
+# ---------------------------------------------------------------------------
+
+class TestPhonUnk(unittest.TestCase):
+
+    def setUp(self):
+        d = { 'a':'a|aa', 'b':'b', 'c':'c|cc', 'abb':'abb', 'bac':'bac' }
+        self.p = PhonUnk(d)
+
+    def test_phon(self):
+        self.assertEqual(self.p.get_phon('abba'), "abb.a|abb.aa")
+        self.assertEqual(self.p.get_phon('abc'), 'a.b.cc|aa.b.cc|a.b.c|aa.b.c')
+
+# ---------------------------------------------------------------------------
+
 if __name__ == '__main__':
 
     testsuite = unittest.TestSuite()
     testsuite.addTest(unittest.makeSuite(TestPhonetize))
     testsuite.addTest(unittest.makeSuite(TestDAGPhon))
+    testsuite.addTest(unittest.makeSuite(TestSppasPhon))
+    testsuite.addTest(unittest.makeSuite(TestPhonUnk))
+
     unittest.TextTestRunner(verbosity=2).run(testsuite)

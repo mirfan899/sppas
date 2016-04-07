@@ -75,6 +75,7 @@ from ..mapping      import Mapping
 from features     import Features
 from phoneset     import PhoneSet
 
+from sp_glob import UNKSTAMP
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -1263,7 +1264,7 @@ class HTKModelTrainer( object ):
 
             # Get only the phonetization from the time-alignment
             tiera = trsalign.Find('PhonAlign')
-            tiera = self.corpus.map_phonemes( tiera, unkstamp=phonetizer.pdict.unkstamp )
+            tiera = self.corpus.map_phonemes( tiera, unkstamp=UNKSTAMP )
             tier = annotationdata.utils.tierutils.align2phon( tiera )
             trs = Transcription()
             trs.Add( tier )
