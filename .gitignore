@@ -4,3 +4,5 @@
 .DS_Store
 *.dump
 *tiedlist.*
+# vim swap files
+.*sw[opq]
