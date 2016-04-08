@@ -55,14 +55,14 @@ class PhonUnk:
 
     Phonetization, also called grapheme-phoneme conversion, is the process of
     representing sounds with phonetic signs. This class implements a
-    language-independent algorithm to phonetize unknown words.
-    Our system is based on the idea that given enough examples it should be
-    possible to predict the pronunciation of unseen words purely by analogy.
+    language-independent algorithm to phonetize unknown tokens.
+    The algorithm is based on the idea that given enough examples it should be
+    possible to predict the pronunciation of unseen tokens purely by analogy.
 
-    At this stage, it consists in exploring the unknown word from left to
-    right and to find the longest strings in the dictionary.
-    Since this algorithm uses the dictionary, the quality of
-    such a phonetization will depend on this resource.
+    At this stage, it consists in exploring the unknown token from left to
+    right, then from right to left, and to find the longest strings in the
+    dictionary. Since this algorithm uses the dictionary, the quality of
+    such a phonetization strongly depends on this resource.
 
     For details, see the following reference:
 
@@ -71,16 +71,18 @@ class PhonUnk:
         > 3rd Less-Resourced Languages workshop, 6th Language & Technology
         > Conference, Poznan (Poland).
 
+    Example of use:
+
+        >>> d = { 'a':'a|aa', 'b':'b', 'c':'c|cc', 'abb':'abb', 'bac':'bac' }
+        >>> p = PhonUnk(d)
+
     """
     def __init__(self, prondict):
         """
         Constructor.
 
-        @param prondict (dict) with a set of couples:
-            token=key, phonetization=value.
+        @param prondict (dict) with a set of couples: token=key, phon=value.
 
-        >>> d = { 'a':'a|aa', 'b':'b', 'c':'c|cc', 'abb':'abb', 'bac':'bac' }
-        >>> p = PhonUnk(d)
         """
         self.prondict = prondict
         self.dagphon = DAGPhon(variants=4)
@@ -102,7 +104,7 @@ class PhonUnk:
 
     # -----------------------------------------------------------------------
 
-    def get_phon(self,entry):
+    def get_phon(self, entry):
         """
         Return the phonetization of an unknown entry.
 
@@ -111,31 +113,46 @@ class PhonUnk:
         @raise Exception if the word can NOT be phonetized
 
         """
-        __str = rutils.ToStrip( entry )
-        __str = rutils.ToLower( __str )
-        if len(__str) == 0:
+        _str = rutils.ToStrip( entry )
+        _str = rutils.ToLower( _str )
+        if len(_str)>0 and _str[-1].isalnum() is False:
+            _str = _str[:-1]
+        if len(_str)>0 and _str[0].isalnum() is False:
+            _str = _str[1:]
+        if len(_str) == 0:
             return ""
 
-        #__str = re.sub("[\s]+", " ", entry)
-        __str = re.sub("-$", "", __str)  # rustine
-        __str = re.sub("'$", "", __str)  # rustine
-
         # Find all pronunciations of segments with a longest matching algo.
-        # if entry contains separators:
-        #  1. phonetize each part independently and
-        #  2. separate segments with a space.
-        __tabstr = re.split(u"[-'_\s]",__str)
+        _tabstr = re.split(u"[-'_\s]",_str)
         pronlr = ""
-        for s in __tabstr:
-            pronlr = pronlr + " " + self.__recurslr(s)
         pronrl = ""
-        for s in __tabstr:
-            pronrl = pronrl + " " + self.__recursrl(s)
+
+        for s in _tabstr:
+            plr = self.__recurslr(s)
+            plr = plr.strip()
+            if len(plr)>0:
+                pronlr = pronlr + " " + plr
+
+            prl = self.__recursrl(s)
+            prl = prl.strip()
+            if len(prl)>0:
+                pronrl = pronrl + " " + prl
+
+        pronlr = pronlr.strip()
+        pronrl = pronrl.strip()
 
         # Create the output
-        pron = self.dagphon.decompose( pronlr.strip(), pronrl.strip() )
+        pron = ""
+        if len(pronlr) > 0:
+            if len(pronrl) > 0:
+                pron = self.dagphon.decompose( pronlr, pronrl )
+            else:
+                pron = self.dagphon.decompose( pronlr )
+        else:
+            if len(pronrl) > 0:
+                pron = self.dagphon.decompose( pronrl )
 
-        if len(pron.strip())>0:
+        if len(pron)>0:
             return pron
 
         raise Exception('Unable to phonetize the unknown token: '+entry)
@@ -144,7 +161,7 @@ class PhonUnk:
     # Private
     # -----------------------------------------------------------------------
 
-    def __longestlr(self,entry):
+    def __longestlr(self, entry):
         """
         Select the longest phonetization of an entry, from the end.
         """
@@ -161,19 +178,19 @@ class PhonUnk:
 
     # -----------------------------------------------------------------------
 
-    def __recurslr(self,str):
+    def __recurslr(self, entry):
         """
         Recursive method to find a phonetization of a supposed unknown entry.
         Return a string with the proposed phonetization.
         Spaces separate segments.
         """
-        if len(str) == 0:
+        if len(entry) == 0:
             return ""
 
         # LEFT:
         # ###########
         # Find the index of the longest left string that can be phonetized
-        leftindex = self.__longestlr(str)
+        leftindex = self.__longestlr(entry)
         # Nothing can be phonetized at the left part!
         if leftindex == 0:
             _phonleft = ""
@@ -181,20 +198,19 @@ class PhonUnk:
             left = ""
         else:
             # left is from the first to the leftindex character in str
-            left = str[:leftindex]
+            left = entry[:leftindex]
             # Phonetize
             if not self.prondict.has_key( left ):
                 _phonleft = ""
             else:
                 _phonleft = self.prondict.get( left )
             # The entire entry can be phonetized (nothing to do at right)
-            ##if left == len(str):
-            if leftindex == len(str):
+            if leftindex == len(entry):
                 return _phonleft
 
         # RIGHT:
         # ###########
-        right = str[leftindex:len(str)]
+        right = entry[leftindex:len(entry)]
         if len(right) == 0:
             return _phonleft
         if self.prondict.has_key( right ):
@@ -211,7 +227,7 @@ class PhonUnk:
 
     # -----------------------------------------------------------------------
 
-    def __longestrl(self,entry):
+    def __longestrl(self, entry):
         """
         Select the longest phonetization of an entry, from the start.
         """
@@ -228,27 +244,27 @@ class PhonUnk:
 
     # -----------------------------------------------------------------------
 
-    def __recursrl(self,str):
+    def __recursrl(self, enrty):
         """
         Recursive method to find a phonetization of a supposed unknown entry.
         Return a string with the proposed phonetization.
         Spaces separate segments.
         """
-        if len(str) == 0:
+        if len(enrty) == 0:
             return ""
 
         # RIGHT:
         # ###########
         # Find the index of the longest right string that can be phonetized
-        rightindex = self.__longestrl(str)
+        rightindex = self.__longestrl(enrty)
         # Nothing can be phonetized at the right part!
-        if rightindex == len(str):
+        if rightindex == len(enrty):
             _phonright = ""
-            rightindex = len(str)-1
+            rightindex = len(enrty)-1
             right = ""
         else:
             # right is from the end to the rightindex character in str
-            right = str[rightindex:]
+            right = enrty[rightindex:]
             # Phonetize
             if not self.prondict.has_key( right ):
                 _phonright = ""
@@ -260,7 +276,7 @@ class PhonUnk:
 
         # LEFT:
         # ###########
-        left = str[0:rightindex]
+        left = enrty[0:rightindex]
         if len(left) == 0:
             return _phonright
         if self.prondict.has_key( left ):

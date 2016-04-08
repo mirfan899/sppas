@@ -48,16 +48,16 @@ __copyright__ = """Copyright (C) 2011-2014  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import sys
-import os
 import os.path
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
-from annotations.Phon.phon import sppasPhon
+
+from annotations.Phon.phon      import sppasPhon
 from annotations.Phon.phonetize import DictPhon
-from resources.dictpron import DictPron
+from resources.dictpron         import DictPron
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -66,12 +66,12 @@ from resources.dictpron import DictPron
 epilogue  = "!!!!!!!  if no input is given, the input is stdin and output is stdout  !!!!!!!\n"
 epilogue += "!!!!!!!  if no output is given, the output is the input  !!!!!!!"
 
-parser = ArgumentParser(usage="%s -r dict [options]" % os.path.basename(PROGRAM), prog=PROGRAM, description="Phonetization command line interface.", epilog=epilogue)
+parser = ArgumentParser(usage="%s -r dict [options]" % os.path.basename(PROGRAM), prog=PROGRAM, description="Phonetization automatic annotation.", epilog=epilogue)
 
-parser.add_argument("-r", "--dict", required=True, help='Pronunciation dictionary file name')
-parser.add_argument("-i", metavar="file", required=False, help='Input file name')
-parser.add_argument("-o", metavar="file", required=False, help='Output file name')
-parser.add_argument("--nounk", action='store_true', help="Disable unknown word phonetization" )
+parser.add_argument("-r", "--dict", required=True, help='Pronunciation dictionary file name (HTK-ASCII format).')
+parser.add_argument("-i", metavar="file", required=False, help='Input file name.')
+parser.add_argument("-o", metavar="file", required=False, help='Output file name.')
+parser.add_argument("--nounk", action='store_true', help="Disable unknown word phonetization." )
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -92,8 +92,8 @@ if args.i:
     p.set_unk( unkopt )
     p.run( args.i,args.o )
 else:
-    pdict = DictPron( args.dict )
-    phonetizer = DictPhon( pdict,None )
+    pdict      = DictPron( args.dict )
+    phonetizer = DictPhon( pdict, None )
     for line in sys.stdin:
         print phonetizer.phonetize( line, unkopt )
 

@@ -15,7 +15,7 @@ from annotations.Phon.phonunk   import PhonUnk
 from annotations.Phon.phon      import sppasPhon
 
 from resources.dictpron import DictPron
-from resources.mapping import Mapping
+from resources.mapping  import Mapping
 
 from sp_glob import RESOURCES_PATH
 from sp_glob import UNKSTAMP
@@ -23,7 +23,7 @@ from sp_glob import ERROR_ID, WARNING_ID, OK_ID
 
 # ---------------------------------------------------------------------------
 
-class TestPhonetize( unittest.TestCase ):
+class TestDictPhon( unittest.TestCase ):
 
     def setUp(self):
         self.dd   = DictPron()
@@ -158,14 +158,21 @@ class TestPhonUnk(unittest.TestCase):
 
     def test_phon(self):
         self.assertEqual(self.p.get_phon('abba'), "abb.a|abb.aa")
+        self.assertEqual(self.p.get_phon('abba-'), "abb.a|abb.aa")
+        self.assertEqual(self.p.get_phon("abba'"), "abb.a|abb.aa")
+        self.assertEqual(self.p.get_phon("<abba>"), "abb.a|abb.aa")
+        self.assertEqual(self.p.get_phon("<>"), "")
+        self.assertEqual(self.p.get_phon("abb-a"), "abb.a|abb.aa")
+
         self.assertEqual(self.p.get_phon('abc'), 'a.b.cc|aa.b.cc|a.b.c|aa.b.c')
+        self.assertEqual(self.p.get_phon('abd'), 'a.b|aa.b')
 
 # ---------------------------------------------------------------------------
 
 if __name__ == '__main__':
 
     testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestPhonetize))
+    testsuite.addTest(unittest.makeSuite(TestDictPhon))
     testsuite.addTest(unittest.makeSuite(TestDAGPhon))
     testsuite.addTest(unittest.makeSuite(TestSppasPhon))
     testsuite.addTest(unittest.makeSuite(TestPhonUnk))
