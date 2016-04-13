@@ -716,7 +716,55 @@ class TestIntervalsDelay(unittest.TestCase):
                                 ); nbAsserts+=1
         if nbAsserts<=0: raise Warning("Any assertion in the test loop");
 
-            
+    #------------------------------------------------------------------------------------------
+    def test_andorOperators(self):
+        from annotationdata.filter.delay_relations import AndPredicates, OrPredicates
+        import random
+        nbAsserts=0
+        # combination of 2 IntervalsDelays
+        for id1 in random.sample(self.intervalsDelays.values(),10): # get only 10 random values
+            for id2 in random.sample(self.intervalsDelays.values(),10): # get only 10 random values
+                # (a) & operator
+                idAnd = AndPredicates(id1, id2)
+                idAndOp = id1 & id2
+                self.assertEquals(idAnd, idAndOp
+                    , "(id1 & id2)={idAndOp} isn't equals to AndPredicates(id1, id2)={idAnd}".format(**locals())
+                    ); nbAsserts+=1
+                # (b) | operator
+                idOr = OrPredicates(id1, id2)
+                idOrOp = id1 | id2
+                self.assertEquals(idOr, idOrOp
+                    , "(id1 | id2)={idOrOp} isn't equals to OrPredicates(id1, id2)={idOr}".format(**locals())
+                    ); nbAsserts+=1
+                # add a 3 value
+                for id3 in random.sample(self.intervalsDelays.values(),10): # get only 10 random values
+                    # (a) & operator
+                    idAnd2 = AndPredicates(idAnd, id3)
+                    idAndOp2 = id1 & id2 & id3
+                    self.assertEquals(idAnd2, idAndOp2
+                        , "(id1 & id2 & id3)={idAndOp2} isn't equals to AndPredicates(AndPredicates(id1, id2), id3)={idAnd2}".format(**locals())
+                        ); nbAsserts+=1
+                    # with IntervalDelay before
+                    idAnd3 = AndPredicates(id3, idAnd)
+                    idAndOp3 = id3 & (id1 & id2)
+                    self.assertEquals(idAnd3, idAndOp3
+                        , "(id3 & (id1 & id2))={idAndOp3} isn't equals to AndPredicates(id3, AndPredicates(id1, id2))={idAnd3}".format(**locals())
+                        ); nbAsserts+=1
+                    # (b) | operator
+                    idOr2 = OrPredicates(idOr, id3)
+                    idOrOp2 = id1 | id2 | id3
+                    self.assertEquals(idOr2, idOrOp2
+                        , "(id1 | id2 | id3)={idOrOp2} isn't equals to OrPredicates(OrPredicates(id1, id2), id3)={idOr2}".format(**locals())
+                        ); nbAsserts+=1
+                    # with IntervalDelay before
+                    idOr3 = OrPredicates(id3, idOr)
+                    idOrOp3 = id3 | (id1 | id2)
+                    self.assertEquals(idOr3, idOrOp3
+                        , "(id3 | (id1 | id2))={idOrOp3} isn't equals to OrPredicates(id3, OrPredicates(id1, id2))={idOr3}".format(**locals())
+                        ); nbAsserts+=1
+
+        if nbAsserts<=0: raise Warning("Any assertion in the test loop");
+         
 
 # End TestIntervalsDelay
 # ---------------------------------------------------------------------------
