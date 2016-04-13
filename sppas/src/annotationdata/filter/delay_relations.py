@@ -164,6 +164,8 @@ class Delay(object):
         @see Dealy.unpack()
         """
         self.value, self.margin = Delay.unpack(value)   # this accept many values and init the margin
+        if self.value is None:
+            raise ValueError("Incorrect Delay value {value} ({value.__class__.__name__})".format(**locals()))
         if margin is not None:  # (re)define margin
             self.margin = Delay.numeric(margin)
        
@@ -212,13 +214,13 @@ class Delay(object):
         """
         #TODO?  return hasMargin (or a hasMargin() method)
         #TODO? other as a list/tuple[2]
-        value, margin = None, 0.
-        hasValue, hasMargin = [False] * 2
+        value = None; margin = cls.numeric(0.)
+        hasValue = hasMargin = False
         # easy cases
         if isinstance(other, Delay):
             value, margin = other.value, other.margin
-            hasValue, hasMargin = [True] * 2
-        if isinstance(other, (int, float)):
+            hasValue = hasMargin = True
+        elif isinstance(other, (int, float)):
             value = other; hasValue = True
         # other cases
         # (a) look for 'value' or other cls._VALUE_ATTRIBUTES
@@ -252,16 +254,15 @@ class Delay(object):
                     hasMargin=True
                     break;
         # convert value, margin into classes' numeric (float, Decimal, ...)
-        if hasValue:
-            try:
-                value = cls.numeric(value)
-            except:
-                value = None
+        try:
+            value = cls.numeric(value if hasValue else other) # use other as default value
+        except:
+            value = None
         if hasMargin:
             try:
                 margin = cls.numeric(margin)
             except:
-                margin = 0.
+                margin = cls.numeric(0.)
         return value, margin
 
     # -----------------------------------------------------------------------
@@ -270,7 +271,7 @@ class Delay(object):
 
     # -----------------------------------------------------------------------
     def __repr__(self):
-        return "%s(%f~%f)" % (self.__class__.__name__, self.value, self.margin)
+        return "%s(%r~%r)" % (self.__class__.__name__, self.value, self.margin)
 
     # -----------------------------------------------------------------------
     def __str__(self):
@@ -998,18 +999,21 @@ class IntervalsDelay(BinaryPredicate):
     
     
 #---------------------------------------------------------------
-class CheckedIntervalsDelay(IntervalsDelay):
+class CheckedIntervalsDelay(Delay, IntervalsDelay):
     def __init__(self, delay, mindelay=0, maxdelay=0, xpercent=IntervalsDelay.DEFAULT_PERCENT, ypercent=IntervalsDelay.DEFAULT_PERCENT, name=''):
+        Delay.__init__(self, delay)
         IntervalsDelay.__init__(self, mindelay=mindelay, maxdelay=maxdelay, xpercent=xpercent, ypercent=ypercent, name=name)
-        self.delay=delay;
 
+    @property
     def delay(self):
         """
         Get the actual delay.
         """
-        return  self.delay
+        return  self
 
 
+#---------------------------------------------------------------
+# Old <point>_<point> methods rewrite with IntervalsDelay
 #---------------------------------------------------------------
 
 def start_start(xstart, xend, ystart, yend, mindelay=0, maxdelay=0):

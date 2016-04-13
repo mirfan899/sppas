@@ -9,7 +9,7 @@ from os.path import *
 SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
 sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
-from annotationdata.filter.delay_relations import IntervalsDelay
+from annotationdata.filter.delay_relations import IntervalsDelay, Delay
 #import annotationdata.filter.delay_relations as delay_relations
 
 # some import to build intervals/Annotation
@@ -49,6 +49,7 @@ class TestIntervalsDelay(unittest.TestCase):
 
     #------------------------------------------------------------------------------------------
     def setUp(self):
+        #Delay._NUMERIC = 'Decimal'  # change Delay numeric value
         self.p1 = TimePoint(1)
         self.p2 = TimePoint(2)
         self.p3 = TimePoint(3)
