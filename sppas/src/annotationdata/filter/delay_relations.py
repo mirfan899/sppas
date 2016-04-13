@@ -113,6 +113,25 @@ class OrPredicates(JoinList):
     
     def __str__(self):
         return self.name if (self.name is not None) else JoinList.__str__(self)
+    
+    #---------------------------------------------
+    #-- '&' and '|' operators
+    #---------------------------------------------
+
+    #---------------------------------------------
+    def __or__(self, other):
+        """
+        Allow to combine 2 predicates with the '|' operator
+        """
+        return OrPredicates(self, other)
+
+    #---------------------------------------------
+    def __and__(self, other):
+        """
+        Allow to combine 2 predicates with the '&' operator
+        """
+        return AndPredicates(self, other)
+
 
 #---------------------------------------------------------------
 class AndPredicates(JoinList):
@@ -148,6 +167,25 @@ class AndPredicates(JoinList):
     def __str__(self):
         return self.name if (self.name is not None) else JoinList.__str__(self)
 
+    #---------------------------------------------
+    #-- '&' and '|' operators
+    #---------------------------------------------
+
+    #---------------------------------------------
+    def __or__(self, other):
+        """
+        Allow to combine 2 predicates with the '|' operator
+        """
+        return OrPredicates(self, other)
+
+    #---------------------------------------------
+    def __and__(self, other):
+        """
+        Allow to combine 2 predicates with the '&' operator
+        """
+        return AndPredicates(self, other)
+
+    #TODO?  def __invert__(self):
 
 #---------------------------------------------------------------
 # Delay : a value with a margin/vagueness/radius
@@ -668,6 +706,26 @@ class IntervalsDelay(BinaryPredicate):
                     else self.maxdelay - other.maxdelay ) # self - other
         return sign(res);
 
+    
+    #---------------------------------------------
+    #-- '&' and '|' operators
+    #---------------------------------------------
+
+    #---------------------------------------------
+    def __or__(self, other):
+        """
+        Allow to combine 2 predicates with the '|' operator
+        """
+        return OrPredicates(self, other)
+
+    #---------------------------------------------
+    def __and__(self, other):
+        """
+        Allow to combine 2 predicates with the '&' operator
+        """
+        return AndPredicates(self, other)
+
+    #---------------------------------------------
     @staticmethod
     def validMinMaxDelay(mindelay, maxdelay):
         """
