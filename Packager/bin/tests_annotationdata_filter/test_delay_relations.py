@@ -496,15 +496,15 @@ class TestIntervalsDelay(unittest.TestCase):
                             pred = idc(pai, paj)
                             if (j-i) > Maxd:
                                 self.assertFalse(pred
-                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't false when ({j}-{i}) > {Maxd} (pred={pred}; ped.delay={pred_delay})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None,**locals())
+                                        , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't false when ({j}-{i}) > {Maxd} (pred={pred}; pred.delay={pred_delay}, idc.delay()={idc_delay:r})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None, idc_delay=idc.delay(*IntervalsDelay.splitAnnotations(pai, paj)), **locals())
                                     ); nbAsserts+=1
                             elif (mind is None or mind<=(j-i)):
                                 self.assertTrue(pred
-                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't true when {mind} <= ({j}-{i}) < {Maxd} (pred={pred}; ped.delay={pred_delay})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None,**locals())
+                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't true when {mind} <= ({j}-{i}) < {Maxd} (pred={pred}; pred.delay={pred_delay}, idc.delay()={idc_delay:r})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None, idc_delay=idc.delay(*IntervalsDelay.splitAnnotations(pai, paj)), **locals())
                                     ); nbAsserts+=1
                             else: # (j-i) < min
                                 self.assertFalse(pred
-                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't false when ({j}-{i}) < {mind} (pred={pred}; ped.delay={pred_delay})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None,**locals())
+                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't false when ({j}-{i}) < {mind} (pred={pred}; pred.delay={pred_delay}, idc.delay()={idc_delay:r})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None, idc_delay=idc.delay(*IntervalsDelay.splitAnnotations(pai, paj)), **locals())
                                     ); nbAsserts+=1
                     # compare a point and an interval annotations
                     for start1 in self.pointAnnotations.keys():
