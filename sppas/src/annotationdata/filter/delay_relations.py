@@ -39,6 +39,11 @@ __docformat__ = """epytext"""
 __authors__   = """Tatsuya Watanabe, Brigitte Bigi (brigitte.bigi@gmail.com), Grégoire Montcheuil"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
+# import TimePoint for intervals
+from ..ptime.point import TimePoint
+# import Decimal
+from decimal import *
+
 #---------------------------------------------------------------
 # Utils
 #---------------------------------------------------------------
@@ -145,6 +150,367 @@ class AndPredicates(JoinList):
 
 
 #---------------------------------------------------------------
+# Delay : a value with a margin/vagueness/radius
+# (similar to ..ptime.Duration but allowing negative values)
+#---------------------------------------------------------------
+
+class Delay(object):
+
+    def __init__(self, value, margin=None):
+        """
+        Constructor
+        @param value:   the delay value or any object 'unpackable' into (value, margin)
+        @param margin:  (optional) a (new) margin
+        @see Dealy.unpack()
+        """
+        self.value, self.margin = Delay.unpack(value)   # this accept many values and init the margin
+        if margin is not None:  # (re)define margin
+            self.margin = Delay.numeric(margin)
+       
+
+    # -----------------------------------------------------------------------
+    # --- core tools method
+    # -----------------------------------------------------------------------
+    _NUMERIC = None    # type of numeric (float, Decimal, ..., accept either keys of _NUMERIC_FROMSTRING)
+    _NUMERIC_FROMSTRING = {'float':float, 'Decimal':Decimal}
+    _VALUE_ATTRIBUTES = ['value', 'GetValue', 'GetMidpoint']
+    _MARGIN_ATTRIBUTES = ['margin', 'GetMargin', 'GetRadius']
+    
+    # -----------------------------------------------------------------------
+    @classmethod
+    def numeric(cls, value):
+        """
+        Class method to convert a value into a numeric, based on _NUMERIC (default float)
+        @param value:   the value to convert
+        @return:    the converted value or None if error
+        @raise  ValueError  if the class _NUMERIC parameter isn't correct
+        """
+        #TODO? add a 'numeric' parameter
+        numeric = cls._NUMERIC
+        if numeric is None: # default to float
+            numeric = float
+        if not callable(numeric) and numeric in cls._NUMERIC_FROMSTRING:
+            numeric = cls._NUMERIC_FROMSTRING[numeric]
+        if not callable(numeric):
+            raise ValueError("_NUMERIC parameter '{cls._NUMERIC}' of class '{cls}' isn't a valid method ({numeric})".format(**locals()))
+        else:
+            try:
+                return numeric(value)
+            except:
+                return None;
+
+    # -----------------------------------------------------------------------
+    @classmethod
+    def unpack(cls, other):
+        """
+        Split a object into (value, margin)
+        @param other:   the object to split
+        @type other:    a Delay, float, int, or many other things
+        @return:    a tuple of 2 'numerics' (value, margin)
+            default value is None   (=> other's value isn't a valid number)
+            default margin is 0.    (=> other hasn't a margin)
+        """
+        #TODO?  return hasMargin (or a hasMargin() method)
+        #TODO? other as a list/tuple[2]
+        value, margin = None, 0.
+        hasValue, hasMargin = [False] * 2
+        # easy cases
+        if isinstance(other, Delay):
+            value, margin = other.value, other.margin
+            hasValue, hasMargin = [True] * 2
+        if isinstance(other, (int, float)):
+            value = other; hasValue = True
+        # other cases
+        # (a) look for 'value' or other cls._VALUE_ATTRIBUTES
+        if not hasValue:
+            for att in cls._VALUE_ATTRIBUTES:
+                oatt = getattr(other, att, None)
+                if callable(oatt):
+                    try:
+                        value = oatt();
+                        hasValue=True
+                        break
+                    except:
+                        pass
+                elif oatt is not None:
+                    value = oatt
+                    hasValue=True
+                    break;
+        # (b) look for 'margin' or other cls._MARGIN_ATTRIBUTES
+        if not hasMargin:
+            for att in cls._MARGIN_ATTRIBUTES:
+                oatt = getattr(other, att, None)
+                if callable(oatt):
+                    try:
+                        margin = oatt();
+                        hasMargin=True
+                        break
+                    except:
+                        pass
+                elif oatt is not None:
+                    margin = oatt
+                    hasMargin=True
+                    break;
+        # convert value, margin into classes' numeric (float, Decimal, ...)
+        if hasValue:
+            try:
+                value = cls.numeric(value)
+            except:
+                value = None
+        if hasMargin:
+            try:
+                margin = cls.numeric(margin)
+            except:
+                margin = 0.
+        return value, margin
+
+    # -----------------------------------------------------------------------
+    # --- formating methods
+    # -----------------------------------------------------------------------
+
+    # -----------------------------------------------------------------------
+    def __repr__(self):
+        return "%s(%f~%f)" % (self.__class__.__name__, self.value, self.margin)
+
+    # -----------------------------------------------------------------------
+    def __str__(self):
+        return "(%f~%f)" % (self.value, self.margin)
+
+    # -----------------------------------------------------------------------
+    def __format__(self, f):
+        if f=='s':
+            return str(self)
+        if f=='r':
+            return repr(self)
+        return format(self.value, f)
+
+    def __hash__(self):
+        return hash((self.value, self.margin))
+
+    # -----------------------------------------------------------------------
+    # --- comparition methods
+    # -----------------------------------------------------------------------
+
+    # -----------------------------------------------------------------------
+    # inspired by Duration
+    def __eq__(self, other):
+        """
+        Equal is required to use '==' between 2 Delay instances
+         or between a Delay and another object a time/number
+
+        @param other:   the other duration to compare with.
+        @type other:    Delay, float, int (or any thing convertible into float)
+        """
+        svalue, smargin = Delay.unpack(self)
+        ovalue, omargin = Delay.unpack(other)
+        # bad values => not equals
+        if svalue is None or ovalue is None:
+            return self is other    # False except if same reference
+        delta = abs(svalue - ovalue)
+        radius = smargin + omargin
+        return delta <= radius
+
+    # -----------------------------------------------------------------------
+    # inspired by Duration
+    def __lt__(self, other):
+        """
+        LowerThan is required to use '<' between 2 Delay instances
+         or between a Delay and an other time/number.
+
+        @param other:   the other duration to compare with.
+        @type other:    Delay, float, int (or any thing convertible into float)
+        """
+        # start by check if self == other (this use the margins)
+        if self == other:
+            return False
+        # compare value
+        svalue, smargin = Delay.unpack(self)
+        ovalue, omargin = Delay.unpack(other)
+        return (svalue < ovalue)
+    
+    # -----------------------------------------------------------------------
+    # inspired by Duration
+    def __gt__(self, other):
+        """
+        GreaterThan is required to use '>' between 2 Delay instances
+         or between a Delay and an other time/number.
+
+        @param other:   the other duration to compare with.
+        @type other:    Delay, float, int (or any thing convertible into float)
+        """
+        # start by if self == other (this use the margins)
+        if self == other:
+            return False
+        # compare value
+        svalue, smargin = Delay.unpack(self)
+        ovalue, omargin = Delay.unpack(other)
+        return (svalue > ovalue)
+
+    # ------------------------------------------------------------------------
+    # copied from Duration
+    def __ne__(self, other):
+        """
+        Not equals.
+        """
+        return not (self == other)
+
+    # ------------------------------------------------------------------------
+    # inspired by __lt__
+    def __le__(self, other):
+        """
+        Lesser or equal.
+        """
+        # start by self == other (this use the margin)
+        if self == other:
+            return True
+        # compare value
+        svalue, smargin = Delay.unpack(self)
+        ovalue, omargin = Delay.unpack(other)
+        return (svalue <= ovalue)
+
+    # ------------------------------------------------------------------------
+    # inspired by Duration
+    # inspired by __lt__
+    def __ge__(self, other):
+        """
+        Greater or equal.
+        """
+        # start by self == other (this use the margin)
+        if self == other:
+            return True
+        # compare value
+        svalue, smargin = Delay.unpack(self)
+        ovalue, omargin = Delay.unpack(other)
+        return (svalue >= ovalue)
+
+    
+    # -----------------------------------------------------------------------
+    # --- formating methods
+    # -----------------------------------------------------------------------
+    def __add__(self, other):
+        """
+        Delay addition
+        @type other:    Delay or float/int
+        @return:    a Delay with the sum of value and the maximum margin
+        """
+        svalue, smargin = Delay.unpack(self)
+        ovalue, omargin = Delay.unpack(other)
+        # error case
+        if svalue is None or ovalue is None:
+            raise ValueError("Can't add undefined values ({} + {})".format(self, other))
+        # idempotent cases
+        if ovalue == 0.:
+            if omargin <= smargin:
+                return self
+            else:
+                return Delay(svalue, omargin)
+        margin = omargin if omargin > smargin else smargin
+        return Delay(svalue+ovalue, margin)
+
+    def __sub__(self, other):
+        """
+        Delay substraction
+        @type other:    Delay or float/int
+        @return:    a Delay with the difference of values and the maximum margin
+        """
+        svalue, smargin = Delay.unpack(self)
+        ovalue, omargin = Delay.unpack(other)
+        # error case
+        if svalue is None or ovalue is None:
+            raise ValueError("Can't substract undefined values ({} - {})".format(self, other))
+        # idempotent cases
+        if ovalue == 0.:
+            if omargin <= smargin:
+                return self
+            else:
+                return Delay(svalue, omargin)
+        margin = omargin if omargin > smargin else smargin
+        return Delay(svalue-ovalue, margin)
+
+    def __mul__(self, other):
+        """
+        Delay multiplication
+        @type other:    Delay or float/int
+        @return:    a Delay with the product of values and the maximum margin
+        """
+        svalue, smargin = Delay.unpack(self)
+        ovalue, omargin = Delay.unpack(other)
+        # error case
+        if svalue is None or ovalue is None:
+            raise ValueError("Can't multiply undefined values ({} * {})".format(self, other))
+        # idempotent cases
+        if ovalue == 1.:
+            if omargin <= smargin:
+                return self
+            else:
+                return Delay(svalue, omargin)
+        margin = omargin if omargin > smargin else smargin
+        return Delay(svalue*ovalue, margin)
+
+    def __div__(self, other):
+        """
+        Delay "classic" division
+        @type other:    Delay or float/int
+        @return:    a Delay with the "classic" division of values and the maximum margin
+        """
+        svalue, smargin = Delay.unpack(self)
+        ovalue, omargin = Delay.unpack(other)
+        # error case
+        if svalue is None or ovalue is None:
+            raise ValueError("Can't divided undefined values ({} / {})".format(self, other))
+        if ovalue == 0.:
+            raise ValueError("Can't divided by 0 ({} / {})".format(self, other))
+        # idempotent cases
+        if ovalue == 1.:
+            if omargin <= smargin:
+                return self
+            else:
+                return Delay(svalue, omargin)
+        margin = omargin if omargin > smargin else smargin
+        return Delay(svalue/ovalue, margin)
+
+
+    def __truediv__(self, other):
+        """
+        Delay "true" division
+        @type other:    Delay or float/int
+        @return:    a Delay with the "true" division of values and the maximum margin
+        """
+        svalue, smargin = Delay.unpack(self)
+        ovalue, omargin = Delay.unpack(other)
+        # error case
+        if svalue is None or ovalue is None:
+            raise ValueError("Can't divided undefined values ({} / {})".format(self, other))
+        if ovalue == 0.:
+            raise ValueError("Can't divided by 0 ({} / {})".format(self, other))
+        # idempotent cases
+        if ovalue == 1.:
+            if omargin <= smargin:
+                return self
+            else:
+                return Delay(svalue, omargin)
+        margin = omargin if omargin > smargin else smargin
+        return Delay(svalue/ovalue, margin)
+
+    def __neg__(self):
+        return Delay(-self.value, self.margin);
+
+    def __pos__(self):
+        return self;
+    
+    def __abs__(self):
+        return self if self.value >= 0 else -self;
+
+    def __int__(self):
+        return int(self.value)
+
+    def __float__(self):
+        return float(self.value)
+
+    def __round__(self, n=0):
+        return round(self.value, n)
+
+#---------------------------------------------------------------
 # IntervalsDelay
 #---------------------------------------------------------------
 
@@ -194,28 +560,54 @@ class IntervalsDelay(BinaryPredicate):
         self.ypercent = ypercent
         self.name = name
 
-    def delay(self, x1, x2, y1, y2):
+    def delay(self, xstart, xend, ystart, yend):
         """
         Compute the actual delay between the two intervals
-        @param x1:  first interval start point
-        @param x2:  first interval end point
-        @param y1:  second interval start point
-        @param y2:  second interval end point
+        @param xstart:  first interval start point
+        @param xend:  first interval end point
+        @param ystart:  second interval start point
+        @param yend:  second interval end point
+        @return:    the delay between the two intervals
+        @rtype: a Delay if any of the (usefull) points is a TimePoint
+            else a float
+            nota: 'usefull points' if xpercent=0., point(xstart,xend) is xstart, so xend is useless
         """
-        return ( ( (1-self.ypercent) * y1.GetMidpoint() + self.ypercent * y2.GetMidpoint() )
-               - ( (1-self.xpercent) * x1.GetMidpoint() + self.xpercent * x2.GetMidpoint() )
-               )
+        xpoint = IntervalsDelay.point(xstart, xend, self.xpercent)
+        ypoint = IntervalsDelay.point(ystart, yend, self.ypercent)
 
-    def check(self, x1, x2, y1, y2):
+        # evaluate the delay/vagueness (~ sum of radius)
+        #TODO: use Delay.unpack to be more generic than TimePoint, i.e. xvalue, xmargin = Delay.unpack(xpoint), ...
+        vagueness = None; delay = 0.;
+        if isinstance(xpoint, TimePoint):
+            vagueness = xpoint.GetRadius();
+            if isinstance(ypoint, TimePoint):
+                vagueness += ypoint.GetRadius() # sum the y radius
+                delay = ypoint.GetMidpoint() - xpoint.GetMidpoint() # Y -X
+            else: 
+                delay = ypoint - xpoint.GetMidpoint() # Y -X
+        elif isinstance(ypoint, TimePoint): # only ypoint is a TimePoint
+            vagueness = ypoint.GetRadius() ; # the radius
+            delay = ypoint.GetMidpoint() - xpoint # Y -X
+        else:   # any TimePoint
+            delay = ypoint - xpoint # Y -X
+        #HERE:  vagueness is None and any of x,y are a TimePoint
+        #    OR vagueness is not None and at least one of x,y is a TimePoint
+        res = Delay(delay, vagueness) if vagueness is not None else delay
+        #print "delay({xstart}, {xend}, {ystart}, {yend}) = ({ypoint} - {xpoint}) = {delay} (vagueness={vagueness}) = {res} ({res:r})".format(**locals())
+        #print " res.GetValue()={res_value}".format(res_value=res.GetValue(), **locals())
+        #print " res.__value={res__value}".format(res__value=res.__value if hasattr(res, '__value') else "NO '__value' attribute", **locals())
+        return res;
+
+    def check(self, xstart, xend, ystart, yend):
         """
         Check if the delay between the two intervals respect max/mindelay
-        @param x1:  first interval start point
-        @param x2:  first interval end point
-        @param y1:  second interval start point
-        @param y2:  second interval end point
+        @param xstart:  first interval start point
+        @param xend:  first interval end point
+        @param ystart:  second interval start point
+        @param yend:  second interval end point
         """
-        delay = self.delay(x1, x2, y1, y2)
-        #print "[{self.xpercent},{self.ypercent}] delay({x1}, {x2}, {y1}, {y2}) = {delay}".format(**locals())
+        delay = self.delay(xstart, xend, ystart, yend)
+        #print "[{self.xpercent},{self.ypercent}] delay({xstart}, {xend}, {ystart}, {yend}) = {delay}".format(**locals())
         if IntervalsDelay.checkDelay(delay, self.mindelay, self.maxdelay):
             return CheckedIntervalsDelay(delay, **{a:getattr(self,a) for a in ['mindelay', 'maxdelay', 'xpercent', 'ypercent']})
         else:
@@ -226,11 +618,11 @@ class IntervalsDelay(BinaryPredicate):
         IntervalsDelay's predicate
         Accecpt either:
             - 2 Annotation arguments (x,y)
-            - 4 Point arguments (x1, x2, y1, y2)
+            - 4 Point arguments (xstart, xend, ystart, yend)
         """
-        if (len(args)==2): # 2 arguments => x,y (Annotation) => split into x1, x2, y1, y2
+        if (len(args)==2): # 2 arguments => x,y (Annotation) => split into xstart, xend, ystart, yend
             return self.check(*IntervalsDelay.splitAnnotations(*args))
-        elif (len(args)==4): # 4 arguments => yet x1, x2, y1, y2
+        elif (len(args)==4): # 4 arguments => yet xstart, xend, ystart, yend
             return self.check(*args)
         else:
             raise ValueError("IntervalsDelay's function require 2 Annotation parameters or 4 Point parameters")
@@ -307,6 +699,35 @@ class IntervalsDelay(BinaryPredicate):
             raise ValueError("Percent value '{}' isn't a real number".format(percent))
 
     @staticmethod
+    def point(start, end, percent=0):
+        """
+        Compute the point corresponding to a percent of an interval
+        @param start: start of the interval
+        @type start: TimePoint (better) or float/int
+        @param end: end of the interval
+        @type end: TimePoint (better) or float/int
+        @param percent: percent value
+        @type percent: float
+        @return: the point corresponding to the percent of the interval
+        @rtype: TimePoint (better) if start/end are a TimePoint, else a float
+        """
+        if percent==0.:  return start;
+        if percent==1.:  return end;
+        # compute the percent point
+        ppoint = ( (1.-percent) * ( start.GetMidpoint() if isinstance(start, TimePoint) else start )
+                  + percent * ( end.GetMidpoint() if isinstance(end, TimePoint) else end )
+                 )
+        # compute the TimePoint radius : Max(start.radius, end.radius)
+        radius = None;
+        if isinstance(start, TimePoint): # get the start radius
+            radius = start.GetRadius();
+        if isinstance(end, TimePoint): # get Max(start.radius, end.radius)
+            endRadius = end.GetRadius();
+            if radius is None or endRadius>radius:
+                radius = endRadius
+        return TimePoint(ppoint, radius) if radius is not None else ppoint # return a TimePoint if at least one TimePoint
+
+    @staticmethod
     def delayStr(mindelay=0, maxdelay=0, unit='', delayformat='.3f'):
         """
         Convert the minimal/maximal delays into string
@@ -340,34 +761,39 @@ class IntervalsDelay(BinaryPredicate):
         """
         Check a delay value between (optionals) maxdelay/mindelay
         @param delay:   the delay
-        @type delay:    float
+        @type delay:    Delay or float
         @param mindelay:    the minimum delay (if defined, default 0)
-        @type mindelay: float or None
+        @type mindelay: float or Delay or None
         @param maxdelay:    the maximum delay (if defined, default 0)
-        @type maxdelay: float or None
+        @type maxdelay: float or Delay or None
         @rtype: Boolean
         """
-        return (  (mindelay is None or delay >= mindelay)
-                and (maxdelay is None or delay <= maxdelay)
-                )
+        if isinstance(delay, Delay): # delay is a Delay, so we use the Delay comparision
+            return (  (mindelay is None or delay >= mindelay)
+                  and (maxdelay is None or delay <= maxdelay)
+                   )
+        else: # we use mindelay/maxdelay comparision (float or Delay)
+            return (  (mindelay is None or mindelay <= delay)
+                  and (maxdelay is None or maxdelay >= delay)
+                   )
     
     # copy of annotationdata/filter/_relations.py#split()
     @staticmethod
     def splitAnnotations(x, y):
         """ x,y (Annotation) """
         if x.GetLocation().IsPoint():
-            x1 = x.GetLocation().GetPoint()
-            x2 = x.GetLocation().GetPoint()
+            xstart = x.GetLocation().GetPoint()
+            xend = x.GetLocation().GetPoint()
         else:
-            x1 = x.GetLocation().GetBegin()
-            x2 = x.GetLocation().GetEnd()
+            xstart = x.GetLocation().GetBegin()
+            xend = x.GetLocation().GetEnd()
         if y.GetLocation().IsPoint():
-            y1 = y.GetLocation().GetPoint()
-            y2 = y.GetLocation().GetPoint()
+            ystart = y.GetLocation().GetPoint()
+            yend = y.GetLocation().GetPoint()
         else:
-            y1 = y.GetLocation().GetBegin()
-            y2 = y.GetLocation().GetEnd()
-        return x1, x2, y1, y2
+            ystart = y.GetLocation().GetBegin()
+            yend = y.GetLocation().GetEnd()
+        return xstart, xend, ystart, yend
 
     @staticmethod
     def parsePoint(ptStr, default=DEFAULT_PERCENT, prefix=None):
@@ -586,43 +1012,43 @@ class CheckedIntervalsDelay(IntervalsDelay):
 
 #---------------------------------------------------------------
 
-def start_start(x1, x2, y1, y2, mindelay=0, maxdelay=0):
+def start_start(xstart, xend, ystart, yend, mindelay=0, maxdelay=0):
     """
     Maximal/minimal delay between 2 intervals starts
       |----x----|
           |---y---|
       |~d~|          mindelay <= d <= maxdelay
     """
-    return IntervalsDelay(mindelay, maxdelay, xpercent=0, ypercent=0).check(x1, x2, y1, y2)
+    return IntervalsDelay(mindelay, maxdelay, xpercent=0, ypercent=0).check(xstart, xend, ystart, yend)
 
-def start_end(x1, x2, y1, y2, mindelay=0, maxdelay=0):
+def start_end(xstart, xend, ystart, yend, mindelay=0, maxdelay=0):
     """
     Maximal/minimal delay between first interval start and second interval end
       |----x----|
           |---y---|
       |~~~~~d~~~~~|  mindelay <= d <= maxdelay
     """
-    return IntervalsDelay(mindelay, maxdelay, xpercent=0, ypercent=1).check(x1, x2, y1, y2)
+    return IntervalsDelay(mindelay, maxdelay, xpercent=0, ypercent=1).check(xstart, xend, ystart, yend)
 
-def end_start(x1, x2, y1, y2, mindelay=0, maxdelay=0):
+def end_start(xstart, xend, ystart, yend, mindelay=0, maxdelay=0):
     """
     Maximal/minimal delay between first interval end and second interval start
       |-x-|
             |-y-|
           |d|        mindelay <= d <= maxdelay
     """
-    return IntervalsDelay(mindelay, maxdelay, xpercent=1, ypercent=0).check(x1, x2, y1, y2)
+    return IntervalsDelay(mindelay, maxdelay, xpercent=1, ypercent=0).check(xstart, xend, ystart, yend)
 
-def end_end(x1, x2, y1, y2, mindelay=0, maxdelay=0):
+def end_end(xstart, xend, ystart, yend, mindelay=0, maxdelay=0):
     """
     Maximal/minimal delay between 2 intervals ends
       |----x----|
           |---y---|
                 |d|  mindelay <= d <= maxdelay
     """
-    return IntervalsDelay(mindelay, maxdelay, xpercent=1, ypercent=1).check(x1, x2, y1, y2)
+    return IntervalsDelay(mindelay, maxdelay, xpercent=1, ypercent=1).check(xstart, xend, ystart, yend)
 
-def percent_start(x1, x2, y1, y2, mindelay=0, maxdelay=0, xpercent=0.5):
+def percent_start(xstart, xend, ystart, yend, mindelay=0, maxdelay=0, xpercent=0.5):
     """
     Maximal/minimal delay between a fraction of the first interval and the start of the second interval
        |-+--x----|    where the '+' mark xpercent of the interval x
@@ -630,10 +1056,10 @@ def percent_start(x1, x2, y1, y2, mindelay=0, maxdelay=0, xpercent=0.5):
          |d|          mindelay <= d  <= maxdelay
      nota: startStartDelay <=> percentStartDelay(xpercent=0), endStartDelay <=> percentStartDelay(xpercent=1)
     """
-    return IntervalsDelay(mindelay, maxdelay, xpercent, ypercent=0).check(x1, x2, y1, y2)
+    return IntervalsDelay(mindelay, maxdelay, xpercent, ypercent=0).check(xstart, xend, ystart, yend)
 
 
-def percent_end(x1, x2, y1, y2, mindelay=0, maxdelay=0, xpercent=0.5):
+def percent_end(xstart, xend, ystart, yend, mindelay=0, maxdelay=0, xpercent=0.5):
     """
     Maximal/minimal delay between a fraction of the first interval and the end of the second interval
        |-+--x----|    where the '+' mark xpercent of the interval x
@@ -641,10 +1067,10 @@ def percent_end(x1, x2, y1, y2, mindelay=0, maxdelay=0, xpercent=0.5):
          |~~~~d~~~~|  mindelay <= d
      nota: startEndDelay <=> percentEndDelay(xpercent=0), endEndDelay <=> percentEndDelay(xpercent=1), 
     """
-    return IntervalsDelay(mindelay, maxdelay, xpercent, ypercent=1).check(x1, x2, y1, y2)
+    return IntervalsDelay(mindelay, maxdelay, xpercent, ypercent=1).check(xstart, xend, ystart, yend)
 
 
-def percent_percent(x1, x2, y1, y2, mindelay=0, maxdelay=0, xpercent=0.5, ypercent=0.5):
+def percent_percent(xstart, xend, ystart, yend, mindelay=0, maxdelay=0, xpercent=0.5, ypercent=0.5):
     """
     Maximal/minimal delay between a fraction of the first interval and a fraction of the second interval
        |-+--x----|    where the '+' mark xpercent of the interval x
@@ -653,5 +1079,5 @@ def percent_percent(x1, x2, y1, y2, mindelay=0, maxdelay=0, xpercent=0.5, yperce
      nota: startStartDelay <=> percentPercentDelay(xpercent=0, ypercent=0), endStartDelay <=> percentPercentDelay(xpercent=1, ypercent=0), 
      nota: startEndDelay <=> percentPercentDelay(xpercent=0, ypercent=1), endEndDelay <=> percentPercentDelay(xpercent=1, ypercent=1), 
     """
-    return IntervalsDelay(mindelay, maxdelay, xpercent, ypercent).check(x1, x2, y1, y2)
+    return IntervalsDelay(mindelay, maxdelay, xpercent, ypercent).check(xstart, xend, ystart, yend)
 
