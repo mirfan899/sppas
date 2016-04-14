@@ -313,15 +313,26 @@ class Delay(object):
 
     # -----------------------------------------------------------------------
     def __str__(self):
-        return "(%f~%f)" % (self.value, self.margin)
+        return "(%f~%.1f)" % (self.value, self.margin)
 
     # -----------------------------------------------------------------------
     def __format__(self, f):
-        if f=='s':
-            return str(self)
+        # easy case
         if f=='r':
             return repr(self)
-        return format(self.value, f)
+        if f=='s':
+            return str(self)
+        vformat = 'f'; mformat = '.2f' # default value/margin format
+        if f:
+            iTilde = f.find('~') # split with '~'
+            if iTilde>=0:
+                vformat = f[:iTilde]; mformat = f[(iTilde+1):]
+            else:
+                vformat = f
+        res = format(self.value, vformat)
+        if mformat and (self.margin>0.): # append margin except with empty format or null margin
+            res += '~'+format(self.margin, mformat)
+        return res
 
     def __hash__(self):
         return hash((self.value, self.margin))
@@ -577,8 +588,11 @@ class IntervalsDelay(BinaryPredicate):
     DEFAULT_PERCENT=0.5
     # 'percent' name
     PERCENT_ALIASES=('percent', '%')
+    # dictionnary of directions
+    DIRECTIONS={'after':'after', 'before':'before'}
+    __DEFAULT_DIRECTION='before'
     
-    def __init__(self, mindelay=0, maxdelay=0, xpercent=DEFAULT_PERCENT, ypercent=DEFAULT_PERCENT, name=''):
+    def __init__(self, mindelay=0, maxdelay=0, xpercent=DEFAULT_PERCENT, ypercent=DEFAULT_PERCENT, direction=__DEFAULT_DIRECTION, name=''):
         """
         Build a new IntervalsDelay
         @param mindelay:    minimum delay between the 2 intervals (in second, default:0)
@@ -589,6 +603,10 @@ class IntervalsDelay(BinaryPredicate):
         @type xpercent: float
         @param ypercent:    second interval reference point ([0,1], default:0.5)
         @type ypercent: float
+        @param direction:    the X-Y direction
+            if (direction=='after'), the delay is positif when X is after Y (usefull if we search X that are 'consequence' of Y)
+            else, i.e. (direction=='before'), the delay is positif when X is before Y (usefull if we search X that 'imply' Y)
+        @type name: 'before' or 'after'
         @param name:    custom name for the relation
         @type name: str
         """
@@ -597,6 +615,10 @@ class IntervalsDelay(BinaryPredicate):
         self.maxdelay = maxdelay
         self.xpercent = xpercent
         self.ypercent = ypercent
+        if direction not in self.DIRECTIONS:
+            raise ValueError("Incorrect IntervalsDelay direction '{}', correct values are {}".format(direction, joinWithQuote(',', self.DIRECTIONS.keys())))
+        else:
+            self.direction = self.DIRECTIONS[direction]
         self.name = name
 
     def delay(self, xstart, xend, ystart, yend):
@@ -615,27 +637,18 @@ class IntervalsDelay(BinaryPredicate):
         ypoint = IntervalsDelay.point(ystart, yend, self.ypercent)
 
         # evaluate the delay/vagueness (~ sum of radius)
-        #TODO: use Delay.unpack to be more generic than TimePoint, i.e. xvalue, xmargin = Delay.unpack(xpoint), ...
-        vagueness = None; delay = 0.;
-        if isinstance(xpoint, TimePoint):
-            vagueness = xpoint.GetRadius();
-            if isinstance(ypoint, TimePoint):
-                vagueness += ypoint.GetRadius() # sum the y radius
-                delay = ypoint.GetMidpoint() - xpoint.GetMidpoint() # Y -X
-            else: 
-                delay = ypoint - xpoint.GetMidpoint() # Y -X
-        elif isinstance(ypoint, TimePoint): # only ypoint is a TimePoint
-            vagueness = ypoint.GetRadius() ; # the radius
-            delay = ypoint.GetMidpoint() - xpoint # Y -X
-        else:   # any TimePoint
-            delay = ypoint - xpoint # Y -X
-        #HERE:  vagueness is None and any of x,y are a TimePoint
-        #    OR vagueness is not None and at least one of x,y is a TimePoint
-        res = Delay(delay, vagueness) if vagueness is not None else delay
-        #print "delay({xstart}, {xend}, {ystart}, {yend}) = ({ypoint} - {xpoint}) = {delay} (vagueness={vagueness}) = {res} ({res:r})".format(**locals())
-        #print " res.GetValue()={res_value}".format(res_value=res.GetValue(), **locals())
-        #print " res.__value={res__value}".format(res__value=res.__value if hasattr(res, '__value') else "NO '__value' attribute", **locals())
-        return res;
+        # use Delay.unpack to be more generic than TimePoint
+        xvalue, xmargin = Delay.unpack(xpoint)
+        yvalue, ymargin = Delay.unpack(ypoint)
+        hasMargin = isinstance(xpoint, TimePoint) or isinstance(ypoint, TimePoint) #TODO: Delay.unpack 3rd return value or Delay.hasMargin() method
+        delay = 0.
+        if self.direction == 'after': # delay of X after Y, i.e. X-Y
+            delay = (xvalue - yvalue)
+        elif self.direction == 'before': # delay of X after Y, i.e. X-Y
+            delay = (yvalue - xvalue)
+        else: # __DEFAULT_DIRECTION
+            delay = (xvalue - yvalue) if self.__DEFAULT_DIRECTION=='after' else (yvalue - xvalue)
+        return Delay(delay, xmargin+ymargin) if hasMargin else delay;
 
     def check(self, xstart, xend, ystart, yend):
         """
@@ -670,26 +683,47 @@ class IntervalsDelay(BinaryPredicate):
         if self.name:
             return self.name
         else:
-            return '_'.join([IntervalsDelay.pointStr(self.xpercent), IntervalsDelay.pointStr(self.ypercent), IntervalsDelay.delayStr(self.mindelay, self.maxdelay)])
+            elems = [IntervalsDelay.pointStr(self.xpercent), IntervalsDelay.pointStr(self.ypercent)]
+            if (self.direction and self.direction != self.__DEFAULT_DIRECTION): # insert the direction if it isn't the default
+                elems.append(self.direction)
+            elems.append(IntervalsDelay.delayStr(self.mindelay, self.maxdelay))
+            return '_'.join(elems)
 
     def __cmp__(self, other):
         """
         Compare IntervalsDelay based on 
             - (1) the first interval point (i.e. xpercent)
             - (2) the second interval point (i.e. ypercent)
-            - (3) the minimal delay (None ~ -infinity)
-            - (3) the maximal delay (None ~ +infinity)
+            - (3) the direction (before < after)
+            - (4) the minimal delay (None ~ -infinity)
+            - (5) the maximal delay (None ~ +infinity)
         """
         def sign(x):
             if x<0: return -1;
             if x>0: return +1;
             return 0;
 
+        # a secure way to get the real direction of an IntervalDelay/object
+        def dir_(x):
+            if hasattr(x, 'direction'):
+                return x.direction or self.__DEFAULT_DIRECTION  # if x.direction isn't true, return __DEFAULT_DIRECTION
+            else:
+                return self.__DEFAULT_DIRECTION
+
+        # (1) the first interval point (i.e. xpercent)
         res = self.xpercent - other.xpercent # start < mid < end
         if res: return sign(res);
+
+        # (2) the second interval point (i.e. ypercent)
         res = self.ypercent - other.ypercent # start < mid < end
         if res: return sign(res);
-        # compare mindelay (None is -infinity)
+        
+        # (3) the direction (before < after)
+        sdir, odir = dir_(self), dir_(other)
+        if (sdir != odir):            
+            return -1 if sdir=='before' else +1 # (sdir!=odir and sdir==before) => odir == after => self < other 
+
+        # (4) the minimal delay (None ~ -infinity)
         if self.mindelay is None:
             res = ( 0 if other.mindelay is None # both None => 'equals'
                     else -1 ) # self(-infinity) < other
@@ -697,7 +731,8 @@ class IntervalsDelay(BinaryPredicate):
             res = ( +1 if other.mindelay is None # self > other(-infinity)
                     else self.mindelay - other.mindelay ) # self - other
         if res: return sign(res);
-        # compare maxdelay (None is +infinity)
+        
+        # (5) the maximal delay (None ~ +infinity)
         if self.maxdelay is None:
             res = ( 0 if other.maxdelay is None # both None => 'equals'
                     else +1 ) # self(+infinity) > other
@@ -885,6 +920,7 @@ class IntervalsDelay(BinaryPredicate):
         Parse a point string into it's percent value
         @type rel:    str
         @param rel:    the 'relation' part : min, max, eq, ...
+            Nota: could be prefixed by a direction part 'before' or 'after' with an optional '_', b.e. 'aftermax', 'before_min'
         @type value:  float, (min, max), {delay=<float>}
         @param value:  the 'numeric' value(s)
         @type res:  a dict
@@ -931,16 +967,25 @@ class IntervalsDelay(BinaryPredicate):
                 else:   # min and max values
                     res['maxdelay'] = vmax; # vmax
                     res['mindelay'] = vmin; # vmin
-            elif rel.startswith('min'):
-                res['mindelay'] = vmin if vmin is not None else v; # vmin or v
-                res['maxdelay'] = 0 if (res['mindelay'] is None or res['mindelay']<0) else None; # max is +∞ (or 0 if min is negative)
-            elif rel.startswith('max'): # max or empty str
-                res['maxdelay'] = vmax if vmax is not None else v; # vmax or v
-                res['mindelay'] = 0 if (res['maxdelay'] is None or res['maxdelay'] >= 0) else None; # min is 0 (or -∞ if max is negative)
-            elif rel.startswith('eq'):
-                res['maxdelay'] = v if v is not None else vmax; # v or vmax
-                res['mindelay'] = res['maxdelay'];
-            else: raise ValueError("relation '%s' isn't a valid relation, correct values are 'max', 'min' or 'eq'" % rel);
+            else:
+                # look for a direction prefix
+                relcopy = rel
+                for dstr in IntervalsDelay.DIRECTIONS.keys():
+                    if rel.startswith(dstr):
+                        res['direction'] = dstr # add the direction option
+                        rel = rel[len(dstr):] # remove dstr
+                        if rel.startswith('_'): rel = rel[1:] # remove '_' if any
+                        break;
+                if rel.startswith('min'):
+                    res['mindelay'] = vmin if vmin is not None else v; # vmin or v
+                    res['maxdelay'] = 0 if (res['mindelay'] is None or res['mindelay']<0) else None; # max is +∞ (or 0 if min is negative)
+                elif rel.startswith('max'): # max or empty str
+                    res['maxdelay'] = vmax if vmax is not None else v; # vmax or v
+                    res['mindelay'] = 0 if (res['maxdelay'] is None or res['maxdelay'] >= 0) else None; # min is 0 (or -∞ if max is negative)
+                elif rel.startswith('eq'):
+                    res['maxdelay'] = v if v is not None else vmax; # v or vmax
+                    res['mindelay'] = res['maxdelay'];
+                else: raise ValueError("relation '%s' isn't a valid relation, correct values are 'max', 'min' or 'eq'" % relcopy);
         else:
             raise ValueError("relation '%s' isn't a valid relation, correct values are 'max', 'min' or 'eq'" % rel);
         return res;
@@ -964,12 +1009,16 @@ class IntervalsDelay(BinaryPredicate):
             Special keys :
             - name(str): the relation name
             - join(str): 'and' or 'or' 
+            - direction(str): the X-Y direction ('before' or 'after')
+              . before : positive delay <=> X before Y (~ X is a 'cause' of Y)
+              . after : positive delay <=> X after Y (~ X is a 'consequence' of Y)
         @param kwargs: more key-value, same as args
         """
         # the default options
         DEFAULT_OPTS={'maxdelay':0, 'mindelay':0, 'xpercent':0.5, 'ypercent':0.5}
         JOIN_VALUES=('and', 'or');
         atts = {'join':'and'}; # relation attributes
+        idOpts = {}; # IntervalDelay constructor options
         
         #----- convert (key, value) into options
         def keyValueOptions(k,v):
@@ -986,13 +1035,17 @@ class IntervalsDelay(BinaryPredicate):
             if k.lower() == 'name':
                 atts['name'] = v
                 return None;
+            # (0.3) the 'direction' attribute
+            if k.lower() == 'direction':
+                idOpts['direction'] = v
+                return None;
     
             # build the final options
             opts = v.copy() if isinstance(v, dict) else {};
     
             # (a) split key into <point>_<point>(_<rel>)?
             xpoint, ypoint, rel = 3 * [None]
-            ksplit = k.lower().split('_', 2);
+            ksplit = k.lower().split('_', 2); # nota: rel could contain a '_' (p.e. after_max)
             if len(ksplit)<2:
                 raise ValueError("Bad point_point value '%s'" % k);
             else:
@@ -1017,11 +1070,24 @@ class IntervalsDelay(BinaryPredicate):
             return opts;
             
         #-----
+        def buildID(idOpts, opts):  # build IntervalsDelay with 2 dict of options
+            bOpts = idOpts.copy(); # make a copy of idOpts
+            bOpts.update(opts); # update with opts value
+            return IntervalsDelay(**bOpts); # build IntervalsDelay with all options
     
-        # look for the first argument
+        #-----
+
+        # look for the first argument (JOIN_VALUES/IntervalsDelay.DIRECTIONS)
         iArg=0;
-        if len(args)>0 and (args[iArg].lower() in JOIN_VALUES):
-            atts['join'] = args[iArg].lower(); iArg+=1  # the join type
+        while (iArg<len(args)):
+            if (args[iArg].lower() in JOIN_VALUES):
+                atts['join'] = args[iArg].lower();  # the join type
+                iArg+=1
+            elif (args[iArg].lower() in IntervalsDelay.DIRECTIONS):
+                idOpts['direction'] = args[iArg].lower();  # the direction type
+                iArg+=1
+            else:
+                break
         
         lOpts = []
         # other arguments
@@ -1038,7 +1104,7 @@ class IntervalsDelay(BinaryPredicate):
             if opts: lOpts.append(opts);
     
         # create IntervalsDelay for each lOpts and join them
-        lIntDelays = map(lambda opts: IntervalsDelay(**opts), lOpts)
+        lIntDelays = [buildID(idOpts,opts) for opts in lOpts]
     
         #TODO: reduce AND predicates with the same (xpercent,ypercent)
         # b.e. (start_start_max=2, start_start_min=1)
@@ -1068,6 +1134,56 @@ class CheckedIntervalsDelay(Delay, IntervalsDelay):
         Get the actual delay.
         """
         return  self
+
+    # -----------------------------------------------------------------------
+    # --- formating methods
+    # -----------------------------------------------------------------------
+
+    # -----------------------------------------------------------------------
+    def __repr__(self):
+        return "%s(%s=%r~%r)" % (self.__class__.__name__, IntervalsDelay.__format__(self, 's'), self.value, self.margin)
+
+    # -----------------------------------------------------------------------
+    def __str__(self):
+        return IntervalsDelay.__str__(self) # default to only the IntervalsDelay predicate
+        #return "(%s=%f~%.2f)" % (IntervalsDelay.__format__(self, 's'), self.value, self.margin)
+
+    # -----------------------------------------------------------------------
+    def __format__(self, f):
+        """
+        Format a CheckedIntervalsDelay
+        @param f: the format
+            if f is 's', format like a IntervalsDelay, i.e. the predicate name
+            else, the format as the form '[<fid>=]<fd>', where :
+              <fid> is an optional format for the IntervalsDelay (predicate) part
+              <fd> is the format for the Delay (value) part
+            Some example with a 'start_start_max(2)' predicate and a delay of +1.5 (margin 0.2)
+              - 'f' => only the Delay part => "1.50000~0.2"
+              - '.2f' => only the Delay part => "1.5~0.2"
+              - 's=.2f' => <fid> is 's' and <fd> is '.2f' => "start_start_max(2)=1.5~0.2"
+              - 's= =+3.2f' => <fid> is 's' and <fd> is '0=+3.2f' => "start_start_max(2)=+ 1.5~0.2"
+              - 's=.2f~' => <fid> is 's' and <fd> is '.2f~' => "start_start_max(2)=1.5" (no margin)
+              - 's=' => <fid> is 's' and <fd> is '' (default) => "start_start_max(2)=1.50000~0.2" (same as 's=f')
+              - 's' => "start_start_max(2)"
+        """
+        # easy cases
+        if f=='r':
+            return repr(self)
+        if f=='s':
+            return str(self)
+        # other case
+        delayFormat = 'f'; idFormat = '' # default delay/interval delay format
+        if f:
+            iEqual = f.find('=') # split with 1st '='
+            if iEqual>=0:
+                idFormat = f[:iEqual]; delayFormat = f[(iEqual+1):]
+            else:   # any equals => only delayFormat
+                delayFormat = f
+        res = ''
+        if idFormat: # prepend Interval delay
+            res += IntervalsDelay.__format__(self, idFormat) + '='
+        res += Delay.__format__(self, delayFormat)
+        return res
 
 
 #---------------------------------------------------------------
