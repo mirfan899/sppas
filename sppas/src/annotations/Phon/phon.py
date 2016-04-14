@@ -66,7 +66,7 @@ class sppasPhon( object ):
     >>> p.run(inputtrsname, outputphonfile, outputtokensfile)
 
     """
-    def __init__(self, dictfilename, logfile=None):
+    def __init__(self, dictfilename, maptable=None, logfile=None):
         """
         Constructor.
 
@@ -76,7 +76,7 @@ class sppasPhon( object ):
 
         """
         pdict = DictPron(dictfilename, unkstamp=UNKSTAMP, nodump=False)
-        self.phonetizer = DictPhon( pdict )
+        self.phonetizer = DictPhon( pdict, maptable )
         self.logfile = logfile
 
         # List of options to configure this automatic annotation

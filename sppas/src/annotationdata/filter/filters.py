@@ -1,5 +1,5 @@
 #!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
+# vim: set fileencoding=UTF-8 ts=4 sw=4 expandtab:
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
 #           /     |  \  |  \  |  \  /              Automatic
@@ -36,7 +36,7 @@
 # ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
-__authors__   = """Tatsuya Watanabe, Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__authors__   = """Tatsuya Watanabe, Brigitte Bigi (brigitte.bigi@gmail.com), Grégoire Montcheuil"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
@@ -184,7 +184,8 @@ class RelationFilter(Filter):
     >>> fY = Filter(tier2)
     >>> p = Rel("overlaps") | Rel("overlappedby")
     >>> rf = RelationFilter(p,fX,fY)
-    >>> newtier = rf.Filter()
+    >>> newtier = rf.Filter()	# the new tier annotations have X's label
+    >>> newtier2 = rf.Filter(annotformat="{x} {rel} {y}")	# the new tier annotations' labels show the X-Y relation
 
     """
 
@@ -202,48 +203,53 @@ class RelationFilter(Filter):
         self.filter2 = filter2
 
     def __iter__(self):
+        """
+        Iterator
+        @return: a tuple (x, rel, y) with the annotations and their relation (type: (Annotation, string, Annotation))
+        """
         if not isinstance(self.filter1, RelationFilter):
             f1 = [x for x in self.filter1 if not x.GetLabel().IsEmpty()]
-        else:
+        else: # as RelationFilter iterator return a tuple (x, rel, y), we get the 1st value
             f1 = [x[0] for x in self.filter1]
 
         if not isinstance(self.filter2, RelationFilter):
             f2 = [x for x in self.filter2 if not x.GetLabel().IsEmpty()]
-        else:
+        else: # as RelationFilter iterator return a tuple (x, rel, y), we get the 1st value
             f2 = [x[0] for x in self.filter2]
 
         for x in f1:
             for y in f2:
                 ret = self.pred(x, y)
                 if ret:
-                    yield x, ret
+                    yield x, ret, y
 
     # -----------------------------------------------------------------------
 
-    def Filter(self, replace=False):
+    def Filter(self, replace=False, annotformat=""):
         """
         Apply the predicate on all annotations of the tier defined in the filter.
 
+        @type annotformat:	str
+        @param annotformat:	format of the resulting annotation label.
+            Use {x}, {y} for each annotation's label and {rel} for the relation.
+            By default we keep the x label (equivalent to "{x}").
+        @type replace:Boolean
+        @param replace:	(deprecated) when True, equivalent of annotformat="{rel}"
         @return: (Tier)
-
         """
         tier = Tier()
         if replace:
-            for x, label in self:
-                a = x.Copy()
-                a.GetLabel().SetValue( label )
-                try:
-                    tier.Append(a)
-                except:
-                    e = tier[-1]
-                    e.GetLabel().SetValue( e.GetLabel().GetValue() + " | %s" % label)
-        else:
-            for x, label in self:
-                x = x.Copy()
-                try:
-                    tier.Append(x)
-                except:
-                    pass
+            annotformat="{rel}"
+        # feed the tier
+        for x, rel, y in self:
+            a = x.Copy()
+            if annotformat: # change the annotation label
+                annotlabel = annotformat.format(x=x.GetLabel(), rel=rel, y=y.GetLabel())
+                a.GetLabel().SetValue( annotlabel )
+            try:
+                tier.Append(a)
+            except:
+                pass
         return tier
 
     # -----------------------------------------------------------------------

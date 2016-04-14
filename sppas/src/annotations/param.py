@@ -160,8 +160,6 @@ class annotationParam():
         self.key  = None
         # The name of the annotation
         self.name = "None"
-        # The HTML file with the annotation description
-        self.helpfile  = None
         # The list of languages this annotation can provide
         self.langlist  = []
         # The selected language
@@ -201,9 +199,6 @@ class annotationParam():
                 elif( line.find("resources_ext:")>-1 ):
                     line = line.replace( "resources_ext:", "" )
                     self.resource["ext"] = line.strip()
-                elif( line.find("param:")>-1 ):
-                    line = line.replace( "param:", "" )
-                    self.helpfile = line.strip()
                 elif( line.find("optionid:")>-1 ):
                     line = line.replace( "optionid:", "" )
                     self.options.append( option(line.strip()) )
@@ -408,9 +403,6 @@ class sppasParam():
         for i in range(len(self.annotations)):
             steps.append(self.annotations[i].get_name())
         return steps
-
-    def get_helpfile(self,stepnumber):
-        return self.annotations[stepnumber].get_helpfile()
 
     def get_langlist(self,stepnumber=2):
         """ Get the list of available languages of an annotation.
