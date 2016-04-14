@@ -435,8 +435,19 @@ class Delay(object):
 
     
     # -----------------------------------------------------------------------
-    # --- formating methods
+    # --- mathematic methods
     # -----------------------------------------------------------------------
+    def _newSelf(self, value, margin=None):
+        """
+        Method that try to build a new instance of 
+        """
+        #TODO: try a 'copy' of self
+        try:
+            return type(self)(value, margin)    # new object of the same class that self
+        #TODO: try all the inheritance path between self and Delay
+        except:
+            return Delay(value, margin)
+
     def __add__(self, other):
         """
         Delay addition
@@ -453,9 +464,9 @@ class Delay(object):
             if omargin <= smargin:
                 return self
             else:
-                return Delay(svalue, omargin)
+                return self._newSelf(svalue, omargin)
         margin = omargin if omargin > smargin else smargin
-        return Delay(svalue+ovalue, margin)
+        return self._newSelf(svalue+ovalue, margin)
 
     def __sub__(self, other):
         """
@@ -473,9 +484,9 @@ class Delay(object):
             if omargin <= smargin:
                 return self
             else:
-                return Delay(svalue, omargin)
+                return self._newSelf(svalue, omargin)
         margin = omargin if omargin > smargin else smargin
-        return Delay(svalue-ovalue, margin)
+        return self._newSelf(svalue-ovalue, margin)
 
     def __mul__(self, other):
         """
@@ -493,9 +504,9 @@ class Delay(object):
             if omargin <= smargin:
                 return self
             else:
-                return Delay(svalue, omargin)
+                return self._newSelf(svalue, omargin)
         margin = omargin if omargin > smargin else smargin
-        return Delay(svalue*ovalue, margin)
+        return self._newSelf(svalue*ovalue, margin)
 
     def __div__(self, other):
         """
@@ -515,9 +526,9 @@ class Delay(object):
             if omargin <= smargin:
                 return self
             else:
-                return Delay(svalue, omargin)
+                return self._newSelf(svalue, omargin)
         margin = omargin if omargin > smargin else smargin
-        return Delay(svalue/ovalue, margin)
+        return self._newSelf(svalue/ovalue, margin)
 
 
     def __truediv__(self, other):
@@ -538,12 +549,12 @@ class Delay(object):
             if omargin <= smargin:
                 return self
             else:
-                return Delay(svalue, omargin)
+                return self._newSelf(svalue, omargin)
         margin = omargin if omargin > smargin else smargin
-        return Delay(svalue/ovalue, margin)
+        return self._newSelf(svalue/ovalue, margin)
 
     def __neg__(self):
-        return Delay(-self.value, self.margin);
+        return self._newSelf(-self.value, self.margin);
 
     def __pos__(self):
         return self;
