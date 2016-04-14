@@ -63,7 +63,14 @@ class sppasAlign:
     @summary:      SPPAS integration of the Alignment automatic annotation.
 
     SPPAS automatic Alignment is also called phonetic segmentation.
-    See SpeechSegmenter class for details.
+    Alignment is performed in 3 sub-steps:
+
+        1. Split the audio/trs into units;
+        2. Align each unit using an external aligner;
+        3. Create a transcription with results.
+
+    If step 1 fails, a basic alignment is applied on all units.
+    At step 2, if the aligner fails, a basic alignment is applied on the unit.
 
     This alignment produces 1 or 3 tiers with names:
 
@@ -116,9 +123,9 @@ class sppasAlign:
             elif "clean" == opt.get_key():
                 self.set_clean( opt.get_value() )
             elif "aligner" == opt.get_key():
-                self.speechseg.set_aligner( opt.get_value() )
+                self.set_aligner( opt.get_value() )
             elif "infersp" == opt.get_key():
-                self.speechseg.set_infersp( opt.get_value() )
+                self.set_infersp( opt.get_value() )
 
     # ------------------------------------------------------------------------
 
@@ -170,6 +177,19 @@ class sppasAlign:
         """
         self.speechseg.set_aligner(alignername)
 
+    # -----------------------------------------------------------------------
+
+    def set_infersp(self, infersp):
+        """
+        Fix the infersp option.
+        If infersp is set to True, sppasAlign() will add a short pause at
+        the end of each token, and the automatic aligner will infer if it is
+        appropriate or not.
+
+        @param infersp is a Boolean
+
+        """
+        self.speechseg.set_infersp( infersp )
 
     # -----------------------------------------------------------------------
     # Methods to time-align series of data

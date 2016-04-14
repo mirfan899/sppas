@@ -36,7 +36,6 @@
 # ----------------------------------------------------------------------------
 
 import os.path
-import string
 import re
 import random
 import codecs
@@ -70,28 +69,32 @@ class SpeechSegmenter:
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
     @summary:      Automatic speech segmentation.
 
-    Alignment is performed in 3 sub-steps:
+    Speech segmentation of a unit of speech (an IPU).
 
-        1. Split the audio/trs into units;
-        2. Align each unit using an external aligner;
-        3. Create a transcription with results.
-
-    If step 1 fails, a basic alignment is applied on all units.
-    At step 2, if the aligner fails, a basic alignment is applied on the unit.
     """
 
-    # List of supported aligners
-    # Notice that the basic aligner can be used to align without wav!
+    # List of supported aligners (with lowered names)
+    # Notice that the basic aligner can be used to align without audio file!
     ALIGNERS = ['julius', 'hvite', 'basic']
+
+    # ------------------------------------------------------------------------
 
     def __init__(self, model):
         """
         Constructor.
 
-        @param model is the acoustic model directory name,
+        @param model is the acoustic model directory name. It is expected
+        to contain at least a file with name "hmmdefs". It can also contain:
+            - tiedlist file;
+            - monophones.repl file;
+            - config file.
+        Any other file will be ignored.
 
         """
-        self._model = model
+        # The automatic alignment system:
+        self._alignerid = SpeechSegmenter.ALIGNERS[0]
+        self._model   = model
+        self._infersp = False
 
         # Map phoneme names from model-specific to SAMPA and vice-versa
         mappingfilename = os.path.join( self._model, "monophones.repl")
@@ -100,54 +103,52 @@ class SpeechSegmenter:
         else:
             self._mapping = Mapping()
 
-        # The automatic alignment system:
-        self._alignerid = SpeechSegmenter.ALIGNERS[0]
-        self.__instanciate_aligner()
-
         # The basic aligner is used:
         #   - when the IPU contains only one phoneme;
         #   - when the automatic alignment system failed to perform segmn.
         self._basicaligner = basicAligner(model, self._mapping, None)
+        self._instantiate_aligner()
 
     # ------------------------------------------------------------------------
 
     def set_model(self, model):
         """
-        Fix a new model to perform alignment.
+        Fix an acoustic model to perform time-alignment.
 
-        @param model (string) name of the directory that contains the Acoustic Model
+        @param model (string) Directory that contains the Acoustic Model.
 
         """
         self._model = model
-        self.__instanciate_aligner()
+        self._instantiate_aligner()
 
     # ----------------------------------------------------------------------
 
     def set_aligner(self, alignername):
         """
-        Fix the name of the aligner: julius, hvite or basic.
+        Fix the name of the aligner, one of ALIGNERS.
 
-        @param alignername is a string (upper/lower accepted)
+        @param alignername (string) Case-insensitive name of an aligner system.
 
         """
-        if not alignername.lower() in SpeechSegmenter.ALIGNERS:
-            raise ValueError('Error: Bad aligner name.')
+        alignername = alignername.lower()
+        if not alignername in SpeechSegmenter.ALIGNERS:
+            raise ValueError('Unknown aligner name.')
 
-        self._alignerid = string.lower(alignername)
-        self.__instanciate_aligner()
+        self._alignerid = alignername
+        self._instantiate_aligner()
 
     # ----------------------------------------------------------------------
 
     def set_infersp(self, infersp):
         """
-        Fix the infersp option.
-        If infersp is set to True, sppasAlign() will add a short pause at
-        the end of each token, and the automatic aligner will infer if it is
-        appropriate or not.
+        Fix the automatic inference of short pauses.
 
-        @param infersp is a Boolean
+        @param infersp (bool) If infersp is set to True, a short pause is
+        added at the end of each token, and the automatic aligner will infer
+        if it is relevant or not.
 
         """
+        self._infersp = infersp
         self._aligner.set_infersp( infersp )
 
     # ----------------------------------------------------------------------
@@ -160,6 +161,7 @@ class SpeechSegmenter:
         @param diralign is the directory to put units.
         @param extension is the file extension of units.
         @return tuple with number of silences and number of tracks
+
         """
         audiospeech = signals.open( inputaudio )
         idx = audiospeech.extract_channel(0)
@@ -329,10 +331,14 @@ class SpeechSegmenter:
         return ret
 
     # ------------------------------------------------------------------------
+    # Private
+    # ------------------------------------------------------------------------
 
-    def __instanciate_aligner(self, infersp=False):
-        """ Instanciate self._aligner to the appropriate Aligner system. """
+    def _instantiate_aligner(self):
+        """
+        Instantiate self._aligner to the appropriate Aligner system.
 
+        """
         if self._alignerid == "julius":
             self._aligner = juliusAligner( self._model, self._mapping) #, self._logfile )
 
@@ -342,7 +348,6 @@ class SpeechSegmenter:
         else:
             self._aligner = basicAligner( self._model, self._mapping) #, self._logfile )
 
-        self._aligner.set_infersp( infersp )
+        self._aligner.set_infersp( self._infersp )
 
     # ------------------------------------------------------------------------
-
