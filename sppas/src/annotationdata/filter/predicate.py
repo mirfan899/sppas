@@ -248,7 +248,7 @@ class Rel(object):
         @return: predicate (RelationPredicate)
 
         >>> p1 = Rel("overlaps") | Rel("overlappedby")
-        >>> p2 = Rel("after", 0.5)
+        >>> p2 = Rel(after=0.5)
 
         """
         functions = []
