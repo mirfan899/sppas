@@ -79,8 +79,10 @@ class sppasPhon( object ):
         self.phonetizer = DictPhon( pdict )
         self.logfile = logfile
 
-        self.opt_phonunk      = False # Phonetize missing tokens
-        self.opt_usestdtokens = False # Phonetize standard spelling
+        # List of options to configure this automatic annotation
+        self._options = {}
+        self._options['phonunk']      = False # Phonetize missing tokens
+        self._options['usestdtokens'] = False # Phonetize standard spelling
 
     # -----------------------------------------------------------------------
     # Methods to fix options
@@ -103,10 +105,8 @@ class sppasPhon( object ):
 
             if key == "unk":
                 self.set_unk( opt.get_value() )
-
             elif key == "usestdtokens":
                 self.set_usestdtokens( opt.get_value() )
-
             else:
                 raise Exception('Unknown key option: %s'%key)
 
@@ -122,7 +122,7 @@ class sppasPhon( object ):
         default string.
 
         """
-        self.opt_phonunk = unk
+        self._options['phonunk'] = unk
 
     # -----------------------------------------------------------------------
 
@@ -136,7 +136,7 @@ class sppasPhon( object ):
         Orthographic Transcription.
 
         """
-        self.opt_usestdtokens = stdtokens
+        self._options['usestdtokens'] = stdtokens
 
     # -----------------------------------------------------------------------
     # Methods to phonetize series of data
@@ -162,7 +162,7 @@ class sppasPhon( object ):
         @return phonetization of `label`.
 
         """
-        tab = self.phonetizer.get_phon_tokens( label.split(), phonunk=self.opt_phonunk)
+        tab = self.phonetizer.get_phon_tokens( label.split(), phonunk=self._options['phonunk'])
         tabphon = []
         for t,p,s in tab:
             message = None
@@ -188,7 +188,7 @@ class sppasPhon( object ):
         """
         Phonetize all labels of a tier.
 
-        @param tier (Tier) contains the orthohraphic transcription previously tokenized.
+        @param tier (Tier) contains the orthographic transcription previously tokenized.
         @return A tier with name "Phonetization"
 
         """
@@ -255,7 +255,7 @@ class sppasPhon( object ):
         tierinput = None
 
         pattern = "fake"
-        if self.opt_usestdtokens is True: # Phonetize standard spelling
+        if self._options['usestdtokens'] is True: # Phonetize standard spelling
             pattern = "standard"
 
         for tier in trsinput:
