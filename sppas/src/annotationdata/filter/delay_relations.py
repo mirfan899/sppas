@@ -451,6 +451,7 @@ class Delay(object):
     def __add__(self, other):
         """
         Delay addition
+        (!) the new margin is the max of the initial margins
         @type other:    Delay or float/int
         @return:    a Delay with the sum of value and the maximum margin
         """
@@ -471,6 +472,7 @@ class Delay(object):
     def __sub__(self, other):
         """
         Delay substraction
+        (!) the new margin is the max of the initial margins
         @type other:    Delay or float/int
         @return:    a Delay with the difference of values and the maximum margin
         """
@@ -491,6 +493,7 @@ class Delay(object):
     def __mul__(self, other):
         """
         Delay multiplication
+        (!) the new margin is the max of the initial margins
         @type other:    Delay or float/int
         @return:    a Delay with the product of values and the maximum margin
         """
@@ -511,6 +514,7 @@ class Delay(object):
     def __div__(self, other):
         """
         Delay "classic" division
+        (!) the new margin is the max of the initial margins
         @type other:    Delay or float/int
         @return:    a Delay with the "classic" division of values and the maximum margin
         """
@@ -659,6 +663,7 @@ class IntervalsDelay(BinaryPredicate):
             delay = (yvalue - xvalue)
         else: # __DEFAULT_DIRECTION
             delay = (xvalue - yvalue) if self.__DEFAULT_DIRECTION=='after' else (yvalue - xvalue)
+        #print "delay({xstart}, {xend}, {ystart}, {yend})\n\t=> {xpoint}, {ypoint}\n\t=> ({xvalue}, {xmargin}) , ({yvalue}, {ymargin}) hasMargin:{hasMargin}\n\t{delay} (direction={self.direction})".format(**locals())
         return Delay(delay, xmargin+ymargin) if hasMargin else delay;
 
     def check(self, xstart, xend, ystart, yend):
@@ -816,6 +821,7 @@ class IntervalsDelay(BinaryPredicate):
         @return: the point corresponding to the percent of the interval
         @rtype: TimePoint (better) if start/end are a TimePoint, else a float
         """
+        if start is end:  return start; # point
         if percent==0.:  return start;
         if percent==1.:  return end;
         # compute the percent point

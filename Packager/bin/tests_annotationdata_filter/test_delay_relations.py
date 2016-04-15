@@ -5,6 +5,7 @@ import unittest
 import os
 import sys
 from os.path import *
+import random
 
 SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
 sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
@@ -48,7 +49,18 @@ class TestIntervalsDelay(unittest.TestCase):
         return mindelay <= maxdelay # min < max
 
     #------------------------------------------------------------------------------------------
+    # an optional random.sample method
+    def _random_sample(self, list_, sample, testall=None):
+        if testall is None: # testall=None => use self._testall, but testall=False => avoid exhaustive test
+            testall = self._testall
+        if testall or sample > len(list_):   # the full list
+            return list_;
+        else:
+            return random.sample(list_, sample)
+
+    #------------------------------------------------------------------------------------------
     def setUp(self):
+        self._testall = False # run very exhaustive tests, only if you have many time (various hours), the random selection is enough (~6s)
         #Delay._NUMERIC = 'Decimal'  # change Delay numeric value
         self.p1 = TimePoint(1)
         self.p2 = TimePoint(2)
@@ -372,11 +384,11 @@ class TestIntervalsDelay(unittest.TestCase):
 
         # create joined IntervalsDelay
         from annotationdata.filter.delay_relations import AndPredicates, OrPredicates
-        import random
-        for (xk1, yk1, mk1, Mk1) in random.sample(self.intervalsDelays.keys(),15): # get only 15 random values
+        testall=False # if testall=False => no more sample (independant of self._testall); elif testall=None => based on self._testall
+        for (xk1, yk1, mk1, Mk1) in self._random_sample(self.intervalsDelays.keys(), 10, testall=testall): # get only 10 random values
             min1 = self.MINs[mk1]; Max1 = self.MAXs[Mk1];
             id1 = self.intervalsDelays[(xk1, yk1, mk1, Mk1)]
-            for (xk2, yk2, mk2, Mk2) in random.sample(self.intervalsDelays.keys(),15): # get only 15 random values
+            for (xk2, yk2, mk2, Mk2) in self._random_sample(self.intervalsDelays.keys(), 10, testall=testall): # get only 10 random values (testall=False => never more as it's useless)
 
                 min2 = self.MINs[mk2]; Max2 = self.MAXs[Mk2];
                 id2 = self.intervalsDelays[(xk2, yk2, mk2, Mk2)]
@@ -415,34 +427,34 @@ class TestIntervalsDelay(unittest.TestCase):
                 ckwargs={};
                 try:
                     idc = IntervalsDelay.create(*cargs, **ckwargs);
+                    self.assertEqual(idc, idOr
+                        , "[{xk1},{yk1},{mk1},{Mk1}][{xk2},{yk2},{mk2},{Mk2}] (e) create({cargs},{ckwargs}) NOT {idc} == {idOr}".format(**locals())
+                        )
                 except:
                     e = sys.exc_info()[0]
                     print("Error with [{xk1},{yk1},{mk1},{Mk1}][{xk2},{yk2},{mk2},{Mk2}] create({cargs},{ckwargs}) : {e}".format(**locals()))
-                self.assertEqual(idc, idOr
-                    , "[{xk1},{yk1},{mk1},{Mk1}][{xk2},{yk2},{mk2},{Mk2}] (e) create({cargs},{ckwargs}) NOT {idc} == {idOr}".format(**locals())
-                    )
                 # (f) (explicit) OR with 'join' key
                 cargs=("join", "Or", "{}_{}".format(xk1, yk1), (min1, Max1), "{}_{}".format(xk2, yk2), (min2, Max2)) 
                 ckwargs={};
                 try:
                     idc = IntervalsDelay.create(*cargs, **ckwargs);
+                    self.assertEqual(idc, idOr
+                        , "[{xk1},{yk1},{mk1},{Mk1}][{xk2},{yk2},{mk2},{Mk2}] (f) create({cargs},{ckwargs}) NOT {idc} == {idOr}".format(**locals())
+                        )
                 except:
                     e = sys.exc_info()[0]
                     print("Error with [{xk1},{yk1},{mk1},{Mk1}][{xk2},{yk2},{mk2},{Mk2}] create({cargs},{ckwargs}) : {e}".format(**locals()))
-                self.assertEqual(idc, idOr
-                    , "[{xk1},{yk1},{mk1},{Mk1}][{xk2},{yk2},{mk2},{Mk2}] (f) create({cargs},{ckwargs}) NOT {idc} == {idOr}".format(**locals())
-                    )
                 # (g) (explicit) OR in kwargs
                 cargs=("{}_{}".format(xk1, yk1), (min1, Max1), "{}_{}".format(xk2, yk2), (min2, Max2)) 
                 ckwargs={'join':'OR'};
                 try:
                     idc = IntervalsDelay.create(*cargs, **ckwargs);
+                    self.assertEqual(idc, idOr
+                        , "[{xk1},{yk1},{mk1},{Mk1}][{xk2},{yk2},{mk2},{Mk2}] (g) create({cargs},{ckwargs}) NOT {idc} == {idOr}".format(**locals())
+                        )
                 except:
                     e = sys.exc_info()[0]
                     print("Error with [{xk1},{yk1},{mk1},{Mk1}][{xk2},{yk2},{mk2},{Mk2}] create({cargs},{ckwargs}) : {e}".format(**locals()))
-                self.assertEqual(idc, idOr
-                    , "[{xk1},{yk1},{mk1},{Mk1}][{xk2},{yk2},{mk2},{Mk2}] (g) create({cargs},{ckwargs}) NOT {idc} == {idOr}".format(**locals())
-                    )
                 # (h) Using kwargs for id1 AND id2 /!\ order can change
                 #import traceback
                 if (xk1, yk1) != (xk2, yk2): # (!) if (xk1, yk1) == (xk2, yk2), the "{}_{}" keys have the same value => the first is ignored
@@ -461,8 +473,10 @@ class TestIntervalsDelay(unittest.TestCase):
                         #traceback.print_exception(*sys.exc_info())
 
     #------------------------------------------------------------------------------------------
-    def test___call__(self):
-        import random
+    def test_call(self):
+        """
+        Test of IntervalsDelay predicates (with the default direction)
+        """
         # Create some TimePoint, TimeInterval and Annotation
         # - create the TimePoints:  self.timePoints[i] = TimePoint(i) (0<=i<=9) (=> 10)
         self.timePoints = {i:TimePoint(i) for i in self.TIMEPOINTS }
@@ -495,58 +509,65 @@ class TestIntervalsDelay(unittest.TestCase):
                             pai = self.pointAnnotations[i]
                             paj = self.pointAnnotations[j]
                             pred = idc(pai, paj)
+                            pred_delay=pred.delay if (hasattr(pred,'delay')) else None
+                            idc_delay=idc.delay(*IntervalsDelay.splitAnnotations(pai, paj))
                             if (j-i) > Maxd:
                                 self.assertFalse(pred
-                                        , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't false when ({j}-{i}) > {Maxd} (pred={pred}; pred.delay={pred_delay}, idc.delay()={idc_delay:r})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None, idc_delay=idc.delay(*IntervalsDelay.splitAnnotations(pai, paj)), **locals())
+                                        , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't false when ({j}-{i}) > {Maxd} (pred={pred}; pred.delay={pred_delay}, idc.delay()={idc_delay:r})".format(**locals())
                                     ); nbAsserts+=1
                             elif (mind is None or mind<=(j-i)):
                                 self.assertTrue(pred
-                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't true when {mind} <= ({j}-{i}) < {Maxd} (pred={pred}; pred.delay={pred_delay}, idc.delay()={idc_delay:r})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None, idc_delay=idc.delay(*IntervalsDelay.splitAnnotations(pai, paj)), **locals())
+                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't true when {mind} <= ({j}-{i}) < {Maxd} (pred={pred}; pred.delay={pred_delay}, idc.delay()={idc_delay:r})".format(**locals())
                                     ); nbAsserts+=1
                             else: # (j-i) < min
                                 self.assertFalse(pred
-                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't false when ({j}-{i}) < {mind} (pred={pred}; pred.delay={pred_delay}, idc.delay()={idc_delay:r})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None, idc_delay=idc.delay(*IntervalsDelay.splitAnnotations(pai, paj)), **locals())
+                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't false when ({j}-{i}) < {mind} (pred={pred}; pred.delay={pred_delay}, idc.delay()={idc_delay:r})".format(**locals())
                                     ); nbAsserts+=1
                     # compare a point and an interval annotations
+                    testall=False # if testall=False => no more sample (independant of self._testall); elif testall=None => based on self._testall
                     for start1 in self.pointAnnotations.keys():
-                        for (start2, end2) in random.sample(self.intervalAnnotations.keys(),15):
+                        for (start2, end2) in self._random_sample(self.intervalAnnotations.keys(), 15, testall=testall):
                             a1 = self.pointAnnotations[start1]
                             a2 = self.intervalAnnotations[(start2, end2)]
                             pred = idc(a1, a2)
+                            pred_delay=pred.delay if (hasattr(pred,'delay')) else None
                             if (start2-start1) > Maxd:
                                 self.assertFalse(pred
-                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't false when ({start2}-{start1}) > {Maxd} (pred={pred}; ped.delay={pred_delay})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None,**locals())
+                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({a1}, {a2}) isn't false when ({start2}-{start1}) > {Maxd} (pred={pred}; pred.delay={pred_delay})".format(**locals())
                                     ); nbAsserts+=1
                             elif (mind is None or mind<=(start2-start1)):
                                 self.assertTrue(pred
-                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't true when {mind} <= ({start2}-{start1}) < {Maxd} (pred={pred}; ped.delay={pred_delay})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None,**locals())
+                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({a1}, {a2}) isn't true when {mind} <= ({start2}-{start1}) < {Maxd} (pred={pred}; pred.delay={pred_delay})".format(**locals())
                                     ); nbAsserts+=1
                             else: # (start2-start1) < min
                                 self.assertFalse(pred
-                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't false when ({start2}-{start1}) < {mind} (pred={pred}; ped.delay={pred_delay})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None,**locals())
+                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({a1}, {a2}) isn't false when ({start2}-{start1}) < {mind} (pred={pred}; pred.delay={pred_delay})".format(**locals())
                                     ); nbAsserts+=1
                     # compare 2 interval annotations
-                    for (start1, end1) in random.sample(self.intervalAnnotations.keys(),15):
-                        for (start2, end2) in random.sample(self.intervalAnnotations.keys(),15):
+                    testall=False # if testall=False => no more sample (independant of self._testall); elif testall=None => based on self._testall
+                    for (start1, end1) in self._random_sample(self.intervalAnnotations.keys(),15, testall=testall):
+                        for (start2, end2) in self._random_sample(self.intervalAnnotations.keys(),15, testall=testall):
                             a1 = self.intervalAnnotations[(start1, end1)]
                             a2 = self.intervalAnnotations[(start2, end2)]
                             pred = idc(a1, a2)
+                            pred_delay=pred.delay if (hasattr(pred,'delay')) else None
                             if (start2-start1) > Maxd:
                                 self.assertFalse(pred
-                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't false when ({start2}-{start1}) > {Maxd} (pred={pred}; ped.delay={pred_delay})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None,**locals())
+                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({a1}, {a2}) isn't false when ({start2}-{start1}) > {Maxd} (pred={pred}; pred.delay={pred_delay})".format(**locals())
                                     ); nbAsserts+=1
                             elif (mind is None or mind<=(start2-start1)):
                                 self.assertTrue(pred
-                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't true when {mind} <= ({start2}-{start1}) < {Maxd} (pred={pred}; ped.delay={pred_delay})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None,**locals())
+                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({a1}, {a2}) isn't true when {mind} <= ({start2}-{start1}) < {Maxd} (pred={pred}; pred.delay={pred_delay})".format(**locals())
                                     ); nbAsserts+=1
                             else: # (start2-start1) < min
                                 self.assertFalse(pred
-                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't false when ({start2}-{start1}) < {mind} (pred={pred}; ped.delay={pred_delay})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None,**locals())
+                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({a1}, {a2}) isn't false when ({start2}-{start1}) < {mind} (pred={pred}; pred.delay={pred_delay})".format(**locals())
                                     ); nbAsserts+=1
         if nbAsserts<=0: raise Warning("Any assertion in the test loop");
 
         # check the start_end predicates
         nbAsserts=0
+        testall=False # if testall=False => no more sample (independant of self._testall); elif testall=None => based on self._testall
         for Mk in self.MAXsORDER:
             Maxd = self.MAXs[Mk]
             #if Maxd<0: continue; # TODO
@@ -557,28 +578,30 @@ class TestIntervalsDelay(unittest.TestCase):
                 for (xk, yk) in [('start','end'), ('start', '100%')]:
                     idc = self.intervalsDelays[(xk, yk, mk, Mk)]
                     # compare 2 interval annotations
-                    for (start1, end1) in random.sample(self.intervalAnnotations.keys(),15):
-                        for (start2, end2) in random.sample(self.intervalAnnotations.keys(),15):
+                    for (start1, end1) in self._random_sample(self.intervalAnnotations.keys(),15, testall=testall):
+                        for (start2, end2) in self._random_sample(self.intervalAnnotations.keys(),15, testall=testall):
                             a1 = self.intervalAnnotations[(start1, end1)]
                             a2 = self.intervalAnnotations[(start2, end2)]
                             pred = idc(a1, a2)
+                            pred_delay=pred.delay if (hasattr(pred,'delay')) else None
                             delay = (end2-start1)
                             if delay > Maxd:
                                 self.assertFalse(pred
-                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't false when ({delay} > {Maxd}) (pred={pred}; ped.delay={pred_delay})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None,**locals())
+                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({a1}, {a2}) isn't false when ({delay} > {Maxd}) (pred={pred}; pred.delay={pred_delay})".format(**locals())
                                     ); nbAsserts+=1
                             elif (mind is None or mind<=delay):
                                 self.assertTrue(pred
-                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't true when ({mind} <= {delay}) < {Maxd}) (pred={pred}; ped.delay={pred_delay})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None,**locals())
+                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({a1}, {a2}) isn't true when ({mind} <= {delay}) < {Maxd}) (pred={pred}; pred.delay={pred_delay})".format(**locals())
                                     ); nbAsserts+=1
                             else: # (start2-start1) < min
                                 self.assertFalse(pred
-                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't false when ({delay} < {mind}) (pred={pred}; ped.delay={pred_delay})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None,**locals())
+                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({a1}, {a2}) isn't false when ({delay} < {mind}) (pred={pred}; pred.delay={pred_delay})".format(**locals())
                                     ); nbAsserts+=1
         if nbAsserts<=0: raise Warning("Any assertion in the test loop");
 
         # check the end_start predicates
         nbAsserts=0
+        testall=False # if testall=False => no more sample (independant of self._testall); elif testall=None => based on self._testall
         for Mk in self.MAXsORDER:
             Maxd = self.MAXs[Mk]
             #if Maxd<0: continue; # TODO
@@ -589,28 +612,30 @@ class TestIntervalsDelay(unittest.TestCase):
                 for (xk, yk) in [('end','start'), ('100%', 'start')]:
                     idc = self.intervalsDelays[(xk, yk, mk, Mk)]
                     # compare 2 interval annotations
-                    for (start1, end1) in random.sample(self.intervalAnnotations.keys(),15):
-                        for (start2, end2) in random.sample(self.intervalAnnotations.keys(),15):
+                    for (start1, end1) in self._random_sample(self.intervalAnnotations.keys(),15, testall=testall):
+                        for (start2, end2) in self._random_sample(self.intervalAnnotations.keys(),15, testall=testall):
                             a1 = self.intervalAnnotations[(start1, end1)]
                             a2 = self.intervalAnnotations[(start2, end2)]
                             pred = idc(a1, a2)
+                            pred_delay=pred.delay if (hasattr(pred,'delay')) else None
                             delay = (start2-end1)
                             if delay > Maxd:
                                 self.assertFalse(pred
-                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't false when ({delay} > {Maxd}) (pred={pred}; ped.delay={pred_delay})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None,**locals())
+                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({a1}, {a2}) isn't false when ({delay} > {Maxd}) (pred={pred}; pred.delay={pred_delay})".format(**locals())
                                     ); nbAsserts+=1
                             elif (mind is None or mind<=delay):
                                 self.assertTrue(pred
-                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't true when ({mind} <= {delay}) < {Maxd}) (pred={pred}; ped.delay={pred_delay})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None,**locals())
+                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({a1}, {a2}) isn't true when ({mind} <= {delay}) < {Maxd}) (pred={pred}; pred.delay={pred_delay})".format(**locals())
                                     ); nbAsserts+=1
                             else: # (start2-start1) < min
                                 self.assertFalse(pred
-                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't false when ({delay} < {mind}) (pred={pred}; ped.delay={pred_delay})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None,**locals())
+                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({a1}, {a2}) isn't false when ({delay} < {mind}) (pred={pred}; pred.delay={pred_delay})".format(**locals())
                                     ); nbAsserts+=1
         if nbAsserts<=0: raise Warning("Any assertion in the test loop");
 
         # check some percent/percent predicates
         nbAsserts=0
+        testall=False # if testall=False => no more sample (independant of self._testall); elif testall=None => based on self._testall
         for Mk in self.MAXsORDER:
             Maxd = self.MAXs[Mk]
             #if Maxd<0: continue; # TODO
@@ -621,48 +646,50 @@ class TestIntervalsDelay(unittest.TestCase):
                 for (xk, yk) in [('middle','25%'), ('50%', '75%')]:
                     idc = self.intervalsDelays[(xk, yk, mk, Mk)]
                     # compare 2 interval annotations
-                    for (start1, end1) in random.sample(self.intervalAnnotations.keys(),15):
-                        for (start2, end2) in random.sample(self.intervalAnnotations.keys(),15):
+                    for (start1, end1) in self._random_sample(self.intervalAnnotations.keys(),15, testall=testall):
+                        for (start2, end2) in self._random_sample(self.intervalAnnotations.keys(),15, testall=testall):
                             a1 = self.intervalAnnotations[(start1, end1)]
                             a2 = self.intervalAnnotations[(start2, end2)]
                             pred = idc(a1, a2)
+                            pred_delay=pred.delay if (hasattr(pred,'delay')) else None
                             delay = ( ( start2 + self.PERCENTs[yk] * (end2-start2))
                                     - ( start1 + self.PERCENTs[xk] * (end1-start1))
                                     )
                             if delay > Maxd:
                                 self.assertFalse(pred
-                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't false when ({delay} > {Maxd}) (pred={pred}; ped.delay={pred_delay})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None,**locals())
+                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({a1}, {a2}) isn't false when ({delay} > {Maxd}) (pred={pred}; pred.delay={pred_delay})".format(**locals())
                                     ); nbAsserts+=1
                             elif (mind is None or mind<=delay):
                                 # pred is a CheckedIntervalsDelay
                                 self.assertTrue(pred
-                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't true when ({mind} <= {delay}) < {Maxd}) (pred={pred}; ped.delay={pred_delay})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None,**locals())
+                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({a1}, {a2}) isn't true when ({mind} <= {delay}) < {Maxd}) (pred={pred}; pred.delay={pred_delay})".format(**locals())
                                     ); nbAsserts+=1
                                 # pred.delay == delay
                                 self.assertEqual(delay, pred.delay
-                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) {delay}) != pred.delay={pred_delay})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None,**locals())
+                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({a1}, {a2}) {delay}) != pred.delay={pred_delay})".format(**locals())
                                     ); nbAsserts+=1
                             else: # (start2-start1) < min
                                 self.assertFalse(pred
-                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({pai}, {paj}) isn't false when ({delay} < {mind}) (pred={pred}; ped.delay={pred_delay})".format(pred_delay=pred.delay if (hasattr(pred,'delay')) else None,**locals())
+                                    , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({a1}, {a2}) isn't false when ({delay} < {mind}) (pred={pred}; pred.delay={pred_delay})".format(**locals())
                                     ); nbAsserts+=1
         if nbAsserts<=0: raise Warning("Any assertion in the test loop");
         
         # check some AND/OR predicate
         from annotationdata.filter.delay_relations import AndPredicates, OrPredicates
         nbAsserts=0
-        for (xk1, yk1, mk1, Mk1) in random.sample(self.intervalsDelays.keys(),10): # get only 10 random values
+        testall=False # if testall=False => no more sample (independant of self._testall); elif testall=None => based on self._testall
+        for (xk1, yk1, mk1, Mk1) in self._random_sample(self.intervalsDelays.keys(),10, testall=testall): # get only 10 random values
             min1 = self.MINs[mk1]; Max1 = self.MAXs[Mk1];
             id1 = self.intervalsDelays[(xk1, yk1, mk1, Mk1)]
-            #for (xk2, yk2, mk2, Mk2) in random.sample([k for k in self.intervalsDelays.keys() if (k[0], k[1])==(xk1, yk1)],10): # get only 10 random values, with same xk, yk
-            for (xk2, yk2, mk2, Mk2) in random.sample(self.intervalsDelays.keys(),10): # get only 10 random values
+            #for (xk2, yk2, mk2, Mk2) in self._random_sample([k for k in self.intervalsDelays.keys() if (k[0], k[1])==(xk1, yk1)],10): # get only 10 random values, with same xk, yk
+            for (xk2, yk2, mk2, Mk2) in self._random_sample(self.intervalsDelays.keys(),10, testall=testall): # get only 10 random values
                 min2 = self.MINs[mk2]; Max2 = self.MAXs[Mk2];
                 id2 = self.intervalsDelays[(xk2, yk2, mk2, Mk2)]
                 idAnd = AndPredicates(id1, id2)
                 idOr = OrPredicates(id1, id2)
                 # compare 2 interval annotations
-                for (start1, end1) in random.sample(self.intervalAnnotations.keys(),10):
-                    for (start2, end2) in random.sample(self.intervalAnnotations.keys(),10):
+                for (start1, end1) in self._random_sample(self.intervalAnnotations.keys(),10, testall=testall):
+                    for (start2, end2) in self._random_sample(self.intervalAnnotations.keys(),10, testall=testall):
                         a1 = self.intervalAnnotations[(start1, end1)]
                         a2 = self.intervalAnnotations[(start2, end2)]
                         # compute delay and value
@@ -718,12 +745,16 @@ class TestIntervalsDelay(unittest.TestCase):
 
     #------------------------------------------------------------------------------------------
     def test_andorOperators(self):
+        """
+        Test the '|' and '&' operators on IntervalsDelay
+        """
+
         from annotationdata.filter.delay_relations import AndPredicates, OrPredicates
-        import random
         nbAsserts=0
         # combination of 2 IntervalsDelays
-        for id1 in random.sample(self.intervalsDelays.values(),10): # get only 10 random values
-            for id2 in random.sample(self.intervalsDelays.values(),10): # get only 10 random values
+        testall=False # if testall=False => no more sample (independant of self._testall); elif testall=None => based on self._testall
+        for id1 in self._random_sample(self.intervalsDelays.values(),10, testall=testall): # get only 10 random values
+            for id2 in self._random_sample(self.intervalsDelays.values(),10, testall=testall): # get only 10 random values
                 # (a) & operator
                 idAnd = AndPredicates(id1, id2)
                 idAndOp = id1 & id2
@@ -737,7 +768,7 @@ class TestIntervalsDelay(unittest.TestCase):
                     , "(id1 | id2)={idOrOp} isn't equals to OrPredicates(id1, id2)={idOr}".format(**locals())
                     ); nbAsserts+=1
                 # add a 3 value
-                for id3 in random.sample(self.intervalsDelays.values(),10): # get only 10 random values
+                for id3 in self._random_sample(self.intervalsDelays.values(),10, testall=testall): # get only 10 random values
                     # (a) & operator
                     idAnd2 = AndPredicates(idAnd, id3)
                     idAndOp2 = id1 & id2 & id3
@@ -764,7 +795,126 @@ class TestIntervalsDelay(unittest.TestCase):
                         ); nbAsserts+=1
 
         if nbAsserts<=0: raise Warning("Any assertion in the test loop");
-         
+    
+    #------------------------------------------------------------------------------------------
+    def test_call_after(self):
+        """
+        Some test of IntervalsDelay predicates with the 'after' direction
+        """
+        #self._testall = True    # test all case
+        # Create some TimePoint, TimeInterval and Annotation
+        # - create the TimePoints:  self.timePoints[i] = TimePoint(i) (0<=i<=9) (=> 10)
+        self.timePoints = {i:TimePoint(i) for i in self.TIMEPOINTS }
+        # - create the TimeInterval:  [timePoints[i], timePoints[j]] 0<=i<j<=9 (=> 45)
+        self.timeIntervals = dict();
+        for i in self.timePoints.keys():
+            for j in self.timePoints.keys():
+                if i<j:
+                    self.timeIntervals[(i,j)] = TimeInterval(self.timePoints[i], self.timePoints[j])
+        # - create the point annotations:
+        self.pointAnnotations = {i:Annotation(self.timePoints[i], Label("point at {:.3f}s".format(i))) for i in self.timePoints.keys()}
+        # - create the intervals annotations:
+        self.intervalAnnotations = {(i,j):Annotation(self.timeIntervals[(i,j)], Label("interval [{:.3f}, {:.3f}]s".format(i,j))) for (i,j) in self.timeIntervals.keys()}
+        
+        # check some predicates
+        testall=None # if testall=False => no more sample (independant of self._testall); elif testall=None => based on self._testall
+        nbAsserts=0
+        for Mk in self.MAXsORDER:
+            maxdelay = self.MAXs[Mk]
+            #if maxdelay<0: continue; # TODO
+            for mk in self.MINsORDER:
+                mindelay = self.MINs[mk]
+                if maxdelay is None and mindelay is None: break; # => invalid interval
+                if mindelay>maxdelay: break; # mindelay > maxdelay => invalid interval
+                for xk in self._random_sample(self.PERCENTs.keys(),4, testall=testall):
+                    xpercent = self.PERCENTs[xk]
+                    for yk in self._random_sample(self.PERCENTs.keys(),4, testall=testall):
+                        ypercent = self.PERCENTs[yk]
+                        #idc = self.intervalsDelays[(xk, yk, mk, Mk)]
+                        idAfter = IntervalsDelay(mindelay, maxdelay, xpercent, ypercent, direction='after')
+                        # compare 2 interval annotations
+                        for (start1, end1) in self._random_sample(self.intervalAnnotations.keys(),15, testall=testall):
+                            for (start2, end2) in self._random_sample(self.intervalAnnotations.keys(),15, testall=testall):
+                                a1 = self.intervalAnnotations[(start1, end1)]
+                                a2 = self.intervalAnnotations[(start2, end2)]
+                                #pred = idc(a1, a2)
+                                predAfter = idAfter(a1, a2)
+                                delayAfter = ( ( start1 + self.PERCENTs[xk] * (end1-start1))
+                                             - ( start2 + self.PERCENTs[yk] * (end2-start2))
+                                             )
+                                #delay = -delayAfter
+                                predAfter_delay = predAfter.delay if (hasattr(predAfter,'delay')) else None
+                                if delayAfter > maxdelay:   # delayAfter > max
+                                    self.assertFalse(predAfter
+                                        , "IntervalsDelays[{xk},{yk},{mk},{Mk},after]({a1}, {a2}) isn't false when ({delayAfter} > {maxdelay}) (predAfter={predAfter}; predAfter.delay={predAfter_delay})".format(**locals())
+                                        ); nbAsserts+=1
+                                elif (mindelay is None or mindelay<=delayAfter): # min <= delayAfter <= max
+                                    # nota: predAfter is a CheckedIntervalsDelay
+                                    self.assertTrue(predAfter
+                                        , "IntervalsDelays[{xk},{yk},{mk},{Mk},after]({a1}, {a2}) isn't true when ({mindelay} <= {delayAfter}) < {maxdelay}) (predAfter={predAfter}; predAfter.delay={predAfter_delay})".format(**locals())
+                                        ); nbAsserts+=1
+                                    # predAfter.delay == delayAfter
+                                    self.assertEqual(delayAfter, predAfter.delay
+                                        , "IntervalsDelays[{xk},{yk},{mk},{Mk},after]({a1}, {a2}) {delayAfter}) != predAfter.delay={predAfter_delay})".format(**locals())
+                                        ); nbAsserts+=1
+                                else: #  delayAfter < min
+                                    self.assertFalse(predAfter
+                                        , "IntervalsDelays[{xk},{yk},{mk},{Mk}]({a1}, {a2}) isn't false when ({delayAfter} < {mindelay}) (predAfter={predAfter}; predAfter.delay={predAfter_delay})".format(**locals())
+                                        ); nbAsserts+=1
+        if nbAsserts<=0: raise Warning("Any assertion in the test loop");
+
+    #------------------------------------------------------------------------------------------
+    def test_call_withMargin(self):
+        """
+        Some test of IntervalsDelay predicates with TimePoint that have margin/vagueness/radius
+        """
+        #self._testall = True    # test all case
+        margin=0.3
+        # Create some TimePoint and Annotation
+        # - create the TimePoints:  self.timePoints[i] = TimePoint(i,margin) (0<=i<=9) (=> 10)
+        self.timePoints = {i:TimePoint(i, margin) for i in self.TIMEPOINTS }
+        # - create the point annotations:
+        self.pointAnnotations = {i:Annotation(self.timePoints[i], Label("Point at {:.0f}s~{:.1f}".format(i, margin))) for i in self.timePoints.keys()}
+        
+        # Create some IntervalsDelay() (as we workds with point, all percents are equivalents)
+        testall=False # if testall=False => no more sample (independant of self._testall); elif testall=None => based on self._testall
+        nbAsserts=0
+        for mindelay in [0, 0.5]: # nota: 1-2*margin=0.4 < 0.5 < 2*margin=0.3
+            for maxdelay in [mindelay, (mindelay+1)]:
+                ids = IntervalsDelay(mindelay=mindelay, maxdelay=maxdelay, xpercent=0., ypercent=0.)
+                # compare 2 point annotations
+                for p1 in self._random_sample(self.pointAnnotations.keys(),5, testall=testall):
+                    for p2 in self._random_sample(self.pointAnnotations.keys(),5, testall=testall):
+                        if (p1>p2): (p1, p2) = (p2, p1); # put p1,p2 in order as we consider only positive delay
+                        tp1= self.timePoints[p1]
+                        tp2 = self.timePoints[p2]
+                        pa1 = self.pointAnnotations[p1]
+                        pa2 = self.pointAnnotations[p2]
+                        pred = ids(pa1, pa2)
+                        delay = p2 - p1
+                        # /!\ the sum of the 2 points' margin is not always 2*margin
+                        #  because TimePoint at 0. have a 0. margin (i.e TimePoint(0., margin) --> TimePoint(0., 0.))
+                        #  nota: looking at TimePoint.SetRadius() TimePoint(v, margin) --> TimePoint(v, v) if (v<margin)
+                        #-- tpMargins = 2*margin   # NO
+                        #-- tpMargins = (margin if p1>0 else 0) + (margin if p2>0 else 0)  # correct as '0.' is our only point without margin
+                        tpMargins = (margin if p1>margin else p1) + (margin if p2>margin else p2)   # more exact, for the current version of TimePoint.SetRadius()
+                        #-- tpMargins = tp1.GetRadius() + tp2.GetRadius()   # safer
+                        delayLow = delay-tpMargins; delayHigh = delay+tpMargins
+                        pred_delay = pred.delay if (hasattr(pred,'delay')) else None
+                        ids_delay = repr(ids.delay(tp1, tp1, tp2, tp2))
+                        if delayLow > maxdelay:   # delay-2*margin > max
+                            self.assertFalse(pred
+                                , "IntervalsDelays[{mindelay},{maxdelay}]({pa1}, {pa2}) isn't false when ({delayLow} > {maxdelay}) (pred={pred}; pred.delay={pred_delay})".format(**locals())
+                                ); nbAsserts+=1
+                        elif delayHigh < mindelay:   # delay+2*margin < min
+                            self.assertFalse(pred
+                                , "IntervalsDelays[{mindelay},{maxdelay}]({pa1}, {pa2}) isn't false when ({delayHigh} < {mindelay}) (pred={pred}; pred.delay={pred_delay})".format(**locals())
+                                ); nbAsserts+=1
+                        else: # [mindelay,maxdelay] and  [delayLow,delayHigh] overlap
+                            self.assertTrue(pred
+                                    , "IntervalsDelays[{mindelay},{maxdelay}]({pa1}, {pa2}) isn't true when ({mindelay} <= {delayHigh} AND {delayLow} <= {maxdelay}) (pred={pred}; pred.delay={pred_delay}; ids.delay(...)={ids_delay})".format(**locals())
+                                ); nbAsserts+=1
+        if nbAsserts<=0: raise Warning("Any assertion in the test loop");
 
 # End TestIntervalsDelay
 # ---------------------------------------------------------------------------
@@ -772,4 +922,5 @@ class TestIntervalsDelay(unittest.TestCase):
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestIntervalsDelay)
     unittest.TextTestRunner(verbosity=2).run(suite)
+    #unittest.main()
 
