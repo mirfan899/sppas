@@ -233,6 +233,8 @@ class Delay(object):
             numeric = cls._NUMERIC_FROMSTRING[numeric]
         if not callable(numeric):
             raise ValueError("_NUMERIC parameter '{cls._NUMERIC}' of class '{cls}' isn't a valid method ({numeric})".format(**locals()))
+        elif isinstance(value, numeric):
+            return value;
         else:
             try:
                 return numeric(value)
@@ -241,25 +243,34 @@ class Delay(object):
 
     # -----------------------------------------------------------------------
     @classmethod
-    def unpack(cls, other):
+    def unpack(cls, other, noValue=None, noMargin=0.):
         """
         Split a object into (value, margin)
         @param other:   the object to split
         @type other:    a Delay, float, int, or many other things
+        @param noValue:   (optional) value to return if any value is found.  Default is None.
+        @param noMargin:   (optional) margin to return if any margin is found. Default 0.
+            nota: noMargin=None allow to know tets if a margin was found.
         @return:    a tuple of 2 'numerics' (value, margin)
             default value is None   (=> other's value isn't a valid number)
             default margin is 0.    (=> other hasn't a margin)
         """
-        #TODO?  return hasMargin (or a hasMargin() method)
-        #TODO? other as a list/tuple[2]
-        value = None; margin = cls.numeric(0.)
         hasValue = hasMargin = False
+        value = None; margin = None #cls.numeric(0.)
         # easy cases
         if isinstance(other, Delay):
             value, margin = other.value, other.margin
             hasValue = hasMargin = True
         elif isinstance(other, (int, float)):
             value = other; hasValue = True
+        elif (  isinstance(other, (list, tuple))    # list/tuple
+            and not isinstance(other, basestring)   # avoid string
+            and len(other)>0    # or empty list/tuple
+            ):
+            value = other[0]; hasValue = True
+            if len(other)>1:
+                margin = other[1]; hasMargin = True
+        
         # other cases
         # (a) look for 'value' or other cls._VALUE_ATTRIBUTES
         if not hasValue:
@@ -291,16 +302,29 @@ class Delay(object):
                     margin = oatt
                     hasMargin=True
                     break;
-        # convert value, margin into classes' numeric (float, Decimal, ...)
+        # convert value into classes' numeric (float, Decimal, ...)
         try:
             value = cls.numeric(value if hasValue else other) # use other as default value
-        except:
-            value = None
+        except: # value stay None => next try with noValue
+            pass
+        if (value is None and noValue is not None):
+            try:
+                value = cls.numeric(noValue) # convert noValue
+            except:
+                value = None    # final default
+        # convert margin into classes' numeric (float, Decimal, ...)
         if hasMargin:
             try:
                 margin = cls.numeric(margin)
             except:
                 margin = cls.numeric(0.)
+        if (margin is None and noMargin is not None):
+            try:
+                margin = cls.numeric(noMargin) # convert noMargin
+            except:
+                margin = cls.numeric(0.)    # final default
+
+        # result
         return value, margin
 
     # -----------------------------------------------------------------------
@@ -462,11 +486,11 @@ class Delay(object):
             raise ValueError("Can't add undefined values ({} + {})".format(self, other))
         # idempotent cases
         if ovalue == 0.:
-            if omargin <= smargin:
+            if omargin <= smargin:  #TODO: a option self._DELAY_MARGIN_OP = 'sum' or 'max' (default) , etc.
                 return self
             else:
                 return self._newSelf(svalue, omargin)
-        margin = omargin if omargin > smargin else smargin
+        margin = omargin if omargin > smargin else smargin  #TODO: a option self._DELAY_MARGIN_OP = 'sum' or 'max' (default), etc.
         return self._newSelf(svalue+ovalue, margin)
 
     def __sub__(self, other):
@@ -653,10 +677,16 @@ class IntervalsDelay(BinaryPredicate):
 
         # evaluate the delay/vagueness (~ sum of radius)
         # use Delay.unpack to be more generic than TimePoint
-        xvalue, xmargin = Delay.unpack(xpoint)
-        yvalue, ymargin = Delay.unpack(ypoint)
-        hasMargin = isinstance(xpoint, TimePoint) or isinstance(ypoint, TimePoint) #TODO: Delay.unpack 3rd return value or Delay.hasMargin() method
-        delay = 0.
+        xvalue, xmargin = Delay.unpack(xpoint, noMargin=None)
+        yvalue, ymargin = Delay.unpack(ypoint, noMargin=None)
+        #hasMargin = isinstance(xpoint, TimePoint) or isinstance(ypoint, TimePoint) #TODO: Delay.unpack 3rd return value or Delay.hasMargin() method
+        hasMargin=False
+        if xmargin is None:    xmargin = Delay.numeric(0.);# remplace None by Delay.numeric(0.)
+        else: hasMargin=True
+        if ymargin is None:    ymargin = Delay.numeric(0.)# remplace None by Delay.numeric(0.)
+        else: hasMargin=True
+        # calculate the delay based on the direction
+        delay = Delay.numeric(0.)
         if self.direction == 'after': # delay of X after Y, i.e. X-Y
             delay = (xvalue - yvalue)
         elif self.direction == 'before': # delay of X after Y, i.e. X-Y
@@ -664,7 +694,7 @@ class IntervalsDelay(BinaryPredicate):
         else: # __DEFAULT_DIRECTION
             delay = (xvalue - yvalue) if self.__DEFAULT_DIRECTION=='after' else (yvalue - xvalue)
         #print "delay({xstart}, {xend}, {ystart}, {yend})\n\t=> {xpoint}, {ypoint}\n\t=> ({xvalue}, {xmargin}) , ({yvalue}, {ymargin}) hasMargin:{hasMargin}\n\t{delay} (direction={self.direction})".format(**locals())
-        return Delay(delay, xmargin+ymargin) if hasMargin else delay;
+        return Delay(delay, xmargin+ymargin) if hasMargin else delay;   #TODO: a option self._DELAY_MARGIN_OP = 'sum' (default) or 'max', etc.
 
     def check(self, xstart, xend, ystart, yend):
         """
