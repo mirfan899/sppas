@@ -36,27 +36,22 @@
 # ----------------------------------------------------------------------------
 
 import os.path
-import re
-import random
 import codecs
-import shutil
-from datetime import date
+import re
 
 from sp_glob import encoding
-
 
 import signals
 from signals.channel    import Channel
 from signals.channelsil import ChannelSil
 
-from resources.acm.tiedlist import TiedList
 from resources.mapping  import Mapping
 
 from presenters.audiosilencepresenter import AudioSilencePresenter
 
-from juliusalign    import juliusAligner
-from hvitealign     import hviteAligner
-from basicalign     import basicAligner
+from juliusalign    import JuliusAligner
+from hvitealign     import HviteAligner
+from basicalign     import BasicAligner
 
 # ----------------------------------------------------------------------------
 
@@ -72,7 +67,6 @@ class SpeechSegmenter:
     Speech segmentation of a unit of speech (an IPU).
 
     """
-
     # List of supported aligners (with lowered names)
     # Notice that the basic aligner can be used to align without audio file!
     ALIGNERS = ['julius', 'hvite', 'basic']
@@ -106,7 +100,7 @@ class SpeechSegmenter:
         # The basic aligner is used:
         #   - when the IPU contains only one phoneme;
         #   - when the automatic alignment system failed to perform segmn.
-        self._basicaligner = basicAligner(model, self._mapping, None)
+        self._basicaligner = BasicAligner(model, self._mapping)
         self._instantiate_aligner()
 
     # ------------------------------------------------------------------------
@@ -204,7 +198,7 @@ class SpeechSegmenter:
         chansil = ChannelSil( channel , 0.3 )
         chansil.set_silence( silence )
         audiosilpres = AudioSilencePresenter(chansil, None)
-        audiosilpres.write_tracks(trstracks, diralign, ext=extension, trsunits=trsunits, trsnames=[]) #, logfile=None)
+        audiosilpres.write_tracks(trstracks, diralign, ext=extension, trsunits=trsunits, trsnames=[])
 
         if listfile is not None:
             # write the list file
@@ -221,67 +215,18 @@ class SpeechSegmenter:
 
     # ------------------------------------------------------------------------
 
-    def add_tiedlist(self, inputaudio, outputalign):
-        """
-        Add missing triphones/biphones in the tiedlist.
-        IMPORTANT: efficient only if the aligner is Julius.
-
-        @param inputaudio is the audio input file name.
-        @param outputalign is a file name with the failed julius alignment.
-
-        """
-        fileName, fileExtension = os.path.splitext(inputaudio)
-        tiedfile = os.path.join(self._model, "tiedlist")
-        dictfile = inputaudio[:-len(fileExtension)] + ".dict"
-
-        # Create a new Tiedlist instance and backup the current tiedlist file
-        tie = TiedList( )
-        tie.load( tiedfile )
-        dirty = False
-
-        with codecs.open(outputalign, 'r', encoding) as f:
-            for line in f:
-                if line.find("Error: voca_load_htkdict")>-1 and line.find("not found")>-1:
-                    line = re.sub("[ ]+", " ", line)
-                    line = line.strip()
-                    line = line[line.find('"')+1:]
-                    line = line[:line.find('"')]
-                    if len(line)>0:
-                        entries = line.split(" ")
-                        for entry in entries:
-                            if tie.is_observed( entry ) is False and tie.is_tied( entry ) is False:
-                                ret = tie.add_tied( entry )
-                                if ret is True:
-                                    dirty = True
-                                    #if self._logfile:
-                                    #    self._logfile.print_message(entry+" successfully added in the tiedlist.",indent=4,status=3)
-                                #else:
-                                #    if self._logfile:
-                                #        self._logfile.print_message("I do not know how to add "+entry+" in the tiedlist.",indent=4,status=3)
-
-        if dirty is True:
-            today          = str(date.today())
-            randval        = str(int(random.random()*10000))
-            backuptiedfile = os.path.join(self._model, "tiedlist."+today+"."+randval)
-            shutil.copy( tiedfile,backuptiedfile )
-            tie.save( tiedfile )
-
-    # ------------------------------------------------------------------------
-
-    def exec_basic_alignment_track(self, unitduration, phonname, alignname):
-        self._basicaligner.run_basic(unitduration, phonname, alignname)
-
     def exec_basic_alignment(self, audiofilename, phonname, alignname):
         self._basicaligner.run_alignment(audiofilename, phonname, alignname)
 
+    # ------------------------------------------------------------------------
 
-    def exec_alignment(self, audiofilename, phonname, alignname):
+    def segmenter(self, audiofilename, phonname, alignname):
         """
-        Call Aligner to align.
+        Call an aligner to perform speech segmentation and manage errors.
 
-        @param audiofilename is the audio file name of the unit
-        @param phonname is the file name with the phonetization
-        @param alignname is the output file name to save alignment
+        @param audiofilename (str) the audio file name of an IPU
+        @param phonname (str) the file name with the phonetization
+        @param alignname (str) the output file name to save the result
 
         """
         with codecs.open(phonname, 'r', encoding) as fp:
@@ -291,20 +236,15 @@ class SpeechSegmenter:
             phones = re.sub("[ ]+", " ", phones)
 
         # Do not align nothing!
-        if len(phones)==0:
-            #if self._logfile:
-            #    self._logfile.print_message('Nothing to do: empty unit!!!', indent=3,status=1)
-            return -1
+        if len(phones) == 0:
+            return "Nothing to do: empty unit."
 
         # Do not ask Aligner to align only one phoneme!
         if len(phones.split()) <= 1 and '.' not in phones:
-            #if self._logfile:
-            #    self._logfile.print_message('Execute Basic Align', indent=3)
             self._basicaligner.run_alignment(audiofilename, phonname, alignname)
-            return 0
+            return ""
 
         fileName, fileExtension = os.path.splitext(audiofilename)
-        ret = 0
 
         # Create the dictionary and the grammar
         dictname = audiofilename[:-len(fileExtension)] + ".dict"
@@ -317,16 +257,11 @@ class SpeechSegmenter:
         else:
             grammarname = ''
 
-        # Map phonemes to the appropriate phoneset
-
         # Generate dependencies (grammar, dict...)
         self._aligner.gen_dependencies(phones,grammarname,dictname)
 
         # Execute Alignment
-        #if self._logfile: self._logfile.print_message('Execute '+self._alignerid+' Align',indent=3)
         ret = self._aligner.run_alignment(audiofilename, basename, alignname)
-
-        # Map-back the phoneset
 
         return ret
 
@@ -340,13 +275,13 @@ class SpeechSegmenter:
 
         """
         if self._alignerid == "julius":
-            self._aligner = juliusAligner( self._model, self._mapping) #, self._logfile )
+            self._aligner = JuliusAligner( self._model, self._mapping )
 
         elif self._alignerid == "hvite":
-            self._aligner = hviteAligner( self._model, self._mapping) #, self._logfile )
+            self._aligner = HviteAligner( self._model, self._mapping )
 
         else:
-            self._aligner = basicAligner( self._model, self._mapping) #, self._logfile )
+            self._aligner = BasicAligner( self._model, self._mapping )
 
         self._aligner.set_infersp( self._infersp )
 

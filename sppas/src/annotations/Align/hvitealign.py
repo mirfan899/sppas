@@ -33,45 +33,43 @@
 #
 # ---------------------------------------------------------------------------
 # File: hvitealign.py
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-# ----------------------------------------------------------------------------
-
-import sys
 import os
-import re
 from subprocess import Popen, PIPE, STDOUT
 import codecs
 
-from basealigner import baseAligner
+from basealigner import BaseAligner
+from sp_glob import encoding
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
-class hviteAligner( baseAligner ):
+class HviteAligner( BaseAligner ):
     """
-    HTK Alignment.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      HVite automatic alignment system.
 
     http://htk.eng.cam.ac.uk/links/asr_tool.shtml
 
     """
-
-    def __init__(self, model, mapping, logfile=None):
+    def __init__(self, modelfilename, mapping=None):
         """
-        Create a new hviteAlign instance.
+        Constructor.
 
-        @param model is the acoustic model file name,
-        @param logfile is a file descriptor of a log file (see log.py).
+        HviteAligner aligns one inter-pausal unit.
+
+        @param modelfilename (str) the acoustic model file name
+        @param mapping (Mapping) a mapping table to convert the phone set
 
         """
-        baseAligner.__init__(self, model, mapping, logfile)
+        BaseAligner.__init__(self, modelfilename, mapping)
+        self._outext = "mlf"
 
-    # End __init__
-    # ------------------------------------------------------------------------
-
+    # -----------------------------------------------------------------------
 
     def gen_dependencies(self, phones, grammarname, dictname):
         """
@@ -86,8 +84,8 @@ class hviteAligner( baseAligner ):
         self._mapping.set_reverse(True)
         phones = self._mapping.map(phones)
 
-        with codecs.open(grammarname, 'w', self._encoding) as flab,\
-                codecs.open(dictname, 'w', self._encoding) as fdict:
+        with codecs.open(grammarname, 'w', encoding) as flab,\
+                codecs.open(dictname, 'w', encoding) as fdict:
 
             fdict.write( "SENT-END [] sil\n" )
             fdict.write( "SENT-START [] sil\n" )
@@ -100,12 +98,6 @@ class hviteAligner( baseAligner ):
 
                 # dictionary:
                 for i,variant in enumerate(pron.split("|")):
-
-                    # map phonemes (if any)
-                    variant = ' ' + variant + ' '
-                    for k,v in self._mappingpatch.items():
-                        if k in variant:
-                            variant = variant.replace(' '+k+' ', ' '+v+' ')
 
                     if self._infersp is True:
                         variant = variant + 'sp'
@@ -123,20 +115,15 @@ class hviteAligner( baseAligner ):
                 tokenidx += 1
                 nbtokens -= 1
 
-    # End gen_dependencies
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
-
-    def run_alignment(self, inputwav, basename, outputalign):
+    def run_hvite(self, inputwav, basename, outputalign):
         """
-        Execute the external program HVite to align.
+        Perform the speech segmentation.
 
-        @param inputwav is the wav input file name.
-        @param basename is the name of the dictionary file
-        @param outputalign is the output file name.
+        Call the system command `HVite`.
 
         """
-
         # Example of use with triphones:
         #
         # HVite -A -D -T 1 -l '*'  -a -b SENT-END -m
@@ -156,7 +143,7 @@ class hviteAligner( baseAligner ):
         macros   = os.path.join(self._model, "macros")
         config   = os.path.join(self._model, "config")
         graph    = os.path.join(self._model, "tiedlist")
-        if not os.path.isfile(graph):
+        if os.path.isfile(graph) is False:
             graph = os.path.join(self._model, "monophones")
 
         # Program name
@@ -174,49 +161,38 @@ class hviteAligner( baseAligner ):
 
         # Execute command
         p = Popen(command, shell=True, stdout=PIPE, stderr=STDOUT)
-        retval = p.wait()
+        p.wait()
         line = p.communicate()
 
         if len(line[0]) > 0 and line[0].find("not found") > -1:
-            if self._logfile:
-                self._logfile.print_message(' **************** HVite not installed ************** ',status=-1)
-            else:
-                print " **************** ERROR: HVite not installed ************** "
-            return 1
+            raise OSError( "HVite is not properly installed. See installation instructions for details." )
 
         if len(line[0]) > 0 and line[0].find("ERROR [") > -1:
-            return 1
+            raise OSError( "julius command failed." )
 
-        # Write the program output at the end of the log file
-        try:
-            if len(line[0]) > 0:
-                #THIS DOES NOT WORK on Windows if line[0] contains accentuated characters:
-                #   l = unicodedata.normalize('NFKD', line[0]).encode('ascii', 'ignore')
-                #THEN.... Try an other solution to remove all strange characters in this string:
-                import re
-                l = re.sub(ur'[^a-zA-Z0-9\',\s]', '',line[0])
-                if self._logfile:
-                    self._logfile.print_message(l.strip(),indent=4 )
-            else:
-                if self._logfile:
-                    self._logfile.print_message('No results with command "%r"' % command, indent=3,status=-1)
-                print "EXEC ERROR 1"
-                return 1
-        except Exception as e:
-            if self._logfile:
-                self._logfile.print_message(str(e),indent=3,status=-1)
-            else:
-                print "Unknown error."
-            print "EXEC ERROR 2"
-            return 1
+        # Check output file
+        if os.path.isfile( outputalign ) is False:
+            raise Exception('HVite did not created an alignment file.')
+
+    # -----------------------------------------------------------------------
+
+    def run_alignment(self, inputwav, basename, outputalign):
+        """
+        Execute the external program HVite to align.
+
+        @param inputwav is the wav input file name.
+        @param basename is the name of the dictionary file
+        @param outputalign is the output file name.
+
+        """
+        self.run_hvite(inputwav, basename, outputalign)
 
         if os.path.isfile(outputalign):
-            with codecs.open(outputalign, 'r', self._encoding) as f:
-                line = f.readlines()
-                if len(line)==1:
-                    return 1
+            with codecs.open(outputalign, 'r', encoding) as f:
+                lines = f.readlines()
+                if len(lines) == 1:
+                    raise Exception(lines)
 
-        return 0
+        return ""
 
-    # End run_alignment
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------

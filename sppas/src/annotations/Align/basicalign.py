@@ -35,194 +35,216 @@
 # File: basicalign.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-# ----------------------------------------------------------------------------
-
-
-import sys
-import os
 import re
 import codecs
-import logging
 
 import signals
-from basealigner  import baseAligner
-
+from basealigner  import BaseAligner
+from sp_glob import encoding
 
 # ----------------------------------------------------------------------------
 
-
-class basicAligner( baseAligner ):
+class BasicAligner( BaseAligner ):
     """
-    Basic Alignment annotation (also called phonetic segmentation).
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Basic automatic alignment system.
 
-    This segmentation assign the same duration at each phoneme.
-    In case of phonetic variants, the shortest possibility is selected.
+    This segmentation assign the same duration to each phoneme.
+    In case of phonetic variants, the shortest phonetization is selected.
+
     """
-
-    def __init__(self, model, mapping, logfile=None):
+    def __init__(self, modelfilename, mapping=None):
         """
-        Create a BasicAlign instance.
+        Constructor.
 
         BasicAlign aligns one inter-pausal unit with the same duration
-        for each phoneme. Select the shortest in case of variants.
+        for each phoneme. It selects the shortest in case of variants.
+
+        @param modelfilename (str) the acoustic model file name
+        @param mapping (Mapping) a mapping table to convert the phone set
 
         """
-        baseAligner.__init__(self, model, mapping, logfile)
+        BaseAligner.__init__(self, modelfilename, mapping)
+        self._outext = "palign"
 
-    # End __init__
     # -----------------------------------------------------------------------
-
 
     def run_alignment(self, inputwav, basename, outputalign):
         """
-        Execute the external program julius to align.
+        Perform the speech segmentation.
 
-        @param inputwav is the wav input file name.
-        @param basename is the name of the phon file
-        @param outputalign is the output file name.
+        Assign the same duration to each phoneme.
+
+        @param inputwav (str or float) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits; or its duration
+        @param basename (str) the base name of the grammar file and of the dictionary file
+        @param outputalign (str) the output file name
+
+        @return Empty string.
 
         """
-        try:
-            wavspeech = signals.open(inputwav)
-            duration  = wavspeech.get_duration()
-        except Exception:
-            duration = 0.
+        if isinstance(inputwav, float) is True:
+            duration = inputwav
+        else:
+            try:
+                wavspeech = signals.open( inputwav )
+                duration  = wavspeech.get_duration()
+            except Exception:
+                duration = 0.
+
+        with codecs.open(basename, 'r', encoding) as fp:
+            # Get the phoneme sequence and Remove multiple spaces
+            phones = fp.readline()
+            phones = re.sub("[ ]+", " ", phones)
 
         self.run_basic(duration, basename, outputalign)
 
-    # End run_alignment
+        return ""
+
     # ------------------------------------------------------------------------
 
+    def run_basic(self, duration, phones, outputalign=None):
+        """
+        Perform the speech segmentation.
 
-    def run_basic(self, duration, basename, outputalign):
+        Assign the same duration to each phoneme.
 
-        with codecs.open(basename, 'r', self._encoding) as fp:
-            # Get the phoneme sequence
-            phones = fp.readline()
-            # Remove multiple spaces
-            phones = re.sub("[ ]+", " ", phones)
+        @param duration (float) the duration of the audio input
+        @param phones (str) the phonetization to time-align
+        @param outputalign (str) the output file name
 
-        # Remove variants
+        @return the List of tuples (begin, end, phone)
+
+        """
+        # Remove variants: Select the first-shorter pronunciation of each token
         phoneslist = []
         tokenslist = phones.strip().split(" ")
-        if len(tokenslist) == 0 or duration < 0.01:
-            alignments = [(0., duration, "")]
-            self.write_palign([], alignments, outputalign)
-            return
-
-        selecttokenslist = [] # selected pronunciation of each token
-        i = 0
+        selecttokenslist = []
+        delta = 0.
         for pron in tokenslist:
-            token = self.__select(tokenslist[i])
-            selecttokenslist.append( token.strip().replace("."," ") )
-            phones = token.split(".")
-            i = i + 1
-            for p in phones:
-                phoneslist.append(p)
+            token = self.__select(pron)
+            phoneslist.extend( token.split() )
+            selecttokenslist.append( token.replace("."," ") )
 
-        # Estimate the duration of a phone (in centiseconds)
-        delta = ( duration / float(len(phoneslist)) ) * 100.0
-        if delta < 1.:
-            #raise Exception('Segmentation error: phones shorter than 10ms.')
-            if self._logfile:
-                self._logfile.print_message('Phones shorter than 10ms.', indent=3, status=-1)
-            alignments = [(0., duration, "")]
-            self.write_palign([], alignments, outputalign)
-            return
+        # Estimate the duration of a phone (in centi-seconds)
+        if len(phoneslist) > 0:
+            delta = ( duration / float(len(phoneslist)) ) * 100.
 
-        timeval = 0.0
-        alignments = []
-        for i in range(len(phoneslist)):
-            tv1 = int(timeval)
-            timeval = timeval + delta - 1
-            tv2 = int(timeval)
-            timeval = timeval + 1
-            alignments.append( (tv1, tv2, phoneslist[i]) )
+        # Generate the result
+        if delta < 1. or len(selecttokenslist) == 0:
+            return self.gen_alignment([], [], int(duration*100.), outputalign)
 
-        # Write this result in a file
-        self.write_palign(selecttokenslist, alignments, outputalign)
+        return self.gen_alignment(selecttokenslist, phoneslist, int(delta), outputalign)
 
-    # End run_basic
     # ------------------------------------------------------------------------
 
-
-    def write_palign(self,tokenslist,alignments,outputfile):
+    def gen_alignment(self, tokenslist, phoneslist, phonesdur, outputalign=None):
         """
-        Write an alignment file.
+        Write an alignment in an output file.
 
-        @param tokenslist: is a list with the phonetization of each token
-        @param alignments: is a list of tuples: (start-time end-time phoneme)
-        @param outputfile: is the output file name (a Julius-like output).
-
-        @raise IOError
+        @param tokenslist (list) phonetization of each token
+        @param phoneslist (list) each phone
+        @param phonesdur (int) the duration of each phone in centi-seconds
+        @param outputalign (str) the output file name
 
         """
+        timeval = 0
+        alignments = []
+        for phon in phoneslist:
+            tv1 = timeval
+            tv2 = timeval + phonesdur - 1
+            alignments.append( (tv1, tv2, phon) )
+            timeval = tv2 + 1
 
-        with codecs.open(outputfile, 'w', self._encoding)as fp:
+        if len(alignments) == 0:
+            alignments = [(0, phonesdur, "")]
+
+        if outputalign is not None:
+            if outputalign.endswith('palign'):
+                self.write_palign(tokenslist, alignments, outputalign)
+
+        return alignments
+
+    # ------------------------------------------------------------------------
+
+    def write_palign(self, tokenslist, alignments, outputfilename):
+        """
+        Write an alignment output file.
+
+        @param tokenslist (list) List with the phonetization of each token
+        @param alignments (list) List of tuples: (start-time end-time phoneme)
+        @param outputfilename (str) The output file name (a Julius-like output).
+
+        """
+        with codecs.open(outputfilename, 'w', encoding) as fp:
 
             fp.write("----------------------- System Information begin ---------------------\n")
             fp.write("\n")
             fp.write("                         SPPAS Basic Alignment\n")
             fp.write("\n")
             fp.write("----------------------- System Information end -----------------------\n")
+
             fp.write("### Recognition: 1st pass\n")
+
             fp.write("pass1_best_wordseq: ")
             for i in range(len(tokenslist)):
                 fp.write(str(i)+" ")
             fp.write("\n")
+
             fp.write("pass1_best_phonemeseq: ")
             for i in range(len(tokenslist)-1):
                 fp.write(str(tokenslist[i])+" | ")
             if len(tokenslist) > 0:
                 fp.write(str(tokenslist[len(tokenslist)-1]))
             fp.write("\n")
+
             fp.write("### Recognition: 2nd pass\n")
+
             fp.write("ALIGN: === phoneme alignment begin ===\n")
             fp.write("wseq1: ")
             for i in range(len(tokenslist)):
                 fp.write(str(i)+" ")
             fp.write("\n")
+
             fp.write("phseq1: ")
             for i in range(len(tokenslist)-1):
                 fp.write(str(tokenslist[i])+" | ")
             if len(tokenslist) > 0:
                 fp.write(str(tokenslist[len(tokenslist)-1]))
             fp.write("\n")
+
             fp.write("=== begin forced alignment ===\n")
             fp.write("-- phoneme alignment --\n")
             fp.write(" id: from  to    n_score    unit\n")
             fp.write(" ----------------------------------------\n")
-            for i in range(len(alignments)):
-                tv1,tv2,phon = alignments[i]
+            for tv1,tv2,phon in alignments:
                 fp.write("[ %d " % tv1)
                 fp.write(" %d]" % tv2)
                 fp.write(" -30.000000 "+str(phon)+"\n")
             fp.write("=== end forced alignment ===\n")
+
             fp.close()
-
-    # End write_palign
-    # ------------------------------------------------------------------
-
 
     # ------------------------------------------------------------------------
     # Private
     # ------------------------------------------------------------------------
 
     def __select(self, pron):
-        """ Select the shorter phonetization of an entry. """
+        """
+        Select the first-shorter phonetization of an entry.
+
+        """
         tab = pron.split("|")
-        i=0
-        m=len(tab[0])
+        i = 0
+        m = len(tab[0])
 
         for n,p in enumerate(tab):
-            if len(p)<m:
+            if len(p) < m:
                 i = n
                 m = len(p)
-        return tab[i]
+        return tab[i].strip()
 
-    # End __select
     # ------------------------------------------------------------------------

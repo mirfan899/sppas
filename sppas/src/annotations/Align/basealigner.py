@@ -33,84 +33,140 @@
 #
 # ---------------------------------------------------------------------------
 # File: basealigner.py
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+import os
+import random
+import shutil
+from datetime import date
 
+from resources.mapping import Mapping
+from resources.acm.tiedlist import TiedList
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
-
-class baseAligner:
+class BaseAligner:
     """
-    Factory class for an automatic alignment system, ie a system to perform
-    phonetic speech segmentation.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Base class for an automatic alignment system.
+
+    A base class for a system to perform phonetic speech segmentation.
+
     """
-
-    def __init__(self, model, mapping, logfile=None):
+    def __init__(self, modelfilename, mapping=None):
         """
-        Create a new baseAligner instance.
+        Constructor.
 
-        @param model is the acoustic model file name,
-        @param logfile is a file descriptor of a log file (see log.py).
+        @param modelfilename (str) the acoustic model file name
+        @param mapping (Mapping) a mapping table to convert the phone set
 
         """
-        self._encoding ='utf-8'
-        self._model    = model
-        self._logfile  = logfile
+        if mapping is None:
+            mapping = Mapping()
+        if isinstance(mapping, Mapping) is False:
+            raise TypeError('Aligner expected a Mapping as argument.')
+
+        self._model    = modelfilename
+        self._mapping  = mapping
         self._infersp  = False
+        self._outext   = ""
 
-        self._mapping = mapping
-        self._mappingpatch = {}
-        self._mappingpatch["UNK"] = "dummy"
+    # -----------------------------------------------------------------------
 
-    # End __init__
-    # ------------------------------------------------------------------------
+    def get_outext(self):
+        """
+        Return the extension for output files.
 
+        @return str
+
+        """
+        return self._outext
+
+    # -----------------------------------------------------------------------
+
+    def get_infersp(self):
+        """
+        Return the infersp option value.
+
+        @return boolean value
+
+        """
+        return self._infersp
+
+    # -----------------------------------------------------------------------
 
     def set_infersp(self, infersp):
         """
         Fix the infersp option.
-        If infersp is set to True, sppasAlign() will add a short pause at
-        the en of each token, and the automatic aligner will infer if it is
-        appropriate or not.
 
-        @param infersp is a Boolean
+        @param infersp (bool) If infersp is set to True, the system will
+        add a short pause at the end of each token, and the automatic aligner
+        will infer if it is appropriate or not.
 
         """
         self._infersp = infersp
 
-    # End set_infersp
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
+    def add_tiedlist(self, entries):
+        """
+        Add missing triphones/biphones in the tiedlist of the model.
+
+        @param entries (list) List of missing entries into the tiedlist.
+
+        """
+        tiedfile = os.path.join(self._model, "tiedlist")
+        if os.path.exists( tiedfile ) is False:
+            return []
+
+        tie = TiedList()
+        tie.load( tiedfile )
+        addentries = []
+        for entry in entries:
+            if tie.is_observed( entry ) is False and tie.is_tied( entry ) is False:
+                ret = tie.add_tied( entry )
+                if ret is True:
+                    addentries.append(entry)
+
+        if len(addentries) > 0:
+            today          = str(date.today())
+            randval        = str(int(random.random()*10000))
+            backuptiedfile = os.path.join(self._model, "tiedlist."+today+"."+randval)
+            shutil.copy( tiedfile,backuptiedfile )
+            tie.save( tiedfile )
+
+        return addentries
+
+    # ------------------------------------------------------------------------
 
     def gen_dependencies(self, phones, grammarname, dictname):
         """
         Generate the dependencies (grammar, dictionary).
 
-        @param phones is the phonetization to align (spaces separate tokens, pipes separate variants, dots separate phones)
-        @param dfaname is the file name of the grammar (output)
-        @param dictname is the dictionary file name (output)
+        @param phones (str) the phonetization to align (spaces separate tokens, pipes separate variants, dots separate phones)
+        @param dfaname (str) the file name of the grammar (output)
+        @param dictname (str) the dictionary file name (output)
 
         """
         pass
 
-    # End gen_dependencies
-    # ------------------------------------------------------------------------
-
+    # -----------------------------------------------------------------------
 
     def run_alignment(self, inputwav, basename, outputalign):
         """
-        Execute the external program to perform alignment.
+        Execute a program to perform alignment.
 
-        @param inputwav is the wav input file name.
-        @param basename is the basename for the grammar file and the dictionary file
-        @param outputalign is the output file name.
+        @param inputwav (str) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
+        @param basename (str) the base name of the grammar file and of the dictionary file
+        @param outputalign (str) the output file name
+
+        @return str A message of the aligner.
 
         """
         raise NotImplementedError
 
-    # End run_alignment
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------

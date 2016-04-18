@@ -93,7 +93,7 @@ if args.i:
     p.run( args.i,args.o )
 else:
     pdict      = DictPron( args.dict )
-    phonetizer = DictPhon( pdict, logfile=None )
+    phonetizer = DictPhon( pdict )
     for line in sys.stdin:
         print phonetizer.phonetize( line, unkopt )
 

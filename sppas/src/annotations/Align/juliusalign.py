@@ -35,32 +35,30 @@
 # File: juliusalign.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
-import sys
 import os
-import re
 import codecs
+import re
+
 from subprocess import Popen, PIPE, STDOUT
 
-from basealigner import baseAligner
+from basealigner import BaseAligner
+
+from sp_glob import encoding
 
 # ----------------------------------------------------------------------------
 
-class juliusAligner( baseAligner ):
+class JuliusAligner( BaseAligner ):
     """
-    Julius Alignment.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Julius automatic alignment system.
 
     http://julius.sourceforge.jp/en_index.php
 
-    "Julius" is a high-performance, two-pass large vocabulary continuous
+    `Julius` is a high-performance, two-pass large vocabulary continuous
     speech recognition (LVCSR) decoder software for speech-related researchers
     and developers. Based on word N-gram and context-dependent HMM, it can
     perform almost real-time decoding on most current PCs in 60k word dictation
@@ -82,38 +80,39 @@ class juliusAligner( baseAligner ):
     1997, and the work was continued under IPA Japanese dictation toolkit
     project (1997-2000), Continuous Speech Recognition Consortium, Japan (CSRC)
     (2000-2003) and currently Interactive Speech Technology Consortium (ISTC).
+
     """
-
-    def __init__(self, model, mapping, logfile=None):
+    def __init__(self, modelfilename, mapping=None):
         """
-        Create a new juliusAlign instance.
+        Constructor.
 
-        @param model is the acoustic model file name,
-        @param logfile is a file descriptor of a log file (see log.py).
+        JuliusAligner aligns one inter-pausal unit.
+
+        @param modelfilename (str) the acoustic model file name
+        @param mapping (Mapping) a mapping table to convert the phone set
 
         """
-        baseAligner.__init__(self, model, mapping, logfile)
+        BaseAligner.__init__(self, modelfilename, mapping)
+        self._outext = "palign"
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def gen_dependencies(self, phones, grammarname, dictname):
         """
         Generate the dependencies (grammar, dictionary) for julius.
 
-        @param phones is the phonetization to align (spaces separate tokens, pipes separate variants, dots separate phones)
-        @param dfaname is the file name of the grammar (output)
-        @param dictname is the dictionary file name (output)
+        @param phones (str) the phonetization to align (spaces separate tokens, pipes separate variants, dots separate phones)
+        @param grammarname (str) the file name of the grammar (output)
+        @param dictname (str) the dictionary file name (output)
 
         """
+        # Map phonemes from SAMPA to the expected one.
         self._mapping.set_keepmiss(True)
         self._mapping.set_reverse( True )
-
         phones = self._mapping.map(phones)
 
-        with codecs.open(grammarname, 'w', self._encoding) as fdfa,\
-                codecs.open(dictname, 'w', self._encoding) as fdict:
+        with codecs.open(grammarname, 'w', encoding) as fdfa,\
+                codecs.open(dictname, 'w', encoding) as fdict:
 
             tokenslist = phones.strip().split(" ")
             tokenidx = 0
@@ -124,19 +123,11 @@ class juliusAligner( baseAligner ):
                 # dictionary:
                 for variant in pron.split("|"):
 
-                    # map phonemes (if any)
-                    variant = '.' + variant + '.'
-                    for k,v in self._mappingpatch.items():
-                        if k in variant:
-                            variant = variant.replace('.'+k+'.', '.'+v+'.')
-
-                    # write
                     fdict.write( str(tokenidx)+' ' )
                     fdict.write("[w_"+str(tokenidx)+"] ")
-
                     fdict.write(variant.replace(".",' ')+"\n" )
 
-                # dfa grammar
+                # grammar:
                 if tokenidx == 0:
                     fdfa.write( str(tokenidx)+" "+str(nbtokens)+" "+str(tokenidx+1)+" 0 1\n")
                 else:
@@ -147,106 +138,105 @@ class juliusAligner( baseAligner ):
             # last line of the grammar
             fdfa.write( str(tokenidx)+" -1 -1 1 0\n")
 
-    # End gen_dependencies
     # ------------------------------------------------------------------------
 
-
-    def run_alignment(self, inputwav, basename, outputalign):
+    def run_julius(self, inputwav, basename, outputalign):
         """
-        Execute the external program julius to align.
+        Perform the speech segmentation.
 
-        @param inputwav is the wav input file name.
-        @param basename is the basename of the DFA grammar file and dictionary file
-        @param outputalign is the output file name.
+        Call the system command `julius`.
 
         """
         tiedlist = os.path.join(self._model, "tiedlist")
         hmmdefs  = os.path.join(self._model, "hmmdefs")
+        config   = os.path.join(self._model, "config")
 
-        # By David Yeung, force Julius to use configuration file of HTK
-        config = os.path.join(self._model, "config")
-
+        # Create the command
         command = 'echo '
         command += inputwav
         command += ' | julius -input file -h '
+
+        # its parameters
         command += '"' + hmmdefs.replace('"', '\\"') + '"'
         command += ' -gram '
         command += '"' + basename.replace('"', '\\"') + '"'
         if os.path.isfile(tiedlist):
             command += ' -hlist '
             command += '"' + tiedlist.replace('"', '\\"') + '"'
-        """ By David Yeung, force Julius to use configuration file of HTK
-        """
+        command += ' -palign -multipath -penalty1 5.0 -penalty2 20.0 -iwcd1 max -gprune safe -m 10000 -b2 1000 -sb 1000.0 -smpFreq 16000'
+        if self._infersp is True:
+            command += ' -spmodel "sp" -iwsp -iwsppenalty -70.0'
+        # By David Yeung, force Julius to use configuration file of HTK
         if os.path.isfile(config):
             command += ' -htkconf '
             command += '"' + config.replace('"', '\\"') + '"'
 
-        command += ' -palign -multipath -penalty1 5.0 -penalty2 20.0 -iwcd1 max -gprune safe -m 10000 -b2 1000 -sb 1000.0 -smpFreq 16000'
-
-        if self._infersp is True:
-            command += ' -spmodel "sp" -iwsp -iwsppenalty -70.0'
-
+        # the output of the command
         command += ' > '
-
         command += '"' + outputalign.replace('"', '\\"') + '"'
 
-        # Execute command
-
+        # Execute the command
         p = Popen(command, shell=True, stdout=PIPE, stderr=STDOUT)
-        retval = p.wait()
+        p.wait()
         line = p.communicate()
 
+        # Julius not installed
         if len(line[0]) > 0 and line[0].find("not found") > -1:
-            if self._logfile:
-                self._logfile.print_message(' **************** julius not installed ************** ',status=-1)
-            else:
-                print " **************** ERROR: julius not installed ************** "
-            return 1
+            raise OSError( "julius is not properly installed. See installation instructions for details." )
 
+        # Bad command
         if len(line[0]) > 0 and line[0].find("-help") > -1:
-            if self._logfile:
-                self._logfile.print_message(' **************** Bad command: **************\n%s '%command, status=-1)
-            else:
-                print " **************** ERROR: Bad command. **************\n",command
-            return 1
+            raise OSError( "julius command failed." )
 
-        # Write the program output at the end of the log file
-        try:
-            if len(line[0]) > 0:
-                #THIS DOES NOT WORK on Windows if line[0] contains accentuated characters:
-                #   l = unicodedata.normalize('NFKD', line[0]).encode('ascii', 'ignore')
-                #THEN.... Try an other solution to remove all strange characters in this string:
-                import re
-                l = re.sub(ur'[^a-zA-Z0-9\',\s]', '',line[0])
-                if self._logfile:
-                    self._logfile.print_message(l.strip(),indent=4)
-            elif self._logfile:
-                self._logfile.print_message('No results with command "%r"' % command,indent=3,status=-1)
-        except Exception as e:
-            if self._logfile:
-                self._logfile.print_message(str(e),indent=3,status=-1)
-            #else:
-            #    print "Julius command: Unknown error!"
+        # Check output file
+        if os.path.isfile( outputalign ) is False:
+            raise Exception('julius did not created an alignment file.')
 
-        err = 2
-        if os.path.isfile(outputalign):
-            with codecs.open(outputalign, 'r', self._encoding) as f:
-                lines = f.readlines()
-            for line in lines:
-                if line.startswith("Error: voca_load_htkdict"):
-                    if self._logfile:
-                        message="The reported error is:\n"
-                        for l in lines:
-                            if l.startswith("Error:"):
-                                message = message + l
-                        self._logfile.print_message(message,indent=3,status=-1)
-                    if os.path.isfile(tiedlist):
-                        err += 3
-                    else:
-                        return 1
-                elif line.find("forced alignment ===") > -1:
-                    err -= 1
-        return err
+    # ------------------------------------------------------------------------
 
-    # End run_julius
+    def run_alignment(self, inputwav, basename, outputalign):
+        """
+        Perform the speech segmentation.
+
+        @param inputwav (str) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
+        @param basename (str) the base name of the grammar file and of the dictionary file
+        @param outputalign (str) the output file name
+
+        """
+        self.run_julius(inputwav, basename, outputalign)
+        with codecs.open(outputalign, 'r', encoding) as f:
+            lines = f.readlines()
+
+        entries = []
+        for line in lines:
+            if line.find("Error: voca_load_htkdict")>-1 and line.find("not found")>-1:
+                line = re.sub("[ ]+", " ", line)
+                line = line.strip()
+                line = line[line.find('"')+1:]
+                line = line[:line.find('"')]
+                if len(line)>0:
+                    entries = line.split(" ")
+
+        message = ""
+        if len(entries) > 0:
+            added = self.add_tiedlist(inputwav, entries)
+            if len(added) > 0:
+                message = "The acoustic model was modified. The following entries were successfully added into the tiedlist: "
+                message = message + " ".join(added) + "\n"
+                self.run_julius(inputwav, basename, outputalign)
+                with codecs.open(outputalign, 'r', encoding) as f:
+                    lines = f.readlines()
+
+        errorlines = ""
+        for line in lines:
+            if line.startswith("Error: voca_load_htkdict"):
+                for l in lines:
+                    if l.startswith("Error:"):
+                        errorlines = errorlines + l
+
+        if len(errorlines) > 0:
+            raise Exception(message + errorlines)
+
+        return message
+
     # ------------------------------------------------------------------------

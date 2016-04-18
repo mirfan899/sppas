@@ -3,14 +3,31 @@
 
 import unittest
 
-from test_phonetize  import TestPhonetize
 from test_num2letter import TestNum2Letter
 from test_tokenize   import TestDictTok
+from test_phon       import TestDictPhon, TestDAGPhon, TestSppasPhon, TestPhonUnk
+from test_align      import TestBaseAligner, TestBasicAlign, TestJuliusAlign, TestHviteAlign
+
+# ---------------------------------------------------------------------------
 
 testsuite = unittest.TestSuite()
-testsuite.addTest(unittest.makeSuite(TestPhonetize))
+
+# tokenize
 testsuite.addTest(unittest.makeSuite(TestNum2Letter))
 testsuite.addTest(unittest.makeSuite(TestDictTok))
+
+# phonetize
+testsuite.addTest(unittest.makeSuite(TestDictPhon))
+testsuite.addTest(unittest.makeSuite(TestDAGPhon))
+testsuite.addTest(unittest.makeSuite(TestSppasPhon))
+testsuite.addTest(unittest.makeSuite(TestPhonUnk))
+
+# alignment
+testsuite = unittest.TestSuite()
+testsuite.addTest(unittest.makeSuite(TestBaseAligner))
+testsuite.addTest(unittest.makeSuite(TestBasicAlign))
+testsuite.addTest(unittest.makeSuite(TestJuliusAlign))
+testsuite.addTest(unittest.makeSuite(TestHviteAlign))
 
 unittest.TextTestRunner(verbosity=2).run(testsuite)
 
