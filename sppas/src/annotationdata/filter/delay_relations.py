@@ -68,22 +68,40 @@ class JoinList(list):
     A list with customizable str() method
     @param args:    the list of predicates
     @param kwargs:    options
+        - name (str): a name for str()
         - sep (str): set the join separator (default: ',')
         - left (str): string before the list, p.e. '[' (default: '')
         - right (str): string after the list, p.e. ']' (default: '')
     """
     def __init__(self, *args, **kwargs):
         list.__init__(self, args)
+        self.name = kwargs.get('name', None)
         self.__str__opts = {'sep':',', 'left':'', 'right':''}
         for k,v in kwargs.items():
             self.__str__opts[k]=v;
 
+    # -----------------------------------------------------------------------
+    def __repr__(self):
+        return "%s(%s)" % (self.__class__.__name__, ', '.join([str(i) for i in self]))
+
     def __str__(self):
+        if self.name is not None:
+            return self.name
         return "{left}{join}{right}".format(
                 left = self.__str__opts['left'] if (self.__str__opts['left'] is not None) else '',
                 right = self.__str__opts['right'] if (self.__str__opts['right'] is not None) else '',
                 join = (self.__str__opts['sep'] if (self.__str__opts['sep'] is not None) else '').join(map(str, self))
                 )
+
+    # -----------------------------------------------------------------------
+    def __format__(self, f):
+        # easy case
+        if f=='r':
+            return repr(self)
+        if f=='s':
+            return str(self)
+        # default
+        return str(self)
 
 #---------------------------------------------------------------
 class OrPredicates(JoinList):
@@ -97,7 +115,6 @@ class OrPredicates(JoinList):
 
     def __init__(self, *args, **kwargs):
         JoinList.__init__(self, *args, sep=" OR ", **kwargs)
-        self.name = kwargs.get('name', None)
 
     def __call__(self, *args, **kwargs):
         """
@@ -108,11 +125,9 @@ class OrPredicates(JoinList):
         for p in self:
             res = p(*args, **kwargs)
             if res:
+                #TODO? if (self.name is not None): (try) res.name = self.name
                 return res
         return None # any not None result
-    
-    def __str__(self):
-        return self.name if (self.name is not None) else JoinList.__str__(self)
     
     #---------------------------------------------
     #-- '&' and '|' operators
@@ -122,6 +137,7 @@ class OrPredicates(JoinList):
     def __or__(self, other):
         """
         Allow to combine 2 predicates with the '|' operator
+        @deprecated:    prefer explicit OrPredicates(self, other, ...)
         """
         return OrPredicates(self, other)
 
@@ -129,6 +145,7 @@ class OrPredicates(JoinList):
     def __and__(self, other):
         """
         Allow to combine 2 predicates with the '&' operator
+        @deprecated:    prefer explicit AndPredicates(self, other, ...)
         """
         return AndPredicates(self, other)
 
@@ -153,7 +170,7 @@ class AndPredicates(JoinList):
         @return: the list of all results if all are verified
             or None if any result is falsy
         """
-        results = JoinList(sep=" and ")
+        results = JoinList(sep=" and ", name=self.name)
         # return None if one is None
         for p in self:
             res = p(*args, **kwargs)
@@ -164,9 +181,6 @@ class AndPredicates(JoinList):
         # join the result
         return results #" AND ".join(map(str, results))
 
-    def __str__(self):
-        return self.name if (self.name is not None) else JoinList.__str__(self)
-
     #---------------------------------------------
     #-- '&' and '|' operators
     #---------------------------------------------
@@ -175,6 +189,7 @@ class AndPredicates(JoinList):
     def __or__(self, other):
         """
         Allow to combine 2 predicates with the '|' operator
+        @deprecated:    prefer explicit OrPredicates(self, other, ...)
         """
         return OrPredicates(self, other)
 
@@ -182,6 +197,7 @@ class AndPredicates(JoinList):
     def __and__(self, other):
         """
         Allow to combine 2 predicates with the '&' operator
+        @deprecated:    prefer explicit AndPredicates(self, other, ...)
         """
         return AndPredicates(self, other)
 
