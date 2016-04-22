@@ -273,12 +273,13 @@ class DictTok:
 
         toks = []
         for t in s.split():
-            if not "/" in t: #if not a phonetized entry
+            # if not a phonetized entry
+            if t.startswith("/") is False and t.endswith("/") is False:
                 if std is False:
                     if not character_based(self.lang):
                         # Split numbers if sticked to characters
                         # attention: do not replace [a-zA-Z] by [\w] (because \w includes numbers)
-                        # and not on asian languages: it can be a tone!
+                        # and not on Asian languages: it can be a tone!
                         t = re.sub(u'([0-9])([a-zA-Z])', ur'\1 \2', t)
                         t = re.sub(u'([a-zA-Z])([0-9])', ur'\1 \2', t)
 
@@ -294,7 +295,7 @@ class DictTok:
                     if t.endswith(r):
                         t = t[:-len(r)]
                         t = t + ' ' + r
-            toks.append(t)
+            toks.append(t.strip())
 
         s = " ".join(toks)
 
@@ -398,7 +399,7 @@ class DictTok:
             #   --> an unknown token
             #   --> containing a special character
             #   --> that is not a truncated word!
-            if self.vocab.is_unk(tok.lower().strip()) is True and (tok.find("-")>-1 or tok.find("'")>-1 or tok.find(".")>-1) and not tok.endswith('-'):
+            if self.vocab.is_unk(tok.lower().strip()) is True and ("-" in tok or "'" in tok or "." in tok) and not tok.endswith('-'):
 
                 # Split the unknown token into a list
                 # KEEP special chars ('-.) in the array!

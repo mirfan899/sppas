@@ -144,7 +144,7 @@ class AudioSppasPresenter:
             raise NameError("The sample width of ("+str(audio.get_sampwidth())+") of the given file is not appropriate. " + str(self._reqSamplewidth) + " bytes required")
 
         if (audio.get_framerate() < self._reqFramerate):
-            raise NameError("The framerate of ("+str(audio.get_framerate())+") of the given file is not appropriate. " + str(self._reqFramerate) + " Hz required")
+            raise NameError("The framerate of "+str(audio.get_framerate())+" Hz of the given file is not appropriate: " + str(self._reqFramerate) + " Hz required")
 
         if (self._reqSamplewidth != audio.get_sampwidth()):
             toconvert = True
@@ -159,7 +159,7 @@ class AudioSppasPresenter:
         if (self._reqFramerate != audio.get_framerate()):
             toconvert = True
             if self._logfile:
-                self._logfile.print_message("The framerate of ("+str(audio.get_framerate())+") of the given file is not appropriate. Framerate is changed to " + str(self._reqFramerate) + " Hz", indent=3, status=1)
+                self._logfile.print_message("The framerate of "+str(audio.get_framerate())+" Hz is not appropriate: " + str(self._reqFramerate) + " Hz required.", indent=3, status=1)
 
         if toconvert is True:
             # Get the expected channel

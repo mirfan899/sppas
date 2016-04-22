@@ -172,7 +172,11 @@ class sppasPhon( object ):
             else:
                 tabphon.append( p )
                 if s == WARNING_ID:
-                    message = "%s is missing in the dictionary. It was automatically phonetized as: %s"%(t,p)
+                    message = "%s is missing in the dictionary. "%t
+                    if len(p) > 0:
+                        message = message +"It was automatically phonetized as: %s"%p
+                    else:
+                        message = message +"It wasn't phonetized."
 
             if message:
                 if self.logfile:

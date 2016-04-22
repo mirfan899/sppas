@@ -38,7 +38,6 @@
 import shutil
 import os.path
 import glob
-import logging
 
 from presenters.audiosppaspresenter import AudioSppasPresenter
 import utils.fileutils as fileutils
@@ -269,8 +268,6 @@ class sppasAlign:
 
             if self.logfile:
                 self.logfile.print_message('Align unit number '+str(track), indent=3)
-            else:
-                logging.info( ' ... Align unit number %d'%track)
 
             audiofilename = os.path.join(diralign, "track_%06d.wav"%track)
             phonname      = os.path.join(diralign, "track_%06d.phon"%track)
@@ -279,20 +276,27 @@ class sppasAlign:
             try:
                 msg = self.speechseg.segmenter(audiofilename, phonname, alignname)
                 if self.logfile:
-                    self.logfile.print_message(msg, indent=3, status=OK_ID)
+                    if len(msg) == 0:
+                        self.logfile.print_message("", indent=3, status=OK_ID)
+                    else:
+                        self.logfile.print_message(msg, indent=3, status=INFO_ID)
 
             except Exception as e:
                 if self.logfile:
-                    self.logfile.print_message(self.speechseg._alignerid+' failed to perform segmentation: '+str(e), indent=3, status=ERROR_ID)
+                    self.logfile.print_message(self.speechseg._alignerid+' failed to perform segmentation.', indent=3, status=ERROR_ID)
+                    self.logfile.print_message(str(e), indent=4, status=INFO_ID)
+
+                if os.path.exists(alignname):
+                    os.rename(alignname, alignname+'.backup')
+                alignname = os.path.join(diralign, "track_%06d.%s"%(track,self.speechseg._basicaligner.get_outext()))
 
                 # Execute BasicAlign
                 if self._options['basic'] is True:
                     if self.logfile:
                         self.logfile.print_message('Execute a Basic Alignment - same duration for each phoneme:', indent=3)
-                    if os.path.exists(alignname):
-                        os.rename(alignname, alignname+'.backup')
-                    alignname = os.path.join(diralign, "track_%06d.palign"%track)
                     self.speechseg.exec_basic_alignment(audiofilename, phonname, alignname)
+                else:
+                    self.speechseg.exec_basic_alignment(audiofilename, None, alignname)
 
             track = track + 1
 
@@ -320,7 +324,7 @@ class sppasAlign:
                 if converted is False:
                     self.logfile.print_message("", indent=3, status=OK_ID)
                 else:
-                    self.logfile.print_message("The file was converted to the required format.", indent=3, status=INFO_ID)
+                    self.logfile.print_message("A copy of the file was created with the required format.", indent=3, status=INFO_ID)
         except IOError as e:
             raise IOError('Not a valid audio file: '+str(e))
 
@@ -331,6 +335,10 @@ class sppasAlign:
         diralign, fileExt = os.path.splitext( self.inputaudio )
         if not os.path.exists( diralign ):
             os.mkdir( diralign )
+            if self._options['clean'] is False:
+                if self.logfile:
+                    self.logfile.print_message("The working directory is: %s"%diralign, indent=3, status=INFO_ID)
+
         listfilename = os.path.join(diralign, "tracks.list")
 
         # Split input into inter-pausal units
@@ -413,7 +421,7 @@ class sppasAlign:
             if self.logfile:
                 self.logfile.print_message("", indent=4, status=OK_ID)
 
-        except Exception as e:
+        except Exception:
             if self._options['clean'] is True:
                 shutil.rmtree( diralign )
             raise # IOError("align.py. AlignerIO. Error while reading aligned tracks: " + str(e))
@@ -506,6 +514,10 @@ class sppasAlign:
         @param outputfilename is the file name with the result (3 tiers)
 
         """
+        if self.logfile:
+            for k,v in self._options.items():
+                self.logfile.print_message("Option: %s: %s"%(k,v), indent=2, status=INFO_ID)
+
         # Get the tiers to be time-aligned.
         trsinput = annotationdata.io.read( inputphonesname )
         phontier = self.get_phonestier( trsinput )
@@ -523,22 +535,26 @@ class sppasAlign:
                 self.logfile.print_message("Tokens alignment disabled: no tokenization available", indent=2, status=INFO_ID)
 
         # Processing...
-        trsoutput = self.convert( phontier,toktier,inputaudioname )
+        try:
+            trsoutput = self.convert( phontier,toktier,inputaudioname )
+        except Exception:
+            import traceback
+            print traceback.format_exc()
+            raise
 
         # Save results
         try:
             if self.logfile:
-                self.logfile.print_message("Save each alignment unit: ",indent=3)
+                self.logfile.print_message("Save alignment of the units: ",indent=3)
             self.save( trsinput, inputphonesname, trsoutput, outputfilename )
-
             if self.logfile:
                 self.logfile.print_message("", indent=4, status=OK_ID)
 
-        except Exception as e:
+        except Exception:
             if self._options['clean'] is True:
                 diralign, fileExt = os.path.splitext( self.inputaudio )
                 shutil.rmtree( diralign )
-            raise IOError("align.py. Save. Error while saving file: " + str(e))
+            raise #IOError("align.py. Save. Error while saving file: " + str(e))
 
         # Clean!
         # if the audio file was converted.... remove the tmpaudio

@@ -80,6 +80,7 @@ class HviteAligner( BaseAligner ):
         @param dictname is the dictionary file name (output)
 
         """
+        # Map phonemes from SAMPA to the expected one.
         self._mapping.set_keepmiss(True)
         self._mapping.set_reverse(True)
         phones = self._mapping.map(phones)

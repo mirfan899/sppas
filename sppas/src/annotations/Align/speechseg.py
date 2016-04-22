@@ -93,7 +93,10 @@ class SpeechSegmenter:
         # Map phoneme names from model-specific to SAMPA and vice-versa
         mappingfilename = os.path.join( self._model, "monophones.repl")
         if os.path.isfile( mappingfilename ):
-            self._mapping = Mapping( mappingfilename )
+            try:
+                self._mapping = Mapping( mappingfilename )
+            except Exception:
+                self._mapping = Mapping()
         else:
             self._mapping = Mapping()
 
@@ -229,6 +232,7 @@ class SpeechSegmenter:
         @param alignname (str) the output file name to save the result
 
         """
+        phones = ""
         with codecs.open(phonname, 'r', encoding) as fp:
             # Get the phoneme sequence
             phones = fp.readline()
@@ -237,7 +241,8 @@ class SpeechSegmenter:
 
         # Do not align nothing!
         if len(phones) == 0:
-            return "Nothing to do: empty unit."
+            self._basicaligner.run_alignment(audiofilename, None, alignname)
+            return "Empty annotation: nothing to align."
 
         # Do not ask Aligner to align only one phoneme!
         if len(phones.split()) <= 1 and '.' not in phones:

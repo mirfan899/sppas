@@ -80,7 +80,7 @@ class BasicAligner( BaseAligner ):
         Assign the same duration to each phoneme.
 
         @param inputwav (str or float) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits; or its duration
-        @param basename (str) the base name of the grammar file and of the dictionary file
+        @param basename (str or None) the base name of the grammar file and of the dictionary file
         @param outputalign (str) the output file name
 
         @return Empty string.
@@ -95,12 +95,14 @@ class BasicAligner( BaseAligner ):
             except Exception:
                 duration = 0.
 
-        with codecs.open(basename, 'r', encoding) as fp:
-            # Get the phoneme sequence and Remove multiple spaces
-            phones = fp.readline()
-            phones = re.sub("[ ]+", " ", phones)
+        phones = ""
+        if basename is not None:
+            with codecs.open(basename, 'r', encoding) as fp:
+                # Get the phoneme sequence and Remove multiple spaces
+                phones = fp.readline()
+                phones = re.sub("[ ]+", " ", phones)
 
-        self.run_basic(duration, basename, outputalign)
+        self.run_basic(duration, phones, outputalign)
 
         return ""
 
@@ -160,7 +162,7 @@ class BasicAligner( BaseAligner ):
             timeval = tv2 + 1
 
         if len(alignments) == 0:
-            alignments = [(0, phonesdur, "")]
+            alignments = [(0, int(phonesdur), "")]
 
         if outputalign is not None:
             if outputalign.endswith('palign'):

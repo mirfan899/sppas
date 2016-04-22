@@ -117,6 +117,9 @@ class TestDictTok(unittest.TestCase):
         s = self.tok.clean_toe(u"gpd_1324ah euh")
         self.assertEqual(s, u"ah euh")
 
+        s = self.tok.clean_toe(u"ah a/b euh")
+        self.assertEqual(s, u"ah a/b euh")
+
 
     def test_sampa(self):
         repl = DictRepl( os.path.join(RESOURCES_PATH, "repl", "fra.repl"), nodump=True )
@@ -127,11 +130,17 @@ class TestDictTok(unittest.TestCase):
         s = self.tok.tokenize(u"[le mot,/lemot/]", std=True)
         self.assertEqual(u"le_mot", s)
 
+        s = self.tok.clean_toe(u"ah a/b euh")
+        self.assertEqual(s, u"ah a/b euh")
+
 
     def test_tokenize(self):
         self.tok.set_lang("fra")
         splitfra = self.tok.tokenize(u"l'assiette l'abat-jour et le paris-brest et Paris-Marseille")
         self.assertEqual(splitfra, u"l' assiette l' abat-jour et le paris-brest et paris - marseille")
+
+        s = self.tok.tokenize(u"ah a/b euh")
+        self.assertEqual(s, u"ah a/b euh")
 
 
     def test_code_switching(self):

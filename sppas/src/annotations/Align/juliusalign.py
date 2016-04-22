@@ -229,10 +229,8 @@ class JuliusAligner( BaseAligner ):
 
         errorlines = ""
         for line in lines:
-            if line.startswith("Error: voca_load_htkdict"):
-                for l in lines:
-                    if l.startswith("Error:"):
-                        errorlines = errorlines + l
+            if line.startswith("Error:") and not " line " in line:
+                errorlines = errorlines + line
 
         if len(errorlines) > 0:
             raise Exception(message + errorlines)
