@@ -219,7 +219,7 @@ class JuliusAligner( BaseAligner ):
 
         message = ""
         if len(entries) > 0:
-            added = self.add_tiedlist(inputwav, entries)
+            added = self.add_tiedlist(entries)
             if len(added) > 0:
                 message = "The acoustic model was modified. The following entries were successfully added into the tiedlist: "
                 message = message + " ".join(added) + "\n"
