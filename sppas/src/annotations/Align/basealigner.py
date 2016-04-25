@@ -148,7 +148,7 @@ class BaseAligner:
         Generate the dependencies (grammar, dictionary).
 
         @param phones (str) the phonetization to align (spaces separate tokens, pipes separate variants, dots separate phones)
-        @param dfaname (str) the file name of the grammar (output)
+        @param grammarname (str) the file name of the grammar (output)
         @param dictname (str) the dictionary file name (output)
 
         """

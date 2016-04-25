@@ -85,11 +85,12 @@ class sppasAlign:
     >>> a.run(inputphonesname, inputtokensname, inputaudioname, outputfilename)
 
     """
-    def __init__(self, model, logfile=None):
+    def __init__(self, model, modelL1=None, logfile=None):
         """
         Create a new sppasAlign instance.
 
-        @param model is the acoustic model directory name,
+        @param model is the acoustic model directory name of the language of the text,
+        @param modelL1 is the acoustic model directory name of the mother language of the speaker,
         @param logfile is a file descriptor of a log file (see log.py).
 
         """

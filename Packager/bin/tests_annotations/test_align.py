@@ -4,20 +4,25 @@
 import unittest
 import os
 import sys
+import shutil
 from os.path import dirname,abspath
 
 SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
 sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
+from utils.type import compare
+
 from sp_glob import RESOURCES_PATH
 from sp_glob import SAMPLES_PATH
 
 from resources.mapping  import Mapping
+from resources.acm.acmodel import AcModel
 
 from annotations.Align.basealigner    import BaseAligner
 from annotations.Align.basicalign     import BasicAligner
 from annotations.Align.juliusalign    import JuliusAligner
 from annotations.Align.hvitealign     import HviteAligner
+from annotations.Align.modelmixer     import ModelMixer
 
 MODELDIR = os.path.join(RESOURCES_PATH, "models")
 
@@ -97,18 +102,45 @@ class TestBasicAlign( unittest.TestCase ):
 class TestJuliusAlign( unittest.TestCase ):
 
     def setUp(self):
-        self._model   = os.path.join(MODELDIR, "models-fra")
-        self._mapping = Mapping(os.path.join(self._model, "monophones.repl"))
-        self._aligner = JuliusAligner( self._model, self._mapping )
+        self._modeldir = os.path.join(MODELDIR, "models-fra")
+        self._mapping  = Mapping(os.path.join(self._modeldir, "monophones.repl"))
+        self._aligner  = JuliusAligner( self._modeldir, self._mapping )
 
 # ---------------------------------------------------------------------------
 
 class TestHviteAlign( unittest.TestCase ):
 
     def setUp(self):
-        self._model   = os.path.join(MODELDIR, "models-fra")
-        self._mapping = Mapping(os.path.join(self._model, "monophones.repl"))
-        self._aligner = HviteAligner( self._model, self._mapping )
+        self._modeldir = os.path.join(MODELDIR, "models-fra")
+        self._mapping  = Mapping(os.path.join(self._modeldir, "monophones.repl"))
+        self._aligner  = HviteAligner( self._modeldir, self._mapping )
+
+# ---------------------------------------------------------------------------
+
+class TestModelMixer( unittest.TestCase ):
+
+    def setUp(self):
+        # a French speaker reading an English text...
+        self._modelL2dir = os.path.join(MODELDIR, "models-eng")
+        self._modelL1dir = os.path.join(MODELDIR, "models-fra")
+        self._modelmixer = ModelMixer( self._modelL2dir, self._modelL1dir )
+
+    def testMix(self):
+        outputdir = os.path.join(MODELDIR, "models-eng-fra")
+        self._modelmixer.mix( outputdir, gamma=1. )
+        self.assertTrue( os.path.exists( outputdir ) )
+        acmodel1 = AcModel()
+        acmodel1.load_htk( os.path.join(self._modelL2dir, "hmmdefs") )
+        acmodel1 = acmodel1.extract_monophones()
+        acmodel2 = AcModel()
+        acmodel2.load_htk( os.path.join(os.path.join(MODELDIR, "models-eng-fra"), "hmmdefs") )
+
+        for h1 in acmodel1.hmms:
+            h2 = acmodel2.get_hmm( h1.name )
+            self.assertTrue(compare(h1.definition['transition'],h2.definition['transition']))
+            self.assertTrue(compare(h1.definition['states'],h2.definition['states']))
+
+        shutil.rmtree( outputdir )
 
 # ---------------------------------------------------------------------------
 
@@ -119,5 +151,6 @@ if __name__ == '__main__':
     testsuite.addTest(unittest.makeSuite(TestBasicAlign))
     testsuite.addTest(unittest.makeSuite(TestJuliusAlign))
     testsuite.addTest(unittest.makeSuite(TestHviteAlign))
+    testsuite.addTest(unittest.makeSuite(TestModelMixer))
 
     unittest.TextTestRunner(verbosity=2).run(testsuite)

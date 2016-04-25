@@ -83,7 +83,7 @@ class sppasSyll:
 
     How to use sppasSyll?
 
-    >>> s = sppasAlign( configfilename )
+    >>> s = sppasSyll( configfilename )
     >>> s.run(inputfilename, outputfilename)
 
     """

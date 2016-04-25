@@ -47,12 +47,12 @@ import copy
 import glob
 import os.path
 
-from acmodelhtkio import HtkIO
-from hmm          import HMM
-from tiedlist     import TiedList
+from acmodelhtkio   import HtkIO
+from hmm            import HMM
+from tiedlist       import TiedList
 from ..mapping      import Mapping
 
-from utils.type   import compare_dictionaries
+from utils.type import compare_dictionaries
 
 # ---------------------------------------------------------------------------
 
@@ -91,6 +91,7 @@ class AcModel:
         The default file names are:
             - hmmdefs for an HTK-ASCII acoustic model
             - tiedlist
+            - monophones.repl
 
         @param directory (str)
         @return list of loaded file names
@@ -120,6 +121,10 @@ class AcModel:
     def save(self, directory):
         """
         Save all data into a directory.
+        The default file names are:
+            - hmmdefs for an HTK-ASCII acoustic model
+            - tiedlist
+            - monophones.repl
 
         @param directory (str)
         @return list of saved file names
@@ -310,7 +315,7 @@ class AcModel:
             return
         delimiters = ['-','+']
 
-        oldreverse=self.repllist.reverse
+        oldreverse = self.repllist.reverse
         self.repllist.set_reverse(reverse)
 
         # Replace in the tiedlist
@@ -513,9 +518,19 @@ class AcModel:
         self.tiedlist.merge( other.tiedlist )
 
         # Merge the replacement mapping tables.
+        for hmm in self.hmms:
+            print "HMM: ",hmm.name
+        for k,v in self.repllist.get_dict().items():
+            print "Map: ",k,v
+
         for k,v in other.repllist.get_dict().items():
-            if self.repllist.is_value_of(k,v) is False:
+            print "Replace: ",k,v
+            #if self.repllist.is_value_of(k,v) is False:
+            if self.repllist.is_key(k) is False and self.repllist.is_value(v):
                 self.repllist.add(k,v)
+                print "  -> Added."
+            else:
+                print "  -> Ignored."
 
         return (appended,interpolated,keeped,changed)
 
