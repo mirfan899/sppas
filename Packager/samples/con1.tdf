@@ -1,0 +1,755 @@
+file;unicode	channel;int	start;float	end;float	speaker;unicode	speakerType;unicode	speakerDialect;unicode	transcript;unicode	section;int	turn;int	segment;int	sectionType;unicode	suType;unicode
+;;MM sectionTypes	[None, None]
+;;MM sectionBoundaries	[0.0, 9999999.0]
+emma1.wav	1	5.79874657439	7.30642068373	Cainteoir 2	male	native	Bhuel cé chaoi bhfuil rudaí?	0	0	-1		
+emma1.wav	0	7.88732394366	10.8920187793	Cainteoir 1	male	native	Go maith anois a mhac. Anois cé acub?	0	0	1		
+emma1.wav	1	10.2816901408	11.1267605634	Cainteoir 2	male	native	eh	0	0	1		
+emma1.wav	0	11.0341863387	12.3430462798	Cainteoir 1	male	native	Tá neart ábhair ansin anois agat.	0	0	2		
+emma1.wav	1	11.220657277	17.6995305164	Cainteoir 2	male	native	[Céard é] céard atá mé a dhul a rá leat an lá cheana? Oh yeah chuaigh muid amach sa mbád an lá cheana, bhí mé ag rá leat an raibh?	0	0	4		
+emma1.wav	0	17.6944609756	18.3240391751	Cainteoir 1	male	native	Sa mbaile ab ea?	0	0	5		
+emma1.wav	1	18.3903105645	18.7382353589	Cainteoir 2	male	native	ah	0	0	6		
+emma1.wav	0	18.8542102904	19.251838627	Cainteoir 1	male	native	Ros Muc?	0	0	7		
+emma1.wav	1	19.5997634214	20.792648431	Cainteoir 2	male	native	Yeah chuaigh muid amach go hÁrainn.	0	0	8		
+emma1.wav	0	21.7338363015	26.2060435204	Cainteoir 1	male	native	Ar an mbád sibh? Oh ar like mar a dearfá an bád mór.	0	0	9		
+emma1.wav	1	26.7241650884	28.2239906801	Cainteoir 2	male	native	Oh yeah tá bád againn sa mbaile.	0	0	10		
+emma1.wav	0	28.0876428991	28.6057644671	Cainteoir 1	male	native	Oh stop.	0	0	11		
+emma1.wav	1	28.8784600293	29.2875033724	Cainteoir 2	male	native	ah	0	0	12		
+emma1.wav	0	29.6420076032	30.8691376328	Cainteoir 1	male	native	Púcán de chineál <an ea> [?] ?	0	0	13		
+emma1.wav	1	30.7327898517	31.9871894375	Cainteoir 2	male	native	ah ní hea speedboat atá againn.	0	0	14		
+emma1.wav	0	32.2326154434	32.5325805618	Cainteoir 1	male	native	@=gáire	0	0	15		
+emma1.wav	1	33.1325107984	33.3779368043	Cainteoir 2	male	native	Ach	0	0	16		
+emma1.wav	0	33.9233279286	34.5777972777	Cainteoir 1	male	native	'Sea 'sea.	0	0	17		
+emma1.wav	1	34.0051365972	38.2864569226	Cainteoir 2	male	native	Eh bhfuil fhios agat an chaoi a tharla rudaí aisteacha ['s] 's tú amuigh ann? Bhuel	0	0	18		
+emma1.wav	0	38.3682655913	39.7590129581	Cainteoir 1	male	native	Cén rúdaí iad seo anois go díreach?	0	0	19		
+emma1.wav	1	40.1407867451	42.949551035	Cainteoir 2	male	native	Bhuel bhí mé fhéin xxx agus mo chailín 	0	0	20		
+emma1.wav	0	43.3040552658	43.6858290528	Cainteoir 1	male	native	mhm	0	0	21		
+emma1.wav	1	43.467672603	44.0676028397	Cainteoir 2	male	native	amuigh ar an mbád	0	0	22		
+emma1.wav	0	44.4221070705	44.6948026326	Cainteoir 1	male	native	ah	0	0	23		
+emma1.wav	1	44.8584199699	50.2305225438	Cainteoir 2	male	native	agus an bhfuil fhios agat bhí muid ag iarraidh [an] an <triail> [?] a chur amach san uisce agus you know ansin an bád a scaoileadh	0	0	24		
+emma1.wav	0	50.3123312124	51.921235029	Cainteoir 1	male	native	Ó 'sea í a scaoileadh amach.	0	0	25		
+emma1.wav	1	50.7042253521	52.5821596244	Cainteoir 2	male	native	dhon rópa 'sea	0	0	27		
+emma1.wav	0	52.6029739343	52.9029390526	Cainteoir 1	male	native	ah	0	0	28		
+emma1.wav	1	52.9847477213	55.8753206798	Cainteoir 2	male	native	Ach nár phleasc an rópa agus d'imigh sí uainn.	0	0	29		
+emma1.wav	0	55.7303445084	56.5872071238	Cainteoir 1	male	native	Oh stopfaidh tú.	0	0	30		
+emma1.wav	1	56.5529326192	58.6436774009	Cainteoir 2	male	native	beag nár imigh sí ón gcéibh @=gáire	0	0	31		
+emma1.wav	0	58.2323833455	59.980383081	Cainteoir 1	male	native	Ó amach léi féin mar a dearfá amach le	0	0	32		
+emma1.wav	1	58.6779519055	60.2888536225	Cainteoir 2	male	native	Chuaigh sí síos le fána.	0	0	33		
+emma1.wav	1	60.3231281271	60.7344221825	Cainteoir 1	male	native	oh 	0	0	34		
+emma1.wav	1	60.8920187793	64.0375586854	Cainteoir 2	male	native	So sin é an chéad rud a tharla 's ansin níorbh fhéidir í a thosadh.	0	0	37		
+emma1.wav	0	64.2989706628	64.6759902136	Cainteoir 1	male	native	uh	0	0	38		
+emma1.wav	1	64.9159117459	69.9199894201	Cainteoir 2	male	native	Ach ah bhí muid alright [y'know] y'know bhí an aimsir go hálainn agus chuile shórt mar sin.	0	0	39		
+emma1.wav	0	69.9885384293	70.3655579801	Cainteoir 1	male	native	hm	0	0	40		
+emma1.wav	1	70.468381494	75.6781061959	Cainteoir 2	male	native	Ach eh chuaigh muid amach ó Chill Chiaráin ansin agus chuaigh mé fhéin ag iascaireacht.	0	0	41		
+emma1.wav	0	76.1579492605	77.0490863806	Cainteoir 1	male	native	Oh go deas.	0	0	42		
+emma1.wav	1	76.5692433159	79.8595957592	Cainteoir 2	male	native	Ach agus oh mise ag deireadh an bháid ag suí amach ar an tosach.	0	0	43		
+emma1.wav	0	79.9281447685	80.2708898146	Cainteoir 1	male	native	hm	0	0	44		
+emma1.wav	1	80.3051643192	83.2527717164	Cainteoir 2	male	native	Agus chaith seisean amach an graiféad agus chaith mise amach <an dorú> [?].	0	0	45		
+emma1.wav	0	83.3555952302	84.5894773965	Cainteoir 1	male	native	Oh okay eh.	0	0	46		
+emma1.wav	1	84.1096343318	87.2628887566	Cainteoir 2	male	native	Agus an bhfuil fhios agat anois [bhí] bhí sé ag tuilleadh so bhí	0	0	47		
+emma1.wav	0	86.9201437105	87.228614252	Cainteoir 1	male	native	'Sea.	0	0	48		
+emma1.wav	1	87.8455553351	91.7871233662	Cainteoir 2	male	native	an fharraige ag dhul isteach, nach ea? Yeah bhí an fharraige ag dhul isteach.	0	0	49		
+emma1.wav	0	91.9584958893	92.3355154401	Cainteoir 1	male	native	hm	0	0	50		
+emma1.wav	1	92.0657276995	99.1549295775	Cainteoir 2	male	native	So bhí an <dorú> [?] sórt ag dul taobh thiar dhon bhád agus ansin bhí an graiféad ag dhul sórt i dtreo eile.	0	0	53		
+emma1.wav	0	100.057748683	100.388223971	Cainteoir 1	male	native	awh	0	0	54		
+emma1.wav	1	100.566172203	105.802934456	Cainteoir 2	male	native	Chaith sé amach an graiféad agus bhí sé ag rá ó jeez tá muid ag dhul eh <thuas> [?] anois bhfuil fhios agat tá muid ag dhul in áit éicint eile.	0	0	55		
+emma1.wav	0	105.90461916	106.438463856	Cainteoir 1	male	native	uhoh	0	0	56		
+emma1.wav	1	106.15883092	107.251941487	Cainteoir 2	male	native	Tá rud éicint dhá tarraingt.	0	0	57		
+emma1.wav	0	107.556995599	108.904317926	Cainteoir 1	male	native	Uh oh stop.	0	0	58		
+emma1.wav	1	108.395894407	117.674623642	Cainteoir 2	male	native	Bhuail sé rud éicint bhí sé ag ceapadh gur bhuail sé gainnimh nó rud éicint ach níorbh fhéidir gurb é cos bhí mé fhéin agus é fhéin ag iarraidh eh an graiféad a bhaint suas aríst bhfuil fhios agat. 	0	0	59		
+emma1.wav	0	116.73404013	117.903414226	Cainteoir 1	male	native	['Sea] 'sea 'sea.	0	0	60		
+emma1.wav	1	118.284731865	123.699442351	Cainteoir 2	male	native	Ach eh níorbh fhéidir leis an bheirt againn. Bhí mise ag ceapadh go raibh sé ag magadh gurb é fhéin a bhí ann ach níorbh é.	0	0	61		
+emma1.wav	0	123.496072943	124.08075999	Cainteoir 1	male	native	oh 'se- 	0	0	62		
+emma1.wav	1	124.131602342	127.995621092	Cainteoir 2	male	native	's bhí an bheirt againn taobh amuigh ar a taobh an bháid agus muid ag iarraidh an rud a chrochadh ach níorbh fhéidir	0	0	63		
+emma1.wav	0	128.423484547	131.043417201	Cainteoir 1	male	native	[agus] agus bhí an bád [ag imeacht] eh ag imeacht [le] leis.	0	0	64		
+emma1.wav	1	128.591549296	146.948356808	Cainteoir 2	male	native	mm. oh bhí yeah bhí muid ag dhul isteach ag na carraigeachaí an bhfuil fhios agat ansin idir eh Ceann Golaim agus Carna tá sórt cúpla oileáinín beag ansin agus bhí muid ag dhul i dtreo na hoileáin mar bhí tú in ann na [na] tithí a fheiceáil is bhí tú sórt ag bogadh ar aghaidh is ar aghaidh is ar aghaidh is ní cheart go xxx dhul an treo seo ar aon chuma	0	0	65		
+emma1.wav	0	143.113821213	143.417920539	Cainteoir 1	male	native	'Sea.	0	0	66		
+emma1.wav	0	147.160681473	147.464780799	Cainteoir 1	male	native	mhm	0	0	67		
+emma1.wav	1	147.792272381	151.698779105	Cainteoir 2	male	native	ba cheart go mbeadh muid ag dhul leis an taoide bhfuil a fhios agat ag dul isteach bhí muid ag dhul an taobh eile	0	0	68		
+emma1.wav	0	149.640260592	152.985353176	Cainteoir 1	male	native	Oh 'sea is [ní raibh] ní raibh gaoth láidir ann	0	0	69		
+emma1.wav	1	152.848733617	165.457726931	Cainteoir 2	male	native	[dhá riamh] dhá riamh ann agus ansin níorbh fhéidir linn eh an chéad rud eile just stop sé scaoileadh é so bhain muid suas [an] an uh @=teoit	0	0	70		
+emma1.wav	0	165.303645546	166.074052469	Cainteoir 1	male	native	uh 'sea an.	0	0	71		
+emma1.wav	1	166.125412931	166.716058239	Cainteoir 2	male	native	an graiféad	0	0	72		
+emma1.wav	0	166.484936162	167.024221008	Cainteoir 1	male	native	graiféad ah	0	0	73		
+emma1.wav	1	167.024221008	169.05295924	Cainteoir 2	male	native	agus ansin muid ag rá caithfidh muid amach arís é agus	0	0	74		
+emma1.wav	0	168.796156932	169.207040625	Cainteoir 1	male	native	oh	0	0	75		
+emma1.wav	1	169.232720856	176.115022705	Cainteoir 2	male	native	ní raibh muid sásta a chaitheadh amach arís ar fhaitíos go mbeadh sé i bhfostú i bponc aríst ach eh @=gáire anyways	0	0	76		
+emma1.wav	0	176.320464552	176.577266859	Cainteoir 1	male	native	uh	0	0	77		
+emma1.wav	1	176.423185475	178.169441168	Cainteoir 2	male	native	Dúirt muid ah sure gabhfaimid leis an sruth	0	0	78		
+emma1.wav	0	178.683045784	178.965528322	Cainteoir 1	male	native	'Sea.	0	0	79		
+emma1.wav	1	178.862807399	186.926399865	Cainteoir 2	male	native	Sin go breá chuaigh mé fhéin ag iascaireacht agus fuair mé níl fhios agamsa trí @=teoit oh ní brádán a bhí ann ach em @=teoit oh	0	0	80		
+emma1.wav	0	187.74816725	189.006498558	Cainteoir 1	male	native	Ní mangachaigh a bhí ann ab ea?	0	0	81		
+emma1.wav	1	188.82629108	199.389671362	Cainteoir 2	male	native	Mangachaigh rudaí <flóitín> [?] xxx nó rud éicint a bhí ann ach anyways bhí muid ag iarraidh dhul abhaile ansin agus níor níorb- níorbh fhéidir an bád a thosú aríst.	0	0	84		
+emma1.wav	0	199.567945584	201.902073603	Cainteoir 1	male	native	Awh stop bhí sibh sainnithe, cá fhad a raibh sibh amuigh?	0	0	85		
+emma1.wav	1	199.992332497	202.193839605	Cainteoir 2	male	native	Ní raibh sí ag iarraidh dhul bhí muid sáinnithe	0	0	86		
+emma1.wav	0	202.246887969	203.57309707	Cainteoir 1	male	native	xxx an domhain i xxx nó?	0	0	87		
+emma1.wav	1	203.44047616	207.551724375	Cainteoir 2	male	native	Bhí yeah <domhan> [?] aisteach bhfuil fhios agat ansin tá tú beagnach [go h-] go hÁrainn	0	0	88		
+emma1.wav	0	207.790442013	209.408417117	Cainteoir 1	male	native	Oh 'sea 'sea 'sea.	0	0	89		
+emma1.wav	1	208.450704225	226.197183099	Cainteoir 2	male	native	So tá na tonnta móra mílteacha seo tarrtha isteach agus nach bhfaca muid eh @=teoit eh bád eile ag teacht isteach agus <dúirt> [?] oh yeah seo go breá anois so bhain mé fhéin dhíom t-léine 's bhfuil fhios agat go mbogfaidh suas ar bharr an bháid 's mé ag craith 's thosaigh mé ag feadaíl agus ag béiceadh orthu	0	0	92		
+emma1.wav	0	224.795773766	225.199950541	Cainteoir 1	male	native	ah	0	0	93		
+emma1.wav	1	227.183098592	233.004694836	Cainteoir 2	male	native	Ní fhaca siad mé ní xxx dhá riamh choinnigh siad orthu agus ah choinnigh muid ag <ascanaí> [?] agus chuile shórt orthu.	0	0	96		
+emma1.wav	0	232.805822586	235.561573327	Cainteoir 1	male	native	@=gaire	0	0	97		
+emma1.wav	1	234.45927303	237.876403949	Cainteoir 2	male	native	Ach eh an chéad rud eile thosaigh an bád.	0	0	98		
+emma1.wav	0	238.427554097	238.868474216	Cainteoir 1	male	native	oh	0	0	99		
+emma1.wav	1	239.823801139	241.367021554	Cainteoir 2	male	native	Boom! Full whack abhaile.	0	0	100		
+emma1.wav	0	241.293534868	242.726525253	Cainteoir 1	male	native	[D'éirigh] d'éirigh libh í a thosú suas.	0	0	101		
+emma1.wav	1	242.910241969	250.516114014	Cainteoir 2	male	native	Oh yeah ach eh bhí mé fhéin ag cuimhniú ansin an bhfuil fhios agat léifeadh tú na scéalta seo faoi na síoga agus tarlaigh rudaí aisteacha	0	0	102		
+emma1.wav	0	249.340327031	250.920290789	Cainteoir 1	male	native	'Sea 'sea @=gaire	0	0	103		
+emma1.wav	1	251.361502347	255.258215962	Cainteoir 2	male	native	Mé fhéin ag ceapadh b'fhéidir bhfuil fhios agat nuair a bhíonns tú fhéin [ar an] ar an tairseach	0	0	104		
+emma1.wav	1	255.492957746	260.563380282	Cainteoir 2	male	native	idir an saol seo agus an saol siúd agus tarlaíonn sé sna bhfuil fhios agat sna <sléibhte> [?] agus na portaigh is chuile shórt.	0	0	104		
+emma1.wav	0	255.633802817	257.558685446	Cainteoir 1	male	native	mhm 'sea	0	0	104		
+emma1.wav	0	260.234741784	261.971830986	Cainteoir 1	male	native	'sea 'sea 'sea go bhfuil rud éicint.	0	0	105		
+emma1.wav	1	261.318656918	262.972107362	Cainteoir 2	male	native	B'fhéidir go bhfuil blas dhon fírinne ann.	0	0	106		
+emma1.wav	0	263.119080735	264.258124374	Cainteoir 1	male	native	Ar tharla rud éicint?	0	0	107		
+emma1.wav	1	264.846017866	266.279008251	Cainteoir 2	male	native	Oh @=gaire	0	0	108		
+emma1.wav	0	265.801344789	270.137059288	Cainteoir 1	male	native	So an raibh sibh eh [an raibh sibh] ag ceapadh [go raibh rud éicint] go raibh rud éicint ag tarraingt an graiféad an uair sin faoin uisce nó? 	0	0	109		
+emma1.wav	1	270.394262691	277.889904706	Cainteoir 2	male	native	Oh bhí teannas aisteach air bhuel sure bhí mé fhéin bhfuil fhios agat ní hé gurb é mé fhéin an fear ba láidre a bhí ann ariamh @=gáire bhfuil fhios agat	0	0	110		
+emma1.wav	0	277.044807812	278.404311511	Cainteoir 1	male	native	@=gáire	0	0	111		
+emma1.wav	1	278.220594795	285.679493467	Cainteoir 2	male	native	Ach bhfuil fhios agat beirt fhear ba cheart go mbeadh muid in ann rud éicint a dhéanamh bhfuil fhios agat níorbh ann ach b'fhéidir cloch meáchain sa graiféad.	0	0	112		
+emma1.wav	0	285.810941483	286.180444963	Cainteoir 1	male	native	'Sea.	0	0	113		
+emma1.wav	1	286.180444963	290.192197027	Cainteoir 2	male	native	Ba chuma leat dá mbeadh sé i bhfhostú mar ye know thiocfaidh sé leat 's ní raibh ach gainnimh thíos ann.	0	0	114		
+emma1.wav	0	289.083686588	290.693666035	Cainteoir 1	male	native	'Sea uh	0	0	115		
+emma1.wav	1	290.561700507	295.708356116	Cainteoir 2	male	native	Agus bhí mise leis an ngraiféad 's bhí mé in ann an domhain an talamh an íochtar an farraige a bhualadh leis.	0	0	116		
+emma1.wav	0	295.787535433	296.130645807	Cainteoir 1	male	native	uh	0	0	117		
+emma1.wav	1	296.341790652	301.778770424	Cainteoir 2	male	native	Is bhí sé togha ach an bhfuil fhios agat bhí an graiféad ag dhul ar taobh amháin agus an <dorú> [?] ag dhul an taobh eile	0	0	118		
+emma1.wav	0	301.831556635	303.098425708	Cainteoir 1	male	native	Ó 'sea tuigim thú.	0	0	119		
+emma1.wav	1	303.494322293	304.12775683	Cainteoir 2	male	native	Ach eh	0	0	120		
+emma1.wav	0	304.365294781	305.394625903	Cainteoir 1	male	native	Is sách scanrúil.	0	0	121		
+emma1.wav	1	304.41314554	306.61971831	Cainteoir 2	male	native	ah bhí sé ah bhí sé	0	0	122		
+emma1.wav	0	306.107239756	309.855060764	Cainteoir 1	male	native	Murach gur [thosaigh sí] thosaigh sí suas bheadh sibh eh eh ann choíche.	0	0	123		
+emma1.wav	1	310.039812504	311.22750226	Cainteoir 2	male	native	mhm <nár chaill againn> [?]	0	0	124		
+emma1.wav	0	310.884391886	312.995840341	Cainteoir 1	male	native	Ní raibh xxx nó tada ar bith ann xxx	0	0	125		
+emma1.wav	1	312.705516178	313.18059208	Cainteoir 2	male	native	Bhí!	0	0	126		
+emma1.wav	0	313.470916243	315.239254324	Cainteoir 1	male	native	<Ah muna mbeadh sibh xxx in ann a bheith isteach ar an gcaoi sin oh> [?]	0	0	127		
+emma1.wav	1	315.344826747	316.558909608	Cainteoir 2	male	native	ah is dóigh yeah	0	0	128		
+emma1.wav	0	316.431924883	319.530516432	Cainteoir 1	male	native	Bheadh an trua oraibh is dóigh ag iarraidh mbealach fhéin isteach.	0	0	131		
+emma1.wav	1	319.593166776	321.368402585	Cainteoir 2	male	native	oh píosa fada le dhul	0	0	132		
+emma1.wav	0	321.216239516	325.197839832	Cainteoir 1	male	native	@=gaire is dóigh go mbeadh sé @=gaire dorcha faoin am @=gaire go raibh sibh landáilte ann.	0	0	133		
+emma1.wav	1	325.476805459	326.465865411	Cainteoir 2	male	native	ah bhí an aimsir go breá.	0	0	134		
+emma1.wav	0	326.846273084	328.646869405	Cainteoir 1	male	native	Ó bhí sibh amach i lár an lae mar a déarfá.	0	0	135		
+emma1.wav	1	327.302762292	330.447465727	Cainteoir 2	male	native	Sin é an tseachtain yeah chuaigh muid amach ar maidin.	0	0	136		
+emma1.wav	0	329.762731914	330.244581634	Cainteoir 1	male	native	ah	0	0	137		
+emma1.wav	1	332.222701536	334.555868601	Cainteoir 2	male	native	Bhí sé gar dhon ceathair nó dhon cúig.	0	0	138		
+emma1.wav	0	334.834834228	336.508627991	Cainteoir 1	male	native	Mhac ní bheidh sibh cúramach arís.	0	0	139		
+emma1.wav	1	337.29480385	348.30126587	Cainteoir 2	male	native	Ah no bhí muid togha @=gáire caitheann na rudaí seo tarlú bhí bhfuil fhios agat bhí chuile dhuine bhí imní ar chuile dhuine 's ó níor chuaigh tú abhaile caithfidh muid glaoch ar Coast Guard is chuile shórt mar sin is xxx	0	0	140		
+emma1.wav	0	346.399227503	347.667253081	Cainteoir 1	male	native	Óó yeah uh	0	0	141		
+emma1.wav	1	348.817128045	351.917936759	Cainteoir 2	male	native	Ah sure @=gáire beidh muid alright bhfuil fhios agat tiocfaidh rud éicint againn.	0	0	142		
+emma1.wav	0	352.943588873	356.71226408	Cainteoir 1	male	native	Bhuel bhí na cúpla breac agaibh dhá mbeadh sibh @=gaire ocras. 	0	0	143		
+emma1.wav	1	355.352678721	361.244215279	Cainteoir 2	male	native	Bhí yeah chaith mé síos ar an mbearbaiciú iad ach ní raibh siad chomh deas sin anois caithfidh mé rá beagánín salainn a bhí uathu.	0	0	144		
+emma1.wav	0	361.673558024	367.541242207	Cainteoir 1	male	native	Ab ea, bheul bhí sé sin go cineál eachtra deas a bhí ansin bhuel nach raibh sé go deas.	0	0	145		
+emma1.wav	1	368.137551576	370.475084299	Cainteoir 2	male	native	@=gaire eachtra a bhí ann ar chuma ar bith.	0	0	146		
+emma1.wav	0	369.497136935	372.764912273	Cainteoir 1	male	native	Oh sure eachtra a bhí ann an dtuigeann tú? Ábhar cainte.	0	0	147		
+emma1.wav	1	372.955731271	375.889573363	Cainteoir 2	male	native	Mm sin é, <ah> [?] now	0	0	148		
+emma1.wav	0	376.915225476	377.344568221	Cainteoir 1	male	native	<B'shin é a mhac> [?]	0	0	149		
+emma1.wav	1	377.773910966	379.300462949	Cainteoir 2	male	native	Eh	0	0	150		
+emma1.wav	0	379.372020073	381.566438548	Cainteoir 1	male	native	Oh cé chaoi a bhfuil an saol <amuigh> [?] i mBleá Cliath?	0	0	151		
+emma1.wav	1	381.580697714	383.46947731	Cainteoir 2	male	native	Oh tá sé maith go leor anois.	0	0	152		
+emma1.wav	0	383.516696799	383.870842974	Cainteoir 1	male	native	xxx	0	0	153		
+emma1.wav	1	384.012501443	387.742841144	Cainteoir 2	male	native	Tá mé anseo anois beagnach ar feadh bliana.	0	0	154		
+emma1.wav	0	389.11220635	389.537181759	Cainteoir 1	male	native	mhm	0	0	155		
+emma1.wav	1	389.25386482	390.694059261	Cainteoir 2	male	native	Gearr go mbíonn an bliain ag imeacht bhfuil fhios agat.	0	0	156		
+emma1.wav	0	390.363522832	392.323131662	Cainteoir 1	male	native	Óó tá sí ag imeacht go sciobhtha anois.	0	0	157		
+emma1.wav	1	392.677277836	393.621667634	Cainteoir 2	male	native	Buíochas le Dia a deir tú.	0	0	158		
+emma1.wav	0	393.456399419	394.802154881	Cainteoir 1	male	native	eh xxx le Dia.	0	0	159		
+emma1.wav	1	395.959032383	396.738153966	Cainteoir 2	male	native	Ach eh	0	0	160		
+emma1.wav	0	396.761763711	399.193567439	Cainteoir 1	male	native	Tá tú san áit céanna fós nach bhfuil, tá tú sa.	0	0	161		
+emma1.wav	1	398.674153051	401.460102954	Cainteoir 2	male	native	Tá 's gearr go mbeidh mé ag bogadh amach anois Mí Meán Fómhair.	0	0	162		
+emma1.wav	0	401.625371168	402.121175812	Cainteoir 1	male	native	An mbeidh?	0	0	163		
+emma1.wav	1	402.404492751	402.994736375	Cainteoir 2	male	native	Beidh yeah.	0	0	164		
+emma1.wav	0	403.089175354	404.529369796	Cainteoir 1	male	native	Ó fáil áit éicint eile áit fhéin i m'aonar.	0	0	165		
+emma1.wav	1	404.033565152	405.945954492	Cainteoir 2	male	native	Oh yeah tá siad ochtar sa teach.	0	0	166		
+emma1.wav	0	405.945954492	406.252881176	Cainteoir 1	male	native	xxx	0	0	167		
+emma1.wav	1	406.819515055	411.659512767	Cainteoir 2	male	native	Níl suaimhneas dhá riamh ann an bhfuil fhios agat dream istigh ann agus castar le daoine nua agus	0	0	168		
+emma1.wav	0	409.086050569	412.344195371	Cainteoir 1	male	native	'Sea 'sea aha	0	0	169		
+emma1.wav	1	412.296975881	418.175802371	Cainteoir 2	male	native	Beidh droch <cháil> [?] ar an gcisteanach agus bhí chuile shóirt millte agus @=teoit awh níorbh fhéidir teach mar sin a choinneáil.	0	0	170		
+emma1.wav	0	418.199690498	418.99816246	Cainteoir 1	male	native	mm mhm 	0	0	171		
+emma1.wav	1	418.941128749	423.760477381	Cainteoir 2	male	native	Beidh mé fhéin is mo chara anois bhfuil fhios agat ag bogadh isteach anois in áit éicint beag.	0	0	172		
+emma1.wav	0	423.931578516	425.899241567	Cainteoir 1	male	native	'Sea 'sea yeah.	0	0	173		
+emma1.wav	1	424.102679651	428.722410293	Cainteoir 2	male	native	Ní bheidh ann ach muid fhéin cineál b'fhéidir go mbeadh duine nó beirt eile istigh ann ach ní bheidh ann ach dornán.	0	0	174		
+emma1.wav	0	429.34978112	431.659646441	Cainteoir 1	male	native	Is é sin beagánín an iomarca nach bhfuil? eh	0	0	175		
+emma1.wav	1	431.220657277	442.816901408	Cainteoir 2	male	native	Oh yeah bhfuil fhios agat nuair atá páipéar leithris agus fhios agat caitheann sé go fíormhinic bhfuil fhios agat ní hé an <phoncáirí> [?] é nuair atá tú istigh ann 's a rá leat fhéin @=gáire cheannaigh mé cúpla rud <sa siopa> [?] an lá cheana.	0	0	178		
+emma1.wav	0	443.151939334	444.292613566	Cainteoir 1	male	native	hm	0	0	180		
+emma1.wav	1	444.121512432	445.461804655	Cainteoir 2	male	native	@=gáire	0	0	181		
+emma1.wav	0	444.805916971	446.745063166	Cainteoir 1	male	native	Agus eh mar a deir buachaillí uilig ab ea?	0	0	182		
+emma1.wav	1	447.40095085	447.800186831	Cainteoir 2	male	native	Yeah.	0	0	183		
+emma1.wav	0	447.74315312	448.199422813	Cainteoir 1	male	native	Oh yeah.	0	0	184		
+emma1.wav	1	448.256456524	448.570141938	Cainteoir 2	male	native	Yeah.	0	0	185		
+emma1.wav	0	448.370523948	448.826793641	Cainteoir 1	male	native	Oh anois.	0	0	186		
+emma1.wav	1	448.997894776	454.644232227	Cainteoir 2	male	native	Seachtar againn, ye know ach cailín amháin ann, sí ag obair le BDI@L.	0	0	187		
+emma1.wav	0	454.843850217	455.157535631	Cainteoir 1	male	native	mm	0	0	188		
+emma1.wav	1	456.150234742	458.169014085	Cainteoir 2	male	native	@=méanfach 	0	0	189		
+emma1.wav	0	458.028169014	458.638497653	Cainteoir 1	male	native	Oh go maith. 	0	0	188		
+emma1.wav	1	458.403755869	459.248826291	Cainteoir 2	male	native	Céard fút fhéin?	0	0	189		
+emma1.wav	0	459.812206573	462.20657277	Cainteoir 1	male	native	Oh tá sé ag oibriú amach go maith an áit a bhfuil mé faoi láthair.	0	0	190		
+emma1.wav	1	462.31526644	462.99967098	Cainteoir 2	male	native	Cá bhfuil tú faoi láthair?	0	0	191		
+emma1.wav	0	462.701047285	478.828801949	Cainteoir 1	male	native	ehm an áit a raibh ceann go na comhghleacaí a bhí againn agus d'imigh sé leis agus d'éirigh liom dhul isteach in a áit fhéin ansin so bhí sé go deas yeah em oh bhí conradh beidh an conradh sin thuas sin an t-aon rud beidh sé thuas i mí na Lúnasa beidh orm ceaptha dhul ag cuartú aríst.	0	0	192		
+emma1.wav	1	467.163131928	468.560457863	Cainteoir 2	male	native	óó	0	0	193		
+emma1.wav	1	479.1752215	481.099774563	Cainteoir 2	male	native	Oh ní thiocfaidh sé dhuitse go dtí	0	0	194		
+emma1.wav	0	481.138265624	483.139800809	Cainteoir 1	male	native	No mar sin an conradh an dtuigeann tú a bhí ann.	0	0	195		
+emma1.wav	1	483.293765054	485.064353872	Cainteoir 2	male	native	Ó mí Lúnasa go Lúnasa ab ea nó?	0	0	196		
+emma1.wav	0	483.986604157	488.490058323	Cainteoir 1	male	native	Goile óó céard é oh sé mhí a bhí leagtha amach nó mar sin.	0	0	197		
+emma1.wav	1	488.759495752	489.721772283	Cainteoir 2	male	native	Nach mbeidh tú thart aríst?	0	0	198		
+emma1.wav	0	489.606299099	490.145173957	Cainteoir 1	male	native	ehm	0	0	199		
+emma1.wav	1	490.453102447	492.839548244	Cainteoir 2	male	native	Cén fáth nach bhféadfadh glaoch ar mo dhuine an tiarna talún 	0	0	200		
+emma1.wav	0	492.608601877	497.804895145	Cainteoir 1	male	native	Yeah bhí mé á phlé leis ach bhí sé [bhí daoine] bhí daoine eile faire le thógáil an dtuigeann tú so.	0	0	201		
+emma1.wav	1	498.035841513	502.308349312	Cainteoir 2	male	native	Oh and 'sea tosóidh nach mbeadh an cheart dhuit sórt fanacht ann bhfuil fhios agat tá tú	0	0	202		
+emma1.wav	0	499.765258216	510.563380282	Cainteoir 1	male	native	Yeah eh. Yeah bhuel is dóigh mar gheall go bhfuil [conarthaí] conradh sínithe agat [le haghaidh an] go dtí Lúnasa bhfuil fhios agat tá sé cineáil ní féidir is dóigh dhul ar ais air ach.	0	0	204		
+emma1.wav	1	506.965767723	507.427660458	Cainteoir 2	male	native	áá	0	0	205		
+emma1.wav	0	512.37455183	519.905429805	Cainteoir 1	male	native	Yeah bhuel tá neart ama eile ar aon nós rud éicint eile a fháil em 'sea is dóigh sin anois an áit ina bhfuil mé. 	0	0	206		
+emma1.wav	1	520.427643971	521.059797962	Cainteoir 2	male	native	Is dócha é yeah.	0	0	207		
+emma1.wav	0	521.252192654	526.254454667	Cainteoir 1	male	native	Ah ar dtús bhí sé go leor san áit sa chéad áit a raibh mé bhí go leor torainn ann agus go leor	0	0	208		
+emma1.wav	1	525.814695369	527.546247604	Cainteoir 2	male	native	Uh gleo.	0	0	209		
+emma1.wav	0	527.298882999	535.434430008	Cainteoir 1	male	native	Bhí daoine aisteach thuas an staighre agus bhí [go leor] go leor rí rá agus ruaille buaille mar gheall ar sin	0	0	210		
+emma1.wav	1	534.609881324	535.901674262	Cainteoir 2	male	native	mhm yeah.	0	0	211		
+emma1.wav	0	535.874189306	543.76237171	Cainteoir 1	male	native	So agus seo an rud is measa faoi na háiteachaí sin tá an em céard rud faoi na ballaí sin níl siad tiubh ar chor ar bith so tá an fuaim agus 	0	0	212		
+emma1.wav	1	543.817341622	545.329014208	Cainteoir 2	male	native	Oh an fuaim agus	0	0	213		
+emma1.wav	0	543.927281446	545.38398412	Cainteoir 1	male	native	an clampar uilig ag teach tríbh.	0	0	214		
+emma1.wav	1	545.576378813	547.445355829	Cainteoir 2	male	native	Teas ní choinneodh sé sa	0	0	215		
+emma1.wav	0	546.098592979	550.413731089	Cainteoir 1	male	native	agus em no bhí an teas ceart go leor ach 'sé an torann is measa	0	0	216		
+emma1.wav	1	550.089567753	555.827106106	Cainteoir 2	male	native	@=gaire	0	0	217		
+emma1.wav	0	551.17305139	564.125605786	Cainteoir 1	male	native	@=gáire Ba chuma liom faoi sin ach an oiread @=gáire so bhí orm bogadh amach as sin is bhí orm em míniú dhon eh tiarna talún an trioblóid a bhí ann agus ní raibh sé sin xxx i dtosach agus ansin ach faoi dheireadh	0	0	218		
+emma1.wav	1	557.107586769	565.701581986	Cainteoir 2	male	native	Oh @=gaire oh ba cheart dhuit fhéin sórt	0	0	219		
+emma1.wav	0	564.519599836	565.898579011	Cainteoir 1	male	native	[Ghlac] ghlac sé leis.	0	0	220		
+emma1.wav	1	566.341822317	566.83431488	Cainteoir 2	male	native	Ye know.	0	0	221		
+emma1.wav	0	566.858939508	567.277558186	Cainteoir 1	male	native	Ye know.	0	0	222		
+emma1.wav	1	567.35143207	569.961642652	Cainteoir 2	male	native	an fhadhb a réiteach bhfuil fhios agat just a dhul suas ann 's	0	0	223		
+emma1.wav	0	568.459540336	574.418700343	Cainteoir 1	male	native	Ohhh 'sea @=gaire níor mhaith liom oh no janey níor mhaith liom duine ar bith ar an trioblóid sin.	0	0	224		
+emma1.wav	1	572.300982324	580.747229772	Cainteoir 2	male	native	Ah no tá cúpla duine eile ann bhfuil fhios agat dearfainn go bhfuil neart thart anseo bh- bhféadfaí sórt bhfuil fhios agat sure tabharfaidh mé dhuit cúpla Euro má  tá tú in ann iad seo a thabhairt ar an mbóthar bhfuil fhios agat	0	0	225		
+emma1.wav	0	575.77305489	581.5598425	Cainteoir 1	male	native	@=gáire	0	0	226		
+emma1.wav	1	581.558898363	583.51108416	Cainteoir 2	male	native	Cúpla cic nó chibé céard a bheas ag teastáil uathu.	0	0	227		
+emma1.wav	0	582.823694795	592.667110502	Cainteoir 1	male	native	Bhuel ar aon nós d'oibrigh sé amach agus yeah thug sé thug sé eh go leor airgid ar ais xxx tiarna talún mar bhfuil fhios agat bhí mé ag briseadh an conradh.	0	0	228		
+emma1.wav	1	592.749597226	593.684446762	Cainteoir 2	male	native	Oh fair play!	0	0	229		
+emma1.wav	0	593.079544121	598.27620772	Cainteoir 1	male	native	Ach fós bhog sé ar ais agus bhí sé féaráilte so bhog mé isteach áit éicint eile agus	0	0	230		
+emma1.wav	1	598.138729847	599.046083809	Cainteoir 2	male	native	Níor las tú an áit?	0	0	231		
+emma1.wav	0	599.018588234	600.970774031	Cainteoir 1	male	native	Hmm 'sea [níor] níor las.	0	0	232		
+emma1.wav	1	601.163243053	603.307897872	Cainteoir 2	male	native	Awh bhuel @=gáire.	0	0	233		
+emma1.wav	0	603.500366894	609.714366754	Cainteoir 1	male	native	Anois so tá sé ag oibriú amach faoi láithair ag an áit nua seo so ba neart eh	0	0	234		
+emma1.wav	1	609.054472963	610.676711865	Cainteoir 2	male	native	'is beidh tú le dhul a cuartú anois i gceann	0	0	235		
+emma1.wav	0	610.704207439	610.814189738	Cainteoir 1	male	native	@=teoit	0	0	236		
+emma1.wav	1	611.116641058	611.694048125	Cainteoir 2	male	native	Dhá mhí ab ea?	0	0	237		
+emma1.wav	1	611.281614506	616.643251553	Cainteoir 1	male	native	Ceapaim go mbeidh sin an chaoi a breathnaíonn sé mar sin anois áit éicint eile a fháil ach caithfidh mé a rá go bhfuil go leor taithí anois agam so beidh fhios agam.	0	0	238		
+emma1.wav	1	613.701225071	613.838702944	Cainteoir 2	male	native	oh	0	0	239		
+emma1.wav	1	617.22065862	618.430463902	Cainteoir 2	male	native	xxx ceann is a xxx tú?	0	0	240		
+emma1.wav	0	618.356807512	620.751173709	Cainteoir 1	male	native	Beidh mé cúramach @=gáire níos mó.	0	0	243		
+emma1.wav	1	621.071216029	621.699398268	Cainteoir 2	male	native	Tuigim.	0	0	244		
+emma1.wav	0	621.397870793	622.478344244	Cainteoir 1	male	native	Tuigfidh tú ach eh.	0	0	245		
+emma1.wav	1	622.000925742	623.106526483	Cainteoir 2	male	native	Mise mé fhéin freisin.	0	0	246		
+emma1.wav	0	623.031144614	625.267473385	Cainteoir 1	male	native	Ah ah tá muid ag foghlaim mar a deir an ceann eile.	0	0	247		
+emma1.wav	1	624.890564042	625.795146466	Cainteoir 2	male	native	De réir a chéile.	0	0	248		
+emma1.wav	0	625.971037493	634.539443232	Cainteoir 1	male	native	Ah yeah so an bhfuil fhios agat eh so tá sí ceart go leor tá sí difriúil ó chathair seo mar a dearfá [an] an áit thiar i nGaillimh.	0	0	249		
+emma1.wav	1	635.21788005	636.298353501	Cainteoir 2	male	native	Dhá riamh thiar ann.	0	0	250		
+emma1.wav	0	635.871189579	636.599880976	Cainteoir 1	male	native	ehm	0	0	251		
+emma1.wav	1	636.61971831	639.295774648	Cainteoir 2	male	native	Bhfuil fhios agat i gcomporáid leis an áit seo i ndáiríre anois	0	0	252		
+emma1.wav	0	637.840375587	639.624413146	Cainteoir 1	male	native	'Sea 'sea @=gáire 'sea 'sea. 	0	0	258		
+emma1.wav	1	639.812206573	642.769953052	Cainteoir 2	male	native	An bhfaca tú an bus? Bíonn sé ansin chuile sé nóiméad nó rud éicint.	0	0	258		
+emma1.wav	0	642.680685049	643.434503736	Cainteoir 1	male	native	Tá chuile shórt.	0	0	259		
+emma1.wav	1	643.192488263	646.854460094	Cainteoir 2	male	native	Bhfuil fhios agat mar tá muid buailte le príomhbhóthar leis an aerfort bhfuil fhios agat.	0	0	260		
+emma1.wav	0	646.948356808	647.464788732	Cainteoir 1	male	native	mhm	0	0	263		
+emma1.wav	1	647.706142961	649.238907624	Cainteoir 2	male	native	Beidh's ann go fíormhinic.	0	0	264		
+emma1.wav	0	649.238907624	650.093235469	Cainteoir 1	male	native	[Beidh] beidh.	0	0	265		
+emma1.wav	1	649.314289493	652.103418634	Cainteoir 2	male	native	an dream ag dhul suas síos agus suas síos agus bhfuil fhios agat.	0	0	266		
+emma1.wav	0	651.600872843	652.30443695	Cainteoir 1	male	native	'Sea 'sea.	0	0	267		
+emma1.wav	1	652.638877635	656.762230461	Cainteoir 2	male	native	Tá muid ar an mbóthar céanna leis an xxx agus oh tá sé iontach.	0	0	268		
+emma1.wav	0	656.897422357	657.212870115	Cainteoir 1	male	native	mm	0	0	269		
+emma1.wav	1	657.888829594	663.183845518	Cainteoir 2	male	native	Bhfuil fhios agat dá mbeifeá ag faire ye know níl ach bus amháin ag imeacht ar maidin Dé Sathairn dhul  isteach go lár na cathrach i nGaillimh	0	0	270		
+emma1.wav	0	663.071185605	663.994996894	Cainteoir 1	male	native	I nGaillimh yeah.	0	0	271		
+emma1.wav	1	663.859804998	667.059346535	Cainteoir 2	male	native	Sin ag leathuair théis a seacht ar maidin agus dá gcailfí é tá tú fánta ann.	0	0	272		
+emma1.wav	0	664.378040599	665.955279385	Cainteoir 1	male	native	'Sea 'sea.	0	0	273		
+emma1.wav	0	667.126942483	667.577582136	Cainteoir 1	male	native	Tá tú	0	0	274		
+emma1.wav	1	667.555050154	668.11834972	Cainteoir 2	male	native	Bhfuil fhios agat.	0	0	275		
+emma1.wav	0	669.042161009	669.380140749	Cainteoir 1	male	native	eh	0	0	276		
+emma1.wav	1	669.740652471	671.295359275	Cainteoir 2	male	native	Ach eh anseo wow!	0	0	277		
+emma1.wav	0	671.115103413	672.467022373	Cainteoir 1	male	native	Tá tá tá tú millte.	0	0	278		
+emma1.wav	1	672.174106598	674.337176933	Cainteoir 2	male	native	Dhá Euro cúig déag 'is tá tú i do rogha áit.	0	0	279		
+emma1.wav	0	674.089325124	674.810348569	Cainteoir 1	male	native	Tá tá @=gáire	0	0	280		
+emma1.wav	1	674.99060443	680.75879199	Cainteoir 2	male	native	Níl fhios agam go dleathach nó mídhleathach nó chíbe a céard a bheas ann ach @=gáire eh	0	0	281		
+emma1.wav	0	680.443344233	681.209431643	Cainteoir 1	male	native	aha	0	0	282		
+emma1.wav	1	681.637539314	683.687949735	Cainteoir 2	male	native	Céard eile atá thart anseo oh tá an Luas iontach.	0	0	283		
+emma1.wav	0	683.800609649	685.039868695	Cainteoir 1	male	native	An Luas sin rud eile anois.	0	0	284		
+emma1.wav	1	684.741134803	689.564618742	Cainteoir 2	male	native	DART ah dhá riamh a bhí againne bhí éigint ar bóthar ar bith againn.	0	0	285		
+emma1.wav	0	690.000184182	691.40367282	Cainteoir 1	male	native	'Sea sé an rud atá s'agaibhse ah	0	0	286		
+emma1.wav	1	691.952162632	693.871876976	Cainteoir 2	male	native	agus do thaobhsa freisin tá mé ag ceapadh.	0	0	287		
+emma1.wav	0	693.74282055	695.388289987	Cainteoir 1	male	native	Tá is as xxx ansin freisin.	0	0	288		
+emma1.wav	1	694.839800175	696.323949079	Cainteoir 2	male	native	Níl muid i bhfad óna chéile.	0	0	289		
+emma1.wav	0	695.759327214	699.292246888	Cainteoir 1	male	native	Níl ní ar chor ar bith agus tá tá áiteachaí ann tá áiteachaí áirid ann.	0	0	290		
+emma1.wav	1	699.050266089	704.890069387	Cainteoir 2	male	native	Go háirithe Uachtar Árd tá Uachtar Árd uafásach mar áit ah tá an gráin agam air bhfuil fhios agat.	0	0	291		
+emma1.wav	0	700.938967136	701.267605634	Cainteoir 1	male	native	mm	0	0	291		
+emma1.wav	0	704.882629108	705.258215962	Cainteoir 1	male	native	ah	0	0	292		
+emma1.wav	1	705.569433322	715.839113607	Cainteoir 2	male	native	[Ní] ní féidir leat dhul in áit ar bith ach eh eh nuair a théanns tú chomh fada siar le Bóthar ó xxx agus casann tú ar chlé	0	0	293		
+emma1.wav	0	716.286645546	716.616405922	Cainteoir 1	male	native	hm	0	0	294		
+emma1.wav	1	717.111046486	721.044616687	Cainteoir 2	male	native	Níl eh ye know [tá tú] tá tú tá an áit sin sórt go deas bhfuil fhios agat	0	0	295		
+emma1.wav	0	720.926845124	723.329385007	Cainteoir 1	male	native	Tá oh tá an áit sin go hálainn tá radharcannaí álainn.	0	0	296		
+emma1.wav	1	723.282276382	725.331501577	Cainteoir 2	male	native	Yeah sin an áit a ndearna siad eh The_Field.	0	0	297		
+emma1.wav	0	725.73192489	727.969584586	Cainteoir 1	male	native	Eh The_Field oh 'sea 'sea 's bhí rud	0	0	298		
+emma1.wav	1	728.205127711	728.65265965	Cainteoir 2	male	native	Bhfaca tú é?	0	0	299		
+emma1.wav	0	728.958865714	729.806820967	Cainteoir 1	male	native	Field chonaic mé é.	0	0	300		
+emma1.wav	1	730.089472718	730.607667594	Cainteoir 2	male	native	Tá sé go maith.	0	0	301		
+emma1.wav	0	731.314296972	731.832491849	Cainteoir 1	male	native	Deirim an-mhaith.	0	0	302		
+emma1.wav	1	731.879600474	734.564792108	Cainteoir 2	male	native	Tá sé an-mhaith ach em	0	0	303		
+emma1.wav	0	735.284101741	739.563503805	Cainteoir 1	male	native	Ach an n-aireach tusa uait anois [an] an na garrántaí agus na sléibhte is rudaí mar sin? A leithéid.	0	0	304		
+emma1.wav	1	739.204586213	741.882663633	Cainteoir 2	male	native	Tá an gráin orm breathnú ar tithí lofa sin amach romham.	0	0	305		
+emma1.wav	0	742.020708861	742.683325955	Cainteoir 1	male	native	@=gáire	0	0	306		
+emma1.wav	1	743.373552094	754.251516051	Cainteoir 2	male	native	áá [bhfuil fhios agat] bhfuil fhios agat nuair a bhíonns em @=teoit áá cén t-ainm atá air sórt ní sórt @=teoit tá chuile teach cosúil leis an chéad teach lena thaobh agus 	0	0	307		
+emma1.wav	0	754.389561279	755.1902236	Cainteoir 1	male	native	oh 'sea.	0	0	308		
+emma1.wav	1	754.472388415	762.258139267	Cainteoir 2	male	native	Bhfuil fhios agat ar a laghad nuair atá tú sa mbaile bhfuil fhios agat tá do theach fhéin agat agus ansin tá na garrántaí agat agus ansin b'fhéidir go mbeadh cúpla teach eile gar dhuit.	0	0	309		
+emma1.wav	0	762.12009404	762.644665905	Cainteoir 1	male	native	mhm	0	0	310		
+emma1.wav	1	762.451402586	764.05272723	Cainteoir 2	male	native	ach ní raibh siad buailte díreach le do thaobh.	0	0	311		
+emma1.wav	0	764.0642418	766.908859231	Cainteoir 1	male	native	No ní bheidh tá cineál eh príobháideachas agat eh. 	0	0	312		
+emma1.wav	1	765.746276455	769.159817371	Cainteoir 2	male	native	Bhfuil fhios agat [fiú] fiú mánna bhfuil fhios agat.	0	0	313		
+emma1.wav	0	769.184553175	769.87715568	Cainteoir 1	male	native	'Sea 'sea.	0	0	314		
+emma1.wav	1	769.926627287	770.545022381	Cainteoir 2	male	native	Tá chuile theach	0	0	315		
+emma1.wav	0	771.113945867	771.856019979	Cainteoir 1	male	native	Tá sé sin fíor.	0	0	316		
+emma1.wav	1	771.212889082	772.202321232	Cainteoir 2	male	native	ag an duine bhfuil fhios agat.	0	0	317		
+emma1.wav	0	772.103378017	772.400207662	Cainteoir 1	male	native	Yeah.	0	0	318		
+emma1.wav	1	772.795980521	775.046938662	Cainteoir 2	male	native	Ach anseo an bhfaca tú chuile rud brúite isteach le chéile.	0	0	319		
+emma1.wav	0	774.70063741	776.531086887	Cainteoir 1	male	native	Tá chuile shórt i bhfostas lena chéile. 	0	0	320		
+emma1.wav	1	776.679501709	782.146114336	Cainteoir 2	male	native	Tá milliún bhfuil fhios agat seod an seo lá na cathrach lár na hÉireann cineál.	0	0	321		
+emma1.wav	0	781.849284691	785.782277486	Cainteoir 1	male	native	Oh sin an chaoi ina bhfuil sé tá chuile shórt bruite isteach agus in áit amháin agus	0	0	322		
+emma1.wav	1	784.372336673	787.365368926	Cainteoir 2	male	native	[Caithfidh siad] caithfidh siad chuile shórt a bhrú bhfuil fhios agat.	0	0	323		
+emma1.wav	0	787.365368926	789.04740358	Cainteoir 1	male	native	Ní raibh aon rogha ach acub anois ar <iarraidh> [?]	0	0	324		
+emma1.wav	1	789.24529001	790.605759216	Cainteoir 2	male	native	oh mm sin é anois.	0	0	325		
+emma1.wav	0	789.888420908	795.65186318	Cainteoir 1	male	native	Ach eh sin é anois sin é haon airím uaim go mór é caithfidh mé a rá an fharraige agus cladach agus	0	0	326		
+emma1.wav	1	795.849749609	797.333897834	Cainteoir 2	male	native	oh 'sea xxx go buailtear ort.	0	0	327		
+emma1.wav	0	796.517616311	799.856949816	Cainteoir 1	male	native	Bhfuil fhios agat rud aha [tá sé difriúil] tá sé difriúil.	0	0	328		
+emma1.wav	1	799.189083115	802.13264376	Cainteoir 2	male	native	Ach tá an fharraige no 'sé an sáile céanna é bhfuil fhios agat.	0	0	329		
+emma1.wav	0	801.316362237	803.814678415	Cainteoir 1	male	native	Yeah yeah tá sé difriúil tá rud éicint difriúil ag baint leis.	0	0	330		
+emma1.wav	1	804.366197183	805.211267606	Cainteoir 2	male	native	Is dócha go bhfuil.	0	0	331		
+emma1.wav	0	805.17514762	806.238787181	Cainteoir 1	male	native	oh [tá] tá.	0	0	332		
+emma1.wav	1	805.892485929	806.807710667	Cainteoir 2	male	native	Téann tú amach ar na báid?	0	0	333		
+emma1.wav	0	807.203483527	807.94555764	Cainteoir 1	male	native	Ní théim.	0	0	334		
+emma1.wav	1	808.122065728	810.14084507	Cainteoir 2	male	native	Ah jeez ba cheart duit.	0	0	335		
+emma1.wav	0	809.924421939	812.101172668	Cainteoir 1	male	native	Ag iascaire ó na gcarraigeacha is mó a bhímse anois agus	0	0	336		
+emma1.wav	1	812.200115883	813.164812229	Cainteoir 2	male	native	Ó na gcarraigeachaí ab ea?	0	0	337		
+emma1.wav	0	813.220206494	814.185948015	Cainteoir 1	male	native	'Sea ón gcarraig.	0	0	338		
+emma1.wav	1	813.659179912	814.251794027	Cainteoir 2	male	native	ah yeah.	0	0	339		
+emma1.wav	0	814.888305484	815.480919599	Cainteoir 1	male	native	Ach snámh.	0	0	340		
+emma1.wav	1	815.590662954	816.556404475	Cainteoir 2	male	native	Dorú agat a bhfuil nó?	0	0	341		
+emma1.wav	0	816.6880965	817.214864602	Cainteoir 1	male	native	Slat iascach	0	0	342		
+emma1.wav	1	816.753942513	817.807478718	Cainteoir 2	male	native	Slat iasca?	0	0	343		
+emma1.wav	0	817.653838021	818.246452136	Cainteoir 1	male	native	Ronnachaigh.	0	0	344		
+emma1.wav	1	818.136708781	818.904912264	Cainteoir 2	male	native	uhoh	0	0	345		
+emma1.wav	0	818.948809606	819.190244986	Cainteoir 1	male	native	oh	0	0	346		
+emma1.wav	1	820.375473216	821.275368724	Cainteoir 2	male	native	Jeez ronnachaí	0	0	347		
+emma1.wav	0	821.737089202	823.849765258	Cainteoir 1	male	native	A rá leat tá ronnachaigh deas cinnte.	0	0	348		
+emma1.wav	1	821.924882629	825.399061033	Cainteoir 2	male	native	Bréa liom ronnachaigh anois caithfidh mé a rá, bhfuil siad istigh fós an bhfuil nó?	0	0	349		
+emma1.wav	0	826.586947088	828.803762852	Cainteoir 1	male	native	Amach eh	0	0	352		
+emma1.wav	1	828.29894342	829.089095574	Cainteoir 2	male	native	Mí Iúil ab ea?	0	0	353		
+emma1.wav	0	828.979352219	830.801091906	Cainteoir 1	male	native	Mí Iúil eh mí Lúnasa.	0	0	354		
+emma1.wav	1	831.240065324	832.118012162	Cainteoir 2	male	native	áá right.	0	0	355		
+emma1.wav	0	831.964371465	832.293601529	Cainteoir 1	male	native	eh	0	0	356		
+emma1.wav	1	832.183858174	833.25934305	Cainteoir 2	male	native	Caithfidh mé cúpla ceann acu sin a fháil.	0	0	357		
+emma1.wav	0	833.610521785	834.356776596	Cainteoir 1	male	native	Go deas níorbh	0	0	358		
+emma1.wav	1	833.961700519	837.05646312	Cainteoir 2	male	native	@=gáire xxx mé ag cuimhniú faoi bhfuil fhios agat nuair a thaganns na Gaeilgeoirí?	0	0	359		
+emma1.wav	0	836.002926915	837.780769261	Cainteoir 1	male	native	uh yeah	0	0	360		
+emma1.wav	1	837.868563944	841.204761925	Cainteoir 2	male	native	Bhfuil fhios an chaoi a bhíonn na mná tí ag tabhairt amach go n-íocann siad an oiread airgid.	0	0	361		
+emma1.wav	0	841.336453951	841.665684015	Cainteoir 1	male	native	'Sea.	0	0	362		
+emma1.wav	1	841.643192488	853.23943662	Cainteoir 2	male	native	Bhfuil fhios agat xxx agus chuile shórt, b'iontach an chraic just dhul amach ar an fharraige agus cúpla céad ronnach nó an bhfuil fhios agat chuile shórt atá amuigh ann a fháil 'is da chaitheadh síos dhóibh agus anois ní shíleas agus eh	0	0	365		
+emma1.wav	0	852.981546293	853.611085011	Cainteoir 1	male	native	Oh @=gáire	0	0	366		
+emma1.wav	1	853.741334401	856.302905736	Cainteoir 2	male	native	Lot eile ansin a chaiteadh isteach sa reoiteoir bhfuil fhios agat	0	0	367		
+emma1.wav	0	856.498279821	862.902208158	Cainteoir 1	male	native	'Sea oh 'sea déanann go leor daoine é sin bíonn [na reoiteoir] an reoiteoir an ceann ollmhór agus cuireann siad síos	0	0	368		
+emma1.wav	1	862.967332853	865.854527663	Cainteoir 2	male	native	oh yeah yeah tá mise a rá anois bia na farraige atá ann.	0	0	369		
+emma1.wav	0	866.093318211	867.113605098	Cainteoir 1	male	native	uh 'sea.	0	0	370		
+emma1.wav	1	867.243854488	869.414677653	Cainteoir 2	male	native	Tá fhios agam go dtéann go leor daoine suas go dtí an Tuaisceart.	0	0	371		
+emma1.wav	0	870.759365017	871.526185369	Cainteoir 1	male	native	oh 'sea ag ceannach.	0	0	372		
+emma1.wav	1	872.409190622	876.522136146	Cainteoir 2	male	native	Cad eile? @=gáire	0	0	373		
+emma1.wav	0	876.475662185	877.010112734	Cainteoir 1	male	native	'Sea xxx	0	0	374		
+emma1.wav	1	877.42837838	879.728839436	Cainteoir 2	male	native	Ach eh beidh tú ag dhul ar eh laethanta saoire anois an mbeidh?	0	0	375		
+emma1.wav	0	880.68155563	883.748837038	Cainteoir 1	male	native	Amach an chéad mhí eile anois aríst tógfaidh mé seachtain eile le cúnamh Dé.	0	0	376		
+emma1.wav	1	884.097391743	885.18952982	Cainteoir 2	male	native	'S móran fágtha agat an bhfuil?	0	0	377		
+emma1.wav	0	886.792881465	892.648600516	Cainteoir 1	male	native	Atá fághthaí anois em oh naoi lá uilig fágthaí agam sílim.	0	0	378		
+emma1.wav	1	893.229525025	894.693454787	Cainteoir 2	male	native	Tar éis an tseachtain.	0	0	379		
+emma1.wav	0	894.461084984	898.016342979	Cainteoir 1	male	native	Eh nó beidh trí lá fágtha [taobh] tar éis an tseachtain I think.	0	0	380		
+emma1.wav	1	898.062816939	898.992296154	Cainteoir 2	male	native	Anois ahoh	0	0	381		
+emma1.wav	0	899.292831403	903.450505386	Cainteoir 1	male	native	Tá siad ag ídiú leob so eh níl fhios agam tá súil agam.	0	0	382		
+emma1.wav	1	903.028712374	907.246642502	Cainteoir 2	male	native	Tuigim agus an gheobhaidh tú fiche lá eile sa mbreis anois leis an conradh sé mhí?	0	0	383		
+emma1.wav	0	907.638307442	911.735725281	Cainteoir 1	male	native	Níl fhios agam an mbeidh fiche ann mar gheall nach bhfuil ann ach sé mhí níl fhios níl mé cinnte.	0	0	384		
+emma1.wav	1	909.837656723	912.458799017	Cainteoir 2	male	native	oh óó eh	0	0	385		
+emma1.wav	0	912.48892709	915.983783482	Cainteoir 1	male	native	Bhuel bhfuil fhios agat níl ann níl ann ach sé mhí so d'fhéadfadh sé xxx	0	0	386		
+emma1.wav	1	915.953655409	916.526088784	Cainteoir 2	male	native	Deich lá.	0	0	387		
+emma1.wav	0	916.197183099	917.79342723	Cainteoir 1	male	native	Deich lá nó rud éicint ar an gcaoi sin.	0	0	388		
+emma1.wav	1	916.917753724	918.544669631	Cainteoir 2	male	native	Oh ah fós fhéin.	0	0	389		
+emma1.wav	0	919.056846861	919.960689031	Cainteoir 1	male	native	Más féidir yeah 'sea.	0	0	390		
+emma1.wav	1	920.382482044	920.653634695	Cainteoir 2	male	native	Fós	0	0	391		
+emma1.wav	0	921.165811925	923.666441929	Cainteoir 1	male	native	So [sos] sos ag teastáil ón ríomhaire.	0	0	392		
+emma1.wav	1	922.792727831	925.775406994	Cainteoir 2	male	native	oh tá oh yeah an teicneolaíocht.	0	0	393		
+emma1.wav	0	924.96194904	927.070914104	Cainteoir 1	male	native	@=gáire [á rá leat] á rá leat.	0	0	394		
+emma1.wav	1	927.131170249	928.577317722	Cainteoir 2	male	native	Teicneolaíocht @=gáire	0	0	395		
+emma1.wav	0	928.245908926	928.848470373	Cainteoir 1	male	native	aha	0	0	396		
+emma1.wav	1	929.752312543	939.99585714	Cainteoir 2	male	native	Táim a rá leat em @=teoit oh cén mé a' dhul á dhéanamh ar chor ar bith @=teoit tá orm cur isteach i mbliana dhon eh an post ní an post an cúrsa @=teoit múinteoireachta	0	0	397		
+emma1.wav	0	940.729798671	941.761107576	Cainteoir 1	male	native	oh 'sea.	0	0	398		
+emma1.wav	1	941.534722694	943.169724617	Cainteoir 2	male	native	Tá ort cur isteach bliain roimh ré.	0	0	399		
+emma1.wav	0	943.27034012	945.710266067	Cainteoir 1	male	native	oh stop 's cén sin an cén.	0	0	400		
+emma1.wav	1	945.483881185	946.112728078	Cainteoir 2	male	native	Rud i nGaillimh.	0	0	401		
+emma1.wav	0	946.590651717	947.345267989	Cainteoir 1	male	native	oh just	0	0	402		
+emma1.wav	1	947.194344735	947.647114498	Cainteoir 2	male	native	Agus	0	0	403		
+emma1.wav	0	947.672268374	947.974114883	Cainteoir 1	male	native	Yeah.	0	0	404		
+emma1.wav	1	947.79342723	950.187793427	Cainteoir 2	male	native	Ní ní @=teoit ní céim a bheas i gceist	0	0	405		
+emma1.wav	0	949.005423788	949.508501303	Cainteoir 1	male	native	mhm	0	0	406		
+emma1.wav	1	950.615271835	953.00489003	Cainteoir 2	male	native	Cineál Árd Dioplóma a bhí ann cheana	0	0	406		
+emma1.wav	0	950.715887338	951.218964853	Cainteoir 1	male	native	Múinteoireacht.	0	0	407		
+emma1.wav	0	952.577274143	954.136814438	Cainteoir 1	male	native	óó xxx okay.	0	0	408		
+emma1.wav	1	953.357044291	955.168123344	Cainteoir 2	male	native	Ach is máistreacht a bheas ann anois.	0	0	409		
+emma1.wav	0	955.344200474	955.947893491	Cainteoir 1	male	native	Okay.	0	0	410		
+emma1.wav	1	956.325201627	958.060819053	Cainteoir 2	male	native	Mar teastaíonn máistreacht eile uaim.	0	0	411		
+emma1.wav	0	958.497652582	960.093896714	Cainteoir 1	male	native	oh [is maith leat] is maith leat iad.	0	0	412		
+emma1.wav	1	958.991512455	960.651668254	Cainteoir 2	male	native	B'fhéidir gur seafóid ach	0	0	413		
+emma1.wav	0	961.830985915	965.352112676	Cainteoir 1	male	native	So beidh tú cáillithe le haghaidh múineadh i mbunscoil nó i meánscoil nó?	0	0	414		
+emma1.wav	1	964.802057751	965.556674023	Cainteoir 2	male	native	@=teoit meánscoil.	0	0	415		
+emma1.wav	0	965.581827898	966.613136804	Cainteoir 1	male	native	Chuile meánscoil óó.	0	0	416		
+emma1.wav	1	967.015697227	968.507727511	Cainteoir 2	male	native	Oh yeah sin an áit.	0	0	417		
+emma1.wav	0	968.353379551	969.150844014	Cainteoir 1	male	native	Sin é atá tú ag iarraidh.	0	0	418		
+emma1.wav	1	969.061032864	976.807511737	Cainteoir 2	male	native	Bhfaca tú an xxx a bhíonns orthu le dhul le plé leis na mm bunscoileanna oh cuireann sé as dhom, bhfuil fhios agat an caoi anois	0	0	421		
+emma1.wav	0	977.35701058	977.768605142	Cainteoir 1	male	native	ah	0	0	422		
+emma1.wav	1	977.691431162	986.232018309	Cainteoir 2	male	native	Abair go bhfuil, abair go bhfuil mise ag iarraidh dhul ag múineadh níl fhios agam anois faoi mBleá Cliath b'fhéidir go bhfuil sé difriúil ach abair más ceantar tuaithe abair anois Tiobráid Árainn	0	0	423		
+emma1.wav	0	986.48926491	986.746511511	Cainteoir 1	male	native	mm	0	0	424		
+emma1.wav	1	986.51498957	989.987818682	Cainteoir 2	male	native	Right agus abair anois Scoil Naomh Pádraig	0	0	425		
+emma1.wav	0	990.399413243	990.836732465	Cainteoir 1	male	native	'Sea.	0	0	426		
+emma1.wav	1	990.682384504	999.428768933	Cainteoir 2	male	native	Agus go mbeadh ye know fógraíonn siad an post  sin go breá agus cuireann daoine isteach air agus go mbíonn na hagallaimh acu agus chuile shórt bladdy bladdy blah sin í go breá	0	0	427		
+emma1.wav	0	998.888551071	999.686015534	Cainteoir 1	male	native	'Sea 'sea.	0	0	428		
+emma1.wav	1	999.891812814	1010.82479335	Cainteoir 2	male	native	Ach ní caithfidh tú bheith ar sórt eh panel bíonn panel ag an scoil agus caithfidh tú clárú le haghaidh a bheith ar an bpanel agus ní bhféadfaidh tú dhul ar an bpanel go dtí go bhfuil tú i do chónaí san áit.	0	0	429		
+emma1.wav	0	1011.13348927	1011.41646053	Cainteoir 1	male	native	'Sea.	0	0	430		
+emma1.wav	1	1011.21066325	1018.90233662	Cainteoir 2	male	native	Nó más as an áit thú níl xxx ná caoi ormsa cur isteach ar post mar sin bhfuil fhios agat oh cuireann sé as dhom	0	0	431		
+emma1.wav	0	1018.15632147	1019.33965584	Cainteoir 1	male	native	hm bhuel.	0	0	432		
+emma1.wav	1	1019.67661265	1021.17915019	Cainteoir 2	male	native	oh xxx	0	0	433		
+emma1.wav	0	1020.74660151	1021.7482932	Cainteoir 1	male	native	Níor thaitin sé sin leat.	0	0	434		
+emma1.wav	1	1021.67999604	1023.4329565	Cainteoir 2	male	native	ugh páipéarachas aríst.	0	0	435		
+emma1.wav	0	1023.59231655	1024.6623054	Cainteoir 1	male	native	oh 'sea 'sea.	0	0	436		
+emma1.wav	1	1023.91103663	1035.56708543	Cainteoir 2	male	native	Ach eh le dhul leis an múintóireacht meánscoile an bhfuil fhios agat tá tú críochnaithe ag deireadh mí Béaltaine tá trí mhí ar fad agat bhfuil fhios agat tá an Cáisc agat 	0	0	437		
+emma1.wav	0	1035.88580551	1036.22729132	Cainteoir 1	male	native	Tá.	0	0	438		
+emma1.wav	1	1036.52324568	1040.62107534	Cainteoir 2	male	native	Tá an Nollaig agat tá trí mhí agat an bhfuil fhios agat tá tú in ann dul ar an dós déan déan rogha rud an bhfuil fhios agat	0	0	439		
+emma1.wav	0	1040.66660678	1041.37234411	Cainteoir 1	male	native	ah 'sea.	0	0	440		
+emma1.wav	1	1041.34957839	1051.13883812	Cainteoir 2	male	native	In ann dhul ar an trá nó ag dhul amach ag iascaireacht ansin nuair a thiocas an an eh mí Meán Fómhair arís just gabh amach bhfuil fhios agat tá rud éicint i gcónaí agat	0	0	441		
+emma1.wav	0	1051.229901	1051.86734117	Cainteoir 1	male	native	Is yeah.	0	0	442		
+emma1.wav	1	1051.4575582	1054.89518197	Cainteoir 2	male	native	Agus muna n-éiríonn leat post a fháil anseo	0	0	443		
+emma1.wav	0	1056.05623371	1056.67090816	Cainteoir 1	male	native	Bhfuil a xxx	0	0	444		
+emma1.wav	1	1056.28389091	1057.01239396	Cainteoir 2	male	native	Saudi Arab	0	0	445		
+emma1.wav	0	1057.37664549	1057.80919417	Cainteoir 1	male	native	uhoh	0	0	446		
+emma1.wav	1	1058.04921398	1059.87360679	Cainteoir 2	male	native	Saudi Arabia a mhac sin an áit	0	0	447		
+emma1.wav	0	1060.76114924	1063.02931327	Cainteoir 1	male	native	Bhuel [beidh an ghrian] beidh an ghrian amuigh ansin ar a laghad.	0	0	448		
+emma1.wav	1	1063.17723701	1067.78752695	Cainteoir 2	male	native	Oh cinnte yeah ach ní níor mhaith liom dhul go dtí eh Dubai tá siad an ghéar ansin.	0	0	449		
+emma1.wav	0	1068.05872048	1068.45318379	Cainteoir 1	male	native	An bhfuil?	0	0	450		
+emma1.wav	1	1068.62576149	1070.1049989	Cainteoir 2	male	native	Beireann siad dhíot lámh is cuile shórt.	0	0	451		
+emma1.wav	0	1070.25292264	1070.67203991	Cainteoir 1	male	native	uhoh	0	0	452		
+emma1.wav	1	1070.84461761	1076.81087517	Cainteoir 2	male	native	Má bhriseann tú dada nó má ghoideann tú dada má nó má bhreathnaíonn tú ar bhean isteach sna shúil nó bhfuil fhios agat 	0	0	453		
+emma1.wav	0	1076.88483705	1079.49815648	Cainteoir 1	male	native	Oh 'sea 'sea 'sea oh níor mhaith leat chuile xxx mar sin.	0	0	454		
+emma1.wav	1	1079.12834712	1089.40904715	Cainteoir 2	male	native	Ach [tá] tá áit ann Oman tá mé ag ceapadh cuid dho na na tíortha sin tá an ola ach tá sé sórt @=teoit tagann go leor tuarasaí chuchu mar a déarfá so	0	0	455		
+emma1.wav	0	1089.68394455	1091.03574532	Cainteoir 1	male	native	Okay xxx	0	0	456		
+emma1.wav	1	1090.09389671	1092.91079812	Cainteoir 2	male	native	Tá an áit sin cineál níos ré níos réchúisí bhfuil fhios agat	0	0	457		
+emma1.wav	0	1091.93694583	1094.00440582	Cainteoir 1	male	native	Níl tada ní ba mhaith ort ball ó Dhia ort tá tú eh	0	0	458		
+emma1.wav	1	1093.33333333	1094.1314554	Cainteoir 2	male	native	oh yeah.	0	0	459		
+emma1.wav	0	1096.04535991	1096.44294837	Cainteoir 1	male	native	oh	0	0	460		
+emma1.wav	1	1096.70800734	1099.22606759	Cainteoir 2	male	native	@=gáire ní dhéanfaidh mé riamh é beidh mé ar nós leis 	0	0	461		
+emma1.wav	0	1098.90799682	1103.41399936	Cainteoir 1	male	native	'S eh bhfuil aon drogall ort dhul ag plé leis [na] na na na daltaí na déagóirí sin a bheadh siad an-	0	0	462		
+emma1.wav	1	1102.67183424	1107.86699011	Cainteoir 2	male	native	Oh cuma liom xxx má dheireann siad tada liomsa @=gáire beidh mé go hálainn leothu.	0	0	463		
+emma1.wav	0	1106.35615396	1109.48384985	Cainteoir 1	male	native	Ach anois caithfidh tú oh 'sea. An ea a dtugtar?	0	0	464		
+emma1.wav	1	1109.21879088	1109.64288523	Cainteoir 2	male	native	@=gáire	0	0	465		
+emma1.wav	0	1109.80192062	1111.84287471	Cainteoir 1	male	native	Caithfí a bheith cúramach ní fhéadfadh tú iad a mholadh.	0	0	466		
+emma1.wav	1	1112.55853394	1123.39944594	Cainteoir 2	male	native	ah níor dúirt mé tada faoi <ah wow> [?] anois ná fíorais @=gáire ah no em bhuel bhí mé ag múineadh le cúpla coláist samhraidh agus an rud dheineas mé ná	0	0	467		
+emma1.wav	0	1123.79205677	1125.12875871	Cainteoir 1	male	native	ah 'sea 'sea.	0	0	469		
+emma1.wav	1	1124.94162044	1129.72701339	Cainteoir 2	male	native	Like is daoine fásta iad i ndáiríre an bhfuil fhios agat tá tú sé déag seacht déag tuigeann tú céard tú ag iarraidh a dhéanamh.	0	0	470		
+emma1.wav	0	1126.27832238	1130.18149205	Cainteoir 1	male	native	'Sea 'sea eh 'sea.	0	0	471		
+emma1.wav	1	1129.96761974	1134.27179999	Cainteoir 2	male	native	má tú ag iarraidh a bheith bhfuil fhios agat i do phleb agus <the like>[?] sórt ag déanamh dhá riamh	0	0	472		
+emma1.wav	0	1134.43220422	1134.69954461	Cainteoir 1	male	native	eh	0	0	473		
+emma1.wav	1	1134.4856723	1143.92278801	Cainteoir 2	male	native	féadfaidh tú ach ní féidir tú a bheith i mo ranga ag caint seafóide liomsa má chuireann mise ceist ort céard a cheapann tú? xxx oh níl fhios agam alright, amach an doras @=gáire	0	0	474		
+emma1.wav	0	1143.41484128	1146.43578766	Cainteoir 1	male	native	oh 'sea oh 'sea eh	0	0	475		
+emma1.wav	1	1144.44454106	1148.96573143	Cainteoir 2	male	native	Bhfuil fhios agat má tú muna bhfuil tú dhul páirt a ghlacadh sa rang cén mhaith tuigim go	0	0	477		
+emma1.wav	0	1148.52104269	1149.29632982	Cainteoir 1	male	native	So yeah.	0	0	478		
+emma1.wav	1	1149.13592559	1151.67565928	Cainteoir 2	male	native	Tuigim go bhfuil brú orthu bhí fiú brú ormsa á dhéanamh	0	0	479		
+emma1.wav	0	1151.78259543	1152.18360602	Cainteoir 1	male	native	aha	0	0	480		
+emma1.wav	1	1151.86279755	1155.84616934	Cainteoir 2	male	native	Bhfuil fhios agat bhí an gráin agamsa ar chuid de na rangannaí ach fós fhéin dhún mé mo bhéal agus rinne mé an obair.	0	0	481		
+emma1.wav	0	1156.27391396	1156.51452031	Cainteoir 1	male	native	mm	0	0	482		
+emma1.wav	1	1156.96289072	1157.71642245	Cainteoir 2	male	native	'S chuile dhuine eile.	0	0	483		
+emma1.wav	0	1158.12964952	1161.80007826	Cainteoir 1	male	native	eh so bhfuil aon chleachtadh agat oraibh a bheith timpeall oraibh so ní bheadh aon drogall ort	0	0	484		
+emma1.wav	1	1161.28962128	1165.59204437	Cainteoir 2	male	native	Tá cleachtadh agam ar dream faoi leith bhfuil fhios agat in	0	0	485		
+emma1.wav	0	1164.91143507	1165.68927427	Cainteoir 1	male	native	'Sea 'sea.	0	0	486		
+emma1.wav	1	1165.90804155	1174.75596247	Cainteoir 2	male	native	Bhfuil fhios agat na scoláirí sin ach em @=teoit ach bhfuil fhios agat nuair a bhíonns tú ann ar feadh na bliana bheadh sé i bhfad níos deacra sórt smácht a choimeád orthu.	0	0	487		
+emma1.wav	0	1175.09626712	1175.72826147	Cainteoir 1	male	native	'Sea 'sea.	0	0	488		
+emma1.wav	1	1175.36364935	1181.05159851	Cainteoir 2	male	native	Tá tú ann chuile lá tá tú bhfuil fhios agat má scaoileann tú leo ar chor bith beidh siad thuas do xxx bhfuil fhios agat.	0	0	489		
+emma1.wav	0	1181.22175084	1184.33310765	Cainteoir 1	male	native	'Sea tá sé sin fíor sin eh sin an dúshlán is mó ag baint leis.	0	0	490		
+emma1.wav	1	1184.71985897	1186.06662243	Cainteoir 2	male	native	mhm yeah.	0	0	491		
+emma1.wav	0	1186.09203306	1187.13386894	Cainteoir 1	male	native	oh 'sea is dóigh.	0	0	492		
+emma1.wav	1	1186.7781201	1188.04865166	Cainteoir 2	male	native	Níl an pá ródhonna ach oiread.	0	0	493		
+emma1.wav	0	1188.65850681	1192.08894203	Cainteoir 1	male	native	Bhuel xxx taobh maith den scéal	0	0	494		
+emma1.wav	1	1192.31763771	1196.12923239	Cainteoir 2	male	native	Oh yeah cinnte fiú leis an gearradh siar seo bhfaca tú an pá a faigheann siad?	0	0	495		
+emma1.wav	0	1196.51039186	1196.7899088	Cainteoir 1	male	native	'Sea.	0	0	496		
+emma1.wav	1	1196.89155133	1205.63280846	Cainteoir 2	male	native	Oh a rá liom fhéin hm cén fáth a bhfuil sibh ag dhul amach [ar na b'] na sráideachaí 's ag tabhairt amach oh jeez bheinnse friggin' breá sásta leis an phá sin.	0	0	497		
+emma1.wav	0	1205.27705962	1211.35020048	Cainteoir 1	male	native	Agus eh mar sin maith leat a bheith socruithe síos i mbaile mar sin Connamara nó is dóigh?	0	0	498		
+emma1.wav	1	1210.89280912	1211.88382374	Cainteoir 2	male	native	ah	0	0	499		
+emma1.wav	0	1211.96005563	1212.417447	Cainteoir 1	male	native	Cuma leat?	0	0	500		
+emma1.wav	1	1213.30681909	1216.15280978	Cainteoir 2	male	native	Bhuel ba mhaith liom teach a thógáil cinnte.	0	0	501		
+emma1.wav	0	1215.49213337	1217.16923503	Cainteoir 1	male	native	á 'sea no no sin go deas.	0	0	502		
+emma1.wav	1	1217.16923503	1231.72952672	Cainteoir 2	male	native	Agus tá beagán talaimh thart bhféadfainn rud éigint a dhéanamh ach i ndáiríre anois ba mhaith liom @=teoit caithfidh tú a bheith san áit ceart bhfuil fhios agat tá mé ag iarraidh a bheith díreach buailte ar an fharraige mé ag iarraidh a bheith ag breathnú amach ar Chnoc <Mardán> [?]	0	0	503		
+emma1.wav	0	1231.93281177	1232.3647925	Cainteoir 1	male	native	'Sea. 	0	0	504		
+emma1.wav	1	1232.39020313	1233.99107289	Cainteoir 2	male	native	Bhfuil fhios agat agus an fharraige ag crochadh amach.	0	0	505		
+emma1.wav	0	1234.19435794	1234.67715994	Cainteoir 1	male	native	Go deas.	0	0	506		
+emma1.wav	1	1235.21078319	1248.6530071	Cainteoir 2	male	native	<Fear> [?] i Cill Bhreacáin ah Cill Bhreacáin Ros Muc eh you know na cinn sa xxx sin agus bhfuil fhios agat go leor rudaí mar sin <miana> [?] ach xxx uh le haghaidh cead pleanála tá sé thar a bheith deacair	0	0	507		
+emma1.wav	0	1248.64326437	1252.65647392	Cainteoir 1	male	native	Tá sé casta anois sa saol seo áit éicint eh a réiteach amach is a shocrú amach.	0	0	508		
+emma1.wav	1	1252.62303051	1253.92732361	Cainteoir 2	male	native	Cinnte yeah bhuel	0	0	509		
+emma1.wav	0	1253.6263329	1256.2349191	Cainteoir 1	male	native	Tá airgead i go leor i gceist leis sin taobh eile dhó.	0	0	510		
+emma1.wav	1	1255.43227719	1261.08421398	Cainteoir 2	male	native	ah 's agam déarfainn go gceannóidh mé rud éicint i nGaillimh bhfuil fhios agat sa chathair bhfuil fhios agat.	0	0	511		
+emma1.wav	0	1260.08091159	1262.68949779	Cainteoir 1	male	native	Tá sé níos fhearr ná b'fhéidir nó	0	0	512		
+emma1.wav	1	1262.48883732	1278.00658091	Cainteoir 2	male	native	[Sin é] sin é an rud bhfuil fhios agat idir na mic léinn agus bhfuil fhios agat an t-ospidéal níl fhios céard a thaganns isteach ansin bhfuil fhios agat tagann siad as Maigh Eó, Sligeach suas ó Luimneach agus ó níl fhios agam faoi Luim ó Chontae an Chláir bhfuil fhios agat má bhriseann tú cnámh nó tada caithfidh tú dhul ann	0	0	513		
+emma1.wav	0	1263.00469484	1276.71361502	Cainteoir 1	male	native	ah 'Sea mm	0	0	519		
+emma1.wav	0	1278.07511737	1278.40375587	Cainteoir 1	male	native	mm	0	0	519		
+emma1.wav	1	1278.47478869	1289.51111495	Cainteoir 2	male	native	Bhfuil fhios agat da mbeadh an margaíocht sórt déanta agat le haghaidh sórt an scéal a scaipeadh tá fhios agam tá mé ag dhul beagán thar fóir @=gáire leis an smaoineamh seo ach fós fhéin caithfidh tú bheith ag cuimhniú ar na rudaí seo amach anseo @=gáire	0	0	520		
+emma1.wav	0	1280.81582759	1291.4508329	Cainteoir 1	male	native	'Sea @=gáire [caith] caithfidh caithfidh oh caithfidh tú a bheith ag pleanáil.	0	0	521		
+emma1.wav	1	1291.55116314	1292.68823917	Cainteoir 2	male	native	Sin é an rud ar ndóigh.	0	0	522		
+emma1.wav	0	1292.68823917	1293.75842839	Cainteoir 1	male	native	aha go díreach.	0	0	523		
+emma1.wav	1	1293.05611672	1297.80508135	Cainteoir 2	male	native	Níl tá mheas ort oh déanfaidh mé mo rogha rud oh fanfaidh cúpla bliain eile @=teoit yeah!	0	0	524		
+emma1.wav	0	1297.63786428	1298.54083643	Cainteoir 1	male	native	Yeah eh	0	0	525		
+emma1.wav	1	1298.10607207	1301.91862114	Cainteoir 2	male	native	Right feicfidh mé aríst thú @=gáire céard fút fhéin?	0	0	526		
+emma1.wav	0	1302.55404598	1302.98881035	Cainteoir 1	male	native	aha	0	0	527		
+emma1.wav	1	1303.55734837	1304.56065076	Cainteoir 2	male	native	Tú ag iarraidh teach?	0	0	528		
+emma1.wav	0	1304.79475465	1313.05527764	Cainteoir 1	male	native	Oh ba bhreá liom [teach] teach a thógáil áit éicint eh amach Chonamara yeah [sa mbaile] sa mbaile sa mbaile i Indreabhán thart ar sin	0	0	529		
+emma1.wav	1	1305.22951902	1313.59037224	Cainteoir 2	male	native	a cheannacht. Anseo ab ea? In áit i gConamara anois. Indreabhán ab ea? Spidéal.	0	0	530		
+emma1.wav	0	1313.89136296	1316.19895845	Cainteoir 1	male	native	Thart ar Indreabhán Spidéal thart in aice le m'áit fhéin.	0	0	531		
+emma1.wav	1	1315.028439	1318.50655394	Cainteoir 2	male	native	Ah right cuma leat dá mbeiféa ag breathnú amach ar an fharraige nó?	0	0	532		
+emma1.wav	0	1318.47311053	1320.94792308	Cainteoir 1	male	native	'Sea an fharraige cheapfainn is fhearr.	0	0	533		
+emma1.wav	1	1320.17872459	1325.79721795	Cainteoir 2	male	native	mBeifeá díreach buailte ar an fharraige anois nó mar tá fhios agam thóg bean teach	0	0	534		
+emma1.wav	0	1325.83066137	1326.29886915	Cainteoir 1	male	native	'Sea.	0	0	535		
+emma1.wav	1	1326.26542573	1329.44254996	Cainteoir 2	male	native	Díreach in aice le siopa an phobail @=gáire gar dhon bóthar.	0	0	536		
+emma1.wav	0	1329.47599337	1329.91075774	Cainteoir 1	male	native	ah	0	0	537		
+emma1.wav	1	1330.04453139	1338.50571486	Cainteoir 2	male	native	Agus ansin nach ndearna <duinecint> [?] eile teach díreach ar aghaidh an tí @=gáire anois níl siad ag déanamh tada ach ag breathnú isteach ar @=gáire thóin an tí.	0	0	538		
+emma1.wav	0	1334.09118436	1338.94047923	Cainteoir 1	male	native	oh tuigim thú @=gáire	0	0	539		
+emma1.wav	1	1339.33167295	1340.2475462	Cainteoir 2	male	native	@=gáire	0	0	540		
+emma1.wav	0	1340.1589133	1341.48840672	Cainteoir 1	male	native	Tá sé sin sin í an chontúirt.	0	0	541		
+emma1.wav	1	1341.72476111	1342.34519137	Cainteoir 2	male	native	oh yeah.	0	0	542		
+emma1.wav	0	1341.9315712	1343.5860519	Cainteoir 1	male	native	A bheith cúramach cén áit a thiocfas tú air.	0	0	543		
+emma1.wav	1	1343.6155962	1348.99265848	Cainteoir 2	male	native	Sin an fáth tá mé ag iarraidh teach a thógáil ar cnoc bhfuil fhios agat, níl duine ar bith dul amach romhat bhfuil fhios agat.	0	0	544		
+emma1.wav	0	1348.93356989	1350.3812405	Cainteoir 1	male	native	Teach solais xxx	0	0	545		
+emma1.wav	1	1350.67668348	1360.27858042	Cainteoir 2	male	native	ah ní teach solais ach bhfuil fhios agat áit go mbeadh na páirceannaí thíos fút is dá dtógfaí teach an bhfuil fhios agat fós fhéin bheifeá in ann dhul amach breathnú ar an fharraige agus an cnoc oh cinnte yeah.	0	0	546		
+emma1.wav	0	1353.39475892	1367.25103481	Cainteoir 1	male	native	'Sea tuigim thú oh [bheadh] bheadh bheadh an radharc sin agat an dtuigeann tú yeah so yeah sin é a  thaitneodh liom agus 'sé alright socrú sios sa mbaile d'fhéadfainn ach is braitheann sé uilig le fostaíocht an dtuigeann tú?	0	0	547		
+emma1.wav	1	1367.87146507	1368.31462954	Cainteoir 2	male	native	mhm	0	0	548		
+emma1.wav	0	1367.93055367	1372.89399577	Cainteoir 1	male	native	Cuir ar fáil ach eh eh tá na	0	0	549		
+emma1.wav	1	1372.4803756	1376.91202034	Cainteoir 2	male	native	Meas tú an bhfanfaidh tú ort timpeall na háite seo is tú ag obair go Fiontar?	0	0	550		
+emma1.wav	0	1377.62591197	1383.54559281	Cainteoir 1	male	native	Fanfaidh mé thart píosa eile go bhfeicfidh mé yeah feicfidh mé an bhfuil rud em píosa maith caite agam beagnach bliain anois caite agam.	0	0	551		
+emma1.wav	1	1383.4741784	1386.90140845	Cainteoir 2	male	native	ah is ah [tá] tá tá déanta go maith agat.	0	0	554		
+emma1.wav	0	1387.00335031	1391.2909696	Cainteoir 1	male	native	Tá sé eh bhuel tá sé go deas anseo tá na daoine go deas caithfidh mé a rá.	0	0	555		
+emma1.wav	1	1391.014349	1392.92303114	Cainteoir 2	male	native	ah tá an daoine go hálainn yeah cinnte.	0	0	556		
+emma1.wav	0	1391.40161784	1398.17882254	Cainteoir 1	male	native	So [tá] tá sé sin ann an dtuigeann tú tá duine gan a bheith ar a chompord san oifig tuigeann tú 's daoine but gan a bheith ag cur ceisteanna timpeall.	0	0	557		
+emma1.wav	1	1398.26180872	1398.59375344	Cainteoir 2	male	native	mm	0	0	558		
+emma1.wav	0	1399.14699464	1400.58542176	Cainteoir 1	male	native	eh tea duine ar bith?	0	0	559		
+emma1.wav	1	1400.08750468	1403.57292424	Cainteoir 2	male	native	mm bhfuil fhios agat na cluaisíní freisin le haghaidh píosa beag ceoil bhfuil fhios agat.	0	0	560		
+emma1.wav	0	1403.26864158	1405.89653728	Cainteoir 1	male	native	Sin é an rud tá sé go hálainn ar an gcaoi sin bheadh tú in ann eh	0	0	561		
+emma1.wav	1	1404.54109634	1409.32663272	Cainteoir 2	male	native	a bheith i do shuaimhneas bhfuil fhios agat 's beagán Skrillex agus bhfuil fhios agat amhrán le	0	0	562		
+emma1.wav	0	1410.35012894	1410.62674954	Cainteoir 1	male	native	eh	0	0	563		
+emma1.wav	1	1410.377791	1412.64607992	Cainteoir 2	male	native	So tá chuile chineál dhuine yeah	0	0	564		
+emma1.wav	0	1413.58327831	1418.82835553	Cainteoir 1	male	native	Tá sé sin ann agus eh tá sé sin tábhactach go mbeadh duine cineál compórdach sa láthair oibre chomh maith an dtuigeann tú?	0	0	565		
+emma1.wav	1	1418.01245463	1422.83792567	Cainteoir 2	male	native	oh cinnte yeah an bhfuil fhios agat ní rud maith é a bheith faoin bhrú i gconaí.	0	0	566		
+emma1.wav	0	1421.34599259	1424.81939929	Cainteoir 1	male	native	oh [ní hea] ní hea ní hea.	0	0	567		
+emma1.wav	1	1424.44641602	1426.56775836	Cainteoir 2	male	native	An t-aon sos intinne sórt faoiseamh	0	0	568		
+emma1.wav	0	1426.00828346	1428.05969144	Cainteoir 1	male	native	@=gaire Sé sin atá ann faoiseamh anois is aríst.	0	0	569		
+emma1.wav	1	1427.45359363	1428.89890379	Cainteoir 2	male	native	@=gáire	0	0	570		
+emma1.wav	0	1428.43267471	1429.36513288	Cainteoir 1	male	native	Tá an ceart uilig agat.	0	0	571		
+emma1.wav	1	1429.97123069	1432.95509684	Cainteoir 2	male	native	mm ach eh mbeadh an suim agat Gaeilgeoirí a thógáil?	0	0	572		
+emma1.wav	0	1435.14637355	1436.54506081	Cainteoir 1	male	native	eh ní bheadh.	0	0	573		
+emma1.wav	1	1436.87142117	1437.87381371	Cainteoir 2	male	native	Ní bheadh cén fáth?	0	0	574		
+emma1.wav	0	1439.07387935	1443.30045761	Cainteoir 1	male	native	Mé fhéin? Dá mbeadh teach agam fhéin agus iad a thógail isteach? Oh níl fhios agam níorbh níl mé in ann déileáil leob.	0	0	575		
+emma1.wav	1	1440.04690456	1444.03022651	Cainteoir 2	male	native	'Sea yeah. uh	0	0	576		
+emma1.wav	0	1444.36470393	1444.8208095	Cainteoir 1	male	native	An iomarca	0	0	577		
+emma1.wav	1	1444.75999542	1445.79383471	Cainteoir 2	male	native	ah no just cailín aim-	0	0	578		
+emma1.wav	0	1445.27691506	1446.34116139	Cainteoir 1	male	native	Ruaille buaille agus	0	0	579		
+emma1.wav	1	1446.52360362	1447.83110624	Cainteoir 2	male	native	Cailín aimsire a fháil just	0	0	580		
+emma1.wav	0	1447.92232736	1448.34802589	Cainteoir 1	male	native	xxx	0	0	581		
+emma1.wav	1	1447.98314143	1462.27444921	Cainteoir 2	male	native	Bhfuil fhios agat, [réitigh tú] réitigh tú an céard é fhéin an bricfeasta ar maidin ag a seacht nó a n-ocht, an lón arís ag a haon, an dinnéar agus tae arís agus bhfuil fhios agat glanfaidh siad fhéin chuile shórt agus gheobhaidh tú seic breá ina dhiaidh.	0	0	582		
+emma1.wav	0	1460.4196199	1460.66287621	Cainteoir 1	male	native	eh	0	0	583		
+emma1.wav	0	1461.97183099	1467.74647887	Cainteoir 1	male	native	@=gáire Yeah níl fhios agam anois ní bheadh do theach agat fhéin do chuid fhéin ar chaoi éicint 	0	0	583		
+emma1.wav	1	1468.02816901	1468.2629108	Cainteoir 2	male	native	Ach 	0	0	584		
+emma1.wav	0	1468.2629108	1468.68544601	Cainteoir 1	male	native	gceapfá? 	0	0	583		
+emma1.wav	1	1468.73239437	1477.9342723	Cainteoir 2	male	native	oh bheadh an t-airgead iontach bhfuil fhios agat, b'fhéidir go bhfuil tuairmí difriúil ag daoine difriúil ach sin  bhfuil fhios agat sé sin togha ach	0	0	584		
+emma1.wav	0	1473.94366197	1476.76056338	Cainteoir 1	male	native	Tuigeann thú bhuel sin an chaoi a bhfuil sé. 	0	0	585		
+emma1.wav	0	1478.07511737	1478.77934272	Cainteoir 1	male	native	uhoh	0	0	585		
+emma1.wav	1	1479.10798122	1483.33333333	Cainteoir 2	male	native	Sé dhuine dhéag ó xxx atá mé ag caint faoi bhfuil fhios agat níl aon mhaith agat triúr nó ceathrar bhfuil fhios agat teastaíonn 	0	0	587		
+emma1.wav	0	1482.67605634	1483.33333333	Cainteoir 1	male	native	Dhá dhuine dhéag? 	0	0	587		
+emma1.wav	1	1483.66197183	1483.89671362	Cainteoir 2	male	native	mm	0	0	587		
+emma1.wav	0	1484.22535211	1488.30985915	Cainteoir 1	male	native	oh níl fhios agam tá tú ag déanamh óstán do do theach nach mbeadh ar bhealach.	0	0	587		
+emma1.wav	1	1487.82035816	1492.64332359	Cainteoir 2	male	native	Yeah ach fós fhéin d'fhéadfá ansin d'fhéadfá an teach a ligean nuair nach bhfuil na Gaeilgeoirí ann	0	0	588		
+emma1.wav	0	1493.10756625	1493.64918269	Cainteoir 1	male	native	oh 'sea.	0	0	589		
+emma1.wav	1	1493.77813899	1496.02197852	Cainteoir 2	male	native	Bhfuil fhios agat ar nós teach saoire.	0	0	590		
+emma1.wav	0	1496.61517748	1497.13100266	Cainteoir 1	male	native	aha	0	0	591		
+emma1.wav	1	1498.34319183	1499.16851212	Cainteoir 2	male	native	Déanann go leor daoine é.	0	0	592		
+emma1.wav	0	1499.41480048	1500.79336144	Cainteoir 1	male	native	oh tá mé cinnte go deo.	0	0	593		
+emma1.wav	1	1501.97183099	1511.17370892	Cainteoir 2	male	native	Ach eh yeah jeez ba cheart dom stopadh ag cáint faoi na rudaí seo amm @=gáire bhuel bhfuil aon plean mór agat amach sa mbliain romhainn?	0	0	596		
+emma1.wav	0	1512.43454285	1518.22449887	Cainteoir 1	male	native	Bhuel níl fós just eh is dóigh sé mhí eile atá ag teacht aníos a dhéanamh anseo agus feicfimid linn céard a thiocfas aníos.	0	0	597		
+emma1.wav	1	1516.8765726	1519.6643292	Cainteoir 2	male	native	oh so beidh sibh críochnaithe mí Eanáir?	0	0	598		
+emma1.wav	0	1519.35798232	1521.25733297	Cainteoir 1	male	native	Amach i mí an Feabhra Feabhra is dóigh.	0	0	599		
+emma1.wav	1	1521.4411411	1522.32954705	Cainteoir 2	male	native	oh Feabhra.	0	0	600		
+emma1.wav	0	1522.52970326	1530.91967654	Cainteoir 1	male	native	So tá muid leis an <amach> [?] muid tá súil agam má oibríonn chuile shórt amach anois b'fhéidir rud éicint eile aníos xxx rud éicint eile níl fhios agam xxx	0	0	601		
+emma1.wav	1	1529.44830063	1530.04311217	Cainteoir 2	male	native	mhm	0	0	602		
+emma1.wav	0	1532.07799375	1534.01895772	Cainteoir 1	male	native	Fanfaimid linn go bhfeicfimid ehm	0	0	603		
+emma1.wav	1	1533.54936966	1534.08156946	Cainteoir 2	male	native	mhm	0	0	604		
+emma1.wav	0	1534.676381	1538.30786197	Cainteoir 1	male	native	Is breá an rud post a bheith ag duine ar aon nós cíbe céard a chur xxx orthu an dtuigeann tú	0	0	605		
+emma1.wav	1	1538.74614415	1539.74793201	Cainteoir 2	male	native	I bhfad níos fhearr ná an dole.	0	0	606		
+emma1.wav	0	1540.15490832	1540.40535529	Cainteoir 1	male	native	oh.	0	0	607		
+emma1.wav	1	1540.40535529	1542.12717816	Cainteoir 2	male	native	Bhuel dá xxx tú agus cúpla gasúr agat	0	0	608		
+emma1.wav	0	1542.84721318	1543.16027189	Cainteoir 1	male	native	@=gáire	0	0	609		
+emma1.wav	1	1543.12896602	1546.97958808	Cainteoir 2	male	native	Dá mbeadh cúpla gasúrí dhéanfá go maith agus an bhfuil fhios agat an caoi a faigheann tú an rud sin le haghaidh cíos	0	0	610		
+emma1.wav	0	1547.26134092	1548.29443464	Cainteoir 1	male	native	'Sea 'sea. 	0	0	611		
+emma1.wav	1	1548.13790529	1553.522515	Cainteoir 2	male	native	'fhios agat tá tú ag déanamh beagnach an t-airgead ah nó ní mar sin sé dhuine dhéag agat nó rud éicint @=gáire	0	0	612		
+emma1.wav	0	1552.8963976	1553.39729152	Cainteoir 1	male	native	@=gáire	0	0	613		
+emma1.wav	1	1554.33646764	1558.28100731	Cainteoir 2	male	native	Nach fhaigheann tú céad Euro in aghaidh an pháiste nó rud éicint @=gáire meas tú?	0	0	614		
+emma1.wav	0	1558.23057008	1561.66529929	Cainteoir 1	male	native	xxx go mbíodh siad acub fadó an méid sin acub deichniúr agus chuile shórt.	0	0	615		
+emma1.wav	1	1560.30150975	1562.42296014	Cainteoir 2	male	native	Oh yeah ah tá sé ag teastáil arís anois.	0	0	616		
+emma1.wav	0	1563.48368534	1564.01404794	Cainteoir 1	male	native	xxx leat.	0	0	617		
+emma1.wav	1	1565.21126761	1571.22065728	Cainteoir 2	male	native	So an xxx spás go na Gaeilgeoirí @=gáire ahm	0	0	620		
+emma1.wav	0	1571.59624413	1577.65258216	Cainteoir 1	male	native	mhm so cén áit a ndeachaigh tusa ar scoil i dtosach bhuel xxx tú ag teacht aníos baile xxx eile	0	0	622		
+emma1.wav	1	1576.86902711	1578.35909346	Cainteoir 2	male	native	D'fhreastal mise	0	0	623		
+emma1.wav	0	1578.38434882	1578.81368998	Cainteoir 1	male	native	Ros Muc.	0	0	624		
+emma1.wav	1	1578.51062563	1580.83411892	Cainteoir 2	male	native	Ar an scoil céanna le Pádraic Ó Conaire.	0	0	625		
+emma1.wav	0	1581.18769399	1582.34944063	Cainteoir 1	male	native	óó 'sea anois.	0	0	626		
+emma1.wav	1	1582.62724961	1590.30487961	Cainteoir 2	male	native	Anois mar eol is as ba as Ros Muc dho Pádraic Ó Conaire ah yeah Scoil Naomh Mhuire ar an Turlach.	0	0	627		
+emma1.wav	0	1590.53201978	1592.02149327	Cainteoir 1	male	native	Okay yeah right.	0	0	628		
+emma1.wav	1	1591.61527323	1599.69453858	Cainteoir 2	male	native	Agus tá Tí Mhícheal díreach lena thaobh eh teach tabhairne agus ba é daideo fear atá ann anois a bhí ina príomhoide ar an scoil.	0	0	629		
+emma1.wav	0	1599.73967414	1600.86806315	Cainteoir 1	male	native	óó tuigim.	0	0	630		
+emma1.wav	1	1600.46184311	1612.1519533	Cainteoir 2	male	native	Agus ba é a mhuin Pádraic Pádraic Ó Conaire yeah is breá liom rudaí mar sin 's ansin nuair a bhain mé amach mo chuid scoil ansin chuaigh mé ar aghaidh go dtí Cathairscoil na bPiarseach.	0	0	631		
+emma1.wav	1	1613.415749	1621.58528546	Cainteoir 2	male	native	a d'oscail Eamon Ó Cuív ní Eamon Ó Cuív ah a mhaighdean bhí an Eamon mícheart Eamon de Valera chas sé an leictreachas agus d'oscail sé an scoil.	0	0	631		
+emma1.wav	0	1613.4741784	1613.8028169	Cainteoir 1	male	native	oh	0	0	633		
+emma1.wav	0	1622.3943662	1622.72300469	Cainteoir 1	male	native	oh	0	0	633		
+emma1.wav	1	1622.48799668	1642.43791446	Cainteoir 2	male	native	Am fadó fadó is fadó bhí ach eh chaith mé mo chuid ama ansin agus ansin ar bhain mé amach m'ardteist eh chuaigh mé chomh fada le Ollscoil na Gaillimhe hÉireann agus i ndiaidh an trí bliana bhain mé amach céim sa Ghaeilge agus sa tSocheolaíocht agus Polaitíocht.	0	0	634		
+emma1.wav	0	1643.0066649	1643.73158862	Cainteoir 1	male	native	Go maith.	0	0	635		
+emma1.wav	1	1643.33617569	1646.69718567	Cainteoir 2	male	native	Agus anois fuair mé post ag obair le Fiontar clár intéirneach.	0	0	636		
+emma1.wav	0	1647.48801155	1648.27883743	Cainteoir 1	male	native	Aimhirghín.	0	0	637		
+emma1.wav	1	1650.46948357	1651.92488263	Cainteoir 2	male	native	@=gáire céard fút fhéin?	0	0	639		
+emma1.wav	0	1651.45539906	1653.05164319	Cainteoir 1	male	native	Tá ag déanamh gó maith fair play dhuit. 	0	0	639		
+emma1.wav	1	1653.14553991	1654.27230047	Cainteoir 2	male	native	oh maith agat.	0	0	637		
+emma1.wav	0	1653.23943662	1656.05633803	Cainteoir 1	male	native	eh is sa [is sa] Spidéal a bhí an scoil, 	0	0	638		
+emma1.wav	1	1656.99530516	1657.27699531	Cainteoir 2	male	native	@=teoit	0	0	639		
+emma1.wav	0	1657.18309859	1659.01408451	Cainteoir 1	male	native	scoil na gcailíní a ghlaoidís uirthi an uair sin agus scoil a	0	0	639		
+emma1.wav	1	1659.01408451	1659.62441315	Cainteoir 2	male	native	@=gáire	0	0	639		
+emma1.wav	0	1659.62441315	1669.01408451	Cainteoir 1	male	native	xxx mura mbíodh em chaitheadh [na] na buachaillí beaga amach as em eh théis rang a haon agus dhul thuas go dtí scoil na mbuachaillí.	0	0	639		
+emma1.wav	1	1669.36752752	1670.35605987	Cainteoir 2	male	native	An raibh dhá scoil ann?	0	0	640		
+emma1.wav	0	1669.63113615	1674.11248279	Cainteoir 1	male	native	Agus chuadh na cailíní ar aghaidh rang a dó, rang a trí, rang a cheathar, rang a cúig, rang a sé thíos	0	0	641		
+emma1.wav	1	1673.78297201	1674.7056022	Cainteoir 2	male	native	Raibh dhá scoil agaibh?	0	0	642		
+emma1.wav	0	1674.63970005	1676.61676474	Cainteoir 1	male	native	Dhá scoil agamsa an ea? [Bhí] bhí.	0	0	643		
+emma1.wav	1	1675.76003671	1676.74856906	Cainteoir 2	male	native	oh cén áit?	0	0	644		
+emma1.wav	0	1677.55868545	1677.98122066	Cainteoir 1	male	native	Spidéal.	0	0	645		
+emma1.wav	1	1677.79342723	1678.45070423	Cainteoir 2	male	native	Bhfuil fhios agat	0	0	646		
+emma1.wav	0	1678.49765258	1679.71830986	Cainteoir 1	male	native	xxx scoil xxx	0	0	645		
+emma1.wav	1	1679.53051643	1680.51643192	Cainteoir 2	male	native	Díreach in aice le em	0	0	646		
+emma1.wav	0	1680.98591549	1681.59624413	Cainteoir 1	male	native	em	0	0	645		
+emma1.wav	1	1681.26760563	1685.16431925	Cainteoir 2	male	native	mé a dhul Supermacs a rá in aice leis an mbúistéir, b'shin é an scoil?	0	0	646		
+emma1.wav	0	1684.78863215	1691.37884781	Cainteoir 1	male	native	Sin é an meánscoil no tá scoil eile síos ag an gcladach seod é an bunscoil atá mé ag caint air ansin ceann thíos ag an cladach agus ceann eile thuas	0	0	647		
+emma1.wav	1	1691.97196722	1694.80575995	Cainteoir 2	male	native	Agus an raibh ort íoc le haghaidh dhul ag eh Spidéal an t-am sin?	0	0	648		
+emma1.wav	0	1692.49918447	1695.66248798	Cainteoir 1	male	native	Agus céard é seo?	0	0	649		
+emma1.wav	1	1695.53068367	1698.23267209	Cainteoir 2	male	native	Raibh ort airgead a íoc le haghaidh dhul ag an Spidéal ag an meánscoil?	0	0	650		
+emma1.wav	0	1698.5915493	1699.29577465	Cainteoir 1	male	native	Ag an meánscoil? 	0	0	650		
+emma1.wav	1	1699.24882629	1699.62441315	Cainteoir 2	male	native	ah	0	0	650		
+emma1.wav	0	1699.57746479	1702.86384977	Cainteoir 1	male	native	Níl fhios agam faoin meánscoil anois thiar in Indreabhán bhí mé fhéin ag an meánscoil. 	0	0	650		
+emma1.wav	1	1702.62910798	1704.4600939	Cainteoir 2	male	native	oh ní dheacaigh tú ag an Spidéal cén fáth?	0	0	650		
+emma1.wav	0	1703.42723005	1712.34741784	Cainteoir 1	male	native	'Sea ag an amach eh thiar in Indreabhán ag an eh Gairmscoil Choilm Chille bhí rinne yeah.	0	0	651		
+emma1.wav	1	1713.00469484	1714.88262911	Cainteoir 2	male	native	oh right agus cén fáth nach ndeacaigh tú ag an Spidéal?	0	0	652		
+emma1.wav	0	1715.30516432	1718.63849765	Cainteoir 1	male	native	Cén fáth nach ndeachaigh mé bhuel níl fhios agam xxx go leor dho mo chairde siar	0	0	651		
+emma1.wav	1	1715.82159624	1717.32394366	Cainteoir 2	male	native	ah raibh sé níos giorra?	0	0	650		
+emma1.wav	1	1718.68544601	1719.38967136	Cainteoir 2	male	native	okay	0	0	651		
+emma1.wav	0	1719.24882629	1726.76056338	Cainteoir 1	male	native	agus cineál lean mé dhóibh yeah so eh @=teoit agus eh sin sin.	0	0	652		
+emma1.wav	1	1727.84037559	1747.37089202	Cainteoir 2	male	native	hm mar tá fhios agam cuireadh scoiláireacht ar fáil chaill duinecint eh rud éicint fadó 's chuir sí airgead ar fáil scoiláireacht go daoine a bhí ag iarraidh a chuid scoil a bhaint amach agus níl fhios agamsa cé mhéad a bhí ann ach b'fhéidir go raibh cúpla céad punt ann agus cuirfidh go dtí an Spidéal thú agus	0	0	653		
+emma1.wav	0	1747.27699531	1747.9342723	Cainteoir 1	male	native	oh	0	0	654		
+emma1.wav	1	1747.46478873	1751.36150235	Cainteoir 2	male	native	d'íocfaí na táillí sin an fáth níl fhios agam cén <air> [?] ar	0	0	653		
+emma1.wav	0	1751.54929577	1753.66197183	Cainteoir 1	male	native	Okay níor chuala mé riamh uirthi.	0	0	654		
+emma1.wav	1	1753.56807512	1755.49295775	Cainteoir 2	male	native	B'fhéidir gurb é sin sa seanaimsir.	0	0	655		
+emma1.wav	0	1755.21126761	1756.99530516	Cainteoir 1	male	native	B'fhéidir [b'fhéidir gurb ea] b'fhéidir gurb ea. 	0	0	654		
+emma1.wav	1	1756.38497653	1757.32394366	Cainteoir 2	male	native	Fadó fadó.	0	0	655		
+emma1.wav	0	1757.41784038	1758.16901408	Cainteoir 1	male	native	Fadó bhí.	0	0	654		
+emma1.wav	1	1758.07511737	1768.82629108	Cainteoir 2	male	native	Arú anuraidh b'fhéidir nó rud éicint ach eh @=gáire em ach eh cén áit a ndeachaigh tú ag an ollscoil?	0	0	655		
+emma1.wav	0	1769.85915493	1773.61502347	Cainteoir 1	male	native	I nGaillimh i nGaillimh agus rinne mé	0	0	656		
+emma1.wav	1	1773.05164319	1773.84976526	Cainteoir 2	male	native	An ndéarna tú an	0	0	657		
+emma1.wav	0	1775.25821596	1777.98122066	Cainteoir 1	male	native	BA agus an MA an MA@L ansin.	0	0	656		
+emma1.wav	1	1777.41784038	1779.06103286	Cainteoir 2	male	native	oh Go maith.	0	0	657		
+emma1.wav	0	1779.06103286	1779.53051643	Cainteoir 1	male	native	agus	0	0	656		
+emma1.wav	1	1780.3286385	1781.69014085	Cainteoir 2	male	native	[Céard air a] bhunaigh tú do thráchtas?	0	0	657		
+emma1.wav	0	1782.34563653	1791.20994069	Cainteoir 1	male	native	eh bealoideas em ar eh luibheolaíocht luibhe luibhiní agus bealoideas a bhain le luibheannaí agus na leigheasannaí a bhain leob	0	0	658		
+emma1.wav	1	1791.69014085	1792.15962441	Cainteoir 2	male	native	oh	0	0	659		
+emma1.wav	0	1792.67605634	1797.13615023	Cainteoir 1	male	native	Draíocht xxx dúirt daoine go raibh draíocht iontaib agus rudaí mar sin so chuaigh mé isteach	0	0	659		
+emma1.wav	1	1796.94835681	1797.79342723	Cainteoir 2	male	native	ah tá sin go maith.	0	0	660		
+emma1.wav	0	1797.41784038	1802.25352113	Cainteoir 1	male	native	Bhí orm breathnú [ar an] ar an mbailiúcháin a bhí acuab thíos ansin sa leabharlann freisin bailiúchán mór mílteach acuab agus 	0	0	659		
+emma1.wav	1	1802.62910798	1803.38028169	Cainteoir 2	male	native	Cén bailiúchán?	0	0	660		
+emma1.wav	0	1803.52112676	1805.58685446	Cainteoir 1	male	native	Bailiúchán eh Bhéaloideas Éireann.	0	0	660		
+emma1.wav	1	1806.72247296	1808.05211858	Cainteoir 2	male	native	'S cá bhfuil sé sin lonnaithe?	0	0	661		
+emma1.wav	0	1807.27699531	1813.84976526	Cainteoir 1	male	native	In ah tá sé seo thíos thíos tá sé thíos acub em tá cineál microfís nó microfilms acub thíos ansin. 	0	0	662		
+emma1.wav	1	1813.05164319	1814.08450704	Cainteoir 2	male	native	Oh sin i nGaillimh ab ea?	0	0	663		
+emma1.wav	0	1814.03755869	1818.16901408	Cainteoir 1	male	native	'Sea istigh sa leabharlann tá seomra ansin sórt seomra taighde is tá na bailiúchán ansin so.	0	0	662		
+emma1.wav	1	1814.41314554	1815.72769953	Cainteoir 2	male	native	oh di.	0	0	663		
+emma1.wav	1	1818.35680751	1819.24882629	Cainteoir 2	male	native	oh ní raibh fhios agam é sin anois.	0	0	663		
+emma1.wav	0	1819.29577465	1823.61502347	Cainteoir 1	male	native	Bhí mé in ann a dhul ag breathnú orthaib sin agus bhí go leor stuif suimiúil ansin.	0	0	662		
+emma1.wav	1	1823.89671362	1824.1314554	Cainteoir 2	male	native	hm	0	0	663		
+emma1.wav	0	1824.50704225	1829.85915493	Cainteoir 1	male	native	Agus é a chur in eh xxx tráchtas comparáid idir an idirfhaisean agus an stuif atá sna leabhair go heolaíoch.	0	0	663		
+emma1.wav	1	1830.0	1830.75117371	Cainteoir 2	male	native	mhm	0	0	662		
+emma1.wav	0	1830.18779343	1836.76056338	Cainteoir 1	male	native	go heolaíoctiúil mar a dhéarfá so bhí sé go deas bhí sé go breá suimiúil ach bhí eh píosa oibre i gceist leis.	0	0	663		
+emma1.wav	1	1837.08920188	1838.12206573	Cainteoir 2	male	native	Déarfainn é yeah.	0	0	664		
+emma1.wav	0	1838.07511737	1838.68544601	Cainteoir 1	male	native	Ye know.	0	0	665		
+emma1.wav	1	1838.45070423	1840.75117371	Cainteoir 2	male	native	So raibh tú ag dhul a chaint le na seandaoine a bhí thart timpeall ort?	0	0	665		
+emma1.wav	0	1841.50234742	1854.60093897	Cainteoir 1	male	native	Bhí cúpla duine cúpla duine bhí mé ag caint le Eddie xxx bhí go leor tá sórt xxx ag Eddie xxx, Carna tá sé i Leitir Mór, tá sé lonnaithe i dTír dTír an Fhia anois sílim as Carna ó dhúchas é siúd ceapaim, ceapaim go ba	0	0	666		
+emma1.wav	1	1854.41314554	1855.21126761	Cainteoir 2	male	native	mhm go breá yeah.	0	0	667		
+emma1.wav	0	1854.83568075	1863.4741784	Cainteoir 1	male	native	Ach [ar aon nós] ar aon nós bhí an-eolas ag an bhfear sin agus bhí sé sin go deas xxx go leor eolas uaidh agus cúpla duine eile ní raibh an oiread sin thart anois a raibh fhios acub ar luibheannaí bhfuil fhios agat.	0	0	666		
+emma1.wav	1	1862.81690141	1863.66197183	Cainteoir 2	male	native	mhm	0	0	667		
+emma1.wav	0	1863.8028169	1866.66666667	Cainteoir 1	male	native	Tá siad imithe. Cheapfainn go raibh go leor acub ach em.	0	0	666		
+emma1.wav	1	1865.30516432	1866.29107981	Cainteoir 2	male	native	Cinnte yeah.	0	0	667		
+emma1.wav	0	1867.98122066	1873.09859155	Cainteoir 1	male	native	Eh yeah so bhain mé amach sin agus sásta leis.	0	0	668		
+emma1.wav	1	1873.11611108	1875.68675929	Cainteoir 2	male	native	mBeadh tá aon tsuim agat am dochtúireacht a dhéanamh nó?	0	0	669		
+emma1.wav	0	1876.1299745	1894.4790841	Cainteoir 1	male	native	Bhí mé cineál ag cuimhniú ar sin em rud éicint mar sin a dhéanamh arís bealoideas is dóigh ach bhí mé cinéal cuimhniú ar bealoideas a bhainneans le hainmhí agus leigheasannaí a bheadh acub ar ainmhí fadó 's cinéal an @=teoit réimse sin ach níl mé cinnte bhfuil fhios agat an bhfuil an bhféadtaí em go leor eolas a fháil ar sin an bhfuil an eolas mar sin	0	0	670		
+emma1.wav	1	1881.26760563	1882.25352113	Cainteoir 2	male	native	Oh yeah.	0	0	671		
+emma1.wav	1	1894.60093897	1895.30516432	Cainteoir 2	male	native	Ar fáil.	0	0	671		
+emma1.wav	0	1895.11737089	1899.85915493	Cainteoir 1	male	native	ar fáil deirtear liom go bhfuil ach bheadh rud éicint mar sin a bhfuil suim agam ansin agus	0	0	672		
+emma1.wav	1	1899.48356808	1902.34741784	Cainteoir 2	male	native	ah cinnte 's bhfuil ainmhthe agaibh sa mbaile a'bhfuil?	0	0	672		
+emma1.wav	0	1902.48826291	1904.92957746	Cainteoir 1	male	native	Tá madra is cait sa mbaile againn so 	0	0	672		
+emma1.wav	1	1904.92957746	1914.1314554	Cainteoir 2	male	native	oh mbíns an mbíonn tú ag plé thart leis na luibheanna ye know le haghaidh bhfuil fhios agat dá mbeadh cúplá xxx ag teastáil ag an ngadhar an bhfuil fhios agat tá fhios agam céard le déanamh.	0	0	672		
+emma1.wav	0	1914.17840376	1918.12206573	Cainteoir 1	male	native	Ní fhéad ní féad ní níl mé i mo dhochtúir eh luibhe fós.	0	0	673		
+emma1.wav	1	1914.83568075	1915.91549296	Cainteoir 2	male	native	Caithfidh mé plé leise. 	0	0	672		
+emma1.wav	1	1917.74647887	1921.87793427	Cainteoir 2	male	native	awh oh yeah tuigim, tá sé go breá.	0	0	672		
+emma1.wav	0	1920.657277	1927.13615023	Cainteoir 1	male	native	Ach eh ah bhí sé go maith bhí sé go maith rud suimiúl a bhí ann agus ye know is iontach an deis a bheith in ann é a dhéanamh agus an staidéar sin a dhéanamh bhfuil fhios agat.	0	0	673		
+emma1.wav	1	1926.99530516	1927.74647887	Cainteoir 2	male	native	mhm	0	0	672		
+emma1.wav	0	1928.2629108	1932.3943662	Cainteoir 1	male	native	em ceard fút fhéin an mbeadh tú ag iarraidh dochtúireacht a dhéanamh amach anseo?	0	0	672		
+emma1.wav	1	1931.59624413	1932.72300469	Cainteoir 2	male	native	oh cinnte yeah.	0	0	673		
+emma1.wav	0	1932.58215962	1933.00469484	Cainteoir 1	male	native	Bheadh.	0	0	671		
+emma1.wav	1	1933.14553991	1934.17840376	Cainteoir 2	male	native	oh yeah.	0	0	672		
+emma1.wav	0	1934.17840376	1935.25821596	Cainteoir 1	male	native	Is cén ábhar xxx a bheadh?	0	0	672		
+emma1.wav	1	1935.44600939	1941.36150235	Cainteoir 2	male	native	Bhuel ba bhreá liom fanacht leis an Ghaeilge chomh fada agus is a bheinn in ann ba mhaith liom é a dhéanamh ar sórt stair Ros Muc.	0	0	673		
+emma1.wav	0	1942.01877934	1942.67605634	Cainteoir 1	male	native	óó 'sea. 	0	0	674		
+emma1.wav	1	1942.43496958	1953.95856498	Cainteoir 2	male	native	Sórt stair chomparáideach idir tréimhse Pádraic Ó Conaire suas go dtí <Cáitrín Maud> [?] agus b'fhéidir John Pheatín Tom a chur isteach ann freisin.	0	0	675		
+emma1.wav	0	1942.95774648	1943.99061033	Cainteoir 1	male	native	oh tuigim.	0	0	675		
+emma1.wav	0	1954.04720802	1954.8449954	Cainteoir 1	male	native	oh 'sea. 	0	0	676		
+emma1.wav	1	1955.02347418	1965.8685446	Cainteoir 2	male	native	Bhfuil fhios agat 's tá nó d'fhéadfainn rud éicint just a bhúnadh go hiomlán ar aon duine amháin ar nós Pádraic Ó Conaire bhfuil fhios agat a saothar filíochta ar fad is a saothar scéal nó rud	0	0	676		
+emma1.wav	0	1965.58685446	1966.33802817	Cainteoir 1	male	native	oh go maith.	0	0	677		
+emma1.wav	1	1966.15023474	1977.18309859	Cainteoir 2	male	native	mm b'fhéidir Páraic Ó Pádraig Mac Piarais t'fhios agam go bhfuil go leor scríofa faoi Pádraig Mac Piarais agus bhí seanbhean i Ros Muc agus bhí pictiúir aici dhon mo dhuine	0	0	676		
+emma1.wav	0	1977.37089202	1977.79342723	Cainteoir 1	male	native	'Sea.	0	0	677		
+emma1.wav	1	1977.37089202	1985.39906103	Cainteoir 2	male	native	agus [bhí sé sínithe aige] bhí sé sínithe aige mar a déarfás.	0	0	677		
+emma1.wav	0	1984.80634344	1986.93377644	Cainteoir 1	male	native	Sínithe [aige] aige oh stop.	0	0	678		
+emma1.wav	1	1985.51548777	1995.62079451	Cainteoir 2	male	native	Yeah sínithe ag Pádraig Mac Piarais yeah bhí sé ag múineadh sa scoil 's nár tháinig daoine seo isteach agus bhí siad ag iarraidh an áit a las 's chuile shórt ach	0	0	679		
+emma1.wav	0	1995.08893626	1995.97536668	Cainteoir 1	male	native	oh stop.	0	0	680		
+emma1.wav	1	1995.96244131	2003.33333333	Cainteoir 2	male	native	cuma faoi sin ach dúirt d'iarrs sí air oh cuma leat é seo a shíniú agus shínigh sé di é agus tá sé fós sa teach aici.	0	0	681		
+emma1.wav	0	2001.87793427	2002.91079812	Cainteoir 1	male	native	oh suimiúil. 	0	0	682		
+emma1.wav	0	2003.42723005	2004.60093897	Cainteoir 1	male	native	oh mhaith go deo.	0	0	682		
+emma1.wav	1	2003.8028169	2008.07511737	Cainteoir 2	male	native	[Tá] tá sí céad is a haon nó rud éicint nó céad is a dó.	0	0	683		
+emma1.wav	0	2006.38497653	2008.68544601	Cainteoir 1	male	native	oh stop 's tá sin aici fós.	0	0	682		
+emma1.wav	1	2008.68544601	2012.30046948	Cainteoir 2	male	native	Tá dearfainn go bhfuil eh luach airgid ar sin 's tá portach thiar againne.	0	0	683		
+emma1.wav	0	2010.75117371	2012.0657277	Cainteoir 1	male	native	óó píosa ar sin. 	0	0	682		
+emma1.wav	1	2012.95774648	2046.33802817	Cainteoir 2	male	native	Ní portach é i ndáiríre sórt <camas> [?] ní dhéantar tada leis tá cloch ann is chuile cineál thing @=teoit ach eh thabharfadh sé dream as Bleá Cliath agus thabharfadh sé dream as Ros Muc agus gabhadh siad sórt ag póirseáil timpeall na portaigh le haghaidh sórt cleachtadh a thabhairt dhóibh bhfuil fhios agat céard a dhéananns tú leis na gunnaí agus ye know cén chaoi a mbeidh sibh agus traenáil a bhí ann agus bhí sé ag iarraidh oiliúint agus ye know chuile cineál dhen rud sin agus a [bhí] bhí rudaí a bhí maith agus casadh ye know chas go leor daoine air muintir na háite	0	0	683		
+emma1.wav	0	2017.04225352	2017.51173709	Cainteoir 1	male	native	mhm	0	0	683		
+emma1.wav	0	2033.47137325	2036.21930754	Cainteoir 1	male	native	oh ['sea 'sea 'sea 'sea] 'sea.	0	0	684		
+emma1.wav	0	2046.33802817	2047.04225352	Cainteoir 1	male	native	oh yeah. 	0	0	685		
+emma1.wav	1	2046.47887324	2050.84507042	Cainteoir 2	male	native	Bhuel ah no chaithfidh ye know @=gáire tá sé amach as an áit cén chaoi nach gcasfaidh sé le muintir na háite.	0	0	684		
+emma1.wav	0	2048.68544601	2051.26760563	Cainteoir 1	male	native	Tá 'sea tuigim thú oh tá sé sin fíor.	0	0	685		
+emma1.wav	1	2052.26848396	2062.61537419	Cainteoir 2	male	native	Ach eh yeah bhí tá fhios agam gur tháinig @=teoit bhí rud éicint eile ar nós tháinig bád isteach le gunnaí agus tháinig sé isteach go Camas mar bhí Sasanaigh ag fanacht i Screebe House.	0	0	686		
+emma1.wav	0	2063.08876133	2063.6297752	Cainteoir 1	male	native	'Sea.	0	0	687		
+emma1.wav	1	2063.4741784	2070.70422535	Cainteoir 2	male	native	Agus an chéad rud eile nár bhuail ceann dhe na báid carraig agus bádh chuile dhuine 's na gunnaí ar fad 's	0	0	688		
+emma1.wav	0	2070.70422535	2071.12676056	Cainteoir 1	male	native	Síos. 	0	0	689		
+emma1.wav	1	2071.31455399	2072.76995305	Cainteoir 2	male	native	Mar ní raibh ní bhfuil fhios agat	0	0	688		
+emma1.wav	0	2072.91079812	2074.31924883	Cainteoir 1	male	native	['sea] 'sea 'sea. 	0	0	689		
+emma1.wav	1	2073.52112676	2076.29107981	Cainteoir 2	male	native	Ní raibh aon bóthar ag dhul thar Tí Screebe.	0	0	688		
+emma1.wav	0	2075.49295775	2076.85446009	Cainteoir 1	male	native	oh [tuigim] tuigim. 	0	0	689		
+emma1.wav	1	2076.66666667	2081.4084507	Cainteoir 2	male	native	Agus chuaigh mo dhuine ansin siar chomh fada gurbh fhéidir leis bhfuil fhios agat go dtí Ros Muc xxx go ndearfá.	0	0	690		
+emma1.wav	0	2079.57746479	2084.64788732	Cainteoir 1	male	native	[oh] oh oh an é mm.	0	0	690		
+emma1.wav	1	2084.05304874	2094.12943204	Cainteoir 2	male	native	Ach 'sea sin idir an sin an dá rud a bheadh suim is mó agam. Bhunaidh mé sórt @=teoit béaloideas faoi Chaitlín Mhaud ar mo thráchtas sin an sórt ábhar a bhí ann.	0	0	691		
+emma1.wav	0	2093.45316471	2097.44314199	Cainteoir 1	male	native	oh sin an ábhar so thaitnigh a cuid eh áá saothar leat?	0	0	692		
+emma1.wav	1	2096.56399445	2099.13381033	Cainteoir 2	male	native	Is í an comharsa béaldórais linne í.	0	0	693		
+emma1.wav	0	2099.60719746	2101.02735887	Cainteoir 1	male	native	oh i ndáiríre okay.	0	0	694		
+emma1.wav	1	2100.21583806	2104.47632228	Cainteoir 2	male	native	Yeah yeah so bhí sórt rudaí eile 's like seanleaid fuithí agus	0	0	695		
+emma1.wav	0	2104.92957746	2107.13615023	Cainteoir 1	male	native	oh suimiúil [sin] sin an-suimiúil anois. 	0	0	696		
+emma1.wav	1	2105.91549296	2108.40375587	Cainteoir 2	male	native	Yeah bhí sórt go leor scéalta agus	0	0	696		
+emma1.wav	0	2108.54460094	2109.06103286	Cainteoir 1	male	native	aha	0	0	697		
+emma1.wav	1	2109.24882629	2125.21126761	Cainteoir 2	male	native	Bhí [an deartháir] an deartháir fuair sé scoiláireacht le haghaidh ríomhairí a dhéanamh in ollscoil thall i Sasana agus rinne sé é is d'aontaigh sé in a gambler gairmiúil 's fuair sé trí chéad míle punt nó rud éicint in aon bhliain amháin agus	0	0	697		
+emma1.wav	0	2125.10247602	2125.44060969	Cainteoir 1	male	native	Stop.	0	0	698		
+emma1.wav	1	2125.84637009	2130.03922757	Cainteoir 2	male	native	ní raibh a dhá riamh a dhéanamh ar sin aríst ach chaill sé chuile shórt.	0	0	699		
+emma1.wav	0	2130.28169014	2130.84507042	Cainteoir 1	male	native	Faoi dheireadh.	0	0	700		
+emma1.wav	1	2130.61032864	2131.83098592	Cainteoir 2	male	native	Chuaigh sé ar an <ól> [?] dearg.	0	0	701		
+emma1.wav	0	2131.7370892	2132.67605634	Cainteoir 1	male	native	oh créatúr.	0	0	702		
+emma1.wav	1	2132.72300469	2138.40375587	Cainteoir 2	male	native	Ach níor oibrigh sé aon lá riamh ina shaol ar feadh trí bliain nó rud éicint so rinne sé go maith dhó fhéin má chuimhníonn tú air.	0	0	703		

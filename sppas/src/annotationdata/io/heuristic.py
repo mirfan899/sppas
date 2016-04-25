@@ -44,7 +44,7 @@ from htk import Label, MasterLabel
 from subtitle import SubRip, SubViewer
 from sclite import TimeMarkedConversation, SegmentTimeMark
 from elan import Elan
-
+from xtrans import Xtrans
 
 class HeuristicFactory(object):
     __OPTS = [
@@ -61,6 +61,7 @@ class HeuristicFactory(object):
         # TimeMarkedConversation,
         # SegmentTimeMark,
         # Elan,
+        Xtrans,
         CSV,
         HzPitch,
         RawText  # must be last

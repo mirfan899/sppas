@@ -32,6 +32,23 @@ class TestIO(unittest.TestCase):
                 self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
         os.remove(os.path.join(SAMPLES,"sample2.TextGrid"))
 
+
+    def test_IOXtrans(self):
+        tg1 = annotationdata.io.read(os.path.join(SAMPLES,"con1.tdf"))
+        annotationdata.io.write(os.path.join(SAMPLES,"con1.xra"), tg1)
+        tg2 = annotationdata.io.read(os.path.join(SAMPLES,"con1.xra"))
+
+        self.assertEqual(tg1.GetName(), tg2.GetName())
+        self.assertEqual(tg1.GetSize(), tg2.GetSize())
+        for tier1, tier2 in zip(tg1, tg2):
+            self.assertEqual(tier1.GetName(), tier2.GetName())
+            self.assertEqual(tier1.GetSize(), tier2.GetSize())
+            for a1, a2 in zip(tier1, tier2):
+                self.assertEqual(a1.GetLabel().GetValue(), a2.GetLabel().GetValue())
+                self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
+        os.remove(os.path.join(SAMPLES,"con1.xra"))
+
+
     def test_IOAscii(self):
         tg1 = annotationdata.io.read(os.path.join(SAMPLES,"sample.TextGrid"))
         # save as txt.

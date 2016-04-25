@@ -62,7 +62,7 @@ It will do... nothing! But now, we are ready to do something with the API!
 
 ### Read/Write annotated files
 
-Open/Read a file of any format (TextGrid, Elan, Transcriber, CSV) and 
+Open/Read a file of any format (TextGrid, Elan, Transcriber, ...) and 
 store it into a `Transcription` object instance, named `trs` in the
 following code, is mainly done as:
 
