@@ -15,8 +15,9 @@ from utils.type import compare
 from sp_glob import RESOURCES_PATH
 from sp_glob import SAMPLES_PATH
 
-from resources.mapping  import Mapping
+from resources.mapping     import Mapping
 from resources.acm.acmodel import AcModel
+from resources.acm.hmm     import HMM
 
 from annotations.Align.basealigner    import BaseAligner
 from annotations.Align.basicalign     import BasicAligner
@@ -123,34 +124,58 @@ class TestModelMixer( unittest.TestCase ):
         # a French speaker reading an English text...
         self._modelL2dir = os.path.join(MODELDIR, "models-eng")
         self._modelL1dir = os.path.join(MODELDIR, "models-fra")
-        self._modelmixer = ModelMixer( self._modelL2dir, self._modelL1dir )
 
     def testMix(self):
+        acmodel1 = AcModel()
+        hmm1 = HMM()
+        hmm1.create_proto( 25 )
+        hmm1.name = "y"
+        acmodel1.append_hmm( hmm1 )
+        acmodel1.repllist.add("y","j")
+
+        acmodel2 = AcModel()
+        hmm2 = HMM()
+        hmm2.create_proto( 25 )
+        hmm2.name = "j"
+        hmm3 = HMM()
+        hmm3.create_proto( 25 )
+        hmm3.name = "y"
+        acmodel2.hmms.append( hmm2 )
+        acmodel2.hmms.append( hmm3 )
+        acmodel2.repllist.add("y","y")
+        acmodel2.repllist.add("j","j")
+
+        modelmixer = ModelMixer()
+        modelmixer.set_models( acmodel1,acmodel2 )
+
+        outputdir = os.path.join(MODELDIR, "models-test")
+        (appended,interpolated,keeped,changed) = modelmixer.mix( outputdir, gamma=1. )
+        mixedh1 = AcModel()
+        mixedh1.load( outputdir )
+        shutil.rmtree( outputdir )
+
+    def testMixData(self):
+        modelmixer = ModelMixer()
+        modelmixer.load(self._modelL2dir, self._modelL1dir )
         outputdir = os.path.join(MODELDIR, "models-eng-fra")
-        self._modelmixer.mix( outputdir, gamma=1. )
+        modelmixer.mix( outputdir, gamma=0.5 )
         self.assertTrue( os.path.exists( outputdir ) )
         acmodel1 = AcModel()
         acmodel1.load_htk( os.path.join(self._modelL2dir, "hmmdefs") )
         acmodel1 = acmodel1.extract_monophones()
         acmodel2 = AcModel()
         acmodel2.load_htk( os.path.join(os.path.join(MODELDIR, "models-eng-fra"), "hmmdefs") )
-
-        for h1 in acmodel1.hmms:
-            h2 = acmodel2.get_hmm( h1.name )
-            self.assertTrue(compare(h1.definition['transition'],h2.definition['transition']))
-            self.assertTrue(compare(h1.definition['states'],h2.definition['states']))
-
-        shutil.rmtree( outputdir )
+#         shutil.rmtree( outputdir )
 
 # ---------------------------------------------------------------------------
 
 if __name__ == '__main__':
 
     testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestBaseAligner))
-    testsuite.addTest(unittest.makeSuite(TestBasicAlign))
-    testsuite.addTest(unittest.makeSuite(TestJuliusAlign))
-    testsuite.addTest(unittest.makeSuite(TestHviteAlign))
+    #testsuite.addTest(unittest.makeSuite(TestBaseAligner))
+    #testsuite.addTest(unittest.makeSuite(TestBasicAlign))
+    #testsuite.addTest(unittest.makeSuite(TestJuliusAlign))
+    #testsuite.addTest(unittest.makeSuite(TestHviteAlign))
     testsuite.addTest(unittest.makeSuite(TestModelMixer))
 
     unittest.TextTestRunner(verbosity=2).run(testsuite)

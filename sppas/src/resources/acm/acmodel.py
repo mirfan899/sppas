@@ -35,12 +35,6 @@
 # File: acmodel.py
 # ---------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
-
-# ---------------------------------------------------------------------------
-
 import collections
 import json
 import copy
@@ -58,10 +52,12 @@ from utils.type import compare_dictionaries
 
 class AcModel:
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: Acoustic model representation.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Acoustic model representation.
 
     A model is made of:
        - 'macros' is an OrderedDict of options, transitions, states, ...
@@ -70,7 +66,6 @@ class AcModel:
        - a mapping table to replace phone names.
 
     """
-
     def __init__(self):
         """
         Constructor.
@@ -332,19 +327,18 @@ class AcModel:
 
         # Replace in HMMs
         for hmm in self.hmms:
-
             hmm.set_name( self.repllist.map( hmm.name, delimiters) )
 
             states = hmm.definition['states']
-            if all(isinstance(state['state'],collections.OrderedDict) for state in states) is False:
+            if all(isinstance(state['state'], (collections.OrderedDict,collections.defaultdict)) for state in states) is False:
                 for state in states:
-                    if isinstance(state['state'], collections.OrderedDict) is False:
+                    if isinstance(state['state'], (collections.OrderedDict,collections.defaultdict)) is False:
                         tab = state['state'].split('_')
                         tab[1] = self.repllist.map_entry( tab[1] )
                         state['state'] = "_".join(tab)
 
             transition = hmm.definition['transition']
-            if isinstance(transition, collections.OrderedDict) is False:
+            if isinstance(transition, (collections.OrderedDict,collections.defaultdict)) is False:
                 tab = transition.split('_')
                 tab[1] = self.repllist.map_entry( tab[1] )
                 transition = "_".join(tab)
@@ -365,14 +359,14 @@ class AcModel:
             states     = hmm.definition['states']
             transition = hmm.definition['transition']
 
-            if all(isinstance(state['state'],collections.OrderedDict) for state in states) is False:
+            if all(isinstance(state['state'],(collections.OrderedDict,collections.defaultdict)) for state in states) is False:
                 newstates = self._fill_states( states )
                 if all(s is not None for s in newstates):
                     hmm.definition['states'] = newstates
                 else:
                     raise ValueError('No corresponding macro for states: %s'%states)
 
-            if isinstance(transition, collections.OrderedDict) is False:
+            if isinstance(transition, (collections.OrderedDict,collections.defaultdict)) is False:
                 newtrs = self._fill_transition( transition )
                 if newtrs is not None:
                     hmm.definition['transition'] = newtrs
@@ -381,9 +375,10 @@ class AcModel:
 
         # No more need of states and transitions in macros
         newmacros = []
-        for m in self.macros:
-            if m.get('transition',None) is None and m.get('state',None) is None:
-                newmacros.append( m )
+        if self.macros is not None:
+            for m in self.macros:
+                if m.get('transition',None) is None and m.get('state',None) is None:
+                    newmacros.append( m )
         self.macros = newmacros
 
     # -----------------------------------------------------------------------
@@ -416,7 +411,8 @@ class AcModel:
         ac = AcModel()
 
         # The macros
-        ac.macros = copy.deepcopy( self.macros )
+        if self.macros is not None:
+            ac.macros = copy.deepcopy( self.macros )
 
         # The HMMs
         for h in self.hmms:
@@ -436,6 +432,9 @@ class AcModel:
         Return the MFCC parameter kind, as a string, or an empty string.
 
         """
+        if self.macros is None:
+            return ""
+
         for m in self.macros:
             option = m.get('options',None)
             if option is not None:
@@ -517,20 +516,9 @@ class AcModel:
         # Merge the tiedlists
         self.tiedlist.merge( other.tiedlist )
 
-        # Merge the replacement mapping tables.
-        for hmm in self.hmms:
-            print "HMM: ",hmm.name
-        for k,v in self.repllist.get_dict().items():
-            print "Map: ",k,v
-
         for k,v in other.repllist.get_dict().items():
-            print "Replace: ",k,v
-            #if self.repllist.is_value_of(k,v) is False:
-            if self.repllist.is_key(k) is False and self.repllist.is_value(v):
+            if self.repllist.is_key(k) is False and self.repllist.is_value(v) is False:
                 self.repllist.add(k,v)
-                print "  -> Added."
-            else:
-                print "  -> Ignored."
 
         return (appended,interpolated,keeped,changed)
 
@@ -548,7 +536,7 @@ class AcModel:
     def _fill_states(self, states):
         newstates = []
         for state in states:
-            if isinstance(state['state'], collections.OrderedDict) is True:
+            if isinstance(state['state'], (collections.OrderedDict,collections.defaultdict)) is True:
                 newstates.append( state )
                 continue
             news = copy.deepcopy(state)
@@ -560,20 +548,22 @@ class AcModel:
 
     def _fill_state(self, state):
         newstate = None
-        for macro in self.macros:
-            if macro.get('state', None):
-                if macro['state']['name'] == state:
-                    newstate = copy.deepcopy( macro['state']['definition'] )
+        if self.macros is not None:
+            for macro in self.macros:
+                if macro.get('state', None):
+                    if macro['state']['name'] == state:
+                        newstate = copy.deepcopy( macro['state']['definition'] )
         return newstate
 
     # ----------------------------------
 
     def _fill_transition(self, transition):
         newtransition = None
-        for macro in self.macros:
-            if macro.get('transition', None):
-                if macro['transition']['name'] == transition:
-                    newtransition = copy.deepcopy( macro['transition']['definition'] )
+        if self.macros is not None:
+            for macro in self.macros:
+                if macro.get('transition', None):
+                    if macro['transition']['name'] == transition:
+                        newtransition = copy.deepcopy( macro['transition']['definition'] )
         return newtransition
 
     # ----------------------------------

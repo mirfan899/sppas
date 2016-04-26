@@ -53,9 +53,22 @@ class ModelMixer:
     Typical use is to create an acoustic model of a non-native speaker.
 
     """
-    def __init__(self, modelTextDir, modelSpkDir):
+    def __init__(self):
         """
-        Constructor: load the acoustic models.
+        Constructor.
+
+        """
+        self.modelText = None
+        self.modelSpk  = None
+
+    # ------------------------------------------------------------------------
+
+    def load(self, modelTextDir, modelSpkDir):
+        """
+        Load the acoustic models from their directories.
+
+        @param modelTextDir (str)
+        @param modelSpkDir (str)
 
         """
         modelText = AcModel()
@@ -65,6 +78,18 @@ class ModelMixer:
         modelText.load( modelTextDir )
         modelSpk.load( modelSpkDir )
 
+        self.set_models(modelText, modelSpk)
+
+    # ------------------------------------------------------------------------
+
+    def set_models(self, modelText, modelSpk):
+        """
+        Fix the acoustic models.
+
+        @param modelText (AcModel)
+        @param modelSpk (AcModel)
+
+        """
         # Check the MFCC parameter kind:
         # we can only interpolate identical models.
         if modelText.get_mfcc_parameter_kind() != modelSpk.get_mfcc_parameter_kind() :
@@ -100,15 +125,19 @@ class ModelMixer:
         (appended, interpolated, keeped, changed).
 
         """
+        if self.modelText is None or self.modelSpk is None:
+            raise TypeError('No model to mix.')
+
         self.modelmix = copy.deepcopy( self.modelText )
 
-        # Manage both mapping table to provide conflicts
+        # Manage both mapping table to provide conflicts.
+        # Because a key in modelText can be a value in modelSpk
+        # i.e. in modelText, a WRONG symbol is used!
         for k,v in self.modelmix.repllist.get_dict().items():
-            # The key in modelText is a value in modelSpk
-            # i.e. In modelText, a WRONG symbol is used!
+
             for key,value in self.modelSpk.repllist.get_dict().items():
+
                 if k == value and v != key:
-                    print "[CAUTION] MUST CHANGE: ",k,v
                     if self.modelSpk.repllist.is_value(v):
                         for key2,value2 in self.modelSpk.repllist.get_dict().items():
                             if v == value2:
@@ -119,9 +148,8 @@ class ModelMixer:
                         newkey = k
                         while self.modelmix.repllist.is_key(newkey) is True:
                             newkey = newkey+k
-                    hmm = self.modelmix.get_hmm(k)
-                    hmm.set_name( key )
-                    print " -> new key:",newkey
+
+                    self.modelmix.repllist.remove(k)
                     self.modelmix.repllist.add( newkey, v )
 
         (appended,interpolated,keeped,changed) = self.modelmix.merge_model( self.modelSpk, gamma )

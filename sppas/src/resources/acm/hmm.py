@@ -314,16 +314,23 @@ class HMM( BaseModel ):
 
     def _create_default(self):
         return collections.defaultdict(lambda: None)
+        #return collections.OrderedDict()
 
     # ----------------------------------
 
     def _create_vector(self, vector):
-        return {'dim': len(vector), 'vector': vector}
+        d = self._create_default()
+        d['dim'] = len(vector)
+        d['vector'] = vector
+        return d
 
     # ----------------------------------
 
     def _create_square_matrix(self, mat):
-        return {'dim': len(mat[0]), 'matrix': mat}
+        d = self._create_default()
+        d['dim'] = len(mat[0])
+        d['matrix'] = mat
+        return d
 
     # ----------------------------------
 

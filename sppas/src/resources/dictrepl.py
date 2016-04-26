@@ -305,3 +305,6 @@ class DictRepl:
         return True
 
     # ------------------------------------------------------------------------
+
+    def __str__(self):
+        return str(self._dict)

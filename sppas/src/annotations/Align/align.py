@@ -641,7 +641,8 @@ class sppasAlign:
     def rustine_liaisons(self, trs):
         """ veritable rustine pour supprimer qqs liaisons en trop. """
         # Only for French!
-        if "fra" not in self.speechseg._model: return trs
+        if self.speechseg._model.startswith("fra") is False:
+            return trs
 
         tierphon   = trs.Find("PhonAlign")
         tiertokens = trs.Find("TokensAlign")
