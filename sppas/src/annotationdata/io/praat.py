@@ -101,26 +101,23 @@ def parse_string(iterator):
     """
     Parse a string from one or more lines of a Praat formatted file.
     """
-    try:
-        firstLine = iterator.next()
-        if firstLine.rstrip().endswith('"'):
-            firstLine = firstLine.rstrip()
-            return firstLine[firstLine.find('"')+1:-1]
-        else:
-            firstLine = firstLine[firstLine.find('"')+1:]
+    firstLine = iterator.next()
+    if firstLine.rstrip().endswith('"'):
+        firstLine = firstLine.rstrip()
+        return firstLine[firstLine.find('"')+1:-1]
+    else:
+        firstLine = firstLine[firstLine.find('"')+1:]
 
+    currentLine = iterator.next()
+
+    while not currentLine.rstrip().endswith('"'):
+        firstLine += currentLine
         currentLine = iterator.next()
 
-        while not currentLine.rstrip().endswith('"'):
-            firstLine += currentLine
-            currentLine = iterator.next()
+    currentLine = currentLine.rstrip()[:-1]
+    firstLine += currentLine
 
-        currentLine = currentLine.rstrip()[:-1]
-        firstLine += currentLine
-
-        return firstLine
-    except Exception as e:
-        raise e
+    return firstLine
 
 # ----------------------------------------------------------------------------
 
@@ -128,10 +125,7 @@ def detect_praat_file(filename, ftype):
     with codecs.open(filename, 'r', 'utf-8') as it:
         fileType = parse_string(it)
         objectClass = parse_string(it)
-        return (
-            fileType == "ooTextFile" and
-            objectClass == ftype)
-
+        return (fileType == "ooTextFile" and objectClass == ftype)
 
 # ----------------------------------------------------------------------------
 
@@ -153,7 +147,7 @@ class TextGrid(Transcription):
         - some annotations if they overlap with other ones (a solution is
         used to keep a maximum of information, but some annotations may
         be lost).
-        - CtrlVocab, Media, Metadata, etc...
+        - CtrlVocab, Media, Metadata, Hierarchy, etc...
 
     """
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
@@ -274,10 +268,8 @@ class TextGrid(Transcription):
         """
         beg = TimePoint(parse_float(it.next()))
         end = TimePoint(parse_float(it.next()))
-
         label = parse_string(it)
         label = label.replace('""', '"') # praat double quotes.
-
         interval = TimeInterval(beg, end)
         tier.Add(Annotation(interval, Label(label)))
 
@@ -367,6 +359,9 @@ class TextGrid(Transcription):
         if '"' in label:
             label = re.sub('([^"])["]([^"])', '\\1""\\2', label)
             label = re.sub('([^"])["]([^"])', '\\1""\\2', label) # miss occurrences if 2 " are separated by only 1 character
+            label = re.sub('([^"])["]$', '\\1""', label) # miss occurrences if " are at the end of the label!
+            label = re.sub('^["]([^"])', '""\\1', label) # miss occurrences if " are at the beginning of the label!
+
         return (
             '        intervals [%d]:\n'
             '            xmin = %s\n'
