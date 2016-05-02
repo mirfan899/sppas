@@ -49,8 +49,10 @@ from annotationdata.io.utils      import gen_id
 
 from speechseg import SpeechSegmenter
 from alignerio import AlignerIO
+from modelmixer import ModelMixer
 
 from sp_glob import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
+from sp_glob import RESOURCES_PATH
 
 # ----------------------------------------------------------------------------
 
@@ -94,6 +96,19 @@ class sppasAlign:
         @param logfile is a file descriptor of a log file (see log.py).
 
         """
+        if modelL1 is not None:
+            try:
+                modelmixer = ModelMixer()
+                modelmixer.load( model,modelL1 )
+                outputdir = os.path.join(RESOURCES_PATH, "models", "models-mix")
+                (appended,interpolated,keeped,changed) = modelmixer.mix( outputdir, gamma=1. )
+                model = outputdir
+            except Exception as e:
+                if logfile is not None:
+                    logfile.print_message("The model is ignored: %s"%str(e), indent=3, status=WARNING_ID)
+                else:
+                    print "The model is ignored: %s"%str(e)
+
         # The automatic alignment system:
         self.speechseg = SpeechSegmenter( model )
         self.logfile = logfile
@@ -104,7 +119,7 @@ class sppasAlign:
         self._options['extend']  = False
         self._options['clean']   = True  # Remove temporary files
         self._options['infersp'] = False # Add 'sp' at the end of each token
-        self._options['basic']   = False # Perform a basic alimnent if error
+        self._options['basic']   = False # Perform a basic alignment if error
 
     # ------------------------------------------------------------------------
     # Methods to fix options
@@ -339,6 +354,8 @@ class sppasAlign:
             if self._options['clean'] is False:
                 if self.logfile:
                     self.logfile.print_message("The working directory is: %s"%diralign, indent=3, status=INFO_ID)
+                else:
+                    print "The working directory is: %s"%diralign
 
         listfilename = os.path.join(diralign, "tracks.list")
 

@@ -42,6 +42,7 @@ from annotationdata.tier import Tier
 from annotationdata.transcription import Transcription
 
 from resources.dictpron import DictPron
+from resources.mapping  import Mapping
 from phonetize import DictPhon
 
 from sp_glob import ERROR_ID, WARNING_ID, OK_ID
@@ -66,7 +67,7 @@ class sppasPhon( object ):
     >>> p.run(inputtrsname, outputphonfile, outputtokensfile)
 
     """
-    def __init__(self, dictfilename, maptable=None, logfile=None):
+    def __init__(self, dictfilename, mapfile=None, logfile=None):
         """
         Constructor.
 
@@ -76,6 +77,9 @@ class sppasPhon( object ):
 
         """
         pdict = DictPron(dictfilename, unkstamp=UNKSTAMP, nodump=False)
+        maptable = Mapping()
+        if mapfile is not None:
+            maptable = Mapping( mapfile )
         self.phonetizer = DictPhon( pdict, maptable )
         self.logfile = logfile
 
