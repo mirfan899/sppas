@@ -38,15 +38,6 @@
 # File: phonetize.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2014  Brigitte Bigi"""
-
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
 import sys
 import os.path
 from argparse import ArgumentParser
@@ -58,6 +49,9 @@ sys.path.append(SPPAS)
 from annotations.Phon.phon      import sppasPhon
 from annotations.Phon.phonetize import DictPhon
 from resources.dictpron         import DictPron
+from resources.mapping          import Mapping
+
+from sp_glob import UNKSTAMP
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -69,6 +63,7 @@ epilogue += "!!!!!!!  if no output is given, the output is the input  !!!!!!!"
 parser = ArgumentParser(usage="%s -r dict [options]" % os.path.basename(PROGRAM), prog=PROGRAM, description="Phonetization automatic annotation.", epilog=epilogue)
 
 parser.add_argument("-r", "--dict", required=True, help='Pronunciation dictionary file name (HTK-ASCII format).')
+parser.add_argument("-m", "--map", required=False, help='Pronunciation mapping table.')
 parser.add_argument("-i", metavar="file", required=False, help='Input file name.')
 parser.add_argument("-o", metavar="file", required=False, help='Output file name.')
 parser.add_argument("--nounk", action='store_true', help="Disable unknown word phonetization." )
@@ -78,7 +73,6 @@ if len(sys.argv) <= 1:
 
 args = parser.parse_args()
 
-
 # ----------------------------------------------------------------------------
 # Automatic Phonetization is here:
 # ----------------------------------------------------------------------------
@@ -87,13 +81,21 @@ unkopt = True
 if args.nounk:
     unkopt = False
 
+mapfile = None
+if args.map:
+    mapfile = args.map
+
 if args.i:
-    p = sppasPhon( args.dict )
+    p = sppasPhon( args.dict, mapfile )
     p.set_unk( unkopt )
+    p.set_usestdtokens( False )
     p.run( args.i,args.o )
 else:
-    pdict      = DictPron( args.dict )
-    phonetizer = DictPhon( pdict )
+    pdict      = DictPron( args.dict, unkstamp=UNKSTAMP, nodump=False )
+    maptable = Mapping()
+    if mapfile is not None:
+        maptable = Mapping( mapfile )
+    phonetizer = DictPhon( pdict, maptable )
     for line in sys.stdin:
         print phonetizer.phonetize( line, unkopt )
 
