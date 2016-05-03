@@ -172,10 +172,10 @@ class TestModelMixer( unittest.TestCase ):
 if __name__ == '__main__':
 
     testsuite = unittest.TestSuite()
-    #testsuite.addTest(unittest.makeSuite(TestBaseAligner))
-    #testsuite.addTest(unittest.makeSuite(TestBasicAlign))
-    #testsuite.addTest(unittest.makeSuite(TestJuliusAlign))
-    #testsuite.addTest(unittest.makeSuite(TestHviteAlign))
+    testsuite.addTest(unittest.makeSuite(TestBaseAligner))
+    testsuite.addTest(unittest.makeSuite(TestBasicAlign))
+    testsuite.addTest(unittest.makeSuite(TestJuliusAlign))
+    testsuite.addTest(unittest.makeSuite(TestHviteAlign))
     testsuite.addTest(unittest.makeSuite(TestModelMixer))
 
     unittest.TextTestRunner(verbosity=2).run(testsuite)

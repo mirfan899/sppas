@@ -6,7 +6,7 @@ import unittest
 from test_num2letter import TestNum2Letter
 from test_tokenize   import TestDictTok
 from test_phon       import TestDictPhon, TestDAGPhon, TestSppasPhon, TestPhonUnk
-from test_align      import TestBaseAligner, TestBasicAlign, TestJuliusAlign, TestHviteAlign
+from test_align      import TestBaseAligner, TestBasicAlign, TestJuliusAlign, TestHviteAlign, TestModelMixer
 
 # ---------------------------------------------------------------------------
 
@@ -28,6 +28,6 @@ testsuite.addTest(unittest.makeSuite(TestBaseAligner))
 testsuite.addTest(unittest.makeSuite(TestBasicAlign))
 testsuite.addTest(unittest.makeSuite(TestJuliusAlign))
 testsuite.addTest(unittest.makeSuite(TestHviteAlign))
+testsuite.addTest(unittest.makeSuite(TestModelMixer))
 
 unittest.TextTestRunner(verbosity=2).run(testsuite)
-
