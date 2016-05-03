@@ -85,7 +85,7 @@ class Xtrans( Transcription ):
                 if line.startswith(";;"):
                     continue
                 tab = line.split('\t')
-                if len(tab) < 12:
+                if len(tab) < 10: # expected is 13
                     return False
 
         return True

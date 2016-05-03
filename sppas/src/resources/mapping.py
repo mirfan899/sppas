@@ -160,8 +160,8 @@ class Mapping( DictRepl ):
         # suppose that some punctuation are like a separator
         # and we have to replace all strings between them
         if delimiters is None:
-            delimiters = [';', ',', ' ', '.', '|', '+', '-']
-        pattern = '|'.join(map(re.escape, delimiters))
+            delimiters = [";", ",", " ", ".", "|", "+", "-"]
+        pattern = "|".join(map(re.escape, delimiters))
         pattern = "("+pattern+")\s*"
         tab = re.split(pattern, mstr)
         maptab = []
@@ -172,6 +172,6 @@ class Mapping( DictRepl ):
             else:
                 maptab.append( self.map_entry(v) )
 
-        return ''.join(maptab)
+        return "".join(maptab)
 
     # -----------------------------------------------------------------------

@@ -53,11 +53,11 @@ class TestDictPhon( unittest.TestCase ):
         self.assertEqual(self.grph.get_phon_tokens(['a-a','b']), [('a-a','a-a',WARNING_ID),('b','b',OK_ID)])
         self.assertEqual(self.grph.get_phon_tokens(['a-']), [('a-','a',WARNING_ID)])
         self.assertEqual(self.grph.get_phon_tokens(['A','B']), [('A','a',OK_ID),('B','b',OK_ID)])
-        self.assertEqual(self.grph.get_phon_tokens(['a','aa']), [('a','a',OK_ID),('aa','a.a',WARNING_ID)])
+        self.assertEqual(self.grph.get_phon_tokens(['a','aa']), [('a','a',OK_ID),('aa','a-a',WARNING_ID)])
         self.assertEqual(self.grph.get_phon_tokens(['a','aa'], phonunk=False), [('a','a',OK_ID),('aa',UNKSTAMP,ERROR_ID)])
         self.assertEqual(self.grph.get_phon_tokens(['a','d']), [('a','a',OK_ID),('d',UNKSTAMP,ERROR_ID)])
         self.assertEqual(self.grph.get_phon_tokens(['/a/','d']), [('/a/','a',OK_ID),('d',UNKSTAMP,ERROR_ID)])
-        self.assertEqual(self.grph.get_phon_tokens(['/A.a/','d']), [('/A.a/','A.a',OK_ID),('d',UNKSTAMP,ERROR_ID)])
+        self.assertEqual(self.grph.get_phon_tokens(['/A-a/','d']), [('/A-a/','A-a',OK_ID),('d',UNKSTAMP,ERROR_ID)])
 
     def test_phonetize(self):
         with self.assertRaises(TypeError):
@@ -135,11 +135,14 @@ class TestSppasPhon(unittest.TestCase):
 
     def setUp(self):
         dictfile = os.path.join(RESOURCES_PATH, "dict", "eng.dict")
+        mapfile  = os.path.join(RESOURCES_PATH, "dict", "eng-fra.map")
         self.sp = sppasPhon( dictfile )
+        self.spl = sppasPhon( dictfile, mapfile )
 
     def test_phonetize(self):
         self.sp.set_unk(True)
         self.assertEqual(self.sp.phonetize("THE"), "D-@|D-V|D-i:")
+        self.assertEqual(self.sp.phonetize("HE"),  "h-i:")
         self.assertEqual(self.sp.phonetize("THE BANC"), "D-@|D-V|D-i: b-{-N-k")
         self.assertEqual(self.sp.phonetize("THE BANCI THE"), "D-@|D-V|D-i: b-{-N-k-aI D-@|D-V|D-i:")
         self.assertEqual(self.sp.phonetize("#"), "sil")
@@ -147,6 +150,11 @@ class TestSppasPhon(unittest.TestCase):
         self.assertEqual(self.sp.phonetize("é à"), "")
         self.sp.set_unk(False)
         self.assertEqual(self.sp.phonetize("THE BANCI THE"), "")
+
+    def test_phonetize_learners(self):
+        self.sp.set_unk(True)
+        self.assertEqual(self.spl.phonetize("THE"), "D-@|z-@|v-@|z-9|D-V|v-9|v-V|D-9|z-V|D-i:|z-i|v-i|D-i|v-i:|z-i:")
+        self.assertEqual(self.spl.phonetize("HE"), "i|h-i:|h-i|i:")
 
 # ---------------------------------------------------------------------------
 
@@ -164,7 +172,7 @@ class TestPhonUnk(unittest.TestCase):
         self.assertEqual(self.p.get_phon("<>"), "")
         self.assertEqual(self.p.get_phon("abb-a"), "abb-a|abb-aa")
 
-        self.assertEqual(self.p.get_phon('abc'), 'a-b-cc|aa-b-cc|a-b-c|aa-b-c')
+        self.assertEqual(self.p.get_phon('abc'), 'a-b-c|a-b-cc|aa-b-c|aa-b-cc')
         self.assertEqual(self.p.get_phon('abd'), 'a-b|aa-b')
 
 # ---------------------------------------------------------------------------

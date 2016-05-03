@@ -1,0 +1,406 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0.0
+xmax = 262.240362812
+tiers? <exists>
+size = 1
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "Phonetization"
+        xmin = 0.000000
+        xmax = 262.240363
+        intervals: size = 98
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.0450944252
+            text = ""
+        intervals [2]:
+            xmin = 0.0450944252
+            xmax = 1.6571825657
+            text = "#"
+        intervals [3]:
+            xmin = 1.6571825657
+            xmax = 2.0222563934
+            text = "#"
+        intervals [4]:
+            xmin = 2.0222563934
+            xmax = 3.299018498
+            text = "@|E|eI|E-j k-R-i-s-m-@-s|k-R-I-s-m-@-s|k-w-i-s-m-@-s|k-r-I-s-m-@-s|k-r-i-s-m-@-s|k-w-I-s-m-@-s i-n-t-3:r-v-j-u|I-n-t-9-R-v-j-u|I-n-t-3:r-v-j-u|i-n-t-9-R-v-j-u|i-n-3:r-v-j-u|I-n-9-R-v-j-u|I-n-3:r-v-j-u|i-n-9-R-v-j-u"
+        intervals [5]:
+            xmin = 3.299018498
+            xmax = 3.5686111118
+            text = "#"
+        intervals [6]:
+            xmin = 3.5686111118
+            xmax = 7.8266068098
+            text = "i-f|I-f|i-f t-E-l-@-v-i-Z-@-n|t-E-l-@-v-I-z-@-n|t-E-l-@-v-i-z-@-n|t-E-l-@-v-I-Z-@-n p-9-R-s-@-n-{-l-i-4-i-z|p-3:r-s-@-n-{-l-i-4-i-z|p-9-R-s-@-n-a-l-i-4-i-z|p-3:r-s-@-n-{-l-i-4-i:-z|p-9-R-s-@-n-{-l-i-4-i:-z|p-3:r-s-@-n-a-l-i-4-i-z|p-3:r-s-@-n-a-l-i-4-i:-z|p-9-R-s-@-n-a-l-i-4-i:-z E-r|E-w|h-E-r|E-R|h-E-w|h-E-R E-n-i:-f-I-N|E-n-i:-s-i-n-g|E-n-i:-T-i-N|E-n-i-T-i-N-g|E-n-i:-T-I-n-g|E-n-i-f-i-N|E-n-i-s-I-n-g|E-n-i-f-i-n-g|E-n-i:-f-i-n-g|E-n-i:-s-I-N|E-n-i:-f-i-N|E-n-i:-s-I-n-g|E-n-i:-T-I-N|E-n-i:-T-i-N-g|E-n-i:-f-I-N-g|E-n-i-s-I-N-g|E-n-i-f-I-n-g|E-n-i-s-I-N|E-n-i:-s-i-N|E-n-i:-s-I-N-g|E-n-i:-T-I-N-g|E-n-i:-f-i-N-g|E-n-i-T-i-N|E-n-i-T-i-n-g|E-n-i:-T-i-n-g|E-n-i-s-i-N-g|E-n-i-f-I-N-g|E-n-i-s-i-N|E-n-i:-f-I-n-g|E-n-i-T-I-N-g|E-n-i-T-I-n-g|E-n-i:-s-i-N-g|E-n-i-T-I-N|E-n-i-f-I-N|E-n-i-s-i-n-g|E-n-i-f-i-N-g l-a-j-k|l-aI-k|l-a-k D-@|z-@|v-@|z-9|D-V|v-9|v-V|D-9|z-V|D-i:|z-i|v-i|D-i|v-i:|z-i: R-E-s-t|r-E-s-t|w-E-s-t V-v|9-v|@-v 9-s|V-s|j-u-E-s"
+        intervals [7]:
+            xmin = 7.8266068098
+            xmax = 8.3524078488
+            text = "#"
+        intervals [8]:
+            xmin = 8.3524078488
+            xmax = 13.336534717
+            text = "O:-l|o-l D-E|z-eI|v-E|z-E|v-E-j|D-E-j|z-E-j|v-eI|D-eI r-I-l-i|w-I-l-i|R-i-l-i|w-i-l-i:|r-i-l-i:|R-I-l-i|r-i-l-i|R-i-l-i:|w-i-l-i|R-I-l-i:|r-I-l-i:|w-I-l-i:|R-i-l-i|w-i-l-i|r-i:-l-i:|R-i:-l-i:|w-i:-l-i:|r-i-l-i|R-i-l-i:|R-i:-l-i|w-i:-l-i|r-i:-l-i|r-i-l-i:|w-i-l-i: w-A-n-t|w-a-n-t|w-O:-n-t|w-o-n-t t-u|t-i|t-@ d-u i-n|i-n|I-n k-R-i-s-m-@-s|k-R-I-s-m-@-s|k-w-i-s-m-@-s|k-r-I-s-m-@-s|k-r-i-s-m-@-s|k-w-I-s-m-@-s w-i-k|w-i:-k I-z|i-z|i-z z-n-{-p|z-i:-n-{-p eI-dZ-aU-t-d|@-dZ-aU-t-d|eI-dZ-@U-u-t-d|@-dZ-aU-t-d-i: u-n-s-I-l-@-b-i:|u-n-s-aI-l-l-eI-b|u-n-s-aI-E-l-l-eI-b A-p|O:-p {-t|a-t v-E-r|z-E-w|D-E-r|z-E-R|v-E-w|D-E-w|v-E-R|z-E-r|D-E-R f-a-m-@-l-i-z|f-a-m-@-l-i:-z|f-{-m-@-l-i-z|f-{-m-@-l-i:-z|f-{-m-l-i:-z|f-a-m-l-i:-z|f-a-m-l-i-z|f-{-m-l-i-z"
+        intervals [9]:
+            xmin = 13.336534717
+            xmax = 13.8556022423
+            text = "#"
+        intervals [10]:
+            xmin = 13.8556022423
+            xmax = 20.8818309075
+            text = "s-r-i-t-aI-z-aI-z-i:|s-r-I-t-aI-z-aI-z-i:|s-r-aI-t-i:-z-aI-z-i:|s-i:-r-i-t-aI-z-aI-z-i: z-aI-r|z-i:-aI-r|z-i:-aI-A-r f-w-E-n-d-z|f-r-E-n-d-z|f-R-E-n-d-z|f-R-E-n-z|f-r-E-n-z|f-w-E-n-z {-n-d|a-n-d|@-n-d m-E-j-k|m-eI-k|m-E-k z-i:-aI n-eI-b-3:r-dZ-i:-s|n-eI-b-3:r-dZ-i:-E-s|n-i:-aI-dZ-i:-h-b-O:-r-g-s|n-eI-aI-dZ-i:-h-b-O:-r-g-s tS-I-l-d-R-@-n|S-i-l-d-w-@-n|tS-I-l-d-w-@-n|S-I-l-d-r-@-n|S-I-l-d-w-@-n|S-i-l-d-r-@-n|tS-i-l-d-r-@-n|tS-I-l-d-r-@-n|S-i-l-d-R-@-n|S-I-l-d-R-@-n|tS-i-l-d-R-@-n|tS-i-l-d-w-@-n k-r-aI|k-r-a-j|k-r-a|k-R-aI|k-w-a|k-w-a-j|k-R-a-j|k-R-a|k-w-aI b-a-j|b-a|b-aI g-l-E-w-i-n-g|g-l-E-R-i-N|g-l-E-r-i-N|g-l-E-R-i-N-g|g-l-E-R-i-n-g|g-l-E-r-i-n-g|g-l-E-w-i-N|g-l-E-w-i-N-g|g-l-E-r-i-N-g {-t|a-t z-E-m|D-E-m|v-E-m|z-@-m|D-@-m|v-@-m @U-v-3:r|o-v-3:r|o-v-9-R|@U-v-9-R D-@|z-@|v-@|z-9|D-V|v-9|v-V|D-9|z-V|D-i:|z-i|v-i|D-i|v-i:|z-i: g-a-r-d-@-n|g-A-R-d-@-n|g-A-r-d-@-n|g-a-R-d-@-n|g-A-w-d-@-n|g-a-w-d-@-n f-E-n-s"
+        intervals [11]:
+            xmin = 20.8818309075
+            xmax = 21.64280237
+            text = "#"
+        intervals [12]:
+            xmin = 21.64280237
+            xmax = 30.1119905137
+            text = "j-E-t s-@-s-a-j-@-4-i:|s-@-s-aI-@-4-i|s-@-s-a-j-@-4-i|s-@-s-a-@-4-i:|s-@-s-aI-@-4-i:|s-@-s-a-@-4-i i-k-s-p-E-k-t-s|i-k-s-p-E-k-s z-E-m|D-E-m|v-E-m|z-@-m|D-@-m|v-@-m t-u|t-i|t-@ b-i|b-i:|b-i|b-i: a-z|{-z|E-z dZ-o-v-i:-@-l|Z-o-v-i-@-l|dZ-o-v-i-@-l|Z-@U-v-i:-@-l|dZ-@U-v-i:-@-l|Z-o-v-i:-@-l|dZ-@U-v-i-@-l|Z-@U-v-i-@-l {-n-d|a-n-d|@-n-d b-i:-m-i-n-g|b-i-m-i-N-g|b-i-m-i-n-g|b-i-m-i-N|b-i:-m-i-N|b-i:-m-i-N-g a-z|{-z|E-z D-E|z-eI|v-E|z-E|v-E-j|D-E-j|z-E-j|v-eI|D-eI A-r|a-r|A-R|a-w|a-R|A-w|3:r|9-R f-o-w|f-o-r|f-o-R|f-O:-w|f-O:-R|f-O:-r|f-9-R|f-3:r|f-R-9-R|f-R-3:r|f-r-9-R|f-w-9-R|f-w-3:r|f-r-3:r D-@|z-@|v-@|z-9|D-V|v-9|v-V|D-9|z-V|D-i:|z-i|v-i|D-i|v-i:|z-i: A-z-3:r f-I-f-t-i:|f-I-f-t-i|f-i-f-t-i:|f-i-f-t-i w-9-n|w-V-n|w-9-n|h-w-V-n|h-w-9-n|w-V-n w-i:-k-s-t|w-i:-k-s-t-i:|w-i:-k-s-eI-n-t|w-i:-k-s-t-r-i:-t V-v|9-v|@-v D-@|z-@|v-@|z-9|D-V|v-9|v-V|D-9|z-V|D-i:|z-i|v-i|D-i|v-i:|z-i: j-I-r|j-I-R|j-I-w|j-i-R|j-i-r|j-i-w"
+        intervals [13]:
+            xmin = 30.1119905137
+            xmax = 30.7323034317
+            text = "#"
+        intervals [14]:
+            xmin = 30.7323034317
+            xmax = 32.3228818937
+            text = "i-f|I-f|i-f E-n-i:-f-I-N|E-n-i:-s-i-n-g|E-n-i:-T-i-N|E-n-i-T-i-N-g|E-n-i:-T-I-n-g|E-n-i-f-i-N|E-n-i-s-I-n-g|E-n-i-f-i-n-g|E-n-i:-f-i-n-g|E-n-i:-s-I-N|E-n-i:-f-i-N|E-n-i:-s-I-n-g|E-n-i:-T-I-N|E-n-i:-T-i-N-g|E-n-i:-f-I-N-g|E-n-i-s-I-N-g|E-n-i-f-I-n-g|E-n-i-s-I-N|E-n-i:-s-i-N|E-n-i:-s-I-N-g|E-n-i:-T-I-N-g|E-n-i:-f-i-N-g|E-n-i-T-i-N|E-n-i-T-i-n-g|E-n-i:-T-i-n-g|E-n-i-s-i-N-g|E-n-i-f-I-N-g|E-n-i-s-i-N|E-n-i:-f-I-n-g|E-n-i-T-I-N-g|E-n-i-T-I-n-g|E-n-i:-s-i-N-g|E-n-i-T-I-N|E-n-i-f-I-N|E-n-i-s-i-n-g|E-n-i-f-i-N-g m-O:-r|m-o-w|m-o-R|m-o-r|m-O:-w|m-O:-R s-o|s-@U"
+        intervals [15]:
+            xmin = 32.3228818937
+            xmax = 33.6386274826
+            text = "#"
+        intervals [16]:
+            xmin = 33.6386274826
+            xmax = 35.8634316683
+            text = "t-eI-k|t-E-k|t-E-j-k D-@|z-@|v-@|z-9|D-V|v-9|v-V|D-9|z-V|D-i:|z-i|v-i|D-i|v-i:|z-i: r-i:-v-r-{-n-t|r-E-v-E-r-@-n-t|r-E-v-I-r-@-n-t|A-r-i:-v-r-{-n-t p-i-4-3:r|p-i:-4-3:r|p-i:-4-9-R|p-i-4-9-R s-m-I-s|E-s-m-I-s"
+        intervals [17]:
+            xmin = 35.8634316683
+            xmax = 36.3985736232
+            text = "#"
+        intervals [18]:
+            xmin = 36.3985736232
+            xmax = 40.3082481167
+            text = "D-@|z-@|v-@|z-9|D-V|v-9|v-V|D-9|z-V|D-i:|z-i|v-i|D-i|v-i:|z-i: t-i-v-i:|t-i-v-i|t-i:-v-i:|t-i:-v-i|t-E-l-@-v-i-Z-@-n|t-E-l-@-v-I-z-@-n|t-E-l-@-v-i-z-@-n|t-E-l-@-v-I-Z-@-n v-I-k-3:r|v-i-k-9-R|v-I-k-9-R|v-i-k-3:r h-u|u s-E-n-d-z-h|s-E-n-d-z-eI-tS|s-E-n-d-E-s-eI-tS a-@-t|aU-t p-r-E-s|p-R-E-s|p-w-E-s R-i-l-i-s-i-z|r-i-l-i-s-i-z|w-i-l-i:-s-i-z|w-i-l-i-s-i-z|R-i-l-i:-s-i-z|r-i-l-i:-s-i-z"
+        intervals [19]:
+            xmin = 40.3082481167
+            xmax = 41.157842714
+            text = "#"
+        intervals [20]:
+            xmin = 41.157842714
+            xmax = 43.7221035235
+            text = "i-n|i-n|I-n w-i-S|w-i-tS|w-I-S|w-I-tS|h-w-i-tS|w-i-S|w-I-S|h-w-I-tS|h-w-i-S|h-w-I-S|w-I-tS|w-i-tS i|i:|h-i:|h-i d-I-s-r-I-z-i:|d-E-s-r-I-z-i:|d-E-s-r-aI-z-i:|d-I-s-r-aI-z-i: I-m-s-E-l-f a-z|{-z|E-z"
+        intervals [21]:
+            xmin = 43.7221035235
+            xmax = 44.3966834667
+            text = "#"
+        intervals [22]:
+            xmin = 44.3966834667
+            xmax = 47.3244520306
+            text = "d-i:|d-i|d-E-j|d-E|d-eI|d-@ m-E-n h-u|u h-a-z|a-z|h-{-z|{-z|@-z|h-@-z k-a-p-S-3:r-d|k-{-p-S-3:r-d|k-a-p-tS-3:r-d|k-{-p-S-9-R-d|k-{-p-tS-3:r-d|k-a-p-tS-9-R-d|k-a-p-S-9-R-d|k-{-p-tS-9-R-d z-i|z-i: s-p-i-R-@-t|s-p-i-r-@-t|s-p-I-R-@-t|s-p-i-w-@-t|s-p-I-w-@-t|s-p-I-r-@-t|s-p-I-R-i-t|s-p-i-w-i-t|s-p-I-w-i-t|s-p-i-R-i-t|s-p-i-r-i-t|s-p-I-r-i-t V-v|9-v|@-v d-i:|d-i|d-a|d-aI|d-a-j eI-dZ"
+        intervals [23]:
+            xmin = 47.3244520306
+            xmax = 48.1731462963
+            text = "#"
+        intervals [24]:
+            xmin = 48.1731462963
+            xmax = 54.4896171583
+            text = "b-i-f-O:-w|b-i-f-O:-r|b-i-f-O:-R|b-i-f-o-w|b-i-f-o-R|b-i-f-o-r|b-i:-f-o-R|b-i-f-O:-w|b-i-f-O:-R|b-i-f-O:-r|b-i:-f-o-r|b-i-f-o-w|b-i:-f-o-w|b-i-f-o-r|b-i:-f-O:-R|b-i:-f-O:-r|b-i:-f-O:-w|b-i-f-o-R o|@U n-a-n|n-a-j-n|n-aI-n {-m|a-m|E-E-m|eI-E-m|E-j-E-m m-i-4-i-N-g|m-i:-4-i-n-g|m-i-4-i-N|m-i:-4-i-N-g|m-i-4-i-n-g|m-i:-4-i-N {-t|a-t h-i-z|i-z|h-I-z|I-z|h-i-z|i-z m-i:-4-i:-@|m-i-4-i:-@|m-i:-4-i-@|m-i-4-i-@ o-f-@-s|O:-f-@-s a-n|A-n|O:-n|o-n s-r-O:-S-@U|s-i:-r-O:-S-@U|k-r-O:-s-h-i:-@U a-v-@-n-u|{-v-@-n-u"
+        intervals [25]:
+            xmin = 54.4896171583
+            xmax = 55.5859091359
+            text = "s-aU-T-l-V-n-d-@-n l|E-l  n-d|@-n-d|n-d-i:|E-n-d  n|@-n|E-n"
+        intervals [26]:
+            xmin = 55.5859091359
+            xmax = 55.972041532
+            text = "#"
+        intervals [27]:
+            xmin = 55.972041532
+            xmax = 56.6443979419
+            text = "i|i:|h-i:|h-i f-E-s-t|f-E-j-s-t|f-eI-s-t"
+        intervals [28]:
+            xmin = 56.6443979419
+            xmax = 56.9441230885
+            text = "#"
+        intervals [29]:
+            xmin = 56.9441230885
+            xmax = 57.6246284719
+            text = "i|i:|h-i:|h-i s-eI-aI-z|E-s-i:-aI-z|s-eI-aI-z-i:|E-s-i:-aI-z-i:"
+        intervals [30]:
+            xmin = 57.6246284719
+            xmax = 57.9243536185
+            text = "#"
+        intervals [31]:
+            xmin = 57.9243536185
+            xmax = 58.9336939631
+            text = "@|E|eI|E-j R-i:-l|r-i-l|R-i-l|w-i:-l|w-i-l|r-i:-l d-i-l-E-m-@"
+        intervals [32]:
+            xmin = 58.9336939631
+            xmax = 60.5137538669
+            text = "#"
+        intervals [33]:
+            xmin = 60.5137538669
+            xmax = 77.0866356052
+            text = "S-u-V-l|S-u-j-u-E-l i|i:|h-i:|h-i m-E-j-k|m-eI-k|m-E-k {-n|a-n|@-n E-f-3:r-t|E-f-9-R-t t-u|t-i|t-@ b-i-h-E-v|b-i-E-j-v|b-i-eI-v|b-i-E-v|b-i-h-eI-v|b-i-h-E-j-v l-a-j-k|l-aI-k|l-a-k @|E|eI|E-j k-r-I-s-tS-@-n|k-R-i-s-tS-@-n|k-r-i-s-tS-@-n|k-r-I-s-S-@-n|k-R-I-s-tS-@-n|k-w-I-s-S-@-n|k-R-i-s-S-@-n|k-w-i-s-S-@-n|k-w-i-s-tS-@-n|k-R-I-s-S-@-n|k-w-I-s-tS-@-n|k-r-i-s-S-@-n|k-w-I-s-tS-i-n|k-w-i-s-tS-i-n|k-R-i-s-S-i-n|k-R-I-s-tS-i-n|k-R-i-s-tS-i-n|k-R-I-s-S-i-n|k-w-I-s-S-i-n|k-r-I-s-tS-i-n|k-r-I-s-S-i-n|k-r-i-s-S-i-n|k-r-i-s-tS-i-n|k-w-i-s-S-i-n s-r-@U|E-s-r-@U|s-i:-n-j-3:r-@U|s-i:-n-j-3:r-aU h-i-z|i-z|h-I-z|I-z|h-i-z|i-z d-O:-R|d-o-R|d-o-r|d-O:-r|d-O:-w|d-o-w @U-p-@-n|o-p-@-n O:-f-9-R|O:-f-3:r|o-f-3:r|o-f-9-R m-i:|m-i @|E|eI|E-j k-@U-i:-V-p V-v|9-v|@-v t-i:|t-i o-R|O:-w|O:-R|o-r|o-w|O:-r|3:r|9-R S-u-d|S-U-d i|i:|h-i:|h-i Z-9-s-t|dZ-9-s-t|dZ-V-s-t|Z-V-s-t|Z-i-s-t|dZ-i-s-t p-l-E|p-l-eI|p-l-E-j I-t|i-t|i-t k-u-l s-t-9-4-i:|s-t-9-4-i|s-t-V-4-i:|s-t-V-4-i h-i-z|i-z|h-I-z|I-z|h-i-z|i-z f-I-n-g-@U-u-l-eI-n-aI-z|f-I-n-g-@U-V-l-n-A-aI-z|f-I-n-g-@U-j-u-l-eI-n-aI-z|f-I-n-g-@U-u-l-eI-n-aI-z-i: i-n|i-n|I-n @|E|eI|E-j m-{-n-u z-{-t|v-a-t|z-a-t|D-a-t|v-{-t|D-{-t|z-@-t|D-@-t|v-@-t S-o-z|S-@U-z b-3:r|b-O:-r|b-@U-r|b-i:-3:r i-n-d-I-f-3:r-@-n-s|i-n-d-i-f-9-R-@-n-s|i-n-d-I-f-9-R-@-n-s|i-n-d-i-f-3:r-@-n-s|i-n-d-I-f-w-@-n-s|i-n-d-i-f-R-@-n-s|i-n-d-i-f-w-@-n-s|i-n-d-I-f-R-@-n-s|i-n-d-i-f-r-@-n-s|i-n-d-I-f-r-@-n-s {-n-d|a-n-d|@-n-d g-E-t|g-i-t|g-I-t r-I-d|w-i-d|R-i-d|R-I-d|r-i-d|w-I-d V-v|9-v|@-v m-i:|m-i a-z|{-z|E-z k-w-i-k-l-i|k-w-I-k-l-i|k-w-i-k-l-i:|k-w-I-k-l-i: a-z|{-z|E-z p-O:-s-I-b-i:-V-l|p-O:-s-aI-b-i:-i:-V-l|p-A-s-s-i:-b-i:-V-l|p-O:-s-I-b-i:-j-u-E-l"
+        intervals [34]:
+            xmin = 77.0866356052
+            xmax = 77.7751933744
+            text = ""
+        intervals [35]:
+            xmin = 77.7751933744
+            xmax = 78.4205475189
+            text = "i-n|i-n|I-n d-i:|d-i|d-a|d-aI|d-a-j E-n-d"
+        intervals [36]:
+            xmin = 78.4205475189
+            xmax = 78.9271957822
+            text = "#"
+        intervals [37]:
+            xmin = 78.9271957822
+            xmax = 79.8533734875
+            text = "i|i:|h-i:|h-i d-I-d|d-i-d|d-i-d n-i-v-9-R|n-i-D-9-R|n-i:-z-9-R|n-i:-v-3:r|n-i:-v-9-R|n-i:-z-3:r|n-i-D-3:r|n-i:-D-9-R|n-i-z-9-R|n-i-z-3:r|n-i:-D-3:r|n-i-v-3:r|n-a-z-3:r|n-aI-z-3:r|n-a-j-z-3:r|n-a-j-z-9-R|n-aI-D-9-R|n-a-j-D-9-R|n-a-j-v-3:r|n-aI-D-3:r|n-a-z-9-R|n-a-j-v-9-R|n-a-D-9-R|n-a-v-3:r|n-aI-v-9-R|n-a-j-D-3:r|n-aI-z-9-R|n-a-v-9-R|n-aI-v-3:r|n-a-D-3:r"
+        intervals [38]:
+            xmin = 79.8533734875
+            xmax = 81.0295388076
+            text = "#"
+        intervals [39]:
+            xmin = 81.0295388076
+            xmax = 82.9546253095
+            text = ""
+        intervals [40]:
+            xmin = 82.9546253095
+            xmax = 82.9547294831
+            text = ""
+        intervals [41]:
+            xmin = 82.9547294831
+            xmax = 83.3091300068
+            text = "#"
+        intervals [42]:
+            xmin = 83.3091300068
+            xmax = 86.247243342
+            text = "s-z|s-z-i:|E-s-z|E-s-z-i: i-n|i-n|I-n @|E|eI|E-j l-a-@-d|l-aU-d i:-s-t-O:-r-t|i:-s-t-u-3:r-t|i:-s-t-j-u-3:r-t|@-s-t-eI-t-j-u-A-r-t i-n-g-g-l-i-S|I-N-g-g-l-i-S|I-N-g-l-i-S|i-N-g-l-i-S|I-n-g-g-l-i-S|i-N-g-g-l-i-S|I-N-l-i-S|i-N-l-i-S|I-n-g-l-i-S|i-N-g-l-i-S|I-N-g-l-i-S|i-n-g-l-i-S t-w-A-N-g|t-w-A-N|t-w-A-n-g|t-w-a-N|t-w-a-N-g|t-w-a-n-g"
+        intervals [43]:
+            xmin = 86.247243342
+            xmax = 87.2216053001
+            text = "#"
+        intervals [44]:
+            xmin = 87.2216053001
+            xmax = 88.6877198794
+            text = ""
+        intervals [45]:
+            xmin = 88.6877198794
+            xmax = 89.3226994419
+            text = "#"
+        intervals [46]:
+            xmin = 89.3226994419
+            xmax = 92.4954206906
+            text = ""
+        intervals [47]:
+            xmin = 92.4954206906
+            xmax = 93.0392914454
+            text = "#"
+        intervals [48]:
+            xmin = 93.0392914454
+            xmax = 95.0832693006
+            text = ""
+        intervals [49]:
+            xmin = 95.0832693006
+            xmax = 96.1412919419
+            text = "#"
+        intervals [50]:
+            xmin = 96.1412919419
+            xmax = 97.0001151615
+            text = "b-V-t|b-9-t h-eI|E|h-E-j|E-j|h-E|eI"
+        intervals [51]:
+            xmin = 97.0001151615
+            xmax = 97.3129896346
+            text = "#"
+        intervals [52]:
+            xmin = 97.3129896346
+            xmax = 99.6053525446
+            text = "i|i:|h-i:|h-i d-i-d-@-n-t|d-I-d-@-n-t|d-I-d-n-t|d-i-d-n-t|d-I-d-@-n|d-i-d-@-n|d-I-n-t|d-i-n-t m-i-n-t|m-I-n-t b-i|b-i:|b-i|b-i: w-9-n|w-V-n|w-9-n|h-w-V-n|h-w-9-n|w-V-n"
+        intervals [53]:
+            xmin = 99.6053525446
+            xmax = 100.513465871
+            text = "#"
+        intervals [54]:
+            xmin = 100.513465871
+            xmax = 104.178387612
+            text = "b-i|b-i:|b-i|b-i: w-V-n-b-i:-@U-n-i:-A-r-b-E-s-t-b-i:-h-A-v-i:-aU-3:r-@-n-d-b-i:-h-{-p-i:-O:-l-D-V-t-aI-m|w-V-n-b-i:-@U-n-i:-aU-r-b-E-s-t-b-i:-h-A-v-aI-A-r-@-n-d-b-i:-h-{-p-i:-O:-l-D-@-t-aI-m|w-V-n-b-i:-@U-n-i:-aU-r-b-E-s-t-b-i:-h-A-v-aI-aU-r-{-n-d-b-i:-h-{-p-i:-O:-l-D-i:-t-aI-m|w-V-n-b-i:-@U-n-i:-aU-r-b-E-s-t-b-i:-h-A-v-i:-aU-r-@-n-d-b-i:-h-{-p-i:-O:-l-D-i:-t-aI-m"
+        intervals [55]:
+            xmin = 104.178387612
+            xmax = 104.963702037
+            text = "#"
+        intervals [56]:
+            xmin = 104.963702037
+            xmax = 111.371518133
+            text = ""
+        intervals [57]:
+            xmin = 111.371518133
+            xmax = 111.482225787
+            text = "#"
+        intervals [58]:
+            xmin = 111.482225787
+            xmax = 113.482955206
+            text = ""
+        intervals [59]:
+            xmin = 113.482955206
+            xmax = 115.814870515
+            text = "#"
+        intervals [60]:
+            xmin = 115.814870515
+            xmax = 117.321464655
+            text = ""
+        intervals [61]:
+            xmin = 117.321464655
+            xmax = 118.024221027
+            text = "#"
+        intervals [62]:
+            xmin = 118.024221027
+            xmax = 118.731652685
+            text = ""
+        intervals [63]:
+            xmin = 118.731652685
+            xmax = 118.968508752
+            text = "#"
+        intervals [64]:
+            xmin = 118.968508752
+            xmax = 120.223944739
+            text = "aI-m|a-m|a-j-m @|E|eI|E-j k-r-I-s-tS-@-n|k-R-i-s-tS-@-n|k-r-i-s-tS-@-n|k-r-I-s-S-@-n|k-R-I-s-tS-@-n|k-w-I-s-S-@-n|k-R-i-s-S-@-n|k-w-i-s-S-@-n|k-w-i-s-tS-@-n|k-R-I-s-S-@-n|k-w-I-s-tS-@-n|k-r-i-s-S-@-n|k-w-I-s-tS-i-n|k-w-i-s-tS-i-n|k-R-i-s-S-i-n|k-R-I-s-tS-i-n|k-R-i-s-tS-i-n|k-R-I-s-S-i-n|k-w-I-s-S-i-n|k-r-I-s-tS-i-n|k-r-I-s-S-i-n|k-r-i-s-S-i-n|k-r-i-s-tS-i-n|k-w-i-s-S-i-n Z-a-n|dZ-A-n|Z-A-n|dZ-a-n"
+        intervals [65]:
+            xmin = 120.223944739
+            xmax = 120.669634624
+            text = "#"
+        intervals [66]:
+            xmin = 120.669634624
+            xmax = 122.948576179
+            text = ""
+        intervals [67]:
+            xmin = 122.948576179
+            xmax = 123.585276216
+            text = "#"
+        intervals [68]:
+            xmin = 123.585276216
+            xmax = 131.908443673
+            text = "{-n-d|a-n-d|@-n-d aI|a|a-j n-o|n-@U f-o-w|f-o-r|f-o-R|f-O:-w|f-O:-R|f-O:-r|f-9-R|f-3:r|f-R-9-R|f-R-3:r|f-r-9-R|f-w-9-R|f-w-3:r|f-r-3:r S-u-w|S-u-r|S-U-R|S-U-w|S-U-r|S-u-R z-{-t|v-a-t|z-a-t|D-a-t|v-{-t|D-{-t|z-@-t|D-@-t|v-@-t k-r-I-s-S-i-{-n-i-4-i:|k-w-I-s-tS-i:-a-n-i-4-i|k-r-I-s-tS-i-{-n-i-4-i|k-w-i-s-tS-i-{-n-i-4-i:|k-R-I-s-tS-i-a-n-i-4-i:|k-R-i-s-S-i-a-n-i-4-i:|k-r-I-s-S-i:-{-n-i-4-i:|k-R-i-s-tS-i:-a-n-i-4-i:|k-w-I-s-tS-i-a-n-i-4-i|k-R-i-s-S-i:-{-n-i-4-i|k-R-i-s-S-i-{-n-i-4-i|k-w-I-s-tS-i-{-n-i-4-i:|k-w-i-s-S-i-a-n-i-4-i:|k-w-I-s-tS-i:-{-n-i-4-i|k-r-i-s-S-i:-{-n-i-4-i:|k-R-i-s-tS-i-a-n-i-4-i|k-w-i-s-tS-i-{-n-i-4-i|k-w-I-s-tS-i-a-n-i-4-i:|k-R-I-s-S-i-{-n-i-4-i|k-R-I-s-tS-i:-a-n-i-4-i|k-w-I-s-S-i-{-n-i-4-i:|k-R-i-s-tS-i:-{-n-i-4-i|k-R-I-s-tS-i-{-n-i-4-i|k-r-I-s-S-i-{-n-i-4-i|k-R-i-s-tS-i-a-n-i-4-i:|k-r-I-s-tS-i:-a-n-i-4-i|k-w-i-s-S-i:-{-n-i-4-i|k-r-i-s-S-i-{-n-i-4-i|k-R-I-s-S-i:-a-n-i-4-i|k-R-I-s-S-i-a-n-i-4-i|k-w-i-s-tS-i:-{-n-i-4-i|k-w-i-s-tS-i:-a-n-i-4-i:|k-r-i-s-S-i-{-n-i-4-i:|k-R-I-s-S-i:-a-n-i-4-i:|k-r-I-s-tS-i:-{-n-i-4-i|k-w-i-s-S-i-{-n-i-4-i:|k-R-i-s-S-i:-a-n-i-4-i|k-R-I-s-tS-i:-{-n-i-4-i:|k-w-i-s-S-i:-a-n-i-4-i|k-R-I-s-tS-i:-a-n-i-4-i:|k-R-i-s-tS-i:-a-n-i-4-i|k-r-i-s-tS-i:-{-n-i-4-i|k-w-i-s-tS-i:-{-n-i-4-i:|k-R-i-s-tS-i-{-n-i-4-i|k-R-I-s-S-i:-{-n-i-4-i|k-w-i-s-S-i-a-n-i-4-i|k-r-i-s-S-i-a-n-i-4-i|k-r-i-s-tS-i-a-n-i-4-i:|k-w-I-s-S-i:-{-n-i-4-i:|k-r-I-s-S-i-a-n-i-4-i:|k-r-i-s-S-i:-a-n-i-4-i:|k-w-I-s-tS-i-{-n-i-4-i|k-w-i-s-tS-i:-a-n-i-4-i|k-r-I-s-S-i:-{-n-i-4-i|k-R-i-s-S-i-a-n-i-4-i|k-w-i-s-S-i:-a-n-i-4-i:|k-r-i-s-tS-i:-a-n-i-4-i:|k-R-i-s-S-i:-a-n-i-4-i:|k-R-I-s-tS-i:-{-n-i-4-i|k-w-i-s-tS-i-a-n-i-4-i|k-w-I-s-S-i-{-n-i-4-i|k-r-I-s-tS-i-a-n-i-4-i|k-r-i-s-tS-i:-a-n-i-4-i|k-R-i-s-tS-i-{-n-i-4-i:|k-w-I-s-S-i:-{-n-i-4-i|k-r-I-s-S-i:-a-n-i-4-i|k-r-I-s-S-i-a-n-i-4-i|k-r-I-s-tS-i-a-n-i-4-i:|k-w-i-s-S-i:-{-n-i-4-i:|k-r-I-s-tS-i:-{-n-i-4-i:|k-R-i-s-S-i-{-n-i-4-i:|k-r-I-s-S-i:-a-n-i-4-i:|k-r-i-s-S-i:-a-n-i-4-i|k-r-I-s-tS-i-{-n-i-4-i:|k-w-I-s-S-i:-a-n-i-4-i|k-r-i-s-tS-i:-{-n-i-4-i:|k-r-I-s-tS-i:-a-n-i-4-i:|k-w-I-s-S-i-a-n-i-4-i|k-R-I-s-S-i-a-n-i-4-i:|k-w-I-s-tS-i:-a-n-i-4-i:|k-R-I-s-tS-i-a-n-i-4-i|k-w-I-s-S-i:-a-n-i-4-i:|k-r-i-s-tS-i-{-n-i-4-i:|k-r-i-s-S-i:-{-n-i-4-i|k-w-i-s-tS-i-a-n-i-4-i:|k-r-i-s-tS-i-{-n-i-4-i|k-r-i-s-tS-i-a-n-i-4-i|k-R-I-s-tS-i-{-n-i-4-i:|k-w-I-s-S-i-a-n-i-4-i:|k-R-i-s-S-i:-{-n-i-4-i:|k-R-I-s-S-i-{-n-i-4-i:|k-w-I-s-tS-i:-{-n-i-4-i:|k-w-i-s-S-i-{-n-i-4-i|k-R-i-s-tS-i:-{-n-i-4-i:|k-r-i-s-S-i-a-n-i-4-i:|k-R-I-s-S-i:-{-n-i-4-i: w-i-l|w-I-l|w-@-l b-i|b-i:|b-i|b-i: Z-9-dZ-d|dZ-9-Z-d|Z-9-Z-d|Z-V-dZ-d|dZ-V-dZ-d|dZ-V-Z-d|Z-V-Z-d|dZ-9-dZ-d m-O:-r|m-o-w|m-o-R|m-o-r|m-O:-w|m-O:-R a-n|A-n|O:-n|o-n w-9-t|w-V-t|h-w-V-t|w-9-t|w-V-t|h-w-9-t j-u d-u r-E-j-d-A-r|r-E-j-d-A-w|R-E-d-A-R|R-eI-d-a-w|R-E-d-a-w|R-E-j-d-A-R|R-eI-d-a-r|w-E-d-A-w|w-E-d-a-R|R-E-j-d-A-r|r-eI-d-A-R|R-eI-d-A-r|r-E-j-d-A-R|w-E-j-d-a-r|w-E-d-A-r|w-eI-d-a-r|R-E-j-d-a-w|R-E-d-A-w|R-eI-d-a-R|w-E-d-a-w|w-E-d-A-R|w-E-j-d-a-w|R-E-d-a-r|w-E-d-a-r|r-eI-d-A-w|r-E-j-d-a-R|r-E-d-a-r|r-E-d-a-R|r-E-d-A-w|R-E-j-d-a-R|r-eI-d-a-R|w-eI-d-a-w|w-E-j-d-A-R|w-eI-d-A-R|w-eI-d-a-R|R-eI-d-A-R|R-E-d-a-R|r-E-j-d-a-r|w-E-j-d-a-R|R-E-j-d-a-r|r-E-j-d-a-w|r-E-d-A-R|R-eI-d-A-w|R-E-j-d-A-w|r-E-d-a-w|r-eI-d-a-r|r-eI-d-A-r|r-E-d-A-r|R-E-d-A-r|w-eI-d-A-w|w-E-j-d-A-r|w-eI-d-A-r|r-eI-d-a-w|w-E-j-d-A-w D-{-n|v-{-n|D-a-n|v-a-n|z-a-n|z-{-n|z-@-n|v-@-n|D-@-n w-9-t|w-V-t|h-w-V-t|w-9-t|w-V-t|h-w-9-t j-u d-u"
+        intervals [69]:
+            xmin = 131.908443673
+            xmax = 132.620567232
+            text = "#"
+        intervals [70]:
+            xmin = 132.620567232
+            xmax = 134.994834399
+            text = ""
+        intervals [71]:
+            xmin = 134.994834399
+            xmax = 136.398498295
+            text = "#"
+        intervals [72]:
+            xmin = 136.398498295
+            xmax = 151.231939031
+            text = ""
+        intervals [73]:
+            xmin = 151.231939031
+            xmax = 151.984744631
+            text = "#"
+        intervals [74]:
+            xmin = 151.984744631
+            xmax = 155.538159192
+            text = "d-o-g|d-O:-g d-A-l|d-a-l R|r|w|A-r|a-r|A-R|a-w|a-R|A-w p-r-@U-n-A-n-s|p-r-@U-n-A-n-s-i: E-n E-f-r|E-f-A-r"
+        intervals [75]:
+            xmin = 155.538159192
+            xmax = 155.75082204
+            text = "#"
+        intervals [76]:
+            xmin = 155.75082204
+            xmax = 166.795484888
+            text = ""
+        intervals [77]:
+            xmin = 166.795484888
+            xmax = 167.389082999
+            text = "#"
+        intervals [78]:
+            xmin = 167.389082999
+            xmax = 180.763400469
+            text = ""
+        intervals [79]:
+            xmin = 180.763400469
+            xmax = 181.58959357
+            text = "#"
+        intervals [80]:
+            xmin = 181.58959357
+            xmax = 186.583150669
+            text = ""
+        intervals [81]:
+            xmin = 186.583150669
+            xmax = 188.429274587
+            text = "#"
+        intervals [82]:
+            xmin = 188.429274587
+            xmax = 194.281109869
+            text = ""
+        intervals [83]:
+            xmin = 194.281109869
+            xmax = 195.400973232
+            text = "#"
+        intervals [84]:
+            xmin = 195.400973232
+            xmax = 204.15141508
+            text = "i|i:|h-i:|h-i O:-l-s-o|O:-l-s-@U|o-l-s-@U|o-l-s-o t-O:-k-t|t-o-k-t @-b-a-@-t|@-b-aU-t h-i-z|i-z|h-I-z|I-z|h-i-z|i-z t-u|t-i|t-@ S-a-n-@|tS-a-j-n-@|tS-a-n-@|S-aI-n-@|tS-aI-n-@|S-a-j-n-@ {-n-d|a-n-d|@-n-d D-@|z-@|v-@|z-9|D-V|v-9|v-V|D-9|z-V|D-i:|z-i|v-i|D-i|v-i:|z-i: m-a-s-@-z|m-{-s-@-z|m-{-s-i-z|m-a-s-i-z w-E-4-i-N|w-E-4-i-N-g|w-E-4-i-n-g|w-E-j-4-i-n-g|w-eI-4-i-N|w-E-j-4-i-N-g|w-eI-4-i-N-g|w-eI-4-i-n-g|w-E-j-4-i-N f-o-w|f-o-r|f-o-R|f-O:-w|f-O:-R|f-O:-r|f-9-R|f-3:r|f-R-9-R|f-R-3:r|f-r-9-R|f-w-9-R|f-w-3:r|f-r-3:r D-@|z-@|v-@|z-9|D-V|v-9|v-V|D-9|z-V|D-i:|z-i|v-i|D-i|v-i:|z-i: m-E-s-@-dZ|m-E-s-@-Z|m-E-s-i-Z|m-E-s-i-dZ v-E-r|z-E-w|D-E-r|z-E-R|v-E-w|D-E-w|v-E-R|z-E-r|D-E-R f-o-w|f-o-r|f-o-R|f-O:-w|f-O:-R|f-O:-r|f-9-R|f-3:r|f-R-9-R|f-R-3:r|f-r-9-R|f-w-9-R|f-w-3:r|f-r-3:r h-i-z|i-z|h-I-z|I-z|h-i-z|i-z m-@-s-A-Z|m-@-s-A-z|m-@-s-a-Z|m-@-s-a-z v-E-r|z-E-w|D-E-r|z-E-R|v-E-w|D-E-w|v-E-R|z-E-r|D-E-R"
+        intervals [85]:
+            xmin = 204.15141508
+            xmax = 205.75049648
+            text = "#"
+        intervals [86]:
+            xmin = 205.75049648
+            xmax = 215.456845711
+            text = ""
+        intervals [87]:
+            xmin = 215.456845711
+            xmax = 222.187418057
+            text = ""
+        intervals [88]:
+            xmin = 222.187418057
+            xmax = 223.121131886
+            text = "#"
+        intervals [89]:
+            xmin = 223.121131886
+            xmax = 232.110946544
+            text = ""
+        intervals [90]:
+            xmin = 232.110946544
+            xmax = 232.836886147
+            text = "#"
+        intervals [91]:
+            xmin = 232.836886147
+            xmax = 240.363222563
+            text = "i|i:|h-i:|h-i Z-9-s-t|dZ-9-s-t|dZ-V-s-t|Z-V-s-t|Z-i-s-t|dZ-i-s-t s-a-j-d|s-a-d|s-aI-d i-n|i-n|I-n a-n-s-3:r|{-n-s-9-R|a-n-s-9-R|{-n-s-3:r t-u|t-i|t-@ m-aI|m-a|m-a-j w-i-m-A-w-k-s|r-i-m-A-r-k-s|w-i-m-A-r-k-s|w-i-m-A-R-k-s|r-i-m-a-w-k-s|r-i-m-a-r-k-s|r-i-m-A-R-k-s|w-i-m-a-R-k-s|r-i-m-a-R-k-s|R-i-m-A-R-k-s|R-i-m-a-r-k-s|R-i-m-a-w-k-s|r-i-m-A-w-k-s|R-i-m-A-w-k-s|w-i-m-a-w-k-s|R-i-m-A-r-k-s|R-i-m-a-R-k-s|w-i-m-a-r-k-s|w-i-m-A-R-k-s|r-i-m-A-R-k-s|R-i-m-A-R-k-s|r-i-m-A-w-k-s|R-i:-m-A-w-k-s|w-i:-m-A-w-k-s|r-i:-m-a-r-k-s|w-i:-m-a-R-k-s|w-i-m-a-r-k-s|w-i-m-a-w-k-s|R-i-m-a-r-k-s|r-i:-m-a-R-k-s|w-i-m-A-r-k-s|R-i:-m-a-R-k-s|r-i-m-A-r-k-s|r-i-m-a-w-k-s|R-i:-m-a-w-k-s|R-i-m-A-r-k-s|r-i:-m-A-r-k-s|w-i:-m-a-r-k-s|R-i-m-A-w-k-s|w-i-m-A-w-k-s|r-i-m-a-r-k-s|R-i:-m-A-r-k-s|r-i:-m-a-w-k-s|r-i:-m-A-R-k-s|w-i:-m-A-r-k-s|w-i-m-a-R-k-s|R-i-m-a-R-k-s|R-i:-m-A-R-k-s|r-i-m-a-R-k-s|r-i:-m-A-w-k-s|w-i:-m-a-w-k-s|R-i:-m-a-r-k-s|w-i:-m-A-R-k-s|R-i-m-a-w-k-s {-n-d|a-n-d|@-n-d s-E-d aI-m|a-m|a-j-m o-n-l-i|o-n-l-i:|@U-n-l-i:|@U-n-l-i k-s-k-s|k-s-E-k-s|E-k-s-k-s|E-k-s-E-k-s k-s-h-aI|E-k-s-h-aI m-@U-n-l-i:-j-u-m-@-n-dZ-A-n|m-@U-n-l-aI-j-u-m-@-n-dZ-A-n|m-A-n-l-aI-j-u-m-@-n-dZ-A-n|E-m-@U-n-l-i:-j-u-m-@-n-dZ-A-n"
+        intervals [92]:
+            xmin = 240.363222563
+            xmax = 241.093187733
+            text = "#"
+        intervals [93]:
+            xmin = 241.093187733
+            xmax = 244.636049519
+            text = "g-A-d|g-a-d n-@U-z|n-o-z a|a-j|aI|h-a-j|h-aI|h-a d-u m-aI|m-a|m-a-j b-E-s-t {-n-d|a-n-d|@-n-d O:-f-@-n|o-f-@-n|O:-f-t-@-n|o-f-t-@-n f-eI-l|f-E-j-l|f-E-l"
+        intervals [94]:
+            xmin = 244.636049519
+            xmax = 245.12859413
+            text = "#"
+        intervals [95]:
+            xmin = 245.12859413
+            xmax = 255.473465753
+            text = "b-V-t|b-9-t i-t-s|I-t-s|i-t-s n-o|n-@U s-k-I-n|s-k-i-n O:-f|o-f m-aI|m-a|m-a-j n-@U-z-b-u-t-I-t|n-@U-z-b-V-t-i-t|n-@U-z-b-V-t-I-t|n-@U-z-b-j-u-t-I-t s-n-@U-s-k-I-n-O:-f-m-aI-n-@U-z-aI-f-O:-r-E-n-@-m-i:-z-s-n-i:-r-{-t-s-V-m-V-v-D-i:-g-i-d-w-3:r-k-j-i:-4-@U|s-n-@U-s-k-I-n-O:-f-m-aI-n-@U-z-aI-f-O:-r-E-n-@-m-i:-z-s-n-i:-r-{-t-s-V-m-@-v-D-@-g-U-d-w-3:r-k-j-i:-4-@U|s-n-@U-s-k-I-n-O:-f-m-aI-n-@U-z-aI-f-O:-r-E-n-@-m-i:-z-s-n-i:-r-{-t-s-V-m-@-v-D-V-g-U-d-w-3:r-k-j-i:-4-@U|s-n-@U-s-k-I-n-O:-f-m-aI-n-@U-z-aI-f-O:-r-E-n-@-m-i:-z-s-n-i:-r-{-t-s-V-m-V-v-D-V-g-i-d-w-3:r-k-j-i:-4-@U"
+        intervals [96]:
+            xmin = 255.473465753
+            xmax = 255.84912
+            text = "#"
+        intervals [97]:
+            xmin = 255.84912
+            xmax = 259.447483087
+            text = "t-r-u-T|t-r-u-s|t-R-u-f|t-w-u-f|t-r-u-f|t-R-u-T|t-w-u-s|t-w-u-T|t-R-u-s w-i-l|w-I-l|w-@-l k-s-t-r-u-T-w-@-l-aU-t|k-s-t-r-u-T-w-I-l-aU-t|E-k-s-t-r-u-T-w-@-l-aU-t|E-k-s-t-r-u-T-w-I-l-aU-t"
+        intervals [98]:
+            xmin = 259.447483087
+            xmax = 262.240362812
+            text = "#"

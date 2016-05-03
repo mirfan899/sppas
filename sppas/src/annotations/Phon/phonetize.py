@@ -199,8 +199,7 @@ class DictPhon:
             # entry can be already in SAMPA.
             if entry.startswith("/") is True and entry.endswith("/") is True:
                 phon = entry.strip("/")
-                # Must be converted to our convention (dots to separate phones)
-                # TODO
+                # Must use SAMPA (including minus to separate phones)
 
             else:
 
@@ -292,7 +291,15 @@ class DictPhon:
         self._dagphon.variants = 0
         phon = ToStrip( self._dagphon.decompose(" ".join(subs)) )
 
-        return phon
+        # Remove un-pronounced phonemes!!!
+        # By convention, they are represented by an underscore in the
+        # mapping table.
+        tmp = []
+        for p in phon.split('|'):
+            r = [ x for x in p.split("-") if x != "_" ]
+            tmp.append("-".join(r))
+
+        return "|".join(set(tmp))
 
     # -----------------------------------------------------------------------
 
@@ -301,8 +308,7 @@ class DictPhon:
         Return a list of the longest phone sequences.
 
         """
-        # Convert this variant to an array and remove un-pronunced phones
-        phones = [ p for p in phonvariant.split("-") if p != "_" ]
+        phones = phonvariant.split("-")
         if len(phones) == 1:
             return phones
 

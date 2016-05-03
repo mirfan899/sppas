@@ -22,21 +22,24 @@ The system produces a phonetic transcription.
 ![Phonetization workflow](./etc/figures/phonworkflow.bmp)
 
 Actually, some words can correspond to several entries in the dictionary 
-with various pronunciations, all these variants are stored in the phonetization
-result. By convention, spaces separate words, dots separate phones and pipes 
-separate phonetic variants of a word. For example, the transcription utterance:
+with various pronunciations. These pronunciation variants are stored in the 
+phonetization result. By convention, spaces separate words, minus separate 
+phones and pipes separate phonetic variants of a word.
+For example, the transcription utterance:
 
+* Transcription: `The flight was 12 hours long.`
 * Tokenization: `the flight was twelve hours long`
-* Phonetization: `dh.ax|dh.ah|dh.iy f.l.ay.t w.aa.z|w.ah.z|w.ax.z|w.ao.z t.w.eh.l.v aw.er.z|aw.r.z l.ao.ng`
+* Phonetization: `D-@|D-V|D-i: f-l-aI-t w-A-z|w-V-z|w-@-z|w-O:-z t-w-E-l-v aU-3:r-z|aU-r-z l-O:-N`
 
 Many of the other systems assume that all words of the speech transcription
 are mentioned in the pronunciation dictionary. On the contrary, SPPAS
 includes a language-independent algorithm which is able to phonetize unknown
-words of any language as long as a dictionary is available!
-If such case occurs during the phonetization process, a WARNING mentions it
-in the Procedure Outcome Report. 
+words of any language as long as a (minimum) dictionary is available!
+If such case occurs during the phonetization process, a WARNING indicates
+it in the Procedure Outcome Report. 
 
-For details, see the following reference:
+For details about the method to phonetize unknown tokens in SPPAS, 
+refer to the following reference:
 
 >**Brigitte Bigi (2013).**
 >*A phonetization approach for the forced-alignment task*,
@@ -45,11 +48,11 @@ For details, see the following reference:
 Since the phonetization is only based on the use of a pronunciation dictionary,
 the quality of such a phonetization only depends on this resource.
 If a pronunciation is not as expected, it is up to the user to change it in
-the dictionary. All dictionaries are located in the sub-directory "dict" of
+the dictionary. All dictionaries are located in the folder "dict" of
 the "resources" directory.
 
 SPPAS uses the same dictionary-format as proposed in VoxForge, 
-i.e. the HTK ASCII format. Here is a peace of the eng.dict file:
+i.e. the HTK ASCII format. Here is a piece of the `eng.dict` file:
 
         THE             [THE]           D @
         THE(2)          [THE]           D V
@@ -61,5 +64,7 @@ i.e. the HTK ASCII format. Here is a peace of the eng.dict file:
         THEATER'S       [THEATER'S]     T i: @ 4 3:r z
 
 The first column indicates the word, followed by the variant number (except for
-the first one). The second column indicated the word between brackets. The last 
-columns are the succession of phones, separated by a whitespace.
+the first one). The second column indicates the word between brackets; however
+brackets can also be empty. The last columns are the succession of phones, 
+separated by a whitespace.
+

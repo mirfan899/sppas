@@ -61,9 +61,17 @@ from utils import gen_id
 class XRA(Transcription):
     """
     xra files are the native file format of the GPL tool SPPAS.
-    """
 
+    """
+    @staticmethod
+    def detect(filename):
+        tree = ET.parse(filename)
+        root = tree.getroot()
+        return root.find('Tier') is not None
+
+    # -----------------------------------------------------------------
     __format = '1.2'
+    # -----------------------------------------------------------------
 
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
@@ -74,13 +82,6 @@ class XRA(Transcription):
 
     # -----------------------------------------------------------------
 
-    @staticmethod
-    def detect(filename):
-        tree = ET.parse(filename)
-        root = tree.getroot()
-        return root.find('Tier') is not None
-
-    # -----------------------------------------------------------------
 
     # -----------------------------------------------------------------
     # Read XRA 1.1 and 1.2
@@ -88,10 +89,11 @@ class XRA(Transcription):
 
     def read(self, filename):
         """
-        Import a Transcription() from a .xra file.
+        Read an XRA file and fill the Transcription.
 
         @type filename: str
         @param filename: filename
+
         """
         tree = ET.parse(filename)
         root = tree.getroot()
@@ -115,7 +117,6 @@ class XRA(Transcription):
         for vocabularyRoot in root.findall('Vocabulary'):
             self.__read_vocabulary(vocabularyRoot)
 
-    # End read
     # -----------------------------------------------------------------
 
     def __read_media(self, mediaRoot):
@@ -378,50 +379,44 @@ class XRA(Transcription):
 
     def write(self, filename, encoding='UTF-8'):
         """
-        Write a XRA file.
+        Write an XRA file.
+
         """
-        try:
-            root = ET.Element('Document')
-            root.set('Author', 'SPPAS')
-            root.set('Date', datetime.now().strftime("%Y-%m-%d"))
-            root.set('Format', XRA.__format)
+        root = ET.Element('Document')
+        root.set('Author', 'SPPAS')
+        root.set('Date', datetime.now().strftime("%Y-%m-%d"))
+        root.set('Format', XRA.__format)
 
-            self.__tier_id_map = {}
-            self.__tier_counter = 0
+        self.__tier_id_map = {}
+        self.__tier_counter = 0
 
-            metadataRoot = ET.SubElement(root, 'Metadata')
-            XRA.__format_metadata(metadataRoot, self)
-            if len(metadataRoot.findall('Entry')) == 0:
-                root.remove(metadataRoot)
+        metadataRoot = ET.SubElement(root, 'Metadata')
+        XRA.__format_metadata(metadataRoot, self)
+        if len(metadataRoot.findall('Entry')) == 0:
+            root.remove(metadataRoot)
 
-            for tier in self:
-                tierRoot = ET.SubElement(root, 'Tier')
-                self.__format_tier(tierRoot, tier)
+        for tier in self:
+            tierRoot = ET.SubElement(root, 'Tier')
+            self.__format_tier(tierRoot, tier)
 
-            for media in self.GetMedia():
-                if media:
-                    mediaRoot = ET.SubElement(root, 'Media')
-                    self.__format_media(mediaRoot, media)
+        for media in self.GetMedia():
+            if media:
+                mediaRoot = ET.SubElement(root, 'Media')
+                self.__format_media(mediaRoot, media)
 
-            hierarchyRoot = ET.SubElement(root, 'Hierarchy')
-            self.__format_hierarchy(hierarchyRoot, self._hierarchy)
+        hierarchyRoot = ET.SubElement(root, 'Hierarchy')
+        self.__format_hierarchy(hierarchyRoot, self._hierarchy)
 
-            for vocabulary in self.GetCtrlVocab():
-                if vocabulary:
-                    vocabularyRoot = ET.SubElement(root, 'Vocabulary')
-                    self.__format_vocabulary(vocabularyRoot, vocabulary)
+        for vocabulary in self.GetCtrlVocab():
+            if vocabulary:
+                vocabularyRoot = ET.SubElement(root, 'Vocabulary')
+                self.__format_vocabulary(vocabularyRoot, vocabulary)
 
-            indent(root)
+        indent(root)
 
-            tree = ET.ElementTree(root)
-            tree.write(filename, encoding=encoding, method="xml")
+        tree = ET.ElementTree(root)
+        tree.write(filename, encoding=encoding, method="xml")
 
-        except Exception:
-            #import traceback
-            #print(traceback.format_exc())
-            raise
-
-    # End write
     # -----------------------------------------------------------------
 
     def __format_media(self, mediaRoot, media):
@@ -494,10 +489,10 @@ class XRA(Transcription):
     # -----------------------------------------------------------------
 
     def __format_tier(self, tierRoot, tier):
-        id = gen_id() #'t%d' % self.__tier_counter
-        tierRoot.set("id", id)
-        tier.metadata [ 'id' ] = id
-        self.__tier_id_map[tier] = id
+        tid = gen_id() #'t%d' % self.__tier_counter
+        tierRoot.set("id", tid)
+        tier.metadata [ 'id' ] = tid
+        self.__tier_id_map[tier] = tid
         self.__tier_counter += 1
         tierRoot.set("tiername", tier.GetName())
 

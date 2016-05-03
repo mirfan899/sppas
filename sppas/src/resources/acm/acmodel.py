@@ -308,7 +308,7 @@ class AcModel:
         """
         if self.repllist.get_size() == 0:
             return
-        delimiters = ['-','+']
+        delimiters = ["-","+"]
 
         oldreverse = self.repllist.reverse
         self.repllist.set_reverse(reverse)
