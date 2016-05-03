@@ -68,7 +68,7 @@ class DictPron:
     In this class, the following convention is adopted to represent the
     pronunciation variants:
 
-        - '.' separates the phones
+        - '-' separates the phones
         - '|' separates the variants
 
     Then, the pronunciation can be accessed with get_pron() method:
@@ -191,7 +191,7 @@ class DictPron:
         entry   = rutils.ToStrip(token)
         entry   = rutils.ToLower(entry)
         newpron = rutils.ToStrip(pron)
-        newpron = newpron.replace(" ", ".")
+        newpron = newpron.replace(" ", "-")
 
         # Find a previous pronunciation in the dictionary... or not!
         curpron = ""
@@ -217,7 +217,7 @@ class DictPron:
 
         """
         maptable.set_reverse(True)
-        delimiters = ['.','|']
+        delimiters = ['-','|']
         newdict = DictPron()
 
         for key,value in self._dict.items():
@@ -277,7 +277,7 @@ class DictPron:
                 for entry, value in sorted(self._dict.iteritems(), key=lambda x:x[0]):
                     variants = value.split("|")
                     for i, variant in enumerate(variants, 1):
-                        variant = variant.replace(".", " ")
+                        variant = variant.replace("-", " ")
                         if i > 1:
                             line = u"%s(%d) [%s] %s\n" % (entry, i, entry, variant)
                         else:

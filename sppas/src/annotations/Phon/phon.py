@@ -73,20 +73,24 @@ class sppasPhon( object ):
 
         @param dictfilename (str) is the pronunciation dictionary file name
         (HTK-ASCII format, utf8).
+        @param mapfile (str) is the filename of a mapping table. It is used
+        to generate new pronunciations by mapping phonemes of the dictionary.
         @param logfile (sppasLog) is a log file utility class member.
 
         """
-        pdict = DictPron(dictfilename, unkstamp=UNKSTAMP, nodump=False)
-        maptable = Mapping()
+        # Pronunciation dictionary
+        self.maptable = None
         if mapfile is not None:
-            maptable = Mapping( mapfile )
-        self.phonetizer = DictPhon( pdict, maptable )
-        self.logfile = logfile
+            self.maptable = Mapping( mapfile )
+        self.set_dict( dictfilename )
 
         # List of options to configure this automatic annotation
         self._options = {}
         self._options['phonunk']      = False # Phonetize missing tokens
         self._options['usestdtokens'] = False # Phonetize standard spelling
+        
+        # The communication!
+        self.logfile = logfile
 
     # -----------------------------------------------------------------------
     # Methods to fix options
@@ -150,11 +154,12 @@ class sppasPhon( object ):
         """
         Set the dictionary.
 
-        @param dictfilename (str) The pronunciation dictionary.
+        @param dictfilename (str) The pronunciation dictionary in HTK-ASCII 
+        format with UTF-8 encoding.
 
         """
         pdict = DictPron(dictfilename, unkstamp=UNKSTAMP, nodump=False)
-        self.phonetizer = DictPhon( pdict )
+        self.phonetizer = DictPhon( pdict, self.maptable )
 
     # -----------------------------------------------------------------------
 

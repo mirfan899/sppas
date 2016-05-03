@@ -84,7 +84,7 @@ class DictPhon:
         > 6th Language & Technology Conference, Poznan (Poland).
 
     DictPhon is using the following convention:
-        - dots separate phones,
+        - minus separate phones,
         - pipes separate pronunciation variants.
 
     """
@@ -301,11 +301,12 @@ class DictPhon:
         Return a list of the longest phone sequences.
 
         """
-        tab = []
-        phones = phonvariant.split('.')
+        # Convert this variant to an array and remove un-pronunced phones
+        phones = [ p for p in phonvariant.split("-") if p != "_" ]
         if len(phones) == 1:
             return phones
 
+        tab = []
         idx = 0
         maxidx = len(phones)
 
@@ -313,7 +314,7 @@ class DictPhon:
             # Find the index of the longest phone sequence that can be mapped
             leftindex = self.__longestlr( phones[idx:maxidx] )
             # Append such a longest sequence in tab
-            tab.append( ".".join(phones[idx:idx+leftindex]) )
+            tab.append( "-".join(phones[idx:idx+leftindex]) )
             idx = idx + leftindex
 
         return tab
@@ -328,7 +329,7 @@ class DictPhon:
         i = len(tabentry)
         while i > 0:
             # Find in the map table a substring from 0 to i
-            entry = ".".join(tabentry[:i])
+            entry = "-".join(tabentry[:i])
             if self._maptable.is_key( entry ):
                 return i
             i = i - 1

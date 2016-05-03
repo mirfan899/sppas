@@ -88,7 +88,7 @@ class PhoneSet( WordsList ):
         for value in d.values():
             variants = value.split("|")
             for variant in variants:
-                phones = variant.split(".")
+                phones = variant.split("-")
                 for phone in phones:
                     self.add( phone )
 

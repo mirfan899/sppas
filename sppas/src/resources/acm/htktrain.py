@@ -670,7 +670,7 @@ class TrainingCorpus( object ):
         for ann in tier:
             label = ann.GetLabel().GetValue()
             newlabel = label.replace('sp',"sil")
-            newlabel = self.phonemap.map( newlabel, delimiters=[' ','.','|'] )
+            newlabel = self.phonemap.map( newlabel, delimiters=[" ","-","|"] )
             newlabel = self._format_phonetization( newlabel )
             if label != newlabel:
                 ann.GetLabel().SetValue( newlabel )
@@ -838,7 +838,7 @@ class TrainingCorpus( object ):
 
         """
         selectlist = []
-        for pron in ipu.split(' '):
+        for pron in ipu.split(" "):
             tab = pron.split("|")
             i=0
             m=len(tab[0])
@@ -846,7 +846,7 @@ class TrainingCorpus( object ):
                 if len(p)<m:
                     i = n
                     m = len(p)
-            selectlist.append( tab[i].replace('.',' ') )
+            selectlist.append( tab[i].replace("-"," ") )
         return " ".join( selectlist )
 
     # -----------------------------------------------------------------------

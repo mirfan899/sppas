@@ -109,7 +109,7 @@ class HviteAligner( BaseAligner ):
                     else:
                         fdict.write("("+str(i+1)+") ")
                     fdict.write("[w_"+str(tokenidx)+"] ")
-                    fdict.write(variant.replace(".",' ')+"\n" )
+                    fdict.write(variant.replace("-",' ')+"\n" )
 
                 flab.write( "w_" + str(tokenidx)+"\n")
 

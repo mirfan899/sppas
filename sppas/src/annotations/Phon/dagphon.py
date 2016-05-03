@@ -256,9 +256,9 @@ class DAGPhon:
         for variant in pathslist:
             p = ""
             for i in variant[1:len(variant)-1]: # do not include Start and End nodes
-                p = p + "." + prongraph[i]
+                p = p + "-" + prongraph[i]
             p = re.sub('^.', "", p)
-            pron[p] = len(p.split('.'))
+            pron[p] = len(p.split("-"))
 
         return pron
 

@@ -374,7 +374,7 @@ function phonetize {
 
     echo -n " ... inline phonetization (1): "
     inline=`echo "test num one" | $BIN_DIR/phonetize.py -r $RESOURCES_DIR/dict/eng.dict --nounk`;
-    if [ "$inline" == "t.E.s.t UNK w.V.n|h.w.V.n" ]; then
+    if [ "$inline" == "t-E-s-t UNK w-V-n|h-w-V-n" ]; then
           fct_echo_status 0
     else
         fct_echo_status 1
@@ -382,7 +382,7 @@ function phonetize {
 
     echo -n " ... inline phonetization (2): "
     inline=`echo "test num one" | $BIN_DIR/phonetize.py -r $RESOURCES_DIR/dict/eng.dict`;
-    if [ "$inline" == "t.E.s.t n.u.m|n.V.m|n.u.@.m|@.n.V.m w.V.n|h.w.V.n" ]; then
+    if [ "$inline" == "t-E-s-t n-V-m|n-u-m|n-u-@-m|E-n-V-m w-V-n|h-w-V-n" ]; then
           fct_echo_status 0
     else
         fct_echo_status 1

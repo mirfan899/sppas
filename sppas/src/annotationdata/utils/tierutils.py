@@ -49,7 +49,7 @@ from annotationdata.label.label import Label
 
 # ---------------------------------------------------------------------------
 
-DEFAULT_SEP = ['sil', '#', '+', '@@', 'gb', '*', 'dummy']
+DEFAULT_SEP = ["sil", "#", "+", "@@", "gb", "*", "dummy"]
 
 # ---------------------------------------------------------------------------
 
@@ -80,7 +80,7 @@ def align2phon( aligntier, separators=DEFAULT_SEP):
     if e > b:
         ann = aligntier[-1]
         label = ann.GetLabel().GetValue()
-        label = label.replace('.', ' ')
+        label = label.replace("-", " ")
         at = Annotation(TimeInterval(b,e), Label(l))
         phontier.Add(at)
 

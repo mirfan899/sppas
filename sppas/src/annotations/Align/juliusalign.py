@@ -125,7 +125,7 @@ class JuliusAligner( BaseAligner ):
 
                     fdict.write( str(tokenidx)+' ' )
                     fdict.write("[w_"+str(tokenidx)+"] ")
-                    fdict.write(variant.replace(".",' ')+"\n" )
+                    fdict.write(variant.replace("-",' ')+"\n" )
 
                 # grammar:
                 if tokenidx == 0:

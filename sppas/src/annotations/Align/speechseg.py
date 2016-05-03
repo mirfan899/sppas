@@ -245,7 +245,7 @@ class SpeechSegmenter:
             return "Empty annotation: nothing to align."
 
         # Do not ask Aligner to align only one phoneme!
-        if len(phones.split()) <= 1 and '.' not in phones:
+        if len(phones.split()) <= 1 and "-" not in phones:
             self._basicaligner.run_alignment(audiofilename, phonname, alignname)
             return ""
 

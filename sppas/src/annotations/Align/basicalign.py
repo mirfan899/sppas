@@ -129,7 +129,7 @@ class BasicAligner( BaseAligner ):
         for pron in tokenslist:
             token = self.__select(pron)
             phoneslist.extend( token.split() )
-            selecttokenslist.append( token.replace("."," ") )
+            selecttokenslist.append( token.replace("-"," ") )
 
         # Estimate the duration of a phone (in centi-seconds)
         if len(phoneslist) > 0:

@@ -36,8 +36,7 @@
 # ---------------------------------------------------------------------------
 
 import codecs
-import csv
-import re
+import mimetypes
 
 from annotationdata.transcription import Transcription
 from annotationdata.tier import Tier
@@ -93,13 +92,6 @@ class Xtrans( Transcription ):
 
     # --------------------------------------------------------------------
 
-    @staticmethod
-    def utf_8_encoder(unicode_csv_data):
-        for line in unicode_csv_data:
-            yield line.encode('utf-8')
-
-    # -----------------------------------------------------------------------
-
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
         Creates a new Xtrans Transcription instance.
@@ -110,23 +102,34 @@ class Xtrans( Transcription ):
     # -----------------------------------------------------------------------
 
     def read(self, filename):
+        """
+        Read an Xtrans file and fill the Transcription.
+        It creates a tier for each speaker-channel observed in the file.
 
+        """
         with codecs.open(filename, 'r', 'utf-8') as fp:
             lines = fp.readlines()
+
             rownames = lines[0].split('\t')
-            medias = {}
             lines.pop(0)
+            medias = {}
 
             # Extract rows, create tiers and metadata.
             for line in lines:
+
+                # a comment
                 if line.startswith(';;'):
                     continue
+
+                # a tab-delimited line
                 line = line.split('\t')
 
+                # fix the name of the tier
                 channel = line[rownames.index('channel;int')]
                 speaker = line[rownames.index('speaker;unicode')]
-
                 tiername = speaker+'-'+channel
+
+                # check for the tier (find it or create it)
                 tier = self.Find(tiername)
                 if tier is None:
                     tier = Tier(tiername)
@@ -135,19 +138,21 @@ class Xtrans( Transcription ):
                         mediaid = gen_id()
                         medias[mediaurl] = mediaid
                     mediaid = medias[mediaurl]
-                    # mediamime is not set
-                    tier.SetMedia( Media( mediaid, mediaurl ))
+                    (mediamime,mediaencoding) = mimetypes.guess_type(mediaurl)
+                    media = Media( mediaid, mediaurl, mediamime )
+                    if mediaencoding is not None:
+                        media.metadata[ "encoding" ] = mediaencoding
 
+                    tier.SetMedia( media )
                     tier.metadata[ "speakerName" ]    = speaker
                     tier.metadata[ "speakerType" ]    = line[ rownames.index('speakerType;unicode') ]
                     tier.metadata[ "speakerDialect" ] = line[ rownames.index('speakerDialect;unicode') ]
                     tier.metadata[ "mediaChannel" ]   = channel
-
                     self.Append( tier )
 
+                # Add the new annotation
                 label = Label( line[rownames.index('transcript;unicode')] )
                 begin = TimePoint( float( line[rownames.index('start;float')] ) )
-                end = TimePoint( float( line[rownames.index('end;float')] ) )
-
+                end   = TimePoint( float( line[rownames.index('end;float')] ) )
                 new_ann = Annotation(TimeInterval(begin,end), label)
                 tier.Add( new_ann )

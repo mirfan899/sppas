@@ -50,7 +50,7 @@ class TestDictPhon( unittest.TestCase ):
         self.assertEqual(self.grph.get_phon_tokens([' \n \t']), [(' \n \t', '', OK_ID)])
         self.assertEqual(self.grph.get_phon_tokens(['a']), [('a','a',OK_ID)])
         self.assertEqual(self.grph.get_phon_tokens(['a','b']), [('a','a',OK_ID),('b','b',OK_ID)])
-        self.assertEqual(self.grph.get_phon_tokens(['a-a','b']), [('a-a','a.a',WARNING_ID),('b','b',OK_ID)])
+        self.assertEqual(self.grph.get_phon_tokens(['a-a','b']), [('a-a','a-a',WARNING_ID),('b','b',OK_ID)])
         self.assertEqual(self.grph.get_phon_tokens(['a-']), [('a-','a',WARNING_ID)])
         self.assertEqual(self.grph.get_phon_tokens(['A','B']), [('A','a',OK_ID),('B','b',OK_ID)])
         self.assertEqual(self.grph.get_phon_tokens(['a','aa']), [('a','a',OK_ID),('aa','a.a',WARNING_ID)])
@@ -69,26 +69,26 @@ class TestDictPhon( unittest.TestCase ):
         self.assertEqual( self.grph.phonetize('a + a'), "a sp a" )
         self.assertEqual( self.grph.phonetize('A B C'), "a b c" )
         self.assertEqual( self.grph.phonetize('A_B_C',delimiter="_"), "a_b_c" )
-        self.assertEqual( self.grph.phonetize("a'b-a c"), "a.b.a c" )
-        self.assertEqual( self.grph.phonetize("ipu_4 a'b-a c"), "a.b.a c" )
-        self.assertEqual( self.grph.phonetize("gpd_4 a'b-a + c"), "a.b.a sp c" )
-        self.assertEqual( self.grph.phonetize("gpd_4 aa'b-a"), "a.a.b.a" )
+        self.assertEqual( self.grph.phonetize("a'b-a c"), "a-b-a c" )
+        self.assertEqual( self.grph.phonetize("ipu_4 a'b-a c"), "a-b-a c" )
+        self.assertEqual( self.grph.phonetize("gpd_4 a'b-a + c"), "a-b-a sp c" )
+        self.assertEqual( self.grph.phonetize("gpd_4 aa'b-a"), "a-a-b-a" )
 
     def test_map_entry(self):
         mapt = Mapping()
         mapt.add('a','A')
         mapt.add('b','B')
         mapt.add('b','v')
-        mapt.add('a.c','a.C')
+        mapt.add('a-c','a-C')
         self.grph.set_maptable( mapt )
         self.assertEqual(self.grph._map_phonentry("c"), "c")
         self.assertEqual(self.grph._map_phonentry("a"), "a|A")
         self.assertEqual(self.grph._map_phonentry("b"), "B|b|v")
         self.assertEqual(self.grph._map_phonentry("c.c"), 'c.c')
-        self.assertEqual(self.grph._map_phonentry("a.b"), 'a.b|a.B|A.b|A.B|A.v|a.v')
-        self.assertEqual(self.grph._map_phonentry("a.c"), "a.c|a.C")
-        self.assertEqual(self.grph._map_phonentry("a.c.a"), "a.c.A|a.c.a|a.C.A|a.C.a")
-        self.assertEqual(self.grph._map_phonentry("c.a.c"), "c.a.c|c.a.C")
+        self.assertEqual(self.grph._map_phonentry("a-b"), 'a-b|a-B|A-b|A-B|A-v|a-v')
+        self.assertEqual(self.grph._map_phonentry("a-c"), "a.c|a-C")
+        self.assertEqual(self.grph._map_phonentry("a-c-a"), "a-c-A|a-c-a|a-C-A|a-C-a")
+        self.assertEqual(self.grph._map_phonentry("c-a-c"), "c-a-c|c-a-C")
         mapt.add('a','a')
         mapt.add('b','b')
         mapt.add('c','c')
@@ -103,16 +103,16 @@ class TestDictPhon( unittest.TestCase ):
         mapt = Mapping( map_table )
         dd   = DictPron(dictfile)
         grph = DictPhon(dd)
-        self.assertEqual(grph.get_phon_entry("THE"), "D.@|D.V|D.i:")
-        self.assertEqual(grph.get_phon_entry("UR"), "3:r|U.r")
-        self.assertEqual(grph.get_phon_entry("ARE"), "A.r|3:r")
-        self.assertEqual(grph.get_phon_entry("BANC"), "b.{.N.k")
+        self.assertEqual(grph.get_phon_entry("THE"), "D-@|D-V|D-i:")
+        self.assertEqual(grph.get_phon_entry("UR"), "3:r|U-r")
+        self.assertEqual(grph.get_phon_entry("ARE"), "A-r|3:r")
+        self.assertEqual(grph.get_phon_entry("BANC"), "b-{-N-k")
 
         grph.set_maptable( mapt )
-        self.assertEqual(grph.get_phon_entry("THE"), "z.@|D.@|v.@|v.V|D.V|z.V|z.9|D.9|v.9|z.i:|z.i|D.i|v.i|D.i:|v.i:")
-        self.assertEqual(grph.get_phon_entry("UR"), "3:r|9.R|u.r|U.w|u.w|U.R|U.r|u.R")
-        self.assertEqual(grph.get_phon_entry("ARE"), "a.R|A.R|a.w|A.w|a.r|A.r|3:r|9.R")
-        self.assertEqual(grph.get_phon_entry("BANC"), "b.{.N.k|b.a.N.k|b.a.n.k|b.{.n.k")
+        self.assertEqual(grph.get_phon_entry("THE"), "z-@|D-@|v-@|v-V|D-V|z-V|z-9|D-9|v-9|z-i:|z-i|D-i|v-i|D-i:|v-i:")
+        self.assertEqual(grph.get_phon_entry("UR"), "3:r|9-R|u-r|U-w|u-w|U-R|U-r|u-R")
+        self.assertEqual(grph.get_phon_entry("ARE"), "a-R|A-R|a-w|A-w|a-r|A-r|3:r|9-R")
+        self.assertEqual(grph.get_phon_entry("BANC"), "b-{-N-k|b-a-N-k|b-a-n-k|b-{-n-k")
 
 # ---------------------------------------------------------------------------
 
@@ -123,11 +123,11 @@ class TestDAGPhon(unittest.TestCase):
 
     def test_decompose(self):
         self.assertEqual(self.dd.decompose("a","b"), "a|b")
-        self.assertEqual(self.dd.decompose("a|A b"), "a.b|A.b")
+        self.assertEqual(self.dd.decompose("a|A b"), "a-b|A-b")
         self.assertEqual(self.dd.decompose("a|A","b|B"), "a|A|B|b")
-        self.assertEqual(self.dd.decompose("p1 p2|x2 p3|x3"), "p1.p2.p3|p1.p2.x3|p1.x2.x3|p1.x2.p3")
-        self.assertEqual(self.dd.decompose("p1 p2 p3", "x1 x2 x3"), 'p1.p2.p3|x1.x2.x3')
-        self.assertEqual(self.dd.decompose("p1 p2|x2 p3", "x1 x2 x3"), 'p1.p2.p3|p1.x2.p3|x1.x2.x3')
+        self.assertEqual(self.dd.decompose("p1 p2|x2 p3|x3"), "p1-p2-x3|p1-x2-x3|p1-p2-p3|p1-x2-p3")
+        self.assertEqual(self.dd.decompose("p1 p2 p3", "x1 x2 x3"), 'p1-p2-p3|x1-x2-x3')
+        self.assertEqual(self.dd.decompose("p1 p2|x2 p3", "x1 x2 x3"), 'p1-p2-p3|p1-x2-p3|x1-x2-x3')
 
 # ---------------------------------------------------------------------------
 
@@ -139,9 +139,9 @@ class TestSppasPhon(unittest.TestCase):
 
     def test_phonetize(self):
         self.sp.set_unk(True)
-        self.assertEqual(self.sp.phonetize("THE"), "D.@|D.V|D.i:")
-        self.assertEqual(self.sp.phonetize("THE BANC"), "D.@|D.V|D.i: b.{.N.k")
-        self.assertEqual(self.sp.phonetize("THE BANCI THE"), "D.@|D.V|D.i: b.{.N.k.aI D.@|D.V|D.i:")
+        self.assertEqual(self.sp.phonetize("THE"), "D-@|D-V|D-i:")
+        self.assertEqual(self.sp.phonetize("THE BANC"), "D-@|D-V|D-i: b-{-N-k")
+        self.assertEqual(self.sp.phonetize("THE BANCI THE"), "D-@|D-V|D-i: b-{-N-k-aI D-@|D-V|D-i:")
         self.assertEqual(self.sp.phonetize("#"), "sil")
         self.assertEqual(self.sp.phonetize("+"), "sil")
         self.assertEqual(self.sp.phonetize("é à"), "")
@@ -157,15 +157,15 @@ class TestPhonUnk(unittest.TestCase):
         self.p = PhonUnk(d)
 
     def test_phon(self):
-        self.assertEqual(self.p.get_phon('abba'), "abb.a|abb.aa")
-        self.assertEqual(self.p.get_phon('abba-'), "abb.a|abb.aa")
-        self.assertEqual(self.p.get_phon("abba'"), "abb.a|abb.aa")
-        self.assertEqual(self.p.get_phon("<abba>"), "abb.a|abb.aa")
+        self.assertEqual(self.p.get_phon('abba'), "abb-a|abb-aa")
+        self.assertEqual(self.p.get_phon('abba-'), "abb-a|abb-aa")
+        self.assertEqual(self.p.get_phon("abba'"), "abb-a|abb-aa")
+        self.assertEqual(self.p.get_phon("<abba>"), "abb-a|abb-aa")
         self.assertEqual(self.p.get_phon("<>"), "")
-        self.assertEqual(self.p.get_phon("abb-a"), "abb.a|abb.aa")
+        self.assertEqual(self.p.get_phon("abb-a"), "abb-a|abb-aa")
 
-        self.assertEqual(self.p.get_phon('abc'), 'a.b.cc|aa.b.cc|a.b.c|aa.b.c')
-        self.assertEqual(self.p.get_phon('abd'), 'a.b|aa.b')
+        self.assertEqual(self.p.get_phon('abc'), 'a-b-cc|aa-b-cc|a-b-c|aa-b-c')
+        self.assertEqual(self.p.get_phon('abd'), 'a-b|aa-b')
 
 # ---------------------------------------------------------------------------
 

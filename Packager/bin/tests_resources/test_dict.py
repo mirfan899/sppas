@@ -28,7 +28,7 @@ class TestDictPron(unittest.TestCase):
         self.assertTrue( d.is_unk('azerty') )
         self.assertFalse( d.is_unk('il_y_a') )
         self.assertFalse( d.is_unk(u'être') )
-        self.assertEqual( d.get_pron(u'sil'), "s.i.l" )
+        self.assertEqual( d.get_pron(u'sil'), "s-i-l" )
         self.assertEqual( d.get_pron(u'azerty'), "UNK" )
 
     def test_save(self):
@@ -45,10 +45,10 @@ class TestDictPron(unittest.TestCase):
         mapd = Mapping( replfile )
         dm = d.map_phones(mapd)
 
-        self.assertEqual( d.get_pron(u'veuf'),   "v.9.f" )
-        self.assertEqual( dm.get_pron(u'veuf'),  "v.oe.f" )
-        self.assertEqual( d.get_pron(u'veufs'),  "v.9.f.z|v.9.f" )
-        self.assertEqual( dm.get_pron(u'veufs'), "v.oe.f.z|v.oe.f" )
+        self.assertEqual( d.get_pron(u'veuf'),   "v-9-f" )
+        self.assertEqual( dm.get_pron(u'veuf'),  "v-oe.f" )
+        self.assertEqual( d.get_pron(u'veufs'),  "v-9-f-z|v-9-f" )
+        self.assertEqual( dm.get_pron(u'veufs'), "v-oe-f-z|v-oe-f" )
 
 # ---------------------------------------------------------------------------
 
@@ -152,9 +152,11 @@ class TestMapping(unittest.TestCase):
 
         self.assertEqual("a-9+@", dict1.map("a-oe+@"))
         self.assertEqual("l|l.eu|l.e k.o~.b.l.eu|k.o~.b.l", dict1.map("l|l.eu|l.e k.o~.b.l.eu|k.o~.b.l"))
+        self.assertEqual("l|l-eu|l-e k-o~-b-l-eu|k-o~-b-l", dict1.map("l|l-eu|l-e k-o~-b-l-eu|k-o~-b-l"))
 
         dict1.set_reverse( True )
         self.assertEqual("l|l.eu|l.e k.o~.b.l.eu|k.o~.b.l", dict1.map("l|l.eu|l.e k.o~.b.l.eu|k.o~.b.l"))
+        self.assertEqual("l|l-eu|l-e k-o~-b-l-eu|k-o~-b-l", dict1.map("l|l-eu|l-e k-o~-b-l-eu|k-o~-b-l"))
 
 # End TestMapping
 # ---------------------------------------------------------------------------

@@ -393,13 +393,13 @@ class AlignerIO( Transcription ):
             loc_s = loc_e
             # add also the word?
             if phonidx == wordlist[wordidx]:
-                _wordalign.append( (wordloc_s, loc_e, wordseq[wordidx].strip().replace(" ",".")) )
+                _wordalign.append( (wordloc_s, loc_e, wordseq[wordidx].strip().replace(" ","-")) )
                 wordidx = wordidx + 1
                 wordloc_s = loc_e
 
         # last word
         if len(wordseq)-1 == wordidx:
-            _wordalign.append( (wordloc_s, loc_e, wordseq[wordidx].strip().replace(" ",".")) )
+            _wordalign.append( (wordloc_s, loc_e, wordseq[wordidx].strip().replace(" ","-")) )
 
         return (_modifiedphonalign,_wordalign)
 
@@ -449,7 +449,7 @@ class AlignerIO( Transcription ):
                                 wmrkp = wmrkp[:-1]
                                 word.append( ( wsrt, wend, wmrk) )
                                 phontok.append( ( wsrt, wend, wmrkp) )
-                            wmrkp = line[2] + '.'
+                            wmrkp = line[2] + '-'
                             wmrk = line[4]
                             wsrt = pmin
                             wend = pmax
@@ -461,7 +461,7 @@ class AlignerIO( Transcription ):
                             else:
                                 pmin = round(float(line[0]) / samplerate, 5) + 0.005
                             pmax = round(float(line[1]) / samplerate, 5) + 0.005
-                            wmrkp = wmrkp + line[2] + '.'
+                            wmrkp = wmrkp + line[2] + "-"
                             if line[2] == 'sp' and pmin != pmax:
                                 if wmrk:
                                     wmrkp = wmrkp[:-1]
