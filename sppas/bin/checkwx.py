@@ -41,7 +41,12 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-import wx
+import sys
+
+try:
+	import wx
+except ImportError:
+	exit(2)
 
 # ----------------------------------------------------------------------------
 
@@ -57,7 +62,7 @@ def get_wx_version():
 if __name__=="__main__":
     version = get_wx_version()
     if version >= 3:
-        exit(0)
-    exit(1)
+        sys.exit(0)
+    sys.exit(1)
 
 # ----------------------------------------------------------------------------

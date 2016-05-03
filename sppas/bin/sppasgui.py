@@ -43,16 +43,15 @@ import sys
 import os.path
 import traceback
 from argparse import ArgumentParser
-
 from butils import exit_error, check_python, install_gettext, check_aligner
-from checkwx import get_wx_version
-
 check_python()
 
 try:
     import wx
 except ImportError:
     exit_error( "WxPython is not installed on your system\n. The Graphical User Interface of SPPAS can't work. Refer to the installation instructions of the SPPAS web site.")
+from checkwx import get_wx_version
+
 
 # import SPPAS Application Programming Interface
 # ----------------------------------------------

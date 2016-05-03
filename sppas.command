@@ -37,8 +37,7 @@
 # ---------------------------------------------------------------------------
 # File:    sppas.command
 # Author:  Brigitte Bigi
-# Date:    November, 2014
-# Brief:   SPPAS GUI run script
+# Summary: SPPAS GUI run script
 # ---------------------------------------------------------------------------
 
 
@@ -163,28 +162,32 @@ echo "System:  "$unamestr
 
 # Linux
 if [[ "$unamestr" == 'Linux' ]]; then
-    python2 "$PROGRAM_DIR"/$BIN_DIR/checkwx.py
+    $PYTHON "$PROGRAM_DIR"/$BIN_DIR/checkwx.py
     wxstatus="$?"
     if [[ $wxstatus == "1" ]]; then
         fct_echo_warning "It seems you are using SPPAS with an old version of wxPython.\nUpdate it at: <http://www.wxpython.org/>."
+    elif [[ $wxstatus == "2" ]]; then
+        fct_exit_error "Wxpython is not installed. Get it at: <http://www.wxpython.org/> "
     fi
-    python2 "$PROGRAM_DIR"/$BIN_DIR/sppasgui.py
+    $PYTHON "$PROGRAM_DIR"/$BIN_DIR/sppasgui.py
 
 # Cygwin
 elif [[ "$unamestr" == 'CYGWIN_*' ]]; then
    fct_echo_warning "It seems you are using SPPAS under Cygwin... Some troubles can occur!"
-   python2 "$PROGRAM_DIR"/$BIN_DIR/sppasgui.py
+   $PYTHON "$PROGRAM_DIR"/$BIN_DIR/sppasgui.py
 
 # MacOS
 elif [[ "$unamestr" == 'Darwin' ]]; then
-    python2 "$PROGRAM_DIR"/$BIN_DIR/checkwx.py
+    $PYTHON "$PROGRAM_DIR"/$BIN_DIR/checkwx.py
     wxstatus="$?"
     if [[ $wxstatus == "1" ]]; then
         fct_echo_warning "It seems you are using SPPAS with an old version of wxPython.\nUpdate it at: <http://www.wxpython.org/>."
         export VERSIONER_PYTHON_PREFER_32_BIT=yes
-        arch -i386 python2 "$PROGRAM_DIR"/$BIN_DIR/sppasgui.py
+        arch -i386 $PYTHON "$PROGRAM_DIR"/$BIN_DIR/sppasgui.py
+    elif [[ $wxstatus == "2" ]]; then
+        fct_exit_error "Wxpython is not installed. Get it at: <http://www.wxpython.org/> "
     else
-        python2 "$PROGRAM_DIR"/$BIN_DIR/sppasgui.py
+        $PYTHON "$PROGRAM_DIR"/$BIN_DIR/sppasgui.py
     fi
 
 else
