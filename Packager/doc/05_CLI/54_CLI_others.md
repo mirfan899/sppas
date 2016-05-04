@@ -1,9 +1,9 @@
-##Other Programs
+## Other Programs
 
 Some scripts are also available to be used with the Command-Line Interface.
 They are located in the `scripts` sub-directory.
 
-###Merge annotation files
+### Merge annotation files
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 usage: trsmerge.py -i file -o file [options]
@@ -17,7 +17,7 @@ optional arguments:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-###Convert annotation files
+### Convert annotation files
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 usage: trsconvert.py -i file -o file [options]
@@ -32,7 +32,7 @@ optional arguments:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-###Get information about a tier of an annotated file.
+### Get information about a tier of an annotated file.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 usage: tierinfo.py -i file [options]

@@ -23,11 +23,11 @@ option `--help`, as for example:
 bin> annotation.py --help
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-There are 2 types of programs in the `sppas` then `bin` sub-directory:
+There are 2 types of programs in the `sppas` directory then `bin` folder:
 
 1. programs to execute an automatic annotation; 
 2. programs to execute a GUI (i.e. the SPPAS main frame or a component)
 
 All programs are written with the programming language Python.
 **The version of Python must be 2.7.something.** 
-Nothing will work with Python >= 3.0!
+Nothing is working with Python >= 3.0!

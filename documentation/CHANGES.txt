@@ -725,7 +725,7 @@ Development:
     real SAMPA symbols and the acoustic model to be compatible with Hvite
     requirements.
     - annotationdata bug correction with min and max values
-    - IPUs Segmentation: 
+    - IPUs Segmentation:
         - bug correction when split into tracks with a tier "Name"
         - add the ipu number in speech segments if silence/speech segmentation
     - Self-repetitions debug in finding the repetition interval
@@ -740,10 +740,10 @@ SPPAS-1.6.9
 =============================================================================
 
 Development:
-    - package annotationdata.filter updated to support last changes of annotationdata: 
+    - package annotationdata.filter updated to support last changes of annotationdata:
       multiple labels and numerical labels.
     - package annotationdata.io:
-        - praat.py newly created. Support of TextGrid, PitchTier and 
+        - praat.py newly created. Support of TextGrid, PitchTier and
           IntensityTier files completely re-written
         - htk.py newly created to support .lab and .mlf files
         - sclite.py newly created to support .stm and .ctm files
@@ -754,7 +754,7 @@ Development:
         - updated object Transcription to support more/different input data
         - updated hierarchy
         - updated meta-data
-    - package signal: partially re-written. As a consequence, sox won't 
+    - package signal: partially re-written. As a consequence, sox won't
     be neither used, but the file conversion (if required) is slower.
 
 GUI:
@@ -775,12 +775,12 @@ Development:
     - package annotationdata:
         - updated hierarchy
         - updated meta-data
-    - package signal: 
+    - package signal:
         - support of audio files re-written: can open/save wav, aiff and au files
         - add a lot of possibilities to manage one channel of an audio file
 
 GUI:
-    - DataFilter component finalized: can deal with alternative labels, 
+    - DataFilter component finalized: can deal with alternative labels,
        and typed labels (string, number, boolean)
     - Statistics component fully re-written to facilitate its use
     - SndRoamer displays more properties of audio files (min, mean and max added)
@@ -805,7 +805,7 @@ Development:
         - add Media object
         - add CtrlVocab object
         - add inheritance of MetaObject for Annotation
-    - package annotationdata.io: 
+    - package annotationdata.io:
         - complete debug of all file formats
         - add comments and documentation
         - add also some tests
@@ -876,9 +876,9 @@ Development:
 GUI:
     - Changed all pictures to remove the problem with colorset of some of them
     - Add a christmast theme for the pictures of tips
-    - IPUscribe improvements: 
+    - IPUscribe improvements:
         - add keyboard shortcuts to play/pause/stop the sound
-        - add a new button to auto-play the sound 
+        - add a new button to auto-play the sound
 
 
 =============================================================================
@@ -888,7 +888,7 @@ SPPAS-1.7.6
 Development:
     - IPU segmentation:
         - bug correction with option "split into tracks"
-        - new option to add or not add the IPU index of each IPU into the 
+        - new option to add or not add the IPU index of each IPU into the
         transcription tier
     - Tokenization:
         - bug correction in input tier selection
@@ -911,24 +911,47 @@ SPPAS-1.7.7
 =============================================================================
 
 Resources:
-    - Correction of errors in most of the acoustics models, 
+    - Correction of errors in most of the acoustics models,
       for /@@/ and /dummy/ models
     - New vocabulary and pronunciation dictionary for Mandarin Chinese.
 
 GUI:
     - Dialogs are customized
     - DataRoamer debug and changes: save buttons moved in the main toolbar.
-    - HelpSystem is back.
+    - HelpSystem is (welcome) back!
 
 Development:
     - Add the API and a script to train acoustic models with HTK.
     - Add Kullback-Leibler distance estimator.
     - Add a script to compare 2 segmentations (of 2 tiers).
     - Classes of the package resources are debugged, improved and extended.
-    - Automatic annotation alignment: 
-	- bug correction is input starts by an empty interval.
+    - Automatic annotation alignment:
+    - bug correction is input starts by an empty interval.
     - sppas.command modified for MacOS-X (use python if python2 not available)
     - GUIs in bin directory are updated (test of python, wxpython, and so on).
+
+
+=============================================================================
+SPPAS-1.7.8
+=============================================================================
+
+Resources:
+    - Add a pronunciation mapping table `eng-fra.map`: to be used for the
+    speech segmentation of for French speakers reading an English text.
+
+Development:
+    - Phonetization is extended: it can take into account a mapping table of
+    phones to generate new pronunciation variants.
+    - Phonetization: use of minus instead of dot to separate phones as
+    recommended in SAMPA standard.
+    - Alignment is restructured and extended: it can take into account two
+    acoustics models and mix them.
+    - DataFilter is extended: Relations can be based on a delay between
+    the intervals.
+    - annotationdata: add Xtrans reader (extension: .tdf)
+
+GUI:
+    - Automatic annotations: improved log messages.
 
 
 =============================================================================
