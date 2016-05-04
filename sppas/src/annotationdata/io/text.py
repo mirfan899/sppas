@@ -176,6 +176,19 @@ class CSV(Transcription):
         """
         A CSV reader which will iterate over lines in the CSV file "f",
         which is encoded in the given encoding.
+
+        csv.excel
+        {
+          "csvddfVersion": 1.0,
+          "delimiter": ",",
+          "doubleQuote": true,
+          "lineTerminator": "\r\n",
+          "quoteChar": "\"",
+          "skipInitialSpace": true,
+          "header": true
+        }
+
+
         """
         @staticmethod
         def utf_8_encoder(unicode_csv_data):
@@ -262,11 +275,13 @@ class CSV(Transcription):
 
             for row in reader:
                 if len(row) != 4:
-                    raise Exception('Invalid row in CSV file: %r' % row)
+                    raise Exception('Invalid row in CSV file: %r. Expected 4 columns, got %d!' % (row,len(row)))
 
                 name, begin, end, label = row
 
-                if tier is None or name != tier.GetName():
+                # The following does not suppose that the file is sorted by tiers
+                tier = self.Find(name)
+                if tier is None:
                     tier = self.NewTier(name)
 
                 hasBegin = len(begin.strip()) > 0
