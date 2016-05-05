@@ -4,12 +4,12 @@ Object class = "TextGrid"
 xmin = 0.0
 xmax = 2.328813
 tiers? <exists>
-size = 12
+size = 14
 item []:
     item [1]:
         class = "IntervalTier"
         name = "transcription"
-        xmin = 0.0
+        xmin = 0.000000
         xmax = 2.328813
         intervals: size = 1
         intervals [1]:
@@ -18,8 +18,8 @@ item []:
             text = "une classe entière qui a bien vu comment ça s'est passé"
     item [2]:
         class = "IntervalTier"
-        name = "Tokens"
-        xmin = 0.0
+        name = "Tokenization"
+        xmin = 0.000000
         xmax = 2.328813
         intervals: size = 1
         intervals [1]:
@@ -29,399 +29,419 @@ item []:
     item [3]:
         class = "IntervalTier"
         name = "Phonetization"
-        xmin = 0.0
+        xmin = 0.000000
         xmax = 2.328813
         intervals: size = 1
         intervals [1]:
             xmin = 0.0
             xmax = 2.328813
-            text = "y.n.eu|y.n k.l.a.s.eu|k.l.a.s|k.l.a.s|k.l.a.s.eu a~.t.j.E.R|a~.t.j.E.R.eu k.i|k.j|k a b.j.U~.n|b.j.U~ v.y k.o.m.a~.t|k.o.m.a~|k.o.m.a~|k.o.m.a~|k.o.m.a~.t s.a|s s.e.p.a.s.e|s.e.p.a.s.e"
+            text = "y-n-eu|y-n k-l-a-s-eu|k-l-a-s|k-l-a-s|k-l-a-s-eu a~-t-j-E-R|a~-t-j-E-R-eu k-i|k-j|k a b-j-U~-n|b-j-U~ v-y k-o-m-a~-t|k-o-m-a~|k-o-m-a~|k-o-m-a~|k-o-m-a~-t s-a|s s-e-p-a-s-e|s-e-p-a-s-e"
     item [4]:
         class = "IntervalTier"
         name = "PhonAlign"
-        xmin = 0.0
-        xmax = 2.3288
+        xmin = 0.000000
+        xmax = 2.328800
         intervals: size = 30
         intervals [1]:
             xmin = 0.0
-            xmax = 0.125
+            xmax = 0.12
             text = "y"
         intervals [2]:
-            xmin = 0.125
-            xmax = 0.195
+            xmin = 0.12
+            xmax = 0.19
             text = "n"
         intervals [3]:
-            xmin = 0.195
-            xmax = 0.305
+            xmin = 0.19
+            xmax = 0.3
             text = "k"
         intervals [4]:
-            xmin = 0.305
-            xmax = 0.335
+            xmin = 0.3
+            xmax = 0.33
             text = "l"
         intervals [5]:
-            xmin = 0.335
-            xmax = 0.405
+            xmin = 0.33
+            xmax = 0.4
             text = "a"
         intervals [6]:
-            xmin = 0.405
-            xmax = 0.495
+            xmin = 0.4
+            xmax = 0.49
             text = "s"
         intervals [7]:
-            xmin = 0.495
-            xmax = 0.615
+            xmin = 0.49
+            xmax = 0.61
             text = "a~"
         intervals [8]:
-            xmin = 0.615
-            xmax = 0.755
+            xmin = 0.61
+            xmax = 0.75
             text = "t"
         intervals [9]:
-            xmin = 0.755
-            xmax = 0.805
+            xmin = 0.75
+            xmax = 0.8
             text = "j"
         intervals [10]:
-            xmin = 0.805
-            xmax = 0.895
+            xmin = 0.8
+            xmax = 0.89
             text = "E"
         intervals [11]:
-            xmin = 0.895
-            xmax = 0.945
+            xmin = 0.89
+            xmax = 0.94
             text = "R"
         intervals [12]:
-            xmin = 0.945
-            xmax = 1.075
+            xmin = 0.94
+            xmax = 1.07
             text = "k"
         intervals [13]:
-            xmin = 1.075
-            xmax = 1.125
+            xmin = 1.07
+            xmax = 1.12
             text = "a"
         intervals [14]:
-            xmin = 1.125
-            xmax = 1.205
+            xmin = 1.12
+            xmax = 1.2
             text = "b"
         intervals [15]:
-            xmin = 1.205
-            xmax = 1.295
+            xmin = 1.2
+            xmax = 1.29
             text = "j"
         intervals [16]:
-            xmin = 1.295
-            xmax = 1.365
+            xmin = 1.29
+            xmax = 1.36
             text = "U~"
         intervals [17]:
-            xmin = 1.365
-            xmax = 1.445
+            xmin = 1.36
+            xmax = 1.44
             text = "v"
         intervals [18]:
-            xmin = 1.445
-            xmax = 1.495
+            xmin = 1.44
+            xmax = 1.49
             text = "y"
         intervals [19]:
-            xmin = 1.495
-            xmax = 1.555
+            xmin = 1.49
+            xmax = 1.55
             text = "k"
         intervals [20]:
-            xmin = 1.555
-            xmax = 1.585
+            xmin = 1.55
+            xmax = 1.58
             text = "o"
         intervals [21]:
-            xmin = 1.585
-            xmax = 1.615
+            xmin = 1.58
+            xmax = 1.61
             text = "m"
         intervals [22]:
-            xmin = 1.615
-            xmax = 1.645
+            xmin = 1.61
+            xmax = 1.64
             text = "a~"
         intervals [23]:
-            xmin = 1.645
-            xmax = 1.695
+            xmin = 1.64
+            xmax = 1.69
             text = "t"
         intervals [24]:
-            xmin = 1.695
-            xmax = 1.765
+            xmin = 1.69
+            xmax = 1.76
             text = "s"
         intervals [25]:
-            xmin = 1.765
-            xmax = 1.875
+            xmin = 1.76
+            xmax = 1.87
             text = "s"
         intervals [26]:
-            xmin = 1.875
-            xmax = 1.905
+            xmin = 1.87
+            xmax = 1.9
             text = "e"
         intervals [27]:
-            xmin = 1.905
-            xmax = 1.975
+            xmin = 1.9
+            xmax = 1.97
             text = "p"
         intervals [28]:
-            xmin = 1.975
-            xmax = 2.055
+            xmin = 1.97
+            xmax = 2.05
             text = "a"
         intervals [29]:
-            xmin = 2.055
-            xmax = 2.175
+            xmin = 2.05
+            xmax = 2.17
             text = "s"
         intervals [30]:
-            xmin = 2.175
+            xmin = 2.17
             xmax = 2.3288
             text = "e"
     item [5]:
         class = "IntervalTier"
         name = "PhnTokAlign"
-        xmin = 0.0
-        xmax = 2.3288
+        xmin = 0.000000
+        xmax = 2.328800
         intervals: size = 10
         intervals [1]:
             xmin = 0.0
-            xmax = 0.195
-            text = "y.n"
+            xmax = 0.19
+            text = "y-n"
         intervals [2]:
-            xmin = 0.195
-            xmax = 0.495
-            text = "k.l.a.s"
+            xmin = 0.19
+            xmax = 0.49
+            text = "k-l-a-s"
         intervals [3]:
-            xmin = 0.495
-            xmax = 0.945
-            text = "a~.t.j.E.R"
+            xmin = 0.49
+            xmax = 0.94
+            text = "a~-t-j-E-R"
         intervals [4]:
-            xmin = 0.945
-            xmax = 1.075
+            xmin = 0.94
+            xmax = 1.07
             text = "k"
         intervals [5]:
-            xmin = 1.075
-            xmax = 1.125
+            xmin = 1.07
+            xmax = 1.12
             text = "a"
         intervals [6]:
-            xmin = 1.125
-            xmax = 1.365
-            text = "b.j.U~"
+            xmin = 1.12
+            xmax = 1.36
+            text = "b-j-U~"
         intervals [7]:
-            xmin = 1.365
-            xmax = 1.495
-            text = "v.y"
+            xmin = 1.36
+            xmax = 1.49
+            text = "v-y"
         intervals [8]:
-            xmin = 1.495
-            xmax = 1.695
-            text = "k.o.m.a~.t"
+            xmin = 1.49
+            xmax = 1.69
+            text = "k-o-m-a~-t"
         intervals [9]:
-            xmin = 1.695
-            xmax = 1.765
+            xmin = 1.69
+            xmax = 1.76
             text = "s"
         intervals [10]:
-            xmin = 1.765
+            xmin = 1.76
             xmax = 2.3288
-            text = "s.e.p.a.s.e"
+            text = "s-e-p-a-s-e"
     item [6]:
         class = "IntervalTier"
         name = "TokensAlign"
-        xmin = 0.0
-        xmax = 2.3288
+        xmin = 0.000000
+        xmax = 2.328800
         intervals: size = 10
         intervals [1]:
             xmin = 0.0
-            xmax = 0.195
+            xmax = 0.19
             text = "une"
         intervals [2]:
-            xmin = 0.195
-            xmax = 0.495
+            xmin = 0.19
+            xmax = 0.49
             text = "classe"
         intervals [3]:
-            xmin = 0.495
-            xmax = 0.945
+            xmin = 0.49
+            xmax = 0.94
             text = "entière"
         intervals [4]:
-            xmin = 0.945
-            xmax = 1.075
+            xmin = 0.94
+            xmax = 1.07
             text = "qui"
         intervals [5]:
-            xmin = 1.075
-            xmax = 1.125
+            xmin = 1.07
+            xmax = 1.12
             text = "a"
         intervals [6]:
-            xmin = 1.125
-            xmax = 1.365
+            xmin = 1.12
+            xmax = 1.36
             text = "bien"
         intervals [7]:
-            xmin = 1.365
-            xmax = 1.495
+            xmin = 1.36
+            xmax = 1.49
             text = "vu"
         intervals [8]:
-            xmin = 1.495
-            xmax = 1.695
+            xmin = 1.49
+            xmax = 1.69
             text = "comment"
         intervals [9]:
-            xmin = 1.695
-            xmax = 1.765
+            xmin = 1.69
+            xmax = 1.76
             text = "ça"
         intervals [10]:
-            xmin = 1.765
+            xmin = 1.76
             xmax = 2.3288
             text = "s'est_passé"
     item [7]:
         class = "IntervalTier"
         name = "Syllables"
-        xmin = 0.0
-        xmax = 2.3288
+        xmin = 0.000000
+        xmax = 2.328800
         intervals: size = 12
         intervals [1]:
             xmin = 0.0
-            xmax = 0.195
+            xmax = 0.19
             text = "yn"
         intervals [2]:
-            xmin = 0.195
-            xmax = 0.405
+            xmin = 0.19
+            xmax = 0.4
             text = "kla"
         intervals [3]:
-            xmin = 0.405
-            xmax = 0.615
+            xmin = 0.4
+            xmax = 0.61
             text = "sa~"
         intervals [4]:
-            xmin = 0.615
-            xmax = 0.945
+            xmin = 0.61
+            xmax = 0.94
             text = "tjER"
         intervals [5]:
-            xmin = 0.945
-            xmax = 1.125
+            xmin = 0.94
+            xmax = 1.12
             text = "ka"
         intervals [6]:
-            xmin = 1.125
-            xmax = 1.365
+            xmin = 1.12
+            xmax = 1.36
             text = "bjU~"
         intervals [7]:
-            xmin = 1.365
-            xmax = 1.495
+            xmin = 1.36
+            xmax = 1.49
             text = "vy"
         intervals [8]:
-            xmin = 1.495
-            xmax = 1.585
+            xmin = 1.49
+            xmax = 1.58
             text = "ko"
         intervals [9]:
-            xmin = 1.585
-            xmax = 1.695
+            xmin = 1.58
+            xmax = 1.69
             text = "ma~t"
         intervals [10]:
-            xmin = 1.695
-            xmax = 1.905
+            xmin = 1.69
+            xmax = 1.9
             text = "sse"
         intervals [11]:
-            xmin = 1.905
-            xmax = 2.055
+            xmin = 1.9
+            xmax = 2.05
             text = "pa"
         intervals [12]:
-            xmin = 2.055
+            xmin = 2.05
             xmax = 2.3288
             text = "se"
     item [8]:
         class = "IntervalTier"
         name = "Classes"
-        xmin = 0.0
-        xmax = 2.3288
+        xmin = 0.000000
+        xmax = 2.328800
         intervals: size = 12
         intervals [1]:
             xmin = 0.0
-            xmax = 0.195
+            xmax = 0.19
             text = "VN"
         intervals [2]:
-            xmin = 0.195
-            xmax = 0.405
+            xmin = 0.19
+            xmax = 0.4
             text = "OLV"
         intervals [3]:
-            xmin = 0.405
-            xmax = 0.615
+            xmin = 0.4
+            xmax = 0.61
             text = "FV"
         intervals [4]:
-            xmin = 0.615
-            xmax = 0.945
+            xmin = 0.61
+            xmax = 0.94
             text = "OGVL"
         intervals [5]:
-            xmin = 0.945
-            xmax = 1.125
+            xmin = 0.94
+            xmax = 1.12
             text = "OV"
         intervals [6]:
-            xmin = 1.125
-            xmax = 1.365
+            xmin = 1.12
+            xmax = 1.36
             text = "OGV"
         intervals [7]:
-            xmin = 1.365
-            xmax = 1.495
+            xmin = 1.36
+            xmax = 1.49
             text = "FV"
         intervals [8]:
-            xmin = 1.495
-            xmax = 1.585
+            xmin = 1.49
+            xmax = 1.58
             text = "OV"
         intervals [9]:
-            xmin = 1.585
-            xmax = 1.695
+            xmin = 1.58
+            xmax = 1.69
             text = "NVO"
         intervals [10]:
-            xmin = 1.695
-            xmax = 1.905
+            xmin = 1.69
+            xmax = 1.9
             text = "FFV"
         intervals [11]:
-            xmin = 1.905
-            xmax = 2.055
+            xmin = 1.9
+            xmax = 2.05
             text = "OV"
         intervals [12]:
-            xmin = 2.055
+            xmin = 2.05
             xmax = 2.3288
             text = "FV"
     item [9]:
         class = "IntervalTier"
         name = "Structures"
-        xmin = 0.0
-        xmax = 2.3288
+        xmin = 0.000000
+        xmax = 2.328800
         intervals: size = 12
         intervals [1]:
             xmin = 0.0
-            xmax = 0.195
+            xmax = 0.19
             text = "VC"
         intervals [2]:
-            xmin = 0.195
-            xmax = 0.405
+            xmin = 0.19
+            xmax = 0.4
             text = "CCV"
         intervals [3]:
-            xmin = 0.405
-            xmax = 0.615
+            xmin = 0.4
+            xmax = 0.61
             text = "CV"
         intervals [4]:
-            xmin = 0.615
-            xmax = 0.945
+            xmin = 0.61
+            xmax = 0.94
             text = "CCVC"
         intervals [5]:
-            xmin = 0.945
-            xmax = 1.125
+            xmin = 0.94
+            xmax = 1.12
             text = "CV"
         intervals [6]:
-            xmin = 1.125
-            xmax = 1.365
+            xmin = 1.12
+            xmax = 1.36
             text = "CCV"
         intervals [7]:
-            xmin = 1.365
-            xmax = 1.495
+            xmin = 1.36
+            xmax = 1.49
             text = "CV"
         intervals [8]:
-            xmin = 1.495
-            xmax = 1.585
+            xmin = 1.49
+            xmax = 1.58
             text = "CV"
         intervals [9]:
-            xmin = 1.585
-            xmax = 1.695
+            xmin = 1.58
+            xmax = 1.69
             text = "CVC"
         intervals [10]:
-            xmin = 1.695
-            xmax = 1.905
+            xmin = 1.69
+            xmax = 1.9
             text = "CCV"
         intervals [11]:
-            xmin = 1.905
-            xmax = 2.055
+            xmin = 1.9
+            xmax = 2.05
             text = "CV"
         intervals [12]:
-            xmin = 2.055
+            xmin = 2.05
             xmax = 2.3288
             text = "CV"
     item [10]:
+        class = "IntervalTier"
+        name = "Sources"
+        xmin = 0.000000
+        xmax = 2.328800
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 2.3288
+            text = ""
+    item [11]:
+        class = "IntervalTier"
+        name = "Repetitions"
+        xmin = 0.000000
+        xmax = 2.328800
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 2.3288
+            text = ""
+    item [12]:
         class = "TextTier"
         name = "Momel"
-        xmin = 0.1538453443
-        xmax = 2.1587867047
-        points: size = 9
+        xmin = 0.153845
+        xmax = 2.158787
+        intervals: size = 9
         points [1]:
             time = 0.1538453443
             mark = "183"
@@ -449,12 +469,12 @@ item []:
         points [9]:
             time = 2.1587867047
             mark = "285"
-    item [11]:
+    item [13]:
         class = "TextTier"
         name = "Intsint"
-        xmin = 0.1538453443
-        xmax = 2.1587867047
-        points: size = 9
+        xmin = 0.153845
+        xmax = 2.158787
+        intervals: size = 9
         points [1]:
             time = 0.1538453443
             mark = "M"
@@ -482,17 +502,17 @@ item []:
         points [9]:
             time = 2.1587867047
             mark = "H"
-    item [12]:
+    item [14]:
         class = "IntervalTier"
         name = "Information"
-        xmin = 0.0
+        xmin = 0.000000
         xmax = 2.328813
         intervals: size = 2
         intervals [1]:
             xmin = 0.0
             xmax = 1.1644065
-            text = "This annotation was produced by SPPAS 1.6.8 on 2015-05-07"
+            text = "This annotation was produced by SPPAS 1.7.8 on 2016-05-05"
         intervals [2]:
             xmin = 1.1644065
             xmax = 2.328813
-            text = "Copyright (C) 2011-2015 Brigitte Bigi"
+            text = "Copyright (C) 2011-2016 Brigitte Bigi"

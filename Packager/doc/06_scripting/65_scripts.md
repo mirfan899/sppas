@@ -100,6 +100,7 @@ Currently, accepted input file extensions are:
 * sub, srt
 * hz
 * antx
+* tdf
 
 Possible output file extensions are:
 

@@ -1,15 +1,18 @@
-File type = "ooTextFile short"
-"TextGrid"
+File type = "ooTextFile"
+Object class = "TextGrid"
 
-0.0
-3.51
-<exists>
-1
-"IntervalTier"
-"Tokens"
-0.0
-3.51
-1
-0.0
-3.51
-" oui ben oui puisque de_toute_façon il m' a dit il a trouvé un appart et tout là-haut donc c'est que euh "
+xmin = 0.0
+xmax = 3.51
+tiers? <exists>
+size = 1
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "Tokenization"
+        xmin = 0.000000
+        xmax = 3.510000
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 3.51
+            text = "oui ben oui puisque de_toute_façon il m' a dit il a trouvé un appart et tout là-haut donc c'est que euh"

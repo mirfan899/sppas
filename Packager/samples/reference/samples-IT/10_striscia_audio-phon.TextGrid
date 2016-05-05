@@ -1,57 +1,74 @@
-File type = "ooTextFile short"
-"TextGrid"
+File type = "ooTextFile"
+Object class = "TextGrid"
 
-0.0
-10.0
-<exists>
-1
-"IntervalTier"
-"Phonetization"
-0.0
-10.0
-15
-0.0
-0.795
-" l.a|a s.t.i.S.a|s.t.r.i.S|s.t.r.i.S.a "
-0.795
-1.1
-" # "
-1.1
-1.97
-" l.a|a s.t.i.S.a|s.t.r.i.S|s.t.r.i.S.a "
-1.97
-2.28
-" # "
-2.28
-3.135
-" l.a|a s.t.i.S.a|s.t.r.i.S|s.t.r.i.S.a "
-3.135
-3.555
-" # "
-3.555
-4.425
-" l.a|a s.t.i.S.a|s.t.r.i.S|s.t.r.i.S.a "
-4.425
-4.89
-" # "
-4.89
-5.77
-" l.a|a s.t.i.S.a|s.t.r.i.S|s.t.r.i.S.a "
-5.77
-6.24
-" # "
-6.24
-7.175
-" l.a|a s.t.i.S.a|s.t.r.i.S|s.t.r.i.S.a "
-7.175
-7.61
-" # "
-7.61
-8.505
-" l.a|a s.t.i.S.a|s.t.r.i.S|s.t.r.i.S.a "
-8.505
-9.07
-" # "
-9.07
-10.0
-" l.a|a s.t.i.S.a|s.t.r.i.S|s.t.r.i.S.a "
+xmin = 0.0
+xmax = 10.0
+tiers? <exists>
+size = 1
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "Phonetization"
+        xmin = 0.000000
+        xmax = 10.000000
+        intervals: size = 15
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.795
+            text = "l-a|a s-t-i-S-a|s-t-r-i-S|s-t-r-i-S-a"
+        intervals [2]:
+            xmin = 0.795
+            xmax = 1.1
+            text = "#"
+        intervals [3]:
+            xmin = 1.1
+            xmax = 1.97
+            text = "l-a|a s-t-i-S-a|s-t-r-i-S|s-t-r-i-S-a"
+        intervals [4]:
+            xmin = 1.97
+            xmax = 2.28
+            text = "#"
+        intervals [5]:
+            xmin = 2.28
+            xmax = 3.135
+            text = "l-a|a s-t-i-S-a|s-t-r-i-S|s-t-r-i-S-a"
+        intervals [6]:
+            xmin = 3.135
+            xmax = 3.555
+            text = "#"
+        intervals [7]:
+            xmin = 3.555
+            xmax = 4.425
+            text = "l-a|a s-t-i-S-a|s-t-r-i-S|s-t-r-i-S-a"
+        intervals [8]:
+            xmin = 4.425
+            xmax = 4.89
+            text = "#"
+        intervals [9]:
+            xmin = 4.89
+            xmax = 5.77
+            text = "l-a|a s-t-i-S-a|s-t-r-i-S|s-t-r-i-S-a"
+        intervals [10]:
+            xmin = 5.77
+            xmax = 6.24
+            text = "#"
+        intervals [11]:
+            xmin = 6.24
+            xmax = 7.175
+            text = "l-a|a s-t-i-S-a|s-t-r-i-S|s-t-r-i-S-a"
+        intervals [12]:
+            xmin = 7.175
+            xmax = 7.61
+            text = "#"
+        intervals [13]:
+            xmin = 7.61
+            xmax = 8.505
+            text = "l-a|a s-t-i-S-a|s-t-r-i-S|s-t-r-i-S-a"
+        intervals [14]:
+            xmin = 8.505
+            xmax = 9.07
+            text = "#"
+        intervals [15]:
+            xmin = 9.07
+            xmax = 10.0
+            text = "l-a|a s-t-i-S-a|s-t-r-i-S|s-t-r-i-S-a"

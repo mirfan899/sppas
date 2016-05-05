@@ -40,10 +40,12 @@ import math
 # ----------------------------------------------------------------------------
 
 """
-@authors: Brigitte Bigi
-@contact: brigitte.bigi@gmail.com
-@license: GPL, v3
-@summary: Frequency estimators.
+@author:       Brigitte Bigi
+@organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+@summary:      Frequency estimators.
 
 A collection of basic statistical functions for python.
 
@@ -98,7 +100,7 @@ def hapax(counter):
     @return list
 
     """
-    return [k for k in counter1.keys() if counter[k]==1]
+    return [k for k in counter.keys() if counter[k]==1]
 
 # ---------------------------------------------------------------------------
 

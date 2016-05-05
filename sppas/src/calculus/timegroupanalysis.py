@@ -43,17 +43,23 @@ import stats.variability
 
 class TimeGroupAnalysis( DescriptiveStatistics ):
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: TGA estimator class.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      TGA estimator class.
+
+    TGA: Time Group Analyzer is an online tool for speech annotation mining
+    written by Dafydd Gibbon (Universität Bielefeld).
+    See: http://wwwhomes.uni-bielefeld.de/gibbon/TGA/
 
     This class estimates TGA on a set of data values, stored in a dictionary:
     - key is the name of the time group;
     - value is the list of durations of each segments in the time group.
 
     >>> d = { 'tg1':[1.0,1.2,3.2,4.1] , 'tg2':[2.9,3.3,3.6,5.8] }
-    >>> tga = TimeGroupAnalyses(d)
+    >>> tga = TimeGroupAnalysis(d)
     >>> total = tga.total()
     >>> slope = tga.slope()
     >>> print slope['tg_1']
@@ -68,31 +74,42 @@ class TimeGroupAnalysis( DescriptiveStatistics ):
         TGA.
 
         @param dictitems (dict): a dict of a list of durations.
+
         """
         DescriptiveStatistics.__init__(self, dictitems)
 
     # -----------------------------------------------------------------------
-    # Specific estimators for rythm analysis
+    # Specific estimators for rythme analysis
     # -----------------------------------------------------------------------
 
     def rPVI(self):
         """
         Estimates the Raw Pairwise Variability Index of data values.
+
         @return (dict): a dictionary of (key, nPVI) of float values
+
         """
         return dict( (key, stats.variability.rPVI(values)) for key,values in self.items.iteritems() )
+
+    # -----------------------------------------------------------------------
 
     def nPVI(self):
         """
         Estimates the Normalized Pairwise Variability Index of data values.
+
         @return (dict): a dictionary of (key, nPVI) of float values
+
         """
         return dict( (key, stats.variability.nPVI(values)) for key,values in self.items.iteritems() )
+
+    # -----------------------------------------------------------------------
 
     def intercept_slope_original(self):
         """
         Estimates the intercept like the original TGA of data values.
+
         @return (dict): a dictionary of (key, (intercept,slope)) of float values
+
         """
         # Create the list of points (x,y) of each TG where:
         # x is the position
@@ -103,10 +120,14 @@ class TimeGroupAnalysis( DescriptiveStatistics ):
             linreg.append( (key, (stats.linregress.tga_linear_regression(points))) )
         return dict(linreg)
 
+    # -----------------------------------------------------------------------
+
     def intercept_slope(self):
         """
         Estimates the intercept like AnnotationPro of data values.
+
         @return (dict): a dictionary of (key, (intercept,slope)) of float values
+
         """
         # Create the list of points (x,y) of each TG where:
         # x is the timestamps
@@ -121,4 +142,4 @@ class TimeGroupAnalysis( DescriptiveStatistics ):
             linreg.append( (key, (stats.linregress.tga_linear_regression(points))) )
         return dict(linreg)
 
-    # -----------------------------------------------------------------------
+# -----------------------------------------------------------------------

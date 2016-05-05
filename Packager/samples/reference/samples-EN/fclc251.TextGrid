@@ -9,7 +9,7 @@ item []:
     item [1]:
         class = "IntervalTier"
         name = "IPU"
-        xmin = 0.0
+        xmin = 0.000000
         xmax = 3.497125
         intervals: size = 3
         intervals [1]:
@@ -26,8 +26,8 @@ item []:
             text = "#"
     item [2]:
         class = "IntervalTier"
-        name = "IPU"
-        xmin = 0.0
+        name = "IPU-2"
+        xmin = 0.000000
         xmax = 3.497125
         intervals: size = 3
         intervals [1]:
@@ -44,8 +44,8 @@ item []:
             text = "#"
     item [3]:
         class = "IntervalTier"
-        name = "IPU"
-        xmin = 0.0
+        name = "IPU-3"
+        xmin = 0.000000
         xmax = 3.497125
         intervals: size = 3
         intervals [1]:
@@ -62,8 +62,8 @@ item []:
             text = "#"
     item [4]:
         class = "IntervalTier"
-        name = "IPU"
-        xmin = 0.0
+        name = "IPU-4"
+        xmin = 0.000000
         xmax = 3.497125
         intervals: size = 3
         intervals [1]:

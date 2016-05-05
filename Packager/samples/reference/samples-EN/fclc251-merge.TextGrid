@@ -4,12 +4,12 @@ Object class = "TextGrid"
 xmin = 0.0
 xmax = 3.497125
 tiers? <exists>
-size = 7
+size = 12
 item []:
     item [1]:
         class = "IntervalTier"
         name = "IPU"
-        xmin = 0.0
+        xmin = 0.000000
         xmax = 3.497125
         intervals: size = 3
         intervals [1]:
@@ -26,8 +26,62 @@ item []:
             text = "#"
     item [2]:
         class = "IntervalTier"
-        name = "Tokens"
-        xmin = 0.0
+        name = "IPU-2"
+        xmin = 0.000000
+        xmax = 3.497125
+        intervals: size = 3
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.865
+            text = "#"
+        intervals [2]:
+            xmin = 0.865
+            xmax = 1.79
+            text = "Are you angry at me?"
+        intervals [3]:
+            xmin = 1.79
+            xmax = 3.497125
+            text = "#"
+    item [3]:
+        class = "IntervalTier"
+        name = "IPU-3"
+        xmin = 0.000000
+        xmax = 3.497125
+        intervals: size = 3
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.865
+            text = "#"
+        intervals [2]:
+            xmin = 0.865
+            xmax = 1.79
+            text = "Are you angry at me?"
+        intervals [3]:
+            xmin = 1.79
+            xmax = 3.497125
+            text = "#"
+    item [4]:
+        class = "IntervalTier"
+        name = "IPU-4"
+        xmin = 0.000000
+        xmax = 3.497125
+        intervals: size = 3
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.865
+            text = "#"
+        intervals [2]:
+            xmin = 0.865
+            xmax = 1.79
+            text = "Are you angry at me?"
+        intervals [3]:
+            xmin = 1.79
+            xmax = 3.497125
+            text = "#"
+    item [5]:
+        class = "IntervalTier"
+        name = "Tokenization"
+        xmin = 0.000000
         xmax = 3.497125
         intervals: size = 3
         intervals [1]:
@@ -42,10 +96,10 @@ item []:
             xmin = 1.79
             xmax = 3.497125
             text = "#"
-    item [3]:
+    item [6]:
         class = "IntervalTier"
         name = "Phonetization"
-        xmin = 0.0
+        xmin = 0.000000
         xmax = 3.497125
         intervals: size = 3
         intervals [1]:
@@ -55,16 +109,16 @@ item []:
         intervals [2]:
             xmin = 0.865
             xmax = 1.79
-            text = "A.r|3:r j.u {.N.g.r.i: {.t m.i:"
+            text = "A-r|3:r j-u {-N-g-r-i: {-t m-i:"
         intervals [3]:
             xmin = 1.79
             xmax = 3.497125
             text = "#"
-    item [4]:
+    item [7]:
         class = "IntervalTier"
         name = "PhonAlign"
-        xmin = 0.0
-        xmax = 3.4971
+        xmin = 0.000000
+        xmax = 3.497100
         intervals: size = 14
         intervals [1]:
             xmin = 0.0
@@ -72,61 +126,61 @@ item []:
             text = "#"
         intervals [2]:
             xmin = 0.865
-            xmax = 0.9
+            xmax = 0.895
             text = "3:r"
         intervals [3]:
-            xmin = 0.9
-            xmax = 1.02
+            xmin = 0.895
+            xmax = 1.015
             text = "j"
         intervals [4]:
-            xmin = 1.02
-            xmax = 1.08
+            xmin = 1.015
+            xmax = 1.075
             text = "u"
         intervals [5]:
-            xmin = 1.08
-            xmax = 1.2
+            xmin = 1.075
+            xmax = 1.195
             text = "{"
         intervals [6]:
-            xmin = 1.2
-            xmax = 1.26
+            xmin = 1.195
+            xmax = 1.255
             text = "N"
         intervals [7]:
-            xmin = 1.26
-            xmax = 1.3
+            xmin = 1.255
+            xmax = 1.295
             text = "g"
         intervals [8]:
-            xmin = 1.3
-            xmax = 1.35
+            xmin = 1.295
+            xmax = 1.345
             text = "r"
         intervals [9]:
-            xmin = 1.35
-            xmax = 1.44
+            xmin = 1.345
+            xmax = 1.435
             text = "i:"
         intervals [10]:
-            xmin = 1.44
-            xmax = 1.47
+            xmin = 1.435
+            xmax = 1.465
             text = "{"
         intervals [11]:
-            xmin = 1.47
-            xmax = 1.52
+            xmin = 1.465
+            xmax = 1.515
             text = "t"
         intervals [12]:
-            xmin = 1.52
-            xmax = 1.56
+            xmin = 1.515
+            xmax = 1.555
             text = "m"
         intervals [13]:
-            xmin = 1.56
+            xmin = 1.555
             xmax = 1.79
             text = "i:"
         intervals [14]:
             xmin = 1.79
             xmax = 3.4971
             text = "#"
-    item [5]:
+    item [8]:
         class = "IntervalTier"
         name = "PhnTokAlign"
-        xmin = 0.0
-        xmax = 3.4971
+        xmin = 0.000000
+        xmax = 3.497100
         intervals: size = 7
         intervals [1]:
             xmin = 0.0
@@ -134,33 +188,33 @@ item []:
             text = "#"
         intervals [2]:
             xmin = 0.865
-            xmax = 0.9
+            xmax = 0.895
             text = "3:r"
         intervals [3]:
-            xmin = 0.9
-            xmax = 1.08
-            text = "j.u"
+            xmin = 0.895
+            xmax = 1.075
+            text = "j-u"
         intervals [4]:
-            xmin = 1.08
-            xmax = 1.44
-            text = "{.N.g.r.i:"
+            xmin = 1.075
+            xmax = 1.435
+            text = "{-N-g-r-i:"
         intervals [5]:
-            xmin = 1.44
-            xmax = 1.52
-            text = "{.t"
+            xmin = 1.435
+            xmax = 1.515
+            text = "{-t"
         intervals [6]:
-            xmin = 1.52
+            xmin = 1.515
             xmax = 1.79
-            text = "m.i:"
+            text = "m-i:"
         intervals [7]:
             xmin = 1.79
             xmax = 3.4971
             text = "#"
-    item [6]:
+    item [9]:
         class = "IntervalTier"
         name = "TokensAlign"
-        xmin = 0.0
-        xmax = 3.4971
+        xmin = 0.000000
+        xmax = 3.497100
         intervals: size = 7
         intervals [1]:
             xmin = 0.0
@@ -168,39 +222,59 @@ item []:
             text = "#"
         intervals [2]:
             xmin = 0.865
-            xmax = 0.9
+            xmax = 0.895
             text = "are"
         intervals [3]:
-            xmin = 0.9
-            xmax = 1.08
+            xmin = 0.895
+            xmax = 1.075
             text = "you"
         intervals [4]:
-            xmin = 1.08
-            xmax = 1.44
+            xmin = 1.075
+            xmax = 1.435
             text = "angry"
         intervals [5]:
-            xmin = 1.44
-            xmax = 1.52
+            xmin = 1.435
+            xmax = 1.515
             text = "at"
         intervals [6]:
-            xmin = 1.52
+            xmin = 1.515
             xmax = 1.79
             text = "me"
         intervals [7]:
             xmin = 1.79
             xmax = 3.4971
             text = "#"
-    item [7]:
+    item [10]:
+        class = "IntervalTier"
+        name = "Sources"
+        xmin = 0.000000
+        xmax = 3.497100
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 3.4971
+            text = ""
+    item [11]:
+        class = "IntervalTier"
+        name = "Repetitions"
+        xmin = 0.000000
+        xmax = 3.497100
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 3.4971
+            text = ""
+    item [12]:
         class = "IntervalTier"
         name = "Information"
-        xmin = 0.0
+        xmin = 0.000000
         xmax = 3.497125
         intervals: size = 2
         intervals [1]:
             xmin = 0.0
             xmax = 1.7485625
-            text = "This annotation was produced by SPPAS 1.6.8 on 2015-05-07"
+            text = "This annotation was produced by SPPAS 1.7.8 on 2016-05-05"
         intervals [2]:
             xmin = 1.7485625
             xmax = 3.497125
-            text = "Copyright (C) 2011-2015 Brigitte Bigi"
+            text = "Copyright (C) 2011-2016 Brigitte Bigi"

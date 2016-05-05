@@ -1,15 +1,18 @@
-File type = "ooTextFile short"
-"TextGrid"
+File type = "ooTextFile"
+Object class = "TextGrid"
 
-0.0
-6.76
-<exists>
-1
-"IntervalTier"
-"Phonetization"
-0.0
-6.76
-1
-0.0
-6.76
-" E.l.eu|E.l|e.l|E a.b.i.t|a.b.i.t.eu s.y.R a.R.l|a.R.l d.eu.p.y.i.z|d.eu.p.y.i|t.p.y.i|d.eu.p.y.i k|k.eu Z|Z.eu|S l.a k.o.n.e|k.o.n.E|k.o.n.E.z|k.o.n.E|k.o.n.e.z|k.o.n.e m.E.z|m.e|m.E|m.e.z|m Z|Z.eu|S k.R.w.a.z|k.R.w.a k E.l.eu|E.l|e.l|E a p.a.z|p.a t.u.Z.u.R.z|t.u.Z.u.R|t.u.j.u.R a.b.i.t.e l.a.b.a a~.f.U~ Z|Z.eu|S s.E.z|s.e|s.E|s.e.z|s p.l.y.s|p.l.y|p.l.y.z E.g.z.a.k.t.eu.m.a~|E.g.z.a.k.t.eu.m.a~|E.g.z.a.k.t.eu.m.a~.t|E.g.z.a.k.t.eu.m.a~.t|e.g.z.a.k.t.eu.m.a~|E.g.z.a.k.t.eu.m.a~|E.g.z.a.k.t.eu.m.a~.t Z|Z.eu|S k.o.n.e|k.o.n.E|k.o.n.E.z|k.o.n.E|k.o.n.e.z|k.o.n.e p.a.z|p.a t.R.e|t.R.E|t.R.E.z|t.R.e.z|t.R.E|t.R.E.z t.R.e.b.j.U~.n|t.R.e.b.j.U~.n|t.R.e.b.j.U~|t.R.E.b.j.U~.n|t.R.E.b.j.U~ s.o~|s.o~.n p.a.R.k.u.R|p.a.R.k.u.R|p.a.R.k.u.R.z @@ m.E.z|m.e|m.E|m.e.z|m fp "
+xmin = 0.0
+xmax = 6.76
+tiers? <exists>
+size = 1
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "Phonetization"
+        xmin = 0.000000
+        xmax = 6.760000
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 6.76
+            text = "E-l-eu|E-l|e-l|E a-b-i-t|a-b-i-t-eu s-y-R a-R-l|a-R-l d-eu-p-y-i-z|d-eu-p-y-i|t-p-y-i|d-eu-p-y-i k|k-eu Z|Z-eu|S l-a k-o-n-e|k-o-n-E|k-o-n-E-z|k-o-n-E|k-o-n-e-z|k-o-n-e m-E-z|m-e|m-E|m-e-z|m Z|Z-eu|S k-R-w-a-z|k-R-w-a k E-l-eu|E-l|e-l|E a p-a-z|p-a t-u-Z-u-R-z|t-u-Z-u-R|t-u-j-u-R a-b-i-t-e l-a-b-a a~-f-U~ Z|Z-eu|S s-E-z|s-e|s-E|s-e-z|s p-l-y-s|p-l-y|p-l-y-z E-g-z-a-k-t-eu-m-a~|E-g-z-a-k-t-eu-m-a~|E-g-z-a-k-t-eu-m-a~-t|E-g-z-a-k-t-eu-m-a~-t|e-g-z-a-k-t-eu-m-a~|E-g-z-a-k-t-eu-m-a~|E-g-z-a-k-t-eu-m-a~-t Z|Z-eu|S k-o-n-e|k-o-n-E|k-o-n-E-z|k-o-n-E|k-o-n-e-z|k-o-n-e p-a-z|p-a t-R-e|t-R-E|t-R-E-z|t-R-e-z|t-R-E|t-R-E-z t-R-e-b-j-U~-n|t-R-e-b-j-U~-n|t-R-e-b-j-U~|t-R-E-b-j-U~-n|t-R-E-b-j-U~ s-o~|s-o~-n p-a-R-k-u-R|p-a-R-k-u-R|p-a-R-k-u-R-z @@ m-E-z|m-e|m-E|m-e-z|m fp"

@@ -101,7 +101,9 @@ if args.l: parameters.set_lang( args.l )
 if args.e:
     extensions = [e.lower() for e in extensions_out_multitiers]
     if not args.e.lower() in extensions:
+        print
         print "[WARNING] Unknown extension:",args.e,". Extension is set to its default value."
+        print
     else:
         parameters.set_output_format( args.e )
 

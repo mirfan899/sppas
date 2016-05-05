@@ -1,51 +1,66 @@
-File type = "ooTextFile short"
-"TextGrid"
+File type = "ooTextFile"
+Object class = "TextGrid"
 
-0.0
-23.5716
-<exists>
-1
-"IntervalTier"
-"Tokens"
-0.0
-23.5716
-13
-0.0
-1.0236208367
-" # "
-1.0236208367
-3.4553591886
-" my wife has a complicated flight schedule next month "
-3.4553591886
-4.1918285181
-" # "
-4.1918285181
-7.026540654
-" would you please advise me on the most economical arrangements "
-7.026540654
-7.790801279
-" # "
-7.790801279
-10.9207959291
-" she has a series of meetings + nine am to five pm "
-10.9207959291
-11.4488305427
-"  "
-11.4488305427
-16.0726073233
-" in paris + bruges + frankfurt + rome and hamburg + on consecutive days "
-16.0726073233
-16.872
-" # "
-16.872
-20.1996146977
-" can you suggest convenient evening flights and suitable accommodation "
-20.1996146977
-20.808
-" # "
-20.808
-22.8119964701
-" she doesn t like large anonymous hotels "
-22.8119964701
-23.5716
-" # "
+xmin = 0.0
+xmax = 23.5716
+tiers? <exists>
+size = 1
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "Tokenization"
+        xmin = 0.000000
+        xmax = 23.571600
+        intervals: size = 13
+        intervals [1]:
+            xmin = 0.0
+            xmax = 1.0236208367
+            text = "#"
+        intervals [2]:
+            xmin = 1.0236208367
+            xmax = 3.4553591886
+            text = "my wife has a complicated flight schedule next month"
+        intervals [3]:
+            xmin = 3.4553591886
+            xmax = 4.1918285181
+            text = "#"
+        intervals [4]:
+            xmin = 4.1918285181
+            xmax = 7.026540654
+            text = "would you please advise me on the most economical arrangements"
+        intervals [5]:
+            xmin = 7.026540654
+            xmax = 7.790801279
+            text = "#"
+        intervals [6]:
+            xmin = 7.790801279
+            xmax = 10.9207959291
+            text = "she has a series of meetings + nine am to five pm"
+        intervals [7]:
+            xmin = 10.9207959291
+            xmax = 11.4488305427
+            text = ""
+        intervals [8]:
+            xmin = 11.4488305427
+            xmax = 16.0726073233
+            text = "in paris + bruges + frankfurt + rome and hamburg + on consecutive days"
+        intervals [9]:
+            xmin = 16.0726073233
+            xmax = 16.872
+            text = "#"
+        intervals [10]:
+            xmin = 16.872
+            xmax = 20.1996146977
+            text = "can you suggest convenient evening flights and suitable accommodation"
+        intervals [11]:
+            xmin = 20.1996146977
+            xmax = 20.808
+            text = "#"
+        intervals [12]:
+            xmin = 20.808
+            xmax = 22.8119964701
+            text = "she doesn t like large anonymous hotels"
+        intervals [13]:
+            xmin = 22.8119964701
+            xmax = 23.5716
+            text = "#"

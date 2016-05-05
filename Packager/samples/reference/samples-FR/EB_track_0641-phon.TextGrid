@@ -1,15 +1,18 @@
-File type = "ooTextFile short"
-"TextGrid"
+File type = "ooTextFile"
+Object class = "TextGrid"
 
-0.0
-6.44
-<exists>
-1
-"IntervalTier"
-"Phonetization"
-0.0
-6.44
-1
-0.0
-6.44
-" e|E w.E m.E.z|m.e|m.E|m.e.z|m d.eu.t.u.t.f.a.s.o~ e|E a~.n.p.l.y.s|p.l.y.z|a~.n.p.l.y.s|a~.n.p.l.y|a~.n.p.l.y.z|a~.p.l.y.s|a~.p.l.y|a~.p.l.y.z|p.l.y.s|p.l.y s.e fp t.y|t|t.j fp k.a~.t|k.a~ t.y|t|t.j v.w.a.z|v.w.a l.E|l.E.z|l.e|l.e.z|l.eu l.E|l.E.z|l.e|l.e.z|l.eu b.R.E.v.z|b.R.E.v s.j.a~.t.i.f.i.k.z|s.j.a~.t.i.f.i.k k|k.eu t.y|t|t.j p.eu.z|p.eu v.w.a.R|v.w.a.R d.a~.z|d.a~ l.E|l.E.z|l.e|l.e.z|l.eu Z.u.R.n.o.z|Z.u.R.n.o fp s n.o.R.m.a.l|n.o.R.m.a.l k|k.eu l.E|l.E.z|l.e|l.e.z|l.eu Z.a~|Z.a~.z s.eu|s p.o.z.eu.t|p.o.z d.E.z|d.e|d.E|d.E.z|d.e.z|d|d.E k.E.s.t.j.o~.z|k.E.s.t.j.o~|k.E.s.j.o~ k.w.a|k.w.a p.a.R.s.k|p.a.R.s.eu.k.eu|p.s.k|p.a.s.k.eu|p.a.s.eu "
+xmin = 0.0
+xmax = 6.44
+tiers? <exists>
+size = 1
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "Phonetization"
+        xmin = 0.000000
+        xmax = 6.440000
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 6.44
+            text = "e|E w-E m-E-z|m-e|m-E|m-e-z|m d-eu-t-u-t-f-a-s-o~ e|E a~-n-p-l-y-s|p-l-y-z|a~-n-p-l-y-s|a~-n-p-l-y|a~-n-p-l-y-z|a~-p-l-y-s|a~-p-l-y|a~-p-l-y-z|p-l-y-s|p-l-y s-e fp t-y|t|t-j fp k-a~-t|k-a~ t-y|t|t-j v-w-a-z|v-w-a l-E|l-E-z|l-e|l-e-z|l-eu l-E|l-E-z|l-e|l-e-z|l-eu b-R-E-v-z|b-R-E-v s-j-a~-t-i-f-i-k-z|s-j-a~-t-i-f-i-k k|k-eu t-y|t|t-j p-eu-z|p-eu v-w-a-R|v-w-a-R d-a~-z|d-a~ l-E|l-E-z|l-e|l-e-z|l-eu Z-u-R-n-o-z|Z-u-R-n-o fp s n-o-R-m-a-l|n-o-R-m-a-l k|k-eu l-E|l-E-z|l-e|l-e-z|l-eu Z-a~|Z-a~-z s-eu|s p-o-z-eu-t|p-o-z d-E-z|d-e|d-E|d-E-z|d-e-z|d|d-E k-E-s-t-j-o~-z|k-E-s-t-j-o~|k-E-s-j-o~ k-w-a|k-w-a p-a-R-s-k|p-a-R-s-eu-k-eu|p-s-k|p-a-s-k-eu|p-a-s-eu"

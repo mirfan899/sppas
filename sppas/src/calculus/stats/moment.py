@@ -41,10 +41,12 @@ import variability
 # ----------------------------------------------------------------------------
 
 """
-@authors: Brigitte Bigi
-@contact: brigitte.bigi@gmail.com
-@license: GPL, v3
-@summary: Moment estimators.
+@author:       Brigitte Bigi
+@organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+@summary:      Moment estimators.
 
 A collection of basic statistical functions for python.
 
@@ -58,12 +60,16 @@ Function List
 
 """
 
+# ---------------------------------------------------------------------------
+
 def lmoment(items,moment=1):
     """
     Calculates the r-th moment about the mean for a sample:
     1/n * SUM((items(i)-mean)**r)
+
     @param items (list) list of data values
     @return (float)
+
     """
     if moment == 1:
         return 0.
@@ -71,16 +77,20 @@ def lmoment(items,moment=1):
     momentlist = [ (i-mn)**moment for i in items ]
     return sum(momentlist) / float(len(items))
 
+# ---------------------------------------------------------------------------
 
 def lvariation(items):
     """
     Calculates the coefficient of variation of data values.
     It shows the extent of variability in relation to the mean.
     It's a standardized measure of dispersion: stdev / mean and returned as a percentage.
+
     @param items (list) list of data values
     @return (float)
+
     """
     return variability.lstdev(items) / float(central.fmean(items)) * 100.
+# ---------------------------------------------------------------------------
 
 
 def lskew(items):
@@ -89,11 +99,14 @@ def lskew(items):
     The skewness represents a measure of the asymmetry: an understanding
     of the skewness of the dataset indicates whether deviations from the
     mean are going to be positive or negative.
+
     @param items (list) list of data values
     @return (float)
+
     """
     return lmoment(items,3) / pow(lmoment(items,2),1.5)
 
+# ---------------------------------------------------------------------------
 
 def lkurtosis(items):
     """
@@ -102,11 +115,12 @@ def lkurtosis(items):
     a high kurtosis distribution has a sharper peak and fatter tails,
     while a low kurtosis distribution has a more rounded peak and thinner
     tails.
+
     @param items (list) list of data values
     @return (float)
+
     """
     return lmoment(items,4) / pow(lmoment(items,2),2.0)
-
 
 # ----------------------------------------------------------------------------
 

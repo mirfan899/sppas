@@ -459,14 +459,20 @@ function fct_api_manual {
 
 function fct_uml_diagrams {
     echo -e "${BROWN} - $PROGRAM_NAME UML diagrams${NC}"
-    # test if suml is ok.
-    type suml >& /dev/null
+    # test if yuml is ok. https://github.com/wandernauta/yuml/
+    type yuml >& /dev/null
     if [ $? -eq 1 ] ; then
-        echo -e "${RED}suml is missing. Please, install it and try again.${NC}"
-        return 1
+        # test if suml is ok. https://pypi.python.org/pypi/scruffy
+        type suml >& /dev/null
+        if [ $? -eq 1 ] ; then
+            echo -e "${RED}None of yuml or suml are working! Please, install at least one of them and try again.${NC}"
+            return 1
+    
+        suml --png --class -i $ETC_DIR/figures/src/annotationdata.yuml -o $ETC_DIR/figures/annotationdata.png
+        fi
     fi
 
-    suml --png --class -i $ETC_DIR/figures/src/annotationdata.yuml -o $ETC_DIR/figures/annotationdata.png
+    cat $ETC_DIR/figures/src/annotationdata.yuml | yuml -s nofunky -o $ETC_DIR/figures/annotationdata.png
 }
 
 

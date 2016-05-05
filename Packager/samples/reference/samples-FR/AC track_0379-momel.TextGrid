@@ -9,14 +9,14 @@ item []:
     item [1]:
         class = "TextTier"
         name = "Momel"
-        xmin = 0.153845344311
-        xmax = 2.15878670474
-        points: size = 9
+        xmin = 0.153845
+        xmax = 2.158787
+        intervals: size = 9
         points [1]:
             time = 0.153845344311
             mark = "183"
         points [2]:
-            time = 0.24463260689
+            time = 0.244632606891
             mark = "531"
         points [3]:
             time = 0.564237424784
@@ -42,14 +42,14 @@ item []:
     item [2]:
         class = "TextTier"
         name = "Intsint"
-        xmin = 0.153845344311
-        xmax = 2.15878670474
-        points: size = 9
+        xmin = 0.153845
+        xmax = 2.158787
+        intervals: size = 9
         points [1]:
             time = 0.153845344311
             mark = "M"
         points [2]:
-            time = 0.24463260689
+            time = 0.244632606891
             mark = "T"
         points [3]:
             time = 0.564237424784

@@ -1,21 +1,26 @@
-File type = "ooTextFile short"
-"TextGrid"
+File type = "ooTextFile"
+Object class = "TextGrid"
 
-0.0
-6.008125
-<exists>
-1
-"IntervalTier"
-"Tokens"
-0.0
-6.008125
-3
-0.0
-0.93
-" # "
-0.93
-5.545
-" i am attacking woolf because he is attacking me "
-5.545
-6.008125
-" # "
+xmin = 0.0
+xmax = 6.008125
+tiers? <exists>
+size = 1
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "Tokenization"
+        xmin = 0.000000
+        xmax = 6.008125
+        intervals: size = 3
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.93
+            text = "#"
+        intervals [2]:
+            xmin = 0.93
+            xmax = 5.545
+            text = "i am attacking woolf because he is attacking me"
+        intervals [3]:
+            xmin = 5.545
+            xmax = 6.008125
+            text = "#"

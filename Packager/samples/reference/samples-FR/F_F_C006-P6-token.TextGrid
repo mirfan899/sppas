@@ -1,45 +1,58 @@
-File type = "ooTextFile short"
-"TextGrid"
+File type = "ooTextFile"
+Object class = "TextGrid"
 
-0.0
-33.2598
-<exists>
-1
-"IntervalTier"
-"Tokens"
-0.0
-33.2598
-11
-0.0
-1.1348764085
-" # "
-1.1348764085
-8.7344091942
-" magasins réunis inventaire du six mars mille neuf cents quatre vingt neuf + étage + homme + et garçonnet + rayon chemises et sous vêtements "
-8.7344091942
-9.2685367528
-" # "
-9.2685367528
-16.8712590912
-" chemises manches longues + cintrées + stature cent trente huit + dix ans * à cent soixante deux + quatorze ans "
-16.8712590912
-17.8169485442
-" # "
-17.8169485442
-21.0525123875
-" trois de chaque taille en blanc + bleu clair + et beige "
-21.0525123875
-21.751841752
-" # "
-21.751841752
-24.086
-" pulls shetland tailles trente six à quarante six "
-24.086
-24.752
-" # "
-24.752
-31.4725844028
-" plus de gris foncé ni de beige en tre- en trente huit et quarante + quatre de chaque couleur pour toutes les autres tailles "
-31.4725844028
-33.2598
-" # "
+xmin = 0.0
+xmax = 33.2598
+tiers? <exists>
+size = 1
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "Tokenization"
+        xmin = 0.000000
+        xmax = 33.259800
+        intervals: size = 11
+        intervals [1]:
+            xmin = 0.0
+            xmax = 1.1348764085
+            text = "#"
+        intervals [2]:
+            xmin = 1.1348764085
+            xmax = 8.7344091942
+            text = "magasins réunis inventaire du six mars mille neuf cents quatre vingt neuf + étage + homme + et garçonnet + rayon chemises et sous vêtements"
+        intervals [3]:
+            xmin = 8.7344091942
+            xmax = 9.2685367528
+            text = "#"
+        intervals [4]:
+            xmin = 9.2685367528
+            xmax = 16.8712590912
+            text = "chemises manches longues + cintrées + stature cent trente huit + dix ans * à cent soixante deux + quatorze ans"
+        intervals [5]:
+            xmin = 16.8712590912
+            xmax = 17.8169485442
+            text = "#"
+        intervals [6]:
+            xmin = 17.8169485442
+            xmax = 21.0525123875
+            text = "trois de chaque taille en blanc + bleu clair + et beige"
+        intervals [7]:
+            xmin = 21.0525123875
+            xmax = 21.751841752
+            text = "#"
+        intervals [8]:
+            xmin = 21.751841752
+            xmax = 24.086
+            text = "pulls shetland tailles trente six à quarante six"
+        intervals [9]:
+            xmin = 24.086
+            xmax = 24.752
+            text = "#"
+        intervals [10]:
+            xmin = 24.752
+            xmax = 31.4725844028
+            text = "plus de gris foncé ni de beige en tre- en trente huit et quarante + quatre de chaque couleur pour toutes les autres tailles"
+        intervals [11]:
+            xmin = 31.4725844028
+            xmax = 33.2598
+            text = "#"

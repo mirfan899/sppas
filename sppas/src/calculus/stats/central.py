@@ -40,10 +40,12 @@ import math
 # ----------------------------------------------------------------------------
 
 """
-@authors: Brigitte Bigi
-@contact: brigitte.bigi@gmail.com
-@license: GPL, v3
-@summary: central estimators.
+@author:       Brigitte Bigi
+@organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+@summary:      Central estimators.
 
 A collection of basic statistical functions for python.
 
@@ -59,15 +61,19 @@ Function List
 
 """
 
+# ---------------------------------------------------------------------------
+
 def fsum(items):
     """
     Estimates the sum of a list of data values.
 
     @param items (list) list of data values
     @return (float)
+
     """
     return math.fsum(items)
 
+# ---------------------------------------------------------------------------
 
 def fmult(items):
     """
@@ -75,16 +81,20 @@ def fmult(items):
 
     @param items (list) list of data values
     @return (float)
+
     """
     return reduce(lambda x, y: x*y, items)
 
+# ---------------------------------------------------------------------------
 
 def fgeometricmean (items):
     """
     Calculates the geometric mean of the data values:
     n-th root of (x1 * x2 * ... * xn).
+
     @param items (list) list of data values
     @return (float)
+
     """
     if not len(items): return 0.
     one_over_n = 1./len(items)
@@ -93,13 +103,16 @@ def fgeometricmean (items):
         m = m * pow(item,one_over_n)
     return m
 
+# ---------------------------------------------------------------------------
 
 def fharmonicmean (items):
     """
     Calculates the harmonic mean of the data values:
     C{n / (1/x1 + 1/x2 + ... + 1/xn)}.
+
     @param items (list) list of data values
     @return (float)
+
     """
     if not len(items): return 0.
     # create a list with 1/xi values
@@ -108,6 +121,7 @@ def fharmonicmean (items):
         s = s + 1./item
     return float(len(items)) / s
 
+# ---------------------------------------------------------------------------
 
 def fmean (items):
     """
@@ -119,13 +133,16 @@ def fmean (items):
     if not len(items): return 0.
     return (fsum(items) / float(len(items)))
 
+# ---------------------------------------------------------------------------
 
 def fmedian (items):
     """
     Calculates the 'middle' score of the data values. If there is an even
     number of scores, the mean of the 2 middle scores is returned.
+
     @param items (list) list of data values
     @return (float)
+
     """
     if not len(items): return 0.
     middle = len(items) / 2
@@ -136,16 +153,20 @@ def fmedian (items):
     newlist = sorted(items)
     return float(newlist[middle] + newlist[middle-1]) / 2.
 
+# ---------------------------------------------------------------------------
 
 def fmin (items):
     """
     Return the minimum of the data values.
+
     @param items (list) list of data values
     @return (float)
+
     """
     if not len(items): return 0.
     return min(items)
 
+# ---------------------------------------------------------------------------
 
 def fmax (items):
     """

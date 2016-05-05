@@ -1,15 +1,18 @@
-File type = "ooTextFile short"
-"TextGrid"
+File type = "ooTextFile"
+Object class = "TextGrid"
 
-0.0
-1.460687
-<exists>
-1
-"IntervalTier"
-"Tokens"
-0.0
-1.460687
-1
-0.0
-1.460687
-" ralego vede ladona "
+xmin = 0.0
+xmax = 1.460687
+tiers? <exists>
+size = 1
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "Tokenization"
+        xmin = 0.000000
+        xmax = 1.460687
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 1.460687
+            text = "ralego vede ladona"

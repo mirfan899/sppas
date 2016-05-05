@@ -9,9 +9,9 @@ item []:
     item [1]:
         class = "TextTier"
         name = "Momel"
-        xmin = 1.26174888512
-        xmax = 19.7108972406
-        points: size = 71
+        xmin = 1.261749
+        xmax = 19.710897
+        intervals: size = 71
         points [1]:
             time = 1.26174888512
             mark = "102"
@@ -228,9 +228,9 @@ item []:
     item [2]:
         class = "TextTier"
         name = "Intsint"
-        xmin = 1.26174888512
-        xmax = 19.7108972406
-        points: size = 71
+        xmin = 1.261749
+        xmax = 19.710897
+        intervals: size = 71
         points [1]:
             time = 1.26174888512
             mark = "M"

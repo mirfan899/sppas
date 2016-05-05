@@ -37,19 +37,26 @@
 
 import math
 
-# ----------------------------------------------------------------------------
+"""
+@author:       Brigitte Bigi
+@organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+@summary:      Utility functions and constants for information theory.
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+Function List
+=============
 
+    - find_ngrams
+    - symbols_to_items
+
+"""
 # ----------------------------------------------------------------------------
 
 log2 = lambda x:math.log(x)/math.log(2)
 MAX_NGRAM = 8
 
-# ----------------------------------------------------------------------------
-# Utility functions
 # ----------------------------------------------------------------------------
 
 def find_ngrams( symbols, ngram):
@@ -62,25 +69,40 @@ def find_ngrams( symbols, ngram):
 
     Example:
         >>>symbols=[0,1,0,1,1,1,0]
-        >>>ngrams=find_ngrams(symbols,2)
-        >>>print ngrams
+        >>>print find_ngrams(symbols,2)
         >>>[(0, 1), (1, 0), (0, 1), (1, 1), (1, 1), (1, 0)]
 
     """
     return zip(*[symbols[i:] for i in range(ngram)])
 
+# ----------------------------------------------------------------------------
 
 def symbols_to_items( symbols, ngram ):
     """
     Convert a list of symbols into a dictionary of items.
 
-    @return dictionary with key=symbol, value=number of occurrences
+    Example:
+        >>>symbols=[0,1,0,1,1,1,0]
+        >>>print symbols_to_items(symbols,2)
+        >>>{(0, 1): 2, (1, 0): 2, (1, 1): 2}
+
+    @return dictionary with key=tuple of symbols, value=number of occurrences
 
     """
     nsymbols = find_ngrams(symbols, ngram)
+
     exr = {}
     for each in nsymbols:
         v = 1 + exr.get(each,0)
         exr[each] = v
 
     return exr
+
+# ----------------------------------------------------------------------------
+
+if __name__ == "__main__":
+
+    symbols=[0,1,0,1,1,1,0]
+    print find_ngrams(symbols,2)
+    print symbols_to_items(symbols,2)
+

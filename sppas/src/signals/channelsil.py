@@ -39,21 +39,12 @@ __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-
 # ----------------------------------------------------------------------------
-
-import sys
-import getopt
-import codecs
-import os
 
 import signals
 from signals import audioutils
-from audio import Audio
-
 
 # ----------------------------------------------------------------------------
-
 
 class ChannelSil:
     """
@@ -63,7 +54,6 @@ class ChannelSil:
     @summary: This class implements the silence finding on channels.
 
     """
-
     def __init__(self, channel, m=0.3):
         """
         Create a ChannelSil audio instance.
@@ -76,9 +66,7 @@ class ChannelSil:
         self.silence   = None
         self.minlenght = m
 
-    # End __init__
     # ------------------------------------------------------------------
-
 
     def set_mintrack(self, m):
         """
@@ -89,16 +77,15 @@ class ChannelSil:
         """
         self.minlenght = float(m)
 
-    # End set_minlength
-    # ------------------------------------------------------------------
-
-
     # ------------------------------------------------------------------
     # Silence detection
     # ------------------------------------------------------------------
 
-
     def tracks(self):
+        """
+        Yield tuples (from,to) of the tracks.
+
+        """
         from_pos = 0
         if self.silence is None or len(self.silence)==0:
         # No silence: Only one track!
@@ -112,18 +99,17 @@ class ChannelSil:
             from_pos = next_from
 
         # Last track after the last silence
-        # (if the silence does not end at the end of the wav)
+        # (if the silence does not end at the end of the channel)
         to_pos = self.channel.get_nframes()
         if (to_pos - from_pos) >= (self.minlenght * self.channel.get_framerate()):
             yield int(from_pos), int(to_pos)
 
-    # End tracks
     # ------------------------------------------------------------------
-
 
     def track_data(self, tracks):
         """
         Get the track data: a set of frames for each track.
+
         """
         nframes = self.channel.get_nframes()
         for from_pos, to_pos in tracks:
@@ -138,33 +124,39 @@ class ChannelSil:
             # Keep in mind the related frames
             yield self.channel.get_frames(to_pos - from_pos)
 
-    # End track_data
     # ------------------------------------------------------------------
-
 
     def get_silence(self, p=0.250, v=150, s=0.0):
         """
         Get silences from an audio file.
 
+        @param p (float) Minimum silence duration in seconds
+        @param v (int) Expected minimum volume (rms value)
+        @param s (float) Shift delta duration in seconds
         @return a set of frames corresponding to silences.
 
         """
         self.silence = []
+
         # Once silence has been found, continue searching in this interval
         afterloop_frames = int((self.channel.get_frameduration()/2) * self.channel.get_framerate())
         initpos = i = self.channel.tell()
-        self.silence = []
+
         # This scans the file in steps of frames whether a section's volume
         # is lower than silence_cap, if it is it is written to silence.
         while i < self.channel.get_nframes():
-            curframe  = self.channel.get_frames(self.channel.nbreadframes)
-            volume    = audioutils.get_rms(curframe, self.channel.get_sampwidth())
+
+            curframe = self.channel.get_frames(self.channel.nbreadframes)
+            volume   = audioutils.get_rms(curframe, self.channel.get_sampwidth())
+
             if volume < v:
+
                 # Continue searching in smaller steps whether the silence is
-                # longer than readed frames but smaller than readed frames * 2.
+                # longer than read frames but smaller than read frames * 2.
                 while volume < v and self.channel.tell() < self.channel.get_nframes():
                     curframe = self.channel.get_frames(afterloop_frames)
                     volume   = audioutils.get_rms(curframe, self.channel.get_sampwidth())
+
                 # If the last sequence of silence ends where the new one starts
                 # it's a continuous range.
                 if self.silence and self.silence[-1][1] == i:
@@ -179,19 +171,15 @@ class ChannelSil:
                         # Adjust silence end-pos
                         __endpos = self.channel.tell() - ( s * self.channel.get_framerate() )
                         self.silence.append([__startpos, __endpos])
+
             i = self.channel.tell()
 
         # Return the position in the file to where it was when we got it.
         self.channel.seek(initpos)
 
-    # End get_silence
     # ------------------------------------------------------------------
-
 
     def set_silence(self, silence):
         self.silence = silence
-
-    # End set_silence
-    # ------------------------------------------------------------------
 
 # ----------------------------------------------------------------------

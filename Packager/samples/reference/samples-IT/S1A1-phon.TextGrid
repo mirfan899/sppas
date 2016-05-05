@@ -1,15 +1,18 @@
-File type = "ooTextFile short"
-"TextGrid"
+File type = "ooTextFile"
+Object class = "TextGrid"
 
-0.0
-1.460687
-<exists>
-1
-"IntervalTier"
-"Phonetization"
-0.0
-1.460687
-1
-0.0
-1.460687
-" r.a.l.e.g.o|r.a.l.E.g.o v.e.d.e|v.E.d.E|v.E.d.e|v.e.d.E l.a.d.o.n.a|l.a.d.O.n.a "
+xmin = 0.0
+xmax = 1.460687
+tiers? <exists>
+size = 1
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "Phonetization"
+        xmin = 0.000000
+        xmax = 1.460687
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 1.460687
+            text = "r-a-l-e-g-o|r-a-l-E-g-o v-e-d-e|v-E-d-E|v-E-d-e|v-e-d-E l-a-d-o-n-a|l-a-d-O-n-a"

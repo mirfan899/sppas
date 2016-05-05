@@ -9,19 +9,19 @@ item []:
     item [1]:
         class = "IntervalTier"
         name = "Syllables"
-        xmin = 0.0
-        xmax = 10.0
+        xmin = 0.000000
+        xmax = 10.000000
         intervals: size = 31
         intervals [1]:
             xmin = 0.0
-            xmax = 0.165
+            xmax = 0.17
             text = "as"
         intervals [2]:
-            xmin = 0.165
-            xmax = 0.415
+            xmin = 0.17
+            xmax = 0.41
             text = "tri"
         intervals [3]:
-            xmin = 0.415
+            xmin = 0.41
             xmax = 0.795
             text = "Sa"
         intervals [4]:
@@ -30,14 +30,14 @@ item []:
             text = "#"
         intervals [5]:
             xmin = 1.1
-            xmax = 1.305
+            xmax = 1.32
             text = "las"
         intervals [6]:
-            xmin = 1.305
-            xmax = 1.575
+            xmin = 1.32
+            xmax = 1.57
             text = "tri"
         intervals [7]:
-            xmin = 1.575
+            xmin = 1.57
             xmax = 1.97
             text = "Sa"
         intervals [8]:
@@ -46,14 +46,14 @@ item []:
             text = "#"
         intervals [9]:
             xmin = 2.28
-            xmax = 2.495
+            xmax = 2.49
             text = "las"
         intervals [10]:
-            xmin = 2.495
-            xmax = 2.755
+            xmin = 2.49
+            xmax = 2.75
             text = "tri"
         intervals [11]:
-            xmin = 2.755
+            xmin = 2.75
             xmax = 3.135
             text = "Sa"
         intervals [12]:
@@ -62,14 +62,14 @@ item []:
             text = "#"
         intervals [13]:
             xmin = 3.555
-            xmax = 3.79
+            xmax = 3.785
             text = "las"
         intervals [14]:
-            xmin = 3.79
-            xmax = 4.05
+            xmin = 3.785
+            xmax = 4.035
             text = "tri"
         intervals [15]:
-            xmin = 4.05
+            xmin = 4.035
             xmax = 4.425
             text = "Sa"
         intervals [16]:
@@ -78,14 +78,14 @@ item []:
             text = "#"
         intervals [17]:
             xmin = 4.89
-            xmax = 5.045
+            xmax = 5.04
             text = "as"
         intervals [18]:
-            xmin = 5.045
-            xmax = 5.385
+            xmin = 5.04
+            xmax = 5.38
             text = "tri"
         intervals [19]:
-            xmin = 5.385
+            xmin = 5.38
             xmax = 5.77
             text = "Sa"
         intervals [20]:
@@ -94,14 +94,14 @@ item []:
             text = "#"
         intervals [21]:
             xmin = 6.24
-            xmax = 6.405
+            xmax = 6.4
             text = "las"
         intervals [22]:
-            xmin = 6.405
-            xmax = 6.785
+            xmin = 6.4
+            xmax = 6.78
             text = "tri"
         intervals [23]:
-            xmin = 6.785
+            xmin = 6.78
             xmax = 7.175
             text = "Sa"
         intervals [24]:
@@ -110,14 +110,14 @@ item []:
             text = "#"
         intervals [25]:
             xmin = 7.61
-            xmax = 7.835
+            xmax = 7.83
             text = "las"
         intervals [26]:
-            xmin = 7.835
-            xmax = 8.115
+            xmin = 7.83
+            xmax = 8.11
             text = "tri"
         intervals [27]:
-            xmin = 8.115
+            xmin = 8.11
             xmax = 8.505
             text = "Sa"
         intervals [28]:
@@ -126,32 +126,32 @@ item []:
             text = "#"
         intervals [29]:
             xmin = 9.07
-            xmax = 9.315
+            xmax = 9.31
             text = "las"
         intervals [30]:
-            xmin = 9.315
-            xmax = 9.545
+            xmin = 9.31
+            xmax = 9.54
             text = "tri"
         intervals [31]:
-            xmin = 9.545
+            xmin = 9.54
             xmax = 10.0
             text = "Sa"
     item [2]:
         class = "IntervalTier"
         name = "Classes"
-        xmin = 0.0
-        xmax = 10.0
+        xmin = 0.000000
+        xmax = 10.000000
         intervals: size = 31
         intervals [1]:
             xmin = 0.0
-            xmax = 0.165
+            xmax = 0.17
             text = "VF"
         intervals [2]:
-            xmin = 0.165
-            xmax = 0.415
+            xmin = 0.17
+            xmax = 0.41
             text = "OLV"
         intervals [3]:
-            xmin = 0.415
+            xmin = 0.41
             xmax = 0.795
             text = "FV"
         intervals [4]:
@@ -160,14 +160,14 @@ item []:
             text = "#"
         intervals [5]:
             xmin = 1.1
-            xmax = 1.305
+            xmax = 1.32
             text = "LVF"
         intervals [6]:
-            xmin = 1.305
-            xmax = 1.575
+            xmin = 1.32
+            xmax = 1.57
             text = "OLV"
         intervals [7]:
-            xmin = 1.575
+            xmin = 1.57
             xmax = 1.97
             text = "FV"
         intervals [8]:
@@ -176,14 +176,14 @@ item []:
             text = "#"
         intervals [9]:
             xmin = 2.28
-            xmax = 2.495
+            xmax = 2.49
             text = "LVF"
         intervals [10]:
-            xmin = 2.495
-            xmax = 2.755
+            xmin = 2.49
+            xmax = 2.75
             text = "OLV"
         intervals [11]:
-            xmin = 2.755
+            xmin = 2.75
             xmax = 3.135
             text = "FV"
         intervals [12]:
@@ -192,14 +192,14 @@ item []:
             text = "#"
         intervals [13]:
             xmin = 3.555
-            xmax = 3.79
+            xmax = 3.785
             text = "LVF"
         intervals [14]:
-            xmin = 3.79
-            xmax = 4.05
+            xmin = 3.785
+            xmax = 4.035
             text = "OLV"
         intervals [15]:
-            xmin = 4.05
+            xmin = 4.035
             xmax = 4.425
             text = "FV"
         intervals [16]:
@@ -208,14 +208,14 @@ item []:
             text = "#"
         intervals [17]:
             xmin = 4.89
-            xmax = 5.045
+            xmax = 5.04
             text = "VF"
         intervals [18]:
-            xmin = 5.045
-            xmax = 5.385
+            xmin = 5.04
+            xmax = 5.38
             text = "OLV"
         intervals [19]:
-            xmin = 5.385
+            xmin = 5.38
             xmax = 5.77
             text = "FV"
         intervals [20]:
@@ -224,14 +224,14 @@ item []:
             text = "#"
         intervals [21]:
             xmin = 6.24
-            xmax = 6.405
+            xmax = 6.4
             text = "LVF"
         intervals [22]:
-            xmin = 6.405
-            xmax = 6.785
+            xmin = 6.4
+            xmax = 6.78
             text = "OLV"
         intervals [23]:
-            xmin = 6.785
+            xmin = 6.78
             xmax = 7.175
             text = "FV"
         intervals [24]:
@@ -240,14 +240,14 @@ item []:
             text = "#"
         intervals [25]:
             xmin = 7.61
-            xmax = 7.835
+            xmax = 7.83
             text = "LVF"
         intervals [26]:
-            xmin = 7.835
-            xmax = 8.115
+            xmin = 7.83
+            xmax = 8.11
             text = "OLV"
         intervals [27]:
-            xmin = 8.115
+            xmin = 8.11
             xmax = 8.505
             text = "FV"
         intervals [28]:
@@ -256,32 +256,32 @@ item []:
             text = "#"
         intervals [29]:
             xmin = 9.07
-            xmax = 9.315
+            xmax = 9.31
             text = "LVF"
         intervals [30]:
-            xmin = 9.315
-            xmax = 9.545
+            xmin = 9.31
+            xmax = 9.54
             text = "OLV"
         intervals [31]:
-            xmin = 9.545
+            xmin = 9.54
             xmax = 10.0
             text = "FV"
     item [3]:
         class = "IntervalTier"
         name = "Structures"
-        xmin = 0.0
-        xmax = 10.0
+        xmin = 0.000000
+        xmax = 10.000000
         intervals: size = 31
         intervals [1]:
             xmin = 0.0
-            xmax = 0.165
+            xmax = 0.17
             text = "VC"
         intervals [2]:
-            xmin = 0.165
-            xmax = 0.415
+            xmin = 0.17
+            xmax = 0.41
             text = "CCV"
         intervals [3]:
-            xmin = 0.415
+            xmin = 0.41
             xmax = 0.795
             text = "CV"
         intervals [4]:
@@ -290,14 +290,14 @@ item []:
             text = "#"
         intervals [5]:
             xmin = 1.1
-            xmax = 1.305
+            xmax = 1.32
             text = "CVC"
         intervals [6]:
-            xmin = 1.305
-            xmax = 1.575
+            xmin = 1.32
+            xmax = 1.57
             text = "CCV"
         intervals [7]:
-            xmin = 1.575
+            xmin = 1.57
             xmax = 1.97
             text = "CV"
         intervals [8]:
@@ -306,14 +306,14 @@ item []:
             text = "#"
         intervals [9]:
             xmin = 2.28
-            xmax = 2.495
+            xmax = 2.49
             text = "CVC"
         intervals [10]:
-            xmin = 2.495
-            xmax = 2.755
+            xmin = 2.49
+            xmax = 2.75
             text = "CCV"
         intervals [11]:
-            xmin = 2.755
+            xmin = 2.75
             xmax = 3.135
             text = "CV"
         intervals [12]:
@@ -322,14 +322,14 @@ item []:
             text = "#"
         intervals [13]:
             xmin = 3.555
-            xmax = 3.79
+            xmax = 3.785
             text = "CVC"
         intervals [14]:
-            xmin = 3.79
-            xmax = 4.05
+            xmin = 3.785
+            xmax = 4.035
             text = "CCV"
         intervals [15]:
-            xmin = 4.05
+            xmin = 4.035
             xmax = 4.425
             text = "CV"
         intervals [16]:
@@ -338,14 +338,14 @@ item []:
             text = "#"
         intervals [17]:
             xmin = 4.89
-            xmax = 5.045
+            xmax = 5.04
             text = "VC"
         intervals [18]:
-            xmin = 5.045
-            xmax = 5.385
+            xmin = 5.04
+            xmax = 5.38
             text = "CCV"
         intervals [19]:
-            xmin = 5.385
+            xmin = 5.38
             xmax = 5.77
             text = "CV"
         intervals [20]:
@@ -354,14 +354,14 @@ item []:
             text = "#"
         intervals [21]:
             xmin = 6.24
-            xmax = 6.405
+            xmax = 6.4
             text = "CVC"
         intervals [22]:
-            xmin = 6.405
-            xmax = 6.785
+            xmin = 6.4
+            xmax = 6.78
             text = "CCV"
         intervals [23]:
-            xmin = 6.785
+            xmin = 6.78
             xmax = 7.175
             text = "CV"
         intervals [24]:
@@ -370,14 +370,14 @@ item []:
             text = "#"
         intervals [25]:
             xmin = 7.61
-            xmax = 7.835
+            xmax = 7.83
             text = "CVC"
         intervals [26]:
-            xmin = 7.835
-            xmax = 8.115
+            xmin = 7.83
+            xmax = 8.11
             text = "CCV"
         intervals [27]:
-            xmin = 8.115
+            xmin = 8.11
             xmax = 8.505
             text = "CV"
         intervals [28]:
@@ -386,13 +386,13 @@ item []:
             text = "#"
         intervals [29]:
             xmin = 9.07
-            xmax = 9.315
+            xmax = 9.31
             text = "CVC"
         intervals [30]:
-            xmin = 9.315
-            xmax = 9.545
+            xmin = 9.31
+            xmax = 9.54
             text = "CCV"
         intervals [31]:
-            xmin = 9.545
+            xmin = 9.54
             xmax = 10.0
             text = "CV"

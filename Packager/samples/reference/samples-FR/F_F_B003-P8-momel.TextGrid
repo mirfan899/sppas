@@ -2,30 +2,30 @@ File type = "ooTextFile"
 Object class = "TextGrid"
 
 xmin = 0.0
-xmax = 19.3361933394
+xmax = 19.3361933395
 tiers? <exists>
 size = 2
 item []:
     item [1]:
         class = "TextTier"
         name = "Momel"
-        xmin = 0.276468698582
-        xmax = 19.3361933394
-        points: size = 56
+        xmin = 0.276469
+        xmax = 19.336193
+        intervals: size = 56
         points [1]:
-            time = 0.276468698582
+            time = 0.27646869941
             mark = "79"
         points [2]:
             time = 0.589158425464
             mark = "51"
         points [3]:
-            time = 1.63640263329
-            mark = "255"
+            time = 1.6347916633
+            mark = "254"
         points [4]:
-            time = 2.55016791979
+            time = 2.5501679198
             mark = "117"
         points [5]:
-            time = 2.66929840575
+            time = 2.66929840574
             mark = "131"
         points [6]:
             time = 2.83556877334
@@ -52,19 +52,19 @@ item []:
             time = 4.2186037312
             mark = "99"
         points [14]:
-            time = 4.58000905924
+            time = 4.58000905923
             mark = "101"
         points [15]:
-            time = 5.04044893446
-            mark = "128"
+            time = 5.03141303561
+            mark = "129"
         points [16]:
-            time = 5.43268189428
-            mark = "93"
+            time = 5.43573899179
+            mark = "95"
         points [17]:
             time = 5.66663344341
             mark = "132"
         points [18]:
-            time = 5.77266109472
+            time = 5.77266109471
             mark = "99"
         points [19]:
             time = 5.95453778789
@@ -73,13 +73,13 @@ item []:
             time = 6.22827190125
             mark = "100"
         points [21]:
-            time = 6.38766067254
+            time = 6.38766067255
             mark = "107"
         points [22]:
             time = 6.59670151902
             mark = "170"
         points [23]:
-            time = 6.91020115741
+            time = 6.91020115742
             mark = "97"
         points [24]:
             time = 7.24231325671
@@ -91,10 +91,10 @@ item []:
             time = 7.71172067662
             mark = "117"
         points [27]:
-            time = 8.00741393759
+            time = 8.00741393731
             mark = "94"
         points [28]:
-            time = 8.3695804623
+            time = 8.36958046243
             mark = "94"
         points [29]:
             time = 9.25073505753
@@ -139,7 +139,7 @@ item []:
             time = 13.3687742767
             mark = "98"
         points [43]:
-            time = 13.6677658905
+            time = 13.6677658904
             mark = "131"
         points [44]:
             time = 14.3322273038
@@ -178,28 +178,28 @@ item []:
             time = 19.1464995789
             mark = "104"
         points [56]:
-            time = 19.3361933394
+            time = 19.3361933395
             mark = "94"
     item [2]:
         class = "TextTier"
         name = "Intsint"
-        xmin = 0.276468698582
-        xmax = 19.3361933394
-        points: size = 56
+        xmin = 0.276469
+        xmax = 19.336193
+        intervals: size = 56
         points [1]:
-            time = 0.276468698582
+            time = 0.27646869941
             mark = "B"
         points [2]:
             time = 0.589158425464
             mark = "S"
         points [3]:
-            time = 1.63640263329
+            time = 1.6347916633
             mark = "T"
         points [4]:
-            time = 2.55016791979
+            time = 2.5501679198
             mark = "M"
         points [5]:
-            time = 2.66929840575
+            time = 2.66929840574
             mark = "D"
         points [6]:
             time = 2.83556877334
@@ -226,19 +226,19 @@ item []:
             time = 4.2186037312
             mark = "L"
         points [14]:
-            time = 4.58000905924
+            time = 4.58000905923
             mark = "D"
         points [15]:
-            time = 5.04044893446
+            time = 5.03141303561
             mark = "U"
         points [16]:
-            time = 5.43268189428
+            time = 5.43573899179
             mark = "L"
         points [17]:
             time = 5.66663344341
             mark = "U"
         points [18]:
-            time = 5.77266109472
+            time = 5.77266109471
             mark = "L"
         points [19]:
             time = 5.95453778789
@@ -247,13 +247,13 @@ item []:
             time = 6.22827190125
             mark = "D"
         points [21]:
-            time = 6.38766067254
+            time = 6.38766067255
             mark = "S"
         points [22]:
             time = 6.59670151902
             mark = "H"
         points [23]:
-            time = 6.91020115741
+            time = 6.91020115742
             mark = "B"
         points [24]:
             time = 7.24231325671
@@ -265,10 +265,10 @@ item []:
             time = 7.71172067662
             mark = "U"
         points [27]:
-            time = 8.00741393759
+            time = 8.00741393731
             mark = "L"
         points [28]:
-            time = 8.3695804623
+            time = 8.36958046243
             mark = "L"
         points [29]:
             time = 9.25073505753
@@ -313,7 +313,7 @@ item []:
             time = 13.3687742767
             mark = "L"
         points [43]:
-            time = 13.6677658905
+            time = 13.6677658904
             mark = "U"
         points [44]:
             time = 14.3322273038
@@ -352,5 +352,5 @@ item []:
             time = 19.1464995789
             mark = "S"
         points [56]:
-            time = 19.3361933394
+            time = 19.3361933395
             mark = "S"

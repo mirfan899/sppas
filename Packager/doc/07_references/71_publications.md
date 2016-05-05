@@ -14,12 +14,14 @@ author website, at the following URL:
 
 ### Main reference
 
+#### How to cite SPPAS?
+
 > *Brigitte Bigi (2015).*
 > **SPPAS - Multi-lingual Approaches to the Automatic Annotation of Speech**.
-> In "the Phonetician", International Society of Phonetic Sciences,
-> Volume 111-112, Pages 55-69.
+> In "the Phonetician" - International Society of Phonetic Sciences, 
+> ISSN 0741-6164, Number 111-112 / 2015-I-II, pages 54-69. 
 
-Summary:
+#### Summary
 
 The first step of most acoustic analyses unavoidably involves the alignment of
 recorded speech sounds with their phonetic annotation. This step is very
@@ -41,8 +43,6 @@ quality of the automatic annotations is largely influenced by external
 resources, and the users can modify the process as needed. In that sense,
 phoneticians need automatic tools and these tools can be significantly
 improved by phonetician input.
-
-
 
 
 ### Specific references

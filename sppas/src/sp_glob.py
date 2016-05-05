@@ -37,31 +37,42 @@
 
 import os.path
 
+"""
+@author:       Brigitte Bigi
+@organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+@summary:      This is the list of SPPAS global variables.
+
+"""
+
 # ---------------------------------------------------------------------------
-# Define the base path of SPPAS sources
+# Define paths
 # ---------------------------------------------------------------------------
 
+# SPPAS base directory
 BASE_PATH = os.path.dirname( os.path.dirname( os.path.abspath(__file__) ) )
 
-# ---------------------------------------------------------------------------
-# Define all paths (relatively to BASE_SPPAS)
-# ---------------------------------------------------------------------------
-
-PLUGIN_PATH    = os.path.join( BASE_PATH, "plugins" )
-ICONS_PATH     = os.path.join( BASE_PATH, "etc", "icons" )
-TIPS_ICON_PATH = os.path.join( BASE_PATH, "etc","tips") #
-TIPS_FILE      = os.path.join( BASE_PATH, "etc","tips","tips.txt")
-SETTINGS_FILE  = os.path.join( BASE_PATH, "etc", "settings.dump")
-
+# SPPAS folders
+PLUGIN_PATH    = os.path.join( os.path.dirname(BASE_PATH), "plugins" )
 RESOURCES_PATH = os.path.join( os.path.dirname(BASE_PATH), "resources" )
 SAMPLES_PATH   = os.path.join( os.path.dirname(BASE_PATH), "samples" )
+DOCUMENTATION_PATH = os.path.join( os.path.dirname(BASE_PATH), "documentation" )
+
+# et cetera
+ICONS_PATH     = os.path.join( BASE_PATH, "etc", "icons" )
+TIPS_ICON_PATH = os.path.join( BASE_PATH, "etc", "tips")
+TIPS_FILE      = os.path.join( BASE_PATH, "etc", "tips","tips.txt")
+SETTINGS_FILE  = os.path.join( BASE_PATH, "etc", "settings.dump")
+
 
 # ---------------------------------------------------------------------------
 # Define configuration for annotations
 # ---------------------------------------------------------------------------
 
 ANNOTATIONS_LIST_FILE = os.path.join( BASE_PATH, "etc", "annotations.conf")
-UNKSTAMP="UNK"
+UNKSTAMP=u"UNK"
 
 # Default output extension must be one of the list:
 #  annotationdata.io.extensions_out_multitiers
@@ -70,16 +81,18 @@ DEFAULT_OUTPUT_EXTENSION = ".xra"
 # Default input/output encoding
 encoding = 'utf-8'
 
+
 # ---------------------------------------------------------------------------
 # Constants: ID
 # ---------------------------------------------------------------------------
 
-# Annotation log status (TO BE USED... TODO!):
+# Annotation status, mainly used for log
 ERROR_ID   = -1
 INFO_ID    = 3
 IGNORE_ID  = 2
 WARNING_ID = 1
 OK_ID      = 0
+
 
 # ---------------------------------------------------------------------------
 # Constants: SPPAS Information
@@ -88,7 +101,7 @@ OK_ID      = 0
 author     = "Brigitte Bigi"
 contact    = "brigite.bigi@gmail.com"
 program    = "SPPAS"
-version    = "1.7.7"
+version    = "1.7.8"
 copyright  = "Copyright (C) 2011-2016 Brigitte Bigi"
 url        = "http://www.sppas.org/"
 brief      = "SPPAS produces automatically annotations\nfrom a recorded speech sound and its transcription\nand performs the analysis of any annotated data."
@@ -98,7 +111,6 @@ license_text = """
 ------------------------------------------------------------
 
 By using SPPAS, you agree to cite a reference in your publications.
-See the documentation to get the list of references.
 
 ------------------------------------------------------------
 

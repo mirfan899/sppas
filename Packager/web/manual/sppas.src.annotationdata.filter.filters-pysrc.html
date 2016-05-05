@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>sppas.src.annotationdata.filter.filters</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.lpl-aix.fr/~bigi/sppas/">SPPAS</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;sppas ::
+        Package&nbsp;src ::
+        <a href="sppas.src.annotationdata-module.html">Package&nbsp;annotationdata</a> ::
+        <a href="sppas.src.annotationdata.filter-module.html">Package&nbsp;filter</a> ::
+        Module&nbsp;filters
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="sppas.src.annotationdata.filter.filters-module.html">Module sppas.src.annotationdata.filter.filters</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment">#!/usr/bin/env python2</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"># vim: set fileencoding=UTF-8 ts=4 sw=4 expandtab:</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment"># ---------------------------------------------------------------------------</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment">#            ___   __    __    __    ___</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment">#           /     |  \  |  \  |  \  /              Automatic</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment">#           \__   |__/  |__/  |___| \__             Annotation</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment">#              \  |     |     |   |    \             of</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment">#           ___/  |     |     |   | ___/              Speech</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment">#                           http://www.sppas.org/</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment"># ---------------------------------------------------------------------------</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment">#            Laboratoire Parole et Langage, Aix-en-Provence, France</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment">#                   Copyright (C) 2011-2016  Brigitte Bigi</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-comment">#                   This banner notice must not be removed</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-comment"># ---------------------------------------------------------------------------</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-comment"># Use of this software is governed by the GNU Public License, version 3.</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-comment"># SPPAS is free software: you can redistribute it and/or modify</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-comment"># it under the terms of the GNU General Public License as published by</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-comment"># the Free Software Foundation, either version 3 of the License, or</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-comment"># (at your option) any later version.</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-comment"># SPPAS is distributed in the hope that it will be useful,</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-comment"># but WITHOUT ANY WARRANTY; without even the implied warranty of</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-comment"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-comment"># GNU General Public License for more details.</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-comment"># You should have received a copy of the GNU General Public License</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-comment"># along with SPPAS. If not, see &lt;http://www.gnu.org/licenses/&gt;.</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-comment"># ---------------------------------------------------------------------------</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-comment"># File: filters.py</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-comment"># ----------------------------------------------------------------------------</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-name">__docformat__</tt> <tt class="py-op">=</tt> <tt class="py-docstring">"""epytext"""</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-name">__authors__</tt>   <tt class="py-op">=</tt> <tt class="py-string">"""Tatsuya Watanabe, Brigitte Bigi (brigitte.bigi@gmail.com), Gr&#233;goire Montcheuil"""</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt id="link-0" class="py-name" targets="Variable sppas.src.annotationdata.filter._relations.__copyright__=sppas.src.annotationdata.filter._relations-module.html#__copyright__,Variable sppas.src.annotationdata.io.__copyright__=sppas.src.annotationdata.io-module.html#__copyright__"><a title="sppas.src.annotationdata.filter._relations.__copyright__
+sppas.src.annotationdata.io.__copyright__" class="py-name" href="#" onclick="return doclink('link-0', '__copyright__', 'link-0');">__copyright__</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"""Copyright (C) 2011-2015  Brigitte Bigi"""</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-comment"># ----------------------------------------------------------------------------</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-1" class="py-name" targets="Package sppas.src.annotationdata=sppas.src.annotationdata-module.html"><a title="sppas.src.annotationdata" class="py-name" href="#" onclick="return doclink('link-1', 'annotationdata', 'link-1');">annotationdata</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module sppas.src.annotationdata.tier=sppas.src.annotationdata.tier-module.html"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-2', 'tier', 'link-2');">tier</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Class sppas.src.annotationdata.tier.Tier=sppas.src.annotationdata.tier.Tier-class.html"><a title="sppas.src.annotationdata.tier.Tier" class="py-name" href="#" onclick="return doclink('link-3', 'Tier', 'link-3');">Tier</a></tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-4" class="py-name" targets="Module sppas.src.annotationdata.filter.predicate=sppas.src.annotationdata.filter.predicate-module.html"><a title="sppas.src.annotationdata.filter.predicate" class="py-name" href="#" onclick="return doclink('link-4', 'predicate', 'link-4');">predicate</a></tt> <tt class="py-keyword">import</tt> <tt id="link-5" class="py-name" targets="Class sppas.src.annotationdata.filter.Predicate=sppas.src.annotationdata.filter.Predicate-class.html,Class sppas.src.annotationdata.filter.predicate.Predicate=sppas.src.annotationdata.filter.predicate.Predicate-class.html"><a title="sppas.src.annotationdata.filter.Predicate
+sppas.src.annotationdata.filter.predicate.Predicate" class="py-name" href="#" onclick="return doclink('link-5', 'Predicate', 'link-5');">Predicate</a></tt><tt class="py-op">,</tt><tt id="link-6" class="py-name" targets="Class sppas.src.annotationdata.filter.RelationPredicate=sppas.src.annotationdata.filter.RelationPredicate-class.html,Class sppas.src.annotationdata.filter.predicate.RelationPredicate=sppas.src.annotationdata.filter.predicate.RelationPredicate-class.html"><a title="sppas.src.annotationdata.filter.RelationPredicate
+sppas.src.annotationdata.filter.predicate.RelationPredicate" class="py-name" href="#" onclick="return doclink('link-6', 'RelationPredicate', 'link-6');">RelationPredicate</a></tt><tt class="py-op">,</tt><tt id="link-7" class="py-name" targets="Class sppas.src.annotationdata.filter.predicate.Sel=sppas.src.annotationdata.filter.predicate.Sel-class.html"><a title="sppas.src.annotationdata.filter.predicate.Sel" class="py-name" href="#" onclick="return doclink('link-7', 'Sel', 'link-7');">Sel</a></tt><tt class="py-op">,</tt><tt id="link-8" class="py-name" targets="Class sppas.src.annotationdata.filter.Rel=sppas.src.annotationdata.filter.Rel-class.html,Class sppas.src.annotationdata.filter.predicate.Rel=sppas.src.annotationdata.filter.predicate.Rel-class.html"><a title="sppas.src.annotationdata.filter.Rel
+sppas.src.annotationdata.filter.predicate.Rel" class="py-name" href="#" onclick="return doclink('link-8', 'Rel', 'link-8');">Rel</a></tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-comment"># ----------------------------------------------------------------------------</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"> </tt>
+<a name="FilterFactory"></a><div id="FilterFactory-def"><a name="L50"></a><tt class="py-lineno"> 50</tt> <a class="py-toggle" href="#" id="FilterFactory-toggle" onclick="return toggle('FilterFactory');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="sppas.src.annotationdata.filter.filters.FilterFactory-class.html">FilterFactory</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FilterFactory-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="FilterFactory-expanded"><a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-docstring">    @deprecated</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="FilterFactory.__new__"></a><div id="FilterFactory.__new__-def"><a name="L54"></a><tt class="py-lineno"> 54</tt> <a class="py-toggle" href="#" id="FilterFactory.__new__-toggle" onclick="return toggle('FilterFactory.__new__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.filter.filters.FilterFactory-class.html#__new__">__new__</a><tt class="py-op">(</tt><tt class="py-param">cls</tt><tt class="py-op">,</tt> <tt class="py-param">tier</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">predicate</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FilterFactory.__new__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="FilterFactory.__new__-expanded"><a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-docstring">        Create a Filter.</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"><tt class="py-docstring">        @param tier: (Tier)</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"><tt class="py-docstring">        @param predicate: (Predicate)</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"><tt class="py-docstring">        @param kwargs:</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"><tt class="py-docstring">        @return: (Filter)</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-9" class="py-name"><a title="sppas.src.annotationdata.filter.predicate" class="py-name" href="#" onclick="return doclink('link-9', 'predicate', 'link-4');">predicate</a></tt> <tt class="py-keyword">and</tt> <tt class="py-keyword">not</tt> <tt class="py-name">kwargs</tt><tt class="py-op">:</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">            <tt id="link-10" class="py-name"><a title="sppas.src.annotationdata.filter.predicate" class="py-name" href="#" onclick="return doclink('link-10', 'predicate', 'link-4');">predicate</a></tt> <tt class="py-op">=</tt> <tt id="link-11" class="py-name"><a title="sppas.src.annotationdata.filter.predicate.Sel" class="py-name" href="#" onclick="return doclink('link-11', 'Sel', 'link-7');">Sel</a></tt><tt class="py-op">(</tt><tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">kwargs</tt><tt class="py-op">:</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">            <tt id="link-12" class="py-name"><a title="sppas.src.annotationdata.filter.predicate" class="py-name" href="#" onclick="return doclink('link-12', 'predicate', 'link-4');">predicate</a></tt> <tt class="py-op">=</tt> <tt id="link-13" class="py-name"><a title="sppas.src.annotationdata.filter.predicate.Sel" class="py-name" href="#" onclick="return doclink('link-13', 'Sel', 'link-7');">Sel</a></tt><tt class="py-op">(</tt><tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-keyword">not</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt id="link-14" class="py-name"><a title="sppas.src.annotationdata.filter.predicate" class="py-name" href="#" onclick="return doclink('link-14', 'predicate', 'link-4');">predicate</a></tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt id="link-15" class="py-name"><a title="sppas.src.annotationdata.filter.Predicate
+sppas.src.annotationdata.filter.predicate.Predicate" class="py-name" href="#" onclick="return doclink('link-15', 'Predicate', 'link-5');">Predicate</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">Exception</tt><tt class="py-op">(</tt><tt class="py-string">"Invalid argument %s"</tt> <tt class="py-op">%</tt> <tt id="link-16" class="py-name"><a title="sppas.src.annotationdata.filter.predicate" class="py-name" href="#" onclick="return doclink('link-16', 'predicate', 'link-4');">predicate</a></tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">            <tt id="link-17" class="py-name"><a title="sppas.src.annotationdata.filter.predicate" class="py-name" href="#" onclick="return doclink('link-17', 'predicate', 'link-4');">predicate</a></tt> <tt class="py-op">=</tt> <tt id="link-18" class="py-name"><a title="sppas.src.annotationdata.filter.predicate" class="py-name" href="#" onclick="return doclink('link-18', 'predicate', 'link-4');">predicate</a></tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">        <tt class="py-name">f</tt> <tt class="py-op">=</tt> <tt id="link-19" class="py-name" targets="Class sppas.src.annotationdata.filter.Filter=sppas.src.annotationdata.filter.Filter-class.html,Method sppas.src.annotationdata.filter.Filter.Filter()=sppas.src.annotationdata.filter.Filter-class.html#Filter,Method sppas.src.annotationdata.filter.LabelFilter.Filter()=sppas.src.annotationdata.filter.LabelFilter-class.html#Filter,Method sppas.src.annotationdata.filter.RelationFilter.Filter()=sppas.src.annotationdata.filter.RelationFilter-class.html#Filter,Class sppas.src.annotationdata.filter.filters.Filter=sppas.src.annotationdata.filter.filters.Filter-class.html,Method sppas.src.annotationdata.filter.filters.Filter.Filter()=sppas.src.annotationdata.filter.filters.Filter-class.html#Filter,Method sppas.src.annotationdata.filter.filters.RelationFilter.Filter()=sppas.src.annotationdata.filter.filters.RelationFilter-class.html#Filter,Method sppas.src.annotationdata.filter.filters.SingleFilter.Filter()=sppas.src.annotationdata.filter.filters.SingleFilter-class.html#Filter"><a title="sppas.src.annotationdata.filter.Filter
+sppas.src.annotationdata.filter.Filter.Filter
+sppas.src.annotationdata.filter.LabelFilter.Filter
+sppas.src.annotationdata.filter.RelationFilter.Filter
+sppas.src.annotationdata.filter.filters.Filter
+sppas.src.annotationdata.filter.filters.Filter.Filter
+sppas.src.annotationdata.filter.filters.RelationFilter.Filter
+sppas.src.annotationdata.filter.filters.SingleFilter.Filter" class="py-name" href="#" onclick="return doclink('link-19', 'Filter', 'link-19');">Filter</a></tt><tt class="py-op">(</tt><tt id="link-20" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-20', 'tier', 'link-2');">tier</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">f</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name" targets="Method sppas.src.annotationdata.filter.Filter.Label()=sppas.src.annotationdata.filter.Filter-class.html#Label,Method sppas.src.annotationdata.filter.filters.Filter.Label()=sppas.src.annotationdata.filter.filters.Filter-class.html#Label,Class sppas.src.annotationdata.label.label.Label=sppas.src.annotationdata.label.label.Label-class.html"><a title="sppas.src.annotationdata.filter.Filter.Label
+sppas.src.annotationdata.filter.filters.Filter.Label
+sppas.src.annotationdata.label.label.Label" class="py-name" href="#" onclick="return doclink('link-21', 'Label', 'link-21');">Label</a></tt><tt class="py-op">(</tt><tt id="link-22" class="py-name"><a title="sppas.src.annotationdata.filter.predicate" class="py-name" href="#" onclick="return doclink('link-22', 'predicate', 'link-4');">predicate</a></tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"><tt class="py-comment"># ----------------------------------------------------------------------------</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"> </tt>
+<a name="Filter"></a><div id="Filter-def"><a name="L77"></a><tt class="py-lineno"> 77</tt> <a class="py-toggle" href="#" id="Filter-toggle" onclick="return toggle('Filter');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="sppas.src.annotationdata.filter.filters.Filter-class.html">Filter</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Filter-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Filter-expanded"><a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"><tt class="py-docstring">    Create an empty Filter.</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; f = Filter(tier)</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; copytier = f.Filter()</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="Filter.__init__"></a><div id="Filter.__init__-def"><a name="L85"></a><tt class="py-lineno"> 85</tt> <a class="py-toggle" href="#" id="Filter.__init__-toggle" onclick="return toggle('Filter.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.filter.filters.Filter-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">tier</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Filter.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Filter.__init__-expanded"><a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"><tt class="py-docstring">        @param tier: (Tier)</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-23', 'tier', 'link-2');">tier</a></tt> <tt class="py-op">=</tt> <tt id="link-24" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-24', 'tier', 'link-2');">tier</a></tt> </tt>
+</div><a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"> </tt>
+<a name="Filter.__iter__"></a><div id="Filter.__iter__-def"><a name="L91"></a><tt class="py-lineno"> 91</tt> <a class="py-toggle" href="#" id="Filter.__iter__-toggle" onclick="return toggle('Filter.__iter__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.filter.filters.Filter-class.html#__iter__">__iter__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Filter.__iter__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Filter.__iter__-expanded"><a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">x</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-25', 'tier', 'link-2');">tier</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">            <tt class="py-keyword">yield</tt> <tt class="py-name">x</tt> </tt>
+</div><a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"> </tt>
+<a name="Filter.Label"></a><div id="Filter.Label-def"><a name="L95"></a><tt class="py-lineno"> 95</tt> <a class="py-toggle" href="#" id="Filter.Label-toggle" onclick="return toggle('Filter.Label');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.filter.filters.Filter-class.html#Label">Label</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">predicate</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Filter.Label-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Filter.Label-expanded"><a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"><tt class="py-docstring">        @deprecated</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-26" class="py-name" targets="Class sppas.src.annotationdata.filter.filters.SingleFilter=sppas.src.annotationdata.filter.filters.SingleFilter-class.html"><a title="sppas.src.annotationdata.filter.filters.SingleFilter" class="py-name" href="#" onclick="return doclink('link-26', 'SingleFilter', 'link-26');">SingleFilter</a></tt><tt class="py-op">(</tt><tt id="link-27" class="py-name"><a title="sppas.src.annotationdata.filter.predicate" class="py-name" href="#" onclick="return doclink('link-27', 'predicate', 'link-4');">predicate</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"> </tt>
+<a name="Filter.Link"></a><div id="Filter.Link-def"><a name="L101"></a><tt class="py-lineno">101</tt> <a class="py-toggle" href="#" id="Filter.Link-toggle" onclick="return toggle('Filter.Link');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.filter.filters.Filter-class.html#Link">Link</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">other</tt><tt class="py-op">,</tt> <tt class="py-param">relation</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Filter.Link-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Filter.Link-expanded"><a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"><tt class="py-docstring">        @deprecated</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"><tt class="py-docstring">        @param other:(Filter)</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"><tt class="py-docstring">        @param relation: (RelationPredicate)</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"><tt class="py-docstring">        @return: (RelationFilter)</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-28" class="py-name" targets="Class sppas.src.annotationdata.filter.RelationFilter=sppas.src.annotationdata.filter.RelationFilter-class.html,Class sppas.src.annotationdata.filter.filters.RelationFilter=sppas.src.annotationdata.filter.filters.RelationFilter-class.html"><a title="sppas.src.annotationdata.filter.RelationFilter
+sppas.src.annotationdata.filter.filters.RelationFilter" class="py-name" href="#" onclick="return doclink('link-28', 'RelationFilter', 'link-28');">RelationFilter</a></tt><tt class="py-op">(</tt><tt class="py-name">relation</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">other</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"> </tt>
+<a name="Filter.Filter"></a><div id="Filter.Filter-def"><a name="L112"></a><tt class="py-lineno">112</tt> <a class="py-toggle" href="#" id="Filter.Filter-toggle" onclick="return toggle('Filter.Filter');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.filter.filters.Filter-class.html#Filter">Filter</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Filter.Filter-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Filter.Filter-expanded"><a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line"><tt class="py-docstring">        Filter the given tier without any predicate: simply copy the tier!</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"><tt class="py-docstring">        @return: (Tier)</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">        <tt id="link-29" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-29', 'tier', 'link-2');">tier</a></tt> <tt class="py-op">=</tt> <tt id="link-30" class="py-name"><a title="sppas.src.annotationdata.tier.Tier" class="py-name" href="#" onclick="return doclink('link-30', 'Tier', 'link-3');">Tier</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">x</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-31', 'tier', 'link-2');">tier</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">                <tt id="link-32" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-32', 'tier', 'link-2');">tier</a></tt><tt class="py-op">.</tt><tt id="link-33" class="py-name" targets="Method sppas.src.annotationdata.ctrlvocab.CtrlVocab.Add()=sppas.src.annotationdata.ctrlvocab.CtrlVocab-class.html#Add,Method sppas.src.annotationdata.tier.Tier.Add()=sppas.src.annotationdata.tier.Tier-class.html#Add,Method sppas.src.annotationdata.transcription.Transcription.Add()=sppas.src.annotationdata.transcription.Transcription-class.html#Add"><a title="sppas.src.annotationdata.ctrlvocab.CtrlVocab.Add
+sppas.src.annotationdata.tier.Tier.Add
+sppas.src.annotationdata.transcription.Transcription.Add" class="py-name" href="#" onclick="return doclink('link-33', 'Add', 'link-33');">Add</a></tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name" targets="Method sppas.src.annotationdata.annotation.Annotation.Copy()=sppas.src.annotationdata.annotation.Annotation-class.html#Copy,Method sppas.src.annotationdata.ptime.duration.Duration.Copy()=sppas.src.annotationdata.ptime.duration.Duration-class.html#Copy,Method sppas.src.annotationdata.ptime.frameinterval.FrameInterval.Copy()=sppas.src.annotationdata.ptime.frameinterval.FrameInterval-class.html#Copy,Method sppas.src.annotationdata.ptime.framepoint.FramePoint.Copy()=sppas.src.annotationdata.ptime.framepoint.FramePoint-class.html#Copy,Method sppas.src.annotationdata.ptime.interval.TimeInterval.Copy()=sppas.src.annotationdata.ptime.interval.TimeInterval-class.html#Copy,Method sppas.src.annotationdata.ptime.location.Location.Copy()=sppas.src.annotationdata.ptime.location.Location-class.html#Copy,Method sppas.src.annotationdata.ptime.point.TimePoint.Copy()=sppas.src.annotationdata.ptime.point.TimePoint-class.html#Copy,Method sppas.src.annotationdata.tier.Tier.Copy()=sppas.src.annotationdata.tier.Tier-class.html#Copy,Method sppas.src.annotationdata.transcription.Transcription.Copy()=sppas.src.annotationdata.transcription.Transcription-class.html#Copy"><a title="sppas.src.annotationdata.annotation.Annotation.Copy
+sppas.src.annotationdata.ptime.duration.Duration.Copy
+sppas.src.annotationdata.ptime.frameinterval.FrameInterval.Copy
+sppas.src.annotationdata.ptime.framepoint.FramePoint.Copy
+sppas.src.annotationdata.ptime.interval.TimeInterval.Copy
+sppas.src.annotationdata.ptime.location.Location.Copy
+sppas.src.annotationdata.ptime.point.TimePoint.Copy
+sppas.src.annotationdata.tier.Tier.Copy
+sppas.src.annotationdata.transcription.Transcription.Copy" class="py-name" href="#" onclick="return doclink('link-34', 'Copy', 'link-34');">Copy</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">                <tt class="py-keyword">pass</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-35" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-35', 'tier', 'link-2');">tier</a></tt> </tt>
+</div></div><a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line"> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"><tt class="py-comment"># ----------------------------------------------------------------------------</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"> </tt>
+<a name="SingleFilter"></a><div id="SingleFilter-def"><a name="L130"></a><tt class="py-lineno">130</tt> <a class="py-toggle" href="#" id="SingleFilter-toggle" onclick="return toggle('SingleFilter');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="sppas.src.annotationdata.filter.filters.SingleFilter-class.html">SingleFilter</a><tt class="py-op">(</tt><tt class="py-base-class">Filter</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SingleFilter-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="SingleFilter-expanded"><a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line"><tt class="py-docstring">    Create a filter on a single filter.</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; f = Filter(tier)</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; p = Sel(exact='foo') | Sel(exact='bar') &amp; Sel(duration_le=0.2)</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; sf = SingleFilter(p,f)</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; newtier = sf.Filter()</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="SingleFilter.__init__"></a><div id="SingleFilter.__init__-def"><a name="L140"></a><tt class="py-lineno">140</tt> <a class="py-toggle" href="#" id="SingleFilter.__init__-toggle" onclick="return toggle('SingleFilter.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.filter.filters.SingleFilter-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">predicate</tt><tt class="py-op">,</tt> <tt class="py-param">filter</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SingleFilter.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SingleFilter.__init__-expanded"><a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"><tt class="py-docstring">        Constructor for SingleFilter, a filter on a single tier.</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"><tt class="py-docstring">        @param predicate (Predicate)</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"><tt class="py-docstring">        @param filter (either: Filter, SingleFilter, RelationFilter)</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-36" class="py-name" targets="Package sppas.src.annotationdata.filter=sppas.src.annotationdata.filter-module.html"><a title="sppas.src.annotationdata.filter" class="py-name" href="#" onclick="return doclink('link-36', 'filter', 'link-36');">filter</a></tt> <tt class="py-op">=</tt> <tt id="link-37" class="py-name"><a title="sppas.src.annotationdata.filter" class="py-name" href="#" onclick="return doclink('link-37', 'filter', 'link-36');">filter</a></tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-38" class="py-name"><a title="sppas.src.annotationdata.filter.predicate" class="py-name" href="#" onclick="return doclink('link-38', 'predicate', 'link-4');">predicate</a></tt> <tt class="py-op">=</tt> <tt id="link-39" class="py-name"><a title="sppas.src.annotationdata.filter.predicate" class="py-name" href="#" onclick="return doclink('link-39', 'predicate', 'link-4');">predicate</a></tt> </tt>
+</div><a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line"> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"> </tt>
+<a name="SingleFilter.__iter__"></a><div id="SingleFilter.__iter__-def"><a name="L152"></a><tt class="py-lineno">152</tt> <a class="py-toggle" href="#" id="SingleFilter.__iter__-toggle" onclick="return toggle('SingleFilter.__iter__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.filter.filters.SingleFilter-class.html#__iter__">__iter__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SingleFilter.__iter__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SingleFilter.__iter__-expanded"><a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">x</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-40" class="py-name"><a title="sppas.src.annotationdata.filter" class="py-name" href="#" onclick="return doclink('link-40', 'filter', 'link-36');">filter</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-41" class="py-name"><a title="sppas.src.annotationdata.filter.predicate" class="py-name" href="#" onclick="return doclink('link-41', 'predicate', 'link-4');">predicate</a></tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">                <tt class="py-keyword">yield</tt> <tt class="py-name">x</tt> </tt>
+</div><a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line"> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">    <tt class="py-comment"># -----------------------------------------------------------------------</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"> </tt>
+<a name="SingleFilter.Filter"></a><div id="SingleFilter.Filter-def"><a name="L159"></a><tt class="py-lineno">159</tt> <a class="py-toggle" href="#" id="SingleFilter.Filter-toggle" onclick="return toggle('SingleFilter.Filter');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.filter.filters.SingleFilter-class.html#Filter">Filter</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SingleFilter.Filter-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SingleFilter.Filter-expanded"><a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line"><tt class="py-docstring">        Apply the predicate on all annotations of the tier defined in the filter.</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"><tt class="py-docstring">        @return: (Tier)</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">        <tt id="link-42" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-42', 'tier', 'link-2');">tier</a></tt> <tt class="py-op">=</tt> <tt id="link-43" class="py-name"><a title="sppas.src.annotationdata.tier.Tier" class="py-name" href="#" onclick="return doclink('link-43', 'Tier', 'link-3');">Tier</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">x</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">:</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line">                <tt id="link-44" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-44', 'tier', 'link-2');">tier</a></tt><tt class="py-op">.</tt><tt id="link-45" class="py-name"><a title="sppas.src.annotationdata.ctrlvocab.CtrlVocab.Add
+sppas.src.annotationdata.tier.Tier.Add
+sppas.src.annotationdata.transcription.Transcription.Add" class="py-name" href="#" onclick="return doclink('link-45', 'Add', 'link-33');">Add</a></tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">.</tt><tt id="link-46" class="py-name"><a title="sppas.src.annotationdata.annotation.Annotation.Copy
+sppas.src.annotationdata.ptime.duration.Duration.Copy
+sppas.src.annotationdata.ptime.frameinterval.FrameInterval.Copy
+sppas.src.annotationdata.ptime.framepoint.FramePoint.Copy
+sppas.src.annotationdata.ptime.interval.TimeInterval.Copy
+sppas.src.annotationdata.ptime.location.Location.Copy
+sppas.src.annotationdata.ptime.point.TimePoint.Copy
+sppas.src.annotationdata.tier.Tier.Copy
+sppas.src.annotationdata.transcription.Transcription.Copy" class="py-name" href="#" onclick="return doclink('link-46', 'Copy', 'link-34');">Copy</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">                <tt class="py-keyword">pass</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-47" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-47', 'tier', 'link-2');">tier</a></tt> </tt>
+</div></div><a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line"> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">    <tt class="py-comment"># -----------------------------------------------------------------------</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line"> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"><tt class="py-comment"># ----------------------------------------------------------------------------</tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line"> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line"> </tt>
+<a name="RelationFilter"></a><div id="RelationFilter-def"><a name="L179"></a><tt class="py-lineno">179</tt> <a class="py-toggle" href="#" id="RelationFilter-toggle" onclick="return toggle('RelationFilter');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="sppas.src.annotationdata.filter.filters.RelationFilter-class.html">RelationFilter</a><tt class="py-op">(</tt><tt class="py-base-class">Filter</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RelationFilter-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="RelationFilter-expanded"><a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line"><tt class="py-docstring">    Create a filter on relations between 2 filters.</tt> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; fX = Filter(tier1)</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; fY = Filter(tier2)</tt> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; p = Rel("overlaps") | Rel("overlappedby")</tt> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; rf = RelationFilter(p,fX,fY)</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; newtier = rf.Filter()   # the new tier annotations have X's label</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; newtier2 = rf.Filter(annotformat="{x} {rel} {y}")       # the new tier annotations' labels show the X-Y relation</tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line"> </tt>
+<a name="RelationFilter.__init__"></a><div id="RelationFilter.__init__-def"><a name="L192"></a><tt class="py-lineno">192</tt> <a class="py-toggle" href="#" id="RelationFilter.__init__-toggle" onclick="return toggle('RelationFilter.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.filter.filters.RelationFilter-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">relation</tt><tt class="py-op">,</tt> <tt class="py-param">filter1</tt><tt class="py-op">,</tt> <tt class="py-param">filter2</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RelationFilter.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="RelationFilter.__init__-expanded"><a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line"><tt class="py-docstring">        Constructor for RelationFilter, a filter on relations between 2 filters.</tt> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line"><tt class="py-docstring">        @param relation: (RelationPredicate)</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line"><tt class="py-docstring">        @param filter1: (either: Filter, SingleFilter, RelationFilter)</tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line"><tt class="py-docstring">        @param filter2: (either: Filter, SingleFilter, RelationFilter)</tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">pred</tt> <tt class="py-op">=</tt> <tt class="py-name">relation</tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">filter1</tt> <tt class="py-op">=</tt> <tt class="py-name">filter1</tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">filter2</tt> <tt class="py-op">=</tt> <tt class="py-name">filter2</tt> </tt>
+</div><a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line"> </tt>
+<a name="RelationFilter.__iter__"></a><div id="RelationFilter.__iter__-def"><a name="L205"></a><tt class="py-lineno">205</tt> <a class="py-toggle" href="#" id="RelationFilter.__iter__-toggle" onclick="return toggle('RelationFilter.__iter__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.filter.filters.RelationFilter-class.html#__iter__">__iter__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RelationFilter.__iter__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="RelationFilter.__iter__-expanded"><a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line"><tt class="py-docstring">        Iterator</tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line"><tt class="py-docstring">        @return: a tuple (x, rel, y) with the annotations and their relation (type: (Annotation, string, Annotation))</tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">filter1</tt><tt class="py-op">,</tt> <tt id="link-48" class="py-name"><a title="sppas.src.annotationdata.filter.RelationFilter
+sppas.src.annotationdata.filter.filters.RelationFilter" class="py-name" href="#" onclick="return doclink('link-48', 'RelationFilter', 'link-28');">RelationFilter</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line">            <tt class="py-name">f1</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">x</tt> <tt class="py-keyword">for</tt> <tt class="py-name">x</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">filter1</tt> <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">x</tt><tt class="py-op">.</tt><tt id="link-49" class="py-name" targets="Method sppas.src.annotationdata.annotation.Annotation.GetLabel()=sppas.src.annotationdata.annotation.Annotation-class.html#GetLabel,Method sppas.src.annotationdata.label.label.Label.GetLabel()=sppas.src.annotationdata.label.label.Label-class.html#GetLabel"><a title="sppas.src.annotationdata.annotation.Annotation.GetLabel
+sppas.src.annotationdata.label.label.Label.GetLabel" class="py-name" href="#" onclick="return doclink('link-49', 'GetLabel', 'link-49');">GetLabel</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-50" class="py-name" targets="Method sppas.src.annotationdata.label.label.Label.IsEmpty()=sppas.src.annotationdata.label.label.Label-class.html#IsEmpty,Method sppas.src.annotationdata.tier.Tier.IsEmpty()=sppas.src.annotationdata.tier.Tier-class.html#IsEmpty,Method sppas.src.annotationdata.transcription.Transcription.IsEmpty()=sppas.src.annotationdata.transcription.Transcription-class.html#IsEmpty"><a title="sppas.src.annotationdata.label.label.Label.IsEmpty
+sppas.src.annotationdata.tier.Tier.IsEmpty
+sppas.src.annotationdata.transcription.Transcription.IsEmpty" class="py-name" href="#" onclick="return doclink('link-50', 'IsEmpty', 'link-50');">IsEmpty</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> <tt class="py-comment"># as RelationFilter iterator return a tuple (x, rel, y), we get the 1st value</tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line">            <tt class="py-name">f1</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">x</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> <tt class="py-keyword">for</tt> <tt class="py-name">x</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">filter1</tt><tt class="py-op">]</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line"> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">filter2</tt><tt class="py-op">,</tt> <tt id="link-51" class="py-name"><a title="sppas.src.annotationdata.filter.RelationFilter
+sppas.src.annotationdata.filter.filters.RelationFilter" class="py-name" href="#" onclick="return doclink('link-51', 'RelationFilter', 'link-28');">RelationFilter</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line">            <tt class="py-name">f2</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">x</tt> <tt class="py-keyword">for</tt> <tt class="py-name">x</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">filter2</tt> <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">x</tt><tt class="py-op">.</tt><tt id="link-52" class="py-name"><a title="sppas.src.annotationdata.annotation.Annotation.GetLabel
+sppas.src.annotationdata.label.label.Label.GetLabel" class="py-name" href="#" onclick="return doclink('link-52', 'GetLabel', 'link-49');">GetLabel</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-53" class="py-name"><a title="sppas.src.annotationdata.label.label.Label.IsEmpty
+sppas.src.annotationdata.tier.Tier.IsEmpty
+sppas.src.annotationdata.transcription.Transcription.IsEmpty" class="py-name" href="#" onclick="return doclink('link-53', 'IsEmpty', 'link-50');">IsEmpty</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> <tt class="py-comment"># as RelationFilter iterator return a tuple (x, rel, y), we get the 1st value</tt> </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line">            <tt class="py-name">f2</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">x</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> <tt class="py-keyword">for</tt> <tt class="py-name">x</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">filter2</tt><tt class="py-op">]</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line"> </tt>
+<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">x</tt> <tt class="py-keyword">in</tt> <tt class="py-name">f1</tt><tt class="py-op">:</tt> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">y</tt> <tt class="py-keyword">in</tt> <tt class="py-name">f2</tt><tt class="py-op">:</tt> </tt>
+<a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line">                <tt class="py-name">ret</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">pred</tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">,</tt> <tt class="py-name">y</tt><tt class="py-op">)</tt> </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">ret</tt><tt class="py-op">:</tt> </tt>
+<a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line">                    <tt class="py-keyword">yield</tt> <tt class="py-name">x</tt><tt class="py-op">,</tt> <tt class="py-name">ret</tt><tt class="py-op">,</tt> <tt class="py-name">y</tt> </tt>
+</div><a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line"> </tt>
+<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line">    <tt class="py-comment"># -----------------------------------------------------------------------</tt> </tt>
+<a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line"> </tt>
+<a name="RelationFilter.Filter"></a><div id="RelationFilter.Filter-def"><a name="L228"></a><tt class="py-lineno">228</tt> <a class="py-toggle" href="#" id="RelationFilter.Filter-toggle" onclick="return toggle('RelationFilter.Filter');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.filter.filters.RelationFilter-class.html#Filter">Filter</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">replace</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">,</tt> <tt class="py-param">annotformat</tt><tt class="py-op">=</tt><tt class="py-string">""</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RelationFilter.Filter-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="RelationFilter.Filter-expanded"><a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line"><tt class="py-docstring">        Apply the predicate on all annotations of the tier defined in the filter.</tt> </tt>
+<a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line"><tt class="py-docstring">        @type annotformat:      str</tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line"><tt class="py-docstring">        @param annotformat:     format of the resulting annotation label.</tt> </tt>
+<a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line"><tt class="py-docstring">            Use {x}, {y} for each annotation's label and {rel} for the relation.</tt> </tt>
+<a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line"><tt class="py-docstring">            By default we keep the x label (equivalent to "{x}").</tt> </tt>
+<a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line"><tt class="py-docstring">        @type replace:Boolean</tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line"><tt class="py-docstring">        @param replace: (deprecated) when True, equivalent of annotformat="{rel}"</tt> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line"><tt class="py-docstring">        @return: (Tier)</tt> </tt>
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line">        <tt id="link-54" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-54', 'tier', 'link-2');">tier</a></tt> <tt class="py-op">=</tt> <tt id="link-55" class="py-name"><a title="sppas.src.annotationdata.tier.Tier" class="py-name" href="#" onclick="return doclink('link-55', 'Tier', 'link-3');">Tier</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">replace</tt><tt class="py-op">:</tt> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line">            <tt class="py-name">annotformat</tt><tt class="py-op">=</tt><tt class="py-string">"{rel}"</tt> </tt>
+<a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line">        <tt class="py-comment"># feed the tier</tt> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">x</tt><tt class="py-op">,</tt> <tt class="py-name">rel</tt><tt class="py-op">,</tt> <tt class="py-name">y</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">:</tt> </tt>
+<a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line">            <tt class="py-name">a</tt> <tt class="py-op">=</tt> <tt class="py-name">x</tt><tt class="py-op">.</tt><tt id="link-56" class="py-name"><a title="sppas.src.annotationdata.annotation.Annotation.Copy
+sppas.src.annotationdata.ptime.duration.Duration.Copy
+sppas.src.annotationdata.ptime.frameinterval.FrameInterval.Copy
+sppas.src.annotationdata.ptime.framepoint.FramePoint.Copy
+sppas.src.annotationdata.ptime.interval.TimeInterval.Copy
+sppas.src.annotationdata.ptime.location.Location.Copy
+sppas.src.annotationdata.ptime.point.TimePoint.Copy
+sppas.src.annotationdata.tier.Tier.Copy
+sppas.src.annotationdata.transcription.Transcription.Copy" class="py-name" href="#" onclick="return doclink('link-56', 'Copy', 'link-34');">Copy</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">annotformat</tt><tt class="py-op">:</tt> <tt class="py-comment"># change the annotation label</tt> </tt>
+<a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line">                <tt class="py-name">annotlabel</tt> <tt class="py-op">=</tt> <tt class="py-name">annotformat</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">=</tt><tt class="py-name">x</tt><tt class="py-op">.</tt><tt id="link-57" class="py-name"><a title="sppas.src.annotationdata.annotation.Annotation.GetLabel
+sppas.src.annotationdata.label.label.Label.GetLabel" class="py-name" href="#" onclick="return doclink('link-57', 'GetLabel', 'link-49');">GetLabel</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">rel</tt><tt class="py-op">=</tt><tt class="py-name">rel</tt><tt class="py-op">,</tt> <tt class="py-name">y</tt><tt class="py-op">=</tt><tt class="py-name">y</tt><tt class="py-op">.</tt><tt id="link-58" class="py-name"><a title="sppas.src.annotationdata.annotation.Annotation.GetLabel
+sppas.src.annotationdata.label.label.Label.GetLabel" class="py-name" href="#" onclick="return doclink('link-58', 'GetLabel', 'link-49');">GetLabel</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line">                <tt class="py-name">a</tt><tt class="py-op">.</tt><tt id="link-59" class="py-name"><a title="sppas.src.annotationdata.annotation.Annotation.GetLabel
+sppas.src.annotationdata.label.label.Label.GetLabel" class="py-name" href="#" onclick="return doclink('link-59', 'GetLabel', 'link-49');">GetLabel</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-60" class="py-name" targets="Method sppas.src.annotationdata.label.label.Label.SetValue()=sppas.src.annotationdata.label.label.Label-class.html#SetValue,Method sppas.src.annotationdata.label.text.Text.SetValue()=sppas.src.annotationdata.label.text.Text-class.html#SetValue,Method sppas.src.annotationdata.ptime.duration.Duration.SetValue()=sppas.src.annotationdata.ptime.duration.Duration-class.html#SetValue,Method sppas.src.annotationdata.ptime.framepoint.FramePoint.SetValue()=sppas.src.annotationdata.ptime.framepoint.FramePoint-class.html#SetValue,Method sppas.src.annotationdata.ptime.location.Location.SetValue()=sppas.src.annotationdata.ptime.location.Location-class.html#SetValue,Method sppas.src.annotationdata.ptime.point.TimePoint.SetValue()=sppas.src.annotationdata.ptime.point.TimePoint-class.html#SetValue"><a title="sppas.src.annotationdata.label.label.Label.SetValue
+sppas.src.annotationdata.label.text.Text.SetValue
+sppas.src.annotationdata.ptime.duration.Duration.SetValue
+sppas.src.annotationdata.ptime.framepoint.FramePoint.SetValue
+sppas.src.annotationdata.ptime.location.Location.SetValue
+sppas.src.annotationdata.ptime.point.TimePoint.SetValue" class="py-name" href="#" onclick="return doclink('link-60', 'SetValue', 'link-60');">SetValue</a></tt><tt class="py-op">(</tt> <tt class="py-name">annotlabel</tt> <tt class="py-op">)</tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line">                <tt id="link-61" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-61', 'tier', 'link-2');">tier</a></tt><tt class="py-op">.</tt><tt id="link-62" class="py-name" targets="Method sppas.src.annotationdata.ctrlvocab.CtrlVocab.Append()=sppas.src.annotationdata.ctrlvocab.CtrlVocab-class.html#Append,Method sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.Append()=sppas.src.annotationdata.ptime.disjoint.TimeDisjoint-class.html#Append,Method sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.Append()=sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint-class.html#Append,Method sppas.src.annotationdata.tier.Tier.Append()=sppas.src.annotationdata.tier.Tier-class.html#Append,Method sppas.src.annotationdata.transcription.Transcription.Append()=sppas.src.annotationdata.transcription.Transcription-class.html#Append"><a title="sppas.src.annotationdata.ctrlvocab.CtrlVocab.Append
+sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.Append
+sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.Append
+sppas.src.annotationdata.tier.Tier.Append
+sppas.src.annotationdata.transcription.Transcription.Append" class="py-name" href="#" onclick="return doclink('link-62', 'Append', 'link-62');">Append</a></tt><tt class="py-op">(</tt><tt class="py-name">a</tt><tt class="py-op">)</tt> </tt>
+<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line">                <tt class="py-keyword">pass</tt> </tt>
+<a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-63" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-63', 'tier', 'link-2');">tier</a></tt> </tt>
+</div></div><a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line"> </tt>
+<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line">    <tt class="py-comment"># -----------------------------------------------------------------------</tt> </tt>
+<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line"> </tt>
+<a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line"><tt class="py-comment"># ----------------------------------------------------------------------------</tt> </tt>
+<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.lpl-aix.fr/~bigi/sppas/">SPPAS</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu May  5 10:03:35 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

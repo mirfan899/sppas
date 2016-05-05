@@ -240,7 +240,7 @@ class sppasSeg:
 
 
     def verifyborne(self):
-        """ Verify silences at start and end.
+        """ Verify if silences at start and end are as expected.
         """
         if self.bornestart == 0 and self.borneend == 0:
             # we do not know anything about silences at start and end
@@ -251,7 +251,7 @@ class sppasSeg:
         last_to_pos = units[len(units)-1][1]
         # If I expected a silence at start... and I found a track
         if self.bornestart != 0 and first_from_pos==0:
-            # Verify if getsilence found a silence at start
+            # Verify if get_silence found a silence at start
             return False
         # If I expected a silence at end... and I found a track
         if self.borneend != 0 and last_to_pos==self.audiospeech.get_nframes():
@@ -270,15 +270,14 @@ class sppasSeg:
         vmin = int( self.audiospeech.get_minvolume() )
         # Max is set to the mean
         vmax = int( self.audiospeech.get_meanvolume() )
-        # Step is used to not exagerate a detailed search!
+        # Step is necessary to not exaggerate a detailed search!
         # step is set to 5% of the volume between min and mean.
-        #step = int(vmin + ( (vmax - vmin) / 10.0))
         step = int( (vmax - vmin) / 20.0 )
         # Min and max are adjusted
         vmin += step
         vmax -= step
 
-        # Save initial value
+        # Save initial value (to restore it later)
         __v = self.volume_cap
 
         # First Test !!!

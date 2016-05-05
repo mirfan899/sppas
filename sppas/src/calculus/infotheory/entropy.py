@@ -35,18 +35,9 @@
 # File: entropy.py
 # ----------------------------------------------------------------------------
 
-import math
-
 from utilit import log2
 from utilit import MAX_NGRAM
 from utilit import symbols_to_items
-
-# ----------------------------------------------------------------------------
-
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
 
 # ----------------------------------------------------------------------------
 # Class Entropy
@@ -54,22 +45,23 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 class Entropy:
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: Entropy estimation.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Entropy estimation.
 
     Entropy is a measure of unpredictability of information content.
     Entropy is one of several ways to measure diversity.
 
-    If we want to look at the entropy on a large serie, we could also compute
+    If we want to look at the entropy on a large series, we could also compute
     the entropy for windows to measure the evenness or uncertainties.
     By looking at the definition, one could predict the areas that have a
     lot of variance would result in a higher entropy and the areas that have
     lower variance would result in lower entropy.
 
     """
-
     def __init__(self, symbols, ngram=1):
         """
         Create a Entropy instance with a list of symbols.
@@ -91,7 +83,7 @@ class Entropy:
 
         """
         if symbols is None or len(symbols)==0:
-            raise ValueError('To estimate entropy, the input vector must contain at least one symbols.')
+            raise ValueError('To estimate entropy, the input vector must contain at least one symbol.')
         self.symbols = symbols
 
     # -----------------------------------------------------------------------
@@ -106,14 +98,13 @@ class Entropy:
         if n > 0 and n < MAX_NGRAM:
             self.ngram = n
         else:
-            raise ValueError('The ngram value must be between 1 and 8. Got %d'%n)
+            raise ValueError('The ngram value must range from 1 to %d. Got %d'%(MAX_NGRAM,n))
 
     # -----------------------------------------------------------------------
 
     def get(self):
         """
         Estimates the Shannon entropy of a vector of symbols.
-
         Shannon's entropy measures the information contained in a message as
         opposed to the portion of the message that is determined
         (or predictable).
@@ -121,19 +112,19 @@ class Entropy:
         @return float value
 
         """
-
         exr = symbols_to_items(self.symbols, self.ngram)
         total = len(self.symbols) - self.ngram + 1
         entropy = 0
 
         for symbol,occurrences in exr.items():
-            probability = 1.0*occurrences/total
-            self_information = log2(1.0/probability)
+
+            probability = 1.0 * occurrences / total
+            self_information = log2( 1.0 / probability )
             entropy += (probability * self_information)
 
         return entropy
 
-    # -----------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
 

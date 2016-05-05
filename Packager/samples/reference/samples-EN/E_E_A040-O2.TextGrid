@@ -9,27 +9,27 @@ item []:
     item [1]:
         class = "IntervalTier"
         name = "transcription"
-        xmin = 0.0
-        xmax = 21.6109
+        xmin = 0.000000
+        xmax = 21.610900
         intervals: size = 11
         intervals [1]:
             xmin = 0.0
-            xmax = 1.24106300403
+            xmax = 1.241063004
             text = "#"
         intervals [2]:
-            xmin = 1.24106300403
-            xmax = 3.36594958522
+            xmin = 1.241063004
+            xmax = 3.3659495852
             text = "please put me through to the complaints department"
         intervals [3]:
-            xmin = 3.36594958522
+            xmin = 3.3659495852
             xmax = 4.423352928
             text = "#"
         intervals [4]:
             xmin = 4.423352928
-            xmax = 9.06646739411
+            xmax = 9.0664673941
             text = "the repair to the water main outside my house was unsuccessful and my cellar s flooded"
         intervals [5]:
-            xmin = 9.06646739411
+            xmin = 9.0664673941
             xmax = 9.47
             text = "#"
         intervals [6]:
@@ -58,28 +58,28 @@ item []:
             text = "#"
     item [2]:
         class = "IntervalTier"
-        name = "transcription"
-        xmin = 0.0
-        xmax = 21.6109
+        name = "transcription-2"
+        xmin = 0.000000
+        xmax = 21.610900
         intervals: size = 11
         intervals [1]:
             xmin = 0.0
-            xmax = 1.24106300403
+            xmax = 1.241063004
             text = "#"
         intervals [2]:
-            xmin = 1.24106300403
-            xmax = 3.36594958522
+            xmin = 1.241063004
+            xmax = 3.3659495852
             text = "please put me through to the complaints department"
         intervals [3]:
-            xmin = 3.36594958522
+            xmin = 3.3659495852
             xmax = 4.423352928
             text = "#"
         intervals [4]:
             xmin = 4.423352928
-            xmax = 9.06646739411
+            xmax = 9.0664673941
             text = "the repair to the water main outside my house was unsuccessful and my cellar s flooded"
         intervals [5]:
-            xmin = 9.06646739411
+            xmin = 9.0664673941
             xmax = 9.47
             text = "#"
         intervals [6]:
@@ -108,28 +108,28 @@ item []:
             text = "#"
     item [3]:
         class = "IntervalTier"
-        name = "transcription"
-        xmin = 0.0
-        xmax = 21.6109
+        name = "transcription-3"
+        xmin = 0.000000
+        xmax = 21.610900
         intervals: size = 11
         intervals [1]:
             xmin = 0.0
-            xmax = 1.24106300403
+            xmax = 1.241063004
             text = "#"
         intervals [2]:
-            xmin = 1.24106300403
-            xmax = 3.36594958522
+            xmin = 1.241063004
+            xmax = 3.3659495852
             text = "please put me through to the complaints department"
         intervals [3]:
-            xmin = 3.36594958522
+            xmin = 3.3659495852
             xmax = 4.423352928
             text = "#"
         intervals [4]:
             xmin = 4.423352928
-            xmax = 9.06646739411
+            xmax = 9.0664673941
             text = "the repair to the water main outside my house was unsuccessful and my cellar s flooded"
         intervals [5]:
-            xmin = 9.06646739411
+            xmin = 9.0664673941
             xmax = 9.47
             text = "#"
         intervals [6]:
@@ -158,28 +158,28 @@ item []:
             text = "#"
     item [4]:
         class = "IntervalTier"
-        name = "transcription"
-        xmin = 0.0
-        xmax = 21.6109
+        name = "transcription-4"
+        xmin = 0.000000
+        xmax = 21.610900
         intervals: size = 11
         intervals [1]:
             xmin = 0.0
-            xmax = 1.24106300403
+            xmax = 1.241063004
             text = "#"
         intervals [2]:
-            xmin = 1.24106300403
-            xmax = 3.36594958522
+            xmin = 1.241063004
+            xmax = 3.3659495852
             text = "please put me through to the complaints department"
         intervals [3]:
-            xmin = 3.36594958522
+            xmin = 3.3659495852
             xmax = 4.423352928
             text = "#"
         intervals [4]:
             xmin = 4.423352928
-            xmax = 9.06646739411
+            xmax = 9.0664673941
             text = "the repair to the water main outside my house was unsuccessful and my cellar s flooded"
         intervals [5]:
-            xmin = 9.06646739411
+            xmin = 9.0664673941
             xmax = 9.47
             text = "#"
         intervals [6]:

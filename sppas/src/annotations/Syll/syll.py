@@ -35,27 +35,22 @@
 # File: syll.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
-import sys
-import os
-import logging
+from sp_glob import ERROR_ID, WARNING_ID, INFO_ID, OK_ID
 
 from annotations.Syll.syllabification import Syllabification
 import annotationdata.io
+from annotationdata.transcription import Transcription
 
 # ----------------------------------------------------------------------------
 
 class sppasSyll:
     """
-    SPPAS automatic syllabification annotation.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      SPPAS automatic syllabification annotation.
 
     For details, see:
     B. Bigi, C. Meunier, I. Nesterenko, R. Bertrand (2010).
@@ -87,7 +82,6 @@ class sppasSyll:
     >>> s.run(inputfilename, outputfilename)
 
     """
-
     def __init__(self, config, logfile=None):
         """
         Create a new sppasSyll instance.
@@ -96,54 +90,48 @@ class sppasSyll:
         @param logfile is a file descriptor of the log file.
 
         """
-        self._merge         = False
-        self._usesintervals = False
-        self._usesphons     = True
-        self._tiername = "TokensAlign"
+        self.syllabifier = Syllabification(config, logfile)
 
-        try:
-            self.syllabifier = Syllabification(config, logfile)
-        except Exception as e:
-            raise e
+        # List of options to configure this automatic annotation
+        self._options = {}
+        self._options['usesintervals'] = False #
+        self._options['usesphons']     = True #
+        self._options['tiername']      = "TokensAlign" #
 
-    # End __init__
+        # The communication!
+        self.logfile = logfile
+
     # ------------------------------------------------------------------------
-
 
     def fix_options(self, options):
         """
         Fix all options.
 
-        @param options (dict) Dictionary with key=optionname (string).
+        Available options are:
+            - usesintervals
+            - usesphons
+            - tiername
+
+        @param options (option)
 
         """
         for opt in options:
-            if "merge" == opt.get_key():
-                self.set_merge( opt.get_value() )
-            elif "usesintervals" == opt.get_key():
+
+            key = opt.get_key()
+
+            if "usesintervals" == key:
                 self.set_usesintervals( opt.get_value() )
-            elif "usesphons" == opt.get_key():
+
+            elif "usesphons" == key:
                 self.set_usesphons( opt.get_value() )
-            elif "tiername" == opt.get_key():
-                self.set_tiername(opt.get_value())
 
-    # End fix_options
+            elif "tiername" == key:
+                self.set_tiername( opt.get_value() )
+
+            else:
+                raise Exception('Unknown key option: %s'%key)
+
     # ------------------------------------------------------------------------
-
-
-    def set_merge(self,merge):
-        """
-        Fix the merge option.
-        If merge is set to True, sppasSyll() will save the input tiers in the output file.
-
-        @param merge is a Boolean
-
-        """
-        self._merge = merge
-
-    # End set_merge
-    # ----------------------------------------------------------------------
-
 
     def set_usesintervals(self, mode):
         """
@@ -154,9 +142,8 @@ class sppasSyll:
         @param mode is a Boolean
 
         """
-        self._usesintervals = mode
+        self._options['usesintervals'] = mode
 
-    # End set_usesintervals
     # ----------------------------------------------------------------------
 
 
@@ -169,11 +156,9 @@ class sppasSyll:
         @param mode is a Boolean
 
         """
-        self._usesphons = mode
+        self._options['usesphons'] = mode
 
-    # End set_usesphons
     # ----------------------------------------------------------------------
-
 
     def set_tiername(self, tiername):
         """
@@ -182,39 +167,70 @@ class sppasSyll:
         @param tiername is a string
 
         """
-        self._tiername = tiername
+        self._options['tiername'] = tiername
 
-    # End set_interval_file
     # ----------------------------------------------------------------------
 
-
-    def save(self, trsinput, inputfilename, syllables, outputfilename):
+    def save(self, trsinput, inputfilename, trsoutput, outputfile=None):
         """
-        Save the syllabification into a file (end of the input or output).
-        """
+        Save depending on the given data.
+        If no output file name is given, output is appended to the input.
 
-        # An output file name is given
-        if outputfilename is not None:
-            if self._merge is True:
-                for tier in trsinput:
-                    syllables.Add(tier)
-            trsoutput = syllables
-        # the syllable' tiers are added to the input transcription
-        else:
-            for tier in syllables:
-                trsinput.Add(tier)
+        @param trsinput (Transcription)
+        @param inputfilename (str)
+        @param trsoutput (Transcription)
+        @param outputfile (str)
+
+        """
+        # Append to the input
+        if outputfile is None:
+            for tier in trsoutput:
+                trsinput.Append(tier)
             trsoutput  = trsinput
-            outputfilename = inputfilename
+            outputfile = inputfilename
 
-        # Save
-        try:
-            annotationdata.io.write( outputfilename, trsoutput )
-        except Exception as e:
-            raise IOError('Syll::syll.py. An error occurred when writing output.\n %s' % e)
+        # Save in a file
+        annotationdata.io.write( outputfile,trsoutput )
 
-    # End save
     # ------------------------------------------------------------------------
 
+    def get_input_tier(self, trsinput):
+        """
+        Return the tier with time-aligned phonemes or None.
+
+        """
+        for tier in trsinput:
+            if "align" in tier.GetName().lower() and "phon" in tier.GetName().lower():
+                return tier
+
+        for tier in trsinput:
+            if "phon" in tier.GetName().lower():
+                return tier
+
+        return None
+
+    # ------------------------------------------------------------------------
+
+    def convert(self, phonemes, intervals=None):
+        """
+        Syllabify labels of a time-aligned phones tier.
+
+        @param phonemes (Tier) time-aligned phones tier
+        @return Transcription
+
+        """
+        syllables = Transcription("sppasSyll")
+        if self._options['usesphons'] is True:
+            syllables = self.syllabifier.syllabify(phonemes)
+
+        if intervals is not None:
+            syllables_seg = self.syllabifier.syllabify2(phonemes, intervals)
+            for tier in syllables_seg:
+                syllables.Add(tier)
+
+        return syllables
+
+    # ------------------------------------------------------------------------
 
     def run(self, inputfilename, outputfilename=None):
         """
@@ -224,81 +240,26 @@ class sppasSyll:
         @param outputfilename
 
         """
-        phonemes = None
+        if self.logfile:
+            for k,v in self._options.items():
+                self.logfile.print_message("Option %s: %s"%(k,v), indent=2, status=INFO_ID)
+
+        # Get the tier to syllabify
         trsinput = annotationdata.io.read(inputfilename)
-
-        #find the phoneme tier
-        for tier in trsinput:
-            if "align" in tier.GetName().lower() and "phon" in tier.GetName().lower():
-                phonemes = tier
-                break
-
+        phonemes = self.get_input_tier(trsinput)
         if phonemes is None:
-            raise IOError("Phoneme tier not found."
-                          " The name of a tier must contain both 'align' and 'phon'.")
-        if phonemes.IsEmpty() is True:
-            raise IOError("Syll::sppasSyll. Empty phoneme tier.\n")
+            raise Exception("No tier found with time-aligned phonemes. "
+                            "One of the tier names must contain both 'phon' and align.")
 
-        if self._usesintervals is True:
-            intervals = trsinput.Find(self._tiername)
-            if not intervals:
-                raise IndexError("Interval tier not found: %s" % self._tiername)
+        intervals = None
+        if self._options['usesintervals'] is True:
+            intervals = trsinput.Find(self._options['tiername'])
+            if intervals is None and self.logfile:
+                self.logfile.print_message("The use of %s is disabled. Tier not found."%(self._options['tiername']), indent=2, status=WARNING_ID)
 
-        if self._usesintervals and self._usesphons:
-            syllables     = self.syllabifier.syllabify(phonemes)
-            syllables_seg = self.syllabifier.syllabify2(phonemes, intervals)
-            for tier in syllables_seg:
-                syllables.Add(tier)
-            syll       = syllables.Find("Syllables")
-            cls        = syllables.Find("Classes")
-            struct     = syllables.Find("Structures")
-            syll_seg   = syllables.Find("Syllables-seg")
-            cls_seg    = syllables.Find("Classes-seg")
-            struct_seg = syllables.Find("Structures-seg")
-            #syllables._hierarchy.addLink("TimeAlignment", phonemes, syll) # phonemes are not in this transcription
-            syllables._hierarchy.addLink("TimeAssociation", syll, cls)
-            syllables._hierarchy.addLink('TimeAssociation', syll, struct)
-            #try:
-            #    syllables._hierarchy.addLink("TimeAlignment", phonemes, syll_seg) # phonemes are not in this transcription
-            #except Exception:
-                # it happens when radius was not fixed properly in phonemes
-            #    pass
-            #try:
-            #    syllables._hierarchy.addLink("TimeAlignment", syll_seg, self._tiername) # self._tiername is not in this transcription
-            #except Exception:
-                # it happens when radius was not fixed properly in self._tiername
-            #    pass
-            syllables._hierarchy.addLink('TimeAssociation', syll_seg, cls_seg)
-            syllables._hierarchy.addLink('TimeAssociation', syll_seg, struct_seg)
+        syllables = self.convert( phonemes, intervals )
 
-        elif self._usesintervals:
-            syllables  = self.syllabifier.syllabify2(phonemes, intervals)
-            syll_seg   = syllables.Find("Syllables-seg")
-            cls_seg    = syllables.Find("Classes-seg")
-            struct_seg = syllables.Find("Structures-seg")
-            #try:
-            #    syllables._hierarchy.addLink("TimeAlignment", phonemes, syll_seg)
-            #except Exception:
-            #    pass
-            #try:
-            #    syllables._hierarchy.addLink("TimeAlignment", syll_seg, self._tiername)
-            #except Exception:
-            #    pass
-            syllables._hierarchy.addLink('TimeAssociation', syll_seg, cls_seg)
-            syllables._hierarchy.addLink('TimeAssociation', syll_seg, struct_seg)
-
-        else:
-            syllables = self.syllabifier.syllabify(phonemes)
-            syll      = syllables.Find("Syllables")
-            cls       = syllables.Find("Classes")
-            struct    = syllables.Find("Structures")
-            #syllables._hierarchy.addLink("TimeAlignment", phonemes, syll)
-            syllables._hierarchy.addLink('TimeAssociation', syll, cls)
-            syllables._hierarchy.addLink('TimeAssociation', syll, struct)
-
-
-        # Manage results
+        # Save
         self.save(trsinput, inputfilename, syllables, outputfilename)
 
-    # End run
     # ------------------------------------------------------------------------

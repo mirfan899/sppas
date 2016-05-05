@@ -69,5 +69,6 @@ And it can also import data from:
 
 * ANVIL: anvil
 * Transcriber: trs
+* Xtrans: tdf
 
 ![File formats SPPAS can open/save and import](./etc/figures/sppas-formats.png)

@@ -1,45 +1,58 @@
-File type = "ooTextFile short"
-"TextGrid"
+File type = "ooTextFile"
+Object class = "TextGrid"
 
-0.0
-21.3471
-<exists>
-1
-"IntervalTier"
-"Phonetization"
-0.0
-21.3471
-11
-0.0
-2.4971007546
-" # "
-2.4971007546
-5.6838880379
-" j.E.R|i.E.R s.w.a.R|s.w.a.R S|Z e|E u.v.E.R|u.v.E.R.t l.a p.o.R.t.eu|p.o.R.t d|d.eu a~.t.R.e p.u.R l.E.s.e.R|l.E.s.e|l.e.s.e|l.E.s.e|l.E.s.e.R S.o.R.t s.o.R.t.i.R l|l.eu|l.e S.a "
-5.6838880379
-5.7436026532
-" # "
-5.7436026532
-8.4605955438
-" l.a n.y.i|n.H.i|n.H.i.t|n.y.i.t e.t.e|E.t.E|E.t.E.t|e.t.E|e.t.e.t|e.t.E.t|t.e|t.E s.i|s b.E.l.eu|b.E.l k|k.eu Z|Z.eu|S s.y.i|s.y.i.z|s.y.i d.E.s.a~.d.y d.a~.z|d.a~ l.a R.y p.R.a~.d.R|p.R.a~.d.R.eu l|l.eu|l.e f.R.E.z|f.R.E|f.R.e|f.R.E|f.R.E.z "
-8.4605955438
-9.1450000312
-" # "
-9.1450000312
-11.9485310906
-" S|Z a.v.e|a.v.E|a.v.E.z|a.v.e.z a~.t.E.n.d.eu|a~.t.E.n.eu.d.eu|a p.E.n.eu|p.E.n f.e|f.E.t|f.E|f.e.t|f.e.z|f.E.t.eu k.E.l.k.eu|k.E.l.k p.a.z|p.a k|k.eu S|Z e|E a~.t.a~.d.y l.a p.o.R.t.eu|p.o.R.t k.l.a.k.e|k.l.a.k.e.R|k.l.a.k.e|k.l.a.k.e.R d.E.R.j.E.R|d.E.R.j.E.R.eu|d.E.R.j.E.R|d.E.R.j.E.R.eu m.w.a "
-11.9485310906
-12.494
-" # "
-12.494
-15.036
-" S|Z e|E R.E.a.l.i.z.e|R.E.a.l.i.z.e t.u|t.u.t d.U~ k.u # k|k.eu S|Z E.t.E.z|e.t.e|E.t.E|e.t.E|e.t.e.z|t.E a~.f.E.R.m.e d.eu.o.R|d.eu.o.R.z|d.eu.o.R "
-15.036
-16.602
-" # "
-16.602
-20.01
-" l|l.eu|l.e k.o~.b.l.eu|k.o~.b.l s.e k|k.eu Z|Z.eu|S m|m.eu s.y.i|s.y.i.z|s.y.i f.e|f.E.t|f.E|f.e.t|f.e.z|f.E.t.eu a.R.E.t.e.R|a.R.E.t.e|a.R.e.t.e|a.R.E.t.e|a.R.E.t.e.R a.l.o.R.k.eu S|Z E.s.E.j.E|E.s.E.j.E.z d.eu|d|t f.o.R.s.e|f.o.R.s.e.R m.a|m.a p.R.o.p.R.eu|p.R.o.p.R|p.R.o.p p.o.R.t.eu|p.o.R.t "
-20.01
-21.3471
-" # "
+xmin = 0.0
+xmax = 21.3471
+tiers? <exists>
+size = 1
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "Phonetization"
+        xmin = 0.000000
+        xmax = 21.347100
+        intervals: size = 11
+        intervals [1]:
+            xmin = 0.0
+            xmax = 2.4971007546
+            text = "#"
+        intervals [2]:
+            xmin = 2.4971007546
+            xmax = 5.6838880379
+            text = "j-E-R|i-E-R s-w-a-R|s-w-a-R S|Z e|E u-v-E-R|u-v-E-R-t l-a p-o-R-t-eu|p-o-R-t d|d-eu a~-t-R-e p-u-R l-E-s-e-R|l-E-s-e|l-e-s-e|l-E-s-e|l-E-s-e-R S-o-R-t s-o-R-t-i-R l|l-eu|l-e S-a"
+        intervals [3]:
+            xmin = 5.6838880379
+            xmax = 5.7436026532
+            text = "#"
+        intervals [4]:
+            xmin = 5.7436026532
+            xmax = 8.4605955438
+            text = "l-a n-y-i|n-H-i|n-H-i-t|n-y-i-t e-t-e|E-t-E|E-t-E-t|e-t-E|e-t-e-t|e-t-E-t|t-e|t-E s-i|s b-E-l-eu|b-E-l k|k-eu Z|Z-eu|S s-y-i|s-y-i-z|s-y-i d-E-s-a~-d-y d-a~-z|d-a~ l-a R-y p-R-a~-d-R|p-R-a~-d-R-eu l|l-eu|l-e f-R-E-z|f-R-E|f-R-e|f-R-E|f-R-E-z"
+        intervals [5]:
+            xmin = 8.4605955438
+            xmax = 9.1450000312
+            text = "#"
+        intervals [6]:
+            xmin = 9.1450000312
+            xmax = 11.9485310906
+            text = "S|Z a-v-e|a-v-E|a-v-E-z|a-v-e-z a~-t-E-n-d-eu|a~-t-E-n-eu-d-eu|a p-E-n-eu|p-E-n f-e|f-E-t|f-E|f-e-t|f-e-z|f-E-t-eu k-E-l-k-eu|k-E-l-k p-a-z|p-a k|k-eu S|Z e|E a~-t-a~-d-y l-a p-o-R-t-eu|p-o-R-t k-l-a-k-e|k-l-a-k-e-R|k-l-a-k-e|k-l-a-k-e-R d-E-R-j-E-R|d-E-R-j-E-R-eu|d-E-R-j-E-R|d-E-R-j-E-R-eu m-w-a"
+        intervals [7]:
+            xmin = 11.9485310906
+            xmax = 12.494
+            text = "#"
+        intervals [8]:
+            xmin = 12.494
+            xmax = 15.036
+            text = "S|Z e|E R-E-a-l-i-z-e|R-E-a-l-i-z-e t-u|t-u-t d-U~ k-u # k|k-eu S|Z E-t-E-z|e-t-e|E-t-E|e-t-E|e-t-e-z|t-E a~-f-E-R-m-e d-eu-o-R|d-eu-o-R-z|d-eu-o-R"
+        intervals [9]:
+            xmin = 15.036
+            xmax = 16.602
+            text = "#"
+        intervals [10]:
+            xmin = 16.602
+            xmax = 20.01
+            text = "l|l-eu|l-e k-o~-b-l-eu|k-o~-b-l s-e k|k-eu Z|Z-eu|S m|m-eu s-y-i|s-y-i-z|s-y-i f-e|f-E-t|f-E|f-e-t|f-e-z|f-E-t-eu a-R-E-t-e-R|a-R-E-t-e|a-R-e-t-e|a-R-E-t-e|a-R-E-t-e-R a-l-o-R-k-eu S|Z E-s-E-j-E|E-s-E-j-E-z d-eu|d|t f-o-R-s-e|f-o-R-s-e-R m-a|m-a p-R-o-p-R-eu|p-R-o-p-R|p-R-o-p p-o-R-t-eu|p-o-R-t"
+        intervals [11]:
+            xmin = 20.01
+            xmax = 21.3471
+            text = "#"

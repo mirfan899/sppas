@@ -9,114 +9,114 @@ item []:
     item [1]:
         class = "IntervalTier"
         name = "Syllables"
-        xmin = 0.0
-        xmax = 1.4606
+        xmin = 0.000000
+        xmax = 1.460600
         intervals: size = 8
         intervals [1]:
             xmin = 0.0
-            xmax = 0.195
+            xmax = 0.19
             text = "ra"
         intervals [2]:
-            xmin = 0.195
-            xmax = 0.415
+            xmin = 0.19
+            xmax = 0.42
             text = "le"
         intervals [3]:
-            xmin = 0.415
-            xmax = 0.605
+            xmin = 0.42
+            xmax = 0.6
             text = "go"
         intervals [4]:
-            xmin = 0.605
-            xmax = 0.735
+            xmin = 0.6
+            xmax = 0.73
             text = "ve"
         intervals [5]:
-            xmin = 0.735
-            xmax = 0.865
+            xmin = 0.73
+            xmax = 0.86
             text = "de"
         intervals [6]:
-            xmin = 0.865
-            xmax = 1.015
+            xmin = 0.86
+            xmax = 1.01
             text = "la"
         intervals [7]:
-            xmin = 1.015
-            xmax = 1.255
+            xmin = 1.01
+            xmax = 1.25
             text = "do"
         intervals [8]:
-            xmin = 1.255
+            xmin = 1.25
             xmax = 1.4606
             text = "na"
     item [2]:
         class = "IntervalTier"
         name = "Classes"
-        xmin = 0.0
-        xmax = 1.4606
+        xmin = 0.000000
+        xmax = 1.460600
         intervals: size = 8
         intervals [1]:
             xmin = 0.0
-            xmax = 0.195
+            xmax = 0.19
             text = "LV"
         intervals [2]:
-            xmin = 0.195
-            xmax = 0.415
+            xmin = 0.19
+            xmax = 0.42
             text = "LV"
         intervals [3]:
-            xmin = 0.415
-            xmax = 0.605
+            xmin = 0.42
+            xmax = 0.6
             text = "OV"
         intervals [4]:
-            xmin = 0.605
-            xmax = 0.735
+            xmin = 0.6
+            xmax = 0.73
             text = "FV"
         intervals [5]:
-            xmin = 0.735
-            xmax = 0.865
+            xmin = 0.73
+            xmax = 0.86
             text = "OV"
         intervals [6]:
-            xmin = 0.865
-            xmax = 1.015
+            xmin = 0.86
+            xmax = 1.01
             text = "LV"
         intervals [7]:
-            xmin = 1.015
-            xmax = 1.255
+            xmin = 1.01
+            xmax = 1.25
             text = "OV"
         intervals [8]:
-            xmin = 1.255
+            xmin = 1.25
             xmax = 1.4606
             text = "NV"
     item [3]:
         class = "IntervalTier"
         name = "Structures"
-        xmin = 0.0
-        xmax = 1.4606
+        xmin = 0.000000
+        xmax = 1.460600
         intervals: size = 8
         intervals [1]:
             xmin = 0.0
-            xmax = 0.195
+            xmax = 0.19
             text = "CV"
         intervals [2]:
-            xmin = 0.195
-            xmax = 0.415
+            xmin = 0.19
+            xmax = 0.42
             text = "CV"
         intervals [3]:
-            xmin = 0.415
-            xmax = 0.605
+            xmin = 0.42
+            xmax = 0.6
             text = "CV"
         intervals [4]:
-            xmin = 0.605
-            xmax = 0.735
+            xmin = 0.6
+            xmax = 0.73
             text = "CV"
         intervals [5]:
-            xmin = 0.735
-            xmax = 0.865
+            xmin = 0.73
+            xmax = 0.86
             text = "CV"
         intervals [6]:
-            xmin = 0.865
-            xmax = 1.015
+            xmin = 0.86
+            xmax = 1.01
             text = "CV"
         intervals [7]:
-            xmin = 1.015
-            xmax = 1.255
+            xmin = 1.01
+            xmax = 1.25
             text = "CV"
         intervals [8]:
-            xmin = 1.255
+            xmin = 1.25
             xmax = 1.4606
             text = "CV"

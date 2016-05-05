@@ -45,7 +45,7 @@ from resources.dictpron import DictPron
 from resources.mapping  import Mapping
 from phonetize import DictPhon
 
-from sp_glob import ERROR_ID, WARNING_ID, OK_ID
+from sp_glob import ERROR_ID, WARNING_ID, INFO_ID, OK_ID
 from sp_glob import UNKSTAMP
 
 # ---------------------------------------------------------------------------
@@ -88,7 +88,7 @@ class sppasPhon( object ):
         self._options = {}
         self._options['phonunk']      = False # Phonetize missing tokens
         self._options['usestdtokens'] = False # Phonetize standard spelling
-        
+
         # The communication!
         self.logfile = logfile
 
@@ -113,8 +113,10 @@ class sppasPhon( object ):
 
             if key == "unk":
                 self.set_unk( opt.get_value() )
+
             elif key == "usestdtokens":
                 self.set_usestdtokens( opt.get_value() )
+
             else:
                 raise Exception('Unknown key option: %s'%key)
 
@@ -154,7 +156,7 @@ class sppasPhon( object ):
         """
         Set the dictionary.
 
-        @param dictfilename (str) The pronunciation dictionary in HTK-ASCII 
+        @param dictfilename (str) The pronunciation dictionary in HTK-ASCII
         format with UTF-8 encoding.
 
         """
@@ -300,6 +302,10 @@ class sppasPhon( object ):
         @param outputfile is the output file name of the phonetization
 
         """
+        if self.logfile:
+            for k,v in self._options.items():
+                self.logfile.print_message("Option %s: %s"%(k,v), indent=2, status=INFO_ID)
+
         # Get the tier to be phonetized.
         trsinput = annotationdata.io.read( inputfilename )
         tierinput = self.get_input_tier(trsinput)
@@ -311,7 +317,7 @@ class sppasPhon( object ):
         tierphon = self.convert( tierinput )
 
         # Save
-        trsoutput = Transcription()
+        trsoutput = Transcription("sppasPhon")
         trsoutput.Append( tierphon )
         self.save(trsinput, inputfilename, trsoutput, outputfile)
 

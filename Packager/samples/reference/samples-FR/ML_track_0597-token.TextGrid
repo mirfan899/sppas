@@ -1,15 +1,18 @@
-File type = "ooTextFile short"
-"TextGrid"
+File type = "ooTextFile"
+Object class = "TextGrid"
 
-0.0
-6.29
-<exists>
-1
-"IntervalTier"
-"Tokens"
-0.0
-6.29
-1
-0.0
-6.29
-" non mais pas la virer mais si elle fout des baffes aux gamins alors je vois pas pourquoi elle est avec des gamins on la fout dans un bureau et_puis voilà quoi y a qu' à la mettre à la cantine @ "
+xmin = 0.0
+xmax = 6.29
+tiers? <exists>
+size = 1
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "Tokenization"
+        xmin = 0.000000
+        xmax = 6.290000
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 6.29
+            text = "non mais pas la virer mais si elle fout des baffes aux gamins alors je vois pas pourquoi elle est avec des gamins on la fout dans un bureau et_puis voilà quoi y a qu' à la mettre à la cantine @"

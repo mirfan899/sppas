@@ -86,7 +86,6 @@ do not hesitate to contact the author by e-mail at:
 
 Partly supported by ANR OTIM project (Ref. Nr. ANR-08-BLAN-0239),
 Tools for Multimodal Information Processing.
-
 Read more at: <http://www.lpl-aix.fr/~otim/>
 
 
@@ -95,7 +94,6 @@ Read more at: <http://www.lpl-aix.fr/~otim/>
 Partly supported by ORTOLANG (Ref. Nr. ANR-11-EQPX-0032) funded by the
 « Investissements d'Avenir » French Government program managed by the
 French National Research Agency (ANR).
-
 Read more at: <http://www.ortolang.fr/>
 
 
@@ -107,6 +105,7 @@ following projects or groups:
 - CoFee - Conversational Feedback <http://cofee.hypotheses.org>
 - Variamu - Variations in Action: a MUltilingual approach <http://variamu.hypotheses.org>
 - Team C3i of LPL <http://www.lpl-aix.fr/~c3i>
+- Campus France, Procore PHC.
 
 
 ### Contributors

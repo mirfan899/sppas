@@ -4,7 +4,7 @@ author:     Brigitte Bigi
 contact:    brigite.bigi@gmail.com
 program:    SPPAS - Automatic Annotation of Speech
 date:       2016-03-30
-version:    1.7.7
+version:    1.7.8
 copyright:  Copyright (C) 2011-2016  Brigitte Bigi
 url:        http://www.sppas.org/
 license:    GNU Public License, v3
@@ -22,8 +22,7 @@ The main reference is:
     > the Phonetician - International Society of Phonetic Sciences,
     > ISSN 0741-6164, Number 111-112 / 2015-I-II, pages 54-69.
 
-A list of other references is available in the chapter "References" of the
-documentation.
+Other references are available in the documentation.
 
 ------------------------------------------------------------------------------
 

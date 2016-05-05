@@ -133,18 +133,28 @@ class sppasAlign:
 
         """
         for opt in options:
-            if "expend" == opt.get_key():
+
+            key = opt.get_key()
+
+            if "expend" == key:
                 self.set_expend( opt.get_value() )
-            elif "extend" == opt.get_key():
+
+            elif "extend" == key:
                 self.set_extend( opt.get_value() )
-            elif "clean" == opt.get_key():
+
+            elif "clean" == key:
                 self.set_clean( opt.get_value() )
-            elif "aligner" == opt.get_key():
+
+            elif "aligner" == key:
                 self.set_aligner( opt.get_value() )
-            elif "infersp" == opt.get_key():
+
+            elif "infersp" == key:
                 self.set_infersp( opt.get_value() )
-            elif "basic" == opt.get_key():
+
+            elif "basic" == key:
                 self.set_basic( opt.get_value() )
+            else:
+                raise Exception('Unknown key option: %s'%key)
 
     # ------------------------------------------------------------------------
 
@@ -534,7 +544,7 @@ class sppasAlign:
         """
         if self.logfile:
             for k,v in self._options.items():
-                self.logfile.print_message("Option: %s: %s"%(k,v), indent=2, status=INFO_ID)
+                self.logfile.print_message("Option %s: %s"%(k,v), indent=2, status=INFO_ID)
 
         # Get the tiers to be time-aligned.
         trsinput = annotationdata.io.read( inputphonesname )

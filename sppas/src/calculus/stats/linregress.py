@@ -40,10 +40,12 @@ import central
 # ----------------------------------------------------------------------------
 
 """
-@authors: Brigitte Bigi
-@contact: brigitte.bigi@gmail.com
-@license: GPL, v3
-@summary: Linear regression estimators.
+@author:       Brigitte Bigi
+@organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+@summary:      Linear regression estimators.
 
 The goal of linear regression is to fit a line to a set of points.
 Equation of the line is y = mx + b
@@ -59,23 +61,30 @@ Function List
 
 """
 
+# ---------------------------------------------------------------------------
+
 def slope ((x1, y1), (x2, y2)):
     """
     Estimates the slope between 2 points (x1,y1) and (x2,y2).
+
     """
     x2 = float(x2 - x1)
     y2 = float(y2 - y1)
     m = (y2/x2)
     return m
 
+# ---------------------------------------------------------------------------
+
 def intercept((x1, y1), (x2, y2)):
     """
     Estimates the intercept between 2 points (x1,y1) and (x2,y2).
+
     """
     m = slope((x1,y1),(x2,y2))
     b = y2 - (m*x2)
     return b
 
+# ---------------------------------------------------------------------------
 
 """
 Linear regression, Solution 1 adapted from:
@@ -94,11 +103,14 @@ def compute_error_for_line_given_points(b, m, points):
 
     Lines that fit our data better (where better is defined by our error
     function) will result in lower error values.
+
     """
     total_error = 0
     for x,y in points:
         total_error += (y - (m * x + b)) ** 2
     return total_error / float(len(points))
+
+# ---------------------------------------------------------------------------
 
 def step_gradient(b_current, m_current, points, learning_rate):
     """
@@ -115,6 +127,7 @@ def step_gradient(b_current, m_current, points, learning_rate):
     during each iteration. If we take too large of a step, we may step over
     the minimum. However, if we take small steps, it will require many
     iterations to arrive at the minimum.
+
     """
     b_gradient = 0
     m_gradient = 0
@@ -125,6 +138,8 @@ def step_gradient(b_current, m_current, points, learning_rate):
     new_b = b_current - (learning_rate * b_gradient)
     new_m = m_current - (learning_rate * m_gradient)
     return [new_b, new_m]
+
+# ---------------------------------------------------------------------------
 
 def gradient_descent(points, starting_b, starting_m, learning_rate, num_iterations):
     """
@@ -144,19 +159,22 @@ def gradient_descent(points, starting_b, starting_m, learning_rate, num_iteratio
         b, m = step_gradient(b, m, points, learning_rate)
     return b, m
 
+# ---------------------------------------------------------------------------
+
 def gradient_descent_linear_regression(points, num_iterations=50000):
     """
     Gradient descent method for linear regression.
 
     @param points is a list of tuples (x,y) of float values.
     @return intercept,slope
+
     """
     learning_rate  = 0.0001
     initial_b      = 0 # initial y-intercept guess
     initial_m      = 0 # initial slope guess
     return gradient_descent(points, initial_b, initial_m, learning_rate, num_iterations)
 
-
+# ---------------------------------------------------------------------------
 
 """
 Linear regression, Solution 2: as proposed in TGA, by Dafydd Gibbon:
@@ -193,6 +211,8 @@ def tga_linear_regression(points):
     # Slope
     b = mean_y - m * mean_x
     return b,m
+
+# ---------------------------------------------------------------------------
 
 """
 Linear regression, Solution 3: as proposed in AnnotationPro:
@@ -231,7 +251,7 @@ def tansey_linear_regression(points):
 
     return b, m
 
-
+# ---------------------------------------------------------------------------
 
 if __name__ == '__main__':
 

@@ -266,10 +266,10 @@ France.
     - save (UTF-8 encoding)
 
 * In the phonetization output, by convention, spaces separate words,
-dots separate phones and pipes separate phonetic variants of a word. Example:
+minus separate phones and pipes separate phonetic variants of a word. Example:
 
     - input: `the flight`
-    - output: `dh.ax|dh.ah|dh.iy f.l.ay.t`
+    - output: `dh-ax|dh-ah|dh-iy f-l-ay-t`
 
 * If a word is missing of the dictionary, SPPAS generates a pronunciation.
 

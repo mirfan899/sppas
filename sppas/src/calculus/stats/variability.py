@@ -41,10 +41,12 @@ import central
 # ----------------------------------------------------------------------------
 
 """
-@authors: Brigitte Bigi
-@contact: brigitte.bigi@gmail.com
-@license: GPL, v3
-@summary: Variability estimators.
+@author:       Brigitte Bigi
+@organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+@summary:      Variability estimators.
 
 A collection of basic statistical functions for python.
 
@@ -58,95 +60,120 @@ Function List
 
 """
 
+# ----------------------------------------------------------------------------
+
 def lunbiasedvariance (items):
     """
     Calculates the unbiased sample variance of the data values,
     using N-1 for the denominator.
     The variance is a measure of dispersion near the mean.
+
     @param items (list) list of data values
     @return (float)
+
     """
     if len(items)<2:
         return 0.
     mn = central.fmean(items)
     return central.fsum(pow(i-mn, 2) for i in items) / (len(items)-1)
 
+# ----------------------------------------------------------------------------
 
 def lvariance (items):
     """
     Calculates the variance of the data values,
     using N for the denominator.
     The variance is a measure of dispersion near the mean.
+
     @param items (list) list of data values
     @return (float)
+
     """
     if len(items)<2:
         return 0.
     mn = central.fmean(items)
     return central.fsum(pow(i-mn, 2) for i in items) / (len(items))
 
+# ----------------------------------------------------------------------------
 
 def lunbiasedstdev (items):
     """
     Calculates the standard deviation of the data values, using N-1 for the denominator.
     The standard deviation is the positive square root of the variance.
+
     @param items (list) list of data values
     @return (float)
+
     """
     if len(items)<2:
         return 0.
     return math.sqrt(lunbiasedvariance(items))
 
+# ----------------------------------------------------------------------------
 
 def lstdev (items):
     """
     Calculates the standard deviation of the data values, using N for the denominator.
     The standard deviation is the positive square root of the variance.
+
     @param items (list) list of data values
     @return (float)
+
     """
     if len(items)<2:
         return 0.
     return math.sqrt(lvariance(items))
 
+# ----------------------------------------------------------------------------
 
 def lsterr(items):
     """
     Calculates the standard error of the data values.
+
     @param items (list) list of data values
     @return (float)
+
     """
     return lstdev(items) / float(math.sqrt(len(items)))
 
+# ----------------------------------------------------------------------------
 
 def lz (items, score):
     """
     Calculates the z-score for a given input score, given that score and the
     data values from which that score came.
     The z-score determines the relative location of a data value.
+
     @param items (list) list of data values
     @param score (float) a score of any items
     @return (float)
+
     """
     if len(items)<2:
         return 0.
     return (score - central.fmean(items)) / lstdev(items)
 
+# ----------------------------------------------------------------------------
 
 def lzs (items):
     """
     Calculates a list of z-scores, one for each score in the data values.
+
     @param items (list) list of data values
     @return (list)
+
     """
     return [ lz(items,i) for i in items ]
 
+# ----------------------------------------------------------------------------
 
 def rPVI(items):
     """
-    Calculates the Raw Pairwise Variability Index
+    Calculates the Raw Pairwise Variability Index.
+
     @param items (list) list of data values
     @return (float)
+
     """
     if len(items)<2:
         return 0.
@@ -154,12 +181,15 @@ def rPVI(items):
     sumd = central.fsum( [ math.fabs(items[i]-items[i+1]) for i in range(n) ]  )
     return sumd / n
 
+# ----------------------------------------------------------------------------
 
 def nPVI(items):
     """
-    Calculates the Normalized Pairwise Variability Index
+    Calculates the Normalized Pairwise Variability Index.
+
     @param items (list) list of data values
     @return (float)
+
     """
     if len(items)<2:
         return 0.

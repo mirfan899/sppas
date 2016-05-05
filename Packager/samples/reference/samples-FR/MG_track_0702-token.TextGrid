@@ -1,15 +1,18 @@
-File type = "ooTextFile short"
-"TextGrid"
+File type = "ooTextFile"
+Object class = "TextGrid"
 
-0.0
-6.76
-<exists>
-1
-"IntervalTier"
-"Tokens"
-0.0
-6.76
-1
-0.0
-6.76
-" elle habite sur arles depuis que je la connais mais je crois qu' elle a pas toujours habité là-bas enfin je sais plus exactement je connais pas très très_bien son parcours @ mais euh "
+xmin = 0.0
+xmax = 6.76
+tiers? <exists>
+size = 1
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "Tokenization"
+        xmin = 0.000000
+        xmax = 6.760000
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 6.76
+            text = "elle habite sur arles depuis que je la connais mais je crois qu' elle a pas toujours habité là-bas enfin je sais plus exactement je connais pas très très_bien son parcours @ mais euh"

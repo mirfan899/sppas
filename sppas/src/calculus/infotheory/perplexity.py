@@ -35,25 +35,19 @@
 # File: perplexity.py
 # ----------------------------------------------------------------------------
 
-import math
-
 from utilit import log2
 from utilit import MAX_NGRAM
 from utilit import symbols_to_items
 
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-# ----------------------------------------------------------------------------
-
 class Perplexity:
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
     @summary: Perplexity estimation.
 
     Perplexity is a measurement of how well a probability distribution or
@@ -135,8 +129,7 @@ class Perplexity:
 
         return pow(2,entropy)
 
-
-    # -----------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
 

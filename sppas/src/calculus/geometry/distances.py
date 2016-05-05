@@ -36,12 +36,14 @@
 # ----------------------------------------------------------------------------
 
 """
-@authors: Brigitte Bigi
-@contact: brigitte.bigi@gmail.com
-@license: GPL, v3
-@summary: Distance estimators.
+@author:       Brigitte Bigi
+@organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+@summary:      Distance estimators.
 
-A collection of basic statistical functions for python.
+A collection of basic distance functions for python.
 
 Function List
 =============
@@ -67,6 +69,6 @@ def squared_euclidian(x, y):
     if len(x) != len(y):
         raise Exception('Both x and y must have the same length (got respectively %d and %d).'%(len(x),len(y)))
 
-    return sum([(a-b)**2 for (a,b) in zip(x,y)])
+    return sum( [(a-b)**2 for (a,b) in zip(x,y)] )
 
 # -----------------------------------------------------------------------

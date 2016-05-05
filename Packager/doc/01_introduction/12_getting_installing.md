@@ -4,16 +4,15 @@
 ### Websites
 
 In the past, SPPAS - Automatic Annotation of Speech, was hosted by
-"Laboratoire Parole et Langage" (see <http://www.lpl-aix.fr>, then
-by Speech and Language Data Repository (SLDR), at: 
-<http://sldr.org/sldr000800/>
+"Laboratoire Parole et Langage" (see <http://www.lpl-aix.fr>), then
+by Speech and Language Data Repository (SLDR), at <http://sldr.org/sldr000800/>
 
-Since January 2016, SPPAS is located at the following URL:
-<http://www.sppas.org>
+Since January 2016, the main website of SPPAS is located at the following URL:
 
-The source code with recent stable releases is hosted on github:
-<https://github.com/brigittebigi/>
+    <http://www.sppas.org>
 
+The source code with recent stable releases is hosted on github
+<https://github.com/brigittebigi/>.
 From this website, anyone can download the development version,
 contribute, send comments and/or declare an issue.
 
@@ -41,8 +40,8 @@ installations.
 
 ### Download and install SPPAS
 
-The website lets to go to the Download Page to download a new version or
-Subscribe to the User's group.
+The website lets to go to the `Download Page` to download a new version or
+subscribe to the User's group.
 
 SPPAS is ready to run, so it does not need elaborate installation, except for
 its dependencies (other software required for SPPAS to work properly).
@@ -64,10 +63,10 @@ on the computer screen.
 
 Unlike many other software, SPPAS is not what is called a "black box".
 Instead, everything is done so that users can check / change operation.
-It is particularly suitable for automatic annotations. It allows any user
+It is particularly suitable for automatic annotations: it allows any user
 to adapt automatic annotations to its own needs.
 
-The package of SPPAS is then a folder with content as files and sub-folders.
+The package of SPPAS is then a directory with content as files and folders.
 
 ![SPPAS Package content](./etc/screenshots/explorer-sppas-folder.png)
 
@@ -82,9 +81,9 @@ The SPPAS package contains:
 
     - the file `CHANGES.txt` which is a Release History.
       It shows an overview of the differences between the succeeding versions of SPPAS.
-    - the copyright and a copy of the licenses
-    - the file `documentation.pdf` is this documentation in printable version
-    - the file `thePhoneticianSPPAS.pdf` is the main publication about SPPAS
+    - the copyright
+    - the documentation
+    - the main publication about SPPAS
     - the folder `scripting_solutions` is a set of python scripts corresponding 
       to the exercises proposed in the chapter "Scripting with Python and SPPAS"
 
@@ -97,6 +96,6 @@ regularly in order to get the latest functions and corrections.
 
 Updating SPPAS is very easy and fast:
 
-1. Download the last updated package from the SPPAS web site
-2. Unpack the package
+1. Download the last updated package from the SPPAS main web site
+2. Unpack the downloaded package
 3. Optionally, put the old one into the Trash.

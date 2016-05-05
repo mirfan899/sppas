@@ -38,15 +38,16 @@
 import stats.central
 import stats.variability
 import stats.moment
-from types import FunctionType
 
 # ----------------------------------------------------------------------------
 
 class DescriptiveStatistics( object ):
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
     @summary: Descriptives statistics estimator class.
 
     This class estimates descriptives statistics on a set of data values,
@@ -67,6 +68,7 @@ class DescriptiveStatistics( object ):
         Descriptive statistics.
 
         @param dictitems: a dict of tuples (key, [values])
+
         """
         self.items = dictitems
 
@@ -76,6 +78,7 @@ class DescriptiveStatistics( object ):
         """
         Estimates the number of occurrences of data values.
         @return (dict): a dictionary of (key, len)
+
         """
         return dict( (key, len(values)) for key,values in self.items.iteritems() )
 
@@ -84,6 +87,7 @@ class DescriptiveStatistics( object ):
         """
         Estimates the sum of data values.
         @return (dict): a dictionary of (key, total) of float values
+
         """
         return dict( (key, stats.central.fsum(values)) for key,values in self.items.iteritems() )
 
@@ -92,6 +96,7 @@ class DescriptiveStatistics( object ):
         """
         Returns the minimum of data values.
         @return (dict): a dictionary of (key, min) of float values
+
         """
         return dict( (key, stats.central.fmin(values)) for key,values in self.items.iteritems() )
 
@@ -100,6 +105,7 @@ class DescriptiveStatistics( object ):
         """
         Returns the maximum of data values.
         @return (dict): a dictionary of (key, max) of float values
+
         """
         return dict( (key, stats.central.fmax(values)) for key,values in self.items.iteritems() )
 
@@ -108,6 +114,7 @@ class DescriptiveStatistics( object ):
         """
         Estimates the arithmetic mean of data values.
         @return (dict): a dictionary of (key, mean) of float values
+
         """
         return dict( (key, stats.central.fmean(values)) for key,values in self.items.iteritems() )
 
@@ -124,6 +131,7 @@ class DescriptiveStatistics( object ):
         """
         Estimates the unbiased sample variance of data values.
         @return (dict): a dictionary of (key, variance) of float values
+
         """
         return dict( (key, stats.variability.lvariance(values)) for key,values in self.items.iteritems() )
 
@@ -132,6 +140,7 @@ class DescriptiveStatistics( object ):
         """
         Estimates the standard deviation of data values.
         @return (dict): a dictionary of (key, stddev) of float values
+
         """
         return dict( (key, stats.variability.lstdev(values)) for key,values in self.items.iteritems() )
 
@@ -140,6 +149,7 @@ class DescriptiveStatistics( object ):
         """
         Estimates the coefficient of variation of data values (given as a percentage).
         @return (dict): a dictionary of (key, coefvariation) of float values
+
         """
         return dict( (key, stats.moment.lvariation(values)) for key,values in self.items.iteritems() )
 
@@ -150,6 +160,7 @@ class DescriptiveStatistics( object ):
         Estimates the z-scores of data values.
         The z-score determines the relative location of a data value.
         @return (dict): a dictionary of (key, [z-scores]) of float values
+
         """
         return dict( (key, stats.variability.lzs(values)) for key,values in self.items.iteritems() )
 

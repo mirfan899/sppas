@@ -1,21 +1,25 @@
 ## Programs to perform an automatic annotation
 
 This chapter describes how to use the automatic annotations of SPPAS with a
-Command-Line Interface.
-It describes all available command and how to use it. However, for scripts
-that execute an automatic annotation, refer to the chapter
-"Automatic Annotation" to understand exactly each option!
+Command-Line Interface (CLI). It describes all available command and how to 
+use them. However, for scripts that execute an automatic annotation, refer 
+to the chapter "Automatic Annotation" to understand exactly each option!
 
-Generally, resources are given to the CLI with the argument "-r", an input
-wav file is given with "-w" option, an input annotated file is given with "-i" 
-and the output is specified with "-o".
+Generally, data are given to the CLI with the following arguments:
+
+- a resources is given with "-r" option;
+- an input audio file is given with "-w" option;
+- an input annotated file is given with "-i" option;
+- the output is specified with "-o".
 
 
 ### annotation.py
 
 This program performs automatic annotations on a given file or on all files
 of a directory. It strictly corresponds to the button `Annotate` of the GUI.
-All annotations are pre-configured: no specific option can be used.
+All annotations are pre-configured: no specific option can be specified.
+This configuration is fixed in the source code packages, via a file with name
+`sppas.conf` for each annotation.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 usage: annotation.py -w file|folder [options]
@@ -35,6 +39,9 @@ optional arguments:
    --syll          Activate Syllabification
    --rep           Activate Repetitions
    --all           Activate ALL automatic annotations
+   --merge         Create a merged TextGrid file, if more than two automatic
+                   annotations (this is the default).
+   --nomerge       Do not create a merged TextGrid file.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -55,7 +62,7 @@ any text editor (as Notepad++, vim, TextEdit, ...).
 
 
 
-###wavsplit.py
+### wavsplit.py
 
 This program performs the IPU-segmentation, i.e. silence/speech segmentation.
 When this program is used from an audio speech sound and eventually a
@@ -129,9 +136,10 @@ Examples of use to get each IPU in a wav file and its corresponding textgrid:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-###tokenize.py
+###ntokenize.py
 
-This program performs Tokenization, i.e. text normalization on a given file.
+This program performs Tokenization, i.e. the text normalization of a given 
+file or a raw text.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 usage: tokenize.py -r vocab [options]
@@ -146,9 +154,9 @@ optional arguments:
 
 The following situations are possible:
 
-1. no input is given: the input is stdin and the output is stdout
-(if an output file name is given, it is ignored). In case of enriched
-orthographic transcription, only the faked tokenization is printed.
+1. no input is given: the input is `stdin` and the output is `stdout`
+(if an output file name is given, it is ignored). In case of Enriched
+Orthographic Transcription, only the faked tokenization is printed.
 
 2. an input is given, but no output: the result of the tokenization is
 added to the input file.
@@ -167,7 +175,7 @@ $ echo "The te(xt) to normalize 123." |\
 $ the te to normalize one_hundred_twenty-three
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In that case, the elision mentionned with the parentheses is removed
+In that case, the elision mentionned with the parenthesis is removed
 and the number is converted to its written form. The character "_" is
 used for compound words (it replaces the whitespace).
 
@@ -190,36 +198,51 @@ given file.
 usage: phonetize.py -r dict [options]
 
 optional arguments:
-    -r dict      Pronunciation dictionary file name
+    -r dict      Pronunciation dictionary file name (HTK-ASCII format)
+    -m map       Pronunciation mapping table
     -i file      Input file name
     -o file      Output file name
     --nounk      Disable unknown word phonetization
     -h, --help   Show the help message and exit
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-
 Examples of use:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-$ echo "the te to normalize one_hundred_twenty-three" |\
- ./sppas/bin/phonetize.py
- -d ./resources/dict/eng.dict
- --unk
-$ D.@|D.V|D.i: t.i: t.u|t.i|t.@ n.O:.r.m.@.l.aI.z UNK
+$ echo "the te totu" |\
+ ./sppas/bin/phonetize.py 
+    -r ./resources/dict/eng.dict 
+    --nounk
+$ D-@|D-V|D-i: t-i: UNK
+$
+$ echo "the te totu" |\
+ ./sppas/bin/phonetize.py -r ./resources/dict/eng.dict 
+$ D-@|D-V|D-i: t-i: t-u-t-u|t-i-t-u|t-A-t-u|t-@-t-u
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If we suppose that the previous text was read by a French native speaker, the
+previous example can be phonetized as:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+$ echo "the te totu" |\
+ ./sppas/bin/phonetize.py 
+     -r ./resources/dict/eng.dict 
+     -m ./resources/dict/eng-fra.map 
+$ D-@|z-@|v-@|z-9|D-V|v-9|v-V|D-9|z-V|D-i:|z-i|v-i|D-i|v-i:|z-i: 
+  t-i:|t-i 
+  t-u-t-u|t-i-t-u|t-A-t-u|t-@-t-u
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Example of use on a tokenized file:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ./sppas/bin/phonetize.py
--d ../resources/dict/eng.dict
--i ../samples/samples-eng/oriana1-token.xra
--o ../samples/samples-eng/oriana1-phon.xra
+-d ./resources/dict/eng.dict
+-i ./samples/samples-eng/oriana1-token.xra
+-o ./samples/samples-eng/oriana1-phon.xra
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-###alignment.py
+### alignment.py
 
-This program performs automatic speech segmentation on a given file.
+This program performs automatic speech segmentation of a given file.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 usage: alignment.py -w file -i file -r file -o file [options]
@@ -228,16 +251,21 @@ optional arguments:
     -w file     Input wav file name
     -i file     Input file name with the phonetization
     -I file     Input file name with the tokenization
-    -r file     Model directory
+    -r file     Directory of the acoustic model of the language of the text
+    -R file     Directory of the acoustic model of the mother language 
+                of the speaker
     -o file     Output file name with alignments
     -a name     Aligner name. One of: julius, hvite, basic (default: julius)
     --extend    Extend last phoneme/token to the wav duration
+    --basic     Perform a basic alignment if error with the aligner
+    --infersp   Add 'sp' at the end of each token and let the aligner 
+                to decide the relevance
+    --noclean   Do not remove temporary data
     -h, --help  Show the help message and exit
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-Typical usage:
-
+Example of use:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ./sppas/bin/alignment.py
 -r ./resources/models/models-eng
@@ -248,9 +276,10 @@ Typical usage:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-###syllabify.py
+### syllabify.py
 
-This program performs automatic syllabification on a given file.
+This program performs automatic syllabification of a given file with 
+time-aligned phones.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 usage: syllabify.py -r config [options]

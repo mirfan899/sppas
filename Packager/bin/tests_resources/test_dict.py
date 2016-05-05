@@ -46,7 +46,7 @@ class TestDictPron(unittest.TestCase):
         dm = d.map_phones(mapd)
 
         self.assertEqual( d.get_pron(u'veuf'),   "v-9-f" )
-        self.assertEqual( dm.get_pron(u'veuf'),  "v-oe.f" )
+        self.assertEqual( dm.get_pron(u'veuf'),  "v-oe-f" )
         self.assertEqual( d.get_pron(u'veufs'),  "v-9-f-z|v-9-f" )
         self.assertEqual( dm.get_pron(u'veufs'), "v-oe-f-z|v-oe-f" )
 

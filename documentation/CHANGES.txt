@@ -937,18 +937,19 @@ SPPAS-1.7.8
 
 Resources:
     - Add a pronunciation mapping table `eng-fra.map`: to be used for the
-    speech segmentation of for French speakers reading an English text.
+    speech segmentation for French speakers reading an English text.
 
 Development:
     - Phonetization is extended: it can take into account a mapping table of
     phones to generate new pronunciation variants.
-    - Phonetization: use of minus instead of dot to separate phones as
+    - Phonetization: use of minus instead of dots to separate phones as
     recommended in SAMPA standard.
     - Alignment is restructured and extended: it can take into account two
     acoustics models and mix them.
     - DataFilter is extended: Relations can be based on a delay between
     the intervals.
     - annotationdata: add Xtrans reader (extension: .tdf)
+    - Code cleaning in several packages.
 
 GUI:
     - Automatic annotations: improved log messages.

@@ -40,17 +40,13 @@ from geometry.distances import squared_euclidian as sq
 
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-# ----------------------------------------------------------------------------
-
 class Kappa:
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
     @summary: Inter-observer variation estimation.
 
     Inter-observer variation can be measured in any situation in which
@@ -97,7 +93,6 @@ class Kappa:
         @return v
 
         """
-
         if len(self.p) != len(self.q):
             raise Exception('Both vectors p and q must have the same length (got respectively %d and %d).'%(len(self.p),len(self.q)))
 
@@ -112,7 +107,6 @@ class Kappa:
         @return row and col
 
         """
-
         if len(self.p) != len(self.q):
             raise Exception('Both vectors p and q must have the same length (got respectively %d and %d).'%(len(self.p),len(self.q)))
 
@@ -189,7 +183,5 @@ class Kappa:
             return 1.
 
         return 1.0 - v/r
-
-    # -----------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------

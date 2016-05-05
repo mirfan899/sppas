@@ -35,17 +35,7 @@
 # File: kullback.py
 # ----------------------------------------------------------------------------
 
-import math
-
 from utilit import log2
-from utilit import MAX_NGRAM
-from utilit import symbols_to_items
-
-# ----------------------------------------------------------------------------
-
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
@@ -57,9 +47,11 @@ EPSILON = 0.000001
 
 class Kullback:
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
     @summary: Kullback-Leibler distance estimation.
 
     In probability theory and information theory, the Kullback–Leibler
@@ -71,7 +63,7 @@ class Kullback:
     the prior probability distribution Q to the posterior probability
     distribution P.
 
-    However, the Kullback class estimates the KL diatance, i.e. the
+    However, the Kullback class estimates the KL distance, i.e. the
     symmetric Kullback-Leibler divergence.
 
     This Kullback class implements the Kullback-Leibler distance estimation
@@ -100,7 +92,6 @@ class Kullback:
     We suppose a window to be a list of ngrams.
 
     """
-
     def __init__(self, model=None, ngrams=None):
         """
         Create a Kullback instance with a list of symbols.
@@ -168,7 +159,6 @@ class Kullback:
         self.ngrams = ngrams
 
     # -----------------------------------------------------------------------
-
 
     def set_epsilon(self, eps):
         """
@@ -265,7 +255,7 @@ class Kullback:
 
         return dist
 
-    # -----------------------------------------------------------------------
+#---- -----------------------------------------------------------------------
 
 if __name__ == "__main__":
 

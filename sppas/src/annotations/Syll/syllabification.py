@@ -35,17 +35,7 @@
 # File: syllabification.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
 import sys
-import logging
 
 from rules import Rules
 from annotationdata.transcription import Transcription
@@ -59,9 +49,14 @@ from annotationdata.tier import Tier
 
 class Syllabification:
     """
-    SPPAS automatic syllabification annotation.
-    """
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      SPPAS automatic syllabification annotation.
 
+    """
     def __init__(self, rulesfilename, logfile=None):
         """
         Create a new syllabification instance.
@@ -71,22 +66,25 @@ class Syllabification:
 
         @param rulesfilename is a file with rules to syllabify.
 
-        """
-        # Load a set of initial rules from a file:
-        self.load_rules(rulesfilename)
+        TODO: remove the use of logfile. Clean code!
 
+        """
         # Create each instance:
         self.phonemes  = None
-        self.syllables = None
-        self.logfile   = logfile
+        self.syll   = Tier("Syllables")
+        self.cls    = Tier("Classes")
+        self.struct = Tier("Structures")
+
+        self.logfile = logfile
 
         # Initializations
         self.vow1 = 0
         self.vow2 = 1
 
-    # End __init__
-    # ------------------------------------------------------------------
+        # Load a set of initial rules from a file:
+        self.load_rules(rulesfilename)
 
+    # ------------------------------------------------------------------
 
     def load_rules(self, rulesfilename):
         """
@@ -95,28 +93,9 @@ class Syllabification:
         @param rulesfilename is a file with rules to syllabify.
 
          """
-        try:
-            self.rules = Rules(rulesfilename)
-        except Exception as e:
-            raise IOError("Syll::sppasSyll. Failed in loading rules: %s\n"%str(e))
+        self.rules = Rules(rulesfilename)
 
-
-    # End load_rules
     # ------------------------------------------------------------------
-
-
-    def get_syllables(self):
-        """
-        Return the syllables.
-
-        @return A Transcription() with syllables
-
-        """
-        return self.syllables
-
-    # End get_syllables
-    # ------------------------------------------------------------------
-
 
     def add_syllable(self, limit):
         """
@@ -163,7 +142,7 @@ class Syllabification:
         if len(p)>15:
             # MUST BE CHANGED : DO NOT RAISE AN EXCEPTION !!!!!!!!!!!!!!
             # JUST IGNORE THIS SEGMENT AND GO TO WORK FOR THE NEXT ONE !!!!!!
-            raise Exception("Syll::sppasSyll. Failed when syllabifying (more than 15 phonemes in a syllable!)\n")
+            raise Exception("Failed when syllabifying (more than 15 phonemes in a syllable!)\n")
 
         time = TimeInterval(TimePoint(starttime,startradius), TimePoint(e,er))
         self.syll.Append(Annotation(time, Label(p)))
@@ -176,9 +155,7 @@ class Syllabification:
 
         self.prevlimit = limit + 1
 
-    # End add_syllable
     # ------------------------------------------------------------------
-
 
     def find_next_break (self, start):
         """
@@ -196,9 +173,7 @@ class Syllabification:
                 return i
         return self.phonemes.GetSize()-1
 
-    # End find_next_break
     # ------------------------------------------------------------------
-
 
     def shift(self, limit):
         """
@@ -254,9 +229,7 @@ class Syllabification:
         self.vow2 = self.find_next_break( self.vow1+1 )
         return limit
 
-    # End shift
     # ------------------------------------------------------------------
-
 
     def is_consonant(self, string):
         """
@@ -264,7 +237,6 @@ class Syllabification:
 
         """
         return string not in ("V", "W", "#")
-
 
     def analyze_breaks(self):
         """
@@ -300,9 +272,7 @@ class Syllabification:
             if self.vow1 >= self.vow2:
                 vbreak = False
 
-    # End analyze_breaks
     # ------------------------------------------------------------------
-
 
     def syllabificationVV(self):
         """
@@ -333,9 +303,22 @@ class Syllabification:
 
         self.shift( self.vow1 + d)
 
-    # End syllabificationVV
     # ------------------------------------------------------------------
 
+    def get_syllables(self):
+        """
+        Return a Transcription() with the syllables.
+
+        """
+        syllables = Transcription("Syllabification")
+        syllables.Append( self.syll )
+        syllables.Append( self.cls )
+        syllables.Append( self.struct )
+        syllables._hierarchy.addLink("TimeAssociation", self.syll, self.cls)
+        syllables._hierarchy.addLink('TimeAssociation', self.syll, self.struct)
+        return syllables
+
+    # ------------------------------------------------------------------
 
     def syllabify(self, phonemes):
         """
@@ -346,22 +329,20 @@ class Syllabification:
         """
         # Init
         self.phonemes  = phonemes
-        self.syllables = None
         self.prevlimit = 0
 
         # Verifications: is there any data to syllabify?
         if self.phonemes.IsEmpty() is True:
-            raise IOError("Syll::sppasSyll. Empty phoneme tier.\n")
+            raise IOError("Empty phoneme tier.\n")
 
         # Create output Transcription
-        self.syllables = Transcription("Syllabification")
-        self.syll      = self.syllables.NewTier(name="Syllables")
-        self.cls       = self.syllables.NewTier(name="Classes")
-        self.struct    = self.syllables.NewTier(name="Structures")
+        self.syll   = Tier("Syllables")
+        self.cls    = Tier("Classes")
+        self.struct = Tier("Structures")
 
         if self.phonemes.GetSize() == 1:
             self.add_syllable(0)
-            return self.syllables
+            return self.get_syllables()
 
         # Initialization of vow1 and vow2
         if "dummy" in self.phonemes[0].GetLabel().GetValue():
@@ -385,11 +366,9 @@ class Syllabification:
         if self.vow2 <= lasti and ( classe in ("V", "W", "#")):
             self.add_syllable( lasti )
 
-        return self.syllables
+        return self.get_syllables()
 
-    # End syllabify
     # ------------------------------------------------------------------
-
 
     def syllabify2(self, phonemesTier, intervalsTier):
         """
@@ -454,5 +433,4 @@ class Syllabification:
 
         return syllables
 
-    # End syllabify2
     # ------------------------------------------------------------------
