@@ -41,8 +41,10 @@
 # Fix global variables
 # ===========================================================================
 
+HERE=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+
 # Program to package
-PROGRAM_DIR=".."
+PROGRAM_DIR=$(dirname $HERE)
 PROGRAM_NAME=$(grep -i program: $PROGRAM_DIR/README.txt | awk '{print $2}')
 PROGRAM_AUTHOR=$(grep -i author: $PROGRAM_DIR/README.txt | awk -F":" '{print $2}')
 PROGRAM_VERSION=$(grep -i version: $PROGRAM_DIR/README.txt | awk '{print $2}')
@@ -50,6 +52,7 @@ PROGRAM_COPYRIGHT=$(grep -i copyright: $PROGRAM_DIR/README.txt | awk -F":" '{pri
 
 # Files and directories to be used
 BIN_DIR="bin"
+TESTS_DIR="tests"
 DOC_DIR="doc"
 ETC_DIR="etc"
 SAMPLES_DIR="samples"
@@ -67,7 +70,7 @@ LOG_MANUAL="manual.log"
 LOG_PACKAGE="package.log"
 
 # User-Interface
-MSG_HEADER="${PROGRAM_NAME} Packager, a program written by ${PROGRAM_AUTHOR}."
+MSG_HEADER="${PROGRAM_NAME}, a program written by ${PROGRAM_AUTHOR}."
 TODAY=$(date "+%Y-%m-%d")
 
 BLACK='\e[0;30m'
@@ -378,31 +381,31 @@ function fct_test_api {
 
     echo " ... Test annotationdata "
     echo " ... Test annotationdata " >>  $TEMP
-    $BIN_DIR/tests_annotationdata/test_all.py    >&  $TEMP
+    $TESTS_DIR/tests_annotationdata/test_all.py    >&  $TEMP
 
     echo " ... Test I/O "
     echo " ... Test I/O " >>  $TEMP
-    $BIN_DIR/tests_annotationdata_io/test_all.py 2>> $TEMP
+    $TESTS_DIR/tests_annotationdata_io/test_all.py 2>> $TEMP
 
     echo " ... Test annotations "
     echo " ... Test annotations " >>  $TEMP
-    $BIN_DIR/tests_annotations/test_all.py    2>>  $TEMP
+    $TESTS_DIR/tests_annotations/test_all.py    2>>  $TEMP
 
     echo " ... Test Analysis tools "
     echo " ... Test Calculus " >>  $TEMP
-    $BIN_DIR/tests_calculus/test_all.py 2>> $TEMP
+    $TESTS_DIR/tests_calculus/test_all.py 2>> $TEMP
 
     echo " ... Test Presenters "
     echo " ... Test Presenters " >>  $TEMP
-    $BIN_DIR/tests_presenters/test_all.py 2>> $TEMP
+    $TESTS_DIR/tests_presenters/test_all.py 2>> $TEMP
 
     echo " ... Test Resources "
     echo " ... Test Resources " >>  $TEMP
-    $BIN_DIR/tests_resources/test_all.py 2>> $TEMP
+    $TESTS_DIR/tests_resources/test_all.py 2>> $TEMP
 
     echo " ... Test Signals "
     echo " ... Test Signals ">>  $TEMP
-    $BIN_DIR/tests_signals/test_all.py 2>> $TEMP
+    $TESTS_DIR/tests_signals/test_all.py 2>> $TEMP
 
     local error=`grep -c '... ERROR' $TEMP`
     if [ $error -eq 0 ]; then
@@ -540,7 +543,7 @@ function fct_sppas_doc {
     local files=$(fct_get_all_md)
 
     echo ' Version PDF';
-    pandoc -N --template=$DOC_DIR/mytemplate.tex -V geometry:a4paper -V geometry:"top=3cm, bottom=3cm, left=3cm, right=2.5cm" --variable documentclass="report" --variable classoption="twoside, openright" --variable mainfont="FreeSerif" --variable sansfont="FreeSans" --variable monofont="FreeMono" --variable fontsize=11pt --variable version="$PROGRAM_VERSION" --variable frontpage="`pwd`/doc/frontpage.pdf" $files --latex-engine=xelatex --toc -o $PROGRAM_DIR/documentation/documentation.pdf
+    pandoc -N --template=$DOC_DIR/mytemplate.tex --variable toc-depth=2 -V geometry:a4paper -V geometry:"top=3cm, bottom=3cm, left=3cm, right=2.5cm" --variable documentclass="report" --variable classoption="twoside, openright" --variable mainfont="FreeSerif" --variable sansfont="FreeSans" --variable monofont="FreeMono" --variable fontsize=11pt --variable version="$PROGRAM_VERSION" --variable frontpage="`pwd`/doc/frontpage.pdf" $files --latex-engine=xelatex --toc -o $PROGRAM_DIR/documentation/documentation.pdf
     cp $PROGRAM_DIR/documentation/documentation.pdf $WEB_DIR/doc
 
     echo ' SPPAS for dummies, web version';
