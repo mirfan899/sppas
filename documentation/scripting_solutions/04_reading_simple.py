@@ -1,14 +1,21 @@
-# ----------------------------------------------------------------------------
-# Author: Brigitte Bigi
-# Date: April,17th,2015
-# Brief: Simple script to write the content of a file.
-# ----------------------------------------------------------------------------
+#!/usr/bin python
+"""
+
+@author:       Brigitte Bigi
+@date:         2016-May-07
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2016  Brigitte Bigi
+
+@summary:      Simple script to open and read a file.
+
+""" 
 
 # ----------------------------------------------------------------------------
 # Variables
 # ----------------------------------------------------------------------------
 
-#myfile="C:\Users\Brigitte\Desktop\pythonscripts\phonemes.csv"
+#myfile="C:\phonemes.csv"
 myfile="phonemes.csv"
 
 

@@ -1,38 +1,64 @@
-# ----------------------------------------------------------------------------
-# Author: Brigitte Bigi
-# Date: April,17th,2015
-# Brief: Simple script to print a list of vowels.
-# ----------------------------------------------------------------------------
+#!/usr/bin python
+"""
 
-# Python libraries:
-import os
-import sys
+@author:       Brigitte Bigi
+@date:         2016-May-07
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2016  Brigitte Bigi
 
+@summary:      Simple script to print phonetics.
 
-# ----------------------------------------------------------------------------
-# Functions:
-# ----------------------------------------------------------------------------
+""" 
 
 def print_vowels():
-    """ Print the list of French vowels on the screen. """
-    vowels = [ 'a', 'e', 'E', 'i', 'o', 'u', 'y', '@', '2', '9', 'a~', 'o~', 'U~' ]
-    for v in vowels:
-        print "  ",v
+    """ 
+    Print the list of French vowels on the screen. 
+    
+    """
+    print "a"
+    print "e"
+    print "E"
+    print "i"
+    print "o"
+    print "u"
+    print "y"
+    print "@"
+    print "2"
+    print "9"
+    print "a~"
+    print "o~"
+    print "U~"
+
 
 def print_plosives():
-    """ Print a list of plosives on the screen. """
-    plosives = ['p', 't', 'k', 'b', 'd', 'g' ]
-    for p in plosives:
-        print "  ",p
+    """ 
+    Print a list of plosives on the screen. 
+    
+    """
+    print "p"
+    print "t"
+    print "k"
+    print "b"
+    print "d"
+    print "g"
 
 # ----------------------------------------------------------------------------
-# Main
-# ----------------------------------------------------------------------------
 
-print "French vowels: "
-print_vowels()
-print "French plosives: "
-print_plosives()
+def main():
+    """ 
+    This is the main function. 
+    
+    """
+    print "French vowels: "
+    print_vowels()
+    
+    print "French plosives: "
+    print_plosives()
+
+
+if __name__ == '__main__':
+    main()
 
 # ----------------------------------------------------------------------------
 

@@ -1,9 +1,17 @@
-# ----------------------------------------------------------------------------
-# Author: Brigitte Bigi
-# Date: 17 avril 2015
-# Brief: Open an annotated file and print information about annotations
-#        of a given tier.
-# ----------------------------------------------------------------------------
+#!/usr/bin python
+"""
+
+@author:       Brigitte Bigi
+@date:         2016-May-07
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2016  Brigitte Bigi
+
+@summary:       Open an annotated file and print information about annotations
+                of a given tier.
+
+"""
+
 import sys
 import os
 from os.path import *
@@ -46,7 +54,7 @@ nb_silence = len([a for a in tier if a.GetLabel().IsSilence()])
 nb_empty = len([a for a in tier if a.GetLabel().IsEmpty()])
 
 # Get the duration of silences
-dur_silence = sum(a.GetLocation().GetDuration() for a in tier if a.GetLabel().IsSilence())
+dur_silence = sum(a.GetLocation().GetDuration().GetValue() for a in tier if a.GetLabel().IsSilence())
 
 # Get the duration of empty labels
 dur_empty = sum(a.GetLocation().GetDuration() for a in tier if a.GetLabel().IsEmpty())

@@ -1,8 +1,15 @@
-# ----------------------------------------------------------------------------
-# Author: Brigitte Bigi
-# Date: April,17th,2015
-# Brief: Simple script to manipulate dictionaries: SAMPA to IPA converter.
-# ----------------------------------------------------------------------------
+#!/usr/bin python
+"""
+
+@author:       Brigitte Bigi
+@date:         2016-May-07
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2016  Brigitte Bigi
+
+@summary:      Simple script to manipulate dictionaries: SAMPA to IPA converter.
+
+"""  
 
 import codecs
 import sys
@@ -11,7 +18,7 @@ import sys
 # Variables
 # ----------------------------------------------------------------------------
 
-#myfile="C:\Users\Brigitte\Desktop\pythonscripts\phonemes.csv"
+#myfile="C:\phonemes.csv"
 myfile="phonemes.csv"
 
 # ----------------------------------------------------------------------------
@@ -32,6 +39,7 @@ def read_file(filename):
 def extract_dict_from_lines(lines, colkey, colvalue):
     """
     Extract a dictionary from the columns of a list of lines.
+    
     """
     # Check if everything is normal:
     mydict = {}
@@ -54,7 +62,6 @@ def extract_dict_from_lines(lines, colkey, colvalue):
     return mydict
 
 # ----------------------------------------------------------------------------
-
 
 lines = read_file(myfile)
 

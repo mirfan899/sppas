@@ -1,20 +1,25 @@
-# ----------------------------------------------------------------------------
-# Author: Brigitte Bigi
-# Date: April,17th,2015
-# Brief: Simple script to print a list of vowels.
-# ----------------------------------------------------------------------------
+#!/usr/bin python
+"""
 
-# Python libraries:
-import os
-import sys
+@author:       Brigitte Bigi
+@date:         2016-May-07
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2016  Brigitte Bigi
 
+@summary:      Simple script to print lists.
 
-# ----------------------------------------------------------------------------
-# Functions:
-# ----------------------------------------------------------------------------
+""" 
 
 def is_empty(mystr):
-    """ Return True if mystr is empty. """
+    """ 
+    
+    Return True if mystr is an empty string
+    
+    @param mystr (str) is a string
+    @return bool 
+    
+    """
     s = mystr.strip()
     return not len(s)
 
@@ -40,7 +45,7 @@ def print_list(mylist, message=""):
 
 vowels = [ 'a', 'e', 'E', 'i', 'o', 'u', 'y', '@', '2', '9', 'a~', 'o~', 'U~' ]
 plosives = ['p', 't', 'k', 'b', 'd', 'g' ]
-numbers = [ 1,2,'',3,4]
+numbers = [ 1,2,"",3,"4"]
 
 print_list(vowels,   "Vowel:   ")
 print_list(plosives, "Plosive: ")

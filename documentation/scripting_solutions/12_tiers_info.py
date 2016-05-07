@@ -1,8 +1,14 @@
-# ----------------------------------------------------------------------------
-# Author: Brigitte Bigi
-# Date: 17 avril 2015
-# Brief: Open an annotated file and print information about tiers.
-# ----------------------------------------------------------------------------
+#!/usr/bin python
+"""
+
+@author:       Brigitte Bigi
+@date:         2016-May-07
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2016  Brigitte Bigi
+
+@summary:      Open an annotated file and print information about tiers.
+"""
 
 # ----------------------------------------------------------------------------
 # Get SPPAS API
@@ -23,11 +29,9 @@ from annotationdata import Transcription
 
 filename='F_F_B003-P9-merge.TextGrid'
 
-
 # ----------------------------------------------------------------------------
 # Main
 # ----------------------------------------------------------------------------
-
 
 # Read an annotated file.
 trs = annotationdata.io.read(filename)

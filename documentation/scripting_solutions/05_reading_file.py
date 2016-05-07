@@ -1,8 +1,15 @@
-# ----------------------------------------------------------------------------
-# Author: Brigitte Bigi
-# Date: April,17th,2015
-# Brief: Simple script to get how many vowels are in a list of phonemes.
-# ----------------------------------------------------------------------------
+#!/usr/bin python
+"""
+
+@author:       Brigitte Bigi
+@date:         2016-May-07
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2016  Brigitte Bigi
+
+@summary:      Simple script to open and read a file.
+
+""" 
 
 import codecs
 import sys
@@ -11,7 +18,7 @@ import sys
 # Variables
 # ----------------------------------------------------------------------------
 
-#myfile="C:\Users\Brigitte\Desktop\pythonscripts\phonemes.csv"
+#myfile="C:\phonemes.csv"
 myfile="phonemes.csv"
 
 # ----------------------------------------------------------------------------
@@ -21,14 +28,13 @@ def read_file(filename):
     Read the whole file, return lines into a list.
 
     @param filename (string) Name of the file to read, including path.
-    @return List of lines
+    @return List of str
 
     """
     with codecs.open(filename, 'r', encoding="utf8") as f:
         return f.readlines()
 
 # ----------------------------------------------------------------------------
-
 
 lines = read_file(myfile)
 

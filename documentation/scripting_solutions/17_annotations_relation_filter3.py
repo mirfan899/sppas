@@ -1,9 +1,16 @@
-# ----------------------------------------------------------------------------
-# Author: Brigitte Bigi
-# Date: 17 avril 2015
-# Brief: Open an annotated file and filter to answer the following request:
-# get tokens preceded by AND followed by a silence.
-# ----------------------------------------------------------------------------
+#!/usr/bin python
+"""
+
+@author:       Brigitte Bigi
+@date:         2016-May-07
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2016  Brigitte Bigi
+
+@summary:      Open an annotated file and filter to answer the following request:
+               get tokens preceded by AND followed by a silence.
+
+"""
 
 import sys
 import os
@@ -13,7 +20,6 @@ sys.path.append( join("..","..", "sppas", "src") )
 import annotationdata.io
 from annotationdata import Transcription
 from annotationdata import Sel, Rel, Filter, SingleFilter, RelationFilter
-
 
 # ----------------------------------------------------------------------------
 # Variables

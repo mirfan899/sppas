@@ -1,8 +1,15 @@
-# ----------------------------------------------------------------------------
-# Author: Brigitte Bigi
-# Date: April,17th,2015
-# Brief: Simple script to get how many vowels are in a list of phonemes.
-# ----------------------------------------------------------------------------
+#!/usr/bin python
+"""
+
+@author:       Brigitte Bigi
+@date:         2016-May-07
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2016  Brigitte Bigi
+
+@summary:      Simple script to get how many vowels are in a list of phonemes.
+
+""" 
 
 import codecs
 import sys
@@ -12,7 +19,7 @@ import codecs
 # Variables
 # ----------------------------------------------------------------------------
 
-#myfile="C:\Users\Brigitte\Desktop\pythonscripts\phonemes.csv"
+#myfile="C:\phonemes.csv"
 myfile="phonemes.csv"
 
 # ----------------------------------------------------------------------------
@@ -31,18 +38,25 @@ def read_file(filename):
 # ----------------------------------------------------------------------------
 
 def extract_list_from_lines(lines, pattern):
-    """ Extract a list from lines if lines match with pattern. """
+    """ 
+    Extract a list from lines if lines match with pattern. 
+    
+    """
     mylist = []
     for l in lines:
         columns = l.split(';')
         if columns[0].strip() == pattern:
             mylist.append(columns[1].strip())
+
     return mylist
 
 # ----------------------------------------------------------------------------
 
 def count_elements(referencelist, tocountlist):
-    """ Return how many elements of a list are in the reference list. """
+    """ 
+    Return how many elements of a list are in the reference list. 
+    
+    """
     n = 0
     for x in tocountlist:
         if x in referencelist:
@@ -50,7 +64,6 @@ def count_elements(referencelist, tocountlist):
     return n
 
 # ----------------------------------------------------------------------------
-
 
 lines = read_file(myfile)
 

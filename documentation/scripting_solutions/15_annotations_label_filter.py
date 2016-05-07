@@ -1,8 +1,16 @@
-# ----------------------------------------------------------------------------
-# Author: Brigitte Bigi
-# Date: 17 avril 2015
-# Brief: Open an annotated file and filter depending on the label.
-# ----------------------------------------------------------------------------
+#!/usr/bin python
+"""
+
+@author:       Brigitte Bigi
+@date:         2016-May-07
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2016  Brigitte Bigi
+
+@summary:      Open an annotated file and filter depending on the label.
+
+"""
+
 import sys
 import os
 from os.path import *

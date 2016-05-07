@@ -1,12 +1,21 @@
-# ----------------------------------------------------------------------------
-# Author: Brigitte Bigi
-# Date: 17 avril 2015
-# Brief: Open an annotated file and print information about tiers, with GUI.
-# ----------------------------------------------------------------------------
+#!/usr/bin python
+"""
+
+@author:       Brigitte Bigi
+@date:         2016-May-07
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2016  Brigitte Bigi
+
+@summary:      Open an annotated file and print information about tiers, 
+               with GUI.
+
+"""
 
 # ----------------------------------------------------------------------------
 # Get SPPAS API
 # ----------------------------------------------------------------------------
+
 import sys
 import os
 from os.path import *
@@ -16,8 +25,6 @@ import annotationdata.io
 from annotationdata import Transcription
 
 import wx
-
-
 
 # ----------------------------------------------------------------------------
 # WX Functions
@@ -157,7 +164,6 @@ def main():
 
     # Let the result until a key is pressed.
     raw_input("Press a key to exit")
-
 
 # ----------------------------------------------------------------------------
 # This is the python entry point:

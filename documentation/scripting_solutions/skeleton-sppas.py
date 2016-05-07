@@ -1,10 +1,17 @@
-# ----------------------------------------------------------------------------
-# Author:
-# Date:
-# Brief:
-# ----------------------------------------------------------------------------
+#!/usr/bin python
+"""
 
-# Get SPPAS API
+@author:       Fix Me
+@date:         Now
+@contact:      me@me.org
+@license:      GPL, v3
+@copyright:    Copyright (C) 2016  Fixme
+
+@summary:      This is the skeleton of a python script using SPPAS.
+
+"""
+
+# Get SPPAS API for reading/writing/modifying annotated files
 import annotationdata.io
 from annotationdata import Transcription
 from annotationdata import Tier
@@ -12,7 +19,6 @@ from annotationdata import Annotation
 from annotationdata import Label
 from annotationdata import TimePoint
 from annotationdata import TimeInterval
-
 from annotationdata import Sel
 from annotationdata import Rel
 from annotationdata import Filter, SingleFilter, RelationFilter
@@ -24,17 +30,17 @@ import codecs
 
 
 # ----------------------------------------------------------------------------
-# Global variables:
+# Global variables
 # ----------------------------------------------------------------------------
 
 
 # ----------------------------------------------------------------------------
-# Functions:
+# Functions
 # ----------------------------------------------------------------------------
 
 
 # ----------------------------------------------------------------------------
-# Global variables:
+# Global variables
 # ----------------------------------------------------------------------------
 def main():
     """ This is the main function. """

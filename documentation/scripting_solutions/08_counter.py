@@ -1,12 +1,15 @@
-﻿# ---------------------------------------------------------------------------
-# Author: Brigitte Bigi
-# Date: April,17th,2015
-# Brief: Simple script to compare 2 sets of data using NLP techniques.
-# ---------------------------------------------------------------------------
+﻿#!/usr/bin python
+"""
 
-# ---------------------------------------------------------------------------
-# Import libraries
-# ---------------------------------------------------------------------------
+@author:       Brigitte Bigi
+@date:         2016-May-07
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2016  Brigitte Bigi
+
+@summary:      Simple script to compare 2 sets of data using NLP techniques.
+
+"""
 
 import sys
 import codecs

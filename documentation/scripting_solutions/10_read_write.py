@@ -1,12 +1,15 @@
-# ----------------------------------------------------------------------------
-# Author: Brigitte Bigi
-# Date: 17 avril 2015
-# Brief: Open an annotated file and save it as CSV file.
-# ----------------------------------------------------------------------------
+#!/usr/bin python
+"""
 
-# ----------------------------------------------------------------------------
-# Get SPPAS API
-# ----------------------------------------------------------------------------
+@author:       Brigitte Bigi
+@date:         2016-May-07
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2016  Brigitte Bigi
+
+@summary:      Open an annotated file and save it as CSV file.
+
+""" 
 
 # Tell python whereis SPPAS API
 import sys
