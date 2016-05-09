@@ -35,15 +35,6 @@
 # File: trsfactory.py
 # ---------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
 from text          import RawText, CSV
 from praat         import TextGrid, PitchTier, IntensityTier
 from signaix       import HzPitch
@@ -56,18 +47,22 @@ from sclite        import TimeMarkedConversation, SegmentTimeMark
 from elan          import Elan
 from anvil         import Anvil
 from annotationpro import Antx
+from xtrans        import Xtrans
 
 # ----------------------------------------------------------------------------
 
 class TrsFactory(object):
     """
-    @authors: Tatsuya Watanabe, Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: Factory for Transcription.
+    @authors:      Tatsuya Watanabe, Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Factory for Transcription.
+
     """
 
-    __TRS = {
+    TRANSCRIPTION_TYPES = {
         "txt": RawText,
         "csv": CSV,
         "intensitytier": IntensityTier,
@@ -85,23 +80,22 @@ class TrsFactory(object):
         "stm": SegmentTimeMark,
         "eaf": Elan,
         "anvil": Anvil,
-        "antx": Antx
+        "antx": Antx,
+        "tdf": Xtrans
     }
 
     @staticmethod
     def NewTrs(trs_type):
         """
-        Return a new Transcription.
+        Return a Transcription from a type.
 
-        @param trs_type
-        @return Transcription
+        @param trs_type (str) a file extension.
+        @return Transcription()
+
         """
         try:
-            return TrsFactory.__TRS[trs_type]()
+            return TrsFactory.TRANSCRIPTION_TYPES[trs_type]()
         except KeyError:
-            raise KeyError("Unrecognised Transcription type: %s" % trs_type)
-
-    # End NewTrs
-    # ------------------------------------------------------------------------
+            raise KeyError("Unrecognized Transcription type: %s" % trs_type)
 
 # ----------------------------------------------------------------------------
