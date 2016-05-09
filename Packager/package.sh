@@ -463,19 +463,20 @@ function fct_api_manual {
 function fct_uml_diagrams {
     echo -e "${BROWN} - $PROGRAM_NAME UML diagrams${NC}"
     # test if yuml is ok. https://github.com/wandernauta/yuml/
-    type yuml >& /dev/null
+    type $BIN_DIR/yuml >& /dev/null
     if [ $? -eq 1 ] ; then
         # test if suml is ok. https://pypi.python.org/pypi/scruffy
         type suml >& /dev/null
         if [ $? -eq 1 ] ; then
             echo -e "${RED}None of yuml or suml are working! Please, install at least one of them and try again.${NC}"
             return 1
-    
-        suml --png --class -i $ETC_DIR/figures/src/annotationdata.yuml -o $ETC_DIR/figures/annotationdata.png
+        else
+            suml --png --class -i $ETC_DIR/figures/src/annotationdata.yuml -o $ETC_DIR/figures/annotationdata.png
         fi
+    else
+        cat $ETC_DIR/figures/src/annotationdata.yuml | $BIN_DIR/yuml -f png -t class -s plain --scale 42 -o $ETC_DIR/figures/annotationdata.png
     fi
 
-    cat $ETC_DIR/figures/src/annotationdata.yuml | yuml -s nofunky -o $ETC_DIR/figures/annotationdata.png
 }
 
 
@@ -543,8 +544,8 @@ function fct_sppas_doc {
     local files=$(fct_get_all_md)
 
     echo ' Version PDF';
-    pandoc -N --template=$DOC_DIR/mytemplate.tex --variable toc-depth=2 -V geometry:a4paper -V geometry:"top=3cm, bottom=3cm, left=3cm, right=2.5cm" --variable documentclass="report" --variable classoption="twoside, openright" --variable mainfont="FreeSerif" --variable sansfont="FreeSans" --variable monofont="FreeMono" --variable fontsize=11pt --variable version="$PROGRAM_VERSION" --variable frontpage="`pwd`/doc/frontpage.pdf" $files --latex-engine=xelatex --toc -o $PROGRAM_DIR/documentation/documentation.pdf
-    cp $PROGRAM_DIR/documentation/documentation.pdf $WEB_DIR/doc
+    pandoc -N --template=$DOC_DIR/mytemplate.tex --variable toc-depth=2 -V geometry:a4paper -V geometry:"top=3cm, bottom=3cm, left=3cm, right=2.5cm" --variable documentclass="report" --variable classoption="twoside, openright" --variable mainfont="FreeSerif" --variable sansfont="FreeSans" --variable monofont="FreeMono" --variable fontsize=11pt --variable version="$PROGRAM_VERSION" --variable frontpage="`pwd`/doc/frontpage.pdf" $files --latex-engine=xelatex --toc -o $PROGRAM_DIR/documentation/Documentation.pdf
+    cp $PROGRAM_DIR/documentation/Documentation.pdf $WEB_DIR/doc/Documentation.pdf
 
     echo ' SPPAS for dummies, web version';
     pandoc -s --mathjax -t dzslides --css $ETC_DIR/styles/dummies.css --slide-level=2 -H $DOC_DIR/include-scripts.txt $DOC_DIR/SPPAS-for-dummies.md -o $WEB_DIR/SPPAS-for-dummies.html
