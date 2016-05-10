@@ -42,9 +42,9 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-from signals.monofragment import MonoFragment
-from signals import audioutils
-from channel import Channel
+from audiodata.monofragment import MonoFragment
+from audiodata.channel      import Channel
+from audiodata              import audioutils
 
 # ----------------------------------------------------------------------------
 

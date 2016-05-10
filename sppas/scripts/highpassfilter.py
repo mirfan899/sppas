@@ -58,9 +58,9 @@ WAVETOASTER = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ))
 SRC = os.path.join(WAVETOASTER, "src" )
 sys.path.append(SRC)
 
-import signals
-from signals.channel import Channel
-from signals.audio import Audio
+import audiodata
+from audiodata.channel import Channel
+from audiodata.audio import Audio
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -78,7 +78,7 @@ args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
 
-audioin = signals.open( args.i )
+audioin = audiodata.open( args.i )
 SAMPLE_RATE = audioin.get_framerate()
 
 # ----------------------------------------------------------------------------
@@ -111,6 +111,6 @@ result = [ int(sample * (2.0**15 - 1)) for sample in result ]
 audioout = Audio()
 channel = Channel(framerate=SAMPLE_RATE, sampwidth=audioin.get_sampwidth(), frames=struct.pack('%dh' % len(result), *result) )
 audioout.append_channel( channel )
-signals.save( args.o, audioout)
+audiodata.save( args.o, audioout)
 
 # ----------------------------------------------------------------------------

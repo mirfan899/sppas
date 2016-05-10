@@ -32,25 +32,46 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: audio.py of the package signals
+# File: audio.py
 # ---------------------------------------------------------------------------
 
-NO_AUDIO_MSG = "No audio file available. Was closed??"
+NO_AUDIO_MSG = "No audio file available. Closed?"
 
 # ---------------------------------------------------------------------------
 
 import struct
+
 from channel import Channel
-from signals import audioutils
+from audiodata import audioutils
 
 # ---------------------------------------------------------------------------
 
 class Audio( object ):
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: An audio file reader/writer utility class.
+    @authors:      Nicolas Chazeau, Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      An audio file reader/writer utility class.
+
+    Pulse-code modulation (PCM) is a method used to digitally represent sampled
+    analog signals. A PCM signal is a sequence of digital audio samples
+    containing the data providing the necessary information to reconstruct the
+    original analog signal. Each sample represents the amplitude of the signal
+    at a specific point in time, and the samples are uniformly spaced in time.
+    The amplitude is the only information explicitly stored in the sample
+
+    A PCM stream has two basic properties that determine the stream's fidelity
+    to the original analog signal: the sampling rate, which is the number of
+    times per second that samples are taken; and the bit depth, which
+    determines the number of possible digital values that can be used to
+    represent each sample.
+
+    For speech analysis, recommended sampling rate are 16000 (for automatic
+    analysis) or 48000 (for manual analysis); and recommended sample depths
+    are 16 (for automatic analysis) or 24 bits (for both automatic and manual
+    analysis) per sample.
 
     These variables are user gettable through appropriate methods:
         - nchannels -- the number of audio channels
@@ -71,6 +92,7 @@ class Audio( object ):
         - setpos()
         - tell()
         - rewind()
+
     """
     def __init__(self):
         """
@@ -83,9 +105,7 @@ class Audio( object ):
         # The list of loaded channels of this audio
         self.channels = []
 
-    # End __init__
     # ----------------------------------------------------------------------
-
 
     def Set(self, audio):
         """
@@ -111,6 +131,7 @@ class Audio( object ):
         """
         return self.channels
 
+
     def get_audiofp(self):
         """
         Return the audio file pointer.
@@ -119,8 +140,6 @@ class Audio( object ):
 
         """
         return self.audiofp
-
-    # ----------------------------------------------------------------------
 
 
     # ----------------------------------------------------------------------
@@ -136,6 +155,7 @@ class Audio( object ):
         """
         self.channels.pop(channel)
 
+
     def pop_channel(self, idx):
         """
         Pop the channel at the position given from the list of uploaded channels
@@ -144,6 +164,7 @@ class Audio( object ):
 
         """
         self.channels.pop(idx)
+
 
     def insert_channel(self, idx, channel):
         """
@@ -155,6 +176,7 @@ class Audio( object ):
         """
         self.channels.insert(idx, channel)
 
+
     def get_channel(self, idx):
         """
         Get an uploaded channel.
@@ -165,6 +187,7 @@ class Audio( object ):
         """
         return self.channels[idx]
 
+
     def append_channel(self, channel):
         """
         Append a channel to the list of uploaded channels.
@@ -173,6 +196,7 @@ class Audio( object ):
 
         """
         self.channels.append(channel)
+
 
     def extract_channel(self, number):
         """
@@ -204,8 +228,6 @@ class Audio( object ):
 
         return len(self.channels)-1
 
-    # ----------------------------------------------------------------------
-
 
     # ----------------------------------------------------------------------
     # Read content, for audiofp
@@ -220,6 +242,7 @@ class Audio( object ):
         """
         return self.read_frames(self.nbreadframes)
 
+
     def read_frames(self, nframes):
         """
         Read the frames from the audio file.
@@ -232,9 +255,10 @@ class Audio( object ):
             raise Exception(NO_AUDIO_MSG)
         return self.audiofp.readframes(nframes)
 
+
     def read_samples(self, nframes):
         """
-        Read the samples from the wave file.
+        Read the samples from the audio file.
 
         @param nframes (int) the number of frames to read
         @return the samples
@@ -265,8 +289,6 @@ class Audio( object ):
 
         return samples
 
-    # ----------------------------------------------------------------------
-
 
     # ----------------------------------------------------------------------
     # Getters, for audiofp
@@ -286,6 +308,7 @@ class Audio( object ):
                 raise Exception(NO_AUDIO_MSG)
         return self.audiofp.getsampwidth()
 
+
     def get_framerate(self):
         """
         Return the frame rate of the Audio file pointer.
@@ -299,6 +322,7 @@ class Audio( object ):
             else:
                 raise Exception(NO_AUDIO_MSG)
         return self.audiofp.getframerate()
+
 
     def get_nframes(self):
         """
@@ -314,6 +338,7 @@ class Audio( object ):
                 raise Exception(NO_AUDIO_MSG)
         return self.audiofp.getnframes()
 
+
     def get_nchannels(self):
         """
         Return the number of channels of the Audio file pointer.
@@ -328,11 +353,12 @@ class Audio( object ):
                 raise Exception(NO_AUDIO_MSG)
         return self.audiofp.getnchannels()
 
+
     def get_duration(self):
         """
         Return the duration of the Audio file pointer.
 
-        @return the duration of the audio file
+        @return the duration of the audio file (in seconds)
 
         """
         if not self.audiofp:
@@ -340,6 +366,7 @@ class Audio( object ):
                 return self.channels[0].get_duration()
             else:
                 raise Exception(NO_AUDIO_MSG)
+
         return float(self.get_nframes())/float(self.get_framerate())
 
     # ----------------------------------------------------------------------
@@ -358,6 +385,7 @@ class Audio( object ):
             raise Exception(NO_AUDIO_MSG)
         return self.frameduration
 
+
     def get_minvolume(self):
         """
         Return the min volume of the Audio file pointer.
@@ -368,7 +396,9 @@ class Audio( object ):
         if not self.audiofp:
             raise Exception(NO_AUDIO_MSG)
         self.__set_minvolume()
+
         return self.minvolume
+
 
     def get_maxvolume(self):
         """
@@ -380,7 +410,9 @@ class Audio( object ):
         if not self.audiofp:
             raise Exception(NO_AUDIO_MSG)
         self.__set_maxvolume()
+
         return self.maxvolume
+
 
     def get_meanvolume(self):
         """
@@ -394,7 +426,9 @@ class Audio( object ):
         self.__set_minvolume()
         self.__set_maxvolume()
         self.__set_meanvolume()
+
         return self.meanvolume
+
 
     def get_volumes(self):
         """
@@ -413,6 +447,7 @@ class Audio( object ):
             nb += 1
         return vol
 
+
     def get_rms(self):
         """
         Return the root mean square of the whole file
@@ -422,18 +457,17 @@ class Audio( object ):
         """
         return audioutils.get_rms(self.read_frames(self.get_nframes()), self.get_sampwidth(), self.get_nchannels())
 
-    # -----------------------------------------------------------------------
 
     def get_clipping_rate(self, factor):
         """
         Return the clipping rate of the frames
 
-        @param factor (float) An interval to be more precise on clipping rate. It will consider that all frames outside the interval are clipped. Factor has to be between 0 and 1.
+        @param factor (float) An interval to be more precise on clipping rate.
+        It will consider that all frames outside the interval are clipped.
+        Factor has to be between 0 and 1.
 
         """
         return audioutils.get_clipping_rate(self.read_frames(self.get_nframes()), self.get_sampwidth(), factor)
-
-    # ----------------------------------------------------------------------
 
 
     # ----------------------------------------------------------------------
@@ -451,6 +485,7 @@ class Audio( object ):
             raise Exception(NO_AUDIO_MSG)
         self.audiofp.setpos(pos)
 
+
     def tell(self):
         """
         Get reader position.
@@ -461,6 +496,7 @@ class Audio( object ):
         if not self.audiofp:
             raise Exception(NO_AUDIO_MSG)
         return self.audiofp.tell()
+
 
     def rewind(self):
         """
@@ -497,8 +533,6 @@ class Audio( object ):
                 raise NameError("Channels have not the same number of frames ! Convert them before mix.")
 
     # ----------------------------------------------------------------------
-
-    # ----------------------------------------------------------------------
     # The sad death of this audiofp...
     # ----------------------------------------------------------------------
 
@@ -511,8 +545,6 @@ class Audio( object ):
             raise Exception(NO_AUDIO_MSG)
         self.audiofp.close()
         self.__reset()
-
-    # ----------------------------------------------------------------------
 
 
     # ----------------------------------------------------------------------
@@ -606,7 +638,7 @@ class Audio( object ):
         # Remember current position in the speech file
         pos = self.tell()
 
-        # Rewind to the begining of the file
+        # Rewind to the beginning of the file
         self.rewind()
 
         # Get the mean value: the rms of the whole file
@@ -624,7 +656,6 @@ class Audio( object ):
         # Returns to the position where the file was before
         self.set_pos(pos)
 
-    # ----------------------------------------------------------------------
 
     # ----------------------------------------------------------------------
     # Overloads
@@ -633,12 +664,10 @@ class Audio( object ):
     def __len__(self):
         return len(self.channels)
 
-    # End __len__
     # ------------------------------------------------------------------------------------
 
     def __iter__(self):
         for x in self.channels:
             yield x
 
-    # End __iter__
     # ------------------------------------------------------------------------------------

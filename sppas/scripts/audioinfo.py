@@ -56,7 +56,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
-import signals
+import audiodata
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -74,7 +74,7 @@ args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
 
-wavspeech = signals.open(args.w)
+wavspeech = audiodata.open(args.w)
 wavspeech.frameduration = args.f
 
 print "Wav file name:       ", args.w

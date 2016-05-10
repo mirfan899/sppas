@@ -57,12 +57,12 @@ from annotations.Align.align import sppasAlign
 
 import annotationdata.io
 import annotationdata.utils.tierutils
-import signals
+import audiodata
 
 from annotationdata.transcription import Transcription
-from signals.audio                import Audio
-from signals.channelformatter     import ChannelFormatter
-from signals.channelmfcc          import ChannelMFCC
+from audiodata.audio                import Audio
+from audiodata.channelformatter     import ChannelFormatter
+from audiodata.channelmfcc          import ChannelMFCC
 
 from resources.dictpron import DictPron
 from resources.wordslst import WordsList
@@ -370,7 +370,7 @@ class TrainingCorpus( object ):
     Accepted input:
 
         - annotated files: one of annotationdata.io.extensions_in
-        - audio files: one of signals.extensions
+        - audio files: one of audiodata.extensions
 
     """
     def __init__(self, datatrainer=None, lang="und"):
@@ -494,7 +494,7 @@ class TrainingCorpus( object ):
         """
         # Get the list of audio files from the input directory
         audiofilelist = []
-        for extension in signals.extensions:
+        for extension in audiodata.extensions:
             files = utils.fileutils.get_files( directory, extension )
             audiofilelist.extend( files )
 
@@ -750,7 +750,7 @@ class TrainingCorpus( object ):
     def _add_audio( self, audiofilename, outfile ):
         # Get the first channel
         try:
-            audio = signals.open( audiofilename )
+            audio = audiodata.open( audiofilename )
             audio.extract_channel(0)
             formatter = ChannelFormatter( audio.get_channel(0) )
         except Exception as e:
@@ -766,7 +766,7 @@ class TrainingCorpus( object ):
         # Save the converted channel
         audio_out = Audio()
         audio_out.append_channel( formatter.channel )
-        signals.save( os.path.join(self.datatrainer.get_storewav(), outfile + ".wav" ), audio_out )
+        audiodata.save( os.path.join(self.datatrainer.get_storewav(), outfile + ".wav" ), audio_out )
 
         # Generate MFCC
         wav = os.path.join(self.datatrainer.get_storewav(), outfile + ".wav" )

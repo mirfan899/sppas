@@ -38,7 +38,7 @@
 import re
 import codecs
 
-import signals
+import audiodata
 from basealigner  import BaseAligner
 from sp_glob import encoding
 
@@ -90,7 +90,7 @@ class BasicAligner( BaseAligner ):
             duration = inputwav
         else:
             try:
-                wavspeech = signals.open( inputwav )
+                wavspeech = audiodata.open( inputwav )
                 duration  = wavspeech.get_duration()
             except Exception:
                 duration = 0.

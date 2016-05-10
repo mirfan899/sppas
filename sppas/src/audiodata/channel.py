@@ -35,36 +35,37 @@
 # File: channel.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Nicolas Chazeau (n.chazeau94@gmail.com), Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-# ----------------------------------------------------------------------------
-
-from signals import audioutils
+from audiodata import audioutils
 import audioop
 
 # ----------------------------------------------------------------------------
 
 class Channel:
     """
-    @authors: Nicolas Chazeau, Brigitte Bigi
-    @contact: n.chazeau94@gmail.com, brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: A class to manage frames of an audio channel.
+    @authors:      Nicolas Chazeau, Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      A class to manage frames of an audio channel.
 
     """
     def __init__(self, framerate=0, sampwidth=0, frames=''):
         """
         Constructor.
 
+        @param framerate (int) The frame rate of this channel, in Hertz.
+        The recommended framerate value is 48,000;
+        @param sampwidth (int)
+        @param frames (str) The frames represented by a string.
+
         """
-        self.frames = frames
+        self.frames    = frames
         self.framerate = framerate
         self.sampwidth = sampwidth
         self.position  = 0
 
-        self.frameduration = 0.01
+        self.frameduration = 0.01 # for rms estimation
         self.nbreadframes = int(self.frameduration*self.framerate)
 
     # ----------------------------------------------------------------------
@@ -97,13 +98,14 @@ class Channel:
         m = len(self.frames)
         f = ''.join( self.frames[i] for i in range( p*self.sampwidth,min(m, p*self.sampwidth + chuncksize*self.sampwidth ) ) )
         self.position = p + chuncksize
+
         return f
 
     # -----------------------------------------------------------------------
 
     def get_nframes(self):
         """
-        Return the number of frames (A frame has a length of (sampwidth) bytes).
+        Return the number of frames (a frame has a length of (sampwidth) bytes).
 
         @return the total number of frames
 
@@ -201,12 +203,14 @@ class Channel:
         """
         return self.position
 
+
     def rewind(self):
         """
         Return at the beginning of the frames.
 
         """
         self.position = 0
+
 
     def seek(self, position):
         """

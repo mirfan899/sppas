@@ -51,7 +51,7 @@ import wave
 import os.path
 
 import annotationdata.io
-import signals
+import audiodata
 
 # and temporary.......
 from  annotationdata.label.label import Label
@@ -310,9 +310,9 @@ class DisplayCtrl( wx.Window ):
         logging.debug('DisplayCtrl.SetData: %s , %s'%(fileName, fileExtension))
 
         # Load data, create the corresponding control
-        if fileExtension.lower() in signals.extensions:
+        if fileExtension.lower() in audiodata.extensions:
             try:
-                wf = signals.open( f )
+                wf = audiodata.open( f )
             except Exception as e:
                 ShowInformation(self, self._prefsIO,"The following error occurred while loading file "+f+".\n"+str(e), style=wx.ICON_INFORMATION)
                 raise Exception('Display. SetData. Error while loading the sound: %s.'%str(e))

@@ -8,9 +8,9 @@ WAVETOASTER = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ))
 SRC = os.path.join(WAVETOASTER, "src" )
 sys.path.append(SRC)
 
-import signals
-from signals.channelsmixer import ChannelsMixer
-from signals.audio import Audio
+import audiodata
+from audiodata.channelsmixer import ChannelsMixer
+from audiodata.audio import Audio
 
 sys.path.remove(SRC)
 
@@ -26,23 +26,23 @@ if len(sys.argv) <= 1:
     sys.argv.append('-h')
 
 args = parser.parse_args()
-    
+
 # ----------------------------------------------------------------------------
 
 
 mixer = ChannelsMixer()
 
 for inputFile in args.w:
-    audio = signals.open(inputFile)
+    audio = audiodata.open(inputFile)
     idx = audio.extract_channel(0)
     mixer.append_channel(audio.get_channel(idx))
-    
+
 newchannel = mixer.mix()
 
 
 # Save the converted channel
 audio_out = Audio()
 audio_out.append_channel( newchannel )
-signals.save( args.o, audio_out )
+audiodata.save( args.o, audio_out )
 
 # ----------------------------------------------------------------------------

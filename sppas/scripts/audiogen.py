@@ -57,9 +57,9 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
-import signals
-from signals.channelformatter import ChannelFormatter
-from signals.audio import Audio
+import audiodata
+from audiodata.channelformatter import ChannelFormatter
+from audiodata.audio import Audio
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -87,7 +87,7 @@ if not args.b in [1,2,4]:
 # ----------------------------------------------------------------------------
 
 print (time.strftime("%H:%M:%S"))
-audio = signals.open(args.w)
+audio = audiodata.open(args.w)
 
 # Get the expected channel
 idx = audio.extract_channel(args.c-1)
@@ -107,7 +107,7 @@ print (time.strftime("%H:%M:%S"))
 # Save the converted channel
 audio_out = Audio()
 audio_out.append_channel( formatter.channel )
-signals.save( args.o, audio_out )
+audiodata.save( args.o, audio_out )
 print (time.strftime("%H:%M:%S"))
 
 # ----------------------------------------------------------------------------

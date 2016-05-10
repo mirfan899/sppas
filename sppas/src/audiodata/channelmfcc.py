@@ -41,9 +41,9 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ---------------------------------------------------------------------------
 
-from utils.type import test_command
-from signals.channel import Channel
 import subprocess
+from utils.type import test_command
+from audiodata.channel import Channel
 
 # ---------------------------------------------------------------------------
 

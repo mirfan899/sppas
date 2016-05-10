@@ -47,7 +47,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import wx
 import logging
 
-import signals
+import audiodata
 
 from wxgui.structs.prefs  import Preferences
 from wxgui.structs.themes import BaseTheme
@@ -232,9 +232,7 @@ class SndProperty( wx.Panel ):
         Show information of a sound file.
         """
         try:
-            logging.info('PropertyPanel. File: '+filename)
-            #_wav  = wave.Wave_read( filename )
-            _audio = signals.open( filename )
+            _audio = audiodata.open( filename )
             duration = float(_audio.get_duration() )
             value_list = [ filename,
                            '%.2f' % duration,

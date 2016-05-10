@@ -42,10 +42,10 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-import signals
-from signals.audio import Audio
-from signals.channel import Channel
-from signals.channelformatter import ChannelFormatter
+import audiodata
+from audiodata.audio import Audio
+from audiodata.channel import Channel
+from audiodata.channelformatter import ChannelFormatter
 
 # ----------------------------------------------------------------------------
 
@@ -114,7 +114,7 @@ class AudioSppasPresenter:
 
         """
         toconvert = False
-        audio = signals.open(inputname)
+        audio = audiodata.open(inputname)
 
         if (self._reqSamplewidth != audio.get_sampwidth()):
             toconvert = True
@@ -138,7 +138,7 @@ class AudioSppasPresenter:
         """
         toconvert = False
 
-        audio = signals.open(inputname)
+        audio = audiodata.open(inputname)
 
         if (audio.get_sampwidth() < self._reqSamplewidth):
             raise NameError("The sample width of ("+str(audio.get_sampwidth())+") of the given file is not appropriate. " + str(self._reqSamplewidth) + " bytes required")
@@ -176,7 +176,7 @@ class AudioSppasPresenter:
             # Save the converted channel
             audio_out = Audio()
             audio_out.append_channel( formatter.channel )
-            signals.save( outputname, audio_out )
+            audiodata.save( outputname, audio_out )
 
         return toconvert
 

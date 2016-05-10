@@ -3,25 +3,25 @@
 
 import unittest
 import os
-import paths
-import signals
-from signals.audioutils import samples2frames
+from paths import SAMPLES
+import audiodata
+from audiodata.audioutils import samples2frames
 
 
 class TestAudioUtils(unittest.TestCase):
-    _sample_path_1 = os.path.join(paths.samples, "oriana1.WAV")
-    _sample_path_2 = os.path.join(paths.samples, "F_F_B003-P9.wav")
-    _sample_path_3 = os.path.join(paths.samples, "stereo.wav")
+    _sample_path_1 = os.path.join(SAMPLES, "oriana1.WAV")
+    _sample_path_2 = os.path.join(SAMPLES, "F_F_B003-P9.wav")
+    _sample_path_3 = os.path.join(SAMPLES, "stereo.wav")
 
-    _newsample_path_1 = os.path.join(paths.samples, "oriana1new.wav")
-    _newsample_path_2 = os.path.join(paths.samples, "F_F_B003-P9new.wav")
-    _newsample_path_3 = os.path.join(paths.samples, "stereonew.wav")
+    _newsample_path_1 = os.path.join(SAMPLES, "oriana1new.wav")
+    _newsample_path_2 = os.path.join(SAMPLES, "F_F_B003-P9new.wav")
+    _newsample_path_3 = os.path.join(SAMPLES, "stereonew.wav")
 
 
     def setUp(self):
-        self._sample_1 = signals.open(TestAudioUtils._sample_path_1)
-        self._sample_2 = signals.open(TestAudioUtils._sample_path_2)
-        self._sample_3 = signals.open(TestAudioUtils._sample_path_3)
+        self._sample_1 = audiodata.open(TestAudioUtils._sample_path_1)
+        self._sample_2 = audiodata.open(TestAudioUtils._sample_path_2)
+        self._sample_3 = audiodata.open(TestAudioUtils._sample_path_3)
 
 
     def test_Samples2Frames(self):

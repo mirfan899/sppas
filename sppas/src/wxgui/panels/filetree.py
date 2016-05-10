@@ -47,7 +47,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import logging
 import os.path
 
-import signals
+import audiodata
 
 import wx
 from wx.lib.buttons import GenBitmapButton, GenBitmapTextButton
@@ -431,7 +431,7 @@ class FiletreePanel( wx.Panel ):
         """
         if filelist is None:
             filelist = []
-            for ext in signals.extensions:
+            for ext in audiodata.extensions:
                 filelist.extend( self.GetSelected(ext) )
 
         for f in filelist:
@@ -518,7 +518,7 @@ class FiletreePanel( wx.Panel ):
             child = self._get_item_by_label(basename, item)
             if not child.IsOk():
                 child = self._add_item(item, basename)
-            if fileExtension.lower() in signals.extensions:
+            if fileExtension.lower() in audiodata.extensions:
                 self._add_related_files(os.path.join(dirname, basename))
                 self._filestree.SelectItem(child)
 
@@ -536,7 +536,7 @@ class FiletreePanel( wx.Panel ):
         #store all the wav file names in wavfile_list
         for f in files:
             filename, extension = os.path.splitext(f)
-            if extension.lower() in signals.extensions:
+            if extension.lower() in audiodata.extensions:
                 wavfile_list.append(filename)
 
         #add all the children directories
@@ -569,7 +569,7 @@ class FiletreePanel( wx.Panel ):
                 continue
             #if it is a wav file, add it as item of the tree
             try:
-                if f.lower() in signals.extensions:
+                if f.lower() in audiodata.extensions:
                     #self._add_item(item, f)
                     #add the file only if it is not in the list
                     child = self._get_item_by_label(os.path.basename( f ), item)
@@ -617,7 +617,7 @@ class FiletreePanel( wx.Panel ):
             self._filestree.SetItemImage(child, self.fldridx,     which=wx.TreeItemIcon_Normal)
             self._filestree.SetItemImage(child, self.fldropenidx, which=wx.TreeItemIcon_Expanded)
 
-        elif fileExtension in signals.extensions:
+        elif fileExtension in audiodata.extensions:
             child = self._filestree.AppendItem(parent, son)
             self._filestree.SetPyData(child, None)
             self._filestree.SetItemImage(child, self.wavfileidx, wx.TreeItemIcon_Normal)

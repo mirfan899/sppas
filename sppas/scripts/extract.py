@@ -8,8 +8,8 @@ WAVETOASTER = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ))
 SRC = os.path.join(WAVETOASTER, "src" )
 sys.path.append(SRC)
 
-import signals
-from signals.audio import Audio
+import audiodata
+from audiodata.audio import Audio
 
 sys.path.remove(SRC)
 
@@ -26,10 +26,10 @@ if len(sys.argv) <= 1:
     sys.argv.append('-h')
 
 args = parser.parse_args()
-    
+
 # ----------------------------------------------------------------------------
 
-audio = signals.open(args.w)
+audio = audiodata.open(args.w)
 
 if args.c == 0 or args.c > audio.get_nchannels():
     print "Wrong channel value (must be > 0 and < number of channels)"
@@ -42,6 +42,6 @@ idx = audio.extract_channel(args.c-1)
 # Save the converted channel
 audio_out = Audio()
 audio_out.append_channel( audio.get_channel(idx) )
-signals.save( args.o, audio_out )
+audiodata.save( args.o, audio_out )
 
 # ----------------------------------------------------------------------------

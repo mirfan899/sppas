@@ -32,7 +32,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: audiofactory.py of the package signals
+# File: audiofactory.py
 # ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""

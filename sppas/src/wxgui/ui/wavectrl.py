@@ -170,7 +170,7 @@ class WaveCtrl( spControl ):
         Constructor.
 
         Non-wxPython related parameter:
-          - audio: the audio, already open by signals.open(f).
+          - audio (AudioPCM): the audio instance.
 
         """
 

@@ -42,10 +42,10 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-import signals
+import audiodata
 import annotationdata.io
 
-from signals.audio import Audio
+from audiodata.audio import Audio
 from annotationdata.transcription import Transcription
 
 import os
@@ -142,7 +142,7 @@ class AudioSilencePresenter:
                 audio_out = Audio()
                 audio_out.append_channel(self.channelsil.channel)
                 try:
-                    signals.save_fragment(trackwavname, audio_out, split_track)
+                    audiodata.save_fragment(trackwavname, audio_out, split_track)
                 except Exception as e:
                     if logfile:
                         logfile.print_message('Writing track %s failed with error: %s'%(trackwavname,str(e)), status=-1)

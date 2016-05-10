@@ -41,9 +41,9 @@ import re
 
 from sp_glob import encoding
 
-import signals
-from signals.channel    import Channel
-from signals.channelsil import ChannelSil
+import audiodata
+from audiodata.channel    import Channel
+from audiodata.channelsil import ChannelSil
 
 from resources.mapping  import Mapping
 
@@ -160,7 +160,7 @@ class SpeechSegmenter:
         @return tuple with number of silences and number of tracks
 
         """
-        audiospeech = signals.open( inputaudio )
+        audiospeech = audiodata.open( inputaudio )
         idx = audiospeech.extract_channel(0)
         channel = audiospeech.get_channel(idx)
         framerate = channel.get_framerate()

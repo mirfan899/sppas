@@ -41,9 +41,8 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ---------------------------------------------------------------------------
 
-import struct
-from channel import Channel
-from signals import audioutils
+from audiodata.channel import Channel
+from audiodata import audioutils
 
 # ---------------------------------------------------------------------------
 

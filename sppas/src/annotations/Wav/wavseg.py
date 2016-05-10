@@ -45,9 +45,9 @@ import os
 import codecs
 import logging
 
-import signals
-from signals.channel    import Channel
-from signals.channelsil import ChannelSil
+import audiodata
+from audiodata.channel    import Channel
+from audiodata.channelsil import ChannelSil
 
 from presenters.audiosilencepresenter import AudioSilencePresenter
 
@@ -681,9 +681,9 @@ class sppasSeg:
         """
         fileName, fileExtension = os.path.splitext( audiofile )
         # Set input
-        if fileExtension.lower() in signals.extensions:
+        if fileExtension.lower() in audiodata.extensions:
             try:
-                self.audiospeech = signals.open( audiofile )
+                self.audiospeech = audiodata.open( audiofile )
             except Exception as e:
                 raise Exception('Input error.\n'+str(e)+'\n')
             # Auto-adjust volume

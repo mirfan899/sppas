@@ -8,9 +8,9 @@ WAVETOASTER = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ))
 SRC = os.path.join(WAVETOASTER, "src" )
 sys.path.append(SRC)
 
-import signals
-from signals.channelformatter import ChannelFormatter
-from signals.audio import Audio
+import audiodata
+from audiodata.channelformatter import ChannelFormatter
+from audiodata.audio import Audio
 
 sys.path.remove(SRC)
 
@@ -31,10 +31,10 @@ if len(sys.argv) <= 1:
     sys.argv.append('-h')
 
 args = parser.parse_args()
-    
+
 # ----------------------------------------------------------------------------
 
-audio = signals.open(args.w)
+audio = audiodata.open(args.w)
 
 # Get the expected channel
 idx = audio.extract_channel(args.c-1)
@@ -46,7 +46,7 @@ if args.r:
     formatter.set_framerate(args.r)
 else:
     formatter.set_framerate(audio.get_framerate())
-    
+
 
 if args.b:
     if not args.b in [1,2,4]:
@@ -63,13 +63,13 @@ audio.close()
 
 if args.m:
     formatter.mul(args.m)
-    
+
 if args.b:
     formatter.bias(args.b)
 
 # Save the converted channel
 audio_out = Audio()
 audio_out.append_channel( formatter.channel )
-signals.save( args.o, audio_out )
+audiodata.save( args.o, audio_out )
 
 # ----------------------------------------------------------------------------

@@ -56,14 +56,14 @@ WAVETOASTER = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ))
 SRC = os.path.join(WAVETOASTER, "src" )
 sys.path.append(SRC)
 
-import signals
-from signals       import extensionsul, audioutils
-from signals.audio import Audio
-from signals.channel           import Channel
-from signals.channelsmixer     import ChannelsMixer
-from signals.channelformatter  import ChannelFormatter
-from signals.channelsequalizer import ChannelsEqualizer
-from signals.channelfragmentextracter import ChannelFragmentExtracter
+import audiodata
+from audiodata       import extensionsul, audioutils
+from audiodata.audio import Audio
+from audiodata.channel           import Channel
+from audiodata.channelsmixer     import ChannelsMixer
+from audiodata.channelformatter  import ChannelFormatter
+from audiodata.channelsequalizer import ChannelsEqualizer
+from audiodata.channelfragmentextracter import ChannelFragmentExtracter
 from term.textprogress       import TextProgress
 from term.terminalcontroller import TerminalController
 
@@ -149,7 +149,7 @@ def extract_channels( settings, factor=0, channel=0, p=None ):
     for i,channelparameter in enumerate(settings):
         if p: p.update(float(i)/total, "Channel " + str(i+1) + " of " + str(total))
 
-        audio = signals.open( channelparameter['file'] )
+        audio = audiodata.open( channelparameter['file'] )
 
         # CHANNEL EXTRACTION
         idx = audio.extract_channel( channel )
@@ -475,7 +475,7 @@ audio_out = Audio()
 audio_out.append_channel( newchannelleft )
 audio_out.append_channel( newchannelright )
 
-signals.save( args.o, audio_out )
+audiodata.save( args.o, audio_out )
 
 if verbose > 0:
     p.update(1, "")

@@ -8,9 +8,9 @@ WAVETOASTER = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ))
 SRC = os.path.join(WAVETOASTER, "src" )
 sys.path.append(SRC)
 
-import signals
-from signals.audio import Audio
-from signals.channelfragmentextracter import ChannelFragmentExtracter
+import audiodata
+from audiodata.audio import Audio
+from audiodata.channelfragmentextracter import ChannelFragmentExtracter
 
 sys.path.remove(SRC)
 
@@ -29,11 +29,11 @@ if len(sys.argv) <= 1:
     sys.argv.append('-h')
 
 args = parser.parse_args()
-    
+
 # ----------------------------------------------------------------------------
 
 audio_out = Audio()
-audio = signals.open(args.w)
+audio = audiodata.open(args.w)
 
 if args.bf and args.bs:
     print "bf option and bs option can't be used at the same time !"
@@ -62,5 +62,5 @@ for i in xrange(audio.get_nchannels()):
     channel = audio.get_channel(idx)
     extracter = ChannelFragmentExtracter(channel)
     audio_out.append_channel(extracter.extract_fragment(begin, end))
-    
-signals.save(args.o, audio_out)
+
+audiodata.save(args.o, audio_out)

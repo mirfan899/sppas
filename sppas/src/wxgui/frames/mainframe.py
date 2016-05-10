@@ -48,7 +48,7 @@ import webbrowser
 import logging
 
 import annotationdata.io
-import signals
+import audiodata
 
 from sp_glob import program,version,copyright,license
 from sp_glob import PLUGIN_PATH
@@ -718,7 +718,7 @@ class FrameSPPAS( wx.Frame ):
 
         """
         selection = []
-        for ext in signals.extensions:
+        for ext in audiodata.extensions:
             selection.extend( self.flp.GetSelected(ext) )
         return selection
 

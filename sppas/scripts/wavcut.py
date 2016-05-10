@@ -56,7 +56,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
-from signals.wav import Wave
+from audiodata.wav import Wave
 import utils.fileutils
 
 

@@ -1,0 +1,9 @@
+// AudioData Class Diagram
+
+// Nodes
+[Audio|+audiofp;+channels;{bg:orange}]
+[Channel|+framerate;+sampwidth;+frames;+position;{bg:lightblue}]
+
+
+// Edges
+[Audio]++-0..*>[Channel],
