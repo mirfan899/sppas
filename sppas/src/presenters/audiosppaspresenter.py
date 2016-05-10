@@ -43,7 +43,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import audiodata
-from audiodata.audio import Audio
+from audiodata.audio import AudioPCM
 from audiodata.channel import Channel
 from audiodata.channelformatter import ChannelFormatter
 
@@ -174,7 +174,7 @@ class AudioSppasPresenter:
             formatter.convert()
 
             # Save the converted channel
-            audio_out = Audio()
+            audio_out = AudioPCM()
             audio_out.append_channel( formatter.channel )
             audiodata.save( outputname, audio_out )
 

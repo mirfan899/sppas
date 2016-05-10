@@ -41,35 +41,29 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-NO_AUDIO_MSG = "No audio file available. Was closed??"
-
-# ----------------------------------------------------------------------------
-
 import sunau
-import struct
-from audio import Audio
+from audio import AudioPCM
+from audio import NO_AUDIO_MSG
 
 # ---------------------------------------------------------------------------
 
-class SunauIO( Audio ):
+class SunauIO( AudioPCM ):
     """
     @authors: Nicolas Chazeau, Brigitte Bigi
     @contact: n.chazeau94@gmail.com, brigitte.bigi@gmail.com
     @license: GPL, v3
     @summary: An Sun AU file open/save utility class.
-    """
 
+    """
 
     def __init__(self):
         """
         Constructor.
 
         """
-        Audio.__init__(self)
+        AudioPCM.__init__(self)
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def open(self, filename):
         """
@@ -87,7 +81,6 @@ class SunauIO( Audio ):
         self.nbreadframes = int(self.frameduration * self.audiofp.getframerate())
 
     # -----------------------------------------------------------------------
-
 
     def save(self, filename):
         """
@@ -146,7 +139,5 @@ class SunauIO( Audio ):
             f.writeframes( frames )
         finally:
             f.close()
-
-    # -----------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------

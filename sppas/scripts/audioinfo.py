@@ -74,16 +74,16 @@ args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
 
-wavspeech = audiodata.open(args.w)
-wavspeech.frameduration = args.f
+audio = audiodata.open(args.w)
+audio.frameduration = args.f
 
-print "Wav file name:       ", args.w
-print "Duration in seconds: ", wavspeech.get_duration()
-print "Frame rate:          ", wavspeech.get_framerate()
-print "Sample width:        ", wavspeech.get_sampwidth()
-print "Channels:            ", wavspeech.get_nchannels()
-print "Volume min:          ", wavspeech.get_minvolume()
-print "Volume max:          ", wavspeech.get_maxvolume()
-print "Volume mean:         ", wavspeech.get_meanvolume()
+print "Audio file name:     ", args.w
+print "Duration in seconds: ", audio.get_duration()
+print "Frame rate:          ", audio.get_framerate()
+print "Sample width:        ", audio.get_sampwidth()
+print "Channels:            ", audio.get_nchannels()
+print "Volume min:          ", audio.get_minvolume()
+print "Volume max:          ", audio.get_maxvolume()
+print "Volume mean:         ", audio.get_meanvolume()
 
 # ----------------------------------------------------------------------------

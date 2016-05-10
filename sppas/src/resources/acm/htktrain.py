@@ -60,7 +60,7 @@ import annotationdata.utils.tierutils
 import audiodata
 
 from annotationdata.transcription import Transcription
-from audiodata.audio                import Audio
+from audiodata.audio                import AudioPCM
 from audiodata.channelformatter     import ChannelFormatter
 from audiodata.channelmfcc          import ChannelMFCC
 
@@ -764,7 +764,7 @@ class TrainingCorpus( object ):
         audio.close()
 
         # Save the converted channel
-        audio_out = Audio()
+        audio_out = AudioPCM()
         audio_out.append_channel( formatter.channel )
         audiodata.save( os.path.join(self.datatrainer.get_storewav(), outfile + ".wav" ), audio_out )
 

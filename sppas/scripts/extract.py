@@ -9,7 +9,7 @@ SRC = os.path.join(WAVETOASTER, "src" )
 sys.path.append(SRC)
 
 import audiodata
-from audiodata.audio import Audio
+from audiodata.audio import AudioPCM
 
 sys.path.remove(SRC)
 
@@ -40,7 +40,7 @@ idx = audio.extract_channel(args.c-1)
 
 
 # Save the converted channel
-audio_out = Audio()
+audio_out = AudioPCM()
 audio_out.append_channel( audio.get_channel(idx) )
 audiodata.save( args.o, audio_out )
 

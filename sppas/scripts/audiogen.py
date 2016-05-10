@@ -59,7 +59,7 @@ sys.path.append(SPPAS)
 
 import audiodata
 from audiodata.channelformatter import ChannelFormatter
-from audiodata.audio import Audio
+from audiodata.audio import AudioPCM
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -105,7 +105,7 @@ formatter.convert()
 print (time.strftime("%H:%M:%S"))
 
 # Save the converted channel
-audio_out = Audio()
+audio_out = AudioPCM()
 audio_out.append_channel( formatter.channel )
 audiodata.save( args.o, audio_out )
 print (time.strftime("%H:%M:%S"))

@@ -35,43 +35,43 @@
 # File: audiofactory.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-# ----------------------------------------------------------------------------
-
-from wave_io import WaveIO
-from aiff_io import AiffIO
+from wave_io  import WaveIO
+from aiff_io  import AiffIO
 from sunau_io import SunauIO
 
 # ----------------------------------------------------------------------------
 
 class AudioFactory(object):
     """
-    Factory for Audio.
+    @authors:      Nicolas Chazeau, Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Factory for AudioPCM.
 
     """
 
-    __AUDIO = {
+    AUDIO_TYPES = {
         "wav":  WaveIO,
         "wave": WaveIO,
         "aiff": AiffIO,
         "au" : SunauIO
         }
 
+
     @staticmethod
     def NewAudio(audio_type):
         """
-        Return a new Audio according to the format.
+        Return a new AudioPCM according to the format.
 
-        @param audio_type
-        @return Audio
+        @param audio_type (str) a file extension.
+        @return AudioPCM
 
         """
         try:
-            return AudioFactory.__AUDIO[audio_type]()
+            return AudioFactory.AUDIO_TYPES[audio_type.lower()]()
         except KeyError:
-            raise Exception("Unrecognised Audio type: %s" % audio_type)
+            raise Exception("Unrecognized AudioPCM type: %s" % audio_type)
 
 # ----------------------------------------------------------------------------

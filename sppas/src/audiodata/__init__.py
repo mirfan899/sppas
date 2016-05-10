@@ -65,7 +65,7 @@ def open( filename ):
 
     @param filename (string) the file name (including path)
     @raise IOError, Exception
-    @return Audio()
+    @return AudioPCM()
 
     """
     ext = getExtension(filename).lower()
@@ -88,7 +88,7 @@ def save( filename, audio ):
     Write an audio file.
 
     @param filename: (string) the file name (including path)
-    @param audio: (Audio) the Audio to write.
+    @param audio: (AudioPCM) the Audio to write.
     @raise IOError
 
     """
@@ -105,7 +105,7 @@ def save_fragment( filename, audio, frames ):
     Write a fragment of frames of an audio file.
 
     @param filename: (string) the file name (including path)
-    @param audio: (Audio) the Audio to write.
+    @param audio: (AudioPCM) the Audio to write.
     @param frames: (string)
     @raise IOError
 

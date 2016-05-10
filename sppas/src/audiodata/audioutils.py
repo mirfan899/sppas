@@ -275,5 +275,4 @@ def get_clipping_rate(frames, sampwidth, factor):
 
     return float(nbclipping)/len(data)
 
-
 # ----------------------------------------------------------------------------

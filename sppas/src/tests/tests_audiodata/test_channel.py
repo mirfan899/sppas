@@ -6,7 +6,7 @@ import os
 from paths import SAMPLES, TEMP
 import audiodata
 from audiodata.channel import Channel
-from audiodata.audio import Audio
+from audiodata.audio import AudioPCM
 
 class TestChannel(unittest.TestCase):
     _sample_path_1 = os.path.join(SAMPLES, "oriana1.WAV") # mono file at 16000Hz, 16bits
@@ -57,7 +57,7 @@ class TestChannel(unittest.TestCase):
     def test_Save(self):
         cidx = self._sample_1.extract_channel(0)
         channel = self._sample_1.get_channel(cidx)
-        audio = Audio()
+        audio = AudioPCM()
         audio.append_channel( channel )
         audiodata.save( TestChannel._sample_path_new, audio )
         savedaudio = audiodata.open(TestChannel._sample_path_new)

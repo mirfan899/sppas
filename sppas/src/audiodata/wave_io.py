@@ -42,16 +42,17 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ---------------------------------------------------------------------------
 
 import wave
-from audio import Audio
+from audio import AudioPCM
 
 # ---------------------------------------------------------------------------
 
-class WaveIO( Audio ):
+class WaveIO( AudioPCM ):
     """
     @authors: Nicolas Chazeau, Brigitte Bigi
     @contact: n.chazeau94@gmail.com, brigitte.bigi@gmail.com
     @license: GPL, v3
-    @summary: A wave file open/save Audio class.
+    @summary: A wave file open/save AudioPCM class.
+
     """
 
     def __init__(self):
@@ -59,11 +60,9 @@ class WaveIO( Audio ):
         Constructor.
 
         """
-        Audio.__init__(self)
+        AudioPCM.__init__(self)
 
-    # End __init__
     # -----------------------------------------------------------------------
-
 
     def open(self, filename):
         """
@@ -80,7 +79,6 @@ class WaveIO( Audio ):
         self.nbreadframes = int(self.frameduration * self.audiofp.getframerate())
 
     # -----------------------------------------------------------------------
-
 
     def save(self, filename):
         """
@@ -122,7 +120,6 @@ class WaveIO( Audio ):
 
     # -----------------------------------------------------------------------
 
-
     def save_fragment(self, filename, frames):
         """
         Write an audio content as a Waveform Audio File Format file.
@@ -139,7 +136,5 @@ class WaveIO( Audio ):
             f.writeframes( frames )
         finally:
             f.close()
-
-    # -----------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------

@@ -9,7 +9,7 @@ SRC = os.path.join(WAVETOASTER, "src" )
 sys.path.append(SRC)
 
 import audiodata
-from audiodata.audio import Audio
+from audiodata.audio import AudioPCM
 from audiodata.channelfragmentextracter import ChannelFragmentExtracter
 
 sys.path.remove(SRC)
@@ -32,7 +32,7 @@ args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
 
-audio_out = Audio()
+audio_out = AudioPCM()
 audio = audiodata.open(args.w)
 
 if args.bf and args.bs:

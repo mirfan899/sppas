@@ -87,14 +87,14 @@ class TrsFactory(object):
     @staticmethod
     def NewTrs(trs_type):
         """
-        Return a Transcription from a type.
+        Return a new Transcription() according to the format.
 
         @param trs_type (str) a file extension.
         @return Transcription()
 
         """
         try:
-            return TrsFactory.TRANSCRIPTION_TYPES[trs_type]()
+            return TrsFactory.TRANSCRIPTION_TYPES[trs_type.lower()]()
         except KeyError:
             raise KeyError("Unrecognized Transcription type: %s" % trs_type)
 

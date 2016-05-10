@@ -9,7 +9,7 @@ sys.path.append(SPPAS)
 
 import audiodata
 from audiodata.channelsmixer import ChannelsMixer
-from audiodata.audio import Audio
+from audiodata.audio import AudioPCM
 
 
 parser = ArgumentParser(usage="%s -w input file -o output file [options]" % os.path.basename(PROGRAM), description="A script to mix all channels from multi audio files in one channel")
@@ -41,7 +41,7 @@ newchannel = mixer.mix()
 
 
 # Save the converted channel
-audio_out = Audio()
+audio_out = AudioPCM()
 audio_out.append_channel( newchannel )
 audiodata.save( args.o, audio_out )
 

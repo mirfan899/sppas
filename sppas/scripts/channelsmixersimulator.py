@@ -10,7 +10,6 @@ sys.path.append(SRC)
 
 import audiodata
 from audiodata.channelsmixer import ChannelsMixer
-from audiodata.audio import Audio
 
 sys.path.remove(SRC)
 

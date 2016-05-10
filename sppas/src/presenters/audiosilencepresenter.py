@@ -45,12 +45,11 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import audiodata
 import annotationdata.io
 
-from audiodata.audio import Audio
+from audiodata.audio import AudioPCM
 from annotationdata.transcription import Transcription
 
 import os
 import codecs
-
 
 # ----------------------------------------------------------------------------
 
@@ -139,7 +138,7 @@ class AudioSilencePresenter:
             if len(trackbasename)>0:
                 # Write the wav track content
                 trackwavname = trackbasename+".wav"
-                audio_out = Audio()
+                audio_out = AudioPCM()
                 audio_out.append_channel(self.channelsil.channel)
                 try:
                     audiodata.save_fragment(trackwavname, audio_out, split_track)

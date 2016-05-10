@@ -41,17 +41,15 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-NO_AUDIO_MSG = "No audio file available. Was closed??"
-
-# ----------------------------------------------------------------------------
-
 import aifc
 import struct
-from audio import Audio
+from audio import AudioPCM
+
+from audio import NO_AUDIO_MSG
 
 # ---------------------------------------------------------------------------
 
-class AiffIO( Audio ):
+class AiffIO( AudioPCM ):
     """
     @authors: Nicolas Chazeau, Brigitte Bigi
     @contact: n.chazeau94@gmail.com, brigitte.bigi@gmail.com
@@ -65,15 +63,14 @@ class AiffIO( Audio ):
         Constructor.
 
         """
-        Audio.__init__(self)
+        AudioPCM.__init__(self)
 
-    # End __init__
     # ------------------------------------------------------------------------
 
 
     def open(self, filename):
         """
-        Get an audio from a Audio Interchange File Format file.
+        Get an audio from an Audio Interchange File Format file.
 
         @param filename: input file name.
 
@@ -120,7 +117,7 @@ class AiffIO( Audio ):
         """
         Specific writer for aiff files, because data is in little endian and aiff files need data in big endian
 
-        @param file (Audio object) the audio file pointer to write in
+        @param file (AudioPCM) the audio file pointer to write in
         @param data (string) the frames to write
 
         """

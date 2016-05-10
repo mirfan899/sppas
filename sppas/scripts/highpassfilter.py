@@ -50,7 +50,6 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 from argparse import ArgumentParser
 import os
 import sys
-import time
 import struct, math
 
 PROGRAM = os.path.abspath(__file__)
@@ -60,7 +59,7 @@ sys.path.append(SRC)
 
 import audiodata
 from audiodata.channel import Channel
-from audiodata.audio import Audio
+from audiodata.audio import AudioPCM
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -108,7 +107,7 @@ result = [ int(sample * (2.0**15 - 1)) for sample in result ]
 
 # ----------------------------------------------------------------------------
 
-audioout = Audio()
+audioout = AudioPCM()
 channel = Channel(framerate=SAMPLE_RATE, sampwidth=audioin.get_sampwidth(), frames=struct.pack('%dh' % len(result), *result) )
 audioout.append_channel( channel )
 audiodata.save( args.o, audioout)

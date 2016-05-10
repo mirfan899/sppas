@@ -35,7 +35,7 @@
 # File: audio.py
 # ---------------------------------------------------------------------------
 
-NO_AUDIO_MSG = "No audio file available. Closed?"
+NO_AUDIO_MSG = "No audio file."
 
 # ---------------------------------------------------------------------------
 
@@ -46,7 +46,7 @@ from audiodata import audioutils
 
 # ---------------------------------------------------------------------------
 
-class Audio( object ):
+class AudioPCM( object ):
     """
     @authors:      Nicolas Chazeau, Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -96,10 +96,10 @@ class Audio( object ):
     """
     def __init__(self):
         """
-        Creates a new Audio instance.
+        Creates a new AudioPCM instance.
 
         """
-        super(Audio, self).__init__()
+        super(AudioPCM, self).__init__()
         self.__reset()
 
         # The list of loaded channels of this audio
@@ -109,9 +109,9 @@ class Audio( object ):
 
     def Set(self, audio):
         """
-        Set a new Audio() instance either with an audiofp, or channels or both.
+        Set a new AudioPCM() instance either with an audiofp, or channels or both.
 
-        @param audio (Audio) audio object
+        @param audio (AudioPCM) AudioPCM to set
 
         """
         self.__reset()
@@ -200,7 +200,7 @@ class Audio( object ):
 
     def extract_channel(self, number):
         """
-        Extract a channel from the Audio file pointer and store frames into
+        Extract a channel from the Audio File Pointer and store frames into
         a Channel() instance.
 
         @param number (int) number of the channel to extract
@@ -296,7 +296,7 @@ class Audio( object ):
 
     def get_sampwidth(self):
         """
-        Return the sample width of the Audio file pointer.
+        Return the sample width of the Audio File Pointer.
 
         @return the sample width of the audio file
 
@@ -311,7 +311,7 @@ class Audio( object ):
 
     def get_framerate(self):
         """
-        Return the frame rate of the Audio file pointer.
+        Return the frame rate of the Audio File Pointer.
 
         @return the frame rate of the audio file
 
@@ -326,7 +326,7 @@ class Audio( object ):
 
     def get_nframes(self):
         """
-        Return the number of frames of the Audio file pointer.
+        Return the number of frames of the Audio File Pointer.
 
         @return the number of frames of the audio file
 
@@ -341,7 +341,7 @@ class Audio( object ):
 
     def get_nchannels(self):
         """
-        Return the number of channels of the Audio file pointer.
+        Return the number of channels of the Audio File Pointer.
 
         @return the number of channels of the audio file
 
@@ -356,7 +356,7 @@ class Audio( object ):
 
     def get_duration(self):
         """
-        Return the duration of the Audio file pointer.
+        Return the duration of the Audio File Pointer.
 
         @return the duration of the audio file (in seconds)
 
@@ -375,8 +375,7 @@ class Audio( object ):
 
     def get_frameduration(self):
         """
-        Return the frame-duration used to estimate min, max, mean volumes
-        of the Audio file pointer.
+        Return the frame-duration used to estimate volumes of the Audio File Pointer.
 
         @return the frameduration set by default
 
@@ -388,7 +387,7 @@ class Audio( object ):
 
     def get_minvolume(self):
         """
-        Return the min volume of the Audio file pointer.
+        Return the min volume of the Audio File Pointer.
 
         @return the minimum volume
 
@@ -402,7 +401,7 @@ class Audio( object ):
 
     def get_maxvolume(self):
         """
-        Return the max volume of the Audio file pointer.
+        Return the max volume of the Audio File Pointer.
 
         @return the maximum volume
 
@@ -416,7 +415,7 @@ class Audio( object ):
 
     def get_meanvolume(self):
         """
-        Return the mean volume of the Audio file pointer.
+        Return the mean volume of the Audio File Pointer.
 
         @return the mean volume
 

@@ -10,7 +10,7 @@ sys.path.append(SRC)
 
 import audiodata
 from audiodata.channelformatter import ChannelFormatter
-from audiodata.audio import Audio
+from audiodata.audio import AudioPCM
 
 sys.path.remove(SRC)
 
@@ -68,7 +68,7 @@ if args.b:
     formatter.bias(args.b)
 
 # Save the converted channel
-audio_out = Audio()
+audio_out = AudioPCM()
 audio_out.append_channel( formatter.channel )
 audiodata.save( args.o, audio_out )
 

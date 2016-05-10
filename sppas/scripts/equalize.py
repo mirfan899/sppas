@@ -10,7 +10,7 @@ sys.path.append(SRC)
 
 import audiodata
 from audiodata.channelsequalizer import ChannelsEqualizer
-from audiodata.audio import Audio
+from audiodata.audio import AudioPCM
 
 sys.path.remove(SRC)
 
@@ -50,7 +50,7 @@ equalizer.equalize()
 
 # Save the converted channel
 for i, chan in enumerate(equalizer.channels):
-    audio_out = Audio()
+    audio_out = AudioPCM()
     audio_out.append_channel( chan )
     filename, extension = os.path.splitext(args.w[i])
     audiodata.save(filename + "EQUAL" + extension, audio_out)

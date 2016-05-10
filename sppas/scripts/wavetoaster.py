@@ -58,7 +58,7 @@ sys.path.append(SRC)
 
 import audiodata
 from audiodata       import extensionsul, audioutils
-from audiodata.audio import Audio
+from audiodata.audio import AudioPCM
 from audiodata.channel           import Channel
 from audiodata.channelsmixer     import ChannelsMixer
 from audiodata.channelformatter  import ChannelFormatter
@@ -471,7 +471,7 @@ if verbose > 0:
     p.set_fraction(0)
     p.update(0,"")
 
-audio_out = Audio()
+audio_out = AudioPCM()
 audio_out.append_channel( newchannelleft )
 audio_out.append_channel( newchannelright )
 
