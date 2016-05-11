@@ -59,10 +59,10 @@ from audiofactory import AudioFactory
 # ----------------------------------------------------------------------------
 
 ext_wav  = ['.wav', '.wave', '.[wWaAvV]', '.[wWaAvVeE]']
-ext_aiff = ['.aiff', '.[aAiIfF]']
+ext_aiff = ['.aif', '.aiff', '.[aAiIfF]']
 ext_sunau = ['.au', '.[aAuU]']
 
-extensions   = [ '.wav', '.wave', '.aiff', '.au' ]
+extensions   = [ '.wav', '.wave', '.aif', '.aiff', '.au' ]
 extensionsul = ext_wav + ext_aiff + ext_sunau
 
 # ----------------------------------------------------------------------------

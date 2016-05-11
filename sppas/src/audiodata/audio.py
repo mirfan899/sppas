@@ -272,8 +272,10 @@ class AudioPCM( object ):
         # Unpack to get all values, depending on the number of bytes of each value.
         if self.get_sampwidth() == 4 :
             data = struct.unpack("<%ul" % (len(data) / 4), data)
+
         elif self.get_sampwidth() == 2 :
             data = struct.unpack("<%uh" % (len(data) / 2), data)
+
         else :
             data = struct.unpack("%uB"  %  len(data),      data)
             data = [ s - 128 for s in data ]

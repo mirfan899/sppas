@@ -58,7 +58,6 @@ class WaveIO( AudioPCM ):
         """
         AudioPCM.__init__(self)
 
-
     # -----------------------------------------------------------------------
 
     def open(self, filename):

@@ -35,11 +35,12 @@
 # File: aiff.py
 # ----------------------------------------------------------------------------
 
-import aifc
 import struct
 
 from audiodata.audio import AudioPCM
 from audiodata.audio import NO_AUDIO_MSG
+#import lib.aifc as aifc
+import aifc
 
 # ---------------------------------------------------------------------------
 
@@ -52,8 +53,10 @@ class AiffIO( AudioPCM ):
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
     @summary:      An AIFF/AIFC file open/save utility class.
 
-    """
+    Audio Interchange File Format (AIFF) is an audio file format developed by
+    Apple Inc. in 1988.
 
+    """
     def __init__(self):
         """
         Constructor.
@@ -87,7 +90,8 @@ class AiffIO( AudioPCM ):
 
     def read_frames(self, nframes):
         """
-        Specific frame reader for aiff files, because their data is in big endian and we need little endian
+        Specific frame reader for aiff files.
+        AIFF data is in big endian and we need little endian.
 
         @param nframes (int) the the number of frames wanted
         @return the frames read
@@ -95,20 +99,25 @@ class AiffIO( AudioPCM ):
         """
         if not self.audiofp:
             raise Exception(NO_AUDIO_MSG)
+
         data = self.audiofp.readframes(nframes)
 
-        if self.get_sampwidth() == 4 :
+        if self.get_sampwidth() == 4:
             data = struct.unpack(">%ul" % (len(data) / 4), data)
             return struct.pack("<%ul" % (len(data)), *data)
-        else : #self.get_sampwidth() == 2 :
+
+        elif self.get_sampwidth() == 2:
             data = struct.unpack(">%uh" % (len(data) / 2), data)
             return struct.pack("<%uh" % (len(data)), *data)
+
+        return data
 
     # ----------------------------------------------------------------------
 
     def _write_frames(self, file, data):
         """
-        Specific writer for aiff files, because data is in little endian and aiff files need data in big endian
+        Specific writer for aiff files.
+        Data is in little endian and aiff files need big endian.
 
         @param file (AudioPCM) the audio file pointer to write in
         @param data (string) the frames to write
