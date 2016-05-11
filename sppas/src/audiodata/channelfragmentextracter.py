@@ -64,14 +64,13 @@ class ChannelFragmentExtracter:
         self.sampwidth = channel.get_sampwidth()
         self.nframes = channel.get_nframes()
 
-    # End __init__
     # -----------------------------------------------------------------------
 
     def extract_fragment(self, begin, end = 0):
         """
-        Extract a fragment between the beginning and the end chosen
+        Extract a fragment between the beginning and the end chosen.
 
-        @param begin (int : number of frames) the beggining of the fragment to extract
+        @param begin (int : number of frames) the beginning of the fragment to extract
         @param end (int: number of frames) the end of the fragment to extract
 
         @return the fragment extracted in an Channel object
