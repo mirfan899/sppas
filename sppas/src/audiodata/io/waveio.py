@@ -50,6 +50,11 @@ class WaveIO( AudioPCM ):
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
     @summary:      A wave file open/save AudioPCM class.
 
+    Waveform Audio File Format is a Microsoft and IBM audio file format
+    standard for storing an audio bitstream on PCs. It is an application of
+    the Resource Interchange File Format (RIFF) bitstream format method for
+    storing data in "chunks".
+
     """
     def __init__(self):
         """

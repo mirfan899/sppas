@@ -118,14 +118,13 @@ class ChannelFormatter:
         """
         self.sampwidth = sampwidth
 
-
     # ----------------------------------------------------------------------
     # Workers
     # ----------------------------------------------------------------------
 
     def sync(self, channel):
         """
-        Convert the channel owned by the ChannelFormatter with the parameters from the channel put in input
+        Convert the channel owned by the ChannelFormatter with the parameters from the channel put in input.
 
         @param channel (Channel object) the channel used as a model
 
@@ -133,6 +132,8 @@ class ChannelFormatter:
         self.sampwidth = channel.get_sampwidth()
         self.framerate = channel.get_framerate()
         self.convert()
+
+    # ----------------------------------------------------------------------
 
     def remove_frames(self, begin, end):
         """
@@ -148,6 +149,8 @@ class ChannelFormatter:
         newchannel.framerate = self.framerate
         self.channel = newchannel
 
+    # ----------------------------------------------------------------------
+
     def add_frames(self, frames, position):
         """
         Convert the channel by adding frames.
@@ -161,6 +164,8 @@ class ChannelFormatter:
         newchannel.framerate = self.framerate
         self.channel = newchannel
 
+    # ----------------------------------------------------------------------
+
     def append_frames(self, frames):
         """
         Convert the channel by appending frames.
@@ -173,6 +178,8 @@ class ChannelFormatter:
         newchannel.sampwidth = self.sampwidth
         newchannel.framerate = self.framerate
         self.channel = newchannel
+
+    # ----------------------------------------------------------------------
 
     def bias(self, bias):
         """
@@ -188,6 +195,8 @@ class ChannelFormatter:
 
         self.channel = newchannel
 
+    # ----------------------------------------------------------------------
+
     def mul(self, factor):
         """
         Multiply the frames by the factor
@@ -201,6 +210,8 @@ class ChannelFormatter:
         newchannel.set_frames(audioutils.mul(self.channel.frames, self.sampwidth, factor))
 
         self.channel = newchannel
+
+    # ----------------------------------------------------------------------
 
     def remove_offset(self):
         """
@@ -229,7 +240,6 @@ class ChannelFormatter:
 
         self.channel = newchannel
 
-
     # ----------------------------------------------------------------------
     # Private
     # ----------------------------------------------------------------------
@@ -252,7 +262,5 @@ class ChannelFormatter:
             fragment.resample(self.sampwidth, self.channel.get_framerate(), self.framerate)
 
         return fragment.get_frames()
-
-    # ----------------------------------------------------------------------
 
 # --------------------------------------------------------------------------

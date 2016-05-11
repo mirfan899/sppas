@@ -1,21 +1,28 @@
 #!/usr/bin/env python2
 # -*- coding: utf8 -*-
 
+import sys
+from os.path import abspath, dirname
+SPPAS = dirname(dirname(dirname(abspath(__file__))))
+sys.path.append( SPPAS )
+
 import unittest
 import os
-from paths import SAMPLES, TEMP
-import audiodata
+
+import audiodata.io
 from audiodata.channel import Channel
 from audiodata.audio import AudioPCM
+from tests.paths import SPPASSAMPLES, TEMP
+
+sample_1 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana1.wav")  # mono
+sample_2 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana3.wave") # stereo
+sample_new = os.path.join(TEMP, "converted.wav")
 
 class TestChannel(unittest.TestCase):
-    _sample_path_1 = os.path.join(SAMPLES, "oriana1.WAV") # mono file at 16000Hz, 16bits
-    _sample_path_2 = os.path.join(SAMPLES, "stereo.wav") # stereo file
-    _sample_path_new = os.path.join(TEMP, "converted.wav")
 
     def setUp(self):
-        self._sample_1 = audiodata.open(TestChannel._sample_path_1)
-        self._sample_2 = audiodata.open(TestChannel._sample_path_2)
+        self._sample_1 = audiodata.io.open(sample_1)
+        self._sample_2 = audiodata.io.open(sample_2)
 
     def tearDown(self):
         self._sample_1.close()
@@ -59,8 +66,8 @@ class TestChannel(unittest.TestCase):
         channel = self._sample_1.get_channel(cidx)
         audio = AudioPCM()
         audio.append_channel( channel )
-        audiodata.save( TestChannel._sample_path_new, audio )
-        savedaudio = audiodata.open(TestChannel._sample_path_new)
+        audiodata.io.save( sample_new, audio )
+        savedaudio = audiodata.io.open( sample_new )
 
         self._sample_1.rewind()
         frames = self._sample_1.read_frames( self._sample_1.get_nframes() )
@@ -68,5 +75,7 @@ class TestChannel(unittest.TestCase):
         self.assertEqual(len(frames), len(savedframes))
         self.assertEqual(frames, savedframes)
 
-# ---------------------------------------------------------------------------
+        savedaudio.close()
+        os.remove( sample_new )
 
+# ---------------------------------------------------------------------------

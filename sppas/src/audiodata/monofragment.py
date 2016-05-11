@@ -42,7 +42,6 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ---------------------------------------------------------------------------
 
 import audioutils
-import cmath
 
 # ---------------------------------------------------------------------------
 
@@ -51,9 +50,9 @@ class MonoFragment:
     @authors: Nicolas Chazeau
     @contact: n.chazeau94@gmail.com
     @license: GPL, v3
-    @summary: An utilitary for monochannel frames.
-    """
+    @summary: An utility for monochannel frames.
 
+    """
     def __init__(self, frames = ""):
         """
         Constructor.
@@ -61,7 +60,6 @@ class MonoFragment:
         """
         self.frames = frames
 
-    # End __init__
     # -----------------------------------------------------------------------
 
     def create_silence(self, nframes):
@@ -124,4 +122,3 @@ class MonoFragment:
         self.frames = frames
 
     # ----------------------------------------------------------------------------
-        # ----------------------------------------------------------------------------

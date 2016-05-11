@@ -45,7 +45,7 @@ def samples2frames(samples, sampwidth, nchannel=1):
     """
     Turn samples into frames
 
-    @param samples (int[][]) samples list, first index is the numero of the channel, second is the numero of the sample.
+    @param samples (int[][]) samples list, first index is the index of the channel, second is the index of the sample.
     @param sampwidth (int) sample width of the frames.
     @param nchannel (int) number of channels in the samples
     @return frames
@@ -58,10 +58,12 @@ def samples2frames(samples, sampwidth, nchannel=1):
         for i in xrange(nframes):
             for j in xrange(nchannel):
                 frames = frames + struct.pack("<l", samples[j][i])
+
     elif sampwidth == 2 :
         for i in xrange(nframes):
             for j in xrange(nchannel):
                 frames = frames + struct.pack("<h", samples[j][i])
+
     else :
         for i in xrange(nframes):
             for j in xrange(nchannel):

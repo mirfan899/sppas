@@ -51,9 +51,9 @@ class ChannelsEqualizer:
     @authors: Nicolas Chazeau
     @contact: n.chazeau94@gmail.com
     @license: GPL, v3
-    @summary: A channel utilitary class to equalize number of frames by appending silence at the end.
-    """
+    @summary: A channel utility class to equalize number of frames by appending silence at the end.
 
+    """
     def __init__(self):
         """
         Constructor.

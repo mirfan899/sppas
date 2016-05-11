@@ -39,7 +39,6 @@ import struct
 
 from audiodata.audio import AudioPCM
 from audiodata.audio import NO_AUDIO_MSG
-#import lib.aifc as aifc
 import aifc
 
 # ---------------------------------------------------------------------------

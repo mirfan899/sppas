@@ -36,7 +36,6 @@
 # ----------------------------------------------------------------------------
 
 from audiodata import audioutils
-import audioop
 
 # ----------------------------------------------------------------------------
 
@@ -143,7 +142,8 @@ class Channel:
         @return number of zero crossing
 
         """
-        return audioop.cross( self.frames )
+        return audioutils.cross( self.frames, self.sampwidth )
+        #audioop.cross( self.frames )
 
     # -----------------------------------------------------------------------
 
