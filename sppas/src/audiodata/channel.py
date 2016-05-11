@@ -177,6 +177,38 @@ class Channel( object ):
         return float(self.get_nframes())/float(self.get_framerate())
 
     # -----------------------------------------------------------------------
+
+    def extract_fragment(self, begin, end = 0):
+        """
+        Extract a fragment between the beginning and the end.
+
+        @param begin (int : number of frames) the beginning of the fragment to extract
+        @param end (int: number of frames) the end of the fragment to extract
+
+        @return (Channel) the fragment extracted.
+
+        """
+        if begin > end and end != 0:
+            raise NameError("The end can't be upper than the beginning.")
+        if begin < 0 or end < 0:
+            raise NameError("Beginning and End can't be negative values.")
+
+        nframes = self.get_nframes()
+        if begin > nframes:
+            raise NameError("The beginning can't be upper than the duration.")
+        if end > nframes:
+            raise NameError("The end can't be upper than the duration.")
+
+        posbegin = int(begin*self.sampwidth)
+        if end == 0:
+            frames = self.frames[posbegin:]
+        else:
+            posend = int(end*self.sampwidth)
+            frames = self.frames[posbegin:posend]
+
+        return Channel(self.framerate, self.sampwidth, frames)
+
+    # -----------------------------------------------------------------------
     # Manage position
     # -----------------------------------------------------------------------
 

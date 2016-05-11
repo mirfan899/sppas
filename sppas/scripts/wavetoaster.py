@@ -63,7 +63,6 @@ from audiodata.channel           import Channel
 from audiodata.channelsmixer     import ChannelsMixer
 from audiodata.channelformatter  import ChannelFormatter
 from audiodata.channelsequalizer import ChannelsEqualizer
-from audiodata.channelfragmentextracter import ChannelFragmentExtracter
 from term.textprogress       import TextProgress
 from term.terminalcontroller import TerminalController
 
@@ -197,9 +196,8 @@ def fragment_channels( settings, begin, end, p=None ):
     """
 
     for channel in settings:
-        extracter = ChannelFragmentExtracter(channel['channel'])
-        channel['channel'] = extracter.extract_fragment(begin*channel['channel'].get_framerate(), end*channel['channel'].get_framerate())
-        del extracter
+        extracter = channel['channel']
+        channel['channel'] = extracter.extract_fragment(begin*extracter.get_framerate(), end*extracter.get_framerate())
 
 # ----------------------------------------------------------------------------
 

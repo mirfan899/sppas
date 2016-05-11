@@ -10,7 +10,7 @@ sys.path.append(SRC)
 
 import audiodata
 from audiodata.audio import AudioPCM
-from audiodata.channelfragmentextracter import ChannelFragmentExtracter
+from audiodata.channel import Channel
 
 sys.path.remove(SRC)
 
@@ -60,7 +60,7 @@ for i in xrange(audio.get_nchannels()):
     idx = audio.extract_channel(i)
     audio.rewind()
     channel = audio.get_channel(idx)
-    extracter = ChannelFragmentExtracter(channel)
-    audio_out.append_channel(extracter.extract_fragment(begin, end))
+    extracter = channel.extract_fragment(begin, end)
+    audio_out.append_channel(extracter)
 
 audiodata.save(args.o, audio_out)

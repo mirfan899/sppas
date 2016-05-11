@@ -16,6 +16,7 @@ from tests.paths import SPPASSAMPLES, TEMP
 
 sample_1 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana1.wav")  # mono
 sample_2 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana3.wave") # stereo
+sample_3 = os.path.join(SPPASSAMPLES, "samples-fra", "F_F_B003-P9.wav")
 sample_new = os.path.join(TEMP, "converted.wav")
 
 class TestChannel(unittest.TestCase):
@@ -23,6 +24,7 @@ class TestChannel(unittest.TestCase):
     def setUp(self):
         self._sample_1 = audiodata.io.open(sample_1)
         self._sample_2 = audiodata.io.open(sample_2)
+        self._sample_3 = audiodata.io.open(sample_3)
 
     def tearDown(self):
         self._sample_1.close()
@@ -78,4 +80,11 @@ class TestChannel(unittest.TestCase):
         savedaudio.close()
         os.remove( sample_new )
 
-# ---------------------------------------------------------------------------
+
+    def test_ExtractFragment(self):
+        self._sample_1.extract_channel(0)
+        self._sample_3.extract_channel(0)
+
+        channel = self._sample_1.get_channel(0)
+        newchannel = channel.extract_fragment(1*channel.get_framerate(),2*channel.get_framerate())
+        self.assertEqual(newchannel.get_nframes()/newchannel.get_framerate(), 1)

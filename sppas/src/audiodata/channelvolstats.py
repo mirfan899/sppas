@@ -58,6 +58,7 @@ class ChannelVolumeStats:
         """
         Constructor.
 
+        @param channel (Channel) The channel to work on.
         @param winlen (float) Window length to estimate the volume.
 
         """

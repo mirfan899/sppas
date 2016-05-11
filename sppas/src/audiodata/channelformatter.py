@@ -55,6 +55,8 @@ class ChannelFormatter( object ):
         """
         Constructor.
 
+        @param channel (Channel) The channel to work on.
+
         """
         self.channel   = channel
         self.framerate = channel.get_framerate()
