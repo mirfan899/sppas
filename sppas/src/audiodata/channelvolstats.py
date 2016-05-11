@@ -84,6 +84,11 @@ class ChannelVolumeStats:
     # -----------------------------------------------------------------------
 
     def volume(self):
+        """
+        Return the volume (rms).
+        @return (int)
+
+        """
         return self.rms
 
     # -----------------------------------------------------------------------
@@ -140,7 +145,7 @@ class ChannelVolumeStats:
 
     def variance(self):
         """
-        Returns the unbiased sample variance of RMS values.
+        Returns the sample variance of RMS values.
         @return (int)
 
         """
@@ -168,11 +173,11 @@ class ChannelVolumeStats:
 
     # -----------------------------------------------------------------------
 
-    def zscore(self):
+    def zscores(self):
         """
         Returns the z-scores of RMS values.
         The z-score determines the relative location of a data value.
-        @return (float)
+        @return (list of float)
 
         """
         return variability.lzs(self.volumes)

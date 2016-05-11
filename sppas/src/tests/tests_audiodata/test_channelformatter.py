@@ -1,20 +1,24 @@
 #!/usr/bin/env python2
-# -*- coding: utf8 -*-
+import sys
+from os.path import abspath, dirname
+SPPAS = dirname(dirname(dirname(abspath(__file__))))
+sys.path.append( SPPAS )
 
 import unittest
 import os
-from paths import SAMPLES
-import audiodata
+
+import audiodata.io
 from audiodata.channelformatter import ChannelFormatter
 
+from tests.paths import SPPASSAMPLES
+sample_1 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana1.wav")  # mono; 16000Hz; 16bits
+sample_2 = os.path.join(SPPASSAMPLES, "samples-fra", "F_F_B003-P9.wav")  # mono; 44100Hz; 32bits
 
 class TestChannelFormatter(unittest.TestCase):
-    _sample_path_1 = os.path.join(SAMPLES, "oriana1.WAV") # mono file at 16000Hz, 16bits
-    _sample_path_2 = os.path.join(SAMPLES, "F_F_B003-P9.wav")
 
     def setUp(self):
-        self._sample_1 = audiodata.open(TestChannelFormatter._sample_path_1)
-        self._sample_2 = audiodata.open(TestChannelFormatter._sample_path_2)
+        self._sample_1 = audiodata.io.open(sample_1)
+        self._sample_2 = audiodata.io.open(sample_2)
 
     def tearDown(self):
         self._sample_1.close()
@@ -31,4 +35,3 @@ class TestChannelFormatter(unittest.TestCase):
 
         self.assertEqual(channel.get_framerate(), formatter.channel.get_framerate())
         self.assertEqual(channel.get_sampwidth(), formatter.channel.get_sampwidth())
-

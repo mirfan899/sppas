@@ -35,29 +35,28 @@
 # File: channelformatter.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Nicolas Chazeau (n.chazeau94@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# ----------------------------------------------------------------------------
-
 from audiodata.monofragment import MonoFragment
 from audiodata.channel      import Channel
 from audiodata              import audioutils
 
 # ----------------------------------------------------------------------------
 
-class ChannelFormatter:
+class ChannelFormatter( object ):
     """
-    @authors: Nicolas Chazeau, Brigitte Bigi
-    @contact: n.chazeau94@gmail.com, brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: A channel formatter class.
+    @authors:      Nicolas Chazeau, Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      A channel formatter class.
 
     """
     def __init__(self, channel):
-        self.channel = channel
+        """
+        Constructor.
+
+        """
+        self.channel   = channel
         self.framerate = channel.get_framerate()
         self.sampwidth = channel.get_sampwidth()
 
@@ -76,6 +75,7 @@ class ChannelFormatter:
         """
         return self.framerate
 
+
     def get_sampwidth(self):
         """
         Return the expected sample width for the channel.
@@ -86,8 +86,6 @@ class ChannelFormatter:
 
         """
         return self.sampwidth
-
-    # ----------------------------------------------------------------------
 
     # ----------------------------------------------------------------------
     # Setters
@@ -103,6 +101,7 @@ class ChannelFormatter:
 
         """
         self.framerate = framerate
+
 
     def set_sampwidth(self, sampwidth):
         """
@@ -123,7 +122,7 @@ class ChannelFormatter:
         """
         Convert the channel owned by the ChannelFormatter with the parameters from the channel put in input.
 
-        @param channel (Channel object) the channel used as a model
+        @param channel (Channel) the channel used as a model
 
         """
         self.sampwidth = channel.get_sampwidth()
@@ -136,7 +135,7 @@ class ChannelFormatter:
         """
         Convert the channel by removing frames.
 
-        @param begin (int) the position of the beggining of the frames to remove
+        @param begin (int) the position of the beginning of the frames to remove
         @param end (int) the position of the end of the frames to remove
 
         """
@@ -180,7 +179,7 @@ class ChannelFormatter:
 
     def bias(self, bias):
         """
-        Apply a bias on the frames
+        Convert the channel by applying a bias on the frames.
 
         @param bias (int) the value to bias the frames
 
@@ -196,7 +195,7 @@ class ChannelFormatter:
 
     def mul(self, factor):
         """
-        Multiply the frames by the factor
+        Convert the channel by multiplying the frames by the factor.
 
         @param bias (int) the factor to multiply the frames
 
@@ -212,7 +211,7 @@ class ChannelFormatter:
 
     def remove_offset(self):
         """
-        Remove the offset in the channel
+        Convert the channel by removing the offset in the channel.
 
         """
         newchannel = Channel()

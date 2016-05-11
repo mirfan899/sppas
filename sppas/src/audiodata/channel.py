@@ -39,7 +39,7 @@ from audiodata import audioutils
 
 # ----------------------------------------------------------------------------
 
-class Channel:
+class Channel( object ):
     """
     @authors:      Nicolas Chazeau, Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -63,9 +63,6 @@ class Channel:
         self.framerate = framerate
         self.sampwidth = sampwidth
         self.position  = 0
-
-        self.frameduration = 0.01 # for rms estimation
-        self.nbreadframes = int(self.frameduration*self.framerate)
 
     # ----------------------------------------------------------------------
     # Setters
@@ -106,7 +103,7 @@ class Channel:
         """
         Return the number of frames (a frame has a length of (sampwidth) bytes).
 
-        @return the total number of frames
+        @return (int) the total number of frames
 
         """
         return len(self.frames)/self.sampwidth
@@ -115,9 +112,9 @@ class Channel:
 
     def get_framerate(self):
         """
-        Return the frame rate.
+        Return the frame rate, in Hz.
 
-        @return the frame rate of the channel
+        @return (int) the frame rate of the channel
 
         """
         return self.framerate
@@ -128,7 +125,7 @@ class Channel:
         """
         Return the sample width.
 
-        @return the sample width of the channel
+        @return (int) the sample width of the channel
 
         """
         return self.sampwidth
@@ -139,7 +136,7 @@ class Channel:
         """
         Return the number of zero crossings.
 
-        @return number of zero crossing
+        @return (int) number of zero crossing
 
         """
         return audioutils.cross( self.frames, self.sampwidth )
@@ -151,30 +148,19 @@ class Channel:
         """
         Return the root mean square of the channel.
 
-        @return the root mean square of the channel
+        @return (int) the root mean square of the channel
 
         """
         return audioutils.get_rms( self.frames, self.sampwidth )
 
     # -----------------------------------------------------------------------
 
-    def get_frameduration(self):
-        """
-        Return the frame-duration set by default used to perform windowing method.
-
-        @return the frame duration
-
-        """
-        return self.frameduration
-
-    # -----------------------------------------------------------------------
-
     def get_clipping_rate(self, factor):
         """
-        Return the clipping rate of the frames
+        Return the clipping rate of the frames.
 
         @param factor (float) An interval to be more precise on clipping rate. It will consider that all frames outside the interval are clipped. Factor has to be between 0 and 1.
-        @return the clipping rate
+        @return (float) the clipping rate
 
         """
         return audioutils.get_clipping_rate(self.frames, self.sampwidth, factor)
@@ -183,9 +169,9 @@ class Channel:
 
     def get_duration(self):
         """
-        Return the duration of the channel.
+        Return the duration of the channel, in seconds.
 
-        @return the duration of the channel
+        @return (float) the duration of the channel
 
         """
         return float(self.get_nframes())/float(self.get_framerate())
