@@ -61,7 +61,6 @@ class AudioSilencePresenter:
     @summary: An audio presenter class to export silence.
 
     """
-
     def __init__(self, channelsil, logfile=None):
         """
         Create a AudioSilencePresenter.
@@ -141,7 +140,7 @@ class AudioSilencePresenter:
                 audio_out = AudioPCM()
                 audio_out.append_channel(self.channelsil.channel)
                 try:
-                    audiodata.save_fragment(trackwavname, audio_out, split_track)
+                    audiodata.io.save_fragment(trackwavname, audio_out, split_track)
                 except Exception as e:
                     if logfile:
                         logfile.print_message('Writing track %s failed with error: %s'%(trackwavname,str(e)), status=-1)
@@ -150,9 +149,5 @@ class AudioSilencePresenter:
                     wavtraks = False
 
         return wavtraks
-
-    # End write_tracks
-    # ------------------------------------------------------------------
-
 
 # ----------------------------------------------------------------------------

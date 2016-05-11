@@ -750,7 +750,7 @@ class TrainingCorpus( object ):
     def _add_audio( self, audiofilename, outfile ):
         # Get the first channel
         try:
-            audio = audiodata.open( audiofilename )
+            audio = audiodata.io.open( audiofilename )
             audio.extract_channel(0)
             formatter = ChannelFormatter( audio.get_channel(0) )
         except Exception as e:
@@ -766,7 +766,7 @@ class TrainingCorpus( object ):
         # Save the converted channel
         audio_out = AudioPCM()
         audio_out.append_channel( formatter.channel )
-        audiodata.save( os.path.join(self.datatrainer.get_storewav(), outfile + ".wav" ), audio_out )
+        audiodata.io.save( os.path.join(self.datatrainer.get_storewav(), outfile + ".wav" ), audio_out )
 
         # Generate MFCC
         wav = os.path.join(self.datatrainer.get_storewav(), outfile + ".wav" )

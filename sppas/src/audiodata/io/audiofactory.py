@@ -35,9 +35,9 @@
 # File: audiofactory.py
 # ----------------------------------------------------------------------------
 
-from wave_io  import WaveIO
-from aiff_io  import AiffIO
-from sunau_io import SunauIO
+from waveio  import WaveIO
+from aiff    import AiffIO
+from sunau   import SunauIO
 
 # ----------------------------------------------------------------------------
 
@@ -53,10 +53,10 @@ class AudioFactory(object):
     """
 
     AUDIO_TYPES = {
-        "wav":  WaveIO,
+        "wav" : WaveIO,
         "wave": WaveIO,
         "aiff": AiffIO,
-        "au" : SunauIO
+        "au"  : SunauIO
         }
 
 

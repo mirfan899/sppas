@@ -160,7 +160,7 @@ class SpeechSegmenter:
         @return tuple with number of silences and number of tracks
 
         """
-        audiospeech = audiodata.open( inputaudio )
+        audiospeech = audiodata.io.open( inputaudio )
         idx = audiospeech.extract_channel(0)
         channel = audiospeech.get_channel(idx)
         framerate = channel.get_framerate()

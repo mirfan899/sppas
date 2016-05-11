@@ -32,66 +32,16 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: __init__.py of the package annotationdata
-# ----------------------------------------------------------------------------
-
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
+# annotationdata.io package
 # ----------------------------------------------------------------------------
 
 """
-annotationdata is a free and open source Python library to access and
-search data from annotated data. It can convert file formats like Elan’s EAF,
-Praat's TextGrid and others into a Transcription() object and convert into
-any of these formats. Those objects allow unified access to linguistic data
-from a wide range sources.
-
-Details can be found in the following publication:
-
-    Brigitte Bigi, Tatsuya Watanabe, Laurent Prévot (2014).
-    Representing Multimodal Linguistics Annotated data,
-    Proceedings of the 9th edition of the Language Resources and Evaluation
-    Conference, 26-31 May 2014, Reykjavik, Iceland.
-
-Linguistics annotation, especially when dealing with multiple domains,
-makes use of different tools within a given project.
-Many tools and frameworks are available for handling rich media data.
-The heterogeneity of such annotations has been recognised as a key problem
-limiting the inter-operability and re-usability of NLP tools and linguistic
-data collections.
-
-In annotation tools, annotated data are mainly represented in the form of
-"tiers" or "tracks" of annotations.
-The genericity and flexibility of "tiers" is appropriate to represent any
-multimodal annotated data because it simply maps the annotations on the
-timeline.
-In most tools, tiers are series of intervals defined by:
-
-    * a time point to represent the beginning of the interval;
-    * a time point to represent the end of the interval;
-    * a label to represent the annotation itself.
-
-In Praat, tiers can be represented by a time point and a label (such
-tiers are named PointTiers and IntervalTiers).
-Of course, depending on the annotation tool, the internal data representation
-and the file formats are different.
-For example, in Elan, unlabelled intervals are not represented nor saved.
-On the contrary, in Praat, tiers are made of a succession of consecutive
-intervals (labelled or un-labelled).
-
-The annotationdata API used for data representation is based on the
-common set of information all tool are currently sharing.
-This allows to manipulate all data in the same way, regardless of the file
-type.
-
-This API supports to merge data and annotation from a wide range of
-heterogeneous data sources for further analysis.
-
-To get the list of extensions currently supported for reading and writing:
-
-    >>> ext = annotationdata.io.extensions
+@author:       Brigitte Bigi, Jibril Saffi
+@organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+@summary:      Readers and writers of annotated data.
 
 """
 
@@ -101,23 +51,13 @@ To get the list of extensions currently supported for reading and writing:
 
 from os.path import splitext
 
-from trsfactory import TrsFactory
-from heuristic import HeuristicFactory
-from annotationdata.annotation import Annotation
-from annotationdata.ptime.point import TimePoint
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.label.label import Label
-
-# ----------------------------------------------------------------------------
+from trsfactory  import TrsFactory
+from heuristic   import HeuristicFactory
 
 
 # ----------------------------------------------------------------------------
 # Variables
 # ----------------------------------------------------------------------------
-
-
-encoding="utf-8"
-
 
 ext_sppas =       ['.xra', '.[Xx][Rr][Aa]']
 ext_praat =       ['.TextGrid', '.PitchTier', '.[Tt][eE][xX][tT][Gg][Rr][Ii][dD]','.[Pp][Ii][tT][cC][hH][Tt][Ii][Ee][rR]']
@@ -139,33 +79,35 @@ extensions_in  = ['.xra', '.TextGrid', '.hz', '.PitchTier', '.eaf', '.trs', '.cs
 extensions_out = ['.xra', '.TextGrid', '.eaf', '.csv', '.mrk', '.stm', '.ctm', '.lab', '.mlf', '.sub', '.srt', '.antx' ]
 extensions_out_multitiers = ['.xra', '.TextGrid', '.eaf', '.csv', '.mrk', '.antx', '.mlf' ]
 
+# ----------------------------------------------------------------------------
+
+def get_extension(filename):
+    return splitext(filename)[1][1:]
 
 # ----------------------------------------------------------------------------
 # Functions for reading and writing annotated files.
 # ----------------------------------------------------------------------------
 
-def getExtension(filename):
-    return splitext(filename)[1][1:]
-
-def read(filename):
+def read( filename ):
     """
     Read a transcription file.
 
     @param filename (string) the file name (including path)
-
     @raise IOError, UnicodeError, Exception
-
     @return Transcription
 
+    >>> # Read an annotated file:
     >>> transcription = annotationdata.io.read('filename')
+
     >>> # Get a tier of a transcription from its index:
     >>> tier = transcription[0]
+
     >>> # Get all annotations between 2 time values:
     >>> annotations = tier.Find(0, 200, overlaps=True)
+
     >>> # Get the first occurrence of a pattern in a tier:
     >>> first_index = tier.Search(['foo', 'bar'],
             function='exact', pos=0, forward=True, reverse=False)
-
 
     About encoding of file names:
 
@@ -183,7 +125,7 @@ def read(filename):
     to the right encoding for you!
 
     """
-    ext = getExtension(filename).lower()
+    ext = get_extension(filename).lower()
     try:
         transcription = TrsFactory.NewTrs(ext)
     except KeyError:
@@ -217,7 +159,7 @@ def write(filename, transcription):
 
     """
 
-    ext = getExtension(filename).lower()
+    ext = get_extension(filename).lower()
     output = TrsFactory.NewTrs(ext)
 
     output.Set(transcription)

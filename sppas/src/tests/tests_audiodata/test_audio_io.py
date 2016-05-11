@@ -8,7 +8,7 @@ sys.path.append( SPPAS )
 
 import unittest
 import os
-import audiodata
+import audiodata.io
 from tests.paths import SPPASSAMPLES, TEMP
 
 sample_1 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana1.wav")
@@ -20,10 +20,10 @@ sample_3 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana3.wave")
 class TestInformation(unittest.TestCase):
 
     def setUp(self):
-        self._sample_1 = audiodata.open(sample_1)
-        self._sample_2 = audiodata.open(sample_2)
-        self._sample_3 = audiodata.open(sample_3)
-        #self._sample_4 = audiodata.open(sample_4)
+        self._sample_1 = audiodata.io.open(sample_1)
+        self._sample_2 = audiodata.io.open(sample_2)
+        self._sample_3 = audiodata.io.open(sample_3)
+        #self._sample_4 = audiodata.io.open(sample_4)
 
     def tearDown(self):
         self._sample_1.close()
@@ -56,10 +56,10 @@ class TestInformation(unittest.TestCase):
 class TestData(unittest.TestCase):
 
     def setUp(self):
-        self._sample_1 = audiodata.open(sample_1)
-        self._sample_2 = audiodata.open(sample_2)
-        self._sample_3 = audiodata.open(sample_3)
-        #self._sample_4 = audiodata.open(sample_4)
+        self._sample_1 = audiodata.io.open(sample_1)
+        self._sample_2 = audiodata.io.open(sample_2)
+        self._sample_3 = audiodata.io.open(sample_3)
+        #self._sample_4 = audiodata.io.open(sample_4)
 
     def tearDown(self):
         self._sample_1.close()
@@ -97,9 +97,9 @@ class TestData(unittest.TestCase):
         _sample_new = os.path.join(TEMP,"newFile.wav")
 
         # save first
-        audiodata.save( _sample_new, self._sample_1 )
+        audiodata.io.save( _sample_new, self._sample_1 )
         # read the saved file and compare Audio() instances
-        newFile = audiodata.open( _sample_new )
+        newFile = audiodata.io.open( _sample_new )
         self.assertEqual(newFile.get_framerate(), self._sample_1.get_framerate())
         self.assertEqual(newFile.get_sampwidth(), self._sample_1.get_sampwidth())
         self.assertEqual(newFile.get_nchannels(), self._sample_1.get_nchannels())
@@ -108,8 +108,8 @@ class TestData(unittest.TestCase):
         os.remove(_sample_new)
         self._sample_1.rewind()
 
-        audiodata.save_fragment( _sample_new, self._sample_1, self._sample_1.read_frames(self._sample_1.get_nframes()))
-        newFile = audiodata.open( _sample_new )
+        audiodata.io.save_fragment( _sample_new, self._sample_1, self._sample_1.read_frames(self._sample_1.get_nframes()))
+        newFile = audiodata.io.open( _sample_new )
         self.assertEqual(newFile.get_framerate(), self._sample_1.get_framerate())
         self.assertEqual(newFile.get_sampwidth(), self._sample_1.get_sampwidth())
         self.assertEqual(newFile.get_nchannels(), self._sample_1.get_nchannels())
@@ -119,9 +119,9 @@ class TestData(unittest.TestCase):
 
         _sample_new = os.path.join(TEMP,"newFile.wav")
         # save first
-        audiodata.save( _sample_new, self._sample_3 )
+        audiodata.io.save( _sample_new, self._sample_3 )
         # read the saved file and compare Audio() instances
-        newFile = audiodata.open( _sample_new )
+        newFile = audiodata.io.open( _sample_new )
         self.assertEqual(newFile.get_framerate(), self._sample_3.get_framerate())
         self.assertEqual(newFile.get_sampwidth(), self._sample_3.get_sampwidth())
         self.assertEqual(newFile.get_nchannels(), self._sample_3.get_nchannels())
@@ -130,8 +130,8 @@ class TestData(unittest.TestCase):
         os.remove(_sample_new)
         self._sample_3.rewind()
 
-        audiodata.save_fragment( _sample_new, self._sample_3, self._sample_3.read_frames(self._sample_3.get_nframes()))
-        newFile = audiodata.open( _sample_new )
+        audiodata.io.save_fragment( _sample_new, self._sample_3, self._sample_3.read_frames(self._sample_3.get_nframes()))
+        newFile = audiodata.io.open( _sample_new )
         self.assertEqual(newFile.get_framerate(), self._sample_3.get_framerate())
         self.assertEqual(newFile.get_sampwidth(), self._sample_3.get_sampwidth())
         self.assertEqual(newFile.get_nchannels(), self._sample_3.get_nchannels())

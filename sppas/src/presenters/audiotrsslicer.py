@@ -74,7 +74,7 @@ class AudioSlicer(object):
         if not os.path.exists(output_dir):
             os.mkdir(output_dir)
 
-        audiospeech = audiodata.open(audiofile)
+        audiospeech = audiodata.io.open(audiofile)
 
         transcription = annotationdata.io.read(trsfile)
 
@@ -105,5 +105,5 @@ class AudioSlicer(object):
             chunks.append(audiospeech.read_frames(to_pos - from_pos))
 
         for name, chunk, trs in zip(names, chunks, list_transcription):
-            audiodata.save(os.path.join(output_dir, name + ".wav"), chunk)
+            audiodata.io.save(os.path.join(output_dir, name + ".wav"), chunk)
             annotationdata.io.write(os.path.join(output_dir, name + "." + output_ext), trs)

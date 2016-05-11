@@ -32,6 +32,69 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
+# annotationdata package
+# ---------------------------------------------------------------------------
+
+"""
+@author:       Brigitte Bigi, Jibril Saffi
+@organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+@summary:      Representation of annotated data.
+
+annotationdata is a free and open source Python library to access and
+search data from annotated data. It can convert file formats like Elan’s EAF,
+Praat's TextGrid and others into a Transcription() object and convert into
+any of these formats. Those objects allow unified access to linguistic data
+from a wide range sources.
+
+Details can be found in the following publication:
+
+    Brigitte Bigi, Tatsuya Watanabe, Laurent Prévot (2014).
+    Representing Multimodal Linguistics Annotated data,
+    Proceedings of the 9th edition of the Language Resources and Evaluation
+    Conference, 26-31 May 2014, Reykjavik, Iceland.
+
+Linguistics annotation, especially when dealing with multiple domains,
+makes use of different tools within a given project.
+Many tools and frameworks are available for handling rich media data.
+The heterogeneity of such annotations has been recognised as a key problem
+limiting the inter-operability and re-usability of NLP tools and linguistic
+data collections.
+
+In annotation tools, annotated data are mainly represented in the form of
+"tiers" or "tracks" of annotations.
+The genericity and flexibility of "tiers" is appropriate to represent any
+multimodal annotated data because it simply maps the annotations on the
+timeline.
+In most tools, tiers are series of intervals defined by:
+
+    * a time point to represent the beginning of the interval;
+    * a time point to represent the end of the interval;
+    * a label to represent the annotation itself.
+
+In Praat, tiers can be represented by a time point and a label (such
+tiers are named PointTiers and IntervalTiers).
+Of course, depending on the annotation tool, the internal data representation
+and the file formats are different.
+For example, in Elan, unlabelled intervals are not represented nor saved.
+On the contrary, in Praat, tiers are made of a succession of consecutive
+intervals (labelled or un-labelled).
+
+The annotationdata API used for data representation is based on the
+common set of information all tool are currently sharing.
+This allows to manipulate all data in the same way, regardless of the file
+type.
+
+This API supports to merge data and annotation from a wide range of
+heterogeneous data sources for further analysis.
+
+To get the list of extensions currently supported for reading and writing:
+
+    >>> ext = annotationdata.io.extensions
+
+"""
 
 from annotationdata.transcription  import Transcription
 from annotationdata.tier           import Tier

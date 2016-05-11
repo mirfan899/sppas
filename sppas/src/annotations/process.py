@@ -52,17 +52,17 @@ from sp_glob import program, version, copyright
 
 import utils.fileutils
 
-from annotations.log import sppasLog
-
-from annotationdata.tier import Tier
-from annotationdata.transcription import Transcription
-from annotationdata.annotation import Annotation
-from annotationdata.label.label import Label
-from annotationdata.ptime.point import TimePoint
+from annotationdata.tier           import Tier
+from annotationdata.transcription  import Transcription
+from annotationdata.annotation     import Annotation
+from annotationdata.label.label    import Label
+from annotationdata.ptime.point    import TimePoint
 from annotationdata.ptime.interval import TimeInterval
-import annotationdata.io
-import audiodata
 
+import annotationdata.io
+import audiodata.io
+
+from annotations.log import sppasLog
 from annotations.Momel.momel     import sppasMomel
 from annotations.Wav.wavseg      import sppasSeg
 from annotations.Token.tok       import sppasTok
@@ -158,10 +158,10 @@ class sppasProcess( Thread ):
                 inputfilename, inputfileextension = os.path.splitext(sinput)
 
                 # Input is a file (and not a directory)
-                if extension.lower() in audiodata.extensions and os.path.isfile(sinput) is True:
+                if extension.lower() in audiodata.io.extensions and os.path.isfile(sinput) is True:
                     filelist.append( sinput )
 
-                elif inputfileextension.lower() in audiodata.extensions:
+                elif inputfileextension.lower() in audiodata.io.extensions:
                     sinput = inputfilename + extension
                     if os.path.isfile(sinput) is True:
                         filelist.append( sinput )

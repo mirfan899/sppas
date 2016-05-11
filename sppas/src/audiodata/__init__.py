@@ -32,89 +32,26 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: __init__.py
-# ----------------------------------------------------------------------------
+# audiodata package
+# ---------------------------------------------------------------------------
 
-from os.path import splitext
-from audiofactory import AudioFactory
+"""
+@author:       Brigitte Bigi, Jibril Saffi
+@organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+@contact:      brigitte.bigi@gmail.com
+@license:      GPL, v3
+@copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+@summary:      Representation of digital audio data.
 
-# ----------------------------------------------------------------------------
-# Variables
-# ----------------------------------------------------------------------------
+"""
 
-ext_wav  = ['.wav', '.wave', '.[wWaAvV]', '.[wWaAvVeE]']
-ext_aiff = ['.aiff', '.[aAiIfF]']
-ext_sunau = ['.au', '.[aAuU]']
+from audiodata.audio import AudioPCM
+from channel import Channel
 
-extensions     = [ '.wav', '.wave', '.aiff', '.au' ]
-extensionsul   = ext_wav + ext_aiff + ext_sunau
+import audiodata.io as io
 
-# ----------------------------------------------------------------------------
-
-
-def getExtension(filename):
-    return splitext(filename)[1][1:]
-
-# ----------------------------------------------------------------------------
-# Functions for reading and writing audio files.
-# ----------------------------------------------------------------------------
-
-def open( filename ):
-    """
-    Read a transcription file.
-
-    @param filename (string) the file name (including path)
-    @raise IOError, Exception
-    @return AudioPCM()
-
-    """
-    ext = getExtension(filename).lower()
-    audio = AudioFactory.NewAudio( ext )
-
-    try:
-        audio.open( unicode(filename) )
-    except UnicodeError as e:
-        raise UnicodeError('Encoding error: the file %r contains non-UTF-8 characters: %s' % (filename,e))
-    except IOError:
-        raise
-    except Exception as e:
-        raise Exception('Invalid audio file: %s' % e)
-
-    return audio
-
-
-def save( filename, audio ):
-    """
-    Write an audio file.
-
-    @param filename: (string) the file name (including path)
-    @param audio: (AudioPCM) the Audio to write.
-    @raise IOError
-
-    """
-
-    ext = getExtension(filename).lower()
-    output = AudioFactory.NewAudio(ext)
-
-    output.Set( audio  )
-    output.save( unicode(filename) )
-
-
-def save_fragment( filename, audio, frames ):
-    """
-    Write a fragment of frames of an audio file.
-
-    @param filename: (string) the file name (including path)
-    @param audio: (AudioPCM) the Audio to write.
-    @param frames: (string)
-    @raise IOError
-
-    """
-
-    ext = getExtension(filename).lower()
-    output = AudioFactory.NewAudio(ext)
-
-    output.Set( audio  )
-    output.save_fragment( filename, frames )
-
-# ----------------------------------------------------------------------------
+__all__ = [
+'AudioPCM',
+'Channel',
+'io'
+]

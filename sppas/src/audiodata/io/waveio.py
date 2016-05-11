@@ -32,30 +32,25 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: sunau_io.py
-# ----------------------------------------------------------------------------
+# File: wave_io.py
+# ---------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+import wave
 
-# ----------------------------------------------------------------------------
-
-import sunau
-from audio import AudioPCM
-from audio import NO_AUDIO_MSG
+from audiodata.audio import AudioPCM
 
 # ---------------------------------------------------------------------------
 
-class SunauIO( AudioPCM ):
+class WaveIO( AudioPCM ):
     """
-    @authors: Nicolas Chazeau, Brigitte Bigi
-    @contact: n.chazeau94@gmail.com, brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: An Sun AU file open/save utility class.
+    @authors:      Nicolas Chazeau, Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      A wave file open/save AudioPCM class.
 
     """
-
     def __init__(self):
         """
         Constructor.
@@ -63,19 +58,19 @@ class SunauIO( AudioPCM ):
         """
         AudioPCM.__init__(self)
 
-    # ------------------------------------------------------------------------
+
+    # -----------------------------------------------------------------------
 
     def open(self, filename):
         """
-        Get an audio from a Audio Interchange File Format file.
+        Get an audio from a Waveform Audio File Format file.
 
         @param filename (string) input file name.
 
         """
-
         # Use the standard wave library to load the wave file
         # open method returns a Wave_read() object
-        self.audiofp = sunau.open( filename, "r")
+        self.audiofp = wave.open( unicode(filename), "r" )
 
         # Find out how many frames the frameduration second value is
         self.nbreadframes = int(self.frameduration * self.audiofp.getframerate())
@@ -84,7 +79,7 @@ class SunauIO( AudioPCM ):
 
     def save(self, filename):
         """
-        Write an audio content as a Audio Interchange File Format file.
+        Write an audio content as a Waveform Audio File Format file.
 
         @param filename (string) output filename.
 
@@ -94,7 +89,7 @@ class SunauIO( AudioPCM ):
 
         elif len(self) == 1:
             channel = self.channels[0]
-            f = sunau.Au_write( filename )
+            f = wave.Wave_write( unicode(filename) )
             f.setnchannels(1)
             f.setsampwidth(channel.get_sampwidth())
             f.setframerate(channel.get_framerate())
@@ -111,7 +106,7 @@ class SunauIO( AudioPCM ):
                 for j in xrange(len(self.channels)):
                         frames += self.channels[j].frames[i:i+self.channels[0].get_sampwidth()]
 
-            f = sunau.Au_write( filename )
+            f = wave.Wave_write( unicode(filename) )
             f.setnchannels(len(self.channels))
             f.setsampwidth(self.channels[0].get_sampwidth())
             f.setframerate(self.channels[0].get_framerate())
@@ -122,16 +117,15 @@ class SunauIO( AudioPCM ):
 
     # -----------------------------------------------------------------------
 
-
     def save_fragment(self, filename, frames):
         """
-        Write an audio content as a Audio Interchange File Format file.
+        Write an audio content as a Waveform Audio File Format file.
 
         @param filename (string) output filename.
         @param frames (string) the frames to write
 
         """
-        f = sunau.Au_write( filename )
+        f = wave.Wave_write( unicode(filename) )
         f.setnchannels(self.get_nchannels())
         f.setsampwidth(self.get_sampwidth())
         f.setframerate(self.get_framerate())

@@ -51,7 +51,7 @@ from wxgui.cutils.dialogutils import create_wildcard, extend_path
 from msgdialogs import ShowYesNoQuestion
 
 import annotationdata.io as io
-import audiodata
+import audiodata.io
 import sp_glob
 
 # ----------------------------------------------------------------------------
@@ -94,7 +94,7 @@ def OpenSoundFiles():
     Return a list of sound file names.
     """
 
-    wildcard  = create_wildcard("Sound files", audiodata.extensionsul)
+    wildcard  = create_wildcard("Sound files", audiodata.io.extensionsul)
     wildcard += '|'+create_wildcard("All files", ['*', '*.*'])
 
     files = []

@@ -90,7 +90,7 @@ class BasicAligner( BaseAligner ):
             duration = inputwav
         else:
             try:
-                wavspeech = audiodata.open( inputwav )
+                wavspeech = audiodata.io.open( inputwav )
                 duration  = wavspeech.get_duration()
             except Exception:
                 duration = 0.

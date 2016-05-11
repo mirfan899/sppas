@@ -32,31 +32,27 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: aiff_io.py
-# ----------------------------------------------------------------------------
-
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
+# File: aiff.py
 # ----------------------------------------------------------------------------
 
 import aifc
 import struct
-from audio import AudioPCM
 
-from audio import NO_AUDIO_MSG
+from audiodata.audio import AudioPCM
+from audiodata.audio import NO_AUDIO_MSG
 
 # ---------------------------------------------------------------------------
 
 class AiffIO( AudioPCM ):
     """
-    @authors: Nicolas Chazeau, Brigitte Bigi
-    @contact: n.chazeau94@gmail.com, brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: An AIFF/AIFC file open/save utility class.
-    """
+    @authors:      Nicolas Chazeau, Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      An AIFF/AIFC file open/save utility class.
 
+    """
 
     def __init__(self):
         """
@@ -66,7 +62,6 @@ class AiffIO( AudioPCM ):
         AudioPCM.__init__(self)
 
     # ------------------------------------------------------------------------
-
 
     def open(self, filename):
         """
@@ -85,8 +80,6 @@ class AiffIO( AudioPCM ):
 
         # Find out how many frames the frameduration second value is
         self.nbreadframes = int(self.frameduration * self.audiofp.getframerate())
-
-    # -----------------------------------------------------------------------
 
     # ----------------------------------------------------------------------
     # Read content, for audiofp
@@ -173,7 +166,6 @@ class AiffIO( AudioPCM ):
                 f.close()
 
     # -----------------------------------------------------------------------
-
 
     def save_fragment(self, filename, frames):
         """

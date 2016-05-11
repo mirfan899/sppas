@@ -47,7 +47,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import wx
 import logging
 
-import audiodata
+import audiodata.io
 
 from wxgui.structs.prefs  import Preferences
 from wxgui.structs.themes import BaseTheme
@@ -111,14 +111,9 @@ class SndProperty( wx.Panel ):
         self.SetAutoLayout( True )
         self.Layout()
 
-    # End __init__
-    # -----------------------------------------------------------------------
-
-
     # -----------------------------------------------------------------------
     # Private methods to create the GUI and initialize members
     # -----------------------------------------------------------------------
-
 
     def _create_property_labels(self, sizer):
         for line,label in enumerate(LABEL_LIST):
@@ -129,9 +124,7 @@ class SndProperty( wx.Panel ):
             self._labels.append( static_tx )
             sizer.Add(static_tx, (line,0), flag=wx.ALL, border=5)
 
-    # End create_property_labels
     # -----------------------------------------------------------------------
-
 
     def _create_property_values(self, sizer):
         for line,label in enumerate(LABEL_LIST):
@@ -142,14 +135,10 @@ class SndProperty( wx.Panel ):
             self._values.append( tx )
             sizer.Add(tx, (line,1), flag=wx.EXPAND|wx.RIGHT, border=5)
 
-    # End create_property_values
-    # -----------------------------------------------------------------------
-
 
     # -----------------------------------------------------------------------
     # GUI
     # -----------------------------------------------------------------------
-
 
     def SetPreferences(self, prefs):
         """ Set new preferences. """
@@ -161,7 +150,6 @@ class SndProperty( wx.Panel ):
 
     #-------------------------------------------------------------------------
 
-
     def SetFont(self, font):
         """ Change font of all texts. """
 
@@ -172,9 +160,7 @@ class SndProperty( wx.Panel ):
             l.SetFont( font )
         self.Refresh()
 
-    # End SetFont
     # -----------------------------------------------------------------------
-
 
     def SetBackgroundColour(self, colour):
         """ Change the background color of all objects. """
@@ -187,9 +173,7 @@ class SndProperty( wx.Panel ):
             l.SetBackgroundColour( colour )
         self.Refresh()
 
-    # End SetForegroundColour
     # -----------------------------------------------------------------------
-
 
     def SetForegroundColour(self, colour):
         """ Change the foreground color of all objects. """
@@ -218,21 +202,16 @@ class SndProperty( wx.Panel ):
             l.SetForegroundColour( colour )
         self.Refresh()
 
-    # End SetForegroundColour
-    # -----------------------------------------------------------------------
-
-
     # -----------------------------------------------------------------------
     # Callbacks
     # -----------------------------------------------------------------------
-
 
     def FileSelected(self, filename):
         """
         Show information of a sound file.
         """
         try:
-            _audio = audiodata.open( filename )
+            _audio = audiodata.io.open( filename )
             duration = float(_audio.get_duration() )
             value_list = [ filename,
                            '%.2f' % duration,
@@ -253,9 +232,7 @@ class SndProperty( wx.Panel ):
         self.SetForegroundColour( self._prefs.GetValue('M_FG_COLOUR') )
         #self.Refresh()
 
-    # End OnFileSelected
     #------------------------------------------------------------------------
-
 
     def FileDeSelected(self):
         """
@@ -267,7 +244,4 @@ class SndProperty( wx.Panel ):
 
         self.Refresh()
 
-    # End OnFileDeSelected
     # -----------------------------------------------------------------------
-
-# ---------------------------------------------------------------------------

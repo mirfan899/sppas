@@ -41,7 +41,7 @@ NO_AUDIO_MSG = "No audio file."
 
 import struct
 
-from channel import Channel
+from channel   import Channel
 from audiodata import audioutils
 
 # ---------------------------------------------------------------------------
@@ -531,9 +531,27 @@ class AudioPCM( object ):
             if self.channels[i].get_nframes() != nframes:
                 raise NameError("Channels have not the same number of frames ! Convert them before mix.")
 
-    # ----------------------------------------------------------------------
-    # The sad death of this audiofp...
-    # ----------------------------------------------------------------------
+    # ------------------------------------------------------------------------
+    # Input/Output
+    # ------------------------------------------------------------------------
+
+    def open(self):
+        name = self.__class__.__name__
+        raise NotImplementedError("%s does not support open()." % name)
+
+    # ------------------------------------------------------------------------
+
+    def save(self):
+        name = self.__class__.__name__
+        raise NotImplementedError("%s does not support save()." % name)
+
+    # ------------------------------------------------------------------------
+
+    def save_fragments(self):
+        name = self.__class__.__name__
+        raise NotImplementedError("%s does not support save_fragments()." % name)
+
+    # ------------------------------------------------------------------------
 
     def close(self):
         """
@@ -544,7 +562,6 @@ class AudioPCM( object ):
             raise Exception(NO_AUDIO_MSG)
         self.audiofp.close()
         self.__reset()
-
 
     # ----------------------------------------------------------------------
     # Private
@@ -670,3 +687,8 @@ class AudioPCM( object ):
             yield x
 
     # ------------------------------------------------------------------------------------
+
+    def __getitem__(self, i):
+        return self.channels[i]
+
+    # ------------------------------------------------------------------------

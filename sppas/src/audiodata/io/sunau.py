@@ -32,29 +32,25 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: wave_io.py
-# ---------------------------------------------------------------------------
+# File: sunau.py
+# ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Nicolas Chazeau (n.chazeau94@gmail.com), Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-# ---------------------------------------------------------------------------
-
-import wave
-from audio import AudioPCM
+import sunau
+from audiodata.audio import AudioPCM
+from audiodata.audio import NO_AUDIO_MSG
 
 # ---------------------------------------------------------------------------
 
-class WaveIO( AudioPCM ):
+class SunauIO( AudioPCM ):
     """
-    @authors: Nicolas Chazeau, Brigitte Bigi
-    @contact: n.chazeau94@gmail.com, brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: A wave file open/save AudioPCM class.
+    @authors:      Nicolas Chazeau, Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      An Sun AU file open/save utility class.
 
     """
-
     def __init__(self):
         """
         Constructor.
@@ -62,18 +58,19 @@ class WaveIO( AudioPCM ):
         """
         AudioPCM.__init__(self)
 
-    # -----------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def open(self, filename):
         """
-        Get an audio from a Waveform Audio File Format file.
+        Get an audio from a Audio Interchange File Format file.
 
         @param filename (string) input file name.
 
         """
+
         # Use the standard wave library to load the wave file
         # open method returns a Wave_read() object
-        self.audiofp = wave.open( unicode(filename), "r" )
+        self.audiofp = sunau.open( filename, "r")
 
         # Find out how many frames the frameduration second value is
         self.nbreadframes = int(self.frameduration * self.audiofp.getframerate())
@@ -82,7 +79,7 @@ class WaveIO( AudioPCM ):
 
     def save(self, filename):
         """
-        Write an audio content as a Waveform Audio File Format file.
+        Write an audio content as a Audio Interchange File Format file.
 
         @param filename (string) output filename.
 
@@ -92,7 +89,7 @@ class WaveIO( AudioPCM ):
 
         elif len(self) == 1:
             channel = self.channels[0]
-            f = wave.Wave_write( unicode(filename) )
+            f = sunau.Au_write( filename )
             f.setnchannels(1)
             f.setsampwidth(channel.get_sampwidth())
             f.setframerate(channel.get_framerate())
@@ -109,7 +106,7 @@ class WaveIO( AudioPCM ):
                 for j in xrange(len(self.channels)):
                         frames += self.channels[j].frames[i:i+self.channels[0].get_sampwidth()]
 
-            f = wave.Wave_write( unicode(filename) )
+            f = sunau.Au_write( filename )
             f.setnchannels(len(self.channels))
             f.setsampwidth(self.channels[0].get_sampwidth())
             f.setframerate(self.channels[0].get_framerate())
@@ -122,13 +119,13 @@ class WaveIO( AudioPCM ):
 
     def save_fragment(self, filename, frames):
         """
-        Write an audio content as a Waveform Audio File Format file.
+        Write an audio content as a Audio Interchange File Format file.
 
         @param filename (string) output filename.
         @param frames (string) the frames to write
 
         """
-        f = wave.Wave_write( unicode(filename) )
+        f = sunau.Au_write( filename )
         f.setnchannels(self.get_nchannels())
         f.setsampwidth(self.get_sampwidth())
         f.setframerate(self.get_framerate())

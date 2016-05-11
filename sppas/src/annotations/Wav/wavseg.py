@@ -681,9 +681,9 @@ class sppasSeg:
         """
         fileName, fileExtension = os.path.splitext( audiofile )
         # Set input
-        if fileExtension.lower() in audiodata.extensions:
+        if fileExtension.lower() in audiodata.io.extensions:
             try:
-                self.audiospeech = audiodata.open( audiofile )
+                self.audiospeech = audiodata.io.open( audiofile )
             except Exception as e:
                 raise Exception('Input error.\n'+str(e)+'\n')
             # Auto-adjust volume
