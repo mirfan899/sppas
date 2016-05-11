@@ -56,13 +56,14 @@ WAVETOASTER = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ))
 SRC = os.path.join(WAVETOASTER, "src" )
 sys.path.append(SRC)
 
-import audiodata
+import audiodata.io
 from audiodata       import extensionsul, audioutils
 from audiodata.audio import AudioPCM
+
 from audiodata.channel           import Channel
 from audiodata.channelsmixer     import ChannelsMixer
 from audiodata.channelformatter  import ChannelFormatter
-from audiodata.channelsequalizer import ChannelsEqualizer
+
 from term.textprogress       import TextProgress
 from term.terminalcontroller import TerminalController
 
@@ -148,7 +149,7 @@ def extract_channels( settings, factor=0, channel=0, p=None ):
     for i,channelparameter in enumerate(settings):
         if p: p.update(float(i)/total, "Channel " + str(i+1) + " of " + str(total))
 
-        audio = audiodata.open( channelparameter['file'] )
+        audio = audiodata.io.open( channelparameter['file'] )
 
         # CHANNEL EXTRACTION
         idx = audio.extract_channel( channel )
@@ -165,25 +166,26 @@ def extract_channels( settings, factor=0, channel=0, p=None ):
 
 # ----------------------------------------------------------------------------
 
-def equalize_channels( settings, p=None ):
+def normalize_channels( settings, p=None ):
     """
-    Equalize channels of the settings.
+    Normalize the length of channels of the settings.
+
     @param settings: a list of dictionaries with extracted information from a settings file.
     @param p is a progress dialog
 
     """
-    equalizer = ChannelsEqualizer()
+    norm = ChannelsMixer()
 
-    if p: p.update(0.25, "Load channels to equalize. ")
+    if p: p.update(0.25, "Load channels to normalize. ")
     for channel in settings:
-        equalizer.append_channel( channel['channel'] )
+        norm.append_channel( channel['channel'] )
 
-    if p: p.update(0.50, "Equalize each channel... ")
-    equalizer.equalize()
+    if p: p.update(0.50, "Normalize length of each channel... ")
+    norm.norm_length()
 
-    if p: p.update(0.90, "Save equalized channels. ")
+    if p: p.update(0.90, "Save normalized channels. ")
     for i,channel in enumerate(settings):
-        channel['channel'] = equalizer.get_channel(i)
+        channel['channel'] = norm.get_channel(i)
 
 # ----------------------------------------------------------------------------
 
@@ -232,7 +234,6 @@ def mix_channels( settings, p=None ):
     return mixerleft,mixerright
 
 # ----------------------------------------------------------------------------
-
 
 def show_channels( settings ):
     """
@@ -343,7 +344,7 @@ if verbose > 1:
     print "\nBegin equalizing channels at %s"%time.strftime('%d/%m/%y %H:%M:%S',time.localtime())
 
 try:
-    equalize_channels( settings, p )
+    normalize_channels( settings, p )
 except Exception as e:
     print e
     sys.exit(1)
@@ -473,7 +474,7 @@ audio_out = AudioPCM()
 audio_out.append_channel( newchannelleft )
 audio_out.append_channel( newchannelright )
 
-audiodata.save( args.o, audio_out )
+audiodata.io.save( args.o, audio_out )
 
 if verbose > 0:
     p.update(1, "")

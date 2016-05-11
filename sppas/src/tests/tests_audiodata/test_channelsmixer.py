@@ -1,22 +1,27 @@
 #!/usr/bin/env python2
 # -*- coding: utf8 -*-
 
+import sys
+from os.path import abspath, dirname
+SPPAS = dirname(dirname(dirname(abspath(__file__))))
+sys.path.append( SPPAS )
+
 import unittest
 import os
-from paths import SAMPLES
-import audiodata
-from audiodata.channelsequalizer import ChannelsEqualizer
+import audiodata.io
+
 from audiodata.channelformatter  import ChannelFormatter
 from audiodata.channelsmixer     import ChannelsMixer
 
+from tests.paths import SPPASSAMPLES
+sample_1 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana1.wav")
+sample_2 = os.path.join(SPPASSAMPLES, "samples-fra", "F_F_B003-P9.wav")
 
 class TestChannelsMixer(unittest.TestCase):
-    _sample_path_1 = os.path.join(SAMPLES, "oriana1.WAV") # mono file at 16000Hz, 16bits
-    _sample_path_2 = os.path.join(SAMPLES, "F_F_B003-P9.wav")
 
     def setUp(self):
-        self._sample_1 = audiodata.open(TestChannelsMixer._sample_path_1)
-        self._sample_2 = audiodata.open(TestChannelsMixer._sample_path_2)
+        self._sample_1 = audiodata.io.open(sample_1)
+        self._sample_2 = audiodata.io.open(sample_2)
 
     def tearDown(self):
         self._sample_1.close()
@@ -36,15 +41,14 @@ class TestChannelsMixer(unittest.TestCase):
         formatter2.set_sampwidth(2)
         formatter2.convert()
 
-        equalizer = ChannelsEqualizer()
-        equalizer.append_channel(formatter1.channel)
-        equalizer.append_channel(formatter2.channel)
-        equalizer.equalize()
-
         mixer = ChannelsMixer()
-        mixer.append_channel(equalizer.get_channel(0))
-        mixer.append_channel(equalizer.get_channel(1))
+        mixer.append_channel(formatter1.channel)
+        mixer.append_channel(formatter2.channel)
+        mixer.norm_length()
+
+        self.assertEqual(mixer.get_channel(0).get_nframes(), mixer.get_channel(1).get_nframes())
+
         newchannel = mixer.mix()
 
-        self.assertEqual(newchannel.get_nframes(), equalizer.get_channel(0).get_nframes())
-        self.assertEqual(newchannel.get_nframes(), equalizer.get_channel(1).get_nframes())
+        self.assertEqual(newchannel.get_nframes(), mixer.get_channel(0).get_nframes())
+        self.assertEqual(newchannel.get_nframes(), mixer.get_channel(1).get_nframes())

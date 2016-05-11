@@ -80,7 +80,6 @@ class TestChannel(unittest.TestCase):
         savedaudio.close()
         os.remove( sample_new )
 
-
     def test_ExtractFragment(self):
         self._sample_1.extract_channel(0)
         self._sample_3.extract_channel(0)

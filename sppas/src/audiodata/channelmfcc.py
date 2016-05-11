@@ -35,24 +35,21 @@
 # File: channelmfcc.py
 # ---------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
-
-# ---------------------------------------------------------------------------
-
 import subprocess
-from utils.type import test_command
+
+from utils.type        import test_command
 from audiodata.channel import Channel
 
 # ---------------------------------------------------------------------------
 
-class ChannelMFCC:
+class ChannelMFCC( object ):
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: A channel MFCC extractor class.
+    @authors:      Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      A channel MFCC extractor class.
 
     Mel-frequency cepstrum (MFC) is a representation of the short-term power
     spectrum of a sound, based on a linear cosine transform of a log power
@@ -68,6 +65,12 @@ class ChannelMFCC:
 
     """
     def __init__(self, channel=None):
+        """
+        Constructor.
+
+        @param channel (Channel) The channel to work on. Currently not used...!!!
+
+        """
         self.channel = channel
 
     # ----------------------------------------------------------------------

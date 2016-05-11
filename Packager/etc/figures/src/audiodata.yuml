@@ -6,8 +6,10 @@
 [ChannelVolumeStats|+channel;+rms;]
 [ChannelFormatter|+channel;+framerate;+sampwidth;]
 [ChannelFrames|+frames;]
+[ChannelMFCC|+channel;]
 
 // Edges
 [AudioPCM]++-0..*>[Channel],
 [Channel]<1-[ChannelVolumeStats]
-[Channel]<0-[ChannelFormatter]
+[Channel]<1-[ChannelFormatter]
+[Channel]<1-[ChannelMFCC]
