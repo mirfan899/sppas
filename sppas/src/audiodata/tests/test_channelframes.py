@@ -1,20 +1,20 @@
 #!/usr/bin/env python2
-import sys
-from os.path import abspath, dirname
-SPPAS = dirname(dirname(dirname(abspath(__file__))))
-sys.path.append( SPPAS )
+# -*- coding: utf8 -*-
 
+import paths
 import unittest
 import os
 
 import audiodata.io
-from audiodata.channelformatter import ChannelFormatter
+from audiodata.channel import Channel
+from audiodata.channelframes import ChannelFrames
 
-from tests.paths import SPPASSAMPLES
+from paths import SPPASSAMPLES, TEMP
 sample_1 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana1.wav")  # mono; 16000Hz; 16bits
 sample_2 = os.path.join(SPPASSAMPLES, "samples-fra", "F_F_B003-P9.wav")  # mono; 44100Hz; 32bits
 
-class TestChannelFormatter(unittest.TestCase):
+
+class TestChannelFrames(unittest.TestCase):
 
     def setUp(self):
         self._sample_1 = audiodata.io.open(sample_1)
@@ -24,14 +24,11 @@ class TestChannelFormatter(unittest.TestCase):
         self._sample_1.close()
         self._sample_2.close()
 
-    def test_Sync(self):
+    def test_CreateSilence(self):
         self._sample_1.extract_channel(0)
         self._sample_2.extract_channel(0)
 
         channel = self._sample_1.get_channel(0)
-
-        formatter = ChannelFormatter(self._sample_2.get_channel(0))
-        formatter.sync(channel)
-
-        self.assertEqual(channel.get_framerate(), formatter.channel.get_framerate())
-        self.assertEqual(channel.get_sampwidth(), formatter.channel.get_sampwidth())
+        monofrag = ChannelFrames(channel.frames)
+        monofrag.append_silence(1000)
+        self.assertEqual(channel.get_nframes()+1000, len(monofrag.get_frames())/channel.get_sampwidth())

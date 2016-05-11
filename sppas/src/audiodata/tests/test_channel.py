@@ -1,19 +1,15 @@
 #!/usr/bin/env python2
 # -*- coding: utf8 -*-
 
-import sys
-from os.path import abspath, dirname
-SPPAS = dirname(dirname(dirname(abspath(__file__))))
-sys.path.append( SPPAS )
-
+import paths
 import unittest
 import os
 
 import audiodata.io
 from audiodata.channel import Channel
-from audiodata.audio import AudioPCM
-from tests.paths import SPPASSAMPLES, TEMP
+from audiodata.audio   import AudioPCM
 
+from paths import SPPASSAMPLES, TEMP
 sample_1 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana1.wav")  # mono
 sample_2 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana3.wave") # stereo
 sample_3 = os.path.join(SPPASSAMPLES, "samples-fra", "F_F_B003-P9.wav")

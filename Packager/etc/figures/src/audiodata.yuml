@@ -7,9 +7,11 @@
 [ChannelFormatter|+channel;+framerate;+sampwidth;]
 [ChannelFrames|+frames;]
 [ChannelMFCC|+channel;]
+[ChannelsMixer|+channels;]
 
 // Edges
 [AudioPCM]++-0..*>[Channel],
 [Channel]<1-[ChannelVolumeStats]
 [Channel]<1-[ChannelFormatter]
 [Channel]<1-[ChannelMFCC]
+[Channel]<1..*-[ChannelsMixer]

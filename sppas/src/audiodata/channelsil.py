@@ -35,27 +35,23 @@
 # File: channelsil.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-# ----------------------------------------------------------------------------
-
 from audiodata import audioutils
 
 # ----------------------------------------------------------------------------
 
-class ChannelSil:
+class ChannelSil( object ):
     """
-    @authors: Brigitte Bigi, Nicolas Chazeau
-    @contact: brigitte.bigi@gmail.com, n.chazeau94@gmail.com
-    @license: GPL
-    @summary: This class implements the silence finding on channels.
+    @authors:      Nicolas Chazeau, Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      This class implements the silence finding on a channel.
 
     """
     def __init__(self, channel, m=0.3):
         """
-        Create a ChannelSil audio instance.
+        Constructor.
 
         @param channel (Channel) the input channel object
         @param m (float) is the minimum track duration (in seconds)

@@ -1,11 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf8 -*-
 
-import sys
-from os.path import abspath, dirname
-SPPAS = dirname(dirname(dirname(abspath(__file__))))
-sys.path.append( SPPAS )
-
+import paths
 import unittest
 import os
 
@@ -13,8 +9,8 @@ import audiodata.io
 from audiodata.channel import Channel
 from audiodata.channelvolstats import ChannelVolumeStats
 from audiodata.audio import AudioPCM
-from tests.paths import SPPASSAMPLES, TEMP
 
+from paths import SPPASSAMPLES
 sample_1 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana1.wav")
 
 class TestChannelStats(unittest.TestCase):
