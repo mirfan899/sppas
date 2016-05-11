@@ -6,28 +6,27 @@ import unittest
 import os
 
 import audiodata.io
-from audiodata.channel import Channel
-from audiodata.channelvolstats import ChannelVolumeStats
-from audiodata.audio import AudioPCM
+from audiodata.channelvolume import ChannelVolume
+from audiodata.audiovolume   import AudioVolume
 
 from paths import SPPASSAMPLES
 sample_1 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana1.wav")
 
 class TestChannelStats(unittest.TestCase):
 
-    def setUp(self):
-        self._sample_1 = audiodata.io.open(sample_1)
-
-    def tearDown(self):
-        self._sample_1.close()
-
     def test_rms(self):
-        cidx = self._sample_1.extract_channel(0)
-        channel = self._sample_1.get_channel(cidx)
-        chanvol = ChannelVolumeStats(channel)
+        audio = audiodata.io.open(sample_1)
+        cidx = audio.extract_channel(0)
+        channel = audio.get_channel(cidx)
 
-        self.assertEqual(chanvol.volume(), channel.get_rms())
+        chanvol  = ChannelVolume(channel)
+        audiovol = AudioVolume(audio)
+
+        self.assertEqual(chanvol.volume(), channel.rms())
+        self.assertEqual(audiovol.volume(), audio.rms())
         self.assertEqual(chanvol.len(), int(channel.get_duration()/0.01) + 1)
-        self.assertEqual(chanvol.min(), self._sample_1.get_minvolume())
-        self.assertEqual(chanvol.max(), self._sample_1.get_maxvolume())
-        self.assertEqual(int(chanvol.mean()), self._sample_1.get_meanvolume())
+        self.assertEqual(chanvol.min(), audiovol.min())
+        self.assertEqual(chanvol.max(), audiovol.max())
+        self.assertEqual(int(chanvol.mean()), int(audiovol.mean()))
+        self.assertEqual(int(chanvol.variance()), int(audiovol.variance()))
+        self.assertEqual(int(chanvol.stdev()), int(audiovol.stdev()))

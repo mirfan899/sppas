@@ -115,9 +115,7 @@ class AudioPCM( object ):
 
         """
         self.__reset()
-        self.audiofp = audio.get_audiofp()
-        if self.audiofp:
-            self.nbreadframes = int(self.frameduration * self.get_framerate())
+        self.audiofp  = audio.get_audiofp()
         self.channels = audio.get_channels()
 
     # ----------------------------------------------------------------------
@@ -131,6 +129,7 @@ class AudioPCM( object ):
         """
         return self.channels
 
+    # ----------------------------------------------------------------------
 
     def get_audiofp(self):
         """
@@ -155,6 +154,7 @@ class AudioPCM( object ):
         """
         self.channels.pop(channel)
 
+    # ----------------------------------------------------------------------
 
     def pop_channel(self, idx):
         """
@@ -165,6 +165,7 @@ class AudioPCM( object ):
         """
         self.channels.pop(idx)
 
+    # ----------------------------------------------------------------------
 
     def insert_channel(self, idx, channel):
         """
@@ -176,6 +177,7 @@ class AudioPCM( object ):
         """
         self.channels.insert(idx, channel)
 
+    # ----------------------------------------------------------------------
 
     def get_channel(self, idx):
         """
@@ -187,6 +189,7 @@ class AudioPCM( object ):
         """
         return self.channels[idx]
 
+    # ----------------------------------------------------------------------
 
     def append_channel(self, channel):
         """
@@ -197,6 +200,7 @@ class AudioPCM( object ):
         """
         self.channels.append(channel)
 
+    # ----------------------------------------------------------------------
 
     def extract_channel(self, number):
         """
@@ -228,7 +232,6 @@ class AudioPCM( object ):
 
         return len(self.channels)-1
 
-
     # ----------------------------------------------------------------------
     # Read content, for audiofp
     # ----------------------------------------------------------------------
@@ -242,6 +245,7 @@ class AudioPCM( object ):
         """
         return self.read_frames(self.nbreadframes)
 
+    # ----------------------------------------------------------------------
 
     def read_frames(self, nframes):
         """
@@ -255,6 +259,7 @@ class AudioPCM( object ):
             raise Exception(NO_AUDIO_MSG)
         return self.audiofp.readframes(nframes)
 
+    # ----------------------------------------------------------------------
 
     def read_samples(self, nframes):
         """
@@ -291,7 +296,6 @@ class AudioPCM( object ):
 
         return samples
 
-
     # ----------------------------------------------------------------------
     # Getters, for audiofp
     # ----------------------------------------------------------------------
@@ -310,6 +314,7 @@ class AudioPCM( object ):
                 raise Exception(NO_AUDIO_MSG)
         return self.audiofp.getsampwidth()
 
+    # ----------------------------------------------------------------------
 
     def get_framerate(self):
         """
@@ -323,8 +328,10 @@ class AudioPCM( object ):
                 return self.channels[0].get_framerate()
             else:
                 raise Exception(NO_AUDIO_MSG)
+
         return self.audiofp.getframerate()
 
+    # ----------------------------------------------------------------------
 
     def get_nframes(self):
         """
@@ -338,8 +345,10 @@ class AudioPCM( object ):
                 return self.channels[0].get_nframes()
             else:
                 raise Exception(NO_AUDIO_MSG)
+
         return self.audiofp.getnframes()
 
+    # ----------------------------------------------------------------------
 
     def get_nchannels(self):
         """
@@ -355,6 +364,7 @@ class AudioPCM( object ):
                 raise Exception(NO_AUDIO_MSG)
         return self.audiofp.getnchannels()
 
+    # ----------------------------------------------------------------------
 
     def get_duration(self):
         """
@@ -372,96 +382,24 @@ class AudioPCM( object ):
         return float(self.get_nframes())/float(self.get_framerate())
 
     # ----------------------------------------------------------------------
-    # Getters, for audiofp, volume information
-    # ----------------------------------------------------------------------
 
-    def get_frameduration(self):
-        """
-        Return the frame-duration used to estimate volumes of the Audio File Pointer.
-
-        @return the frameduration set by default
-
-        """
-        if not self.audiofp:
-            raise Exception(NO_AUDIO_MSG)
-        return self.frameduration
-
-
-    def get_minvolume(self):
-        """
-        Return the min volume of the Audio File Pointer.
-
-        @return the minimum volume
-
-        """
-        if not self.audiofp:
-            raise Exception(NO_AUDIO_MSG)
-        self.__set_minvolume()
-
-        return self.minvolume
-
-
-    def get_maxvolume(self):
-        """
-        Return the max volume of the Audio File Pointer.
-
-        @return the maximum volume
-
-        """
-        if not self.audiofp:
-            raise Exception(NO_AUDIO_MSG)
-        self.__set_maxvolume()
-
-        return self.maxvolume
-
-
-    def get_meanvolume(self):
-        """
-        Return the mean volume of the Audio File Pointer.
-
-        @return the mean volume
-
-        """
-        if not self.audiofp:
-            raise Exception(NO_AUDIO_MSG)
-        self.__set_minvolume()
-        self.__set_maxvolume()
-        self.__set_meanvolume()
-
-        return self.meanvolume
-
-
-    def get_volumes(self):
-        """
-        Return an array containing the volume of each frame of the Audio file pointer.
-
-        @return an array containing the volume of each frame of the audio file
-
-        """
-        if not self.audiofp:
-            raise Exception(NO_AUDIO_MSG)
-        vol = []
-        nb = 0
-        while self.tell() < self.nframes:
-            frames  = self.read_frames(self.nbreadframes)
-            a = AudioFrames(frames, self.get_sampwidth(), self.get_nchannels())
-            vol[nb] = a.rms()
-            nb += 1
-        return vol
-
-
-    def get_rms(self):
+    def rms(self):
         """
         Return the root mean square of the whole file
 
         @return the root mean square of the audio file
 
         """
+        pos = self.tell()
+        self.seek(0)
         a = AudioFrames(self.read_frames(self.get_nframes()), self.get_sampwidth(), self.get_nchannels())
+        self.seek(pos)
+
         return a.rms()
 
+    # ----------------------------------------------------------------------
 
-    def get_clipping_rate(self, factor):
+    def clipping_rate(self, factor):
         """
         Return the clipping rate of the frames
 
@@ -470,14 +408,31 @@ class AudioPCM( object ):
         Factor has to be between 0 and 1.
 
         """
+        pos = self.tell()
+        self.seek(0)
         a = AudioFrames(self.read_frames(self.get_nframes()), self.get_sampwidth())
-        return a.get_clipping_rate(factor)
+        self.seek(pos)
+
+        return a.clipping_rate(factor)
 
     # ----------------------------------------------------------------------
     # Navigate into the audiofp
     # ----------------------------------------------------------------------
 
     def set_pos(self, pos):
+        """
+        Fix reader position.
+        @deprecated: Use seek instead.
+        @param pos (int) the position to set
+
+        """
+        if not self.audiofp:
+            raise Exception(NO_AUDIO_MSG)
+        self.audiofp.setpos(pos)
+
+    # ----------------------------------------------------------------------
+
+    def seek(self, pos):
         """
         Fix reader position.
 
@@ -488,6 +443,7 @@ class AudioPCM( object ):
             raise Exception(NO_AUDIO_MSG)
         self.audiofp.setpos(pos)
 
+    # ----------------------------------------------------------------------
 
     def tell(self):
         """
@@ -500,6 +456,7 @@ class AudioPCM( object ):
             raise Exception(NO_AUDIO_MSG)
         return self.audiofp.tell()
 
+    # ----------------------------------------------------------------------
 
     def rewind(self):
         """
@@ -576,109 +533,8 @@ class AudioPCM( object ):
         Reset all members to a default value.
 
         """
-
         # The audio file pointer
         self.audiofp = None
-
-        # Set default information about frames
-        self.frameduration = 0.01
-        self.nbreadframes  = 0
-
-        # Set informations about the volume
-        self.minvolume  = None
-        self.maxvolume  = None
-        self.meanvolume = None
-
-    # ----------------------------------------------------------------------
-
-    def __set_maxvolume(self):
-        """
-        Set the max volume of the file.
-        Max volume for the whole file is the max rms of each frame.
-
-        """
-        # Max volume was already estimated
-        if self.maxvolume is not None:
-            return self.maxvolume
-
-        # Remember current position in the speech file
-        pos = self.tell()
-
-        # Rewind to the beginning of the file
-        self.rewind()
-
-        # Find the max rms value (explore all frames)
-        self.maxvolume = 0
-        while self.tell() < self.get_nframes():
-            frames = self.read_frames(self.nbreadframes)
-            a = AudioFrames(frames, self.get_sampwidth(), self.get_nchannels())
-            rms = a.rms()
-            if rms > self.maxvolume:
-                self.maxvolume = rms
-
-        # Returns to the position where the file was before
-        self.set_pos(pos)
-
-
-    def __set_minvolume(self):
-        """
-        Min volume for the whole file is the min rms of each frame.
-
-        """
-        # Min volume was already estimated
-        if self.minvolume is not None:
-            return self.minvolume
-
-        # Remember current position in the speech file
-        pos = self.tell()
-
-        # Rewind to the begining of the file
-        self.rewind()
-
-        # Find the min rms value (explore all frames)
-        self.minvolume = 0
-        while self.tell() < self.get_nframes():
-            frames = self.read_frames(self.nbreadframes)
-            a = AudioFrames(frames, self.get_sampwidth(), self.get_nchannels())
-            rms = a.rms()
-            if rms < self.minvolume or self.minvolume == 0:
-                self.minvolume = rms
-
-        # Returns to the position where the file was before
-        self.set_pos(pos)
-
-
-    def __set_meanvolume(self):
-        """
-        Calculate the mean volume of the adio file (the mean of rms of the whole file).
-
-        """
-        # Median volume was already estimated
-        if self.meanvolume is not None:
-            return self.meanvolume
-
-        # Remember current position in the speech file
-        pos = self.tell()
-
-        # Rewind to the beginning of the file
-        self.rewind()
-
-        # Get the mean value: the rms of the whole file
-        ####mean_volume = self.rms(self.speech.readframes(self.nframes))
-        self.meanvolume = 0
-        sumrms = 0
-        nb = 0
-        while self.tell() < self.get_nframes():
-            frames = self.read_frames(self.nbreadframes)
-            a = AudioFrames(frames, self.get_sampwidth(), self.get_nchannels())
-            rms = a.rms()
-            sumrms += rms
-            nb += 1
-        self.meanvolume = sumrms / nb
-
-        # Returns to the position where the file was before
-        self.set_pos(pos)
-
 
     # ----------------------------------------------------------------------
     # Overloads

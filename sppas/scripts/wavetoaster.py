@@ -158,7 +158,7 @@ def extract_channels( settings, factor=0, channel=0, p=None ):
 
         # RMS EXTRACTION
         if factor > 0:
-            rms = channelparameter['channel'].get_rms() #audioutils.get_rms(channelparameter['channel'].frames, audio.get_sampwidth())
+            rms = channelparameter['channel'].rms() #audioutils.get_rms(channelparameter['channel'].frames, audio.get_sampwidth())
             rmswanted = audioutils.mel2db(audioutils.db2mel(rms)*factor)
             channelparameter['factor'] = rmswanted/rms
 
@@ -247,7 +247,7 @@ def show_channels( settings ):
         print "     * sampwidth:    ",channel['channel'].get_sampwidth()
         print "     * framerate:    ",channel['channel'].get_framerate()
         print "     * nframes:      ",channel['channel'].get_nframes()
-        print "     * rms:          ",channel['channel'].get_rms()
+        print "     * rms:          ",channel['channel'].rms()
 
 # ----------------------------------------------------------------------------
 

@@ -35,7 +35,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: wavinfo.py
+# File: audioinfo.py
 # ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
@@ -57,6 +57,7 @@ SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
 import audiodata.io
+from audiodata.audiovolume import AudioVolume
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -64,7 +65,7 @@ import audiodata.io
 
 parser = ArgumentParser(usage="%s -w file [options]" % os.path.basename(PROGRAM), description="... a script to get information about a wav file.")
 
-parser.add_argument("-w", metavar="file", required=True,  help='Input wav file name')
+parser.add_argument("-w", metavar="file", required=True,  help='Input audio file name')
 parser.add_argument("-f", metavar="value", default=0.01, type=float, help='Frame duration to estimate rms (default: 0.01)')
 
 if len(sys.argv) <= 1:
@@ -78,12 +79,23 @@ audio = audiodata.io.open(args.w)
 audio.frameduration = args.f
 
 print "Audio file name:     ", args.w
-print "Duration in seconds: ", audio.get_duration()
-print "Frame rate:          ", audio.get_framerate()
-print "Sample width:        ", audio.get_sampwidth()
+print "Duration (seconds):  ", audio.get_duration()
+print "Frame rate (Hz):     ", audio.get_framerate()
+print "Sample width (bits): ", audio.get_sampwidth()
 print "Channels:            ", audio.get_nchannels()
-print "Volume min:          ", audio.get_minvolume()
-print "Volume max:          ", audio.get_maxvolume()
-print "Volume mean:         ", audio.get_meanvolume()
+print "Clipping rate (in %):"
+print "  - factor=0.2:      ", round(audio.clipping_rate(0.2)*100., 6)
+print "  - factor=0.4:      ", round(audio.clipping_rate(0.4)*100., 6)
+print "  - factor=0.6:      ", round(audio.clipping_rate(0.6)*100., 6)
+print "  - factor=0.8:      ", round(audio.clipping_rate(0.8)*100., 6)
+
+audiovol = AudioVolume(audio, args.f)
+print "Volume:"
+print "  - min:           ", audiovol.min()
+print "  - max:           ", audiovol.max()
+print "  - mean:          ", round(audiovol.mean(),2)
+print "  - median:        ", round(audiovol.median(),2)
+print "  - stdev:         ", round(audiovol.stdev(),2)
+print "  - coefvariation: ", round(audiovol.coefvariation(),2)
 
 # ----------------------------------------------------------------------------

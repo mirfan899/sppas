@@ -72,9 +72,6 @@ class SunauIO( AudioPCM ):
         # open method returns a Wave_read() object
         self.audiofp = sunau.open( filename, "r")
 
-        # Find out how many frames the frameduration second value is
-        self.nbreadframes = int(self.frameduration * self.audiofp.getframerate())
-
     # -----------------------------------------------------------------------
 
     def save(self, filename):

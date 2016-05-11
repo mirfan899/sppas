@@ -32,17 +32,16 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: channelvolstats.py
-# ----------------------------------------------------------------------------
+# File: basevolume.py
+# ---------------------------------------------------------------------------
 
 import calculus.stats.central      as central
 import calculus.stats.variability  as variability
+import calculus.stats.moment       as moment
 
-from audioframes import AudioFrames
+# ---------------------------------------------------------------------------
 
-# ----------------------------------------------------------------------------
-
-class ChannelVolumeStats:
+class BaseVolume( object ):
     """
     @authors:      Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -54,40 +53,29 @@ class ChannelVolumeStats:
     The volume is the estimation of RMS values, sampled with a window of 10ms.
 
     """
-    def __init__(self, channel, winlen=0.01):
+    def __init__(self):
         """
         Constructor.
 
-        @param channel (Channel) The channel to work on.
-        @param winlen (float) Window length to estimate the volume.
-
         """
-        # Remember current position
-        pos = channel.tell()
-
-        # Rewind to the beginning
-        channel.rewind()
-
-        # Find the rms values (explore all frames)
         self.volumes = []
-        nbframes = int(winlen * channel.get_framerate())
-
-        while channel.tell() < channel.get_nframes():
-            frames = channel.get_frames( nbframes )
-            a = AudioFrames( frames, channel.get_sampwidth(), 1)
-            rms = a.rms()
-            self.volumes.append( rms )
-
-        # Returns to the position where we was before
-        channel.seek(pos)
-
-        self.rms = channel.get_rms()
+        self.rms = 0
 
     # -----------------------------------------------------------------------
 
     def volume(self):
         """
-        Return the volume (rms).
+        Return the global volume value (rms).
+        @return (int)
+
+        """
+        return self.rms
+
+    # -----------------------------------------------------------------------
+
+    def volumes(self):
+        """
+        Return the list of volume values (rms).
         @return (int)
 
         """
@@ -171,7 +159,7 @@ class ChannelVolumeStats:
         @return (float)
 
         """
-        return variability.lvariation(self.volumes)
+        return moment.lvariation(self.volumes)
 
     # -----------------------------------------------------------------------
 

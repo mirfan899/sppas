@@ -80,9 +80,6 @@ class AiffIO( AudioPCM ):
         # open method return an Aifc_read object
         self.audiofp = aifc.open( fp )
 
-        # Find out how many frames the frameduration second value is
-        self.nbreadframes = int(self.frameduration * self.audiofp.getframerate())
-
     # ----------------------------------------------------------------------
     # Read content, for audiofp
     # ----------------------------------------------------------------------

@@ -37,7 +37,8 @@
 
 import audioop
 import struct
-import audiodata.audioutils
+
+import audiodata.audioutils as audioutils
 
 # ---------------------------------------------------------------------------
 
@@ -161,7 +162,7 @@ class AudioFrames( object ):
 
     # -----------------------------------------------------------------------
 
-    def get_clipping_rate(self, factor):
+    def clipping_rate(self, factor):
         """
         Return the clipping rate of the frames.
 

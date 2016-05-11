@@ -144,7 +144,7 @@ class Channel( object ):
 
     # -----------------------------------------------------------------------
 
-    def get_rms(self):
+    def rms(self):
         """
         Return the root mean square of the channel.
 
@@ -156,16 +156,18 @@ class Channel( object ):
 
     # -----------------------------------------------------------------------
 
-    def get_clipping_rate(self, factor):
+    def clipping_rate(self, factor):
         """
         Return the clipping rate of the frames.
 
-        @param factor (float) An interval to be more precise on clipping rate. It will consider that all frames outside the interval are clipped. Factor has to be between 0 and 1.
+        @param factor (float) An interval to be more precise on clipping rate.
+        It will consider that all frames outside the interval are clipped.
+        Factor has to be between 0 and 1.
         @return (float) the clipping rate
 
         """
         a = AudioFrames(self.frames, self.sampwidth, 1)
-        return a.get_clipping_rate(factor)
+        return a.clipping_rate(factor)
 
     # -----------------------------------------------------------------------
 
