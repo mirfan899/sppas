@@ -90,9 +90,12 @@ class Channel( object ):
         @return the frames
 
         """
+        chuncksize = int(chuncksize)
         p = self.position
         m = len(self.frames)
-        f = ''.join( self.frames[i] for i in range( p*self.sampwidth,min(m, p*self.sampwidth + chuncksize*self.sampwidth ) ) )
+        s = p*self.sampwidth
+        e = min(m, s + chuncksize*self.sampwidth )
+        f = ''.join( self.frames[i] for i in range(s,e) )
         self.position = p + chuncksize
 
         return f

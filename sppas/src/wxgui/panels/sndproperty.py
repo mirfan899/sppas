@@ -48,6 +48,7 @@ import wx
 import logging
 
 import audiodata.io
+from audiodata.audiovolume import AudioVolume
 
 from wxgui.structs.prefs  import Preferences
 from wxgui.structs.themes import BaseTheme
@@ -212,15 +213,17 @@ class SndProperty( wx.Panel ):
         """
         try:
             _audio = audiodata.io.open( filename )
+            _audiovol = AudioVolume(_audio, 0.01)
+
             duration = float(_audio.get_duration() )
             value_list = [ filename,
                            '%.2f' % duration,
                            str(_audio.get_framerate()),
                            str(_audio.get_sampwidth()),
                            str(_audio.get_nchannels()),
-                           str(_audio.get_minvolume()),
-                           str(_audio.get_meanvolume()),
-                           str(_audio.get_maxvolume()) ]
+                           str(_audiovol.min()),
+                           str(int(_audiovol.mean())),
+                           str(_audiovol.max()) ]
         except Exception as e:
             value_list = [ NO_INFO_LABEL ] * len(LABEL_LIST)
             logging.info(" ... Error reading %s: %s" % (filename,e))

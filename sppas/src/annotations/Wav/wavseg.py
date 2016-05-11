@@ -45,7 +45,8 @@ import os
 import codecs
 import logging
 
-import audiodata
+import audiodata.io
+from audiodata.audiovolume import AudioVolume
 from audiodata.channel    import Channel
 from audiodata.channelsil import ChannelSil
 
@@ -267,11 +268,12 @@ class sppasSeg:
                 - nbtracks is the expected number of speech units
         """
         # Min volume in the speech
-        vmin = int( self.audiospeech.get_minvolume() )
+        vmin = self.volstats.min()
         # Max is set to the mean
-        vmax = int( self.audiospeech.get_meanvolume() )
+        vmax = self.volstats.mean()
         # Step is necessary to not exaggerate a detailed search!
         # step is set to 5% of the volume between min and mean.
+        # TODO: try with coefvariation....
         step = int( (vmax - vmin) / 20.0 )
         # Min and max are adjusted
         vmin += step
@@ -684,12 +686,14 @@ class sppasSeg:
         if fileExtension.lower() in audiodata.io.extensions:
             try:
                 self.audiospeech = audiodata.io.open( audiofile )
+                #TODO: audiospeech should be replaced by the 1st Channel
+                self.volstats    = AudioVolume( self.audiospeech )
             except Exception as e:
                 raise Exception('Input error.\n'+str(e)+'\n')
             # Auto-adjust volume
             if self.volume_cap == 0:
-                minv  = self.audiospeech.get_minvolume()
-                meanv = self.audiospeech.get_meanvolume()
+                minv  = self.volstats.min()
+                meanv = self.volstats.max()
                 step  = int( (meanv - minv) / 5.0 )
                 self.volume_cap = minv + step
         else:
@@ -722,10 +726,10 @@ class sppasSeg:
                     raise Exception('Input transcription error. '+str(e)+'\n')
 
         if sil is True:
-            try:
-                self.split( ntracks )
-            except Exception as e:
-                raise Exception('Error while executing Split.\n'+str(e)+'\n')
+            #try:
+            self.split( ntracks )
+            #except Exception as e:
+            #    raise Exception('Error while executing Split.\n'+str(e)+'\n')
 
         # save output
         # ###############################################################

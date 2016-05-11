@@ -61,6 +61,7 @@ class ChannelVolume( BaseVolume ):
 
         """
         BaseVolume.__init__(self)
+        self.winlen = winlen
 
         # Remember current position
         pos = channel.tell()

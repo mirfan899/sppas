@@ -518,7 +518,7 @@ class FiletreePanel( wx.Panel ):
             child = self._get_item_by_label(basename, item)
             if not child.IsOk():
                 child = self._add_item(item, basename)
-            if fileExtension.lower() in audiodata.extensions:
+            if fileExtension.lower() in audiodata.io.extensions:
                 self._add_related_files(os.path.join(dirname, basename))
                 self._filestree.SelectItem(child)
 

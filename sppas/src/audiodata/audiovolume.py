@@ -61,6 +61,7 @@ class AudioVolume( BaseVolume ) :
 
         """
         BaseVolume.__init__(self)
+        self.winlen = winlen
 
         # Remember current position
         pos = audio.tell()

@@ -35,7 +35,8 @@
 # File: channelsil.py
 # ----------------------------------------------------------------------------
 
-from audioframes import AudioFrames
+from audioframes   import AudioFrames
+from channelvolume import ChannelVolume
 
 # ----------------------------------------------------------------------------
 
@@ -58,6 +59,7 @@ class ChannelSil( object ):
 
         """
         self.channel = channel
+        self.volstats = ChannelVolume( channel )
         self.silence   = None
         self.minlenght = m
 
@@ -134,14 +136,15 @@ class ChannelSil( object ):
         self.silence = []
 
         # Once silence has been found, continue searching in this interval
-        afterloop_frames = int((self.channel.get_frameduration()/2) * self.channel.get_framerate())
+        nb_frames = int( self.volstats.get_winlen()*self.channel.get_framerate() )
+        afterloop_frames = int( nb_frames/2 )
         initpos = i = self.channel.tell()
 
         # This scans the file in steps of frames whether a section's volume
         # is lower than silence_cap, if it is it is written to silence.
         while i < self.channel.get_nframes():
 
-            curframe = self.channel.get_frames(self.channel.nbreadframes)
+            curframe = self.channel.get_frames( nb_frames )
             a = AudioFrames( curframe, self.channel.get_sampwidth(), 1 )
             volume = a.rms()
 
