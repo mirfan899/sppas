@@ -13,7 +13,7 @@ from tests_audiodata.test_channel                   import TestChannel
 from tests_audiodata.test_channelsequalizer         import TestChannelsEqualizer
 from tests_audiodata.test_channelsmixer             import TestChannelsMixer
 from tests_audiodata.test_channelformatter          import TestChannelFormatter
-from tests_audiodata.test_monofragment              import TestMonoFragment
+from tests_audiodata.test_channelframes             import TestChannelFrames
 from tests_audiodata.test_channelfragmentextracter  import TestChannelFragmentExtracter
 
 testsuite = unittest.TestSuite()
@@ -24,7 +24,7 @@ testsuite.addTest(unittest.makeSuite(TestChannel))
 testsuite.addTest(unittest.makeSuite(TestChannelsEqualizer))
 testsuite.addTest(unittest.makeSuite(TestChannelsMixer))
 testsuite.addTest(unittest.makeSuite(TestChannelFormatter))
-testsuite.addTest(unittest.makeSuite(TestMonoFragment))
+testsuite.addTest(unittest.makeSuite(TestChannelFrames))
 testsuite.addTest(unittest.makeSuite(TestChannelFragmentExtracter))
 
 

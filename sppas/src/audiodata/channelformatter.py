@@ -35,9 +35,9 @@
 # File: channelformatter.py
 # ----------------------------------------------------------------------------
 
-from audiodata.monofragment import MonoFragment
-from audiodata.channel      import Channel
-from audiodata              import audioutils
+from audiodata.channelframes import ChannelFrames
+from audiodata.channel       import Channel
+from audiodata               import audioutils
 
 # ----------------------------------------------------------------------------
 
@@ -248,10 +248,10 @@ class ChannelFormatter( object ):
 
         """
         f = frames
-        fragment = MonoFragment(f)
+        fragment = ChannelFrames( f )
         #Convert the sample width if it needs to
         if (self.channel.get_sampwidth() != self.sampwidth):
-            fragment.changesampwidth(self.channel.get_sampwidth(), self.sampwidth)
+            fragment.change_sampwidth(self.channel.get_sampwidth(), self.sampwidth)
 
         #Convert the self.framerate if it needs to
         if (self.channel.get_framerate() != self.framerate):

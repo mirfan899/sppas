@@ -32,74 +32,33 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: monofragment.py
-# ---------------------------------------------------------------------------
-
-__docformat__ = """epytext"""
-__authors__   = """Nicolas Chazeau (n.chazeau94@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
+# File: channelframes.py
 # ---------------------------------------------------------------------------
 
 import audioutils
 
 # ---------------------------------------------------------------------------
 
-class MonoFragment:
+class ChannelFrames( object ):
     """
-    @authors: Nicolas Chazeau
-    @contact: n.chazeau94@gmail.com
-    @license: GPL, v3
-    @summary: An utility for monochannel frames.
+    @authors:      Nicolas Chazeau, Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      An utility for frames of one channel only.
 
     """
-    def __init__(self, frames = ""):
+    def __init__(self, frames=""):
         """
         Constructor.
-        frames must be MONO channel ONLY.
+
+        @param frames (str) Frames that must be MONO ONLY.
+
         """
         self.frames = frames
 
     # -----------------------------------------------------------------------
-
-    def create_silence(self, nframes):
-        """
-        Create nframes of silence and append it to the frames
-
-        @param the number of frames of silence to create
-
-        """
-        silence = ""
-        for i in range(nframes):
-            silence += " \x00"
-        self.frames += silence
-
-    # ----------------------------------------------------------------------------
-
-    def resample(self, sampwidth, rate, newrate):
-        """
-        Resample the frames with a new frame rate
-
-        @param sampwidth (int) sample width of the frames.
-        @param rate (int) current frame rate of the frames
-        @param newrate (int) new frame rate of the frames
-
-        """
-        self.frames = audioutils.resample(self.frames, sampwidth, 1, rate, newrate)
-
-    # ----------------------------------------------------------------------------
-
-    def changesampwidth(self, sampwidth, newsampwidth):
-        """
-        Change the number of bytes used to encode the frames
-
-        @param current sampwidth (int) sample width of the frames. (1 for 8 bits, 2 for 16 bits, 4 for 32 bits)
-        @param newsampwidth (int) new sample width of the frames. (1 for 8 bits, 2 for 16 bits, 4 for 32 bits)
-
-        """
-        self.frames = audioutils.changesampwidth(self.frames, sampwidth, newsampwidth)
-
-    # ----------------------------------------------------------------------------
 
     def get_frames(self):
         """
@@ -114,11 +73,55 @@ class MonoFragment:
 
     def set_frames(self, frames):
         """
-        Set the frames of the MonoFragment
+        Set the frames.
 
         @param the frames to set
 
         """
         self.frames = frames
+
+    # ----------------------------------------------------------------------------
+
+    def append_silence(self, nframes):
+        """
+        Create n frames of silence and append it to the frames.
+
+        @param nframes (int) the number of frames of silence to append
+
+        """
+        nframes = int(nframes)
+        if nframes < 0:
+            raise ValueError("Expected a number of frames. Got %s"%nframes)
+        if nframes == 0:
+            return
+
+        self.frames += " \x00"*nframes
+
+    # ----------------------------------------------------------------------------
+
+    def resample(self, sampwidth, rate, newrate):
+        """
+        Resample the frames with a new frame rate.
+
+        @param sampwidth (int) sample width of the frames.
+        @param rate (int) current frame rate of the frames
+        @param newrate (int) new frame rate of the frames
+
+        """
+        self.frames = audioutils.resample(self.frames, sampwidth, 1, rate, newrate)
+
+    # ----------------------------------------------------------------------------
+
+    def change_sampwidth(self, sampwidth, newsampwidth):
+        """
+        Change the number of bytes used to encode the frames.
+
+        @param current sampwidth (int) sample width of the frames.
+        (1 for 8 bits, 2 for 16 bits, 4 for 32 bits)
+        @param newsampwidth (int) new sample width of the frames.
+        (1 for 8 bits, 2 for 16 bits, 4 for 32 bits)
+
+        """
+        self.frames = audioutils.changesampwidth(self.frames, sampwidth, newsampwidth)
 
     # ----------------------------------------------------------------------------

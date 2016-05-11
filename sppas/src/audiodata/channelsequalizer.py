@@ -41,8 +41,8 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ---------------------------------------------------------------------------
 
-from audiodata.monofragment import MonoFragment
-from audiodata.channel import Channel
+from audiodata.channelframes import ChannelFrames
+from audiodata.channel       import Channel
 
 # ---------------------------------------------------------------------------
 
@@ -81,8 +81,8 @@ class ChannelsEqualizer:
 
         for i in xrange(len(self.channels)):
             if self.channels[i].get_nframes() < nframes:
-                fragment = MonoFragment(self.channels[i].frames)
-                fragment.create_silence(nframes - self.channels[i].get_nframes())
+                fragment = ChannelFrames(self.channels[i].frames)
+                fragment.append_silence(nframes - self.channels[i].get_nframes())
                 self.channels[i] = Channel(self.channels[i].get_framerate(), self.channels[i].get_sampwidth(), fragment.get_frames())
 
     def get_channel(self, idx):

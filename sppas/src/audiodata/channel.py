@@ -55,7 +55,7 @@ class Channel( object ):
 
         @param framerate (int) The frame rate of this channel, in Hertz.
         The recommended framerate value is 48,000;
-        @param sampwidth (int)
+        @param sampwidth (int) 1 for 8 bits, 2 for 16 bits, 4 for 32 bits
         @param frames (str) The frames represented by a string.
 
         """
