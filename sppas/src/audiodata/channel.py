@@ -35,7 +35,7 @@
 # File: channel.py
 # ----------------------------------------------------------------------------
 
-from audiodata import audioutils
+from audioframes import AudioFrames
 
 # ----------------------------------------------------------------------------
 
@@ -139,8 +139,8 @@ class Channel( object ):
         @return (int) number of zero crossing
 
         """
-        return audioutils.cross( self.frames, self.sampwidth )
-        #audioop.cross( self.frames )
+        a = AudioFrames(self.frames, self.sampwidth, 1)
+        return a.cross()
 
     # -----------------------------------------------------------------------
 
@@ -151,7 +151,8 @@ class Channel( object ):
         @return (int) the root mean square of the channel
 
         """
-        return audioutils.get_rms( self.frames, self.sampwidth )
+        a = AudioFrames(self.frames, self.sampwidth, 1)
+        return a.rms()
 
     # -----------------------------------------------------------------------
 
@@ -163,7 +164,8 @@ class Channel( object ):
         @return (float) the clipping rate
 
         """
-        return audioutils.get_clipping_rate(self.frames, self.sampwidth, factor)
+        a = AudioFrames(self.frames, self.sampwidth, 1)
+        return a.get_clipping_rate(factor)
 
     # -----------------------------------------------------------------------
 

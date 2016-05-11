@@ -36,7 +36,6 @@
 # ---------------------------------------------------------------------------
 
 import struct
-import audioop
 import math
 
 # ----------------------------------------------------------------------------
@@ -72,39 +71,9 @@ def samples2frames(samples, sampwidth, nchannel=1):
 
 # ----------------------------------------------------------------------------
 
-def resample(frames, sampwidth, nchannels, rate, newrate):
-    """
-    Resample frames with a new framerate
-
-    @param frames (string) input frames.
-    @param sampwidth (int) sample width of the frames.
-    @param nchannels (int) number of channels in the samples
-    @param rate (int) current framerate of the frames
-    @param newrate (int) new framerate of the frames
-    @return converted frames
-
-    """
-    return audioop.ratecv(frames, sampwidth, nchannels, rate, newrate, None)[0]
-
-# ----------------------------------------------------------------------------
-
-def changesampwidth(frames, sampwidth, newsampwidth):
-    """
-    Change the number of bytes used to encode the frames
-
-    @param frames (string) input frames.
-    @param current sampwidth (int) sample width of the frames. (1 for 8 bits, 2 for 16 bits, 4 for 32 bits)
-    @param newsampwidth (int) new sample width of the frames. (1 for 8 bits, 2 for 16 bits, 4 for 32 bits)
-    @return converted frames
-
-    """
-    return audioop.lin2lin(frames, sampwidth, newsampwidth)
-
-# ----------------------------------------------------------------------------
-
 def get_maxval(size, signed=True):
     """
-    Return the max value for a sampwidth given
+    Return the max value for a given sampwidth.
 
     @param size (int) the sampwidth
     @param signed (bool) if the values will be signed or not
@@ -128,7 +97,7 @@ def get_maxval(size, signed=True):
 
 def get_minval(size, signed=True):
     """
-    Return the min value for a sampwidth given
+    Return the min value for a given sampwidth.
 
     @param size (int) the sampwidth
     @param signed (bool) if the values will be signed or not
@@ -148,7 +117,7 @@ def get_minval(size, signed=True):
 
 def db2mel(value):
     """
-    Return the equivalent value in a mel scale
+    Return the equivalent value in a mel scale.
 
     @param value (int) the value in db to convert
     @return the value in mel
@@ -160,121 +129,12 @@ def db2mel(value):
 
 def mel2db(value):
     """
-    Return the equivalent value in a db scale
+    Return the equivalent value in a db scale.
 
     @param value (int) the value in mel to convert
     @return the value in db
 
     """
     return 700*(10**(float(value)/2595)-1)
-
-# ----------------------------------------------------------------------------
-
-def bias(fragment, sampwidth, bias):
-    """
-    Return a fragment that is the original fragment with a bias added to each sample. Samples wrap around in case of overflow.
-
-    @param fragment (string) input frames.
-    @param sampwidth (int) sample width of the frames.
-    @param bias (int) the bias which will be applied to each sample.
-    @return converted frames
-
-    """
-    return audioop.bias(fragment, sampwidth, bias)
-
-# ----------------------------------------------------------------------------
-
-def mul(fragment, sampwidth, factor):
-    """
-    Return a fragment that has all samples in the original fragment multiplied by the floating-point value factor. Samples are truncated in case of overflow.
-
-    @param fragment (string) input frames.
-    @param sampwidth (int) sample width of the frames.
-    @param factor (int) the factor which will be applied to each sample.
-    @return converted frames
-
-    """
-    return audioop.mul(fragment, sampwidth, factor)
-
-# ----------------------------------------------------------------------------
-
-def cross(fragment, sampwidth):
-    """
-    Return the number of zero crossings in the fragment passed as an argument.
-
-    @param fragment (string) input frames.
-    @param sampwidth (int) sample width of the frames.
-    @return number of zero crossing
-
-    """
-    return audioop.cross(fragment, sampwidth)
-
-# ----------------------------------------------------------------------------
-
-def avg(fragment, sampwidth):
-    """
-    Return the average of all the samples.
-
-    @param fragment (string) input frames.
-    @param sampwidth (int) sample width of the frames.
-    @return the average
-
-    """
-    return audioop.avg(fragment, sampwidth)
-
-# ----------------------------------------------------------------------------
-
-def get_rms(frames, sampwidth, nchannels = 1):
-    """
-    Return the root mean square of the frames
-
-    @param frames (string) input frames.
-    @param sampwidth (int) sample width of the frames.
-    @param nchannels (int) number of channels in the frames
-    @return the root mean square
-
-    """
-    if nchannels == 1:
-        return audioop.rms(frames, sampwidth)
-    else:
-        sum = 0
-        for i in xrange(nchannels):
-            newFrames = ""
-            for j in xrange(i*sampwidth, len(frames), sampwidth*nchannels):
-                for k in xrange(sampwidth):
-                    newFrames = newFrames + frames[j+k]
-            sum = sum + audioop.rms(newFrames, sampwidth)
-        return sum/nchannels
-
-# ----------------------------------------------------------------------------
-
-def get_clipping_rate(frames, sampwidth, factor):
-    """
-    Return the clipping rate of the frames
-
-    @param frames (string) input frames.
-    @param sampwidth (int) sample width of the frames.
-    @param factor (float) An interval to be more precise on clipping rate. It will consider that all frames outside the interval are clipped. Factor has to be between 0 and 1.
-    @return the clipping rate
-
-    """
-    if sampwidth == 4 :
-        data = struct.unpack("<%ul" % (len(frames) / 4), frames)
-    elif sampwidth == 2 :
-        data = struct.unpack("<%uh" % (len(frames) / 2), frames)
-    else :
-        data = struct.unpack("%uB"  %  len(frames),      frames)
-        data = [ s - 128 for s in data ]
-
-    maxval = get_maxval(sampwidth)*(factor/2.)
-    minval = get_minval(sampwidth)*(factor/2.)
-
-    nbclipping = 0
-
-    for i in xrange(len(data)):
-        if data[i] >= maxval or data[i] <= minval:
-            nbclipping = nbclipping + 1
-
-    return float(nbclipping)/len(data)
 
 # ----------------------------------------------------------------------------

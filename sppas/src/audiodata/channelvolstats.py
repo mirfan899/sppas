@@ -38,7 +38,7 @@
 import calculus.stats.central      as central
 import calculus.stats.variability  as variability
 
-import audiodata.audioutils as audioutils
+from audioframes import AudioFrames
 
 # ----------------------------------------------------------------------------
 
@@ -74,7 +74,8 @@ class ChannelVolumeStats:
 
         while channel.tell() < channel.get_nframes():
             frames = channel.get_frames( nbframes )
-            rms = audioutils.get_rms(frames, channel.get_sampwidth(), 1)
+            a = AudioFrames( frames, channel.get_sampwidth(), 1)
+            rms = a.rms()
             self.volumes.append( rms )
 
         # Returns to the position where we was before

@@ -35,7 +35,7 @@
 # File: channelframes.py
 # ---------------------------------------------------------------------------
 
-import audioutils
+from audioframes import AudioFrames
 
 # ---------------------------------------------------------------------------
 
@@ -108,7 +108,8 @@ class ChannelFrames( object ):
         @param newrate (int) new frame rate of the frames
 
         """
-        self.frames = audioutils.resample(self.frames, sampwidth, 1, rate, newrate)
+        a = AudioFrames( self.frames, sampwidth, 1)
+        self.frames = a.resample(rate, newrate)
 
     # ----------------------------------------------------------------------------
 
@@ -122,6 +123,7 @@ class ChannelFrames( object ):
         (1 for 8 bits, 2 for 16 bits, 4 for 32 bits)
 
         """
-        self.frames = audioutils.changesampwidth(self.frames, sampwidth, newsampwidth)
+        a = AudioFrames( self.frames, sampwidth, 1)
+        self.frames = a.changesampwidth(newsampwidth)
 
     # ----------------------------------------------------------------------------

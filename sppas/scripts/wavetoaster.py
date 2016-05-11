@@ -60,6 +60,7 @@ import audiodata.io
 from audiodata       import extensionsul, audioutils
 from audiodata.audio import AudioPCM
 
+from audiodata.audioframes import AudioFrames
 from audiodata.channel           import Channel
 from audiodata.channelsmixer     import ChannelsMixer
 from audiodata.channelformatter  import ChannelFormatter
@@ -157,7 +158,7 @@ def extract_channels( settings, factor=0, channel=0, p=None ):
 
         # RMS EXTRACTION
         if factor > 0:
-            rms = audioutils.get_rms(channelparameter['channel'].frames, audio.get_sampwidth())
+            rms = channelparameter['channel'].get_rms() #audioutils.get_rms(channelparameter['channel'].frames, audio.get_sampwidth())
             rmswanted = audioutils.mel2db(audioutils.db2mel(rms)*factor)
             channelparameter['factor'] = rmswanted/rms
 

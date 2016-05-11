@@ -35,7 +35,7 @@
 # File: channelsil.py
 # ----------------------------------------------------------------------------
 
-from audiodata import audioutils
+from audioframes import AudioFrames
 
 # ----------------------------------------------------------------------------
 
@@ -142,7 +142,8 @@ class ChannelSil( object ):
         while i < self.channel.get_nframes():
 
             curframe = self.channel.get_frames(self.channel.nbreadframes)
-            volume   = audioutils.get_rms(curframe, self.channel.get_sampwidth())
+            a = AudioFrames( curframe, self.channel.get_sampwidth(), 1 )
+            volume = a.rms()
 
             if volume < v:
 
@@ -150,7 +151,8 @@ class ChannelSil( object ):
                 # longer than read frames but smaller than read frames * 2.
                 while volume < v and self.channel.tell() < self.channel.get_nframes():
                     curframe = self.channel.get_frames(afterloop_frames)
-                    volume   = audioutils.get_rms(curframe, self.channel.get_sampwidth())
+                    a = AudioFrames( curframe, self.channel.get_sampwidth(), 1 )
+                    volume = a.rms()
 
                 # If the last sequence of silence ends where the new one starts
                 # it's a continuous range.

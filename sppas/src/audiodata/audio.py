@@ -42,7 +42,7 @@ NO_AUDIO_MSG = "No audio file."
 import struct
 
 from channel   import Channel
-from audiodata import audioutils
+from audioframes import AudioFrames
 
 # ---------------------------------------------------------------------------
 
@@ -444,7 +444,8 @@ class AudioPCM( object ):
         nb = 0
         while self.tell() < self.nframes:
             frames  = self.read_frames(self.nbreadframes)
-            vol[nb] = audioutils.get_rms(frames, self.get_sampwidth(), self.get_nchannels())
+            a = AudioFrames(frames, self.get_sampwidth(), self.get_nchannels())
+            vol[nb] = a.rms()
             nb += 1
         return vol
 
@@ -456,7 +457,8 @@ class AudioPCM( object ):
         @return the root mean square of the audio file
 
         """
-        return audioutils.get_rms(self.read_frames(self.get_nframes()), self.get_sampwidth(), self.get_nchannels())
+        a = AudioFrames(self.read_frames(self.get_nframes()), self.get_sampwidth(), self.get_nchannels())
+        return a.rms()
 
 
     def get_clipping_rate(self, factor):
@@ -468,8 +470,8 @@ class AudioPCM( object ):
         Factor has to be between 0 and 1.
 
         """
-        return audioutils.get_clipping_rate(self.read_frames(self.get_nframes()), self.get_sampwidth(), factor)
-
+        a = AudioFrames(self.read_frames(self.get_nframes()), self.get_sampwidth())
+        return a.get_clipping_rate(factor)
 
     # ----------------------------------------------------------------------
     # Navigate into the audiofp
@@ -609,7 +611,8 @@ class AudioPCM( object ):
         self.maxvolume = 0
         while self.tell() < self.get_nframes():
             frames = self.read_frames(self.nbreadframes)
-            rms = audioutils.get_rms(frames, self.get_sampwidth(), self.get_nchannels())
+            a = AudioFrames(frames, self.get_sampwidth(), self.get_nchannels())
+            rms = a.rms()
             if rms > self.maxvolume:
                 self.maxvolume = rms
 
@@ -636,7 +639,8 @@ class AudioPCM( object ):
         self.minvolume = 0
         while self.tell() < self.get_nframes():
             frames = self.read_frames(self.nbreadframes)
-            rms = audioutils.get_rms(frames, self.get_sampwidth(), self.get_nchannels())
+            a = AudioFrames(frames, self.get_sampwidth(), self.get_nchannels())
+            rms = a.rms()
             if rms < self.minvolume or self.minvolume == 0:
                 self.minvolume = rms
 
@@ -666,7 +670,8 @@ class AudioPCM( object ):
         nb = 0
         while self.tell() < self.get_nframes():
             frames = self.read_frames(self.nbreadframes)
-            rms = audioutils.get_rms(frames, self.get_sampwidth(), self.get_nchannels())
+            a = AudioFrames(frames, self.get_sampwidth(), self.get_nchannels())
+            rms = a.rms()
             sumrms += rms
             nb += 1
         self.meanvolume = sumrms / nb

@@ -37,7 +37,7 @@
 
 from audiodata.channelframes import ChannelFrames
 from audiodata.channel       import Channel
-from audiodata               import audioutils
+from audiodata.audioframes   import AudioFrames
 
 # ----------------------------------------------------------------------------
 
@@ -179,17 +179,18 @@ class ChannelFormatter( object ):
 
     # ----------------------------------------------------------------------
 
-    def bias(self, bias):
+    def bias(self, biasvalue):
         """
         Convert the channel by applying a bias on the frames.
 
-        @param bias (int) the value to bias the frames
+        @param biasvalue (int) the value to bias the frames
 
         """
         newchannel = Channel()
         newchannel.sampwidth = self.sampwidth
         newchannel.framerate = self.framerate
-        newchannel.set_frames(audioutils.bias(self.channel.frames, self.sampwidth, bias))
+        a = AudioFrames( self.channel.get_frames(self.channel.get_nframes()), self.channel.get_sampwidth(), 1)
+        newchannel.set_frames( a.bias( biasvalue ) )
 
         self.channel = newchannel
 
@@ -205,7 +206,8 @@ class ChannelFormatter( object ):
         newchannel = Channel()
         newchannel.sampwidth = self.sampwidth
         newchannel.framerate = self.framerate
-        newchannel.set_frames(audioutils.mul(self.channel.frames, self.sampwidth, factor))
+        a = AudioFrames( self.channel.get_frames(self.channel.get_nframes()), self.channel.get_sampwidth(), 1)
+        newchannel.set_frames( a.mul(factor) )
 
         self.channel = newchannel
 
@@ -219,8 +221,9 @@ class ChannelFormatter( object ):
         newchannel = Channel()
         newchannel.sampwidth = self.sampwidth
         newchannel.framerate = self.framerate
-        avg = audioutils.avg(self.channel.frames, self.sampwidth)
-        newchannel.set_frames(audioutils.bias(self.channel.frames, self.sampwidth, - avg))
+        a = AudioFrames( self.channel.get_frames(self.channel.get_nframes()), self.channel.get_sampwidth(), 1)
+        avg = a.avg()
+        newchannel.set_frames( a.bias( - avg ) )
 
         self.channel = newchannel
 
