@@ -36,10 +36,10 @@
 # ----------------------------------------------------------------------------
 
 import struct
-
-from audiodata.audio import AudioPCM
-from audiodata.audio import NO_AUDIO_MSG
 import aifc
+
+from audiodata.audio        import AudioPCM
+from audiodata.audiodataexc import AudioDataError
 
 # ---------------------------------------------------------------------------
 
@@ -94,7 +94,7 @@ class AiffIO( AudioPCM ):
 
         """
         if not self.audiofp:
-            raise Exception(NO_AUDIO_MSG)
+            raise AudioDataError
 
         data = self.audiofp.readframes(nframes)
 

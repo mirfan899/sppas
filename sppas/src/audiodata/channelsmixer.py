@@ -40,6 +40,7 @@ import struct
 from audiodata.channel       import Channel
 from audiodata.channelframes import ChannelFrames
 from audiodata               import audioutils
+from audiodata.audiodataexc  import AudioDataError
 
 # ---------------------------------------------------------------------------
 
@@ -107,7 +108,7 @@ class ChannelsMixer( object ):
 
         """
         if len(self.channels) == 0:
-            raise NameError("No channels.")
+            raise AudioDataError("No channels.")
 
         sampwidth = self.channels[0].get_sampwidth()
         framerate = self.channels[0].get_framerate()
@@ -115,11 +116,11 @@ class ChannelsMixer( object ):
 
         for i in range(1, len(self.channels)):
             if self.channels[i].get_sampwidth() != sampwidth:
-                raise NameError("Channels have not the same sampwidth.")
+                raise AudioDataError("Channels have not the same sampwidth.")
             if self.channels[i].get_framerate() != framerate:
-                raise NameError("Channels have not the same framerate.")
+                raise AudioDataError("Channels have not the same framerate.")
             if self.channels[i].get_nframes() != nframes:
-                raise NameError("Channels have not the same number of frames.")
+                raise AudioDataError("Channels have not the same number of frames.")
 
     # -----------------------------------------------------------------------
 

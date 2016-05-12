@@ -88,7 +88,7 @@ class WaveIO( AudioPCM ):
         if self.audiofp:
             self.save_fragment( filename, self.audiofp.readframes(self.audiofp.getnframes()) )
 
-        elif len(self) == 1:
+        elif len(self.channels) == 1:
             channel = self.channels[0]
             f = wave.Wave_write( unicode(filename) )
             f.setnchannels(1)
@@ -101,11 +101,11 @@ class WaveIO( AudioPCM ):
 
         else:
             self.verify_channels()
-
+            sw = self.channels[0].get_sampwidth()
             frames = ""
-            for i in xrange(0, self.channels[0].get_nframes()*self.channels[0].get_sampwidth(), self.channels[0].get_sampwidth()):
-                for j in xrange(len(self.channels)):
-                        frames += self.channels[j].frames[i:i+self.channels[0].get_sampwidth()]
+            for i in xrange(0, self.channels[0].get_nframes()*sw, sw):
+                for j in range( len(self.channels) ):
+                    frames += self.channels[j].frames[i:i+sw]
 
             f = wave.Wave_write( unicode(filename) )
             f.setnchannels(len(self.channels))

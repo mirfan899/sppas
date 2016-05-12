@@ -36,8 +36,8 @@
 # ----------------------------------------------------------------------------
 
 import sunau
+
 from audiodata.audio import AudioPCM
-from audiodata.audio import NO_AUDIO_MSG
 
 # ---------------------------------------------------------------------------
 
@@ -67,7 +67,6 @@ class SunauIO( AudioPCM ):
         @param filename (string) input file name.
 
         """
-
         # Use the standard wave library to load the wave file
         # open method returns a Wave_read() object
         self.audiofp = sunau.open( filename, "r")

@@ -35,14 +35,12 @@
 # File: audio.py
 # ---------------------------------------------------------------------------
 
-NO_AUDIO_MSG = "No audio file."
-
-# ---------------------------------------------------------------------------
-
 import struct
 
-from channel   import Channel
-from audioframes import AudioFrames
+from audiodata.audioframes   import AudioFrames
+from audiodata.audiodataexc  import AudioDataError
+from audiodata.channel       import Channel
+from audiodata.channelsmixer import ChannelsMixer
 
 # ---------------------------------------------------------------------------
 
@@ -114,7 +112,6 @@ class AudioPCM( object ):
         @param audio (AudioPCM) AudioPCM to set
 
         """
-        self.__reset()
         self.audiofp  = audio.get_audiofp()
         self.channels = audio.get_channels()
 
@@ -163,6 +160,7 @@ class AudioPCM( object ):
         @param idx (int) the index of the channel to remove
 
         """
+        idx = int(idx)
         self.channels.pop(idx)
 
     # ----------------------------------------------------------------------
@@ -175,6 +173,7 @@ class AudioPCM( object ):
         @param idx (int) the index where the channel has to be inserted
 
         """
+        idx = int(idx)
         self.channels.insert(idx, channel)
 
     # ----------------------------------------------------------------------
@@ -187,6 +186,7 @@ class AudioPCM( object ):
         @return channel (Channel) the channel wanted
 
         """
+        idx = int(idx)
         return self.channels[idx]
 
     # ----------------------------------------------------------------------
@@ -196,41 +196,54 @@ class AudioPCM( object ):
         Append a channel to the list of uploaded channels.
 
         @param channel (Channel) the channel to append
+        @return index of the channel
 
         """
         self.channels.append(channel)
+        return len(self.channels) - 1
 
     # ----------------------------------------------------------------------
 
-    def extract_channel(self, number):
+    def extract_channel(self, index=0):
         """
-        Extract a channel from the Audio File Pointer and store frames into
-        a Channel() instance.
+        Extract a channel from the Audio File Pointer and append in the list of channels.
 
-        @param number (int) number of the channel to extract
-        @return the index of the new Channel() in the list
+        Frames are stored into a Channel() instance.
+        Index of the channel in the audio file:
+        0 = 1st channel (left); 1 = 2nd channel (right); 2 = 3rd channel...
+
+        @param index (int) The index of the channel to extract
+        @return the index of the new Channel() appended in the list
 
         """
         if not self.audiofp:
-            raise Exception(NO_AUDIO_MSG)
+            raise AudioDataError
 
-        sw = self.get_sampwidth()
+        index = int(index)
+        if index < 0:
+            raise AudioDataError('Expected the index of channels to extract. Got: %d'%index)
+
         nc = self.get_nchannels()
+        self.seek(0)
         data = self.read_frames(self.get_nframes())
 
-        if nc > 1:
-            frames = ''
-            for i in xrange(number*sw, len(data), nc*sw):
-                for j in xrange(0,sw):
-                    frames = frames + data[i+j]
+        if nc == 0:
+            raise AudioDataError('No channel in the audio file.')
 
-            channel = Channel( self.get_framerate(), self.get_sampwidth(), frames )
-        else:
+        if index+1 > nc:
+            raise AudioDataError('No channel with index %d in the audio file.'%index)
+
+        if nc == 1:
             channel = Channel( self.get_framerate(), self.get_sampwidth(), data )
+            return self.append_channel( channel )
 
-        self.append_channel( channel )
+        frames = ""
+        sw = self.get_sampwidth()
+        for i in xrange(index*sw, len(data), nc*sw):
+            frames += data[i:i+sw]
+        channel = Channel( self.get_framerate(), self.get_sampwidth(), frames )
 
-        return len(self.channels)-1
+        return self.append_channel( channel )
 
     # ----------------------------------------------------------------------
     # Read content, for audiofp
@@ -256,7 +269,8 @@ class AudioPCM( object ):
 
         """
         if not self.audiofp:
-            raise Exception(NO_AUDIO_MSG)
+            raise AudioDataError
+
         return self.audiofp.readframes(nframes)
 
     # ----------------------------------------------------------------------
@@ -270,7 +284,7 @@ class AudioPCM( object ):
 
         """
         if not self.audiofp:
-            raise Exception(NO_AUDIO_MSG)
+            raise AudioDataError
 
         data = self.read_frames(nframes)
 
@@ -311,7 +325,8 @@ class AudioPCM( object ):
             if len(self.channels) > 0:
                 return self.channels[0].get_sampwidth()
             else:
-                raise Exception(NO_AUDIO_MSG)
+                raise AudioDataError('No data in audio file.')
+
         return self.audiofp.getsampwidth()
 
     # ----------------------------------------------------------------------
@@ -327,7 +342,7 @@ class AudioPCM( object ):
             if len(self.channels) > 0:
                 return self.channels[0].get_framerate()
             else:
-                raise Exception(NO_AUDIO_MSG)
+                raise AudioDataError('No data in audio file.')
 
         return self.audiofp.getframerate()
 
@@ -344,7 +359,7 @@ class AudioPCM( object ):
             if len(self.channels) > 0:
                 return self.channels[0].get_nframes()
             else:
-                raise Exception(NO_AUDIO_MSG)
+                raise AudioDataError('No data in audio file.')
 
         return self.audiofp.getnframes()
 
@@ -361,7 +376,8 @@ class AudioPCM( object ):
             if len(self.channels) > 0:
                 return len(self.channels)
             else:
-                raise Exception(NO_AUDIO_MSG)
+                raise AudioDataError('No data in audio file.')
+
         return self.audiofp.getnchannels()
 
     # ----------------------------------------------------------------------
@@ -377,7 +393,7 @@ class AudioPCM( object ):
             if len(self.channels) > 0:
                 return self.channels[0].get_duration()
             else:
-                raise Exception(NO_AUDIO_MSG)
+                raise AudioDataError('No data in audio file.')
 
         return float(self.get_nframes())/float(self.get_framerate())
 
@@ -427,7 +443,8 @@ class AudioPCM( object ):
 
         """
         if not self.audiofp:
-            raise Exception(NO_AUDIO_MSG)
+            raise AudioDataError
+
         self.audiofp.setpos(pos)
 
     # ----------------------------------------------------------------------
@@ -440,7 +457,8 @@ class AudioPCM( object ):
 
         """
         if not self.audiofp:
-            raise Exception(NO_AUDIO_MSG)
+            raise AudioDataError
+
         self.audiofp.setpos(pos)
 
     # ----------------------------------------------------------------------
@@ -453,7 +471,8 @@ class AudioPCM( object ):
 
         """
         if not self.audiofp:
-            raise Exception(NO_AUDIO_MSG)
+            raise AudioDataError
+
         return self.audiofp.tell()
 
     # ----------------------------------------------------------------------
@@ -464,7 +483,8 @@ class AudioPCM( object ):
 
         """
         if not self.audiofp:
-            raise Exception(NO_AUDIO_MSG)
+            raise AudioDataError
+
         return self.audiofp.rewind()
 
 
@@ -474,23 +494,21 @@ class AudioPCM( object ):
 
     def verify_channels(self):
         """
-        Verify that the channels have the same framerate, sample width and number of frames.
+        Check that the channels have the same parameters.
+        Check framerate, sample width and number of frames.
+
+        @return bool
 
         """
-        if len(self.channels) == 0:
-            raise NameError("No channel detected !")
-
-        sampwidth = self.channels[0].get_sampwidth()
-        framerate = self.channels[0].get_framerate()
-        nframes = self.channels[0].get_nframes()
-
-        for i in xrange(1, len(self.channels)):
-            if self.channels[i].get_sampwidth() != sampwidth:
-                raise NameError("Channels have not the same sampwidth ! Convert them before mix.")
-            if self.channels[i].get_framerate() != framerate:
-                raise NameError("Channels have not the same framerate ! Convert them before mix.")
-            if self.channels[i].get_nframes() != nframes:
-                raise NameError("Channels have not the same number of frames ! Convert them before mix.")
+        mixer = ChannelsMixer()
+        f = 1./len(self.channels)
+        for c in self.channels:
+            mixer.append_channel(c,f)
+        try:
+            mixer.check_channels()
+        except AudioDataError:
+            return False
+        return True
 
     # ------------------------------------------------------------------------
     # Input/Output
@@ -520,7 +538,8 @@ class AudioPCM( object ):
 
         """
         if not self.audiofp:
-            raise Exception(NO_AUDIO_MSG)
+            raise AudioDataError
+
         self.audiofp.close()
         self.__reset()
 

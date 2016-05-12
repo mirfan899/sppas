@@ -12,7 +12,7 @@ from audiodata.audiovolume   import AudioVolume
 from paths import SPPASSAMPLES
 sample_1 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana1.wav")
 
-class TestChannelStats(unittest.TestCase):
+class TestVolume(unittest.TestCase):
 
     def test_rms(self):
         audio = audiodata.io.open(sample_1)
