@@ -59,12 +59,16 @@ class BaseVolume( object ):
 
         """
         self.volumes = []
-        self.rms = 0
-        self.winlen = 0.01
+        self.rms     = 0
+        self.winlen  = 0.01
 
     # -----------------------------------------------------------------------
 
     def get_winlen(self):
+        """
+        Return the windows length that was used to estimate the volume values.
+
+        """
         return self.winlen
 
     # -----------------------------------------------------------------------
@@ -79,13 +83,23 @@ class BaseVolume( object ):
 
     # -----------------------------------------------------------------------
 
+    def volume_at(self, index):
+        """
+        Return the value of the volume at a given index (rms).
+        @return (int)
+
+        """
+        return self.volumes[index]
+
+    # -----------------------------------------------------------------------
+
     def volumes(self):
         """
         Return the list of volume values (rms).
         @return (int)
 
         """
-        return self.rms
+        return self.volumes
 
     # -----------------------------------------------------------------------
 
@@ -179,3 +193,20 @@ class BaseVolume( object ):
         return variability.lzs(self.volumes)
 
     # -----------------------------------------------------------------------
+
+    def __len__(self):
+        return len(self.volumes)
+
+    # ------------------------------------------------------------------------------------
+
+    def __iter__(self):
+        for x in self.volumes:
+            yield x
+
+    # ------------------------------------------------------------------------------------
+
+    def __getitem__(self, i):
+        return self.volumes[i]
+
+    # ------------------------------------------------------------------------
+

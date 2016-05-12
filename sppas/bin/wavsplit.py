@@ -58,6 +58,7 @@ sys.path.append(SPPAS)
 
 from annotations.Wav.wavseg import sppasSeg
 import annotationdata.io
+from utils.fileutils           import setup_logging
 
 
 # ----------------------------------------------------------------------------
@@ -70,7 +71,7 @@ parser.add_argument("-w", metavar="file", required=True,  help='Input wav file n
 
 # Silence/Speech segmentation options:
 parser.add_argument("-r", "--winrms", type=float, help='Window size to estimate rms, in seconds (default: 0.010)')
-parser.add_argument("-m", "--minvol", type=float, help='Drop speech shorter than m seconds long (default: 0.300)')
+parser.add_argument("-m", "--minipu", type=float, help='Drop speech shorter than m seconds long (default: 0.300)')
 parser.add_argument("-s", "--minsil", type=float, help='Drop silences shorter than s seconds long (default: 0.200)')
 parser.add_argument("-v", "--minrms", type=int, default=0, help='Assume everything with a rms lower than v is a silence. (default: auto-adjust)')
 
@@ -80,7 +81,8 @@ parser.add_argument("-n", type=int, default=-1, help='Input transcription tier n
 parser.add_argument("-N", type=int, help='Adjust the volume cap until it splits into N tracks. (default = 0 = do not do that).')
 
 # Other options:
-parser.add_argument("-d", "--shift", type=float, help='Add this time value, in seconds, to each boundary (default: 0.020)')
+parser.add_argument("-d", "--shiftstart", type=float, help='Shift-left the start boundary of IPUs (default: 0.010)')
+parser.add_argument("-D", "--shiftend",   type=float, help='Shift-right the end boundary of IPUs (default: 0.020)')
 
 # Output options:
 parser.add_argument("-o", metavar="dir",  help='Output directory name (default: None)')
@@ -93,6 +95,7 @@ if len(sys.argv) <= 1:
 
 args = parser.parse_args()
 
+
 if args.t and args.N:
     print "You can NOT use both -t and -N options!\nUse option -h for any help."
     sys.exit(1)
@@ -102,20 +105,29 @@ if args.t and args.e and args.t.lower().endswith('.txt'):
     sys.exit(1)
 
 
+log_level = 1
+log_file  = None
+try:
+    setup_logging(log_level, log_file)
+except Exception:
+    pass
 
 # ----------------------------------------------------------------------------
 # Automatic IPUs segmentation is here:
 # ----------------------------------------------------------------------------
+
 
 if args.o and not os.path.exists(args.o):
     os.mkdir(args.o)
 
 w = sppasSeg()
 
-if args.shift:  w.set_shift( args.shift )
-if args.minvol: w.set_min_volume( args.minvol )
+if args.shiftstart:  w.set_shift_start( args.shiftstart )
+if args.shiftend:    w.set_shift_start( args.shiftend )
+
+if args.minipu: w.set_min_speech( args.minvol )
 if args.minsil: w.set_min_silence( args.minsil )
-if args.minrms: w.set_min_speech( args.minrms )
+if args.minrms: w.set_min_volume( args.minrms )
 if args.o: w.set_dirtracks( True )
 if args.p: w.set_save_as_trs( True )
 if args.e: w.set_save_as_trs( True )

@@ -175,7 +175,7 @@ for i,d in enumerate(distances):
         else:
             # It's the beginning of a block of zero distances
             idxbegin = i+1
-            indide = True
+            inside = True
     else:
         inside = True
 

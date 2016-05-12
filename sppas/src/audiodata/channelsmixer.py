@@ -39,21 +39,9 @@ import struct
 
 from audiodata.channel       import Channel
 from audiodata.channelframes import ChannelFrames
-from audiodata               import audioutils
 from audiodata.audiodataexc  import AudioDataError
 
-# ---------------------------------------------------------------------------
-
-def unpack_data( data, sampwidth ):
-    if sampwidth == 4 :
-        newdata = struct.unpack("<l", data)
-    elif sampwidth == 2 :
-        newdata = struct.unpack("<h", data)
-    else :
-        newdata = struct.unpack("B",  data)
-        newdata = [ s - 128 for s in data ]
-
-    return newdata
+import audiodata.audioutils as audioutils
 
 # ---------------------------------------------------------------------------
 
@@ -144,7 +132,7 @@ class ChannelsMixer( object ):
         sampsum = 0
         for factor,channel in zip(factors,channels):
             data = channel.frames[pos:pos+sampwidth]
-            data = unpack_data(data, sampwidth)
+            data = audioutils.unpack_data(data, sampwidth)
             # without a cast, sum is a float!
             sampsum += data[0]*factor*attenuator
 

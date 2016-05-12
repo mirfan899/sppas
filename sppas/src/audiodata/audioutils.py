@@ -38,6 +38,20 @@
 import struct
 import math
 
+
+# ---------------------------------------------------------------------------
+
+def unpack_data( data, sampwidth ):
+    if sampwidth == 4 :
+        newdata = struct.unpack("<l", data)
+    elif sampwidth == 2 :
+        newdata = struct.unpack("<h", data)
+    else :
+        newdata = struct.unpack("B",  data)
+        newdata = [ s - 128 for s in data ]
+
+    return newdata
+
 # ----------------------------------------------------------------------------
 
 def samples2frames(samples, sampwidth, nchannel=1):

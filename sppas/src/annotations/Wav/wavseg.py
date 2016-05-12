@@ -35,12 +35,6 @@
 # File: wavseg.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-# ----------------------------------------------------------------------------
-
 import os
 import codecs
 import logging
@@ -48,7 +42,7 @@ import logging
 import audiodata.io
 from audiodata.audiovolume import AudioVolume
 from audiodata.channel    import Channel
-from audiodata.channelsil import ChannelSil
+from audiodata.channelspeech import ChannelSpeech
 
 from presenters.audiosilencepresenter import AudioSilencePresenter
 
@@ -84,9 +78,7 @@ class sppasSeg:
         self.silence       = []
         self.restaure_default()
 
-    # End __init__
     # ------------------------------------------------------------------
-
 
     def restaure_default(self):
         """
@@ -96,21 +88,22 @@ class sppasSeg:
         self.min_length    = 0.300
         self.volume_cap    = 0
         self.shift_start   = 0.010
+        self.shift_end     = 0.020
+
+        self.bornestart = 0
+        self.borneend   = 0
+
         self.trsunits      = []
         self.trsnames      = []
-        self.audiospeech   = None
-        self.audiosil      = None
+        self.chansil       = None
         self.dirtracks     = False
+
         self.save_as_trs   = False
         self.addipuidx     = True  # Add IPU index in transcription tier (if any)
 
-    # End restaure_default
     # ------------------------------------------------------------------
-
-
-    # ##################################################################
     # Getters and Setters
-    # ##################################################################
+    # ------------------------------------------------------------------
 
     def set_min_volume(self,volume_cap):
         """ Fix the default minimum volume value (rms).
@@ -131,6 +124,17 @@ class sppasSeg:
         """ Fix the default minimum boundary shift value (in seconds).
         """
         self.shift_start = float(s)
+        self.shift_end   = float(s)
+
+    def set_shift_start(self,s):
+        """ Fix the default minimum boundary shift value (in seconds).
+        """
+        self.shift_start = float(s)
+
+    def set_shift_end(self,s):
+        """ Fix the default minimum boundary shift value (in seconds).
+        """
+        self.shift_end = float(s)
 
     def set_dirtracks(self, dirtracks):
         """ Fix the "dirtracks" option (boolean).
@@ -167,7 +171,6 @@ class sppasSeg:
     # End OPTIONS
     # ------------------------------------------------------------------
 
-
     def fix_options(self, options):
 
         for opt in options:
@@ -195,9 +198,7 @@ class sppasSeg:
             elif "add_ipu_idx" == opt.get_key():
                 self.set_add_ipu_idx_in_trs(opt.get_value())
 
-    # End fix_options
     # ------------------------------------------------------------------
-
 
     def get_trs(self):
         return self.trsunits
@@ -213,7 +214,7 @@ class sppasSeg:
             Return:      none
             Exception:   IOerror
         """
-        # 0 means that I do NOT know if there is a silence:
+        # 0 means that I doN'T know if there is a silence:
         # It does not mean that there IS NOT a silence.
         self.bornestart = 0
         self.borneend   = 0
@@ -236,62 +237,77 @@ class sppasSeg:
             if ann.GetLabel().IsSilence() is False:
                 self.trsunits.append( ann.GetLabel().GetValue() )
 
-
     # ------------------------------------------------------------------
 
+    def check_boundaries(self, tracks):
+        """
+        Check if silences at start and end are as expected.
 
-    def verifyborne(self):
-        """ Verify if silences at start and end are as expected.
+        @return bool
+
         """
         if self.bornestart == 0 and self.borneend == 0:
             # we do not know anything about silences at start and end
             # then, everything is ALWAYS OK!
             return True
-        units = list(self.audiosil.tracks( ))
-        first_from_pos = units[0][0]
-        last_to_pos = units[len(units)-1][1]
+
+        first_from_pos = tracks[0][0]
+        last_to_pos = tracks[len(tracks)-1][1]
+
         # If I expected a silence at start... and I found a track
         if self.bornestart != 0 and first_from_pos==0:
-            # Verify if get_silence found a silence at start
             return False
+
         # If I expected a silence at end... and I found a track
-        if self.borneend != 0 and last_to_pos==self.audiospeech.get_nframes():
+        if self.borneend != 0 and last_to_pos==self.chansil.get_channel().get_nframes():
             return False
+
         return True
 
     # ------------------------------------------------------------------
 
+    def search_tracks(self, volume):
+        """
+        Return the number of tracks if volume is used as threshold.
+        """
+        self.chansil.search_silences(volume, mintrackdur=0.08)
+        self.chansil.filter_silences(self.pause_seconds)
+        return self.chansil.extract_tracks(self.min_length, self.shift_start, self.shift_end)
+
+    # ------------------------------------------------------------------
 
     def split_into_vol(self, nbtracks):
-        """ Try various volume values to get silences.
-            Parameters:
-                - nbtracks is the expected number of speech units
         """
+        Try various volume values to estimate silences then get the expected number of tracks.
+
+        @param nbtracks is the expected number of IPUs
+
+        """
+        volstats = self.chansil.get_volstats()
         # Min volume in the speech
-        vmin = self.volstats.min()
+        vmin = volstats.min()
         # Max is set to the mean
-        vmax = self.volstats.mean()
+        vmax = volstats.mean()
         # Step is necessary to not exaggerate a detailed search!
         # step is set to 5% of the volume between min and mean.
-        # TODO: try with coefvariation....
         step = int( (vmax - vmin) / 20.0 )
         # Min and max are adjusted
         vmin += step
         vmax -= step
 
         # Save initial value (to restore it later)
-        __v = self.volume_cap
+        init_vol_cap = self.volume_cap
 
         # First Test !!!
         self.volume_cap = vmin
-        self.audiosil.get_silence( p=self.pause_seconds, v=self.volume_cap, s=self.shift_start )
-        n = len( list(self.audiosil.tracks( ) ) )
-        b = self.verifyborne()
+        tracks = self.search_tracks(vmin)
+        n = len(tracks)
+        b = self.check_boundaries(tracks)
 
         while (n != nbtracks or b is False):
             # We would never be done anyway.
             if (vmax==vmin) or (vmax-vmin) < step:
-                self.volume_cap = __v
+                self.volume_cap = init_vol_cap
                 return n
 
             # Try with the middle volume value
@@ -308,36 +324,31 @@ class sppasSeg:
 
             # Find silences with these parameters
             self.volume_cap = int(vmid)
-            self.audiosil.get_silence( p=self.pause_seconds, v=int(vmid), s=self.shift_start )
-            n = len( list(self.audiosil.tracks( )) )
-            b = self.verifyborne()
+            tracks = self.search_tracks(vmid)
+            n = len(tracks)
+            b = self.check_boundaries(tracks)
 
-        # End while: finished with success
-        if self.logfile:
-            self.logfile.print_message("Threshold volume value:     "+str(self.volume_cap),    indent=3)
-            self.logfile.print_message("Threshold silence duration: "+str(self.pause_seconds), indent=3)
-            self.logfile.print_message("Threshold speech duration:  "+str(self.min_length),    indent=3)
-
-        self.volume_cap = __v
+        self.volume_cap = init_vol_cap
         return 0
 
-    # End split_into_vol
     # ------------------------------------------------------------------
 
-
     def split_into(self, nbtracks):
-        """ Try various volume values, pause durations and silence duration to get silences.
-            Parameters:
-                - nbtracks is the expected number of silences
+        """
+        Try various volume values, pause durations and silence duration to get silences.
+
+        @param nbtracks is the expected number of silences
+
         """
         # Try with default parameters:
-        self.audiosil.get_silence( p=self.pause_seconds, v=self.volume_cap, s=self.shift_start)
-        n = len( list(self.audiosil.tracks( )) )
-        b = self.verifyborne()
+        tracks = self.search_tracks(self.volume_cap)
+        n = len(tracks)
+        b = self.check_boundaries(tracks)
+
         if n == nbtracks and b is True:
             return True
 
-        # Try with default min lengths (change only volume):
+        # Try with default lengths (change only volume):
         n = self.split_into_vol( nbtracks )
         if n == 0:
             return True
@@ -389,50 +400,54 @@ class sppasSeg:
 
         return False
 
-    # End split_into
     # ------------------------------------------------------------------
 
-
     def split(self, nbtracks=None):
-        """ Main split function.
-            Parameters:    none
+        """
+        Main split function: blind or controlled silence detection.
+
         """
         if nbtracks is not None:
             _nbtracks = nbtracks
         else:
             _nbtracks = len( self.trsunits )
 
-        if self.audiosil.channel.get_duration() <= max(self.min_length,self.pause_seconds):
+        if self.channel.get_duration() <= max(self.min_length,self.pause_seconds):
             if self.logfile:
                 self.logfile.print_message("Speech file is too short!",indent=3,status=1)
-            self.audiosil.set_silence(None)
+            else:
+                logging.info('Speech file is too short: %f'%self.channel.get_duration())
+            self.chansil.set_silences([])
             return
 
         # Blind or controlled silence detection
         if _nbtracks > 0:
             res = self.split_into( _nbtracks )
             if not res:
-                raise Exception("sppasSeg::waveseg.py. Silence detection failed.\nUnable to find "+str(_nbtracks)+" inter-pausal units.\n")
-        else:
-            self.audiosil.get_silence( p=self.pause_seconds, v=self.volume_cap, s=self.shift_start )
-            if self.logfile:
-                self.logfile.print_message("Threshold volume value:     "+str(self.volume_cap),    indent=3)
-                self.logfile.print_message("Threshold silence duration: "+str(self.pause_seconds), indent=3)
-                self.logfile.print_message("Threshold speech duration:  "+str(self.min_length),    indent=3)
+                raise Exception("Silence detection failed.\nUnable to find "+str(_nbtracks)+" inter-pausal units.\n")
 
-    # End split
+        else:
+            print "Simple track search...."
+            self.search_tracks( self.volume_cap )
+
+        if self.logfile:
+            self.logfile.print_message("Threshold volume value:     "+str(self.volume_cap),    indent=3)
+            self.logfile.print_message("Threshold silence duration: "+str(self.pause_seconds), indent=3)
+            self.logfile.print_message("Threshold speech duration:  "+str(self.min_length),    indent=3)
+        else:
+            logging.info("Threshold volume value:     "+str(self.volume_cap))
+            logging.info("Threshold silence duration: "+str(self.pause_seconds))
+            logging.info("Threshold speech duration:  "+str(self.min_length))
+
     # ------------------------------------------------------------------
 
-    # ##################################################################
-
-
     def get_from_transcription(self, inputfilename, tieridx=None):
-        """ Extract silences and transcription units from a transcription
-            (and the tier index). Also extract names if any.
-            Parameters:
-                - inputfilename is the input transcription file name
-            Return:      none
-            Exception:   IOerror
+        """
+        Extract silences and transcription units from a transcription.
+        Also extract track names if any.
+
+        @param inputfilename is the input transcription file name
+
         """
         try:
             trsinput  = annotationdata.io.read(inputfilename)
@@ -482,20 +497,20 @@ class sppasSeg:
 
             # Save information
             if __ann.GetLabel().IsSilence():
-                __start = int(__ann.GetLocation().GetBeginMidpoint() * self.audiospeech.get_framerate())
-                __end   = int(__ann.GetLocation().GetEndMidpoint()   * self.audiospeech.get_framerate())
+                __start = int(__ann.GetLocation().GetBeginMidpoint() * self.channel.get_framerate())
+                __end   = int(__ann.GetLocation().GetEndMidpoint()   * self.channel.get_framerate())
                 # Verify next annotations (concatenate all silences between 2 tracks)
                 if (i + 1) < last:
                     __nextann = trstier[i + 1]
                     while (i + 1) < last and __nextann.GetLabel().IsSilence():
-                        __end   = int(__nextann.GetLocation().GetEndMidpoint() * self.audiospeech.get_framerate())
+                        __end   = int(__nextann.GetLocation().GetEndMidpoint() * self.channel.get_framerate())
                         i = i + 1
                         if (i + 1) < last:
                             __nextann = trstier[i + 1]
                 self.silence.append([__start,__end])
             else:
-                __start = int(__ann.GetLocation().GetBeginMidpoint() * self.audiospeech.get_framerate())
-                __end   = int(__ann.GetLocation().GetEndMidpoint()   * self.audiospeech.get_framerate())
+                __start = int(__ann.GetLocation().GetBeginMidpoint() * self.channel.get_framerate())
+                __end   = int(__ann.GetLocation().GetEndMidpoint()   * self.channel.get_framerate())
                 trstracks.append([__start,__end])
                 self.trsunits.append( __label )
 
@@ -515,35 +530,33 @@ class sppasSeg:
 
         return trstracks
 
-    # End split_from_transcription
     # ------------------------------------------------------------------
 
 
-    # ##################################################################
+    # ------------------------------------------------------------------
     # Outputs
-    # ##################################################################
+    # ------------------------------------------------------------------
 
-    def write_list(self,filename,trstracks):
+    def write_list(self, filename, trstracks):
         encoding='utf-8'
         with codecs.open(filename ,'w', encoding) as fp:
             idx = 0
             for from_pos, to_pos in trstracks:
                 # Print informations on stdout
-                fp.write( "%.4f %.4f " %( float(from_pos)/float(self.audiospeech.get_framerate()) , float(to_pos)/float(self.audiospeech.get_framerate()) ))
+                fp.write( "%.4f %.4f " %( float(from_pos)/float(self.channel.get_framerate()) , float(to_pos)/float(self.channel.get_framerate()) ))
                 if len(self.trsnames)>0 and idx < len(self.trsnames):
                     ustr = self.trsnames[idx].encode('utf8')
                     fp.write( ustr.decode(encoding)+"\n" )
                 else:
                     fp.write( "\n" )
                 idx = idx+1
-            # Finally, print wav duration
-            fp.write( "%.4f\n" %(float(self.audiospeech.get_nframes())/float(self.audiospeech.get_framerate())) )
 
-    # End write_list
+            # Finally, print wav duration
+            fp.write( "%.4f\n" %(float(self.channel.get_nframes())/float(self.channel.get_framerate())) )
+
     # ------------------------------------------------------------------
 
-
-    def write_textgrid(self,filename,trstracks,inputaudioname=None):
+    def write_transcription(self, filename, trstracks, inputaudioname=None):
         if trstracks is None:
             raise Exception('No tracks found to be written.\n')
 
@@ -551,7 +564,7 @@ class sppasSeg:
         trs = Transcription("IPU-Segmentation")
         tieripu = trs.NewTier("IPU")
         tier    = trs.NewTier("Transcription")
-        radius  = 1.0 / self.audiospeech.get_framerate()
+        radius  = 1.0 / self.channel.get_framerate()
 
         try:
             i = 0
@@ -562,15 +575,15 @@ class sppasSeg:
                         raise Exception('Bad number of tracks to write\n')
                 # From the previous track to the current track: silence
                 if to_pos_prec < from_pos:
-                    begin = float(to_pos_prec)/float(self.audiospeech.get_framerate())
-                    end   = float(from_pos)/float(self.audiospeech.get_framerate())
+                    begin = float(to_pos_prec)/float(self.channel.get_framerate())
+                    end   = float(from_pos)/float(self.channel.get_framerate())
                     a     = Annotation(TimeInterval(TimePoint(begin,radius), TimePoint(end,radius)), Label("#"))
                     tieripu.Append(a)
                     tier.Append(a.Copy())
 
                 # New track with speech
-                begin = float(from_pos)/float(self.audiospeech.get_framerate())
-                end   = float(to_pos)/float(self.audiospeech.get_framerate())
+                begin = float(from_pos)/float(self.channel.get_framerate())
+                end   = float(to_pos)/float(self.channel.get_framerate())
                 # ... IPU tier
                 label = "ipu_%d"%(i+1)
                 a  = Annotation(TimeInterval(TimePoint(begin,radius), TimePoint(end,radius)), Label(label))
@@ -588,10 +601,10 @@ class sppasSeg:
                 to_pos_prec = to_pos
 
             # The end is a silence?
-            end_pos = float( self.audiospeech.get_nframes() )
+            end_pos = float( self.channel.get_nframes() )
             if to_pos_prec < end_pos:
-                begin = TimePoint(float(to_pos_prec)/float(self.audiospeech.get_framerate()),radius)
-                end   = TimePoint(float(end_pos)/float(self.audiospeech.get_framerate()),radius)
+                begin = TimePoint(float(to_pos_prec)/float(self.channel.get_framerate()),radius)
+                end   = TimePoint(float(end_pos)/float(self.channel.get_framerate()),radius)
                 if begin < end:
                     a  = Annotation(TimeInterval(begin, end), Label("#"))
                     tieripu.Append(a)
@@ -620,15 +633,16 @@ class sppasSeg:
         except Exception as e:
             raise Exception('Error while saving the transcription output.\n'+str(e)+'\n')
 
-    # End write_textgrid
     # ------------------------------------------------------------------
 
 
     def create_trsunits(self, trstracks):
         """
         Create a list of transcription units from tracks.
+
         @param trstracks
         @return list of Transcription objects
+
         """
         if trstracks is None:
             raise Exception("No tracks found.\n")
@@ -642,11 +656,11 @@ class sppasSeg:
             from_pos = track[0]
             to_pos   = track[1]
             if self.trsunits and i > trsunits_size:
-                raise Exception("Error: bad number of tracks.\n")
+                raise Exception("Bad number of tracks.\n")
 
             # Create a new Transcription with speech
-            start = float(from_pos) / float(self.audiospeech.get_framerate())
-            end   = float(to_pos) / float(self.audiospeech.get_framerate())
+            start = float(from_pos) / float(self.channel.get_framerate())
+            end   = float(to_pos) / float(self.channel.get_framerate())
             a = Annotation(TimeInterval(TimePoint(start,0.001), TimePoint(end,0.001)))
             new_trs = Transcription(self.trsinput.GetName())
 
@@ -666,13 +680,12 @@ class sppasSeg:
 
         return trs_list
 
-    # End create_trsunits
     # ------------------------------------------------------------------
-
 
     def run(self, audiofile, trsinputfile=None, trstieridx=None, ntracks=None, diroutput=None, tracksext=None, listoutput=None, textgridoutput=None):
         """
-        Perform an IPU segmentation from a wav file.
+        Perform an IPU segmentation from an audio file.
+
             - audiofile is the sound input file name
             - trsinputfile is a transcription (or 'None')
             - ntracks expected number of tracks
@@ -680,33 +693,24 @@ class sppasSeg:
             - tracksext is the track extension (used with the diroutput option)
             - listoutput is a file name  to save the IPU segmentation result (this file contains the begin time and end time of each unit, and the wav duration)
             - textgridoutput is a file name to save the IPU segmentation result.
+
         """
         fileName, fileExtension = os.path.splitext( audiofile )
         # Set input
         if fileExtension.lower() in audiodata.io.extensions:
-            try:
-                self.audiospeech = audiodata.io.open( audiofile )
-                #TODO: audiospeech should be replaced by the 1st Channel
-                self.volstats    = AudioVolume( self.audiospeech )
-            except Exception as e:
-                raise Exception('Input error.\n'+str(e)+'\n')
-            # Auto-adjust volume
-            if self.volume_cap == 0:
-                minv  = self.volstats.min()
-                meanv = self.volstats.max()
-                step  = int( (meanv - minv) / 5.0 )
-                self.volume_cap = minv + step
+
+            audiospeech = audiodata.io.open( audiofile )
+            idx = audiospeech.extract_channel()
+            self.channel = audiospeech.get_channel(idx)
+            self.chansil = ChannelSpeech( self.channel )
+
         else:
-            raise Exception('Input error: unrecognized file format\n')
+            raise Exception('Input error: unrecognized file format %s\n'%fileExtension)
 
         self.bornestart = 0
         self.borneend   = 0
-        idx = self.audiospeech.extract_channel(0)
-        channel = self.audiospeech.get_channel(idx)
-        self.audiosil = ChannelSil( channel , self.min_length )
 
-        # Silence detection is here:
-        # ###########################
+
         # Fix transcription units if a transcription is given
         trstracks = None
         sil = True
@@ -716,30 +720,24 @@ class sppasSeg:
             if trsinputfile.lower().endswith("txt"):
                 self.set_trs( trsinputfile )
             else:
-                try:
-                    # Get tracks and silences from an annotated file
-                    trstracks = self.get_from_transcription( trsinputfile, trstieridx )
-                    self.audiosil.set_silence( self.silence )
-                    # Do not find silences automatically!
-                    sil = False
-                except Exception as e:
-                    raise Exception('Input transcription error. '+str(e)+'\n')
+                # Get tracks and silences from an annotated file
+                trstracks = self.get_from_transcription( trsinputfile, trstieridx )
+                self.chansil.set_silences( self.silence )
+                # Do not find silences automatically!
+                sil = False
 
         if sil is True:
-            #try:
+            # Find automatically silences
             self.split( ntracks )
-            #except Exception as e:
-            #    raise Exception('Error while executing Split.\n'+str(e)+'\n')
-
-        # save output
-        # ###############################################################
 
         if trstracks is None:
-            trstracks = self.audiosil.tracks()
+            trstracks = self.chansil.extract_tracks( self.min_length )
+
+        # save output
 
         # Write silences/units into a transcription file
         if textgridoutput is not None:
-            self.write_textgrid(textgridoutput,trstracks,audiofile)
+            self.write_transcription(textgridoutput,trstracks,audiofile)
 
         # Write speech into track files with a given file extension
         if diroutput is not None or self.dirtracks is True:
@@ -760,10 +758,10 @@ class sppasSeg:
 
             if "."+tracksext.strip().lower() in annotationdata.io.extensions and tracksext != "txt":
                 trs = self.create_trsunits(trstracks)
-                audiosilpres = AudioSilencePresenter(self.audiosil)
+                audiosilpres = AudioSilencePresenter(self.chansil)
                 audiosilpres.write_tracks(trstracks, diroutput, ext=tracksext, trsunits=trs, trsnames=self.trsnames, logfile=self.logfile)
             else:
-                audiosilpres = AudioSilencePresenter(self.audiosil)
+                audiosilpres = AudioSilencePresenter(self.chansil)
                 audiosilpres.write_tracks(trstracks, diroutput, ext=tracksext, trsunits=self.trsunits, trsnames=self.trsnames, logfile=self.logfile)
 
         # Write silences boundaries (in seconds) into a file
