@@ -43,7 +43,7 @@ from sp_glob import encoding
 
 import audiodata
 from audiodata.channel    import Channel
-from audiodata.channelsil import ChannelSil
+from audiodata.channelsilence import ChannelSilence
 
 from resources.mapping  import Mapping
 
@@ -161,10 +161,11 @@ class SpeechSegmenter:
 
         """
         audiospeech = audiodata.io.open( inputaudio )
-        idx = audiospeech.extract_channel(0)
-        channel = audiospeech.get_channel(idx)
-        framerate = channel.get_framerate()
-        duration  = float(channel.get_nframes())/float(framerate)
+        idx         = audiospeech.extract_channel()
+        channel     = audiospeech.get_channel(idx)
+        chansil     = ChannelSilence( channel )
+        framerate   = channel.get_framerate()
+        duration    = float(channel.get_nframes())/float(framerate)
 
         trstracks = []
         silence   = []
@@ -173,34 +174,32 @@ class SpeechSegmenter:
         last = trstier.GetSize()
         while i < last:
             # Set the current annotation values
-            __ann = trstier[i]
+            __ann   = trstier[i]
             __label = __ann.GetLabel().GetValue()
             # Save information
             if __ann.GetLabel().IsSilence():
-                __start = int(__ann.GetLocation().GetBeginMidpoint() * framerate)
-                __end   = int(__ann.GetLocation().GetEndMidpoint()   * framerate)
+                __start = int(__ann.GetLocation().GetBegin().GetMidpoint() * framerate)
+                __end   = int(__ann.GetLocation().GetEnd().GetMidpoint()   * framerate)
                 # Verify next annotations (concatenate all silences between 2 tracks)
                 if (i + 1) < last:
                     __nextann = trstier[i + 1]
                     while (i + 1) < last and __nextann.GetLabel().IsSilence():
-                        __end   = int(__nextann.GetLocation().GetEndMidpoint() * framerate)
+                        __end = int(__nextann.GetLocation().GetEnd().GetMidpoint() * framerate)
                         i = i + 1
                         if (i + 1) < last:
-                            __nextann = trstier[i + 1]
-                silence.append([__start,__end])
+                            __nextann = trstier[i+1]
+                silence.append((__start,__end))
             else:
                 __start = int(__ann.GetLocation().GetBeginMidpoint() * framerate)
                 __end   = int(__ann.GetLocation().GetEndMidpoint()   * framerate)
-                trstracks.append([__start,__end])
+                trstracks.append((__start,__end))
                 trsunits.append( __label )
 
-            # Continue
-            i = i + 1
+            i = i+1
         # end while
 
-        chansil = ChannelSil( channel , 0.3 )
-        chansil.set_silence( silence )
-        audiosilpres = AudioSilencePresenter(chansil, None)
+        chansil.set_silences( silence )
+        audiosilpres = AudioSilencePresenter(chansil)
         audiosilpres.write_tracks(trstracks, diralign, ext=extension, trsunits=trsunits, trsnames=[])
 
         if listfile is not None:

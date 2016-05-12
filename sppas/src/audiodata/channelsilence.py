@@ -40,7 +40,7 @@ from channelvolume import ChannelVolume
 
 # ----------------------------------------------------------------------------
 
-class ChannelSpeech( object ):
+class ChannelSilence( object ):
     """
     @authors:      Nicolas Chazeau, Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -58,9 +58,9 @@ class ChannelSpeech( object ):
         @param m (float) is the minimum track duration (in seconds)
 
         """
-        self.channel   = channel
-        self.volstats  = ChannelVolume( channel, 0.01 )
-        self.silences  = []
+        self.channel    = channel
+        self.volstats   = ChannelVolume( channel, 0.01 )
+        self.__silences = []
 
     # ------------------------------------------------------------------
 
@@ -181,8 +181,6 @@ class ChannelSpeech( object ):
             yield self.channel.get_frames(to_pos - from_pos)
 
     # ------------------------------------------------------------------
-    # New silence detection
-    # ------------------------------------------------------------------
 
     def extract_tracks(self, mintrackdur, shiftdurstart=0.010, shiftdurend=0.010):
         """
@@ -198,13 +196,13 @@ class ChannelSpeech( object ):
         shiftend   = int(shiftdurend   * self.channel.get_framerate())
 
         from_pos = 0
-        if len(self.silences)==0:
+        if len(self.__silences)==0:
         # No silence: Only one track!
             tracks.append( (0,self.channel.get_nframes()) )
             return tracks
 
         # At least one silence
-        for to_pos, next_from in self.silences:
+        for to_pos, next_from in self.__silences:
             shift_from_pos = max(from_pos - shiftstart, 0)
             shift_to_pos   = min(to_pos + shiftend, self.channel.get_nframes())
 
@@ -223,10 +221,15 @@ class ChannelSpeech( object ):
         return tracks
 
     # ------------------------------------------------------------------
+    # New silence detection
+    # ------------------------------------------------------------------
 
     def search_threshold_vol(self):
         """
         Try to fix optimally the threshold for speech/silence segmentation.
+        This is a simple observation of the distribution of rms values.
+
+        @return (int) volume value
 
         """
         vmin  = self.volstats.min()
@@ -254,7 +257,7 @@ class ChannelSpeech( object ):
 
         # This scans the volumes whether it is lower than silence_cap,
         # if it is it is written to silence.
-        self.silences = []
+        self.__silences = []
         inside = False
         idxbegin = 0
         ignored = 0
@@ -275,7 +278,7 @@ class ChannelSpeech( object ):
                         idxend = i-ignored-1
                         start_pos = int(idxbegin * self.volstats.get_winlen() * self.channel.get_framerate())
                         end_pos   = int(idxend * self.volstats.get_winlen() * self.channel.get_framerate())
-                        self.silences.append((start_pos,end_pos))
+                        self.__silences.append((start_pos,end_pos))
                         ignored = 0
                     else:
                         ignored += 1
@@ -284,7 +287,7 @@ class ChannelSpeech( object ):
         if inside is True:
             start_pos = int(idxbegin * self.volstats.get_winlen() * self.channel.get_framerate())
             end_pos   = self.channel.get_nframes()
-            self.silences.append((start_pos,end_pos))
+            self.__silences.append((start_pos,end_pos))
 
         return threshold
 
@@ -301,20 +304,21 @@ class ChannelSpeech( object ):
         @return a list of tuples (start_pos,end_pos) of silences.
 
         """
-        if len(self.silences) == 0:
+        if len(self.__silences) == 0:
             return
 
         filteredsil = []
-        for (start_pos,end_pos) in self.silences:
+        for (start_pos,end_pos) in self.__silences:
             sildur = float(end_pos-start_pos) / float(self.channel.get_framerate())
             if sildur > minsildur:
                 filteredsil.append( (start_pos,end_pos) )
 
-        self.silences = filteredsil
+        self.__silences = filteredsil
 
-        for (s,e) in self.silences:
-            print " (",float(s)/float(self.channel.get_framerate())," ; ",float(e)/float(self.channel.get_framerate()),")"
-        print "Number of silences: ",len(self.silences)
+#         print "Number of silences: ",len(self.__silences)
+#         print "Silences: "
+#         for (s,e) in self.__silences:
+#             print " (",float(s)/float(self.channel.get_framerate())," ; ",float(e)/float(self.channel.get_framerate()),")"
 
     # ------------------------------------------------------------------
 
@@ -322,9 +326,36 @@ class ChannelSpeech( object ):
         """
         Fix manually silences!
 
-        @param silences (list of tuples)
+        @param silences (list of tuples (start_pos,end_pos))
 
         """
-        self.silences = silences
+        self.__silences = silences
 
-# ----------------------------------------------------------------------
+    # ------------------------------------------------------------------
+
+    def reset_silences(self):
+        """
+        Reset silences.
+
+        """
+        self.__silences = []
+
+    # -----------------------------------------------------------------------
+    #
+    # -----------------------------------------------------------------------
+
+    def __len__(self):
+        return len(self.__silences)
+
+    # ------------------------------------------------------------------------------------
+
+    def __iter__(self):
+        for x in self.__silences:
+            yield x
+
+    # ------------------------------------------------------------------------------------
+
+    def __getitem__(self, i):
+        return self.__silences[i]
+
+    # ------------------------------------------------------------------------

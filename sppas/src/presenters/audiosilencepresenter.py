@@ -53,7 +53,7 @@ import codecs
 
 # ----------------------------------------------------------------------------
 
-class AudioSilencePresenter:
+class AudioSilencePresenter( object ):
     """
     @authors: Nicolas Chazeau, Brigitte Bigi
     @contact: n.chazeau94@gmail.com, brigitte.bigi@gmail.com
@@ -61,13 +61,12 @@ class AudioSilencePresenter:
     @summary: An audio presenter class to export silence.
 
     """
-    def __init__(self, channelsil, logfile=None):
+    def __init__(self, channelsil):
         """
         Create a AudioSilencePresenter.
 
         """
         self.channelsil = channelsil
-        self.logfile = logfile
 
 
     def __write_track(self, tracktxtname, trackcontent):
@@ -76,7 +75,7 @@ class AudioSilencePresenter:
             fp.write(trackcontent)
 
 
-    def write_tracks(self, trstracks, output, ext="txt", trsunits=[], trsnames=[], logfile=None):
+    def write_tracks(self, trstracks, output, ext="txt", trsunits=[], trsnames=[]):
         """
         Write tracks in an output directory.
 
@@ -90,7 +89,6 @@ class AudioSilencePresenter:
         @param logfile     Log file (sppasLog)
 
         """
-        wavtraks = True
         if not os.path.exists( output ):
             os.mkdir( output )
 
@@ -111,21 +109,16 @@ class AudioSilencePresenter:
                         annotationdata.io.write(tracktxtname, trsunits[i])
                     else:
                         self.__write_track(tracktxtname, trsunits[i])
-                elif logfile is not None:
-                    logfile.print_message( "Writing track "+tracktxtname,indent=3,status=-1 )
-                else:
-                    print ( " ... ... ... Writing track "+tracktxtname+": [ERROR]" )
 
-        # Write wav tracks
+        # Write audio tracks
 
-        if self.channelsil.channel is None:
-            return False
+        if self.channelsil.get_channel() is None:
+            return
 
         try:
             split_tracks = self.channelsil.track_data( trstracks )
-        except Exception:
-            logfile.print_message('split tracks failed: wav corrupted',indent=2,status=-1)
-            return False
+        except Exception as e:
+            raise Exception('Split into tracks failed: audio corrupted: %s'%e)
 
         for i, split_track in enumerate(split_tracks):
             trackbasename = ""
@@ -135,19 +128,13 @@ class AudioSilencePresenter:
             else:
                 trackbasename = os.path.join(output, "track_%.06d" % (i+1))
             if len(trackbasename)>0:
-                # Write the wav track content
+                # Write the audio track content
                 trackwavname = trackbasename+".wav"
                 audio_out = AudioPCM()
-                audio_out.append_channel(self.channelsil.channel)
+                audio_out.append_channel(self.channelsil.get_channel())
                 try:
                     audiodata.io.save_fragment(trackwavname, audio_out, split_track)
                 except Exception as e:
-                    if logfile:
-                        logfile.print_message('Writing track %s failed with error: %s'%(trackwavname,str(e)), status=-1)
-                    else:
-                        print 'Writing track %s failed with error: %s'%(trackwavname,str(e))
-                    wavtraks = False
-
-        return wavtraks
+                    raise Exception("Split into tracks failed: can't write tracks: %s. %s"%(trackwavname,e))
 
 # ----------------------------------------------------------------------------

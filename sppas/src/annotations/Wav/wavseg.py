@@ -40,9 +40,9 @@ import codecs
 import logging
 
 import audiodata.io
-from audiodata.audiovolume import AudioVolume
-from audiodata.channel    import Channel
-from audiodata.channelspeech import ChannelSpeech
+from audiodata.audiovolume    import AudioVolume
+from audiodata.channel        import Channel
+from audiodata.channelsilence import ChannelSilence
 
 from presenters.audiosilencepresenter import AudioSilencePresenter
 
@@ -59,13 +59,13 @@ from annotationdata.annotation      import Annotation
 
 from utils.fileutils import format_filename
 
-# ######################################################################### #
+# ----------------------------------------------------------------------------
 
 class sppasSeg:
     """
     This class implements the IPUs segmentation.
-    """
 
+    """
     def __init__(self, logfile=None):
         """
         Create a sppasSeg instance.
@@ -106,65 +106,87 @@ class sppasSeg:
     # ------------------------------------------------------------------
 
     def set_min_volume(self,volume_cap):
-        """ Fix the default minimum volume value (rms).
+        """
+        Fix the default minimum volume value (rms).
+
         """
         self.volume_cap = int(volume_cap)
 
     def set_min_silence(self,pause_seconds):
-        """ Fix the default minimum speech duration (in seconds).
+        """
+        Fix the default minimum speech duration (in seconds).
+
         """
         self.pause_seconds = float(pause_seconds)
 
     def set_min_speech(self,min_length):
-        """ Fix the default minimum silence duration (in seconds).
+        """
+        Fix the default minimum silence duration (in seconds).
+
         """
         self.min_length = float(min_length)
 
     def set_shift(self,s):
-        """ Fix the default minimum boundary shift value (in seconds).
+        """
+        Fix the default minimum boundary shift value (in seconds).
+
         """
         self.shift_start = float(s)
         self.shift_end   = float(s)
 
     def set_shift_start(self,s):
-        """ Fix the default minimum boundary shift value (in seconds).
+        """
+        Fix the default minimum boundary shift value (in seconds).
+
         """
         self.shift_start = float(s)
 
     def set_shift_end(self,s):
-        """ Fix the default minimum boundary shift value (in seconds).
+        """
+        Fix the default minimum boundary shift value (in seconds).
+
         """
         self.shift_end = float(s)
 
     def set_dirtracks(self, dirtracks):
-        """ Fix the "dirtracks" option (boolean).
+        """
+        Fix the "dirtracks" option (boolean).
+
         """
         self.dirtracks = dirtracks
 
     def get_dirtracks(self):
-        """ Get the "dirtracks" option (boolean).
+        """
+        Get the "dirtracks" option (boolean).
+
         """
         return self.dirtracks
 
     def set_save_as_trs(self, output):
-        """ Fix the "save as transcription" option (boolean).
+        """
+        Fix the "save as transcription" option (boolean).
+
         """
         self.save_as_trs = output
 
     def get_save_as_trs(self):
         """
         Get the "save as textgrid" option (boolean).
+
         """
         return self.save_as_trs
 
     def set_add_ipu_idx_in_trs(self, value):
-        """ Fix the "add IPU index in the transcription output" option (boolean).
+        """
+        Fix the "add IPU index in the transcription output" option (boolean).
+
         """
         self.addipuidx = value
 
     def get_add_ipu_idx_in_trs(self):
         """
         Get the "add IPU index in the transcription output" option (boolean).
+
         """
         return self.addipuidx
 
@@ -175,8 +197,14 @@ class sppasSeg:
 
         for opt in options:
 
-            if "shift_start" == opt.get_key():
+            if "shift" == opt.get_key():
                 self.set_shift( opt.get_value() )
+
+            elif "shift_start" == opt.get_key():
+                self.set_shift_start( opt.get_value() )
+
+            elif "shift_end" == opt.get_key():
+                self.set_shift_end( opt.get_value() )
 
             elif "min_speech" == opt.get_key():
                 self.set_min_speech( opt.get_value() )
@@ -205,14 +233,14 @@ class sppasSeg:
 
 
     def set_trs(self, filename):
-        """ Extract inter pausal units of the transcription.
-            Input is a text file as:
+        """
+        Extract inter pausal units of the transcription.
+        Input is a text file as:
                 - Each line is supposed to be at least one unit.
                 - Each '#' symbol is considered as a unit boundary.
-            Parameters:
-                - filename (string): contains the transcription
-            Return:      none
-            Exception:   IOerror
+
+        @param filename (string): contains the transcription
+
         """
         # 0 means that I doN'T know if there is a silence:
         # It does not mean that there IS NOT a silence.
@@ -417,7 +445,7 @@ class sppasSeg:
                 self.logfile.print_message("Speech file is too short!",indent=3,status=1)
             else:
                 logging.info('Speech file is too short: %f'%self.channel.get_duration())
-            self.chansil.set_silences([])
+            self.chansil.reset_silences()
             return
 
         # Blind or controlled silence detection
@@ -427,7 +455,6 @@ class sppasSeg:
                 raise Exception("Silence detection failed.\nUnable to find "+str(_nbtracks)+" inter-pausal units.\n")
 
         else:
-            print "Simple track search...."
             self.search_tracks( self.volume_cap )
 
         if self.logfile:
@@ -635,7 +662,6 @@ class sppasSeg:
 
     # ------------------------------------------------------------------
 
-
     def create_trsunits(self, trstracks):
         """
         Create a list of transcription units from tracks.
@@ -695,14 +721,16 @@ class sppasSeg:
             - textgridoutput is a file name to save the IPU segmentation result.
 
         """
-        fileName, fileExtension = os.path.splitext( audiofile )
+
         # Set input
+
+        fileName, fileExtension = os.path.splitext( audiofile )
         if fileExtension.lower() in audiodata.io.extensions:
 
             audiospeech = audiodata.io.open( audiofile )
             idx = audiospeech.extract_channel()
             self.channel = audiospeech.get_channel(idx)
-            self.chansil = ChannelSpeech( self.channel )
+            self.chansil = ChannelSilence( self.channel )
 
         else:
             raise Exception('Input error: unrecognized file format %s\n'%fileExtension)
@@ -710,8 +738,8 @@ class sppasSeg:
         self.bornestart = 0
         self.borneend   = 0
 
-
         # Fix transcription units if a transcription is given
+
         trstracks = None
         sil = True
 
@@ -729,9 +757,11 @@ class sppasSeg:
         if sil is True:
             # Find automatically silences
             self.split( ntracks )
+            trstracks = self.chansil.extract_tracks( self.min_length, self.shift_start, self.shift_end)
 
         if trstracks is None:
-            trstracks = self.chansil.extract_tracks( self.min_length )
+            trstracks = self.chansil.extract_tracks( self.min_length, 0., 0.)
+
 
         # save output
 
@@ -759,16 +789,17 @@ class sppasSeg:
             if "."+tracksext.strip().lower() in annotationdata.io.extensions and tracksext != "txt":
                 trs = self.create_trsunits(trstracks)
                 audiosilpres = AudioSilencePresenter(self.chansil)
-                audiosilpres.write_tracks(trstracks, diroutput, ext=tracksext, trsunits=trs, trsnames=self.trsnames, logfile=self.logfile)
+                audiosilpres.write_tracks(trstracks, diroutput, ext=tracksext, trsunits=trs, trsnames=self.trsnames)
             else:
                 audiosilpres = AudioSilencePresenter(self.chansil)
-                audiosilpres.write_tracks(trstracks, diroutput, ext=tracksext, trsunits=self.trsunits, trsnames=self.trsnames, logfile=self.logfile)
+                audiosilpres.write_tracks(trstracks, diroutput, ext=tracksext, trsunits=self.trsunits, trsnames=self.trsnames)
 
         # Write silences boundaries (in seconds) into a file
         if (listoutput):
             self.write_list(listoutput,trstracks)
 
-    # ##################################################################### #
+
+        # finish properly
 
         self.restaure_default()
         if trstracks is None:
@@ -780,5 +811,4 @@ class sppasSeg:
                 nbtracks = 0
         return (self.silence,nbtracks)
 
-    # End run
     # ------------------------------------------------------------------

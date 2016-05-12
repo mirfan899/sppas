@@ -125,7 +125,7 @@ w = sppasSeg()
 if args.shiftstart:  w.set_shift_start( args.shiftstart )
 if args.shiftend:    w.set_shift_start( args.shiftend )
 
-if args.minipu: w.set_min_speech( args.minvol )
+if args.minipu: w.set_min_speech( args.minipu )
 if args.minsil: w.set_min_silence( args.minsil )
 if args.minrms: w.set_min_volume( args.minrms )
 if args.o: w.set_dirtracks( True )
