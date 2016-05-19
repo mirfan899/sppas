@@ -43,7 +43,7 @@ import calculus.stats.moment       as moment
 
 class BaseVolume( object ):
     """
-    @authors:      Brigitte Bigi
+    @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
@@ -67,6 +67,7 @@ class BaseVolume( object ):
     def get_winlen(self):
         """
         Return the windows length that was used to estimate the volume values.
+        @return (float) Duration in seconds.
 
         """
         return self.winlen
@@ -197,16 +198,16 @@ class BaseVolume( object ):
     def __len__(self):
         return len(self.volumes)
 
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __iter__(self):
         for x in self.volumes:
             yield x
 
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __getitem__(self, i):
         return self.volumes[i]
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 

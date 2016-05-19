@@ -42,7 +42,7 @@ from basevolume  import BaseVolume
 
 class AudioVolume( BaseVolume ) :
     """
-    @authors:      Brigitte Bigi
+    @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3

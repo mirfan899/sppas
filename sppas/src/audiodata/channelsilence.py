@@ -32,7 +32,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: channelsil.py
+# File: channelsilence.py
 # ----------------------------------------------------------------------------
 
 from audioframes import AudioFrames
@@ -42,7 +42,7 @@ from channelvolume import ChannelVolume
 
 class ChannelSilence( object ):
     """
-    @authors:      Nicolas Chazeau, Brigitte Bigi
+    @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
@@ -55,7 +55,6 @@ class ChannelSilence( object ):
         Constructor.
 
         @param channel (Channel) the input channel object
-        @param m (float) is the minimum track duration (in seconds)
 
         """
         self.channel    = channel
@@ -71,7 +70,7 @@ class ChannelSilence( object ):
         return self.volstats
 
     # ------------------------------------------------------------------
-    # DEPRECATED Silence detection
+    # DEPRECATED Silence detection. Used until sppas-1.7.8.
     # ------------------------------------------------------------------
 
     def tracks(self, m):
@@ -166,6 +165,8 @@ class ChannelSilence( object ):
         """
         Get the track data: a set of frames for each track.
 
+        @param tracks (list of tuples) List of (from_pos,to_pos)
+
         """
         nframes = self.channel.get_nframes()
         for from_pos, to_pos in tracks:
@@ -184,24 +185,26 @@ class ChannelSilence( object ):
 
     def extract_tracks(self, mintrackdur, shiftdurstart=0.010, shiftdurend=0.010):
         """
-        Return a list of tuples (from,to) of the tracks.
+        Return a list of tuples (from_pos,to_pos) of the tracks.
 
         @param mintrackdur (float) The minimum duration for a track (in seconds)
+        @param shiftdurstart (float) The time to remove to the start boundary (in seconds)
+        @param shiftdurend (float) The time to add to the end boundary (in seconds)
 
         """
         tracks = []
-        delta = int(mintrackdur * self.channel.get_framerate())
 
-        shiftstart = int(shiftdurstart * self.channel.get_framerate())
-        shiftend   = int(shiftdurend   * self.channel.get_framerate())
-
-        from_pos = 0
-        if len(self.__silences)==0:
         # No silence: Only one track!
+        if len(self.__silences)==0:
             tracks.append( (0,self.channel.get_nframes()) )
             return tracks
 
-        # At least one silence
+        # Convert values: time into frame
+        delta      = int(mintrackdur   * self.channel.get_framerate())
+        shiftstart = int(shiftdurstart * self.channel.get_framerate())
+        shiftend   = int(shiftdurend   * self.channel.get_framerate())
+        from_pos = 0
+
         for to_pos, next_from in self.__silences:
             shift_from_pos = max(from_pos - shiftstart, 0)
             shift_to_pos   = min(to_pos + shiftend, self.channel.get_nframes())
@@ -249,18 +252,19 @@ class ChannelSilence( object ):
 
         @param threshold (int) Expected minimum volume (rms value)
         If threshold is set to 0, search_minvol() will assign a value.
-        @param mintrackdur (float) The minimum duration for a track (in seconds)
+        @param mintrackdur (float) The very very minimum duration for
+        a track (in seconds).
 
         """
         if threshold == 0:
             threshold = self.search_threshold_vol()
 
-        # This scans the volumes whether it is lower than silence_cap,
+        # This scans the volumes whether it is lower than threshold,
         # if it is it is written to silence.
         self.__silences = []
         inside = False
         idxbegin = 0
-        ignored = 0
+        ignored  = 0
         delta = int(mintrackdur / self.volstats.get_winlen())
 
         for i,v in enumerate(self.volstats):
@@ -275,7 +279,7 @@ class ChannelSilence( object ):
                     # or not if the track is very short!
                     if (i-idxbegin) > delta:
                         inside = False
-                        idxend = i-ignored-1
+                        idxend = i-ignored #-1 # no -1 because we want the end of the frame
                         start_pos = int(idxbegin * self.volstats.get_winlen() * self.channel.get_framerate())
                         end_pos   = int(idxend * self.volstats.get_winlen() * self.channel.get_framerate())
                         self.__silences.append((start_pos,end_pos))
@@ -293,19 +297,15 @@ class ChannelSilence( object ):
 
     # ------------------------------------------------------------------
 
-    def filter_silences(self, minsildur=0.250):
+    def filter_silences(self, minsildur=0.200):
         """
-        Return filtered silences areas.
+        Filtered the current silences.
 
         @param minsildur (float) Minimum silence duration in seconds
-        @param shiftdurstart (float) Shift delta duration in seconds
-        @param shiftdurend (float) Shift delta duration in seconds
-
-        @return a list of tuples (start_pos,end_pos) of silences.
 
         """
         if len(self.__silences) == 0:
-            return
+            return 0
 
         filteredsil = []
         for (start_pos,end_pos) in self.__silences:
@@ -314,6 +314,8 @@ class ChannelSilence( object ):
                 filteredsil.append( (start_pos,end_pos) )
 
         self.__silences = filteredsil
+
+        return len(self.__silences)
 
 #         print "Number of silences: ",len(self.__silences)
 #         print "Silences: "
@@ -347,15 +349,15 @@ class ChannelSilence( object ):
     def __len__(self):
         return len(self.__silences)
 
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __iter__(self):
         for x in self.__silences:
             yield x
 
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __getitem__(self, i):
         return self.__silences[i]
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
