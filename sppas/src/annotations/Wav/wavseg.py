@@ -89,6 +89,7 @@ class sppasSeg:
         self.volume_cap    = 0
         self.shift_start   = 0.010
         self.shift_end     = 0.020
+        self.winlenght     = 0.020
 
         self.bornestart = 0
         self.borneend   = 0
@@ -125,6 +126,13 @@ class sppasSeg:
 
         """
         self.min_length = float(min_length)
+
+    def set_vol_win_lenght(self, winlength):
+        """
+        Fix the default windows length for RMS estimations.
+
+        """
+        self.winlenght = max(winlength, 0.005)
 
     def set_shift(self,s):
         """
@@ -730,7 +738,7 @@ class sppasSeg:
             audiospeech = audiodata.io.open( audiofile )
             idx = audiospeech.extract_channel()
             self.channel = audiospeech.get_channel(idx)
-            self.chansil = ChannelSilence( self.channel )
+            self.chansil = ChannelSilence( self.channel, self.winlenght )
 
         else:
             raise Exception('Input error: unrecognized file format %s\n'%fileExtension)

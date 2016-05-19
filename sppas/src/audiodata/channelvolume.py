@@ -74,11 +74,13 @@ class ChannelVolume( BaseVolume ):
         nbvols = int(channel.get_duration()/winlen) + 1
         self.volumes = [0]*nbvols
 
-        #while channel.tell() < channel.get_nframes():
         for i in range(nbvols):
             frames = channel.get_frames( nbframes )
             a = AudioFrames( frames, channel.get_sampwidth(), 1)
             self.volumes[i] = a.rms()
+
+        if self.volumes[-1] == 0:
+            self.volumes.pop()
 
         # Returns to the position where we was before
         channel.seek(pos)

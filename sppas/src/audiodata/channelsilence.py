@@ -35,8 +35,9 @@
 # File: channelsilence.py
 # ----------------------------------------------------------------------------
 
-from audioframes import AudioFrames
-from channelvolume import ChannelVolume
+from audiodata.audioframes   import AudioFrames
+from audiodata.channel       import Channel
+from audiodata.channelvolume import ChannelVolume
 
 # ----------------------------------------------------------------------------
 
@@ -50,15 +51,16 @@ class ChannelSilence( object ):
     @summary:      This class implements the silence finding on a channel.
 
     """
-    def __init__(self, channel):
+    def __init__(self, channel, winlenght=0.01):
         """
         Constructor.
 
         @param channel (Channel) the input channel object
+        @param winlenght (float) duration of a window for the estimation of the volume
 
         """
         self.channel    = channel
-        self.volstats   = ChannelVolume( channel, 0.01 )
+        self.volstats   = ChannelVolume( channel, winlenght )
         self.__silences = []
 
     # ------------------------------------------------------------------
@@ -183,6 +185,38 @@ class ChannelSilence( object ):
 
     # ------------------------------------------------------------------
 
+    def refine(self, pos, threshold, winlenght=0.005, direction=1):
+        """
+        Refine the position of a silence around a given position.
+
+        @param pos (int) Initial position of the silence
+        @param threshold (int) RMS threshold value for a silence
+        @param winlenght (float) Windows duration to estimate the RMS
+        @return new position
+
+        """
+        delta = int(self.volstats.get_winlen() * self.channel.get_framerate())
+        from_pos = max(pos-delta,0)
+        self.channel.seek( from_pos )
+        frames = self.channel.get_frames( delta*2 )
+        c = Channel( self.channel.get_framerate(), self.channel.get_sampwidth(), frames )
+        volstats = ChannelVolume( c, winlenght )
+
+        if direction==1:
+            for i,v in enumerate(volstats):
+                if v > threshold:
+                    return (from_pos + i*( int(winlenght*self.channel.get_framerate())))
+        if direction==-1:
+            i=len(volstats)
+            for v in reversed(volstats):
+                if v > threshold:
+                    return (from_pos + (i*( int(winlenght*self.channel.get_framerate()))))
+                i = i-1
+
+        return pos
+
+    # ------------------------------------------------------------------
+
     def extract_tracks(self, mintrackdur, shiftdurstart=0.010, shiftdurend=0.010):
         """
         Return a list of tuples (from_pos,to_pos) of the tracks.
@@ -206,6 +240,7 @@ class ChannelSilence( object ):
         from_pos = 0
 
         for to_pos, next_from in self.__silences:
+
             shift_from_pos = max(from_pos - shiftstart, 0)
             shift_to_pos   = min(to_pos + shiftend, self.channel.get_nframes())
 
@@ -279,10 +314,16 @@ class ChannelSilence( object ):
                     # or not if the track is very short!
                     if (i-idxbegin) > delta:
                         inside = False
-                        idxend = i-ignored #-1 # no -1 because we want the end of the frame
-                        start_pos = int(idxbegin * self.volstats.get_winlen() * self.channel.get_framerate())
-                        end_pos   = int(idxend * self.volstats.get_winlen() * self.channel.get_framerate())
-                        self.__silences.append((start_pos,end_pos))
+                        idxend   = i-ignored #-1 # not use -1 because we want the end of the frame
+                        from_pos = int(idxbegin * self.volstats.get_winlen() * self.channel.get_framerate())
+                        to_pos   = int(idxend   * self.volstats.get_winlen() * self.channel.get_framerate())
+
+                        # Find the boundaries with a better precision
+                        w = self.volstats.get_winlen()/4.
+                        from_pos = self.refine(from_pos, threshold, w, direction=-1)
+                        to_pos   = self.refine(to_pos,   threshold, w, direction=1)
+
+                        self.__silences.append((from_pos,to_pos))
                         ignored = 0
                     else:
                         ignored += 1

@@ -128,6 +128,8 @@ if args.shiftend:    w.set_shift_start( args.shiftend )
 if args.minipu: w.set_min_speech( args.minipu )
 if args.minsil: w.set_min_silence( args.minsil )
 if args.minrms: w.set_min_volume( args.minrms )
+if args.winrms: w.set_vol_win_lenght( args.winrms )
+
 if args.o: w.set_dirtracks( True )
 if args.p: w.set_save_as_trs( True )
 if args.e: w.set_save_as_trs( True )
