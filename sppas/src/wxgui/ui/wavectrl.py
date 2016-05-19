@@ -665,13 +665,14 @@ class WaveCtrl( spControl ):
 
         # draw each channel amplitude
 
-        # Position in the wav
+        # Position in the audio
         pos = int(self._mintime * self._audio.get_framerate())
 
         # Read samples
         duration = self._maxtime - self._mintime
         self._audio.set_pos( pos )
-        data = self._read_samples( int( duration * self._audio.get_framerate() ) )
+        nframes = int( duration * self._audio.get_framerate() )
+        data = self._audio.read_samples( nframes )
 
         # draw each channel
         for i,c in enumerate(self._channels):
@@ -712,48 +713,5 @@ class WaveCtrl( spControl ):
 
     # End drawMouseSelection
     # -----------------------------------------------------------------------
-
-
-
-    #------------------------------------------------------------------------
-    # Private
-    #------------------------------------------------------------------------
-
-
-    def _read_samples(self, nframes) :
-        """
-        Read an array of number-of-channels normalized int sample arrays.
-        """
-        # Get amplituve values
-        if self._audio is None:
-            return
-        try:
-            wav = self._audio.read_frames(int(nframes))
-        except Exception:
-            return []
-
-        # Unpack to get all values, depending on the number of bytes of each value.
-        if self._audio.get_sampwidth() == 4:
-            wav = struct.unpack("<%ul" % (len(wav) / 4), wav)
-        elif self._audio.get_sampwidth() == 2:
-            wav = struct.unpack("<%uh" % (len(wav) / 2), wav)
-        else:
-            wav = struct.unpack("%uB"  %  len(wav),      wav)
-            wav = [ s - 128 for s in wav ]
-
-        # Split channels
-        nc  = self._audio.get_nchannels()
-        if  nc > 1:
-            wavs = []
-            for i in xrange(nc) :
-                wavs.append([ wav[si] for si in xrange(0, len(wav), nc) ])
-            pass
-        else:
-            wavs = [ wav ]
-
-        return wavs
-
-    # End private
-    #------------------------------------------------------------------------
 
 #----------------------------------------------------------------------------
