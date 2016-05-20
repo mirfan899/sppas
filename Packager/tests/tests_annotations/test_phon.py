@@ -136,7 +136,7 @@ class TestSppasPhon(unittest.TestCase):
     def setUp(self):
         dictfile = os.path.join(RESOURCES_PATH, "dict", "eng.dict")
         mapfile  = os.path.join(RESOURCES_PATH, "dict", "eng-fra.map")
-        self.sp = sppasPhon( dictfile )
+        self.sp  = sppasPhon( dictfile )
         self.spl = sppasPhon( dictfile, mapfile )
 
     def test_phonetize(self):

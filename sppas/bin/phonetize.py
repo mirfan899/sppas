@@ -91,7 +91,7 @@ if args.i:
     p.set_usestdtokens( False )
     p.run( args.i,args.o )
 else:
-    pdict      = DictPron( args.dict, unkstamp=UNKSTAMP, nodump=False )
+    pdict    = DictPron( args.dict, unkstamp=UNKSTAMP, nodump=False )
     maptable = Mapping()
     if mapfile is not None:
         maptable = Mapping( mapfile )
