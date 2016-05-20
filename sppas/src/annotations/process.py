@@ -334,6 +334,7 @@ class sppasProcess( Thread ):
         for i,f in enumerate(filelist):
 
             # fix the default values
+            seg.restaure_default()
             seg.fix_options( step.get_options() )
 
             # Indicate the file to be processed

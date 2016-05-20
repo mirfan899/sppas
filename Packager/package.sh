@@ -405,7 +405,8 @@ function fct_test_api {
 
     echo " ... Test Signals "
     echo " ... Test Signals ">>  $TEMP
-    $TESTS_DIR/tests_signals/test_all.py 2>> $TEMP
+    #$TESTS_DIR/tests_signals/test_all.py 2>> $TEMP
+    python $PROGRAM_DIR/sppas/src/audiodata/tests/test_all.py 2>> $TEMP
 
     local error=`grep -c '... ERROR' $TEMP`
     if [ $error -eq 0 ]; then
