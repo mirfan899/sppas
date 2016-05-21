@@ -54,7 +54,7 @@ from wxgui.ui.CustomEvents  import spEVT_SETTINGS
 
 from baseclient        import BaseClient
 from wxgui.panels.sndplayer     import SndPlayer
-from wxgui.panels.sndproperty   import SndProperty
+from wxgui.panels.audioinfo     import AudioInfo
 from wxgui.structs.prefs        import Preferences
 from wxgui.structs.themes       import BaseTheme
 
@@ -111,8 +111,7 @@ class SndRoamer( scrolled.ScrolledPanel ):
         self._filename = None
 
         # create the panels
-        self._propertyPanel = SndProperty(self)
-        self._propertyPanel.SetPreferences(self._prefsIO)
+        self._propertyPanel = AudioInfo(self, self._prefsIO)
         self._playerPanel   = SndPlayer(self, prefsIO=self._prefsIO)
 
         sizer.Add(self._propertyPanel, proportion=0, flag=wx.LEFT|wx.TOP|wx.EXPAND, border=5 )

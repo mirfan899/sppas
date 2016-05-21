@@ -45,14 +45,14 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 import wx
 
-from wxgui.panels.sndproperty import SndProperty
+from wxgui.panels.audioinfo   import AudioInfo
 from wxgui.dialogs.basedialog import spBaseDialog
 
 from wxgui.sp_icons import INFO_ICON
 
 # ----------------------------------------------------------------------------
 
-class AudioInfo( spBaseDialog ):
+class AudioInfoDialog( spBaseDialog ):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -62,11 +62,11 @@ class AudioInfo( spBaseDialog ):
     """
     def __init__(self, parent, preferences, sndname):
         spBaseDialog.__init__(self, parent, preferences, title=" - Information")
-        wx.GetApp().SetAppName( "audioinfo" )
+        wx.GetApp().SetAppName( "audioinfodlg" )
 
         self.sndname = sndname
 
-        titlebox   = self.CreateTitle(INFO_ICON,"Speech sound properties")
+        titlebox   = self.CreateTitle(INFO_ICON,"Audio description")
         contentbox = self._create_content()
         buttonbox  = self._create_buttons()
 
@@ -84,12 +84,12 @@ class AudioInfo( spBaseDialog ):
 
     def _create_content(self):
         # the information panel
-        self.trspanel = SndProperty( self )
+        self.trspanel = AudioInfo( self )
         self.trspanel.FileSelected( self.sndname )
         return self.trspanel
 
 # ------------------------------------------------------------------------------
 
 def ShowAudioInfo(parent, preferences, sndname):
-    dlg = AudioInfo( parent, preferences, sndname )
+    dlg = AudioInfoDialog( parent, preferences, sndname )
     return dlg.ShowModal()
