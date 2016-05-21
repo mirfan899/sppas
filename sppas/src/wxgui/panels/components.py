@@ -45,7 +45,6 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import wx
-from wx.lib.buttons import GenBitmapButton, GenBitmapTextButton
 
 from wxgui.frames.dataroamerframe import DataRoamerFrame
 from wxgui.frames.sndroamerframe  import SndRoamerFrame
@@ -55,7 +54,7 @@ from wxgui.frames.datafilterframe import DataFilterFrame
 from wxgui.frames.statisticsframe import StatisticsFrame
 
 from wxgui.cutils.imageutils import spBitmap
-from wxgui.cutils.ctrlutils import CreateGenButton
+from wxgui.cutils.ctrlutils  import CreateGenButton
 
 from wxgui.sp_icons import SNDROAMER_APP_ICON
 from wxgui.sp_icons import DATAROAMER_APP_ICON

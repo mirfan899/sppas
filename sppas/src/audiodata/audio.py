@@ -246,6 +246,28 @@ class AudioPCM( object ):
         return self.append_channel( channel )
 
     # ----------------------------------------------------------------------
+
+    def extract_channels(self):
+        """
+        Extract all channels from the Audio File Pointer and append them the list of channels.
+
+        """
+        if not self.audiofp:
+            raise AudioDataError
+
+        nc = self.get_nchannels()
+        sw = self.get_sampwidth()
+        self.seek(0)
+        data = self.read_frames(self.get_nframes())
+
+        for index in range(nc):
+            frames = ""
+            for i in xrange(index*sw, len(data), nc*sw):
+                frames += data[i:i+sw]
+            channel = Channel( self.get_framerate(), self.get_sampwidth(), frames )
+            self.append_channel(channel)
+
+    # ----------------------------------------------------------------------
     # Read content, for audiofp
     # ----------------------------------------------------------------------
 
