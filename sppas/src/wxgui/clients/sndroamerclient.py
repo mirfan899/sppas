@@ -55,10 +55,21 @@ from wxgui.sp_consts import BUTTON_ICONSIZE
 
 from wxgui.dialogs.basedialog import spBaseDialog
 import audiodata.io
+from audiodata.channelvolume import ChannelVolume
+
+from wxgui.sp_consts import INFO_COLOUR
+from wxgui.sp_consts import MIN_PANEL_W
+from wxgui.sp_consts import MIN_PANEL_H
 
 # ----------------------------------------------------------------------------
 
 ID_DIALOG_AUDIOROAMER  = wx.NewId()
+
+LABEL_LIST = [ "RMS min: ",
+               "RMS max: ",
+               "RMS mean: " ]
+
+NO_INFO_LABEL = " ... "
 
 # ----------------------------------------------------------------------------
 # Main class that manage the notebook
@@ -331,8 +342,8 @@ class AudioRoamerDialog( spBaseDialog ):
         @param filename
 
         """
-        spBaseDialog.__init__(self, parent, preferences, title=" - Preview")
-        wx.GetApp().SetAppName( "log" )
+        spBaseDialog.__init__(self, parent, preferences, title=" - AudioRoamer")
+        wx.GetApp().SetAppName( "audio" )
 
         titlebox   = self.CreateTitle(SNDROAMER_APP_ICON,"Audio Data Manager")
         contentbox = self._create_content( filename )
@@ -358,23 +369,27 @@ class AudioRoamerDialog( spBaseDialog ):
         self.notebook = wx.Notebook(self)
         self.pages = []
         for i in range(nchannels):
-            page = AudioRoamerPanel(self.notebook, self.preferences)
+
+            page = AudioRoamerPanel(self.notebook, self.preferences, audio.get_channel(i))
             # add the pages to the notebook with the label to show on the tab
             self.notebook.AddPage(page, "Channel %d"%i )
 
-        #self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.OnNotebookPageChanged)
+        page = self.notebook.GetPage( 0 )
+        page.ShowInfo()
+        self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.OnNotebookPageChanged)
+        audio.close()
         return self.notebook
 
     # ------------------------------------------------------------------------
     # Callbacks to events
     # ------------------------------------------------------------------------
 
-#     def OnNotebookPageChanged(self, event):
-#         oldselection = event.GetOldSelection()
-#         newselection = event.GetSelection()
-#         if oldselection != newselection:
-#             page = self.notebook.GetPage( newselection )
-#             page.Show()
+    def OnNotebookPageChanged(self, event):
+        oldselection = event.GetOldSelection()
+        newselection = event.GetSelection()
+        if oldselection != newselection:
+            page = self.notebook.GetPage( newselection )
+            page.ShowInfo()
 
 # ----------------------------------------------------------------------------
 
@@ -390,7 +405,7 @@ class AudioRoamerPanel( wx.Panel ):
     @summary:      to do!
 
     """
-    def __init__(self, parent, preferences):
+    def __init__(self, parent, preferences, channel):
         """
         Create a new AudioRoamerPanel instance.
 
@@ -399,7 +414,59 @@ class AudioRoamerPanel( wx.Panel ):
         """
         wx.Panel.__init__(self, parent)
         self._prefs = preferences
-        wx.StaticText(self, -1, "To do...")
+        self.channel = channel
+        self.cv = None
+        self._labels = []
+        self._values = []
+
+        gbs = self._create_content()
+
+        self.SetFont( self._prefs.GetValue('M_FONT') )
+        self.SetBackgroundColour( self._prefs.GetValue('M_BG_COLOUR') )
+        self.SetForegroundColour( self._prefs.GetValue('M_FG_COLOUR') )
+
+        self.SetSizer(gbs)
+        self.SetAutoLayout( True )
+        self.SetMinSize((MIN_PANEL_W,MIN_PANEL_H))
+        self.Layout()
+
+    # -----------------------------------------------------------------------
+    # Private methods to create the GUI and initialize members
+    # -----------------------------------------------------------------------
+
+    def _create_content(self):
+        """
+        GUI design.
+
+        """
+        gbs = wx.GridBagSizer(len(LABEL_LIST), 2)
+
+        for i,label in enumerate(LABEL_LIST):
+            static_tx = wx.StaticText(self, -1, label)
+            self._labels.append( static_tx )
+            gbs.Add(static_tx, (i,0), flag=wx.ALL, border=2)
+
+            tx = wx.TextCtrl(self, -1, NO_INFO_LABEL, style=wx.TE_READONLY)
+            self._values.append( tx )
+            gbs.Add(tx, (i,1), flag=wx.EXPAND|wx.RIGHT, border=2)
+
+        gbs.AddGrowableCol(1)
+        return gbs
+
+
+    def ShowInfo(self):
+        wx.BeginBusyCursor()
+        b = wx.BusyInfo("Please wait while loading data...")
+        if self.cv is None:
+            self.cv = ChannelVolume(self.channel)
+        self._values[0].ChangeValue( str(self.cv.min()) )
+        self._values[1].ChangeValue( str(self.cv.max()) )
+        self._values[2].ChangeValue( str(self.cv.mean()) )
+        b.Destroy()
+        b = None
+        wx.EndBusyCursor()
+
+# ----------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
 
