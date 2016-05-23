@@ -129,9 +129,42 @@ class AudioFrames( object ):
 
     # -----------------------------------------------------------------------
 
+    def minmax(self):
+        """
+        Return the (minimum,maximum) of the values of all frames.
+
+        @return (min,max)
+
+        """
+        return audioop.minmax(self.frames, self.sampwidth)
+
+    # -----------------------------------------------------------------------
+
+    def min(self):
+        """
+        Return the minimum of the values of all frames.
+
+        @return the minimum
+
+        """
+        return audioop.minmax(self.frames, self.sampwidth)[0]
+
+    # -----------------------------------------------------------------------
+
+    def max(self):
+        """
+        Return the maximum of the values of all frames.
+
+        @return the maximum
+
+        """
+        return audioop.minmax(self.frames, self.sampwidth)[1]
+
+    # -----------------------------------------------------------------------
+
     def avg(self):
         """
-        Return the average of all the samples.
+        Return the average of all the frames.
 
         @return the average
 
@@ -166,7 +199,9 @@ class AudioFrames( object ):
         """
         Return the clipping rate of the frames.
 
-        @param factor (float) An interval to be more precise on clipping rate. It will consider that all frames outside the interval are clipped. Factor has to be between 0 and 1.
+        @param factor (float) An interval to be more precise on clipping rate.
+        It will consider that all frames outside the interval are clipped.
+        Factor has to be between 0 and 1.
         @return the clipping rate
 
         """
