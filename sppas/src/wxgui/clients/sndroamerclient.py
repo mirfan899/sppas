@@ -51,16 +51,21 @@ from wxgui.structs.themes    import BaseTheme
 from wxgui.cutils.imageutils import spBitmap
 from wxgui.cutils.ctrlutils  import CreateGenButton
 from wxgui.sp_icons  import SNDROAMER_APP_ICON
+from wxgui.sp_icons  import SAVE_FILE
+from wxgui.sp_icons  import SAVE_AS_FILE
+
+from wxgui.sp_consts import INFO_COLOUR
+from wxgui.sp_consts import MIN_PANEL_W
+from wxgui.sp_consts import MIN_PANEL_H
 from wxgui.sp_consts import BUTTON_ICONSIZE
+
+from wxgui.dialogs.filedialogs import SaveAsAudioFile
+from wxgui.dialogs.msgdialogs import ShowInformation
 
 from wxgui.dialogs.basedialog import spBaseDialog
 import audiodata.io
 from audiodata.channelvolume import ChannelVolume
 from audiodata.audioframes   import AudioFrames
-
-from wxgui.sp_consts import INFO_COLOUR
-from wxgui.sp_consts import MIN_PANEL_W
-from wxgui.sp_consts import MIN_PANEL_H
 
 # ----------------------------------------------------------------------------
 
@@ -319,7 +324,6 @@ class AudioRoamer( wx.Panel ):
 
 # ----------------------------------------------------------------------------
 
-
 class AudioRoamerDialog( spBaseDialog ):
     """
     @author:  Brigitte Bigi
@@ -339,9 +343,10 @@ class AudioRoamerDialog( spBaseDialog ):
         """
         spBaseDialog.__init__(self, parent, preferences, title=" - AudioRoamer")
         wx.GetApp().SetAppName( "audio" )
+        self._filename = filename
 
         titlebox   = self.CreateTitle(SNDROAMER_APP_ICON,"Audio Data Manager")
-        contentbox = self._create_content( filename )
+        contentbox = self._create_content()
         buttonbox  = self._create_buttons()
 
         self.LayoutComponents( titlebox,
@@ -354,10 +359,14 @@ class AudioRoamerDialog( spBaseDialog ):
 
     def _create_buttons(self):
         btn_close = self.CreateCloseButton()
-        return self.CreateButtonBox( [],[btn_close] )
+        btn_save_channel  = self.CreateButton(SAVE_FILE, "Save this channel as...", "Save the channel in an audio file.", btnid=wx.ID_SAVE)
+        self.Bind(wx.EVT_BUTTON, self._on_save_channel, btn_save_channel)
+        btn_save_info = self.CreateButton(SAVE_AS_FILE, "Save these information as...", "Save the displayed information in a text file.", btnid=wx.ID_SAVE)
+        self.Bind(wx.EVT_BUTTON, self._on_save_info, btn_save_info)
+        return self.CreateButtonBox( [btn_save_channel,btn_save_info],[btn_close] )
 
-    def _create_content(self, filename):
-        audio = audiodata.io.open(filename)
+    def _create_content(self):
+        audio = audiodata.io.open(self._filename)
         nchannels = audio.get_nchannels()
         audio.extract_channels()
 
@@ -369,7 +378,7 @@ class AudioRoamerDialog( spBaseDialog ):
             self.notebook.AddPage(page, "Channel %d"%i )
 
         self.ShowPage(0)
-        self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.OnNotebookPageChanged)
+        self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self._on_notebook_page_changed)
         audio.close()
         return self.notebook
 
@@ -377,11 +386,21 @@ class AudioRoamerDialog( spBaseDialog ):
     # Callbacks to events
     # ------------------------------------------------------------------------
 
-    def OnNotebookPageChanged(self, event):
+    def _on_notebook_page_changed(self, event):
         oldselection = event.GetOldSelection()
         newselection = event.GetSelection()
         if oldselection != newselection:
             self.ShowPage(newselection)
+
+    def _on_save_channel(self, event):
+        page = self.notebook.GetPage( self.notebook.GetSelection() )
+        page.SaveChannel( self._filename )
+
+    def _on_save_info(self, event):
+        page = self.notebook.GetPage( self.notebook.GetSelection() )
+        page.SaveInfos( self._filename )
+
+    # ------------------------------------------------------------------------
 
     def ShowPage(self, idx):
         wx.BeginBusyCursor()
@@ -406,6 +425,9 @@ class AudioRoamerPanel( wx.Panel ):
     @summary:      to do!
 
     """
+    FRAMERATES = [ "16000", "32000", "48000" ]
+    SAMPWIDTH  = [ "8", "16", "24", "32" ]
+
     NO_INFO_LABEL = " ... "
 
     def __init__(self, parent, preferences, channel):
@@ -425,10 +447,13 @@ class AudioRoamerPanel( wx.Panel ):
         sizerinfos = wx.BoxSizer(wx.VERTICAL)
         gbs1 = self._create_content_infos()
         gbs2 = self._create_content_clipping()
+        gbs3 = self._create_content_modif()
 
         sizerinfos.Add(gbs1, 1, wx.EXPAND|wx.ALL, 2)
         sizerinfos.AddSpacer(10)
         sizerinfos.Add(gbs2, 0, wx.ALL, 2)
+        sizerinfos.AddSpacer(10)
+        sizerinfos.Add(gbs3, 0, wx.ALL, 2)
         sizerinfos.AddSpacer(10)
 
         self.SetFont( self._prefs.GetValue('M_FONT') )
@@ -457,20 +482,21 @@ class AudioRoamerPanel( wx.Panel ):
 
         """
         gbs = wx.GridBagSizer(3, 4)
-
         self._add_info(gbs, "Number of frames: ", 0,0)
         self._add_info(gbs, "Min/Max values: ",   1,0)
         self._add_info(gbs, "Zero crossings: ",   2,0)
         self._add_info(gbs, "Volume min: ",       0,2)
         self._add_info(gbs, "Volume max: ",       1,2)
         self._add_info(gbs, "Volume mean: ",      2,2)
-
         gbs.AddGrowableCol(1)
         gbs.AddGrowableCol(3)
-
         return gbs
 
     def _create_content_clipping(self):
+        """
+        GUI design for clipping information.
+
+        """
         gbs = wx.GridBagSizer(2, 11)
         static_tx = wx.StaticText(self, -1, "Factor:")
         gbs.Add(static_tx, (0, 0), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
@@ -484,28 +510,77 @@ class AudioRoamerPanel( wx.Panel ):
             self._values.append( tx )
         return gbs
 
+    def _create_content_modif(self):
+        """
+        GUI design for modifiable information.
+
+        """
+        gbs = wx.GridBagSizer(2, 2)
+        static_tx = wx.StaticText(self, -1, "Frame rate (Hz):")
+        gbs.Add(static_tx, (0, 0), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
+        self.comboframerate = wx.ComboBox(self, -1, size=(150, -1), choices=AudioRoamerPanel.FRAMERATES, style=wx.CB_READONLY)
+        gbs.Add(self.comboframerate, (1, 0), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
+
+        static_tx = wx.StaticText(self, -1, "Samp. width (bits):")
+        gbs.Add(static_tx, (0, 1), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
+        self.combosampwidth = wx.ComboBox(self, -1, size=(150, -1), choices=AudioRoamerPanel.SAMPWIDTH, style=wx.CB_READONLY)
+        gbs.Add(self.combosampwidth, (1, 1), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
+
+        return gbs
+
     def ShowInfo(self):
         if self.cv is None:
             self.cv = ChannelVolume(self.channel)
             self.ca = AudioFrames(self.channel.get_frames(self.channel.get_nframes()), self.channel.get_sampwidth(), 1)
+        # Volume/Amplitude
         self._values[0].ChangeValue( " "+str(self.channel.get_nframes())+" " )
         self._values[1].ChangeValue( " "+str(self.ca.minmax())+" " )
         self._values[2].ChangeValue( " "+str(self.ca.cross())+" " )
         self._values[3].ChangeValue( " "+str(self.cv.min())+" " )
         self._values[4].ChangeValue( " "+str(self.cv.max())+" " )
         self._values[5].ChangeValue( " "+str(int(self.cv.mean()) )+" ")
+        # Clipping
         for i in range(1,10):
             cr = self.ca.clipping_rate( float(i)/10. ) * 100.
             self._values[5+i].ChangeValue( " "+str( round(cr,2))+" ")
-
         for v in self._values:
             v.SetForegroundColour( INFO_COLOUR )
+        # Modifiable
+        fm = str(self.channel.get_framerate())
+        if not fm in AudioRoamerPanel.FRAMERATES:
+            self.comboframerate.Append( fm )
+        self.comboframerate.SetStringSelection(fm)
+        sp = str(self.channel.get_sampwidth()*8)
+        if not sp in AudioRoamerPanel.SAMPWIDTH:
+            self.combosampwidth.Append( sp )
+        self.combosampwidth.SetStringSelection( sp )
+
+
+    def SaveChannel(self, parentfilename):
+#         newfilename = SaveAsAudioFile( )
+#         # If it is the OK response, process the data.
+#         if newfilename:
+#             try:
+#                 channel = ChannelFormatter()
+#                 audio = AudioPCM()
+#                 audio.append_channel( channel )
+#
+#                 audiodata.io.write(newfilename, audio)
+#             except Exception as e:
+#                 ShowInformation( self, self._prefs, "Save has failed: %s" % e, style=wx.ICON_ERROR)
+
+        fm = int(self.comboframerate.GetValue())
+        sp = int(self.combosampwidth.GetValue())/8
+        ShowInformation( self, self._prefs, "Not implemented yet.", style=wx.ICON_ERROR)
+
+    def SaveInfos(self, parentfilename):
+        ShowInformation( self, self._prefs, "Not implemented yet.", style=wx.ICON_ERROR)
 
 # ----------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
 
 def ShowAudioRoamerDialog(parent, preferences, filename):
-    dialog = AudioRoamerDialog(parent, preferences,filename)
+    dialog = AudioRoamerDialog(parent, preferences, filename)
     dialog.ShowModal()
     dialog.Destroy()

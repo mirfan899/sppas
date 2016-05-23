@@ -144,6 +144,7 @@ def SaveAsAnnotationFile(defaultdir=None,defaultfile=None):
     wildcard += '|'+create_wildcard("ELAN",  io.ext_elan)
     wildcard += '|'+create_wildcard("Phonedit", io.ext_phonedit)
     wildcard += '|'+create_wildcard("ASCII", io.ext_ascii)
+    wildcard += '|'+create_wildcard("AnnotationPro", io.ext_antx)
 
     dlg = wx.FileDialog(
         None, message = "Choose a file name...",
@@ -161,11 +162,44 @@ def SaveAsAnnotationFile(defaultdir=None,defaultfile=None):
 
 # ----------------------------------------------------------------------------
 
+def SaveAsAudioFile(defaultdir=None,defaultfile=None):
+    """
+    Return an audio file name.
+    """
+    if defaultdir is None:
+        defaultdir = os.path.dirname(sp_glob.BASE_PATH)
+
+    if defaultfile is None:
+        defaultfile = "newfile.wav"
+
+    file = None
+
+    wildcard  = create_wildcard("All files", audiodata.io.extensions)
+    wildcard += '|'+create_wildcard("Wave", audiodata.io.ext_wav)
+    wildcard += '|'+create_wildcard("Aiff", audiodata.io.ext_aiff)
+    wildcard += '|'+create_wildcard("SunAu",  audiodata.io.ext_sunau)
+
+    dlg = wx.FileDialog(
+        None, message = "Choose a file name...",
+        defaultDir  = defaultdir,
+        defaultFile = defaultfile,
+        wildcard    = wildcard,
+        style = wx.FD_SAVE | wx.FD_CHANGE_DIR )
+
+    if dlg.ShowModal() == wx.ID_OK:
+        file = dlg.GetPath()
+
+    dlg.Destroy()
+
+    return file
+
+# ----------------------------------------------------------------------------
+
 def SaveAsImageFile(preferences, image):
     """
     Save the current image as a PNG picture.
-    """
 
+    """
     extension_map = {"png": wx.BITMAP_TYPE_PNG}
     extensions    = extension_map.keys()
     wildcard      = create_wildcard("Image files", extensions)
@@ -186,4 +220,3 @@ def SaveAsImageFile(preferences, image):
     return saved
 
 # ----------------------------------------------------------------------------
-
