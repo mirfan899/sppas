@@ -66,6 +66,9 @@ class ChannelFormatter( object ):
     # Getters
     # ----------------------------------------------------------------------
 
+    def get_channel(self):
+        return self.channel
+
     def get_framerate(self):
         """
         Return the expected frame rate for the channel.
@@ -104,6 +107,7 @@ class ChannelFormatter( object ):
         """
         self.framerate = framerate
 
+    # ----------------------------------------------------------------------
 
     def set_sampwidth(self, sampwidth):
         """
@@ -117,12 +121,26 @@ class ChannelFormatter( object ):
         self.sampwidth = sampwidth
 
     # ----------------------------------------------------------------------
+
+    def convert(self):
+        """
+        Convert the channel to the expected sample width and frame rate.
+
+        """
+        newchannel = Channel()
+        newchannel.set_frames( self.__convert_frames( self.channel.frames ) )
+        newchannel.sampwidth = self.sampwidth
+        newchannel.framerate = self.framerate
+
+        self.channel = newchannel
+
+    # ----------------------------------------------------------------------
     # Workers
     # ----------------------------------------------------------------------
 
     def sync(self, channel):
         """
-        Convert the channel owned by the ChannelFormatter with the parameters from the channel put in input.
+        Convert the channel with the parameters from the channel put in input.
 
         @param channel (Channel) the channel used as a model
 
@@ -181,7 +199,8 @@ class ChannelFormatter( object ):
 
     def bias(self, biasvalue):
         """
-        Convert the channel by applying a bias on the frames.
+        Convert the channel with a bias added to each frame.
+        Samples wrap around in case of overflow.
 
         @param biasvalue (int) the value to bias the frames
 
@@ -198,11 +217,15 @@ class ChannelFormatter( object ):
 
     def mul(self, factor):
         """
-        Convert the channel by multiplying the frames by the factor.
+        Convert the channel that has all frames in the original channel are
+        multiplied by the floating-point value factor.
+        Samples are truncated in case of overflow.
 
-        @param bias (int) the factor to multiply the frames
+        @param factor (float) the factor to multiply the frames
 
         """
+        if factor == 1.:
+            return
         newchannel = Channel()
         newchannel.sampwidth = self.sampwidth
         newchannel.framerate = self.framerate
@@ -227,19 +250,6 @@ class ChannelFormatter( object ):
 
         self.channel = newchannel
 
-    # ----------------------------------------------------------------------
-
-    def convert(self):
-        """
-        Convert the channel to the expected sample width and frame rate.
-
-        """
-        newchannel = Channel()
-        newchannel.set_frames( self.__convert_frames( self.channel.frames ) )
-        newchannel.sampwidth = self.sampwidth
-        newchannel.framerate = self.framerate
-
-        self.channel = newchannel
 
     # ----------------------------------------------------------------------
     # Private
@@ -254,11 +264,12 @@ class ChannelFormatter( object ):
         """
         f = frames
         fragment = ChannelFrames( f )
-        #Convert the sample width if it needs to
+
+        # Convert the sample width if it needs to
         if (self.channel.get_sampwidth() != self.sampwidth):
             fragment.change_sampwidth(self.channel.get_sampwidth(), self.sampwidth)
 
-        #Convert the self.framerate if it needs to
+        # Convert the self.framerate if it needs to
         if (self.channel.get_framerate() != self.framerate):
             fragment.resample(self.sampwidth, self.channel.get_framerate(), self.framerate)
 

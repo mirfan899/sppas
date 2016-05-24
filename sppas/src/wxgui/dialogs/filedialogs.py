@@ -220,3 +220,30 @@ def SaveAsImageFile(preferences, image):
     return saved
 
 # ----------------------------------------------------------------------------
+
+def SaveAsAnyFile(defaultdir=None,defaultfile=None):
+    """
+    """
+    if defaultdir is None:
+        defaultdir = os.path.dirname(sp_glob.BASE_PATH)
+
+    if defaultfile is None:
+        defaultfile = "newfile.txt"
+
+    file = None
+    wildcard  = create_wildcard("All files", ['*', '*.*'])
+    dlg = wx.FileDialog(
+        None, message = "Choose a file name...",
+        defaultDir  = defaultdir,
+        defaultFile = defaultfile,
+        wildcard    = wildcard,
+        style = wx.FD_SAVE | wx.FD_CHANGE_DIR )
+
+    if dlg.ShowModal() == wx.ID_OK:
+        file = dlg.GetPath()
+
+    dlg.Destroy()
+
+    return file
+
+# ----------------------------------------------------------------------------

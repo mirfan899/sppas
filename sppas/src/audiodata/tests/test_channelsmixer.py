@@ -38,8 +38,8 @@ class TestChannelsMixer(unittest.TestCase):
         formatter2.convert()
 
         mixer = ChannelsMixer()
-        mixer.append_channel(formatter1.channel)
-        mixer.append_channel(formatter2.channel)
+        mixer.append_channel(formatter1.get_channel())
+        mixer.append_channel(formatter2.get_channel())
         mixer.norm_length()
 
         self.assertEqual(mixer.get_channel(0).get_nframes(), mixer.get_channel(1).get_nframes())
