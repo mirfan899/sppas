@@ -217,7 +217,7 @@ class ChannelSilence( object ):
 
     # ------------------------------------------------------------------
 
-    def extract_tracks(self, mintrackdur, shiftdurstart=0.010, shiftdurend=0.010):
+    def extract_tracks(self, mintrackdur=0.300, shiftdurstart=0.010, shiftdurend=0.010):
         """
         Return a list of tuples (from_pos,to_pos) of the tracks.
 
