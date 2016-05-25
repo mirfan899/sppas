@@ -431,7 +431,7 @@ class AudioRoamerPanel( wx.Panel ):
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      to do!
+    @summary:      Display info about a channel. Allows to save.
 
     """
     FRAMERATES = [ "16000", "32000", "48000" ]
@@ -441,7 +441,10 @@ class AudioRoamerPanel( wx.Panel ):
                       "cross":"Zero crossings: "}
     INFO_LABEL_VOL = { "volmin":"Volume min: ",
                        "volmax":"Volume max: ",
-                       "volmean":"Volume mean: "
+                       "volmean":"Volume mean: ",
+                       "volsil":"Threshold volume:",
+                       "nbsil":"Number of silences:",
+                       "dursil":"Duration of silences:"
                      }
 
     NO_INFO_LABEL = " ... "
@@ -484,150 +487,173 @@ class AudioRoamerPanel( wx.Panel ):
         Create the main sizer, add content then return it.
 
         """
-        sizerinfos = wx.BoxSizer(wx.VERTICAL)
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        gbs1 = self._create_content_infos()
-        gbs2 = self._create_content_clipping()
-        gbs3 = self._create_content_modif()
-        gbs4 = self._create_content_ipus()
+        info = self._create_content_infos()
+        clip = self._create_content_clipping()
+        ipus = self._create_content_ipus()
 
-        sizerinfos.AddSpacer(10)
-        sizerinfos.Add(gbs1, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 2)
-        sizerinfos.AddSpacer(10)
-        sizerinfos.Add(gbs2, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 2)
-        sizerinfos.AddSpacer(10)
-        sizerinfos.Add(gbs3, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 2)
-        sizerinfos.AddSpacer(10)
-        sizerinfos.Add(gbs4, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 2)
-        sizerinfos.AddSpacer(10)
+        sizer.AddSpacer(10)
+        sizer.Add(info, 1, wx.EXPAND, 0)
+        sizer.AddSpacer(10)
+        sizer.Add(clip, 0, wx.ALL, 0)
+        sizer.AddSpacer(10)
+        sizer.Add(ipus, 1, wx.EXPAND, 10)
+        sizer.AddSpacer(10)
 
-        return sizerinfos
+        return sizer
 
-    def __add_info_amp(self, gbs, key, row, col):
+    def __add_info_amp(self, parent, gbs, key, row, col):
         """ Private method to add an info in the GridBagSizer. """
-        static_tx = wx.StaticText(self, -1, AudioRoamerPanel.INFO_LABEL_AMP[key])
-        gbs.Add(static_tx, (row, col), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
+        static_tx = wx.StaticText(parent, -1, AudioRoamerPanel.INFO_LABEL_AMP[key])
+        gbs.Add(static_tx, (row, col), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=2)
         self._wxtxobj.append( static_tx )
-        tx = wx.TextCtrl(self, -1, AudioRoamerPanel.NO_INFO_LABEL, style=wx.TE_READONLY)
+        tx = wx.TextCtrl(parent, -1, AudioRoamerPanel.NO_INFO_LABEL, style=wx.TE_READONLY)
         self._wxobj[key] = tx
-        gbs.Add(tx, (row, col+1), flag=wx.EXPAND|wx.RIGHT, border=4)
+        gbs.Add(tx, (row, col+1), flag=wx.wx.LEFT, border=2)
 
-    def __add_info_vol(self, gbs, key, row, col):
-        """ Private method to add an info in the GridBagSizer. """
-        static_tx = wx.StaticText(self, -1, AudioRoamerPanel.INFO_LABEL_VOL[key])
-        gbs.Add(static_tx, (row, col), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
-        self._wxtxobj.append( static_tx )
-        tx = wx.TextCtrl(self, -1, AudioRoamerPanel.NO_INFO_LABEL, style=wx.TE_READONLY)
-        self._wxobj[key] = tx
-        gbs.Add(tx, (row, col+1), flag=wx.EXPAND|wx.RIGHT, border=4)
-
-    def __add_clip(self, gbs, i):
+    def __add_clip(self, parent, gbs, i):
         """ Private method to add a clipping value in a GridBagSizer. """
-        static_tx = wx.StaticText(self, -1, str( float(i)/10.) )
-        gbs.Add(static_tx, (0, i), flag=wx.ALIGN_RIGHT|wx.ALL, border=2)
+        static_tx = wx.StaticText(parent, -1, "factor "+str( float(i)/10.)+": " )
+        gbs.Add(static_tx, (i, 0), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=2)
         self._wxtxobj.append( static_tx )
-        tx = wx.TextCtrl(self, -1, AudioRoamerPanel.NO_INFO_LABEL, style=wx.TE_READONLY|wx.TE_RIGHT)
-        gbs.Add(tx, (1, i), flag=wx.RIGHT, border=2)
+        tx = wx.TextCtrl(parent, -1, AudioRoamerPanel.NO_INFO_LABEL, style=wx.TE_READONLY|wx.TE_RIGHT)
+        gbs.Add(tx, (i, 1), flag=wx.RIGHT, border=2)
         self._wxobj["clip1"+str(i)] = tx
+
+    def __add_info_vol(self, parent, gbs, key, row, col):
+        """ Private method to add an info in the GridBagSizer. """
+        static_tx = wx.StaticText(parent, -1, AudioRoamerPanel.INFO_LABEL_VOL[key])
+        gbs.Add(static_tx, (row, col), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=2)
+        self._wxtxobj.append( static_tx )
+        tx = wx.TextCtrl(parent, -1, AudioRoamerPanel.NO_INFO_LABEL, style=wx.TE_READONLY)
+        self._wxobj[key] = tx
+        gbs.Add(tx, (row, col+1), flag=wx.RIGHT, border=2)
 
     def _create_content_infos(self):
         """
         GUI design for amplitude and volume information.
 
         """
-        gbs = wx.GridBagSizer(3, 4)
+        boldfont = self._prefs.GetValue('M_FONT')
+        boldfont.SetWeight(wx.BOLD)
 
-        self.__add_info_amp(gbs, "nframes", 0,0)
-        self.__add_info_amp(gbs, "minmax",  1,0)
-        self.__add_info_amp(gbs, "cross",   2,0)
-        self.__add_info_vol(gbs, "volmin",  0,2)
-        self.__add_info_vol(gbs, "volmax",  1,2)
-        self.__add_info_vol(gbs, "volmean", 2,2)
+        gbs = wx.GridBagSizer(10, 2)
+
+        static_tx = wx.StaticText(self, -1, "Amplitude values:")
+        static_tx.SetFont( boldfont )
+        gbs.Add(static_tx, (0,0), (1,2), flag=wx.LEFT, border=2)
+
+        self.__add_info_amp(self, gbs, "nframes", 1, 0)
+        self.__add_info_amp(self, gbs, "minmax",  2, 0)
+        self.__add_info_amp(self, gbs, "cross",   3, 0)
+
+        static_tx = wx.StaticText(self, -1, "")
+        gbs.Add(static_tx, (4,0), (1,2), flag=wx.LEFT, border=2)
+
+        static_tx = wx.StaticText(self, -1, "Frame rate (Hz): ")
+        gbs.Add(static_tx, (5, 0), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
+        self._wxtxobj.append( static_tx )
+        comboframerate = wx.ComboBox(self, -1, choices=AudioRoamerPanel.FRAMERATES, style=wx.CB_READONLY)
+        gbs.Add(comboframerate, (5, 1), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
+        self._wxobj["framerate"] = comboframerate
+        comboframerate.SetForegroundColour( INFO_COLOUR )
+
+        static_tx = wx.StaticText(self, -1, "Samp. width (bits): ")
+        gbs.Add(static_tx, (6, 0), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
+        self._wxtxobj.append( static_tx )
+        combosampwidth = wx.ComboBox(self, -1, choices=AudioRoamerPanel.SAMPWIDTH, style=wx.CB_READONLY)
+        gbs.Add(combosampwidth, (6, 1), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
+        self._wxobj["sampwidth"] = combosampwidth
+        combosampwidth.SetForegroundColour( INFO_COLOUR )
+
+        static_tx = wx.StaticText(self, -1, "Multiply values by: ")
+        gbs.Add(static_tx, (7, 0), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
+        self._wxtxobj.append( static_tx )
+        tx = wx.TextCtrl(self, -1, "1.0", validator=TextAsNumericValidator())
+        tx.SetInsertionPoint(0)
+        gbs.Add(tx, (7, 1), flag=wx.EXPAND|wx.RIGHT, border=2)
+        self._wxobj["mul"] = tx
+        tx.SetForegroundColour( INFO_COLOUR )
+
+        static_tx = wx.StaticText(self, -1, "Add bias value: ")
+        gbs.Add(static_tx, (8, 0), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
+        self._wxtxobj.append( static_tx )
+        tx = wx.TextCtrl(self, -1, "0", validator=TextAsNumericValidator())
+        tx.SetInsertionPoint(0)
+        gbs.Add(tx, (8, 1), flag=wx.EXPAND|wx.RIGHT, border=2)
+        self._wxobj["bias"] = tx
+        tx.SetForegroundColour( INFO_COLOUR )
+
+        static_tx = wx.StaticText(self, -1, "Remove offset value: ")
+        gbs.Add(static_tx, (9, 0), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
+        self._wxtxobj.append( static_tx )
+        cb = wx.CheckBox(self, -1, style=wx.NO_BORDER)
+        cb.SetValue( False )
+        gbs.Add(cb, (9, 1), flag=wx.LEFT, border=2)
+        self._wxobj["offset"] = cb
+        cb.SetForegroundColour( INFO_COLOUR )
+
+        # Extract fragment: from...to...
         gbs.AddGrowableCol(1)
-        gbs.AddGrowableCol(3)
 
-        return gbs
+        border = wx.BoxSizer()
+        border.Add(gbs, 1, wx.ALL | wx.EXPAND, 10)
+        return border
 
     def _create_content_clipping(self):
         """
         GUI design for clipping information.
 
         """
-        gbs = wx.GridBagSizer(2, 11)
+        gbs = wx.GridBagSizer(11, 2)
 
-        static_tx = wx.StaticText(self, -1, "Factor: ")
-        gbs.Add(static_tx, (0, 0), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
-        self._wxtxobj.append( static_tx )
-        static_tx = wx.StaticText(self, -1, "Clipping rate (%): ")
-        gbs.Add(static_tx, (1, 0), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
-        self._wxtxobj.append( static_tx )
+        boldfont = self._prefs.GetValue('M_FONT')
+        boldfont.SetWeight(wx.BOLD)
+
+        static_tx = wx.StaticText(self, -1, "Clipping rates:")
+        static_tx.SetFont( boldfont )
+        gbs.Add(static_tx, (0,0), (1,2), flag=wx.LEFT, border=2)
 
         for i in range(1,10):
-            self.__add_clip(gbs,i)
+            self.__add_clip(self, gbs, i)
 
-        return gbs
-
-    def _create_content_modif(self):
-        """
-        GUI design for modifiable information.
-
-        """
-        gbs = wx.GridBagSizer(2, 5)
-        static_tx = wx.StaticText(self, -1, "Frame rate (Hz): ")
-        gbs.Add(static_tx, (0, 0), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
-        self._wxtxobj.append( static_tx )
-        comboframerate = wx.ComboBox(self, -1, size=(150, -1), choices=AudioRoamerPanel.FRAMERATES, style=wx.CB_READONLY)
-        gbs.Add(comboframerate, (1, 0), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
-        self._wxobj["framerate"] = comboframerate
-
-        static_tx = wx.StaticText(self, -1, "Samp. width (bits): ")
-        gbs.Add(static_tx, (0, 1), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
-        self._wxtxobj.append( static_tx )
-        combosampwidth = wx.ComboBox(self, -1, size=(150, -1), choices=AudioRoamerPanel.SAMPWIDTH, style=wx.CB_READONLY)
-        gbs.Add(combosampwidth, (1, 1), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
-        self._wxobj["sampwidth"] = combosampwidth
-
-        static_tx = wx.StaticText(self, -1, "Multiply values by: ")
-        gbs.Add(static_tx, (0, 2), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
-        self._wxtxobj.append( static_tx )
-        tx = wx.TextCtrl(self, -1, "1.0", validator=TextAsNumericValidator())
-        tx.SetInsertionPoint(0)
-        gbs.Add(tx, (1, 2), flag=wx.EXPAND|wx.RIGHT, border=2)
-        self._wxobj["mul"] = tx
-
-        static_tx = wx.StaticText(self, -1, "Add bias value: ")
-        gbs.Add(static_tx, (0, 3), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
-        self._wxtxobj.append( static_tx )
-        tx = wx.TextCtrl(self, -1, "0", validator=TextAsNumericValidator())
-        tx.SetInsertionPoint(0)
-        gbs.Add(tx, (1, 3), flag=wx.EXPAND|wx.RIGHT, border=2)
-        self._wxobj["bias"] = tx
-
-        static_tx = wx.StaticText(self, -1, "Remove offset value: ")
-        gbs.Add(static_tx, (0, 4), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
-        self._wxtxobj.append( static_tx )
-        cb = wx.CheckBox(self, -1, style=wx.NO_BORDER)
-        cb.SetValue( False )
-        gbs.Add(cb, (1, 4), flag=wx.ALIGN_CENTER_HORIZONTAL|wx.ALL, border=2)
-        self._wxobj["offset"] = cb
-
-        # Extract fragment: from...to...
-        return gbs
+        border = wx.BoxSizer()
+        border.Add(gbs, 1, wx.ALL | wx.EXPAND, 10)
+        return border
 
     def _create_content_ipus(self):
         """
         GUI design for information about an IPUs segmentation...
 
         """
-        s = wx.BoxSizer(wx.HORIZONTAL)
+        gbs = wx.GridBagSizer(9, 2)
 
-        # Volume threshold we used...
-        # Number of silences
-        # Number of tracks
-        # Total silence duration
-        # Total tracks duration
+        boldfont = self._prefs.GetValue('M_FONT')
+        boldfont.SetWeight(wx.BOLD)
 
-        return s
+        static_tx = wx.StaticText(self, -1, "Volume (RMS):")
+        static_tx.SetFont( boldfont )
+        gbs.Add(static_tx, (0,0), (1,2), flag=wx.LEFT, border=2)
+
+        self.__add_info_vol(self, gbs, "volmin",  1, 0)
+        self.__add_info_vol(self, gbs, "volmax",  2, 0)
+        self.__add_info_vol(self, gbs, "volmean", 3, 0)
+
+        static_tx = wx.StaticText(self, -1, "")
+        gbs.Add(static_tx, (4, 0), (1,2), flag=wx.LEFT, border=2)
+
+        static_tx = wx.StaticText(self, -1, "Automatic detection of silences:")
+        static_tx.SetFont( boldfont )
+        gbs.Add(static_tx, (5, 0), (1,2), flag=wx.LEFT, border=2)
+
+        self.__add_info_vol(self, gbs, "volsil", 6,0)
+        self.__add_info_vol(self, gbs, "nbsil", 7,0)
+        self.__add_info_vol(self, gbs, "dursil", 8,0)
+
+        border = wx.BoxSizer()
+        border.Add(gbs, 1, wx.ALL | wx.EXPAND, 10)
+        return border
 
     # -----------------------------------------------------------------------
     # Setters for GUI
@@ -692,7 +718,7 @@ class AudioRoamerPanel( wx.Panel ):
         # Clipping
         for i in range(1,10):
             cr = self._ca.clipping_rate( float(i)/10. ) * 100.
-            self._wxobj["clip1"+str(i)].ChangeValue( " "+str( round(cr,2))+" ")
+            self._wxobj["clip1"+str(i)].ChangeValue( " "+str( round(cr,2))+"% ")
 
         # Modifiable
         fm = str(self._channel.get_framerate())
@@ -705,10 +731,6 @@ class AudioRoamerPanel( wx.Panel ):
         self._wxobj["sampwidth"].SetStringSelection( sp )
 
         # IPUs
-
-        # Set a different foreground color to estimated values
-        for v in self._wxobj.values():
-            v.SetForegroundColour( INFO_COLOUR )
 
     # -----------------------------------------------------------------------
 
