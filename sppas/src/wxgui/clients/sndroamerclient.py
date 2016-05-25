@@ -464,19 +464,19 @@ class AudioRoamerPanel( wx.Panel ):
         self._wxobj = {}          # List of wx objects for information values
         self._wxtxobj = []        # List of wx objects for information labels
 
-        sizerinfos = self._create_content()
+        sizer = self._create_content()
 
         self.SetFont( preferences.GetValue('M_FONT') )
         self.SetBackgroundColour( preferences.GetValue('M_BG_COLOUR') )
         self.SetForegroundColour( preferences.GetValue('M_FG_COLOUR') )
 
-        self.SetSizer(sizerinfos)
+        self.SetSizer(sizer)
         self.SetAutoLayout( True )
         self.SetMinSize((MIN_PANEL_W,MIN_PANEL_H))
         self.Layout()
 
     # -----------------------------------------------------------------------
-    # Private methods to create the GUI.
+    # Private methods to show information about the channel into the GUI.
     # -----------------------------------------------------------------------
 
     def _create_content(self):
@@ -529,7 +529,6 @@ class AudioRoamerPanel( wx.Panel ):
         tx = wx.TextCtrl(self, -1, AudioRoamerPanel.NO_INFO_LABEL, style=wx.TE_READONLY|wx.TE_RIGHT)
         gbs.Add(tx, (1, i), flag=wx.RIGHT, border=2)
         self._wxobj["clip1"+str(i)] = tx
-
 
     def _create_content_infos(self):
         """
@@ -631,16 +630,56 @@ class AudioRoamerPanel( wx.Panel ):
         return s
 
     # -----------------------------------------------------------------------
+    # Setters for GUI
+    # ----------------------------------------------------------------------
+
+    def SetFont(self, font):
+        """
+        Change font of all wx texts.
+
+        """
+        wx.Window.SetFont( self, font )
+        for obj in self._wxobj.values():
+            obj.SetFont(font)
+        for obj in self._wxtxobj:
+            obj.SetFont(font)
+
+    # ----------------------------------------------------------------------
+
+    def SetBackgroundColour(self, color):
+        """
+        Change background of all texts.
+
+        """
+        wx.Window.SetBackgroundColour( self, color )
+        for obj in self._wxobj.values():
+            obj.SetBackgroundColour( color )
+        for obj in self._wxtxobj:
+            obj.SetBackgroundColour( color )
+
+    # ----------------------------------------------------------------------
+
+    def SetForegroundColour(self, color):
+        """
+        Change foreground of all texts.
+
+        """
+        wx.Window.SetForegroundColour( self, color )
+        for obj in self._wxtxobj:
+            obj.SetForegroundColour( color )
+
+    # ----------------------------------------------------------------------
+    # Methods of the workers
+    # ----------------------------------------------------------------------
 
     def ShowInfo(self):
         """
-        This method fill all values to estimate then display all information.
+        Estimate all values then display the information.
 
         """
         # we never estimated values. we have to do it!
         if self._cv is None:
-            self._cv = ChannelSilence(self._channel)
-            self._ca = AudioFrames(self._channel.get_frames(self._channel.get_nframes()), self._channel.get_sampwidth(), 1)
+            self.SetChannel(self._channel)
 
         # Volume/Amplitude
         self._wxobj["nframes"].ChangeValue( " "+str(self._channel.get_nframes())+" " )
@@ -666,10 +705,6 @@ class AudioRoamerPanel( wx.Panel ):
         self._wxobj["sampwidth"].SetStringSelection( sp )
 
         # IPUs
-        volume = self._cv.search_threshold_vol()
-        self._cv.search_silences(volume)
-        self._cv.filter_silences(0.2)
-        tracks = self._cv.extract_tracks(0.3)
 
         # Set a different foreground color to estimated values
         for v in self._wxobj.values():
@@ -679,12 +714,23 @@ class AudioRoamerPanel( wx.Panel ):
 
     def SetChannel(self, newchannel):
         """
-        Set a new channel.
+        Set a new channel, estimates the values to be displayed.
 
         """
-        self._channel  = newchannel
+        # Set the channel
+        self._channel = newchannel
+
+        # To estimate values related to amplitude
+        frames = self._channel.get_frames(self._channel.get_nframes())
+        self._ca = AudioFrames(frames, self._channel.get_sampwidth(), 1)
+
+        # Estimates the RMS (i.e. volume), then find where are silences
         self._cv = ChannelSilence(self._channel)
-        self._ca = AudioFrames(self._channel.get_frames(self._channel.get_nframes()), self._channel.get_sampwidth(), 1)
+        volume = self._cv.search_threshold_vol()
+        self._cv.search_silences(volume)
+        self._cv.filter_silences(0.2)
+        # Find where are IPUs
+        #tracks = self._cv.extract_tracks(0.3)
 
     # -----------------------------------------------------------------------
 
@@ -693,11 +739,14 @@ class AudioRoamerPanel( wx.Panel ):
         Apply changes on the channel then show new values.
 
         """
+        # Get the list of modifiable values from wx objects
         fm     = int(self._wxobj["framerate"].GetValue())
         sp     = int(self._wxobj["sampwidth"].GetValue())/8
         mul    = float(self._wxobj["mul"].GetValue())
         bias   = int(self._wxobj["bias"].GetValue())
         offset = self._wxobj["offset"].GetValue()
+
+        # If something changed, apply this/these change-s to the channel
         if fm != self._channel.get_framerate() or sp != self._channel.get_sampwidth() or mul != 1.0 or bias != 0 or offset is True:
             channelfmt = ChannelFormatter(self._channel)
             channelfmt.set_framerate(fm)
@@ -721,11 +770,8 @@ class AudioRoamerPanel( wx.Panel ):
 
         # If it is the OK response, process the data.
         if newfilename is not None:
-            if newfilename == parentfilename or os.path.exists(newfilename):
-                ShowInformation( self, self._prefs, "File already exists!" , style=wx.ICON_ERROR)
-                return
             try:
-
+                self.ApplyChanges()
                 audio = AudioPCM()
                 audio.append_channel(self._channel)
                 audiodata.io.save(newfilename, audio)
@@ -735,6 +781,11 @@ class AudioRoamerPanel( wx.Panel ):
             else:
                 # Update members
                 self._filename = newfilename
+                # Tell the parent we changed his file
+                if newfilename == parentfilename:
+                    evt = FileWanderEvent(filename=self._filename, status=True)
+                    evt.SetEventObject(self)
+                    wx.PostEvent( self.GetParent().GetParent().GetParent(), evt )
 
     # -----------------------------------------------------------------------
 
@@ -749,6 +800,10 @@ class AudioRoamerPanel( wx.Panel ):
             content = self._infos_content(parentfilename)
             with codecs.open(newfilename, "w", encoding) as fp:
                 fp.write(content)
+
+    # -----------------------------------------------------------------------
+    # Private methods to list information in a "formatted" text.
+    # -----------------------------------------------------------------------
 
     def _infos_content(self, parentfilename):
         content  = ""
@@ -767,7 +822,7 @@ class AudioRoamerPanel( wx.Panel ):
         content += self._line("Channel extracted from file: "+parentfilename)
         content += self._line("Duration: %s sec."%self._channel.get_duration())
         content += self._line("Framerate: %d Hz"%self._channel.get_framerate())
-        content += self._line("Samp. width: %d bits"%self._channel.get_sampwidth())
+        content += self._line("Samp. width: %d bits"%(int(self._channel.get_sampwidth())*8))
 
         # Amplitude
         content += self._section("Amplitude")
@@ -777,8 +832,8 @@ class AudioRoamerPanel( wx.Panel ):
         # Clipping
         content += self._section("Amplitude clipping: ")
         for i in range(1,10):
-            content += self._item(str(float(i)/10.)+": "+str(self._wxobj["clip1"+str(i)].GetValue())+"%")
-        content += self._newline()
+            f = self._ca.clipping_rate( float(i)/10. ) * 100.
+            content += self._item("factor "+str(float(i)/10.)+": "+str(round(f,2))+"%")
 
         # Volume
         content += self._section("Volume")
@@ -809,7 +864,6 @@ class AudioRoamerPanel( wx.Panel ):
 
     def _sep(self):
         return "-----------------------------------------------------------------\n"
-
 
 # ----------------------------------------------------------------------------
 

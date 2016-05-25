@@ -138,65 +138,6 @@ class ChannelFormatter( object ):
     # Workers
     # ----------------------------------------------------------------------
 
-    def sync(self, channel):
-        """
-        Convert the channel with the parameters from the channel put in input.
-
-        @param channel (Channel) the channel used as a model
-
-        """
-        self.sampwidth = channel.get_sampwidth()
-        self.framerate = channel.get_framerate()
-        self.convert()
-
-    # ----------------------------------------------------------------------
-
-    def remove_frames(self, begin, end):
-        """
-        Convert the channel by removing frames.
-
-        @param begin (int) the position of the beginning of the frames to remove
-        @param end (int) the position of the end of the frames to remove
-
-        """
-        newchannel = Channel()
-        newchannel.set_frames( self.channel.frames[:begin*self.sampwidth] + self.channel.frames[end*self.sampwidth:] )
-        newchannel.sampwidth = self.sampwidth
-        newchannel.framerate = self.framerate
-        self.channel = newchannel
-
-    # ----------------------------------------------------------------------
-
-    def add_frames(self, frames, position):
-        """
-        Convert the channel by adding frames.
-
-        @param position (int) the position where the frames will be inserted
-
-        """
-        newchannel = Channel()
-        newchannel.set_frames( self.channel.frames[:position*self.sampwidth] + frames + self.channel.frames[position*self.sampwidth:] )
-        newchannel.sampwidth = self.sampwidth
-        newchannel.framerate = self.framerate
-        self.channel = newchannel
-
-    # ----------------------------------------------------------------------
-
-    def append_frames(self, frames):
-        """
-        Convert the channel by appending frames.
-
-        @param frames (string) the frames to append
-
-        """
-        newchannel = Channel()
-        newchannel.set_frames( self.channel.frames + frames )
-        newchannel.sampwidth = self.sampwidth
-        newchannel.framerate = self.framerate
-        self.channel = newchannel
-
-    # ----------------------------------------------------------------------
-
     def bias(self, biasvalue):
         """
         Convert the channel with a bias added to each frame.
@@ -205,6 +146,8 @@ class ChannelFormatter( object ):
         @param biasvalue (int) the value to bias the frames
 
         """
+        if biasvalue == 0:
+            return
         newchannel = Channel()
         newchannel.sampwidth = self.sampwidth
         newchannel.framerate = self.framerate
@@ -250,6 +193,76 @@ class ChannelFormatter( object ):
 
         self.channel = newchannel
 
+    # ----------------------------------------------------------------------
+
+    def sync(self, channel):
+        """
+        Convert the channel with the parameters from the channel put in input.
+
+        @param channel (Channel) the channel used as a model
+
+        """
+        if isinstance(channel, Channel) is not True:
+            raise TypeError("Expected a channel, got %s"%type(channel))
+
+        self.sampwidth = channel.get_sampwidth()
+        self.framerate = channel.get_framerate()
+        self.convert()
+
+    # ----------------------------------------------------------------------
+
+    def remove_frames(self, begin, end):
+        """
+        Convert the channel by removing frames.
+
+        @param begin (int) the position of the beginning of the frames to remove
+        @param end (int) the position of the end of the frames to remove
+
+        """
+        if begin == end:
+            return
+        if end < begin:
+            raise ValueError
+        newchannel = Channel()
+        newchannel.set_frames( self.channel.frames[:begin*self.sampwidth] + self.channel.frames[end*self.sampwidth:] )
+        newchannel.sampwidth = self.sampwidth
+        newchannel.framerate = self.framerate
+        self.channel = newchannel
+
+    # ----------------------------------------------------------------------
+
+    def add_frames(self, frames, position):
+        """
+        Convert the channel by adding frames.
+
+        @param position (int) the position where the frames will be inserted
+
+        """
+        if len(frames)==0:
+            return
+        newchannel = Channel()
+        newchannel.set_frames( self.channel.frames[:position*self.sampwidth] + frames + self.channel.frames[position*self.sampwidth:] )
+        newchannel.sampwidth = self.sampwidth
+        newchannel.framerate = self.framerate
+        self.channel = newchannel
+
+    # ----------------------------------------------------------------------
+
+    def append_frames(self, frames):
+        """
+        Convert the channel by appending frames.
+
+        @param frames (string) the frames to append
+
+        """
+        if len(frames)==0:
+            return
+        newchannel = Channel()
+        newchannel.set_frames( self.channel.frames + frames )
+        newchannel.sampwidth = self.sampwidth
+        newchannel.framerate = self.framerate
+        self.channel = newchannel
+
 
     # ----------------------------------------------------------------------
     # Private
@@ -266,11 +279,11 @@ class ChannelFormatter( object ):
         fragment = ChannelFrames( f )
 
         # Convert the sample width if it needs to
-        if (self.channel.get_sampwidth() != self.sampwidth):
+        if self.channel.get_sampwidth() != self.sampwidth:
             fragment.change_sampwidth(self.channel.get_sampwidth(), self.sampwidth)
 
         # Convert the self.framerate if it needs to
-        if (self.channel.get_framerate() != self.framerate):
+        if self.channel.get_framerate() != self.framerate:
             fragment.resample(self.sampwidth, self.channel.get_framerate(), self.framerate)
 
         return fragment.get_frames()
