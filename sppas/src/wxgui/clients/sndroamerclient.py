@@ -64,10 +64,12 @@ from wxgui.sp_consts import MIN_PANEL_H
 from wxgui.sp_consts import BUTTON_ICONSIZE
 
 from wxgui.dialogs.filedialogs import SaveAsAudioFile, SaveAsAnyFile
-from wxgui.dialogs.msgdialogs import ShowInformation
-from wxgui.dialogs.basedialog import spBaseDialog
+from wxgui.dialogs.msgdialogs  import ShowInformation
+from wxgui.dialogs.basedialog  import spBaseDialog
+from wxgui.dialogs.choosers    import PeriodChooser
 
 import audiodata.io
+from audiodata.channel          import Channel
 from audiodata.channelsilence   import ChannelSilence
 from audiodata.channelformatter import ChannelFormatter
 from audiodata.audioframes      import AudioFrames
@@ -368,16 +370,23 @@ class AudioRoamerDialog( spBaseDialog ):
 
     def _create_buttons(self):
         btn_close = self.CreateCloseButton()
-        btn_save_channel  = self.CreateButton(SAVE_FILE, "Save this channel as...", "Save the channel in an audio file.", btnid=wx.ID_SAVE)
+
+        btn_save_channel  = self.CreateButton(SAVE_FILE, "Save as...", "Save the channel in an audio file.", btnid=wx.ID_SAVE)
         btn_save_channel.Bind(wx.EVT_BUTTON, self._on_save_channel)
-        btn_save_info = self.CreateButton(SAVE_AS_FILE, "Save these information as...", "Save the displayed information in a text file.", btnid=wx.ID_SAVE)
+
+        btn_save_fragment = self.CreateButton(SAVE_FILE, "Save a portion as...", "Save a portion of this channel in an audio file.", btnid=wx.ID_SAVE)
+        btn_save_fragment.Bind(wx.EVT_BUTTON, self._on_save_fragment)
+
+        btn_save_info = self.CreateButton(SAVE_AS_FILE, "Save info as...", "Save the displayed information in a text file.", btnid=wx.ID_SAVE)
         btn_save_info.Bind(wx.EVT_BUTTON, self._on_save_info)
-        return self.CreateButtonBox( [btn_save_channel,btn_save_info],[btn_close] )
+
+        return self.CreateButtonBox( [btn_save_channel,btn_save_fragment,btn_save_info],[btn_close] )
 
     def _create_content(self):
         audio = audiodata.io.open(self._filename)
         nchannels = audio.get_nchannels()
         audio.extract_channels()
+        audio.close()
 
         self.notebook = wx.Notebook(self)
         self.pages = []
@@ -388,7 +397,6 @@ class AudioRoamerDialog( spBaseDialog ):
 
         self.ShowPage(0)
         self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self._on_notebook_page_changed)
-        audio.close()
         return self.notebook
 
     # ------------------------------------------------------------------------
@@ -403,7 +411,11 @@ class AudioRoamerDialog( spBaseDialog ):
 
     def _on_save_channel(self, event):
         page = self.notebook.GetPage( self.notebook.GetSelection() )
-        page.SaveChannel( self._filename )
+        page.SaveChannel( self._filename, period=False )
+
+    def _on_save_fragment(self, event):
+        page = self.notebook.GetPage( self.notebook.GetSelection() )
+        page.SaveChannel( self._filename, period=True )
 
     def _on_save_info(self, event):
         page = self.notebook.GetPage( self.notebook.GetSelection() )
@@ -435,17 +447,19 @@ class AudioRoamerPanel( wx.Panel ):
 
     """
     FRAMERATES = [ "16000", "32000", "48000" ]
-    SAMPWIDTH  = [ "8", "16", "24", "32" ]
+    SAMPWIDTH  = [ "8", "16", "32" ]
+
     INFO_LABEL_AMP = {"nframes":"Number of frames: " ,
                       "minmax":"Min/Max values: ",
                       "cross":"Zero crossings: "}
+
     INFO_LABEL_VOL = { "volmin":"Volume min: ",
                        "volmax":"Volume max: ",
-                       "volmean":"Volume mean: ",
-                       "volsil":"Threshold volume:",
+                       "volavg":"Volume mean: "}
+
+    INFO_LABEL_IPU = {"volsil":"Threshold volume:",
                        "nbipus":"Number of IPUs:",
-                       "duripus":"Nb frames of IPUs:"
-                     }
+                       "duripus":"Nb frames of IPUs:"}
 
     NO_INFO_LABEL = " ... "
 
@@ -504,33 +518,6 @@ class AudioRoamerPanel( wx.Panel ):
 
         return sizer
 
-    def __add_info_amp(self, parent, gbs, key, row, col):
-        """ Private method to add an info into the GridBagSizer. """
-        static_tx = wx.StaticText(parent, -1, AudioRoamerPanel.INFO_LABEL_AMP[key])
-        gbs.Add(static_tx, (row, col), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=2)
-        self._wxtxobj.append( static_tx )
-        tx = wx.TextCtrl(parent, -1, AudioRoamerPanel.NO_INFO_LABEL, style=wx.TE_READONLY)
-        self._wxobj[key] = tx
-        gbs.Add(tx, (row, col+1), flag=wx.wx.LEFT, border=2)
-
-    def __add_clip(self, parent, gbs, i):
-        """ Private method to add a clipping value in a GridBagSizer. """
-        static_tx = wx.StaticText(parent, -1, "factor "+str( float(i)/10.)+": " )
-        gbs.Add(static_tx, (i, 0), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=2)
-        self._wxtxobj.append( static_tx )
-        tx = wx.TextCtrl(parent, -1, AudioRoamerPanel.NO_INFO_LABEL, style=wx.TE_READONLY|wx.TE_RIGHT)
-        gbs.Add(tx, (i, 1), flag=wx.RIGHT, border=2)
-        self._wxobj["clip1"+str(i)] = tx
-
-    def __add_info_vol(self, parent, gbs, key, row, col):
-        """ Private method to add an info in the GridBagSizer. """
-        static_tx = wx.StaticText(parent, -1, AudioRoamerPanel.INFO_LABEL_VOL[key])
-        gbs.Add(static_tx, (row, col), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=2)
-        self._wxtxobj.append( static_tx )
-        tx = wx.TextCtrl(parent, -1, AudioRoamerPanel.NO_INFO_LABEL, style=wx.TE_READONLY)
-        self._wxobj[key] = tx
-        gbs.Add(tx, (row, col+1), flag=wx.RIGHT, border=2)
-
     def _create_content_infos(self):
         """
         GUI design for amplitude and volume information.
@@ -545,9 +532,9 @@ class AudioRoamerPanel( wx.Panel ):
         static_tx.SetFont( boldfont )
         gbs.Add(static_tx, (0,0), (1,2), flag=wx.LEFT, border=2)
 
-        self.__add_info_amp(self, gbs, "nframes", 1, 0)
-        self.__add_info_amp(self, gbs, "minmax",  2, 0)
-        self.__add_info_amp(self, gbs, "cross",   3, 0)
+        self.__add_info(self, gbs, "nframes", AudioRoamerPanel.INFO_LABEL_AMP["nframes"], 1, 0)
+        self.__add_info(self, gbs, "minmax",  AudioRoamerPanel.INFO_LABEL_AMP["minmax"],  2, 0)
+        self.__add_info(self, gbs, "cross",   AudioRoamerPanel.INFO_LABEL_AMP["cross"],   3, 0)
 
         static_tx = wx.StaticText(self, -1, "")
         gbs.Add(static_tx, (4,0), (1,2), flag=wx.LEFT, border=2)
@@ -555,14 +542,14 @@ class AudioRoamerPanel( wx.Panel ):
         static_tx = wx.StaticText(self, -1, "Frame rate (Hz): ")
         gbs.Add(static_tx, (5, 0), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
         self._wxtxobj.append( static_tx )
-        comboframerate = wx.Choice(self, -1, choices=AudioRoamerPanel.FRAMERATES)#, style=wx.CB_READONLY)
+        comboframerate = wx.ComboBox(self, -1, choices=AudioRoamerPanel.FRAMERATES)#, style=wx.CB_READONLY)
         gbs.Add(comboframerate, (5, 1), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
         self._wxobj["framerate"] = comboframerate
 
         static_tx = wx.StaticText(self, -1, "Samp. width (bits): ")
         gbs.Add(static_tx, (6, 0), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
         self._wxtxobj.append( static_tx )
-        combosampwidth = wx.Choice(self, -1, choices=AudioRoamerPanel.SAMPWIDTH)#, style=wx.CB_READONLY)
+        combosampwidth = wx.ComboBox(self, -1, choices=AudioRoamerPanel.SAMPWIDTH)#, style=wx.CB_READONLY)
         gbs.Add(combosampwidth, (6, 1), flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
         self._wxobj["sampwidth"] = combosampwidth
 
@@ -633,9 +620,9 @@ class AudioRoamerPanel( wx.Panel ):
         static_tx.SetFont( boldfont )
         gbs.Add(static_tx, (0,0), (1,2), flag=wx.LEFT, border=2)
 
-        self.__add_info_vol(self, gbs, "volmin",  1, 0)
-        self.__add_info_vol(self, gbs, "volmax",  2, 0)
-        self.__add_info_vol(self, gbs, "volmean", 3, 0)
+        self.__add_info(self, gbs, "volmin", AudioRoamerPanel.INFO_LABEL_VOL["volmin"], 1, 0)
+        self.__add_info(self, gbs, "volmax", AudioRoamerPanel.INFO_LABEL_VOL["volmax"], 2, 0)
+        self.__add_info(self, gbs, "volavg", AudioRoamerPanel.INFO_LABEL_VOL["volavg"], 3, 0)
 
         static_tx = wx.StaticText(self, -1, "")
         gbs.Add(static_tx, (4, 0), (1,2), flag=wx.LEFT, border=2)
@@ -644,9 +631,9 @@ class AudioRoamerPanel( wx.Panel ):
         static_tx.SetFont( boldfont )
         gbs.Add(static_tx, (5, 0), (1,2), flag=wx.LEFT, border=2)
 
-        self.__add_info_vol(self, gbs, "volsil", 6,0)
-        self.__add_info_vol(self, gbs, "nbipus", 7,0)
-        self.__add_info_vol(self, gbs, "duripus", 8,0)
+        self.__add_info(self, gbs, "volsil",  AudioRoamerPanel.INFO_LABEL_IPU["volsil"],  6, 0)
+        self.__add_info(self, gbs, "nbipus",  AudioRoamerPanel.INFO_LABEL_IPU["nbipus"],  7, 0)
+        self.__add_info(self, gbs, "duripus", AudioRoamerPanel.INFO_LABEL_IPU["duripus"], 8, 0)
 
         border = wx.BoxSizer()
         border.Add(gbs, 1, wx.ALL | wx.EXPAND, 10)
@@ -725,12 +712,12 @@ class AudioRoamerPanel( wx.Panel ):
         # Clipping
         for i in range(1,10):
             cr = self._ca.clipping_rate( float(i)/10. ) * 100.
-            self._wxobj["clip1"+str(i)].ChangeValue( " "+str( round(cr,2))+"% ")
+            self._wxobj["clip"+str(i)].ChangeValue( " "+str( round(cr,2))+"% ")
 
         # Volumes / Silences
         self._wxobj["volmin"].ChangeValue( " "+str(self._cv.get_volstats().min())+" " )
         self._wxobj["volmax"].ChangeValue( " "+str(self._cv.get_volstats().max())+" " )
-        self._wxobj["volmean"].ChangeValue( " "+str(int(self._cv.get_volstats().mean()) )+" ")
+        self._wxobj["volavg"].ChangeValue( " "+str(int(self._cv.get_volstats().mean()) )+" ")
         self._wxobj["volsil"].ChangeValue( " "+str(self._cv.search_threshold_vol())+" " )
         self._wxobj["nbipus"].ChangeValue( " "+str(len(self._tracks))+" " )
         d = sum( [(e-s) for (s,e) in self._tracks] )
@@ -758,58 +745,111 @@ class AudioRoamerPanel( wx.Panel ):
 
     # -----------------------------------------------------------------------
 
-    def ApplyChanges(self):
+    def ApplyChanges(self, from_time=None, to_time=None):
         """
-        Apply changes on the channel then show new values.
+        Return a channel with changed applied.
+
+        @param from_time (float)
+        @param to_time (float)
+        @return (Channel) new channel or None if nothing changed
 
         """
         # Get the list of modifiable values from wx objects
         fm     = int(self._wxobj["framerate"].GetValue())
-        sp     = int(self._wxobj["sampwidth"].GetValue())/8
+        sp     = int(int(self._wxobj["sampwidth"].GetValue())/8)
         mul    = float(self._wxobj["mul"].GetValue())
         bias   = int(self._wxobj["bias"].GetValue())
         offset = self._wxobj["offset"].GetValue()
 
+        dirty = False
+        if from_time is None:
+            from_frame = 0
+        else:
+            from_frame = int( from_time * fm )
+            dirty = True
+        if to_time is None:
+            to_frame = self._channel.get_nframes()
+        else:
+            dirty = True
+            to_frame = int(to_time * fm)
+
+        channel = self._channel.extract_fragment(from_frame,to_frame)
+
         # If something changed, apply this/these change-s to the channel
-        if fm != self._channel.get_framerate() or sp != self._channel.get_sampwidth() or mul != 1.0 or bias != 0 or offset is True:
-            channelfmt = ChannelFormatter(self._channel)
+        if fm != self._channel.get_framerate() or sp != self._channel.get_sampwidth() or mul != 1. or bias != 0 or offset is True:
+            channelfmt = ChannelFormatter( channel )
             channelfmt.set_framerate(fm)
             channelfmt.set_sampwidth(sp)
             channelfmt.convert()
             channelfmt.mul(mul)
-            channelfmt.bias()
+            channelfmt.bias(bias)
             if offset is True:
                 channelfmt.remove_offset()
-            self.SetChannel( channelfmt.get_channel() )
-            self.ShowInfo()
+            channel = channelfmt.get_channel()
+            dirty = True
+
+        if dirty is True:
+            return channel
+        return None
 
     # -----------------------------------------------------------------------
 
-    def SaveChannel(self, parentfilename):
+    def SaveChannel(self, parentfilename, period=False):
         """
         Save the channel in an audio file.
 
+        @param parentfilename (str)
+        @param period (bool) Save a portion of the channel only
+
         """
+        s = None
+        e = None
+        if period is True:
+            dlg = PeriodChooser( self, 0., float(self._channel.get_nframes())/float(self._channel.get_framerate()) )
+            if dlg.ShowModal() == wx.ID_OK:
+                (s,e) = dlg.GetValues()
+                try:
+                    s = float(s)
+                    e = float(e)
+                    if e < s: raise Exception
+                except Exception:
+                    ShowInformation( self, self._prefs, "Error in the definition of the portion of time.", style=wx.ICON_ERROR)
+                    return
+            dlg.Destroy()
+
         newfilename = SaveAsAudioFile()
 
         # If it is the OK response, process the data.
         if newfilename is not None:
+            if newfilename == parentfilename:
+                ShowInformation( self, self._prefs, "Assigning the current file name is forbidden. Choose a new file name.", style=wx.ICON_ERROR)
+                return
+
+            # Create a formatted channel
             try:
-                self.ApplyChanges()
+                channel = self.ApplyChanges(s,e)
+            except Exception as e:
+                ShowInformation( self, self._prefs, "Error while formatting the channel: %s"%str(e), style=wx.ICON_ERROR)
+                return
+
+            message = "File %s saved successfully."%newfilename
+            if channel is None:
+                channel = self._channel
+            else:
+                message +="\nYou can now open it with SndRoamer to see your changes!"
+
+            # Save the channel
+            try:
                 audio = AudioPCM()
-                audio.append_channel(self._channel)
+                audio.append_channel(channel)
                 audiodata.io.save(newfilename, audio)
             except Exception as e:
-                ShowInformation( self, self._prefs, "Save has failed: %s" % e, style=wx.ICON_ERROR)
-                return
+                message = "File not saved. Error: %s"%str(e)
             else:
                 # Update members
                 self._filename = newfilename
-                # Tell the parent we changed his file
-                if newfilename == parentfilename:
-                    evt = FileWanderEvent(filename=self._filename, status=True)
-                    evt.SetEventObject(self)
-                    wx.PostEvent( self.GetParent().GetParent().GetParent(), evt )
+
+            ShowInformation( self, self._prefs, message, style=wx.ICON_ERROR)
 
     # -----------------------------------------------------------------------
 
@@ -831,63 +871,102 @@ class AudioRoamerPanel( wx.Panel ):
 
     def _infos_content(self, parentfilename):
         content  = ""
-        content += self._sep()
-        content += self._line(program + ' - Version ' + version)
-        content += self._line(copyright)
-        content += self._line("Web site: "+ url)
-        content += self._line("Contact: "+ author + "("+ contact + ")")
-        content += self._sep()
-        content += self._newline()
-        content += self._line("Date: " + str(datetime.datetime.now()))
+        content += self.__separator()
+        content += self.__line(program + ' - Version ' + version)
+        content += self.__line(copyright)
+        content += self.__line("Web site: "+ url)
+        content += self.__line("Contact: "+ author + "("+ contact + ")")
+        content += self.__separator()
+        content += self.__newline()
+        content += self.__line("Date: " + str(datetime.datetime.now()))
 
         # General information
-        content += self._section("General information")
-        content += self._line("Filename: %s"%self._filename)
-        content += self._line("Channel extracted from file: "+parentfilename)
-        content += self._line("Duration: %s sec."%self._channel.get_duration())
-        content += self._line("Framerate: %d Hz"%self._channel.get_framerate())
-        content += self._line("Samp. width: %d bits"%(int(self._channel.get_sampwidth())*8))
+        content += self.__section("General information")
+        content += self.__line("Filename: %s"%self._filename)
+        content += self.__line("Channel extracted from file: "+parentfilename)
+        content += self.__line("Duration: %s sec."%self._channel.get_duration())
+        content += self.__line("Framerate: %d Hz"%self._channel.get_framerate())
+        content += self.__line("Samp. width: %d bits"%(int(self._channel.get_sampwidth())*8))
 
         # Amplitude
-        content += self._section("Amplitude")
+        content += self.__section("Amplitude")
         for k,label in AudioRoamerPanel.INFO_LABEL_AMP.items():
-            content += self._line(label+self._wxobj[k].GetValue())
+            content += self.__line(label+self._wxobj[k].GetValue())
 
         # Clipping
-        content += self._section("Amplitude clipping: ")
+        content += self.__section("Amplitude clipping: ")
         for i in range(1,10):
             f = self._ca.clipping_rate( float(i)/10. ) * 100.
-            content += self._item("factor "+str(float(i)/10.)+": "+str(round(f,2))+"%")
+            content += self.__item("factor "+str(float(i)/10.)+": "+str(round(f,2))+"%")
 
         # Volume
-        content += self._section("Volume")
+        content += self.__section("Volume")
         for k,label in AudioRoamerPanel.INFO_LABEL_VOL.items():
-            content += self._line(label+self._wxobj[k].GetValue())
+            content += self.__line(label+self._wxobj[k].GetValue())
 
         # IPUs
-        content += self._section("Inter-Pausal Units automatic segmentation")
+        content += self.__section("Inter-Pausal Units automatic segmentation")
+        for k,label in AudioRoamerPanel.INFO_LABEL_IPU.items():
+            content += self.__line(label+self._wxobj[k].GetValue())
 
         return content
 
-    def _section(self, title):
-        text = self._newline()
-        text += self._sep()
-        text += self._line(title)
-        text += self._sep()
-        text += self._newline()
+    # -----------------------------------------------------------------------
+    # Private methods.
+    # -----------------------------------------------------------------------
+
+    def __add_info(self, parent, gbs, key, label, row, col):
+        """ Private method to add an info into the GridBagSizer. """
+        static_tx = wx.StaticText(parent, -1, label)
+        gbs.Add(static_tx, (row, col), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=2)
+        self._wxtxobj.append( static_tx )
+        tx = wx.TextCtrl(parent, -1, AudioRoamerPanel.NO_INFO_LABEL, style=wx.TE_READONLY)
+        self._wxobj[key] = tx
+        gbs.Add(tx, (row, col+1), flag=wx.wx.LEFT, border=2)
+
+    def __add_clip(self, parent, gbs, i):
+        """ Private method to add a clipping value in a GridBagSizer. """
+        static_tx = wx.StaticText(parent, -1, "factor "+str( float(i)/10.)+": " )
+        gbs.Add(static_tx, (i, 0), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=2)
+        self._wxtxobj.append( static_tx )
+        tx = wx.TextCtrl(parent, -1, AudioRoamerPanel.NO_INFO_LABEL, style=wx.TE_READONLY|wx.TE_RIGHT)
+        gbs.Add(tx, (i, 1), flag=wx.RIGHT, border=2)
+        self._wxobj["clip"+str(i)] = tx
+
+    # -----------------------------------------------------------------------
+
+    def __section(self, title):
+        """ Private method to make to look like a title. """
+        text  = self.__newline()
+        text += self.__separator()
+        text += self.__line(title)
+        text += self.__separator()
+        text += self.__newline()
         return text
 
-    def _line(self, msg):
-        return msg.strip() + "\n"
+    def __line(self, msg):
+        """ Private method to make a text as a simple line. """
+        text  = msg.strip()
+        text += self.__newline()
+        return text
 
-    def _item(self, msg):
-        return "  - "+msg.strip() + "\n"
+    def __item(self, msg):
+        """ Private method to make a text as a simple item. """
+        text  = "  - "
+        text += self.__line(msg)
+        return text
 
-    def _newline(self):
-        return "\n"
+    def __newline(self):
+        """ Private method to return a new empty line. """
+        if wx.Platform == '__WXMAC__' or wx.Platform == '__WXGTK__':
+            return "\n"
+        return "\r\n"
 
-    def _sep(self):
-        return "-----------------------------------------------------------------\n"
+    def __separator(self):
+        """ Private method to return a separator line. """
+        text  = "-----------------------------------------------------------------"
+        text += self.__newline()
+        return text
 
 # ----------------------------------------------------------------------------
 

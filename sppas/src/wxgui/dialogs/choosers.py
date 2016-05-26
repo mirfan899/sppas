@@ -51,13 +51,13 @@ from wxgui.sp_consts          import MAIN_FONTSIZE
 
 # ----------------------------------------------------------------------------
 
-class ZoomChooser( wx.Dialog ):
+class PeriodChooser( wx.Dialog ):
     """
     Show a dialog to choose a new period (start/end values).
-    """
 
+    """
     def __init__(self, parent, start, end):
-        wx.Dialog.__init__(self, parent, title="Zoom Chooser", size=(320,150), style=wx.DEFAULT_DIALOG_STYLE | wx.STAY_ON_TOP)
+        wx.Dialog.__init__(self, parent, title="Period chooser", size=(320,150), style=wx.DEFAULT_DIALOG_STYLE | wx.STAY_ON_TOP)
 
         self.start = start
         self.end   = end

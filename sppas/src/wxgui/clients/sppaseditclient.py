@@ -79,7 +79,7 @@ from wxgui.ui.displayctrl    import DisplayCtrl
 from wxgui.ui.trsctrl        import TranscriptionCtrl
 from wxgui.ui.wavectrl       import WaveCtrl
 
-from wxgui.dialogs.choosers      import ZoomChooser
+from wxgui.dialogs.choosers      import PeriodChooser
 from wxgui.dialogs.trsinfodialog import TrsInfoDialog
 from wxgui.dialogs.msgdialogs    import ShowInformation
 
@@ -559,7 +559,7 @@ class NavigatePanel( wx.Panel ):
         """
         if self._display is None: return
 
-        dlg = ZoomChooser( self, self._display.GetPeriod().GetStart(), self._display.GetPeriod().GetEnd() )
+        dlg = PeriodChooser( self, self._display.GetPeriod().GetStart(), self._display.GetPeriod().GetEnd() )
         if dlg.ShowModal() == wx.ID_OK:
             (s,e) = dlg.GetValues()
             try:
