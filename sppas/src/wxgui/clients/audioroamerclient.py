@@ -32,11 +32,12 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: sndroamerclient.py
+# File: audioroamerclient.py
 # ----------------------------------------------------------------------------
-import os
+
 import datetime
 import codecs
+import math
 import wx
 import wx.lib.scrolledpanel as scrolled
 
@@ -54,7 +55,7 @@ from wxgui.cutils.imageutils import spBitmap
 from wxgui.cutils.ctrlutils  import CreateGenButton
 from wxgui.cutils.textutils   import TextAsNumericValidator
 
-from wxgui.sp_icons  import SNDROAMER_APP_ICON
+from wxgui.sp_icons  import AUDIOROAMER_APP_ICON
 from wxgui.sp_icons  import SAVE_FILE
 from wxgui.sp_icons  import SAVE_AS_FILE
 
@@ -74,6 +75,7 @@ from audiodata.channelsilence   import ChannelSilence
 from audiodata.channelformatter import ChannelFormatter
 from audiodata.audioframes      import AudioFrames
 from audiodata.audio            import AudioPCM
+from audiodata.audioutils       import amp2db as amp2db
 
 from sp_glob import program, version, copyright, url, author, contact
 from sp_glob import encoding
@@ -86,7 +88,7 @@ ID_DIALOG_AUDIOROAMER  = wx.NewId()
 # Main class that manage the notebook
 # ----------------------------------------------------------------------------
 
-class SndRoamerClient( BaseClient ):
+class AudioRoamerClient( BaseClient ):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -312,7 +314,7 @@ class AudioRoamer( wx.Panel ):
 
         sizer = wx.BoxSizer( wx.HORIZONTAL )
         FONT = self._prefs.GetValue('M_FONT')
-        bmproamer = spBitmap(SNDROAMER_APP_ICON, theme=self._prefs.GetValue('M_ICON_THEME'))
+        bmproamer = spBitmap(AUDIOROAMER_APP_ICON, theme=self._prefs.GetValue('M_ICON_THEME'))
         self.roamerButton = CreateGenButton(self, ID_DIALOG_AUDIOROAMER, bmproamer, text="Want more?", tooltip="Show more information, manage channels, framerate, etc.", colour=wx.Colour(220,120,180), SIZE=BUTTON_ICONSIZE, font=FONT)
         self.Bind(wx.EVT_BUTTON, self.OnAudioRoamer,  self.roamerButton, ID_DIALOG_AUDIOROAMER)
 
@@ -362,7 +364,7 @@ class AudioRoamerDialog( spBaseDialog ):
         wx.GetApp().SetAppName( "audio" )
         self._filename = filename
 
-        titlebox   = self.CreateTitle(SNDROAMER_APP_ICON,"Audio Data Manager")
+        titlebox   = self.CreateTitle(AUDIOROAMER_APP_ICON,"Audio Data Manager")
         contentbox = self._create_content()
         buttonbox  = self._create_buttons()
 
@@ -460,20 +462,20 @@ class AudioRoamerPanel( wx.Panel ):
     """
     FRAMERATES = [ "16000", "32000", "48000" ]
     SAMPWIDTH  = [ "8", "16", "32" ]
-    INFO_LABELS = {"framerate":("Frame rate (Hz): ",FRAMERATES[0]),
-                   "sampwidth":("Samp. width (bits): ",SAMPWIDTH[0]),
-                   "mul":      ("Multiply values by: ","1.0"),
-                   "bias":     ("Add bias value: ","0"),
-                   "offset":   ("Remove offset value: ",False),
-                   "nframes":  ("Number of frames: "," ... "),
-                   "minmax":   ("Min/Max values: "," ... "),
-                   "cross":    ("Zero crossings: "," ... "),
-                   "volmin":   ("Volume min: "," ... "),
-                   "volmax":   ("Volume max: "," ... "),
-                   "volavg":   ("Volume mean: "," ... "),
-                   "volsil":   ("Threshold volume: "," ... "),
-                   "nbipus":   ("Number of IPUs: "," ... "),
-                   "duripus":  ("Nb frames of IPUs: "," ... ")
+    INFO_LABELS = {"framerate":("  Frame rate (Hz): ",FRAMERATES[0]),
+                   "sampwidth":("  Samp. width (bits): ",SAMPWIDTH[0]),
+                   "mul":      ("  Multiply values by: ","1.0"),
+                   "bias":     ("  Add bias value: ","0"),
+                   "offset":   ("  Remove offset value: ",False),
+                   "nframes":  ("  Number of frames: "," ... "),
+                   "minmax":   ("  Min/Max values: "," ... "),
+                   "cross":    ("  Zero crossings: "," ... "),
+                   "volmin":   ("  Volume min: "," ... "),
+                   "volmax":   ("  Volume max: "," ... "),
+                   "volavg":   ("  Volume mean: "," ... "),
+                   "volsil":   ("  Threshold volume: "," ... "),
+                   "nbipus":   ("  Number of IPUs: "," ... "),
+                   "duripus":  ("  Nb frames of IPUs: "," ... ")
                    }
 
     def __init__(self, parent, preferences, channel):
@@ -549,10 +551,12 @@ class AudioRoamerPanel( wx.Panel ):
         gbs.Add(static_tx, (4,0), (1,2), flag=wx.LEFT, border=2)
 
         cfm = wx.ComboBox(self, -1, choices=AudioRoamerPanel.FRAMERATES, style=wx.CB_READONLY)
+        cfm.SetMinSize((120,24))
         self.__add_modifiable(self, gbs, cfm, "framerate", 5)
         self.Bind(wx.EVT_COMBOBOX, self.OnModif, cfm)
 
         csp = wx.ComboBox(self, -1, choices=AudioRoamerPanel.SAMPWIDTH, style=wx.CB_READONLY)
+        csp.SetMinSize((120,24))
         self.__add_modifiable(self, gbs, csp, "sampwidth", 6)
         self.Bind(wx.EVT_COMBOBOX, self.OnModif, csp)
 
@@ -602,7 +606,7 @@ class AudioRoamerPanel( wx.Panel ):
         """
         gbs = wx.GridBagSizer(9, 2)
 
-        static_tx = wx.StaticText(self, -1, "Volume (RMS):")
+        static_tx = wx.StaticText(self, -1, "Root-mean square:")
         gbs.Add(static_tx, (0,0), (1,2), flag=wx.LEFT, border=2)
         self._wxobj["titlevolume"] = (static_tx,None)
 
@@ -744,9 +748,12 @@ class AudioRoamerPanel( wx.Panel ):
             self._wxobj["clip"+str(i)][1].ChangeValue( " "+str( round(cr,2))+"% ")
 
         # Volumes / Silences
-        self._wxobj["volmin"][1].ChangeValue( " "+str(self._cv.get_volstats().min())+" " )
-        self._wxobj["volmax"][1].ChangeValue( " "+str(self._cv.get_volstats().max())+" " )
-        self._wxobj["volavg"][1].ChangeValue( " "+str(int(self._cv.get_volstats().mean()) )+" ")
+        vmin = self._cv.get_volstats().min()
+        vmax = self._cv.get_volstats().max()
+        vavg = self._cv.get_volstats().mean()
+        self._wxobj["volmin"][1].ChangeValue( " "+str(vmin)+" ("+str(amp2db(vmin))+" dB) " )
+        self._wxobj["volmax"][1].ChangeValue( " "+str(vmax)+" ("+str(amp2db(vmax))+" dB) " )
+        self._wxobj["volavg"][1].ChangeValue( " "+str(int(vavg) )+" ("+str(amp2db(vavg))+" dB) ")
         self._wxobj["volsil"][1].ChangeValue( " "+str(self._cv.search_threshold_vol())+" " )
         self._wxobj["nbipus"][1].ChangeValue( " "+str(len(self._tracks))+" " )
         d = sum( [(e-s) for (s,e) in self._tracks] )
@@ -846,8 +853,9 @@ class AudioRoamerPanel( wx.Panel ):
         s = None
         e = None
         if period is True:
-            dlg = PeriodChooser( self, 0., float(self._channel.get_nframes())/float(self._channel.get_framerate()) )
-            if dlg.ShowModal() == wx.ID_OK:
+            dlg = PeriodChooser( self, self._prefs, 0., float(self._channel.get_nframes())/float(self._channel.get_framerate()) )
+            answer = dlg.ShowModal()
+            if answer == wx.ID_OK:
                 (s,e) = dlg.GetValues()
                 try:
                     s = float(s)
@@ -857,6 +865,8 @@ class AudioRoamerPanel( wx.Panel ):
                     ShowInformation( self, self._prefs, "Error in the definition of the portion of time.", style=wx.ICON_ERROR)
                     return
             dlg.Destroy()
+            if answer != wx.ID_OK:
+                return
 
         newfilename = SaveAsAudioFile()
 
@@ -931,27 +941,29 @@ class AudioRoamerPanel( wx.Panel ):
 
         # Amplitude
         content += self.__section("Amplitude")
-        content += self.__line(AudioRoamerPanel.INFO_LABELS["nframes"]+self._wxobj["nframes"][1].GetValue())
-        content += self.__line(AudioRoamerPanel.INFO_LABELS["minmax"]+self._wxobj["minmax"][1].GetValue())
-        content += self.__line(AudioRoamerPanel.INFO_LABELS["cross"]+self._wxobj["cross"][1].GetValue())
+        content += self.__line(AudioRoamerPanel.INFO_LABELS["nframes"][0]+self._wxobj["nframes"][1].GetValue())
+        content += self.__line(AudioRoamerPanel.INFO_LABELS["minmax"][0]+self._wxobj["minmax"][1].GetValue())
+        content += self.__line(AudioRoamerPanel.INFO_LABELS["cross"][0]+self._wxobj["cross"][1].GetValue())
 
         # Clipping
-        content += self.__section("Amplitude clipping: ")
+        content += self.__section("Amplitude clipping")
         for i in range(1,10):
             f = self._ca.clipping_rate( float(i)/10. ) * 100.
-            content += self.__item("factor "+str(float(i)/10.)+": "+str(round(f,2))+"%")
+            content += self.__item("  factor "+str(float(i)/10.)+": "+str(round(f,2))+"%")
 
         # Volume
-        content += self.__section("Volume")
-        content += self.__line(AudioRoamerPanel.INFO_LABELS["volmin"]+self._wxobj["volmin"][1].GetValue())
-        content += self.__line(AudioRoamerPanel.INFO_LABELS["volmax"]+self._wxobj["volmax"][1].GetValue())
-        content += self.__line(AudioRoamerPanel.INFO_LABELS["volavg"]+self._wxobj["volavg"][1].GetValue())
+        content += self.__section("Root-mean square")
+        content += self.__line(AudioRoamerPanel.INFO_LABELS["volmin"][0]+self._wxobj["volmin"][1].GetValue())
+        content += self.__line(AudioRoamerPanel.INFO_LABELS["volmax"][0]+self._wxobj["volmax"][1].GetValue())
+        content += self.__line(AudioRoamerPanel.INFO_LABELS["volavg"][0]+self._wxobj["volavg"][1].GetValue())
 
         # IPUs
         content += self.__section("Inter-Pausal Units automatic segmentation")
-        content += self.__line(AudioRoamerPanel.INFO_LABELS["volsil"]+self._wxobj["volsil"][1].GetValue())
-        content += self.__line(AudioRoamerPanel.INFO_LABELS["nbipus"]+self._wxobj["nbipus"][1].GetValue())
-        content += self.__line(AudioRoamerPanel.INFO_LABELS["duripus"]+self._wxobj["duripus"][1].GetValue())
+        content += self.__line(AudioRoamerPanel.INFO_LABELS["volsil"][0]+self._wxobj["volsil"][1].GetValue())
+        content += self.__line(AudioRoamerPanel.INFO_LABELS["nbipus"][0]+self._wxobj["nbipus"][1].GetValue())
+        content += self.__line(AudioRoamerPanel.INFO_LABELS["duripus"][0]+self._wxobj["duripus"][1].GetValue())
+        content += self.__newline()
+        content += self.__separator()
 
         return content
 
@@ -964,12 +976,13 @@ class AudioRoamerPanel( wx.Panel ):
         static_tx = wx.StaticText(parent, -1, AudioRoamerPanel.INFO_LABELS[key][0])
         gbs.Add(static_tx, (row, 0), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=2)
         tx = wx.TextCtrl(parent, -1, AudioRoamerPanel.INFO_LABELS[key][1], style=wx.TE_READONLY)
+        tx.SetMinSize((120,24))
         gbs.Add(tx, (row, 1), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=2)
         self._wxobj[key] = (static_tx,tx)
 
     def __add_clip(self, parent, gbs, i):
         """ Private method to add a clipping value in a GridBagSizer. """
-        static_tx = wx.StaticText(parent, -1, "factor "+str( float(i)/10.)+": " )
+        static_tx = wx.StaticText(parent, -1, "  factor "+str( float(i)/10.)+": " )
         gbs.Add(static_tx, (i, 0), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=2)
         tx = wx.TextCtrl(parent, -1, " ... ", style=wx.TE_READONLY|wx.TE_RIGHT)
         gbs.Add(tx, (i, 1), flag=wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, border=2)

@@ -66,8 +66,8 @@ SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.insert(0,SPPAS)
 
 try:
-    from wxgui.frames.sndroamerframe import SndRoamerFrame
-    from wxgui.sp_icons import SNDROAMER_APP_ICON
+    from wxgui.frames.audioroamerframe import AudioRoamerFrame
+    from wxgui.sp_icons import AUDIOROAMER_APP_ICON
     from utils.fileutils import setup_logging
     from wxgui.dialogs.msgdialogs  import ShowInformation
     from wxgui.structs.prefs       import Preferences_IO
@@ -84,7 +84,7 @@ except ImportError:
 # Arguments
 # ------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s files" % os.path.basename(PROGRAM), description="SndRoamer graphical user interface.")
+parser = ArgumentParser(usage="%s files" % os.path.basename(PROGRAM), description="SPPAS AudioRoamer graphical user interface.")
 parser.add_argument("files", nargs="*", help='Input file name(s)')
 args = parser.parse_args()
 
@@ -129,12 +129,12 @@ if v < 3:
 # App
 arguments = {}
 arguments['files'] = []
-arguments['title'] = "SndRoamer"
+arguments['title'] = "SPPAS - AudioRoamer"
 arguments['type']  = "SOUNDFILES"
-arguments['icon']  = SNDROAMER_APP_ICON
+arguments['icon']  = AUDIOROAMER_APP_ICON
 arguments['prefs'] = prefsIO
 
-frame = SndRoamerFrame(None, -1, arguments)
+frame = AudioRoamerFrame(None, -1, arguments)
 frame.AddFiles( filenames )
 
 app.SetTopWindow(frame)

@@ -152,3 +152,15 @@ def mel2db(value):
     return 700*(10**(float(value)/2595)-1)
 
 # ----------------------------------------------------------------------------
+
+def amp2db(value):
+    """
+    Return the equivalent value in a db scale, from an amplitude value.
+
+    @param value (int) the amplitude value to convert
+    @return the value in db
+
+    """
+    return round( 10. * math.log10(value), 2)
+
+# ----------------------------------------------------------------------------

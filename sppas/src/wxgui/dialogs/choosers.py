@@ -48,28 +48,53 @@ import wx
 from wxgui.cutils.dialogutils import create_wildcard, extend_path
 from wxgui.cutils.textutils   import TextAsNumericValidator
 from wxgui.sp_consts          import MAIN_FONTSIZE
+from wxgui.dialogs.basedialog import spBaseDialog
+from wxgui.sp_icons import INFO_ICON
 
 # ----------------------------------------------------------------------------
 
-class PeriodChooser( wx.Dialog ):
+class PeriodChooser( spBaseDialog ):
     """
     Show a dialog to choose a new period (start/end values).
 
     """
-    def __init__(self, parent, start, end):
-        wx.Dialog.__init__(self, parent, title="Period chooser", size=(320,150), style=wx.DEFAULT_DIALOG_STYLE | wx.STAY_ON_TOP)
+    def __init__(self, parent, preferences, start, end):
+        """
+
+        """
+        spBaseDialog.__init__(self, parent, preferences, title=" - Chooser")
+        wx.GetApp().SetAppName( "perioddlg" )
 
         self.start = start
         self.end   = end
 
-        font = wx.Font(MAIN_FONTSIZE, wx.SWISS, wx.NORMAL, wx.NORMAL)
+        titlebox   = self.CreateTitle(INFO_ICON,"Choose a period:")
+        contentbox = self._create_content()
+        buttonbox  = self._create_buttons()
 
+        self.SetMinSize((300, 120))
+        self.LayoutComponents( titlebox,
+                               contentbox,
+                               buttonbox )
+
+    # ------------------------------------------------------------------------
+    # Create the GUI
+    # ------------------------------------------------------------------------
+
+    def _create_buttons(self):
+        btn_cancel = self.CreateCancelButton()
+        btn_okay   = self.CreateOkayButton()
+        self.SetAffirmativeId(wx.ID_OK)
+        return self.CreateButtonBox( [btn_cancel],[btn_okay] )
+
+    def _create_content(self):
         # create the main sizer.
+        font = self.preferences.GetValue('M_FONT')
         gbs = wx.GridBagSizer(hgap=5, vgap=5)
 
-        txtfrom = wx.StaticText(self, label="  From: ", size=(80, 24))
+        txtfrom = wx.StaticText(self, label=" From: ", size=(80, 24))
         txtfrom.SetFont( font )
-        txtto   = wx.StaticText(self, label="  To:   ", size=(80, 24))
+        txtto   = wx.StaticText(self, label=" To:   ", size=(80, 24))
         txtto.SetFont( font )
 
         self.fieldfrom = wx.TextCtrl(self, -1, str(self.start), size=(150, 24), validator=TextAsNumericValidator())
@@ -79,29 +104,24 @@ class PeriodChooser( wx.Dialog ):
         self.fieldto.SetFont(font)
         self.fieldto.SetInsertionPoint(0)
 
-        gbs.Add(txtfrom,       (0,0), flag=wx.ALL, border=2)
+        gbs.Add(txtfrom,       (0,0), flag=wx.ALL,    border=2)
         gbs.Add(self.fieldfrom,(0,1), flag=wx.EXPAND, border=2)
-        gbs.Add(txtto,         (1,0), flag=wx.ALL, border=2)
+        gbs.Add(txtto,         (1,0), flag=wx.ALL,    border=2)
         gbs.Add(self.fieldto,  (1,1), flag=wx.EXPAND, border=2)
 
-        # the buttons for close, and cancellation
-        Buttons = wx.StdDialogButtonSizer()
-        ButtonClose = wx.Button(self, wx.ID_OK)
-        Buttons.AddButton(ButtonClose)
-        ButtonCancel = wx.Button(self, wx.ID_CANCEL)
-        Buttons.AddButton(ButtonCancel)
-        Buttons.Realize()
-        gbs.Add(Buttons, (2,0), (1,2), flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_CENTER_HORIZONTAL, border=5)
+        gbs.AddGrowableCol(1)
 
-        self.SetMinSize((300, 120))
-        self.SetSizer( gbs )
-        self.Layout()
-        self.Refresh()
+        border = wx.BoxSizer()
+        border.Add(gbs, 1, wx.ALL | wx.EXPAND, 10)
+        return border
 
     #-------------------------------------------------------------------------
 
     def GetValues(self):
-        """ Return the new start/end values. """
+        """
+        Return the new from/to values.
+
+        """
         return self.fieldfrom.GetValue(), self.fieldto.GetValue()
 
 # ----------------------------------------------------------------------------
@@ -109,8 +129,8 @@ class PeriodChooser( wx.Dialog ):
 class RadiusChooser( wx.Dialog ):
     """
     Show a dialog to choose a new radius value.
-    """
 
+    """
     def __init__(self, parent, radius):
         wx.Dialog.__init__(self, parent, title="Radius", size=(320,150), style=wx.DEFAULT_DIALOG_STYLE | wx.STAY_ON_TOP)
 

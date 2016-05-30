@@ -559,7 +559,7 @@ class NavigatePanel( wx.Panel ):
         """
         if self._display is None: return
 
-        dlg = PeriodChooser( self, self._display.GetPeriod().GetStart(), self._display.GetPeriod().GetEnd() )
+        dlg = PeriodChooser( self, self._prefsIO, self._display.GetPeriod().GetStart(), self._display.GetPeriod().GetEnd() )
         if dlg.ShowModal() == wx.ID_OK:
             (s,e) = dlg.GetValues()
             try:

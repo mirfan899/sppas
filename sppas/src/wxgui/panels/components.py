@@ -46,17 +46,17 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 import wx
 
-from wxgui.frames.dataroamerframe import DataRoamerFrame
-from wxgui.frames.sndroamerframe  import SndRoamerFrame
-from wxgui.frames.ipuscribeframe  import IPUscribeFrame
-from wxgui.frames.sppaseditframe  import SppasEditFrame
-from wxgui.frames.datafilterframe import DataFilterFrame
-from wxgui.frames.statisticsframe import StatisticsFrame
+from wxgui.frames.dataroamerframe  import DataRoamerFrame
+from wxgui.frames.audioroamerframe import AudioRoamerFrame
+from wxgui.frames.ipuscribeframe   import IPUscribeFrame
+from wxgui.frames.sppaseditframe   import SppasEditFrame
+from wxgui.frames.datafilterframe  import DataFilterFrame
+from wxgui.frames.statisticsframe  import StatisticsFrame
 
 from wxgui.cutils.imageutils import spBitmap
 from wxgui.cutils.ctrlutils  import CreateGenButton
 
-from wxgui.sp_icons import SNDROAMER_APP_ICON
+from wxgui.sp_icons import AUDIOROAMER_APP_ICON
 from wxgui.sp_icons import DATAROAMER_APP_ICON
 from wxgui.sp_icons import IPUSCRIBE_APP_ICON
 from wxgui.sp_icons import SPPASEDIT_APP_ICON
@@ -119,14 +119,14 @@ class ComponentsPanel( wx.Panel ):
 
         FONT = self._prefsIO.GetValue('M_FONT')
         bmproamer = spBitmap(DATAROAMER_APP_ICON, theme=self._prefsIO.GetValue('M_ICON_THEME'))
-        bmpplayer = spBitmap(SNDROAMER_APP_ICON,  theme=self._prefsIO.GetValue('M_ICON_THEME'))
+        bmpplayer = spBitmap(AUDIOROAMER_APP_ICON,theme=self._prefsIO.GetValue('M_ICON_THEME'))
         bmpscribe = spBitmap(IPUSCRIBE_APP_ICON,  theme=self._prefsIO.GetValue('M_ICON_THEME'))
         bmpedit   = spBitmap(SPPASEDIT_APP_ICON,  theme=self._prefsIO.GetValue('M_ICON_THEME'))
         bmpfilter = spBitmap(DATAFILTER_APP_ICON, theme=self._prefsIO.GetValue('M_ICON_THEME'))
         bmpstats  = spBitmap(STATISTICS_APP_ICON, theme=self._prefsIO.GetValue('M_ICON_THEME'))
 
-        roamerButton     = CreateGenButton(self, ID_FRAME_DATAROAMER, bmproamer, text="DataRoamer", tooltip="DataRoamer: Explore annotated files.", colour=wx.Colour(220,120,180), SIZE=BUTTON_ICONSIZE, font=FONT)
-        waveButton       = CreateGenButton(self, ID_FRAME_SNDROAMER,  bmpplayer, text="SndPlayer",  tooltip="SndRoamer: Play your speech files.",  colour=wx.Colour(110,210,210), SIZE=BUTTON_ICONSIZE, font=FONT)
+        roamerButton     = CreateGenButton(self, ID_FRAME_DATAROAMER, bmproamer, text="DataRoamer", tooltip="DataRoamer: Manage annotated files.", colour=wx.Colour(220,120,180), SIZE=BUTTON_ICONSIZE, font=FONT)
+        waveButton       = CreateGenButton(self, ID_FRAME_SNDROAMER,  bmpplayer, text="AudioRoamer",tooltip="AudioRoamer: Manage audio files.",  colour=wx.Colour(110,210,210), SIZE=BUTTON_ICONSIZE, font=FONT)
         transcribeButton = CreateGenButton(self, ID_FRAME_IPUSCRIBE,  bmpscribe, text="IPUscribe",  tooltip="IPUscribe: Manual orthographic transcription based on IPUs segmentation.", colour=wx.Colour(120,240,120), SIZE=BUTTON_ICONSIZE, font=FONT)
         editorButton     = CreateGenButton(self, ID_FRAME_SPPASEDIT,  bmpedit,   text="SppasEdit",  tooltip="SppasEdit: View speech and annotated files.", colour=wx.Colour(100,120,230), SIZE=BUTTON_ICONSIZE, font=FONT)
         filterButton     = CreateGenButton(self, ID_FRAME_DATAFILTER, bmpfilter, text="DataFilter", tooltip="DataFilter: Extract/Request annotated files.", colour=wx.Colour(250,250,150), SIZE=BUTTON_ICONSIZE, font=FONT)
@@ -147,7 +147,7 @@ class ComponentsPanel( wx.Panel ):
         _box.AddGrowableRow(1)
 
         self.Bind(wx.EVT_BUTTON, self.OnDataRoamer,  roamerButton, ID_FRAME_DATAROAMER)
-        self.Bind(wx.EVT_BUTTON, self.OnSndRoamer,   waveButton,   ID_FRAME_SNDROAMER)
+        self.Bind(wx.EVT_BUTTON, self.OnAudioRoamer, waveButton,   ID_FRAME_SNDROAMER)
         self.Bind(wx.EVT_BUTTON, self.OnIPUscribe,   transcribeButton, ID_FRAME_IPUSCRIBE)
         self.Bind(wx.EVT_BUTTON, self.OnSppasEdit,   editorButton, ID_FRAME_SPPASEDIT)
         self.Bind(wx.EVT_BUTTON, self.OnDataFilter,  filterButton, ID_FRAME_DATAFILTER)
@@ -196,15 +196,15 @@ class ComponentsPanel( wx.Panel ):
     # -----------------------------------------------------------------------
 
 
-    def OnSndRoamer(self, evt):
+    def OnAudioRoamer(self, evt):
         """
-        Open the SndRoamer component.
+        Open the AudioRoamer component.
         """
         selection = self.GetTopLevelParent().GetAudioSelection()
 
         arguments = {}
-        arguments['title'] = 'SPPAS - SndRoamer'
-        arguments['icon']  = SNDROAMER_APP_ICON
+        arguments['title'] = 'SPPAS - AudioRoamer'
+        arguments['icon']  = AUDIOROAMER_APP_ICON
         arguments['type']  = "SOUNDFILES"
         arguments['prefs'] = self._prefsIO
 
@@ -217,7 +217,7 @@ class ComponentsPanel( wx.Panel ):
 
         # Create (or not) and Add files. Give the focus to this frame.
         if ID_FRAME_SNDROAMER not in self.opened_frames.keys():
-            self.opened_frames[ID_FRAME_SNDROAMER] = SndRoamerFrame(self.GetTopLevelParent(), ID_FRAME_IPUSCRIBE, arguments)
+            self.opened_frames[ID_FRAME_SNDROAMER] = AudioRoamerFrame(self.GetTopLevelParent(), ID_FRAME_IPUSCRIBE, arguments)
 
         if len(selection)>0:
             self.opened_frames[ID_FRAME_SNDROAMER].AddFiles( selection )

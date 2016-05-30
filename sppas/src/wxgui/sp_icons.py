@@ -47,12 +47,12 @@ THEME_DEFAULT = 'Default'
 APP_ICON       = os.path.join("applications", "sppas.png")
 COMPONENT_ICON = os.path.join("applications", "component.jpg")
 
-SNDROAMER_APP_ICON  = os.path.join( "applications", "player.png")
-DATAROAMER_APP_ICON = os.path.join( "applications", "roamer.png")
-IPUSCRIBE_APP_ICON  = os.path.join( "applications", "ipuscribe.png")
-SPPASEDIT_APP_ICON  = os.path.join( "applications", "viewer.png")
-STATISTICS_APP_ICON = os.path.join( "applications", "stats.png")
-DATAFILTER_APP_ICON = os.path.join( "applications", "filter.png")
+AUDIOROAMER_APP_ICON = os.path.join( "applications", "player.png")
+DATAROAMER_APP_ICON  = os.path.join( "applications", "roamer.png")
+IPUSCRIBE_APP_ICON   = os.path.join( "applications", "ipuscribe.png")
+SPPASEDIT_APP_ICON   = os.path.join( "applications", "viewer.png")
+STATISTICS_APP_ICON  = os.path.join( "applications", "stats.png")
+DATAFILTER_APP_ICON  = os.path.join( "applications", "filter.png")
 
 
 # ---------------------------------------------------------------------------
