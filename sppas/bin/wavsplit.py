@@ -87,7 +87,6 @@ parser.add_argument("-D", "--shiftend",   type=float, help='Shift-right the end 
 # Output options:
 parser.add_argument("-o", metavar="dir",  help='Output directory name (default: None)')
 parser.add_argument("-e", metavar="ext",  help='Output tracks extension, available only if -t (default: txt)')
-parser.add_argument("-l", metavar="file", help='File with the list of unit\' boundaries (default: None)')
 parser.add_argument("-p", metavar="file", help='Annotated file with silences/units segmentation (default: None)')
 
 if len(sys.argv) <= 1:
@@ -99,11 +98,6 @@ args = parser.parse_args()
 if args.t and args.N:
     print "You can NOT use both -t and -N options!\nUse option -h for any help."
     sys.exit(1)
-
-if args.t and args.e and args.t.lower().endswith('.txt'):
-    print "You can NOT use both -e with -t option if file is not time-aligned!\nUse option -h for any help."
-    sys.exit(1)
-
 
 log_level = 1
 log_file  = None
@@ -138,7 +132,7 @@ if args.n == -1:
 else:
     tieridx=0
 
-w.run(args.w, args.t, tieridx, args.N, args.o, args.e, args.l, args.p)
+w.run(args.w, args.t, tieridx, args.N, args.o, args.e, args.p)
 
 #     - wavfile is the wav input file name
 #     - trsinputfile is a transcription (or 'None')

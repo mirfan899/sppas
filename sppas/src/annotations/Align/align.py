@@ -125,6 +125,15 @@ class sppasAlign:
     # Methods to fix options
     # ------------------------------------------------------------------------
 
+    def get_option(self, key):
+        """
+        Return the option value of a given key or raise an Exception.
+
+        """
+        return self._options[key]
+
+    # ------------------------------------------------------------------------
+
     def fix_options(self, options):
         """
         Fix all options.

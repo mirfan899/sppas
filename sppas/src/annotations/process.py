@@ -372,7 +372,7 @@ class sppasProcess( Thread ):
                     else:
                         self._logfile.print_message("No transcription was found, perform Silence/Speech segmentation only.", indent=2,status=3)
                 try:
-                    seg.run(f, trsinputfile=txtfile, ntracks=None, diroutput=None, tracksext=None, listoutput=None, textgridoutput=outname)
+                    seg.run(f, trsinputfile=txtfile, ntracks=None, diroutput=None, tracksext=None, trsoutput=outname)
                     files_processed_success += 1
                     if self._logfile is not None:
                         self._logfile.print_message(outname, indent=2,status=0)
@@ -383,7 +383,7 @@ class sppasProcess( Thread ):
                 if seg.get_dirtracks() is True:
                     self._logfile.print_message("A time-aligned transcription was found, split into multiple files", indent=2,status=3)
                     try:
-                        seg.run(f, trsinputfile=tgfname, ntracks=None, diroutput=None, tracksext=None, listoutput=None, textgridoutput=None)
+                        seg.run(f, trsinputfile=tgfname, ntracks=None, diroutput=None, tracksext=None, trsoutput=None)
                         files_processed_success += 1
                         if self._logfile is not None:
                             self._logfile.print_message(tgfname, indent=2,status=0 )

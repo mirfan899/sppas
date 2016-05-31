@@ -73,8 +73,22 @@ class IPUsTrs( object ):
         Set default values to members.
 
         """
-        self.trsunits = []  # List of the content of the units (if any)
-        self.trsnames = []  # List of file names for tracks (if any)
+        self.units = []  # List of the content of the units (if any)
+        self.names = []  # List of file names for tracks (if any)
+
+    # ------------------------------------------------------------------
+
+    def get_units(self):
+        """
+        """
+        return self.units
+
+    # ------------------------------------------------------------------
+
+    def get_names(self):
+        """
+        """
+        return self.names
 
     # ------------------------------------------------------------------
     # Manage Transcription
@@ -129,8 +143,8 @@ class IPUsTrs( object ):
         @return tracks and silences, with time as seconds.
 
         """
-        self.trsunits = []
-        self.trsnames = []
+        self.units = []
+        self.names = []
 
         if self.trsinput.GetSize() == 0:
             return ([],[])
@@ -145,9 +159,12 @@ class IPUsTrs( object ):
         if trstier.GetSize() == 0:
             raise IOError('Got no utterances.')
 
+
         if trstier[0].GetLocation().GetValue().IsTimePoint():
+            print "JE SUIS A EXTRACT ALIGNED"
             (tracks,silences) = self.extract_aligned(trstier,nametier)
         else:
+            print "JE SUIS A EXTRACT UNITS"
             self.extract_units()
         return (tracks,silences)
 
@@ -158,16 +175,19 @@ class IPUsTrs( object ):
         Extract IPUs content from a non-aligned transcription file.
 
         """
-        self.trsunits = []
-        self.trsnames = []
+        self.units = []
+        self.names = []
 
         tier = self.trsinput[0]
         if tier.GetSize() == 0:
             raise IOError('Got no utterances.')
 
+        i = 0
         for ann in tier:
             if ann.GetLabel().IsSilence() is False:
-                self.trsunits.append( ann.GetLabel().GetValue() )
+                self.units.append( ann.GetLabel().GetValue() )
+                self.names.append( "track_%.06d" % (i+1) )
+                i = i+1
 
     # ------------------------------------------------------------------
 
@@ -181,8 +201,9 @@ class IPUsTrs( object ):
         """
         trstracks = []
         silences  = []
-        self.trsunits = []
-        self.trsnames = []
+        self.units = []
+        self.names = []
+
         i = 0
         last = trstier.GetSize()
         while i < last:
@@ -206,18 +227,18 @@ class IPUsTrs( object ):
                 start = ann.GetLocation().GetBegin().GetMidpoint()
                 end   = ann.GetLocation().GetEnd().GetMidpoint()
                 trstracks.append([start,end])
-                self.trsunits.append( ann.GetLabel().GetValue() )
+                self.units.append( ann.GetLabel().GetValue() )
 
                 if nametier is not None:
                     #time = (__ann.GetLocation().GetBeginMidpoint() + __ann.GetLocation().GetEndMidpoint()) / 2.0
                     ##????????iname = TierUtils.Select(nametier, lambda a: time in a.Time)
                     # iname = TierUtils.Select(nametier, lambda a: time in a.GetLocation().GetValue().GetMidpoint())
-                    aname = nametier.Find(ann.GetLocation().GetBeginMidpoint(), ann.GetLocation().GetEndMidpoint(), True)
-                    if not len(aname):
+                    aname = nametier.Find(ann.GetLocation().GetBegin().GetMidpoint(), ann.GetLocation().GetEnd().GetMidpoint(), True)
+                    if len(aname) == 0:
                         trstracks.pop()
-                        self.trsunits.pop()
+                        self.units.pop()
                     else:
-                        self.trsnames.append( format_filename(aname[0].GetLabel().GetValue()) )
+                        self.names.append( format_filename(aname[0].GetLabel().GetValue()) )
 
             # Continue
             i = i + 1

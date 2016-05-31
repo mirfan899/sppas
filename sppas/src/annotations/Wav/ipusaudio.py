@@ -86,6 +86,15 @@ class IPUsAudio( object ):
     # Manage Channel
     # ------------------------------------------------------------------
 
+    def get_channel(self):
+        """
+        Return the channel.
+
+        """
+        return self.chansil.get_channel()
+
+    # ------------------------------------------------------------------
+
     def set_channel(self, channel):
         """
         Set a new Channel.

@@ -1,76 +1,110 @@
 File type = "ooTextFile"
 Object class = "TextGrid"
 
-xmin = 0.0
-xmax = 17.792
-tiers? <exists>
-size = 2
-item []:
+xmin = 0 
+xmax = 17.792 
+tiers? <exists> 
+size = 3 
+item []: 
     item [1]:
-        class = "IntervalTier"
-        name = "IPU"
-        xmin = 0.000000
-        xmax = 17.792000
-        intervals: size = 7
+        class = "IntervalTier" 
+        name = "IPU" 
+        xmin = 0 
+        xmax = 17.792 
+        intervals: size = 7 
         intervals [1]:
-            xmin = 0.0
-            xmax = 1.675
-            text = "#"
+            xmin = 0 
+            xmax = 1.675 
+            text = "#" 
         intervals [2]:
-            xmin = 1.675
-            xmax = 4.525
-            text = "ipu_1"
+            xmin = 1.675 
+            xmax = 4.525 
+            text = "ipu_1" 
         intervals [3]:
-            xmin = 4.525
-            xmax = 6.385
-            text = "#"
+            xmin = 4.525 
+            xmax = 6.385 
+            text = "#" 
         intervals [4]:
-            xmin = 6.385
-            xmax = 9.825
-            text = "ipu_2"
+            xmin = 6.385 
+            xmax = 9.825 
+            text = "ipu_2" 
         intervals [5]:
-            xmin = 9.825
-            xmax = 11.425
-            text = "#"
+            xmin = 9.825 
+            xmax = 11.425 
+            text = "#" 
         intervals [6]:
-            xmin = 11.425
-            xmax = 14.655
-            text = "ipu_3"
+            xmin = 11.425 
+            xmax = 14.655 
+            text = "ipu_3" 
         intervals [7]:
-            xmin = 14.655
-            xmax = 17.792
-            text = "#"
+            xmin = 14.655 
+            xmax = 17.792 
+            text = "#" 
     item [2]:
-        class = "IntervalTier"
-        name = "Transcription"
-        xmin = 0.000000
-        xmax = 17.792000
-        intervals: size = 7
+        class = "IntervalTier" 
+        name = "Name" 
+        xmin = 0 
+        xmax = 17.792 
+        intervals: size = 7 
         intervals [1]:
-            xmin = 0.0
-            xmax = 1.675
-            text = "#"
+            xmin = 0 
+            xmax = 1.675 
+            text = "#" 
         intervals [2]:
-            xmin = 1.675
-            xmax = 4.525
-            text = "ipu_1 the flight was twelve hours long and we really got bored"
+            xmin = 1.675 
+            xmax = 4.525 
+            text = "ipu_1" 
         intervals [3]:
-            xmin = 4.525
-            xmax = 6.385
-            text = "#"
+            xmin = 4.525 
+            xmax = 6.385 
+            text = "#" 
         intervals [4]:
-            xmin = 6.385
-            xmax = 9.825
-            text = "ipu_2 they only played two movies + which we had both already seen"
+            xmin = 6.385 
+            xmax = 9.825 
+            text = "ipu_2" 
         intervals [5]:
-            xmin = 9.825
-            xmax = 11.425
-            text = "#"
+            xmin = 9.825 
+            xmax = 11.425 
+            text = "#" 
         intervals [6]:
-            xmin = 11.425
-            xmax = 14.655
-            text = "ipu_3 I never get to sleep on the airplane because it's so uncomfortable"
+            xmin = 11.425 
+            xmax = 14.655 
+            text = "ipu_3" 
         intervals [7]:
-            xmin = 14.655
-            xmax = 17.792
-            text = "#"
+            xmin = 14.655 
+            xmax = 17.792 
+            text = "#" 
+    item [3]:
+        class = "IntervalTier" 
+        name = "Transcription" 
+        xmin = 0 
+        xmax = 17.792 
+        intervals: size = 7 
+        intervals [1]:
+            xmin = 0 
+            xmax = 1.675 
+            text = "#" 
+        intervals [2]:
+            xmin = 1.675 
+            xmax = 4.525 
+            text = "ipu_1 the flight was twelve hours long and we really got bored" 
+        intervals [3]:
+            xmin = 4.525 
+            xmax = 6.385 
+            text = "#" 
+        intervals [4]:
+            xmin = 6.385 
+            xmax = 9.825 
+            text = "ipu_2 they only played two movies + which we had both already seen" 
+        intervals [5]:
+            xmin = 9.825 
+            xmax = 11.425 
+            text = "#" 
+        intervals [6]:
+            xmin = 11.425 
+            xmax = 14.655 
+            text = "ipu_3 I never get to sleep on the airplane because it's so uncomfortable" 
+        intervals [7]:
+            xmin = 14.655 
+            xmax = 17.792 
+            text = "#" 

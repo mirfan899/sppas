@@ -214,15 +214,6 @@ function wavsplit {
     $BIN_DIR/wavsplit.py -w $SAMPLES_DIR/oriana1.txt &> /dev/null
     fct_echo_rstatus $?
 
-    echo -n " ... simple speech/silence segmentation with list output: "
-    $BIN_DIR/wavsplit.py -w $SAMPLES_DIR/oriana1.WAV -l oriana1.list &> /dev/null
-    if [ -e oriana1.list ]; then
-        rm oriana1.list;
-        fct_echo_status 0
-    else
-        fct_echo_status 1
-    fi
-
     echo -n " ... simple speech/silence segmentation with textgrid output: "
     $BIN_DIR/wavsplit.py -w $SAMPLES_DIR/oriana1.WAV -p oriana1.TextGrid &> /dev/null
     if [ -e oriana1.TextGrid ]; then
@@ -277,7 +268,18 @@ function wavsplit {
     $BIN_DIR/wavsplit.py -w $SAMPLES_DIR/oriana1.WAV -t $SAMPLES_DIR/oriana1.txt -o oriana1 &> /dev/null
     if [ -d oriana1 ]; then
         s=1
-        if [ "`ls oriana1 | grep -v index.txt | wc -l`" == "6" ]; then s=0; fi
+        if [ "`ls oriana1/track*.wav | wc -l`" == "3" ]; then s=0; fi
+        rm -rf oriana1;
+        fct_echo_status $s
+    else
+        fct_echo_status 1
+    fi
+
+    echo -n " ... speech/silence segmentation, align with transcription txt, with dir output, with txt: "
+    $BIN_DIR/wavsplit.py -w $SAMPLES_DIR/oriana1.WAV -t $SAMPLES_DIR/oriana1.txt -o oriana1 -e txt &> /dev/null
+    if [ -d oriana1 ]; then
+        s=1
+        if [ "`ls oriana1/track*.* | wc -l`" == "6" ]; then s=0; fi
         rm -rf oriana1;
         fct_echo_status $s
     else
@@ -285,11 +287,11 @@ function wavsplit {
     fi
 
     echo -n " ... speech/silence segmentation, align with transcription TextGrid, with tier Name and with dir output: "
-    $BIN_DIR/wavsplit.py -w $SAMPLES_DIR/oriana1.WAV -t $SAMPLES_DIR/oriana1.TextGrid -o oriana1 &> /dev/null
+    $BIN_DIR/wavsplit.py -w $SAMPLES_DIR/oriana1.WAV -t $SAMPLES_DIR/oriana1.TextGrid -o oriana1 -e txt &> /dev/null
     if [ -d oriana1 ]; then
         s=1
-        if [ "`ls oriana1 | wc -l`" == "6" ]; then s=0; fi
-        if [ "`ls oriana1/*.txt | grep -v index.txt | wc -l`" == "3" ]; then s=0; fi
+        if [ "`ls oriana1 | wc -l`" == "7" ]; then s=0; fi
+        if [ "`ls oriana1/ipu_*.txt | wc -l`" == "3" ]; then s=0; fi
         rm -rf oriana1;
         fct_echo_status $s
     else
@@ -300,7 +302,7 @@ function wavsplit {
     $BIN_DIR/wavsplit.py -w $SAMPLES_DIR/oriana1.WAV -t $SAMPLES_DIR/oriana1.TextGrid -o oriana1 -e TextGrid &> /dev/null
     if [ -d oriana1 ]; then
         s=1
-        if [ "`ls oriana1 | wc -l`" == "6" ]; then s=0; fi
+        if [ "`ls oriana1 | wc -l`" == "7" ]; then s=0; fi
         if [ "`ls oriana1/*.TextGrid | wc -l`" == "3" ]; then s=0; fi
         rm -rf oriana1;
         fct_echo_status $s

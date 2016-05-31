@@ -40,27 +40,26 @@ import codecs
 import logging
 
 import audiodata.io
-from audiodata.audiovolume    import AudioVolume
-from audiodata.channel        import Channel
-
-from presenters.audiosilencepresenter import AudioSilencePresenter
+from audiodata.audiovolume import AudioVolume
+from audiodata.channel     import Channel
 
 from annotationdata.io.utils import gen_id
 import annotationdata.io
 
-import annotationdata.utils.trsutils as trsutils
-from annotationdata.utils.tierutils import TierUtils
-from annotationdata.transcription   import Transcription
-from annotationdata.media           import Media
-from annotationdata.ptime.point     import TimePoint
-from annotationdata.ptime.interval  import TimeInterval
-from annotationdata.label.label     import Label
-from annotationdata.annotation      import Annotation
+from annotationdata.transcription import Transcription
+from annotationdata.media import Media
 
 from annotations.Wav.ipusaudio import IPUsAudio # find IPUs/tracks from audio
 from annotations.Wav.ipustrs   import IPUsTrs   # find IPUs/tracks/utterances from transcription
+from annotations.Wav.tracksio  import TracksIO  # tracks Input/Output
 
-# ----------------------------------------------------------------------------
+from sp_glob import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
+
+from annotations.Wav.ipusutils import frames2times, times2frames
+
+# ------------------------------------------------------------------
+# Main class
+# ------------------------------------------------------------------
 
 class sppasSeg:
     """
@@ -78,6 +77,7 @@ class sppasSeg:
         self.logfile   = logfile
         self.ipusaudio = IPUsAudio(None)
         self.ipustrs   = IPUsTrs(None)
+        self.tracksio  = TracksIO(None)
         self.restaure_default()
 
     # ------------------------------------------------------------------
@@ -87,58 +87,37 @@ class sppasSeg:
         Set default values.
 
         """
+        # List of options to configure this automatic annotation
+        self._options = {}
+        self._options['dirtracks']   = False
+        self._options['save_as_trs'] = False
+        self._options['addipuidx']   = False
+
+        # The workers
         self.ipusaudio.set_channel(None)
         self.ipustrs.set_transcription(None)
-        self.dirtracks   = False
-        self.save_as_trs = False
-        self.addipuidx = True
+        self.tracksio.set_tracks(None)
 
-    # ------------------------------------------------------------------
-    # Getters and Setters
-    # ------------------------------------------------------------------
+    # ------------------------------------------------------------------------
+    # Methods to fix options
+    # ------------------------------------------------------------------------
 
-    def set_dirtracks(self, dirtracks):
+    def get_option(self, key):
         """
-        Fix the "dirtracks" option (boolean).
+        Return the option value of a given key or raise an Exception.
 
         """
-        self.dirtracks = dirtracks
+        return self._options[key]
 
-    def get_dirtracks(self):
-        """
-        Get the "dirtracks" option (boolean).
-
-        """
-        return self.dirtracks
-
-    def set_save_as_trs(self, output):
-        """
-        Fix the "save as transcription" option (boolean).
-
-        """
-        self.save_as_trs = output
-
-    def get_save_as_trs(self):
-        """
-        Get the "save as textgrid" option (boolean).
-
-        """
-        return self.save_as_trs
-
-    def set_addipuidx(self, value):
-        """
-        Fix the "add IPU index in the transcription output" option (boolean).
-
-        @param value (bool)
-
-        """
-        self.addipuidx = bool(value)
-
-    # End OPTIONS
-    # ------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def fix_options(self, options):
+        """
+        Fix all options.
 
+        @param options (option)
+
+        """
         for opt in options:
 
             if "shift" == opt.get_key():
@@ -168,11 +147,41 @@ class sppasSeg:
             elif "add_ipu_idx" == opt.get_key():
                 self.set_addipuidx(opt.get_value())
 
+    # ------------------------------------------------------------------------
+
+    def set_dirtracks(self, value):
+        """
+        Fix the "dirtracks" option (boolean).
+
+        @param value (bool)
+
+        """
+        self._options['dirtracks'] = value
+
+    # ------------------------------------------------------------------------
+
+    def set_save_as_trs(self, value):
+        """
+        Fix the "save as transcription" option (boolean).
+
+        @param value (bool)
+
+        """
+        self._options['save_as_trs'] = value
+
+    # ------------------------------------------------------------------------
+
+    def set_addipuidx(self, value):
+        """
+        Fix the "add IPU index in the transcription output" option (boolean).
+
+        @param value (bool)
+
+        """
+        self._options['addipuidx'] = bool(value)
+
+
     # ------------------------------------------------------------------
-
-    def get_trs(self):
-        return self.ipustrs.trsunits
-
     # ------------------------------------------------------------------
 
     def get_transcription(self, inputfilename, tieridx=None):
@@ -194,7 +203,7 @@ class sppasSeg:
 
         """
         if inputfilename is None:
-            return None
+            return Transcription()
 
         trsinput = annotationdata.io.read( inputfilename )
         nametier = None
@@ -235,7 +244,11 @@ class sppasSeg:
         trs = Transcription()
         trs.Append(trstier)
         if nametier is not None:
-            trs.Append(nametier)
+            try:
+                trs.Append(nametier)
+                trs.GetHierarchy().addLink('TimeAssociation', trstier, nametier)
+            except Exception:
+                pass
 
         return trs
 
@@ -246,10 +259,10 @@ class sppasSeg:
         Blind or controlled speech/silence segmentation.
 
         """
-        if self.channel is None:
+        if self.ipusaudio.get_channel() is None:
             raise Exception("No speech data to split.\n")
 
-        if self.channel.get_duration() <= self.ipusaudio.min_channel_duration():
+        if self.ipusaudio.get_channel().get_duration() <= self.ipusaudio.min_channel_duration():
             raise Exception("Speech file is too short.\n")
 
         n = self.ipusaudio.split_into( nbtracks )
@@ -272,192 +285,68 @@ class sppasSeg:
     # Outputs
     # ------------------------------------------------------------------
 
-    def write_list(self, filename, trstracks):
-        encoding='utf-8'
-        with codecs.open(filename ,'w', encoding) as fp:
-            idx = 0
-            for from_pos, to_pos in trstracks:
-                # Print informations on stdout
-                fp.write( "%.4f %.4f " %( float(from_pos)/float(self.channel.get_framerate()) , float(to_pos)/float(self.channel.get_framerate()) ))
-                if len(self.ipustrs.trsnames)>0 and idx < len(self.ipustrs.trsnames):
-                    ustr = self.ipustrs.trsnames[idx].encode('utf8')
-                    fp.write( ustr.decode(encoding)+"\n" )
-                else:
-                    fp.write( "\n" )
-                idx = idx+1
-
-            # Finally, print audio duration
-            fp.write( "%.4f\n" %self.channel.get_duration() )
-
-    # ------------------------------------------------------------------
-
-    def write_transcription(self, filename, trstracks, inputaudioname=None):
-        if trstracks is None:
-            raise Exception('No tracks to write.\n')
-
-        # Create a transcription from tracks
-        trs = Transcription("IPU-Segmentation")
-        tieripu = trs.NewTier("IPU")
-        tier    = trs.NewTier("Transcription")
-        radius  = 1.0 / self.channel.get_framerate()
-
-        try:
-            i = 0
-            to_pos_prec = 0
-            for from_pos, to_pos in trstracks:
-                if self.ipustrs.trsunits:
-                    if (i > len(self.ipustrs.trsunits)):
-                        raise Exception('Bad number of tracks to write\n')
-                # From the previous track to the current track: silence
-                if to_pos_prec < from_pos:
-                    begin = float(to_pos_prec)/float(self.channel.get_framerate())
-                    end   = float(from_pos)/float(self.channel.get_framerate())
-                    a     = Annotation(TimeInterval(TimePoint(begin,radius), TimePoint(end,radius)), Label("#"))
-                    tieripu.Append(a)
-                    tier.Append(a.Copy())
-
-                # New track with speech
-                begin = float(from_pos)/float(self.channel.get_framerate())
-                end   = float(to_pos)/float(self.channel.get_framerate())
-                # ... IPU tier
-                label = "ipu_%d"%(i+1)
-                a  = Annotation(TimeInterval(TimePoint(begin,radius), TimePoint(end,radius)), Label(label))
-                tieripu.Append(a)
-                # ... Transcription tier
-                if self.addipuidx is False:
-                    label = ""
-                if self.ipustrs.trsunits:
-                    label = label + " " + self.ipustrs.trsunits[i]
-                a  = Annotation(TimeInterval(TimePoint(begin,radius), TimePoint(end,radius)), Label(label))
-                tier.Append(a)
-
-                # Go to the next
-                i += 1
-                to_pos_prec = to_pos
-
-            # The end is a silence?
-            end_pos = float( self.channel.get_nframes() )
-            if to_pos_prec < end_pos:
-                begin = TimePoint(float(to_pos_prec)/float(self.channel.get_framerate()),radius)
-                end   = TimePoint(float(end_pos)/float(self.channel.get_framerate()),radius)
-                if begin < end:
-                    a  = Annotation(TimeInterval(begin, end), Label("#"))
-                    tieripu.Append(a)
-                    tier.Append(a.Copy())
-        except Exception as e:
-            raise Exception('Error while converting tracks to the tier output.\n'+str(e)+'\n')
-
-        # Link both tiers: IPU and Transcription
-        try:
-            trs.GetHierarchy().addLink('TimeAssociation', tieripu, tier)
-        except Exception as e:
-            logging.info('Error while assigning TimeAssociation hierarchy between IPU tier and Transcription tier: %s'%(str(e)))
-            pass
-
-        # Set media
-        if inputaudioname is not None:
-            extm = os.path.splitext(inputaudioname)[1].lower()[1:]
-            media = Media( gen_id(), inputaudioname, "audio/"+extm )
-            trs.AddMedia( media )
-            for tier in trs:
-                tier.SetMedia( media )
-
-        # Write the transcription
-        try:
-            annotationdata.io.write(filename, trs)
-        except Exception as e:
-            raise Exception('Error while saving the transcription output.\n'+str(e)+'\n')
-
-    # ------------------------------------------------------------------
-
-    def create_trsunits(self, trstracks):
-        """
-        Create a list of transcription units from tracks.
-
-        @param trstracks
-        @return list of Transcription objects
-
-        """
-        if trstracks is None:
-            raise Exception("No tracks found.\n")
-
-        if self.ipustrs.trsinput is None:
-            raise Exception("No trsinput found.\n")
-
-        trs_list = []
-        trsunits_size = len(self.ipustrs.trsunits)
-        for i, track in enumerate(trstracks):
-            from_pos = track[0]
-            to_pos   = track[1]
-            if self.ipustrs.trsunits and i > trsunits_size:
-                raise Exception("Bad number of tracks.\n")
-
-            # Create a new Transcription with speech
-            start = float(from_pos) / float(self.channel.get_framerate())
-            end   = float(to_pos) / float(self.channel.get_framerate())
-            a = Annotation(TimeInterval(TimePoint(start,0.001), TimePoint(end,0.001)))
-            new_trs = Transcription(self.ipustrs.trsinput.GetName())
-
-            new_trs.SetMinTime( start )
-            new_trs.SetMaxTime( end )
-
-            for tier in self.ipustrs.trsinput:
-                new_tier = TierUtils.Select(tier, lambda x: trsutils.overlaps(a, x))
-                if new_tier is not None:
-                    if new_tier[0].GetLocation().IsInterval():
-                        new_tier[0].GetLocation().SetBeginMidpoint( start )
-                        new_tier[-1].GetLocation().SetEndMidpoint( end )
-                    new_trs.Append(new_tier)
-
-            trsutils.TrsUtils.Shift(new_trs, new_trs.GetBegin())
-            trs_list.append(new_trs)
-
-        return trs_list
-
-    # ------------------------------------------------------------------
-
-    def run(self, audiofile, trsinputfile=None, trstieridx=None, ntracks=None, diroutput=None, tracksext=None, listoutput=None, textgridoutput=None):
+    def run(self, audiofile, trsinputfile=None, trstieridx=None, ntracks=None, diroutput=None, tracksext=None, trsoutput=None):
         """
         Perform an IPU segmentation from an audio file.
 
-            - audiofile is the sound input file name
-            - trsinputfile is a transcription (or 'None')
-            - ntracks expected number of tracks
-            - diroutput is a directory name to save output tracks (one per unit)
-            - tracksext is the track extension (used with the diroutput option)
-            - listoutput is a file name  to save the IPU segmentation result (this file contains the begin time and end time of each unit, and the wav duration)
-            - textgridoutput is a file name to save the IPU segmentation result.
+        @param audiofile (str) the speech audio input file name
+        @param trsinputfile (str) the transcription file name (or 'None')
+        @param ntracks (int) an expected number of tracks (or 'None')
+        @param diroutput (str) a directory name to save output tracks (one per unit)
+        @param tracksext (str) the track extension (used with the diroutput option)
+        @param textgridoutput (str) a file name to save the IPU segmentation result.
 
         """
+        if self.logfile:
+            for k,v in self._options.items():
+                self.logfile.print_message("Option %s: %s"%(k,v), indent=2, status=INFO_ID)
+
         fileName = os.path.splitext( audiofile )[0]
 
-        # Fix audio
+        # Get the inputs.
+        # ---------------
+
+        # Get audio and the channel we'll work on
         audiospeech = audiodata.io.open( audiofile )
         idx = audiospeech.extract_channel()
-        self.channel = audiospeech.get_channel(idx)
-        self.ipusaudio.set_channel( self.channel )
+        channel = audiospeech.get_channel(idx)
+
+        # Set the audio Channel
+        self.ipusaudio.set_channel( channel )
         self.ipusaudio.set_bound_start(False)
         self.ipusaudio.set_bound_end(False)
 
-        # Fix transcription units if a transcription is given
+        # Fix transcription (if a transcription is given)
         trs = self.get_transcription(trsinputfile, trstieridx)
+
+        # Assign the audio file as Media to the transcription instance.
+        extm = os.path.splitext(audiofile)[1].lower()[1:]
+        media = Media( gen_id(), audiofile, "audio/"+extm )
+        trs.AddMedia( media )
+
+        # Set the Transcription
         self.ipustrs.set_transcription( trs )
-        (trstracks,silences) = self.ipustrs.extract()
+        (trackslist,silences) = self.ipustrs.extract()
+
+        # Process the data.
+        # -----------------
 
         # We got tracks from the transcription
-        if len(trstracks) > 0:
+        if len(trackslist) > 0:
             # but we have time in seconds. we expect frames...
-            fm = self.channel.get_framerate()
-            trackframes = []
-            for (s,e) in trstracks:
-                fs = float(s)/float(fm)
-                fe = float(e)/float(fm)
-                trackframes.append( (fs, fe) )
-            trstracks = trackframes
+            fm = channel.get_framerate()
+            trackslist = times2frames( trackslist, fm )
 
-        # No silences were extracted from the transcription file,
-        # find them from the audio.
-        if len(silences) == 0:
+        # We got silences from the transcription
+        if len(silences) > 0:
+            # but we have time in seconds. we expect frames...
+            fm = channel.get_framerate()
+            silences = times2frames( silences, fm )
+            # inject silences in the IPUsAudio
+            # (so it won't have to find them automatically)
+            self.ipusaudio.set_silences( silences )
+
+        else:
 
             # Fix if we have to find silences at start and end of the speech
             (bs,be) = self.ipustrs.extract_bounds()
@@ -466,60 +355,49 @@ class sppasSeg:
 
             # Fix the number of tracks to split into
             if ntracks is None:
-                ntracks = len( self.ipustrs.trsunits ) # 0 = automatic!
+                ntracks = len( self.ipustrs.get_units() ) # 0 = automatic!
 
             # Find automatically silences and tracks
             self.split( ntracks )
-            trstracks = self.ipusaudio.extract_tracks()
+            trackslist = self.ipusaudio.extract_tracks()
 
-        else:
-            # We got silences from the transcription
-            # but we have time in seconds. we expect frames...
-            fm = self.channel.get_framerate()
-            silframes = []
-            for (s,e) in silences:
-                fs = int(s*fm)
-                fe = int(e*fm)
-                silframes.append( (fs, fe) )
-            self.ipusaudio.set_silences( silframes )
+        # No tracks? Find them from the audio.
+        if len(trackslist) == 0:
+            trackslist = self.ipusaudio.extract_tracks(shift_start=0., shift_end=0.)
 
-            # No tracks were extracted from the transcription file,
-            # find them from the audio.
-            if len(trstracks) == 0:
-                trstracks = self.ipusaudio.extract_tracks(shift_start=0., shift_end=0.)
+        # Save output(s).
+        # ---------------
 
-        # Save output
+        self.tracksio.set_tracks( trackslist )
 
-        # Write silences/units into a transcription file
-        if textgridoutput is not None:
-            self.write_transcription(textgridoutput,trstracks,audiofile)
+        trs = self.tracksio.tracks2transcription(self.ipustrs, self.ipusaudio, self._options['addipuidx'])
 
-        # Write speech into track files with a given file extension
-        if diroutput is not None or self.dirtracks is True:
+        if len(self.ipustrs.get_units()) == 0:
+            self.ipustrs.set_transcription( trs )
+            self.ipustrs.extract_units()
+
+        # Write the tracks into a transcription file.
+        if trsoutput is not None:
+            # Write the transcription
+            try:
+                annotationdata.io.write(trsoutput, trs)
+            except Exception as e:
+                raise Exception('Error while saving the transcription output.\n'+str(e)+'\n')
+
+        # Write speech/units into track files
+        if diroutput is not None or self._options['dirtracks'] is True:
             if diroutput is None:
                 diroutput = fileName+"-tracks"
+
             if self.logfile is not None:
-                self.logfile.print_message(str(len(self.ipustrs.trsunits))+" units to write.", indent=3)
-            # Automatically activate the list output file
-            if listoutput is None:
-                listoutput = os.path.join(diroutput, "index.txt")
-                if self.logfile is not None:
-                    self.logfile.print_message(listoutput, indent=3)
+                self.logfile.print_message(str(len(self.ipustrs.get_units()))+" units to write.", indent=3)
 
-            # Fix output files format (txt or TextGrid)
-            if tracksext is None:
-                tracksext = "TextGrid" if self.save_as_trs is True else "txt"
+            # Write the list output files and the tracks
+            listoutput = os.path.join(diroutput, "index.txt")
+            self.tracksio.write_list(listoutput, self.ipustrs, self.ipusaudio)
+            if self._options['save_as_trs'] is True and tracksext is None:
+                tracksext="TextGrid"
+            self.tracksio.write_tracks(self.ipustrs, self.ipusaudio, diroutput, tracksext, "wav" )
 
-            if "."+tracksext.strip().lower() in annotationdata.io.extensions and tracksext != "txt":
-                trs = self.create_trsunits(trstracks)
-                audiosilpres = AudioSilencePresenter(self.ipusaudio.chansil)
-                audiosilpres.write_tracks(trstracks, diroutput, ext=tracksext, trsunits=trs, trsnames=self.ipustrs.trsnames)
-            else:
-                audiosilpres = AudioSilencePresenter(self.ipusaudio.chansil)
-                audiosilpres.write_tracks(trstracks, diroutput, ext=tracksext, trsunits=self.ipustrs.trsunits, trsnames=self.ipustrs.trsnames)
-
-        # Write silences boundaries (in seconds) into a file
-        if (listoutput):
-            self.write_list(listoutput,trstracks)
 
     # ------------------------------------------------------------------

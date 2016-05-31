@@ -194,7 +194,7 @@ class Transcription( MetaObject ):
 
     def AddMedia(self, newmedia):
         if not isinstance(newmedia, Media):
-            raise TypeError("Can not add media in Transcription.")
+            raise TypeError("Can not add media in Transcription. Expected Media instance, got %s."%type(newmedia))
         ids = [ m.id for m in self.__media ]
         if newmedia.id in ids:
             raise ValueError('A media is already defined with the same identifier %s'%newmedia.id)
@@ -207,6 +207,11 @@ class Transcription( MetaObject ):
         for tier in self.__tiers:
             if tier.GetMedia() == oldmedia:
                 tier.SetMedia(None)
+
+    def SetMedia(self, media):
+        self.__media = []
+        for m in media:
+            self.AddMedia( m )
 
     # ------------------------------------------------------------------------
     # Controlled vocabularies
