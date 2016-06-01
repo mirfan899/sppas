@@ -223,7 +223,7 @@ function wavsplit {
         fct_echo_status 1
     fi
 
-    echo -n " ... speech/silence segmentation, force N tracks: "
+    echo -n " ... speech/silence segmentation, force 3 tracks: "
     $BIN_DIR/wavsplit.py -w $SAMPLES_DIR/oriana1.WAV -o oriana1 -N 3 &> /dev/null
     if [ -d oriana1 ]; then
         s=1
@@ -234,13 +234,29 @@ function wavsplit {
         fct_echo_status 1
     fi
 
-    echo -n " ... simple speech/silence segmentation, -m and -s options: "
+    echo -n " ... speech/silence segmentation, force 20 tracks: "
+    $BIN_DIR/wavsplit.py -w $SAMPLES_DIR/oriana1.WAV -o oriana1 -N 20 &> /dev/null
+    fct_echo_rstatus $?
+    
+    echo -n " ... simple speech/silence segmentation, -m and -s options (3 ipus): "
     $BIN_DIR/wavsplit.py -w $SAMPLES_DIR/oriana1.WAV -p oriana1.TextGrid -m 0.5 -s 0.4 &> /dev/null
     if [ -e oriana1.TextGrid ]; then
         s=1
         if [ "`grep ipu_3 oriana1.TextGrid | wc -l`" == "1" ]; then s=0; fi
         if [ "`grep ipu_4 oriana1.TextGrid | wc -l`" == "0" ]; then s=0; fi
-        rm -rf oriana1;
+        rm oriana1.TextGrid;
+        fct_echo_status $s
+    else
+        fct_echo_status 1
+    fi
+
+    echo -n " ... simple speech/silence segmentation, -m and -s options (5 ipus): "
+    $BIN_DIR/wavsplit.py -w $SAMPLES_DIR/oriana1.WAV -p oriana1.TextGrid -m 0.5 -s 0.2 &> /dev/null
+    if [ -e oriana1.TextGrid ]; then
+        s=1
+        if [ "`grep ipu_5 oriana1.TextGrid | wc -l`" == "1" ]; then s=0; fi
+        if [ "`grep ipu_6 oriana1.TextGrid | wc -l`" == "0" ]; then s=0; fi
+        rm oriana1.TextGrid;
         fct_echo_status $s
     else
         fct_echo_status 1
@@ -249,8 +265,11 @@ function wavsplit {
     echo -n " ... speech/silence segmentation, align with transcription txt, output TextGrid: "
     $BIN_DIR/wavsplit.py -w $SAMPLES_DIR/oriana1.WAV -t $SAMPLES_DIR/oriana1.txt -p oriana1.TextGrid &> /dev/null
     if [ -e oriana1.TextGrid ]; then
+        if [ "`grep ipu_3 oriana1.TextGrid | wc -l`" == "1" ]; then s=0; fi  # 3 IPUs exactly
+        if [ "`grep ipu_4 oriana1.TextGrid | wc -l`" == "0" ]; then s=0; fi
+        if [ "`grep the oriana1.TextGrid | wc -l`" == "3" ]; then s=0; fi    # with transcription filled
         rm oriana1.TextGrid;
-        fct_echo_status 0
+        fct_echo_status $s
     else
         fct_echo_status 1
     fi
@@ -264,11 +283,12 @@ function wavsplit {
         fct_echo_status 1
     fi
 
-    echo -n " ... speech/silence segmentation, align with transcription txt, with dir output: "
+    echo -n " ... speech/silence segmentation, align with transcription txt, with dir output only: "
     $BIN_DIR/wavsplit.py -w $SAMPLES_DIR/oriana1.WAV -t $SAMPLES_DIR/oriana1.txt -o oriana1 &> /dev/null
     if [ -d oriana1 ]; then
         s=1
-        if [ "`ls oriana1/track*.wav | wc -l`" == "3" ]; then s=0; fi
+        if [ "`ls oriana1/track_000*.wav | wc -l`" == "3" ]; then s=0; fi
+        if [ "`ls oriana1/index.txt | wc -l`" == "1" ]; then s=0; fi
         rm -rf oriana1;
         fct_echo_status $s
     else
@@ -279,7 +299,9 @@ function wavsplit {
     $BIN_DIR/wavsplit.py -w $SAMPLES_DIR/oriana1.WAV -t $SAMPLES_DIR/oriana1.txt -o oriana1 -e txt &> /dev/null
     if [ -d oriana1 ]; then
         s=1
-        if [ "`ls oriana1/track*.* | wc -l`" == "6" ]; then s=0; fi
+        if [ "`ls oriana1/track_000*.wav | wc -l`" == "3" ]; then s=0; fi
+        if [ "`ls oriana1/track_000*.txt | wc -l`" == "3" ]; then s=0; fi
+        if [ "`ls oriana1/index.txt | wc -l`" == "1" ]; then s=0; fi
         rm -rf oriana1;
         fct_echo_status $s
     else
@@ -287,11 +309,12 @@ function wavsplit {
     fi
 
     echo -n " ... speech/silence segmentation, align with transcription TextGrid, with tier Name and with dir output: "
-    $BIN_DIR/wavsplit.py -w $SAMPLES_DIR/oriana1.WAV -t $SAMPLES_DIR/oriana1.TextGrid -o oriana1 -e txt &> /dev/null
+    $BIN_DIR/wavsplit.py -w $SAMPLES_DIR/oriana1.WAV -t $SAMPLES_DIR/oriana1.TextGrid -o oriana1 &> /dev/null
     if [ -d oriana1 ]; then
         s=1
-        if [ "`ls oriana1 | wc -l`" == "7" ]; then s=0; fi
-        if [ "`ls oriana1/ipu_*.txt | wc -l`" == "3" ]; then s=0; fi
+        if [ "`ls oriana1 | wc -l`" == "4" ]; then s=0; fi
+        if [ "`ls oriana1/ipu_*.wav | wc -l`" == "3" ]; then s=0; fi
+        if [ "`ls oriana1/index.txt | wc -l`" == "1" ]; then s=0; fi
         rm -rf oriana1;
         fct_echo_status $s
     else
@@ -299,11 +322,13 @@ function wavsplit {
     fi
 
     echo -n " ... speech/silence segmentation, align with transcription TextGrid, with dir output and textgrid tracks: "
-    $BIN_DIR/wavsplit.py -w $SAMPLES_DIR/oriana1.WAV -t $SAMPLES_DIR/oriana1.TextGrid -o oriana1 -e TextGrid &> /dev/null
+    $BIN_DIR/wavsplit.py -w $SAMPLES_DIR/oriana1.WAV -t $SAMPLES_DIR/oriana1.TextGrid -o oriana1 -e csv &> /dev/null
     if [ -d oriana1 ]; then
         s=1
         if [ "`ls oriana1 | wc -l`" == "7" ]; then s=0; fi
-        if [ "`ls oriana1/*.TextGrid | wc -l`" == "3" ]; then s=0; fi
+        if [ "`ls oriana1/ipu_*.csv | wc -l`" == "3" ]; then s=0; fi
+        if [ "`ls oriana1/ipu_*.wav | wc -l`" == "3" ]; then s=0; fi
+        if [ "`ls oriana1/index.txt | wc -l`" == "1" ]; then s=0; fi
         rm -rf oriana1;
         fct_echo_status $s
     else

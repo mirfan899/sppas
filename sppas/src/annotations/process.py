@@ -44,7 +44,6 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # Imports
 # ----------------------------------------------------------------------------
 
-import sys
 import os
 import datetime
 
@@ -62,9 +61,9 @@ from annotationdata.ptime.interval import TimeInterval
 import annotationdata.io
 import audiodata.io
 
-from annotations.log import sppasLog
+from annotations.log             import sppasLog
 from annotations.Momel.momel     import sppasMomel
-from annotations.Wav.wavseg      import sppasSeg
+from annotations.IPUs.ipusseg    import sppasIPUs
 from annotations.Token.tok       import sppasTok
 from annotations.Phon.phon       import sppasPhon
 from annotations.Align.align     import sppasAlign
@@ -76,14 +75,18 @@ from threading import Thread
 # ----------------------------------------------------------------------------
 
 class sppasProcess( Thread ):
-#class sppasProcess():
     """
-    Parent class for running annotation processes.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Parent class for running annotation processes.
+
     Process a directory full of files or a single file, and report on a
     progress.
 
     """
-
     def __init__(self, parameters):
         """
         Create a new sppasProcess instance.
@@ -324,7 +327,7 @@ class sppasProcess( Thread ):
 
         # Create annotation instance, and fix options
         try:
-            seg = sppasSeg(self._logfile)
+            seg = sppasIPUs(self._logfile)
         except Exception as e:
             if self._logfile is not None:
                 self._logfile.print_message( "%s\n"%str(e), indent=1,status=4 )
@@ -334,7 +337,7 @@ class sppasProcess( Thread ):
         for i,f in enumerate(filelist):
 
             # fix the default values
-            seg.restaure_default()
+            seg.reset()
             seg.fix_options( step.get_options() )
 
             # Indicate the file to be processed
@@ -346,7 +349,11 @@ class sppasProcess( Thread ):
             outname = os.path.splitext(f)[0] + self.parameters.get_output_format()
 
             # Is there already an existing IPU-seg (in any format)!
-            existoutname = self._get_filename(f, ['.xra', '.TextGrid', '.eaf', '.csv', '.mrk' ])
+            ext = []
+            for e in annotationdata.io.extensions_in:
+                if not e in ['.txt','.hz', '.PitchTier']:
+                    ext.append(e)
+            existoutname = self._get_filename(f, ext)
 
             # it's existing... but not in the expected format: convert!
             if existoutname is not None and existoutname != outname:
@@ -380,7 +387,7 @@ class sppasProcess( Thread ):
                     if self._logfile is not None:
                         self._logfile.print_message( "%s for file %s\n"%(str(e),outname), indent=2,status=-1 )
             else:
-                if seg.get_dirtracks() is True:
+                if seg.get_option('dirtracks') is True:
                     self._logfile.print_message("A time-aligned transcription was found, split into multiple files", indent=2,status=3)
                     try:
                         seg.run(f, trsinputfile=tgfname, ntracks=None, diroutput=None, tracksext=None, trsoutput=None)

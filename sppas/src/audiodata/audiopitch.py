@@ -37,28 +37,19 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-import os
-import sys
-
-# ----------------------------------------------------------------------------
-
-class WavePitch():
+class WavePitch(object):
     """
     A pitch wav utility class.
     ToDo:
-    Implements 3 differents methods (at least) to estimate pitch and
+    Implements 3 different methods (at least) to estimate pitch and
     an algorithm to "vote" (exactly as in Signaix, by R. Espesser).
+
     """
-
-    # ##################################################################### #
-    # Constructor
-    # ##################################################################### #
-
-    def __init__(self,delta=0.01):
+    def __init__(self, delta=0.01):
         """
         Creates a new WavePitch instance with empty pith values.
         """
@@ -71,11 +62,12 @@ class WavePitch():
     # ##################################################################### #
 
     def get_pitch(self, time):
-        """ Return the pitch value at a given time.
-            Parameters:
-                - time: a float value representing the time in seconds.
-            Return:      a float
-            Exception:   ValueError
+        """
+        Return the pitch value at a given time.
+
+        @param time: a float value representing the time in seconds.
+        @return float
+
         """
         idx = int(time/self.delta) + 1
         if len(self.pitch) < idx:
@@ -83,58 +75,42 @@ class WavePitch():
         else:
             raise ValueError('%d not in range' % idx)
 
-    # End get_pitch
     # ------------------------------------------------------------------
 
-
     def get_pitch_list(self):
-        """ Return pitch values.
-            Parameters:  None
-            Return:      an array
-            Exception:   None
+        """
+        Return pitch values.
+
         """
         return self.pitch
 
-    # End get_pitch_list
     # ------------------------------------------------------------------
 
-
     def get_pitch_delta(self):
-        """ Return the delta used to estimate pitch.
-            Parameters:  None
-            Return:      a float
-            Exception:   None
+        """
+        Return the delta used to estimate pitch.
+
         """
         return self.delta
 
-    # End get_pitch_delta
     # ------------------------------------------------------------------
 
-
     def get_size(self):
-        """ Return the number of pitch values.
-            Parameters:  None
-            Return:      an integer
-            Exception:   None
+        """
+        Return the number of pitch values.
+
         """
         return len(self.pitch)
 
-    # End get_size
     # ------------------------------------------------------------------
 
+    def eval_pitch(self, filename, delta=0.01):
+        """
+        Eval pitch values... (TODO)
+        At this stage, this will do: NOTHING!
 
-    # ##################################################################### #
-    # Pitch Estimation
-    # ##################################################################### #
-
-    def eval_pitch(self,filename,delta=0.01):
-        """ Eval pitch values... (TODO)
-            At this stage, this will do: NOTHING!
-            This is in my "TODO" list for the version 1.5 of SPPAS...
         """
         self.delta = delta
         pass
 
-    # End eval_pitch
     # ------------------------------------------------------------------
-

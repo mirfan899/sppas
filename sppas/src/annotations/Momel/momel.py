@@ -51,7 +51,6 @@ from annotationdata.ptime.point import TimePoint
 from annotationdata.label.label import Label
 import annotationdata.io
 
-from annotations.Wav.wavpitch import WavePitch
 from annotationdata.pitch import Pitch
 
 from st_cib import Targets

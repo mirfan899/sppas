@@ -106,7 +106,7 @@ class RawText(Transcription):
         # Remark: here we use FramePoint() as a "rank" function
         with codecs.open(filename, 'r', 'utf-8') as fp:
 
-            tier = self.NewTier('RawTrs')
+            tier = self.NewTier('RawTranscription')
 
             n = 1
             for line in fp:

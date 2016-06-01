@@ -59,7 +59,11 @@ class IPUsTrs( object ):
         """
         Creates a new IPUsTrs instance.
 
-        @param Transcription
+        @param trs (Transcription) Input transcription from which it's
+        possible to extract IPUs.
+        Expected tiers are:
+            - first tier: the IPUs content
+            - second tier: the IPUs file names
 
         """
         super(IPUsTrs, self).__init__()
@@ -74,12 +78,14 @@ class IPUsTrs( object ):
 
         """
         self.units = []  # List of the content of the units (if any)
-        self.names = []  # List of file names for tracks (if any)
+        self.names = []  # List of file names for IPUs (if any)
 
     # ------------------------------------------------------------------
 
     def get_units(self):
         """
+        Return the list of the content of the IPUs.
+
         """
         return self.units
 
@@ -87,6 +93,7 @@ class IPUsTrs( object ):
 
     def get_names(self):
         """
+        Return the list of file names for IPUs.
         """
         return self.names
 
@@ -97,6 +104,9 @@ class IPUsTrs( object ):
     def set_transcription(self, trs):
         """
         Set a new Transcription.
+
+        @param trs (Transcription) Input transcription from which it's
+        possible to extract IPUs.
 
         """
         if trs is not None:
@@ -111,6 +121,10 @@ class IPUsTrs( object ):
     def extract_bounds(self):
         """
         Return bound values.
+
+        Bound values are boolean to know if we expect a silence at start
+        or end of the given transcription. It is relevant only if the
+        transcription was created from a non-aligned file.
 
         """
         # False means that I DON'T know if there is a silence:
@@ -159,12 +173,9 @@ class IPUsTrs( object ):
         if trstier.GetSize() == 0:
             raise IOError('Got no utterances.')
 
-
-        if trstier[0].GetLocation().GetValue().IsTimePoint():
-            print "JE SUIS A EXTRACT ALIGNED"
+        if trstier[0].GetLocation().GetValue().IsTimeInterval():
             (tracks,silences) = self.extract_aligned(trstier,nametier)
         else:
-            print "JE SUIS A EXTRACT UNITS"
             self.extract_units()
         return (tracks,silences)
 
@@ -193,7 +204,7 @@ class IPUsTrs( object ):
 
     def extract_aligned(self, trstier, nametier):
         """
-        Extract from a transcription file.
+        Extract from a time-aligned transcription file.
 
         @param inputfilename is the input transcription file name
         @return a tuple with tracks and silences lists
@@ -230,9 +241,6 @@ class IPUsTrs( object ):
                 self.units.append( ann.GetLabel().GetValue() )
 
                 if nametier is not None:
-                    #time = (__ann.GetLocation().GetBeginMidpoint() + __ann.GetLocation().GetEndMidpoint()) / 2.0
-                    ##????????iname = TierUtils.Select(nametier, lambda a: time in a.Time)
-                    # iname = TierUtils.Select(nametier, lambda a: time in a.GetLocation().GetValue().GetMidpoint())
                     aname = nametier.Find(ann.GetLocation().GetBegin().GetMidpoint(), ann.GetLocation().GetEnd().GetMidpoint(), True)
                     if len(aname) == 0:
                         trstracks.pop()
@@ -246,5 +254,3 @@ class IPUsTrs( object ):
         return (trstracks,silences)
 
     # ------------------------------------------------------------------
-
-

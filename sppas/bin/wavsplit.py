@@ -42,13 +42,11 @@ __docformat__ = """epytext"""
 __authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2014  Brigitte Bigi"""
 
-
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
 
 import sys
-import os
 import os.path
 from argparse import ArgumentParser
 
@@ -56,9 +54,9 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
-from annotations.Wav.wavseg import sppasSeg
+from annotations.IPUs.ipusseg import sppasIPUs
 import annotationdata.io
-from utils.fileutils           import setup_logging
+from utils.fileutils import setup_logging
 
 
 # ----------------------------------------------------------------------------
@@ -114,23 +112,22 @@ except Exception:
 if args.o and not os.path.exists(args.o):
     os.mkdir(args.o)
 
-w = sppasSeg()
+w = sppasIPUs()
 
-if args.shiftstart:  w.set_shift_start( args.shiftstart )
-if args.shiftend:    w.set_shift_start( args.shiftend )
-
-if args.minipu: w.ipusaudio.set_min_speech( args.minipu )
-if args.minsil: w.ipusaudio.set_min_silence( args.minsil )
-if args.minrms: w.ipusaudio.set_min_vol_threshold( args.minrms )
-if args.winrms: w.ipusaudio.set_vol_win_lenght( args.winrms )
+if args.shiftstart: w.set_shift_start( args.shiftstart )
+if args.shiftend:   w.set_shift_start( args.shiftend )
+if args.minipu:     w.ipusaudio.set_min_speech( args.minipu )
+if args.minsil:     w.ipusaudio.set_min_silence( args.minsil )
+if args.minrms:     w.ipusaudio.set_min_vol_threshold( args.minrms )
+if args.winrms:     w.ipusaudio.set_vol_win_lenght( args.winrms )
 
 if args.o: w.set_dirtracks( True )
 if args.p: w.set_save_as_trs( True )
 if args.e: w.set_save_as_trs( True )
 if args.n == -1:
-    tieridx=None
+    tieridx = None
 else:
-    tieridx=0
+    tieridx = 0
 
 w.run(args.w, args.t, tieridx, args.N, args.o, args.e, args.p)
 
@@ -140,7 +137,6 @@ w.run(args.w, args.t, tieridx, args.N, args.o, args.e, args.p)
 #     - ntracks
 #     - diroutput is a directory name to save output tracks (one per unit)
 #     - tracksext is the track extension (used with the diroutput option)
-#     - listoutput is a file name  to save the IPU segmentation result (this file contains the begin time and end time of each unit, and the wav duration)
 #     - textgridoutput is a file name to save the IPU segmentation result.
 
 # ----------------------------------------------------------------------------

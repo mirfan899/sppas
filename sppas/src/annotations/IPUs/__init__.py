@@ -34,7 +34,18 @@
 # ---------------------------------------------------------------------------
 
 """
-    This package contains a set of classes dealing with the IPUs segmentation
-    annotation step.
+This package contains a set of classes dealing with the IPUs segmentation
+annotation step. IPUs - Inter-Pausal Units - are blocks of speech bounded
+by silent pauses.
+
+The "IPUs segmentation" automatic annotation can perform 3 actions:
+
+1. find silence/speech segmentation of a recorded file,
+2. find silence/speech segmentation of a recorded file including
+   the time-alignment of utterances of a transcription file,
+3. split/save a recorded file into multiple files, depending on IPUs
+   indicated in a time-aligned file.
+
 """
-__all__ = ['wavseg']
+
+__all__ = ['ipusseg']

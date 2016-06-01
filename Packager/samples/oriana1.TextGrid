@@ -53,7 +53,7 @@ item []:
         intervals [2]:
             xmin = 1.675 
             xmax = 4.525 
-            text = "ipu_1" 
+            text = "ipu_name1" 
         intervals [3]:
             xmin = 4.525 
             xmax = 6.385 
@@ -61,7 +61,7 @@ item []:
         intervals [4]:
             xmin = 6.385 
             xmax = 9.825 
-            text = "ipu_2" 
+            text = "ipu_name2" 
         intervals [5]:
             xmin = 9.825 
             xmax = 11.425 
@@ -69,7 +69,7 @@ item []:
         intervals [6]:
             xmin = 11.425 
             xmax = 14.655 
-            text = "ipu_3" 
+            text = "ipu_name3" 
         intervals [7]:
             xmin = 14.655 
             xmax = 17.792 

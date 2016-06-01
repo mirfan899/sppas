@@ -32,20 +32,19 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: tracksio.py
+# File: ipusout.py
 # ---------------------------------------------------------------------------
 
 import codecs
 import os
+
 from sp_glob import encoding
 
-from annotations.Wav.ipusutils import frames2times
+from annotations.IPUs.ipusutils import frames2times
 
 import audiodata.io
 import annotationdata.io
-
-from audiodata.audio import AudioPCM
-
+from audiodata.audio                import AudioPCM
 from annotationdata.transcription   import Transcription
 from annotationdata.media           import Media
 from annotationdata.ptime.point     import TimePoint
@@ -55,24 +54,22 @@ from annotationdata.annotation      import Annotation
 
 # ---------------------------------------------------------------------------
 
-class TracksIO( object ):
+class IPUsOut( object ):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Input/Output tracks.
-
-    Reader and writer for tracks.
+    @summary:      Writer for IPUs.
 
     """
     def __init__(self, tracks):
         """
-        Creates a new TracksIO instance.
+        Creates a new IPUsOut instance.
 
         """
-        super(TracksIO, self).__init__()
+        super(IPUsOut, self).__init__()
         self.set_tracks(tracks)
 
     # ------------------------------------------------------------------
@@ -109,14 +106,21 @@ class TracksIO( object ):
 
         """
         if len(self.tracks) == 0:
-            raise IOError('No tracks to write.\n')
+            raise IOError('No IPUs to write.\n')
 
         # Extract the info we need from ipusaudio
         framerate = ipusaudio.get_channel().get_framerate()
         end_time  = ipusaudio.get_channel().get_duration()
 
         # Extract the info we need from ipustrs
-        media = ipustrs.trsinput.GetMedia() # Content of each track
+        try:
+            medialist = ipustrs.trsinput.GetMedia()
+            if len(medialist) > 0:
+                media = medialist[0]
+            else:
+                media = None
+        except Exception:
+            media = None
         units = ipustrs.get_units()
         if len(units) != 0:
             if len(self.tracks) != len(units):
@@ -180,9 +184,10 @@ class TracksIO( object ):
             pass
 
         # Set media
-        trs.SetMedia( media )
-        #for tier in trs:
-        #    tier.SetMedia( media )
+        if media is not None:
+            trs.AddMedia( media )
+            for tier in trs:
+                tier.SetMedia( media )
 
         return trs
 
@@ -194,6 +199,10 @@ class TracksIO( object ):
         """
         Write the list of tracks: from_time to_time (in seconds).
         Last line is the audio file duration.
+
+        @param filename (str) The list file name
+        @param ipustrs (IPUsTrs)
+        @param ipusaudio (IPUsAudio)
 
         """
         # Convert the tracks: from frames to times
