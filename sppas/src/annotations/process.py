@@ -45,22 +45,14 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import os
-import datetime
-
-from sp_glob import program, version, copyright
 
 import utils.fileutils
 
-from annotationdata.tier           import Tier
 from annotationdata.transcription  import Transcription
-from annotationdata.annotation     import Annotation
-from annotationdata.label.label    import Label
-from annotationdata.ptime.point    import TimePoint
-from annotationdata.ptime.interval import TimeInterval
 
-import annotationdata.io
 import audiodata.io
-
+import annotationdata.io
+from annotations.infotier        import InfoTier
 from annotations.log             import sppasLog
 from annotations.Momel.momel     import sppasMomel
 from annotations.IPUs.ipusseg    import sppasIPUs
@@ -891,11 +883,8 @@ class sppasProcess( Thread ):
 
             try:
                 if nbfiles > 1:
-                    tier = Tier("Information")
-                    _e = trs.GetEnd()
-                    label = "This annotation was produced by " + program + " " + version + " on " + str(datetime.date.today())
-                    tier.Append(Annotation(TimeInterval(TimePoint(trs.GetBegin()), TimePoint(float(_e)/2.0)), Label(label)))
-                    tier.Append(Annotation(TimeInterval(TimePoint((float(_e)/2.0)), TimePoint(_e)), Label(copyright)))
+                    infotier = InfoTier()
+                    tier = infotier.create_time_tier(trs.GetBegin(),trs.GetEnd())
                     trs.Add(tier)
                     annotationdata.io.write( basef + "-merge.TextGrid", trs)
                     if self._logfile is not None:
@@ -980,7 +969,7 @@ class sppasProcess( Thread ):
                 elif self.parameters.get_step_key(i) == "repetition":
                     nbruns[i] = self.run_repetition(i)
                 elif self._logfile is not None:
-                    self._logfile.print_message('Unrecognised annotation step:%s'%self.parameters.get_step_name(i))
+                    self._logfile.print_message('Unrecognized annotation step:%s'%self.parameters.get_step_name(i))
 
         if self._logfile is not None:
             self._logfile.print_separator()
