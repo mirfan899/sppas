@@ -81,8 +81,10 @@ Generic options:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     -w file		    audio input file name
-    -d delta shift	Add this time value to each start/end
-                    bounds of the IPUs (for -o option only)
+    -d delta shift	Add this time value to each start
+                    bound of the IPUs
+    -D delta shift	Add this time value to each end
+                    bound of the IPUs
     -h, --help      show the help message and exit
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -103,12 +105,10 @@ Options that can be fixed for the Speech/Silence segmentation with
 a given orthographic transcription. It must be choose one of -t or -n options:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    -t file 	Input transcription file with txt or
-                textgrid extension (default: None)
-    -n value 	Input transcription tier number
-                (in case of input as textgrid) (default: 0)
+    -t file 	Input transcription file (default: None)
+    -n value 	Input transcription tier number (default: None)
     -N 		    Adjust the volume cap until it splits
-                into nb tracks (default: 0)
+                into nb tracks (default: 0=automatic)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Output options:
@@ -116,7 +116,6 @@ Output options:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     -o dir		Output directory name       (default: None)
     -e ext		Output tracks extension     (default: txt)
-    -l file		File with units' boundaries (default: None)
     -p file		File with the segmentation  (default: None)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -136,7 +135,7 @@ Examples of use to get each IPU in a wav file and its corresponding textgrid:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-###ntokenize.py
+### tokenize.py
 
 This program performs Tokenization, i.e. the text normalization of a given 
 file or a raw text.

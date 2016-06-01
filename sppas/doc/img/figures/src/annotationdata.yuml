@@ -23,7 +23,7 @@
 [Hierarchy]<>-0..*>[Tier],
 [Hierarchy]-[note:holds multiple hierarchies by name{bg:wheat}],
 [Tier]++-0..*>[Annotation],
-[Tier]-[note:ctrlvocab is a dictionnary where possible values are keys mapping to descriptions or None{bg:wheat}],
+[Tier]-[note:ctrlvocab is a dictionary where possible values are keys mapping to descriptions or None{bg:wheat}],
 [Annotation]++0-1>[Label],
 [Label]1..*-1[Text],
 [Annotation]++1-1>[Location],

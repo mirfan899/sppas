@@ -50,12 +50,12 @@ Resources:
 
 ## the Middle Ages
 
-Since version 1.4, SPPAS has a name! 
+Since version 1.4, SPPAS has a name!
 
-It's python made only. 
-It uses python 2.7.x and wxpython 2.8.x or 2.9.x. 
+It's python made only.
+It uses python 2.7.x and wxpython 2.8.x or 2.9.x.
 
-Remark for MacOS users: wxpython must be 32 bits. 
+Remark for MacOS users: wxpython must be 32 bits.
 SPPAS requires sox and julius free software to be installed.
 
 
@@ -70,26 +70,26 @@ Automatic annotations main changes:
     and Robert Espesser for the analysis and synthesis of intonation patterns.
     Momel need a .hz files with pitch values: ASCII file with one value each 10ms.
     This Momel implementation can be used directly, with a large set of options:
-          
+
           > python $SPPAS/scripts/lib/momel.py -h
-    
+
     or in SPPAS, using the GUI, or in text-mode (only with default options):
-    
+
           > $SPPAS/sppas.py -i INPUT --momel
-  
+
   - add the first version of INTSINT, proposed by Daniel Hirst.
     INTSINT is an acronym for INternational Transcription System for INTonation.
     INTSINT codes the intonation of an utterance by means of an alphabet of i
-    8 discrete symbols constituting a surface phonological representation of 
+    8 discrete symbols constituting a surface phonological representation of
     the intonation:
-    
-       - T (Top), 
-       - H (Higher), 
-       - U (Upstepped), 
+
+       - T (Top),
+       - H (Higher),
+       - U (Upstepped),
        - S (Same),
-       - M (mid), 
-       - D (Downstepped), 
-       - L (Lower), 
+       - M (mid),
+       - D (Downstepped),
+       - L (Lower),
        - B (Bottom).
 
 Package:
@@ -106,7 +106,7 @@ Package:
   - Momel can deal with long sounds (not only one IPU)
   - manage source files, comments, exceptions...
   - SPPAS works as a single instance by mean of a lock file.
-  - SPPAS can be installed in a directory containing spaces and can deal 
+  - SPPAS can be installed in a directory containing spaces and can deal
     with file names with spaces (bug fixed: 2012-06-11)
 
 GUI:
@@ -140,7 +140,7 @@ Resources:
   - English acoustic models updated, and converted to SAMPA
 
 Annotations:
- 
+
   - IPUs Segmentation annotation performs a simple silence detection if no
     transcription is available (the volume is automatically adjusted)
   - A specific language can be selected for each annotation depending on
@@ -157,11 +157,11 @@ GUI:
   - Create (systematically) a merged annotations file.
 
 Development:
-   
+
    - Package's management
 
 
-#### SPPAS 1.4.2 (2012-08-02) 
+#### SPPAS 1.4.2 (2012-08-02)
 
 GUI:
 
@@ -178,9 +178,9 @@ Known bug:
   - The filter frame is not working under Windows XP.
 
 
-#### SPPAS 1.4.3 (2012-10-10) 
+#### SPPAS 1.4.3 (2012-10-10)
 
-This is primarily a bug-fix release. Many thanks to all users who send their 
+This is primarily a bug-fix release. Many thanks to all users who send their
 comments!
 
 GUI:
@@ -231,7 +231,7 @@ Known bugs:
 
 Development:
 
-  - Correct a few bugs of the previous version 
+  - Correct a few bugs of the previous version
     (phonetization, alignment, syllabification)
   - ".eaf" files support (transcriptions from Elan)
 
@@ -252,16 +252,16 @@ Tools/scripts:
   - tiercombine.py
 
 
-#### SPPAS 1.4.6 (2013-02-12) 
+#### SPPAS 1.4.6 (2013-02-12)
 
 GUI:
 
   - Improved Request/Filter a tier:
-  
+
       * add new modes: not contains, not starts with, not ends with
       * add time constraints: minimum duration, maximum duration, meets
       * multiple modes selection (replace radio buttons by check buttons)
-  
+
   - Add Requests/Stats to obtain basic statistics
   - Requests Copy/Cut/Paste/Duplicate/Save debugged
 
@@ -269,9 +269,9 @@ Annotations:
 
   - IPU segmentation: can take a "Name" tier to fix names of tracks
     (if the "Split into tracks" option is checked)
-  
 
-#### SPPAS 1.4.7 (2013-03-25) 
+
+#### SPPAS 1.4.7 (2013-03-25)
 
 Requests/Filter:
 
@@ -296,12 +296,12 @@ Annotations:
   and implemented in the last version of Momel/INTSINT Praat plugin!
 
 
-#### SPPAS 1.4.8 (2013-05-30) 
+#### SPPAS 1.4.8 (2013-05-30)
 
 Development:
 
   - reorganization of the GUI code.  SPPAS is made of:
-  
+
        * automatic annotations;
        * 3 components (wavplayer, transcriber, requests).
 
@@ -316,20 +316,20 @@ GUI:
   - Help and documentation changed, expanded and improved
 
 
-#### SPPAS 1.4.9 (2013-07-03) 
+#### SPPAS 1.4.9 (2013-07-03)
 
 New Logo!
 
 Development:
 
   - bug correction:
-  
+
       - Bug fixed in IPU segmentation with option "Split into tracks"
       - Bug fixed in Momel with some rare files
       - Bug fixed to create a merged file
       - Bug fixed in align and IPU seg.
       - Bug fixed in Transcriber
-      
+
   - library organization revised
 
 GUI:
@@ -340,7 +340,7 @@ GUI:
   - Save As improved in the Requests component
 
 
-#### SPPAS 1.5 (2013-08-02) 
+#### SPPAS 1.5 (2013-08-02)
 
 Development:
 
@@ -379,7 +379,7 @@ Resources:
     - French dict modified
 
 
-#### SPPAS 1.5.2 (2013-09-27) 
+#### SPPAS 1.5.2 (2013-09-27)
 
 ALL RESOURCES ARE MOVED IN A 'RESOURCES' DIRECTORY.
 
@@ -398,7 +398,7 @@ Components:
     multiple annotated files
 
 
-#### SPPAS 1.5.3 (2013-10-25) 
+#### SPPAS 1.5.3 (2013-10-25)
 
 Resources:
 
@@ -412,7 +412,7 @@ Components:
 Help updated.
 
 
-#### SPPAS 1.5.4 (2013-12-03) 
+#### SPPAS 1.5.4 (2013-12-03)
 
 The most stable release of this period.
 
@@ -429,7 +429,7 @@ Annotations:
   - Add Repetitions (detection of sources only)
 
 
-#### SPPAS 1.5.5 (2013-12-23) 
+#### SPPAS 1.5.5 (2013-12-23)
 
 Development:
 
@@ -446,7 +446,7 @@ GUI:
   - New theme: Christmast
 
 
-#### SPPAS 1.5.6 (2014-01-28) 
+#### SPPAS 1.5.6 (2014-01-28)
 
 Development:
 
@@ -472,7 +472,7 @@ Resources:
   - Japanese support, thanks to the resources available on the Julius website.
 
 
-#### SPPAS 1.5.8 (2014-03-18) 
+#### SPPAS 1.5.8 (2014-03-18)
 
 Development:
 
@@ -485,7 +485,7 @@ Documentation:
   - add a PDF file of slides: "SPPAS for dummies"
 
 
-#### SPPAS 1.5.9 (2014-04-15)  
+#### SPPAS 1.5.9 (2014-04-15)
 
 Components:
 
@@ -527,7 +527,7 @@ Resources:
   - new acoustic model: SP
 
 
-#### SPPAS 1.6.1 (2014-09-26) 
+#### SPPAS 1.6.1 (2014-09-26)
 
 Development:
 
@@ -544,7 +544,7 @@ GUI:
   - add a new Export button
 
 
-#### SPPAS 1.6.2 (2014-10-21) 
+#### SPPAS 1.6.2 (2014-10-21)
 
 Resources:
 
@@ -577,8 +577,8 @@ GUI:
 
 ## the Renaissance
 
-Since version 1.6.4, SPPAS is still using python 2.7.x, but SPPAS 
-requires wxpython > 3.0. 
+Since version 1.6.4, SPPAS is still using python 2.7.x, but SPPAS
+requires wxpython > 3.0.
 
 For MacOS users: wxpython must be installed in 64 bits (cocoa).
 
@@ -598,7 +598,7 @@ Development:
 
 Components:
 
-  - IPUscribe replaces IPUTransciber mainly for the support large files: 
+  - IPUscribe replaces IPUTransciber mainly for the support large files:
     tested with a file of 1 hour speech (143 Go) and 800 IPUs.
   - SndRoamer replaces WavPlayer
   - Dataroamer has also a new version
@@ -631,13 +631,13 @@ components is missing.
 Annotations:
 
   - log messages more explicit and status with colors:
-    
+
      * OK is green
      * WARNING is orange
      * IGNORED is violet
      * INFO is blue
      * ERROR is red
-        
+
   - management of input/output file format redone: now easier for the user.
 
 Development:
@@ -653,21 +653,21 @@ GUI:
   - GUI is more homogeneous and pretty (hope!)
   - Show the date in the status bar
   - New Settings frame:
-    
+
       - 4 icon themes available
       - Choice of foreground and background colours
       - Choice of the font
       - Choice of the input/output file format of annotations
-        
+
   - New in Help menu:
-    
+
      - access to the project homepage
      - access to the online documentation
      - New Feedback
-        
+
   - New Help browser
   - Add Keyboard shortcuts:
-    
+
      - ALT+F4 to exit,
      - CTRL+A to add files in FLP
      - SHIFT+CTRL+A to add a directory in FLP
@@ -684,7 +684,7 @@ Components:
   - GUI design unified for DataRoamer, SndPlayer, IPUscribe and SppasEdit
   - New Tier Preview frame (still under development)
   - SndPlayer print information about a sound file with colors:
-    
+
      - Green: the information corresponds to the SPPAS requirements
      - Orange: the information does not exactly corresponds to the requirements
         however SPPAS is able to deal with (after convertion)
@@ -730,10 +730,10 @@ Development:
   requirements.
   - annotationdata bug correction with min and max values
   - IPUs Segmentation:
-    
+
      - bug correction when split into tracks with a tier "Name"
      - add the ipu number in speech segments if silence/speech segmentation
-        
+
   - Self-repetitions debug in finding the repetition interval
 
 GUI:
@@ -753,10 +753,10 @@ Python 2.7.something, wxpython 3.something and Julius are the only dependencies.
 
 Development:
 
-  - package annotationdata.filter updated to support last changes of 
+  - package annotationdata.filter updated to support last changes of
     annotationdata: multiple labels and numerical labels.
   - package annotationdata.io:
-    
+
       - praat.py newly created. Support of TextGrid, PitchTier and
        IntensityTier files completely re-written
       - htk.py newly created to support .lab and .mlf files
@@ -764,13 +764,13 @@ Development:
       - signaix.py newly created to support .hz files
       - SPPAS native format XRA upgraded to version 1.1 to support
         improvements of the library.
-          
+
   - package annotationdata:
-    
+
       - updated object Transcription to support more/different input data
       - updated hierarchy
       - updated meta-data
-        
+
   - package signal: partially re-written. As a consequence, sox won't
     be neither used, but the file conversion (if required) is slower.
 
@@ -785,24 +785,24 @@ GUI:
 Development:
 
   - package annotationdata.io:
-    
+
       - add support of subtitles: sub, srt
       - elan.py created to replace eaf.py: allows a full support of Elan annotations
       - transcriber.py created to replace trs.py for a better support of Transcriber files
       - anvil.py allows to import anvil files
-        
+
   - package annotationdata:
-    
+
       - updated hierarchy
       - updated meta-data
-   
+
   - package signal:
-    
+
      - support of audio files re-written: can open/save wav, aiff and au files
      - add a lot of possibilities to manage one channel of an audio file
-        
+
 GUI:
-    
+
   - DataFilter component finalized: can deal with alternative labels,
     and typed labels (string, number, boolean)
   - Statistics component fully re-written to facilitate its use
@@ -820,20 +820,20 @@ Annotations:
 Development:
 
   - package re-organization:
-    
+
      - package signal is now standalone
      - package resources is now standalone
      - package presenters created
 
   - updated statistics estimations
   - package annotationdata:
-    
+
      - add Media object
      - add CtrlVocab object
      - add inheritance of MetaObject for Annotation
-        
+
   - package annotationdata.io:
-    
+
      - complete debug of all file formats
      - add comments and documentation
      - add also some tests
@@ -883,7 +883,7 @@ Resources:
   - Add a vocab for Portuguese
   - Add a dict for Portuguese
   - Add an acoustic model for Portuguese. It has to be noticed that
-    it was constructed from French/Spanish/Italian models, not trained 
+    it was constructed from French/Spanish/Italian models, not trained
     from data.
 
 Samples:
@@ -908,7 +908,7 @@ GUI:
   - Changed all pictures to remove the problem with colorset of some of them
   - Add a christmast theme for the pictures of tips
   - IPUscribe improvements:
-    
+
      - add keyboard shortcuts to play/pause/stop the sound
      - add a new button to auto-play the sound
 
@@ -919,13 +919,13 @@ Web site host has changed: <http://www.sppas.org/>
 Development:
 
   - IPU segmentation:
-    
+
      - bug correction with option "split into tracks"
      - new option to add or not add the IPU index of each IPU into the
         transcription tier
-        
+
   - Tokenization:
-   
+
      - bug correction in input tier selection
      - bug correction for replacements
 
@@ -964,7 +964,7 @@ Development:
   - Add Kullback-Leibler distance estimator.
   - Add a script to compare 2 segmentations (of 2 tiers).
   - Classes of the package resources are debugged, improved and extended.
-  - Automatic annotation alignment: bug correction if input starts by an 
+  - Automatic annotation alignment: bug correction if input starts by an
     empty interval.
   - `sppas.command` modified for MacOS-X (use python if python2 not available)
   - GUIs in `bin` directory are updated (test of python, wxpython, and so on).
@@ -993,4 +993,27 @@ Development:
 GUI:
 
   - Automatic annotations: improved log messages.
+
+
+#### SPPAS-1.7.9 (2016-06-03)
+
+GUI:
+
+    - SndPlayer renamed AudioRoamer
+    because new functionnalities were added:
+
+        - See detailed information about each channel of an audio file
+        - Can extract/save a channel or a fragment of channel
+        - Can modify the framerate and the sample width of a channel
+        - Can add a bias on amplitude values of a channel,
+        - Can multiply amplitude values of a channel,
+        - Can remove the offset of amplitude values of a channel.
+
+Automatic annotations:
+
+    - IPUs Segmentation fully re-implemented.
+
+        - Silence/speech sehmentation improved for both quality and fastness
+        - Package code cleaning and re-organization.
+
 

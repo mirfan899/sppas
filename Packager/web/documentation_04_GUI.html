@@ -71,7 +71,7 @@
 <li><a href="#the-main-toolbar">The main toolbar</a></li>
 <li><a href="#the-list-of-files">The list of files</a></li>
 <li><a href="#dataroamer">DataRoamer</a></li>
-<li><a href="#sndroamer">SndRoamer</a></li>
+<li><a href="#audioroamer">AudioRoamer</a></li>
 <li><a href="#ipuscribe">IPUscribe</a></li>
 <li><a href="#sppasedit">SppasEdit</a></li>
 <li><a href="#datafilter">DataFilter</a></li>
@@ -250,9 +250,9 @@
 <p>Six components are available:</p>
 <ol type="1">
 <li><code>DataRoamer</code> allows to explore the annotated files: cut/copy/paste/rename/duplicate tiers, move a tier from one file to another one, etc.</li>
-<li><code>SndPlayer</code> allows to play your speech files.</li>
+<li><code>AudioRoamer</code> allows to play and manage audio files: extract a channel, see clipping rates, change framerate, etc.</li>
 <li><code>IPUscribe</code> is useful to perform manual orthographic transcription.</li>
-<li><code>SppasEdit</code> displays speech files and annotated files, and is very useful to take a screenshot! Easy way to zoom/scroll, change colours, choose the tiers to display, etc;</li>
+<li><code>SppasEdit</code> displays audio files and annotated files, and is very useful to take a screenshot! Easy way to zoom/scroll, change colours, choose the tiers to display, etc;</li>
 <li><code>DataFilter</code> allows to select annotations: fix a set of filters to create new tiers with only the annotations you are interested in!</li>
 <li><code>Statistics</code> estimates the number of occurrences, the duration, etc. of the annotations, and allows to save in CSV (for Excel, OpenOffice, R, MatLab,...).</li>
 </ol>
@@ -286,11 +286,53 @@
 <figure>
 <img src="./etc/screenshots/DataRoamer.png" alt="Component: DataRoamer" /><figcaption>Component: DataRoamer</figcaption>
 </figure>
-<h3 id="sndroamer"><a href="#sndroamer">SndRoamer</a></h3>
-<p><code>SndRoamer</code> allows to play your speech files and to get information.</p>
+<h3 id="audioroamer"><a href="#audioroamer">AudioRoamer</a></h3>
+<p><code>AudioRoamer</code> allows to play your audio files and to display general information about a digitalized audio-PCM file.</p>
+<p>Pulse-code modulation (PCM) is a method used to digitally represent sampled analog signals. In a PCM stream, the amplitude of the analog signal is sampled regularly at uniform intervals. A PCM stream has two basic properties that determine the stream's fidelity to the original analog signal:</p>
+<ol type="1">
+<li>the sampling rate, which is the number of times per second that samples are taken;</li>
+<li>the bit depth, which determines the number of possible digital values that can be used to represent each sample.</li>
+</ol>
+<p>Common sampling frequencies are 48 kHz as used with DVD format videos, or 44.1 kHz as used in Compact discs. Common sample depths are 8, 16 or 24 bits per sample. 16 is the most frequent one: this allow values to range from -32768 to 32767.</p>
+<p>Support for multichannel audio depends on file format and relies on interweaving or synchronization of streams.</p>
 <figure>
 <img src="./etc/screenshots/SndRoamer.png" alt="Component: SndRoamer" /><figcaption>Component: SndRoamer</figcaption>
 </figure>
+<p>Want more?</p>
+<p><code>AudioRoamer</code> allows to display a large set of information for each channel. For a large file, it can take a while to estimate them... so be patient! It's worth it!</p>
+<figure>
+<img src="./etc/screenshots/SndRoamer-more.png" alt="Component: SndRoamer if you want more" /><figcaption>Component: SndRoamer if you want more</figcaption>
+</figure>
+<p>At the bottom of the window, it is possible to click on buttons to:</p>
+<ol type="1">
+<li>Save the channel currently displayed;</li>
+<li>Save a portion (from...to...) of the channel;</li>
+<li>Save the displayed information in a text file;</li>
+<li>Close the window.</li>
+</ol>
+<p>There are 3 main columns of information, related to amplitude, clipping and volume.</p>
+<h4 id="amplitude"><a href="#amplitude">Amplitude</a></h4>
+<p>The amplitude is a variable characterizing the sinusoidal oscillation of the digital-audio recording. It gives the deflection of a physical quantity from its neutral position (zero point) up to a positive or negative value. With sound waves, it is the extent to which air particles are displaced, and this amplitude of sound or sound amplitude is experienced as the loudness of sound. The loudness perception of a sound is determined by the amplitude of the sound waves − the higher the amplitude, the louder the sound or the noise.</p>
+<p>The first column of <code>AudioRoamer</code> Data Manager gives amplitude values of each channel of the PCM file:</p>
+<ul>
+<li>Number of frames: the number of samples, i.e. the number of amplitude values;</li>
+<li>Min/Max values: minimum and maximum amplitude values in the channel;</li>
+<li>Zero crossings</li>
+</ul>
+<p>The 5 information below can be modified and modifications can be saved separatly for each channel:</p>
+<ul>
+<li>Frame rate: the sampling frequency observed in the channel included in a list of possible values. If it is modified, the color is changed.</li>
+<li>Samp. width: the bit depth observed in the channel included in a list of possible values. If it is modified, the color is changed.</li>
+<li>Multiply values by: all samples in the original channel are multiplied by the floating-point value factor. Sample values are truncated in case of overflow.</li>
+<li>Add bias value: a bias value is added to each sample. Sample values wrap around in case of overflow.</li>
+<li>Remove offset value: the average over all values is deduced to each sample. Sample values wrap around in case of overflow.</li>
+</ul>
+<h4 id="clipping"><a href="#clipping">Clipping</a></h4>
+<p>The second column displays the clipping rates of the sample values given a factor. It will consider that all values outside the interval are clipped. The clipping rate is given as a percentage related to the total number of values.</p>
+<h4 id="volume"><a href="#volume">Volume</a></h4>
+<p>Volume is estimated from root-mean-square (RMS) of the samples, i.e. sqrt(sum(S_i^2)/n). This is a measure of the power in an audio signal. Between parenthesis, the volume in dB is estimated as: 10.log10(rms/ref), where ref is a reference factor (energy quantity) ref = 1 ≡ 0 dB (power).</p>
+<p>Illustration: The level of −3 dB is equivalent to 50% (factor = 0.5) and the level of −6 dB is equivalent to 25% (factor = 1/4 = 0.25) of the initial power. For example, a RMS value of 350 gives a pover value equal to 25.45 dB compared to a RMS value of 700 that gives a power value of 28.45 dB.</p>
+<p>Finally, the result of an automatic detection of silences is given. Of course, this information is given for information only, and is estimated with default parameters.</p>
 <h3 id="ipuscribe"><a href="#ipuscribe">IPUscribe</a></h3>
 <p><code>IPUscribe</code> is useful to perform manual orthographic transcription.</p>
 <figure>

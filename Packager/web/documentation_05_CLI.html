@@ -58,7 +58,7 @@
 <li><a href="#programs-to-perform-an-automatic-annotation">Programs to perform an automatic annotation</a><ul>
 <li><a href="#annotation.py">annotation.py</a></li>
 <li><a href="#wavsplit.py">wavsplit.py</a></li>
-<li><a href="#ntokenize.py">ntokenize.py</a></li>
+<li><a href="#tokenize.py">tokenize.py</a></li>
 <li><a href="#phonetize.py">phonetize.py</a></li>
 <li><a href="#alignment.py">alignment.py</a></li>
 <li><a href="#syllabify.py">syllabify.py</a></li>
@@ -145,8 +145,10 @@
 <pre><code>usage: wavsplit.py -w file [options]</code></pre>
 <p>Generic options:</p>
 <pre><code>    -w file         audio input file name
-    -d delta shift  Add this time value to each start/end
-                    bounds of the IPUs (for -o option only)
+    -d delta shift  Add this time value to each start
+                    bound of the IPUs
+    -D delta shift  Add this time value to each end
+                    bound of the IPUs
     -h, --help      show the help message and exit</code></pre>
 <p>Options that can be fixed for the Speech/Silence segmentation:</p>
 <pre><code>    -r float    Window size to estimate rms, in seconds
@@ -158,16 +160,13 @@
     -v value    Assume that a rms lower than v is a silence
                 (default value is: 0 which means to auto-adjust)</code></pre>
 <p>Options that can be fixed for the Speech/Silence segmentation with a given orthographic transcription. It must be choose one of -t or -n options:</p>
-<pre><code>    -t file     Input transcription file with txt or
-                textgrid extension (default: None)
-    -n value    Input transcription tier number
-                (in case of input as textgrid) (default: 0)
+<pre><code>    -t file     Input transcription file (default: None)
+    -n value    Input transcription tier number (default: None)
     -N          Adjust the volume cap until it splits
-                into nb tracks (default: 0)</code></pre>
+                into nb tracks (default: 0=automatic)</code></pre>
 <p>Output options:</p>
 <pre><code>    -o dir      Output directory name       (default: None)
     -e ext      Output tracks extension     (default: txt)
-    -l file     File with units&#39; boundaries (default: None)
     -p file     File with the segmentation  (default: None)</code></pre>
 <p>Examples of use to get each IPU in a wav file and its corresponding textgrid:</p>
 <pre><code>./sppas/bin/wavsplit.py -w ./samples/samples-eng/oriana1.WAV
@@ -179,7 +178,7 @@
 -t ./samples/samples-eng/oriana1.xra
 -o ./samples/samples-eng/oriana1
 -e textgrid</code></pre>
-<h3 id="ntokenize.py"><a href="#ntokenize.py">ntokenize.py</a></h3>
+<h3 id="tokenize.py"><a href="#tokenize.py">tokenize.py</a></h3>
 <p>This program performs Tokenization, i.e. the text normalization of a given file or a raw text.</p>
 <pre><code>usage: tokenize.py -r vocab [options]
 
