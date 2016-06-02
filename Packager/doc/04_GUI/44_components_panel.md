@@ -32,7 +32,7 @@ All of the components share the same style:
 
 ![The toolbar of the components](./etc/screenshots/components-toolbar.png)
 
-Seven buttons are available:
+Height buttons are available:
 
 - Exit: go out of the component;
 - Add: add file(s) in the list;
@@ -40,6 +40,7 @@ Seven buttons are available:
 - New tab: open an empty new tab in the notebook;
 - Close tab: close the selected tab;
 - Settings: the same that the main frame of SPPAS;
+- Help: open the documentation;
 - About: get information about the component.
 
 
@@ -85,16 +86,18 @@ bits per sample. 16 is the most frequent one: this allow values to range from
 Support for multichannel audio depends on file format and relies on 
 interweaving or synchronization of streams.
 
-![Component: SndRoamer](./etc/screenshots/SndRoamer.png)
+![Component: AudioRoamer](./etc/screenshots/SndRoamer.png)
 
 
-Want more?
+#### Want more?
 
 `AudioRoamer` allows to display a large set of information for each channel.
-For a large file, it can take a while to estimate them... 
-so be patient! It's worth it!
+For a large file, it can take a while to estimate such information... 
+For example, an audio file of 243 seconds (21.5Mb) is loaded in 35 seconds.
+**So be patient! It's worth it!**
 
-![Component: SndRoamer if you want more](./etc/screenshots/SndRoamer-more.png)
+![Component: AudioRoamer if you want more](./etc/screenshots/SndRoamer-more.png)
+
 
 At the bottom of the window, it is possible to click on buttons to:
 
@@ -144,6 +147,8 @@ values.
 
 #### Volume
 
+##### RMS:
+
 Volume is estimated from root-mean-square (RMS) of the samples, i.e. 
 sqrt(sum(S_i^2)/n). This is a measure of the power in an audio signal.
 Between parenthesis, the volume in dB is estimated as: 
@@ -156,9 +161,11 @@ The level of −3 dB is equivalent to 50% (factor = 0.5) and the level of
 For example, a RMS value of 350 gives a pover value equal to 25.45 dB compared
 to a RMS value of 700 that gives a power value of 28.45 dB.
 
+##### Automatic detection of silences:
+
 Finally, the result of an automatic detection of silences is given. Of course,
 this information is given for information only, and is estimated with default
-parameters.
+parameters, which should be adapted. 
 
 
 
@@ -193,7 +200,7 @@ The following keyboard shortcuts can also be used:
 This component is still under-development, some "troubles/crashes" can occur 
 while using it... but the data will never been corrupted!!
 
-`DataViewer` displays speech files and annotated files, and is very useful 
+`SppasEdit` displays speech files and annotated files, and is very useful 
 to take a nice screenshot! 
 Most of the screenshots of annotated data of this document were taken with it...
 

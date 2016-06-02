@@ -46,46 +46,52 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 import wx
 import logging
+import webbrowser
 
 from sp_glob import SETTINGS_FILE
 
-from wxgui.sp_icons                     import SETTINGS_ICON
-from wxgui.sp_icons                     import COMPONENT_ICON
-from wxgui.sp_icons                     import ADD_FILE_ICON
-from wxgui.sp_icons                     import REMOVE_ICON
-from wxgui.sp_icons                     import TAB_NEW_ICON
-from wxgui.sp_icons                     import TAB_CLOSE_ICON
-from wxgui.sp_icons                     import ABOUT_ICON
-from wxgui.sp_icons                     import LOGOUT_ICON
-from wxgui.sp_icons                     import EXIT_ICON
+from wxgui.sp_icons import SETTINGS_ICON
+from wxgui.sp_icons import COMPONENT_ICON
+from wxgui.sp_icons import ADD_FILE_ICON
+from wxgui.sp_icons import REMOVE_ICON
+from wxgui.sp_icons import TAB_NEW_ICON
+from wxgui.sp_icons import TAB_CLOSE_ICON
+from wxgui.sp_icons import ABOUT_ICON
+from wxgui.sp_icons import LOGOUT_ICON
+from wxgui.sp_icons import EXIT_ICON
+from wxgui.sp_icons import HELP_ICON
+from wxgui.sp_icons import APP_ICON
+from wxgui.sp_icons import BUG_ICON
+from wxgui.sp_icons import FEEDBACK_ICON
+from wxgui.sp_icons import WEB_ICON
 
-from wxgui.sp_consts                    import DEFAULT_APP_NAME
+from wxgui.sp_consts  import DEFAULT_APP_NAME
+from wxgui.sp_consts  import TB_ICONSIZE
+from wxgui.sp_consts  import MENU_ICONSIZE
+from wxgui.sp_consts  import MIN_PANEL_W
+from wxgui.sp_consts  import MIN_FRAME_W
+from wxgui.sp_consts  import MIN_FRAME_H
+from wxgui.sp_consts  import FRAME_STYLE
+from wxgui.sp_consts  import FRAME_TITLE
 
-from wxgui.sp_consts                    import TB_ICONSIZE
-from wxgui.sp_consts                    import MENU_ICONSIZE
-from wxgui.sp_consts                    import MIN_PANEL_W
-from wxgui.sp_consts                    import MIN_FRAME_W
-from wxgui.sp_consts                    import MIN_FRAME_H
-from wxgui.sp_consts                    import FRAME_STYLE
-from wxgui.sp_consts                    import FRAME_TITLE
+from wxgui.ui.CustomEvents     import FileWanderEvent, spEVT_FILE_WANDER
+from wxgui.ui.CustomEvents     import FileCheckEvent
+from wxgui.ui.CustomEvents     import NotebookNewPageEvent
+from wxgui.ui.CustomEvents     import NotebookClosePageEvent
+from wxgui.ui.CustomEvents     import SettingsEvent
+from wxgui.ui.CustomStatus     import CustomStatusBar
 
-from wxgui.ui.CustomEvents              import FileWanderEvent, spEVT_FILE_WANDER
-from wxgui.ui.CustomEvents              import FileCheckEvent
-from wxgui.ui.CustomEvents              import NotebookNewPageEvent
-from wxgui.ui.CustomEvents              import NotebookClosePageEvent
-from wxgui.ui.CustomEvents              import SettingsEvent
+from wxgui.dialogs.msgdialogs  import ShowYesNoQuestion, ShowInformation
+from wxgui.views.about         import AboutBox
+from wxgui.views.settings      import SettingsDialog
+from wxgui.views.feedback      import ShowFeedbackDialog
+from wxgui.frames.helpbrowser  import HelpBrowser
 
-from wxgui.ui.CustomStatus              import CustomStatusBar
+from wxgui.structs.prefs       import Preferences_IO
+from wxgui.structs.themes      import Themes, BaseTheme
 
-from wxgui.dialogs.msgdialogs        import ShowYesNoQuestion
-from wxgui.views.about                  import AboutBox
-from wxgui.views.settings               import SettingsDialog
-
-from wxgui.structs.prefs                import Preferences_IO
-from wxgui.structs.themes               import Themes, BaseTheme
-
-from wxgui.panels.filemanager           import FileManager
-from wxgui.clients.baseclient        import BaseClient
+from wxgui.panels.filemanager   import FileManager
+from wxgui.clients.baseclient   import BaseClient
 import wxgui.dialogs.filedialogs as filedialogs
 
 from wxgui.cutils.imageutils import spBitmap
@@ -100,6 +106,11 @@ VIEW_STATUSBAR_ID   = wx.NewId()
 
 TAB_NEW_ID          = wx.NewId()
 TAB_CLOSE_ID        = wx.NewId()
+
+ID_HOME            = wx.NewId()
+ID_DOC             = wx.NewId()
+ID_TRACK           = wx.NewId()
+ID_FEEDBACK        = wx.NewId()
 
 # ----------------------------------------------------------------------------
 
@@ -118,14 +129,13 @@ class ComponentFrame( wx.Frame ):
     - a panel at right, which contains the client.
 
     """
-
-    def __init__(self, parent, id, args={}):
+    def __init__(self, parent, idf, args={}):
         """
         Creates a new ComponentFrame instance.
 
         """
 
-        wx.Frame.__init__(self, parent, id, title=FRAME_TITLE+" - Component", style=FRAME_STYLE)
+        wx.Frame.__init__(self, parent, idf, title=FRAME_TITLE+" - Component", style=FRAME_STYLE)
 
         # To enable translations of wx stock items.
         #self.locale = wx.Locale(wx.LANGUAGE_DEFAULT)
@@ -153,7 +163,7 @@ class ComponentFrame( wx.Frame ):
         self.Show(True)
 
     # ------------------------------------------------------------------------
-    # Private methods to create the GUI and initialise members
+    # Private methods to create the GUI and initialize members
     # ------------------------------------------------------------------------
 
     def _init_members( self, args ):
@@ -161,7 +171,6 @@ class ComponentFrame( wx.Frame ):
         Sets the members settings.
 
         """
-
         if "prefs" in args.keys():
             self._prefsIO = args["prefs"]
         else:
@@ -207,7 +216,7 @@ class ComponentFrame( wx.Frame ):
 
     def _init_frame(self):
         """
-        Initialises the frame.
+        Initializes the frame.
 
         Creates the default about, menubar, toolbar and status bar.
 
@@ -225,7 +234,6 @@ class ComponentFrame( wx.Frame ):
         self._create_accelerators()
 
         # Create the panels and set the menu
-
         if wx.Platform == '__WXMAC__':
             self.SetMenuBar(menubar)  # wxBug: Have to set the menubar at the very end or the automatic MDI "window" menu doesn't get put in the right place when the services add new menus to the menubar
 
@@ -244,7 +252,6 @@ class ComponentFrame( wx.Frame ):
         Fix frame size (adjust size depending on screen capabilities).
 
         """
-
         self.SetSizeHints(MIN_FRAME_W, MIN_FRAME_H)
         (w,h) = wx.GetDisplaySize()
         self.SetSize( wx.Size(w*0.75,h*0.75) )
@@ -270,6 +277,7 @@ class ComponentFrame( wx.Frame ):
             - Show/Hide Status Bar
             - Show/Hide Toolbar
         - Help
+            - Help
             - About
 
         """
@@ -316,9 +324,28 @@ class ComponentFrame( wx.Frame ):
         prefMenu.AppendCheckItem(VIEW_TOOLBAR_ID,   '&Toolbar',    'Shows or hides the toolbar')
 
         # Items of the menu "Help"
+        # Items of the menu Help
+        helpItem  = wx.MenuItem(helpMenu, wx.ID_HELP,  '&Help browser...\tF1')
         aboutItem = wx.MenuItem(helpMenu, wx.ID_ABOUT, '&About' + ' ' + wx.GetApp().GetAppName()+"...\tF2")
+        homeItem  = wx.MenuItem(helpMenu, ID_HOME,     'Homepage...' , 'Visit the project homepage.')
+        docItem   = wx.MenuItem(helpMenu, ID_DOC,      'Online Documentation...' , 'Open the documentation in a web browser.')
+        trackItem = wx.MenuItem(helpMenu, ID_TRACK,    'Bug tracker...' , 'Declare a bug.')
+        feedbackItem = wx.MenuItem(helpMenu, ID_FEEDBACK, 'Give Feedback...' , 'Send information, or any suggestions by email.')
+
         aboutItem.SetBitmap( spBitmap(ABOUT_ICON, MENU_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')) )
-        helpMenu.AppendItem(aboutItem)
+        helpItem.SetBitmap(  spBitmap(HELP_ICON,  MENU_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')) )
+        homeItem.SetBitmap(  spBitmap(APP_ICON,   MENU_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')) )
+        docItem.SetBitmap(   spBitmap(WEB_ICON,   MENU_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')) )
+        trackItem.SetBitmap( spBitmap(BUG_ICON,   MENU_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
+        feedbackItem.SetBitmap( spBitmap(FEEDBACK_ICON, MENU_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
+
+        helpMenu.AppendItem( helpItem )
+        helpMenu.AppendItem( aboutItem )
+        helpMenu.AppendItem( homeItem )
+        helpMenu.AppendItem( docItem )
+        helpMenu.AppendItem( trackItem )
+        helpMenu.AppendItem( feedbackItem )
+
 
         # Append all menus in the menubar
         menubar.Append(fileMenu, '&File')         # Alt+F
@@ -332,7 +359,7 @@ class ComponentFrame( wx.Frame ):
         menubar.SetFont(self._prefsIO.GetValue('M_FONT')) #  # does not work with windows, bug in wx?
 
         # Events
-        eventslist = [ wx.ID_ADD, wx.ID_REMOVE, TAB_NEW_ID, TAB_CLOSE_ID, wx.ID_EXIT, wx.ID_PREFERENCES, wx.ID_ABOUT, VIEW_TOOLBAR_ID, VIEW_STATUSBAR_ID ]
+        eventslist = [ wx.ID_ADD, wx.ID_REMOVE, TAB_NEW_ID, TAB_CLOSE_ID, wx.ID_EXIT, wx.ID_PREFERENCES, wx.ID_ABOUT, wx.ID_HELP, ID_HOME, ID_DOC, ID_TRACK, ID_FEEDBACK, VIEW_TOOLBAR_ID, VIEW_STATUSBAR_ID ]
         for event in eventslist:
             wx.EVT_MENU(self, event, self.ProcessEvent)
 
@@ -369,6 +396,7 @@ class ComponentFrame( wx.Frame ):
         toolbar.AddSeparator()
         toolbar.AddLabelTool(wx.ID_PREFERENCES, 'Settings', spBitmap(SETTINGS_ICON, TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')) )
         toolbar.AddSeparator()
+        toolbar.AddLabelTool(wx.ID_HELP,  'Help',  spBitmap(HELP_ICON, TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
         toolbar.AddLabelTool(wx.ID_ABOUT, 'About', spBitmap(ABOUT_ICON, TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')) )
 
         toolbar.SetToolSeparation(10)
@@ -381,7 +409,7 @@ class ComponentFrame( wx.Frame ):
         toolbar.SetFont(self._prefsIO.GetValue('M_FONT'))
 
         # events
-        eventslist = [ wx.ID_NEW, wx.ID_EXIT, wx.ID_ADD, wx.ID_REMOVE, TAB_NEW_ID, TAB_CLOSE_ID, wx.ID_PREFERENCES, wx.ID_ABOUT ]
+        eventslist = [ wx.ID_NEW, wx.ID_EXIT, wx.ID_ADD, wx.ID_REMOVE, TAB_NEW_ID, TAB_CLOSE_ID, wx.ID_PREFERENCES, wx.ID_HELP, wx.ID_ABOUT ]
         for event in eventslist:
             wx.EVT_TOOL(self, event, self.ProcessEvent)
 
@@ -505,44 +533,54 @@ class ComponentFrame( wx.Frame ):
         wxPython does not have a virtual ProcessEvent function.
 
         """
-        id = event.GetId()
+        ide = event.GetId()
 
-        if id == wx.ID_ADD:
+        if ide == wx.ID_ADD:
             # add a file in the file manager
             self.OnAdd(event)
             return True
-        elif id == wx.ID_REMOVE:
+        elif ide == wx.ID_REMOVE:
             # remove all checked files of the file manager, delete the instances
             self.OnRemove(event)
             return True
-        elif id == wx.ID_EXIT:
+        elif ide == wx.ID_EXIT:
             # quit the application
             self.OnClose(event)
             return True
 
-        elif id == wx.ID_PREFERENCES:
+        elif ide == wx.ID_PREFERENCES:
             # customize
             self.OnSettings(event)
 
-        elif id == TAB_NEW_ID:
+        elif ide == TAB_NEW_ID:
             # new tab in the client
             self.OnNewTab(event)
-        elif id == TAB_CLOSE_ID:
+
+        elif ide == TAB_CLOSE_ID:
             # close tab in the client
             self.OnCloseTab(event)
 
-        elif id == VIEW_TOOLBAR_ID:
+        elif ide == VIEW_TOOLBAR_ID:
             # enable/disable toolbar
             self.OnViewToolBar(event)
             return True
-        elif id == VIEW_STATUSBAR_ID:
+
+        elif ide == VIEW_STATUSBAR_ID:
             # enable/disable statusbar
             self.OnViewStatusBar(event)
             return True
 
-        elif id == wx.ID_ABOUT:
+        elif ide == wx.ID_HELP or ide == ID_DOC or ide == ID_HOME or ide == ID_TRACK:
+            self.OnExternalLink(event)
+            return True
+
+        elif ide == wx.ID_ABOUT:
             # open the about frame
             self.OnAbout(event)
+            return True
+
+        elif ide == ID_FEEDBACK:
+            ShowFeedbackDialog(self, preferences=self._prefsIO)
             return True
 
         return wx.GetApp().ProcessEvent(event)
@@ -557,12 +595,12 @@ class ComponentFrame( wx.Frame ):
         wxPython does not have a virtual ProcessEvent function.
 
         """
-        id = event.GetId()
+        ide = event.GetId()
 
-        if id == VIEW_TOOLBAR_ID:
+        if ide == VIEW_TOOLBAR_ID:
             self.OnUpdateViewToolBar(event)
             return True
-        elif id == VIEW_STATUSBAR_ID:
+        elif ide == VIEW_STATUSBAR_ID:
             self.OnUpdateViewStatusBar(event)
             return True
 
@@ -771,6 +809,42 @@ class ComponentFrame( wx.Frame ):
                     pass
         prefdlg.Destroy()
         self._LayoutFrame()
+
+    # ------------------------------------------------------------------------
+
+    def OnExternalLink(self, evt):
+        """
+        Open the web browser, go to a specific location.
+
+        """
+        eid = evt.GetId()
+
+        if eid == ID_HOME:
+            url="http://www.sppas.org/"
+
+        elif eid == ID_DOC:
+            url="http://www.sppas.org/documentation.html"
+
+        elif eid == ID_TRACK:
+            url="https://github.com/brigittebigi/sppas/issues/"
+            message= 'Your web browser will be opened.\nFirst, check if the issue is not already declared in the list.\nThen, declare an issue by clicking on the button "New Issue"'
+            ShowInformation( self, self._prefsIO, message)
+
+        else:
+            evt.Skip()
+            return
+
+        # It seems under some cases when running under windows the call to
+        # subprocess in webbrowser will fail and raise an exception here. So
+        # simply trap and ignore it.
+        wx.BeginBusyCursor()
+        try:
+            webbrowser.open(url,1)
+        except:
+            pass#self.SetStatusText("Error: Unable to open %s" % url)
+        wx.EndBusyCursor()
+
+    # -----------------------------------------------------------------------
 
     #-------------------------------------------------------------------------
     # Data management

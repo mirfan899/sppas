@@ -247,11 +247,11 @@ class TierTGA( object ):
                     labels[tglabel] = []
                     logging.debug('... %s is first segment of this TG'%alabel)
                 else:
-                    logging.debug('... %s is segment prec=%f dur=%f'%(alabel,previousduration,duration))
+                    logging.debug('... %s is segment prec=%f dur=%f'%(alabel,previousduration.GetValue(),duration.GetValue()))
                     # delta=duration(i)-duration(i+1)
                     #   positive => deceleration
                     #   negative => acceleration
-                    labels[tglabel].append( previousduration-duration )
+                    labels[tglabel].append( previousduration.GetValue()-duration.GetValue() )
 
                 previousduration = duration
 

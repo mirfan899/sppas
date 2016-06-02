@@ -138,8 +138,8 @@ class SppasEditFrame( ComponentFrame ):
         Update information of the about dialog box.
 
         """
-        description = """SppasView is a component to display files. """
-        self._about.SetName('SppasView')
+        description = """SppasEdit is a component to display files. """
+        self._about.SetName('SppasEdit')
         self._about.SetVersion('1.1')
         self._about.SetDescription(description)
         _icon = wx.EmptyIcon()

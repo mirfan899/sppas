@@ -56,7 +56,7 @@ class AudioRoamerFrame( ComponentFrame ):
     """
     def __init__(self, parent, appid, args={}):
         """
-        Creates a new ComponentFrame instance for SndRoamer component.
+        Creates a new ComponentFrame instance for AudioRoamerFrame.
 
         """
         ComponentFrame.__init__(self, parent, appid, args)
@@ -72,9 +72,9 @@ class AudioRoamerFrame( ComponentFrame ):
         Update information of the about dialog box.
 
         """
-        description = """SndRoamer is a component to play and get information about speech files."""
-        self._about.SetName('SndRoamer')
-        self._about.SetVersion('1.0')
+        description = """AudioRoamer allows to play, show information and manage channels of audio files."""
+        self._about.SetName('AudioRoamer')
+        self._about.SetVersion('1.2')
         self._about.SetDescription(description)
 
         _icon = wx.EmptyIcon()

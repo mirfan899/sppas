@@ -43,11 +43,12 @@ import logging
 import wx
 
 from wxgui.ui.wavectrl import WaveCtrl
+import audiodata.io
 
 # ----------------------------------------------------------------------------
 
 import os
-wavef = wave.Wave_read(os.path.join(os.path.dirname(os.path.abspath(__file__)),"oriana1.wav"))
+wavef = audiodata.io.open(os.path.join(os.path.dirname(os.path.abspath(__file__)),"oriana1.wav"))
 
 # ----------------------------------------------------------------------------
 
@@ -64,7 +65,7 @@ class WaveCtrlDemo(wx.Window):
         self.b2 = wx.Button(self, -1, " Scroll ", (110, 40))
         self.b3 = wx.Button(self, -1, " Size ", (210, 40))
 
-        self.wavectrl = WaveCtrl(self, id=-1, pos=(10,80),  size=wx.Size(400,100), wave=wavef)
+        self.wavectrl = WaveCtrl(self, id=-1, pos=(10,80),  size=wx.Size(400,100), audio=wavef)
         self.wavectrl.SetGradientBackground( True ) # Gradient bg
         self.wavectrl.SetTime(2.0,4.0)
         self.wavectrl.SetHandlesColour( wx.Colour(200, 100, 100) )

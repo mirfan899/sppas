@@ -266,7 +266,7 @@
 <figure>
 <img src="./etc/screenshots/components-toolbar.png" alt="The toolbar of the components" /><figcaption>The toolbar of the components</figcaption>
 </figure>
-<p>Seven buttons are available:</p>
+<p>Height buttons are available:</p>
 <ul>
 <li>Exit: go out of the component;</li>
 <li>Add: add file(s) in the list;</li>
@@ -274,6 +274,7 @@
 <li>New tab: open an empty new tab in the notebook;</li>
 <li>Close tab: close the selected tab;</li>
 <li>Settings: the same that the main frame of SPPAS;</li>
+<li>Help: open the documentation;</li>
 <li>About: get information about the component.</li>
 </ul>
 <h3 id="the-list-of-files"><a href="#the-list-of-files">The list of files</a></h3>
@@ -296,12 +297,12 @@
 <p>Common sampling frequencies are 48 kHz as used with DVD format videos, or 44.1 kHz as used in Compact discs. Common sample depths are 8, 16 or 24 bits per sample. 16 is the most frequent one: this allow values to range from -32768 to 32767.</p>
 <p>Support for multichannel audio depends on file format and relies on interweaving or synchronization of streams.</p>
 <figure>
-<img src="./etc/screenshots/SndRoamer.png" alt="Component: SndRoamer" /><figcaption>Component: SndRoamer</figcaption>
+<img src="./etc/screenshots/SndRoamer.png" alt="Component: AudioRoamer" /><figcaption>Component: AudioRoamer</figcaption>
 </figure>
-<p>Want more?</p>
-<p><code>AudioRoamer</code> allows to display a large set of information for each channel. For a large file, it can take a while to estimate them... so be patient! It's worth it!</p>
+<h4 id="want-more"><a href="#want-more">Want more?</a></h4>
+<p><code>AudioRoamer</code> allows to display a large set of information for each channel. For a large file, it can take a while to estimate such information... For example, an audio file of 243 seconds (21.5Mb) is loaded in 35 seconds. <strong>So be patient! It's worth it!</strong></p>
 <figure>
-<img src="./etc/screenshots/SndRoamer-more.png" alt="Component: SndRoamer if you want more" /><figcaption>Component: SndRoamer if you want more</figcaption>
+<img src="./etc/screenshots/SndRoamer-more.png" alt="Component: AudioRoamer if you want more" /><figcaption>Component: AudioRoamer if you want more</figcaption>
 </figure>
 <p>At the bottom of the window, it is possible to click on buttons to:</p>
 <ol type="1">
@@ -330,9 +331,11 @@
 <h4 id="clipping"><a href="#clipping">Clipping</a></h4>
 <p>The second column displays the clipping rates of the sample values given a factor. It will consider that all values outside the interval are clipped. The clipping rate is given as a percentage related to the total number of values.</p>
 <h4 id="volume"><a href="#volume">Volume</a></h4>
+<h5 id="rms"><a href="#rms">RMS:</a></h5>
 <p>Volume is estimated from root-mean-square (RMS) of the samples, i.e. sqrt(sum(S_i^2)/n). This is a measure of the power in an audio signal. Between parenthesis, the volume in dB is estimated as: 10.log10(rms/ref), where ref is a reference factor (energy quantity) ref = 1 ≡ 0 dB (power).</p>
 <p>Illustration: The level of −3 dB is equivalent to 50% (factor = 0.5) and the level of −6 dB is equivalent to 25% (factor = 1/4 = 0.25) of the initial power. For example, a RMS value of 350 gives a pover value equal to 25.45 dB compared to a RMS value of 700 that gives a power value of 28.45 dB.</p>
-<p>Finally, the result of an automatic detection of silences is given. Of course, this information is given for information only, and is estimated with default parameters.</p>
+<h5 id="automatic-detection-of-silences"><a href="#automatic-detection-of-silences">Automatic detection of silences:</a></h5>
+<p>Finally, the result of an automatic detection of silences is given. Of course, this information is given for information only, and is estimated with default parameters, which should be adapted.</p>
 <h3 id="ipuscribe"><a href="#ipuscribe">IPUscribe</a></h3>
 <p><code>IPUscribe</code> is useful to perform manual orthographic transcription.</p>
 <figure>
@@ -354,7 +357,7 @@
 </ul>
 <h3 id="sppasedit"><a href="#sppasedit">SppasEdit</a></h3>
 <p>This component is still under-development, some &quot;troubles/crashes&quot; can occur while using it... but the data will never been corrupted!!</p>
-<p><code>DataViewer</code> displays speech files and annotated files, and is very useful to take a nice screenshot! Most of the screenshots of annotated data of this document were taken with it...</p>
+<p><code>SppasEdit</code> displays speech files and annotated files, and is very useful to take a nice screenshot! Most of the screenshots of annotated data of this document were taken with it...</p>
 <p>Try the <code>Demo</code> of this component: easy way to zoom/scroll, change colours, choose the tiers to display, etc!</p>
 <figure>
 <img src="./etc/screenshots/SppasEdit.png" alt="Component: SppasEdit" /><figcaption>Component: SppasEdit</figcaption>

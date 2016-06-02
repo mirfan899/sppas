@@ -44,9 +44,6 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # Imports
 # ----------------------------------------------------------------------------
 
-import sys
-import os
-
 from annotationdata.transcription import Transcription
 from annotationdata.tier import Tier
 from annotationdata.annotation import Annotation
@@ -55,17 +52,16 @@ from annotationdata.ptime.interval import TimeInterval
 from annotationdata.label.label import Label
 import annotationdata.io
 import annotations.log
+
 from dictlem import LemmaDict
 from resources.wordslst import WordsList
 from resources.unigram import Unigram
 from detectrepetition import Repetitions
 from detectrepetition import DataSpeaker
 
-
 DEBUG=False
 
 # ######################################################################### #
-
 
 class sppasRepetition( ):
     """
@@ -84,8 +80,6 @@ class sppasRepetition( ):
     >>> p.run(inputtrsname, outputfilename)
 
     """
-
-
     def __init__(self, resourcefile, logfile=None):
         """
         Create a new sppasRepetition instance.
@@ -96,9 +90,7 @@ class sppasRepetition( ):
         must be ".stp" for stop-words and ".lem" for lemmas (case-sensitive)!
 
         """
-
         # Members
-        self._merge         = False  # Merge input in the output
         self._use_lemmatize = True   # Lemmatize the input
         self._use_stopwords = True   # Add specific stopwords of the input
         self._empan  = 5             # Detection length (nb of IPUs; 1=current IPU)
@@ -138,15 +130,11 @@ class sppasRepetition( ):
                 print " ... ... [ INFO ] StopWords disabled."
             #self._use_stopwords = False
 
-    # End __init__
     # ------------------------------------------------------------------
-
 
     def fix_options(self, options):
         for opt in options:
-            if "merge" == opt.get_key():
-                self.set_merge( opt.get_value() )
-            elif "stopwords" == opt.get_key():
+            if "stopwords" == opt.get_key():
                 self.set_use_stopwords( opt.get_value() )
             elif "lemmatize" == opt.get_key():
                 self.set_use_lemmatize( opt.get_value() )
@@ -155,29 +143,9 @@ class sppasRepetition( ):
             elif "alpha" == opt.get_key():
                 self.set_alpha( opt.get_value() )
 
-    # End fix_options
     # ------------------------------------------------------------------
-
-
-    # ###################################################################### #
     # Getters and Setters                                                    #
-    # ###################################################################### #
-
-
-    def set_merge(self, merge):
-        """
-        Fix the merge option.
-        If merge is set to True, sppasRepetition() will save the input tiers
-        in the output file.
-
-        @param merge (Boolean)
-
-        """
-        self._merge = merge
-
-    # End set_merge
-    # ----------------------------------------------------------------------
-
+    # ------------------------------------------------------------------
 
     def set_use_lemmatize(self, use_lemmatize):
         """
@@ -191,9 +159,7 @@ class sppasRepetition( ):
         """
         self._use_lemmatize = use_lemmatize
 
-    # End set_use_lemmatize
     # ----------------------------------------------------------------------
-
 
     def set_use_stopwords(self, use_stopwords):
         """
@@ -207,9 +173,7 @@ class sppasRepetition( ):
         """
         self._use_stopwords = use_stopwords
 
-    # End set_use_stopwords
     # ----------------------------------------------------------------------
-
 
     def set_empan(self, empan):
         """
@@ -220,9 +184,7 @@ class sppasRepetition( ):
         """
         self._empan = empan
 
-    # End set_empan
     # ----------------------------------------------------------------------
-
 
     def set_alpha(self, alpha):
         """
@@ -233,14 +195,9 @@ class sppasRepetition( ):
         """
         self._alpha = alpha
 
-    # End set_alpha
     # ----------------------------------------------------------------------
-
-
-    # ###################################################################### #
     # Automatic Detection search parameters                                  #
-    # ###################################################################### #
-
+    # ----------------------------------------------------------------------
 
     def lemmatize(self, inputtier):
         """
@@ -261,7 +218,6 @@ class sppasRepetition( ):
         return lemmatier
 
     # ------------------------------------------------------------------
-
 
     def relevancy(self, inputtier):
         """
@@ -297,9 +253,7 @@ class sppasRepetition( ):
 
         return l
 
-    # End relevancy
     # ------------------------------------------------------------------
-
 
     def find_next_break (self, inputtier, start, empan):
         """
@@ -317,22 +271,17 @@ class sppasRepetition( ):
                     return i
         return inputtier.GetSize() - 1
 
-    # End find_next_break
     # ------------------------------------------------------------------
-
-
-    # ###################################################################### #
     # Automatic Detection search                                             #
-    # ###################################################################### #
-
+    # ------------------------------------------------------------------
 
     def _addrepetition(self, repeatobj, nbrepeats, inputtier1, inputtier2, tokstartsrc, tokstartrep, srctier, reptier):
         """
         Add sources and repetitions
         from repeatobj
         to the tiers.
-        """
 
+        """
         n = 0
         for i in range(repeatobj.get_repeats_size()):
 
@@ -370,7 +319,7 @@ class sppasRepetition( ):
 
         return n
 
-
+    # ------------------------------------------------------------------
 
     def selfdetection(self, inputtier1):
         """
@@ -428,9 +377,7 @@ class sppasRepetition( ):
 
         return (srctier,reptier)
 
-    # End selfdetection
     # ------------------------------------------------------------------------
-
 
     def otherdetection(self, inputtier1, inputtier2):
         """
@@ -522,14 +469,9 @@ class sppasRepetition( ):
 
         return (srctier,reptier)
 
-    # End otherdetection
     # ------------------------------------------------------------------------
-
-
-    # ###################################################################### #
     # Run
-    # ###################################################################### #
-
+    # ------------------------------------------------------------------
 
     def run(self, inputfilename1, inputfilename2=None, outputfilename=None):
         """
@@ -585,9 +527,6 @@ class sppasRepetition( ):
         # An output file name is given
         if outputfilename:
             trsoutput = Transcription("Repetitions")
-            if self._merge is True:
-                for i in range( trsinput1.GetSize() ):
-                    trsoutput.Add( trsinput1[i] )
         # the repeat tier is added to the input transcription
         else:
             outputfilename = inputfilename1
@@ -603,5 +542,4 @@ class sppasRepetition( ):
         # Save
         annotationdata.io.write( outputfilename, trsoutput )
 
-    # End run
     # ------------------------------------------------------------------------

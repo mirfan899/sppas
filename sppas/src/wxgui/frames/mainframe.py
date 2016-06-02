@@ -450,7 +450,6 @@ class FrameSPPAS( wx.Frame ):
         wxPython does not have a virtual ProcessEvent function.
 
         """
-
         ide = event.GetId()
 
         if ide == wx.ID_EXIT:

@@ -131,9 +131,9 @@ def get_minval(size, signed=True):
 
 def db2mel(value):
     """
-    Return the equivalent value in a mel scale.
+    Return the equivalent value in a mel scale, from a dB value.
 
-    @param value (int) the value in db to convert
+    @param value (int) the value in dB to convert
     @return the value in mel
 
     """
@@ -143,10 +143,10 @@ def db2mel(value):
 
 def mel2db(value):
     """
-    Return the equivalent value in a db scale.
+    Return the equivalent value in a dB scale, from a mel value.
 
     @param value (int) the value in mel to convert
-    @return the value in db
+    @return the value in dB
 
     """
     return 700*(10**(float(value)/2595)-1)
@@ -155,12 +155,14 @@ def mel2db(value):
 
 def amp2db(value):
     """
-    Return the equivalent value in a db scale, from an amplitude value.
+    Return the equivalent value in a dB scale, from an amplitude value.
 
     @param value (int) the amplitude value to convert
-    @return the value in db
+    @return the value in dB
 
     """
+    if value < 3:
+        return 0.
     return round( 10. * math.log10(value), 2)
 
 # ----------------------------------------------------------------------------

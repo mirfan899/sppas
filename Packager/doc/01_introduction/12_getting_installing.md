@@ -3,18 +3,30 @@
 
 ### Websites
 
+Since January 2016, **the main website of SPPAS** is located at the following URL:
+
+<http://www.sppas.org>
+
+
 In the past, SPPAS - Automatic Annotation of Speech, was hosted by
-"Laboratoire Parole et Langage" (see <http://www.lpl-aix.fr>), then
-by Speech and Language Data Repository (SLDR), at <http://sldr.org/sldr000800/>
+"Laboratoire Parole et Langage":
 
-Since January 2016, the main website of SPPAS is located at the following URL:
+<http://www.lpl-aix.fr>
 
-    <http://www.sppas.org>
+Then it was migrated on Speech and Language Data Repository (SLDR), at:
 
-The source code with recent stable releases is hosted on github
-<https://github.com/brigittebigi/>.
+<http://sldr.org/sldr000800/>
+
+SLDR is now migrating under Ortolang. SPPAS is then here also:
+
+<https://www.ortolang.fr/market/tools/sldr000800/>
+
+The *source code* with recent stable releases is hosted on github.
 From this website, anyone can download the development version,
-contribute, send comments and/or declare an issue.
+contribute, send comments and/or declare an issue:
+
+<https://github.com/brigittebigi/>
+
 
 
 ### Dependencies
@@ -40,11 +52,11 @@ installations.
 
 ### Download and install SPPAS
 
-The website lets to go to the `Download Page` to download a new version or
-subscribe to the User's group.
+The main website contains the `Download Page` to download a new version.
 
 SPPAS is ready to run, so it does not need elaborate installation, except for
-its dependencies (other software required for SPPAS to work properly).
+its dependencies (other software required for SPPAS to work properly, 
+see previous section).
 All you need to do is to copy the SPPAS package from the website to somewhere
 on your computer. Preferably, choose *a location without spaces nor accentuated
 characters in the name of the path*.
@@ -52,7 +64,7 @@ characters in the name of the path*.
 The SPPAS package is compressed and zipped, so you will need to
 *decompress and unpack* it once you've got it.
 
-There is a unique version of SPPAS which does **not depend** on your operating
+There is a unique version of SPPAS which does not depend on the operating
 system. The only obvious difference depending on the system is how it looks
 on the computer screen.
 

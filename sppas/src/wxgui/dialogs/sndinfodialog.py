@@ -64,15 +64,15 @@ class AudioInfoDialog( spBaseDialog ):
         spBaseDialog.__init__(self, parent, preferences, title=" - Information")
         wx.GetApp().SetAppName( "audioinfodlg" )
 
-        self.sndname = sndname
-
         titlebox   = self.CreateTitle(INFO_ICON,"Audio description")
-        contentbox = self._create_content()
+        contentbox = self._create_content(sndname)
         buttonbox  = self._create_buttons()
 
         self.LayoutComponents( titlebox,
                                contentbox,
                                buttonbox )
+
+        self.SetMinSize((480,220))
 
     # ------------------------------------------------------------------------
     # Create the GUI
@@ -82,10 +82,10 @@ class AudioInfoDialog( spBaseDialog ):
         btn_close  = self.CreateCloseButton()
         return self.CreateButtonBox( [],[btn_close] )
 
-    def _create_content(self):
+    def _create_content(self, sndname):
         # the information panel
-        self.trspanel = AudioInfo( self )
-        self.trspanel.FileSelected( self.sndname )
+        self.trspanel = AudioInfo( self, self.preferences )
+        self.trspanel.FileSelected( sndname )
         return self.trspanel
 
 # ------------------------------------------------------------------------------

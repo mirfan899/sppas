@@ -18,12 +18,12 @@ speech data and to analyse annotated files:
 
 2. **Components**
 
-    - *IPUScribe*:      Manual orthographic transcription
-    - *SndRoamer*:      Play sounds and display information about audio files
+    - *IPUscribe*:      Manual orthographic transcription, after IPUs segmentation
+    - *AudioRoamer*:    Play, show information and manage speech audio files
     - *Statistics*:     Estimates/Save statistics on annotated files
     - *DataRoamer*:     Manipulate annotated files
-    - *DataFilter*:     Extract data from annotated files
-    - *SppasEdit*:      Display sound and annotated files (development version, unstable)
+    - *DataFilter*:     Extract data from annotated files (i.e. querying data)
+    - *SppasEdit*:      Display sound and annotated files 
 
 
 3. **Plugins**

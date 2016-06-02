@@ -74,6 +74,7 @@ from wxgui.sp_icons import MIME_MRK
 from wxgui.sp_icons import MIME_SUBTITLES
 from wxgui.sp_icons import MIME_ANVIL
 from wxgui.sp_icons import MIME_ANTX
+from wxgui.sp_icons import MIME_XTRANS
 
 from wxgui.sp_icons import ADD_FILE_ICON
 from wxgui.sp_icons import ADD_DIR_ICON
@@ -217,6 +218,7 @@ class FiletreePanel( wx.Panel ):
         self.subfileidx   = il.Add(spBitmap(MIME_SUBTITLES, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
         self.anvilfileidx = il.Add(spBitmap(MIME_ANVIL, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
         self.antxfileidx  = il.Add(spBitmap(MIME_ANTX, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
+        self.xtransfileidx = il.Add(spBitmap(MIME_XTRANS, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
 
         t.AssignImageList(il)
 
@@ -676,6 +678,11 @@ class FiletreePanel( wx.Panel ):
             child = self._filestree.AppendItem(parent, son)
             self._filestree.SetPyData(child, None)
             self._filestree.SetItemImage(child, self.antxfileidx, wx.TreeItemIcon_Normal)
+
+        elif fileExtension == ".tdf":
+            child = self._filestree.AppendItem(parent, son)
+            self._filestree.SetPyData(child, None)
+            self._filestree.SetItemImage(child, self.xtransfileidx, wx.TreeItemIcon_Normal)
 
         else:
             return wx.TreeItemId()

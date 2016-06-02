@@ -9,8 +9,8 @@ item []:
     item [1]:
         class = "IntervalTier"
         name = "IPU"
-        xmin = 0.0
-        xmax = 18.2253333333
+        xmin = 0.000000
+        xmax = 18.225333
         intervals: size = 11
         intervals [1]:
             xmin = 0.0
@@ -27,7 +27,7 @@ item []:
         intervals [4]:
             xmin = 4.465
             xmax = 7.415
-            text = "El nivel de agua es demasiado y gotea continuamente."
+            text = "El nivel de agua es demasiado + y gotea continuamente."
         intervals [5]:
             xmin = 7.415
             xmax = 8.005

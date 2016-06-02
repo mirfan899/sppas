@@ -998,9 +998,8 @@ GUI:
 #### SPPAS-1.7.9 (2016-06-03)
 
 GUI:
-
-    - SndPlayer renamed AudioRoamer
-    because new functionnalities were added:
+    - Some debug in SppasEdit
+    - SndPlayer renamed AudioRoamer because new functionnalities were added:
 
         - See detailed information about each channel of an audio file
         - Can extract/save a channel or a fragment of channel

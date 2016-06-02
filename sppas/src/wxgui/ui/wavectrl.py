@@ -173,7 +173,6 @@ class WaveCtrl( spControl ):
           - audio (AudioPCM): the audio instance.
 
         """
-
         spControl.__init__(self, parent, id, pos, size)
 
         # Preferences
