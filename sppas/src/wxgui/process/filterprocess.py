@@ -51,6 +51,7 @@ import logging
 from annotationdata import Filter, SingleFilter, RelationFilter
 from wxgui.views.processprogress import ProcessProgressDialog
 
+from annotationdata.filter.predicate import Rel, Sel
 
 # ----------------------------------------------------------------------------
 
@@ -112,8 +113,7 @@ class FilterProcess:
                     obj.Append( new_tier )
 
 
-
-    def _runRelationFilter(self, tiername, progress):
+    def _runRelationFilter(self, tiername, progress, annotformat=""):
         progress.set_header("Apply RelationFilter")
         progress.update(0,"")
         total = self.file_manager.GetSize()
@@ -151,7 +151,7 @@ class FilterProcess:
                     # create an apply filter
                     xfilter = Filter( tier )
                     sf = RelationFilter( predicate, xfilter, yfilter )
-                    new_tier = sf.Filter()
+                    new_tier = sf.Filter( annotformat )
                     new_tier.SetName( self.tier_name )
                     logging.debug(' ... ... ... new tier %s created '%new_tier.GetName())
 
@@ -170,13 +170,13 @@ class FilterProcess:
         progress.set_header("")
 
 
-    def RunRelationFilter(self, parent, tiername):
+    def RunRelationFilter(self, parent, tiername, annotformat=""):
         wx.BeginBusyCursor()
 
         # Create the progress bar
         p = ProcessProgressDialog(parent, parent._prefsIO)
         p.set_title("Filtering progress...")
-        self._runRelationFilter(tiername,p)
+        self._runRelationFilter(tiername, p, annotformat)
         p.close()
         wx.EndBusyCursor()
 
