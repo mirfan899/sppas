@@ -37,7 +37,6 @@
 
 import datetime
 import codecs
-import math
 import wx
 import wx.lib.scrolledpanel as scrolled
 
@@ -65,7 +64,7 @@ from wxgui.sp_consts import MIN_PANEL_H
 from wxgui.sp_consts import BUTTON_ICONSIZE
 
 from wxgui.dialogs.filedialogs import SaveAsAudioFile, SaveAsAnyFile
-from wxgui.dialogs.msgdialogs  import ShowInformation
+from wxgui.dialogs.msgdialogs  import ShowInformation, ShowYesNoQuestion
 from wxgui.dialogs.basedialog  import spBaseDialog
 from wxgui.dialogs.choosers    import PeriodChooser
 
@@ -315,7 +314,7 @@ class AudioRoamer( wx.Panel ):
         sizer = wx.BoxSizer( wx.HORIZONTAL )
         FONT = self._prefs.GetValue('M_FONT')
         bmproamer = spBitmap(AUDIOROAMER_APP_ICON, theme=self._prefs.GetValue('M_ICON_THEME'))
-        self.roamerButton = CreateGenButton(self, ID_DIALOG_AUDIOROAMER, bmproamer, text="Want more?", tooltip="Show more information, manage channels, framerate, etc.", colour=wx.Colour(220,120,180), SIZE=BUTTON_ICONSIZE, font=FONT)
+        self.roamerButton = CreateGenButton(self, ID_DIALOG_AUDIOROAMER, bmproamer, text=" Want more? ", tooltip="Show more information, manage channels, framerate, etc.", colour=wx.Colour(220,120,180), SIZE=BUTTON_ICONSIZE, font=FONT)
         self.Bind(wx.EVT_BUTTON, self.OnAudioRoamer,  self.roamerButton, ID_DIALOG_AUDIOROAMER)
 
         sizer.Add( self.roamerButton )
@@ -722,7 +721,11 @@ class AudioRoamerPanel( wx.Panel ):
         """
         # we never estimated values. we have to do it!
         if self._cv is None:
-            self.SetChannel(self._channel)
+            try:
+                self.SetChannel(self._channel)
+            except Exception as e:
+                ShowInformation(self, self._prefs, "Error: %s"%str(e))
+                return
 
         # Amplitude
         self._wxobj["nframes"][1].ChangeValue( " "+str(self._channel.get_nframes())+" " )
@@ -887,7 +890,7 @@ class AudioRoamerPanel( wx.Panel ):
             if channel is None:
                 channel = self._channel
             else:
-                message +="\nYou can now open it with SndRoamer to see your changes!"
+                message +="\nYou can now open it with AudioRoamer to see your changes!"
 
             # Save the channel
             try:
@@ -1033,6 +1036,12 @@ class AudioRoamerPanel( wx.Panel ):
 # ----------------------------------------------------------------------------
 
 def ShowAudioRoamerDialog(parent, preferences, filename):
+    audio = audiodata.io.open( filename )
+    if audio.get_nframes() > 15000000:
+        userChoice = ShowYesNoQuestion( None, preferences, "Audio file is very large. Showing more will take a while and could generate a memory error. Really want more?" )
+        if userChoice == wx.ID_NO:
+            return
+    audio.close()
     dialog = AudioRoamerDialog(parent, preferences, filename)
     dialog.ShowModal()
     dialog.Destroy()
