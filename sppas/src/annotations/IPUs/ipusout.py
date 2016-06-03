@@ -271,7 +271,7 @@ class IPUsOut( object ):
         # Write text tracks
         for i,track in enumerate(trackstimes):
             trackbasename = ""
-            if len(names) > 0:
+            if len(names) > 0 and len(names[i])>0:
                 # Specific names are given
                 trackbasename = os.path.join(output, names[i])
             else:
@@ -310,7 +310,7 @@ class IPUsOut( object ):
         # Write audio tracks
         for i, split_track in enumerate(split_tracks):
             trackbasename = ""
-            if len(names) > 0:
+            if len(names) > 0 and len(names[i])>0:
                 # Specific names are given
                 trackbasename = os.path.join(output, names[i])
             else:

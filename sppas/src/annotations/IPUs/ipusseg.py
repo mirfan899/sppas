@@ -387,6 +387,9 @@ class sppasIPUs:
                 fileName = os.path.splitext( audiofile )[0]
                 diroutput = fileName+"-ipus"
 
+            if os.path.exists(diroutput) is False:
+                os.mkdir( diroutput )
+
             if self.logfile is not None:
                 self.logfile.print_message(str(len(self.ipustrs.get_units()))+" units to write.", indent=3)
 
