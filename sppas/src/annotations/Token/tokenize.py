@@ -570,7 +570,7 @@ class DictTok:
         # Transcriptor comment's: [comment]
         _fentry = re.sub(u'\\[[\s\w\xaa-\xff\-:]+\\]', ur'', _fentry, re.UNICODE)
         # Transcription comment's: (comment)
-        _fentry = re.sub(u' \\([\s\w\xaa-\xff\-:]+\\) ', ur'', _fentry, re.UNICODE) # .... warning!
+        #_fentry = re.sub(u' \\([\s\w\xaa-\xff\-:]+\\) ', ur'', _fentry, re.UNICODE) # .... warning!
 
         if std is False:
             # Special elisions (remove parenthesis content)
