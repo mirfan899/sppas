@@ -114,8 +114,8 @@ if args.o and not os.path.exists(args.o):
 
 w = sppasIPUs()
 
-if args.shiftstart: w.set_shift_start( args.shiftstart )
-if args.shiftend:   w.set_shift_start( args.shiftend )
+if args.shiftstart: w.ipusaudio.set_shift_start( args.shiftstart )
+if args.shiftend:   w.ipusaudio.set_shift_start( args.shiftend )
 if args.minipu:     w.ipusaudio.set_min_speech( args.minipu )
 if args.minsil:     w.ipusaudio.set_min_silence( args.minsil )
 if args.minrms:     w.ipusaudio.set_min_vol_threshold( args.minrms )

@@ -61,6 +61,7 @@ from annotations.param import sppasParam
 from annotations.process import sppasProcess
 from term.textprogress import TextProgress
 from term.terminalcontroller import TerminalController
+from sp_glob import DEFAULT_OUTPUT_EXTENSION
 
 
 # ----------------------------------------------------------------------------
@@ -73,7 +74,7 @@ parser = ArgumentParser(usage="%s -w file|folder [options]" % os.path.basename(P
 parser.add_argument("-w", required=True, metavar="file|folder", help='Input wav file name, or directory')
 
 parser.add_argument("-l", metavar="lang", help='Input language, using iso639-3 code')
-parser.add_argument("-e", metavar="extension", help='Output extension. One of: %s'%" ".join(extensions_out_multitiers))
+parser.add_argument("-e", default=DEFAULT_OUTPUT_EXTENSION, metavar="extension", help='Output extension. One of: %s'%" ".join(extensions_out_multitiers))
 parser.add_argument("--momel", action='store_true', help="Activate Momel and INTSINT" )
 parser.add_argument("--ipu",   action='store_true', help="Activate IPUs Segmentation" )
 parser.add_argument("--tok",   action='store_true', help="Activate Tokenization" )
@@ -98,14 +99,16 @@ args = parser.parse_args()
 parameters.add_sppasinput( os.path.abspath(args.w) )
 
 if args.l: parameters.set_lang( args.l )
-if args.e:
-    extensions = [e.lower() for e in extensions_out_multitiers]
-    if not args.e.lower() in extensions:
-        print
-        print "[WARNING] Unknown extension:",args.e,". Extension is set to its default value."
-        print
-    else:
-        parameters.set_output_format( args.e )
+ext = args.e
+if not ext.startswith("."):
+    ext = "."+ext
+extensions = [e.lower() for e in extensions_out_multitiers]
+if not ext.lower() in extensions:
+    print
+    print "[WARNING] Unknown extension:",args.e,". Extension is set to its default value."
+    print
+    ext = DEFAULT_OUTPUT_EXTENSION
+parameters.set_output_format( ext )
 
 if args.momel: parameters.activate_step(0)
 if args.ipu:   parameters.activate_step(1)
