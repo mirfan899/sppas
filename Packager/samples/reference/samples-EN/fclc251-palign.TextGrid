@@ -70,40 +70,6 @@ item []:
             text = "#"
     item [2]:
         class = "IntervalTier"
-        name = "PhnTokAlign"
-        xmin = 0.000000
-        xmax = 3.497100
-        intervals: size = 7
-        intervals [1]:
-            xmin = 0.0
-            xmax = 0.865
-            text = "#"
-        intervals [2]:
-            xmin = 0.865
-            xmax = 0.895
-            text = "3:r"
-        intervals [3]:
-            xmin = 0.895
-            xmax = 1.075
-            text = "j-u"
-        intervals [4]:
-            xmin = 1.075
-            xmax = 1.435
-            text = "{-N-g-r-i:"
-        intervals [5]:
-            xmin = 1.435
-            xmax = 1.515
-            text = "{-t"
-        intervals [6]:
-            xmin = 1.515
-            xmax = 1.79
-            text = "m-i:"
-        intervals [7]:
-            xmin = 1.79
-            xmax = 3.4971
-            text = "#"
-    item [3]:
-        class = "IntervalTier"
         name = "TokensAlign"
         xmin = 0.000000
         xmax = 3.497100
@@ -136,3 +102,21 @@ item []:
             xmin = 1.79
             xmax = 3.4971
             text = "#"
+    item [3]:
+        class = "IntervalTier"
+        name = "Activity"
+        xmin = 0.000000
+        xmax = 3.497100
+        intervals: size = 3
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.865
+            text = "silence"
+        intervals [2]:
+            xmin = 0.865
+            xmax = 1.79
+            text = "speech"
+        intervals [3]:
+            xmin = 1.79
+            xmax = 3.4971
+            text = "silence"

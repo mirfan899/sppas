@@ -9,7 +9,7 @@ item []:
     item [1]:
         class = "IntervalTier"
         name = "IPU"
-        xmin = 0.0
+        xmin = 0.000000
         xmax = 6.008125
         intervals: size = 3
         intervals [1]:

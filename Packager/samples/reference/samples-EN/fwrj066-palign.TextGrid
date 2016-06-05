@@ -142,56 +142,6 @@ item []:
             text = "#"
     item [2]:
         class = "IntervalTier"
-        name = "PhnTokAlign"
-        xmin = 0.000000
-        xmax = 6.008100
-        intervals: size = 11
-        intervals [1]:
-            xmin = 0.0
-            xmax = 0.93
-            text = "#"
-        intervals [2]:
-            xmin = 0.93
-            xmax = 1.05
-            text = "aI"
-        intervals [3]:
-            xmin = 1.05
-            xmax = 1.17
-            text = "{-m"
-        intervals [4]:
-            xmin = 1.17
-            xmax = 1.89
-            text = "@-t-{-k-i-N"
-        intervals [5]:
-            xmin = 1.89
-            xmax = 2.99
-            text = "w-U-l-f"
-        intervals [6]:
-            xmin = 2.99
-            xmax = 3.44
-            text = "b-i-k-O:-z"
-        intervals [7]:
-            xmin = 3.44
-            xmax = 3.88
-            text = "h-i:"
-        intervals [8]:
-            xmin = 3.88
-            xmax = 4.05
-            text = "I-z"
-        intervals [9]:
-            xmin = 4.05
-            xmax = 4.93
-            text = "@-t-{-k-i-N"
-        intervals [10]:
-            xmin = 4.93
-            xmax = 5.545
-            text = "m-i:"
-        intervals [11]:
-            xmin = 5.545
-            xmax = 6.0081
-            text = "#"
-    item [3]:
-        class = "IntervalTier"
         name = "TokensAlign"
         xmin = 0.000000
         xmax = 6.008100
@@ -240,3 +190,21 @@ item []:
             xmin = 5.545
             xmax = 6.0081
             text = "#"
+    item [3]:
+        class = "IntervalTier"
+        name = "Activity"
+        xmin = 0.000000
+        xmax = 6.008100
+        intervals: size = 3
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.93
+            text = "silence"
+        intervals [2]:
+            xmin = 0.93
+            xmax = 5.545
+            text = "speech"
+        intervals [3]:
+            xmin = 5.545
+            xmax = 6.0081
+            text = "silence"

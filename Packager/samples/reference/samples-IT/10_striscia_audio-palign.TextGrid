@@ -290,104 +290,6 @@ item []:
             text = "a"
     item [2]:
         class = "IntervalTier"
-        name = "PhnTokAlign"
-        xmin = 0.000000
-        xmax = 10.000000
-        intervals: size = 23
-        intervals [1]:
-            xmin = 0.0
-            xmax = 0.06
-            text = "a"
-        intervals [2]:
-            xmin = 0.06
-            xmax = 0.795
-            text = "s-t-r-i-S-a"
-        intervals [3]:
-            xmin = 0.795
-            xmax = 1.1
-            text = "#"
-        intervals [4]:
-            xmin = 1.1
-            xmax = 1.21
-            text = "l-a"
-        intervals [5]:
-            xmin = 1.21
-            xmax = 1.97
-            text = "s-t-r-i-S-a"
-        intervals [6]:
-            xmin = 1.97
-            xmax = 2.28
-            text = "#"
-        intervals [7]:
-            xmin = 2.28
-            xmax = 2.37
-            text = "l-a"
-        intervals [8]:
-            xmin = 2.37
-            xmax = 3.135
-            text = "s-t-r-i-S-a"
-        intervals [9]:
-            xmin = 3.135
-            xmax = 3.555
-            text = "#"
-        intervals [10]:
-            xmin = 3.555
-            xmax = 3.655
-            text = "l-a"
-        intervals [11]:
-            xmin = 3.655
-            xmax = 4.425
-            text = "s-t-r-i-S-a"
-        intervals [12]:
-            xmin = 4.425
-            xmax = 4.89
-            text = "#"
-        intervals [13]:
-            xmin = 4.89
-            xmax = 4.99
-            text = "a"
-        intervals [14]:
-            xmin = 4.99
-            xmax = 5.77
-            text = "s-t-r-i-S-a"
-        intervals [15]:
-            xmin = 5.77
-            xmax = 6.24
-            text = "#"
-        intervals [16]:
-            xmin = 6.24
-            xmax = 6.34
-            text = "l-a"
-        intervals [17]:
-            xmin = 6.34
-            xmax = 7.175
-            text = "s-t-r-i-S-a"
-        intervals [18]:
-            xmin = 7.175
-            xmax = 7.61
-            text = "#"
-        intervals [19]:
-            xmin = 7.61
-            xmax = 7.71
-            text = "l-a"
-        intervals [20]:
-            xmin = 7.71
-            xmax = 8.505
-            text = "s-t-r-i-S-a"
-        intervals [21]:
-            xmin = 8.505
-            xmax = 9.07
-            text = "#"
-        intervals [22]:
-            xmin = 9.07
-            xmax = 9.18
-            text = "l-a"
-        intervals [23]:
-            xmin = 9.18
-            xmax = 10.0
-            text = "s-t-r-i-S-a"
-    item [3]:
-        class = "IntervalTier"
         name = "TokensAlign"
         xmin = 0.000000
         xmax = 10.000000
@@ -484,3 +386,69 @@ item []:
             xmin = 9.18
             xmax = 10.0
             text = "striscia"
+    item [3]:
+        class = "IntervalTier"
+        name = "Activity"
+        xmin = 0.000000
+        xmax = 10.000000
+        intervals: size = 15
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.795
+            text = "speech"
+        intervals [2]:
+            xmin = 0.795
+            xmax = 1.1
+            text = "silence"
+        intervals [3]:
+            xmin = 1.1
+            xmax = 1.97
+            text = "speech"
+        intervals [4]:
+            xmin = 1.97
+            xmax = 2.28
+            text = "silence"
+        intervals [5]:
+            xmin = 2.28
+            xmax = 3.135
+            text = "speech"
+        intervals [6]:
+            xmin = 3.135
+            xmax = 3.555
+            text = "silence"
+        intervals [7]:
+            xmin = 3.555
+            xmax = 4.425
+            text = "speech"
+        intervals [8]:
+            xmin = 4.425
+            xmax = 4.89
+            text = "silence"
+        intervals [9]:
+            xmin = 4.89
+            xmax = 5.77
+            text = "speech"
+        intervals [10]:
+            xmin = 5.77
+            xmax = 6.24
+            text = "silence"
+        intervals [11]:
+            xmin = 6.24
+            xmax = 7.175
+            text = "speech"
+        intervals [12]:
+            xmin = 7.175
+            xmax = 7.61
+            text = "silence"
+        intervals [13]:
+            xmin = 7.61
+            xmax = 8.505
+            text = "speech"
+        intervals [14]:
+            xmin = 8.505
+            xmax = 9.07
+            text = "silence"
+        intervals [15]:
+            xmin = 9.07
+            xmax = 10.0
+            text = "speech"

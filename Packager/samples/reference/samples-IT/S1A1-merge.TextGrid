@@ -112,28 +112,6 @@ item []:
             text = ""
     item [5]:
         class = "IntervalTier"
-        name = "PhnTokAlign"
-        xmin = 0.000000
-        xmax = 1.460687
-        intervals: size = 4
-        intervals [1]:
-            xmin = 0.0
-            xmax = 0.6
-            text = "r-a-l-e-g-o"
-        intervals [2]:
-            xmin = 0.6
-            xmax = 0.86
-            text = "v-e-d-e"
-        intervals [3]:
-            xmin = 0.86
-            xmax = 1.4606
-            text = "l-a-d-o-n-a"
-        intervals [4]:
-            xmin = 1.4606
-            xmax = 1.460687
-            text = ""
-    item [6]:
-        class = "IntervalTier"
         name = "TokensAlign"
         xmin = 0.000000
         xmax = 1.460687
@@ -151,6 +129,20 @@ item []:
             xmax = 1.4606
             text = "ladona"
         intervals [4]:
+            xmin = 1.4606
+            xmax = 1.460687
+            text = ""
+    item [6]:
+        class = "IntervalTier"
+        name = "Activity"
+        xmin = 0.000000
+        xmax = 1.460687
+        intervals: size = 2
+        intervals [1]:
+            xmin = 0.0
+            xmax = 1.4606
+            text = "speech"
+        intervals [2]:
             xmin = 1.4606
             xmax = 1.460687
             text = ""
@@ -342,15 +334,39 @@ item []:
             mark = "S"
     item [12]:
         class = "IntervalTier"
-        name = "Information"
+        name = "MetaInformation"
         xmin = 0.000000
         xmax = 1.460687
-        intervals: size = 2
+        intervals: size = 8
         intervals [1]:
             xmin = 0.0
-            xmax = 0.7303435
-            text = "This annotation was produced by SPPAS 1.7.8 on 2016-05-05"
+            xmax = 0.182585875
+            text = "license=GNU Public License, version 3"
         intervals [2]:
+            xmin = 0.182585875
+            xmax = 0.36517175
+            text = "version=1.7.9"
+        intervals [3]:
+            xmin = 0.36517175
+            xmax = 0.547757625
+            text = "copyright=Copyright (C) 2011-2016 Brigitte Bigi"
+        intervals [4]:
+            xmin = 0.547757625
+            xmax = 0.7303435
+            text = "author=Brigitte Bigi"
+        intervals [5]:
             xmin = 0.7303435
+            xmax = 0.912929375
+            text = "url=http://www.sppas.org/"
+        intervals [6]:
+            xmin = 0.912929375
+            xmax = 1.09551525
+            text = "contact=brigite.bigi@gmail.com"
+        intervals [7]:
+            xmin = 1.09551525
+            xmax = 1.278101125
+            text = "program=SPPAS"
+        intervals [8]:
+            xmin = 1.278101125
             xmax = 1.460687
-            text = "Copyright (C) 2011-2016 Brigitte Bigi"
+            text = "date=2016-06-05"

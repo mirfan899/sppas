@@ -434,164 +434,6 @@ item []:
             text = "U~"
     item [2]:
         class = "IntervalTier"
-        name = "PhnTokAlign"
-        xmin = 0.000000
-        xmax = 7.460500
-        intervals: size = 38
-        intervals [1]:
-            xmin = 0.0
-            xmax = 0.12
-            text = "e"
-        intervals [2]:
-            xmin = 0.12
-            xmax = 0.3
-            text = "fp"
-        intervals [3]:
-            xmin = 0.3
-            xmax = 0.54
-            text = "d-o~-k"
-        intervals [4]:
-            xmin = 0.54
-            xmax = 0.71
-            text = "d-o~-k"
-        intervals [5]:
-            xmin = 0.71
-            xmax = 1.0
-            text = "d-y-k-u"
-        intervals [6]:
-            xmin = 1.0
-            xmax = 1.15
-            text = "s-e"
-        intervals [7]:
-            xmin = 1.15
-            xmax = 1.52
-            text = "t-w-a"
-        intervals [8]:
-            xmin = 1.52
-            xmax = 1.64
-            text = "s-e"
-        intervals [9]:
-            xmin = 1.64
-            xmax = 1.87
-            text = "U~-p-eu"
-        intervals [10]:
-            xmin = 1.87
-            xmax = 2.05
-            text = "t-w-a"
-        intervals [11]:
-            xmin = 2.05
-            xmax = 2.12
-            text = "k"
-        intervals [12]:
-            xmin = 2.12
-            xmax = 2.17
-            text = "a"
-        intervals [13]:
-            xmin = 2.17
-            xmax = 2.26
-            text = "l-e-z"
-        intervals [14]:
-            xmin = 2.26
-            xmax = 2.49
-            text = "p-R-eu-m-j-e"
-        intervals [15]:
-            xmin = 2.49
-            xmax = 2.91
-            text = "k-o~-t-a-k-t"
-        intervals [16]:
-            xmin = 2.91
-            xmax = 3.14
-            text = "a-v-E-k"
-        intervals [17]:
-            xmin = 3.14
-            xmax = 3.17
-            text = "l"
-        intervals [18]:
-            xmin = 3.17
-            xmax = 3.43
-            text = "a-v-E-k"
-        intervals [19]:
-            xmin = 3.43
-            xmax = 3.5
-            text = "l-eu"
-        intervals [20]:
-            xmin = 3.5
-            xmax = 3.78
-            text = "g-o-s"
-        intervals [21]:
-            xmin = 3.78
-            xmax = 4.03
-            text = "k-w-a"
-        intervals [22]:
-            xmin = 4.03
-            xmax = 4.25
-            text = "#"
-        intervals [23]:
-            xmin = 4.25
-            xmax = 4.49
-            text = "e-p-H-i"
-        intervals [24]:
-            xmin = 4.49
-            xmax = 4.56
-            text = "l-a"
-        intervals [25]:
-            xmin = 4.56
-            xmax = 4.61
-            text = "i"
-        intervals [26]:
-            xmin = 4.61
-            xmax = 4.72
-            text = "t-eu"
-        intervals [27]:
-            xmin = 4.72
-            xmax = 4.94
-            text = "d-eu-m-a~-d"
-        intervals [28]:
-            xmin = 4.94
-            xmax = 5.05
-            text = "l-eu"
-        intervals [29]:
-            xmin = 5.05
-            xmax = 5.42
-            text = "p-R-e-n-o~"
-        intervals [30]:
-            xmin = 5.42
-            xmax = 5.53
-            text = "d-o~"
-        intervals [31]:
-            xmin = 5.53
-            xmax = 5.66
-            text = "f-o"
-        intervals [32]:
-            xmin = 5.66
-            xmax = 5.69
-            text = "s"
-        intervals [33]:
-            xmin = 5.69
-            xmax = 5.9
-            text = "s-w-a"
-        intervals [34]:
-            xmin = 5.9
-            xmax = 6.13
-            text = "p-R-e-t"
-        intervals [35]:
-            xmin = 6.13
-            xmax = 6.34
-            text = "l-a"
-        intervals [36]:
-            xmin = 6.34
-            xmax = 6.37
-            text = "@@"
-        intervals [37]:
-            xmin = 6.37
-            xmax = 7.02
-            text = "p-a-s-k-eu"
-        intervals [38]:
-            xmin = 7.02
-            xmax = 7.4605
-            text = "p-y-t-U~"
-    item [3]:
-        class = "IntervalTier"
         name = "TokensAlign"
         xmin = 0.000000
         xmax = 7.460500
@@ -602,10 +444,10 @@ item []:
             text = "et"
         intervals [2]:
             xmin = 0.12
-            xmax = 0.3
+            xmax = 0.32
             text = "euh"
         intervals [3]:
-            xmin = 0.3
+            xmin = 0.32
             xmax = 0.54
             text = "donc"
         intervals [4]:
@@ -738,13 +580,47 @@ item []:
             text = "là"
         intervals [36]:
             xmin = 6.34
-            xmax = 6.37
+            xmax = 6.39
             text = "@"
         intervals [37]:
-            xmin = 6.37
+            xmin = 6.39
             xmax = 7.02
             text = "parce_que"
         intervals [38]:
             xmin = 7.02
             xmax = 7.4605
             text = "putain"
+    item [3]:
+        class = "IntervalTier"
+        name = "Activity"
+        xmin = 0.000000
+        xmax = 7.460500
+        intervals: size = 7
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.12
+            text = "speech"
+        intervals [2]:
+            xmin = 0.12
+            xmax = 0.32
+            text = "filled pause"
+        intervals [3]:
+            xmin = 0.32
+            xmax = 4.03
+            text = "speech"
+        intervals [4]:
+            xmin = 4.03
+            xmax = 4.25
+            text = "pause"
+        intervals [5]:
+            xmin = 4.25
+            xmax = 6.34
+            text = "speech"
+        intervals [6]:
+            xmin = 6.34
+            xmax = 6.39
+            text = "laughter"
+        intervals [7]:
+            xmin = 6.39
+            xmax = 7.4605
+            text = "speech"

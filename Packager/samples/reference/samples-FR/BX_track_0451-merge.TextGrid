@@ -300,100 +300,6 @@ item []:
             text = "e"
     item [5]:
         class = "IntervalTier"
-        name = "PhnTokAlign"
-        xmin = 0.000000
-        xmax = 3.840000
-        intervals: size = 22
-        intervals [1]:
-            xmin = 0.0
-            xmax = 0.43
-            text = "E-p-H-i"
-        intervals [2]:
-            xmin = 0.43
-            xmax = 0.77
-            text = "o~-n"
-        intervals [3]:
-            xmin = 0.77
-            xmax = 0.8
-            text = "fp"
-        intervals [4]:
-            xmin = 0.8
-            xmax = 0.99
-            text = "m-E-m"
-        intervals [5]:
-            xmin = 0.99
-            xmax = 1.07
-            text = "s"
-        intervals [6]:
-            xmin = 1.07
-            xmax = 1.16
-            text = "o~-n"
-        intervals [7]:
-            xmin = 1.16
-            xmax = 1.36
-            text = "e-s-e-j"
-        intervals [8]:
-            xmin = 1.36
-            xmax = 1.43
-            text = "d-eu"
-        intervals [9]:
-            xmin = 1.43
-            xmax = 1.92
-            text = "m-e-m-o-R-i-z-e"
-        intervals [10]:
-            xmin = 1.92
-            xmax = 2.03
-            text = "p-u-R"
-        intervals [11]:
-            xmin = 2.03
-            xmax = 2.16
-            text = "p-a"
-        intervals [12]:
-            xmin = 2.16
-            xmax = 2.21
-            text = "s"
-        intervals [13]:
-            xmin = 2.21
-            xmax = 2.43
-            text = "t-R-o~-p-e"
-        intervals [14]:
-            xmin = 2.43
-            xmax = 2.55
-            text = "l-a"
-        intervals [15]:
-            xmin = 2.55
-            xmax = 2.69
-            text = "f-w-a"
-        intervals [16]:
-            xmin = 2.69
-            xmax = 2.96
-            text = "d-a-p-R-e"
-        intervals [17]:
-            xmin = 2.96
-            xmax = 3.04
-            text = "l-a"
-        intervals [18]:
-            xmin = 3.04
-            xmax = 3.14
-            text = "f-w-a"
-        intervals [19]:
-            xmin = 3.14
-            xmax = 3.39
-            text = "d-a-p-R-e"
-        intervals [20]:
-            xmin = 3.39
-            xmax = 3.43
-            text = "s"
-        intervals [21]:
-            xmin = 3.43
-            xmax = 3.53
-            text = "a"
-        intervals [22]:
-            xmin = 3.53
-            xmax = 3.84
-            text = "S-a~-Z-e"
-    item [6]:
-        class = "IntervalTier"
         name = "TokensAlign"
         xmin = 0.000000
         xmax = 3.840000
@@ -408,10 +314,10 @@ item []:
             text = "on"
         intervals [3]:
             xmin = 0.77
-            xmax = 0.8
+            xmax = 0.82
             text = "euh"
         intervals [4]:
-            xmin = 0.8
+            xmin = 0.82
             xmax = 0.99
             text = "même"
         intervals [5]:
@@ -486,6 +392,24 @@ item []:
             xmin = 3.53
             xmax = 3.84
             text = "changé"
+    item [6]:
+        class = "IntervalTier"
+        name = "Activity"
+        xmin = 0.000000
+        xmax = 3.840000
+        intervals: size = 3
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.77
+            text = "speech"
+        intervals [2]:
+            xmin = 0.77
+            xmax = 0.82
+            text = "filled pause"
+        intervals [3]:
+            xmin = 0.82
+            xmax = 3.84
+            text = "speech"
     item [7]:
         class = "IntervalTier"
         name = "Syllables"
@@ -878,15 +802,39 @@ item []:
             text = ""
     item [12]:
         class = "IntervalTier"
-        name = "Information"
+        name = "MetaInformation"
         xmin = 0.000000
         xmax = 3.840000
-        intervals: size = 2
+        intervals: size = 8
         intervals [1]:
             xmin = 0.0
-            xmax = 1.92
-            text = "This annotation was produced by SPPAS 1.7.8 on 2016-05-05"
+            xmax = 0.48
+            text = "license=GNU Public License, version 3"
         intervals [2]:
+            xmin = 0.48
+            xmax = 0.96
+            text = "version=1.7.9"
+        intervals [3]:
+            xmin = 0.96
+            xmax = 1.44
+            text = "copyright=Copyright (C) 2011-2016 Brigitte Bigi"
+        intervals [4]:
+            xmin = 1.44
+            xmax = 1.92
+            text = "author=Brigitte Bigi"
+        intervals [5]:
             xmin = 1.92
+            xmax = 2.4
+            text = "url=http://www.sppas.org/"
+        intervals [6]:
+            xmin = 2.4
+            xmax = 2.88
+            text = "contact=brigite.bigi@gmail.com"
+        intervals [7]:
+            xmin = 2.88
+            xmax = 3.36
+            text = "program=SPPAS"
+        intervals [8]:
+            xmin = 3.36
             xmax = 3.84
-            text = "Copyright (C) 2011-2016 Brigitte Bigi"
+            text = "date=2016-06-05"

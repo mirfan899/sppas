@@ -9,27 +9,27 @@ item []:
     item [1]:
         class = "IntervalTier"
         name = "IPU"
-        xmin = 0.0
-        xmax = 17.7919954649
+        xmin = 0.000000
+        xmax = 17.791995
         intervals: size = 7
         intervals [1]:
             xmin = 0.0
-            xmax = 1.69117913832
+            xmax = 1.6911791383
             text = "#"
         intervals [2]:
-            xmin = 1.69117913832
-            xmax = 4.50526077098
+            xmin = 1.6911791383
+            xmax = 4.505260771
             text = "the flight was twelve hours long and we really got bored"
         intervals [3]:
-            xmin = 4.50526077098
-            xmax = 6.40596371882
+            xmin = 4.505260771
+            xmax = 6.4059637188
             text = "#"
         intervals [4]:
-            xmin = 6.40596371882
-            xmax = 9.80405895692
+            xmin = 6.4059637188
+            xmax = 9.8040589569
             text = "they only played two movies + which we had both already seen"
         intervals [5]:
-            xmin = 9.80405895692
+            xmin = 9.8040589569
             xmax = 11.4453514739
             text = "#"
         intervals [6]:
@@ -42,28 +42,28 @@ item []:
             text = "#"
     item [2]:
         class = "IntervalTier"
-        name = "IPU"
-        xmin = 0.0
-        xmax = 17.7919954649
+        name = "IPU-2"
+        xmin = 0.000000
+        xmax = 17.791995
         intervals: size = 7
         intervals [1]:
             xmin = 0.0
-            xmax = 1.69117913832
+            xmax = 1.6911791383
             text = "#"
         intervals [2]:
-            xmin = 1.69117913832
-            xmax = 4.50526077098
+            xmin = 1.6911791383
+            xmax = 4.505260771
             text = "the flight was twelve hours long and we really got bored"
         intervals [3]:
-            xmin = 4.50526077098
-            xmax = 6.40596371882
+            xmin = 4.505260771
+            xmax = 6.4059637188
             text = "#"
         intervals [4]:
-            xmin = 6.40596371882
-            xmax = 9.80405895692
+            xmin = 6.4059637188
+            xmax = 9.8040589569
             text = "they only played two movies + which we had both already seen"
         intervals [5]:
-            xmin = 9.80405895692
+            xmin = 9.8040589569
             xmax = 11.4453514739
             text = "#"
         intervals [6]:
@@ -76,28 +76,28 @@ item []:
             text = "#"
     item [3]:
         class = "IntervalTier"
-        name = "IPU"
-        xmin = 0.0
-        xmax = 17.7919954649
+        name = "IPU-3"
+        xmin = 0.000000
+        xmax = 17.791995
         intervals: size = 7
         intervals [1]:
             xmin = 0.0
-            xmax = 1.69117913832
+            xmax = 1.6911791383
             text = "#"
         intervals [2]:
-            xmin = 1.69117913832
-            xmax = 4.50526077098
+            xmin = 1.6911791383
+            xmax = 4.505260771
             text = "the flight was twelve hours long and we really got bored"
         intervals [3]:
-            xmin = 4.50526077098
-            xmax = 6.40596371882
+            xmin = 4.505260771
+            xmax = 6.4059637188
             text = "#"
         intervals [4]:
-            xmin = 6.40596371882
-            xmax = 9.80405895692
+            xmin = 6.4059637188
+            xmax = 9.8040589569
             text = "they only played two movies + which we had both already seen"
         intervals [5]:
-            xmin = 9.80405895692
+            xmin = 9.8040589569
             xmax = 11.4453514739
             text = "#"
         intervals [6]:
@@ -110,28 +110,28 @@ item []:
             text = "#"
     item [4]:
         class = "IntervalTier"
-        name = "IPU"
-        xmin = 0.0
-        xmax = 17.7919954649
+        name = "IPU-4"
+        xmin = 0.000000
+        xmax = 17.791995
         intervals: size = 7
         intervals [1]:
             xmin = 0.0
-            xmax = 1.69117913832
+            xmax = 1.6911791383
             text = "#"
         intervals [2]:
-            xmin = 1.69117913832
-            xmax = 4.50526077098
+            xmin = 1.6911791383
+            xmax = 4.505260771
             text = "the flight was twelve hours long and we really got bored"
         intervals [3]:
-            xmin = 4.50526077098
-            xmax = 6.40596371882
+            xmin = 4.505260771
+            xmax = 6.4059637188
             text = "#"
         intervals [4]:
-            xmin = 6.40596371882
-            xmax = 9.80405895692
+            xmin = 6.4059637188
+            xmax = 9.8040589569
             text = "they only played two movies + which we had both already seen"
         intervals [5]:
-            xmin = 9.80405895692
+            xmin = 9.8040589569
             xmax = 11.4453514739
             text = "#"
         intervals [6]:

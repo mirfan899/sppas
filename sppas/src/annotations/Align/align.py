@@ -50,6 +50,7 @@ from annotationdata.io.utils      import gen_id
 from speechseg import SpeechSegmenter
 from alignerio import AlignerIO
 from modelmixer import ModelMixer
+from activity import Activity
 
 from sp_glob import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
 from sp_glob import RESOURCES_PATH
@@ -574,6 +575,10 @@ class sppasAlign:
         # Processing...
         try:
             trsoutput = self.convert( phontier,toktier,inputaudioname )
+            activity = Activity( trsoutput )
+            tier = activity.get_tier()
+            if tier is not None:
+                trsoutput.Append(tier)
         except Exception:
             import traceback
             print traceback.format_exc()
@@ -654,7 +659,7 @@ class sppasAlign:
 
     def rustine_others(self, trs):
         """ veritable rustine pour decaler la fin des non-phonemes. """
-        tierphon   = trs.Find("PhonAlign")
+        tierphon = trs.Find("PhonAlign")
         if tierphon is None:
             return trs
 
@@ -662,15 +667,37 @@ class sppasAlign:
         for i, a in reversed(list(enumerate(tierphon))):
             if i < imax:
                 nexta = tierphon[i+1]
+                if nexta.GetLabel().GetValue() == "#":
+                    continue
                 durnexta = nexta.GetLocation().GetDuration()
 
-                if a.GetLabel().GetValue() == "sil" and durnexta > 0.04:
+                if a.GetLabel().GetValue() == "sil" and durnexta > 0.05:
                     a.GetLocation().SetEndMidpoint( a.GetLocation().GetEndMidpoint() + 0.03 )
+                    nexta.GetLocation().SetBeginMidpoint( a.GetLocation().GetEndMidpoint() )
 
-                if a.GetLabel().GetValue() in [ "gb", "@@", "fp", "dummy" ]:
+                if a.GetLabel().GetValue() in [ "*", "@@", "fp", "dummy" ] and durnexta > 0.04:
                     a.GetLocation().SetEndMidpoint( a.GetLocation().GetEndMidpoint() + 0.02 )
+                    nexta.GetLocation().SetBeginMidpoint( a.GetLocation().GetEndMidpoint() )
 
-                nexta.GetLocation().SetBeginMidpoint( a.GetLocation().GetEndMidpoint() )
+        tiertok = trs.Find("TokensAlign")
+        if tiertok is None:
+            return trs
+
+        imax = tiertok.GetSize() - 1
+        for i, a in reversed(list(enumerate(tiertok))):
+            if i < imax:
+                nexta = tiertok[i+1]
+                if nexta.GetLabel().GetValue() == "#":
+                    continue
+                durnexta = nexta.GetLocation().GetDuration()
+
+                if a.GetLabel().GetValue() == "sil" and durnexta > 0.05:
+                    a.GetLocation().SetEndMidpoint( a.GetLocation().GetEndMidpoint() + 0.03 )
+                    nexta.GetLocation().SetBeginMidpoint( a.GetLocation().GetEndMidpoint() )
+
+                if a.GetLabel().GetValue() in [ "*", "@", "euh", "dummy" ] and durnexta > 0.04:
+                    a.GetLocation().SetEndMidpoint( a.GetLocation().GetEndMidpoint() + 0.02 )
+                    nexta.GetLocation().SetBeginMidpoint( a.GetLocation().GetEndMidpoint() )
 
         return trs
 

@@ -78,24 +78,6 @@ item []:
             text = "o"
     item [2]:
         class = "IntervalTier"
-        name = "PhnTokAlign"
-        xmin = 0.000000
-        xmax = 1.175100
-        intervals: size = 3
-        intervals [1]:
-            xmin = 0.0
-            xmax = 0.4
-            text = "b-o-v-e-d-a"
-        intervals [2]:
-            xmin = 0.4
-            xmax = 0.68
-            text = "d-o-m-a"
-        intervals [3]:
-            xmin = 0.68
-            xmax = 1.1751
-            text = "r-a-l-e-g-o"
-    item [3]:
-        class = "IntervalTier"
         name = "TokensAlign"
         xmin = 0.000000
         xmax = 1.175100
@@ -112,3 +94,13 @@ item []:
             xmin = 0.68
             xmax = 1.1751
             text = "ralego"
+    item [3]:
+        class = "IntervalTier"
+        name = "Activity"
+        xmin = 0.000000
+        xmax = 1.175100
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 1.1751
+            text = "speech"
