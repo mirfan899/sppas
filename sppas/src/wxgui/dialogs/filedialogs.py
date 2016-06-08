@@ -144,7 +144,8 @@ def SaveAsAnnotationFile(defaultdir=None,defaultfile=None):
     wildcard += '|'+create_wildcard("ELAN",  io.ext_elan)
     wildcard += '|'+create_wildcard("Phonedit", io.ext_phonedit)
     wildcard += '|'+create_wildcard("ASCII", io.ext_ascii)
-    wildcard += '|'+create_wildcard("AnnotationPro", io.ext_antx)
+    wildcard += '|'+create_wildcard("AnnotationPro", io.ext_annotationpro)
+    wildcard += '|'+create_wildcard("Subtitles", io.ext_subtitles)
 
     dlg = wx.FileDialog(
         None, message = "Choose a file name...",
