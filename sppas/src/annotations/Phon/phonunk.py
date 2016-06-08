@@ -40,6 +40,8 @@ import re
 from dagphon import DAGPhon
 import resources.rutils as rutils
 
+LIMIT_SIZE = 40 # Max nb of characters of an unknown entry
+
 # ---------------------------------------------------------------------------
 # Class PhonUnk
 # ---------------------------------------------------------------------------
@@ -121,6 +123,9 @@ class PhonUnk:
             _str = _str[1:]
         if len(_str) == 0:
             return ""
+
+        if len(entry) > LIMIT_SIZE:
+            raise Exception('Unable to phonetize the unknown token (too long): '+entry)
 
         # Find all pronunciations of segments with a longest matching algo.
         _tabstr = re.split(u"[-'_\s]",_str)

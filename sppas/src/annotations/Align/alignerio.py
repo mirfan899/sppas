@@ -125,7 +125,6 @@ class AlignerIO( Transcription ):
         # Create 3 new tiers
         itemp = self.NewTier("PhonAlign")
         if tokens is True:
-            itemt = self.NewTier("PhnTokAlign")
             itemw = self.NewTier("TokensAlign")
 
         # Read the file.list (the list of units + the wav duration)
@@ -163,7 +162,6 @@ class AlignerIO( Transcription ):
                     annotation = Annotation(time, Label("#"))
                     itemp.Append(annotation)
                     if tokens is True:
-                        itemt.Append(annotation.Copy())
                         itemw.Append(annotation.Copy())
 
             else:
@@ -173,7 +171,6 @@ class AlignerIO( Transcription ):
                     annotation = Annotation(time, Label("#"))
                     itemp.Append(annotation)
                     if tokens is True:
-                        itemt.Append(annotation.Copy())
                         itemw.Append(annotation.Copy())
 
             # Get phoneme alignments and put them into the tier
@@ -219,7 +216,7 @@ class AlignerIO( Transcription ):
                     itemp.Append(annotation)
                     idx += 1
             except Exception as e:
-                if unitstart<unitend:
+                if unitstart < unitend:
                     annotation = Annotation(TimeInterval(TimePoint(unitstart,radius), TimePoint(unitend,radius)), Label(""))
                     itemp.Append(annotation)
                     #print " *** exception Append in phonemes:",annotation
@@ -252,7 +249,6 @@ class AlignerIO( Transcription ):
                         if len(tokenlist) == len(_wordannots):
                             annotationt = Annotation(TimeInterval(TimePoint(loc_s,radius), TimePoint(loc_e,radius)), Label(label))
                             #print "Append in tokenst 3:",annotationt
-                            itemt.Append(annotationt)
                             annotationw = Annotation(TimeInterval(TimePoint(loc_s,radius), TimePoint(loc_e,radius)), Label(tokenlist[idx-1]))
                             #print "Append in tokensw 3:",annotationw
                             itemw.Append(annotationw)
@@ -260,7 +256,6 @@ class AlignerIO( Transcription ):
                         idx = idx + 1
                 except Exception:
                     if unitstart<unitend:
-                        itemt.Append(Annotation(TimeInterval(TimePoint(unitstart,radius), TimePoint(unitend,radius))))
                         itemw.Append(Annotation(TimeInterval(TimePoint(unitstart,radius), TimePoint(unitend,radius))))
                         #print " *** exception Append in tokennw and tokenst:",Annotation(TimeInterval(TimePoint(unitstart,radius), TimePoint(unitend,radius)))
 
@@ -274,31 +269,24 @@ class AlignerIO( Transcription ):
                 annotation = Annotation(time, Label("#"))
                 itemp.Append(annotation)
             except Exception as e:
-                raise IOError('Error %s with the wav duration, for track %d.'%(str(e),(track-1)))
+                raise IOError('Error %s with the audio file duration, for track %d.'%(str(e),(track-1)))
             if tokens is True:
                 try:
-                    itemt.Append(annotation.Copy())
                     itemw.Append(annotation.Copy())
                 except Exception as e:
-                    raise IOError('Error %s with the wav duration, for track %d.'%(str(e),(track-1)))
+                    raise IOError('Error %s with the audio file duration, for track %d.'%(str(e),(track-1)))
 
         # Adjust Radius
         if itemp.GetSize()>1:
             itemp[-1].GetLocation().SetEndRadius(0.)
             if tokens is True:
-                itemt[-1].GetLocation().SetEndRadius(0.)  # last
                 itemw[-1].GetLocation().SetEndRadius(0.)
 
         if tokens is True:
             try:
-                self._hierarchy.addLink('TimeAlignment', itemp, itemt)
+                self._hierarchy.addLink('TimeAlignment', itemp, itemw)
             except Exception as e:
                 logging.info('Error while assigning hierarchy between phonemes and tokens: %s'%(str(e)))
-                pass
-            try:
-                self._hierarchy.addLink('TimeAssociation', itemt, itemw)
-            except Exception as e:
-                logging.info('Error while assigning hierarchy between tokens and phntokens: %s'%(str(e)))
                 pass
 
     # ------------------------------------------------------------------
@@ -379,7 +367,6 @@ class AlignerIO( Transcription ):
             else:
                 nextloc_s = 0.0
             # Attention... loc_s must be equal to the last loc_e
-            # But difficulty to interpret Julius values...
             if loc_e < nextloc_s:
                 # Since SPPAS 1.4.4, I was setting next loc_s to the current loc_e
                 # I tried to the average between both values, but did not got better results:.
@@ -390,6 +377,7 @@ class AlignerIO( Transcription ):
                 #loc_e = nextloc_s + ( ( nextloc_s - loc_e) / 2.0 )
 
             _modifiedphonalign.append( (loc_s, loc_e, phonlist[phonidx], _phonalign[phonidx][3]) )
+
             loc_s = loc_e
             # add also the word?
             if phonidx == wordlist[wordidx]:

@@ -555,11 +555,12 @@ class DataFilter( scrolled.ScrolledPanel ):
             reltiername = dlg.GetRelationTierName()
             # The RelationPredicate to be applied
             prel = dlg.GetPredicate()
+            annotformat = dlg.GetAnnotationFormat()
             # OK, go...
             if prel:
                 self.__display_text_in_statusbar("Please wait while filtering...")
                 process = FilterProcess([], prel, False, tiername, self._filetrs)
-                process.RunRelationFilter( self, reltiername )
+                process.RunRelationFilter( self, reltiername, annotformat )
 
             else:
                 self.__display_text_in_statusbar("No filter was entered, nothing to do!")

@@ -272,7 +272,7 @@ class ChannelSilence( object ):
         """
         vmin  = self.volstats.min()
         vmean = self.volstats.mean()
-        vcvar = 1.1 * self.volstats.coefvariation()
+        vcvar = 1.5 * self.volstats.coefvariation()
         alt = (vmean-vmin)/5.
         if alt > vcvar:
             vcvar=alt

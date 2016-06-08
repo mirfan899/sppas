@@ -238,10 +238,10 @@ item []:
             text = "za~z"
         intervals [57]:
             xmin = 14.7285
-            xmax = 15.1885
+            xmax = 15.2085
             text = "*"
         intervals [58]:
-            xmin = 15.1885
+            xmin = 15.2085
             xmax = 15.3085
             text = "a"
         intervals [59]:
@@ -736,10 +736,10 @@ item []:
             text = "FVF"
         intervals [57]:
             xmin = 14.7285
-            xmax = 15.1885
+            xmax = 15.2085
             text = "*"
         intervals [58]:
-            xmin = 15.1885
+            xmin = 15.2085
             xmax = 15.3085
             text = "V"
         intervals [59]:
@@ -1234,10 +1234,10 @@ item []:
             text = "CVC"
         intervals [57]:
             xmin = 14.7285
-            xmax = 15.1885
+            xmax = 15.2085
             text = "*"
         intervals [58]:
-            xmin = 15.1885
+            xmin = 15.2085
             xmax = 15.3085
             text = "V"
         intervals [59]:

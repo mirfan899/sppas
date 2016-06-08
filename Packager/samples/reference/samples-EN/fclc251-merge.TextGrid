@@ -178,40 +178,6 @@ item []:
             text = "#"
     item [8]:
         class = "IntervalTier"
-        name = "PhnTokAlign"
-        xmin = 0.000000
-        xmax = 3.497100
-        intervals: size = 7
-        intervals [1]:
-            xmin = 0.0
-            xmax = 0.865
-            text = "#"
-        intervals [2]:
-            xmin = 0.865
-            xmax = 0.895
-            text = "3:r"
-        intervals [3]:
-            xmin = 0.895
-            xmax = 1.075
-            text = "j-u"
-        intervals [4]:
-            xmin = 1.075
-            xmax = 1.435
-            text = "{-N-g-r-i:"
-        intervals [5]:
-            xmin = 1.435
-            xmax = 1.515
-            text = "{-t"
-        intervals [6]:
-            xmin = 1.515
-            xmax = 1.79
-            text = "m-i:"
-        intervals [7]:
-            xmin = 1.79
-            xmax = 3.4971
-            text = "#"
-    item [9]:
-        class = "IntervalTier"
         name = "TokensAlign"
         xmin = 0.000000
         xmax = 3.497100
@@ -244,6 +210,24 @@ item []:
             xmin = 1.79
             xmax = 3.4971
             text = "#"
+    item [9]:
+        class = "IntervalTier"
+        name = "Activity"
+        xmin = 0.000000
+        xmax = 3.497100
+        intervals: size = 3
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.865
+            text = "silence"
+        intervals [2]:
+            xmin = 0.865
+            xmax = 1.79
+            text = "speech"
+        intervals [3]:
+            xmin = 1.79
+            xmax = 3.4971
+            text = "silence"
     item [10]:
         class = "IntervalTier"
         name = "Sources"
@@ -266,15 +250,39 @@ item []:
             text = ""
     item [12]:
         class = "IntervalTier"
-        name = "Information"
+        name = "MetaInformation"
         xmin = 0.000000
         xmax = 3.497125
-        intervals: size = 2
+        intervals: size = 8
         intervals [1]:
             xmin = 0.0
-            xmax = 1.7485625
-            text = "This annotation was produced by SPPAS 1.7.8 on 2016-05-05"
+            xmax = 0.437140625
+            text = "license=GNU Public License, version 3"
         intervals [2]:
+            xmin = 0.437140625
+            xmax = 0.87428125
+            text = "version=1.7.9"
+        intervals [3]:
+            xmin = 0.87428125
+            xmax = 1.311421875
+            text = "copyright=Copyright (C) 2011-2016 Brigitte Bigi"
+        intervals [4]:
+            xmin = 1.311421875
+            xmax = 1.7485625
+            text = "author=Brigitte Bigi"
+        intervals [5]:
             xmin = 1.7485625
+            xmax = 2.185703125
+            text = "url=http://www.sppas.org/"
+        intervals [6]:
+            xmin = 2.185703125
+            xmax = 2.62284375
+            text = "contact=brigite.bigi@gmail.com"
+        intervals [7]:
+            xmin = 2.62284375
+            xmax = 3.059984375
+            text = "program=SPPAS"
+        intervals [8]:
+            xmin = 3.059984375
             xmax = 3.497125
-            text = "Copyright (C) 2011-2016 Brigitte Bigi"
+            text = "date=2016-06-05"

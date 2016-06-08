@@ -74,10 +74,10 @@ item []:
             text = "kaRt"
         intervals [16]:
             xmin = 3.15
-            xmax = 3.26
+            xmax = 3.24
             text = "fp"
         intervals [17]:
-            xmin = 3.26
+            xmin = 3.24
             xmax = 3.3
             text = "vu"
         intervals [18]:
@@ -316,10 +316,10 @@ item []:
             text = "OVLO"
         intervals [16]:
             xmin = 3.15
-            xmax = 3.26
+            xmax = 3.24
             text = "fp"
         intervals [17]:
-            xmin = 3.26
+            xmin = 3.24
             xmax = 3.3
             text = "FV"
         intervals [18]:
@@ -558,10 +558,10 @@ item []:
             text = "CVCC"
         intervals [16]:
             xmin = 3.15
-            xmax = 3.26
+            xmax = 3.24
             text = "fp"
         intervals [17]:
-            xmin = 3.26
+            xmin = 3.24
             xmax = 3.3
             text = "CV"
         intervals [18]:

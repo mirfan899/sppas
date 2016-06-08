@@ -221,9 +221,12 @@ class RelationFilterDialog( spBaseDialog ):
 
     def GetRelationTierName(self):
         """
-        Return the future name for the filtered tier.
+        Return the name for the Y tier.
         """
         return self.texttierY.GetValue().strip()
+
+    def GetAnnotationFormat(self):
+        return self.filterpanel.GetAnnotationFormat()
 
 # ----------------------------------------------------------------------------
 
@@ -244,7 +247,7 @@ class RelationFilterPanel(wx.Panel):
         self.data = []
 
         self.relTable = AllensRelationsTable(self)
-        self.opt = wx.CheckBox(self, label='Replace annotation label of X by the relation name.')
+        self.opt = wx.CheckBox(self, label='Replace label of X by the relation name.')
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.relTable, proportion=1, flag=wx.EXPAND|wx.BOTTOM, border=5)
@@ -263,12 +266,15 @@ class RelationFilterPanel(wx.Panel):
 
         """
         d = self.relTable.GetData()
-        d['replace'] = self.opt.GetValue()
 
         return _genPredicateRel( **d ).generate()
 
     # -----------------------------------------------------------------------
 
+    def GetAnnotationFormat(self):
+        if self.opt.GetValue() is True:
+            return "{rel}"
+        return ""
 
 # --------------------------------------------------------------------------
 

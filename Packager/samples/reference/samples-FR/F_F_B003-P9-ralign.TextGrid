@@ -1,0 +1,88 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0.0
+xmax = 20.7557
+tiers? <exists>
+size = 2
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "Sources"
+        xmin = 0.000000
+        xmax = 20.755700
+        intervals: size = 9
+        intervals [1]:
+            xmin = 0.0
+            xmax = 1.222
+            text = ""
+        intervals [2]:
+            xmin = 1.222
+            xmax = 1.512
+            text = "S1"
+        intervals [3]:
+            xmin = 1.512
+            xmax = 9.8072
+            text = ""
+        intervals [4]:
+            xmin = 9.8072
+            xmax = 9.9772
+            text = "S2"
+        intervals [5]:
+            xmin = 9.9772
+            xmax = 10.1072
+            text = ""
+        intervals [6]:
+            xmin = 10.1072
+            xmax = 10.3872
+            text = "S3"
+        intervals [7]:
+            xmin = 10.3872
+            xmax = 17.3458
+            text = ""
+        intervals [8]:
+            xmin = 17.3458
+            xmax = 17.5558
+            text = "S4"
+        intervals [9]:
+            xmin = 17.5558
+            xmax = 20.7557
+            text = ""
+    item [2]:
+        class = "IntervalTier"
+        name = "Repetitions"
+        xmin = 0.000000
+        xmax = 20.755700
+        intervals: size = 8
+        intervals [1]:
+            xmin = 0.0
+            xmax = 4.708
+            text = ""
+        intervals [2]:
+            xmin = 4.708
+            xmax = 5.098
+            text = "R1"
+        intervals [3]:
+            xmin = 5.098
+            xmax = 11.3472
+            text = ""
+        intervals [4]:
+            xmin = 11.3472
+            xmax = 11.4772
+            text = "R2"
+        intervals [5]:
+            xmin = 11.4772
+            xmax = 11.6872
+            text = "R3"
+        intervals [6]:
+            xmin = 11.6872
+            xmax = 19.4458
+            text = ""
+        intervals [7]:
+            xmin = 19.4458
+            xmax = 19.766
+            text = "R4"
+        intervals [8]:
+            xmin = 19.766
+            xmax = 20.7557
+            text = ""

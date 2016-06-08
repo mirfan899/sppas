@@ -1060,336 +1060,6 @@ item []:
             text = "#"
     item [5]:
         class = "IntervalTier"
-        name = "PhnTokAlign"
-        xmin = 0.000000
-        xmax = 21.347100
-        intervals: size = 81
-        intervals [1]:
-            xmin = 0.0
-            xmax = 2.4971
-            text = "#"
-        intervals [2]:
-            xmin = 2.4971
-            xmax = 2.7371
-            text = "j-E-R"
-        intervals [3]:
-            xmin = 2.7371
-            xmax = 2.9871
-            text = "s-w-a-R"
-        intervals [4]:
-            xmin = 2.9871
-            xmax = 3.0671
-            text = "Z"
-        intervals [5]:
-            xmin = 3.0671
-            xmax = 3.0971
-            text = "e"
-        intervals [6]:
-            xmin = 3.0971
-            xmax = 3.3171
-            text = "u-v-E-R"
-        intervals [7]:
-            xmin = 3.3171
-            xmax = 3.4771
-            text = "l-a"
-        intervals [8]:
-            xmin = 3.4771
-            xmax = 3.7171
-            text = "p-o-R-t-eu"
-        intervals [9]:
-            xmin = 3.7171
-            xmax = 3.7571
-            text = "d"
-        intervals [10]:
-            xmin = 3.7571
-            xmax = 4.0771
-            text = "a~-t-R-e"
-        intervals [11]:
-            xmin = 4.0771
-            xmax = 4.1771
-            text = "p-u-R"
-        intervals [12]:
-            xmin = 4.1771
-            xmax = 4.4171
-            text = "l-e-s-e"
-        intervals [13]:
-            xmin = 4.4171
-            xmax = 4.7671
-            text = "S-o-R-t"
-        intervals [14]:
-            xmin = 4.7671
-            xmax = 5.1871
-            text = "s-o-R-t-i-R"
-        intervals [15]:
-            xmin = 5.1871
-            xmax = 5.2771
-            text = "l-eu"
-        intervals [16]:
-            xmin = 5.2771
-            xmax = 5.6839
-            text = "S-a"
-        intervals [17]:
-            xmin = 5.6839
-            xmax = 5.7436
-            text = "#"
-        intervals [18]:
-            xmin = 5.7436
-            xmax = 5.8436
-            text = "l-a"
-        intervals [19]:
-            xmin = 5.8436
-            xmax = 6.1136
-            text = "n-y-i"
-        intervals [20]:
-            xmin = 6.1136
-            xmax = 6.2136
-            text = "t-e"
-        intervals [21]:
-            xmin = 6.2136
-            xmax = 6.4036
-            text = "s-i"
-        intervals [22]:
-            xmin = 6.4036
-            xmax = 6.5436
-            text = "b-E-l"
-        intervals [23]:
-            xmin = 6.5436
-            xmax = 6.5936
-            text = "k"
-        intervals [24]:
-            xmin = 6.5936
-            xmax = 6.7336
-            text = "Z-eu"
-        intervals [25]:
-            xmin = 6.7336
-            xmax = 6.9136
-            text = "s-y-i"
-        intervals [26]:
-            xmin = 6.9136
-            xmax = 7.3236
-            text = "d-E-s-a~-d-y"
-        intervals [27]:
-            xmin = 7.3236
-            xmax = 7.4436
-            text = "d-a~"
-        intervals [28]:
-            xmin = 7.4436
-            xmax = 7.5636
-            text = "l-a"
-        intervals [29]:
-            xmin = 7.5636
-            xmax = 7.7536
-            text = "R-y"
-        intervals [30]:
-            xmin = 7.7536
-            xmax = 8.0536
-            text = "p-R-a~-d-R"
-        intervals [31]:
-            xmin = 8.0536
-            xmax = 8.1236
-            text = "l-eu"
-        intervals [32]:
-            xmin = 8.1236
-            xmax = 8.4606
-            text = "f-R-E"
-        intervals [33]:
-            xmin = 8.4606
-            xmax = 9.145
-            text = "#"
-        intervals [34]:
-            xmin = 9.145
-            xmax = 9.205
-            text = "S"
-        intervals [35]:
-            xmin = 9.205
-            xmax = 9.345
-            text = "a-v-E"
-        intervals [36]:
-            xmin = 9.345
-            xmax = 9.465
-            text = "a"
-        intervals [37]:
-            xmin = 9.465
-            xmax = 9.605
-            text = "p-E-n"
-        intervals [38]:
-            xmin = 9.605
-            xmax = 9.805
-            text = "f-e"
-        intervals [39]:
-            xmin = 9.805
-            xmax = 10.125
-            text = "k-E-l-k-eu"
-        intervals [40]:
-            xmin = 10.125
-            xmax = 10.295
-            text = "p-a-z"
-        intervals [41]:
-            xmin = 10.295
-            xmax = 10.385
-            text = "k-eu"
-        intervals [42]:
-            xmin = 10.385
-            xmax = 10.415
-            text = "Z"
-        intervals [43]:
-            xmin = 10.415
-            xmax = 10.455
-            text = "e"
-        intervals [44]:
-            xmin = 10.455
-            xmax = 10.755
-            text = "a~-t-a~-d-y"
-        intervals [45]:
-            xmin = 10.755
-            xmax = 10.915
-            text = "l-a"
-        intervals [46]:
-            xmin = 10.915
-            xmax = 11.125
-            text = "p-o-R-t"
-        intervals [47]:
-            xmin = 11.125
-            xmax = 11.425
-            text = "k-l-a-k-e"
-        intervals [48]:
-            xmin = 11.425
-            xmax = 11.695
-            text = "d-E-R-j-E-R"
-        intervals [49]:
-            xmin = 11.695
-            xmax = 11.9485
-            text = "m-w-a"
-        intervals [50]:
-            xmin = 11.9485
-            xmax = 12.494
-            text = "#"
-        intervals [51]:
-            xmin = 12.494
-            xmax = 12.554
-            text = "S"
-        intervals [52]:
-            xmin = 12.554
-            xmax = 12.644
-            text = "e"
-        intervals [53]:
-            xmin = 12.644
-            xmax = 13.164
-            text = "R-E-a-l-i-z-e"
-        intervals [54]:
-            xmin = 13.164
-            xmax = 13.274
-            text = "t-u"
-        intervals [55]:
-            xmin = 13.274
-            xmax = 13.394
-            text = "d-U~"
-        intervals [56]:
-            xmin = 13.394
-            xmax = 13.694
-            text = "k-u"
-        intervals [57]:
-            xmin = 13.694
-            xmax = 13.894
-            text = "#"
-        intervals [58]:
-            xmin = 13.894
-            xmax = 13.964
-            text = "k-eu"
-        intervals [59]:
-            xmin = 13.964
-            xmax = 14.034
-            text = "Z"
-        intervals [60]:
-            xmin = 14.034
-            xmax = 14.284
-            text = "e-t-e"
-        intervals [61]:
-            xmin = 14.284
-            xmax = 14.684
-            text = "a~-f-E-R-m-e"
-        intervals [62]:
-            xmin = 14.684
-            xmax = 15.036
-            text = "d-eu-o-R"
-        intervals [63]:
-            xmin = 15.036
-            xmax = 16.602
-            text = "#"
-        intervals [64]:
-            xmin = 16.602
-            xmax = 16.722
-            text = "l-eu"
-        intervals [65]:
-            xmin = 16.722
-            xmax = 16.962
-            text = "k-o~-b-l"
-        intervals [66]:
-            xmin = 16.962
-            xmax = 17.162
-            text = "s-e"
-        intervals [67]:
-            xmin = 17.162
-            xmax = 17.302
-            text = "k-eu"
-        intervals [68]:
-            xmin = 17.302
-            xmax = 17.352
-            text = "Z"
-        intervals [69]:
-            xmin = 17.352
-            xmax = 17.462
-            text = "m-eu"
-        intervals [70]:
-            xmin = 17.462
-            xmax = 17.662
-            text = "s-y-i"
-        intervals [71]:
-            xmin = 17.662
-            xmax = 17.782
-            text = "f-e"
-        intervals [72]:
-            xmin = 17.782
-            xmax = 18.132
-            text = "a-R-e-t-e"
-        intervals [73]:
-            xmin = 18.132
-            xmax = 18.452
-            text = "a-l-o-R-k-eu"
-        intervals [74]:
-            xmin = 18.452
-            xmax = 18.532
-            text = "Z"
-        intervals [75]:
-            xmin = 18.532
-            xmax = 18.862
-            text = "E-s-E-j-E"
-        intervals [76]:
-            xmin = 18.862
-            xmax = 18.892
-            text = "d"
-        intervals [77]:
-            xmin = 18.892
-            xmax = 19.232
-            text = "f-o-R-s-e"
-        intervals [78]:
-            xmin = 19.232
-            xmax = 19.342
-            text = "m-a"
-        intervals [79]:
-            xmin = 19.342
-            xmax = 19.712
-            text = "p-R-o-p-R-eu"
-        intervals [80]:
-            xmin = 19.712
-            xmax = 20.01
-            text = "p-o-R-t"
-        intervals [81]:
-            xmin = 20.01
-            xmax = 21.3471
-            text = "#"
-    item [6]:
-        class = "IntervalTier"
         name = "TokensAlign"
         xmin = 0.000000
         xmax = 21.347100
@@ -1718,6 +1388,64 @@ item []:
             xmin = 20.01
             xmax = 21.3471
             text = "#"
+    item [6]:
+        class = "IntervalTier"
+        name = "Activity"
+        xmin = 0.000000
+        xmax = 21.347100
+        intervals: size = 13
+        intervals [1]:
+            xmin = 0.0
+            xmax = 2.4971
+            text = "silence"
+        intervals [2]:
+            xmin = 2.4971
+            xmax = 5.6839
+            text = "speech"
+        intervals [3]:
+            xmin = 5.6839
+            xmax = 5.7436
+            text = "silence"
+        intervals [4]:
+            xmin = 5.7436
+            xmax = 8.4606
+            text = "speech"
+        intervals [5]:
+            xmin = 8.4606
+            xmax = 9.145
+            text = "silence"
+        intervals [6]:
+            xmin = 9.145
+            xmax = 11.9485
+            text = "speech"
+        intervals [7]:
+            xmin = 11.9485
+            xmax = 12.494
+            text = "silence"
+        intervals [8]:
+            xmin = 12.494
+            xmax = 13.694
+            text = "speech"
+        intervals [9]:
+            xmin = 13.694
+            xmax = 13.894
+            text = "pause"
+        intervals [10]:
+            xmin = 13.894
+            xmax = 15.036
+            text = "speech"
+        intervals [11]:
+            xmin = 15.036
+            xmax = 16.602
+            text = "silence"
+        intervals [12]:
+            xmin = 16.602
+            xmax = 20.01
+            text = "speech"
+        intervals [13]:
+            xmin = 20.01
+            xmax = 21.3471
+            text = "silence"
     item [7]:
         class = "IntervalTier"
         name = "Syllables"
@@ -3386,15 +3114,39 @@ item []:
             mark = "S"
     item [14]:
         class = "IntervalTier"
-        name = "Information"
+        name = "MetaInformation"
         xmin = 0.000000
         xmax = 21.347100
-        intervals: size = 2
+        intervals: size = 8
         intervals [1]:
             xmin = 0.0
-            xmax = 10.67355
-            text = "This annotation was produced by SPPAS 1.7.8 on 2016-05-05"
+            xmax = 2.6683875
+            text = "license=GNU Public License, version 3"
         intervals [2]:
+            xmin = 2.6683875
+            xmax = 5.336775
+            text = "version=1.7.9"
+        intervals [3]:
+            xmin = 5.336775
+            xmax = 8.0051625
+            text = "copyright=Copyright (C) 2011-2016 Brigitte Bigi"
+        intervals [4]:
+            xmin = 8.0051625
+            xmax = 10.67355
+            text = "author=Brigitte Bigi"
+        intervals [5]:
             xmin = 10.67355
+            xmax = 13.3419375
+            text = "url=http://www.sppas.org/"
+        intervals [6]:
+            xmin = 13.3419375
+            xmax = 16.010325
+            text = "contact=brigite.bigi@gmail.com"
+        intervals [7]:
+            xmin = 16.010325
+            xmax = 18.6787125
+            text = "program=SPPAS"
+        intervals [8]:
+            xmin = 18.6787125
             xmax = 21.3471
-            text = "Copyright (C) 2011-2016 Brigitte Bigi"
+            text = "date=2016-06-05"

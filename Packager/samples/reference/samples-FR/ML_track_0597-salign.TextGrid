@@ -134,10 +134,10 @@ item []:
             text = "da~"
         intervals [31]:
             xmin = 3.87
-            xmax = 4.03
-            text = "zU~n"
+            xmax = 3.99
+            text = "zU~"
         intervals [32]:
-            xmin = 4.03
+            xmin = 3.99
             xmax = 4.16
             text = "by"
         intervals [33]:
@@ -328,10 +328,10 @@ item []:
             text = "OV"
         intervals [31]:
             xmin = 3.87
-            xmax = 4.03
-            text = "FVN"
+            xmax = 3.99
+            text = "FV"
         intervals [32]:
-            xmin = 4.03
+            xmin = 3.99
             xmax = 4.16
             text = "OV"
         intervals [33]:
@@ -522,10 +522,10 @@ item []:
             text = "CV"
         intervals [31]:
             xmin = 3.87
-            xmax = 4.03
-            text = "CVC"
+            xmax = 3.99
+            text = "CV"
         intervals [32]:
-            xmin = 4.03
+            xmin = 3.99
             xmax = 4.16
             text = "CV"
         intervals [33]:
