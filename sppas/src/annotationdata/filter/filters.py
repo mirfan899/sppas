@@ -225,7 +225,7 @@ class RelationFilter(Filter):
 
     # -----------------------------------------------------------------------
 
-    def Filter(self, replace=False, annotformat=""):
+    def Filter(self, annotformat="{x}"):
         """
         Apply the predicate on all annotations of the tier defined in the filter.
 
@@ -233,23 +233,26 @@ class RelationFilter(Filter):
         @param annotformat:	format of the resulting annotation label.
             Use {x}, {y} for each annotation's label and {rel} for the relation.
             By default we keep the x label (equivalent to "{x}").
-        @type replace:Boolean
-        @param replace:	(deprecated) when True, equivalent of annotformat="{rel}"
         @return: (Tier)
         """
         tier = Tier()
-        if replace:
-            annotformat="{rel}"
+
+        i = 0
         # feed the tier
         for x, rel, y in self:
             a = x.Copy()
-            if annotformat: # change the annotation label
-                annotlabel = annotformat.format(x=x.GetLabel(), rel=rel, y=y.GetLabel())
-                a.GetLabel().SetValue( annotlabel )
+            annotlabel = annotformat.format(x=x.GetLabel(), rel=rel, y=y.GetLabel())
+            a.GetLabel().SetValue( annotlabel )
             try:
                 tier.Append(a)
             except:
+                if annotformat=="{rel}" and i>1:
+                    annotlabel = annotformat.format(x=x.GetLabel(), rel=rel, y=y.GetLabel())
+                    e = tier[-1]
+                    label = e.GetLabel().GetValue()
+                    e.GetLabel().SetValue( label + " | %s" % annotlabel)
                 pass
+            i = i+1
         return tier
 
     # -----------------------------------------------------------------------

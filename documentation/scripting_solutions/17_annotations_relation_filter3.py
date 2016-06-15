@@ -60,7 +60,7 @@ frel1 = RelationFilter(relation1,fX,fY)
 frel2 = RelationFilter(relation2,frel1,fY)
 
 # Create a filtered tier.
-filteredtier = frel2.Filter(replace=False)
+filteredtier = frel2.Filter(annotformat="{x}")
 
 # Print filtered annotations
 for ann in filteredtier:

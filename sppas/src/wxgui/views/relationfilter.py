@@ -274,7 +274,7 @@ class RelationFilterPanel(wx.Panel):
     def GetAnnotationFormat(self):
         if self.opt.GetValue() is True:
             return "{rel}"
-        return ""
+        return "{x}"
 
 # --------------------------------------------------------------------------
 

@@ -556,6 +556,7 @@ class DataFilter( scrolled.ScrolledPanel ):
             # The RelationPredicate to be applied
             prel = dlg.GetPredicate()
             annotformat = dlg.GetAnnotationFormat()
+
             # OK, go...
             if prel:
                 self.__display_text_in_statusbar("Please wait while filtering...")

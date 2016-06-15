@@ -60,7 +60,7 @@ frel = RelationFilter(relation,fX,fY)
 # Create a tier with relations meets OR met by.
 # Replace the label of the token by the name of the relation
 # If both relations are true, relation' names are concatenated.
-filteredtier = frel.Filter(replace=True)
+filteredtier = frel.Filter( annotformat="{rel}" )
 
 # Print filtered annotations
 for ann in filteredtier:

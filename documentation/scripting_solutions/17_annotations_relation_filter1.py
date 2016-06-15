@@ -60,7 +60,7 @@ relation = Rel('meets')
 frel = RelationFilter(relation,fX,fY)
 
 # Create a tier
-filteredtier = frel.Filter(replace=False)
+filteredtier = frel.Filter()
 
 # Print filtered annotations
 for ann in filteredtier:

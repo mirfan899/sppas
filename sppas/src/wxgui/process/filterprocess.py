@@ -113,7 +113,7 @@ class FilterProcess:
                     obj.Append( new_tier )
 
 
-    def _runRelationFilter(self, tiername, progress, annotformat=""):
+    def _runRelationFilter(self, tiername, progress, annotformat):
         progress.set_header("Apply RelationFilter")
         progress.update(0,"")
         total = self.file_manager.GetSize()
@@ -170,9 +170,8 @@ class FilterProcess:
         progress.set_header("")
 
 
-    def RunRelationFilter(self, parent, tiername, annotformat=""):
+    def RunRelationFilter(self, parent, tiername, annotformat):
         wx.BeginBusyCursor()
-
         # Create the progress bar
         p = ProcessProgressDialog(parent, parent._prefsIO)
         p.set_title("Filtering progress...")
