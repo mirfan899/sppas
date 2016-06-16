@@ -130,8 +130,11 @@ class TierStats( object ):
         """
         Create then return the DescriptiveStatistic object corresponding to the tier.
         """
-        tup   = self.__tier_to_tuple()
-        items = self.__tuple_to_dict(self.__ngrams(tup))
+        ltup  = self.__tiers_to_tuple()
+        ngrams = list()
+        for t in ltup:
+            ngrams.extend( self.__ngrams( t ) )
+        items = self.__tuple_to_dict(ngrams)
         return DescriptiveStatistics(items)
 
     # ------------------------------------------------------------------
@@ -141,45 +144,53 @@ class TierStats( object ):
     # Private
     # ------------------------------------------------------------------
 
-    def __tier_to_tuple(self):
+    def __tiers_to_tuple(self):
         """
-        Return a tuple of label/duration pairs.
+        Return a list of tuples of label/duration pairs.
         """
         tiers = self.tier
         if not isinstance(self.tier,list):
             tiers = [self.tier]
 
+        return [ self.__tier_to_tuple(tier) for tier in tiers ]
+
+
+    def __tier_to_tuple(self, tier):
+        """
+        Return a tuple of label/duration pairs for a given tier.
+        """
         l = list()
-        for tier in tiers:
-            for a in tier:
-                if self.__withalt is False:
-                    textes = [ a.GetLabel().GetValue() ]
-                else:
-                    textes = [ t.GetValue() for t in a.GetLabels() ]
+        for a in tier:
+            if self.__withalt is False:
+                textes = [ a.GetLabel().GetValue() ]
+            else:
+                textes = [ t.GetValue() for t in a.GetLabels() ]
 
-                duration = a.GetLocation().GetDuration().GetValue()
-                if a.GetLocation().IsInterval():
-                    if self.__withradius < 0:
-                        duration = duration + a.GetLocation().GetDuration().GetMargin()
-                    elif self.__withradius > 0:
-                        duration = duration - a.GetLocation().GetDuration().GetMargin()
+            duration = a.GetLocation().GetDuration().GetValue()
+            if a.GetLocation().IsInterval():
+                if self.__withradius < 0:
+                    duration = duration + a.GetLocation().GetDuration().GetMargin()
+                elif self.__withradius > 0:
+                    duration = duration - a.GetLocation().GetDuration().GetMargin()
 
-                for texte in textes:
-                    l.append( (texte,duration) )
+            for texte in textes:
+                l.append( (texte,duration) )
 
         return tuple(l)
+
 
     def __ngrams(self,items):
         """
         Yield a sequences of ngrams.
         """
+        l = list()
         size = len(items)
-        if (size - self.__n) < 0:
-            yield items[:]
-        else:
+        if (size - self.__n) > 0:
             limit = size - self.__n + 1
             for i in xrange(limit):
-                yield items[i:i + self.__n]
+                l.append( items[i:i + self.__n] )
+        return l
+
 
     def __tuple_to_dict(self,items):
         """
