@@ -93,10 +93,13 @@ class DescriptivesStatsDialog( spBaseDialog ):
 
         self._data = {} # to store stats
         for k,v in tiers.items():
+            # k = filename
+            # v = list of tiers
             for tier in v:
                 ts = TierStats( tier, self.n, self.withradius, self.withalt )
                 self._data[ts]=k
                 # remark: statistics are not estimated yet.
+                # ts contains a pointer to the tier; ts.tier
 
         titlebox   = self.CreateTitle(SPREADSHEETS,"Descriptives statistics of a set of tiers")
         contentbox = self._create_content()
@@ -119,7 +122,7 @@ class DescriptivesStatsDialog( spBaseDialog ):
 
         title_label = wx.StaticText(self, label="N-gram:", style=wx.ALIGN_CENTER)
         title_label.SetFont( font )
-        ngrambox = wx.ComboBox(self, -1, choices=['1','2','3','4','5'], style=wx.CB_READONLY)
+        ngrambox = wx.ComboBox(self, -1, choices=[str(i) for i in range(1,6)], style=wx.CB_READONLY)
         ngrambox.SetSelection(0)
         ngrambox.SetFont( font )
 
@@ -330,6 +333,7 @@ class DetailedPanel( BaseStatPanel ):
         """
         Show descriptive statistics of set of tiers as list.
 
+        @param data (dict) Dictionary with key=TierStats and value=filename
         """
         if not data or len(data)==0:
             self.ShowNothing()
@@ -338,7 +342,7 @@ class DetailedPanel( BaseStatPanel ):
         self.statctrl = SortListCtrl(self, size=(-1,400))
 
         # create columns
-        self.cols = ("Labels",) + tuple( os.path.basename(v) for v in data.values() )
+        self.cols = ("Labels",) + tuple( os.path.basename(v)+":"+ts.get_tier().GetName() for ts,v in data.items() )
         for i,col in enumerate(self.cols):
             self.statctrl.InsertColumn(i,col)
             self.statctrl.SetColumnWidth(i, 120)

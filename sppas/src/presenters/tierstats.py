@@ -89,6 +89,9 @@ class TierStats( object ):
     def get_withalt(self):
         return self.__withalt
 
+    def get_tier(self):
+        return self.tier
+
     # ------------------------------------------------------------------
     # Setters
     # ------------------------------------------------------------------
