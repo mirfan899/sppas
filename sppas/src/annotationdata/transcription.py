@@ -179,6 +179,19 @@ class Transcription( MetaObject ):
         return copy.deepcopy(self)
 
     # ------------------------------------------------------------------------
+
+    def SetSherableProperties(self, other):
+        """
+        Set some of the properties of other to self: media, ctrlvocab.
+
+        """
+        if not isinstance(other, Transcription):
+            raise TypeError("Can not set properties. Expected Transcription instance, got %s."%type(other))
+
+        self.SetMedia( other.GetMedia() )
+        self.SetCtrlVocab( other.GetCtrlVocab() )
+
+    # ------------------------------------------------------------------------
     # Media
     # ------------------------------------------------------------------------
 
@@ -335,6 +348,11 @@ class Transcription( MetaObject ):
         tier.SetTranscription(self)
         self.__rename(tier)
 
+        if tier.GetEnd() > self.__maxtime:
+            self.__maxtime = tier.GetEndValue()
+        if tier.GetBegin() < self.__mintime:
+            self.__mintime = tier.GetBeginValue()
+
         if index is not None:
             if index >= len(self.__tiers) or index < 0:
                 raise IndexError
@@ -342,6 +360,9 @@ class Transcription( MetaObject ):
         else:
             self.__tiers.append(tier)
             index = len(self.__tiers)-1
+
+        # TODO: GET ITS MEDIA AND SET TO THE TRANSCRIPTION???
+        # TODO: IDEM WITH CTRLVOCAB....????
 
         return index
 
@@ -361,6 +382,11 @@ class Transcription( MetaObject ):
 
         if tier.GetEnd() > self.__maxtime:
             self.__maxtime = tier.GetEndValue()
+        if tier.GetBegin() < self.__mintime:
+            self.__mintime = tier.GetBeginValue()
+
+        # TODO: GET ITS MEDIA AND SET TO THE TRANSCRIPTION???
+        # TODO: IDEM WITH CTRLVOCAB....???
 
         return len(self.__tiers)-1
 

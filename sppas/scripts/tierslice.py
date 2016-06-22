@@ -35,12 +35,12 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: tierinfo.py
+# File: tierslice.py
 # ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
 __authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2014  Brigitte Bigi"""
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 
 # ----------------------------------------------------------------------------
@@ -48,7 +48,6 @@ __copyright__ = """Copyright (C) 2011-2014  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import sys
-import os
 import os.path
 from argparse import ArgumentParser
 
@@ -57,15 +56,27 @@ SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
 import annotationdata.io
+from annotationdata import Transcription
+from annotationdata import Tier
+from annotationdata import TimePoint
+from annotationdata import TimeInterval
+from annotationdata import Label
+from annotationdata import Annotation
+from annotationdata.utils.trsutils import TrsUtils
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -i file [options]" % os.path.basename(PROGRAM), description="... a script to get information about a tier of an annotated file.")
+parser = ArgumentParser(usage="%s -i file [options]" % os.path.basename(PROGRAM), description="... a script to slice a tier of an annotated file.")
 
-parser.add_argument("-i", metavar="file", required=True,  help='Input annotated file name')
+parser.add_argument("-i", metavar="file",  required=True,  help='Input annotated file name')
+parser.add_argument("-o", metavar="file",  required=False, help='Output annotated file name')
+parser.add_argument("-s", metavar="value", required=False, default=0, type=float, help='Start position in seconds (default=0)')
+parser.add_argument("-d", metavar="value", required=False, default=4, type=float, help='Duration in seconds (default=4)')
 parser.add_argument("-t", metavar="value", default=1, type=int, help='Tier number (default: 1)')
+parser.add_argument("-l", metavar="value", default=0, type=float, help='Apply a shift delay to the extracted part. (default: 0)')
+
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -74,35 +85,43 @@ args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
 
-trs = annotationdata.io.read(args.i)
+trsinput = annotationdata.io.read(args.i)
 
-if args.t <= 0 or args.t > trs.GetSize():
-    print 'Error: Bad tier number.\n'
+if args.t <= 0 or args.t > trsinput.GetSize():
+    print 'Error: Bad tier number. Must range in (%d,%d)\n'%(1,trsinput.GetSize())
     sys.exit(1)
-tier = trs[args.t-1]
+tierinput = trsinput[args.t-1]
 
-if tier.IsPoint() is True:
-    tier_type = "Point"
-elif tier.IsInterval() is True:
-    tier_type = "Interval"
-elif tier.IsDisjoint() is True:
-    tier_type = "Disjoint"
+# ----------------------------------------------------------------------------
+
+trs = Transcription(trsinput.GetName())
+trs.Append( tierinput )
+
+# ----------------------------------------------------------------------------
+# Preparation
+
+slicertier = Tier("Name")
+b = TimePoint(float(args.s))
+e = TimePoint(float(args.s) + float(args.d))
+ann = Annotation(TimeInterval(b,e),Label('slice'))
+slicertier.Append(ann)
+
+list_transcription = TrsUtils.Split( trs, slicertier )
+trsout = list_transcription[0]
+TrsUtils.Shift(trsout, -trsout.GetBeginValue())
+
+delay = float(args.l)
+if delay != 0:
+    TrsUtils.Shift(trsout, delay)
+
+# ----------------------------------------------------------------------------
+# Write
+
+if args.o:
+    outputf = args.o
 else:
-    tier_type = "Unknown"
-
-nb_silence = len([a for a in tier if a.GetLabel().IsSilence()])
-nb_empty = len([a for a in tier if a.GetLabel().IsEmpty()])
-dur_silence = sum(a.GetLocation().GetValue().Duration().GetValue() for a in tier if a.GetLabel().IsSilence())
-dur_empty = sum(a.GetLocation().GetValue().Duration().GetValue() for a in tier if a.GetLabel().IsEmpty())
-
-print "Tier name: ", tier.GetName()
-print "Tier type: ", tier_type
-print "Tier size: ", tier.GetSize()
-print "   - Number of silences:         ", nb_silence
-print "   - Number of empty intervals:  ", nb_empty
-print "   - Number of speech intervals: ", tier.GetSize() - (nb_empty + nb_silence)
-print "   - silence duration: ", dur_silence
-print "   - empties duration: ", dur_empty
-print "   - speech duration:  ", (tier.GetEndValue() - tier.GetBeginValue()) - (dur_empty + dur_silence)
+    f,e = os.path.splitext(args.i)
+    outputf = f+"_"+tierinput.GetName()+e
+annotationdata.io.write(outputf, trsout)
 
 # ----------------------------------------------------------------------------

@@ -63,7 +63,7 @@ from presenters.audiotrslicer import AudioSlicer
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -w file -i file -o file [options]" % os.path.basename(PROGRAM), description="WavSlice command line interface.")
+parser = ArgumentParser(usage="%s -w file -i file -o file [options]" % os.path.basename(PROGRAM), description="audio slicer.")
 
 parser.add_argument("-w", metavar="file", required=True,  help='Input wav file name')
 parser.add_argument("-i", metavar="file", required=True,  help='Input file name with the transcription')

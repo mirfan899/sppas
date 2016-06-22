@@ -111,6 +111,7 @@ class TierUtils(object):
         if not annotations:
             return None
         newtier = Tier(tier.GetName())
+        newtier.SetSherableProperties( tier )
         for a in annotations:
             newtier.Add(a.Copy())
         return newtier

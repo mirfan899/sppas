@@ -37,8 +37,6 @@ if args.c == 0 or args.c > audio.get_nchannels():
 
 idx = audio.extract_channel(args.c-1)
 
-
-
 # Save the converted channel
 audio_out = AudioPCM()
 audio_out.append_channel( audio.get_channel(idx) )

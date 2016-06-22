@@ -88,6 +88,23 @@ class Tier( MetaObject ):
     # Getters and Setters
     # -----------------------------------------------------------------------
 
+    def SetSherableProperties(self, other):
+        """
+        Set some of the properties of other to self: media, ctrlvocab, datatype, radius.
+
+        @param other (Tier)
+
+        """
+        if not isinstance(other, Tier):
+            raise TypeError("Can not set properties. Expected Tier instance, got %s."%type(other))
+
+        self.SetCtrlVocab( other.GetCtrlVocab() )
+        self.SetMedia( other.GetMedia() )
+        self.SetDataType( other.GetDataType() )
+        self.SetRadius( other.GetRadius() )
+
+    # -----------------------------------------------------------------------
+
     def GetCtrlVocab(self):
         return self.__ctrlvocab
 
@@ -195,6 +212,35 @@ class Tier( MetaObject ):
 
     # -----------------------------------------------------------------------
 
+    def GetRadius(self):
+        """
+        Return the radius value if all TimePoint instances of the tier have the same value.
+
+        @return radius: (float) is in seconds
+
+        """
+        if self.IsEmpty() is True:
+            return 0.
+
+        r = None
+        for annotation in self.__ann:
+            if annotation.GetLocation().IsPoint():
+                ra = annotation.GetLocation().GetPointRadius()
+                if r is not None and r != ra:
+                    return 0
+                r = ra
+            elif annotation.GetLocation().IsInterval():
+                rb = annotation.GetLocation().GetBeginRadius()
+                re = annotation.GetLocation().GetEndRadius()
+                if rb != re:
+                    return 0.
+                if r is not None and rb != r:
+                    return 0.
+                r = rb
+        return r
+
+    # -----------------------------------------------------------------------
+
     def SetRadius(self, radius):
         """
         Assign a fixed radius to all TimePoint instances of the tier.
@@ -202,11 +248,10 @@ class Tier( MetaObject ):
         @param radius: (float) is in seconds
 
         """
-
         if self.IsEmpty() is True:
             return
 
-        for annotation in self:
+        for annotation in self.__ann:
             if annotation.GetLocation().IsPoint():
                 annotation.GetLocation().SetPointRadius( radius )
             elif annotation.GetLocation().IsInterval():

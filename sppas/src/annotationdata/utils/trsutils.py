@@ -70,13 +70,13 @@ class TrsUtils(object):
         for a1 in ref_tier:
             if a1.GetLabel().IsEmpty():
                 continue
-            new_trs = Transcription()
+            new_trs = Transcription(mintime=transcription.GetMaxTime())
             for tier in transcription:
                 new_tier = TierUtils.Select(tier, lambda x: overlaps(a1, x))
                 if new_tier is not None:
                     if new_tier[0].GetLocation().IsInterval():
-                        new_tier[0].SetBegin( a1.GetLocation().GetBegin() )
-                        new_tier[-1].SetEnd( a1.GetLocation().GetEnd() )
+                        new_tier[0].GetLocation().SetBegin( a1.GetLocation().GetBegin() )
+                        new_tier[-1].GetLocation().SetEnd( a1.GetLocation().GetEnd() )
                     new_trs.Append(new_tier)
 
             if not new_trs.IsEmpty():
@@ -94,28 +94,33 @@ class TrsUtils(object):
 
         TODO: APPLY TO ALL LOCATIONS OF EACH ANNOTATION.
         """
-        if n == 0:
+        n = float(n)
+        if n == 0.:
             return
 
         for tier in transcription:
             if tier.IsInterval():
                 for a in tier:
-                    begin = a.GetLocation().GetBeginMidpoint() - n
-                    begin = begin if begin > 0. else 0.
-                    end = a.GetLocation().GetEndMidpoint() - n
+                    begin = max(0., a.GetLocation().GetBegin().GetMidpoint() + n)
+                    end = a.GetLocation().GetEnd().GetMidpoint() + n
                     if end <= 0.:
-                        tier.Remove(a.GetLocation().GetBeginMidpoint(), a.GetLocation().GetEndMidpoint())
+                        tier.Remove(a.GetLocation().GetBegin().GetMidpoint(), a.GetLocation().GetEnd().GetMidpoint())
                     else:
-                        a.GetLocation().SetBeginMidpoint( begin ) #
-                        a.GetLocation().SetEndMidpoint( end )
+                        a.GetLocation().GetBegin().SetMidpoint( begin ) #
+                        a.GetLocation().GetEnd().SetMidpoint( end )
             else: # PointTier
                 for a in tier:
-                    time = a.GetLocation().GetPointMidpoint() - n
+                    time = a.GetLocation().GetPoint().GetMidpoint() + n
                     if time > 0:
-                        a.GetLocation().SetPointMidpoint( time )
+                        a.GetLocation().GetPoint().SetMidpoint( time )
                     else:
                         # Remove
                         pass
 
-        transcription.SetMinTime( transcription.GetMinTime() - n)
-        transcription.SetMaxTime( transcription.GetMaxTime() - n)
+        transcription.SetMinTime( max(0., transcription.GetMinTime() + n) )
+        if n<0:
+            transcription.SetMaxTime( transcription.GetMaxTime() + n )
+        else:
+            # transcription.GetMaxTime() automatically adjusts maxtime value
+            transcription.SetMaxTime( transcription.GetMaxTime() )
+
