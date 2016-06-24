@@ -1,4 +1,4 @@
-/*============================   slides.css  ===============================
+/*============================   sppas.css  ===============================
  * Brigitte Bigi
  * Style to be used for SPPAS web site
  * -------------------------------------------------------------------------
@@ -23,18 +23,22 @@
 @font-face {
     font-family: HeaderFont;
     src: url(../../etc/font/Jura-DemiBold.ttf);
-    }
+}
 
 @font-face {
     font-family: NormalFont;
     src: url(../../etc/font/MavenPro-Regular.ttf);
-    }
+}
 
 @font-face {
     font-family: FooterFont;
     src: url(../../etc/font/data-latin.ttf);
-    }
+}
 
+@font-face {
+    font-family: SignatureFont;
+    src: url(../../etc/font/JenniferLynne.ttf);
+}
 
 /*===========================  MAIN PAGE  =================================*/
 
@@ -309,6 +313,14 @@ p {
     margin-right:   20px;
     text-align:     justify;
     text-justify:   inter-word;
+}
+
+p.signature {
+    font-family: SignatureFont;
+    font-size:   160%;
+    text-align:  right;
+    line-height: 150%;
+
 }
 
 dt code {
