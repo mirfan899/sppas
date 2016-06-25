@@ -1,16 +1,24 @@
 
+    <!----------------------------------------------------------------->
+
     <div class="header">
         <div class="title">
             <div class="h1title">SPPAS</div>
             <div class="h2title">Automatic Annotation of Speech</div>
-            <div class="h2title"><a href="http://www.lpl-aix.fr/~bigi/">Brigitte Bigi</a></div>
+            <div class="h3title">a software tool by Brigitte Bigi, researcher at</div>
             <div class="h3title">Laboratoire Parole et Langage - Aix-en-Provence - France</div>
         </div>
     </div>
+
+    <!----------------------------------------------------------------->
+
     <div class="menu">
-        <a class="neonBlue"    href="index.html">Home</a>
-        <a class="neonGreen"   href="installation.html">Installation</a>
-        <a class="neonYellow"  href="download.html">Download</a>
-        <a class="neonOrange"  href="documentation.html">Documentation</a>
-        <a class="neonRed"     href="https://groups.google.com/forum/?fromgroups#!forum/sppas-users">User's group</a>
+        <a href="index.html">Home</a>
+        <a href="installation.html">Installation</a>
+        <a href="download.html">Download</a>
+        <a class="current" href="documentation.html">Documentation</a>
+        <a href="https://groups.google.com/forum/?fromgroups#!forum/sppas-users">User's group</a>
     </div>
+
+    <!----------------------------------------------------------------->
+
