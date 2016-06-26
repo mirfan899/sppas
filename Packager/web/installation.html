@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang='en'>
 
 <head>
@@ -70,65 +69,72 @@
     </ul>
 
 
-    <h2><img src="etc/logos/windows.jpg" width="20"/>Dependencies on Windows</h2>
+    <h2><img src="etc/logos/windows.jpg" width="20"/> Dependencies on Windows</h2>
 
-        <p>Click the link to download Python 2.7
+    <ol>
+        <li>Click the link to download Python 2.7
         <a href="https://www.python.org/downloads/release/python-2711/">"Windows x86 MSI installer"</a>, 
         then execute it. 
-        </p>
+        </li>
 
-        <p>Click the link to download <a href="http://www.wxpython.org/download.php#msw"> wxPython with version name: "-win32-py27",</a>
-        then execute it.</p>
+        <li>Click the link to download wxPython with version name: 
+        <a href="http://www.wxpython.org/download.php#msw"> "-win32-py27",</a>
+        then execute it.
+        </li>
 
-        <p>Click the link to download <a href="http://sourceforge.jp/projects/julius/downloads/60273/julius-4.3.1-win32bin.zip/"> 
+        <li>Click the link to download 
+        <a href="http://sourceforge.jp/projects/julius/downloads/60273/julius-4.3.1-win32bin.zip/"> 
         Julius (release >= 4.1)</a>. Unpack the file then go to into the directory.
         Open the "bin" folder then select the file "julius.exe".
-        Copy this file into C:\WINDOWS\
-        </p>
-        <p>Remark: the file name must be STRICTLY julius.exe, and nothing else
-            (you'll have to rename it by removing the version number if any).</p>
-
+        Copy this file into C:\WINDOWS\.
+        Notice that the file name must be STRICTLY julius.exe, and nothing else
+            (you'll have to rename it by removing the version number if any).
+        </li>
+    </ol>
 
     <!----------------------------------------------------------------->
 
     <h2><img src="etc/logos/apple.jpg" width="20"/> Dependencies on MacOS</h2>
 
-        <p>Click the link to download Python 2.7 
-        <a href="https://www.python.org/downloads/release/python-2711/">"Mac OS X 64-bit/32-bit installer"</a>, 
-        then execute it. 
-        </p>
-
-        <p>
-          Click the link to <a href="http://downloads.sourceforge.net/wxpython/wxPython3.0-osx-3.0.2.0-cocoa-py2.7.dmg">
+    <ol>
+        <li>Click the link to download Python 2.7 
+        <a href="https://www.python.org/downloads/release/python-2711/">
+        "Mac OS X 64-bit/32-bit installer"</a>, then execute it. 
+        </li>
+        <li>
+          Click the link to 
+          <a href="http://downloads.sourceforge.net/wxpython/wxPython3.0-osx-3.0.2.0-cocoa-py2.7.dmg">
           download wxPython.</a>
           Click on the package and follow instructions. Notice that
           this installer is not signed by Apple, so by default your Mac 
-            will tell you it is corrupted and will not install it. You can get 
-            around this by temporarily relaxing the security settings in 
-            System Preferences. In the Security &amp; Privacy section set 
-            "Allow applications downloaded from" to "Anywhere."</p>
-
-        <p>For Julius software, I prepared a 64-bits version which include a 
+          will tell you it is corrupted and will not install it. You can get 
+          around this by temporarily relaxing the security settings in 
+          System Preferences. In the Security &amp; Privacy section set 
+          "Allow applications downloaded from" to "Anywhere."
+        </li>
+        <li>For Julius software, I prepared a 64-bits version which include a 
         ready-to-use (old) version of Julius for MacOS. This version is available 
         here: <a href="downloads/Julius-MacOS-10.7.3.tgz">Julius for MacOS</a>.
         Download, extract the archive and drag-and-drop the package content into 
         the <b>/usr/local/bin</b> directory.
-        </p>
-
+        </li>
+    </ol>
 
     <!----------------------------------------------------------------->
 
     <h2><img src="etc/logos/linux.jpg" width="20"/> Dependencies on Linux</h2>
 
-        <p>
+    <ul>
+        <li>
             There are <i>deb</i> packages for all dependencies 
             (python2.7, wxpython, julius).
             python-wxgtk-media and gstreamer must be installed too.
-        </p>
-        <p>
+        </li>
+        <li>
             There are <i>rpm</i> packages for python2.7 and wxpython. 
             The Julius tool will have to be installed from sources.
-        </p>
+        </li>
+    </ul>
 
     <!----------------------------------------------------------------->
 

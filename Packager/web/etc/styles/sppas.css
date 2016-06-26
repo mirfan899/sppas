@@ -36,8 +36,24 @@
 
 @font-face {
     font-family: HandFont;
-    src: url(../../etc/font/JenniferLynne.ttf);
+    src: url(../../etc/font/NellaSue.ttf);
 }
+
+@font-face {
+    font-family: TitleFont;
+    src: url(../../etc/font/HandOfSean.ttf);
+}
+
+@font-face {
+    font-family: HighlightFont;
+    src: url(../../etc/font/MNS.ttf);
+}
+
+@font-face {
+    font-family: MonoFont;
+    src: url(../../etc/font/FreeMono.ttf);
+}
+
 
 /*===========================  MAIN PAGE  =================================*/
 
@@ -74,7 +90,7 @@ body {
 
 /*================================  HEADER  ===============================*/
 
-.header{
+.header {
     background:     url('../../etc/img/background-header.png') repeat-x center;
     
     height:         200px; /* match with the image height */
@@ -82,7 +98,7 @@ body {
     border-top:     1px solid rgb(30,30,30);  
     border-bottom:  1px solid rgb(30,30,30); 
 
-    font-family:    NormalFont, "Maven Pro", serif;
+    font-family:    TitleFont, serif;
     font-weight:    bold;
     text-align:     center;
 }
@@ -147,12 +163,13 @@ body {
 
 /*===========================  HTML ELEMENTS  ==============================*/
 
+/* ------ H titles ------- */
+
 h1, h2, h3, h4, h5 {
-    font-family:    ComputerFont, serif;
+    font-family:    TitleFont, serif;
     font-weight:    normal;
     font-style:     normal;
     font-variant:   normal;
-    padding-left:   5px;
     padding-top:    10px;
     padding-bottom: 10px;
 }
@@ -164,8 +181,8 @@ h1 {
     margin-top:     10px;
     margin-bottom:  10px;
     border-bottom:  2px solid rgb(120,20,20);
-    color: rgb(120,20,20);
-    }
+    color:          rgb(120,20,20);
+}
 
 h2 {
     font-size:      120%;
@@ -173,31 +190,30 @@ h2 {
     margin-top:     20px;
     margin-bottom:  20px;
     border-bottom:  1px solid rgb(60,60,190);
-    color: rgb(60,60,190);
+    color:          rgb(60,60,190);
 }
 
 h3 {
     font-size:      100%;
-    margin-top:     20px;
-    margin-bottom:  15px;
+    margin-top:     10px;
+    margin-bottom:  10px;
     text-align:     left;
     border-bottom:  1px solid rgb(60,160,60);
-    color: rgb(60,160,60);
-    display: inline-block !important;
-    }
+    color:          rgb(60,160,60);
+}
 
 h4 {
-    margin-top:     20px;
-    margin-bottom:  15px;
-    font-size:      90%;
+    margin-top:     10px;
+    margin-bottom:  10px;
+    font-size:      100%;
     border-bottom:  1px solid rgb(120,120,120);
     display:        inline-block !important;
 }
 
 h5 {
-    margin-top:     20px;
-    margin-bottom:  15px;
-    font-size:      90%;
+    margin-top:     10px;
+    margin-bottom:  10px;
+    font-size:      100%;
     font-style:     italic;
 }
 
@@ -205,29 +221,145 @@ h1.title {
     font-size:      200%;
     font-weight:    bold;
     text-align:     center;
-    margin-top:     1em;
-    margin-bottom:  1em;
+    margin-top:     20px;
+    margin-bottom:  20px;
     margin-right:   auto;
-    padding-top:    20px;
-    padding-right:  15px;
     padding-bottom: 20px;
-    padding-left:   15px;
     border-bottom:  2px solid;
-    border-left:    2px solid;
-    border-right:   2px solid;
-    border-top:     2px solid;
-    border-color:   #b31414;
+    border-left:    none;
+    border-right:   none;
+    border-top:     none;
 }
 
-h2.author, h3.date {
-    border:none;
+h2.author {
+    border:     none;
     text-align: center;
-    border: 0px;
-    }
+}
+
+h3.date {
+    border:     none;
+    text-align: center;
+    display: block;
+}
+
+
+h1 a {
+    color:          rgb(120,20,20);
+}
+h2 a {
+    color:          rgb(60,60,190);
+}
+h3 a {
+    color:          rgb(60,160,60);
+}
+h4 a {
+    color: rgb(30,30,30);
+}
+h5 a {
+    color: rgb(30,30,30);
+}
+
+/* ------ A links ------- */
+
+a {
+    color: rgb(75,65,205);
+    text-decoration:none;
+    -webkit-transition-property:color;
+    -moz-transition-property:color;
+    -ms-transition-property:color;
+    -o-transition-property:color;
+    transition-property:color;
+    -webkit-transition-duration:0.2s;
+    -moz-transition-duration:0.2s;
+    -ms-transition-duration:0.2s;
+    -o-transition-duration:0.2s;
+    transition-duration:0.2s
+}
+
+a:hover{
+    color: rgb(205,110,65);
+}
+
+/* ------ Text -------- */
+
+p {
+    margin-left:    20px;
+    margin-right:   20px;
+    margin-bottom:   3px;
+    margin-top:      3px;
+    text-align:     justify;
+    text-justify:   inter-word;
+}
+
+p.hand {
+    font-family: HandFont;
+    font-size:   140%;
+    line-height: 120%;
+    color:       rgb(65,65,180);
+    margin-bottom:  10px;
+    margin-top:     10px;
+}
+
+a.signature {
+    color:       rgb(65,65,180);
+    text-decoration: underline;
+}
+
+blockquote {
+    background-color:  rgb(200,200,200);
+    color:             rgb(30,30,120);
+
+    margin-left:   40px;
+    margin-right:  40px;
+    margin-top:    10px;
+    margin-bottom: 15px;
+
+    min-height:    24px;
+    padding-top:    5px;
+    padding-right:  0px;
+    padding-bottom: 5px;
+    padding-left:   0px;
+
+    clear:          none;
+    text-align:     justify;
+    vertical-align: middle;
+    font-family:    TitleFont;
+    font-size:      100%;
+    line-height:    180%;
+    
+    -moz-border-radius: 10px; /* Firefox */
+    border-radius:      10px;
+    border-collapse:    collapse;
+    border:             1px solid rgb(100,100,100);
+}
+
+strong{
+    font-weight: bold;
+}
+
+em{
+    font-style: italic;
+}
+
+
+/* ------ Media ------- */
 
 img {
     max-width: 95%;
 }
+
+figure {
+    display:      block;
+    margin-left:  auto;
+    margin-right: auto;
+    text-align:   center;
+    font-size:    80%;
+    text-align:   center;
+    color:        rgb(120,120,120);
+}
+
+
+/* ------ Tables, lists, etc ------ */
 
 table {
     max-width:      80%;
@@ -239,53 +371,6 @@ table {
 th {
     font-weight: bold;
     background:  transparent;
-}
-
-p {
-    margin-left:    20px;
-    margin-right:   20px;
-    margin-bottom:  5px;
-    text-align:     justify;
-    text-justify:   inter-word;
-}
-
-p.hand {
-    font-family: HandFont;
-    font-size:   180%;
-    line-height: 120%;
-    color:       rgb(50,50,120);
-    margin-bottom:  15px;
-}
-
-a.signature {
-    color:       rgb(50,50,120);
-    text-decoration: underline;
-}
-
-dt code {
-        font-weight: bold;
-}
-dd p {
-        margin-top: 0;
-}
-
-a {
-    color: rgb(75,65,205);
-    text-decoration:none;
-    -webkit-transition-property:color;
-    -moz-transition-property:color;
-    -ms-transition-property:color;
-    -o-transition-property:color;
-    transition-property:color;
-    -webkit-transition-duration:0.3s;
-    -moz-transition-duration:0.3s;
-    -ms-transition-duration:0.3s;
-    -o-transition-duration:0.3s;
-    transition-duration:0.3s
-}
-
-a:hover{
-    color: rgb(205,110,65);
 }
 
 ul, ol{
@@ -306,76 +391,43 @@ li{
     line-height:    20px
 }
 
+/* ------- Computers -------- */
+
 pre {
-    border: 1px dotted gray;
-    background-color: #ececec;
-    color: #404040;
-    margin-left:   10px;
-    margin-right:  10px;
-    margin-top:    20px;
-    margin-bottom: 20px;
-    padding-top:    5px;
-    padding-right:  15px;
-    padding-bottom: 5px;
-    padding-left:   15px;
-    max-width: 95%;
-}
-
-code {
-    font-family: monospace;
-}
-
-blockquote {
-    background-color:  rgba(100,100,100, 0.5);
-
+    background-color: rgb(200,200,200);
     margin-left:   40px;
     margin-right:  40px;
     margin-top:    10px;
     margin-bottom: 15px;
+    padding-top:    5px;
+    padding-right:  5px;
+    padding-bottom: 5px;
+    padding-left:   5px;
 
-    min-height: 24px;
+    min-height:    24px;
+    max-width: 95%;
 
-    clear:      none;
-    text-align: justify;
-    vertical-align: middle;
+    border: 1px dotted gray;
+}
 
-    padding-top:    0px;
-    padding-right:  0px;
-    padding-bottom: 0x;
-    padding-left:   0px;
+dt code {
+        font-weight: bold;
+}
+dd p {
+        margin-top: 0;
+}
 
-    -moz-border-radius:10px; /* Firefox */
-    border-radius:10px;
-    border-collapse: collapse;
-    border: 1px solid #C8C9B9;
+code {
+    font-family: MonoFont, monospace;
 }
 
 hr{
     margin-left:   20px;
     margin-right:  20px;
     margin-bottom: 40px;
-    border:0;
-    border-top:1px solid #d8d7cf
+    border:         0;
+    border-top:1px  solid rgb(100,100,100);
 }
-
-strong{
-    font-weight:bold
-}
-
-em{
-    font-style:italic
-}
-
-figure {
-    display:      block;
-    margin-left:  auto;
-    margin-right: auto;
-    text-align:   center;
-    font-size:    80%;
-    text-align:   center;
-    color:        rgb(120,120,120);
-    }
-
 
 /*==============================  BUTTONS  =================================*/
 
@@ -478,17 +530,4 @@ figure {
 
 .scrollT:hover {
     cursor: pointer;
-}
-
-h1 a {
-    color: rgb(30,30,30);
-}
-h2 a {
-    color: rgb(30,30,30);
-}
-h3 a {
-    color: rgb(30,30,30);
-}
-h4 a {
-    color: rgb(30,30,30);
 }
