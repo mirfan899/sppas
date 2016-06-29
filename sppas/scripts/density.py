@@ -65,11 +65,7 @@ from annotationdata.ptime.interval import TimeInterval
 from annotationdata.label.label    import Label
 
 from calculus.infotheory.kullback import Kullback
-
-# ----------------------------------------------------------------------------
-
-def find_ngrams( symbols, ngram):
-    return zip(*[symbols[i:] for i in range(ngram)])
+from calculus.infotheory.utilit import find_ngrams
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
