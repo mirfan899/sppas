@@ -6,5 +6,5 @@ from os.path import abspath, dirname, join
 SPPAS = dirname(dirname(dirname(dirname(dirname(abspath(__file__))))))
 sys.path.append( join(SPPAS, "sppas", "src") )
 
-TEMP    = join(dirname(abspath(__file__)), 'temp')
+TEMP = join(dirname(abspath(__file__)), 'temp')
 SPPASSAMPLES = join(SPPAS, "samples")

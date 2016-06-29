@@ -35,12 +35,6 @@
 # File: wordslst.py
 # ---------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
-
-# ---------------------------------------------------------------------------
-
 import codecs
 import logging
 import rutils
@@ -49,37 +43,38 @@ import rutils
 
 class WordsList( object ):
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: Class to represent a simple list of words.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Class to represent a simple list of words.
 
     """
-
     def __init__(self, filename=None, nodump=False, casesensitive=False):
         """
-        Create a new WordsList instance.
+        Create a WordsList instance.
 
         @param filename (str) is the word list file name, i.e. a file with 1 column.
         @param nodump (Boolean) allows to disable the creation of a dump file.
+        @param casesensitive (Boolean) the list of word is case-sensitive or not
 
         """
-
         self._stw = {}
-        # a list is relevant but a dictionary is used because:
-        # a dictionary is faster to read tokens from a file and is also
-        # faster to find a token in it.
+        # a list is enough but a dictionary is used because:
+        # with a dictionary it is faster to read tokens from a file and is also
+        # faster to find a token in it!
 
-        # Do the list of word is case-sensitive or not.
+        # Set the list of word to be case-sensitive or not.
         self.casesensitive = casesensitive
 
         if filename is not None:
 
             data = None
-            if nodump is False:
-                # Try first to get the dict from a dump file
-                # (at least 2 times faster than the ascii one)
-                data = rutils.load_from_dump( filename )
+            #if nodump is False:
+            # Try first to get the dict from a dump file
+            # (at least 2 times faster than the ascii one)
+            data = rutils.load_from_dump( filename )
 
             # Load from ascii if: 1st load, or, dump load error, or dump older than ascii
             if data is None:
@@ -93,8 +88,6 @@ class WordsList( object ):
                 logging.info('Got word list from dumped file.')
 
     # -----------------------------------------------------------------------
-
-    # -----------------------------------------------------------------------
     # Data management
     # -----------------------------------------------------------------------
 
@@ -106,7 +99,6 @@ class WordsList( object ):
         @return (Boolean)
 
         """
-
         entry = entry.strip()
         if self.casesensitive is False:
             entry = rutils.ToLower(entry)
@@ -139,22 +131,22 @@ class WordsList( object ):
 
     # -----------------------------------------------------------------------
 
-    def is_in(self,entry):
+    def is_in(self, entry):
         """
         Return True if entry is in the list.
 
-        @param entry is a string
+        @param entry (str - IN)
 
         """
         return self._stw.has_key( entry )
 
     # -----------------------------------------------------------------------
 
-    def is_unk(self,entry):
+    def is_unk(self, entry):
         """
         Return True if entry is unknown (not in the list).
 
-        @param entry is a string
+        @param entry (str - IN)
 
         """
         return not self.is_in(entry)
@@ -175,8 +167,6 @@ class WordsList( object ):
         return s
 
     # -----------------------------------------------------------------------
-
-    # -----------------------------------------------------------------------
     # File management
     # -----------------------------------------------------------------------
 
@@ -184,7 +174,7 @@ class WordsList( object ):
         """
         Read words from a file: one per line.
 
-        @param filename (str) is the file name.
+        @param filename (str - IN) is the file name.
         @raise Exception
 
         """
@@ -201,7 +191,7 @@ class WordsList( object ):
         """
         Save the list of words in a file.
 
-        @param filename (str)
+        @param filename (str - OUT)
         @return (Boolean)
 
         """
@@ -215,7 +205,5 @@ class WordsList( object ):
             return False
 
         return True
-
-    # -----------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------

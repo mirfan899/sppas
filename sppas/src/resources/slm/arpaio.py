@@ -41,6 +41,9 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ---------------------------------------------------------------------------
 
+import codecs
+from sp_glob import encoding
+
 # ---------------------------------------------------------------------------
 
 class ArpaIO:
@@ -54,16 +57,26 @@ class ArpaIO:
     ARPA-ASCII files.
 
     """
-    def __init__(self, filename=None):
+    def __init__(self):
         """
-        Create an ArpaIO instance, and optionaly load a model from a file.
-
-        @param filename (str)
+        Create an ArpaIO instance.
 
         """
         self.slm = None
-        if filename:
-            self.load(filename)
+
+    # -----------------------------------------------------------------------
+
+    def set(self, slm):
+        """
+        Set the model of the SLM.
+
+        @param slm (list) List of tuples for 1-gram, 2-grams, ...
+
+        """
+        if not (isinstance(slm, list) and all([isinstance(m,list) for m in slm])):
+            raise TypeError('Expected a list of lists of tuples.')
+
+        self.slm = slm
 
     # -----------------------------------------------------------------------
 
@@ -71,10 +84,43 @@ class ArpaIO:
         """
         Load an ARPA model from a file.
 
-        @param filename (str) Filename of the model.
+        @param filename (str - IN) Filename of the model.
 
         """
-        raise NotImplementedError
+        # we expect small models, so we can read the whole file in one
+        with codecs.open(filename, 'r', encoding) as f:
+            lines = f.readlines()
+
+        self.slm = []
+        n = 0
+        lm = []
+        for line in lines:
+            line = line.strip()
+            if len(line)==0:
+                pass
+            elif line.startswith('\\') and not "data" in line:
+                if n>0:
+                    self.slm.append(lm)
+                n = n+1
+                lm = []
+            elif n>0:
+                # split line into columns
+                cols = line.split()
+                if len(cols)<n+1:
+                    raise ValueError('Unexpected line: %s'%line)
+                # probability is the first column
+                proba = float(cols[0])
+                # the n- folowwing columns are the ngram
+                tokenseq = " ".join(cols[1:n+1])
+                # the last (optional) value is the bow
+                bow = None
+                if len(cols) > n+1:
+                    bow = float(cols[-1])
+                lm.append( (tokenseq,proba,bow) )
+
+        if n>0:
+            self.slm.append(lm)
+        return self.slm
 
     # -----------------------------------------------------------------------
 
@@ -103,26 +149,12 @@ class ArpaIO:
 
              \end\
 
-        @param filename (str) File where to save the model.
+        @param filename (str - IN) File where to save the model.
 
         """
-        with open(filename, 'w') as f:
-            if self.slm:
+        with codecs.open(filename, 'w', encoding) as f:
+            if self.slm is not None:
                 f.write( self._serialize_slm() )
-
-    # -----------------------------------------------------------------------
-
-    def set(self, slm):
-        """
-        Set the model of the SLM.
-
-        @param slm (list) List of SLM instances 1-gram, 2-grams, ...).
-
-        """
-        if not (isinstance(slm, list) and all([isinstance(m,slm.SLM) for m in slm])):
-            raise TypeError('Expected a list of HMMs instances.')
-
-        self.slm = slm
 
     # -----------------------------------------------------------------------
     # Private
@@ -136,8 +168,9 @@ class ArpaIO:
 
         """
         result = self._serialize_header()
-        for m in self.slm:
-            result += self._serialize_ngram( m )
+        for n,m in enumerate(self.slm):
+            newngram = self._serialize_ngram( m,n+1 )
+            result = result + newngram
 
         return result
 
@@ -155,13 +188,13 @@ class ArpaIO:
         """
         r = "\\data\\ \n"
         for i,m in enumerate(self.slm):
-            r += "ngram " + str(i) + "=" +m.get_order()+"\n"
+            r += "ngram " + str(i+1) + "=" + str(len(m)) +"\n"
         r += "\n"
         return r
 
     # -----------------------------------------------------------------------
 
-    def _serialize_ngram(self, model):
+    def _serialize_ngram(self, model, order):
         """
 
              \2-grams:
@@ -169,11 +202,11 @@ class ArpaIO:
              ...
 
         """
-        r = "\\"+str(model.get_order())+"-grams: \n"
+        r = "\\"+str(order)+"-grams: \n"
         for (wseq,lp,bo) in model:
-            r += lp+" "+wseq
+            r += str(round(lp,6))+"\t"+wseq
             if bo is not None:
-                r+=" "+bo
+                r+="\t"+bo
             r+="\n"
         r+="\n"
         return r

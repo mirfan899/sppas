@@ -39,6 +39,8 @@ import collections
 import math
 
 import annotationdata
+from resources.wordslst import WordsList
+from sp_glob import UNKSTAMP
 
 # ---------------------------------------------------------------------------
 
@@ -55,7 +57,7 @@ class NgramsModel:
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Statistical language model representation.
+    @summary:      Statistical language model trainer.
 
     A model is made of:
        - n-gram counts: a list of NgramCounter instances.
@@ -98,6 +100,12 @@ class NgramsModel:
     in the context (a_). Different algorithms mainly differ on how they
     discount the ML estimate to get f(a_z).
 
+    How to use this class?
+
+    >>> model = NgramsModel(3)                         # create a 3-gram model
+    >>> model.count( *corpusfiles )                    # count n-grams from data
+    >>> probas = model.probabilities(method="logml")   # estimates probas
+
     """
     def __init__(self, norder=1):
         """
@@ -110,9 +118,15 @@ class NgramsModel:
         if n < 1:
             raise ValueError('Expected order between 1 and %d. Get: %d.'%(MAX_ORDER,n))
         self.order = n
+        self.ngramcounts = []
+
         self._ss = START_SENT_SYMBOL
         self._es = END_SENT_SYMBOL
-        self.ngramcounts = []
+
+        # Options
+        self.vocab    = None    # list of tokens of the unigram model
+        self.mincount = 1       # minimum number of occurrences
+        self.wrdlist  = None    # vocabulary
 
     # -----------------------------------------------------------------------
 
@@ -153,6 +167,17 @@ class NgramsModel:
 
     # -----------------------------------------------------------------------
 
+    def set_vocab(self, filename):
+        """
+        Fix a list of accepted tokens; others are mentioned as unknown.
+
+        @param filename (str - IN) List of tokens.
+
+        """
+        self.wrdlist = WordsList(filename, nodump=True, casesensitive=False)
+
+    # -----------------------------------------------------------------------
+
     def count(self, *datafiles):
         """
         Count ngrams from data files.
@@ -162,15 +187,39 @@ class NgramsModel:
 
         """
         for n in range(self.order):
-            ngramcounter = NgramCounter(n+1)
+            ngramcounter = NgramCounter(n+1, self.wrdlist)
             ngramcounter.count( *datafiles )
             self.ngramcounts.append( ngramcounter )
+
+        # We already fixed a count threshold
+        if self.mincount > 1:
+            self.ngramcounts[-1].shave(self.mincount)
+
+    # -----------------------------------------------------------------------
+
+    def set_min_count(self, value):
+        """
+        Fix a minimum count values, applied only to the max order.
+        Any observed n-gram with a count under the value is removed.
+
+        @param value (int - IN) Threshold for minimum count
+
+        """
+        value = int(value)
+        if value < 1:
+            raise Exception('Expected a count value > 1. Got %d'%value)
+
+        # We already have counts
+        if len(self.ngramcounts) > 0:
+            self.ngramcounts[-1].shave(value)
+
+        self.mincount = value
 
     # -----------------------------------------------------------------------
 
     def probabilities(self, method="lograw"):
         """
-        Return probabilities as raw data.
+        Return a list of probabilities.
 
         @param method (str) method to estimate probabilities, i.e. one of:
 
@@ -180,6 +229,17 @@ class NgramsModel:
             - ml:     return maximum likelihood (un-smoothed probabilities)
             - logml:  idem with log values
 
+        @return list of n-gram probabilities.
+        Example:
+            >>> probas = probabilities("logml")
+            >>> for t in probas[0]:
+            >>>      print t
+            ('SENT_END', -1.066946789630613, None)
+            ('SENT_START', -99.0, None)
+            (u'a', -0.3679767852945944, None)
+            (u'b', -0.5440680443502756, None)
+            (u'c', -0.9420080530223132, None)
+            (u'd', -1.066946789630613, None)
 
         """
         method = str(method).strip().lower()
@@ -216,12 +276,12 @@ class NgramsModel:
                 token = " ".join(entry)
                 c = self.ngramcounts[n].get_count(token)
                 if token == self._ss and tolog is True:
-                    ngram.append((self._ss,-99))
+                    ngram.append((self._ss,-99,None))
                 else:
                     if tolog is False:
-                        ngram.append((token,c))
+                        ngram.append((token,c,None))
                     else:
-                        ngram.append((token,math.log(c,10.)))
+                        ngram.append((token,math.log(c,10.),None))
             models.append(ngram)
 
         return models
@@ -266,14 +326,14 @@ class NgramsModel:
                 # Adjust f if unigram(start-sent), then append
                 if token == self._ss:
                     if tolog is True:
-                        ngram.append((self._ss,-99.))
+                        ngram.append((self._ss,-99.,None))
                     else:
-                        ngram.append((self._ss,0.))
+                        ngram.append((self._ss,0.,None))
                 else:
                     if tolog is False:
-                        ngram.append((token,f))
+                        ngram.append((token,f,None))
                     else:
-                        ngram.append((token,math.log(f,10.)))
+                        ngram.append((token,math.log(f,10.),None))
 
             models.append(ngram)
 
@@ -291,22 +351,24 @@ class NgramCounter:
     @summary:      N-gram representation.
 
     """
-    def __init__(self, n=1):
+    def __init__(self, n=1, wordslist=None):
         """
         Constructor.
 
         @param n (int) n-gram order, between 1 and MAX_ORDER.
+        @param wordslist (WordsList) a list of accepted tokens.
 
         """
         n = int(n)
         if n < 1:
             raise ValueError('Expected order between 1 and %d. Got: %d.'%(MAX_ORDER,n))
         self._n      = n   # n-gram order to count
-        self._nsent  = 0   # number of sentences
-        self._ncount = 0   # number of observed n-grams
         self._ss     = START_SENT_SYMBOL
         self._es     = END_SENT_SYMBOL
         self._datacounts = collections.defaultdict(lambda: None)
+        self._wordslist = wordslist
+        self._nsent  = 0   # number of sentences (estimated)
+        self._ncount = 0   # number of observed n-grams (estimated)
 
     # -----------------------------------------------------------------------
 
@@ -386,10 +448,7 @@ class NgramCounter:
 
         """
         # get the list of observed tokens
-        symbols = []
-        symbols.append( self._ss )
-        symbols.extend( sentence.split() )
-        symbols.append( self._es )
+        symbols = self._sentence_to_tokens(sentence)
 
         # get a list of ngrams from a list of tokens.
         ngrams = zip(*[symbols[i:] for i in range(self._n)])
@@ -407,5 +466,50 @@ class NgramCounter:
         self._ncount = self._ncount + len(ngrams) - 1
         # notice that we don't add count of sent-start,
         # but we add it for sent-end
+
+    # -----------------------------------------------------------------------
+
+    def shave(self, value):
+        """
+        Remove data if count is lower than the given value.
+
+        """
+        # we can't delete an item while iterating the dict.
+        # so... 2 steps: we store keys to delete, then we pop them!
+        topop = []
+        for k,c in self._datacounts.iteritems():
+            if k[0] == self._ss or k[0] == self._es:
+                continue
+            if c < value:
+                topop.append(k)
+        for k in topop:
+            self._datacounts.pop(k)
+
+    # -----------------------------------------------------------------------
+    # Private
+    # -----------------------------------------------------------------------
+
+    def _sentence_to_tokens(self, sentence):
+        """
+        Return the (ordered) list of tokens of the given sentence.
+
+        @param sentence (str - IN)
+        @return list of str
+
+        """
+        tokens = []
+        tokens.append( self._ss )
+
+        if self._wordslist is None:
+            tokens.extend( sentence.split() )
+        else:
+            for token in sentence.split():
+                if self._wordslist.is_in(token):
+                    tokens.append(token)
+                else:
+                    tokens.append(UNKSTAMP)
+
+        tokens.append( self._es )
+        return tokens
 
     # -----------------------------------------------------------------------
