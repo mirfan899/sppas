@@ -65,6 +65,7 @@ ICONS_PATH     = os.path.join( BASE_PATH, "etc", "icons" )
 TIPS_ICON_PATH = os.path.join( BASE_PATH, "etc", "tips")
 TIPS_FILE      = os.path.join( BASE_PATH, "etc", "tips","tips.txt")
 SETTINGS_FILE  = os.path.join( BASE_PATH, "etc", "settings.dump")
+JULIUS_CONFIG  = os.path.join( BASE_PATH, "etc", "julius-fa.conf")
 
 
 # ---------------------------------------------------------------------------

@@ -44,6 +44,7 @@ from subprocess import Popen, PIPE, STDOUT
 from basealigner import BaseAligner
 
 from sp_glob import encoding
+from sp_glob import JULIUS_CONFIG
 
 # ----------------------------------------------------------------------------
 
@@ -151,27 +152,34 @@ class JuliusAligner( BaseAligner ):
         hmmdefs  = os.path.join(self._model, "hmmdefs")
         config   = os.path.join(self._model, "config")
 
-        # Create the command
+        # ... about the command
         command = 'echo '
         command += inputwav
-        command += ' | julius -input file -h '
+        command += ' | julius '
 
-        # its parameters
-        command += '"' + hmmdefs.replace('"', '\\"') + '"'
-        command += ' -gram '
-        command += '"' + basename.replace('"', '\\"') + '"'
+        # ... about the file to align
+        command += ' -dfa "' + basename.replace('"', '\\"') + '.dfa"'
+        command += ' -v "'   + basename.replace('"', '\\"') + '.dict"'
+
+        # ... about the acoustic model
+        command += ' -h "' + hmmdefs.replace('"', '\\"') + '"'
         if os.path.isfile(tiedlist):
             command += ' -hlist '
             command += '"' + tiedlist.replace('"', '\\"') + '"'
-        command += ' -palign -multipath -penalty1 5.0 -penalty2 20.0 -iwcd1 max -gprune safe -m 10000 -b2 1000 -sb 1000.0 -smpFreq 16000'
-        if self._infersp is True:
-            command += ' -spmodel "sp" -iwsp -iwsppenalty -70.0'
-        # By David Yeung, force Julius to use configuration file of HTK
         if os.path.isfile(config):
+            # By David Yeung, force Julius to use configuration file of HTK
             command += ' -htkconf '
             command += '"' + config.replace('"', '\\"') + '"'
 
-        # the output of the command
+        # ... about options
+        if self._infersp is True:
+            # inter-word short pause = on (append "sp" for each word tail)
+            command += ' -iwsp'
+
+        # ... about the recognizer parameters
+        command += " -C "+JULIUS_CONFIG
+
+        # ... about the output of the command
         command += ' > '
         command += '"' + outputalign.replace('"', '\\"') + '"'
 
