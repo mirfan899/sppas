@@ -692,7 +692,7 @@ class DictTok:
 
         strres = rutils.ToStrip(strres)
         if len(strres)==0:
-            return "#"   # or "dummy" ???
+            return ""  # Nothing valid!
 
         return strres.replace(u" ", self.delimiter)
 

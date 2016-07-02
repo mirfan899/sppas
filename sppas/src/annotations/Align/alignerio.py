@@ -55,6 +55,8 @@ from annotationdata.label.label    import Label
 from annotationdata.label.text     import Text
 from sp_glob import encoding
 
+from resources.rutils import ToStrip
+
 # ----------------------------------------------------------------------------
 
 class AlignerIO( Transcription ):
@@ -62,12 +64,16 @@ class AlignerIO( Transcription ):
     Read/Write time-aligned files.
 
     """
+    # List of file extensions this class is able to read and/or write.
+    EXTENSIONS = [ 'palign', 'mlf' ]
+
+    # ------------------------------------------------------------------------
 
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
-        Creates a new Aligner IO instance.
+        Creates a new AlignerIO instance.
 
-        @param alignerid (string) name of the aligner
+        @param name (string) name of the aligner
 
         """
         Transcription.__init__(self, name, mintime, maxtime)
@@ -82,38 +88,30 @@ class AlignerIO( Transcription ):
         @raise IOError
 
         """
-        try:
-            fp = codecs.open(filename, 'r', encoding)
-        except IOError,e:
-            raise IOError("Input IPUs read list error: " + str(e) + "\n")
+        with codecs.open(filename, 'r', encoding) as fp:
+            lines = fp.readlines()
 
         _units = []
-        # Each line corresponds to an inter-pausal unit,
+        # Each line corresponds to a track,
         # with a couple 'start end' of float values.
-        for line in fp:
-            line = self.__clean(line)
+        for line in lines:
+            line = ToStrip(line)
             _tab = line.split(" ")
             if len(_tab)>=2:
                 _units.append( (float(_tab[0]),float(_tab[1])) )
             elif len(_tab)==1:
                 # last line indicates the duration of the wav file.
                 _units.append( (float(_tab[0]),0.) )
-        fp.close()
 
         return _units
 
     # ------------------------------------------------------------------
 
-    def read(self, dirname, listfilename, mapping, expend=True, extend=False, tokens=True):
+    def read(self, dirname, listfilename, mapping, tokens=True):
         """
         Read a set of alignment files and set it as a tier in a transcription.
 
         @param dirname is the input directory containing a set of unit
-        @param expend last phoneme to the unit duration
-        @param extend only concerns the silence at the end of the file
-
-        @raise IOError
-        @raise Exception
 
         """
         radius = 0.005
@@ -122,7 +120,7 @@ class AlignerIO( Transcription ):
         if not os.path.exists( dirname ):
             raise IOError("Missing directory: " + dirname+".\n")
 
-        # Create 3 new tiers
+        # Create new tiers
         itemp = self.NewTier("PhonAlign")
         if tokens is True:
             itemw = self.NewTier("TokensAlign")
@@ -149,115 +147,72 @@ class AlignerIO( Transcription ):
         # Explore each unit to get alignments
         wavend,unitend = units[ntracks] # Get the wav duration
         track = 1
+        loc_s = 0.
         loc_e = 0.
         while track <= ntracks:
 
             # Get real start and end time values of this unit.
             unitstart,unitend = units[(track-1)]
 
-            if track == 1:
-                # A silence to start?
-                if unitstart > 0.:
-                    time = TimeInterval(TimePoint(0.,0.), TimePoint(unitstart,radius))
-                    annotation = Annotation(time, Label("#"))
-                    itemp.Append(annotation)
-                    if tokens is True:
-                        itemw.Append(annotation.Copy())
-
-            else:
-                if loc_e < unitstart:
-                    # An empty interval between 2 units...
-                    time = TimeInterval(TimePoint(loc_e,radius), TimePoint(unitstart,radius))
-                    annotation = Annotation(time, Label("#"))
-                    itemp.Append(annotation)
-                    if tokens is True:
-                        itemw.Append(annotation.Copy())
+            # Silences were not time-aligned. We add back them now.
+            if loc_e < unitstart:
+                # An empty interval between 2 units...
+                time = TimeInterval(TimePoint(loc_e,radius), TimePoint(unitstart,radius))
+                annotation = Annotation(time, Label("#"))
+                itemp.Append(annotation)
+                if tokens is True:
+                    itemw.Append(annotation.Copy())
 
             # Get phoneme alignments and put them into the tier
 
             try:
-                trackname = os.path.join(dirname, "track_%06d.palign"%track)
-                if not os.path.isfile(trackname):
-                    trackname = os.path.join(dirname, "track_%06d.mlf"%track)
-                    (_phonannots,_wordannots) = self.read_mlf( trackname )
-                else:
-                    (_phonannots,_wordannots) = self.read_palign( trackname )
+                basename = os.path.join(dirname, "track_%06d"%track)
+                (_phonannots,_wordannots) = self.read_aligned(basename)
 
-                # Map-back the phoneset for phonemes
+                # Map-back the phone set
                 mapping.set_keepmiss( True )
                 mapping.set_reverse( False )
-                i = 0
-                for t in _phonannots:
-                    _phonannots[i] = (t[0], t[1], mapping.map_entry(t[2]), t[3])
-                    i = i+1
 
-                # Map-back the phoneset for tokens too
-                i = 0
-                for t in _wordannots:
-                    _wordannots[i] = (t[0], t[1], mapping.map(t[2]))
-                    i = i+1
+                for i,p in enumerate(_phonannots):
+                    (loc_s,loc_e,label,score) = p
+                    label = mapping.map_entry(label)
 
-                # phonemes
-                idx = 1
-                for loc_s,loc_e,label,score in _phonannots:
-
-                    # Assign real end value
+                    # shift to the real value, from the start of the unit
                     loc_s += unitstart
-                    # last phoneme... extend to the wav duration?
-                    if idx==len(_phonannots) and track==ntracks and extend is True:
-                        loc_e = wavend
-                    # last unit phoneme... extend to the unit duration?
-                    elif idx==len(_phonannots) and expend is True:
-                        loc_e = unitend
-                    else:
-                        loc_e += unitstart
+                    loc_e += unitstart
 
+                    # force last phoneme to reach to the end of the unit
+                    if i == (len(_phonannots)-1):
+                        loc_e = unitend
+
+                    # append phoneme in the tier
                     annotation = Annotation(TimeInterval(TimePoint(loc_s,radius), TimePoint(loc_e,radius)), Label(Text(label,score)))
                     itemp.Append(annotation)
-                    idx += 1
+
             except Exception as e:
+                #import traceback
+                #print(traceback.format_exc())
                 if unitstart < unitend:
                     annotation = Annotation(TimeInterval(TimePoint(unitstart,radius), TimePoint(unitend,radius)), Label(""))
                     itemp.Append(annotation)
-                    #print " *** exception Append in phonemes:",annotation
 
-            # Get phoneme alignments and put them into the TOKEN'S tier
-
+            # Tokens
             if tokens is True:
                 try:
-                    # for tokens
-                    transname = os.path.join(dirname, "track_%06d.trans"%track)
-                    f = codecs.open(transname, 'r', encoding)
-                    readtokens = f.readline()
-                    # Remove multiple spaces
-                    f.close()
-                    readtokens = re.sub("[ ]+", " ", readtokens)
-                    tokenlist = readtokens.strip().split(" ")
 
-                    idx = 1
-                    for loc_s,loc_e,label in _wordannots:
+                    for i,t in enumerate(_wordannots):
+                        (loc_s,loc_e,label,score) = t
                         loc_s += unitstart
-                        # last phontoken... extend to the wav duration?
-                        if idx==len(_wordannots) and track==ntracks and extend is True:
-                            loc_e = wavend
-                        # last phon-word... extend to the unit duration?
-                        elif idx==len(_wordannots) and expend==True:
+                        loc_e += unitstart
+                        if i==(len(_wordannots)-1):
                             loc_e = unitend
-                        else:
-                            loc_e += unitstart
 
-                        if len(tokenlist) == len(_wordannots):
-                            annotationt = Annotation(TimeInterval(TimePoint(loc_s,radius), TimePoint(loc_e,radius)), Label(label))
-                            #print "Append in tokenst 3:",annotationt
-                            annotationw = Annotation(TimeInterval(TimePoint(loc_s,radius), TimePoint(loc_e,radius)), Label(tokenlist[idx-1]))
-                            #print "Append in tokensw 3:",annotationw
-                            itemw.Append(annotationw)
+                        annotationw = Annotation(TimeInterval(TimePoint(loc_s,radius), TimePoint(loc_e,radius)), Label(label,score))
+                        itemw.Append(annotationw)
 
-                        idx = idx + 1
                 except Exception:
-                    if unitstart<unitend:
+                    if unitstart < unitend:
                         itemw.Append(Annotation(TimeInterval(TimePoint(unitstart,radius), TimePoint(unitend,radius))))
-                        #print " *** exception Append in tokennw and tokenst:",Annotation(TimeInterval(TimePoint(unitstart,radius), TimePoint(unitend,radius)))
 
             track += 1
         # End while
@@ -291,72 +246,114 @@ class AlignerIO( Transcription ):
 
     # ------------------------------------------------------------------
 
+    def read_aligned(self, basename):
+        """
+        Find an aligned file and read it.
+
+        @param basename (str - IN) Track file name without extension
+        @return Two lists of tuples with phones and words
+
+        """
+        for ext in AlignerIO.EXTENSIONS:
+            trackname = basename + "." + ext
+            if os.path.isfile(trackname) is True:
+                if ext == "palign":
+                    return self.read_palign( trackname )
+                else:
+                    return self.read_mlf( trackname )
+
+        raise IOError('No time-aligned file for %s'%basename)
+
+    # ------------------------------------------------------------------
+
     def read_palign(self, filename):
         """
-        Read an alignment file.
+        Read an alignment file in the standard format of Julius CSR engine.
 
-        @param filename: is the input file (a Julius output).
-        @raise IOError:
-        @return: 2 lists of tuples:
+        @param filename (str - IN) The input file name.
+        @return Two lists of tuples:
             - (start-time end-time phoneme score)
-            - (start-time end-time word)
+            - (start-time end-time word score)
 
         """
         _phonalign = []
         _wordalign = []
-        try:
-            fp = codecs.open(filename, 'r', encoding)
-        except IOError,e:
-            raise IOError("Input error with file " + filename + ": " + str(e) + "\n")
 
-        # Each line is either a new annotation or nothing interesting!
         phonidx = -1     # phoneme index
         loc_s = 0.       # phoneme start time
         loc_e = 0.       # phoneme end time
         phonlist = []
-        for line in fp:
-            if line.find("=== begin forced alignment ===")>-1:
+        wordseq  = []
+        scores   = []
+
+        with codecs.open(filename, 'r', encoding) as fp:
+            lines = fp.readlines()
+
+        for line in lines:
+            # Each line is either a new annotation or nothing interesting!
+            line = ToStrip(line)
+
+            if line.startswith("=== begin forced alignment ==="):
                 phonidx = 0
-            elif line.find('=== end forced alignment ===')>-1:
+
+            elif line.startswith("=== end forced alignment ==="):
                 phonidx = -1
-            elif line.find("phseq1:")>-1:
+
+            elif line.startswith("phseq1:"):
                 line = line[7:]
+                line = ToStrip(line)
+
                 wordseq = line.split('|')
                 # get indexes of each word
                 wordlist = []
                 _idx = -1
-                for i in range(len(wordseq)):
-                    _wrdphseq = wordseq[i].strip().split(" ")
+                for w in wordseq:
+                    _wrdphseq = w.strip().split()
                     _idx += len(_wrdphseq)
                     wordlist.append( _idx )
                 # get the list of phonemes (without word segmentation)
                 line = line.replace('|','')
-                line = self.__clean(line)
-                phonlist = line.split(' ')
+                line = ToStrip(line)
+                phonlist = line.split()
+
+            elif line.startswith('cmscore1:'):
+                line = line[9:]
+                # confidence score of the pronunciation of each token
+                scores = [float(s) for s in line.split()]
+                if len(scores)==0:
+                    scores = [0]
+
+            elif line.startswith('sentence1:'):
+                line = line[10:]
+                # each token
+                tokens = line.split()
+                if len(tokens)==0:
+                    tokens = [""]
+
             elif line.startswith('[') and phonidx>-1:
                 # New phonemes
                 line = line.replace("[","")
                 line = line.replace("]","")
-                line = self.__clean(line)
+                line = ToStrip(line)
                 tab = line.split(" ")
                 # Column 1: begin time
                 # Column 2: end time
-                # Column 3: score
+                # Column 3: score of the segmentation (log proba)
                 # Column 4: triphone used
                 # ATTENTION: Julius indicates time in centiseconds!
                 loc_s = (float( tab[0] ) / 100.)
                 loc_e = (float( tab[1] ) / 100.)
                 if len(tab)>3:
-                    _phonalign.append( (loc_s, loc_e, tab[3], tab[2]) )
+                    _phonalign.append( (loc_s, loc_e, phonlist[phonidx], tab[2]) )
                 else:
                     _phonalign.append( (loc_s, loc_e, "", tab[2]) )
-
-        fp.close()
+                phonidx = phonidx+1
 
         # Put real phoneme and adjust time values
-        wordidx = 0      # word index
-        wordloc_s  = 0.  # word start time
-        _modifiedphonalign = [] # the real phoneme (not the triphone)
+        # Create wordalign
+        wordidx = 0     # word index
+        wordloc_s = 0.  # word start time
+        _modifiedphonalign = [] # the real phoneme segmentation... we hack...
         loc_s = 0
         loc_e = 0
         nextloc_s = 0
@@ -368,26 +365,19 @@ class AlignerIO( Transcription ):
                 nextloc_s = 0.0
             # Attention... loc_s must be equal to the last loc_e
             if loc_e < nextloc_s:
-                # Since SPPAS 1.4.4, I was setting next loc_s to the current loc_e
-                # I tried to the average between both values, but did not got better results:.
-                #loc_e = ( nextloc_s + loc_e ) / 2.0
-                # For READ SPEECH, I got better results if I set the current loc_e as the next loc_s:
                 loc_e = nextloc_s
-                # For CONVERSATIONAL SPPECG, the better is::
-                #loc_e = nextloc_s + ( ( nextloc_s - loc_e) / 2.0 )
-
-            _modifiedphonalign.append( (loc_s, loc_e, phonlist[phonidx], _phonalign[phonidx][3]) )
+            _modifiedphonalign.append( (loc_s, loc_e, _phonalign[phonidx][2], _phonalign[phonidx][3]) )
 
             loc_s = loc_e
             # add also the word?
             if phonidx == wordlist[wordidx]:
-                _wordalign.append( (wordloc_s, loc_e, wordseq[wordidx].strip().replace(" ","-")) )
+                _wordalign.append( (wordloc_s, loc_e, tokens[wordidx],scores[wordidx]) )
                 wordidx = wordidx + 1
                 wordloc_s = loc_e
 
-        # last word
+        # last word, or the only entry in case of empty interval...
         if len(wordseq)-1 == wordidx:
-            _wordalign.append( (wordloc_s, loc_e, wordseq[wordidx].strip().replace(" ","-")) )
+            _wordalign.append( (wordloc_s, loc_e, tokens[wordidx-1],scores[wordidx-1]))
 
         return (_modifiedphonalign,_wordalign)
 
@@ -400,13 +390,12 @@ class AlignerIO( Transcription ):
         @param filename: is the input file (a HVite mlf output file).
         @raise IOError
         @return: 2 lists of tuples:
-            - (start-time end-time phoneme)
-            - (start-time end-time word)
+            - (start-time end-time phoneme -30)
+            - (start-time end-time word 0)
 
         """
         phon = []
         word = []
-        phontok = []
         samplerate=10e6
 
         with codecs.open(filename, 'r', encoding) as source:
@@ -435,8 +424,7 @@ class AlignerIO( Transcription ):
                                 phon.append( (pmin, pmax, line[2], -30.) )
                             if wmrk:
                                 wmrkp = wmrkp[:-1]
-                                word.append( ( wsrt, wend, wmrk) )
-                                phontok.append( ( wsrt, wend, wmrkp) )
+                                word.append( ( wsrt, wend, wmrk, 0) )
                             wmrkp = line[2] + '-'
                             wmrk = line[4]
                             wsrt = pmin
@@ -453,8 +441,7 @@ class AlignerIO( Transcription ):
                             if line[2] == 'sp' and pmin != pmax:
                                 if wmrk:
                                     wmrkp = wmrkp[:-1]
-                                    word.append( (wsrt, wend, wmrk) )
-                                    phontok.append( (wsrt, wend, wmrkp) )
+                                    word.append( (wsrt, wend, wmrk, 0) )
                                 wmrk = line[2]
                                 wmrkp = ''
                                 wsrt = pmin
@@ -465,8 +452,7 @@ class AlignerIO( Transcription ):
 
                         else: # it's a period
                             wmrkp = wmrkp[:-1]
-                            word.append( (wsrt, wend - 0.005, wmrk) )
-                            phontok.append( (wsrt, wend - 0.005, wmrkp) )
+                            word.append( (wsrt, wend - 0.005, wmrk, 0) )
                             break
                 else:
                     break
@@ -475,31 +461,35 @@ class AlignerIO( Transcription ):
         # at the beginning and at the end of the IPU (if any, remove them).
         if len(word)>0:
             if "SENT" in word[0][2]:
-                newword = (phontok[0][0], phontok[1][1], phontok[1][2])
+                newword = (word[0][0], word[1][1], word[1][2], word[1][3])
                 newphon = (phon[0][0], phon[1][1], phon[1][2], phon[1][3])
-                phontok.pop(0)
+                word.pop(0)
                 phon.pop(0)
-                phontok.pop(0)
+                word.pop(0)
                 phon.pop(0)
-                phontok.insert(0,newword)
+                word.insert(0,newword)
                 phon.insert(0,newphon)
             if "SENT" in word[-1][2]:
-                phontok.pop()
+                word.pop()
                 phon.pop()
 
-        return (phon,phontok)
+        return (phon,word)
 
     # ------------------------------------------------------------------
 
-    def write_palign(self, tokenslist, alignments, outputfilename):
+    def write_palign(self, phoneslist, tokenslist, alignments, outputfilename):
         """
         Write an alignment output file.
 
-        @param tokenslist (list) List with the phonetization of each token
+        @param phoneslist (list) List with the phonetization of each token
+        @param tokenslist (list) List with each token
         @param alignments (list) List of tuples: (start-time end-time phoneme)
         @param outputfilename (str) The output file name (a Julius-like output).
 
         """
+        if len(tokenslist) != len(phoneslist):
+            tokenslist = ["w_"+str(i+1) for i in range(len(phoneslist))]
+
         with codecs.open(outputfilename, 'w', encoding) as fp:
 
             fp.write("----------------------- System Information begin ---------------------\n")
@@ -508,34 +498,32 @@ class AlignerIO( Transcription ):
             fp.write("\n")
             fp.write("----------------------- System Information end -----------------------\n")
 
-            fp.write("### Recognition: 1st pass\n")
+            fp.write("\n### Recognition: 1st pass\n")
+
+            fp.write("pass1_best: ")
+            fp.write("%s\n"%" ".join(tokenslist))
 
             fp.write("pass1_best_wordseq: ")
-            for i in range(len(tokenslist)):
-                fp.write(str(i)+" ")
-            fp.write("\n")
+            fp.write("%s\n"%" ".join(tokenslist))
 
             fp.write("pass1_best_phonemeseq: ")
-            for i in range(len(tokenslist)-1):
-                fp.write(str(tokenslist[i])+" | ")
-            if len(tokenslist) > 0:
-                fp.write(str(tokenslist[len(tokenslist)-1]))
-            fp.write("\n")
+            fp.write("%s\n"%" | ".join(phoneslist))
 
-            fp.write("### Recognition: 2nd pass\n")
+            fp.write("\n### Recognition: 2nd pass\n")
 
             fp.write("ALIGN: === phoneme alignment begin ===\n")
+
+            fp.write("sentence1: ")
+            fp.write("%s\n"%" ".join(tokenslist))
+
             fp.write("wseq1: ")
-            for i in range(len(tokenslist)):
-                fp.write(str(i)+" ")
-            fp.write("\n")
+            fp.write("%s\n"%" ".join(tokenslist))
 
             fp.write("phseq1: ")
-            for i in range(len(tokenslist)-1):
-                fp.write(str(tokenslist[i])+" | ")
-            if len(tokenslist) > 0:
-                fp.write(str(tokenslist[len(tokenslist)-1]))
-            fp.write("\n")
+            fp.write("%s\n"%" | ".join(phoneslist))
+
+            fp.write("cmscore1: ")
+            fp.write("%s\n"%("0.000 "*len(phoneslist)))
 
             fp.write("=== begin forced alignment ===\n")
             fp.write("-- phoneme alignment --\n")
@@ -548,12 +536,5 @@ class AlignerIO( Transcription ):
             fp.write("=== end forced alignment ===\n")
 
             fp.close()
-
-    # ------------------------------------------------------------------
-
-    def __clean(self,sstr):
-        __s = sstr.strip()
-        __s = re.sub("\s+" , " ", __s)
-        return __s
 
     # ------------------------------------------------------------------

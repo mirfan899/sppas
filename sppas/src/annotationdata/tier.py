@@ -838,13 +838,13 @@ class Tier( MetaObject ):
         and return it. If no index is specified, Pop() removes
         and returns the last annotation in the tier.
 
-        @param i: (int)
+        @param i (int) Index of the annotation to remove.
 
         """
         try:
             return self.__ann.pop(i)
         except IndexError:
-            raise IndexError("Pop from empty tier.")
+            raise IndexError("Can not pop annotation %d. Empty tier."%i)
 
     # -----------------------------------------------------------------------
 

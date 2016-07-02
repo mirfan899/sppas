@@ -51,6 +51,8 @@ from annotationdata.transcription import Transcription
 import os
 import codecs
 
+from sp_glob import encoding
+
 # ----------------------------------------------------------------------------
 
 class AudioSilencePresenter( object ):
@@ -70,7 +72,6 @@ class AudioSilencePresenter( object ):
 
 
     def __write_track(self, tracktxtname, trackcontent):
-        encoding='utf-8'
         with codecs.open(tracktxtname,"w", encoding) as fp:
             fp.write(trackcontent)
 

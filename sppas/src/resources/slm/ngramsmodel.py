@@ -197,6 +197,19 @@ class NgramsModel:
 
     # -----------------------------------------------------------------------
 
+    def append_sentences(self, sentences):
+        """
+        Append a list of sentences in data counts.
+
+        @param sentence (list - IN) sentences with tokens separated by whitespace.
+
+        """
+        for ngramcounter in self.ngramcounts:
+            for sentence in sentences:
+                ngramcounter.append_sentence( sentence )
+
+    # -----------------------------------------------------------------------
+
     def set_min_count(self, value):
         """
         Fix a minimum count values, applied only to the max order.

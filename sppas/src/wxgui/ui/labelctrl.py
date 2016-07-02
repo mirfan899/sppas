@@ -74,7 +74,6 @@ class LabelCtrl( wx.Window ):
     LabelCtrl implements a static text label.
 
     """
-
     def __init__(self, parent, id=-1,
                  pos=wx.DefaultPosition,
                  size=wx.DefaultSize,
@@ -411,13 +410,13 @@ class LabelCtrl( wx.Window ):
         """ Set a tooltip string with the label. """
 
         if self._label is not None:
-            if self._label.GetSize() > 1:
-                alltexts = self._label.GetLabels()
-                s = ""
-                for t in alltexts:
-                    s += str(t.Score) + " - " + t.Value + "\n"
-                return s[:-1]
-            return self._label.GetValue()
+            #if self._label.GetSize() > 1:
+            alltexts = self._label.GetLabels()
+            s = ""
+            for t in alltexts:
+                s += t.Value + " (score="+ str(t.Score) + ")\n"
+            return s[:-1]
+            #return self._label.GetValue()
         return ""
 
     #------------------------------------------------------------------------

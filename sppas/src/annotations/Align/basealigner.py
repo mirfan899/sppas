@@ -72,8 +72,11 @@ class BaseAligner:
 
         self._model    = modelfilename
         self._mapping  = mapping
+
         self._infersp  = False
-        self._outext   = ""
+        self._outext   = "" # output file name extension
+        self._phones   = "" # string of the phonemes to time-align
+        self._tokens   = "" # string of the tokens to time-align
 
     # -----------------------------------------------------------------------
 
@@ -143,25 +146,35 @@ class BaseAligner:
 
     # ------------------------------------------------------------------------
 
-    def gen_dependencies(self, phones, grammarname, dictname):
+    def set_phones(self, phones):
         """
-        Generate the files the aligner will need (grammar, dictionary).
+        Fix the pronunciations of each token.
 
-        @param phones (str - IN) the phonetization to align (spaces separate tokens, pipes separate variants, minus separate phones)
-        @param grammarname (str - OUT) the file name of the grammar
-        @param dictname (str - OUT) the dictionary file name
+        @param phones (str)
 
         """
-        pass
+        self._phones = phones
+
+    # ------------------------------------------------------------------------
+
+    def set_tokens(self, tokens):
+        """
+        Fix the tokens.
+
+        @param tokens (str)
+
+        """
+        self._tokens = tokens
 
     # -----------------------------------------------------------------------
 
-    def run_alignment(self, inputwav, basename, outputalign):
+    def run_alignment(self, inputwav, outputalign):
         """
         Execute an external program to perform forced-alignment.
+        It is expected that the alignment is performed on a file with a size
+        less or equal to a sentence (sentence/IPUs/segment/utterance).
 
         @param inputwav (str - IN) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
-        @param basename (str - IN) the base name of the grammar file and of the dictionary file
         @param outputalign (str - OUT) the output file name
 
         @return (str) A message of the external program.

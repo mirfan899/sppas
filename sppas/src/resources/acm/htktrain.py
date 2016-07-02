@@ -1223,8 +1223,6 @@ class HTKModelTrainer( object ):
             phonetizer.set_usestdtokens( False )
 
             aligner = sppasAlign( self.curdir )
-            aligner.set_extend( False )
-            aligner.set_expend( False )
             aligner.set_infersp( infersp )
 
             #aligner.set_aligner( "hvite" )

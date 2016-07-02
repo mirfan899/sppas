@@ -46,6 +46,11 @@ from basealigner import BaseAligner
 from sp_glob import encoding
 from sp_glob import JULIUS_CONFIG
 
+from resources.rutils import ToStrip
+from resources.slm.ngramsmodel import NgramsModel
+from resources.slm.arpaio      import ArpaIO
+from resources.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
+
 # ----------------------------------------------------------------------------
 
 class JuliusAligner( BaseAligner ):
@@ -95,38 +100,83 @@ class JuliusAligner( BaseAligner ):
         """
         BaseAligner.__init__(self, modelfilename, mapping)
         self._outext = "palign"
+        self._mode   = "grammar"
 
     # ------------------------------------------------------------------------
 
-    def gen_dependencies(self, phones, grammarname, dictname):
+    def gen_slm_dependencies(self, basename):
         """
-        Generate the dependencies (grammar, dictionary) for julius.
+        Generate the dependencies (slm, dictionary) for julius.
 
-        @param phones (str) the phonetization to align (spaces separate tokens, pipes separate variants, minus separate phones)
-        @param grammarname (str) the file name of the grammar (output)
-        @param dictname (str) the dictionary file name (output)
+        @param basename (str - IN) the base name of the slm file and of the dictionary file
 
         """
+        dictname = basename + ".dict"
+        slmname  = basename + ".arpa"
+
         # Map phonemes from SAMPA to the expected one.
         self._mapping.set_keepmiss(True)
         self._mapping.set_reverse( True )
-        phones = self._mapping.map(phones)
+
+        phones = self._mapping.map(self._phones)
+        phoneslist = ToStrip(phones).split()
+        tokenslist = ToStrip(self._tokens).split()
+        if len(tokenslist) != len(phoneslist):
+            tokenslist = [ "w_"+str(i) for i in range(len(phoneslist)) ]
+
+        # Write the dictionary
+        with codecs.open(dictname, 'w', encoding) as fdict:
+            fdict.write( START_SENT_SYMBOL+" [] sil\n" )
+            fdict.write( END_SENT_SYMBOL+" [] sil\n" )
+            for token,pron in zip(tokenslist,phoneslist):
+                for variant in pron.split("|"):
+                    fdict.write( token )
+                    fdict.write("["+token+"] ")
+                    fdict.write(variant.replace("-",' ')+"\n" )
+
+        # Write the SLM
+        model = NgramsModel(3)
+        model.append_sentences( [" ".join(self._tokens)] )
+        probas = model.probabilities( method="raw" )
+        arpaio = ArpaIO()
+        arpaio.set( probas )
+        arpaio.save( slmname )
+
+    # ------------------------------------------------------------------------
+
+    def gen_grammar_dependencies(self, basename):
+        """
+        Generate the dependencies (grammar, dictionary) for julius.
+
+        @param basename (str - IN) the base name of the grammar file and of the dictionary file
+
+        """
+        dictname    = basename + ".dict"
+        grammarname = basename + ".dfa"
+
+        # Map phonemes from SAMPA to the expected one.
+        self._mapping.set_keepmiss(True)
+        self._mapping.set_reverse( True )
+
+        phones = self._mapping.map(self._phones)
+        phoneslist = ToStrip(phones).split()
+        tokenslist = ToStrip(self._tokens).split()
+        if len(tokenslist) != len(phoneslist):
+            tokenslist = [ "w_"+str(i) for i in range(len(phoneslist)) ]
 
         with codecs.open(grammarname, 'w', encoding) as fdfa,\
                 codecs.open(dictname, 'w', encoding) as fdict:
 
-            tokenslist = phones.strip().split(" ")
             tokenidx = 0
-            nbtokens = (len(tokenslist)-1)
+            nbtokens = (len(phoneslist)-1)
 
-            for pron in tokenslist:
+            for token,pron in zip(tokenslist,phoneslist):
 
                 # dictionary:
                 for variant in pron.split("|"):
-
-                    fdict.write( str(tokenidx)+' ' )
-                    fdict.write("[w_"+str(tokenidx)+"] ")
-                    fdict.write(variant.replace("-",' ')+"\n" )
+                    fdict.write( str(tokenidx) )
+                    fdict.write( " ["+token+"] ")
+                    fdict.write( variant.replace("-"," ")+"\n" )
 
                 # grammar:
                 if tokenidx == 0:
@@ -160,8 +210,22 @@ class JuliusAligner( BaseAligner ):
         command += inputwav
         command += ' | julius '
 
-        # ... about the file to align
-        command += ' -dfa "' + basename.replace('"', '\\"') + '.dfa"'
+        # ... about the parameters
+        command += " -input file -gprune safe -iwcd1 max -smpFreq 16000"
+        command += ' -multipath -iwsppenalty -70.0 -spmodel "sp"'
+        command += " -b 1000 -b2 1000 -sb 1000.0 -m 10000 "
+
+        # ... about the decoding mode: grammar or slm
+        if self._mode=="grammar":
+            command += " -looktrellis "
+            command += " -palign"
+            command += ' -dfa "' + basename.replace('"', '\\"') + '.dfa"'
+        else:
+            command += " -silhead "+START_SENT_SYMBOL
+            command += " -siltail "+END_SENT_SYMBOL
+            command += " -walign "
+            command += ' -nlr "' + basename.replace('"', '\\"') + '.arpa"'
+
         command += ' -v "'   + basename.replace('"', '\\"') + '.dict"'
 
         # ... about the acoustic model
@@ -178,9 +242,6 @@ class JuliusAligner( BaseAligner ):
         if self._infersp is True:
             # inter-word short pause = on (append "sp" for each word tail)
             command += ' -iwsp'
-
-        # ... about the recognizer parameters
-        command += " -C "+JULIUS_CONFIG
 
         # ... about the output of the command
         command += ' > '
@@ -205,17 +266,22 @@ class JuliusAligner( BaseAligner ):
 
     # ------------------------------------------------------------------------
 
-    def run_alignment(self, inputwav, basename, outputalign):
+    def run_alignment(self, inputwav, outputalign):
         """
         Execute the external program `julius` to align.
 
         @param inputwav (str - IN) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
-        @param basename (str - IN) the base name of the grammar file and of the dictionary file
         @param outputalign (str - OUT) the output file name
 
         @return (str) A message of `julius`.
 
         """
+        basename = os.path.splitext(inputwav)[0]
+        if self._mode == "grammar":
+            self.gen_grammar_dependencies(basename)
+        else:
+            self.gen_slm_dependencies(basename)
+
         self.run_julius(inputwav, basename, outputalign)
         with codecs.open(outputalign, 'r', encoding) as f:
             lines = f.readlines()

@@ -172,9 +172,13 @@ def unfill_gaps(tier):
 
     """
     new_tier = tier.Copy()
-    for i,ann in enumerate(tier):
+    topop = []
+    for i,ann in enumerate(new_tier):
         if ann.GetLabel().IsEmpty():
-            new_tier.Pop(i)
+            topop.append(i)
+
+    for i in reversed(topop):
+        new_tier.Pop(i)
 
     return new_tier
 

@@ -41,6 +41,7 @@ import codecs
 
 from basealigner import BaseAligner
 from sp_glob import encoding
+from resources.rutils import ToStrip
 
 # ---------------------------------------------------------------------------
 
@@ -71,11 +72,10 @@ class HviteAligner( BaseAligner ):
 
     # -----------------------------------------------------------------------
 
-    def gen_dependencies(self, phones, grammarname, dictname):
+    def gen_dependencies(self, grammarname, dictname):
         """
         Generate the dependencies (grammar, dictionary) for HVite.
 
-        @param phones is the phonetization to align
         @param grammarname is the file name of the tokens
         @param dictname is the dictionary file name
 
@@ -83,7 +83,12 @@ class HviteAligner( BaseAligner ):
         # Map phonemes from SAMPA to the expected one.
         self._mapping.set_keepmiss(True)
         self._mapping.set_reverse(True)
-        phones = self._mapping.map(phones)
+
+        phones = self._mapping.map(self._phones)
+        phoneslist = ToStrip(phones).split()
+        tokenslist = ToStrip(self._tokens).split()
+        if len(tokenslist) != len(phoneslist):
+            tokenslist = [ "w_"+str(i) for i in range(len(phoneslist)) ]
 
         with codecs.open(grammarname, 'w', encoding) as flab,\
                 codecs.open(dictname, 'w', encoding) as fdict:
@@ -91,11 +96,7 @@ class HviteAligner( BaseAligner ):
             fdict.write( "SENT-END [] sil\n" )
             fdict.write( "SENT-START [] sil\n" )
 
-            tokenslist = phones.strip().split(" ")
-            tokenidx = 0
-            nbtokens = (len(tokenslist)-1)
-
-            for pron in tokenslist:
+            for token,pron in zip(tokenslist,phoneslist):
 
                 # dictionary:
                 for i,variant in enumerate(pron.split("|")):
@@ -103,28 +104,30 @@ class HviteAligner( BaseAligner ):
                     if self._infersp is True:
                         variant = variant + 'sp'
 
-                    fdict.write( "w_" + str(tokenidx))
+                    fdict.write( token )
                     if i==0:
                         fdict.write(' ')
                     else:
                         fdict.write("("+str(i+1)+") ")
-                    fdict.write("[w_"+str(tokenidx)+"] ")
+                    fdict.write("["+token+"] ")
                     fdict.write(variant.replace("-",' ')+"\n" )
 
-                flab.write( "w_" + str(tokenidx)+"\n")
-
-                tokenidx += 1
-                nbtokens -= 1
+                flab.write( token+"\n")
 
     # -----------------------------------------------------------------------
 
-    def run_hvite(self, inputwav, basename, outputalign):
+    def run_hvite(self, inputwav, outputalign):
         """
         Perform the speech segmentation.
 
         Call the system command `HVite`.
 
         """
+        basename = os.path.splitext(inputwav)[0]
+        dictname = basename + ".dict"
+        grammarname = basename + ".lab"
+        self.gen_dependencies(self._phones, grammarname, dictname)
+
         # Example of use with triphones:
         #
         # HVite -A -D -T 1 -l '*'  -a -b SENT-END -m
@@ -156,7 +159,7 @@ class HviteAligner( BaseAligner ):
         command += " -t 250.0 150.0 1000.0"
         command += ' -i "' + outputalign.replace('"', '\\"') + '"'
         command += ' -y lab'
-        command += ' "' + basename.replace('"', '\\"') + '"'
+        command += ' "' + dictname.replace('"', '\\"') + '"'
         command += ' "' + graph.replace('"', '\\"') + '"'
         command += ' ' + inputwav
 
@@ -177,18 +180,17 @@ class HviteAligner( BaseAligner ):
 
     # -----------------------------------------------------------------------
 
-    def run_alignment(self, inputwav, basename, outputalign):
+    def run_alignment(self, inputwav, outputalign):
         """
         Execute the external program `HVite` to align.
 
         @param inputwav (str - IN) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
-        @param basename (str - IN) the base name of the grammar file and of the dictionary file
         @param outputalign (str - OUT) the output file name
 
         @return (str) An empty string.
 
         """
-        self.run_hvite(inputwav, basename, outputalign)
+        self.run_hvite(inputwav, outputalign)
 
         if os.path.isfile(outputalign):
             with codecs.open(outputalign, 'r', encoding) as f:

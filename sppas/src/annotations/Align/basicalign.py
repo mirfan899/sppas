@@ -76,14 +76,12 @@ class BasicAligner( BaseAligner ):
 
     # -----------------------------------------------------------------------
 
-    def run_alignment(self, inputwav, basename, outputalign):
+    def run_alignment(self, inputwav, outputalign):
         """
         Perform the speech segmentation.
-
         Assign the same duration to each phoneme.
 
         @param inputwav (str or float) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits; or its duration
-        @param basename (str or None) the base name of the grammar file and of the dictionary file
         @param outputalign (str) the output file name
 
         @return Empty string.
@@ -98,20 +96,13 @@ class BasicAligner( BaseAligner ):
             except Exception:
                 duration = 0.
 
-        phones = ""
-        if basename is not None:
-            with codecs.open(basename, 'r', encoding) as fp:
-                # Get the phoneme sequence and Remove multiple spaces
-                phones = fp.readline()
-                phones = re.sub("[ ]+", " ", phones)
-
-        self.run_basic(duration, phones, outputalign)
+        self.run_basic(duration, outputalign)
 
         return ""
 
     # ------------------------------------------------------------------------
 
-    def run_basic(self, duration, phones, outputalign=None):
+    def run_basic(self, duration, outputalign=None):
         """
         Perform the speech segmentation.
 
@@ -126,31 +117,34 @@ class BasicAligner( BaseAligner ):
         """
         # Remove variants: Select the first-shorter pronunciation of each token
         phoneslist = []
-        tokenslist = phones.strip().split(" ")
-        selecttokenslist = []
+        phonetization = self._phones.strip().split(" ")
+        tokenization  = self._tokens.strip().split(" ")
+        selectphonetization = []
         delta = 0.
-        for pron in tokenslist:
+        for pron in phonetization:
             token = self.__select(pron)
-            phoneslist.extend( token.split() )
-            selecttokenslist.append( token.replace("-"," ") )
+            phoneslist.extend( token.split("-") )
+            selectphonetization.append( token.replace("-"," ") )
 
         # Estimate the duration of a phone (in centi-seconds)
         if len(phoneslist) > 0:
             delta = ( duration / float(len(phoneslist)) ) * 100.
 
         # Generate the result
-        if delta < 1. or len(selecttokenslist) == 0:
-            return self.gen_alignment([], [], int(duration*100.), outputalign)
+        if delta < 1. or len(selectphonetization) == 0:
+            return self.gen_alignment([], [], [], int(duration*100.), outputalign)
 
-        return self.gen_alignment(selecttokenslist, phoneslist, int(delta), outputalign)
+        return self.gen_alignment(selectphonetization, tokenization, phoneslist, int(delta), outputalign)
 
     # ------------------------------------------------------------------------
 
-    def gen_alignment(self, tokenslist, phoneslist, phonesdur, outputalign=None):
+    def gen_alignment(self, phonetization, tokenization, phoneslist, phonesdur, outputalign=None):
         """
         Write an alignment in an output file.
 
-        @param tokenslist (list) phonetization of each token
+        @param phonetization (list) phonetization of each token
+        @param tokenization (list) each token
+
         @param phoneslist (list) each phone
         @param phonesdur (int) the duration of each phone in centi-seconds
         @param outputalign (str) the output file name
@@ -170,7 +164,7 @@ class BasicAligner( BaseAligner ):
         if outputalign is not None:
             if outputalign.endswith('palign'):
                 alignio = AlignerIO()
-                alignio.write_palign(tokenslist, alignments, outputalign)
+                alignio.write_palign(phonetization, tokenization, alignments, outputalign)
 
         return alignments
 
@@ -180,7 +174,7 @@ class BasicAligner( BaseAligner ):
 
     def __select(self, pron):
         """
-        Select the first-shorter phonetization of an entry.
+        Select the first-shorter pronunciation of an entry.
 
         """
         tab = pron.split("|")

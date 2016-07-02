@@ -59,11 +59,12 @@ parser.add_argument("-I", metavar="file", required=False, help='Input file name 
 parser.add_argument("-r", metavar="file", required=True,  help='Directory of the acoustic model of the language of the text')
 parser.add_argument("-R", metavar="file", required=False, help='Directory of the acoustic model of the mother language of the speaker')
 parser.add_argument("-o", metavar="file", required=True,  help='Output file name with estimated alignments')
-parser.add_argument("-a", metavar="name", required=False, choices='["julius","hvite","basic"]', default="julius", help='Aligner name. One of: julius, hvite, basic (default: julius)')
-parser.add_argument("--extend",  action='store_true', help="Extend last phoneme/token to the wav duration" )
-parser.add_argument("--basic",   action='store_true', help="Perform a basic alignment if error with the aligner" )
-parser.add_argument("--infersp", action='store_true', help="Add 'sp' at the end of each token and let the aligner to decide the relevance" )
-parser.add_argument("--noclean", action='store_true', help="Do not remove temporary data" )
+
+parser.add_argument("-a", metavar="name", required=False, choices='["julius","hvite","basic"]', default="julius", help='Speech automatic aligner system: julius, hvite, basic (default: julius)')
+parser.add_argument("--basic",   action='store_true', help="Perform basic alignment if the aligner fails" )
+parser.add_argument("--noclean", action='store_true', help="Do not remove working directory" )
+parser.add_argument("--noactivity", action='store_true', help="Do not generate Activity tier" )
+parser.add_argument("--nophntok",  action='store_true',  help="Do not generate PhnTokAlign tier" )
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -76,7 +77,7 @@ args = parser.parse_args()
 
 # Fix resources
 modelText = args.r # Acoustic model of the language of the text (required)
-modelSpk = args.R  # Acoustic model of the mother language of the speaker (optionnal)
+modelSpk = args.R  # Acoustic model of the mother language of the speaker (optional)
 
 a = sppasAlign( modelText, modelSpk )
 
@@ -85,19 +86,18 @@ a.set_clean( True )
 if args.noclean:
     a.set_clean( False )
 
-a.set_extend( False )
-if args.extend:
-    a.set_extend( True )
-
-a.set_infersp( False )
-if args.infersp:
-    a.set_infersp( True )
-
 a.set_basic( False )
 if args.basic:
     a.set_basic( True )
 
-a.set_expend( True )
+a.set_activity_tier( True )
+if args.noactivity:
+    a.set_activity_tier( False )
+
+a.set_phntokalign_tier( True )
+if args.nophntok:
+    a.set_phntokalign_tier( False )
+
 a.set_aligner( args.a )
 
 # Run speech segmentation

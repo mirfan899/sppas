@@ -53,6 +53,8 @@ from juliusalign    import JuliusAligner
 from hvitealign     import HviteAligner
 from basicalign     import BasicAligner
 
+from resources.rutils   import ToStrip
+
 # ----------------------------------------------------------------------------
 
 class SpeechSegmenter:
@@ -64,7 +66,7 @@ class SpeechSegmenter:
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
     @summary:      Automatic speech segmentation.
 
-    Speech segmentation of a unit of speech (an IPU).
+    Speech segmentation of a unit of speech (an IPU/utterance/sentence/segment).
 
     """
     # List of supported aligners (with lowered names)
@@ -73,7 +75,7 @@ class SpeechSegmenter:
 
     # ------------------------------------------------------------------------
 
-    def __init__(self, model):
+    def __init__(self, model, alignername="julius"):
         """
         Constructor.
 
@@ -85,13 +87,14 @@ class SpeechSegmenter:
         Any other file will be ignored.
 
         """
-        # The automatic alignment system:
-        self._alignerid = SpeechSegmenter.ALIGNERS[0]
-        self._model   = model
+        # Options, must be fixed before to instantiate the aligner
         self._infersp = False
 
+        # The acoustic model directory
+        self._modeldir = model
+
         # Map phoneme names from model-specific to SAMPA and vice-versa
-        mappingfilename = os.path.join( self._model, "monophones.repl")
+        mappingfilename = os.path.join( self._modeldir, "monophones.repl")
         if os.path.isfile( mappingfilename ):
             try:
                 self._mapping = Mapping( mappingfilename )
@@ -100,9 +103,11 @@ class SpeechSegmenter:
         else:
             self._mapping = Mapping()
 
+        # The automatic alignment system:
         # The basic aligner is used:
         #   - when the IPU contains only one phoneme;
         #   - when the automatic alignment system failed to perform segmn.
+        self.set_aligner(alignername)
         self._basicaligner = BasicAligner(model, self._mapping)
         self._instantiate_aligner()
 
@@ -115,7 +120,7 @@ class SpeechSegmenter:
         @param model (string) Directory that contains the Acoustic Model.
 
         """
-        self._model = model
+        self._modeldir = model
         self._instantiate_aligner()
 
     # ----------------------------------------------------------------------
@@ -150,13 +155,32 @@ class SpeechSegmenter:
 
     # ----------------------------------------------------------------------
 
+    def get_aligner(self):
+        """
+        Return the aligner name.
+
+        """
+        return self._alignerid
+
+    # ----------------------------------------------------------------------
+
+    def get_model(self):
+        """
+        Return the model directory name.
+
+        """
+        return self._modeldir
+
+    # ----------------------------------------------------------------------
+
     def split(self, inputaudio, trstier, diralign, extension, listfile=None):
         """
-        Split the phonetization and the audio speech into inter-pausal units.
+        Split all the data into tracks.
 
         @param trstier is the tier to split
         @param diralign is the directory to put units.
         @param extension is the file extension of units.
+
         @return tuple with number of silences and number of tracks
 
         """
@@ -217,55 +241,57 @@ class SpeechSegmenter:
 
     # ------------------------------------------------------------------------
 
-    def exec_basic_alignment(self, audiofilename, phonname, alignname):
-        self._basicaligner.run_alignment(audiofilename, phonname, alignname)
+    def _readline(self, filename):
+        """
+        Return the first line of filename, formatted.
+
+        """
+        line = ""
+        with codecs.open(filename, 'r', encoding) as fp:
+            # Get the phoneme sequence
+            line = fp.readline()
+
+        return ToStrip(line)
 
     # ------------------------------------------------------------------------
 
-    def segmenter(self, audiofilename, phonname, alignname):
+    def segmenter(self, audiofilename, phonname, tokenname, alignname):
         """
         Call an aligner to perform speech segmentation and manage errors.
 
-        @param audiofilename (str) the audio file name of an IPU
-        @param phonname (str) the file name with the phonetization
-        @param alignname (str) the output file name to save the result
+        @param audiofilename (str - IN) the audio file name of an IPU
+        @param phonname (str - IN) the file name with the phonetization
+        @param tokenname (str - IN) the file name with the tokenization
+        @param alignname (str - OUT) the file name to save the result
+
+        @return A message of the aligner in case of any problem, or
+        an empty string if success.
 
         """
+        # Get the phonetization and tokenization strings to time-align.
         phones = ""
-        with codecs.open(phonname, 'r', encoding) as fp:
-            # Get the phoneme sequence
-            phones = fp.readline()
-            # Remove multiple spaces
-            phones = re.sub("[ ]+", " ", phones)
+        tokens = ""
+
+        if phonname is not None:
+            phones = self._readline(phonname)
+        self._aligner.set_phones( phones )
+
+        if tokenname is not None:
+            tokens = self._readline(tokenname)
+        self._aligner.set_tokens( tokens )
 
         # Do not align nothing!
         if len(phones) == 0:
-            self._basicaligner.run_alignment(audiofilename, None, alignname)
+            self._basicaligner.run_alignment(audiofilename, alignname)
             return "Empty annotation: nothing to align."
 
-        # Do not ask Aligner to align only one phoneme!
+        # Do not align only one phoneme!
         if len(phones.split()) <= 1 and "-" not in phones:
-            self._basicaligner.run_alignment(audiofilename, phonname, alignname)
+            self._basicaligner.run_alignment(audiofilename, alignname)
             return ""
 
-        fileName, fileExtension = os.path.splitext(audiofilename)
-
-        # Create the dictionary and the grammar
-        dictname = audiofilename[:-len(fileExtension)] + ".dict"
-        if self._alignerid == "julius":
-            grammarname = audiofilename[:-len(fileExtension)] + ".dfa"
-            basename = audiofilename[:-len(fileExtension)]
-        elif self._alignerid == "hvite":
-            grammarname = audiofilename[:-len(fileExtension)] + ".lab"
-            basename = dictname
-        else:
-            grammarname = ''
-
-        # Generate dependencies (grammar, dict...)
-        self._aligner.gen_dependencies(phones,grammarname,dictname)
-
         # Execute Alignment
-        ret = self._aligner.run_alignment(audiofilename, basename, alignname)
+        ret = self._aligner.run_alignment(audiofilename, alignname)
 
         return ret
 
@@ -279,13 +305,13 @@ class SpeechSegmenter:
 
         """
         if self._alignerid == "julius":
-            self._aligner = JuliusAligner( self._model, self._mapping )
+            self._aligner = JuliusAligner( self._modeldir, self._mapping )
 
         elif self._alignerid == "hvite":
-            self._aligner = HviteAligner( self._model, self._mapping )
+            self._aligner = HviteAligner( self._modeldir, self._mapping )
 
         else:
-            self._aligner = BasicAligner( self._model, self._mapping )
+            self._aligner = BasicAligner( self._modeldir, self._mapping )
 
         self._aligner.set_infersp( self._infersp )
 
