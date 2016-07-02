@@ -44,6 +44,7 @@ import utils.fileutils as fileutils
 
 import annotationdata.io
 from annotationdata.transcription import Transcription
+from annotationdata.tier          import Tier
 from annotationdata.media         import Media
 from annotationdata.io.utils      import gen_id
 
@@ -121,6 +122,8 @@ class sppasAlign:
         self._options['clean']   = True  # Remove temporary files
         self._options['infersp'] = False # Add 'sp' at the end of each token
         self._options['basic']   = False # Perform a basic alignment if error
+        self._options['activity'] = True
+        self._options['phntok']   = False
 
     # ------------------------------------------------------------------------
     # Methods to fix options
@@ -163,6 +166,13 @@ class sppasAlign:
 
             elif "basic" == key:
                 self.set_basic( opt.get_value() )
+
+            elif "activity" == key:
+                self.set_activity_tier( opt.get_value() )
+
+            elif "phntok" == key:
+                self.set_phntokalign_tier( opt.get_value() )
+
             else:
                 raise Exception('Unknown key option: %s'%key)
 
@@ -242,6 +252,29 @@ class sppasAlign:
 
         """
         self._options['basic'] = basic
+
+    # -----------------------------------------------------------------------
+
+    def set_activity_tier(self, value):
+        """
+        Fix the Activity tier generation option value.
+
+        @param value is a Boolean
+
+        """
+        self._options['activity'] = bool(value)
+
+
+    # -----------------------------------------------------------------------
+
+    def set_phntokalign_tier(self, value):
+        """
+        Fix the PhnTokAlign tier generation option value.
+
+        @param value is a Boolean
+
+        """
+        self._options['phntok'] = bool(value)
 
     # -----------------------------------------------------------------------
     # Methods to time-align series of data
@@ -369,13 +402,15 @@ class sppasAlign:
         # we use inputaudio instead of inputphonesname because it contains
         # only ascii characters in filename (which is required under Windows).
         diralign, fileExt = os.path.splitext( self.inputaudio )
-        if not os.path.exists( diralign ):
+        if os.path.exists( diralign ) is False:
             os.mkdir( diralign )
             if self._options['clean'] is False:
                 if self.logfile:
                     self.logfile.print_message("The working directory is: %s"%diralign, indent=3, status=INFO_ID)
                 else:
                     print "The working directory is: %s"%diralign
+        else:
+            raise Exception("Working directory %s already exists. Can not override."%(diralign))
 
         listfilename = os.path.join(diralign, "tracks.list")
 
@@ -543,6 +578,31 @@ class sppasAlign:
 
     # ------------------------------------------------------------------------
 
+    def phntokalign_tier(self, tierphon, tiertoken):
+        """
+        Generates the PhnTokAlignTier from PhonAlign and TokensAlign.
+
+        """
+        newtier = Tier('PhnTokAlign')
+        newtier.SetMedia( tiertoken.GetMedia() )
+
+        for anntoken in tiertoken:
+
+            # Create the sequence of phonemes
+            beg = anntoken.GetLocation().GetBegin()
+            end = anntoken.GetLocation().GetEnd()
+            annphons = tierphon.Find(beg,end)
+            l = "-".join( ann.GetLabel().GetValue() for ann in annphons )
+
+            # Append in the new tier
+            newann = anntoken.Copy()
+            newann.GetLabel().SetValue(l)
+            newtier.Add( newann )
+
+        return newtier
+
+    # ------------------------------------------------------------------------
+
     def run(self, inputphonesname, inputtokensname, inputaudioname, outputfilename=None):
         """
         Execute SPPAS Alignment.
@@ -573,16 +633,31 @@ class sppasAlign:
                 self.logfile.print_message("Tokens alignment disabled: no tokenization available", indent=2, status=INFO_ID)
 
         # Processing...
-        try:
-            trsoutput = self.convert( phontier,toktier,inputaudioname )
-            activity = Activity( trsoutput )
-            tier = activity.get_tier()
-            if tier is not None:
-                trsoutput.Append(tier)
-        except Exception:
-            import traceback
-            print traceback.format_exc()
-            raise
+        trsoutput = self.convert( phontier,toktier,inputaudioname )
+
+        if toktier is not None:
+            phonalign  = trsoutput.Find("PhonAlign")
+            tokenalign = trsoutput.Find("TokensAlign")
+            # PhnTokAlign tier
+            if self._options['phntok'] is True:
+                try:
+                    tier = self.phntokalign_tier(phonalign,tokenalign)
+                    trsoutput.Append(tier)
+                    trsoutput.GetHierarchy().addLink("TimeAssociation", tokenalign, tier)
+                except Exception as e:
+                    if self.logfile:
+                        self.logfile.print_message("PhnTokAlign generation: %s"%str(e), indent=2, status=WARNING_ID)
+
+            # Activity tier
+            if self._options['activity'] is True:
+                try:
+                    activity = Activity( trsoutput )
+                    tier = activity.get_tier()
+                    trsoutput.Append(tier)
+                    trsoutput.GetHierarchy().addLink("TimeAlignment", tokenalign, tier)
+                except Exception as e:
+                    if self.logfile:
+                        self.logfile.print_message("Activities generation: %s"%str(e), indent=2, status=WARNING_ID)
 
         # Save results
         try:
@@ -596,7 +671,7 @@ class sppasAlign:
             if self._options['clean'] is True:
                 diralign, fileExt = os.path.splitext( self.inputaudio )
                 shutil.rmtree( diralign )
-            raise #IOError("align.py. Save. Error while saving file: " + str(e))
+            raise
 
         # Clean!
         # if the audio file was converted.... remove the tmpaudio

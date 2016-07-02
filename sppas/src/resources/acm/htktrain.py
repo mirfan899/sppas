@@ -625,7 +625,7 @@ class TrainingCorpus( object ):
 
     # -----------------------------------------------------------------------
 
-    def map_phonemes(self, tier, unkstamp="UNK"):
+    def map_phonemes(self, tier, unkstamp=UNKSTAMP):
         """
         Map phonemes of a tier.
 

@@ -38,8 +38,11 @@
 import re
 import codecs
 
+from annotations.Align.basealigner  import BaseAligner
+from annotations.Align.alignerio    import AlignerIO
+
 import audiodata
-from basealigner  import BaseAligner
+
 from sp_glob import encoding
 
 # ----------------------------------------------------------------------------
@@ -54,7 +57,7 @@ class BasicAligner( BaseAligner ):
     @summary:      Basic automatic alignment system.
 
     This segmentation assign the same duration to each phoneme.
-    In case of phonetic variants, the shortest phonetization is selected.
+    In case of phonetic variants, the first shortest phonetization is selected.
 
     """
     def __init__(self, modelfilename, mapping=None):
@@ -166,69 +169,10 @@ class BasicAligner( BaseAligner ):
 
         if outputalign is not None:
             if outputalign.endswith('palign'):
-                self.write_palign(tokenslist, alignments, outputalign)
+                alignio = AlignerIO()
+                alignio.write_palign(tokenslist, alignments, outputalign)
 
         return alignments
-
-    # ------------------------------------------------------------------------
-
-    def write_palign(self, tokenslist, alignments, outputfilename):
-        """
-        Write an alignment output file.
-
-        @param tokenslist (list) List with the phonetization of each token
-        @param alignments (list) List of tuples: (start-time end-time phoneme)
-        @param outputfilename (str) The output file name (a Julius-like output).
-
-        """
-        with codecs.open(outputfilename, 'w', encoding) as fp:
-
-            fp.write("----------------------- System Information begin ---------------------\n")
-            fp.write("\n")
-            fp.write("                         SPPAS Basic Alignment\n")
-            fp.write("\n")
-            fp.write("----------------------- System Information end -----------------------\n")
-
-            fp.write("### Recognition: 1st pass\n")
-
-            fp.write("pass1_best_wordseq: ")
-            for i in range(len(tokenslist)):
-                fp.write(str(i)+" ")
-            fp.write("\n")
-
-            fp.write("pass1_best_phonemeseq: ")
-            for i in range(len(tokenslist)-1):
-                fp.write(str(tokenslist[i])+" | ")
-            if len(tokenslist) > 0:
-                fp.write(str(tokenslist[len(tokenslist)-1]))
-            fp.write("\n")
-
-            fp.write("### Recognition: 2nd pass\n")
-
-            fp.write("ALIGN: === phoneme alignment begin ===\n")
-            fp.write("wseq1: ")
-            for i in range(len(tokenslist)):
-                fp.write(str(i)+" ")
-            fp.write("\n")
-
-            fp.write("phseq1: ")
-            for i in range(len(tokenslist)-1):
-                fp.write(str(tokenslist[i])+" | ")
-            if len(tokenslist) > 0:
-                fp.write(str(tokenslist[len(tokenslist)-1]))
-            fp.write("\n")
-
-            fp.write("=== begin forced alignment ===\n")
-            fp.write("-- phoneme alignment --\n")
-            fp.write(" id: from  to    n_score    unit\n")
-            fp.write(" ----------------------------------------\n")
-            for tv1,tv2,phon in alignments:
-                fp.write("[ %d " % tv1)
-                fp.write(" %d]" % tv2)
-                fp.write(" -30.000000 "+str(phon)+"\n")
-            fp.write("=== end forced alignment ===\n")
-
-            fp.close()
 
     # ------------------------------------------------------------------------
     # Private

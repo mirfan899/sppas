@@ -102,7 +102,7 @@ class JuliusAligner( BaseAligner ):
         """
         Generate the dependencies (grammar, dictionary) for julius.
 
-        @param phones (str) the phonetization to align (spaces separate tokens, pipes separate variants, dots separate phones)
+        @param phones (str) the phonetization to align (spaces separate tokens, pipes separate variants, minus separate phones)
         @param grammarname (str) the file name of the grammar (output)
         @param dictname (str) the dictionary file name (output)
 
@@ -144,8 +144,11 @@ class JuliusAligner( BaseAligner ):
     def run_julius(self, inputwav, basename, outputalign):
         """
         Perform the speech segmentation.
+        System call to the command `julius`.
 
-        Call the system command `julius`.
+        @param inputwav (str - IN) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
+        @param basename (str - IN) the base name of the grammar file and of the dictionary file
+        @param outputalign (str - OUT) the output file name
 
         """
         tiedlist = os.path.join(self._model, "tiedlist")
@@ -204,11 +207,13 @@ class JuliusAligner( BaseAligner ):
 
     def run_alignment(self, inputwav, basename, outputalign):
         """
-        Perform the speech segmentation.
+        Execute the external program `julius` to align.
 
-        @param inputwav (str) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
-        @param basename (str) the base name of the grammar file and of the dictionary file
-        @param outputalign (str) the output file name
+        @param inputwav (str - IN) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
+        @param basename (str - IN) the base name of the grammar file and of the dictionary file
+        @param outputalign (str - OUT) the output file name
+
+        @return (str) A message of `julius`.
 
         """
         self.run_julius(inputwav, basename, outputalign)

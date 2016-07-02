@@ -45,9 +45,10 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import os
-import sys
 import re
 import codecs
+
+from sp_glob import UNKSTAMP
 
 # ----------------------------------------------------------------------------
 
@@ -64,7 +65,7 @@ class LemmaDict:
                 - dictfilename is the dictionary file name.
 
         """
-        self.unk = "UNK"
+        self.unk = UNKSTAMP
         # Load the dictionary:
         self.lemdict = {}
         encoding='utf-8'

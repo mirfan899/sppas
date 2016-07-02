@@ -145,11 +145,11 @@ class BaseAligner:
 
     def gen_dependencies(self, phones, grammarname, dictname):
         """
-        Generate the dependencies (grammar, dictionary).
+        Generate the files the aligner will need (grammar, dictionary).
 
-        @param phones (str) the phonetization to align (spaces separate tokens, pipes separate variants, dots separate phones)
-        @param grammarname (str) the file name of the grammar (output)
-        @param dictname (str) the dictionary file name (output)
+        @param phones (str - IN) the phonetization to align (spaces separate tokens, pipes separate variants, minus separate phones)
+        @param grammarname (str - OUT) the file name of the grammar
+        @param dictname (str - OUT) the dictionary file name
 
         """
         pass
@@ -158,13 +158,13 @@ class BaseAligner:
 
     def run_alignment(self, inputwav, basename, outputalign):
         """
-        Execute a program to perform alignment.
+        Execute an external program to perform forced-alignment.
 
-        @param inputwav (str) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
-        @param basename (str) the base name of the grammar file and of the dictionary file
-        @param outputalign (str) the output file name
+        @param inputwav (str - IN) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
+        @param basename (str - IN) the base name of the grammar file and of the dictionary file
+        @param outputalign (str - OUT) the output file name
 
-        @return str A message of the aligner.
+        @return (str) A message of the external program.
 
         """
         raise NotImplementedError

@@ -40,6 +40,7 @@ from annotationdata.ptime.interval import TimeInterval
 from annotationdata.ptime.point    import TimePoint
 from annotationdata.annotation     import Annotation
 from annotationdata.label.label    import Label
+from annotationdata.io.utils       import fill_gaps, unfill_gaps
 
 # ---------------------------------------------------------------------------
 
@@ -53,57 +54,93 @@ class Activity(object):
     @summary:      Create an activity tier from tokens.
 
     """
+    UNKNOWN="<UNK>"
+
     def __init__(self, trs):
-        self.tokens = trs.Find('TokensAlign')
+        """
+        Initialize activities.
+
+        @param trs (Transcription - IN) a Transcription that contains a tier with axactly the name 'TokensAlign'
+
+        """
+        tokenstier = trs.Find('TokensAlign')
+        self.tokens = fill_gaps(tokenstier, trs.GetMinTime(), trs.GetMaxTime() )
         self.set_activities()
 
-    def set_activities(self):
-        """
-        TODO... with a better solution!
-        """
-        self.activities = {}  # Non-speech activities
-        self.activities['dummy'] = "dummy"  # un-transcribed
-        self.activities['#'] = "silence"
-        self.activities['+'] = "pause"
-        self.activities['euh'] = "filled pause"
-        self.activities['*'] = "noise"
-        self.activities['@'] = "laughter"
+    # -----------------------------------------------------------------------
 
+    def set_activities(self, activities=None):
+        """
+        Fix the dictionary of possible non-speech activities.
+
+        @param activities (dict - IN) A dictionary of activities.
+        The key is the token and the value is the activity name.
+
+        """
+        if activities is None:
+            self.activities = {}  # Non-speech activities
+            self.activities['dummy'] = "dummy"  # un-transcribed
+            self.activities['#']     = "silence"
+            self.activities['+']     = "pause"
+            self.activities['euh']   = "filled pause"
+            self.activities['*']     = "noise"
+            self.activities['@']     = "laughter"
+        else:
+            self.activities=activities
+
+        # For empty intervals... activity is unknown
+        self.append_activity(Activity.UNKNOWN, "")
+
+    # -----------------------------------------------------------------------
+
+    def append_activity(self, token, activity):
+        """
+        Append a new activity.
+
+        @param token (str) String of the token
+        @param activity (str) String of the activity name
+
+        """
+        token    = str(token).strip()
+        activity = str(activity).strip()
+        if self.activities.get(token,None) is None:
+            self.activities[token] = activity
+
+    # -----------------------------------------------------------------------
 
     def get_tier(self):
         """
+        Create and return the activity tier.
+
+        @return Tier
+
         """
         if self.tokens is None:
-            return None
+            raise Exception('No time-aligned tokens tier...')
 
         newtier = Tier('Activity')
-        activity = ""
+        activity = "<INIT>" # initial activity
 
         for ann in self.tokens:
 
-            l = ann.GetLabel().GetValue()
-
-            # Non-speech activity
-            if l in self.activities.keys():
-                newactivity = self.activities[l]
-                if activity != newactivity:
-                    if len(activity) > 0:
-                        # the activity has changed.
-                        newtier.Append(Annotation(TimeInterval(newtier.GetEnd(),ann.GetLocation().GetBegin()), Label(activity)))
-                    activity = newactivity
-            # Speech
+            # Fix the activity name of this new token
+            if ann.GetLabel().IsEmpty():
+                l = Activity.UNKNOWN
             else:
-                # token!
-                if activity != "speech":
-                    if len(activity) > 0:
-                        # the activity has changed.
-                        newtier.Append(Annotation(TimeInterval(newtier.GetEnd(),ann.GetLocation().GetBegin()), Label(activity)))
-                    activity = "speech"
+                l = ann.GetLabel().GetValue()
+            newactivity = self.activities.get(l, "speech")
 
-        # last interval
+            # The activity has changed.
+            if activity != newactivity and activity != "<INIT>":
+                newtier.Append(Annotation(TimeInterval(newtier.GetEnd(),ann.GetLocation().GetBegin()), Label(activity)))
+
+            # In any case, update current activity
+            activity = newactivity
+
+        # Last interval
         if newtier.GetEnd() < self.tokens.GetEnd():
             newtier.Append(Annotation(TimeInterval(newtier.GetEnd(),self.tokens.GetEnd()), Label(activity)))
 
-        return newtier
+        return unfill_gaps(newtier)
 
 # ---------------------------------------------------------------------------

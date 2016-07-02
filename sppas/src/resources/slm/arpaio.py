@@ -110,7 +110,7 @@ class ArpaIO:
                     raise ValueError('Unexpected line: %s'%line)
                 # probability is the first column
                 proba = float(cols[0])
-                # the n- folowwing columns are the ngram
+                # the n- following columns are the ngram
                 tokenseq = " ".join(cols[1:n+1])
                 # the last (optional) value is the bow
                 bow = None
@@ -171,6 +171,7 @@ class ArpaIO:
         for n,m in enumerate(self.slm):
             newngram = self._serialize_ngram( m,n+1 )
             result = result + newngram
+        result += self._serialize_footer()
 
         return result
 
@@ -206,9 +207,19 @@ class ArpaIO:
         for (wseq,lp,bo) in model:
             r += str(round(lp,6))+"\t"+wseq
             if bo is not None:
-                r+="\t"+bo
+                r+="\t"+str(round(bo,6))
             r+="\n"
         r+="\n"
         return r
+
+    # -----------------------------------------------------------------------
+
+    def _serialize_footer(self):
+        """
+
+             \end
+
+        """
+        return "\\end\n"
 
     # -----------------------------------------------------------------------

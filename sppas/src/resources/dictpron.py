@@ -38,6 +38,7 @@
 import codecs
 import logging
 import rutils
+from sp_glob import UNKSTAMP
 
 # ---------------------------------------------------------------------------
 
@@ -77,7 +78,7 @@ class DictPron:
         {.k.t.e.d|{.k.t.i.d|{ k t e|{ k t i
 
     """
-    def __init__(self, dictfilename=None, unkstamp=u"UNK", nodump=False):
+    def __init__(self, dictfilename=None, unkstamp=UNKSTAMP, nodump=False):
         """
         Constructor.
 

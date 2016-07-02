@@ -48,7 +48,7 @@ import sys
 import os.path
 
 from sp_glob import RESOURCES_PATH
-from sp_glob import ANNOTATIONS_LIST_FILE
+from sp_glob import SPPAS_CONFIG
 from sp_glob import DEFAULT_OUTPUT_EXTENSION
 
 import utils.fileutils
@@ -314,7 +314,7 @@ class sppasParam():
 
         # Annotation steps
         self.annotations = []
-        with open( ANNOTATIONS_LIST_FILE, "r" ) as fp:
+        with open( SPPAS_CONFIG, "r" ) as fp:
             # Read the whole file and load annotation options
             for line in fp:
                 line = line.strip()

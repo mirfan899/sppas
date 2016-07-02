@@ -66,14 +66,14 @@ TIPS_ICON_PATH = os.path.join( BASE_PATH, "etc", "tips")
 TIPS_FILE      = os.path.join( BASE_PATH, "etc", "tips","tips.txt")
 SETTINGS_FILE  = os.path.join( BASE_PATH, "etc", "settings.dump")
 JULIUS_CONFIG  = os.path.join( BASE_PATH, "etc", "julius-fa.conf")
+SPPAS_CONFIG   = os.path.join( BASE_PATH, "etc", "sppas.conf")
 
 
 # ---------------------------------------------------------------------------
 # Define configuration for annotations
 # ---------------------------------------------------------------------------
 
-ANNOTATIONS_LIST_FILE = os.path.join( BASE_PATH, "etc", "annotations.conf")
-UNKSTAMP=u"UNK"
+UNKSTAMP=u"<UNK>"
 
 # Default output extension must be one of the list:
 #  annotationdata.io.extensions_out_multitiers

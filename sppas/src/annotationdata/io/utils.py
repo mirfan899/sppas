@@ -135,7 +135,6 @@ def fill_gaps(tier, mintime, maxtime):
     @param tier: (Tier)
 
     """
-
     new_tier = tier.Copy()
     prev = None
 
@@ -162,6 +161,26 @@ def fill_gaps(tier, mintime, maxtime):
 
 # End fill_gaps
 # ------------------------------------------------------------------------
+
+
+def unfill_gaps(tier):
+    """
+    Return the tier in which un-labelled annotations are removed.
+
+    @param tier (Tier - IN)
+    @return tier
+
+    """
+    new_tier = tier.Copy()
+    for i,ann in enumerate(tier):
+        if ann.GetLabel().IsEmpty():
+            new_tier.Pop(i)
+
+    return new_tier
+
+# End unfill_gaps
+# ------------------------------------------------------------------------
+
 
 def merge_overlapping_annotations(tier, separator=' '):
     """

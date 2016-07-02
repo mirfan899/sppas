@@ -104,6 +104,15 @@ class SLM:
     # -----------------------------------------------------------------------
 
     def interpolate(self, other):
+        """
+        An N-Gram language model can be constructed from a linear interpolation
+        of several models. In this case, the overall likelihood P(w|h) of a
+        word w occurring after the history h is computed as the arithmetic
+        average of P(w|h) for each of the models.
+
+        The default interpolation method is linear interpolation. In addition,
+        log-linear interpolation of models is possible.
+        """
         raise NotImplementedError
 
     # -----------------------------------------------------------------------

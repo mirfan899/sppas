@@ -75,9 +75,9 @@ class HviteAligner( BaseAligner ):
         """
         Generate the dependencies (grammar, dictionary) for HVite.
 
-        @param phones is the phonetization to align (spaces separate tokens, pipes separate variants, dots separate phones)
-        @param labname is the file name of the tokens (output)
-        @param dictname is the dictionary file name (output)
+        @param phones is the phonetization to align
+        @param grammarname is the file name of the tokens
+        @param dictname is the dictionary file name
 
         """
         # Map phonemes from SAMPA to the expected one.
@@ -169,7 +169,7 @@ class HviteAligner( BaseAligner ):
             raise OSError( "HVite is not properly installed. See installation instructions for details." )
 
         if len(line[0]) > 0 and line[0].find("ERROR [") > -1:
-            raise OSError( "julius command failed." )
+            raise OSError( "HVite command failed." )
 
         # Check output file
         if os.path.isfile( outputalign ) is False:
@@ -179,11 +179,13 @@ class HviteAligner( BaseAligner ):
 
     def run_alignment(self, inputwav, basename, outputalign):
         """
-        Execute the external program HVite to align.
+        Execute the external program `HVite` to align.
 
-        @param inputwav is the wav input file name.
-        @param basename is the name of the dictionary file
-        @param outputalign is the output file name.
+        @param inputwav (str - IN) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
+        @param basename (str - IN) the base name of the grammar file and of the dictionary file
+        @param outputalign (str - OUT) the output file name
+
+        @return (str) An empty string.
 
         """
         self.run_hvite(inputwav, basename, outputalign)

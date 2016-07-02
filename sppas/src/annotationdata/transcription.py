@@ -67,18 +67,17 @@ class Transcription( MetaObject ):
         - a hierarchy
         - controlled vocabularies (yet not used)
 
-    Inter-tier relations are managed by establishing alignment or constituency
+    Inter-tier relations are managed by establishing alignment or association
     links between 2 tiers:
-        - alignment: annotations of a tier A have only Time instances
-          included in those of annotations of tier B;
-        - constituency: annotations of a tier A have only Time instances
-          included in those of annotations of tier B and labels of B are
-          made of those of A.
+        - alignment: annotations of a tier A (child) have only Time instances
+          included in those of annotations of tier B (parent);
+        - association: annotations of a tier A have exactly Time instances
+          included in those of annotations of tier B.
 
     >>> transcription = Transcription()
-    >>> tier1 = transcription.NewTier("tier1")
-    >>> tier2 = transcription.NewTier("tier2")
-    >>> transcription.GetHierarchy().addLink(type="TimeAlignment", tier1, tier2)
+    >>> formertier = transcription.NewTier("parent")
+    >>> lattertier = transcription.NewTier("child")
+    >>> transcription.GetHierarchy().addLink("TimeAlignment", formertier, lattertier)
 
     """
 

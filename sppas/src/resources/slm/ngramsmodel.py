@@ -45,8 +45,8 @@ from sp_glob import UNKSTAMP
 # ---------------------------------------------------------------------------
 
 MAX_ORDER = 20
-START_SENT_SYMBOL = "SENT_START"
-END_SENT_SYMBOL   = "SENT_END"
+START_SENT_SYMBOL = "<s>"
+END_SENT_SYMBOL   = "</s>"
 
 # ---------------------------------------------------------------------------
 
@@ -234,8 +234,8 @@ class NgramsModel:
             >>> probas = probabilities("logml")
             >>> for t in probas[0]:
             >>>      print t
-            ('SENT_END', -1.066946789630613, None)
-            ('SENT_START', -99.0, None)
+            ('</s>', -1.066946789630613, None)
+            ('<s>', -99.0, None)
             (u'a', -0.3679767852945944, None)
             (u'b', -0.5440680443502756, None)
             (u'c', -0.9420080530223132, None)
@@ -323,17 +323,24 @@ class NgramsModel:
                 # Estimates p(a_z)
                 f = float(c) / total
 
+                # bow
+                bow = None
+                if n < (len(self.ngramcounts)-1):
+                    bow = 0
+                    if token == self._es:
+                        bow = -99
+
                 # Adjust f if unigram(start-sent), then append
                 if token == self._ss:
                     if tolog is True:
-                        ngram.append((self._ss,-99.,None))
+                        ngram.append((self._ss,-99.,bow))
                     else:
-                        ngram.append((self._ss,0.,None))
+                        ngram.append((self._ss,0.,bow))
                 else:
                     if tolog is False:
-                        ngram.append((token,f,None))
+                        ngram.append((token,f,bow))
                     else:
-                        ngram.append((token,math.log(f,10.),None))
+                        ngram.append((token,math.log(f,10.),bow))
 
             models.append(ngram)
 
