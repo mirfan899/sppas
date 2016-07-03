@@ -17,6 +17,8 @@ from resources.wordslst import WordsList
 class TestNgramCounter(unittest.TestCase):
 
     def setUp(self):
+        if os.path.exists(TEMP) is False:
+            os.mkdir(TEMP)
         self.corpusfile = os.path.join(TEMP,"corpus.txt")
         self.sent1 = "a a b a c a b b a a b"
         self.sent2 = "a a d c a b b a a b"
@@ -144,15 +146,15 @@ class TestNgramsModel(unittest.TestCase):
     def testCount(self):
         model = NgramsModel(2)
         model.count( self.corpusfile )
-        self.assertEqual(len(model.ngramcounts), 2)
-        ngramcounter = model.ngramcounts[0]
+        self.assertEqual(len(model._ngramcounts), 2)
+        ngramcounter = model._ngramcounts[0]
         self.assertEqual(ngramcounter.get_count('a'), 15)
         self.assertEqual(ngramcounter.get_count('b'), 10)
         self.assertEqual(ngramcounter.get_count('c'), 4)
         self.assertEqual(ngramcounter.get_count('d'), 3)
         self.assertEqual(ngramcounter.get_count(START_SENT_SYMBOL), 0)
         self.assertEqual(ngramcounter.get_count(END_SENT_SYMBOL), 3)
-        ngramcounter = model.ngramcounts[1]
+        ngramcounter = model._ngramcounts[1]
         self.assertEqual(ngramcounter.get_count('a b'), 7)
         self.assertEqual(ngramcounter.get_count('b a'), 4)
         self.assertEqual(ngramcounter.get_count('d b'), 1)
@@ -164,16 +166,16 @@ class TestNgramsModel(unittest.TestCase):
     def testShave(self):
         model = NgramsModel(2)
         model.count( self.corpusfile )
-        self.assertEqual(len(model.ngramcounts), 2)
+        self.assertEqual(len(model._ngramcounts), 2)
         model.set_min_count(2)
-        ngramcounter = model.ngramcounts[0]
+        ngramcounter = model._ngramcounts[0]
         self.assertEqual(ngramcounter.get_count('a'), 15)
         self.assertEqual(ngramcounter.get_count('b'), 10)
         self.assertEqual(ngramcounter.get_count('c'), 4)
         self.assertEqual(ngramcounter.get_count('d'), 3)
         self.assertEqual(ngramcounter.get_count(START_SENT_SYMBOL), 0)
         self.assertEqual(ngramcounter.get_count(END_SENT_SYMBOL), 3)
-        ngramcounter = model.ngramcounts[1]
+        ngramcounter = model._ngramcounts[1]
         self.assertEqual(ngramcounter.get_count('a b'), 7)
         self.assertEqual(ngramcounter.get_count('b a'), 4)
         self.assertEqual(ngramcounter.get_count('d b'), 0)

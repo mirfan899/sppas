@@ -118,7 +118,7 @@ class NgramsModel:
         if n < 1:
             raise ValueError('Expected order between 1 and %d. Get: %d.'%(MAX_ORDER,n))
         self.order = n
-        self.ngramcounts = []
+        self._ngramcounts = []
 
         self._ss = START_SENT_SYMBOL
         self._es = END_SENT_SYMBOL
@@ -186,14 +186,14 @@ class NgramsModel:
         If the file contains more than one tier, only the first one is used.
 
         """
-        for n in range(self.order):
-            ngramcounter = NgramCounter(n+1, self.wrdlist)
+        self._create_counters()
+
+        for ngramcounter in self._ngramcounts:
             ngramcounter.count( *datafiles )
-            self.ngramcounts.append( ngramcounter )
 
         # We already fixed a count threshold
         if self.mincount > 1:
-            self.ngramcounts[-1].shave(self.mincount)
+            self._ngramcounts[-1].shave(self.mincount)
 
     # -----------------------------------------------------------------------
 
@@ -204,9 +204,14 @@ class NgramsModel:
         @param sentence (list - IN) sentences with tokens separated by whitespace.
 
         """
-        for ngramcounter in self.ngramcounts:
+        self._create_counters()
+
+        for ngramcounter in self._ngramcounts:
             for sentence in sentences:
+                print "SENTENCE: ",sentence
+                print "Old N-count=", ngramcounter.get_ncount()
                 ngramcounter.append_sentence( sentence )
+                print "New N-count=", ngramcounter.get_ncount()
 
     # -----------------------------------------------------------------------
 
@@ -223,8 +228,8 @@ class NgramsModel:
             raise Exception('Expected a count value > 1. Got %d'%value)
 
         # We already have counts
-        if len(self.ngramcounts) > 0:
-            self.ngramcounts[-1].shave(value)
+        if len(self._ngramcounts) > 0:
+            self._ngramcounts[-1].shave(value)
 
         self.mincount = value
 
@@ -275,6 +280,19 @@ class NgramsModel:
     # Private
     # -----------------------------------------------------------------------
 
+    def _create_counters(self):
+        """
+        Create empty counters.
+        Erase existing ones if any (except if order didn't changed)!
+
+        """
+        if len(self._ngramcounts) != self.order:
+            for n in range(self.order):
+                ngramcounter = NgramCounter(n+1, self.wrdlist)
+                self._ngramcounts.append( ngramcounter )
+
+    # -----------------------------------------------------------------------
+
     def _probas_as_raw(self, tolog=True):
         """
         Do not estimate probas... just return raw counts.
@@ -282,12 +300,12 @@ class NgramsModel:
         """
         models = []
 
-        for n in range(len(self.ngramcounts)):
+        for n in range(len(self._ngramcounts)):
 
             ngram = []
-            for entry in self.ngramcounts[n].get_ngrams():
+            for entry in self._ngramcounts[n].get_ngrams():
                 token = " ".join(entry)
-                c = self.ngramcounts[n].get_count(token)
+                c = self._ngramcounts[n].get_count(token)
                 if token == self._ss and tolog is True:
                     ngram.append((self._ss,-99,None))
                 else:
@@ -309,36 +327,36 @@ class NgramsModel:
         """
         models = []
 
-        for n in range(len(self.ngramcounts)):
+        for n in range(len(self._ngramcounts)):
         # n is the index in ngramcounts, i.e. the expected order-1.
 
             ngram = []
             oldhist = ""
-            for entry in self.ngramcounts[n].get_ngrams():
+            for entry in self._ngramcounts[n].get_ngrams():
 
                 # Estimates c(a_)
                 if n == 0:
                     # unigrams
-                    total = float(self.ngramcounts[n].get_ncount())
+                    total = float(self._ngramcounts[n].get_ncount())
                 else:
                     hist = " ".join(entry[:-1])
                     hist = hist.strip()
                     if hist != oldhist:
                         if hist == self._ss:
-                            total = float(self.ngramcounts[n-1].get_count(self._es))
+                            total = float(self._ngramcounts[n-1].get_count(self._es))
                         else:
-                            total = float(self.ngramcounts[n-1].get_count(hist))
+                            total = float(self._ngramcounts[n-1].get_count(hist))
 
                 # Estimates c(a_z)
                 token = " ".join(entry)
-                c = self.ngramcounts[n].get_count(token)
+                c = self._ngramcounts[n].get_count(token)
 
                 # Estimates p(a_z)
                 f = float(c) / total
 
                 # bow
                 bow = None
-                if n < (len(self.ngramcounts)-1):
+                if n < (len(self._ngramcounts)-1):
                     bow = 0
                     if token == self._es:
                         bow = -99

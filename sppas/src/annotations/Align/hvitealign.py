@@ -105,13 +105,12 @@ class HviteAligner( BaseAligner ):
                         variant = variant + 'sp'
 
                     fdict.write( token )
-                    if i==0:
-                        fdict.write(' ')
-                    else:
-                        fdict.write("("+str(i+1)+") ")
-                    fdict.write("["+token+"] ")
+                    if i>0:
+                        fdict.write("("+str(i+1)+")")
+                    fdict.write(" ["+token+"] ")
                     fdict.write(variant.replace("-",' ')+"\n" )
 
+                # lab file (one token per line)
                 flab.write( token+"\n")
 
     # -----------------------------------------------------------------------

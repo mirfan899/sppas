@@ -90,9 +90,39 @@ class JuliusAligner( BaseAligner ):
     """
     def __init__(self, modelfilename, mapping=None):
         """
-        Constructor.
+        JuliusAligner is able to align one audio segment that can be:
+            - an inter-pausal unit,
+            - an utterance,
+            - a sentence...
+        no longer that a few seconds preferably.
 
-        JuliusAligner aligns one inter-pausal unit.
+        Things needed to run JuliusAligner:
+
+        To perform speech segmentation with Julius, three "models" have to be
+        prepared. The models should define the linguistic property of the
+        language: recognition unit, audio properties of the unit and the
+        linguistic constraint for the connection between the units.
+        Typically the unit should be a word, and you should give Julius these
+        models below:
+
+        1. "Acoustic model", which is a stochastic model of input waveform
+        patterns, typically per phoneme. Format is HTK-ASCII model.
+
+        2. "Word dictionary", which defines vocabulary.
+
+        3. "Language model", which defines syntax level rules that defines the
+        connection constraint between words. It should give the constraint for
+        the acceptable or preferable sentence patterns. It can be:
+            * either a rule-based grammar,
+            * or probabilistic N-gram model.
+
+        This class automatically construct the word dictionary and the language
+        model from both:
+            - the tokenization of speech,
+            - the phonetization of speech.
+
+        if outext is set to "palign", JuliusAligner will use a grammar, and
+        if outext is set to "walign", JuliusAligner will use a slm.
 
         @param modelfilename (str) the acoustic model file name
         @param mapping (Mapping) a mapping table to convert the phone set
@@ -100,7 +130,6 @@ class JuliusAligner( BaseAligner ):
         """
         BaseAligner.__init__(self, modelfilename, mapping)
         self._outext = "palign"
-        self._mode   = "grammar"
 
     # ------------------------------------------------------------------------
 
@@ -118,11 +147,12 @@ class JuliusAligner( BaseAligner ):
         self._mapping.set_keepmiss(True)
         self._mapping.set_reverse( True )
 
+        # Get tokens and their pronunciations
         phones = self._mapping.map(self._phones)
         phoneslist = ToStrip(phones).split()
         tokenslist = ToStrip(self._tokens).split()
         if len(tokenslist) != len(phoneslist):
-            tokenslist = [ "w_"+str(i) for i in range(len(phoneslist)) ]
+            raise IOError("Inconsistent data: Got %d pronunciations and %d tokens"%(len(phoneslist),len(tokenslist)))
 
         # Write the dictionary
         with codecs.open(dictname, 'w', encoding) as fdict:
@@ -131,13 +161,13 @@ class JuliusAligner( BaseAligner ):
             for token,pron in zip(tokenslist,phoneslist):
                 for variant in pron.split("|"):
                     fdict.write( token )
-                    fdict.write("["+token+"] ")
-                    fdict.write(variant.replace("-",' ')+"\n" )
+                    fdict.write(" ["+token+"] ")
+                    fdict.write(variant.replace("-"," ")+"\n" )
 
         # Write the SLM
         model = NgramsModel(3)
-        model.append_sentences( [" ".join(self._tokens)] )
-        probas = model.probabilities( method="raw" )
+        model.append_sentences( [self._tokens] )
+        probas = model.probabilities( method="logml" )
         arpaio = ArpaIO()
         arpaio.set( probas )
         arpaio.save( slmname )
@@ -155,8 +185,8 @@ class JuliusAligner( BaseAligner ):
         grammarname = basename + ".dfa"
 
         # Map phonemes from SAMPA to the expected one.
-        self._mapping.set_keepmiss(True)
-        self._mapping.set_reverse( True )
+        self._mapping.set_keepmiss( True )
+        self._mapping.set_reverse(  True )
 
         phones = self._mapping.map(self._phones)
         phoneslist = ToStrip(phones).split()
@@ -164,11 +194,11 @@ class JuliusAligner( BaseAligner ):
         if len(tokenslist) != len(phoneslist):
             tokenslist = [ "w_"+str(i) for i in range(len(phoneslist)) ]
 
+        tokenidx = 0
+        nbtokens = len(tokenslist)-1
+
         with codecs.open(grammarname, 'w', encoding) as fdfa,\
                 codecs.open(dictname, 'w', encoding) as fdict:
-
-            tokenidx = 0
-            nbtokens = (len(phoneslist)-1)
 
             for token,pron in zip(tokenslist,phoneslist):
 
@@ -180,14 +210,15 @@ class JuliusAligner( BaseAligner ):
 
                 # grammar:
                 if tokenidx == 0:
-                    fdfa.write( str(tokenidx)+" "+str(nbtokens)+" "+str(tokenidx+1)+" 0 1\n")
+                    fdfa.write( "0 %s 1 0 1\n"%nbtokens)
                 else:
                     fdfa.write( str(tokenidx)+" "+str(nbtokens)+" "+str(tokenidx+1)+" 0 0\n")
+
                 tokenidx += 1
                 nbtokens -= 1
 
             # last line of the grammar
-            fdfa.write( str(tokenidx)+" -1 -1 1 0\n")
+            fdfa.write( "%s -1 -1 1 0\n"%tokenidx)
 
     # ------------------------------------------------------------------------
 
@@ -201,51 +232,56 @@ class JuliusAligner( BaseAligner ):
         @param outputalign (str - OUT) the output file name
 
         """
+        # Fix file names
         tiedlist = os.path.join(self._model, "tiedlist")
-        hmmdefs  = os.path.join(self._model, "hmmdefs")
         config   = os.path.join(self._model, "config")
+        # Fix file names and protect special characters.
+        hmmdefs    = '"' + os.path.join(self._model, "hmmdefs").replace('"', '\\"') + '"'
+        output     = '"' + outputalign.replace('"', '\\"') + '"'
+        dictionary = '"' + basename.replace('"', '\\"') + ".dict" + '"'
+        grammar    = '"' + basename.replace('"', '\\"') + ".dfa"  + '"'
+        slm        = '"' + basename.replace('"', '\\"') + ".arpa" + '"'
+        audio      = '"' + inputwav.replace('"', '\\"') + '"'
 
-        # ... about the command
-        command = 'echo '
-        command += inputwav
-        command += ' | julius '
+        # the command
+        command = "echo " + audio + " | julius "
 
-        # ... about the parameters
+        # the global decoding parameters
         command += " -input file -gprune safe -iwcd1 max -smpFreq 16000"
         command += ' -multipath -iwsppenalty -70.0 -spmodel "sp"'
         command += " -b 1000 -b2 1000 -sb 1000.0 -m 10000 "
 
-        # ... about the decoding mode: grammar or slm
-        if self._mode=="grammar":
+        # 1. the acoustic model
+        command += " -h " + hmmdefs
+        if os.path.isfile(tiedlist):
+            command += " -hlist " + '"' + tiedlist.replace('"', '\\"') + '"'
+        if os.path.isfile(config):
+            # force Julius to use configuration file of HTK, by David Yeung
+            command += " -htkconf " + '"' + config.replace('"', '\\"') + '"'
+
+        # 2. the pronunciation dictionary
+        command += " -v " + dictionary
+
+        # 3. the language model
+        if self._outext == "palign":
+            # grammar-based forced-alignment
             command += " -looktrellis "
             command += " -palign"
-            command += ' -dfa "' + basename.replace('"', '\\"') + '.dfa"'
+            command += " -dfa " + grammar
         else:
-            command += " -silhead "+START_SENT_SYMBOL
-            command += " -siltail "+END_SENT_SYMBOL
+            # slm-based speech recognition
+            command += " -silhead "+ '"' + START_SENT_SYMBOL + '"'
+            command += " -siltail "+ '"' + END_SENT_SYMBOL   + '"'
             command += " -walign "
-            command += ' -nlr "' + basename.replace('"', '\\"') + '.arpa"'
+            command += " -nlr " + slm
 
-        command += ' -v "'   + basename.replace('"', '\\"') + '.dict"'
-
-        # ... about the acoustic model
-        command += ' -h "' + hmmdefs.replace('"', '\\"') + '"'
-        if os.path.isfile(tiedlist):
-            command += ' -hlist '
-            command += '"' + tiedlist.replace('"', '\\"') + '"'
-        if os.path.isfile(config):
-            # By David Yeung, force Julius to use configuration file of HTK
-            command += ' -htkconf '
-            command += '"' + config.replace('"', '\\"') + '"'
-
-        # ... about options
+        # options
         if self._infersp is True:
             # inter-word short pause = on (append "sp" for each word tail)
             command += ' -iwsp'
 
-        # ... about the output of the command
-        command += ' > '
-        command += '"' + outputalign.replace('"', '\\"') + '"'
+        # output of the command
+        command += " > " + output
 
         # Execute the command
         p = Popen(command, shell=True, stdout=PIPE, stderr=STDOUT)
@@ -253,22 +289,26 @@ class JuliusAligner( BaseAligner ):
         line = p.communicate()
 
         # Julius not installed
-        if len(line[0]) > 0 and line[0].find("not found") > -1:
+        if len(line[0]) > 0 and "not found" in line[0]:
             raise OSError( "julius is not properly installed. See installation instructions for details." )
 
         # Bad command
-        if len(line[0]) > 0 and line[0].find("-help") > -1:
-            raise OSError( "julius command failed." )
+        if len(line[0]) > 0 and "-help" in line[0]:
+            raise OSError( "julius command failed:%s"%line )
 
         # Check output file
         if os.path.isfile( outputalign ) is False:
-            raise Exception('julius did not created an alignment file.')
+            raise Exception( "julius did not created an alignment file." )
 
     # ------------------------------------------------------------------------
 
     def run_alignment(self, inputwav, outputalign):
         """
         Execute the external program `julius` to align.
+        The data related to the unit to time-align need to be previously
+        fixed with:
+            - set_phones(str)
+            - set_tokens(str)
 
         @param inputwav (str - IN) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
         @param outputalign (str - OUT) the output file name
@@ -276,8 +316,11 @@ class JuliusAligner( BaseAligner ):
         @return (str) A message of `julius`.
 
         """
+        if len(self._phones) == 0:
+            raise IOError("No data to time-align.")
+
         basename = os.path.splitext(inputwav)[0]
-        if self._mode == "grammar":
+        if self._outext == "palign":
             self.gen_grammar_dependencies(basename)
         else:
             self.gen_slm_dependencies(basename)
@@ -285,6 +328,9 @@ class JuliusAligner( BaseAligner ):
         self.run_julius(inputwav, basename, outputalign)
         with codecs.open(outputalign, 'r', encoding) as f:
             lines = f.readlines()
+
+        errorlines = ""
+        message = ""
 
         entries = []
         for line in lines:
@@ -296,7 +342,6 @@ class JuliusAligner( BaseAligner ):
                 if len(line)>0:
                     entries = line.split(" ")
 
-        message = ""
         if len(entries) > 0:
             added = self.add_tiedlist(entries)
             if len(added) > 0:
@@ -306,10 +351,12 @@ class JuliusAligner( BaseAligner ):
                 with codecs.open(outputalign, 'r', encoding) as f:
                     lines = f.readlines()
 
-        errorlines = ""
         for line in lines:
             if line.startswith("Error:") and not " line " in line:
                 errorlines = errorlines + line
+            if "search failed" in line:
+                message = "Julius search has failed to find the transcription in the audio file of this unit."
+                errorlines = "Search error. "+ errorlines
 
         if len(errorlines) > 0:
             raise Exception(message + errorlines)
