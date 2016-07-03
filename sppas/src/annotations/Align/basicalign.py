@@ -38,8 +38,8 @@
 import re
 import codecs
 
-from annotations.Align.basealigner  import BaseAligner
-from annotations.Align.alignerio    import AlignerIO
+from annotations.Align.basealigner import BaseAligner
+from annotations.Align.alignerio   import AlignerIO
 
 import audiodata
 

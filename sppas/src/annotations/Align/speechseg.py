@@ -37,7 +37,6 @@
 
 import os.path
 import codecs
-import re
 
 from sp_glob import encoding
 
@@ -243,15 +242,16 @@ class SpeechSegmenter:
 
     def _readline(self, filename):
         """
-        Return the first line of filename, formatted.
+        Return the lines of filename, formatted.
 
         """
-        line = ""
-        with codecs.open(filename, 'r', encoding) as fp:
-            # Get the phoneme sequence
-            line = fp.readline()
+        try:
+            with codecs.open(filename, 'r', encoding) as fp:
+                return ToStrip(fp.readline())
+        except Exception:
+            return "" # IOError
 
-        return ToStrip(line)
+        return "" # Empty file
 
     # ------------------------------------------------------------------------
 
@@ -268,6 +268,7 @@ class SpeechSegmenter:
         an empty string if success.
 
         """
+        print "SPEECHSEG: RUN ALIGNER..."
         # Get the phonetization and tokenization strings to time-align.
         phones = ""
         tokens = ""
@@ -291,7 +292,9 @@ class SpeechSegmenter:
             return ""
 
         # Execute Alignment
+
         ret = self._aligner.run_alignment(audiofilename, alignname)
+        print "RETURN:",ret
 
         return ret
 

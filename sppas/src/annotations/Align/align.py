@@ -49,7 +49,7 @@ from annotationdata.media         import Media
 from annotationdata.io.utils      import gen_id
 
 from speechseg import SpeechSegmenter
-from alignerio import AlignerIO
+from alignio   import AlignIO
 from modelmixer import ModelMixer
 from activity import Activity
 
@@ -348,7 +348,7 @@ class sppasAlign:
 
         @param phontier (Tier) contains the phonetization.
         @param toktier (Tier) contains the tokenization, or None.
-        @return A transciption with 1 or 3 tiers.
+        @return A transcription.
 
         """
         # Set local file names
@@ -388,7 +388,7 @@ class sppasAlign:
         # Split input into inter-pausal units
         # --------------------------------------------------------------
         if self.logfile:
-            self.logfile.print_message("Split into inter-pausal units: ",indent=2)
+            self.logfile.print_message("Split into units: ",indent=2)
 
         try:
             s1 = s2 = 0
@@ -452,11 +452,8 @@ class sppasAlign:
             self.logfile.print_message("Read each alignment unit: ", indent=3)
 
         try:
-            trsoutput = AlignerIO(self.speechseg._alignerid)
-            if toktier is not None:
-                trsoutput.read( diralign, listfilename, self.speechseg._mapping, tokens=True)
-            else:
-                trsoutput.read( diralign, listfilename, self.speechseg._mapping, tokens=False)
+            alignio = AlignIO( self.speechseg._mapping )
+            trsoutput = alignio.read( diralign, listfilename )
 
             if self.speechseg._alignerid != 'basic':
                 trsoutput = self.rustine_liaisons(trsoutput)
@@ -468,7 +465,7 @@ class sppasAlign:
         except Exception:
             if self._options['clean'] is True:
                 shutil.rmtree( diralign )
-            raise # IOError("align.py. AlignerIO. Error while reading aligned tracks: " + str(e))
+            raise
 
         # Set media
         extm = os.path.splitext(inputaudioname)[1].lower()[1:]
