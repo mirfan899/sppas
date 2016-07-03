@@ -40,7 +40,6 @@ import random
 import shutil
 from datetime import date
 
-from resources.mapping import Mapping
 from resources.acm.tiedlist import TiedList
 
 # ---------------------------------------------------------------------------
@@ -57,21 +56,14 @@ class BaseAligner:
     A base class for a system to perform phonetic speech segmentation.
 
     """
-    def __init__(self, modelfilename, mapping=None):
+    def __init__(self, modelfilename):
         """
         Constructor.
 
         @param modelfilename (str) the acoustic model file name
-        @param mapping (Mapping) a mapping table to convert the phone set
 
         """
-        if mapping is None:
-            mapping = Mapping()
-        if isinstance(mapping, Mapping) is False:
-            raise TypeError('Aligner expected a Mapping as argument.')
-
         self._model    = modelfilename
-        self._mapping  = mapping
 
         self._infersp  = False
         self._outext   = "" # output file name extension

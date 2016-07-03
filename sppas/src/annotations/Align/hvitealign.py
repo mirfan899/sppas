@@ -57,17 +57,16 @@ class HviteAligner( BaseAligner ):
     http://htk.eng.cam.ac.uk/links/asr_tool.shtml
 
     """
-    def __init__(self, modelfilename, mapping=None):
+    def __init__(self, modelfilename):
         """
         Constructor.
 
         HviteAligner aligns one inter-pausal unit.
 
         @param modelfilename (str) the acoustic model file name
-        @param mapping (Mapping) a mapping table to convert the phone set
 
         """
-        BaseAligner.__init__(self, modelfilename, mapping)
+        BaseAligner.__init__(self, modelfilename)
         self._outext = "mlf"
 
     # -----------------------------------------------------------------------
@@ -80,12 +79,7 @@ class HviteAligner( BaseAligner ):
         @param dictname is the dictionary file name
 
         """
-        # Map phonemes from SAMPA to the expected one.
-        self._mapping.set_keepmiss(True)
-        self._mapping.set_reverse(True)
-
-        phones = self._mapping.map(self._phones)
-        phoneslist = ToStrip(phones).split()
+        phoneslist = ToStrip(self._phones).split()
         tokenslist = ToStrip(self._tokens).split()
         if len(tokenslist) != len(phoneslist):
             tokenslist = [ "w_"+str(i) for i in range(len(phoneslist)) ]

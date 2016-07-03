@@ -40,14 +40,6 @@ import codecs
 
 from sp_glob import encoding
 
-import audiodata
-from audiodata.channel    import Channel
-from audiodata.channelsilence import ChannelSilence
-
-from resources.mapping  import Mapping
-
-from presenters.audiosilencepresenter import AudioSilencePresenter
-
 from juliusalign    import JuliusAligner
 from hvitealign     import HviteAligner
 from basicalign     import BasicAligner
@@ -92,22 +84,12 @@ class SpeechSegmenter:
         # The acoustic model directory
         self._modeldir = model
 
-        # Map phoneme names from model-specific to SAMPA and vice-versa
-        mappingfilename = os.path.join( self._modeldir, "monophones.repl")
-        if os.path.isfile( mappingfilename ):
-            try:
-                self._mapping = Mapping( mappingfilename )
-            except Exception:
-                self._mapping = Mapping()
-        else:
-            self._mapping = Mapping()
-
         # The automatic alignment system:
         # The basic aligner is used:
         #   - when the IPU contains only one phoneme;
         #   - when the automatic alignment system failed to perform segmn.
         self.set_aligner(alignername)
-        self._basicaligner = BasicAligner(model, self._mapping)
+        self._basicaligner = BasicAligner(model)
         self._instantiate_aligner()
 
     # ------------------------------------------------------------------------
@@ -163,95 +145,21 @@ class SpeechSegmenter:
 
     # ----------------------------------------------------------------------
 
+    def get_aligner_ext(self):
+        """
+        Return the output file extension the aligner will use.
+
+        """
+        return self._aligner.get_outext()
+
+    # ----------------------------------------------------------------------
+
     def get_model(self):
         """
         Return the model directory name.
 
         """
         return self._modeldir
-
-    # ----------------------------------------------------------------------
-
-    def split(self, inputaudio, trstier, diralign, extension, listfile=None):
-        """
-        Split all the data into tracks.
-
-        @param trstier is the tier to split
-        @param diralign is the directory to put units.
-        @param extension is the file extension of units.
-
-        @return tuple with number of silences and number of tracks
-
-        """
-        audiospeech = audiodata.io.open( inputaudio )
-        idx         = audiospeech.extract_channel()
-        channel     = audiospeech.get_channel(idx)
-        chansil     = ChannelSilence( channel )
-        framerate   = channel.get_framerate()
-        duration    = float(channel.get_nframes())/float(framerate)
-
-        trstracks = []
-        silence   = []
-        trsunits  = []
-        i = 0
-        last = trstier.GetSize()
-        while i < last:
-            # Set the current annotation values
-            __ann   = trstier[i]
-            __label = __ann.GetLabel().GetValue()
-            # Save information
-            if __ann.GetLabel().IsSilence():
-                __start = int(__ann.GetLocation().GetBegin().GetMidpoint() * framerate)
-                __end   = int(__ann.GetLocation().GetEnd().GetMidpoint()   * framerate)
-                # Verify next annotations (concatenate all silences between 2 tracks)
-                if (i + 1) < last:
-                    __nextann = trstier[i + 1]
-                    while (i + 1) < last and __nextann.GetLabel().IsSilence():
-                        __end = int(__nextann.GetLocation().GetEnd().GetMidpoint() * framerate)
-                        i = i + 1
-                        if (i + 1) < last:
-                            __nextann = trstier[i+1]
-                silence.append((__start,__end))
-            else:
-                __start = int(__ann.GetLocation().GetBeginMidpoint() * framerate)
-                __end   = int(__ann.GetLocation().GetEndMidpoint()   * framerate)
-                trstracks.append((__start,__end))
-                trsunits.append( __label )
-
-            i = i+1
-        # end while
-
-        chansil.set_silences( silence )
-        audiosilpres = AudioSilencePresenter(chansil)
-        audiosilpres.write_tracks(trstracks, diralign, ext=extension, trsunits=trsunits, trsnames=[])
-
-        if listfile is not None:
-            # write the list file
-            with codecs.open(listfile ,'w', encoding) as fp:
-                idx = 0
-                for from_pos, to_pos in trstracks:
-                    fp.write( "%.4f %.4f " %( float(from_pos)/float(framerate) , float(to_pos)/float(framerate) ))
-                    fp.write( "\n" )
-                    idx = idx+1
-                # Finally, print audio file duration
-                fp.write( "%.4f\n" % duration )
-
-        return (len(silence), len(trstracks))
-
-    # ------------------------------------------------------------------------
-
-    def _readline(self, filename):
-        """
-        Return the lines of filename, formatted.
-
-        """
-        try:
-            with codecs.open(filename, 'r', encoding) as fp:
-                return ToStrip(fp.readline())
-        except Exception:
-            return "" # IOError
-
-        return "" # Empty file
 
     # ------------------------------------------------------------------------
 
@@ -268,7 +176,6 @@ class SpeechSegmenter:
         an empty string if success.
 
         """
-        print "SPEECHSEG: RUN ALIGNER..."
         # Get the phonetization and tokenization strings to time-align.
         phones = ""
         tokens = ""
@@ -276,10 +183,12 @@ class SpeechSegmenter:
         if phonname is not None:
             phones = self._readline(phonname)
         self._aligner.set_phones( phones )
+        self._basicaligner.set_phones( phones )
 
         if tokenname is not None:
             tokens = self._readline(tokenname)
         self._aligner.set_tokens( tokens )
+        self._basicaligner.set_tokens( tokens )
 
         # Do not align nothing!
         if len(phones) == 0:
@@ -292,9 +201,7 @@ class SpeechSegmenter:
             return ""
 
         # Execute Alignment
-
         ret = self._aligner.run_alignment(audiofilename, alignname)
-        print "RETURN:",ret
 
         return ret
 
@@ -308,14 +215,29 @@ class SpeechSegmenter:
 
         """
         if self._alignerid == "julius":
-            self._aligner = JuliusAligner( self._modeldir, self._mapping )
+            self._aligner = JuliusAligner( self._modeldir )
 
         elif self._alignerid == "hvite":
-            self._aligner = HviteAligner( self._modeldir, self._mapping )
+            self._aligner = HviteAligner( self._modeldir )
 
         else:
-            self._aligner = BasicAligner( self._modeldir, self._mapping )
+            self._aligner = BasicAligner( self._modeldir )
 
         self._aligner.set_infersp( self._infersp )
 
     # ------------------------------------------------------------------------
+
+    def _readline(self, filename):
+        """
+        Return the lines of filename, formatted.
+
+        """
+        try:
+            with codecs.open(filename, 'r', encoding) as fp:
+                return ToStrip(fp.readline())
+        except Exception:
+            return "" # IOError
+
+        return "" # Empty file
+
+    # ----------------------------------------------------------------------

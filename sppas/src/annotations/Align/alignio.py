@@ -52,6 +52,13 @@ from annotationdata.annotation     import Annotation
 from annotationdata.label.label    import Label
 from annotationdata.label.text     import Text
 
+import audiodata.io
+from audiodata.audio         import AudioPCM
+from audiodata.channel       import Channel
+from audiodata.channelframes import ChannelFrames
+
+from resources.mapping import Mapping
+
 # ------------------------------------------------------------------
 # Main class
 # ------------------------------------------------------------------
@@ -70,22 +77,43 @@ class AlignIO:
         """
         Creates a new AlignIO instance.
 
-        @param mapping (Mapping) Phoneme mapping table
+        @param mapping (Mapping) a mapping table to convert the phone set
 
         """
+        if mapping is None:
+            mapping = Mapping()
+        if isinstance(mapping, Mapping) is False:
+            raise TypeError('Aligner expected a Mapping as argument.')
+
         self._mapping = mapping
         self._listio  = ListIO()
+        self._tracknames = TrackNamesGenerator()
 
     # ------------------------------------------------------------------------
 
-    def read(self, dirname, listfilename):
+    def get_audiofilename(self, trackdir, tracknumber):
+        return self._tracknames.audiofilename(trackdir, tracknumber)
+
+    def get_phonesfilename(self, trackdir, tracknumber):
+        return self._tracknames.phonesfilename(trackdir, tracknumber)
+
+    def get_tokensfilename(self, trackdir, tracknumber):
+        return self._tracknames.tokensfilename(trackdir, tracknumber)
+
+    def get_alignfilename(self, trackdir, tracknumber, ext):
+        return self._tracknames.alignfilename(trackdir, tracknumber, ext)
+
+    # ------------------------------------------------------------------------
+
+    def read(self, dirname):
         """
         Return a Transcription.
 
         """
-        units = self._listio.read( listfilename )
+        units = self._listio.read( dirname )
 
         trsin = SegmentsIn()
+        trsin.set_tracksnames( self._tracknames )
         trsin.read(dirname, units)
 
         # map-back phonemes
@@ -103,9 +131,27 @@ class AlignIO:
 
     # ------------------------------------------------------------------------
 
+    def split(self, inputaudio, phontier, toktier, diralign):
+        """
+        Write tracks from a Transcription.
+
+        """
+        # Map phonemes from SAMPA to the expected ones.
+        self._mapping.set_keepmiss( True )
+        self._mapping.set_reverse( True )
+
+        for ann in phontier:
+            label = ann.GetLabel().GetValue()
+            ann.GetLabel().SetValue( self._mapping.map( label ) )
+
+        sgmt = SegmentsOut()
+        sgmt.set_tracksnames( self._tracknames )
+        units = sgmt.split(inputaudio, phontier, toktier, diralign)
+        self._listio.write(diralign, units)
+
 # ------------------------------------------------------------------
 
-class SegmentsOut( Transcription ):
+class SegmentsOut:
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -120,12 +166,98 @@ class SegmentsOut( Transcription ):
         Creates a new SegmentsOut instance.
 
         """
-        Transcription.__init__(self, name, mintime, maxtime)
         self.alignerio = AlignerIO()
         self._radius = 0.005
+        self._tracknames = TrackNamesGenerator()
 
     # ------------------------------------------------------------------------
 
+    def set_tracksnames( self, tracknames ):
+        self._tracknames = tracknames
+
+    # ------------------------------------------------------------------------
+
+    def split(self, inputaudio, phontier, toktier, diralign):
+        """
+        Split all the data into tracks.
+
+        @param phontier (Tier - IN) the tier with phonetization to split
+        @param toktier  (Tier - IN) the tier with tokenization to split
+        @param diralign (str - IN) the directory to put units.
+
+        @return List of units with (start-time end-time)
+
+        """
+        units = self._write_text_tracks(phontier, toktier, diralign)
+        self._write_audio_tracks(inputaudio, units, diralign)
+        return units
+
+    # ------------------------------------------------------------------------
+
+    def _write_text_tracks(self, phontier, toktier, diralign):
+        """
+
+        """
+        tokens = True
+        if toktier is None:
+            toktier = phontier.Copy()
+            tokens = False
+        else:
+            if phontier.GetSize() != toktier.GetSize():
+                raise IOError('Inconsistency in the number of intervals of phonetization and tokenization tiers.')
+
+        units = []
+        for annp,annt in zip(phontier,toktier):
+
+            b = annp.GetLocation().GetBegin().GetMidpoint()
+            e = annp.GetLocation().GetEnd().GetMidpoint()
+            units.append( (b,e) )
+
+            fnp = self._tracknames.phonesfilename(diralign, len(units))
+            self.__write_texttrack( fnp, annp.GetLabel().GetValue() )
+            if tokens is True:
+                fnt = self._tracknames.tokensfilename(diralign, len(units))
+                self.__write_texttrack( fnt, annt.GetLabel().GetValue() )
+
+        return units
+
+    def __write_texttrack(self, tracktxtname, trackcontent):
+        with codecs.open(tracktxtname,"w", encoding) as fp:
+            fp.write(trackcontent)
+
+    # ------------------------------------------------------------------------
+
+    def _write_audio_tracks(self, inputaudio, units, diralign):
+
+        audio = audiodata.io.open(inputaudio)
+        idx = audio.extract_channel(0)
+        channel = audio.get_channel(idx)
+        # no more need of input data, can close
+        audio.close()
+
+        framerate = channel.get_framerate()
+        sampwidth = channel.get_sampwidth()
+
+        track = 1
+        for (s,e) in units:
+
+            # Extract the fragment of frames and convert to 16000 Hz, 16 bits.
+            fragmentchannel = channel.extract_fragment(begin=int(s*framerate), end=int(e*framerate))
+            cf = ChannelFrames( fragmentchannel.get_frames( fragmentchannel.get_nframes()) )
+            cf.resample( sampwidth, framerate, 16000 )
+            cf.change_sampwidth( sampwidth, 2)
+            #cf.append_silence( 0.2*16000 )
+
+            trackname    = self._tracknames.audiofilename(diralign, track)
+            trackchannel = Channel( 16000, 2, frames=cf.get_frames() )
+            self.__write_audiotrack(trackname, trackchannel)
+
+            track = track + 1
+
+    def __write_audiotrack(self, trackname, channel):
+        audio_out = AudioPCM()
+        audio_out.append_channel( channel )
+        audiodata.io.save( trackname, audio_out )
 
 # ------------------------------------------------------------------
 
@@ -147,6 +279,12 @@ class SegmentsIn( Transcription ):
         Transcription.__init__(self, name, mintime, maxtime)
         self.alignerio = AlignerIO()
         self._radius = 0.005
+        self._tracknames = TrackNamesGenerator()
+
+    # ------------------------------------------------------------------------
+
+    def set_tracksnames( self, tracknames ):
+        self._tracknames = tracknames
 
     # ------------------------------------------------------------------------
 
@@ -167,57 +305,29 @@ class SegmentsIn( Transcription ):
         itemw = self.NewTier("TokensAlign")
 
         # Get all unit alignment file names (default file names of write_tracks())
-        dirlist  = glob.glob( os.path.join(dirname, "track_*palign") )
-        dirlist += glob.glob( os.path.join(dirname, "track_*mlf") )
-        ntracks = len(dirlist)
-        if ntracks == 0:
-            raise IOError('No tracks were time-aligned.')
+#         dirlist  = glob.glob( os.path.join(dirname, "track_*palign") )
+#         dirlist += glob.glob( os.path.join(dirname, "track_*mlf") )
+#         ntracks = len(dirlist)
+#         if ntracks == 0:
+#             raise IOError('No tracks were time-aligned.')
 
         # The number of alignment files must correspond
         # to the number of units in the "list" file.
-        if (len(units)-1) != ntracks:
-            raise IOError('Inconsistency between expected nb of tracks '+str(len(units)-1)+' and nb track files '+str(ntracks))
+#         if len(units) != ntracks:
+#             raise IOError('Inconsistency between expected nb of tracks '+str(len(units))+' and nb track files '+str(ntracks))
 
         # Explore each unit to get alignments
-        wavend,unitend = units[ntracks] # Get the audio duration (last line in list file)
-        prevunitend = units[0][0]
-        for track in range(ntracks):
+        for track in range(len(units)):
 
             # Get real start and end time values of this unit.
             unitstart,unitend = units[track]
 
-            # Silences were not time-aligned. We add back them now.
-            if prevunitend < unitstart:
-                # An empty interval between 2 units...
-                time = TimeInterval(TimePoint(prevunitend,self._radius), TimePoint(unitstart,self._radius))
-                annotation = Annotation(time, Label("#"))
-                itemp.Append(annotation)
-                #itemw.Append(annotation.Copy())
-
-            basename = os.path.join(dirname, "track_%06d"%(track+1))
+            basename = self._tracknames.alignfilename(dirname, track+1)
             (_phonannots,_wordannots) = self.alignerio.read_aligned(basename)
 
             # Append alignments in tiers
             self._append_tuples(itemp, _phonannots, unitstart, unitend)
             self._append_tuples(itemw, _wordannots, unitstart, unitend)
-
-            prevunitend = unitend
-
-        # A silence at the end?
-        # ... Extend the transcription to the end of the wav.
-        if (unitend+0.01) < wavend:
-            try:
-                if itemp.GetSize()>0: # we had phonemes
-                    time = TimeInterval(TimePoint(unitend,self._radius), TimePoint(wavend,0.))
-                    annotation = Annotation(time, Label("#"))
-                    itemp.Append(annotation)
-            except Exception as e:
-                raise IOError('Error %s with the audio file duration, for track %d.'%(str(e),(track-1)))
-            if itemw.GetSize()>0: # we had tokens
-                try:
-                    itemw.Append(annotation.Copy())
-                except Exception as e:
-                    raise IOError('Error %s with the audio file duration, for track %d.'%(str(e),(track-1)))
 
         # Adjust Radius
         if itemp.GetSize()>1:
@@ -259,21 +369,46 @@ class SegmentsIn( Transcription ):
 
 # ----------------------------------------------------------------------
 
+class TrackNamesGenerator():
+    def __init__(self):
+        pass
+
+    def audiofilename(self, trackdir, tracknumber):
+        return os.path.join(trackdir, "track_%.06d.wav" % tracknumber)
+
+    def phonesfilename(self, trackdir, tracknumber):
+        return os.path.join(trackdir, "track_%.06d.pron" % tracknumber)
+
+    def tokensfilename(self, trackdir, tracknumber):
+        return os.path.join(trackdir, "track_%.06d.term" % tracknumber)
+
+    def alignfilename(self, trackdir, tracknumber, ext=None):
+        if ext is None:
+            return os.path.join(trackdir, "track_%.06d" % tracknumber)
+        return os.path.join(trackdir, "track_%.06d.%s" % (tracknumber,ext))
+
+# ----------------------------------------------------------------------
+
 class ListIO():
+
+    DEFAULT_FILENAME="tracks_index.list"
+
+    # ------------------------------------------------------------------
 
     def __init__(self):
         pass
 
     # ------------------------------------------------------------------
 
-    def read(self, filename):
+    def read(self, dirname):
         """
-        Read a list file (start-time end-time track-filename).
+        Read a list file (start-time end-time).
 
         @param filename is the list file name.
         @raise IOError
 
         """
+        filename = os.path.join( dirname, ListIO.DEFAULT_FILENAME )
         with codecs.open(filename, 'r', encoding) as fp:
             lines = fp.readlines()
 
@@ -285,10 +420,18 @@ class ListIO():
             _tab = line.split()
             if len(_tab) >= 2:
                 _units.append( (float(_tab[0]),float(_tab[1])) )
-            elif len(_tab) == 1:
-                # last line indicates the duration of the audio file.
-                _units.append( (float(_tab[0]), 0.) )
 
         return _units
+
+    # ------------------------------------------------------------------
+
+    def write(self, dirname, units):
+        """
+        """
+        filename = os.path.join( dirname, ListIO.DEFAULT_FILENAME )
+        with codecs.open(filename ,'w', encoding) as fp:
+            for start,end in units:
+                fp.write( "%.6f %.6f " %(start,end))
+                fp.write( "\n" )
 
     # ------------------------------------------------------------------

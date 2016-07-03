@@ -226,7 +226,6 @@ class IPUsOut( object ):
             # Finally, print audio duration
             fp.write( "%.4f\n" %ipusaudio.get_channel().get_duration() )
 
-
     # ------------------------------------------------------------------
 
     def write_tracks(self, ipustrs, ipusaudio, output, extensiontrs, extensionaudio):

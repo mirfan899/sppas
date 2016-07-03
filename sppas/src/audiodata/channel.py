@@ -189,7 +189,7 @@ class Channel( object ):
         """
         Extract a fragment between the beginning and the end.
 
-        @param begin (int : number of frames) the beginning of the fragment to extract
+        @param begin (int: number of frames) the beginning of the fragment to extract
         @param end (int: number of frames) the end of the fragment to extract
 
         @return (Channel) the fragment extracted.

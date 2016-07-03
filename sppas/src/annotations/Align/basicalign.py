@@ -35,15 +35,10 @@
 # File: basicalign.py
 # ----------------------------------------------------------------------------
 
-import re
-import codecs
-
 from annotations.Align.basealigner import BaseAligner
 from annotations.Align.alignerio   import AlignerIO
 
-import audiodata
-
-from sp_glob import encoding
+import audiodata.io
 
 # ----------------------------------------------------------------------------
 
@@ -60,7 +55,7 @@ class BasicAligner( BaseAligner ):
     In case of phonetic variants, the first shortest phonetization is selected.
 
     """
-    def __init__(self, modelfilename, mapping=None):
+    def __init__(self, modelfilename):
         """
         Constructor.
 
@@ -68,10 +63,9 @@ class BasicAligner( BaseAligner ):
         for each phoneme. It selects the shortest in case of variants.
 
         @param modelfilename (str) the acoustic model file name
-        @param mapping (Mapping) a mapping table to convert the phone set
 
         """
-        BaseAligner.__init__(self, modelfilename, mapping)
+        BaseAligner.__init__(self, modelfilename)
         self._outext = "palign"
 
     # -----------------------------------------------------------------------
@@ -109,7 +103,6 @@ class BasicAligner( BaseAligner ):
         Assign the same duration to each phoneme.
 
         @param duration (float) the duration of the audio input
-        @param phones (str) the phonetization to time-align
         @param outputalign (str) the output file name
 
         @return the List of tuples (begin, end, phone)
@@ -185,6 +178,7 @@ class BasicAligner( BaseAligner ):
             if len(p) < m:
                 i = n
                 m = len(p)
+
         return tab[i].strip()
 
     # ------------------------------------------------------------------------

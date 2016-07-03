@@ -38,7 +38,6 @@
 import os
 import codecs
 import re
-
 from subprocess import Popen, PIPE, STDOUT
 
 from basealigner import BaseAligner
@@ -47,6 +46,7 @@ from sp_glob import encoding
 from sp_glob import JULIUS_CONFIG
 
 from resources.rutils import ToStrip
+
 from resources.slm.ngramsmodel import NgramsModel
 from resources.slm.arpaio      import ArpaIO
 from resources.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
@@ -88,7 +88,7 @@ class JuliusAligner( BaseAligner ):
     (2000-2003) and currently Interactive Speech Technology Consortium (ISTC).
 
     """
-    def __init__(self, modelfilename, mapping=None):
+    def __init__(self, modelfilename):
         """
         JuliusAligner is able to align one audio segment that can be:
             - an inter-pausal unit,
@@ -125,10 +125,9 @@ class JuliusAligner( BaseAligner ):
         if outext is set to "walign", JuliusAligner will use a slm.
 
         @param modelfilename (str) the acoustic model file name
-        @param mapping (Mapping) a mapping table to convert the phone set
 
         """
-        BaseAligner.__init__(self, modelfilename, mapping)
+        BaseAligner.__init__(self, modelfilename)
         self._outext = "palign"
 
     # ------------------------------------------------------------------------
@@ -143,13 +142,8 @@ class JuliusAligner( BaseAligner ):
         dictname = basename + ".dict"
         slmname  = basename + ".arpa"
 
-        # Map phonemes from SAMPA to the expected one.
-        self._mapping.set_keepmiss(True)
-        self._mapping.set_reverse( True )
-
         # Get tokens and their pronunciations
-        phones = self._mapping.map(self._phones)
-        phoneslist = ToStrip(phones).split()
+        phoneslist = ToStrip(self._phones).split()
         tokenslist = ToStrip(self._tokens).split()
         if len(tokenslist) != len(phoneslist):
             raise IOError("Inconsistent data: Got %d pronunciations and %d tokens"%(len(phoneslist),len(tokenslist)))
@@ -184,12 +178,7 @@ class JuliusAligner( BaseAligner ):
         dictname    = basename + ".dict"
         grammarname = basename + ".dfa"
 
-        # Map phonemes from SAMPA to the expected one.
-        self._mapping.set_keepmiss( True )
-        self._mapping.set_reverse(  True )
-
-        phones = self._mapping.map(self._phones)
-        phoneslist = ToStrip(phones).split()
+        phoneslist = ToStrip(self._phones).split()
         tokenslist = ToStrip(self._tokens).split()
         if len(tokenslist) != len(phoneslist):
             tokenslist = [ "w_"+str(i) for i in range(len(phoneslist)) ]
@@ -241,10 +230,9 @@ class JuliusAligner( BaseAligner ):
         dictionary = '"' + basename.replace('"', '\\"') + ".dict" + '"'
         grammar    = '"' + basename.replace('"', '\\"') + ".dfa"  + '"'
         slm        = '"' + basename.replace('"', '\\"') + ".arpa" + '"'
-        audio      = '"' + inputwav.replace('"', '\\"') + '"'
 
         # the command
-        command = "echo " + audio + " | julius "
+        command = "echo " + inputwav + " | julius "
 
         # the global decoding parameters
         command += " -input file -gprune safe -iwcd1 max -smpFreq 16000"

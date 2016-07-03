@@ -62,7 +62,7 @@ class AlignerIO( object ):
 
     """
     # List of file extensions this class is able to read and/or write.
-    EXTENSIONS = [ 'palign', 'mlf' ]
+    EXTENSIONS = [ 'palign', 'mlf', 'walign' ]
 
     # ------------------------------------------------------------------------
 
@@ -90,8 +90,10 @@ class AlignerIO( object ):
             if os.path.isfile(trackname) is True:
                 if ext == "palign":
                     return self.read_palign( trackname )
-                else:
+                elif ext == "mlf":
                     return self.read_mlf( trackname )
+                elif ext == "walign":
+                    return self.read_walign( trackname )
 
         raise IOError('No time-aligned file for %s'%basename)
 
@@ -212,6 +214,21 @@ class AlignerIO( object ):
             _wordalign.append( [wordloc_s, loc_e, tokens[wordidx-1], scores[wordidx-1]] )
 
         return (_phonalign,_wordalign)
+
+    # ------------------------------------------------------------------
+
+    def read_walign(self):
+        """
+        Read an alignment file in the standard format of Julius CSR engine.
+
+        @param filename (str - IN) The input file name.
+        @return Two lists of tuples:
+            - None
+            - (start-time end-time word score)
+
+        """
+        _wordalign = []
+        return (None,_wordalign)
 
     # ------------------------------------------------------------------
 

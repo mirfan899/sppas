@@ -38,10 +38,12 @@
 import shutil
 import os.path
 import glob
+import logging
 
 from presenters.audiosppaspresenter import AudioSppasPresenter
 import utils.fileutils as fileutils
 
+import audiodata.io
 import annotationdata.io
 from annotationdata.transcription import Transcription
 from annotationdata.tier          import Tier
@@ -55,6 +57,8 @@ from activity import Activity
 
 from sp_glob import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
 from sp_glob import RESOURCES_PATH
+
+from resources.mapping import Mapping
 
 # ----------------------------------------------------------------------------
 
@@ -103,16 +107,31 @@ class sppasAlign:
                 modelmixer = ModelMixer()
                 modelmixer.load( model,modelL1 )
                 outputdir = os.path.join(RESOURCES_PATH, "models", "models-mix")
-                (appended,interpolated,keeped,changed) = modelmixer.mix( outputdir, gamma=1. )
+                modelmixer.mix( outputdir, gamma=1. )
                 model = outputdir
             except Exception as e:
                 if logfile is not None:
                     logfile.print_message("The model is ignored: %s"%str(e), indent=3, status=WARNING_ID)
                 else:
-                    print "The model is ignored: %s"%str(e)
+                    logging.info( "The model is ignored: %s"%str(e) )
 
-        # The automatic alignment system:
+        # The automatic alignment system
         self.speechseg = SpeechSegmenter( model )
+
+        # Map phoneme names from model-specific to SAMPA and vice-versa
+        mappingfilename = os.path.join( model, "monophones.repl")
+        if os.path.isfile( mappingfilename ):
+            try:
+                mapping = Mapping( mappingfilename )
+            except Exception:
+                mapping = Mapping()
+        else:
+            mapping = Mapping()
+
+        # Manager of interval tracks
+        self.alignio = AlignIO( mapping )
+
+        # Log messages for the user
         self.logfile = logfile
 
         # List of options to configure this automatic annotation
@@ -173,9 +192,9 @@ class sppasAlign:
     def set_clean(self, clean):
         """
         Fix the clean option.
-        If clean is set to True, sppasAlign() will remove temporary files.
 
-        @param clean is a Boolean
+        @param clean (bool - IN) If clean is set to True then temporary files
+        will be removed.
 
         """
         self._options['clean'] = clean
@@ -186,7 +205,7 @@ class sppasAlign:
         """
         Fix the name of the aligner: julius, hvite or basic.
 
-        @param alignername is a string (upper/lower accepted)
+        @param alignername (str - IN) Case-insensitive name of the aligner.
 
         """
         self.speechseg.set_aligner(alignername)
@@ -196,11 +215,10 @@ class sppasAlign:
     def set_infersp(self, infersp):
         """
         Fix the infersp option.
-        If infersp is set to True, sppasAlign() will add a short pause at
-        the end of each token, and the automatic aligner will infer if it is
-        appropriate or not.
 
-        @param infersp is a Boolean
+        @param infersp (bool - IN) If infersp is set to True, the aligner
+        will add an optional short pause at the end of each token, and the
+        will infer if it is relevant.
 
         """
         self.speechseg.set_infersp( infersp )
@@ -210,10 +228,9 @@ class sppasAlign:
     def set_basic(self, basic):
         """
         Fix the basic option.
-        If basic is set to True, sppasAlign() will perform a basic segmentation
-        if an aligner fails.
 
-        @param basic is a Boolean
+        @param basic (bool - IN) If basic is set to True, a basic segmentation
+        will be performer if the main aligner fails.
 
         """
         self._options['basic'] = basic
@@ -222,9 +239,9 @@ class sppasAlign:
 
     def set_activity_tier(self, value):
         """
-        Fix the Activity tier generation option value.
+        Fix the activity option.
 
-        @param value is a Boolean
+        @param value (bool - IN) Activity tier generation.
 
         """
         self._options['activity'] = bool(value)
@@ -234,9 +251,9 @@ class sppasAlign:
 
     def set_phntokalign_tier(self, value):
         """
-        Fix the PhnTokAlign tier generation option value.
+        Fix the phntok option.
 
-        @param value is a Boolean
+        @param value (bool - IN) PhnTokAlign tier generation.
 
         """
         self._options['phntok'] = bool(value)
@@ -247,31 +264,18 @@ class sppasAlign:
 
     def audioinput(self):
         """
-        Fix the self.inputaudio value.
-        Verify if a audio file corresponds to the expected
-        input format and convert_tracks if it is needed.
+        Fix the self.inputaudio file name.
 
         @return Boolean value (the input audio file was converted or not).
 
         """
-        isconverted = False
-        tmpname = fileutils.gen_name() + ".wav"
-        try:
-            converter = AudioSppasPresenter(self.logfile)
-            isconverted = converter.export(self.inputaudio, tmpname)
-        except Exception:
-            pass
+        testname = fileutils.string_to_ascii(fileutils.format_filename(self.inputaudio))
+        if testname != self.inputaudio:
+            shutil.copy(self.inputaudio, testname)
+            self.inputaudio = testname
+            return True
 
-        if isconverted is False:
-            testname = fileutils.string_to_ascii(fileutils.format_filename(self.inputaudio))
-            if testname != self.inputaudio:
-                shutil.copy(self.inputaudio, tmpname)
-                isconverted = True
-
-        if isconverted is True:
-            self.inputaudio = tmpname
-
-        return isconverted
+        return False
 
     # ------------------------------------------------------------------------
 
@@ -287,10 +291,6 @@ class sppasAlign:
         if not os.path.exists( diralign ):
             raise IOError('The directory '+diralign+' does not exist.')
 
-        if self.speechseg._alignerid == 'basic':
-            self.__convert_basic(diralign, trstier)
-            return
-
         # Get all audio tracks
         dirlist = glob.glob(os.path.join(diralign, "track_*.wav"))
         ntracks = len(dirlist)
@@ -302,10 +302,10 @@ class sppasAlign:
             if self.logfile:
                 self.logfile.print_message('Align unit number '+str(track), indent=3)
 
-            audiofilename = os.path.join(diralign, "track_%06d.wav"%track)
-            phonname      = os.path.join(diralign, "track_%06d.phon"%track)
-            tokenname     = os.path.join(diralign, "track_%06d.term"%track)
-            alignname     = os.path.join(diralign, "track_%06d.%s"%(track,self.speechseg._aligner.get_outext()))
+            audiofilename = self.alignio.get_audiofilename(diralign,track)
+            phonname      = self.alignio.get_phonesfilename(diralign,track)
+            tokenname     = self.alignio.get_tokensfilename(diralign,track)
+            alignname     = self.alignio.get_alignfilename(diralign,track,self.speechseg.get_aligner_ext())
 
             try:
                 msg = self.speechseg.segmenter(audiofilename, phonname, tokenname, alignname)
@@ -325,18 +325,19 @@ class sppasAlign:
 
                 if os.path.exists(alignname):
                     os.rename(alignname, alignname+'.backup')
-                alignname = os.path.join(diralign, "track_%06d.%s"%(track,self.speechseg._basicaligner.get_outext()))
 
                 # Execute BasicAlign
-                alignerid = self.speechseg.get_aligner()
-                self.speechseg.set_aligner('basic')
                 if self._options['basic'] is True:
                     if self.logfile:
                         self.logfile.print_message('Execute a Basic Alignment - same duration for each phoneme:', indent=3)
+                    alignerid = self.speechseg.get_aligner()
+                    self.speechseg.set_aligner('basic')
+                    alignname = self.alignio.get_alignfilename(diralign,track,self.speechseg.get_aligner_ext())
                     self.speechseg.segmenter(audiofilename, phonname, tokenname, alignname)
+                    self.speechseg.set_aligner(alignerid)
+                # or Create an empty alignment, to get an empty interval in the final tier
                 else:
                     self.speechseg.segmenter(audiofilename, None, None, alignname)
-                self.speechseg.set_aligner(alignerid)
 
             track = track + 1
 
@@ -359,12 +360,14 @@ class sppasAlign:
         try:
             if self.logfile:
                 self.logfile.print_message("Check audio file: ",indent=2)
-            converted = self.audioinput( )
+            converted = self.audioinput()
             if self.logfile:
                 if converted is False:
                     self.logfile.print_message("", indent=3, status=OK_ID)
                 else:
-                    self.logfile.print_message("A copy of the file was created with the required format.", indent=3, status=INFO_ID)
+                    self.logfile.print_message("A copy of the file was temporarily created with a file name: without whitespace and with only ASCII characters.", indent=3, status=INFO_ID)
+            audio = audiodata.io.open( self.inputaudio )
+            audio.close()
         except IOError as e:
             raise IOError('Not a valid audio file: '+str(e))
 
@@ -383,39 +386,18 @@ class sppasAlign:
         else:
             raise Exception("Working directory %s already exists. Can not override."%(diralign))
 
-        listfilename = os.path.join(diralign, "tracks.list")
-
-        # Split input into inter-pausal units
+        # Split input into tracks
         # --------------------------------------------------------------
         if self.logfile:
             self.logfile.print_message("Split into units: ",indent=2)
 
         try:
-            s1 = s2 = 0
-            t1 = t2 = 0
-            if self.logfile:
-                self.logfile.print_message("Phonemes",indent=3)
-
-            (s1,t1) = self.speechseg.split( self.inputaudio, phontier, diralign, "phon", listfilename )
-
-            if toktier is not None:
-                if self.logfile:
-                    self.logfile.print_message("Tokens",indent=3)
-                dirtmp = diralign+"tmp"
-                if not os.path.exists( dirtmp ):
-                    os.mkdir( dirtmp )
-                (s2,t2) = self.speechseg.split( self.inputaudio, toktier, dirtmp, "term" )
-                if s1 != s2  or  t1 != t2:
-                    if self.logfile is not None:
-                        self.logfile.print_message("Inconsistency between phonetization and tokenization: ", indent=3, status=WARNING_ID)
-                        self.logfile.print_message("Got %d silences and %d IPUs in phonetization."%(s1,t1), indent=4)
-                        self.logfile.print_message("Got %d silences and %d IPUs in tokenization"%(s2,t2), indent=4)
-                        self.logfile.print_message("Tokens won't be time-aligned.", indent=4)
-                    else:#out of SPPAS
-                        raise Exception('align.py. Split error: inconsistency between phonemes and tokens (not the same number of IPUs)',indent=3)
-                else:
-                    self.speechseg.split( self.inputaudio, toktier, diralign, "term" )
-                shutil.rmtree( dirtmp )
+            try:
+                self.alignio.split( self.inputaudio, phontier, toktier, diralign )
+            except Exception as e:
+                if self.logfile is not None:
+                    self.logfile.print_message("%s"%str(e), indent=3, status=WARNING_ID)
+                self.alignio.split( self.inputaudio, phontier, None, diralign )
         except Exception as e:
             if self._options['clean'] is True:
                 shutil.rmtree( diralign )
@@ -452,8 +434,7 @@ class sppasAlign:
             self.logfile.print_message("Read each alignment unit: ", indent=3)
 
         try:
-            alignio = AlignIO( self.speechseg._mapping )
-            trsoutput = alignio.read( diralign, listfilename )
+            trsoutput = self.alignio.read( diralign )
 
             if self.speechseg._alignerid != 'basic':
                 trsoutput = self.rustine_liaisons(trsoutput)
@@ -651,56 +632,6 @@ class sppasAlign:
 
     # ------------------------------------------------------------------------
     # Private
-    # ------------------------------------------------------------------------
-
-    def __convert_basic(self, diralign, trstier=None):
-        """
-        Perform segmentation without an audio file.
-
-        """
-        if self.logfile:
-            self.logfile.print_message('Basic Align', indent=2)
-
-        i = 0
-        track = 1
-        last = trstier.GetSize()
-
-        while i < last:
-
-            if self.logfile:
-                self.logfile.print_message('Basic Align, unit number '+str(track), indent=3)
-
-            # Set the current annotation values
-            __ann   = trstier[i]
-            __label = __ann.GetLabel().GetValue()
-            unitduration = __ann.GetLocation().GetDuration().GetValue()
-
-            # Save information
-            if __ann.GetLabel().IsSilence():
-                # Verify next annotations (concatenate all silences between 2 tracks)
-                if (i + 1) < last:
-                    __nextann = trstier[i + 1]
-                    while (i + 1) < last and __nextann.GetLabel().IsSilence():
-                        i = i + 1
-                        if (i + 1) < last:
-                            __nextann = trstier[i+1]
-
-            else:
-
-#        for track,ann in enumerate(trstier):
-                try:
-                    phonname  = os.path.join(diralign, "track_%06d.phon"%track)
-                    tokenname = os.path.join(diralign, "track_%06d.term"%track)
-                    alignname = os.path.join(diralign, "track_%06d.palign"%track)
-                    self.speechseg.segmenter(unitduration, phonname, tokenname, alignname)
-                    if self.logfile:
-                        self.logfile.print_message(" ", indent=3, status=OK_ID)
-                except Exception as e:
-                    if self.logfile:
-                        self.logfile.print_message(str(e), indent=3, status=ERROR_ID)
-                track = track + 1
-            i = i + 1
-
     # ------------------------------------------------------------------------
 
     def rustine_others(self, trs):
