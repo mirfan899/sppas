@@ -493,29 +493,6 @@ class sppasAlign:
 
     # ------------------------------------------------------------------------
 
-    def save(self, trsinput, inputfilename, trsoutput, outputfile=None):
-        """
-        Save depending on the given data.
-        If no output file name is given, output is appended to the input.
-
-        @param trsinput (Transcription)
-        @param inputfilename (str)
-        @param trsoutput (Transcription)
-        @param outputfile (str)
-
-        """
-        # Append to the input
-        if outputfile is None:
-            for tier in trsoutput:
-                trsinput.Append(tier)
-            trsoutput  = trsinput
-            outputfile = inputfilename
-
-        # Save in a file
-        annotationdata.io.write( outputfile,trsoutput )
-
-    # ------------------------------------------------------------------------
-
     def get_phonestier(self, trsinput):
         """
         Return the tier with phonetization or None.
@@ -587,7 +564,7 @@ class sppasAlign:
 
     # ------------------------------------------------------------------------
 
-    def run(self, phonesname, tokensname, audioname, outputfilename=None):
+    def run(self, phonesname, tokensname, audioname, outputfilename):
         """
         Execute SPPAS Alignment.
 
@@ -646,7 +623,8 @@ class sppasAlign:
         # --------------------------------------------------------------
         try:
             self.print_message("Save alignment of the units: ",indent=3)
-            self.save( trsinput, phonesname, trsoutput, outputfilename )
+            # Save in a file
+            annotationdata.io.write( outputfilename,trsoutput )
             self.print_message("", indent=4, status=OK_ID)
         except Exception:
             if self._options['clean'] is True:

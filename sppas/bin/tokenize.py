@@ -40,7 +40,7 @@
 
 __docformat__ = """epytext"""
 __authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 # Imports
@@ -66,16 +66,13 @@ from sp_glob import RESOURCES_PATH
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-epilogue  = "!!!!!!!  if no input is given, the input is stdin and output is stdout  !!!!!!!\n"
-epilogue += "!!!!!!!  if no output is given, the output is the input  !!!!!!!"
+parser = ArgumentParser(usage="%s -r vocab [options]" % os.path.basename(PROGRAM), prog=PROGRAM, description="Text normalization command line interface.")
 
-parser = ArgumentParser(usage="%s -r vocab [options]" % os.path.basename(PROGRAM), prog=PROGRAM, description="Text normalization command line interface.", epilog=epilogue)
-
-parser.add_argument("-r", "--vocab", required=True, help='Vocabulary file name')
+parser.add_argument("-r", "--vocab",      required=True, help='Vocabulary file name')
 parser.add_argument("-i", metavar="file", required=False, help='Input file name')
-parser.add_argument("-o", metavar="file", required=False, help='Output file name')
-parser.add_argument("--delimiter", metavar='char', help="Use a delimiter character instead of a space for word delimiter.")
-parser.add_argument("--std",    action='store_true', help="Add the standard tokenization")
+parser.add_argument("-o", metavar="file", required=False, help='Output file name (required only if -i is fixed)')
+
+parser.add_argument("--std",    action='store_true', help="Add the standard tokenization (available only if -i is fixed)")
 parser.add_argument("--quiet",  action='store_true', help="Disable verbose." )
 
 if len(sys.argv) <= 1:
@@ -95,15 +92,10 @@ if not args.quiet:
 base = os.path.basename( args.vocab )
 lang = base[:3]
 
-delim = ' '
-if args.delimiter:
-    delim = unicode(args.delimiter)
-
 if args.i:
     p = sppasTok( args.vocab,lang )
     if args.std:
         p.set_std(True)
-    p.tokenizer.set_delim( delim )
     p.run( args.i, args.o )
 
 else:
@@ -121,8 +113,6 @@ else:
         tokenizer.set_punct( punct )
     except Exception as e:
         print "[warning] No punctuation dictionary: ",str(e)
-
-    tokenizer.set_delim( delim )
 
     for line in sys.stdin:
         print tokenizer.tokenize( line ).encode('utf8')

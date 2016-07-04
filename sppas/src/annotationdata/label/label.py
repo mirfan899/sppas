@@ -36,15 +36,14 @@
 # ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
-__authors__   = """Tatsuya Watanabe, Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
 from text import Text
 
 # ----------------------------------------------------------------------------
-
 
 class Label( object ):
     """
@@ -57,7 +56,6 @@ class Label( object ):
     A data type can be associated, as Text() can be 'int', 'float' or 'bool'.
 
     """
-
     def __init__(self, entry=None, data_type="str"):
         """
         Creates a new Label instance.
@@ -65,7 +63,6 @@ class Label( object ):
         A Label is represented as a unicode string.
 
         """
-
         # The list of possible Text for this Label
         self.__texts = []
         self.__fct   = max
@@ -75,14 +72,9 @@ class Label( object ):
                 entry = Text(entry, score=1., data_type=data_type)
             self.__texts.append(entry)
 
-    # End __init__
-    # -----------------------------------------------------------------------
-
-
     # -----------------------------------------------------------------------
     # Getters and Setters
     # -----------------------------------------------------------------------
-
 
     def Get(self):
         """
@@ -93,14 +85,11 @@ class Label( object ):
 
     # -----------------------------------------------------------------------
 
-
     def Set(self, entry):
         """
         Set the label to a new label entry.
 
         @param entry (Label)
-
-        @raise TypeError
 
         """
         if isinstance(entry, Label) is False:
@@ -108,9 +97,7 @@ class Label( object ):
 
         self.__texts = entry.Get()
 
-    # End Set
     # -----------------------------------------------------------------------
-
 
     def AddValue(self, text):
         """
@@ -118,17 +105,13 @@ class Label( object ):
 
         @param text (Text)
 
-        @raise TypeError
-
         """
         if not isinstance(text, Text):
             raise TypeError("Text required not %r" % text)
 
         self.__texts.append(text)
 
-    # End AddValue
     # -----------------------------------------------------------------------
-
 
     def RemoveValue(self, text):
         """
@@ -144,17 +127,13 @@ class Label( object ):
         if text in self.__texts:
             self.__texts.remove(text)
 
-    # End RemoveValue
     # -----------------------------------------------------------------------
-
 
     def SetValue(self, entry):
         """
         Remove all labels and append the new string.
 
         @param entry is the new string label
-
-        @raise UnicodeDecodeError
 
         """
         self.UnsetValue()
@@ -164,9 +143,7 @@ class Label( object ):
 
         self.__texts.append(entry)
 
-    # End SetValue
     # -----------------------------------------------------------------------
-
 
     def UnsetValue(self):
         """
@@ -175,9 +152,7 @@ class Label( object ):
         """
         self.__texts = []
 
-    # End UnsetValue
     # -----------------------------------------------------------------------
-
 
     def GetSize(self):
         """
@@ -186,21 +161,16 @@ class Label( object ):
         """
         return len(self.__texts)
 
-    # End GetSize
     # -----------------------------------------------------------------------
-
 
     def GetLabels(self):
         """
-        Return a copy of all texts included into this label.
+        Return a list of text instances of this label.
 
         """
         return [l for l in self.__texts]
 
-    # End GetPlaces
     # -----------------------------------------------------------------------
-
-
 
     def GetFunctionScore(self):
         """
@@ -209,9 +179,7 @@ class Label( object ):
         """
         return self.__fct
 
-    # End GetFunctionScore
     # -----------------------------------------------------------------------
-
 
     def SetFunctionScore(self, fctname):
         """
@@ -225,14 +193,9 @@ class Label( object ):
 
         self.__fct = fctname
 
-    # End SetFunctionScore
-    # -----------------------------------------------------------------------
-
-
     # -----------------------------------------------------------------------
     # Methods for the label with the best score
     # -----------------------------------------------------------------------
-
 
     def GetValue(self):
         """
@@ -245,10 +208,11 @@ class Label( object ):
         text = self.__fct(self.__texts, key=lambda x: x.GetScore())
         return text.GetValue()
 
+    # -----------------------------------------------------------------------
 
     def GetLabel(self):
         """
-        Return the text of the label with the best score.
+        Return the text instance of the label with the best score.
 
         """
         if len(self.__texts) == 0:
@@ -257,9 +221,7 @@ class Label( object ):
         text = self.__fct(self.__texts, key=lambda x: x.GetScore())
         return text
 
-    # End GetValue
     # -----------------------------------------------------------------------
-
 
     def GetTypedValue(self):
         """
@@ -272,107 +234,68 @@ class Label( object ):
         text = self.__fct(self.__texts, key=lambda x: x.GetScore())
         return text.GetTypedValue()
 
-    # End GetTypedValue
     # -----------------------------------------------------------------------
-
 
     def IsEmpty(self):
         """
         Return True if the label with the best score is an empty string.
 
         """
-        return self.GetValue() == ''
+        return self.GetLabel().IsEmpty()
 
-    # End IsEmpty
     # -----------------------------------------------------------------------
-
 
     def IsSpeech(self):
         """
         Return True if the label with the best score is not a silence.
 
         """
-        return not (self.IsSilence() or self.IsPause() or self.IsLaugh() or self.IsNoise() or self.IsDummy())
+        return self.GetLabel().IsSpeech()
 
-    # End IsLabel
     # -----------------------------------------------------------------------
-
 
     def IsSilence(self):
         """
         Return True if the label with the best score is an instance of Silence.
 
         """
-        # SPPAS representation of silences
-        if self.GetValue() in ("#", "sil"):
-            return True
+        return self.GetLabel().IsSilence()
 
-        # The French CID corpus:
-        if self.GetValue().startswith("gpf_"):
-            return True
-
-        return False
-
-    # End IsSilence
     # -----------------------------------------------------------------------
-
 
     def IsPause(self):
         """
         Return True if the label with the best score is a short pause.
 
         """
-        if self.GetValue() == "+":
-            return True
+        return self.GetLabel().IsPause()
 
-        return False
-
-    # End IsPause
     # -----------------------------------------------------------------------
-
 
     def IsLaugh(self):
         """
         Return True if the label with the best score is a laughing.
 
         """
-        if self.GetValue() == "@@":
-            return True
+        return self.GetLabel().IsLaugh()
 
-        return False
-
-    # End IsLaugh
     # -----------------------------------------------------------------------
-
 
     def IsNoise(self):
         """
         Return True if the label with the best score is a noise.
 
         """
-        if self.GetValue() == "*":
-            return True
+        return self.GetLabel().IsNoise()
 
-        return False
-
-    # End IsNoise
     # -----------------------------------------------------------------------
-
 
     def IsDummy(self):
         """
         Return True if the label with the best score is a dummy label.
 
         """
-        if self.GetValue() == "dummy":
-            return True
-
-        return False
-
-    # End IsDummy
-    # -----------------------------------------------------------------------
-
-
+        return self.GetLabel().IsDummy()
 
     # -----------------------------------------------------------------------
     # Overloads

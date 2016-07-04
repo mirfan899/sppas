@@ -80,13 +80,29 @@ class sppasTok(object):
 
         @param vocab (str - IN) the file name with the orthographic transcription
         @param lang (str - IN) the language code
+        @param logfile (sppasLog)
 
         """
         # Log messages for the user
         self.logfile = logfile
 
-        pvoc = WordsList(vocab)
+        self.fix_tokenizer( vocab,lang )
 
+        # List of options to configure this automatic annotation
+        self._options = {}
+        self._options['std'] = False
+
+    # -----------------------------------------------------------------------
+
+    def fix_tokenizer(self, vocab, lang):
+        """
+        Fix the tokenizer.
+
+        @param vocab (str - IN) the file name with the orthographic transcription
+        @param lang (str - IN) the language code
+
+        """
+        pvoc = WordsList(vocab)
         self.tokenizer = DictTok(pvoc, lang)
 
         try:
@@ -100,10 +116,6 @@ class sppasTok(object):
             self.tokenizer.set_punct( punct )
         except Exception:
             pass
-
-        # List of options to configure this automatic annotation
-        self._options = {}
-        self._options['std'] = False
 
     # -----------------------------------------------------------------------
     # Methods to fix options
@@ -222,37 +234,12 @@ class sppasTok(object):
 
     # ------------------------------------------------------------------------
 
-    def save(self, trsinput, inputfilename, trsoutput, outputfile=None):
-        """
-        Save depending on the given data.
-
-        If no output file name is given, trsoutput is appended to the input
-        transcription.
-
-        @param trsinput (Transcription - IN)
-        @param inputfilename (str - IN)
-        @param trsoutput (Transcription - INOUT)
-        @param outputfile (str - IN)
-
-        """
-        # Append to the input
-        if outputfile is None:
-            for tier in trsoutput:
-                trsinput.Append(tier)
-            trsoutput  = trsinput
-            outputfile = inputfilename
-
-        # Save in a file
-        annotationdata.io.write( outputfile,trsoutput )
-
-    # ------------------------------------------------------------------------
-
-    def run( self, inputfilename, outputfile=None ):
+    def run( self, inputfilename,outputfilename ):
         """
         Run the Tokenization process on an input file.
 
-        @param inputfilename is the input file name
-        @param outputfile is the output file name of the tokenization
+        @param inputfilename (str - IN) the input file name of the transcription
+        @param outputfilename (str - IN) the output file name of the tokenization
 
         """
         for k,v in self._options.items():
@@ -304,7 +291,8 @@ class sppasTok(object):
         if tierStokens is not None:
             trsoutput.Add( tierStokens )
 
-        self.save(trsinput, inputfilename, trsoutput, outputfile)
+        # Save in a file
+        annotationdata.io.write( outputfilename,trsoutput )
 
 
     # ------------------------------------------------------------------------
@@ -321,9 +309,9 @@ class sppasTok(object):
         for a in tier:
 
             af = a.Copy()
-            # Do not tokenize an empty label, noises, laughter...
-            if af.GetLabel().IsSpeech() is True:
-                for text in af.GetLabel().GetLabels():
+            for text in af.GetLabel().GetLabels():
+                # Do not tokenize an empty label, noises, laughter...
+                if text.IsSpeech() is True:
                     tokenized = self.tokenizer.tokenize( text.GetValue(), std=std )
                     text.SetValue( tokenized )
             tokens.Append( af )

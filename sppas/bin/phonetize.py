@@ -50,6 +50,7 @@ from annotations.Phon.phon      import sppasPhon
 from annotations.Phon.phonetize import DictPhon
 from resources.dictpron         import DictPron
 from resources.mapping          import Mapping
+from utils.fileutils            import setup_logging
 
 from sp_glob import UNKSTAMP
 
@@ -57,21 +58,26 @@ from sp_glob import UNKSTAMP
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-epilogue  = "!!!!!!!  if no input is given, the input is stdin and output is stdout  !!!!!!!\n"
-epilogue += "!!!!!!!  if no output is given, the output is the input  !!!!!!!"
-
-parser = ArgumentParser(usage="%s -r dict [options]" % os.path.basename(PROGRAM), prog=PROGRAM, description="Phonetization automatic annotation.", epilog=epilogue)
+parser = ArgumentParser(usage="%s -r dict [options]" % os.path.basename(PROGRAM), prog=PROGRAM, description="Phonetization automatic annotation.")
 
 parser.add_argument("-r", "--dict", required=True, help='Pronunciation dictionary file name (HTK-ASCII format).')
-parser.add_argument("-m", "--map", required=False, help='Pronunciation mapping table.')
-parser.add_argument("-i", metavar="file", required=False, help='Input file name.')
-parser.add_argument("-o", metavar="file", required=False, help='Output file name.')
+parser.add_argument("-m", "--map", required=False, help='Pronunciation mapping table. It is used to generate new pronunciations by mapping phonemes of the dictionary.')
+
+parser.add_argument("-i", metavar="file", required=False, help='Input file name')
+parser.add_argument("-o", metavar="file", required=False, help='Output file name (required only if -i is fixed)')
+
 parser.add_argument("--nounk", action='store_true', help="Disable unknown word phonetization." )
+parser.add_argument("--quiet",  action='store_true', help="Disable verbose." )
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
 
 args = parser.parse_args()
+
+# ----------------------------------------------------------------------------
+
+if not args.quiet:
+    setup_logging(1,None)
 
 # ----------------------------------------------------------------------------
 # Automatic Phonetization is here:

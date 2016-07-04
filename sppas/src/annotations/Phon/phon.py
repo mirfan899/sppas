@@ -78,10 +78,14 @@ class sppasPhon( object ):
         @param logfile (sppasLog) is a log file utility class member.
 
         """
+        # Log messages for the user
+        self.logfile = logfile
+
         # Pronunciation dictionary
         self.maptable = None
         if mapfile is not None:
             self.maptable = Mapping( mapfile )
+
         self.set_dict( dictfilename )
 
         # List of options to configure this automatic annotation
@@ -89,12 +93,18 @@ class sppasPhon( object ):
         self._options['phonunk']      = False # Phonetize missing tokens
         self._options['usestdtokens'] = False # Phonetize standard spelling
 
-        # The communication!
-        self.logfile = logfile
-
     # -----------------------------------------------------------------------
     # Methods to fix options
     # -----------------------------------------------------------------------
+
+    def get_option(self, key):
+        """
+        Return the option value of a given key or raise an Exception.
+
+        """
+        return self._options[key]
+
+    # ------------------------------------------------------------------------
 
     def fix_options(self, options):
         """
@@ -126,8 +136,8 @@ class sppasPhon( object ):
         """
         Fix the unk option value.
 
-        @param unk (bool) If unk is set to True, the system will attempt to
-        phonetize unknown entries (i.e. tokens missing in the dictionary).
+        @param unk (bool - IN) If unk is set to True, the system will attempt
+        to phonetize unknown entries (i.e. tokens missing in the dictionary).
         Otherwise, the phonetization of an unknown entry unit is set to the
         default string.
 
@@ -140,13 +150,33 @@ class sppasPhon( object ):
         """
         Fix the stdtokens option.
 
-        @param stdtokens (bool) If it is set to True, the phonetization
+        @param stdtokens (bool - IN) If it is set to True, the phonetization
         will use the standard transcription as input, instead of the faked
         transcription. This option does make sense only for an Enriched
         Orthographic Transcription.
 
         """
         self._options['usestdtokens'] = stdtokens
+
+    # -----------------------------------------------------------------------
+
+    def print_message(self, message, indent=3, status=INFO_ID):
+        """
+        Print a message either in the user log or in the console log.
+
+        """
+        if self.logfile:
+            self.logfile.print_message(message, indent=indent, status=status)
+
+        elif len(message) > 0:
+            if status==INFO_ID:
+                logging.info( message )
+            elif status==WARNING_ID:
+                logging.warning( message )
+            elif status==ERROR_ID:
+                logging.error( message )
+            else:
+                logging.debug( message )
 
     # -----------------------------------------------------------------------
     # Methods to phonetize series of data
@@ -156,7 +186,7 @@ class sppasPhon( object ):
         """
         Set the dictionary.
 
-        @param dictfilename (str) The pronunciation dictionary in HTK-ASCII
+        @param dictfilename (str- IN) The pronunciation dictionary in HTK-ASCII
         format with UTF-8 encoding.
 
         """
@@ -165,15 +195,15 @@ class sppasPhon( object ):
 
     # -----------------------------------------------------------------------
 
-    def phonetize(self, label):
+    def phonetize(self, entry):
         """
         Phonetize a text.
 
-        @param label (str) The string to be phonetized.
+        @param entry (str- IN) The string to be phonetized.
         @return phonetization of `label`.
 
         """
-        tab = self.phonetizer.get_phon_tokens( label.split(), phonunk=self._options['phonunk'])
+        tab = self.phonetizer.get_phon_tokens( entry.split(), phonunk=self._options['phonunk'])
         tabphon = []
         for t,p,s in tab:
             message = None
@@ -190,10 +220,7 @@ class sppasPhon( object ):
                         message = message +"It wasn't phonetized."
 
             if message:
-                if self.logfile:
-                    self.logfile.print_message(message, indent=3, status=s)
-                else:
-                    logging.info('Phonetization. %s'%message)
+                self.print_message(message, indent=3, status=s)
 
         return " ".join(tabphon)
 
@@ -201,61 +228,34 @@ class sppasPhon( object ):
 
     def convert(self, tier, variants=True):
         """
-        Phonetize all labels of a tier.
+        Phonetize all annotation of a tokenized tier.
 
-        @param tier (Tier) contains the orthographic transcription previously tokenized.
+        @param tier (Tier - IN) contains the orthographic transcription
+        previously tokenized.
+        @param variants (bool - IN)
         @return A tier with name "Phonetization"
 
         """
         t = Tier("Phonetization")
-        if tier is None: return t
+        if tier is None:
+            return t
 
         for a in tier:
-            phon = ''
-            # Do not phonetize an unlabelled interval!
-            if not a.GetLabel().IsEmpty():
-                try:
-                    # Do not phonetize silences
-                    if a.GetLabel().IsSilence() is True:
-                        phon = a.GetLabel().GetValue()
-                    elif a.GetLabel().IsPause() is True:
-                        phon = "sil"
-                    else:
-                        _label = a.GetLabel().GetValue()
-                        # Do not phonetize empty intervals!
-                        if len(_label)>0:
-                            phon = self.phonetize( _label )
-                except Exception as e:
-                    raise Exception('Phonetization error of %s. Error: %s'%(a,str(e)))
 
-            new_phon = a.Copy()
-            new_phon.GetLabel().SetValue( phon )
-            t.Append( new_phon )
+            af = a.Copy()
+            for text in af.GetLabel().GetLabels():
+
+                if text.IsPause() is True:
+                    # In case the pronunciation dictionary were not properly fixed.
+                    text.SetValue( "sil" )
+
+                elif text.IsEmpty() is False and text.IsSilence() is False:
+                    phon = self.phonetize( text.GetValue() )
+                    text.SetValue( phon )
+
+            t.Append( af )
 
         return t
-
-    # -----------------------------------------------------------------------
-
-    def save(self, trsinput, inputfilename, trsoutput, outputfile=None):
-        """
-        Save depending on the given data.
-        If no output file name is given, output is appended to the input.
-
-        @param trsinput (Transcription)
-        @param inputfilename (str)
-        @param trsoutput (Transcription)
-        @param outputfile (str)
-
-        """
-        # Append to the input
-        if outputfile is None:
-            for tier in trsoutput:
-                trsinput.Append(tier)
-            trsoutput  = trsinput
-            outputfile = inputfilename
-
-        # Save in a file
-        annotationdata.io.write( outputfile,trsoutput )
 
     # -----------------------------------------------------------------------
 
@@ -294,17 +294,16 @@ class sppasPhon( object ):
 
     # -----------------------------------------------------------------------
 
-    def run( self, inputfilename, outputfile=None ):
+    def run( self, inputfilename, outputfile ):
         """
         Run the Phonetization process on an input file.
 
-        @param inputfilename is the input file name
-        @param outputfile is the output file name of the phonetization
+        @param inputfilename (str - IN) the input file name with tokenization
+        @param outputfile (str - IN) the output file name of the phonetization
 
         """
-        if self.logfile:
-            for k,v in self._options.items():
-                self.logfile.print_message("Option %s: %s"%(k,v), indent=2, status=INFO_ID)
+        for k,v in self._options.items():
+            self.print_message("Option %s: %s"%(k,v), indent=2, status=INFO_ID)
 
         # Get the tier to be phonetized.
         trsinput = annotationdata.io.read( inputfilename )
@@ -319,6 +318,8 @@ class sppasPhon( object ):
         # Save
         trsoutput = Transcription("sppasPhon")
         trsoutput.Append( tierphon )
-        self.save(trsinput, inputfilename, trsoutput, outputfile)
+
+        # Save in a file
+        annotationdata.io.write( outputfile,trsoutput )
 
     # -----------------------------------------------------------------------

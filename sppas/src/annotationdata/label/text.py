@@ -36,11 +36,10 @@
 # ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
-__authors__   = """Tatsuya Watanabe, Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
-
 
 class Text(object):
 
@@ -51,7 +50,6 @@ class Text(object):
         @param text (str)
         @param score (float)
         @param data_type (str): The type of this value (str, int, float, bool)
-
 
         >>> t = Text( "2" )                      # "2"
         >>> t = Text(  2, data_type="int")       # 2
@@ -80,9 +78,7 @@ class Text(object):
         self.__score = float(score)
         self.__data_type = data_type
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def SetValue(self, s, data_type="str"):
         """
@@ -98,9 +94,7 @@ class Text(object):
         self.__value = ' '.join(s.split())
         self._data_type = data_type
 
-    # End SetValue
     # ------------------------------------------------------------------------
-
 
     def SetScore(self, s):
         """
@@ -109,9 +103,7 @@ class Text(object):
         """
         self.__score = float(s)
 
-    # End SetScore
     # ------------------------------------------------------------------------
-
 
     def GetValue(self):
         """
@@ -120,9 +112,7 @@ class Text(object):
         """
         return self.__value
 
-    # End GetValue
     # ------------------------------------------------------------------------
-
 
     def GetTypedValue(self):
         """
@@ -144,9 +134,7 @@ class Text(object):
 
         return self.__value
 
-    # End GetTypedValue
     # ------------------------------------------------------------------------
-
 
     def GetScore(self):
         """
@@ -155,9 +143,7 @@ class Text(object):
         """
         return self.__score
 
-    # End Score
     # ------------------------------------------------------------------------
-
 
     def Equal(self, other):
         """
@@ -168,9 +154,7 @@ class Text(object):
         """
         return self == other
 
-    # End Equal
     # ------------------------------------------------------------------------
-
 
     def StrictEqual(self, other):
         """
@@ -181,9 +165,76 @@ class Text(object):
         """
         return self.GetTypedValue() == other.GetTypedValue() and self.GetScore() == other.GetScore()
 
-    # End StrictEqual
     # ------------------------------------------------------------------------
 
+    def IsEmpty(self):
+        """
+        Return True if the text value is an empty string.
+
+        """
+        return self.__value == ''
+
+    # -----------------------------------------------------------------------
+
+    def IsSpeech(self):
+        """
+        Return True if the text value is not a silence.
+
+        """
+        return not (self.IsSilence() or self.IsPause() or self.IsLaugh() or self.IsNoise() or self.IsDummy())
+
+    # -----------------------------------------------------------------------
+
+    def IsSilence(self):
+        """
+        Return True if the text value is a silence.
+
+        """
+        # SPPAS representation of silences
+        if self.__value in ("#", "sil"):
+            return True
+
+        # The French CID corpus:
+        if self.__value.startswith("gpf_"):
+            return True
+
+        return False
+
+    # -----------------------------------------------------------------------
+
+    def IsPause(self):
+        """
+        Return True if the text value is a short pause.
+
+        """
+        return self.__value == "+"
+
+    # -----------------------------------------------------------------------
+
+    def IsLaugh(self):
+        """
+        Return True if the text value is a laughing.
+
+        """
+        return self.__value == "@@"
+
+    # -----------------------------------------------------------------------
+
+    def IsNoise(self):
+        """
+        Return True if the text value is a noise.
+
+        """
+        return self.__value == "*"
+
+    # -----------------------------------------------------------------------
+
+    def IsDummy(self):
+        """
+        Return True if the text value is a dummy label.
+
+        """
+        return self.__value == "dummy"
 
     # ------------------------------------------------------------------------
     # Properties
@@ -191,7 +242,6 @@ class Text(object):
 
     Value = property(GetValue, SetValue)
     Score = property(GetScore, SetScore)
-
 
     # ------------------------------------------------------------------------
     # Overloads
@@ -205,7 +255,5 @@ class Text(object):
 
     def __eq__(self, other):
         return self.GetTypedValue() == other.GetTypedValue()
-
-    # ------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
