@@ -42,13 +42,11 @@ __docformat__ = """epytext"""
 __authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
 
 import sys
-import os
 import os.path
 from argparse import ArgumentParser
 
@@ -56,13 +54,13 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
-from annotations.Token.tok import sppasTok
+from annotations.Token.tok      import sppasTok
 from annotations.Token.tokenize import DictTok
-from resources.wordslst import WordsList
-from resources.dictrepl import DictRepl
+from resources.wordslst         import WordsList
+from resources.dictrepl         import DictRepl
+from utils.fileutils            import setup_logging
 
 from sp_glob import RESOURCES_PATH
-
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -77,12 +75,18 @@ parser.add_argument("-r", "--vocab", required=True, help='Vocabulary file name')
 parser.add_argument("-i", metavar="file", required=False, help='Input file name')
 parser.add_argument("-o", metavar="file", required=False, help='Output file name')
 parser.add_argument("--delimiter", metavar='char', help="Use a delimiter character instead of a space for word delimiter.")
+parser.add_argument("--std",    action='store_true', help="Add the standard tokenization")
+parser.add_argument("--quiet",  action='store_true', help="Disable verbose." )
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
 
 args = parser.parse_args()
 
+# ----------------------------------------------------------------------------
+
+if not args.quiet:
+    setup_logging(1,None)
 
 # ----------------------------------------------------------------------------
 # Automatic Tokenization is here:
@@ -97,6 +101,8 @@ if args.delimiter:
 
 if args.i:
     p = sppasTok( args.vocab,lang )
+    if args.std:
+        p.set_std(True)
     p.tokenizer.set_delim( delim )
     p.run( args.i, args.o )
 

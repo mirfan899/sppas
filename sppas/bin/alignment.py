@@ -68,7 +68,7 @@ parser.add_argument("--noclean", action='store_true', help="Do not remove workin
 parser.add_argument("--noactivity", action='store_true', help="Do not generate Activity tier" )
 parser.add_argument("--nophntok",  action='store_true',  help="Do not generate PhnTokAlign tier" )
 
-parser.add_argument("--quiet",  action='store_true',  help="Disable verbosity." )
+parser.add_argument("--quiet",  action='store_true',  help="Disable verbose." )
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')

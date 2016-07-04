@@ -35,16 +35,8 @@
 # File: tok.py
 # ---------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# ---------------------------------------------------------------------------
-# Imports
-# ---------------------------------------------------------------------------
-
 import os.path
+import logging
 
 from tokenize import DictTok
 
@@ -52,25 +44,26 @@ from resources.wordslst import WordsList
 from resources.dictrepl import DictRepl
 
 from annotationdata.transcription import Transcription
-from annotationdata.tier import Tier
-from annotationdata.annotation import Annotation
-from annotationdata.label.label import Label
+from annotationdata.tier          import Tier
+from annotationdata.annotation    import Annotation
+from annotationdata.label.label   import Label
 import annotationdata.io
 
+from sp_glob import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
 from sp_glob import RESOURCES_PATH
-
 
 # ---------------------------------------------------------------------------
 # sppasTok main class
 # ---------------------------------------------------------------------------
 
-
 class sppasTok(object):
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: Tokenization automatic annotation.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Tokenization automatic annotation.
 
     Tokenization is a text normalization task.
 
@@ -81,19 +74,18 @@ class sppasTok(object):
         - 5th Language & Technology Conference, Poznan (Poland).
 
     """
-
     def __init__(self, vocab, lang="und", logfile=None):
         """
-        Create a new sppasTok instance.
+        Create a sppasTok instance.
 
-        @param vocab (string) is the file name with the list of words,
-        @param lang (string) is the language code.
+        @param vocab (str - IN) the file name with the orthographic transcription
+        @param lang (str - IN) the language code
 
         """
-        try:
-            pvoc = WordsList(vocab)
-        except Exception as e:
-            raise Exception("Load words list file failed: %s" % e)
+        # Log messages for the user
+        self.logfile = logfile
+
+        pvoc = WordsList(vocab)
 
         self.tokenizer = DictTok(pvoc, lang)
 
@@ -109,29 +101,32 @@ class sppasTok(object):
         except Exception:
             pass
 
-        self.std = True
-        self.logfile = logfile
-
-    # End __init__
-    # ------------------------------------------------------------------
-
+        # List of options to configure this automatic annotation
+        self._options = {}
+        self._options['std'] = False
 
     # -----------------------------------------------------------------------
     # Methods to fix options
     # -----------------------------------------------------------------------
 
+    def get_option(self, key):
+        """
+        Return the option value of a given key or raise an Exception.
+
+        """
+        return self._options[key]
+
+    # ------------------------------------------------------------------------
 
     def fix_options(self, options):
         """
         Fix all options.
-
         Available options are:
             - std
 
         @param options (option)
 
         """
-
         for opt in options:
 
             key = opt.get_key()
@@ -142,112 +137,200 @@ class sppasTok(object):
             else:
                 raise Exception('Unknown key option: %s'%key)
 
-    # End fix_options
     # -----------------------------------------------------------------------
-
 
     def set_std(self, std):
         """
         Fix the std option.
-        If std is set to True, a standard tokenization is created.
 
-        @param std (Boolean)
+        @param std (bool - IN) If std is set to True, a standard tokenization
+        is created.
 
         """
-        self.std = std
-
-    # End set_std
-    # ----------------------------------------------------------------------
-
+        self._options['std'] = std
 
     # -----------------------------------------------------------------------
     # Methods to tokenize series of data
     # -----------------------------------------------------------------------
 
+    def print_message(self, message, indent=3, status=INFO_ID):
+        """
+        Print a message either in the user log or in the console log.
+
+        """
+        if self.logfile:
+            self.logfile.print_message(message, indent=indent, status=status)
+
+        elif len(message) > 0:
+            if status==INFO_ID:
+                logging.info( message )
+            elif status==WARNING_ID:
+                logging.warning( message )
+            elif status==ERROR_ID:
+                logging.error( message )
+            else:
+                logging.debug( message )
+
+    # -----------------------------------------------------------------------
 
     def convert(self, tier):
         """
-        Tokenize labels of a tier.
+        Tokenization of all labels of a tier.
 
-        @param tier (Tier) contains the orthographic transcription
-
+        @param tier (Tier - IN) contains the orthographic transcription
         @return A tuple with 2 tiers named "Tokens-Std" and "Tokens-Faked"
 
         """
         if tier.IsEmpty() is True:
-            raise Exception('convert. Error: Empty input tier.\n')
+            raise IOError("Empty input tier %s.\n"%tier.GetName())
 
-        if self.std:
-            tokensFaked = Tier("Tokenization-Fake")
-            tokensStd   = Tier("Tokenization-Standard")
-        else:
-            tokensFaked = Tier("Tokenization")
-            tokensStd   = None
-
-        for a in tier:
-            # Do not tokenize an empty label
-            if a.GetLabel().IsEmpty():
-                _labelf = Label()
-                if self.std:
-                    _labels = Label()
-            # Do not tokenize silences
-            elif a.GetLabel().IsSilence():
-                _labelf = Label(a.GetLabel().GetValue())
-                if self.std:
-                    _labels = Label(a.GetLabel().GetValue())
-            else:
-                try:
-                    _labelf = Label(self.tokenizer.tokenize( a.GetLabel().GetValue(), std=False ))
-                    if self.std:
-                        _labels = Label(self.tokenizer.tokenize( a.GetLabel().GetValue(), std=True ))
-                except Exception as e:
-                    raise Exception('convert. Tokenize error in interval: '+str(a)+'. Error: '+str(e)+'\n')
-
-            try:
-                b = Annotation(a.GetLocation().Copy(), _labelf)
-                tokensFaked.Append(b)
-                if self.std:
-                    c = Annotation(a.GetLocation().Copy(), _labels)
-                    tokensStd.Append(c)
-            except Exception as e:
-                raise Exception('convert. Tier insertion error: '+str(e)+'\n')
+        tokensStd = None
+        if self._options['std'] is True:
+            tokensStd = self.__convert(tier, True)
+        tokensFaked = self.__convert(tier, False)
 
         return (tokensFaked, tokensStd)
 
-    # End convert
     # ------------------------------------------------------------------------
-
 
     def align_tiers(self, stdtier, fakedtier):
         """
-        Align standard spelling tokens with faked spelling tokens.
+        Force standard spelling and faked spelling to share the same number of tokens.
 
-        @param stdtier (Tier)
-        @param fakedtier (Tier)
+        @param stdtier (Tier - IN)
+        @param fakedtier (Tier - IN)
 
         """
-        if self.std is False:
+        if self._options['std'] is False:
             return
 
-        for std, faked in zip(stdtier, fakedtier):
-            try:
-                s, f = self.__align_tiers(std.GetLabel().GetValue(), faked.GetLabel().GetValue())
-            except Exception:
-                if self.logfile:
-                    self.logfile.print_message(u"StdTokens and FakedTokens matching error, at %s\n"%std.GetLocation().GetValue(),indent=2,status=1)
-                    self.logfile.print_message(std.GetLabel().GetValue(),  indent=3)
-                    self.logfile.print_message(faked.GetLabel().GetValue(),indent=3)
-                    self.logfile.print_message(u"Fall back on faked: %s" %self.fallback, indent=3,status=3)
-                    std.GetLabel().SetValue( faked.GetLabel().GetValue() )
+        for astd, afaked in zip(stdtier, fakedtier):
 
-                continue
+                for textstd,textfaked in zip(astd.GetLabel().GetLabels(),afaked.GetLabel().GetLabels()):
 
-            std.GetLabel().SetValue( s )
-            faked.GetLabel().SetValue( f )
+                    try:
+                        texts, textf = self.__align_tiers(textstd.GetValue(), textfaked.GetValue())
+                        textstd.SetValue( texts )
+                        textfaked.SetValue( textf )
 
-    # End align_tiers
+                    except Exception:
+                        self.print_message(u"StdTokens and FakedTokens matching error, at %s\n"%astd.GetLocation().GetValue(),indent=2,status=1)
+                        self.print_message(astd.GetLabel().GetValue(),  indent=3)
+                        self.print_message(afaked.GetLabel().GetValue(),indent=3)
+                        self.print_message(u"Fall back on faked: %s" %self.fallback, indent=3,status=3)
+                        textstd.SetValue( textf )
+
     # ------------------------------------------------------------------------
 
+    def save(self, trsinput, inputfilename, trsoutput, outputfile=None):
+        """
+        Save depending on the given data.
+
+        If no output file name is given, trsoutput is appended to the input
+        transcription.
+
+        @param trsinput (Transcription - IN)
+        @param inputfilename (str - IN)
+        @param trsoutput (Transcription - INOUT)
+        @param outputfile (str - IN)
+
+        """
+        # Append to the input
+        if outputfile is None:
+            for tier in trsoutput:
+                trsinput.Append(tier)
+            trsoutput  = trsinput
+            outputfile = inputfilename
+
+        # Save in a file
+        annotationdata.io.write( outputfile,trsoutput )
+
+    # ------------------------------------------------------------------------
+
+    def run( self, inputfilename, outputfile=None ):
+        """
+        Run the Tokenization process on an input file.
+
+        @param inputfilename is the input file name
+        @param outputfile is the output file name of the tokenization
+
+        """
+        for k,v in self._options.items():
+            self.print_message("Option %s: %s"%(k,v), indent=2, status=INFO_ID)
+
+        # Get input tier to tokenize
+        trsinput  = annotationdata.io.read(inputfilename)
+        tierinput = None
+
+        for tier in trsinput:
+            tiername = tier.GetName().lower()
+            if "transcription" in tiername:
+                tierinput = tier
+                break
+
+        if tierinput is None:
+            for tier in trsinput:
+                tiername = tier.GetName().lower()
+                if "trans" in tiername:
+                    tierinput = tier
+                    break
+                elif "trs" in tiername:
+                    tierinput = tier
+                    break
+                elif "ipu" in tiername:
+                    tierinput = tier
+                    break
+                elif "ortho" in tiername:
+                    tierinput = tier
+                elif "toe" in tiername:
+                    tierinput = tier
+                    break
+
+        if tierinput is None:
+            raise IOError("Transcription tier not found. "
+                          "Tier name must contain "
+                          "'trans' or 'trs' or 'ipu' 'ortho' or 'toe'.")
+
+        # Tokenize the tier
+        tiertokens, tierStokens = self.convert( tierinput )
+
+        # Align Faked and Standard
+        if tierStokens is not None:
+            self.align_tiers(tierStokens, tiertokens)
+
+        # Save
+        trsoutput = Transcription()
+        trsoutput.Add( tiertokens )
+        if tierStokens is not None:
+            trsoutput.Add( tierStokens )
+
+        self.save(trsinput, inputfilename, trsoutput, outputfile)
+
+
+    # ------------------------------------------------------------------------
+    # Private: some workers...
+    # ------------------------------------------------------------------------
+
+    def __convert(self, tier, std):
+        """
+        Tokenize all labels of an annotation, not only the one with the best score.
+
+        """
+        tiername = "Tokenization-Standard" if std is True else "Tokenization"
+        tokens = Tier( tiername )
+        for a in tier:
+
+            af = a.Copy()
+            # Do not tokenize an empty label, noises, laughter...
+            if af.GetLabel().IsSpeech() is True:
+                for text in af.GetLabel().GetLabels():
+                    tokenized = self.tokenizer.tokenize( text.GetValue(), std=std )
+                    text.SetValue( tokenized )
+            tokens.Append( af )
+
+        return tokens
+
+    # -----------------------------------------------------------------------
 
     def __align_tiers(self, std, faked):
         """
@@ -256,8 +339,9 @@ class sppasTok(object):
         @param std (string)
         @param faked (string)
         @return a tuple of std and faked
+
         """
-        stds = std.split()
+        stds   = std.split()
         fakeds = faked.split()
         if len(stds) == len(fakeds):
             return (std, faked)
@@ -298,96 +382,4 @@ class sppasTok(object):
 
         return (std, " ".join(fakeds))
 
-    # End __align_tiers
-    # ------------------------------------------------------------------------
-
-
-    def save(self, trsinput, inputfilename, trsoutput, outputfile=None):
-        """
-        Save depending on the given data.
-
-        If no output file name is given, trsoutput is appended to the input
-        transcription.
-
-        @param trsinput (Transcription)
-        @param inputfilename (String)
-        @param trsoutput (Transcription)
-        @param outputfile (String)
-
-        """
-
-        # Append to the input
-        if outputfile is None:
-            for tier in trsoutput:
-                trsinput.Append(tier)
-            trsoutput  = trsinput
-            outputfile = inputfilename
-
-        # Save in a file
-        annotationdata.io.write( outputfile,trsoutput )
-
-    # End save
-    # ------------------------------------------------------------------------
-
-
-    def run( self, inputfilename, outputfile=None ):
-        """
-        Run the Tokenization process on an input file.
-
-        @param inputfilename is the input file name
-        @param outputfile is the output file name of the tokenization
-
-        """
-        # Get input tier to tokenize
-        trsinput  = annotationdata.io.read(inputfilename)
-        tierinput = None
-
-        for tier in trsinput:
-            tiername = tier.GetName().lower()
-            if "transcription" in tiername:
-                tierinput = tier
-                break
-
-        if tierinput is None:
-            for tier in trsinput:
-                tiername = tier.GetName().lower()
-                if "trans" in tiername:
-                    tierinput = tier
-                    break
-                elif "trs" in tiername:
-                    tierinput = tier
-                    break
-                elif "ipu" in tiername:
-                    tierinput = tier
-                    break
-                elif "ortho" in tiername:
-                    tierinput = tier
-                elif "toe" in tiername:
-                    tierinput = tier
-                    break
-
-        if tierinput is None:
-            raise Exception("Transcription tier not found. "
-                            "Tier name must contain "
-                            "'trans' or 'trs' or 'ipu' 'ortho' or 'toe'.")
-
-        # Tokenize the tier
-        tiertokens, tierStokens = self.convert( tierinput )
-
-        # Align Faked and Standard
-        if tierStokens is not None:
-            self.align_tiers(tierStokens, tiertokens)
-
-        # Save
-        trsoutput = Transcription()
-        trsoutput.Add( tiertokens )
-        if tierStokens is not None:
-            trsoutput.Add( tierStokens )
-
-        self.save(trsinput, inputfilename, trsoutput, outputfile)
-
-    # End run
-    # ------------------------------------------------------------------------
-
-# End sppasTok
 # ---------------------------------------------------------------------------
