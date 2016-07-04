@@ -72,21 +72,12 @@ class sppasAlign:
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
     @summary:      SPPAS integration of the Alignment automatic annotation.
 
-    SPPAS automatic Alignment is also called phonetic segmentation.
-    Alignment is performed in 3 sub-steps:
+    This class can produce 1 up to 4 tiers with names:
 
-        1. Split the audio/trs into units;
-        2. Align each unit using an external aligner;
-        3. Create a transcription with results.
-
-    If step 1 fails, a basic alignment is applied on all units.
-    At step 2, if the aligner fails, a basic alignment is applied on the unit.
-
-    This alignment produces 1 or 3 tiers with names:
-
-        - Phonemes,
-        - PhonTokens (if tokens are given in the input),
-        - Tokens (if tokens are given in the input).
+        - PhonAlign,
+        - TokensAlign (if tokens are given in the input).
+        - PhnTokALign - option (if tokens are given in the input),
+        - Activity    - option (if tokens are given in the input),
 
     How to use sppasAlign?
 
@@ -98,9 +89,9 @@ class sppasAlign:
         """
         Create a new sppasAlign instance.
 
-        @param model is the acoustic model directory name of the language of the text,
-        @param modelL1 is the acoustic model directory name of the mother language of the speaker,
-        @param logfile is a file descriptor of a log file (see log.py).
+        @param model (str) the acoustic model directory name of the language of the text
+        @param modelL1 (str) the acoustic model directory name of the mother language of the speaker
+        @param logfile (sppasLog)
 
         """
         # Log messages for the user
@@ -186,14 +177,14 @@ class sppasAlign:
             if "clean" == key:
                 self.set_clean( opt.get_value() )
 
+            elif "basic" == key:
+                self.set_basic( opt.get_value() )
+
             elif "aligner" == key:
                 self.set_aligner( opt.get_value() )
 
             elif "infersp" == key:
                 self.set_infersp( opt.get_value() )
-
-            elif "basic" == key:
-                self.set_basic( opt.get_value() )
 
             elif "activity" == key:
                 self.set_activity_tier( opt.get_value() )
@@ -357,12 +348,11 @@ class sppasAlign:
         dirlist = glob.glob(os.path.join(diralign, "track_*.wav"))
         ntracks = len(dirlist)
         if ntracks == 0:
-            raise IOError('The directory '+diralign+' does not contain tracks.')
+            raise IOError('The directory '+diralign+' does not contain data.')
 
         track = 1
         while track <= ntracks:
-            if self.logfile:
-                self.logfile.print_message('Align unit number '+str(track), indent=3)
+            self.print_message('Align unit number '+str(track), indent=3)
 
             audiofilename = self.alignio.get_audiofilename(diralign,track)
             phonname      = self.alignio.get_phonesfilename(diralign,track)
@@ -498,19 +488,25 @@ class sppasAlign:
         Return the tier with phonetization or None.
 
         """
+        # Search for a tier starting with "phon"
         for tier in trsinput:
             if tier.GetName().lower().startswith("phon") is True:
                 return tier
 
+        # Search for a tier containing "phon"
         for tier in trsinput:
             if "phon" in tier.GetName().lower():
                 return tier
+
+        # We got the phonetization from a raw text file
+        if trsinput.GetSize() == 1 and trsinput[0].GetName().lower() == "rawtranscription":
+            return tier
 
         return None
 
     # ------------------------------------------------------------------------
 
-    def get_tokenstier(self, trsinputtok):
+    def get_tokenstier(self, trsinput):
         """
         Return the tier with tokens, or None.
 
@@ -522,7 +518,7 @@ class sppasAlign:
         stdtier   = None # index of stdtoken tier
         fakedtier = None # index of fakedtoken tier
 
-        for tier in trsinputtok:
+        for tier in trsinput:
             tiername = tier.GetName().lower()
             if "std" in tiername and "token" in tiername:
                 return stdtier
@@ -533,6 +529,11 @@ class sppasAlign:
 
         if fakedtier is not None:
             return fakedtier
+
+        if toktier is None:
+            # We got the tokenization from a raw text file
+            if trsinput.GetSize() == 1 and trsinput[0].GetName().lower() == "rawtranscription":
+                return tier
 
         return toktier
 
@@ -586,12 +587,15 @@ class sppasAlign:
         phontier = self.get_phonestier( trsinput )
         if phontier is None:
             raise IOError("No tier with the phonetization was found.")
+        if phontier.IsTimeInterval() is False:
+            raise IOError("The phonetization tier is not of type TimeInterval.")
 
         try:
             trsinputtok = annotationdata.io.read( tokensname )
             toktier = self.get_tokenstier( trsinputtok )
-            for tier in trsinputtok:
-                trsinput.Append( tier )
+            if toktier.IsTimeInterval() is False:
+                self.print_message("The tokenization tier is not of type TimeInterval: Tokens alignment disabled.", indent=2, status=WARNING_ID)
+                toktier = None
         except Exception:
             toktier = None
             self.print_message("No tokenization found: Tokens alignment disabled.", indent=2, status=WARNING_ID)

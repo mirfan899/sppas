@@ -403,7 +403,8 @@ class Tier( MetaObject ):
 
     def IsDisjoint(self):
         """
-        Return True if all annotations of the tier are linked to time disjoint.
+        Return True if all annotations of the tier are linked to disjoint.
+        It can be either TimeDisjoint of FrameDisjoint.
 
         """
         if self.IsEmpty():
@@ -415,7 +416,8 @@ class Tier( MetaObject ):
 
     def IsInterval(self):
         """
-        Return True if all annotations of the tier are linked to time interval.
+        Return True if all annotations of the tier are linked to interval.
+        It can be either TimeInterval or FrameInterval.
 
         """
         if self.IsEmpty():
@@ -427,13 +429,26 @@ class Tier( MetaObject ):
 
     def IsPoint(self):
         """
-        Return True if all annotations of the tier are linked to time point.
+        Return True if all annotations of the tier are linked to point.
+        It can be either TimePoint or FramePoint.
 
         """
         if self.IsEmpty():
             return False
 
         return all(a.GetLocation().IsPoint() for a in self.__ann)
+
+    # -----------------------------------------------------------------------
+
+    def IsTimeInterval(self):
+        """
+        Return True if all annotations of the tier are linked to time interval.
+
+        """
+        if self.IsEmpty():
+            return False
+
+        return all(a.GetLocation().IsTimeInterval() for a in self.__ann)
 
     # -----------------------------------------------------------------------
 

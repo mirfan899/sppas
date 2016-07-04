@@ -38,13 +38,13 @@
 import codecs
 
 from sp_glob import encoding
-from resources.rutils   import ToStrip
+from resources.rutils import ToStrip
 
 import aligners
 
 # ----------------------------------------------------------------------------
 
-class SpeechSegmenter:
+class SpeechSegmenter( object ):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -88,7 +88,7 @@ class SpeechSegmenter:
         """
         Fix an acoustic model to perform time-alignment.
 
-        @param model (string) Directory that contains the Acoustic Model.
+        @param model (str - IN) Directory that contains the Acoustic Model.
 
         """
         self._modeldir = model
@@ -100,7 +100,7 @@ class SpeechSegmenter:
         """
         Fix the name of the aligner, one of ALIGNERS.
 
-        @param alignername (string) Case-insensitive name of an aligner system.
+        @param alignername (str - IN) Case-insensitive name of an aligner system.
 
         """
         alignername = aligners.check(alignername)
@@ -113,7 +113,7 @@ class SpeechSegmenter:
         """
         Fix the automatic inference of short pauses.
 
-        @param infersp (bool) If infersp is set to True, a short pause is
+        @param infersp (bool - IN) If infersp is set to True, a short pause is
         added at the end of each token, and the automatic aligner will infer
         if it is relevant or not.
 
