@@ -45,20 +45,21 @@ import utils.fileutils as fileutils
 
 import audiodata.io
 import annotationdata.io
-from annotationdata.transcription import Transcription
-from annotationdata.tier          import Tier
-from annotationdata.media         import Media
-from annotationdata.io.utils      import gen_id
+from annotationdata import Transcription
+from annotationdata import Tier
+from annotationdata import Media
+from annotationdata import Text
+from annotationdata.io.utils import gen_id
 
 from speechseg import SpeechSegmenter
 from alignio   import AlignIO
-from modelmixer import ModelMixer
-from activity import Activity
+from activity  import Activity
 
 from sp_glob import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
 from sp_glob import RESOURCES_PATH
 
-from resources.mapping import Mapping
+from resources.mapping        import Mapping
+from resources.acm.modelmixer import ModelMixer
 
 # ----------------------------------------------------------------------------
 
@@ -102,6 +103,33 @@ class sppasAlign:
         @param logfile is a file descriptor of a log file (see log.py).
 
         """
+        # Log messages for the user
+        self.logfile = logfile
+
+        # Members: self.speechseg and self.alignio
+        self.fix_segmenter( model,modelL1 )
+
+        self.workdir = ""
+        self.inputaudio = ""
+
+        # List of options to configure this automatic annotation
+        self._options = {}
+        self._options['clean']   = True  # Remove temporary files
+        self._options['infersp'] = False # Add 'sp' at the end of each token
+        self._options['basic']   = False # Perform a basic alignment if error
+        self._options['activity'] = True
+        self._options['phntok']   = False
+
+    # -----------------------------------------------------------------------
+
+    def fix_segmenter(self, model, modelL1):
+        """
+        Fix the acoustic model directory, then create a SpeechSegmenter and AlignerIO.
+
+        @param model is the acoustic model directory name of the language of the text,
+        @param modelL1 is the acoustic model directory name of the mother language of the speaker,
+
+        """
         if modelL1 is not None:
             try:
                 modelmixer = ModelMixer()
@@ -110,12 +138,12 @@ class sppasAlign:
                 modelmixer.mix( outputdir, gamma=1. )
                 model = outputdir
             except Exception as e:
-                if logfile is not None:
-                    logfile.print_message("The model is ignored: %s"%str(e), indent=3, status=WARNING_ID)
+                if self.logfile is not None:
+                    self.logfile.print_message("The model is ignored: %s"%str(e), indent=3, status=WARNING_ID)
                 else:
                     logging.info( "The model is ignored: %s"%str(e) )
 
-        # The automatic alignment system
+        # The automatic alignment system; it will use the default aligner
         self.speechseg = SpeechSegmenter( model )
 
         # Map phoneme names from model-specific to SAMPA and vice-versa
@@ -128,19 +156,8 @@ class sppasAlign:
         else:
             mapping = Mapping()
 
-        # Manager of interval tracks
+        # Manager of the interval tracks
         self.alignio = AlignIO( mapping )
-
-        # Log messages for the user
-        self.logfile = logfile
-
-        # List of options to configure this automatic annotation
-        self._options = {}
-        self._options['clean']   = True  # Remove temporary files
-        self._options['infersp'] = False # Add 'sp' at the end of each token
-        self._options['basic']   = False # Perform a basic alignment if error
-        self._options['activity'] = True
-        self._options['phntok']   = False
 
     # ------------------------------------------------------------------------
     # Methods to fix options
@@ -203,7 +220,9 @@ class sppasAlign:
 
     def set_aligner(self, alignername):
         """
-        Fix the name of the aligner: julius, hvite or basic.
+        Fix the name of the aligner.
+        The list of accepted aligner names is available in:
+        >>> aligners.aligner_names()
 
         @param alignername (str - IN) Case-insensitive name of the aligner.
 
@@ -262,20 +281,63 @@ class sppasAlign:
     # Methods to time-align series of data
     # -----------------------------------------------------------------------
 
-    def audioinput(self):
+    def print_message(self, message, indent=3, status=INFO_ID):
         """
-        Fix the self.inputaudio file name.
-
-        @return Boolean value (the input audio file was converted or not).
+        Print a message either in the user log or in the console log.
 
         """
-        testname = fileutils.string_to_ascii(fileutils.format_filename(self.inputaudio))
-        if testname != self.inputaudio:
-            shutil.copy(self.inputaudio, testname)
-            self.inputaudio = testname
-            return True
+        if self.logfile:
+            self.logfile.print_message(message, indent=indent, status=status)
 
-        return False
+        elif len(message) > 0:
+            if status==INFO_ID:
+                logging.info( message )
+            elif status==WARNING_ID:
+                logging.warning( message )
+            elif status==ERROR_ID:
+                logging.error( message )
+            else:
+                logging.debug( message )
+
+    # -----------------------------------------------------------------------
+
+    def fix_audioinput(self, inputaudioname):
+        """
+        Fix the audio file name that will be used.
+        An only-ascii-based file name without whitespace is set if the
+        current audio file name does not fit in these requirements.
+
+        @param inputaudioname (str - IN) Given audio file name
+
+        """
+        self.inputaudio = fileutils.string_to_ascii(fileutils.format_filename(inputaudioname))
+        if self.inputaudio != inputaudioname:
+            shutil.copy(inputaudioname, self.inputaudio)
+
+        try:
+            audio = audiodata.io.open( self.inputaudio )
+            audio.close()
+        except IOError as e:
+            raise IOError("Not a valid audio file: "+str(e))
+
+    # ------------------------------------------------------------------------
+
+    def fix_workingdir(self):
+        """
+        Fix the working directory to store temporarily the data.
+
+        """
+        if len(self.inputaudio) == 0:
+            # Notice that the following generates a directory that the
+            # aligners won't be able to access under Windows.
+            # No problem with MacOS or Linux.
+            self.workdir = fileutils.gen_name()
+            while os.path.exists( self.workdir ) is True:
+                self.workdir = fileutils.gen_name()
+        else:
+            self.workdir = os.path.splitext(self.inputaudio)[0]+"-temp"
+
+        os.mkdir( self.workdir )
 
     # ------------------------------------------------------------------------
 
@@ -309,19 +371,13 @@ class sppasAlign:
 
             try:
                 msg = self.speechseg.segmenter(audiofilename, phonname, tokenname, alignname)
-                if self.logfile:
-                    if len(msg) == 0:
-                        self.logfile.print_message("", indent=3, status=OK_ID)
-                    else:
-                        self.logfile.print_message(msg, indent=3, status=INFO_ID)
+                self.print_message(msg, indent=3, status=INFO_ID)
 
             except Exception as e:
-                if self.logfile:
-                    self.logfile.print_message(self.speechseg._alignerid+' failed to perform segmentation.', indent=3, status=ERROR_ID)
-                    self.logfile.print_message(str(e), indent=4, status=INFO_ID)
-                else:
-                    import traceback
-                    print(traceback.format_exc())
+                self.print_message(self.speechseg._alignerid+' failed to perform segmentation.', indent=3, status=ERROR_ID)
+                self.print_message(str(e), indent=4, status=INFO_ID)
+                #    import traceback
+                #    print(traceback.format_exc())
 
                 if os.path.exists(alignname):
                     os.rename(alignname, alignname+'.backup')
@@ -343,119 +399,97 @@ class sppasAlign:
 
     # ------------------------------------------------------------------------
 
-    def convert( self, phontier, toktier, inputaudioname ):
+    def convert( self, phontier, toktier, audioname ):
         """
-        Time-align an input tokenization/phonetization.
+        Perform speech segmentation of data in tiers tokenization/phonetization.
 
-        @param phontier (Tier) contains the phonetization.
-        @param toktier (Tier) contains the tokenization, or None.
+        @param phontier (Tier - IN) The phonetization.
+        @param toktier (Tier - IN) The tokenization, or None.
+        @param audioname (str - IN) Audio file name.
+
         @return A transcription.
 
         """
-        # Set local file names
-        self.inputaudio = inputaudioname
+        # Prepare data
+        # -------------------------------------------------------------
 
-        # Verify the input audio file (and optionally convert it...)
-        # --------------------------------------------------------------
-        try:
-            if self.logfile:
-                self.logfile.print_message("Check audio file: ",indent=2)
-            converted = self.audioinput()
-            if self.logfile:
-                if converted is False:
-                    self.logfile.print_message("", indent=3, status=OK_ID)
-                else:
-                    self.logfile.print_message("A copy of the file was temporarily created with a file name: without whitespace and with only ASCII characters.", indent=3, status=INFO_ID)
-            audio = audiodata.io.open( self.inputaudio )
-            audio.close()
-        except IOError as e:
-            raise IOError('Not a valid audio file: '+str(e))
+        # Fix the input audio file: self.inputaudio
+        self.fix_audioinput(audioname)
 
-        # Fix the working directory name
-        # ------------------------------
-        # we use inputaudio instead of inputphonesname because it contains
-        # only ascii characters in filename (which is required under Windows).
-        diralign, fileExt = os.path.splitext( self.inputaudio )
-        if os.path.exists( diralign ) is False:
-            os.mkdir( diralign )
-            if self._options['clean'] is False:
-                if self.logfile:
-                    self.logfile.print_message("The working directory is: %s"%diralign, indent=3, status=INFO_ID)
-                else:
-                    print "The working directory is: %s"%diralign
-        else:
-            raise Exception("Working directory %s already exists. Can not override."%(diralign))
+        # Fix the working directory name: self.workdir
+        self.fix_workingdir()
+        if self._options['clean'] is False:
+            self.print_message( "The working directory is: %s"%self.workdir, indent=3, status=INFO_ID )
 
         # Split input into tracks
         # --------------------------------------------------------------
-        if self.logfile:
-            self.logfile.print_message("Split into units: ",indent=2)
+
+        self.print_message("Split into intervals: ", indent=2)
 
         try:
-            try:
-                self.alignio.split( self.inputaudio, phontier, toktier, diralign )
-            except Exception as e:
-                if self.logfile is not None:
-                    self.logfile.print_message("%s"%str(e), indent=3, status=WARNING_ID)
-                self.alignio.split( self.inputaudio, phontier, None, diralign )
+            self.alignio.split( self.inputaudio, phontier, toktier, self.workdir )
         except Exception as e:
-            if self._options['clean'] is True:
-                shutil.rmtree( diralign )
-            if self.logfile is not None:
-                self.logfile.print_message("The audio input file is corrupted: "+str(e), indent=2, status=ERROR_ID)
-                self.logfile.print_message("Automatic Speech Segmentation CAN'T work.", indent=2, status=INFO_ID)
-                return
-            else:
-                raise
+            self.alignio.split( self.inputaudio, phontier, None, self.workdir )
+            self.print_message("Tokens alignment disabled: %s"%str(e), indent=3, status=WARNING_ID)
 
-        if self.logfile:
-            self.logfile.print_message("", indent=2, status=OK_ID)
+        self.print_message("", indent=2, status=OK_ID)
 
-        # Align each unit
+        # Align each track
         # --------------------------------------------------------------
-        if self.logfile:
-            self.logfile.print_message("Align each inter-pausal unit: ",indent=2)
-        try:
-            self.convert_tracks( diralign , phontier)
-            if self.logfile:
-                self.logfile.print_message("", indent=2, status=OK_ID)
-        except Exception:
-            if self._options['clean'] is True:
-                shutil.rmtree( diralign )
-            raise
 
-        # Merge unit alignments
+        self.print_message("Align each interval: ", indent=2)
+        self.convert_tracks( self.workdir, phontier )
+        self.print_message("", indent=2, status=OK_ID)
+
+        # Merge track alignment results
         # --------------------------------------------------------------
-        if self.logfile:
-            self.logfile.print_message("Merge unit's alignment and save into a file ", indent=2)
+
+        self.print_message("Merge interval's alignment:", indent=2)
 
         # Create a Transcription() object with alignments
-        if self.logfile:
-            self.logfile.print_message("Read each alignment unit: ", indent=3)
+        trsoutput = self.alignio.read( self.workdir )
 
-        try:
-            trsoutput = self.alignio.read( diralign )
+        if self.speechseg._alignerid != 'basic':
+            trsoutput = self.rustine_liaisons(trsoutput)
+            trsoutput = self.rustine_others(trsoutput)
 
-            if self.speechseg._alignerid != 'basic':
-                trsoutput = self.rustine_liaisons(trsoutput)
-                trsoutput = self.rustine_others(trsoutput)
-
-            if self.logfile:
-                self.logfile.print_message("", indent=4, status=OK_ID)
-
-        except Exception:
-            if self._options['clean'] is True:
-                shutil.rmtree( diralign )
-            raise
-
-        # Set media
-        extm = os.path.splitext(inputaudioname)[1].lower()[1:]
-        media = Media( gen_id(), inputaudioname, "audio/"+extm )
-        trsoutput.AddMedia( media )
-        for tier in trsoutput:
-            tier.SetMedia( media )
+        self.print_message("", indent=4, status=OK_ID)
 
         return trsoutput
+
+    # ------------------------------------------------------------------------
+
+    def append_extra(self, trs):
+        """
+        Append extra tiers in trs: Activity and PhnTokAlign.
+
+        """
+        tokenalign = trs.Find("TokensAlign")
+        if tokenalign is None:
+            self.print_message("No time-aligned tokens found. No extra tier can be generated.", indent=2, status=WARNING_ID)
+            return trs
+
+        # PhnTokAlign tier
+        if self._options['phntok'] is True:
+            try:
+                phonalign = trs.Find("PhonAlign")
+                tier = self.phntokalign_tier(phonalign,tokenalign)
+                trs.Append(tier)
+                trs.GetHierarchy().addLink("TimeAssociation", tokenalign, tier)
+            except Exception as e:
+                self.print_message("PhnTokAlign generation: %s"%str(e), indent=2, status=WARNING_ID)
+
+        # Activity tier
+        if self._options['activity'] is True:
+            try:
+                activity = Activity( trs )
+                tier = activity.get_tier()
+                trs.Append(tier)
+                trs.GetHierarchy().addLink("TimeAlignment", tokenalign, tier)
+            except Exception as e:
+                self.print_message("Activities generation: %s"%str(e), indent=2, status=WARNING_ID)
+
+        return trs
 
     # ------------------------------------------------------------------------
 
@@ -545,93 +579,92 @@ class sppasAlign:
 
             # Append in the new tier
             newann = anntoken.Copy()
-            newann.GetLabel().SetValue(l)
+            score = newann.GetLabel().GetLabel().GetScore()
+            newann.GetLabel().SetValue( Text(l,score) )
             newtier.Add( newann )
 
         return newtier
 
     # ------------------------------------------------------------------------
 
-    def run(self, inputphonesname, inputtokensname, inputaudioname, outputfilename=None):
+    def run(self, phonesname, tokensname, audioname, outputfilename=None):
         """
         Execute SPPAS Alignment.
 
-        @param inputphonesname is the file containing the phonetization
-        @param inputtokensname is the file containing the tokenization
-        @param outputfilename is the file name with the result (3 tiers)
+        @param phonesname (str - IN) file containing the phonetization
+        @param tokensname (str - IN) file containing the tokenization
+        @param audioname (str - IN) Audio file name
+        @param outputfilename (str - IN) the file name with the result
+
+        @return Transcription
 
         """
-        if self.logfile:
-            for k,v in self._options.items():
-                self.logfile.print_message("Option %s: %s"%(k,v), indent=2, status=INFO_ID)
+        for k,v in self._options.items():
+            self.print_message("Option %s: %s"%(k,v), indent=2, status=INFO_ID)
 
-        # Get the tiers to be time-aligned.
-        trsinput = annotationdata.io.read( inputphonesname )
+        # Get the tiers to be time-aligned
+        # ---------------------------------------------------------------
+
+        trsinput = annotationdata.io.read( phonesname )
         phontier = self.get_phonestier( trsinput )
         if phontier is None:
-            raise IOError(' Not a valid input file: no tier with phonetization was found.')
+            raise IOError("No tier with the phonetization was found.")
 
         try:
-            trsinputtok = annotationdata.io.read( inputtokensname )
+            trsinputtok = annotationdata.io.read( tokensname )
             toktier = self.get_tokenstier( trsinputtok )
             for tier in trsinputtok:
                 trsinput.Append( tier )
         except Exception:
             toktier = None
-            if self.logfile:
-                self.logfile.print_message("Tokens alignment disabled: no tokenization available", indent=2, status=INFO_ID)
+            self.print_message("No tokenization found: Tokens alignment disabled.", indent=2, status=WARNING_ID)
 
         # Processing...
-        trsoutput = self.convert( phontier,toktier,inputaudioname )
+        # ---------------------------------------------------------------
 
-        if toktier is not None:
-            phonalign  = trsoutput.Find("PhonAlign")
-            tokenalign = trsoutput.Find("TokensAlign")
-            # PhnTokAlign tier
-            if self._options['phntok'] is True:
-                try:
-                    tier = self.phntokalign_tier(phonalign,tokenalign)
-                    trsoutput.Append(tier)
-                    trsoutput.GetHierarchy().addLink("TimeAssociation", tokenalign, tier)
-                except Exception as e:
-                    if self.logfile:
-                        self.logfile.print_message("PhnTokAlign generation: %s"%str(e), indent=2, status=WARNING_ID)
+        try:
+            trsoutput = self.convert( phontier,toktier,audioname )
+            if toktier is not None:
+                trsoutput = self.append_extra(trsoutput)
+        except Exception as e:
+            self.print_message( str(e) )
+            self.print_message("WORKDIR=%s"%self.workdir)
+            #if self._options['clean'] is True:
+            #    shutil.rmtree( self.workdir )
+            raise
 
-            # Activity tier
-            if self._options['activity'] is True:
-                try:
-                    activity = Activity( trsoutput )
-                    tier = activity.get_tier()
-                    trsoutput.Append(tier)
-                    trsoutput.GetHierarchy().addLink("TimeAlignment", tokenalign, tier)
-                except Exception as e:
-                    if self.logfile:
-                        self.logfile.print_message("Activities generation: %s"%str(e), indent=2, status=WARNING_ID)
+        # Set media
+        # --------------------------------------------------------------
+
+        extm = os.path.splitext(audioname)[1].lower()[1:]
+        media = Media( gen_id(), audioname, "audio/"+extm )
+        trsoutput.AddMedia( media )
+        for tier in trsoutput:
+            tier.SetMedia( media )
 
         # Save results
+        # --------------------------------------------------------------
         try:
-            if self.logfile:
-                self.logfile.print_message("Save alignment of the units: ",indent=3)
-            self.save( trsinput, inputphonesname, trsoutput, outputfilename )
-            if self.logfile:
-                self.logfile.print_message("", indent=4, status=OK_ID)
-
+            self.print_message("Save alignment of the units: ",indent=3)
+            self.save( trsinput, phonesname, trsoutput, outputfilename )
+            self.print_message("", indent=4, status=OK_ID)
         except Exception:
             if self._options['clean'] is True:
-                diralign, fileExt = os.path.splitext( self.inputaudio )
-                shutil.rmtree( diralign )
+                shutil.rmtree( self.workdir )
             raise
 
         # Clean!
+        # --------------------------------------------------------------
         # if the audio file was converted.... remove the tmpaudio
-        if self.inputaudio != inputaudioname:
+        if self.inputaudio != audioname:
             os.remove(self.inputaudio)
+        # Remove the working directory we created
         if self._options['clean'] is True:
-            diralign, fileExt = os.path.splitext( self.inputaudio )
-            shutil.rmtree( diralign )
+            shutil.rmtree( self.workdir )
+
 
     # ------------------------------------------------------------------------
-    # Private
+    # Private: some very bad hack...
     # ------------------------------------------------------------------------
 
     def rustine_others(self, trs):
@@ -677,6 +710,8 @@ class sppasAlign:
                     nexta.GetLocation().SetBeginMidpoint( a.GetLocation().GetEndMidpoint() )
 
         return trs
+
+    # ------------------------------------------------------------------------
 
     def rustine_liaisons(self, trs):
         """ veritable rustine pour supprimer qqs liaisons en trop. """

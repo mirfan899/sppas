@@ -98,6 +98,10 @@ To get the list of extensions currently supported for reading and writing:
 
 from annotationdata.transcription  import Transcription
 from annotationdata.tier           import Tier
+from annotationdata.media          import Media
+from annotationdata.hierarchy      import Hierarchy
+from annotationdata.ctrlvocab      import CtrlVocab
+
 from annotationdata.annotation     import Annotation
 from annotationdata.label.label    import Label
 from annotationdata.label.text     import Text

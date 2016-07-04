@@ -3,13 +3,7 @@
 
 import unittest
 import os
-import sys
-import os.path
 
-SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
-
-from annotations.Syll.syllabification import Syllabification
 from sp_glob import RESOURCES_PATH
 POL_SYLL = os.path.join(RESOURCES_PATH, "syll", "syllConfig-pol.txt")
 FRA_SYLL = os.path.join(RESOURCES_PATH, "syll", "syllConfig-fra.txt")
@@ -151,11 +145,4 @@ class TestSyll(unittest.TestCase):
         syll = get_syll(trsS)
         self.assertEqual("apsk|mwa", syll)
 
-
-# End TestSyll
 # ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestSyll)
-    unittest.TextTestRunner(verbosity=2).run(suite)
-

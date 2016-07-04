@@ -389,7 +389,8 @@ function fct_test_api {
 
     echo " ... Test annotations "
     echo " ... Test annotations " >>  $TEMP
-    $TESTS_DIR/tests_annotations/test_all.py    2>>  $TEMP
+    #$TESTS_DIR/tests_annotations/test_all.py    2>>  $TEMP
+    python $PROGRAM_DIR/sppas/src/annotations/tests/test_all.py 2>> $TEMP
 
     echo " ... Test Analysis tools "
     echo " ... Test Calculus " >>  $TEMP

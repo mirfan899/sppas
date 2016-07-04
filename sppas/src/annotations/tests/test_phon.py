@@ -3,11 +3,6 @@
 
 import unittest
 import os
-import sys
-from os.path import dirname,abspath
-
-SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
-sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 from annotations.Phon.phonetize import DictPhon
 from annotations.Phon.dagphon   import DAGPhon
@@ -176,13 +171,3 @@ class TestPhonUnk(unittest.TestCase):
         self.assertEqual(self.p.get_phon('abd'), 'a-b|aa-b')
 
 # ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestDictPhon))
-    testsuite.addTest(unittest.makeSuite(TestDAGPhon))
-    testsuite.addTest(unittest.makeSuite(TestSppasPhon))
-    testsuite.addTest(unittest.makeSuite(TestPhonUnk))
-
-    unittest.TextTestRunner(verbosity=2).run(testsuite)

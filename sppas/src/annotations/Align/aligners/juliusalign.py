@@ -40,7 +40,7 @@ import codecs
 import re
 from subprocess import Popen, PIPE, STDOUT
 
-from basealigner import BaseAligner
+from annotations.Align.aligners.basealigner import BaseAligner
 
 from sp_glob import encoding
 from sp_glob import JULIUS_CONFIG
@@ -340,7 +340,7 @@ class JuliusAligner( BaseAligner ):
                     lines = f.readlines()
 
         for line in lines:
-            if line.startswith("Error:") and not " line " in line:
+            if (line.startswith("Error:") or line.startswith("ERROR:")) and not " line " in line:
                 errorlines = errorlines + line
             if "search failed" in line:
                 message = "Julius search has failed to find the transcription in the audio file of this unit."

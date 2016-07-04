@@ -39,7 +39,8 @@ import os
 from subprocess import Popen, PIPE, STDOUT
 import codecs
 
-from basealigner import BaseAligner
+from annotations.Align.aligners.basealigner import BaseAligner
+
 from sp_glob import encoding
 from resources.rutils import ToStrip
 

@@ -35,8 +35,8 @@
 # File: basicalign.py
 # ----------------------------------------------------------------------------
 
-from annotations.Align.basealigner import BaseAligner
-from annotations.Align.alignerio   import AlignerIO
+from annotations.Align.aligners.basealigner import BaseAligner
+from annotations.Align.aligners.alignerio   import AlignerIO
 
 import audiodata.io
 
@@ -110,8 +110,8 @@ class BasicAligner( BaseAligner ):
         """
         # Remove variants: Select the first-shorter pronunciation of each token
         phoneslist = []
-        phonetization = self._phones.strip().split(" ")
-        tokenization  = self._tokens.strip().split(" ")
+        phonetization = self._phones.strip().split()
+        tokenization  = self._tokens.strip().split()
         selectphonetization = []
         delta = 0.
         for pron in phonetization:

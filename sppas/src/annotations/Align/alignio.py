@@ -41,9 +41,7 @@ import logging
 
 from resources.rutils import ToStrip
 from sp_glob import encoding
-from alignerio import AlignerIO
-
-import glob
+from annotations.Align.aligners.alignerio import AlignerIO
 
 from annotationdata.transcription  import Transcription
 from annotationdata.ptime.interval import TimeInterval

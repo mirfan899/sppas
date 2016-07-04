@@ -35,16 +35,12 @@
 # File: speechseg.py
 # ----------------------------------------------------------------------------
 
-import os.path
 import codecs
 
 from sp_glob import encoding
-
-from juliusalign    import JuliusAligner
-from hvitealign     import HviteAligner
-from basicalign     import BasicAligner
-
 from resources.rutils   import ToStrip
+
+import aligners
 
 # ----------------------------------------------------------------------------
 
@@ -60,13 +56,7 @@ class SpeechSegmenter:
     Speech segmentation of a unit of speech (an IPU/utterance/sentence/segment).
 
     """
-    # List of supported aligners (with lowered names)
-    # Notice that the basic aligner can be used to align without audio file!
-    ALIGNERS = ['julius', 'hvite', 'basic']
-
-    # ------------------------------------------------------------------------
-
-    def __init__(self, model, alignername="julius"):
+    def __init__(self, model, alignername=aligners.DEFAULT_ALIGNER):
         """
         Constructor.
 
@@ -86,10 +76,10 @@ class SpeechSegmenter:
 
         # The automatic alignment system:
         # The basic aligner is used:
-        #   - when the IPU contains only one phoneme;
+        #   - when the track contains only one phoneme;
         #   - when the automatic alignment system failed to perform segmn.
         self.set_aligner(alignername)
-        self._basicaligner = BasicAligner(model)
+        self._basicaligner = aligners.instantiate(None)
         self._instantiate_aligner()
 
     # ------------------------------------------------------------------------
@@ -113,10 +103,7 @@ class SpeechSegmenter:
         @param alignername (string) Case-insensitive name of an aligner system.
 
         """
-        alignername = alignername.lower()
-        if not alignername in SpeechSegmenter.ALIGNERS:
-            raise ValueError('Unknown aligner name.')
-
+        alignername = aligners.check(alignername)
         self._alignerid = alignername
         self._instantiate_aligner()
 
@@ -214,22 +201,14 @@ class SpeechSegmenter:
         Instantiate self._aligner to the appropriate Aligner system.
 
         """
-        if self._alignerid == "julius":
-            self._aligner = JuliusAligner( self._modeldir )
-
-        elif self._alignerid == "hvite":
-            self._aligner = HviteAligner( self._modeldir )
-
-        else:
-            self._aligner = BasicAligner( self._modeldir )
-
+        self._aligner = aligners.instantiate( self._modeldir,self._alignerid )
         self._aligner.set_infersp( self._infersp )
 
     # ------------------------------------------------------------------------
 
     def _readline(self, filename):
         """
-        Return the lines of filename, formatted.
+        Return the first line of filename, formatted.
 
         """
         try:

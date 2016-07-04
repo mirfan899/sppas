@@ -1,6 +1,5 @@
 #!/usr/bin/env python2
 
-import paths
 import unittest
 import os
 

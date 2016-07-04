@@ -45,7 +45,9 @@ from argparse import ArgumentParser
 PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
+
 from annotations.Align.align import sppasAlign
+from utils.fileutils         import setup_logging
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -66,10 +68,17 @@ parser.add_argument("--noclean", action='store_true', help="Do not remove workin
 parser.add_argument("--noactivity", action='store_true', help="Do not generate Activity tier" )
 parser.add_argument("--nophntok",  action='store_true',  help="Do not generate PhnTokAlign tier" )
 
+parser.add_argument("--quiet",  action='store_true',  help="Disable verbosity." )
+
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
 
 args = parser.parse_args()
+
+# ----------------------------------------------------------------------------
+
+if not args.quiet:
+    setup_logging(1,None)
 
 # ----------------------------------------------------------------------------
 # Automatic alignment is here:

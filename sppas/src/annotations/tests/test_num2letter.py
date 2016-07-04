@@ -3,11 +3,6 @@
 
 import unittest
 import os
-import sys
-from os.path import *
-
-SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
-sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 from annotations.Token.num2letter import sppasNum
 
@@ -55,6 +50,8 @@ u"treinta-y-nueve",
 u"cuarenta",
 ]
 
+# ---------------------------------------------------------------------------
+
 class TestNum2Letter(unittest.TestCase):
 
     def test_num2letterFR(self):
@@ -79,9 +76,4 @@ class TestNum2Letter(unittest.TestCase):
         s = num.convert(739499)
         self.assertEquals(s, u"setecientos-treinta-y-nueve-mil-cuatrocientos-noventa-y-nueve")
 
-# End TestNum2Letter
 # ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestNum2Letter)
-    unittest.TextTestRunner(verbosity=2).run(suite)

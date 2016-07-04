@@ -117,7 +117,8 @@ class AlignerIO( object ):
         loc_e = 0.       # phoneme end time
         phonlist = []
         wordseq  = []
-        scores   = []
+        scores   = [0]
+        tokens   = [""]
 
         with codecs.open(filename, 'r', encoding) as fp:
             lines = fp.readlines()
@@ -169,8 +170,8 @@ class AlignerIO( object ):
                 line = line.replace("]","")
                 line = ToStrip(line)
                 tab = line.split(" ")
-                # tab 0: begin time
-                # tab 1: end time
+                # tab 0: first frame
+                # tab 1: last frame
                 # tab 2: score of the segmentation (log proba)
                 # tab 3: triphone used
                 loc_s = (float( tab[0] ) / 100.)
@@ -217,7 +218,7 @@ class AlignerIO( object ):
 
     # ------------------------------------------------------------------
 
-    def read_walign(self):
+    def read_walign(self, filename):
         """
         Read an alignment file in the standard format of Julius CSR engine.
 
@@ -227,7 +228,65 @@ class AlignerIO( object ):
             - (start-time end-time word score)
 
         """
+        tokens     = [""]
+        scores     = [0]
         _wordalign = []
+        wordidx = -1
+        with codecs.open(filename, 'r', encoding) as fp:
+            lines = fp.readlines()
+
+        for line in lines:
+            # Each line is either a new annotation or nothing interesting!
+            line = ToStrip(line)
+
+            if line.startswith("=== begin forced alignment ==="):
+                wordidx = 0
+
+            elif line.startswith("=== end forced alignment ==="):
+                wordidx = -1
+
+            elif line.startswith('wseq1:'):
+                line = line[10:]
+                # each token
+                tokens = line.split()
+                if len(tokens)==0:
+                    tokens = [""]
+
+            elif line.startswith('cmscore1:'):
+                line = line[9:]
+                # confidence score of the pronunciation of each token
+                scores = [float(s) for s in line.split()]
+                if len(scores)==0:
+                    scores = [0]
+
+            elif line.startswith('[') and wordidx>-1:
+                # New phonemes
+                line = line.replace("[","")
+                line = line.replace("]","")
+                line = ToStrip(line)
+                tab = line.split(" ")
+                # tab 0: first frame
+                # tab 1: last frame
+                # tab 2: score of the segmentation (log proba)
+                # tab 3: word
+                loc_s = (float( tab[0] ) / 100.)
+                loc_e = (float( tab[1] ) / 100.)
+                _wordalign.append( [loc_s, loc_e, tokens[wordidx], scores[wordidx]] )
+                wordidx = wordidx+1
+
+        # Adjust time values
+        for wordidx in range( len(_wordalign) ):
+
+            # Fix the end of this annotation to the begin of the next one.
+            loc_e = _wordalign[wordidx][1]
+            if wordidx < (len(_wordalign)-1):
+                nextloc_s = _wordalign[wordidx+1][0]
+            else:
+                nextloc_s = 0.
+            if loc_e < nextloc_s:
+                loc_e = nextloc_s
+            _wordalign[wordidx][1] = loc_e
+
         return (None,_wordalign)
 
     # ------------------------------------------------------------------
