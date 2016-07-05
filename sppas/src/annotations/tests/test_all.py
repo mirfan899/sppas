@@ -22,15 +22,15 @@ if os.path.exists( TEMP ) is False:
 
 testsuite = unittest.TestSuite()
 
-# tokenize
-testsuite.addTest(unittest.makeSuite(TestNum2Letter))
-testsuite.addTest(unittest.makeSuite(TestDictTok))
-
-# phonetize
-testsuite.addTest(unittest.makeSuite(TestDictPhon))
-testsuite.addTest(unittest.makeSuite(TestDAGPhon))
-testsuite.addTest(unittest.makeSuite(TestSppasPhon))
-testsuite.addTest(unittest.makeSuite(TestPhonUnk))
+# # tokenize
+# testsuite.addTest(unittest.makeSuite(TestNum2Letter))
+# testsuite.addTest(unittest.makeSuite(TestDictTok))
+#
+# # phonetize
+# testsuite.addTest(unittest.makeSuite(TestDictPhon))
+# testsuite.addTest(unittest.makeSuite(TestDAGPhon))
+# testsuite.addTest(unittest.makeSuite(TestSppasPhon))
+# testsuite.addTest(unittest.makeSuite(TestPhonUnk))
 
 # align
 testsuite.addTest(unittest.makeSuite(TestBaseAligner))

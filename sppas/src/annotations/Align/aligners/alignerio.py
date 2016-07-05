@@ -395,9 +395,6 @@ class AlignerIO( object ):
         @param outputfilename (str) The output file name (a Julius-like output).
 
         """
-        if len(tokenslist) != len(phoneslist):
-            tokenslist = ["w_"+str(i+1) for i in range(len(phoneslist))]
-
         with codecs.open(outputfilename, 'w', encoding) as fp:
 
             fp.write("----------------------- System Information begin ---------------------\n")

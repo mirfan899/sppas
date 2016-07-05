@@ -25,6 +25,18 @@ class TestBaseAligner( unittest.TestCase ):
     def setUp(self):
         self._aligner = basicalign.BaseAligner( None )
 
+    def test_outext(self):
+        self.assertEqual( self._aligner.get_outext(),"" )
+        with self.assertRaises(NotImplementedError):
+            self._aligner.set_outext( "palign" )
+
+    def test_infersp(self):
+        self.assertFalse( self._aligner.get_infersp() )
+        self._aligner.set_infersp( True )
+        self.assertTrue( self._aligner.get_infersp() )
+        self._aligner.set_infersp( "ejzkjreg" )
+        self.assertFalse( self._aligner.get_infersp() )
+
     def test_options(self):
         self.assertFalse( self._aligner.get_infersp())
         self._aligner.set_infersp(True)
@@ -119,5 +131,7 @@ class TestAlignersPackage(unittest.TestCase):
             aligners.check("invalid")
 
     def test_instantiate(self):
-        aligner = aligners.instantiate("basic", None)
+        aligner = aligners.instantiate(None,"basic")
         self.assertTrue(isinstance(aligner, basicalign.BasicAligner))
+
+# ---------------------------------------------------------------------------

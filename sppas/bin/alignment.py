@@ -46,6 +46,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
+import annotations.Align.aligners as aligners
 from annotations.Align.align import sppasAlign
 from utils.fileutils         import setup_logging
 
@@ -62,7 +63,7 @@ parser.add_argument("-r", metavar="file", required=True,  help='Directory of the
 parser.add_argument("-R", metavar="file", required=False, help='Directory of the acoustic model of the mother language of the speaker')
 parser.add_argument("-o", metavar="file", required=True,  help='Output file name with estimated alignments')
 
-parser.add_argument("-a", metavar="name", required=False, choices='["julius","hvite","basic"]', default="julius", help='Speech automatic aligner system: julius, hvite, basic (default: julius)')
+parser.add_argument("-a", metavar="name", required=False, choices=aligners.aligner_names(), default="julius", help='Speech automatic aligner system: julius, hvite, basic (default: julius)')
 parser.add_argument("--basic",   action='store_true', help="Perform basic alignment if the aligner fails" )
 parser.add_argument("--noclean", action='store_true', help="Do not remove working directory" )
 parser.add_argument("--noactivity", action='store_true', help="Do not generate Activity tier" )

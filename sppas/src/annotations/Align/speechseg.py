@@ -51,9 +51,21 @@ class SpeechSegmenter( object ):
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Automatic speech segmentation.
+    @summary:      Automatic segmentation of a segment of speech.
 
-    Speech segmentation of a unit of speech (an IPU/utterance/sentence/segment).
+
+    Speech segmentation of a unit of speech (an IPU/utterance/sentence/segment)
+    at phones and tokens levels.
+
+    This class expect that all the following data were previously properly
+    fixed:
+        - audio file in 16000 Hz, 16 bits;
+        - tokenization, UTF-8 encoding file (optional);
+        - phonetization, UTF-8 encoding file;
+        - acoustic model, HTK-ASCII;
+        and that:
+        - both the AC and phonetization are based on the same phone set;
+        - both the tokenization and phonetization contain the same number of words.
 
     """
     def __init__(self, model, alignername=aligners.DEFAULT_ALIGNER):
@@ -66,6 +78,7 @@ class SpeechSegmenter( object ):
             - monophones.repl file;
             - config file.
         Any other file will be ignored.
+        @param alignername (str) The identifier name of the aligner.
 
         """
         # Options, must be fixed before to instantiate the aligner
@@ -74,10 +87,10 @@ class SpeechSegmenter( object ):
         # The acoustic model directory
         self._modeldir = model
 
-        # The automatic alignment system:
+        # The automatic alignment system, and the "basic".
         # The basic aligner is used:
-        #   - when the track contains only one phoneme;
-        #   - when the automatic alignment system failed to perform segmn.
+        #   - when the track segment contains only one phoneme;
+        #   - when the track segment does not contain phonemes.
         self.set_aligner(alignername)
         self._basicaligner = aligners.instantiate(None)
         self._instantiate_aligner()
@@ -98,7 +111,7 @@ class SpeechSegmenter( object ):
 
     def set_aligner(self, alignername):
         """
-        Fix the name of the aligner, one of ALIGNERS.
+        Fix the name of the aligner, one of aligners.ALIGNERS_TYPES.
 
         @param alignername (str - IN) Case-insensitive name of an aligner system.
 
@@ -125,7 +138,7 @@ class SpeechSegmenter( object ):
 
     def get_aligner(self):
         """
-        Return the aligner name.
+        Return the aligner name identifier.
 
         """
         return self._alignerid
@@ -138,6 +151,15 @@ class SpeechSegmenter( object ):
 
         """
         return self._aligner.get_outext()
+
+    # ----------------------------------------------------------------------
+
+    def set_aligner_ext(self, ext):
+        """
+        Fix the output file extension the aligner will use.
+
+        """
+        self._aligner.set_outext( ext )
 
     # ----------------------------------------------------------------------
 
@@ -188,7 +210,8 @@ class SpeechSegmenter( object ):
             return ""
 
         # Execute Alignment
-        ret = self._aligner.run_alignment(audiofilename, alignname)
+        ret  = self._aligner.check_data()
+        ret += self._aligner.run_alignment(audiofilename, alignname)
 
         return ret
 
@@ -208,15 +231,16 @@ class SpeechSegmenter( object ):
 
     def _readline(self, filename):
         """
-        Return the first line of filename, formatted.
+        Read the first line of filename, and return it as a formatted string.
 
         """
+        line = ""
         try:
             with codecs.open(filename, 'r', encoding) as fp:
-                return ToStrip(fp.readline())
+                line = ToStrip(fp.readline())
         except Exception:
-            return "" # IOError
+            return "" # IOError, Encoding error...
 
-        return "" # Empty file
+        return line
 
     # ----------------------------------------------------------------------

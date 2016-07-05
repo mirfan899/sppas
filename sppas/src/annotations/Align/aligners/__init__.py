@@ -33,9 +33,13 @@
 #
 # ---------------------------------------------------------------------------
 
+from basicalign  import BasicAligner
 from juliusalign import JuliusAligner
 from hvitealign  import HviteAligner
-from basicalign  import BasicAligner
+
+from basicalign  import BASIC_EXT_OUT
+from juliusalign import JULIUS_EXT_OUT
+from hvitealign  import HVITE_EXT_OUT
 
 # ---------------------------------------------------------------------------
 
@@ -47,13 +51,21 @@ __all__ = [
 
 # ---------------------------------------------------------------------------
 
-# List of supported aligner names
+# List of supported aligner and related class name
+ALIGNERS_TYPES = {
+    "basic":BasicAligner,
+    "julius":JuliusAligner,
+    "hvite":HviteAligner
+}
+
+# Identifier name of the default aligner
 DEFAULT_ALIGNER = "basic"
 
-ALIGNERS_TYPES = {
-    "julius":JuliusAligner,
-    "hvite":HviteAligner,
-    "basic":BasicAligner
+# List of extensions each aligner is able to write
+ALIGNERS_EXT_OUT = {
+    "basic":BASIC_EXT_OUT,
+    "julius":JULIUS_EXT_OUT,
+    "hvite":HVITE_EXT_OUT
 }
 
 # ---------------------------------------------------------------------------
@@ -69,7 +81,7 @@ def aligner_names():
 
 def check( alignername ):
     """
-    Check whether the alignername is known or not.
+    Check whether the aligner name is known or not.
 
     @param alignername (str - IN) Name of the aligner. Expect one of the ALIGNERS list.
     @return formatted alignername
@@ -78,25 +90,28 @@ def check( alignername ):
     alignername = alignername.lower()
     if not alignername in ALIGNERS_TYPES.keys():
         raise ValueError('Unknown aligner name.')
+
     return alignername
 
 # ---------------------------------------------------------------------------
 
 def instantiate( modeldir, alignername=DEFAULT_ALIGNER ):
     """
-    Instantiate an aligner to the appropriate Aligner system.
+    Instantiate an aligner to the appropriate Aligner system from its name.
+    If an error occurred, the basic aligner is returned.
 
     @param alignername (str - IN) Name of the aligner. Expect one of the ALIGNERS list.
     @param modeldir (str - IN) Directory of the acoustic model
-    @return an Aligner instance. If an error occurred,
-    the default aligner is returned.
+    @return an Aligner instance.
 
     """
     alignername = alignername.lower()
 
     try:
-        return ALIGNERS_TYPES[alignername](modeldir)
+        a = ALIGNERS_TYPES[alignername](modeldir)
     except KeyError:
-        return ALIGNERS_TYPES[DEFAULT_ALIGNER](None)
+        a = BasicAligner(None)
+
+    return a
 
 # ---------------------------------------------------------------------------

@@ -41,6 +41,7 @@ import shutil
 from datetime import date
 
 from resources.acm.tiedlist import TiedList
+from resources.rutils import ToStrip
 
 # ---------------------------------------------------------------------------
 
@@ -56,15 +57,18 @@ class BaseAligner:
     A base class for a system to perform phonetic speech segmentation.
 
     """
-    def __init__(self, modelfilename):
+    def __init__(self, modeldir):
         """
         Constructor.
 
-        @param modelfilename (str) the acoustic model file name
+        @param modeldir (str) the acoustic model directory name
 
         """
-        self._model    = modelfilename
-
+        if modeldir is not None:
+            modeldir = str(modeldir)
+            if os.path.exists( modeldir ) is False:
+                raise IOError("Not a valid model directory.")
+        self._model    = modeldir
         self._infersp  = False
         self._outext   = "" # output file name extension
         self._phones   = "" # string of the phonemes to time-align
@@ -80,6 +84,17 @@ class BaseAligner:
 
         """
         return self._outext
+
+    # -----------------------------------------------------------------------
+
+    def set_outext(self, ext):
+        """
+        Set the extension for output files.
+
+        @param str
+
+        """
+        raise NotImplementedError
 
     # -----------------------------------------------------------------------
 
@@ -103,7 +118,10 @@ class BaseAligner:
         will infer if it is appropriate or not.
 
         """
-        self._infersp = infersp
+        if isinstance(infersp,bool) is False:
+            self._infersp = False
+        else:
+            self._infersp = infersp
 
     # -----------------------------------------------------------------------
 
@@ -142,9 +160,10 @@ class BaseAligner:
         """
         Fix the pronunciations of each token.
 
-        @param phones (str)
+        @param phones (str) Phonetization
 
         """
+        phones = str(phones)
         self._phones = phones
 
     # ------------------------------------------------------------------------
@@ -153,10 +172,33 @@ class BaseAligner:
         """
         Fix the tokens.
 
-        @param tokens (str)
+        @param tokens (str) Tokenization
 
         """
+        tokens = str(tokens)
         self._tokens = tokens
+
+    # -----------------------------------------------------------------------
+
+    def check_data(self):
+        """
+        Check the given data to be aligned (phones and tokens).
+
+        @raise IOError
+        @return A warning message, or an empty string if check is OK.
+
+        """
+        if len(self._phones) == 0:
+            raise IOError("No data to time-align.")
+
+        phones = ToStrip(self._phones).split()
+        tokens = ToStrip(self._tokens).split()
+        if len(tokens) != len(phones):
+            message = "Tokens alignment disabled: not the same number of tokens in tokenization (%d) and phonetization (%d)."%(len(self._tokens),len(self._phones))
+            self._tokens = " ".join([ "w_"+str(i) for i in range(len(self._phones)) ])
+            return message
+
+        return ""
 
     # -----------------------------------------------------------------------
 

@@ -45,12 +45,13 @@ from annotations.Align.aligners.basealigner import BaseAligner
 from sp_glob import encoding
 from sp_glob import JULIUS_CONFIG
 
-from resources.rutils import ToStrip
-
 from resources.slm.ngramsmodel import NgramsModel
 from resources.slm.arpaio      import ArpaIO
 from resources.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
 
+# ----------------------------------------------------------------------------
+JULIUS_EXT_OUT = ["palign","walign"]
+DEFAULT_EXT_OUT = JULIUS_EXT_OUT[0]
 # ----------------------------------------------------------------------------
 
 class JuliusAligner( BaseAligner ):
@@ -88,7 +89,7 @@ class JuliusAligner( BaseAligner ):
     (2000-2003) and currently Interactive Speech Technology Consortium (ISTC).
 
     """
-    def __init__(self, modelfilename):
+    def __init__(self, modeldir):
         """
         JuliusAligner is able to align one audio segment that can be:
             - an inter-pausal unit,
@@ -124,13 +125,27 @@ class JuliusAligner( BaseAligner ):
         if outext is set to "palign", JuliusAligner will use a grammar, and
         if outext is set to "walign", JuliusAligner will use a slm.
 
-        @param modelfilename (str) the acoustic model file name
+        @param modelfildir (str) the acoustic model file name
 
         """
-        BaseAligner.__init__(self, modelfilename)
-        self._outext = "palign"
+        BaseAligner.__init__(self, modeldir)
+        self._outext = DEFAULT_EXT_OUT
 
     # ------------------------------------------------------------------------
+
+    def set_outext(self, ext):
+        """
+        Set the extension for output files.
+
+        @param str
+
+        """
+        ext = ext.lower()
+        if not ext in JULIUS_EXT_OUT:
+            raise ValueError("%s is not a valid file extension for JuliusAligner"%ext)
+        self._outext = ext
+
+    # -----------------------------------------------------------------------
 
     def gen_slm_dependencies(self, basename):
         """
@@ -142,11 +157,8 @@ class JuliusAligner( BaseAligner ):
         dictname = basename + ".dict"
         slmname  = basename + ".arpa"
 
-        # Get tokens and their pronunciations
-        phoneslist = ToStrip(self._phones).split()
-        tokenslist = ToStrip(self._tokens).split()
-        if len(tokenslist) != len(phoneslist):
-            raise IOError("Inconsistent data: Got %d pronunciations and %d tokens"%(len(phoneslist),len(tokenslist)))
+        phoneslist = self._phones.split()
+        tokenslist = self._tokens.split()
 
         # Write the dictionary
         with codecs.open(dictname, 'w', encoding) as fdict:
@@ -178,10 +190,8 @@ class JuliusAligner( BaseAligner ):
         dictname    = basename + ".dict"
         grammarname = basename + ".dfa"
 
-        phoneslist = ToStrip(self._phones).split()
-        tokenslist = ToStrip(self._tokens).split()
-        if len(tokenslist) != len(phoneslist):
-            tokenslist = [ "w_"+str(i) for i in range(len(phoneslist)) ]
+        phoneslist = self._phones.split()
+        tokenslist = self._tokens.split()
 
         tokenidx = 0
         nbtokens = len(tokenslist)-1
@@ -304,9 +314,6 @@ class JuliusAligner( BaseAligner ):
         @return (str) A message of `julius`.
 
         """
-        if len(self._phones) == 0:
-            raise IOError("No data to time-align.")
-
         basename = os.path.splitext(inputwav)[0]
         if self._outext == "palign":
             self.gen_grammar_dependencies(basename)

@@ -587,18 +587,13 @@ class sppasAlign:
         phontier = self.get_phonestier( trsinput )
         if phontier is None:
             raise IOError("No tier with the phonetization was found.")
-        if phontier.IsTimeInterval() is False:
-            raise IOError("The phonetization tier is not of type TimeInterval.")
 
         try:
             trsinputtok = annotationdata.io.read( tokensname )
             toktier = self.get_tokenstier( trsinputtok )
-            if toktier.IsTimeInterval() is False:
-                self.print_message("The tokenization tier is not of type TimeInterval: Tokens alignment disabled.", indent=2, status=WARNING_ID)
-                toktier = None
         except Exception:
             toktier = None
-            self.print_message("No tokenization found: Tokens alignment disabled.", indent=2, status=WARNING_ID)
+            self.print_message("Tokens alignment disabled.", indent=2, status=WARNING_ID)
 
         # Processing...
         # ---------------------------------------------------------------

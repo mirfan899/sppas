@@ -41,6 +41,9 @@ from annotations.Align.aligners.alignerio   import AlignerIO
 import audiodata.io
 
 # ----------------------------------------------------------------------------
+BASIC_EXT_OUT = ["palign","walign"]
+DEFAULT_EXT_OUT = BASIC_EXT_OUT[0]
+# ----------------------------------------------------------------------------
 
 class BasicAligner( BaseAligner ):
     """
@@ -55,18 +58,32 @@ class BasicAligner( BaseAligner ):
     In case of phonetic variants, the first shortest phonetization is selected.
 
     """
-    def __init__(self, modelfilename):
+    def __init__(self, modeldir):
         """
         Constructor.
 
         BasicAlign aligns one inter-pausal unit with the same duration
         for each phoneme. It selects the shortest in case of variants.
 
-        @param modelfilename (str) the acoustic model file name
+        @param modeldir (str) the acoustic model file name
 
         """
-        BaseAligner.__init__(self, modelfilename)
-        self._outext = "palign"
+        BaseAligner.__init__(self, modeldir)
+        self._outext = DEFAULT_EXT_OUT
+
+    # -----------------------------------------------------------------------
+
+    def set_outext(self, ext):
+        """
+        Set the extension for output files.
+
+        @param str
+
+        """
+        ext = ext.lower()
+        if not ext in BasicAligner.BASIC_EXT_OUT:
+            raise ValueError("%s is not a valid file extension for BasicAligner"%ext)
+        self._outext = ext
 
     # -----------------------------------------------------------------------
 

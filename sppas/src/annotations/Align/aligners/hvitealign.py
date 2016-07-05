@@ -44,7 +44,10 @@ from annotations.Align.aligners.basealigner import BaseAligner
 from sp_glob import encoding
 from resources.rutils import ToStrip
 
-# ---------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+HVITE_EXT_OUT = ["mlf"]
+DEFAULT_EXT_OUT = HVITE_EXT_OUT[0]
+# ----------------------------------------------------------------------------
 
 class HviteAligner( BaseAligner ):
     """
@@ -58,17 +61,31 @@ class HviteAligner( BaseAligner ):
     http://htk.eng.cam.ac.uk/links/asr_tool.shtml
 
     """
-    def __init__(self, modelfilename):
+    def __init__(self, modeldir):
         """
         Constructor.
 
         HviteAligner aligns one inter-pausal unit.
 
-        @param modelfilename (str) the acoustic model file name
+        @param modeldir (str) the acoustic model file name
 
         """
-        BaseAligner.__init__(self, modelfilename)
-        self._outext = "mlf"
+        BaseAligner.__init__(self, modeldir)
+        self._outext = HVITE_EXT_OUT
+
+    # -----------------------------------------------------------------------
+
+    def set_outext(self, ext):
+        """
+        Set the extension for output files.
+
+        @param str
+
+        """
+        ext = ext.lower()
+        if not ext in HVITE_EXT_OUT:
+            raise ValueError("%s is not a valid file extension for JuliusAligner"%ext)
+        self._outext = ext
 
     # -----------------------------------------------------------------------
 
@@ -80,18 +97,13 @@ class HviteAligner( BaseAligner ):
         @param dictname is the dictionary file name
 
         """
-        phoneslist = ToStrip(self._phones).split()
-        tokenslist = ToStrip(self._tokens).split()
-        if len(tokenslist) != len(phoneslist):
-            tokenslist = [ "w_"+str(i) for i in range(len(phoneslist)) ]
-
         with codecs.open(grammarname, 'w', encoding) as flab,\
                 codecs.open(dictname, 'w', encoding) as fdict:
 
             fdict.write( "SENT-END [] sil\n" )
             fdict.write( "SENT-START [] sil\n" )
 
-            for token,pron in zip(tokenslist,phoneslist):
+            for token,pron in zip(self._tokens.split(),self._phones.split()):
 
                 # dictionary:
                 for i,variant in enumerate(pron.split("|")):
