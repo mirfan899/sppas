@@ -41,7 +41,7 @@ from annotations.Align.aligners.alignerio   import AlignerIO
 import audiodata.io
 
 # ----------------------------------------------------------------------------
-BASIC_EXT_OUT = ["palign","walign"]
+BASIC_EXT_OUT = ["palign"]
 DEFAULT_EXT_OUT = BASIC_EXT_OUT[0]
 # ----------------------------------------------------------------------------
 
@@ -172,9 +172,9 @@ class BasicAligner( BaseAligner ):
             alignments = [(0, int(phonesdur), "")]
 
         if outputalign is not None:
-            if outputalign.endswith('palign'):
-                alignio = AlignerIO()
-                alignio.write_palign(phonetization, tokenization, alignments, outputalign)
+            outputalign = outputalign + "." + self._outext
+            alignio = AlignerIO()
+            alignio.write_palign(phonetization, tokenization, alignments, outputalign)
 
         return alignments
 

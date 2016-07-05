@@ -162,8 +162,10 @@ class JuliusAligner( BaseAligner ):
 
         # Write the dictionary
         with codecs.open(dictname, 'w', encoding) as fdict:
+
             fdict.write( START_SENT_SYMBOL+" [] sil\n" )
             fdict.write( END_SENT_SYMBOL+" [] sil\n" )
+
             for token,pron in zip(tokenslist,phoneslist):
                 for variant in pron.split("|"):
                     fdict.write( token )
@@ -314,6 +316,8 @@ class JuliusAligner( BaseAligner ):
         @return (str) A message of `julius`.
 
         """
+        outputalign = outputalign + "." + self._outext
+
         basename = os.path.splitext(inputwav)[0]
         if self._outext == "palign":
             self.gen_grammar_dependencies(basename)

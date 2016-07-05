@@ -100,8 +100,8 @@ class AlignIO:
     def get_tokensfilename(self, trackdir, tracknumber):
         return self._tracknames.tokensfilename(trackdir, tracknumber)
 
-    def get_alignfilename(self, trackdir, tracknumber, ext):
-        return self._tracknames.alignfilename(trackdir, tracknumber, ext)
+    def get_alignfilename(self, trackdir, tracknumber):
+        return self._tracknames.alignfilename(trackdir, tracknumber)
 
     # ------------------------------------------------------------------------
 

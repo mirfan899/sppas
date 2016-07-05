@@ -53,7 +53,6 @@ class SpeechSegmenter( object ):
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
     @summary:      Automatic segmentation of a segment of speech.
 
-
     Speech segmentation of a unit of speech (an IPU/utterance/sentence/segment)
     at phones and tokens levels.
 
@@ -179,7 +178,7 @@ class SpeechSegmenter( object ):
         @param audiofilename (str - IN) the audio file name of an IPU
         @param phonname (str - IN) the file name with the phonetization
         @param tokenname (str - IN) the file name with the tokenization
-        @param alignname (str - OUT) the file name to save the result
+        @param alignname (str - OUT) the file name to save the result WITHOUT extension
 
         @return A message of the aligner in case of any problem, or
         an empty string if success.

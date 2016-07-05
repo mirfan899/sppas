@@ -230,6 +230,7 @@ class Features( object ):
         """
         logging.info('Write config file: %s'%filename)
         with open( filename, "w") as fp:
+            #fp.write("SOURCEFORMAT = WAV\n") ??? Required by HVite for alignment
             fp.write("SOURCERATE = %d\n"%( (1000./float(self.framerate))*10000) )
             fp.write("TARGETKIND = %s\n"%self.targetkind)
             fp.write("TARGETRATE = %.1f\n"%(self.win_shift_ms*100000))
@@ -240,7 +241,6 @@ class Features( object ):
             fp.write("PREEMCOEF = %f\n"%self.pre_em_coef)
             fp.write("NUMCHANS = %d\n"%self.num_chans)
             fp.write("CEPLIFTER = %d\n"%self.num_lift_ceps)
-            #fp.write("NUMCEPS = %d\n"%self.num_ceps)
             fp.write("ENORMALISE = F\n")
         self.configfile = filename
 

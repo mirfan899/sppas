@@ -43,6 +43,7 @@ from annotations.Align.aligners.basealigner import BaseAligner
 
 from sp_glob import encoding
 from resources.rutils import ToStrip
+from resources.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
 
 # ----------------------------------------------------------------------------
 HVITE_EXT_OUT = ["mlf"]
@@ -71,7 +72,7 @@ class HviteAligner( BaseAligner ):
 
         """
         BaseAligner.__init__(self, modeldir)
-        self._outext = HVITE_EXT_OUT
+        self._outext = DEFAULT_EXT_OUT
 
     # -----------------------------------------------------------------------
 
@@ -99,9 +100,6 @@ class HviteAligner( BaseAligner ):
         """
         with codecs.open(grammarname, 'w', encoding) as flab,\
                 codecs.open(dictname, 'w', encoding) as fdict:
-
-            fdict.write( "SENT-END [] sil\n" )
-            fdict.write( "SENT-START [] sil\n" )
 
             for token,pron in zip(self._tokens.split(),self._phones.split()):
 
@@ -132,15 +130,22 @@ class HviteAligner( BaseAligner ):
         basename = os.path.splitext(inputwav)[0]
         dictname = basename + ".dict"
         grammarname = basename + ".lab"
-        self.gen_dependencies(self._phones, grammarname, dictname)
+        self.gen_dependencies(grammarname, dictname)
 
         # Example of use with triphones:
         #
-        # HVite -A -D -T 1 -l '*'  -a -b SENT-END -m
-        #   -C models-EN/config
+        # HVite
+        #   -A                             # print command line arguments
+        #   -D                             # display configuration variables
+        #   -T 1                           # set trace flags to N
+        #   -l '*'                         # dir to store label/lattice files
+        #   -a                             # align from label file
+        #   -b SENT-END                    # *** TO NOT USE for forced-alignment ***
+        #   -m                             # output model alignment
+        #   -C models-EN/config            # model config !IMPORTANT!
         #   -H models-EN/macros
         #   -H models-EN/hmmdefs
-        #   -m -t 250.0 150.0 1000.0
+        #   -t 250.0 150.0 1000.0
         #   -i aligned.out
         #   -y lab
         #   dict/EN.dict
@@ -157,17 +162,21 @@ class HviteAligner( BaseAligner ):
             graph = os.path.join(self._model, "monophones")
 
         # Program name
-        command = 'HVite -A -D -T 1 -l \'*\'  -a -b SENT-END -m '
-        command += ' -C "' + config.replace('"', '\\"') + '"'
-        command += ' -H "' + hmmdefs.replace('"', '\\"') + '"'
+        command = "HVite "
+        command += " -T 1 "
+        command += " -l '*' "
+        command += " -a "
+        command += " -m "
+        command += ' -C "' + config.replace('"', '\\"') + '" '
+        command += ' -H "' + hmmdefs.replace('"', '\\"') + '" '
         if os.path.isfile(macros):
-            command += ' -H "' + macros.replace('"', '\\"') + '"'
-        command += " -t 250.0 150.0 1000.0"
-        command += ' -i "' + outputalign.replace('"', '\\"') + '"'
+            command += ' -H "' + macros.replace('"', '\\"') + '" '
+        command += " -t 250.0 150.0 1000.0 "
+        command += ' -i "' + outputalign.replace('"', '\\"') + '" '
         command += ' -y lab'
-        command += ' "' + dictname.replace('"', '\\"') + '"'
-        command += ' "' + graph.replace('"', '\\"') + '"'
-        command += ' ' + inputwav
+        command += ' "' + dictname.replace('"', '\\"') + '" '
+        command += ' "' + graph.replace('"', '\\"') + '" '
+        command += inputwav
 
         # Execute command
         p = Popen(command, shell=True, stdout=PIPE, stderr=STDOUT)
@@ -196,6 +205,8 @@ class HviteAligner( BaseAligner ):
         @return (str) An empty string.
 
         """
+        outputalign = outputalign + "."  + self._outext
+
         self.run_hvite(inputwav, outputalign)
 
         if os.path.isfile(outputalign):

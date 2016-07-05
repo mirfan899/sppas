@@ -298,8 +298,8 @@ class AlignerIO( object ):
         @param filename: is the input file (a HVite mlf output file).
         @raise IOError
         @return: 2 lists of tuples:
-            - (start-time end-time phoneme -30)
-            - (start-time end-time word 0)
+            - (start-time end-time phoneme 1)
+            - (start-time end-time word 1)
 
         """
         phon = []
@@ -329,10 +329,10 @@ class AlignerIO( object ):
                                 pmin = round(float(line[0]) / samplerate, 5) + 0.005
                             pmax = round(float(line[1]) / samplerate, 5) + 0.005
                             if pmin != pmax: # for sp
-                                phon.append( (pmin, pmax, line[2], -30.) )
+                                phon.append( (pmin, pmax, line[2], 1) )
                             if wmrk:
                                 wmrkp = wmrkp[:-1]
-                                word.append( ( wsrt, wend, wmrk, 0) )
+                                word.append( ( wsrt, wend, wmrk, 1) )
                             wmrkp = line[2] + '-'
                             wmrk = line[4]
                             wsrt = pmin
@@ -349,37 +349,37 @@ class AlignerIO( object ):
                             if line[2] == 'sp' and pmin != pmax:
                                 if wmrk:
                                     wmrkp = wmrkp[:-1]
-                                    word.append( (wsrt, wend, wmrk, 0) )
+                                    word.append( (wsrt, wend, wmrk, 1) )
                                 wmrk = line[2]
                                 wmrkp = ''
                                 wsrt = pmin
                                 wend = pmax
                             elif pmin != pmax: # for sp
-                                phon.append( (pmin, pmax, line[2], -30) )
+                                phon.append( (pmin, pmax, line[2], 1) )
                             wend = pmax
 
                         else: # it's a period
                             wmrkp = wmrkp[:-1]
-                            word.append( (wsrt, wend - 0.005, wmrk, 0) )
+                            word.append( (wsrt, wend - 0.005, wmrk, 1) )
                             break
                 else:
                     break
 
         # Before returning the result... must check if HVite added silences
         # at the beginning and at the end of the IPU (if any, remove them).
-        if len(word)>0:
-            if "SENT" in word[0][2]:
-                newword = (word[0][0], word[1][1], word[1][2], word[1][3])
-                newphon = (phon[0][0], phon[1][1], phon[1][2], phon[1][3])
-                word.pop(0)
-                phon.pop(0)
-                word.pop(0)
-                phon.pop(0)
-                word.insert(0,newword)
-                phon.insert(0,newphon)
-            if "SENT" in word[-1][2]:
-                word.pop()
-                phon.pop()
+#         if len(word)>0:
+#             if "SENT" in word[0][2]:
+#                 newword = (word[0][0], word[1][1], word[1][2], word[1][3])
+#                 newphon = (phon[0][0], phon[1][1], phon[1][2], phon[1][3])
+#                 word.pop(0)
+#                 phon.pop(0)
+#                 word.pop(0)
+#                 phon.pop(0)
+#                 word.insert(0,newword)
+#                 phon.insert(0,newphon)
+#             if "SENT" in word[-1][2]:
+#                 word.pop()
+#                 phon.pop()
 
         return (phon,word)
 

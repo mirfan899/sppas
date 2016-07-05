@@ -357,7 +357,7 @@ class sppasAlign:
             audiofilename = self.alignio.get_audiofilename(diralign,track)
             phonname      = self.alignio.get_phonesfilename(diralign,track)
             tokenname     = self.alignio.get_tokensfilename(diralign,track)
-            alignname     = self.alignio.get_alignfilename(diralign,track,self.speechseg.get_aligner_ext())
+            alignname     = self.alignio.get_alignfilename(diralign,track)
 
             try:
                 msg = self.speechseg.segmenter(audiofilename, phonname, tokenname, alignname)
@@ -369,8 +369,8 @@ class sppasAlign:
                 #    import traceback
                 #    print(traceback.format_exc())
 
-                if os.path.exists(alignname):
-                    os.rename(alignname, alignname+'.backup')
+                #if os.path.exists(alignname):
+                #    os.rename(alignname, alignname+'.backup')
 
                 # Execute BasicAlign
                 if self._options['basic'] is True:
@@ -378,7 +378,7 @@ class sppasAlign:
                         self.logfile.print_message('Execute a Basic Alignment - same duration for each phoneme:', indent=3)
                     alignerid = self.speechseg.get_aligner()
                     self.speechseg.set_aligner('basic')
-                    alignname = self.alignio.get_alignfilename(diralign,track,self.speechseg.get_aligner_ext())
+                    alignname = self.alignio.get_alignfilename(diralign,track)
                     self.speechseg.segmenter(audiofilename, phonname, tokenname, alignname)
                     self.speechseg.set_aligner(alignerid)
                 # or Create an empty alignment, to get an empty interval in the final tier
