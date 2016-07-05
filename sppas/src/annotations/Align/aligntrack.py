@@ -32,7 +32,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: speechseg.py
+# File: aligntrack.py
 # ----------------------------------------------------------------------------
 
 import codecs
@@ -44,7 +44,7 @@ import aligners
 
 # ----------------------------------------------------------------------------
 
-class SpeechSegmenter( object ):
+class AlignTrack( object ):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -55,13 +55,14 @@ class SpeechSegmenter( object ):
 
     Speech segmentation of a unit of speech (an IPU/utterance/sentence/segment)
     at phones and tokens levels.
+    This class is mainly an interface with aligners.
 
-    This class expect that all the following data were previously properly
+    It is expected that all the following data were previously properly
     fixed:
-        - audio file in 16000 Hz, 16 bits;
-        - tokenization, UTF-8 encoding file (optional);
-        - phonetization, UTF-8 encoding file;
-        - acoustic model, HTK-ASCII;
+        - audio file: 1 channel, 16000 Hz, 16 bits;
+        - tokenization: UTF-8 encoding file (optional);
+        - phonetization: UTF-8 encoding file;
+        - acoustic model: HTK-ASCII (Julius and HVite expect this model format);
         and that:
         - both the AC and phonetization are based on the same phone set;
         - both the tokenization and phonetization contain the same number of words.

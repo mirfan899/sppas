@@ -40,7 +40,6 @@ import os.path
 import glob
 import logging
 
-from presenters.audiosppaspresenter import AudioSppasPresenter
 import utils.fileutils as fileutils
 
 import audiodata.io
@@ -51,7 +50,6 @@ from annotationdata import Media
 from annotationdata import Text
 from annotationdata.io.utils import gen_id
 
-from speechseg import SpeechSegmenter
 from alignio   import AlignIO
 from activity  import Activity
 
@@ -60,6 +58,8 @@ from sp_glob import RESOURCES_PATH
 
 from resources.mapping        import Mapping
 from resources.acm.modelmixer import ModelMixer
+
+from annotations.diagnosis import SppasDiagnosis
 
 # ----------------------------------------------------------------------------
 
@@ -97,10 +97,9 @@ class sppasAlign:
         # Log messages for the user
         self.logfile = logfile
 
-        # Members: self.speechseg and self.alignio
+        # Members: self.alignio
         self.fix_segmenter( model,modelL1 )
-
-        self.workdir = ""
+        self.workdir    = ""
         self.inputaudio = ""
 
         # List of options to configure this automatic annotation
@@ -134,9 +133,6 @@ class sppasAlign:
                 else:
                     logging.info( "The model is ignored: %s"%str(e) )
 
-        # The automatic alignment system; it will use the default aligner
-        self.speechseg = SpeechSegmenter( model )
-
         # Map phoneme names from model-specific to SAMPA and vice-versa
         mappingfilename = os.path.join( model, "monophones.repl")
         if os.path.isfile( mappingfilename ):
@@ -148,7 +144,7 @@ class sppasAlign:
             mapping = Mapping()
 
         # Manager of the interval tracks
-        self.alignio = AlignIO( mapping )
+        self.alignio = AlignIO( mapping, model )
 
     # ------------------------------------------------------------------------
     # Methods to fix options
@@ -218,7 +214,7 @@ class sppasAlign:
         @param alignername (str - IN) Case-insensitive name of the aligner.
 
         """
-        self.speechseg.set_aligner(alignername)
+        self.alignio.set_aligner(alignername)
 
     # -----------------------------------------------------------------------
 
@@ -231,7 +227,7 @@ class sppasAlign:
         will infer if it is relevant.
 
         """
-        self.speechseg.set_infersp( infersp )
+        self.alignio.set_infersp( infersp )
 
     # -----------------------------------------------------------------------
 
@@ -255,7 +251,6 @@ class sppasAlign:
 
         """
         self._options['activity'] = bool(value)
-
 
     # -----------------------------------------------------------------------
 
@@ -352,19 +347,14 @@ class sppasAlign:
 
         track = 1
         while track <= ntracks:
-            self.print_message('Align unit number '+str(track), indent=3)
-
-            audiofilename = self.alignio.get_audiofilename(diralign,track)
-            phonname      = self.alignio.get_phonesfilename(diralign,track)
-            tokenname     = self.alignio.get_tokensfilename(diralign,track)
-            alignname     = self.alignio.get_alignfilename(diralign,track)
+            self.print_message('Align interval number '+str(track), indent=3)
 
             try:
-                msg = self.speechseg.segmenter(audiofilename, phonname, tokenname, alignname)
+                msg = self.alignio.segment_track(track,self.workdir)
                 self.print_message(msg, indent=3, status=INFO_ID)
 
             except Exception as e:
-                self.print_message(self.speechseg._alignerid+' failed to perform segmentation.', indent=3, status=ERROR_ID)
+                self.print_message(self.alignio.get_aligner()+' failed to perform segmentation.', indent=3, status=ERROR_ID)
                 self.print_message(str(e), indent=4, status=INFO_ID)
                 #    import traceback
                 #    print(traceback.format_exc())
@@ -376,14 +366,13 @@ class sppasAlign:
                 if self._options['basic'] is True:
                     if self.logfile:
                         self.logfile.print_message('Execute a Basic Alignment - same duration for each phoneme:', indent=3)
-                    alignerid = self.speechseg.get_aligner()
-                    self.speechseg.set_aligner('basic')
-                    alignname = self.alignio.get_alignfilename(diralign,track)
-                    self.speechseg.segmenter(audiofilename, phonname, tokenname, alignname)
-                    self.speechseg.set_aligner(alignerid)
+                    alignerid = self.alignio.get_aligner()
+                    self.alignio.set_aligner('basic')
+                    msg = self.alignio.segment_track(track,self.workdir)
+                    self.alignio.set_aligner(alignerid)
                 # or Create an empty alignment, to get an empty interval in the final tier
                 else:
-                    self.speechseg.segmenter(audiofilename, None, None, alignname)
+                    msg = self.alignio.segment_track(track,self.workdir,segment=False)
 
             track = track + 1
 
@@ -439,7 +428,7 @@ class sppasAlign:
         # Create a Transcription() object with alignments
         trsoutput = self.alignio.read( self.workdir )
 
-        if self.speechseg._alignerid != 'basic':
+        if self.alignio.get_aligner() != 'basic':
             trsoutput = self.rustine_liaisons(trsoutput)
             trsoutput = self.rustine_others(trsoutput)
 
@@ -550,6 +539,8 @@ class sppasAlign:
         for anntoken in tiertoken:
 
             # Create the sequence of phonemes
+            # Use only the phoneme with the best score.
+            # Don't generate alternatives, and won't never do it.
             beg = anntoken.GetLocation().GetBegin()
             end = anntoken.GetLocation().GetEnd()
             annphons = tierphon.Find(beg,end)
@@ -577,8 +568,22 @@ class sppasAlign:
         @return Transcription
 
         """
+        self.print_message("Options: ", indent=2, status=INFO_ID)
         for k,v in self._options.items():
-            self.print_message("Option %s: %s"%(k,v), indent=2, status=INFO_ID)
+            self.print_message(" - %s: %s"%(k,v), indent=3, status=INFO_ID)
+
+        # Check the given files
+        # --------------------------------------------------------------
+
+        d = SppasDiagnosis()
+        self.print_message("Diagnosis: ", indent=2, status=INFO_ID)
+        (s,m) = d.audiofile( audioname )
+        self.print_message(" - %s: %s"%(audioname,m), indent=3, status=s)
+        (s,m) = d.trsfile( phonesname )
+        self.print_message(" - %s: %s"%(phonesname,m), indent=3, status=s)
+        if tokensname is not None:
+            (s,m) = d.trsfile( tokensname )
+            self.print_message(" - %s: %s"%(tokensname,m), indent=3, status=s)
 
         # Get the tiers to be time-aligned
         # ---------------------------------------------------------------
@@ -621,7 +626,7 @@ class sppasAlign:
         # Save results
         # --------------------------------------------------------------
         try:
-            self.print_message("Save alignment of the units: ",indent=3)
+            self.print_message("Save automatic alignment: ",indent=3)
             # Save in a file
             annotationdata.io.write( outputfilename,trsoutput )
             self.print_message("", indent=4, status=OK_ID)
@@ -693,7 +698,7 @@ class sppasAlign:
     def rustine_liaisons(self, trs):
         """ veritable rustine pour supprimer qqs liaisons en trop. """
         # Only for French!
-        if self.speechseg.get_model().startswith("fra") is False:
+        if self.alignio.aligntrack.get_model().startswith("fra") is False:
             return trs
 
         tierphon   = trs.Find("PhonAlign")
