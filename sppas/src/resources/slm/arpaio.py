@@ -98,6 +98,8 @@ class ArpaIO:
             line = line.strip()
             if len(line)==0:
                 pass
+            elif line.startswith('\\end'):
+                break
             elif line.startswith('\\') and not "data" in line:
                 if n>0:
                     self.slm.append(lm)

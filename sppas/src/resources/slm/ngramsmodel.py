@@ -208,10 +208,7 @@ class NgramsModel:
 
         for ngramcounter in self._ngramcounts:
             for sentence in sentences:
-                print "SENTENCE: ",sentence
-                print "Old N-count=", ngramcounter.get_ncount()
                 ngramcounter.append_sentence( sentence )
-                print "New N-count=", ngramcounter.get_ncount()
 
     # -----------------------------------------------------------------------
 
@@ -535,19 +532,22 @@ class NgramCounter:
         @return list of str
 
         """
-        tokens = []
-        tokens.append( self._ss )
-
+        # We are not using a  vocabulary
         if self._wordslist is None:
-            tokens.extend( sentence.split() )
+            tokens = sentence.split()
         else:
+            tokens = []
+            # We need to check if each token is in the vocabulary
             for token in sentence.split():
                 if self._wordslist.is_in(token):
                     tokens.append(token)
                 else:
                     tokens.append(UNKSTAMP)
 
-        tokens.append( self._es )
+        if tokens[0] != self._ss:
+            tokens.insert( 0,self._ss )
+        if tokens[-1] != self._es:
+            tokens.append( self._es )
         return tokens
 
     # -----------------------------------------------------------------------

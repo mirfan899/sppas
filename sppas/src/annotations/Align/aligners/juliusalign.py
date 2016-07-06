@@ -49,6 +49,8 @@ from resources.slm.ngramsmodel import NgramsModel
 from resources.slm.arpaio      import ArpaIO
 from resources.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
 
+from resources.dictpron import DictPron
+
 # ----------------------------------------------------------------------------
 JULIUS_EXT_OUT = ["palign","walign"]
 DEFAULT_EXT_OUT = JULIUS_EXT_OUT[0]
@@ -160,17 +162,18 @@ class JuliusAligner( BaseAligner ):
         phoneslist = self._phones.split()
         tokenslist = self._tokens.split()
 
-        # Write the dictionary
-        with codecs.open(dictname, 'w', encoding) as fdict:
+        dictpron = DictPron()
 
-            fdict.write( START_SENT_SYMBOL+" [] sil\n" )
-            fdict.write( END_SENT_SYMBOL+" [] sil\n" )
+        for token,pron in zip(tokenslist,phoneslist):
+            for variant in pron.split("|"):
+                dictpron.add_pron( token, variant.replace("-"," ") )
 
-            for token,pron in zip(tokenslist,phoneslist):
-                for variant in pron.split("|"):
-                    fdict.write( token )
-                    fdict.write(" ["+token+"] ")
-                    fdict.write(variant.replace("-"," ")+"\n" )
+        if dictpron.is_unk(START_SENT_SYMBOL) is True:
+            dictpron.add_pron( START_SENT_SYMBOL, "sil" )
+        if dictpron.is_unk(END_SENT_SYMBOL) is True:
+            dictpron.add_pron(  END_SENT_SYMBOL, "sil" )
+
+        dictpron.save_as_ascii( dictname, False )
 
         # Write the SLM
         model = NgramsModel(3)

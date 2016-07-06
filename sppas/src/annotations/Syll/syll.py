@@ -169,29 +169,6 @@ class sppasSyll:
         """
         self._options['tiername'] = tiername
 
-    # ----------------------------------------------------------------------
-
-    def save(self, trsinput, inputfilename, trsoutput, outputfile=None):
-        """
-        Save depending on the given data.
-        If no output file name is given, output is appended to the input.
-
-        @param trsinput (Transcription)
-        @param inputfilename (str)
-        @param trsoutput (Transcription)
-        @param outputfile (str)
-
-        """
-        # Append to the input
-        if outputfile is None:
-            for tier in trsoutput:
-                trsinput.Append(tier)
-            trsoutput  = trsinput
-            outputfile = inputfilename
-
-        # Save in a file
-        annotationdata.io.write( outputfile,trsoutput )
-
     # ------------------------------------------------------------------------
 
     def get_input_tier(self, trsinput):
@@ -259,7 +236,7 @@ class sppasSyll:
 
         syllables = self.convert( phonemes, intervals )
 
-        # Save
-        self.save(trsinput, inputfilename, syllables, outputfilename)
+        # Save in a file
+        annotationdata.io.write( outputfilename,syllables )
 
     # ------------------------------------------------------------------------

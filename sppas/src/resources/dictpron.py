@@ -194,9 +194,10 @@ class DictPron:
         newpron = rutils.ToStrip(pron)
         newpron = newpron.replace(" ", "-")
 
-        # Find a previous pronunciation in the dictionary... or not!
+        # Already a pronunciation for this token?
         curpron = ""
         if self._dict.has_key(entry):
+            # and don't append an already known pronunciation
             if self.is_pron_of(entry, pron) is False:
                 curpron = self.get_pron( entry ) + "|"
 
@@ -266,11 +267,12 @@ class DictPron:
 
     # -----------------------------------------------------------------------
 
-    def save_as_ascii(self, filename):
+    def save_as_ascii(self, filename, withvariantnb=True):
         """
         Save the pronunciation dictionary in HTK-ASCII format, encoding=utf8.
 
         @param filename (string)
+        @param withvariantnb (boot) Write the variant number or not.
 
         """
         try:
@@ -279,7 +281,7 @@ class DictPron:
                     variants = value.split("|")
                     for i, variant in enumerate(variants, 1):
                         variant = variant.replace("-", " ")
-                        if i > 1:
+                        if i > 1 and withvariantnb is True:
                             line = u"%s(%d) [%s] %s\n" % (entry, i, entry, variant)
                         else:
                             line = u"%s [%s] %s\n" % (entry, entry, variant)

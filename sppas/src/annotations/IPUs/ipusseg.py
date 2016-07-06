@@ -51,7 +51,7 @@ from annotationdata.media         import Media
 from annotations.IPUs.ipusaudio import IPUsAudio # find IPUs/tracks from audio
 from annotations.IPUs.ipustrs   import IPUsTrs   # find IPUs/tracks/utterances from transcription
 from annotations.IPUs.ipusout   import IPUsOut   # IPUs Output (writer)
-from annotations.IPUs.ipusutils import frames2times, times2frames
+from audiodata.autils import frames2times, times2frames
 
 # ------------------------------------------------------------------
 # Main class

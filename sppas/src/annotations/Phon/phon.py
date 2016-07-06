@@ -198,6 +198,9 @@ class sppasPhon( object ):
     def phonetize(self, entry):
         """
         Phonetize a text.
+        Because we absolutely need to match with the number of tokens, this
+        method will always return a string: either the automatic phonetization
+        (from dict or from phonunk) or the UNKSTAMP.
 
         @param entry (str- IN) The string to be phonetized.
         @return phonetization of `label`.
@@ -208,16 +211,17 @@ class sppasPhon( object ):
         for t,p,s in tab:
             message = None
             if s == ERROR_ID:
-                message = "%s is missing in the dictionary and can't be phonetized automatically."%t
-                return ""
+                message = "%s is missing of the dictionary and wasn't phonetized."%t
+                return UNKSTAMP
             else:
-                tabphon.append( p )
                 if s == WARNING_ID:
-                    message = "%s is missing in the dictionary. "%t
+                    message = "%s is missing of the dictionary, and "%t
                     if len(p) > 0:
-                        message = message +"It was automatically phonetized as: %s"%p
+                        message = message +"was automatically phonetized as: %s"%p
                     else:
-                        message = message +"It wasn't phonetized."
+                        message = message +"wasn't phonetized."
+                        p = UNKSTAMP
+                tabphon.append( p )
 
             if message:
                 self.print_message(message, indent=3, status=s)

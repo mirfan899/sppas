@@ -408,8 +408,11 @@ class sppasAlign:
         try:
             self.alignio.split( self.inputaudio, phontier, toktier, self.workdir )
         except Exception as e:
-            self.alignio.split( self.inputaudio, phontier, None, self.workdir )
-            self.print_message("Tokens alignment disabled: %s"%str(e), indent=3, status=WARNING_ID)
+            if phontier.IsTimeInterval() is True:
+                self.alignio.split( self.inputaudio, phontier, None, self.workdir )
+                self.print_message("Tokens alignment disabled: %s"%str(e), indent=3, status=WARNING_ID)
+            else:
+                raise
 
         self.print_message("", indent=2, status=OK_ID)
 

@@ -50,6 +50,10 @@ class TestSLM(unittest.TestCase):
 
         m1 = slm1.model
         m2 = slm2.model
+        print
+        print m1
+        print m2
+        compare(m1,m2,verbose=True)
         self.assertTrue( compare(m1,m2) )
 
 # ---------------------------------------------------------------------------

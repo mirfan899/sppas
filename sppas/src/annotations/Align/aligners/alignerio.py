@@ -246,7 +246,7 @@ class AlignerIO( object ):
                 wordidx = -1
 
             elif line.startswith('wseq1:'):
-                line = line[10:]
+                line = line[6:]
                 # each token
                 tokens = line.split()
                 if len(tokens)==0:
@@ -364,22 +364,6 @@ class AlignerIO( object ):
                             break
                 else:
                     break
-
-        # Before returning the result... must check if HVite added silences
-        # at the beginning and at the end of the IPU (if any, remove them).
-#         if len(word)>0:
-#             if "SENT" in word[0][2]:
-#                 newword = (word[0][0], word[1][1], word[1][2], word[1][3])
-#                 newphon = (phon[0][0], phon[1][1], phon[1][2], phon[1][3])
-#                 word.pop(0)
-#                 phon.pop(0)
-#                 word.pop(0)
-#                 phon.pop(0)
-#                 word.insert(0,newword)
-#                 phon.insert(0,newphon)
-#             if "SENT" in word[-1][2]:
-#                 word.pop()
-#                 phon.pop()
 
         return (phon,word)
 

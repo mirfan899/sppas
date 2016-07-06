@@ -45,6 +45,8 @@ from sp_glob import encoding
 from resources.rutils import ToStrip
 from resources.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
 
+from resources.dictpron import DictPron
+
 # ----------------------------------------------------------------------------
 HVITE_EXT_OUT = ["mlf"]
 DEFAULT_EXT_OUT = HVITE_EXT_OUT[0]
@@ -98,25 +100,23 @@ class HviteAligner( BaseAligner ):
         @param dictname is the dictionary file name
 
         """
-        with codecs.open(grammarname, 'w', encoding) as flab,\
-                codecs.open(dictname, 'w', encoding) as fdict:
+        dictpron = DictPron()
+
+        with codecs.open(grammarname, 'w', encoding) as flab:
 
             for token,pron in zip(self._tokens.split(),self._phones.split()):
 
                 # dictionary:
-                for i,variant in enumerate(pron.split("|")):
-
+                for variant in pron.split("|"):
+                    dictpron.add_pron( token, variant.replace("-"," ") )
                     if self._infersp is True:
-                        variant = variant + 'sp'
-
-                    fdict.write( token )
-                    if i>0:
-                        fdict.write("("+str(i+1)+")")
-                    fdict.write(" ["+token+"] ")
-                    fdict.write(variant.replace("-",' ')+"\n" )
+                        variant = variant + '-sil'
+                        dictpron.add_pron( token, variant.replace("-"," ") )
 
                 # lab file (one token per line)
                 flab.write( token+"\n")
+
+        dictpron.save_as_ascii( dictname )
 
     # -----------------------------------------------------------------------
 

@@ -456,7 +456,7 @@ class sppasProcess( Thread ):
 
                 # Execute annotation
                 try:
-                    t.run( inname, outputfile=outname )
+                    t.run( inname, outname )
                 except Exception as e:
                     if self._logfile is not None:
                         self._logfile.print_message( "%s for file %s\n"%(str(e),outname), indent=2,status=-1 )
@@ -536,7 +536,7 @@ class sppasProcess( Thread ):
 
                 # Execute annotation
                 try:
-                    p.run( inname, outputfile=outname )
+                    p.run( inname, outname )
                 except Exception as e:
                     import traceback
                     print traceback.format_exc()
@@ -618,7 +618,7 @@ class sppasProcess( Thread ):
 
                 # Execute annotation
                 try:
-                    a.run( inname, intok, f, outputfilename=outname )
+                    a.run( inname, intok, f, outname )
                 except Exception as e:
                     if self._logfile is not None:
                         stre = unicode(e.message).encode("utf-8")
@@ -695,7 +695,7 @@ class sppasProcess( Thread ):
 
                 # Execute annotation
                 try:
-                    s.run( inname, outputfilename=outname )
+                    s.run( inname, outname )
                 except Exception as e:
                     if self._logfile is not None:
                         self._logfile.print_message( "%s for file %s\n"%(str(e),outname), indent=2,status=-1 )
@@ -771,7 +771,7 @@ class sppasProcess( Thread ):
 
                 # Execute annotation
                 try:
-                    r.run( inname, outputfilename=outname )
+                    r.run( inname, None, outname )
                 except Exception as e:
                     if self._logfile is not None:
                         self._logfile.print_message( "%s for file %s\n"%(str(e),outname), indent=2,status=-1 )

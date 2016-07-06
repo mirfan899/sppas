@@ -14,6 +14,7 @@ k_w k_w
 k_h_w k_h_w
 w w
 ts ts
+tS tS
 ts_h ts_h
 s s
 j j
@@ -23,7 +24,7 @@ E: E:
 e e
 i: i:
 I I
-O: O:
+O: O
 o o
 u: u:
 U U
@@ -35,5 +36,4 @@ sp +
 y y
 @ @
 S S
-tS tS
 tS_h tS_h

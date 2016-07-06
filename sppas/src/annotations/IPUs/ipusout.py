@@ -40,7 +40,7 @@ import os
 
 from sp_glob import encoding
 
-from annotations.IPUs.ipusutils import frames2times
+from audiodata.autils import frames2times
 
 import audiodata.io
 import annotationdata.io

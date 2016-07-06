@@ -99,6 +99,23 @@ class ChannelFrames( object ):
 
     # ----------------------------------------------------------------------------
 
+    def prepend_silence(self, nframes):
+        """
+        Create n frames of silence and prepend it to the frames.
+
+        @param nframes (int) the number of frames of silence to append
+
+        """
+        nframes = int(nframes)
+        if nframes < 0:
+            raise ValueError("Expected a number of frames. Got %s"%nframes)
+        if nframes == 0:
+            return
+
+        self.frames = " \x00"*nframes + self.frames
+
+    # ----------------------------------------------------------------------------
+
     def resample(self, sampwidth, rate, newrate):
         """
         Resample the frames with a new frame rate.
