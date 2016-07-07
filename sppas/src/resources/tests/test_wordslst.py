@@ -1,25 +1,26 @@
 #!/usr/bin/env python2
-# -*- coding:utf-8 -*-
+# -*- coding: utf8 -*-
 
 import unittest
 import os
-import sys
-from os.path import *
-
-SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
-sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 from resources.wordslst import WordsList
 from sp_glob import RESOURCES_PATH
+from paths import TEMP
 
-VOCAB  = join(dirname(abspath(__file__)), "vocab.txt")
-VOCAB2 = join(dirname(abspath(__file__)), "vocab2.txt")
+# ---------------------------------------------------------------------------
+
+VOCAB  = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "vocab.txt")
 ITA = os.path.join(RESOURCES_PATH, "vocab", "ita.vocab")
+
+VOCAB_TEST = os.path.join(TEMP, "vocab.txt")
+
+# ---------------------------------------------------------------------------
 
 class TestWordsList(unittest.TestCase):
 
     def test_all(self):
-        l = WordsList( VOCAB )
+        l = WordsList( VOCAB, nodump=True )
         self.assertEqual(l.get_size(), 20 )
         self.assertTrue( l.is_unk('toto') )
         self.assertFalse( l.is_unk('normale') )
@@ -30,23 +31,16 @@ class TestWordsList(unittest.TestCase):
         self.assertTrue( l.is_unk("être") )
 
     def test_save(self):
-        l = WordsList( VOCAB )
-        l.save( VOCAB2 )
-        l2 = WordsList( VOCAB2 )
+        l = WordsList( VOCAB, nodump=True )
+        l.save( VOCAB_TEST )
+        l2 = WordsList( VOCAB_TEST, nodump=True )
         self.assertEqual(l.get_size(), l2.get_size())
         for w in l.get_list():
             self.assertTrue(l2.is_in(w))
 
     def test_ita(self):
-        l = WordsList( ITA )
+        l = WordsList( ITA, nodump=True )
         self.assertTrue( l.is_unk('toto') )
         self.assertFalse( l.is_unk(u'perché') )
 
-
-# End TestWordsList
 # ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestWordsList)
-    unittest.TextTestRunner(verbosity=2).run(suite)
-

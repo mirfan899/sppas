@@ -53,6 +53,7 @@ from annotationdata.label.text     import Text
 import audiodata.autils as autils
 
 from resources.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
+from resources.patterns import Patterns
 from resources.rutils import ToStrip
 
 from sp_glob import encoding
@@ -247,7 +248,7 @@ class TrackSplitter( Transcription ):
                 print " -> ",b,e,w,s
 
             # match automatic and manual sequences of tokens
-            (lastasrtoken,lastmantoken) = self._append_chunks( wordalign, toklist[fromtoken:totoken], anchortier )
+            (lastmantoken,lastasrtoken) = self._append_chunks( toklist[fromtoken:totoken], wordalign, anchortier )
 
             print "Last token = ",fromtoken+lastmantoken,toklist[fromtoken+lastmantoken]
             print "Last time  = ",lastasrtoken,wordalign[lastasrtoken][1]
@@ -294,11 +295,16 @@ class TrackSplitter( Transcription ):
 
     # ------------------------------------------------------------------------
 
-    def _append_chunks(self, tokensalign, tokenslist, anchortier ):
+    def _append_chunks(self, tokenslist, tokensalign, anchortier ):
         """
         Try to find chunks and append in anchortier.
         Chunk search is based on the n-grams matching between the words the
-        ASR found and the tokens manually transcribed.
+        ASR found (hyp) and the tokens manually transcribed (ref), as:
+
+        ref = [ w1, w2, w3 ... wn ... wN ]
+        hyp = [ (b1,e1,t1,s1), (b2,e2,t2,s2), ... (bk,ek,tk,sk) ]
+
+        with N < k.
 
         @param tokensalign (list of tuples - IN) The list of tokens the ASR found in an extract
         @param tokenslist (list of str - IN) The sequence of manually transcribed tokens matching the extract and after
@@ -306,73 +312,111 @@ class TrackSplitter( Transcription ):
 
         """
         # list of tokens the ASR automatically time-aligned
-        tasr = [unicode(token) for (start,end,token,score) in tokensalign]
         tman = [unicode(token) for token in tokenslist]
-        ngram = 4 # to start with 3-grams...
+        tasr = [(unicode(token),score) for (start,end,token,score) in tokensalign]
 
-        # find matching patterns from left to right
-        lrmatching = []
-        while ngram > 1:
-            ngram = ngram-1
-
-            # create n-gram sequences of manually transcribed tokens
-            nman = zip(*[tman[i:] for i in range(ngram)])
-
-            # create n-gram sequences of ASR transcribed tokens
-            # if ngram=1, keep only tokens with a high confidence score
-            if ngram>1:
-                nasr = zip(*[tasr[i:] for i in range(ngram)])
-            else:
-                nasr = []
-                for (start,end,token,score) in tokensalign:
-                    if score > 0.9:
-                        nasr.append( unicode(token) )
-                    else:
-                        nasr.append( unicode("<unk>") )
-
-            # find matching patterns
-            lastidx = min(len(nasr),len(nman))
-            idxa = 0
-            idxm = 0
-            while idxa<lastidx and idxm<lastidx:
-                found = False
-
-                if nasr[idxa] == nman[idxm]:
-                    print "Matching exact with n=",ngram, range(idxa,idxa+ngram)
-                    for i in range(ngram):
-                        lrmatching.append( (idxa+i,idxm+i) )
-                    found = True
-
-                if not found and idxm < lastidx:
-                    if nasr[idxa] == nman[idxm+1]:
-                        idxm = idxm + 1
-                        print "Matching shift+1 with n=",ngram, range(idxa,idxa+ngram)
-                        for i in range(ngram):
-                            lrmatching.append( (idxa+i,idxm+i) )
-                        found = True
-
-                if not found and idxm > 0:
-                    if nasr[idxa] == nman[idxm-1]:
-                        idxm = idxm - 1
-                        print "Matching shift-1 with n=",ngram, range(idxa,idxa+ngram)
-                        for i in range(ngram):
-                            lrmatching.append( (idxa+i,idxm+i) )
-
-                idxa = idxa + 1
-                idxm = idxm + 1
-
-        matching = sorted(list(set(lrmatching)))
-
-        if len(matching) == 0:
+        pattern = Patterns()
+        pattern.set_ngram(3)
+        matchingslist = pattern.matchings( tman,tasr )
+        print "Matching set of tokens:"
+        for (m,a) in matchingslist:
+            print " ... ...",m,"-",a," ->",tman[m],tasr[a]
+        if len(matchingslist) == 0:
             raise Exception('No matching found between ASR result and manual transcription.')
 
         # OK, insert the chunks we found in anchortier
-        print "Matching set of tokens:"
-        for (a,m) in matching:
-            print " ... ...",a,"-",m," ->",tasr[a],nman[m]
+        self._fix_chunks_list( tokenslist, tokensalign, matchingslist )
 
         # Return the indexes of the last token of the last anchor
-        return matching[-1]
+        return matchingslist[-1]
+
+    # ------------------------------------------------------------------------
+
+    def _fix_chunks_list(self, ref, hyp, match ):
+        """
+        Create the list of chunks.
+
+        ref = [ w1, w2, w3 ... wn ... wN ]
+        hyp = [ (b1,e1,t1,s1), (b2,e2,t2,s2), ... (bk,ek,tk,sk) ]
+        match = [ (w1,t1), (w2,t2), ... , (wn,tg) ]
+
+        with N < k, and the fact that match has holes.
+
+        """
+        print "Find chunks..."
+        chunks = []
+        tocontinue = True
+        if match[0][0] > 0:
+            re = match[0][0]-1
+            he = match[0][1]-1
+            chunktext = " ".join( ref[0:re+1] )
+            chunks.append( (hyp[0][0], hyp[he][1], chunktext) )
+
+        startchunk = 0
+        endchunk   = 0
+
+        while tocontinue:
+
+            print " ----------",startchunk,endchunk
+
+            cur = match[endchunk][0]
+            nex = match[endchunk+1][0]
+            if cur+1 != nex:
+            # we finished a chunk
+
+                # append the chunk
+                c = self.__fix_chunk(ref, hyp, match, startchunk, endchunk)
+                chunks.append( c )
+                # append the hole
+                if endchunk+1 < len(match):
+                    h = self.__fix_chunk_from_hole(ref, hyp, match, endchunk)
+                    chunks.append( h )
+                # next
+                startchunk = endchunk + 1
+
+            endchunk = endchunk + 1
+            if endchunk+1 == len(match):
+                tocontinue = False
+
+        if startchunk < endchunk:
+            c = self.__fix_chunk(ref, hyp, match, startchunk, endchunk)
+            chunks.append( c )
+            startchunk = endchunk
+
+        print chunks
+
+    # ------------------------------------------------------------------------
+
+    def __fix_chunk(self, ref, hyp, match, s, e):
+
+        print "... Got a chunk from",s," to ",e
+
+        rs = match[s][0]
+        re = match[e][0]
+        chunktext = " ".join( ref[rs:re+1] )
+        print "  ->",chunktext
+
+        hs = match[s][1]
+        he = match[e][1]
+        print "  -> ",hyp[hs][0], hyp[he][1]
+
+        return (hyp[hs][0], hyp[he][1], chunktext)
+
+
+    def __fix_chunk_from_hole(self, ref, hyp, match, p):
+
+        print "... Got a hole"
+
+        rs = match[p][0]
+        re = match[p+1][0]
+        chunktext = " ".join( ref[rs+1:re] )
+        print "  ->",chunktext
+
+        hs = match[p][1]
+        he = match[p+1][1]
+        print "  -> ",hyp[hs][0], hyp[he][1]
+
+        return (hyp[hs][1], hyp[he][0], chunktext)
 
     # ------------------------------------------------------------------------
 

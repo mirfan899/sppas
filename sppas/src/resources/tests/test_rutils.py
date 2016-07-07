@@ -1,13 +1,8 @@
 #!/usr/bin/env python2
-# -*- coding:utf-8 -*-
+# -*- coding: utf8 -*-
 
 import unittest
 import os
-import sys
-from os.path import *
-
-SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
-sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 import resources.rutils as rutils
 
@@ -121,6 +116,7 @@ LowerDict[u'Ỷ'] = u'ỷ'
 LowerDict[u'Ỹ'] = u'ỹ'
 
 # ---------------------------------------------------------------------------
+
 class TestRutils(unittest.TestCase):
 
     def test_lower(self):
@@ -131,9 +127,4 @@ class TestRutils(unittest.TestCase):
     def test_strip(self):
         self.assertEqual( rutils.ToStrip(u'  \n Ỹ  \t\r   ỏ  ') , u'Ỹ ỏ' )
 
-# End TestWordsList
 # ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestRutils)
-    unittest.TextTestRunner(verbosity=2).run(suite)

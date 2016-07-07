@@ -5,15 +5,24 @@ import unittest
 import os
 import shutil
 
-from paths import TEMP
-from test_ngrams import TestNgramCounter
-from test_ngrams import TestNgramsModel
-from test_slm import TestSLM
+from paths         import TEMP
+from test_ngrams   import TestNgramCounter
+from test_ngrams   import TestNgramsModel
+from test_slm      import TestSLM
+from test_rutils   import TestRutils
+from test_wordslst import TestWordsList
+from test_dict     import TestDictPron, TestDictRepl, TestMapping
 
 if os.path.exists( TEMP ) is False:
     os.mkdir( TEMP )
 
 testsuite = unittest.TestSuite()
+
+testsuite.addTest(unittest.makeSuite(TestRutils))
+testsuite.addTest(unittest.makeSuite(TestWordsList))
+testsuite.addTest(unittest.makeSuite(TestDictPron))
+testsuite.addTest(unittest.makeSuite(TestDictRepl))
+testsuite.addTest(unittest.makeSuite(TestMapping))
 testsuite.addTest(unittest.makeSuite(TestNgramCounter))
 testsuite.addTest(unittest.makeSuite(TestNgramsModel))
 testsuite.addTest(unittest.makeSuite(TestSLM))

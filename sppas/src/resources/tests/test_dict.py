@@ -3,11 +3,6 @@
 
 import unittest
 import os
-import sys
-from os.path import *
-
-SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
-sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 from resources.dictpron import DictPron
 from resources.dictrepl import DictRepl
@@ -16,6 +11,8 @@ from resources.unigram  import Unigram
 
 import resources.rutils as rutils
 from sp_glob import RESOURCES_PATH
+
+# ---------------------------------------------------------------------------
 
 DICT_FRA = os.path.join(RESOURCES_PATH, "dict", "fra.dict")
 
@@ -29,7 +26,7 @@ class TestDictPron(unittest.TestCase):
         self.assertFalse( d.is_unk('il_y_a') )
         self.assertFalse( d.is_unk(u'être') )
         self.assertEqual( d.get_pron(u'sil'), "s-i-l" )
-        self.assertEqual( d.get_pron(u'azerty'), "UNK" )
+        self.assertEqual( d.get_pron(u'azerty'), "<UNK>" )
 
     def test_save(self):
         d = DictPron( DICT_FRA )
@@ -39,16 +36,16 @@ class TestDictPron(unittest.TestCase):
             self.assertEqual( d.get_pron(w), d2.get_pron(w) )
         os.remove( DICT_FRA+".copy" )
 
-    def test_map(self):
-        d = DictPron( DICT_FRA )
-        replfile = os.path.join(RESOURCES_PATH,"models","models-fra","monophones.repl")
-        mapd = Mapping( replfile )
-        dm = d.map_phones(mapd)
-
-        self.assertEqual( d.get_pron(u'veuf'),   "v-9-f" )
-        self.assertEqual( dm.get_pron(u'veuf'),  "v-oe-f" )
-        self.assertEqual( d.get_pron(u'veufs'),  "v-9-f-z|v-9-f" )
-        self.assertEqual( dm.get_pron(u'veufs'), "v-oe-f-z|v-oe-f" )
+#     def test_map(self):
+#         d = DictPron( DICT_FRA )
+#         replfile = os.path.join(RESOURCES_PATH,"models","models-fra","monophones.repl")
+#         mapd = Mapping( replfile )
+#         dm = d.map_phones(mapd)
+#
+#         self.assertEqual( d.get_pron(u'veuf'),   "v-9-f" )
+#         self.assertEqual( dm.get_pron(u'veuf'),  "v-oe-f" )
+#         self.assertEqual( d.get_pron(u'veufs'),  "v-9-f-z|v-9-f" )
+#         self.assertEqual( dm.get_pron(u'veufs'), "v-oe-f-z|v-oe-f" )
 
 # ---------------------------------------------------------------------------
 
@@ -160,12 +157,3 @@ class TestMapping(unittest.TestCase):
 
 # End TestMapping
 # ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestDictPron))
-    testsuite.addTest(unittest.makeSuite(TestDictRepl))
-    testsuite.addTest(unittest.makeSuite(TestMapping))
-
-    unittest.TextTestRunner(verbosity=2).run(testsuite)
