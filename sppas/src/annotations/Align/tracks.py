@@ -56,6 +56,7 @@ from resources.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
 from resources.rutils import ToStrip
 
 from sp_glob import encoding
+from sp_glob import UNKSTAMP
 
 # ----------------------------------------------------------------------
 
@@ -215,7 +216,9 @@ class TrackSplitter( Transcription ):
             (fromtime,totime) = anchortier.fix_window(fromtime)
             nbtokens = duration2ntokens( totime-fromtime, spkrate )
             totoken = min( (fromtoken + nbtokens), len(toklist))
-            if fromtime >= totime: break
+            if fromtime >= totime:
+                print "That's the end: fromtime=",fromtime," totime=",totime
+                break
             logging.debug(" ... ... window: ")
             logging.debug("... ... ... - time  from %.4f to %.4f."%(fromtime,totime))
             logging.debug("... ... ... - token from %d to %d."%(fromtoken,totoken))
@@ -227,22 +230,149 @@ class TrackSplitter( Transcription ):
             trackchannel = autils.extract_channel_fragment( channel, fromtime, totime, 0.2)
             autils.write_channel( fna, trackchannel )
 
-            # call the asr engine to recognize tokens of this track
+            # call the ASR engine to recognize tokens of this track
             aligner.set_phones( " ".join( pronlist[fromtoken:totoken] ) )
             aligner.set_tokens( " ".join(  toklist[fromtoken:totoken] ) )
             aligner.run_alignment(fna, fnw)
 
-            # get aligned tokens
-            wordalign = alignerio.read_aligned(fnw)[1]
-
+            # get the tokens time-aligned by the ASR engine
+            wordalign = alignerio.read_aligned(fnw)[1]  # (starttime,endtime,label,score)
+            print "ASR direct output:"
             for (b,e,w,s) in wordalign:
                 print " -> ",b,e,w,s
+
+            wordalign = self._adjust_asr_result(wordalign, fromtime, 0.2)
+            print "ASR ADJUSTED:"
+            for (b,e,w,s) in wordalign:
+                print " -> ",b,e,w,s
+
+            # match automatic and manual sequences of tokens
+            (lastasrtoken,lastmantoken) = self._append_chunks( wordalign, toklist[fromtoken:totoken], anchortier )
+
+            print "Last token = ",fromtoken+lastmantoken,toklist[fromtoken+lastmantoken]
+            print "Last time  = ",lastasrtoken,wordalign[lastasrtoken][1]
+            fromtoken = fromtoken + lastmantoken + 1
+            fromtime  = wordalign[lastasrtoken][1]
+
+            print "Next trip with fromtoken=",toklist[fromtoken],"fromtime=",fromtime
             # delete files
 
-            # continue with next window
-            fromtime = totime
-
         raise NotImplementedError("the aligner can't perform the units segmentation.")
+
+    # ------------------------------------------------------------------------
+
+    def _adjust_asr_result(self, wordsalign, fromtime, silence):
+        """
+        Adapt wordsalign: remove <s> and </s> then adjust time values.
+
+        """
+        # shift all time values of "silence" delta
+        for i in range(len(wordsalign)):
+            wordsalign[i][0] = wordsalign[i][0] - silence
+            wordsalign[i][1] = wordsalign[i][1] - silence
+
+        # remove the first <s> and the last </s>
+        wordsalign.pop(0)
+        wordsalign.pop()
+
+        if len(wordsalign) == 0:
+            raise IOError('The ASR failed to find tokens.')
+
+        # the first token was recognized during the silence we prepended!!!!
+        if wordsalign[0][1] < 0:
+            wordsalign.pop(0)
+
+        # fix the (new) first token to the beginning of the audio, i.e. 0.
+        wordsalign[0][0] = 0.
+
+        # shift to the real time values in the audioinput
+        for i in range(len(wordsalign)):
+            wordsalign[i][0] = wordsalign[i][0] + fromtime
+            wordsalign[i][1] = wordsalign[i][1] + fromtime
+
+        return wordsalign
+
+    # ------------------------------------------------------------------------
+
+    def _append_chunks(self, tokensalign, tokenslist, anchortier ):
+        """
+        Try to find chunks and append in anchortier.
+        Chunk search is based on the n-grams matching between the words the
+        ASR found and the tokens manually transcribed.
+
+        @param tokensalign (list of tuples - IN) The list of tokens the ASR found in an extract
+        @param tokenslist (list of str - IN) The sequence of manually transcribed tokens matching the extract and after
+        @param anchortier (Tier - INOUT) The tier to add chunks
+
+        """
+        # list of tokens the ASR automatically time-aligned
+        tasr = [unicode(token) for (start,end,token,score) in tokensalign]
+        tman = [unicode(token) for token in tokenslist]
+        ngram = 4 # to start with 3-grams...
+
+        # find matching patterns from left to right
+        lrmatching = []
+        while ngram > 1:
+            ngram = ngram-1
+
+            # create n-gram sequences of manually transcribed tokens
+            nman = zip(*[tman[i:] for i in range(ngram)])
+
+            # create n-gram sequences of ASR transcribed tokens
+            # if ngram=1, keep only tokens with a high confidence score
+            if ngram>1:
+                nasr = zip(*[tasr[i:] for i in range(ngram)])
+            else:
+                nasr = []
+                for (start,end,token,score) in tokensalign:
+                    if score > 0.9:
+                        nasr.append( unicode(token) )
+                    else:
+                        nasr.append( unicode("<unk>") )
+
+            # find matching patterns
+            lastidx = min(len(nasr),len(nman))
+            idxa = 0
+            idxm = 0
+            while idxa<lastidx and idxm<lastidx:
+                found = False
+
+                if nasr[idxa] == nman[idxm]:
+                    print "Matching exact with n=",ngram, range(idxa,idxa+ngram)
+                    for i in range(ngram):
+                        lrmatching.append( (idxa+i,idxm+i) )
+                    found = True
+
+                if not found and idxm < lastidx:
+                    if nasr[idxa] == nman[idxm+1]:
+                        idxm = idxm + 1
+                        print "Matching shift+1 with n=",ngram, range(idxa,idxa+ngram)
+                        for i in range(ngram):
+                            lrmatching.append( (idxa+i,idxm+i) )
+                        found = True
+
+                if not found and idxm > 0:
+                    if nasr[idxa] == nman[idxm-1]:
+                        idxm = idxm - 1
+                        print "Matching shift-1 with n=",ngram, range(idxa,idxa+ngram)
+                        for i in range(ngram):
+                            lrmatching.append( (idxa+i,idxm+i) )
+
+                idxa = idxa + 1
+                idxm = idxm + 1
+
+        matching = sorted(list(set(lrmatching)))
+
+        if len(matching) == 0:
+            raise Exception('No matching found between ASR result and manual transcription.')
+
+        # OK, insert the chunks we found in anchortier
+        print "Matching set of tokens:"
+        for (a,m) in matching:
+            print " ... ...",a,"-",m," ->",tasr[a],nman[m]
+
+        # Return the indexes of the last token of the last anchor
+        return matching[-1]
 
     # ------------------------------------------------------------------------
 
@@ -254,6 +384,8 @@ class TrackSplitter( Transcription ):
         for ann in tier:
             if ann.GetLabel().IsSilence() is False:
                 besttext = ann.GetLabel().GetValue()
+                if UNKSTAMP in besttext:
+                    besttext = "sil"
                 raw = raw + " " + besttext
 
         return ToStrip(raw)
@@ -360,26 +492,44 @@ class AnchorTier( Tier ):
         """
         Tier.__init__(self, name)
         self._windowdelay = 4.0
-        self_margindelay  = 2.0
+        self._margindelay = 2.0
+
 
     def fix_window(self, fromtime):
         """
-        Return the time corresponding approx. to a window of time.
+        Return the "totime" corresponding to a flexible-sized window.
+
+        if fromtime inside an anchor:
+            fromtime = end-anchor-time
+
+        totime is either:
+
+            - fromtime + begin-of-the-next-anchor
+              if there is an anchor in interval [fromtime,fromtime+delay]
+
+            - fromtime + begin-of-the-next-anchor
+              if there is an anchor in interval [fromtime,fromtime+delay+margin]
+                (this is to ensure that the next window won't be too small)
+
+            - fromtime + delay
+
         """
         # The totime corresponding to a full window
         totime = fromtime+self._windowdelay
 
         # Do we have already anchors between fromtime and totime?
-        anns = self.Find( fromtime, totime )
+        anns = self.Find( fromtime, totime, overlaps=True )
         if len(anns)>0:
-            # totime is the begin of the first anchor we got in this window
             totime = anns[0].GetLocation().GetBegin().GetMidpoint()
-            if totime == fromtime:
+            # fromtime is perhaps INSIDE an anchor!
+            # or at the beginning of an anchor.
+            # So... try again by shifting fromtime to the end of such anchor
+            if fromtime >= totime:
                 (fromtime,totime) = self.fix_window( anns[0].GetLocation().GetEnd().GetMidpoint() )
 
         else:
-            # test the margin to ensure the next window to be too small
-            anns = self.Find( totime, totime+self_margindelay )
+            # test with the margin to ensure the next window won't be too small
+            anns = self.Find( totime, totime+self._margindelay, overlaps=True )
             if len(anns)>0:
                 # totime is the begin of the first anchor we got in the margin
                 totime = anns[0].GetLocation().GetBegin().GetMidpoint()
