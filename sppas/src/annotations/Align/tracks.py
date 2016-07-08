@@ -175,22 +175,25 @@ class TrackSplitter( Transcription ):
     def _create_tracks(self, inputaudio, phontier, toktier, diralign):
         """
         """
-        # only julius can do that (for now)
+        logging.debug( "Find automatically chunks for audio file: %s"%inputaudio)
+
+        # Fix the aligner: only julius can do that (for now)
         aligner = aligners.instantiate(self._aligntrack.get_model(),"julius")
         aligner.set_infersp(False)
         aligner.set_outext("walign")
-        alignerio = AlignerIO()
 
-        logging.debug( "Find automatically chunks for audio file: %s"%inputaudio)
-        anchortier = AnchorTier()
-
-        # Extract the data we'll work on
+        # Extract the data we'll work on...
+        # i.e. an audio channel
         channel = autils.extract_audio_channel( inputaudio,0 )
         channel = autils.format_channel( channel,16000,2 )
+        # i.e. lists of tokens and their corresponding pronunciations
         pronlist = self._tier2raw( phontier ).split()
         toklist  = self._tier2raw( toktier ).split()
         if len(pronlist) != len(toklist):
             raise IOError("Inconsistency between the number of items in phonetization %d and tokenization %d."%(len(pronlist),len(toklist)))
+
+        # At a first stage, we'll find chunks of anchors
+        anchortier = AnchorTier()
 
         # Search silences and use them as anchors.
         logging.debug(" ... Search silences:")
@@ -201,64 +204,106 @@ class TrackSplitter( Transcription ):
 
         # Estimates the speaking rate (amount of tokens/sec. in average)
         spkrate = eval_spkrate( trackstimes, len(toklist) )
-        logging.debug(' ... Real speaking rate is: %.3f tokens/sec.'%spkrate)
-        spkrate = int(spkrate*1.8)
-        logging.debug(' ... ... we will approx. to %d tokens/sec.'%spkrate)
+        spkrate = int(spkrate*2.5)
 
-        # Windowing on the audio
+        # Windowing on the audio to find chunk of anchors
         logging.debug(" ... Windowing the audio file:")
-        fromtime = 0.
-        totime   = 0.
+        fromtime  = 0.
+        totime    = 0.
         fromtoken = 0
-        totoken   = 0
-        maxtime  = trackstimes[-1][1]
+        maxtime   = trackstimes[-1][1]
+
         while fromtime < maxtime:
 
-            (fromtime,totime) = anchortier.fix_window(fromtime)
-            nbtokens = duration2ntokens( totime-fromtime, spkrate )
-            totoken = min( (fromtoken + nbtokens), len(toklist))
-            if fromtime >= totime:
-                print "That's the end: fromtime=",fromtime," totime=",totime
-                break
-            logging.debug(" ... ... window: ")
-            logging.debug("... ... ... - time  from %.4f to %.4f."%(fromtime,totime))
-            logging.debug("... ... ... - token from %d to %d."%(fromtoken,totoken))
-            logging.debug("%s"%(" ".join(  toklist[fromtoken:totoken] )))
+            try:
+                (fromtime,totime) = anchortier.fix_window(fromtime)
+                if fromtime >= totime:
+                    print "That's the end: fromtime=",fromtime," totime=",totime
+                    break
 
-            # create audio file
-            fnw = self._tracknames.alignfilename(diralign,0)
-            fna = self._tracknames.audiofilename(diralign,0)
-            trackchannel = autils.extract_channel_fragment( channel, fromtime, totime, 0.2)
-            autils.write_channel( fna, trackchannel )
+                nbtokens = duration2ntokens( totime-fromtime, spkrate )
+                totoken = min( (fromtoken + nbtokens), len(toklist))
 
-            # call the ASR engine to recognize tokens of this track
-            aligner.set_phones( " ".join( pronlist[fromtoken:totoken] ) )
-            aligner.set_tokens( " ".join(  toklist[fromtoken:totoken] ) )
-            aligner.run_alignment(fna, fnw)
+                anchors = self._fix_anchors(fromtime, totime, fromtoken, totoken, aligner, channel, pronlist, toklist, diralign)
 
-            # get the tokens time-aligned by the ASR engine
-            wordalign = alignerio.read_aligned(fnw)[1]  # (starttime,endtime,label,score)
-            print "ASR direct output:"
-            for (b,e,w,s) in wordalign:
-                print " -> ",b,e,w,s
+                # Append anchor chunks in the anchor tier
+                nbt = 0
+                logging.debug('... ... ... Anchors:')
+                for (s,e,l) in anchors:
+                    nbt += len( l.split() )
+                    i = TimeInterval(TimePoint(s),TimePoint(e))
+                    label = Label(l)
+                    anchortier.Add( Annotation(i,label) )
+                    logging.debug(' ... ... ... ... %f %f - %s'%(s,e,l))
 
-            wordalign = self._adjust_asr_result(wordalign, fromtime, 0.2)
-            print "ASR ADJUSTED:"
-            for (b,e,w,s) in wordalign:
-                print " -> ",b,e,w,s
+                fromtime = anchors[-1][1]
+                fromtoken = fromtoken + nbt
 
-            # match automatic and manual sequences of tokens
-            (lastmantoken,lastasrtoken) = self._append_chunks( toklist[fromtoken:totoken], wordalign, anchortier )
+            except Exception as e:
 
-            print "Last token = ",fromtoken+lastmantoken,toklist[fromtoken+lastmantoken]
-            print "Last time  = ",lastasrtoken,wordalign[lastasrtoken][1]
-            fromtoken = fromtoken + lastmantoken + 1
-            fromtime  = wordalign[lastasrtoken][1]
+                # wish your luck in the next window...
+                logging.info('%s'%str(e))
+                raise
+                #logging.debug(' ... ... Bad luck. Try next!')
+                #fromtime = totime
 
             print "Next trip with fromtoken=",toklist[fromtoken],"fromtime=",fromtime
-            # delete files
 
-        raise NotImplementedError("the aligner can't perform the units segmentation.")
+        # OK, we found anchors... now:
+        # - fill holes
+        # - remove overlaps
+        tiert = self.NewTier("TokenizedChunks")
+        tierp = self.NewTier("PhonetizedChunks")
+        for ann in anchortier:
+            a = ann.Copy()
+            tiert.Add(a)
+
+    # ------------------------------------------------------------------------
+
+    def _fix_anchors(self, fromtime, totime, fromtoken, totoken, aligner, channel, pronlist, toklist, diralign):
+        """
+        Fix anchors in a window.
+
+        """
+        logging.debug(" ... ... window: ")
+        logging.debug("... ... ... - time  from %.4f to %.4f."%(fromtime,totime))
+        logging.debug("... ... ... - token from %d to %d."%(fromtoken,totoken))
+        logging.debug("... ... ... REF: %s"%(" ".join(  toklist[fromtoken:totoken] )))
+
+        # create audio file
+        fnw = self._tracknames.alignfilename(diralign,0)
+        fna = self._tracknames.audiofilename(diralign,0)
+        trackchannel = autils.extract_channel_fragment( channel, fromtime, totime, 0.2)
+        autils.write_channel( fna, trackchannel )
+
+        # call the ASR engine to recognize tokens of this track
+        aligner.set_phones( " ".join( pronlist[fromtoken:totoken] ) )
+        aligner.set_tokens( " ".join(  toklist[fromtoken:totoken] ) )
+        aligner.run_alignment(fna, fnw)
+
+        # get the tokens time-aligned by the ASR engine
+        alignerio = AlignerIO()
+        wordalign = alignerio.read_aligned(fnw)[1]  # (starttime,endtime,label,score)
+        wordalign = self._adjust_asr_result(wordalign, fromtime, 0.2)
+        logging.debug("... ... ... ASR hypothesis:")
+        for (b,e,w,s) in wordalign:
+            logging.debug("... ... ... ... %f %f, %s %f"%(b,e,w,s))
+
+        # delete files
+
+        # list of tokens the ASR automatically time-aligned
+        tman = [token for token in toklist[fromtoken:totoken]]
+        # list of tokens manually transcribed
+        tasr = [(token,score) for (start,end,token,score) in wordalign]
+
+        # Find matching tokens: the anchors
+        matchingslist = self._fix_matchings_list( tman,tasr )
+        if len(matchingslist) == 0:
+            raise Exception('No matching found between ASR result and manual transcription.')
+
+        # Concatenate anchors into chunks
+        anchors = self._fix_chunks_list( toklist[fromtoken:totoken], wordalign, matchingslist )
+        return anchors
 
     # ------------------------------------------------------------------------
 
@@ -295,128 +340,86 @@ class TrackSplitter( Transcription ):
 
     # ------------------------------------------------------------------------
 
-    def _append_chunks(self, tokenslist, tokensalign, anchortier ):
+    def _fix_matchings_list(self, ref, hyp ):
         """
-        Try to find chunks and append in anchortier.
-        Chunk search is based on the n-grams matching between the words the
-        ASR found (hyp) and the tokens manually transcribed (ref), as:
+        Create the list of match between ref and hyp.
 
-        ref = [ w1, w2, w3 ... wn ... wN ]
-        hyp = [ (b1,e1,t1,s1), (b2,e2,t2,s2), ... (bk,ek,tk,sk) ]
+        The default set of anchors is defined as:
 
-        with N < k.
-
-        @param tokensalign (list of tuples - IN) The list of tokens the ASR found in an extract
-        @param tokenslist (list of str - IN) The sequence of manually transcribed tokens matching the extract and after
-        @param anchortier (Tier - INOUT) The tier to add chunks
+            1. tokens in 3-grams sequences matching in a gap of 2 possible
+               consecutive insertions or deletions;
+            2. tokens matching in ref and hyp in a gap of 1 possible insertion
+               or deletion, if the score of token is more than 0.9 in hyp.
 
         """
-        # list of tokens the ASR automatically time-aligned
-        tman = [unicode(token) for token in tokenslist]
-        tasr = [(unicode(token),score) for (start,end,token,score) in tokensalign]
-
         pattern = Patterns()
+        pattern.set_gap(2)
         pattern.set_ngram(3)
-        matchingslist = pattern.matchings( tman,tasr )
-        print "Matching set of tokens:"
-        for (m,a) in matchingslist:
-            print " ... ...",m,"-",a," ->",tman[m],tasr[a]
-        if len(matchingslist) == 0:
-            raise Exception('No matching found between ASR result and manual transcription.')
+        m3 = pattern.ngram_matchings( ref,hyp )
+        pattern.set_ngram(1)
+        pattern.set_score(0.9)
+        m1 = pattern.ngram_matchings( ref,hyp )
 
-        # OK, insert the chunks we found in anchortier
-        self._fix_chunks_list( tokenslist, tokensalign, matchingslist )
-
-        # Return the indexes of the last token of the last anchor
-        return matchingslist[-1]
+        return sorted(list(set(m1+m3)))
 
     # ------------------------------------------------------------------------
 
     def _fix_chunks_list(self, ref, hyp, match ):
         """
-        Create the list of chunks.
+        Create the list of chunks from matching anchors.
 
         ref = [ w1, w2, w3 ... wn ... wN ]
         hyp = [ (b1,e1,t1,s1), (b2,e2,t2,s2), ... (bk,ek,tk,sk) ]
         match = [ (w1,t1), (w2,t2), ... , (wn,tg) ]
 
-        with N < k, and the fact that match has holes.
+        with N < k, and the fact that match has holes, of course.
 
         """
-        print "Find chunks..."
-        chunks = []
+        s = []
         tocontinue = True
         if match[0][0] > 0:
             re = match[0][0]-1
             he = match[0][1]-1
-            chunktext = " ".join( ref[0:re+1] )
-            chunks.append( (hyp[0][0], hyp[he][1], chunktext) )
+            text = " ".join( ref[0:re+1] )
+            s.append( (hyp[0][0], hyp[he][1], text) )
 
-        startchunk = 0
-        endchunk   = 0
+        start = 0
+        end   = 0
 
         while tocontinue:
 
-            print " ----------",startchunk,endchunk
-
-            cur = match[endchunk][0]
-            nex = match[endchunk+1][0]
+            cur = match[end][0]
+            nex = match[end+1][0]
+            # we finished a sequence of anchors
             if cur+1 != nex:
-            # we finished a chunk
-
                 # append the chunk
-                c = self.__fix_chunk(ref, hyp, match, startchunk, endchunk)
-                chunks.append( c )
-                # append the hole
-                if endchunk+1 < len(match):
-                    h = self.__fix_chunk_from_hole(ref, hyp, match, endchunk)
-                    chunks.append( h )
-                # next
-                startchunk = endchunk + 1
+                c = self.__fix_chunk(ref, hyp, match, start, end)
+                s.append( c )
+                start = end + 1
 
-            endchunk = endchunk + 1
-            if endchunk+1 == len(match):
+            end = end + 1
+            if end+1 == len(match):
+                # the last chunk found
+                if start < end:
+                    c = self.__fix_chunk(ref, hyp, match, start, end)
+                    s.append( c )
+
                 tocontinue = False
 
-        if startchunk < endchunk:
-            c = self.__fix_chunk(ref, hyp, match, startchunk, endchunk)
-            chunks.append( c )
-            startchunk = endchunk
-
-        print chunks
+        return s
 
     # ------------------------------------------------------------------------
 
     def __fix_chunk(self, ref, hyp, match, s, e):
 
-        print "... Got a chunk from",s," to ",e
-
         rs = match[s][0]
         re = match[e][0]
-        chunktext = " ".join( ref[rs:re+1] )
-        print "  ->",chunktext
+        text = " ".join( ref[rs:re+1] )
 
         hs = match[s][1]
         he = match[e][1]
-        print "  -> ",hyp[hs][0], hyp[he][1]
 
-        return (hyp[hs][0], hyp[he][1], chunktext)
-
-
-    def __fix_chunk_from_hole(self, ref, hyp, match, p):
-
-        print "... Got a hole"
-
-        rs = match[p][0]
-        re = match[p+1][0]
-        chunktext = " ".join( ref[rs+1:re] )
-        print "  ->",chunktext
-
-        hs = match[p][1]
-        he = match[p+1][1]
-        print "  -> ",hyp[hs][0], hyp[he][1]
-
-        return (hyp[hs][1], hyp[he][0], chunktext)
+        return (hyp[hs][0], hyp[he][1], text)
 
     # ------------------------------------------------------------------------
 

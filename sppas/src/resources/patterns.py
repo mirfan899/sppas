@@ -53,53 +53,90 @@ class Patterns( object ):
     recognition, the match usually has to be exact.
 
     """
+    MAX_GAP   = 4
+    MAX_NGRAM = 4
+
+    # ------------------------------------------------------------------------
+
     def __init__(self):
         """
 
         """
         self._ngram = 3
         self._score = 1.
-        self._interstice = 2
+        self._gap   = 2
+        self._interstice = 4
 
+    # ------------------------------------------------------------------------
+
+    def get_score(self):
+        return self._score
+
+    def get_ngram(self):
+        return self._ngram
+
+    def get_gap(self):
+        return self._gap
+
+    # ------------------------------------------------------------------------
 
     def set_ngram(self, n):
-        """
-        """
         n = int(n)
-        if n > 0 and n < 20:
+        if n > 0 and n < Patterns.MAX_NGRAM:
             self._ngram = n
         else:
-            raise ValueError("n value of n-grams pattern matching must range [0;20]. Got %d."%n)
+            raise ValueError("n value of n-grams pattern matching must range [1;%d]. Got %d."%(Patterns.MAX_NGRAM,n))
 
+    # ------------------------------------------------------------------------
 
-    def set_interstice(self, i):
-        """
-        """
-        i = int(i)
-        if i < 0 and i < 10:
-            self._interstice = i
+    def set_gap(self, g):
+        g = int(g)
+        if g >= 0 and g < Patterns.MAX_GAP:
+            self._gap = g
+            self._interstice = 2*g
         else:
-            raise ValueError("interstice value of pattern matching must range [0;10]. Got %d."%i)
+            raise ValueError("gap value of pattern matching must range [0;%d]. Got %d."%(Patterns.MAX_GAP,g))
 
+    # ------------------------------------------------------------------------
 
     def set_score(self, s):
-        """
-        """
         s = float(s)
         if s >= 0. and s <= 1.:
             self._score = s
         else:
             raise ValueError("score value of unigrams pattern matching must range [0;1]. Got %f."%s)
 
+    # ------------------------------------------------------------------------
+    # Matching search methods
+    # ------------------------------------------------------------------------
 
-    def matchings(self, ref, hyp):
+    def ngram_matchings(self, ref, hyp):
         """
-        Return items that are both aligned in ref and hyp.
+        n-gram alignment of ref and hyp.
+
+        The algorithm is based on the finding of matching n-grams, in the
+        range of a given gap. If 1-gram, keep only hypothesis items with a
+        high confidence score. A gap of search has to be fixed.
+        An interstice value ensure the gap between an item in the ref and
+        in the hyp won't be too far.
 
         @param ref (list of tokens - IN) List of references
         @param hyp (list of tuples - IN) List of hypothesis with their scores
         The scores are supposed to range in [0;1] values.
-        @return List of matching indexes (ref,hyp)
+        @return List of matching indexes as tuples (i_ref,i_hyp),
+
+        Example:
+
+        ref:  w0  w1  w2  w3  w4  w5  w6  w7  w8  w9  w10  w11  w12
+               |   |   |   |       |   |          |
+               |   |   |    \      |   |         /
+               |   |   |      \    |   |        /
+        hyp:  w0  w1  w2  wX  w3  w5  w6  wX  w9
+
+        returned matchings:
+         - n=3: [ (0,0), (1,1), (2,2) ]
+         - n=2: [(0, 0), (1, 1), (2, 2), (5, 5), (6, 6)]
+         - n=1 depends on the scores in hyp and the value of the gap.
 
         """
         matching = []
@@ -116,42 +153,72 @@ class Patterns( object ):
             nasr = []
             for (token,score) in hyp:
                 if score >= self._score:
-                    nasr.append( token )
+                    nasr.append( (token,) )
                 else:
-                    nasr.append( "<>" )
+                    nasr.append( ("<>",) )
 
-        lastidx = min(len(nasr),len(nman))
+        lastidxa = len(nasr)
+        lastidxm = len(nman)
+        lastidx = min(lastidxa,lastidxm)
+
         idxa = 0
         idxm = 0
         interstice = 0
 
-        while idxa<lastidx and idxm<lastidx and interstice<self._interstice:
+        while idxa < (lastidx+self._gap) and idxm < (lastidx+self._gap):
+
             found = False
 
-            if nasr[idxa] == nman[idxm]:
-                print "Matching exact with n=",self._ngram, range(idxa,idxa+self._ngram)
+            # matching
+            if idxa < lastidxa and idxm < lastidxm and nasr[idxa] == nman[idxm]:
                 for i in range(self._ngram):
                     matching.append( (idxm+i,idxa+i) )
                 found = True
 
-            if not found and idxm < lastidx:
-                if nasr[idxa] == nman[idxm+1]:
-                    idxm = idxm + 1
-                    print "Matching shift+1 with n=",self._ngram, range(idxa,idxa+self._ngram)
-                    for i in range(self._ngram):
-                        matching.append( (idxm+i,idxa+i) )
-                    found = True
+            # matching, supposing deletions in hyp
+            for gap in range(self._gap):
+                if not found and idxa < lastidxa and idxm < (lastidxm-gap-1):
+                    if nasr[idxa] == nman[idxm+gap+1]:
+                        idxm = idxm + gap + 1
+                        for i in range(self._ngram):
+                            matching.append( (idxm+i,idxa+i) )
+                        found = True
 
-            if not found and idxm > 0:
-                if nasr[idxa] == nman[idxm-1]:
-                    idxm = idxm - 1
-                    print "Matching shift-1 with n=",self._ngram, range(idxa,idxa+self._ngram)
-                    for i in range(self._ngram):
-                        matching.append( (idxm+i,idxa+i) )
+            # matching, supposing insertions in hyp
+            for gap in range(self._gap):
+                if not found and idxa < lastidxa and idxm > (gap+1):
+                    if nasr[idxa] == nman[idxm-gap-1]:
+                        idxm = idxm - gap - 1
+                        for i in range(self._ngram):
+                            matching.append( (idxm+i,idxa+i) )
 
             idxa = idxa + 1
             idxm = idxm + 1
 
+            # in case that idx in ref and idx in hyp are too far away...
             interstice = math.fabs( idxm - idxa )
+            if interstice > self._interstice:
+                vmax = max(idxa,idxm)
+                idxa = vmax
+                idxm = vmax
 
         return sorted(list(set(matching)))
+
+    # ------------------------------------------------------------------------
+
+    def dp_matching(self, ref, hyp):
+        """
+        Dynamic Programming alignment of ref and hyp.
+
+        The DP alignment algorithm performs a global minimization of a
+        Levenshtein distance function which weights the cost of correct words,
+        insertions, deletions and substitutions as 0, 3, 3 and 4 respectively.
+
+         See:
+         TIME WARPS, STRING EDITS, AND MACROMOLECULES: THE THEORY AND PRACTICE OF SEQUENCE COMPARISON,
+         by Sankoff and Kruskal, ISBN 0-201-07809-0
+
+        """
+        raise NotImplementedError
+
+    # ------------------------------------------------------------------------
