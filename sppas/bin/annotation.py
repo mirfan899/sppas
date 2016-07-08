@@ -56,7 +56,7 @@ SPPAS = os.path.join( os.path.dirname( os.path.dirname( PROGRAM_PATH ) ), "src" 
 sys.path.append(SPPAS)
 
 from sp_glob import program, author, version, copyright, url
-from annotationdata.io import extensions_out_multitiers
+from annotationdata.io import extensions_out #_multitiers
 from annotations.param import sppasParam
 from annotations.process import sppasProcess
 from term.textprogress import TextProgress
@@ -74,7 +74,7 @@ parser = ArgumentParser(usage="%s -w file|folder [options]" % os.path.basename(P
 parser.add_argument("-w", required=True, metavar="file|folder", help='Input wav file name, or directory')
 
 parser.add_argument("-l", metavar="lang", help='Input language, using iso639-3 code')
-parser.add_argument("-e", default=DEFAULT_OUTPUT_EXTENSION, metavar="extension", help='Output extension. One of: %s'%" ".join(extensions_out_multitiers))
+parser.add_argument("-e", default=DEFAULT_OUTPUT_EXTENSION, metavar="extension", help='Output extension. One of: %s'%" ".join(extensions_out)) #_multitiers))
 parser.add_argument("--momel", action='store_true', help="Activate Momel and INTSINT" )
 parser.add_argument("--ipu",   action='store_true', help="Activate IPUs Segmentation" )
 parser.add_argument("--tok",   action='store_true', help="Activate Tokenization" )
@@ -102,7 +102,7 @@ if args.l: parameters.set_lang( args.l )
 ext = args.e
 if not ext.startswith("."):
     ext = "."+ext
-extensions = [e.lower() for e in extensions_out_multitiers]
+extensions = [e.lower() for e in extensions_out] #_multitiers]
 if not ext.lower() in extensions:
     print
     print "[WARNING] Unknown extension:",args.e,". Extension is set to its default value."

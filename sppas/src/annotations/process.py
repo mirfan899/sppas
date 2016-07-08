@@ -605,7 +605,7 @@ class sppasProcess( Thread ):
             # Get the input file
             extt = ['-token'+self.parameters.get_output_format()]
             extp = ['-phon'+self.parameters.get_output_format()]
-            for e in annotationdata.io.extensions_out_multitiers:
+            for e in annotationdata.io.extensions_out:
                 extt.append( '-token'+e )
                 extp.append( '-phon'+e )
 
@@ -799,18 +799,15 @@ class sppasProcess( Thread ):
 
     def __add_trs(self, trs, trsinputfile):
         trsinput = annotationdata.io.read( trsinputfile )
-        try:
-            for tier in trsinput:
-                alreadin = False
-                if trs.IsEmpty() is False:
-                    tiername = tier.GetName()
-                    for t in trs:
-                        if t.GetName() == tiername:
-                            alreadin = True
-                if alreadin is False:
-                    trs.Add(tier)
-        except Exception as e:
-            raise Exception(str(e))
+        for tier in trsinput:
+            alreadin = False
+            if trs.IsEmpty() is False:
+                tiername = tier.GetName()
+                for t in trs:
+                    if t.GetName() == tiername:
+                        alreadin = True
+            if alreadin is False:
+                trs.Add(tier)
 
     # ------------------------------------------------------------------------
 
@@ -833,6 +830,7 @@ class sppasProcess( Thread ):
         total = len(filelist)
 
         output_format = self.parameters.get_output_format()
+
         for i,f in enumerate(filelist):
 
             nbfiles = 0

@@ -35,15 +35,6 @@
 # File: log.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
 # Python libraries
 import datetime
 import codecs
@@ -60,16 +51,17 @@ from utils.fileutils import string_to_ascii
 
 class sppasLog:
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: A log file utility class.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      A log file utility class.
 
     Class to manage the SPPAS automatic annotations log file, which is also
     called the "Procedure Outcome Report".
 
     """
-
     def __init__(self, parameters):
         """
         Constructor.
@@ -80,10 +72,6 @@ class sppasLog:
         self.parameters = parameters
         self.logfp = codecs.open(os.devnull, 'w', encoding)
 
-    # End __init__
-    # ------------------------------------------------------------------------
-
-
     # ----------------------------------------------------------------------
     # File management
     # ----------------------------------------------------------------------
@@ -91,14 +79,11 @@ class sppasLog:
     def close(self):
         self.logfp.close()
 
-
     def open_new(self, logfilename):
         self.logfp = codecs.open(logfilename, 'w', encoding)
 
-
     def open(self, logfilename):
         self.logfp = codecs.open(logfilename, 'a+', encoding)
-
 
     # ----------------------------------------------------------------------
     # Write data
@@ -109,6 +94,7 @@ class sppasLog:
         Print the annotation step name.
 
         @param stepnumber (1..6)
+
         """
         try:
             self.logfp.seek(0, 2) # force to write at the end of the file
@@ -238,7 +224,5 @@ class sppasLog:
         self.print_message("Extension: %s"%self.parameters.get_output_format())
         self.print_separator()
         self.print_newline()
-
-    # ----------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------

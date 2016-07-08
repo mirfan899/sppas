@@ -176,21 +176,24 @@ class Patterns( object ):
                 found = True
 
             # matching, supposing deletions in hyp
-            for gap in range(self._gap):
-                if not found and idxa < lastidxa and idxm < (lastidxm-gap-1):
-                    if nasr[idxa] == nman[idxm+gap+1]:
-                        idxm = idxm + gap + 1
-                        for i in range(self._ngram):
-                            matching.append( (idxm+i,idxa+i) )
-                        found = True
+            if idxm < lastidxm:
+                for gap in range(self._gap):
+                    if not found and idxa < lastidxa and idxm < (lastidxm-gap-1):
+                        if nasr[idxa] == nman[idxm+gap+1]:
+                            idxm = idxm + gap + 1
+                            for i in range(self._ngram):
+                                matching.append( (idxm+i,idxa+i) )
+                            found = True
 
             # matching, supposing insertions in hyp
-            for gap in range(self._gap):
-                if not found and idxa < lastidxa and idxm > (gap+1):
-                    if nasr[idxa] == nman[idxm-gap-1]:
-                        idxm = idxm - gap - 1
-                        for i in range(self._ngram):
-                            matching.append( (idxm+i,idxa+i) )
+            if idxm > 0:
+                for gap in range(self._gap):
+                    if not found and idxa < lastidxa and idxm > (gap+1):
+                        if nasr[idxa] == nman[idxm-gap-1]:
+                            idxm = idxm - gap - 1
+                            for i in range(self._ngram):
+                                matching.append( (idxm+i,idxa+i) )
+                            found = True
 
             idxa = idxa + 1
             idxm = idxm + 1

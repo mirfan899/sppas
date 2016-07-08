@@ -164,9 +164,10 @@ class TrackSplitter( Transcription ):
             if self._aligntrack is None or self._aligntrack.get_aligner() != "julius":
                 raise IOError("The phonetization tier is not of type TimeInterval and the aligner can't perform this segmentation.")
             else:
-                self._create_tracks(inputaudio, phontier, toktier, diralign)
-
-        units = self._write_text_tracks(phontier, toktier, diralign)
+                (t,p) = self._create_tracks(inputaudio, phontier, toktier, diralign)
+                units = self._write_text_tracks(p, t, diralign)
+        else:
+            units = self._write_text_tracks(phontier, toktier, diralign)
         self._write_audio_tracks(inputaudio, units, diralign)
         return units
 
@@ -193,13 +194,15 @@ class TrackSplitter( Transcription ):
             raise IOError("Inconsistency between the number of items in phonetization %d and tokenization %d."%(len(pronlist),len(toklist)))
 
         # At a first stage, we'll find chunks of anchors
-        anchortier = AnchorTier()
+        anchortiert = AnchorTier()
+        anchortierp = AnchorTier()
 
         # Search silences and use them as anchors.
         logging.debug(" ... Search silences:")
         trackstimes = autils.search_channel_speech( channel )
-        self._append_silences(trackstimes, anchortier)
-        for i,a in enumerate(anchortier):
+        self._append_silences(trackstimes, anchortiert)
+        self._append_silences(trackstimes, anchortierp)
+        for i,a in enumerate(anchortiert):
             logging.debug(" ... ... %i: %s"%(i,a))
 
         # Estimates the speaking rate (amount of tokens/sec. in average)
@@ -213,12 +216,11 @@ class TrackSplitter( Transcription ):
         fromtoken = 0
         maxtime   = trackstimes[-1][1]
 
-        while fromtime < maxtime:
+        while fromtime < maxtime and fromtoken < len(toklist):
 
             try:
-                (fromtime,totime) = anchortier.fix_window(fromtime)
+                (fromtime,totime) = anchortiert.fix_window(fromtime)
                 if fromtime >= totime:
-                    print "That's the end: fromtime=",fromtime," totime=",totime
                     break
 
                 nbtokens = duration2ntokens( totime-fromtime, spkrate )
@@ -229,34 +231,40 @@ class TrackSplitter( Transcription ):
                 # Append anchor chunks in the anchor tier
                 nbt = 0
                 logging.debug('... ... ... Anchors:')
-                for (s,e,l) in anchors:
+                for (s,e,l,p) in anchors:
                     nbt += len( l.split() )
                     i = TimeInterval(TimePoint(s),TimePoint(e))
-                    label = Label(l)
-                    anchortier.Add( Annotation(i,label) )
-                    logging.debug(' ... ... ... ... %f %f - %s'%(s,e,l))
+                    anchortiert.Add( Annotation(i,Label(l)) )
+                    anchortierp.Add( Annotation(i,Label(p)) )
+                    logging.debug(' ... ... ... ... %f %f - %s %s'%(s,e,l,p))
 
                 fromtime = anchors[-1][1]
                 fromtoken = fromtoken + nbt
 
             except Exception as e:
+                import traceback
+                print(traceback.format_exc())
 
                 # wish your luck in the next window...
                 logging.info('%s'%str(e))
-                raise
                 #logging.debug(' ... ... Bad luck. Try next!')
-                #fromtime = totime
-
-            print "Next trip with fromtoken=",toklist[fromtoken],"fromtime=",fromtime
+                fromtime = totime
 
         # OK, we found anchors... now:
-        # - fill holes
         # - remove overlaps
         tiert = self.NewTier("TokenizedChunks")
         tierp = self.NewTier("PhonetizedChunks")
-        for ann in anchortier:
-            a = ann.Copy()
-            tiert.Add(a)
+        for annt,annp in zip(anchortiert,anchortierp):
+            at = annt.Copy()
+            ap = annp.Copy()
+            if at.GetLocation().GetBegin().GetMidpoint() < tiert.GetEnd().GetMidpoint():
+                at.GetLocation().SetBegin( tiert.GetEnd() )
+                ap.GetLocation().SetBegin( tierp.GetEnd() )
+
+            tiert.Add(at)
+            tierp.Add(ap)
+
+        return (tiert,tierp)
 
     # ------------------------------------------------------------------------
 
@@ -302,8 +310,8 @@ class TrackSplitter( Transcription ):
             raise Exception('No matching found between ASR result and manual transcription.')
 
         # Concatenate anchors into chunks
-        anchors = self._fix_chunks_list( toklist[fromtoken:totoken], wordalign, matchingslist )
-        return anchors
+        chunks = self._fix_chunks_list( toklist[fromtoken:totoken], pronlist[fromtoken:totoken], wordalign, matchingslist )
+        return chunks
 
     # ------------------------------------------------------------------------
 
@@ -364,10 +372,11 @@ class TrackSplitter( Transcription ):
 
     # ------------------------------------------------------------------------
 
-    def _fix_chunks_list(self, ref, hyp, match ):
+    def _fix_chunks_list(self, ref, pronref, hyp, match ):
         """
         Create the list of chunks from matching anchors.
 
+        pronref = [p1, p2, p3 ... pn ... pN ]
         ref = [ w1, w2, w3 ... wn ... wN ]
         hyp = [ (b1,e1,t1,s1), (b2,e2,t2,s2), ... (bk,ek,tk,sk) ]
         match = [ (w1,t1), (w2,t2), ... , (wn,tg) ]
@@ -375,16 +384,20 @@ class TrackSplitter( Transcription ):
         with N < k, and the fact that match has holes, of course.
 
         """
-        s = []
+        chunks = []
         tocontinue = True
         if match[0][0] > 0:
             re = match[0][0]-1
             he = match[0][1]-1
-            text = " ".join( ref[0:re+1] )
-            s.append( (hyp[0][0], hyp[he][1], text) )
+            textt = " ".join( ref[0:re+1] )
+            textp = " ".join( pronref[0:re+1] )
+            chunks.append( (hyp[0][0], hyp[he][1], textt, textp) )
 
         start = 0
         end   = 0
+
+        if end+1 >= len(match):
+            tocontinue = False
 
         while tocontinue:
 
@@ -393,33 +406,52 @@ class TrackSplitter( Transcription ):
             # we finished a sequence of anchors
             if cur+1 != nex:
                 # append the chunk
-                c = self.__fix_chunk(ref, hyp, match, start, end)
-                s.append( c )
+                c = self.__fix_chunk(ref, pronref, hyp, match, start, end)
+                chunks.append( c )
+                # append the hole
+                #if end+1 < len(match):
+                #    h = self.__fix_chunk_from_hole(ref, pronref, hyp, match, end)
+                #    chunks.append( h )
                 start = end + 1
 
             end = end + 1
-            if end+1 == len(match):
+
+            if end+1 >= len(match):
                 # the last chunk found
                 if start < end:
-                    c = self.__fix_chunk(ref, hyp, match, start, end)
-                    s.append( c )
+                    c = self.__fix_chunk(ref, pronref, hyp, match, start, end)
+                    chunks.append( c )
 
                 tocontinue = False
 
-        return s
+        return chunks
 
     # ------------------------------------------------------------------------
 
-    def __fix_chunk(self, ref, hyp, match, s, e):
+    def __fix_chunk(self, ref, pronref, hyp, match, s, e):
 
         rs = match[s][0]
         re = match[e][0]
-        text = " ".join( ref[rs:re+1] )
+        texttok  = " ".join( ref[rs:re+1] )
+        textpron = " ".join( pronref[rs:re+1] )
 
         hs = match[s][1]
         he = match[e][1]
 
-        return (hyp[hs][0], hyp[he][1], text)
+        return (hyp[hs][0], hyp[he][1], texttok, textpron)
+
+
+    def __fix_chunk_from_hole(self, ref, pronref, hyp, match, p):
+
+        rs = match[p][0]
+        re = match[p+1][0]
+        chunktext = " ".join( ref[rs+1:re] )
+        prontext  = " ".join( pronref[rs+1:re] )
+
+        hs = match[p][1]
+        he = match[p+1][1]
+
+        return (hyp[hs][1], hyp[he][0], chunktext, prontext)
 
     # ------------------------------------------------------------------------
 
@@ -567,12 +599,16 @@ class AnchorTier( Tier ):
         # Do we have already anchors between fromtime and totime?
         anns = self.Find( fromtime, totime, overlaps=True )
         if len(anns)>0:
+            # we reached the end of the tier
+            if anns[-1].GetLocation().GetEnd().GetMidpoint() == self.GetEnd():
+                return (totime,totime)
+
             totime = anns[0].GetLocation().GetBegin().GetMidpoint()
             # fromtime is perhaps INSIDE an anchor!
             # or at the beginning of an anchor.
             # So... try again by shifting fromtime to the end of such anchor
             if fromtime >= totime:
-                (fromtime,totime) = self.fix_window( anns[0].GetLocation().GetEnd().GetMidpoint() )
+                return self.fix_window( anns[0].GetLocation().GetEnd().GetMidpoint() )
 
         else:
             # test with the margin to ensure the next window won't be too small

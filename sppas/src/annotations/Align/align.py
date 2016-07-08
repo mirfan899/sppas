@@ -267,7 +267,7 @@ class sppasAlign:
     # Methods to time-align series of data
     # -----------------------------------------------------------------------
 
-    def print_message(self, message, indent=3, status=INFO_ID):
+    def print_message(self, message, indent=3, status=None):
         """
         Print a message either in the user log or in the console log.
 
@@ -276,14 +276,17 @@ class sppasAlign:
             self.logfile.print_message(message, indent=indent, status=status)
 
         elif len(message) > 0:
-            if status==INFO_ID:
-                logging.info( message )
-            elif status==WARNING_ID:
-                logging.warning( message )
-            elif status==ERROR_ID:
-                logging.error( message )
-            else:
+            if status is None:
                 logging.debug( message )
+            else:
+                if status == INFO_ID:
+                    logging.info( message )
+                elif status == WARNING_ID:
+                    logging.warning( message )
+                elif status == ERROR_ID:
+                    logging.error( message )
+                else:
+                    logging.debug( message )
 
     # -----------------------------------------------------------------------
 
@@ -351,16 +354,14 @@ class sppasAlign:
 
             try:
                 msg = self.alignio.segment_track(track,self.workdir)
-                self.print_message(msg, indent=3, status=INFO_ID)
+                if len(msg)>0:
+                    self.print_message(msg, indent=3, status=INFO_ID)
 
             except Exception as e:
                 self.print_message(self.alignio.get_aligner()+' failed to perform segmentation.', indent=3, status=ERROR_ID)
                 self.print_message(str(e), indent=4, status=INFO_ID)
-                #    import traceback
-                #    print(traceback.format_exc())
-
-                #if os.path.exists(alignname):
-                #    os.rename(alignname, alignname+'.backup')
+                #import traceback
+                #print(traceback.format_exc())
 
                 # Execute BasicAlign
                 if self._options['basic'] is True:
@@ -406,7 +407,7 @@ class sppasAlign:
         self.print_message("Split into intervals: ", indent=2)
 
         try:
-            self.alignio.split( self.inputaudio, phontier, toktier, self.workdir )
+            sgmt = self.alignio.split( self.inputaudio, phontier, toktier, self.workdir )
         except Exception as e:
             if phontier.IsTimeInterval() is True:
                 self.alignio.split( self.inputaudio, phontier, None, self.workdir )
@@ -414,14 +415,11 @@ class sppasAlign:
             else:
                 raise
 
-        self.print_message("", indent=2, status=OK_ID)
-
         # Align each track
         # --------------------------------------------------------------
 
         self.print_message("Align each interval: ", indent=2)
         self.convert_tracks( self.workdir, phontier )
-        self.print_message("", indent=2, status=OK_ID)
 
         # Merge track alignment results
         # --------------------------------------------------------------
@@ -435,7 +433,8 @@ class sppasAlign:
             trsoutput = self.rustine_liaisons(trsoutput)
             trsoutput = self.rustine_others(trsoutput)
 
-        self.print_message("", indent=4, status=OK_ID)
+        for tier in sgmt:
+            trsoutput.Append(tier)
 
         return trsoutput
 
@@ -559,6 +558,32 @@ class sppasAlign:
 
     # ------------------------------------------------------------------------
 
+    def print_diagnosis(self, phonesname, tokensname, audioname):
+        """
+        Print file diagnosis in the log.
+
+        """
+        d = SppasDiagnosis()
+        self.print_message("Diagnosis: ", indent=2, status=INFO_ID)
+        (s,m) = d.audiofile( audioname )
+        if s == OK_ID:
+            self.print_message(" - %s: %s"%(audioname,m), indent=3, status=None)
+        else:
+            self.print_message(" - %s: %s"%(audioname,m), indent=3, status=s)
+        (s,m) = d.trsfile( phonesname )
+        if s == OK_ID:
+            self.print_message(" - %s: %s"%(phonesname,m), indent=3, status=None)
+        else:
+            self.print_message(" - %s: %s"%(phonesname,m), indent=3, status=s)
+        if tokensname is not None:
+            (s,m) = d.trsfile( tokensname )
+            if s == OK_ID:
+                self.print_message(" - %s: %s"%(tokensname,m), indent=3, status=None)
+            else:
+                self.print_message(" - %s: %s"%(tokensname,m), indent=3, status=s)
+
+    # ------------------------------------------------------------------------
+
     def run(self, phonesname, tokensname, audioname, outputfilename):
         """
         Execute SPPAS Alignment.
@@ -573,20 +598,9 @@ class sppasAlign:
         """
         self.print_message("Options: ", indent=2, status=INFO_ID)
         for k,v in self._options.items():
-            self.print_message(" - %s: %s"%(k,v), indent=3, status=INFO_ID)
+            self.print_message(" - %s: %s"%(k,v), indent=3, status=None)
 
-        # Check the given files
-        # --------------------------------------------------------------
-
-        d = SppasDiagnosis()
-        self.print_message("Diagnosis: ", indent=2, status=INFO_ID)
-        (s,m) = d.audiofile( audioname )
-        self.print_message(" - %s: %s"%(audioname,m), indent=3, status=s)
-        (s,m) = d.trsfile( phonesname )
-        self.print_message(" - %s: %s"%(phonesname,m), indent=3, status=s)
-        if tokensname is not None:
-            (s,m) = d.trsfile( tokensname )
-            self.print_message(" - %s: %s"%(tokensname,m), indent=3, status=s)
+        self.print_diagnosis(phonesname, tokensname, audioname)
 
         # Get the tiers to be time-aligned
         # ---------------------------------------------------------------
@@ -632,7 +646,6 @@ class sppasAlign:
             self.print_message("Save automatic alignment: ",indent=3)
             # Save in a file
             annotationdata.io.write( outputfilename,trsoutput )
-            self.print_message("", indent=4, status=OK_ID)
         except Exception:
             if self._options['clean'] is True:
                 shutil.rmtree( self.workdir )

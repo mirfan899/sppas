@@ -52,6 +52,8 @@ import annotationdata.io
 from sp_glob import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
 from sp_glob import RESOURCES_PATH
 
+from annotations.diagnosis import SppasDiagnosis
+
 # ---------------------------------------------------------------------------
 # sppasTok main class
 # ---------------------------------------------------------------------------
@@ -165,7 +167,7 @@ class sppasTok(object):
     # Methods to tokenize series of data
     # -----------------------------------------------------------------------
 
-    def print_message(self, message, indent=3, status=INFO_ID):
+    def print_message(self, message, indent=3, status=None):
         """
         Print a message either in the user log or in the console log.
 
@@ -174,14 +176,17 @@ class sppasTok(object):
             self.logfile.print_message(message, indent=indent, status=status)
 
         elif len(message) > 0:
-            if status==INFO_ID:
-                logging.info( message )
-            elif status==WARNING_ID:
-                logging.warning( message )
-            elif status==ERROR_ID:
-                logging.error( message )
-            else:
+            if status is None:
                 logging.debug( message )
+            else:
+                if status == INFO_ID:
+                    logging.info( message )
+                elif status == WARNING_ID:
+                    logging.warning( message )
+                elif status == ERROR_ID:
+                    logging.error( message )
+                else:
+                    logging.debug( message )
 
     # -----------------------------------------------------------------------
 
@@ -234,18 +239,11 @@ class sppasTok(object):
 
     # ------------------------------------------------------------------------
 
-    def run( self, inputfilename,outputfilename ):
+    def get_transtier(self, inputfilename):
         """
-        Run the Tokenization process on an input file.
-
-        @param inputfilename (str - IN) the input file name of the transcription
-        @param outputfilename (str - IN) the output file name of the tokenization
+        Return the tier with transcription, or None.
 
         """
-        for k,v in self._options.items():
-            self.print_message("Option %s: %s"%(k,v), indent=2, status=INFO_ID)
-
-        # Get input tier to tokenize
         trsinput  = annotationdata.io.read(inputfilename)
         tierinput = None
 
@@ -257,6 +255,9 @@ class sppasTok(object):
 
         if tierinput is None:
             for tier in trsinput:
+                print
+                print tier.GetName()
+                print
                 tiername = tier.GetName().lower()
                 if "trans" in tiername:
                     tierinput = tier
@@ -273,6 +274,31 @@ class sppasTok(object):
                     tierinput = tier
                     break
 
+        return tierinput
+
+    # ------------------------------------------------------------------------
+
+    def run( self, inputfilename,outputfilename ):
+        """
+        Run the Tokenization process on an input file.
+
+        @param inputfilename (str - IN) the input file name of the transcription
+        @param outputfilename (str - IN) the output file name of the tokenization
+
+        """
+        self.print_message("Options: ", indent=2, status=INFO_ID)
+        for k,v in self._options.items():
+            self.print_message(" - %s: %s"%(k,v), indent=3, status=None)
+        d = SppasDiagnosis()
+        self.print_message("Diagnosis: ", indent=2, status=INFO_ID)
+        (s,m) = d.trsfile( inputfilename )
+        if s == OK_ID:
+            self.print_message(" - %s: %s"%(inputfilename,m), indent=3, status=None)
+        else:
+            self.print_message(" - %s: %s"%(inputfilename,m), indent=3, status=s)
+
+        # Get input tier to tokenize
+        tierinput = self.get_transtier(inputfilename)
         if tierinput is None:
             raise IOError("Transcription tier not found. "
                           "Tier name must contain "

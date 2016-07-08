@@ -175,7 +175,7 @@ class BaseAligner:
         @param tokens (str) Tokenization
 
         """
-        tokens = str(tokens)
+        tokens = unicode(tokens)
         self._tokens = tokens
 
     # -----------------------------------------------------------------------

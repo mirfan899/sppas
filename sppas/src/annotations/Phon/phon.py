@@ -48,6 +48,8 @@ from phonetize import DictPhon
 from sp_glob import ERROR_ID, WARNING_ID, INFO_ID, OK_ID
 from sp_glob import UNKSTAMP
 
+from annotations.diagnosis import SppasDiagnosis
+
 # ---------------------------------------------------------------------------
 
 class sppasPhon( object ):
@@ -160,7 +162,7 @@ class sppasPhon( object ):
 
     # -----------------------------------------------------------------------
 
-    def print_message(self, message, indent=3, status=INFO_ID):
+    def print_message(self, message, indent=3, status=None):
         """
         Print a message either in the user log or in the console log.
 
@@ -169,14 +171,17 @@ class sppasPhon( object ):
             self.logfile.print_message(message, indent=indent, status=status)
 
         elif len(message) > 0:
-            if status==INFO_ID:
-                logging.info( message )
-            elif status==WARNING_ID:
-                logging.warning( message )
-            elif status==ERROR_ID:
-                logging.error( message )
-            else:
+            if status is None:
                 logging.debug( message )
+            else:
+                if status == INFO_ID:
+                    logging.info( message )
+                elif status == WARNING_ID:
+                    logging.warning( message )
+                elif status == ERROR_ID:
+                    logging.error( message )
+                else:
+                    logging.debug( message )
 
     # -----------------------------------------------------------------------
     # Methods to phonetize series of data
@@ -306,8 +311,16 @@ class sppasPhon( object ):
         @param outputfile (str - IN) the output file name of the phonetization
 
         """
+        self.print_message("Options: ", indent=2, status=INFO_ID)
         for k,v in self._options.items():
-            self.print_message("Option %s: %s"%(k,v), indent=2, status=INFO_ID)
+            self.print_message(" - %s: %s"%(k,v), indent=3, status=None)
+        d = SppasDiagnosis()
+        self.print_message("Diagnosis: ", indent=2, status=INFO_ID)
+        (s,m) = d.trsfile( inputfilename )
+        if s == OK_ID:
+            self.print_message(" - %s: %s"%(inputfilename,m), indent=3, status=None)
+        else:
+            self.print_message(" - %s: %s"%(inputfilename,m), indent=3, status=s)
 
         # Get the tier to be phonetized.
         trsinput = annotationdata.io.read( inputfilename )

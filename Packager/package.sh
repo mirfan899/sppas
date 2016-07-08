@@ -402,7 +402,8 @@ function fct_test_api {
 
     echo " ... Test Resources "
     echo " ... Test Resources " >>  $TEMP
-    $TESTS_DIR/tests_resources/test_all.py 2>> $TEMP
+    #$TESTS_DIR/tests_resources/test_all.py 2>> $TEMP
+    python $PROGRAM_DIR/sppas/src/resources/tests/test_all.py 2>> $TEMP
 
     echo " ... Test Signals "
     echo " ... Test Signals ">>  $TEMP

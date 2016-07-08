@@ -40,7 +40,7 @@ from audiodata.audio import AudioPCM
 from audiodata.channel import Channel
 
 from sp_glob import encoding
-from sp_glob import ERROR_ID, WARNING_ID, INFO_ID
+from sp_glob import ERROR_ID, WARNING_ID, INFO_ID, OK_ID
 
 import annotationdata.io
 import codecs
@@ -83,7 +83,7 @@ class SppasDiagnosis:
         @param inputname (string) name of the inputfile
 
         """
-        status  = INFO_ID
+        status  = OK_ID
         message = "Valid."
 
         # test file format: can we support it?
@@ -98,23 +98,23 @@ class SppasDiagnosis:
 
         if nc > 1:
             status = ERROR_ID
-            message = "Audio file must contain only 1 channel. Got %d."%audio.get_nchannels()
+            message = "Invalid. Audio file must contain only 1 channel. Got %d."%(audio.get_nchannels())
 
         elif sp < 16:
             status = ERROR_ID
-            message = "Sample width must be at least 16 bits. Got %d."(sp)
+            message = "Invalid. Sample width must be at least 16 bits. Got %d."%(sp)
 
         elif fm < 16000:
             status = ERROR_ID
-            message = "The frame rate of audio file must be at least 16000 Hz. Got %d."(fm)
+            message = "Invalid. The frame rate of audio file must be at least 16000 Hz. Got %d."%(fm)
 
         elif sp > 16:
             status = WARNING_ID
-            message = "Sample width is preferably 16 bits. Got %d. SPPAS will work on a converted file."(sp)
+            message = "Admit. Sample width is preferably 16 bits. Got %d. SPPAS will work on a converted file."%(sp)
 
         elif fm > 16000:
             status = WARNING_ID
-            message = "The frame rate of audio file is preferably 16000 Hz. Got %d. SPPAS will work on a converted file."(fm)
+            message = "Admit. The frame rate of audio file is preferably 16000 Hz. Got %d. SPPAS will work on a converted file."%(fm)
 
         # append in message: test whitespace and accents in filename
 
@@ -129,18 +129,19 @@ class SppasDiagnosis:
         @param inputname (string) name of the inputfile
 
         """
-        status  = INFO_ID
-        message = "Valid."
+        status  = OK_ID
+        message = "Valid or Admit."
 
         # test encoding
         try:
             codecs.open(inputname,"r",encoding)
         except Exception as e:
-            return (ERROR_ID,str(e))
+            return (ERROR_ID,"Invalid. "+str(e))
 
         # test whitespace and accents in filename
 
         # test extension
+        # exists or heuristic...
 
         return (status,message)
 
