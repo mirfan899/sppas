@@ -225,11 +225,11 @@ class Label( object ):
 
     def GetTypedValue(self):
         """
-        Return the string of the label with the best score.
+        Return the value of the label with the best score.
 
         """
         if len(self.__texts) == 0:
-            return "" # hum... without Text() we suppose the dataype as string...
+            return "" # hum... without Text() we suppose the datatype as string...
 
         text = self.__fct(self.__texts, key=lambda x: x.GetScore())
         return text.GetTypedValue()

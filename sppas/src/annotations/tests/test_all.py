@@ -17,6 +17,7 @@ from test_aligners import TestBasicAlign
 from test_aligners import TestJuliusAlign
 from test_aligners import TestHviteAlign
 from test_spkrate  import TestSpeakerRate
+from test_tracks   import TestAnchorTier
 
 if os.path.exists( TEMP ) is False:
     os.mkdir( TEMP )
@@ -34,6 +35,7 @@ testsuite = unittest.TestSuite()
 # testsuite.addTest(unittest.makeSuite(TestPhonUnk))
 
 # align
+testsuite.addTest(unittest.makeSuite(TestAnchorTier))
 testsuite.addTest(unittest.makeSuite(TestSpeakerRate))
 testsuite.addTest(unittest.makeSuite(TestBaseAligner))
 testsuite.addTest(unittest.makeSuite(TestBasicAlign))

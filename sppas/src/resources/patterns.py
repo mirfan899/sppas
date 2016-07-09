@@ -165,12 +165,12 @@ class Patterns( object ):
         idxm = 0
         interstice = 0
 
-        while idxa < (lastidx+self._gap) and idxm < (lastidx+self._gap):
+        while idxa < lastidxa and idxm < (lastidx+self._gap-1):
 
             found = False
 
             # matching
-            if idxa < lastidxa and idxm < lastidxm and nasr[idxa] == nman[idxm]:
+            if idxm < lastidxm and nasr[idxa] == nman[idxm]:
                 for i in range(self._ngram):
                     matching.append( (idxm+i,idxa+i) )
                 found = True
@@ -178,7 +178,7 @@ class Patterns( object ):
             # matching, supposing deletions in hyp
             if idxm < lastidxm:
                 for gap in range(self._gap):
-                    if not found and idxa < lastidxa and idxm < (lastidxm-gap-1):
+                    if not found and idxm < (lastidxm-gap-1):
                         if nasr[idxa] == nman[idxm+gap+1]:
                             idxm = idxm + gap + 1
                             for i in range(self._ngram):
@@ -188,7 +188,7 @@ class Patterns( object ):
             # matching, supposing insertions in hyp
             if idxm > 0:
                 for gap in range(self._gap):
-                    if not found and idxa < lastidxa and idxm > (gap+1):
+                    if not found and idxm > (gap+1):
                         if nasr[idxa] == nman[idxm-gap-1]:
                             idxm = idxm - gap - 1
                             for i in range(self._ngram):

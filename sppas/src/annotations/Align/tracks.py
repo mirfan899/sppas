@@ -42,6 +42,7 @@ import codecs
 import annotations.Align.aligners as aligners
 from annotations.Align.aligners.alignerio import AlignerIO
 from annotations.Align.spkrate import SpeakerRate
+from annotations.Align.anchors import AnchorTier
 
 from annotationdata.transcription  import Transcription
 from annotationdata.tier           import Tier
@@ -106,51 +107,129 @@ class TrackSplitter( Transcription ):
         self._spkrate  = SpeakerRate()
 
     # ------------------------------------------------------------------------
+    # Setters
+    # ------------------------------------------------------------------------
 
     def set_tracksnames( self, tracknames ):
+        """
+        Set the TrackNamesGenerator().
+
+        """
         self._tracknames = tracknames
 
     # ------------------------------------------------------------------------
 
     def set_trackalign( self, ta ):
+        """
+        Set the aligner, required to create tracks (if any).
+
+        """
         self._aligntrack = ta
 
+    # ------------------------------------------------------------------------
+    # Workers
     # ------------------------------------------------------------------------
 
     def split(self, inputaudio, phontier, toktier, diralign):
         """
-        Split all the data into tracks.
+        Main method to write tracks from the given data.
 
-        @param phontier (Tier - IN) the tier with phonetization to split
-        @param toktier  (Tier - IN) the tier with tokenization to split
-        @param diralign (str - IN) the directory to put units.
+        @param inputaudio (src - IN) File name of the audio file.
+        @param phontier  (Tier - IN) Tier with phonetization to split
+        @param toktier   (Tier - IN) Tier with tokenization to split
+        @param diralign   (str - IN) Directory to put units.
 
-        @return List of units with (start-time end-time)
+        @return List of tracks with (start-time end-time)
 
         """
         if phontier.IsTimeInterval() is False:
             if self._aligntrack is None or self._aligntrack.get_aligner() != "julius":
                 raise IOError("The phonetization tier is not of type TimeInterval and the aligner can't perform this segmentation.")
             else:
-                (t,p) = self._create_tracks(inputaudio, phontier, toktier, diralign)
-                units = self._write_text_tracks(p, t, diralign)
+                (t,p) = self.create_tier_tracks(inputaudio, phontier, toktier, diralign)
+                tracks = self.write_text_tracks(p, t, diralign)
         else:
-            units = self._write_text_tracks(phontier, toktier, diralign)
-        self._write_audio_tracks(inputaudio, units, diralign)
+            tracks = self.write_text_tracks(phontier, toktier, diralign)
+
+        self.write_audio_tracks(inputaudio, tracks, diralign)
+
+        return tracks
+
+    # ------------------------------------------------------------------------
+
+    def write_text_tracks(self, phontier, toktier, diralign):
+        """
+        Write tokenization and phonetization of tiers into separated track files.
+
+        @param phontier (Tier - IN) time-aligned tier with phonetization to split
+        @param toktier  (Tier - IN) time-aligned tier with tokenization to split
+        @param diralign (str - IN) the directory to write tracks.
+
+        """
+        tokens = True
+        if toktier is None:
+            toktier = phontier.Copy()
+            tokens = False
+        if phontier.GetSize() != toktier.GetSize():
+            raise IOError('Inconsistency between the number of intervals of tokenization (%d) and phonetization (%d) tiers.'%(phontier.GetSize(),toktier.GetSize()))
+
+        units = []
+        for annp,annt in zip(phontier,toktier):
+
+            b = annp.GetLocation().GetBegin().GetMidpoint()
+            e = annp.GetLocation().GetEnd().GetMidpoint()
+            units.append( (b,e) )
+
+            # Here we write only the text-label with the best score,
+            # we don't care about alternative text-labels
+            fnp = self._tracknames.phonesfilename(diralign, len(units))
+            textp = annp.GetLabel().GetValue()
+            self._write_text_track( fnp, textp )
+
+            fnt = self._tracknames.tokensfilename(diralign, len(units))
+            label = annt.GetLabel()
+            if tokens is False and label.IsSpeech() is True:
+                textt = " ".join( ["w_"+str(i+1) for i in range(len(textp.split()))] )
+            else:
+                textt = label.GetValue()
+            self._write_text_track( fnt, textt )
 
         return units
 
     # ------------------------------------------------------------------------
 
-    def _create_tracks(self, inputaudio, phontier, toktier, diralign):
+    def write_audio_tracks(self, inputaudio, units, diralign, silence=0.):
         """
-        """
-        logging.debug( "Find automatically chunks for audio file: %s"%inputaudio)
+        Write the first channel of an audio file into separated track files.
+        Re-sample to 16000 Hz, 16 bits.
 
-        # Fix the aligner: only julius can do that (for now)
-        aligner = aligners.instantiate(self._aligntrack.get_model(),"julius")
-        aligner.set_infersp(False)
-        aligner.set_outext("walign")
+        @param inputaudio (src - IN) File name of the audio file.
+        @param units     (list - IN) List of tuples (start-time,end-time) of tracks.
+        @param diralign   (str - IN) Directory to write audio tracks.
+        @param silence   float - IN) Duration of a silence to surround the tracks.
+
+        """
+        channel = autils.extract_audio_channel( inputaudio,0 )
+        channel = autils.format_channel( channel,16000,2 )
+
+        for track,u in enumerate(units):
+            (s,e) = u
+            trackchannel = autils.extract_channel_fragment( channel, s, e, silence)
+            trackname    = self._tracknames.audiofilename(diralign, track+1)
+            autils.write_channel(trackname, trackchannel)
+
+    # ------------------------------------------------------------------------
+
+    def create_tier_tracks(self, inputaudio, phontier, toktier, diralign):
+        """
+        Create time-aligned tiers from raw intput tiers.
+
+        @param phontier (Tier - IN) the tier with phonetization
+        @param toktier  (Tier - IN) the tier with tokenization to split
+        @param diralign (str - IN) the directory to work.
+
+        """
+        logging.debug( "Find automatically tracks for audio file: %s"%inputaudio)
 
         # Extract the data we'll work on...
         # i.e. an audio channel
@@ -162,78 +241,110 @@ class TrackSplitter( Transcription ):
         if len(pronlist) != len(toklist):
             raise IOError("Inconsistency between the number of items in phonetization %d and tokenization %d."%(len(pronlist),len(toklist)))
 
-        # At a first stage, we'll find chunks of anchors
-        anchortiert = AnchorTier()
-        anchortierp = AnchorTier()
+        # At a first stage, we'll find anchors
+        anchortier = AnchorTier()
 
         # Search silences and use them as anchors.
         logging.debug(" ... Search silences:")
         trackstimes = autils.search_channel_speech( channel )
-        self._append_silences(trackstimes, anchortiert)
-        self._append_silences(trackstimes, anchortierp)
-        for i,a in enumerate(anchortiert):
+        self._append_silences(trackstimes, anchortier)
+        for i,a in enumerate(anchortier):
             logging.debug(" ... ... %i: %s"%(i,a))
 
         # Estimates the speaking rate (amount of tokens/sec. in average)
         self._spkrate.eval_from_tracks( trackstimes, len(toklist) )
-        self._spkrate.mul(3)
+        self._spkrate.mul(1.5)
 
-        # Windowing on the audio to find chunk of anchors
-        logging.debug(" ... Windowing the audio file:")
-        fromtime  = 0.
-        totime    = 0.
-        fromtoken = 0
-        maxtime   = trackstimes[-1][1]
-
-        while fromtime < maxtime and fromtoken < len(toklist):
-
-            try:
-                (fromtime,totime) = anchortiert.fix_window(fromtime)
-                if fromtime >= totime:
-                    break
-
-                nbtokens = self._spkrate.ntokens( totime-fromtime )
-                totoken = min( (fromtoken + nbtokens), len(toklist))
-
-                anchors = self._fix_anchors(fromtime, totime, fromtoken, totoken, aligner, channel, pronlist, toklist, diralign)
-
-                # Append anchor chunks in the anchor tier
-                nbt = 0
-                logging.debug('... ... ... Anchors:')
-                for (s,e,l,p) in anchors:
-                    nbt += len( l.split() )
-                    i = TimeInterval(TimePoint(s),TimePoint(e))
-                    anchortiert.Add( Annotation(i,Label(l)) )
-                    anchortierp.Add( Annotation(i,Label(p)) )
-                    logging.debug(' ... ... ... ... %f %f - %s %s'%(s,e,l,p))
-
-                fromtime = anchors[-1][1]
-                fromtoken = fromtoken + nbt
-
-            except Exception as e:
-                import traceback
-                print(traceback.format_exc())
-
-                # wish your luck in the next window...
-                logging.info('%s'%str(e))
-                #logging.debug(' ... ... Bad luck. Try next!')
-                fromtime = totime
+        # Windowing to find anchors
+        self._append_anchors(toklist, pronlist, anchortier, channel, diralign)
 
         # OK, we found anchors... now:
         # - remove overlaps
         tiert = self.NewTier("TokenizedChunks")
         tierp = self.NewTier("PhonetizedChunks")
-        for annt,annp in zip(anchortiert,anchortierp):
-            at = annt.Copy()
-            ap = annp.Copy()
+        for ann in anchortier:
+            at = ann.Copy()
+            ap = ann.Copy()
             if at.GetLocation().GetBegin().GetMidpoint() < tiert.GetEnd().GetMidpoint():
+                radius = tiert.GetEnd().GetMidpoint() - at.GetLocation().GetBegin().GetMidpoint()
+                radius = radius/2.
                 at.GetLocation().SetBegin( tiert.GetEnd() )
+                at.GetLocation().GetBegin().SetRadius( radius )
                 ap.GetLocation().SetBegin( tierp.GetEnd() )
+                ap.GetLocation().GetBegin().SetRadius( radius )
+                tiert.GetEnd().SetRadius( radius )
+                tierp.GetEnd().SetRadius( radius )
+
+            if ann.GetLabel().IsSilence() is False:
+                i = ann.GetLabel().GetTypedValue()
+                at.GetLabel().SetValue( toklist[i] )
+                ap.GetLabel().SetValue( pronlist[i] )
 
             tiert.Add(at)
             tierp.Add(ap)
 
         return (tiert,tierp)
+
+
+    # ------------------------------------------------------------------------
+    # Private
+    # ------------------------------------------------------------------------
+
+    def _append_anchors(self, toklist, pronlist, anchortier, channel, diralign):
+
+        # Set the aligner: only julius can do that (for now)
+        aligner = aligners.instantiate(self._aligntrack.get_model(),"julius")
+        aligner.set_infersp(False)
+        aligner.set_outext("walign")
+
+        # Windowing on the audio to find anchors
+        logging.debug(" ... Windowing the audio file:")
+        fromtime  = 0.
+        totime    = 0.
+        fromtoken = 0
+        fails     = 0
+        maxtime   = channel.get_duration()
+
+        while fromtime < maxtime and fromtoken < len(toklist):
+
+            if fails > 3:
+                raise Exception("The search of anchors failed too often.")
+
+            try:
+                # Fix boundaries of this window...
+                (fromtime,totime) = anchortier.fix_window(fromtime)
+                if fromtime >= totime:
+                    break
+                nbtokens = self._spkrate.ntokens( totime-fromtime )
+                totoken = min( (fromtoken + nbtokens), len(toklist))
+
+                logging.debug(" ... ... window: ")
+                logging.debug("... ... ... - time  from %.4f to %.4f."%(fromtime,totime))
+                logging.debug("... ... ... - token from %d to %d."%(fromtoken,totoken))
+                logging.debug("... ... ... REF: %s"%(" ".join(  toklist[fromtoken:totoken] )))
+
+                # Fix anchors of this window
+                anchors = self._fix_anchors(fromtime, totime, fromtoken, totoken, aligner, channel, pronlist, toklist, diralign)
+
+                # Append anchors in the anchor tier
+                logging.debug('... ... ... Anchors:')
+                for (s,e,i) in anchors:
+                    time  = TimeInterval(TimePoint(s),TimePoint(e))
+                    label = Label( Text(i,data_type="int") )
+                    anchortier.Add( Annotation(time,label) )
+                    logging.debug(' ... ... ... ... %f %f - %s %s'%(s,e,toklist[i],pronlist[i]))
+
+                # Prepare next window
+                fromtime  = anchors[-1][1]
+                fromtoken = anchors[-1][2] + 1
+                fails = 0
+
+            except Exception as e:
+                # try your luck in the next window...
+                import traceback
+                logging.info("%s"%str(traceback.format_exc()))
+                fromtime = totime
+                fails = fails + 1
 
     # ------------------------------------------------------------------------
 
@@ -242,11 +353,6 @@ class TrackSplitter( Transcription ):
         Fix anchors in a window.
 
         """
-        logging.debug(" ... ... window: ")
-        logging.debug("... ... ... - time  from %.4f to %.4f."%(fromtime,totime))
-        logging.debug("... ... ... - token from %d to %d."%(fromtoken,totoken))
-        logging.debug("... ... ... REF: %s"%(" ".join(  toklist[fromtoken:totoken] )))
-
         # create audio file
         fnw = self._tracknames.alignfilename(diralign,0)
         fna = self._tracknames.audiofilename(diralign,0)
@@ -277,9 +383,15 @@ class TrackSplitter( Transcription ):
         if len(matchingslist) == 0:
             raise Exception('No matching found between ASR result and manual transcription.')
 
-        # Concatenate anchors into chunks
-        chunks = self._fix_chunks_list( toklist[fromtoken:totoken], pronlist[fromtoken:totoken], wordalign, matchingslist )
-        return chunks
+        anchors = []
+        for match in matchingslist:
+            i  = match[0]   # ref
+            hi = match[1]   # hyp
+            s = wordalign[hi][0]
+            e = wordalign[hi][1]
+            anchors.append( (s,e,fromtoken+i) )
+
+        return anchors
 
     # ------------------------------------------------------------------------
 
@@ -298,16 +410,17 @@ class TrackSplitter( Transcription ):
         wordsalign.pop()
 
         if len(wordsalign) == 0:
-            raise IOError('The ASR failed to find tokens.')
+            raise IOError("The ASR failed to find tokens.")
 
         # the first token was recognized during the silence we prepended!!!!
         if wordsalign[0][1] < 0:
             wordsalign.pop(0)
+            wordsalign[0][0] = 0.
 
-        # fix the (new) first token to the beginning of the audio, i.e. 0.
-        wordsalign[0][0] = 0.
+        # the first token was starting during to the silence we prepended.
+        wordsalign[0][0] = max( 0. , wordsalign[0][0] )
 
-        # shift to the real time values in the audioinput
+        # shift all local time values to the real time values in the audioinput
         for i in range(len(wordsalign)):
             wordsalign[i][0] = wordsalign[i][0] + fromtime
             wordsalign[i][1] = wordsalign[i][1] + fromtime
@@ -338,6 +451,57 @@ class TrackSplitter( Transcription ):
 
         return sorted(list(set(m1+m3)))
 
+    # ------------------------------------------------------------------------
+
+    def _tier2raw( self,tier ):
+        """
+        Return all interval contents into a single string.
+        """
+        raw = ""
+        for ann in tier:
+            if ann.GetLabel().IsSilence() is False:
+                besttext = ann.GetLabel().GetValue()
+                if UNKSTAMP in besttext:
+                    besttext = "sil"
+                raw = raw + " " + besttext
+
+        return ToStrip(raw)
+
+    # ------------------------------------------------------------------------
+
+    def _write_text_track(self, trackname, trackcontent):
+        """
+        Write a raw text in a file.
+        """
+        with codecs.open(trackname,"w", encoding) as fp:
+            fp.write(trackcontent)
+
+    # ------------------------------------------------------------------------
+
+    def _append_silences(self, trackstimes, tier):
+        """
+        Add silences in tier from a list of speech tracks.
+
+        @param trackstimes (list - IN) List of tuples (fromtime,totime)
+        @param tier (Tier - INOUT) The tier to append silence intervals
+
+        """
+        radius = 0.005
+        toprec = 0.
+        for (fromtime,totime) in trackstimes:
+            # From the previous track to the current track: silence
+            if toprec < fromtime:
+                begin = toprec
+                end   = fromtime
+                a     = Annotation(TimeInterval(TimePoint(begin,radius), TimePoint(end,radius)), Label("#"))
+                tier.Append(a)
+            toprec = totime
+        if tier.GetSize()>0:
+            tier[-1].GetLocation().SetEndRadius(0.)
+            tier[0].GetLocation().SetBeginRadius(0.)
+
+    # ------------------------------------------------------------------------
+    # Deprecated
     # ------------------------------------------------------------------------
 
     def _fix_chunks_list(self, ref, pronref, hyp, match ):
@@ -408,186 +572,7 @@ class TrackSplitter( Transcription ):
 
         return (hyp[hs][0], hyp[he][1], texttok, textpron)
 
-
-    def __fix_chunk_from_hole(self, ref, pronref, hyp, match, p):
-
-        rs = match[p][0]
-        re = match[p+1][0]
-        chunktext = " ".join( ref[rs+1:re] )
-        prontext  = " ".join( pronref[rs+1:re] )
-
-        hs = match[p][1]
-        he = match[p+1][1]
-
-        return (hyp[hs][1], hyp[he][0], chunktext, prontext)
-
-    # ------------------------------------------------------------------------
-
-    def _tier2raw( self,tier ):
-        """
-        Return all interval contents into a single string.
-        """
-        raw = ""
-        for ann in tier:
-            if ann.GetLabel().IsSilence() is False:
-                besttext = ann.GetLabel().GetValue()
-                if UNKSTAMP in besttext:
-                    besttext = "sil"
-                raw = raw + " " + besttext
-
-        return ToStrip(raw)
-
-    # ------------------------------------------------------------------------
-
-    def _write_text_tracks(self, phontier, toktier, diralign):
-        """
-        Write tokenization and phonetization of tiers into separated track files.
-
-        """
-        tokens = True
-        if toktier is None:
-            toktier = phontier.Copy()
-            tokens = False
-        if phontier.GetSize() != toktier.GetSize():
-            raise IOError('Inconsistency between the number of intervals of tokenization (%d) and phonetization (%d) tiers.'%(phontier.GetSize(),toktier.GetSize()))
-
-        units = []
-        for annp,annt in zip(phontier,toktier):
-
-            b = annp.GetLocation().GetBegin().GetMidpoint()
-            e = annp.GetLocation().GetEnd().GetMidpoint()
-            units.append( (b,e) )
-
-            # Here we write only the text-label with the best score,
-            # we dont care about alternative text-labels
-            fnp = self._tracknames.phonesfilename(diralign, len(units))
-            textp = annp.GetLabel().GetValue()
-            self._write_text_track( fnp, textp )
-
-            fnt = self._tracknames.tokensfilename(diralign, len(units))
-            label = annt.GetLabel()
-            if tokens is False and label.IsSpeech() is True:
-                textt = " ".join( ["w_"+str(i+1) for i in range(len(textp.split()))] )
-            else:
-                textt = label.GetValue()
-            self._write_text_track( fnt, textt )
-
-        return units
-
-    def _write_text_track(self, trackname, trackcontent):
-        with codecs.open(trackname,"w", encoding) as fp:
-            fp.write(trackcontent)
-
-    # ------------------------------------------------------------------------
-
-    def _write_audio_tracks(self, inputaudio, units, diralign, silence=0.):
-        """
-        Write the first channel of an audio file into separated track files.
-        Re-sample to 16000 Hz, 16 bits.
-
-        """
-        channel = autils.extract_audio_channel( inputaudio,0 )
-        channel = autils.format_channel( channel,16000,2 )
-
-        for track,u in enumerate(units):
-            (s,e) = u
-            trackchannel = autils.extract_channel_fragment( channel, s, e, silence)
-            trackname    = self._tracknames.audiofilename(diralign, track+1)
-            autils.write_channel(trackname, trackchannel)
-
-    # ------------------------------------------------------------------------
-
-    def _append_silences(self, trackstimes, tier):
-        """
-        Add silences in tier from a list of speech segments.
-
-        @param trackstimes (list - IN) List of tuples (fromtime,totime)
-        @param tier (Tier - INOUT) The tier to append silence intervals
-
-        """
-        radius = 0.005
-        toprec = 0.
-        for (fromtime,totime) in trackstimes:
-            # From the previous track to the current track: silence
-            if toprec < fromtime:
-                begin = toprec
-                end   = fromtime
-                a     = Annotation(TimeInterval(TimePoint(begin,radius), TimePoint(end,radius)), Label("#"))
-                tier.Append(a)
-            toprec = totime
-        if tier.GetSize()>0:
-            tier[-1].GetLocation().SetEndRadius(0.)
-            tier[0].GetLocation().SetBeginRadius(0.)
-
-# ------------------------------------------------------------------
-# ------------------------------------------------------------------
-
-class AnchorTier( Tier ):
-    """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Read time-aligned segments, convert into Tier.
-
-    """
-    def __init__(self, name="Anchors"):
-        """
-        Creates a new SegmentsIn instance.
-
-        """
-        Tier.__init__(self, name)
-        self._windowdelay = 4.0
-        self._margindelay = 2.0
-
-
-    def fix_window(self, fromtime):
-        """
-        Return the "totime" corresponding to a flexible-sized window.
-
-        if fromtime inside an anchor:
-            fromtime = end-anchor-time
-
-        totime is either:
-
-            - fromtime + begin-of-the-next-anchor
-              if there is an anchor in interval [fromtime,fromtime+delay]
-
-            - fromtime + begin-of-the-next-anchor
-              if there is an anchor in interval [fromtime,fromtime+delay+margin]
-                (this is to ensure that the next window won't be too small)
-
-            - fromtime + delay
-
-        """
-        # The totime corresponding to a full window
-        totime = fromtime+self._windowdelay
-
-        # Do we have already anchors between fromtime and totime?
-        anns = self.Find( fromtime, totime, overlaps=True )
-        if len(anns)>0:
-            # we reached the end of the tier
-            if anns[-1].GetLocation().GetEnd().GetMidpoint() == self.GetEnd():
-                return (totime,totime)
-
-            totime = anns[0].GetLocation().GetBegin().GetMidpoint()
-            # fromtime is perhaps INSIDE an anchor!
-            # or at the beginning of an anchor.
-            # So... try again by shifting fromtime to the end of such anchor
-            if fromtime >= totime:
-                return self.fix_window( anns[0].GetLocation().GetEnd().GetMidpoint() )
-
-        else:
-            # test with the margin to ensure the next window won't be too small
-            anns = self.Find( totime, totime+self._margindelay, overlaps=True )
-            if len(anns)>0:
-                # totime is the begin of the first anchor we got in the margin
-                totime = anns[0].GetLocation().GetBegin().GetMidpoint()
-
-        return (fromtime,totime)
-
-# ------------------------------------------------------------------
+# --------------------------------------------------------------------------
 # ------------------------------------------------------------------
 
 class TracksReader( Transcription ):
@@ -691,3 +676,4 @@ class TracksReader( Transcription ):
             logging.info('No alignment appended in tier from %f to %f.'%(delta,unitend))
             pass
 
+    # ------------------------------------------------------------------------
