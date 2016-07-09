@@ -41,6 +41,7 @@ import codecs
 
 import annotations.Align.aligners as aligners
 from annotations.Align.aligners.alignerio import AlignerIO
+from annotations.Align.spkrate import SpeakerRate
 
 from annotationdata.transcription  import Transcription
 from annotationdata.tier           import Tier
@@ -61,41 +62,6 @@ from sp_glob import UNKSTAMP
 
 # ----------------------------------------------------------------------
 
-def eval_spkrate( trackstimes, ntokens ):
-    """
-    Evaluate the speaking rate in number of tokens per seconds.
-
-    """
-    return ntokens/sum( [(e-s) for (s,e) in trackstimes] )
-
-# ----------------------------------------------------------------------
-
-def duration2ntokens( duration, spkrate=12. ):
-    """
-    Try to empirically fix the maximum number of tokens we could expect for a given duration.
-    However, the average speaking rate will vary across languages and situations.
-
-    In conversational English, the average rate of speech for men is 125
-    words per minute. Women average 150 words per minute. Television
-    newscasters frequently hit 175+ words per minute (= 3 words/sec.).
-    See: http://sixminutes.dlugan.com/speaking-rate/
-
-    In CID, if we look at all tokens of the IPUs, the speaker rate is:
-        - AB: 4.55 tokens/sec.
-        - AC: 5.29 tokens/sec.
-        - AP: 5.15 tokens/sec.
-    See: http://sldr.org/sldr000720/
-
-    To ensure we'll consider enough words, we'll fix a very large value by
-    default, i.e. 12 tokens/second.
-
-    @param duration (float - IN) Speech duration in seconds.
-    @return a maximum number of tokens we could expect for this duration.
-
-    """
-    return int(duration*spkrate)+1
-
-# ----------------------------------------------------------------------
 
 class TrackNamesGenerator():
     def __init__(self):
@@ -136,6 +102,8 @@ class TrackSplitter( Transcription ):
         self._radius = 0.005
         self._tracknames = TrackNamesGenerator()
         self._aligntrack = None
+        self._alignerio = AlignerIO()
+        self._spkrate  = SpeakerRate()
 
     # ------------------------------------------------------------------------
 
@@ -169,6 +137,7 @@ class TrackSplitter( Transcription ):
         else:
             units = self._write_text_tracks(phontier, toktier, diralign)
         self._write_audio_tracks(inputaudio, units, diralign)
+
         return units
 
     # ------------------------------------------------------------------------
@@ -206,8 +175,8 @@ class TrackSplitter( Transcription ):
             logging.debug(" ... ... %i: %s"%(i,a))
 
         # Estimates the speaking rate (amount of tokens/sec. in average)
-        spkrate = eval_spkrate( trackstimes, len(toklist) )
-        spkrate = int(spkrate*2.5)
+        self._spkrate.eval_from_tracks( trackstimes, len(toklist) )
+        self._spkrate.mul(3)
 
         # Windowing on the audio to find chunk of anchors
         logging.debug(" ... Windowing the audio file:")
@@ -223,7 +192,7 @@ class TrackSplitter( Transcription ):
                 if fromtime >= totime:
                     break
 
-                nbtokens = duration2ntokens( totime-fromtime, spkrate )
+                nbtokens = self._spkrate.ntokens( totime-fromtime )
                 totoken = min( (fromtoken + nbtokens), len(toklist))
 
                 anchors = self._fix_anchors(fromtime, totime, fromtoken, totoken, aligner, channel, pronlist, toklist, diralign)
@@ -290,8 +259,7 @@ class TrackSplitter( Transcription ):
         aligner.run_alignment(fna, fnw)
 
         # get the tokens time-aligned by the ASR engine
-        alignerio = AlignerIO()
-        wordalign = alignerio.read_aligned(fnw)[1]  # (starttime,endtime,label,score)
+        wordalign = self._alignerio.read_aligned(fnw)[1]  # (starttime,endtime,label,score)
         wordalign = self._adjust_asr_result(wordalign, fromtime, 0.2)
         logging.debug("... ... ... ASR hypothesis:")
         for (b,e,w,s) in wordalign:
