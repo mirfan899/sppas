@@ -84,6 +84,12 @@ class SpeakerRate:
 
     # ----------------------------------------------------------------------
 
+    def div(self, coef):
+        coef = float(coef)
+        self.set_value( self._spkrate / coef )
+
+    # ----------------------------------------------------------------------
+
     def eval_from_duration(self, duration, ntokens ):
         """
         Evaluate the speaking rate in number of tokens per seconds.

@@ -229,13 +229,14 @@ class TrackSplitter( Transcription ):
         @param diralign (str - IN) the directory to work.
 
         """
+        message = ""
         logging.debug( "Find automatically tracks for audio file: %s"%inputaudio)
 
-        # Extract the data we'll work on...
-        # i.e. an audio channel
+        # Extract the audio channel
         channel = autils.extract_audio_channel( inputaudio,0 )
         channel = autils.format_channel( channel,16000,2 )
-        # i.e. lists of tokens and their corresponding pronunciations
+
+        # Extract the lists of tokens and their corresponding pronunciations
         pronlist = self._tier2raw( phontier ).split()
         toklist  = self._tier2raw( toktier ).split()
         if len(pronlist) != len(toklist):
@@ -243,20 +244,21 @@ class TrackSplitter( Transcription ):
 
         # At a first stage, we'll find anchors
         anchortier = AnchorTier()
+        anchortier.set_duration( channel.get_duration() )
 
         # Search silences and use them as anchors.
-        logging.debug(" ... Search silences:")
-        trackstimes = autils.search_channel_speech( channel )
-        self._append_silences(trackstimes, anchortier)
-        for i,a in enumerate(anchortier):
-            logging.debug(" ... ... %i: %s"%(i,a))
+        #speechduration = anchortier.append_silences( channel )
+        speechduration = channel.get_duration()
 
         # Estimates the speaking rate (amount of tokens/sec. in average)
-        self._spkrate.eval_from_tracks( trackstimes, len(toklist) )
-        self._spkrate.mul(1.5)
+        self._spkrate.eval_from_duration( speechduration, len(toklist) )
 
         # Windowing to find anchors
-        self._append_anchors(toklist, pronlist, anchortier, channel, diralign)
+        try:
+            self._asr(toklist, pronlist, anchortier, channel, diralign)
+            #self._append_anchors(toklist, pronlist, anchortier, channel, diralign)
+        except Exception as e:
+            message = str(e)
 
         # OK, we found anchors... now:
         # - remove overlaps
@@ -268,26 +270,97 @@ class TrackSplitter( Transcription ):
             if at.GetLocation().GetBegin().GetMidpoint() < tiert.GetEnd().GetMidpoint():
                 radius = tiert.GetEnd().GetMidpoint() - at.GetLocation().GetBegin().GetMidpoint()
                 radius = radius/2.
-                at.GetLocation().SetBegin( tiert.GetEnd() )
-                at.GetLocation().GetBegin().SetRadius( radius )
-                ap.GetLocation().SetBegin( tierp.GetEnd() )
-                ap.GetLocation().GetBegin().SetRadius( radius )
-                tiert.GetEnd().SetRadius( radius )
-                tierp.GetEnd().SetRadius( radius )
-
+                try:
+                    at.GetLocation().SetBegin( tiert.GetEnd() )
+                    at.GetLocation().GetBegin().SetRadius( radius )
+                    ap.GetLocation().SetBegin( tierp.GetEnd() )
+                    ap.GetLocation().GetBegin().SetRadius( radius )
+                    tiert.GetEnd().SetRadius( radius )
+                    tierp.GetEnd().SetRadius( radius )
+                except Exception:
+                    pass
             if ann.GetLabel().IsSilence() is False:
                 i = ann.GetLabel().GetTypedValue()
                 at.GetLabel().SetValue( toklist[i] )
                 ap.GetLabel().SetValue( pronlist[i] )
 
-            tiert.Add(at)
-            tierp.Add(ap)
+            try:
+                tiert.Append(at)
+                tierp.Append(ap)
+            except Exception:
+                pass
 
         return (tiert,tierp)
 
 
     # ------------------------------------------------------------------------
     # Private
+    # ------------------------------------------------------------------------
+
+    def _asr(self, toklist, pronlist, anchortier, channel, diralign):
+
+        # Set the aligner: only julius can do that (for now)
+        aligner = aligners.instantiate(self._aligntrack.get_model(),"julius")
+        aligner.set_infersp(False)
+        aligner.set_outext("walign")
+
+        # Windowing on the audio to find anchors
+        logging.debug(" ... Windowing the audio file:")
+        fromtime  = 0.
+        totime    = 0.
+        fails = 0
+        maxtime = channel.get_duration()
+
+        while fromtime < maxtime:
+
+            if fails > 3:
+                break
+                #raise Exception("The search of anchors failed too often. Stop process at time: %f"%fromtime)
+
+            try:
+                # Fix boundaries of this window...
+                (fromtime,totime) = anchortier.fix_window(fromtime)
+                if totime > maxtime:
+                    totime = maxtime
+                if fromtime >= totime:
+                    logging.debug('Stop windowing: %f %f.'%(fromtime,totime))
+                    break
+
+                # Fix "exact" position of fromtoken,totoken depends on
+                # fromtime,totime, then surrounded by a large number of tokens!
+                ntokens = self._spkrate.ntokens(totime-fromtime)
+
+                fromtoken = max(0, self._spkrate.ntokens( fromtime ) - ntokens)
+                totoken   = min(len(toklist), self._spkrate.ntokens( totime ) + ntokens)
+
+                logging.debug(" ... ... window: ")
+                logging.debug("... ... ... - time  from %.4f to %.4f."%(fromtime,totime))
+                logging.debug("... ... ... - token from %d to %d."%(fromtoken,totoken))
+                logging.debug("... ... ... REF: %s"%(" ".join(  toklist[fromtoken:totoken] )))
+                logging.debug("... ... ... HYP: ")
+
+                # Fix anchors of this window
+                anchors = self._fix_window_asr(fromtime, totime, fromtoken, totoken, aligner, channel, pronlist, toklist, diralign)
+
+                # Add anchors in the anchor tier
+                logging.debug('... ... ... Anchors:')
+                for (s,e,i) in anchors:
+                    time  = TimeInterval(TimePoint(s),TimePoint(e))
+                    label = Label( Text(i,data_type="int") )
+                    anchortier.Add( Annotation(time,label) )
+                    logging.debug(' ... ... ... ... %f %f - %s %s'%(s,e,toklist[i],pronlist[i]))
+
+                # Prepare next window
+                fromtime = anchors[-1][1]
+                fails = 0
+
+            except Exception as e:
+                # try your luck in the next window...
+                import traceback
+                logging.info("%s"%str(traceback.format_exc()))
+                fromtime = totime
+                fails = fails + 1
+
     # ------------------------------------------------------------------------
 
     def _append_anchors(self, toklist, pronlist, anchortier, channel, diralign):
@@ -308,13 +381,16 @@ class TrackSplitter( Transcription ):
         while fromtime < maxtime and fromtoken < len(toklist):
 
             if fails > 3:
-                raise Exception("The search of anchors failed too often.")
+                raise Exception("The search of anchors failed too often. Stop process at time: %f"%fromtime)
 
             try:
                 # Fix boundaries of this window...
                 (fromtime,totime) = anchortier.fix_window(fromtime)
+                if totime > maxtime:
+                    totime = maxtime
                 if fromtime >= totime:
                     break
+
                 nbtokens = self._spkrate.ntokens( totime-fromtime )
                 totoken = min( (fromtoken + nbtokens), len(toklist))
 
@@ -324,9 +400,9 @@ class TrackSplitter( Transcription ):
                 logging.debug("... ... ... REF: %s"%(" ".join(  toklist[fromtoken:totoken] )))
 
                 # Fix anchors of this window
-                anchors = self._fix_anchors(fromtime, totime, fromtoken, totoken, aligner, channel, pronlist, toklist, diralign)
+                anchors = self._fix_window_anchors(fromtime, totime, fromtoken, totoken, aligner, channel, pronlist, toklist, diralign)
 
-                # Append anchors in the anchor tier
+                # Add anchors in the anchor tier
                 logging.debug('... ... ... Anchors:')
                 for (s,e,i) in anchors:
                     time  = TimeInterval(TimePoint(s),TimePoint(e))
@@ -348,7 +424,54 @@ class TrackSplitter( Transcription ):
 
     # ------------------------------------------------------------------------
 
-    def _fix_anchors(self, fromtime, totime, fromtoken, totoken, aligner, channel, pronlist, toklist, diralign):
+    def _fix_window_asr(self, fromtime, totime, fromtoken, totoken, aligner, channel, pronlist, toklist, diralign):
+        """
+        Fix asr result in a window.
+
+        """
+        # create audio file
+        fnw = self._tracknames.alignfilename(diralign,0)
+        fna = self._tracknames.audiofilename(diralign,0)
+        trackchannel = autils.extract_channel_fragment( channel, fromtime, totime, 0.2)
+        autils.write_channel( fna, trackchannel )
+
+        # call the ASR engine to recognize tokens of this track
+        aligner.set_phones( " ".join( pronlist[fromtoken:totoken] ) )
+        aligner.set_tokens( " ".join(  toklist[fromtoken:totoken] ) )
+        aligner.run_alignment(fna, fnw)
+
+        # get the tokens time-aligned by the ASR engine
+        wordalign = self._alignerio.read_aligned(fnw)[1]  # (starttime,endtime,label,score)
+        wordalign = self._adjust_asr_result(wordalign, fromtime, 0.2)
+
+        # ignore the last word: we can't know if the word is entire or was cut
+        if len(wordalign) > 3:
+            wordalign.pop()
+
+
+        # list of tokens the ASR automatically time-aligned
+        tman = [token for token in toklist[fromtoken:totoken]]
+        # list of tokens manually transcribed
+        tasr = [(token,score) for (start,end,token,score) in wordalign]
+
+        # Find matching tokens: the anchors
+        matchingslist = self._fix_matchings_list( tman,tasr )
+        if len(matchingslist) == 0:
+            raise Exception('No matching found between ASR result and manual transcription.')
+
+        anchors = []
+        for match in matchingslist:
+            i  = match[0]   # ref
+            hi = match[1]   # hyp
+            s = wordalign[hi][0]
+            e = wordalign[hi][1]
+            anchors.append( (s,e,fromtoken+i) )
+
+        return anchors
+
+    # ------------------------------------------------------------------------
+
+    def _fix_window_anchors(self, fromtime, totime, fromtoken, totoken, aligner, channel, pronlist, toklist, diralign):
         """
         Fix anchors in a window.
 
@@ -442,7 +565,6 @@ class TrackSplitter( Transcription ):
 
         """
         pattern = Patterns()
-        pattern.set_gap(2)
         pattern.set_ngram(3)
         m3 = pattern.ngram_matchings( ref,hyp )
         pattern.set_ngram(1)
@@ -476,29 +598,6 @@ class TrackSplitter( Transcription ):
         with codecs.open(trackname,"w", encoding) as fp:
             fp.write(trackcontent)
 
-    # ------------------------------------------------------------------------
-
-    def _append_silences(self, trackstimes, tier):
-        """
-        Add silences in tier from a list of speech tracks.
-
-        @param trackstimes (list - IN) List of tuples (fromtime,totime)
-        @param tier (Tier - INOUT) The tier to append silence intervals
-
-        """
-        radius = 0.005
-        toprec = 0.
-        for (fromtime,totime) in trackstimes:
-            # From the previous track to the current track: silence
-            if toprec < fromtime:
-                begin = toprec
-                end   = fromtime
-                a     = Annotation(TimeInterval(TimePoint(begin,radius), TimePoint(end,radius)), Label("#"))
-                tier.Append(a)
-            toprec = totime
-        if tier.GetSize()>0:
-            tier[-1].GetLocation().SetEndRadius(0.)
-            tier[0].GetLocation().SetBeginRadius(0.)
 
     # ------------------------------------------------------------------------
     # Deprecated

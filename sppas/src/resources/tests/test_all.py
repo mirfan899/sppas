@@ -19,14 +19,14 @@ if os.path.exists( TEMP ) is False:
 
 testsuite = unittest.TestSuite()
 
-testsuite.addTest(unittest.makeSuite(TestRutils))
-testsuite.addTest(unittest.makeSuite(TestWordsList))
-testsuite.addTest(unittest.makeSuite(TestDictPron))
-testsuite.addTest(unittest.makeSuite(TestDictRepl))
-testsuite.addTest(unittest.makeSuite(TestMapping))
-testsuite.addTest(unittest.makeSuite(TestNgramCounter))
-testsuite.addTest(unittest.makeSuite(TestNgramsModel))
-testsuite.addTest(unittest.makeSuite(TestSLM))
+# testsuite.addTest(unittest.makeSuite(TestRutils))
+# testsuite.addTest(unittest.makeSuite(TestWordsList))
+# testsuite.addTest(unittest.makeSuite(TestDictPron))
+# testsuite.addTest(unittest.makeSuite(TestDictRepl))
+# testsuite.addTest(unittest.makeSuite(TestMapping))
+# testsuite.addTest(unittest.makeSuite(TestNgramCounter))
+# testsuite.addTest(unittest.makeSuite(TestNgramsModel))
+# testsuite.addTest(unittest.makeSuite(TestSLM))
 testsuite.addTest(unittest.makeSuite(TestPatterns))
 
 unittest.TextTestRunner(verbosity=2).run(testsuite)

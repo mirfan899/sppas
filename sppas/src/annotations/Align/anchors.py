@@ -35,7 +35,9 @@
 # File: anchors.py
 # ----------------------------------------------------------------------------
 
-from annotationdata.tier import Tier
+import logging
+from annotationdata import Tier, Annotation, TimeInterval, TimePoint, Label, Text
+import audiodata.autils as autils
 
 # --------------------------------------------------------------------------
 
@@ -55,8 +57,41 @@ class AnchorTier( Tier ):
 
         """
         Tier.__init__(self, name)
-        self._windelay = 3.
+        self._windelay = 4.
+        self._extdelay = 1.
         self._outdelay = 0.2
+        self._duration = 0.
+
+    # ------------------------------------------------------------------------
+
+    def append_silences(self, channel):
+        """
+        Append silences as anchors.
+
+        @return the duration of speech in the channel
+
+        """
+        logging.debug(" ... Search silences:")
+
+        trackstimes = autils.search_channel_speech( channel )
+        radius = 0.005
+        toprec = 0.
+        for (fromtime,totime) in trackstimes:
+            # From the previous track to the current track: silence
+            if toprec < fromtime:
+                begin = toprec
+                end   = fromtime
+                a     = Annotation(TimeInterval(TimePoint(begin,radius), TimePoint(end,radius)), Label("#"))
+                self.Append(a)
+            toprec = totime
+        if self.GetSize()>0:
+            self[-1].GetLocation().SetEndRadius(0.)
+            self[0].GetLocation().SetBeginRadius(0.)
+
+        for i,a in enumerate(self):
+            logging.debug(" ... ... %i: %s"%(i,a))
+
+        return sum( [(e-s) for (s,e) in trackstimes] )
 
     # ------------------------------------------------------------------------
 
@@ -66,6 +101,13 @@ class AnchorTier( Tier ):
             raise ValueError("%f is a too short window delay."%(delay))
 
         self._windelay = delay
+
+
+    # ------------------------------------------------------------------------
+
+    def set_duration(self, duration):
+        duration = float(duration)
+        self._duration = duration
 
     # ------------------------------------------------------------------------
 
@@ -88,36 +130,52 @@ class AnchorTier( Tier ):
             - fromtime + delay
 
         """
-        (fromtime,totime) = self._fix_window(fromtime, self._windelay)
+        (fromtime,totime) = self._recurs_fix_window(fromtime, self._windelay)
 
-        extendeddelay = self._windelay + self._windelay/3.
-        (nf,nt) = self._fix_window(fromtime, extendeddelay)
-        if (nt-nf) < extendeddelay:
+        # take a quick look at the next window... just to be sure it won't be too small
+        (nf,nt) = self._recurs_fix_window(totime, self._windelay)
+        if (nt-nf) < self._windelay:
             totime = nt
 
         return (fromtime,totime)
 
     # ------------------------------------------------------------------------
 
-    def _fix_window(self, fromtime, delay=4.):
+    def _recurs_fix_window(self, fromtime, delay=4.):
         """
         Recursive method to fix a window.
 
         """
+        print "FROMTIME=",fromtime
         # The totime corresponding to a full window
-        totime = fromtime + delay
+        totime = min(fromtime + delay, self._duration)
+
+        print "EXPCTED TOTIME=",totime
+
+        if self.GetSize() == 0:
+            print "FIRST WINDOW. return ",fromtime,totime
+            return (fromtime,totime)
 
         # Main stop condition: we reach the end of the tier.
-        if fromtime >= self.GetEnd():
-            return (self.GetEnd().GetMidpoint(),self.GetEnd().GetMidpoint())
+        if fromtime >= self._duration:
+            return (self._duration,self._duration)
 
         # Do we have already anchors between fromtime and totime?
         anns = self.Find( fromtime, totime, overlaps=True )
+        if len(anns)>0 and fromtime == anns[0].GetLocation().GetEnd().GetMidpoint():
+            anns.pop(0)
+
         if len(anns)>0:
+
+            print "FOUND ANNS",anns[0]
 
             # fromtime is perhaps INSIDE an anchor or at the beginning of an anchor.
             if fromtime >= anns[0].GetLocation().GetBegin().GetMidpoint():
-                return self._fix_window( anns[0].GetLocation().GetEnd().GetMidpoint(), delay )
+                fromtime = anns[0].GetLocation().GetEnd().GetMidpoint()
+                print "  FROMTIME =",fromtime
+                if totime < self._duration:
+                    print "  --> next round"
+                    return self._recurs_fix_window( fromtime, delay )
             else:
                 totime = anns[0].GetLocation().GetBegin().GetMidpoint()
                 if fromtime == totime:
@@ -125,7 +183,7 @@ class AnchorTier( Tier ):
 
         if (totime-fromtime) < self._outdelay:
             fromtime = totime
-            return self._fix_window( fromtime, delay )
+            return self._recurs_fix_window( fromtime, delay )
 
         return (fromtime,totime)
 

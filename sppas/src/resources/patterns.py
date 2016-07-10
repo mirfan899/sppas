@@ -112,6 +112,42 @@ class Patterns( object ):
 
     def ngram_matchings(self, ref, hyp):
         """
+        n-gram matchings between ref and hyp.
+        Search for common n-gram sequences of hyp in ref.
+
+        @param ref (list of tokens - IN) List of references
+        @param hyp (list of tuples - IN) List of hypothesis with their scores
+        The scores are supposed to range in [0;1] values.
+        @return List of matching indexes as tuples (i_ref,i_hyp),
+
+        """
+        matchings = []
+        (nman,nasr) = self._create_ngrams(ref, hyp)
+
+        previdxm = 0
+
+        for idxa in range(len(nasr)):
+
+            matchidxa = []
+            for idxm in range(previdxm,len(nman)):
+                if nasr[idxa] == nman[idxm]:
+                    matchidxa.append( idxm )
+
+            # if we found more than one match, then ignore!
+            # (it can be caused by self-repetitions for example,
+            # or ORs if there are more than one speaker in the audiofile)
+            if len(matchidxa) == 1:
+                idxm = matchidxa[0]
+                previdxm = idxm+1
+                for i in range(self._ngram):
+                    matchings.append( (idxm+i,idxa+i) )
+
+        return sorted(list(set(matchings)))
+
+    # ------------------------------------------------------------------------
+
+    def ngram_alignments(self, ref, hyp):
+        """
         n-gram alignment of ref and hyp.
 
         The algorithm is based on the finding of matching n-grams, in the
@@ -123,7 +159,7 @@ class Patterns( object ):
         @param ref (list of tokens - IN) List of references
         @param hyp (list of tuples - IN) List of hypothesis with their scores
         The scores are supposed to range in [0;1] values.
-        @return List of matching indexes as tuples (i_ref,i_hyp),
+        @return List of alignments indexes as tuples (i_ref,i_hyp),
 
         Example:
 
@@ -139,23 +175,9 @@ class Patterns( object ):
          - n=1 depends on the scores in hyp and the value of the gap.
 
         """
-        matching = []
+        alignment = []
 
-        # create n-gram sequences of the reference
-        nman = zip(*[ref[i:] for i in range(self._ngram)])
-
-        # create n-gram sequences of the hypothesis
-        # if ngram=1, keep only items with a high confidence score
-        if self._ngram > 1:
-            tab = [ token for (token,score) in hyp ]
-            nasr = zip(*[tab[i:] for i in range(self._ngram)])
-        else:
-            nasr = []
-            for (token,score) in hyp:
-                if score >= self._score:
-                    nasr.append( (token,) )
-                else:
-                    nasr.append( ("<>",) )
+        (nman,nasr) = self._create_ngrams(ref, hyp)
 
         lastidxa = len(nasr)
         lastidxm = len(nman)
@@ -172,7 +194,7 @@ class Patterns( object ):
             # matching
             if idxm < lastidxm and nasr[idxa] == nman[idxm]:
                 for i in range(self._ngram):
-                    matching.append( (idxm+i,idxa+i) )
+                    alignment.append( (idxm+i,idxa+i) )
                 found = True
 
             # matching, supposing deletions in hyp
@@ -182,7 +204,7 @@ class Patterns( object ):
                         if nasr[idxa] == nman[idxm+gap+1]:
                             idxm = idxm + gap + 1
                             for i in range(self._ngram):
-                                matching.append( (idxm+i,idxa+i) )
+                                alignment.append( (idxm+i,idxa+i) )
                             found = True
 
             # matching, supposing insertions in hyp
@@ -192,7 +214,7 @@ class Patterns( object ):
                         if nasr[idxa] == nman[idxm-gap-1]:
                             idxm = idxm - gap - 1
                             for i in range(self._ngram):
-                                matching.append( (idxm+i,idxa+i) )
+                                alignment.append( (idxm+i,idxa+i) )
                             found = True
 
             idxa = idxa + 1
@@ -205,7 +227,7 @@ class Patterns( object ):
                 idxa = vmax
                 idxm = vmax
 
-        return sorted(list(set(matching)))
+        return sorted(list(set(alignment)))
 
     # ------------------------------------------------------------------------
 
@@ -223,5 +245,29 @@ class Patterns( object ):
 
         """
         raise NotImplementedError
+
+    # ------------------------------------------------------------------------
+    # Private
+    # ------------------------------------------------------------------------
+
+    def _create_ngrams(self, ref, hyp):
+
+        # create n-gram sequences of the reference
+        nman = zip(*[ref[i:] for i in range(self._ngram)])
+
+        # create n-gram sequences of the hypothesis
+        # if ngram=1, keep only items with a high confidence score
+        if self._ngram > 1:
+            tab = [ token for (token,score) in hyp ]
+            nasr = zip(*[tab[i:] for i in range(self._ngram)])
+        else:
+            nasr = []
+            for (token,score) in hyp:
+                if score >= self._score:
+                    nasr.append( (token,) )
+                else:
+                    nasr.append( ("<>",) )
+
+        return (nman,nasr)
 
     # ------------------------------------------------------------------------
