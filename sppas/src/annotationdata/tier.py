@@ -741,6 +741,9 @@ class Tier( MetaObject ):
 
         """
         index = self.__find(time)
+        if index == -1:
+            return -1
+
         a = self.__ann[index]
         if a.GetLocation().IsPoint() and a.GetLocation().GetPoint() == time:
             return index

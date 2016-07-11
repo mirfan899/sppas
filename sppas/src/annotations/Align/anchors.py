@@ -175,11 +175,6 @@ class AnchorTier( Tier ):
             a = Annotation(TimeInterval(begin, end), Label("#"))
             self.Append(a)
 
-        # Adjust the radius at start and end
-        if self.GetSize() > 0:
-            self[-1].GetLocation().SetEndRadius(0.)
-            self[0].GetLocation().SetBeginRadius(0.)
-
         for i,a in enumerate(self):
             logging.debug(" ... ... %i: %s"%(i,a))
 
@@ -218,6 +213,57 @@ class AnchorTier( Tier ):
             totime = nt
 
         return (fromtime,totime)
+
+    # ------------------------------------------------------------------------
+
+    def near_indexed_anchor(self, timevalue, direction):
+        """
+        Search the nearest indexed anchor (an anchor with a positive integer).
+
+        @param time (float)
+        @param direction: (int)
+                - forward 1
+                - backward -1
+
+        """
+        if not direction in [1,-1]:
+            raise ValueError('Unexpected direction value.')
+
+        valuepoint = TimePoint(timevalue)
+        previ = -1
+        i = self.Near( valuepoint, direction )
+        while i != -1 and i != previ:
+
+            print "i=",i
+            print "valuepoint=",valuepoint
+
+            label = self[i].GetLabel()
+            content = label.GetTypedValue()
+
+            testinside=False
+            if direction == -1 and self[i].GetLocation().GetEnd() > valuepoint:
+                testinside = True
+            if direction == 1 and self[i].GetLocation().GetBegin() < valuepoint:
+                testinside = True
+
+            previ = i
+            if label.IsSilence() is True or content < 0 or testinside is True:
+                if direction == -1:
+                    valuepoint = self[i].GetLocation().GetBegin()
+                else:
+                    valuepoint = self[i].GetLocation().GetEnd()
+                i = self.Near( valuepoint, direction )
+
+
+        if i == -1:
+            return None
+        if self[i].GetLabel().IsSilence() is True:
+            return None
+
+        return self[i]
+
+
+    # ------------------------------------------------------------------------
 
     # ------------------------------------------------------------------------
     # Private
