@@ -48,74 +48,151 @@ class AnchorTier( Tier ):
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Tier with a windowing method.
+    @summary:      Extended Tier allowing to store anchor-annotations.
+
+    This class extends Tier() and allows to store anchors as annotations.
+    Two main methods are added:
+    1. Append silences;
+    2. Fix a flexible time-based window: given a "from-time", it estimates
+       the couple ("from-time","to-time") to match the next hole in the tier,
+       with a given maximum delay between both values.
 
     """
     def __init__(self, name="Anchors"):
         """
-        Creates a new SegmentsIn instance.
+        Creates a new AnchorTier instance, with default values.
 
         """
         Tier.__init__(self, name)
-        self._windelay = 4.
-        self._extdelay = 1.
-        self._outdelay = 0.2
-        self._duration = 0.
+        self.reset()
 
     # ------------------------------------------------------------------------
 
-    def append_silences(self, channel):
+    def reset(self):
         """
-        Append silences as anchors.
-
-        @return the duration of speech in the channel
+        Fix default values of all members.
 
         """
-        logging.debug(" ... Search silences:")
+        self._duration = 0.
 
-        trackstimes = autils.search_channel_speech( channel )
-        radius = 0.005
-        toprec = 0.
-        for (fromtime,totime) in trackstimes:
-            # From the previous track to the current track: silence
-            if toprec < fromtime:
-                begin = toprec
-                end   = fromtime
-                a     = Annotation(TimeInterval(TimePoint(begin,radius), TimePoint(end,radius)), Label("#"))
-                self.Append(a)
-            toprec = totime
-        if self.GetSize()>0:
-            self[-1].GetLocation().SetEndRadius(0.)
-            self[0].GetLocation().SetBeginRadius(0.)
+        # For the silence search
+        self._winlenght     = 0.020
+        self._minsildur     = 0.250
+        self._mintrackdur   = 0.300
+        self._shiftdurstart = 0.
+        self._shiftdurend   = 0.
 
-        for i,a in enumerate(self):
-            logging.debug(" ... ... %i: %s"%(i,a))
+        # For the windowing
+        self._windelay = 4.
+        self._extdelay = 1.
+        self._outdelay = 0.2
 
-        return sum( [(e-s) for (s,e) in trackstimes] )
+    # ------------------------------------------------------------------------
+    # Setters
+    # ------------------------------------------------------------------------
+
+    def set_duration(self, duration):
+        """
+        Set the duration of the tier (in sec.).
+
+        """
+        duration = float(duration)
+        if duration <= 0.:
+            raise Exception("%f is an invalid tier duration."%(duration))
+
+        self._duration = duration
 
     # ------------------------------------------------------------------------
 
     def set_windelay(self, delay):
+        """
+        Set the expected delay for a window.
+
+        """
         delay = float(delay)
         if delay <= self._outdelay:
             raise ValueError("%f is a too short window delay."%(delay))
 
         self._windelay = delay
 
+    # ------------------------------------------------------------------------
+
+    def set_extdelay(self, delay):
+        """
+        Set the extra delay that is possible to add for a window.
+
+        """
+        delay = float(delay)
+        if delay <= 0.:
+            raise ValueError("%f is an invalid delay."%(delay))
+
+        self._extdelay = delay
 
     # ------------------------------------------------------------------------
 
-    def set_duration(self, duration):
-        duration = float(duration)
-        self._duration = duration
+    def set_outdelay(self, delay):
+        """
+        Set the minimum delay that is acceptable for a window.
+
+        """
+        delay = float(delay)
+        if delay <= 0. or delay >= self._windelay:
+            raise ValueError("%f is an invalid delay."%(delay))
+
+        self._outdelay = delay
+
+    # ------------------------------------------------------------------------
+    # Workers
+    # ------------------------------------------------------------------------
+
+    def append_silences(self, channel):
+        """
+        Append silences as anchors.
+
+        """
+        logging.debug(" ... Search silences:")
+
+        # We have to find tracks first
+        trackstimes = autils.search_channel_speech( channel, self._winlenght, self._minsildur, self._mintrackdur, self._shiftdurstart, self._shiftdurend )
+        radius = self._winlenght/ 2.
+        toprec = 0.
+
+        # Then, the silences are the holes between tracks
+        for (fromtime,totime) in trackstimes:
+            if toprec < fromtime:
+                begin = TimePoint(toprec,radius)
+                if begin == 0.:
+                    begin = TimePoint(toprec,radius)
+                end = TimePoint(fromtime,radius)
+                a = Annotation(TimeInterval(begin, end), Label("#"))
+                self.Append(a)
+            toprec = totime
+
+        # A silence at the end?
+        if toprec < self._duration:
+            begin = TimePoint(toprec,radius)
+            end = TimePoint(self._duration,0.)
+            a = Annotation(TimeInterval(begin, end), Label("#"))
+            self.Append(a)
+
+        # Adjust the radius at start and end
+        if self.GetSize() > 0:
+            self[-1].GetLocation().SetEndRadius(0.)
+            self[0].GetLocation().SetBeginRadius(0.)
+
+        for i,a in enumerate(self):
+            logging.debug(" ... ... %i: %s"%(i,a))
 
     # ------------------------------------------------------------------------
 
     def fix_window(self, fromtime):
         """
         Return the "totime" corresponding to a flexible-sized window.
+        The window aims at covering the holes of the tier. If there is
+        no hole after fromtime, this method returns a tuple with
+        fromtime=totime.
 
-        if fromtime inside an anchor:
+        if fromtime is inside an anchor:
             fromtime = end-anchor-time
 
         totime is either:
@@ -129,31 +206,36 @@ class AnchorTier( Tier ):
 
             - fromtime + delay
 
+        @param fromtime (float) The point in time from which the window has to be found
+        @return (fromtime,totime)
+
         """
         (fromtime,totime) = self._recurs_fix_window(fromtime, self._windelay)
 
         # take a quick look at the next window... just to be sure it won't be too small
         (nf,nt) = self._recurs_fix_window(totime, self._windelay)
-        if (nt-nf) < self._windelay:
+        if nf == fromtime and (nt-nf) < self._windelay:
             totime = nt
 
         return (fromtime,totime)
 
+    # ------------------------------------------------------------------------
+    # Private
     # ------------------------------------------------------------------------
 
     def _recurs_fix_window(self, fromtime, delay=4.):
         """
         Recursive method to fix a window.
 
+        @param fromtime (float) The point in time from which the window has to be found
+        @param delay (float) Expected duration of the window
+        @return (fromtime,totime)
+
         """
-        print "FROMTIME=",fromtime
-        # The totime corresponding to a full window
+        # The totime value corresponding to a full window
         totime = min(fromtime + delay, self._duration)
 
-        print "EXPCTED TOTIME=",totime
-
         if self.GetSize() == 0:
-            print "FIRST WINDOW. return ",fromtime,totime
             return (fromtime,totime)
 
         # Main stop condition: we reach the end of the tier.
@@ -167,14 +249,10 @@ class AnchorTier( Tier ):
 
         if len(anns)>0:
 
-            print "FOUND ANNS",anns[0]
-
             # fromtime is perhaps INSIDE an anchor or at the beginning of an anchor.
             if fromtime >= anns[0].GetLocation().GetBegin().GetMidpoint():
                 fromtime = anns[0].GetLocation().GetEnd().GetMidpoint()
-                print "  FROMTIME =",fromtime
                 if totime < self._duration:
-                    print "  --> next round"
                     return self._recurs_fix_window( fromtime, delay )
             else:
                 totime = anns[0].GetLocation().GetBegin().GetMidpoint()

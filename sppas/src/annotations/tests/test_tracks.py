@@ -24,8 +24,10 @@ class TestAnchorTier( unittest.TestCase ):
     def test_window_sil(self):
         self.t = AnchorTier()
         self.t.set_duration(17.8)
-
         self.t.set_windelay(4.)
+        self.t.set_extdelay(1.)
+        self.t.set_outdelay(0.2)
+
         self.t.Append( Annotation(TimeInterval(TimePoint(0.), TimePoint(1.5)), Label("#")))
         self.t.Append( Annotation(TimeInterval(TimePoint(4.5),TimePoint(6.3)), Label("#")))
         self.t.Append( Annotation(TimeInterval(TimePoint(9.7),TimePoint(11.3)), Label("#")))

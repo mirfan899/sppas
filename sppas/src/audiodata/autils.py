@@ -140,7 +140,7 @@ def extract_channel_fragment(channel, fromtime, totime, silence=0.):
 
 # ------------------------------------------------------------------------
 
-def search_channel_speech(channel):
+def search_channel_speech(channel, winlenght=0.010, minsildur=0.200, mintrackdur=0.300, shiftdurstart=0.010, shiftdurend=0.010 ):
     """
     Return a list of tracks (i.e. speech intervals where energy is high enough).
     Use only default parameters.
@@ -149,10 +149,10 @@ def search_channel_speech(channel):
     @return A list of tuples (fromtime,totime)
 
     """
-    chansil = ChannelSilence( channel )
-    chansil.search_silences()
-    chansil.filter_silences( 0.250 )
-    tracks = chansil.extract_tracks()
+    chansil = ChannelSilence( channel, winlenght )
+    chansil.search_silences( threshold=0, mintrackdur=0.08 )
+    chansil.filter_silences( minsildur )
+    tracks = chansil.extract_tracks( mintrackdur, shiftdurstart, shiftdurend )
     tracks.append( (channel.get_nframes(),channel.get_nframes()) )
     trackstimes = frames2times(tracks, channel.get_framerate())
 

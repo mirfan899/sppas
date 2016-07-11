@@ -247,7 +247,7 @@ class TrackSplitter( Transcription ):
         anchortier.set_duration( channel.get_duration() )
 
         # Search silences and use them as anchors.
-        #speechduration = anchortier.append_silences( channel )
+        #anchortier.append_silences( channel )
         speechduration = channel.get_duration()
 
         # Estimates the speaking rate (amount of tokens/sec. in average)
