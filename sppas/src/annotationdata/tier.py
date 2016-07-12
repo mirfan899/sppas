@@ -740,32 +740,61 @@ class Tier( MetaObject ):
                 - backward -1
 
         """
+        if self.GetSize() == 0:
+            return -1
+
         index = self.__find(time)
+
         if index == -1:
             return -1
 
         a = self.__ann[index]
-        if a.GetLocation().IsPoint() and a.GetLocation().GetPoint() == time:
-            return index
-        elif (a.GetLocation().IsInterval() or a.GetLocation().IsDisjoint()):
-            if a.GetLocation().GetBegin() < time < a.GetLocation().GetEnd():
+
+        # POINTS
+        # TODO: The following code is not tested.
+        if a.GetLocation().IsPoint():
+            if direction == 0:
                 return index
-# BB:
-#             if direction==0 and a.GetLocation().GetBegin() <= time <= a.GetLocation().GetEnd():
-#                 return index
-#             elif direction == 1 and a.GetLocation().GetBegin() <= time < a.GetLocation().GetEnd():
-#                 return index
-#             elif direction == -1 and a.GetLocation().GetBegin() <= time < a.GetLocation().GetEnd():
-#                 return index
-#       _next, _prev = (index + 1, index - 1)
-        _next, _prev = (index, index - 1)
+            if direction == -1:
+                return index-1
+            if direction == 1:
+                return index+1
+
+        # INTERVALS
         # forward
-        if direction == 1 or _prev < 0:
-            return _next
+        if direction == 1:
+            if self.__ann[index].GetLocation().GetBegin() >= time:
+                return index
+            if index+1 < self.GetSize():
+                return index+1
+            else:
+                return -1
+
         # backward
         elif direction == -1:
-            return _prev
-        # near
+            if self.__ann[index].GetLocation().GetEnd() <= time:
+                return index
+            if index-1 > 0:
+                return index-1
+            else:
+                return -1
+
+        # if time is during an annotation
+        a = self.__ann[index]
+        if a.GetLocation().GetBegin() < time < a.GetLocation().GetEnd():
+            return index
+
+        # nearest is either the previous or the next annotation
+        # TODO: the following code is not tested
+
+        if index-1 < 0:
+            # no previous.
+            return index+1
+        if index+1 > self.GetSize():
+            # no next
+            return index-1
+
+        _next, _prev = (index + 1, index - 1)
         next_a = self.__ann[_next]
         prev_a = self.__ann[_prev]
         time = time.GetMidpoint() if isinstance(time, TimePoint) else float(time)
@@ -831,7 +860,6 @@ class Tier( MetaObject ):
     def Remove(self, begin, end, overlaps=False):
         """
         Remove intervals between begin and end.
-        It is an error if there is no such time points.
 
         @param begin: (TimePoint)
         @param end:   (TimePoint)
@@ -840,11 +868,8 @@ class Tier( MetaObject ):
         """
         if end < begin:
             raise ValueError("End TimePoint must be strictly greater than Begin TimePoint")
-        if begin < self.GetBeginValue() or self.GetEndValue() < end:
-            raise IndexError("index error.")
+
         annotations = self.Find(begin, end, overlaps)
-        if not annotations:
-            raise IndexError("error not found (%s, %s)." % (begin, end))
         for a in annotations:
             self.__ann.remove(a)
 

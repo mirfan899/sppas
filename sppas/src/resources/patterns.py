@@ -54,7 +54,7 @@ class Patterns( object ):
 
     """
     MAX_GAP   = 4
-    MAX_NGRAM = 4
+    MAX_NGRAM = 6
 
     # ------------------------------------------------------------------------
 
@@ -65,7 +65,7 @@ class Patterns( object ):
         self._ngram = 3
         self._score = 1.
         self._gap   = 2
-        self._interstice = 4
+        self._interstice = self._gap * 2
 
     # ------------------------------------------------------------------------
 

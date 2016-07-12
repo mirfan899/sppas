@@ -203,9 +203,9 @@ class Channel( object ):
             return Channel(self.framerate, self.sampwidth, self.frames)
 
         if begin > end:
-            raise ValueError("The end can't be upper than the beginning.")
+            raise ValueError("The end (%d) can't be upper than the beginning (%d)."%(end,begin))
         if begin < 0 or end < 0:
-            raise ValueError("Beginning or End can't be negative values.")
+            raise ValueError("Beginning or End can't be negative values. Got %d,%d."%(begin,end))
 
         nframes = self.get_nframes()
         if begin > nframes:

@@ -216,6 +216,44 @@ class AnchorTier( Tier ):
 
     # ------------------------------------------------------------------------
 
+    def check_holes_durations(self, duration):
+        """
+        Check if all holes have a duration lesser than the given one.
+
+        """
+        for i in range(1,self.GetSize()):
+            lastend  = self[i-1].GetLocation().GetEnd().GetMidpoint()
+            curbegin = self[i].GetLocation().GetBegin().GetMidpoint()
+            if (curbegin-lastend) > duration:
+                return False
+
+        return True
+
+    # ------------------------------------------------------------------------
+
+    def check_holes_ntokens(self, ntokens):
+        """
+        Check if indexed-anchors make all holes lesser or equal than ntokens.
+        The last one can't be tested.
+
+        """
+        if self.GetSize() == 0:
+            return False
+
+        fromtoken = 0
+        a = self.near_indexed_anchor(0., 1)
+
+        while a is not None:
+            totoken = a.GetLabel().GetTypedValue()
+            if totoken-fromtoken > ntokens:
+                return False
+            fromtoken = totoken
+            a = self.near_indexed_anchor( a.GetLocation().GetEnd().GetMidpoint(), 1)
+
+        return True
+
+    # ------------------------------------------------------------------------
+
     def near_indexed_anchor(self, timevalue, direction):
         """
         Search the nearest indexed anchor (an anchor with a positive integer).
@@ -234,9 +272,6 @@ class AnchorTier( Tier ):
         i = self.Near( valuepoint, direction )
         while i != -1 and i != previ:
 
-            print "i=",i
-            print "valuepoint=",valuepoint
-
             label = self[i].GetLabel()
             content = label.GetTypedValue()
 
@@ -254,7 +289,6 @@ class AnchorTier( Tier ):
                     valuepoint = self[i].GetLocation().GetEnd()
                 i = self.Near( valuepoint, direction )
 
-
         if i == -1:
             return None
         if self[i].GetLabel().IsSilence() is True:
@@ -262,8 +296,123 @@ class AnchorTier( Tier ):
 
         return self[i]
 
+    # ------------------------------------------------------------------------
+
+    def fill_evident_holes(self):
+        """
+        Fill holes if we find consecutive index values in prev/next anchors.
+
+        """
+        toadd=[]
+        for i in range(1,len(self)):
+            prevann = self[i-1]
+            curann  = self[i]
+            if prevann.GetLabel().IsSilence():
+                continue
+            if curann.GetLabel().IsSilence():
+                continue
+            # there is a hole
+            if prevann.GetLocation().GetEnd() < curann.GetLocation().GetBegin():
+                idxprev = prevann.GetLabel().GetTypedValue()
+                idxcur  = curann.GetLabel().GetTypedValue()
+                if idxprev+1 == idxcur-1:
+                    text = Text( idxprev+1, data_type="int" )
+                    hole = Annotation( TimeInterval(prevann.GetLocation().GetEnd(), curann.GetLocation().GetBegin()), Label(text) )
+                    toadd.append(hole)
+
+        for a in toadd:
+            self.Add(a)
+
+        return len(toadd)
 
     # ------------------------------------------------------------------------
+
+    def export(self, toklist):
+        tier = Tier("TokenizedAnchors")
+
+        # Append silences in the result and pop them from the list of anchors
+        anchors = AnchorTier()
+        for ann in self:
+            if ann.GetLabel().IsSilence():
+                try:
+                    tier.Append( ann.Copy() )
+                except Exception:
+                    logging.debug("Error: Silence not appended: %s"%ann)
+                    pass
+            else:
+                try:
+                    anchors.Append( ann.Copy() )
+                except Exception:
+                    logging.debug("Error: Anchor not appended: %s"%ann)
+                    pass
+
+        # Fill the holes when prev-index and next-index made a sequence
+        anchors.fill_evident_holes()
+        for ann in anchors:
+            print " --> ",ann
+
+        # Add holes between anchors
+        for i in range(1,len(anchors)):
+            prevann = anchors[i-1]
+            curann  = anchors[i]
+            # there is a hole
+            if prevann.GetLocation().GetEnd() < curann.GetLocation().GetBegin():
+                idxprev = prevann.GetLabel().GetTypedValue()
+                idxcur  = curann.GetLabel().GetTypedValue()
+                if (idxprev+1) < idxcur-1:
+                    texte = " ".join( toklist[idxprev+1:idxcur])
+                    begin = prevann.GetLocation().GetEnd()
+                    end   = curann.GetLocation().GetBegin()
+                    hole = Annotation( TimeInterval(begin,end), Label(texte) )
+                    anns = tier.Find( begin, end, overlaps=True )
+                    if len(anns) == 0:
+                        tier.Add(hole)
+
+        # Append chunk of anchors
+        start = 0
+        end   = 0
+        tocontinue = True
+        if end+1 >= anchors.GetSize():
+            tocontinue = False
+
+        while tocontinue:
+
+            idxcur = anchors[end].GetLabel().GetTypedValue()
+            idxnex = anchors[end+1].GetLabel().GetTypedValue()
+
+            # we finished a sequence of anchors
+            if idxcur+1 != idxnex or (end-start)>10:
+                # append the chunk
+                idxstart = anchors[start].GetLabel().GetTypedValue()
+                chunktext = " ".join( toklist[ idxstart:idxcur+1 ] )
+                tbegin = anchors[start].GetLocation().GetBegin()
+                tend   = anchors[end].GetLocation().GetEnd()
+                ann = Annotation( TimeInterval(tbegin,tend), Label(chunktext) )
+
+                tier.Remove(tbegin,tend,overlaps=True)
+                tier.Add( ann )
+
+                start = end + 1
+
+            end = end + 1
+
+            if end+1 >= anchors.GetSize():
+                # the last chunk found
+                if start <= end:
+                    idxstart = anchors[start].GetLabel().GetTypedValue()
+                    idxcur = anchors[end].GetLabel().GetTypedValue()
+
+                    chunktext = " ".join( toklist[ idxstart:idxcur+1 ] )
+                    tbegin = anchors[start].GetLocation().GetBegin()
+                    tend   = anchors[end].GetLocation().GetEnd()
+                    ann = Annotation( TimeInterval(tbegin,tend), Label(chunktext) )
+
+                    tier.Remove(tbegin,tend,overlaps=True)
+                    tier.Add( ann )
+
+                tocontinue = False
+
+        return tier
 
     # ------------------------------------------------------------------------
     # Private

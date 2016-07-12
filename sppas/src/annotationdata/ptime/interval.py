@@ -60,7 +60,6 @@ class TimeInterval(baseplacement.BasePlacement):
         - an end time.
 
     """
-
     def __init__(self, begin, end):
         """
         Create a new TimeInterval instance.
@@ -71,7 +70,6 @@ class TimeInterval(baseplacement.BasePlacement):
         @raise ValueError
 
         """
-
         if isinstance(begin, TimePoint) is False:
             raise TypeError(
                 "TimePoint argument required for begin, not %r" % begin)
@@ -275,6 +273,7 @@ class TimeInterval(baseplacement.BasePlacement):
     def __repr__(self):
         return "TimeInterval: [%s,%s]" % (self.__begin, self.__end)
 
+    def __str__(self):
         return "[%s,%s]" % (self.__begin, self.__end)
 
     # -----------------------------------------------------------------------
