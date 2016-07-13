@@ -288,9 +288,9 @@ class TrackSplitter( Transcription ):
             N = max(N-1,3)
 
         tiert = anchortier.export(toklist)
-        tiert.SetName("ASR-Tokenized")
+        tiert.SetName("Chunks-Tokenized")
         tierp = anchortier.export(pronlist)
-        tiert.SetName("ASR-Phonetized")
+        tierp.SetName("Chunks-Phonetized")
 
         return (tiert,tierp)
 
@@ -391,7 +391,7 @@ class TrackSplitter( Transcription ):
         else:
             # we approximate with the speaking rate
             if fexact is True:
-                totoken = fromtoken + 2*ntokens
+                totoken = fromtoken + int(1.5*ntokens)
             else:
                 totoken = min(len(toklist), self._spkrate.ntokens( totime ) + ntokens)
 
@@ -528,14 +528,15 @@ class TrackSplitter( Transcription ):
 
         if len(hyp) < N:
             pattern = Patterns()
-            pattern.set_score(0.7)
+            pattern.set_score(0.9)
             pattern.set_ngram(1)
             pattern.set_gap(1)
             m1 = pattern.ngram_alignments( newref,newhyp )
         else:
             m1 = []
+        logging.debug(" ~~~ ~~~ 1-gram set ignored: %s"%(" ".join(m1)))
 
-        return sorted(list(set(m1+newm3)))
+        return sorted(list(set(newm3)))
 
     # ------------------------------------------------------------------------
 
@@ -577,17 +578,16 @@ class TrackSplitter( Transcription ):
             # previous index must be lesser
             p = anchortier.near_indexed_anchor( s,-1 )
             if p is not None:
-                if i <= p.GetLabel().GetTypedValue():
+                pidx = p.GetLabel().GetTypedValue()
+                if i <= pidx:
                     valid = False
-                # FOR HKCAC ONLY (NO SILENCES...).
                 else:
+                    # solve a small amount of issues...
                     # duration between the previous and the one we want to add
                     deltatime = s-p.GetLocation().GetEnd().GetMidpoint()
-                    # nb of tokens expected during this duration
-                    deltatokens = int( self._spkrate.ntokens(deltatime) * 2.) + 3
-                    # we are much more higher...
-                    if (i-deltatokens) > p.GetLabel().GetTypedValue():
-                        valid=False
+                    if deltatime < 0.2:
+                        if (i-10) > pidx:
+                            valid=False
 
             # next index must be higher
             n = anchortier.near_indexed_anchor(e, 1)

@@ -426,14 +426,16 @@ class sppasAlign:
 
         self.print_message("Merge interval's alignment:", indent=2)
 
-        # Create a Transcription() object with alignments
-        trsoutput = self.alignio.read( self.workdir )
-
-        if self.alignio.get_aligner() != 'basic':
-            trsoutput = self.rustine_liaisons(trsoutput)
-            trsoutput = self.rustine_others(trsoutput)
-
+        trsoutput = Transcription("AutomaticAlignment")
         for tier in sgmt:
+            trsoutput.Append(tier)
+
+        # Create a Transcription() object with alignments
+        trs = self.alignio.read( self.workdir )
+        if self.alignio.get_aligner() != 'basic':
+            trs = self.rustine_liaisons(trs)
+            trs = self.rustine_others(trs)
+        for tier in trs:
             trsoutput.Append(tier)
 
         return trsoutput

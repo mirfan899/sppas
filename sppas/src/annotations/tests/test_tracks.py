@@ -186,7 +186,8 @@ class TestAnchorTier( unittest.TestCase ):
         self.t.Append( Annotation(TimeInterval(TimePoint(14.), TimePoint(14.6)), Label(Text(13,data_type="int"))))
         self.t.Append( Annotation(TimeInterval(TimePoint(14.6), TimePoint(15.2)), Label(Text(14,data_type="int"))))
         self.t.Append( Annotation(TimeInterval(TimePoint(15.2), TimePoint(15.6)), Label("#")))
-        self.t.Append( Annotation(TimeInterval(TimePoint(16.), TimePoint(16.6)), Label(Text(16,data_type="int"))))
+        self.t.Append( Annotation(TimeInterval(TimePoint(16.), TimePoint(16.60)), Label(Text(16,data_type="int"))))
+        self.t.Append( Annotation(TimeInterval(TimePoint(16.63), TimePoint(17.)), Label(Text(17,data_type="int"))))
 
         toklist=[u"w0", u"w1", u"w2", u"w3", u"w4", u"w5", u"w6", u"w7", u"w8", u"w9", u"w10", u"w11", u"w12", u"w13", u"w14", u"w15", u"w16", u"w17"]
 

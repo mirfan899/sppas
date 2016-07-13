@@ -315,9 +315,11 @@ class AnchorTier( Tier ):
             if prevann.GetLocation().GetEnd() < curann.GetLocation().GetBegin():
                 idxprev = prevann.GetLabel().GetTypedValue()
                 idxcur  = curann.GetLabel().GetTypedValue()
+                prevend = prevann.GetLocation().GetEnd()
+                curbegin = curann.GetLocation().GetBegin()
                 if idxprev+1 == idxcur-1:
                     text = Text( idxprev+1, data_type="int" )
-                    hole = Annotation( TimeInterval(prevann.GetLocation().GetEnd(), curann.GetLocation().GetBegin()), Label(text) )
+                    hole = Annotation( TimeInterval(prevend, curbegin), Label(text) )
                     toadd.append(hole)
 
         for a in toadd:
@@ -328,7 +330,7 @@ class AnchorTier( Tier ):
     # ------------------------------------------------------------------------
 
     def export(self, toklist):
-        tier = Tier("TokenizedAnchors")
+        tier = Tier("Chunks")
 
         # Append silences in the result and pop them from the list of anchors
         anchors = AnchorTier()
@@ -355,16 +357,31 @@ class AnchorTier( Tier ):
             curann  = anchors[i]
             # there is a hole
             if prevann.GetLocation().GetEnd() < curann.GetLocation().GetBegin():
+
                 idxprev = prevann.GetLabel().GetTypedValue()
                 idxcur  = curann.GetLabel().GetTypedValue()
-                if (idxprev+1) < idxcur-1:
+                prevend  = prevann.GetLocation().GetEnd()
+                curbegin = curann.GetLocation().GetBegin()
+
+                if idxprev+1 == idxcur:
+                    # hum... a little bit of hack!!!
+                    holeduration = curbegin.GetMidpoint()-prevend.GetMidpoint()
+                    if holeduration < 0.055:
+                        prevend.SetMidpoint( curbegin.GetMidpoint() )
+                    elif holeduration < 0.505 and prevann.GetLocation().GetDuration().GetValue() < 0.105:
+                        prevend.SetMidpoint( curbegin.GetMidpoint() )
+
+                elif (idxprev+1) < idxcur-1:
                     texte = " ".join( toklist[idxprev+1:idxcur])
-                    begin = prevann.GetLocation().GetEnd()
-                    end   = curann.GetLocation().GetBegin()
-                    hole = Annotation( TimeInterval(begin,end), Label(texte) )
+                    begin = prevend.GetMidpoint()
+                    end   = curbegin.GetMidpoint()
+                    hole = Annotation( TimeInterval(TimePoint(begin),TimePoint(end)), Label(texte) )
                     anns = tier.Find( begin, end, overlaps=True )
                     if len(anns) == 0:
-                        tier.Add(hole)
+                        try:
+                            tier.Add(hole)
+                        except Exception:
+                            pass
 
         # Append chunk of anchors
         start = 0
@@ -432,6 +449,7 @@ class AnchorTier( Tier ):
 
         # End of the tier
         fi = anchors[-1].GetLabel().GetTypedValue()
+        fi = fi+1
         ft = tier[-1].GetLocation().GetEnd()
         at = anchors[-1].GetLocation().GetEnd()
         if ft == self._duration:
@@ -440,11 +458,28 @@ class AnchorTier( Tier ):
         else:
             ft = TimePoint(self._duration)
         if fi < len(toklist) and at < ft:
-            chunktext = " ".join( toklist[ fi:len(toklist) ] )
+            chunktext = " ".join( toklist[ fi+1:len(toklist) ] )
             ann = Annotation( TimeInterval(at,ft), Label(chunktext) )
             tier.Add( ann )
 
-        return tier
+        chunktier = Tier("Chunks")
+        i = 1
+        while i < tier.GetSize():
+
+            prevtext = tier[i-1].GetLabel().GetValue()
+            curtext = tier[i].GetLabel().GetValue()
+            newtext = prevtext+" "+curtext
+
+            if tier[i-1].GetLabel().IsSilence() is False and tier[i].GetLabel().IsSilence() is False and (len(prevtext.split()) < 3 or len(newtext.split()) < 12):
+                a = Annotation( TimeInterval( tier[i-1].GetLocation().GetBegin(), tier[i].GetLocation().GetEnd() ), Label(newtext) )
+                chunktier.Append( a )
+                i = i + 1
+            else:
+                chunktier.Append( tier[i-1] )
+
+            i = i + 1
+
+        return chunktier
 
     # ------------------------------------------------------------------------
     # Private
