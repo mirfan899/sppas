@@ -348,10 +348,8 @@ class AnchorTier( Tier ):
 
         # Fill the holes when prev-index and next-index made a sequence
         anchors.fill_evident_holes()
-        for ann in anchors:
-            print " --> ",ann
 
-        # Add holes between anchors
+        # Fill holes between anchors
         for i in range(1,len(anchors)):
             prevann = anchors[i-1]
             curann  = anchors[i]
@@ -379,9 +377,15 @@ class AnchorTier( Tier ):
 
             idxcur = anchors[end].GetLabel().GetTypedValue()
             idxnex = anchors[end+1].GetLabel().GetTypedValue()
+            endtimecur = anchors[end].GetLocation().GetEnd()
+            begtimenex = anchors[end+1].GetLocation().GetBegin()
 
-            # we finished a sequence of anchors
-            if idxcur+1 != idxnex or (end-start)>10:
+            # a sequence of anchors is finished if either:
+            #  - next anchor index does not directly follow the current one
+            #  - next anchor time does not directly follow the current one
+            #  - we already appended enough anchors in the chunk
+
+            if idxcur+1 != idxnex or (end-start)>10 or begtimenex>endtimecur:
                 # append the chunk
                 idxstart = anchors[start].GetLabel().GetTypedValue()
                 chunktext = " ".join( toklist[ idxstart:idxcur+1 ] )
@@ -396,7 +400,7 @@ class AnchorTier( Tier ):
 
             end = end + 1
 
-            if end+1 >= anchors.GetSize():
+            if anchors.GetSize() <= end+1:
                 # the last chunk found
                 if start <= end:
                     idxstart = anchors[start].GetLabel().GetTypedValue()
@@ -411,6 +415,34 @@ class AnchorTier( Tier ):
                     tier.Add( ann )
 
                 tocontinue = False
+
+        # Begin of the tier
+        fi = anchors[0].GetLabel().GetTypedValue()
+        ft = tier[0].GetLocation().GetBegin()
+        at = anchors[0].GetLocation().GetBegin()
+        if ft == 0.:
+            # a silence to start
+            ft = tier[0].GetLocation().GetEnd()
+        else:
+            ft = TimePoint(0.)
+        if fi > 0 and ft < at:
+            chunktext = " ".join( toklist[ 0:fi ] )
+            ann = Annotation( TimeInterval(ft,at), Label(chunktext) )
+            tier.Add( ann )
+
+        # End of the tier
+        fi = anchors[-1].GetLabel().GetTypedValue()
+        ft = tier[-1].GetLocation().GetEnd()
+        at = anchors[-1].GetLocation().GetEnd()
+        if ft == self._duration:
+            # a silence to end
+            ft = tier[-1].GetLocation().GetBegin()
+        else:
+            ft = TimePoint(self._duration)
+        if fi < len(toklist) and at < ft:
+            chunktext = " ".join( toklist[ fi:len(toklist) ] )
+            ann = Annotation( TimeInterval(at,ft), Label(chunktext) )
+            tier.Add( ann )
 
         return tier
 

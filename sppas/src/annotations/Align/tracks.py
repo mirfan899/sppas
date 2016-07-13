@@ -419,7 +419,7 @@ class TrackSplitter( Transcription ):
         # call the ASR engine to recognize tokens of this track
         aligner.set_phones( " ".join( pronlist[fromtoken:totoken] ) )
         aligner.set_tokens( " ".join(  toklist[fromtoken:totoken] ) )
-        aligner.run_alignment(fna, fnw)
+        aligner.run_alignment(fna, fnw, 4)
 
         # get the tokens time-aligned by the ASR engine
         wordalign = self._alignerio.read_aligned(fnw)[1]  # (starttime,endtime,label,score)
@@ -576,8 +576,19 @@ class TrackSplitter( Transcription ):
             valid = True
             # previous index must be lesser
             p = anchortier.near_indexed_anchor( s,-1 )
-            if p is not None and i <= p.GetLabel().GetTypedValue():
-                valid = False
+            if p is not None:
+                if i <= p.GetLabel().GetTypedValue():
+                    valid = False
+                # FOR HKCAC ONLY (NO SILENCES...).
+                else:
+                    # duration between the previous and the one we want to add
+                    deltatime = s-p.GetLocation().GetEnd().GetMidpoint()
+                    # nb of tokens expected during this duration
+                    deltatokens = int( self._spkrate.ntokens(deltatime) * 2.) + 3
+                    # we are much more higher...
+                    if (i-deltatokens) > p.GetLabel().GetTypedValue():
+                        valid=False
+
             # next index must be higher
             n = anchortier.near_indexed_anchor(e, 1)
             if n is not None and i >= n.GetLabel().GetTypedValue():

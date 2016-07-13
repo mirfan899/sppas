@@ -149,7 +149,7 @@ class JuliusAligner( BaseAligner ):
 
     # -----------------------------------------------------------------------
 
-    def gen_slm_dependencies(self, basename):
+    def gen_slm_dependencies(self, basename, N=3):
         """
         Generate the dependencies (slm, dictionary) for julius.
 
@@ -176,7 +176,7 @@ class JuliusAligner( BaseAligner ):
         dictpron.save_as_ascii( dictname, False )
 
         # Write the SLM
-        model = NgramsModel(3)
+        model = NgramsModel(N)
         model.append_sentences( [self._tokens] )
         probas = model.probabilities( method="logml" )
         arpaio = ArpaIO()
@@ -305,7 +305,7 @@ class JuliusAligner( BaseAligner ):
 
     # ------------------------------------------------------------------------
 
-    def run_alignment(self, inputwav, outputalign):
+    def run_alignment(self, inputwav, outputalign, N=3):
         """
         Execute the external program `julius` to align.
         The data related to the unit to time-align need to be previously
@@ -315,6 +315,7 @@ class JuliusAligner( BaseAligner ):
 
         @param inputwav (str - IN) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
         @param outputalign (str - OUT) the output file name
+        @param N (int) N value of N-grams, used if SLM only
 
         @return (str) A message of `julius`.
 

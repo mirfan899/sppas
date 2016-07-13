@@ -178,7 +178,7 @@ class TestAnchorTier( unittest.TestCase ):
         self.t.set_windelay(4.)
         self.t.set_extdelay(1.)
         self.t.set_outdelay(0.2)
-        self.t.Append( Annotation(TimeInterval(TimePoint(0.),  TimePoint(1.)),   Label("#")))
+        #self.t.Append( Annotation(TimeInterval(TimePoint(0.),  TimePoint(1.)),   Label("#")))
         self.t.Append( Annotation(TimeInterval(TimePoint(1.5), TimePoint(2.)),   Label(Text(3,data_type="int"))))
         self.t.Append( Annotation(TimeInterval(TimePoint(4.5), TimePoint(6.3)),  Label("#")))
         self.t.Append( Annotation(TimeInterval(TimePoint(7.),  TimePoint(8.)),   Label(Text(8,data_type="int"))))
