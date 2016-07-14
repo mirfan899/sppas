@@ -266,6 +266,8 @@ class TrackSplitter( Transcription ):
         newnbanchors = -1
         N = 5
         while newnbanchors != nbanchors:
+            anchortier.set_windelay(N+1)
+
             nbanchors = anchortier.GetSize()
             logging.debug(" =========================================================== ")
             logging.debug(" Number of anchors: %d"%nbanchors)
@@ -281,7 +283,7 @@ class TrackSplitter( Transcription ):
                 try:
                     tmpanchortier.Append( ac )
                 except Exception:
-                    logging.debug("Append in tier failed: %s"%ac)
+                    logging.debug("Append anchor in tier failed: %s"%ac)
             self.Append(tmpanchortier)
             annotationdata.io.write( os.path.join(diralign,"ANCHORS.xra"),self )
 
@@ -526,17 +528,15 @@ class TrackSplitter( Transcription ):
         else:
             newm3 = m3
 
+        m1 = []
         if len(hyp) < N:
             pattern = Patterns()
             pattern.set_score(0.9)
             pattern.set_ngram(1)
             pattern.set_gap(1)
             m1 = pattern.ngram_alignments( newref,newhyp )
-        else:
-            m1 = []
-        logging.debug(" ~~~ ~~~ 1-gram set ignored: %s"%(" ".join(m1)))
 
-        return sorted(list(set(newm3)))
+        return sorted(list(set(m1+newm3)))
 
     # ------------------------------------------------------------------------
 
