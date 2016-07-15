@@ -58,8 +58,16 @@ ALIGNERS_TYPES = {
     "hvite":HviteAligner
 }
 
+# List of supported aligner and related class name
+TRACKS_ALIGNERS_TYPES = {
+    "julius":JuliusAligner,
+}
+
 # Identifier name of the default aligner
 DEFAULT_ALIGNER = "basic"
+
+# Identifier name of the default aligner
+DEFAULT_TRACK_ALIGNER = "julius"
 
 # List of extensions each aligner is able to write
 ALIGNERS_EXT_OUT = {
