@@ -407,8 +407,8 @@ class TrackSplitter( Transcription ):
 
         # ...
         if fromtoken >= totoken:
-            fromtoken = fromtoken - 1
-            totoken   = fromtoken + 2
+            fromtoken = max(0, fromtoken-1)
+            totoken   = min(len(toklist), fromtoken+2)
 
         return (fromtoken,totoken)
 
