@@ -134,8 +134,8 @@ class TestTier(unittest.TestCase):
         self.assertEquals(tier[1].GetLocation().GetValue().GetPlace(), TimeInterval(TimePoint(4), TimePoint(5)))
         self.assertEquals(tier[2].GetLocation().GetValue().GetPlace(), TimeInterval(TimePoint(5), TimePoint(6)))
 
-        with self.assertRaises(IndexError):
-            tier.Remove(TimePoint(2), TimePoint(3))
+        #with self.assertRaises(IndexError):
+        #    tier.Remove(TimePoint(2), TimePoint(3))
 
         tier = Tier()
         for i in range(1, 5):
@@ -426,21 +426,23 @@ class TestTier(unittest.TestCase):
         self.assertEquals(index, 0)
 
         index = tier.Near(time=0.5, direction=1)
+        self.assertEquals(index, 1)
+        index = tier.Near(time=0.5, direction=0)
         self.assertEquals(index, 0)
 
         index = tier.Near(time=1, direction=0)
         self.assertEquals(index, 0)
 
         index = tier.Near(time=1, direction=-1)
-        self.assertEquals(index, 0)
+        self.assertEquals(index, -1)
 
         index = tier.Near(time=1, direction=1)
         self.assertEquals(index, 1)
 
-        index = tier.Near(time=1.2, direction=1)
+        index = tier.Near(time=2, direction=1)
         self.assertEquals(index, 1)
 
-        index = tier.Near(time=1.2, direction=-1)
+        index = tier.Near(time=2, direction=-1)
         self.assertEquals(index, 0)
 
         index = tier.Near(time=1.4, direction=0)

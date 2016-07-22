@@ -514,7 +514,8 @@ class AnchorTier( Tier ):
             # fromtime is perhaps INSIDE an anchor or at the beginning of an anchor.
             if fromtime >= anns[0].GetLocation().GetBegin().GetMidpoint():
                 fromtime = anns[0].GetLocation().GetEnd().GetMidpoint()
-                if totime < self._duration:
+                #if totime < self._duration:
+                if fromtime < self._duration:
                     return self._recurs_fix_window( fromtime, delay )
             else:
                 totime = anns[0].GetLocation().GetBegin().GetMidpoint()

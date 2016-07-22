@@ -45,7 +45,8 @@ THEME_DEFAULT = 'Default'
 # Frames/Applications
 
 APP_ICON       = os.path.join("applications", "sppas.png")
-COMPONENT_ICON = os.path.join("applications", "component.jpg")
+COMPONENTS_ICON  = os.path.join("applications", "components.png")
+ANNOTATIONS_ICON = os.path.join("applications", "annotations.png")
 
 AUDIOROAMER_APP_ICON = os.path.join( "applications", "player.png")
 DATAROAMER_APP_ICON  = os.path.join( "applications", "roamer.png")

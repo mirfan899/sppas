@@ -102,6 +102,7 @@ OK_ID      = 0
 author     = "Brigitte Bigi"
 contact    = "brigite.bigi@gmail.com"
 program    = "SPPAS"
+title      = "Automatic Annotation of speech and analyzing"
 version    = "1.8.0"
 copyright  = "Copyright (C) 2011-2016 Brigitte Bigi"
 url        = "http://www.sppas.org/"

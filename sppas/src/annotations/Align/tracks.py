@@ -344,11 +344,13 @@ class TrackSplitter( Transcription ):
 
                 # Fix token range of this window...
                 (fromtoken,totoken) = self._fix_trans_interval(fromtime,totime,toklist,anchortier)
+                if fromtoken >= len(toklist):
+                    break
 
                 logging.debug(" ... ... window: ")
                 logging.debug("... ... ... time  from %.4f to %.4f."%(fromtime,totime))
                 logging.debug("... ... ... token from %d to %d."%(fromtoken,totoken))
-                logging.debug("... ... ... REF: %s"%(" ".join(  toklist[fromtoken:totoken] )))
+                logging.debug("... ... ... REF: %s"%(" ".join( toklist[fromtoken:totoken] )))
                 logging.debug("... ... ... HYP: ")
 
                 # Fix anchors of this window
@@ -401,7 +403,7 @@ class TrackSplitter( Transcription ):
         else:
             # we approximate with the speaking rate
             if fexact is True:
-                totoken = fromtoken + int(1.5*ntokens)
+                totoken = min(len(toklist), fromtoken + int(1.5*ntokens))
             else:
                 totoken = min(len(toklist), self._spkrate.ntokens( totime ) + ntokens)
 

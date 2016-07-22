@@ -230,11 +230,11 @@ def get_bmp_file(id, theme=None):
 # ----------------------------------------------------------------------------
 
 
-def spBitmap(id, size=None, theme=None):
+def spBitmap(idb, size=None, theme=None):
     """
     Get the bitmap from its identifier.
 
-    @param id is the key of a bitmap (see sp_icons.py)
+    @param idb is the identifier of a bitmap (see sp_icons.py)
     @param size (int)
     @param theme (string) is the icons theme name
 
@@ -242,7 +242,7 @@ def spBitmap(id, size=None, theme=None):
 
     """
 
-    bmpfile = get_bmp_file( id, theme )
+    bmpfile = get_bmp_file( idb, theme )
     bmp = wx.Bitmap(bmpfile, wx.BITMAP_TYPE_ANY)
 
     if size:

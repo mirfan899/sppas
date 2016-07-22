@@ -78,8 +78,8 @@ OK_COLOUR      = wx.Colour(  25, 160,  50 )  # green
 MIN_PANEL_W = 180
 MIN_PANEL_H = 220
 
-MIN_FRAME_W=640
-MIN_FRAME_H=400
+MIN_FRAME_W=600
+MIN_FRAME_H=410
 
 if wx.Platform == "__WXMSW__":
     FRAME_H  = 600   # expected "good" height
@@ -91,7 +91,7 @@ else:
 TREE_ICONSIZE   = 16
 MENU_ICONSIZE   = 16
 TB_ICONSIZE     = 24
-BUTTON_ICONSIZE = 24
+BUTTON_ICONSIZE = 32
 
 # ---------------------------------------------------------------------------
 

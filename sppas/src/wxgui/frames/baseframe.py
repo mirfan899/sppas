@@ -51,7 +51,7 @@ import webbrowser
 from sp_glob import SETTINGS_FILE
 
 from wxgui.sp_icons import SETTINGS_ICON
-from wxgui.sp_icons import COMPONENT_ICON
+from wxgui.sp_icons import COMPONENTS_ICON
 from wxgui.sp_icons import ADD_FILE_ICON
 from wxgui.sp_icons import REMOVE_ICON
 from wxgui.sp_icons import TAB_NEW_ICON
@@ -201,7 +201,7 @@ class ComponentFrame( wx.Frame ):
         wx.GetApp().SetAppName( _app )
 
         # Set icon
-        _iconname = COMPONENT_ICON
+        _iconname = COMPONENTS_ICON
         if "icon" in args.keys():
             _iconname = args["icon"]
 

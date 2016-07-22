@@ -97,9 +97,15 @@ class Preferences:
         Fix the default settings for SPPAS.
         """
         self.SetValue( 'M_FG_COLOUR',   t='wx.Colour', v=wx.Colour(10,10,10), text='Main frame foreground color')
-        self.SetValue( 'M_FONT_COLOUR', t='wx.Colour', v=wx.Colour(10,10,10), text='Main frame foreground color')
+        self.SetValue( 'M_FGD_COLOUR',  t='wx.Colour', v=wx.Colour(30,30,30), text='Main frame second foreground color')
+        self.SetValue( 'M_FONT_COLOUR', t='wx.Colour', v=wx.Colour(10,10,10), text='Main frame font color')
+        self.SetValue( 'M_FONTD_COLOUR', t='wx.Colour', v=wx.Colour(30,30,30), text='Main frame second font color')
         self.SetValue( 'M_BG_COLOUR',   t='wx.Colour', v=wx.Colour(245,245,245), text='Main frame background color')
+        self.SetValue( 'M_BGD_COLOUR',  t='wx.Colour', v=wx.Colour(215,215,215), text='Main frame second background color')
         self.SetValue( 'M_FONT',        t='wx.Font',   v=wx.Font(10, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, '', wx.FONTENCODING_SYSTEM), text='Main frame font')
+
+        self.SetValue( 'M_BGM_COLOUR',   t='wx.Colour', v=wx.Colour(185,185,230), text='Main frame menu background color')
+        self.SetValue( 'M_FONTM_COLOUR', t='wx.Colour', v=wx.Colour(250,250,250), text='Main frame menu font color')
 
     # End SetDefault
     # ------------------------------------------------------------------------

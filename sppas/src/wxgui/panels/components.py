@@ -90,11 +90,10 @@ class ComponentsPanel( wx.Panel ):
     @summary: A panel with buttons to execute components.
 
     """
-
     def __init__(self, parent, preferences):
 
         wx.Panel.__init__(self, parent, -1, style=wx.SIMPLE_BORDER)
-        self.SetBackgroundColour(preferences.GetValue('M_BG_COLOUR'))
+        self.SetBackgroundColour( preferences.GetValue('M_BG_COLOUR') )
 
         self.opened_frames = {}
         self._prefsIO = preferences

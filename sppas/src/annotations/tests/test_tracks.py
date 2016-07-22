@@ -29,6 +29,14 @@ class TestAnchorTier( unittest.TestCase ):
         self.assertEqual(f, 0.)
         self.assertEqual(t, 4.)
 
+        self.t.set_duration(18.)
+        self.t.Append( Annotation(TimeInterval(TimePoint(13.), TimePoint(13.5)), Label(Text(18,data_type="int"))))
+        self.t.Append( Annotation(TimeInterval(TimePoint(14.), TimePoint(14.6)), Label(Text(20,data_type="int"))))
+        self.t.Append( Annotation(TimeInterval(TimePoint(14.6), TimePoint(15.6)), Label(Text(21,data_type="int"))))
+        f,t = self.t.fix_window( 14. )
+        self.assertEqual(f, 15.6 )
+        self.assertEqual(t, 18. )
+
     def test_window_sil(self):
         self.t = AnchorTier()
         self.t.set_duration(17.8)
@@ -192,8 +200,8 @@ class TestAnchorTier( unittest.TestCase ):
         toklist=[u"w0", u"w1", u"w2", u"w3", u"w4", u"w5", u"w6", u"w7", u"w8", u"w9", u"w10", u"w11", u"w12", u"w13", u"w14", u"w15", u"w16", u"w17"]
 
         newtier = self.t.export(toklist)
-        for ann in newtier:
-            print ann
+        #for ann in newtier:
+        #    print ann
 
 # --------------------------------------------------------------------------
 

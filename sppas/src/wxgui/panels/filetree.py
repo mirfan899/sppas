@@ -113,29 +113,26 @@ class FiletreePanel( wx.Panel ):
 
     def __init__(self, parent, preferences):
 
-        wx.Panel.__init__(self, parent, -1, style=wx.SIMPLE_BORDER)
+        wx.Panel.__init__(self, parent, -1, style=wx.NO_BORDER)
         self.SetBackgroundColour(preferences.GetValue('M_BG_COLOUR'))
 
         # Members
         self._prefsIO = preferences
 
-        self._title = wx.StaticText(self, -1, 'List of files:')
-        self._title.SetForegroundColour(self._prefsIO.GetValue('M_FG_COLOUR'))
         font = self._prefsIO.GetValue('M_FONT')
         font.SetWeight( wx.BOLD )
-        self._title.SetFont(font)
 
         self._toolbar = self._create_toolbar()
         self._filestree = self._create_filestree()
 
         _vbox = wx.BoxSizer(wx.VERTICAL)
-        _vbox.Add(self._title, proportion=0, flag=wx.EXPAND | wx.ALL, border=4)
-        _vbox.Add(self._toolbar, proportion=0, flag=wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, border=4)
-        _vbox.Add(self._filestree, proportion=2, flag=wx.EXPAND|wx.LEFT|wx.RIGHT, border=4)
+        _vbox.Add(self._toolbar,   proportion=0, flag=wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, border=4)
+        _vbox.Add(self._filestree, proportion=1, flag=wx.EXPAND|wx.LEFT|wx.RIGHT, border=4)
 
         self.GetTopLevelParent().Bind(wx.EVT_CHAR_HOOK, self.OnKeyPress)
 
         self.SetSizer(_vbox)
+        self.SetMinSize((320,200))
 
 
     def _create_toolbar(self):
@@ -413,8 +410,6 @@ class FiletreePanel( wx.Panel ):
 
         font = self._prefsIO.GetValue('M_FONT')
         font.SetWeight( wx.BOLD )
-        self._title.SetFont( font )
-        self._title.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR') )
 
         self._filestree.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
         self._filestree.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR') )
