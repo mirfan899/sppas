@@ -62,7 +62,6 @@ class Themes:
     @summary: This class is used to store all themes (name/class).
 
     """
-
     def __init__(self):
         """
         Constructor.
@@ -70,12 +69,9 @@ class Themes:
         A Theme is a dictionary with key/option.
 
         """
-
         self._themes = {}
 
-    # End __init__
     # -----------------------------------------------------------------------
-
 
     def get_theme(self, key):
         """ Return a value from its key. """
@@ -85,18 +81,14 @@ class Themes:
 
         return self._themes[key]
 
-    # End get_theme
     # -----------------------------------------------------------------------
-
 
     def get_themes(self):
         """ Return the dictionary with all pairs key/value. """
 
         return self._themes
 
-    # End get_themes
     # -----------------------------------------------------------------------
-
 
     def add_theme(self, key, value):
         """ Add a pair key/value. """
@@ -104,9 +96,6 @@ class Themes:
         #if not key in self._themes.keys():
         self._themes[key] = value
         #raise KeyError('This theme is already in the set of known themes.')
-
-    # End add_theme
-    # ------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
 
@@ -128,17 +117,12 @@ class Theme:
 
     def __init__(self):
         """
-        Constructor.
-
         A Theme is a dictionary with key/option.
 
         """
-
         self._choice = {}
 
-    # End __init__
     # -----------------------------------------------------------------------
-
 
     def get_choice(self, key):
         """ Return a value from its key. """
@@ -147,26 +131,19 @@ class Theme:
             return None
         return self._choice[key]
 
-    # End get_choice
     # -----------------------------------------------------------------------
-
 
     def get_choices(self):
         """ Return the dictionary with all pairs key/value. """
 
         return self._choice
 
-    # End get_choice
     # -----------------------------------------------------------------------
-
 
     def get_keys(self):
         """ Return the list of keys. """
 
         return self._choice.keys()
-
-    # End get_choice
-    # -----------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------
 
@@ -175,7 +152,6 @@ class Theme:
 # The BaseTheme (preferences shared by all frames):
 # ----------------------------------------------------------------------------
 
-
 class BaseTheme( Theme ):
     """ Base theme: the minimum required information, with a "classic" look. """
 
@@ -183,12 +159,44 @@ class BaseTheme( Theme ):
 
         Theme.__init__(self)
 
+        self._choice['M_BG_COLOUR']   = Option('wx.Colour', (135,145,160), "Main background color")
+        self._choice['M_FG_COLOUR']   = Option('wx.Colour', (245,245,245), "Main foreground color")
+        self._choice['M_FONT']        = Option('wx.Font', (MAIN_FONTSIZE, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, '', wx.FONTENCODING_SYSTEM), "Font")
+        self._choice['M_FONT_COLOUR'] = Option('wx.Colour', (245,245,245), "Main font color")
+
+        self._choice['M_TIPS']        = Option('bool', True, 'Show tips at start-up')
+        self._choice['M_OUTPUT_EXT']  = Option('str',  '.xra', "Output file format")
+        self._choice['M_ICON_THEME']  = Option('str',  'Default', "Icons theme")
+
+        self._choice['M_BGD_COLOUR']   = Option('wx.Colour', (100,110,125), "Secondary main background color")
+        self._choice['M_FGD_COLOUR']   = Option('wx.Colour', (175,185,200), "Secondary main foreground color")
+        self._choice['M_FONTD_COLOUR'] = Option('wx.Colour', (175,185,200), "Secondary main font color")
+
+        # Menu
+        self._choice['M_BGM_COLOUR']   = Option('wx.Colour', (175,175,215), "Menu background color")
+        self._choice['M_FONTM_COLOUR'] = Option('wx.Colour', (250,250,250), "Menu font color")
+
+        self._choice['F_SPACING'] = Option('int', 2)
+
+
+# BORDER_COLOUR=wx.Colour(175,185,200)
+
+# ----------------------------------------------------------------------------
+
+class OldBaseTheme( Theme ):
+    """ Base theme for SPPAS before 1.8.0 """
+
+    def __init__(self):
+
+        Theme.__init__(self)
+
         # For the Main Frame
         # ==================
-        self._choice['M_BG_COLOUR']   = Option('wx.Colour', (245,245,245), "Background color")
-        self._choice['M_FG_COLOUR']   = Option('wx.Colour', (15,15,15), "Foreground color")
+
+        self._choice['M_BG_COLOUR']   = Option('wx.Colour', (245,245,245), "Main background color")
+        self._choice['M_FG_COLOUR']   = Option('wx.Colour', (15,15,15), "Main foreground color")
         self._choice['M_FONT']        = Option('wx.Font', (MAIN_FONTSIZE, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, '', wx.FONTENCODING_SYSTEM), "Font")
-        self._choice['M_FONT_COLOUR'] = Option('wx.Colour', (15,15,15), "Font color")
+        self._choice['M_FONT_COLOUR'] = Option('wx.Colour', (15,15,15), "Main font color")
 
         self._choice['M_TIPS']        = Option('bool', True, 'Show tips at start-up')
         self._choice['M_OUTPUT_EXT']  = Option('str',  '.xra', "Output file format")
@@ -197,24 +205,5 @@ class BaseTheme( Theme ):
         # For the File Manager
         # ====================
         self._choice['F_SPACING'] = Option('int', 2)
-
-        # wx.FONTFAMILY_DEFAULT     Chooses a default font.
-        # wx.FONTFAMILY_DECORATIVE     A decorative font.
-        # wx.FONTFAMILY_ROMAN     A formal, serif font.
-        # wx.FONTFAMILY_SCRIPT     A handwriting font.
-        # wx.FONTFAMILY_SWISS     A sans-serif font.
-        # wx.FONTFAMILY_MODERN     Usually a fixed pitch font.
-        # wx.FONTFAMILY_TELETYPE     A teletype font.
-        #
-        # wx.FONTWEIGHT_NORMAL     Normal font.
-        # wx.FONTWEIGHT_LIGHT     Light font.
-        # wx.FONTWEIGHT_BOLD     Bold font.
-        #
-        # wx.FONTENCODING_SYSTEM     system default
-        # wx.FONTENCODING_DEFAULT     current default encoding
-        # wx.FONTENCODING_ISO8859_1     West European (Latin1)
-        # ...
-        # wx.FONTENCODING_UTF7     UTF-7 Unicode encoding
-        # wx.FONTENCODING_UTF8     UTF-8 Unicode encoding
 
 # ----------------------------------------------------------------------------

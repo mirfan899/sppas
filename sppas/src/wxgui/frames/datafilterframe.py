@@ -61,19 +61,24 @@ class DataFilterFrame( ComponentFrame ):
     @summary: DataFilter allows to filter tiers of annotated files.
 
     """
-    def __init__(self, parent, id, args={}):
+    def __init__(self, parent, id, prefsIO):
         """
         Creates a new ComponentFrame instance for DataFilter component.
         """
-        ComponentFrame.__init__(self, parent, id, args)
+        arguments = {}
+        arguments['files'] = []
+        arguments['title'] = "SPPAS - DataFilter"
+        arguments['type']  = "DATAFILES"
+        arguments['icon']  = DATAFILTER_APP_ICON
+        arguments['prefs'] = prefsIO
+
+        ComponentFrame.__init__(self, parent, id, arguments)
 
         self._update_about()
         self._append_in_menu()
         self._append_in_toolbar()
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def _update_about(self):
         """
@@ -87,9 +92,7 @@ class DataFilterFrame( ComponentFrame ):
         _icon.CopyFromBitmap( spBitmap(DATAFILTER_APP_ICON) )
         self._about.SetIcon(_icon)
 
-    # End _update_about
     # ------------------------------------------------------------------------
-
 
     def _append_in_menu(self):
         """
@@ -102,9 +105,7 @@ class DataFilterFrame( ComponentFrame ):
         # http://www.wxpython.org/docs/api/wx.MenuBar-class.html
         # http://xoomer.virgilio.it/infinity77/wxPython/Widgets/wx.Menu.html
 
-    # End _append_in_menu
     # ------------------------------------------------------------------------
-
 
     def _append_in_toolbar(self):
         """
@@ -118,17 +119,12 @@ class DataFilterFrame( ComponentFrame ):
 
         toolbar.Realize()
 
-    # End _append_in_toolbar
     # ------------------------------------------------------------------------
-
 
     def CreateClient(self, parent, prefsIO):
         """
         Override.
         """
         return DataFilterClient( parent,prefsIO )
-
-    # End CreateClient
-    # ------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------

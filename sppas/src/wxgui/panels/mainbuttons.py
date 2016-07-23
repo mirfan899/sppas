@@ -37,7 +37,8 @@
 
 import wx
 
-from wxgui.panels.buttons import ButtonPanel
+from wxgui.panels.buttons import ButtonPanel, ButtonMenuPanel
+from sp_glob import program, title
 
 from wxgui.sp_icons import ANNOTATIONS_ICON
 from wxgui.sp_icons import COMPONENTS_ICON
@@ -46,24 +47,104 @@ from wxgui.sp_icons import ABOUT_ICON
 from wxgui.sp_icons import HELP_ICON
 from wxgui.sp_icons import SETTINGS_ICON
 
-from wxgui.views.about        import AboutBox
-from wxgui.views.settings     import SettingsDialog
-from wxgui.frames.helpbrowser import HelpBrowser
+from wxgui.sp_icons import EXIT_ICON
+from wxgui.sp_icons import BUG_ICON
+from wxgui.sp_icons import FEEDBACK_ICON
+from wxgui.sp_icons import WEB_ICON
+from wxgui.sp_icons import BUG_ICON
+from wxgui.sp_icons import BACKWARD_ICON
+
+from wxgui.sp_consts import ID_ANNOTATIONS
+from wxgui.sp_consts import ID_COMPONENTS
+from wxgui.sp_consts import ID_PLUGINS
+from wxgui.sp_consts import ID_FEEDBACK
+from wxgui.sp_consts import ID_EXT_BUG
+from wxgui.sp_consts import ID_EXT_HOME
+from wxgui.sp_consts import ID_ACTIONS
 
 # ----------------------------------------------------------------------------
 
-ID_ANNOTATE   = wx.NewId()
-ID_COMPONENTS = wx.NewId()
-ID_PLUGINS    = wx.NewId()
-
-# ----------------------------------------------------------------------------
-
-class MainButtonsPanel( wx.Panel ):
+class MainMenuPanel( wx.Panel ):
     """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL
-    @summary: Main frame buttons panel.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Main frame menu panel.
+
+    """
+    def __init__(self, parent, preferences):
+        wx.Panel.__init__(self, parent, -1, style=wx.NO_BORDER)
+        self.SetBackgroundColour( preferences.GetValue('M_BGM_COLOUR') )
+
+        exitButton     = ButtonMenuPanel(self, wx.ID_EXIT,  preferences, EXIT_ICON, None)
+        bugButton      = ButtonMenuPanel(self, ID_EXT_BUG,  preferences, BUG_ICON, None)
+        feedbackButton = ButtonMenuPanel(self, ID_FEEDBACK, preferences, FEEDBACK_ICON, None)
+
+        sizer = wx.BoxSizer( wx.VERTICAL )
+        sizer.Add( exitButton, proportion=0, flag=wx.ALL, border=2)
+        sizer.AddStretchSpacer(2)
+        sizer.Add( bugButton,  proportion=0, flag=wx.ALL, border=2)
+        sizer.Add( feedbackButton, proportion=0, flag=wx.ALL, border=2)
+
+        self.SetSizer( sizer )
+        self.Bind( wx.EVT_BUTTON, self.OnButtonClick )
+
+    # -----------------------------------------------------------------------
+
+    def OnButtonClick(self, evt):
+        obj = evt.GetEventObject()
+        evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, obj.GetId())
+        evt.SetEventObject(self)
+        wx.PostEvent(self.GetParent(), evt)
+
+    # -----------------------------------------------------------------------
+
+class MainTitlePanel( wx.Panel ):
+    """
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Main frame buttons panel.
+
+    """
+    def __init__(self, parent, preferences):
+        wx.Panel.__init__(self, parent, -1, style=wx.NO_BORDER)
+        self.SetBackgroundColour( preferences.GetValue('M_BGD_COLOUR') )
+
+        font = preferences.GetValue('M_FONT')
+        font.SetWeight(wx.BOLD)
+
+        s = wx.BoxSizer()
+        text = wx.StaticText(self, label=program+" - "+title, style=wx.ALIGN_CENTER)
+        text.SetFont( font )
+        text.SetForegroundColour( preferences.GetValue('M_FONT_COLOUR') )
+        text.Bind(wx.EVT_LEFT_UP, self.OnButtonClick)
+        s.Add(text, proportion=1, flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=10)
+
+        self.SetSizer(s)
+        self.Bind(wx.EVT_LEFT_UP, self.OnButtonClick)
+
+    # -----------------------------------------------------------------------
+
+    def OnButtonClick(self, evt):
+        evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, ID_EXT_HOME)
+        evt.SetEventObject(self)
+        wx.PostEvent(self.GetParent(), evt)
+
+# ----------------------------------------------------------------------------
+
+class MainActionsPanel( wx.Panel ):
+    """
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Main frame buttons panel.
 
     """
     def __init__(self, parent, preferences):
@@ -82,7 +163,7 @@ class MainButtonsPanel( wx.Panel ):
     def __create_buttons(self):
         """ Create buttons to call tools. """
 
-        annotateButton = ButtonPanel(self, ID_ANNOTATE,      self._prefs, ANNOTATIONS_ICON,"Annotate", "Segment speech, normalize text, ...")
+        annotateButton = ButtonPanel(self, ID_ANNOTATIONS,   self._prefs, ANNOTATIONS_ICON,"Annotate", "Segment speech, normalize text, ...")
         analyzeButton  = ButtonPanel(self, ID_COMPONENTS,    self._prefs, COMPONENTS_ICON, "Analyze",  "Statistics, data managers, ...")
         pluginsButton  = ButtonPanel(self, ID_PLUGINS,       self._prefs, PLUGIN_ICON,     "Plugins",  "External tools")
         settingsButton = ButtonPanel(self, wx.ID_PREFERENCES,self._prefs, SETTINGS_ICON,   "Settings", "Configuration, preferences")
@@ -115,3 +196,44 @@ class MainButtonsPanel( wx.Panel ):
 
 # ---------------------------------------------------------------------------
 
+class MainActionsMenuPanel( wx.Panel ):
+    """
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Main actions menu panel.
+
+    """
+    def __init__(self, parent, preferences):
+        wx.Panel.__init__(self, parent, -1, style=wx.NO_BORDER)
+        self.SetBackgroundColour( preferences.GetValue('M_BGM_COLOUR') )
+        self._prefs = preferences
+
+        self.backButton = ButtonMenuPanel(self, ID_ACTIONS,  preferences, BACKWARD_ICON, None)
+
+        sizer = wx.BoxSizer( wx.HORIZONTAL )
+        sizer.Add( self.backButton, proportion=0, flag=wx.ALL, border=2)
+        self.SetSizer( sizer )
+        self.Bind( wx.EVT_BUTTON, self.OnButtonClick )
+
+    # -----------------------------------------------------------------------
+
+    def OnButtonClick(self, evt):
+        obj = evt.GetEventObject()
+        evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, obj.GetId())
+        evt.SetEventObject(self)
+        wx.PostEvent(self.GetParent(), evt)
+
+    # -----------------------------------------------------------------------
+
+    def ShowBack(self, value):
+        if value is True:
+            self.backButton.Show()
+        else:
+            self.backButton.Hide()
+
+    # -----------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------

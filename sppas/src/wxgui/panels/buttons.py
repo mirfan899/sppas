@@ -37,21 +37,18 @@
 
 import wx
 
-BACKGROUND_DARK_COLOUR=wx.Colour(65,75,85)
-BACKGROUND_COLOUR=wx.Colour(75,85,100)
-BORDER_COLOUR=wx.Colour(175,185,200)
-
-from wxgui.sp_consts import BUTTON_ICONSIZE
 from wxgui.cutils.imageutils import spBitmap
 
 # ---------------------------------------------------------------------------
 
 class ImgPanel( wx.Panel ):
     """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL
-    @summary: Simple panel with an image.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Simple panel with an image.
 
     """
     def __init__(self, parent, bmpsize, bmpname):
@@ -75,13 +72,15 @@ class ImgPanel( wx.Panel ):
 
 class ButtonPanel( wx.Panel ):
     """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL
-    @summary: Panel imitating behaviors of a complex button.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Panel imitating behaviors of a complex button.
 
     """
-    def __init__(self, parent, idb, preferences, bmp, text, subtext):
+    def __init__(self, parent, idb, preferences, bmp, text, subtext=None):
         wx.Panel.__init__(self, parent, idb, style=wx.NO_BORDER)
         self.SetBackgroundColour( preferences.GetValue('M_BGD_COLOUR') )
         self.SetFont( preferences.GetValue('M_FONT') )
@@ -93,10 +92,8 @@ class ButtonPanel( wx.Panel ):
         sizer.Add(content, flag=wx.EXPAND|wx.ALL|wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL, border=2)
         self.SetSizer(sizer)
         self.SetAutoLayout( True )
-        #self.SetMinSize((120,120))
 
-
-    def create_content(self, bmpname, textstr, subtextstr):
+    def create_content(self, bmpname, textstr, subtextstr=None):
         panel = wx.Panel(self)
         panel.SetBackgroundColour( self.GetBackgroundColour() )
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -116,17 +113,18 @@ class ButtonPanel( wx.Panel ):
         sizer.Add(text, flag=wx.ALL|wx.ALIGN_CENTER, border=0)
 
         font.SetWeight(wx.NORMAL)
-        tabtexts = subtextstr.split(',')
-        for i,t in enumerate(tabtexts):
-            if (i+1)<len(tabtexts):
-                subtext = wx.StaticText(panel, -1, t+",")
-            else:
-                subtext = wx.StaticText(panel, -1, t)
-            subtext.SetBackgroundColour( self.GetBackgroundColour() )
-            subtext.SetForegroundColour( self._prefs.GetValue('M_FONTD_COLOUR') )
-            subtext.SetFont( font )
-            subtext.Bind(wx.EVT_LEFT_UP, self.OnButtonLeftUp)
-            sizer.Add(subtext, flag=wx.ALL|wx.ALIGN_CENTER, border=0)
+        if subtextstr is not None:
+            tabtexts = subtextstr.split(',')
+            for i,t in enumerate(tabtexts):
+                if (i+1)<len(tabtexts):
+                    subtext = wx.StaticText(panel, -1, t+",")
+                else:
+                    subtext = wx.StaticText(panel, -1, t)
+                subtext.SetBackgroundColour( self.GetBackgroundColour() )
+                subtext.SetForegroundColour( self._prefs.GetValue('M_FONTD_COLOUR') )
+                subtext.SetFont( font )
+                subtext.Bind(wx.EVT_LEFT_UP, self.OnButtonLeftUp)
+                sizer.Add(subtext, flag=wx.ALL|wx.ALIGN_CENTER, border=0)
 
         panel.SetSizer(sizer)
         panel.SetAutoLayout( True )
@@ -149,8 +147,6 @@ class ButtonPanel( wx.Panel ):
         evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, self.GetId())
         evt.SetEventObject(self)
         wx.PostEvent(self.GetParent(), evt)
-
-# ---------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------
 

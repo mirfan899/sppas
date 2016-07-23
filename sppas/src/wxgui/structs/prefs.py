@@ -35,37 +35,25 @@
 # File: prefs.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
 import logging
 import codecs
 import pickle
-import wx
 
 from option import Option
-from themes import Themes, BaseTheme
+from themes import BaseTheme
 
 # ----------------------------------------------------------------------------
 
-
 class Preferences:
     """
-    Manage a dictionary with user's preferences.
-
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL
-    @summary: This class is used to manage a dictionary of settings.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      This class is used to manage a dictionary of settings.
 
     """
-
     def __init__(self, theme=None):
         """
         Constructor.
@@ -74,51 +62,23 @@ class Preferences:
 
         """
         self._prefs = {}
-        self.SetDefault()
 
-        # Set a default theme to assign values in the dictionary.
-        if theme is not None:
-            self.SetTheme( theme )
-        else:
+        # Set the requested theme.
+        if theme is None:
             self.SetTheme( BaseTheme() )
-
-    # End __init__
-    # ------------------------------------------------------------------------
-
-
+        else:
+            self.SetTheme( theme )
 
     # ------------------------------------------------------------------------
     # Getters and Setters
     # ------------------------------------------------------------------------
-
-
-    def SetDefault(self):
-        """
-        Fix the default settings for SPPAS.
-        """
-        self.SetValue( 'M_FG_COLOUR',   t='wx.Colour', v=wx.Colour(10,10,10), text='Main frame foreground color')
-        self.SetValue( 'M_FGD_COLOUR',  t='wx.Colour', v=wx.Colour(30,30,30), text='Main frame second foreground color')
-        self.SetValue( 'M_FONT_COLOUR', t='wx.Colour', v=wx.Colour(10,10,10), text='Main frame font color')
-        self.SetValue( 'M_FONTD_COLOUR', t='wx.Colour', v=wx.Colour(30,30,30), text='Main frame second font color')
-        self.SetValue( 'M_BG_COLOUR',   t='wx.Colour', v=wx.Colour(245,245,245), text='Main frame background color')
-        self.SetValue( 'M_BGD_COLOUR',  t='wx.Colour', v=wx.Colour(215,215,215), text='Main frame second background color')
-        self.SetValue( 'M_FONT',        t='wx.Font',   v=wx.Font(10, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, '', wx.FONTENCODING_SYSTEM), text='Main frame font')
-
-        self.SetValue( 'M_BGM_COLOUR',   t='wx.Colour', v=wx.Colour(185,185,230), text='Main frame menu background color')
-        self.SetValue( 'M_FONTM_COLOUR', t='wx.Colour', v=wx.Colour(250,250,250), text='Main frame menu font color')
-
-    # End SetDefault
-    # ------------------------------------------------------------------------
-
 
     def GetValue(self, key):
         """ Return the typed-value of the given key. """
 
         return self._prefs[key].get_value()
 
-    # End GetValue
     # ------------------------------------------------------------------------
-
 
     def SetValue(self, key, t=None, v=None, text=''):
         """ Set a new couple key/(type,typed-value,text). """
@@ -128,32 +88,24 @@ class Preferences:
 
         self._prefs[key].set_value(v)
 
-    # End SetValue
     # ------------------------------------------------------------------------
-
 
     def SetOption(self, key, option):
         """ Set a new couple key/Option. """
 
         self._prefs[key] = option
 
-    # End SetOption
     # ------------------------------------------------------------------------
-
 
     def GetTheme(self):
         """ Return the the current theme. """
 
         return self._prefs.get('THEME', None)
 
-    # End GetTheme
     # ------------------------------------------------------------------------
-
 
     def SetTheme(self, theme):
         """ Set a new theme. """
-
-        logging.debug('Set to a new theme.')
 
         self._prefs['THEME'] = theme
         for key in theme.get_keys():
@@ -161,54 +113,44 @@ class Preferences:
             if opt is not None:
                 self.SetOption(key, opt)
 
-    # End SetTheme
     # ------------------------------------------------------------------------
-
 
 # ----------------------------------------------------------------------------
 
-
 class Preferences_IO( Preferences ):
     """
-    Input/Output preferences.
-
-    @author: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL,v3
-    @summary: This class is used to manage a file of settings.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Input/Output preferences.
 
     """
-
     def __init__(self, filename=None):
         """ Create a new dictionary of preferences. """
 
         Preferences.__init__(self)
         self._filename = filename
 
-        logging.info('Settings file name is: %s'%self._filename)
-
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def HasFilename(self):
         """
         Return True is a file name was defined.
-        """
 
+        """
         if self._filename is None: return False
         return True
 
-    # End HasFilename
     # ------------------------------------------------------------------------
-
 
     def Read(self):
         """
         Read user preferences from a file.
         Return True if preferences have been read.
-        """
 
+        """
         try:
             with codecs.open(self._filename, mode="rb") as f:
                 prefs = pickle.load(f)
@@ -220,16 +162,14 @@ class Preferences_IO( Preferences ):
         logging.debug('Settings read successfully')
         return True
 
-    # End Read
     # ------------------------------------------------------------------------
-
 
     def Write(self):
         """
         Save user preferences into a file.
         Return True if preferences have been saved.
-        """
 
+        """
         if self._filename is None:
             return False
 
@@ -243,13 +183,12 @@ class Preferences_IO( Preferences ):
         logging.debug('Settings saved successfully.')
         return True
 
-    # End Write
     # ------------------------------------------------------------------------
-
 
     def Copy(self):
         """
         Return a deep copy of self.
+
         """
         #import copy
         #return copy.deepcopy( self._prefs ) -->
@@ -268,8 +207,5 @@ class Preferences_IO( Preferences ):
                 cpref.SetOption(key, opt)
 
         return cpref
-
-    # End Copy
-    # ------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------

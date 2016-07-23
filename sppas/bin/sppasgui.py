@@ -134,6 +134,7 @@ frame = FrameSPPAS( prefsIO )
 if len(filenames) > 0:
     frame.RefreshTree( filenames )
 
+frame.Show()
 sppas.SetTopWindow( frame )
 sppas.MainLoop()
 

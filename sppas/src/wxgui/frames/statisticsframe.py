@@ -64,11 +64,18 @@ class StatisticsFrame( ComponentFrame ):
 
     """
 
-    def __init__(self, parent, id, args={}):
+    def __init__(self, parent, id, prefsIO):
         """
         Creates a new ComponentFrame instance for Statistics component.
         """
-        ComponentFrame.__init__(self, parent, id, args)
+        arguments = {}
+        arguments['files'] = []
+        arguments['title'] = "SPPAS - DataStats"
+        arguments['type']  = "DATAFILES"
+        arguments['icon']  = STATISTICS_APP_ICON
+        arguments['prefs'] = prefsIO
+
+        ComponentFrame.__init__(self, parent, id, arguments)
 
         self._update_about()
         self._append_in_menu()

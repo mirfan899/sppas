@@ -128,14 +128,8 @@ if v < 3:
     ShowInformation( None, prefsIO, message, style=wx.ICON_WARNING)
 
 # App
-arguments = {}
-arguments['files'] = []
-arguments['title'] = "Statistics"
-arguments['type']  = "DATAFILES"
-arguments['icon']  = STATISTICS_APP_ICON
-arguments['prefs'] = prefsIO
 
-frame = StatisticsFrame(None, -1, arguments)
+frame = StatisticsFrame(None, -1, prefsIO)
 frame.AddFiles( filenames )
 
 app.SetTopWindow(frame)

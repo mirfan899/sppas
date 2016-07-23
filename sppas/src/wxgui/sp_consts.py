@@ -78,8 +78,8 @@ OK_COLOUR      = wx.Colour(  25, 160,  50 )  # green
 MIN_PANEL_W = 180
 MIN_PANEL_H = 220
 
-MIN_FRAME_W=600
-MIN_FRAME_H=410
+MIN_FRAME_W=640
+MIN_FRAME_H=440
 
 if wx.Platform == "__WXMSW__":
     FRAME_H  = 600   # expected "good" height
@@ -106,3 +106,24 @@ TB_FONTSIZE     = MAIN_FONTSIZE - 2
 HEADER_FONTSIZE = MAIN_FONTSIZE + 4
 
 # ---------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------
+
+ID_ANNOTATIONS = wx.NewId()
+ID_COMPONENTS  = wx.NewId()
+ID_PLUGINS     = wx.NewId()
+ID_ACTIONS     = wx.NewId()
+
+ID_EXT_BUG     = wx.NewId()
+ID_EXT_HOME    = wx.NewId()
+ID_FEEDBACK    = wx.NewId()
+
+ID_FRAME_DATAROAMER  = wx.NewId()
+ID_FRAME_SNDROAMER   = wx.NewId()
+ID_FRAME_IPUSCRIBE   = wx.NewId()
+ID_FRAME_SPPASEDIT   = wx.NewId()
+ID_FRAME_STATISTICS  = wx.NewId()
+ID_FRAME_DATAFILTER  = wx.NewId()
+
+# ---------------------------------------------------------------------------
+

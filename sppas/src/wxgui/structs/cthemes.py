@@ -47,19 +47,19 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import wx
 
 from wxgui.structs.option import Option
-from wxgui.structs.themes import Theme, Themes
+from wxgui.structs.themes import BaseTheme, Themes
 
 # ----------------------------------------------------------------------------
 # Specific themes for SppasEdit component
 # ----------------------------------------------------------------------------
 #
 
-class ThemeDefault( Theme ):
+class ThemeDefault( BaseTheme ):
     """ The theme which assign all required options, with default values. """
 
     def __init__(self):
 
-        Theme.__init__(self)
+        BaseTheme.__init__(self)
 
         # Display
         self._choice['D_TIME_MIN']      = Option('float', 0.0,  'Minimum time value (in seconds) of the displayed period at start-up')

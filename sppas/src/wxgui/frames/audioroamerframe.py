@@ -54,12 +54,18 @@ class AudioRoamerFrame( ComponentFrame ):
     @summary:      AudioRoamer allows to manipulate audio files.
 
     """
-    def __init__(self, parent, appid, args={}):
+    def __init__(self, parent, appid, prefsIO):
         """
         Creates a new ComponentFrame instance for AudioRoamerFrame.
 
         """
-        ComponentFrame.__init__(self, parent, appid, args)
+        arguments = {}
+        arguments['files'] = []
+        arguments['title'] = "SPPAS - AudioRoamer"
+        arguments['type']  = "SOUNDFILES"
+        arguments['icon']  = AUDIOROAMER_APP_ICON
+        arguments['prefs'] = prefsIO
+        ComponentFrame.__init__(self, parent, appid, arguments)
 
         self._update_about()
         self._append_in_menu()

@@ -45,7 +45,6 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import wx
-import logging
 
 from wxgui.sp_icons   import IPUSCRIBE_APP_ICON
 from wxgui.sp_icons   import SAVE_FILE
@@ -60,7 +59,6 @@ SAVE_ALL_ID = wx.NewId()
 
 # ----------------------------------------------------------------------------
 
-
 class IPUscribeFrame( ComponentFrame ):
     """
     @authors: Brigitte Bigi
@@ -70,20 +68,25 @@ class IPUscribeFrame( ComponentFrame ):
 
     """
 
-    def __init__(self, parent, id, args={}):
+    def __init__(self, parent, id, prefsIO):
         """
         Creates a new ComponentFrame instance for IPUscribe component.
         """
-        ComponentFrame.__init__(self, parent, id, args)
+        arguments = {}
+        arguments['files'] = []
+        arguments['title'] = "SPPAS - IPUscriber"
+        arguments['type']  = "SOUNDFILES"
+        arguments['icon']  = IPUSCRIBE_APP_ICON
+        arguments['prefs'] = prefsIO
+
+        ComponentFrame.__init__(self, parent, id, arguments)
 
         self._update_about()
         self._append_in_menu()
         self._append_in_toolbar()
         self._add_accelerator()
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def _update_about(self):
         """
@@ -98,9 +101,7 @@ class IPUscribeFrame( ComponentFrame ):
         _icon.CopyFromBitmap( spBitmap(IPUSCRIBE_APP_ICON) )
         self._about.SetIcon(_icon)
 
-    # End _update_about
     # ------------------------------------------------------------------------
-
 
     def _append_in_menu(self):
         """
@@ -113,9 +114,7 @@ class IPUscribeFrame( ComponentFrame ):
         # http://www.wxpython.org/docs/api/wx.MenuBar-class.html
         # http://xoomer.virgilio.it/infinity77/wxPython/Widgets/wx.Menu.html
 
-    # End _append_in_menu
     # ------------------------------------------------------------------------
-
 
     def _append_in_toolbar(self):
         """
@@ -140,9 +139,7 @@ class IPUscribeFrame( ComponentFrame ):
         # see documentation:
         # http://xoomer.virgilio.it/infinity77/wxPython/Widgets/wx.ToolBar.html
 
-    # End _append_in_toolbar
     # ------------------------------------------------------------------------
-
 
     def _add_accelerator(self):
         """
@@ -159,9 +156,7 @@ class IPUscribeFrame( ComponentFrame ):
         accel_tbl = wx.AcceleratorTable([ accelQ, accelS, accelSS ])
         self.SetAcceleratorTable(accel_tbl)
 
-    # End _add_accelerator
     # ------------------------------------------------------------------------
-
 
     def CreateClient(self, parent, prefsIO):
         """
@@ -169,9 +164,7 @@ class IPUscribeFrame( ComponentFrame ):
         """
         return IPUscribeClient(parent,prefsIO)
 
-    # End CreateClient
     # ------------------------------------------------------------------------
-
 
     def IPUscribeProcessEvent(self, event):
         """
@@ -193,9 +186,7 @@ class IPUscribeFrame( ComponentFrame ):
 
         return wx.GetApp().ProcessEvent(event)
 
-    # End IPUscribeProcessEvent
     # ------------------------------------------------------------------------
-
 
     def OnSave(self, event):
         """

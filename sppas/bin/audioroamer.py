@@ -127,14 +127,8 @@ if v < 3:
     ShowInformation( None, prefsIO, message, style=wx.ICON_WARNING)
 
 # App
-arguments = {}
-arguments['files'] = []
-arguments['title'] = "SPPAS - AudioRoamer"
-arguments['type']  = "SOUNDFILES"
-arguments['icon']  = AUDIOROAMER_APP_ICON
-arguments['prefs'] = prefsIO
 
-frame = AudioRoamerFrame(None, -1, arguments)
+frame = AudioRoamerFrame(None, -1, prefsIO)
 frame.AddFiles( filenames )
 
 app.SetTopWindow(frame)

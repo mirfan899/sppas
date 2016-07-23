@@ -127,14 +127,8 @@ if v < 3:
     ShowInformation( None, prefsIO, message, style=wx.ICON_WARNING)
 
 # App
-arguments = {}
-arguments['files'] = []
-arguments['title'] = "SppasEdit"
-arguments['type']  = "ANYFILES"
-arguments['icon']  = SPPASEDIT_APP_ICON
-arguments['prefs'] = prefsIO
 
-frame = SppasEditFrame(None, -1, arguments)
+frame = SppasEditFrame(None, -1, prefsIO)
 frame.AddFiles( filenames )
 
 app.SetTopWindow(frame)

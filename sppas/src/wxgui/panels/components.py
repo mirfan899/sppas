@@ -35,15 +35,6 @@
 # File: components.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
 import wx
 
 from wxgui.frames.dataroamerframe  import DataRoamerFrame
@@ -65,17 +56,74 @@ from wxgui.sp_icons import DATAFILTER_APP_ICON
 
 from wxgui.sp_consts import BUTTON_ICONSIZE
 
+from wxgui.panels.buttons import ButtonPanel
+
+from wxgui.sp_consts          import ID_FRAME_DATAROAMER
+from wxgui.sp_consts          import ID_FRAME_SNDROAMER
+from wxgui.sp_consts          import ID_FRAME_IPUSCRIBE
+from wxgui.sp_consts          import ID_FRAME_SPPASEDIT
+from wxgui.sp_consts          import ID_FRAME_STATISTICS
+from wxgui.sp_consts          import ID_FRAME_DATAFILTER
 
 # ----------------------------------------------------------------------------
-# Constants
-# ----------------------------------------------------------------------------
 
-ID_FRAME_DATAROAMER  = wx.NewId()
-ID_FRAME_SNDROAMER   = wx.NewId()
-ID_FRAME_IPUSCRIBE   = wx.NewId()
-ID_FRAME_SPPASEDIT   = wx.NewId()
-ID_FRAME_STATISTICS  = wx.NewId()
-ID_FRAME_DATAFILTER  = wx.NewId()
+class AnalyzePanel( wx.Panel ):
+    """
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Tools for analyzing annotated data.
+
+    """
+    def __init__(self, parent, preferences):
+        wx.Panel.__init__(self, parent, -1, style=wx.NO_BORDER)
+        self.SetBackgroundColour( preferences.GetValue('M_BG_COLOUR') )
+        self._prefs = preferences
+
+        content = self.__create_buttons()
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(content, proportion=1, flag=wx.EXPAND | wx.ALL, border=0)
+
+        self.Bind(wx.EVT_BUTTON, self.OnButtonClick)
+        self.SetSizerAndFit(sizer)
+
+
+    def __create_buttons(self):
+        """ Create buttons to call tools. """
+
+        annotateButton = ButtonPanel(self, ID_FRAME_DATAROAMER, self._prefs, DATAROAMER_APP_ICON,  "DataRoamer")
+        analyzeButton  = ButtonPanel(self, ID_FRAME_SNDROAMER,  self._prefs, AUDIOROAMER_APP_ICON, "AudioRoamer")
+        pluginsButton  = ButtonPanel(self, ID_FRAME_IPUSCRIBE,  self._prefs, IPUSCRIBE_APP_ICON,   "IPUscriber")
+        settingsButton = ButtonPanel(self, ID_FRAME_SPPASEDIT,  self._prefs, SPPASEDIT_APP_ICON,   "Vizualizer")
+        helpButton     = ButtonPanel(self, ID_FRAME_DATAFILTER, self._prefs, DATAFILTER_APP_ICON,  "DataFilter")
+        aboutButton    = ButtonPanel(self, ID_FRAME_STATISTICS, self._prefs, STATISTICS_APP_ICON,  "DataStats")
+
+        _box = wx.GridBagSizer()
+        _box.Add( annotateButton, pos=(0, 0), flag=wx.ALL, border=2)
+        _box.Add( pluginsButton,  pos=(1, 1), flag=wx.ALL, border=2)
+        _box.Add( analyzeButton,  pos=(0, 1), flag=wx.ALL, border=2)
+        _box.Add( settingsButton, pos=(1, 0), flag=wx.ALL, border=2)
+        _box.Add( aboutButton,    pos=(2, 0), flag=wx.ALL, border=2)
+        _box.Add( helpButton,     pos=(2, 1), flag=wx.ALL, border=2)
+
+        _box.AddGrowableCol(0)
+        _box.AddGrowableCol(1)
+        _box.AddGrowableRow(0)
+        _box.AddGrowableRow(1)
+        _box.AddGrowableRow(2)
+
+        return _box
+
+    # -----------------------------------------------------------------------
+
+    def OnButtonClick(self, evt):
+        obj = evt.GetEventObject()
+        evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, obj.GetId())
+        evt.SetEventObject(self)
+        wx.PostEvent(self.GetParent(), evt)
+
 
 
 # ----------------------------------------------------------------------------

@@ -127,14 +127,7 @@ if v < 3:
     ShowInformation( None, prefsIO, message, style=wx.ICON_WARNING)
 
 # App
-arguments = {}
-arguments['files'] = []
-arguments['title'] = "DataRoamer"
-arguments['type']  = "DATAFILES"
-arguments['icon']  = DATAROAMER_APP_ICON
-arguments['prefs'] = prefsIO
-
-frame = DataRoamerFrame(None, -1, arguments)
+frame = DataRoamerFrame(None, -1, prefsIO)
 frame.AddFiles( filenames )
 
 app.SetTopWindow(frame)

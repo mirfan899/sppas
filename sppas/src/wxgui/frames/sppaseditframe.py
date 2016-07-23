@@ -92,7 +92,6 @@ DEMO_TRS_WIZARD_ID = wx.NewId()
 
 # ----------------------------------------------------------------------------
 
-
 class SppasEditFrame( ComponentFrame ):
     """
     @authors: Brigitte Bigi
@@ -102,19 +101,23 @@ class SppasEditFrame( ComponentFrame ):
 
     """
 
-    def __init__(self, parent, id, args={}):
+    def __init__(self, parent, id, prefsIO):
         """
         Creates a new ComponentFrame instance for SppasEdit component.
         """
-        ComponentFrame.__init__(self, parent, id, args)
+        arguments = {}
+        arguments['files'] = []
+        arguments['title'] = "SPPAS - Vizualizer"
+        arguments['type']  = "ANYFILES"
+        arguments['icon']  = SPPASEDIT_APP_ICON
+        arguments['prefs'] = prefsIO
+        ComponentFrame.__init__(self, parent, id, arguments)
 
         self._update_about()
         self._append_in_menu()
         self._append_in_toolbar()
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def _init_members( self, args ):
         """
@@ -129,9 +132,7 @@ class SppasEditFrame( ComponentFrame ):
 
         self._fmtype = "ANYFILES"
 
-    # End _init_members
     # ------------------------------------------------------------------------
-
 
     def _update_about(self):
         """
@@ -146,9 +147,7 @@ class SppasEditFrame( ComponentFrame ):
         _icon.CopyFromBitmap( spBitmap(SPPASEDIT_APP_ICON) )
         self._about.SetIcon(_icon)
 
-    # End _update_about
     # ------------------------------------------------------------------------
-
 
     def _append_in_menu(self):
         """
@@ -194,9 +193,7 @@ class SppasEditFrame( ComponentFrame ):
         for event in eventslist:
             wx.EVT_MENU(self, event, self.SppasEditProcessEvent)
 
-    # End _append_in_menu
     # ------------------------------------------------------------------------
-
 
     def _append_in_toolbar(self):
         """
@@ -211,9 +208,7 @@ class SppasEditFrame( ComponentFrame ):
 
         #toolbar.Realize()
 
-    # End _append_in_toolbar
     # ------------------------------------------------------------------------
-
 
     def CreateClient(self, parent, prefsIO):
         """
@@ -221,9 +216,7 @@ class SppasEditFrame( ComponentFrame ):
         """
         return SppasEditClient(parent,prefsIO)
 
-    # End CreateClient
     # ------------------------------------------------------------------------
-
 
     def SppasEditProcessEvent(self, event):
         """
@@ -257,9 +250,7 @@ class SppasEditFrame( ComponentFrame ):
         elif id == DEMO_TRS_WIZARD_ID:
             self.OnDemoTrsWizard(event)
 
-    # End SppasEditProcessEvent
     # ------------------------------------------------------------------------
-
 
     #-------------------------------------------------------------------------
     # Demo... Callbacks
@@ -273,7 +264,6 @@ class SppasEditFrame( ComponentFrame ):
         logging.info('Demo.')
         WizardDisplayDemo(self)
 
-    # End OnDemoDisplayWizard
     #-------------------------------------------------------------------------
 
 
@@ -284,7 +274,6 @@ class SppasEditFrame( ComponentFrame ):
         frame = PointCtrlFrame(self, -1, 'Time Point Demo')
         frame.Show(True)
 
-    # End OnDemoPoint
     #-------------------------------------------------------------------------
 
 
@@ -295,9 +284,7 @@ class SppasEditFrame( ComponentFrame ):
         frame = LabelCtrlFrame(self, -1, 'Label Demo')
         frame.Show(True)
 
-    # End OnDemoLabel
     #-------------------------------------------------------------------------
-
 
     def OnDemoTier(self, event):
         """
@@ -306,9 +293,7 @@ class SppasEditFrame( ComponentFrame ):
         frame = TierCtrlFrame(self, -1, 'Tier Demo')
         frame.Show(True)
 
-    # End OnDemoTier
     #-------------------------------------------------------------------------
-
 
     def OnDemoTrs(self, event):
         """
@@ -317,9 +302,7 @@ class SppasEditFrame( ComponentFrame ):
         frame = TrsCtrlFrame(self, -1, 'Transcription Demo')
         frame.Show(True)
 
-    # End OnDemoTrs
     #-------------------------------------------------------------------------
-
 
     def OnDemoWave(self, event):
         """
@@ -328,9 +311,7 @@ class SppasEditFrame( ComponentFrame ):
         frame = WaveCtrlFrame(self, -1, 'Wave Demo')
         frame.Show(True)
 
-    # End OnDemoWave
     #-------------------------------------------------------------------------
-
 
     def OnDemoDisplay(self, event):
         """
@@ -339,9 +320,7 @@ class SppasEditFrame( ComponentFrame ):
         frame = DisplayCtrlFrame(self, -1, 'Display Demo')
         frame.Show(True)
 
-    # End OnDemoDisplay
     #-------------------------------------------------------------------------
-
 
     def OnDemoZoomWizard(self, event):
         """
@@ -350,9 +329,7 @@ class SppasEditFrame( ComponentFrame ):
         logging.info('Demo: Zoom.')
         WizardZoomDemo(self)
 
-    # End OnDemoZoomWizard
     #-------------------------------------------------------------------------
-
 
     def OnDemoScrollWizard(self, event):
         """
@@ -361,9 +338,7 @@ class SppasEditFrame( ComponentFrame ):
         logging.info('Demo: Scroll.')
         WizardScrollDemo(self)
 
-    # End OnDemoScrollWizard
     #-------------------------------------------------------------------------
-
 
     def OnDemoSoundWizard(self, event):
         """
@@ -372,9 +347,7 @@ class SppasEditFrame( ComponentFrame ):
         logging.info('Demo: Sound.')
         WizardSoundDemo(self)
 
-    # End OnDemoSoundWizard
     #-------------------------------------------------------------------------
-
 
     def OnDemoTrsWizard(self, event):
         """
@@ -383,9 +356,7 @@ class SppasEditFrame( ComponentFrame ):
         logging.info('Demo: Ann. files.')
         WizardTrsDemo(self)
 
-    # End OnDemoTrsWizard
     #-------------------------------------------------------------------------
-
 
     def OnSettings(self, event):
         """
@@ -409,7 +380,6 @@ class SppasEditFrame( ComponentFrame ):
         prefdlg.Destroy()
         self._LayoutFrame()
 
-    # End OnSettings
     # ------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------

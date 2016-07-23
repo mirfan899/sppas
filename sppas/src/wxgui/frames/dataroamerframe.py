@@ -76,11 +76,17 @@ class DataRoamerFrame( ComponentFrame ):
 
     """
 
-    def __init__(self, parent, id, args={}):
+    def __init__(self, parent, idc, prefsIO):
         """
         Creates a new ComponentFrame instance for DataRoamer component.
         """
-        ComponentFrame.__init__(self, parent, id, args)
+        arguments = {}
+        arguments['title'] = 'SPPAS - Data Roamer'
+        arguments['icon']  = DATAROAMER_APP_ICON
+        arguments['type']  = "DATAFILES"
+        arguments['prefs'] = prefsIO
+
+        ComponentFrame.__init__(self, parent, idc, arguments)
 
         self._update_about()
         self._append_in_menu()

@@ -44,12 +44,10 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # Imports
 # ----------------------------------------------------------------------------
 
-import sys
-import os
 import wx
 import wx.lib.newevent
+import wx.lib.scrolledpanel
 import functools
-from wx.lib.buttons import GenBitmapButton, GenBitmapTextButton
 
 from annotations.param import sppasParam
 
@@ -103,7 +101,6 @@ class sppasStepPanel( wx.Panel ):
     given annotation.
 
     """
-
     def __init__(self, parent, parameters, preferences, index):
 
         wx.Panel.__init__(self, parent, size=wx.DefaultSize, style=wx.NO_BORDER)
@@ -234,7 +231,7 @@ class AnnotationsPanel( wx.lib.scrolledpanel.ScrolledPanel ):
         """
         Constructor.
         """
-        wx.lib.scrolledpanel.ScrolledPanel.__init__(self, parent, -1, size=wx.DefaultSize, style=wx.SIMPLE_BORDER)
+        wx.lib.scrolledpanel.ScrolledPanel.__init__(self, parent, -1, size=wx.DefaultSize, style=wx.NO_BORDER)
         self.SetBackgroundColour(preferences.GetValue('M_BG_COLOUR'))
 
         # Members
@@ -357,6 +354,4 @@ class AnnotationsPanel( wx.lib.scrolledpanel.ScrolledPanel ):
 
         self.parameters.set_output_format( self._prefsIO.GetValue('M_OUTPUT_EXT') )
 
-
 # ----------------------------------------------------------------------------
-
