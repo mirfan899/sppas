@@ -35,15 +35,6 @@
 # File: themes.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
 import wx
 
 from option import Option
@@ -56,10 +47,12 @@ from wxgui.sp_consts import MAIN_FONTSIZE
 
 class Themes:
     """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: This class is used to store all themes (name/class).
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:     This class is used to store all themes (name/class).
 
     """
     def __init__(self):
@@ -106,20 +99,17 @@ class Themes:
 
 class Theme:
     """
-    Base class: A theme store all preferences for the colors, fonts, etc...
-
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: This class is used to store all settings for the colors and fonts.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:     Base class: A theme store all preferences for the colors, fonts, etc...
 
     """
 
     def __init__(self):
-        """
-        A Theme is a dictionary with key/option.
-
-        """
+        """ A Theme is a dictionary with key/option. """
         self._choice = {}
 
     # -----------------------------------------------------------------------
@@ -159,27 +149,27 @@ class BaseTheme( Theme ):
 
         Theme.__init__(self)
 
-        self._choice['M_BG_COLOUR']   = Option('wx.Colour', (135,145,160), "Main background color")
-        self._choice['M_FG_COLOUR']   = Option('wx.Colour', (245,245,245), "Main foreground color")
+        self._choice['M_BG_COLOUR']   = Option('wx.Colour', (240,240,230), "Main background color")
+        self._choice['M_FG_COLOUR']   = Option('wx.Colour', (128,122,122), "Main foreground color")
         self._choice['M_FONT']        = Option('wx.Font', (MAIN_FONTSIZE, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, '', wx.FONTENCODING_SYSTEM), "Font")
-        self._choice['M_FONT_COLOUR'] = Option('wx.Colour', (245,245,245), "Main font color")
+        self._choice['M_FONT_COLOUR'] = Option('wx.Colour', (30,30,30), "Main font color")
 
         self._choice['M_TIPS']        = Option('bool', True, 'Show tips at start-up')
         self._choice['M_OUTPUT_EXT']  = Option('str',  '.xra', "Output file format")
         self._choice['M_ICON_THEME']  = Option('str',  'Default', "Icons theme")
 
-        self._choice['M_BGD_COLOUR']   = Option('wx.Colour', (100,110,125), "Secondary main background color")
-        self._choice['M_FGD_COLOUR']   = Option('wx.Colour', (175,185,200), "Secondary main foreground color")
-        self._choice['M_FONTD_COLOUR'] = Option('wx.Colour', (175,185,200), "Secondary main font color")
+        self._choice['M_BGD_COLOUR']   = Option('wx.Colour', (240,235,215), "Secondary main background color")
+        self._choice['M_FGD_COLOUR']   = Option('wx.Colour', (128,122,122), "Secondary main foreground color")
+        self._choice['M_FONTD_COLOUR'] = Option('wx.Colour', (108,102,102), "Secondary main font color")
 
         # Menu
-        self._choice['M_BGM_COLOUR']   = Option('wx.Colour', (175,175,215), "Menu background color")
-        self._choice['M_FONTM_COLOUR'] = Option('wx.Colour', (250,250,250), "Menu font color")
+        self._choice['M_BGM_COLOUR']   = Option('wx.Colour', (128,122,122), "Menu background color")
+        self._choice['M_FONTM_COLOUR'] = Option('wx.Colour', (240,240,230), "Menu font color")
 
         self._choice['F_SPACING'] = Option('int', 2)
 
 
-# BORDER_COLOUR=wx.Colour(175,185,200)
+# (100,110,125)
 
 # ----------------------------------------------------------------------------
 

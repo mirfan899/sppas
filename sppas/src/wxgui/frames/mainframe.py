@@ -73,6 +73,7 @@ from wxgui.panels.mainbuttons      import MainActionsPanel, MainMenuPanel, MainA
 from wxgui.panels.components       import AnalyzePanel
 from wxgui.panels.aannotations     import AnnotationsPanel
 from wxgui.panels.plugins          import PluginPanel
+from wxgui.panels.about            import AboutSPPAS
 
 from wxgui.frames.dataroamerframe  import DataRoamerFrame
 from wxgui.frames.audioroamerframe import AudioRoamerFrame
@@ -82,7 +83,6 @@ from wxgui.frames.datafilterframe  import DataFilterFrame
 from wxgui.frames.statisticsframe  import StatisticsFrame
 from wxgui.frames.helpbrowser      import HelpBrowser
 from wxgui.views.settings          import SettingsDialog
-from wxgui.views.about             import AboutBox
 from wxgui.views.settings          import SettingsDialog
 from wxgui.views.feedback          import ShowFeedbackDialog
 
@@ -119,7 +119,7 @@ class FrameSPPAS( wx.Frame ):
         self.actions = None
         self.flp     = None
 
-        self._mainmenu  = MainMenuPanel(self, self.preferences)
+        self._mainmenu  = MainMenuPanel(self,  self.preferences)
         self._maintitle = MainTitlePanel(self, self.preferences)
         self._mainpanel = self._create_content()
 
@@ -166,8 +166,13 @@ class FrameSPPAS( wx.Frame ):
         """ Create the frame content. """
 
         splitpanel = wx.SplitterWindow(self, -1, style=wx.SP_NOBORDER)
+        splitpanel.SetBackgroundColour( self.preferences.GetValue('M_FG_COLOUR') )
+        splitpanel.SetForegroundColour( self.preferences.GetValue('M_BG_COLOUR') )
+
+        # Left: File explorer
         self.flp   = FiletreePanel(splitpanel, self.preferences)
 
+        # Right: Actions to perform on selected files
         self._rightpanel = wx.Panel(splitpanel,-1)
         self._contentsizer = wx.BoxSizer( wx.VERTICAL )
         self.actionsmenu = MainActionsMenuPanel(self._rightpanel, self.preferences)
@@ -203,21 +208,27 @@ class FrameSPPAS( wx.Frame ):
     def fix_actioncontent( self, ide ):
         """ Fix the action panel content. """
 
+        # Remove current actions panel
         if self.actions is not None:
             self._contentsizer.Detach( self.actions )
             self.actions.Destroy()
 
+        # Create the new one:
         if ide == ID_ACTIONS:
             self.actions = MainActionsPanel(self._rightpanel, self.preferences)
-            self.actionsmenu.ShowBack(False)
+            self.actionsmenu.ShowBack(False, "")
 
         elif ide == ID_COMPONENTS:
             self.actions = AnalyzePanel(self._rightpanel, self.preferences)
-            self.actionsmenu.ShowBack(True)
+            self.actionsmenu.ShowBack(True, "   A N A L Y Z E ")
 
         elif ide == ID_ANNOTATIONS:
             self.actions = AnnotationsPanel(self._rightpanel, self.preferences)
-            self.actionsmenu.ShowBack(True)
+            self.actionsmenu.ShowBack(True, "   A N N O T A T E ")
+
+        elif ide == wx.ID_ABOUT:
+            self.actions = AboutSPPAS(self._rightpanel, self.preferences)
+            self.actionsmenu.ShowBack(True, "   A B O U T ")
 
         self._contentsizer.Add( self.actions, proportion=1, flag=wx.ALL|wx.EXPAND, border=0)
         self.Refresh()
@@ -246,15 +257,15 @@ class FrameSPPAS( wx.Frame ):
         elif ide == wx.ID_PREFERENCES:
             self.OnSettings(event)
 
-        elif ide == wx.ID_ABOUT:
-            wx.AboutBox( AboutBox() )
-
         elif ide == wx.ID_HELP:
             self.OnHelp(event)
 
         elif ide == ID_PLUGINS:
             pass
             #self.ppp.Import()
+
+        elif ide == wx.ID_ABOUT:
+            self.fix_actioncontent( wx.ID_ABOUT )
 
         elif ide == ID_ANNOTATIONS:
             self.fix_actioncontent( ID_ANNOTATIONS )

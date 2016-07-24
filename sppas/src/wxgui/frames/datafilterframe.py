@@ -74,23 +74,8 @@ class DataFilterFrame( ComponentFrame ):
 
         ComponentFrame.__init__(self, parent, id, arguments)
 
-        self._update_about()
         self._append_in_menu()
         self._append_in_toolbar()
-
-    # ------------------------------------------------------------------------
-
-    def _update_about(self):
-        """
-        Update information of the about dialog box.
-        """
-        description = """DataFilter is a component to select annotations of tiers."""
-        self._about.SetName('DataFilter')
-        self._about.SetVersion('2.0')
-        self._about.SetDescription(description)
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(DATAFILTER_APP_ICON) )
-        self._about.SetIcon(_icon)
 
     # ------------------------------------------------------------------------
 

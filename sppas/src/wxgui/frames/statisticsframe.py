@@ -45,7 +45,6 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import wx
-import logging
 
 from baseframe import ComponentFrame
 
@@ -77,29 +76,10 @@ class StatisticsFrame( ComponentFrame ):
 
         ComponentFrame.__init__(self, parent, id, arguments)
 
-        self._update_about()
         self._append_in_menu()
         self._append_in_toolbar()
 
-    # End __init__
     # ------------------------------------------------------------------------
-
-
-    def _update_about(self):
-        """
-        Update information of the about dialog box.
-        """
-        description = """Statistics allows to estimates descriptives statistics on annotated files"""
-        self._about.SetName('Statistics')
-        self._about.SetVersion('2.0')
-        self._about.SetDescription(description)
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(STATISTICS_APP_ICON) )
-        self._about.SetIcon(_icon)
-
-    # End _update_about
-    # ------------------------------------------------------------------------
-
 
     def _append_in_menu(self):
         """
@@ -112,9 +92,7 @@ class StatisticsFrame( ComponentFrame ):
         # http://www.wxpython.org/docs/api/wx.MenuBar-class.html
         # http://xoomer.virgilio.it/infinity77/wxPython/Widgets/wx.Menu.html
 
-    # End _append_in_menu
     # ------------------------------------------------------------------------
-
 
     def _append_in_toolbar(self):
         """
@@ -128,17 +106,12 @@ class StatisticsFrame( ComponentFrame ):
 
         toolbar.Realize()
 
-    # End _append_in_toolbar
     # ------------------------------------------------------------------------
-
 
     def CreateClient(self, parent, prefsIO):
         """
         Override.
         """
         return StatisticsClient( parent,prefsIO )
-
-    # End CreateClient
-    # ------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------

@@ -67,25 +67,8 @@ class AudioRoamerFrame( ComponentFrame ):
         arguments['prefs'] = prefsIO
         ComponentFrame.__init__(self, parent, appid, arguments)
 
-        self._update_about()
         self._append_in_menu()
         self._append_in_toolbar()
-
-    # ------------------------------------------------------------------------
-
-    def _update_about(self):
-        """
-        Update information of the about dialog box.
-
-        """
-        description = """AudioRoamer allows to play, show information and manage channels of audio files."""
-        self._about.SetName('AudioRoamer')
-        self._about.SetVersion('1.2')
-        self._about.SetDescription(description)
-
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(AUDIOROAMER_APP_ICON) )
-        self._about.SetIcon(_icon)
 
     # ------------------------------------------------------------------------
 

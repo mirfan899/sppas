@@ -88,23 +88,8 @@ class DataRoamerFrame( ComponentFrame ):
 
         ComponentFrame.__init__(self, parent, idc, arguments)
 
-        self._update_about()
         self._append_in_menu()
         self._append_in_toolbar()
-
-    # ------------------------------------------------------------------------
-
-    def _update_about(self):
-        """
-        Update information of the about dialog box.
-        """
-        description = """DataRoamer is a component to play and get information about speech files."""
-        self._about.SetName('DataRoamer')
-        self._about.SetVersion('2.0')
-        self._about.SetDescription(description)
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(DATAROAMER_APP_ICON) )
-        self._about.SetIcon(_icon)
 
     # ------------------------------------------------------------------------
 

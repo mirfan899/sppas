@@ -101,12 +101,12 @@ class AnalyzePanel( wx.Panel ):
         aboutButton    = ButtonPanel(self, ID_FRAME_STATISTICS, self._prefs, STATISTICS_APP_ICON,  "DataStats")
 
         _box = wx.GridBagSizer()
-        _box.Add( annotateButton, pos=(0, 0), flag=wx.ALL, border=2)
-        _box.Add( pluginsButton,  pos=(1, 1), flag=wx.ALL, border=2)
-        _box.Add( analyzeButton,  pos=(0, 1), flag=wx.ALL, border=2)
-        _box.Add( settingsButton, pos=(1, 0), flag=wx.ALL, border=2)
-        _box.Add( aboutButton,    pos=(2, 0), flag=wx.ALL, border=2)
-        _box.Add( helpButton,     pos=(2, 1), flag=wx.ALL, border=2)
+        _box.Add( annotateButton, pos=(0, 0), flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
+        _box.Add( pluginsButton,  pos=(1, 1), flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
+        _box.Add( analyzeButton,  pos=(0, 1), flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
+        _box.Add( settingsButton, pos=(1, 0), flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
+        _box.Add( aboutButton,    pos=(2, 0), flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
+        _box.Add( helpButton,     pos=(2, 1), flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
 
         _box.AddGrowableCol(0)
         _box.AddGrowableCol(1)

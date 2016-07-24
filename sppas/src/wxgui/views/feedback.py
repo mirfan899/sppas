@@ -111,7 +111,6 @@ class FeedbackDialog( spBaseDialog ):
     @summary: Dialog to send feedback comments by email to the author.
 
     """
-
     def __init__(self, parent, preferences):
         spBaseDialog.__init__(self, parent, preferences, title="Feedback")
         wx.GetApp().SetAppName( "feedback" )

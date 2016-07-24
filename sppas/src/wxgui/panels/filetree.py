@@ -44,7 +44,6 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # Imports
 # ----------------------------------------------------------------------------
 
-import logging
 import os.path
 
 import audiodata.io

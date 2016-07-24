@@ -37,7 +37,7 @@
 
 import wx
 
-from wxgui.panels.buttons import ButtonPanel, ButtonMenuPanel
+from wxgui.panels.buttons import ButtonPanel, ButtonMenuPanel, ImgPanel
 from sp_glob import program, title
 
 from wxgui.sp_icons import ANNOTATIONS_ICON
@@ -171,12 +171,12 @@ class MainActionsPanel( wx.Panel ):
         aboutButton    = ButtonPanel(self, wx.ID_ABOUT,      self._prefs, ABOUT_ICON,      "About",    "Know more, give feedback, ...")
 
         _box = wx.GridBagSizer()
-        _box.Add( annotateButton, pos=(0, 0), flag=wx.ALL, border=2)
-        _box.Add( pluginsButton,  pos=(1, 1), flag=wx.ALL, border=2)
-        _box.Add( analyzeButton,  pos=(0, 1), flag=wx.ALL, border=2)
-        _box.Add( settingsButton, pos=(1, 0), flag=wx.ALL, border=2)
-        _box.Add( aboutButton,    pos=(2, 0), flag=wx.ALL, border=2)
-        _box.Add( helpButton,     pos=(2, 1), flag=wx.ALL, border=2)
+        _box.Add( annotateButton, pos=(0, 0), flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
+        _box.Add( pluginsButton,  pos=(1, 1), flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
+        _box.Add( analyzeButton,  pos=(0, 1), flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
+        _box.Add( settingsButton, pos=(1, 0), flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
+        _box.Add( aboutButton,    pos=(2, 0), flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
+        _box.Add( helpButton,     pos=(2, 1), flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
 
         _box.AddGrowableCol(0)
         _box.AddGrowableCol(1)
@@ -211,28 +211,40 @@ class MainActionsMenuPanel( wx.Panel ):
         self.SetBackgroundColour( preferences.GetValue('M_BGM_COLOUR') )
         self._prefs = preferences
 
-        self.backButton = ButtonMenuPanel(self, ID_ACTIONS,  preferences, BACKWARD_ICON, None)
+        self.backButton = ImgPanel(self, 24, BACKWARD_ICON)
+        font = preferences.GetValue('M_FONT')
+
+        self.text = wx.TextCtrl( self, -1, style=wx.NO_BORDER )
+        self.text.SetEditable(False)
+        font.SetWeight( wx.BOLD )
+        self.text.SetFont( font )
+        self.text.SetBackgroundColour( self.GetBackgroundColour() )
+        self.text.SetForegroundColour( preferences.GetValue('M_FONTM_COLOUR') )
 
         sizer = wx.BoxSizer( wx.HORIZONTAL )
-        sizer.Add( self.backButton, proportion=0, flag=wx.ALL, border=2)
+        sizer.Add( self.backButton, proportion=0, flag=wx.ALL|wx.ALIGN_CENTER|wx.ALIGN_CENTRE_VERTICAL, border=2)
+        sizer.Add( self.text, proportion=1, flag=wx.EXPAND|wx.ALL|wx.ALIGN_CENTER|wx.ALIGN_CENTRE_VERTICAL, border=0)
         self.SetSizer( sizer )
-        self.Bind( wx.EVT_BUTTON, self.OnButtonClick )
+        self.SetMinSize((-1, 28))
+
+        self.Bind(wx.EVT_LEFT_UP, self.OnButtonClick)
 
     # -----------------------------------------------------------------------
 
     def OnButtonClick(self, evt):
-        obj = evt.GetEventObject()
-        evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, obj.GetId())
+        evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, ID_ACTIONS)
         evt.SetEventObject(self)
         wx.PostEvent(self.GetParent(), evt)
 
     # -----------------------------------------------------------------------
 
-    def ShowBack(self, value):
-        if value is True:
+    def ShowBack(self, state=True, text=""):
+        self.text.SetValue(text)
+        if state is True:
             self.backButton.Show()
         else:
             self.backButton.Hide()
+        self.Refresh()
 
     # -----------------------------------------------------------------------
 

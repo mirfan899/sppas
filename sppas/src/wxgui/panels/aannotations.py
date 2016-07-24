@@ -125,7 +125,7 @@ class sppasStepPanel( wx.Panel ):
         #self.panel = wx.Panel(self, -1)
         self.text = wx.StaticText(self, -1, self.parameters.get_step_name(index))
         self.text.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR'))
-        self.text.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR'))
+        self.text.SetForegroundColour( self._prefsIO.GetValue('M_FONT_COLOUR'))
         self.text.SetFont( self._prefsIO.GetValue('M_FONT') )
         self.text.Bind(wx.EVT_LEFT_UP, self.on_click)
         step_sizer.Add(self.text, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 0)
@@ -136,7 +136,7 @@ class sppasStepPanel( wx.Panel ):
             choicelist.append( LANG_NONE )
             self.choice = wx.Choice(self, -1, choices = sorted(choicelist))
             self.choice.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
-            self.choice.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR') )
+            self.choice.SetForegroundColour( self._prefsIO.GetValue('M_FONTD_COLOUR') )
             self.choice.SetFont( self._prefsIO.GetValue('M_FONT') )
 
             self.choice.SetSelection(self.choice.GetItems().index( LANG_NONE ))
@@ -242,20 +242,12 @@ class AnnotationsPanel( wx.lib.scrolledpanel.ScrolledPanel ):
         self._prefsIO = preferences
         self.parameters.set_output_format( self._prefsIO.GetValue('M_OUTPUT_EXT') )
 
-        # Label
-        self._title = wx.StaticText(self, -1, 'Automatic annotations:')
-        self._title.SetForegroundColour(self._prefsIO.GetValue('M_FG_COLOUR'))
-        font = self._prefsIO.GetValue('M_FONT')
-        font.SetWeight( wx.BOLD )
-        self._title.SetFont(font)
-
         _contentbox = self.__create_content()
 
         # Button to annotate
         self._brun = CreateGenButton(self, RUN_ID, spBitmap(ANNOTATE_ICON, BUTTON_ICONSIZE, self._prefsIO.GetValue('M_ICON_THEME')), text="Annotate", tooltip="Automatically annotate selected files.", colour=wx.Colour(220,100,80), SIZE=BUTTON_ICONSIZE, font=self._prefsIO.GetValue('M_FONT'))
 
         _vbox = wx.BoxSizer(wx.VERTICAL)
-        _vbox.Add(self._title, proportion=0, flag=wx.EXPAND | wx.ALL, border=4)
         _vbox.Add(_contentbox, proportion=2, flag=wx.EXPAND | wx.ALL, border=4)
         _vbox.Add(self._brun, proportion=0, flag=wx.EXPAND | wx.ALL, border=4)
 
@@ -339,11 +331,6 @@ class AnnotationsPanel( wx.lib.scrolledpanel.ScrolledPanel ):
         self.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
         self.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR') )
         self.SetFont( self._prefsIO.GetValue('M_FONT') )
-
-        font = self._prefsIO.GetValue('M_FONT')
-        font.SetWeight( wx.BOLD )
-        self._title.SetFont( font )
-        self._title.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR') )
 
         self._brun.SetFont( self._prefsIO.GetValue('M_FONT') )
         self.link_btn.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )

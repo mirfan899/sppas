@@ -82,9 +82,9 @@ from wxgui.ui.CustomEvents     import SettingsEvent
 from wxgui.ui.CustomStatus     import CustomStatusBar
 
 from wxgui.dialogs.msgdialogs  import ShowYesNoQuestion, ShowInformation
-from wxgui.views.about         import AboutBox
-from wxgui.views.settings      import SettingsDialog
+from wxgui.views.about         import ShowAboutDialog
 from wxgui.views.feedback      import ShowFeedbackDialog
+from wxgui.views.settings      import SettingsDialog
 from wxgui.frames.helpbrowser  import HelpBrowser
 
 from wxgui.structs.prefs       import Preferences_IO
@@ -134,7 +134,6 @@ class ComponentFrame( wx.Frame ):
         Creates a new ComponentFrame instance.
 
         """
-
         wx.Frame.__init__(self, parent, idf, title=FRAME_TITLE+" - Component", style=FRAME_STYLE)
 
         # To enable translations of wx stock items.
@@ -221,9 +220,6 @@ class ComponentFrame( wx.Frame ):
         Creates the default about, menubar, toolbar and status bar.
 
         """
-        # Create the about box
-        self._about = AboutBox()
-
         # Create the menu
         menubar = self._create_menu()
 
@@ -785,7 +781,7 @@ class ComponentFrame( wx.Frame ):
         Open the About box.
 
         """
-        wx.AboutBox( self._about )
+        ShowAboutDialog( self, self._prefsIO )
 
     # ------------------------------------------------------------------------
 

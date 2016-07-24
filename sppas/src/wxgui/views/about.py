@@ -35,50 +35,40 @@
 # File: about.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
-
-# -------------------------------------------------------------------------
-# Imports
-# -------------------------------------------------------------------------
-
 import wx
 
-from sp_glob import program, version, author, copyright, brief, url, license_text
-
+from wxgui.dialogs.basedialog import spBaseDialog
 from wxgui.sp_icons import APP_ICON
-
-from wxgui.cutils.imageutils import spBitmap
+from wxgui.panels.about import AboutSPPAS
 
 # ----------------------------------------------------------------------------
 
-class AboutBox( wx.AboutDialogInfo ):
+class AboutDialog( spBaseDialog ):
     """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: This class is used to display an about frame.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      This class is used to display an about frame.
 
     """
+    def __init__(self, parent, preferences):
+        spBaseDialog.__init__(self, parent, preferences, title="About")
+        wx.GetApp().SetAppName( "about" )
 
-    def __init__(self):
-        """
-        Constructor.
+        titlebox   = self.CreateTitle(APP_ICON,"About SPPAS...")
+        contentbox = AboutSPPAS( self,preferences )
+        buttonbox  = self.CreateButtonBox( [],[self.CreateOkayButton()] )
 
-        """
-        wx.AboutDialogInfo.__init__(self)
+        self.LayoutComponents( titlebox,
+                               contentbox,
+                               buttonbox )
 
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap( APP_ICON ) )
-        self.SetIcon(_icon)
+# ------------------------------------------------------------------------
 
-        self.SetName( program )
-        self.SetVersion( version )
-        self.SetDescription( brief )
-        self.SetCopyright( copyright )
-        self.SetWebSite( url )
-        self.SetLicence( license_text )
-        self.AddDeveloper( author )
-        self.AddDocWriter( author )
-        self.AddArtist('')
+def ShowAboutDialog(parent, preferences):
+    dialog = AboutDialog(parent, preferences)
+    dialog.SetMinSize((520,580))
+    dialog.ShowModal()
+    dialog.Destroy()

@@ -113,7 +113,6 @@ class SppasEditFrame( ComponentFrame ):
         arguments['prefs'] = prefsIO
         ComponentFrame.__init__(self, parent, id, arguments)
 
-        self._update_about()
         self._append_in_menu()
         self._append_in_toolbar()
 
@@ -131,21 +130,6 @@ class SppasEditFrame( ComponentFrame ):
             self._prefsIO.SetTheme( all_themes.get_theme(u'Default') )
 
         self._fmtype = "ANYFILES"
-
-    # ------------------------------------------------------------------------
-
-    def _update_about(self):
-        """
-        Update information of the about dialog box.
-
-        """
-        description = """SppasEdit is a component to display files. """
-        self._about.SetName('SppasEdit')
-        self._about.SetVersion('1.1')
-        self._about.SetDescription(description)
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(SPPASEDIT_APP_ICON) )
-        self._about.SetIcon(_icon)
 
     # ------------------------------------------------------------------------
 
