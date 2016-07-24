@@ -154,12 +154,10 @@ class Preferences_IO( Preferences ):
         try:
             with codecs.open(self._filename, mode="rb") as f:
                 prefs = pickle.load(f)
-        except Exception as e:
-            logging.debug('Preferences NOT read, error: %s'%str(e))
+        except Exception:
             return False
 
         self._prefs = prefs
-        logging.debug('Settings read successfully')
         return True
 
     # ------------------------------------------------------------------------
@@ -176,11 +174,9 @@ class Preferences_IO( Preferences ):
         try:
             with codecs.open(self._filename, mode="wb") as f:
                 pickle.dump(self._prefs, f, pickle.HIGHEST_PROTOCOL)
-        except Exception as e:
-            logging.debug('Preferences NOT saved, error: %s'%str(e))
+        except Exception:
             return False
 
-        logging.debug('Settings saved successfully.')
         return True
 
     # ------------------------------------------------------------------------

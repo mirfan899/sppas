@@ -88,7 +88,6 @@ from wxgui.views.settings      import SettingsDialog
 from wxgui.frames.helpbrowser  import HelpBrowser
 
 from wxgui.structs.prefs       import Preferences_IO
-from wxgui.structs.themes      import Themes, BaseTheme
 
 from wxgui.panels.filemanager   import FileManager
 from wxgui.clients.baseclient   import BaseClient
@@ -176,7 +175,7 @@ class ComponentFrame( wx.Frame ):
             # Try to get prefs from a file, or fix default values.
             self._prefsIO = Preferences_IO( SETTINGS_FILE )
             if self._prefsIO.Read() is False:
-                self._prefsIO.SetTheme( BaseTheme() )
+                self._prefsIO = Preferences_IO( None )
 
         self._fmtype = "DATAFILES"
         if "type" in args.keys():

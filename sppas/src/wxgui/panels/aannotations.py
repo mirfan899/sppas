@@ -197,11 +197,11 @@ class sppasStepPanel( wx.Panel ):
         """
         self._prefsIO = prefs
         self.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
-        self.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR') )
+        self.SetForegroundColour( self._prefsIO.GetValue('M_FONT_COLOUR') )
         self.SetFont( self._prefsIO.GetValue('M_FONT') )
 
         self.text.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR'))
-        self.text.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR'))
+        self.text.SetForegroundColour( self._prefsIO.GetValue('M_FONT_COLOUR'))
         self.text.SetFont( self._prefsIO.GetValue('M_FONT') )
 
         if self.choice:

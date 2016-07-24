@@ -45,9 +45,11 @@ import webbrowser
 import annotationdata
 import audiodata
 
+from sp_glob import SETTINGS_FILE
+
 from wxgui.cutils.imageutils import spBitmap
 from wxgui.sp_icons import APP_ICON
-import wxgui.structs.prefs
+from wxgui.structs.prefs import Preferences_IO
 
 from wxgui.sp_consts import MIN_FRAME_W, MIN_PANEL_W, PANEL_W
 from wxgui.sp_consts import MIN_FRAME_H, MIN_PANEL_H, FRAME_H
@@ -74,6 +76,7 @@ from wxgui.panels.components       import AnalyzePanel
 from wxgui.panels.aannotations     import AnnotationsPanel
 from wxgui.panels.plugins          import PluginPanel
 from wxgui.panels.about            import AboutSPPAS
+from wxgui.ui.splitterpanel import SplitterPanel
 
 from wxgui.frames.dataroamerframe  import DataRoamerFrame
 from wxgui.frames.audioroamerframe import AudioRoamerFrame
@@ -100,7 +103,7 @@ class FrameSPPAS( wx.Frame ):
     @summary:      SPPAS main frame based on wx library.
 
     """
-    def __init__( self, preferencesIO ):
+    def __init__( self, preferencesIO=None ):
         """
         Constructor of the SPPAS main frame.
 
@@ -110,39 +113,46 @@ class FrameSPPAS( wx.Frame ):
         wx.Frame.__init__(self, None, -1, title=FRAME_TITLE, style=FRAME_STYLE)
 
         # Members
-        if preferencesIO is None:
-            preferencesIO = wxgui.structs.prefs.Preferences_IO()
-        self.preferences = preferencesIO
+        self._init_members(preferencesIO)
 
         # Create GUI
         self._init_infos()
-        self.actions = None
-        self.flp     = None
 
-        self._mainmenu  = MainMenuPanel(self,  self.preferences)
-        self._maintitle = MainTitlePanel(self, self.preferences)
         self._mainpanel = self._create_content()
-
-        contentsizer = wx.BoxSizer( wx.VERTICAL )
-        contentsizer.Add( self._maintitle, proportion=0, flag=wx.ALL|wx.EXPAND, border=0 )
-        contentsizer.Add( self._mainpanel, proportion=1, flag=wx.ALL|wx.EXPAND, border=0 )
-
-        sizer = wx.BoxSizer( wx.HORIZONTAL )
-        sizer.Add( self._mainmenu, proportion=0, flag=wx.ALL|wx.EXPAND, border=0)
-        sizer.Add( contentsizer,   proportion=2, flag=wx.ALL|wx.EXPAND, border=0)
-        self.SetSizer( sizer )
-
-        # Frame properties
-        self._frame_properties()
 
         # Events of this frame
         self.Bind(wx.EVT_CLOSE,  self.ProcessEvent)
         self.Bind(wx.EVT_BUTTON, self.ProcessEvent)
 
+        self.SetMinSize( (MIN_FRAME_W,MIN_FRAME_H) )
+        (w,h) = wx.GetDisplaySize()
+        self.SetSize( wx.Size(w*0.75,h*0.75) )
+        self.Centre()
+        self.Enable()
+        self.SetFocus()
+
         self.Show( True )
 
     # ------------------------------------------------------------------------
     # Private methods to create the GUI and initialize members
+    # ------------------------------------------------------------------------
+
+    def _init_members( self, preferencesIO ):
+        # Data
+        if preferencesIO is None:
+            # Try to get prefs from a file, or fix default values.
+            preferencesIO = Preferences_IO( SETTINGS_FILE )
+            preferencesIO.Read()
+        self.preferences = preferencesIO
+
+        # wx: panels and sizers
+        self.actions = None
+        self.flp     = None
+        self._leftpanel  = None
+        self._rightpanel = None
+        self._leftsizer  = None
+        self._rightsizer = None
+
     # ------------------------------------------------------------------------
 
     def _init_infos( self ):
@@ -163,45 +173,67 @@ class FrameSPPAS( wx.Frame ):
     # ------------------------------------------------------------------------
 
     def _create_content(self):
-        """ Create the frame content. """
+        """ Organize all sub-panels into a main panel and return it. """
 
-        splitpanel = wx.SplitterWindow(self, -1, style=wx.SP_NOBORDER)
-        splitpanel.SetBackgroundColour( self.preferences.GetValue('M_FG_COLOUR') )
-        splitpanel.SetForegroundColour( self.preferences.GetValue('M_BG_COLOUR') )
+        mainpanel = wx.Panel(self, -1,  style=wx.NO_BORDER)
+        mainpanel.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
+        mainpanel.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR'))
+        mainpanel.SetFont( self.preferences.GetValue('M_FONT'))
 
-        # Left: File explorer
-        self.flp   = FiletreePanel(splitpanel, self.preferences)
+        mainmenu  = MainMenuPanel(mainpanel,  self.preferences)
+        maintitle = MainTitlePanel(mainpanel, self.preferences)
+        splitpanel = self._create_splitter(mainpanel)
 
-        # Right: Actions to perform on selected files
-        self._rightpanel = wx.Panel(splitpanel,-1)
-        self._contentsizer = wx.BoxSizer( wx.VERTICAL )
-        self.actionsmenu = MainActionsMenuPanel(self._rightpanel, self.preferences)
-        self.actionsmenu.ShowBack(False)
-        self.actions     = MainActionsPanel(self._rightpanel, self.preferences)
-        self._contentsizer.Add( self.actionsmenu, proportion=0, flag=wx.ALL|wx.EXPAND, border=0)
-        self._contentsizer.Add( self.actions,     proportion=1, flag=wx.ALL|wx.EXPAND, border=0)
-        self._rightpanel.SetSizer(self._contentsizer)
+        vsizer = wx.BoxSizer( wx.VERTICAL )
+        vsizer.Add( maintitle,  proportion=0, flag=wx.ALL|wx.EXPAND, border=0 )
+        vsizer.Add( splitpanel, proportion=1, flag=wx.ALL|wx.EXPAND, border=0 )
 
-        splitpanel.SplitVertically( self.flp , self._rightpanel, sashPosition=0 )
-        splitpanel.SetSashGravity(0.5)
-        splitpanel.SetMinimumPaneSize( MIN_PANEL_W )
+        sizer = wx.BoxSizer( wx.HORIZONTAL )
+        sizer.Add( mainmenu, proportion=0, flag=wx.ALL|wx.EXPAND, border=0)
+        sizer.Add( vsizer, proportion=2, flag=wx.ALL|wx.EXPAND, border=0)
+        mainpanel.SetSizer( sizer )
 
-        return splitpanel
+        # Frame properties
+        mainmenu.SetMinSize((32,-1))
+        maintitle.SetMinSize((-1,32))
+
+        return mainpanel
 
     # ------------------------------------------------------------------------
 
-    def _frame_properties(self):
-        """ Fix frame size (adjust size depending on screen capabilities). """
+    def _create_splitter(self, parent):
+        """ Create the main panel content. """
 
-        self._mainmenu.SetMinSize((32,MIN_FRAME_H))
-        self._maintitle.SetMinSize((-1,32))
-        self.flp.SetMinSize((MIN_PANEL_W,MIN_PANEL_H))
-        self.actions.SetMinSize((MIN_PANEL_W,MIN_PANEL_H))
+        splitpanel = SplitterPanel(parent, proportion=0.6)
+        splitpanel.SetBackgroundColour( self.preferences.GetValue('M_BGM_COLOUR') )
+        splitpanel.SetForegroundColour( self.preferences.GetValue('M_BGM_COLOUR') )
 
-        self.SetMinSize( (MIN_FRAME_W,MIN_FRAME_H) )
-        self.Centre()
-        self.Enable()
-        self.SetFocus()
+        # Left: File explorer
+        self._leftpanel = wx.Panel(splitpanel,-1)
+        self.flp = FiletreePanel(self._leftpanel, self.preferences)
+
+        self._leftsizer = wx.BoxSizer( wx.VERTICAL )
+        self._leftsizer.Add( self.flp, proportion=2, flag=wx.ALL|wx.EXPAND, border=0)
+        self._leftpanel.SetSizer(self._leftsizer)
+
+        # Right: Actions to perform on selected files
+        self._rightpanel = wx.Panel(splitpanel,-1)
+        self.actionsmenu = MainActionsMenuPanel(self._rightpanel, self.preferences)
+        self.actionsmenu.ShowBack(False)
+        self.actions = MainActionsPanel(self._rightpanel, self.preferences)
+
+        self._rightsizer = wx.BoxSizer( wx.VERTICAL )
+        self._rightsizer.Add( self.actionsmenu, proportion=0, flag=wx.ALL|wx.EXPAND, border=0)
+        self._rightsizer.Add( self.actions,     proportion=1, flag=wx.ALL|wx.EXPAND, border=0)
+        self._rightpanel.SetSizer(self._rightsizer)
+
+        splitpanel.SetMinimumPaneSize( MIN_PANEL_W )
+        splitpanel.SplitVertically( self._leftpanel , self._rightpanel )
+
+        self._leftpanel.SetMinSize((MIN_PANEL_W,MIN_PANEL_H))
+        self._rightpanel.SetMinSize((MIN_PANEL_W,MIN_PANEL_H))
+
+        return splitpanel
 
     # ------------------------------------------------------------------------
 
@@ -210,7 +242,7 @@ class FrameSPPAS( wx.Frame ):
 
         # Remove current actions panel
         if self.actions is not None:
-            self._contentsizer.Detach( self.actions )
+            self._rightsizer.Detach( self.actions )
             self.actions.Destroy()
 
         # Create the new one:
@@ -230,11 +262,20 @@ class FrameSPPAS( wx.Frame ):
             self.actions = AboutSPPAS(self._rightpanel, self.preferences)
             self.actionsmenu.ShowBack(True, "   A B O U T ")
 
-        self._contentsizer.Add( self.actions, proportion=1, flag=wx.ALL|wx.EXPAND, border=0)
-        self.Refresh()
-        self.Layout()
+        self._rightsizer.Add( self.actions, proportion=1, flag=wx.ALL|wx.EXPAND, border=0)
+        self._LayoutFrame()
 
     # -----------------------------------------------------------------------
+
+    def _LayoutFrame(self):
+        """
+        Lays out the frame.
+
+        """
+        wx.LayoutAlgorithm().LayoutFrame(self, self._mainpanel)
+        self._rightpanel.SendSizeEvent()
+        self.Refresh()
+
 
     # -----------------------------------------------------------------------
     # Callbacks
@@ -408,13 +449,12 @@ class FrameSPPAS( wx.Frame ):
         self.preferences = prefs
         self.flp.SetPrefs( self.preferences )
 
-        self._contentsizer.Detach(self.actions)
+        self._rightsizer.Detach(self.actions)
         self.actions.Destroy()
         self.actions = MainActionsPanel(self._rightpanel, self.preferences)
-        self._contentsizer.Add( self.actions, proportion=0, flag=wx.ALL|wx.EXPAND, border=0)
+        self._rightsizer.Add( self.actions, proportion=1, flag=wx.ALL|wx.EXPAND, border=0)
 
-        self.Refresh()
-        self.Layout()
+        self._LayoutFrame()
 
     # -----------------------------------------------------------------------
 
