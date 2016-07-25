@@ -54,13 +54,15 @@ import audiodata.io
 import annotationdata.io
 from annotations.infotier        import InfoTier
 from annotations.log             import sppasLog
-from annotations.Momel.momel     import sppasMomel
-from annotations.IPUs.ipusseg    import sppasIPUs
-from annotations.Token.tok       import sppasTok
-from annotations.Phon.phon       import sppasPhon
-from annotations.Align.align     import sppasAlign
-from annotations.Syll.syll       import sppasSyll
-from annotations.Repetitions.repetition  import sppasRepetition
+
+from annotations.Momel.sppasmomel       import sppasMomel
+from annotations.Intsint.sppasintsint   import sppasIntsint
+from annotations.IPUs.ipusseg           import sppasIPUs
+from annotations.Token.tok              import sppasTok
+from annotations.Phon.phon              import sppasPhon
+from annotations.Align.align            import sppasAlign
+from annotations.Syll.syll              import sppasSyll
+from annotations.Repetitions.repetition import sppasRepetition
 
 from threading import Thread
 
@@ -104,7 +106,7 @@ class sppasProcess( Thread ):
         Fix all options.
 
         Available options are:
-            - domerge
+            - domerge (bool) create a merged TextGrid file.
 
         @param options (option)
 
@@ -295,6 +297,80 @@ class sppasProcess( Thread ):
         return files_processed_success
 
     # End run_momel
+    # ------------------------------------------------------------------------
+
+    def run_intsint(self, stepidx):
+        """
+        Execute the SPPAS implementation of Intsint.
+
+        @param stepidx index of this annotations in the parameters
+        @return number of files processed successfully
+
+        """
+        # Initializations
+        stepname = self.parameters.get_step_name(stepidx)
+        files_processed_success = 0
+        self._progress.set_header(stepname)
+        self._progress.update(0,"")
+
+        # Get the list of input file names, with the ".wav" (or ".wave") extension
+        filelist = self.set_filelist(".wav")#,not_start=["track_"])
+        if len(filelist) == 0:
+            return 0
+        total = len(filelist)
+
+        # Create annotation instance
+        try:
+            intsint = sppasIntsint( self._logfile )
+        except Exception as e:
+            if self._logfile is not None:
+                self._logfile.print_message( "%s\n"%str(e), indent=1,status=1 )
+            return 0
+
+        # Execute annotation for each file in the list
+        for i,f in enumerate(filelist):
+
+            # Indicate the file to be processed
+            self._progress.set_text( os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")" )
+            if self._logfile is not None:
+                self._logfile.print_message(stepname+" of file " + f, indent=1 )
+
+            # Get the input file
+            ext = ['-momel'+self.parameters.get_output_format()]
+            for e in annotationdata.io.extensions_out:
+                ext.append( '-momel'+e )
+
+            inname = self._get_filename(f, ext)
+            if inname is not None:
+
+                # Fix output file names
+                outname = os.path.splitext(f)[0] + '-intsint' + self.parameters.get_output_format()
+
+                # Execute annotation
+                try:
+                    intsint.run(inname, outname)
+                    files_processed_success += 1
+                    if self._logfile is not None:
+                        self._logfile.print_message(outname,indent=2,status=0)
+                except Exception as e:
+                    if self._logfile is not None:
+                        self._logfile.print_message(outname+": %s"%str(e),indent=2,status=-1)
+            else:
+                if self._logfile is not None:
+                    self._logfile.print_message("Failed to find a file with momel targets. Read the documentation for details.",indent=2,status=2)
+
+            # Indicate progress
+            self._progress.set_fraction(float((i+1))/float(total))
+            if self._logfile is not None:
+                self._logfile.print_newline()
+
+        # Indicate completed!
+        self._progress.update(1,"Completed (%d files successfully over %d files).\n"%(files_processed_success,total))
+        self._progress.set_header("")
+
+        return files_processed_success
+
+    # End run_intsint
     # ------------------------------------------------------------------------
 
     def run_ipusegmentation(self, stepidx):
@@ -874,7 +950,12 @@ class sppasProcess( Thread ):
             except Exception:
                 pass
             try:
-                self.__add_trs(trs, basef + "-momel" + output_format) # Momel, INTSINT
+                self.__add_trs(trs, basef + "-momel" + output_format) # Momel
+                nbfiles = nbfiles + 1
+            except Exception:
+                pass
+            try:
+                self.__add_trs(trs, basef + "-intsint" + output_format) # INTSINT
                 nbfiles = nbfiles + 1
             except Exception:
                 pass
@@ -954,6 +1035,8 @@ class sppasProcess( Thread ):
 
                 if self.parameters.get_step_key(i) == "momel":
                     nbruns[i] = self.run_momel(i)
+                elif self.parameters.get_step_key(i) == "intsint":
+                    nbruns[i] = self.run_intsint(i)
                 elif self.parameters.get_step_key(i) == "ipus":
                     nbruns[i] = self.run_ipusegmentation(i)
                 elif self.parameters.get_step_key(i) == "tok":

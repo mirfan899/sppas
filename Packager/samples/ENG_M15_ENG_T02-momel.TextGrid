@@ -1,0 +1,167 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0.0
+xmax = 14.2878416586
+tiers? <exists>
+size = 1
+item []:
+    item [1]:
+        class = "TextTier"
+        name = "Momel"
+        xmin = 1.291629
+        xmax = 14.287842
+        intervals: size = 51
+        points [1]:
+            time = 1.29162920605
+            mark = "109"
+        points [2]:
+            time = 1.52941253486
+            mark = "126"
+        points [3]:
+            time = 1.62527058632
+            mark = "144"
+        points [4]:
+            time = 1.95207183809
+            mark = "103"
+        points [5]:
+            time = 2.15322385002
+            mark = "98"
+        points [6]:
+            time = 2.33812460502
+            mark = "108"
+        points [7]:
+            time = 2.56577502217
+            mark = "84"
+        points [8]:
+            time = 2.74859454513
+            mark = "105"
+        points [9]:
+            time = 2.90628641
+            mark = "82"
+        points [10]:
+            time = 3.37773755522
+            mark = "122"
+        points [11]:
+            time = 3.48985254949
+            mark = "103"
+        points [12]:
+            time = 3.70624232405
+            mark = "133"
+        points [13]:
+            time = 4.00242272583
+            mark = "96"
+        points [14]:
+            time = 4.1703662494
+            mark = "93"
+        points [15]:
+            time = 4.34463507643
+            mark = "127"
+        points [16]:
+            time = 4.59226690617
+            mark = "107"
+        points [17]:
+            time = 4.70162793123
+            mark = "89"
+        points [18]:
+            time = 4.98076718516
+            mark = "101"
+        points [19]:
+            time = 5.39316971227
+            mark = "88"
+        points [20]:
+            time = 5.69744423815
+            mark = "96"
+        points [21]:
+            time = 5.88266614261
+            mark = "85"
+        points [22]:
+            time = 5.99391847847
+            mark = "92"
+        points [23]:
+            time = 6.71441632074
+            mark = "120"
+        points [24]:
+            time = 7.06181676707
+            mark = "132"
+        points [25]:
+            time = 7.24581806845
+            mark = "119"
+        points [26]:
+            time = 7.64098161691
+            mark = "101"
+        points [27]:
+            time = 7.81193464784
+            mark = "109"
+        points [28]:
+            time = 8.02030602628
+            mark = "90"
+        points [29]:
+            time = 8.18270958504
+            mark = "93"
+        points [30]:
+            time = 8.42701250146
+            mark = "114"
+        points [31]:
+            time = 8.64119683245
+            mark = "94"
+        points [32]:
+            time = 8.71497385368
+            mark = "74"
+        points [33]:
+            time = 8.92451780259
+            mark = "111"
+        points [34]:
+            time = 9.60611087356
+            mark = "101"
+        points [35]:
+            time = 9.96785781778
+            mark = "122"
+        points [36]:
+            time = 10.2399186942
+            mark = "102"
+        points [37]:
+            time = 10.5410712631
+            mark = "91"
+        points [38]:
+            time = 10.6940980741
+            mark = "99"
+        points [39]:
+            time = 10.8275976152
+            mark = "86"
+        points [40]:
+            time = 10.8822470334
+            mark = "84"
+        points [41]:
+            time = 11.7918203309
+            mark = "98"
+        points [42]:
+            time = 11.9958973615
+            mark = "127"
+        points [43]:
+            time = 12.0770343072
+            mark = "122"
+        points [44]:
+            time = 12.4043054427
+            mark = "110"
+        points [45]:
+            time = 12.6177955084
+            mark = "102"
+        points [46]:
+            time = 12.9211312846
+            mark = "114"
+        points [47]:
+            time = 13.3253632534
+            mark = "91"
+        points [48]:
+            time = 13.5133767791
+            mark = "90"
+        points [49]:
+            time = 13.7954890514
+            mark = "86"
+        points [50]:
+            time = 13.995243643
+            mark = "90"
+        points [51]:
+            time = 14.2878416586
+            mark = "57"
