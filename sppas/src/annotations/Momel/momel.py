@@ -35,43 +35,28 @@
 # File: momel.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+import math
+
+from st_cib import Targets
+import momelutil
 
 # ----------------------------------------------------------------------------
 
-import os
-import sys
-import math
-
-from annotationdata.transcription import Transcription
-from annotationdata.annotation import Annotation
-from annotationdata.ptime.point import TimePoint
-from annotationdata.label.label import Label
-import annotationdata.io
-
-from annotationdata.pitch import Pitch
-
-from st_cib import Targets
-from intsint import Intsint
-import momelutil
-
-
-# ##################################################################### #
-# Momel class implementation
-# ##################################################################### #
 class Momel:
-    """ A class to filter f0 and to modelize the melodie.
     """
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      A class to filter f0 and to modelize the melodie.
 
-    # ##################################################################### #
-    # Constructor
-    # ##################################################################### #
+    """
     def __init__(self):
-        """ Create a new sppasMomel instance.
         """
+        Create a new Momel instance.
 
+        """
         # Constants
         self.SEUILV = 50.
         self.FSIGMA = 1.
@@ -99,9 +84,7 @@ class Momel:
         # minimal frequency ratio
         self.seuilrapp_y = 0.05
 
-    # End __init__
     # -------------------------------------------------------------------
-
 
     def initialize(self):
         """ Set some variables to their default values.
@@ -120,13 +103,7 @@ class Momel:
         # Output of reduc2:
         self.cibred2 = []
 
-    # End initialize
     # -------------------------------------------------------------------
-
-
-    # ##################################################################### #
-    # Setters for optional values
-    # ##################################################################### #
 
     def set_pitch_array(self,arrayvals):
         self.hzptr = arrayvals
@@ -157,10 +134,7 @@ class Momel:
     def set_option_minr(self,val):
         self.seuilrapp_y = val
 
-
-    # ################################################################# #
-    # Elim glitch
-    # ################################################################# #
+    # ------------------------------------------------------------------
 
     def elim_glitch(self):
         """ Eliminate Glitch of the pitch values array.
@@ -177,17 +151,12 @@ class Momel:
             if (cur > gprec and cur > gnext):
                 self.hzptr[i] = 0.
 
-    # End elim_glitch
     # ------------------------------------------------------------------
 
-
-    # ################################################################## #
-    # Cible
-    # ################################################################## #
-
     def calcrgp(self,pond,dpx,fpx):
-        """ From inputs, estimates: a0, a1, a2.
-            Exception:   raise if an error occurs
+        """
+        From inputs, estimates: a0, a1, a2.
+
         """
         pn = 0.
         sx = sx2 = sx3 = sx4 = sy = sxy = sx2y = 0.
@@ -228,12 +197,12 @@ class Momel:
         self.a1 = (spdxy - self.a2 * spdx3) / spdx2
         self.a0 = (sy - self.a1 * sx - self.a2 * sx2) / pn
 
-    # End calcrgp
     # ------------------------------------------------------------------
 
-
     def cible(self):
-        """ cible.
+        """
+        Find momel target points.
+
         """
         if len(self.hzptr)==0:
             raise IOError('Momel::momel.py. IOError: empty pitch array')
@@ -306,19 +275,13 @@ class Momel:
             c.set(xc,yc)
             self.cib.append(c)
 
-    # End cible
     # ------------------------------------------------------------------
 
-
-
-    # ##################################################################### #
-    # Reduc
-    # ##################################################################### #
-
     def reduc(self):
-        """ reduc.
         """
+        First target reduction of too close points.
 
+        """
         # initialisations
         # ---------------
         xdist = []
@@ -492,9 +455,7 @@ class Momel:
                             self.cibred[ncibr].set(cibred_cour.get_x(),cibred_cour.get_y(),cibred_cour.get_p())
         # end For ip
 
-    # End reduc
     # ------------------------------------------------------------------
-
 
     def reduc2(self):
         """ reduc2.
@@ -522,13 +483,7 @@ class Momel:
                 pnred2 = pnred2 + 1
                 self.cibred2.append( self.cibred[i] )
 
-    # End reduc2
     # ------------------------------------------------------------------
-
-
-    # ##################################################################### #
-    # Borne
-    # ##################################################################### #
 
     def borne(self):
         """ borne.
@@ -605,261 +560,33 @@ class Momel:
             #borne.set_x( frontiere + (frontiere - ancre.get_x()) )
             #borne.set_y( ancre.get_y() + (2. * a * (ancre.get_x() - frontiere)*(ancre.get_x() - frontiere)) )
 
-    # End borne
     # ------------------------------------------------------------------
 
+    def annotate(self, pitchvalues):
+        """
+        Apply momel from a vector of pitch values, one each 0.01 sec.
 
-    def run_momel(self, pitchvalues):
-        """ Apply momel from a vector of pitch values, one each 0.01sec.
-            Write result in a text file and/or a TextGrid file.
-            Parameters:
-                pitch is the list of pitch values
-            Return:      A list of targets
-            Exceptions:  Exception
+        Return a list.
+
         """
         # Get pitch values
         self.initialize()
         self.set_pitch_array( pitchvalues )
 
-        if (self.ELIM_GLITCH==True):
+        if self.ELIM_GLITCH is True:
             self.elim_glitch()
 
-        try:
-            self.cible()
-        except Exception as e:
-            raise Exception("Momel.Cible.\n"+str(e))
+        self.cible()
+        self.reduc()
+        if len(self.cibred) == 0:
+            raise Exception("No left point after the first pass of point reduction.\n")
 
-        try:
-            self.reduc()
-        except Exception as e:
-            raise Exception("Momel.Reduc.\n"+str(e))
-        else:
-            self.reduc2()
-            if (len(self.cibred2))==0:
-                raise Exception("Momel.reduc2.\n"+str(e))
+        self.reduc2()
+        if len(self.cibred2) == 0:
+            raise Exception("No left point after the second pass of point reduction.\n")
 
-        try:
-            self.borne()
-        except Exception as e:
-            raise Exception("Momel::Borne.\n"+str(e))
+        self.borne()
 
         return self.cibred2
 
-    # End run
     # ------------------------------------------------------------------
-
-
-
-class sppasMomel( Momel ):
-    """ SPPAS inplementation of Momel.
-    """
-
-    def __init__(self, logfile=None):
-        Momel.__init__(self)
-        self.PAS_TRAME = 10.
-        self.logfile = logfile
-
-    # End __init__
-    # ------------------------------------------------------------------
-
-
-    def set_pitch(self, inputfilename):
-        """ Take pitch values from a file.
-            Return:      A list of pitch values (one value each 10 ms).
-            Exceptions;  Exception
-        """
-        try:
-            pitch = annotationdata.io.read( inputfilename )
-            pitchlist = pitch.get_pitch_list()
-            if len(pitchlist)==0:
-                raise IOError('sppasMomel::Pitch. Error while reading '+inputfilename+'\nEmpty pitch tier.\n')
-            return pitchlist
-        except Exception as e:
-            raise IOError('sppasMomel::Pitch. Error while reading '+inputfilename+'\n'+str(e)+'\n')
-    # End set_pitch
-    # ------------------------------------------------------------------
-
-    def __print_tgts(self, targets, output):
-        for i in range(len(targets)):
-            output.write( str( "%g"%(targets[i].get_x() * self.PAS_TRAME) ) )
-            output.write( " " )
-            output.write( str( "%g"%targets[i].get_y() ) )
-            output.write( "\n" )
-
-    def print_targets(self, targets, outputfile=None, trs=None):
-        """ Print the set of selected targets.
-            Return:      None
-        """
-        if outputfile is not None:
-            if outputfile is "STDOUT":
-                output=sys.stdout
-                self.__print_tgts(targets, output)
-            elif outputfile.lower().endswith('momel') is True:
-                output = open(outputfile,"w")
-                self.__print_tgts(targets, output)
-                output.close()
-
-        if trs is not None:
-            # Attention: time in targets is in milliseconds!
-            tier = trs.NewTier(name="Momel")
-            for i in range(len(targets)):
-                try:
-                    _time  = targets[i].get_x() * (0.001*self.PAS_TRAME)
-                    _label = str("%d"%(targets[i].get_y()))
-                    tier.Append(Annotation(TimePoint(_time), Label(_label)))
-                except Exception as e:
-                    if self.logfile is not None:
-                        self.logfile.print_message("Ignore target: time="+str(_time)+" and value="+_label, indent=2,status=3)
-
-            if outputfile is not None and outputfile.lower().endswith('.pitchtier'):
-                trsp=Transcription()
-                trsp.Add(tier)
-                try:
-                    annotationdata.io.write(outputfile, trsp)
-                except Exception as e:
-                    if self.logfile is not None:
-                        self.logfile.print_message("Can't write PitchTier output file.",status=-1)
-            return tier
-
-    # End print_targets
-    # ------------------------------------------------------------------
-
-
-    def fix_options(self, options):
-        for opt in options:
-            if "lfen1" == opt.get_key():
-                self.set_option_win1( opt.get_value() )
-            elif "hzinf" == opt.get_key():
-                self.set_option_lo( opt.get_value() )
-            elif "hzsup" == opt.get_key():
-                self.set_option_hi( opt.get_value() )
-            elif "maxec" == opt.get_key():
-                self.set_option_maxerr( opt.get_value() )
-            elif "lfen2" == opt.get_key():
-                self.set_option_win2( opt.get_value() )
-            elif "seuildiff_x" == opt.get_key():
-                self.set_option_mind( opt.get_value() )
-            elif "seuildiff_y" == opt.get_key():
-                self.set_option_minr( opt.get_value() )
-            elif "glitch" == opt.get_key():
-                self.set_option_elim_glitch( opt.get_value() )
-
-
-    def run(self, inputfilename, trsoutput=None, outputfile=None):
-        """ Apply momel and intsint (if any) from a pitch file.
-            Write result in a text file and/or a TextGrid file.
-            Parameters:
-                - inputfilename
-                - trsoutput
-                - outputfile
-            Return:      None
-        """
-        # Get pitch values from the input
-        pitch = self.set_pitch( inputfilename )
-        # Selected values (Target points) for this set of pitch values
-        targets = []
-
-        # List of pitch values of one **estimated** Inter-Pausal-Unit (ipu)
-        ipupitch = []
-        # Number of consecutive null F0 values
-        nbzero  = 0
-        # Current time value
-        curtime = 0
-        # For each f0 value of the wav file
-        for p in pitch:
-            if p == 0:
-                nbzero += 1
-            else:
-                nbzero = 0
-            ipupitch.append( p )
-
-            # If the number of null values exceed 300ms,
-            # we consider this is a silence and estimate Momel
-            # on the recorded list of pitch values of the **estimated** IPU.
-            if (nbzero*self.PAS_TRAME) > 299:
-                if len(ipupitch)>0 and ( len(ipupitch) > nbzero):
-                    # Estimates the real start time of the IPU
-                    ipustarttime = curtime - ( len(ipupitch) ) + 1
-                    try:
-                        # It is supposed ipupitch starts at time = 0.
-                        iputargets = self.run_momel( ipupitch )
-                    except Exception as e:
-                        if self.logfile is not None:
-                            self.logfile.print_message('No Momel annotation between time '+ str(ipustarttime*0.01) +" and "+ str(curtime*0.01)+" due to the following error: " +str(e),indent=2,status=-1)
-                        else:
-                            print "Momel Error: " + str(e)
-                        iputargets = []
-                        pass
-                    # Adjust time values in the targets
-                    for i in range( len(iputargets) ):
-                        x = iputargets[i].get_x()
-                        iputargets[i].set_x( ipustarttime + x )
-                    # add this targets to the targets list
-                    targets = targets + iputargets
-                    del ipupitch[:]
-
-            curtime += 1
-
-        # last ipu
-        if len(ipupitch)>0 and ( len(ipupitch) > nbzero):
-            try:
-                iputargets = self.run_momel( ipupitch )
-            except Exception as e:
-                if self.logfile is not None:
-                    self.logfile.print_message('No Momel annotation between time '+ str(ipustarttime*0.01) +" and "+ str(curtime*0.01)+" due to the following error: " +str(e),indent=2,status=-1)
-                else:
-                    print "error: " + str(e)
-                    iputargets = []
-                pass
-            ipustarttime = curtime - ( len(ipupitch) )
-            # Adjust time values
-            for i in range( len(iputargets) ):
-                x = iputargets[i].get_x()
-                iputargets[i].set_x(ipustarttime + x)
-            targets = targets + iputargets
-
-
-        # Print results and/or estimate INTSINT (if any)
-        try:
-            if trsoutput:
-                trsm = Transcription("TrsMomel")
-                if outputfile:
-                    momeltier = self.print_targets(targets, outputfile, trs=trsm)
-                else:
-                    momeltier = self.print_targets(targets, outputfile=None, trs=trsm)
-                if self.logfile is not None:
-                    self.logfile.print_message(str(len(targets))+ " targets found.",indent=2,status=3)
-
-                momeltier.SetRadius(0.005) # because one pitch estimation each 10ms...
-
-                try:
-                    try:
-                        intsint = Intsint( momeltier )
-                        intsinttier = intsint.run()
-                        intsinttier.SetRadius(0.005) # BECAUSE IT WAS LOST BY INTSINT!!!!!!
-                        trsm.Add( intsinttier )
-                        trsm._hierarchy.addLink("TimeAssociation", momeltier, intsinttier)
-                    except Exception as e:
-                        if self.logfile is not None:
-                            self.logfile.print_message("Problem with INTSINT: "+str(e),indent=2,status=-1)
-                        else:
-                            sys.stderr.write("INTSINT ERROR\n")
-                            sys.stderr.write(str(e))
-                        pass
-                    annotationdata.io.write( trsoutput, trsm )
-                except Exception as e:
-                    if self.logfile is not None:
-                        self.logfile.print_message("Failed to save: %s"%str(e),indent=2,status=-1)
-                    else:
-                        sys.stderr.write("sppasMomel::Print error.\n")
-                    pass
-            elif outputfile:
-                self.print_targets(targets, outputfile, trs=None)
-            else:
-                self.print_targets(targets, outputfile='STDOUT', trs=None)
-        except Exception as e:
-            raise Exception("Momel::Print targets. Error: "+str(e))
-
-    # End run
-    # ------------------------------------------------------------------
-
