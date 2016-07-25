@@ -380,6 +380,11 @@ class sppasParam():
     # INFORMATION ABOUT SPPAS ANNOTATION STEPS #
     # ######################################## #
 
+    def activate_annotation(self,stepname):
+        for a in self.annotations:
+            if a.get_key() == stepname:
+                a.set_activate(True)
+
     def activate_step(self,stepnumber):
         self.annotations[stepnumber].set_activate(True)
 

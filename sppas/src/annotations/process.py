@@ -52,7 +52,7 @@ from annotationdata.transcription  import Transcription
 
 import audiodata.io
 import annotationdata.io
-from annotations.infotier        import InfoTier
+from annotations.infotier        import sppasMetaInfoTier
 from annotations.log             import sppasLog
 
 from annotations.Momel.sppasmomel       import sppasMomel
@@ -962,7 +962,7 @@ class sppasProcess( Thread ):
 
             try:
                 if nbfiles > 1:
-                    infotier = InfoTier()
+                    infotier = sppasMetaInfoTier()
                     tier = infotier.create_time_tier(trs.GetBegin(),trs.GetEnd())
                     trs.Add(tier)
                     annotationdata.io.write( basef + "-merge.TextGrid", trs)

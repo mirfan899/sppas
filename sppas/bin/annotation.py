@@ -75,7 +75,8 @@ parser.add_argument("-w", required=True, metavar="file|folder", help='Input wav 
 
 parser.add_argument("-l", metavar="lang", help='Input language, using iso639-3 code')
 parser.add_argument("-e", default=DEFAULT_OUTPUT_EXTENSION, metavar="extension", help='Output extension. One of: %s'%" ".join(extensions_out)) #_multitiers))
-parser.add_argument("--momel", action='store_true', help="Activate Momel and INTSINT" )
+parser.add_argument("--momel", action='store_true', help="Activate Momel" )
+parser.add_argument("--intsint", action='store_true', help="Activate INTSINT" )
 parser.add_argument("--ipu",   action='store_true', help="Activate IPUs Segmentation" )
 parser.add_argument("--tok",   action='store_true', help="Activate Tokenization" )
 parser.add_argument("--phon",  action='store_true', help="Activate Phonetization" )
@@ -110,13 +111,14 @@ if not ext.lower() in extensions:
     ext = DEFAULT_OUTPUT_EXTENSION
 parameters.set_output_format( ext )
 
-if args.momel: parameters.activate_step(0)
-if args.ipu:   parameters.activate_step(1)
-if args.tok:   parameters.activate_step(2)
-if args.phon:  parameters.activate_step(3)
-if args.align: parameters.activate_step(4)
-if args.syll:  parameters.activate_step(5)
-if args.rep:   parameters.activate_step(6)
+if args.momel: parameters.activate_annotation("momel")
+if args.intsint: parameters.activate_annotation("intsint")
+if args.ipu:   parameters.activate_annotation("ipus")
+if args.tok:   parameters.activate_annotation("tok")
+if args.phon:  parameters.activate_annotation("phon")
+if args.align: parameters.activate_annotation("align")
+if args.syll:  parameters.activate_annotation("syll")
+if args.rep:   parameters.activate_annotation("repetition")
 if args.all:
     for step in range(parameters.get_step_numbers()):
         parameters.activate_step(step)

@@ -78,10 +78,6 @@ class sppasBase( object ):
         """
         Fix all options.
 
-        Available options are:
-            - unk
-            - usesstdtokens
-
         @param options (option)
 
         """

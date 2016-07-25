@@ -44,126 +44,69 @@ from annotationdata.annotation     import Annotation
 from annotationdata.label.label    import Label
 from annotationdata.ptime.point    import TimePoint
 from annotationdata.ptime.interval import TimeInterval
+from structs.metainfo import MetaInfo
 
 # ---------------------------------------------------------------------------
 
-class InfoTier( object ):
+class sppasMetaInfoTier( MetaInfo):
     """
     @authors:      Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Create a tier with information about SPPAS.
+    @summary:      Meta informations manager about SPPAS.
+
+    Manager of meta information about SPPAS that allows to create a tier with
+    such activated information.
 
     """
     def __init__(self):
         """
-        Creates a new InfoTier instance.
+        Creates a new sppasMetaInfoTier instance.
+        Add and activate all known information about SPPAS.
 
         """
-        super(InfoTier, self).__init__()
-        self.reset_options()
+        MetaInfo.__init__( self )
 
-
-    def reset_options(self):
-        self._options = {}
-        self._options['author']    = [True,author]
-        self._options['contact']   = [True,contact]
-        self._options['program']   = [True,program]
-        self._options['version']   = [True,version]
-        self._options['copyright'] = [True,copyright]
-        self._options['url']       = [True,url]
-        self._options['license']   = [True,license]
-        self._options['date']      = [True,str(datetime.date.today())]
-
-    # ------------------------------------------------------------------------
-
-    def is_active_option(self, key):
-        """
-        Return the option status of a given key or raise an Exception.
-
-        """
-        return self._options[key][0]
-
-    # ------------------------------------------------------------------------
-
-    def get_option(self, key):
-        """
-        Return the option value of a given key or raise an Exception.
-
-        """
-        return self._options[key][1]
-
-    # ------------------------------------------------------------------------
-
-    def activate_option(self, key, value):
-        """
-        Activate/Disable an option.
-
-        @param key (str)
-        @param value (bool)
-
-        """
-        if not str(key) in self._options.keys():
-            raise KeyError('%s is not an option.'%key)
-        self._options[str(key)][0] = bool(value)
-
-    # ------------------------------------------------------------------------
-
-    def add_option(self, key, strv):
-        """
-        Fix an option.
-
-        @param key (str)
-        @param strv (str)
-
-        """
-        if str(key) in self._options.keys():
-            raise KeyError('%s is already an option.'%key)
-        self._options[str(key)] = [True,strv]
-
-    # ------------------------------------------------------------------------
-
-    def pop_option(self, key):
-        """
-        Fix an option.
-
-        @param key (str)
-
-        """
-        if not str(key) in self._options.keys():
-            raise KeyError('%s is not an option.'%key)
-        del self._options[str(key)]
+        self.add_metainfo('author',author)
+        self.add_metainfo('contact',contact)
+        self.add_metainfo('program',program)
+        self.add_metainfo('version',version)
+        self.add_metainfo('copyright',copyright)
+        self.add_metainfo('url',url)
+        self.add_metainfo('license',license)
+        self.add_metainfo('date',str(datetime.date.today()))
 
     # ------------------------------------------------------------------------
 
     def create_time_tier(self, begin, end):
         """
-        Return a tier with activated information as annotation.
+        Return a tier with activated information as annotations.
+
+        @param begin (float) Begin time value (seconds)
+        @param end (float) End time value (seconds)
+        @return Tier
 
         """
-        # how many information are activated
-        nbinfo = sum([1 for v in self._options.values() if v[0] is True])
-        if nbinfo == 0:
+        activekeys = self.keys_activated()
+        if len(activekeys) == 0:
             return None
 
         tierdur = float(end) - float(begin)
-        anndur  = tierdur / float(nbinfo)
+        anndur  = tierdur / float(len(activekeys))
 
         tier = Tier("MetaInformation")
         annbegin = begin
         annend   = anndur
-        for key in self._options.keys():
-            (activated,value) = self._options[key]
-            if activated is True:
-                label = key+"="+value
-                tier.Append(Annotation(TimeInterval(TimePoint(annbegin), TimePoint(annend)), Label(label)))
-                annbegin = annend
-                annend = annend + anndur
+        for key in activekeys:
+            value = self.get_metainfo(key)
+            label = key+"="+value
+            tier.Append(Annotation(TimeInterval(TimePoint(annbegin), TimePoint(annend)), Label(label)))
+            annbegin = annend
+            annend = annend + anndur
 
         tier[-1].GetLocation().SetEnd(TimePoint(end))
         return tier
 
     # ------------------------------------------------------------------------
-
