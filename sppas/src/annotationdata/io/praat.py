@@ -320,7 +320,7 @@ class TextGrid(Transcription):
                 TimeInterval(TimePoint(self.GetMinTime()),
                              TimePoint(self.GetMaxTime()))))
 
-        if tier.IsInterval():
+        if tier.IsTimeInterval():
             tier = fill_gaps(tier, self.GetMinTime(), self.GetMaxTime())
             tier = merge_overlapping_annotations(tier)
 
@@ -338,10 +338,12 @@ class TextGrid(Transcription):
                 tier.GetEndValue(),
                 tier.GetSize())
 
-        if tier.IsInterval():
+        if tier.IsTimeInterval():
             format_annotation = TextGrid.__format_interval_annotation
-        else:
+        elif tier.IsTimePoint():
             format_annotation = TextGrid.__format_point_annotation
+        else:
+            raise IOError('Unsupported tier type. Praat textgrid files only support Time Intervals or Time Points.')
 
         for j, an in enumerate(tier, 1):
             result += format_annotation(an, j)

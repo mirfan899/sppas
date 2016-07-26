@@ -153,6 +153,8 @@ class sppasChunks( sppasBase ):
         """
         if trsinput.GetSize() == 1 and trsinput[0].GetName().lower() == "rawtranscription":
             return trsinput[0]
+        if trsinput.GetSize() == 1 and trsinput[0].GetName().lower() == "phonetization":
+            return trsinput[0]
 
         return None
 
@@ -166,7 +168,7 @@ class sppasChunks( sppasBase ):
         Priority is given to std.
 
         """
-        if trsinput.GetSize() == 1 and trsinput[0].GetName().lower() == "rawtranscription":
+        if trsinput.GetSize() == 1 and trsinput[0].GetName().lower() == "tokenization":
             return trsinput[0]
 
         return None

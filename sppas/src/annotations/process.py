@@ -60,6 +60,7 @@ from annotations.Intsint.sppasintsint   import sppasIntsint
 from annotations.IPUs.ipusseg           import sppasIPUs
 from annotations.Token.tok              import sppasTok
 from annotations.Phon.phon              import sppasPhon
+from annotations.Chunks.sppaschunks     import sppasChunks
 from annotations.Align.sppasalign       import sppasAlign
 from annotations.Syll.syll              import sppasSyll
 from annotations.Repetitions.repetition import sppasRepetition
@@ -524,7 +525,7 @@ class sppasProcess( Thread ):
                 self._logfile.print_message(stepname+" of file " + f, indent=1 )
 
             # Get the input file
-            inname = self._get_filename(f, [self.parameters.get_output_format()] + annotationdata.io.extensions_out_multitiers) # '.xra', '.TextGrid', '.eaf', '.trs', '.csv', '.mrk'])
+            inname = self._get_filename(f, [self.parameters.get_output_format()] + annotationdata.io.extensions_out)
             if inname is not None:
 
                 # Fix output file name
@@ -641,6 +642,84 @@ class sppasProcess( Thread ):
     # End run_phonetization
     # ------------------------------------------------------------------------
 
+    def run_chunks_alignment(self, stepidx):
+        """
+        Execute the SPPAS Chunks alignment program.
+
+        """
+        # Initializations
+        step = self.parameters.get_step(stepidx)
+        stepname = self.parameters.get_step_name(stepidx)
+        files_processed_success = 0
+        self._progress.set_header(stepname)
+        self._progress.update(0,"")
+
+        # Get the list of input file names, with the ".wav" (or ".wave") extension
+        filelist = self.set_filelist(".wav")#,not_start=["track_"])
+        if len(filelist) == 0:
+            return 0
+        total = len(filelist)
+
+        # Create annotation instance
+        try:
+            a = sppasChunks( step.get_langresource(), logfile=self._logfile )
+        except Exception as e:
+            if self._logfile is not None:
+                self._logfile.print_message( "%s\n"%str(e), indent=1,status=4 )
+            return 0
+
+        # Execute the annotation for each file in the list
+        for i,f in enumerate(filelist):
+
+            # fix the default values
+            a.fix_options( step.get_options() )
+
+            # Indicate the file to be processed
+            self._progress.set_text( os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")" )
+            if self._logfile is not None:
+                self._logfile.print_message(stepname+" of file " + f, indent=1 )
+
+            # Get the input file: only txt and xra supports non-time-aligned data
+            extt = ['-token.txt', '-token.xra']
+            extp = ['-phon.txt', '-phon.xra']
+
+            inname = self._get_filename(f, extp)
+            intok  = self._get_filename(f, extt)
+            if inname is not None and intok is not None:
+
+                # Fix output file name
+                outname = os.path.splitext(f)[0] + '-chunks' + self.parameters.get_output_format()
+
+                # Execute annotation
+                try:
+                    a.run( inname, intok, f, outname )
+                except Exception as e:
+                    if self._logfile is not None:
+                        stre = unicode(e.message).encode("utf-8")
+                        self._logfile.print_message( "%s for file %s\n"%(stre,outname), indent=2,status=-1 )
+                else:
+                    files_processed_success += 1
+                    if self._logfile is not None:
+                        self._logfile.print_message(outname, indent=2,status=0 )
+
+            else:
+                if self._logfile is not None:
+                    self._logfile.print_message("Failed to find a raw file with phonetization/tokenization. Read the documentation for details.",indent=2,status=2)
+
+            # Indicate progress
+            self._progress.set_fraction(float((i+1))/float(total))
+            if self._logfile is not None:
+                self._logfile.print_newline()
+
+        # Indicate completed!
+        self._progress.update(1,"Completed (%d files successfully over %d files).\n"%(files_processed_success,total))
+        self._progress.set_header("")
+
+        return files_processed_success
+
+    # End run_alignment
+    # ------------------------------------------------------------------------
+
     def run_alignment(self, stepidx):
         """
         Execute the SPPAS-Alignment program.
@@ -684,6 +763,8 @@ class sppasProcess( Thread ):
             for e in annotationdata.io.extensions_out:
                 extt.append( '-token'+e )
                 extp.append( '-phon'+e )
+            extt.append('-chunks'+self.parameters.get_output_format())
+            extp.append('-chunks'+self.parameters.get_output_format())
 
             inname = self._get_filename(f, extp)
             intok  = self._get_filename(f, extt)
@@ -897,7 +978,6 @@ class sppasProcess( Thread ):
             - hierarchy
 
         """
-
         self._progress.set_header("Create a merged TextGrid file...")
         self._progress.update(0,"")
 
@@ -931,6 +1011,11 @@ class sppasProcess( Thread ):
                 pass
             try:
                 self.__add_trs(trs, basef + "-phon" + output_format) # Phonetization
+                nbfiles = nbfiles + 1
+            except Exception:
+                pass
+            try:
+                self.__add_trs(trs, basef + "-chunks" + output_format) # PhonAlign, TokensAlign
                 nbfiles = nbfiles + 1
             except Exception:
                 pass
@@ -1043,6 +1128,8 @@ class sppasProcess( Thread ):
                     nbruns[i] = self.run_tokenization(i)
                 elif self.parameters.get_step_key(i) == "phon":
                     nbruns[i] = self.run_phonetization(i)
+                elif self.parameters.get_step_key(i) == "chunks":
+                    nbruns[i] = self.run_chunks_alignment(i)
                 elif self.parameters.get_step_key(i) == "align":
                     nbruns[i] = self.run_alignment(i)
                 elif self.parameters.get_step_key(i) == "syll":

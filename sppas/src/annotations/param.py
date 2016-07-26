@@ -112,7 +112,7 @@ class annotationParam():
 
             if line.startswith("identifier:"):
                 line = line.replace( "identifier:", "" )
-                self.key = line.strip()
+                self.key = line.strip().lower()
 
             elif line.startswith("name:"):
                 line = line.replace( "name:", "" )
