@@ -35,19 +35,20 @@
 # File: diagnosis.py
 # ----------------------------------------------------------------------------
 
-import audiodata
+import codecs
+import os
+
+import annotationdata.io
+import audiodata.io
 from audiodata.audio import AudioPCM
 from audiodata.channel import Channel
 
 from sp_glob import encoding
 from sp_glob import ERROR_ID, WARNING_ID, INFO_ID, OK_ID
 
-import annotationdata.io
-import codecs
-
 # ----------------------------------------------------------------------------
 
-class SppasDiagnosis:
+class sppasDiagnosis:
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -59,7 +60,7 @@ class SppasDiagnosis:
     """
     def __init__(self, logfile=None):
         """
-        SppasDiagnosis.
+        SPPAS files diagnosis.
 
         """
         self._logfile = logfile
@@ -74,6 +75,25 @@ class SppasDiagnosis:
 
     # ------------------------------------------------------------------------
     # Workers
+    # ------------------------------------------------------------------------
+
+    def checkfile(self, filename):
+        """
+        Return a status and a message depending on the fact that the file corresponds to the requirements.
+
+        @param filename (string) name of the input file to diagnose.
+
+        """
+        ext = os.path.splitext( filename )[1]
+
+        if ext.lower() in audiodata.io.extensions:
+            return self.audiofile( filename )
+
+        if ext.lower() in annotationdata.io.extensions:
+            return self.trsfile( filename )
+
+        return (ERROR_ID,"Invalid. Unknown file extension %s."%ext)
+
     # ------------------------------------------------------------------------
 
     def audiofile(self, inputname):
@@ -129,20 +149,24 @@ class SppasDiagnosis:
         @param inputname (string) name of the inputfile
 
         """
-        status  = OK_ID
-        message = "Valid or Admit."
-
         # test encoding
         try:
             codecs.open(inputname,"r",encoding)
+        except UnicodeDecodeError:
+            return (ERROR_ID,"Invalid. Bad file encoding: only %s is accepted."%encoding)
         except Exception as e:
-            return (ERROR_ID,"Invalid. "+str(e))
+            return (ERROR_ID,"Invalid. %s."%str(e))
+
+        # test US_ASCII  in filename
+        try:
+            str( inputname )
+        except Exception:
+            return (WARNING_ID,"Admit. File name should contain only US-ASCII characters.")
 
         # test whitespace and accents in filename
+        if " " in inputname:
+            return (WARNING_ID,"Admit. File name should not contain whitespace.")
 
-        # test extension
-        # exists or heuristic...
-
-        return (status,message)
+        return (OK_ID,"Valid.")
 
     # ------------------------------------------------------------------------

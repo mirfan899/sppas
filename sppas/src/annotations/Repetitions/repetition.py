@@ -59,11 +59,13 @@ from resources.unigram import Unigram
 from detectrepetition import Repetitions
 from detectrepetition import DataSpeaker
 
+from annotations.sppasbase import sppasBase
+
 DEBUG=False
 
 # ######################################################################### #
 
-class sppasRepetition( ):
+class sppasRepetition( sppasBase ):
     """
     SPPAS Automatic Repetition Detection
     (either self-repetitions or other-repetitions).
@@ -90,6 +92,8 @@ class sppasRepetition( ):
         must be ".stp" for stop-words and ".lem" for lemmas (case-sensitive)!
 
         """
+        sppasBase.__init__(self, logfile)
+
         # Members
         self._use_lemmatize = True   # Lemmatize the input
         self._use_stopwords = True   # Add specific stopwords of the input
@@ -481,24 +485,25 @@ class sppasRepetition( ):
         @param outputfilename
 
         """
+        self.print_options()
+        self.print_diagnosis(inputfilename1)
+
         tokentier1 = None  # First tier
         tokentier2 = -1    # No echoing speaker
-        try:
-            # Find the token tier
-            trsinput1 = annotationdata.io.read( inputfilename1 )
-            for i in range( trsinput1.GetSize() ):
-                if "token" in trsinput1[i].GetName().lower() and "align" in trsinput1[i].GetName().lower():
-                    tokentier1 = i
+
+        # Find the token tier
+        trsinput1 = annotationdata.io.read( inputfilename1 )
+        for i in range( trsinput1.GetSize() ):
+            if "token" in trsinput1[i].GetName().lower() and "align" in trsinput1[i].GetName().lower():
+                tokentier1 = i
+                break
+        if inputfilename2 is not None:
+            #find the token tier
+            trsinput2 = annotationdata.io.read( inputfilename2 )
+            for i in range( trsinput2.GetSize() ):
+                if "token" in trsinput2[i].GetName().lower() and "align" in trsinput2[i].GetName().lower():
+                    tokentier2 = i
                     break
-            if inputfilename2 is not None:
-                #find the token tier
-                trsinput2 = annotationdata.io.read( inputfilename2 )
-                for i in range( trsinput2.GetSize() ):
-                    if "token" in trsinput2[i].GetName().lower() and "align" in trsinput2[i].GetName().lower():
-                        tokentier2 = i
-                        break
-        except Exception as e:
-            raise Exception('Repetitions. '+str(e))
 
         if tokentier1 is None:
             raise Exception('Repetitions. No valid input tier (expected: TokensAlign).')

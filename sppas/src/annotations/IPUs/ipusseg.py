@@ -53,11 +53,13 @@ from annotations.IPUs.ipustrs   import IPUsTrs   # find IPUs/tracks/utterances f
 from annotations.IPUs.ipusout   import IPUsOut   # IPUs Output (writer)
 from audiodata.autils import frames2times, times2frames
 
+from annotations.sppasbase import sppasBase
+
 # ------------------------------------------------------------------
 # Main class
 # ------------------------------------------------------------------
 
-class sppasIPUs:
+class sppasIPUs( sppasBase ):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -75,7 +77,8 @@ class sppasIPUs:
                 to the user.
 
         """
-        self.logfile   = logfile
+        sppasBase.__init__(self, logfile)
+
         self.ipusaudio = IPUsAudio(None) # Find IPUs from an audio file
         self.ipustrs   = IPUsTrs(None)   # Get IPUs from a transcription file
         self.reset()
@@ -99,15 +102,6 @@ class sppasIPUs:
 
     # ------------------------------------------------------------------------
     # Methods to fix options
-    # ------------------------------------------------------------------------
-
-    def get_option(self, key):
-        """
-        Return the option value of a given key or raise an Exception.
-
-        """
-        return self._options[key]
-
     # ------------------------------------------------------------------------
 
     def fix_options(self, options):
@@ -297,9 +291,8 @@ class sppasIPUs:
         @param trsoutput (str) a file name to save the IPUs segmentation result.
 
         """
-        if self.logfile:
-            for k,v in self._options.items():
-                self.logfile.print_message("Option %s: %s"%(k,v), indent=2, status=INFO_ID)
+        self.print_options()
+        self.print_diagnosis(audiofile)
 
         # Get the inputs.
         # ---------------

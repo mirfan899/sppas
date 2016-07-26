@@ -59,11 +59,12 @@ from sp_glob import RESOURCES_PATH
 from resources.mapping        import Mapping
 from resources.acm.modelmixer import ModelMixer
 
-from annotations.diagnosis import SppasDiagnosis
+from annotations.diagnosis import sppasDiagnosis
+from annotations.sppasbase import sppasBase
 
 # ----------------------------------------------------------------------------
 
-class sppasAlign:
+class sppasAlign( sppasBase ):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -94,21 +95,29 @@ class sppasAlign:
         @param logfile (sppasLog)
 
         """
-        # Log messages for the user
-        self.logfile = logfile
+        sppasBase.__init__(self, logfile)
 
         # Members: self.alignio
         self.fix_segmenter( model,modelL1 )
-        self.workdir    = ""
-        self.inputaudio = ""
+        self.reset()
 
+    # ------------------------------------------------------------------
+
+    def reset(self):
+        """
+        Set default values.
+
+        """
         # List of options to configure this automatic annotation
         self._options = {}
-        self._options['clean']   = True  # Remove temporary files
-        self._options['infersp'] = False # Add 'sp' at the end of each token
-        self._options['basic']   = False # Perform a basic alignment if error
+        self._options['clean']    = True  # Remove temporary files
+        self._options['infersp']  = False # Add 'sp' at the end of each token
+        self._options['basic']    = False # Perform a basic alignment if error
         self._options['activity'] = True
         self._options['phntok']   = False
+
+        self.workdir    = ""
+        self.inputaudio = ""
 
     # -----------------------------------------------------------------------
 
@@ -148,15 +157,6 @@ class sppasAlign:
 
     # ------------------------------------------------------------------------
     # Methods to fix options
-    # ------------------------------------------------------------------------
-
-    def get_option(self, key):
-        """
-        Return the option value of a given key or raise an Exception.
-
-        """
-        return self._options[key]
-
     # ------------------------------------------------------------------------
 
     def fix_options(self, options):
@@ -265,29 +265,6 @@ class sppasAlign:
 
     # -----------------------------------------------------------------------
     # Methods to time-align series of data
-    # -----------------------------------------------------------------------
-
-    def print_message(self, message, indent=3, status=None):
-        """
-        Print a message either in the user log or in the console log.
-
-        """
-        if self.logfile:
-            self.logfile.print_message(message, indent=indent, status=status)
-
-        elif len(message) > 0:
-            if status is None:
-                logging.debug( message )
-            else:
-                if status == INFO_ID:
-                    logging.info( message )
-                elif status == WARNING_ID:
-                    logging.warning( message )
-                elif status == ERROR_ID:
-                    logging.error( message )
-                else:
-                    logging.debug( message )
-
     # -----------------------------------------------------------------------
 
     def fix_audioinput(self, inputaudioname):
@@ -560,32 +537,6 @@ class sppasAlign:
 
     # ------------------------------------------------------------------------
 
-    def print_diagnosis(self, phonesname, tokensname, audioname):
-        """
-        Print file diagnosis in the log.
-
-        """
-        d = SppasDiagnosis()
-        self.print_message("Diagnosis: ", indent=2, status=INFO_ID)
-        (s,m) = d.audiofile( audioname )
-        if s == OK_ID:
-            self.print_message(" - %s: %s"%(audioname,m), indent=3, status=None)
-        else:
-            self.print_message(" - %s: %s"%(audioname,m), indent=3, status=s)
-        (s,m) = d.trsfile( phonesname )
-        if s == OK_ID:
-            self.print_message(" - %s: %s"%(phonesname,m), indent=3, status=None)
-        else:
-            self.print_message(" - %s: %s"%(phonesname,m), indent=3, status=s)
-        if tokensname is not None:
-            (s,m) = d.trsfile( tokensname )
-            if s == OK_ID:
-                self.print_message(" - %s: %s"%(tokensname,m), indent=3, status=None)
-            else:
-                self.print_message(" - %s: %s"%(tokensname,m), indent=3, status=s)
-
-    # ------------------------------------------------------------------------
-
     def run(self, phonesname, tokensname, audioname, outputfilename):
         """
         Execute SPPAS Alignment.
@@ -598,11 +549,8 @@ class sppasAlign:
         @return Transcription
 
         """
-        self.print_message("Options: ", indent=2, status=INFO_ID)
-        for k,v in self._options.items():
-            self.print_message(" - %s: %s"%(k,v), indent=3, status=None)
-
-        self.print_diagnosis(phonesname, tokensname, audioname)
+        self.print_options()
+        self.print_diagnosis(audioname, phonesname, tokensname)
 
         # Get the tiers to be time-aligned
         # ---------------------------------------------------------------

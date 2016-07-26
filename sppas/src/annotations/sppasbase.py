@@ -37,6 +37,7 @@
 
 import logging
 from sp_glob import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
+from annotations.diagnosis import sppasDiagnosis
 
 # ---------------------------------------------------------------------------
 
@@ -50,16 +51,19 @@ class sppasBase( object ):
     @summary:      SPPAS Base class of any automatic annotation.
 
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, logfile=None):
         """
+        Base class for any SPPAS automatic annotation.
+
         """
         # Log messages for the user
-        self.logfile = None
-        if "logfile" in kwargs.keys():
-            self.logfile = kwargs["logfile"]
+        self.logfile = logfile
 
-        # List of options to configure this automatic annotation
+        # List of options to configure the automatic annotation
         self._options = {}
+
+        # A file diagnostician
+        self._diag = sppasDiagnosis()
 
     # -----------------------------------------------------------------------
     # Methods to fix options
@@ -85,22 +89,51 @@ class sppasBase( object ):
 
     # -----------------------------------------------------------------------
 
-    def print_message(self, message, indent=3, status=INFO_ID):
+    def print_message(self, message, indent=3, status=None):
         """
-        Print a message either in the user log or in the console log.
+        Print a message either in the user log.
 
         """
         if self.logfile:
             self.logfile.print_message(message, indent=indent, status=status)
 
         elif len(message) > 0:
-            if status==INFO_ID:
-                logging.info( message )
-            elif status==WARNING_ID:
-                logging.warning( message )
-            elif status==ERROR_ID:
-                logging.error( message )
-            else:
+            if status is None:
                 logging.debug( message )
+            else:
+                if status == INFO_ID:
+                    logging.info( message )
+                elif status == WARNING_ID:
+                    logging.warning( message )
+                elif status == ERROR_ID:
+                    logging.error( message )
+                else:
+                    logging.debug( message )
+
+    # -----------------------------------------------------------------------
+
+    def print_options(self):
+        """
+        Print the list of options in the user log.
+
+        """
+        self.print_message("Options: ", indent=2, status=None)
+        for k,v in self._options.items():
+            self.print_message(" - %s: %s"%(k,v), indent=3, status=None)
+
+    # -----------------------------------------------------------------------
+
+    def print_diagnosis(self, *filenames):
+        """
+        Print the diagnosis of a list of files in the user log.
+
+        """
+        self.print_message("Diagnosis: ", indent=2, status=None)
+        for filename in filenames:
+            (s,m) = self._diag.checkfile( filename )
+            if s == OK_ID:
+                self.print_message(" - %s: %s"%(filename,m), indent=3, status=None)
+            else:
+                self.print_message(" - %s: %s"%(filename,m), indent=3, status=s)
 
     # -----------------------------------------------------------------------

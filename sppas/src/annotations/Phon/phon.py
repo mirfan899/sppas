@@ -48,11 +48,11 @@ from phonetize import DictPhon
 from sp_glob import ERROR_ID, WARNING_ID, INFO_ID, OK_ID
 from sp_glob import UNKSTAMP
 
-from annotations.diagnosis import SppasDiagnosis
+from annotations.sppasbase import sppasBase
 
 # ---------------------------------------------------------------------------
 
-class sppasPhon( object ):
+class sppasPhon( sppasBase ):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -80,8 +80,7 @@ class sppasPhon( object ):
         @param logfile (sppasLog) is a log file utility class member.
 
         """
-        # Log messages for the user
-        self.logfile = logfile
+        sppasBase.__init__(self, logfile)
 
         # Pronunciation dictionary
         self.maptable = None
@@ -98,15 +97,6 @@ class sppasPhon( object ):
     # -----------------------------------------------------------------------
     # Methods to fix options
     # -----------------------------------------------------------------------
-
-    def get_option(self, key):
-        """
-        Return the option value of a given key or raise an Exception.
-
-        """
-        return self._options[key]
-
-    # ------------------------------------------------------------------------
 
     def fix_options(self, options):
         """
@@ -159,29 +149,6 @@ class sppasPhon( object ):
 
         """
         self._options['usestdtokens'] = stdtokens
-
-    # -----------------------------------------------------------------------
-
-    def print_message(self, message, indent=3, status=None):
-        """
-        Print a message either in the user log or in the console log.
-
-        """
-        if self.logfile:
-            self.logfile.print_message(message, indent=indent, status=status)
-
-        elif len(message) > 0:
-            if status is None:
-                logging.debug( message )
-            else:
-                if status == INFO_ID:
-                    logging.info( message )
-                elif status == WARNING_ID:
-                    logging.warning( message )
-                elif status == ERROR_ID:
-                    logging.error( message )
-                else:
-                    logging.debug( message )
 
     # -----------------------------------------------------------------------
     # Methods to phonetize series of data
@@ -301,7 +268,7 @@ class sppasPhon( object ):
 
         return tierinput
 
-    # -----------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def run( self, inputfilename, outputfile ):
         """
@@ -311,16 +278,8 @@ class sppasPhon( object ):
         @param outputfile (str - IN) the output file name of the phonetization
 
         """
-        self.print_message("Options: ", indent=2, status=INFO_ID)
-        for k,v in self._options.items():
-            self.print_message(" - %s: %s"%(k,v), indent=3, status=None)
-        d = SppasDiagnosis()
-        self.print_message("Diagnosis: ", indent=2, status=INFO_ID)
-        (s,m) = d.trsfile( inputfilename )
-        if s == OK_ID:
-            self.print_message(" - %s: %s"%(inputfilename,m), indent=3, status=None)
-        else:
-            self.print_message(" - %s: %s"%(inputfilename,m), indent=3, status=s)
+        self.print_options()
+        self.print_diagnosis(inputfilename)
 
         # Get the tier to be phonetized.
         trsinput = annotationdata.io.read( inputfilename )

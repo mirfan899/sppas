@@ -79,11 +79,19 @@ class BaseOption( object ):
         """ Return the typed-value or None. """
 
         if self._type.startswith('bool'):
-            return self._value
+            if isinstance(self._value, bool):
+                return self._value
+            if self._value.lower() == "true":
+                return True
+            else:
+                return False
+
         if self._type.startswith('int') or self._type == 'long' or self._type == 'short':
             return int(self._value)
+
         if self._type == 'float' or self._type == 'double':
             return float(self._value)
+
         if self._type.startswith('str'):
             return self._value.decode(encoding)
 
@@ -115,7 +123,7 @@ class BaseOption( object ):
 
     def set_type(self, opttype):
         """ Set a new type. """
-        self._value = opttype
+        self._type = opttype
 
     def set_value(self, value):
         """ Set a new value. """

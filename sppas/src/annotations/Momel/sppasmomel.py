@@ -37,6 +37,8 @@
 
 import sys
 
+from annotations.sppasbase import sppasBase
+
 from annotationdata.transcription import Transcription
 from annotationdata.annotation import Annotation
 from annotationdata.ptime.point import TimePoint
@@ -48,7 +50,7 @@ from annotations.Momel.momel import Momel
 
 # ---------------------------------------------------------------------------
 
-class sppasMomel( object ):
+class sppasMomel( sppasBase ):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -56,40 +58,23 @@ class sppasMomel( object ):
     @license:      GPL, v3
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
     @summary:      SPPAS integration of Momel.
-    """
 
+    """
     def __init__(self, logfile=None):
         """
         Constructor.
 
-        @param dictfilename (str) is the pronunciation dictionary file name
-        (HTK-ASCII format, utf8).
-        @param mapfile (str) is the filename of a mapping table. It is used
-        to generate new pronunciations by mapping phonemes of the dictionary.
         @param logfile (sppasLog) is a log file utility class member.
 
         """
-        # Log messages for the user
-        self.logfile = logfile
+        sppasBase.__init__(self, logfile)
 
         self.momel = Momel()
         self.PAS_TRAME = 10.
 
-        # List of options to configure this automatic annotation
-        self._options = {}
-
     # -----------------------------------------------------------------------
     # Methods to fix options
     # -----------------------------------------------------------------------
-
-    def get_option(self, key):
-        """
-        Return the option value of a given key or raise an Exception.
-
-        """
-        return self._options[key]
-
-    # ------------------------------------------------------------------------
 
     def fix_options(self, options):
         """
@@ -166,7 +151,7 @@ class sppasMomel( object ):
                     _time  = targets[i].get_x() * (0.001*self.PAS_TRAME)
                     _label = str("%d"%(targets[i].get_y()))
                     tier.Append(Annotation(TimePoint(_time), Label(_label)))
-                except Exception as e:
+                except Exception:
                     if self.logfile is not None:
                         self.logfile.print_message("Ignore target: time="+str(_time)+" and value="+_label, indent=2,status=3)
 
@@ -175,19 +160,20 @@ class sppasMomel( object ):
                 trsp.Add(tier)
                 try:
                     annotationdata.io.write(outputfile, trsp)
-                except Exception as e:
+                except Exception:
                     if self.logfile is not None:
                         self.logfile.print_message("Can't write PitchTier output file.",status=-1)
             return tier
 
     # ------------------------------------------------------------------
 
-
     def run(self, inputfilename, trsoutput=None, outputfile=None):
         """
         Apply momel from a pitch file.
 
         """
+        self.print_options()
+
         # Get pitch values from the input
         pitch = self.set_pitch( inputfilename )
         # Selected values (Target points) for this set of pitch values

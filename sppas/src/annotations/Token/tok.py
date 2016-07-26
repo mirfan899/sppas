@@ -36,7 +36,6 @@
 # ---------------------------------------------------------------------------
 
 import os.path
-import logging
 
 from tokenize import DictTok
 
@@ -52,13 +51,13 @@ import annotationdata.io
 from sp_glob import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
 from sp_glob import RESOURCES_PATH
 
-from annotations.diagnosis import SppasDiagnosis
+from annotations.sppasbase import sppasBase
 
 # ---------------------------------------------------------------------------
 # sppasTok main class
 # ---------------------------------------------------------------------------
 
-class sppasTok(object):
+class sppasTok( sppasBase ):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -85,13 +84,11 @@ class sppasTok(object):
         @param logfile (sppasLog)
 
         """
-        # Log messages for the user
-        self.logfile = logfile
+        sppasBase.__init__(self, logfile)
 
         self.fix_tokenizer( vocab,lang )
 
         # List of options to configure this automatic annotation
-        self._options = {}
         self._options['std'] = False
 
     # -----------------------------------------------------------------------
@@ -122,15 +119,6 @@ class sppasTok(object):
     # -----------------------------------------------------------------------
     # Methods to fix options
     # -----------------------------------------------------------------------
-
-    def get_option(self, key):
-        """
-        Return the option value of a given key or raise an Exception.
-
-        """
-        return self._options[key]
-
-    # ------------------------------------------------------------------------
 
     def fix_options(self, options):
         """
@@ -165,29 +153,6 @@ class sppasTok(object):
 
     # -----------------------------------------------------------------------
     # Methods to tokenize series of data
-    # -----------------------------------------------------------------------
-
-    def print_message(self, message, indent=3, status=None):
-        """
-        Print a message either in the user log or in the console log.
-
-        """
-        if self.logfile:
-            self.logfile.print_message(message, indent=indent, status=status)
-
-        elif len(message) > 0:
-            if status is None:
-                logging.debug( message )
-            else:
-                if status == INFO_ID:
-                    logging.info( message )
-                elif status == WARNING_ID:
-                    logging.warning( message )
-                elif status == ERROR_ID:
-                    logging.error( message )
-                else:
-                    logging.debug( message )
-
     # -----------------------------------------------------------------------
 
     def convert(self, tier):
@@ -278,7 +243,7 @@ class sppasTok(object):
 
     # ------------------------------------------------------------------------
 
-    def run( self, inputfilename,outputfilename ):
+    def run( self, inputfilename, outputfilename ):
         """
         Run the Tokenization process on an input file.
 
@@ -286,16 +251,8 @@ class sppasTok(object):
         @param outputfilename (str - IN) the output file name of the tokenization
 
         """
-        self.print_message("Options: ", indent=2, status=INFO_ID)
-        for k,v in self._options.items():
-            self.print_message(" - %s: %s"%(k,v), indent=3, status=None)
-        d = SppasDiagnosis()
-        self.print_message("Diagnosis: ", indent=2, status=INFO_ID)
-        (s,m) = d.trsfile( inputfilename )
-        if s == OK_ID:
-            self.print_message(" - %s: %s"%(inputfilename,m), indent=3, status=None)
-        else:
-            self.print_message(" - %s: %s"%(inputfilename,m), indent=3, status=s)
+        self.print_options()
+        self.print_diagnosis( inputfilename )
 
         # Get input tier to tokenize
         tierinput = self.get_transtier(inputfilename)

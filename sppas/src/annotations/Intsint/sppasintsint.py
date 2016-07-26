@@ -35,7 +35,7 @@
 # File: sppasintsint.py
 # ---------------------------------------------------------------------------
 
-import logging
+from annotations.sppasbase import sppasBase
 
 import annotationdata.io
 from annotationdata.transcription import Transcription
@@ -43,11 +43,10 @@ from annotationdata.transcription import Transcription
 from annotations.Intsint.intsint import Intsint
 
 from sp_glob import ERROR_ID, WARNING_ID, INFO_ID, OK_ID
-from annotations.diagnosis import SppasDiagnosis
 
 # ---------------------------------------------------------------------------
 
-class sppasIntsint( object ):
+class sppasIntsint( sppasBase ):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -61,8 +60,7 @@ class sppasIntsint( object ):
         """
 
         """
-        # Log messages for the user
-        self.logfile = logfile
+        sppasBase.__init__(self, logfile)
 
         self.intsint = Intsint()
 
