@@ -35,11 +35,10 @@
 # File: prefs.py
 # ----------------------------------------------------------------------------
 
-import logging
 import codecs
 import pickle
 
-from option import Option
+from wxgui.structs.wxoption import wxOption
 from themes import BaseTheme
 
 # ----------------------------------------------------------------------------
@@ -84,7 +83,7 @@ class Preferences:
         """ Set a new couple key/(type,typed-value,text). """
 
         if not key in self._prefs:
-            self._prefs[key] = Option(optiontype=t, optionvalue=v, optiontext=text)
+            self._prefs[key] = wxOption(optiontype=t, optionvalue=v, optiontext=text)
 
         self._prefs[key].set_value(v)
 
@@ -199,7 +198,7 @@ class Preferences_IO( Preferences ):
                 t   = self._prefs[key].get_type()
                 v   = self._prefs[key].get_untypedvalue()
                 txt = self._prefs[key].get_text()
-                opt = Option(t,v,txt)
+                opt = wxOption(t,v,txt)
                 cpref.SetOption(key, opt)
 
         return cpref

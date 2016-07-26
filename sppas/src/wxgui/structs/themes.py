@@ -37,7 +37,7 @@
 
 import wx
 
-from option import Option
+from wxgui.structs.wxoption import wxOption
 from wxgui.sp_consts import MAIN_FONTSIZE
 
 
@@ -149,24 +149,24 @@ class BaseTheme( Theme ):
 
         Theme.__init__(self)
 
-        self._choice['M_BG_COLOUR']   = Option('wx.Colour', (240,240,230), "Main background color")
-        self._choice['M_FG_COLOUR']   = Option('wx.Colour', (128,122,122), "Main foreground color")
-        self._choice['M_FONT']        = Option('wx.Font', (MAIN_FONTSIZE, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, '', wx.FONTENCODING_SYSTEM), "Font")
-        self._choice['M_FONT_COLOUR'] = Option('wx.Colour', (30,30,30), "Main font color")
+        self._choice['M_BG_COLOUR']   = wxOption('wx.Colour', (240,240,230), "Main background color")
+        self._choice['M_FG_COLOUR']   = wxOption('wx.Colour', (128,122,122), "Main foreground color")
+        self._choice['M_FONT']        = wxOption('wx.Font', (MAIN_FONTSIZE, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, '', wx.FONTENCODING_SYSTEM), "Font")
+        self._choice['M_FONT_COLOUR'] = wxOption('wx.Colour', (30,30,30), "Main font color")
 
-        self._choice['M_TIPS']        = Option('bool', True, 'Show tips at start-up')
-        self._choice['M_OUTPUT_EXT']  = Option('str',  '.xra', "Output file format")
-        self._choice['M_ICON_THEME']  = Option('str',  'Default', "Icons theme")
+        self._choice['M_TIPS']        = wxOption('bool', True, 'Show tips at start-up')
+        self._choice['M_OUTPUT_EXT']  = wxOption('str',  '.xra', "Output file format")
+        self._choice['M_ICON_THEME']  = wxOption('str',  'Default', "Icons theme")
 
-        self._choice['M_BGD_COLOUR']   = Option('wx.Colour', (240,235,215), "Secondary main background color")
-        self._choice['M_FGD_COLOUR']   = Option('wx.Colour', (128,122,122), "Secondary main foreground color")
-        self._choice['M_FONTD_COLOUR'] = Option('wx.Colour', (108,102,102), "Secondary main font color")
+        self._choice['M_BGD_COLOUR']   = wxOption('wx.Colour', (240,235,215), "Secondary main background color")
+        self._choice['M_FGD_COLOUR']   = wxOption('wx.Colour', (128,122,122), "Secondary main foreground color")
+        self._choice['M_FONTD_COLOUR'] = wxOption('wx.Colour', (108,102,102), "Secondary main font color")
 
         # Menu
-        self._choice['M_BGM_COLOUR']   = Option('wx.Colour', (128,122,122), "Menu background color")
-        self._choice['M_FONTM_COLOUR'] = Option('wx.Colour', (240,240,230), "Menu font color")
+        self._choice['M_BGM_COLOUR']   = wxOption('wx.Colour', (128,122,122), "Menu background color")
+        self._choice['M_FONTM_COLOUR'] = wxOption('wx.Colour', (240,240,230), "Menu font color")
 
-        self._choice['F_SPACING'] = Option('int', 2)
+        self._choice['F_SPACING'] = wxOption('int', 2)
 
 
 # (100,110,125)
@@ -183,17 +183,17 @@ class OldBaseTheme( Theme ):
         # For the Main Frame
         # ==================
 
-        self._choice['M_BG_COLOUR']   = Option('wx.Colour', (245,245,245), "Main background color")
-        self._choice['M_FG_COLOUR']   = Option('wx.Colour', (15,15,15), "Main foreground color")
-        self._choice['M_FONT']        = Option('wx.Font', (MAIN_FONTSIZE, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, '', wx.FONTENCODING_SYSTEM), "Font")
-        self._choice['M_FONT_COLOUR'] = Option('wx.Colour', (15,15,15), "Main font color")
+        self._choice['M_BG_COLOUR']   = wxOption('wx.Colour', (245,245,245), "Main background color")
+        self._choice['M_FG_COLOUR']   = wxOption('wx.Colour', (15,15,15), "Main foreground color")
+        self._choice['M_FONT']        = wxOption('wx.Font', (MAIN_FONTSIZE, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, '', wx.FONTENCODING_SYSTEM), "Font")
+        self._choice['M_FONT_COLOUR'] = wxOption('wx.Colour', (15,15,15), "Main font color")
 
-        self._choice['M_TIPS']        = Option('bool', True, 'Show tips at start-up')
-        self._choice['M_OUTPUT_EXT']  = Option('str',  '.xra', "Output file format")
-        self._choice['M_ICON_THEME']  = Option('str',  'Default', "Icons theme")
+        self._choice['M_TIPS']        = wxOption('bool', True, 'Show tips at start-up')
+        self._choice['M_OUTPUT_EXT']  = wxOption('str',  '.xra', "Output file format")
+        self._choice['M_ICON_THEME']  = wxOption('str',  'Default', "Icons theme")
 
         # For the File Manager
         # ====================
-        self._choice['F_SPACING'] = Option('int', 2)
+        self._choice['F_SPACING'] = wxOption('int', 2)
 
 # ----------------------------------------------------------------------------

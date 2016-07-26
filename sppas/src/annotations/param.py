@@ -53,103 +53,30 @@ from sp_glob import DEFAULT_OUTPUT_EXTENSION
 
 import utils.fileutils
 
+from structs.baseoption import BaseOption
+
 # ----------------------------------------------------------------------------
 
-
-class option():
+class option( BaseOption ):
     """
     Class to deal with one option of one annotation step (Private class).
 
-    For example:
-    optionid:    unk
-    optiontype:  boolean
-    optionvalue: True
-    optiontext:  This is the text in the GUI
     """
-
     def __init__(self, optionkey):
-        """
-        Creates a new option instance.
-        """
-        self.key   = optionkey
-        self.name  = "None"
-        self.value = None
-        self.text  = ""
-
-    # ############## #
-    # Getters        #
-    # ############## #
-
-    def get_name(self):
-        return self.name
-
-    def get_type(self):
-        return type(self.get_value())
-
-    def get_value(self):
-        return self.value
-
-    def get_text(self):
-        return self.text
+        BaseOption.__init__(self, "unknown")
+        self.key = optionkey
 
     def get_key(self):
         return self.key
 
-
-    # ############## #
-    # Setters        #
-    # ############## #
-
-    def set_name(self, name):
-        self.name = name
-
-
-    def parse_value(self, type, value):
-        """
-        Parse a new entry.
-        Parameters:
-            - type (String)
-            - value (String)
-        The possible values for type are: boolean, int, float, string
-        Exceptions:
-            -ValueError (if value is not of the appropriate type)
-            -TypeError (if type is unknown)
-        """
-        if type.lower() == 'boolean' or type.lower() == 'bool':
-            self.value = (value.lower() == "true")
-        elif type.lower() == 'int' or type.lower() == 'integer' or type.lower() == 'long' or type.lower() == 'short':
-            self.value = int(value)
-        elif type.lower() == 'float' or type.lower() == 'double':
-            self.value = float(value)
-        elif type.lower() == 'string':
-            self.value = value.decode('utf-8')
-        else:
-            raise TypeError
-
-
-    def set_value(self, value):
-        """ Set a new value.
-            Exception: TypeError if the new value is not of the same type as the old value
-        """
-        if type(value) == type(self.value):
-            self.value = value
-        else:
-            raise TypeError
-
-
-    def set_text(self, text):
-        self.text = text
-
-
 # ----------------------------------------------------------------------------
-
 
 class annotationParam():
     """
     One SPPAS annotation step parameters (Private class).
     Used to parse the sppas.conf file.
-    """
 
+    """
     def __init__(self, anndir):
         """
         Creates a new annotationParam instance.
@@ -178,60 +105,76 @@ class annotationParam():
 
     def __set_annotations(self,annfile):
         with open(annfile, "r") as fp:
-            type = None
-            # Read the whole file
-            for line in fp:
-                if( line.find("identifier:")>-1 ):
-                    line = line.replace( "identifier:", "" )
-                    self.key = line.strip()
-                elif( line.startswith("name:")==True ):
-                    line = line.replace( "name:", "" )
-                    self.name = line.strip()
-                elif( line.find("resources_path:")>-1 ):
-                    line = line.replace( "resources_path:", "" )
-                    self.resource["path"] = line.strip()
-                elif( line.find("resources_type:")>-1 ):
-                    line = line.replace( "resources_type:", "" )
-                    self.resource["type"] = line.strip()
-                elif( line.find("resources_name:")>-1 ):
-                    line = line.replace( "resources_name:", "" )
-                    self.resource["name"] = line.strip()
-                elif( line.find("resources_ext:")>-1 ):
-                    line = line.replace( "resources_ext:", "" )
-                    self.resource["ext"] = line.strip()
-                elif( line.find("optionid:")>-1 ):
-                    line = line.replace( "optionid:", "" )
-                    self.options.append( option(line.strip()) )
-                elif( line.find("optiontype:")>-1 ):
-                    line = line.replace( "optiontype:", "" )
-                    type = line.strip()
-                elif( line.find("optionvalue:")>-1 ):
-                    line = line.replace( "optionvalue:", "" )
-                    self.options[-1].parse_value( type, line.strip())
-                elif( line.find("optiontext:")>-1 ):
-                    line = line.replace( "optiontext:", "" )
-                    self.options[-1].set_text( line.strip() )
+            lines = fp.readlines()
+
+        for line in lines:
+            line = line.strip()
+
+            if line.startswith("identifier:"):
+                line = line.replace( "identifier:", "" )
+                self.key = line.strip()
+
+            elif line.startswith("name:"):
+                line = line.replace( "name:", "" )
+                self.name = line.strip()
+
+            elif line.startswith("resources_path:"):
+                line = line.replace( "resources_path:", "" )
+                self.resource["path"] = line.strip()
+
+            elif line.startswith("resources_type:"):
+                line = line.replace( "resources_type:", "" )
+                self.resource["type"] = line.strip()
+
+            elif line.startswith("resources_name:"):
+                line = line.replace( "resources_name:", "" )
+                self.resource["name"] = line.strip()
+
+            elif line.startswith("resources_ext:"):
+                line = line.replace( "resources_ext:", "" )
+                self.resource["ext"] = line.strip()
+
+            elif line.startswith("optionid:"):
+                line = line.replace( "optionid:", "" )
+                self.options.append( option(line.strip()) )
+
+            elif line.startswith("optiontype:"):
+                line = line.replace( "optiontype:", "" )
+                self.options[-1].set_type(line.strip())
+
+            elif line.startswith("optionvalue:"):
+                line = line.replace( "optionvalue:", "" )
+                self.options[-1].set_value(line.strip())
+
+            elif line.startswith("optiontext:"):
+                line = line.replace( "optiontext:", "" )
+                self.options[-1].set_text(line.strip())
+
+            elif line.startswith("optiondescr:"):
+                line = line.replace( "optiondescr:", "" )
+                self.options[-1].set_description(line.strip())
 
         # Fix the language list
-        if len(self.resource) > 0 and self.resource["path"]!="None":
+        if len(self.resource) > 0:
             directory = os.path.join(RESOURCES_PATH, self.resource["path"])
             filename = ""
             ext = ""
             langlistext = ""
-            if self.resource["type"]=="file":
-                if self.resource["name"] != "None":
+            if self.resource["type"] == "file":
+                if "name" in self.resource.keys():
                     filename = self.resource["name"]
-                if self.resource["ext"]!="None":
+                if "ext" in self.resource.keys():
                     ext = self.resource["ext"]
                     langlistext = utils.fileutils.get_files( directory, ext )
 
                 # Remove file name, extension and directory
                 self.langlist = [x[len(directory)+len(filename)+1:-len(ext)] for x in langlistext]
-            elif self.resource["type"]=="directory":
-                if self.resource["name"] == "None":
+
+            elif self.resource["type"] == "directory":
+                if "name" in self.resource.keys():
                     self.langresource = directory
                 for dirname in os.listdir(directory):
-                    if dirname.startswith(self.resource["name"])==True:
+                    if dirname.startswith(self.resource["name"]) is True:
                         self.langlist.append(dirname.replace(self.resource["name"], ""))
 
 
@@ -254,18 +197,18 @@ class annotationParam():
         # Is there a resource available for this annotation?
         if l in self.langlist:
             directory = os.path.join(RESOURCES_PATH, self.resource["path"])
-            if self.resource["type"]=="file":
+            if self.resource["type"] == "file":
                 filestart = ""
-                if self.resource["name"]!="None":
+                if "name" in self.resource.keys():
                     filestart = self.resource["name"]
                 self.langresource = os.path.join(directory, filestart)
                 self.langresource += l
-                if self.resource["ext"]!="None":
+                if "ext" in self.resource.keys():
                     self.langresource += self.resource["ext"]
-            elif self.resource["type"]=="directory":
-                filestart = self.resource["name"]
-                if filestart != "None":
-                    self.langresource = os.path.join(directory, filestart+l)
+
+            elif self.resource["type"] == "directory":
+                if "name" in self.resource.keys():
+                    self.langresource = os.path.join(directory, self.resource["name"]+l)
                 else:
                     self.langresource = directory
 

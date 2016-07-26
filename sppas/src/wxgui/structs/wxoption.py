@@ -32,82 +32,48 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: option.py
-# ----------------------------------------------------------------------------
-
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# ----------------------------------------------------------------------------
-# Imports
+# File: wxoption.py
 # ----------------------------------------------------------------------------
 
 import wx
+from structs.baseoption import BaseOption
 
 # ----------------------------------------------------------------------------
 
-
-class Option:
+class wxOption( BaseOption ):
     """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: This class is used to deal with one option of one preference value.
-
-    One option of one preference value (Private class).
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      One option of one preference value.
 
     """
-
     def __init__(self, optiontype, optionvalue, optiontext=""):
         """
         Creates a new Option() instance.
-
-        Example of use:
-            optiontype:  boolean
-            optionvalue: True
-            optiontext:  This is the text in the preferences dialog
 
         optiontype is a string; one of:
             boolean, int, float, string, wx.colour, wx.size, wx.font
 
         """
-        self._type  = optiontype.lower()
-        self._value = optionvalue
-        self._text  = optiontext
-
+        BaseOption.__init__(self, optiontype, optionvalue)
+        self.set_text( optiontext )
 
     # ------------------------------------------------------------------------
     # Getters
     # ------------------------------------------------------------------------
 
-    def get_type(self):
-        """
-        Return the type (as a String) of the option.
-        """
-        return self._type
-
-
-    def get_untypedvalue(self):
-        """
-        Return the typed-value.
-        """
-        return self._value
-
-
     def get_value(self):
         """
         Return the typed-value.
+        Override the BaseOption.get_value().
+
         """
-
-        if self._type.startswith('bool'): return self._value
-
-        if self._type.startswith('int') or self._type == 'long' or self._type == 'short': return int(self._value)
-
-        if self._type == 'float' or self._type == 'double': return float(self._value)
-
-        if self._type.startswith('str'): return self._value.decode('utf-8')
+        v = BaseOption.get_value(self)
+        if v is not None:
+            return v
 
         if self._type == 'wx.size':
             #(w,h) = self._value
@@ -131,31 +97,17 @@ class Option:
                 return wx.ALIGN_RIGHT
             return wx.ALIGN_CENTRE
 
-        raise TypeError
-
-
-    def get_text(self):
-        """ Return the text which describes the option. """
-        return self._text
-
+        raise TypeError('Unknown option type %s'%self._type)
 
     # ------------------------------------------------------------------------
     # Setters
     # ------------------------------------------------------------------------
 
-
-    def set(self, other):
-        """
-        Set self to an other instance.
-        """
-        self._type  = other.get_type()
-        self.set_value( other.get_value() )
-        self._text  = other.get_text()
-
-
     def set_value(self, value):
         """
         Set a new typed-value.
+        Override the BaseOption.set_value().
+
         """
         if self._type == 'wx.font':
             size   = value.GetPointSize()
@@ -183,12 +135,5 @@ class Option:
                 self._value = 'centre'
         else:
             self._value = value
-
-
-    def set_text(self, text):
-        """
-        Set a text to describe the option.
-        """
-        self._text = text
 
     # ------------------------------------------------------------------------
