@@ -83,6 +83,7 @@ class BasicAligner( BaseAligner ):
         ext = ext.lower()
         if not ext in BasicAligner.BASIC_EXT_OUT:
             raise ValueError("%s is not a valid file extension for BasicAligner"%ext)
+
         self._outext = ext
 
     # -----------------------------------------------------------------------
@@ -184,7 +185,7 @@ class BasicAligner( BaseAligner ):
 
     def __select(self, pron):
         """
-        Select the first-shorter pronunciation of an entry.
+        Return the first of the shortest pronunciations of an entry.
 
         """
         tab = pron.split("|")

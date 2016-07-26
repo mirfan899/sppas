@@ -35,7 +35,7 @@
 # File: activity.py
 # ---------------------------------------------------------------------------
 
-from annotationdata.tier import Tier
+from annotationdata.tier           import Tier
 from annotationdata.ptime.interval import TimeInterval
 from annotationdata.ptime.point    import TimePoint
 from annotationdata.annotation     import Annotation
@@ -51,7 +51,7 @@ class Activity(object):
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Create an activity tier from tokens.
+    @summary:      Create an activity tier from time-aligned tokens.
 
     """
     UNKNOWN="<UNK>"
@@ -60,7 +60,7 @@ class Activity(object):
         """
         Initialize activities.
 
-        @param trs (Transcription - IN) a Transcription that contains a tier with axactly the name 'TokensAlign'
+        @param trs (Transcription - IN) a Transcription that contains a tier with exactly the name 'TokensAlign'
 
         """
         tokenstier = trs.Find('TokensAlign')

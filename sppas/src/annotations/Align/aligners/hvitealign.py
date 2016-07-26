@@ -36,15 +36,14 @@
 # ---------------------------------------------------------------------------
 
 import os
-from subprocess import Popen, PIPE, STDOUT
 import codecs
+from subprocess import Popen, PIPE, STDOUT
 
 from annotations.Align.aligners.basealigner import BaseAligner
 
 from sp_glob import encoding
 from resources.rutils import ToStrip
 from resources.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
-
 from resources.dictpron import DictPron
 
 # ----------------------------------------------------------------------------
@@ -87,7 +86,8 @@ class HviteAligner( BaseAligner ):
         """
         ext = ext.lower()
         if not ext in HVITE_EXT_OUT:
-            raise ValueError("%s is not a valid file extension for JuliusAligner"%ext)
+            raise ValueError("%s is not a valid file extension for HVitesAligner"%ext)
+
         self._outext = ext
 
     # -----------------------------------------------------------------------
@@ -123,8 +123,10 @@ class HviteAligner( BaseAligner ):
     def run_hvite(self, inputwav, outputalign):
         """
         Perform the speech segmentation.
-
         Call the system command `HVite`.
+
+        @param inputwav (str - IN) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
+        @param outputalign (str - OUT) the output file name
 
         """
         basename = os.path.splitext(inputwav)[0]

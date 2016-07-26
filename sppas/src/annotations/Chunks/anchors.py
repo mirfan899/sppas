@@ -36,7 +36,14 @@
 # ----------------------------------------------------------------------------
 
 import logging
-from annotationdata import Tier, Annotation, TimeInterval, TimePoint, Label, Text
+
+from annotationdata import Tier
+from annotationdata import Annotation
+from annotationdata import TimeInterval
+from annotationdata import TimePoint
+from annotationdata import Label
+from annotationdata import Text
+
 import audiodata.autils as autils
 
 # --------------------------------------------------------------------------
@@ -86,6 +93,13 @@ class AnchorTier( Tier ):
         self._windelay = 4.
         self._extdelay = 1.
         self._outdelay = 0.2
+
+    # ------------------------------------------------------------------------
+    # Getters
+    # ------------------------------------------------------------------------
+
+    def get_windelay(self):
+        return self._windelay
 
     # ------------------------------------------------------------------------
     # Setters

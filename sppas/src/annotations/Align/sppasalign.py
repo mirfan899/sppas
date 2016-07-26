@@ -32,13 +32,12 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: align.py
+# File: sppasalign.py
 # ----------------------------------------------------------------------------
 
 import shutil
 import os.path
 import glob
-import logging
 
 import utils.fileutils as fileutils
 
@@ -59,7 +58,6 @@ from sp_glob import RESOURCES_PATH
 from resources.mapping        import Mapping
 from resources.acm.modelmixer import ModelMixer
 
-from annotations.diagnosis import sppasDiagnosis
 from annotations.sppasbase import sppasBase
 
 # ----------------------------------------------------------------------------
@@ -77,7 +75,7 @@ class sppasAlign( sppasBase ):
 
         - PhonAlign,
         - TokensAlign (if tokens are given in the input).
-        - PhnTokALign - option (if tokens are given in the input),
+        - PhnTokAlign - option (if tokens are given in the input),
         - Activity    - option (if tokens are given in the input),
 
     How to use sppasAlign?
@@ -116,9 +114,6 @@ class sppasAlign( sppasBase ):
         self._options['activity'] = True
         self._options['phntok']   = False
 
-        self.workdir    = ""
-        self.inputaudio = ""
-
     # -----------------------------------------------------------------------
 
     def fix_segmenter(self, model, modelL1):
@@ -137,10 +132,7 @@ class sppasAlign( sppasBase ):
                 modelmixer.mix( outputdir, gamma=1. )
                 model = outputdir
             except Exception as e:
-                if self.logfile is not None:
-                    self.logfile.print_message("The model is ignored: %s"%str(e), indent=3, status=WARNING_ID)
-                else:
-                    logging.info( "The model is ignored: %s"%str(e) )
+                self.print_message("The model is ignored: %s"%str(e), indent=3, status=WARNING_ID)
 
         # Map phoneme names from model-specific to SAMPA and vice-versa
         mappingfilename = os.path.join( model, "monophones.repl")
@@ -189,7 +181,7 @@ class sppasAlign( sppasBase ):
                 self.set_phntokalign_tier( opt.get_value() )
 
             else:
-                raise Exception('Unknown key option: %s'%key)
+                raise KeyError('Unknown key option: %s'%key)
 
     # ----------------------------------------------------------------------
 
@@ -215,6 +207,7 @@ class sppasAlign( sppasBase ):
 
         """
         self.alignio.set_aligner(alignername)
+        self._options['aligner'] = alignername
 
     # -----------------------------------------------------------------------
 
@@ -267,46 +260,6 @@ class sppasAlign( sppasBase ):
     # Methods to time-align series of data
     # -----------------------------------------------------------------------
 
-    def fix_audioinput(self, inputaudioname):
-        """
-        Fix the audio file name that will be used.
-        An only-ascii-based file name without whitespace is set if the
-        current audio file name does not fit in these requirements.
-
-        @param inputaudioname (str - IN) Given audio file name
-
-        """
-        self.inputaudio = fileutils.string_to_ascii(fileutils.format_filename(inputaudioname))
-        if self.inputaudio != inputaudioname:
-            shutil.copy(inputaudioname, self.inputaudio)
-
-        try:
-            audio = audiodata.io.open( self.inputaudio )
-            audio.close()
-        except IOError as e:
-            raise IOError("Not a valid audio file: "+str(e))
-
-    # ------------------------------------------------------------------------
-
-    def fix_workingdir(self):
-        """
-        Fix the working directory to store temporarily the data.
-
-        """
-        if len(self.inputaudio) == 0:
-            # Notice that the following generates a directory that the
-            # aligners won't be able to access under Windows.
-            # No problem with MacOS or Linux.
-            self.workdir = fileutils.gen_name()
-            while os.path.exists( self.workdir ) is True:
-                self.workdir = fileutils.gen_name()
-        else:
-            self.workdir = os.path.splitext(self.inputaudio)[0]+"-temp"
-
-        os.mkdir( self.workdir )
-
-    # ------------------------------------------------------------------------
-
     def convert_tracks(self, diralign, trstier):
         """
         Call the Aligner to align each unit of a directory.
@@ -330,7 +283,7 @@ class sppasAlign( sppasBase ):
             self.print_message('Align interval number '+str(track), indent=3)
 
             try:
-                msg = self.alignio.segment_track(track,self.workdir)
+                msg = self.alignio.segment_track(track,diralign)
                 if len(msg)>0:
                     self.print_message(msg, indent=3, status=INFO_ID)
 
@@ -346,17 +299,17 @@ class sppasAlign( sppasBase ):
                         self.logfile.print_message('Execute a Basic Alignment - same duration for each phoneme:', indent=3)
                     alignerid = self.alignio.get_aligner()
                     self.alignio.set_aligner('basic')
-                    msg = self.alignio.segment_track(track,self.workdir)
+                    msg = self.alignio.segment_track(track,diralign)
                     self.alignio.set_aligner(alignerid)
                 # or Create an empty alignment, to get an empty interval in the final tier
                 else:
-                    msg = self.alignio.segment_track(track,self.workdir,segment=False)
+                    msg = self.alignio.segment_track(track,diralign,segment=False)
 
             track = track + 1
 
     # ------------------------------------------------------------------------
 
-    def convert( self, phontier, toktier, audioname ):
+    def convert( self, phontier, toktier, inputaudio, workdir ):
         """
         Perform speech segmentation of data in tiers tokenization/phonetization.
 
@@ -367,36 +320,17 @@ class sppasAlign( sppasBase ):
         @return A transcription.
 
         """
-        # Prepare data
-        # -------------------------------------------------------------
-
-        # Fix the input audio file: self.inputaudio
-        self.fix_audioinput(audioname)
-
-        # Fix the working directory name: self.workdir
-        self.fix_workingdir()
-        if self._options['clean'] is False:
-            self.print_message( "The working directory is: %s"%self.workdir, indent=3, status=INFO_ID )
-
         # Split input into tracks
         # --------------------------------------------------------------
 
         self.print_message("Split into intervals: ", indent=2)
-
-        try:
-            sgmt = self.alignio.split( self.inputaudio, phontier, toktier, self.workdir )
-        except Exception as e:
-            if phontier.IsTimeInterval() is True:
-                self.alignio.split( self.inputaudio, phontier, None, self.workdir )
-                self.print_message("Tokens alignment disabled: %s"%str(e), indent=3, status=WARNING_ID)
-            else:
-                raise
+        sgmt = self.alignio.split( inputaudio, phontier, toktier, workdir )
 
         # Align each track
         # --------------------------------------------------------------
 
         self.print_message("Align each interval: ", indent=2)
-        self.convert_tracks( self.workdir, phontier )
+        self.convert_tracks( workdir, phontier )
 
         # Merge track alignment results
         # --------------------------------------------------------------
@@ -408,7 +342,7 @@ class sppasAlign( sppasBase ):
             trsoutput.Append(tier)
 
         # Create a Transcription() object with alignments
-        trs = self.alignio.read( self.workdir )
+        trs = self.alignio.read( workdir )
         if self.alignio.get_aligner() != 'basic':
             trs = self.rustine_liaisons(trs)
             trs = self.rustine_others(trs)
@@ -468,10 +402,6 @@ class sppasAlign( sppasBase ):
             if "phon" in tier.GetName().lower():
                 return tier
 
-        # We got the phonetization from a raw text file
-        if trsinput.GetSize() == 1 and trsinput[0].GetName().lower() == "rawtranscription":
-            return tier
-
         return None
 
     # ------------------------------------------------------------------------
@@ -499,11 +429,6 @@ class sppasAlign( sppasBase ):
 
         if fakedtier is not None:
             return fakedtier
-
-        if toktier is None:
-            # We got the tokenization from a raw text file
-            if trsinput.GetSize() == 1 and trsinput[0].GetName().lower() == "rawtranscription":
-                return tier
 
         return toktier
 
@@ -567,18 +492,26 @@ class sppasAlign( sppasBase ):
             toktier = None
             self.print_message("Tokens alignment disabled.", indent=2, status=WARNING_ID)
 
+        # Prepare data
+        # -------------------------------------------------------------
+
+        inputaudio = fileutils.fix_audioinput(audioname)
+        workdir    = fileutils.fix_workingdir(inputaudio)
+        if self._options['clean'] is False:
+            self.print_message( "The working directory is: %s"%workdir, indent=3, status=None )
+
         # Processing...
         # ---------------------------------------------------------------
 
         try:
-            trsoutput = self.convert( phontier,toktier,audioname )
+            trsoutput = self.convert( phontier,toktier,audioname,workdir )
             if toktier is not None:
                 trsoutput = self.append_extra(trsoutput)
         except Exception as e:
             self.print_message( str(e) )
-            self.print_message("WORKDIR=%s"%self.workdir)
-            #if self._options['clean'] is True:
-            #    shutil.rmtree( self.workdir )
+            self.print_message("WORKDIR=%s"%workdir)
+            if self._options['clean'] is True:
+                shutil.rmtree( workdir )
             raise
 
         # Set media
@@ -598,17 +531,17 @@ class sppasAlign( sppasBase ):
             annotationdata.io.write( outputfilename,trsoutput )
         except Exception:
             if self._options['clean'] is True:
-                shutil.rmtree( self.workdir )
+                shutil.rmtree( workdir )
             raise
 
         # Clean!
         # --------------------------------------------------------------
         # if the audio file was converted.... remove the tmpaudio
-        if self.inputaudio != audioname:
-            os.remove(self.inputaudio)
+        if inputaudio != audioname:
+            os.remove(inputaudio)
         # Remove the working directory we created
         if self._options['clean'] is True:
-            shutil.rmtree( self.workdir )
+            shutil.rmtree( workdir )
 
 
     # ------------------------------------------------------------------------

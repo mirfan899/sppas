@@ -52,7 +52,7 @@ class BaseAligner:
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Base class for an automatic alignment system.
+    @summary:      Base class for any automatic alignment system.
 
     A base class for a system to perform phonetic speech segmentation.
 
@@ -68,6 +68,7 @@ class BaseAligner:
             modeldir = str(modeldir)
             if os.path.exists( modeldir ) is False:
                 raise IOError("Not a valid model directory.")
+
         self._model    = modeldir
         self._infersp  = False
         self._outext   = "" # output file name extension

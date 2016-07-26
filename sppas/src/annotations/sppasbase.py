@@ -131,9 +131,6 @@ class sppasBase( object ):
         self.print_message("Diagnosis: ", indent=2, status=None)
         for filename in filenames:
             (s,m) = self._diag.checkfile( filename )
-            if s == OK_ID:
-                self.print_message(" - %s: %s"%(filename,m), indent=3, status=None)
-            else:
-                self.print_message(" - %s: %s"%(filename,m), indent=3, status=s)
+            self.print_message(" - %s: %s"%(filename,m), indent=3, status=None)
 
     # -----------------------------------------------------------------------

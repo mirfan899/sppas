@@ -37,19 +37,17 @@
 
 import os
 import codecs
-import re
 from subprocess import Popen, PIPE, STDOUT
 
-from annotations.Align.aligners.basealigner import BaseAligner
-
 from sp_glob import encoding
-from sp_glob import JULIUS_CONFIG
+
+from annotations.Align.aligners.basealigner import BaseAligner
 
 from resources.slm.ngramsmodel import NgramsModel
 from resources.slm.arpaio      import ArpaIO
 from resources.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
-
-from resources.dictpron import DictPron
+from resources.rutils          import ToStrip
+from resources.dictpron        import DictPron
 
 # ----------------------------------------------------------------------------
 JULIUS_EXT_OUT = ["palign","walign"]
@@ -97,7 +95,7 @@ class JuliusAligner( BaseAligner ):
             - an inter-pausal unit,
             - an utterance,
             - a sentence...
-        no longer that a few seconds preferably.
+        no longer that a few seconds.
 
         Things needed to run JuliusAligner:
 
@@ -124,8 +122,10 @@ class JuliusAligner( BaseAligner ):
             - the tokenization of speech,
             - the phonetization of speech.
 
-        if outext is set to "palign", JuliusAligner will use a grammar, and
-        if outext is set to "walign", JuliusAligner will use a slm.
+        If outext is set to "palign", JuliusAligner will use a grammar and
+        it will produce both phones and words alignments.
+        If outext is set to "walign", JuliusAligner will use a slm and will
+        produce words alignments only.
 
         @param modelfildir (str) the acoustic model file name
 
@@ -139,12 +139,13 @@ class JuliusAligner( BaseAligner ):
         """
         Set the extension for output files.
 
-        @param str
+        @param ext (str) Extension for output file name.
 
         """
         ext = ext.lower()
         if not ext in JULIUS_EXT_OUT:
             raise ValueError("%s is not a valid file extension for JuliusAligner"%ext)
+
         self._outext = ext
 
     # -----------------------------------------------------------------------
@@ -154,6 +155,7 @@ class JuliusAligner( BaseAligner ):
         Generate the dependencies (slm, dictionary) for julius.
 
         @param basename (str - IN) the base name of the slm file and of the dictionary file
+        @param N (int) Language model N-gram length.
 
         """
         dictname = basename + ".dict"
@@ -315,7 +317,7 @@ class JuliusAligner( BaseAligner ):
 
         @param inputwav (str - IN) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
         @param outputalign (str - OUT) the output file name
-        @param N (int) N value of N-grams, used if SLM only
+        @param N (int) N value of N-grams, used only if SLM (i.e. outext=walign)
 
         @return (str) A message of `julius`.
 
@@ -338,12 +340,11 @@ class JuliusAligner( BaseAligner ):
         entries = []
         for line in lines:
             if line.find("Error: voca_load_htkdict")>-1 and line.find("not found")>-1:
-                line = re.sub("[ ]+", " ", line)
-                line = line.strip()
+                line = ToStrip( line )
                 line = line[line.find('"')+1:]
                 line = line[:line.find('"')]
                 if len(line)>0:
-                    entries = line.split(" ")
+                    entries = line.split()
 
         if len(entries) > 0:
             added = self.add_tiedlist(entries)

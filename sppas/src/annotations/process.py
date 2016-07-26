@@ -60,7 +60,7 @@ from annotations.Intsint.sppasintsint   import sppasIntsint
 from annotations.IPUs.ipusseg           import sppasIPUs
 from annotations.Token.tok              import sppasTok
 from annotations.Phon.phon              import sppasPhon
-from annotations.Align.align            import sppasAlign
+from annotations.Align.sppasalign       import sppasAlign
 from annotations.Syll.syll              import sppasSyll
 from annotations.Repetitions.repetition import sppasRepetition
 

@@ -43,6 +43,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 import os
 import random
+import shutil
 import codecs
 import re
 import logging
@@ -218,3 +219,40 @@ def setup_logging(log_level, filename):
     logging.info("Logging set up with log level=%s, filename=%s", log_level,filename)
 
 # ----------------------------------------------------------------------------
+
+def fix_audioinput(inputaudioname):
+    """
+    Fix the audio file name that will be used.
+    An only-ascii-based file name without whitespace is set if the
+    current audio file name does not fit in these requirements.
+
+    @param inputaudioname (str - IN) Given audio file name
+
+    """
+    inputaudio = string_to_ascii(format_filename(inputaudioname))
+    if inputaudio != inputaudioname:
+        shutil.copy(inputaudioname, inputaudio)
+
+    return inputaudio
+
+# ------------------------------------------------------------------------
+
+def fix_workingdir(inputaudio):
+    """
+    Fix the working directory to store temporarily the data.
+
+    """
+    if len(inputaudio) == 0:
+        # Notice that the following generates a directory that the
+        # aligners won't be able to access under Windows.
+        # No problem with MacOS or Linux.
+        workdir = gen_name()
+        while os.path.exists( workdir ) is True:
+            workdir = gen_name()
+    else:
+        workdir = os.path.splitext(inputaudio)[0]+"-temp"
+
+    os.mkdir( workdir )
+    return workdir
+
+# ------------------------------------------------------------------------
