@@ -3,7 +3,7 @@
 
 import unittest
 
-from annotations.Align.spkrate import SpeakerRate
+from annotations.Chunks.spkrate import SpeakerRate
 
 # ---------------------------------------------------------------------------
 

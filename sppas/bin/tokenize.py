@@ -54,7 +54,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
-from annotations.Token.tok      import sppasTok
+from annotations.Token.sppastok import sppasTok
 from annotations.Token.tokenize import DictTok
 from resources.wordslst         import WordsList
 from resources.dictrepl         import DictRepl

@@ -55,7 +55,7 @@ from argparse import ArgumentParser
 PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
-from annotations.Syll.syll import sppasSyll
+from annotations.Syll.sppassyll import sppasSyll
 
 
 # ----------------------------------------------------------------------------

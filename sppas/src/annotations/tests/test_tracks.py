@@ -5,13 +5,12 @@ import unittest
 import os
 
 from annotations.Align.aligners.alignerio import AlignerIO
-from annotations.Align.anchors   import AnchorTier
+from annotations.Chunks.anchors   import AnchorTier
 from annotationdata import Tier, Annotation, TimeInterval, TimePoint, Label, Text
 from resources.patterns import Patterns
 
 # --------------------------------------------------------------------------
 
-from paths import TEMP
 from paths import DATA
 
 # --------------------------------------------------------------------------

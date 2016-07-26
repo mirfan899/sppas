@@ -452,6 +452,18 @@ class Tier( MetaObject ):
 
     # -----------------------------------------------------------------------
 
+    def IsTimePoint(self):
+        """
+        Return True if all annotations of the tier are linked to time interval.
+
+        """
+        if self.IsEmpty():
+            return False
+
+        return all(a.GetLocation().IsTimePoint() for a in self.__ann)
+
+    # -----------------------------------------------------------------------
+
     def Find(self, begin, end, overlaps=True):
         """
         Return a list of annotations between begin and end.

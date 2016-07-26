@@ -14,6 +14,8 @@ from annotationdata.ptime.interval import TimeInterval
 from annotationdata.ptime.point    import TimePoint
 from annotationdata.label.label    import Label
 
+from annotations.Syll.syllabification import Syllabification
+
 # -------------------------------------------------------------------------
 
 def labels2tier(phonemes):

@@ -55,15 +55,15 @@ import annotationdata.io
 from annotations.infotier        import sppasMetaInfoTier
 from annotations.log             import sppasLog
 
-from annotations.Momel.sppasmomel       import sppasMomel
-from annotations.Intsint.sppasintsint   import sppasIntsint
-from annotations.IPUs.ipusseg           import sppasIPUs
-from annotations.Token.tok              import sppasTok
-from annotations.Phon.phon              import sppasPhon
-from annotations.Chunks.sppaschunks     import sppasChunks
-from annotations.Align.sppasalign       import sppasAlign
-from annotations.Syll.syll              import sppasSyll
-from annotations.Repetitions.repetition import sppasRepetition
+from annotations.Momel.sppasmomel      import sppasMomel
+from annotations.Intsint.sppasintsint  import sppasIntsint
+from annotations.IPUs.ipusseg          import sppasIPUs
+from annotations.Token.sppastok        import sppasTok
+from annotations.Phon.sppasphon        import sppasPhon
+from annotations.Chunks.sppaschunks    import sppasChunks
+from annotations.Align.sppasalign      import sppasAlign
+from annotations.Syll.sppassyll        import sppasSyll
+from annotations.Repet.sppasrepet      import sppasRepet
 
 from threading import Thread
 
@@ -899,7 +899,7 @@ class sppasProcess( Thread ):
         # Create annotation instance
         try:
             self._progress.set_text("Loading resources...")
-            r = sppasRepetition( step.get_langresource(), self._logfile )
+            r = sppasRepet( step.get_langresource(), self._logfile )
         except Exception as e:
             if self._logfile is not None:
                 self._logfile.print_message( "%s\n"%str(e), indent=1,status=4 )
@@ -1134,7 +1134,7 @@ class sppasProcess( Thread ):
                     nbruns[i] = self.run_alignment(i)
                 elif self.parameters.get_step_key(i) == "syll":
                     nbruns[i] = self.run_syllabification(i)
-                elif self.parameters.get_step_key(i) == "repetition":
+                elif self.parameters.get_step_key(i) == "repet":
                     nbruns[i] = self.run_repetition(i)
                 elif self._logfile is not None:
                     self._logfile.print_message('Unrecognized annotation step:%s'%self.parameters.get_step_name(i))

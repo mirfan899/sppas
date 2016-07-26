@@ -46,7 +46,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
-from annotations.Phon.phon      import sppasPhon
+from annotations.Phon.sppasphon import sppasPhon
 from annotations.Phon.phonetize import DictPhon
 from resources.dictpron         import DictPron
 from resources.mapping          import Mapping

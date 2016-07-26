@@ -80,30 +80,44 @@ class sppasMomel( sppasBase ):
         """
         Fix all options.
 
-        Available options are:
-            - unk
-            - usesstdtokens
-
         @param options (option)
 
         """
         for opt in options:
-            if "lfen1" == opt.get_key():
+
+            key = opt.get_key()
+
+            if "lfen1" == key:
                 self.momel.set_option_win1( opt.get_value() )
-            elif "hzinf" == opt.get_key():
+                self._options['lfen1'] = opt.get_value()
+
+            elif "hzinf" == key:
                 self.momel.set_option_lo( opt.get_value() )
-            elif "hzsup" == opt.get_key():
+                self._options['hzinf'] = opt.get_value()
+
+            elif "hzsup" == key:
                 self.momel.set_option_hi( opt.get_value() )
+                self._options['hzsup'] = opt.get_value()
+
             elif "maxec" == opt.get_key():
                 self.momel.set_option_maxerr( opt.get_value() )
+                self._options['maxec'] = opt.get_value()
+
             elif "lfen2" == opt.get_key():
                 self.momel.set_option_win2( opt.get_value() )
+                self._options['lfen2'] = opt.get_value()
+
             elif "seuildiff_x" == opt.get_key():
                 self.momel.set_option_mind( opt.get_value() )
+                self._options['seuildiff_x'] = opt.get_value()
+
             elif "seuildiff_y" == opt.get_key():
                 self.momel.set_option_minr( opt.get_value() )
+                self._options['seuildiff_y'] = opt.get_value()
+
             elif "glitch" == opt.get_key():
                 self.momel.set_option_elim_glitch( opt.get_value() )
+                self._options['glitch'] = opt.get_value()
 
     # ------------------------------------------------------------------------
 
@@ -173,6 +187,7 @@ class sppasMomel( sppasBase ):
 
         """
         self.print_options()
+        self.print_diagnosis( inputfilename )
 
         # Get pitch values from the input
         pitch = self.set_pitch( inputfilename )

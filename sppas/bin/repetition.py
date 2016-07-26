@@ -48,7 +48,6 @@ __copyright__ = """Copyright (C) 2011-2014  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import sys
-import os
 import os.path
 from argparse import ArgumentParser
 
@@ -56,18 +55,15 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
-from annotations.Repetitions.repetition        import sppasRepetition
-from annotations.Repetitions.detectrepetition  import Repetitions
-
-
+from annotations.Repet.sppasrepet import sppasRepet
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -i file [options]" % os.path.basename(PROGRAM), description="Self- and Other- repetitions detection command line interface.")
+parser = ArgumentParser(usage="%s -i file [options]" % os.path.basename(PROGRAM), description="Self- and Other- repetitions detection.")
 
-parser.add_argument("-i", metavar="file", required=True, help='Input file name with time-aligned tokens of the self-speaker')
+parser.add_argument("-i", metavar="file", required=True, help='Input file name with time-aligned tokens of the main speaker')
 
 parser.add_argument("-r", metavar="file",  help='Either the lemma dictionary or the list of stop-words')
 parser.add_argument("-I", metavar="file",  help='Input file name with time-aligned tokens of the echoing-speaker (if ORs)')
@@ -78,12 +74,11 @@ if len(sys.argv) <= 1:
 
 args = parser.parse_args()
 
-
 # ----------------------------------------------------------------------------
 # Automatic detection is here:
 # ----------------------------------------------------------------------------
 
-p = sppasRepetition( args.r )
+p = sppasRepet( args.r )
 p.run( args.i, args.I, args.o )
 
 # ----------------------------------------------------------------------------

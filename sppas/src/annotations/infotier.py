@@ -94,17 +94,17 @@ class sppasMetaInfoTier( MetaInfo):
             return None
 
         tierdur = float(end) - float(begin)
-        anndur  = tierdur / float(len(activekeys))
+        anndur  = tierdur / (float(len(activekeys))+1)
 
         tier = Tier("MetaInformation")
         annbegin = begin
-        annend   = anndur
+        annend   = begin+anndur
         for key in activekeys:
             value = self.get_metainfo(key)
             label = key+"="+value
             tier.Append(Annotation(TimeInterval(TimePoint(annbegin), TimePoint(annend)), Label(label)))
             annbegin = annend
-            annend = annend + anndur
+            annend = annbegin + anndur
 
         tier[-1].GetLocation().SetEnd(TimePoint(end))
         return tier

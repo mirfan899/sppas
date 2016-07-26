@@ -7,7 +7,7 @@ import os
 from annotations.Phon.phonetize import DictPhon
 from annotations.Phon.dagphon   import DAGPhon
 from annotations.Phon.phonunk   import PhonUnk
-from annotations.Phon.phon      import sppasPhon
+from annotations.Phon.sppasphon import sppasPhon
 
 from resources.dictpron import DictPron
 from resources.mapping  import Mapping
@@ -142,7 +142,7 @@ class TestSppasPhon(unittest.TestCase):
         self.assertEqual(self.sp.phonetize("THE BANCI THE"), "D-@|D-V|D-i: b-{-N-k-aI D-@|D-V|D-i:")
         self.assertEqual(self.sp.phonetize("#"), "sil")
         self.assertEqual(self.sp.phonetize("+"), "sil")
-        self.assertEqual(self.sp.phonetize("é à"), "")
+        self.assertEqual(self.sp.phonetize("é à"), UNKSTAMP)
         self.sp.set_unk(False)
         self.assertEqual(self.sp.phonetize("THE BANCI THE"), "")
 

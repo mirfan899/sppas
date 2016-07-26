@@ -314,6 +314,9 @@ class TextGrid(Transcription):
         Format a tier from a transcription to the TextGrid format.
         @param number: The position of the tier in the list of all tiers.
         """
+        if tier.IsTimeInterval() is False and tier.IsTimePoint() is False:
+            raise IOError('Unsupported tier type. Praat textgrid files only support Time Intervals or Time Points.')
+
         # Fill empty tiers because TextGrid does not support empty tiers.
         if tier.IsEmpty():
             tier.Append(Annotation(
@@ -340,10 +343,8 @@ class TextGrid(Transcription):
 
         if tier.IsTimeInterval():
             format_annotation = TextGrid.__format_interval_annotation
-        elif tier.IsTimePoint():
-            format_annotation = TextGrid.__format_point_annotation
         else:
-            raise IOError('Unsupported tier type. Praat textgrid files only support Time Intervals or Time Points.')
+            format_annotation = TextGrid.__format_point_annotation
 
         for j, an in enumerate(tier, 1):
             result += format_annotation(an, j)

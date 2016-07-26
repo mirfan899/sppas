@@ -65,7 +65,7 @@ DEBUG=False
 
 # ######################################################################### #
 
-class sppasRepetition( sppasBase ):
+class sppasRepet( sppasBase ):
     """
     SPPAS Automatic Repetition Detection
     (either self-repetitions or other-repetitions).

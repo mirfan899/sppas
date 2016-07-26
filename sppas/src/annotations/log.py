@@ -35,13 +35,11 @@
 # File: log.py
 # ----------------------------------------------------------------------------
 
-# Python libraries
 import datetime
 import codecs
 import logging
 import os
 
-# Local libraries
 from sp_glob import program, version, copyright, url, author, contact
 from sp_glob import encoding
 
@@ -49,7 +47,7 @@ from utils.fileutils import string_to_ascii
 
 # ----------------------------------------------------------------------------
 
-class sppasLog:
+class sppasLog( object ):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -93,7 +91,7 @@ class sppasLog:
         """
         Print the annotation step name.
 
-        @param stepnumber (1..6)
+        @param stepnumber (1..N)
 
         """
         try:
