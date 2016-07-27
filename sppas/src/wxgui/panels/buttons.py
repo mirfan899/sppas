@@ -38,6 +38,74 @@
 import wx
 
 from wxgui.cutils.imageutils import spBitmap
+from wxgui.cutils.ctrlutils  import CreateGenButton
+
+from wxgui.sp_consts import BUTTON_ICONSIZE, MENU_ICONSIZE
+
+from wxgui.sp_icons import CLOSE_ICON
+from wxgui.sp_icons import APPLY_ICON
+from wxgui.sp_icons import CANCEL_ICON
+from wxgui.sp_icons import SAVE_FILE
+from wxgui.sp_icons import YES_ICON
+from wxgui.sp_icons import NO_ICON
+from wxgui.sp_icons import OKAY_ICON
+
+# ---------------------------------------------------------------------------
+
+class ButtonCreator:
+    """
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Create buttons.
+
+    """
+    def __init__(self, preferences):
+        self.preferences = preferences
+
+    # -----------------------------------------------------------------------
+
+    def CreateButton(self, parent, icon, text, tooltip="", btnid=None):
+        """
+        Create a button and return it.
+
+        @param icon (str) Path to the icon file name.
+        @param text (str) Short text to print into the button.
+        @param tooltip (str) Long text to show when mouse is entering into the button.
+        @param btnid (wx.ID) A unique ID assigned to the button.
+
+        """
+        if btnid is None:
+            btnid = wx.NewId()
+        bmp = spBitmap(icon, BUTTON_ICONSIZE, theme=self.preferences.GetValue('M_ICON_THEME'))
+        btn = CreateGenButton(parent, btnid, bmp, text=text, tooltip=tooltip, colour=None)
+        btn.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
+        btn.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
+        btn.SetFont( self.preferences.GetValue('M_FONT') )
+
+        return btn
+
+    # -----------------------------------------------------------------------
+
+    def CreateSaveButton(self, parent, tooltip="Save"):
+        return self.CreateButton(parent, SAVE_FILE, "Save", tooltip, btnid=wx.ID_SAVE)
+
+    def CreateCancelButton(self, parent, tooltip="Cancel"):
+        return self.CreateButton(parent, CANCEL_ICON, "Cancel", tooltip, btnid=wx.ID_CANCEL)
+
+    def CreateCloseButton(self, parent, tooltip="Close"):
+        return self.CreateButton(parent, CLOSE_ICON, "Close", tooltip, btnid=wx.ID_CLOSE)
+
+    def CreateOkayButton(self, parent, tooltip="Okay"):
+        return self.CreateButton(parent, OKAY_ICON, " OK ", tooltip, btnid=wx.ID_OK)
+
+    def CreateYesButton(self, parent, tooltip="Yes"):
+        return self.CreateButton(parent, YES_ICON, " Yes ", tooltip, btnid=wx.ID_YES)
+
+    def CreateNoButton(self, parent, tooltip="No"):
+        return self.CreateButton(parent, NO_ICON, " No ", tooltip, btnid=wx.ID_NO)
 
 # ---------------------------------------------------------------------------
 
@@ -58,7 +126,7 @@ class ImgPanel( wx.Panel ):
         sBmp = wx.StaticBitmap(self, wx.ID_ANY, bitmap)
 
         sizer = wx.BoxSizer()
-        sizer.Add(sBmp, proportion=0, flag=wx.ALL, border=0)
+        sizer.Add(sBmp, proportion=1, flag=wx.ALL|wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL, border=0)
         self.SetBackgroundColour( parent.GetBackgroundColour() )
         self.SetSizerAndFit(sizer)
 
@@ -101,7 +169,7 @@ class ButtonPanel( wx.Panel ):
         font = self.GetFont()
 
         if bmpname is not None:
-            bmp = ImgPanel(panel, 32, bmpname)
+            bmp = ImgPanel(panel, BUTTON_ICONSIZE, bmpname)
             sizer.Add(bmp, flag=wx.ALL|wx.ALIGN_CENTER, border=10)
 
         text = wx.StaticText(panel, -1, textstr)
@@ -139,9 +207,11 @@ class ButtonPanel( wx.Panel ):
 
     def OnButtonEnter(self, event):
         self.SetBackgroundColour( self._prefs.GetValue('M_FGD_COLOUR') )
+        self.Refresh()
 
     def OnButtonLeave(self, event):
         self.SetBackgroundColour( self._prefs.GetValue('M_BGD_COLOUR') )
+        self.Refresh()
 
     def OnButtonLeftUp(self, event):
         evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, self.GetId())
@@ -166,9 +236,9 @@ class ButtonMenuPanel( wx.Panel ):
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         if bmpname is not None:
-            bmp = ImgPanel(self, 24, bmpname)
+            bmp = ImgPanel(self, MENU_ICONSIZE, bmpname)
             bmp.Bind(wx.EVT_LEFT_UP, self.OnButtonLeftUp)
-            sizer.Add(bmp, flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
+            sizer.Add(bmp, flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER, border=0)
 
         if textstr is not None:
             text = wx.StaticText(self, -1, textstr)

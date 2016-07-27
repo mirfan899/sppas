@@ -48,35 +48,35 @@ import audiodata
 from sp_glob import SETTINGS_FILE
 
 from wxgui.cutils.imageutils import spBitmap
-from wxgui.sp_icons import APP_ICON
 from wxgui.structs.prefs import Preferences_IO
+from wxgui.sp_icons import APP_ICON
 
 from wxgui.sp_consts import MIN_FRAME_W, MIN_PANEL_W, PANEL_W
 from wxgui.sp_consts import MIN_FRAME_H, MIN_PANEL_H, FRAME_H
 from wxgui.sp_consts import FRAME_STYLE
 from wxgui.sp_consts import FRAME_TITLE
 
-from wxgui.sp_consts          import ID_ANNOTATIONS
-from wxgui.sp_consts          import ID_COMPONENTS
-from wxgui.sp_consts          import ID_PLUGINS
-from wxgui.sp_consts          import ID_ACTIONS
-from wxgui.sp_consts          import ID_EXT_BUG
-from wxgui.sp_consts          import ID_EXT_HOME
-from wxgui.sp_consts          import ID_FEEDBACK
-from wxgui.sp_consts          import ID_FRAME_DATAROAMER
-from wxgui.sp_consts          import ID_FRAME_SNDROAMER
-from wxgui.sp_consts          import ID_FRAME_IPUSCRIBE
-from wxgui.sp_consts          import ID_FRAME_SPPASEDIT
-from wxgui.sp_consts          import ID_FRAME_STATISTICS
-from wxgui.sp_consts          import ID_FRAME_DATAFILTER
+from wxgui.sp_consts import ID_ANNOTATIONS
+from wxgui.sp_consts import ID_COMPONENTS
+from wxgui.sp_consts import ID_PLUGINS
+from wxgui.sp_consts import ID_ACTIONS
+from wxgui.sp_consts import ID_EXT_BUG
+from wxgui.sp_consts import ID_EXT_HOME
+from wxgui.sp_consts import ID_FEEDBACK
+from wxgui.sp_consts import ID_FRAME_DATAROAMER
+from wxgui.sp_consts import ID_FRAME_SNDROAMER
+from wxgui.sp_consts import ID_FRAME_IPUSCRIBE
+from wxgui.sp_consts import ID_FRAME_SPPASEDIT
+from wxgui.sp_consts import ID_FRAME_STATISTICS
+from wxgui.sp_consts import ID_FRAME_DATAFILTER
 
 from wxgui.panels.filetree         import FiletreePanel
-from wxgui.panels.mainbuttons      import MainActionsPanel, MainMenuPanel, MainActionsMenuPanel, MainTitlePanel
+from wxgui.panels.mainbuttons      import MainActionsPanel, MainMenuPanel, MainActionsMenuPanel, MainTitlePanel, MainTooltips
 from wxgui.panels.components       import AnalyzePanel
 from wxgui.panels.aannotations     import AnnotationsPanel
 from wxgui.panels.plugins          import PluginPanel
 from wxgui.panels.about            import AboutSPPAS
-from wxgui.ui.splitterpanel import SplitterPanel
+from wxgui.ui.splitterpanel        import SplitterPanel
 
 from wxgui.frames.dataroamerframe  import DataRoamerFrame
 from wxgui.frames.audioroamerframe import AudioRoamerFrame
@@ -193,10 +193,6 @@ class FrameSPPAS( wx.Frame ):
         sizer.Add( vsizer, proportion=2, flag=wx.ALL|wx.EXPAND, border=0)
         mainpanel.SetSizer( sizer )
 
-        # Frame properties
-        mainmenu.SetMinSize((32,-1))
-        maintitle.SetMinSize((-1,32))
-
         return mainpanel
 
     # ------------------------------------------------------------------------
@@ -210,11 +206,16 @@ class FrameSPPAS( wx.Frame ):
 
         # Left: File explorer
         self._leftpanel = wx.Panel(splitpanel,-1)
+        self._leftpanel.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
         self.flp = FiletreePanel(self._leftpanel, self.preferences)
+        self.tips = MainTooltips(self._leftpanel, self.preferences)
 
         self._leftsizer = wx.BoxSizer( wx.VERTICAL )
-        self._leftsizer.Add( self.flp, proportion=2, flag=wx.ALL|wx.EXPAND, border=0)
+        self._leftsizer.Add( self.flp, proportion=2, flag=wx.EXPAND, border=0)
+        self._leftsizer.Add( self.tips, proportion=0, flag=wx.ALL|wx.ALIGN_CENTER, border=20)
         self._leftpanel.SetSizer(self._leftsizer)
+        if self.preferences.GetValue('M_TIPS') is False:
+            self.tips.Hide()
 
         # Right: Actions to perform on selected files
         self._rightpanel = wx.Panel(splitpanel,-1)
@@ -496,7 +497,7 @@ class FrameSPPAS( wx.Frame ):
 
 if __name__ == "__main__":
 
-    app = wx.PySimpleApp()
+    app = wx.App()
     frame = FrameSPPAS(None)
     frame.Show()
     app.MainLoop()

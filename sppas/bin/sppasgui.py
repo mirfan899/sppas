@@ -62,7 +62,6 @@ sys.path.insert(0,SPPAS)
 
 try:
     from wxgui.frames.mainframe    import FrameSPPAS
-    from wxgui.views.tips          import ShowTipsDialog
     from wxgui.dialogs.msgdialogs  import ShowInformation
     from wxgui.structs.prefs       import Preferences_IO
     from wxgui.structs.themes      import BaseTheme
@@ -123,11 +122,6 @@ if v < 3:
 
 if check_aligner() is False:
     ShowInformation( None, prefsIO, 'None of julius or HVite command is installed on your system.\nThe automatic annotation named "Alignment" WILL NOT WORK.', style=wx.ICON_WARNING)
-
-# Tips
-showtips = prefsIO.GetValue('M_TIPS')
-if showtips is True:
-    ShowTipsDialog(None, prefsIO)
 
 # Main frame
 frame = FrameSPPAS( prefsIO )

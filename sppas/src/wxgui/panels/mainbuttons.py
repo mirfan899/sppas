@@ -37,7 +37,9 @@
 
 import wx
 
-from wxgui.panels.buttons import ButtonPanel, ButtonMenuPanel, ImgPanel
+from structs.tips import Tips
+
+from wxgui.panels.buttons import ButtonPanel, ButtonMenuPanel, ImgPanel, ButtonCreator
 from sp_glob import program, title
 
 from wxgui.sp_icons import ANNOTATIONS_ICON
@@ -53,6 +55,8 @@ from wxgui.sp_icons import FEEDBACK_ICON
 from wxgui.sp_icons import WEB_ICON
 from wxgui.sp_icons import BUG_ICON
 from wxgui.sp_icons import BACKWARD_ICON
+from wxgui.sp_icons import FORWARD_ICON
+from wxgui.sp_icons import CLOSE_ICON
 
 from wxgui.sp_consts import ID_ANNOTATIONS
 from wxgui.sp_consts import ID_COMPONENTS
@@ -61,6 +65,8 @@ from wxgui.sp_consts import ID_FEEDBACK
 from wxgui.sp_consts import ID_EXT_BUG
 from wxgui.sp_consts import ID_EXT_HOME
 from wxgui.sp_consts import ID_ACTIONS
+
+from wxgui.sp_consts import MENU_ICONSIZE
 
 # ----------------------------------------------------------------------------
 
@@ -89,6 +95,7 @@ class MainMenuPanel( wx.Panel ):
         sizer.Add( feedbackButton, proportion=0, flag=wx.ALL, border=2)
 
         self.SetSizer( sizer )
+        self.SetMinSize((MENU_ICONSIZE+4, -1))
         self.Bind( wx.EVT_BUTTON, self.OnButtonClick )
 
     # -----------------------------------------------------------------------
@@ -126,6 +133,8 @@ class MainTitlePanel( wx.Panel ):
         s.Add(text, proportion=1, flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=10)
 
         self.SetSizer(s)
+        self.SetMinSize((-1,MENU_ICONSIZE+4))
+
         self.Bind(wx.EVT_LEFT_UP, self.OnButtonClick)
 
     # -----------------------------------------------------------------------
@@ -206,12 +215,12 @@ class MainActionsMenuPanel( wx.Panel ):
     @summary:      Main actions menu panel.
 
     """
-    def __init__(self, parent, preferences):
+    def __init__(self, parent, preferences, icon=BACKWARD_ICON):
         wx.Panel.__init__(self, parent, -1, style=wx.NO_BORDER)
         self.SetBackgroundColour( preferences.GetValue('M_BGM_COLOUR') )
         self._prefs = preferences
 
-        self.backButton = ImgPanel(self, 24, BACKWARD_ICON)
+        self.backButton = ImgPanel(self, MENU_ICONSIZE, icon)
         font = preferences.GetValue('M_FONT')
 
         self.text = wx.TextCtrl( self, -1, style=wx.NO_BORDER )
@@ -225,7 +234,7 @@ class MainActionsMenuPanel( wx.Panel ):
         sizer.Add( self.backButton, proportion=0, flag=wx.ALL|wx.ALIGN_CENTER|wx.ALIGN_CENTRE_VERTICAL, border=2)
         sizer.Add( self.text, proportion=1, flag=wx.EXPAND|wx.ALL|wx.ALIGN_CENTER|wx.ALIGN_CENTRE_VERTICAL, border=0)
         self.SetSizer( sizer )
-        self.SetMinSize((-1, 28))
+        self.SetMinSize((-1, MENU_ICONSIZE+4))
 
         self.Bind(wx.EVT_LEFT_UP, self.OnButtonClick)
 
@@ -249,3 +258,68 @@ class MainActionsMenuPanel( wx.Panel ):
     # -----------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
+
+class MainTooltips( wx.Panel ):
+    """
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Main tooltips panel.
+
+    """
+    def __init__(self, parent, preferences):
+        wx.Panel.__init__(self, parent, -1, style=wx.RAISED_BORDER)
+        self.SetBackgroundColour( preferences.GetValue('M_BGD_COLOUR') )
+        self._prefs = preferences
+        self.tips = Tips()
+
+        menu   = self._create_menu()
+        self.text = self._create_content()
+        button = self._create_button()
+
+        sizer = wx.BoxSizer( wx.VERTICAL )
+        sizer.Add( menu, proportion=0, flag=wx.EXPAND, border=0 )
+        sizer.Add( self.text, proportion=2, flag=wx.EXPAND|wx.ALIGN_CENTER|wx.ALL, border=10 )
+        sizer.Add( button, proportion=0, flag=wx.ALIGN_CENTER, border=0 )
+        self.SetSizerAndFit( sizer )
+
+        self.Bind(wx.EVT_BUTTON, self.OnClose)
+
+    # -----------------------------------------------------------------------
+
+    def _create_menu(self):
+        return MainActionsMenuPanel(self, self._prefs, icon=CLOSE_ICON)
+
+    def _create_content(self):
+        txt = wx.TextCtrl(self, wx.ID_ANY, value=self.tips.get(), style=wx.TE_READONLY|wx.TE_MULTILINE|wx.NO_BORDER)
+        font = self._prefs.GetValue('M_FONT')
+        txt.SetFont(font)
+        txt.SetForegroundColour( self._prefs.GetValue('M_FG_COLOUR') )
+        txt.SetBackgroundColour( self._prefs.GetValue('M_BGD_COLOUR') )
+        txt.SetMinSize((300,48))
+        return txt
+
+    def _create_button(self):
+        btncreator = ButtonCreator(self._prefs)
+        btn = btncreator.CreateButton(self, FORWARD_ICON, " Next tip", "Show a random tip", wx.NewId())
+        btn.SetBackgroundColour( self._prefs.GetValue('M_BG_COLOUR') )
+        btn.Bind(wx.EVT_BUTTON, self.OnNext)
+        return btn
+
+    # -----------------------------------------------------------------------
+
+    def OnClose(self, event):
+        self.Hide()
+        evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, ID_ACTIONS)
+        evt.SetEventObject(self)
+        wx.PostEvent(self.GetParent(), evt)
+
+    # -----------------------------------------------------------------------
+
+    def OnNext(self, event):
+        self.text.SetValue( self.tips.get() )
+        self.Refresh()
+
+    # -----------------------------------------------------------------------

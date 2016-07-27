@@ -34,6 +34,9 @@
 # ---------------------------------------------------------------------------
 # File: msgdialogs.py
 # ---------------------------------------------------------------------------
+import sys
+import os.path
+sys.path.append(  os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) )
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
@@ -89,11 +92,7 @@ class spBaseMessageDialog( spBaseDialog ):
                                buttonbox )
 
     def _create_content(self,message):
-        txt = wx.TextCtrl(self, value=message, style=wx.TE_READONLY|wx.TE_MULTILINE|wx.NO_BORDER)
-        font = wx.Font(MAIN_FONTSIZE, wx.FONTFAMILY_TELETYPE, wx.NORMAL, wx.NORMAL)
-        txt.SetFont(font)
-        txt.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
-        txt.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
+        txt = self.CreateTextCtrl(message, style=wx.TE_READONLY|wx.TE_MULTILINE|wx.NO_BORDER)
         txt.SetMinSize((300,-1))
         return txt
 
@@ -180,9 +179,6 @@ def DemoBaseDialog(parent, preferences=None):
     frame.Destroy()
 
 # ---------------------------------------------------------------------------
-# import sys
-# import os.path
-# sys.path.append(  os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) )
 
 if __name__ == "__main__":
     app = wx.PySimpleApp()

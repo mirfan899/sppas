@@ -34,29 +34,17 @@
 # ---------------------------------------------------------------------------
 # File: basedialog.py
 # ---------------------------------------------------------------------------
-
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
+# import sys
+# import os.path
+# sys.path.append(  os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) )
 
 import wx
 
 from wxgui.sp_icons import APP_ICON
-from wxgui.sp_icons import CLOSE_ICON
-from wxgui.sp_icons import APPLY_ICON
-from wxgui.sp_icons import CANCEL_ICON
-from wxgui.sp_icons import SAVE_FILE
-from wxgui.sp_icons import YES_ICON
-from wxgui.sp_icons import NO_ICON
-from wxgui.sp_icons import OKAY_ICON
 
-from wxgui.cutils.ctrlutils  import CreateGenButton
 from wxgui.cutils.imageutils import spBitmap
 
+from wxgui.panels.buttons import ButtonCreator
 from wxgui.sp_consts import DIALOG_STYLE
 from wxgui.sp_consts import FRAME_TITLE
 from wxgui.sp_consts import MAIN_FONTSIZE
@@ -70,10 +58,12 @@ import wxgui.structs.prefs
 
 class spBaseDialog( wx.Dialog ):
     """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL
-    @summary: Base class for dialogs in SPPAS.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Base class for dialogs in SPPAS.
 
     """
     def __init__(self, parent, preferences=None, title=""):
@@ -92,6 +82,7 @@ class spBaseDialog( wx.Dialog ):
 
         # menu and toolbar
         self.toolbar = None
+        self.btncreator = ButtonCreator(self.preferences)
 
         # icon
         _icon = wx.EmptyIcon()
@@ -109,28 +100,33 @@ class spBaseDialog( wx.Dialog ):
         """
         Create a layout including a nice bold-title with an icon.
 
-        @param titleicon Name of the icon (see sp_icons)
-        @param titletext String of the title
-        @return Sizer
+        @param titleicon (str) Name of the icon.
+        @param titletext (str) The title
+        @return wx.Panel
 
         """
-        bmp = spBitmap(titleicon, BUTTON_ICONSIZE, theme=self.preferences.GetValue('M_ICON_THEME'))
-        pan = wx.Panel(self,-1)
-        pic = wx.StaticBitmap(pan)
-        pic.SetBitmap(bmp)
+        panel = wx.Panel(self, -1)
+        panel.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
+
+        bitmap = spBitmap(titleicon, BUTTON_ICONSIZE, theme=self.preferences.GetValue('M_ICON_THEME'))
+        sBmp = wx.StaticBitmap(panel, wx.ID_ANY, bitmap)
 
         font = self.preferences.GetValue('M_FONT')
         font.SetWeight(wx.BOLD)
-        font.SetPointSize(font.GetPointSize() + 2)
+        font.SetPointSize(font.GetPointSize() + 1)
 
-        title_label = wx.StaticText(self, label=titletext, style=wx.ALIGN_CENTER)
-        title_label.SetFont( font )
+        text = wx.StaticText(panel, label=titletext)
+        text.SetFont( font )
+        text.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
+        text.SetForegroundColour( self.preferences.GetValue('M_FONT_COLOUR') )
 
-        title_layout = wx.BoxSizer(wx.HORIZONTAL)
-        title_layout.Add(pan, flag=wx.ALL, border=4)
-        title_layout.Add(title_label, flag=wx.EXPAND|wx.ALL|wx.wx.ALIGN_CENTER_VERTICAL, border=4)
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+        sizer.Add(sBmp, proportion=0, flag=wx.ALL|wx.ALIGN_CENTER, border=4)
+        sizer.Add(text, proportion=1, flag=wx.EXPAND|wx.ALL|wx.ALIGN_CENTER, border=4)
+        panel.SetSizer(sizer)
+        panel.SetAutoLayout( True )
 
-        return title_layout
+        return panel
 
     # -----------------------------------------------------------------------
 
@@ -144,48 +140,39 @@ class spBaseDialog( wx.Dialog ):
         @param btnid (wx.ID) A unique ID assigned to the button.
 
         """
-        if btnid is None:
-            btnid = wx.NewId()
-        bmp = spBitmap(icon, BUTTON_ICONSIZE, theme=self.preferences.GetValue('M_ICON_THEME'))
-        btn = CreateGenButton(self, btnid, bmp, text=text, tooltip=tooltip, colour=None)
-        btn.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
-        btn.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
-        btn.SetFont( self.preferences.GetValue('M_FONT') )
-
-        return btn
+        return self.btncreator.CreateButton(self, icon, text, tooltip, btnid)
 
     # -----------------------------------------------------------------------
 
     def CreateSaveButton(self, tooltip="Save"):
-        return self.CreateButton(SAVE_FILE, "Save", tooltip, btnid=wx.ID_SAVE)
+        return self.btncreator.CreateSaveButton(self, tooltip)
 
     def CreateCancelButton(self, tooltip="Cancel"):
-        btn = self.CreateButton(CANCEL_ICON, "Cancel", tooltip, btnid=wx.ID_CANCEL)
+        btn = self.btncreator.CreateCancelButton(self, tooltip)
         self.SetAffirmativeId(wx.ID_CANCEL)
         return btn
 
     def CreateCloseButton(self, tooltip="Close"):
-        btn = self.CreateButton(CLOSE_ICON, "Close", tooltip, btnid=wx.ID_CLOSE)
+        btn = self.btncreator.CreateCloseButton(self, tooltip)
         btn.SetDefault()
         btn.SetFocus()
         self.SetAffirmativeId(wx.ID_CLOSE)
         return btn
 
     def CreateOkayButton(self, tooltip="Okay"):
-        btn = self.CreateButton(OKAY_ICON, " OK ", tooltip, btnid=wx.ID_OK)
+        btn = self.btncreator.CreateOkayButton(self, tooltip)
         btn.SetDefault()
         btn.SetFocus()
         self.SetAffirmativeId(wx.ID_OK)
         return btn
 
     def CreateYesButton(self, tooltip="Yes"):
-        btn = self.CreateButton(YES_ICON, " Yes ", tooltip, btnid=wx.ID_YES)
+        btn = self.btncreator.CreateYesButton(self, tooltip)
         btn.SetDefault()
         return btn
 
     def CreateNoButton(self, tooltip="No"):
-        btn = self.CreateButton(NO_ICON, " No ", tooltip, btnid=wx.ID_NO)
-        return btn
+        return self.btncreator.CreateNoButton(self, tooltip)
 
     # -----------------------------------------------------------------------
 
@@ -283,9 +270,6 @@ def DemoBaseDialog(parent, preferences=None):
     frame.Destroy()
 
 # ---------------------------------------------------------------------------
-# import sys
-# import os.path
-# sys.path.append(  os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) )
 
 if __name__ == "__main__":
 
