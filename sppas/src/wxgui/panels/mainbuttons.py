@@ -49,14 +49,13 @@ from wxgui.sp_icons import ABOUT_ICON
 from wxgui.sp_icons import HELP_ICON
 from wxgui.sp_icons import SETTINGS_ICON
 
-from wxgui.sp_icons import EXIT_ICON
-from wxgui.sp_icons import BUG_ICON
-from wxgui.sp_icons import FEEDBACK_ICON
+from wxgui.sp_icons import MENU_EXIT_ICON
+from wxgui.sp_icons import MENU_BUG_ICON
+from wxgui.sp_icons import MENU_FEEDBACK_ICON
+from wxgui.sp_icons import MENU_BACK_ICON
+from wxgui.sp_icons import MENU_CLOSE_ICON
 from wxgui.sp_icons import WEB_ICON
-from wxgui.sp_icons import BUG_ICON
-from wxgui.sp_icons import BACKWARD_ICON
 from wxgui.sp_icons import FORWARD_ICON
-from wxgui.sp_icons import CLOSE_ICON
 
 from wxgui.sp_consts import ID_ANNOTATIONS
 from wxgui.sp_consts import ID_COMPONENTS
@@ -84,9 +83,9 @@ class MainMenuPanel( wx.Panel ):
         wx.Panel.__init__(self, parent, -1, style=wx.NO_BORDER)
         self.SetBackgroundColour( preferences.GetValue('M_BGM_COLOUR') )
 
-        exitButton     = ButtonMenuPanel(self, wx.ID_EXIT,  preferences, EXIT_ICON, None)
-        bugButton      = ButtonMenuPanel(self, ID_EXT_BUG,  preferences, BUG_ICON, None)
-        feedbackButton = ButtonMenuPanel(self, ID_FEEDBACK, preferences, FEEDBACK_ICON, None)
+        exitButton     = ButtonMenuPanel(self, wx.ID_EXIT,  preferences, MENU_EXIT_ICON, None)
+        bugButton      = ButtonMenuPanel(self, ID_EXT_BUG,  preferences, MENU_BUG_ICON, None)
+        feedbackButton = ButtonMenuPanel(self, ID_FEEDBACK, preferences, MENU_FEEDBACK_ICON, None)
 
         sizer = wx.BoxSizer( wx.VERTICAL )
         sizer.Add( exitButton, proportion=0, flag=wx.ALL, border=2)
@@ -215,7 +214,7 @@ class MainActionsMenuPanel( wx.Panel ):
     @summary:      Main actions menu panel.
 
     """
-    def __init__(self, parent, preferences, icon=BACKWARD_ICON):
+    def __init__(self, parent, preferences, icon=MENU_BACK_ICON):
         wx.Panel.__init__(self, parent, -1, style=wx.NO_BORDER)
         self.SetBackgroundColour( preferences.GetValue('M_BGM_COLOUR') )
         self._prefs = preferences
@@ -290,7 +289,7 @@ class MainTooltips( wx.Panel ):
     # -----------------------------------------------------------------------
 
     def _create_menu(self):
-        return MainActionsMenuPanel(self, self._prefs, icon=CLOSE_ICON)
+        return MainActionsMenuPanel(self, self._prefs, icon=MENU_CLOSE_ICON)
 
     def _create_content(self):
         txt = wx.TextCtrl(self, wx.ID_ANY, value=self.tips.get(), style=wx.TE_READONLY|wx.TE_MULTILINE|wx.NO_BORDER)

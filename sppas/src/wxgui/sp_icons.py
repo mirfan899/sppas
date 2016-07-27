@@ -59,6 +59,12 @@ DATAFILTER_APP_ICON  = os.path.join( "applications", "filter.png")
 # ---------------------------------------------------------------------------
 # Actions, for the toolbars and menus
 
+MENU_EXIT_ICON     = os.path.join( "menu", "exit.png" )
+MENU_BUG_ICON      = os.path.join( "menu", "bug.png" )
+MENU_BACK_ICON     = os.path.join( "menu", "back.png" )
+MENU_FEEDBACK_ICON = os.path.join( "menu", "feedback.png" )
+MENU_CLOSE_ICON    = os.path.join( "menu", "close.png" )
+
 ANNOTATE_ICON       = os.path.join( "actions", "annotate.png" )
 ANNOTATE_CONFIG_ICON= os.path.join( "actions", "annotate-config.png" )
 BACKWARD_ICON       = os.path.join( "actions", "backward.png" )
