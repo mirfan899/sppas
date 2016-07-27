@@ -58,7 +58,9 @@ class wxOption( BaseOption ):
             boolean, int, float, string, wx.colour, wx.size, wx.font
 
         """
-        BaseOption.__init__(self, optiontype, optionvalue)
+        BaseOption.__init__(self, optiontype)
+        self.set_type(optiontype)
+        self.set_value(optionvalue)
         self.set_text( optiontext )
 
     # ------------------------------------------------------------------------
@@ -103,30 +105,21 @@ class wxOption( BaseOption ):
     # Setters
     # ------------------------------------------------------------------------
 
+    def set_type(self, opttype):
+        """ Set a new type. """
+        opttype = opttype.lower()
+        if opttype.startswith("wx"):
+            self._type = opttype
+        else:
+            BaseOption.set_type(self,opttype)
+
     def set_value(self, value):
         """
         Set a new typed-value.
         Override the BaseOption.set_value().
 
         """
-        if self._type == 'wx.font':
-            size   = value.GetPointSize()
-            family = value.GetFamily()
-            style  = value.GetStyle()
-            weight = value.GetWeight()
-            underline = value.GetUnderlined()
-            face = value.GetFaceName()
-            encoding = value.GetEncoding()
-            self._value = (size, family, style, weight, underline, face, encoding)
-        elif self._type == 'wx.size':
-            (w,h) = value
-            self._value = (w,h)
-        elif self._type == 'wx.colour':
-            if value is None:
-                self._value = None
-            (r,g,b) = value
-            self._value = (r,g,b)
-        elif self._type == 'wx.align':
+        if self._type == 'wx.align':
             if value == wx.ALIGN_LEFT or value == 'left':
                 self._value = 'left'
             elif value == wx.ALIGN_RIGHT or value == 'right':

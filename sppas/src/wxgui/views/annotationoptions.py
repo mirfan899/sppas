@@ -79,16 +79,16 @@ class optionsPanel( scrolled.ScrolledPanel ):
         # Adding options
         for opt in options:
 
-            if opt.get_type() == bool:
+            if opt.get_type() == "bool":
                 self.AddCheckbox( opt.get_text(), value=opt.get_value() )
 
-            elif opt.get_type() == int:
+            elif opt.get_type() == "int":
                 self.AddIntSpinner( opt.get_text(), value=opt.get_value() )
 
-            elif opt.get_type() == float:
+            elif opt.get_type() == "float":
                 self.AddFloatSpinner( opt.get_text(), value=opt.get_value() )
 
-            elif opt.get_type() == unicode:
+            elif opt.get_type() == "str":
                 self.AddTextctrl( opt.get_text(), value=opt.get_value() )
 
         self.SetSizer(self.option_sizer)

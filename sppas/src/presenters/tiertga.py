@@ -300,7 +300,7 @@ class TierTGA( object ):
         totaltier  = Tier('TGA-total')
         meantier   = Tier('TGA-mean')
         mediantier = Tier('TGA-median')
-        stdevtier  = Tier('TGA-median')
+        stdevtier  = Tier('TGA-stdev')
         npvitier   = Tier('TGA-npvi')
         interceptptier = Tier('TGA-intercept-with-X-as-position')
         slopeptier     = Tier('TGA-slope-with-X-as-position')

@@ -57,7 +57,7 @@ class BaseOption( object ):
         Creates a new option instance.
 
         """
-        self._type  = optiontype.lower()
+        self._type  = optiontype#self.set_type(optiontype)
         self._value = optionvalue
         self._text  = ""
         self._name  = ""
@@ -78,7 +78,7 @@ class BaseOption( object ):
     def get_value(self):
         """ Return the typed-value or None. """
 
-        if self._type.startswith('bool'):
+        if self._type == "bool":
             if isinstance(self._value, bool):
                 return self._value
             if self._value.lower() == "true":
@@ -86,13 +86,13 @@ class BaseOption( object ):
             else:
                 return False
 
-        if self._type.startswith('int') or self._type == 'long' or self._type == 'short':
+        if self._type == 'int':
             return int(self._value)
 
-        if self._type == 'float' or self._type == 'double':
+        if self._type == 'float':
             return float(self._value)
 
-        if self._type.startswith('str'):
+        if self._type == 'str':
             return self._value.decode(encoding)
 
         return None
@@ -123,7 +123,19 @@ class BaseOption( object ):
 
     def set_type(self, opttype):
         """ Set a new type. """
-        self._type = opttype
+        opttype = opttype.lower()
+
+        if opttype.startswith('bool'):
+            self._type = "bool"
+
+        elif opttype.startswith('int') or opttype == 'long' or opttype == 'short':
+            self._type = "int"
+
+        elif opttype == 'float' or opttype == 'double':
+            self._type = "float"
+
+        else:
+            self._type = "str"
 
     def set_value(self, value):
         """ Set a new value. """
