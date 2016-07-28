@@ -57,7 +57,7 @@ class BaseOption( object ):
         Creates a new option instance.
 
         """
-        self._type  = optiontype#self.set_type(optiontype)
+        self._type  = self.set_type(optiontype)
         self._value = optionvalue
         self._text  = ""
         self._name  = ""
@@ -71,9 +71,11 @@ class BaseOption( object ):
         """ Return the type (as a String) of the option. """
         return self._type
 
+
     def get_untypedvalue(self):
         """ Return the value as it was given. """
         return self._value
+
 
     def get_value(self):
         """ Return the typed-value or None. """
@@ -97,13 +99,16 @@ class BaseOption( object ):
 
         return None
 
+
     def get_name(self):
         """ Return the name of to this option. """
         return self._name
 
+
     def get_text(self):
         """ Return the brief text which describes the option. """
         return self._text
+
 
     def get_description(self):
         """ Return the long text which describes the option. """
@@ -121,6 +126,7 @@ class BaseOption( object ):
         self._name         = other.get_name()
         self._description  = other.get_description()
 
+
     def set_type(self, opttype):
         """ Set a new type. """
         opttype = opttype.lower()
@@ -137,20 +143,40 @@ class BaseOption( object ):
         else:
             self._type = "str"
 
+
     def set_value(self, value):
         """ Set a new value. """
         self._value = value
+
 
     def set_name(self, name):
         """ Set the name of the options. """
         self._name = name
 
+
     def set_text(self, text):
         """ Set the brief text which describes the option. """
         self._text = text
+
 
     def set_description(self, descr):
         """ Set the long text which describes the option. """
         self._description = descr
 
     # ------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------
+
+class Option( BaseOption ):
+    """
+    Class to deal with one option with a key as identifier.
+
+    """
+    def __init__(self, optionkey):
+        BaseOption.__init__(self, "unknown")
+        self.key = optionkey
+
+    def get_key(self):
+        return self.key
+
+# ----------------------------------------------------------------------------

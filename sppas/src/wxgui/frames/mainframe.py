@@ -200,7 +200,7 @@ class FrameSPPAS( wx.Frame ):
     def _create_splitter(self, parent):
         """ Create the main panel content. """
 
-        splitpanel = SplitterPanel(parent, proportion=0.6)
+        splitpanel = SplitterPanel(parent, proportion=0.55)
         splitpanel.SetBackgroundColour( self.preferences.GetValue('M_BGM_COLOUR') )
         splitpanel.SetForegroundColour( self.preferences.GetValue('M_BGM_COLOUR') )
 
@@ -208,14 +208,14 @@ class FrameSPPAS( wx.Frame ):
         self._leftpanel = wx.Panel(splitpanel,-1)
         self._leftpanel.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
         self.flp = FiletreePanel(self._leftpanel, self.preferences)
-        self.tips = MainTooltips(self._leftpanel, self.preferences)
+        tips = MainTooltips(self._leftpanel, self.preferences)
 
         self._leftsizer = wx.BoxSizer( wx.VERTICAL )
         self._leftsizer.Add( self.flp, proportion=2, flag=wx.EXPAND, border=0)
-        self._leftsizer.Add( self.tips, proportion=0, flag=wx.ALL|wx.ALIGN_CENTER, border=20)
+        self._leftsizer.Add( tips, proportion=0, flag=wx.ALL|wx.ALIGN_CENTER, border=20)
         self._leftpanel.SetSizer(self._leftsizer)
         if self.preferences.GetValue('M_TIPS') is False:
-            self.tips.Hide()
+            tips.Hide()
 
         # Right: Actions to perform on selected files
         self._rightpanel = wx.Panel(splitpanel,-1)

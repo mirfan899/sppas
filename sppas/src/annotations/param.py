@@ -87,18 +87,21 @@ class annotationParam():
         self.key  = None
         # The name of the annotation
         self.name = "None"
+
         # The list of languages this annotation can provide
         self.langlist  = []
         # The selected language
         self.lang      = None
-        # The annotation status
-        self.activated = False
-        # The list of options available for the annotation
-        self.options   = []
         # All available language resources (type, path, filename, extension)
         self.resource  = {}
         # The language resource after the language is fixed
         self.langresource = ""
+
+        # The annotation status
+        self.activated = False
+        # The list of options available for the annotation
+        self.options   = []
+
         # Initialize variables from the configuration file
         self.__set_annotations( os.path.join(anndir, "sppas.conf") )
 
@@ -269,7 +272,6 @@ class sppasParam():
         # SPPAS parameters
         self.sppasinput  = []
 
-    # End __init__
     # --------------------------
 
 
