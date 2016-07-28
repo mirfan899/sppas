@@ -63,6 +63,7 @@ from wxgui.sp_consts import BUTTON_ICONSIZE
 from wxgui.sp_icons import LINK_ICON
 from wxgui.sp_icons import UNLINK_ICON
 from wxgui.sp_icons import ANNOTATE_ICON
+import wxgui.ui.CustomCheckBox as CCB
 
 
 # ----------------------------------------------------------------------------
@@ -109,27 +110,24 @@ class sppasStepPanel( wx.Panel ):
         # Members
         self.parameters  = parameters
         self.step_idx    = index
-        self._prefsIO = preferences
-        choicelist = self.parameters.get_langlist(index)
-        self.choice = None
+        self._prefsIO    = preferences
+        choicelist       = self.parameters.get_langlist(index)
+        self.choice      = None
         self.opened_frames = {}
         self.ID_FRAME_ANNOTATION_CFG = wx.NewId()
 
         step_sizer = wx.BoxSizer(wx.HORIZONTAL)
         #create the checkbox allowing to select or unselect the step
-        self.checkbox = wx.CheckBox(self, -1)
+        self.checkbox = CCB.CustomCheckBox(self, -1, self.parameters.get_step_name(index), CCB_TYPE="activecheck")
+        self.checkbox.SetFont( self._prefsIO.GetValue( 'M_FONT'))
+        self.checkbox.SetBackgroundColour( self._prefsIO.GetValue( 'M_BG_COLOUR' ))
+        self.checkbox.SetForegroundColour( self._prefsIO.GetValue( 'M_FG_COLOUR' ))
+        self.checkbox.SetSpacing( self._prefsIO.GetValue( 'F_SPACING' ))
+
         self.checkbox.Bind(wx.EVT_CHECKBOX, functools.partial(self.on_check_changed, step_idx=index))
         step_sizer.Add(self.checkbox, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 8)
 
         #create the panel allowing to show configuration panel
-        #self.panel = wx.Panel(self, -1)
-        self.text = wx.StaticText(self, -1, self.parameters.get_step_name(index))
-        self.text.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR'))
-        self.text.SetForegroundColour( self._prefsIO.GetValue('M_FONT_COLOUR'))
-        self.text.SetFont( self._prefsIO.GetValue('M_FONT') )
-        self.text.Bind(wx.EVT_LEFT_UP, self.on_click)
-        step_sizer.Add(self.text, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 0)
-
         self.choice = None
         #if there are different languages available, add a choice to the panel
         if len(choicelist) > 0:
@@ -144,7 +142,18 @@ class sppasStepPanel( wx.Panel ):
             step_sizer.Add(wx.StaticLine(self, style=wx.LI_HORIZONTAL), proportion=1, flag=wx.ALIGN_CENTER_VERTICAL |wx.LEFT|wx.RIGHT, border=4)
             step_sizer.Add(self.choice, 0,  wx.ALIGN_CENTER_VERTICAL|wx.ALL, 0)#, wx.ALIGN_RIGHT)
 
-        self.SetSizer(step_sizer)
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        self.text = wx.StaticText(self, -1, self.parameters.get_step_descr(index))
+        self.text.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR'))
+        self.text.SetForegroundColour( self._prefsIO.GetValue('M_FONT_COLOUR'))
+        self.text.SetFont( self._prefsIO.GetValue('M_FONT') )
+        self.text.Wrap( 400 )
+        self.text.Bind(wx.EVT_LEFT_UP, self.on_click)
+
+        sizer.Add(step_sizer, 0,wx.ALIGN_CENTER_VERTICAL, 0)
+        sizer.Add(self.text, 0, wx.ALIGN_CENTER_VERTICAL, 0)
+
+        self.SetSizerAndFit(sizer)
 
 
     def on_check_changed(self, evt, step_idx):
@@ -200,6 +209,9 @@ class sppasStepPanel( wx.Panel ):
         self.SetForegroundColour( self._prefsIO.GetValue('M_FONT_COLOUR') )
         self.SetFont( self._prefsIO.GetValue('M_FONT') )
 
+        self.checkbox.SetFont( self._prefsIO.GetValue( 'M_FONT'))
+        self.checkbox.SetBackgroundColour( self._prefsIO.GetValue( 'M_BG_COLOUR' ))
+        self.checkbox.SetForegroundColour( self._prefsIO.GetValue( 'M_FG_COLOUR' ))
         self.text.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR'))
         self.text.SetForegroundColour( self._prefsIO.GetValue('M_FONT_COLOUR'))
         self.text.SetFont( self._prefsIO.GetValue('M_FONT') )

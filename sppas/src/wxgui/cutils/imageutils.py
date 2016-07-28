@@ -52,7 +52,10 @@ import math
 import random
 
 from sp_glob import ICONS_PATH
-from wxgui.sp_icons import *
+from wxgui.sp_icons import THEME_DEFAULT
+
+from wxgui.sp_icons import CHECKED_ICON, ACTIVATED_ICON, RADIOCHECKED_ICON
+from wxgui.sp_icons import UNCHECKED_ICON, DISABLED_ICON, RADIOUNCHECKED_ICON
 
 
 # ----------------------------------------------------------------------------
@@ -276,43 +279,53 @@ def GetBitmap(bmppath, pattern, ext):
 
 #----------------------------------------------------------------------
 
-def GetCheckedBitmap(CCB_MULTIPLE = False):
+def GetCheckedBitmap( CCB_TYPE="check" ):
     """
-    Return a 16x16 bitmap representing "check".
-    """
-    return wx.BitmapFromImage(GetCheckedImage(CCB_MULTIPLE))
+    Return a bitmap representing "check".
 
-def GetCheckedImage(CCB_MULTIPLE = False):
+    """
+    return wx.BitmapFromImage(GetCheckedImage(CCB_TYPE))
+
+
+def GetCheckedImage( CCB_TYPE="check" ):
     """
     Return a 16x16 image representing "check".
+
     """
-    # checkbox
-    if CCB_MULTIPLE is True:
-        img = wx.Image(get_bmp_file(CHECKED_ICON), wx.BITMAP_TYPE_PNG)
+    if CCB_TYPE == "radiocheck":
+        img = wx.Image(get_bmp_file(RADIOCHECKED_ICON), wx.BITMAP_TYPE_PNG)
         return ScaleImage(img, 16, 16)
 
-    # radiobox
-    img = wx.Image(get_bmp_file(RADIOCHECKED_ICON), wx.BITMAP_TYPE_PNG)
+    if CCB_TYPE == "activecheck":
+        img = wx.Image(get_bmp_file(ACTIVATED_ICON), wx.BITMAP_TYPE_PNG)
+        return ScaleImage(img, 32, 24)
+
+    img = wx.Image(get_bmp_file(CHECKED_ICON), wx.BITMAP_TYPE_PNG)
     return ScaleImage(img, 16, 16)
 
 #----------------------------------------------------------------------
 
-def GetNotCheckedBitmap(CCB_MULTIPLE = False):
+def GetNotCheckedBitmap( CCB_TYPE="check" ):
     """
-    Return a 16x16 bitmap representing "uncheck".
+    Return a bitmap representing "uncheck".
     """
-    return wx.BitmapFromImage(GetNotCheckedImage(CCB_MULTIPLE))
+    return wx.BitmapFromImage(GetNotCheckedImage(CCB_TYPE))
 
-def GetNotCheckedImage(CCB_MULTIPLE = False):
+
+def GetNotCheckedImage( CCB_TYPE="check" ):
     """
-    Return a 16x16 image representing "uncheck".
+    Return an image representing "uncheck".
+
     """
-    # checkbox
-    if CCB_MULTIPLE is True:
-        img = wx.Image(get_bmp_file(UNCHECKED_ICON), wx.BITMAP_TYPE_PNG)
+    if CCB_TYPE == "radiocheck":
+        img = wx.Image(get_bmp_file(RADIOUNCHECKED_ICON), wx.BITMAP_TYPE_PNG)
         return ScaleImage(img, 16, 16)
-    # radiobox
-    img = wx.Image(get_bmp_file(RADIOUNCHECKED_ICON), wx.BITMAP_TYPE_PNG)
+
+    if CCB_TYPE == "activecheck":
+        img = wx.Image(get_bmp_file(DISABLED_ICON), wx.BITMAP_TYPE_PNG)
+        return ScaleImage(img, 32, 24)
+
+    img = wx.Image(get_bmp_file(UNCHECKED_ICON), wx.BITMAP_TYPE_PNG)
     return ScaleImage(img, 16, 16)
 
 #----------------------------------------------------------------------

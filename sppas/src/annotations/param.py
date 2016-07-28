@@ -255,6 +255,9 @@ class sppasParam:
     def get_step_name(self, step):
         return self.annotations[step].get_name()
 
+    def get_step_descr(self, step):
+        return self.annotations[step].get_descr()
+
     def get_step_key(self, step):
         return self.annotations[step].get_key()
 

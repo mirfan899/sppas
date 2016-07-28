@@ -240,6 +240,8 @@ TIMEANALYSIS     = os.path.join( "others", "timeanalysis.png")
 # Various
 
 # For the CustomCheckBox
+ACTIVATED_ICON      = os.path.join( "others", "on.png")
+DISABLED_ICON       = os.path.join( "others", "off.png")
 CHECKED_ICON        = os.path.join( "others", "check.png")
 UNCHECKED_ICON      = os.path.join( "others", "uncheck.png")
 RADIOCHECKED_ICON   = os.path.join( "others", "radiocheck.png")

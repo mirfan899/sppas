@@ -43,24 +43,21 @@ __authors__   = """http://wiki.wxpython.org/CreatingCustomControls, Brigitte Big
 # ----------------------------------------------------------------------------
 
 import wx
-import os.path
 
 from wxgui.cutils.imageutils import MakeGray, GrayOut
 from wxgui.cutils.imageutils import GetCheckedBitmap, GetCheckedImage, GetNotCheckedBitmap, GetNotCheckedImage
 
-
 #----------------------------------------------------------------------
-
 
 class CustomCheckBox( wx.PyControl ):
     """
     A custom class that replicates some of the functionalities of wx.CheckBox,
     while being completely owner-drawn with a nice check bitmaps.
-    """
 
+    """
     def __init__(self, parent, id=wx.ID_ANY, label="", pos=wx.DefaultPosition,
                  size=wx.DefaultSize, style=wx.NO_BORDER, validator=wx.DefaultValidator,
-                 name="CustomCheckBox", CCB_MULTIPLE=True):
+                 name="CustomCheckBox", CCB_TYPE="check"):
         """
         Default class constructor.
 
@@ -74,17 +71,16 @@ class CustomCheckBox( wx.PyControl ):
         @param style: not used in this demo, CustomCheckBox has only 2 state
         @param validator: Window validator.
         @param name: Window name.
-        """
 
+        """
         # Ok, let's see why we have used wx.PyControl instead of wx.Control.
         # Basically, wx.PyControl is just like its wxWidgets counterparts
         # except that it allows some of the more common C++ virtual method
         # to be overridden in Python derived class. For CustomCheckBox, we
         # basically need to override DoGetBestSize and AcceptsFocusFromKeyboard
-
         wx.PyControl.__init__(self, parent, id, pos, size, style, validator, name)
 
-        self._multiple = CCB_MULTIPLE
+        self._ccbtype = CCB_TYPE
 
         # Initialize our cool bitmaps
         self.InitializeBitmaps()
@@ -139,10 +135,10 @@ class CustomCheckBox( wx.PyControl ):
         # We keep 4 bitmaps for CustomCheckBox, depending on the
         # checking state (Checked/UnCkecked) and the control
         # state (Enabled/Disabled).
-        self._bitmaps = {"CheckedEnable": GetCheckedBitmap(self._multiple),
-                         "UnCheckedEnable": GetNotCheckedBitmap(self._multiple),
-                         "CheckedDisable": GrayOut(GetCheckedImage(self._multiple)),
-                         "UnCheckedDisable": GrayOut(GetNotCheckedImage(self._multiple))}
+        self._bitmaps = {"CheckedEnable": GetCheckedBitmap(self._ccbtype),
+                         "UnCheckedEnable": GetNotCheckedBitmap(self._ccbtype),
+                         "CheckedDisable": GrayOut(GetCheckedImage(self._ccbtype)),
+                         "UnCheckedDisable": GrayOut(GetNotCheckedImage(self._ccbtype))}
 
 
     def InitializeColours(self):

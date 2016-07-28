@@ -326,7 +326,11 @@ class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
 
         try:
             # create a CustomCheckBox.
-            ccb = CCB.CustomCheckBox(self, -1, os.path.basename(f), CCB_MULTIPLE=self._prefsIO.GetValue( 'F_CCB_MULTIPLE' ))
+            ccbtype = "check"
+            if self._prefsIO.GetValue( 'F_CCB_MULTIPLE' ):
+                ccbtype = "radiocheck"
+
+            ccb = CCB.CustomCheckBox(self, -1, os.path.basename(f), CCB_TYPE=ccbtype)
             ccb.SetFont( self._prefsIO.GetValue( 'M_FONT'))
             ccb.SetBackgroundColour( self._prefsIO.GetValue( 'M_BG_COLOUR' ))
             ccb.SetForegroundColour( self._prefsIO.GetValue( 'M_FG_COLOUR' ))
