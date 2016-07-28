@@ -314,14 +314,16 @@ class TextGrid(Transcription):
         Format a tier from a transcription to the TextGrid format.
         @param number: The position of the tier in the list of all tiers.
         """
-        if tier.IsTimeInterval() is False and tier.IsTimePoint() is False:
-            raise IOError('Unsupported tier type. Praat textgrid files only support Time Intervals or Time Points.')
-
         # Fill empty tiers because TextGrid does not support empty tiers.
         if tier.IsEmpty():
             tier.Append(Annotation(
                 TimeInterval(TimePoint(self.GetMinTime()),
                              TimePoint(self.GetMaxTime()))))
+
+        if tier.IsTimeInterval() is False and tier.IsTimePoint() is False:
+            for ann in tier:
+                print ann
+            raise IOError('Unsupported tier type. Praat textgrid files only support Time Intervals and Time Points.')
 
         if tier.IsTimeInterval():
             tier = fill_gaps(tier, self.GetMinTime(), self.GetMaxTime())

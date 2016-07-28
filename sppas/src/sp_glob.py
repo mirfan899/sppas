@@ -61,11 +61,11 @@ SAMPLES_PATH   = os.path.join( os.path.dirname(BASE_PATH), "samples" )
 DOCUMENTATION_PATH = os.path.join( os.path.dirname(BASE_PATH), "documentation" )
 
 # et cetera
-ICONS_PATH     = os.path.join( BASE_PATH, "etc", "icons" )
-TIPS_ICON_PATH = os.path.join( BASE_PATH, "etc", "tips")
-TIPS_FILE      = os.path.join( BASE_PATH, "etc", "tips","tips.txt")
-SETTINGS_FILE  = os.path.join( BASE_PATH, "etc", "settings.dump")
-SPPAS_CONFIG   = os.path.join( BASE_PATH, "etc", "sppas.conf")
+SPPAS_CONFIG_DIR = os.path.join( BASE_PATH, "etc")
+ICONS_PATH       = os.path.join( BASE_PATH, "etc", "icons" )
+TIPS_ICON_PATH   = os.path.join( BASE_PATH, "etc", "tips")
+TIPS_FILE        = os.path.join( BASE_PATH, "etc", "tips","tips.txt")
+SETTINGS_FILE    = os.path.join( BASE_PATH, "etc", "settings.dump")
 
 
 # ---------------------------------------------------------------------------

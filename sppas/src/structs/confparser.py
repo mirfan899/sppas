@@ -126,7 +126,6 @@ class ConfigParser( object ):
     def _parse(self):
 
         for section_name in self.parser.sections():
-            print "PARSE:",section_name
 
             if section_name == "Configuration":
                 self._parse_config(self.parser.items(section_name))

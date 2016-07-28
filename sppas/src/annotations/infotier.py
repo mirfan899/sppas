@@ -94,7 +94,7 @@ class sppasMetaInfoTier( MetaInfo):
             return None
 
         tierdur = float(end) - float(begin)
-        anndur  = tierdur / (float(len(activekeys))+1)
+        anndur  = tierdur / float(len(activekeys))
 
         tier = Tier("MetaInformation")
         annbegin = begin

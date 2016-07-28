@@ -1078,17 +1078,6 @@ class sppasProcess( Thread ):
         self._progress = progress
 
         # ##################################################################### #
-        # Steps validation
-        # ##################################################################### #
-        for step in range(self.parameters.get_step_numbers()):
-            if self.parameters.get_langresourcetype(step)=="directory":
-                if self.parameters.get_langresource(step)=="None" or not os.path.exists(self.parameters.get_langresource(step)):
-                    self.parameters.disable_step(step)
-            elif self.parameters.get_langresourcetype(step)=="file":
-                if self.parameters.get_langresource(step)=="None" or not os.path.isfile(self.parameters.get_langresource(step)):
-                    self.parameters.disable_step(step)
-
-        # ##################################################################### #
         # Print header message in the log file
         # ##################################################################### #
         try:

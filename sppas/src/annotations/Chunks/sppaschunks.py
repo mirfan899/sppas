@@ -154,6 +154,8 @@ class sppasChunks( sppasBase ):
         if trsinput.GetSize() == 1 and trsinput[0].GetName().lower() == "rawtranscription":
             return trsinput[0]
         if trsinput.GetSize() == 1 and trsinput[0].GetName().lower() == "phonetization":
+            if trsinput[0].IsTimeInterval():
+                return None
             return trsinput[0]
 
         return None
