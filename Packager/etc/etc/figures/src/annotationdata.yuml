@@ -1,0 +1,42 @@
+// AnnotationData Class Diagram
+
+// Nodes
+[Transcription{bg:orange}]
+[Hierarchy{bg:lightblue}]
+[Tier|+ctrlvocab;+annotations;{bg:lightblue}]
+[Annotation|+text;+location;-parenttier;{bg:salmon}]
+[Label|+texts;+functionscore;{bg:lavender}]
+[Text|+rawtext;+score;{bg:lavender}]
+[Location|+localizations;+functionscore;{bg:lemonchiffon}]
+[Localization|+baseplacement;+score;{bg:lemonchiffon}]
+[BasePlacement{bg:lemonchiffon}],
+[TimePoint|+midpoint;+radius;{bg:lemonchiffon}]
+[TimeInterval{bg:lemonchiffon}]
+[TimeDisjoint{bg:lemonchiffon}]
+[FramePoint|+midpoint;+radius;{bg:lemonchiffon}]
+[FrameInterval{bg:lemonchiffon}]
+[FrameDisjoint{bg:lemonchiffon}]
+
+// Edges
+[Transcription]++-0..*>[Tier],
+[Transcription]++-1>[Hierarchy],
+[Hierarchy]<>-0..*>[Tier],
+[Hierarchy]-[note:holds multiple hierarchies by name{bg:wheat}],
+[Tier]++-0..*>[Annotation],
+[Tier]-[note:ctrlvocab is a dictionary where possible values are keys mapping to descriptions or None{bg:wheat}],
+[Annotation]++0-1>[Label],
+[Label]1..*-1[Text],
+[Annotation]++1-1>[Location],
+[Location]1..*-1[Localization],
+[Localization]1-1[BasePlacement],
+[BasePlacement]^-[TimePoint],
+[BasePlacement]^-[TimeInterval],
+[BasePlacement]^-[TimeDisjoint],
+[BasePlacement]^-[FramePoint],
+[BasePlacement]^-[FrameInterval],
+[BasePlacement]^-[FrameDisjoint],
+[TimeInterval]<>-2>[TimePoint],
+[FrameInterval]<>-2>[FramePoint],
+[TimeDisjoint]->[TimeInterval],
+[FrameDisjoint]->[FrameInterval],
+[[TimePoint][TimeInterval][TimeDisjoint][FramePoint][FrameInterval][FrameDisjoint]]
