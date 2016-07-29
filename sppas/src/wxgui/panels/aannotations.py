@@ -37,7 +37,7 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi, Cazembe Henry"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 
 # ----------------------------------------------------------------------------
@@ -148,10 +148,16 @@ class sppasStepPanel( wx.Panel ):
         self.text.SetForegroundColour( self._prefsIO.GetValue('M_FONT_COLOUR'))
         self.text.SetFont( self._prefsIO.GetValue('M_FONT') )
         self.text.Wrap( 400 )
-        self.text.Bind(wx.EVT_LEFT_UP, self.on_click)
 
-        sizer.Add(step_sizer, 0,wx.ALIGN_CENTER_VERTICAL, 0)
-        sizer.Add(self.text, 0, wx.ALIGN_CENTER_VERTICAL, 0)
+        self.link = wx.StaticText(self, -1, "Configure...")
+        self.link.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR'))
+        self.link.SetForegroundColour( wx.Colour(40,40,190) )
+        self.link.SetFont( self._prefsIO.GetValue('M_FONT') )
+        self.link.Bind(wx.EVT_LEFT_UP, self.on_click)
+
+        sizer.Add(step_sizer, 0, wx.ALIGN_CENTER_VERTICAL, 0)
+        sizer.Add(self.text,  0, wx.ALIGN_CENTER_VERTICAL, 0)
+        sizer.Add(self.link,  0, wx.ALIGN_CENTER_VERTICAL, 0)
 
         self.SetSizerAndFit(sizer)
 
@@ -179,7 +185,6 @@ class sppasStepPanel( wx.Panel ):
         else:
             self.opened_frames[frameId].SetFocus()
             self.opened_frames[frameId].Raise()
-
 
     def on_lang_changed(self, evt, step_idx):
         #create the a step event
@@ -257,17 +262,16 @@ class AnnotationsPanel( wx.lib.scrolledpanel.ScrolledPanel ):
         _contentbox = self.__create_content()
 
         # Button to annotate
-        self._brun = CreateGenButton(self, RUN_ID, spBitmap(ANNOTATE_ICON, BUTTON_ICONSIZE, self._prefsIO.GetValue('M_ICON_THEME')), text="Annotate", tooltip="Automatically annotate selected files.", colour=wx.Colour(220,100,80), SIZE=BUTTON_ICONSIZE, font=self._prefsIO.GetValue('M_FONT'))
+        runBmp = spBitmap(ANNOTATE_ICON, BUTTON_ICONSIZE, self._prefsIO.GetValue('M_ICON_THEME'))
+        self._brun = CreateGenButton(self, RUN_ID, runBmp, text="  Perform annotations  ", tooltip="Automatically annotate selected files.", colour=wx.Colour(220,100,80), SIZE=BUTTON_ICONSIZE, font=self._prefsIO.GetValue('M_FONT'))
 
         _vbox = wx.BoxSizer(wx.VERTICAL)
         _vbox.Add(_contentbox, proportion=2, flag=wx.EXPAND | wx.ALL, border=4)
-        _vbox.Add(self._brun, proportion=0, flag=wx.EXPAND | wx.ALL, border=4)
+        _vbox.Add(self._brun, proportion=0, flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, border=20)
 
         self.Bind(wx.EVT_BUTTON, self.on_sppas_run, self._brun, RUN_ID)
         self.SetSizer(_vbox)
-        #_vbox.Fit(self)
         self.SetupScrolling(scroll_x=True, scroll_y=True)
-        #self.FitInside()
         self.SetMinSize(wx.Size(MIN_PANEL_W,MIN_PANEL_H))
 
 

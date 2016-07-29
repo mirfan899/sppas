@@ -37,7 +37,7 @@
 
 __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi, Cazambe Henry"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 
 # ----------------------------------------------------------------------------
@@ -51,11 +51,11 @@ import audiodata.io
 import wx
 from wx.lib.buttons import GenBitmapButton, GenBitmapTextButton
 
-from wxgui.cutils.imageutils import spBitmap
+from wxgui.cutils.imageutils   import spBitmap
 from wxgui.dialogs.filedialogs import OpenSoundFiles
 from wxgui.dialogs.filedialogs import SaveAsAnnotationFile
-from wxgui.dialogs.msgdialogs import ShowInformation
-from wxgui.dialogs.msgdialogs import ShowYesNoQuestion
+from wxgui.dialogs.msgdialogs  import ShowInformation
+from wxgui.dialogs.msgdialogs  import ShowYesNoQuestion
 
 import annotationdata.io
 
@@ -83,7 +83,9 @@ from wxgui.sp_icons import EXPORT_AS_ICON
 from wxgui.sp_icons import EXPORT_ICON
 
 from wxgui.sp_consts import TREE_ICONSIZE
+
 from wxgui.sp_consts import TB_ICONSIZE
+from wxgui.panels.buttons import ButtonToolbarPanel
 
 
 # ----------------------------------------------------------------------------
@@ -130,26 +132,26 @@ class FiletreePanel( wx.Panel ):
 
         self.GetTopLevelParent().Bind(wx.EVT_CHAR_HOOK, self.OnKeyPress)
 
+        self.Bind(wx.EVT_BUTTON, self.OnButtonClick)
+
         self.SetSizer(_vbox)
         self.SetMinSize((320,200))
 
 
     def _create_toolbar(self):
-        """
-        Simulate the creation of a toolbar.
-        """
+        """ Simulate the creation of a toolbar. """
 
         # create the main panel and sizer
         panel = wx.Panel(self, -1, style=wx.NO_BORDER)
         panel.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
         sizer = wx.BoxSizer( wx.HORIZONTAL )
 
-        baddfile = self._create_button( panel, ADD_FILE_ICON, self.OnAddFile, sizer, tooltip="Add files into the list.")
-        badddir  = self._create_button( panel, ADD_DIR_ICON,  self.OnAddDir,  sizer, tooltip="Add a folder into the list.")
-        bremove  = self._create_button( panel, REMOVE_ICON,   self.OnRemove,  sizer, tooltip="Remove files of the list.")
-        bdelete  = self._create_button( panel, DELETE_ICON,   self.OnDelete,  sizer, tooltip="Delete definitively files of the computer.")
-        bsaveas  = self._create_button( panel, EXPORT_AS_ICON,self.OnSaveAs,  sizer, tooltip="Copy files.")
-        bexport  = self._create_button( panel, EXPORT_ICON,   self.OnExport,  sizer, tooltip="Export files.")
+        baddfile = ButtonToolbarPanel(panel, ID_TB_ADDFILE, self._prefsIO, ADD_FILE_ICON, "Add files", tooltip="Add files into the list.")
+        badddir  = ButtonToolbarPanel(panel, ID_TB_ADDDIR,  self._prefsIO, ADD_DIR_ICON,  "Add dir", tooltip="Add a folder into the list.")
+        bremove  = ButtonToolbarPanel(panel, ID_TB_REMOVE,  self._prefsIO, REMOVE_ICON,   "Remove",  tooltip="Remove files of the list.")
+        bdelete  = ButtonToolbarPanel(panel, ID_TB_DELETE,  self._prefsIO, DELETE_ICON,   "Delete",  tooltip="Delete definitively files of the computer.")
+        bsaveas  = ButtonToolbarPanel(panel, wx.ID_SAVEAS,  self._prefsIO, EXPORT_AS_ICON,"Copy",    tooltip="Copy files.")
+        bexport  = ButtonToolbarPanel(panel, wx.ID_SAVE,    self._prefsIO, EXPORT_ICON,   "Export",  tooltip="Export files.")
 
         sizer.Add(baddfile, 1, flag=wx.ALL, border=2)
         sizer.Add(badddir,  1, flag=wx.ALL, border=2)
@@ -162,30 +164,6 @@ class FiletreePanel( wx.Panel ):
 
         panel.SetSizer( sizer )
         return panel
-
-
-    def _create_button(self, parent, btype, handler, sizer, text=None, tooltip=None, colour=None):
-        """ Private method to create a button. """
-
-        bmp = spBitmap(btype, TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME'))
-
-        if text is None:
-            button = GenBitmapButton(parent, 1, bmp)
-        else:
-            button = GenBitmapTextButton(parent, 1, bmp, text)
-        button.SetBezelWidth(1)
-
-        if tooltip is not None:
-            button.SetToolTipString(tooltip)
-
-        if colour is not None:
-            button.SetBackgroundColour( colour )
-        else:
-            button.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR'))
-
-        button.Bind(wx.EVT_BUTTON, handler)
-
-        return button
 
 
     def _create_filestree(self):
@@ -228,6 +206,22 @@ class FiletreePanel( wx.Panel ):
     # Callbacks
     # -----------------------------------------------------------------------
 
+    def OnButtonClick(self, event):
+        ide = event.GetId()
+        if ide == ID_TB_ADDFILE:
+            self._add_file()
+        elif ide == ID_TB_ADDDIR:
+            self._add_dir()
+        elif ide == ID_TB_REMOVE:
+            self._remove()
+        elif ide == ID_TB_DELETE:
+            self._delete()
+        elif ide == wx.ID_SAVEAS:
+            self._copy()
+        elif ide == wx.ID_SAVE:
+            self._export()
+
+
     def OnKeyPress(self, event):
         """
         Respond to a keypress event.
@@ -240,47 +234,29 @@ class FiletreePanel( wx.Panel ):
 
     # ------------------------------------------------------------------------
 
-
-    # -----------------------------------------------------------------------
-
-
-    def OnAddFile(self, evt):
+    def _add_file(self):
         """ Add one or more file(s). """
+
         files = OpenSoundFiles()
         for f in files:
             self._append_file(f)
 
-    # End OnAddFile
     # -----------------------------------------------------------------------
 
-
-    def OnAddDir(self, evt):
+    def _add_dir(self):
         """ Add the content of a directory. """
-        dlg = wx.DirDialog(self, message="Choose a directory:",defaultPath=os.getcwd())
 
-        # Show the dialog and retrieve the user response.
-        # If it is the OK response, process the data.
+        dlg = wx.DirDialog(self, message="Choose a directory:",defaultPath=os.getcwd())
         self.paths = []
         if dlg.ShowModal() == wx.ID_OK:
             self._append_dir(dlg.GetPath())
-
-        # Destroy the dialog.
         dlg.Destroy()
 
-    # End OnAddDir
     # -----------------------------------------------------------------------
 
+    def _delete(self):
+        """ Delete selected files from the file system and remove of the tree. """
 
-    def OnRemove(self, evt):
-        self._remove()
-
-    # -----------------------------------------------------------------------
-
-
-    def OnDelete(self, evt):
-        """
-        Delete selected files from the file system and remove of the tree.
-        """
         selection = self.GetSelected()
         str_list = ""
 
@@ -318,14 +294,11 @@ class FiletreePanel( wx.Panel ):
             # Remove deleted files of the tree
             self._remove()
 
-    # End OnDelete
     # -----------------------------------------------------------------------
 
+    def _export(self):
+        """ Export multiple files, i.e. propose to change the extension. Nothing else. """
 
-    def OnExport(self, evt):
-        """
-        Export multiple files, i.e. propose to change the extension. Nothing else.
-        """
         # Some selection?
         files = self.GetSelected()
         if not files:
@@ -362,14 +335,11 @@ class FiletreePanel( wx.Panel ):
         if errors is False:
             ShowInformation( self, self._prefsIO, "Export with success.", style=wx.ICON_INFORMATION)
 
-    # End OnExport
     # -----------------------------------------------------------------------
 
+    def _copy(self):
+        """ Export selected files. """
 
-    def OnSaveAs(self, evt):
-        """
-        Export selected files.
-        """
         # Some files to save???
         files = self.GetSelected()
         if not files: return

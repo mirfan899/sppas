@@ -492,7 +492,7 @@ class NavigatePanel( wx.Panel ):
         gbs.Add(self._buttons['vzoomin'], (0,8), flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=1)
         gbs.Add(self._buttons['vzoomout'],(0,9), flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=1)
 
-        self.SetBackgroundColour( self.GetParent().GetBackgroundColour() )
+        self.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
 
         self.SetSizer( gbs )
         self.SetAutoLayout( True )
@@ -786,7 +786,7 @@ class TrsPanel( wx.Panel ):
         sizer.Add(self._buttons['search'],    1, flag=wx.ALL, border=2)
 
         self.Bind(spEVT_SEARCHED, self.onSearched)
-        self.SetBackgroundColour( self.GetParent().GetBackgroundColour() )
+        self.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
 
         self.SetSizer( sizer )
         self.SetAutoLayout( True )
@@ -1032,7 +1032,7 @@ class MediaPanel( SndPlayer ):
 
         # members
         self._display = None
-        self.SetBackgroundColour( self.GetParent().GetBackgroundColour() )
+        self.SetBackgroundColour( prefsIO.GetValue('M_BG_COLOUR') )
 
     #-------------------------------------------------------------------------
 

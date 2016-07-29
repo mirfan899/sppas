@@ -69,7 +69,7 @@ class optionsPanel( scrolled.ScrolledPanel ):
         @param options (list) List of options (see param.py).
 
         """
-        scrolled.ScrolledPanel.__init__(self, parent, -1, size=(400,300), style=wx.NO_BORDER)
+        scrolled.ScrolledPanel.__init__(self, parent, -1, size=(440,380), style=wx.NO_BORDER)
 
         self.option_sizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -91,7 +91,7 @@ class optionsPanel( scrolled.ScrolledPanel ):
             elif opt.get_type() == "str":
                 self.AddTextctrl( opt.get_text(), value=opt.get_value() )
 
-        self.SetSizer(self.option_sizer)
+        self.SetSizerAndFit(self.option_sizer)
         self.SetupScrolling()
 
     # ------------------------------------------------------------------------
