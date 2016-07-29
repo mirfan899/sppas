@@ -140,7 +140,7 @@ body {
 
 .menu a {
     display:         inline-block;
-    padding-top:     0px;
+    padding-top:     36px;
     padding-bottom:  0px;
     padding-left:    20px;
     padding-right:   20px;
@@ -160,6 +160,37 @@ body {
     background:     rgba(240,235,215,0.4);
     color:          rgb(128,122,122);
 }
+
+.menu a.home
+{
+background: rgb(240,235,215) url('../../etc/icons/home.png') no-repeat ;
+background-position:center 10px;
+}
+
+.menu a.install
+{
+background: rgb(240,235,215) url('../../etc/icons/install.png') no-repeat ;
+background-position:center 10px;
+}
+
+.menu a.download
+{
+background: rgb(240,235,215) url('../../etc/icons/download.png') no-repeat ;
+background-position:center 10px;
+}
+
+.menu a.documentation
+{
+background: rgb(240,235,215) url('../../etc/icons/help.png') no-repeat ;
+background-position:center 10px;
+}
+
+.menu a.group
+{
+background: rgb(240,235,215) url('../../etc/icons/community.png') no-repeat ;
+background-position:center 10px;
+}
+
 
 /*===========================  HTML ELEMENTS  ==============================*/
 
