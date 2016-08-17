@@ -134,7 +134,7 @@ class sppasStepPanel( wx.Panel ):
             choicelist.append( LANG_NONE )
             self.choice = wx.Choice(self, -1, choices = sorted(choicelist))
             self.choice.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
-            self.choice.SetForegroundColour( self._prefsIO.GetValue('M_FONTD_COLOUR') )
+            self.choice.SetForegroundColour( self._prefsIO.GetValue('M_FGD_COLOUR') )
             self.choice.SetFont( self._prefsIO.GetValue('M_FONT') )
 
             self.choice.SetSelection(self.choice.GetItems().index( LANG_NONE ))
@@ -145,7 +145,7 @@ class sppasStepPanel( wx.Panel ):
         sizer = wx.BoxSizer(wx.VERTICAL)
         self.text = wx.StaticText(self, -1, self.parameters.get_step_descr(index))
         self.text.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR'))
-        self.text.SetForegroundColour( self._prefsIO.GetValue('M_FONT_COLOUR'))
+        self.text.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR'))
         self.text.SetFont( self._prefsIO.GetValue('M_FONT') )
         self.text.Wrap( 400 )
 
@@ -211,14 +211,14 @@ class sppasStepPanel( wx.Panel ):
         """
         self._prefsIO = prefs
         self.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
-        self.SetForegroundColour( self._prefsIO.GetValue('M_FONT_COLOUR') )
+        self.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR') )
         self.SetFont( self._prefsIO.GetValue('M_FONT') )
 
         self.checkbox.SetFont( self._prefsIO.GetValue( 'M_FONT'))
         self.checkbox.SetBackgroundColour( self._prefsIO.GetValue( 'M_BG_COLOUR' ))
         self.checkbox.SetForegroundColour( self._prefsIO.GetValue( 'M_FG_COLOUR' ))
         self.text.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR'))
-        self.text.SetForegroundColour( self._prefsIO.GetValue('M_FONT_COLOUR'))
+        self.text.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR'))
         self.text.SetFont( self._prefsIO.GetValue('M_FONT') )
 
         if self.choice:

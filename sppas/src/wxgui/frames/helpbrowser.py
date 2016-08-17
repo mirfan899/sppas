@@ -801,7 +801,7 @@ class HelpBrowser( wx.Frame ):
         <html>
         <head>
         </head>
-        <body bgcolor="rgb(240,240,230)">
+        <body bgcolor="rgb(250,250,245)">
         %s
         </body>
         </html>

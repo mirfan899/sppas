@@ -118,7 +118,7 @@ class spBaseDialog( wx.Dialog ):
         text = wx.StaticText(panel, label=titletext)
         text.SetFont( font )
         text.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
-        text.SetForegroundColour( self.preferences.GetValue('M_FONT_COLOUR') )
+        text.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         sizer.Add(sBmp, proportion=0, flag=wx.ALL|wx.ALIGN_CENTER, border=4)

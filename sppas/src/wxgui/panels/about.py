@@ -73,7 +73,7 @@ class AboutSPPAS( wx.lib.scrolledpanel.ScrolledPanel ):
         textprogramversion = wx.StaticText(self, -1, program + " "+version)
         textprogramversion.SetFont( font )
         textprogramversion.SetBackgroundColour( preferences.GetValue('M_BG_COLOUR') )
-        textprogramversion.SetForegroundColour( preferences.GetValue('M_FONT_COLOUR') )
+        textprogramversion.SetForegroundColour( preferences.GetValue('M_FG_COLOUR') )
 
         # Description
         font.SetPointSize( fontsize )
@@ -81,14 +81,14 @@ class AboutSPPAS( wx.lib.scrolledpanel.ScrolledPanel ):
         textdescr = wx.StaticText(self, -1, brief)
         textdescr.SetFont( font )
         textdescr.SetBackgroundColour( preferences.GetValue('M_BG_COLOUR') )
-        textdescr.SetForegroundColour( preferences.GetValue('M_FONT_COLOUR') )
+        textdescr.SetForegroundColour( preferences.GetValue('M_FG_COLOUR') )
 
         # Copyright
         font.SetWeight( wx.BOLD )
         textcopy = wx.StaticText(self, -1, copyright)
         textcopy.SetFont( font )
         textcopy.SetBackgroundColour( preferences.GetValue('M_BG_COLOUR') )
-        textcopy.SetForegroundColour( preferences.GetValue('M_FONT_COLOUR') )
+        textcopy.SetForegroundColour( preferences.GetValue('M_FG_COLOUR') )
 
         # URL
         font.SetWeight( wx.NORMAL )
@@ -104,7 +104,7 @@ class AboutSPPAS( wx.lib.scrolledpanel.ScrolledPanel ):
         textgpl = wx.StaticText(self, -1, license_text)
         textgpl.SetFont( font )
         textgpl.SetBackgroundColour( preferences.GetValue('M_BG_COLOUR') )
-        textgpl.SetForegroundColour( preferences.GetValue('M_FONT_COLOUR') )
+        textgpl.SetForegroundColour( preferences.GetValue('M_FG_COLOUR') )
 
         sizer = wx.BoxSizer( wx.VERTICAL )
         sizer.Add(logo,               proportion=0, flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, border=8)

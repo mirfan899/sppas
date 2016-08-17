@@ -127,7 +127,7 @@ class MainTitlePanel( wx.Panel ):
         s = wx.BoxSizer()
         text = wx.StaticText(self, label=program+" - "+title, style=wx.ALIGN_CENTER)
         text.SetFont( font )
-        text.SetForegroundColour( preferences.GetValue('M_FONT_COLOUR') )
+        text.SetForegroundColour( preferences.GetValue('M_FG_COLOUR') )
         text.Bind(wx.EVT_LEFT_UP, self.OnButtonClick)
         s.Add(text, proportion=1, flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=10)
 
@@ -227,7 +227,7 @@ class MainActionsMenuPanel( wx.Panel ):
         font.SetWeight( wx.BOLD )
         self.text.SetFont( font )
         self.text.SetBackgroundColour( self.GetBackgroundColour() )
-        self.text.SetForegroundColour( preferences.GetValue('M_FONTM_COLOUR') )
+        self.text.SetForegroundColour( preferences.GetValue('M_FGM_COLOUR') )
 
         sizer = wx.BoxSizer( wx.HORIZONTAL )
         sizer.Add( self.backButton, proportion=0, flag=wx.ALL|wx.ALIGN_CENTER|wx.ALIGN_CENTRE_VERTICAL, border=2)
@@ -295,6 +295,8 @@ class MainTooltips( wx.Panel ):
         txt = wx.TextCtrl(self, wx.ID_ANY, value=self.tips.get(), style=wx.TE_READONLY|wx.TE_MULTILINE|wx.NO_BORDER)
         font = self._prefs.GetValue('M_FONT')
         txt.SetFont(font)
+        colour = self._prefs.GetValue('M_BG_COLOUR')
+        print colour
         txt.SetForegroundColour( self._prefs.GetValue('M_FG_COLOUR') )
         txt.SetBackgroundColour( self._prefs.GetValue('M_BGD_COLOUR') )
         txt.SetMinSize((300,48))
