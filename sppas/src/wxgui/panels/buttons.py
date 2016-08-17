@@ -39,6 +39,7 @@ import wx
 
 from wxgui.cutils.imageutils import spBitmap
 from wxgui.cutils.ctrlutils  import CreateGenButton
+from wxgui.cutils.colorutils import LightenColor
 
 from wxgui.sp_consts import BUTTON_ICONSIZE, MENU_ICONSIZE, TB_ICONSIZE
 
@@ -148,12 +149,13 @@ class ButtonPanel( wx.Panel ):
     @summary:      Panel imitating behaviors of a complex button.
 
     """
-    def __init__(self, parent, idb, preferences, bmp, text, subtext=None, tooltip=None):
+    def __init__(self, parent, idb, preferences, bmp, text, subtext=None, tooltip=None, activated=True):
         wx.Panel.__init__(self, parent, idb, style=wx.NO_BORDER)
         self.SetBackgroundColour( preferences.GetValue('M_BGD_COLOUR') )
         self.SetFont( preferences.GetValue('M_FONT') )
 
         self._prefs = preferences
+        self.activated = activated
 
         content = self.create_content(bmp, text, subtext)
 
@@ -181,6 +183,7 @@ class ButtonPanel( wx.Panel ):
         text.SetFont( font )
         text.SetBackgroundColour( self._prefs.GetValue('M_BGD_COLOUR') )
         text.SetForegroundColour( self._prefs.GetValue('M_FG_COLOUR') )
+
         text.Bind(wx.EVT_LEFT_UP, self.OnButtonLeftUp)
         sizer.Add(text, 0, flag=wx.ALL|wx.ALIGN_CENTER, border=2)
 
@@ -210,20 +213,22 @@ class ButtonPanel( wx.Panel ):
 
 
     def OnButtonEnter(self, event):
-        self.SetBackgroundColour( self._prefs.GetValue('M_FGD_COLOUR') )
-        self.Refresh()
+        if self.activated is True:
+            self.SetBackgroundColour( self._prefs.GetValue('M_FGD_COLOUR') )
+            self.Refresh()
 
     def OnButtonLeave(self, event):
-        self.SetBackgroundColour( self._prefs.GetValue('M_BGD_COLOUR') )
-        self.Refresh()
+        if self.activated is True:
+            self.SetBackgroundColour( self._prefs.GetValue('M_BGD_COLOUR') )
+            self.Refresh()
 
     def OnButtonLeftUp(self, event):
-        self.SetBackgroundColour( self._prefs.GetValue('M_BGD_COLOUR') )
-        self.Refresh()
-        evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, self.GetId())
-        evt.SetEventObject(self)
-        wx.PostEvent(self.GetParent(), evt)
-
+        if self.activated is True:
+            self.SetBackgroundColour( self._prefs.GetValue('M_BGD_COLOUR') )
+            self.Refresh()
+            evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, self.GetId())
+            evt.SetEventObject(self)
+            wx.PostEvent(self.GetParent(), evt)
 
 # ---------------------------------------------------------------------------
 
@@ -237,12 +242,13 @@ class ButtonToolbarPanel( wx.Panel ):
     @summary:      Panel imitating behaviors of a complex button.
 
     """
-    def __init__(self, parent, idb, preferences, bmp, text, tooltip=None):
+    def __init__(self, parent, idb, preferences, bmp, text, tooltip=None, activated=True):
         wx.Panel.__init__(self, parent, idb, style=wx.NO_BORDER)
         self.SetBackgroundColour( preferences.GetValue('M_BG_COLOUR') )
         self.SetFont( preferences.GetValue('M_FONT') )
 
         self._prefs = preferences
+        self.activated = activated
 
         content = self.create_content(bmp, text)
 
@@ -283,19 +289,27 @@ class ButtonToolbarPanel( wx.Panel ):
 
 
     def OnButtonEnter(self, event):
-        self.SetBackgroundColour( self._prefs.GetValue('M_FGD_COLOUR') )
-        self.Refresh()
+        if self.activated is True:
+            self.SetBackgroundColour( self._prefs.GetValue('M_FGD_COLOUR') )
+            self.Refresh()
 
     def OnButtonLeave(self, event):
-        self.SetBackgroundColour( self._prefs.GetValue('M_BG_COLOUR') )
-        self.Refresh()
+        if self.activated is True:
+            self.SetBackgroundColour( self._prefs.GetValue('M_BG_COLOUR') )
+            self.Refresh()
 
     def OnButtonLeftUp(self, event):
+        if self.activated is True:
+            self.SetBackgroundColour( self._prefs.GetValue('M_BG_COLOUR') )
+            self.Refresh()
+            evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, self.GetId())
+            evt.SetEventObject(self)
+            wx.PostEvent(self.GetParent(), evt)
+
+    def Enable(self, value):
+        self.activated = value
         self.SetBackgroundColour( self._prefs.GetValue('M_BG_COLOUR') )
         self.Refresh()
-        evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, self.GetId())
-        evt.SetEventObject(self)
-        wx.PostEvent(self.GetParent(), evt)
 
 
 # ---------------------------------------------------------------------------

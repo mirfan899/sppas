@@ -102,9 +102,7 @@ def TakeScreenShot(rect, client_x=0, client_y=0):
 
     return bmp.ConvertToImage()
 
-# End TakeScreenShot
 #-----------------------------------------------------------------------------
-
 
 def CreateCursorFromXPMData( xpmdata, hotspot ):
     """ Return a wx.Cursor from a vectorized image. """
@@ -121,27 +119,23 @@ def CreateCursorFromXPMData( xpmdata, hotspot ):
     # make the image into a cursor
     return wx.CursorFromImage( image )
 
-# End CreateCursorFromXPMData
 # ----------------------------------------------------------------------------
 
-
 def ScaleBitmap(bitmap, width, height):
-    """ Scale the image. """
+    """ Scale the bitmap image. """
 
     image = wx.ImageFromBitmap(bitmap)
     image = image.Scale(width, height, wx.IMAGE_QUALITY_HIGH)
-    result = wx.BitmapFromImage(image)
-    return result
+    return wx.BitmapFromImage(image)
 
+# -----------------------------------------------------------------------
 
 def ScaleImage(img, width, height):
     """ Scale the image. """
 
     return img.Scale(width, height, wx.IMAGE_QUALITY_HIGH)
 
-# End ScaleImage
 # -----------------------------------------------------------------------
-
 
 def RotateImage(bmp):
     """ Rotates the bitmap. """
@@ -152,16 +146,14 @@ def RotateImage(bmp):
 
     return bmp.Rotate(math.pi, (wcenter, hcenter), True)
 
-# End RotateImage
 # -----------------------------------------------------------------------
-
 
 def GrayOut(anImage):
     """
     Convert the given image (in place) to a grayed-out version,
     appropriate for a 'disabled' appearance.
-    """
 
+    """
     factor = 0.7        # 0 < f < 1.  Higher Is Grayer
 
     if anImage.HasMask():
@@ -181,28 +173,24 @@ def GrayOut(anImage):
 
     anImage.SetData(''.join(map(chr, data)))
 
-    return anImage.ConvertToBitmap()
+    return anImage #.ConvertToBitmap()
 
-# End GrayOut
 # -----------------------------------------------------------------------
-
 
 def MakeGray((r,g,b), factor, maskColor):
     """
     Make a pixel grayed-out. If the pixel matches the maskcolor, it won't be
     changed.
-    """
 
+    """
     if (r,g,b) != maskColor:
         return map(lambda x: int((230 - x) * factor) + x, (r,g,b))
     else:
         return (r,g,b)
 
-# End MakeGray
 # -----------------------------------------------------------------------
 
-
-def get_bmp_file(id, theme=None):
+def get_img_file(id, theme=None):
     """
     Get the bitmap file name from its identifier.
 
@@ -229,9 +217,7 @@ def get_bmp_file(id, theme=None):
 
     return bmpfile
 
-# End get_bmp_file
 # ----------------------------------------------------------------------------
-
 
 def spBitmap(idb, size=None, theme=None):
     """
@@ -244,18 +230,14 @@ def spBitmap(idb, size=None, theme=None):
     @return wx.Bitmap
 
     """
+    img = wx.Image( get_img_file( idb, theme ), wx.BITMAP_TYPE_ANY)
 
-    bmpfile = get_bmp_file( idb, theme )
-    bmp = wx.Bitmap(bmpfile, wx.BITMAP_TYPE_ANY)
+    if size is not None:
+        img = ScaleImage(img, size, size)
 
-    if size:
-        bmp = ScaleBitmap(bmp, size, size)
+    return wx.BitmapFromImage( img )
 
-    return bmp
-
-# End spBitmap
 # ----------------------------------------------------------------------------
-
 
 def GetBitmap(bmppath, pattern, ext):
     """
@@ -268,14 +250,10 @@ def GetBitmap(bmppath, pattern, ext):
     @return filename of the selected bitmap image
 
     """
-
     tipsbmp = [f for f in os.listdir(bmppath) if pattern in f and f.endswith(ext)]
     return os.path.join(bmppath,random.choice(tipsbmp))
 
-# End GetBitmap
 # ----------------------------------------------------------------------------
-
-
 
 #----------------------------------------------------------------------
 
@@ -293,14 +271,14 @@ def GetCheckedImage( CCB_TYPE="check" ):
 
     """
     if CCB_TYPE == "radiocheck":
-        img = wx.Image(get_bmp_file(RADIOCHECKED_ICON), wx.BITMAP_TYPE_PNG)
+        img = wx.Image(get_img_file(RADIOCHECKED_ICON), wx.BITMAP_TYPE_PNG)
         return ScaleImage(img, 16, 16)
 
     if CCB_TYPE == "activecheck":
-        img = wx.Image(get_bmp_file(ACTIVATED_ICON), wx.BITMAP_TYPE_PNG)
+        img = wx.Image(get_img_file(ACTIVATED_ICON), wx.BITMAP_TYPE_PNG)
         return ScaleImage(img, 32, 24)
 
-    img = wx.Image(get_bmp_file(CHECKED_ICON), wx.BITMAP_TYPE_PNG)
+    img = wx.Image(get_img_file(CHECKED_ICON), wx.BITMAP_TYPE_PNG)
     return ScaleImage(img, 16, 16)
 
 #----------------------------------------------------------------------
@@ -318,14 +296,14 @@ def GetNotCheckedImage( CCB_TYPE="check" ):
 
     """
     if CCB_TYPE == "radiocheck":
-        img = wx.Image(get_bmp_file(RADIOUNCHECKED_ICON), wx.BITMAP_TYPE_PNG)
+        img = wx.Image(get_img_file(RADIOUNCHECKED_ICON), wx.BITMAP_TYPE_PNG)
         return ScaleImage(img, 16, 16)
 
     if CCB_TYPE == "activecheck":
-        img = wx.Image(get_bmp_file(DISABLED_ICON), wx.BITMAP_TYPE_PNG)
+        img = wx.Image(get_img_file(DISABLED_ICON), wx.BITMAP_TYPE_PNG)
         return ScaleImage(img, 32, 24)
 
-    img = wx.Image(get_bmp_file(UNCHECKED_ICON), wx.BITMAP_TYPE_PNG)
+    img = wx.Image(get_img_file(UNCHECKED_ICON), wx.BITMAP_TYPE_PNG)
     return ScaleImage(img, 16, 16)
 
 #----------------------------------------------------------------------

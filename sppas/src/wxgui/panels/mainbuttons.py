@@ -173,7 +173,7 @@ class MainActionsPanel( wx.Panel ):
 
         annotateButton = ButtonPanel(self, ID_ANNOTATIONS,   self._prefs, ANNOTATIONS_ICON,"Annotate", "Segment speech, normalize text, ...")
         analyzeButton  = ButtonPanel(self, ID_COMPONENTS,    self._prefs, COMPONENTS_ICON, "Analyze",  "Statistics, data managers, ...")
-        pluginsButton  = ButtonPanel(self, ID_PLUGINS,       self._prefs, PLUGIN_ICON,     "Plugins",  "External tools")
+        pluginsButton  = ButtonPanel(self, ID_PLUGINS,       self._prefs, PLUGIN_ICON,     "Plugins",  "External tools", activated=False)
         settingsButton = ButtonPanel(self, wx.ID_PREFERENCES,self._prefs, SETTINGS_ICON,   "Settings", "Configuration, preferences")
         helpButton     = ButtonPanel(self, wx.ID_HELP,       self._prefs, HELP_ICON,       "Help",     "Documentation")
         aboutButton    = ButtonPanel(self, wx.ID_ABOUT,      self._prefs, ABOUT_ICON,      "About",    "Know more, give feedback, ...")
@@ -295,8 +295,6 @@ class MainTooltips( wx.Panel ):
         txt = wx.TextCtrl(self, wx.ID_ANY, value=self.tips.get(), style=wx.TE_READONLY|wx.TE_MULTILINE|wx.NO_BORDER)
         font = self._prefs.GetValue('M_FONT')
         txt.SetFont(font)
-        colour = self._prefs.GetValue('M_BG_COLOUR')
-        print colour
         txt.SetForegroundColour( self._prefs.GetValue('M_FG_COLOUR') )
         txt.SetBackgroundColour( self._prefs.GetValue('M_BGD_COLOUR') )
         txt.SetMinSize((300,48))

@@ -53,13 +53,12 @@ import wx
 
 def PickRandomColour(v1,v2):
     """ Return a random color. """
+
     c = [random.uniform(v1,v2) for _ in range(5)]
     random.shuffle(c)
     return wx.Colour(c[0],c[1],c[2])
 
-
 #-------------------------------------------------------------------------
-
 
 def ContrastiveColour(crColor):
     """ Return a contrastive (ie lighten or darken) color. """
@@ -79,6 +78,7 @@ def ContrastiveColour(crColor):
 
     return DarkenColor(crColor, random.sample(range(40,60),1)[0])
 
+#-------------------------------------------------------------------------
 
 def LightenColor(crColor, byIncreaseVal):
     """ Lightens a colour. """
@@ -93,6 +93,7 @@ def LightenColor(crColor, byIncreaseVal):
 
     return wx.Colour(byRed, byGreen, byBlue)
 
+#-------------------------------------------------------------------------
 
 def DarkenColor(crColor, byReduceVal):
     """ Darkens a colour. """

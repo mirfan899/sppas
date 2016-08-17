@@ -35,15 +35,6 @@
 # File: helpbrowser.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# -------------------------------------------------------------------------
-# Imports
-# -------------------------------------------------------------------------
-
 import codecs
 import os.path
 import re
@@ -77,17 +68,7 @@ from wxgui.sp_consts import FRAME_TITLE
 
 from sp_glob import encoding
 
-
-# ---------------------------------------------------------------------------
-# Constants
-# ---------------------------------------------------------------------------
-
-HOME_ID     = wx.NewId()
-BACKWARD_ID = wx.NewId()
-FORWARD_ID  = wx.NewId()
-PREVIOUS_ID = wx.NewId()
-NEXT_ID     = wx.NewId()
-
+from wxgui.panels.buttons import ButtonToolbarPanel
 
 # ---------------------------------------------------------------------------
 # Functions
@@ -270,7 +251,6 @@ class HelpSystem( object ):
     @summary: A wiki-like help system: data of the pages.
 
     """
-
     def __init__(self, resources_prefix, page_prefix):
         """
         Create a new HelpSystem.
@@ -283,7 +263,7 @@ class HelpSystem( object ):
         self.ranks = [] # used if pages are ranked
         self.resources_prefix = resources_prefix
         self.page_prefix = page_prefix
-        self._install_page(idp=str(HOME_ID), header="Help content", body="")
+        self._install_page(idp=str(wx.ID_HOME), header="Help content", body="")
 
     # -----------------------------------------------------------------------
 
@@ -426,7 +406,7 @@ class HelpSystem( object ):
             toc_body = "No help is available due to the following error:\n%s"%str(e)
 
         # Then, append this TOC to main one
-        self.GetPage(str(HOME_ID)).body += toc_body
+        self.GetPage(str(wx.ID_HOME)).body += toc_body
 
     # -----------------------------------------------------------------------
 
@@ -472,7 +452,7 @@ class HelpSystem( object ):
         @return HelpPage
 
         """
-        if idp == str(HOME_ID):
+        if idp == str(wx.ID_HOME):
             return None
 
         if not idp in self.ranks:
@@ -493,7 +473,7 @@ class HelpSystem( object ):
         @return HelpPage
 
         """
-        if idp == str(HOME_ID):
+        if idp == str(wx.ID_HOME):
             return None
 
         if not idp in self.ranks:
@@ -524,7 +504,6 @@ class HelpBrowser( wx.Frame ):
     @summary: A wiki-like help browser.
 
     """
-
     def __init__(self, parent, preferences):
         """
         Create a wiki-like help browser.
@@ -539,7 +518,26 @@ class HelpBrowser( wx.Frame ):
         self.help_system = HelpSystem(HELP_PATH, "page:")
         self.help_system.Install(DOC_IDX)
 
-        self._create_gui()
+        self._init_infos()
+        toolbar = self._create_toolbar()
+
+        self.html_window = wx.html.HtmlWindow(self)
+        self.html_window.Connect(wx.ID_ANY, wx.ID_ANY, wx.EVT_KEY_DOWN.typeId, self.OnKeyDown)
+        if "gtk2" in wx.PlatformInfo:
+            self.html_window.SetStandardFonts()
+        self._go_home()
+
+        _vbox = wx.BoxSizer(wx.VERTICAL)
+        _vbox.Add(toolbar,     proportion=0, flag=wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, border=4)
+        _vbox.Add(self.html_window, proportion=1, flag=wx.EXPAND|wx.LEFT|wx.RIGHT, border=4)
+
+        toolbar.Bind(wx.EVT_BUTTON, self.OnToolbarClicked)
+        self.Bind(wx.html.EVT_HTML_LINK_CLICKED, self.OnLinkClicked, self.html_window)
+
+        self.SetSizer(_vbox)
+        self.SetMinSize((320,200))
+
+        self.Layout()
         self._update_buttons()
 
     # ------------------------------------------------------------------------
@@ -580,13 +578,6 @@ class HelpBrowser( wx.Frame ):
     # Create the GUI
     # ------------------------------------------------------------------------
 
-    def _create_gui(self):
-        self._init_infos()
-        self._create_toolbar()
-        self._create_html()
-        self._go_home()
-
-
     def _init_infos( self ):
         wx.GetApp().SetAppName( "helpbrowser" )
         # icon
@@ -598,90 +589,38 @@ class HelpBrowser( wx.Frame ):
         self.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR'))
         self.SetFont( self.preferences.GetValue('M_FONT'))
 
-
     def _create_toolbar(self):
-        self.toolbar = self.CreateToolBar(style=wx.TB_TEXT|wx.TB_FLAT|wx.TB_DOCKABLE|wx.TB_NODIVIDER)
+        """ Simulate the creation of a toolbar. """
 
-        size = (BUTTON_ICONSIZE, BUTTON_ICONSIZE)
+        toolbar = wx.Panel(self, -1, style=wx.NO_BORDER)
+        toolbar.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
+        sizer = wx.BoxSizer( wx.HORIZONTAL )
 
-        close_bmp   = spBitmap(LOGOUT_ICON,   BUTTON_ICONSIZE, theme=self.preferences.GetValue('M_ICON_THEME'))
-        home_bmp    = spBitmap(HOME_ICON,     BUTTON_ICONSIZE, theme=self.preferences.GetValue('M_ICON_THEME'))
-        back_bmp    = spBitmap(BACKWARD_ICON, BUTTON_ICONSIZE, theme=self.preferences.GetValue('M_ICON_THEME'))
-        forward_bmp = spBitmap(FORWARD_ICON,  BUTTON_ICONSIZE, theme=self.preferences.GetValue('M_ICON_THEME'))
-        previous_bmp= spBitmap(PREVIOUS_ICON, BUTTON_ICONSIZE, theme=self.preferences.GetValue('M_ICON_THEME'))
-        next_bmp    = spBitmap(NEXT_ICON,     BUTTON_ICONSIZE, theme=self.preferences.GetValue('M_ICON_THEME'))
-        self.toolbar.SetToolBitmapSize(size)
+        closebtn   = ButtonToolbarPanel(toolbar, wx.ID_EXIT, self.preferences, LOGOUT_ICON, "Close")
+        homebtn    = ButtonToolbarPanel(toolbar, wx.ID_HOME, self.preferences, HOME_ICON, "Home")
+        backbtn    = ButtonToolbarPanel(toolbar, wx.ID_BACKWARD, self.preferences, BACKWARD_ICON, "Backward", activated=False)
+        forwardbtn = ButtonToolbarPanel(toolbar, wx.ID_FORWARD, self.preferences, FORWARD_ICON, "Forward", activated=False)
+        prevbtn    = ButtonToolbarPanel(toolbar, wx.ID_PREVIEW_PREVIOUS, self.preferences, PREVIOUS_ICON, "Previous", activated=False)
+        nextbtn    = ButtonToolbarPanel(toolbar, wx.ID_PREVIEW_NEXT, self.preferences, NEXT_ICON, "Next", activated=False)
 
-        # Close
-        self.toolbar.AddLabelTool(wx.ID_CLOSE, "Close", close_bmp, shortHelp="Close this browser")
-
-        # Separator
-        self.toolbar.AddSeparator()
-
-        # Home
-        home_str = "Go to the Table of contents"
-        self.toolbar.AddLabelTool(HOME_ID, "Home", home_bmp, shortHelp=home_str)
-
-        # Backward
-        backward_str = "Go back one page"
-        self.toolbar.AddLabelTool(BACKWARD_ID, "Backward", back_bmp, shortHelp=backward_str)
-
-        # Forward
-        forward_str = "Go forward one page"
-        self.toolbar.AddLabelTool(FORWARD_ID, "Forward", forward_bmp, shortHelp=forward_str)
-
-        # Separator
-        self.toolbar.AddSeparator()
-
-        # Previous
-        previous_str = "Go to the preceding page"
-        self.toolbar.AddLabelTool(PREVIOUS_ID, "Prev", previous_bmp, shortHelp=previous_str)
-
-        # Next
-        next_str = "Go to the next page"
-        self.toolbar.AddLabelTool(NEXT_ID, "Next", next_bmp, shortHelp=next_str)
-
-        # Separator
-        self.toolbar.AddSeparator()
-
-        # Search
-        self.search = wx.SearchCtrl(self.toolbar, size=(200, -1), style=wx.TE_PROCESS_ENTER)
-        self.toolbar.AddControl(self.search)
-
-        self.toolbar.SetToolSeparation(10)
-        self.toolbar.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR')) # does not work, bug in wx
-        self.toolbar.SetForegroundColour(self.preferences.GetValue('M_FG_COLOUR')) # does not work, bug in wx
-        self.toolbar.SetFont(self.preferences.GetValue('M_FONT'))
-
-        self.toolbar.Realize()
-
-        self.Bind(wx.EVT_TOOL, self.OnClose,          id=wx.ID_CLOSE)
-        self.Bind(wx.EVT_TOOL, self.OnToolbarClicked, id=PREVIOUS_ID)
-        self.Bind(wx.EVT_TOOL, self.OnToolbarClicked, id=NEXT_ID)
-        self.Bind(wx.EVT_TOOL, self.OnToolbarClicked, id=FORWARD_ID)
-        self.Bind(wx.EVT_TOOL, self.OnToolbarClicked, id=BACKWARD_ID)
-        self.Bind(wx.EVT_TOOL, self.OnToolbarClicked, id=HOME_ID)
+        self.search = wx.SearchCtrl(toolbar, style=wx.TE_PROCESS_ENTER)
+        self.search.SetMinSize((200,-1))
         self.Bind(wx.EVT_TEXT_ENTER, self.OnSearchText, self.search)
 
+        sizer.Add(closebtn, 1, flag=wx.ALL, border=2)
+        sizer.Add(homebtn,  1, flag=wx.ALL, border=2)
+        sizer.Add(backbtn,  1, flag=wx.ALL, border=2)
+        sizer.Add(forwardbtn, 1, flag=wx.ALL, border=2)
+        sizer.Add(prevbtn,  1, flag=wx.ALL, border=2)
+        sizer.Add(nextbtn,  1, flag=wx.ALL, border=2)
+        sizer.Add(self.search, 4, flag=wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=2)
 
-    def _create_html(self):
-        # Html window
-        self.html_window = wx.html.HtmlWindow(self)
-        self.html_window.Connect(wx.ID_ANY, wx.ID_ANY, wx.EVT_KEY_DOWN.typeId, self.OnKeyDown)
-
-        self.Bind(wx.html.EVT_HTML_LINK_CLICKED, self.OnLinkClicked, self.html_window)
+        self.buttons = [ closebtn, homebtn, backbtn, forwardbtn, prevbtn, nextbtn ]
+        toolbar.SetSizer( sizer )
+        return toolbar
 
     # -----------------------------------------------------------------------
     # Callbacks to events
-    # -----------------------------------------------------------------------
-
-    def OnClose(self, event):
-        """
-        Event handler used to hide the frame.
-        """
-        #self.Show(False)
-        self.Destroy()
-
     # -----------------------------------------------------------------------
 
     def OnKeyDown(self, evt):
@@ -704,17 +643,20 @@ class HelpBrowser( wx.Frame ):
     def OnToolbarClicked(self, e):
         """
         Event handler used when a button of the toolbar has been pressed.
+
         """
         bid = e.GetId()
-        if bid == HOME_ID:
+        if bid == wx.ID_EXIT:
+            self.Destroy()
+        elif bid == wx.ID_HOME:
             self._go_home()
-        elif bid == BACKWARD_ID:
+        elif bid == wx.ID_BACKWARD:
             self._go_back()
-        elif bid == FORWARD_ID:
+        elif bid == wx.ID_FORWARD:
             self._go_forward()
-        elif bid == PREVIOUS_ID:
+        elif bid == wx.ID_PREVIEW_PREVIOUS:
             self._go_previous()
-        elif bid == NEXT_ID:
+        elif bid == wx.ID_PREVIEW_NEXT:
             self._go_next()
 
     # -----------------------------------------------------------------------
@@ -739,7 +681,7 @@ class HelpBrowser( wx.Frame ):
     # -----------------------------------------------------------------------
 
     def _go_home(self):
-        self._show_page(str(HOME_ID))
+        self._show_page(str(wx.ID_HOME))
 
     def _go_back(self):
         if self.current_pos > 0:
@@ -777,14 +719,23 @@ class HelpBrowser( wx.Frame ):
         if self.current_pos != -1:
             current_type, current_id = self.history[self.current_pos]
         history_len = len(self.history)
-        enable_backward = history_len > 1 and self.current_pos > 0
-        enable_forward = history_len > 1 and self.current_pos < history_len - 1
-        enable_next = str(current_id) != str(HOME_ID)
-        enable_prev = str(current_id) != str(HOME_ID)
-        self.toolbar.EnableTool(BACKWARD_ID, enable_backward)
-        self.toolbar.EnableTool(FORWARD_ID, enable_forward)
-        self.toolbar.EnableTool(PREVIOUS_ID, enable_prev)
-        self.toolbar.EnableTool(NEXT_ID, enable_next)
+
+        for btn in self.buttons:
+            bid = btn.GetId()
+            if bid == wx.ID_BACKWARD:
+                enable_backward = history_len > 1 and self.current_pos > 0
+                btn.Enable(enable_backward)
+            elif bid == wx.ID_FORWARD:
+                enable_forward  = history_len > 1 and self.current_pos < history_len - 1
+                btn.Enable(enable_forward)
+            elif bid == wx.ID_PREVIEW_PREVIOUS:
+                enable_prev = str(current_id) != str(wx.ID_HOME)
+                btn.Enable(enable_prev)
+            elif bid == wx.ID_PREVIEW_NEXT:
+                enable_next = str(current_id) != str(wx.ID_HOME)
+                btn.Enable(enable_next)
+
+        self.Refresh()
 
     def _generate_page(self, id):
         page = self.help_system.GetPage(id)
