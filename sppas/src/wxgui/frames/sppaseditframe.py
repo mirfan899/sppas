@@ -35,15 +35,6 @@
 # File: sppaseditframe.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
 import wx
 import logging
 
@@ -71,7 +62,7 @@ from wxgui.demo.wizardScrollDemo  import WizardScrollDemo
 from wxgui.demo.wizardSoundDemo   import WizardSoundDemo
 from wxgui.demo.wizardTrsDemo     import WizardTrsDemo
 
-from wxgui.sp_icons          import SPPASEDIT_APP_ICON
+from wxgui.sp_icons import SPPASEDIT_APP_ICON
 
 
 # ----------------------------------------------------------------------------
@@ -114,7 +105,6 @@ class SppasEditFrame( ComponentFrame ):
         ComponentFrame.__init__(self, parent, id, arguments)
 
         self._append_in_menu()
-        self._append_in_toolbar()
 
     # ------------------------------------------------------------------------
 
@@ -138,6 +128,7 @@ class SppasEditFrame( ComponentFrame ):
         Append new items in a menu or a new menu in the menubar.
 
         """
+        return
         menubar = self.GetMenuBar()
         menus = menubar.GetMenus()
 
@@ -179,25 +170,9 @@ class SppasEditFrame( ComponentFrame ):
 
     # ------------------------------------------------------------------------
 
-    def _append_in_toolbar(self):
-        """
-        Append new items in the toolbar.
-
-        """
-        toolbar = self.GetToolBar()
-
-        # nothing to add for now! but it's possible and it works (tested).
-        # see documentation:
-        # http://xoomer.virgilio.it/infinity77/wxPython/Widgets/wx.ToolBar.html
-
-        #toolbar.Realize()
-
-    # ------------------------------------------------------------------------
-
     def CreateClient(self, parent, prefsIO):
-        """
-        Override.
-        """
+        """ Override. """
+
         return SppasEditClient(parent,prefsIO)
 
     # ------------------------------------------------------------------------
@@ -234,12 +209,9 @@ class SppasEditFrame( ComponentFrame ):
         elif id == DEMO_TRS_WIZARD_ID:
             self.OnDemoTrsWizard(event)
 
-    # ------------------------------------------------------------------------
-
     #-------------------------------------------------------------------------
     # Demo... Callbacks
     #-------------------------------------------------------------------------
-
 
     def OnDemoDisplayWizard(self, event):
         """
@@ -250,7 +222,6 @@ class SppasEditFrame( ComponentFrame ):
 
     #-------------------------------------------------------------------------
 
-
     def OnDemoPoint(self, event):
         """
         TimePoint demo.
@@ -259,7 +230,6 @@ class SppasEditFrame( ComponentFrame ):
         frame.Show(True)
 
     #-------------------------------------------------------------------------
-
 
     def OnDemoLabel(self, event):
         """
@@ -366,9 +336,6 @@ class SppasEditFrame( ComponentFrame ):
 
     # ------------------------------------------------------------------------
 
-#-----------------------------------------------------------------------------
-
-
 # ----------------------------------------------------------------------------
 # class SettingsDialog, with specific settings for SppasEdit
 # ----------------------------------------------------------------------------
@@ -384,7 +351,6 @@ class SppasEditSettingsDialog( SettingsDialog ):
     Dialog for the user to fix all preferences.
 
     """
-
     def __init__(self, parent, prefsIO):
         """
         Create a new dialog fo fix preferences, sorted in a notebook.
@@ -405,8 +371,8 @@ class SppasEditSettingsDialog( SettingsDialog ):
 class SppasEditAppearancePanel(wx.Panel):
     """
     Drawing area settings.
-    """
 
+    """
     def __init__(self, parent, prefsIO):
 
         wx.Panel.__init__(self, parent)
@@ -415,9 +381,7 @@ class SppasEditAppearancePanel(wx.Panel):
         gbs = self.__create_sizer()
         self.SetSizer(gbs)
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def __create_sizer(self):
 
@@ -466,8 +430,6 @@ class SppasEditAppearancePanel(wx.Panel):
         return gbs
 
     # ------------------------------------------------------------------------
-
-    # ------------------------------------------------------------------------
     # Callbacks
     # ------------------------------------------------------------------------
 
@@ -489,9 +451,7 @@ class SppasEditAppearancePanel(wx.Panel):
         except Exception:
             pass
 
-    # End onVZoomChanged
     # ------------------------------------------------------------------------
-
 
     def onLabelAlignChanged(self, event):
         """
@@ -502,9 +462,7 @@ class SppasEditAppearancePanel(wx.Panel):
         alignchoice = [wx.ALIGN_LEFT , wx.ALIGN_CENTRE, wx.ALIGN_RIGHT]
         self._prefsIO.SetValue('T_LABEL_ALIGN', 'wx.ALIGN', alignchoice[choice])
 
-    # End onLabelAlignChanged
     # ------------------------------------------------------------------------
-
 
     def onWaveScrollChanged(self, event):
         """
@@ -512,10 +470,6 @@ class SppasEditAppearancePanel(wx.Panel):
         """
         checked = self.wavescroll.GetValue()
         self._prefsIO.SetValue('W_AUTOSCROLL', 'bool', checked)
-
-    # End onWaveScrollChanged
-    #-------------------------------------------------------------------------
-
 
 #-----------------------------------------------------------------------------
 
@@ -558,12 +512,10 @@ class SppasEditColourSchemePanel(wx.Panel):
 
 # ----------------------------------------------------------------------------
 
-
 class SppasEditTimePanel(wx.Panel):
     """
     Time settings.
     """
-
     def __init__(self, parent, prefsIO):
 
         wx.Panel.__init__(self, parent)
@@ -572,9 +524,7 @@ class SppasEditTimePanel(wx.Panel):
         gbs = self.__create_sizer()
         self.SetSizer(gbs)
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def __create_sizer(self):
 
@@ -611,8 +561,6 @@ class SppasEditTimePanel(wx.Panel):
 
         return gbs
 
-    # ------------------------------------------------------------------------
-
 
     #-------------------------------------------------------------------------
     # Callbacks
@@ -636,9 +584,7 @@ class SppasEditTimePanel(wx.Panel):
         except Exception:
             pass
 
-    # End onTextDurationChanged
     #-------------------------------------------------------------------------
-
 
     def onHZoomChanged(self, event):
         """
@@ -658,9 +604,7 @@ class SppasEditTimePanel(wx.Panel):
         except Exception:
             pass
 
-    # End onHZoomChanged
     #-------------------------------------------------------------------------
-
 
     def onScrollChanged(self, event):
         """
@@ -679,8 +623,5 @@ class SppasEditTimePanel(wx.Panel):
             self._prefsIO.SetValue('D_SCROLL', 'float', v)
         except Exception:
             pass
-
-    # End onScrollChanged
-    #-------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------

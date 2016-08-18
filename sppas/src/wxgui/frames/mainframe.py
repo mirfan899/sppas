@@ -34,13 +34,9 @@
 # ---------------------------------------------------------------------------
 # File: mainframe.py
 # ----------------------------------------------------------------------------
-import sys
-import os.path
-sys.path.append(  os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) )
 
 import wx
 import logging
-import webbrowser
 
 import annotationdata
 import audiodata
@@ -86,8 +82,6 @@ from wxgui.frames.datafilterframe  import DataFilterFrame
 from wxgui.frames.statisticsframe  import StatisticsFrame
 from wxgui.frames.helpbrowser      import HelpBrowser
 from wxgui.views.settings          import SettingsDialog
-from wxgui.views.settings          import SettingsDialog
-from wxgui.views.feedback          import ShowFeedbackDialog
 
 # -----------------------------------------------------------------------
 # S P P A S  Graphical User Interface... is here!
@@ -117,7 +111,6 @@ class FrameSPPAS( wx.Frame ):
 
         # Create GUI
         self._init_infos()
-
         self._mainpanel = self._create_content()
 
         # Events of this frame
@@ -138,6 +131,8 @@ class FrameSPPAS( wx.Frame ):
     # ------------------------------------------------------------------------
 
     def _init_members( self, preferencesIO ):
+        """ Sets the members settings with default values. """
+
         # Data
         if preferencesIO is None:
             # Try to get prefs from a file, or fix default values.
@@ -146,8 +141,8 @@ class FrameSPPAS( wx.Frame ):
         self.preferences = preferencesIO
 
         # wx: panels and sizers
-        self.actions = None
-        self.flp     = None
+        self.actions     = None
+        self.flp         = None
         self._leftpanel  = None
         self._rightpanel = None
         self._leftsizer  = None
@@ -200,7 +195,7 @@ class FrameSPPAS( wx.Frame ):
     def _create_splitter(self, parent):
         """ Create the main panel content. """
 
-        splitpanel = SplitterPanel(parent, proportion=0.55)
+        splitpanel = SplitterPanel(parent, proportion=0.5)
         splitpanel.SetBackgroundColour( self.preferences.GetValue('M_BGM_COLOUR') )
         splitpanel.SetForegroundColour( self.preferences.GetValue('M_BGM_COLOUR') )
 
@@ -269,10 +264,8 @@ class FrameSPPAS( wx.Frame ):
     # -----------------------------------------------------------------------
 
     def _LayoutFrame(self):
-        """
-        Lays out the frame.
+        """ Lays out the frame. """
 
-        """
         wx.LayoutAlgorithm().LayoutFrame(self, self._mainpanel)
         self._rightpanel.SendSizeEvent()
         self.Refresh()
@@ -291,7 +284,7 @@ class FrameSPPAS( wx.Frame ):
 
         """
         ide = event.GetId()
-        logging.debug('Event id: %d'%ide)
+        logging.debug('Event id: %d from frame id %d'%(ide, self.GetId()))
 
         if ide == wx.ID_EXIT:
             self.OnExit(event)
@@ -318,12 +311,6 @@ class FrameSPPAS( wx.Frame ):
         elif ide == ID_ACTIONS:
             self.fix_actioncontent( ID_ACTIONS )
 
-        elif ide == ID_EXT_HOME or ide == ID_EXT_BUG:
-            self.OnExternalLink(event)
-
-        elif ide == ID_FEEDBACK:
-            ShowFeedbackDialog(self, preferences=self.preferences)
-
         elif ide == ID_FRAME_DATAROAMER or ide == ID_FRAME_SNDROAMER or ide == ID_FRAME_IPUSCRIBE or ide == ID_FRAME_SPPASEDIT or ide == ID_FRAME_DATAFILTER or ide == ID_FRAME_STATISTICS:
             self.OnAnalyzer(event)
 
@@ -332,10 +319,8 @@ class FrameSPPAS( wx.Frame ):
     # -----------------------------------------------------------------------
 
     def OnExit(self, evt):
-        """
-        Close the frame.
+        """ Close the frame. """
 
-        """
         self.Destroy()
 
     # -----------------------------------------------------------------------
@@ -365,33 +350,6 @@ class FrameSPPAS( wx.Frame ):
                 c.Raise()
                 return True
         HelpBrowser( self, self.preferences )
-
-    # -----------------------------------------------------------------------
-
-    def OnExternalLink(self, evt):
-        """ Open the web browser, go to a specific location. """
-
-        eid = evt.GetId()
-
-        if eid == ID_EXT_HOME:
-            url="http://www.sppas.org/"
-
-        elif eid == ID_EXT_BUG:
-            url="https://github.com/brigittebigi/sppas/issues/"
-
-        else:
-            evt.Skip()
-            return
-
-        # It seems under some cases when running under windows the call to
-        # subprocess in webbrowser will fail and raise an exception here. So
-        # simply trap and ignore it.
-        wx.BeginBusyCursor()
-        try:
-            webbrowser.open(url,1)
-        except:
-            pass
-        wx.EndBusyCursor()
 
     # -----------------------------------------------------------------------
 
@@ -448,6 +406,9 @@ class FrameSPPAS( wx.Frame ):
         """ Set new preferences. """
 
         self.preferences = prefs
+
+        self._leftpanel.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
+
         self.flp.SetPrefs( self.preferences )
 
         self._rightsizer.Detach(self.actions)
@@ -492,14 +453,3 @@ class FrameSPPAS( wx.Frame ):
         self.flp.RefreshTree(filelist)
 
     # -----------------------------------------------------------------------
-
-# ---------------------------------------------------------------------------
-
-if __name__ == "__main__":
-
-    app = wx.App()
-    frame = FrameSPPAS(None)
-    frame.Show()
-    app.MainLoop()
-
-# ---------------------------------------------------------------------------

@@ -36,10 +36,11 @@
 # ----------------------------------------------------------------------------
 
 import wx
+import webbrowser
 
 from structs.tips import Tips
 
-from wxgui.panels.buttons import ButtonPanel, ButtonMenuPanel, ImgPanel, ButtonCreator
+from wxgui.panels.buttons import ButtonPanel, ButtonMenuPanel, ImgPanel, ButtonCreator, ButtonToolbarPanel
 from sp_glob import program, title
 
 from wxgui.sp_icons import ANNOTATIONS_ICON
@@ -65,7 +66,9 @@ from wxgui.sp_consts import ID_EXT_BUG
 from wxgui.sp_consts import ID_EXT_HOME
 from wxgui.sp_consts import ID_ACTIONS
 
-from wxgui.sp_consts import MENU_ICONSIZE
+from wxgui.sp_consts import MENU_ICONSIZE, TB_ICONSIZE
+
+from wxgui.views.feedback import ShowFeedbackDialog
 
 # ----------------------------------------------------------------------------
 
@@ -82,30 +85,50 @@ class MainMenuPanel( wx.Panel ):
     def __init__(self, parent, preferences):
         wx.Panel.__init__(self, parent, -1, style=wx.NO_BORDER)
         self.SetBackgroundColour( preferences.GetValue('M_BGM_COLOUR') )
+        self.preferences = preferences
+        self.sizer = wx.BoxSizer( wx.VERTICAL )
 
-        exitButton     = ButtonMenuPanel(self, wx.ID_EXIT,  preferences, MENU_EXIT_ICON, None)
-        bugButton      = ButtonMenuPanel(self, ID_EXT_BUG,  preferences, MENU_BUG_ICON, None)
-        feedbackButton = ButtonMenuPanel(self, ID_FEEDBACK, preferences, MENU_FEEDBACK_ICON, None)
+        self.AddButton(wx.ID_EXIT, MENU_EXIT_ICON)
+        self.sizer.AddStretchSpacer(20)
+        self.AddButton(ID_EXT_BUG, MENU_BUG_ICON)
+        self.AddButton(ID_FEEDBACK, MENU_FEEDBACK_ICON)
 
-        sizer = wx.BoxSizer( wx.VERTICAL )
-        sizer.Add( exitButton, proportion=0, flag=wx.ALL, border=2)
-        sizer.AddStretchSpacer(2)
-        sizer.Add( bugButton,  proportion=0, flag=wx.ALL, border=2)
-        sizer.Add( feedbackButton, proportion=0, flag=wx.ALL, border=2)
-
-        self.SetSizer( sizer )
-        self.SetMinSize((MENU_ICONSIZE+4, -1))
+        self.SetSizer( self.sizer )
+        self.SetMinSize((MENU_ICONSIZE+8, -1))
         self.Bind( wx.EVT_BUTTON, self.OnButtonClick )
 
     # -----------------------------------------------------------------------
 
     def OnButtonClick(self, evt):
-        obj = evt.GetEventObject()
-        evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, obj.GetId())
-        evt.SetEventObject(self)
-        wx.PostEvent(self.GetParent(), evt)
+        ide = evt.GetId()
+
+        if ide == ID_FEEDBACK:
+            ShowFeedbackDialog(self, preferences=self.preferences)
+
+        elif ide == ID_EXT_BUG:
+            wx.BeginBusyCursor()
+            try:
+                webbrowser.open("https://github.com/brigittebigi/sppas/issues/",1)
+            except:
+                pass
+            wx.EndBusyCursor()
+
+        else:
+            obj = evt.GetEventObject()
+            evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, obj.GetId())
+            evt.SetEventObject(self)
+            wx.PostEvent(self.GetParent(), evt)
 
     # -----------------------------------------------------------------------
+
+    def AddButton(self, idb, icon):
+        btn = ButtonMenuPanel(self, idb, self.preferences, icon, None)
+        self.sizer.Add( btn, proportion=0, flag=wx.ALL, border=4 )
+
+    def AddSpacer(self):
+        self.sizer.AddStretchSpacer(1)
+
+# ---------------------------------------------------------------------------
 
 class MainTitlePanel( wx.Panel ):
     """
@@ -132,16 +155,67 @@ class MainTitlePanel( wx.Panel ):
         s.Add(text, proportion=1, flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=10)
 
         self.SetSizer(s)
-        self.SetMinSize((-1,MENU_ICONSIZE+4))
+        self.SetMinSize((-1,MENU_ICONSIZE+8))
 
         self.Bind(wx.EVT_LEFT_UP, self.OnButtonClick)
 
     # -----------------------------------------------------------------------
 
     def OnButtonClick(self, evt):
-        evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, ID_EXT_HOME)
+        wx.BeginBusyCursor()
+        try:
+            webbrowser.open("https://www.sppas.org/",1)
+        except:
+            pass
+        wx.EndBusyCursor()
+
+# ----------------------------------------------------------------------------
+
+class MainToolbarPanel( wx.Panel ):
+    """
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Main toolbar panel.
+
+    """
+    def __init__(self, parent, preferences):
+        wx.Panel.__init__(self, parent, -1, style=wx.NO_BORDER)
+        self.SetBackgroundColour( preferences.GetValue('M_BG_COLOUR') )
+
+        self.preferences = preferences
+        self.buttons = []
+        self.sizer = wx.BoxSizer( wx.HORIZONTAL )
+
+        self.SetSizer( self.sizer )
+        self.SetMinSize((TB_ICONSIZE+8, -1))
+        self.Bind( wx.EVT_BUTTON, self.OnButtonClick )
+
+    # -----------------------------------------------------------------------
+
+    def OnButtonClick(self, evt):
+        obj = evt.GetEventObject()
+        evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, obj.GetId())
         evt.SetEventObject(self)
         wx.PostEvent(self.GetParent(), evt)
+
+    def AddButton(self, idb, icon, text, tooltip=None, activated=True):
+        btn = ButtonToolbarPanel(self, idb, self.preferences, icon, text, tooltip, activated)
+        self.sizer.Add( btn, proportion=1, flag=wx.ALL, border=2 )
+        self.buttons.append(btn)
+
+    def AddSpacer(self):
+        self.sizer.AddStretchSpacer(1)
+
+    # -----------------------------------------------------------------------
+
+    def SetPrefs(self, prefs):
+        self.preferences = prefs
+        self.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
+        for btn in self.buttons:
+            btn.SetPrefs( self.preferences )
 
 # ----------------------------------------------------------------------------
 

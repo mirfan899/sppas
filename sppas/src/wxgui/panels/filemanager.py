@@ -77,7 +77,7 @@ class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
 
     def __init__(self, parent, ID=0, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0, prefsIO=None):
 
-        wx.lib.scrolledpanel.ScrolledPanel.__init__(self, parent, -1, style=wx.TAB_TRAVERSAL|wx.SIMPLE_BORDER)
+        wx.lib.scrolledpanel.ScrolledPanel.__init__(self, parent, -1, style=wx.TAB_TRAVERSAL|wx.NO_BORDER)
 
         # members
         self._xfiles  = xFiles()
@@ -87,24 +87,9 @@ class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
         except Exception:
             self._ccbmultiple = False
 
-        # create the sizer items:
-
-        # ... a text to introduce the panel
-        self._text = wx.StaticText(self, -1, "List of files:", size=(150,-1), style=wx.TE_READONLY|wx.NO_BORDER)
-        font = self._prefsIO.GetValue('M_FONT')
-        font.SetWeight(wx.BOLD)
-        self._text.SetFont( font )
-        self._text.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
-        self._text.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR') )
-
         # ... the list of files
         self._ccbsizer = wx.BoxSizer( wx.VERTICAL )
-
-        # create the main sizer
-        sizer = wx.BoxSizer( wx.VERTICAL )
-        sizer.Add(self._text, proportion=0, flag=wx.ALL, border=5 )
-        sizer.Add(self._ccbsizer, proportion=1, flag=wx.ALL, border=5 )
-        self.SetSizer( sizer )
+        self.SetSizer( self._ccbsizer )
 
         spEVT_FILE_CHECK(self,  self.OnCheck)
         spEVT_FILE_WANDER(self, self.OnWander)
@@ -116,9 +101,7 @@ class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
         self.Layout()
         self.SetupScrolling()
 
-    # End __init__
     # ----------------------------------------------------------------------
-
 
     def _check_prefs(self, prefs):
         """
@@ -147,13 +130,10 @@ class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
 
         return prefs
 
-    # ----------------------------------------------------------------------
-
 
     # ----------------------------------------------------------------------
     # CCB Callbacks
     # ----------------------------------------------------------------------
-
 
     def OnCheckBox(self, event):
         """ Action when a check box is clicked. """
@@ -183,47 +163,33 @@ class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
         evt.SetEventObject(self)
         wx.PostEvent( self.GetTopLevelParent(), evt )
 
-    # End OnCheckBox
     # ----------------------------------------------------------------------
-
 
     def SetBackgroundColour(self, colour):
         """ Change the background color of all CustomCheckBox objects. """
 
-        # We set the new colour
         wx.lib.scrolledpanel.ScrolledPanel.SetBackgroundColour( self,colour )
         self.Refresh() # required for the bg color to be applied
-        self._text.SetBackgroundColour( colour )
 
         # Apply as background on all CustomCheckBoxes
         for i in range(self._xfiles.GetSize()):
             ccb = self._xfiles.GetObject(i)
             ccb.SetBackgroundColour(colour)
 
-    # End SetBackgroundColour
     # ----------------------------------------------------------------------
-
 
     def SetForegroundColour(self, colour):
         """ Change the foreground color of all CustomCheckBox objects. """
-
-        # We set the new colour
-        self._text.SetForegroundColour( colour )
 
         # Apply as foreground on all CustomCheckBoxes
         for i in range(self._xfiles.GetSize()):
             ccb = self._xfiles.GetObject(i)
             ccb.SetForegroundColour(colour)
 
-    # End SetForegroundColour
     # ----------------------------------------------------------------------
-
 
     def SetFont(self, font):
         """ Change font of all text. """
-
-        # Change to the text label
-        self._text.SetFont( font )
 
         # Change to the list of file names
         if self._xfiles.GetSize() == 0:
@@ -232,9 +198,6 @@ class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
             ccb = self._xfiles.GetObject(i)
             ccb.SetFont(font)
             ccb.GetContainingSizer().Layout()
-
-    # End ChangeFont
-    # ----------------------------------------------------------------------
 
 
     # ----------------------------------------------------------------------
@@ -258,9 +221,7 @@ class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
             else:
                 self.RemoveFile(f)
 
-    # End OnWander
     # ----------------------------------------------------------------------
-
 
     def OnCheck(self, event):
         """
@@ -285,9 +246,7 @@ class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
             if f is None and self._ccbmultiple is True: # select all
                 ccb.SetValue( s )
 
-    # End OnCheck
     # ----------------------------------------------------------------------
-
 
     def OnSettings(self, event):
         """
@@ -303,10 +262,6 @@ class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
 
         self.Layout()
         self.Refresh()
-
-    # End OnSettings
-    # ------------------------------------------------------------------------
-
 
     # ------------------------------------------------------------------------
     # File management
@@ -350,9 +305,7 @@ class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
         self.Bind(wx.EVT_CHECKBOX, self.OnCheckBox, ccb)
         return True
 
-    # End AddFile
     # ----------------------------------------------------------------------
-
 
     def RemoveFile(self, f):
         """ Remove the given file. """
@@ -369,9 +322,7 @@ class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
         evt.SetEventObject(self)
         wx.PostEvent(self.GetTopLevelParent(), evt)
 
-    # End RemoveFile
     # ----------------------------------------------------------------------
-
 
     def RemoveChecked(self, checked=False):
         """
@@ -391,9 +342,7 @@ class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
 
         self.Layout()
 
-    # End RemoveChecked
     # ----------------------------------------------------------------------
-
 
     def RemoveAll(self):
         """ Remove all files. """
@@ -401,8 +350,5 @@ class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
         self._xfiles.RemoveAll()
         self._ccbsizer.DeleteWindows()
         self.Layout()
-
-    # End RemoveAll
-    # ----------------------------------------------------------------------
 
 # --------------------------------------------------------------------------

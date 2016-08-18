@@ -395,15 +395,7 @@ class SppasEdit( wx.Panel ):
         self._media.SetMedia()
         self._trans.SetTrs()
 
-        if len(fname)==0:
-            self.GetTopLevelParent().StartTimeInStatusBar()
-        else:
-            self.GetTopLevelParent().StopTimeInStatusBar()
-            self.GetTopLevelParent().DisplayTextInStatusbar(fname)
-
-    # End OnObjectSelected
     # ------------------------------------------------------------------------
-
 
     def OnSize(self, event):
         """

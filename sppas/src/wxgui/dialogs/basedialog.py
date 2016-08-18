@@ -252,7 +252,7 @@ class spBaseDialog( wx.Dialog ):
         vbox.Add(title,     0, flag=wx.ALL|wx.EXPAND, border=2)
         if self.toolbar is not None:
             vbox.Add(self.toolbar, 0, flag=wx.LEFT|wx.RIGHT|wx.EXPAND, border=2)
-        vbox.Add(content,   1, flag=wx.ALL|wx.EXPAND, border=2)
+        vbox.Add(content,   2, flag=wx.ALL|wx.EXPAND, border=2)
         vbox.Add(buttonbox, 0, flag=wx.LEFT|wx.RIGHT|wx.BOTTOM|wx.EXPAND, border=2)
         self.SetSizerAndFit(vbox)
 

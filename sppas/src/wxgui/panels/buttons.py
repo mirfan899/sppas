@@ -272,7 +272,7 @@ class ButtonToolbarPanel( wx.Panel ):
 
         text = wx.StaticText(panel, -1, textstr)
         text.SetBackgroundColour( self._prefs.GetValue('M_BG_COLOUR') )
-        text.SetForegroundColour( self._prefs.GetValue('M_FGD_COLOUR') )
+        text.SetForegroundColour( self._prefs.GetValue('M_FG_COLOUR') )
         text.Bind(wx.EVT_LEFT_UP, self.OnButtonLeftUp)
         text.Bind(wx.EVT_ENTER_WINDOW, self.OnButtonEnter)
         sizer.Add(text, 0, flag=wx.ALL|wx.ALIGN_CENTER, border=2)
@@ -311,6 +311,9 @@ class ButtonToolbarPanel( wx.Panel ):
         self.SetBackgroundColour( self._prefs.GetValue('M_BG_COLOUR') )
         self.Refresh()
 
+    def SetPrefs(self, prefs):
+        self._prefs = prefs
+        self.Refresh()
 
 # ---------------------------------------------------------------------------
 

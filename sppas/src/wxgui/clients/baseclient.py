@@ -35,14 +35,6 @@
 # File: baseclient.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
 import os.path
 import wx
 import logging
@@ -59,24 +51,22 @@ from wxgui.cutils.imageutils import spBitmap
 
 # ----------------------------------------------------------------------------
 
-
 class BaseClient( wx.Window ):
     """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: This class is used to manage the opened files.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      This class is used to manage the opened files.
 
     This class manages the pages of a notebook with all opened files.
 
     Each page (except if empty...) contains an instance of a component.
 
     """
-
     def __init__(self, parent, prefsIO):
-        """
-        Constructor.
-        """
+
         wx.Window.__init__(self, parent, -1, style=wx.NO_BORDER)
         self.SetBackgroundColour( prefsIO.GetValue('M_BG_COLOUR') )
 
@@ -110,14 +100,10 @@ class BaseClient( wx.Window ):
 
         self._LayoutFrame()
 
-    # End __init__
     # ------------------------------------------------------------------------
 
-
     def _set_notebook(self):
-        """
-        Create the notebook and set images.
-        """
+        """ Create the notebook and set images. """
 
         self._notebook = wx.Notebook( self, style=wx.NB_TOP|wx.CLIP_CHILDREN|wx.NB_MULTILINE|wx.NB_NOPAGETHEME|wx.NO_BORDER )
         self._notebook.SetBackgroundColour( self._prefsIO.GetValue( 'M_BG_COLOUR' ) )
@@ -131,14 +117,10 @@ class BaseClient( wx.Window ):
         self._notebook.AssignImageList(il)
         self._notebookimages = { EMPTY_ICON:idx1, NON_EMPTY_ICON:idx2 }
 
-    # End _set_notebook
     # ------------------------------------------------------------------------
 
-
     def _LayoutFrame(self):
-        """
-        Layout and Refresh the frame and refresh all GDI objects.
-        """
+        """ Layout and Refresh the frame and refresh all GDI objects.  """
 
         page = self._notebook.GetCurrentPage()
         for i in range(self._xfiles.GetSize()):
@@ -151,69 +133,30 @@ class BaseClient( wx.Window ):
         self.Refresh()
 
     # ------------------------------------------------------------------------
-
-
-    # ------------------------------------------------------------------------
     # The panel including the component
     # ------------------------------------------------------------------------
-
 
     def CreateComponent(self, parent, prefsIO):
         """
         Create the real client: the component itself.
-
         Must be overridden.
 
         """
         raise NotImplementedError
-
-    # End CreateComponent
-    # ------------------------------------------------------------------------
-
-
-    # ------------------------------------------------------------------------
-    # Parent' Status Bar management
-    # ------------------------------------------------------------------------
-
-
-    def StopTimeInStatusBar(self):
-        """
-        Stop the timer of the status bar.
-        """
-        self.GetTopLevelParent().GetStatusBar().StopTime()
-
-    # End StopTimeInStatusBar
-    # ------------------------------------------------------------------------
-
-
-    def StartTimeInStatusBar(self):
-        """
-        Start the timer of the status bar.
-        """
-        self.GetTopLevelParent().GetStatusBar().StartTime()
-
-    # End StartTimeInStatusBar
-    # ------------------------------------------------------------------------
 
 
     # ------------------------------------------------------------------------
     # Notebook
     # ------------------------------------------------------------------------
 
-
     def SetImage(self, pageidx, imgname):
-        """
-        Set an image to a page of the notebook.
-
-        """
+        """ Set an image to a page of the notebook. """
 
         if imgname in self._notebookimages.keys():
             # now put an image on the page:
             self._notebook.SetPageImage(pageidx, self._notebookimages[imgname])
 
-    # End SetImage
     # ------------------------------------------------------------------------
-
 
     def AddEmptyPage(self, title=None):
         """
@@ -226,7 +169,6 @@ class BaseClient( wx.Window ):
         The default title is the page number.
 
         """
-
         _panel = wx.Panel( self._notebook )
         _panel.SetBackgroundColour( self._prefsIO.GetValue( 'M_BG_COLOUR' ) )
         _sizer = wx.BoxSizer( wx.VERTICAL )
@@ -239,14 +181,12 @@ class BaseClient( wx.Window ):
 
         self.SetImage(self._notebook.GetPageCount()-1, EMPTY_ICON)
 
-    # End AddEmptyPage
     # ------------------------------------------------------------------------
-
 
     def ChangePage(self, direction=0):
         """
-        Go at the next page if direction > 0
-        or at the previous page if direction < 0.
+        Go at the next page if direction > 0 or at the previous page if direction < 0.
+
         """
         curp = self._notebook.GetSelection()
         maxp = self._notebook.GetPageCount()
@@ -267,25 +207,16 @@ class BaseClient( wx.Window ):
                 # go at next
                 self._notebook.SetSelection(curp+1)
 
-    # End ChangePage
-    # ------------------------------------------------------------------------
-
-
     # ------------------------------------------------------------------------
     # Callbacks for the notebook
     # ------------------------------------------------------------------------
 
-
     def OnNewPage(self, event):
-        """
-        We received an event to add an empty new page.
+        """ We received an event to add an empty new page. """
 
-        """
         self.AddEmptyPage()
 
-    # End OnAddPage
     # ------------------------------------------------------------------------
-
 
     def OnClosePage(self, event):
         """
@@ -294,7 +225,6 @@ class BaseClient( wx.Window ):
         All files of this page are unset.
 
         """
-
         # get current selected page
         page = self._notebook.GetCurrentPage()
 
@@ -319,9 +249,7 @@ class BaseClient( wx.Window ):
             for f in files:
                 self.UnsetData( f )
 
-    # End OnClosePage
     # ------------------------------------------------------------------------
-
 
     def OnPageChanged(self, event):
         """
@@ -331,20 +259,12 @@ class BaseClient( wx.Window ):
         page = self._notebook.GetCurrentPage()
         # TODO: call ChangePage
 
-    # End OnPageChanged
-    # ------------------------------------------------------------------------
-
-
     # ------------------------------------------------------------------------
     # Callbacks for the files
     # ------------------------------------------------------------------------
 
-
     def OnFileWander(self, event):
-        """
-        A file was checked/unchecked somewhere else, then, set/unset the data.
-
-        """
+        """  A file was checked/unchecked somewhere else, then, set/unset the data. """
         owner = event.GetEventObject()
         f = event.filename
         s = event.status
@@ -368,43 +288,29 @@ class BaseClient( wx.Window ):
 
         self.Refresh()
 
-    # End OnFileWander
     # ------------------------------------------------------------------------
 
-
     def OnSize(self, event):
-        """
-        Called by the parent when the frame is resized
-        and lays out the client window.
-        """
+        """ Called by the parent when the frame is resized and lays out the client window. """
 
         self._LayoutFrame()
 
-    # End OnSize
     # ------------------------------------------------------------------------
-
 
     def OnClose(self, event):
-        """
-        Destroy all objects then self.
-        """
-        for i in range(self._xfiles.GetSize()):
-            obj = self._xfiles.GetObject(i)
-            self.UnsetData(self._xfiles.GetFilename(i))
+        """ Destroy all objects then self. """
 
-    # End OnClose
-    # ------------------------------------------------------------------------
+        for i in range(self._xfiles.GetSize()):
+            #obj = self._xfiles.GetObject(i)
+            self.UnsetData(self._xfiles.GetFilename(i))
 
 
     # ------------------------------------------------------------------------
     # Decoration management...
     # ------------------------------------------------------------------------
 
-
     def OnSettings(self, event):
-        """
-        Set new preferences, then apply them.
-        """
+        """ Set new preferences, then apply them.  """
 
         self._prefsIO = event.prefsIO
 
@@ -429,14 +335,9 @@ class BaseClient( wx.Window ):
         self.Layout()
         self.Refresh()
 
-    # End OnSettings
-    # ------------------------------------------------------------------------
-
-
     # ------------------------------------------------------------------------
     # Data management...
     # ------------------------------------------------------------------------
-
 
     def SetData(self, filename):
         """
@@ -445,14 +346,12 @@ class BaseClient( wx.Window ):
         @param filename (String / List of String) is file name(s) to draw.
 
         """
-
         loaded = []
         if not type(filename) is list:
             filenames = [filename]
         else:
             filenames = filename
 
-        self.StopTimeInStatusBar()
         #self.GetTopLevelParent().SetCursor(wx.StockCursor(wx.CURSOR_WAIT))
         wx.BeginBusyCursor()
 
@@ -460,11 +359,8 @@ class BaseClient( wx.Window ):
 
             # Do not add an existing file
             if self._xfiles.Exists( f ):
-                self.GetTopLevelParent().DisplayTextInStatusbar("Ignore %s "%f)
                 loaded.append(False)
                 continue
-
-            self.GetTopLevelParent().DisplayTextInStatusbar("Loading %s "%f)
 
             # get all required data
             page = self._notebook.GetCurrentPage()
@@ -501,18 +397,15 @@ class BaseClient( wx.Window ):
                 wx.PostEvent(client, evt)
             except Exception as e:
                 logging.info('Error uploading: '+f+' '+str(e))
-                self.GetTopLevelParent().DisplayTextInStatusbar('Error when loading file: '+str(e))
                 loaded.append( False )
                 evt = FileWanderEvent(filename=f,status=False)
                 evt.SetEventObject(self)
                 wx.PostEvent(self.GetTopLevelParent(), evt)
             loaded.append( True )
-            #self.GetTopLevelParent().DisplayTextInStatusbar("Loaded %s "%f)
 
         # redraw objects of this page
         wx.EndBusyCursor()
         #self.GetTopLevelParent().SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
-        self.StartTimeInStatusBar()
         self.Refresh()
 
         if len(loaded)==1:
@@ -520,14 +413,11 @@ class BaseClient( wx.Window ):
 
         return loaded
 
-    # End SetData
     # ------------------------------------------------------------------------
 
-
     def UnsetData(self, f):
-        """
-        Remove the given file.
-        """
+        """ Remove the given file. """
+
         if not self._xfiles.Exists(f):
             logging.debug('WARNING. Try to unset an un-existing data:%s '%f)
             return
@@ -535,25 +425,22 @@ class BaseClient( wx.Window ):
         # Get information about this file (index, Display object, page)
         idx    = self._xfiles.GetIndex(f)
         client = self._xfiles.GetObject(idx)
-        page   = self._xfiles.GetOther(idx)
+        #page   = self._xfiles.GetOther(idx)
 
         evt = FileWanderEvent(filename=f, status=False)
         evt.SetEventObject(self)
         wx.PostEvent( client, evt )
         wx.PostEvent( self.GetTopLevelParent(), evt )
 
-    # End UnsetData
     # ------------------------------------------------------------------------
 
-
     def DeletePage(self, page):
-        """
-        Delete a page of the notebook.
-        """
+        """ Delete a page of the notebook. """
+
         # Close the page ???
         unused = True
         for i in range(self._xfiles.GetSize()):
-            f = self._xfiles.GetFilename(i)
+            #f = self._xfiles.GetFilename(i)
             pagei = self._xfiles.GetOther(i)
             if page == pagei:
                 unused = False # an other file is using the same page
@@ -568,15 +455,10 @@ class BaseClient( wx.Window ):
         if self._notebook.GetCurrentPage() is None:
             self.AddEmptyPage()
 
-    # End UnsetData
     # ------------------------------------------------------------------------
 
-
     def GetSelection(self):
-        """
-        Return the list of displayed files (files of this page).
-
-        """
+        """ Return the list of displayed files (files of this page). """
 
         if self._notebook.GetCurrentPage() is None:
             return []
@@ -589,14 +471,10 @@ class BaseClient( wx.Window ):
 
         return selection
 
-    # End GetSelection
-    # ------------------------------------------------------------------------
-
 
     # ------------------------------------------------------------------------
     # Private methods
     # ------------------------------------------------------------------------
-
 
     def __getIndexPageNotebook(self, page):
         """ Get the index of this page in the notebook. """
@@ -606,7 +484,6 @@ class BaseClient( wx.Window ):
             return idx_page[0]
         return -1
 
-
     def __getIndexPageXFiles(self, page):
         """ Get the index of this page in xfiles. """
 
@@ -614,8 +491,6 @@ class BaseClient( wx.Window ):
         if len( idx_page )>0:
             return idx_page[0]
         return -1
-
-    # ------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
 # A few doc:

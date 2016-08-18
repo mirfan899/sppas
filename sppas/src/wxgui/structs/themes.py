@@ -159,10 +159,10 @@ class BaseTheme( Theme ):
         self._choice['M_ICON_THEME']  = wxOption('str',  'Default', "Icons theme")
 
         self._choice['M_BGD_COLOUR']  = wxOption('wx.Colour', (240,240,230), "Secondary main background color")
-        self._choice['M_FGD_COLOUR']  = wxOption('wx.Colour', (128,122,122), "Secondary main foreground color")
+        self._choice['M_FGD_COLOUR']  = wxOption('wx.Colour', (80,80,100), "Secondary main foreground color")
 
         # Menu
-        self._choice['M_BGM_COLOUR']  = wxOption('wx.Colour', (128,122,122), "Menu background color")
+        self._choice['M_BGM_COLOUR']  = wxOption('wx.Colour', (80,80,100), "Menu background color")
         self._choice['M_FGM_COLOUR']  = wxOption('wx.Colour', (240,240,230), "Menu font color")
 
         self._choice['F_SPACING'] = wxOption('int', 2)

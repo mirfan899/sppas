@@ -35,14 +35,6 @@
 # File: settings.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
 import os
 import wx
 from wx.lib import stattext
@@ -65,10 +57,12 @@ from sp_glob import ICONS_PATH
 
 class SettingsDialog( spBaseDialog ):
     """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: This class is used to fix all user's settings, with a Dialog.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      This class is used to fix all user's settings, with a Dialog.
 
     Dialog for the user to fix all preferences.
 
@@ -119,10 +113,8 @@ class SettingsDialog( spBaseDialog ):
     #-------------------------------------------------------------------------
 
     def _on_save(self, event):
-        """
-        Save preferences in a file.
+        """ Save preferences in a file. """
 
-        """
         self.preferences.Write()
 
     #-------------------------------------------------------------------------
@@ -130,10 +122,8 @@ class SettingsDialog( spBaseDialog ):
     #-------------------------------------------------------------------------
 
     def GetPreferences(self):
-        """
-        Return the preferences.
+        """ Return the preferences. """
 
-        """
         return self.preferences
 
 # ----------------------------------------------------------------------------
@@ -151,6 +141,7 @@ class PrefsGeneralPanel( wx.Panel ):
 
         """
         wx.Panel.__init__(self, parent)
+        self.SetBackgroundColour( prefsIO.GetValue("M_BG_COLOUR") )
         self.preferences = prefsIO
 
         gbs = self.__create_sizer()
@@ -302,6 +293,7 @@ class PrefsAnnotationPanel( wx.Panel ):
     def __init__(self, parent, prefsIO):
 
         wx.Panel.__init__(self, parent)
+        self.SetBackgroundColour( prefsIO.GetValue("M_BG_COLOUR") )
 
         self.preferences = prefsIO
 
@@ -341,6 +333,7 @@ class PrefsThemePanel( wx.Panel ):
     def __init__(self, parent, prefsIO):
 
         wx.Panel.__init__(self, parent)
+        self.SetBackgroundColour( prefsIO.GetValue("M_BG_COLOUR") )
 
         self.preferences = prefsIO
 

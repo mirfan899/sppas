@@ -37,10 +37,9 @@
 
 import wx
 
-from baseframe                       import ComponentFrame
-from wxgui.sp_icons                  import AUDIOROAMER_APP_ICON
-from wxgui.cutils.imageutils         import spBitmap
+from wxgui.frames.baseframe          import ComponentFrame
 from wxgui.clients.audioroamerclient import AudioRoamerClient
+from wxgui.sp_icons                  import AUDIOROAMER_APP_ICON
 
 # ----------------------------------------------------------------------------
 
@@ -65,45 +64,14 @@ class AudioRoamerFrame( ComponentFrame ):
         arguments['type']  = "SOUNDFILES"
         arguments['icon']  = AUDIOROAMER_APP_ICON
         arguments['prefs'] = prefsIO
+
         ComponentFrame.__init__(self, parent, appid, arguments)
-
-        self._append_in_menu()
-        self._append_in_toolbar()
-
-    # ------------------------------------------------------------------------
-
-    def _append_in_menu(self):
-        """
-        Append new items in a menu or a new menu in the menubar.
-
-        """
-        menubar = self.GetMenuBar()
-        menus = menubar.GetMenus()
-        # nothing to add for now! but it's possible and it works (tested).
-        # see documentation:
-        # http://www.wxpython.org/docs/api/wx.MenuBar-class.html
-        # http://xoomer.virgilio.it/infinity77/wxPython/Widgets/wx.Menu.html
-
-    # ------------------------------------------------------------------------
-
-    def _append_in_toolbar(self):
-        """
-        Append new items in the toolbar.
-
-        """
-        toolbar = self.GetToolBar()
-        # nothing to add for now! but it's possible and it works (tested).
-        # see documentation:
-        # http://xoomer.virgilio.it/infinity77/wxPython/Widgets/wx.ToolBar.html
-        toolbar.Realize()
 
     # ------------------------------------------------------------------------
 
     def CreateClient(self, parent, prefsIO):
-        """
-        Override.
+        """ Override. """
 
-        """
         return AudioRoamerClient(parent,prefsIO)
 
 # ----------------------------------------------------------------------------

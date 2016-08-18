@@ -84,20 +84,15 @@ from wxgui.sp_icons import EXPORT_ICON
 
 from wxgui.sp_consts import TREE_ICONSIZE
 
-from wxgui.sp_consts import TB_ICONSIZE
-from wxgui.panels.buttons import ButtonToolbarPanel
+from wxgui.panels.mainbuttons import MainToolbarPanel
 
 
 # ----------------------------------------------------------------------------
 # Constants
 # ----------------------------------------------------------------------------
 
-ID_TB_ADDFILE = wx.NewId()
 ID_TB_ADDDIR  = wx.NewId()
-ID_TB_REMOVE  = wx.NewId()
-ID_TB_DELETE  = wx.NewId()
 ID_TB_EXPORT  = wx.NewId()
-
 
 # ----------------------------------------------------------------------------
 # class filelistPanel
@@ -111,7 +106,6 @@ class FiletreePanel( wx.Panel ):
     @summary: A panel with a toolbar and a tree-style list of files.
 
     """
-
     def __init__(self, parent, preferences):
 
         wx.Panel.__init__(self, parent, -1, style=wx.NO_BORDER)
@@ -123,7 +117,7 @@ class FiletreePanel( wx.Panel ):
         font = self._prefsIO.GetValue('M_FONT')
         font.SetWeight( wx.BOLD )
 
-        self._toolbar = self._create_toolbar()
+        self._toolbar   = self._create_toolbar()
         self._filestree = self._create_filestree()
 
         _vbox = wx.BoxSizer(wx.VERTICAL)
@@ -141,29 +135,14 @@ class FiletreePanel( wx.Panel ):
     def _create_toolbar(self):
         """ Simulate the creation of a toolbar. """
 
-        # create the main panel and sizer
-        panel = wx.Panel(self, -1, style=wx.NO_BORDER)
-        panel.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
-        sizer = wx.BoxSizer( wx.HORIZONTAL )
-
-        baddfile = ButtonToolbarPanel(panel, ID_TB_ADDFILE, self._prefsIO, ADD_FILE_ICON, "Add files", tooltip="Add files into the list.")
-        badddir  = ButtonToolbarPanel(panel, ID_TB_ADDDIR,  self._prefsIO, ADD_DIR_ICON,  "Add dir", tooltip="Add a folder into the list.")
-        bremove  = ButtonToolbarPanel(panel, ID_TB_REMOVE,  self._prefsIO, REMOVE_ICON,   "Remove",  tooltip="Remove files of the list.")
-        bdelete  = ButtonToolbarPanel(panel, ID_TB_DELETE,  self._prefsIO, DELETE_ICON,   "Delete",  tooltip="Delete definitively files of the computer.")
-        bsaveas  = ButtonToolbarPanel(panel, wx.ID_SAVEAS,  self._prefsIO, EXPORT_AS_ICON,"Copy",    tooltip="Copy files.")
-        bexport  = ButtonToolbarPanel(panel, wx.ID_SAVE,    self._prefsIO, EXPORT_ICON,   "Export",  tooltip="Export files.")
-
-        sizer.Add(baddfile, 1, flag=wx.ALL, border=2)
-        sizer.Add(badddir,  1, flag=wx.ALL, border=2)
-        sizer.Add(bremove,  1, flag=wx.ALL, border=2)
-        sizer.Add(bdelete,  1, flag=wx.ALL, border=2)
-        sizer.Add(bsaveas,  1, flag=wx.ALL, border=2)
-        sizer.Add(bexport,  1, flag=wx.ALL, border=2)
-
-        self.buttons = [ baddfile, badddir, bremove, bdelete, bsaveas, bexport ]
-
-        panel.SetSizer( sizer )
-        return panel
+        toolbar = MainToolbarPanel(self, self._prefsIO)
+        toolbar.AddButton( wx.ID_ADD,    ADD_FILE_ICON, "Add files", tooltip="Add files into the list.")
+        toolbar.AddButton( ID_TB_ADDDIR, ADD_DIR_ICON,  "Add dir", tooltip="Add a folder into the list.")
+        toolbar.AddButton( wx.ID_REMOVE, REMOVE_ICON,   "Remove",  tooltip="Remove files of the list.")
+        toolbar.AddButton( wx.ID_DELETE, DELETE_ICON,   "Delete",  tooltip="Delete definitively files of the computer.")
+        toolbar.AddButton( wx.ID_SAVEAS, EXPORT_AS_ICON,"Copy",    tooltip="Copy files.")
+        toolbar.AddButton( wx.ID_SAVE,   EXPORT_ICON,   "Export",  tooltip="Export files.")
+        return toolbar
 
 
     def _create_filestree(self):
@@ -208,13 +187,13 @@ class FiletreePanel( wx.Panel ):
 
     def OnButtonClick(self, event):
         ide = event.GetId()
-        if ide == ID_TB_ADDFILE:
+        if ide == wx.ID_ADD:
             self._add_file()
         elif ide == ID_TB_ADDDIR:
             self._add_dir()
-        elif ide == ID_TB_REMOVE:
+        elif ide == wx.ID_REMOVE:
             self._remove()
-        elif ide == ID_TB_DELETE:
+        elif ide == wx.ID_DELETE:
             self._delete()
         elif ide == wx.ID_SAVEAS:
             self._copy()
@@ -384,9 +363,7 @@ class FiletreePanel( wx.Panel ):
         self._filestree.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR') )
         self._filestree.SetFont( self._prefsIO.GetValue('M_FONT') )
 
-        self._toolbar.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
-        for b in self.buttons:
-            b.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
+        self._toolbar.SetPrefs( self._prefsIO )
 
     # -----------------------------------------------------------------------
 

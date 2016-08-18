@@ -173,7 +173,7 @@ def GrayOut(anImage):
 
     anImage.SetData(''.join(map(chr, data)))
 
-    return anImage #.ConvertToBitmap()
+    return anImage
 
 # -----------------------------------------------------------------------
 

@@ -117,8 +117,8 @@ class CheckListCtrl( wx.ListCtrl ):
         """
         self._bitmaps = {"CheckedEnable":    GetCheckedBitmap(not self.HasFlag( wx.LC_SINGLE_SEL )),
                          "UnCheckedEnable":  GetNotCheckedBitmap(not self.HasFlag( wx.LC_SINGLE_SEL )),
-                         "CheckedDisable":   GrayOut(GetCheckedImage(not self.HasFlag( wx.LC_SINGLE_SEL ))),
-                         "UnCheckedDisable": GrayOut(GetNotCheckedImage(not self.HasFlag( wx.LC_SINGLE_SEL )))}
+                         "CheckedDisable":   GrayOut(GetCheckedImage(not self.HasFlag( wx.LC_SINGLE_SEL ))).ConvertToBitmap(),
+                         "UnCheckedDisable": GrayOut(GetNotCheckedImage(not self.HasFlag( wx.LC_SINGLE_SEL ))).ConvertToBitmap()}
 
 
     def __createImageList(self):
@@ -164,9 +164,9 @@ class CheckListCtrl( wx.ListCtrl ):
                 return self._bitmaps["UnCheckedDisable"]
 
 
-     # ---------------------------------------------------------------------
-     # Override methods of wx.ListCtrl
-     # ---------------------------------------------------------------------
+    # ---------------------------------------------------------------------
+    # Override methods of wx.ListCtrl
+    # ---------------------------------------------------------------------
 
 
     def InsertColumn(self, colnum, colname):

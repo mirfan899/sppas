@@ -107,6 +107,7 @@ class wxOption( BaseOption ):
 
     def set_type(self, opttype):
         """ Set a new type. """
+
         opttype = opttype.lower()
         if opttype.startswith("wx"):
             self._type = opttype
@@ -115,17 +116,45 @@ class wxOption( BaseOption ):
 
     def set_value(self, value):
         """
-        Set a new typed-value.
+        Set a new value.
         Override the BaseOption.set_value().
 
         """
-        if self._type == 'wx.align':
+        if self._type == 'wx.font':
+            if isinstance(value,wx.Font):
+                size   = value.GetPointSize()
+                family = value.GetFamily()
+                style  = value.GetStyle()
+                weight = value.GetWeight()
+                underline = value.GetUnderlined()
+                face = value.GetFaceName()
+                encoding = value.GetEncoding()
+                self._value = (size, family, style, weight, underline, face, encoding)
+            else:
+                self._value = value
+
+        elif self._type == 'wx.size':
+            if isinstance(value,wx.Size):
+                (w,h) = value
+                self._value = (w,h)
+            else:
+                self._value = value
+
+        elif self._type == 'wx.colour':
+            if isinstance(value,wx.Colour):
+                (r,g,b) = value
+                self._value = (r,g,b)
+            else:
+                self._value = value
+
+        elif self._type == 'wx.align':
             if value == wx.ALIGN_LEFT or value == 'left':
                 self._value = 'left'
             elif value == wx.ALIGN_RIGHT or value == 'right':
                 self._value = 'right'
             else:
                 self._value = 'centre'
+
         else:
             self._value = value
 

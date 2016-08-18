@@ -38,13 +38,6 @@ import sys
 import os.path
 sys.path.append(  os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) )
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
 
 import wx
 from basedialog import spBaseDialog
