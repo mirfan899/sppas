@@ -25,13 +25,8 @@ We propose the following classes, for both French and Italian set of rules:
 
 The rules we propose follow usual phonological statements for most of the 
 corpus. A configuration file indicates phonemes, classes and rules. 
-This file can be edited and modified to adapt the syllabification.
-
-For more details, see the following reference:
-
->**B. Bigi, C. Meunier, I. Nesterenko, R. Bertrand** (2010).
->*Automatic detection of syllable boundaries in spontaneous speech.*
->Language Resource and Evaluation Conference, pp 3285-3292, La Valetta, Malte.
+This file can be edited and modified to adapt the syllabification 
+(Bigi et al. 2010).
 
 ![Syllabification workflow](./etc/figures/syllworkflow.bmp)
 

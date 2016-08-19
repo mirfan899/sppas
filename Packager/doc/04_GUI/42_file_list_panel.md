@@ -1,4 +1,4 @@
-## File List Panel
+## File List
 
 The File List Panel (FLP) consists of:
 

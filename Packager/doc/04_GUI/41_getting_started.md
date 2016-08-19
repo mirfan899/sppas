@@ -9,85 +9,50 @@ Under MacOS or Linux, once the SPPAS package is opened in the
 Finder/File Explorer, *double-click on the `sppas.command` file*. The program
 will first check the version of wxpython and eventually ask to update.
 
-Then, two windows will open automatically.
+Then, the main windows will open automatically. It is made of a menu, a title, 
+the tips, the list of files and the action buttons.
 
-1. Above, a window with a tips aims at displaying messages to help users to 
-discover SPPAS capabilities.
-
-2. Below, the main frame: to perform automatic annotations, get statistics, 
-filter data, view wav/annotated data, etc.
+![SPPAS Main Frame of version 1.8.0](./etc/screenshots/sppas-1-8-0.png)
 
 
-### The Tips Frame
+### The tips
 
-This frame picks up randomly and prints a message to help users.
-Click on the button `Next Tip` to read another message, or click on the `Close` 
-button to close the frame. 
+![The tips included in the main frame](./etc/screenshots/tips.png)
 
-![The Tips Frame](./etc/screenshots/tips.png)
-
-The `Settings` frame also allows to show/hide the Tips frame at start-up.
-
-If you want to suggest new tips (to help the other users), send them by 
-e-mail to the author at `brigitte.bigi@gmail.com`. They will be included in 
-the next version.
+The frame includes message tips that are picked up randomly and printed to 
+help users. Click on the button `Next Tip` to read another message, or click 
+on the top-left button to close the tips frame. 
+The `Settings` allows to show/hide tips at start-up.
+If a user wants to suggest new tips to help the other users, they have to be
+sent to the author by e-mail. They will be included in the next version.
 
 
+### The menu
 
-### The main frame
+It allows to exit the program, declare an issue and contact the author.
 
-The main frame is made of a menu, a toolbar and the main content. All of them
-are described in the next sub-sections.
+The `Exit` button closes all SPPAS frames *properly*. 
+Please, do not kill SPPAS by clicking on the arrow of the windows manager!
+**Use this Exit button** to close SPPAS. 
 
-![The Main Frame of version 1.7.6](./etc/screenshots/sppas-1-7-6.png)
+To declare an issue, click on the bug button of the menu, then your default
+web browser will be opened at the appropriate URL to do this.
 
-#### The menu
-
-It allows to access to all functions of the GUI, and to manage it.
-
-The "File" menu can be used to manage files (add, remove, ...) and to exit the program.
-
-In the "Preferences" menu, check boxes allow to show/hide the toolbar 
-and the status bar, and to fix settings (see below for details).
-
-The "Help" menu includes an item to open the SPPAS website
-in a web browser, to access inline documentation, to declare a bug and to send
-feedback to the author. In the latter case, replace the text "Describe what you
-did here..." by your own comment, question or suggestion and choose how to send
-the e-mail: with your own default mailer, with gmail (opened in your web browser)
+To contact the author, replace the text "Describe what you did here..." by 
+your own comment, question or suggestion and choose how to send the e-mail: 
+with your own default mailer, with gmail (opened in your web browser)
 or by another e-mail client. Then, close the frame by clicking on the "Close"
 button.
 
 ![The Feedback Frame](./etc/screenshots/feedback.png)
 
 
-#### The toolbar
+### Settings
 
-The toolbar includes 5 buttons: 
-
-1. Exit;
-2. Settings;
-3. Plug-in;
-4. About;
-5. Help.
-
-The look of the toolbar can change depending of the Theme of the icons.
-
-![Main toolbar, with Default icon theme](./etc/screenshots/toolbar-default.png)
-
-![Main toolbar, with Metro icon theme](./etc/screenshots/toolbar-metro.png)
-
-![Main toolbar, with CrystalClear icon theme](./etc/screenshots/toolbar-crystalclear.png)
-
-
-The `Exit` button closes all SPPAS frames *properly*. 
-Please, do not kill SPPAS by clicking on the arrow of the windows manager!
-**Use this Exit button** to close SPPAS. 
-
-To fix new settings, click on the `Settings` icon, then choose your
+To change preferences, click on the `Settings` icon, then choose your
 preferred options: 
 
-- General: fix background colour, font colour and font of the GUI, and enable/disable tips at start-up.
+- General: fix background color, font color and font of the GUI, and enable/disable tips at start-up.
 - Theme: fix the icons of the GUI. 
 - Annotations: fix automatic annotations parameters.
 
@@ -100,22 +65,15 @@ To close the frame, click on:
 - "Close" to apply changes then close the frame.
 
 
-The `Plug-in` button allows to install a new plugin.
+### About
 
-The `About` button opens a new frame which gives the main information about
-SPPAS: authors, license, web site URL, etc.
+The `About` action button allows to display the main information about SPPAS: 
+authors, license, web site URL, etc.
 
-The `Help` button opens the documentation and allows to browse in the chapters
+
+### Help
+
+The `Help` action button opens the documentation and allows to browse in the chapters
 and sections.
 
 ![The Help Browser Frame](./etc/screenshots/helpbrowser.png)
-
-
-#### The content of the frame.
-
-The content of the main frame is made of 4 main panels:
-
-1. the file list panel (FLP), at left;
-2. the automatic annotation panel (AAP); at middle-top;
-3. the components panel (CCP), at middle-bottom;
-4. the plug-ins panel (P&P), at right.

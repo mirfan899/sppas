@@ -4,14 +4,16 @@
 % Define a set of colors
 
 \usepackage{xcolor}
-  \definecolor{vertclair}{rgb}{0.10,0.55,0.17}
-  \definecolor{vertfonce}{rgb}{0,0.44,0}
   \definecolor{grisclair}{rgb}{0.78,0.78,0.78}
   \definecolor{grisfonce}{rgb}{0.18,0.18,0.18}
-  \definecolor{prune}{rgb}{0.65,0.00,0.00}
   \definecolor{bleufonce}{rgb}{0.12,0.08,0.98}
   \definecolor{violet}{rgb}{0.21,0.18,0.73}
   \definecolor{orange}{rgb}{0.93,0.46,0.00}
+  
+  \definecolor{chapterrouge}{rgb}{0.47,0.08,0.08}
+  \definecolor{sectionbleu}{rgb}{0.08,0.08,0.47}
+  \definecolor{subsectionvert}{rgb}{0.08,0.47,0.08}
+
 % -----------------------
 
 
@@ -101,7 +103,8 @@ $endif$
 % Section style
 
 \usepackage{sectsty}
-\sectionfont{\color{bleufonce}}
+\sectionfont{\sffamily\color{sectionbleu}}
+\subsectionfont{\sffamily\color{subsectionvert}}
 % ----------------------- 
 
 % -----------------------
@@ -119,7 +122,8 @@ $endif$
   \end{tikzpicture}
 }
 {20pt}
-{\Huge}
+{\Huge\color{chapterrouge}}
+
 % ----------------------- 
 
 % -----------------------

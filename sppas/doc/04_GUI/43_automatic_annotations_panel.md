@@ -1,4 +1,4 @@
-## Automatic Annotations Panel
+## Automatic Annotations
 
 ### Description
 

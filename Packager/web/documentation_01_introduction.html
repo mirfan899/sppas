@@ -31,21 +31,28 @@
 </head>
 <body>
 
+    <!----------------------------------------------------------------->
+
     <div class="header">
         <div class="title">
             <div class="h1title">SPPAS</div>
-            <div class="h2title">Automatic Annotation of Speech</div>
-            <div class="h2title"><a href="http://www.lpl-aix.fr/~bigi/">Brigitte Bigi</a></div>
+            <div class="h2title">the automatic annotation and analysis of speech</div>
+            <div class="h3title">a software tool by Brigitte Bigi, researcher at</div>
             <div class="h3title">Laboratoire Parole et Langage - Aix-en-Provence - France</div>
         </div>
     </div>
+
+    <!----------------------------------------------------------------->
+
     <div class="menu">
-        <a class="neonBlue"    href="index.html">Home</a>
-        <a class="neonGreen"   href="installation.html">Installation</a>
-        <a class="neonYellow"  href="download.html">Download</a>
-        <a class="neonOrange"  href="documentation.html">Documentation</a>
-        <a class="neonRed"     href="https://groups.google.com/forum/?fromgroups#!forum/sppas-users">User's group</a>
+        <a class="home"     href="index.html">Home</a>
+        <a class="install"  href="installation.html">Installation</a>
+        <a class="download" href="download.html">Download</a>
+        <a class="documentation" href="documentation.html">Documentation</a>
+        <a class="group"    href="https://groups.google.com/forum/?fromgroups#!forum/sppas-users">User's group</a>
     </div>
+
+    <!----------------------------------------------------------------->
 <header>
 <h1 class="title">SPPAS Documentation</h1>
 <h2 class="author">Brigitte Bigi</h2>
@@ -54,6 +61,7 @@
 <nav id="TOC">
 <ul>
 <li><a href="#introduction">Introduction</a><ul>
+<li><a href="#about-this-documentation">About this documentation</a></li>
 <li><a href="#what-is-sppas">What is SPPAS?</a><ul>
 <li><a href="#main-features">Main features</a></li>
 <li><a href="#copyright-and-licenses">Copyright and Licenses</a></li>
@@ -64,7 +72,7 @@
 </ul></li>
 <li><a href="#getting-and-installing">Getting and installing</a><ul>
 <li><a href="#websites">Websites</a></li>
-<li><a href="#dependencies">Dependencies</a></li>
+<li><a href="#external-programs">External programs</a></li>
 <li><a href="#download-and-install-sppas">Download and install SPPAS</a></li>
 <li><a href="#the-sppas-package">The SPPAS package</a></li>
 <li><a href="#update">Update</a></li>
@@ -83,14 +91,19 @@
 </nav>
 <hr />
 <h1 id="introduction"><a href="#introduction">Introduction</a></h1>
+<h2 id="about-this-documentation"><a href="#about-this-documentation">About this documentation</a></h2>
+<blockquote>
+<p>This documentation will assume that you are using a relatively recent version of SPPAS. There's no reason not to download the latest version whenever released: it's easy and fast!</p>
+</blockquote>
 <h2 id="what-is-sppas"><a href="#what-is-sppas">What is SPPAS?</a></h2>
 <h3 id="main-features"><a href="#main-features">Main features</a></h3>
-<p><strong>SPPAS - Automatic Annotation of Speech</strong> is a scientific computer software package written and maintained by Brigitte Bigi of the Laboratoire Parole et Langage, in Aix-en-Provence, France.</p>
-<p>Available for free, with open source code, there is simply no other package for linguists to simple use in automatic segmentation of speech. SPPAS is daily developed with the aim to provide a robust and reliable software for the automatic annotation and for the exploitation of annotated-data.</p>
-<blockquote>
-<p>This documentation will assume that you are using a relatively recent version of SPPAS.</p>
-</blockquote>
-<p>There's no reason not to download the latest version whenever released: it's easy and fast!</p>
+<p><strong>SPPAS - the automatic annotation and analyses of speech</strong> is a scientific computer software package written and maintained by Brigitte Bigi of the Laboratoire Parole et Langage, in Aix-en-Provence, France.</p>
+<p>Available for free, with open source code, there is simply no other package for linguists to simple use in automatic segmentation of speech. SPPAS is daily developed with the aim to provide a robust and reliable software for the automatic annotation and for the analyses of annotated-data.</p>
+<p>As the primary functionality, SPPAS proposes a set of automatic or semi-automatic annotations of recordings. Corpus annotation &quot;can be defined as the practice of adding interpretative, linguistic information to an electronic corpus of spoken and/or written language data. 'Annotation' can also refer to the end-product of this process&quot; (Leech, 1997). The annotation of recordings is concerned by many Linguistics sub-fields as Phonetics, Prosody, Gestures or Discourse... Corpora are annotated with detailed information at various linguistic levels thanks to annotation software. As large multimodal corpora become prevalent, new annotation and analysis requirements are emerging. The annotations must be time-synchronized: annotations need to be time-aligned in order to be useful for purposes such as qualitative or quantitative analyses. Temporal information makes it possible to describe behaviors from different subjects that happen at the same time, and time-analysis of multi-level annotations can reveal Linguistic structures. In the past, studies was mostly based on limited data. In current trends, it is expected that models have to be built on the acoustic analysis of large quantity of speech data with valid statistical analyses. Annotating is very labor-intensive and cost-ineffective since it has to be performed manually by experienced researchers with many hours of work. SPPAS can automatize annotations and allows users to save time. In order to use efficiently this automatic annotation software, a rigorous methodology to collect data and to prepare them is expected. This implies a rigorous framework to ensure compatibilities between annotations and time-saving. The expected result is time-aligned data, for all annotated levels.</p>
+<p>Indeed, &quot;when multiple annotations are integrated into a single data set, inter-relationships between the annotations can be explored both qualitatively (by using database queries that combine levels) and quantitatively (by running statistical analyses or machine learning algorithms)&quot; (Chiarcos 2008). Some special features are also offered in SPPAS for managing corpora of annotated files; particularly, it includes a tool to filter multi-levels annotations (Bigi and Saubesty, 2015). Some other tools are dedicated to the analysis of time-aligned data; as for example to estimate descriptive statistics, and a version of the Time Group Analyzer (Gibbon 2013), etc.</p>
+<p>Linguistics annotation, especially when dealing with multiple domains, makes use of different tools within a given project. In recent years, many annotation software/tools have become available for annotation of audio-video data. For a researcher looking for an annotation software, it is difficult to select the most appropriate. Due to the diversity of linguistic phenomena, annotation tools lead to a variety of models, theories and formalisms. This diversity results in heterogeneous description formats, each tool developing its own framework. The choice of all annotation software is part of the annotation framework and must be done carefully and of course before the creation of the corpus. SPPAS annotation files are in a specific XML format (xra). Annotations can be imported from and exported to a variety of other formats, including Praat (TextGrid, PitchTier, IntensityTier), Elan (eaf), Transcriber (trs), Annotation Pro (antx), Phonedit (mrk), Sclite (ctm, stm), HTK (lab, mlf), subtitles formats (srt, sub) and CSV files.</p>
+<p>Automatic annotations can be used either with a Command-line User Interface or a Graphical User Interface. So, there's no specific difficulty by using this software. Advanced users can also access directly the Application Programming Interface. The program was implemented using the programming language Python 2.7. The only potential brake on the usage of automatic annotations of SPPAS is the need to integrate it in a rigorous methodology for the corpus construction, annotations and analyses.</p>
+<p>Data analysis of SPPAS are mainly proposed in the Graphical User Interface. However, advanced users can also access directly the Application Programming Interface, for example to estimate statistics or to manipulate annotated data.</p>
 <h3 id="copyright-and-licenses"><a href="#copyright-and-licenses">Copyright and Licenses</a></h3>
 <p><em>(c) 2011-2016 Brigitte Bigi, Laboratoire Parole et Langage, Aix-en-Provence, France</em></p>
 <p>SPPAS software is distributed under the terms of the <strong>GNU GENERAL PUBLIC LICENSE</strong>.</p>
@@ -102,9 +115,9 @@
 <p>A copy of both licenses is available in the package. See the &quot;Resources&quot; chapter for details about the license of each proposed resource.</p>
 <h3 id="user-engagement-how-to-cite-sppas"><a href="#user-engagement-how-to-cite-sppas">User engagement: how to cite SPPAS</a></h3>
 <blockquote>
-<p>By using SPPAS, <strong>you agree to cite references in your publications</strong>.</p>
+<p>By using SPPAS, <strong>you agree to cite the reference in your publications</strong>.</p>
 </blockquote>
-<p>See the &quot;References&quot; chapter of this documentation.</p>
+<p>See the &quot;References&quot; chapter of this documentation to get the list or the home page <a href="http://www.lpl-aix.fr/~bigi/">http://www.lpl-aix.fr/~bigi/</a> to get printable versions of the references.</p>
 <h3 id="need-help"><a href="#need-help">Need help</a></h3>
 <ol type="1">
 <li><p>When looking for more detail about some subject, one can search this documentation. This documentation is available in-line (see the SPPAS website), it is also included in the package (in PDF format) and it can also be explored with the Graphical User Interface by clicking on the 'Help' button.</p></li>
@@ -131,7 +144,7 @@
 <h3 id="contributors"><a href="#contributors">Contributors</a></h3>
 <p>Here is the list of contributors:</p>
 <ul>
-<li>Since January 2011: Brigitte Bigi is the main author;</li>
+<li>Since January 2011: <strong>Brigitte Bigi</strong> is the main author;</li>
 <li>April 2012-June 2012: Alexandre Ranson;</li>
 <li>April 2012-July 2012: Cazembé Henry;</li>
 <li>April 2012-June 2013: Bastien Herbaut;</li>
@@ -141,52 +154,45 @@
 </ul>
 <h2 id="getting-and-installing"><a href="#getting-and-installing">Getting and installing</a></h2>
 <h3 id="websites"><a href="#websites">Websites</a></h3>
-<p>Since January 2016, <strong>the main website of SPPAS</strong> is located at the following URL:</p>
+<p>Since January 2016, the main website of SPPAS is located at the following URL:</p>
 <p><a href="http://www.sppas.org">http://www.sppas.org</a></p>
-<p>In the past, SPPAS - Automatic Annotation of Speech, was hosted by &quot;Laboratoire Parole et Langage&quot;:</p>
-<p><a href="http://www.lpl-aix.fr">http://www.lpl-aix.fr</a></p>
-<p>Then it was migrated on Speech and Language Data Repository (SLDR), at:</p>
-<p><a href="http://sldr.org/sldr000800/">http://sldr.org/sldr000800/</a></p>
-<p>SLDR is now migrating under Ortolang. SPPAS is then here also:</p>
-<p><a href="https://www.ortolang.fr/market/tools/sldr000800/">https://www.ortolang.fr/market/tools/sldr000800/</a></p>
-<p>The <em>source code</em> with recent stable releases is hosted on github. From this website, anyone can download the development version, contribute, send comments and/or declare an issue:</p>
+<p>The source code with recent stable releases is hosted on github. From this website, anyone can download the development version, contribute, send comments and/or declare an issue:</p>
 <p><a href="https://github.com/brigittebigi/">https://github.com/brigittebigi/</a></p>
-<h3 id="dependencies"><a href="#dependencies">Dependencies</a></h3>
-<p>On the main website, you will find information about the software requirements. In fact, other programs are required for SPPAS to operate. Of course, they must be installed before using SPPAS, and <em>only once</em>. This operation takes from 5 to 15 minutes depending on the operating system.</p>
+<h3 id="external-programs"><a href="#external-programs">External programs</a></h3>
+<p>On the main website, you will find information about the software requirements. In fact, other programs are required for SPPAS to operate. Of course, they must be installed before using SPPAS, and <em>only once</em>. This operation takes 5 up to 10 minutes depending on the operating system.</p>
 <p>The following software are required:</p>
 <ol type="1">
 <li>Python 2.7.x</li>
 <li>wxPython &gt;= 3.0</li>
 <li>julius &gt;= 4.1</li>
 </ol>
-<p>It is very (very very) important to take care about the version of Python. An installation guide is available on the website, depending on your operating system. <strong>Please, closely follow the instructions.</strong> Notice that administrator rights are required to perform the installations.</p>
+<p>It is very (very very) important to take care about the version of Python. An installation guide is available on the website, depending on the operating system. <strong>Please, closely follow the instructions.</strong> Notice that administrator rights are required to perform the installations.</p>
 <h3 id="download-and-install-sppas"><a href="#download-and-install-sppas">Download and install SPPAS</a></h3>
 <p>The main website contains the <code>Download Page</code> to download a new version.</p>
-<p>SPPAS is ready to run, so it does not need elaborate installation, except for its dependencies (other software required for SPPAS to work properly, see previous section). All you need to do is to copy the SPPAS package from the website to somewhere on your computer. Preferably, choose <em>a location without spaces nor accentuated characters in the name of the path</em>.</p>
+<p>SPPAS is ready to run, so it does not need elaborate installation, except for the other software required for SPPAS to work properly. All you need to do is to copy the SPPAS package from the website to somewhere on your computer. Choose <em>a location with only US-ASCII characters in the name of the path</em>.</p>
 <p>The SPPAS package is compressed and zipped, so you will need to <em>decompress and unpack</em> it once you've got it.</p>
 <p>There is a unique version of SPPAS which does not depend on the operating system. The only obvious difference depending on the system is how it looks on the computer screen.</p>
 <figure>
 <img src="./etc/logos/systemes.jpg" alt="Operating systems" /><figcaption>Operating systems</figcaption>
 </figure>
 <h3 id="the-sppas-package"><a href="#the-sppas-package">The SPPAS package</a></h3>
-<p>Unlike many other software, SPPAS is not what is called a &quot;black box&quot;. Instead, everything is done so that users can check / change operation. It is particularly suitable for automatic annotations: it allows any user to adapt automatic annotations to its own needs.</p>
+<p>Unlike many other software tool, SPPAS is not what is called a &quot;black box&quot;. Instead, everything is done so that users can check / change operation. It is particularly suitable for automatic annotations: it allows any user to adapt automatic annotations to its own needs.</p>
 <p>The package of SPPAS is then a directory with content as files and folders.</p>
 <figure>
 <img src="./etc/screenshots/explorer-sppas-folder.png" alt="SPPAS Package content" /><figcaption>SPPAS Package content</figcaption>
 </figure>
 <p>The SPPAS package contains:</p>
 <ul>
-<li>the <code>README.txt</code> file, which aims to be read by users!</li>
+<li>the <code>README.txt</code> file, which aims to be read by users</li>
 <li>the files <code>sppas.bat</code> and <code>sppas.command</code> to execute the Graphical User Interface of SPPAS</li>
 <li>the <code>resources</code> directory contains data that are used by automatic annotations (lexicons, dictionaries, ...)</li>
-<li>the <code>samples</code> directory contains folders of data of various languages, they are sets of annotations freely distributed to test SPPAS</li>
+<li>the <code>samples</code> directory contains folders of data of various languages, they are sets of annotations freely distributed to test features of SPPAS</li>
 <li>the <code>sppas</code> directory contains the program itself</li>
 <li><p>the <code>documentation</code> directory contains:</p>
 <ul>
-<li>the file <code>CHANGES.txt</code> which is a Release History. It shows an overview of the differences between the succeeding versions of SPPAS.</li>
 <li>the copyright</li>
-<li>the documentation</li>
-<li>the main publication about SPPAS</li>
+<li>the printable documentation</li>
+<li>the printable version of the main reference published in &quot;the Phonetician&quot; journal</li>
 <li>the folder <code>scripting_solutions</code> is a set of python scripts corresponding to the exercises proposed in the chapter &quot;Scripting with Python and SPPAS&quot;</li>
 </ul></li>
 </ul>
@@ -194,34 +200,35 @@
 <p>SPPAS is constantly being improved and new packages are published frequently (about 10 versions a year). It is important to update regularly in order to get the latest functions and corrections.</p>
 <p>Updating SPPAS is very easy and fast:</p>
 <ol type="1">
-<li>Download the last updated package from the SPPAS main web site</li>
-<li>Unpack the downloaded package</li>
+<li>Download the last updated package from the SPPAS main web site;</li>
+<li>Unpack the downloaded package;</li>
 <li>Optionally, put the old one into the Trash.</li>
 </ol>
 <h2 id="capabilities"><a href="#capabilities">Capabilities</a></h2>
 <h3 id="what-sppas-can-do"><a href="#what-sppas-can-do">What SPPAS can do?</a></h3>
 <p>Here is the list of functionalities available to annotate automatically speech data and to analyse annotated files:</p>
 <ol type="1">
-<li><p><strong>Automatic and semi-automatic annotations</strong></p>
+<li><p>Automatic and semi-automatic annotations</p>
 <ul>
-<li><strong>Momel/INTSINT</strong>: modelling melody</li>
-<li><strong>IPUs segmentation</strong>: utterance level segmentation</li>
-<li><strong>Tokenization</strong>: text normalization</li>
-<li><strong>Phonetization</strong>: grapheme to phoneme conversion</li>
-<li><strong>Alignment</strong>: phonetic segmentation</li>
-<li><strong>Syllabification</strong>: group phonemes into syllables</li>
-<li><strong>Repetitions</strong>: detect self-repetitions, and other-repetitions (not in the GUI).</li>
+<li><em>Momel</em>: modelling melody</li>
+<li><em>INTSINT</em>: Intonation<br /></li>
+<li><em>IPUs segmentation</em>: speech/silence segmentation</li>
+<li><em>Tokenization</em>: text normalization</li>
+<li><em>Phonetization</em>: grapheme to phoneme conversion</li>
+<li><em>Alignment</em>: phonetic segmentation</li>
+<li><em>Syllabification</em>: group phonemes into syllables</li>
+<li><em>Repetitions</em>: detect self-repetitions, and other-repetitions</li>
 </ul></li>
-<li><p><strong>Components</strong></p>
+<li><p>Analysis</p>
 <ul>
-<li><em>IPUscribe</em>: Manual orthographic transcription, after IPUs segmentation</li>
+<li><em>IPUscriber</em>: Manual orthographic transcription, after IPUs segmentation</li>
 <li><em>AudioRoamer</em>: Play, show information and manage speech audio files</li>
 <li><em>Statistics</em>: Estimates/Save statistics on annotated files</li>
 <li><em>DataRoamer</em>: Manipulate annotated files</li>
 <li><em>DataFilter</em>: Extract data from annotated files (i.e. querying data)</li>
-<li><em>SppasEdit</em>: Display sound and annotated files</li>
+<li><em>Vizualizer</em>: Display sound and annotated files</li>
 </ul></li>
-<li><p><strong>Plugins</strong></p>
+<li><p>Plugins</p>
 <ul>
 <li><em>TierMapping-plugin</em>: Create tier by mapping annotation labels</li>
 <li><em>MarsaTag-plugin</em>: Use the POS-Tagger MarsaTag from SPPAS (French only)</li>
@@ -239,7 +246,7 @@
 <li><p>Scripting with Python and SPPAS provides the more powerful way.</p></li>
 </ol>
 <h3 id="interoperability-and-compatibility"><a href="#interoperability-and-compatibility">Interoperability and compatibility</a></h3>
-<p>SPPAS is able to open/save files from the following software, with the expected extension:</p>
+<p>In the scope of the compatibility between SPPAS data and annotated data from other software tools or programs, SPPAS is able to open/save/convert files of the following software with their extensions:</p>
 <ul>
 <li>Praat: TextGrid, PitchTier, IntensityTier</li>
 <li>Elan: eaf</li>
@@ -251,7 +258,7 @@
 <li>Signaix: hz</li>
 <li>Excel/OpenOffice/R: csv</li>
 </ul>
-<p>And it can also import data from:</p>
+<p>And the followings can be imported:</p>
 <ul>
 <li>ANVIL: anvil</li>
 <li>Transcriber: trs</li>
@@ -262,9 +269,9 @@
 </figure>
 <h2 id="main-and-important-recommendations"><a href="#main-and-important-recommendations">Main and important recommendations</a></h2>
 <h3 id="about-files"><a href="#about-files">About files</a></h3>
-<p>There is a list of important things to keep in mind while using SPPAS. They are summarized as follows and detailed in chapters of this documentation:</p>
+<p>There is a list of important things to keep in mind while using SPPAS. They are summarized as follows and detailed in the chapters of this documentation:</p>
 <ol type="1">
-<li><p>Speech files:</p>
+<li><p>Speech audio files:</p>
 <ul>
 <li>only <code>wav</code>, <code>aiff</code> and <code>au</code> audio files</li>
 <li>only mono (= one channel)</li>
@@ -272,27 +279,38 @@
 <li>bit rate preferably: 16 bits</li>
 <li>good recording quality is expected. It is of course required to never convert from a compressed file (as mp3 for example).</li>
 </ul></li>
-<li><p>Annotated files:</p>
+<li><p>Annotated data files:</p>
 <ul>
 <li>UTF-8 encoding only</li>
-<li>it is recommended to NOT use accentuated characters in file names nor in paths</li>
+<li>it is recommended to use ony US-ASCII characters in file names (including their path)</li>
 </ul></li>
 </ol>
 <h3 id="about-automatic-annotations"><a href="#about-automatic-annotations">About automatic annotations</a></h3>
-<p>The quality of the results for most of the automatic annotations is highly influenced by the quality of the data the annotation takes in input (this is a politically correct way to say: <strong>Garbage in, garbage out!</strong>)</p>
-<p>Annotations are based on the use of <strong>resources</strong>, that are freely available in the SPPAS package. The quality of the automatic annotations is also largely influenced by such resources. Fortunately... all the resources can be modified/improved/shared by any user!</p>
+<p>The quality of the results for most of the automatic annotations is highly influenced by the quality of the data the annotation takes in input. This is a politically correct way to say: <strong>Garbage in, garbage out!</strong></p>
+<p>Annotations are based on the use of <strong>resources</strong>, that are gently shared and freely available in the SPPAS package. The quality of the automatic annotations is largely influenced by such resources, and the users can contribute to improve them. In that sense, users need automatic tools and such tools need users. Users are of crucial importance for resource development. They can contribute to improve them, and the author releases the improvements to the public, so that the whole community benefits. Resources are distributed under the terms of public licenses, so that SPPAS users are &quot;free&quot;: free to study the source code and the resources of the software they use, free to share the software and resources with other people, free to modify the software and resources, and free to publish their modified versions of the software and resources.</p>
 <hr />
+    <!----------------------------------------------------------------->
 
-    <div id="footer">
+    <div class="footer">
         <a href="index.html"><img src="./etc/logos/sppas-logo.png" alt="SPPAS"></a>
         <p class="copyright">
-            <a href="mailto:brigitte.bigi@gmail.com">Brigitte Bigi</a> &copy; 2011-2015
+            <a href="mailto:brigitte.bigi@gmail.com">Brigitte Bigi</a> &copy; 2011-2016
         </p>
     </div>
 
     <!----------------------------------------------------------------->
 
-    <a onclick="window.top.window.scrollTo(0,0);" href=""><span class="scrollT"></span></a>
+    <span class="scrollT"></span>
+    <script type="text/javascript" src="./etc/scripts/jquery.min.js"></script>
+    <script type="text/javascript" src="./etc/scripts/scrollT.js"></script>
+    <script type="text/javascript">
+        // On active la fonction permettant de faire apparaitre l'indicateur 
+        // de scroll pour remonter en haut de page.
+        $(document).ready(function() 
+        {
+            $(this).scrollT();
+        });
+    </script>
 
     <!----------------------------------------------------------------->
 </body>

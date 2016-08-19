@@ -1,6 +1,6 @@
-##Momel and INTSINT
+## Momel and INTSINT
 
-###Momel (modelling melody)
+### Momel (modelling melody)
 
 Momel is an algorithm for the automatic modelling of fundamental frequency (F0)
 curves using a technique called assymetric modal quaratic regression.
@@ -20,14 +20,14 @@ For details, see the following reference:
 >*Automatic modelling of fundamental frequency using a quadratic spline function.*
 >Travaux de l’Institut de Phonétique d’Aix. vol. 15, pages 71-85.
 
-The SPPAS implementation of Momel requires a file with the F0 values, sampled
-at 10 ms. Two extensions are supported:
+The SPPAS implementation of Momel requires a file with the F0 values. It must
+be **sampled at 10 ms**. Two extensions are supported:
 
 - .PitchTier, from Praat.
-- .hz, from any tool, is a file with one F0 value per line.
+- .hz, from any tool, is a file with one value per line.
 
 
-These options can be fixed:
+The following options can be fixed:
 
 * Window length used in the "cible" method 
 * F0 threshold: Maximum F0 value
@@ -39,7 +39,7 @@ These options can be fixed:
 * Eliminate glitch option: Filter f0 values before 'cible'
 
 
-###Encoding of F0 target points using the "INTSINT" system
+### Encoding of F0 target points using the "INTSINT" system
 
 INTSINT assumes that pitch patterns can be adequately described using a 
 limited set of tonal symbols, T,M,B,H,S,L,U,D (standing for : Top, Mid, Bottom, 

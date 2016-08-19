@@ -1,1 +1,1 @@
-#Automatic Speech Segmentation and Annotation
+# Automatic Annotations

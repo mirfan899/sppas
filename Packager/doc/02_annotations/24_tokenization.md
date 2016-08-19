@@ -7,7 +7,8 @@ be normalized. Texts contain a variety of "non-standard" token types such as
 digit sequences, words, acronyms and letter sequences in all capitals, mixed
 case words, abbreviations, roman numerals, URL's and e-mail addresses...
 Normalizing or rewriting such texts using ordinary words is then an important
-issue. The main steps of the text normalization proposed in SPPAS are:
+issue. The main steps of the text normalization implemented in SPPAS 
+(Bigi 2011) are:
 
 * Remove punctuation;
 * Lower the text;
@@ -19,12 +20,6 @@ issue. The main steps of the text normalization proposed in SPPAS are:
   result is not corresponding to your expectations, fill free to
   modify the lexicon, located in the "vocab" sub-directory of the "resources"
   directory. The lexicon contains one word per line.
-
-For more details, see the following reference:
-
-> **Brigitte Bigi (2011).**
-> *A Multilingual Text Normalization Approach.*
-> 2nd Less-Resourced Languages workshop, 5th Language  Technology Conference, Poznàn (Poland).
 
 ![Text normalization workflow](./etc/figures/tokworkflow.bmp)
 
@@ -40,13 +35,13 @@ one of the following strings:
 4. ortho
 5. toe
 
-The first tier that matches is used (case in-sensitive search).
+The first tier that matches is used (case insensitive search).
 
-By default, it produces a file including only one tier with the
+By default, Tokenization produces a file including only one tier with the
 tokens. 
-
 In case of an Enriched Orthographic Transcription, to get both faked 
-and standard tokenized tiers, check the corresponding option.
+and standard tokenized tiers, check the corresponding option. Then, 2
+tiers will be created:
 
 - Tokens-std: the text normalization of the standard transcription,
 - Tokens-faked: the text normalization of the faked transcription.

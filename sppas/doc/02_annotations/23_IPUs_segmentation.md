@@ -1,5 +1,13 @@
 ## Inter-Pausal Units (IPUs) segmentation
 
+After recording, the first annotation to perform is IPUs segmentation. Indeed,
+at a first stage, the audio signal must be automatically segmented in 
+Inter-Pausal Units (IPUs) which are blocks of speech bounded by silent pauses
+of more than X ms. This X duration depends on the language and it is commonly
+set to 200ms for French and 250ms for English. IPUs are time-aligned on the 
+speech signal. This segmentation should be verified manually, depending on the
+quality of the recording: the better quality, thus the better IPUs segmentation.
+
 The "IPUs segmentation" automatic annotation can perform 3 actions:
 
 1. find silence/speech segmentation of a recorded file,

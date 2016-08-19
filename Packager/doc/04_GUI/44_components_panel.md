@@ -1,7 +1,7 @@
-## Components Panel
+## Analyses
 
-The components are useful for the analysis of annotated files: display the
-automatic alignments with the audio signal, estimates statistics on the 
+The component tools are useful for the analysis of annotated files: display 
+the automatic alignments with the audio signal, estimates statistics on the 
 annotations, filter the annotated data to get only the annotations you are
 interested in, etc.
  

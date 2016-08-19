@@ -31,21 +31,28 @@
 </head>
 <body>
 
+    <!----------------------------------------------------------------->
+
     <div class="header">
         <div class="title">
             <div class="h1title">SPPAS</div>
-            <div class="h2title">Automatic Annotation of Speech</div>
-            <div class="h2title"><a href="http://www.lpl-aix.fr/~bigi/">Brigitte Bigi</a></div>
+            <div class="h2title">the automatic annotation and analysis of speech</div>
+            <div class="h3title">a software tool by Brigitte Bigi, researcher at</div>
             <div class="h3title">Laboratoire Parole et Langage - Aix-en-Provence - France</div>
         </div>
     </div>
+
+    <!----------------------------------------------------------------->
+
     <div class="menu">
-        <a class="neonBlue"    href="index.html">Home</a>
-        <a class="neonGreen"   href="installation.html">Installation</a>
-        <a class="neonYellow"  href="download.html">Download</a>
-        <a class="neonOrange"  href="documentation.html">Documentation</a>
-        <a class="neonRed"     href="https://groups.google.com/forum/?fromgroups#!forum/sppas-users">User's group</a>
+        <a class="home"     href="index.html">Home</a>
+        <a class="install"  href="installation.html">Installation</a>
+        <a class="download" href="download.html">Download</a>
+        <a class="documentation" href="documentation.html">Documentation</a>
+        <a class="group"    href="https://groups.google.com/forum/?fromgroups#!forum/sppas-users">User's group</a>
     </div>
+
+    <!----------------------------------------------------------------->
 <header>
 <h1 class="title">SPPAS Documentation</h1>
 <h2 class="author">Brigitte Bigi</h2>
@@ -55,19 +62,22 @@
 <ul>
 <li><a href="#graphical-user-interface---gui">Graphical User Interface - GUI</a><ul>
 <li><a href="#getting-started">Getting started</a><ul>
-<li><a href="#the-tips-frame">The Tips Frame</a></li>
-<li><a href="#the-main-frame">The main frame</a></li>
+<li><a href="#the-tips">The tips</a></li>
+<li><a href="#the-menu">The menu</a></li>
+<li><a href="#settings">Settings</a></li>
+<li><a href="#about">About</a></li>
+<li><a href="#help">Help</a></li>
 </ul></li>
-<li><a href="#file-list-panel">File List Panel</a><ul>
+<li><a href="#file-list">File List</a><ul>
 <li><a href="#the-file-explorer">The file explorer</a></li>
-<li><a href="#the-toolbar-1">The toolbar</a></li>
+<li><a href="#the-toolbar">The toolbar</a></li>
 </ul></li>
-<li><a href="#automatic-annotations-panel">Automatic Annotations Panel</a><ul>
+<li><a href="#automatic-annotations">Automatic Annotations</a><ul>
 <li><a href="#description">Description</a></li>
 <li><a href="#aap-usage">AAP Usage</a></li>
 <li><a href="#the-procedure-outcome-report">The procedure outcome report</a></li>
 </ul></li>
-<li><a href="#components-panel">Components Panel</a><ul>
+<li><a href="#analyses">Analyses</a><ul>
 <li><a href="#the-main-toolbar">The main toolbar</a></li>
 <li><a href="#the-list-of-files">The list of files</a></li>
 <li><a href="#dataroamer">DataRoamer</a></li>
@@ -77,7 +87,7 @@
 <li><a href="#datafilter">DataFilter</a></li>
 <li><a href="#statistics">Statistics</a></li>
 </ul></li>
-<li><a href="#plugins-panel">Plugins Panel</a><ul>
+<li><a href="#plugins">Plugins</a><ul>
 <li><a href="#installing-a-plugin">Installing a Plugin</a></li>
 <li><a href="#marsatag-plugin">Marsatag-Plugin</a></li>
 <li><a href="#tiermapping">TierMapping</a></li>
@@ -91,54 +101,27 @@
 <p>The current chapter describes how to use the Graphical User Interface.</p>
 <p>Under Windows, once the SPPAS package is opened in the File Explorer, <em>double-click on the <code>sppas.bat</code> file</em>.</p>
 <p>Under MacOS or Linux, once the SPPAS package is opened in the Finder/File Explorer, <em>double-click on the <code>sppas.command</code> file</em>. The program will first check the version of wxpython and eventually ask to update.</p>
-<p>Then, two windows will open automatically.</p>
-<ol type="1">
-<li><p>Above, a window with a tips aims at displaying messages to help users to discover SPPAS capabilities.</p></li>
-<li><p>Below, the main frame: to perform automatic annotations, get statistics, filter data, view wav/annotated data, etc.</p></li>
-</ol>
-<h3 id="the-tips-frame"><a href="#the-tips-frame">The Tips Frame</a></h3>
-<p>This frame picks up randomly and prints a message to help users. Click on the button <code>Next Tip</code> to read another message, or click on the <code>Close</code> button to close the frame.</p>
+<p>Then, the main windows will open automatically. It is made of a menu, a title, the tips, the list of files and the action buttons.</p>
 <figure>
-<img src="./etc/screenshots/tips.png" alt="The Tips Frame" /><figcaption>The Tips Frame</figcaption>
+<img src="./etc/screenshots/sppas-1-8-0.png" alt="SPPAS Main Frame of version 1.8.0" /><figcaption>SPPAS Main Frame of version 1.8.0</figcaption>
 </figure>
-<p>The <code>Settings</code> frame also allows to show/hide the Tips frame at start-up.</p>
-<p>If you want to suggest new tips (to help the other users), send them by e-mail to the author at <code>brigitte.bigi@gmail.com</code>. They will be included in the next version.</p>
-<h3 id="the-main-frame"><a href="#the-main-frame">The main frame</a></h3>
-<p>The main frame is made of a menu, a toolbar and the main content. All of them are described in the next sub-sections.</p>
+<h3 id="the-tips"><a href="#the-tips">The tips</a></h3>
 <figure>
-<img src="./etc/screenshots/sppas-1-7-6.png" alt="The Main Frame of version 1.7.6" /><figcaption>The Main Frame of version 1.7.6</figcaption>
+<img src="./etc/screenshots/tips.png" alt="The tips included in the main frame" /><figcaption>The tips included in the main frame</figcaption>
 </figure>
-<h4 id="the-menu"><a href="#the-menu">The menu</a></h4>
-<p>It allows to access to all functions of the GUI, and to manage it.</p>
-<p>The &quot;File&quot; menu can be used to manage files (add, remove, ...) and to exit the program.</p>
-<p>In the &quot;Preferences&quot; menu, check boxes allow to show/hide the toolbar and the status bar, and to fix settings (see below for details).</p>
-<p>The &quot;Help&quot; menu includes an item to open the SPPAS website in a web browser, to access inline documentation, to declare a bug and to send feedback to the author. In the latter case, replace the text &quot;Describe what you did here...&quot; by your own comment, question or suggestion and choose how to send the e-mail: with your own default mailer, with gmail (opened in your web browser) or by another e-mail client. Then, close the frame by clicking on the &quot;Close&quot; button.</p>
+<p>The frame includes message tips that are picked up randomly and printed to help users. Click on the button <code>Next Tip</code> to read another message, or click on the top-left button to close the tips frame. The <code>Settings</code> allows to show/hide tips at start-up. If a user wants to suggest new tips to help the other users, they have to be sent to the author by e-mail. They will be included in the next version.</p>
+<h3 id="the-menu"><a href="#the-menu">The menu</a></h3>
+<p>It allows to exit the program, declare an issue and contact the author.</p>
+<p>The <code>Exit</code> button closes all SPPAS frames <em>properly</em>. Please, do not kill SPPAS by clicking on the arrow of the windows manager! <strong>Use this Exit button</strong> to close SPPAS.</p>
+<p>To declare an issue, click on the bug button of the menu, then your default web browser will be opened at the appropriate URL to do this.</p>
+<p>To contact the author, replace the text &quot;Describe what you did here...&quot; by your own comment, question or suggestion and choose how to send the e-mail: with your own default mailer, with gmail (opened in your web browser) or by another e-mail client. Then, close the frame by clicking on the &quot;Close&quot; button.</p>
 <figure>
 <img src="./etc/screenshots/feedback.png" alt="The Feedback Frame" /><figcaption>The Feedback Frame</figcaption>
 </figure>
-<h4 id="the-toolbar"><a href="#the-toolbar">The toolbar</a></h4>
-<p>The toolbar includes 5 buttons:</p>
-<ol type="1">
-<li>Exit;</li>
-<li>Settings;</li>
-<li>Plug-in;</li>
-<li>About;</li>
-<li>Help.</li>
-</ol>
-<p>The look of the toolbar can change depending of the Theme of the icons.</p>
-<figure>
-<img src="./etc/screenshots/toolbar-default.png" alt="Main toolbar, with Default icon theme" /><figcaption>Main toolbar, with Default icon theme</figcaption>
-</figure>
-<figure>
-<img src="./etc/screenshots/toolbar-metro.png" alt="Main toolbar, with Metro icon theme" /><figcaption>Main toolbar, with Metro icon theme</figcaption>
-</figure>
-<figure>
-<img src="./etc/screenshots/toolbar-crystalclear.png" alt="Main toolbar, with CrystalClear icon theme" /><figcaption>Main toolbar, with CrystalClear icon theme</figcaption>
-</figure>
-<p>The <code>Exit</code> button closes all SPPAS frames <em>properly</em>. Please, do not kill SPPAS by clicking on the arrow of the windows manager! <strong>Use this Exit button</strong> to close SPPAS.</p>
-<p>To fix new settings, click on the <code>Settings</code> icon, then choose your preferred options:</p>
+<h3 id="settings"><a href="#settings">Settings</a></h3>
+<p>To change preferences, click on the <code>Settings</code> icon, then choose your preferred options:</p>
 <ul>
-<li>General: fix background colour, font colour and font of the GUI, and enable/disable tips at start-up.</li>
+<li>General: fix background color, font color and font of the GUI, and enable/disable tips at start-up.</li>
 <li>Theme: fix the icons of the GUI.</li>
 <li>Annotations: fix automatic annotations parameters.</li>
 </ul>
@@ -150,21 +133,14 @@
 <li>&quot;Cancel&quot; button to ignore changes,</li>
 <li>&quot;Close&quot; to apply changes then close the frame.</li>
 </ul>
-<p>The <code>Plug-in</code> button allows to install a new plugin.</p>
-<p>The <code>About</code> button opens a new frame which gives the main information about SPPAS: authors, license, web site URL, etc.</p>
-<p>The <code>Help</code> button opens the documentation and allows to browse in the chapters and sections.</p>
+<h3 id="about"><a href="#about">About</a></h3>
+<p>The <code>About</code> action button allows to display the main information about SPPAS: authors, license, web site URL, etc.</p>
+<h3 id="help"><a href="#help">Help</a></h3>
+<p>The <code>Help</code> action button opens the documentation and allows to browse in the chapters and sections.</p>
 <figure>
 <img src="./etc/screenshots/helpbrowser.png" alt="The Help Browser Frame" /><figcaption>The Help Browser Frame</figcaption>
 </figure>
-<h4 id="the-content-of-the-frame."><a href="#the-content-of-the-frame.">The content of the frame.</a></h4>
-<p>The content of the main frame is made of 4 main panels:</p>
-<ol type="1">
-<li>the file list panel (FLP), at left;</li>
-<li>the automatic annotation panel (AAP); at middle-top;</li>
-<li>the components panel (CCP), at middle-bottom;</li>
-<li>the plug-ins panel (P&amp;P), at right.</li>
-</ol>
-<h2 id="file-list-panel"><a href="#file-list-panel">File List Panel</a></h2>
+<h2 id="file-list"><a href="#file-list">File List</a></h2>
 <p>The File List Panel (FLP) consists of:</p>
 <ul>
 <li>a file explorer: a tree-style set of files and directories.</li>
@@ -181,7 +157,7 @@
 <li>a single click on a directory name highlights and selects the chosen directory (displayed in the list).</li>
 </ul>
 <p>Like in any other file explorer, while clicking and pressing the &quot;CTRL&quot; key (&quot;COMMAND&quot; on MacOS) on the keyboard, you can select multiple files and/or directories. Idem with the &quot;SHIFT&quot; key.</p>
-<h3 id="the-toolbar-1"><a href="#the-toolbar-1">The toolbar</a></h3>
+<h3 id="the-toolbar"><a href="#the-toolbar">The toolbar</a></h3>
 <h4 id="add-files."><a href="#add-files.">Add file(s).</a></h4>
 <p>A single-click on the <code>Add File</code> button opens a frame that allows to select the files to get. By default, only &quot;wav&quot; files are proposed. If you select <em>a wav file(s)</em>, all files with the same name will be automatically added into the file explorer. It is possible to change the wildcard of this frame and to select each file to add. In both cases, only files with an appropriate extension will be added in the file explorer.</p>
 <figure>
@@ -206,7 +182,7 @@
 <img src="./etc/screenshots/FLP-Export.png" alt="Export: Check the expected format in the list" /><figcaption>Export: Check the expected format in the list</figcaption>
 </figure>
 <p>After the export, a new frame will open to report if file(s) were exported successfully or not.</p>
-<h2 id="automatic-annotations-panel"><a href="#automatic-annotations-panel">Automatic Annotations Panel</a></h2>
+<h2 id="automatic-annotations"><a href="#automatic-annotations">Automatic Annotations</a></h2>
 <h3 id="description"><a href="#description">Description</a></h3>
 <p>The Automatic Annotations Panel (AAP) consists of a list of buttons to check (the left column), the annotation name (middle) and buttons to fix the language of each annotation (at right).</p>
 <figure>
@@ -241,8 +217,8 @@
 <figure>
 <img src="./etc/screenshots/log.png" alt="Procedure outcome report" /><figcaption>Procedure outcome report</figcaption>
 </figure>
-<h2 id="components-panel"><a href="#components-panel">Components Panel</a></h2>
-<p>The components are useful for the analysis of annotated files: display the automatic alignments with the audio signal, estimates statistics on the annotations, filter the annotated data to get only the annotations you are interested in, etc.</p>
+<h2 id="analyses"><a href="#analyses">Analyses</a></h2>
+<p>The component tools are useful for the analysis of annotated files: display the automatic alignments with the audio signal, estimates statistics on the annotations, filter the annotated data to get only the annotations you are interested in, etc.</p>
 <p>To execute a specific component, select file(s) in the file explorer, then click on the button of a component. It will open the component frame, and add the selected file(s) in the file manager of the component. Refer to the documentation of each component to know how to use it.</p>
 <figure>
 <img src="./etc/screenshots/CCP.png" alt="Component Panel (CCP)" /><figcaption>Component Panel (CCP)</figcaption>
@@ -471,7 +447,7 @@
 <li>with x-axis based on time-stamps, like in the AnnotationPro+TGA</li>
 </ol></li>
 </ul>
-<h2 id="plugins-panel"><a href="#plugins-panel">Plugins Panel</a></h2>
+<h2 id="plugins"><a href="#plugins">Plugins</a></h2>
 <p>This panel includes the icons of plugins that were previously installed. To execute a plug-in, select file(s) in the File explorer, click on the icon of the plug-in and follow instructions of the plugged program.</p>
 <figure>
 <img src="./etc/screenshots/PPP.png" alt="Plugins Panel with two plug-ins: TierMapping and MarsaTag" /><figcaption>Plugins Panel with two plug-ins: TierMapping and MarsaTag</figcaption>
@@ -507,17 +483,28 @@
 <img src="./etc/screenshots/TierMapping.png" alt="Plug-in: TierMapping" /><figcaption>Plug-in: TierMapping</figcaption>
 </figure>
 <hr />
+    <!----------------------------------------------------------------->
 
-    <div id="footer">
+    <div class="footer">
         <a href="index.html"><img src="./etc/logos/sppas-logo.png" alt="SPPAS"></a>
         <p class="copyright">
-            <a href="mailto:brigitte.bigi@gmail.com">Brigitte Bigi</a> &copy; 2011-2015
+            <a href="mailto:brigitte.bigi@gmail.com">Brigitte Bigi</a> &copy; 2011-2016
         </p>
     </div>
 
     <!----------------------------------------------------------------->
 
-    <a onclick="window.top.window.scrollTo(0,0);" href=""><span class="scrollT"></span></a>
+    <span class="scrollT"></span>
+    <script type="text/javascript" src="./etc/scripts/jquery.min.js"></script>
+    <script type="text/javascript" src="./etc/scripts/scrollT.js"></script>
+    <script type="text/javascript">
+        // On active la fonction permettant de faire apparaitre l'indicateur 
+        // de scroll pour remonter en haut de page.
+        $(document).ready(function() 
+        {
+            $(this).scrollT();
+        });
+    </script>
 
     <!----------------------------------------------------------------->
 </body>

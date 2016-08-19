@@ -6,8 +6,8 @@ This chapter is not a description on how each automatic annotation is
 implemented and how it's working: 
 the references are available for that specific purpose!
 
-Instead, this chapter describes how each automatic annotation can be
-used in SPPAS, i.e.
+Instead, this chapter describes how each automatic annotation can be used in 
+SPPAS, i.e.
 what is the goal of the annotation, 
 what are the requirements, 
 what kind of resources are used,
@@ -19,23 +19,46 @@ Each automatic annotation is then illustrated as a workflow schema, where:
 - green boxes indicate the resource,
 - yellow boxes indicate the annotated file (given as input or produced as output).
 
-At the end of each automatic annotation process, SPPAS produces a Procedure
-Outcome Report that aims to be read!
 
+### Annotations methodology
+
+The kind of process to implement in the perspective of obtaining rich and 
+broad-coverage multimodal/multi-levels annotations of a corpus is illustrated 
+in next Figure. It describes each step of the annotation workflow. This 
+Figure must be read from top to bottom and from left to right, starting by 
+the recordings and ending to the analysis of annotated files.
+Yellow boxes represent manual annotations, blue boxes represent automatic ones.
+
+![Annotation methodology](./etc/figures/methodo.png)
+
+After the recording, the first annotation to perform is IPUs segmentation. 
+Indeed, at a first stage, the audio signal must be automatically segmented 
+into Inter-Pausal Units (IPUs) which are blocks of speech bounded by silent 
+pauses of more than X ms, and time-aligned on the speech signal. 
+An orthographic transcription has to be performed manually inside the set of 
+IPUs. Then tokenization will normalize the transcription. The phonetization
+process will convert the normalized text in a set of pronunciations using
+X-SAMPA standard. Alignment will perform segmentation at phonemes and tokens
+levels, etc.
+
+At the end of each automatic annotation process, SPPAS produces a Procedure
+Outcome Report that contains important information about the annotations.
 
 Among others, SPPAS is able to produce automatically annotations from a
 recorded speech sound and its orthographic transcription. Let us first
-introduce what is the exaclty meaning of
-"recorded speech" and "orthographic transcription".
+introduce what is required in terms of files, and what is the exactly meaning 
+of "recorded speech" and "orthographic transcription".
 
 
 ### File formats and tier names
 
 When using the Graphical User Interface, the file format for input and 
 output can be fixed in the Settings and is applied to all annotations,
-and file names of each annotation is already fixed and can't be changed.
+however file names of each annotation is already fixed and can't be changed.
+
 When using the Command-Line interface, or when using scripts, each 
 annotation can be configured independently (file format and file names).
+
 In all cases, **the name of the tiers are fixed and can't be changed**!
 
 
@@ -45,12 +68,12 @@ First of all:
 
 >Only `wav`, `aiff` and `au` audio files and only as mono are supported by SPPAS.
 
-SPPAS verifies if the wav file is 16 bits and 16000 Hz sample rate. 
+SPPAS verifies if the audio file is 16 bits and 16000 Hz sample rate. 
 Otherwise it automatically converts to this configuration.
 For very long files, this may take time. So, the following are possible:
 
-1. be patient
-2. prepare by your own the required wav/mono/16000Hz/16bits files to be used in SPPAS
+1. be patient;
+2. prepare by your own the required wav/mono/16000Hz/16bits files to be used in SPPAS.
 
 Secondly, a relatively good recording quality is expected. Providing a
 guideline or recommendation for that is impossible, because it depends:
@@ -62,79 +85,65 @@ by "Alignment", and for that latter, it depends on the language.
 
 ### Orthographic Transcription
 
-#### Overview
-
->Only UTF-8 encoding is supported by SPPAS.
-
-Clearly, there are different ways to pronounce the same utterance. 
-Different speakers have different accents and tend to speak at different 
-rates.
-There are commonly
-two types of Speech Corpora. First is related to “Read Speech” which 
-includes book excerpts, broadcast news, lists of words, sequences of numbers. 
-Second is often named as “Spontaneous Speech” which includes dialogs - 
-between two or more people (includes meetings), narratives - a person 
-telling a story, map- tasks - one person explains a route on a map to another,
-appointment-tasks - two people try to find a common meeting time based on 
-individual schedules. One of the characteristics of Spontaneous Speech is 
-an important gap between a word’s phonological form and its phonetic 
-realizations. Specific realization due to elision or reduction processes
-are frequent in spontaneous data. It also presents other types of phenomena 
-such as non-standard elisions, substitutions or addition of phonemes which
-intervene in the automatic phonetization and alignment tasks.
-
+An orthographic transcription is often the minimum requirement for a speech 
+corpus so it is at the top of the annotation procedure, and it is the entry 
+point for most of the automatic annotations, including automatic speech 
+segmentation.
+But clearly, there are different ways to pronounce the same utterance. 
 Consequently, when a speech corpus is transcribed into a written text, the 
 transcriber is immediately confronted with the following question:
 how to reflect the orality of the corpus?
 *Transcription conventions* are then designed to provide rules for
-writing speech corpora. These conventions establish
-phenomena to transcribe and also how to annotate them.
+writing speech corpora. These conventions establish phenomena to transcribe 
+and also how to annotate them.
 
-In that sense, the orthographic transcription must be a representation 
-of what is “perceived” in the signal. Consequently, it **must** includes:
+In that sense, the orthographic transcription is a subjective representation 
+of what is "perceived" in the signal. It **must** includes:
 
 - filled pauses;
 - short pauses;
 - repeats;
 - noises and laugh items (not available for: English, Japanese and Cantonese).
 
-In speech (particularly in spontaneous speech), many phonetic variations 
-occur. Some of these phonologically known variants are predictable and can 
-be included in the pronunciation dictionary but many others are still 
-unpredictable (especially invented words, regional words or words borrowed 
-from another language). 
+In speech, many phonetic variations occur. Some of these phonologically known 
+variants are predictable and can be included in the pronunciation dictionary 
+but many others are still unpredictable like invented words, regional words or 
+words borrowed from another language. These specifics have a direct consequence
+on the automatic phonetization procedure as shown in (Bigi 2012). 
+As a consequence, from the beginning of its development it was considered to 
+be essential for SPPAS to deal with **Enriched Orthographic Transcriptions**.
 
-> SPPAS is the only automatic annotation software that deals with **Enriched Orthographic Transcriptions**.
+The transcription must use the following convention to represent speech 
+phenomena. All the symbols must be surrounded by whitespace.
 
-
-#### Convention
-
-The transcription must use the following convention:
-
-* truncated words, noted as a ’-’ at the end of the token string (an ex- example);
-* noises, noted by a ’*’ (not available for: English, Japanese and Cantonese);
-* laughs, noted by a ’@’ (not available for: English, Japanese and Cantonese);
-* short pauses, noted by a ’+’;
+* truncated words, noted as a '-' at the end of the token string (an ex- example);
+* noises, noted by a '*' (not available for: English, Japanese and Cantonese);
+* laughs, noted by a '@' (not available for: English, Japanese and Cantonese);
+* short pauses, noted by a '+';
 * elisions, mentioned in parenthesis;
 * specific pronunciations, noted with brackets [example,eczap];
 * comments are noted inside braces or brackets without using comma {this} or [this and this];
-* liaisons, noted between ’=’ (an =n= example);
+* liaisons, noted between '=' (an =n= example);
 * morphological variants with \<like,lie ok\>,
-* proper name annotation, like \$John S. Doe\$.
+* proper name annotation, like \$ John S. Doe \$.
 
 SPPAS also allows to include in the transcription:
 
 - regular punctuations,
 - numbers: they will be automatically converted to their written form.
 
-The result is what we call an enriched orthographic construction, from which
-two derived transcriptions are generated automatically: 
-the **standard transcription** (the list of orthographic tokens) 
-and a specific transcription from which the phonetic tokens are obtained 
-to be used by the grapheme-phoneme converter that is named **faked transcription**.
+This convention is not software-dependent which means that it can be performed
+with IPUscriber tool of SPPAS, Praat, Annotation Pro, ...
 
+The result is what we call an Enriched Orthographic construction, from which
+two derived transcriptions can be generated automatically: 
 
-#### Example
+1. the **standard transcription** is the list of orthographic tokens
+2. a specific transcription from which the phonetic tokens are obtained 
+to be used by the grapheme-phoneme converter that is named 
+**faked transcription**.
+
+As for example with the following sentence:
 
 *This is + hum... an enrich(ed) transcription {loud} number 1!*
 

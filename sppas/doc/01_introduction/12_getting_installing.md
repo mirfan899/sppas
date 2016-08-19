@@ -3,25 +3,12 @@
 
 ### Websites
 
-Since January 2016, **the main website of SPPAS** is located at the following URL:
+Since January 2016, the main website of SPPAS is located at the following 
+URL:
 
 <http://www.sppas.org>
 
-
-In the past, SPPAS - Automatic Annotation of Speech, was hosted by
-"Laboratoire Parole et Langage":
-
-<http://www.lpl-aix.fr>
-
-Then it was migrated on Speech and Language Data Repository (SLDR), at:
-
-<http://sldr.org/sldr000800/>
-
-SLDR is now migrating under Ortolang. SPPAS is then here also:
-
-<https://www.ortolang.fr/market/tools/sldr000800/>
-
-The *source code* with recent stable releases is hosted on github.
+The source code with recent stable releases is hosted on github.
 From this website, anyone can download the development version,
 contribute, send comments and/or declare an issue:
 
@@ -29,12 +16,12 @@ contribute, send comments and/or declare an issue:
 
 
 
-### Dependencies
+### External programs
 
 On the main website, you will find information about the software 
 requirements. In fact, other programs are required for SPPAS to operate.
 Of course, they must be installed before using SPPAS, and *only once*.
-This operation takes from 5 to 15 minutes depending on the operating 
+This operation takes 5 up to 10 minutes depending on the operating 
 system. 
 
 The following software are required:
@@ -45,9 +32,8 @@ The following software are required:
 
 It is very (very very) important to take care about the version of 
 Python. An installation guide is available on the website, depending 
-on your operating system. **Please, closely follow the instructions.**
-Notice that administrator rights are required to perform the
-installations.
+on the operating system. **Please, closely follow the instructions.**
+Notice that administrator rights are required to perform the installations.
 
 
 ### Download and install SPPAS
@@ -55,11 +41,10 @@ installations.
 The main website contains the `Download Page` to download a new version.
 
 SPPAS is ready to run, so it does not need elaborate installation, except for
-its dependencies (other software required for SPPAS to work properly, 
-see previous section).
+the other software required for SPPAS to work properly.
 All you need to do is to copy the SPPAS package from the website to somewhere
-on your computer. Preferably, choose *a location without spaces nor accentuated
-characters in the name of the path*.
+on your computer. Choose *a location with only US-ASCII characters in the 
+name of the path*.
 
 The SPPAS package is compressed and zipped, so you will need to
 *decompress and unpack* it once you've got it.
@@ -73,7 +58,7 @@ on the computer screen.
 
 ### The SPPAS package
 
-Unlike many other software, SPPAS is not what is called a "black box".
+Unlike many other software tool, SPPAS is not what is called a "black box".
 Instead, everything is done so that users can check / change operation.
 It is particularly suitable for automatic annotations: it allows any user
 to adapt automatic annotations to its own needs.
@@ -84,18 +69,16 @@ The package of SPPAS is then a directory with content as files and folders.
 
 The SPPAS package contains:
 
-- the `README.txt` file, which aims to be read by users!
+- the `README.txt` file, which aims to be read by users
 - the files `sppas.bat` and `sppas.command` to execute the Graphical User Interface of SPPAS
 - the `resources` directory contains data that are used by automatic annotations (lexicons, dictionaries, ...)
-- the `samples` directory contains folders of data of various languages, they are sets of annotations freely distributed to test SPPAS
+- the `samples` directory contains folders of data of various languages, they are sets of annotations freely distributed to test features of SPPAS
 - the `sppas` directory contains the program itself
 - the `documentation` directory contains:
 
-    - the file `CHANGES.txt` which is a Release History.
-      It shows an overview of the differences between the succeeding versions of SPPAS.
     - the copyright
-    - the documentation
-    - the main publication about SPPAS
+    - the printable documentation
+    - the printable version of the main reference published in "the Phonetician" journal
     - the folder `scripting_solutions` is a set of python scripts corresponding 
       to the exercises proposed in the chapter "Scripting with Python and SPPAS"
 
@@ -108,6 +91,6 @@ regularly in order to get the latest functions and corrections.
 
 Updating SPPAS is very easy and fast:
 
-1. Download the last updated package from the SPPAS main web site
-2. Unpack the downloaded package
+1. Download the last updated package from the SPPAS main web site;
+2. Unpack the downloaded package;
 3. Optionally, put the old one into the Trash.

@@ -5,28 +5,29 @@
 Here is the list of functionalities available to annotate automatically
 speech data and to analyse annotated files:
 
-1. **Automatic and semi-automatic annotations**
+1. Automatic and semi-automatic annotations
 
-    - **Momel/INTSINT**:     modelling melody
-    - **IPUs segmentation**: utterance level segmentation
-    - **Tokenization**:      text normalization
-    - **Phonetization**:     grapheme to phoneme conversion
-    - **Alignment**:         phonetic segmentation
-    - **Syllabification**:   group phonemes into syllables
-    - **Repetitions**:       detect self-repetitions, and other-repetitions (not in the GUI).
+    - *Momel*: modelling melody
+    - *INTSINT*: Intonation    
+    - *IPUs segmentation*: speech/silence segmentation
+    - *Tokenization*:      text normalization
+    - *Phonetization*:     grapheme to phoneme conversion
+    - *Alignment*:         phonetic segmentation
+    - *Syllabification*:   group phonemes into syllables
+    - *Repetitions*:       detect self-repetitions, and other-repetitions
 
 
-2. **Components**
+2. Analysis
 
-    - *IPUscribe*:      Manual orthographic transcription, after IPUs segmentation
+    - *IPUscriber*:      Manual orthographic transcription, after IPUs segmentation
     - *AudioRoamer*:    Play, show information and manage speech audio files
     - *Statistics*:     Estimates/Save statistics on annotated files
     - *DataRoamer*:     Manipulate annotated files
     - *DataFilter*:     Extract data from annotated files (i.e. querying data)
-    - *SppasEdit*:      Display sound and annotated files 
+    - *Vizualizer*:     Display sound and annotated files 
 
 
-3. **Plugins**
+3. Plugins
 
     - *TierMapping-plugin*: Create tier by mapping annotation labels
     - *MarsaTag-plugin*: Use the POS-Tagger MarsaTag from SPPAS (French only)
@@ -51,8 +52,9 @@ of the shell.
 
 ### Interoperability and compatibility
 
-SPPAS is able to open/save files from the following software, with
-the expected extension:
+In the scope of the compatibility between SPPAS data and annotated data from
+other software tools or programs, SPPAS is able to open/save/convert files 
+of the following software with their extensions:
 
 * Praat: TextGrid, PitchTier, IntensityTier
 * Elan: eaf
@@ -64,8 +66,7 @@ the expected extension:
 * Signaix: hz
 * Excel/OpenOffice/R: csv
 
-
-And it can also import data from:
+And the followings can be imported:
 
 * ANVIL: anvil
 * Transcriber: trs

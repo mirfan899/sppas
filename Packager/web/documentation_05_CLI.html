@@ -31,21 +31,28 @@
 </head>
 <body>
 
+    <!----------------------------------------------------------------->
+
     <div class="header">
         <div class="title">
             <div class="h1title">SPPAS</div>
-            <div class="h2title">Automatic Annotation of Speech</div>
-            <div class="h2title"><a href="http://www.lpl-aix.fr/~bigi/">Brigitte Bigi</a></div>
+            <div class="h2title">the automatic annotation and analysis of speech</div>
+            <div class="h3title">a software tool by Brigitte Bigi, researcher at</div>
             <div class="h3title">Laboratoire Parole et Langage - Aix-en-Provence - France</div>
         </div>
     </div>
+
+    <!----------------------------------------------------------------->
+
     <div class="menu">
-        <a class="neonBlue"    href="index.html">Home</a>
-        <a class="neonGreen"   href="installation.html">Installation</a>
-        <a class="neonYellow"  href="download.html">Download</a>
-        <a class="neonOrange"  href="documentation.html">Documentation</a>
-        <a class="neonRed"     href="https://groups.google.com/forum/?fromgroups#!forum/sppas-users">User's group</a>
+        <a class="home"     href="index.html">Home</a>
+        <a class="install"  href="installation.html">Installation</a>
+        <a class="download" href="download.html">Download</a>
+        <a class="documentation" href="documentation.html">Documentation</a>
+        <a class="group"    href="https://groups.google.com/forum/?fromgroups#!forum/sppas-users">User's group</a>
     </div>
+
+    <!----------------------------------------------------------------->
 <header>
 <h1 class="title">SPPAS Documentation</h1>
 <h2 class="author">Brigitte Bigi</h2>
@@ -387,17 +394,28 @@ optional arguments:
 <p>Example of use:</p>
 <pre><code>usage: ./scripts/audiotoaster.py -s ./samples/settings.txt -o mix.wav -l 0</code></pre>
 <hr />
+    <!----------------------------------------------------------------->
 
-    <div id="footer">
+    <div class="footer">
         <a href="index.html"><img src="./etc/logos/sppas-logo.png" alt="SPPAS"></a>
         <p class="copyright">
-            <a href="mailto:brigitte.bigi@gmail.com">Brigitte Bigi</a> &copy; 2011-2015
+            <a href="mailto:brigitte.bigi@gmail.com">Brigitte Bigi</a> &copy; 2011-2016
         </p>
     </div>
 
     <!----------------------------------------------------------------->
 
-    <a onclick="window.top.window.scrollTo(0,0);" href=""><span class="scrollT"></span></a>
+    <span class="scrollT"></span>
+    <script type="text/javascript" src="./etc/scripts/jquery.min.js"></script>
+    <script type="text/javascript" src="./etc/scripts/scrollT.js"></script>
+    <script type="text/javascript">
+        // On active la fonction permettant de faire apparaitre l'indicateur 
+        // de scroll pour remonter en haut de page.
+        $(document).ready(function() 
+        {
+            $(this).scrollT();
+        });
+    </script>
 
     <!----------------------------------------------------------------->
 </body>

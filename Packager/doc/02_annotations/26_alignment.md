@@ -15,13 +15,9 @@ SPPAS is working with HTK-ASCII acoustic models, trained from 16 bits,
 
 Speech segmentation was evaluated for French: in average, automatic speech 
 segmentation is 95% of times within 40ms compared to the manual segmentation
-(tested on read speech and on conversational speech). 
+and was tested on read speech and on conversational speech (Bigi 2014). 
 Details about these results are available in the slides of the 
 following reference:
-
->*Brigitte Bigi* (2014).
->**Automatic Speech Segmentation of French: Corpus Adaptation**.
->2nd Asian Pacific Corpus Linguistics Conference, p. 32, Hong Kong. 
 
 ![Alignment workflow](./etc/figures/alignworkflow.bmp)
 
@@ -30,19 +26,17 @@ tokenization.
 The name of the phonetization tier must contains the string "phon".
 The first tier that matches is used (case insensitive search). 
 
-The annotation provides one annotated file with 3 tiers:
+The annotation provides one annotated file with 2 tiers:
 
 * "PhonAlign", is the segmentation at the phone level;
-* "PhnTokAlign"  is the segmentation at the word level, with phonemes as labels; 
 * "TokensAlign" is the segmentation at the word level.
 
 ![SPPAS alignment output example](./etc/screenshots/alignment.png)
 
 The following options are available to configure alignment:
 
-* Expend option: If expend is checked, SPPAS will expend the last phoneme and the last token of each unit to the unit duration.
-* Extend option: If extend is checked, SPPAS will extend the last phoneme and the last token to the wav duration, otherwise SPPAS adds a silence.
-* Remove temporary files: keep only alignment result and remove intermediary files (they consists in one wav file per unit and a set of text files per unit).
-* Speech segmentation system can be either: julius, hvite or basic
-* Guess short pauses after each token
-
+* choose the speech segmentation system. It can be either: julius, hvite or basic
+* perform basic alignment if the aligner failed, instead such intervals are empty.
+* remove working directory will keep only alignment result: it will remove working files. Working directory includes one wav file per unit and a set of text files per unit.
+* create the Activity tier will append another tier with activities as intervals, i.e. speech, silences, laughter, noises...
+* create the PhnTokAlign will append anoter tier with intervals of the phonetization of each word.

@@ -1,24 +1,91 @@
+## About this documentation
+
+>This documentation will assume that you are using a relatively recent
+>version of SPPAS. There's no reason not to download the latest version
+>whenever released: it's easy and fast!
+
 ## What is SPPAS?
 
 
 ### Main features
 
-**SPPAS - Automatic Annotation of Speech** is a scientific computer software
-package written and maintained by Brigitte Bigi of
+**SPPAS - the automatic annotation and analyses of speech** is a scientific 
+computer software package written and maintained by Brigitte Bigi of
 the Laboratoire Parole et Langage, in Aix-en-Provence, France.
 
 Available for free, with open source code, there is simply no other package
 for linguists to simple use in automatic segmentation of speech.
 SPPAS is daily developed with the aim to provide a robust and reliable
-software for the automatic annotation and for the exploitation of
+software for the automatic annotation and for the analyses of
 annotated-data.
 
->This documentation will assume that you are using a relatively recent
->version of SPPAS.
+As the primary functionality, SPPAS proposes a set of automatic or 
+semi-automatic annotations of recordings. 
+Corpus annotation "can be defined as the practice of adding interpretative, 
+linguistic information to an electronic corpus of spoken and/or written 
+language data. 'Annotation' can also refer to the end-product of this process"
+(Leech, 1997). The annotation of recordings is concerned by many Linguistics 
+sub-fields as Phonetics, Prosody, Gestures or Discourse... 
+Corpora are annotated with detailed information at various linguistic levels 
+thanks to annotation software. As large multimodal corpora become prevalent, 
+new annotation and analysis requirements are emerging. The annotations must 
+be time-synchronized: annotations need to be time-aligned in order to be
+useful for purposes such as qualitative or quantitative analyses. Temporal 
+information makes it possible to describe behaviors from different subjects 
+that happen at the same time, and time-analysis of multi-level annotations 
+can reveal Linguistic structures.
+In the past, studies was mostly based on limited data. In current trends, 
+it is expected that models have to be built on the acoustic analysis of 
+large quantity of speech data with valid statistical analyses.
+Annotating is very labor-intensive and cost-ineffective since it 
+has to be performed manually by experienced researchers with many hours 
+of work. SPPAS can automatize annotations and allows users to save time.
+In order to use efficiently this automatic annotation software, a 
+rigorous methodology to collect data and to prepare them is expected.
+This implies a rigorous framework to ensure compatibilities between 
+annotations and time-saving. 
+The expected result is time-aligned data, for all annotated levels.
 
-There's no reason not to download the latest version whenever released:
-it's easy and fast!
+Indeed, "when multiple annotations are integrated into a single data set, 
+inter-relationships between the annotations can be explored both qualitatively
+(by using database queries that combine levels) and quantitatively 
+(by running statistical analyses or machine learning algorithms)" 
+(Chiarcos 2008). 
+Some special features are also offered in SPPAS for managing corpora of 
+annotated files; particularly, it includes a tool to filter multi-levels 
+annotations (Bigi and Saubesty, 2015). Some other tools are dedicated to 
+the analysis of time-aligned data; as for example to estimate descriptive 
+statistics, and a version of the Time Group Analyzer (Gibbon 2013), etc. 
 
+Linguistics annotation, especially when dealing with multiple domains, 
+makes use of different tools within a given project. 
+In recent years, many annotation software/tools have become available for 
+annotation of audio-video data. For a researcher looking for an annotation 
+software, it is difficult to select the most appropriate. 
+Due to the diversity of linguistic phenomena, annotation tools lead to a 
+variety of models, theories and formalisms. This diversity results in 
+heterogeneous  description formats, each tool developing its own framework.
+The choice of all annotation software is part of the annotation framework 
+and must be done carefully and of course before the creation of the corpus. 
+SPPAS annotation files are in a specific XML format (xra). Annotations 
+can be imported from and exported to a variety of other formats, including 
+Praat (TextGrid, PitchTier, IntensityTier), Elan (eaf), Transcriber (trs), 
+Annotation Pro (antx), Phonedit (mrk), Sclite (ctm, stm), HTK (lab, mlf), 
+subtitles formats (srt, sub) and CSV files. 
+
+Automatic annotations can be used either with a Command-line User Interface 
+or a Graphical User Interface. So, there's no specific difficulty by using 
+this software. Advanced users can also access directly the Application 
+Programming Interface.
+The program was implemented using the programming language Python 2.7.
+The only potential brake on the usage of automatic annotations of SPPAS is 
+the need to integrate it in a rigorous methodology for the corpus construction,
+annotations and analyses.
+
+Data analysis of SPPAS are mainly proposed in the Graphical User Interface.
+However, advanced users can also access directly the Application 
+Programming Interface, for example to estimate statistics or to manipulate
+annotated data.
 
 
 ### Copyright and Licenses
@@ -40,9 +107,11 @@ resource.
 
 ### User engagement: how to cite SPPAS
 
->By using SPPAS, **you agree to cite references in your publications**.
+>By using SPPAS, **you agree to cite the reference in your publications**.
 
-See the "References" chapter of this documentation.
+See the "References" chapter of this documentation to get the list or
+the home page <http://www.lpl-aix.fr/~bigi/> to get printable versions
+of the references.
 
 
 ### Need help
@@ -112,7 +181,7 @@ following projects or groups:
 
 Here is the list of contributors:
 
-* Since January 2011: Brigitte Bigi is the main author;
+* Since January 2011: **Brigitte Bigi** is the main author;
 * April 2012-June 2012: Alexandre Ranson;
 * April 2012-July 2012: Cazembé Henry;
 * April 2012-June 2013: Bastien Herbaut;

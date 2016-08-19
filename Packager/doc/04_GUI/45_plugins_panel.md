@@ -1,4 +1,4 @@
-## Plugins Panel
+## Plugins 
 
 This panel includes the icons of plugins that were previously installed. 
 To execute a plug-in, select file(s) in the File explorer, click on the icon
