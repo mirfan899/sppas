@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="author" content="Brigitte Bigi">
+  <title>SPPAS Documentation</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="etc/styles/sppas.css">
+      <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Jura">
+      <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Maven Pro">
+      <link rel="icon" href="../etc/icons/sppas.ico" />
+  
+  <script type="text/javascript">
+  
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-38055333-4']);
+    _gaq.push(['_trackPageview']);
+  
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  
+  </script>
+</head>
+<body>
+
+    <!----------------------------------------------------------------->
+
+    <div class="header">
+        <div class="title">
+            <div class="h1title">SPPAS</div>
+            <div class="h2title">the automatic annotation and analysis of speech</div>
+            <div class="h3title">a software tool by Brigitte Bigi, researcher at</div>
+            <div class="h3title">Laboratoire Parole et Langage - Aix-en-Provence - France</div>
+        </div>
+    </div>
+
+    <!----------------------------------------------------------------->
+
+    <div class="menu">
+        <a class="home"     href="index.html">Home</a>
+        <a class="install"  href="installation.html">Installation</a>
+        <a class="download" href="download.html">Download</a>
+        <a class="documentation" href="documentation.html">Documentation</a>
+        <a class="group"    href="https://groups.google.com/forum/?fromgroups#!forum/sppas-users">User's group</a>
+    </div>
+
+    <!----------------------------------------------------------------->
+<header>
+<h1 class="title">SPPAS Documentation</h1>
+<h2 class="author">Brigitte Bigi</h2>
+<h3 class="date">Version 1.7.8</h3>
+</header>
+<nav id="TOC">
+<ul>
+<li><a href="#analyses">Analyses</a><ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#dataroamer">DataRoamer</a></li>
+<li><a href="#audioroamer">AudioRoamer</a></li>
+<li><a href="#ipuscriber">IPUscriber</a></li>
+<li><a href="#vizualizer">Vizualizer</a></li>
+<li><a href="#datafilter">DataFilter</a><ul>
+<li><a href="#filtering-annotations-of-a-tier-singlefilter">Filtering annotations of a tier: SingleFilter</a></li>
+<li><a href="#filtering-on-time-relations-between-two-tiers">Filtering on time-relations between two tiers</a></li>
+</ul></li>
+<li><a href="#statistics">Statistics</a><ul>
+<li><a href="#descriptive-statistics">Descriptive statistics</a></li>
+<li><a href="#user-agreement">User agreement</a></li>
+<li><a href="#tga---time-group-analyzer">TGA - Time Group Analyzer</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<hr />
+<h1 id="analyses"><a href="#analyses">Analyses</a></h1>
+<h2 id="introduction"><a href="#introduction">Introduction</a></h2>
+<p>The analyses tools are useful for the analysis of annotated files: display the automatic alignments with the audio signal, estimates statistics on the annotations, filter the annotated data to get only the annotations you are interested in, etc.</p>
+<p>To execute a specific component, select file(s) in the file explorer, then click on the button of a component. It will open the component frame, and add the selected file(s) in the file manager of the component. Refer to the documentation of each component to know how to use it.</p>
+<figure>
+<img src="./etc/screenshots/CCP.png" alt="Component Panel (CCP)" /><figcaption>Component Panel (CCP)</figcaption>
+</figure>
+<p>Six tools are available:</p>
+<ol type="1">
+<li><code>DataRoamer</code> allows to explore the annotated files: cut/copy/paste/rename/duplicate tiers, move a tier from one file to another one, etc.</li>
+<li><code>AudioRoamer</code> allows to play and manage audio files: extract a channel, see clipping rates, change framerate, etc.</li>
+<li><code>IPUscribe</code> is useful to perform manual orthographic transcription.</li>
+<li><code>SppasEdit</code> displays audio files and annotated files, and is very useful to take a screenshot! Easy way to zoom/scroll, change colours, choose the tiers to display, etc;</li>
+<li><code>DataFilter</code> allows to select annotations: fix a set of filters to create new tiers with only the annotations you are interested in!</li>
+<li><code>Statistics</code> estimates the number of occurrences, the duration, etc. of the annotations, and allows to save in CSV (for Excel, OpenOffice, R, MatLab,...).</li>
+</ol>
+<p>All of such tools share the same style of frame:</p>
+<ul>
+<li>a menu, a toolbar,</li>
+<li>a list of files,</li>
+<li>a notebook to open files in tabs.</li>
+</ul>
+<h2 id="dataroamer"><a href="#dataroamer">DataRoamer</a></h2>
+<p><code>DataRoamer</code> displays detailed information about annotated files and allows to manage the tiers: cut/copy/paste/rename/duplicate tiers, move a tier from one file to another one, etc.</p>
+<figure>
+<img src="./etc/screenshots/DataRoamer.png" alt="Component: DataRoamer" /><figcaption>Component: DataRoamer</figcaption>
+</figure>
+<h2 id="audioroamer"><a href="#audioroamer">AudioRoamer</a></h2>
+<p><code>AudioRoamer</code> allows to play your audio files and to display general information about a digitalized audio-PCM file.</p>
+<p>Pulse-code modulation (PCM) is a method used to digitally represent sampled analog signals. In a PCM stream, the amplitude of the analog signal is sampled regularly at uniform intervals. A PCM stream has two basic properties that determine the stream's fidelity to the original analog signal:</p>
+<ol type="1">
+<li>the sampling rate, which is the number of times per second that samples are taken;</li>
+<li>the bit depth, which determines the number of possible digital values that can be used to represent each sample.</li>
+</ol>
+<p>Common sampling frequencies are 48 kHz as used with DVD format videos, or 44.1 kHz as used in Compact discs. Common sample depths are 8, 16 or 24 bits per sample. 16 is the most frequent one: this allow values to range from -32768 to 32767.</p>
+<p>Support for multichannel audio depends on file format and relies on interweaving or synchronization of streams.</p>
+<figure>
+<img src="./etc/screenshots/SndRoamer.png" alt="Component: AudioRoamer" /><figcaption>Component: AudioRoamer</figcaption>
+</figure>
+<h4 id="want-more"><a href="#want-more">Want more?</a></h4>
+<p><code>AudioRoamer</code> allows to display a large set of information for each channel. For a large file, it can take a while to estimate such information... For example, an audio file of 243 seconds (21.5Mb) is loaded in 35 seconds. <strong>So be patient! It's worth it!</strong></p>
+<figure>
+<img src="./etc/screenshots/SndRoamer-more.png" alt="Component: AudioRoamer if you want more" /><figcaption>Component: AudioRoamer if you want more</figcaption>
+</figure>
+<p>At the bottom of the window, it is possible to click on buttons to:</p>
+<ol type="1">
+<li>Save the channel currently displayed;</li>
+<li>Save a portion (from...to...) of the channel;</li>
+<li>Save the displayed information in a text file;</li>
+<li>Close the window.</li>
+</ol>
+<p>There are 3 main columns of information, related to amplitude, clipping and volume.</p>
+<h4 id="amplitude"><a href="#amplitude">Amplitude</a></h4>
+<p>The amplitude is a variable characterizing the sinusoidal oscillation of the digital-audio recording. It gives the deflection of a physical quantity from its neutral position (zero point) up to a positive or negative value. With sound waves, it is the extent to which air particles are displaced, and this amplitude of sound or sound amplitude is experienced as the loudness of sound. The loudness perception of a sound is determined by the amplitude of the sound waves − the higher the amplitude, the louder the sound or the noise.</p>
+<p>The first column of <code>AudioRoamer</code> Data Manager gives amplitude values of each channel of the PCM file:</p>
+<ul>
+<li>Number of frames: the number of samples, i.e. the number of amplitude values;</li>
+<li>Min/Max values: minimum and maximum amplitude values in the channel;</li>
+<li>Zero crossings</li>
+</ul>
+<p>The 5 information below can be modified and modifications can be saved separatly for each channel:</p>
+<ul>
+<li>Frame rate: the sampling frequency observed in the channel included in a list of possible values. If it is modified, the color is changed.</li>
+<li>Samp. width: the bit depth observed in the channel included in a list of possible values. If it is modified, the color is changed.</li>
+<li>Multiply values by: all samples in the original channel are multiplied by the floating-point value factor. Sample values are truncated in case of overflow.</li>
+<li>Add bias value: a bias value is added to each sample. Sample values wrap around in case of overflow.</li>
+<li>Remove offset value: the average over all values is deduced to each sample. Sample values wrap around in case of overflow.</li>
+</ul>
+<h4 id="clipping"><a href="#clipping">Clipping</a></h4>
+<p>The second column displays the clipping rates of the sample values given a factor. It will consider that all values outside the interval are clipped. The clipping rate is given as a percentage related to the total number of values.</p>
+<h4 id="volume"><a href="#volume">Volume</a></h4>
+<h5 id="rms"><a href="#rms">RMS:</a></h5>
+<p>Volume is estimated from root-mean-square (RMS) of the samples, i.e. sqrt(sum(S_i^2)/n). This is a measure of the power in an audio signal. Between parenthesis, the volume in dB is estimated as: 10.log10(rms/ref), where ref is a reference factor (energy quantity) ref = 1 ≡ 0 dB (power).</p>
+<p>Illustration: The level of −3 dB is equivalent to 50% (factor = 0.5) and the level of −6 dB is equivalent to 25% (factor = 1/4 = 0.25) of the initial power. For example, a RMS value of 350 gives a pover value equal to 25.45 dB compared to a RMS value of 700 that gives a power value of 28.45 dB.</p>
+<h5 id="automatic-detection-of-silences"><a href="#automatic-detection-of-silences">Automatic detection of silences:</a></h5>
+<p>Finally, the result of an automatic detection of silences is given. Of course, this information is given for information only, and is estimated with default parameters, which should be adapted.</p>
+<h2 id="ipuscriber"><a href="#ipuscriber">IPUscriber</a></h2>
+<p><code>IPUscriber</code> is useful to perform manual orthographic transcription.</p>
+<figure>
+<img src="./etc/screenshots/IPUscribe.png" alt="Component: IPUTranscriber" /><figcaption>Component: IPUTranscriber</figcaption>
+</figure>
+<p>To transcribe an IPU, click on the IPU box, play sound and write the corresponding text: refer to the transcription convention of this document. To manage sound, use green buttons just at the bottom of the IPUs list (from left to right):</p>
+<ul>
+<li>information about the file</li>
+<li>play sound</li>
+<li>auto-play sound</li>
+<li>pause</li>
+<li>stop</li>
+</ul>
+<p>The following keyboard shortcuts can also be used:</p>
+<ul>
+<li>to play: TAB</li>
+<li>to pause: ESC</li>
+<li>to stop: F1</li>
+</ul>
+<h2 id="vizualizer"><a href="#vizualizer">Vizualizer</a></h2>
+<p>This component is still under-development, some &quot;troubles/crashes&quot; can occur while using it... but the data will never been corrupted!!</p>
+<p><code>Vizualizer</code> displays speech files and annotated files, and is very useful to take a nice screenshot! Most of the screenshots of annotated data of this document were taken with it...</p>
+<figure>
+<img src="./etc/screenshots/SppasEdit.png" alt="Vizualizer analysis tool" /><figcaption>Vizualizer analysis tool</figcaption>
+</figure>
+<h2 id="datafilter"><a href="#datafilter">DataFilter</a></h2>
+<p><code>DataFilter</code> allows to select annotations: fix a set of filters to create new tiers with only the annotations you are interested in! This system is based on the creation of 2 different types of filters:</p>
+<ol type="1">
+<li>single filters, i.e. search in a/several tier(s) depending on the data content, the time values or the duration of each annotation;</li>
+<li>relation filters, i.e. search on annotations of a/several tier(s) in time-relation with annotations of another one.</li>
+</ol>
+<p>These later are applied on tiers of many kind of input files (TextGrid, eaf, trs, csv...). The filtering process results in a new tier, that can re-filtered and so on.</p>
+<figure>
+<img src="./etc/screenshots/DataFilter.png" alt="Component: DataFilter" /><figcaption>Component: DataFilter</figcaption>
+</figure>
+<h3 id="filtering-annotations-of-a-tier-singlefilter"><a href="#filtering-annotations-of-a-tier-singlefilter">Filtering annotations of a tier: SingleFilter</a></h3>
+<p>Pattern selection is an important part to extract data of a corpus and is obviously and important part of any filtering system. Thus, if the label of an annotation is a string, the following filters are proposed in DataFilter:</p>
+<ul>
+<li>exact match: an annotation is selected if its label strictly corresponds to the given pattern;</li>
+<li>contains: an annotation is selected if its label contains the given pattern;</li>
+<li>starts with: an annotation is selected if its label starts with the given pattern;</li>
+<li>ends with: an annotation is selected if its label ends with the given pattern.</li>
+</ul>
+<p>All these matches can be reversed to represent respectively: does not exactly match, does not contain, does not start with or does not end with. Moreover, this pattern matching can be case sensitive or not.</p>
+<p>For complex search, a selection based on regular expressions is available for advanced users.</p>
+<p>A multiple pattern selection can be expressed in both ways:</p>
+<ul>
+<li>enter multiple patterns at the same time (separated by commas) to mention the system to retrieve either one pattern or the other, etc.</li>
+<li>enter one pattern at a time and choose the appropriate button: &quot;Apply All&quot; or &quot;Apply any&quot;.</li>
+</ul>
+<figure>
+<img src="./etc/screenshots/DataFilter-label.png" alt="Frame to create a filter on annotation labels. In that case, filtering annotations that exactly match either a, @ or E" /><figcaption>Frame to create a filter on annotation labels. In that case, filtering annotations that exactly match either a, @ or E</figcaption>
+</figure>
+<p>Another important feature for a filtering system is the possibility to retrieve annotated data of a certain duration, and in a certain range of time in the timeline.</p>
+<figure>
+<img src="./etc/screenshots/DataFilter-duration.png" alt="Frame to create a filter on annotation durations. In that case, filtering annotations that are during more that 80 ms" /><figcaption>Frame to create a filter on annotation durations. In that case, filtering annotations that are during more that 80 ms</figcaption>
+</figure>
+<p>Search can also starts and/or ends at specific time values in a tier.</p>
+<figure>
+<img src="./etc/screenshots/DataFilter-time.png" alt="Frame to create a filter on annotation time values. In that case, filtering annotations that are starting after the 5th minute." /><figcaption>Frame to create a filter on annotation time values. In that case, filtering annotations that are starting after the 5th minute.</figcaption>
+</figure>
+<p>All the given filters are then summarized in the &quot;SingleFilter&quot; frame. To complete the filtering process, it must be clicked on one of the apply buttons and the new resulting tiers are added in the annotation file(s).</p>
+<p>In the given example:</p>
+<ul>
+<li>click on &quot;Apply All&quot; to get either a, @ or E vowels during more than 80ms, after the 5th minute.</li>
+<li>click on &quot;Apply Any&quot; to get a, @ or E vowels, and all annotations during more than 80 ms, and all annotations after the 5th minute.</li>
+</ul>
+<figure>
+<img src="./etc/screenshots/DataFilter-single.png" alt="DataFilter: SingleFilter frame" /><figcaption>DataFilter: SingleFilter frame</figcaption>
+</figure>
+<h3 id="filtering-on-time-relations-between-two-tiers"><a href="#filtering-on-time-relations-between-two-tiers">Filtering on time-relations between two tiers</a></h3>
+<p>Regarding the searching problem, linguists are typically interested in locating patterns on specific tiers, with the possibility to relate different annotations a tier from another. The proposed system offers a powerful way to request/extract data, with the help of Allen's interval algebra.</p>
+<p>In 1983 James F. Allen published a paper in which he proposed 13 basic relations between time intervals that are distinct, exhaustive, and qualitative:</p>
+<ul>
+<li>distinct because no pair of definite intervals can be related by more than one of the relationships;</li>
+<li>exhaustive because any pair of definite intervals are described by one of the relations;</li>
+<li>qualitative (rather than quantitative) because no numeric time spans are considered.</li>
+</ul>
+<p>These relations and the operations on them form Allen's interval algebra. These relations were extended to Interval-Tiers as Point-Tiers to be used to find/select/filter annotations of any kind of time-aligned tiers.</p>
+<p>For the sake of simplicity, only the 13 relations of the Allen's algebra are available in the GUI. But actually, we implemented the 25 relations proposed Pujari and al. (1999) in the INDU model. This model is fixing constraints on INtervals (with Allen's relations) and on DUration (duration are equals, one is less/greater than the other). Such relations are available while requesting with Python.</p>
+<p>At a first stage, the user must select the tiers to be filtered and click on &quot;RelationFilter&quot;. The second stage is to select the tier that will be used for time-relations.</p>
+<figure>
+<img src="./etc/screenshots/DataFilter-relationY.png" alt="Fix time-relation tier name" /><figcaption>Fix time-relation tier name</figcaption>
+</figure>
+<p>The next step consists in checking the Allen's relations that will be applied. The last stage is to fix the name of the resulting tier. The above screenshots illustrates how to select the first phoneme of each token, except for tokens that are containing only one phoneme (in this later case, the &quot;equal&quot; relation should be checked).</p>
+<figure>
+<img src="./etc/screenshots/DataFilter-relation.png" alt="DataFilter: RelationFilter frame" /><figcaption>DataFilter: RelationFilter frame</figcaption>
+</figure>
+<p>To complete the filtering process, it must be clicked on the &quot;Apply&quot; button and the new resulting tiers are added in the annotation file(s).</p>
+<h2 id="statistics"><a href="#statistics">Statistics</a></h2>
+<p><code>Statistics</code> allows to get descriptives statistics about a set of selected tiers. It also allows to estimate a user agreement rate (Kappa as a first stage) and includes TGA (Time Group Analyzer), originaly available at <a href="http://wwwhomes.uni-bielefeld.de/gibbon/TGA/">http://wwwhomes.uni-bielefeld.de/gibbon/TGA/</a>, a tool developped by Dafydd Gibbon, emeritus professor of English and General Linguistics at Bielefeld University.</p>
+<figure>
+<img src="./etc/screenshots/Statistics.png" alt="Component: Statistics" /><figcaption>Component: Statistics</figcaption>
+</figure>
+<h3 id="descriptive-statistics"><a href="#descriptive-statistics">Descriptive statistics</a></h3>
+<p>It allows to estimate the number of occurrences, the duration, etc. of the annotations of a set of selected tiers, and allows to save in CSV (for Excel, OpenOffice, R, MatLab,...). It offers a serie of sheets organized in a notebook. The first tab is displaying a summary of descriptive statistics of the set of given tiers. The other tabs are indicating one of the statistics over the given tiers. The followings are estimated:</p>
+<ul>
+<li>occurrences: the number of observations</li>
+<li>total durations: the sum of the durations</li>
+<li>mean durations: the arithmetic mean of the duration</li>
+<li>median durations: the median value of the distribution of durations</li>
+<li>std dev. durations: the standard deviation value of the distribution of durations</li>
+</ul>
+<p>All of them can be estimated on a single annotation label or on a serie of them. The lengh of this context can be optionally changed while fixing the &quot;N-gram&quot; value (available from 1 to 5), just above the sheets.</p>
+<p>Each displayed sheet can be saved as a CSV file, which is a useful file format to be read by R, Excel, OpenOffice, LibreOffice, and so... To do so, display the sheet you want to save and click on the button &quot;Save sheet&quot;, just below the sheets. If you plan to open this CSV file with Excel under Windows, it is recommended to change the encoding to UTF-16. For the other cases, UTF-8 is probably the most relevant.</p>
+<p>The annotation durations are commonly estimated on the Midpoint value, without taking the radius into account; see (Bigi et al, 2012) for explanations about the Midpoint/Radius. Optionnally, the duration can either be estimated by taking the vagueness into account, then check &quot;Add the radius value&quot; button, or by ignoring the vagueness and estimating only on the central part of the annotation, then check &quot;Deduct the radius value&quot;.</p>
+<p>For those who are estimating statistics on XRA files, you can either estimate stats only on the best label (the label with the higher score) or on all labels, i.e. the best label and all its alternatives (if any).</p>
+<figure>
+<img src="./etc/screenshots/Statistics-descriptives.png" alt="Component: Statistics" /><figcaption>Component: Statistics</figcaption>
+</figure>
+<h3 id="user-agreement"><a href="#user-agreement">User agreement</a></h3>
+<p>SPPAS integrates the estimation of the Cohen's Kappa. It is currently limited to the evaluation of this user agreement between labels of 2 tiers with the same number of intervals.</p>
+<h3 id="tga---time-group-analyzer"><a href="#tga---time-group-analyzer">TGA - Time Group Analyzer</a></h3>
+<blockquote>
+<p><em>Dafydd Gibbon</em> (2013). <strong>TGA: a web tool for Time Group Analysis</strong>, Tools ans Resources for the Analysis of Speech Prosody, Aix-en-Provence, France, pp. 66-69.</p>
+</blockquote>
+<p>The TGA is an online batch processing tool which provides a parametrised mapping from time-stamps in speech annotation files in various formats to a detailed analysis report with statistics and visualisations. TGA software calculates, inter alia, mean, median, rPVI, nPVI, slope and intercept functions within interpausal groups, provides visualisations of timing patterns, as well as correlations between these, and parses interpausal groups into hierarchies based on duration relations. Linear regression is selected mainly for the slope function, as a first approximation to examining acceleration and deceleration over large data sets.</p>
+<p>The TGA online tool was designed to support phoneticians in basic statistical analysis of annotated speech data. In practice, the tool provides not only rapid analyses but also the ability to handle larger data sets than can be handled manually.</p>
+<blockquote>
+<p><em>Katarzyna Klessa, Dafydd Gibbon</em> (2014). <strong>Annotation Pro + TGA: automation of speech timing analysis</strong>, 9th International conference on Language Resources and Evaluation (LREC), Reykjavik (Iceland). pp. 1499-1505, ISBN: 978-2-9517408-8-4.</p>
+</blockquote>
+<p>The integrated Annotation Pro + TGA tool incorporates some TGA features and is intended to support the development of more robust and versatile timing models for a greater variety of data.</p>
+<p>The integration of TGA statistical and visualisation functions into Annotation Pro+TGA results in a powerful computational enhancement of the<br />existing AnnotationPro phonetic workbench, for supporting experimental analysis and modelling of speech timing.</p>
+<p>So... What's the novelty...</p>
+<p>TGA is partly implemented in SPPAS. The Statistics component of SPPAS allows to estimates TGA within the SPPAS framework. It results in the following advantages:</p>
+<ul>
+<li>it can read either TextGrid, csv, Elan, HTK, or Sclite, or any file format supported by SPPAS,</li>
+<li>it can save TGA results either as a table in a CSV file or as an annotation file (of any of the format supported by SPPAS),</li>
+<li><p>it estimates 2 linear regressions (the y-axis is the duration in both cases):</p>
+<ol type="1">
+<li>with x-axis based on positions, like in the inline TGA</li>
+<li>with x-axis based on time-stamps, like in the AnnotationPro+TGA</li>
+</ol></li>
+</ul>
+<hr />
+    <!----------------------------------------------------------------->
+
+    <div class="footer">
+        <a href="index.html"><img src="./etc/logos/sppas-logo.png" alt="SPPAS"></a>
+        <p class="copyright">
+            <a href="mailto:brigitte.bigi@gmail.com">Brigitte Bigi</a> &copy; 2011-2016
+        </p>
+    </div>
+
+    <!----------------------------------------------------------------->
+
+    <span class="scrollT"></span>
+    <script type="text/javascript" src="./etc/scripts/jquery.min.js"></script>
+    <script type="text/javascript" src="./etc/scripts/scrollT.js"></script>
+    <script type="text/javascript">
+        // On active la fonction permettant de faire apparaitre l'indicateur 
+        // de scroll pour remonter en haut de page.
+        $(document).ready(function() 
+        {
+            $(this).scrollT();
+        });
+    </script>
+
+    <!----------------------------------------------------------------->
+</body>
+</html>

@@ -110,8 +110,8 @@ code > span.er { font-weight: bold; }
 </ul>
 </nav>
 <hr />
-<h1 id="scripting-with-python-and-sppas">Scripting with Python and SPPAS</h1>
-<h2 id="introduction">Introduction</h2>
+<h1 id="scripting-with-python-and-sppas"><a href="#scripting-with-python-and-sppas">Scripting with Python and SPPAS</a></h1>
+<h2 id="introduction"><a href="#introduction">Introduction</a></h2>
 <p>SPPAS implements an Application Programming Interface (API), named <em>annotationdata</em>, to deal with annotated files.</p>
 <p><em>annotationdata</em> API is a free and open source Python library to access and search data from annotated data. It can convert file formats like Elan’s EAF, Praat's TextGrid and others into a <code>Transcription</code> object and convert this object into anyone of these formats. This object allows unified access to linguistic data from a wide range sources.</p>
 <p>In this chapter, we are going to create Python scripts with the SPPAS Application Programming Interface <em>annotationdata</em> and then run them. This chapter includes examples and some exercises to practice. Solutions of the exercises are included in the package sub-directory <em>documentation</em>, then <em>solutions</em>.</p>
@@ -120,20 +120,20 @@ code > span.er { font-weight: bold; }
 <blockquote>
 <p>The Python Website: <a href="http://www.python.org">http://www.python.org</a></p>
 </blockquote>
-<h2 id="a-gentle-introduction-to-programming">A gentle introduction to programming</h2>
+<h2 id="a-gentle-introduction-to-programming"><a href="#a-gentle-introduction-to-programming">A gentle introduction to programming</a></h2>
 <p>This section is partially made of selected parts of <em>the Python website</em> and <em>wikipedia</em>.</p>
-<h3 id="definitions">Definitions</h3>
+<h3 id="definitions"><a href="#definitions">Definitions</a></h3>
 <p><em>Programming</em> is the process of writing instructions for computers to produce software for users. More than anything, it is a creative and problem-solving activity. Any problem can be solved in a large number of ways.</p>
 <p>An <em>algorithm</em> is the step-by-step solution to a certain problem: algorithms are lists of <em>instructions</em> which are followed step by step, from top to bottom and from left to right. To practice writing programs in a programming language, it is required first to think of a the problem and consider the logical solution before writing it out.</p>
 <p>Writing a program is done so using a programming language. Thankfully even though some languages are vastly different than others, most share a lot of common ground, so that once anyone knows his/her first language, other languages are much easier to pick up.</p>
 <p>Any program is made of statements. A <em>statement</em> is more casually (and commonly) known as a line of code is the smallest standalone element which expresses some action to be carried out while executing the program. It can be one of: comment, assignment, conditions, iterations, etc. Most languages have a fixed set of statements defined by the language.s</p>
 <p>Lines of code are grouped in <em>blocks</em>. Blocks are delimited by brackets, braces or by the indentation (depending on the programming language).</p>
 <p>The prompt indicates the system is ready to receive input. Most of times, it is represented by '&gt;'. In the following, the prompt is not mentioned.</p>
-<h3 id="comments-and-blocks">Comments and blocks</h3>
+<h3 id="comments-and-blocks"><a href="#comments-and-blocks">Comments and blocks</a></h3>
 <p>Comments are not required by the program to work. But comments are necessary! It is commonly admitted that about 25% to 30% of lines of a program must be comments.</p>
 <pre class="sourceCode python"><code class="sourceCode python"> <span class="co"># this is a comment in python, bash and others.</span>
  <span class="co"># I can write what I want after the # symbol :-)~</span></code></pre>
-<h3 id="variables-assignment-and-typing">Variables: Assignment and Typing</h3>
+<h3 id="variables-assignment-and-typing"><a href="#variables-assignment-and-typing">Variables: Assignment and Typing</a></h3>
 <p>A <em>variable</em> in any programming language is a named piece of computer memory, containing some information inside. When declaring a variable, it is usually also stated what kind of data it should carry. Assignment is setting a variable to a value. Dynamically typed languages, such as Python, allow automatic conversions between types according to defined rules.</p>
 <p>Python variables do not have to be explicitly declared: the declaration happens automatically when a value is assigned to a variable. In most languages, the equal sign (=) is used to assign values to variables.</p>
 <pre class="sourceCode python"><code class="sourceCode python"> a = <span class="dv">1</span>
@@ -160,7 +160,7 @@ code > span.er { font-weight: bold; }
 <p>Complex data types are often used, for example: arrays, lists, tree, hash-tables, etc. For example, with Python:</p>
 <pre class="sourceCode python"><code class="sourceCode python"> lst = [<span class="st">&#39;a&#39;</span>, <span class="st">&#39;bb&#39;</span>, <span class="st">&#39;ccc&#39;</span>, <span class="st">&#39;dddd&#39;</span>, <span class="st">&#39;eeeee&#39;</span> ]
  sublst = lst[<span class="dv">1</span>:<span class="dv">2</span>]</code></pre>
-<h3 id="basic-operators">Basic Operators</h3>
+<h3 id="basic-operators"><a href="#basic-operators">Basic Operators</a></h3>
 <p>Python Arithmetic Operators:</p>
 <pre class="sourceCode python"><code class="sourceCode python"> a = <span class="dv">10</span>
  b = <span class="dv">20</span>
@@ -169,7 +169,7 @@ code > span.er { font-weight: bold; }
  a * b  <span class="co"># Multiplication</span>
  a / b  <span class="co"># Division</span>
  <span class="dt">float</span>(a) / <span class="dt">float</span>(b) <span class="co"># try it! and compare with the previous one</span></code></pre>
-<h3 id="conditions">Conditions</h3>
+<h3 id="conditions"><a href="#conditions">Conditions</a></h3>
 <p>Decision making structures require that the programmer specify one or more conditions to be evaluated or tested by the program. The condition statement is a simple control that tests whether a statement is true or false. The condition can include a variable, or be a variable. If the condition is true, then an action occurs. If the condition is false, nothing is done.</p>
 <p>Conditions are performed with the help of comparison operators, as equal, less than, greater than, etc.</p>
 <p>In the following, we give example of conditions/comparisons in Python.</p>
@@ -196,15 +196,15 @@ code > span.er { font-weight: bold; }
 <li><code>not</code> Called Logical NOT Operator. Use to reverses the logical state of its operand. If a condition is true then Logical NOT operator will make false.</li>
 <li><code>in</code> Evaluates to true if it finds a variable in the specified sequence and false otherwise.</li>
 </ul>
-<h3 id="loops">Loops</h3>
+<h3 id="loops"><a href="#loops">Loops</a></h3>
 <p>A &quot;loop&quot; is a process in which a loop is initiated until a condition has been met.</p>
 <p>A <code>while</code> loop statement repeatedly executes a target statement as long as a given condition is true.</p>
 <p>The <code>for</code> loop has the ability to iterate over the items of any sequence, such as a list or a string. The following Python program prints items of a list on the screen:</p>
 <pre class="sourceCode python"><code class="sourceCode python"> l = [<span class="st">&#39;fruits&#39;</span>, <span class="st">&#39;viande&#39;</span>, <span class="st">&#39;poisson&#39;</span>, <span class="st">&#39;oeufs&#39;</span>]
  <span class="kw">for</span> item in l:
     <span class="dt">print</span> item</code></pre>
-<h2 id="scripting-with-python">Scripting with Python</h2>
-<h3 id="hello-world">Hello World!</h3>
+<h2 id="scripting-with-python"><a href="#scripting-with-python">Scripting with Python</a></h2>
+<h3 id="hello-world"><a href="#hello-world">Hello World!</a></h3>
 <p>We are going to create a very simple Python script and then run it. First of all, create a new folder (on your Desktop for example); you can name it &quot;pythonscripts&quot; for example.</p>
 <p>Execute the python IDLE (available in the Application-Menu of your operating system).</p>
 <figure>
@@ -281,8 +281,8 @@ code > span.er { font-weight: bold; }
 <blockquote>
 <p>Epydoc web site: <a href="http://epydoc.sourceforge.net/manual-epytext.html">http://epydoc.sourceforge.net/manual-epytext.html</a></p>
 </blockquote>
-<h3 id="functions">Functions</h3>
-<h4 id="simple-function">Simple function</h4>
+<h3 id="functions"><a href="#functions">Functions</a></h3>
+<h4 id="simple-function"><a href="#simple-function">Simple function</a></h4>
 <p>Now, we'll play with functions! So, create a copy of the file <code>skeleton.py</code>, and add the following function <code>print_vowels()</code>. This function declare a list named <code>vowels</code>. Each item of the list is a string representing a vowel in French encoded in SAMPA (at the phonetic level). Of course, such list can be overridden with any other set of phonemes. Then, the function print each item of the list, by means of a loop.</p>
 <table class="sourceCode python numberLines" startFrom="21"><tr class="sourceCode"><td class="lineNumbers"><pre>21
 22
@@ -309,7 +309,7 @@ code > span.er { font-weight: bold; }
 <img src="./etc/screenshots/python_idle_02.png" alt="Output of the second script" /><figcaption>Output of the second script</figcaption>
 </figure>
 <p>One can also create a function to print glides, another one to print affricates, and so on. Hum... this sounds a little bit fastidious! Lets update, or refactor, our printing function to <em>make it more generic</em>.</p>
-<h4 id="function-with-parameters">Function with parameters</h4>
+<h4 id="function-with-parameters"><a href="#function-with-parameters">Function with parameters</a></h4>
 <p>There are times when we need to do something different with only slight variation each time. Rather than writing the same code with only minor differences over and over, we group the code together and use a mechanism to allow slight variations each time we use it. A function is a smaller program with a specific job. In most languages they can be &quot;passed&quot; data, called parameters, which allow us to change the values they deal with.</p>
 <p>Notice that the number of parameters of a function is not limited!</p>
 <p>In the example, we can replace the <code>print_vowels()</code> function and the <code>print_plosives()</code> function by a single function <code>print_list(mylist)</code> where <code>mylist</code> can be any list containing strings or characters. If the list contains other typed-variables (as int or float), they must be converted to string to be printed out.</p>
@@ -339,7 +339,7 @@ code > span.er { font-weight: bold; }
         <span class="dt">print</span> message,<span class="dt">str</span>(element)
 
 <span class="co"># ----------------------------------------------------------------------------</span></code></pre></td></tr></table>
-<h4 id="function-return-values">Function return values</h4>
+<h4 id="function-return-values"><a href="#function-return-values">Function return values</a></h4>
 <p>Languages usually have a way to return information from a function, and this is called the return data. This is done with the <code>return</code> key-word. The function stops at this stage, even if some code is following in the block.</p>
 <p>In the following example, the function would return a boolean value (True if the given string has no character).</p>
 <table class="sourceCode python numberLines" startFrom="21"><tr class="sourceCode"><td class="lineNumbers"><pre>21
@@ -354,8 +354,8 @@ code > span.er { font-weight: bold; }
 <figure>
 <img src="./etc/screenshots/python_idle_03.png" alt="Expected output of the 3rd script" /><figcaption>Expected output of the 3rd script</figcaption>
 </figure>
-<h3 id="readingwriting-files">Reading/Writing files</h3>
-<h4 id="reading-data-from-a-file">Reading data from a file</h4>
+<h3 id="readingwriting-files"><a href="#readingwriting-files">Reading/Writing files</a></h3>
+<h4 id="reading-data-from-a-file"><a href="#reading-data-from-a-file">Reading data from a file</a></h4>
 <p>Now, we'll try to get data from a file. Create a new empty file with the following lines (and add as many lines as you want), then, save it with the name &quot;phonemes.csv&quot; (by using UTF-8 encoding):</p>
 <pre><code>occlusives ; b ; b 
 occlusives ; d ; d 
@@ -432,7 +432,7 @@ vowels ; e ; e </code></pre>
         <span class="dt">print</span> l.strip()</code></pre></td></tr></table>
 <p>See the file 05_reading_file.py for the whole program, and try-it (do not forget to change the file name to your own file!).</p>
 <p>Notice that Python <code>os</code> module provides methods that can help you to perform file-processing operations, such as renaming and deleting files. See Python documentation for details: <a href="https://docs.python.org/2/">https://docs.python.org/2/</a></p>
-<h4 id="writing-files">Writing files</h4>
+<h4 id="writing-files"><a href="#writing-files">Writing files</a></h4>
 <p>Writing a file requires to open it in a writing mode:</p>
 <ul>
 <li>'w' is the mode used to write; it will erase any existing file;</li>
@@ -457,7 +457,7 @@ file_output = codecs.<span class="dt">open</span>(file_location+<span class="st"
 
 <span class="kw">for</span> l in file_stream:
     file_output.write(l)</code></pre></td></tr></table>
-<h3 id="dictionaries">Dictionaries</h3>
+<h3 id="dictionaries"><a href="#dictionaries">Dictionaries</a></h3>
 <p>A dictionary is another container type that can store any number of Python objects, including other container types. Dictionaries consist of pairs (called items) of keys and their corresponding values. Each key is separated from its value by a colon (:), the items are separated by commas, and the whole thing is enclosed in curly braces. An empty dictionary without any items is written with just two curly braces, like this: {}. To access dictionary elements, you can use the familiar square brackets along with the key to obtain its value.</p>
 <p>The next example is a portion of a program that can be used to convert a list of phonemes from SAMPA to IPA.</p>
 <p>To get values from a dictionary, one way is to use directly <code>dict[key]</code>, but it is required to test if key is really in dict, otherwise, Python will stop the program and send an error. Alternatively, the <code>get</code> function can be used, as <code>dict.get(key, default=None)</code> where default is the value to return if the key is missing. In the previous example, it is possible to replace <code>sampadict[phone]</code> by <code>sampadict.get(phone, phone)</code>. Two other functions are useful while using dictionaries:</p>
@@ -465,7 +465,7 @@ file_output = codecs.<span class="dt">open</span>(file_location+<span class="st"
 <li>dict.keys() return a list with the keys</li>
 <li>dict.values() return a list with values</li>
 </ul>
-<h3 id="exercises-to-practice">Exercises to practice</h3>
+<h3 id="exercises-to-practice"><a href="#exercises-to-practice">Exercises to practice</a></h3>
 <blockquote>
 <p>Exercise 1: How many vowels are in a list of phonemes? (solution: 06_list.py)</p>
 </blockquote>
@@ -475,14 +475,14 @@ file_output = codecs.<span class="dt">open</span>(file_location+<span class="st"
 <blockquote>
 <p>Exercise 3: Compare 2 sets of data using NLP techniques (Zipf law, Tf.Idf) (solution: 08_counter.py)</p>
 </blockquote>
-<h2 id="the-api-of-sppas-to-manage-data">The API of SPPAS to manage data</h2>
-<h3 id="overview">Overview</h3>
+<h2 id="the-api-of-sppas-to-manage-data"><a href="#the-api-of-sppas-to-manage-data">The API of SPPAS to manage data</a></h2>
+<h3 id="overview"><a href="#overview">Overview</a></h3>
 <p>We are now going to write Python scripts with the help of the <em>annotationdata</em> API included in SPPAS. This API is useful to read/write and manipulate files annotated from various annotation tools as Praat or Elan for example.</p>
 <p>First of all, it is important to understand the data structure included in the API to be able to use it efficiently. Details can be found in the following publication:</p>
 <blockquote>
 <p><em>Brigitte Bigi, Tatsuya Watanabe, Laurent Prévot</em> (2014). <strong>Representing Multimodal Linguistics Annotated data</strong>, Proceedings of the 9th edition of the Language Resources and Evaluation Conference, 26-31 May 2014, Reykjavik, Iceland.</p>
 </blockquote>
-<h3 id="why-developing-a-new-api">Why developing a new API?</h3>
+<h3 id="why-developing-a-new-api"><a href="#why-developing-a-new-api">Why developing a new API?</a></h3>
 <p>In the Linguistics field, multimodal annotations contain information ranging from general linguistic to domain specific information. Some are annotated with automatic tools, and some are manually annotated. Linguistics annotation, especially when dealing with multiple domains, makes use of different tools within a given project. Many tools and frameworks are available for handling rich media data. The heterogeneity of such annotations has been recognized as a key problem limiting the interoperability and re-usability of NLP tools and linguistic data collections.</p>
 <p>In annotation tools, annotated data are mainly represented in the form of &quot;tiers&quot; or &quot;tracks&quot; of annotations. The genericity and flexibility of &quot;tiers&quot; is appropriate to represent any multimodal annotated data because it simply maps the annotations on the timeline. In most tools, tiers are series of intervals defined by:</p>
 <ul>
@@ -493,7 +493,7 @@ file_output = codecs.<span class="dt">open</span>(file_location+<span class="st"
 <p>In Praat, tiers can be represented by a time point and a label (such tiers are named PointTiers and IntervalTiers). Of course, depending on the annotation tool, the internal data representation and the file formats are different. For example, in Elan, unlabelled intervals are not represented nor saved. On the contrary, in Praat, tiers are made of a succession of consecutive intervals (labelled or un-labelled).</p>
 <p>The <em>annotationdata</em> API used for data representation is based on the common set of information all tool are currently sharing. This allows to manipulate all data in the same way, regardless of the file type.</p>
 <p>The API supports to merge data and annotation from a wide range of heterogeneous data sources for further analysis.</p>
-<h3 id="the-api-class-diagram">The API class diagram</h3>
+<h3 id="the-api-class-diagram"><a href="#the-api-class-diagram">The API class diagram</a></h3>
 <p>After opening/loading a file, its content is stored in a <code>Transcription</code> object. A <code>Transcription</code> has a name, and a list of <code>Tier</code> objects. This list can be empty. Notice that in a <code>Transcription</code>, two tiers can't have the same name.</p>
 <p>A <code>Tier</code> has a name, and a list of <code>Annotation</code> objects. It also contains a set of meta-data and it can be associated to a controlled vocabulary.</p>
 <p>A common solution to represent annotation schemes is to put them in a tree. One advantage in representing annotation schemes through those trees, is that the linguists instantly understand how such a tree works and can give a representation of “their” annotation schema. However, each annotation tool is using its own formalism and it is unrealistic to be able to create a generic scheme allowing to map all of them. SPPAS implements another solution that is compatible with trees and/or flat structures (as in Praat). Actually, subdivision relations can be established between tiers. For example, a tier with phonemes is a subdivision reference for syllables, or for tokens, and tokens are a subdivision reference for the orthographic transcription in IPUs. Such subdivisions can be of two categories: alignment or constituency. This data representation allows to keep the Tier representation, which is shared by most of the annotation tools and it allows too to map data on a tree if required: the user can freely create tiers with any names and arrange them in such custom and very easy hierarchy system.</p>
@@ -510,9 +510,9 @@ file_output = codecs.<span class="dt">open</span>(file_location+<span class="st"
 <blockquote>
 <p><strong>The whole API documentation is available at the following URL:</strong> <a href="http://www.sppas.org/manual/module-tree.html">http://www.sppas.org/manual/module-tree.html</a></p>
 </blockquote>
-<h4 id="label-representation">Label representation</h4>
+<h4 id="label-representation"><a href="#label-representation">Label representation</a></h4>
 <p>Each annotation holds at least one label, mainly represented in the form of a string, freely written by the annotator or selected from a list of categories, depending on the annotation tool. The <em>&quot;annotationdata&quot;</em> API, aiming at representing any kind of linguistic annotations, allows to assign a score to each label, and allows multiple labels for one annotation. The API also allows to define a controlled vocabulary.</p>
-<h4 id="location-representation">Location representation</h4>
+<h4 id="location-representation"><a href="#location-representation">Location representation</a></h4>
 <p>In the <em>annotationdata</em> API, a <code>TimePoint</code> is considered <em>as an imprecise value</em>. It is possible to characterize a point in a space immediately allowing its vagueness by using:</p>
 <ul>
 <li>a midpoint value (center) of the point;</li>
@@ -521,13 +521,13 @@ file_output = codecs.<span class="dt">open</span>(file_location+<span class="st"
 <figure>
 <img src="./etc/figures/timepoint-represent.png" alt="Representation of a TimePoint" /><figcaption>Representation of a TimePoint</figcaption>
 </figure>
-<h4 id="example">Example</h4>
+<h4 id="example"><a href="#example">Example</a></h4>
 <p>The screenshot below shows an example of multimodal annotated data, imported from 3 different annotation tools. Each <code>TimePoint</code> is represented by a vertical dark-blue line with a gradient color to refer to the radius value (0ms for prosody, 5ms for phonetics, discourse and syntax and 40ms for gestures in this screenshot).</p>
 <figure>
 <img src="./etc/screenshots/Grenelle.png" alt="Example of multimodal data" /><figcaption>Example of multimodal data</figcaption>
 </figure>
-<h2 id="creating-scripts-with-the-sppas-api">Creating scripts with the SPPAS API</h2>
-<h3 id="preparing-the-data">Preparing the data</h3>
+<h2 id="creating-scripts-with-the-sppas-api"><a href="#creating-scripts-with-the-sppas-api">Creating scripts with the SPPAS API</a></h2>
+<h3 id="preparing-the-data"><a href="#preparing-the-data">Preparing the data</a></h3>
 <p>If it is not already done, create a new folder (on your Desktop for example); you can name it &quot;pythonscripts&quot; for example.</p>
 <p>Open a File Explorer window and go to the SPPAS folder location. Then, open the <code>sppas</code> directory then <code>src</code> sub-directory. Copy the <code>annotationdata</code> folder then paste-it into the newly created <code>pythonscripts</code> folder.</p>
 <p>Open the python IDLE and create a new empty file. Copy the following code in this newly created file, then save the file in the pythonscripts folder. By convention, Python source files end with a .py extension; I suggest skeleton-sppas.py. It will allow to use the SPPAS API in your script.</p>
@@ -599,7 +599,7 @@ file_output = codecs.<span class="dt">open</span>(file_location+<span class="st"
 <li>Keyboard: F5</li>
 </ul>
 <p>It will do... nothing! But now, we are ready to do something with the API!</p>
-<h3 id="readwrite-annotated-files">Read/Write annotated files</h3>
+<h3 id="readwrite-annotated-files"><a href="#readwrite-annotated-files">Read/Write annotated files</a></h3>
 <p>Open/Read a file of any format (TextGrid, Elan, Transcriber, ...) and store it into a <code>Transcription</code> object instance, named <code>trs</code> in the following code, is mainly done as:</p>
 <table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
 </pre></td><td class="sourceCode"><pre><code class="sourceCode python">trs = annotationdata.io.read(filename_in)</code></pre></td></tr></table>
@@ -635,7 +635,7 @@ file_output = codecs.<span class="dt">open</span>(file_location+<span class="st"
 <blockquote>
 <p>Practice: Write a script to convert a TextGrid file into CSV (solution: 10_read_write.py)</p>
 </blockquote>
-<h3 id="manipulating-a-transcription-object">Manipulating a Transcription object</h3>
+<h3 id="manipulating-a-transcription-object"><a href="#manipulating-a-transcription-object">Manipulating a Transcription object</a></h3>
 <p>The most useful functions used to manage a Transcription object are:</p>
 <ul>
 <li><code>Append(tier)</code>, <code>Pop()</code></li>
@@ -655,7 +655,7 @@ file_output = codecs.<span class="dt">open</span>(file_location+<span class="st"
 <blockquote>
 <p>Practice: Write a script to select a set of tiers of a file and save them into a new file (solution: 11_transcription.py).</p>
 </blockquote>
-<h3 id="manipulating-a-tier-object">Manipulating a Tier object</h3>
+<h3 id="manipulating-a-tier-object"><a href="#manipulating-a-tier-object">Manipulating a Tier object</a></h3>
 <p>As it was already said, a tier is made of a name and a list of annotations. To get the name of a tier, or to fix a new name, the easier way is to use tier.GetName().</p>
 <p>Test the following code into a script:</p>
 <table class="sourceCode python numberLines" startFrom="15"><tr class="sourceCode"><td class="lineNumbers"><pre>15
@@ -684,7 +684,7 @@ tier.SetName( <span class="st">&quot;toto&quot;</span> )
 </blockquote>
 <p><strong>Goodies:</strong></p>
 <p>the file <code>12_tiers_info_wx.py</code> proposes a GUI to print information of one file or all files of a directory, and to ask the file/directory name with a dialogue frame, instead of fixing it in the script. This script can be executed simply by double-clicking on it in the File Explorer of your system. Many functions of this script can be cut/pasted in any other script.</p>
-<h3 id="main-information-on-annotationlocationlabel-objects">Main information on Annotation/Location/Label objects</h3>
+<h3 id="main-information-on-annotationlocationlabel-objects"><a href="#main-information-on-annotationlocationlabel-objects">Main information on Annotation/Location/Label objects</a></h3>
 <p>The most useful function used to manage an Annotation object are:</p>
 <ul>
 <li><code>IsSilence()</code>, <code>IsLabel()</code></li>
@@ -713,15 +713,15 @@ tier.SetName( <span class="st">&quot;toto&quot;</span> )
     ann.GetLocation().GetBegin().SetValue( <span class="fl">0.123</span> )
     ann.GetLocation().GetEnd().SetValue( <span class="fl">0.234</span> )    </code></pre></td></tr></table>
 <p>If something forbidden is attempted, the object will raise an Exception. This means that the program will stop (except if the program &quot;raises&quot; the exception).</p>
-<h3 id="exercises">Exercises</h3>
+<h3 id="exercises"><a href="#exercises">Exercises</a></h3>
 <blockquote>
 <p>Exercise 1: Write a script to print information about annotations of a tier (solution: 13_tiers_info.py)</p>
 </blockquote>
 <blockquote>
 <p>Exercise 2: Write a script to estimates the frequency of a specific annotation label in a file/corpus (solution: 14_freq.py)</p>
 </blockquote>
-<h3 id="search-in-annotations-filters">Search in annotations: Filters</h3>
-<h4 id="overview-1">Overview</h4>
+<h3 id="search-in-annotations-filters"><a href="#search-in-annotations-filters">Search in annotations: Filters</a></h3>
+<h4 id="overview-1"><a href="#overview-1">Overview</a></h4>
 <p>This section focuses on the problem of <em>searching and retrieving</em> data from annotated corpora.</p>
 <p>The filter implementation can only be used together with the <code>Tier()</code> class. The idea is that each <code>Tier()</code> can contain a set of filters, that each reduce the full list of annotations to a subset.</p>
 <p>SPPAS filtering system proposes 2 main axis to filter such data:</p>
@@ -731,7 +731,7 @@ tier.SetName( <span class="st">&quot;toto&quot;</span> )
 </ul>
 <p>A set of filters can be created and combined to get the expected result, with the help of the boolean function and the relation function.</p>
 <p>To be able to apply filters to a tier, some data must be loaded first. First, you have to create a new <code>Transcription()</code> when loading a file. In the next step, you have to select the tier to apply filters on. Then, if the input file was not XRA, it is widely recommended to fix a radius value depending on the annotation type. Now everything is ready to create filters for these data.</p>
-<h4 id="creating-a-boolean-function">Creating a boolean function</h4>
+<h4 id="creating-a-boolean-function"><a href="#creating-a-boolean-function">Creating a boolean function</a></h4>
 <p>In the following, let <code>Bool</code> and <code>Rel</code> two predicates, a tier <code>T</code>, and a filter <code>f</code>.</p>
 <p>Pattern selection is an important part to extract data of a corpus. In this case, each filter consists of search terms for each of the tiers that were loaded from an input file. Thus, the following matching predicates are proposed to select annotations (intervals or points) depending on their label. Notice that <code>P</code> represents the text pattern to find:</p>
 <ul>
@@ -780,7 +780,7 @@ flab = LabelFilter(predicate,ft)
 <span class="co"># to get filtered data from the filter:</span>
 tier = flab.Filter()
 tier.SetName( <span class="st">&#39;Filtered with a-e-0.8&#39;</span> )</code></pre></td></tr></table>
-<h4 id="creating-a-relation-function">Creating a relation function</h4>
+<h4 id="creating-a-relation-function"><a href="#creating-a-relation-function">Creating a relation function</a></h4>
 <p>Relations between annotations is crucial if we want to extract multimodal data. The aim here is to select intervals of a tier depending on what is represented in another tier.</p>
 <p>We implemented the 13 Allen interval relations: before, after, meets, met by, overlaps, overlapped by, starts, started by, finishes, finished by, contains, during and equals. Actually, we implemented the 25 relations proposed in the INDU model. This model is fixing constraints on INtervals (with Allen's relations) and on DUration (duration are equals, one is less/greater than the other).</p>
 <p>[List of Allen interval relations]&lt;./etc/screenshots/allen.png&gt;</p>
@@ -807,7 +807,7 @@ ftoks = Filter(tiertoks)
 <span class="co"># Create the filter with the relation function (link both filters)</span>
 predicate = Rel(<span class="st">&quot;overlaps&quot;</span>) | Rel(<span class="st">&quot;overlappedby&quot;</span>)
 f = RelationFilter(relation, fsyll, ftoks)</code></pre></td></tr></table>
-<h3 id="exercises-1">Exercises</h3>
+<h3 id="exercises-1"><a href="#exercises-1">Exercises</a></h3>
 <blockquote>
 <p>Exercise 1: Create a script to filter annotated data on their label (solution: 15_annotation_label_filter.py).</p>
 </blockquote>
