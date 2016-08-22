@@ -4,5 +4,4 @@
 to manage the tiers: cut/copy/paste/rename/duplicate tiers, move a tier from 
 one file to another one, etc.
 
-![Component: DataRoamer](./etc/screenshots/DataRoamer.png)
-
+![DataRoamer: explore annotated files](./etc/screenshots/DataRoamer.png)

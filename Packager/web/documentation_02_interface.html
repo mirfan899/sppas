@@ -61,7 +61,7 @@
 <nav id="TOC">
 <ul>
 <li><a href="#interface">Interface</a><ul>
-<li><a href="#getting-started">Getting started</a></li>
+<li><a href="#introduction">Introduction</a></li>
 <li><a href="#gui-main-frame">GUI Main frame</a><ul>
 <li><a href="#launch-sppas">Launch SPPAS</a></li>
 <li><a href="#the-tips">The tips</a></li>
@@ -78,13 +78,15 @@
 </nav>
 <hr />
 <h1 id="interface"><a href="#interface">Interface</a></h1>
-<h2 id="getting-started"><a href="#getting-started">Getting started</a></h2>
+<h2 id="introduction"><a href="#introduction">Introduction</a></h2>
 <p>The current chapter describes how to use SPPAS via the Graphical User Interface (GUI) and the Command-line User Interface (CLI). Each capability implemented in SPPAS corresponds to a program that can be invoked either by the GUI or the CLI.</p>
 <h2 id="gui-main-frame"><a href="#gui-main-frame">GUI Main frame</a></h2>
 <h3 id="launch-sppas"><a href="#launch-sppas">Launch SPPAS</a></h3>
-<p>Under Windows, once the SPPAS package is opened in the File Explorer, <em>double-click on the <code>sppas.bat</code> file</em>.</p>
-<p>Under MacOS or Linux, once the SPPAS package is opened in the Finder/File Explorer, <em>double-click on the <code>sppas.command</code> file</em>. The program will first check the version of wxpython and eventually ask to update.</p>
-<p>Then, the main windows will open automatically. It is made of a menu, a title, the tips, the list of files and the action buttons.</p>
+<p>Under Windows, once the SPPAS package is opened in the File Explorer, double-click on the <code>sppas.bat</code> file. In recent versions of Windows (e.g. 10), the first time you try to run SPPAS by clicking on sppas.bat you may get a message: &quot;&quot; The solution is to click on the text &quot;&quot;. It will display a button to launch the program, then clik on it.</p>
+<p>Under MacOS, once the SPPAS package is opened in the Finder/File Explorer, double-click on the <code>sppas.command</code> file. In recent versions of MacOs X (e.g. 10.11 El Capitan), the first time you try to run SPPAS by clicking on sppas.command you may get a message: &quot;sppas.command can't be opened because it is from an unidentified developer.&quot;. The solution is to run SPPAS with a right click (alt-click) on sppas.command. This time you will get a message: &quot;sppas.command is from an unidentified developer. Are you sure you want to open it?&quot; Click on Open and SPPAS will now run. It will also now work each time you try to run it.</p>
+<p>Under Linux, once the SPPAS package is opened in the Finder/File Explorer, double-click on the <code>sppas.command</code> file.</p>
+<p>The program will first check the version of wxpython and eventually ask to update. It will then check if the julius program can be accessed.</p>
+<p>The main windows will open automatically. It is made of a menu (left), a title (top), the tips (middle), the list of files (left-middle), and the action buttons (right).</p>
 <figure>
 <img src="./etc/screenshots/sppas-1-8-0.png" alt="SPPAS Main Frame of version 1.8.0" /><figcaption>SPPAS Main Frame of version 1.8.0</figcaption>
 </figure>
@@ -92,11 +94,11 @@
 <figure>
 <img src="./etc/screenshots/tips.png" alt="The tips included in the main frame" /><figcaption>The tips included in the main frame</figcaption>
 </figure>
-<p>The frame includes message tips that are picked up randomly and printed to help users. Click on the button <code>Next Tip</code> to read another message, or click on the top-left button to close the tips frame. The <code>Settings</code> allows to show/hide tips at start-up. If a user wants to suggest new tips to help the other users, they have to be sent to the author by e-mail. They will be included in the next version.</p>
+<p>The frame includes message tips that are picked up randomly and printed to help users. Click on the button <code>Next Tip</code> to read another message, or click on the top-left button to close the tips frame. The <code>Settings</code> allows to show/hide tips at start-up. If you want to suggest new tips to help the other users, they have to be sent to the author by e-mail. They will be included in the next version.</p>
 <h3 id="the-menu"><a href="#the-menu">The menu</a></h3>
-<p>It allows to exit the program, declare an issue and contact the author.</p>
-<p>The <code>Exit</code> button closes all SPPAS frames <em>properly</em>. Please, do not kill SPPAS by clicking on the arrow of the windows manager! <strong>Use this Exit button</strong> to close SPPAS.</p>
-<p>To declare an issue, click on the bug button of the menu, then your default web browser will be opened at the appropriate URL to do this.</p>
+<p>The menu is located at the left-side of the window. At its top, a button allows to exit the program, and at bottom you can declare an issue or contact the author.</p>
+<p>The <code>Exit</code> button closes all SPPAS frames properly. Please, do not kill SPPAS by clicking on the arrow of the windows manager! <strong>Use this Exit button</strong> to close SPPAS.</p>
+<p>To declare an issue, click on the bug button of the menu, then your default web browser will be opened at the appropriate URL. Take a quick look at the list of already declared issues and if any, click on the green button &quot;New Issue&quot;.</p>
 <p>To contact the author, replace the text &quot;Describe what you did here...&quot; by your own comment, question or suggestion and choose how to send the e-mail: with your own default mailer, with gmail (opened in your web browser) or by another e-mail client. Then, close the frame by clicking on the &quot;Close&quot; button.</p>
 <figure>
 <img src="./etc/screenshots/feedback.png" alt="The Feedback Frame" /><figcaption>The Feedback Frame</figcaption>
@@ -111,7 +113,7 @@
 <li>a single click on a file name highlights and selects the chosen file (displayed in the list).</li>
 <li>a single click on a directory name highlights and selects the chosen directory (displayed in the list).</li>
 </ul>
-<p>Like in any other file explorer, while clicking and pressing the &quot;CTRL&quot; key (&quot;COMMAND&quot; on MacOS) on the keyboard, you can select multiple files and/or directories. Idem with the &quot;SHIFT&quot; key. The &quot;F5&quot; shortcut allows to refresh the list.</p>
+<p>Like in any other file explorer, while clicking and pressing the &quot;CTRL&quot; key (&quot;COMMAND&quot; on MacOS) on the keyboard, you can select multiple files and/or directories. Idem with the &quot;SHIFT&quot; key.</p>
 <h4 id="add-files."><a href="#add-files.">Add file(s).</a></h4>
 <p>A single-click on the <code>Add File</code> button opens a frame that allows to select the files to get. By default, only &quot;wav&quot; files are proposed. If you select <em>a wav file(s)</em>, all files with the same name will be automatically added into the file explorer. It is possible to change the wildcard of this frame and to select each file to add. In both cases, only files with an appropriate extension will be added in the file explorer.</p>
 <figure>
@@ -156,9 +158,12 @@
 <h3 id="help"><a href="#help">Help</a></h3>
 <p>The <code>Help</code> action button opens the documentation and allows to browse in the chapters and sections.</p>
 <figure>
-<img src="./etc/screenshots/helpbrowser.png" alt="The Help Browser Frame" /><figcaption>The Help Browser Frame</figcaption>
+<img src="./etc/screenshots/help.png" alt="The Help Browser Frame" /><figcaption>The Help Browser Frame</figcaption>
 </figure>
 <h3 id="plugins"><a href="#plugins">Plugins</a></h3>
+<blockquote>
+<p>The plugins are currently disabled. They will be turned on later.</p>
+</blockquote>
 <h4 id="installing-a-plugin"><a href="#installing-a-plugin">Installing a Plugin</a></h4>
 <p>To install a plugin, follow this workflow:</p>
 <ol type="1">
@@ -174,9 +179,6 @@
 </figure>
 <h4 id="using-a-plugin"><a href="#using-a-plugin">Using a Plugin</a></h4>
 <p>To execute a plug-in, select file(s) in the File explorer, click on the icon of the plug-in and follow instructions of the plugged program.</p>
-<figure>
-<img src="./etc/screenshots/PPP.png" alt="Plugins Panel with two plug-ins: TierMapping and MarsaTag" /><figcaption>Plugins Panel with two plug-ins: TierMapping and MarsaTag</figcaption>
-</figure>
 <h2 id="cli"><a href="#cli">CLI</a></h2>
 <p>A command-line interface (CLI), also known as command-line user interface, is a means of interacting with a computer program where the user issues commands to the program in the form of successive lines of text (command lines). Command-line interfaces provide a more concise and powerful means to control the program than the GUI. Operating system command line interfaces are called a command-line interpreter, command processor or shell. It displays a prompt, accept a &quot;command line&quot; typed by the user terminated by the Enter key, then execute the specified command and provide textual display of results or error messages. When a shell is active a program is typically invoked by typing its name followed by command-line arguments (if any).</p>
 <p>Such programs are located in the <code>bin</code> sub-directory of the <code>sppas</code> directory included in the SPPAS package. It is usual for a program to be able to display a brief summary of its parameters. Each program included in SPPAS provides its usage by using the option <code>--help</code>, as for example:</p>

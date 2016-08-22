@@ -1,6 +1,6 @@
 ## AudioRoamer
 
-`AudioRoamer` allows to play your audio files and to display general 
+`AudioRoamer` allows to play audio files and to display general 
 information about a digitalized audio-PCM file.
 
 Pulse-code modulation (PCM) is a method used to digitally represent sampled 
@@ -19,18 +19,17 @@ bits per sample. 16 is the most frequent one: this allow values to range from
 Support for multichannel audio depends on file format and relies on 
 interweaving or synchronization of streams.
 
-![Component: AudioRoamer](./etc/screenshots/SndRoamer.png)
+![AudioRoamer: play and manage audio files](./etc/screenshots/SndRoamer.png)
 
 
 #### Want more?
 
 `AudioRoamer` allows to display a large set of information for each channel.
 For a large file, it can take a while to estimate such information... 
-For example, an audio file of 243 seconds (21.5Mb) is loaded in 35 seconds.
+For example, an mono-audio file of 243 seconds (21.5Mb) is loaded in 35 seconds.
 **So be patient! It's worth it!**
 
-![Component: AudioRoamer if you want more](./etc/screenshots/SndRoamer-more.png)
-
+![AudioRoamer if you want more](./etc/screenshots/SndRoamer-more.png)
 
 At the bottom of the window, it is possible to click on buttons to:
 

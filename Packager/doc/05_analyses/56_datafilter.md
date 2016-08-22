@@ -11,7 +11,7 @@ These later are applied on tiers of many kind of input files (TextGrid, eaf,
 trs, csv...). The filtering process results in a new tier, that can re-filtered
 and so on.
 
-![Component: DataFilter](./etc/screenshots/DataFilter.png)
+![DataFilter: select annotations](./etc/screenshots/DataFilter.png)
 
 
 ### Filtering annotations of a tier: SingleFilter

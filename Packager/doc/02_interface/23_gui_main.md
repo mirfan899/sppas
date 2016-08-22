@@ -4,14 +4,36 @@
 ### Launch SPPAS
 
 Under Windows, once the SPPAS package is opened in the File Explorer,
-*double-click on the `sppas.bat` file*.
+double-click on the `sppas.bat` file.
+In recent versions of Windows (e.g. 10), the first time you try 
+to run SPPAS by clicking on sppas.bat you may get a message:
+""
+The solution is to click on the text "". It will display a button to 
+launch the program, then clik on it.
 
-Under MacOS or Linux, once the SPPAS package is opened in the 
-Finder/File Explorer, *double-click on the `sppas.command` file*. The program
-will first check the version of wxpython and eventually ask to update.
 
-Then, the main windows will open automatically. It is made of a menu, a title, 
-the tips, the list of files and the action buttons.
+Under MacOS, once the SPPAS package is opened in the 
+Finder/File Explorer, double-click on the `sppas.command` file. 
+In recent versions of MacOs X (e.g. 10.11 El Capitan), the first time you try 
+to run SPPAS by clicking on sppas.command you may get a message:
+"sppas.command can't be opened because it is from an unidentified developer.".
+The solution is to run SPPAS with a right click (alt-click) on sppas.command. 
+This time you will get a message:
+"sppas.command is from an unidentified developer. Are you sure you want to open it?"
+Click on Open and SPPAS will now run. 
+It will also now work each time you try to run it.
+
+Under Linux, once the SPPAS package is opened in the 
+Finder/File Explorer, double-click on the `sppas.command` file.
+
+The program will first check the version of wxpython and eventually ask to 
+update. It will then check if the julius program can be accessed.
+
+The main windows will open automatically. It is made of a menu (left), 
+a title (top), 
+the tips (middle), 
+the list of files (left-middle),
+and the action buttons (right).
 
 ![SPPAS Main Frame of version 1.8.0](./etc/screenshots/sppas-1-8-0.png)
 
@@ -24,20 +46,24 @@ The frame includes message tips that are picked up randomly and printed to
 help users. Click on the button `Next Tip` to read another message, or click 
 on the top-left button to close the tips frame. 
 The `Settings` allows to show/hide tips at start-up.
-If a user wants to suggest new tips to help the other users, they have to be
+If you want to suggest new tips to help the other users, they have to be
 sent to the author by e-mail. They will be included in the next version.
 
 
 ### The menu
 
-It allows to exit the program, declare an issue and contact the author.
+The menu is located at the left-side of the window.
+At its top, a button allows to exit the program, and at bottom
+you can declare an issue or contact the author.
 
-The `Exit` button closes all SPPAS frames *properly*. 
+The `Exit` button closes all SPPAS frames properly. 
 Please, do not kill SPPAS by clicking on the arrow of the windows manager!
 **Use this Exit button** to close SPPAS. 
 
 To declare an issue, click on the bug button of the menu, then your default
-web browser will be opened at the appropriate URL to do this.
+web browser will be opened at the appropriate URL. Take a quick look at the 
+list of already declared issues and if any, click on the green button "New
+Issue".
 
 To contact the author, replace the text "Describe what you did here..." by 
 your own comment, question or suggestion and choose how to send the e-mail: 
@@ -63,7 +89,7 @@ To select:
 Like in any other file explorer, while clicking and pressing the "CTRL" key 
 ("COMMAND" on MacOS) on the keyboard, you can select multiple files and/or 
 directories. Idem with the "SHIFT" key.
-The "F5" shortcut allows to refresh the list.
+
 
 #### Add file(s).
 
@@ -152,10 +178,13 @@ authors, license, web site URL, etc.
 The `Help` action button opens the documentation and allows to browse in the chapters
 and sections.
 
-![The Help Browser Frame](./etc/screenshots/helpbrowser.png)
+![The Help Browser Frame](./etc/screenshots/help.png)
 
 
 ### Plugins 
+
+> The plugins are currently disabled. They will be turned on later.
+
 
 #### Installing a Plugin
 
@@ -176,5 +205,3 @@ be removed after the plugin installation).
 
 To execute a plug-in, select file(s) in the File explorer, click on the 
 icon of the plug-in and follow instructions of the plugged program.
-
-![Plugins Panel with two plug-ins: TierMapping and MarsaTag](./etc/screenshots/PPP.png)

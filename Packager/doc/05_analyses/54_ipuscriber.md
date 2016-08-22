@@ -2,7 +2,7 @@
 
 `IPUscriber` is useful to perform manual orthographic transcription.
 
-![Component: IPUTranscriber](./etc/screenshots/IPUscribe.png)
+![IPUscriber: for manual orthographic transcription](./etc/screenshots/IPUscribe.png)
 
 To transcribe an IPU, click on the IPU box, play sound and write 
 the corresponding text: refer to the transcription convention of 

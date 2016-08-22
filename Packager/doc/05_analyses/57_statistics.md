@@ -7,7 +7,7 @@ first stage) and includes TGA (Time Group Analyzer), originaly available at
 by Dafydd Gibbon, emeritus professor of English and General Linguistics at
 Bielefeld University. 
 
-![Component: Statistics](./etc/screenshots/Statistics.png)
+![Statistics: descriptive statistics and TGA](./etc/screenshots/Statistics.png)
 
 
 ### Descriptive statistics
@@ -48,7 +48,7 @@ For those who are estimating statistics on XRA files, you can either estimate
 stats only on the best label (the label with the higher score) or on all labels,
 i.e. the best label and all its alternatives (if any).
 
-![Component: Statistics](./etc/screenshots/Statistics-descriptives.png)
+![Descriptive statistics](./etc/screenshots/Statistics-descriptives.png)
 
 
 ### User agreement

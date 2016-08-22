@@ -32,6 +32,9 @@ Here is the list of some available languages in SPPAS resources:
 - Mandarin Chinese: cmn
 - Southern Min (or Min Nan): nan
 - Cantonese: yue
+- Polish: pol
+- Catalan: cat
+- Portuguese: por
 
 SPPAS can deal with a new language by simply adding the language resources
 to the appropriate sub-directories.

@@ -144,6 +144,7 @@ class FiletreePanel( wx.Panel ):
         toolbar.AddButton( wx.ID_SAVE,   EXPORT_ICON,   "Export",  tooltip="Export files.")
         return toolbar
 
+    # ------------------------------------------------------------------------
 
     def _create_filestree(self):
         """ Create the tree to store file names. """

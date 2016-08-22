@@ -1,4 +1,4 @@
-## Getting started
+## Introduction
 
 The current chapter describes how to use SPPAS via 
 the Graphical User Interface (GUI) and 

@@ -81,17 +81,17 @@
 <hr />
 <h1 id="analyses"><a href="#analyses">Analyses</a></h1>
 <h2 id="introduction"><a href="#introduction">Introduction</a></h2>
-<p>The analyses tools are useful for the analysis of annotated files: display the automatic alignments with the audio signal, estimates statistics on the annotations, filter the annotated data to get only the annotations you are interested in, etc.</p>
-<p>To execute a specific component, select file(s) in the file explorer, then click on the button of a component. It will open the component frame, and add the selected file(s) in the file manager of the component. Refer to the documentation of each component to know how to use it.</p>
+<p>The analysis tools are useful for the analyses of annotated files: display the automatic alignments with the audio signal, estimates statistics on the annotations, filter the annotated data to get only the annotations you are interested in, etc.</p>
+<p>To execute a specific analysis tool, select file(s) in the file explorer of the main frame, then click on the button of the tool. It will open the frame, and add the file(s) in the file manager of the tool.</p>
 <figure>
-<img src="./etc/screenshots/CCP.png" alt="Component Panel (CCP)" /><figcaption>Component Panel (CCP)</figcaption>
+<img src="./etc/screenshots/CCP.png" alt="The analysis tools" /><figcaption>The analysis tools</figcaption>
 </figure>
 <p>Six tools are available:</p>
 <ol type="1">
 <li><code>DataRoamer</code> allows to explore the annotated files: cut/copy/paste/rename/duplicate tiers, move a tier from one file to another one, etc.</li>
 <li><code>AudioRoamer</code> allows to play and manage audio files: extract a channel, see clipping rates, change framerate, etc.</li>
-<li><code>IPUscribe</code> is useful to perform manual orthographic transcription.</li>
-<li><code>SppasEdit</code> displays audio files and annotated files, and is very useful to take a screenshot! Easy way to zoom/scroll, change colours, choose the tiers to display, etc;</li>
+<li><code>IPUscriber</code> is useful to perform manual orthographic transcription.</li>
+<li><code>Vizualizer</code> displays audio files and annotated files, and is very useful to take a screenshot! Easy way to zoom/scroll, change colours, choose the tiers to display, etc;</li>
 <li><code>DataFilter</code> allows to select annotations: fix a set of filters to create new tiers with only the annotations you are interested in!</li>
 <li><code>Statistics</code> estimates the number of occurrences, the duration, etc. of the annotations, and allows to save in CSV (for Excel, OpenOffice, R, MatLab,...).</li>
 </ol>
@@ -104,10 +104,10 @@
 <h2 id="dataroamer"><a href="#dataroamer">DataRoamer</a></h2>
 <p><code>DataRoamer</code> displays detailed information about annotated files and allows to manage the tiers: cut/copy/paste/rename/duplicate tiers, move a tier from one file to another one, etc.</p>
 <figure>
-<img src="./etc/screenshots/DataRoamer.png" alt="Component: DataRoamer" /><figcaption>Component: DataRoamer</figcaption>
+<img src="./etc/screenshots/DataRoamer.png" alt="DataRoamer: explore annotated files" /><figcaption>DataRoamer: explore annotated files</figcaption>
 </figure>
 <h2 id="audioroamer"><a href="#audioroamer">AudioRoamer</a></h2>
-<p><code>AudioRoamer</code> allows to play your audio files and to display general information about a digitalized audio-PCM file.</p>
+<p><code>AudioRoamer</code> allows to play audio files and to display general information about a digitalized audio-PCM file.</p>
 <p>Pulse-code modulation (PCM) is a method used to digitally represent sampled analog signals. In a PCM stream, the amplitude of the analog signal is sampled regularly at uniform intervals. A PCM stream has two basic properties that determine the stream's fidelity to the original analog signal:</p>
 <ol type="1">
 <li>the sampling rate, which is the number of times per second that samples are taken;</li>
@@ -116,12 +116,12 @@
 <p>Common sampling frequencies are 48 kHz as used with DVD format videos, or 44.1 kHz as used in Compact discs. Common sample depths are 8, 16 or 24 bits per sample. 16 is the most frequent one: this allow values to range from -32768 to 32767.</p>
 <p>Support for multichannel audio depends on file format and relies on interweaving or synchronization of streams.</p>
 <figure>
-<img src="./etc/screenshots/SndRoamer.png" alt="Component: AudioRoamer" /><figcaption>Component: AudioRoamer</figcaption>
+<img src="./etc/screenshots/SndRoamer.png" alt="AudioRoamer: play and manage audio files" /><figcaption>AudioRoamer: play and manage audio files</figcaption>
 </figure>
 <h4 id="want-more"><a href="#want-more">Want more?</a></h4>
-<p><code>AudioRoamer</code> allows to display a large set of information for each channel. For a large file, it can take a while to estimate such information... For example, an audio file of 243 seconds (21.5Mb) is loaded in 35 seconds. <strong>So be patient! It's worth it!</strong></p>
+<p><code>AudioRoamer</code> allows to display a large set of information for each channel. For a large file, it can take a while to estimate such information... For example, an mono-audio file of 243 seconds (21.5Mb) is loaded in 35 seconds. <strong>So be patient! It's worth it!</strong></p>
 <figure>
-<img src="./etc/screenshots/SndRoamer-more.png" alt="Component: AudioRoamer if you want more" /><figcaption>Component: AudioRoamer if you want more</figcaption>
+<img src="./etc/screenshots/SndRoamer-more.png" alt="AudioRoamer if you want more" /><figcaption>AudioRoamer if you want more</figcaption>
 </figure>
 <p>At the bottom of the window, it is possible to click on buttons to:</p>
 <ol type="1">
@@ -158,7 +158,7 @@
 <h2 id="ipuscriber"><a href="#ipuscriber">IPUscriber</a></h2>
 <p><code>IPUscriber</code> is useful to perform manual orthographic transcription.</p>
 <figure>
-<img src="./etc/screenshots/IPUscribe.png" alt="Component: IPUTranscriber" /><figcaption>Component: IPUTranscriber</figcaption>
+<img src="./etc/screenshots/IPUscribe.png" alt="IPUscriber: for manual orthographic transcription" /><figcaption>IPUscriber: for manual orthographic transcription</figcaption>
 </figure>
 <p>To transcribe an IPU, click on the IPU box, play sound and write the corresponding text: refer to the transcription convention of this document. To manage sound, use green buttons just at the bottom of the IPUs list (from left to right):</p>
 <ul>
@@ -175,10 +175,10 @@
 <li>to stop: F1</li>
 </ul>
 <h2 id="vizualizer"><a href="#vizualizer">Vizualizer</a></h2>
-<p>This component is still under-development, some &quot;troubles/crashes&quot; can occur while using it... but the data will never been corrupted!!</p>
-<p><code>Vizualizer</code> displays speech files and annotated files, and is very useful to take a nice screenshot! Most of the screenshots of annotated data of this document were taken with it...</p>
+<p>This component is still under-development, some &quot;troubles/crashes&quot; can occur while using it... however the data will never been corrupted!</p>
+<p><code>Vizualizer</code> displays speech files and annotated files, and is very useful to take a nice screenshot.</p>
 <figure>
-<img src="./etc/screenshots/SppasEdit.png" alt="Vizualizer analysis tool" /><figcaption>Vizualizer analysis tool</figcaption>
+<img src="./etc/screenshots/SppasEdit.png" alt="Vizualizer: displays audio files and annotated files" /><figcaption>Vizualizer: displays audio files and annotated files</figcaption>
 </figure>
 <h2 id="datafilter"><a href="#datafilter">DataFilter</a></h2>
 <p><code>DataFilter</code> allows to select annotations: fix a set of filters to create new tiers with only the annotations you are interested in! This system is based on the creation of 2 different types of filters:</p>
@@ -188,7 +188,7 @@
 </ol>
 <p>These later are applied on tiers of many kind of input files (TextGrid, eaf, trs, csv...). The filtering process results in a new tier, that can re-filtered and so on.</p>
 <figure>
-<img src="./etc/screenshots/DataFilter.png" alt="Component: DataFilter" /><figcaption>Component: DataFilter</figcaption>
+<img src="./etc/screenshots/DataFilter.png" alt="DataFilter: select annotations" /><figcaption>DataFilter: select annotations</figcaption>
 </figure>
 <h3 id="filtering-annotations-of-a-tier-singlefilter"><a href="#filtering-annotations-of-a-tier-singlefilter">Filtering annotations of a tier: SingleFilter</a></h3>
 <p>Pattern selection is an important part to extract data of a corpus and is obviously and important part of any filtering system. Thus, if the label of an annotation is a string, the following filters are proposed in DataFilter:</p>
@@ -247,7 +247,7 @@
 <h2 id="statistics"><a href="#statistics">Statistics</a></h2>
 <p><code>Statistics</code> allows to get descriptives statistics about a set of selected tiers. It also allows to estimate a user agreement rate (Kappa as a first stage) and includes TGA (Time Group Analyzer), originaly available at <a href="http://wwwhomes.uni-bielefeld.de/gibbon/TGA/">http://wwwhomes.uni-bielefeld.de/gibbon/TGA/</a>, a tool developped by Dafydd Gibbon, emeritus professor of English and General Linguistics at Bielefeld University.</p>
 <figure>
-<img src="./etc/screenshots/Statistics.png" alt="Component: Statistics" /><figcaption>Component: Statistics</figcaption>
+<img src="./etc/screenshots/Statistics.png" alt="Statistics: descriptive statistics and TGA" /><figcaption>Statistics: descriptive statistics and TGA</figcaption>
 </figure>
 <h3 id="descriptive-statistics"><a href="#descriptive-statistics">Descriptive statistics</a></h3>
 <p>It allows to estimate the number of occurrences, the duration, etc. of the annotations of a set of selected tiers, and allows to save in CSV (for Excel, OpenOffice, R, MatLab,...). It offers a serie of sheets organized in a notebook. The first tab is displaying a summary of descriptive statistics of the set of given tiers. The other tabs are indicating one of the statistics over the given tiers. The followings are estimated:</p>
@@ -263,7 +263,7 @@
 <p>The annotation durations are commonly estimated on the Midpoint value, without taking the radius into account; see (Bigi et al, 2012) for explanations about the Midpoint/Radius. Optionnally, the duration can either be estimated by taking the vagueness into account, then check &quot;Add the radius value&quot; button, or by ignoring the vagueness and estimating only on the central part of the annotation, then check &quot;Deduct the radius value&quot;.</p>
 <p>For those who are estimating statistics on XRA files, you can either estimate stats only on the best label (the label with the higher score) or on all labels, i.e. the best label and all its alternatives (if any).</p>
 <figure>
-<img src="./etc/screenshots/Statistics-descriptives.png" alt="Component: Statistics" /><figcaption>Component: Statistics</figcaption>
+<img src="./etc/screenshots/Statistics-descriptives.png" alt="Descriptive statistics" /><figcaption>Descriptive statistics</figcaption>
 </figure>
 <h3 id="user-agreement"><a href="#user-agreement">User agreement</a></h3>
 <p>SPPAS integrates the estimation of the Cohen's Kappa. It is currently limited to the evaluation of this user agreement between labels of 2 tiers with the same number of intervals.</p>
