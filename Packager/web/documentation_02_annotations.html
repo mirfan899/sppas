@@ -86,9 +86,9 @@
 </ul>
 </nav>
 <hr />
-<h1 id="automatic-annotations"><a href="#automatic-annotations">Automatic Annotations</a></h1>
-<h2 id="introduction"><a href="#introduction">Introduction</a></h2>
-<h3 id="about-this-chapter"><a href="#about-this-chapter">About this chapter</a></h3>
+<h1 id="automatic-annotations">Automatic Annotations</h1>
+<h2 id="introduction">Introduction</h2>
+<h3 id="about-this-chapter">About this chapter</h3>
 <p>This chapter is not a description on how each automatic annotation is implemented and how it's working: the references are available for that specific purpose!</p>
 <p>Instead, this chapter describes how each automatic annotation can be used in SPPAS, i.e. what is the goal of the annotation, what are the requirements, what kind of resources are used, and what is the expected result. Each automatic annotation is then illustrated as a workflow schema, where:</p>
 <ul>
@@ -97,7 +97,7 @@
 <li>green boxes indicate the resource,</li>
 <li>yellow boxes indicate the annotated file (given as input or produced as output).</li>
 </ul>
-<h3 id="annotations-methodology"><a href="#annotations-methodology">Annotations methodology</a></h3>
+<h3 id="annotations-methodology">Annotations methodology</h3>
 <p>The kind of process to implement in the perspective of obtaining rich and broad-coverage multimodal/multi-levels annotations of a corpus is illustrated in next Figure. It describes each step of the annotation workflow. This Figure must be read from top to bottom and from left to right, starting by the recordings and ending to the analysis of annotated files. Yellow boxes represent manual annotations, blue boxes represent automatic ones.</p>
 <figure>
 <img src="./etc/figures/methodo.png" alt="Annotation methodology" /><figcaption>Annotation methodology</figcaption>
@@ -105,11 +105,11 @@
 <p>After the recording, the first annotation to perform is IPUs segmentation. Indeed, at a first stage, the audio signal must be automatically segmented into Inter-Pausal Units (IPUs) which are blocks of speech bounded by silent pauses of more than X ms, and time-aligned on the speech signal. An orthographic transcription has to be performed manually inside the set of IPUs. Then tokenization will normalize the transcription. The phonetization process will convert the normalized text in a set of pronunciations using X-SAMPA standard. Alignment will perform segmentation at phonemes and tokens levels, etc.</p>
 <p>At the end of each automatic annotation process, SPPAS produces a Procedure Outcome Report that contains important information about the annotations.</p>
 <p>Among others, SPPAS is able to produce automatically annotations from a recorded speech sound and its orthographic transcription. Let us first introduce what is required in terms of files, and what is the exactly meaning of &quot;recorded speech&quot; and &quot;orthographic transcription&quot;.</p>
-<h3 id="file-formats-and-tier-names"><a href="#file-formats-and-tier-names">File formats and tier names</a></h3>
+<h3 id="file-formats-and-tier-names">File formats and tier names</h3>
 <p>When using the Graphical User Interface, the file format for input and output can be fixed in the Settings and is applied to all annotations, however file names of each annotation is already fixed and can't be changed.</p>
 <p>When using the Command-Line interface, or when using scripts, each annotation can be configured independently (file format and file names).</p>
 <p>In all cases, <strong>the name of the tiers are fixed and can't be changed</strong>!</p>
-<h3 id="recorded-speech"><a href="#recorded-speech">Recorded speech</a></h3>
+<h3 id="recorded-speech">Recorded speech</h3>
 <p>First of all:</p>
 <blockquote>
 <p>Only <code>wav</code>, <code>aiff</code> and <code>au</code> audio files and only as mono are supported by SPPAS.</p>
@@ -123,7 +123,7 @@
 <figure>
 <img src="./etc/screenshots/signal.png" alt="Example of recorded speech" /><figcaption>Example of recorded speech</figcaption>
 </figure>
-<h3 id="orthographic-transcription"><a href="#orthographic-transcription">Orthographic Transcription</a></h3>
+<h3 id="orthographic-transcription">Orthographic Transcription</h3>
 <p>An orthographic transcription is often the minimum requirement for a speech corpus so it is at the top of the annotation procedure, and it is the entry point for most of the automatic annotations, including automatic speech segmentation. But clearly, there are different ways to pronounce the same utterance. Consequently, when a speech corpus is transcribed into a written text, the transcriber is immediately confronted with the following question: how to reflect the orality of the corpus? <em>Transcription conventions</em> are then designed to provide rules for writing speech corpora. These conventions establish phenomena to transcribe and also how to annotate them.</p>
 <p>In that sense, the orthographic transcription is a subjective representation of what is &quot;perceived&quot; in the signal. It <strong>must</strong> includes:</p>
 <ul>
@@ -164,7 +164,7 @@
 <li>standard: this is hum an enriched transcription number one</li>
 <li>faked: this is + hum an enrich transcription number one</li>
 </ul>
-<h2 id="inter-pausal-units-ipus-segmentation"><a href="#inter-pausal-units-ipus-segmentation">Inter-Pausal Units (IPUs) segmentation</a></h2>
+<h2 id="inter-pausal-units-ipus-segmentation">Inter-Pausal Units (IPUs) segmentation</h2>
 <p>After recording, the first annotation to perform is IPUs segmentation. Indeed, at a first stage, the audio signal must be automatically segmented in Inter-Pausal Units (IPUs) which are blocks of speech bounded by silent pauses of more than X ms. This X duration depends on the language and it is commonly set to 200ms for French and 250ms for English. IPUs are time-aligned on the speech signal. This segmentation should be verified manually, depending on the quality of the recording: the better quality, thus the better IPUs segmentation.</p>
 <p>The &quot;IPUs segmentation&quot; automatic annotation can perform 3 actions:</p>
 <ol type="1">
@@ -175,7 +175,7 @@
 <figure>
 <img src="./etc/figures/segmworkflow.bmp" alt="IPU Segmentation workflow" /><figcaption>IPU Segmentation workflow</figcaption>
 </figure>
-<h3 id="silencespeech-segmentation"><a href="#silencespeech-segmentation">Silence/Speech segmentation</a></h3>
+<h3 id="silencespeech-segmentation">Silence/Speech segmentation</h3>
 <p>The IPUs Segmentation annotation performs a silence detection from a recorded file. This segmentation provides an annotated file with one tier named &quot;IPU&quot;. The silence intervals are labelled with the &quot;#&quot; symbol, as speech intervals are labelled with &quot;ipu_&quot; followed by the IPU number.</p>
 <p>The following parameters must be fixed:</p>
 <ul>
@@ -196,7 +196,7 @@
 <figure>
 <img src="./etc/screenshots/IPUscribe-2.png" alt="Orthographic transcription based on IPUs Segmentation" /><figcaption>Orthographic transcription based on IPUs Segmentation</figcaption>
 </figure>
-<h3 id="silencespeech-segmentation-time-aligned-with-a-transcription"><a href="#silencespeech-segmentation-time-aligned-with-a-transcription">Silence/Speech segmentation time-aligned with a transcription</a></h3>
+<h3 id="silencespeech-segmentation-time-aligned-with-a-transcription">Silence/Speech segmentation time-aligned with a transcription</h3>
 <p>Inter-Pausal Units segmentation can also consist in aligning macro-units of a document with the corresponding sound.</p>
 <p>SPPAS identifies silent pauses in the signal and attempts to align them with the inter-pausal units proposed in the transcription file, under the assumption that each such unit is separated by a silent pause. This algorithm is language-independent: it can work on any language.</p>
 <p>In the transcription file, <strong>silent pauses must be indicated</strong> using both solutions, which can be combined:</p>
@@ -212,7 +212,7 @@ This segmentation was tested on documents no longer than one paragraph
 <figure>
 <img src="./etc/screenshots/ipu-seg-result2.png" alt="Silence/Speech segmentation with orthographic transcription" /><figcaption>Silence/Speech segmentation with orthographic transcription</figcaption>
 </figure>
-<h3 id="split-into-multiple-files"><a href="#split-into-multiple-files">Split into multiple files</a></h3>
+<h3 id="split-into-multiple-files">Split into multiple files</h3>
 <p>IPU segmentation can split the sound into multiple files (one per IPU), and it creates a text file for each of the tracks. The output file names are &quot;track_0001&quot;, &quot;track_0002&quot;, etc.</p>
 <p>Optionally, if the input annotated file contains a tier named exactly &quot;Name&quot;, then the content of this tier will be used to fix output file names.</p>
 <figure>
@@ -222,7 +222,7 @@ This segmentation was tested on documents no longer than one paragraph
 <figure>
 <img src="./etc/screenshots/ipu-seg-result3-files.png" alt="Data split" /><figcaption>Data split</figcaption>
 </figure>
-<h2 id="tokenization"><a href="#tokenization">Tokenization</a></h2>
+<h2 id="tokenization">Tokenization</h2>
 <p>Tokenization is also known as &quot;Text Normalization&quot; the process of segmenting a text into tokens. In principle, any system that deals with unrestricted text need the text to be normalized. Texts contain a variety of &quot;non-standard&quot; token types such as digit sequences, words, acronyms and letter sequences in all capitals, mixed case words, abbreviations, roman numerals, URL's and e-mail addresses... Normalizing or rewriting such texts using ordinary words is then an important issue. The main steps of the text normalization implemented in SPPAS (Bigi 2011) are:</p>
 <ul>
 <li>Remove punctuation;</li>
@@ -249,7 +249,7 @@ This segmentation was tested on documents no longer than one paragraph
 <li>Tokens-faked: the text normalization of the faked transcription.</li>
 </ul>
 <p>Read the &quot;Introduction&quot; of this chapter for a better understanding of the difference between &quot;standard&quot; and &quot;faked&quot; transcriptions.</p>
-<h2 id="phonetization"><a href="#phonetization">Phonetization</a></h2>
+<h2 id="phonetization">Phonetization</h2>
 <p>Phonetization, also called grapheme-phoneme conversion, is the process of representing sounds with phonetic signs. However, converting from written text into actual sounds, for any language, cause several problems that have their origins in the relative lack of correspondence between the spelling of the lexical items and their sound contents.</p>
 <p>SPPAS implements a dictionary based-solution which consists in storing a maximum of phonological knowledge in a lexicon. In this sense, this approach is language-independent. SPPAS phonetization process is the equivalent of a sequence of dictionary look-ups. It is then assumed that all words of the speech transcription are mentioned in the pronunciation dictionary.</p>
 <p>The Phonetization takes as input an orthographic transcription previously normalized by the Tokenization automatic system or manually. The name of this tier must contains one of the following strings:</p>
@@ -280,7 +280,7 @@ This segmentation was tested on documents no longer than one paragraph
     THEATER         [THEATER]       T i: @ 4 3:r
     THEATER&#39;S       [THEATER&#39;S]     T i: @ 4 3:r z</code></pre>
 <p>The first column indicates the word, followed by the variant number (except for the first one). The second column indicates the word between brackets; however brackets can also be empty. The last columns are the succession of phones, separated by a whitespace.</p>
-<h2 id="alignment"><a href="#alignment">Alignment</a></h2>
+<h2 id="alignment">Alignment</h2>
 <p>Alignment, also called phonetic segmentation, is the process of aligning speech with its corresponding transcription at the phone level. The alignment problem consists in a time-matching between a given speech unit along with a phonetic representation of the unit.</p>
 <p>SPPAS is based on the Julius Speech Recognition Engine (SRE). Speech Alignment also requires an Acoustic Model in order to align speech. An acoustic model is a file that contains statistical representations of each of the distinct sounds of one language. Each phoneme is represented by one of these statistical representations. SPPAS is working with HTK-ASCII acoustic models, trained from 16 bits, 16000 Hz wav files.</p>
 <p>Speech segmentation was evaluated for French: in average, automatic speech segmentation is 95% of times within 40ms compared to the manual segmentation and was tested on read speech and on conversational speech (Bigi 2014). Details about these results are available in the slides of the following reference:</p>
@@ -304,7 +304,7 @@ This segmentation was tested on documents no longer than one paragraph
 <li>create the Activity tier will append another tier with activities as intervals, i.e. speech, silences, laughter, noises...</li>
 <li>create the PhnTokAlign will append anoter tier with intervals of the phonetization of each word.</li>
 </ul>
-<h2 id="syllabification"><a href="#syllabification">Syllabification</a></h2>
+<h2 id="syllabification">Syllabification</h2>
 <p>The syllabification of phonemes is performed with a rule-based system from time-aligned phonemes. This phoneme-to-syllable segmentation system is based on 2 main principles:</p>
 <ul>
 <li>a syllable contains a vowel, and only one;</li>
@@ -358,7 +358,7 @@ This segmentation was tested on documents no longer than one paragraph
 </ul>
 <p>Finally, to adapt the rules to specific situations that the rules failed to model, we introduced some phoneme sequences and the boundary definition. Specific rules contain only phonemes or the symbol &quot;ANY&quot; which means any phoneme. It consists of 7 columns: the first one is the key-word OTHRULE, the 5 following columns are a phoneme sequence where the boundary should be applied to the third one by the rules, the last column is the shift to apply to this boundary. In the following example:</p>
 <p><code>OTHRULE ANY ANY p s k -2</code></p>
-<h2 id="repetitions"><a href="#repetitions">Repetitions</a></h2>
+<h2 id="repetitions">Repetitions</h2>
 <p>This automatic detection focus on word repetitions, which can be an exact repetition (named strict echo) or a repetition with variation (named non-strict echo).</p>
 <p>SPPAS implements <em>self-repetitions</em> and <em>other-repetitions</em> detection (Bigi et al. 2014). The system is based only on lexical criteria. The proposed algorithm is focusing on the detection of the source.</p>
 <p>The Graphical User Interface only allows to detect self-repetitions. Use the Command-Line User Interface if you want to get other-repetitions.</p>
@@ -367,8 +367,8 @@ This segmentation was tested on documents no longer than one paragraph
 </figure>
 <p>The automatic annotation takes as input a file with (at least) one tier containing the time-aligned tokens of the speaker (and another file/tier for other-repetitions). The annotation provides one annotated file with 2 tiers: Sources and Repetitions.</p>
 <p>This process requires a list of stop-words, and a dictionary with lemmas (the system can process without it, but the result is better with it). Both lexicons are located in the &quot;vocab&quot; sub-directory of the &quot;resources&quot; directory.</p>
-<h2 id="momel-and-intsint"><a href="#momel-and-intsint">Momel and INTSINT</a></h2>
-<h3 id="momel-modelling-melody"><a href="#momel-modelling-melody">Momel (modelling melody)</a></h3>
+<h2 id="momel-and-intsint">Momel and INTSINT</h2>
+<h3 id="momel-modelling-melody">Momel (modelling melody)</h3>
 <p>Momel is an algorithm for the automatic modelling of fundamental frequency (F0) curves using a technique called assymetric modal quaratic regression.</p>
 <p>This technique makes it possible by an appropriate choice of parameters to factor an F0 curve into two components:</p>
 <ul>
@@ -396,7 +396,7 @@ This segmentation was tested on documents no longer than one paragraph
 <li>Minimal frequency ratio</li>
 <li>Eliminate glitch option: Filter f0 values before 'cible'</li>
 </ul>
-<h3 id="encoding-of-f0-target-points-using-the-intsint-system"><a href="#encoding-of-f0-target-points-using-the-intsint-system">Encoding of F0 target points using the &quot;INTSINT&quot; system</a></h3>
+<h3 id="encoding-of-f0-target-points-using-the-intsint-system">Encoding of F0 target points using the &quot;INTSINT&quot; system</h3>
 <p>INTSINT assumes that pitch patterns can be adequately described using a limited set of tonal symbols, T,M,B,H,S,L,U,D (standing for : Top, Mid, Bottom, Higher, Same, Lower, Up-stepped, Down-stepped respectively) each one of which characterises a point on the fundamental frequency curve.</p>
 <p>The rationale behind the INTSINT system is that the F0 values of pitch targets are programmed in one of two ways : either as absolute tones T, M, B which are assumed to refer to the speaker’s overall pitch range (within the current Intonation Unit), or as relative tones H, S, L, U, D assumed to refer only to the value of the preceding target point.</p>
 <figure>

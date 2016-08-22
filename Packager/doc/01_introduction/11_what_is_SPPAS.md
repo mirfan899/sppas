@@ -1,11 +1,4 @@
-## About this documentation
-
->This documentation will assume that you are using a relatively recent
->version of SPPAS. There's no reason not to download the latest version
->whenever released: it's easy and fast!
-
 ## What is SPPAS?
-
 
 ### Main features
 
@@ -142,10 +135,7 @@ It is very important to indicate clearly:
 
 And/Or, if you have any question, if you want to contribute to SPPAS either
 to improve the quality of resources or to help in development, or anything else,
-do not hesitate to contact the author by e-mail at:
-`brigitte.bigi@gmail.com`.
-
-**Any and all constructive comments are welcome.**
+contact the author by e-mail.
 
 
 ### Supports
