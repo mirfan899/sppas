@@ -220,14 +220,6 @@ class DataRoamer( scrolled.ScrolledPanel ):
 
     # ----------------------------------------------------------------------
 
-    def __display_text_in_statusbar(self, text):
-        wx.GetTopLevelParent(self).SetStatusText(text,0)
-
-    def __reset_text_in_statusbar(self):
-        wx.GetTopLevelParent(self).SetStatusText('', 0)
-
-    #-------------------------------------------------------------------------
-
     def _check_prefs(self, prefs):
         """
         Check if preferences are set properly. Set new ones if required.
@@ -262,8 +254,6 @@ class DataRoamer( scrolled.ScrolledPanel ):
         toolbar.AddButton( TIER_RADIUS_ID, TIER_RADIUS, "Radius", tooltip="Fix the vagueness of each boundary. Efficient only while saving file in .xra format.")
         toolbar.AddButton( PREVIEW_ID,     TIER_PREVIEW, "View",   tooltip="Preview of the selected tier.")
         return toolbar
-
-    # ------------------------------------------------------------------------
 
     # ------------------------------------------------------------------------
     # Callbacks to any kind of event
@@ -472,7 +462,6 @@ class DataRoamer( scrolled.ScrolledPanel ):
 
             # do not erase the file if it is already existing!
             if os.path.exists( filename ) and f != filename:
-                self.__display_text_in_statusbar('File not saved.')
                 ShowInformation( self, self._prefsIO, "File not saved: this file name is already existing!", style=wx.ICON_INFORMATION)
             elif f == filename :
                 p.Save()

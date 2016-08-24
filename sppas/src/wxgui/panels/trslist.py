@@ -161,17 +161,6 @@ class TrsList( wx.Panel ):
 
         return tier_list
 
-    # ----------------------------------------------------------------------
-
-    def __display_text_in_statusbar(self, text):
-        wx.GetTopLevelParent(self).SetStatusText(text,0)
-
-    def __reset_text_in_statusbar(self):
-        wx.GetTopLevelParent(self).SetStatusText('',0)
-
-    # ----------------------------------------------------------------------
-
-
     #-------------------------------------------------------------------------
 
     def SetTierProperties(self, tier_idx):
@@ -206,9 +195,6 @@ class TrsList( wx.Panel ):
         except Exception as e:
             self.tier_list.InsertStringItem(1, "Error: "+str(e))
 
-    # End SetTierProperties
-    # -----------------------------------------------------------------------
-
 
     # ----------------------------------------------------------------------
     # Callbacks...
@@ -222,9 +208,6 @@ class TrsList( wx.Panel ):
         evt = PanelSelectedEvent(panel=self)
         evt.SetEventObject(self)
         wx.PostEvent(self.GetParent(), evt)
-
-    # End OnListItemSelected
-    # ----------------------------------------------------------------------
 
 
     # ----------------------------------------------------------------------
@@ -242,7 +225,6 @@ class TrsList( wx.Panel ):
 
     #-------------------------------------------------------------------------
 
-
     def SetFont(self, font):
         """ Set a new font. """
 
@@ -254,7 +236,6 @@ class TrsList( wx.Panel ):
         self._static_tx.SetFont( font )
         self._boxtitle.SetFont( font )
         self.Layout() # bigger/smaller font can impact on the layout
-
 
     def SetBackgroundColour(self, color):
         """ Set background. """
@@ -268,7 +249,6 @@ class TrsList( wx.Panel ):
         self._boxtitle.SetBackgroundColour( color )
         self.Refresh()
 
-
     def SetForegroundColour(self, color):
         """ Set foreground and items text color. """
 
@@ -280,14 +260,9 @@ class TrsList( wx.Panel ):
         self._static_tx.SetForegroundColour( color )
         self.Refresh()
 
-
-    # ----------------------------------------------------------------------
-
-
     # ----------------------------------------------------------------------
     # Functions...
     # ----------------------------------------------------------------------
-
 
     def Protect(self):
         """
@@ -298,7 +273,6 @@ class TrsList( wx.Panel ):
             self._protected.append(t)
             self.tier_list.SetItemTextColour( i, wx.Colour(140,10,10) )
 
-
     def Unprotect(self):
         """
         Erase the list of protected tiers.
@@ -306,7 +280,6 @@ class TrsList( wx.Panel ):
         self._protected = []
 
     # ----------------------------------------------------------------------
-
 
     def IsSelected(self, tiername, case_sensitive=False):
         """
@@ -317,9 +290,7 @@ class TrsList( wx.Panel ):
             return self.tier_list.IsSelected(i)
         return False
 
-    # End IsSelected
     # ----------------------------------------------------------------------
-
 
     def Select(self, tiername, case_sensitive=False):
         """
@@ -331,18 +302,14 @@ class TrsList( wx.Panel ):
             return True
         return False
 
-    # End Select
     # ----------------------------------------------------------------------
-
 
     def Deselect(self):
         #for i in range(self.tier_list.GetItemCount()):
         #    self.tier_list.Select( i, on=0 )
         self.tier_list.DeSelectAll()
 
-    # End Deselect
     # ----------------------------------------------------------------------
-
 
     def Rename(self):
         """ Rename the selected tier. Dialog with the user to get the new name. """
@@ -369,7 +336,6 @@ class TrsList( wx.Panel ):
         dlg = wx.TextEntryDialog(self, 'What is the new tier name?','Data Roamer', 'Rename a tier.')
         dlg.SetValue( self._transcription[sellist].GetName() )
         if dlg.ShowModal() == wx.ID_OK:
-            self.__display_text_in_statusbar('New tier name: %s.' % dlg.GetValue())
             # Update tier name of the transcription
             tier.SetName( dlg.GetValue())
             # Update tier name of the list
@@ -379,9 +345,7 @@ class TrsList( wx.Panel ):
             self.Refresh()
         dlg.Destroy()
 
-    # End Rename
     # ----------------------------------------------------------------------
-
 
     def Cut(self):
         """ Cut the selected tier. Return the clipboard. """
@@ -415,9 +379,6 @@ class TrsList( wx.Panel ):
         for i in range(sellist,self.tier_list.GetItemCount()):
             self.tier_list.SetStringItem(i, 0, "Tier "+str(i+1))
 
-        # give information
-        self.__display_text_in_statusbar('Tier '+clipboard.GetName() +' cutted by the user.')
-
         self.Deselect()
         self._checksize()
         self._dirty = True
@@ -426,9 +387,7 @@ class TrsList( wx.Panel ):
 
         return clipboard
 
-    # End Cut
     # ----------------------------------------------------------------------
-
 
     def Copy(self):
         """ Return the selected tier. """
@@ -448,14 +407,9 @@ class TrsList( wx.Panel ):
         # Copy the tier to the clipboard
         tier = self._transcription[sellist]
 
-        # give information
-        self.__display_text_in_statusbar('Tier '+tier.GetName()+' cutted by the user.')
-
         return tier.Copy()
 
-    # End Copy
     # ----------------------------------------------------------------------
-
 
     def Paste(self, clipboard):
         """ Paste the clipboard tier to the current page. """
@@ -476,14 +430,9 @@ class TrsList( wx.Panel ):
             # And if CtrlVocab...
             # TODO
 
-        # give information
-        self.__display_text_in_statusbar('Tier '+clipboard.GetName()+' added.')
-
         self._checksize()
 
-    # End Paste
     # ----------------------------------------------------------------------
-
 
     def Delete(self):
         """ Delete the selected tier.
@@ -511,18 +460,16 @@ class TrsList( wx.Panel ):
             for sellist in reversed( sorted(indexes) ):
 
                 item = self.tier_list.GetItem(sellist)
-                self.__display_text_in_statusbar('Delete tier: %d.' % item.GetId())
 
                 tier = self._transcription[sellist]
                 if tier in self._protected:
-                    self.__display_text_in_statusbar('Tier %d is protected. It cant be deleted.'% item.GetId())
+                    pass
                 else:
 
                     # Delete tier of the transcription
                     self._transcription.Remove(sellist)
                     # Delete tier of the list
                     self.tier_list.DeleteItem(sellist)
-                    self.__display_text_in_statusbar('Tier %d deleted by the user.'% item.GetId())
                     delete = delete + 1
                     # Update tier numbers of next items in the list.
                     for i in range(sellist,self.tier_list.GetItemCount()):
@@ -535,9 +482,7 @@ class TrsList( wx.Panel ):
         self._checksize()
         return delete
 
-    # End Delete
     # ----------------------------------------------------------------------
-
 
     def Duplicate(self):
         """ Duplicate the selected tier. """
@@ -557,12 +502,7 @@ class TrsList( wx.Panel ):
         tier = self._transcription[sellist]
         self.Append(tier.Copy())
 
-        # give information
-        self.__display_text_in_statusbar('Tier '+tier.GetName()+ ' successfully duplicated.')
-
-    # End Duplicate
     # ----------------------------------------------------------------------
-
 
     def MoveUp(self):
         """ Move up the selected tier (except for the first one). """
@@ -612,12 +552,7 @@ class TrsList( wx.Panel ):
         self._boxtitle.SetForegroundColour( FG_FILE_DIRTY_COLOUR )
         self.Refresh()
 
-        # give information
-        self.__display_text_in_statusbar('Tier successfully moved up.')
-
-    # End MoveUp
     # ----------------------------------------------------------------------
-
 
     def MoveDown(self):
         """ Move down the selected tier (except for the last one). """
@@ -672,12 +607,7 @@ class TrsList( wx.Panel ):
         self._boxtitle.SetForegroundColour( FG_FILE_DIRTY_COLOUR )
         self.Refresh()
 
-        # give information
-        self.__display_text_in_statusbar('Tier successfully moved down.')
-
-    # End MoveDown
     # ----------------------------------------------------------------------
-
 
     def Radius(self):
         """ Fix a new radius value to all TimePoint instances of the selected tier. """
@@ -717,9 +647,7 @@ class TrsList( wx.Panel ):
 
         dlg.Destroy()
 
-    # End Radius
     # ----------------------------------------------------------------------
-
 
     def Preview(self):
         """ Open a grid frame with the selected tier content. """
@@ -742,9 +670,7 @@ class TrsList( wx.Panel ):
         dlg = PreviewTierDialog(self, self._prefs, tiers=[tier])
         dlg.Show()
 
-    # End Preview
     # ----------------------------------------------------------------------
-
 
     def Append(self, newtier):
         """
@@ -761,11 +687,8 @@ class TrsList( wx.Panel ):
         self._dirty = True
         self._boxtitle.SetForegroundColour( FG_FILE_DIRTY_COLOUR )
         self.Refresh()
-        self.__display_text_in_statusbar('Tier '+newtier.GetName()+ ' successfully added.')
 
-    # End Append
     # ----------------------------------------------------------------------
-
 
     def LoadFile(self, filename):
         """
@@ -788,15 +711,12 @@ class TrsList( wx.Panel ):
             self._transcription = Transcription("IO-Error")
             #raise
 
-    # End LoadFile
     # ----------------------------------------------------------------------
-
 
     def Save(self):
         """ Save the current page content. """
 
         if self._dirty is False:
-            self.__display_text_in_statusbar('File '+ self._filename + " not saved (not changed)!")
             return
 
         try:
@@ -804,14 +724,11 @@ class TrsList( wx.Panel ):
             self._dirty = False
             self._boxtitle.SetForegroundColour( FG_FILE_COLOUR )
             self.Refresh()
-            self.__display_text_in_statusbar('File '+ self._filename + " saved.")
         except Exception as e:
             # give information
             ShowInformation(self, self._prefs, 'File not saved: %s'%str(e), style=wx.ICON_ERROR)
 
-    # End Save
     # ----------------------------------------------------------------------
-
 
     def SaveAs(self, filename):
         """
@@ -824,19 +741,12 @@ class TrsList( wx.Panel ):
             # give information
             ShowInformation(self, self._prefs, 'File not saved: %s'%str(e), style=wx.ICON_ERROR)
 
-    # End SaveAs
-    # ----------------------------------------------------------------------
-
-
     # ----------------------------------------------------------------------
 
     def GetTranscription(self):
         """ Return the Transcription. """
 
         return self._transcription
-
-    # ----------------------------------------------------------------------
-
 
     # ----------------------------------------------------------------------
     # Private
@@ -866,8 +776,5 @@ class TrsList( wx.Panel ):
             return True
 
         return False
-
-    # End _checksize
-    # ----------------------------------------------------------------------
 
 # --------------------------------------------------------------------------

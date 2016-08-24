@@ -56,9 +56,6 @@ from wxgui.sp_icons import FILTER_CHECK
 from wxgui.sp_icons import FILTER_UNCHECK
 from wxgui.sp_icons import TIER_PREVIEW
 
-from wxgui.sp_consts import TB_ICONSIZE
-from wxgui.sp_consts import TB_FONTSIZE
-
 from wxgui.ui.CustomEvents  import FileWanderEvent, spEVT_FILE_WANDER
 from wxgui.ui.CustomEvents  import spEVT_PANEL_SELECTED
 from wxgui.ui.CustomEvents  import spEVT_SETTINGS
@@ -74,6 +71,7 @@ from wxgui.dialogs.msgdialogs    import ShowInformation
 from wxgui.dialogs.msgdialogs    import ShowYesNoQuestion
 
 from wxgui.panels.trslist         import TrsList
+from wxgui.panels.mainbuttons     import MainToolbarPanel
 from wxgui.views.descriptivestats import DescriptivesStatsDialog
 from wxgui.views.useragreement    import UserAgreementDialog
 from wxgui.views.tga              import TGADialog
@@ -111,9 +109,7 @@ class StatisticsClient( BaseClient ):
         BaseClient.__init__( self, parent, prefsIO )
         self._update_members()
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def _update_members(self):
         """
@@ -124,9 +120,7 @@ class StatisticsClient( BaseClient ):
         # Quick and dirty solution to communicate to the file manager:
         self._prefsIO.SetValue( 'F_CCB_MULTIPLE', t='bool', v=True, text='')
 
-    # End _update_members
     # ------------------------------------------------------------------------
-
 
     def CreateComponent(self, parent, prefsIO ):
         return Statistics(parent, prefsIO)
@@ -160,19 +154,21 @@ class Statistics( scrolled.ScrolledPanel ):
         self._selection  = None # the index of the selected trsdata panel
 
         self._prefsIO = self._check_prefs(prefsIO)
+        self.SetBackgroundColour(prefsIO.GetValue('M_BG_COLOUR'))
 
         # imitate the behavior of a toolbar, with buttons
         self.toolbar = self._create_toolbar()
-        sizer.Add(self.toolbar, proportion=0, flag=wx.EXPAND|wx.ALL, border=1 )
+        sizer.Add(self.toolbar, proportion=0, flag=wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, border=4)
 
         # sizer
         self._trssizer = wx.BoxSizer( wx.VERTICAL )
-        sizer.Add(self._trssizer, proportion=1, flag=wx.EXPAND|wx.ALL, border=1 )
+        sizer.Add(self._trssizer, proportion=1, flag=wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, border=4)
 
         # Bind events
         self.Bind(spEVT_PANEL_SELECTED, self.OnPanelSelection)
         self.Bind(spEVT_FILE_WANDER,    self.OnFileWander)
         self.Bind(spEVT_SETTINGS,       self.OnSettings)
+        self.Bind(wx.EVT_BUTTON,        self.ProcessEvent)
 
         self.SetSizer(sizer)
         self.SetAutoLayout( True )
@@ -180,19 +176,7 @@ class Statistics( scrolled.ScrolledPanel ):
 
         self.SetupScrolling()
 
-    # End __init__
     # ----------------------------------------------------------------------
-
-
-    def __display_text_in_statusbar(self, text):
-        wx.GetTopLevelParent(self).SetStatusText(text,0)
-
-    def __reset_text_in_statusbar(self):
-        wx.GetTopLevelParent(self).SetStatusText('', 0)
-
-
-    #-------------------------------------------------------------------------
-
 
     def _check_prefs(self, prefs):
         """
@@ -213,50 +197,19 @@ class Statistics( scrolled.ScrolledPanel ):
 
     #-------------------------------------------------------------------------
 
-
     def _create_toolbar(self):
         """ Creates a toolbar panel. """
-        # Define the size of the icons and buttons
-        iconSize = (TB_ICONSIZE, TB_ICONSIZE)
 
-        toolbar = wx.ToolBar( self, -1, style=wx.TB_TEXT )
-        # Set the size of the buttons
-        toolbar.SetToolBitmapSize(iconSize)
-        toolbar.SetFont( self._prefsIO.GetValue('M_FONT') )
-
-        toolbar.AddLabelTool(FILTER_CHECK_ID,'Check tiers',
-                             spBitmap(FILTER_CHECK,TB_ICONSIZE,theme=self._prefsIO.GetValue('M_ICON_THEME')),
-                             shortHelp="Choose the tier(s) to check")
-        toolbar.AddLabelTool(FILTER_UNCHECK_ID, 'Uncheck tiers',
-                             spBitmap(FILTER_UNCHECK,TB_ICONSIZE,theme=self._prefsIO.GetValue('M_ICON_THEME')),
-                             shortHelp="Uncheck all")
-        toolbar.AddLabelTool(PREVIEW_ID,   'View',
-                             spBitmap(TIER_PREVIEW,TB_ICONSIZE,theme=self._prefsIO.GetValue('M_ICON_THEME')),
-                             shortHelp="Preview one checked tier of the selected file")
-
-        toolbar.AddSeparator()
-
-        toolbar.AddLabelTool(DESCRIPTIVES_ID, 'Descriptive\nStatistics',
-                             spBitmap(SPREADSHEETS,TB_ICONSIZE,theme=self._prefsIO.GetValue('M_ICON_THEME')),
-                             shortHelp="Estimates descriptive statistics of checked tier(s).")
-        toolbar.AddLabelTool(USERCHECK_ID, 'User\nAgreement',
-                             spBitmap(USERCHECK,TB_ICONSIZE,theme=self._prefsIO.GetValue('M_ICON_THEME')),
-                             shortHelp="Estimates Kappa of checked tier(s).")
-        toolbar.AddLabelTool(TIMEANALYSIS_ID, 'TimeGroup\nAnalysis',
-                             spBitmap(TIMEANALYSIS,TB_ICONSIZE,theme=self._prefsIO.GetValue('M_ICON_THEME')),
-                             shortHelp="Estimates TGA - Time GroupAnalyses of checked tier(s).")
-
-        toolbar.Realize()
-
-        # events
-        eventslist = [ FILTER_CHECK_ID, FILTER_UNCHECK_ID, PREVIEW_ID, DESCRIPTIVES_ID, USERCHECK_ID, TIMEANALYSIS_ID ]
-        for event in eventslist:
-            wx.EVT_TOOL(self, event, self.ProcessEvent)
-
+        toolbar = MainToolbarPanel(self, self._prefsIO)
+        toolbar.AddButton( FILTER_CHECK_ID, FILTER_CHECK, 'Check', tooltip="Choose the tier(s) to check.")
+        toolbar.AddButton( FILTER_UNCHECK_ID, FILTER_UNCHECK, 'Uncheck', tooltip="Uncheck all the tier(s) of the page.")
+        toolbar.AddButton( PREVIEW_ID, TIER_PREVIEW, 'View', tooltip="Preview one checked tier of the selected file.")
+        toolbar.AddSpacer()
+        toolbar.AddButton( DESCRIPTIVES_ID, SPREADSHEETS, 'Statistics', tooltip="Estimates descriptive statistics of checked tier(s).")
+        toolbar.AddButton( TIMEANALYSIS_ID, TIMEANALYSIS, 'TGA', tooltip="Estimates TGA - Time GroupAnalyses of checked tier(s).")
+        toolbar.AddButton( USERCHECK_ID, USERCHECK, 'User\nAgreement', tooltip="Estimates Kappa of checked tier(s).")
+        toolbar.AddSpacer()
         return toolbar
-
-    # End _create_toolbar
-    # ------------------------------------------------------------------------
 
 
     # ------------------------------------------------------------------------
@@ -372,11 +325,6 @@ class Statistics( scrolled.ScrolledPanel ):
                 if r: nb = nb+1
         dlg.Destroy()
 
-        if nb == 0:
-            self.__display_text_in_statusbar("No tier selected.")
-        else:
-            self.__display_text_in_statusbar("%d tier(s) selected."%nb)
-
 
     def OnUncheck(self, event):
         """ Un-check all tiers in all files. """
@@ -396,7 +344,6 @@ class Statistics( scrolled.ScrolledPanel ):
             nb = self._get_nbselectedtiers(inselection=False)
             if nb == 0:
                 ShowInformation(self, self._prefsIO, "One tier must be checked.", wx.ICON_INFORMATION)
-                self.__display_text_in_statusbar('You must at least one tier to view...')
             elif nb == 1:
                 for i in range(self._filetrs.GetSize()):
                     p = self._filetrs.GetObject(i)
@@ -404,7 +351,6 @@ class Statistics( scrolled.ScrolledPanel ):
                         p.Preview()
             else:
                 ShowInformation(self, self._prefsIO, "Only one tier must be checked.", wx.ICON_INFORMATION)
-                self.__display_text_in_statusbar('Too many selected tiers to view...')
 
 
     # ----------------------------------------------------------------------
@@ -419,7 +365,6 @@ class Statistics( scrolled.ScrolledPanel ):
             dlg.Destroy()
         else:
             ShowInformation(self, self._prefsIO, "At least one tier must be checked!", wx.ICON_INFORMATION)
-            self.__display_text_in_statusbar('You must check at least one tier...')
 
     def OnUserAgreement(self, event):
         """ User agreement ."""
@@ -430,7 +375,6 @@ class Statistics( scrolled.ScrolledPanel ):
             dlg.Destroy()
         else:
             ShowInformation(self, self._prefsIO, "Two tiers must be checked!", wx.ICON_WARNING)
-            self.__display_text_in_statusbar('You must check two tiers...')
 
     def OnTimeGroupAnalysis(self, event):
         """ Time Group Analysis ."""
@@ -441,10 +385,6 @@ class Statistics( scrolled.ScrolledPanel ):
             dlg.Destroy()
         else:
             ShowInformation(self, self._prefsIO, "At least one tier must be checked!", wx.ICON_INFORMATION)
-            self.__display_text_in_statusbar('You must check at least one tier...')
-
-    # ----------------------------------------------------------------------
-
 
     # ----------------------------------------------------------------------
     # GUI
@@ -470,59 +410,39 @@ class Statistics( scrolled.ScrolledPanel ):
         self.Layout()
         self.Refresh()
 
-    # End OnSettings
     # ----------------------------------------------------------------------
-
 
     def SetFont(self, font):
         """ Change font of all texts. """
 
         wx.Window.SetFont( self,font )
-        self.toolbar.SetFont( font )
-
-        # Apply to all panels
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
             p.SetFont( font )
 
-    # End SetFont
     # ----------------------------------------------------------------------
-
 
     def SetBackgroundColour(self, color):
         """ Change background of all texts. """
 
         wx.Window.SetBackgroundColour( self,color )
-        self.toolbar.SetBackgroundColour( color )
-
-        # Apply as background on all panels
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
             p.SetBackgroundColour(color)
 
-    # End SetBackgroundColour
     # ----------------------------------------------------------------------
-
 
     def SetForegroundColour(self, color):
         """ Change foreground of all texts. """
 
         wx.Window.SetForegroundColour( self,color )
-        self.toolbar.SetForegroundColour( color )
-
-        # Apply as foreground on all panels
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
             p.SetForegroundColour(color)
 
-    # End SetForegroundColour
-    # ----------------------------------------------------------------------
-
-
     # ----------------------------------------------------------------------
     # Manage the data
     # ----------------------------------------------------------------------
-
 
     def SetData(self, filename):
         """ Add a file. """
@@ -553,9 +473,7 @@ class Statistics( scrolled.ScrolledPanel ):
 
         return True
 
-    # End SetData
     # ----------------------------------------------------------------------
-
 
     def UnsetData(self, f):
         """ Remove the given file. """
@@ -578,9 +496,7 @@ class Statistics( scrolled.ScrolledPanel ):
         #self.Refresh()
         self.SendSizeEvent()
 
-    # End UnsetData
     # ----------------------------------------------------------------------
-
 
     def UnsetAllData(self):
         """ Clean information and destroy all data. """
@@ -589,9 +505,6 @@ class Statistics( scrolled.ScrolledPanel ):
         self._trssizer.DeleteWindows()
 
         self.Layout()
-
-    # End UnsetAllData
-    # ----------------------------------------------------------------------
 
 
     # -----------------------------------------------------------------------

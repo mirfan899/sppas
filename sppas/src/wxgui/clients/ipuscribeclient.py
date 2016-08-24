@@ -196,19 +196,7 @@ class IPUscribe( wx.Panel ):
         self.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR') )
         self.SetFont( self._prefsIO.GetValue('M_FONT') )
 
-    # End __init__
     # ----------------------------------------------------------------------
-
-
-    def __display_text_in_statusbar(self, text):
-        wx.GetTopLevelParent(self).SetStatusText(text,0)
-
-    def __reset_text_in_statusbar(self):
-        wx.GetTopLevelParent(self).SetStatusText('')
-
-
-    #-------------------------------------------------------------------------
-
 
     def __create_button(self, bmp):
         """
@@ -223,7 +211,6 @@ class IPUscribe( wx.Panel ):
 
     #----------------------------------------------------------------------
 
-
     def _create_media(self):
         """
         Create the media panel.
@@ -235,7 +222,6 @@ class IPUscribe( wx.Panel ):
         self._mediaPanel.ActivateButtons(False)
 
     #----------------------------------------------------------------------
-
 
     def _create_nav(self):
         """
@@ -645,21 +631,10 @@ class IPUscribeData( scrolled.ScrolledPanel ):
         self.Layout()
         self.SetupScrolling()
 
-    # End __init__
-    # ----------------------------------------------------------------------
-
-
-    def __display_text_in_statusbar(self, text):
-        wx.GetTopLevelParent(self).SetStatusText(text, 0)
-
-    def __reset_text_in_statusbar(self):
-        wx.GetTopLevelParent(self).SetStatusText('', 0)
-
 
     # ----------------------------------------------------------------------
     # Callbacks
     # ----------------------------------------------------------------------
-
 
     def OnFocus(self, event):
         """
@@ -888,9 +863,6 @@ class IPUscribeData( scrolled.ScrolledPanel ):
         self.Layout()
         self.Refresh()
 
-    # End UnsetData
-    # -----------------------------------------------------------------------
-
 
     # ----------------------------------------------------------------------
     # Functions...
@@ -903,19 +875,10 @@ class IPUscribeData( scrolled.ScrolledPanel ):
         if self._dirty is True:
             try:
                 annotationdata.io.write(self._trsname, self._trsinput)
-                self.__display_text_in_statusbar("File saved.")
                 self._dirty = False
             except Exception as e:
-                self.__display_text_in_statusbar("File NOT saved: %s" % str(e))
                 ShowInformation( self, self._prefsIO, "Transcription %s not saved: %s" % (self._trsname, str(e)), style=wx.ICON_ERROR)
                 return None
-        else:
-            self.__display_text_in_statusbar("Nothing changed. Nothing to save.")
-
-    # End Save
-    # ----------------------------------------------------------------------
-
-
 
     # ----------------------------------------------------------------------
     # Private

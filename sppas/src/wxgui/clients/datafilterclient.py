@@ -174,14 +174,6 @@ class DataFilter( scrolled.ScrolledPanel ):
 
     # ----------------------------------------------------------------------
 
-    def __display_text_in_statusbar(self, text):
-        wx.GetTopLevelParent(self).SetStatusText(text,0)
-
-    def __reset_text_in_statusbar(self):
-        wx.GetTopLevelParent(self).SetStatusText('', 0)
-
-    #-------------------------------------------------------------------------
-
     def _check_prefs(self, prefs):
         """
         Check if preferences are set properly. Set new ones if required.
@@ -344,11 +336,6 @@ class DataFilter( scrolled.ScrolledPanel ):
                     nb = nb+1
         dlg.Destroy()
 
-        if nb == 0:
-            self.__display_text_in_statusbar("No tier selected.")
-        else:
-            self.__display_text_in_statusbar("%d tier(s) selected."%nb)
-
 
     def OnUncheck(self, event):
         """
@@ -371,11 +358,6 @@ class DataFilter( scrolled.ScrolledPanel ):
             d = p.Delete()
             delete = delete + d
 
-        if delete == 0:
-            self.__display_text_in_statusbar("Nothing deleted.")
-        else:
-            self.__display_text_in_statusbar("Deleted %d tier(s)."%delete)
-
 
     def OnPreview(self, event):
         """
@@ -395,7 +377,7 @@ class DataFilter( scrolled.ScrolledPanel ):
                     p.Preview()
 
         elif nb == 0:
-            self.__display_text_in_statusbar("Nothing to view: one tier must be selected.")
+            pass
 
         else:
             ShowInformation( self, self._prefsIO, "You must check only one tier to view...", style=wx.ICON_WARNING)
@@ -447,7 +429,6 @@ class DataFilter( scrolled.ScrolledPanel ):
 
             # do not erase the file if it is already existing!
             if os.path.exists( filename ) and f != filename:
-                self.__display_text_in_statusbar('File not saved.')
                 ShowInformation( self, self._prefsIO, "File not saved: this file name is already existing!", style=wx.ICON_INFORMATION)
             elif f == filename :
                 p.Save()
@@ -491,15 +472,8 @@ class DataFilter( scrolled.ScrolledPanel ):
             psel = dlg.GetPredicates()
             # OK, go...
             if len(psel):
-                self.__display_text_in_statusbar("Please wait while filtering...")
                 process = FilterProcess(psel, [], match_all, tiername, self._filetrs)
                 process.RunSingleFilter()
-                self.__display_text_in_statusbar("Filtering is done.")
-            else:
-                self.__display_text_in_statusbar("No filter was entered, nothing to do!")
-
-        else:
-            self.__display_text_in_statusbar("Filtering was canceled.")
 
         dlg.Destroy()
 
@@ -523,15 +497,8 @@ class DataFilter( scrolled.ScrolledPanel ):
 
             # OK, go...
             if prel:
-                self.__display_text_in_statusbar("Please wait while filtering...")
                 process = FilterProcess([], prel, False, tiername, self._filetrs)
                 process.RunRelationFilter( self, reltiername, annotformat )
-
-            else:
-                self.__display_text_in_statusbar("No filter was entered, nothing to do!")
-
-        else:
-            self.__display_text_in_statusbar("Filtering was canceled.")
 
         dlg.Destroy()
 
