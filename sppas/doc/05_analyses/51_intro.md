@@ -20,8 +20,9 @@ Six tools are available:
 5. `DataFilter` allows to select annotations: fix a set of filters to create new tiers with only the annotations you are interested in!
 6. `Statistics` estimates the number of occurrences, the duration, etc. of the annotations, and allows to save in CSV (for Excel, OpenOffice, R, MatLab,...).
 
-All of such tools share the same style of frame:
+All of such tools share the same frame with:
 
-- a menu, a toolbar,
+- a menu (left), 
+- a toolbar (top),
 - a list of files,
 - a notebook to open files in tabs.

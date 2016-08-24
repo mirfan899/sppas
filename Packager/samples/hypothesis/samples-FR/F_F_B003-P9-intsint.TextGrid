@@ -1,0 +1,227 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0.0
+xmax = 19.7108972406
+tiers? <exists>
+size = 1
+item []:
+    item [1]:
+        class = "TextTier"
+        name = "INTSINT"
+        xmin = 1.261749
+        xmax = 19.710897
+        intervals: size = 71
+        points [1]:
+            time = 1.2617488851
+            mark = "M"
+        points [2]:
+            time = 1.4627549128
+            mark = "H"
+        points [3]:
+            time = 1.6494309182
+            mark = "S"
+        points [4]:
+            time = 1.7221517297
+            mark = "U"
+        points [5]:
+            time = 1.9362652812
+            mark = "D"
+        points [6]:
+            time = 2.1617348743
+            mark = "U"
+        points [7]:
+            time = 2.3569634435
+            mark = "D"
+        points [8]:
+            time = 2.4984920744
+            mark = "S"
+        points [9]:
+            time = 2.7194575362
+            mark = "U"
+        points [10]:
+            time = 2.9214451697
+            mark = "D"
+        points [11]:
+            time = 3.3426202587
+            mark = "S"
+        points [12]:
+            time = 4.1181754866
+            mark = "M"
+        points [13]:
+            time = 4.1973922915
+            mark = "S"
+        points [14]:
+            time = 4.3610972614
+            mark = "H"
+        points [15]:
+            time = 4.5655612497
+            mark = "D"
+        points [16]:
+            time = 4.7565705492
+            mark = "D"
+        points [17]:
+            time = 4.9774869098
+            mark = "U"
+        points [18]:
+            time = 5.4133614722
+            mark = "D"
+        points [19]:
+            time = 5.6333792012
+            mark = "U"
+        points [20]:
+            time = 5.8000039682
+            mark = "D"
+        points [21]:
+            time = 5.9451416654
+            mark = "T"
+        points [22]:
+            time = 6.2260728929
+            mark = "L"
+        points [23]:
+            time = 6.5473628045
+            mark = "S"
+        points [24]:
+            time = 6.8787175495
+            mark = "S"
+        points [25]:
+            time = 7.2438390732
+            mark = "D"
+        points [26]:
+            time = 7.908542449
+            mark = "M"
+        points [27]:
+            time = 8.0582536292
+            mark = "H"
+        points [28]:
+            time = 8.4204082114
+            mark = "L"
+        points [29]:
+            time = 8.6420729973
+            mark = "U"
+        points [30]:
+            time = 8.9066866058
+            mark = "D"
+        points [31]:
+            time = 9.1271380431
+            mark = "S"
+        points [32]:
+            time = 9.7597050108
+            mark = "M"
+        points [33]:
+            time = 10.0258955448
+            mark = "U"
+        points [34]:
+            time = 10.1575983908
+            mark = "S"
+        points [35]:
+            time = 10.2906615002
+            mark = "S"
+        points [36]:
+            time = 10.4558357915
+            mark = "D"
+        points [37]:
+            time = 10.6196079843
+            mark = "D"
+        points [38]:
+            time = 10.8073587736
+            mark = "H"
+        points [39]:
+            time = 10.9024122717
+            mark = "B"
+        points [40]:
+            time = 11.5947800158
+            mark = "M"
+        points [41]:
+            time = 11.9333983807
+            mark = "S"
+        points [42]:
+            time = 12.2059097074
+            mark = "D"
+        points [43]:
+            time = 12.296696527
+            mark = "S"
+        points [44]:
+            time = 12.4299342872
+            mark = "S"
+        points [45]:
+            time = 13.1056115343
+            mark = "M"
+        points [46]:
+            time = 13.5117276179
+            mark = "S"
+        points [47]:
+            time = 13.7065868901
+            mark = "S"
+        points [48]:
+            time = 13.8901185711
+            mark = "U"
+        points [49]:
+            time = 14.0984111177
+            mark = "D"
+        points [50]:
+            time = 14.2615581154
+            mark = "U"
+        points [51]:
+            time = 14.4232368426
+            mark = "D"
+        points [52]:
+            time = 14.6213189423
+            mark = "U"
+        points [53]:
+            time = 14.9401810343
+            mark = "D"
+        points [54]:
+            time = 15.0684476113
+            mark = "S"
+        points [55]:
+            time = 15.2982959533
+            mark = "S"
+        points [56]:
+            time = 15.9821563695
+            mark = "M"
+        points [57]:
+            time = 16.1130869541
+            mark = "U"
+        points [58]:
+            time = 16.3272575068
+            mark = "B"
+        points [59]:
+            time = 16.7125373494
+            mark = "H"
+        points [60]:
+            time = 17.0133656453
+            mark = "H"
+        points [61]:
+            time = 17.2675075229
+            mark = "L"
+        points [62]:
+            time = 17.4770565229
+            mark = "U"
+        points [63]:
+            time = 17.6961825914
+            mark = "D"
+        points [64]:
+            time = 17.8432693971
+            mark = "S"
+        points [65]:
+            time = 18.121259407
+            mark = "H"
+        points [66]:
+            time = 18.6576694825
+            mark = "M"
+        points [67]:
+            time = 18.8547932538
+            mark = "U"
+        points [68]:
+            time = 19.0276283509
+            mark = "D"
+        points [69]:
+            time = 19.2092954017
+            mark = "U"
+        points [70]:
+            time = 19.5595294149
+            mark = "D"
+        points [71]:
+            time = 19.7108972406
+            mark = "U"

@@ -1,11 +1,11 @@
 ## Statistics
 
 `Statistics` allows to get descriptives statistics about a set of selected
-tiers. It also allows to estimate a user agreement rate (Kappa as a
-first stage) and includes TGA (Time Group Analyzer), originaly available at 
+tiers and includes TGA (Time Group Analyzer), originaly available at 
 <http://wwwhomes.uni-bielefeld.de/gibbon/TGA/>, a tool developped
 by Dafydd Gibbon, emeritus professor of English and General Linguistics at
 Bielefeld University. 
+It also allows to estimate a user agreement rate (Kappa as a first stage).
 
 ![Statistics: descriptive statistics and TGA](./etc/screenshots/Statistics.png)
 
@@ -49,14 +49,6 @@ stats only on the best label (the label with the higher score) or on all labels,
 i.e. the best label and all its alternatives (if any).
 
 ![Descriptive statistics](./etc/screenshots/Statistics-descriptives.png)
-
-
-### User agreement
-
-SPPAS integrates the estimation of the Cohen's Kappa.
-It is currently limited to the evaluation of this user agreement between labels 
-of 2 tiers with the same number of intervals.
-
 
 
 ### TGA - Time Group Analyzer
@@ -110,3 +102,10 @@ framework. It results in the following advantages:
     1. with x-axis based on positions, like in the inline TGA
     2. with x-axis based on time-stamps, like in the AnnotationPro+TGA
     
+
+### User agreement
+
+SPPAS integrates the estimation of the Cohen's Kappa.
+It is currently limited to the evaluation of this user agreement between 
+labels of 2 tiers with the same number of intervals.
+
