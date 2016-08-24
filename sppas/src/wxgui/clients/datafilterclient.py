@@ -52,16 +52,11 @@ from wxgui.sp_icons import TIER_DELETE
 from wxgui.sp_icons import TIER_PREVIEW
 from wxgui.sp_icons import FILTER_CHECK
 from wxgui.sp_icons import FILTER_UNCHECK
-
 from wxgui.sp_icons import FILTER_SINGLE
 from wxgui.sp_icons import FILTER_RELATION
-
 from wxgui.sp_icons import SAVE_FILE
 from wxgui.sp_icons import SAVE_ALL_FILE
 from wxgui.sp_icons import SAVE_AS_FILE
-
-from wxgui.sp_consts import TB_ICONSIZE
-from wxgui.sp_consts import TB_FONTSIZE
 
 from wxgui.ui.CustomEvents  import FileWanderEvent, spEVT_FILE_WANDER
 from wxgui.ui.CustomEvents  import spEVT_PANEL_SELECTED
@@ -77,6 +72,7 @@ from wxgui.dialogs.msgdialogs import ShowInformation
 from wxgui.dialogs.msgdialogs import ShowYesNoQuestion
 
 from wxgui.panels.trslist        import TrsList
+from wxgui.panels.mainbuttons    import MainToolbarPanel
 from wxgui.views.singlefilter    import SingleFilterDialog
 from wxgui.views.relationfilter  import RelationFilterDialog
 from wxgui.process.filterprocess import FilterProcess
@@ -154,19 +150,21 @@ class DataFilter( scrolled.ScrolledPanel ):
         self._selection  = None # the index of the selected trsdata panel
 
         self._prefsIO = self._check_prefs(prefsIO)
+        self.SetBackgroundColour(prefsIO.GetValue('M_BG_COLOUR'))
 
         # imitate the behavior of a toolbar, with buttons
         self.toolbar = self._create_toolbar()
-        sizer.Add(self.toolbar, proportion=0, flag=wx.EXPAND|wx.ALL, border=1 )
+        sizer.Add(self.toolbar, proportion=0, flag=wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, border=4)
 
         # sizer
         self._trssizer = wx.BoxSizer( wx.VERTICAL )
-        sizer.Add(self._trssizer, proportion=1, flag=wx.EXPAND|wx.ALL, border=1 )
+        sizer.Add(self._trssizer, proportion=1, flag=wx.EXPAND|wx.LEFT|wx.RIGHT, border=4)
 
         # Bind events
         self.Bind(spEVT_PANEL_SELECTED, self.OnPanelSelection)
         self.Bind(spEVT_FILE_WANDER,    self.OnFileWander)
         self.Bind(spEVT_SETTINGS,       self.OnSettings)
+        self.Bind(wx.EVT_BUTTON,        self.ProcessEvent)
 
         self.SetSizer(sizer)
         self.SetAutoLayout( True )
@@ -209,57 +207,23 @@ class DataFilter( scrolled.ScrolledPanel ):
         Creates a toolbar panel.
 
         """
-        # Define the size of the icons and buttons
-        iconSize = (TB_ICONSIZE, TB_ICONSIZE)
+        toolbar = MainToolbarPanel(self, self._prefsIO)
+        toolbar.AddButton( wx.ID_SAVE,    SAVE_FILE,    'Save', tooltip="Save the selected file.")
+        toolbar.AddButton( SAVE_AS_ID,    SAVE_AS_FILE, 'Save As', tooltip="Save as... the selected file.")
+        toolbar.AddButton( SAVE_ALL_ID,   SAVE_ALL_FILE, 'Save All', tooltip="Save all files of the page.")
+        toolbar.AddSpacer()
 
-        toolbar = wx.ToolBar( self, -1, style=wx.TB_TEXT )
-        # Set the size of the buttons
-        toolbar.SetToolBitmapSize(iconSize)
-        toolbar.SetFont( self._prefsIO.GetValue('M_FONT') )
+        toolbar.AddButton( FILTER_CHECK_ID, FILTER_CHECK, 'Check', tooltip="Choose the tier(s) to check.")
+        toolbar.AddButton( FILTER_UNCHECK_ID, FILTER_UNCHECK, 'Uncheck', tooltip="Uncheck all the tier(s) of the page.")
+        toolbar.AddButton( wx.ID_DELETE, TIER_DELETE, 'Delete', tooltip="Delete all the checked tier(s) of the page.")
+        toolbar.AddButton( PREVIEW_ID, TIER_PREVIEW, 'View', tooltip="Preview one checked tier of the selected file.")
+        toolbar.AddSpacer()
 
-        toolbar.AddLabelTool(wx.ID_SAVE,  'Save',
-                             spBitmap(SAVE_FILE,TB_ICONSIZE,theme=self._prefsIO.GetValue('M_ICON_THEME')),
-                             shortHelp="Save the selected file")
-        toolbar.AddLabelTool(SAVE_AS_ID,  'Save As',
-                             spBitmap(SAVE_AS_FILE,TB_ICONSIZE,theme=self._prefsIO.GetValue('M_ICON_THEME')),
-                             shortHelp="Save as... the selected file")
-        toolbar.AddLabelTool(SAVE_ALL_ID, 'Save All',
-                             spBitmap(SAVE_ALL_FILE,TB_ICONSIZE,theme=self._prefsIO.GetValue('M_ICON_THEME')),
-                             shortHelp="Save all the files")
-
-        toolbar.AddSeparator()
-
-        toolbar.AddLabelTool(FILTER_CHECK_ID,'Check tiers',
-                             spBitmap(FILTER_CHECK,TB_ICONSIZE,theme=self._prefsIO.GetValue('M_ICON_THEME')),
-                             shortHelp="Choose the tier(s) to check")
-        toolbar.AddLabelTool(FILTER_UNCHECK_ID, 'Uncheck tiers',
-                             spBitmap(FILTER_UNCHECK,TB_ICONSIZE,theme=self._prefsIO.GetValue('M_ICON_THEME')),
-                             shortHelp="Uncheck all")
-        toolbar.AddLabelTool(wx.ID_DELETE, 'Delete',
-                             spBitmap(TIER_DELETE,TB_ICONSIZE,theme=self._prefsIO.GetValue('M_ICON_THEME')),
-                             shortHelp="Delete all the checked tier(s)")
-        toolbar.AddLabelTool(PREVIEW_ID,   'View',
-                             spBitmap(TIER_PREVIEW,TB_ICONSIZE,theme=self._prefsIO.GetValue('M_ICON_THEME')),
-                             shortHelp="Preview one checked tier of the selected file")
-
-        toolbar.AddSeparator()
-
-        toolbar.AddLabelTool(FILTER_SEL_ID, 'Single\nFilter',
-                             spBitmap(FILTER_SINGLE,TB_ICONSIZE,theme=self._prefsIO.GetValue('M_ICON_THEME')),
-                             shortHelp="Filter checked tier(s) depending on its annotations.")
-        toolbar.AddLabelTool(FILTER_REL_ID, 'Relation\nFilter',
-                             spBitmap(FILTER_RELATION,TB_ICONSIZE,theme=self._prefsIO.GetValue('M_ICON_THEME')),
-                             shortHelp="Filter checked tier(s) depending on time-relations of its annotation with annotations of another tier.")
-
-        toolbar.Realize()
-
-        # events
-        eventslist = [ wx.ID_SAVE, SAVE_AS_ID, SAVE_ALL_ID, wx.ID_DELETE, PREVIEW_ID, FILTER_CHECK_ID, FILTER_UNCHECK_ID, FILTER_SEL_ID, FILTER_REL_ID ]
-        for event in eventslist:
-            wx.EVT_TOOL(self, event, self.ProcessEvent)
+        toolbar.AddButton( FILTER_SEL_ID, FILTER_SINGLE, 'Single\nFilter', tooltip="Filter checked tier(s) depending on its annotations.")
+        toolbar.AddButton( FILTER_REL_ID, FILTER_RELATION, 'Relation\nFilter', tooltip="Filter checked tier(s) depending on time-relations of its annotation with annotations of another tier.")
+        toolbar.AddSpacer()
 
         return toolbar
-
 
     # ------------------------------------------------------------------------
     # Callbacks to any kind of event
@@ -603,9 +567,6 @@ class DataFilter( scrolled.ScrolledPanel ):
 
         """
         wx.Window.SetFont( self,font )
-        self.toolbar.SetFont( font )
-
-        # Apply to all panels
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
             p.SetFont( font )
@@ -618,9 +579,6 @@ class DataFilter( scrolled.ScrolledPanel ):
 
         """
         wx.Window.SetBackgroundColour( self,color )
-        self.toolbar.SetBackgroundColour( color )
-
-        # Apply as background on all panels
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
             p.SetBackgroundColour(color)
@@ -633,9 +591,6 @@ class DataFilter( scrolled.ScrolledPanel ):
 
         """
         wx.Window.SetForegroundColour( self,color )
-        self.toolbar.SetForegroundColour( color )
-
-        # Apply as foreground on all panels
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
             p.SetForegroundColour(color)

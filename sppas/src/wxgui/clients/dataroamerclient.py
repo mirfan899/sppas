@@ -201,11 +201,11 @@ class DataRoamer( scrolled.ScrolledPanel ):
 
         # imitate the behavior of a toolbar, with buttons
         toolbar = self._create_toolbar()
-        sizer.Add(toolbar, proportion=0, flag=wx.ALL|wx.EXPAND, border=1 )
+        sizer.Add(toolbar, proportion=0, flag=wx.EXPAND|wx.LEFT|wx.RIGHT, border=4)
 
         # sizer
         self._trssizer = wx.BoxSizer( wx.VERTICAL )
-        sizer.Add(self._trssizer, proportion=1, flag=wx.ALL|wx.EXPAND, border=1 )
+        sizer.Add(self._trssizer, proportion=1, flag=wx.EXPAND|wx.LEFT|wx.RIGHT, border=4)
 
         # Bind events
         self.Bind(spEVT_PANEL_SELECTED, self.OnPanelSelection)
@@ -259,10 +259,8 @@ class DataRoamer( scrolled.ScrolledPanel ):
         toolbar.AddButton( DUPLICATE_ID, TIER_DUPLICATE,"Duplicate", tooltip="Duplicate the selected tier.")
         toolbar.AddButton( wx.ID_UP,     TIER_MOVE_UP,  "Move Up",   tooltip="Move up the selected tier.")
         toolbar.AddButton( wx.ID_DOWN,   TIER_MOVE_DOWN,"Move Down", tooltip="Move down the selected tier.")
-
         toolbar.AddButton( TIER_RADIUS_ID, TIER_RADIUS, "Radius", tooltip="Fix the vagueness of each boundary. Efficient only while saving file in .xra format.")
         toolbar.AddButton( PREVIEW_ID,     TIER_PREVIEW, "View",   tooltip="Preview of the selected tier.")
-
         return toolbar
 
     # ------------------------------------------------------------------------

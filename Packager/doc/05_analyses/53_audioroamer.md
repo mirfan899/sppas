@@ -19,7 +19,7 @@ bits per sample. 16 is the most frequent one: this allow values to range from
 Support for multichannel audio depends on file format and relies on 
 interweaving or synchronization of streams.
 
-![AudioRoamer: play and manage audio files](./etc/screenshots/SndRoamer.png)
+![AudioRoamer: play and manage audio files](./etc/screenshots/AudioRoamer.png)
 
 
 #### Want more?
@@ -29,7 +29,7 @@ For a large file, it can take a while to estimate such information...
 For example, an mono-audio file of 243 seconds (21.5Mb) is loaded in 35 seconds.
 **So be patient! It's worth it!**
 
-![AudioRoamer if you want more](./etc/screenshots/SndRoamer-more.png)
+![AudioRoamer if you want more](./etc/screenshots/AudioRoamer-more.png)
 
 At the bottom of the window, it is possible to click on buttons to:
 
@@ -87,7 +87,7 @@ Between parenthesis, the volume in dB is estimated as:
 10.log10(rms/ref), where ref is a reference factor (energy quantity) 
 ref = 1 ≡ 0 dB (power).
 
-Illustration:
+*Illustration:*
 The level of −3 dB is equivalent to 50% (factor = 0.5) and the level of
 −6 dB is equivalent to 25% (factor = 1/4 = 0.25) of the initial power.
 For example, a RMS value of 350 gives a pover value equal to 25.45 dB compared
@@ -96,5 +96,5 @@ to a RMS value of 700 that gives a power value of 28.45 dB.
 ##### Automatic detection of silences:
 
 Finally, the result of an automatic detection of silences is given. Of course,
-this information is given for information only, and is estimated with default
-parameters, which should be adapted. 
+this information is given for information only. It is estimated with default
+parameters which should be adapted. 
