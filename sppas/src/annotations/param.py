@@ -59,7 +59,7 @@ class annotationParam( object ):
         Creates a new annotationParam instance.
 
         """
-        # An identifier to represent this annotation step (not used)
+        # An identifier to represent this annotation step
         self.key  = None
         # The name of the annotation
         self.name = ""

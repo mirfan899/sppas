@@ -53,10 +53,6 @@ class LangResource( object ):
 
     """
     def __init__(self):
-        """
-        Creates a new instance.
-
-        """
         self.reset()
 
     # ------------------------------------------------------------------------
@@ -90,6 +86,13 @@ class LangResource( object ):
         return self.langlist
 
     def get_langresource(self):
+        # Is there a resource available for this language?
+        if self.lang in self.langlist:
+            if len(self._rname)>0:
+                return self.langresource + self.lang + self._rext
+            else:
+                return os.path.join(self.langresource, self.lang + self._rext)
+
         return self.langresource
 
     # ------------------------------------------------------------------------
@@ -115,6 +118,7 @@ class LangResource( object ):
         # Fix the language resource path/file
         directory = os.path.join(RESOURCES_PATH, rpath)
         if os.path.exists( directory ) is False:
+            self.reset()
             raise IOError('The resource directory %s does not exists.'%directory)
         if len(self._rname)>0:
             self.langresource = os.path.join(directory, self._rname)
@@ -151,12 +155,5 @@ class LangResource( object ):
             raise ValueError('Unknown language %s.'%lang)
 
         self.lang = lang
-
-        # Is there a resource available for this language?
-        if lang in self.langlist:
-            if len(self._rname)>0:
-                self.langresource += lang + self._rext
-            else:
-                self.langresource = os.path.join(self.langresource, lang + self._rext)
 
     # ------------------------------------------------------------------------

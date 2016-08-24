@@ -32,7 +32,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: confreader.py
+# File: confparser.py
 # ----------------------------------------------------------------------------
 
 from ConfigParser import SafeConfigParser
@@ -69,10 +69,8 @@ class ConfigParser( object ):
 
     """
     def __init__(self):
-        """
-        Creates a new instance.
+        """ Creates a new instance. """
 
-        """
         self.reset()
         self.parser = SafeConfigParser()
 
@@ -150,7 +148,7 @@ class ConfigParser( object ):
         rtype = ""
         rpath = ""
         rname = ""
-        rext = ""
+        rext  = ""
         lr = LangResource()
         for name,value in items:
             if name == "type":
@@ -169,10 +167,10 @@ class ConfigParser( object ):
 
     def _parse_option(self, items):
 
-        oid = ""
-        otype = ""
+        oid    = ""
+        otype  = ""
         ovalue = ""
-        otext = ""
+        otext  = ""
 
         for name,value in items:
             if name == "type":
