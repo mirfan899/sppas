@@ -59,15 +59,13 @@ from wxgui.sp_icons import TIER_MOVE_DOWN
 from wxgui.sp_icons import TIER_PREVIEW
 from wxgui.sp_icons import TIER_RADIUS
 
-from wxgui.sp_consts import TB_ICONSIZE
-from wxgui.sp_consts import TB_FONTSIZE
-
 from wxgui.ui.CustomEvents  import FileWanderEvent, spEVT_FILE_WANDER
 from wxgui.ui.CustomEvents  import spEVT_PANEL_SELECTED
 from wxgui.ui.CustomEvents  import spEVT_SETTINGS
 
-from baseclient              import BaseClient
-from wxgui.panels.trslist    import TrsList
+from baseclient               import BaseClient
+from wxgui.panels.trslist     import TrsList
+from wxgui.panels.mainbuttons import MainToolbarPanel
 from wxgui.structs.files     import xFiles
 from wxgui.structs.prefs     import Preferences
 from wxgui.structs.themes    import BaseTheme
@@ -199,6 +197,7 @@ class DataRoamer( scrolled.ScrolledPanel ):
         self._selection  = None # the index of the selected trsdata panel
 
         self._prefsIO = self._check_prefs(prefsIO)
+        self.SetBackgroundColour(prefsIO.GetValue('M_BG_COLOUR'))
 
         # imitate the behavior of a toolbar, with buttons
         toolbar = self._create_toolbar()
@@ -212,6 +211,7 @@ class DataRoamer( scrolled.ScrolledPanel ):
         self.Bind(spEVT_PANEL_SELECTED, self.OnPanelSelection)
         self.Bind(spEVT_FILE_WANDER,    self.OnFileWander)
         self.Bind(spEVT_SETTINGS,       self.OnSettings)
+        self.Bind(wx.EVT_BUTTON,        self.ProcessEvent)
 
         self.SetSizer(sizer)
         self.SetAutoLayout( True )
@@ -249,33 +249,19 @@ class DataRoamer( scrolled.ScrolledPanel ):
 
     def _create_toolbar(self):
         """ Creates a toolbar panel. """
-        # Define the size of the icons and buttons
-        iconSize = (TB_ICONSIZE, TB_ICONSIZE)
 
-        toolbar = wx.ToolBar( self, -1 )
-        # Set the size of the buttons
-        toolbar.SetToolBitmapSize(iconSize)
-        toolbar.SetFont(wx.Font(TB_FONTSIZE, wx.DEFAULT, wx.NORMAL, wx.NORMAL))
+        toolbar = MainToolbarPanel(self, self._prefsIO)
+        toolbar.AddButton( RENAME_ID,    TIER_RENAME,   'Rename', tooltip="Rename the selected tier.")
+        toolbar.AddButton( wx.ID_DELETE, TIER_DELETE,   'Delete', tooltip="Delete the selected tier.")
+        toolbar.AddButton( wx.ID_CUT,    TIER_CUT,      'Cut',    tooltip="Cut the selected tier.")
+        toolbar.AddButton( wx.ID_COPY,   TIER_COPY,     "Copy",   tooltip="Copy the selected tier.")
+        toolbar.AddButton( wx.ID_PASTE,  TIER_PASTE,    "Paste",  tooltip="Paste the selected tier.")
+        toolbar.AddButton( DUPLICATE_ID, TIER_DUPLICATE,"Duplicate", tooltip="Duplicate the selected tier.")
+        toolbar.AddButton( wx.ID_UP,     TIER_MOVE_UP,  "Move Up",   tooltip="Move up the selected tier.")
+        toolbar.AddButton( wx.ID_DOWN,   TIER_MOVE_DOWN,"Move Down", tooltip="Move down the selected tier.")
 
-        toolbar.AddLabelTool(RENAME_ID,    'Rename',    spBitmap(TIER_RENAME, TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')),    shortHelp="Rename the selected tier")
-        toolbar.AddLabelTool(wx.ID_DELETE, 'Delete',    spBitmap(TIER_DELETE, TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')),    shortHelp="Delete the selected tier")
-        toolbar.AddLabelTool(wx.ID_CUT,    'Cut',       spBitmap(TIER_CUT,    TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')),    shortHelp="Cut the selected tier")
-        toolbar.AddLabelTool(wx.ID_COPY,   'Copy',      spBitmap(TIER_COPY,   TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')),    shortHelp="Copy the selected tier")
-        toolbar.AddLabelTool(wx.ID_PASTE,  'Paste',     spBitmap(TIER_PASTE,  TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')),    shortHelp="Paste the selected tier")
-        toolbar.AddLabelTool(DUPLICATE_ID, 'Duplicate', spBitmap(TIER_DUPLICATE, TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')), shortHelp="Duplicate the selected tier")
-        toolbar.AddLabelTool(wx.ID_UP,     'Move Up',   spBitmap(TIER_MOVE_UP,   TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')), shortHelp="Move up the selected tier")
-        toolbar.AddLabelTool(wx.ID_DOWN,   'Move Down', spBitmap(TIER_MOVE_DOWN, TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')), shortHelp="Move down the selected tier")
-        toolbar.AddSeparator()
-        toolbar.AddLabelTool(TIER_RADIUS_ID, 'Radius', spBitmap(TIER_RADIUS, TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')), shortHelp="Fix the vagueness of each boundary. Efficient only while saving file in .xra format.")
-        toolbar.AddSeparator()
-        toolbar.AddLabelTool(PREVIEW_ID,   'View',      spBitmap(TIER_PREVIEW, TB_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')),   shortHelp="Preview of the selected tier")
-
-        toolbar.Realize()
-
-        # events
-        eventslist = [ RENAME_ID, wx.ID_DELETE, wx.ID_CUT, wx.ID_COPY, wx.ID_PASTE, DUPLICATE_ID, wx.ID_UP, wx.ID_DOWN, PREVIEW_ID, TIER_RADIUS_ID ]
-        for event in eventslist:
-            wx.EVT_TOOL(self, event, self.ProcessEvent)
+        toolbar.AddButton( TIER_RADIUS_ID, TIER_RADIUS, "Radius", tooltip="Fix the vagueness of each boundary. Efficient only while saving file in .xra format.")
+        toolbar.AddButton( PREVIEW_ID,     TIER_PREVIEW, "View",   tooltip="Preview of the selected tier.")
 
         return toolbar
 

@@ -196,7 +196,7 @@ class TrsList( wx.Panel ):
                 begin = str(tier.GetBeginValue())
                 end   = str(tier.GetEndValue())
 
-            self.tier_list.InsertStringItem(tier_idx, "%d"%(tier_idx+1))
+            self.tier_list.InsertStringItem(tier_idx, "Tier %d"%(tier_idx+1))
             self.tier_list.SetStringItem(tier_idx, 1, tier.GetName())
             self.tier_list.SetStringItem(tier_idx, 2, begin )
             self.tier_list.SetStringItem(tier_idx, 3, end )
