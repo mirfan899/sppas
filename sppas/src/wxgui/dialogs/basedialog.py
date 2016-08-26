@@ -113,16 +113,20 @@ class spBaseDialog( wx.Dialog ):
 
         font = self.preferences.GetValue('M_FONT')
         font.SetWeight(wx.BOLD)
-        font.SetPointSize(font.GetPointSize() + 1)
+        font.SetPointSize(font.GetPointSize() + 2)
 
-        text = wx.StaticText(panel, label=titletext)
+        paneltext = wx.Panel(self, -1, style=wx.NO_BORDER)
+        sizertext = wx.BoxSizer()
+        text = wx.StaticText(paneltext, label=titletext)
         text.SetFont( font )
         text.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
         text.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
+        sizertext.Add(text, proportion=0, flag=wx.ALIGN_CENTER_VERTICAL)
+        paneltext.SetSizer( sizertext )
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
-        sizer.Add(sBmp, proportion=0, flag=wx.ALL|wx.ALIGN_CENTER, border=4)
-        sizer.Add(text, proportion=1, flag=wx.EXPAND|wx.ALL|wx.ALIGN_CENTER, border=4)
+        sizer.Add(sBmp, proportion=0, flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=4)
+        sizer.Add(paneltext, proportion=1, flag=wx.EXPAND|wx.ALL, border=4)
         panel.SetSizer(sizer)
         panel.SetAutoLayout( True )
 

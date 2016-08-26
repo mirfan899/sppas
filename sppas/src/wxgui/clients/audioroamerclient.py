@@ -143,6 +143,7 @@ class SndRoamer( scrolled.ScrolledPanel ):
         # Bind events
         self.Bind(spEVT_FILE_WANDER, self.OnFileWander)
         self.Bind(spEVT_SETTINGS,    self.OnSettings)
+        self.GetTopLevelParent().Bind(wx.EVT_CHAR_HOOK, self.OnKeyPress)
 
         self.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR'))
         self.SetSizer(sizer)
@@ -198,6 +199,7 @@ class SndRoamer( scrolled.ScrolledPanel ):
         prefs.SetValue('SND_EJECT',      'bool', True)
 
         return prefs
+
 
     # ----------------------------------------------------------------------
     # GUI
@@ -287,6 +289,42 @@ class SndRoamer( scrolled.ScrolledPanel ):
             evt.SetEventObject(self)
             wx.PostEvent( self.GetParent().GetParent().GetParent(), evt )
             self._filename = None
+
+    # ----------------------------------------------------------------------
+
+    def OnKeyPress(self, event):
+        """
+        Respond to a keypress event.
+        """
+        keycode = event.GetKeyCode()
+
+        # Media player
+        #     TAB -> PLay
+        #     F6 -> Rewind
+        #     F7 -> Pause/Play
+        #     F8 -> Next
+        #     F12 -> Eject
+        #     ESC -> Stop
+        if keycode == wx.WXK_TAB:
+            self._playerPanel.onPlay( event )
+
+        elif keycode == wx.WXK_F6:
+            self._playerPanel.onRewind( event )
+
+        elif keycode == wx.WXK_F7:
+            self._playerPanel.onPause( event )
+
+        elif keycode == wx.WXK_F8:
+            self._playerPanel.onNext( event )
+
+        elif keycode == wx.WXK_F12:
+            self._playerPanel.onEject( event )
+
+        elif keycode == wx.WXK_ESCAPE:
+            self._playerPanel.onStop( event )
+
+        else:
+            event.Skip()
 
 # ----------------------------------------------------------------------------
 

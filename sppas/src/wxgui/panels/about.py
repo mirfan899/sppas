@@ -44,6 +44,7 @@ from sp_glob import program, version, author, copyright, brief, url, license_tex
 from wxgui.sp_icons import APP_ICON
 from wxgui.cutils.imageutils import spBitmap
 
+# ----------------------------------------------------------------------------
 
 class AboutSPPAS( wx.lib.scrolledpanel.ScrolledPanel ):
     """
@@ -98,9 +99,9 @@ class AboutSPPAS( wx.lib.scrolledpanel.ScrolledPanel ):
         texturl.SetBackgroundColour( preferences.GetValue('M_BG_COLOUR') )
         texturl.SetForegroundColour( wx.Colour(80,108,216) )
         texturl.Bind( wx.EVT_LEFT_UP, self.OnLink )
+        font.SetUnderlined( False )
 
         # License
-        font.SetUnderlined( False )
         textgpl = wx.StaticText(self, -1, license_text)
         textgpl.SetFont( font )
         textgpl.SetBackgroundColour( preferences.GetValue('M_BG_COLOUR') )

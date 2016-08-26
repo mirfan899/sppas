@@ -284,7 +284,7 @@ class FrameSPPAS( wx.Frame ):
 
         """
         ide = event.GetId()
-        logging.debug('Event id: %d from frame id %d'%(ide, self.GetId()))
+        #logging.debug('Event id: %d from frame id %d'%(ide, self.GetId()))
 
         if ide == wx.ID_EXIT:
             self.OnExit(event)
@@ -321,6 +321,7 @@ class FrameSPPAS( wx.Frame ):
     def OnExit(self, evt):
         """ Close the frame. """
 
+        logging.info('SPPAS main frame exit.')
         self.Destroy()
 
     # -----------------------------------------------------------------------

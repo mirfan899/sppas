@@ -270,9 +270,13 @@ class ButtonToolbarPanel( wx.Panel ):
             bmp.Bind(wx.EVT_LEFT_UP, self.OnButtonLeftUp)
             bmp.Bind(wx.EVT_ENTER_WINDOW, self.OnButtonEnter)
 
+        font = self._prefs.GetValue('M_FONT')
+        s = font.GetPointSize()
+        font.SetPointSize(s-2)
         text = wx.StaticText(panel, -1, textstr)
         text.SetBackgroundColour( self._prefs.GetValue('M_BG_COLOUR') )
         text.SetForegroundColour( self._prefs.GetValue('M_FG_COLOUR') )
+        text.SetFont(font)
         text.Bind(wx.EVT_LEFT_UP, self.OnButtonLeftUp)
         text.Bind(wx.EVT_ENTER_WINDOW, self.OnButtonEnter)
         sizer.Add(text, 0, flag=wx.ALL|wx.ALIGN_CENTER, border=2)
@@ -335,7 +339,7 @@ class ButtonMenuPanel( wx.Panel ):
         if bmpname is not None:
             bmp = ImgPanel(self, MENU_ICONSIZE, bmpname)
             bmp.Bind(wx.EVT_LEFT_UP, self.OnButtonLeftUp)
-            sizer.Add(bmp, flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER, border=0)
+            sizer.Add(bmp, flag=wx.ALIGN_CENTER_HORIZONTAL, border=0)
 
         if textstr is not None:
             text = wx.StaticText(self, -1, textstr)

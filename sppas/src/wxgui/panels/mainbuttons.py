@@ -146,9 +146,10 @@ class MainTitlePanel( wx.Panel ):
 
         font = preferences.GetValue('M_FONT')
         font.SetWeight(wx.BOLD)
+        font.SetPointSize(font.GetPointSize() + 2)
 
         s = wx.BoxSizer()
-        text = wx.StaticText(self, label=program+" - "+title, style=wx.ALIGN_CENTER)
+        text = wx.StaticText(self, label=program+" - "+title)
         text.SetFont( font )
         text.SetForegroundColour( preferences.GetValue('M_FG_COLOUR') )
         text.Bind(wx.EVT_LEFT_UP, self.OnButtonClick)
@@ -205,6 +206,7 @@ class MainToolbarPanel( wx.Panel ):
         btn = ButtonToolbarPanel(self, idb, self.preferences, icon, text, tooltip, activated)
         self.sizer.Add( btn, proportion=1, flag=wx.ALL, border=2 )
         self.buttons.append(btn)
+        self.Layout()
 
     def AddSpacer(self):
         self.sizer.AddStretchSpacer(1)
@@ -247,10 +249,10 @@ class MainActionsPanel( wx.Panel ):
 
         annotateButton = ButtonPanel(self, ID_ANNOTATIONS,   self._prefs, ANNOTATIONS_ICON,"Annotate", "Segment speech, normalize text, ...")
         analyzeButton  = ButtonPanel(self, ID_COMPONENTS,    self._prefs, COMPONENTS_ICON, "Analyze",  "Statistics, data managers, ...")
-        pluginsButton  = ButtonPanel(self, ID_PLUGINS,       self._prefs, PLUGIN_ICON,     "Plugins",  "External tools", activated=False)
+        pluginsButton  = ButtonPanel(self, ID_PLUGINS,       self._prefs, PLUGIN_ICON,     "Plugins",  "(disabled)", activated=False)
         settingsButton = ButtonPanel(self, wx.ID_PREFERENCES,self._prefs, SETTINGS_ICON,   "Settings", "Configuration, preferences")
         helpButton     = ButtonPanel(self, wx.ID_HELP,       self._prefs, HELP_ICON,       "Help",     "Documentation")
-        aboutButton    = ButtonPanel(self, wx.ID_ABOUT,      self._prefs, ABOUT_ICON,      "About",    "Know more, give feedback, ...")
+        aboutButton    = ButtonPanel(self, wx.ID_ABOUT,      self._prefs, ABOUT_ICON,      "About",    "Know more")
 
         _box = wx.GridBagSizer()
         _box.Add( annotateButton, pos=(0, 0), flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
@@ -296,16 +298,22 @@ class MainActionsMenuPanel( wx.Panel ):
         self.backButton = ImgPanel(self, MENU_ICONSIZE, icon)
         font = preferences.GetValue('M_FONT')
 
-        self.text = wx.TextCtrl( self, -1, style=wx.NO_BORDER )
+
+        paneltext = wx.Panel(self, -1, style=wx.NO_BORDER)
+        sizertext = wx.BoxSizer()
+        self.text = wx.TextCtrl( paneltext, -1, style=wx.NO_BORDER )
         self.text.SetEditable(False)
         font.SetWeight( wx.BOLD )
         self.text.SetFont( font )
         self.text.SetBackgroundColour( self.GetBackgroundColour() )
         self.text.SetForegroundColour( preferences.GetValue('M_FGM_COLOUR') )
+        self.text.SetMinSize((200,-1))
+        sizertext.Add(self.text, 0, flag=wx.ALIGN_CENTER_VERTICAL)
+        paneltext.SetSizer( sizertext )
 
         sizer = wx.BoxSizer( wx.HORIZONTAL )
-        sizer.Add( self.backButton, proportion=0, flag=wx.ALL|wx.ALIGN_CENTER|wx.ALIGN_CENTRE_VERTICAL, border=2)
-        sizer.Add( self.text, proportion=1, flag=wx.EXPAND|wx.ALL|wx.ALIGN_CENTER|wx.ALIGN_CENTRE_VERTICAL, border=0)
+        sizer.Add( self.backButton, proportion=0, flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=2)
+        sizer.Add( paneltext, proportion=1, flag=wx.EXPAND|wx.ALL, border=2)
         self.SetSizer( sizer )
         self.SetMinSize((-1, MENU_ICONSIZE+4))
 

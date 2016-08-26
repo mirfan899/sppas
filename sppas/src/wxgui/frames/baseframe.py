@@ -37,7 +37,6 @@
 
 import wx
 import logging
-import webbrowser
 
 from sp_glob import SETTINGS_FILE
 
@@ -314,7 +313,7 @@ class ComponentFrame( wx.Frame ):
 
         """
         ide = event.GetId()
-        logging.debug('Event id: %d from frame id %d'%(ide, self.GetId()))
+        #logging.debug('Event id: %d from frame id %d'%(ide, self.GetId()))
 
         if ide == wx.ID_EXIT:
             self.OnExitApp(event)
@@ -360,7 +359,7 @@ class ComponentFrame( wx.Frame ):
 
         response = ShowYesNoQuestion( self, self._prefsIO, "Are you sure you want to quit?")
         if response == wx.ID_YES:
-            logging.info('Bye bye... Hope to see you again!')
+            logging.info('Analysis tool exit.')
             self.Destroy()
         else:
             event.StopPropagation()

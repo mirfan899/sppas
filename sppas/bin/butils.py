@@ -87,13 +87,13 @@ def check_aligner():
     julius = True
     hvite  = True
     try:
-        NULL = open(os.devnull, "w")
+        NULL = open(os.devnull, "r")
         subprocess.call(['julius'], stdout=NULL, stderr=subprocess.STDOUT)
     except OSError:
         julius = False
 
     try:
-        NULL = open(os.devnull, "w")
+        NULL = open(os.devnull, "r")
         subprocess.call(['HVite'], stdout=NULL, stderr=subprocess.STDOUT)
     except OSError:
         hvite = False

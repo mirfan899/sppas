@@ -108,9 +108,8 @@ class DataRoamerClient( BaseClient ):
     # ------------------------------------------------------------------------
 
     def _update_members(self):
-        """
-        Update members.
-        """
+        """ Update members. """
+        
         self._multiplefiles = True
 
         # Quick and dirty solution to communicate to the file manager:
@@ -124,10 +123,8 @@ class DataRoamerClient( BaseClient ):
     # ------------------------------------------------------------------------
 
     def New(self):
-        """
-        Add a new file into the current page.
-        """
-        page = self._notebook.GetCurrentPage()
+        """ Add a new file into the current page. """
+        
         # Ask for the new file name
         filename = filedialogs.SaveAsAnnotationFile()
         if filename is None:
@@ -140,9 +137,8 @@ class DataRoamerClient( BaseClient ):
     # ------------------------------------------------------------------------
 
     def Save(self):
-        """
-        Save the current file(s).
-        """
+        """ Save the current file(s). """
+        
         page = self._notebook.GetCurrentPage()
         for i in range(self._xfiles.GetSize()):
             if self._xfiles.GetOther(i) == page:
@@ -152,9 +148,8 @@ class DataRoamerClient( BaseClient ):
     # ------------------------------------------------------------------------
 
     def SaveAs(self):
-        """
-        Save the current file(s).
-        """
+        """ Save the current file(s). """
+        
         page = self._notebook.GetCurrentPage()
         for i in range(self._xfiles.GetSize()):
             if self._xfiles.GetOther(i) == page:
@@ -164,9 +159,8 @@ class DataRoamerClient( BaseClient ):
     # ------------------------------------------------------------------------
 
     def SaveAll(self):
-        """
-        Save all files (one per page).
-        """
+        """ Save all files (one per page). """
+        
         for i in range(self._xfiles.GetSize()):
             o = self._xfiles.GetObject(i)
             o.Save()

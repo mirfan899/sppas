@@ -44,6 +44,8 @@ from wxgui.sp_icons   import IPUSCRIBE_APP_ICON
 from wxgui.sp_icons   import SAVE_FILE
 from wxgui.sp_icons   import SAVE_ALL_FILE
 
+# ----------------------------------------------------------------------------
+
 SAVE_ALL_ID = wx.NewId()
 
 # ----------------------------------------------------------------------------
@@ -70,6 +72,8 @@ class IPUscribeFrame( ComponentFrame ):
 
         self.toolbar.AddButton(wx.ID_SAVE, SAVE_FILE, "Save")
         self.toolbar.AddButton(SAVE_ALL_ID, SAVE_ALL_FILE, "Save all")
+        self.Bind(wx.EVT_BUTTON, self.IPUscribeProcessEvent)
+
         self._LayoutFrame()
 
     # ------------------------------------------------------------------------
@@ -79,8 +83,10 @@ class IPUscribeFrame( ComponentFrame ):
 
         # Save with CTRL+S
         accelS = wx.AcceleratorEntry(wx.ACCEL_CTRL, ord('S'), wx.ID_SAVE)
+
         # Save all with CTRL+SHIFT+S
         accelSS = wx.AcceleratorEntry(wx.ACCEL_CTRL|wx.ACCEL_SHIFT, ord('S'), SAVE_ALL_ID)
+        
         # Quit with ATL+F4
         accelQ = wx.AcceleratorEntry(wx.ACCEL_NORMAL, wx.WXK_F4, wx.ID_EXIT)
 
@@ -113,6 +119,7 @@ class IPUscribeFrame( ComponentFrame ):
             self._clientpanel.SaveAll()
             return True
 
-        return wx.GetApp().ProcessEvent(event)
-
+        else:
+            ComponentFrame.ProcessEvent(self, event)
+            
 # ----------------------------------------------------------------------------

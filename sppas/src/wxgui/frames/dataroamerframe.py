@@ -78,12 +78,35 @@ class DataRoamerFrame( ComponentFrame ):
         arguments['prefs'] = prefsIO
 
         ComponentFrame.__init__(self, parent, idc, arguments)
+        self._add_accelerator()
 
         self.toolbar.AddButton(NEW_ID,      NEW_FILE,  "New")
         self.toolbar.AddButton(wx.ID_SAVE,  SAVE_FILE, "Save")
         self.toolbar.AddButton(SAVE_AS_ID,  SAVE_AS_FILE, "Save as")
         self.toolbar.AddButton(SAVE_ALL_ID, SAVE_ALL_FILE, "Save all")
+        self.Bind(wx.EVT_BUTTON, self.DataRoamerProcessEvent)
+
         self._LayoutFrame()
+
+    # ------------------------------------------------------------------------
+
+    def _add_accelerator(self):
+        """ Set the accelerator table. """
+
+        # New with CTRL+N
+        accelN = wx.AcceleratorEntry(wx.ACCEL_CTRL, ord('N'), NEW_ID)
+
+        # Save with CTRL+S
+        accelS = wx.AcceleratorEntry(wx.ACCEL_CTRL, ord('S'), wx.ID_SAVE)
+
+        # Save all with CTRL+SHIFT+S
+        accelSS = wx.AcceleratorEntry(wx.ACCEL_CTRL|wx.ACCEL_SHIFT, ord('S'), SAVE_ALL_ID)
+        
+        # Quit with ATL+F4
+        accelQ = wx.AcceleratorEntry(wx.ACCEL_NORMAL, wx.WXK_F4, wx.ID_EXIT)
+
+        accel_tbl = wx.AcceleratorTable([ accelN, accelQ, accelS, accelSS ])
+        self.SetAcceleratorTable(accel_tbl)
 
     # ------------------------------------------------------------------------
 
@@ -118,7 +141,8 @@ class DataRoamerFrame( ComponentFrame ):
         elif ide == SAVE_ALL_ID:
             self._clientpanel.SaveAll()
             return True
-
-        return wx.GetApp().ProcessEvent(event)
-
+        
+        else:
+            ComponentFrame.ProcessEvent(self, event)
+            
 # ----------------------------------------------------------------------------

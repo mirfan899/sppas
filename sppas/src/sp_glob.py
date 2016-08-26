@@ -63,8 +63,7 @@ DOCUMENTATION_PATH = os.path.join( os.path.dirname(BASE_PATH), "documentation" )
 # et cetera
 SPPAS_CONFIG_DIR = os.path.join( BASE_PATH, "etc")
 ICONS_PATH       = os.path.join( BASE_PATH, "etc", "icons" )
-TIPS_ICON_PATH   = os.path.join( BASE_PATH, "etc", "tips")
-TIPS_FILE        = os.path.join( BASE_PATH, "etc", "tips","tips.txt")
+TIPS_FILE        = os.path.join( BASE_PATH, "etc", "tips.txt")
 SETTINGS_FILE    = os.path.join( BASE_PATH, "etc", "settings.dump")
 
 
@@ -111,7 +110,12 @@ license    = "GNU Public License, version 3"
 license_text = """
 ------------------------------------------------------------
 
-By using SPPAS, you agree to cite the reference in your publications.
+By using SPPAS, you agree to cite the reference in your publications:
+
+Brigitte Bigi (2015),
+SPPAS - Multi-lingual Approaches to the Automatic Annotation of Speech,
+The Phonetician, International Society of Phonetic Sciences,
+vol. 111-112, ISBN: 0741-6164, pages 54-69.
 
 ------------------------------------------------------------
 

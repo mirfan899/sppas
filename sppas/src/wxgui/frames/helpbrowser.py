@@ -222,7 +222,7 @@ class HelpPage( object ):
         while True:
             match = re.search(r"Color\(([^)]+)\)", html_body)
             if match:
-                replacement = "<font color=\"red\">%s</font>" %match.group(1)
+                replacement = "<font color=\"red\" size=\"+2\">%s</font>" %match.group(1)
                 html_body = html_body[0:match.start(0)] + replacement + \
                        html_body[match.end(0):]
             else:

@@ -101,50 +101,38 @@ class IPUscribeClient( BaseClient ):
         BaseClient.__init__( self, parent, prefsIO )
         self._update_members()
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def _update_members(self):
-        """
-        Update members.
-        """
+        """ Update members. """
+        
         self._multiplefiles = False
 
-    # End _update_members
     # ------------------------------------------------------------------------
-
 
     def CreateComponent(self, parent, prefsIO ):
         return IPUscribe(parent, prefsIO)
 
     # ------------------------------------------------------------------------
 
-
     def Save(self):
-        """
-        Save the current file(s).
-        """
+        """ Save the current file(s). """
+        
         page = self._notebook.GetCurrentPage()
         for i in range(self._xfiles.GetSize()):
             if self._xfiles.GetOther(i) == page:
                 o = self._xfiles.GetObject(i)
                 o.Save()
 
-    # Save
+
     # ------------------------------------------------------------------------
 
-
     def SaveAll(self):
-        """
-        Save all files (one per page).
-        """
+        """ Save all files (one per page). """
+        
         for i in range(self._xfiles.GetSize()):
             o = self._xfiles.GetObject(i)
             o.Save()
-
-    # SaveAll
-    # ------------------------------------------------------------------------
 
 
 # ----------------------------------------------------------------------------
@@ -215,7 +203,6 @@ class IPUscribe( wx.Panel ):
         """
         Create the media panel.
         """
-        #self._mediaPanel = SndPlayer(self, orient=wx.HORIZONTAL, refreshtimer=10, prefsIO=self._prefsIO)
         self._mediaPanel = SndPlayer(self, orient=wx.HORIZONTAL, refreshtimer=10, prefsIO=self._prefsIO)
 
         self._mediaPanel.SetPreferences(self._prefsIO)
@@ -576,14 +563,23 @@ class IPUscribe( wx.Panel ):
 
         # Media player
         #     TAB -> PLay
-        #     F1 -> Pause
+        #     F7 -> Pause
         #     ESC -> Stop
         if keycode == wx.WXK_TAB:
             self._mediaPanel.onPlay( event )
-        elif keycode == wx.WXK_F1:
+
+        elif keycode == wx.WXK_F6:
+            self._mediaPanel.onRewind( event )
+
+        elif keycode == wx.WXK_F7:
             self._mediaPanel.onPause( event )
+
+        elif keycode == wx.WXK_F8:
+            self._mediaPanel.onNext( event )
+
         elif keycode == wx.WXK_ESCAPE:
             self._mediaPanel.onStop( event )
+        
         else:
             event.Skip()
 

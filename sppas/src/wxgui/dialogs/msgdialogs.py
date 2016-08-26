@@ -70,10 +70,13 @@ class spBaseMessageDialog( spBaseDialog ):
 
         if style == wx.ICON_ERROR:
             titlebox = self.CreateTitle(DLG_ERR_ICON, "Error")
+        
         elif style == wx.ICON_WARNING:
             titlebox = self.CreateTitle(DLG_WARN_ICON, "Warning")
+        
         elif style == wx.YES_NO:
             titlebox = self.CreateTitle(DLG_QUEST_ICON, "Question")
+        
         else:
             titlebox = self.CreateTitle(DLG_INFO_ICON, "Information")
 
@@ -106,7 +109,8 @@ class YesNoQuestion( spBaseMessageDialog ):
         return self.CreateButtonBox( [no],[yes] )
 
     def _on_no(self, evt):
-        self.Destroy()
+        #self.Destroy() # does not work on MacOS
+        self.Close()
         self.SetReturnCode( wx.ID_NO )
 
 # ---------------------------------------------------------------------------
