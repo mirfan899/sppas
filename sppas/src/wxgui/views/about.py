@@ -38,7 +38,7 @@
 import wx
 
 from wxgui.dialogs.basedialog import spBaseDialog
-from wxgui.sp_icons import APP_ICON
+from wxgui.sp_icons import ABOUT_ICON
 from wxgui.panels.about import AboutSPPAS
 
 # ----------------------------------------------------------------------------
@@ -57,7 +57,7 @@ class AboutDialog( spBaseDialog ):
         spBaseDialog.__init__(self, parent, preferences, title="About")
         wx.GetApp().SetAppName( "about" )
 
-        titlebox   = self.CreateTitle(APP_ICON,"About SPPAS...")
+        titlebox   = self.CreateTitle(ABOUT_ICON,"About")
         contentbox = AboutSPPAS( self,preferences )
         buttonbox  = self.CreateButtonBox( [],[self.CreateOkayButton()] )
 

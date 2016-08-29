@@ -120,11 +120,12 @@ class ImgPanel( wx.Panel ):
     @summary:      Simple panel with an image.
 
     """
-    def __init__(self, parent, bmpsize, bmpname):
+    def __init__(self, parent, bmpsize, bmpname, prefsIO):
         wx.Panel.__init__(self, parent)
 
-        bitmap = spBitmap( bmpname, size=bmpsize )
+        bitmap = spBitmap( bmpname, size=bmpsize, theme=prefsIO.GetValue('M_ICON_THEME') )
         sBmp = wx.StaticBitmap(self, wx.ID_ANY, bitmap)
+        sBmp.SetBackgroundColour( parent.GetBackgroundColour() )
 
         sizer = wx.BoxSizer()
         sizer.Add(sBmp, proportion=1, flag=wx.ALL|wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL, border=0)
@@ -175,7 +176,7 @@ class ButtonPanel( wx.Panel ):
         font = self.GetFont()
 
         if bmpname is not None:
-            bmp = ImgPanel(panel, BUTTON_ICONSIZE, bmpname)
+            bmp = ImgPanel(panel, BUTTON_ICONSIZE, bmpname, self._prefs)
             sizer.Add(bmp, 0, flag=wx.ALL|wx.ALIGN_CENTER, border=8)
 
         text = wx.StaticText(panel, -1, textstr)
@@ -265,7 +266,7 @@ class ButtonToolbarPanel( wx.Panel ):
         sizer = wx.BoxSizer(wx.VERTICAL)
 
         if bmpname is not None:
-            bmp = ImgPanel(panel, TB_ICONSIZE, bmpname)
+            bmp = ImgPanel(panel, TB_ICONSIZE, bmpname, self._prefs)
             sizer.Add(bmp, 0, flag=wx.ALL|wx.ALIGN_CENTER, border=8)
             bmp.Bind(wx.EVT_LEFT_UP, self.OnButtonLeftUp)
             bmp.Bind(wx.EVT_ENTER_WINDOW, self.OnButtonEnter)
@@ -337,7 +338,7 @@ class ButtonMenuPanel( wx.Panel ):
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         if bmpname is not None:
-            bmp = ImgPanel(self, MENU_ICONSIZE, bmpname)
+            bmp = ImgPanel(self, MENU_ICONSIZE, bmpname, self._prefs)
             bmp.Bind(wx.EVT_LEFT_UP, self.OnButtonLeftUp)
             sizer.Add(bmp, flag=wx.ALIGN_CENTER_HORIZONTAL, border=0)
 

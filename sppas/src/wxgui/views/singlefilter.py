@@ -60,7 +60,7 @@ from wxgui.sp_icons import FILTER_ADD_DURATION
 from wxgui.sp_icons import FILTER_ADD_TIME
 from wxgui.sp_icons import FILTER_REMOVE
 
-from wxgui.sp_consts import TB_ICONSIZE
+from wxgui.panels.mainbuttons import MainToolbarPanel
 
 from wxgui.cutils.imageutils import spBitmap
 from wxgui.cutils.ctrlutils import CreateGenButton
@@ -121,6 +121,7 @@ class SingleFilterDialog( spBaseDialog ):
         self.LayoutComponents( titlebox,
                                contentbox,
                                buttonbox )
+        self.SetMinSize((540,460))
 
     # ------------------------------------------------------------------------
     # Create the GUI
@@ -128,8 +129,8 @@ class SingleFilterDialog( spBaseDialog ):
 
     def _create_buttons(self):
         btn_cancel   = self.CreateCancelButton( )
-        btn_applyany = self.CreateButton(APPLY_ICON, "Apply any", btnid=wx.ID_OK )
-        btn_applyall = self.CreateButton(APPLY_ICON, "Apply all", btnid=wx.ID_OK )
+        btn_applyany = self.CreateButton(APPLY_ICON, "Apply ANY", btnid=wx.ID_OK )
+        btn_applyall = self.CreateButton(APPLY_ICON, "Apply ALL", btnid=wx.ID_OK )
         self.SetAffirmativeId(wx.ID_OK)
         btn_applyall.SetDefault()
         btn_applyall.Bind(wx.EVT_BUTTON, self._on_button_all, btn_applyall)
@@ -217,6 +218,7 @@ class SingleFilterPanel(wx.Panel):
 
     def __init__(self, parent, prefsIO):
         wx.Panel.__init__(self, parent, size=(580, 320))
+        self.SetBackgroundColour(prefsIO.GetValue('M_BG_COLOUR'))
 
         # Members
         self.preferences = prefsIO
@@ -224,59 +226,35 @@ class SingleFilterPanel(wx.Panel):
 
         self._create_toolbar()
         self._create_filterlist()
-        self._layout_components()
-        self._set_focus_component()
+        self.Bind(wx.EVT_BUTTON, self.ProcessEvent)
+
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(self.toolbar,     proportion=0, flag=wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, border=4)
+        sizer.Add(self.filterlist,  proportion=1, flag=wx.EXPAND|wx.LEFT|wx.RIGHT, border=4)
+        self.SetSizer(sizer)
+        self.SetAutoLayout( True )
 
 
     def _create_toolbar(self):
-        """ Creates a toolbar panel. """
 
-        # Define the size of the icons and buttons
-        iconSize = (TB_ICONSIZE, TB_ICONSIZE)
-        self.toolbar = wx.ToolBar( self, -1, style=wx.TB_TEXT)
-
-        # Set the size of the buttons
-        self.toolbar.SetToolBitmapSize(iconSize)
-        self.toolbar.SetFont( self.preferences.GetValue('M_FONT') )
-
-        self.toolbar.AddLabelTool(ID_ADD_LABEL, 'Label Filter',
-                             spBitmap(FILTER_ADD_LABEL,TB_ICONSIZE,theme=self.preferences.GetValue('M_ICON_THEME')),
-                             shortHelp="Add a filter on the content of each annotation of the tier")
-        self.toolbar.AddLabelTool(ID_ADD_TIME, 'Time Filter',
-                             spBitmap(FILTER_ADD_TIME,TB_ICONSIZE,theme=self.preferences.GetValue('M_ICON_THEME')),
-                             shortHelp="Add a filter to fix the time to start or to end to filter")
-        self.toolbar.AddLabelTool(ID_ADD_DURATION, 'Duration Filter',
-                             spBitmap(FILTER_ADD_DURATION,TB_ICONSIZE,theme=self.preferences.GetValue('M_ICON_THEME')),
-                             shortHelp="Add a filter on the duration of each annotations of the tier")
-        self.toolbar.AddSeparator()
-        self.toolbar.AddLabelTool(ID_CLEAR, 'Remove Filter',
-                             spBitmap(FILTER_REMOVE,TB_ICONSIZE,theme=self.preferences.GetValue('M_ICON_THEME')),
-                             shortHelp="Remove checked filters of the list")
-        self.toolbar.Realize()
-
-        # events
-        eventslist = [ ID_ADD_LABEL, ID_ADD_TIME, ID_ADD_DURATION, ID_CLEAR ]
-        for event in eventslist:
-            wx.EVT_TOOL(self, event, self.ProcessEvent)
+        self.toolbar = MainToolbarPanel(self, self.preferences)
+        self.toolbar.AddButton( ID_ADD_LABEL, FILTER_ADD_LABEL, "Label", tooltip="Add a filter on the content of each annotation of the tier.")
+        self.toolbar.AddButton( ID_ADD_TIME, FILTER_ADD_TIME,   "Time",  tooltip="Add a filter to fix the time to start or to end to filter.")
+        self.toolbar.AddButton( ID_ADD_DURATION, FILTER_ADD_DURATION, "Duration", tooltip="Add a filter on the duration of each annotations of the tier.")
+        self.toolbar.AddSpacer()
+        self.toolbar.AddButton( ID_CLEAR, FILTER_REMOVE, "Remove", tooltip="Remove checked filters of the list.")
 
 
     def _create_filterlist(self):
-        self.filterlist = CheckListCtrl(self, -1, style=wx.LC_REPORT|wx.BORDER_NONE)
 
+        self.filterlist = CheckListCtrl(self, -1, style=wx.LC_REPORT|wx.BORDER_NONE)
+        self.filterlist.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
         self.filterlist.SetFont( self.preferences.GetValue('M_FONT') )
+
         cols = ("Filter", "Function", "Value", "Option")
         for i, col in enumerate(cols):
             self.filterlist.InsertColumn(i, col)
             self.filterlist.SetColumnWidth(i, 120)
-
-    def _layout_components(self):
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.toolbar, proportion=0, flag=wx.EXPAND|wx.ALL, border=1 )
-        sizer.Add(self.filterlist, 1, flag=wx.ALL|wx.EXPAND, border=10)
-        self.SetSizer(sizer)
-        self.SetAutoLayout( True )
-
-    def _set_focus_component(self):
         self.filterlist.SetFocus()
 
     # ------------------------------------------------------------------------
@@ -295,14 +273,17 @@ class SingleFilterPanel(wx.Panel):
         if id == ID_ADD_LABEL:
             self.OnAddLabel(event)
             return True
+
         elif id == ID_ADD_TIME:
             self.OnAddTime(event)
             return True
+
         elif id == ID_ADD_DURATION:
             self.OnAddDuration(event)
             return True
+
         elif id == ID_CLEAR:
-            self.OnClear(event)
+            self.OnRemove(event)
             return True
 
         return wx.GetApp().ProcessEvent(event)
@@ -336,24 +317,28 @@ class SingleFilterPanel(wx.Panel):
             self.data.append( data )
         dlg.Destroy()
 
-    def OnClear(self, event):
-        sellist = self.filterlist.GetFirstSelected()
-        while sellist != -1:
-            next = self.filterlist.GetNextSelected( sellist )
-            self.filterlist.DeleteItem( sellist )
-            self.data.pop( sellist )
-            sellist = next
+    def OnRemove(self, event):
+        # fix a list of selected idem indexes
+        selected = []
+        currentf = self.filterlist.GetFirstSelected()
+        while currentf != -1:
+            nextf = self.filterlist.GetNextSelected( currentf )
+            selected.append( currentf )
+            currentf = nextf
+
+        # remove selected items (starting from end!)
+        for index in reversed(selected):
+            self.data.pop( index )
+            self.filterlist.DeleteItem( index )
 
     # ----------------------------------------------------------------------
     # Public Methods
     # ----------------------------------------------------------------------
 
     def GetPredicates(self):
-        """
-        Return a predicate, constructed from the data.
-        """
-        predicates = []
+        """ Return a predicate, constructed from the data. """
 
+        predicates = []
         sellist = self.filterlist.GetFirstSelected()
         while sellist != -1:
             d = self.data[sellist]
@@ -368,9 +353,8 @@ class SingleFilterPanel(wx.Panel):
     # ----------------------------------------------------------------------
 
     def _add_filter(self, data):
-        """
-        Add a filter in the list.
-        """
+        """ Add a filter in the list. """
+
         row = self._format_data(data)
         index = self.filterlist.GetItemCount()
 
@@ -379,10 +363,10 @@ class SingleFilterPanel(wx.Panel):
             self.filterlist.SetStringItem( index, i, row[i] )
         self.filterlist.Select( index,on=True )
 
+
     def _format_data(self, data):
-        """
-        Format data to be included in the list.
-        """
+        """ Format data to be included in the list. """
+
         opt = ""
         if "label" in data['type'].lower() and 'string' in data['type'].lower():
             values = ", ".join( data['value'] )
@@ -480,6 +464,8 @@ class LabelFilterDialog( spBaseDialog ):
 
     def _create_content(self):
         self.notebook = wx.Notebook(self)
+        self.notebook.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
+
         page1 = LabelString(self.notebook, self.preferences)
         page2 = LabelNumber(self.notebook, self.preferences)
         page3 = LabelBoolean(self.notebook, self.preferences)
@@ -518,12 +504,13 @@ class LabelString( wx.Panel ):
 
         wx.Panel.__init__(self, parent)
         self.preferences = prefsIO
+        self.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
 
         # Widgets
         msg = "Patterns to find (separated by commas):"
         self.label = wx.StaticText(self, label=msg)
         self.text = wx.TextCtrl(self, value=DEFAULT_LABEL, validator=TextValidator())
-        self.text.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
+        self.text.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
 
         choices = [row[0] for row in LabelFilterDialog.choices]
         self.radiobox = wx.RadioBox(self, label="Functions",
@@ -551,13 +538,11 @@ class LabelString( wx.Panel ):
 
     def OnTextChanged(self, event):
         self.text.SetFocus()
-        self.text.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
         self.text.Refresh()
 
     def OnTextErase(self, event):
         self.text.SetValue('')
         self.text.SetFocus()
-        self.text.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
         self.text.Refresh()
 
     # -----------------------------------------------------------------------
@@ -608,6 +593,7 @@ class LabelNumber( wx.Panel ):
 
         wx.Panel.__init__(self, parent)
         self.preferences = prefsIO
+        self.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
 
         # Widgets
         label = wx.StaticText(self, label="... this value: ")
@@ -652,6 +638,7 @@ class LabelBoolean( wx.Panel ):
 
         wx.Panel.__init__(self, parent)
         self.preferences = prefsIO
+        self.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
 
         choices = [choice[0] for choice in LabelBoolean.choices]
         self.radiobox = wx.RadioBox(self, label="The label ",

@@ -35,15 +35,6 @@
 # File: CustomListCtrl.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# -------------------------------------------------------------------------
-# Imports
-# -------------------------------------------------------------------------
-
 import wx
 
 from wxgui.cutils.imageutils import GrayOut
@@ -58,9 +49,8 @@ class CheckListCtrl( wx.ListCtrl ):
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
     @summary: A ListCtrl with check-able buttons in the first column.
+
     """
-
-
     def __init__(self, parent, id=-1, pos=wx.DefaultPosition,
                  size=wx.DefaultSize, style=wx.NO_BORDER,
                  validator=wx.DefaultValidator, name="CheckListCtrl",):
@@ -96,14 +86,9 @@ class CheckListCtrl( wx.ListCtrl ):
         self.Bind(wx.EVT_LIST_ITEM_DESELECTED,  self.OnItemDeselected, self)
         self.Bind(wx.EVT_LIST_COL_CLICK,        self.OnColumnClick,    self)
 
-    # End __init__
-    # ---------------------------------------------------------------------
-
-
     # ---------------------------------------------------------------------
     # Private methods to init
     # ---------------------------------------------------------------------
-
 
     def __initializeBitmaps(self):
         """
@@ -122,9 +107,8 @@ class CheckListCtrl( wx.ListCtrl ):
 
 
     def __createImageList(self):
-        """
-        Load some images into an image list.
-        """
+        """ Load some images into an image list. """
+
         il = wx.ImageList(16,16,True)
 
         # Enabled = True, Check = False
@@ -146,8 +130,8 @@ class CheckListCtrl( wx.ListCtrl ):
         """
         Returns the appropriated bitmap depending on the checking state
         (Checked/UnCkecked) and the control state (Enabled/Disabled).
-        """
 
+        """
         if enabled:
             # So we are Enabled
             if checked:
@@ -168,13 +152,12 @@ class CheckListCtrl( wx.ListCtrl ):
     # Override methods of wx.ListCtrl
     # ---------------------------------------------------------------------
 
-
     def InsertColumn(self, colnum, colname):
         """
-        Override.
-        Insert a new column:
-            1. create a column with a check button if we create a column for the first time,
-            2. create the expected column
+        Override. Insert a new column.
+
+        1. create a column with a check button if we create a column for the first time,
+        2. create the expected column
 
         """
         if colnum == 0:
@@ -246,12 +229,10 @@ class CheckListCtrl( wx.ListCtrl ):
             self.sel.remove(index)
         wx.ListCtrl.DeleteItem(self,index)
 
-
     # ---------------------------------------------------------------------
     # Override selection of items.
     # Create our own list of selected items, and do not use the default one.
     # ---------------------------------------------------------------------
-
 
     def Select(self, index, on):
         """
@@ -316,13 +297,10 @@ class CheckListCtrl( wx.ListCtrl ):
         """
         return index in self.sel
 
-    # ---------------------------------------------------------------------
-
 
     # ---------------------------------------------------------------------
     # Callbacks
     # ---------------------------------------------------------------------
-
 
     def OnColumnClick(self, evt):
         """
@@ -387,7 +365,6 @@ class CheckListCtrl( wx.ListCtrl ):
     # Methods we add for convenience!
     # ---------------------------------------------------------------------
 
-
     def SelectAll(self):
         """
         Select (i.e. check) all items in the list.
@@ -409,14 +386,11 @@ class CheckListCtrl( wx.ListCtrl ):
             self.SetItemColumnImage(index, 0, self.UNCHECK)
         self.sel = list()
 
-    # ---------------------------------------------------------------------
-
 # End CheckListCtrl
 # -------------------------------------------------------------------------
 
 
 # -------------------------------------------------------------------------
-
 
 class LineListCtrl( wx.ListCtrl ):
     """
@@ -424,9 +398,8 @@ class LineListCtrl( wx.ListCtrl ):
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
     @summary: A ListCtrl with line numbers in the first column.
+
     """
-
-
     def __init__(self, parent, id=-1, pos=wx.DefaultPosition,
                  size=wx.DefaultSize, style=wx.NO_BORDER,
                  validator=wx.DefaultValidator, name="LineListCtrl",):
@@ -446,14 +419,9 @@ class LineListCtrl( wx.ListCtrl ):
         """
         wx.ListCtrl.__init__(self, parent, id, pos, size, style, validator, name)
 
-     # End __init__
-     # ---------------------------------------------------------------------
-
-
-     # ---------------------------------------------------------------------
-     # Override methods of wx.ListCtrl
-     # ---------------------------------------------------------------------
-
+    # ---------------------------------------------------------------------
+    # Override methods of wx.ListCtrl
+    # ---------------------------------------------------------------------
 
     def InsertColumn(self, colnum, colname):
         """
@@ -537,12 +505,10 @@ class LineListCtrl( wx.ListCtrl ):
             else:
                 self.SetItemBackgroundColour(i, wx.WHITE)
 
-
 # -------------------------------------------------------------------------
 
 
 # -------------------------------------------------------------------------
-
 
 class SortListCtrl( wx.ListCtrl ):
     """
@@ -550,9 +516,8 @@ class SortListCtrl( wx.ListCtrl ):
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
     @summary: A ListCtrl with sorted columns.
+
     """
-
-
     def __init__(self, parent, id=-1, pos=wx.DefaultPosition,
                  size=wx.DefaultSize, style=wx.NO_BORDER,
                  validator=wx.DefaultValidator, name="SortListCtrl",):
@@ -575,14 +540,9 @@ class SortListCtrl( wx.ListCtrl ):
 
         self.Bind(wx.EVT_LIST_COL_CLICK, self.OnColumnClick, self)
 
-     # End __init__
-     # ---------------------------------------------------------------------
-
-
     # ---------------------------------------------------------------------
     # Override methods of wx.ListCtrl
     # ---------------------------------------------------------------------
-
 
     def InsertStringItem(self, index, label):
         """
@@ -624,9 +584,9 @@ class SortListCtrl( wx.ListCtrl ):
             else:
                 self.SetItemBackgroundColour(i, wx.WHITE)
 
-     # ---------------------------------------------------------------------
-     # Callback
-     # ---------------------------------------------------------------------
+    # ---------------------------------------------------------------------
+    # Callback
+    # ---------------------------------------------------------------------
 
     def OnColumnClick(self, evt):
         """

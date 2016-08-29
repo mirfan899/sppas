@@ -63,7 +63,11 @@
 <li><a href="#analyses">Analyses</a><ul>
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#dataroamer">DataRoamer</a></li>
-<li><a href="#audioroamer">AudioRoamer</a></li>
+<li><a href="#audioroamer">AudioRoamer</a><ul>
+<li><a href="#properties-of-the-audio-file">Properties of the audio file</a></li>
+<li><a href="#playing-audio-files">Playing audio files</a></li>
+<li><a href="#want-more">Want more?</a></li>
+</ul></li>
 <li><a href="#ipuscriber">IPUscriber</a></li>
 <li><a href="#vizualizer">Vizualizer</a></li>
 <li><a href="#datafilter">DataFilter</a><ul>
@@ -108,7 +112,7 @@
 <img src="./etc/screenshots/DataRoamer.png" alt="DataRoamer: explore annotated files" /><figcaption>DataRoamer: explore annotated files</figcaption>
 </figure>
 <h2 id="audioroamer"><a href="#audioroamer">AudioRoamer</a></h2>
-<p><code>AudioRoamer</code> allows to play audio files and to display general information about a digitalized audio-PCM file.</p>
+<p><code>AudioRoamer</code> allows to play audio files, to display general information about a digitalized audio-PCM file and to manipulate the file.</p>
 <p>Pulse-code modulation (PCM) is a method used to digitally represent sampled analog signals. In a PCM stream, the amplitude of the analog signal is sampled regularly at uniform intervals. A PCM stream has two basic properties that determine the stream's fidelity to the original analog signal:</p>
 <ol type="1">
 <li>the sampling rate, which is the number of times per second that samples are taken;</li>
@@ -119,7 +123,37 @@
 <figure>
 <img src="./etc/screenshots/AudioRoamer.png" alt="AudioRoamer: play and manage audio files" /><figcaption>AudioRoamer: play and manage audio files</figcaption>
 </figure>
-<h4 id="want-more"><a href="#want-more">Want more?</a></h4>
+<p>When an audio file is checked in the list of files, a new page is opened in the notebook. The main information about the audio file are then displayed in the panel at the middle and a player is displayed at bottom. The audio file is not loaded in memory, so event very long audio files can be displayed. At the top of the page, a button &quot;Want more?&quot; can be clicked: the audio file will then be fully read and analyzed, then a new window will be opened to display detailed information. It will also allow to change some properties of the audio file, extract a channel, etc.</p>
+<h3 id="properties-of-the-audio-file"><a href="#properties-of-the-audio-file">Properties of the audio file</a></h3>
+<p>The main properties of any audio file is displayed. SPPAS can open audio files of type:</p>
+<ol type="1">
+<li>Waveform Audio File Format (WAVE), a Microsoft and IBM audio file format standard;</li>
+<li>Audio Interchange File Format (AIFF), an audio file format standard developped by Apple Inc;</li>
+<li>Au file format, a simple audio file format introduced by Sun Microsystems.</li>
+</ol>
+<p>The following information are extracted or deducted of the header of the audio file:</p>
+<ul>
+<li>the duration given in seconds with a maximum of 3 digits;</li>
+<li>the frame rate given in Hz;</li>
+<li>the sample width in bits (one of 8, 16, 24 or 32);</li>
+<li>the number of channels.</li>
+</ul>
+<p>A color code is used to indicate if the file is compatible with SPPAS automatic annotations:</p>
+<ul>
+<li>Green color indicates that the value is perfectly matching the expectations;</li>
+<li>Orange color indicates that the value is not the expected one but automatic annotations will be able to convert it to the right one;</li>
+<li>Red color indicates that none of the automatic annotations will work with the given value. The file must be modified.</li>
+</ul>
+<h3 id="playing-audio-files"><a href="#playing-audio-files">Playing audio files</a></h3>
+<p>The following shortcuts can be used:</p>
+<ul>
+<li>TAB: Play</li>
+<li>ESC: Stop</li>
+<li>F6: Rewind</li>
+<li>F7: Pause</li>
+<li>F8: Next</li>
+</ul>
+<h3 id="want-more"><a href="#want-more">Want more?</a></h3>
 <p><code>AudioRoamer</code> allows to display a large set of information for each channel. For a large file, it can take a while to estimate such information... For example, an mono-audio file of 243 seconds (21.5Mb) is loaded in 35 seconds. <strong>So be patient! It's worth it!</strong></p>
 <figure>
 <img src="./etc/screenshots/AudioRoamer-more.png" alt="AudioRoamer if you want more" /><figcaption>AudioRoamer if you want more</figcaption>
@@ -171,9 +205,11 @@
 </ul>
 <p>The following keyboard shortcuts can also be used:</p>
 <ul>
-<li>to play: TAB</li>
-<li>to pause: ESC</li>
-<li>to stop: F1</li>
+<li>TAB: Play</li>
+<li>ESC: Stop</li>
+<li>F6: Rewind</li>
+<li>F7: Pause</li>
+<li>F8: Next</li>
 </ul>
 <h2 id="vizualizer"><a href="#vizualizer">Vizualizer</a></h2>
 <p><code>Vizualizer</code> displays speech files and annotated files, and is very useful to take a nice screenshot.</p>

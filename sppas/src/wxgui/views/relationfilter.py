@@ -75,7 +75,6 @@ class RelationFilterDialog( spBaseDialog ):
     to the predicate Rel.
 
     """
-
     def __init__(self, parent, preferences, tierX=[], tierY=[]):
         """
         Create a new dialog.
@@ -238,9 +237,9 @@ class RelationFilterPanel(wx.Panel):
     @summary: Panel to fix filters to be used with Rel predicate.
 
     """
-
     def __init__(self, parent, prefsIO):
         wx.Panel.__init__(self, parent, size=(580, 320))
+        self.SetBackgroundColour( prefsIO.GetValue( 'M_BG_COLOUR' ))
 
         # Members
         self.preferences = prefsIO
@@ -248,6 +247,7 @@ class RelationFilterPanel(wx.Panel):
 
         self.relTable = AllensRelationsTable(self)
         self.opt = wx.CheckBox(self, label='Replace label of X by the relation name.')
+        self.opt.SetBackgroundColour( prefsIO.GetValue( 'M_BG_COLOUR' ))
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.relTable, proportion=1, flag=wx.EXPAND|wx.BOTTOM, border=5)

@@ -1,7 +1,7 @@
 ## AudioRoamer
 
-`AudioRoamer` allows to play audio files and to display general 
-information about a digitalized audio-PCM file.
+`AudioRoamer` allows to play audio files, to display general information about
+a digitalized audio-PCM file and to manipulate the file.
 
 Pulse-code modulation (PCM) is a method used to digitally represent sampled 
 analog signals. In a PCM stream, the amplitude of the analog signal is sampled 
@@ -22,7 +22,59 @@ interweaving or synchronization of streams.
 ![AudioRoamer: play and manage audio files](./etc/screenshots/AudioRoamer.png)
 
 
-#### Want more?
+When an audio file is checked in the list of files, a new page is opened in
+the notebook. The main information about the audio file are then displayed
+in the panel at the middle and a player is displayed at bottom. The audio
+file is not loaded in memory, so event very long audio files can be 
+displayed.
+At the top of the page, a button "Want more?" can be clicked: the audio 
+file will then be fully read and analyzed, then a new window will be 
+opened to display detailed information. It will also allow to change some
+properties of the audio file, extract a channel, etc. 
+
+
+
+### Properties of the audio file
+
+The main properties of any audio file is displayed. SPPAS can open audio files
+of type:
+
+1. Waveform Audio File Format (WAVE), a Microsoft and IBM audio file format standard;
+2. Audio Interchange File Format (AIFF), an audio file format standard developped by Apple Inc;
+3. Au file format, a simple audio file format introduced by Sun Microsystems.
+
+The following information are extracted or deducted of the header of the 
+audio file:
+
+- the duration given in seconds with a maximum of 3 digits;
+- the frame rate given in Hz;
+- the sample width in bits (one of 8, 16, 24 or 32);
+- the number of channels.
+
+
+A color code is used to indicate if the file is compatible with SPPAS automatic
+annotations:
+
+- Green color indicates that the value is perfectly matching the expectations;
+- Orange color indicates that the value is not the expected one but automatic annotations will be able to convert it to the right one;
+- Red color indicates that none of the automatic annotations will work with the given value. The file must be modified.
+
+
+
+### Playing audio files
+
+
+The following shortcuts can be used:
+
+- TAB: Play
+- ESC: Stop
+- F6: Rewind
+- F7: Pause
+- F8: Next
+
+
+
+### Want more?
 
 `AudioRoamer` allows to display a large set of information for each channel.
 For a large file, it can take a while to estimate such information... 

@@ -116,6 +116,7 @@ class spBaseDialog( wx.Dialog ):
         font.SetPointSize(font.GetPointSize() + 2)
 
         paneltext = wx.Panel(self, -1, style=wx.NO_BORDER)
+        paneltext.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
         sizertext = wx.BoxSizer()
         text = wx.StaticText(paneltext, label=titletext)
         text.SetFont( font )

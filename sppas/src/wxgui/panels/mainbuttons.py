@@ -295,18 +295,18 @@ class MainActionsMenuPanel( wx.Panel ):
         self.SetBackgroundColour( preferences.GetValue('M_BGM_COLOUR') )
         self._prefs = preferences
 
-        self.backButton = ImgPanel(self, MENU_ICONSIZE, icon)
+        self.backButton = ImgPanel(self, MENU_ICONSIZE, icon, self._prefs)
         font = preferences.GetValue('M_FONT')
 
-
         paneltext = wx.Panel(self, -1, style=wx.NO_BORDER)
+        paneltext.SetBackgroundColour( preferences.GetValue('M_BGM_COLOUR') )
         sizertext = wx.BoxSizer()
         self.text = wx.TextCtrl( paneltext, -1, style=wx.NO_BORDER )
         self.text.SetEditable(False)
         font.SetWeight( wx.BOLD )
         self.text.SetFont( font )
-        self.text.SetBackgroundColour( self.GetBackgroundColour() )
-        self.text.SetForegroundColour( preferences.GetValue('M_FGM_COLOUR') )
+        self.text.SetBackgroundColour( preferences.GetValue('M_BGM_COLOUR') )
+        self.text.SetForegroundColour( wx.WHITE )
         self.text.SetMinSize((200,-1))
         sizertext.Add(self.text, 0, flag=wx.ALIGN_CENTER_VERTICAL)
         paneltext.SetSizer( sizertext )

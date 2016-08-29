@@ -18,6 +18,8 @@ list (from left to right):
 
 The following keyboard shortcuts can also be used:
 
-- to play:  TAB
-- to pause: ESC
-- to stop:  F1
+- TAB: Play
+- ESC: Stop
+- F6: Rewind
+- F7: Pause
+- F8: Next
