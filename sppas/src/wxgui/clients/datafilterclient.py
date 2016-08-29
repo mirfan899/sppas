@@ -211,8 +211,8 @@ class DataFilter( scrolled.ScrolledPanel ):
         toolbar.AddButton( PREVIEW_ID, TIER_PREVIEW, 'View', tooltip="Preview one checked tier of the selected file.")
         toolbar.AddSpacer()
 
-        toolbar.AddButton( FILTER_SEL_ID, FILTER_SINGLE, 'Single\nFilter', tooltip="Filter checked tier(s) depending on its annotations.")
-        toolbar.AddButton( FILTER_REL_ID, FILTER_RELATION, 'Relation\nFilter', tooltip="Filter checked tier(s) depending on time-relations of its annotation with annotations of another tier.")
+        toolbar.AddButton( FILTER_SEL_ID, FILTER_SINGLE, 'Single', tooltip="Filter checked tier(s) depending on its annotations.")
+        toolbar.AddButton( FILTER_REL_ID, FILTER_RELATION, 'Relation', tooltip="Filter checked tier(s) depending on time-relations of its annotation with annotations of another tier.")
         toolbar.AddSpacer()
 
         return toolbar

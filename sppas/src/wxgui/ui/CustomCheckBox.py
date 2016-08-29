@@ -137,8 +137,8 @@ class CustomCheckBox( wx.PyControl ):
         # state (Enabled/Disabled).
         self._bitmaps = {"CheckedEnable": GetCheckedBitmap(self._ccbtype),
                          "UnCheckedEnable": GetNotCheckedBitmap(self._ccbtype),
-                         "CheckedDisable": GrayOut(GetCheckedImage(self._ccbtype)),
-                         "UnCheckedDisable": GrayOut(GetNotCheckedImage(self._ccbtype))}
+                         "CheckedDisable": wx.BitmapFromImage(GrayOut(GetCheckedImage(self._ccbtype))),
+                         "UnCheckedDisable": wx.BitmapFromImage(GrayOut(GetNotCheckedImage(self._ccbtype)))}
 
 
     def InitializeColours(self):
