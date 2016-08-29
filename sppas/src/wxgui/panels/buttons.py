@@ -136,7 +136,7 @@ class ImgPanel( wx.Panel ):
         sBmp.Bind(wx.EVT_ENTER_WINDOW, self.ProcessEvent)
 
     def ProcessEvent(self, evt):
-        evt.SetEventObject(self)
+        #evt.SetEventObject(self)
         wx.PostEvent(self.GetParent(), evt)
 
 # ---------------------------------------------------------------------------
@@ -218,7 +218,7 @@ class ButtonPanel( wx.Panel ):
     def OnButtonEnter(self, event):
         if self.activated is True:
             ide = event.GetEventObject().GetId()
-            if ide == self.contentpanel.GetId():
+            if (wx.Platform == "__WXMSW__" and ide == self.contentpanel.GetId()) or wx.Platform != "__WXMSW__":
                 self.SetBackgroundColour( self._prefs.GetValue('M_FGD_COLOUR') )
                 self.Refresh()
                 self.childenter = False
@@ -227,7 +227,7 @@ class ButtonPanel( wx.Panel ):
 
     def OnButtonLeave(self, event):
         if self.activated is True:
-            if self.childenter is False:
+            if (wx.Platform == "__WXMSW__" and self.childenter is False) or wx.Platform != "__WXMSW__":
                 self.SetBackgroundColour( self._prefs.GetValue('M_BGD_COLOUR') )
                 self.Refresh()
 
@@ -303,7 +303,7 @@ class ButtonToolbarPanel( wx.Panel ):
     def OnButtonEnter(self, event):
         if self.activated is True:
             ide = event.GetEventObject().GetId()
-            if ide == self.contentpanel.GetId():
+            if (wx.Platform == "__WXMSW__" and ide == self.contentpanel.GetId()) or wx.Platform != "__WXMSW__":
                 self.SetBackgroundColour( self._prefs.GetValue('M_FGD_COLOUR') )
                 self.Refresh()
                 self.childenter = False
@@ -312,7 +312,7 @@ class ButtonToolbarPanel( wx.Panel ):
 
     def OnButtonLeave(self, event):
         if self.activated is True:
-            if self.childenter is False:
+            if (wx.Platform == "__WXMSW__" and self.childenter is False) or wx.Platform != "__WXMSW__":
                 self.SetBackgroundColour( self._prefs.GetValue('M_BG_COLOUR') )
                 self.Refresh()
 
