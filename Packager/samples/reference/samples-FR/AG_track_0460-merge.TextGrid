@@ -4,7 +4,7 @@ Object class = "TextGrid"
 xmin = 0.0
 xmax = 3.51
 tiers? <exists>
-size = 12
+size = 10
 item []:
     item [1]:
         class = "IntervalTier"
@@ -690,26 +690,6 @@ item []:
             text = "fp"
     item [10]:
         class = "IntervalTier"
-        name = "Sources"
-        xmin = 0.000000
-        xmax = 3.510000
-        intervals: size = 1
-        intervals [1]:
-            xmin = 0.0
-            xmax = 3.51
-            text = ""
-    item [11]:
-        class = "IntervalTier"
-        name = "Repetitions"
-        xmin = 0.000000
-        xmax = 3.510000
-        intervals: size = 1
-        intervals [1]:
-            xmin = 0.0
-            xmax = 3.51
-            text = ""
-    item [12]:
-        class = "IntervalTier"
         name = "MetaInformation"
         xmin = 0.000000
         xmax = 3.510000
@@ -717,32 +697,32 @@ item []:
         intervals [1]:
             xmin = 0.0
             xmax = 0.43875
-            text = "license=GNU Public License, version 3"
+            text = "author=Brigitte Bigi"
         intervals [2]:
             xmin = 0.43875
             xmax = 0.8775
-            text = "version=1.7.9"
+            text = "contact=brigite.bigi@gmail.com"
         intervals [3]:
             xmin = 0.8775
             xmax = 1.31625
-            text = "copyright=Copyright (C) 2011-2016 Brigitte Bigi"
+            text = "program=SPPAS"
         intervals [4]:
             xmin = 1.31625
             xmax = 1.755
-            text = "author=Brigitte Bigi"
+            text = "version=1.8.0"
         intervals [5]:
             xmin = 1.755
             xmax = 2.19375
-            text = "url=http://www.sppas.org/"
+            text = "copyright=Copyright (C) 2011-2016 Brigitte Bigi"
         intervals [6]:
             xmin = 2.19375
             xmax = 2.6325
-            text = "contact=brigite.bigi@gmail.com"
+            text = "url=http://www.sppas.org/"
         intervals [7]:
             xmin = 2.6325
             xmax = 3.07125
-            text = "program=SPPAS"
+            text = "license=GNU Public License, version 3"
         intervals [8]:
             xmin = 3.07125
             xmax = 3.51
-            text = "date=2016-06-05"
+            text = "date=2016-08-30"

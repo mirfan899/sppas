@@ -11,23 +11,20 @@
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
   <link rel="stylesheet" href="etc/styles/sppas.css">
-      <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Jura">
-      <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Maven Pro">
-      <link rel="icon" href="../etc/icons/sppas.ico" />
+      <link rel="stylesheet" type="text/css" href="./etc/styles/sppas.css" media="screen" />
+      <link rel="icon" href="./etc/icons/sppas.png" />
   
-  <script type="text/javascript">
-  
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-38055333-4']);
-    _gaq.push(['_trackPageview']);
-  
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  
-  </script>
+      <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-38055333-4']);
+        _gaq.push(['_trackPageview']);
+      
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      </script>
 </head>
 <body>
 
@@ -56,7 +53,7 @@
 <header>
 <h1 class="title">SPPAS Documentation</h1>
 <h2 class="author">Brigitte Bigi</h2>
-<h3 class="date">Version 1.7.8</h3>
+<h3 class="date">Version 1.8.0</h3>
 </header>
 <nav id="TOC">
 <ul>
@@ -72,6 +69,7 @@
 <li><a href="#the-procedure-outcome-report">The procedure outcome report</a></li>
 </ul></li>
 <li><a href="#inter-pausal-units-ipus-segmentation">Inter-Pausal Units (IPUs) segmentation</a><ul>
+<li><a href="#overview">Overview</a></li>
 <li><a href="#silencespeech-segmentation">Silence/Speech segmentation</a></li>
 <li><a href="#silencespeech-segmentation-time-aligned-with-a-transcription">Silence/Speech segmentation time-aligned with a transcription</a></li>
 <li><a href="#split-into-multiple-files">Split into multiple files</a></li>
@@ -79,22 +77,31 @@
 <li><a href="#perform-ipus-segmentation-with-the-cli">Perform IPUs Segmentation with the CLI</a></li>
 </ul></li>
 <li><a href="#tokenization">Tokenization</a><ul>
+<li><a href="#overview-1">Overview</a></li>
+<li><a href="#adapt-tokenization">Adapt Tokenization</a></li>
 <li><a href="#perform-tokenization-with-the-gui">Perform Tokenization with the GUI</a></li>
 <li><a href="#perform-tokenization-with-the-cli">Perform Tokenization with the CLI</a></li>
 </ul></li>
 <li><a href="#phonetization">Phonetization</a><ul>
+<li><a href="#overview-2">Overview</a></li>
+<li><a href="#adapt-phonetization">Adapt Phonetization</a></li>
 <li><a href="#perform-phonetization-with-the-gui">Perform Phonetization with the GUI</a></li>
 <li><a href="#perform-phonetization-with-the-cli">Perform Phonetization with the CLI</a></li>
 </ul></li>
 <li><a href="#alignment">Alignment</a><ul>
+<li><a href="#overview-3">Overview</a></li>
+<li><a href="#adapt-alignment">Adapt Alignment</a></li>
 <li><a href="#perform-alignment-with-the-gui">Perform Alignment with the GUI</a></li>
 <li><a href="#perform-alignment-with-the-cli">Perform Alignment with the CLI</a></li>
 </ul></li>
 <li><a href="#syllabification">Syllabification</a><ul>
+<li><a href="#overview-4">Overview</a></li>
+<li><a href="#adapt-syllabification">Adapt Syllabification</a></li>
 <li><a href="#perform-syllabification-with-the-gui">Perform Syllabification with the GUI</a></li>
 <li><a href="#perform-syllabification-with-the-cli">Perform Syllabification with the CLI</a></li>
 </ul></li>
 <li><a href="#repetitions">Repetitions</a><ul>
+<li><a href="#overview-5">Overview</a></li>
 <li><a href="#perform-repetitions-with-the-gui">Perform Repetitions with the GUI</a></li>
 <li><a href="#perform-repetitions-with-the-cli">Perform Repetitions with the CLI</a></li>
 </ul></li>
@@ -247,6 +254,7 @@
 <img src="./etc/screenshots/log.png" alt="Procedure outcome report" /><figcaption>Procedure outcome report</figcaption>
 </figure>
 <h2 id="inter-pausal-units-ipus-segmentation"><a href="#inter-pausal-units-ipus-segmentation">Inter-Pausal Units (IPUs) segmentation</a></h2>
+<h3 id="overview"><a href="#overview">Overview</a></h3>
 <p>After recording, the first annotation to perform is IPUs segmentation. Indeed, at a first stage, the audio signal must be automatically segmented in Inter-Pausal Units (IPUs) which are blocks of speech bounded by silent pauses of more than X ms. This X duration depends on the language and it is commonly set to 200ms for French and 250ms for English. IPUs are time-aligned on the speech signal. This segmentation should be verified manually, depending on the quality of the recording: the better quality, thus the better IPUs segmentation.</p>
 <p>The &quot;IPUs segmentation&quot; automatic annotation can perform 3 actions:</p>
 <ol type="1">
@@ -261,7 +269,7 @@
 <p>The IPUs Segmentation annotation performs a silence detection from a recorded file. This segmentation provides an annotated file with one tier named &quot;IPU&quot;. The silence intervals are labelled with the &quot;#&quot; symbol, as speech intervals are labelled with &quot;ipu_&quot; followed by the IPU number.</p>
 <p>The following parameters must be fixed:</p>
 <ul>
-<li><p>Minimum volume value (in seconds):<br />If this value is set to zero, the minimum volume is automatically adjusted for each sound file. Try with it first, then if the automatic value is not correct, fix it manually. The Procedure Outcome Report indicates the value the system choose. The SndRoamer component can also be of great help: it indicates min, max and mean volume values of the sound.</p></li>
+<li><p>Minimum volume value (in seconds): If this value is set to zero, the minimum volume is automatically adjusted for each sound file. Try with it first, then if the automatic value is not correct, fix it manually. The Procedure Outcome Report indicates the value the system choose. The SndRoamer component can also be of great help: it indicates min, max and mean volume values of the sound.</p></li>
 <li><p>Minimum silence duration (in seconds): By default, this is fixed to 0.2 sec., an appropriate value for French. This value should be at least 0.25 sec. for English.</p></li>
 <li><p>Minimum speech duration (in seconds): By default, this value is fixed to 0.3 sec. The most relevent value depends on the speech style: for isolated sentences, probably 0.5 sec should be better, but it should be about 0.1 sec for spontaneous speech.</p></li>
 <li><p>Speech boundary shift (in seconds): a duration which is systematically added to speech boundaries, to enlarge the speech interval.</p></li>
@@ -288,9 +296,9 @@
 </ul>
 <p>A recorded speech file must strictly correspond to a transcription, except for the extension expected as .txt for this latter. The segmentation provides an annotated file with one tier named &quot;IPU&quot;. The silence intervals are labelled with the &quot;#&quot; symbol, as speech intervals are labelled with &quot;ipu_&quot; followed by the IPU number then the corresponding transcription.</p>
 <p>The same parameters than those indicated in the previous section must be fixed.</p>
-<pre><code>Important: 
-This segmentation was tested on documents no longer than one paragraph 
-(about 1 minute speech). </code></pre>
+<pre><code>Important:
+This segmentation was tested on documents no longer than one paragraph
+(about 1 minute speech).</code></pre>
 <figure>
 <img src="./etc/screenshots/ipu-seg-result2.png" alt="Silence/Speech segmentation with orthographic transcription" /><figcaption>Silence/Speech segmentation with orthographic transcription</figcaption>
 </figure>
@@ -342,7 +350,7 @@ This segmentation was tested on documents no longer than one paragraph
     -p file     File with the segmentation  (default: None)</code></pre>
 <p>Examples of use to get each IPU in a wav file and its corresponding textgrid:</p>
 <pre><code>./sppas/bin/wavsplit.py -w ./samples/samples-eng/oriana1.WAV
--d 0.01 
+-d 0.01
 -D 0.01
 -t ./samples/samples-eng/oriana1.txt
 -p ./samples/samples-eng/oriana1.xra
@@ -352,6 +360,7 @@ This segmentation was tested on documents no longer than one paragraph
 -o ./samples/samples-eng/oriana1
 -e textgrid</code></pre>
 <h2 id="tokenization"><a href="#tokenization">Tokenization</a></h2>
+<h3 id="overview-1"><a href="#overview-1">Overview</a></h3>
 <p>Tokenization is also known as &quot;Text Normalization&quot; the process of segmenting a text into tokens. In principle, any system that deals with unrestricted text need the text to be normalized. Texts contain a variety of &quot;non-standard&quot; token types such as digit sequences, words, acronyms and letter sequences in all capitals, mixed case words, abbreviations, roman numerals, URL's and e-mail addresses... Normalizing or rewriting such texts using ordinary words is then an important issue. The main steps of the text normalization implemented in SPPAS (Bigi 2011) are:</p>
 <ul>
 <li>Remove punctuation;</li>
@@ -360,26 +369,29 @@ This segmentation was tested on documents no longer than one paragraph
 <li>Replace symbols by their written form, thanks to a &quot;replacement&quot; dictionary, located into the sub-directory &quot;repl&quot; in the &quot;resources&quot; directory. Do not hesitate to add new replacements in this dictionary.</li>
 <li>Word segmentation based on the content of a lexicon. If the result is not corresponding to your expectations, fill free to modify the lexicon, located in the &quot;vocab&quot; sub-directory of the &quot;resources&quot; directory. The lexicon contains one word per line.</li>
 </ul>
+<h3 id="adapt-tokenization"><a href="#adapt-tokenization">Adapt Tokenization</a></h3>
+<p>Word segmentation of SPPAS is mainly based on the use of a lexicon. If a segmentation is not as expected, it is up to the user to modify the lexicon. Lexicons of all supported languages are all located in the folder &quot;vocab&quot; of the &quot;resources&quot; directory. They are in the form of &quot;one word at a line&quot;.</p>
+<h3 id="perform-tokenization-with-the-gui"><a href="#perform-tokenization-with-the-gui">Perform Tokenization with the GUI</a></h3>
+<p>The SPPAS Tokenization system takes as input a file (or a list of files) for which the name strictly match the name of the audio file except the extension. For example, if a file with name &quot;oriana1.wav&quot; is given, SPPAS will search for a file with name &quot;oriana1.xra&quot; at a first stage if &quot;.xra&quot; is set as the default extension, then it will search for other supported extensions until a file is found.</p>
+<p>This file must include a tier with the orthographic transcription. At a first stage, SPPAS tries to find a tier with <code>transcription</code> as name. If such a tier does not exist, SPPAS tries to find a tier that contains one of the following strings:</p>
+<ol type="1">
+<li><code>trans</code></li>
+<li><code>trs</code></li>
+<li><code>ipu</code></li>
+<li><code>ortho</code></li>
+<li><code>toe</code></li>
+</ol>
+<p>The first tier that matches is used (case insensitive search).</p>
+<p>Tokenization produces a file with &quot;-tokens&quot; appended to its name, i.e. &quot;oriana1-tokens.xra&quot; for the previous example. This file is including only one tier with the resulting tokenization and with name &quot;Tokenization&quot;. In case of an Enriched Orthographic Transcription, to get both faked and standard tokenized tiers, check the corresponding option. Then, two tiers will be created:</p>
+<ul>
+<li>&quot;Tokens-std&quot;: the text normalization of the standard transcription,</li>
+<li>&quot;Tokens-faked&quot;: the text normalization of the faked transcription.</li>
+</ul>
+<p>Read the &quot;Introduction&quot; of this chapter for a better understanding of the difference between &quot;standard&quot; and &quot;faked&quot; transcriptions.</p>
 <figure>
 <img src="./etc/figures/tokworkflow.bmp" alt="Text normalization workflow" /><figcaption>Text normalization workflow</figcaption>
 </figure>
-<p>The SPPAS Tokenization system takes as input a file including a tier with the orthographic transcription. At a first stage, SPPAS tries to find a tier with <code>transcription</code> as name. If such a tier does not exist, SPPAS tries to find a tier that contains one of the following strings:</p>
-<ol type="1">
-<li>trans</li>
-<li>trs</li>
-<li>ipu</li>
-<li>ortho</li>
-<li>toe</li>
-</ol>
-<p>The first tier that matches is used (case insensitive search).</p>
-<p>By default, Tokenization produces a file including only one tier with the tokens. In case of an Enriched Orthographic Transcription, to get both faked and standard tokenized tiers, check the corresponding option. Then, 2 tiers will be created:</p>
-<ul>
-<li>Tokens-std: the text normalization of the standard transcription,</li>
-<li>Tokens-faked: the text normalization of the faked transcription.</li>
-</ul>
-<p>Read the &quot;Introduction&quot; of this chapter for a better understanding of the difference between &quot;standard&quot; and &quot;faked&quot; transcriptions.</p>
-<h3 id="perform-tokenization-with-the-gui"><a href="#perform-tokenization-with-the-gui">Perform Tokenization with the GUI</a></h3>
-<p>Click on the Tokenization activation button, select the language and click on the &quot;Configure...&quot; blue text to fix options.</p>
+<p>To perform the text normalization process, click on the Tokenization activation button, select the language and click on the &quot;Configure...&quot; blue text to fix options.</p>
 <h3 id="perform-tokenization-with-the-cli"><a href="#perform-tokenization-with-the-cli">Perform Tokenization with the CLI</a></h3>
 <p><code>tokenize.py</code> is the program to perform Tokenization, i.e. the text normalization of a given file or a raw text.</p>
 <pre><code>usage: tokenize.py -r vocab [options]
@@ -407,18 +419,9 @@ $ the te to normalize one_hundred_twenty-three</code></pre>
   -i ./samples/samples-eng/oriana1.xra
   -o ./samples/samples-eng/oriana1-token.xra</code></pre>
 <h2 id="phonetization"><a href="#phonetization">Phonetization</a></h2>
+<h3 id="overview-2"><a href="#overview-2">Overview</a></h3>
 <p>Phonetization, also called grapheme-phoneme conversion, is the process of representing sounds with phonetic signs. However, converting from written text into actual sounds, for any language, cause several problems that have their origins in the relative lack of correspondence between the spelling of the lexical items and their sound contents.</p>
 <p>SPPAS implements a dictionary based-solution which consists in storing a maximum of phonological knowledge in a lexicon. In this sense, this approach is language-independent. SPPAS phonetization process is the equivalent of a sequence of dictionary look-ups. It is then assumed that all words of the speech transcription are mentioned in the pronunciation dictionary.</p>
-<p>The Phonetization takes as input an orthographic transcription previously normalized by the Tokenization automatic system or manually. The name of this tier must contains one of the following strings:</p>
-<ul>
-<li>&quot;tok&quot; and &quot;std&quot;</li>
-<li>&quot;tok&quot; and &quot;faked&quot;</li>
-</ul>
-<p>The first tier that matches one of these requirements is used (this match is case insensitive).</p>
-<p>The system produces a phonetic transcription.</p>
-<figure>
-<img src="./etc/figures/phonworkflow.bmp" alt="Phonetization workflow" /><figcaption>Phonetization workflow</figcaption>
-</figure>
 <p>Actually, some words can correspond to several entries in the dictionary with various pronunciations. These pronunciation variants are stored in the phonetization result. By convention, spaces separate words, minus separate phones and pipe character separate phonetic variants of a word. For example, the transcription utterance:</p>
 <ul>
 <li>Transcription: <code>The flight was 12 hours long.</code></li>
@@ -426,7 +429,9 @@ $ the te to normalize one_hundred_twenty-three</code></pre>
 <li>Phonetization: <code>D-@|D-V|D-i: f-l-aI-t w-A-z|w-V-z|w-@-z|w-O:-z t-w-E-l-v aU-3:r-z|aU-r-z l-O:-N</code></li>
 </ul>
 <p>Many of the other systems assume that all words of the speech transcription are mentioned in the pronunciation dictionary. On the contrary, SPPAS includes a language-independent algorithm which is able to phonetize unknown words of any language as long as a (minimum) dictionary is available (Bigi 2013)! If such case occurs during the phonetization process, a WARNING indicates it in the Procedure Outcome Report.</p>
-<p>Since the phonetization is only based on the use of a pronunciation dictionary, the quality of such a phonetization only depends on this resource. If a pronunciation is not as expected, it is up to the user to change it in the dictionary. All dictionaries are located in the folder &quot;dict&quot; of the &quot;resources&quot; directory.</p>
+<p>Since the phonetization is only based on the use of a pronunciation dictionary, the quality of such a phonetization only depends on this resource.</p>
+<h3 id="adapt-phonetization"><a href="#adapt-phonetization">Adapt Phonetization</a></h3>
+<p>If a pronunciation is not as expected, it is up to the user to change it in the dictionary. All dictionaries are located in the folder &quot;dict&quot; of the &quot;resources&quot; directory.</p>
 <p>SPPAS uses the HTK ASCII format for dictionaries. As example, below is a piece of the <code>eng.dict</code> file:</p>
 <pre><code>    THE             [THE]           D @
     THE(2)          [THE]           D V
@@ -437,8 +442,19 @@ $ the te to normalize one_hundred_twenty-three</code></pre>
     THEATER         [THEATER]       T i: @ 4 3:r
     THEATER&#39;S       [THEATER&#39;S]     T i: @ 4 3:r z</code></pre>
 <p>The first column indicates the word, followed by the variant number (except for the first one). The second column indicates the word between brackets; however brackets can also be empty. The last columns are the succession of phones, separated by a whitespace.</p>
+<p>SPPAS dictionaries are mainly based on X-SAMPA international standard for phoneme encoding. See the chapter &quot;Resources&quot; of this documentation to know the list of accepted phones for a given language. This list can't be extended nor modified while using SPPAS. However, it can be improved from one version to the other one thanks to user comments (to be sent to the author).</p>
 <h3 id="perform-phonetization-with-the-gui"><a href="#perform-phonetization-with-the-gui">Perform Phonetization with the GUI</a></h3>
-<p>Click on the Phonetization activation button, select the language and click on the &quot;Configure...&quot; blue text to fix options.</p>
+<p>The Phonetization process takes as input a file that strictly match the audio file name except for the extension and that &quot;-tokens&quot; is appended. For example, if the audio file name is &quot;oriana1.wav&quot;, the expected input file name is &quot;oriana1-tokens.xra&quot; if .xra is the default extension for annotations. This file must include a <strong>normalized</strong> orthographic transcription. The name of such tier must contains one of the following strings:</p>
+<ol type="1">
+<li>&quot;tok&quot;</li>
+<li>&quot;trans&quot;</li>
+</ol>
+<p>The first tier that matches one of these requirements is used (this match is case insensitive).</p>
+<p>Phonetization produces a file with &quot;-phon&quot; appended to its name, i.e. &quot;oriana1-phon.xra&quot; for the previous example. This file is including only one tier with the resulting phonetization and with name &quot;Phonetization&quot;.</p>
+<figure>
+<img src="./etc/figures/phonworkflow.bmp" alt="Phonetization workflow" /><figcaption>Phonetization workflow</figcaption>
+</figure>
+<p>To perform the grapheme-to-phoneme convertion, click on the Phonetization activation button, select the language and click on the &quot;Configure...&quot; blue text to fix options.</p>
 <h3 id="perform-phonetization-with-the-cli"><a href="#perform-phonetization-with-the-cli">Perform Phonetization with the CLI</a></h3>
 <p><code>phonetize.py</code> is the program performs Phonetization, i.e. grapheme to phoneme conversion on a given file.</p>
 <pre><code>usage: phonetize.py -r dict [options]
@@ -452,21 +468,21 @@ optional arguments:
     -h, --help   Show the help message and exit</code></pre>
 <p>Examples of use:</p>
 <pre><code>$ echo &quot;the te totu&quot; |\
- ./sppas/bin/phonetize.py 
-    -r ./resources/dict/eng.dict 
+ ./sppas/bin/phonetize.py
+    -r ./resources/dict/eng.dict
     --nounk
 $ D-@|D-V|D-i: t-i: UNK
 $
 $ echo &quot;the te totu&quot; |\
- ./sppas/bin/phonetize.py -r ./resources/dict/eng.dict 
+ ./sppas/bin/phonetize.py -r ./resources/dict/eng.dict
 $ D-@|D-V|D-i: t-i: t-u-t-u|t-i-t-u|t-A-t-u|t-@-t-u</code></pre>
 <p>If we suppose that the previous text was read by a French native speaker, the previous example can be phonetized as:</p>
 <pre><code>$ echo &quot;the te totu&quot; |\
- ./sppas/bin/phonetize.py 
-     -r ./resources/dict/eng.dict 
-     -m ./resources/dict/eng-fra.map 
-$ D-@|z-@|v-@|z-9|D-V|v-9|v-V|D-9|z-V|D-i:|z-i|v-i|D-i|v-i:|z-i: 
-  t-i:|t-i 
+ ./sppas/bin/phonetize.py
+     -r ./resources/dict/eng.dict
+     -m ./resources/dict/eng-fra.map
+$ D-@|z-@|v-@|z-9|D-V|v-9|v-V|D-9|z-V|D-i:|z-i|v-i|D-i|v-i:|z-i:
+  t-i:|t-i
   t-u-t-u|t-i-t-u|t-A-t-u|t-@-t-u</code></pre>
 <p>Example of use on a tokenized file:</p>
 <pre><code>./sppas/bin/phonetize.py
@@ -474,22 +490,26 @@ $ D-@|z-@|v-@|z-9|D-V|v-9|v-V|D-9|z-V|D-i:|z-i|v-i|D-i|v-i:|z-i:
 -i ./samples/samples-eng/oriana1-token.xra
 -o ./samples/samples-eng/oriana1-phon.xra</code></pre>
 <h2 id="alignment"><a href="#alignment">Alignment</a></h2>
+<h3 id="overview-3"><a href="#overview-3">Overview</a></h3>
 <p>Alignment, also called phonetic segmentation, is the process of aligning speech with its corresponding transcription at the phone level. The alignment problem consists in a time-matching between a given speech unit along with a phonetic representation of the unit.</p>
-<p>SPPAS is based on the Julius Speech Recognition Engine (SRE). Speech Alignment also requires an Acoustic Model in order to align speech. An acoustic model is a file that contains statistical representations of each of the distinct sounds of one language. Each phoneme is represented by one of these statistical representations. SPPAS is working with HTK-ASCII acoustic models, trained from 16 bits, 16000 Hz wav files.</p>
-<p>Speech segmentation was evaluated for French: in average, automatic speech segmentation is 95% of times within 40ms compared to the manual segmentation and was tested on read speech and on conversational speech (Bigi 2014). Details about these results are available in the slides of the following reference:</p>
-<figure>
-<img src="./etc/figures/alignworkflow.bmp" alt="Alignment workflow" /><figcaption>Alignment workflow</figcaption>
-</figure>
-<p>The SPPAS aligner takes as input the phonetization and optionally the tokenization. The name of the phonetization tier must contains the string &quot;phon&quot;. The first tier that matches is used (case insensitive search).</p>
-<p>The annotation provides one annotated file with 2 tiers:</p>
-<ul>
-<li>&quot;PhonAlign&quot;, is the segmentation at the phone level;</li>
-<li>&quot;TokensAlign&quot; is the segmentation at the word level.</li>
-</ul>
+<p>SPPAS is based on the Julius Speech Recognition Engine (SRE). Speech Alignment also requires an Acoustic Model in order to align speech. An acoustic model is a file that contains statistical representations of each of the distinct sounds of one language. Each phoneme is represented by one of these statistical representations.</p>
+<p>Speech segmentation was evaluated for French: in average, automatic speech segmentation is 95% of times within 40ms compared to the manual segmentation and was tested on read speech and on conversational speech (Bigi 2014).</p>
 <figure>
 <img src="./etc/screenshots/alignment.png" alt="SPPAS alignment output example" /><figcaption>SPPAS alignment output example</figcaption>
 </figure>
-<p>The following options are available to configure alignment:</p>
+<h3 id="adapt-alignment"><a href="#adapt-alignment">Adapt Alignment</a></h3>
+<p>For Speech segmentation, the better Acoustic Model, the better results. In order to get a better result, any user can append or replace the models included in SPPAS in the &quot;models&quot; folder of the &quot;resources&quot; directory. SPPAS only supports HTK-ASCII acoustic models, trained from 16 bits 16000 Hz WAVE files. The models can be improved if they are re-trained with more data. So, any new data is welcome (send an e-mail to the author).</p>
+<h3 id="perform-alignment-with-the-gui"><a href="#perform-alignment-with-the-gui">Perform Alignment with the GUI</a></h3>
+<p>The Alignment process takes as input one or two files that strictly match the audio file name except for the extension and that &quot;-phon&quot; is appended for the first one and &quot;-tokens&quot; for the optionnal second one. For example, if the audio file name is &quot;oriana1.wav&quot;, the expected input file name is &quot;oriana1-phon.xra&quot; with phonetization and optionnally &quot;oriana1-tokens.xra&quot; with tokenization, if .xra is the default extension for annotations.</p>
+<p>The speech segmentation process provides one file with name &quot;-palign&quot; appended to its name, i.e. &quot;oriana1-palign.xra&quot; for the previous example. This file includes one or two tiers:</p>
+<ul>
+<li>&quot;PhonAlign&quot; is the segmentation at the phone level;</li>
+<li>&quot;TokensAlign&quot; is the segmentation at the word level (if a file with tokenization was found).</li>
+</ul>
+<figure>
+<img src="./etc/figures/alignworkflow.bmp" alt="Alignment workflow" /><figcaption>Alignment workflow</figcaption>
+</figure>
+<p>The following options are available to configure Alignment:</p>
 <ul>
 <li>choose the speech segmentation system. It can be either: julius, hvite or basic</li>
 <li>perform basic alignment if the aligner failed, instead such intervals are empty.</li>
@@ -497,8 +517,7 @@ $ D-@|z-@|v-@|z-9|D-V|v-9|v-V|D-9|z-V|D-i:|z-i|v-i|D-i|v-i:|z-i:
 <li>create the Activity tier will append another tier with activities as intervals, i.e. speech, silences, laughter, noises...</li>
 <li>create the PhnTokAlign will append anoter tier with intervals of the phonetization of each word.</li>
 </ul>
-<h3 id="perform-alignment-with-the-gui"><a href="#perform-alignment-with-the-gui">Perform Alignment with the GUI</a></h3>
-<p>Click on the Alignment activation button, select the language and click on the &quot;Configure...&quot; blue text to fix options.</p>
+<p>To perform speech segmentation, click on the Alignment activation button, select the language and click on the &quot;Configure...&quot; blue text to fix options.</p>
 <h3 id="perform-alignment-with-the-cli"><a href="#perform-alignment-with-the-cli">Perform Alignment with the CLI</a></h3>
 <p><code>alignment.py</code> is the program to perform automatic speech segmentation of a given file.</p>
 <pre><code>usage: alignment.py -w file -i file -r file -o file [options]
@@ -508,13 +527,13 @@ optional arguments:
     -i file     Input file name with the phonetization
     -I file     Input file name with the tokenization
     -r file     Directory of the acoustic model of the language of the text
-    -R file     Directory of the acoustic model of the mother language 
+    -R file     Directory of the acoustic model of the mother language
                 of the speaker
     -o file     Output file name with alignments
     -a name     Aligner name. One of: julius, hvite, basic (default: julius)
     --extend    Extend last phoneme/token to the wav duration
     --basic     Perform a basic alignment if error with the aligner
-    --infersp   Add &#39;sp&#39; at the end of each token and let the aligner 
+    --infersp   Add &#39;sp&#39; at the end of each token and let the aligner
                 to decide the relevance
     --noclean   Do not remove temporary data
     -h, --help  Show the help message and exit</code></pre>
@@ -526,6 +545,7 @@ optional arguments:
 -I ./samples/samples-eng/oriana1-token.xra
 -o ./samples/samples-eng/oriana1-palign.xra</code></pre>
 <h2 id="syllabification"><a href="#syllabification">Syllabification</a></h2>
+<h3 id="overview-4"><a href="#overview-4">Overview</a></h3>
 <p>The syllabification of phonemes is performed with a rule-based system from time-aligned phonemes. This phoneme-to-syllable segmentation system is based on 2 main principles:</p>
 <ul>
 <li>a syllable contains a vowel, and only one;</li>
@@ -541,16 +561,13 @@ optional arguments:
 <li>F - Fricatives,</li>
 <li>N - Nasals.</li>
 </ul>
-<p>The rules we propose follow usual phonological statements for most of the corpus. A configuration file indicates phonemes, classes and rules. This file can be edited and modified to adapt the syllabification (Bigi et al. 2010).</p>
-<figure>
-<img src="./etc/figures/syllworkflow.bmp" alt="Syllabification workflow" /><figcaption>Syllabification workflow</figcaption>
-</figure>
-<p>The Syllabification annotation takes as input one file with (at least) one tier containing the time-aligned phonemes. The annotation provides one annotated file with 3 tiers (Syllables, Classes and Structures).</p>
 <figure>
 <img src="./etc/screenshots/syll-example.png" alt="Syllabification example" /><figcaption>Syllabification example</figcaption>
 </figure>
-<p>If the syllabification is not as expected, you can change the set of rules. The configuration file is located in the sub-directory &quot;syll&quot; of the &quot;resources&quot; directory.</p>
-<p>The syllable configuration file is a simple ASCII text file that any user can change as needed. At first, the list of phonemes and the class symbol associated with each of the phonemes are described as, for example:</p>
+<p>The rules we propose follow usual phonological statements for most of the corpus. A configuration file indicates phonemes, classes and rules. This file can be edited and modified to adapt the syllabification (Bigi et al. 2010).</p>
+<h3 id="adapt-syllabification"><a href="#adapt-syllabification">Adapt Syllabification</a></h3>
+<p>If the syllabification is not as expected, any user can change the set of rules. The configuration file is located in the folder &quot;syll&quot; of the &quot;resources&quot; directory. The syllable configuration file is a simple ASCII text file that can be edited with Notepad++ (Windows) or TextEdit (MacOS) or any other text editor.</p>
+<p>At first, the list of phonemes and the class symbol associated with each of the phonemes are described as, for example:</p>
 <ul>
 <li><code>PHONCLASS e V</code></li>
 <li><code>PHONCLASS p O</code></li>
@@ -580,6 +597,11 @@ optional arguments:
 <p>Finally, to adapt the rules to specific situations that the rules failed to model, we introduced some phoneme sequences and the boundary definition. Specific rules contain only phonemes or the symbol &quot;ANY&quot; which means any phoneme. It consists of 7 columns: the first one is the key-word OTHRULE, the 5 following columns are a phoneme sequence where the boundary should be applied to the third one by the rules, the last column is the shift to apply to this boundary. In the following example:</p>
 <p><code>OTHRULE ANY ANY p s k -2</code></p>
 <h3 id="perform-syllabification-with-the-gui"><a href="#perform-syllabification-with-the-gui">Perform Syllabification with the GUI</a></h3>
+<p>The Syllabification process takes as input a file that strictly match the audio file name except for the extension and that &quot;-palign&quot; is appended. For example, if the audio file name is &quot;oriana1.wav&quot;, the expected input file name is &quot;oriana1-palign.xra&quot; if .xra is the default extension for annotations. This file must include a tier containing the time-aligned phonemes with name &quot;PhonAlign&quot;.</p>
+<p>The annotation provides an annotated file with &quot;-salign&quot; appended to its name, i.e. &quot;oriana1-salign.xra&quot; for the previous example. This file is including 3 tiers: Syllables, Classes and Structures.</p>
+<figure>
+<img src="./etc/figures/syllworkflow.bmp" alt="Syllabification workflow" /><figcaption>Syllabification workflow</figcaption>
+</figure>
 <p>Click on the Syllabification activation button, select the language and click on the &quot;Configure...&quot; blue text to fix options.</p>
 <h3 id="perform-syllabification-with-the-cli"><a href="#perform-syllabification-with-the-cli">Perform Syllabification with the CLI</a></h3>
 <p><code>syllabify.py</code> is the program performs automatic syllabification of a given file with time-aligned phones.</p>
@@ -594,15 +616,16 @@ optional arguments:
     --nophn     Disable the output of the result that does not use the reference  tier
     -h, --help   Show the help message and exit</code></pre>
 <h2 id="repetitions"><a href="#repetitions">Repetitions</a></h2>
+<h3 id="overview-5"><a href="#overview-5">Overview</a></h3>
 <p>This automatic detection focus on word repetitions, which can be an exact repetition (named strict echo) or a repetition with variation (named non-strict echo).</p>
 <p>SPPAS implements <em>self-repetitions</em> and <em>other-repetitions</em> detection (Bigi et al. 2014). The system is based only on lexical criteria. The proposed algorithm is focusing on the detection of the source.</p>
 <p>The Graphical User Interface only allows to detect self-repetitions. Use the Command-Line User Interface if you want to get other-repetitions.</p>
+<p>This process requires a list of stop-words, and a dictionary with lemmas (the system can process without it, but the result is better with it). Both lexicons are located in the &quot;vocab&quot; folder of the &quot;resources&quot; directory.</p>
+<h3 id="perform-repetitions-with-the-gui"><a href="#perform-repetitions-with-the-gui">Perform Repetitions with the GUI</a></h3>
+<p>The automatic annotation takes as input a file with (at least) one tier containing the time-aligned tokens of the speaker (and another file/tier for other-repetitions). The annotation provides one annotated file with 2 tiers: Sources and Repetitions.</p>
 <figure>
 <img src="./etc/figures/repetworkflow.bmp" alt="Repetition detection workflow" /><figcaption>Repetition detection workflow</figcaption>
 </figure>
-<p>The automatic annotation takes as input a file with (at least) one tier containing the time-aligned tokens of the speaker (and another file/tier for other-repetitions). The annotation provides one annotated file with 2 tiers: Sources and Repetitions.</p>
-<p>This process requires a list of stop-words, and a dictionary with lemmas (the system can process without it, but the result is better with it). Both lexicons are located in the &quot;vocab&quot; sub-directory of the &quot;resources&quot; directory.</p>
-<h3 id="perform-repetitions-with-the-gui"><a href="#perform-repetitions-with-the-gui">Perform Repetitions with the GUI</a></h3>
 <p>Click on the Self-Repetitions activation button, select the language and click on the &quot;Configure...&quot; blue text to fix options.</p>
 <h3 id="perform-repetitions-with-the-cli"><a href="#perform-repetitions-with-the-cli">Perform Repetitions with the CLI</a></h3>
 <p><code>repetition.py</code> is the program to perform automatic detection of self-repetitions or other-repetitions if a second speaker is given.</p>

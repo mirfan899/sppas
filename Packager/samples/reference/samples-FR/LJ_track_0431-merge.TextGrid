@@ -4,7 +4,7 @@ Object class = "TextGrid"
 xmin = 0.0
 xmax = 7.782
 tiers? <exists>
-size = 12
+size = 10
 item []:
     item [1]:
         class = "IntervalTier"
@@ -1358,50 +1358,6 @@ item []:
             text = "CV"
     item [10]:
         class = "IntervalTier"
-        name = "Sources"
-        xmin = 0.000000
-        xmax = 7.782000
-        intervals: size = 3
-        intervals [1]:
-            xmin = 0.0
-            xmax = 3.06
-            text = ""
-        intervals [2]:
-            xmin = 3.06
-            xmax = 3.69
-            text = "S1"
-        intervals [3]:
-            xmin = 3.69
-            xmax = 7.782
-            text = ""
-    item [11]:
-        class = "IntervalTier"
-        name = "Repetitions"
-        xmin = 0.000000
-        xmax = 7.782000
-        intervals: size = 5
-        intervals [1]:
-            xmin = 0.0
-            xmax = 5.61
-            text = ""
-        intervals [2]:
-            xmin = 5.61
-            xmax = 6.16
-            text = "R1"
-        intervals [3]:
-            xmin = 6.16
-            xmax = 7.11
-            text = ""
-        intervals [4]:
-            xmin = 7.11
-            xmax = 7.14
-            text = "R1"
-        intervals [5]:
-            xmin = 7.14
-            xmax = 7.782
-            text = ""
-    item [12]:
-        class = "IntervalTier"
         name = "MetaInformation"
         xmin = 0.000000
         xmax = 7.782000
@@ -1409,32 +1365,32 @@ item []:
         intervals [1]:
             xmin = 0.0
             xmax = 0.97275
-            text = "license=GNU Public License, version 3"
+            text = "author=Brigitte Bigi"
         intervals [2]:
             xmin = 0.97275
             xmax = 1.9455
-            text = "version=1.7.9"
+            text = "contact=brigite.bigi@gmail.com"
         intervals [3]:
             xmin = 1.9455
             xmax = 2.91825
-            text = "copyright=Copyright (C) 2011-2016 Brigitte Bigi"
+            text = "program=SPPAS"
         intervals [4]:
             xmin = 2.91825
             xmax = 3.891
-            text = "author=Brigitte Bigi"
+            text = "version=1.8.0"
         intervals [5]:
             xmin = 3.891
             xmax = 4.86375
-            text = "url=http://www.sppas.org/"
+            text = "copyright=Copyright (C) 2011-2016 Brigitte Bigi"
         intervals [6]:
             xmin = 4.86375
             xmax = 5.8365
-            text = "contact=brigite.bigi@gmail.com"
+            text = "url=http://www.sppas.org/"
         intervals [7]:
             xmin = 5.8365
             xmax = 6.80925
-            text = "program=SPPAS"
+            text = "license=GNU Public License, version 3"
         intervals [8]:
             xmin = 6.80925
             xmax = 7.782
-            text = "date=2016-06-05"
+            text = "date=2016-08-30"

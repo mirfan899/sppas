@@ -1,5 +1,7 @@
 ## Tokenization
 
+### Overview
+
 Tokenization is also known as "Text Normalization" the process of segmenting a
 text into tokens.
 In principle, any system that deals with unrestricted text need the text to
@@ -7,7 +9,7 @@ be normalized. Texts contain a variety of "non-standard" token types such as
 digit sequences, words, acronyms and letter sequences in all capitals, mixed
 case words, abbreviations, roman numerals, URL's and e-mail addresses...
 Normalizing or rewriting such texts using ordinary words is then an important
-issue. The main steps of the text normalization implemented in SPPAS 
+issue. The main steps of the text normalization implemented in SPPAS
 (Bigi 2011) are:
 
 * Remove punctuation;
@@ -21,44 +23,59 @@ issue. The main steps of the text normalization implemented in SPPAS
   modify the lexicon, located in the "vocab" sub-directory of the "resources"
   directory. The lexicon contains one word per line.
 
-![Text normalization workflow](./etc/figures/tokworkflow.bmp)
+### Adapt Tokenization
 
-The SPPAS Tokenization system takes as input a file including a tier
-with the orthographic transcription. 
+Word segmentation of SPPAS is mainly based on the use of a lexicon.
+If a segmentation is not as expected, it is up to the user to modify
+the lexicon. Lexicons of all supported languages are all located in the folder
+"vocab" of the "resources" directory. They are in the form of "one
+word at a line".
+
+### Perform Tokenization with the GUI
+
+The SPPAS Tokenization system takes as input a file (or a list of files) for
+which the name strictly match the name of the audio file except the extension.
+For example, if a file with name "oriana1.wav" is given, SPPAS will search for a
+file with name "oriana1.xra" at a first stage if ".xra" is set as the default
+extension, then it will search for other supported extensions until a file is
+found.
+
+This file must include a tier with the orthographic transcription.
 At a first stage, SPPAS tries to find a tier with `transcription` as name.
 If such a tier does not exist, SPPAS tries to find a tier that contains
 one of the following strings:
 
-1. trans
-2. trs
-3. ipu
-4. ortho
-5. toe
+1. `trans`
+2. `trs`
+3. `ipu`
+4. `ortho`
+5. `toe`
 
 The first tier that matches is used (case insensitive search).
 
-By default, Tokenization produces a file including only one tier with the
-tokens. 
-In case of an Enriched Orthographic Transcription, to get both faked 
-and standard tokenized tiers, check the corresponding option. Then, 2
-tiers will be created:
+Tokenization produces a file with "-tokens" appended to its name,
+i.e. "oriana1-tokens.xra" for the previous example.
+This file is including only one tier with the resulting tokenization and with
+name "Tokenization". In case of an Enriched Orthographic Transcription, to get
+both faked and standard tokenized tiers, check the corresponding option. Then,
+two tiers will be created:
 
-- Tokens-std: the text normalization of the standard transcription,
-- Tokens-faked: the text normalization of the faked transcription.
+- "Tokens-std": the text normalization of the standard transcription,
+- "Tokens-faked": the text normalization of the faked transcription.
 
-Read the "Introduction" of this chapter for a better understanding of the 
+Read the "Introduction" of this chapter for a better understanding of the
 difference between "standard" and "faked" transcriptions.
 
+![Text normalization workflow](./etc/figures/tokworkflow.bmp)
 
-### Perform Tokenization with the GUI
-
-Click on the Tokenization activation button, select the language and click 
-on the "Configure..." blue text to fix options.
+To perform the text normalization process, click on the Tokenization activation
+button, select the language and click on the "Configure..." blue text to fix
+options.
 
 
 ### Perform Tokenization with the CLI
 
-`tokenize.py` is the program to perform Tokenization, i.e. the text 
+`tokenize.py` is the program to perform Tokenization, i.e. the text
 normalization of a given file or a raw text.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

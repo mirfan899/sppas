@@ -19,7 +19,7 @@ item []:
         intervals [2]:
             xmin = 1.1348764085
             xmax = 8.7344091942
-            text = "m-a-g-a-z-U~-z|m-a-g-a-z-U~ R-e-y-n-i|R-E-y-n-i-z|R-E-y-n-i U~-v-a~-t-E-R-eu|U~-v-a~-t-E-R d-y|d s-i|s-i-s|s-i-z|s-i-s m-a-R-s|m-a-R-s m-i-l-eu|m-i-l n-9-f|n-9-v s-a~-z|s-a~ k-a-t-R-eu|k-a-t-R|k-a-t|k-a-t-R|k-a-t-R-eu v-U~-t|v-U~ n-9-f|n-9-v # E-t-a-Z|E-t-a-Z|E-t-a-Z-eu|E-t-a-Z-eu # o-m|o-m-eu # e|E g-a-R-s-o-n-E # R-E-j-o~ S-eu-m-i-z-eu|S-eu-m-i-z|S-eu-m-i-z e|E s-u|s-u-z v-E-t-eu-m-a~|v-E-t-eu-m-a~-z"
+            text = "m-a-g-a-z-U~-z|m-a-g-a-z-U~ R-e-y-n-i|R-E-y-n-i-z|R-E-y-n-i U~-v-a~-t-E-R-eu|U~-v-a~-t-E-R d-y|d s-i|s-i-s|s-i-z|s-i-s m-a-R-s|m-a-R-s m-i-l-eu|m-i-l n-9-f|n-9-v s-a~-z|s-a~ k-a-t-R-eu|k-a-t-R|k-a-t|k-a-t-R|k-a-t-R-eu v-U~-t|v-U~ n-9-f|n-9-v sil E-t-a-Z|E-t-a-Z|E-t-a-Z-eu|E-t-a-Z-eu sil o-m|o-m-eu sil e|E g-a-R-s-o-n-E sil R-E-j-o~ S-eu-m-i-z-eu|S-eu-m-i-z|S-eu-m-i-z e|E s-u|s-u-z v-E-t-eu-m-a~|v-E-t-eu-m-a~-z"
         intervals [3]:
             xmin = 8.7344091942
             xmax = 9.2685367528
@@ -27,7 +27,7 @@ item []:
         intervals [4]:
             xmin = 9.2685367528
             xmax = 16.8712590912
-            text = "S-eu-m-i-z-eu|S-eu-m-i-z|S-eu-m-i-z m-a~-S-z|m-a~-S l-o~-g-z|l-o~-g # s-U~-t-R-e-z|s-U~-t-R-e # s-t-a-t-y-R-eu|s-t-a-t-y-R s-a~-t|s-a~ t-R-a~-t-eu|t-R-a~-t y-i-t|j-y-i|j-y-i-t|y-i|j-y-i-t # d-i-z|d-i-s|d-i|d-i-s a~-z|a~ * a~-t-E-n-d-eu|a~-t-E-n-eu-d-eu|a s-a~-t|s-a~ s-w-a-s-a~-t-eu|s-w-a-s-a~-t-eu|s-w-a-s-a~-t d-eu|d-eu-z|d-z # k-a-t-o-R-z-eu|k-a-t-o-R-z|k-a-t-o-R-z|k-a-t-o-R-z-eu a~-z|a~"
+            text = "S-eu-m-i-z-eu|S-eu-m-i-z|S-eu-m-i-z m-a~-S-z|m-a~-S l-o~-g-z|l-o~-g sil s-U~-t-R-e-z|s-U~-t-R-e sil s-t-a-t-y-R-eu|s-t-a-t-y-R s-a~-t|s-a~ t-R-a~-t-eu|t-R-a~-t y-i-t|j-y-i|j-y-i-t|y-i|j-y-i-t sil d-i-z|d-i-s|d-i|d-i-s a~-z|a~ * a~-t-E-n-d-eu|a~-t-E-n-eu-d-eu|a s-a~-t|s-a~ s-w-a-s-a~-t-eu|s-w-a-s-a~-t-eu|s-w-a-s-a~-t d-eu|d-eu-z|d-z sil k-a-t-o-R-z-eu|k-a-t-o-R-z|k-a-t-o-R-z|k-a-t-o-R-z-eu a~-z|a~"
         intervals [5]:
             xmin = 16.8712590912
             xmax = 17.8169485442
@@ -35,7 +35,7 @@ item []:
         intervals [6]:
             xmin = 17.8169485442
             xmax = 21.0525123875
-            text = "t-R-w-a-z|t-R-w-a|t-R-w-a|t-R-w-a-z d-eu|d|t S-a-k-eu|S-a-k|S-a-k|S-a-k-eu t-a-j|t-a-j-eu|t-a-j|t-a-j-eu a~ b-l-a~ # b-l-eu k-l-E-R # e|E b-E-Z-eu|b-E-Z"
+            text = "t-R-w-a-z|t-R-w-a|t-R-w-a|t-R-w-a-z d-eu|d|t S-a-k-eu|S-a-k|S-a-k|S-a-k-eu t-a-j|t-a-j-eu|t-a-j|t-a-j-eu a~ b-l-a~ sil b-l-eu k-l-E-R sil e|E b-E-Z-eu|b-E-Z"
         intervals [7]:
             xmin = 21.0525123875
             xmax = 21.751841752
@@ -51,7 +51,7 @@ item []:
         intervals [10]:
             xmin = 24.752
             xmax = 31.4725844028
-            text = "p-l-y-s|p-l-y|p-l-y-z d-eu|d|t g-R-i-z|g-R-i f-o~-s-e n-i d-eu|d|t b-E-Z-eu|b-E-Z a~ t-R-eu a~ t-R-a~-t-eu|t-R-a~-t y-i-t|j-y-i|j-y-i-t|y-i|j-y-i-t e|E k-a-R-a~-t-eu|k-a-R-a~-t|k-a-R-a~-t-eu # k-a-t-R-eu|k-a-t-R|k-a-t|k-a-t-R|k-a-t-R-eu d-eu|d|t S-a-k-eu|S-a-k|S-a-k|S-a-k-eu k-u-l-9-R p-u-R t-u-t-z|t-u-t-eu|t-u-t|t-u-t-eu-z l-E|l-E-z|l-e|l-e-z|l-eu o-t-R|o-t-R-z|o-t-R-eu|o-t-R-eu-z|o-t t-a-j-z|t-a-j|t-a-j-eu"
+            text = "p-l-y-s|p-l-y|p-l-y-z d-eu|d|t g-R-i-z|g-R-i f-o~-s-e n-i d-eu|d|t b-E-Z-eu|b-E-Z a~ t-R-eu a~ t-R-a~-t-eu|t-R-a~-t y-i-t|j-y-i|j-y-i-t|y-i|j-y-i-t e|E k-a-R-a~-t-eu|k-a-R-a~-t|k-a-R-a~-t-eu sil k-a-t-R-eu|k-a-t-R|k-a-t|k-a-t-R|k-a-t-R-eu d-eu|d|t S-a-k-eu|S-a-k|S-a-k|S-a-k-eu k-u-l-9-R p-u-R t-u-t-z|t-u-t-eu|t-u-t|t-u-t-eu-z l-E|l-E-z|l-e|l-e-z|l-eu o-t-R|o-t-R-z|o-t-R-eu|o-t-R-eu-z|o-t t-a-j-z|t-a-j|t-a-j-eu"
         intervals [11]:
             xmin = 31.4725844028
             xmax = 33.2598

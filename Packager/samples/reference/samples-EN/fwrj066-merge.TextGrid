@@ -4,7 +4,7 @@ Object class = "TextGrid"
 xmin = 0.0
 xmax = 6.008125
 tiers? <exists>
-size = 9
+size = 7
 item []:
     item [1]:
         class = "IntervalTier"
@@ -64,7 +64,7 @@ item []:
         class = "IntervalTier"
         name = "PhonAlign"
         xmin = 0.000000
-        xmax = 6.008100
+        xmax = 6.008125
         intervals: size = 32
         intervals [1]:
             xmin = 0.0
@@ -192,13 +192,13 @@ item []:
             text = "i:"
         intervals [32]:
             xmin = 5.545
-            xmax = 6.0081
+            xmax = 6.008125
             text = "#"
     item [5]:
         class = "IntervalTier"
         name = "TokensAlign"
         xmin = 0.000000
-        xmax = 6.008100
+        xmax = 6.008125
         intervals: size = 11
         intervals [1]:
             xmin = 0.0
@@ -242,13 +242,13 @@ item []:
             text = "me"
         intervals [11]:
             xmin = 5.545
-            xmax = 6.0081
+            xmax = 6.008125
             text = "#"
     item [6]:
         class = "IntervalTier"
         name = "Activity"
         xmin = 0.000000
-        xmax = 6.008100
+        xmax = 6.008125
         intervals: size = 3
         intervals [1]:
             xmin = 0.0
@@ -260,45 +260,9 @@ item []:
             text = "speech"
         intervals [3]:
             xmin = 5.545
-            xmax = 6.0081
+            xmax = 6.008125
             text = "silence"
     item [7]:
-        class = "IntervalTier"
-        name = "Sources"
-        xmin = 0.000000
-        xmax = 6.008100
-        intervals: size = 3
-        intervals [1]:
-            xmin = 0.0
-            xmax = 1.17
-            text = ""
-        intervals [2]:
-            xmin = 1.17
-            xmax = 1.89
-            text = "S1"
-        intervals [3]:
-            xmin = 1.89
-            xmax = 6.0081
-            text = ""
-    item [8]:
-        class = "IntervalTier"
-        name = "Repetitions"
-        xmin = 0.000000
-        xmax = 6.008100
-        intervals: size = 3
-        intervals [1]:
-            xmin = 0.0
-            xmax = 4.05
-            text = ""
-        intervals [2]:
-            xmin = 4.05
-            xmax = 4.93
-            text = "R1"
-        intervals [3]:
-            xmin = 4.93
-            xmax = 6.0081
-            text = ""
-    item [9]:
         class = "IntervalTier"
         name = "MetaInformation"
         xmin = 0.000000
@@ -307,32 +271,32 @@ item []:
         intervals [1]:
             xmin = 0.0
             xmax = 0.751015625
-            text = "license=GNU Public License, version 3"
+            text = "author=Brigitte Bigi"
         intervals [2]:
             xmin = 0.751015625
             xmax = 1.50203125
-            text = "version=1.7.9"
+            text = "contact=brigite.bigi@gmail.com"
         intervals [3]:
             xmin = 1.50203125
             xmax = 2.253046875
-            text = "copyright=Copyright (C) 2011-2016 Brigitte Bigi"
+            text = "program=SPPAS"
         intervals [4]:
             xmin = 2.253046875
             xmax = 3.0040625
-            text = "author=Brigitte Bigi"
+            text = "version=1.8.0"
         intervals [5]:
             xmin = 3.0040625
             xmax = 3.755078125
-            text = "url=http://www.sppas.org/"
+            text = "copyright=Copyright (C) 2011-2016 Brigitte Bigi"
         intervals [6]:
             xmin = 3.755078125
             xmax = 4.50609375
-            text = "contact=brigite.bigi@gmail.com"
+            text = "url=http://www.sppas.org/"
         intervals [7]:
             xmin = 4.50609375
             xmax = 5.257109375
-            text = "program=SPPAS"
+            text = "license=GNU Public License, version 3"
         intervals [8]:
             xmin = 5.257109375
             xmax = 6.008125
-            text = "date=2016-06-05"
+            text = "date=2016-08-30"

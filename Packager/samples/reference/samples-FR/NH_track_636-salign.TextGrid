@@ -30,10 +30,10 @@ item []:
             text = "zE"
         intervals [5]:
             xmin = 0.42
-            xmax = 0.61
-            text = "tut"
+            xmax = 0.57
+            text = "tu"
         intervals [6]:
-            xmin = 0.61
+            xmin = 0.57
             xmax = 0.68
             text = "ty"
         intervals [7]:
@@ -126,14 +126,14 @@ item []:
             text = "vE"
         intervals [29]:
             xmin = 3.76
-            xmax = 3.88
+            xmax = 3.87
             text = "kla"
         intervals [30]:
-            xmin = 3.88
-            xmax = 4.01
-            text = "sE"
+            xmin = 3.87
+            xmax = 4.0
+            text = "se"
         intervals [31]:
-            xmin = 4.01
+            xmin = 4.0
             xmax = 4.1
             text = "Rid"
         intervals [32]:
@@ -154,10 +154,10 @@ item []:
             text = "na~"
         intervals [36]:
             xmin = 4.47
-            xmax = 4.53
-            text = "o~n"
+            xmax = 4.55
+            text = "o~"
         intervals [37]:
-            xmin = 4.53
+            xmin = 4.55
             xmax = 4.67
             text = "la"
         intervals [38]:
@@ -228,10 +228,10 @@ item []:
             text = "FV"
         intervals [5]:
             xmin = 0.42
-            xmax = 0.61
-            text = "OVO"
+            xmax = 0.57
+            text = "OV"
         intervals [6]:
-            xmin = 0.61
+            xmin = 0.57
             xmax = 0.68
             text = "OV"
         intervals [7]:
@@ -324,14 +324,14 @@ item []:
             text = "FV"
         intervals [29]:
             xmin = 3.76
-            xmax = 3.88
+            xmax = 3.87
             text = "OLV"
         intervals [30]:
-            xmin = 3.88
-            xmax = 4.01
+            xmin = 3.87
+            xmax = 4.0
             text = "FV"
         intervals [31]:
-            xmin = 4.01
+            xmin = 4.0
             xmax = 4.1
             text = "LVO"
         intervals [32]:
@@ -352,10 +352,10 @@ item []:
             text = "NV"
         intervals [36]:
             xmin = 4.47
-            xmax = 4.53
-            text = "VN"
+            xmax = 4.55
+            text = "V"
         intervals [37]:
-            xmin = 4.53
+            xmin = 4.55
             xmax = 4.67
             text = "LV"
         intervals [38]:
@@ -426,10 +426,10 @@ item []:
             text = "CV"
         intervals [5]:
             xmin = 0.42
-            xmax = 0.61
-            text = "CVC"
+            xmax = 0.57
+            text = "CV"
         intervals [6]:
-            xmin = 0.61
+            xmin = 0.57
             xmax = 0.68
             text = "CV"
         intervals [7]:
@@ -522,14 +522,14 @@ item []:
             text = "CV"
         intervals [29]:
             xmin = 3.76
-            xmax = 3.88
+            xmax = 3.87
             text = "CCV"
         intervals [30]:
-            xmin = 3.88
-            xmax = 4.01
+            xmin = 3.87
+            xmax = 4.0
             text = "CV"
         intervals [31]:
-            xmin = 4.01
+            xmin = 4.0
             xmax = 4.1
             text = "CVC"
         intervals [32]:
@@ -550,10 +550,10 @@ item []:
             text = "CV"
         intervals [36]:
             xmin = 4.47
-            xmax = 4.53
-            text = "VC"
+            xmax = 4.55
+            text = "V"
         intervals [37]:
-            xmin = 4.53
+            xmin = 4.55
             xmax = 4.67
             text = "CV"
         intervals [38]:

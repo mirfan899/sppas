@@ -118,16 +118,16 @@ item []:
             text = "boS"
         intervals [27]:
             xmin = 3.9
-            xmax = 3.96
-            text = "di"
-        intervals [28]:
-            xmin = 3.96
             xmax = 4.09
+            text = "diz"
+        intervals [28]:
+            xmin = 4.09
+            xmax = 4.22
             text = "kEs"
         intervals [29]:
-            xmin = 4.09
+            xmin = 4.22
             xmax = 4.36
-            text = "tjfe"
+            text = "tfe"
         intervals [30]:
             xmin = 4.36
             xmax = 4.49
@@ -284,16 +284,16 @@ item []:
             text = "OVF"
         intervals [27]:
             xmin = 3.9
-            xmax = 3.96
-            text = "OV"
-        intervals [28]:
-            xmin = 3.96
             xmax = 4.09
             text = "OVF"
-        intervals [29]:
+        intervals [28]:
             xmin = 4.09
+            xmax = 4.22
+            text = "OVF"
+        intervals [29]:
+            xmin = 4.22
             xmax = 4.36
-            text = "OGFV"
+            text = "OFV"
         intervals [30]:
             xmin = 4.36
             xmax = 4.49
@@ -450,16 +450,16 @@ item []:
             text = "CVC"
         intervals [27]:
             xmin = 3.9
-            xmax = 3.96
-            text = "CV"
-        intervals [28]:
-            xmin = 3.96
             xmax = 4.09
             text = "CVC"
-        intervals [29]:
+        intervals [28]:
             xmin = 4.09
+            xmax = 4.22
+            text = "CVC"
+        intervals [29]:
+            xmin = 4.22
             xmax = 4.36
-            text = "CCCV"
+            text = "CCV"
         intervals [30]:
             xmin = 4.36
             xmax = 4.49

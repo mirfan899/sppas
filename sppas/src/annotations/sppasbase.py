@@ -130,7 +130,8 @@ class sppasBase( object ):
         """
         self.print_message("Diagnosis: ", indent=2, status=None)
         for filename in filenames:
-            (s,m) = self._diag.checkfile( filename )
-            self.print_message(" - %s: %s"%(filename,m), indent=3, status=None)
+            if filename is not None:
+                (s,m) = self._diag.checkfile( filename )
+                self.print_message(" - %s: %s"%(filename,m), indent=3, status=None)
 
     # -----------------------------------------------------------------------

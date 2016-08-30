@@ -254,34 +254,34 @@ item []:
             text = "S"
         intervals [61]:
             xmin = 3.9
-            xmax = 3.93
+            xmax = 3.95
             text = "d"
         intervals [62]:
-            xmin = 3.93
-            xmax = 3.96
+            xmin = 3.95
+            xmax = 3.99
             text = "i"
         intervals [63]:
-            xmin = 3.96
-            xmax = 3.99
-            text = "k"
-        intervals [64]:
             xmin = 3.99
-            xmax = 4.02
-            text = "E"
-        intervals [65]:
-            xmin = 4.02
             xmax = 4.09
-            text = "s"
-        intervals [66]:
+            text = "z"
+        intervals [64]:
             xmin = 4.09
-            xmax = 4.13
-            text = "t"
+            xmax = 4.15
+            text = "k"
+        intervals [65]:
+            xmin = 4.15
+            xmax = 4.18
+            text = "E"
+        intervals [66]:
+            xmin = 4.18
+            xmax = 4.22
+            text = "s"
         intervals [67]:
-            xmin = 4.13
-            xmax = 4.2
-            text = "j"
+            xmin = 4.22
+            xmax = 4.25
+            text = "t"
         intervals [68]:
-            xmin = 4.2
+            xmin = 4.25
             xmax = 4.29
             text = "f"
         intervals [69]:
@@ -504,22 +504,22 @@ item []:
             text = "je"
         intervals [25]:
             xmin = 3.9
-            xmax = 3.96
+            xmax = 4.09
             text = "dis"
         intervals [26]:
-            xmin = 3.96
-            xmax = 3.99
+            xmin = 4.09
+            xmax = 4.15
             text = "qu'"
         intervals [27]:
-            xmin = 3.99
-            xmax = 4.09
+            xmin = 4.15
+            xmax = 4.22
             text = "est-ce"
         intervals [28]:
-            xmin = 4.09
-            xmax = 4.2
+            xmin = 4.22
+            xmax = 4.25
             text = "tu"
         intervals [29]:
-            xmin = 4.2
+            xmin = 4.25
             xmax = 4.36
             text = "fais"
         intervals [30]:

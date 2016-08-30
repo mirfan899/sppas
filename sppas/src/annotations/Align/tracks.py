@@ -133,8 +133,9 @@ class TrackSplitter( Transcription ):
         """
         if phontier.IsTimeInterval() is False:
             raise TypeError('Only a tier with time-aligned phonetization (in ipus, chunks, tracks,...) can be aligned at phones level.')
-        if toktier.IsTimeInterval() is False:
-            toktier = None
+        if toktier is not None:
+            if toktier.IsTimeInterval() is False:
+                toktier = None
 
         tracks = self.write_text_tracks(phontier, toktier, diralign)
         self.write_audio_tracks(inputaudio, tracks, diralign)

@@ -4,7 +4,7 @@ Object class = "TextGrid"
 xmin = 0.0
 xmax = 3.497125
 tiers? <exists>
-size = 12
+size = 10
 item []:
     item [1]:
         class = "IntervalTier"
@@ -118,7 +118,7 @@ item []:
         class = "IntervalTier"
         name = "PhonAlign"
         xmin = 0.000000
-        xmax = 3.497100
+        xmax = 3.497125
         intervals: size = 14
         intervals [1]:
             xmin = 0.0
@@ -174,13 +174,13 @@ item []:
             text = "i:"
         intervals [14]:
             xmin = 1.79
-            xmax = 3.4971
+            xmax = 3.497125
             text = "#"
     item [8]:
         class = "IntervalTier"
         name = "TokensAlign"
         xmin = 0.000000
-        xmax = 3.497100
+        xmax = 3.497125
         intervals: size = 7
         intervals [1]:
             xmin = 0.0
@@ -208,13 +208,13 @@ item []:
             text = "me"
         intervals [7]:
             xmin = 1.79
-            xmax = 3.4971
+            xmax = 3.497125
             text = "#"
     item [9]:
         class = "IntervalTier"
         name = "Activity"
         xmin = 0.000000
-        xmax = 3.497100
+        xmax = 3.497125
         intervals: size = 3
         intervals [1]:
             xmin = 0.0
@@ -226,29 +226,9 @@ item []:
             text = "speech"
         intervals [3]:
             xmin = 1.79
-            xmax = 3.4971
+            xmax = 3.497125
             text = "silence"
     item [10]:
-        class = "IntervalTier"
-        name = "Sources"
-        xmin = 0.000000
-        xmax = 3.497100
-        intervals: size = 1
-        intervals [1]:
-            xmin = 0.0
-            xmax = 3.4971
-            text = ""
-    item [11]:
-        class = "IntervalTier"
-        name = "Repetitions"
-        xmin = 0.000000
-        xmax = 3.497100
-        intervals: size = 1
-        intervals [1]:
-            xmin = 0.0
-            xmax = 3.4971
-            text = ""
-    item [12]:
         class = "IntervalTier"
         name = "MetaInformation"
         xmin = 0.000000
@@ -257,32 +237,32 @@ item []:
         intervals [1]:
             xmin = 0.0
             xmax = 0.437140625
-            text = "license=GNU Public License, version 3"
+            text = "author=Brigitte Bigi"
         intervals [2]:
             xmin = 0.437140625
             xmax = 0.87428125
-            text = "version=1.7.9"
+            text = "contact=brigite.bigi@gmail.com"
         intervals [3]:
             xmin = 0.87428125
             xmax = 1.311421875
-            text = "copyright=Copyright (C) 2011-2016 Brigitte Bigi"
+            text = "program=SPPAS"
         intervals [4]:
             xmin = 1.311421875
             xmax = 1.7485625
-            text = "author=Brigitte Bigi"
+            text = "version=1.8.0"
         intervals [5]:
             xmin = 1.7485625
             xmax = 2.185703125
-            text = "url=http://www.sppas.org/"
+            text = "copyright=Copyright (C) 2011-2016 Brigitte Bigi"
         intervals [6]:
             xmin = 2.185703125
             xmax = 2.62284375
-            text = "contact=brigite.bigi@gmail.com"
+            text = "url=http://www.sppas.org/"
         intervals [7]:
             xmin = 2.62284375
             xmax = 3.059984375
-            text = "program=SPPAS"
+            text = "license=GNU Public License, version 3"
         intervals [8]:
             xmin = 3.059984375
             xmax = 3.497125
-            text = "date=2016-06-05"
+            text = "date=2016-08-30"

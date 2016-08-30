@@ -1,0 +1,394 @@
+-----------------------------------------------------------------------
+
+SPPAS - Version 1.8.0
+Copyright (C) 2011-2016 Brigitte Bigi
+Web site: http://www.sppas.org/
+Contact: Brigitte Bigi(brigite.bigi@gmail.com)
+
+-----------------------------------------------------------------------
+Date: 2016-08-30 14:41:36.640604
+Input languages: 
+  - Momel: 
+  - INTSINT: 
+  - IPUs Segmentation: 
+  - Tokenization: eng
+  - Phonetization: eng
+  - Alignment: eng
+  - Syllabification: und
+  - Self-repetitions: eng
+Input selection: 
+  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN
+-----------------------------------------------------------------------
+  - Momel:  activated
+  - INTSINT:  activated
+  - IPUs Segmentation:  activated
+  - Tokenization:  activated
+  - Phonetization:  activated
+  - Alignment:  activated
+  - Syllabification:  disabled
+  - Self-repetitions:  disabled
+-----------------------------------------------------------------------
+
+Extension: .TextGrid
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+                       Momel
+-----------------------------------------------------------------------
+ ... Momel of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fclc251.wav
+ ...  ... [ IGNORED ] Failed to find a file with pitch values. Read the documentation for details.
+
+ ... Momel of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana2.wav
+ ...  ... [ IGNORED ] Failed to find a file with pitch values. Read the documentation for details.
+
+ ... Momel of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana1.wav
+ ...  ... Options: 
+ ...  ...  ...  - lfen1: 30
+ ...  ...  ...  - lfen2: 20
+ ...  ...  ...  - hzinf: 50
+ ...  ...  ...  - hzsup: 600
+ ...  ...  ...  - glitch: True
+ ...  ...  ...  - maxec: 1.04
+ ...  ...  ...  - seuildiff_y: 0.05
+ ...  ...  ...  - seuildiff_x: 5
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana1.PitchTier: Valid.
+ ...  ... [   INFO  ] 36 targets found.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana1-momel.TextGrid
+
+ ... Momel of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fwrj066.wav
+ ...  ... [ IGNORED ] Failed to find a file with pitch values. Read the documentation for details.
+
+ ... Momel of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_A040-O2.wav
+ ...  ... [ IGNORED ] Failed to find a file with pitch values. Read the documentation for details.
+
+ ... Momel of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_B037-P0.wav
+ ...  ... [ IGNORED ] Failed to find a file with pitch values. Read the documentation for details.
+
+-----------------------------------------------------------------------
+                       INTSINT
+-----------------------------------------------------------------------
+ ... INTSINT of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fclc251.wav
+ ...  ... [ IGNORED ] Failed to find a file with momel targets. Read the documentation for details.
+
+ ... INTSINT of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana2.wav
+ ...  ... [ IGNORED ] Failed to find a file with momel targets. Read the documentation for details.
+
+ ... INTSINT of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana1.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana1-intsint.TextGrid
+
+ ... INTSINT of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fwrj066.wav
+ ...  ... [ IGNORED ] Failed to find a file with momel targets. Read the documentation for details.
+
+ ... INTSINT of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_A040-O2.wav
+ ...  ... [ IGNORED ] Failed to find a file with momel targets. Read the documentation for details.
+
+ ... INTSINT of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_B037-P0.wav
+ ...  ... [ IGNORED ] Failed to find a file with momel targets. Read the documentation for details.
+
+-----------------------------------------------------------------------
+                       IPUs Segmentation
+-----------------------------------------------------------------------
+ ... IPUs Segmentation of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fclc251.wav
+ ...  ... [ IGNORED ] because a previous segmentation is existing.
+
+ ... IPUs Segmentation of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana2.wav
+ ...  ... [ IGNORED ] because a previous segmentation is existing.
+
+ ... IPUs Segmentation of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana1.wav
+ ...  ... [ IGNORED ] because a previous segmentation is existing.
+
+ ... IPUs Segmentation of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fwrj066.wav
+ ...  ... [ IGNORED ] because a previous segmentation is existing.
+
+ ... IPUs Segmentation of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_A040-O2.wav
+ ...  ... [ IGNORED ] because a previous segmentation is existing.
+
+ ... IPUs Segmentation of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_B037-P0.wav
+ ...  ... [ IGNORED ] because a previous segmentation is existing.
+
+-----------------------------------------------------------------------
+                       Tokenization
+-----------------------------------------------------------------------
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fclc251.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fclc251.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fclc251-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana2.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana2.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana2-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana1.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana1.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana1-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fwrj066.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fwrj066.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fwrj066-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_A040-O2.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_A040-O2.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_A040-O2-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_B037-P0.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_B037-P0.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_B037-P0-token.TextGrid
+
+-----------------------------------------------------------------------
+                       Phonetization
+-----------------------------------------------------------------------
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fclc251.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fclc251-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fclc251-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana2.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana2-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana2-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana1.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana1-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana1-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fwrj066.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fwrj066-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fwrj066-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_A040-O2.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_A040-O2-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_A040-O2-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_B037-P0.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_B037-P0-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_B037-P0-phon.TextGrid
+
+-----------------------------------------------------------------------
+                       Alignment
+-----------------------------------------------------------------------
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fclc251.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fclc251.wav: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fclc251-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fclc251-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ...  ... Align interval number 2
+ ...  ...  ... Align interval number 3
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fclc251-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana2.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana2.wav: Admit. The frame rate of audio file is preferably 16000 Hz. Got 44100. SPPAS will work on a converted file.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana2-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana2-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ...  ... Align interval number 2
+ ...  ...  ... Align interval number 3
+ ...  ...  ... Align interval number 4
+ ...  ...  ... Align interval number 5
+ ...  ...  ... Align interval number 6
+ ...  ...  ... Align interval number 7
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana2-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana1.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana1.wav: Admit. The frame rate of audio file is preferably 16000 Hz. Got 44100. SPPAS will work on a converted file.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana1-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana1-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ...  ... Align interval number 2
+ ...  ...  ... Align interval number 3
+ ...  ...  ... Align interval number 4
+ ...  ...  ... Align interval number 5
+ ...  ...  ... Align interval number 6
+ ...  ...  ... Align interval number 7
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana1-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fwrj066.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fwrj066.wav: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fwrj066-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fwrj066-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ...  ... Align interval number 2
+ ...  ...  ... Align interval number 3
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fwrj066-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_A040-O2.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_A040-O2.wav: Admit. The frame rate of audio file is preferably 16000 Hz. Got 44100. SPPAS will work on a converted file.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_A040-O2-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_A040-O2-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ...  ... Align interval number 2
+ ...  ...  ... Align interval number 3
+ ...  ...  ... Align interval number 4
+ ...  ...  ... Align interval number 5
+ ...  ...  ... Align interval number 6
+ ...  ...  ... Align interval number 7
+ ...  ...  ... Align interval number 8
+ ...  ...  ... Align interval number 9
+ ...  ...  ... Align interval number 10
+ ...  ...  ... Align interval number 11
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_A040-O2-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_B037-P0.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_B037-P0.wav: Admit. The frame rate of audio file is preferably 16000 Hz. Got 44100. SPPAS will work on a converted file.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_B037-P0-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_B037-P0-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ...  ... Align interval number 2
+ ...  ...  ... Align interval number 3
+ ...  ...  ... Align interval number 4
+ ...  ...  ... Align interval number 5
+ ...  ...  ... Align interval number 6
+ ...  ...  ... Align interval number 7
+ ...  ...  ... [   INFO  ] Empty annotation: nothing to align.
+ ...  ...  ... Align interval number 8
+ ...  ...  ... Align interval number 9
+ ...  ...  ... Align interval number 10
+ ...  ...  ... Align interval number 11
+ ...  ...  ... Align interval number 12
+ ...  ...  ... Align interval number 13
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_B037-P0-palign.TextGrid
+
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fclc251.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fclc251-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana2.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana2-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana1.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/oriana1-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fwrj066.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/fwrj066-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_A040-O2.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_A040-O2-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_B037-P0.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-EN/E_E_B037-P0-merge.TextGrid
+
+-----------------------------------------------------------------------
+Result statistics:
+-----------------------------------------------------------------------
+  - Momel:  1
+  - INTSINT:  1
+  - IPUs Segmentation:  0
+  - Tokenization:  6
+  - Phonetization:  6
+  - Alignment:  6
+  - Syllabification:  -1
+  - Self-repetitions:  -1
+-----------------------------------------------------------------------

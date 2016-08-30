@@ -2,31 +2,26 @@
 
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta name="generator" content="pandoc">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <meta name="author" content="Brigitte Bigi">
-  <title>SPPAS Documentation</title>
+ 
+    <title>SPPAS Documentation</title>
 
-    <link rel="stylesheet" href="etc/styles/sppas.css">
-    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Jura">
-    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Maven Pro">
+    <meta charset='utf-8' />
+    <meta name="keywords" content="research, speech, phonetization, alignment, syllabification, brigitte, bigi, parole, langage, lpl, corpus, julius, htk, segmentation, forced-alignment, resource, sldr, ortolang" />
+
+    <link rel="stylesheet" type="text/css" href="./etc/styles/sppas.css" media="screen" />
     <link rel="icon" href="./etc/icons/sppas.png" />
 
-
-<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-38055333-4']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-38055333-4']);
+      _gaq.push(['_trackPageview']);
+    
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
 
 </head>
 
@@ -93,22 +88,38 @@
         <b><a href="documentation_01_introduction.html">Introduction:</a></b><br>
         &nbsp;&nbsp;What is SPPAS? <br>
         &nbsp;&nbsp;Getting and installing.<br>
-        &nbsp;&nbsp;How to use SPPAS. <br>
         &nbsp;&nbsp;Main and Important recommendations.<br>
         </td>
     </tr>
 
     <tr>
         <td >
-            <a href="documentation_02_annotations.html">
+            <a href="documentation_02_interface.html">
                 <figure>
-                <img src="./etc/icons/annotation.png" width="64" height="64" />
-                <figcaption>Automatic annotations</figcaption>
+                <img src="./etc/icons/GUI.png" width="64" height="64" />
+                <figcaption>Interface</figcaption>
                 </figure>
             </a>
         </td>
         <td>
-        <b><a href="documentation_02_annotations.html">Automatic Speech Segmentation and Annotation:</a></b><br>
+        <b><a href="documentation_02_interface.html">Interface:</a></b><br>
+        &nbsp;&nbsp;Getting started with SPPAS... <br>
+        &nbsp;&nbsp;the Graphical User Interface<br>
+        &nbsp;&nbsp;the Command-line User Interface<br>
+        </td>
+    </tr>
+
+    <tr>
+        <td >
+            <a href="documentation_03_annotations.html">
+                <figure>
+                <img src="./etc/icons/annotation.png" width="64" height="64" />
+                <figcaption>Annotate</figcaption>
+                </figure>
+            </a>
+        </td>
+        <td>
+        <b><a href="documentation_03_annotations.html">Automatic Annotations:</a></b><br>
         &nbsp;&nbsp;What are automatic annotations in SPPAS? <br>
         &nbsp;&nbsp;How do they work? <br>
         </td>
@@ -117,7 +128,7 @@
 
     <tr>
         <td >
-            <a href="documentation_03_resources.html">
+            <a href="documentation_04_resources.html">
                 <figure>
                 <img src="./etc/icons/library.png" width="64" height="64" />
                 <figcaption>Resources</figcaption>
@@ -125,42 +136,27 @@
             </a>
         </td>
         <td>
-        <b><a href="documentation_03_resources.html">Resources required by Automatic annotations:</a></b><br>
+        <b><a href="documentation_04_resources.html">Resources required by Automatic annotations:</a></b><br>
         &nbsp;&nbsp;What are SPPAS resources? What's for?<br>
         &nbsp;&nbsp;What is the phoneset used for each language?<br>
         &nbsp;&nbsp;What are the licenses?<br>
         </td>
     </tr>
-
+    
     <tr>
         <td >
-            <a href="documentation_04_GUI.html">
+            <a href="documentation_05_analyses.html">
                 <figure>
-                <img src="./etc/icons/GUI.png" width="64" height="64" />
-                <figcaption>The GUI</figcaption>
+                <img src="./etc/icons/analyses.png" width="64" height="64" />
+                <figcaption>Analyze</figcaption>
                 </figure>
             </a>
         </td>
         <td>
-        <b><a href="documentation_04_GUI.html">The Graphical User Interface:</a></b><br>
-        &nbsp;&nbsp;Getting started with SPPAS... <br>
-        &nbsp;&nbsp;How to perform an automatic annotation? <br>
-        &nbsp;&nbsp;How to use components and plugins?<br>
-        </td>
-    </tr>
-
-    <tr>
-        <td >
-            <a href="documentation_05_CLI.html">
-                <figure>
-                <img src="./etc/icons/CLI.png" width="64" height="64" />
-                <figcaption>The CLI</figcaption>
-                </figure>
-            </a>
-        </td>
-        <td>
-        <b><a href="documentation_05_CLI.html">The Command-line User Interface:</a></b><br>
-        &nbsp;&nbsp;How to use SPPAS in a terminal.
+        <b><a href="documentation_05_analyses.html">Analyses:</a></b><br>
+        &nbsp;&nbsp;How to analyze annotated data files?<br>
+        &nbsp;&nbsp;How to get statistics?<br>
+        &nbsp;&nbsp;How to query annotations?<br>
         </td>
     </tr>
 
@@ -169,7 +165,7 @@
             <a href="documentation_06_scripting.html">
                 <figure>
                 <img src="./etc/icons/python.png" width="64" height="64" />
-                <figcaption>Scripting</figcaption>
+                <figcaption>Script</figcaption>
                 </figure>
             </a>
         </td>
@@ -187,7 +183,7 @@
             <a href="documentation_07_references.html">
                 <figure>
                 <img src="./etc/icons/world.png" width="64" height="64" />
-                <figcaption>References</figcaption>
+                <figcaption>Cite</figcaption>
                 </figure>
             </a>
         </td>

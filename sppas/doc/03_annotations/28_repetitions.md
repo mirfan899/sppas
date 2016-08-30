@@ -1,37 +1,37 @@
 ## Repetitions
 
-This automatic detection focus on word repetitions, which can be an exact 
-repetition (named strict echo) or a repetition with variation 
+### Overview
+
+This automatic detection focus on word repetitions, which can be an exact
+repetition (named strict echo) or a repetition with variation
 (named non-strict echo).
 
 SPPAS implements *self-repetitions* and *other-repetitions* detection (Bigi
-et al. 2014). The system is based only on lexical criteria. 
-The proposed algorithm is focusing on the detection of the source. 
+et al. 2014). The system is based only on lexical criteria.
+The proposed algorithm is focusing on the detection of the source.
 
 The Graphical User Interface only allows to detect self-repetitions.
 Use the Command-Line User Interface if you want to get other-repetitions.
 
-![Repetition detection workflow](./etc/figures/repetworkflow.bmp)
+This process requires a list of stop-words, and a dictionary with lemmas (the
+system can process without it, but the result is better with it). Both lexicons
+are located in the "vocab" folder of the "resources" directory.
 
-The automatic annotation takes as input a file with (at least) one 
+### Perform Repetitions with the GUI
+
+The automatic annotation takes as input a file with (at least) one
 tier containing the time-aligned tokens of the speaker (and another file/tier
 for other-repetitions).
 The annotation provides one annotated file with 2 tiers: Sources and Repetitions.
 
-This process requires a list of stop-words, and a dictionary with lemmas (the
-system can process without it, but the result is better with it). Both lexicons
-are located in the "vocab" sub-directory of the "resources" directory.
+![Repetition detection workflow](./etc/figures/repetworkflow.bmp)
 
-
-### Perform Repetitions with the GUI
-
-Click on the Self-Repetitions activation button, select the language and click 
+Click on the Self-Repetitions activation button, select the language and click
 on the "Configure..." blue text to fix options.
-
 
 ### Perform Repetitions with the CLI
 
-`repetition.py` is the program to perform automatic detection of 
+`repetition.py` is the program to perform automatic detection of
 self-repetitions or other-repetitions if a second speaker is given.
 
 It can be language-dependent (better results) or language-independent.

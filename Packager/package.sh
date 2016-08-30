@@ -305,13 +305,13 @@ function fct_get_args {
 function fct_exec_sppas {
 
     echo " ... Test automatic annotation of French"
-    python $PROGRAM_DIR/sppas/bin/annotation.py -w $SAMPLES_DIR/hypothesis/samples-FR -l fra -e .TextGrid --all  >> $LOG_DIAGNOSIS
+    python $PROGRAM_DIR/sppas/bin/annotation.py -w $SAMPLES_DIR/hypothesis/samples-FR -l fra -e .TextGrid --tok --phon --align --syll >> $LOG_DIAGNOSIS
 
     echo " ... Test automatic annotation of Italian"
-    python $PROGRAM_DIR/sppas/bin/annotation.py -w $SAMPLES_DIR/hypothesis/samples-IT -l ita -e .TextGrid --all  >> $LOG_DIAGNOSIS
+    python $PROGRAM_DIR/sppas/bin/annotation.py -w $SAMPLES_DIR/hypothesis/samples-IT -l ita -e .TextGrid --tok --phon --align  >> $LOG_DIAGNOSIS
 
     echo " ... Test automatic annotation of English"
-    python $PROGRAM_DIR/sppas/bin/annotation.py -w $SAMPLES_DIR/hypothesis/samples-EN -l eng -e .TextGrid --all  >> $LOG_DIAGNOSIS
+    python $PROGRAM_DIR/sppas/bin/annotation.py -w $SAMPLES_DIR/hypothesis/samples-EN -l eng -e .TextGrid --ipu --tok --phon --align --momel --intsint  >> $LOG_DIAGNOSIS
 }
 
 

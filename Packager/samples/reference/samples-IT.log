@@ -1,0 +1,239 @@
+-----------------------------------------------------------------------
+
+SPPAS - Version 1.8.0
+Copyright (C) 2011-2016 Brigitte Bigi
+Web site: http://www.sppas.org/
+Contact: Brigitte Bigi(brigite.bigi@gmail.com)
+
+-----------------------------------------------------------------------
+Date: 2016-08-30 14:38:53.644825
+Input languages: 
+  - Momel: 
+  - INTSINT: 
+  - IPUs Segmentation: 
+  - Tokenization: ita
+  - Phonetization: ita
+  - Alignment: ita
+  - Syllabification: ita
+  - Self-repetitions: und
+Input selection: 
+  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT
+-----------------------------------------------------------------------
+  - Momel:  disabled
+  - INTSINT:  disabled
+  - IPUs Segmentation:  activated
+  - Tokenization:  activated
+  - Phonetization:  activated
+  - Alignment:  activated
+  - Syllabification:  disabled
+  - Self-repetitions:  disabled
+-----------------------------------------------------------------------
+
+Extension: .TextGrid
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+                       IPUs Segmentation
+-----------------------------------------------------------------------
+ ... IPUs Segmentation of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S1A1.wav
+ ...  ... [ IGNORED ] because a previous segmentation is existing.
+
+ ... IPUs Segmentation of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/10_striscia_audio.wav
+ ...  ... [ IGNORED ] because a previous segmentation is existing.
+
+ ... IPUs Segmentation of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S3C3.wav
+ ...  ... [ IGNORED ] because a previous segmentation is existing.
+
+ ... IPUs Segmentation of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/g01b3.wav
+ ...  ... [ IGNORED ] because a previous segmentation is existing.
+
+-----------------------------------------------------------------------
+                       Tokenization
+-----------------------------------------------------------------------
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S1A1.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S1A1.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S1A1-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/10_striscia_audio.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/10_striscia_audio.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/10_striscia_audio-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S3C3.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S3C3.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S3C3-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/g01b3.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/g01b3.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/g01b3-token.TextGrid
+
+-----------------------------------------------------------------------
+                       Phonetization
+-----------------------------------------------------------------------
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S1A1.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S1A1-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S1A1-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/10_striscia_audio.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/10_striscia_audio-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/10_striscia_audio-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S3C3.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S3C3-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S3C3-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/g01b3.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/g01b3-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/g01b3-phon.TextGrid
+
+-----------------------------------------------------------------------
+                       Alignment
+-----------------------------------------------------------------------
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S1A1.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S1A1.wav: Admit. The frame rate of audio file is preferably 16000 Hz. Got 44100. SPPAS will work on a converted file.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S1A1-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S1A1-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S1A1-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/10_striscia_audio.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/10_striscia_audio.wav: Admit. The frame rate of audio file is preferably 16000 Hz. Got 20000. SPPAS will work on a converted file.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/10_striscia_audio-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/10_striscia_audio-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ...  ... Align interval number 2
+ ...  ...  ... Align interval number 3
+ ...  ...  ... Align interval number 4
+ ...  ...  ... Align interval number 5
+ ...  ...  ... Align interval number 6
+ ...  ...  ... Align interval number 7
+ ...  ...  ... Align interval number 8
+ ...  ...  ... Align interval number 9
+ ...  ...  ... Align interval number 10
+ ...  ...  ... Align interval number 11
+ ...  ...  ... Align interval number 12
+ ...  ...  ... Align interval number 13
+ ...  ...  ... Align interval number 14
+ ...  ...  ... Align interval number 15
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/10_striscia_audio-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S3C3.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S3C3.wav: Admit. The frame rate of audio file is preferably 16000 Hz. Got 44100. SPPAS will work on a converted file.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S3C3-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S3C3-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S3C3-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/g01b3.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/g01b3.wav: Admit. The frame rate of audio file is preferably 16000 Hz. Got 44100. SPPAS will work on a converted file.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/g01b3-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/g01b3-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ...  ... Align interval number 2
+ ...  ...  ... Align interval number 3
+ ...  ...  ... Align interval number 4
+ ...  ...  ... Align interval number 5
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/g01b3-palign.TextGrid
+
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S1A1.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S1A1-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/10_striscia_audio.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/10_striscia_audio-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S3C3.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/S3C3-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/g01b3.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-IT/g01b3-merge.TextGrid
+
+-----------------------------------------------------------------------
+Result statistics:
+-----------------------------------------------------------------------
+  - Momel:  -1
+  - INTSINT:  -1
+  - IPUs Segmentation:  0
+  - Tokenization:  4
+  - Phonetization:  4
+  - Alignment:  4
+  - Syllabification:  -1
+  - Self-repetitions:  -1
+-----------------------------------------------------------------------

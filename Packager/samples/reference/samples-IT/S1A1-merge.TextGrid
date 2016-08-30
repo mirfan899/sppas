@@ -4,7 +4,7 @@ Object class = "TextGrid"
 xmin = 0.0
 xmax = 1.460687
 tiers? <exists>
-size = 12
+size = 8
 item []:
     item [1]:
         class = "IntervalTier"
@@ -41,7 +41,7 @@ item []:
         name = "PhonAlign"
         xmin = 0.000000
         xmax = 1.460687
-        intervals: size = 17
+        intervals: size = 16
         intervals [1]:
             xmin = 0.0
             xmax = 0.1
@@ -104,18 +104,14 @@ item []:
             text = "n"
         intervals [16]:
             xmin = 1.29
-            xmax = 1.4606
-            text = "a"
-        intervals [17]:
-            xmin = 1.4606
             xmax = 1.460687
-            text = ""
+            text = "a"
     item [5]:
         class = "IntervalTier"
         name = "TokensAlign"
         xmin = 0.000000
         xmax = 1.460687
-        intervals: size = 4
+        intervals: size = 3
         intervals [1]:
             xmin = 0.0
             xmax = 0.6
@@ -126,185 +122,21 @@ item []:
             text = "vede"
         intervals [3]:
             xmin = 0.86
-            xmax = 1.4606
-            text = "ladona"
-        intervals [4]:
-            xmin = 1.4606
             xmax = 1.460687
-            text = ""
+            text = "ladona"
     item [6]:
         class = "IntervalTier"
         name = "Activity"
         xmin = 0.000000
         xmax = 1.460687
-        intervals: size = 2
+        intervals: size = 1
         intervals [1]:
             xmin = 0.0
-            xmax = 1.4606
+            xmax = 1.460687
             text = "speech"
-        intervals [2]:
-            xmin = 1.4606
-            xmax = 1.460687
-            text = ""
     item [7]:
-        class = "IntervalTier"
-        name = "Syllables"
-        xmin = 0.000000
-        xmax = 1.460687
-        intervals: size = 9
-        intervals [1]:
-            xmin = 0.0
-            xmax = 0.19
-            text = "ra"
-        intervals [2]:
-            xmin = 0.19
-            xmax = 0.42
-            text = "le"
-        intervals [3]:
-            xmin = 0.42
-            xmax = 0.6
-            text = "go"
-        intervals [4]:
-            xmin = 0.6
-            xmax = 0.73
-            text = "ve"
-        intervals [5]:
-            xmin = 0.73
-            xmax = 0.86
-            text = "de"
-        intervals [6]:
-            xmin = 0.86
-            xmax = 1.01
-            text = "la"
-        intervals [7]:
-            xmin = 1.01
-            xmax = 1.25
-            text = "do"
-        intervals [8]:
-            xmin = 1.25
-            xmax = 1.4606
-            text = "na"
-        intervals [9]:
-            xmin = 1.4606
-            xmax = 1.460687
-            text = ""
-    item [8]:
-        class = "IntervalTier"
-        name = "Classes"
-        xmin = 0.000000
-        xmax = 1.460687
-        intervals: size = 9
-        intervals [1]:
-            xmin = 0.0
-            xmax = 0.19
-            text = "LV"
-        intervals [2]:
-            xmin = 0.19
-            xmax = 0.42
-            text = "LV"
-        intervals [3]:
-            xmin = 0.42
-            xmax = 0.6
-            text = "OV"
-        intervals [4]:
-            xmin = 0.6
-            xmax = 0.73
-            text = "FV"
-        intervals [5]:
-            xmin = 0.73
-            xmax = 0.86
-            text = "OV"
-        intervals [6]:
-            xmin = 0.86
-            xmax = 1.01
-            text = "LV"
-        intervals [7]:
-            xmin = 1.01
-            xmax = 1.25
-            text = "OV"
-        intervals [8]:
-            xmin = 1.25
-            xmax = 1.4606
-            text = "NV"
-        intervals [9]:
-            xmin = 1.4606
-            xmax = 1.460687
-            text = ""
-    item [9]:
-        class = "IntervalTier"
-        name = "Structures"
-        xmin = 0.000000
-        xmax = 1.460687
-        intervals: size = 9
-        intervals [1]:
-            xmin = 0.0
-            xmax = 0.19
-            text = "CV"
-        intervals [2]:
-            xmin = 0.19
-            xmax = 0.42
-            text = "CV"
-        intervals [3]:
-            xmin = 0.42
-            xmax = 0.6
-            text = "CV"
-        intervals [4]:
-            xmin = 0.6
-            xmax = 0.73
-            text = "CV"
-        intervals [5]:
-            xmin = 0.73
-            xmax = 0.86
-            text = "CV"
-        intervals [6]:
-            xmin = 0.86
-            xmax = 1.01
-            text = "CV"
-        intervals [7]:
-            xmin = 1.01
-            xmax = 1.25
-            text = "CV"
-        intervals [8]:
-            xmin = 1.25
-            xmax = 1.4606
-            text = "CV"
-        intervals [9]:
-            xmin = 1.4606
-            xmax = 1.460687
-            text = ""
-    item [10]:
         class = "TextTier"
-        name = "Momel"
-        xmin = 0.091678
-        xmax = 1.422899
-        intervals: size = 8
-        points [1]:
-            time = 0.0916782446
-            mark = "185"
-        points [2]:
-            time = 0.3214522498
-            mark = "257"
-        points [3]:
-            time = 0.5209380586
-            mark = "174"
-        points [4]:
-            time = 0.6881839271
-            mark = "192"
-        points [5]:
-            time = 0.8734597498
-            mark = "173"
-        points [6]:
-            time = 1.0613042017
-            mark = "186"
-        points [7]:
-            time = 1.2534422573
-            mark = "163"
-        points [8]:
-            time = 1.4228990079
-            mark = "171"
-    item [11]:
-        class = "TextTier"
-        name = "Intsint"
+        name = "INTSINT"
         xmin = 0.091678
         xmax = 1.422899
         intervals: size = 8
@@ -332,7 +164,7 @@ item []:
         points [8]:
             time = 1.4228990079
             mark = "S"
-    item [12]:
+    item [8]:
         class = "IntervalTier"
         name = "MetaInformation"
         xmin = 0.000000
@@ -341,32 +173,32 @@ item []:
         intervals [1]:
             xmin = 0.0
             xmax = 0.182585875
-            text = "license=GNU Public License, version 3"
+            text = "author=Brigitte Bigi"
         intervals [2]:
             xmin = 0.182585875
             xmax = 0.36517175
-            text = "version=1.7.9"
+            text = "contact=brigite.bigi@gmail.com"
         intervals [3]:
             xmin = 0.36517175
             xmax = 0.547757625
-            text = "copyright=Copyright (C) 2011-2016 Brigitte Bigi"
+            text = "program=SPPAS"
         intervals [4]:
             xmin = 0.547757625
             xmax = 0.7303435
-            text = "author=Brigitte Bigi"
+            text = "version=1.8.0"
         intervals [5]:
             xmin = 0.7303435
             xmax = 0.912929375
-            text = "url=http://www.sppas.org/"
+            text = "copyright=Copyright (C) 2011-2016 Brigitte Bigi"
         intervals [6]:
             xmin = 0.912929375
             xmax = 1.09551525
-            text = "contact=brigite.bigi@gmail.com"
+            text = "url=http://www.sppas.org/"
         intervals [7]:
             xmin = 1.09551525
             xmax = 1.278101125
-            text = "program=SPPAS"
+            text = "license=GNU Public License, version 3"
         intervals [8]:
             xmin = 1.278101125
             xmax = 1.460687
-            text = "date=2016-06-05"
+            text = "date=2016-08-30"

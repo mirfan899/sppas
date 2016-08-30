@@ -353,7 +353,7 @@ function tokenize {
     echo "ok"
 
     echo -n " ... inline tokenization (1): "
-    inline=`echo "This is my test number 1." | $BIN_DIR/tokenize.py -r $RESOURCES_DIR/vocab/eng.vocab`
+    inline=`echo "This is my test number 1." | $BIN_DIR/tokenize.py -r $RESOURCES_DIR/vocab/eng.vocab --quiet`
     if [ "$inline" == "this is my test number one" ]; then
         fct_echo_status 0
     else
@@ -361,7 +361,7 @@ function tokenize {
     fi
 
     echo -n " ... inline tokenization (2): "
-    inline=`echo "《干脆就把那部蒙人的闲法给废了拉倒！》RT @laoshipukong : 27日，全国人大常委会第三次审议侵权责任法草案，删除了有关医疗损害责任“举证倒置”的规定。" | $BIN_DIR/tokenize.py -r $RESOURCES_DIR/vocab/cmn.vocab`
+    inline=`echo "《干脆就把那部蒙人的闲法给废了拉倒！》RT @laoshipukong : 27日，全国人大常委会第三次审议侵权责任法草案，删除了有关医疗损害责任“举证倒置”的规定。" | $BIN_DIR/tokenize.py -r $RESOURCES_DIR/vocab/cmn.vocab --quiet`
     if [ "$inline" == "干脆 就 把 那 部 蒙 人 的 闲 法 给 废 了 拉倒 rt @ laoshipukong 二十七 日 全国人大常委会 第 三次 审议 侵权 责任 法 草案 删除 了 有关 医疗 损害 责任 举证 倒置 的 规定" ]; then
         fct_echo_status 0
     else
@@ -369,7 +369,7 @@ function tokenize {
     fi
 
     echo -n " ... tokenization of a file: "
-    inline=`$BIN_DIR/tokenize.py -r $RESOURCES_DIR/vocab/eng.vocab -i $SAMPLES_DIR/oriana1.TextGrid -o oriana1-token.TextGrid`
+    inline=`$BIN_DIR/tokenize.py -r $RESOURCES_DIR/vocab/eng.vocab -i $SAMPLES_DIR/oriana1.TextGrid -o oriana1-token.TextGrid --quiet`
     if [ -e oriana1-token.TextGrid ]; then
         rm oriana1-token.TextGrid
         fct_echo_status 0
@@ -400,15 +400,15 @@ function phonetize {
     echo "ok"
 
     echo -n " ... inline phonetization (1): "
-    inline=`echo "test num one" | $BIN_DIR/phonetize.py -r $RESOURCES_DIR/dict/eng.dict --nounk`;
-    if [ "$inline" == "t-E-s-t UNK w-V-n|h-w-V-n" ]; then
+    inline=`echo "test num one" | $BIN_DIR/phonetize.py -r $RESOURCES_DIR/dict/eng.dict --nounk --quiet`;
+    if [ "$inline" == "t-E-s-t <UNK> w-V-n|h-w-V-n" ]; then
           fct_echo_status 0
     else
         fct_echo_status 1
     fi
 
     echo -n " ... inline phonetization (2): "
-    inline=`echo "test num one" | $BIN_DIR/phonetize.py -r $RESOURCES_DIR/dict/eng.dict`;
+    inline=`echo "test num one" | $BIN_DIR/phonetize.py -r $RESOURCES_DIR/dict/eng.dict --quiet`;
     if [ "$inline" == "t-E-s-t n-V-m|n-u-m|n-u-@-m|E-n-V-m w-V-n|h-w-V-n" ]; then
           fct_echo_status 0
     else
@@ -416,8 +416,8 @@ function phonetize {
     fi
 
     echo -n " ... phonetization of a file: "
-    $BIN_DIR/tokenize.py -r $RESOURCES_DIR/vocab/eng.vocab -i $SAMPLES_DIR/oriana1.TextGrid -o $SAMPLES_DIR/oriana1-token.TextGrid;
-    inline=`$BIN_DIR/phonetize.py -r $RESOURCES_DIR/dict/eng.dict -i $SAMPLES_DIR/oriana1-token.TextGrid -o oriana1-phon.TextGrid`;
+    $BIN_DIR/tokenize.py -r $RESOURCES_DIR/vocab/eng.vocab -i $SAMPLES_DIR/oriana1.TextGrid -o $SAMPLES_DIR/oriana1-token.TextGrid --quiet;
+    inline=`$BIN_DIR/phonetize.py -r $RESOURCES_DIR/dict/eng.dict -i $SAMPLES_DIR/oriana1-token.TextGrid -o oriana1-phon.TextGrid --quiet`;
     if [ -e oriana1-phon.TextGrid ]; then
         rm oriana1-phon.TextGrid
         fct_echo_status 0
@@ -442,15 +442,15 @@ function alignment {
     fi
     echo "ok"
 
-    $BIN_DIR/tokenize.py -r $RESOURCES_DIR/vocab/eng.vocab -i $SAMPLES_DIR/oriana1.TextGrid -o $SAMPLES_DIR/oriana1-token.TextGrid;
-    $BIN_DIR/phonetize.py -r $RESOURCES_DIR/dict/eng.dict -i $SAMPLES_DIR/oriana1-token.TextGrid -o $SAMPLES_DIR/oriana1-phon.TextGrid;
+    $BIN_DIR/tokenize.py -r $RESOURCES_DIR/vocab/eng.vocab -i $SAMPLES_DIR/oriana1.TextGrid -o $SAMPLES_DIR/oriana1-token.TextGrid --quiet;
+    $BIN_DIR/phonetize.py -r $RESOURCES_DIR/dict/eng.dict -i $SAMPLES_DIR/oriana1-token.TextGrid -o $SAMPLES_DIR/oriana1-phon.TextGrid --quiet;
 
     echo -n " ... simply align phonemes with julius: "
     $BIN_DIR/alignment.py -w $SAMPLES_DIR/oriana1.WAV -r $RESOURCES_DIR/models/models-eng -i $SAMPLES_DIR/oriana1-phon.TextGrid -o oriana1-palign.TextGrid >> /dev/null &> /dev/null
     if [ -e oriana1-palign.TextGrid ]; then
         size=`cat oriana1-palign.TextGrid | head -n 7 | tail -n 1`
         rm oriana1-palign.TextGrid
-        if [ "$size" == "size = 1" ]; then
+        if [ "$size" == "size = 2" ]; then
             fct_echo_status 0
         else
             fct_echo_status 1
@@ -462,7 +462,7 @@ function alignment {
     echo -n " ... align phonemes and tokens with julius: "
     $BIN_DIR/alignment.py -w $SAMPLES_DIR/oriana1.WAV -r $RESOURCES_DIR/models/models-eng -i $SAMPLES_DIR/oriana1-phon.TextGrid -I $SAMPLES_DIR/oriana1-token.TextGrid -o oriana1-palign.TextGrid >> /dev/null &> /dev/null
     if [ -e oriana1-palign.TextGrid ]; then
-        size=`cat oriana1-palign.TextGrid | grep -c "^size = 3"`
+        size=`cat oriana1-palign.TextGrid | grep -c "^size = 4"`
         rm oriana1-palign.TextGrid
         if [ "$size" == "1" ]; then
             fct_echo_status 0
@@ -476,7 +476,7 @@ function alignment {
     echo -n " ... align phonemes and tokens with basic aligner: "
     $BIN_DIR/alignment.py -w $SAMPLES_DIR/oriana1.WAV -r $RESOURCES_DIR/models/models-eng -i $SAMPLES_DIR/oriana1-phon.TextGrid -I $SAMPLES_DIR/oriana1-token.TextGrid -o oriana1-palign.TextGrid -a basic >> /dev/null &> /dev/null
     if [ -e oriana1-palign.TextGrid ]; then
-        size=`cat oriana1-palign.TextGrid | grep -c "^size = 3"`
+        size=`cat oriana1-palign.TextGrid | grep -c "^size = 4"`
         rm oriana1-palign.TextGrid
         if [ "$size" == "1" ]; then
             fct_echo_status 0
@@ -617,12 +617,25 @@ function momelintsint {
     fi
 
     echo -n " ... Momel and INTSINT, output file: "
-    inline=`$BIN_DIR/momel-intsint.py -i $SAMPLES_DIR/F_F_B003-P9.hz -o F_F_B003-P9-momel.TextGrid | wc -l`
+    $BIN_DIR/momel-intsint.py -i $SAMPLES_DIR/F_F_B003-P9.hz -o F_F_B003-P9-momel.TextGrid -O F_F_B003-P9-intsint.TextGrid 
     if [ -e F_F_B003-P9-momel.TextGrid ]; then
-        size=`cat F_F_B003-P9-momel.TextGrid | grep -c "^size = 2"`
+        
+        size=`cat F_F_B003-P9-momel.TextGrid | grep -c "^size = 1"`
         rm F_F_B003-P9-momel.TextGrid
         if [ "$size" == "1" ]; then
             fct_echo_status 0
+        else
+            fct_echo_status 1
+        fi
+        
+        if [ -e F_F_B003-P9-intsint.TextGrid ]; then
+            size=`cat F_F_B003-P9-intsint.TextGrid | grep -c "^size = 1"`
+            rm F_F_B003-P9-intsint.TextGrid
+            if [ "$size" == "1" ]; then
+                fct_echo_status 0
+            else
+                fct_echo_status 1
+            fi
         else
             fct_echo_status 1
         fi

@@ -66,10 +66,10 @@ item []:
             text = "ka"
         intervals [14]:
             xmin = 2.17
-            xmax = 2.26
-            text = "lez"
+            xmax = 2.25
+            text = "le"
         intervals [15]:
-            xmin = 2.26
+            xmin = 2.25
             xmax = 2.39
             text = "pReu"
         intervals [16]:
@@ -256,10 +256,10 @@ item []:
             text = "OV"
         intervals [14]:
             xmin = 2.17
-            xmax = 2.26
-            text = "LVF"
+            xmax = 2.25
+            text = "LV"
         intervals [15]:
-            xmin = 2.26
+            xmin = 2.25
             xmax = 2.39
             text = "OLV"
         intervals [16]:
@@ -446,10 +446,10 @@ item []:
             text = "CV"
         intervals [14]:
             xmin = 2.17
-            xmax = 2.26
-            text = "CVC"
+            xmax = 2.25
+            text = "CV"
         intervals [15]:
-            xmin = 2.26
+            xmin = 2.25
             xmax = 2.39
             text = "CCV"
         intervals [16]:

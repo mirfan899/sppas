@@ -1,0 +1,876 @@
+-----------------------------------------------------------------------
+
+SPPAS - Version 1.8.0
+Copyright (C) 2011-2016 Brigitte Bigi
+Web site: http://www.sppas.org/
+Contact: Brigitte Bigi(brigite.bigi@gmail.com)
+
+-----------------------------------------------------------------------
+Date: 2016-08-30 14:40:35.223996
+Input languages: 
+  - Momel: 
+  - INTSINT: 
+  - IPUs Segmentation: 
+  - Tokenization: fra
+  - Phonetization: fra
+  - Alignment: fra
+  - Syllabification: fra
+  - Self-repetitions: fra
+Input selection: 
+  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR
+-----------------------------------------------------------------------
+  - Momel:  disabled
+  - INTSINT:  disabled
+  - IPUs Segmentation:  disabled
+  - Tokenization:  activated
+  - Phonetization:  activated
+  - Alignment:  activated
+  - Syllabification:  activated
+  - Self-repetitions:  disabled
+-----------------------------------------------------------------------
+
+Extension: .TextGrid
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+                       Tokenization
+-----------------------------------------------------------------------
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AC track_0379.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AC track_0379.TextGrid: Admit. File name should not contain whitespace.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AC track_0379-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_C006-P6.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_C006-P6.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_C006-P6-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0968.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0968.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0968-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/NH_track_636.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/NH_track_636.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/NH_track_636-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/SR_track_631.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/SR_track_631.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/SR_track_631-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/BX_track_0451.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/BX_track_0451.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/BX_track_0451-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MG_track_0702.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MG_track_0702.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MG_track_0702-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/ML_track_0597.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/ML_track_0597.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/ML_track_0597-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MB_track_0674.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MB_track_0674.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MB_track_0674-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/IM_track_0767.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/IM_track_0767.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/IM_track_0767-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/LJ_track_0431.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/LJ_track_0431.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/LJ_track_0431-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P9.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P9.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P9-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AG_track_0460.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AG_track_0460.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AG_track_0460-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/YM_track_0182.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/YM_track_0182.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/YM_track_0182-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P8.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P8.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P8-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/EB_track_0641.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/EB_track_0641.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/EB_track_0641-token.TextGrid
+
+ ... Tokenization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0711.wav
+ ...  ... Options: 
+ ...  ...  ...  - std: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0711.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0711-token.TextGrid
+
+-----------------------------------------------------------------------
+                       Phonetization
+-----------------------------------------------------------------------
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AC track_0379.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AC track_0379-token.TextGrid: Admit. File name should not contain whitespace.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AC track_0379-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_C006-P6.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_C006-P6-token.TextGrid: Valid.
+ ...  ...  ... [ WARNING ] tre- is missing of the dictionary, and was automatically phonetized as: t-R-eu
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_C006-P6-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0968.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0968-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0968-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/NH_track_636.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/NH_track_636-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/NH_track_636-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/SR_track_631.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/SR_track_631-token.TextGrid: Valid.
+ ...  ...  ... [ WARNING ] p- is missing of the dictionary, and was automatically phonetized as: p|p-e|p-E|p-a-Z
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/SR_track_631-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/BX_track_0451.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/BX_track_0451-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/BX_track_0451-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MG_track_0702.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MG_track_0702-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MG_track_0702-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/ML_track_0597.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/ML_track_0597-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/ML_track_0597-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MB_track_0674.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MB_track_0674-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MB_track_0674-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/IM_track_0767.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/IM_track_0767-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/IM_track_0767-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/LJ_track_0431.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/LJ_track_0431-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/LJ_track_0431-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P9.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P9-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P9-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AG_track_0460.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AG_track_0460-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AG_track_0460-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/YM_track_0182.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/YM_track_0182-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/YM_track_0182-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P8.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P8-token.TextGrid: Valid.
+ ...  ...  ... [ WARNING ] chort- is missing of the dictionary, and was automatically phonetized as: S-o-R-t
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P8-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/EB_track_0641.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/EB_track_0641-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/EB_track_0641-phon.TextGrid
+
+ ... Phonetization of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0711.wav
+ ...  ... Options: 
+ ...  ...  ...  - phonunk: True
+ ...  ...  ...  - usestdtokens: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0711-token.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0711-phon.TextGrid
+
+-----------------------------------------------------------------------
+                       Alignment
+-----------------------------------------------------------------------
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AC track_0379.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AC track_0379.wav: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AC track_0379-phon.TextGrid: Admit. File name should not contain whitespace.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AC track_0379-token.TextGrid: Admit. File name should not contain whitespace.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AC track_0379-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_C006-P6.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_C006-P6.wav: Admit. The frame rate of audio file is preferably 16000 Hz. Got 44100. SPPAS will work on a converted file.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_C006-P6-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_C006-P6-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ...  ... Align interval number 2
+ ...  ...  ... Align interval number 3
+ ...  ...  ... Align interval number 4
+ ...  ...  ... Align interval number 5
+ ...  ...  ... Align interval number 6
+ ...  ...  ... Align interval number 7
+ ...  ...  ... Align interval number 8
+ ...  ...  ... Align interval number 9
+ ...  ...  ... Align interval number 10
+ ...  ...  ... Align interval number 11
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_C006-P6-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0968.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0968.wav: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0968-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0968-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0968-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/NH_track_636.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/NH_track_636.wav: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/NH_track_636-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/NH_track_636-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/NH_track_636-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/SR_track_631.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/SR_track_631.wav: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/SR_track_631-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/SR_track_631-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/SR_track_631-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/BX_track_0451.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/BX_track_0451.wav: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/BX_track_0451-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/BX_track_0451-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/BX_track_0451-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MG_track_0702.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MG_track_0702.wav: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MG_track_0702-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MG_track_0702-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MG_track_0702-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/ML_track_0597.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/ML_track_0597.wav: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/ML_track_0597-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/ML_track_0597-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/ML_track_0597-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MB_track_0674.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MB_track_0674.wav: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MB_track_0674-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MB_track_0674-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MB_track_0674-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/IM_track_0767.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/IM_track_0767.wav: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/IM_track_0767-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/IM_track_0767-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/IM_track_0767-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/LJ_track_0431.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/LJ_track_0431.wav: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/LJ_track_0431-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/LJ_track_0431-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/LJ_track_0431-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P9.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P9.wav: Admit. The frame rate of audio file is preferably 16000 Hz. Got 44100. SPPAS will work on a converted file.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P9-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P9-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ...  ... Align interval number 2
+ ...  ...  ... Align interval number 3
+ ...  ...  ... Align interval number 4
+ ...  ...  ... Align interval number 5
+ ...  ...  ... Align interval number 6
+ ...  ...  ... Align interval number 7
+ ...  ...  ... Align interval number 8
+ ...  ...  ... Align interval number 9
+ ...  ...  ... Align interval number 10
+ ...  ...  ... Align interval number 11
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P9-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AG_track_0460.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AG_track_0460.wav: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AG_track_0460-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AG_track_0460-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AG_track_0460-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/YM_track_0182.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/YM_track_0182.wav: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/YM_track_0182-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/YM_track_0182-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/YM_track_0182-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P8.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P8.wav: Admit. The frame rate of audio file is preferably 16000 Hz. Got 44100. SPPAS will work on a converted file.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P8-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P8-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ...  ... Align interval number 2
+ ...  ...  ... Align interval number 3
+ ...  ...  ... Align interval number 4
+ ...  ...  ... Align interval number 5
+ ...  ...  ... Align interval number 6
+ ...  ...  ... Align interval number 7
+ ...  ...  ... Align interval number 8
+ ...  ...  ... Align interval number 9
+ ...  ...  ... Align interval number 10
+ ...  ...  ... Align interval number 11
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P8-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/EB_track_0641.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/EB_track_0641.wav: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/EB_track_0641-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/EB_track_0641-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/EB_track_0641-palign.TextGrid
+
+ ... Alignment of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0711.wav
+ ...  ... Options: 
+ ...  ...  ...  - infersp: False
+ ...  ...  ...  - basic: False
+ ...  ...  ...  - aligner: julius
+ ...  ...  ...  - clean: True
+ ...  ...  ...  - activity: True
+ ...  ...  ...  - phntok: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0711.wav: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0711-phon.TextGrid: Valid.
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0711-token.TextGrid: Valid.
+ ...  ... Split into intervals: 
+ ...  ... Align each interval: 
+ ...  ...  ... Align interval number 1
+ ...  ... Merge interval's alignment:
+ ...  ...  ... Save automatic alignment: 
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0711-palign.TextGrid
+
+-----------------------------------------------------------------------
+                       Syllabification
+-----------------------------------------------------------------------
+ ... Syllabification of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AC track_0379.wav
+ ...  ... Options: 
+ ...  ...  ...  - usesphons: True
+ ...  ...  ...  - tiername: TokensAlign
+ ...  ...  ...  - usesintervals: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AC track_0379-palign.TextGrid: Admit. File name should not contain whitespace.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AC track_0379-salign.TextGrid
+
+ ... Syllabification of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_C006-P6.wav
+ ...  ... Options: 
+ ...  ...  ...  - usesphons: True
+ ...  ...  ...  - tiername: TokensAlign
+ ...  ...  ...  - usesintervals: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_C006-P6-palign.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_C006-P6-salign.TextGrid
+
+ ... Syllabification of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0968.wav
+ ...  ... Options: 
+ ...  ...  ...  - usesphons: True
+ ...  ...  ...  - tiername: TokensAlign
+ ...  ...  ...  - usesintervals: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0968-palign.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0968-salign.TextGrid
+
+ ... Syllabification of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/NH_track_636.wav
+ ...  ... Options: 
+ ...  ...  ...  - usesphons: True
+ ...  ...  ...  - tiername: TokensAlign
+ ...  ...  ...  - usesintervals: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/NH_track_636-palign.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/NH_track_636-salign.TextGrid
+
+ ... Syllabification of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/SR_track_631.wav
+ ...  ... Options: 
+ ...  ...  ...  - usesphons: True
+ ...  ...  ...  - tiername: TokensAlign
+ ...  ...  ...  - usesintervals: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/SR_track_631-palign.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/SR_track_631-salign.TextGrid
+
+ ... Syllabification of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/BX_track_0451.wav
+ ...  ... Options: 
+ ...  ...  ...  - usesphons: True
+ ...  ...  ...  - tiername: TokensAlign
+ ...  ...  ...  - usesintervals: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/BX_track_0451-palign.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/BX_track_0451-salign.TextGrid
+
+ ... Syllabification of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MG_track_0702.wav
+ ...  ... Options: 
+ ...  ...  ...  - usesphons: True
+ ...  ...  ...  - tiername: TokensAlign
+ ...  ...  ...  - usesintervals: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MG_track_0702-palign.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MG_track_0702-salign.TextGrid
+
+ ... Syllabification of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/ML_track_0597.wav
+ ...  ... Options: 
+ ...  ...  ...  - usesphons: True
+ ...  ...  ...  - tiername: TokensAlign
+ ...  ...  ...  - usesintervals: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/ML_track_0597-palign.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/ML_track_0597-salign.TextGrid
+
+ ... Syllabification of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MB_track_0674.wav
+ ...  ... Options: 
+ ...  ...  ...  - usesphons: True
+ ...  ...  ...  - tiername: TokensAlign
+ ...  ...  ...  - usesintervals: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MB_track_0674-palign.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MB_track_0674-salign.TextGrid
+
+ ... Syllabification of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/IM_track_0767.wav
+ ...  ... Options: 
+ ...  ...  ...  - usesphons: True
+ ...  ...  ...  - tiername: TokensAlign
+ ...  ...  ...  - usesintervals: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/IM_track_0767-palign.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/IM_track_0767-salign.TextGrid
+
+ ... Syllabification of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/LJ_track_0431.wav
+ ...  ... Options: 
+ ...  ...  ...  - usesphons: True
+ ...  ...  ...  - tiername: TokensAlign
+ ...  ...  ...  - usesintervals: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/LJ_track_0431-palign.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/LJ_track_0431-salign.TextGrid
+
+ ... Syllabification of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P9.wav
+ ...  ... Options: 
+ ...  ...  ...  - usesphons: True
+ ...  ...  ...  - tiername: TokensAlign
+ ...  ...  ...  - usesintervals: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P9-palign.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P9-salign.TextGrid
+
+ ... Syllabification of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AG_track_0460.wav
+ ...  ... Options: 
+ ...  ...  ...  - usesphons: True
+ ...  ...  ...  - tiername: TokensAlign
+ ...  ...  ...  - usesintervals: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AG_track_0460-palign.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AG_track_0460-salign.TextGrid
+
+ ... Syllabification of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/YM_track_0182.wav
+ ...  ... Options: 
+ ...  ...  ...  - usesphons: True
+ ...  ...  ...  - tiername: TokensAlign
+ ...  ...  ...  - usesintervals: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/YM_track_0182-palign.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/YM_track_0182-salign.TextGrid
+
+ ... Syllabification of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P8.wav
+ ...  ... Options: 
+ ...  ...  ...  - usesphons: True
+ ...  ...  ...  - tiername: TokensAlign
+ ...  ...  ...  - usesintervals: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P8-palign.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P8-salign.TextGrid
+
+ ... Syllabification of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/EB_track_0641.wav
+ ...  ... Options: 
+ ...  ...  ...  - usesphons: True
+ ...  ...  ...  - tiername: TokensAlign
+ ...  ...  ...  - usesintervals: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/EB_track_0641-palign.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/EB_track_0641-salign.TextGrid
+
+ ... Syllabification of file /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0711.wav
+ ...  ... Options: 
+ ...  ...  ...  - usesphons: True
+ ...  ...  ...  - tiername: TokensAlign
+ ...  ...  ...  - usesintervals: False
+ ...  ... Diagnosis: 
+ ...  ...  ...  - /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0711-palign.TextGrid: Valid.
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0711-salign.TextGrid
+
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AC track_0379.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AC track_0379-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_C006-P6.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_C006-P6-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0968.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0968-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/NH_track_636.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/NH_track_636-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/SR_track_631.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/SR_track_631-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/BX_track_0451.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/BX_track_0451-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MG_track_0702.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MG_track_0702-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/ML_track_0597.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/ML_track_0597-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MB_track_0674.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/MB_track_0674-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/IM_track_0767.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/IM_track_0767-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/LJ_track_0431.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/LJ_track_0431-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P9.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P9-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AG_track_0460.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AG_track_0460-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/YM_track_0182.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/YM_track_0182-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P8.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/F_F_B003-P8-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/EB_track_0641.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/EB_track_0641-merge.TextGrid
+
+ ... Merge outputs /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0711.wav
+ ...  ... [    OK   ] /home/bigi/Workspace/sppas/Packager/samples/hypothesis/samples-FR/AP_track_0711-merge.TextGrid
+
+-----------------------------------------------------------------------
+Result statistics:
+-----------------------------------------------------------------------
+  - Momel:  -1
+  - INTSINT:  -1
+  - IPUs Segmentation:  -1
+  - Tokenization:  17
+  - Phonetization:  17
+  - Alignment:  17
+  - Syllabification:  17
+  - Self-repetitions:  -1
+-----------------------------------------------------------------------
