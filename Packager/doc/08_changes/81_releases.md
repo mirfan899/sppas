@@ -1016,3 +1016,28 @@ Automatic annotations:
         - Package code cleaning and re-organization.
 
 
+#### SPPAS-1.8.0 (2016-30-08)
+
+GUI:
+
+    - Design fully revisited and tested under Linux Mint, Windows 10 and MacOS 10.9
+
+Development:
+
+    - SLM package created: can estimate a statistical language model (without smooth method)
+
+Automatic annotations:
+
+    - Add a diagnosis of files
+    - Tokenize extended: aplied also on alternative labels
+    - Phonetize extended: aplied also on alternative labels
+    - Alignment code cleaning and partly re-implemented
+    - Add "Chunk alignment"
+    - Use of a .ini file to configure each annotation instead of a sppas.conf file
+
+
+
+## the Modern period
+
+... it will be the case when SPPAS will be based on Python 3.x which is not currently the plan!
+
