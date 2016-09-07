@@ -1,0 +1,107 @@
+# SPPAS: Getting started
+
+## Overview
+
+* SPPAS is a scientific computer software package written and maintained
+by Brigitte Bigi of the Laboratoire Parole et Langage, in Aix-en-Provence,
+France.
+
+* Operating systems:
+
+    -![](./etc/logos/systemes.jpg)
+
+* GNU Public License, version 3
+
+--------------
+
+## How to cite SPPAS
+
+* By using SPPAS, you agree to cite any of the references in your publications
+
+> *Brigitte Bigi (2015).*
+> **SPPAS - Multi-lingual Approaches to the Automatic Annotation of Speech**.
+> In "the Phonetician", International Society of Phonetic Sciences,
+> Volume 111-112, Pages 55-69.
+
+* Other references are available in the documentation.
+
+--------------
+
+## Download, install and update
+
+* Web site: <http://www.sppas.org/>
+
+    1. Follow *carefully* instructions of the installation page
+    2. Download the last package
+    3. Unzip in a directory of your computer
+
+* Update SPPAS regularly:
+
+    1. Put the old directory into the Trash
+    2. Download and unpack the new package
+
+
+----------------------------------------------------------------------
+
+## The SPPAS directory
+
+![SPPAS Package content](./etc/screenshots/explorer-sppas-folder.png)
+
+--------------
+
+### The SPPAS directory content (1):
+
+- the `README.txt` file
+- the `documentation` folder contains:
+    - the printable version of the documentation
+    - the printable version of the main reference
+
+--------------
+
+### The SPPAS directory content (2):
+
+- the `samples` folder contains data of various languages to test SPPAS
+- the `resources` folder content is used by automatic annotations (lexicons, dictionaries, ...)
+- the `sppas` folder contains the program itself
+- the files `sppas.bat` and `sppas.command` to execute the Graphical User Interface of SPPAS
+
+----------------------------------------------------------------------
+
+
+## Usages: GUI, CLI or Python Scripts
+
+* Graphical User Interface - GUI
+* Command-Line User Interface - CLI
+* Application Programming Interface - API
+
+--------------
+
+## Executing the GUI
+
+* Open the file explorer of your system
+
+* Go to the SPPAS folder location
+
+![SPPAS Package content](./etc/screenshots/explorer-sppas-folder.png)
+
+* Windows:
+    - Doucle-click on the `sppas.bat` file
+
+* MacOS / Linux:
+    - Double-click on the `sppas.command` file
+
+--------------
+
+### GUI Usage (2)
+
+* Click on the 'Add files' button
+
+* Explore the `samples` folder and choose some audio files
+
+* All files with the same name as the audio files will be added into the list
+
+* Click (and/or ctrl+click) on some files in this list
+
+* Choose what you want to do with your selection (a component, automatic annotations, plugin)
+
+
