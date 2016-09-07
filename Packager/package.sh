@@ -54,6 +54,7 @@ PROGRAM_COPYRIGHT=$(grep -i copyright: $PROGRAM_DIR/README.txt | awk -F":" '{pri
 BIN_DIR="bin"
 TESTS_DIR="tests"
 DOC_DIR="doc"
+TUTO_DIR="tuto"
 ETC_DIR="etc"
 SAMPLES_DIR="samples"
 WEB_DIR="web"
@@ -502,21 +503,30 @@ function fct_get_md_idx {
 
 # Return the list of sub-folders of the documentation
 function fct_get_docfolders {
-    local folders="`cat $DOC_DIR/markdown.idx`"
+    local folders="`cat $1/markdown.idx`"
     echo $folders
 }
 
 
 # Return a string indicating the list of files for the documentation
+# Parameters:
+# - $1: the directory with the documentation
 function fct_get_all_md {
-    local folders=$(fct_get_docfolders)
-    local files="$DOC_DIR/header.md"
+    # take a look if an header is existing (the title/author/date of the doc)
+    if [ -e "$1/header.md" ] ; then
+        local files="$1/header.md";
+    else
+        local files=""
+    fi
+    # get the list of all indexed folders in the documentation directory
+    local folders=$(fct_get_docfolders $1)
+    # get all indexed files of each folder
     for folder in $folders;
     do
         files="$files $(fct_get_md_idx $folder)"
     done
 
-    # return the list of files
+    # return the list of files we just created
     echo $files
 }
 
@@ -550,8 +560,8 @@ function fct_sppas_doc {
     pandoc -N --template=$DOC_DIR/mytemplate.tex --variable toc-depth=2 -V geometry:a4paper -V geometry:"top=3cm, bottom=3cm, left=3cm, right=2.5cm" --variable documentclass="report" --variable classoption="twoside, openright" --variable mainfont="FreeSerif" --variable sansfont="FreeSans" --variable monofont="FreeMono" --variable fontsize=11pt --variable version="$PROGRAM_VERSION" --variable frontpage="`pwd`/doc/frontpage.pdf" $files --latex-engine=xelatex --toc -o $PROGRAM_DIR/documentation/Documentation.pdf
     cp $PROGRAM_DIR/documentation/Documentation.pdf $WEB_DIR/doc/Documentation.pdf
 
-    echo ' SPPAS for dummies, web version';
-    pandoc -s --mathjax -t dzslides --css $ETC_DIR/styles/dummies.css --slide-level=2 -H $DOC_DIR/include-scripts.txt $DOC_DIR/SPPAS-for-dummies.md -o $WEB_DIR/SPPAS-for-dummies.html
+    echo ' SPPAS for dummies for the web';
+    pandoc -s --mathjax -t dzslides --css $ETC_DIR/styles/dummies.css --slide-level=2 -H $ETC_DIR/scripts/include-scripts.txt $TUTO_DIR/SPPAS-for-dummies.md -o $WEB_DIR/SPPAS-for-dummies.html
 
     # Package: erase old then copy new
     rm -rf $WEB_DIR/$ETC_DIR
