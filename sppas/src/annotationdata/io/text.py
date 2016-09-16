@@ -73,6 +73,7 @@ class RawText(Transcription):
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
     @summary: Represents a simple text file.
+
     """
 
     @staticmethod
@@ -86,6 +87,7 @@ class RawText(Transcription):
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
         Creates a new Transcription instance.
+
         """
         Transcription.__init__(self, name, mintime, maxtime)
 
@@ -93,57 +95,90 @@ class RawText(Transcription):
 
     @staticmethod
     def __read_annotation(phrase, number):
+        # Remark: here we use FramePoint() as a "rank" function
         return Annotation(FramePoint(number), Label(phrase))
+
+    # ------------------------------------------------------------------------
+
+    def read_raw(self, lines):
+        """
+        Read a raw text.
+        Each CR/LF is a unit separator.
+        Each # is a unit separator, added as a silence mark.
+
+        @param filename (String) is the input file name.
+
+        """
+        tier = self.NewTier('RawTranscription')
+
+        n = 1
+        for line in lines:
+            line = line.strip()
+            # we ought not to have to remove the BOM
+            # line.lstrip(unicode(codecs.BOM_UTF8, "utf8"))
+
+            if line.find("#") > -1:
+
+                phrases = map(lambda s: s.strip(), split('(#)', line))
+
+                for phrase in phrases:  # keep '#' in the tab
+                    if len(phrase) > 0:
+                        tier.Append(RawText.__read_annotation(phrase, n))
+                        n += 1
+
+            elif len(line) > 0:
+                tier.Append(RawText.__read_annotation(line, n))
+                n += 1
 
     # ------------------------------------------------------------------------
 
     def read(self, filename):
         """
-        Read a raw text.
-        Each CR/LF is a unit separator (not added in the Transcription()).
-        Each # is also a unit separator (added in the Transcription()).
+        Read a text, either a raw text or a tab-delimited text.
+
+        @param filename (String) is the input file name.
+
         """
         # Remark: here we use FramePoint() as a "rank" function
         with codecs.open(filename, 'r', 'utf-8') as fp:
+            lines = fp.readlines()
 
-            tier = self.NewTier('RawTranscription')
+        # Tab-delimited??
+        tdf = True
+        for line in lines:
+            tab = line.split('\t')
+            if len(tab) != 3:
+                tdf = False
 
-            n = 1
-            for line in fp:
-                line = line.strip()
-                # we ought not to have to remove the BOM
-                # line.lstrip(unicode(codecs.BOM_UTF8, "utf8"))
+        if tdf is False:
+            self.read_raw(lines)
 
-                if line.find("#") > -1:
+        else:
+            trs = CSV()
+            rows = []
+            for line in lines:
+                row = ["Transcription"] + line.split("\t")
+                rows.append( row )
+            trs.read_rows(rows)
+            self.Set( [t for t in trs] )
 
-                    phrases = map(lambda s: s.strip(), split('(#)', line))
-
-                    for phrase in phrases:  # keep '#' in the tab
-                        if len(phrase) > 0:
-                            tier.Append(RawText.__read_annotation(phrase, n))
-                            n += 1
-
-                elif len(line) > 0:
-                    tier.Append(RawText.__read_annotation(line, n))
-                    n += 1
-
-    # End read
     # ------------------------------------------------------------------------
 
     def write(self, filename):
         """
         Write an ascii file, as txt file.
-        @param filename: (String) is the output file name, ending with ".txt"
+
+        @param filename (String) is the output file name, ending with ".txt"
+
         """
         with codecs.open(filename, 'w', 'utf-8', buffering=8096) as fp:
             if self.GetSize() != 1:
                 raise Exception(
-                    "Cannot write a multi tier annotation to a txt.")
+                    "Cannot write a multi-tier annotation to a txt file.")
 
             for annotation in self[0]:
                 fp.write(annotation.GetLabel().GetValue() + '\n')
 
-    # End write
     # ------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
@@ -154,6 +189,7 @@ class CSV(Transcription):
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
     @summary: Represents a simple CSV file with 4 columns.
+
     """
 
     @staticmethod
@@ -169,7 +205,6 @@ class CSV(Transcription):
 
         return detected
 
-    # End detect
     # ------------------------------------------------------------------------
 
     class UnicodeReader:
@@ -219,8 +254,8 @@ class CSV(Transcription):
         """
         A CSV writer which will write rows to CSV file "f",
         which is encoded in the given encoding.
-        """
 
+        """
         def __init__(self, f, dialect=csv.excel, encoding="utf-8", **kwds):
             # Redirect output to a queue
             self.queue = cStringIO.StringIO()
@@ -250,8 +285,50 @@ class CSV(Transcription):
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
         Creates a new CSV Transcription instance.
+
         """
         super(CSV, self).__init__(name, mintime, maxtime)
+
+    # ------------------------------------------------------------------------
+
+    def read_rows(self, lines):
+        tier = None
+
+        for row in lines:
+            if len(row) != 4:
+                raise Exception('Invalid row: %r. Got %d columns.' % (row,len(row)))
+
+            name, begin, end, label = row
+
+            # The following does not suppose that the file is sorted by tiers
+            tier = self.Find(name)
+            if tier is None:
+                tier = self.NewTier(name)
+
+            hasBegin = len(begin.strip()) > 0
+            hasEnd = len(end.strip()) > 0
+
+            if hasBegin and hasEnd:
+                b = float(begin)
+                e = float(end)
+                if b == e:
+                    time = TimePoint(b)
+                else:
+                    time = TimeInterval(TimePoint(b),
+                                        TimePoint(e))
+            elif hasBegin:
+                time = TimePoint(float(begin))
+
+            elif hasEnd:
+                time = TimePoint(float(end))
+
+            else:
+                raise Exception('No valid TimePoint in row: %r' % row)
+
+            tier.Add(Annotation(time, Label(label)))
+
+        self.SetMinTime(0.)
+        self.SetMaxTime(self.GetEnd())
 
     # ------------------------------------------------------------------------
 
@@ -267,51 +344,19 @@ class CSV(Transcription):
                           will be filled with a non-labelled annotation
 
         """
-
         with codecs.open(filename, "r", 'utf-8-sig') as fp:
 
             reader = CSV.UnicodeReader(fp)
-            tier = None
+            self.read_rows(reader)
 
-            for row in reader:
-                if len(row) != 4:
-                    raise Exception('Invalid row in CSV file: %r. Expected 4 columns, got %d!' % (row,len(row)))
-
-                name, begin, end, label = row
-
-                # The following does not suppose that the file is sorted by tiers
-                tier = self.Find(name)
-                if tier is None:
-                    tier = self.NewTier(name)
-
-                hasBegin = len(begin.strip()) > 0
-                hasEnd = len(end.strip()) > 0
-
-                if hasBegin and hasEnd:
-                    time = TimeInterval(TimePoint(float(begin)),
-                                        TimePoint(float(end)))
-                elif hasBegin:
-                    time = TimePoint(float(begin))
-
-                elif hasEnd:
-                    time = TimePoint(float(end))
-
-                else:
-                    raise Exception('No valid timepoint in CSV file row: %r'
-                                    % row)
-
-                tier.Add(Annotation(time, Label(label)))
-
-        self.SetMinTime(0.)
-        self.SetMaxTime(self.GetEnd())
-
-    # End read
     # ------------------------------------------------------------------------
 
     def write(self, filename):
         """
         Write a csv file.
+
         @param filename: is the output file name, ending with ".csv"
+
         """
         with codecs.open(filename, 'w', 'utf-8-sig', buffering=8096) as fp:
 
@@ -340,5 +385,4 @@ class CSV(Transcription):
                     row = [name, begin, end, label]
                     writer.writerow(row)
 
-    # End write
     # ------------------------------------------------------------------------

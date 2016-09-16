@@ -45,6 +45,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 import codecs
 import re
+import logging
 
 from utils import merge_overlapping_annotations
 from utils import fill_gaps
@@ -322,7 +323,7 @@ class TextGrid(Transcription):
 
         if tier.IsTimeInterval() is False and tier.IsTimePoint() is False:
             for ann in tier:
-                print ann
+                logging.debug('%s'% ann)
             raise IOError('Unsupported tier type. Praat textgrid files only support Time Intervals and Time Points.')
 
         if tier.IsTimeInterval():

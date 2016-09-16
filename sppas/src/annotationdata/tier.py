@@ -332,7 +332,7 @@ class Tier( MetaObject ):
         if self.IsEmpty():
             return TimePoint(0)
 
-        if self.IsPoint() is True:
+        if self.__ann[0].GetLocation().IsPoint() is True:
             return self.__ann[0].GetLocation().GetPoint()
 
         # Interval of Disjoint
@@ -348,7 +348,7 @@ class Tier( MetaObject ):
         if self.IsEmpty():
             return TimePoint(0)
 
-        if self.IsPoint() is True:
+        if self.__ann[-1].GetLocation().IsPoint() is True:
             return self.__ann[-1].GetLocation().GetPoint()
 
         # Interval or Disjoint
