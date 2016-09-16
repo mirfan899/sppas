@@ -74,6 +74,7 @@ from wxgui.sp_icons import MIME_SUBTITLES
 from wxgui.sp_icons import MIME_ANVIL
 from wxgui.sp_icons import MIME_ANTX
 from wxgui.sp_icons import MIME_XTRANS
+from wxgui.sp_icons import MIME_AUP
 
 from wxgui.sp_icons import ADD_FILE_ICON
 from wxgui.sp_icons import ADD_DIR_ICON
@@ -173,6 +174,7 @@ class FiletreePanel( wx.Panel ):
         self.anvilfileidx = il.Add(spBitmap(MIME_ANVIL, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
         self.antxfileidx  = il.Add(spBitmap(MIME_ANTX, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
         self.xtransfileidx = il.Add(spBitmap(MIME_XTRANS, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
+        self.aupfileidx    = il.Add(spBitmap(MIME_AUP, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
 
         t.AssignImageList(il)
 
@@ -368,7 +370,6 @@ class FiletreePanel( wx.Panel ):
 
     # -----------------------------------------------------------------------
 
-
     def RefreshTree(self, filelist=None):
         """
         Refresh the tree, and optionally add new files.
@@ -381,9 +382,7 @@ class FiletreePanel( wx.Panel ):
         for f in filelist:
             self._append_file(f)
 
-    # End RefreshTree
     # -----------------------------------------------------------------------
-
 
     def GetSelected(self, extension=""):
         """
@@ -424,8 +423,6 @@ class FiletreePanel( wx.Panel ):
         return sel
 
     # -----------------------------------------------------------------------
-
-
 #     def get_filestree(self):
 #         return self._filestree
 
@@ -625,6 +622,11 @@ class FiletreePanel( wx.Panel ):
             child = self._filestree.AppendItem(parent, son)
             self._filestree.SetPyData(child, None)
             self._filestree.SetItemImage(child, self.xtransfileidx, wx.TreeItemIcon_Normal)
+
+        elif fileExtension == ".aup":
+            child = self._filestree.AppendItem(parent, son)
+            self._filestree.SetPyData(child, None)
+            self._filestree.SetItemImage(child, self.aupfileidx, wx.TreeItemIcon_Normal)
 
         else:
             return wx.TreeItemId()

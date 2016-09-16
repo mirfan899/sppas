@@ -48,6 +48,7 @@ from elan          import Elan
 from anvil         import Anvil
 from annotationpro import Antx
 from xtrans        import Xtrans
+from audacity      import Audacity
 
 # ----------------------------------------------------------------------------
 
@@ -81,7 +82,8 @@ class TrsFactory(object):
         "eaf": Elan,
         "anvil": Anvil,
         "antx": Antx,
-        "tdf": Xtrans
+        "tdf": Xtrans,
+        "aup": Audacity
     }
 
     @staticmethod
