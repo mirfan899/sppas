@@ -487,14 +487,15 @@ function fct_uml_diagrams {
 # Return a string indicating the list of files for a sub-folder of the
 # documentation
 # Parameters:
-#  $1: sub-folder name (without path) of the documentation
+#  $1: directory of the documentation
+#  $2: folder name (without path) of the documentation
 function fct_get_md_idx {
 
     # Get all files mentionned in the idx
-    local f="`cat $DOC_DIR/$1/${1}.idx`"
+    local f="`cat $1/$2/${2}.idx`"
 
     # Add its path to each file name
-    local files="`for i in $f; do echo "$DOC_DIR/$1/"$i; done`"
+    local files="`for i in $f; do echo "$1/$2/"$i; done`"
 
     # return the list of files
     echo $files
@@ -502,6 +503,8 @@ function fct_get_md_idx {
 
 
 # Return the list of sub-folders of the documentation
+# Parameters:
+#  $1: directory of the documentation
 function fct_get_docfolders {
     local folders="`cat $1/markdown.idx`"
     echo $folders
@@ -510,7 +513,7 @@ function fct_get_docfolders {
 
 # Return a string indicating the list of files for the documentation
 # Parameters:
-# - $1: the directory with the documentation
+# - $1: directory with the documentation
 function fct_get_all_md {
     # take a look if an header is existing (the title/author/date of the doc)
     if [ -e "$1/header.md" ] ; then
@@ -523,7 +526,7 @@ function fct_get_all_md {
     # get all indexed files of each folder
     for folder in $folders;
     do
-        files="$files $(fct_get_md_idx $folder)"
+        files="$files $(fct_get_md_idx $1 $folder)"
     done
 
     # return the list of files we just created
@@ -543,25 +546,73 @@ function fct_sppas_doc {
 
     echo ' Version for the web (add header and footer)'
     # An HTML file is generated for each sub-folder of the documentation
-    local folders=$(fct_get_docfolders)
+    local folders=$(fct_get_docfolders $DOC_DIR)
     for folder in $folders;
     do
         echo " ... $folder"
         local files="$DOC_DIR/header.md"
-        files="$files $(fct_get_md_idx $folder)"
+        files="$files $(fct_get_md_idx $DOC_DIR $folder)"
         files="$files $DOC_DIR/footer.md"
         pandoc -s --toc --mathjax -t html5 --css $ETC_DIR/styles/sppas.css -H $DOC_DIR/include-scripts.txt -B $DOC_DIR/header.txt -A $DOC_DIR/footer.txt $files --highlight-style haddock -o $WEB_DIR/documentation_${folder}.html
     done
 
     # A Unique file is generated from all files of the documentation
-    local files=$(fct_get_all_md)
+    local files=$(fct_get_all_md $DOC_DIR)
 
     echo ' Version PDF';
     pandoc -N --template=$DOC_DIR/mytemplate.tex --variable toc-depth=2 -V geometry:a4paper -V geometry:"top=3cm, bottom=3cm, left=3cm, right=2.5cm" --variable documentclass="report" --variable classoption="twoside, openright" --variable mainfont="FreeSerif" --variable sansfont="FreeSans" --variable monofont="FreeMono" --variable fontsize=11pt --variable version="$PROGRAM_VERSION" --variable frontpage="`pwd`/doc/frontpage.pdf" $files --latex-engine=xelatex --toc -o $PROGRAM_DIR/documentation/Documentation.pdf
     cp $PROGRAM_DIR/documentation/Documentation.pdf $WEB_DIR/doc/Documentation.pdf
 
-    echo ' SPPAS for dummies for the web';
-    pandoc -s --mathjax -t dzslides --css $ETC_DIR/styles/dummies.css --slide-level=2 -H $ETC_DIR/scripts/include-scripts.txt $TUTO_DIR/SPPAS-for-dummies.md -o $WEB_DIR/SPPAS-for-dummies.html
+    echo ' Tutorials for the web';
+    cat $TUTO_DIR/tutorial_header.html > $WEB_DIR/tutorial.html
+    echo '<ol>' >> $WEB_DIR/tutorial.html
+
+    # An HTML file is generated for each md file of each folder of the tutorial
+    local folders=$(fct_get_docfolders $TUTO_DIR)
+    for folder in $folders;
+    do
+        echo "<li>$folder</li>" >> $WEB_DIR/tutorial.html
+        echo '  <ul>' >> $WEB_DIR/tutorial.html
+        
+        echo " ... $folder"
+        local files=$(fct_get_md_idx $TUTO_DIR $folder)
+        
+        for file in $files;
+        do 
+            echo " ... ... $file"
+            outfile=`basename $file .md`
+            pandoc -s --mathjax -t dzslides --css $ETC_DIR/styles/tuto.css --slide-level=2 -H $TUTO_DIR/include-scripts.txt $TUTO_DIR/header.md $file -o toto.html
+
+            cat toto.html | sed -e 's/>[ ]*</>\n</g' |\
+                sed -e 's/<section>/<section class="title">/' |\
+                sed -e "s/autoplay: \"1\"/autoplay: \"0\"/" |\
+                awk 'BEGIN{instyle=0;infigure=0}\
+                /<style>/{instyle=1}\
+                /<\/style>/{instyle=0;infigure=0}\
+                /figure /{if (instyle==1) infigure=1;next}\
+                {if (infigure==0) print;}' |\
+                awk 'BEGIN{infigure=0}\
+                /<figure>/{infigure=1}\
+                /<\/figure>/{infigure=0}\
+                /<embed /{if (infigure==0) {print "<figure>\n",$0,"\n</figure>"; next;}}\
+                /<img /{if (infigure==0) {print "<figure>\n",$0; infigure=2; next;} else {print; next;}}\
+                {if (infigure==2) {print "\n</figure>\n";infigure=0;}; print}' |\
+                awk 'BEGIN{infigure=0}\
+                /<figure>/{infigure=1}\
+                /<\/figure>/{infigure=0}\
+                /<embed /{if (infigure==1) {if (match($0,".wav")){gsub("<embed ", "<audio ", $0); gsub("/>", " controls> </audio>",$0);} else {gsub("<embed ", "<video width=480 ", $0); gsub("/>", " controls> </video>",$0);}}}\
+                {print}'  > $WEB_DIR/tutorial_${outfile}.html
+
+            rm toto.html
+            
+            echo '<li><a href="tutorial_'${outfile}'.html">'$outfile'</a></li>' >> $WEB_DIR/tutorial.html
+        done
+
+        echo '</ul>' >> $WEB_DIR/tutorial.html
+
+    done
+    echo '</ol>' >> $WEB_DIR/tutorial.html
+    cat $TUTO_DIR/tutorial_footer.html >> $WEB_DIR/tutorial.html
 
     # Package: erase old then copy new
     rm -rf $WEB_DIR/$ETC_DIR
@@ -582,8 +633,8 @@ function fct_sppas_doc {
 # Main function for the documentation
 function fct_documentation {
     fct_echo_title "${PROGRAM_NAME} - API Manual and Documentation (package and web)"
-    fct_api_manual
-    fct_uml_diagrams
+    #fct_api_manual
+    #fct_uml_diagrams
     fct_sppas_doc
 }
 
