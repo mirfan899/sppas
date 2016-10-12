@@ -299,7 +299,7 @@ class Elan( Transcription ):
     # -----------------------------------------------------------------
 
     def __parse_alignable_annotation(self, alignableAnnotationRoot):
-        label = alignableAnnotationRoot.find('title').text
+        label = alignableAnnotationRoot.find('ANNOTATION_VALUE').text
 
         beginKey = alignableAnnotationRoot.attrib['TIME_SLOT_REF1']
         begin = self.timeSlots[beginKey]

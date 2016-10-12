@@ -2506,6 +2506,7 @@ R-R+i n-R+i
 R-R+j n-R+j
 R-R+o n-R+o
 R-R+p d-R+p
+R-R+t e-R+@@
 R-R+u d-R+u
 R-R+w d-R+w
 R-S a~-S
@@ -5972,6 +5973,7 @@ d-@@ t-@@
 d-E E-E
 d-E+U~ j-E+U~
 d-E+Z d-E+R
+d-E+e d-E+R
 d-H+eu d-H+e
 d-H+k d-H+e
 d-H+o d-H+e
