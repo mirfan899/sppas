@@ -62,7 +62,7 @@ from utils.fileutils        import setup_logging
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -r dict " % os.path.basename(PROGRAM), description="... a script to an acoustic model.")
+parser = ArgumentParser(usage="%s -r dict " % os.path.basename(PROGRAM), description="... a script to train an acoustic model.")
 parser.add_argument("-r", metavar="dict",   required=True,  help='Pronunciation dictionary (HTK-ASCII format).')
 parser.add_argument("-m", metavar="map",    required=False, default=None,  help='Phoneset mapping table SAMPA <-> Model, if dict is based on SAMPA phoneme encoding.')
 parser.add_argument("-p", metavar="protos", required=False, default=None,  help='Directory with HMM prototypes.')

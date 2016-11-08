@@ -51,9 +51,9 @@ import collections
 import utils.fileutils
 from utils.type import test_command
 
-from annotations.Phon.phon import sppasPhon
-from annotations.Token.tok import sppasTok
-from annotations.Align.align import sppasAlign
+from annotations.Phon.sppasphon import sppasPhon
+from annotations.Token.sppastok import sppasTok
+from annotations.Align.sppasalign import sppasAlign
 
 import annotationdata.io
 import annotationdata.utils.tierutils

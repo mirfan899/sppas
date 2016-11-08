@@ -53,7 +53,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
-from resources.acmodel import AcModel
+from resources.acm.acmodel import AcModel
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
