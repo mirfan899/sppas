@@ -53,8 +53,7 @@ the file format.
 *Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License*
 
 The acoustic model was trained from Glissando corpus. We address special
-thanks to Juan-Maria Garrido for giving us access to this corpus:
-<http://veus.barcelonamedia.org/glissando/node/10>
+thanks to Juan-Maria Garrido for giving us access to this corpus.
 
 >**GARRIDO, J. M. - ESCUDERO, D. - AGUILAR, L. -CARDEÑOSO, V. - RODERO, E. - DE-LA-MOTA, C. - GONZÁLEZ, C. - RUSTULLET, S. - LARREA, O. - LAPLAZA, Y. - VIZCAÍNO, F. - CABRERA, M. - BONAFONTE, A.** (2013).
 >*Glissando: a corpus for multidisciplinary prosodic studies in Spanish and Catalan*,
