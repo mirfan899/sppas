@@ -91,9 +91,16 @@ else:
 # ---------------------------------
 # 1. Create a Data Manager
 # it manages the data created at each step of the acm training procedure
+# create parameters:
+#  - workdir=None (in)
+#  - scriptsdir=DEFAULT_SCRIPTS_DIR (in)
+#  - featsdir=DEFAULT_FEATURES_DIR (in)
+#  - logdir=DEFAULT_LOG_DIR (in)
+#  - protodir=None (in)
+#  - protofilename=DEFAULT_PROTO_FILENAME (out)
 
 datatrainer = DataTrainer()
-datatrainer.create( workdir=args.t, protodir=args.p)
+datatrainer.create( workdir=args.t, protodir=args.p )
 
 
 # ---------------------------------
@@ -103,7 +110,7 @@ datatrainer.create( workdir=args.t, protodir=args.p)
 #   - converts the input annotated data into the HTK-specific data format;
 #   - codes the audio data.
 
-corpus = TrainingCorpus( datatrainer, lang=args.l)
+corpus = TrainingCorpus( datatrainer, lang=args.l )
 corpus.fix_resources( dictfile=args.r, mappingfile=args.m )
 
 if args.i:

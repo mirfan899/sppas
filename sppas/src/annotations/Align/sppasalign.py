@@ -320,6 +320,9 @@ class sppasAlign( sppasBase ):
         @return A transcription.
 
         """
+        if os.path.exists( workdir ) is False:
+            os.mkdir( workdir )
+
         # Split input into tracks
         # --------------------------------------------------------------
 

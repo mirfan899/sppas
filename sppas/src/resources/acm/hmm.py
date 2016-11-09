@@ -263,7 +263,7 @@ class HMM( BaseModel ):
 
     def get_state(self, index):
         """
-        Return the state of a given index of None if index is not found.
+        Return the state of a given index or None if index is not found.
 
         @param index (int) State index (commonly between 1 and 5)
         @return collections.OrderedDict or None
@@ -275,6 +275,15 @@ class HMM( BaseModel ):
                 return item['state']
 
         return None
+
+    # -----------------------------------------------------------------------
+
+    def get_vecsize(self):
+        """
+        Return the number of means and variance of each state.
+
+        """
+        return  self.definition['states'][0]['state']['streams'][0]['mixtures'][0]['pdf']['mean']['dim']
 
     # -----------------------------------------------------------------------
 

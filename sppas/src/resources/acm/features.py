@@ -169,9 +169,9 @@ class Features( object ):
         self.num_lift_ceps = 22   # Length of cepstral liftering
         self.num_ceps      = 12   # The number of cepstral coefficients
         self.pre_em_coef   = 0.97 # The coefficient used for the pre-emphasis
-        self.targetkindw   = "MFCC_0_E"     #"MFCC_0_D"
-        self.targetkind    = "MFCC_E_D_A_Z" #"MFCC_0_D_N_Z"
-        self.nbmv          = 39   # The number of means and variances. It's commonly either 25 or 39.
+        self.targetkindw   = "MFCC_0_D"     #"MFCC_0_E"
+        self.targetkind    = "MFCC_0_D_N_Z" # "MFCC_E_D_A_Z"
+        self.nbmv          = 25   # The number of means and variances. It's commonly either 25 or 39.
 
         self.wavconfigfile = ""
         self.configfile = ""

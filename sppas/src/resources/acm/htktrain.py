@@ -57,7 +57,7 @@ from annotations.Align.sppasalign import sppasAlign
 
 import annotationdata.io
 import annotationdata.utils.tierutils
-import audiodata
+import audiodata.io
 
 from annotationdata.transcription import Transcription
 from audiodata.audio                import AudioPCM
@@ -296,17 +296,25 @@ class DataTrainer( object ):
 
         if self.protodir is not None:
             self.protofile = os.path.join( self.protodir, protofilename)
-            logging.info('Write proto file: %s'%self.protofile)
 
-            protomodel = AcModel()
+            if os.path.exists(self.protofile) is False:
+                logging.info('Write proto file: %s'%self.protofile)
 
-            vectorsize = self.features.nbmv
-            targetkind = self.features.targetkind
-            paramkind  = protomodel.create_parameter_kind("mfcc", targetkind[4:])
+                protomodel = AcModel()
 
-            protomodel.macros = [ protomodel.create_options( vector_size=vectorsize, parameter_kind=paramkind,stream_info=[vectorsize]) ]
-            protomodel.append_hmm( self.proto )
-            protomodel.save_htk( self.protofile )
+                vectorsize = self.features.nbmv
+                targetkind = self.features.targetkind
+                paramkind  = protomodel.create_parameter_kind("mfcc", targetkind[4:])
+
+                protomodel.macros = [ protomodel.create_options( vector_size=vectorsize, parameter_kind=paramkind,stream_info=[vectorsize]) ]
+                protomodel.append_hmm( self.proto )
+                protomodel.save_htk( self.protofile )
+            else:
+                logging.info('Read proto file: %s'%self.protofile)
+                self.proto = HMM()
+                self.proto.load( self.protofile )
+                self.features.nbmv = self.proto.get_vecsize()
+                logging.info(' ... [ OK ] Vector size: %d'%self.features.nbmv)
 
     # -----------------------------------------------------------------------
 
@@ -494,7 +502,7 @@ class TrainingCorpus( object ):
         """
         # Get the list of audio files from the input directory
         audiofilelist = []
-        for extension in audiodata.extensions:
+        for extension in audiodata.io.extensions:
             files = utils.fileutils.get_files( directory, extension )
             audiofilelist.extend( files )
 
@@ -988,12 +996,15 @@ class HTKModelInitializer( object ):
                 logging.info(' ... Train proto model:')
                 self._create_flat_start_model()
                 if os.path.exists( os.path.join( self.directory, "proto") ):
-                    logging.info(' [  OK  ] ')
                     self.trainingcorpus.datatrainer.protofile = os.path.join( self.directory, "proto")
                     self.trainingcorpus.datatrainer.proto = HMM()
                     self.trainingcorpus.datatrainer.proto.load( self.trainingcorpus.datatrainer.protofile )
+                    self.trainingcorpus.datatrainer.features.nbmv = self.trainingcorpus.datatrainer.proto.get_vecsize()
+                    logging.info(' ... ... [  OK  ] ')
                 else:
-                    logging.info(' [ FAIL ] ')
+                    logging.info(' ... ... [ FAIL ] ')
+
+        logging.info(' ... [ INFO ] Vector size: %d'%self.trainingcorpus.datatrainer.features.nbmv)
 
         # Create a start model for each phoneme
         logging.info(' ... Train initial model for phones: %s '%" ".join(self.trainingcorpus.monophones.get_list()))
@@ -1010,10 +1021,13 @@ class HTKModelInitializer( object ):
                     infile = os.path.join( protophone )
                     h = HMM()
                     h.load( infile )
-                    h.set_name( phone )
-                    h.save( outfile )
-                    logging.info(' ... ... [ PROTO ]: %s'%infile)
-                    continue
+                    if h.get_vecsize() != self.trainingcorpus.datatrainer.features.nbmv:
+                        logging.info(' ... ... [ FAIL ] Bad HMM vector size. Got %d.'%h.get_vecsize())
+                    else:
+                        h.set_name( phone )
+                        h.save( outfile )
+                        logging.info(' ... ... [ PROTO ]: %s'%infile)
+                        continue
 
             # Train an initial model
             if scpfile is not None:
@@ -1025,7 +1039,7 @@ class HTKModelInitializer( object ):
                 h = self.trainingcorpus.datatrainer.proto
                 h.set_name( phone )
                 h.save( outfile )
-                logging.info(' ... ... ... [ FLAT ]')
+                logging.info(' ... ... [ FLAT ]')
                 h.set_name( "proto" )
             else:
                 # HInit gives a bad name (it's the filename, including path!!)!
@@ -1225,6 +1239,8 @@ class HTKModelTrainer( object ):
             aligner = sppasAlign( self.curdir )
             aligner.set_infersp( infersp )
 
+            alignerdir = os.path.join( self.corpus.datatrainer.workdir, "alignerio")
+
             #aligner.set_aligner( "hvite" )
             #aligner.set_clean( False )
 
@@ -1255,7 +1271,7 @@ class HTKModelTrainer( object ):
             try:
                 tiertokens, tierStokens = tokenizer.convert( tierinput )
                 tierphones = phonetizer.convert( tiertokens )
-                trsalign = aligner.convert( tierphones,None,audioworkfile )
+                trsalign = aligner.convert( tierphones,None,audioworkfile,alignerdir )
             except Exception as e:
                 logging.info(' ... [ ERROR ] Annotation error for file: %s. %s'%(trsworkfile,str(e)))
                 return False
