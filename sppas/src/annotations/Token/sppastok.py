@@ -199,7 +199,7 @@ class sppasTok( sppasBase ):
                         self.print_message(u"StdTokens and FakedTokens matching error, at %s\n"%astd.GetLocation().GetValue(),indent=2,status=1)
                         self.print_message(astd.GetLabel().GetValue(),  indent=3)
                         self.print_message(afaked.GetLabel().GetValue(),indent=3)
-                        self.print_message(u"Fall back on faked: %s" %self.fallback, indent=3,status=3)
+                        self.print_message(u"Fall back on faked.",indent=3,status=3)
                         textstd.SetValue( textf )
 
     # ------------------------------------------------------------------------

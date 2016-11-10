@@ -170,12 +170,13 @@ des attaques systémiques
     - Sclite: ctm, stm
     - Phonedit: mrk
     - Excel/OpenOffice/R/...: csv
-    - subtitles: sub, srt
+    - Subtitles: sub, srt
 
 * Supported file formats to import (software, extension):
     - Transcriber: trs
     - Anvil: anvil
     - Xtrans: tdf
+    - Audacity (under development)
 
 ----------------
 

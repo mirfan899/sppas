@@ -2,7 +2,6 @@
 
 ------------------------------------------------------------------------
 
-
 ## The context
 
 * SPPAS was created in the scope of annotating automatically and exploring large multi-modal corpora
@@ -69,9 +68,9 @@
 
 ## Step 4: Phonemes/Tokens time-alignment
 
-* A problem divided into 3 tasks:
+* In SPPAS, this problem is divided into 3 tasks:
     1. tokenization 
-        - text normalization, word segmentation
+        - text normalization
     2. phonetization 
         - grapheme to phoneme conversion
     3. alignment 
@@ -88,9 +87,23 @@
     - Repetitions
     - TGA
     - ...
-
+* Analysis:
+    - Filter data
+    - Statistics
+    - ...
 
 --------------
+
+## Wants more?
+
+### More about CID corpus:
+
+[Click here for a description](http://www.lpl-aix.fr/~bigi/Doc/2015-SPPAS-Tutorial-HongKong/SPPAS-tutorial_02_introduction.html#11.0)
+
+
+### More about the annotation workflow:
+
+[Click here for a description](http://www.lpl-aix.fr/~bigi/Doc/2015-SPPAS-Tutorial-HongKong/SPPAS-tutorial_04_methodo.html)
 
 ### 
 

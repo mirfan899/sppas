@@ -52,9 +52,22 @@ of the shell.
 
 ### Interoperability and compatibility
 
+
 In the scope of the compatibility between SPPAS data and annotated data from
-other software tools or programs, SPPAS is able to open/save/convert files 
-of the following software with their extensions:
+other software tools or programs, SPPAS is able to open/save and convert
+files.
+The conversion of a file to another file is the process of changing the form 
+of the presentation of the data, and not the data itself. Every time, when 
+data file is to be used, they must be converted to a readable format for 
+the next application. A data conversion is normally an automated process 
+to some extent. 
+SPPAS provide the possibility to automatically import and export the work 
+done on some various file formats from a wide range of other software tools.
+For the users, the visible change will be only a different file extension but
+for software it is the difference between understanding of the contents of 
+the file and the inability to read it. 
+
+SPPAS supports the following software with their file extensions:
 
 * Praat: TextGrid, PitchTier, IntensityTier
 * Elan: eaf
@@ -72,4 +85,4 @@ And the followings can be imported:
 * Transcriber: trs
 * Xtrans: tdf
 
-![File formats SPPAS can open/save and import](./etc/figures/sppas-formats.png)
+![File formats SPPAS can open/save and import/export](./etc/figures/sppas-formats.png)

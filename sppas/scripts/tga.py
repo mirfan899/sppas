@@ -84,7 +84,7 @@ tieridx    = args.t-1
 fileinput  = args.i
 fileoutput = args.o
 filename, fileextension = os.path.splitext(fileinput)
-separators = ['*', 'gb','@@']
+separators = ['*', 'gb','@@', '+']
 if args.s:
     separators = set(separators + args.s)
 

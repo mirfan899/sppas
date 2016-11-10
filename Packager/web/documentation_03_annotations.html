@@ -420,8 +420,8 @@ $ the te to normalize one_hundred_twenty-three</code></pre>
 <h2 id="phonetization"><a href="#phonetization">Phonetization</a></h2>
 <h3 id="overview-2"><a href="#overview-2">Overview</a></h3>
 <p>Phonetization, also called grapheme-phoneme conversion, is the process of representing sounds with phonetic signs. However, converting from written text into actual sounds, for any language, cause several problems that have their origins in the relative lack of correspondence between the spelling of the lexical items and their sound contents.</p>
-<p>SPPAS implements a dictionary based-solution which consists in storing a maximum of phonological knowledge in a lexicon. In this sense, this approach is language-independent. SPPAS phonetization process is the equivalent of a sequence of dictionary look-ups. It is then assumed that all words of the speech transcription are mentioned in the pronunciation dictionary.</p>
-<p>Actually, some words can correspond to several entries in the dictionary with various pronunciations. These pronunciation variants are stored in the phonetization result. By convention, spaces separate words, minus separate phones and pipe character separate phonetic variants of a word. For example, the transcription utterance:</p>
+<p>SPPAS implements a dictionary based-solution which consists in storing a maximum of phonological knowledge in a lexicon. In this sense, this approach is language-independent. SPPAS phonetization process is the equivalent of a sequence of dictionary look-ups.</p>
+<p>Actually, some words can correspond to several entries in the dictionary with various pronunciations. These pronunciation variants are stored in the phonetization result. By convention, whitespace separate words, minus characters separate phones and pipe character separate phonetic variants of a word. For example, the transcription utterance:</p>
 <ul>
 <li>Transcription: <code>The flight was 12 hours long.</code></li>
 <li>Tokenization: <code>the flight was twelve hours long</code></li>

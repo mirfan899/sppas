@@ -12,13 +12,11 @@ SPPAS implements a dictionary based-solution which consists in storing a
 maximum of phonological knowledge in a lexicon. In this sense, this approach
 is language-independent. SPPAS phonetization process is the equivalent of a
 sequence of dictionary look-ups.
-It is then assumed that all words of the speech transcription are mentioned
-in the pronunciation dictionary.
 
 Actually, some words can correspond to several entries in the dictionary
 with various pronunciations. These pronunciation variants are stored in the
-phonetization result. By convention, spaces separate words, minus separate
-phones and pipe character separate phonetic variants of a word.
+phonetization result. By convention, whitespace separate words, minus characters
+separate phones and pipe character separate phonetic variants of a word.
 For example, the transcription utterance:
 
 * Transcription: `The flight was 12 hours long.`
