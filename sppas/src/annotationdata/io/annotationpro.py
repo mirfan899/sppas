@@ -357,15 +357,16 @@ class Antx(Transcription):
         # Write the Key element
         child_key = ET.SubElement(configuration_root, 'Key')
         # here, we have to restore original upper/lower case
-        child_key.text = UpperLowerDict[key]
+        if key in UpperLowerDict.keys():
+            child_key.text = UpperLowerDict[key]
 
-        # Write the Value element
-        child_value = ET.SubElement(configuration_root, 'Value')
-        if value:
-            if key.lower() == 'modified':
-                child_value.text = now
-            else:
-                child_value.text = unicode(value)
+            # Write the Value element
+            child_value = ET.SubElement(configuration_root, 'Value')
+            if value:
+                if key.lower() == 'modified':
+                    child_value.text = now
+                else:
+                    child_value.text = unicode(value)
 
     # -----------------------------------------------------------------
 

@@ -120,6 +120,9 @@ import annotationdata.io as io
 __all__ = [
 'Transcription',
 'Tier',
+'Media',
+'Hierarchy',
+'CtrlVocab',
 'Annotation',
 'Label',
 'Text',
