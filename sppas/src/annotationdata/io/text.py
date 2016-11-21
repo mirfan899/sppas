@@ -176,8 +176,22 @@ class RawText(Transcription):
                 raise Exception(
                     "Cannot write a multi-tier annotation to a txt file.")
 
-            for annotation in self[0]:
-                fp.write(annotation.GetLabel().GetValue() + '\n')
+            tier = self[0]
+            if tier.IsEmpty(): return
+
+            for annotation in tier:
+                if annotation.GetLocation().IsFrame():
+                    fp.write(annotation.GetLabel().GetValue() + '\n')
+                else:
+                    if annotation.GetLocation().IsTimePoint():
+                        mp = annotation.GetLocation().GetPointMidpoint()
+                        l = annotation.GetLabel().GetValue()
+                        fp.write("%f\t%f\t%s\n"%(mp,mp,l))
+                    else:
+                        b = annotation.GetLocation().GetBeginMidpoint()
+                        e = annotation.GetLocation().GetEndMidpoint()
+                        l = annotation.GetLabel().GetValue()
+                        fp.write("%f\t%f\t%s\n"%(b,e,l))
 
     # ------------------------------------------------------------------------
 

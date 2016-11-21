@@ -35,16 +35,6 @@
 # File: location.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
-
 from baseplacement import BasePlacement
 from localization import Localization
 import copy
@@ -53,19 +43,19 @@ import copy
 
 class Location(object):
     """
-    @authors: Brigitte Bigi, Tatsuya Watanabe
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: Base class for the Location of an annotation.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Base class for the Location of an Annotation.
 
     """
-
     def __init__(self, entry):
         """
         Create a new Location instance and add the entry.
 
-        @param entry (one of the Placements or Localization or Location)
-        is the entry to add for this location.
+        @param entry (Placements or Localization or Location) is the entry to add for this location.
 
         """
         self.__locs = list()
@@ -74,11 +64,16 @@ class Location(object):
         if entry is not None:
             self.AddValue(entry)
 
-    # End __init__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def Copy(self):
+        """
+        Return a deep copy of the Location.
+
+        """
         return copy.deepcopy(self)
+
+    # -----------------------------------------------------------------------
 
     def Set(self, place):
         """
@@ -90,8 +85,7 @@ class Location(object):
         self.SetValue(place)
         self.__fct = place.GetFunctionScore()
 
-    # End Set
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def AddValue(self, place):
         """
@@ -109,8 +103,7 @@ class Location(object):
         if place not in self.__locs:
             self.__locs.append(place)
 
-    # End AddValue
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def SetValue(self, entry):
         """
@@ -122,8 +115,7 @@ class Location(object):
         self.UnsetValue()
         self.AddValue(entry)
 
-    # End SetValue
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def UnsetValue(self):
         """
@@ -132,8 +124,7 @@ class Location(object):
         """
         self.__locs = []
 
-    # End UnsetValue
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetFunctionScore(self):
         """
@@ -142,8 +133,7 @@ class Location(object):
         """
         return self.__fct
 
-    # End GetFunctionScore
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def SetFunctionScore(self, fctname):
         """
@@ -157,8 +147,7 @@ class Location(object):
 
         self.__fct = fctname
 
-    # End SetFunctionScore
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetLocalizations(self):
         """
@@ -167,8 +156,7 @@ class Location(object):
         """
         return self.__locs
 
-    # End GetLocalizations
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetPlaces(self):
         """
@@ -177,8 +165,7 @@ class Location(object):
         """
         return [l.GetPlace() for l in self.__locs]
 
-    # End GetPlaces
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetValue(self):
         """
@@ -193,14 +180,12 @@ class Location(object):
 
         return self.__fct(self.__locs, key=lambda x: x.GetScore())
 
-    # End GetValue
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetDuration(self):
         return self.GetValue().Duration()
 
-    # End GetDuration
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetBeginMidpoint(self):
         """
@@ -210,8 +195,7 @@ class Location(object):
         """
         return self.GetValue().GetBegin().GetMidpoint()
 
-    # End GetBeginMidpoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetEndMidpoint(self):
         """
@@ -221,8 +205,7 @@ class Location(object):
         """
         return self.GetValue().GetEnd().GetMidpoint()
 
-    # End GetEndMidpoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetBeginRadius(self):
         """
@@ -232,8 +215,7 @@ class Location(object):
         """
         return self.GetValue().GetBegin().GetRadius()
 
-    # End GetBeginRadius
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetEndRadius(self):
         """
@@ -243,8 +225,7 @@ class Location(object):
         """
         return self.GetValue().GetEnd().GetRadius()
 
-    # End GetEndRadius
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetBegin(self):
         """
@@ -254,8 +235,7 @@ class Location(object):
         """
         return self.GetValue().GetBegin()
 
-    # End GetBegin
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetEnd(self):
         """
@@ -265,8 +245,7 @@ class Location(object):
         """
         return self.GetValue().GetEnd()
 
-    # End GetEnd
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def SetBegin(self, point):
         """
@@ -276,8 +255,7 @@ class Location(object):
         """
         self.GetValue().SetBegin(point)
 
-    # End SetBegin
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def SetBeginMidpoint(self, value):
         """
@@ -287,6 +265,7 @@ class Location(object):
         """
         self.GetValue().GetBegin().SetMidpoint(value)
 
+    # -----------------------------------------------------------------------
 
     def SetBeginRadius(self, value):
         """
@@ -296,6 +275,8 @@ class Location(object):
         """
         self.GetValue().GetBegin().SetRadius(value)
 
+    # -----------------------------------------------------------------------
+
     def SetEnd(self, point):
         """
         Set the end instance of the best localization (the localization
@@ -304,8 +285,7 @@ class Location(object):
         """
         self.GetValue().SetEnd(point)
 
-    # End SetEnd
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def SetEndMidpoint(self, value):
         """
@@ -315,6 +295,8 @@ class Location(object):
         """
         self.GetValue().GetEnd().SetMidpoint(value)
 
+    # -----------------------------------------------------------------------
+
     def SetEndRadius(self, value):
         """
         Set the end midpoint value of the best localization (the localization
@@ -322,6 +304,8 @@ class Location(object):
 
         """
         self.GetValue().GetEnd().SetRadius(value)
+
+    # -----------------------------------------------------------------------
 
     def GetPoint(self):
         """
@@ -331,8 +315,7 @@ class Location(object):
         """
         return self.GetValue().GetPoint()
 
-    # End GetPoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetPointMidpoint(self):
         """
@@ -342,8 +325,7 @@ class Location(object):
         """
         return self.GetValue().GetPoint().GetMidpoint()
 
-    # End GetPointMidpoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def GetPointRadius(self):
         """
@@ -353,8 +335,7 @@ class Location(object):
         """
         return self.GetValue().GetPoint().GetRadius()
 
-    # End GetPointRadius
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def SetPoint(self, point):
         """
@@ -364,8 +345,7 @@ class Location(object):
         """
         self.GetValue().SetPoint(point)
 
-    # End SetPoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def SetPointMidpoint(self, value):
         """
@@ -375,6 +355,7 @@ class Location(object):
         """
         self.GetValue().GetPoint().SetMidpoint(value)
 
+    # -----------------------------------------------------------------------
 
     def SetPointRadius(self, value):
         """
@@ -384,7 +365,7 @@ class Location(object):
         """
         self.GetValue().GetPoint().SetRadius(value)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def IsPoint(self):
         """
@@ -394,8 +375,7 @@ class Location(object):
         """
         return self.GetValue().IsTimePoint() or self.GetValue().IsFramePoint()
 
-    # End IsPoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def IsInterval(self):
         """
@@ -406,8 +386,7 @@ class Location(object):
         return (self.GetValue().IsTimeInterval() or
                 self.GetValue().IsFrameInterval())
 
-    # End IsInterval
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def IsDisjoint(self):
         """
@@ -418,8 +397,7 @@ class Location(object):
         return (self.GetValue().IsTimeDisjoint() or
                 self.GetValue().IsFrameDisjoint())
 
-    # End IsDisjoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def IsTimePoint(self):
         """
@@ -428,8 +406,7 @@ class Location(object):
         """
         return self.GetValue().IsTimePoint()
 
-    # End IsTimePoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def IsTimeInterval(self):
         """
@@ -438,8 +415,7 @@ class Location(object):
         """
         return self.GetValue().IsTimeInterval()
 
-    # End IsTimeInterval
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def IsTimeDisjoint(self):
         """
@@ -448,8 +424,7 @@ class Location(object):
         """
         return self.GetValue().IsTimeDisjoint()
 
-    # End IsTimeDisjoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def IsFramePoint(self):
         """
@@ -458,8 +433,7 @@ class Location(object):
         """
         return self.GetValue().IsFramePoint()
 
-    # End IsFramePoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def IsFrameInterval(self):
         """
@@ -468,8 +442,7 @@ class Location(object):
         """
         return self.GetValue().IsFrameInterval()
 
-    # End IsFrameInterval
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def IsFrameDisjoint(self):
         """
@@ -478,43 +451,52 @@ class Location(object):
         """
         return self.GetValue().IsFrameDisjoint()
 
-    # End IsFrameDisjoint
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+
+    def IsTime(self):
+        """
+        Check if the best location is a time value.
+
+        """
+        v = self.GetValue()
+        return (v.IsTimeDisjoint() or v.IsTimeInterval() or v.IsTimePoint())
+
+    # -----------------------------------------------------------------------
+
+    def IsFrame(self):
+        """
+        Check if the best location is a frame value.
+
+        """
+        v = self.GetValue()
+        return (v.IsFrameDisjoint() or v.IsFrameInterval() or v.IsFramePoint())
+
+    # -----------------------------------------------------------------------
+
+    # -----------------------------------------------------------------------
 
     def __repr__(self, *args, **kwargs):
         return "Locations:%s" % ("; ".join([str(i) for i in self.__locs]))
 
     # ------------------------------------------------------------------------
-    # ------------------------------------------------------------------------
-
-
-    def __repr__(self, *args, **kwargs):
-        return "%s" % ("; ".join([str(i) for i in self.__locs]))
-
-    # End __repr__
-    # ------------------------------------------------------------------------------------
 
     def __str__(self, *args, **kwargs):
-        return "Locations:%s" % ("; ".join([str(i) for i in self.__locs]))
+        return "%s" % ("; ".join([str(i) for i in self.__locs]))
+
+    # -----------------------------------------------------------------------
 
     def __iter__(self):
         for a in self.__locs:
             yield a
 
-    # End __iter__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __getitem__(self, i):
         return self.__locs[i]
 
-    # End __getitem__
     # ------------------------------------------------------------------------------------
 
     def __len__(self):
         return len(self.__locs)
 
-    # End __len__
     # ------------------------------------------------------------------------------------
-
-# End Location
-# ------------------------------------------------------------------------------------

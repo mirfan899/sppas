@@ -45,6 +45,7 @@ from subtitle import SubRip, SubViewer
 from sclite import TimeMarkedConversation, SegmentTimeMark
 from elan import Elan
 from xtrans import Xtrans
+from annotationpro import Antx
 
 class HeuristicFactory(object):
     __OPTS = [
@@ -62,6 +63,7 @@ class HeuristicFactory(object):
         # SegmentTimeMark,
         # Elan,
         Xtrans,
+        Antx,
         CSV,
         HzPitch,
         RawText  # must be last

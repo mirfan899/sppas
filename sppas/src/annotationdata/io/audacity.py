@@ -39,7 +39,6 @@
 # Imports
 # ----------------------------------------------------------------------------
 
-import datetime
 import xml.etree.cElementTree as ET
 
 from annotationdata.transcription  import Transcription
@@ -81,14 +80,19 @@ class Audacity( Transcription ):
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
-    @summary: Represents the native format of Audacity project files.
+    @summary: Represents the native format of Audacity files.
+
+    Can work either on Audacity projects or Audacity Label tracks.
 
     """
     @staticmethod
     def detect(filename):
         tree = ET.parse(filename)
         root = tree.getroot()
-        return root.find('project') is not None
+        if root.find('project') is not None:
+            return True
+
+        return False
 
     # -----------------------------------------------------------------
     __format = '1.3.0'
