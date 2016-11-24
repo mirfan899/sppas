@@ -58,7 +58,7 @@ from re import split
 
 # ----------------------------------------------------------------------------
 
-TEXT_RADIUS = 0.0005
+TEXT_RADIUS = 0.002
 
 # ----------------------------------------------------------------------------
 
@@ -186,12 +186,12 @@ class RawText(Transcription):
                     if annotation.GetLocation().IsTimePoint():
                         mp = annotation.GetLocation().GetPointMidpoint()
                         l = annotation.GetLabel().GetValue()
-                        fp.write("%f\t%f\t%s\n"%(mp,mp,l))
+                        fp.write("%.3f\t%.3f\t%s\n"%(mp,mp,l))
                     else:
                         b = annotation.GetLocation().GetBeginMidpoint()
                         e = annotation.GetLocation().GetEndMidpoint()
                         l = annotation.GetLabel().GetValue()
-                        fp.write("%f\t%f\t%s\n"%(b,e,l))
+                        fp.write("%.3f\t%.3f\t%s\n"%(b,e,l))
 
     # ------------------------------------------------------------------------
 
