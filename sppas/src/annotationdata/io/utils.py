@@ -89,6 +89,7 @@ def gen_id( ):
     GUIDs are usually stored as 128-bit values, and are commonly
     displayed as 32 hexadecimal digits with groups separated by hyphens,
     such as {21EC2020-3AEA-4069-A2DD-08002B30309D}.
+
     """
     s = ''
     s += random_int(1)
@@ -119,13 +120,11 @@ def gen_id( ):
 
     return s
 
-# End gen_id
 # -----------------------------------------------------------------
 
 def format_float( f ):
     return round(float(f),4)
 
-# End format_float
 # -----------------------------------------------------------------
 
 def fill_gaps(tier, mintime, maxtime):
@@ -149,6 +148,9 @@ def fill_gaps(tier, mintime, maxtime):
             annotation = Annotation(time)
             new_tier.Add(annotation)
             prev = annotation
+        elif prev is not None and prev.GetLocation().GetEndMidpoint() < a.GetLocation().GetBeginMidpoint():
+            a.GetLocation().GetBegin().SetMidpoint( prev.GetLocation().GetEndMidpoint() )
+            prev = a
         else:
             prev = a
 
