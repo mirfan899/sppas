@@ -102,7 +102,7 @@ has a determining influence on the quality of the corpus, and so on the annotati
 
 ### Transcription example 1 (Conversational speech)
 
-![](./media/AG_track_0529.wav)
+![](./etc/media/AG_track_0529.wav)
 
 * Manual orthographic transcription:
 
@@ -117,7 +117,7 @@ has a determining influence on the quality of the corpus, and so on the annotati
 
 ### Transcription example 2 (Conversational speech)
 
-![](./media/AP_track_0968.wav)
+![](./etc/media/AP_track_0968.wav)
 
 * Manual orthographic transcription:
 
@@ -138,7 +138,7 @@ j dis putain le mec i voulait
 
 ### Transcription example 3 (GrenelleII)
 
-![](./media/grenelleII-systemiques.wav)
+![](./etc/media/grenelleII-systemiques.wav)
 
 * Manual orthographic transcription:
 
@@ -176,7 +176,7 @@ des attaques systémiques
     - Transcriber: trs
     - Anvil: anvil
     - Xtrans: tdf
-    - Audacity (under development)
+    - Audacity: txt
 
 ----------------
 

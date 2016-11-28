@@ -179,6 +179,12 @@ background: rgb(240,240,230) url('../../etc/icons/download.png') no-repeat ;
 background-position:center 10px;
 }
 
+.menu a.tutorial
+{
+background: rgb(240,240,230) url('../../etc/icons/tutorials.png') no-repeat ;
+background-position:center 10px;
+}
+
 .menu a.documentation
 {
 background: rgb(240,240,230) url('../../etc/icons/help.png') no-repeat ;

@@ -16,6 +16,7 @@
         <a class="home"     href="index.html">Home</a>
         <a class="install"  href="installation.html">Installation</a>
         <a class="download" href="download.html">Download</a>
+        <a class="tutorial" href="tutorial.html">Tutorials</a>
         <a class="documentation" href="documentation.html">Documentation</a>
         <a class="group"    href="https://groups.google.com/forum/?fromgroups#!forum/sppas-users">User's group</a>
     </div>

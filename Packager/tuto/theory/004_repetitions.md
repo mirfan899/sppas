@@ -11,7 +11,7 @@ in face-to-face conversation through their discursive or communicative
 functions.
 * Example:
 
-![Extract of Corpus of Interactional Data](./media/AB-CM-extract-repet.wav)
+![Extract of Corpus of Interactional Data](./etc/media/AB-CM-extract-repet.wav)
 
     AB: ils voulaient qu'on fasse un feu d'artifice en fait dans un voy- un foyer un foyer catho 
     un foyer de bonnes soeurs
@@ -38,11 +38,11 @@ various statistics was estimated on the detected OR.
 
 ### Other-Repetitions: result
 
-![](./screenshots/AB-CM-repetition.png)
+![](./etc/screenshots/AB-CM-repetition.png)
 
-AB: ![](./media/AB-extract-repet.wav)
+AB: ![](./etc/media/AB-extract-repet.wav)
 
-CM: ![](./media/CM-extract-repet.wav)
+CM: ![](./etc/media/CM-extract-repet.wav)
 
 -------------------------------
 
@@ -53,7 +53,7 @@ CM: ![](./media/CM-extract-repet.wav)
     In Proceedings of the Ninth International Conference on Language Resources and Evaluation, 
     pp. 836-842, Reykjavik, Iceland.
 
-![](./screenshots/repetitions_paper.png)
+![](./etc/screenshots/repetitions_paper.png)
 
 -------------------------------
 
