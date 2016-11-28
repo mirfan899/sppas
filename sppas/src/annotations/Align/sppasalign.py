@@ -177,6 +177,9 @@ class sppasAlign( sppasBase ):
             elif "activity" == key:
                 self.set_activity_tier( opt.get_value() )
 
+            elif "activityduration" == key:
+                self.set_activityduration_tier( opt.get_value() )
+
             elif "phntok" == key:
                 self.set_phntokalign_tier( opt.get_value() )
 
@@ -244,6 +247,17 @@ class sppasAlign( sppasBase ):
 
         """
         self._options['activity'] = bool(value)
+
+    # -----------------------------------------------------------------------
+
+    def set_activityduration_tier(self, value):
+        """
+        Fix the activity duration option.
+
+        @param value (bool - IN) Activity tier generation.
+
+        """
+        self._options['activityduration'] = bool(value)
 
     # -----------------------------------------------------------------------
 
@@ -377,12 +391,22 @@ class sppasAlign( sppasBase ):
                 self.print_message("PhnTokAlign generation: %s"%str(e), indent=2, status=WARNING_ID)
 
         # Activity tier
-        if self._options['activity'] is True:
+        if self._options['activity'] is True or self._options['activityduration']:
             try:
                 activity = Activity( trs )
                 tier = activity.get_tier()
-                trs.Append(tier)
-                trs.GetHierarchy().addLink("TimeAlignment", tokenalign, tier)
+                if self._options['activity'] is True:
+                    trs.Append(tier)
+                    trs.GetHierarchy().addLink("TimeAlignment", tokenalign, tier)
+
+                if self._options['activityduration'] is True:
+                    dtier = tier.Copy()
+                    dtier.SetName( "ActivityDuration" )
+                    trs.Append(dtier)
+                    for a in dtier:
+                        d = a.GetLocation().GetDuration().GetValue()
+                        a.GetLabel().SetValue( '%.3f' % d )
+
             except Exception as e:
                 self.print_message("Activities generation: %s"%str(e), indent=2, status=WARNING_ID)
 
