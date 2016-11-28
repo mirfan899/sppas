@@ -83,7 +83,6 @@ IPU_BY_PAGE = 50
 # Main class that manage the notebook
 # ----------------------------------------------------------------------------
 
-
 class IPUscribeClient( BaseClient ):
     """
     @author:  Brigitte Bigi
@@ -96,7 +95,6 @@ class IPUscribeClient( BaseClient ):
     Each page (except if empty...) contains an instance of a SndRoamer.
 
     """
-
     def __init__( self, parent, prefsIO ):
         BaseClient.__init__( self, parent, prefsIO )
         self._update_members()
@@ -105,7 +103,7 @@ class IPUscribeClient( BaseClient ):
 
     def _update_members(self):
         """ Update members. """
-        
+
         self._multiplefiles = False
 
     # ------------------------------------------------------------------------
@@ -117,23 +115,21 @@ class IPUscribeClient( BaseClient ):
 
     def Save(self):
         """ Save the current file(s). """
-        
+
         page = self._notebook.GetCurrentPage()
         for i in range(self._xfiles.GetSize()):
             if self._xfiles.GetOther(i) == page:
                 o = self._xfiles.GetObject(i)
                 o.Save()
 
-
     # ------------------------------------------------------------------------
 
     def SaveAll(self):
         """ Save all files (one per page). """
-        
+
         for i in range(self._xfiles.GetSize()):
             o = self._xfiles.GetObject(i)
             o.Save()
-
 
 # ----------------------------------------------------------------------------
 
@@ -146,12 +142,11 @@ class IPUscribeClient( BaseClient ):
 class IPUscribe( wx.Panel ):
     """
     Create the whole IPUscribe panel.
-    """
 
+    """
     def __init__(self, parent, prefsIO):
-        """
-        Create a new instance.
-        """
+        """ Create a new instance. """
+
         wx.Panel.__init__(self, parent, -1, style=wx.NO_BORDER)
         sizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -200,20 +195,17 @@ class IPUscribe( wx.Panel ):
     #----------------------------------------------------------------------
 
     def _create_media(self):
-        """
-        Create the media panel.
-        """
-        self._mediaPanel = SndPlayer(self, orient=wx.HORIZONTAL, refreshtimer=10, prefsIO=self._prefsIO)
+        """ Create the media panel. """
 
+        self._mediaPanel = SndPlayer(self, orient=wx.HORIZONTAL, refreshtimer=10, prefsIO=self._prefsIO)
         self._mediaPanel.SetPreferences(self._prefsIO)
         self._mediaPanel.ActivateButtons(False)
 
     #----------------------------------------------------------------------
 
     def _create_nav(self):
-        """
-        Create the page-navigation panel.
-        """
+        """ Create the page-navigation panel. """
+
         self._navPanel = wx.Panel(self)
         s = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -261,6 +253,7 @@ class IPUscribe( wx.Panel ):
 
     def __set_footer(self):
         """ Set the label of the footer. """
+
         pagenb = "---"
         if self._current_page:
             pagenb = str(self._current_page)
@@ -272,11 +265,11 @@ class IPUscribe( wx.Panel ):
 
     # ----------------------------------------------------------------------
 
-
     def _check_prefs(self, prefs):
         """
         Check if preferences are set properly. Set new ones if required.
         Return the new version.
+
         """
         if prefs is None:
             prefs = Preferences( BaseTheme() )
@@ -300,13 +293,10 @@ class IPUscribe( wx.Panel ):
 
         return prefs
 
-    #-------------------------------------------------------------------------
-
 
     # ----------------------------------------------------------------------
     # Callbacks... Page navigation
     # ----------------------------------------------------------------------
-
 
     def OnFirstPage(self, evt=None):
         """
@@ -318,6 +308,7 @@ class IPUscribe( wx.Panel ):
             self._trsPanel.KillFocus()
             self._mediaPanel.SetOffsetPeriod(0,0)
 
+    # ----------------------------------------------------------------------
 
     def OnLastPage(self, evt=None):
         """
@@ -329,6 +320,7 @@ class IPUscribe( wx.Panel ):
             self._trsPanel.KillFocus()
             self._mediaPanel.SetOffsetPeriod(0,0)
 
+    # ----------------------------------------------------------------------
 
     def OnPrevPage(self, evt=None):
         """
@@ -340,6 +332,7 @@ class IPUscribe( wx.Panel ):
             self._trsPanel.KillFocus()
             self._mediaPanel.SetOffsetPeriod(0,0)
 
+    # ----------------------------------------------------------------------
 
     def OnNextPage(self, evt=None):
         """
@@ -351,6 +344,7 @@ class IPUscribe( wx.Panel ):
             self._trsPanel.KillFocus()
             self._mediaPanel.SetOffsetPeriod(0,0)
 
+    # ----------------------------------------------------------------------
 
     def OnSpinPage(self, evt):
         """
@@ -358,6 +352,7 @@ class IPUscribe( wx.Panel ):
         """
         self._textpage.SetValue(str(evt.GetPosition()))
 
+    # ----------------------------------------------------------------------
 
     def OnChangeIPUbyPage(self, evt):
         """
@@ -377,7 +372,6 @@ class IPUscribe( wx.Panel ):
 
     # ------------------------------------------------------------------------
 
-
     def OnFocus(self, event):
         """
         An IPU received the focus.
@@ -388,8 +382,6 @@ class IPUscribe( wx.Panel ):
         self._mediaPanel.FileSelected( self._sndname )
         (s,e) = self._trsPanel.GetSelectionStartEnd()
         self._mediaPanel.SetOffsetPeriod( int(s),int(e) )
-
-    # ------------------------------------------------------------------------
 
 
     # ----------------------------------------------------------------------
@@ -402,9 +394,7 @@ class IPUscribe( wx.Panel ):
 
         self._trsPanel.Save()
 
-    # End Save
     # ----------------------------------------------------------------------
-
 
     def SetFont(self, font):
         """ Change font of all texts. """
@@ -420,9 +410,7 @@ class IPUscribe( wx.Panel ):
         self._footer.SetFont( font )
         self._txtinfo.SetFont( font )
 
-    # End SetFont
     # ----------------------------------------------------------------------
-
 
     def SetBackgroundColour(self, color):
         """ Change background of all panels. """
@@ -439,9 +427,7 @@ class IPUscribe( wx.Panel ):
         self._footer.SetBackgroundColour( color )
         self._txtinfo.SetBackgroundColour( color )
 
-    # End SetBackgroundColour
     # ----------------------------------------------------------------------
-
 
     def SetForegroundColour(self, color):
         """ Change foreground of all panels. """
@@ -458,29 +444,20 @@ class IPUscribe( wx.Panel ):
         self._footer.SetForegroundColour( color )
         self._txtinfo.SetForegroundColour( color )
 
-    # End SetForegroundColour
-    # ----------------------------------------------------------------------
-
 
     # ----------------------------------------------------------------------
     # Callbacks
     # ----------------------------------------------------------------------
 
-
     def OnFileWander(self, event):
-        """
-        A file was selected/unselected.
-        """
+        """ A file was selected/unselected.  """
+
         f = event.filename
         s = event.status
-
         if s is True:
             self.FileSelected( f )
         else:
             self.FileDeSelected()
-
-    # End OnFileWander
-    # ----------------------------------------------------------------------
 
 
     # ----------------------------------------------------------------------
@@ -496,15 +473,15 @@ class IPUscribe( wx.Panel ):
                 pass
         return None
 
+    # ----------------------------------------------------------------------
 
     def FileSelected(self, filename):
-        """
-        Add files.
-        """
+        """ Add files. """
+
         got = False
         name = os.path.splitext(filename)[0]
         for ext in annotationdata.io.extensions:
-            if ext == '.txt':
+            if ext in [ '.pitchtier', '.hz', '.txt']:
                 continue
             f = self.exists( name+ext )
             if got is False and f is not None:
@@ -520,45 +497,43 @@ class IPUscribe( wx.Panel ):
                 else:
                     self._trsPanel.UnsetData()
 
+        self._sndname = filename
+
         if got is False:
             ShowInformation(self, self._prefsIO, "Missing IPUs: A file with an IPUs segmentation is required.", wx.ICON_ERROR)
             self.FileDeSelected()
             return
 
-        self._sndname = filename
-
-    # End OnFileSelected
     # ------------------------------------------------------------------------
 
-
     def FileDeSelected(self):
-        """
-        Remove the file.
-        """
+        """ Remove the file. """
+
         if self._trsPanel._dirty is True:
             # dlg to ask to save or not
             userChoice = ShowYesNoQuestion( None, self._prefsIO, "Do you want to save changes on the transcription of audio file %s?"%self._sndname)
             if userChoice == wx.ID_YES:
                 self._trsPanel.Save()
 
-        self._trsPanel.UnsetData()
-        self._mediaPanel.FileDeSelected()
-        self._current_page = 0
-        self._txtinfo.SetLabel("")
-        self._mediaPanel.onClose(None)
+        try:
+            self._trsPanel.UnsetData()
+            self._current_page = 0
+            self._txtinfo.SetLabel("")
+            self._mediaPanel.FileDeSelected()
+            self._mediaPanel.onClose(None)
+        except Exception as e:
+            logging.debug('ERROR for file %s: %s'%(self._sndname,str(e)))
 
         evt = FileWanderEvent(filename=self._sndname, status=False)
         evt.SetEventObject(self)
         wx.PostEvent( self.GetParent().GetParent().GetParent(), evt )
         self._sndname = None
 
-    # End FileDeSelected
     # ------------------------------------------------------------------------
 
     def OnKeyPress(self, event):
-        """
-        Respond to a keypress event.
-        """
+        """ Respond to a keypress event. """
+
         keycode = event.GetKeyCode()
 
         # Media player
@@ -579,7 +554,7 @@ class IPUscribe( wx.Panel ):
 
         elif keycode == wx.WXK_ESCAPE:
             self._mediaPanel.onStop( event )
-        
+
         else:
             event.Skip()
 
