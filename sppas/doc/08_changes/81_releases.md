@@ -1036,6 +1036,21 @@ Automatic annotations:
     - Use of a .ini file to configure each annotation instead of a sppas.conf file
 
 
+#### SPPAS-1.8.1 (2016-28-11)
+
+New: 
+
+    - A few tutorials are available on the web site.
+
+Automatic annotations:
+
+    - Align: an ActivityDuration tier can be optionnally added.
+    - Support of 3-columns tab-delimited files with .txt extension. It allows the compatibility with Audacity Label track files.
+    - Acoustic models training validated.
+
+Resources:
+    - Catalan: new pronunciation dictionary and new acoustic model.
+
 
 ## the Modern period
 
