@@ -1,4 +1,4 @@
-# Tutorial 1: Corpus creation methodology
+# Corpus creation methodology
 
 ------------------------------------------------------------------------
 

@@ -565,17 +565,20 @@ function fct_sppas_doc {
 
     echo ' Tutorials for the web';
     cat $TUTO_DIR/tutorial_header.html > $WEB_DIR/tutorial.html
-    echo '<ol>' >> $WEB_DIR/tutorial.html
+    echo "<h1>In-line tutorials</h1>" >> $WEB_DIR/tutorial.html
 
     # An HTML file is generated for each md file of each folder of the tutorial
+    i=1
     local folders=$(fct_get_docfolders $TUTO_DIR)
     for folder in $folders;
     do
-        echo "<li>$folder</li>" >> $WEB_DIR/tutorial.html
-        echo '  <ul>' >> $WEB_DIR/tutorial.html
+        foldername=`echo $folder | cut -f1 -d';'`
+        foldertitle=`echo $folder | cut -f2 -d';' | sed -e 's/_/ /g'`
+        
+        echo "<h3>Tutorial $i: $foldertitle</h3>" >> $WEB_DIR/tutorial.html
         
         echo " ... $folder"
-        local files=$(fct_get_md_idx $TUTO_DIR $folder)
+        local files=$(fct_get_md_idx $TUTO_DIR $foldername)
         
         for file in $files;
         do 
@@ -604,14 +607,13 @@ function fct_sppas_doc {
                 {print}'  > $WEB_DIR/tutorial_${outfile}.html
 
             rm toto.html
-            
-            echo '<li><a href="tutorial_'${outfile}'.html">'$outfile'</a></li>' >> $WEB_DIR/tutorial.html
+            echo '<p><a href="tutorial_'${outfile}'.html">'`head -n1 $file | sed -e "s/#//"`'</a></p>' >> $WEB_DIR/tutorial.html
         done
-
-        echo '</ul>' >> $WEB_DIR/tutorial.html
+        i=$((i+1))
+        echo '<p><br></p>' >> $WEB_DIR/tutorial.html
 
     done
-    echo '</ol>' >> $WEB_DIR/tutorial.html
+    echo '<p><br><br></p>' >> $WEB_DIR/tutorial.html
     cat $TUTO_DIR/tutorial_footer.html >> $WEB_DIR/tutorial.html
 
     # Package: erase old then copy new

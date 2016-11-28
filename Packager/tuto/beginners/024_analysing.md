@@ -1,8 +1,8 @@
-# Tutorial: Analysing
+# Analyze annotated data
 
 -----------------------------
 
-## Analysing
+## Analyze
 
 ![](./etc/screencasts/sppas-analyse.mp4)
 

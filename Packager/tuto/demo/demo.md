@@ -1,4 +1,4 @@
-# Tutorial: Full demo
+# SPPAS full demonstration
 
 ## Launch SPPAS
 

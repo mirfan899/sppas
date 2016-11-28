@@ -1,4 +1,4 @@
-# Tutorial 2: Data preparation for automatic annotations
+# Data preparation for automatic annotations
 
 ## (Step 1) Recording Speech
 

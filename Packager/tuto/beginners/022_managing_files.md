@@ -1,4 +1,4 @@
-# Tutorial: Managing files
+# Manage files
 
 -----------------------------
 

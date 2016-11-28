@@ -1,8 +1,8 @@
-# Tutorial: Annotating automatically
+# Annotate automatically
 
 -----------------------------
 
-## Annotating
+## Annotate automatically
 
 ![](./etc/screencasts/sppas-annotate.mp4)
 
