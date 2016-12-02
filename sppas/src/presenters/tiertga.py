@@ -274,12 +274,13 @@ class TierTGA( object ):
             # a TG separator (create a new tg if previous tg was used!)
             if a.GetLabel().IsSilence() or a.GetLabel().IsDummy() or alabel in self.__separators:
                 if len(seglabels)>0:
-                    newa = Annotation(TimeInterval(tgann.GetLocation().GetEnd(),a.GetLocation().GetBegin()), Label(tglabel))
-                    tgtier.Append( newa )
-                    newa = Annotation(TimeInterval(tgann.GetLocation().GetEnd(),a.GetLocation().GetBegin()), Label( " ".join( seglabels )))
-                    segstier.Append( newa )
-                    i = i+1
-                    tglabel = TierTGA.TG_LABEL+str(i)
+                    if tgann is not None:
+                        newa = Annotation(TimeInterval(tgann.GetLocation().GetEnd(),a.GetLocation().GetBegin()), Label(tglabel))
+                        tgtier.Append( newa )
+                        newa = Annotation(TimeInterval(tgann.GetLocation().GetEnd(),a.GetLocation().GetBegin()), Label( " ".join( seglabels )))
+                        segstier.Append( newa )
+                        i = i+1
+                        tglabel = TierTGA.TG_LABEL+str(i)
                     seglabels = ""
                 tgann = a
             # a TG continuum

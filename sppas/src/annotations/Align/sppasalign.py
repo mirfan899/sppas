@@ -38,6 +38,7 @@
 import shutil
 import os.path
 import glob
+import logging
 
 import utils.fileutils as fileutils
 
@@ -112,6 +113,7 @@ class sppasAlign( sppasBase ):
         self._options['infersp']  = False # Add 'sp' at the end of each token
         self._options['basic']    = False # Perform a basic alignment if error
         self._options['activity'] = True
+        self._options['activityduration'] = False
         self._options['phntok']   = False
 
     # -----------------------------------------------------------------------
@@ -577,6 +579,7 @@ class sppasAlign( sppasBase ):
 
     def rustine_others(self, trs):
         """ veritable rustine pour decaler la fin des non-phonemes. """
+
         tierphon = trs.Find("PhonAlign")
         if tierphon is None:
             return trs
@@ -623,9 +626,12 @@ class sppasAlign( sppasBase ):
 
     def rustine_liaisons(self, trs):
         """ veritable rustine pour supprimer qqs liaisons en trop. """
+
         # Only for French!
-        if self.alignio.aligntrack.get_model().startswith("fra") is False:
+        if self.alignio.aligntrack.get_model().endswith("fra") is False:
             return trs
+
+        logging.debug('SPPAS patch for the selection of liaisons...')
 
         tierphon   = trs.Find("PhonAlign")
         tiertokens = trs.Find("TokensAlign")
@@ -634,7 +640,7 @@ class sppasAlign( sppasBase ):
 
         # supprime les /z/ et /t/ de fin de mot si leur duree est < 65ms.
         for i, a in reversed(list(enumerate(tierphon))):
-            if a.GetLocation().GetDuration() < 0.045 and a.GetLabel().GetValue() in [ "z", "n", "t" ]:
+            if a.GetLocation().GetDuration().GetValue() < 0.055 and a.GetLabel().GetValue() in [ "z", "n", "t" ]:
                 # get the corresponding token
                 for t in tiertokens:
                     # this is not the only phoneme in this token!
@@ -644,6 +650,7 @@ class sppasAlign( sppasBase ):
                         lastchar = lastchar[-1]
                     if a.GetLocation().GetEnd() == t.GetLocation().GetEnd() and a.GetLocation().GetBegin() != t.GetLocation().GetBegin() and not lastchar in ["a", "e", "i", "o", "u", u"é", u"à", u"è"] :
                         # Remove a and extend previous annotation
+                        logging.debug(' ... liaison removed %s in token %s'%(a,t.GetLabel().GetValue()))
                         prev = tierphon[i-1]
                         a = tierphon.Pop(i)
                         prev.GetLocation().SetEndMidpoint( a.GetLocation().GetEndMidpoint() )
