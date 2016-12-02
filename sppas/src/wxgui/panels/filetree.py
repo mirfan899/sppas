@@ -56,6 +56,7 @@ from wxgui.dialogs.filedialogs import OpenSoundFiles
 from wxgui.dialogs.filedialogs import SaveAsAnnotationFile
 from wxgui.dialogs.msgdialogs  import ShowInformation
 from wxgui.dialogs.msgdialogs  import ShowYesNoQuestion
+from wxgui.dialogs.msgdialogs  import Choice
 
 import annotationdata.io
 
@@ -289,9 +290,10 @@ class FiletreePanel( wx.Panel ):
         # Ask for the expected file format
         errors = False
         extensions = annotationdata.io.extensions_out
-        dlg = wx.SingleChoiceDialog( self,
-                                   "Check the file format:",
-                                   "File extension", extensions)
+        dlg = Choice(self, self._prefsIO, "Select the file extension to export to:", extensions)
+                     #wx.SingleChoiceDialog( self,
+                     #              "Check the file format:",
+                     #              "File extension", extensions)
         dlg.SetSelection( 0 ) # default choice (=xra)
 
         if dlg.ShowModal() == wx.ID_OK:
