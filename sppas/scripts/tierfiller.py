@@ -40,7 +40,7 @@
 
 __docformat__ = """epytext"""
 __authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2014  Brigitte Bigi"""
+__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 
 # ----------------------------------------------------------------------------
@@ -58,6 +58,7 @@ sys.path.append(SPPAS)
 
 import annotationdata.io
 from   annotationdata.label.label import Label
+from annotationdata.io.utils import fill_gaps
 
 # ----------------------------------------------------------------------------
 
@@ -165,6 +166,7 @@ elif args.t:
 
 for i in tiersnumbs:
     tier = trsinput[i-1]
+    tier = fill_gaps(tier, trsinput.GetMinTime(), trsinput.GetMaxTime())
     print "Tier: ",tier.GetName()
     print "Fill empty intervals with",args.f, "(and merge with previous or following if any)"
     fct_fill(tier, args.f)
