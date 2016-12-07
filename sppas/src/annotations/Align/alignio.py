@@ -143,6 +143,7 @@ class AlignIO:
             msg = self.aligntrack.segmenter(audiofilename, phonname, tokenname, alignname)
         else:
             msg = self.aligntrack.segmenter(audiofilename, None, None, alignname)
+
         return msg
 
     # ------------------------------------------------------------------------

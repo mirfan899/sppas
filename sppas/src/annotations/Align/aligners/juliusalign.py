@@ -359,7 +359,7 @@ class JuliusAligner( BaseAligner ):
             if (line.startswith("Error:") or line.startswith("ERROR:")) and not " line " in line:
                 errorlines = errorlines + line
             if "search failed" in line:
-                message = "Julius search has failed to find the transcription in the audio file of this unit."
+                message = "Julius search has failed to find the transcription in the audio file. "
                 errorlines = "Search error. "+ errorlines
 
         if len(errorlines) > 0:

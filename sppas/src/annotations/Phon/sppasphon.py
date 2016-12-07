@@ -78,6 +78,7 @@ class sppasPhon( sppasBase ):
         @param mapfile (str) is the filename of a mapping table. It is used
         to generate new pronunciations by mapping phonemes of the dictionary.
         @param logfile (sppasLog) is a log file utility class member.
+        @raise ValueError if loading the dictionary fails
 
         """
         sppasBase.__init__(self, logfile)

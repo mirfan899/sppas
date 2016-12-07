@@ -57,6 +57,7 @@ SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
 import annotationdata.io
+from annotationdata.transcription import Transcription
 from   annotationdata.label.label import Label
 from annotationdata.io.utils import fill_gaps
 
@@ -107,11 +108,13 @@ def fct_fill(tier, filler):
                 print "   gives:",ann.GetLocation().GetBegin().GetValue(),ann.GetLocation().GetEnd().GetValue()
         i = i - 1
 
+    return tier
+
 # ----------------------------------------------------------------------------
 
 def fct_clean(tier, filler, duration):
     """
-    Merge too short interval with the previous one if filler match.
+    Merge too short intervals with the previous one if filler match.
     
     """
     i = tier.GetSize()-1
@@ -131,6 +134,8 @@ def fct_clean(tier, filler, duration):
                 print "   gives:",ann.GetLocation().GetBegin().GetValue(),ann.GetLocation().GetEnd().GetValue(),"label:",ann.GetLabel().GetValue()
 
         i = i - 1
+
+    return tier
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -164,19 +169,28 @@ elif args.t:
 # ----------------------------------------------------------------------------
 # Fill
 
+trsout = Transcription()
+
 for i in tiersnumbs:
     tier = trsinput[i-1]
+
     tier = fill_gaps(tier, trsinput.GetMinTime(), trsinput.GetMaxTime())
+    ctrlvocab = tier.GetCtrlVocab()
+    if ctrlvocab is not None:
+        if ctrlvocab.Contains(args.f) is False:
+            ctrlvocab.Append( args.f, descr="Filler" )
+
     print "Tier: ",tier.GetName()
     print "Fill empty intervals with",args.f, "(and merge with previous or following if any)"
-    fct_fill(tier, args.f)
+    tier = fct_fill(tier, args.f)
     print "Merge intervals during less than",args.d
-    fct_clean(tier, args.f, args.d)
+    tier = fct_clean(tier, args.f, args.d)
     print
+    trsout.Append(tier)
 
 # ----------------------------------------------------------------------------
 # Write
 
-annotationdata.io.write(args.o, trsinput)
+annotationdata.io.write(args.o, trsout)
 
 # ----------------------------------------------------------------------------

@@ -656,7 +656,7 @@ class sppasAlign( sppasBase ):
                         prev.GetLocation().SetEndMidpoint( a.GetLocation().GetEndMidpoint() )
                         #self.logfile.print_message( "Liaison removed: %s " % a)
                         # Enlever le phoneme de tierphntok!
-
+                        # TODO
         return trs
 
     # ------------------------------------------------------------------------
