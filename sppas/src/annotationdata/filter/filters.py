@@ -246,7 +246,7 @@ class RelationFilter(Filter):
             try:
                 tier.Append(a)
             except:
-                if annotformat=="{rel}" and i>1:
+                if "{rel}" in annotformat and i>1:
                     annotlabel = annotformat.format(x=x.GetLabel(), rel=rel, y=y.GetLabel())
                     e = tier[-1]
                     label = e.GetLabel().GetValue()
