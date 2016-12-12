@@ -171,8 +171,8 @@ class SingleFilter(Filter):
         @return: (Tier)
 
         """
-        tier = Tier(self.tier.GetName()+"SingleFilter")
-        tier.SetSherableProperties(self.tier)
+        tier = Tier(self.filter.tier.GetName()+"SingleFilter")
+        tier.SetSherableProperties(self.filter.tier)
         for x in self:
             try:
                 tier.Add(x.Copy())
