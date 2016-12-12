@@ -82,15 +82,22 @@ class Filter(object):
     >>> copytier = f.Filter()
 
     """
-    def __init__(self, tier):
+    def __init__(self, tier, unfill=False):
         """
         @param tier: (Tier)
+        @param unfill (bool) Remove empty labels.
         """
         self.tier = tier
+        self.unfill = unfill
 
     def __iter__(self):
         for x in self.tier:
-            yield x
+            if self.unfill is False:
+                yield x
+            else:
+                if x.GetLabel().IsEmpty() is False:
+                    yield x
+
 
     def Label(self, predicate):
         """
@@ -117,7 +124,8 @@ class Filter(object):
 
         """
         tier = Tier()
-        for x in self.tier:
+        tier.SetSherableProperties(self.tier)
+        for x in self:
             try:
                 tier.Add(x.Copy())
             except:
@@ -163,7 +171,8 @@ class SingleFilter(Filter):
         @return: (Tier)
 
         """
-        tier = Tier()
+        tier = Tier(self.tier.GetName()+"SingleFilter")
+        tier.SetSherableProperties(self.tier)
         for x in self:
             try:
                 tier.Add(x.Copy())
@@ -235,7 +244,8 @@ class RelationFilter(Filter):
             By default we keep the x label (equivalent to "{x}").
         @return: (Tier)
         """
-        tier = Tier()
+        tier = Tier(self.filter1.tier.GetName()+"Relation"+self.filter2.tier.GetName())
+        tier.SetSherableProperties(self.filter1.tier)
 
         i = 0
         # feed the tier
