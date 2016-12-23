@@ -40,7 +40,7 @@ import os.path
 from sp_glob import SPPAS_CONFIG_DIR
 from sp_glob import DEFAULT_OUTPUT_EXTENSION
 
-from structs.confparser import AnnotationConfigParser
+from annotations.cfgparser import AnnotationConfigParser
 
 # ----------------------------------------------------------------------------
 

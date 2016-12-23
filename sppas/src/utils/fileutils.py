@@ -68,7 +68,7 @@ def exists(filename):
 
 def get_files(directory,extension,recurs=True):
     """
-    Get a file list of a directory.
+    Get the lust of files of a directory.
 
     @param directory is the directory to find files
     @param extension is the file extension to filter the directory content
@@ -78,7 +78,7 @@ def get_files(directory,extension,recurs=True):
     """
     filelist = []
     if os.path.exists(directory):
-        filelist = dirEntries(directory, recurs, extension)
+        filelist = dir_entries(directory, recurs, extension)
         #filelist = [x for x in os.listdir(directory) if x.lower().endswith(extension.lower())]
     else:
         message = "ERROR: The directory "+directory+" does not exists."
@@ -87,7 +87,7 @@ def get_files(directory,extension,recurs=True):
 
 # ----------------------------------------------------------------------------
 
-def dirEntries(dir_name, subdir, extension):
+def dir_entries(dir_name, subdir, extension):
     """
     Return a list of file names found in directory 'dir_name'.
 
@@ -106,7 +106,7 @@ def dirEntries(dir_name, subdir, extension):
                     fileList.append(dirfile)
         # recursively access file names in subdirectories
         elif os.path.isdir(dirfile) and subdir:
-            fileList.extend(dirEntries(dirfile, subdir, extension))
+            fileList.extend(dir_entries(dirfile, subdir, extension))
     return fileList
 
 # ----------------------------------------------------------------------------

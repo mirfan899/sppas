@@ -4,7 +4,7 @@
 import unittest
 import os
 
-from structs.confparser import AnnotationConfigParser
+from annotations.cfgparser import AnnotationConfigParser
 from sp_glob import RESOURCES_PATH
 
 from paths import SPPAS
@@ -42,3 +42,6 @@ class TestAnnotationConfigParser(unittest.TestCase):
         self.assertEqual(len(conf), 3)
         self.assertEqual(len(opt), 9)
         self.assertEqual(len(res), 0)
+
+# ---------------------------------------------------------------------------
+

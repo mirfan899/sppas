@@ -32,13 +32,12 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: confparser.py
+# File: cfgparser.py
 # ----------------------------------------------------------------------------
 
 from ConfigParser import SafeConfigParser
 import codecs
 
-from structs.lang       import LangResource
 from structs.baseoption import Option
 
 """
@@ -59,44 +58,40 @@ from structs.baseoption import Option
 
 """
 
-# ----------------------------------------------------------------------------
-
-class AnnotationConfigParser( object ):
+class PluginConfigParser( object ):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Class to read an annotation configuration file.
+    @summary:      Class to read a plugin configuration file.
 
     The required section "Configuration" includes an id, a name and a
     description, as for example:
         [Configuration]
-        id:    annotationid
-        name:  The Annotation Name
-        descr: Performs an annotation on a file.
+        id:    pluginid
+        name:  The Plugin Name
+        descr: Performs something on some files.
+        icon:  path (optional)
 
-    Then, a set of sections with name starting by "Resource" can be defined,
-    with the relative path to resource directory, the type (file or dir) and
-    the extension, as for example:
-        [Resource]
-        path:  vocab
-        type:  file
-        ext:   .stp
+    Then, a required section with the name "Command" containing the "file" to
+    work on:
+        [Command]
+        windows: toto.exe file
+        macos:   toto.command file
+        linux:   toto.bash file
 
     Finally, a set of sections with name starting by "Option" can be appended,
     as follow:
-        [Option1]
-        id:    optid
-        type:  int
-        value: 0
-        text:  Explain what this option do here.
+        [Option2]
+        id:    -v
+        type:  boolean
+        value: False
+        text:  Verbose mode
 
     """
     def __init__(self):
-        """ Creates a new instance. """
-
         self.reset()
         self.parser = SafeConfigParser()
 
@@ -105,23 +100,23 @@ class AnnotationConfigParser( object ):
     def reset(self):
         """ Set all members to their default value. """
 
-        self.config = {}
-        self.resources = []
-        self.options   = []
+        self._config = {}
+        self._command = {}
+        self._options = []
 
     # ------------------------------------------------------------------------
 
     def get_config(self):
         """ Return the configuration dictionary. """
-        return self.config
+        return self._config
 
-    def get_resources(self):
-        """ Return the list of language resources. """
-        return self.resources
+    def get_command(self):
+        """ Return the commands dictionary. """
+        return self._command
 
     def get_options(self):
         """ Return the list of options. """
-        return self.options
+        return self._options
 
     # ------------------------------------------------------------------------
 
@@ -139,7 +134,13 @@ class AnnotationConfigParser( object ):
             self.parser.readfp(f)
 
         # Analyze content and set to appropriate data structures
-        self._parse()
+        if self.parser.has_section( "Configuration" ):
+            if self.parser.has_section( "Command" ):
+                self._parse()
+            else:
+                raise ValueError("[Command] section is required.")
+        else:
+            raise ValueError("[Configuration] section is required.")
 
     # ------------------------------------------------------------------------
     # Private
@@ -152,42 +153,26 @@ class AnnotationConfigParser( object ):
             if section_name == "Configuration":
                 self._parse_config(self.parser.items(section_name))
 
-            if section_name.startswith("Resource"):
-                self.resources.append( self._parse_resource(self.parser.items(section_name)) )
+            if section_name == "Command":
+                self._parse_command(self.parser.items(section_name))
 
             if section_name.startswith("Option"):
-                self.options.append( self._parse_option(self.parser.items(section_name)) )
+                self._options.append( self._parse_option(self.parser.items(section_name)) )
 
     # ------------------------------------------------------------------------
 
     def _parse_config(self, items):
 
         for name,value in items:
-            self.config[name] = value.encode('utf-8')
+            self._config[name] = value.encode('utf-8')
+        if not 'id' in self._config.keys():
+            raise ValueError("[Configuration] section must contain an 'id' option.")
 
-    # ------------------------------------------------------------------------
+    def _parse_command(self, items):
 
-    def _parse_resource(self, items):
-
-        rtype = ""
-        rpath = ""
-        rname = ""
-        rext  = ""
-        lr = LangResource()
         for name,value in items:
-            if name == "type":
-                rtype = value.encode('utf-8')
-            elif name == "path":
-                rpath = value.encode('utf-8')
-            elif name == "name":
-                rname = value.encode('utf-8')
-            elif name == "ext":
-                rext  = value.encode('utf-8')
-        lr.set( rtype, rpath, rname, rext )
+            self._command[name] = value.encode('utf-8')
 
-        return lr
-
-    # ------------------------------------------------------------------------
 
     def _parse_option(self, items):
 
@@ -212,5 +197,3 @@ class AnnotationConfigParser( object ):
         opt.set_text(otext)
 
         return opt
-
-    # ------------------------------------------------------------------------

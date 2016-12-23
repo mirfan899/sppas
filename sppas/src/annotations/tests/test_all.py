@@ -21,6 +21,8 @@ from test_spkrate  import TestSpeakerRate
 from test_tracks   import TestAnchorTier
 from test_tracks   import TestTracksAlign
 
+from test_cfgparser import TestAnnotationConfigParser
+
 if os.path.exists( TEMP ) is False:
     os.mkdir( TEMP )
 
@@ -47,6 +49,9 @@ testsuite.addTest(unittest.makeSuite(TestHviteAlign))
 testsuite.addTest(unittest.makeSuite(TestAlignersPackage))
 
 testsuite.addTest(unittest.makeSuite(TestSyll))
+
+testsuite.addTest(unittest.makeSuite(TestAnnotationConfigParser))
+
 
 # run the test...
 unittest.TextTestRunner(verbosity=2).run(testsuite)
