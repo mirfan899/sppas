@@ -4,20 +4,20 @@
 import unittest
 import os
 
-from structs.confparser import ConfigParser
+from structs.confparser import AnnotationConfigParser
 from sp_glob import RESOURCES_PATH
 
 from paths import SPPAS
 
-INITOK   = os.path.join(SPPAS, "sppas", "src", "annotations", "Token", "Token.ini")
-INIMOMEL = os.path.join(SPPAS, "sppas", "src", "annotations", "Momel", "Momel.ini")
+INITOK   = os.path.join(SPPAS, "sppas", "etc", "Token.ini")
+INIMOMEL = os.path.join(SPPAS, "sppas", "etc", "Momel.ini")
 
 # ---------------------------------------------------------------------------
 
-class TestConfigParser(unittest.TestCase):
+class TestAnnotationConfigParser(unittest.TestCase):
 
     def setUp(self):
-        self.cfg = ConfigParser()
+        self.cfg = AnnotationConfigParser()
 
     def test_parsetok(self):
         self.cfg.parse(INITOK)

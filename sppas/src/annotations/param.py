@@ -40,7 +40,7 @@ import os.path
 from sp_glob import SPPAS_CONFIG_DIR
 from sp_glob import DEFAULT_OUTPUT_EXTENSION
 
-from structs.confparser import ConfigParser
+from structs.confparser import AnnotationConfigParser
 
 # ----------------------------------------------------------------------------
 
@@ -80,7 +80,7 @@ class annotationParam( object ):
     # ------------------------------------------------------------------------
 
     def parse(self, filename):
-        p = ConfigParser()
+        p = AnnotationConfigParser()
         p.parse( filename )
         self.options = p.get_options()
         self.langres = p.get_resources()

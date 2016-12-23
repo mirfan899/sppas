@@ -41,17 +41,7 @@ import codecs
 from structs.lang       import LangResource
 from structs.baseoption import Option
 
-# ----------------------------------------------------------------------------
-
-class ConfigParser( object ):
-    """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Class to read a configuration file.
-
+"""
     A config file consists of one or more named sections, each of which can
     contain individual options with names and values.
 
@@ -66,6 +56,42 @@ class ConfigParser( object ):
 
     A config file may include comments, prefixed by specific characters
     (# and ;).
+
+"""
+
+# ----------------------------------------------------------------------------
+
+class AnnotationConfigParser( object ):
+    """
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @summary:      Class to read an annotation configuration file.
+
+    The required section "Configuration" includes an id, a name and a
+    description, as for example:
+        [Configuration]
+        id:    annotationid
+        name:  The Annotation Name
+        descr: Performs an annotation on a file.
+
+    Then, a set of sections with name starting by "Resource" can be defined,
+    with the relative path to resource directory, the type (file or dir) and
+    the extension, as for example:
+        [Resource]
+        path:  vocab
+        type:  file
+        ext:   .stp
+
+    Finally, a set of sections with name starting by "Option" can be appended,
+    as follow:
+        [Option1]
+        id:    optid
+        type:  int
+        value: 0
+        text:  Explain what this option do here.
 
     """
     def __init__(self):
@@ -83,8 +109,6 @@ class ConfigParser( object ):
         self.resources = []
         self.options   = []
 
-    # ------------------------------------------------------------------------
-    # Getters
     # ------------------------------------------------------------------------
 
     def get_config(self):
@@ -115,7 +139,7 @@ class ConfigParser( object ):
             self.parser.readfp(f)
 
         # Analyze content and set to appropriate data structures
-        self._parse( )
+        self._parse()
 
     # ------------------------------------------------------------------------
     # Private
