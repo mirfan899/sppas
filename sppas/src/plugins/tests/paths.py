@@ -7,3 +7,4 @@ SPPAS = dirname(dirname(dirname(dirname(dirname(abspath(__file__))))))
 sys.path.append( join(SPPAS, "sppas", "src") )
 
 DATA = join(dirname(abspath(__file__)), "data")
+SPPASSAMPLES = join(SPPAS, "samples")

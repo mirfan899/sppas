@@ -32,7 +32,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: process.py
+# File: manager.py
 # ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
@@ -69,7 +69,7 @@ from threading import Thread
 
 # ----------------------------------------------------------------------------
 
-class sppasProcess( Thread ):
+class sppasAnnotationsManager( Thread ):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -84,7 +84,7 @@ class sppasProcess( Thread ):
     """
     def __init__(self, parameters):
         """
-        Create a new sppasProcess instance.
+        Create a new sppasAnnotationsManager instance.
         Initialize a Thread.
 
         @param parameters (sppasParam) SPPAS parameters, i.e. config of annotations

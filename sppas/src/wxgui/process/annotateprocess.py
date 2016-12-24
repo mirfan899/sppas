@@ -47,7 +47,7 @@ import os
 import wx
 import shutil
 
-from annotations.process import sppasProcess
+from annotations.manager import sppasAnnotationsManager
 
 from wxgui.views.log import ShowLogDialog
 from wxgui.views.processprogress import ProcessProgressDialog
@@ -125,7 +125,7 @@ class AnnotateProcess( object ):
         wx.BeginBusyCursor()
         p = ProcessProgressDialog(parent, self.preferences)
         p.set_title("Automatic Annotation progress...")
-        self.process = sppasProcess(parameters)
+        self.process = sppasAnnotationsManager(parameters)
         self.process.run_annotations( p )
         p.close()
         self.process = None

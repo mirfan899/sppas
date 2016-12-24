@@ -36,142 +36,19 @@
 # ----------------------------------------------------------------------------
 
 import os
+import shutil
 import logging
-import platform
-from subprocess import Popen, PIPE, STDOUT
+import zipfile
+from threading import Thread
 
 from sp_glob import PLUGIN_PATH
-from utils.filesutils import get_files
-from cfgparser import PluginConfigParser
-from dns.rdatatype import OPT
+import utils.fileutils as fileutils
+from param   import sppasPluginParam
+from process import sppasPluginProcess
 
 # ----------------------------------------------------------------------------
 
-# ----------------------------------------------------------------------------
-
-class pluginParam( object ):
-    """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      One SPPAS plugin parameters (Private class).
-
-    """
-    def __init__(self, path, cfgfile):
-        """
-        Creates a new pluginParam instance.
-
-        @param path (string) the directory where to find the plugin
-        @param cfgfile (string) the file name of the plugin configuration (.ini)
-
-        """
-        # The path where to find the plugin
-        self._path = path
-        self.reset()
-
-        # OK... fill members from the given file
-        self.parse( os.path.join(path,cfgfile) )
-
-    # ------------------------------------------------------------------------
-
-    def reset(self):
-        """
-        Reset all members to their default value.
-
-        """
-        # An identifier to represent this plugin
-        self._key  = None
-        # The name of the plugin
-        self._name = ""
-        # The description of the plugin do
-        self._desc = ""
-        # The icon of the plugin application
-        self._icon = ""
-        # The command to be executed
-        self._command = ""
-        # The list of options to append to the command
-        self._options = []
-
-    # ------------------------------------------------------------------------
-
-    def parse(self, filename):
-
-        self.reset()
-        p = PluginConfigParser()
-        p.parse( filename )
-
-        # get the command
-        commands = p.get_command()
-        system = platform.system()
-        if system in commands.keys():
-            self._command = commands[system]
-        else:
-            raise Exception("No command defined for the system: %s"%system)
-
-        # get the configuration
-        conf = p.get_config()
-        self._key   = conf['id']
-        self._name  = conf.get("name", "")
-        self._descr = conf.get("descr", "No description available.")
-        self._icon  = conf.get("icon", "")
-
-        # get the options
-        self._options = p.get_options()
-
-    # ------------------------------------------------------------------------
-    # Getters
-    # ------------------------------------------------------------------------
-
-    def get_key(self):
-        return self._key
-
-    def get_name(self):
-        return self._name
-
-    def get_descr(self):
-        return self._descr
-
-    def get_icon(self):
-        return self._icon
-
-    def get_options(self):
-        return self._options
-
-    def set_options(self, opt):
-        self._options = opt
-
-    # ------------------------------------------------------------------------
-
-    def perform_command(self, filename):
-        """
-        Execute the plugin.
-
-        @param filename (string) The file name of the file to apply the plugin
-        @return Process output
-
-        """
-        # the command
-        command = os.path.join(self._path,self._command)
-        for opt in self._options:
-            command += " "+opt.get_key()
-            command += " "+opt.get_value()
-
-        # Execute the command
-        p = Popen(command, shell=True, stdout=PIPE, stderr=STDOUT)
-        p.wait()
-        line = p.communicate()
-
-        return line
-
-    # ------------------------------------------------------------------------
-
-
-# ----------------------------------------------------------------------------
-
-
-class PluginsManager( object ):
+class sppasPluginsManager( Thread ):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -182,45 +59,152 @@ class PluginsManager( object ):
 
     """
     def __init__(self):
+        """
+        Instantiate the PluginsManager and load the current plugins.
+
+        """
+        Thread.__init__(self)
+
+        # Load the installed plugins
         self._plugins = {}
+        if self.__init_plugin_dir() is True:
+            self.load()
+
+        # To get progress information while executing a plugin
+        self._progress = None
+
+        # Start threading
+        self.start()
+
+    # ------------------------------------------------------------------------
+
+    def get_plugin_ids(self):
+        """
+        Return the list of plugin identifiers.
+
+        """
+        return self._plugins.keys()
+
+    # ------------------------------------------------------------------------
+
+    def get_plugin(self, pluginid):
+        """
+        Return the sppasPluginParam from a plugin identifier.
+
+        """
+        return self._plugins[pluginid]
+
+    # ------------------------------------------------------------------------
+
+    def set_progress(self, progress):
+        """
+        Fix the progress system to be used while executing a plugin.
+
+        @param progress (TextProgress or ProcessProgressDialog)
+
+        """
+        self._progress = progress
 
     # ------------------------------------------------------------------------
 
     def load(self):
         """
-        Load the list of available plugins in the SPPAS directory.
+        Load all installed plugins in the SPPAS directory.
+
+        A plugin is not loaded if:
+            - a configuration file is not defined or corrupted,
+            - the platform system does not match.
 
         """
-        cfgfiles = self.get_config_files()
-        p = PluginConfigParser()
-        for path,file in cfgfiles:
+        folders = self.__get_plugins()
+        for pluginfolder in folders:
             try:
-                p = pluginParam( path,file )
-                pluginid = p.get_key()
-                self._plugins[pluginid] = p
+                self.append(pluginfolder)
             except Exception as e:
-                logging.debug('Error while loading plugin %s: %s'%(path,str(e)))
+                logging.info("Plugin %s loading error: %s"%(pluginfolder,str(e)))
 
     # ------------------------------------------------------------------------
 
-    def get_config_files(self):
-        """ Return a dictionary with key=path and value=cfgfile. """
+    def install(self, pluginarchive, pluginfolder):
+        """
+        Install a plugin into the plugin directory.
 
-        inifiles = {}
-        # Get The list of "ini" files (one for each plugin)
-        for entry in os.listdir(PLUGIN_PATH):
-            entrypath = os.path.join(PLUGIN_PATH, entry)
-            if os.path.isdir(entrypath):
-                # Find a file with the extension .ini
-                files = get_files(entrypath, extension=".ini", recurs=False)
-                if len(files) == 1:
-                    inifiles[entrypath] = files[0]
+        @param pluginarchive (string) File name of the plugin to be installed.
+        @param pluginfolder (string) Destination folder name of the plugin to be installed.
 
-        return inifiles
+        """
+        if zipfile.is_zipfile(pluginarchive) is False:
+            raise TypeError('Unsupported plugin file type.')
+
+        plugindir = os.path.join(PLUGIN_PATH,pluginfolder)
+        if os.path.exists(plugindir):
+            raise IOError("A plugin is already existing in that folder.")
+
+        os.mkdir(plugindir)
+
+        with zipfile.ZipFile(pluginarchive, 'r') as z:
+            restest = z.testzip()
+            if restest is not None:
+                raise Exception('zip file corrupted.')
+            z.extractall(plugindir)
+
+        try:
+            pluginid = self.append(pluginfolder)
+        except Exception:
+            shutil.rmtree(plugindir)
+            raise
+
+        return pluginid
 
     # ------------------------------------------------------------------------
 
-    def perform_plugin(self, pluginid, filenames):
+    def delete(self, pluginid):
+        """
+        Delete a plugin of the plugin directory.
+
+        @param pluginid (string) Identifier of the plugin to delete.
+
+        """
+        p = self._plugins.get( pluginid, None )
+        if p is not None:
+            shutil.rmtree( p.get_directory() )
+            del self._plugins[pluginid]
+
+    # ------------------------------------------------------------------------
+
+    def append(self, pluginfolder):
+        """
+        Append a plugin.
+        It is supposed that the given plugin folder name is a folder of the
+        plugin directory.
+
+        @param pluginfolder (string) The folder name of the plugin.
+
+        """
+        # Fix the full path of the plugin
+        pluginpath = os.path.join(PLUGIN_PATH,pluginfolder)
+        if os.path.exists( pluginpath ) is False:
+            raise IOError("No such folder: %s"%(pluginpath))
+
+        # Find a file with the extension .ini
+        f = self.__get_config_file(pluginpath)
+        if f is None:
+            raise IOError("No configuration file for the plugin.")
+
+        # Create the plugin instance
+        p = sppasPluginParam( pluginpath,f )
+        pluginid = p.get_key()
+
+        # Append in our list
+        if pluginid in self._plugins.keys():
+            raise KeyError("A plugin with the same key is already existing or plugin already loaded.")
+
+        self._plugins[pluginid] = p
+        return pluginid
+
+    # ------------------------------------------------------------------------
+
+    def run_plugin(self, pluginid, filenames):
         """
         Apply a given plugin on a list of files.
 
@@ -228,18 +212,82 @@ class PluginsManager( object ):
         @param filenames (list) List of files on which the plugin has to be applied.
 
         """
+        if self._progress is not None:
+            self._progress.set_header( pluginid )
+            self._progress.update(0,"")
+
         if not pluginid in self._plugins.keys():
             raise TypeError("No plugin with identifier %s is available."%pluginid)
 
         outputlines = ""
-        for file in filenames:
-            outputlines = "Apply plugin on file: %s"%file
-            lines = self._plugins[pluginid].perform_command( file )
-            if len(lines) == 0:
+        total = len(filenames)
+        for i,pfile in enumerate(filenames):
+
+            # Indicate the file to be processed
+            if self._progress is not None:
+                self._progress.set_text( os.path.basename(pfile)+" ("+str(i+1)+"/"+str(total)+")" )
+            outputlines = "Apply plugin on file: %s\n"%pfile
+
+            # Apply the plugin
+            process = sppasPluginProcess( self._plugins[pluginid] )
+            process.run( pfile )
+            result = process.communicate()
+            if len(result) == 0:
                 outputlines += "done."
             else:
-                outputlines += lines
+                outputlines += result
+
+            # Indicate progress
+            if self._progress is not None:
+                self._progress.set_fraction(float((i+1))/float(total))
+            outputlines += "\n"
+
+        # Indicate completed!
+        if self._progress is not None:
+            self._progress.update(1,"Completed.\n")
+            self._progress.set_header("")
 
         return outputlines
+
+    # ------------------------------------------------------------------------
+    # Private
+    # ------------------------------------------------------------------------
+
+    def __init_plugin_dir(self):
+        """ Create the plugin directory if any. """
+
+        if os.path.exists( PLUGIN_PATH ):
+            return True
+        try:
+            os.makedirs( PLUGIN_PATH )
+        except OSError:
+            return False
+        else:
+            return True
+
+    # ------------------------------------------------------------------------
+
+    def __get_plugins(self):
+        """ Return a list of plugin folders. """
+
+        folders = []
+        for entry in os.listdir(PLUGIN_PATH):
+            entrypath = os.path.join(PLUGIN_PATH, entry)
+            if os.path.isdir(entrypath):
+                folders.append(entry)
+
+        return folders
+
+    # ------------------------------------------------------------------------
+
+    def __get_config_file(self, plugindir):
+        """ Return the config file of a given plugin. """
+
+        # Find a file with the extension .ini, and only one
+        files = fileutils.get_files(plugindir, extension=".ini", recurs=False)
+        if len(files) == 1:
+            return files[0]
+
+        return None
 
     # ------------------------------------------------------------------------

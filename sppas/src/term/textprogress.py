@@ -58,7 +58,7 @@ HEADER = '${BOLD}${CYAN}%s${NORMAL}\n\n'
 
 # ----------------------------------------------------------------------------
 
-class TextProgress:
+class ProcessProgressTerminal( object ):
     """
     @authors: Brigitte Bigi
     @contact: brigitte.bigi((AATT))lpl-aix.fr

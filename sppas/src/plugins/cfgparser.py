@@ -34,12 +34,6 @@
 # ---------------------------------------------------------------------------
 # File: cfgparser.py
 # ----------------------------------------------------------------------------
-
-from ConfigParser import SafeConfigParser
-import codecs
-
-from structs.baseoption import Option
-
 """
     A config file consists of one or more named sections, each of which can
     contain individual options with names and values.
@@ -56,7 +50,23 @@ from structs.baseoption import Option
     A config file may include comments, prefixed by specific characters
     (# and ;).
 
+    Example:
+    ----------------
+
+    # This is a comment in a configuration file
+    [Section]
+    option1 = value1
+    option2 = value2
+
 """
+# ----------------------------------------------------------------------------
+
+from ConfigParser import SafeConfigParser
+import codecs
+
+from structs.baseoption import Option
+
+# ----------------------------------------------------------------------------
 
 class PluginConfigParser( object ):
     """

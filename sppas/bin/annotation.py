@@ -58,8 +58,8 @@ sys.path.append(SPPAS)
 from sp_glob import program, author, version, copyright, url
 from annotationdata.io import extensions_out #_multitiers
 from annotations.param import sppasParam
-from annotations.process import sppasProcess
-from term.textprogress import TextProgress
+from annotations.manager import sppasAnnotationsManager
+from term.textprogress import ProcessProgressTerminal
 from term.terminalcontroller import TerminalController
 from sp_glob import DEFAULT_OUTPUT_EXTENSION
 
@@ -144,8 +144,8 @@ except:
 # Annotation is here
 # ----------------------------------------------------------------------------
 
-p = TextProgress()
-process = sppasProcess( parameters )
+p = ProcessProgressTerminal()
+process = sppasAnnotationsManager( parameters )
 if args.nomerge:
     process.set_domerge( False )
 if args.merge:
