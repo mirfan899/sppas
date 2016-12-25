@@ -110,7 +110,7 @@ def OpenSoundFiles():
 
 def OpenAnyFiles():
     """
-    Return a list of annotation file names.
+    Return a list of file names.
     """
     wildcard  = create_wildcard("All files", ['*', '*.*'])
 
@@ -121,6 +121,22 @@ def OpenAnyFiles():
 
     dlg.Destroy()
     return files
+
+# ----------------------------------------------------------------------------
+
+def OpenSpecificFiles(name, extensions):
+    """
+    Return a list of file names with specific extensions.
+    """
+    wildcard  = create_wildcard(name, extensions)
+
+    afile = ""
+    dlg = wx.FileDialog(None, "Select a file", sp_glob.SAMPLES_PATH, "", wildcard, wx.FD_OPEN | wx.FD_CHANGE_DIR)
+    if dlg.ShowModal() == wx.ID_OK:
+        afile = dlg.GetPath()
+
+    dlg.Destroy()
+    return afile
 
 # ----------------------------------------------------------------------------
 # Save

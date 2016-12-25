@@ -37,17 +37,20 @@
 
 import logging
 import wx
+import os
 
 from wxgui.cutils.imageutils import spBitmap
 from wxgui.cutils.ctrlutils  import CreateGenButton
 
 from wxgui.sp_icons import PLUGINS_ICON, PLUGIN_IMPORT_ICON, PLUGIN_REMOVE_ICON
 from wxgui.sp_consts import BUTTON_ICONSIZE
-from wxgui.panels.buttons import ButtonPanel
-from wxgui.dialogs.msgdialogs import ShowInformation
-from wxgui.panels.mainbuttons    import MainToolbarPanel
+from wxgui.panels.buttons      import ButtonPanel
+from wxgui.dialogs.msgdialogs  import ShowInformation
+from wxgui.dialogs.filedialogs import OpenSpecificFiles
 
-#from plugins.manager import sppasPluginsManager
+from wxgui.panels.mainbuttons  import MainToolbarPanel
+
+from plugins.manager import sppasPluginsManager
 
 # ----------------------------------------------------------------------------
 # Constants
@@ -81,27 +84,30 @@ class PluginsPanel( wx.Panel ):
             logging.info('%s'%str(e))
             ShowInformation( self, preferences, "%s"%str(e), style=wx.ICON_ERROR)
 
-        self.toolbar = self._create_toolbar()
-        self.pluginbuttons = self.__create_buttons()
+        self._toolbar = self._create_toolbar()
+        #pluginspanel = self.__create_buttons()
 
-        sizer = wx.BoxSizer( wx.HORIZONTAL )
-        sizer.Add(self.toolbar, proportion=0, flag=wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, border=4)
-        sizer.Add(self.pluginbuttons, proportion=1, flag=wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, border=4)
+        _vbox = wx.BoxSizer(wx.VERTICAL)
+        _vbox.Add(self._toolbar,   proportion=0, flag=wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, border=4)
+        #_vbox.Add(pluginspanel, proportion=1, flag=wx.EXPAND|wx.LEFT|wx.RIGHT, border=4)
 
         self.Bind(wx.EVT_BUTTON, self.ProcessEvent)
-        self.SetSizerAndFit(sizer)
-        self.Show()
+        self.SetSizerAndFit(_vbox)
+
 
     def _create_toolbar(self):
         """
         Creates a toolbar panel.
 
         """
+        activated=True
+        if self._manager is None:
+            activated=False
         toolbar = MainToolbarPanel(self, self._prefs)
-        toolbar.AddButton( IMPORT_ID, PLUGIN_IMPORT_ICON, 'Import', tooltip="Import a plugin.")
-        toolbar.AddButton( REMOVE_ID, PLUGIN_REMOVE_ICON, 'Remove', tooltip="Remove a plugin.")
         toolbar.AddSpacer()
-
+        toolbar.AddButton( IMPORT_ID, PLUGIN_IMPORT_ICON, 'Import', tooltip="Install a plugin in SPPAS plugins directory.", activated=activated)
+        toolbar.AddButton( REMOVE_ID, PLUGIN_REMOVE_ICON, 'Remove', tooltip="Delete a plugin of SPPAS plugins directory.", activated=activated)
+        toolbar.AddSpacer()
         return toolbar
 
 
@@ -156,12 +162,34 @@ class PluginsPanel( wx.Panel ):
     # -----------------------------------------------------------------------
 
     def Import(self):
-        pass
+        """
+        Import and install a plugin.
+
+        """
+        afile = OpenSpecificFiles("Plugin archive", ['zip', "*.zip", "*.[zZ][iI][pP]"])
+        if len(afile) > 0:
+            try:
+                # fix a name for the plugin directory
+                pluginfolder = os.path.splitext(os.path.basename( afile ))[0]
+                pluginfolder.replace(' ', "_")
+
+                # install the plugin.
+                pluginid = self._manager.install( afile, pluginfolder )
+
+                ShowInformation( self, self._prefs, "Plugin %s successfully installed in %s folder."%(pluginid,pluginfolder), style=wx.ICON_INFORMATION)
+
+            except Exception as e:
+                logging.info('%s'%str(e))
+                ShowInformation( self, self._prefs, "%s"%str(e), style=wx.ICON_ERROR)
 
     # -----------------------------------------------------------------------
 
     def Remove(self):
-        pass
+        """
+        Remove and delete a plugin.
+
+        """
+        # get the list of installed plugins
 
     # -----------------------------------------------------------------------
 

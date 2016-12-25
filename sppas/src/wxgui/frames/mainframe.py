@@ -40,7 +40,6 @@ import logging
 
 import annotationdata
 import audiodata
-
 from sp_glob import SETTINGS_FILE
 
 from wxgui.cutils.imageutils import spBitmap
