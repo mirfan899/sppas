@@ -45,7 +45,7 @@ from sp_glob import program, title
 
 from wxgui.sp_icons import ANNOTATIONS_ICON
 from wxgui.sp_icons import COMPONENTS_ICON
-from wxgui.sp_icons import PLUGIN_ICON
+from wxgui.sp_icons import PLUGINS_ICON
 from wxgui.sp_icons import ABOUT_ICON
 from wxgui.sp_icons import HELP_ICON
 from wxgui.sp_icons import SETTINGS_ICON
@@ -249,7 +249,7 @@ class MainActionsPanel( wx.Panel ):
 
         annotateButton = ButtonPanel(self, ID_ANNOTATIONS,   self._prefs, ANNOTATIONS_ICON,"Annotate", "Segment speech, normalize text, ...")
         analyzeButton  = ButtonPanel(self, ID_COMPONENTS,    self._prefs, COMPONENTS_ICON, "Analyze",  "Statistics, data managers, ...")
-        pluginsButton  = ButtonPanel(self, ID_PLUGINS,       self._prefs, PLUGIN_ICON,     "Plugins",  "(disabled)", activated=False)
+        pluginsButton  = ButtonPanel(self, ID_PLUGINS,       self._prefs, PLUGINS_ICON,    "Plugins",  "Extend SPPAS", activated=True)
         settingsButton = ButtonPanel(self, wx.ID_PREFERENCES,self._prefs, SETTINGS_ICON,   "Settings", "Configuration, preferences")
         helpButton     = ButtonPanel(self, wx.ID_HELP,       self._prefs, HELP_ICON,       "Help",     "Documentation")
         aboutButton    = ButtonPanel(self, wx.ID_ABOUT,      self._prefs, ABOUT_ICON,      "About",    "Know more")

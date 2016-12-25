@@ -44,9 +44,10 @@ THEME_DEFAULT = 'Default'
 # ---------------------------------------------------------------------------
 # Frames/Applications
 
-APP_ICON       = os.path.join("applications", "sppas.png")
+APP_ICON         = os.path.join("applications", "sppas.png")
 COMPONENTS_ICON  = os.path.join("applications", "components.png")
 ANNOTATIONS_ICON = os.path.join("applications", "annotations.png")
+PLUGINS_ICON     = os.path.join( "applications", "plugins.png" )
 
 AUDIOROAMER_APP_ICON = os.path.join( "applications", "player.png")
 DATAROAMER_APP_ICON  = os.path.join( "applications", "roamer.png")
@@ -73,7 +74,6 @@ FEEDBACK_ICON       = os.path.join( "actions", "feedback.png")
 FORWARD_ICON        = os.path.join( "actions", "forward.png" )
 HOME_ICON           = os.path.join( "actions", "home.png" )
 NEXT_ICON           = os.path.join( "actions", "next.png")
-PLUGIN_ICON         = os.path.join( "actions", "plugin-add.png" )
 PREVIOUS_ICON       = os.path.join( "actions", "previous.png")
 RESTORE_ICON        = os.path.join( "actions", "restore.png")
 SETTINGS_ICON       = os.path.join( "actions", "settings.png")
@@ -81,6 +81,9 @@ TAB_NEW_ICON        = os.path.join( "actions", "tab-new.png")
 TAB_CLOSE_ICON      = os.path.join( "actions", "tab-close.png")
 MESSAGE_ICON        = os.path.join( "actions", "message.png")
 WEB_ICON            = os.path.join( "actions", "world.png")
+
+PLUGIN_IMPORT_ICON = os.path.join( "actions", "plugin-import.png")
+PLUGIN_REMOVE_ICON = os.path.join( "actions", "plugin-remove.png")
 
 ABOUT_ICON          = os.path.join( "actions", "about.png" )
 APPLY_ICON          = os.path.join( "actions", "apply.png" )

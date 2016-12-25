@@ -70,7 +70,7 @@ from wxgui.panels.filetree         import FiletreePanel
 from wxgui.panels.mainbuttons      import MainActionsPanel, MainMenuPanel, MainActionsMenuPanel, MainTitlePanel, MainTooltips
 from wxgui.panels.components       import AnalyzePanel
 from wxgui.panels.aannotations     import AnnotationsPanel
-from wxgui.panels.plugins          import PluginPanel
+from wxgui.panels.pplugins         import PluginsPanel
 from wxgui.panels.about            import AboutSPPAS
 from wxgui.ui.splitterpanel        import SplitterPanel
 
@@ -258,6 +258,10 @@ class FrameSPPAS( wx.Frame ):
             self.actions = AboutSPPAS(self._rightpanel, self.preferences)
             self.actionsmenu.ShowBack(True, "   A B O U T ")
 
+        elif ide == ID_PLUGINS:
+            self.actions = PluginsPanel(self._rightpanel, self.preferences)
+            self.actionsmenu.ShowBack(True, "   P L U G I N S ")
+
         self._rightsizer.Add( self.actions, proportion=1, flag=wx.ALL|wx.EXPAND, border=0)
         self._LayoutFrame()
 
@@ -296,8 +300,7 @@ class FrameSPPAS( wx.Frame ):
             self.OnHelp(event)
 
         elif ide == ID_PLUGINS:
-            pass
-            #self.ppp.Import()
+            self.fix_actioncontent( ID_PLUGINS )
 
         elif ide == wx.ID_ABOUT:
             self.fix_actioncontent( wx.ID_ABOUT )
