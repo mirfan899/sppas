@@ -12,7 +12,7 @@
 #
 # ---------------------------------------------------------------------------
 #            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
+#                   Copyright (C) 2011-2017  Brigitte Bigi
 #
 #                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
@@ -54,13 +54,13 @@ class sppasPluginsManager( Thread ):
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     @summary:      Class to manage the list of plugins into SPPAS.
 
     """
     def __init__(self):
         """
-        Instantiate the PluginsManager and load the current plugins.
+        Instantiate the sppasPluginsManager and load the current plugins.
 
         """
         Thread.__init__(self)
@@ -113,7 +113,7 @@ class sppasPluginsManager( Thread ):
 
         A plugin is not loaded if:
             - a configuration file is not defined or corrupted,
-            - the platform system does not match.
+            - the platform system of the command does not match.
 
         """
         folders = self.__get_plugins()
@@ -129,7 +129,7 @@ class sppasPluginsManager( Thread ):
         """
         Install a plugin into the plugin directory.
 
-        @param pluginarchive (string) File name of the plugin to be installed.
+        @param pluginarchive (string) File name of the plugin to be installed (ZIP).
         @param pluginfolder (string) Destination folder name of the plugin to be installed.
 
         """
@@ -169,12 +169,14 @@ class sppasPluginsManager( Thread ):
         if p is not None:
             shutil.rmtree( p.get_directory() )
             del self._plugins[pluginid]
+        else:
+            raise ValueError("No such plugin: %s"%pluginid)
 
     # ------------------------------------------------------------------------
 
     def append(self, pluginfolder):
         """
-        Append a plugin.
+        Append a plugin in the list of plugins.
         It is supposed that the given plugin folder name is a folder of the
         plugin directory.
 

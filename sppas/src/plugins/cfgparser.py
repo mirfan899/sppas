@@ -12,7 +12,7 @@
 #
 # ---------------------------------------------------------------------------
 #            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
+#                   Copyright (C) 2011-2017  Brigitte Bigi
 #
 #                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
@@ -62,19 +62,20 @@
 # ----------------------------------------------------------------------------
 
 from ConfigParser import SafeConfigParser
-import codecs
+from shutil import copyfile
+import collections
 
 from structs.baseoption import Option
 
 # ----------------------------------------------------------------------------
 
-class PluginConfigParser( object ):
+class sppasPluginConfigParser( object ):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     @summary:      Class to read a plugin configuration file.
 
     The required section "Configuration" includes an id, a name and a
@@ -85,12 +86,11 @@ class PluginConfigParser( object ):
         descr: Performs something on some files.
         icon:  path (optional)
 
-    Then, a required section with the name "Command" containing the "file" to
-    work on:
+    Then, a required section with the name "Command":
         [Command]
-        windows: toto.exe file
-        macos:   toto.command file
-        linux:   toto.bash file
+        windows: toto.exe
+        macos:   toto.command
+        linux:   toto.bash
 
     Finally, a set of sections with name starting by "Option" can be appended,
     as follow:
@@ -100,92 +100,148 @@ class PluginConfigParser( object ):
         value: False
         text:  Verbose mode
 
+    Some specific 'id' or 'value' of Option sections can be defined and will be
+    interpreted differently:
+        - input
+        - options
+
     """
-    def __init__(self):
-        self.reset()
-        self.parser = SafeConfigParser()
+    def __init__(self, filename=None):
+        """
+        Create a parser.
 
-    # ------------------------------------------------------------------------
-
-    def reset(self):
-        """ Set all members to their default value. """
-
-        self._config = {}
-        self._command = {}
-        self._options = []
+        """
+        self._parser = SafeConfigParser()
+        self._filename = None
+        if filename is not None:
+            self.parse( filename )
 
     # ------------------------------------------------------------------------
 
     def get_config(self):
-        """ Return the configuration dictionary. """
-        return self._config
+        """
+        Return the 'Configuration' section content.
+
+        @return dictionary.
+
+        """
+        cfgdict = {}
+
+        for section_name in self._parser.sections():
+            if section_name == "Configuration":
+                for name,value in self._parser.items(section_name):
+                    cfgdict[name] = value.encode('utf-8')
+
+        if not 'id' in cfgdict.keys():
+            raise ValueError("[Configuration] section must contain an 'id' option.")
+
+        return cfgdict
+
+    # ------------------------------------------------------------------------
 
     def get_command(self):
-        """ Return the commands dictionary. """
-        return self._command
+        """
+        Return the 'Command' section content.
+
+        @return dictionary.
+
+        """
+        cfgdict = {}
+
+        for section_name in self._parser.sections():
+            if section_name == "Command":
+                for name,value in self._parser.items(section_name):
+                    cfgdict[name] = value.encode('utf-8')
+
+        return cfgdict
+
+    # ------------------------------------------------------------------------
 
     def get_options(self):
-        """ Return the list of options. """
-        return self._options
+        """
+        Return all the 'Option' section contents.
+        The section name is used as key. Values are of type "Option".
+
+        @return ordered dictionary.
+
+        """
+        cfgdict = collections.OrderedDict()
+
+        for section_name in self._parser.sections():
+            if section_name.startswith( "Option" ):
+                opt = self.__parse_option(self._parser.items(section_name))
+                cfgdict[section_name] = opt
+
+        return cfgdict
+
+    # ------------------------------------------------------------------------
+
+    def set_options(self, options):
+        """
+        Re-set all the 'Option' section.
+
+        @param options (ordered dictionary) with key=section name, and value
+        if of type "Option" (with at least a "key").
+
+        """
+        # Remove all current options of the parser.
+        currentoptions = []
+        for section_name in self._parser.sections():
+            if section_name.startswith( "Option" ):
+                currentoptions.append[ section_name ]
+
+        for section_name in currentoptions:
+            self._parser.remove_section(section_name)
+
+        # Append all new options to the parser.
+        for section_name in options.keys():
+            self.__set_option(section_name, options[section_name])
 
     # ------------------------------------------------------------------------
 
     def parse(self, filename):
         """
         Parse a configuration file.
+        This will forget all previous configurations (if any).
 
         @param filename (str) Configuration file name.
 
         """
-        self.reset()
+        # Open the file
+        with open(filename, "r") as f:
+            self._parser.readfp(f)
+        self._filename = filename
 
-        # Open the file with the correct encoding
-        with codecs.open(filename, 'r', encoding='utf-8') as f:
-            self.parser.readfp(f)
-
-        # Analyze content and set to appropriate data structures
-        if self.parser.has_section( "Configuration" ):
-            if self.parser.has_section( "Command" ):
-                self._parse()
-            else:
+        # Check content
+        if self._parser.has_section( "Configuration" ):
+            if not self._parser.has_section( "Command" ):
                 raise ValueError("[Command] section is required.")
         else:
             raise ValueError("[Configuration] section is required.")
 
     # ------------------------------------------------------------------------
+
+    def save(self, backup=True):
+        """
+        Save the configuration file.
+        Copy the old one into a backup file.
+
+        """
+        if self._filename is None:
+            raise Exception('This parser is not linked to a configuration file.')
+
+        if backup is True:
+            copyfile(self._filename, self._filename+".backup")
+
+        with open(self._filename,'w') as cfg:
+            self._parser.write(cfg)
+
+    # ------------------------------------------------------------------------
     # Private
     # ------------------------------------------------------------------------
 
-    def _parse(self):
-
-        for section_name in self.parser.sections():
-
-            if section_name == "Configuration":
-                self._parse_config(self.parser.items(section_name))
-
-            if section_name == "Command":
-                self._parse_command(self.parser.items(section_name))
-
-            if section_name.startswith("Option"):
-                self._options.append( self._parse_option(self.parser.items(section_name)) )
-
-    # ------------------------------------------------------------------------
-
-    def _parse_config(self, items):
-
-        for name,value in items:
-            self._config[name] = value.encode('utf-8')
-        if not 'id' in self._config.keys():
-            raise ValueError("[Configuration] section must contain an 'id' option.")
-
-    def _parse_command(self, items):
-
-        for name,value in items:
-            self._command[name] = value.encode('utf-8')
-
-
-    def _parse_option(self, items):
-
+    def __parse_option(self, items):
+        """ Parse an option, i.e. convert an "Option" section of the parser into an "Option" instance. """
         oid    = ""
         otype  = ""
         ovalue = ""
@@ -207,3 +263,23 @@ class PluginConfigParser( object ):
         opt.set_text(otext)
 
         return opt
+
+    # ------------------------------------------------------------------------
+
+    def __set_option(self, section_name, option):
+        """ Set an option, i.e. convert an "Option" instance into an "Option" section of the parser. """
+
+        self._parser.add_section( section_name )
+        self._parser.set(section_name, "id", option.get_key())
+
+        if len(option.get_type()) > 0:
+            self._parser.set(section_name, "type", option.get_type())
+
+        if len(option.get_untypedvalue()) > 0:
+            self._parser.set(section_name, "value",option.get_untypedvalue())
+
+        if len(option.get_text()) > 0:
+            self._parser.set(section_name, "text", option.get_text())
+
+
+    # ------------------------------------------------------------------------

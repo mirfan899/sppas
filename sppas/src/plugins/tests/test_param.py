@@ -21,6 +21,6 @@ class TestPluginParam(unittest.TestCase):
 
         opt = self.param.get_options()
         self.assertEqual(len(opt), 3)
-        self.assertEqual(opt[1].get_key(), "-b")
-        self.assertEqual(opt[2].get_key(), "--show-progress")
+        self.assertEqual(opt["Option1"].get_key(), "-b")
+        self.assertEqual(opt["Option2"].get_key(), "--show-progress")
 

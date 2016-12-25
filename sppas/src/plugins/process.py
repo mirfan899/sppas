@@ -12,7 +12,7 @@
 #
 # ---------------------------------------------------------------------------
 #            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
+#                   Copyright (C) 2011-2017  Brigitte Bigi
 #
 #                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
@@ -46,7 +46,7 @@ class sppasPluginProcess( object ):
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     @summary:      Class to run a plugin.
 
     """
@@ -64,7 +64,7 @@ class sppasPluginProcess( object ):
 
     def run(self, filename):
         """
-        Execute the plugin.
+        Execute the plugin in batch mode (ie dont wait it to be finished).
 
         @param filename (string) The file name of the file to apply the plugin
         @return Process output message
@@ -74,7 +74,7 @@ class sppasPluginProcess( object ):
         command = self.plugin.get_command()
 
         # append the options (sorted like in the configuration file)
-        for opt in self.plugin.get_options():
+        for opt in self.plugin.get_options().values():
             optid = opt.get_key()
 
             if optid == "input":
@@ -89,14 +89,15 @@ class sppasPluginProcess( object ):
                 command += " "+opt.get_key()
                 value = opt.get_untypedvalue()
                 if len(value)>0:
-                    command += " "+value
+
+                    if value == "input":
+                        command += " \"" + filename + "\" "
+                    else:
+                        command += " "+value
 
         # Execute the command
         if isinstance(command, unicode):
             command = command.encode('utf-8')
-
-        # security issue problem if shell is True. Must trust the plugins...
-        #self.process = Popen(command, shell=True, stdout=PIPE, stderr=STDOUT)
 
         args = shlex.split(command)
         self.process = Popen(args, shell=False, stdout=PIPE, stderr=STDOUT, universal_newlines=True)
@@ -104,7 +105,10 @@ class sppasPluginProcess( object ):
     # ------------------------------------------------------------------------
 
     def communicate(self):
-        """ Wait for the process and get output messages (if any) then return it. """
+        """
+        Wait for the process and get output messages (if any) then return it.
+
+        """
 
         line = self.process.communicate()
         return "".join(line[0])

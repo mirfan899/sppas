@@ -12,7 +12,7 @@
 #
 # ---------------------------------------------------------------------------
 #            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
+#                   Copyright (C) 2011-2017  Brigitte Bigi
 #
 #                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
@@ -40,7 +40,7 @@ import platform
 import shlex
 from subprocess import Popen
 
-from cfgparser import PluginConfigParser
+from cfgparser import sppasPluginConfigParser
 
 # ----------------------------------------------------------------------------
 
@@ -50,24 +50,28 @@ class sppasPluginParam( object ):
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      One SPPAS plugin parameters.
+    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    @summary:      One SPPAS plugin set of parameters.
 
     """
     def __init__(self, directory, cfgfile):
         """
-        Creates a new pluginParam instance.
+        Creates a new sppasPluginParam instance.
 
         @param directory (string) the directory where to find the plugin
         @param cfgfile (string) the file name of the plugin configuration (.ini)
 
         """
-        # The path where to find the plugin
+        # The path where to find the plugin and its config
         self._directory = directory
+        self._cfgfile   = cfgfile
+        self._cfgparser = sppasPluginConfigParser()
+
+        # Declare members and initialize
         self.reset()
 
         # OK... fill members from the given file
-        self.parse( os.path.join(directory,cfgfile) )
+        self.parse()
 
     # ------------------------------------------------------------------------
 
@@ -87,31 +91,45 @@ class sppasPluginParam( object ):
 
         # The command to be executed and its options
         self._command = ""
-        self._options = []
+        self._options = {}
 
     # ------------------------------------------------------------------------
 
-    def parse(self, filename):
+    def parse(self):
+        """
+        Parse the configuration file of the plugin.
 
+        """
         self.reset()
-        p = PluginConfigParser()
-        p.parse( filename )
+        filename = os.path.join(self._directory,self._cfgfile)
+        self._cfgparser.parse( filename )
 
         # get the command
-        command = self.__get_command(p.get_command())
+        command = self.__get_command(self._cfgparser.get_command())
         if not self.__check_command(command):
             raise IOError("Command not found: %s" % command)
         self._command = command
 
         # get the configuration
-        conf = p.get_config()
+        conf = self._cfgparser.get_config()
         self._key   = conf['id']
         self._name  = conf.get("name", "")
-        self._descr = conf.get("descr", "No description available.")
+        self._descr = conf.get("descr", "")
         self._icon  = conf.get("icon", "")
 
         # get the options
-        self._options = p.get_options()
+        self._options = self._cfgparser.get_options()
+
+    # ------------------------------------------------------------------------
+
+    def save(self):
+        """
+        Save the configuration file.
+        Copy the old one into a backup file.
+
+        """
+        self._cfgparser.set_options( self._options )
+        self._cfgparser.save( backup=True )
 
     # ------------------------------------------------------------------------
     # Getters
@@ -142,6 +160,8 @@ class sppasPluginParam( object ):
         self._options = opt
 
     # ------------------------------------------------------------------------
+    # Private
+    # ------------------------------------------------------------------------
 
     def __get_command(self, commands):
         """ Return the appropriate command from a list of available ones. """
@@ -150,8 +170,10 @@ class sppasPluginParam( object ):
 
         if 'windows' in _system and 'windows' in commands.keys():
             return commands['windows']
+
         if 'darwin' in _system and 'macos' in commands.keys():
             return commands['macos']
+
         if 'linux' in _system and 'linux' in commands.keys():
             return commands['linux']
 
@@ -162,12 +184,15 @@ class sppasPluginParam( object ):
     def __check_command(self, command):
         """ Return True if command exists. """
 
+        # test only the main command (i.e. the first string, without args).
+        commandargs = shlex.split( command )
+        testcommand = commandargs[0]
+
         NULL = open(os.devnull, 'w')
-        if isinstance(command, unicode):
-            command = command.encode('utf-8')
-        command = shlex.split(command)
+        if isinstance(testcommand, unicode):
+            testcommand = testcommand.encode('utf-8')
         try:
-            p = Popen(command, shell=False, stdout=NULL, stderr=NULL)
+            p = Popen([testcommand], shell=False, stdout=NULL, stderr=NULL)
         except OSError:
             return False
         else:

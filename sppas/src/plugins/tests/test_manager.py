@@ -26,8 +26,9 @@ class TestPluginsManager(unittest.TestCase):
         # Use it!
         output=os.path.join(DATA,"testsox.wav")
         p = self.manager.get_plugin( soxid )
+
         options = p.get_options()
-        for opt in options:
+        for opt in options.values():
             if opt.get_key() == "output":
                 opt.set_value( output )
         p.set_options(options)
