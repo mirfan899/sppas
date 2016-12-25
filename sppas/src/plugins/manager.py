@@ -138,7 +138,7 @@ class sppasPluginsManager( Thread ):
 
         plugindir = os.path.join(PLUGIN_PATH,pluginfolder)
         if os.path.exists(plugindir):
-            raise IOError("A plugin is already existing in that folder.")
+            raise IOError("A plugin with the same name is already existing in that folder.")
 
         os.mkdir(plugindir)
 
