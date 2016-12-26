@@ -24,18 +24,13 @@ class TestPluginsManager(unittest.TestCase):
         self.assertEqual(len(self.manager.get_plugin_ids()), 1)
 
         # Use it!
-        output=os.path.join(DATA,"testsox.wav")
-        p = self.manager.get_plugin( soxid )
+        output = sample.replace('.wav', '-converted.wav')
+        p = self.manager.get_plugin(soxid)
 
-        options = p.get_options()
-        for opt in options.values():
-            if opt.get_key() == "output":
-                opt.set_value( output )
-        p.set_options(options)
-        message = self.manager.run_plugin( soxid, [sample] )
+        message = self.manager.run_plugin( soxid, [sample])
         self.assertTrue(os.path.exists(output))
-        os.remove( output )
+        os.remove(output)
 
         # Delete it...
-        self.manager.delete( soxid )
+        self.manager.delete(soxid)
         self.assertEqual(len(self.manager.get_plugin_ids()), 0)

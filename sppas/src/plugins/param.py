@@ -55,17 +55,17 @@ class sppasPluginParam(object):
     @summary:      One SPPAS plugin set of parameters.
 
     """
-    def __init__(self, directory, cfgfile):
+    def __init__(self, directory, config_file):
         """
         Creates a new sppasPluginParam instance.
 
-        @param directory (string) the directory where to find the plugin
-        @param cfgfile (string) the file name of the plugin configuration (.ini)
+        :param directory: (string) the directory where to find the plugin
+        :param config_file: (string) the file name of the plugin configuration
 
         """
         # The path where to find the plugin and its config
         self._directory = directory
-        self._cfgfile   = cfgfile
+        self._cfgfile   = config_file
         self._cfgparser = sppasPluginConfigParser()
 
         # Declare members and initialize
@@ -154,11 +154,17 @@ class sppasPluginParam(object):
     def get_command(self):
         return self._command
 
+    def get_option_from_key(self, key):
+        for option in self._options.values():
+            if option.get_key() == key:
+                return option
+        raise KeyError("No option with key %s" % key)
+
     def get_options(self):
         return self._options
 
-    def set_options(self, opt):
-        self._options = opt
+    def set_options(self, options_dict):
+        self._options = options_dict
 
     # ------------------------------------------------------------------------
     # Private
@@ -185,17 +191,19 @@ class sppasPluginParam(object):
 
     @staticmethod
     def __check_command(command):
-        """ Return True if command exists. """
+        """
+        Return True if command exists.
+        Test only the main command (i.e. the first string, without args).
 
-        # test only the main command (i.e. the first string, without args).
-        commandargs = shlex.split(command)
-        testcommand = commandargs[0]
+        """
+        command_args = shlex.split(command)
+        test_command = command_args[0]
 
         NULL = open(os.devnull, 'w')
-        if isinstance(testcommand, unicode):
-            testcommand = testcommand.encode('utf-8')
+        if isinstance(test_command, unicode):
+            test_command = test_command.encode('utf-8')
         try:
-            p = Popen([testcommand], shell=False, stdout=NULL, stderr=NULL)
+            p = Popen([test_command], shell=False, stdout=NULL, stderr=NULL)
         except OSError:
             return False
         else:

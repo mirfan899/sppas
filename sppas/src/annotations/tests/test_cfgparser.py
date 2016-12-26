@@ -23,7 +23,7 @@ class TestAnnotationConfigParser(unittest.TestCase):
         self.cfg.parse(INITOK)
 
         conf = self.cfg.get_config()
-        opt = self.cfg.get_options()
+        opt = self.cfg.get_options
         res = self.cfg.get_resources()
 
         self.assertEqual(len(conf), 3)
@@ -36,7 +36,7 @@ class TestAnnotationConfigParser(unittest.TestCase):
 
         self.cfg.parse(INIMOMEL)
         conf = self.cfg.get_config()
-        opt = self.cfg.get_options()
+        opt = self.cfg.get_options
         res = self.cfg.get_resources()
 
         self.assertEqual(len(conf), 3)

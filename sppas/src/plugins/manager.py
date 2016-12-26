@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
@@ -88,12 +87,12 @@ class sppasPluginsManager(Thread):
 
     # ------------------------------------------------------------------------
 
-    def get_plugin(self, pluginid):
+    def get_plugin(self, plugin_id):
         """
         Return the sppasPluginParam from a plugin identifier.
 
         """
-        return self._plugins[pluginid]
+        return self._plugins[plugin_id]
 
     # ------------------------------------------------------------------------
 
@@ -101,7 +100,7 @@ class sppasPluginsManager(Thread):
         """
         Fix the progress system to be used while executing a plugin.
 
-        @param progress (TextProgress or ProcessProgressDialog)
+        :param progress: (TextProgress or ProcessProgressDialog)
 
         """
         self._progress = progress
@@ -130,8 +129,8 @@ class sppasPluginsManager(Thread):
         """
         Install a plugin into the plugin directory.
 
-        @param plugin_archive (string) File name of the plugin to be installed (ZIP).
-        @param plugin_folder (string) Destination folder name of the plugin to be installed.
+        :param plugin_archive: (string) File name of the plugin to be installed (ZIP).
+        :param plugin_folder: (string) Destination folder name of the plugin to be installed.
 
         """
         if zipfile.is_zipfile(plugin_archive) is False:
@@ -163,7 +162,7 @@ class sppasPluginsManager(Thread):
         """
         Delete a plugin of the plugins directory.
 
-        @param plugin_id (string) Identifier of the plugin to delete.
+        :param plugin_id: (string) Identifier of the plugin to delete.
 
         """
         p = self._plugins.get(plugin_id, None)
@@ -181,13 +180,13 @@ class sppasPluginsManager(Thread):
         It is supposed that the given plugin folder name is a folder of the
         plugin directory.
 
-        @param plugin_folder (string) The folder name of the plugin.
+        :param plugin_folder: (string) The folder name of the plugin.
 
         """
         # Fix the full path of the plugin
         plugin_path = os.path.join(PLUGIN_PATH, plugin_folder)
         if os.path.exists(plugin_path) is False:
-            raise IOError("No such folder: %s" % (plugin_path))
+            raise IOError("No such folder: %s" % plugin_path)
 
         # Find a file with the extension .ini
         f = self.__get_config_file(plugin_path)
@@ -207,29 +206,29 @@ class sppasPluginsManager(Thread):
 
     # ------------------------------------------------------------------------
 
-    def run_plugin(self, plugin_id, filenames):
+    def run_plugin(self, plugin_id, file_names):
         """
         Apply a given plugin on a list of files.
 
-        @param plugin_id (string) Identifier of the plugin to apply.
-        @param filenames (list) List of files on which the plugin has to be applied.
+        :param plugin_id: (string) Identifier of the plugin to apply.
+        :param file_names: (list) List of files on which the plugin has to be applied.
 
         """
         if self._progress is not None:
             self._progress.set_header(plugin_id)
             self._progress.update(0, "")
 
-        if not plugin_id in self._plugins.keys():
+        if plugin_id not in self._plugins.keys():
             raise TypeError("No plugin with identifier %s is available." % plugin_id)
 
         output_lines = ""
-        total = len(filenames)
-        for i, pfile in enumerate(filenames):
+        total = len(file_names)
+        for i, pfile in enumerate(file_names):
 
             # Indicate the file to be processed
             if self._progress is not None:
                 self._progress.set_text(os.path.basename(pfile)+" ("+str(i+1)+"/"+str(total)+")")
-            output_lines = "Apply plugin on file: %s\n" % pfile
+            output_lines += "Apply plugin on file: %s\n" % pfile
 
             # Apply the plugin
             process = sppasPluginProcess(self._plugins[plugin_id])

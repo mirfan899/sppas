@@ -38,16 +38,19 @@
 import logging
 import wx
 import wx.lib.scrolledpanel
+import wx.lib.newevent
 import os
 
 from plugins.manager import sppasPluginsManager
 
 from wxgui.sp_icons import PLUGIN_IMPORT_ICON, PLUGIN_REMOVE_ICON
-from wxgui.panels.buttons      import ButtonToolbarPanel
+from wxgui.panels.buttons      import ButtonPanel
 from wxgui.dialogs.msgdialogs  import ShowInformation
 from wxgui.dialogs.msgdialogs  import Choice
 from wxgui.dialogs.filedialogs import OpenSpecificFiles
 from wxgui.panels.mainbuttons  import MainToolbarPanel
+from wxgui.views.pluginoptions import spPluginConfig
+from wxgui.views.processprogress import ProcessProgressDialog
 
 # ----------------------------------------------------------------------------
 # Constants
@@ -55,6 +58,9 @@ from wxgui.panels.mainbuttons  import MainToolbarPanel
 
 IMPORT_ID = wx.NewId()
 REMOVE_ID = wx.NewId()
+
+PluginApplyEvent, spEVT_PLUGIN = wx.lib.newevent.NewEvent()
+PluginApplyCommandEvent, spEVT_PLUGIN_COMMAND = wx.lib.newevent.NewCommandEvent()
 
 # ----------------------------------------------------------------------------
 
@@ -66,14 +72,14 @@ class PluginsPanel(wx.Panel):
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
     @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    @summary:      Tools for calling a plugin.
+    @summary:      Main panel to work with SPPAS plugin.
 
     """
     def __init__(self, parent, preferences):
 
         wx.Panel.__init__(self, parent, -1, style=wx.NO_BORDER)
         self.SetBackgroundColour(preferences.GetValue('M_BG_COLOUR'))
-        self._prefs = preferences
+        self._preferences = preferences
 
         try:
             self._manager = sppasPluginsManager()
@@ -83,13 +89,15 @@ class PluginsPanel(wx.Panel):
             ShowInformation(self, preferences, "%s" % str(e), style=wx.ICON_ERROR)
 
         self._toolbar = self._create_toolbar()
-        self._pluginspanel = PluginsListPanel(self, preferences, self._manager)
+        self._plugins_panel = PluginsListPanel(self, preferences, self._manager)
 
         _vbox = wx.BoxSizer(wx.VERTICAL)
-        _vbox.Add(self._toolbar,      proportion=0, flag=wx.EXPAND | wx.TOP | wx.LEFT | wx.RIGHT, border=4)
-        _vbox.Add(self._pluginspanel, proportion=1, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=4)
+        _vbox.Add(self._toolbar, proportion=0, flag=wx.EXPAND | wx.TOP | wx.LEFT | wx.RIGHT, border=4)
+        _vbox.Add(self._plugins_panel, proportion=1, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=4)
 
         self.Bind(wx.EVT_BUTTON, self.ProcessEvent)
+        self.Bind(spEVT_PLUGIN,  self.OnApply)
+
         self.SetSizerAndFit(_vbox)
 
     # -----------------------------------------------------------------------
@@ -102,10 +110,10 @@ class PluginsPanel(wx.Panel):
         activated = True
         if self._manager is None:
             activated = False
-        toolbar = MainToolbarPanel(self, self._prefs)
+        toolbar = MainToolbarPanel(self, self._preferences)
         toolbar.AddSpacer()
-        toolbar.AddButton(IMPORT_ID, PLUGIN_IMPORT_ICON, 'Import', tooltip="Install a plugin in SPPAS plugins directory.", activated=activated)
-        toolbar.AddButton(REMOVE_ID, PLUGIN_REMOVE_ICON, 'Remove', tooltip="Delete a plugin of SPPAS plugins directory.", activated=activated)
+        toolbar.AddButton(IMPORT_ID, PLUGIN_IMPORT_ICON, 'Install', tooltip="Install a plugin in SPPAS plugins directory.", activated=activated)
+        toolbar.AddButton(REMOVE_ID, PLUGIN_REMOVE_ICON, 'Delete', tooltip="Delete a plugin of SPPAS plugins directory.", activated=activated)
         toolbar.AddSpacer()
         return toolbar
 
@@ -147,15 +155,15 @@ class PluginsPanel(wx.Panel):
                 # install the plugin.
                 plugin_id = self._manager.install(filename, plugin_folder)
 
-                ShowInformation( self, self._prefs, "Plugin %s successfully installed in %s folder."%(plugin_id,plugin_folder), style=wx.ICON_INFORMATION)
+                ShowInformation( self, self._preferences, "Plugin %s successfully installed in %s folder."%(plugin_id,plugin_folder), style=wx.ICON_INFORMATION)
 
-                self._pluginspanel.Append(plugin_id, self._manager)
-                self._pluginspanel.Layout()
-                self._pluginspanel.Refresh()
+                self._plugins_panel.Append(plugin_id, self._manager)
+                self._plugins_panel.Layout()
+                self._plugins_panel.Refresh()
 
             except Exception as e:
                 logging.info('%s' % str(e))
-                ShowInformation(self, self._prefs, "%s" % str(e), style=wx.ICON_ERROR)
+                ShowInformation(self, self._preferences, "%s" % str(e), style=wx.ICON_ERROR)
 
     # -----------------------------------------------------------------------
 
@@ -164,15 +172,68 @@ class PluginsPanel(wx.Panel):
         Remove and delete a plugin.
 
         """
-        self._pluginspanel.Remove(self._manager)
-        self._pluginspanel.Layout()
-        self._pluginspanel.Refresh()
+        self._plugins_panel.Remove(self._manager)
+        self._plugins_panel.Layout()
+        self._plugins_panel.Refresh()
 
+    # -----------------------------------------------------------------------
+
+    def OnApply(self, event):
+        """
+        Apply a plugin on a set of files.
+
+        :param event: (PluginApplyEvent) Event indicating the identifier of the
+        plugin to apply.
+
+        """
+        # Get the list of files (from the main frame).
+        trs_files = self.GetTopLevelParent().GetTrsSelection()
+        audio_files = self.GetTopLevelParent().GetAudioSelection()
+        file_names = trs_files + audio_files
+        if len(file_names) == 0:
+            ShowInformation(self, self._preferences,
+                            "No file selected to apply a plugin!",
+                            style=wx.ICON_WARNING)
+            return
+
+        # Set the options of the plugin
+        plugin_id = event.pid
+        logging.debug('Apply plugin: %s on %d files.' % (plugin_id, len(file_names)))
+        dlg = spPluginConfig(self, self._preferences,
+                             self._manager.get_plugin(plugin_id))
+        res = dlg.ShowModal()
+        if res == wx.ID_OK:
+            try:
+                # OK... now execute the plugin.
+                wx.BeginBusyCursor()
+                p = ProcessProgressDialog(self, self._preferences)
+                p.set_title("Plugin progress...")
+                self._manager.set_progress(p)
+
+                log_text = self._manager.run_plugin(plugin_id, file_names)
+
+                p.close()
+                wx.EndBusyCursor()
+
+                # Show the output message
+                if len(log_text) == 0:
+                    ShowInformation(self, self._preferences, "Done.", style=wx.ICON_INFORMATION)
+                else:
+                    ShowInformation(self, self._preferences, log_text, style=wx.ICON_INFORMATION)
+
+            except Exception as e:
+                logging.info('%s' % str(e))
+                ShowInformation(self, self._preferences, "%s" % str(e),
+                                style=wx.ICON_ERROR)
+        dlg.Destroy()
+
+        # Update the filetree of the main frame
+        self.GetTopLevelParent().RefreshTree()
 
 # ---------------------------------------------------------------------------
 
 
-class PluginsListPanel( wx.lib.scrolledpanel.ScrolledPanel ):
+class PluginsListPanel(wx.lib.scrolledpanel.ScrolledPanel):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -182,24 +243,24 @@ class PluginsListPanel( wx.lib.scrolledpanel.ScrolledPanel ):
     @summary:      List of buttons to call a plugin.
 
     """
-
     def __init__(self, parent, preferences, manager):
         """
         Constructor.
 
-        @param manager (sppasPluginsManager) Plugins manager.
+        :param manager: (sppasPluginsManager) Plugins manager.
 
         """
-        wx.lib.scrolledpanel.ScrolledPanel.__init__(self, parent, -1, size=wx.DefaultSize, style=wx.TAB_TRAVERSAL|wx.NO_BORDER)
+        wx.lib.scrolledpanel.ScrolledPanel.__init__(self, parent, -1, size=wx.DefaultSize, style=wx.TAB_TRAVERSAL | wx.NO_BORDER)
         self.SetBackgroundColour(preferences.GetValue('M_BG_COLOUR'))
 
-        self._prefs = preferences
+        self._preferences = preferences
         self._plugins = {}
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(sizer)
-        for plugin_id in manager.get_plugin_ids():
-            self.Append(plugin_id,manager)
+        if manager is not None:
+            for plugin_id in manager.get_plugin_ids():
+                self.Append(plugin_id,manager)
 
         self.Bind(wx.EVT_BUTTON, self.OnButtonClick)
         self.SetAutoLayout(True)
@@ -220,28 +281,51 @@ class PluginsListPanel( wx.lib.scrolledpanel.ScrolledPanel ):
         plugin       = manager.get_plugin(plugin_id)
         button_id    = wx.NewId()
         button_icon  = os.path.join(plugin.get_directory(),plugin.get_icon())
-        button_descr = plugin.get_descr()
-        button = ButtonToolbarPanel(self, button_id, self._prefs, button_icon,
-                                    plugin_id, activated=False)
+        button = ButtonPanel(self, button_id, self._preferences, button_icon, plugin_id, activated=True)
 
-        txt = wx.TextCtrl(self, wx.ID_ANY, value=button_descr,
-                          style=wx.TE_READONLY | wx.TE_MULTILINE | wx.NO_BORDER)
-        font = self._prefs.GetValue('M_FONT')
-        txt.SetFont(font)
-        txt.SetForegroundColour(self._prefs.GetValue('M_FG_COLOUR'))
-        txt.SetBackgroundColour(self._prefs.GetValue('M_BG_COLOUR'))
+        # Create a description with the plugin name and its description.
+        p = wx.Panel(self, -1)
+        p.SetBackgroundColour(self._preferences.GetValue('M_BG_COLOUR'))
+
+        n = plugin.get_name()
+        if len(n) == 0:
+            n = "Unknown plugin name"
+        txt_name = wx.TextCtrl(p, wx.ID_ANY, value=n, style=wx.TE_READONLY | wx.NO_BORDER)
+        font = self._preferences.GetValue('M_FONT')
+        font.SetWeight(wx.BOLD)
+        txt_name.SetFont(font)
+        txt_name.SetForegroundColour(self._preferences.GetValue('M_FG_COLOUR'))
+        txt_name.SetBackgroundColour(self._preferences.GetValue('M_BG_COLOUR'))
+
+        d = plugin.get_descr()
+        if len(d) == 0:
+            d = "No description available."
+        txt_descr = wx.TextCtrl(p, wx.ID_ANY, value=d, style=wx.TE_READONLY | wx.TE_MULTILINE | wx.NO_BORDER)
+        font = self._preferences.GetValue('M_FONT')
+        txt_descr.SetFont(font)
+        txt_descr.SetForegroundColour(self._preferences.GetValue('M_FG_COLOUR'))
+        txt_descr.SetBackgroundColour(self._preferences.GetValue('M_BG_COLOUR'))
+
+        s = wx.BoxSizer(wx.VERTICAL)
+        s.Add(txt_name, proportion=1,
+              flag=wx.ALL | wx.EXPAND,
+              border=2)
+        s.Add(txt_descr, proportion=3,
+              flag=wx.ALL | wx.EXPAND,
+              border=2)
+        p.SetSizerAndFit(s)
 
         box = wx.BoxSizer(wx.HORIZONTAL)
         box.Add(button,
                 proportion=0,
-                flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL,
+                flag=wx.ALL,
                 border=4)
-        box.Add(txt, proportion=1,
-                flag=wx.ALL | wx.EXPAND | wx.ALIGN_CENTER,
+        box.Add(p, proportion=1,
+                flag=wx.ALL | wx.EXPAND,
                 border=4)
 
         # Add to the main sizer
-        self.GetSizer().Add(box, flag=wx.ALL | wx.EXPAND, border=2)
+        self.GetSizer().Add(box, flag=wx.ALL | wx.EXPAND, border=0)
         self._plugins[plugin_id] = (button_id, box)
 
     # -----------------------------------------------------------------------
@@ -256,7 +340,7 @@ class PluginsListPanel( wx.lib.scrolledpanel.ScrolledPanel ):
 
         """
         # Ask to select one
-        dlg = Choice(self, self._prefs, "Choose the plugin to delete:",
+        dlg = Choice(self, self._preferences, "Choose the plugin to delete:",
                      self._plugins.keys())
         if dlg.ShowModal() == wx.ID_OK:
             plugin_idx = dlg.GetSelection()
@@ -269,29 +353,35 @@ class PluginsListPanel( wx.lib.scrolledpanel.ScrolledPanel ):
                 sizer.Remove(plugin_box)
                 del self._plugins[plugin_id]
 
-                ShowInformation(self, self._prefs,
+                ShowInformation(self, self._preferences,
                                 "Plugin %s was successfully deleted." % plugin_id,
                                 style=wx.ICON_INFORMATION)
             except Exception as e:
                 logging.info('%s' % str(e))
-                ShowInformation(self, self._prefs,
+                ShowInformation(self, self._preferences,
                                 "%s deletion error: %s" % (plugin_id, str(e)),
                                 style=wx.ICON_ERROR)
         dlg.Destroy()
 
-
+    # -----------------------------------------------------------------------
+    # Callback to events
     # -----------------------------------------------------------------------
 
     def OnButtonClick(self, evt):
+        """
+        A plugin has been clicked: send the plugin identifier to the parent.
 
-        # Which button? then, which plugin?
+        :param evt: (wx event)
+
+        """
         obj = evt.GetEventObject()
         button_id = obj.GetId()
-        #plugin_id = self._buttons[button_id]
 
-        # Send the plugin identifier to the parent
-        # evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, plugin_id)
-        # evt.SetEventObject(self)
-        # wx.PostEvent(self.GetParent(), evt)
+        for p in self._plugins.keys():
+            if button_id == self._plugins[p][0]:
+                evt = PluginApplyEvent(pid=p)
+                evt.SetEventObject(self)
+                wx.PostEvent(self.GetParent(), evt)
+                break
 
     # -----------------------------------------------------------------------

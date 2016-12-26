@@ -140,7 +140,7 @@ if args.apply and args.i:
 
     # Set the output file name (if any)
     if args.o:
-        options = p.get_options()
+        options = p.get_options
         for opt in options.values():
             if opt.get_key() == "output":
                 opt.set_value( args.o )

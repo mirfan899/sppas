@@ -7,11 +7,11 @@ from paths import DATA
 
 # ---------------------------------------------------------------------------
 
+
 class TestPluginParam(unittest.TestCase):
 
     def setUp(self):
-        self.param = sppasPluginParam( directory=DATA, cfgfile="plugin.ini")
-
+        self.param = sppasPluginParam(DATA, "plugin.ini")
 
     def test_getters(self):
         self.assertEqual(self.param.get_key(), "pluginid")
@@ -19,7 +19,7 @@ class TestPluginParam(unittest.TestCase):
         self.assertEqual(self.param.get_descr(), "Performs something on some files.")
         self.assertEqual(self.param.get_icon(), "")
 
-        opt = self.param.get_options()
+        opt = self.param.get_options
         self.assertEqual(len(opt), 3)
         self.assertEqual(opt["Option1"].get_key(), "-b")
         self.assertEqual(opt["Option2"].get_key(), "--show-progress")

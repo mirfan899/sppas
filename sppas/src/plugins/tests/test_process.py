@@ -12,14 +12,15 @@ sample = os.path.join(SPPASSAMPLES, "samples-eng", "oriana1.wav")
 
 # ---------------------------------------------------------------------------
 
+
 class TestPluginProcess(unittest.TestCase):
 
     def setUp(self):
-        param = sppasPluginParam( directory=DATA, cfgfile="plugin.ini")
+        param = sppasPluginParam(DATA, "plugin.ini")
         self.process = sppasPluginProcess(param)
 
     def test_run(self):
-        self.process.run( sample )
+        self.process.run(sample)
         time.sleep(0.3)
         self.process.stop()
         line = self.process.communicate()

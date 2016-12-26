@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
@@ -35,12 +34,14 @@
 # File: process.py
 # ----------------------------------------------------------------------------
 
+import os.path
 import shlex
 from subprocess import Popen, PIPE, STDOUT
 
 # ----------------------------------------------------------------------------
 
-class sppasPluginProcess( object ):
+
+class sppasPluginProcess(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -50,24 +51,24 @@ class sppasPluginProcess( object ):
     @summary:      Class to run a plugin.
 
     """
-    def __init__(self, pluginparam):
+    def __init__(self, plugin_param):
         """
         Creates a new sppasPluginProcess instance.
 
-        @param pluginparam (sppasPluginParam)
+        :param plugin_param: (sppasPluginParam)
 
         """
-        self.plugin = pluginparam
+        self.plugin = plugin_param
         self.process = None
 
     # ------------------------------------------------------------------------
 
     def run(self, filename):
         """
-        Execute the plugin in batch mode (ie dont wait it to be finished).
+        Execute the plugin in batch mode (ie don't wait it to be finished).
 
-        @param filename (string) The file name of the file to apply the plugin
-        @return Process output message
+        :param filename: (string) The file name of the file to apply the plugin
+        :return: Process output message
 
         """
         # the command
@@ -75,20 +76,26 @@ class sppasPluginProcess( object ):
 
         # append the options (sorted like in the configuration file)
         for opt in self.plugin.get_options().values():
-            optid = opt.get_key()
+            opt_id = opt.get_key()
 
-            if optid == "input":
+            if opt_id == "input":
                 command += " \"" + filename + "\" "
 
-            elif optid == "options" or optid == "output":
+            elif opt_id == "options":
                 value = opt.get_untypedvalue()
-                if len(value)>0:
+                if len(value) > 0:
                     command += " "+value
+
+            elif opt_id == "output":
+                value = opt.get_untypedvalue()
+                if len(value) > 0:
+                    fname = os.path.splitext(filename)[0]
+                    command += " \"" + fname + value + "\" "
 
             else:
                 command += " "+opt.get_key()
                 value = opt.get_untypedvalue()
-                if len(value)>0:
+                if len(value) > 0:
 
                     if value == "input":
                         command += " \"" + filename + "\" "

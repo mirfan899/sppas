@@ -184,7 +184,7 @@ class ButtonPanel( wx.Panel ):
 
         text = wx.StaticText(panel, -1, textstr)
         font.SetWeight(wx.BOLD)
-        text.SetFont( font )
+        text.SetFont(font)
         text.SetBackgroundColour( self._prefs.GetValue('M_BGD_COLOUR') )
         text.SetForegroundColour( self._prefs.GetValue('M_FG_COLOUR') )
         text.Bind(wx.EVT_LEFT_UP, self.OnButtonLeftUp)
@@ -201,18 +201,21 @@ class ButtonPanel( wx.Panel ):
                     subtext = wx.StaticText(panel, -1, t)
                 subtext.SetBackgroundColour( self._prefs.GetValue('M_BGD_COLOUR') )
                 subtext.SetForegroundColour( self._prefs.GetValue('M_FGD_COLOUR') )
-                subtext.SetFont( font )
+                subtext.SetFont(font)
                 subtext.Bind(wx.EVT_LEFT_UP, self.OnButtonLeftUp)
                 subtext.Bind(wx.EVT_ENTER_WINDOW, self.OnButtonEnter)
                 sizer.Add(subtext, 0, flag=wx.ALL|wx.ALIGN_CENTER, border=2)
 
+            panel.SetMinSize((128, 128))
+        else:
+            panel.SetMinSize((96, 96))
+
         panel.SetSizer(sizer)
-        panel.SetAutoLayout( True )
+        panel.SetAutoLayout(True)
 
         panel.Bind(wx.EVT_LEFT_UP,      self.OnButtonLeftUp)
         panel.Bind(wx.EVT_ENTER_WINDOW, self.OnButtonEnter)
         panel.Bind(wx.EVT_LEAVE_WINDOW, self.OnButtonLeave)
-        panel.SetMinSize((128,128))
 
         return panel
 

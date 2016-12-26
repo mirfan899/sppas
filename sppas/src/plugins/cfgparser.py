@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
@@ -69,7 +68,8 @@ from structs.baseoption import Option
 
 # ----------------------------------------------------------------------------
 
-class sppasPluginConfigParser( object ):
+
+class sppasPluginConfigParser(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -110,6 +110,8 @@ class sppasPluginConfigParser( object ):
         """
         Create a parser.
 
+        :param filename: (string) the file name of the plugin configuration.
+
         """
         self._parser = SafeConfigParser()
         self._filename = None
@@ -122,17 +124,17 @@ class sppasPluginConfigParser( object ):
         """
         Return the 'Configuration' section content.
 
-        @return dictionary.
+        :return: dictionary.
 
         """
         cfgdict = {}
 
         for section_name in self._parser.sections():
             if section_name == "Configuration":
-                for name,value in self._parser.items(section_name):
+                for name, value in self._parser.items(section_name):
                     cfgdict[name] = value.encode('utf-8')
 
-        if not 'id' in cfgdict.keys():
+        if 'id' not in cfgdict.keys():
             raise ValueError("[Configuration] section must contain an 'id' option.")
 
         return cfgdict
@@ -143,14 +145,14 @@ class sppasPluginConfigParser( object ):
         """
         Return the 'Command' section content.
 
-        @return dictionary.
+        :return: dictionary.
 
         """
         cfgdict = {}
 
         for section_name in self._parser.sections():
             if section_name == "Command":
-                for name,value in self._parser.items(section_name):
+                for name, value in self._parser.items(section_name):
                     cfgdict[name] = value.encode('utf-8')
 
         return cfgdict
@@ -162,13 +164,13 @@ class sppasPluginConfigParser( object ):
         Return all the 'Option' section contents.
         The section name is used as key. Values are of type "Option".
 
-        @return ordered dictionary.
+        :return: ordered dictionary.
 
         """
         cfgdict = collections.OrderedDict()
 
         for section_name in self._parser.sections():
-            if section_name.startswith( "Option" ):
+            if section_name.startswith("Option") is True:
                 opt = self.__parse_option(self._parser.items(section_name))
                 cfgdict[section_name] = opt
 
@@ -185,12 +187,12 @@ class sppasPluginConfigParser( object ):
 
         """
         # Remove all current options of the parser.
-        currentoptions = []
+        current_options = []
         for section_name in self._parser.sections():
-            if section_name.startswith( "Option" ):
-                currentoptions.append[ section_name ]
+            if section_name.startswith("Option") is True:
+                current_options.append(section_name)
 
-        for section_name in currentoptions:
+        for section_name in current_options:
             self._parser.remove_section(section_name)
 
         # Append all new options to the parser.
@@ -204,7 +206,7 @@ class sppasPluginConfigParser( object ):
         Parse a configuration file.
         This will forget all previous configurations (if any).
 
-        @param filename (str) Configuration file name.
+        :param filename: (string) Configuration file name.
 
         """
         # Open the file
@@ -213,8 +215,8 @@ class sppasPluginConfigParser( object ):
         self._filename = filename
 
         # Check content
-        if self._parser.has_section( "Configuration" ):
-            if not self._parser.has_section( "Command" ):
+        if self._parser.has_section("Configuration"):
+            if not self._parser.has_section("Command"):
                 raise ValueError("[Command] section is required.")
         else:
             raise ValueError("[Configuration] section is required.")
@@ -233,27 +235,36 @@ class sppasPluginConfigParser( object ):
         if backup is True:
             copyfile(self._filename, self._filename+".backup")
 
-        with open(self._filename,'w') as cfg:
+        with open(self._filename, 'w') as cfg:
             self._parser.write(cfg)
 
     # ------------------------------------------------------------------------
     # Private
     # ------------------------------------------------------------------------
 
-    def __parse_option(self, items):
-        """ Parse an option, i.e. convert an "Option" section of the parser into an "Option" instance. """
+    @staticmethod
+    def __parse_option(items):
+        """
+        Parse an option.
+        Convert an "Option" section of the parser into an "Option" instance.
+
+        """
         oid    = ""
         otype  = ""
         ovalue = ""
         otext  = ""
 
-        for name,value in items:
+        for name, value in items:
+
             if name == "type":
                 otype = value.encode('utf-8')
+
             elif name == "id":
                 oid = value.encode('utf-8')
+
             elif name == "value":
                 ovalue = value.encode('utf-8')
+
             elif name == "text":
                 otext = value.encode('utf-8')
 
@@ -267,8 +278,11 @@ class sppasPluginConfigParser( object ):
     # ------------------------------------------------------------------------
 
     def __set_option(self, section_name, option):
-        """ Set an option, i.e. convert an "Option" instance into an "Option" section of the parser. """
+        """
+        Set an option.
+        Convert an "Option" instance into an "Option" section of the parser.
 
+        """
         self._parser.add_section( section_name )
         self._parser.set(section_name, "id", option.get_key())
 
@@ -280,6 +294,5 @@ class sppasPluginConfigParser( object ):
 
         if len(option.get_text()) > 0:
             self._parser.set(section_name, "text", option.get_text())
-
 
     # ------------------------------------------------------------------------

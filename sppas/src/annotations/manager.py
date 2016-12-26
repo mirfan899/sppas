@@ -258,7 +258,7 @@ class sppasAnnotationsManager( Thread ):
         for i,f in enumerate(filelist):
 
             # fix the default values
-            m.fix_options( step.get_options() )
+            m.fix_options(step.get_options)
 
             # Indicate the file to be processed
             self._progress.set_text( os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")" )
@@ -407,7 +407,7 @@ class sppasAnnotationsManager( Thread ):
 
             # fix the default values
             seg.reset()
-            seg.fix_options( step.get_options() )
+            seg.fix_options(step.get_options)
 
             # Indicate the file to be processed
             if self._logfile is not None:
@@ -517,7 +517,7 @@ class sppasAnnotationsManager( Thread ):
         for i,f in enumerate(filelist):
 
             # fix the default values
-            t.fix_options( step.get_options() )
+            t.fix_options(step.get_options)
 
             # Indicate the file to be processed
             self._progress.set_text( os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")" )
@@ -593,7 +593,7 @@ class sppasAnnotationsManager( Thread ):
         for i,f in enumerate(filelist):
 
             # fix the default values
-            p.fix_options( step.get_options() )
+            p.fix_options(step.get_options)
 
             # Indicate the file to be processed
             self._progress.set_text( os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")" )
@@ -672,7 +672,7 @@ class sppasAnnotationsManager( Thread ):
         for i,f in enumerate(filelist):
 
             # fix the default values
-            a.fix_options( step.get_options() )
+            a.fix_options(step.get_options)
 
             # Indicate the file to be processed
             self._progress.set_text( os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")" )
@@ -750,7 +750,7 @@ class sppasAnnotationsManager( Thread ):
         for i,f in enumerate(filelist):
 
             # fix the default values
-            a.fix_options( step.get_options() )
+            a.fix_options(step.get_options)
 
             # Indicate the file to be processed
             self._progress.set_text( os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")" )
@@ -832,7 +832,7 @@ class sppasAnnotationsManager( Thread ):
         for i,f in enumerate(filelist):
 
             # fix the default values
-            s.fix_options( step.get_options() )
+            s.fix_options(step.get_options)
 
             # Indicate the file to be processed
             self._progress.set_text( os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")" )
@@ -908,7 +908,7 @@ class sppasAnnotationsManager( Thread ):
         for i,f in enumerate(filelist):
 
             # fix the default values
-            r.fix_options( step.get_options() )
+            r.fix_options(step.get_options)
 
             # Indicate the file to be processed
             self._progress.set_text( os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")" )

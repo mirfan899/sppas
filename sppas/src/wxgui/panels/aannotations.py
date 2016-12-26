@@ -35,15 +35,6 @@
 # File: aannotations.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi, Cazembe Henry"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
-
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
 import wx
 import wx.lib.newevent
 import wx.lib.scrolledpanel
@@ -93,10 +84,12 @@ langEvent, EVT_LANG_EVENT = wx.lib.newevent.NewEvent()
 
 class sppasStepPanel( wx.Panel ):
     """
-    @author:  Cazembe Henry, Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: Panel with an annotation and the language choice.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    @summary:      Panel with an annotation and the language choice.
 
     Panel containing a checkbox and eventually a choice of languages for a
     given annotation.
