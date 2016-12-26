@@ -48,7 +48,8 @@ from process import sppasPluginProcess
 
 # ----------------------------------------------------------------------------
 
-class sppasPluginsManager( Thread ):
+
+class sppasPluginsManager(Thread):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -117,151 +118,152 @@ class sppasPluginsManager( Thread ):
 
         """
         folders = self.__get_plugins()
-        for pluginfolder in folders:
+        for plugin_folder in folders:
             try:
-                self.append(pluginfolder)
+                self.append(plugin_folder)
             except Exception as e:
-                logging.info("Plugin %s loading error: %s"%(pluginfolder,str(e)))
+                logging.info("Plugin %s loading error: %s" % (plugin_folder, str(e)))
 
     # ------------------------------------------------------------------------
 
-    def install(self, pluginarchive, pluginfolder):
+    def install(self, plugin_archive, plugin_folder):
         """
         Install a plugin into the plugin directory.
 
-        @param pluginarchive (string) File name of the plugin to be installed (ZIP).
-        @param pluginfolder (string) Destination folder name of the plugin to be installed.
+        @param plugin_archive (string) File name of the plugin to be installed (ZIP).
+        @param plugin_folder (string) Destination folder name of the plugin to be installed.
 
         """
-        if zipfile.is_zipfile(pluginarchive) is False:
+        if zipfile.is_zipfile(plugin_archive) is False:
             raise TypeError('Unsupported plugin file type.')
 
-        plugindir = os.path.join(PLUGIN_PATH,pluginfolder)
-        if os.path.exists(plugindir):
+        plugin_dir = os.path.join(PLUGIN_PATH,plugin_folder)
+        if os.path.exists(plugin_dir):
             raise IOError("A plugin with the same name is already existing in that folder.")
 
-        os.mkdir(plugindir)
+        os.mkdir(plugin_dir)
 
-        with zipfile.ZipFile(pluginarchive, 'r') as z:
+        with zipfile.ZipFile(plugin_archive, 'r') as z:
             restest = z.testzip()
             if restest is not None:
                 raise Exception('zip file corrupted.')
-            z.extractall(plugindir)
+            z.extractall(plugin_dir)
 
         try:
-            pluginid = self.append(pluginfolder)
+            plugin_id = self.append(plugin_folder)
         except Exception:
-            shutil.rmtree(plugindir)
+            shutil.rmtree(plugin_dir)
             raise
 
-        return pluginid
+        return plugin_id
 
     # ------------------------------------------------------------------------
 
-    def delete(self, pluginid):
+    def delete(self, plugin_id):
         """
-        Delete a plugin of the plugin directory.
+        Delete a plugin of the plugins directory.
 
-        @param pluginid (string) Identifier of the plugin to delete.
+        @param plugin_id (string) Identifier of the plugin to delete.
 
         """
-        p = self._plugins.get( pluginid, None )
+        p = self._plugins.get(plugin_id, None)
         if p is not None:
-            shutil.rmtree( p.get_directory() )
-            del self._plugins[pluginid]
+            shutil.rmtree(p.get_directory())
+            del self._plugins[plugin_id]
         else:
-            raise ValueError("No such plugin: %s"%pluginid)
+            raise ValueError("No such plugin: %s" % plugin_id)
 
     # ------------------------------------------------------------------------
 
-    def append(self, pluginfolder):
+    def append(self, plugin_folder):
         """
         Append a plugin in the list of plugins.
         It is supposed that the given plugin folder name is a folder of the
         plugin directory.
 
-        @param pluginfolder (string) The folder name of the plugin.
+        @param plugin_folder (string) The folder name of the plugin.
 
         """
         # Fix the full path of the plugin
-        pluginpath = os.path.join(PLUGIN_PATH,pluginfolder)
-        if os.path.exists( pluginpath ) is False:
-            raise IOError("No such folder: %s"%(pluginpath))
+        plugin_path = os.path.join(PLUGIN_PATH, plugin_folder)
+        if os.path.exists(plugin_path) is False:
+            raise IOError("No such folder: %s" % (plugin_path))
 
         # Find a file with the extension .ini
-        f = self.__get_config_file(pluginpath)
+        f = self.__get_config_file(plugin_path)
         if f is None:
             raise IOError("No configuration file for the plugin.")
 
         # Create the plugin instance
-        p = sppasPluginParam( pluginpath,f )
-        pluginid = p.get_key()
+        p = sppasPluginParam(plugin_path, f)
+        plugin_id = p.get_key()
 
         # Append in our list
-        if pluginid in self._plugins.keys():
+        if plugin_id in self._plugins.keys():
             raise KeyError("A plugin with the same key is already existing or plugin already loaded.")
 
-        self._plugins[pluginid] = p
-        return pluginid
+        self._plugins[plugin_id] = p
+        return plugin_id
 
     # ------------------------------------------------------------------------
 
-    def run_plugin(self, pluginid, filenames):
+    def run_plugin(self, plugin_id, filenames):
         """
         Apply a given plugin on a list of files.
 
-        @param pluginid (string) Identifier of the plugin to apply.
+        @param plugin_id (string) Identifier of the plugin to apply.
         @param filenames (list) List of files on which the plugin has to be applied.
 
         """
         if self._progress is not None:
-            self._progress.set_header( pluginid )
-            self._progress.update(0,"")
+            self._progress.set_header(plugin_id)
+            self._progress.update(0, "")
 
-        if not pluginid in self._plugins.keys():
-            raise TypeError("No plugin with identifier %s is available."%pluginid)
+        if not plugin_id in self._plugins.keys():
+            raise TypeError("No plugin with identifier %s is available." % plugin_id)
 
-        outputlines = ""
+        output_lines = ""
         total = len(filenames)
-        for i,pfile in enumerate(filenames):
+        for i, pfile in enumerate(filenames):
 
             # Indicate the file to be processed
             if self._progress is not None:
-                self._progress.set_text( os.path.basename(pfile)+" ("+str(i+1)+"/"+str(total)+")" )
-            outputlines = "Apply plugin on file: %s\n"%pfile
+                self._progress.set_text(os.path.basename(pfile)+" ("+str(i+1)+"/"+str(total)+")")
+            output_lines = "Apply plugin on file: %s\n" % pfile
 
             # Apply the plugin
-            process = sppasPluginProcess( self._plugins[pluginid] )
-            process.run( pfile )
+            process = sppasPluginProcess(self._plugins[plugin_id])
+            process.run(pfile)
             result = process.communicate()
             if len(result) == 0:
-                outputlines += "done."
+                output_lines += "done."
             else:
-                outputlines += result
+                output_lines += result
 
             # Indicate progress
             if self._progress is not None:
                 self._progress.set_fraction(float((i+1))/float(total))
-            outputlines += "\n"
+            output_lines += "\n"
 
         # Indicate completed!
         if self._progress is not None:
-            self._progress.update(1,"Completed.\n")
+            self._progress.update(1, "Completed.\n")
             self._progress.set_header("")
 
-        return outputlines
+        return output_lines
 
     # ------------------------------------------------------------------------
     # Private
     # ------------------------------------------------------------------------
 
-    def __init_plugin_dir(self):
+    @staticmethod
+    def __init_plugin_dir():
         """ Create the plugin directory if any. """
 
-        if os.path.exists( PLUGIN_PATH ):
+        if os.path.exists(PLUGIN_PATH):
             return True
         try:
-            os.makedirs( PLUGIN_PATH )
+            os.makedirs(PLUGIN_PATH)
         except OSError:
             return False
         else:
@@ -269,24 +271,26 @@ class sppasPluginsManager( Thread ):
 
     # ------------------------------------------------------------------------
 
-    def __get_plugins(self):
+    @staticmethod
+    def __get_plugins():
         """ Return a list of plugin folders. """
 
         folders = []
         for entry in os.listdir(PLUGIN_PATH):
-            entrypath = os.path.join(PLUGIN_PATH, entry)
-            if os.path.isdir(entrypath):
+            entry_path = os.path.join(PLUGIN_PATH, entry)
+            if os.path.isdir(entry_path):
                 folders.append(entry)
 
         return folders
 
     # ------------------------------------------------------------------------
 
-    def __get_config_file(self, plugindir):
+    @staticmethod
+    def __get_config_file(plugin_dir):
         """ Return the config file of a given plugin. """
 
+        files = fileutils.get_files(plugin_dir, extension=".ini", recurs=False)
         # Find a file with the extension .ini, and only one
-        files = fileutils.get_files(plugindir, extension=".ini", recurs=False)
         if len(files) == 1:
             return files[0]
 

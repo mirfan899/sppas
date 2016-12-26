@@ -58,6 +58,7 @@ import sp_glob
 # Open
 # ----------------------------------------------------------------------------
 
+
 def OpenAnnotationFiles(multiple=True):
     """
     Return a list of annotation file names.
@@ -89,6 +90,7 @@ def OpenAnnotationFiles(multiple=True):
 
 # ----------------------------------------------------------------------------
 
+
 def OpenSoundFiles():
     """
     Return a list of sound file names.
@@ -107,6 +109,7 @@ def OpenSoundFiles():
     return files
 
 # ----------------------------------------------------------------------------
+
 
 def OpenAnyFiles():
     """
@@ -131,7 +134,7 @@ def OpenSpecificFiles(name, extensions):
     wildcard  = create_wildcard(name, extensions)
 
     afile = ""
-    dlg = wx.FileDialog(None, "Select a file", sp_glob.SAMPLES_PATH, "", wildcard, wx.FD_OPEN | wx.FD_CHANGE_DIR)
+    dlg = wx.FileDialog(None, "Select a file", os.getcwd(), "", wildcard, wx.FD_OPEN | wx.FD_CHANGE_DIR)
     if dlg.ShowModal() == wx.ID_OK:
         afile = dlg.GetPath()
 

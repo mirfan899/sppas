@@ -44,7 +44,8 @@ from cfgparser import sppasPluginConfigParser
 
 # ----------------------------------------------------------------------------
 
-class sppasPluginParam( object ):
+
+class sppasPluginParam(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -85,7 +86,7 @@ class sppasPluginParam( object ):
         # The name of the plugin
         self._name = ""
         # The description of the plugin do
-        self._desc = ""
+        self._descr = ""
         # The icon of the plugin application
         self._icon = ""
 
@@ -102,7 +103,7 @@ class sppasPluginParam( object ):
         """
         self.reset()
         filename = os.path.join(self._directory,self._cfgfile)
-        self._cfgparser.parse( filename )
+        self._cfgparser.parse(filename)
 
         # get the command
         command = self.__get_command(self._cfgparser.get_command())
@@ -128,8 +129,8 @@ class sppasPluginParam( object ):
         Copy the old one into a backup file.
 
         """
-        self._cfgparser.set_options( self._options )
-        self._cfgparser.save( backup=True )
+        self._cfgparser.set_options(self._options)
+        self._cfgparser.save(backup=True)
 
     # ------------------------------------------------------------------------
     # Getters
@@ -163,7 +164,8 @@ class sppasPluginParam( object ):
     # Private
     # ------------------------------------------------------------------------
 
-    def __get_command(self, commands):
+    @staticmethod
+    def __get_command(commands):
         """ Return the appropriate command from a list of available ones. """
 
         _system = platform.system().lower()
@@ -181,11 +183,12 @@ class sppasPluginParam( object ):
 
     # ------------------------------------------------------------------------
 
-    def __check_command(self, command):
+    @staticmethod
+    def __check_command(command):
         """ Return True if command exists. """
 
         # test only the main command (i.e. the first string, without args).
-        commandargs = shlex.split( command )
+        commandargs = shlex.split(command)
         testcommand = commandargs[0]
 
         NULL = open(os.devnull, 'w')

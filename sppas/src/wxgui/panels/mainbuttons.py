@@ -72,6 +72,7 @@ from wxgui.views.feedback import ShowFeedbackDialog
 
 # ----------------------------------------------------------------------------
 
+
 class MainMenuPanel( wx.Panel ):
     """
     @author:       Brigitte Bigi
@@ -130,6 +131,7 @@ class MainMenuPanel( wx.Panel ):
 
 # ---------------------------------------------------------------------------
 
+
 class MainTitlePanel( wx.Panel ):
     """
     @author:       Brigitte Bigi
@@ -172,6 +174,7 @@ class MainTitlePanel( wx.Panel ):
 
 # ----------------------------------------------------------------------------
 
+
 class MainToolbarPanel( wx.Panel ):
     """
     @author:       Brigitte Bigi
@@ -204,7 +207,7 @@ class MainToolbarPanel( wx.Panel ):
 
     def AddButton(self, idb, icon, text, tooltip=None, activated=True):
         btn = ButtonToolbarPanel(self, idb, self.preferences, icon, text, tooltip, activated)
-        self.sizer.Add( btn, proportion=1, flag=wx.ALL, border=2 )
+        self.sizer.Add(btn, proportion=1, flag=wx.ALL, border=2)
         self.buttons.append(btn)
         self.Layout()
 
@@ -220,6 +223,7 @@ class MainToolbarPanel( wx.Panel ):
             btn.SetPrefs( self.preferences )
 
 # ----------------------------------------------------------------------------
+
 
 class MainActionsPanel( wx.Panel ):
     """
@@ -243,6 +247,7 @@ class MainActionsPanel( wx.Panel ):
         self.Bind(wx.EVT_BUTTON, self.OnButtonClick)
         self.SetSizerAndFit(sizer)
 
+    # -----------------------------------------------------------------------
 
     def __create_buttons(self):
         """ Create buttons to call tools. """
@@ -279,6 +284,7 @@ class MainActionsPanel( wx.Panel ):
         wx.PostEvent(self.GetParent(), evt)
 
 # ---------------------------------------------------------------------------
+
 
 class MainActionsMenuPanel( wx.Panel ):
     """
@@ -336,9 +342,8 @@ class MainActionsMenuPanel( wx.Panel ):
             self.backButton.Hide()
         self.Refresh()
 
-    # -----------------------------------------------------------------------
-
 # ----------------------------------------------------------------------------
+
 
 class MainTooltips( wx.Panel ):
     """

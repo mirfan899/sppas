@@ -39,12 +39,10 @@ import wx
 
 from wxgui.cutils.imageutils import spBitmap
 from wxgui.cutils.ctrlutils  import CreateGenButton
-from wxgui.cutils.colorutils import LightenColor
 
 from wxgui.sp_consts import BUTTON_ICONSIZE, MENU_ICONSIZE, TB_ICONSIZE
 
 from wxgui.sp_icons import CLOSE_ICON
-from wxgui.sp_icons import APPLY_ICON
 from wxgui.sp_icons import CANCEL_ICON
 from wxgui.sp_icons import SAVE_FILE
 from wxgui.sp_icons import YES_ICON
@@ -52,6 +50,7 @@ from wxgui.sp_icons import NO_ICON
 from wxgui.sp_icons import OKAY_ICON
 
 # ---------------------------------------------------------------------------
+
 
 class ButtonCreator:
     """
@@ -110,6 +109,7 @@ class ButtonCreator:
 
 # ---------------------------------------------------------------------------
 
+
 class ImgPanel( wx.Panel ):
     """
     @author:       Brigitte Bigi
@@ -140,6 +140,7 @@ class ImgPanel( wx.Panel ):
         wx.PostEvent(self.GetParent(), evt)
 
 # ---------------------------------------------------------------------------
+
 
 class ButtonPanel( wx.Panel ):
     """
@@ -241,6 +242,7 @@ class ButtonPanel( wx.Panel ):
 
 # ---------------------------------------------------------------------------
 
+
 class ButtonToolbarPanel( wx.Panel ):
     """
     @author:       Brigitte Bigi
@@ -334,6 +336,7 @@ class ButtonToolbarPanel( wx.Panel ):
         self.Refresh()
 
 # ---------------------------------------------------------------------------
+
 
 class ButtonMenuPanel( wx.Panel ):
     """

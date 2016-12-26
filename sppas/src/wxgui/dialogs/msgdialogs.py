@@ -38,7 +38,6 @@ import sys
 import os.path
 sys.path.append(  os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) )
 
-
 import wx
 from basedialog import spBaseDialog
 
@@ -49,11 +48,10 @@ from wxgui.sp_icons import DLG_WARN_ICON
 from wxgui.sp_icons import DLG_ERR_ICON
 from wxgui.sp_icons import DLG_QUEST_ICON
 
-from wxgui.sp_consts import MAIN_FONTSIZE
-
 # ----------------------------------------------------------------------------
 
-class spBaseMessageDialog( spBaseDialog ):
+
+class spBaseMessageDialog(spBaseDialog):
 
     def __init__(self, parent, preferences, contentmsg, style=wx.ICON_INFORMATION):
         """
@@ -97,7 +95,9 @@ class spBaseMessageDialog( spBaseDialog ):
 
 # ---------------------------------------------------------------------------
 
-class YesNoQuestion( spBaseMessageDialog ):
+
+class YesNoQuestion(spBaseMessageDialog):
+
     def __init__(self, parent, preferences, contentmsg):
         spBaseMessageDialog.__init__(self, parent, preferences, contentmsg, style=wx.YES_NO)
 
@@ -115,7 +115,9 @@ class YesNoQuestion( spBaseMessageDialog ):
 
 # ---------------------------------------------------------------------------
 
-class Information( spBaseMessageDialog ):
+
+class Information(spBaseMessageDialog):
+
     def __init__(self, parent, preferences, contentmsg, style=wx.YES_NO):
         spBaseMessageDialog.__init__(self, parent, preferences, contentmsg, style)
 
@@ -126,9 +128,8 @@ class Information( spBaseMessageDialog ):
 
 # ---------------------------------------------------------------------------
 
-# ---------------------------------------------------------------------------
 
-class Choice( spBaseDialog ):
+class Choice(spBaseDialog):
 
     def __init__(self, parent, preferences, contentmsg, choices):
         """
@@ -193,17 +194,21 @@ class Choice( spBaseDialog ):
 # ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 
+
 def ShowYesNoQuestion(parent, preferences, contentmsg):
     dlg = YesNoQuestion( parent, preferences, contentmsg)
     return dlg.ShowModal()
 
 # ---------------------------------------------------------------------------
 
+
 def ShowInformation(parent, preferences, contentmsg, style=wx.ICON_INFORMATION):
     dlg = Information( parent, preferences, contentmsg, style )
     return dlg.ShowModal()
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+
 
 def DemoBaseDialog(parent, preferences=None):
     """ A simple demonstration of SPPAS message dialogs."""

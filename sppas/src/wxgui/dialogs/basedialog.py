@@ -56,7 +56,8 @@ import wxgui.structs.prefs
 # class BaseDialog
 # ----------------------------------------------------------------------------
 
-class spBaseDialog( wx.Dialog ):
+
+class spBaseDialog(wx.Dialog):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France

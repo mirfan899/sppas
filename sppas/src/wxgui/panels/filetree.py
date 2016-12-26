@@ -100,7 +100,8 @@ ID_TB_EXPORT  = wx.NewId()
 # class filelistPanel
 # ----------------------------------------------------------------------------
 
-class FiletreePanel( wx.Panel ):
+
+class FiletreePanel(wx.Panel):
     """
     @author:  Brigitte Bigi, Cazembe Henry
     @contact: brigitte.bigi@gmail.com
