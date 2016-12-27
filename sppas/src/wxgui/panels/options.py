@@ -34,7 +34,11 @@
 # File: options.py
 # ----------------------------------------------------------------------------
 
+import os
 import wx.lib.scrolledpanel
+
+from wxgui.cutils.imageutils  import spBitmap
+from wxgui.sp_icons import TREE_FOLDER_OPEN
 
 # ----------------------------------------------------------------------------
 
@@ -49,7 +53,7 @@ class sppasOptionsPanel(wx.lib.scrolledpanel.ScrolledPanel):
     @summary:      Create dynamically a panel depending on a list of options.
 
     """
-    def __init__(self, parent, options):
+    def __init__(self, parent, preferences, options):
         """
         Constructor.
 
@@ -57,17 +61,19 @@ class sppasOptionsPanel(wx.lib.scrolledpanel.ScrolledPanel):
 
         """
         wx.lib.scrolledpanel.ScrolledPanel.__init__(self, parent, -1, style=wx.NO_BORDER)
+        self.preferences = preferences
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(sizer)
 
         # wx objects to fill option values
         self._items = []
+        self.filebuttons = {}
 
         for opt in options:
             self.AppendOption(opt)
 
-        self.SetMinSize((320, 240))
+        self.SetMinSize((320, 180))
         self.Fit()
         self.SetupScrolling()
 
@@ -88,6 +94,9 @@ class sppasOptionsPanel(wx.lib.scrolledpanel.ScrolledPanel):
 
         elif opt.get_type() == "float":
             self.__add_float(opt.get_text(), value=opt.get_value())
+
+        elif opt.get_type() == "file":
+            self.__add_file(opt.get_text(), value=opt.get_value())
 
         else:  # if opt.get_type() == "str":
             self.__add_text(opt.get_text(), value=opt.get_value())
@@ -184,9 +193,51 @@ class sppasOptionsPanel(wx.lib.scrolledpanel.ScrolledPanel):
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         sizer.Add(textctrl)
 
-        self.GetSizer().Add(st, 0, wx.BOTTOM, 8)
+        self.GetSizer().Add(st, 0, wx.LEFT, 8)
         self.GetSizer().Add(sizer, 0, wx.BOTTOM, 8)
 
         self._items.append(textctrl)
+
+    # ------------------------------------------------------------------------
+
+    def __add_file(self, label, value=""):
+        """
+        Add a TextCtrl to the panel.
+
+        :param label: (string) the description of the value
+        :param value: (string) the current value
+
+        """
+        st = wx.StaticText(self, -1, label)
+        filetext = wx.TextCtrl(self, -1, size=(300, -1))
+        filetext.SetValue(value)
+
+        filebtn = wx.BitmapButton(self, bitmap=spBitmap(TREE_FOLDER_OPEN, 16, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
+        filebtn.Bind(wx.EVT_BUTTON, self.OnTextFile)
+
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+        sizer.Add(filetext, 1, wx.EXPAND|wx.ALIGN_CENTER_VERTICAL)
+        sizer.Add(filebtn, 0, wx.LEFT|wx.ALIGN_CENTER_VERTICAL, border=5)
+
+        self.GetSizer().Add(st, 0, wx.BOTTOM, 8)
+        self.GetSizer().Add(sizer, 0, wx.BOTTOM, 8)
+
+        self.filebuttons[filebtn] = filetext
+        self._items.append(filetext)
+
+    # ------------------------------------------------------------------------
+
+    def OnTextFile(self, event):
+
+        dlg = wx.DirDialog(self, message="Choose a directory:", defaultPath=os.getcwd())
+        if dlg.ShowModal() == wx.ID_OK:
+            directory = dlg.GetPath()
+            btnobj = event.GetEventObject()
+            obj = self.filebuttons[btnobj]
+            obj.SetValue(directory)
+            obj.SetFocus()
+            obj.Refresh()
+
+        dlg.Destroy()
 
     # ------------------------------------------------------------------------

@@ -63,10 +63,6 @@ A "all-in-one" solution:
 
 """
 
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
 import sys
 import os
 from argparse import ArgumentParser
@@ -76,7 +72,6 @@ SPPAS = os.path.join( os.path.dirname( os.path.dirname( PROGRAM_PATH ) ), "src" 
 sys.path.append(SPPAS)
 
 from sp_glob import program, author, version, copyright, url
-from term.textprogress import ProcessProgressTerminal
 from term.terminalcontroller import TerminalController
 
 from plugins.manager import sppasPluginsManager
@@ -111,7 +106,7 @@ try:
     print term.render('${BLUE}'+copyright+'${NORMAL}')
     print term.render('${BLUE}'+url+'${NORMAL}')
     print term.render('${GREEN}-----------------------------------------------------------------------${NORMAL}\n')
-except:
+except Exception:
     print '-----------------------------------------------------------------------\n'
     print program+'   -  Version '+version
     print copyright
@@ -127,11 +122,11 @@ if args.install:
     print "Plugin installation"
 
     # fix a name for the plugin directory
-    pluginfolder = os.path.splitext(os.path.basename( args.p ))[0]
+    pluginfolder = os.path.splitext(os.path.basename(args.p))[0]
     pluginfolder.replace(' ', "_")
 
     # install the plugin.
-    pluginid = manager.install( args.p, pluginfolder )
+    pluginid = manager.install(args.p, pluginfolder)
 
 if args.apply and args.i:
 
@@ -140,21 +135,19 @@ if args.apply and args.i:
 
     # Set the output file name (if any)
     if args.o:
-        options = p.get_options
+        options = p.get_options()
         for opt in options.values():
             if opt.get_key() == "output":
                 opt.set_value( args.o )
         p.set_options(options)
 
     # Run
-    message = manager.run_plugin( pluginid, [args.i] )
+    message = manager.run_plugin(pluginid, [args.i])
     print message
 
 
 if args.remove:
 
-    manager.delete( pluginid )
+    manager.delete(pluginid)
 
 print '-----------------------------------------------------------------------\n'
-
-# ----------------------------------------------------------------------------

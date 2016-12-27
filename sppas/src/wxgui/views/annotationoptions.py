@@ -86,7 +86,7 @@ class spAnnotationConfig(spBaseDialog):
         return self.CreateTitle(ANNOTATE_CONFIG_ICON, text)
 
     def _create_content(self):
-        options_panel = sppasOptionsPanel(self, self.step.get_options)
+        options_panel = sppasOptionsPanel(self, self.preferences, self.step.get_options())
         options_panel.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
         options_panel.SetForegroundColour(self.preferences.GetValue('M_FG_COLOUR'))
         options_panel.SetFont(self.preferences.GetValue('M_FONT'))

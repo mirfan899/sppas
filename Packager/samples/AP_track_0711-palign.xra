@@ -1,0 +1,1924 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document Author="SPPAS" Date="2016-12-27" Format="1.2">
+  <Tier id="2f008e8d-8d11-6b99-3bd4-5037ec2f293e" tiername="PhonAlign">
+    <Metadata>
+      <Entry key="id">2f008e8d-8d11-6b99-3bd4-5037ec2f293e</Entry>
+    </Metadata>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="0.0" radius="0.0" />
+            <End midpoint="0.04" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">w</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="0.04" radius="0.005" />
+            <End midpoint="0.31" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">E</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="0.31" radius="0.005" />
+            <End midpoint="0.39" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.353">t</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="0.39" radius="0.005" />
+            <End midpoint="0.43" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.353">j</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="0.43" radius="0.005" />
+            <End midpoint="0.47" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.908">k</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="0.47" radius="0.005" />
+            <End midpoint="0.58" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.908">o~</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="0.58" radius="0.005" />
+            <End midpoint="0.63" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.908">p</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="0.63" radius="0.005" />
+            <End midpoint="0.69" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.908">R</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="0.69" radius="0.005" />
+            <End midpoint="0.89" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.908">a~</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="0.89" radius="0.005" />
+            <End midpoint="0.92" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">n</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="0.92" radius="0.005" />
+            <End midpoint="1.14" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">a</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="1.14" radius="0.005" />
+            <End midpoint="1.18" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">n</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="1.18" radius="0.005" />
+            <End midpoint="1.53" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">a</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="1.53" radius="0.005" />
+            <End midpoint="1.59" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">n</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="1.59" radius="0.005" />
+            <End midpoint="1.67" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">a</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="1.67" radius="0.005" />
+            <End midpoint="1.71" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">n</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="1.71" radius="0.005" />
+            <End midpoint="1.81" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">a</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="1.81" radius="0.005" />
+            <End midpoint="1.84" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">n</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="1.84" radius="0.005" />
+            <End midpoint="1.98" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">a</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="1.98" radius="0.005" />
+            <End midpoint="2.01" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">n</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="2.01" radius="0.005" />
+            <End midpoint="2.04" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">a</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="2.04" radius="0.005" />
+            <End midpoint="2.07" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">l</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="2.07" radius="0.005" />
+            <End midpoint="2.12" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">a</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="2.12" radius="0.005" />
+            <End midpoint="2.23" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">s</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="2.23" radius="0.005" />
+            <End midpoint="2.28" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">o</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="2.28" radius="0.005" />
+            <End midpoint="2.33" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">l</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="2.33" radius="0.005" />
+            <End midpoint="2.39" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">i</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="2.39" radius="0.005" />
+            <End midpoint="2.44" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">d</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="2.44" radius="0.005" />
+            <End midpoint="2.53" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">a</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="2.53" radius="0.005" />
+            <End midpoint="2.56" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">R</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="2.56" radius="0.005" />
+            <End midpoint="2.65" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">i</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="2.65" radius="0.005" />
+            <End midpoint="2.73" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">t</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="2.73" radius="0.005" />
+            <End midpoint="2.86" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">e</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="2.86" radius="0.005" />
+            <End midpoint="2.89" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.611">l</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="2.89" radius="0.005" />
+            <End midpoint="2.92" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.611">e</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="2.92" radius="0.005" />
+            <End midpoint="2.99" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.611">z</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="2.99" radius="0.005" />
+            <End midpoint="3.04" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.626">e</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="3.04" radius="0.005" />
+            <End midpoint="3.13" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.626">t</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="3.13" radius="0.005" />
+            <End midpoint="3.18" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.626">y</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="3.18" radius="0.005" />
+            <End midpoint="3.24" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.626">d</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="3.24" radius="0.005" />
+            <End midpoint="3.33" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.626">j</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="3.33" radius="0.005" />
+            <End midpoint="3.37" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.626">a~</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="3.37" radius="0.005" />
+            <End midpoint="3.4" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.678">e</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="3.4" radius="0.005" />
+            <End midpoint="3.47" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.989">k</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="3.47" radius="0.005" />
+            <End midpoint="3.5" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.989">E</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="3.5" radius="0.005" />
+            <End midpoint="3.53" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.989">l</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="3.53" radius="0.005" />
+            <End midpoint="3.61" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">s</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="3.61" radius="0.005" />
+            <End midpoint="3.66" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">o</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="3.66" radius="0.005" />
+            <End midpoint="3.7" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">l</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="3.7" radius="0.005" />
+            <End midpoint="3.78" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">i</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="3.78" radius="0.005" />
+            <End midpoint="3.83" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">d</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="3.83" radius="0.005" />
+            <End midpoint="3.91" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">a</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="3.91" radius="0.005" />
+            <End midpoint="3.94" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">R</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="3.94" radius="0.005" />
+            <End midpoint="4.0" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">i</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.0" radius="0.005" />
+            <End midpoint="4.1" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">t</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.1" radius="0.005" />
+            <End midpoint="4.28" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">e</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.28" radius="0.005" />
+            <End midpoint="4.34" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.333">a</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.34" radius="0.005" />
+            <End midpoint="4.43" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">s</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.43" radius="0.005" />
+            <End midpoint="4.5" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">e</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.5" radius="0.005" />
+            <End midpoint="4.54" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.229">b</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.54" radius="0.005" />
+            <End midpoint="4.7" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.229">o</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.7" radius="0.005" />
+            <End midpoint="4.81" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.823">Z</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.81" radius="0.005" />
+            <End midpoint="4.84" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.764">l</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.84" radius="0.005" />
+            <End midpoint="4.87" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.764">H</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.87" radius="0.005" />
+            <End midpoint="4.9" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.698">d</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.9" radius="0.005" />
+            <End midpoint="4.93" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.698">i</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.93" radius="0.005" />
+            <End midpoint="5.03" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.641">t</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="5.03" radius="0.005" />
+            <End midpoint="5.07" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.425">e</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="5.07" radius="0.005" />
+            <End midpoint="5.16" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.484">s</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="5.16" radius="0.005" />
+            <End midpoint="5.21" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.484">o</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="5.21" radius="0.005" />
+            <End midpoint="5.25" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.484">l</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="5.25" radius="0.005" />
+            <End midpoint="5.33" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.484">i</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="5.33" radius="0.005" />
+            <End midpoint="5.38" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.484">d</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="5.38" radius="0.005" />
+            <End midpoint="5.53" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.484">E</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="5.53" radius="0.005" />
+            <End midpoint="5.58" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.484">R</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="5.58" radius="0.005" />
+            <End midpoint="5.62" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">t</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="5.62" radius="0.005" />
+            <End midpoint="5.65" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">w</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="5.65" radius="0.005" />
+            <End midpoint="5.94" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">a</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="5.94" radius="0.005" />
+            <End midpoint="6.02" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.7">t</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="6.02" radius="0.005" />
+            <End midpoint="6.07" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.538">e</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="6.07" radius="0.005" />
+            <End midpoint="6.14" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.419">s</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="6.14" radius="0.005" />
+            <End midpoint="6.19" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.419">o</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="6.19" radius="0.005" />
+            <End midpoint="6.24" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.419">l</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="6.24" radius="0.005" />
+            <End midpoint="6.33" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.419">i</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="6.33" radius="0.005" />
+            <End midpoint="6.4" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.419">d</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="6.4" radius="0.005" />
+            <End midpoint="6.51" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.419">E</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="6.51" radius="0.005" />
+            <End midpoint="6.59" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.419">R</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="6.59" radius="0.005" />
+            <End midpoint="6.63" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.966">d</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="6.63" radius="0.005" />
+            <End midpoint="6.74" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.966">eu</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="6.74" radius="0.005" />
+            <End midpoint="6.78" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.901">d</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="6.78" radius="0.005" />
+            <End midpoint="6.87" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.901">eu</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="6.87" radius="0.005" />
+            <End midpoint="6.95" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.738">d</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="6.95" radius="0.005" />
+            <End midpoint="7.0" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.738">eu</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="7.0" radius="0.005" />
+            <End midpoint="7.09" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.453">t</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="7.09" radius="0.005" />
+            <End midpoint="7.15" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.453">e</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="7.15" radius="0.005" />
+            <End midpoint="7.29" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.87">f</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="7.29" radius="0.005" />
+            <End midpoint="7.37" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.87">E</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="7.37" radius="0.005" />
+            <End midpoint="7.45" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.87">s</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="7.45" radius="0.005" />
+            <End midpoint="7.5" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.87">eu</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="7.5" radius="0.005" />
+            <End midpoint="7.58" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.934">t</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="7.58" radius="0.005" />
+            <End midpoint="7.61" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.45">e</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="7.61" radius="0.005" />
+            <End midpoint="7.69" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.475">s</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="7.69" radius="0.005" />
+            <End midpoint="7.74" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.475">o</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="7.74" radius="0.005" />
+            <End midpoint="7.81" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.475">l</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="7.81" radius="0.005" />
+            <End midpoint="7.85" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.475">i</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="7.85" radius="0.005" />
+            <End midpoint="7.89" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.475">d</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="7.89" radius="0.005" />
+            <End midpoint="7.99" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.475">E</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="7.99" radius="0.005" />
+            <End midpoint="8.074312" radius="0.0" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.475">R</Text>
+      </Label>
+    </Annotation>
+  </Tier>
+  <Tier id="2f850c4b-9f78-8c25-0ad1-0451ed0e251f" tiername="TokensAlign">
+    <Metadata>
+      <Entry key="id">2f850c4b-9f78-8c25-0ad1-0451ed0e251f</Entry>
+    </Metadata>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="0.0" radius="0.0" />
+            <End midpoint="0.31" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">ouais</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="0.31" radius="0.005" />
+            <End midpoint="0.43" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.353">tu</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="0.43" radius="0.005" />
+            <End midpoint="0.89" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.908">comprends</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="0.89" radius="0.005" />
+            <End midpoint="1.14" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">na</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="1.14" radius="0.005" />
+            <End midpoint="1.53" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">na</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="1.53" radius="0.005" />
+            <End midpoint="1.67" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">na</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="1.67" radius="0.005" />
+            <End midpoint="1.81" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">na</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="1.81" radius="0.005" />
+            <End midpoint="1.98" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">na</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="1.98" radius="0.005" />
+            <End midpoint="2.04" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">na</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="2.04" radius="0.005" />
+            <End midpoint="2.12" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">la</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="2.12" radius="0.005" />
+            <End midpoint="2.86" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">solidarité</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="2.86" radius="0.005" />
+            <End midpoint="2.99" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.611">les</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="2.99" radius="0.005" />
+            <End midpoint="3.37" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.626">étudiants</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="3.37" radius="0.005" />
+            <End midpoint="3.4" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.678">et</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="3.4" radius="0.005" />
+            <End midpoint="3.53" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.989">quelle</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="3.53" radius="0.005" />
+            <End midpoint="4.28" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">solidarité</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.28" radius="0.005" />
+            <End midpoint="4.34" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.333">ah</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.34" radius="0.005" />
+            <End midpoint="4.5" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">c'est</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.5" radius="0.005" />
+            <End midpoint="4.7" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.229">bon</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.7" radius="0.005" />
+            <End midpoint="4.81" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.823">je</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.81" radius="0.005" />
+            <End midpoint="4.87" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.764">lui</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.87" radius="0.005" />
+            <End midpoint="4.93" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.698">dis</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="4.93" radius="0.005" />
+            <End midpoint="5.03" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.641">tu</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="5.03" radius="0.005" />
+            <End midpoint="5.07" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.425">es</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="5.07" radius="0.005" />
+            <End midpoint="5.58" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.484">solidaire</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="5.58" radius="0.005" />
+            <End midpoint="5.94" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.5">toi</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="5.94" radius="0.005" />
+            <End midpoint="6.02" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.7">tu</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="6.02" radius="0.005" />
+            <End midpoint="6.07" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.538">es</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="6.07" radius="0.005" />
+            <End midpoint="6.59" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.419">solidaire</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="6.59" radius="0.005" />
+            <End midpoint="6.74" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.966">de</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="6.74" radius="0.005" />
+            <End midpoint="6.87" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.901">de</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="6.87" radius="0.005" />
+            <End midpoint="7.0" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.738">de</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="7.0" radius="0.005" />
+            <End midpoint="7.15" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.453">tes</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="7.15" radius="0.005" />
+            <End midpoint="7.5" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.87">fesses</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="7.5" radius="0.005" />
+            <End midpoint="7.58" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.934">tu</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="7.58" radius="0.005" />
+            <End midpoint="7.61" radius="0.005" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.45">es</Text>
+      </Label>
+    </Annotation>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="7.61" radius="0.005" />
+            <End midpoint="8.074312" radius="0.0" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="0.475">solidaire</Text>
+      </Label>
+    </Annotation>
+  </Tier>
+  <Tier id="4c987f0e-1f73-2b28-9ae7-0805fc0d679e" tiername="Activity">
+    <Metadata>
+      <Entry key="id">4c987f0e-1f73-2b28-9ae7-0805fc0d679e</Entry>
+    </Metadata>
+    <Annotation>
+      <Location>
+        <Localization score="1.0">
+          <Timeinterval>
+            <Begin midpoint="0.0" radius="0.0" />
+            <End midpoint="8.074312" radius="0.0" />
+          </Timeinterval>
+        </Localization>
+      </Location>
+      <Label scoremode="max">
+        <Text score="1.0">speech</Text>
+      </Label>
+    </Annotation>
+  </Tier>
+  <Media id="7b653d9c-6e83-7a04-3ed2-9489ba9e060d" mimetype="audio/wav" url="/home/bigi/Workspace/sppas/samples/samples-fra/AP_track_0711.wav">
+    <Tier id="2f008e8d-8d11-6b99-3bd4-5037ec2f293e" />
+    <Tier id="2f850c4b-9f78-8c25-0ad1-0451ed0e251f" />
+    <Tier id="4c987f0e-1f73-2b28-9ae7-0805fc0d679e" />
+  </Media>
+  <Hierarchy>
+    <Link from="2f850c4b-9f78-8c25-0ad1-0451ed0e251f" to="4c987f0e-1f73-2b28-9ae7-0805fc0d679e" type="TimeAlignment" />
+  </Hierarchy>
+</Document>

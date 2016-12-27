@@ -35,6 +35,7 @@
 # File: pluginsoptions.py
 # ----------------------------------------------------------------------------
 
+import logging
 import wx
 import wx.lib.agw.floatspin
 
@@ -86,11 +87,11 @@ class spPluginConfig(spBaseDialog):
         all_options = self.plugin.get_options().values()
         selected_options = []
         for option in all_options:
-            if option.get_key() != "input" and option.get_untypedvalue() != "intput":
+            if option.get_key() != "input" and option.get_value() != "input":
                 self._options_key.append(option.get_key())
                 selected_options.append(option)
 
-        options_panel = sppasOptionsPanel(self, selected_options)
+        options_panel = sppasOptionsPanel(self, self.preferences, selected_options)
         options_panel.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
         options_panel.SetForegroundColour(self.preferences.GetValue('M_FG_COLOUR'))
         options_panel.SetFont(self.preferences.GetValue('M_FONT'))

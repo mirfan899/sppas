@@ -250,7 +250,7 @@ class sppasPluginConfigParser(object):
 
         """
         oid    = ""
-        otype  = ""
+        otype  = "str"
         ovalue = ""
         otext  = ""
 

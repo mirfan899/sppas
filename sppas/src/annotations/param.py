@@ -82,7 +82,7 @@ class annotationParam( object ):
     def parse(self, filename):
         p = AnnotationConfigParser()
         p.parse( filename )
-        self.options = p.get_options
+        self.options = p.get_options()
         self.langres = p.get_resources()
         conf = p.get_config()
         self.key   = conf['id']
@@ -277,7 +277,7 @@ class sppasParam:
         return self.annotations[step]
 
     def get_options(self, step):
-        return self.annotations[step].get_options
+        return self.annotations[step].get_options()
 
     def get_output_format(self):
         return self.output_format

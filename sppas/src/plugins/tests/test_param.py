@@ -19,7 +19,7 @@ class TestPluginParam(unittest.TestCase):
         self.assertEqual(self.param.get_descr(), "Performs something on some files.")
         self.assertEqual(self.param.get_icon(), "")
 
-        opt = self.param.get_options
+        opt = self.param.get_options()
         self.assertEqual(len(opt), 3)
         self.assertEqual(opt["Option1"].get_key(), "-b")
         self.assertEqual(opt["Option2"].get_key(), "--show-progress")

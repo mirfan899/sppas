@@ -21,7 +21,7 @@ class TestPluginConfigParser(unittest.TestCase):
     def test_parse(self):
 
         conf = self.cfg.get_config()
-        opt = self.cfg.get_options
+        opt = self.cfg.get_options()
         com = self.cfg.get_command()
 
         self.assertEqual(len(conf), 3) # id, name, descr
@@ -43,7 +43,7 @@ class TestPluginConfigParser(unittest.TestCase):
 
 
         conf = newcfg.get_config()
-        opt  = newcfg.get_options
+        opt  = newcfg.get_options()
         com  = newcfg.get_command()
 
         self.assertEqual(len(conf), 3) # id, name, descr

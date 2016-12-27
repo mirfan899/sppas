@@ -12,7 +12,7 @@
 #
 # ---------------------------------------------------------------------------
 #            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
+#                   Copyright (C) 2011-2017  Brigitte Bigi
 #
 #                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
@@ -39,26 +39,28 @@ from sp_glob import encoding
 
 # ----------------------------------------------------------------------------
 
-class BaseOption( object ):
+
+class BaseOption(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     @summary:      Class to deal with one option.
 
     An option is a set of data with a main value and its type, then 3 other
     variables to store any kind of information.
 
     """
-    def __init__(self, optiontype, optionvalue=""):
+    def __init__(self, option_type, option_value=""):
         """
         Creates a new option instance.
 
         """
-        self._type  = self.set_type(optiontype)
-        self._value = optionvalue
+        self._type  = ""
+        self.set_type(option_type)
+        self._value = option_value
         self._text  = ""
         self._name  = ""
         self._description = ""
@@ -71,11 +73,9 @@ class BaseOption( object ):
         """ Return the type (as a String) of the option. """
         return self._type
 
-
     def get_untypedvalue(self):
         """ Return the value as it was given. """
         return self._value
-
 
     def get_value(self):
         """ Return the typed-value or None. """
@@ -88,27 +88,24 @@ class BaseOption( object ):
             else:
                 return False
 
-        if self._type == 'int':
+        elif self._type == 'int':
             return int(self._value)
 
-        if self._type == 'float':
+        elif self._type == 'float':
             return float(self._value)
 
-        if self._type == 'str':
+        elif self._type == 'str' or self._type == 'file':
             return self._value.decode(encoding)
 
         return None
-
 
     def get_name(self):
         """ Return the name of to this option. """
         return self._name
 
-
     def get_text(self):
         """ Return the brief text which describes the option. """
         return self._text
-
 
     def get_description(self):
         """ Return the long text which describes the option. """
@@ -120,61 +117,58 @@ class BaseOption( object ):
 
     def set(self, other):
         """ Set self to another instance. """
-        self._type         = other.get_type()
-        self._value        = other.get_value()
-        self._text         = other.get_text()
-        self._name         = other.get_name()
-        self._description  = other.get_description()
+        self._type        = other.get_type()
+        self._value       = other.get_value()
+        self._text        = other.get_text()
+        self._name        = other.get_name()
+        self._description = other.get_description()
 
-
-    def set_type(self, opttype):
+    def set_type(self, opt_type):
         """ Set a new type. """
-        opttype = opttype.lower()
+        opt_type = opt_type.lower()
 
-        if opttype.startswith('bool'):
+        if opt_type.startswith('bool'):
             self._type = "bool"
 
-        elif opttype.startswith('int') or opttype == 'long' or opttype == 'short':
+        elif opt_type.startswith('int') or opt_type == 'long' or opt_type == 'short':
             self._type = "int"
 
-        elif opttype == 'float' or opttype == 'double':
+        elif opt_type == 'float' or opt_type == 'double':
             self._type = "float"
+
+        elif opt_type == 'file':
+            self._type = "file"
 
         else:
             self._type = "str"
-
 
     def set_value(self, value):
         """ Set a new value. """
         self._value = value
 
-
     def set_name(self, name):
         """ Set the name of the options. """
         self._name = name
-
 
     def set_text(self, text):
         """ Set the brief text which describes the option. """
         self._text = text
 
-
     def set_description(self, descr):
         """ Set the long text which describes the option. """
         self._description = descr
 
-    # ------------------------------------------------------------------------
-
 # ----------------------------------------------------------------------------
 
-class Option( BaseOption ):
+
+class Option(BaseOption):
     """
     Class to deal with one option with a key as identifier.
 
     """
-    def __init__(self, optionkey):
+    def __init__(self, option_key):
         BaseOption.__init__(self, "unknown")
-        self.key = optionkey
+        self.key = option_key
 
     def get_key(self):
         return self.key
