@@ -111,19 +111,16 @@ class spPluginConfig(spBaseDialog):
     # ------------------------------------------------------------------------
 
     def _on_save(self, evt):
-        """
-        Save the content in a text file.
-        """
+        """ Save the content in a text file. """
+
         self.__set_items()
         self.plugin.save()
 
     # ------------------------------------------------------------------------
 
     def _on_okay(self, evt):
-        """
-        Set the list of "Option" instances to the plugin.
+        """ Set the list of "Option" instances to the plugin. """
 
-        """
         self.__set_items()
         evt.Skip()
 

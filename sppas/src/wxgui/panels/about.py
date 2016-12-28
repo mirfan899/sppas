@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
@@ -12,7 +11,7 @@
 #
 # ---------------------------------------------------------------------------
 #            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
+#                   Copyright (C) 2011-2017  Brigitte Bigi
 #
 #                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
@@ -39,90 +38,146 @@ import wx
 import wx.lib.scrolledpanel
 import webbrowser
 
-from sp_glob import program, version, author, copyright, brief, url, license_text
-
-from wxgui.sp_icons import APP_ICON
 from wxgui.cutils.imageutils import spBitmap
+from wxgui.sp_icons import APP_ICON
+
+from sp_glob import program, version, author, copyright, brief, url, license_text
 
 # ----------------------------------------------------------------------------
 
-class AboutSPPAS( wx.lib.scrolledpanel.ScrolledPanel ):
+
+class sppasBaseAbout(wx.lib.scrolledpanel.ScrolledPanel):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      About SPPAS.
+    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    @summary:      About panel including main information about a software.
 
     """
     def __init__(self, parent, preferences):
-
         wx.lib.scrolledpanel.ScrolledPanel.__init__(self, parent, -1, size=wx.DefaultSize, style=wx.NO_BORDER)
-        self.SetBackgroundColour( preferences.GetValue('M_BG_COLOUR') )
-        self.SetForegroundColour( preferences.GetValue('M_FG_COLOUR') )
+        self.SetBackgroundColour(preferences.GetValue('M_BG_COLOUR'))
+        self.SetForegroundColour(preferences.GetValue('M_FG_COLOUR'))
+
+        self._preferences = preferences
+        self.program = ""
+        self.version = ""
+        self.author = ""
+        self.copyright = ""
+        self.brief = ""
+        self.url = ""
+        self.license = ""
+        self.license_text = ""
+        self.icon = ""
+
+    # ------------------------------------------------------------------------
+
+    def Create(self):
+        sizer = wx.BoxSizer(wx.VERTICAL)
 
         # Logo
-        bitmap = spBitmap( APP_ICON, size=48 )
-        logo = wx.StaticBitmap(self, wx.ID_ANY, bitmap)
+        if len(self.logo) > 0:
+            bitmap = spBitmap(self.logo, size=48)
+            logo_bmp = wx.StaticBitmap(self, wx.ID_ANY, bitmap)
+            sizer.Add(logo_bmp, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=8)
 
         # Program name
-        font = preferences.GetValue('M_FONT')
-        fontsize = font.GetPointSize()
-        font.SetPointSize( fontsize+4 )
-        font.SetWeight( wx.BOLD )
-        textprogramversion = wx.StaticText(self, -1, program + " "+version)
-        textprogramversion.SetFont( font )
-        textprogramversion.SetBackgroundColour( preferences.GetValue('M_BG_COLOUR') )
-        textprogramversion.SetForegroundColour( preferences.GetValue('M_FG_COLOUR') )
+        if len(self.program) > 0:
+            textprogramversion = wx.StaticText(self, -1, self.program + " " + version)
+            self.__apply_preferences(textprogramversion)
+            font = self._preferences.GetValue('M_FONT')
+            fontsize = font.GetPointSize()
+            font.SetPointSize(fontsize+4)
+            font.SetWeight(wx.BOLD)
+            textprogramversion.SetFont(font)
+            sizer.Add(textprogramversion, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
         # Description
-        font.SetPointSize( fontsize )
-        font.SetWeight( wx.NORMAL )
-        textdescr = wx.StaticText(self, -1, brief)
-        textdescr.SetFont( font )
-        textdescr.SetBackgroundColour( preferences.GetValue('M_BG_COLOUR') )
-        textdescr.SetForegroundColour( preferences.GetValue('M_FG_COLOUR') )
+        if len(self.brief) > 0:
+            textdescr = wx.StaticText(self, -1, self.brief)
+            self.__apply_preferences(textdescr)
+            sizer.Add(textdescr, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
         # Copyright
-        font.SetWeight( wx.BOLD )
-        textcopy = wx.StaticText(self, -1, copyright)
-        textcopy.SetFont( font )
-        textcopy.SetBackgroundColour( preferences.GetValue('M_BG_COLOUR') )
-        textcopy.SetForegroundColour( preferences.GetValue('M_FG_COLOUR') )
+        if len(self.copyright) > 0:
+            textcopy = wx.StaticText(self, -1, self.copyright)
+            self.__apply_preferences(textprogramversion)
+            font = self._preferences.GetValue('M_FONT')
+            font.SetWeight(wx.BOLD)
+            textcopy.SetFont(font)
+            sizer.Add(textcopy, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
         # URL
-        font.SetWeight( wx.NORMAL )
-        font.SetUnderlined( True )
-        texturl = wx.StaticText(self, -1, url)
-        texturl.SetFont( font )
-        texturl.SetBackgroundColour( preferences.GetValue('M_BG_COLOUR') )
-        texturl.SetForegroundColour( wx.Colour(80,108,216) )
-        texturl.Bind( wx.EVT_LEFT_UP, self.OnLink )
-        font.SetUnderlined( False )
+        if len(self.url) > 0:
+            texturl = wx.StaticText(self, -1, self.url)
+            self.__apply_preferences(texturl)
+            texturl.SetForegroundColour(wx.Colour(80, 100, 220))
+            texturl.Bind(wx.EVT_LEFT_UP, self.OnLink)
+            sizer.Add(texturl, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
         # License
-        textgpl = wx.StaticText(self, -1, license_text)
-        textgpl.SetFont( font )
-        textgpl.SetBackgroundColour( preferences.GetValue('M_BG_COLOUR') )
-        textgpl.SetForegroundColour( preferences.GetValue('M_FG_COLOUR') )
+        if len(self.license) > 0:
+            textlicense = wx.StaticText(self, -1, self.license)
+            self.__apply_preferences(textgpl)
+            sizer.Add(textlicense, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
-        sizer = wx.BoxSizer( wx.VERTICAL )
-        sizer.Add(logo,               proportion=0, flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, border=8)
-        sizer.Add(textprogramversion, proportion=0, flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, border=2)
-        sizer.Add(textdescr,          proportion=0, flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, border=2)
-        sizer.Add(textcopy,           proportion=0, flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, border=8)
-        sizer.Add(texturl,            proportion=0, flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, border=2)
-        sizer.Add(textgpl,            proportion=0, flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, border=2)
+        # License text content
+        if len(self.license_text) > 0:
+            textgpl = wx.StaticText(self, -1, self.license_text)
+            self.__apply_preferences(textgpl)
+            sizer.Add(textgpl, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
+
         self.SetSizer(sizer)
-
         self.FitInside()
         self.SetupScrolling(scroll_x=True, scroll_y=True)
 
+    # ------------------------------------------------------------------------
 
     def OnLink(self, event):
         try:
-            webbrowser.open(url,1)
+            webbrowser.open(url, 1)
         except:
             pass
 
+    # ------------------------------------------------------------------------
+    # Private
+    # ------------------------------------------------------------------------
+
+    def __apply_preferences(self, wx_object):
+        """ Set font, background color and foreground color to an object. """
+
+        font = self._preferences.GetValue('M_FONT')
+        wx_object.SetFont(font)
+        wx_object.SetForegroundColour(self._preferences.GetValue('M_FG_COLOUR'))
+        wx_object.SetBackgroundColour(self._preferences.GetValue('M_BG_COLOUR'))
+
+# ----------------------------------------------------------------------------
+
+
+class AboutSPPASPanel(sppasBaseAbout):
+    """
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    @summary:      About SPPAS panel.
+
+    """
+    def __init__(self, parent, preferences):
+        sppasBaseAbout.__init__(self, parent, preferences)
+
+        self.program = program
+        self.version = version
+        self.author = author
+        self.copyright = copyright
+        self.brief = brief
+        self.url = url
+        self.license_text = license_text
+        self.logo = APP_ICON
+
+        self.Create()
+
+# ------------------------------------------------------------------------

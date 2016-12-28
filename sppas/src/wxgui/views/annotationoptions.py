@@ -67,11 +67,11 @@ class spAnnotationConfig(spBaseDialog):
 
         """
         spBaseDialog.__init__(self, parent, preferences, title=" - Options")
-        wx.GetApp().SetAppName( "option"+str(stepidx) )
+        wx.GetApp().SetAppName("option"+str(step_idx))
 
-        self.step        = step
-        self.stepid      = step_idx
-        self.preferences = preferences
+        self.step = step
+        self.stepid = step_idx
+        self._preferences = preferences
 
         self.LayoutComponents(self._create_title(),
                               self._create_content(),
@@ -86,10 +86,10 @@ class spAnnotationConfig(spBaseDialog):
         return self.CreateTitle(ANNOTATE_CONFIG_ICON, text)
 
     def _create_content(self):
-        options_panel = sppasOptionsPanel(self, self.preferences, self.step.get_options())
-        options_panel.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
-        options_panel.SetForegroundColour(self.preferences.GetValue('M_FG_COLOUR'))
-        options_panel.SetFont(self.preferences.GetValue('M_FONT'))
+        options_panel = sppasOptionsPanel(self, self._preferences, self.step.get_options())
+        options_panel.SetBackgroundColour(self._preferences.GetValue('M_BG_COLOUR'))
+        options_panel.SetForegroundColour(self._preferences.GetValue('M_FG_COLOUR'))
+        options_panel.SetFont(self._preferences.GetValue('M_FONT'))
         self.items = options_panel.GetItems()
         return options_panel
 

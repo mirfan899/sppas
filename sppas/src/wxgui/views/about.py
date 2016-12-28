@@ -37,13 +37,15 @@
 
 import wx
 
-from wxgui.dialogs.basedialog import spBaseDialog
 from wxgui.sp_icons import ABOUT_ICON
-from wxgui.panels.about import AboutSPPAS
+
+from wxgui.panels.about import AboutSPPASPanel
+from wxgui.dialogs.basedialog import spBaseDialog
 
 # ----------------------------------------------------------------------------
 
-class AboutDialog( spBaseDialog ):
+
+class AboutSPPASDialog(spBaseDialog):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -55,20 +57,21 @@ class AboutDialog( spBaseDialog ):
     """
     def __init__(self, parent, preferences):
         spBaseDialog.__init__(self, parent, preferences, title="About")
-        wx.GetApp().SetAppName( "about" )
+        wx.GetApp().SetAppName("about")
 
-        titlebox   = self.CreateTitle(ABOUT_ICON,"About")
-        contentbox = AboutSPPAS( self,preferences )
-        buttonbox  = self.CreateButtonBox( [],[self.CreateOkayButton()] )
+        titlebox   = self.CreateTitle(ABOUT_ICON, "About")
+        contentbox = AboutSPPASPanel(self, preferences)
+        buttonbox  = self.CreateButtonBox([], [self.CreateOkayButton()])
 
-        self.LayoutComponents( titlebox,
-                               contentbox,
-                               buttonbox )
+        self.LayoutComponents(titlebox,
+                              contentbox,
+                              buttonbox)
 
 # ------------------------------------------------------------------------
 
+
 def ShowAboutDialog(parent, preferences):
-    dialog = AboutDialog(parent, preferences)
-    dialog.SetMinSize((520,580))
+    dialog = AboutSPPASDialog(parent, preferences)
+    dialog.SetMinSize((520, 580))
     dialog.ShowModal()
     dialog.Destroy()

@@ -135,22 +135,22 @@ class sppasStepPanel( wx.Panel ):
             step_sizer.Add(wx.StaticLine(self, style=wx.LI_HORIZONTAL), proportion=1, flag=wx.ALIGN_CENTER_VERTICAL |wx.LEFT|wx.RIGHT, border=4)
             step_sizer.Add(self.choice, 0,  wx.ALIGN_CENTER_VERTICAL|wx.ALL, 0)#, wx.ALIGN_RIGHT)
 
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        self.text = wx.StaticText(self, -1, self.parameters.get_step_descr(index))
+        d = self.parameters.get_step_descr(index)
+        self.text = wx.TextCtrl(self, wx.ID_ANY, value=d, style=wx.TE_READONLY | wx.TE_MULTILINE | wx.NO_BORDER)
         self.text.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR'))
         self.text.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR'))
         self.text.SetFont( self._prefsIO.GetValue('M_FONT') )
-        self.text.Wrap( 400 )
 
         self.link = wx.StaticText(self, -1, "Configure...")
-        self.link.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR'))
-        self.link.SetForegroundColour( wx.Colour(40,40,190) )
-        self.link.SetFont( self._prefsIO.GetValue('M_FONT') )
+        self.link.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
+        self.link.SetForegroundColour(wx.Colour(80, 100, 220))
+        self.link.SetFont( self._prefsIO.GetValue('M_FONT'))
         self.link.Bind(wx.EVT_LEFT_UP, self.on_click)
 
-        sizer.Add(step_sizer, 0, wx.ALIGN_CENTER_VERTICAL, 0)
-        sizer.Add(self.text,  0, wx.ALIGN_CENTER_VERTICAL, 0)
-        sizer.Add(self.link,  0, wx.ALIGN_CENTER_VERTICAL, 0)
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(step_sizer, proportion=0, flag=wx.LEFT | wx.TOP, border=2)
+        sizer.Add(self.link,  proportion=0, flag=wx.LEFT, border=2)
+        sizer.Add(self.text,  proportion=1, flag=wx.LEFT | wx.EXPAND, border=2)
 
         self.SetSizerAndFit(sizer)
 
@@ -281,15 +281,15 @@ class AnnotationsPanel( wx.lib.scrolledpanel.ScrolledPanel ):
             p.Bind(EVT_LANG_EVENT, self.on_lang_changed)
             self.step_panels.append( p )
             self.activated.append(False)
-            sbox.Add(p, 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 1)
+            sbox.Add(p, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, border=4)
         self.steplist_panel.SetSizer(sbox)
 
         self.link_btn = CreateGenButton(self, LINK_ID, spBitmap(LINK_ICON, theme=self._prefsIO.GetValue('M_ICON_THEME')), tooltip="Link/Unlink language selection.", colour=self._prefsIO.GetValue('M_BG_COLOUR'), SIZE=16)
         self.Bind(wx.EVT_BUTTON, self.on_link, self.link_btn, LINK_ID)
         self.on_link(None)
 
-        _box.Add(self.steplist_panel, 1, wx.EXPAND |wx.TOP, 2)
-        _box.Add(self.link_btn, 0, wx.LEFT|wx.EXPAND, 4)
+        _box.Add(self.steplist_panel, 1, wx.EXPAND, 0)
+        _box.Add(self.link_btn, 0, wx.LEFT | wx.EXPAND, 4)
         return _box
 
 

@@ -70,7 +70,7 @@ from wxgui.panels.mainbuttons      import MainActionsPanel, MainMenuPanel, MainA
 from wxgui.panels.components       import AnalyzePanel
 from wxgui.panels.aannotations     import AnnotationsPanel
 from wxgui.panels.pplugins         import PluginsPanel
-from wxgui.panels.about            import AboutSPPAS
+from wxgui.panels.about            import AboutSPPASPanel
 from wxgui.ui.splitterpanel        import SplitterPanel
 
 from wxgui.frames.dataroamerframe  import DataRoamerFrame
@@ -254,7 +254,7 @@ class FrameSPPAS( wx.Frame ):
             self.actionsmenu.ShowBack(True, "   A N N O T A T E ")
 
         elif ide == wx.ID_ABOUT:
-            self.actions = AboutSPPAS(self._rightpanel, self.preferences)
+            self.actions = AboutSPPASPanel(self._rightpanel, self.preferences)
             self.actionsmenu.ShowBack(True, "   A B O U T ")
 
         elif ide == ID_PLUGINS:
