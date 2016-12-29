@@ -1,18 +1,17 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
+#           /     |  \  |  \  |  \  /              the automatic
+#           \__   |__/  |__/  |___| \__             annotation and
+#              \  |     |     |   |    \             analysis
+#           ___/  |     |     |   | ___/              of speech
 #
 #
 #                           http://www.sppas.org/
 #
 # ---------------------------------------------------------------------------
 #            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
+#                   Copyright (C) 2011-2017  Brigitte Bigi
 #
 #                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
@@ -32,36 +31,38 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: wxoption.py
+# File: src.wxgui.structs.wxoption.py
 # ----------------------------------------------------------------------------
 
 import wx
-from structs.baseoption import BaseOption
+from structs.baseoption import sppasBaseOption
 
 # ----------------------------------------------------------------------------
 
-class wxOption( BaseOption ):
+
+class sppasWxOption(sppasBaseOption):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      One option of one preference value.
+    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    @summary:      Extend Option class to wx data types.
+
+    New supported types are: wx.Size, wx.Colour, wx.Font and
+    wx.ALIGN_something.
 
     """
-    def __init__(self, optiontype, optionvalue, optiontext=""):
+    def __init__(self, option_type, option_value, option_text=""):
         """
-        Creates a new Option() instance.
+        Creates a sppasWxOption() instance.
 
-        optiontype is a string; one of:
-            boolean, int, float, string, wx.colour, wx.size, wx.font
+        option_type is a string; one of:
+            boolean, int, float, string, wx.colour, wx.size, wx.font, wx.align
 
         """
-        BaseOption.__init__(self, optiontype)
-        self.set_type(optiontype)
-        self.set_value(optionvalue)
-        self.set_text( optiontext )
+        sppasBaseOption.__init__(self, option_type, option_value)
+        self.set_text(option_text)
 
     # ------------------------------------------------------------------------
     # Getters
@@ -70,10 +71,10 @@ class wxOption( BaseOption ):
     def get_value(self):
         """
         Return the typed-value.
-        Override the BaseOption.get_value().
+        Override the sppasBaseOption.get_value().
 
         """
-        v = BaseOption.get_value(self)
+        v = sppasBaseOption.get_value(self)
         if v is not None:
             return v
 
@@ -85,8 +86,8 @@ class wxOption( BaseOption ):
         if self._type == 'wx.colour':
             if self._value is None:
                 return None
-            (r,g,b) = self._value
-            return wx.Colour(r,g,b)
+            (r, g, b) = self._value
+            return wx.Colour(r, g, b)
 
         if self._type == 'wx.font':
             (size, family, style, weight, u, face, enc) = self._value
@@ -99,25 +100,27 @@ class wxOption( BaseOption ):
                 return wx.ALIGN_RIGHT
             return wx.ALIGN_CENTRE
 
-        raise TypeError('Unknown option type %s'%self._type)
+        raise TypeError('Unknown option type %s' % self._type)
 
     # ------------------------------------------------------------------------
     # Setters
     # ------------------------------------------------------------------------
 
-    def set_type(self, opttype):
+    def set_type(self, option_type):
         """ Set a new type. """
 
-        opttype = opttype.lower()
-        if opttype.startswith("wx"):
-            self._type = opttype
+        option_type = option_type.lower()
+        if option_type.startswith("wx"):
+            self._type = option_type
         else:
-            BaseOption.set_type(self,opttype)
+            sppasBaseOption.set_type(self, option_type)
+
+    # ------------------------------------------------------------------------
 
     def set_value(self, value):
         """
         Set a new value.
-        Override the BaseOption.set_value().
+        Override the sppasBaseOption.set_value().
 
         """
         if self._type == 'wx.font':
@@ -136,14 +139,14 @@ class wxOption( BaseOption ):
         elif self._type == 'wx.size':
             if isinstance(value,wx.Size):
                 (w,h) = value
-                self._value = (w,h)
+                self._value = (w, h)
             else:
                 self._value = value
 
         elif self._type == 'wx.colour':
             if isinstance(value,wx.Colour):
                 (r,g,b) = value
-                self._value = (r,g,b)
+                self._value = (r, g, b)
             else:
                 self._value = value
 

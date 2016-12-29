@@ -38,6 +38,8 @@ import os
 import wx.lib.scrolledpanel
 
 from wxgui.cutils.imageutils  import spBitmap
+from wxgui.cutils.dialogutils import create_wildcard
+
 from wxgui.sp_icons import TREE_FOLDER_OPEN
 
 # ----------------------------------------------------------------------------
@@ -95,8 +97,8 @@ class sppasOptionsPanel(wx.lib.scrolledpanel.ScrolledPanel):
         elif opt.get_type() == "float":
             self.__add_float(opt.get_text(), value=opt.get_value())
 
-        elif opt.get_type() == "file":
-            self.__add_file(opt.get_text(), value=opt.get_value())
+        elif opt.get_type().startswith("file"):
+            self.__add_file(opt.get_text(), opt.get_value(), opt.get_type())
 
         else:  # if opt.get_type() == "str":
             self.__add_text(opt.get_text(), value=opt.get_value())
@@ -219,7 +221,7 @@ class sppasOptionsPanel(wx.lib.scrolledpanel.ScrolledPanel):
 
     # ------------------------------------------------------------------------
 
-    def __add_file(self, label, value=""):
+    def __add_file(self, label, value, opt_type):
         """
         Add a TextCtrl to the panel.
 
@@ -235,7 +237,10 @@ class sppasOptionsPanel(wx.lib.scrolledpanel.ScrolledPanel):
         self.__apply_preferences(filetext)
 
         filebtn = wx.BitmapButton(self, bitmap=spBitmap(TREE_FOLDER_OPEN, 16, theme=self._preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
-        filebtn.Bind(wx.EVT_BUTTON, self.OnTextFile)
+        if opt_type == "filepath":
+            filebtn.Bind(wx.EVT_BUTTON, self.__on_text_filepath)
+        else:
+            filebtn.Bind(wx.EVT_BUTTON, self.__on_text_filename)
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         sizer.Add(filetext, 1, wx.EXPAND|wx.ALIGN_CENTER_VERTICAL)
@@ -249,14 +254,31 @@ class sppasOptionsPanel(wx.lib.scrolledpanel.ScrolledPanel):
 
     # ------------------------------------------------------------------------
 
-    def OnTextFile(self, event):
+    def __on_text_filepath(self, event):
 
         dlg = wx.DirDialog(self, message="Choose a directory", defaultPath=os.getcwd())
         if dlg.ShowModal() == wx.ID_OK:
             directory = dlg.GetPath()
-            btnobj = event.GetEventObject()
-            obj = self.file_buttons[btnobj]
+            btn_obj = event.GetEventObject()
+            obj = self.file_buttons[btn_obj]
             obj.SetValue(directory)
+            obj.SetFocus()
+            obj.Refresh()
+
+        dlg.Destroy()
+
+    # ------------------------------------------------------------------------
+
+    def __on_text_filename(self, event):
+
+        wildcard = create_wildcard("All files", ['*', '*.*'])
+        dlg = wx.FileDialog(None, "Select a file", os.getcwd(), "", wildcard,
+                            wx.FD_OPEN | wx.FD_CHANGE_DIR)
+        if dlg.ShowModal() == wx.ID_OK:
+            filename = dlg.GetPath()
+            btn_obj = event.GetEventObject()
+            obj = self.file_buttons[btn_obj]
+            obj.SetValue(filename)
             obj.SetFocus()
             obj.Refresh()
 
