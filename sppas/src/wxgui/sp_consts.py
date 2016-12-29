@@ -1,18 +1,17 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
+#           /     |  \  |  \  |  \  /              the automatic
+#           \__   |__/  |__/  |___| \__             annotation and
+#              \  |     |     |   |    \             analysis
+#           ___/  |     |     |   | ___/              of speech
 #
 #
 #                           http://www.sppas.org/
 #
 # ---------------------------------------------------------------------------
 #            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
+#                   Copyright (C) 2011-2017  Brigitte Bigi
 #
 #                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
@@ -32,7 +31,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: sp_consts.py
+# File: wxgui.sp_consts.py
 # ----------------------------------------------------------------------------
 
 import os.path
@@ -45,12 +44,12 @@ from sp_glob import program, version
 # Define all paths (relatively to SPPAS base path)
 # ---------------------------------------------------------------------------
 
-PREFS_FILE = os.path.join( BASE_PATH , "etc", "sppas.prefs")
+PREFS_FILE = os.path.join(BASE_PATH, "etc", "sppas.prefs")
 
-HELP_PATH     = os.path.join( BASE_PATH, "doc" )
-HELP_IMG_PATH = os.path.join( HELP_PATH, "img" )
-DOC_IDX       = os.path.join( HELP_PATH, "markdown.idx" )
-HELP_IDX_EXT  = ".idx"
+HELP_PATH = os.path.join(BASE_PATH, "doc")
+HELP_IMG_PATH = os.path.join(HELP_PATH, "img")
+DOC_IDX = os.path.join(HELP_PATH, "markdown.idx")
+HELP_IDX_EXT = ".idx"
 
 
 # ---------------------------------------------------------------------------
@@ -66,11 +65,11 @@ DEFAULT_APP_NAME = program + "Component"
 # ---------------------------------------------------------------------------
 # GUI design.
 
-ERROR_COLOUR   = wx.Colour( 220,  30,  10 )  # red
-INFO_COLOUR    = wx.Colour(  55,  30, 200 )  # blue
-IGNORE_COLOUR  = wx.Colour( 140, 100, 160 )  # gray-violet
-WARNING_COLOUR = wx.Colour( 240, 190,  45 )  # orange
-OK_COLOUR      = wx.Colour(  25, 160,  50 )  # green
+ERROR_COLOUR = wx.Colour(220,  30,  10)    # red
+INFO_COLOUR = wx.Colour(55,  30, 200)      # blue
+IGNORE_COLOUR = wx.Colour(140, 100, 160)   # gray-violet
+WARNING_COLOUR = wx.Colour(240, 190,  45)  # orange
+OK_COLOUR = wx.Colour(25, 160,  50)        # green
 
 # ---------------------------------------------------------------------------
 # GUI design.
@@ -78,19 +77,19 @@ OK_COLOUR      = wx.Colour(  25, 160,  50 )  # green
 MIN_PANEL_W = 180
 MIN_PANEL_H = 220
 
-MIN_FRAME_W=640
-MIN_FRAME_H=440
+MIN_FRAME_W = 640
+MIN_FRAME_H = 440
 
 if wx.Platform == "__WXMSW__":
-    FRAME_H  = 600   # expected "good" height
-    PANEL_W  = 320   # Left/Right panel (FLP)
+    FRAME_H = 600   # expected "good" height
+    PANEL_W = 320   # Left/Right panel (FLP)
 else:
-    FRAME_H  = 540   # expected "good" height
-    PANEL_W  = 380
+    FRAME_H = 540   # expected "good" height
+    PANEL_W = 380
 
-TREE_ICONSIZE   = 16
-MENU_ICONSIZE   = 32
-TB_ICONSIZE     = 24
+TREE_ICONSIZE = 16
+MENU_ICONSIZE = 32
+TB_ICONSIZE = 24
 BUTTON_ICONSIZE = 32
 
 # ---------------------------------------------------------------------------
@@ -102,7 +101,7 @@ elif wx.Platform == '__WXGTK__':
 else:
     MAIN_FONTSIZE = 9
 
-TB_FONTSIZE     = MAIN_FONTSIZE - 2
+TB_FONTSIZE = MAIN_FONTSIZE - 2
 HEADER_FONTSIZE = MAIN_FONTSIZE + 4
 
 # ---------------------------------------------------------------------------
@@ -110,20 +109,19 @@ HEADER_FONTSIZE = MAIN_FONTSIZE + 4
 # ----------------------------------------------------------------------------
 
 ID_ANNOTATIONS = wx.NewId()
-ID_COMPONENTS  = wx.NewId()
-ID_PLUGINS     = wx.NewId()
-ID_ACTIONS     = wx.NewId()
+ID_COMPONENTS = wx.NewId()
+ID_PLUGINS = wx.NewId()
+ID_ACTIONS = wx.NewId()
 
-ID_EXT_BUG     = wx.NewId()
-ID_EXT_HOME    = wx.NewId()
-ID_FEEDBACK    = wx.NewId()
+ID_EXT_BUG = wx.NewId()
+ID_EXT_HOME = wx.NewId()
+ID_FEEDBACK = wx.NewId()
 
-ID_FRAME_DATAROAMER  = wx.NewId()
-ID_FRAME_SNDROAMER   = wx.NewId()
-ID_FRAME_IPUSCRIBE   = wx.NewId()
-ID_FRAME_SPPASEDIT   = wx.NewId()
-ID_FRAME_STATISTICS  = wx.NewId()
-ID_FRAME_DATAFILTER  = wx.NewId()
+ID_FRAME_DATAROAMER = wx.NewId()
+ID_FRAME_SNDROAMER = wx.NewId()
+ID_FRAME_IPUSCRIBE = wx.NewId()
+ID_FRAME_SPPASEDIT = wx.NewId()
+ID_FRAME_STATISTICS = wx.NewId()
+ID_FRAME_DATAFILTER = wx.NewId()
 
 # ---------------------------------------------------------------------------
-

@@ -76,7 +76,7 @@
 <hr />
 <h1 id="interface"><a href="#interface">Interface</a></h1>
 <h2 id="introduction"><a href="#introduction">Introduction</a></h2>
-<p>The current chapter describes how to use SPPAS via the Graphical User Interface (GUI) and the Command-line User Interface (CLI). Each capability implemented in SPPAS corresponds to a program that can be invoked either by the GUI or the CLI.</p>
+<p>The current chapter describes how to use SPPAS with the Graphical User Interface (GUI) and with the Command-line User Interface (CLI). Each feature implemented in SPPAS corresponds to a program that can be invoked by the GUI or the CLI.</p>
 <h2 id="gui-main-frame"><a href="#gui-main-frame">GUI Main frame</a></h2>
 <h3 id="launch-sppas"><a href="#launch-sppas">Launch SPPAS</a></h3>
 <p>Under Windows, once the SPPAS package is opened in the File Explorer, double-click on the <code>sppas.bat</code> file. In recent versions of Windows (e.g. 10), the first time you try to run SPPAS by clicking on sppas.bat you may get a message: &quot;&quot; The solution is to click on the text &quot;&quot;. It will display a button to launch the program, then clik on it.</p>
@@ -158,23 +158,25 @@
 <img src="./etc/screenshots/help.png" alt="The Help Browser Frame" /><figcaption>The Help Browser Frame</figcaption>
 </figure>
 <h3 id="plugins"><a href="#plugins">Plugins</a></h3>
+<p>Installing plugins is a very useful solution to extend the features of SPPAS. Several plugins are available for download in the main site of SPPAS. The plugins of SPPAS are installed in a folder with name &quot;plugins&quot; in the main directory of SPPAS. Then, do not remove/rename this folder!</p>
 <blockquote>
-<p>The plugins are currently disabled. They will be turned on later.</p>
+<p>The plugin system of SPPAS were fully changed at version 1.8.2. Old plugins and new ones are not compatibles.</p>
 </blockquote>
-<h4 id="installing-a-plugin"><a href="#installing-a-plugin">Installing a Plugin</a></h4>
+<h4 id="installing-a-plugin"><a href="#installing-a-plugin">Installing a plugin</a></h4>
 <p>To install a plugin, follow this workflow:</p>
 <ol type="1">
-<li>Download and unpack the Plugin package in a new folder (this folder will be removed after the plugin installation).</li>
+<li>Download the plugin package (a zip file).</li>
 <li>Execute SPPAS.</li>
-<li>Click on the 'Plugin' icon of the toolbar: it will open a new frame.</li>
-<li>Indicate the folder of the new Plugin in the text entry.</li>
-<li>Follow the Plugin instructions (if any).</li>
-<li>See the new Plugin icon in the Plugins panel of the main frame.</li>
+<li>Click on the 'Plugin' icon then click on the 'Install' button of the toolbar.</li>
+<li>Indicate the package of the plugin.</li>
+<li>See the new plugin icon in the plugins list.</li>
 </ol>
 <figure>
 <img src="./etc/figures/plugin-workflow.bmp" alt="Installing a new Plugin" /><figcaption>Installing a new Plugin</figcaption>
 </figure>
-<h4 id="using-a-plugin"><a href="#using-a-plugin">Using a Plugin</a></h4>
+<h4 id="deleting-a-plugin"><a href="#deleting-a-plugin">Deleting a plugin</a></h4>
+<p>To delete a plugin, click on the &quot;Delete&quot; button of the toolbar. Choose the plugin in the given list then click on the OK button. Notice that the plugin is definitively deleted of the disk.</p>
+<h4 id="using-a-plugin"><a href="#using-a-plugin">Using a plugin</a></h4>
 <p>To execute a plug-in, select file(s) in the File explorer, click on the icon of the plug-in and follow instructions of the plugged program.</p>
 <h2 id="cli"><a href="#cli">CLI</a></h2>
 <p>A command-line interface (CLI), also known as command-line user interface, is a means of interacting with a computer program where the user issues commands to the program in the form of successive lines of text (command lines). Command-line interfaces provide a more concise and powerful means to control the program than the GUI. Operating system command line interfaces are called a command-line interpreter, command processor or shell. It displays a prompt, accept a &quot;command line&quot; typed by the user terminated by the Enter key, then execute the specified command and provide textual display of results or error messages. When a shell is active a program is typically invoked by typing its name followed by command-line arguments (if any).</p>

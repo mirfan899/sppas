@@ -1,18 +1,17 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
+#           /     |  \  |  \  |  \  /              the automatic
+#           \__   |__/  |__/  |___| \__             annotation and
+#              \  |     |     |   |    \             analysis
+#           ___/  |     |     |   | ___/              of speech
 #
 #
 #                           http://www.sppas.org/
 #
 # ---------------------------------------------------------------------------
 #            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
+#                   Copyright (C) 2011-2017  Brigitte Bigi
 #
 #                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
@@ -32,7 +31,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: sp_glob.py
+# File: src.sp_glob.py
 # ----------------------------------------------------------------------------
 
 import os.path
@@ -42,7 +41,7 @@ import os.path
 @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
 @contact:      brigitte.bigi@gmail.com
 @license:      GPL, v3
-@copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+@copyright:    Copyright (C) 2011-2017  Brigitte Bigi
 @summary:      This is the list of SPPAS global variables.
 
 """
@@ -52,19 +51,19 @@ import os.path
 # ---------------------------------------------------------------------------
 
 # SPPAS base directory
-BASE_PATH = os.path.dirname( os.path.dirname( os.path.abspath(__file__) ) )
+BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SPPAS folders
-PLUGIN_PATH    = os.path.join( os.path.dirname(BASE_PATH), "plugins" )
-RESOURCES_PATH = os.path.join( os.path.dirname(BASE_PATH), "resources" )
-SAMPLES_PATH   = os.path.join( os.path.dirname(BASE_PATH), "samples" )
-DOCUMENTATION_PATH = os.path.join( os.path.dirname(BASE_PATH), "documentation" )
+PLUGIN_PATH = os.path.join(os.path.dirname(BASE_PATH), "plugins")
+RESOURCES_PATH = os.path.join(os.path.dirname(BASE_PATH), "resources")
+SAMPLES_PATH = os.path.join(os.path.dirname(BASE_PATH), "samples")
+DOCUMENTATION_PATH = os.path.join(os.path.dirname(BASE_PATH), "documentation")
 
-# et cetera
-SPPAS_CONFIG_DIR = os.path.join( BASE_PATH, "etc")
-ICONS_PATH       = os.path.join( BASE_PATH, "etc", "icons" )
-TIPS_FILE        = os.path.join( BASE_PATH, "etc", "tips.txt")
-SETTINGS_FILE    = os.path.join( BASE_PATH, "etc", "settings.dump")
+# etcetera
+SPPAS_CONFIG_DIR = os.path.join(BASE_PATH, "etc")
+ICONS_PATH = os.path.join(BASE_PATH, "etc", "icons" )
+TIPS_FILE = os.path.join(BASE_PATH, "etc", "tips.txt")
+SETTINGS_FILE = os.path.join(BASE_PATH, "etc", "settings.dump")
 
 
 # ---------------------------------------------------------------------------
@@ -73,8 +72,8 @@ SETTINGS_FILE    = os.path.join( BASE_PATH, "etc", "settings.dump")
 
 UNKSTAMP=u"<UNK>"
 
-# Default output extension must be one of the list:
-#  annotationdata.io.extensions_out_multitiers
+# Default output extension must be one of the list of
+# annotationdata.io.extensions_out_multitiers
 DEFAULT_OUTPUT_EXTENSION = ".xra"
 
 # Default input/output encoding
@@ -86,27 +85,27 @@ encoding = 'utf-8'
 # ---------------------------------------------------------------------------
 
 # Annotation status, mainly used for log
-ERROR_ID   = -1
-INFO_ID    = 3
-IGNORE_ID  = 2
+ERROR_ID = -1
+INFO_ID = 3
+IGNORE_ID = 2
 WARNING_ID = 1
-OK_ID      = 0
+OK_ID = 0
 
 
 # ---------------------------------------------------------------------------
-# Constants: SPPAS Information
+# Constants: SPPAS information
 # ---------------------------------------------------------------------------
 
-author     = "Brigitte Bigi"
-contact    = "brigite.bigi@gmail.com"
-program    = "SPPAS"
-title      = "the automatic annotation and analysis of speech"
-version    = "1.8.1"
-copyright  = "Copyright (C) 2011-2016 Brigitte Bigi"
-url        = "http://www.sppas.org/"
-brief      = "SPPAS produces automatically annotations\nfrom a recorded speech sound and its transcription\nand performs the analysis of any annotated data."
-docformat  = "epytext"
-license    = "GNU Public License, version 3"
+author = "Brigitte Bigi"
+contact = "brigite.bigi@gmail.com"
+program = "SPPAS"
+title = "the automatic annotation and analysis of speech"
+version = "1.8.2"
+copyright = "Copyright (C) 2011-2017 Brigitte Bigi"
+url = "http://www.sppas.org/"
+brief = "SPPAS produces automatically annotations\nfrom a recorded speech sound and its transcription\nand performs the analysis of any annotated data."
+docformat = "epytext"
+license = "GNU Public License, version 3"
 license_text = """
 ------------------------------------------------------------
 
@@ -132,4 +131,5 @@ You should have received a copy of the GNU General Public License
 along with File Hunter; if not, write to the Free Software Foundation,
 Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-------------------------------------------------------------"""
+------------------------------------------------------------
+"""

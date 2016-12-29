@@ -183,25 +183,36 @@ and sections.
 
 ### Plugins 
 
-> The plugins are currently disabled. They will be turned on later.
+Installing plugins is a very useful solution to extend the features
+of SPPAS. Several plugins are available for download in the main site
+of SPPAS. The plugins of SPPAS are installed in a folder with name "plugins"
+in the main directory of SPPAS. Then, do not remove/rename this folder!
+
+> The plugin system of SPPAS were fully changed at version 1.8.2.
+> Old plugins and new ones are not compatibles.
 
 
-#### Installing a Plugin
+#### Installing a plugin
 
 To install a plugin, follow this workflow:
 
-1. Download and unpack the Plugin package in a new folder (this folder will
-be removed after the plugin installation).
+1. Download the plugin package (a zip file).
 2. Execute SPPAS.
-3. Click on the 'Plugin' icon of the toolbar: it will open a new frame.
-4. Indicate the folder of the new Plugin in the text entry.
-5. Follow the Plugin instructions (if any).
-6. See the new Plugin icon in the Plugins panel of the main frame.
+3. Click on the 'Plugin' icon then click on the 'Install' button of the toolbar.
+4. Indicate the package of the plugin.
+5. See the new plugin icon in the plugins list.
 
 ![Installing a new Plugin](./etc/figures/plugin-workflow.bmp)
 
 
-#### Using a Plugin
+#### Deleting a plugin
+
+To delete a plugin, click on the "Delete" button of the toolbar.
+Choose the plugin in the given list then click on the OK button.
+Notice that the plugin is definitively deleted of the disk.
+
+
+#### Using a plugin
 
 To execute a plug-in, select file(s) in the File explorer, click on the 
 icon of the plug-in and follow instructions of the plugged program.

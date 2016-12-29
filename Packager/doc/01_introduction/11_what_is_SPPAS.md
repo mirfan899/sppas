@@ -6,11 +6,11 @@
 computer software package written and maintained by Brigitte Bigi of
 the Laboratoire Parole et Langage, in Aix-en-Provence, France.
 
-Available for free, with open source code, there is simply no other package
-for linguists to simple use in automatic segmentation of speech.
 SPPAS is daily developed with the aim to provide a robust and reliable
-software for the automatic annotation and for the analyses of
-annotated-data.
+software. Available for free, with open source code, there is simply no other
+package for linguists to simple use in both the automatic annotations of
+speech and the analyses of any kind of annotated data.
+You can imagine the annotations or analyses you need, SPPAS does the rest.
 
 As the primary functionality, SPPAS proposes a set of automatic or 
 semi-automatic annotations of recordings. 

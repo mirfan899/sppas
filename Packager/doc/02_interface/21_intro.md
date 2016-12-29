@@ -1,7 +1,7 @@
 ## Introduction
 
-The current chapter describes how to use SPPAS via 
-the Graphical User Interface (GUI) and 
+The current chapter describes how to use SPPAS with
+the Graphical User Interface (GUI) and  with
 the Command-line User Interface (CLI).
-Each capability implemented in SPPAS corresponds to a program that can 
-be invoked either by the GUI or the CLI. 
+Each feature implemented in SPPAS corresponds to a program that can
+be invoked by the GUI or the CLI.

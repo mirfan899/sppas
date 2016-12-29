@@ -190,7 +190,13 @@ class PluginsPanel(wx.Panel):
         """
         try:
             plugin_id = self._plugins_panel.Remove()
-            self._manager.delete(plugin_id)
+            if plugin_id is not None:
+                self._manager.delete(plugin_id)
+
+                ShowInformation(self, self._preferences,
+                                "Plugin %s was successfully deleted." % plugin_id,
+                                style=wx.ICON_INFORMATION)
+
         except Exception as e:
             logging.info('%s' % str(e))
             ShowInformation(self, self._preferences, "%s" % str(e), style=wx.ICON_ERROR)
@@ -309,7 +315,7 @@ class PluginsListPanel(wx.lib.scrolledpanel.ScrolledPanel):
         """
         Append a plugin into the panel.
 
-        :param plugin (sppasPlugin) Identifier of the plugin
+        :param plugin (sppasPluginParam) The plugin to append
 
         """
         plugin_id = plugin.get_key()
@@ -366,27 +372,17 @@ class PluginsListPanel(wx.lib.scrolledpanel.ScrolledPanel):
         :return: plugin identifier of the plugin to be deleted.
 
         """
-        # Ask to select one
+        plugin_id = None
         dlg = Choice(self, self._preferences, "Choose the plugin to delete:",
                      self._plugins.keys())
         if dlg.ShowModal() == wx.ID_OK:
             plugin_idx = dlg.GetSelection()
             plugin_id = self._plugins.keys()[plugin_idx]
-            try:
-                plugin_box = self._plugins[plugin_id][1]
-                sizer = self.GetSizer()
-                sizer.Hide(plugin_box)
-                sizer.Remove(plugin_box)
-                del self._plugins[plugin_id]
-
-                ShowInformation(self, self._preferences,
-                                "Plugin %s was successfully deleted." % plugin_id,
-                                style=wx.ICON_INFORMATION)
-            except Exception as e:
-                logging.info('%s' % str(e))
-                ShowInformation(self, self._preferences,
-                                "%s deletion error: %s" % (plugin_id, str(e)),
-                                style=wx.ICON_ERROR)
+            plugin_box = self._plugins[plugin_id][1]
+            sizer = self.GetSizer()
+            sizer.Hide(plugin_box)
+            sizer.Remove(plugin_box)
+            del self._plugins[plugin_id]
         dlg.Destroy()
         self.Layout()
         self.Refresh()
