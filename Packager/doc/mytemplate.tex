@@ -9,7 +9,8 @@
   \definecolor{bleufonce}{rgb}{0.12,0.08,0.98}
   \definecolor{violet}{rgb}{0.21,0.18,0.73}
   \definecolor{orange}{rgb}{0.93,0.46,0.00}
-  
+  \definecolor{sppas}{rgb}{0.31,0.31,0.39}
+
   \definecolor{chapterrouge}{rgb}{0.47,0.08,0.08}
   \definecolor{sectionbleu}{rgb}{0.08,0.08,0.47}
   \definecolor{subsectionvert}{rgb}{0.08,0.47,0.08}
@@ -89,14 +90,18 @@ $endif$
 % Using fancy headers and footers
 
 \usepackage{fancyhdr}
+\setlength{\headheight}{15pt}
 \pagestyle{fancy}
 %\pagenumbering{arabic}
-\lhead{\itshape $title$}
+\lhead{\color{sppas} \itshape $title$}
 \chead{}
-\rhead{\itshape{\nouppercase{\leftmark}}}
-\lfoot{version $version$}
+\rhead{\color{sppas} \itshape{\nouppercase{\leftmark}}}
+\lfoot{\color{sppas} version $version$}
 \cfoot{}
-\rfoot{\thepage}
+\rfoot{\color{sppas} \thepage}
+\renewcommand{\headrulewidth}{1pt}% 1pt header rule, then with color
+\renewcommand{\headrule}{\hbox to\headwidth{%
+  \color{sppas}\leaders\hrule height \headrulewidth\hfill}}
 % -----------------------
 
 % -----------------------

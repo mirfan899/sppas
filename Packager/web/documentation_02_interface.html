@@ -172,7 +172,7 @@
 <li>See the new plugin icon in the plugins list.</li>
 </ol>
 <figure>
-<img src="./etc/figures/plugin-workflow.bmp" alt="Installing a new Plugin" /><figcaption>Installing a new Plugin</figcaption>
+<img src="./etc/figures/plugin-workflow.png" alt="Installing a new Plugin" /><figcaption>Installing a new Plugin</figcaption>
 </figure>
 <h4 id="deleting-a-plugin"><a href="#deleting-a-plugin">Deleting a plugin</a></h4>
 <p>To delete a plugin, click on the &quot;Delete&quot; button of the toolbar. Choose the plugin in the given list then click on the OK button. Notice that the plugin is definitively deleted of the disk.</p>
@@ -180,14 +180,15 @@
 <p>To execute a plug-in, select file(s) in the File explorer, click on the icon of the plug-in and follow instructions of the plugged program.</p>
 <h2 id="cli"><a href="#cli">CLI</a></h2>
 <p>A command-line interface (CLI), also known as command-line user interface, is a means of interacting with a computer program where the user issues commands to the program in the form of successive lines of text (command lines). Command-line interfaces provide a more concise and powerful means to control the program than the GUI. Operating system command line interfaces are called a command-line interpreter, command processor or shell. It displays a prompt, accept a &quot;command line&quot; typed by the user terminated by the Enter key, then execute the specified command and provide textual display of results or error messages. When a shell is active a program is typically invoked by typing its name followed by command-line arguments (if any).</p>
-<p>Such programs are located in the <code>bin</code> sub-directory of the <code>sppas</code> directory included in the SPPAS package. It is usual for a program to be able to display a brief summary of its parameters. Each program included in SPPAS provides its usage by using the option <code>--help</code>, as for example:</p>
+<p>Such programs are located in the <code>bin</code> folder of the <code>sppas</code> directory included in the SPPAS package. All these programs are written with the programming language Python 2.7.</p>
+<p>It is usual for a program to be able to display a brief summary of its parameters. Each program included in SPPAS provides its usage by using the option <code>--help</code>, as for example:</p>
 <pre><code>bin&gt; annotation.py --help</code></pre>
 <p>There are 2 types of programs in the <code>sppas</code> directory then <code>bin</code> folder:</p>
 <ol type="1">
 <li>programs to execute an automatic annotation;</li>
 <li>programs to execute an analysis tool.</li>
 </ol>
-<p>All programs are written with the programming language Python 2.7.</p>
+<p>Moreover, the program &quot;plugin.py&quot; allows to install, execute and remove a plugin of SPPAS.</p>
 <hr />
     <!----------------------------------------------------------------->
 

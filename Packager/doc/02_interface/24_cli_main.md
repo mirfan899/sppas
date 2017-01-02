@@ -12,10 +12,13 @@ command and provide textual display of results or error messages.
 When a shell is active a program is typically invoked by typing its name 
 followed by command-line arguments (if any).
 
-Such programs are located in the `bin` 
-sub-directory of the `sppas` directory included in the SPPAS package.
-It is usual for a program to be able to display a brief summary of its 
-parameters. Each program included in SPPAS provides its usage by using the 
+Such programs are located in the `bin` folder of the `sppas` directory
+included in the SPPAS package.
+All these programs are written with the programming language Python 2.7.
+
+
+It is usual for a program to be able to display a brief summary of its
+parameters. Each program included in SPPAS provides its usage by using the
 option `--help`, as for example:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -27,4 +30,6 @@ There are 2 types of programs in the `sppas` directory then `bin` folder:
 1. programs to execute an automatic annotation; 
 2. programs to execute an analysis tool.
 
-All programs are written with the programming language Python 2.7.
+Moreover, the program "plugin.py" allows to install, execute and
+remove a plugin of SPPAS.
+

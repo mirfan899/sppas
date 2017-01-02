@@ -202,7 +202,7 @@ To install a plugin, follow this workflow:
 4. Indicate the package of the plugin.
 5. See the new plugin icon in the plugins list.
 
-![Installing a new Plugin](./etc/figures/plugin-workflow.bmp)
+![Installing a new Plugin](./etc/figures/plugin-workflow.png)
 
 
 #### Deleting a plugin
