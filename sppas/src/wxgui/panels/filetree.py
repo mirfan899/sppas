@@ -346,17 +346,12 @@ class FiletreePanel(wx.Panel):
                     self._append_file(newfilename)
 
     # -----------------------------------------------------------------------
-
-
-    # -----------------------------------------------------------------------
     # Functions
     # -----------------------------------------------------------------------
 
-
     def SetPrefs(self, prefs):
-        """
-        Fix new preferences.
-        """
+        """ Fix new preferences. """
+
         self._prefsIO = prefs
         self.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
         self.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR') )
@@ -374,16 +369,17 @@ class FiletreePanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def RefreshTree(self, filelist=None):
-        """
-        Refresh the tree, and optionally add new files.
-        """
+        """ Refresh the tree, and optionally add new files. """
+
         if filelist is None:
             filelist = []
             for ext in audiodata.io.extensions:
-                filelist.extend( self.GetSelected(ext) )
+                filelist.extend(self.GetSelected(ext))
 
         for f in filelist:
             self._append_file(f)
+
+        self.Refresh()
 
     # -----------------------------------------------------------------------
 
@@ -439,7 +435,6 @@ class FiletreePanel(wx.Panel):
             self._filestree.DeleteChildren(item)
             if not item == self._filestree.GetRootItem():
                 self._filestree.Delete(item)
-
 
     def _append_file(self, filename):
         """

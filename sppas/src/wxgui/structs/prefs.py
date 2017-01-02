@@ -43,6 +43,7 @@ from themes import BaseTheme
 
 # ----------------------------------------------------------------------------
 
+
 class Preferences:
     """
     @author:       Brigitte Bigi
@@ -64,9 +65,9 @@ class Preferences:
 
         # Set the requested theme.
         if theme is None:
-            self.SetTheme( BaseTheme() )
+            self.SetTheme(BaseTheme())
         else:
-            self.SetTheme( theme )
+            self.SetTheme(theme)
 
     # ------------------------------------------------------------------------
     # Getters and Setters
@@ -82,8 +83,8 @@ class Preferences:
     def SetValue(self, key, t=None, v=None, text=''):
         """ Set a new couple key/(type,typed-value,text). """
 
-        if not key in self._prefs:
-            self._prefs[key] = sppasWxOption(optiontype=t, optionvalue=v, optiontext=text)
+        if key not in self._prefs:
+            self._prefs[key] = sppasWxOption(t, v, text)
 
         self._prefs[key].set_value(v)
 
@@ -139,7 +140,8 @@ class Preferences_IO( Preferences ):
         Return True is a file name was defined.
 
         """
-        if self._filename is None: return False
+        if self._filename is None:
+            return False
         return True
 
     # ------------------------------------------------------------------------
@@ -193,12 +195,12 @@ class Preferences_IO( Preferences ):
 
         for key in self._prefs.keys():
             if key == 'THEME':
-                cpref.SetTheme( self._prefs[key] )
+                cpref.SetTheme(self._prefs[key])
             else:
                 t   = self._prefs[key].get_type()
                 v   = self._prefs[key].get_untypedvalue()
                 txt = self._prefs[key].get_text()
-                opt = sppasWxOption(t,v,txt)
+                opt = sppasWxOption(t, v, txt)
                 cpref.SetOption(key, opt)
 
         return cpref

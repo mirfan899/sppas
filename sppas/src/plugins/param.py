@@ -185,7 +185,7 @@ class sppasPluginParam(object):
         if 'linux' in _system and 'linux' in commands.keys():
             return commands['linux']
 
-        raise Exception("No command defined for the system: %s. Supported systems are: %s"%(_system," ".join(commands.keys())))
+        raise Exception("No command defined for the system: %s. Supported systems are: %s" % (_system, " ".join(commands.keys())))
 
     # ------------------------------------------------------------------------
 

@@ -248,6 +248,8 @@ class PluginsPanel(wx.Panel):
                     log_text = "Done."
 
             except Exception as e:
+                #import traceback
+                #traceback.print_exc()
                 logging.info('%s' % str(e))
                 log_text = str(e)
                 style = wx.ICON_ERROR
@@ -255,10 +257,15 @@ class PluginsPanel(wx.Panel):
             # Show the output message
             ShowInformation(self, self._preferences, log_text, style=style)
 
-            # Update the filetree of the main frame
-            self.GetTopLevelParent().RefreshTree()
-
         dlg.Destroy()
+
+        # Update the filetree of the main frame
+        try:
+            #logging.debug("Refresh Tree ****************************")
+            self.GetTopLevelParent().RefreshTree(None)
+            self.GetTopLevelParent().Refresh()
+        except Exception as e:
+            logging.debug("%s" % str(e))
 
     # -----------------------------------------------------------------------
 

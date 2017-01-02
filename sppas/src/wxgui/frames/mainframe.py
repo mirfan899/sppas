@@ -116,14 +116,14 @@ class FrameSPPAS( wx.Frame ):
         self.Bind(wx.EVT_CLOSE,  self.ProcessEvent)
         self.Bind(wx.EVT_BUTTON, self.ProcessEvent)
 
-        self.SetMinSize( (MIN_FRAME_W,MIN_FRAME_H) )
-        (w,h) = wx.GetDisplaySize()
-        self.SetSize( wx.Size(w*0.75,h*0.75) )
+        self.SetMinSize((MIN_FRAME_W, MIN_FRAME_H))
+        (w, h) = wx.GetDisplaySize()
+        self.SetSize(wx.Size(w*0.6, h*0.6))
         self.Centre()
         self.Enable()
         self.SetFocus()
 
-        self.Show( True )
+        self.Show(True)
 
     # ------------------------------------------------------------------------
     # Private methods to create the GUI and initialize members

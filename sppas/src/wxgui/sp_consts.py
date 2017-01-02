@@ -78,7 +78,7 @@ MIN_PANEL_W = 180
 MIN_PANEL_H = 220
 
 MIN_FRAME_W = 640
-MIN_FRAME_H = 440
+MIN_FRAME_H = 460
 
 if wx.Platform == "__WXMSW__":
     FRAME_H = 600   # expected "good" height

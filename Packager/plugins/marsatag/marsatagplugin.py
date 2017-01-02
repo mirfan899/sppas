@@ -68,6 +68,11 @@ args = parser.parse_args()
 
 filename = args.i
 fname, fext = os.path.splitext(filename)
+
+if fname.endswith("-palign") is False:
+    print "ERROR: MarsaTag plugin requires SPPAS alignment files (i.e. with -palign in its name)."
+    sys.exit(1)
+
 if fext.lower() != "textgrid":
 
     # read content

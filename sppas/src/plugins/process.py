@@ -58,8 +58,8 @@ class sppasPluginProcess(object):
         :param plugin_param: (sppasPluginParam)
 
         """
-        self.plugin = plugin_param
-        self.process = None
+        self._plugin = plugin_param
+        self._process = None
 
     # ------------------------------------------------------------------------
 
@@ -72,10 +72,10 @@ class sppasPluginProcess(object):
 
         """
         # the command
-        command = self.plugin.get_command()
+        command = self._plugin.get_command()
 
         # append the options (sorted like in the configuration file)
-        for opt in self.plugin.get_options().values():
+        for opt in self._plugin.get_options().values():
             opt_id = opt.get_key()
 
             if opt_id == "input":
@@ -107,7 +107,11 @@ class sppasPluginProcess(object):
             command = command.encode('utf-8')
 
         args = shlex.split(command)
-        self.process = Popen(args, shell=False, stdout=PIPE, stderr=STDOUT, universal_newlines=True)
+        for i, argument in enumerate(args):
+            if "PLUGIN_PATH/" in argument:
+                newarg = argument.replace("PLUGIN_PATH/", "")
+                args[i] = os.path.join(self._plugin.get_directory(), newarg)
+        self._process = Popen(args, shell=False, stdout=PIPE, stderr=STDOUT, universal_newlines=True)
 
     # ------------------------------------------------------------------------
 
@@ -117,7 +121,7 @@ class sppasPluginProcess(object):
 
         """
 
-        line = self.process.communicate()
+        line = self._process.communicate()
         return "".join(line[0])
 
     # ------------------------------------------------------------------------
@@ -128,7 +132,7 @@ class sppasPluginProcess(object):
 
         """
         if self.is_running() is True:
-            self.process.terminate()
+            self._process.terminate()
 
     # ------------------------------------------------------------------------
 
@@ -137,9 +141,9 @@ class sppasPluginProcess(object):
         Return True if the process is running.
 
         """
-        if self.process is None:
+        if self._process is None:
             return False
         # A None value indicates that the process hasn't terminated yet.
-        return self.process.poll() is None
+        return self._process.poll() is None
 
     # ------------------------------------------------------------------------

@@ -121,10 +121,10 @@ class ComponentFrame( wx.Frame ):
         wx.Frame.__init__(self, parent, idf, title=FRAME_TITLE+" - Component", style=FRAME_STYLE)
 
         # Members
-        self._init_members( args )
+        self._init_members(args)
 
         # Create GUI
-        self._init_infos( args )
+        self._init_infos(args)
         self._mainpanel = self._create_content( )
 
         # Events of this frame
@@ -134,14 +134,14 @@ class ComponentFrame( wx.Frame ):
         # events sent by the file manager
         spEVT_FILE_WANDER(self, self.OnFileWander)
 
-        self.SetMinSize( (MIN_FRAME_W,MIN_FRAME_H) )
-        (w,h) = wx.GetDisplaySize()
-        self.SetSize( wx.Size(w*0.75,h*0.75) )
+        self.SetMinSize((MIN_FRAME_W, MIN_FRAME_H))
+        (w, h) = wx.GetDisplaySize()
+        self.SetSize(wx.Size(w*0.6, h*0.6))
         self.Centre()
         self.Enable()
         self.SetFocus()
 
-        self.Show( True )
+        self.Show(True)
 
     # ------------------------------------------------------------------------
     # Private methods to create the GUI and initialize members
@@ -245,14 +245,14 @@ class ComponentFrame( wx.Frame ):
         """ Create the main panel content. """
 
         splitpanel = SplitterPanel(parent, proportion=0.25)
-        splitpanel.SetBackgroundColour( self._prefsIO.GetValue('M_BGM_COLOUR') )
-        splitpanel.SetForegroundColour( self._prefsIO.GetValue('M_BGM_COLOUR') )
+        splitpanel.SetBackgroundColour(self._prefsIO.GetValue('M_BGM_COLOUR'))
+        splitpanel.SetForegroundColour(self._prefsIO.GetValue('M_BGM_COLOUR'))
 
-        self._filepanel   = self.CreateFileManager( splitpanel, self._prefsIO )
-        self._clientpanel = self.CreateClient( splitpanel, self._prefsIO )
+        self._filepanel = self.CreateFileManager( splitpanel, self._prefsIO)
+        self._clientpanel = self.CreateClient( splitpanel, self._prefsIO)
 
-        splitpanel.SetMinimumPaneSize( MIN_PANEL_W )
-        splitpanel.SplitVertically( self._filepanel , self._clientpanel )
+        splitpanel.SetMinimumPaneSize(MIN_PANEL_W)
+        splitpanel.SplitVertically(self._filepanel, self._clientpanel)
 
         self._filepanel.SetMinSize((MIN_PANEL_W,MIN_PANEL_H))
         self._clientpanel.SetMinSize((MIN_PANEL_W,MIN_PANEL_H))
@@ -490,7 +490,7 @@ class ComponentFrame( wx.Frame ):
             # Get the list of files to open/view
             for f in files:
                 # Add in the file manager
-                evt = FileWanderEvent( filename=f, status=True )
+                evt = FileWanderEvent(filename=f, status=True)
                 evt.SetEventObject(self)
                 wx.PostEvent(self._filepanel, evt)
 
