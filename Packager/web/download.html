@@ -55,72 +55,66 @@
     <!---------------------------------------------------------------->
     
     <p style="text-align:center">
-    Click on the red button below to download the latest SPPAS package from Ortolang, 
-    and do not forget to read installation instructions...
+    Click on the red button below to download the latest SPPAS package,
+    and do not forget to read carefully installation instructions.
     </p>
-    <p style="text-align:center">
-    If there is a problem, alternatively you can <a href="downloads/SPPAS-1.8.1.zip">download here</a>.
-    </p>
-
 
     <p style="text-align:center">
-        <a class="button button_red" href="https://repository.ortolang.fr/api/content/sldr000800/head/downloads/SPPAS-1.8.1.zip">SPPAS version 1.8.1<br>(2016-11-28)</a>
+        <a class="button button_red" href="downloads/SPPAS-1.8.2.zip">SPPAS version 1.8.2<br>(2017-01-20)</a>
     </p>
-    <p>
 
 
-
-    <h1>Plugins</h1>
+    <h1>Plugins: NEW - NEW - NEW - NEW - NEW</h1>
     
-    <p>The plugin manager is disabled since version 1.8.0. It will (hopefully) come back in future versions.</p>
-
-    <figure>
-    <img src="./etc/figures/plugin-workflow.bmp" width='700' alt="Plugin installation workflow"/>
-    <figcaption>Plugins installation workflow</figcaption>
-    </figure>
-
-    <h2>Marsatag Plug-in</h2>
-
+    <p></p>
     <p>
-        MarsaTag-Plugin is a plugin to use the French POS-tagger
-        <a href="http://sldr.org/sldr000841/">MarsaTag</a> directly from SPPAS.
-        Notice that <b>you have to install MarsaTag</b> first.
+        A new plugin system is available from version 1.8.2: add easily new features in SPPAS!
     </p>
 
+
+    <h2>Marsatag plugin</h2>
+
     <p>
-        By using the plugin, you'll get the following advantages:
+        MarsaTag is a Part-Of-Speech tagging for French, e.g. Det, Noun, ...
+        MarsaTag is developed at Laboratoire Parole et Langage,
+        by S. Rauzy and G. De Moncheuil.
+        Notice that <b>you have first to install MarsaTag</b>:
+        <a href="https://www.ortolang.fr/market/tools/sldr000841">download it here.</a>
+    </p>
+    <p>
+        Using the plugin allows the following advantages:
     </p>
     <ol>
-        <li> The POS-Tags are time-aligned; and </li>
-        <li> it is ready-to-use (all steps to execute MarsaTag are pre-configured).</li>
+        <li> the resulting POS-Tags are time-aligned at tokens level; and </li>
+        <li> it is ready-to-use, i.e. all steps to execute MarsaTag are pre-configured.</li>
     </ol>
 
     <p style="text-align:center;">
-        <a class="button button_blue" href="downloads/marsatag-plugin.zip">Download MarsaTag-PlugIn</a>
+        <a class="button button_blue" href="downloads/marsatagplugin-1.0.zip">marsatagplugin-1.0</a>
     </p>
 
 
-    <h2>TierMapping Plug-in</h2>
+    <h2>Sox plugin</h2>
 
     <p>
-        Create new tiers by mapping the labels of an existing tier, with new labels (already installed by default).
+        SoX is the Swiss Army Knife of sound processing utilities.
+        It can convert audio files to other popular audio file types and also apply
+        sound effects and filters during the conversion.
+        Notice that <b>you have first to install sox</b>:
+        <a href="http://sox.sourceforge.net">download it here.</a>
     </p>
+
     <p>
-        The following mapping tables are proposed:
-    </p>
-    <ol>
-        <li>map the phonemes of the tier "PhonAlign" from SAMPA to IPA, </li>
-        <li>map the phonemes of the tier "PhonAlign" to their properties (voiced/unvoiced, vowel/consonant, palatal/affricate etc).</li>
-    </ol>
-    <p>
-        Such tables are UTF-8 encoded in a CSV file, with columns separated by semicolon.
-        They can be imported/modified/saved with OpenOffice, LibreOffice or Excel.
-        The most important is to not change its properties (UTF8, semicolon) and location (in the plugin directory).
+        By default, the plugin is configured to convert audio files into the format expected by SPPAS:
+        16 bits, 16000 Hz, 1 channel.
+        However, such options can be modified and/or other options can be selected.
     </p>
 
     <p style="text-align:center;">
-        <a class="button button_blue" href="downloads/TierMapping.zip">Download TierMapping-PlugIn</a>
+        <a class="button button_blue" href="downloads/soxplugin-1.0.zip">soxplugin-1.0</a>
     </p>
+
+
 
 <p></p>
 <hr/>
@@ -130,13 +124,13 @@
     <h1>SPPAS: previous versions...</h1>
 
     <ul>
-        <li><a href="http://hdl.handle.net/11041/sldr000800/sppas-1.5.4.zip">SPPAS version 1.5.4 (2013-12-03)</a></li>
-        <li><a href="http://hdl.handle.net/11041/sldr000800/sppas-1.6.3.zip">SPPAS version 1.6.3 (2014-11-02)</a></li>
-        <li><a href="http://hdl.handle.net/11041/sldr000800/SPPAS-1.6.8.zip">SPPAS version 1.6.8 (2015-04-09)</a></li>
-        <li><a href="http://hdl.handle.net/11041/sldr000800/SPPAS-1.7.4.zip">SPPAS version 1.7.4 (2015-11-06)</a></li>
-        <li><a href="https://repository.ortolang.fr/api/content/sldr000800/head/downloads/SPPAS-1.7.9.zip">SPPAS version 1.7.9 (2016-06-05)</a></li>
-        <li><a href="https://repository.ortolang.fr/api/content/sldr000800/head/downloads/SPPAS-1.8.0.zip">SPPAS version 1.8.0 (2016-08-30)</a></li>
-
+        <li><a href="http://hdl.handle.net/11041/sldr000800/sppas-1.5.4.zip">SPPAS 1.5.4 (2013-12-03)</a></li>
+        <li><a href="http://hdl.handle.net/11041/sldr000800/sppas-1.6.3.zip">SPPAS 1.6.3 (2014-11-02)</a></li>
+        <li><a href="http://hdl.handle.net/11041/sldr000800/SPPAS-1.6.8.zip">SPPAS 1.6.8 (2015-04-09)</a></li>
+        <li><a href="http://hdl.handle.net/11041/sldr000800/SPPAS-1.7.4.zip">SPPAS 1.7.4 (2015-11-06)</a></li>
+        <li><a href="https://repository.ortolang.fr/api/content/sldr000800/head/downloads/SPPAS-1.7.9.zip">SPPAS 1.7.9 (2016-06-05)</a></li>
+        <li><a href="https://repository.ortolang.fr/api/content/sldr000800/head/downloads/SPPAS-1.8.0.zip">SPPAS 1.8.0 (2016-08-30)</a></li>
+        <li><a href="downloads/SPPAS-1.8.1.zip">SPPAS 1.8.1 (2016-11-28)</a></li>
     </ul>
 
     <p>
