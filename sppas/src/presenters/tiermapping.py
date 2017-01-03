@@ -70,15 +70,18 @@ class TierMapping(Mapping):
     def set_delimiters(self, delimit_list):
         """
         Fix the list of characters used as symbol delimiters.
+        If delimit_list is an empty list, the mapping system will map with a
+        longest matching algorithm.
 
-        :param delimit_list: List of characters
+        :param delimit_list: List of characters like for example [" ", ".", "-"]
 
         """
         # Each element of the list must contain only one character
         for i, c in enumerate(delimit_list):
             delimit_list[i] = str(c)[0]
 
-        self._delimiters = delimit_list
+        # Set the delimiters as Iterable() and not as List()
+        self._delimiters = tuple(delimit_list)
 
     # ------------------------------------------------------------------
 

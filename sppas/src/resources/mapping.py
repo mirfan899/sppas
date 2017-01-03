@@ -40,7 +40,7 @@ from dictrepl import DictRepl
 
 # ----------------------------------------------------------------------------
 
-DEFAULT_SEP = [";", ",", " ", ".", "|", "+", "-"]
+DEFAULT_SEP = (";", ",", " ", ".", "|", "+", "-")
 
 # ----------------------------------------------------------------------------
 
@@ -129,7 +129,7 @@ class Mapping(DictRepl):
                 return self.replace(entry)
         else:
             s = self.replace_reversed(entry)
-            if len(s)>0:
+            if len(s) > 0:
                 return s
 
         if self._keep_miss is False:
@@ -152,13 +152,34 @@ class Mapping(DictRepl):
         if self.get_size() == 0:
             return mstr
 
+        tab = []
         # suppose that some punctuation are like a separator
         # and we have to replace all strings between them
-        pattern = "|".join(map(re.escape, delimiters))
-        pattern = "("+pattern+")\s*"
-        tab = re.split(pattern, mstr)
-        map_tab = []
+        if len(delimiters) > 0:
+            pattern = "|".join(map(re.escape, delimiters))
+            pattern = "("+pattern+")\s*"
+            tab = re.split(pattern, mstr)
 
+        else:
+            s = self._miss_symbol
+            k = self._keep_miss
+            self._miss_symbol = "UNKNOWN"
+            self._keep_miss = False
+            i = 0
+            j = 0
+            maxi = len(mstr)
+            while i < maxi:
+                i = maxi
+                mapped = self.map_entry(mstr[j:i])
+                while mapped == self._miss_symbol and j < (i-1):
+                    i -= 1
+                    mapped = self.map_entry(mstr[j:i])
+                tab.append(mstr[j:i])
+                j = i
+            self._miss_symbol = s
+            self._keep_miss = k
+
+        map_tab = []
         for v in tab:
             if v in delimiters:
                 map_tab.append(v)

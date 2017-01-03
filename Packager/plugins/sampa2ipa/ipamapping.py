@@ -26,34 +26,6 @@
 # trsmapping.py
 # ---------------------------------------------------------------------------
 
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#       Laboratoire Parole et Langage
-#
-#       Copyright (C) 2017  Brigitte Bigi
-#
-#       Use of this software is governed by the GPL, v3
-#       This banner notice must not be removed
-# ---------------------------------------------------------------------------
-#
-# this program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# this program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# trsmapping.py
-# ---------------------------------------------------------------------------
-
 import sys
 import os
 from argparse import ArgumentParser
@@ -95,7 +67,7 @@ args = parser.parse_args()
 # Load input data
 
 mapping = TierMapping(args.m)
-mapping.set_reverse(False)    # from sampa to praat direction
+mapping.set_reverse(False)    # from sampa to ipa direction
 mapping.set_keep_miss(True)   # keep unknown entries as given
 mapping.set_miss_symbol("")   # not used!
 mapping.set_delimiters([])    # longest matching
@@ -129,6 +101,6 @@ if trs.GetSize() == 0:
     sys.exit(1)
 
 infile, inext = os.path.splitext(args.i)
-filename = infile + "-praat-ipa.TextGrid"
+filename = infile + "-ipa.TextGrid"
 annotationdata.io.write(filename, trs)
 print "File %s created." % filename

@@ -138,10 +138,9 @@ class TestMapping(unittest.TestCase):
         self.assertEqual("+", dict2.map_entry("sp"))
         self.assertEqual("", dict2.map_entry("a"))
 
-
     def test_map(self):
-        dict1 = Mapping( self.replfile )
-        dict1.set_keep_miss( True )
+        dict1 = Mapping(self.replfile)
+        dict1.set_keep_miss(True)
         self.assertEqual("a", dict1.map_entry("a"))
         self.assertEqual("9", dict1.map_entry("oe"))
         self.assertEqual("@", dict1.map_entry("@"))
@@ -150,9 +149,16 @@ class TestMapping(unittest.TestCase):
         self.assertEqual("l|l.eu|l.e k.o~.b.l.eu|k.o~.b.l", dict1.map("l|l.eu|l.e k.o~.b.l.eu|k.o~.b.l"))
         self.assertEqual("l|l-eu|l-e k-o~-b-l-eu|k-o~-b-l", dict1.map("l|l-eu|l-e k-o~-b-l-eu|k-o~-b-l"))
 
-        dict1.set_reverse( True )
+        dict1.set_reverse(True)
         self.assertEqual("l|l.eu|l.e k.o~.b.l.eu|k.o~.b.l", dict1.map("l|l.eu|l.e k.o~.b.l.eu|k.o~.b.l"))
         self.assertEqual("l|l-eu|l-e k-o~-b-l-eu|k-o~-b-l", dict1.map("l|l-eu|l-e k-o~-b-l-eu|k-o~-b-l"))
+
+        dict1.set_reverse(False)
+        self.assertEqual("a", dict1.map("a", ()))
+        self.assertEqual("9", dict1.map("oe", ()))
+        self.assertEqual("a9@", dict1.map("aoe@", ()))
+        self.assertEqual("a-9@", dict1.map("a-oe@", ()))
+        self.assertEqual("lleu ko~.bl9", dict1.map("lleu ko~.bloe", ()))
 
 # End TestMapping
 # ---------------------------------------------------------------------------
