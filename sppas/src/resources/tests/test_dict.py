@@ -100,28 +100,27 @@ class TestMapping(unittest.TestCase):
     def test_init_with_dict(self):
         dict1 = Mapping( self.replfile )
 
-        dict1.set_keepmiss( True )
+        dict1.set_keep_miss( True )
         dict1.set_reverse( False )
         self.assertEqual("@", dict1.map_entry("@"))
         self.assertEqual("+", dict1.map_entry("sp"))
         self.assertEqual("9", dict1.map_entry("oe"))
 
-        dict1.set_keepmiss( True )
+        dict1.set_keep_miss( True )
         dict1.set_reverse( True )
         self.assertEqual("@", dict1.map_entry("@"))
         self.assertEqual("sp", dict1.map_entry("+"))
         self.assertEqual("oe", dict1.map_entry("9"))
 
-        dict1.set_keepmiss( True )
+        dict1.set_keep_miss( True )
         dict1.set_reverse( False )
         self.assertEqual("toto", dict1.map_entry("toto"))
-        dict1.set_keepmiss( False )
+        dict1.set_keep_miss( False )
         self.assertEqual("", dict1.map_entry("toto"))
-
 
     def test_init_without_dict(self):
         dict2 = Mapping( )
-        dict2.set_keepmiss( True )
+        dict2.set_keep_miss( True )
         dict2.set_reverse( False )
         dict2.add('+',"sp")
         self.assertEqual(dict2.get_size(), 1)
@@ -131,7 +130,7 @@ class TestMapping(unittest.TestCase):
         self.assertEqual(dict2.get_size(), 1)
         self.assertEqual("sp|+", dict2.map_entry("+"))
         self.assertEqual("toto", dict2.map_entry("toto"))
-        dict2.set_keepmiss( False )
+        dict2.set_keep_miss( False )
         self.assertEqual("", dict2.map_entry("toto"))
 
         dict2.set_reverse( True )
@@ -142,7 +141,7 @@ class TestMapping(unittest.TestCase):
 
     def test_map(self):
         dict1 = Mapping( self.replfile )
-        dict1.set_keepmiss( True )
+        dict1.set_keep_miss( True )
         self.assertEqual("a", dict1.map_entry("a"))
         self.assertEqual("9", dict1.map_entry("oe"))
         self.assertEqual("@", dict1.map_entry("@"))

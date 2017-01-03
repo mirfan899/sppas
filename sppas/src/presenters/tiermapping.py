@@ -1,18 +1,17 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
+#           /     |  \  |  \  |  \  /              the automatic
+#           \__   |__/  |__/  |___| \__             annotation and
+#              \  |     |     |   |    \             analysis
+#           ___/  |     |     |   | ___/              of speech
 #
 #
 #                           http://www.sppas.org/
 #
 # ---------------------------------------------------------------------------
 #            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
+#                   Copyright (C) 2011-2017  Brigitte Bigi
 #
 #                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
@@ -32,67 +31,79 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: tiermapping.py
+# File: src.presenters.tiermapping.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
-
-# ----------------------------------------------------------------------------
-
-from resources.mapping import Mapping
+from annotationdata.tier import Tier
+from resources.mapping import Mapping, DEFAULT_SEP
 
 # ----------------------------------------------------------------------------
 
-class TierMapping( Mapping ):
+
+class TierMapping(Mapping):
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: Mapping labels of annotations of a tier.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    @summary:      Class that is able to map labels from a table.
 
+    A conversion table is used to map symbols of labels of a tier with new
+    symbols. This class can convert either individual symbols or strings of
+    symbols (syllables, words, ...) if a separator is given.
+    Any symbols in the transcription tier which are not in the conversion
+    table are replaced by a specific symbol (by default '*').
     """
-    def __init__(self, dictname=None):
+    def __init__(self, dict_name=None):
         """
         Create a TierMapping instance.
 
-        @param dictname (string) is the file name with the mapping table (2 columns),
+        :param tier (Tier) is the tier name.
 
         """
-        Mapping.__init__(self, dictname)
+        Mapping.__init__(self, dict_name)
+        self._delimiters = DEFAULT_SEP
 
     # ------------------------------------------------------------------
 
-    def run( self, tierinput, outtiername=None ):
+    def set_delimiters(self, delimit_list):
+        """
+        Fix the list of characters used as symbol delimiters.
+
+        :param delimit_list: List of characters
+
+        """
+        # Each element of the list must contain only one character
+        for i, c in enumerate(delimit_list):
+            delimit_list[i] = str(c)[0]
+
+        self._delimiters = delimit_list
+
+    # ------------------------------------------------------------------
+
+    def map_tier(self, tier):
         """
         Run the TierMapping process on an input tier.
 
-        @param tierinput is the input tier
-        @param outtiername is the name to assign to the new tier
-        @return a new tier
+        :param tier: (Tier) The tier instance to map label symbols.
+        :return: a new tier, with the same name as the given tier
 
         """
-        if tierinput is None:
-            raise Exception("Run mapping failed: input tier is None.")
-
         # Create the output tier
-        name = outtiername
-        if name is None:
-            name = tierinput.GetName()+'-map'
-        outtier = tierinput.Copy()
-        outtier.SetName( name )
+        new_tier = tier.Copy()
 
-        # hum... nothing to do!
-        if tierinput.GetSize() == 0 or self.get_size() == 0:
-            return outtier
+        # if nothing to do
+        if tier.GetSize() == 0 or self.get_size() == 0:
+            return new_tier
 
         # map
-        for a in outtier:
-            for t in a.GetLabel().GetLabels():
-                l = self.map( t.GetValue(), delimiters=[' ', '|', '.'])
-                t.SetValue( l )
+        for ann in new_tier:
+            for text in ann.GetLabel().GetLabels():
+                if text.IsEmpty() is False and text.IsSilence() is False:
+                    l = self.map(text.GetValue(), self._delimiters)
+                    text.SetValue(l)
 
-        return outtier
+        return new_tier
 
     # ------------------------------------------------------------------------

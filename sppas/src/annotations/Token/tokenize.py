@@ -54,13 +54,14 @@ import resources.rutils as rutils
 
 # ---------------------------------------------------------------------------
 
-class DictReplUTF8( DictRepl ):
+
+class DictReplUTF8(DictRepl):
     """
     Replacement dictionary of UTF8 characters that cause problems.
     """
 
     def __init__(self):
-        DictRepl.__init__(self, dictfilename=None, nodump=True)
+        DictRepl.__init__(self, None, nodump=True)
 
         self.add(u"æ",u"ae")
         self.add(u"œ",u"oe")

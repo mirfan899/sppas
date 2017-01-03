@@ -163,8 +163,8 @@ class AlignIO:
         trsin.read(dirname, units)
 
         # map-back phonemes
-        self._mapping.set_keepmiss( True )
-        self._mapping.set_reverse( False )
+        self._mapping.set_keep_miss(True)
+        self._mapping.set_reverse(False)
 
         # Map time-aligned phonemes (even the alternatives)
         tier = trsin.Find("PhonAlign")
@@ -192,8 +192,8 @@ class AlignIO:
 
         """
         # Map phonemes from SAMPA to the expected ones.
-        self._mapping.set_keepmiss( True )
-        self._mapping.set_reverse( True )
+        self._mapping.set_keep_miss(True)
+        self._mapping.set_reverse(True)
 
         # Map phonetizations (even the alternatives)
         for ann in phontier:

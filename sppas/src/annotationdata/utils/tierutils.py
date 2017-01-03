@@ -53,7 +53,8 @@ DEFAULT_SEP = ["sil", "#", "+", "@@", "gb", "*", "dummy"]
 
 # ---------------------------------------------------------------------------
 
-def align2phon( aligntier, separators=DEFAULT_SEP):
+
+def align2phon(aligntier, separators=DEFAULT_SEP):
     """
     Return the phonetization of a time-aligned tier.
 
@@ -65,7 +66,7 @@ def align2phon( aligntier, separators=DEFAULT_SEP):
     for ann in aligntier:
         if ann.GetLabel().IsSilence() is True or ann.GetLabel().GetValue() in separators:
             if len(l) > 0 and e > b:
-                at = Annotation(TimeInterval(b,e), Label(l))
+                at = Annotation(TimeInterval(b, e), Label(l))
                 phontier.Add(at)
             phontier.Add(ann)
             b = ann.GetLocation().GetEnd()
@@ -80,55 +81,8 @@ def align2phon( aligntier, separators=DEFAULT_SEP):
     if e > b:
         ann = aligntier[-1]
         label = ann.GetLabel().GetValue()
-        label = label.replace("-", " ")
-        at = Annotation(TimeInterval(b,e), Label(l))
+        l = label.replace("-", " ")
+        at = Annotation(TimeInterval(b, e), Label(l))
         phontier.Add(at)
 
     return phontier
-
-# ---------------------------------------------------------------------------
-
-class TierUtils(object):
-    """
-    @authors: Tatsuya Watanabe
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: Provides utility methods for Tier instances.
-
-    """
-    @staticmethod
-    def Select(tier, function):
-        """
-        Select all annotations of the tier for which the function returns true.
-
-        @param tier (Tier): the tier to iterate over.
-        @param function (callable): the function to use.
-
-        @return Tier or None
-
-        """
-        annotations = [a for a in tier if function(a)]
-        if not annotations:
-            return None
-        newtier = Tier(tier.GetName())
-        newtier.SetSherableProperties( tier )
-        for a in annotations:
-            newtier.Add(a.Copy())
-        return newtier
-
-
-    @staticmethod
-    def Rindex(tier , time):
-        """
-        Return the index of the interval ending at the given time point.
-        This relationship takes into account the radius.
-
-        @param tier (Tier): the tier to iterate over.
-        @param time (float)
-
-        @return index (int) or None
-        """
-        for i, a in enumerate(tier):
-            if a.GetLocation().GetEnd() == time:
-                return i
-        return None

@@ -559,8 +559,8 @@ class Chunks( object ):
 
         """
         # Map phonemes from SAMPA to the expected ones.
-        self._mapping.set_keepmiss( True )
-        self._mapping.set_reverse( True )
+        self._mapping.set_keep_miss(True)
+        self._mapping.set_reverse(True)
 
         raw = ""
         for i,ann in enumerate(tier):

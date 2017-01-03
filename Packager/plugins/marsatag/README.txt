@@ -3,7 +3,7 @@
 program:    marsatagplugin
 author:     Brigitte Bigi
 contact:    brigite.bigi@gmail.com
-date:       2017-12-27
+date:       2016-12-27
 version:    1.0
 copyright:  Copyright (C) 2017  Brigitte Bigi
 license:    GNU Public License, v3

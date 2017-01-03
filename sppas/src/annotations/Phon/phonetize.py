@@ -113,25 +113,25 @@ class DictPhon:
             raise TypeError('Expected a DictPron instance.')
 
         self._pdict = pdict
-        self._phonunk = PhonUnk( self._pdict.get_dict() )
+        self._phonunk = PhonUnk(self._pdict.get_dict())
 
     # -----------------------------------------------------------------------
 
-    def set_maptable(self, maptable):
+    def set_maptable(self, map_table):
         """
         Set the dictionary.
 
-        @param pdict (DictPron) The pronunciation dictionary.
+        :param map_table (Mapping) The mapping table dictionary.
 
         """
-        if maptable is not None:
-            if isinstance(maptable, Mapping) is False:
+        if map_table is not None:
+            if isinstance(map_table, Mapping) is False:
                 raise TypeError('Expected a Mapping instance.')
         else:
-            maptable = Mapping()
+            map_table = Mapping()
 
-        self._maptable = maptable
-        self._maptable.set_keepmiss( False )
+        self._maptable = map_table
+        self._maptable.set_keep_miss(False)
 
     # -----------------------------------------------------------------------
 
@@ -167,11 +167,11 @@ class DictPhon:
             return ""
 
         # Find entry in the dict as it is given
-        _strphon = self._pdict.get_pron( entry )
+        _strphon = self._pdict.get_pron(entry)
 
         # OK, the entry is properly phonetized.
         if _strphon != self._pdict.unkstamp:
-            return self._map_phonentry( _strphon )
+            return self._map_phonentry(_strphon)
 
         return self._pdict.unkstamp
 
