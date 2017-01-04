@@ -1,18 +1,17 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
+#           /     |  \  |  \  |  \  /              the automatic
+#           \__   |__/  |__/  |___| \__             annotation and
+#              \  |     |     |   |    \             analysis
+#           ___/  |     |     |   | ___/              of speech
 #
 #
 #                           http://www.sppas.org/
 #
 # ---------------------------------------------------------------------------
 #            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
+#                   Copyright (C) 2011-2017  Brigitte Bigi
 #
 #                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
@@ -32,16 +31,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: rutils.py
-# ----------------------------------------------------------------------------
-
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# ----------------------------------------------------------------------------
-# Imports
+# File: src.resources.rutils.py
 # ----------------------------------------------------------------------------
 
 import codecs
@@ -56,14 +46,12 @@ import os.path
 # ----------------------------------------------------------------------------
 
 DUMP_FILENAME_EXT = ".dump"
-ENCODING          = 'utf-8'
+ENCODING = "utf-8"
 
 # ----------------------------------------------------------------------------
 
 
-# ----------------------------------------------------------------------------
-
-def ToLower( entry ):
+def ToLower(entry):
     """
     Return a unicode string with lower case.
 
@@ -82,7 +70,7 @@ def ToLower( entry ):
 # ----------------------------------------------------------------------------
 
 
-def ToStrip( entry ):
+def ToStrip(entry):
     """
     To strip a string.
     (remove also multiple spaces inside the string)
@@ -97,10 +85,9 @@ def ToStrip( entry ):
         e = entry
     e = e.replace(u'\ufeff', ' ')
 
-    return ' '.join( e.split() )
+    return ' '.join(e.split())
 
 # ----------------------------------------------------------------------------
-
 
 
 def get_dump_filename(filename):

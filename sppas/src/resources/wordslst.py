@@ -1,18 +1,17 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
+#           /     |  \  |  \  |  \  /              the automatic
+#           \__   |__/  |__/  |___| \__             annotation and
+#              \  |     |     |   |    \             analysis
+#           ___/  |     |     |   | ___/              of speech
 #
 #
 #                           http://www.sppas.org/
 #
 # ---------------------------------------------------------------------------
 #            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
+#                   Copyright (C) 2011-2017  Brigitte Bigi
 #
 #                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
@@ -32,22 +31,24 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: wordslst.py
+# File: src.resources.wordslst.py
 # ---------------------------------------------------------------------------
 
 import codecs
 import logging
+
 import rutils
 
 # ---------------------------------------------------------------------------
 
-class WordsList( object ):
+
+class WordsList(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     @summary:      Class to represent a simple list of words.
 
     """
@@ -55,9 +56,9 @@ class WordsList( object ):
         """
         Create a WordsList instance.
 
-        @param filename (str) is the word list file name, i.e. a file with 1 column.
-        @param nodump (Boolean) allows to disable the creation of a dump file.
-        @param casesensitive (Boolean) the list of word is case-sensitive or not
+        :param filename: (str) The word list file name, i.e. a file with 1 column.
+        :param nodump: (bool) Allows to disable the creation of a dump file.
+        :param casesensitive: (bool) the list of word is case-sensitive or not
 
         """
         self._stw = {}
@@ -70,17 +71,15 @@ class WordsList( object ):
 
         if filename is not None:
 
-            data = None
-            #if nodump is False:
             # Try first to get the dict from a dump file
             # (at least 2 times faster than the ascii one)
-            data = rutils.load_from_dump( filename )
+            data = rutils.load_from_dump(filename)
 
             # Load from ascii if: 1st load, or, dump load error, or dump older than ascii
             if data is None:
-                self.load_from_ascii( filename )
+                self.load_from_ascii(filename)
                 if nodump is False:
-                    rutils.save_as_dump( self._stw, filename )
+                    rutils.save_as_dump(self._stw, filename)
                 logging.info('Got word list from ASCII file.')
 
             else:
@@ -95,16 +94,16 @@ class WordsList( object ):
         """
         Add an entry into the list except if the entry is already inside.
 
-        @param entry (str) the entry to add in the word list.
-        @return (Boolean)
+        :param entry: (str) The entry to add in the word list
+        :return: (bool)
 
         """
         entry = entry.strip()
         if self.casesensitive is False:
             entry = rutils.ToLower(entry)
 
-        if self._stw.has_key( entry ) is False:
-            self._stw[ entry ] = 0
+        if entry not in self._stw:
+            self._stw[entry] = 0
             return True
 
         return False
@@ -112,21 +111,15 @@ class WordsList( object ):
     # -----------------------------------------------------------------------
 
     def get_size(self):
-        """
-        Return the number of entries in the list.
+        """ Return the number of entries in the list. """
 
-        """
         return len(self._stw)
 
     # -----------------------------------------------------------------------
 
     def get_list(self):
-        """
-        Return the list of words, sorted in alpha-numeric order.
+        """ Return the list of words, sorted in alpha-numeric order. """
 
-        @return (list)
-
-        """
         return sorted(self._stw.keys())
 
     # -----------------------------------------------------------------------
@@ -135,10 +128,10 @@ class WordsList( object ):
         """
         Return True if entry is in the list.
 
-        @param entry (str - IN)
+        :param entry: (str - IN)
 
         """
-        return self._stw.has_key( entry )
+        return entry in self._stw
 
     # -----------------------------------------------------------------------
 
@@ -146,10 +139,10 @@ class WordsList( object ):
         """
         Return True if entry is unknown (not in the list).
 
-        @param entry (str - IN)
+        :param entry: (str - IN)
 
         """
-        return not self.is_in(entry)
+        return entry not in self._stw
 
     # -----------------------------------------------------------------------
 
@@ -157,7 +150,7 @@ class WordsList( object ):
         """
         Make a deep copy of the instance.
 
-        @return WordsList
+        :return: WordsList
 
         """
         s = WordsList()
@@ -174,8 +167,7 @@ class WordsList( object ):
         """
         Read words from a file: one per line.
 
-        @param filename (str - IN) is the file name.
-        @raise Exception
+        :param filename: (str - IN)
 
         """
         with codecs.open(filename, 'r', rutils.ENCODING) as fd:
@@ -183,7 +175,7 @@ class WordsList( object ):
                 try:
                     self.add( line )
                 except Exception as e:
-                    raise Exception("Read file failed due to the following error at line %s: %s" % (nbl,str(e)))
+                    raise Exception("Read file failed due to the following error at line %s: %s" % (nbl, str(e)))
 
     # -----------------------------------------------------------------------
 
@@ -191,17 +183,17 @@ class WordsList( object ):
         """
         Save the list of words in a file.
 
-        @param filename (str - OUT)
-        @return (Boolean)
+        :param filename (str - OUT)
+        :return (bool)
 
         """
         try:
             with codecs.open(filename, 'w', rutils.ENCODING) as fd:
-                for word in sorted( self._stw.keys() ):
-                    fd.write("%s\n"%word)
+                for word in sorted(self._stw.keys()):
+                    fd.write("%s\n" % word)
 
         except Exception as e:
-            logging.debug('Save file failed due to the following error: %s'%str(e))
+            logging.info('Save file failed due to the following error: %s' % str(e))
             return False
 
         return True

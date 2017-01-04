@@ -35,6 +35,8 @@
 # ----------------------------------------------------------------------------
 
 import codecs
+import logging
+
 import rutils
 
 # ----------------------------------------------------------------------------
@@ -67,7 +69,7 @@ class DictRepl(object):
         Constructor.
 
         :param dict_filename: (str) The dictionary file name (2 columns)
-        :param nodump (Boolean) disable the creation of a dump file
+        :param nodump: (bool) Disable the creation of a dump file
 
         """
         self._dict = {}
@@ -248,7 +250,7 @@ class DictRepl(object):
             lines = fd.readlines()
 
         for line in lines:
-            line  = " ".join(line.split())
+            line = " ".join(line.split())
             if len(line) == 0:
                 continue
 
@@ -259,7 +261,7 @@ class DictRepl(object):
             # Add (or modify) the entry in the dict
             key = tabline[0]
             value = "|".join(tabline[1:])
-            self.add( key,value )
+            self.add(key, value)
 
     # ------------------------------------------------------------------------
 
@@ -267,7 +269,8 @@ class DictRepl(object):
         """
         Save the replacement dictionary.
 
-        :param filename (string)
+        :param filename (str)
+        :return: (bool)
 
         """
         try:
@@ -276,7 +279,8 @@ class DictRepl(object):
                     values = value.split('|')
                     for v in values:
                         output.write("%s %s\n" % (entry, v.strip()))
-        except Exception:
+        except Exception as e:
+            logging.info('Save file failed due to the following error: %s' % str(e))
             return False
 
         return True
