@@ -1,17 +1,17 @@
 GOTO EndHeader
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
+#           /     |  \  |  \  |  \  /              the automatic
+#           \__   |__/  |__/  |___| \__             annotation and
+#              \  |     |     |   |    \             analysis
+#           ___/  |     |     |   | ___/              of speech
 #
 #
 #                           http://www.sppas.org/
 #
 # ---------------------------------------------------------------------------
 #            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
+#                   Copyright (C) 2011-2017  Brigitte Bigi
 #
 #                   This banner notice must not be removed
 # ---------------------------------------------------------------------------

@@ -1,18 +1,17 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
+#           /     |  \  |  \  |  \  /              the automatic
+#           \__   |__/  |__/  |___| \__             annotation and
+#              \  |     |     |   |    \             analysis
+#           ___/  |     |     |   | ___/              of speech
 #
 #
 #                           http://www.sppas.org/
 #
 # ---------------------------------------------------------------------------
 #            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
+#                   Copyright (C) 2011-2017  Brigitte Bigi
 #
 #                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
@@ -32,7 +31,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: dictpron.py
+# File: src.resources.dictpron.py
 # ---------------------------------------------------------------------------
 
 import codecs
@@ -42,18 +41,19 @@ from sp_glob import UNKSTAMP
 
 # ---------------------------------------------------------------------------
 
+
 class DictPron:
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     @summary:      Pronunciation dictionary manager.
 
-    A pronunciation dictionary contains a list of words, each one with a
-    list of possible pronunciations. DictPron gets the dictionary from an
-    HTK-ASCII file, as for example, the following lines:
+    A pronunciation dictionary contains a list of words, each one with a list
+    of possible pronunciations. DictPron gets the dictionary from an HTK-ASCII
+    file, as for example, the following lines:
         acted [] { k t e d
         acted(2) [] { k t i d
     The first columns indicates the tokens, eventually followed by the variant
@@ -82,8 +82,10 @@ class DictPron:
         """
         Constructor.
 
-        @param dictfilename is the dictionary file name (HTK-ASCII format)
-        @param unkstamp is the string used to represent a missing pronunciation
+        :param dictfilename: (str) The dictionary file name (HTK-ASCII format)
+        :param unkstamp: (str) Represent a missing pronunciation
+        :param nodump: (bool) Create or not a dump file (binary version of the
+        dictionary)
 
         """
         self._filename = dictfilename
@@ -123,23 +125,31 @@ class DictPron:
         """
         Return the phonetization of an entry in the dictionary.
 
+        :param entry: (str) A token to find in the dictionary
+        :return: pronunciations of the given token or the unknown symbol
+
         """
-        return self._dict.get( rutils.ToLower(entry),self.unkstamp )
+        return self._dict.get(rutils.ToLower(entry), self.unkstamp)
 
     # -----------------------------------------------------------------------
 
-    def is_unk(self,entry):
+    def is_unk(self, entry):
         """
         Return True if entry is unknown (not in the dictionary).
 
+        :param entry: (str) A token to find in the dictionary
+
         """
-        return not self._dict.has_key( rutils.ToLower(entry) )
+        return rutils.ToLower(entry) not in self._dict
 
     # -----------------------------------------------------------------------
 
-    def is_pron_of(self,entry,pron):
+    def is_pron_of(self, entry, pron):
         """
         Return True if pron is a pronunciation of entry.
+
+        :param entry: (str) A token to find in the dictionary
+        :param pron: (str) A pronunciation
 
         """
         prons = self._dict.get( rutils.ToLower(entry),None )
@@ -151,29 +161,22 @@ class DictPron:
     # -----------------------------------------------------------------------
 
     def get_dictsize(self):
-        """
-        Return the number of entries in the dictionary.
-        (without the number of pronunciation variants)
+        """ Return the number of entries in the dictionary. """
 
-        """
         return len(self._dict)
 
     # -----------------------------------------------------------------------
 
     def get_dict(self):
-        """
-        Return the pronunciation dictionary.
+        """ Return the pronunciation dictionary. """
 
-        """
         return self._dict
 
     # -----------------------------------------------------------------------
 
     def get_keys(self):
-        """
-        Return the list of entries of the dictionary.
+        """ Return the list of entries of the dictionary. """
 
-        """
         return self._dict.keys()
 
     # -----------------------------------------------------------------------
@@ -184,8 +187,8 @@ class DictPron:
         """
         Add a token/pron to the dict.
 
-        @param token (string) unicode string of the token to add
-        @param pron (string) the pronunciation with phonemes separated by spaces
+        :param token: (str) Unicode string of the token to add
+        :param pron: (str) The pronunciation with phonemes separated by spaces
 
         """
         # Remove the CR/LF, tabs, multiple spaces and others... and lowerise
@@ -199,7 +202,7 @@ class DictPron:
         if self._dict.has_key(entry):
             # and don't append an already known pronunciation
             if self.is_pron_of(entry, pron) is False:
-                curpron = self.get_pron( entry ) + "|"
+                curpron = self.get_pron(entry) + "|"
 
         # Get the current pronunciation and append the new one
         newpron = curpron + newpron
@@ -209,21 +212,21 @@ class DictPron:
 
     # -----------------------------------------------------------------------
 
-    def map_phones(self, maptable):
+    def map_phones(self, map_table):
         """
         Create a new dictionary by changing the phoneme strings
         depending on a mapping table.
 
-        @param maptable (Mapping) A mapping table.
-        @return a DictPron with mapped phones.
+        :param map_table: (Mapping) A mapping table
+        :return: a DictPron with mapped phones
 
         """
-        maptable.set_reverse(True)
-        delimiters = ['-','|']
+        map_table.set_reverse(True)
+        delimiters = ['-', '|']
         newdict = DictPron()
 
-        for key,value in self._dict.items():
-            newdict._dict[key] = maptable.map( value,delimiters )
+        for key, value in self._dict.items():
+            newdict._dict[key] = map_table.map(value, delimiters)
 
         return newdict
 
@@ -235,33 +238,34 @@ class DictPron:
         """
         Load a pronunciation dictionary from an HTK-ASCII file.
 
-        @param filename (str) Pronunciation dictionary file name.
+        :param filename: (str) Pronunciation dictionary file name.
 
         """
         try:
             with codecs.open(filename, 'r', rutils.ENCODING) as fd:
                 lines = fd.readlines()
         except ValueError as e:
-            raise ValueError('Expected HTK ASCII dictionary format, in UTF-8 encoding. Error while trying to open and read the file: %s'%e)
+            raise ValueError('Expected HTK ASCII dictionary format. Error while trying to open and read the file: %s' % str(e))
 
-        for l,line in enumerate(lines):
+        for l, line in enumerate(lines):
             if len(line.strip()) == 0:
                 continue
             try:
                 line.index(u"[")
                 line.index(u"]")
             except ValueError:
-                raise ValueError('Expected HTK ASCII dictionary format. Error at line number %d: %s'%(l,line))
+                raise ValueError('Expected HTK ASCII dictionary format. Error at line number %d: %s' % (l, line))
 
             # The entry is before the "[" and the pronunciation is after the "]"
             entry = line[:line.find(u"[")]
             newpron  = line[line.find(u"]")+1:]
 
             # Find if it is a new entry or a phonetic variant
-            i = entry.find(u"(")
-            if( i>-1 and entry.find(u"(")>-1 ):
-                # Phonetic variant of an entry (i.e. entry ended with (XX))
-                entry = entry[:i]
+            i = entry.find("(")
+            if i > -1:
+                if ")" in entry[i:]:
+                    # Phonetic variant of an entry (i.e. entry ends with (XX))
+                    entry = entry[:i]
 
             self.add_pron(entry, newpron)
 
@@ -269,16 +273,18 @@ class DictPron:
 
     def save_as_ascii(self, filename, withvariantnb=True):
         """
-        Save the pronunciation dictionary in HTK-ASCII format, encoding=utf8.
+        Save the pronunciation dictionary in HTK-ASCII format.
 
-        @param filename (string)
-        @param withvariantnb (boot) Write the variant number or not.
+        :param filename: (str) Dictionary file name
+        :param withvariantnb: (bool) Write the variant number or not.
 
         """
         try:
             with codecs.open(filename, 'w', encoding=rutils.ENCODING) as output:
+
                 for entry, value in sorted(self._dict.iteritems(), key=lambda x:x[0]):
                     variants = value.split("|")
+
                     for i, variant in enumerate(variants, 1):
                         variant = variant.replace("-", " ")
                         if i > 1 and withvariantnb is True:
@@ -288,7 +294,7 @@ class DictPron:
                         output.write(line)
 
         except Exception as e:
-            logging.info('Save the dict in ASCII failed: %s'%str(e))
+            logging.info('Save the dict in ASCII failed: %s' % str(e))
             return False
 
         return True

@@ -43,7 +43,6 @@ import os.path
 @license:      GPL, v3
 @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
 @summary:      This is the list of SPPAS global variables.
-
 """
 
 # ---------------------------------------------------------------------------
