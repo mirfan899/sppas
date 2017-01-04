@@ -235,7 +235,7 @@ def DemoBaseDialog(parent, preferences=None):
         dlg.Destroy()
 
     def _on_info(evt):
-        ShowInformation( frame, preferences, "This is an information message.", style=wx.ICON_INFORMATION)
+        ShowInformation( frame, preferences, "This is an information message with non-UTF8 characters: éàçù.", style=wx.ICON_INFORMATION)
 
     def _on_error(evt):
         ShowInformation( frame, preferences, "This is an error message.", style=wx.ICON_ERROR)
@@ -244,7 +244,7 @@ def DemoBaseDialog(parent, preferences=None):
         ShowInformation( frame, preferences, "This is a warning message.", style=wx.ICON_WARNING)
 
     frame = spBaseDialog(parent, preferences)
-    title = frame.CreateTitle(MESSAGE_ICON,"Message dialogs demonstration")
+    title = frame.CreateTitle(MESSAGE_ICON, "Message dialogs demonstration")
     btninfo   = frame.CreateButton(DLG_INFO_ICON,"Test info", "This is a tooltip!", btnid=wx.NewId())
     btnyesno  = frame.CreateButton(DLG_QUEST_ICON,"Test yes-no", "This is a tooltip!", btnid=wx.NewId())
     btnerror  = frame.CreateButton(DLG_ERR_ICON,"Test error", "This is a tooltip!", btnid=wx.NewId())

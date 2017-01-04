@@ -62,10 +62,13 @@ try:
     from wxgui.structs.prefs       import Preferences_IO
     from wxgui.structs.themes      import BaseTheme
     from utils.fileutils           import setup_logging
-    from sp_glob                   import SETTINGS_FILE
+    from sp_glob import SETTINGS_FILE
+    from sp_glob import encoding
 except ImportError:
     exit_error( "An error occurred.\nVerify the SPPAS installation and try again. Full error message is: %s"%traceback.format_exc() )
 
+reload(sys)
+sys.setdefaultencoding(encoding)
 
 # ---------------------------------------------------------------------------
 # Main application

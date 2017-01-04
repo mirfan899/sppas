@@ -45,6 +45,7 @@ SPPASSRC = os.path.join(SPPAS, "sppas", "src")
 sys.path.append(SPPASSRC)
 
 import annotationdata.io
+from annotationdata.transcription import Transcription
 
 
 # ----------------------------------------------------------------------------
@@ -77,10 +78,16 @@ if fext.lower() != "textgrid":
 
     # read content
     trs_input = annotationdata.io.read(filename)
-    
+    tier = trs_input.Find("TokensAlign", case_sensitive=False)
+    if tier is None:
+        print "ERROR: A tier with name TokensAlign is required."
+        sys.exit(1)
+
     # write as textgrid
+    trs = Transcription(name="TokensAlign")
+    trs.Append(tier)
     filename = fname + ".TextGrid"
-    annotationdata.io.write(filename, trs_input)
+    annotationdata.io.write(filename, trs)
 
 # ----------------------------------------------------------------------------
 # Get MarsaTag path 

@@ -264,6 +264,7 @@ class spBaseDialog(wx.Dialog):
 
 # ---------------------------------------------------------------------------
 
+
 def DemoBaseDialog(parent, preferences=None):
 
     frame = spBaseDialog(parent, preferences)

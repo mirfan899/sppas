@@ -92,6 +92,11 @@ class sppasPluginProcess(object):
                     fname = os.path.splitext(filename)[0]
                     command += " \"" + fname + value + "\" "
 
+            elif opt.get_type() == "bool":
+                value = opt.get_value()
+                if value is True:
+                    command += " " + opt.get_key()
+
             else:
                 command += " "+opt.get_key()
                 value = opt.get_untypedvalue()

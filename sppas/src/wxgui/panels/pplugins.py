@@ -223,7 +223,7 @@ class PluginsPanel(wx.Panel):
 
         # Set the options of the plugin
         plugin_id = event.pid
-        logging.debug('Apply plugin %s on %d files.' % (plugin_id, len(file_names)))
+        logging.debug("Apply plugin %s on %d files." % (plugin_id, len(file_names)))
         dlg = spPluginConfig(self, self._preferences,
                              self._manager.get_plugin(plugin_id))
         res = dlg.ShowModal()
@@ -248,8 +248,8 @@ class PluginsPanel(wx.Panel):
                     log_text = "Done."
 
             except Exception as e:
-                #import traceback
-                #traceback.print_exc()
+                import traceback
+                traceback.print_exc()
                 logging.info('%s' % str(e))
                 log_text = str(e)
                 style = wx.ICON_ERROR
@@ -261,8 +261,8 @@ class PluginsPanel(wx.Panel):
 
         # Update the filetree of the main frame
         try:
-            #logging.debug("Refresh Tree ****************************")
-            self.GetTopLevelParent().RefreshTree(None)
+            #self.GetTopLevelParent().RefreshTree(None)
+            self.GetTopLevelParent().RefreshTree(file_names)
             self.GetTopLevelParent().Refresh()
         except Exception as e:
             logging.debug("%s" % str(e))
