@@ -4,11 +4,13 @@
 import unittest
 import os
 import time
+
 from plugins.param import sppasPluginParam
 from plugins.process import sppasPluginProcess
+from sp_glob import BASE_PATH
 
-from paths import DATA, SPPASSAMPLES
-sample = os.path.join(SPPASSAMPLES, "samples-eng", "oriana1.wav")
+DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+sample = os.path.join(os.path.dirname(BASE_PATH), "samples", "samples-eng", "oriana1.wav")
 
 # ---------------------------------------------------------------------------
 
@@ -25,3 +27,10 @@ class TestPluginProcess(unittest.TestCase):
         self.process.stop()
         line = self.process.communicate()
         self.assertGreater(len(line), 0)
+
+# ---------------------------------------------------------------------------
+
+if __name__ == "__main__":
+    testsuite = unittest.TestSuite()
+    testsuite.addTest(unittest.makeSuite(TestPluginProcess))
+    unittest.TextTestRunner(verbosity=2).run(testsuite)

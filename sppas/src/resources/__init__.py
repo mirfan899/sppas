@@ -32,7 +32,7 @@
 #
 # ---------------------------------------------------------------------------
 # File: src.resources
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 """
 @author:       Brigitte Bigi
@@ -49,8 +49,16 @@ linguistic resources like lexicons, dictionaries, acoustic models, etc.
 
 from mapping import Mapping
 from dictrepl import DictRepl
+from dictpron import DictPron
+from patterns import Patterns
+from unigram import Unigram
+from wordslst import WordsList
 
 __all__ = [
-           "Mapping",
-           "DictRepl"
-           ]
+    "Mapping",
+    "DictRepl",
+    "DictPron",
+    "Patterns",
+    "Unigram",
+    "WordsList"
+    ]

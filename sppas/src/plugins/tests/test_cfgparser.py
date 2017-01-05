@@ -7,16 +7,16 @@ from shutil import copyfile
 
 from plugins.cfgparser import sppasPluginConfigParser
 
-from paths import DATA
-
+DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 configfile = os.path.join(DATA, "plugin.ini")
 
 # ---------------------------------------------------------------------------
 
+
 class TestPluginConfigParser(unittest.TestCase):
 
     def setUp(self):
-        self.cfg = sppasPluginConfigParser( configfile )
+        self.cfg = sppasPluginConfigParser(configfile)
 
     def test_parse(self):
 
@@ -24,30 +24,33 @@ class TestPluginConfigParser(unittest.TestCase):
         opt = self.cfg.get_options()
         com = self.cfg.get_command()
 
-        self.assertEqual(len(conf), 3) # id, name, descr
-        self.assertEqual(len(opt), 3)  # input, -v, show-progress
+        self.assertEqual(len(conf), 3)  # id, name, descr
+        self.assertEqual(len(opt), 3)   # input, -v, show-progress
         self.assertEqual(len(com), 3)
 
         self.assertEqual(conf['id'], "pluginid")
 
-
     def test_save(self):
         self.cfg.save()
-        self.assertTrue( os.path.exists( configfile+".backup") )
-        self.assertTrue( os.path.exists( configfile) )
-        newcfg = sppasPluginConfigParser( configfile )
+        self.assertTrue(os.path.exists(configfile+".backup"))
+        self.assertTrue(os.path.exists(configfile))
+        newcfg = sppasPluginConfigParser(configfile)
 
         # restore (for next tests!)
         copyfile(configfile+".backup", configfile)
         os.remove(configfile+".backup")
 
-
         conf = newcfg.get_config()
-        opt  = newcfg.get_options()
-        com  = newcfg.get_command()
+        opt = newcfg.get_options()
+        com = newcfg.get_command()
 
-        self.assertEqual(len(conf), 3) # id, name, descr
-        self.assertEqual(len(opt), 3)  # input, -v, show-progress
+        self.assertEqual(len(conf), 3)  # id, name, descr
+        self.assertEqual(len(opt), 3)   # input, -v, show-progress
         self.assertEqual(len(com), 3)
 
 # ---------------------------------------------------------------------------
+
+if __name__ == "__main__":
+    testsuite = unittest.TestSuite()
+    testsuite.addTest(unittest.makeSuite(TestPluginConfigParser))
+    unittest.TextTestRunner(verbosity=2).run(testsuite)

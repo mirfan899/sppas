@@ -42,7 +42,7 @@ from threading import Thread
 
 from sp_glob import PLUGIN_PATH
 import utils.fileutils as fileutils
-from param   import sppasPluginParam
+from param import sppasPluginParam
 from process import sppasPluginProcess
 
 # ----------------------------------------------------------------------------

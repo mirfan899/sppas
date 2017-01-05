@@ -4,12 +4,15 @@
 import unittest
 import os
 from plugins.manager import sppasPluginsManager
+from sp_glob import BASE_PATH
 
-from paths import DATA, SPPASSAMPLES
+DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+
 soxplugin=os.path.join(DATA, "soxplugin.zip")
-sample = os.path.join(SPPASSAMPLES, "samples-eng", "oriana1.wav")
+sample = os.path.join(os.path.dirname(BASE_PATH), "samples", "samples-eng", "oriana1.wav")
 
 # ---------------------------------------------------------------------------
+
 
 class TestPluginsManager(unittest.TestCase):
 
@@ -27,10 +30,17 @@ class TestPluginsManager(unittest.TestCase):
         output = sample.replace('.wav', '-converted.wav')
         p = self.manager.get_plugin(soxid)
 
-        message = self.manager.run_plugin( soxid, [sample])
+        message = self.manager.run_plugin(soxid, [sample])
         self.assertTrue(os.path.exists(output))
         os.remove(output)
 
         # Delete it...
         self.manager.delete(soxid)
         self.assertEqual(len(self.manager.get_plugin_ids()), 0)
+
+# ---------------------------------------------------------------------------
+
+if __name__ == "__main__":
+    testsuite = unittest.TestSuite()
+    testsuite.addTest(unittest.makeSuite(TestPluginsManager))
+    unittest.TextTestRunner(verbosity=2).run(testsuite)
