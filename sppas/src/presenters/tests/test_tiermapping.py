@@ -3,11 +3,6 @@
 
 import unittest
 import os
-import sys
-from os.path import *
-
-SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
-sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 from presenters.tiermapping import TierMapping
 from annotationdata.io.praat import TextGrid
@@ -17,9 +12,11 @@ from annotationdata.ptime.interval import TimeInterval
 from annotationdata.ptime.point import TimePoint
 from annotationdata.label.label import Label
 
-SAMPLES=os.path.join(dirname(dirname(dirname(abspath(__file__)))), "samples")
+
+DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 # ---------------------------------------------------------------------------
+
 
 class TestTierMapping(unittest.TestCase):
 
@@ -55,32 +52,30 @@ class TestTierMapping(unittest.TestCase):
         self.tiermap.add( "80", "octante" )
         self.tiermap.add( "80", "quatre-vingts" )
 
-
     def test_run(self):
-        self.tiermap.set_keepmiss( True )
+        self.tiermap.set_keep_miss( True )
         self.tiermap.set_reverse( False )
-        t1 = self.tiermap.run( self.tierP )
-        t2 = self.tiermap.run( self.tierI )
+        t1 = self.tiermap.map_tier( self.tierP )
+        t2 = self.tiermap.map_tier( self.tierI )
         self.tiermap.set_reverse( True )
-        tP = self.tiermap.run( t1 )
-        tI = self.tiermap.run( t2 )
+        tP = self.tiermap.map_tier( t1 )
+        tI = self.tiermap.map_tier( t2 )
         for a1, a2 in zip(tP, self.tierP):
             self.assertEqual(a1.GetLabel().GetValue(), a2.GetLabel().GetValue())
             self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
         for a1, a2 in zip(tI, self.tierI):
             l1 = a1.GetLabel().GetValue().split('|')
             l2 = a2.GetLabel().GetValue().split('|')
-            self.assertEqual(sorted(list(set(l1))),sorted(l2))
+            self.assertEqual(sorted(list(set(l1))), sorted(l2))
             self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
-
 
     def test_phonetized_sample(self):
         tg = TextGrid()
-        tg.read(os.path.join(SAMPLES,"DGtdA05Np1_95-phon.TextGrid"))
+        tg.read(os.path.join(DATA,"DGtdA05Np1_95-phon.TextGrid"))
         self.tier = tg.Find('Phonetization')
-        tiermap = TierMapping( os.path.join(SAMPLES,"ita_mapping.repl") )
+        tiermap = TierMapping( os.path.join(DATA,"ita_mapping.repl") )
 
-        tiermap.set_keepmiss( True )
+        tiermap.set_keep_miss( True )
         tiermap.set_reverse( False )
         t = tiermap.run( self.tier )
 
@@ -90,26 +85,24 @@ class TestTierMapping(unittest.TestCase):
             self.assertEqual(a1.GetLabel().GetValue(),a2.GetLabel().GetValue())
             self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
 
-
     def test_aligned_sample(self):
         tg = TextGrid()
-        tg.read(os.path.join(SAMPLES,"DGtdA05Np1_95-palign.TextGrid"))
+        tg.read(os.path.join(DATA,"DGtdA05Np1_95-palign.TextGrid"))
         self.tier = tg.Find('PhonAlign')
-        tiermap = TierMapping( os.path.join(SAMPLES,"ita_mapping.repl") )
+        tiermap = TierMapping( os.path.join(DATA,"ita_mapping.repl") )
 
-        tiermap.set_keepmiss( True )
-        t1 = tiermap.run( self.tier )
-        tiermap.set_keepmiss( False )
-        t2 = tiermap.run( self.tier )
+        tiermap.set_keep_miss( True )
+        t1 = tiermap.map_tier( self.tier )
+        tiermap.set_keep_miss( False )
+        t2 = tiermap.map_tier( self.tier )
         for a1, a2 in zip(t1, t2):
-            if a1.GetLabel().IsSilence() is True or a1.GetLabel().IsNoise() is True:
+            if a1.GetLabel().IsNoise() is True:
                 self.assertNotEqual(a1.GetLabel().GetValue(), a2.GetLabel().GetValue())
                 self.assertNotEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
             else:
                 self.assertEqual(a1.GetLabel().GetValue(), a2.GetLabel().GetValue())
                 self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
 
-# End TestAnnotation
 # ---------------------------------------------------------------------------
 
 if __name__ == '__main__':

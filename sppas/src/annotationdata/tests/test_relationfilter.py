@@ -2,13 +2,6 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
-import sys
-import operator
-from os.path import *
-
-SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
-sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 from annotationdata.annotation import Annotation
 from annotationdata.label.label import Label
@@ -16,7 +9,9 @@ from annotationdata.ptime.interval import TimeInterval
 from annotationdata.ptime.point import TimePoint
 from annotationdata.tier import Tier
 from annotationdata.filter.predicate import Rel
-from annotationdata.filter.filters   import RelationPredicate, Filter, RelationFilter
+from annotationdata.filter.filters import RelationPredicate, Filter, RelationFilter
+
+# ---------------------------------------------------------------------------
 
 
 class TestRelationFilter(unittest.TestCase):
@@ -49,7 +44,6 @@ class TestRelationFilter(unittest.TestCase):
         r = Rel(after=0.5)
         self.assertFalse(r(x, y))
 
-
     def test_overlaps_overlappedby(self):
         x = Annotation(TimeInterval(TimePoint(1), TimePoint(3)))
         y = Annotation(TimeInterval(TimePoint(2), TimePoint(4)))
@@ -68,7 +62,6 @@ class TestRelationFilter(unittest.TestCase):
 
         r = Rel(overlappedby=0.5)
         self.assertFalse(r(x, y))
-
 
     def test_equals(self):
         x = Annotation(TimeInterval(TimePoint(3), TimePoint(4)))
@@ -120,10 +113,11 @@ class TestRelationFilter(unittest.TestCase):
         # old solution was:
         # new_tier = tierx().Link(tiery(), Rel('equals')).Filter(replace=True)
 
-# End TestRelationFilter
 # ---------------------------------------------------------------------------
 
 if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestRelationFilter)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    testsuite = unittest.TestSuite()
+    testsuite.addTest(unittest.makeSuite(TestRelationFilter))
+    unittest.TextTestRunner(verbosity=2).run(testsuite)
+
 

@@ -2,23 +2,17 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
-import sys
-import operator
-from os.path import *
 
-SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
-sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
-
-from annotationdata.annotation  import Annotation
+from annotationdata.annotation import Annotation
 from annotationdata.label.label import Label
-from annotationdata.label.text  import Text
 from annotationdata.ptime.interval import TimeInterval
 from annotationdata.ptime.point import TimePoint
-from annotationdata.tier        import Tier
+from annotationdata.tier import Tier
 
 from calculus.kappa import Kappa
 from presenters.tierconverter import TierConverter
+
+# ---------------------------------------------------------------------------
 
 
 class TestVectorKappa(unittest.TestCase):
@@ -44,6 +38,9 @@ class TestVectorKappa(unittest.TestCase):
         v = kappa.evaluate()
         self.assertEqual(0.0625, round(v,5))
 
+# ---------------------------------------------------------------------------
+
+
 class TestTierKappa(unittest.TestCase):
 
     def setUp(self):
@@ -60,45 +57,44 @@ class TestTierKappa(unittest.TestCase):
     def testLabelValue(self):
         d = TierConverter( self.tier )
         items1 = d.tier_to_items( )
-        items2 = d.tier_to_items( ) # ... !!! with same tier, expect kappa=1
+        items2 = d.tier_to_items( )  # ... !!! with same tier, expect kappa=1
         items = sorted(list(set(items1+items2)))
 
         p = d.labels_to_vector( items )
         q = d.labels_to_vector( items )
 
-        k = Kappa(p,q)
+        k = Kappa(p, q)
         self.assertTrue(k.check_vector(p))
         self.assertTrue(k.check_vector(q))
-        self.assertTrue(k.check()) # check both p and q
+        self.assertTrue(k.check())  # check both p and q
         self.assertEqual(k.evaluate(), 1.)
 
     def testBoundValue(self):
         d = TierConverter( self.tier )
-        p,q = d.bounds_to_vector( self.tier )
+        p, q = d.bounds_to_vector( self.tier )
 
-        k = Kappa(p,q)
+        k = Kappa(p, q)
         self.assertTrue(k.check_vector(p))
         self.assertTrue(k.check_vector(q))
-        self.assertTrue(k.check()) # check both p and q
+        self.assertTrue(k.check())  # check both p and q
         self.assertEqual(k.evaluate(), 1.)
 
         othertier = Tier()
         othertier.Append(self.x)
         othertier.Append(self.y)
         othertier.Append(self.b)
-        p,q = d.bounds_to_vector( othertier )
+        p, q = d.bounds_to_vector( othertier )
 
-        kb = Kappa(p,q)
+        kb = Kappa(p, q)
         self.assertTrue(kb.check_vector(p))
         self.assertTrue(kb.check_vector(q))
-        self.assertTrue(kb.check()) # check both p and q
+        self.assertTrue(kb.check())  # check both p and q
         self.assertEqual(kb.evaluate(), 0.)
 
-
+# ---------------------------------------------------------------------------
 
 if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestVectorKappa)
-    unittest.TextTestRunner(verbosity=2).run(suite)
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestTierKappa)
-    unittest.TextTestRunner(verbosity=2).run(suite)
-
+    testsuite = unittest.TestSuite()
+    testsuite.addTest(unittest.makeSuite(TestVectorKappa))
+    testsuite.addTest(unittest.makeSuite(TestTierKappa))
+    unittest.TextTestRunner(verbosity=2).run(testsuite)

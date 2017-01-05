@@ -2,13 +2,6 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
-import sys
-import operator
-from os.path import *
-
-SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
-sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 from annotationdata.annotation import Annotation
 from annotationdata.label.label import Label
@@ -18,13 +11,14 @@ from annotationdata.ptime.point import TimePoint
 from annotationdata.tier import Tier
 from annotationdata import Filter, SingleFilter, Sel
 
+# ---------------------------------------------------------------------------
+
 
 class TestSingleFilter(unittest.TestCase):
 
     def setUp(self):
         self.x = Annotation(TimeInterval(TimePoint(1), TimePoint(2)), Label('toto'))
         self.y = Annotation(TimeInterval(TimePoint(3), TimePoint(4)), Label('titi'))
-
 
     def test_predicate(self):
         p = Sel(exact='toto')
@@ -43,7 +37,6 @@ class TestSingleFilter(unittest.TestCase):
 
         p = Sel(duration_le=1)
         self.assertTrue(p(self.x))
-
 
     def test_filter_label(self):
         tier = Tier()
@@ -97,7 +90,6 @@ class TestSingleFilter(unittest.TestCase):
         for i in range(5):
             self.assertEqual(ans[i].GetLabel().GetValue(), tier[i+5].GetLabel().GetValue())
 
-
     def test_filter_typedlabel(self):
 
         # int
@@ -124,7 +116,6 @@ class TestSingleFilter(unittest.TestCase):
         ans = [a for a in ltge]
         self.assertEqual(len(ans), 5)
 
-
     def test_filter_alternativeslabel(self):
         tier = Tier()
         for i in range(10):
@@ -143,7 +134,6 @@ class TestSingleFilter(unittest.TestCase):
         self.assertEqual(len(ans), 2)
         self.assertEqual(ans[1].GetLabel().GetValue(), tier[2].GetLabel().GetValue())
 
-# End TestFilter
 # ---------------------------------------------------------------------------
 
 if __name__ == '__main__':

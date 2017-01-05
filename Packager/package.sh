@@ -390,26 +390,28 @@ function fct_test_api {
 
     echo " ... Test annotations "
     echo " ... Test annotations " >>  $TEMP
-    #$TESTS_DIR/tests_annotations/test_all.py    2>>  $TEMP
     python $PROGRAM_DIR/sppas/src/annotations/tests/test_all.py 2>> $TEMP
-
-    echo " ... Test Analysis tools "
-    echo " ... Test Calculus " >>  $TEMP
-    $TESTS_DIR/tests_calculus/test_all.py 2>> $TEMP
-
-    echo " ... Test Presenters "
-    echo " ... Test Presenters " >>  $TEMP
-    $TESTS_DIR/tests_presenters/test_all.py 2>> $TEMP
-
-    echo " ... Test Resources "
-    echo " ... Test Resources " >>  $TEMP
-    #$TESTS_DIR/tests_resources/test_all.py 2>> $TEMP
-    python $PROGRAM_DIR/sppas/src/resources/tests/test_all.py 2>> $TEMP
 
     echo " ... Test Signals "
     echo " ... Test Signals ">>  $TEMP
-    #$TESTS_DIR/tests_signals/test_all.py 2>> $TEMP
     python $PROGRAM_DIR/sppas/src/audiodata/tests/test_all.py 2>> $TEMP
+
+    echo " ... Test Analysis tools "
+    echo " ... Test Calculus " >>  $TEMP
+    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/calculus" 2>> $TEMP
+
+    echo " ... Test Presenters "
+    echo " ... Test Presenters " >>  $TEMP
+    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/presenters" 2>> $TEMP
+
+    echo " ... Test Resources "
+    echo " ... Test Resources " >>  $TEMP
+    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/resources" 2>> $TEMP
+
+    echo " ... Test Plugins "
+    echo " ... Test Plugins " >>  $TEMP
+    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/plugins" 2>> $TEMP
+
 
     local error=`grep -c '... ERROR' $TEMP`
     if [ $error -eq 0 ]; then
