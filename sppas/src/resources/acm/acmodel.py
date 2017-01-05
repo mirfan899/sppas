@@ -310,7 +310,7 @@ class AcModel:
             return
         delimiters = ["-","+"]
 
-        oldreverse = self.repllist.reverse
+        oldreverse = self.repllist.get_reverse()
         self.repllist.set_reverse(reverse)
 
         # Replace in the tiedlist

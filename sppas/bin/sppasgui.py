@@ -54,7 +54,7 @@ from checkwx import get_wx_version
 
 PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join( os.path.dirname( os.path.dirname( PROGRAM ) ), "src" )
-sys.path.insert(0,SPPAS)
+sys.path.insert(0, SPPAS)
 
 try:
     from wxgui.frames.mainframe    import FrameSPPAS

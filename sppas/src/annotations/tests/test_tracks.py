@@ -219,7 +219,7 @@ class TestTracksAlign( unittest.TestCase ):
 
         pattern = Patterns()
         pattern.set_ngram(3)
-        m3 = pattern.ngram_matchings( ref,hyp )
+        m3 = pattern.ngram_matches( ref,hyp )
 
         # Search for the lowest value in ref:
         minr = min( [ v[0] for v in m3 ] )

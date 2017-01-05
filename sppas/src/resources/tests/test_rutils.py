@@ -2,7 +2,6 @@
 # -*- coding: utf8 -*-
 
 import unittest
-import os
 
 import resources.rutils as rutils
 
@@ -117,14 +116,21 @@ LowerDict[u'Ỹ'] = u'ỹ'
 
 # ---------------------------------------------------------------------------
 
+
 class TestRutils(unittest.TestCase):
 
     def test_lower(self):
         for key,value in LowerDict.iteritems():
-            self.assertEqual( value, rutils.ToLower(key) )
-        self.assertEqual( rutils.ToLower(u'Ỹ') , rutils.ToLower('Ỹ') )
+            self.assertEqual(value, rutils.ToLower(key))
+        self.assertEqual(rutils.ToLower(u'Ỹ'), rutils.ToLower('Ỹ'))
 
     def test_strip(self):
-        self.assertEqual( rutils.ToStrip(u'  \n Ỹ  \t\r   ỏ  ') , u'Ỹ ỏ' )
+        self.assertEqual(rutils.ToStrip(u'  \n Ỹ  \t\r   ỏ  '), u'Ỹ ỏ')
 
 # ---------------------------------------------------------------------------
+
+if __name__ == '__main__':
+
+    testsuite = unittest.TestSuite()
+    testsuite.addTest(unittest.makeSuite(TestRutils))
+    unittest.TextTestRunner(verbosity=2).run(testsuite)

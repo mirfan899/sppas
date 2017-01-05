@@ -71,6 +71,13 @@ class Mapping(DictRepl):
         self._miss_symbol = ""  # Symbol to be used if keep_miss is False
 
     # -----------------------------------------------------------------------
+
+    def get_reverse(self):
+        """ Return the boolean value of reverse member. """
+
+        return self._reverse
+
+    # -----------------------------------------------------------------------
     # Methods to fix options
     # -----------------------------------------------------------------------
 

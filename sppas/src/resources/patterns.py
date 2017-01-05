@@ -100,7 +100,7 @@ class Patterns(object):
 
         """
         n = int(n)
-        if 1 < n < Patterns.MAX_NGRAM:
+        if 0 < n < Patterns.MAX_NGRAM:
             self._ngram = n
         else:
             raise ValueError("n value of n-grams pattern matching must range [1;%d]. Got %d." % (Patterns.MAX_NGRAM, n))
@@ -115,7 +115,7 @@ class Patterns(object):
 
         """
         g = int(g)
-        if 0 < g < Patterns.MAX_GAP:
+        if 0 <= g < Patterns.MAX_GAP:
             self._gap = g
             self._interstice = 2*g
         else:
@@ -131,7 +131,7 @@ class Patterns(object):
 
         """
         s = float(s)
-        if 0 < s <= 1.:
+        if 0 <= s <= 1.:
             self._score = s
         else:
             raise ValueError("score value of unigrams pattern matching must range [0;1]. Got %f." % s)
@@ -140,9 +140,9 @@ class Patterns(object):
     # Matching search methods
     # ------------------------------------------------------------------------
 
-    def ngram_matchings(self, ref, hyp):
+    def ngram_matches(self, ref, hyp):
         """
-        n-gram matchings between ref and hyp.
+        n-gram matches between ref and hyp.
         Search for common n-gram sequences of hyp in ref.
 
         :param ref: (list of tokens - IN) List of references

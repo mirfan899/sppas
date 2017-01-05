@@ -444,7 +444,7 @@ class Chunks( object ):
         """
         pattern = Patterns()
         pattern.set_ngram( N )
-        m3 = pattern.ngram_matchings( ref,hyp )
+        m3 = pattern.ngram_matches( ref,hyp )
 
         if len( m3 ) == 0:
             return []
@@ -463,7 +463,7 @@ class Chunks( object ):
         if len(listhyp) > len(list(set(listhyp))):
 
             pattern.set_ngram( N+2 )
-            newm3 = pattern.ngram_matchings( ref,hyp )
+            newm3 = pattern.ngram_matches( ref,hyp )
             listref = [ v[0] for v in m3 ]
             listhyp = [ v[1] for v in m3 ]
             if len(listhyp) > len(list(set(listhyp))):
