@@ -369,33 +369,34 @@ class Location(object):
 
     def IsPoint(self):
         """
-        Check if the Localization attribute is
+        Check if the best Localization attribute is
         an instance of TimePoint or FramePoint.
 
         """
-        return self.GetValue().IsTimePoint() or self.GetValue().IsFramePoint()
+        v = self.GetValue()
+        return v.IsTimePoint() or v.IsFramePoint()
 
     # -----------------------------------------------------------------------
 
     def IsInterval(self):
         """
-        Check if the Localization attribute is
+        Check if the best Localization attribute is
         an instance of TimeInterval or FrameInterval.
 
         """
-        return (self.GetValue().IsTimeInterval() or
-                self.GetValue().IsFrameInterval())
+        v = self.GetValue()
+        return v.IsTimeInterval() or v.IsFrameInterval()
 
     # -----------------------------------------------------------------------
 
     def IsDisjoint(self):
         """
-        Check if the attribute Localization is
+        Check if the best attribute Localization is
         an instance of TimeDisjoint or FrameDisjoint.
 
         """
-        return (self.GetValue().IsTimeDisjoint() or
-                self.GetValue().IsFrameDisjoint())
+        v = self.GetValue()
+        return v.IsTimeDisjoint() or v.IsFrameDisjoint()
 
     # -----------------------------------------------------------------------
 

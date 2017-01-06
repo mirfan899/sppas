@@ -3,9 +3,9 @@
 author:     Brigitte Bigi
 contact:    brigite.bigi@gmail.com
 program:    SPPAS - the automatic annotation and analysis of speech
-date:       2016-11-30
-version:    1.8.1
-copyright:  Copyright (C) 2011-2016  Brigitte Bigi
+date:       2017-01-18
+version:    1.8.2
+copyright:  Copyright (C) 2011-2017  Brigitte Bigi
 url:        http://www.sppas.org/
 license:    GNU Public License, v3
 brief:      SPPAS produces automatically annotations from a recorded speech

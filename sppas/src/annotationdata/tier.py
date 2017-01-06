@@ -178,7 +178,7 @@ class Tier( MetaObject ):
         """
         if self.__parent is not None and self.GetReferenceTier():
             # Remove me of the current parent hierarchy!!!!!!
-            self.__parent.hierarchy.removeTier(self)
+            self.__parent.hierarchy.remove_tier(self)
 
         self.__parent = parent
 
@@ -375,16 +375,17 @@ class Tier( MetaObject ):
         #subtimes = tier.GetAllPoints()
         #return set(reftimes).issuperset(set(subtimes))
 
-        for t in tier:
-            if t.GetLocation().IsPoint():
-                i = self.Index( t.GetLocation().GetPoint() )
+        for ann in tier:
+            location = ann.GetLocation()
+            if location.IsPoint():
+                i = self.Index(location.GetPoint())
                 if i == -1:
                     return False
             else:
-                i = self.Lindex( t.GetLocation().GetBegin() )
+                i = self.Lindex(location.GetBegin())
                 if i == -1:
                     return False
-                i = self.Rindex(t.GetLocation().GetEnd())
+                i = self.Rindex(location.GetEnd())
                 if i == -1:
                     return False
 
@@ -574,7 +575,7 @@ class Tier( MetaObject ):
 
     # -----------------------------------------------------------------------
 
-    def __find(self, x):
+    def __find(self, x, direction=1):
         """
         Return the index of the annotation whose time value containing x.
 
@@ -593,14 +594,18 @@ class Tier( MetaObject ):
                     hi = mid
                 else:
                     lo = mid + 1
-            else: # Interval or Disjoint
+            else:  # Interval or Disjoint
                 if a.GetLocation().GetBegin() == x or a.GetLocation().GetBegin() < x < a.GetLocation().GetEnd(): # only compare to the location with the highest score
                     return mid
                 if x < a.GetLocation().GetEnd():
                     hi = mid
                 else:
                     lo = mid + 1
-        return hi
+
+        # We failed to find an annotation at time=x. return the closest...
+        if direction == 1:
+            return hi
+        return mid
 
     # -----------------------------------------------------------------------
 
@@ -657,9 +662,13 @@ class Tier( MetaObject ):
         while lo < hi:
             mid = (lo + hi) // 2
             a = self.__ann[mid]
-            if time < a.GetLocation().GetBegin():
+            if a.GetLocation().IsPoint():
+                p = a.GetLocation().GetPoint()
+            else:
+                p = a.GetLocation().GetBegin()
+            if time < p:
                 hi = mid
-            elif time > a.GetLocation().GetBegin():
+            elif time > p:
                 lo = mid + 1
             else:
                 found = True
@@ -672,7 +681,11 @@ class Tier( MetaObject ):
         first = mid
         for i in range(mid, -1, -1):
             a = self.__ann[i]
-            if a.GetLocation().GetBegin() == time:
+            if a.GetLocation().IsPoint():
+                p = a.GetLocation().GetPoint()
+            else:
+                p = a.GetLocation().GetBegin()
+            if p == time:
                 first = i
             else: break
         return first
@@ -689,15 +702,16 @@ class Tier( MetaObject ):
 
         """
         for i, a in enumerate(self):
-            if direction == -1:
-                if a.GetLocation().GetBegin() <= time < a.GetLocation().GetEnd():
-                    return i
-            elif direction == 1:
-                if a.GetLocation().GetBegin() < time <= a.GetLocation().GetEnd():
-                    return i
-            else:
-                if a.GetLocation().GetBegin() < time < a.GetLocation().GetEnd():
-                    return i
+            if a.GetLocation().IsPoint() is False:
+                if direction == -1:
+                    if a.GetLocation().GetBegin() <= time < a.GetLocation().GetEnd():
+                        return i
+                elif direction == 1:
+                    if a.GetLocation().GetBegin() < time <= a.GetLocation().GetEnd():
+                        return i
+                else:
+                    if a.GetLocation().GetBegin() < time < a.GetLocation().GetEnd():
+                        return i
         return -1
 
     # ------------------------------------------------------------------------
@@ -705,6 +719,7 @@ class Tier( MetaObject ):
     def Rindex(self, time):
         """
         Return the index of the interval ending at the given time point.
+        (or the point)
 
         @param time: (TimePoint)
 
@@ -716,9 +731,13 @@ class Tier( MetaObject ):
         while lo < hi:
             mid = (lo + hi) // 2
             a = self.__ann[mid]
-            if time < a.GetLocation().GetEnd():
+            if a.GetLocation().IsPoint():
+                p = a.GetLocation().GetPoint()
+            else:
+                p = a.GetLocation().GetEnd()
+            if time < p:
                 hi = mid
-            elif time > a.GetLocation().GetEnd():
+            elif time > p:
                 lo = mid + 1
             else:
                 found = True
@@ -732,9 +751,14 @@ class Tier( MetaObject ):
         first = mid
         for i in range(mid, -1, -1):
             a = self.__ann[i]
-            if a.GetLocation().GetEnd() == time:
+            if a.GetLocation().IsPoint():
+                p = a.GetLocation().GetPoint()
+            else:
+                p = a.GetLocation().GetEnd()
+            if p == time:
                 first = i
-            else: break
+            else:
+                break
 
         return first
 
@@ -754,23 +778,19 @@ class Tier( MetaObject ):
         """
         if self.GetSize() == 0:
             return -1
+        if self.GetSize() == 1:
+            return 0
 
-        index = self.__find(time)
-
+        index = self.__find(time, direction)
         if index == -1:
             return -1
 
         a = self.__ann[index]
 
         # POINTS
-        # TODO: The following code is not tested.
+        # TODO: Not Implemented
         if a.GetLocation().IsPoint():
-            if direction == 0:
-                return index
-            if direction == -1:
-                return index-1
-            if direction == 1:
-                return index+1
+            return index
 
         # INTERVALS
         # forward
@@ -779,8 +799,7 @@ class Tier( MetaObject ):
                 return index
             if index+1 < self.GetSize():
                 return index+1
-            else:
-                return -1
+            return -1
 
         # backward
         elif direction == -1:
@@ -788,38 +807,31 @@ class Tier( MetaObject ):
                 return index
             if index-1 > 0:
                 return index-1
-            else:
-                return -1
+            return -1
+
+        # direction == 0 (select the nearest)
 
         # if time is during an annotation
         a = self.__ann[index]
-        if a.GetLocation().GetBegin() < time < a.GetLocation().GetEnd():
+        if a.GetLocation().GetBegin() <= time <= a.GetLocation().GetEnd():
             return index
 
-        # nearest is either the previous or the next annotation
-        # TODO: the following code is not tested
-
-        if index-1 < 0:
-            # no previous.
-            return index+1
-        if index+1 > self.GetSize():
+        # then, the nearest is either the current or the next annotation
+        _next = index + 1
+        if _next >= self.GetSize():
             # no next
-            return index-1
+            return index
 
-        _next, _prev = (index + 1, index - 1)
         next_a = self.__ann[_next]
-        prev_a = self.__ann[_prev]
+        prev_a = self.__ann[index]
         time = time.GetMidpoint() if isinstance(time, TimePoint) else float(time)
         if next_a.GetLocation().IsPoint():
-            if abs(time - prev_a.GetLocation().GetPointMidpoint()) < abs(next_a.GetLocation().GetPointMidpoint() - time):
-                return _prev
-            else:
+            if abs(time - prev_a.GetLocation().GetPointMidpoint()) > abs(next_a.GetLocation().GetPointMidpoint() - time):
                 return _next
         else:
-            if abs(time - prev_a.GetLocation().GetEndMidpoint()) < abs(next_a.GetLocation().GetBeginMidpoint() - time):
-                return _prev
-            else:
+            if abs(time - prev_a.GetLocation().GetEndMidpoint()) > abs(next_a.GetLocation().GetBeginMidpoint() - time):
                 return _next
+        return index
 
     # -----------------------------------------------------------------------
 
@@ -876,14 +888,17 @@ class Tier( MetaObject ):
         @param begin: (TimePoint)
         @param end:   (TimePoint)
         @param overlaps: (bool)
+        :return: the number of removed annotations
 
         """
-        if end < begin:
-            raise ValueError("End TimePoint must be strictly greater than Begin TimePoint")
+        if end <= begin:
+            raise ValueError("End must be strictly greater than begin. Got %s,%s" % (begin, end))
 
         annotations = self.Find(begin, end, overlaps)
         for a in annotations:
             self.__ann.remove(a)
+
+        return len(annotations)
 
     # -----------------------------------------------------------------------
 
@@ -1014,54 +1029,56 @@ class Tier( MetaObject ):
     # -----------------------------------------------------------------------
 
     def __validate_annotation(self, annotation):
+
+        # Check instance:
+
         if isinstance(annotation, Annotation) is False:
             raise TypeError(
-                "Annotation argument required, not %r" % annotation)
+                "Annotation argument required, not %r." % annotation)
+
+        # Check Label:
 
         # Check if controlled vocabulary
         if self.__ctrlvocab is not None:
             for word in annotation.GetLabel().GetLabels():
-                if self.__ctrlvocab.Contains(word.GetValue()) is False and word.GetValue() != '':  # praat needs empty values
+                if self.__ctrlvocab.Contains(word.GetValue()) is False and word.GetValue() != '':
+                    # hum... praat needs empty values
                     raise ValueError(
-                        "Attempt to append a free-annotation-label %s"
-                        " in a controlled vocabulary tier."%(word.GetValue()))
+                        "Attempt to append a free-annotation-label %s "
+                        "in a controlled vocabulary tier." % (word.GetValue()))
 
+        # Check Location:
+
+        # Check if hierarchy is preserved
         if self.GetTranscription() is not None:
             hierarchy = self.GetTranscription().GetHierarchy()
 
-            assocHierarchy = hierarchy.getHierarchy('TimeAssociation')
-            for (former, latter) in assocHierarchy:
-                if former is self or latter is self:
-                    raise Exception(
-                        'Tier modification invalidates hierarchy')
-
-            alignHierarchy = hierarchy.getHierarchy('TimeAlignment')
-            for (former, latter) in alignHierarchy:
-                if latter is self:
+            # if current tier is a child
+            parent_tier = hierarchy.get_parent(self)
+            if parent_tier is not None:
+                link_type = hierarchy.get_hierarchy_type(self)
+                if link_type == "TimeAssociation":
+                    raise Exception("Attempt a modification in a Tier that invalidates its hierarchy.")
+                if link_type == "TimeAlignment":
+                    # The parent must have such location...
                     if annotation.GetLocation().IsPoint():
-                        i = self.Index(annotation.GetLocation().GetPoint())
+                        i = parent_tier.Index(annotation.GetLocation().GetPoint())
                         if i == -1:
-                            raise Exception(
-                                'Tier modification invalidates hierarchy %s %s'
-                                % (
-                                    former.GetLocation().GetMidpoint(),
-                                    latter.GetLocation().GetMidpoint()))
+                            raise Exception("Attempt a modification in a Tier that invalidates its hierarchy.")
                     else:
-                        l = self.Lindex(annotation.GetLocation().GetBegin())
+                        l = parent_tier.Lindex(annotation.GetLocation().GetBegin())
                         if l == -1:
-                            raise Exception(
-                                'Tier modification invalidates hierarchy %s %s'
-                                % (
-                                    former.GetLocation().GetBeginMidpoint(),
-                                    latter.GetLocation().GetBeginMidpoint()))
+                            raise Exception("Attempt a modification in a Tier that invalidates its hierarchy.")
 
-                        r = self.Rindex(annotation.GetLocation().GetEnd())
+                        r = parent_tier.Rindex(annotation.GetLocation().GetEnd())
                         if r == -1:
-                            raise Exception(
-                                'Tier modification invalidates hierarchy %s %s'
-                                % (
-                                    former.GetLocation().GetEndMidpoint(),
-                                    latter.GetLocation().GetEndMidpoint()))
+                            raise Exception("Attempt a modification in a Tier that invalidates its hierarchy.")
+
+            # if current tier is a parent
+            for child_tier in hierarchy.get_children(self):
+                link_type = hierarchy.get_hierarchy_type(child_tier)
+                if link_type == "TimeAssociation":
+                    raise Exception("Attempt a modification in a Tier that invalidates its hierarchy.")
 
     # -----------------------------------------------------------------------
 
@@ -1101,10 +1118,8 @@ class Tier( MetaObject ):
         for a in self.__ann:
             yield a
 
-
     def __getitem__(self, i):
         return self.__ann[i]
-
 
     def __len__(self):
         return len(self.__ann)

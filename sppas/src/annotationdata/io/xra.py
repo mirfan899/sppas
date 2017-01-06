@@ -33,11 +33,11 @@
 #
 # ---------------------------------------------------------------------------
 
+import logging
 from datetime import datetime
 import xml.etree.cElementTree as ET
 
 from annotationdata.transcription       import Transcription
-from annotationdata.hierarchy           import Hierarchy
 from annotationdata.media               import Media
 from annotationdata.ctrlvocab           import CtrlVocab
 
@@ -57,6 +57,7 @@ from utils import indent
 from utils import gen_id
 
 # ---------------------------------------------------------------------------
+
 
 class XRA(Transcription):
     """
@@ -156,7 +157,12 @@ class XRA(Transcription):
             former = self.__id_tier_map[formerID]
             latter = self.__id_tier_map[latterID]
 
-            self._hierarchy.addLink(htype, former, latter)
+            try:
+                self._hierarchy.add_link(htype, former, latter)
+            except Exception as e:
+                logging.debug("Corrupted hierarchy between %s and %s: %s." %
+                              (former.GetName(), latter.GetName(), str(e)))
+                pass
 
     # -----------------------------------------------------------------
 
@@ -444,32 +450,29 @@ class XRA(Transcription):
     # -----------------------------------------------------------------
 
     def __format_hierarchy(self, hierarchyRoot, hierarchy):
-        try:
-            for type in Hierarchy.hierarchy_types:
-                for (former, latter) in hierarchy.getHierarchy(type):
-                    link = ET.SubElement(hierarchyRoot, 'Link')
-                    link.set('type', type)
-                    # FIXME: this shouldn't be used because it breaks transaction unicity
-                    link.set('from', self.__tier_id_map[former])
-                    link.set('to', self.__tier_id_map[latter])
-        except KeyError:
-            #print('The current Hierarchy is invalid.')
-            hierarchyRoot.clear()
+        for child_tier in self:
+            parent_tier = hierarchy.get_parent(child_tier)
+            if parent_tier is not None:
+                link_type = hierarchy.get_hierarchy_type(child_tier)
+                link = ET.SubElement(hierarchyRoot, 'Link')
+                link.set('type', link_type)
+                link.set('from', self.__tier_id_map[parent_tier])
+                link.set('to', self.__tier_id_map[child_tier])
 
     # -----------------------------------------------------------------
 
     def __format_vocabulary(self, vocabularyRoot, vocabulary):
         # Set attribute
         vocabularyRoot.set('id', vocabulary.id)
-        if len(vocabulary.desc)>0:
+        if len(vocabulary.desc) > 0:
             vocabularyRoot.set('description', vocabulary.desc)
 
         # Write the list of entries
         for entry in vocabulary:
             entryNode = ET.SubElement(vocabularyRoot, 'Entry')
             entryNode.text = entry.Text.GetValue()
-            if len(entry.desc)>0:
-                entryNode.set('description',entry.desc)
+            if len(entry.desc) > 0:
+                entryNode.set('description', entry.desc)
 
         # Element Tier
         for tier in self:

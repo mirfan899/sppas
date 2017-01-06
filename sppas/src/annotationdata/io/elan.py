@@ -129,7 +129,7 @@ class Elan( Transcription ):
             parent = self.Find(parentTierRef)
             # Elan's hierarchy
             try:
-                self._hierarchy.addLink('TimeAlignment', child, parent)
+                self._hierarchy.add_link('TimeAlignment', child, parent)
             except:
                 # TODO: to send a warning
                 pass
@@ -501,7 +501,7 @@ class Elan( Transcription ):
             tier = point2interval(tier, ELAN_RADIUS)
         tier = merge_overlapping_annotations(tier)
 
-        parentTier = self._hierarchy.getParent(tier)
+        parentTier = self._hierarchy.get_parent(tier)
         if parentTier is not None:
             tierRoot.set('PARENT_REF', parentTier.GetName())
             self.previousRefId = None

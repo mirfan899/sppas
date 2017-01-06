@@ -2,17 +2,14 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
-import sys
-from os.path import *
-
-SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
-sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 from annotationdata.tier import Tier
 from annotationdata.transcription import Transcription
 from annotationdata.ctrlvocab import CtrlVocab
 from annotationdata.media import Media
+
+# ---------------------------------------------------------------------------
+
 
 class TestTranscription(unittest.TestCase):
 
@@ -87,7 +84,6 @@ class TestTranscription(unittest.TestCase):
         self.trs.RemoveMedia( m1 )
         self.assertEquals(self.tier1.GetMedia(), None)
 
-# End TestTranscription
 # ---------------------------------------------------------------------------
 
 if __name__ == '__main__':

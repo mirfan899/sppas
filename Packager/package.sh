@@ -382,7 +382,7 @@ function fct_test_api {
 
     echo " ... Test annotationdata "
     echo " ... Test annotationdata " >>  $TEMP
-    $TESTS_DIR/tests_annotationdata/test_all.py    >&  $TEMP
+    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/annotationdata" >& $TEMP
 
     echo " ... Test I/O "
     echo " ... Test I/O " >>  $TEMP

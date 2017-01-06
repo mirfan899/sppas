@@ -77,10 +77,10 @@ class TestTierMapping(unittest.TestCase):
 
         tiermap.set_keep_miss( True )
         tiermap.set_reverse( False )
-        t = tiermap.run( self.tier )
+        t = tiermap.map_tier( self.tier )
 
         tiermap.set_reverse( True )
-        tp = tiermap.run( t )
+        tp = tiermap.map_tier( t )
         for a1, a2 in zip(tp, self.tier):
             self.assertEqual(a1.GetLabel().GetValue(),a2.GetLabel().GetValue())
             self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())

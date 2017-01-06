@@ -179,7 +179,7 @@ class IPUsOut( object ):
 
         # Link both tiers: IPU and Transcription
         try:
-            trs.GetHierarchy().addLink('TimeAssociation', tieripu, tier)
+            trs.GetHierarchy().add_link('TimeAssociation', tieripu, tier)
         except Exception:
             pass
 

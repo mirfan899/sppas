@@ -388,7 +388,7 @@ class sppasAlign( sppasBase ):
                 phonalign = trs.Find("PhonAlign")
                 tier = self.phntokalign_tier(phonalign,tokenalign)
                 trs.Append(tier)
-                trs.GetHierarchy().addLink("TimeAssociation", tokenalign, tier)
+                trs.GetHierarchy().add_link("TimeAssociation", tokenalign, tier)
             except Exception as e:
                 self.print_message("PhnTokAlign generation: %s"%str(e), indent=2, status=WARNING_ID)
 
@@ -399,7 +399,7 @@ class sppasAlign( sppasBase ):
                 tier = activity.get_tier()
                 if self._options['activity'] is True:
                     trs.Append(tier)
-                    trs.GetHierarchy().addLink("TimeAlignment", tokenalign, tier)
+                    trs.GetHierarchy().add_link("TimeAlignment", tokenalign, tier)
 
                 if self._options['activityduration'] is True:
                     dtier = tier.Copy()

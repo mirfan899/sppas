@@ -280,7 +280,7 @@ class TracksReader( Transcription ):
         if itemw.GetSize()>1:
             itemw[-1].GetLocation().SetEndRadius(0.)
             try:
-                self._hierarchy.addLink('TimeAlignment', itemp, itemw)
+                self._hierarchy.add_link('TimeAlignment', itemp, itemw)
             except Exception:
                 pass
 

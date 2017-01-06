@@ -314,8 +314,8 @@ class Syllabification:
         syllables.Append( self.syll )
         syllables.Append( self.cls )
         syllables.Append( self.struct )
-        syllables._hierarchy.addLink("TimeAssociation", self.syll, self.cls)
-        syllables._hierarchy.addLink('TimeAssociation', self.syll, self.struct)
+        syllables._hierarchy.add_link("TimeAssociation", self.syll, self.cls)
+        syllables._hierarchy.add_link('TimeAssociation', self.syll, self.struct)
         return syllables
 
     # ------------------------------------------------------------------

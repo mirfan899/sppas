@@ -531,7 +531,7 @@ class TrsList( wx.Panel ):
 
         # Pop selected tier from transcription.
         try:
-            self._transcription._hierarchy.removeTier(self._transcription[sellist]) # waiting a better way to work with hierarchy...
+            self._transcription._hierarchy.remove_tier(self._transcription[sellist]) # waiting a better way to work with hierarchy...
         except Exception:
             pass
         self._transcription.Pop(sellist)
@@ -582,7 +582,7 @@ class TrsList( wx.Panel ):
 
         # Pop selected tier from transcription.
         try:
-            self._transcription._hierarchy.removeTier(self._transcription[sellist]) # waiting a better way to work with hierarchy...
+            self._transcription._hierarchy.remove_tier(self._transcription[sellist]) # waiting a better way to work with hierarchy...
         except Exception:
             pass
         self._transcription.Pop(sellist)

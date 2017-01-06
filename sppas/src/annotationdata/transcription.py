@@ -77,10 +77,9 @@ class Transcription( MetaObject ):
     >>> transcription = Transcription()
     >>> formertier = transcription.NewTier("parent")
     >>> lattertier = transcription.NewTier("child")
-    >>> transcription.GetHierarchy().addLink("TimeAlignment", formertier, lattertier)
+    >>> transcription.GetHierarchy().add_link("TimeAlignment", formertier, lattertier)
 
     """
-
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
         Creates a new Transcription instance.
@@ -97,7 +96,7 @@ class Transcription( MetaObject ):
         self.__tiers     = [] # a list of Tier() instances
         self.__media     = [] # a list of Media() instances
         self.__ctrlvocab = [] # a list of CtrlVocab() instances
-        self._hierarchy  = Hierarchy()
+        self._hierarchy = Hierarchy()
 
         self.SetName(name)
 
@@ -404,7 +403,7 @@ class Transcription( MetaObject ):
             raise IndexError("Pop from empty transcription.")
 
         try:
-            self._hierarchy.removeTier(self.__tiers[index])
+            self._hierarchy.remove_tier(self.__tiers[index])
             return self.__tiers.pop(index)
         except IndexError as e:
             raise e
@@ -422,7 +421,7 @@ class Transcription( MetaObject ):
         if index >= len(self.__tiers) or index < 0:
             raise IndexError
 
-        self._hierarchy.removeTier(self.__tiers[index])
+        self._hierarchy.remove_tier(self.__tiers[index])
         del self.__tiers[index]
 
     # ------------------------------------------------------------------------

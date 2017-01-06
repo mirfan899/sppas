@@ -2,31 +2,25 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
-import sys
-from os.path import *
-
-SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
-sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 from annotationdata.tier import Tier
 
-from annotationdata.label.label    import Label
-from annotationdata.ptime.point    import TimePoint
+from annotationdata.label.label import Label
+from annotationdata.ptime.point import TimePoint
 from annotationdata.ptime.interval import TimeInterval
-from annotationdata.annotation     import Annotation
-from annotationdata.media          import Media
-from annotationdata.ctrlvocab      import CtrlVocab
+from annotationdata.annotation import Annotation
+from annotationdata.media import Media
+from annotationdata.ctrlvocab import CtrlVocab
+
+# ---------------------------------------------------------------------------
+
 
 class TestTier(unittest.TestCase):
-    """ Represents a tier.
+    """
         A Tier is made of:
             - a name
-            - a set of metadata (not used)
-            - a radius value (used to compare 2 time points)
+            - a set of metadata
             - an array of annotations.
-        If annotations are of type 'interval', the begin time of an annotation
-        must be equal to the end time of the previous annotations.
     """
     def setUp(self):
         self.tierP = Tier("PointTier")
@@ -35,13 +29,11 @@ class TestTier(unittest.TestCase):
             self.tierP.Append(Annotation(TimePoint(i), Label("label"+str(i))))
             self.tierI.Append(Annotation(TimeInterval(TimePoint(i), TimePoint(i+1)), Label("label"+str(i))))
 
-
     def test_Metadata(self):
         self.tierP.metadata['key']="value"
         self.tierI.SetMetadata('key',"value")
         self.assertEqual(self.tierI.GetMetadata('key'), self.tierP.GetMetadata('key'))
         self.assertEqual(self.tierI.GetMetadata('toto'), '')
-
 
     def test_CtrlVocab(self):
         tiercv = Tier("CtrlVocabTier")
@@ -62,30 +54,25 @@ class TestTier(unittest.TestCase):
         with self.assertRaises(ValueError):
             tiercv.Append(a3)
 
-
     def test_Media(self):
         m = Media('abcd', '/path/file.wav', 'audio/wav')
         self.tierP.SetMedia(m)
         self.tierI.SetMedia(m)
         self.assertEqual(self.tierI.GetMedia(), self.tierP.GetMedia())
 
-
     def test_GetName(self):
         tier = Tier("être être")
         self.assertIsInstance(tier.GetName(), unicode)
-
 
     def test_SetName(self):
         tier = Tier("être être")
         tier.SetName( "foo" )
         self.assertIsInstance(tier.GetName(), unicode)
 
-
     def test_IsEmpty(self):
         tier = Tier()
         self.assertTrue(tier.IsEmpty())
         self.assertFalse(self.tierI.IsEmpty())
-
 
     def test_GetBegin(self):
         tier = Tier()
@@ -95,7 +82,6 @@ class TestTier(unittest.TestCase):
         tier.Add(a)
         self.assertEqual(tier.GetBeginValue(), 2.4)
 
-
     def test_GetEnd(self):
         tier = Tier()
         self.assertEqual(tier.GetEndValue(), 0)
@@ -104,16 +90,13 @@ class TestTier(unittest.TestCase):
         tier.Add(a)
         self.assertEqual(tier.GetEndValue(), 2.4)
 
-
     def test_IsInterval(self):
         self.assertTrue(self.tierI.IsInterval())
         self.assertFalse(self.tierP.IsInterval())
 
-
     def test_IsPoint(self):
         self.assertTrue(self.tierP.IsPoint())
         self.assertFalse(self.tierI.IsPoint())
-
 
     def test_Remove(self):
         tier = Tier()
@@ -146,9 +129,8 @@ class TestTier(unittest.TestCase):
         self.assertEquals(tier[0].GetLocation().GetValue().GetPlace(), TimePoint(1))
         self.assertEquals(tier[1].GetLocation().GetValue().GetPlace(), TimePoint(4))
 
-        with self.assertRaises(IndexError):
-            tier.Remove(TimePoint(2), TimePoint(3))
-
+        with self.assertRaises(ValueError):
+            tier.Remove(TimePoint(3), TimePoint(3))
 
     def test_Append(self):
         tier = Tier()
@@ -161,7 +143,6 @@ class TestTier(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             tier.Append(a3)
-
 
     # TODO when a tier is mixed, it can not insert annotation correctly.
     def test_Add(self):
@@ -202,13 +183,11 @@ class TestTier(unittest.TestCase):
         for i, a in enumerate(tier, 1):
             self.assertEqual(a.GetLocation().GetEnd(), TimePoint(i))
 
-
     def test_Copy(self):
         tier = Tier()
         copy = tier.Copy()
         self.assertIsNot(tier, copy)
         self.assertIs(tier, tier)
-
 
     def test_FindInterval(self):
         tier = Tier()
@@ -272,7 +251,6 @@ class TestTier(unittest.TestCase):
         annotations = tier.Find(TimePoint(6), TimePoint(7), overlaps=False)
         self.assertEquals(annotations, [])
 
-
     def test_FindPoint(self):
         tier = Tier()
         _anns = [
@@ -326,7 +304,6 @@ class TestTier(unittest.TestCase):
         annotations = tier.Find(TimePoint(6), TimePoint(10), overlaps=False)
         self.assertEquals(len(annotations), 0)
 
-
     def test_Rindex(self):
         tier = Tier()
         for i in range(1, 11):
@@ -354,7 +331,6 @@ class TestTier(unittest.TestCase):
         tier.Add(Annotation(TimeInterval(TimePoint(1), TimePoint(2))))
         self.assertEquals(tier.Rindex(TimePoint(2)), 0)
 
-
     def test_Lindex(self):
         tier = Tier()
         for i in range(1, 11):
@@ -368,7 +344,6 @@ class TestTier(unittest.TestCase):
         self.assertEquals(tier.Lindex(TimePoint(5.5)), -1)
         self.assertEquals(tier.Lindex(TimePoint(0)), -1)
         self.assertEquals(tier.Lindex(TimePoint(1000)), -1)
-
 
     def test_Lindex2(self):
         tier = Tier()
@@ -395,7 +370,6 @@ class TestTier(unittest.TestCase):
         tier.Add(Annotation(TimePoint(2)))
         self.assertEquals(tier.Index(TimePoint(2)), 0)
 
-
     def test_Mindex(self):
         tier = Tier()
         for i in range(1, 11):
@@ -415,14 +389,16 @@ class TestTier(unittest.TestCase):
             index = tier.Mindex(time, 0)
             self.assertEquals(index, i)
 
-
     def test_Near(self):
         # IntervalTier
         tier = Tier()
-        tier.Append(Annotation(TimeInterval(TimePoint(0), TimePoint(1))))
+        tier.Append(Annotation(TimeInterval(TimePoint(0.1), TimePoint(1))))
         tier.Append(Annotation(TimeInterval(TimePoint(3), TimePoint(4))))
 
         index = tier.Near(time=0, direction=1)
+        self.assertEquals(index, 0)
+
+        index = tier.Near(time=0, direction=0)
         self.assertEquals(index, 0)
 
         index = tier.Near(time=0.5, direction=1)
@@ -434,7 +410,8 @@ class TestTier(unittest.TestCase):
         self.assertEquals(index, 0)
 
         index = tier.Near(time=1, direction=-1)
-        self.assertEquals(index, -1)
+        #self.assertEquals(index, -1)
+        self.assertEquals(index, 0)
 
         index = tier.Near(time=1, direction=1)
         self.assertEquals(index, 1)
@@ -445,13 +422,15 @@ class TestTier(unittest.TestCase):
         index = tier.Near(time=2, direction=-1)
         self.assertEquals(index, 0)
 
-        index = tier.Near(time=1.4, direction=0)
+        index = tier.Near(time=2, direction=0)
+        # same distance between both annotations, both should be ok!
         self.assertEquals(index, 0)
+        #self.assertEquals(index, 1)
 
         index = tier.Near(time=2.5, direction=0)
         self.assertEquals(index, 1)
 
-        # PointTier
+        # PointTier (not fully implemented)
         tier = Tier()
         tier.Append(Annotation(TimePoint(1)))
         tier.Append(Annotation(TimePoint(2)))
@@ -465,9 +444,8 @@ class TestTier(unittest.TestCase):
         index = tier.Near(time=1.4, direction=0)
         self.assertEquals(index, 0)
 
-        index = tier.Near(time=1.7, direction=0)
-        self.assertEquals(index, 1)
-
+#        index = tier.Near(time=1.7, direction=0)
+#        self.assertEquals(index, 1)
 
     def test_Search(self):
         tier = Tier()
@@ -492,7 +470,6 @@ class TestTier(unittest.TestCase):
         index = tier.Search(["0", "1"], function="contains", forward=True, pos=0, reverse=True)
         self.assertEquals(index, 2)
 
-# End TestTier
 # ---------------------------------------------------------------------------
 
 if __name__ == '__main__':

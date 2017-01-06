@@ -35,114 +35,250 @@
 # File: hierarchy.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__ = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
 
 class Hierarchy(object):
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: Generic representation of a hierarchy between tiers.
+    @author:       Brigitte Bigi
+    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    @contact:      brigitte.bigi@gmail.com
+    @license:      GPL, v3
+    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    @summary:      Generic representation of a hierarchy between tiers.
 
-    Three types of hierarchy:
-    - TimeAssociation:
-        the points of a child tier are all equals
-        to the points of a reference tier.
-    - TimeAlignment:
-        the points of a child tier are all included
-        in the points of a reference tier.
+    Two types of hierarchy are considered:
+      - TimeAssociation:
+        the points of a child tier are all equals to the points of
+        a reference tier, as for example:
 
-    Examples:
-    Lemmas are child of Tokens,      with TimeAssociation.
-    Tokens are child of Phonemes,    with TimeAlignment.
-    But no hierarchy between Tokens and Phonemes!
+            parent:  Tokens     | l' |  âne  | est |  là   |
+            child:   Lemmas     | le |  âne  | être |  là  |
 
-    A child tier can have only one reference tier.
-    Of course, a reference tier can have children...
-    like Phonemes in the previous example.
+      - TimeAlignment:
+        the points of a child tier are all included in the set of
+        points of a reference tier, as for example:
+
+            parent: Phonemes    | l  | a | n |  e  | l | a |
+            child:  Tokens      | l' |  âne  | est |  là   |
+
+            parent: Phonemes    | l  | a | n |  e  | l | a |
+            child:  Syllables   |   l.a  |  n.e    |   l.a |
+
+    (Notice that there's no hierarchy link between Tokens and Syllables!)
+    (Notice that "Phonemes" is the grand-parent of lemmas!)
+
+    A child can have ONLY ONE parent!
+    A parent can have as many children as wanted.
+    A hierarchy is obviously a tree, not a graph.
 
     """
-    hierarchy_types = {"TimeAssociation", "TimeAlignment"}
+    types = {"TimeAssociation", "TimeAlignment"}
 
-    def __init__(self):
+    def __init__(self, ):
         """
         Creates a new Hierarchy instance.
 
         """
-        self.__hierarchies = {}
-        for type in Hierarchy.hierarchy_types:
-            self.__hierarchies[type] = set()
+        self.__hierarchy = {}  # key = child tier ; value = (parent, link)
 
-    # End __init__
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+    # Getters
+    # -----------------------------------------------------------------------
 
-    def addLink(self, type, formerArg, latterArg):
-        if type not in Hierarchy.hierarchy_types:
-            raise Exception("unsupported Link type: %s" % type)
+    def get_parent(self, child_tier):
+        """
+        Return the reference tier for a given child tier.
+
+        :param child_tier: (Tier) The child tier to found
+
+        """
+        if child_tier not in self.__hierarchy.keys():
+            return None
+        parent, link = self.__hierarchy[child_tier]
+        return parent
+
+    # -----------------------------------------------------------------------
+
+    def get_hierarchy_type(self, child_tier):
+        """
+        Return the hierarchy type between a child tier and its parent.
+
+        :return (str) one of the hierarchy type
+
+        """
+        if child_tier not in self.__hierarchy.keys():
+            return ""
+        parent, link = self.__hierarchy[child_tier]
+        return link
+
+    # -----------------------------------------------------------------------
+
+    def get_children(self, parent_tier, link_type=None):
+        """
+        Return the list of children of a tier, for a given type.
+
+        :param parent_tier: (Tier) The child tier to found
+        :param link_type: (str) The type of hierarchy
+        :return: List of tiers
+
+        """
+        if link_type is not None:
+            if link_type not in Hierarchy.types:
+                raise TypeError("Unsupported hierarchy type: %s" % link_type)
+
+        children = []
+        for child_tier in self.__hierarchy.keys():
+            parent, link = self.__hierarchy[child_tier]
+            if parent is parent_tier:
+                if link_type is None or link_type == link:
+                    children.append(child_tier)
+
+        return children
+
+    # -----------------------------------------------------------------------
+
+    def get_ancestors(self, child_tier):
+        """
+        Return all the direct ancestors of a tier (parent, grand-parent, grand-grand-parent...).
+
+        :param child_tier:
+        :return: List of tiers
+
+        """
+        if child_tier not in self.__hierarchy.keys():
+            return []
+
+        ancestors = []
+        parent = self.get_parent(child_tier)
+        while parent is not None:
+            ancestors.append(parent)
+            parent = self.get_parent(parent)
+
+        return ancestors
+
+    # -----------------------------------------------------------------------
+    # Setters
+    # -----------------------------------------------------------------------
+
+    def add_link(self, link_type, parent_tier, child_tier):
+        """
+        Add a hierarchy link between 2 tiers.
+
+        :param link_type: (constant) is one of the hierarchy types
+        :param parent_tier: (Tier) The reference tier
+        :param child_tier: (Tier) The child tier to be linked to reftier
+
+        """
+        if link_type not in Hierarchy.types:
+            raise TypeError("Unsupported link type: %s" % link_type)
+
+        # A child has only one parent
+        if child_tier in self.__hierarchy.keys():
+            parent, link = self.__hierarchy[child_tier]
+            raise Exception("%s has already a parent in the hierarchy."
+                            "Its parent is %s, with link of type %s." %
+                            (child_tier.GetName(), parent.Get_Name(), link))
+
+        # A tier can't be its own child/parent
+        if parent_tier == child_tier:
+            raise Exception("A tier can't be whether the parent and its own child.")
 
         # Check for TimeAlignment
-        if type is 'TimeAlignment' and not formerArg.IsSuperset(latterArg):
-            raise Exception(
-                "Can't align values, %s is not a superset of %s" % (
-                    formerArg.GetName(),
-                    latterArg.GetName()))
+        if link_type == "TimeAlignment":
+            if parent_tier.IsSuperset(child_tier) is False:
+                raise Exception(
+                    "Can't align values, %s is not a superset of %s" % (
+                        parent_tier.GetName(),
+                        child_tier.GetName()))
 
         # Check for TimeAssociation
-        if type is 'TimeAssociation' and not (
-            formerArg.IsSuperset(latterArg) and
-            latterArg.IsSuperset(formerArg)
-        ):
-            raise Exception(
-                "Can't associate values, "
-                "%s and %s are not supersets of each other" % (
-                    formerArg.GetName(),
-                    latterArg.GetName()))
+        if link_type == "TimeAssociation":
+            if parent_tier.IsSuperset(child_tier) is False and child_tier.IsSuperset(parent_tier) is False:
+                raise Exception(
+                    "Can't associate values, "
+                    "%s and %s are not supersets of each other" % (
+                        parent_tier.GetName(),
+                        child_tier.GetName()))
 
-        link = (formerArg, latterArg)
+        # No circular hierarchy allowed.
+        ancestors = self.get_ancestors(parent_tier)
+        family = []
+        for ancestor in ancestors:
+            uncles = self.get_children(ancestor)
+            family.extend(uncles)
+        family.extend(ancestors)
+        if child_tier in family:
+            raise Exception("%s is an ancestor of %s in the hierarchy." %
+                            (child_tier.GetName(), parent_tier.Get_Name()))
 
-        self.__hierarchies[type].add(link)
+        # OK!
+        self.__hierarchy[child_tier] = (parent_tier, link_type)
 
-    # End addLink
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
-    def removeLink(self, type, formerArg, latterArg):
-        if type not in Hierarchy.hierarchy_types:
-            raise Exception("unsupported Link type: %s" % type)
-
-        link = (formerArg, latterArg)
-
-        self.__hierarchies[type].remove(link)
-
-    # End removeLink
-    # ------------------------------------------------------------------------------------
-
-    def removeTier(self, tier):
+    def remove_child(self, child_tier):
         """
-        Remove all references to a tier inside all hierarchies
+        Remove a hierarchy link between a parent and a child.
+
+        :param child_tier: (Tier) The tier linked to a reference
+
         """
-        for hierarchy in self.__hierarchies.values():
-            for link in hierarchy:
-                if tier in link:
-                    hierarchy.remove(link)
+        if child_tier in self.__hierarchy.keys():
+            del self.__hierarchies[child_tier]
 
-    # End removeTier
+    # -----------------------------------------------------------------------
+
+    def remove_parent(self, parent_tier):
+        """
+        Remove all hierarchy links between a parent and its children.
+
+        :param parent_tier: (Tier) The reference tier
+
+        """
+        to_remove = []
+        for child_tier in self.__hierarchy.keys():
+            parent, link = self.__hierarchy[child_tier]
+            if parent is parent_tier:
+                to_remove.append(child_tier)
+
+        for child_tier in to_remove:
+            del self.__hierarchy[child_tier]
+
     # ------------------------------------------------------------------------------------
 
-    def getHierarchy(self, type):
-        return self.__hierarchies[type]
+    def remove_tier(self, tier):
+        """
+        Remove all occurrences of a tier inside the hierarchy.
 
-    # End getHierarchy
-    # ------------------------------------------------------------------------------------
+        :param tier: (Tier) The tier to remove as parent or child.
 
-    def getParent(self, tier):
-        for key in self.__hierarchies:
-            for (former, latter) in self.__hierarchies[key]:
-                if latter is tier:
-                    return former
-        return None
+        """
+        to_remove = []
+        for child in self.__hierarchy.keys():
+            parent, link = self.__hierarchy[child]
+            if parent is tier or child is tier:
+                to_remove.append(child)
 
-    # End getParent
-    # ------------------------------------------------------------------------------------
+        for child_tier in to_remove:
+            del self.__hierarchy[child_tier]
+
+    # -----------------------------------------------------------------------
+    # Automatic hierarchy
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def infer_hierarchy_type(tier1, tier2):
+        """
+        Test if tier1 can be a reference tier for tier2.
+
+        :return type (constant): One of hierarchy types or an empty string
+
+        """
+        if tier1.IsSuperset(tier2) is False:
+            return ""
+
+        if tier2.IsSuperset(tier1) is True:
+            return "TimeAssociation"
+
+        return "TimeAlignment"
+
+    # -----------------------------------------------------------------------

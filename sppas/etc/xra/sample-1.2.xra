@@ -131,7 +131,7 @@
 
 
   <Hierarchy>
-      <Link type="TimeAlignment"   from="t1" to="t3" />
+      <Link type="TimeAlignment"   from="t2" to="t3" />
       <Link type="TimeAssociation" from="t1" to="t2" />
   </Hierarchy>
 

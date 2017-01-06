@@ -2,24 +2,20 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
-import sys
-from os.path import *
-
-SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
-sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 from annotationdata.ptime.interval import TimeInterval
 from annotationdata.ptime.point import TimePoint
 from annotationdata.label.label import Label
 from annotationdata.annotation import Annotation
 
+# ---------------------------------------------------------------------------
+
 
 class TestAnnotation(unittest.TestCase):
-    """ Represents an annotation.
-        An annotation in SPPAS is:
-            - a time object (a TimePoint or a TimeInterval instance);
-            - a textentry (a Label instance).
+    """
+    An annotation in SPPAS is:
+        - a location;
+        - a label (or not!).
     """
     def setUp(self):
         self.p1 = TimePoint(1)
@@ -27,7 +23,7 @@ class TestAnnotation(unittest.TestCase):
         self.p3 = TimePoint(3)
         self.it = TimeInterval(self.p1, self.p2)
         self.annotationI = Annotation(self.it, Label(" \t\t  être être   être  \n "))
-        self.annotationP= Annotation(self.p1, Label("mark"))
+        self.annotationP = Annotation(self.p1, Label("mark"))
 
     def test___init__(self):
         pass
@@ -46,10 +42,10 @@ class TestAnnotation(unittest.TestCase):
         Raise AttributeError if the attribute Time is an instance of TimePoint.
         """
         with self.assertRaises(ValueError):
-            self.annotationI.GetLocation().SetBegin( self.p3 )
+            self.annotationI.GetLocation().SetBegin(self.p3)
 
         with self.assertRaises(AttributeError):
-            self.annotationP.GetLocation().SetBegin( self.p2 )
+            self.annotationP.GetLocation().SetBegin(self.p2)
 
     def test_GetBeginValue(self):
         """
@@ -60,8 +56,8 @@ class TestAnnotation(unittest.TestCase):
             self.annotationP.GetLocation().GetBeginValue()
 
         with self.assertRaises(ValueError):
-            self.annotationI.GetLocation().SetBegin( TimePoint(4) )
-        self.annotationI.GetLocation().GetBegin().SetMidpoint( 4 ) #### MUST BE FORBIDDEN...
+            self.annotationI.GetLocation().SetBegin(TimePoint(4))
+        self.annotationI.GetLocation().GetBegin().SetMidpoint(4) #### MUST BE FORBIDDEN...
 
     def test_GetEnd(self):
         """
@@ -83,10 +79,10 @@ class TestAnnotation(unittest.TestCase):
         Raise AttributeError if the attribute Time is not an instance of TimeInterval.
         """
         with self.assertRaises(ValueError):
-            self.annotationI.GetLocation().SetEnd( self.p1 )
+            self.annotationI.GetLocation().SetEnd(self.p1)
 
         with self.assertRaises(AttributeError):
-            self.annotationP.GetLocation().SetEnd( self.p2 )
+            self.annotationP.GetLocation().SetEnd(self.p2)
 
     def test_GetPoint(self):
         """
@@ -107,7 +103,7 @@ class TestAnnotation(unittest.TestCase):
         Raise AttributeError if the attribute Time is an instance of TimeInterval.
         """
         with self.assertRaises(AttributeError):
-            self.annotationI.GetLocation().SetPoint( self.p3 )
+            self.annotationI.GetLocation().SetPoint(self.p3)
 
     def test_IsPoint(self):
         """
@@ -130,8 +126,8 @@ class TestAnnotation(unittest.TestCase):
         self.assertFalse(self.annotationP.GetLabel().IsSilence())
         self.assertFalse(self.annotationI.GetLabel().IsSilence())
 
-        self.annotationI.GetLabel().Set( Label("#") )
-        self.annotationP.GetLabel().Set( Label("sil"))
+        self.annotationI.GetLabel().Set(Label("#"))
+        self.annotationP.GetLabel().Set(Label("sil"))
         self.assertTrue(self.annotationI.GetLabel().IsSilence())
         self.assertTrue(self.annotationP.GetLabel().IsSilence())
 
@@ -145,10 +141,11 @@ class TestAnnotation(unittest.TestCase):
         a.GetLocation().SetEnd(TimePoint(10))
         self.assertTrue(clone.GetLocation().GetEnd().GetValue(), 2)
 
-# End TestAnnotation
 # ---------------------------------------------------------------------------
 
 if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestAnnotation)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    testsuite = unittest.TestSuite()
+    testsuite.addTest(unittest.makeSuite(TestAnnotation))
+    unittest.TextTestRunner(verbosity=2).run(testsuite)
+
 

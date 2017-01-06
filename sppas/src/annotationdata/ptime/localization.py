@@ -50,7 +50,6 @@ class Localization(object):
     @summary: This class represents a Localization of an annotation.
 
     """
-
     def __init__(self, placement, score=1.0):
         """
         Create a Localization instance.
@@ -58,7 +57,6 @@ class Localization(object):
         self.SetPlace(placement)
         self.SetScore(score)
 
-    # End __init__
     # ------------------------------------------------------------------------------------
 
     def GetPlace(self):
@@ -68,7 +66,6 @@ class Localization(object):
         """
         return self.__place
 
-    # End GetPlace
     # ------------------------------------------------------------------------------------
 
     def GetScore(self):
@@ -78,7 +75,6 @@ class Localization(object):
         """
         return self.__score
 
-    # End GetScore
     # ------------------------------------------------------------------------------------
 
     def SetPlace(self, placement):
@@ -92,7 +88,6 @@ class Localization(object):
 
         self.__place = placement
 
-    # End SetPlace
     # ------------------------------------------------------------------------------------
 
     def SetScore(self, score):
@@ -106,7 +101,6 @@ class Localization(object):
             raise TypeError("Localization: float argument required, not %r"
                             % score)
 
-    # End SetScore
     # ------------------------------------------------------------------------------------
 
     def StrictEqual(self, other):
@@ -119,7 +113,6 @@ class Localization(object):
         return (self.__place == other.GetPlace() and
                 self.__score == other.GetScore())
 
-    # End StrictEqual
     # ------------------------------------------------------------------------------------
 
     def GetBegin(self):
@@ -133,7 +126,6 @@ class Localization(object):
 
         return self.__place.GetBegin()
 
-    # End GetBegin
     # ------------------------------------------------------------------------------------
 
     def GetEnd(self):
@@ -147,7 +139,6 @@ class Localization(object):
 
         return self.__place.GetEnd()
 
-    # End GetEnd
     # ------------------------------------------------------------------------------------
 
     def SetBegin(self, point):
@@ -161,7 +152,6 @@ class Localization(object):
 
         return self.__place.SetBegin(point)
 
-    # End SetBegin
     # ------------------------------------------------------------------------------------
 
     def SetEnd(self, point):
@@ -175,7 +165,6 @@ class Localization(object):
 
         return self.__place.SetEnd(point)
 
-    # End SetEnd
     # ------------------------------------------------------------------------------------
 
     def GetPoint(self):
@@ -189,7 +178,6 @@ class Localization(object):
 
         return self.__place
 
-    # End GetPoint
     # ------------------------------------------------------------------------------------
 
     def SetPoint(self, point):
@@ -203,7 +191,6 @@ class Localization(object):
 
         return self.__place.Set(point)
 
-    # End SetPoint
     # ------------------------------------------------------------------------------------
 
     def IsTimePoint(self):
@@ -213,7 +200,6 @@ class Localization(object):
         """
         return self.__place.IsTimePoint()
 
-    # End IsTimePoint
     # ------------------------------------------------------------------------------------
 
     def IsTimeInterval(self):
@@ -223,7 +209,6 @@ class Localization(object):
         """
         return self.__place.IsTimeInterval()
 
-    # End IsTimeInterval
     # ------------------------------------------------------------------------------------
 
     def IsTimeDisjoint(self):
@@ -233,7 +218,6 @@ class Localization(object):
         """
         return self.__place.IsTimeDisjoint()
 
-    # End IsTimeDisjoint
     # ------------------------------------------------------------------------------------
 
     def IsFramePoint(self):
@@ -243,7 +227,6 @@ class Localization(object):
         """
         return self.__place.IsFramePoint()
 
-    # End IsFramePoint
     # ------------------------------------------------------------------------------------
 
     def IsFrameInterval(self):
@@ -253,7 +236,6 @@ class Localization(object):
         """
         return self.__place.IsFrameInterval()
 
-    # End IsFrameInterval
     # ------------------------------------------------------------------------------------
 
     def IsFrameDisjoint(self):
@@ -263,7 +245,6 @@ class Localization(object):
         """
         return self.__place.IsFrameDisjoint()
 
-    # End IsFrameDisjoint
     # ------------------------------------------------------------------------------------
 
     def Duration(self):
@@ -272,27 +253,17 @@ class Localization(object):
         """
         return self.__place.Duration()
 
-    # End Duration
+    # ------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------
 
     def __repr__(self):
         return ("Localization(value=%s, score=%s)" %
                 (self.__place, self.__score))
 
-    # End __repr__
-    # ------------------------------------------------------------------------------------
-
     def __str__(self):
         return "(%s,%s)" % (self.__place, self.__score)
-
-    # End __str__
-    # ------------------------------------------------------------------------------------
 
     def __eq__(self, other):
         return self.__place == other.GetPlace()
 
-    # End __eq__
-    # ------------------------------------------------------------------------------------
-
-# End Localization
 # ------------------------------------------------------------------------------------
