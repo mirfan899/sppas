@@ -51,14 +51,14 @@ import os.path
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
-SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
+SPPAS = os.path.join(os.path.dirname(os.path.dirname(PROGRAM)), "src")
 sys.path.append(SPPAS)
 
 from annotations.Token.sppastok import sppasTok
 from annotations.Token.tokenize import DictTok
-from resources.wordslst         import WordsList
-from resources.dictrepl         import DictRepl
-from utils.fileutils            import setup_logging
+from resources.vocab import Vocabulary
+from resources.dictrepl import DictRepl
+from utils.fileutils import setup_logging
 
 from sp_glob import RESOURCES_PATH
 
@@ -73,7 +73,7 @@ parser.add_argument("-i", metavar="file", required=False, help='Input file name'
 parser.add_argument("-o", metavar="file", required=False, help='Output file name (required only if -i is fixed)')
 
 parser.add_argument("--std",    action='store_true', help="Add the standard tokenization (available only if -i is fixed)")
-parser.add_argument("--quiet",  action='store_true', help="Disable verbose." )
+parser.add_argument("--quiet",  action='store_true', help="Disable verbose.")
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -89,32 +89,32 @@ if not args.quiet:
 # Automatic Tokenization is here:
 # ----------------------------------------------------------------------------
 
-base = os.path.basename( args.vocab )
+base = os.path.basename(args.vocab)
 lang = base[:3]
 
 if args.i:
-    p = sppasTok( args.vocab,lang )
+    p = sppasTok(args.vocab,lang)
     if args.std:
         p.set_std(True)
-    p.run( args.i, args.o )
+    p.run(args.i, args.o)
 
 else:
 
-    vocab = WordsList( args.vocab )
-    tokenizer = DictTok( vocab,lang )
+    vocab = Vocabulary(args.vocab)
+    tokenizer = DictTok(vocab,lang)
 
     try:
         repl = DictRepl(os.path.join(RESOURCES_PATH, "repl", lang + ".repl"), nodump=True)
-        tokenizer.set_repl( repl )
+        tokenizer.set_repl(repl)
     except Exception as e:
         print "[warning] No replacement dictionary: ",str(e)
     try:
-        punct = WordsList(os.path.join(RESOURCES_PATH, "vocab", "Punctuations.txt"), nodump=True )
-        tokenizer.set_punct( punct )
+        punct = Vocabulary(os.path.join(RESOURCES_PATH, "vocab", "Punctuations.txt"), nodump=True)
+        tokenizer.set_punct(punct)
     except Exception as e:
         print "[warning] No punctuation dictionary: ",str(e)
 
     for line in sys.stdin:
-        print tokenizer.tokenize( line ).encode('utf8')
+        print tokenizer.tokenize(line).encode('utf8')
 
 # ----------------------------------------------------------------------------

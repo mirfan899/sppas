@@ -122,7 +122,6 @@ class TestTrainer(unittest.TestCase):
         model = trainer.training_recipe()
         self.assertEqual( len(model.hmms),4 )
 
-
     def test_trainer_with_data(self):
         #setup_logging(1,None)
         corpus = TrainingCorpus()
@@ -138,6 +137,7 @@ class TestTrainer(unittest.TestCase):
         ## TODO: Test the model
 
 # ---------------------------------------------------------------------------
+
 
 class TestInterpolate(unittest.TestCase):
     def setUp(self):
@@ -202,6 +202,7 @@ class TestInterpolate(unittest.TestCase):
 
 # ---------------------------------------------------------------------------
 
+
 class TestAcModel(unittest.TestCase):
 
     #This one takes too much time to be tested each time....
@@ -216,10 +217,8 @@ class TestAcModel(unittest.TestCase):
         self.acmodel = AcModel()
         self.acmodel.load_htk( self.hmmdefs )
 
-
     def test_load_save(self):
         self._test_load_save( self.hmmdefs )
-
 
     def _test_load_save(self, acmodel):
 
@@ -240,14 +239,12 @@ class TestAcModel(unittest.TestCase):
 
         os.remove(tmpfile)
 
-
     def test_get_hmm(self):
         with self.assertRaises(ValueError):
             self.acmodel.get_hmm('Q')
         Nhmm = self.acmodel.get_hmm('N')
         self.__test_states( Nhmm.definition['states'] )
         self.__test_transition( Nhmm.definition['transition'] )
-
 
     def test_append_hmm(self):
         with self.assertRaises(TypeError):
@@ -265,19 +262,16 @@ class TestAcModel(unittest.TestCase):
         Newhmm.name = "NewN"
         self.acmodel.append_hmm(Newhmm)
 
-
     def test_pop_hmm(self):
         self.acmodel.pop_hmm("N")
         with self.assertRaises(ValueError):
             self.acmodel.get_hmm( "N" )
-
 
     def test_load_hmm(self):
         hmm = HMM()
         hmm.load( os.path.join(HERE,"N-hmm") )
         self.__test_states( hmm.definition['states'] )
         self.__test_transition( hmm.definition['transition'] )
-
 
     def test_save_hmm(self):
         hmm = HMM()
@@ -289,7 +283,6 @@ class TestAcModel(unittest.TestCase):
         self.assertEqual(hmm.name,newhmm.name)
         self.assertTrue(compare(hmm.definition,newhmm.definition))
 
-
     def test_fill(self):
         acmodel1 = AcModel()
         acmodel1.load_htk( os.path.join(HERE,"1-hmmdefs") )
@@ -298,7 +291,6 @@ class TestAcModel(unittest.TestCase):
 
         acmodel1.fill_hmms()
         self.assertTrue(compare(ahmm1.definition['transition'],a1transition['definition']))
-
 
     def test_no_merge(self):
         nbhmms = len(self.acmodel.hmms)
@@ -331,7 +323,6 @@ class TestAcModel(unittest.TestCase):
         with self.assertRaises(TypeError):
             acmodel2.merge_model(self.acmodel,gamma=1.)
 
-
     def test_merge(self):
         acmodel1 = AcModel()
         acmodel1.load_htk( os.path.join(HERE,"1-hmmdefs") )
@@ -347,7 +338,6 @@ class TestAcModel(unittest.TestCase):
         self.__test_states( acmodel2.get_hmm('a').definition['states'] )
         self.__test_transition( acmodel2.get_hmm('a').definition['transition'] )
 
-
     def test_replace_phones(self):
         acmodel1 = AcModel()
         acmodel1.load( os.path.join(MODEL_PATH,"models-fra") )
@@ -362,7 +352,6 @@ class TestAcModel(unittest.TestCase):
             self.assertTrue(compare(h1.definition['transition'],h2.definition['transition']))
             self.assertTrue(compare(h1.definition['states'],h2.definition['states']))
 
-
     def test_monophones(self):
         acmodel1 = AcModel()
         acmodel1.load( os.path.join(MODEL_PATH,"models-fra") )
@@ -376,7 +365,6 @@ class TestAcModel(unittest.TestCase):
         os.remove( os.path.join(HERE, 'fra-mono','monophones.repl') )
         os.rmdir( os.path.join(HERE,'fra-mono') )
         self.assertEqual( len(acmodel2.hmms), 38 )
-
 
     def test_proto(self):
         h1 = HtkIO()
@@ -397,7 +385,6 @@ class TestAcModel(unittest.TestCase):
 
         os.remove( os.path.join(HERE,"proto_from_hmm") )
         os.remove( os.path.join(HERE,"proto_from_htkio") )
-
 
     def __test_transition(self, transition):
         self.assertEqual(transition['dim'], 5)
@@ -422,7 +409,6 @@ class TestAcModel(unittest.TestCase):
                     self.assertEqual(len(pdf['covariance']['variance']['vector']), 25)
                     self.assertEqual(type(pdf['gconst']),float)
 
-# End TestAcModel
 # ---------------------------------------------------------------------------
 
 if __name__ == '__main__':

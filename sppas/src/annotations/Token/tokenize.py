@@ -46,11 +46,11 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 import re
 
-from num2letter         import sppasNum
-from resources.wordslst import WordsList
+from resources.vocab import Vocabulary
 from resources.dictrepl import DictRepl
-
 import resources.rutils as rutils
+
+from num2letter import sppasNum
 
 # ---------------------------------------------------------------------------
 
@@ -77,8 +77,7 @@ class DictReplUTF8(DictRepl):
 
 # ---------------------------------------------------------------------------
 
-
-def character_based( lang ):
+def character_based(lang):
     """
     Return true if lang is known as a character-based language,
     as Mandarin Chinese or Japanese for example.
@@ -97,7 +96,7 @@ def character_based( lang ):
 # ---------------------------------------------------------------------------
 
 
-class DictTok:
+class DictTok(object):
     """
     @authors: Brigitte Bigi, Tatsuya Watanabe
     @contact: brigitte.bigi@gmail.com
@@ -133,35 +132,27 @@ class DictTok:
         5th Language & Technology Conference, Poznan (Poland).
 
     """
-
-    # ------------------------------------------------------------------
-
-
     def __init__(self, vocab=None, lang="und"):
         """
         Create a new DictTok instance.
 
-        @param vocab (WordsList)
+        @param vocab (Vocabulary)
         @param lang is the language code in iso639-3.
 
         """
         # resources
         self.dicoutf = DictReplUTF8()
-        self.repl    = DictRepl(None)
-        self.punct   = WordsList(None)
-        self.vocab   = vocab
-        self.speech  = True   # transcribed speech (and not written text) is to be tokenized
+        self.repl = DictRepl(None)
+        self.punct = Vocabulary()
+        self.vocab = vocab
+        self.speech = True   # transcribed speech (and not written text) is to be tokenized
         if vocab is None:
-            self.vocab = WordsList(None)
+            self.vocab = Vocabulary()
 
         # members
         self.lang = lang
-        self.num2letter = sppasNum( lang )
+        self.num2letter = sppasNum(lang)
         self.delimiter = u' '
-
-    # End __init__
-    # ------------------------------------------------------------------
-
 
     # ------------------------------------------------------------------
     # Options
@@ -176,23 +167,20 @@ class DictTok:
         """
         self.delimiter = delim
 
-    # End set_delim
     # -------------------------------------------------------------------------
 
-
-    def set_vocab(self,vocab):
+    def set_vocab(self, vocab):
         """
         Set the lexicon.
 
-        @param vocab is a WordsList().
+        @param vocab is a Vocabulary().
 
         """
         self.vocab = vocab
 
     # -------------------------------------------------------------------------
 
-
-    def set_repl(self,repl):
+    def set_repl(self, repl):
         """
         Set the dictionary of replacements.
 
@@ -203,20 +191,18 @@ class DictTok:
 
     # -------------------------------------------------------------------------
 
-
-    def set_punct(self,punct):
+    def set_punct(self, punct):
         """
         Set the list of punctuation.
 
-        @param punct (WordsList)
+        @param punct (Vocabulary)
 
         """
         self.punct = punct
 
     # -------------------------------------------------------------------------
 
-
-    def set_lang(self,lang):
+    def set_lang(self, lang):
         """
         Set the language.
 
@@ -226,13 +212,10 @@ class DictTok:
         self.lang = lang
 
     # -------------------------------------------------------------------------
-
-
-    # -------------------------------------------------------------------------
     # Language independent modules
     # -------------------------------------------------------------------------
 
-    def split_characters(self,utt):
+    def split_characters(self, utt):
         """
         Split an utterance by characters.
 
@@ -244,7 +227,7 @@ class DictTok:
             y = unicode(utt, 'utf-8')
         except Exception:
             y = utt
-        tmp =  " ".join( y )
+        tmp =  " ".join(y)
 
         # split all characters except numbers and ascii characters
         sstr = re.sub(u"([０-９0-9a-zA-ZＡ-Ｔ\s]+\.?[０-９0-9a-zA-ZＡ-Ｔ\s]+)", lambda o: u" %s " % o.group(0).replace(" ",""), tmp)
@@ -255,6 +238,7 @@ class DictTok:
         sstr = re.sub(u'[\s]*・[\s]*', u"・", sstr)
         return sstr
 
+    # -------------------------------------------------------------------------
 
     def split(self, utt, std=False):
         """
@@ -270,7 +254,7 @@ class DictTok:
 
         s = utt
         if character_based(self.lang):
-            s = self.split_characters( s )
+            s = self.split_characters(s)
 
         toks = []
         for t in s.split():
@@ -301,13 +285,11 @@ class DictTok:
         s = " ".join(toks)
 
         # Then split each time there is a space and return result
-        s = rutils.ToStrip( s )
+        s = rutils.ToStrip(s)
 
         return s.split()
 
-    # End split
     # ------------------------------------------------------------------
-
 
     def __stick_longest(self, utt, attachement = "_"):
         """ Longest matching algorithm. """
@@ -322,6 +304,7 @@ class DictTok:
             i -= 1
         return (1,utt.split(" ")[0])
 
+    # -------------------------------------------------------------------------
 
     def stick(self, utt, attachement = "_"):
         """
@@ -334,22 +317,20 @@ class DictTok:
         """
         _utt = []
         t1 = 0
-        while t1<len(utt):
-            sl = utt[t1] # longest string ... in theory!
-            lmax = t1+7
-            if lmax>len(utt):
+        while t1 < len(utt):
+            sl = utt[t1]  # longest string ... in theory!
+            lmax = t1 + 7
+            if lmax > len(utt):
                 lmax = len(utt)
-            for t2 in range(t1+1,lmax):
+            for t2 in range(t1+1, lmax):
                 sl = sl + " " + utt[t2]
-            (i,tok) = self.__stick_longest( rutils.ToStrip( sl ), attachement) # real longest string!
+            (i, tok) = self.__stick_longest(rutils.ToStrip(sl), attachement)  # real longest string!
             t1 += i
-            _utt.append( rutils.ToStrip( tok ) )
+            _utt.append(rutils.ToStrip(tok))
 
         return _utt
 
-    # End stick
     # ------------------------------------------------------------------
-
 
     def replace(self, utt):
         """
@@ -368,21 +349,19 @@ class DictTok:
         sent = ' '.join(utt)
         sent = re.sub(u'([0-9])\.([0-9])', ur'\1 NUMBER_SEP_POINT \2', sent)
         sent = re.sub(u'([0-9])\,([0-9])', ur'\1 NUMBER_SEP \2', sent)
-        sent = rutils.ToStrip( sent )
+        sent = rutils.ToStrip(sent)
         _utt = sent.split()
 
         # Other generic replacements
         _result = []
         for s in _utt:
-            if self.repl.is_key( s ):
+            if self.repl.is_key(s):
                 s = s.replace(s, self.repl.replace(s))
-            _result.append(rutils.ToStrip( s ))
+            _result.append(rutils.ToStrip(s))
 
         return _result
 
-    # End replace
     # -----------------------------------------------------------------------
-
 
     def compound(self, utt):
         """
@@ -393,7 +372,6 @@ class DictTok:
         @return A list of strings
 
         """
-
         _utt = []
         for tok in utt:
             # a missing compound word?
@@ -424,20 +402,18 @@ class DictTok:
                             _token = _tabtoks[t1]
                         i -= 1
                     t1 += i_ok
-                    t2 = rutils.ToStrip( _token )
+                    t2 = rutils.ToStrip(_token)
                     if len(t2)>0:
-                        _utt.append( t2 )
+                        _utt.append(t2)
 
             else:
-                _utt.append( rutils.ToStrip( tok ))
+                _utt.append(rutils.ToStrip(tok))
 
         return _utt
 
-    # End compound
     # ------------------------------------------------------------------
 
-
-    def lower(self, utt ):
+    def lower(self, utt):
         """
         Lower a list of strings.
 
@@ -447,15 +423,13 @@ class DictTok:
         _utt = []
         for tok in utt:
             if "/" not in tok:
-                _utt.append( rutils.ToLower( tok ))
+                _utt.append(rutils.ToLower(tok))
             else:
-                _utt.append( tok )
+                _utt.append(tok)
 
         return _utt
 
-    # End lower
     # ------------------------------------------------------------------
-
 
     def remove(self, utt, wlist):
         """
@@ -466,17 +440,12 @@ class DictTok:
         @param wlist (WordList)
 
         """
-
         _utt = []
         for tok in utt:
             if wlist.is_unk(tok) is True and "gpd_" not in tok and "ipu_" not in tok:
-                _utt.append( tok )
+                _utt.append(tok)
 
         return _utt
-
-    # End remove
-    # ------------------------------------------------------------------
-
 
     # ------------------------------------------------------------------
     # EOT specific modules
@@ -501,7 +470,6 @@ class DictTok:
         right = obj.group(2)
         right = "".join(right.split())
         return " [%s,%s]" % (left, right)
-
 
     def clean_toe(self, entry):
         """
@@ -528,9 +496,7 @@ class DictTok:
         entry = re.sub(ur'\s*\[([^,]+),([^,]+)\]', self.__repl, entry, re.UNICODE)
         return " ".join(entry.split())
 
-    # End clean_toe and __repl
     # ------------------------------------------------------------------
-
 
     def toe_spelling(self, entry, std=False):
         """
@@ -604,7 +570,7 @@ class DictTok:
         _fentry = re.sub(u'([\w\xaa-\xff]+);', ur'\1 ,', _fentry, re.UNICODE)
         _fentry = re.sub(u'([\w\xaa-\xff]+):', ur'\1 :', _fentry, re.UNICODE)
         _fentry = re.sub(u'([\w\xaa-\xff]+)\(', ur'\1 (', _fentry, re.UNICODE)
-        _fentry = re.sub(u'([\w\xaa-\xff]+)\)', ur'\1 )', _fentry, re.UNICODE)
+        _fentry = re.sub(u'([\w\xaa-\xff]+)\)', ur'\1)', _fentry, re.UNICODE)
         _fentry = re.sub(u'([\w\xaa-\xff]+)\{', ur'\1 {', _fentry, re.UNICODE)
         _fentry = re.sub(u'([\w\xaa-\xff]+)\}', ur'\1 }', _fentry, re.UNICODE)
         _fentry = re.sub(u'([\w\xaa-\xff]+)=', ur'\1 =', _fentry, re.UNICODE)
@@ -625,10 +591,6 @@ class DictTok:
             s += c
         return rutils.ToStrip(s)
 
-    # End toe_spelling
-    # ------------------------------------------------------------------
-
-
     # ------------------------------------------------------------------
     # The main tokenize is HERE!
     # ------------------------------------------------------------------
@@ -639,7 +601,7 @@ class DictTok:
         """
         # Step 2: replace
         try:
-            utt = self.replace( utt )
+            utt = self.replace(utt)
         except IOError:
             # repl file not found
             pass
@@ -648,7 +610,7 @@ class DictTok:
 
         # Step 3: compound
         try:
-            utt = self.compound( utt )
+            utt = self.compound(utt)
         except Exception as e:
             raise Exception(" *in compound* "+str(e)+'\n')
 
@@ -657,7 +619,7 @@ class DictTok:
             attachement = "_"
             if character_based(self.lang):
                 attachement = ""
-            utt = self.stick( utt,attachement )
+            utt = self.stick(utt,attachement)
         except Exception as e:
             raise Exception(" *in stick* "+str(e)+'\n')
 
@@ -666,30 +628,30 @@ class DictTok:
             _utt = []
             for i in utt:
                 if not "/" in utt:
-                    _utt.append( self.num2letter.convert( i ) )
+                    _utt.append(self.num2letter.convert(i))
                 else:
-                    _utt.append( i )
+                    _utt.append(i)
             utt = _utt
         except Exception as e:
             pass
 
         # Step 6: lower
         try:
-            utt = self.lower( utt )
+            utt = self.lower(utt)
         except Exception as e:
             raise Exception(" *in lower* "+str(e)+'\n')
 
         # Step 7: remove (punctuation)
         try:
-            utt = self.remove( utt,self.punct )
+            utt = self.remove(utt,self.punct)
         except Exception as e:
             raise Exception(" *in remove* "+str(e)+'\n')
 
         # Finally, prepare the result
         strres = ""
         for s in utt:
-            s = rutils.ToStrip( s )
-            strres = strres + u" " + s.replace(u" ",u"_")
+            s = rutils.ToStrip(s)
+            strres = strres + u" " + s.replace(u" ", u"_")
 
         strres = rutils.ToStrip(strres)
         if len(strres)==0:
@@ -697,8 +659,7 @@ class DictTok:
 
         return strres.replace(u" ", self.delimiter)
 
-
-
+    # ------------------------------------------------------------------
 
     def tokenize(self, entry, std=False):
         """
@@ -713,15 +674,14 @@ class DictTok:
         **TODO: disable TOE_CLEAN for written text**
 
         """
-
         # THE ENTRY (a transcription, a text...) IS A UTF8-STRING
         # -------------------------------------------------------
-        _str = rutils.ToStrip( entry )
+        _str = rutils.ToStrip(entry)
 
         # Remove UTF-8 specific characters that are not in our dictionaries!
         try:
             for key in self.dicoutf.get_keys():
-                _str = _str.replace( key, self.dicoutf.replace(key) )
+                _str = _str.replace(key, self.dicoutf.replace(key))
         except Exception as e:
             raise UnicodeError('Error during cleaning: %s'%str(e))
 
@@ -732,16 +692,10 @@ class DictTok:
 
         # Step 1: split using spaces (or characters for asian languages)
         try:
-            utt = self.split( _str, std )
+            utt = self.split(_str, std)
         except Exception as e:
             raise Exception(" *in split* "+str(e))
 
         # THE ENTRY IS NOW A LIST OF STRINGS.
         # ---------------------------------------------------
         return self.tokenize_list(utt, std)
-
-    # End tokenize
-    # ------------------------------------------------------------------------
-
-# End DictTok
-# ---------------------------------------------------------------------------

@@ -39,7 +39,7 @@ import collections
 import math
 
 import annotationdata
-from resources.wordslst import WordsList
+from resources.vocab import Vocabulary
 from sp_glob import UNKSTAMP
 
 # ---------------------------------------------------------------------------
@@ -50,7 +50,8 @@ END_SENT_SYMBOL   = "</s>"
 
 # ---------------------------------------------------------------------------
 
-class NgramsModel:
+
+class NgramsModel(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -174,7 +175,7 @@ class NgramsModel:
         @param filename (str - IN) List of tokens.
 
         """
-        self.wrdlist = WordsList(filename, nodump=True, casesensitive=False)
+        self.wrdlist = Vocabulary(filename, nodump=True, case_sensitive=False)
 
     # -----------------------------------------------------------------------
 
@@ -314,7 +315,6 @@ class NgramsModel:
 
         return models
 
-
     def _probas_as_ml(self, tolog=True):
         """
         Estimates probas with maximum likekihood method.
@@ -376,7 +376,8 @@ class NgramsModel:
 
 # ---------------------------------------------------------------------------
 
-class NgramCounter:
+
+class NgramCounter(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -391,7 +392,7 @@ class NgramCounter:
         Constructor.
 
         @param n (int) n-gram order, between 1 and MAX_ORDER.
-        @param wordslist (WordsList) a list of accepted tokens.
+        @param wordslist (Vocabulary) a list of accepted tokens.
 
         """
         n = int(n)

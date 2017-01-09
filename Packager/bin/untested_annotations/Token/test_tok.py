@@ -11,8 +11,6 @@ SPPAS = dirname(dirname(dirname(dirname(dirname(abspath(__file__))))))
 sys.path.append(os.path.join(SPPAS, 'sppas'))
 
 from annotations.Token.tok import sppasTok
-from resources.wordslst import WordsList
-import annotationdata.io
 from annotationdata.annotation import Annotation
 from annotationdata.tier import Tier
 from annotationdata.ptime.point import TimePoint

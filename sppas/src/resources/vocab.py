@@ -31,7 +31,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: src.resources.wordslst.py
+# File: src.resources.vocab.py
 # ---------------------------------------------------------------------------
 
 import codecs
@@ -42,7 +42,7 @@ import rutils
 # ---------------------------------------------------------------------------
 
 
-class WordsList(object):
+class Vocabulary(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -52,22 +52,21 @@ class WordsList(object):
     @summary:      Class to represent a simple list of words.
 
     """
-    def __init__(self, filename=None, nodump=False, casesensitive=False):
+    def __init__(self, filename=None, nodump=False, case_sensitive=False):
         """
-        Create a WordsList instance.
+        Create a Vocabulary instance.
 
         :param filename: (str) The word list file name, i.e. a file with 1 column.
         :param nodump: (bool) Allows to disable the creation of a dump file.
-        :param casesensitive: (bool) the list of word is case-sensitive or not
+        :param case_sensitive: (bool) the list of word is case-sensitive or not
 
         """
         self._stw = {}
-        # a list is enough but a dictionary is used because:
-        # with a dictionary it is faster to read tokens from a file and is also
-        # faster to find a token in it!
+        # with a dictionary it is faster to read tokens from a file and is
+        # also faster to find a token in it!
 
         # Set the list of word to be case-sensitive or not.
-        self.casesensitive = casesensitive
+        self.case_sensitive = case_sensitive
 
         if filename is not None:
 
@@ -99,7 +98,7 @@ class WordsList(object):
 
         """
         entry = entry.strip()
-        if self.casesensitive is False:
+        if self.case_sensitive is False:
             entry = rutils.ToLower(entry)
 
         if entry not in self._stw:
@@ -150,10 +149,10 @@ class WordsList(object):
         """
         Make a deep copy of the instance.
 
-        :return: WordsList
+        :return: Vocabulary
 
         """
-        s = WordsList()
+        s = Vocabulary()
         for i in self._stw:
             s.add(i)
 
@@ -173,7 +172,7 @@ class WordsList(object):
         with codecs.open(filename, 'r', rutils.ENCODING) as fd:
             for nbl, line in enumerate(fd, 1):
                 try:
-                    self.add( line )
+                    self.add(line)
                 except Exception as e:
                     raise Exception("Read file failed due to the following error at line %s: %s" % (nbl, str(e)))
 

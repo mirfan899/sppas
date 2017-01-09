@@ -42,11 +42,12 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 # ---------------------------------------------------------------------------
 
 from resources.dictpron import DictPron
-from resources.wordslst import WordsList
+from resources.vocab import Vocabulary
 
 # ---------------------------------------------------------------------------
 
-class PhoneSet( WordsList ):
+
+class PhoneSet( Vocabulary ):
     """
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -69,7 +70,7 @@ class PhoneSet( WordsList ):
         @param filename (str) is the phoneset file name, i.e. a file with 1 column.
 
         """
-        WordsList.__init__(self, filename, nodump=True, casesensitive=True)
+        Vocabulary.__init__(self, filename, nodump=True, casesensitive=True)
         self.add("@@")
         self.add("dummy")
         self.add("gb")

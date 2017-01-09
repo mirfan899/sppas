@@ -47,14 +47,12 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 from annotationdata.transcription import Transcription
 from annotationdata.tier import Tier
 from annotationdata.annotation import Annotation
-from annotationdata.ptime.point import TimePoint
 from annotationdata.ptime.interval import TimeInterval
 from annotationdata.label.label import Label
 import annotationdata.io
-import annotations.log
 
 from dictlem import LemmaDict
-from resources.wordslst import WordsList
+from resources.vocab import Vocabulary
 from resources.unigram import Unigram
 from detectrepetition import Repetitions
 from detectrepetition import DataSpeaker
@@ -63,9 +61,10 @@ from annotations.sppasbase import sppasBase
 
 DEBUG=False
 
-# ######################################################################### #
+# ---------------------------------------------------------------------------
 
-class sppasRepet( sppasBase ):
+
+class sppasRepet(sppasBase):
     """
     SPPAS Automatic Repetition Detection
     (either self-repetitions or other-repetitions).
@@ -78,7 +77,7 @@ class sppasRepet( sppasBase ):
 
     How to use sppasRepetition?
 
-    >>> p = sppasRepetition( dictpath, lang )
+    >>> p = sppasRepetition(dictpath, lang)
     >>> p.run(inputtrsname, outputfilename)
 
     """
@@ -120,11 +119,11 @@ class sppasRepet( sppasBase ):
         # Create the list of stop words (list of non-relevant words)
         try:
             stopfile = resourcefile.replace(".lem", ".stp")
-            self.stopwords = WordsList(filename=resourcefile, nodump=True)
+            self.stopwords = Vocabulary(filename=resourcefile, nodump=True)
             if self.stopwords.get_size() == 0:
                 self._use_stopwords = False
         except Exception:
-            self.stopwords = WordsList()
+            self.stopwords = Vocabulary()
 
         #if (self._use_stopwords is True and self.stopwords.get_size() == 0) or self._use_stopwords is False:
         if self._use_stopwords is False:
@@ -139,13 +138,13 @@ class sppasRepet( sppasBase ):
     def fix_options(self, options):
         for opt in options:
             if "stopwords" == opt.get_key():
-                self.set_use_stopwords( opt.get_value() )
+                self.set_use_stopwords(opt.get_value())
             elif "lemmatize" == opt.get_key():
-                self.set_use_lemmatize( opt.get_value() )
+                self.set_use_lemmatize(opt.get_value())
             elif "empan" == opt.get_key():
-                self.set_empan( opt.get_value() )
+                self.set_empan(opt.get_value())
             elif "alpha" == opt.get_key():
-                self.set_alpha( opt.get_value() )
+                self.set_alpha(opt.get_value())
 
     # ------------------------------------------------------------------
     # Getters and Setters                                                    #
@@ -216,8 +215,8 @@ class sppasRepet( sppasBase ):
         lemmatier = inputtier.Copy()
 
         for i in range(lemmatier.GetSize()):
-            lem = self.lemmatizer.get_lem( lemmatier[i].GetLabel().GetValue() )
-            lemmatier[i].GetLabel().SetValue( lem )
+            lem = self.lemmatizer.get_lem(lemmatier[i].GetLabel().GetValue())
+            lemmatier[i].GetLabel().SetValue(lem)
 
         return lemmatier
 
@@ -226,7 +225,7 @@ class sppasRepet( sppasBase ):
     def relevancy(self, inputtier):
         """
         Add very frequent tokens in a copy of the stopwords list.
-        Return a WordsList instance
+        Return a Vocabulary instance
 
         Estimate the relevance of each term by using the number of
         occurrences of this term in the input and compare this value
@@ -241,7 +240,7 @@ class sppasRepet( sppasBase ):
         u = Unigram()
         for a in inputtier:
             if a.GetLabel().IsSpeech() is True:
-                u.add( a.GetLabel().GetValue() )
+                u.add(a.GetLabel().GetValue())
 
         # Estimate if a token is relevant, put in the stoplist
         for token in u.get_tokens():
@@ -249,7 +248,7 @@ class sppasRepet( sppasBase ):
             proba = float(freq) / float(u.get_sum())
             relevant = 1.0 / (float(u.get_size())*float(self._alpha))
             if proba > relevant:
-                l.add( token )
+                l.add(token)
                 if self.logfile is not None:
                     self.logfile.print_message('Add in the stoplist: '+token, indent=3)
                 elif DEBUG is True:
@@ -312,7 +311,7 @@ class sppasRepet( sppasBase ):
                 l = reptier.Rindex(repend) #time)
 
                 # all other cases (no repetition, overlap)
-                time = TimeInterval( repbegin.Copy(), repend.Copy() )
+                time = TimeInterval(repbegin.Copy(), repend.Copy())
                 repann = Annotation(time, Label("R"+str(nbrepeats+n)))
                 reptier.Add(repann)
                 if DEBUG:
@@ -338,12 +337,12 @@ class sppasRepet( sppasBase ):
 
         # Update the stoplist
         if self._use_stopwords is True:
-            stpw = self.relevancy( inputtier1 )
+            stpw = self.relevancy(inputtier1)
         else:
             stpw = self.stopwords
 
         # Create repeat objects
-        repeatobj = Repetitions( )
+        repeatobj = Repetitions()
 
         # Create output data
         srctier = Tier("Sources")
@@ -354,8 +353,8 @@ class sppasRepet( sppasBase ):
         tokstart = 0
         if inputtier1[0].GetLabel().IsDummy():
             tokstart = 1
-        toksearch = self.find_next_break( inputtier1, tokstart+1 , empan=1)
-        tokend    = self.find_next_break( inputtier1, tokstart+1 , empan=self._empan)
+        toksearch = self.find_next_break(inputtier1, tokstart+1 , empan=1)
+        tokend    = self.find_next_break(inputtier1, tokstart+1 , empan=self._empan)
 
         # Detection is here:
         while tokstart < tokend:
@@ -363,11 +362,11 @@ class sppasRepet( sppasBase ):
             # Build an array with the tokens
             tokens1 = list()
             for i in range(tokstart, tokend+1):
-                tokens1.append( inputtier1[i].GetLabel().GetValue() )
-            speaker1 = DataSpeaker( tokens1, stpw )
+                tokens1.append(inputtier1[i].GetLabel().GetValue())
+            speaker1 = DataSpeaker(tokens1, stpw)
 
             # Detect repeats in these data
-            repeatobj.detect( speaker1, toksearch-tokstart, None )
+            repeatobj.detect(speaker1, toksearch-tokstart, None)
 
             # Save repeats
             if repeatobj.get_repeats_size()>0:
@@ -376,8 +375,8 @@ class sppasRepet( sppasBase ):
 
             # Prepare next search
             tokstart  = toksearch
-            toksearch = self.find_next_break( inputtier1 , tokstart+1 , empan=1 )
-            tokend    = self.find_next_break( inputtier1 , tokstart+1 , empan=self._empan )
+            toksearch = self.find_next_break(inputtier1 , tokstart+1 , empan=1)
+            tokend    = self.find_next_break(inputtier1 , tokstart+1 , empan=self._empan)
 
         return (srctier,reptier)
 
@@ -397,12 +396,12 @@ class sppasRepet( sppasBase ):
         # Update the stoplist
         if self._use_stopwords is True:
             # other-repetition: relevance of the echoing-speaker
-            stpw = self.relevancy( inputtier2 )
+            stpw = self.relevancy(inputtier2)
         else:
             stpw = self.stopwords
 
         # Create repeat objects
-        repeatobj = Repetitions( )
+        repeatobj = Repetitions()
 
         # Create output data
         srctier = Tier("OR-Source")
@@ -423,8 +422,8 @@ class sppasRepet( sppasBase ):
             # Build an array with the tokens
             tokens1 = list()
             for i in range(tokstartsrc, tokendsrc):
-                tokens1.append( inputtier1[i].GetLabel().GetValue() )
-            speaker1 = DataSpeaker( tokens1, stpw )
+                tokens1.append(inputtier1[i].GetLabel().GetValue())
+            speaker1 = DataSpeaker(tokens1, stpw)
 
             # Create speaker2
             tokens2 = list()
@@ -440,8 +439,8 @@ class sppasRepet( sppasBase ):
                         nbbreaks = nbbreaks + 1
                     if nbbreaks == self._empan:
                         break
-                    tokens2.append( b.GetLabel().GetValue() )
-            speaker2 = DataSpeaker( tokens2, stpw )
+                    tokens2.append(b.GetLabel().GetValue())
+            speaker2 = DataSpeaker(tokens2, stpw)
 
             if DEBUG is True:
                 print "SRC : ",speaker1
@@ -449,7 +448,7 @@ class sppasRepet( sppasBase ):
 
             # Detect repeats in these data: search if the first token of spk1
             # is the first token of a source.
-            repeatobj.detect( speaker1, 1, speaker2 )
+            repeatobj.detect(speaker1, 1, speaker2)
 
             # Save repeats
             shift = 1
@@ -492,15 +491,15 @@ class sppasRepet( sppasBase ):
         tokentier2 = -1    # No echoing speaker
 
         # Find the token tier
-        trsinput1 = annotationdata.io.read( inputfilename1 )
-        for i in range( trsinput1.GetSize() ):
+        trsinput1 = annotationdata.io.read(inputfilename1)
+        for i in range(trsinput1.GetSize()):
             if "token" in trsinput1[i].GetName().lower() and "align" in trsinput1[i].GetName().lower():
                 tokentier1 = i
                 break
         if inputfilename2 is not None:
             #find the token tier
-            trsinput2 = annotationdata.io.read( inputfilename2 )
-            for i in range( trsinput2.GetSize() ):
+            trsinput2 = annotationdata.io.read(inputfilename2)
+            for i in range(trsinput2.GetSize()):
                 if "token" in trsinput2[i].GetName().lower() and "align" in trsinput2[i].GetName().lower():
                     tokentier2 = i
                     break
@@ -510,9 +509,9 @@ class sppasRepet( sppasBase ):
 
         # Lemmatize input?
         if self._use_lemmatize is True and self.lemmatizer:
-            tier1 = self.lemmatize( trsinput1[tokentier1] )
+            tier1 = self.lemmatize(trsinput1[tokentier1])
             if tokentier2 > -1:
-                tier2 = self.lemmatize( trsinput2[tokentier2] )
+                tier2 = self.lemmatize(trsinput2[tokentier2])
         else:
             tier1 = trsinput1[tokentier1]
             if tokentier2 > -1:
@@ -524,9 +523,9 @@ class sppasRepet( sppasBase ):
 
         # Repetition Automatic Detection
         if tokentier2 == -1:
-            (srctier,reptier) = self.selfdetection( tier1 )
+            (srctier,reptier) = self.selfdetection(tier1)
         else:
-            (srctier,reptier) = self.otherdetection( tier1 , tier2 )
+            (srctier,reptier) = self.otherdetection(tier1 , tier2)
 
         # Manage results:
         # An output file name is given
@@ -535,16 +534,16 @@ class sppasRepet( sppasBase ):
         # the repeat tier is added to the input transcription
         else:
             outputfilename = inputfilename1
-            trsoutput = annotationdata.io.read( inputfilename1 )
+            trsoutput = annotationdata.io.read(inputfilename1)
 
         # Add repeats to this trsoutput
-        trsoutput.Append( srctier )
-        trsoutput.Append( reptier )
+        trsoutput.Append(srctier)
+        trsoutput.Append(reptier)
 
-        trsoutput.SetMinTime( trsinput1.GetMinTime() )
-        trsoutput.SetMaxTime( trsinput1.GetMaxTime() ) # hum, in case of OR... not sure! to be verified.
+        trsoutput.SetMinTime(trsinput1.GetMinTime())
+        trsoutput.SetMaxTime(trsinput1.GetMaxTime()) # hum, in case of OR... not sure! to be verified.
 
         # Save
-        annotationdata.io.write( outputfilename, trsoutput )
+        annotationdata.io.write(outputfilename, trsoutput)
 
     # ------------------------------------------------------------------------

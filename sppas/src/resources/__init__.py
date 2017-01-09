@@ -52,7 +52,7 @@ from dictrepl import DictRepl
 from dictpron import DictPron
 from patterns import Patterns
 from unigram import Unigram
-from wordslst import WordsList
+from vocab import Vocabulary
 
 __all__ = [
     "Mapping",
@@ -60,5 +60,5 @@ __all__ = [
     "DictPron",
     "Patterns",
     "Unigram",
-    "WordsList"
+    "Vocabulary"
     ]

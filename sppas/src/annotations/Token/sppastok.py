@@ -39,16 +39,13 @@ import os.path
 
 from tokenize import DictTok
 
-from resources.wordslst import WordsList
+from resources.vocab import Vocabulary
 from resources.dictrepl import DictRepl
 
 from annotationdata.transcription import Transcription
-from annotationdata.tier          import Tier
-from annotationdata.annotation    import Annotation
-from annotationdata.label.label   import Label
+from annotationdata.tier import Tier
 import annotationdata.io
 
-from sp_glob import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
 from sp_glob import RESOURCES_PATH
 
 from annotations.sppasbase import sppasBase
@@ -57,7 +54,8 @@ from annotations.sppasbase import sppasBase
 # sppasTok main class
 # ---------------------------------------------------------------------------
 
-class sppasTok( sppasBase ):
+
+class sppasTok(sppasBase):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -86,7 +84,7 @@ class sppasTok( sppasBase ):
         """
         sppasBase.__init__(self, logfile)
 
-        self.fix_tokenizer( vocab,lang )
+        self.fix_tokenizer(vocab, lang)
 
         # List of options to configure this automatic annotation
         self._options['std'] = False
@@ -101,18 +99,18 @@ class sppasTok( sppasBase ):
         @param lang (str - IN) the language code
 
         """
-        pvoc = WordsList(vocab)
+        pvoc = Vocabulary(vocab)
         self.tokenizer = DictTok(pvoc, lang)
 
         try:
             repl = DictRepl(os.path.join(RESOURCES_PATH, "repl", lang + ".repl"), nodump=True)
-            self.tokenizer.set_repl( repl )
+            self.tokenizer.set_repl(repl)
         except Exception:
             pass
 
         try:
-            punct = WordsList(os.path.join(RESOURCES_PATH, "vocab", "Punctuations.txt"), nodump=True)
-            self.tokenizer.set_punct( punct )
+            punct = Vocabulary(os.path.join(RESOURCES_PATH, "vocab", "Punctuations.txt"), nodump=True)
+            self.tokenizer.set_punct(punct)
         except Exception:
             pass
 
@@ -164,7 +162,7 @@ class sppasTok( sppasBase ):
 
         """
         if tier.IsEmpty() is True:
-            raise IOError("Empty input tier %s.\n"%tier.GetName())
+            raise IOError("Empty input tier %s.\n" % tier.GetName())
 
         tokensStd = None
         if self._options['std'] is True:
@@ -192,15 +190,16 @@ class sppasTok( sppasBase ):
 
                     try:
                         texts, textf = self.__align_tiers(textstd.GetValue(), textfaked.GetValue())
-                        textstd.SetValue( texts )
-                        textfaked.SetValue( textf )
+                        textstd.SetValue(texts)
+                        textfaked.SetValue(textf)
 
                     except Exception:
-                        self.print_message(u"StdTokens and FakedTokens matching error, at %s\n"%astd.GetLocation().GetValue(),indent=2,status=1)
-                        self.print_message(astd.GetLabel().GetValue(),  indent=3)
-                        self.print_message(afaked.GetLabel().GetValue(),indent=3)
-                        self.print_message(u"Fall back on faked.",indent=3,status=3)
-                        textstd.SetValue( textf )
+                        self.print_message(u"StdTokens and FakedTokens matching error, at %s\n" %
+                                           astd.GetLocation().GetValue(), indent=2, status=1)
+                        self.print_message(astd.GetLabel().GetValue(), indent=3)
+                        self.print_message(afaked.GetLabel().GetValue(), indent=3)
+                        self.print_message(u"Fall back on faked.", indent=3, status=3)
+                        textstd.SetValue(textf)
 
     # ------------------------------------------------------------------------
 
@@ -243,7 +242,7 @@ class sppasTok( sppasBase ):
 
     # ------------------------------------------------------------------------
 
-    def run( self, inputfilename, outputfilename ):
+    def run(self, inputfilename, outputfilename):
         """
         Run the Tokenization process on an input file.
 
@@ -252,7 +251,7 @@ class sppasTok( sppasBase ):
 
         """
         self.print_options()
-        self.print_diagnosis( inputfilename )
+        self.print_diagnosis(inputfilename)
 
         # Get input tier to tokenize
         tierinput = self.get_transtier(inputfilename)
@@ -262,7 +261,7 @@ class sppasTok( sppasBase ):
                           "'trans' or 'trs' or 'ipu' 'ortho' or 'toe'.")
 
         # Tokenize the tier
-        tiertokens, tierStokens = self.convert( tierinput )
+        tiertokens, tierStokens = self.convert(tierinput)
 
         # Align Faked and Standard
         if tierStokens is not None:
@@ -270,13 +269,12 @@ class sppasTok( sppasBase ):
 
         # Save
         trsoutput = Transcription()
-        trsoutput.Add( tiertokens )
+        trsoutput.Add(tiertokens)
         if tierStokens is not None:
-            trsoutput.Add( tierStokens )
+            trsoutput.Add(tierStokens)
 
         # Save in a file
-        annotationdata.io.write( outputfilename,trsoutput )
-
+        annotationdata.io.write(outputfilename,trsoutput)
 
     # ------------------------------------------------------------------------
     # Private: some workers...
@@ -288,16 +286,16 @@ class sppasTok( sppasBase ):
 
         """
         tiername = "Tokenization-Standard" if std is True else "Tokenization"
-        tokens = Tier( tiername )
+        tokens = Tier(tiername)
         for a in tier:
 
             af = a.Copy()
             for text in af.GetLabel().GetLabels():
                 # Do not tokenize an empty label, noises, laughter...
                 if text.IsSpeech() is True:
-                    tokenized = self.tokenizer.tokenize( text.GetValue(), std=std )
-                    text.SetValue( tokenized )
-            tokens.Append( af )
+                    tokenized = self.tokenizer.tokenize(text.GetValue(), std=std)
+                    text.SetValue(tokenized)
+            tokens.Append(af)
 
         return tokens
 
@@ -345,7 +343,7 @@ class sppasTok( sppasBase ):
                     fakeds[i] = "_".join(fakeds[i:i+n])
                     del fakeds[i+1:i+n]
 
-            i = i + 1
+            i += 1
 
         if len(stds) != len(fakeds):
             raise Exception('Standard and Faked alignment Error: %s\n'
