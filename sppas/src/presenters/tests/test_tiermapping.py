@@ -11,7 +11,7 @@ from annotationdata.annotation import Annotation
 from annotationdata.ptime.interval import TimeInterval
 from annotationdata.ptime.point import TimePoint
 from annotationdata.label.label import Label
-
+from resources.dictpron import DictPron
 
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
@@ -64,16 +64,16 @@ class TestTierMapping(unittest.TestCase):
             self.assertEqual(a1.GetLabel().GetValue(), a2.GetLabel().GetValue())
             self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
         for a1, a2 in zip(tI, self.tierI):
-            l1 = a1.GetLabel().GetValue().split('|')
-            l2 = a2.GetLabel().GetValue().split('|')
+            l1 = a1.GetLabel().GetValue().split(DictPron.VARIANTS_SEPARATOR)
+            l2 = a2.GetLabel().GetValue().split(DictPron.VARIANTS_SEPARATOR)
             self.assertEqual(sorted(list(set(l1))), sorted(l2))
             self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
 
     def test_phonetized_sample(self):
         tg = TextGrid()
-        tg.read(os.path.join(DATA,"DGtdA05Np1_95-phon.TextGrid"))
+        tg.read(os.path.join(DATA, "DGtdA05Np1_95-phon.TextGrid"))
         self.tier = tg.Find('Phonetization')
-        tiermap = TierMapping( os.path.join(DATA,"ita_mapping.repl") )
+        tiermap = TierMapping( os.path.join(DATA, "ita_mapping.repl") )
 
         tiermap.set_keep_miss( True )
         tiermap.set_reverse( False )
@@ -87,9 +87,9 @@ class TestTierMapping(unittest.TestCase):
 
     def test_aligned_sample(self):
         tg = TextGrid()
-        tg.read(os.path.join(DATA,"DGtdA05Np1_95-palign.TextGrid"))
+        tg.read(os.path.join(DATA, "DGtdA05Np1_95-palign.TextGrid"))
         self.tier = tg.Find('PhonAlign')
-        tiermap = TierMapping( os.path.join(DATA,"ita_mapping.repl") )
+        tiermap = TierMapping( os.path.join(DATA, "ita_mapping.repl") )
 
         tiermap.set_keep_miss( True )
         t1 = tiermap.map_tier( self.tier )

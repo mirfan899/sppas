@@ -32,7 +32,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: acmodel.py
+# File: src.resources.acm.acmodel.py
 # ---------------------------------------------------------------------------
 
 import collections
@@ -41,16 +41,16 @@ import copy
 import glob
 import os.path
 
-from acmodelhtkio   import HtkIO
-from hmm            import HMM
-from tiedlist       import TiedList
-from ..mapping      import Mapping
+from acmodelhtkio import HtkIO
+from hmm import HMM
+from tiedlist import TiedList
 
-from utils.type import compare_dictionaries
+from ..mapping import Mapping
 
 # ---------------------------------------------------------------------------
 
-class AcModel:
+
+class AcModel(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -71,8 +71,8 @@ class AcModel:
         Constructor.
 
         """
-        self.macros   = None
-        self.hmms     = []
+        self.macros = None
+        self.hmms = []
         self.tiedlist = TiedList()
         self.repllist = Mapping()
 
@@ -95,7 +95,7 @@ class AcModel:
         l = []
         hmmdefsfiles = glob.glob(os.path.join(directory,'hmmdefs'))
         if len( hmmdefsfiles ) == 0:
-            raise IOError('Missing hmmdefs file in %s'%directory)
+            raise IOError('Missing hmmdefs file in %s' % directory)
         self.load_htk( hmmdefsfiles[0] )
         l.append( hmmdefsfiles[0] )
 

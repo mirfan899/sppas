@@ -35,19 +35,13 @@
 # File: htkscripts.py
 # ---------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
-
-# ---------------------------------------------------------------------------
-
 import os
 import os.path
 import logging
 
 # ---------------------------------------------------------------------------
 
-class HtkScripts:
+class HtkScripts(object):
     """
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com

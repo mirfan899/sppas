@@ -36,28 +36,31 @@
 # ----------------------------------------------------------------------------
 
 import re
+from resources.dictpron import DictPron
 
 # ----------------------------------------------------------------------------
 
-class DAG:
+
+class DAG(object):
     """
     Direct Acyclic Graph.
 
-    Implementation from: http://www.python.org/doc/essays/graphs/
+    Implementation inspired from: http://www.python.org/doc/essays/graphs/
 
     """
     def __init__(self):
         """
         Create a new DAG instance.
 
-        dictgraph (Dictionary) represents the graph as for example:
+        This class represents the DAG as a dictionary.
+        For example:
             - A -> B
             - A -> C
             - B -> C
             - B -> D
             - C -> D
-        is represented as:
-        dictgraph = {'A': ['B', 'C'], 'B': ['C', 'D'], 'C': ['D'],}
+        will be represented as:
+        {'A': ['B', 'C'], 'B': ['C', 'D'], 'C': ['D'],}
 
         """
         self.__graph = {}
@@ -107,7 +110,7 @@ class DAG:
             >>> find_path(graph, 'A', 'C')
             >>> ['A', 'B', 'C'']
         """
-        path = path + [start]
+        path += [start]
         if start == end:
             return [path]
         if not self.__graph.has_key(start):
@@ -123,7 +126,7 @@ class DAG:
     # -----------------------------------------------------------------------
 
     def find_all_paths(self, start, end, path=[]):
-        path = path + [start]
+        path += [start]
         if start == end:
             return [path]
         if not self.__graph.has_key(start):
@@ -141,10 +144,10 @@ class DAG:
     # -----------------------------------------------------------------------
 
     def find_shortest_path(self, start, end, path=[]):
-        path = path + [start]
+        path += [start]
         if start == end:
             return path
-        if not self.__graph.has_key(start):
+        if start not in self.__graph.keys():
             return None
 
         shortest = None
@@ -164,19 +167,18 @@ class DAG:
     def __repr__(self):
         print "Number of nodes:", len(self.__graph.keys())
         for i in self.__graph.keys():
-            if  self.__graph[i]:
-                print "  Node ",i," has edge to --> ", self.__graph[i]
+            if self.__graph[i]:
+                print "  Node ", i, " has edge to --> ", self.__graph[i]
             else:
-                print "  Node ",i," has no edge "
+                print "  Node ", i, " has no edge "
 
     def __len__(self):
         return len(self.__graph)
 
-    # -----------------------------------------------------------------------
-
 # ----------------------------------------------------------------------------
 
-class DAGPhon:
+
+class DAGPhon(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -206,13 +208,13 @@ class DAGPhon:
         """
         tabpron = pron.split()
 
-        graph     = DAG()       # the Graph, used to store segments and to get all paths
+        graph = DAG()       # the Graph, used to store segments and to get all paths
         prongraph = list()      # the pronunciation of each segment
-        variants  = None
+        variants = None
 
         # A Start node (required if the 1st segment has variants)
-        graph.add_node( 0 )
-        prongraph.append( "start" )
+        graph.add_node(0)
+        prongraph.append("start")
 
         # Init values
         prec  = 1
@@ -221,28 +223,28 @@ class DAGPhon:
         # Get all longest-segments of a token
         for i in range(len(tabpron)):
 
-            variants = tabpron[i].split('|')
+            variants = tabpron[i].split(DictPron.VARIANTS_SEPARATOR)
             # Get all variants of this part-of-token
             for v in range(len(variants)):
 
                 # store variants
-                prongraph.append( variants[v] )
+                prongraph.append(variants[v])
                 if i < len(tabpron):
-                    graph.add_node( prec+v )
+                    graph.add_node(prec+v)
                 # add these variants to the precedings segments
                 for k in range(prec-precv, prec):
-                    graph.add_edge(k,prec+v)
+                    graph.add_edge(k, prec+v)
 
-            prec  = prec + len(variants)
+            prec += len(variants)
             precv = len(variants)
 
         # add a "End" node
-        prongraph.append( "end" )
-        graph.add_node( prec )
+        prongraph.append("end")
+        graph.add_node(prec)
         for k in range(prec-precv, prec):
-            graph.add_edge(k,prec)
+            graph.add_edge(k, prec)
 
-        return (graph,prongraph)
+        return (graph, prongraph)
 
     # -----------------------------------------------------------------------
 
@@ -251,14 +253,14 @@ class DAGPhon:
         Convert a DAG into a dictionary including all pronunciation variants.
 
         """
-        pathslist = graph.find_all_paths( 0, len(graph)-1 )
+        pathslist = graph.find_all_paths(0, len(graph)-1)
         pron = {}
         for variant in pathslist:
             p = ""
-            for i in variant[1:len(variant)-1]: # do not include Start and End nodes
-                p = p + "-" + prongraph[i]
+            for i in variant[1:len(variant)-1]:  # do not include Start and End nodes
+                p = p + DictPron.PHONEMES_SEPARATOR + prongraph[i]
             p = re.sub('^.', "", p)
-            pron[p] = len(p.split("-"))
+            pron[p] = len(p.split(DictPron.PHONEMES_SEPARATOR))
 
         return pron
 
@@ -266,7 +268,7 @@ class DAGPhon:
 
     def decompose(self, pron1, pron2=""):
         """
-        Create a decomposed-phonetization from a string as follow:
+        Create a decomposed phonetization from a string as follow:
 
             >>> self.decompose("p1 p2|x2 p3|x3")
             p1.p2.p3|p1.p2.x3|p1.x2.p3|p1.x2.x3
@@ -279,14 +281,14 @@ class DAGPhon:
             return ""
 
         # Complex phonetization: converted into a DAG
-        (graph1,prongraph1) = self.phon2DAG( pron1 )
+        (graph1, prongraph1) = self.phon2DAG(pron1)
         if len(pron2) > 0:
-            (graph2,prongraph2) = self.phon2DAG( pron2 )
+            (graph2, prongraph2) = self.phon2DAG(pron2)
 
         # Create all pronunciations from the DAG
-        pron1 = self.DAG2phon(graph1,prongraph1)
+        pron1 = self.DAG2phon(graph1, prongraph1)
         if len(pron2) > 0:
-            pron2 = self.DAG2phon(graph2,prongraph2)
+            pron2 = self.DAG2phon(graph2, prongraph2)
         else:
             pron2 = {}
 
@@ -296,9 +298,11 @@ class DAGPhon:
 
         # Output selection
 
+        v = DictPron.VARIANTS_SEPARATOR
+        
         # Return all variants
         if self.variants == 0:
-            return "|".join(pron.keys())
+            return v.join(pron.keys())
 
         # Choose the shorter variants
         if self.variants == 1:
@@ -306,6 +310,6 @@ class DAGPhon:
 
         # Other number of variants: choose shorters
         l = sorted(pron.items(), key=lambda x: x[1])[:self.variants]
-        return "|".join(zip(*l)[0])
+        return v.join(zip(*l)[0])
 
     # -----------------------------------------------------------------------

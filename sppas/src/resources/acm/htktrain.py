@@ -68,12 +68,12 @@ from resources.dictpron import DictPron
 from resources.vocab import Vocabulary
 from resources.mapping import Mapping
 
-from hmm          import HMM
-from htkscripts   import HtkScripts
-from acmodel      import AcModel
+from hmm import HMM
+from htkscripts import HtkScripts
+from acmodel import AcModel
 from acmodelhtkio import HtkIO
-from features     import Features
-from phoneset     import PhoneSet
+from features import Features
+from phoneset import PhoneSet
 
 from sp_glob import UNKSTAMP
 

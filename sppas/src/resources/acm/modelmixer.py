@@ -32,7 +32,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: modelmixer.py
+# File: src.resources.acm.modelmixer.py
 # ----------------------------------------------------------------------------
 
 import copy
@@ -40,7 +40,8 @@ from resources.acm.acmodel import AcModel
 
 # ----------------------------------------------------------------------------
 
-class ModelMixer:
+
+class ModelMixer(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -59,7 +60,7 @@ class ModelMixer:
 
         """
         self.modelText = None
-        self.modelSpk  = None
+        self.modelSpk = None
 
     # ------------------------------------------------------------------------
 

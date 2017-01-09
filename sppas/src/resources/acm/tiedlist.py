@@ -35,21 +35,14 @@
 # File: tiedlist.py
 # ---------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
-
-# ---------------------------------------------------------------------------
-# Imports
-# ---------------------------------------------------------------------------
-
 import codecs
 
 import resources.rutils as rutils
 
 # ---------------------------------------------------------------------------
 
-class TiedList:
+
+class TiedList(object):
     """
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -67,7 +60,7 @@ class TiedList:
 
         """
         self.observed = []
-        self.tied     = {}
+        self.tied = {}
 
     # -----------------------------------------------------------------------
 

@@ -32,15 +32,15 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: statlangmodel.py
+# File: src.resources.slm.statlangmodel.py
 # ---------------------------------------------------------------------------
 
-from resources.slm.ngramsmodel import NgramsModel
-from resources.slm.arpaio      import ArpaIO
+from resources.slm.arpaio import ArpaIO
 
 # ---------------------------------------------------------------------------
 
-class SLM:
+
+class SLM(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France

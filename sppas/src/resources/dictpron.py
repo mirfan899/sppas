@@ -37,12 +37,13 @@
 import codecs
 import logging
 import rutils
+
 from sp_glob import UNKSTAMP
 
 # ---------------------------------------------------------------------------
 
 
-class DictPron:
+class DictPron(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -69,26 +70,29 @@ class DictPron:
     In this class, the following convention is adopted to represent the
     pronunciation variants:
 
-        - '-' separates the phones
+        - '-' separates the phones (X-SAMPA standard)
         - '|' separates the variants
 
     Then, the pronunciation can be accessed with get_pron() method:
 
         >>> print d.get_pron('acted')
-        {.k.t.e.d|{.k.t.i.d|{ k t e|{ k t i
+        {-k-t-e-d|{-k-t-i-d|{-k-t-e|{-k-t-i
 
     """
-    def __init__(self, dictfilename=None, unkstamp=UNKSTAMP, nodump=False):
+    VARIANTS_SEPARATOR = "|"
+    PHONEMES_SEPARATOR = "-"
+
+    def __init__(self, dict_filename=None, unkstamp=UNKSTAMP, nodump=False):
         """
         Constructor.
 
-        :param dictfilename: (str) The dictionary file name (HTK-ASCII format)
+        :param dict_filename: (str) The dictionary file name (HTK-ASCII format)
         :param unkstamp: (str) Represent a missing pronunciation
         :param nodump: (bool) Create or not a dump file (binary version of the
         dictionary)
 
         """
-        self._filename = dictfilename
+        self._filename = dict_filename
 
         # Symbol to represent missing entries in the dictionary
         self.unkstamp = unkstamp
@@ -98,19 +102,19 @@ class DictPron:
 
         # Either read the dictionary from a dumped file or from the original
         # ASCII one.
-        if dictfilename is not None:
+        if dict_filename is not None:
 
             data = None
             if nodump is False:
                 # Try first to get the dict from a dump file (at least 2 times faster)
-                data = rutils.load_from_dump( dictfilename )
+                data = rutils.load_from_dump(dict_filename)
 
             # Load from ascii if:
             # 1st load, or, dump load error, or dump older than ascii
             if data is None:
-                self.load_from_ascii( dictfilename )
+                self.load_from_ascii(dict_filename)
                 if nodump is False:
-                    rutils.save_as_dump( self._dict, dictfilename )
+                    rutils.save_as_dump(self._dict, dict_filename)
                 logging.info('Get dictionary from ASCII file.')
 
             else:
@@ -140,7 +144,7 @@ class DictPron:
         :param entry: (str) A token to find in the dictionary
 
         """
-        return rutils.ToLower(entry) not in self._dict
+        return rutils.ToLower(entry) not in self._dict.jeys()
 
     # -----------------------------------------------------------------------
 
@@ -152,11 +156,11 @@ class DictPron:
         :param pron: (str) A pronunciation
 
         """
-        prons = self._dict.get( rutils.ToLower(entry),None )
+        prons = self._dict.get(rutils.ToLower(entry), None)
         if prons is None:
             return False
 
-        return pron in prons.split('|')
+        return pron in prons.split(DictPron.VARIANTS_SEPARATOR)
 
     # -----------------------------------------------------------------------
 
@@ -192,23 +196,23 @@ class DictPron:
 
         """
         # Remove the CR/LF, tabs, multiple spaces and others... and lowerise
-        entry   = rutils.ToStrip(token)
-        entry   = rutils.ToLower(entry)
-        newpron = rutils.ToStrip(pron)
-        newpron = newpron.replace(" ", "-")
+        entry = rutils.ToStrip(token)
+        entry = rutils.ToLower(entry)
+        new_pron = rutils.ToStrip(pron)
+        new_pron = new_pron.replace(" ", DictPron.PHONEMES_SEPARATOR)
 
         # Already a pronunciation for this token?
-        curpron = ""
-        if self._dict.has_key(entry):
+        cur_pron = ""
+        if entry in self._dict:
             # and don't append an already known pronunciation
             if self.is_pron_of(entry, pron) is False:
-                curpron = self.get_pron(entry) + "|"
+                cur_pron = self.get_pron(entry) + DictPron.VARIANTS_SEPARATOR
 
         # Get the current pronunciation and append the new one
-        newpron = curpron + newpron
+        new_pron = cur_pron + new_pron
 
         # Add (or change) the entry in the dict
-        self._dict[entry] = newpron
+        self._dict[entry] = new_pron
 
     # -----------------------------------------------------------------------
 
@@ -222,13 +226,13 @@ class DictPron:
 
         """
         map_table.set_reverse(True)
-        delimiters = ['-', '|']
-        newdict = DictPron()
+        delimiters = [DictPron.VARIANTS_SEPARATOR, DictPron.PHONEMES_SEPARATOR]
+        new_dict = DictPron()
 
         for key, value in self._dict.items():
-            newdict._dict[key] = map_table.map(value, delimiters)
+            new_dict._dict[key] = map_table.map(value, delimiters)
 
-        return newdict
+        return new_dict
 
     # -----------------------------------------------------------------------
     # File management
@@ -245,7 +249,8 @@ class DictPron:
             with codecs.open(filename, 'r', rutils.ENCODING) as fd:
                 lines = fd.readlines()
         except ValueError as e:
-            raise ValueError('Expected HTK ASCII dictionary format. Error while trying to open and read the file: %s' % str(e))
+            raise ValueError('Expected HTK ASCII dictionary format.'
+                             'Error while trying to open and read the file: %s' % str(e))
 
         for l, line in enumerate(lines):
             if len(line.strip()) == 0:
@@ -254,11 +259,12 @@ class DictPron:
                 line.index(u"[")
                 line.index(u"]")
             except ValueError:
-                raise ValueError('Expected HTK ASCII dictionary format. Error at line number %d: %s' % (l, line))
+                raise ValueError('Expected HTK ASCII dictionary format. '
+                                 'Error at line number %d: %s' % (l, line))
 
             # The entry is before the "[" and the pronunciation is after the "]"
             entry = line[:line.find(u"[")]
-            newpron  = line[line.find(u"]")+1:]
+            new_pron = line[line.find(u"]")+1:]
 
             # Find if it is a new entry or a phonetic variant
             i = entry.find("(")
@@ -267,7 +273,7 @@ class DictPron:
                     # Phonetic variant of an entry (i.e. entry ends with (XX))
                     entry = entry[:i]
 
-            self.add_pron(entry, newpron)
+            self.add_pron(entry, new_pron)
 
     # -----------------------------------------------------------------------
 
@@ -282,11 +288,11 @@ class DictPron:
         try:
             with codecs.open(filename, 'w', encoding=rutils.ENCODING) as output:
 
-                for entry, value in sorted(self._dict.iteritems(), key=lambda x:x[0]):
-                    variants = value.split("|")
+                for entry, value in sorted(self._dict.iteritems(), key=lambda x: x[0]):
+                    variants = value.split(DictPron.VARIANTS_SEPARATOR)
 
                     for i, variant in enumerate(variants, 1):
-                        variant = variant.replace("-", " ")
+                        variant = variant.replace(DictPron.PHONEMES_SEPARATOR, " ")
                         if i > 1 and withvariantnb is True:
                             line = u"%s(%d) [%s] %s\n" % (entry, i, entry, variant)
                         else:

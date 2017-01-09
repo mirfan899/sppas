@@ -64,6 +64,8 @@ class DictRepl(object):
         >>>False
 
     """
+    REPLACE_SEPARATOR = "|"
+
     def __init__(self, dict_filename=None, nodump=False):
         """
         Constructor.
@@ -106,7 +108,7 @@ class DictRepl(object):
         """ Return True if entry is a value in the dictionary. """
 
         for v in self._dict.values():
-            values = v.split("|")
+            values = v.split(DictRepl.REPLACE_SEPARATOR)
             for val in values:
                 if val == entry:
                     return True
@@ -119,7 +121,7 @@ class DictRepl(object):
         """ Return True if entry is a value of a given key in the dictionary. """
 
         v = self._dict.get(key, "")
-        values = v.split('|')
+        values = v.split(DictRepl.REPLACE_SEPARATOR)
         for val in values:
             if val == entry:
                 return True
@@ -187,7 +189,7 @@ class DictRepl(object):
         # hum... of course, a value can have more than 1 key!
         keys = []
         for k, v in self._dict.items():
-            values = v.split('|')
+            values = v.split(DictRepl.REPLACE_SEPARATOR)
             for val in values:
                 if val == value:
                     keys.append(k)
@@ -195,7 +197,7 @@ class DictRepl(object):
         if len(keys) == 0:
             return ""
 
-        return "|".join(keys)
+        return DictRepl.REPLACE_SEPARATOR.join(keys)
 
     # ------------------------------------------------------------------------
     # Setters
@@ -260,7 +262,7 @@ class DictRepl(object):
 
             # Add (or modify) the entry in the dict
             key = tabline[0]
-            value = "|".join(tabline[1:])
+            value = DictRepl.REPLACE_SEPARATOR.join(tabline[1:])
             self.add(key, value)
 
     # ------------------------------------------------------------------------
@@ -276,7 +278,7 @@ class DictRepl(object):
         try:
             with codecs.open(filename, 'w', encoding=rutils.ENCODING) as output:
                 for entry, value in sorted(self._dict.iteritems(), key=lambda x: x[0]):
-                    values = value.split('|')
+                    values = value.split(DictRepl.REPLACE_SEPARATOR)
                     for v in values:
                         output.write("%s %s\n" % (entry, v.strip()))
         except Exception as e:

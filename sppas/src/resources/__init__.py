@@ -46,7 +46,24 @@ resources is a free and open source Python library to access and manage
 linguistic resources like lexicons, dictionaries, acoustic models, etc.
 
 """
+# Statistical Language Models (SLM)
+# ---------------------------------
+from slm.statlangmodel import SLM
+from slm.ngramsmodel import NgramsModel
+from slm.arpaio import ArpaIO
 
+# Acoustic Models (AcM)
+# ---------------------------------
+from acm.hmm import HMM
+from acm.features import Features
+from acm.phoneset import PhoneSet
+from acm.acmodel import AcModel
+from acm.htkscripts import HtkScripts
+from acm.acmodelhtkio import HtkIO
+from acm.htktrain import DataTrainer, TrainingCorpus, HTKModelInitializer, HTKModelTrainer
+
+# Lexicons
+# ---------------------------------
 from mapping import Mapping
 from dictrepl import DictRepl
 from dictpron import DictPron
@@ -54,11 +71,26 @@ from patterns import Patterns
 from unigram import Unigram
 from vocab import Vocabulary
 
+# ---------------------------------
+
 __all__ = [
+    "SLM",
+    "NgramsModel",
+    "ArpaIO",
+    "HMM",
+    "Features",
+    "PhoneSet",
+    "AcModel",
+    "DataTrainer",
+    "TrainingCorpus",
+    "HtkScripts",
+    "HtkIO",
+    "HTKModelInitializer",
+    "HTKModelTrainer",
     "Mapping",
     "DictRepl",
     "DictPron",
     "Patterns",
     "Unigram",
     "Vocabulary"
-    ]
+]

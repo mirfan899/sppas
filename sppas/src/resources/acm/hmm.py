@@ -35,12 +35,6 @@
 # File: hmm.py
 # ---------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
-
-# ---------------------------------------------------------------------------
-
 import collections
 import json
 import copy
@@ -49,7 +43,8 @@ import acmodelhtkio
 
 # ---------------------------------------------------------------------------
 
-class BaseModel:
+
+class BaseModel(object):
     """
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -107,6 +102,7 @@ class BaseModel:
         self.definition = definition
 
 # ---------------------------------------------------------------------------
+
 
 class HMM( BaseModel ):
     """
@@ -400,7 +396,8 @@ class HMM( BaseModel ):
 # Interpolation of HMMs.
 # ---------------------------------------------------------------------------
 
-class HMMInterpolation:
+
+class HMMInterpolation(object):
     """
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com

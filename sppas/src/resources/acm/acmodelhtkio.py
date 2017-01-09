@@ -32,18 +32,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: acmodelhtkio.py
-# ---------------------------------------------------------------------------
-
-__docformat__ = """epytext"""
-__authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
-__all__       = [
-    'HtkIO',
-    'HtkModelSemantics',
-    'HtkModelParser'
-]
-
+# File: src.resources.acm.acmodelhtkio.py
 # ---------------------------------------------------------------------------
 
 import collections
@@ -52,6 +41,7 @@ from dependencies.grako.parsing import graken, Parser
 import hmm
 
 # ---------------------------------------------------------------------------
+
 
 def _to_ordered_dict(ast):
     result = collections.OrderedDict()
@@ -62,7 +52,8 @@ def _to_ordered_dict(ast):
 
 # ---------------------------------------------------------------------------
 
-class HtkIO:
+
+class HtkIO(object):
     """
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com

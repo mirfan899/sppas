@@ -32,13 +32,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: features.py
-# ---------------------------------------------------------------------------
-
-__docformat__ = """epytext"""
-__authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
-
+# File: src.resources.acm.features.py
 # ---------------------------------------------------------------------------
 
 import logging
@@ -150,7 +144,8 @@ ParameterKind = {
 
 # ---------------------------------------------------------------------------
 
-class Features( object ):
+
+class Features(object):
     """
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com

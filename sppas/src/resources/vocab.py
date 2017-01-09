@@ -93,7 +93,7 @@ class Vocabulary(object):
         """
         Add an entry into the list except if the entry is already inside.
 
-        :param entry: (str) The entry to add in the word list
+        :param entry: (str - IN) The entry to add in the word list
         :return: (bool)
 
         """
