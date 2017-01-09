@@ -126,7 +126,7 @@ class DAG(object):
     # -----------------------------------------------------------------------
 
     def find_all_paths(self, start, end, path=[]):
-        path += [start]
+        path = path + [start]
         if start == end:
             return [path]
         if not self.__graph.has_key(start):
@@ -208,8 +208,8 @@ class DAGPhon(object):
         """
         tabpron = pron.split()
 
-        graph = DAG()       # the Graph, used to store segments and to get all paths
-        prongraph = list()      # the pronunciation of each segment
+        graph = DAG()    # the Graph, used to store segments and to get all paths
+        prongraph = []   # the pronunciation of each segment
         variants = None
 
         # A Start node (required if the 1st segment has variants)
@@ -231,7 +231,7 @@ class DAGPhon(object):
                 prongraph.append(variants[v])
                 if i < len(tabpron):
                     graph.add_node(prec+v)
-                # add these variants to the precedings segments
+                # add these variants to the preceding segments
                 for k in range(prec-precv, prec):
                     graph.add_edge(k, prec+v)
 
@@ -241,6 +241,7 @@ class DAGPhon(object):
         # add a "End" node
         prongraph.append("end")
         graph.add_node(prec)
+
         for k in range(prec-precv, prec):
             graph.add_edge(k, prec)
 
@@ -254,6 +255,7 @@ class DAGPhon(object):
 
         """
         pathslist = graph.find_all_paths(0, len(graph)-1)
+
         pron = {}
         for variant in pathslist:
             p = ""
@@ -271,7 +273,7 @@ class DAGPhon(object):
         Create a decomposed phonetization from a string as follow:
 
             >>> self.decompose("p1 p2|x2 p3|x3")
-            p1.p2.p3|p1.p2.x3|p1.x2.p3|p1.x2.x3
+            p1-p2-p3|p1-p2-x3|p1-x2-p3|p1-x2-x3
 
         The input string is converted into a DAG, then output corresponds
         to all paths.
@@ -299,7 +301,7 @@ class DAGPhon(object):
         # Output selection
 
         v = DictPron.VARIANTS_SEPARATOR
-        
+
         # Return all variants
         if self.variants == 0:
             return v.join(pron.keys())

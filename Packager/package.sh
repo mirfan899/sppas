@@ -371,6 +371,19 @@ function fct_test_bin {
     rm $TEMP
 }
 
+# Exec python unittest
+#  - $1: package to test
+funcfion fct_perform_unittest {
+    echo " ... Test $1 "
+
+    echo >> TEMP
+    echo " ================================================ " >> TEMP
+    echo " Start test of $1 " >>  $TEMP
+    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/$1" >& $TEMP
+    echo " ================================================ " >> TEMP
+    echo >> TEMP
+}
+
 
 # Use unittest to check the API
 function fct_test_api {
@@ -381,31 +394,14 @@ function fct_test_api {
     echo >> $LOG_DIAGNOSIS
 
     touch $TEMP
-    echo " ... Test annotationdata "
-    echo " ... Test annotationdata " >>  $TEMP
-    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/annotationdata" >& $TEMP
 
-    echo " ... Test Calculus "
-    echo " ... Test Calculus " >>  $TEMP
-    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/calculus"  >& $TEMP
-
-    echo " ... Test Presenters "
-    echo " ... Test Presenters " >>  $TEMP
-    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/presenters"  >& $TEMP
-
-    echo " ... Test Resources "
-    echo " ... Test Resources " >>  $TEMP
-    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/resources"  >& $TEMP
-
-    echo " ... Test Plugins "
-    echo " ... Test Plugins " >>  $TEMP
-    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/plugins"  >& $TEMP
-
-    echo " ... Test Signals "
-    echo " ... Test Signals ">>  $TEMP
-    python $PROGRAM_DIR/sppas/src/audiodata/tests/test_all.py 2>> $TEMP
-
-    echo " ... Test annotations "
+    fct_perform_unittest annotationdata
+    fct_perform_unittest calculus
+    fct_perform_unittest presenters
+    fct_perform_unittest resources
+    fct_perform_unittest plugins
+    fct_perform_unittest audiodata
+    #fct_perform_unittest annotations
     echo " ... Test annotations " >>  $TEMP
     python $PROGRAM_DIR/sppas/src/annotations/tests/test_all.py 2>> $TEMP
 

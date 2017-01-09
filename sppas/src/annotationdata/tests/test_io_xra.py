@@ -3,41 +3,44 @@
 
 import unittest
 import os
-import sys
-from os.path import dirname, abspath
-
-SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
-sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
+import shutil
 
 import annotationdata.io
-from annotationdata.label.label    import Label
-from annotationdata.ptime.point    import TimePoint
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.annotation     import Annotation
-from annotationdata.io.xra         import XRA
+from annotationdata.io.xra import XRA
+#import utils.fileutils
 
-SAMPLES = os.path.join(dirname(dirname(dirname(abspath(__file__)))), "samples")
-XRADEF  = os.path.join(dirname(dirname(dirname(dirname(abspath(__file__))))), "sppas", "etc", "xra")
+#TEMP = utils.fileutils.gen_name()
+DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+TEMP = os.path.join(DATA, "Temp")
+
+# ---------------------------------------------------------------------------
 
 
 class TestXRA(unittest.TestCase):
     """
     Represents an XRA file, the native format of SPPAS.
     """
+    def setUp(self):
+        if os.path.exists(TEMP) is False:
+            os.mkdir(TEMP)
+
+    def tearDown(self):
+        shutil.rmtree(TEMP)
+
     def test_Read1(self):
         tg1 = XRA()
-        tg1.read(os.path.join(XRADEF, "sample-1.1.xra"))
+        tg1.read(os.path.join(DATA, "sample-1.1.xra"))
 
     def test_Read2(self):
         tg2 = XRA()
-        tg2.read(os.path.join(XRADEF, "sample-1.2.xra"))
+        tg2.read(os.path.join(DATA, "sample-1.2.xra"))
 
     def test_ReadWrite(self):
         tg1 = XRA()
-        tg1.read(os.path.join(XRADEF, "sample-1.2.xra"))
-        annotationdata.io.write(os.path.join(SAMPLES, "sample-1.2.xra"), tg1)
+        tg1.read(os.path.join(DATA, "sample-1.2.xra"))
+        annotationdata.io.write(os.path.join(TEMP, "sample-1.2.xra"), tg1)
         tg2 = XRA()
-        tg2.read(os.path.join(SAMPLES, "sample-1.2.xra"))
+        tg2.read(os.path.join(TEMP, "sample-1.2.xra"))
         # Compare annotations of tg1 and tg2
         for t1, t2 in zip(tg1, tg2):
             self.assertEqual(t1.GetSize(), t2.GetSize())
@@ -52,17 +55,14 @@ class TestXRA(unittest.TestCase):
         # Compare hierarchy
         # Compare controlled vocabularies
         for t1, t2 in zip(tg1, tg2):
-            ctrl1 = t1.GetCtrlVocab() # a CtrlVocab() instance or None
-            ctrl2 = t2.GetCtrlVocab() # a CtrlVocab() instance or None
+            ctrl1 = t1.GetCtrlVocab()  # a CtrlVocab() instance or None
+            ctrl2 = t2.GetCtrlVocab()  # a CtrlVocab() instance or None
             if ctrl1 is None and ctrl2 is None:
                 continue
             self.assertEqual(ctrl1.GetSize(), ctrl2.GetSize())
             for entry in ctrl1:
                 self.assertTrue(ctrl2.Contains(entry.Text))
 
-        os.remove( os.path.join(SAMPLES, "sample-1.2.xra") )
-
-# End TestXRA
 # ---------------------------------------------------------------------------
 
 if __name__ == '__main__':

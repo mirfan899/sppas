@@ -1,4 +1,5 @@
 import sys
-from os.path import abspath, dirname, join
+from os.path import abspath, dirname
 SRC = dirname(dirname(dirname(abspath(__file__))))
-sys.path.append(SRC)
+if not SRC in sys.path:
+    sys.path.append(SRC)

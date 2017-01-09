@@ -5,12 +5,14 @@ import unittest
 import os
 
 import audiodata.io
+from sp_glob import SAMPLES_PATH
 
-from paths import SPPASSAMPLES,TEMP
-sample_1 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana1.wav")
-sample_2 = os.path.join(SPPASSAMPLES, "samples-fra", "F_F_B003-P9.wav")
-sample_3 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana3.wave")
-sample_4 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana1.aiff")
+sample_1 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana1.wav")
+sample_2 = os.path.join(SAMPLES_PATH, "samples-fra", "F_F_B003-P9.wav")
+sample_3 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana3.wave")
+sample_4 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana1.aiff")
+
+# ---------------------------------------------------------------------------
 
 
 class TestInformation(unittest.TestCase):
@@ -45,7 +47,6 @@ class TestInformation(unittest.TestCase):
         self.assertEqual(self._sample_3.get_framerate(), 16000)
         self.assertEqual(self._sample_4.get_framerate(), 16000)
 
-# End TestInformation
 # ---------------------------------------------------------------------------
 
 
@@ -69,7 +70,6 @@ class TestData(unittest.TestCase):
         self.assertEqual(len(self._sample_3.read_frames(self._sample_3.get_nframes())),(self._sample_3.get_nframes()*self._sample_3.get_sampwidth()*self._sample_3.get_nchannels()))
         #self.assertEqual(len(self._sample_4.read_frames(self._sample_4.get_nframes())),(self._sample_4.get_nframes()*self._sample_4.get_sampwidth()*self._sample_4.get_nchannels()))
 
-
     def test_ReadSamples(self):
         samples = self._sample_1.read_samples(self._sample_1.get_nframes())
         self.assertEqual(len(samples), 1)
@@ -88,9 +88,8 @@ class TestData(unittest.TestCase):
 #         self.assertEqual(len(samples), 1)
 #         self.assertEqual(len(samples[0]), self._sample_4.get_nframes())
 
-
     def test_WriteFrames(self):
-        _sample_new = os.path.join(TEMP,"newFile.wav")
+        _sample_new = os.path.join(TEMP, "newFile.wav")
 
         # save first
         audiodata.io.save( _sample_new, self._sample_1 )
@@ -113,7 +112,7 @@ class TestData(unittest.TestCase):
         newFile.close()
         os.remove(_sample_new)
 
-        _sample_new = os.path.join(TEMP,"newFile.wav")
+        _sample_new = os.path.join(TEMP, "newFile.wav")
         # save first
         audiodata.io.save( _sample_new, self._sample_3 )
         # read the saved file and compare Audio() instances
@@ -156,3 +155,12 @@ class TestData(unittest.TestCase):
 #         self.assertEqual(newFile.get_nframes(), self._sample_4.get_nframes())
 #         newFile.close()
 #         os.remove(_sample_new)
+
+# ---------------------------------------------------------------------------
+
+if __name__ == '__main__':
+
+    testsuite = unittest.TestSuite()
+    testsuite.addTest(unittest.makeSuite(TestInformation))
+    #testsuite.addTest(unittest.makeSuite(TestData))
+    unittest.TextTestRunner(verbosity=2).run(testsuite)

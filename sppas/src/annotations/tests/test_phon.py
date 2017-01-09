@@ -111,6 +111,7 @@ class TestDictPhon( unittest.TestCase ):
 
 # ---------------------------------------------------------------------------
 
+
 class TestDAGPhon(unittest.TestCase):
 
     def setUp(self):
@@ -125,6 +126,7 @@ class TestDAGPhon(unittest.TestCase):
         self.assertEqual(self.dd.decompose("p1 p2|x2 p3", "x1 x2 x3"), 'p1-p2-p3|p1-x2-p3|x1-x2-x3')
 
 # ---------------------------------------------------------------------------
+
 
 class TestSppasPhon(unittest.TestCase):
 

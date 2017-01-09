@@ -1,31 +1,35 @@
 #!/usr/bin/env python2
 # -*- coding: utf8 -*-
 
-
 import unittest
 import os
-import sys
-from os.path import *
-
-SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
-sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
+import shutil
 
 import annotationdata.io
-from annotationdata.io.xra import XRA
+#import utils.fileutils
 
-SAMPLES=os.path.join(dirname(dirname(dirname(abspath(__file__)))), "samples")
-XRADEF = os.path.join(dirname(dirname(dirname(dirname(abspath(__file__))))), "sppas", "etc", "xra")
+#TEMP = utils.fileutils.gen_name()
+DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+TEMP = os.path.join(DATA, "Temp")
+
+# ---------------------------------------------------------------------------
+
 
 class TestPhonedit(unittest.TestCase):
 
-    def test_io(self):
-        path = os.path.join(SAMPLES,"sample3.TextGrid")
-        trs = annotationdata.io.read(path)
-        annotationdata.io.write(os.path.join(SAMPLES,"sample3.mrk"), trs)
-        trs2 = annotationdata.io.read(os.path.join(SAMPLES,"sample3.mrk"))
+    def setUp(self):
+        if os.path.exists(TEMP) is False:
+            os.mkdir(TEMP)
 
+    def tearDown(self):
+        shutil.rmtree(TEMP)
+
+    def test_io(self):
+        path = os.path.join(DATA, "sample-irish.tdf")
+        trs = annotationdata.io.read(path)
+        annotationdata.io.write(os.path.join(TEMP, "sample.mrk"), trs)
+        trs2 = annotationdata.io.read(os.path.join(TEMP, "sample.mrk"))
         self.compare(trs, trs2)
-        os.remove(os.path.join(SAMPLES,"sample3.mrk"))
 
     def compare(self, trs1, trs2):
         self.assertEqual(trs1.GetSize(), trs2.GetSize())
@@ -43,9 +47,9 @@ class TestPhonedit(unittest.TestCase):
                     self.assertEqual(text1.Value, text2.Value)
 
     def test_Import_XRA(self):
-        tg1 = annotationdata.io.read(os.path.join(XRADEF, "sample-1.2.xra"))
-        annotationdata.io.write(os.path.join(SAMPLES,"sample-1.2.mrk"),tg1)
-        tg2 = annotationdata.io.read(os.path.join(SAMPLES, "sample-1.2.mrk"))
+        tg1 = annotationdata.io.read(os.path.join(DATA, "sample-1.2.xra"))
+        annotationdata.io.write(os.path.join(TEMP, "sample-1.2.mrk"), tg1)
+        tg2 = annotationdata.io.read(os.path.join(TEMP, "sample-1.2.mrk"))
 
         # Compare annotations of tg1 and tg2
         for t1, t2 in zip(tg1, tg2):
@@ -61,9 +65,6 @@ class TestPhonedit(unittest.TestCase):
                     p2 = round(a2.GetLocation().GetPoint().GetMidpoint(),4)
                     self.assertEqual(p1,p2)
 
-        os.remove(os.path.join(SAMPLES,"sample-1.2.mrk"))
-
-# End TestPhonedit
 # ---------------------------------------------------------------------------
 
 if __name__ == '__main__':

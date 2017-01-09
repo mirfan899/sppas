@@ -8,19 +8,14 @@ import audiodata.io
 from audiodata.audio import AudioPCM
 from audiodata.audiodataexc import AudioDataError
 
-from paths import SPPASSAMPLES,TEMP
-sample_1 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana1.wav")
-sample_3 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana3.wave")
-sample_new = os.path.join(TEMP,"newFile.wav")
-from utils.type import compare
+from sp_glob import SAMPLES_PATH
+sample_1 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana1.wav")
+sample_3 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana3.wave")
+
+# ---------------------------------------------------------------------------
+
 
 class TestAudioPCM(unittest.TestCase):
-
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
 
     def test_set_get(self):
         a1 = audiodata.io.open(sample_1)
@@ -50,3 +45,11 @@ class TestAudioPCM(unittest.TestCase):
         self.assertEqual(1, a2.append_channel( c2 ) )
         a2.insert_channel( 0, c1 )
         self.assertTrue( a2.verify_channels())
+
+# ---------------------------------------------------------------------------
+
+if __name__ == '__main__':
+
+    testsuite = unittest.TestSuite()
+    testsuite.addTest(unittest.makeSuite(TestAudioPCM))
+    unittest.TextTestRunner(verbosity=2).run(testsuite)

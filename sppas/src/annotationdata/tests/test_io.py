@@ -6,15 +6,17 @@ import os
 import shutil
 
 import annotationdata.io
-import utils.fileutils
+#import utils.fileutils
 
-TEMP = utils.fileutils.gen_name()
+#TEMP = utils.fileutils.gen_name()
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+TEMP = os.path.join(DATA, "Temp")
 
 # ---------------------------------------------------------------------------
 
 
 class TestIO(unittest.TestCase):
+
     def setUp(self):
         if os.path.exists(TEMP) is False:
             os.mkdir(TEMP)
