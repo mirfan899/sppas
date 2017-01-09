@@ -51,51 +51,50 @@ ENCODING = "utf-8"
 # ----------------------------------------------------------------------------
 
 
-def ToLower(entry):
+def to_lower(entry):
     """
     Return a unicode string with lower case.
 
-    @entry (String or Unicode)
-    @return Unicode
+    :param entry: (str or Unicode)
+    :return: Unicode
 
     """
     try:
         e = entry.decode('utf8')
-    except Exception:
+    except UnicodeEncodeError:
         e = entry
-    e = e.lower()
 
-    return e
+    return e.lower()
 
 # ----------------------------------------------------------------------------
 
 
-def ToStrip(entry):
+def to_strip(entry):
     """
-    To strip a string.
+    Strip a string.
     (remove also multiple spaces inside the string)
 
-    @entry (String or Unicode)
-    @return Unicode
+    :param entry: (str or Unicode)
+    :return: Unicode
 
     """
     try:
         e = entry.decode('utf8')
-    except Exception:
+    except UnicodeEncodeError:
         e = entry
     e = e.replace(u'\ufeff', ' ')
 
-    return ' '.join(e.split())
+    return " ".join(e.split())
 
 # ----------------------------------------------------------------------------
 
 
 def get_dump_filename(filename):
     """
-    Return the file name of the dumped version of filename.
+    Return the file name of the dump version of filename.
 
-    @param filename (String)
-    @return filename
+    :param filename (String)
+    :return: dump filename
 
     """
 
@@ -103,22 +102,21 @@ def get_dump_filename(filename):
 
     return fileName + DUMP_FILENAME_EXT
 
-# End get_dump_filename
 # ----------------------------------------------------------------------------
 
 
 def has_dump(filename):
     """
-    Test if a dumped file exists for filename.
+    Test if a dump file exists for filename and if it is up-to-date.
 
-    @param filename (String)
-    @return Boolean
+    :param filename: (str)
+    :return: (bool)
 
     """
-    dumpfilename = get_dump_filename(filename)
-    if os.path.isfile( dumpfilename ):
+    dump_filename = get_dump_filename(filename)
+    if os.path.isfile(dump_filename):
         tascii = os.path.getmtime(filename)
-        tdump  = os.path.getmtime(dumpfilename)
+        tdump = os.path.getmtime(dump_filename)
         if tascii < tdump:
             return True
 
@@ -131,26 +129,25 @@ def load_from_dump(filename):
     """
     Load the file from a dumped file.
 
-    @param filename
-    @return loaded data
+    :param filename: (str)
+    :return: loaded data or None
 
     """
     if has_dump(filename) is False:
         return None
 
-    dumpfilename = get_dump_filename(filename)
+    dump_filename = get_dump_filename(filename)
 
     try:
-        with codecs.open(dumpfilename, 'rb') as f:
+        with codecs.open(dump_filename, 'rb') as f:
             data = pickle.load(f)
     except Exception as e:
-        logging.info('Load dumped data failed: %s'%str(e))
-        os.remove( dumpfilename )
+        logging.info('Load dumped data failed: %s' % str(e))
+        os.remove(dump_filename)
         return None
 
     return data
 
-# End load_from_dump
 # ----------------------------------------------------------------------------
 
 
@@ -158,20 +155,20 @@ def save_as_dump(data, filename):
     """
     Save the data as a dumped file.
 
-    @param data to save
-    @param filename
+    :param data: The data to save
+    :param filename: File name for the data
+    :return: (bool)
 
     """
-    dumpfilename = get_dump_filename(filename)
+    dump_filename = get_dump_filename(filename)
 
     try:
-        with codecs.open(dumpfilename, 'wb') as f:
+        with codecs.open(dump_filename, 'wb') as f:
             pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
     except Exception as e:
-        logging.info('Save a dumped data failed: %s'%str(e))
+        logging.info('Save a dumped data failed: %s' % str(e))
         return False
 
     return True
 
-# End save_as_dump
 # ----------------------------------------------------------------------------

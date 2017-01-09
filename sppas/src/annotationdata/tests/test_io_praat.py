@@ -3,33 +3,39 @@
 
 import unittest
 import os
-import sys
-from os.path import dirname, abspath
+import shutil
 
-SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
-sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
-
-import annotationdata.io
 from annotationdata.label.label import Label
 from annotationdata.ptime.point import TimePoint
 from annotationdata.ptime.interval import TimeInterval
 from annotationdata.annotation import Annotation
 from annotationdata.io.praat import TextGrid
+import utils.fileutils
 
-SAMPLES = os.path.join(dirname(dirname(dirname(abspath(__file__)))), "samples")
-XRADEF = os.path.join(dirname(dirname(dirname(dirname(abspath(__file__))))), "sppas", "etc", "xra")
+TEMP = utils.fileutils.gen_name()
+DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+
+# ---------------------------------------------------------------------------
+
 
 class TestTextGrid(unittest.TestCase):
     """
     Test reader/writers of TextGrid files from Praat.
+    
     """
+    def setUp(self):
+        if os.path.exists(TEMP) is False:
+            os.mkdir(TEMP)
+
+    def tearDown(self):
+        shutil.rmtree(TEMP)
 
     def test_ReadIntervalsLong(self):
         tg1 = TextGrid()
         tg2 = TextGrid()
-        tg1.read(os.path.join(SAMPLES, "sample.TextGrid"))
-        tg1.write(os.path.join(SAMPLES, "sample2.TextGrid"))
-        tg2.read(os.path.join(SAMPLES, "sample2.TextGrid"))
+        tg1.read(os.path.join(DATA, "sample.TextGrid"))
+        tg1.write(os.path.join(TEMP, "sample.TextGrid"))
+        tg2.read(os.path.join(TEMP, "sample.TextGrid"))
         for t1, t2 in zip(tg1, tg2):
             self.assertEqual(t1.GetSize(), t2.GetSize())
             for a1, a2 in zip(t1, t2):
@@ -37,14 +43,13 @@ class TestTextGrid(unittest.TestCase):
                                  a2.GetLabel().GetValue())
                 self.assertEqual(a1.GetLocation().GetValue(),
                                  a2.GetLocation().GetValue())
-        os.remove(os.path.join(SAMPLES,"sample2.TextGrid"))
 
     def test_ReadPointsLong(self):
         tg1 = TextGrid()
         tg2 = TextGrid()
-        tg1.read(os.path.join(SAMPLES, "sample_points.TextGrid"))
-        tg1.write(os.path.join(SAMPLES, "sample_points2.TextGrid"))
-        tg2.read(os.path.join(SAMPLES, "sample_points2.TextGrid"))
+        tg1.read(os.path.join(DATA, "sample_points.TextGrid"))
+        tg1.write(os.path.join(TEMP, "sample_points.TextGrid"))
+        tg2.read(os.path.join(TEMP, "sample_points.TextGrid"))
         for t1, t2 in zip(tg1, tg2):
             self.assertEqual(t1.GetSize(), t2.GetSize())
             for a1, a2 in zip(t1, t2):
@@ -66,8 +71,7 @@ class TestTextGrid(unittest.TestCase):
                 ]
         for a in anns:
             tier.Add(a)
-
-        #tg.write(os.path.join(SAMPLES, "gaps.TextGrid"))
+        #tg.write(os.path.join(DATA, "gaps.TextGrid"))
 
     def test_GetName(self):
         """
@@ -192,15 +196,15 @@ class TestTextGrid(unittest.TestCase):
 
     def test_MinMaxTime(self):
         tg = TextGrid(mintime=0., maxtime=0.)
-        self.assertTrue(tg.GetMinTime()==0.)
+        self.assertEqual(tg.GetMinTime(), 0.)
         tg.SetMaxTime(3000)
         self.assertEqual(tg.GetMaxTime(), 3000)
         tg.SetMinTime(3000)
         self.assertEqual(tg.GetMinTime(), 3000)
 
-# End TestTextGrid
 # ---------------------------------------------------------------------------
 
 if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestTextGrid)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    testsuite = unittest.TestSuite()
+    testsuite.addTest(unittest.makeSuite(TestTextGrid))
+    unittest.TextTestRunner(verbosity=2).run(testsuite)

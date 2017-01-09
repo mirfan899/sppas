@@ -380,38 +380,34 @@ function fct_test_api {
     echo "##########  ${PROGRAM_NAME} API Diagnosis - $TODAY #########" >> $LOG_DIAGNOSIS
     echo >> $LOG_DIAGNOSIS
 
+    touch $TEMP
     echo " ... Test annotationdata "
     echo " ... Test annotationdata " >>  $TEMP
     python -m unittest discover -s "$PROGRAM_DIR/sppas/src/annotationdata" >& $TEMP
 
-    echo " ... Test I/O "
-    echo " ... Test I/O " >>  $TEMP
-    $TESTS_DIR/tests_annotationdata_io/test_all.py 2>> $TEMP
+    echo " ... Test Calculus "
+    echo " ... Test Calculus " >>  $TEMP
+    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/calculus"  >& $TEMP
 
-    echo " ... Test annotations "
-    echo " ... Test annotations " >>  $TEMP
-    python $PROGRAM_DIR/sppas/src/annotations/tests/test_all.py 2>> $TEMP
+    echo " ... Test Presenters "
+    echo " ... Test Presenters " >>  $TEMP
+    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/presenters"  >& $TEMP
+
+    echo " ... Test Resources "
+    echo " ... Test Resources " >>  $TEMP
+    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/resources"  >& $TEMP
+
+    echo " ... Test Plugins "
+    echo " ... Test Plugins " >>  $TEMP
+    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/plugins"  >& $TEMP
 
     echo " ... Test Signals "
     echo " ... Test Signals ">>  $TEMP
     python $PROGRAM_DIR/sppas/src/audiodata/tests/test_all.py 2>> $TEMP
 
-    echo " ... Test Analysis tools "
-    echo " ... Test Calculus " >>  $TEMP
-    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/calculus" 2>> $TEMP
-
-    echo " ... Test Presenters "
-    echo " ... Test Presenters " >>  $TEMP
-    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/presenters" 2>> $TEMP
-
-    echo " ... Test Resources "
-    echo " ... Test Resources " >>  $TEMP
-    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/resources" 2>> $TEMP
-
-    echo " ... Test Plugins "
-    echo " ... Test Plugins " >>  $TEMP
-    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/plugins" 2>> $TEMP
-
+    echo " ... Test annotations "
+    echo " ... Test annotations " >>  $TEMP
+    python $PROGRAM_DIR/sppas/src/annotations/tests/test_all.py 2>> $TEMP
 
     local error=`grep -c '... ERROR' $TEMP`
     if [ $error -eq 0 ]; then

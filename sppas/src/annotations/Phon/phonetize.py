@@ -39,7 +39,7 @@ import re
 from phonunk import PhonUnk
 from dagphon import DAGPhon
 
-from resources.rutils import ToStrip
+from resources.rutils import to_strip
 from resources.mapping import Mapping
 from resources.dictpron import DictPron
 
@@ -146,7 +146,7 @@ class DictPhon(object):
         the unknown symbol.
 
         """
-        entry = ToStrip(entry)
+        entry = to_strip(entry)
 
         # Specific strings... for the italian transcription...
         # For the participation at the CLIPS-Evalita 2011 campaign.
@@ -216,7 +216,7 @@ class DictPhon(object):
                         if not self._pdict.unkstamp in _tabpron:
                             # ATTENTION: each part can have variants! must be decomposed.
                             self._dag_phon.variants = 4
-                            phon = ToStrip(self._dag_phon.decompose(" ".join(_tabpron)))
+                            phon = to_strip(self._dag_phon.decompose(" ".join(_tabpron)))
                             status = WARNING_ID
 
                     if phon == self._pdict.unkstamp and phonunk is True:
@@ -289,7 +289,7 @@ class DictPhon(object):
                 subs.append(p)
 
         self._dag_phon.variants = 0
-        phon = ToStrip(self._dag_phon.decompose(" ".join(subs)))
+        phon = to_strip(self._dag_phon.decompose(" ".join(subs)))
 
         # Remove un-pronounced phonemes!!!
         # By convention, they are represented by an underscore in the

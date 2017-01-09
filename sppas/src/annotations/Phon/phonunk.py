@@ -40,13 +40,11 @@ import re
 from dagphon import DAGPhon
 import resources.rutils as rutils
 
-LIMIT_SIZE = 40 # Max nb of characters of an unknown entry
+LIMIT_SIZE = 40  # Max nb of characters of an unknown entry
 
 # ---------------------------------------------------------------------------
-# Class PhonUnk
-# ---------------------------------------------------------------------------
 
-class PhonUnk:
+class PhonUnk(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -115,8 +113,8 @@ class PhonUnk:
         @raise Exception if the word can NOT be phonetized
 
         """
-        _str = rutils.ToStrip( entry )
-        _str = rutils.ToLower( _str )
+        _str = rutils.to_strip( entry )
+        _str = rutils.to_lower( _str )
         if len(_str)>0 and _str[-1].isalnum() is False:
             _str = _str[:-1]
         if len(_str)>0 and _str[0].isalnum() is False:

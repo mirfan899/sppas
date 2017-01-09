@@ -48,26 +48,27 @@ import os
 
 import utils.fileutils
 
-from annotationdata.transcription  import Transcription
+from annotationdata.transcription import Transcription
 
 import audiodata.io
 import annotationdata.io
-from annotations.infotier        import sppasMetaInfoTier
-from annotations.log             import sppasLog
+from annotations.infotier import sppasMetaInfoTier
+from annotations.log import sppasLog
 
-from annotations.Momel.sppasmomel      import sppasMomel
-from annotations.Intsint.sppasintsint  import sppasIntsint
-from annotations.IPUs.ipusseg          import sppasIPUs
-from annotations.Token.sppastok        import sppasTok
-from annotations.Phon.sppasphon        import sppasPhon
-from annotations.Chunks.sppaschunks    import sppasChunks
-from annotations.Align.sppasalign      import sppasAlign
-from annotations.Syll.sppassyll        import sppasSyll
-from annotations.Repet.sppasrepet      import sppasRepet
+from annotations.Momel.sppasmomel import sppasMomel
+from annotations.Intsint.sppasintsint import sppasIntsint
+from annotations.IPUs.ipusseg import sppasIPUs
+from annotations.Token.sppastok import sppasTok
+from annotations.Phon.sppasphon import sppasPhon
+from annotations.Chunks.sppaschunks import sppasChunks
+from annotations.Align.sppasalign import sppasAlign
+from annotations.Syll.sppassyll import sppasSyll
+from annotations.Repet.sppasrepet import sppasRepet
 
 from threading import Thread
 
 # ----------------------------------------------------------------------------
+
 
 class sppasAnnotationsManager( Thread ):
     """

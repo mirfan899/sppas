@@ -42,7 +42,7 @@ from aligntrack import AlignTrack
 from tracks import TracksReader, TrackSplitter, TrackNamesGenerator
 
 from resources.mapping import Mapping
-from resources.rutils  import ToStrip
+from resources.rutils import to_strip
 from sp_glob import encoding
 
 # ------------------------------------------------------------------
@@ -238,7 +238,7 @@ class ListIO():
         # Each line corresponds to a track,
         # with a couple 'start end' of float values.
         for line in lines:
-            line = ToStrip(line)
+            line = to_strip(line)
             _tab = line.split()
             if len(_tab) >= 2:
                 _units.append( (float(_tab[0]),float(_tab[1])) )

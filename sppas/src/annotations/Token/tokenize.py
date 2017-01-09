@@ -285,7 +285,7 @@ class DictTok(object):
         s = " ".join(toks)
 
         # Then split each time there is a space and return result
-        s = rutils.ToStrip(s)
+        s = rutils.to_strip(s)
 
         return s.split()
 
@@ -324,9 +324,9 @@ class DictTok(object):
                 lmax = len(utt)
             for t2 in range(t1+1, lmax):
                 sl = sl + " " + utt[t2]
-            (i, tok) = self.__stick_longest(rutils.ToStrip(sl), attachement)  # real longest string!
+            (i, tok) = self.__stick_longest(rutils.to_strip(sl), attachement)  # real longest string!
             t1 += i
-            _utt.append(rutils.ToStrip(tok))
+            _utt.append(rutils.to_strip(tok))
 
         return _utt
 
@@ -349,7 +349,7 @@ class DictTok(object):
         sent = ' '.join(utt)
         sent = re.sub(u'([0-9])\.([0-9])', ur'\1 NUMBER_SEP_POINT \2', sent)
         sent = re.sub(u'([0-9])\,([0-9])', ur'\1 NUMBER_SEP \2', sent)
-        sent = rutils.ToStrip(sent)
+        sent = rutils.to_strip(sent)
         _utt = sent.split()
 
         # Other generic replacements
@@ -357,7 +357,7 @@ class DictTok(object):
         for s in _utt:
             if self.repl.is_key(s):
                 s = s.replace(s, self.repl.replace(s))
-            _result.append(rutils.ToStrip(s))
+            _result.append(rutils.to_strip(s))
 
         return _result
 
@@ -402,12 +402,12 @@ class DictTok(object):
                             _token = _tabtoks[t1]
                         i -= 1
                     t1 += i_ok
-                    t2 = rutils.ToStrip(_token)
+                    t2 = rutils.to_strip(_token)
                     if len(t2)>0:
                         _utt.append(t2)
 
             else:
-                _utt.append(rutils.ToStrip(tok))
+                _utt.append(rutils.to_strip(tok))
 
         return _utt
 
@@ -423,7 +423,7 @@ class DictTok(object):
         _utt = []
         for tok in utt:
             if "/" not in tok:
-                _utt.append(rutils.ToLower(tok))
+                _utt.append(rutils.to_lower(tok))
             else:
                 _utt.append(tok)
 
@@ -589,7 +589,7 @@ class DictTok(object):
                 if c == " " and inpron is True:
                     continue
             s += c
-        return rutils.ToStrip(s)
+        return rutils.to_strip(s)
 
     # ------------------------------------------------------------------
     # The main tokenize is HERE!
@@ -650,10 +650,10 @@ class DictTok(object):
         # Finally, prepare the result
         strres = ""
         for s in utt:
-            s = rutils.ToStrip(s)
+            s = rutils.to_strip(s)
             strres = strres + u" " + s.replace(u" ", u"_")
 
-        strres = rutils.ToStrip(strres)
+        strres = rutils.to_strip(strres)
         if len(strres)==0:
             return ""  # Nothing valid!
 
@@ -676,7 +676,7 @@ class DictTok(object):
         """
         # THE ENTRY (a transcription, a text...) IS A UTF8-STRING
         # -------------------------------------------------------
-        _str = rutils.ToStrip(entry)
+        _str = rutils.to_strip(entry)
 
         # Remove UTF-8 specific characters that are not in our dictionaries!
         try:

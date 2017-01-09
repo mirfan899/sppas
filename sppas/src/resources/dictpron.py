@@ -133,7 +133,7 @@ class DictPron(object):
         :return: pronunciations of the given token or the unknown symbol
 
         """
-        return self._dict.get(rutils.ToLower(entry), self.unkstamp)
+        return self._dict.get(rutils.to_lower(entry), self.unkstamp)
 
     # -----------------------------------------------------------------------
 
@@ -144,7 +144,7 @@ class DictPron(object):
         :param entry: (str) A token to find in the dictionary
 
         """
-        return rutils.ToLower(entry) not in self._dict.jeys()
+        return rutils.to_lower(entry) not in self._dict.keys()
 
     # -----------------------------------------------------------------------
 
@@ -156,7 +156,7 @@ class DictPron(object):
         :param pron: (str) A pronunciation
 
         """
-        prons = self._dict.get(rutils.ToLower(entry), None)
+        prons = self._dict.get(rutils.to_lower(entry), None)
         if prons is None:
             return False
 
@@ -196,9 +196,9 @@ class DictPron(object):
 
         """
         # Remove the CR/LF, tabs, multiple spaces and others... and lowerise
-        entry = rutils.ToStrip(token)
-        entry = rutils.ToLower(entry)
-        new_pron = rutils.ToStrip(pron)
+        entry = rutils.to_strip(token)
+        entry = rutils.to_lower(entry)
+        new_pron = rutils.to_strip(pron)
         new_pron = new_pron.replace(" ", DictPron.PHONEMES_SEPARATOR)
 
         # Already a pronunciation for this token?

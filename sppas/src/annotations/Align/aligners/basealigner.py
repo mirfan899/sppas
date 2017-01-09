@@ -41,7 +41,7 @@ import shutil
 from datetime import date
 
 from resources.acm.tiedlist import TiedList
-from resources.rutils import ToStrip
+from resources.rutils import to_strip
 
 # ---------------------------------------------------------------------------
 
@@ -192,8 +192,8 @@ class BaseAligner:
         if len(self._phones) == 0:
             raise IOError("No data to time-align.")
 
-        phones = ToStrip(self._phones).split()
-        tokens = ToStrip(self._tokens).split()
+        phones = to_strip(self._phones).split()
+        tokens = to_strip(self._tokens).split()
         if len(tokens) != len(phones):
             message = "Tokens alignment disabled: not the same number of tokens in tokenization (%d) and phonetization (%d)."%(len(self._tokens),len(self._phones))
             self._tokens = " ".join([ "w_"+str(i) for i in range(len(self._phones)) ])

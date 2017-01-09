@@ -51,8 +51,6 @@ from sp_glob import RESOURCES_PATH
 from annotations.sppasbase import sppasBase
 
 # ---------------------------------------------------------------------------
-# sppasTok main class
-# ---------------------------------------------------------------------------
 
 
 class sppasTok(sppasBase):

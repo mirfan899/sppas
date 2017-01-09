@@ -121,11 +121,11 @@ class TestRutils(unittest.TestCase):
 
     def test_lower(self):
         for key,value in LowerDict.iteritems():
-            self.assertEqual(value, rutils.ToLower(key))
-        self.assertEqual(rutils.ToLower(u'Ỹ'), rutils.ToLower('Ỹ'))
+            self.assertEqual(value, rutils.to_lower(key))
+        self.assertEqual(rutils.to_lower(u'Ỹ'), rutils.to_lower('Ỹ'))
 
     def test_strip(self):
-        self.assertEqual(rutils.ToStrip(u'  \n Ỹ  \t\r   ỏ  '), u'Ỹ ỏ')
+        self.assertEqual(rutils.to_strip(u'  \n Ỹ  \t\r   ỏ  '), u'Ỹ ỏ')
 
 # ---------------------------------------------------------------------------
 

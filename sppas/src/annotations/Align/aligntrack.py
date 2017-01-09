@@ -38,7 +38,7 @@
 import codecs
 
 from sp_glob import encoding
-from resources.rutils import ToStrip
+from resources.rutils import to_strip
 
 import aligners
 
@@ -237,7 +237,7 @@ class AlignTrack( object ):
         line = ""
         try:
             with codecs.open(filename, 'r', encoding) as fp:
-                line = ToStrip(fp.readline())
+                line = to_strip(fp.readline())
         except Exception:
             return "" # IOError, Encoding error...
 

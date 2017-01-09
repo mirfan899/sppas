@@ -42,8 +42,6 @@ from subprocess import Popen, PIPE, STDOUT
 from annotations.Align.aligners.basealigner import BaseAligner
 
 from sp_glob import encoding
-from resources.rutils import ToStrip
-from resources.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
 from resources.dictpron import DictPron
 
 # ----------------------------------------------------------------------------

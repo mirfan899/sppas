@@ -54,10 +54,9 @@ from annotationdata.label.text     import Text
 
 import audiodata.autils as autils
 
-from resources.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
-from resources.patterns        import Patterns
-from resources.rutils          import ToStrip
-from resources.mapping         import Mapping
+from resources.patterns import Patterns
+from resources.rutils import to_strip
+from resources.mapping import Mapping
 
 from sp_glob import UNKSTAMP
 
@@ -576,6 +575,6 @@ class Chunks( object ):
                     besttext = besttext.replace(UNKSTAMP, "sil")
                 raw = raw + " " + besttext
 
-        return ToStrip(raw)
+        return to_strip(raw)
 
 # --------------------------------------------------------------------------

@@ -60,7 +60,9 @@ from acm.phoneset import PhoneSet
 from acm.acmodel import AcModel
 from acm.htkscripts import HtkScripts
 from acm.acmodelhtkio import HtkIO
-from acm.htktrain import DataTrainer, TrainingCorpus, HTKModelInitializer, HTKModelTrainer
+
+# circular imports (requires annotations):
+# from acm.htktrain import DataTrainer, TrainingCorpus, HTKModelInitializer, HTKModelTrainer
 
 # Lexicons
 # ---------------------------------
@@ -81,12 +83,12 @@ __all__ = [
     "Features",
     "PhoneSet",
     "AcModel",
-    "DataTrainer",
-    "TrainingCorpus",
+    #"DataTrainer",
+    #"TrainingCorpus",
     "HtkScripts",
     "HtkIO",
-    "HTKModelInitializer",
-    "HTKModelTrainer",
+    #"HTKModelInitializer",
+    #"HTKModelTrainer",
     "Mapping",
     "DictRepl",
     "DictPron",

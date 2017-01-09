@@ -44,10 +44,10 @@ from sp_glob import encoding
 from annotations.Align.aligners.basealigner import BaseAligner
 
 from resources.slm.ngramsmodel import NgramsModel
-from resources.slm.arpaio      import ArpaIO
+from resources.slm.arpaio import ArpaIO
 from resources.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
-from resources.rutils          import ToStrip
-from resources.dictpron        import DictPron
+from resources.rutils import to_strip
+from resources.dictpron import DictPron
 
 # ----------------------------------------------------------------------------
 JULIUS_EXT_OUT = ["palign","walign"]
@@ -340,7 +340,7 @@ class JuliusAligner( BaseAligner ):
         entries = []
         for line in lines:
             if line.find("Error: voca_load_htkdict")>-1 and line.find("not found")>-1:
-                line = ToStrip( line )
+                line = to_strip( line )
                 line = line[line.find('"')+1:]
                 line = line[:line.find('"')]
                 if len(line)>0:

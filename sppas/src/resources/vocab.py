@@ -99,7 +99,7 @@ class Vocabulary(object):
         """
         entry = entry.strip()
         if self.case_sensitive is False:
-            entry = rutils.ToLower(entry)
+            entry = rutils.to_lower(entry)
 
         if entry not in self._stw:
             self._stw[entry] = 0

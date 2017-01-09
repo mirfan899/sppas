@@ -45,7 +45,7 @@ import os
 import codecs
 from sp_glob import encoding
 
-from resources.rutils import ToStrip
+from resources.rutils import to_strip
 
 # ----------------------------------------------------------------------------
 
@@ -125,7 +125,7 @@ class AlignerIO( object ):
 
         for line in lines:
             # Each line is either a new annotation or nothing interesting!
-            line = ToStrip(line)
+            line = to_strip(line)
 
             if line.startswith("=== begin forced alignment ==="):
                 phonidx = 0
@@ -135,7 +135,7 @@ class AlignerIO( object ):
 
             elif line.startswith("phseq1:"):
                 line = line[7:]
-                line = ToStrip(line)
+                line = to_strip(line)
 
                 wordseq = line.split('|')
                 # get indexes of each word
@@ -147,7 +147,7 @@ class AlignerIO( object ):
                     wordlist.append( _idx )
                 # get the list of phonemes (without word segmentation)
                 line = line.replace('|','')
-                line = ToStrip(line)
+                line = to_strip(line)
                 phonlist = line.split()
 
             elif line.startswith('cmscore1:'):
@@ -168,7 +168,7 @@ class AlignerIO( object ):
                 # New phonemes
                 line = line.replace("[","")
                 line = line.replace("]","")
-                line = ToStrip(line)
+                line = to_strip(line)
                 tab = line.split(" ")
                 # tab 0: first frame
                 # tab 1: last frame
@@ -237,7 +237,7 @@ class AlignerIO( object ):
 
         for line in lines:
             # Each line is either a new annotation or nothing interesting!
-            line = ToStrip(line)
+            line = to_strip(line)
 
             if line.startswith("=== begin forced alignment ==="):
                 wordidx = 0
@@ -263,7 +263,7 @@ class AlignerIO( object ):
                 # New phonemes
                 line = line.replace("[","")
                 line = line.replace("]","")
-                line = ToStrip(line)
+                line = to_strip(line)
                 tab = line.split(" ")
                 # tab 0: first frame
                 # tab 1: last frame
