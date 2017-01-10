@@ -2,13 +2,14 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
+import os.path
 from plugins.manager import sppasPluginsManager
 from sp_glob import BASE_PATH
 
-DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+# ---------------------------------------------------------------------------
 
-soxplugin=os.path.join(DATA, "soxplugin.zip")
+DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+soxplugin = os.path.join(DATA, "soxplugin.zip")
 sample = os.path.join(os.path.dirname(BASE_PATH), "samples", "samples-eng", "oriana1.wav")
 
 # ---------------------------------------------------------------------------
@@ -37,10 +38,3 @@ class TestPluginsManager(unittest.TestCase):
         # Delete it...
         self.manager.delete(soxid)
         self.assertEqual(len(self.manager.get_plugin_ids()), 0)
-
-# ---------------------------------------------------------------------------
-
-if __name__ == "__main__":
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestPluginsManager))
-    unittest.TextTestRunner(verbosity=2).run(testsuite)

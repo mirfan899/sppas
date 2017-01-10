@@ -2,10 +2,12 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
+import os.path
 from shutil import copyfile
 
 from plugins.cfgparser import sppasPluginConfigParser
+
+# ---------------------------------------------------------------------------
 
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 configfile = os.path.join(DATA, "plugin.ini")
@@ -47,10 +49,3 @@ class TestPluginConfigParser(unittest.TestCase):
         self.assertEqual(len(conf), 3)  # id, name, descr
         self.assertEqual(len(opt), 3)   # input, -v, show-progress
         self.assertEqual(len(com), 3)
-
-# ---------------------------------------------------------------------------
-
-if __name__ == "__main__":
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestPluginConfigParser))
-    unittest.TextTestRunner(verbosity=2).run(testsuite)

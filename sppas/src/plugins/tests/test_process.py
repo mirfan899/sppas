@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
+import os.path
 import time
 
 from plugins.param import sppasPluginParam
@@ -27,10 +27,3 @@ class TestPluginProcess(unittest.TestCase):
         self.process.stop()
         line = self.process.communicate()
         self.assertGreater(len(line), 0)
-
-# ---------------------------------------------------------------------------
-
-if __name__ == "__main__":
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestPluginProcess))
-    unittest.TextTestRunner(verbosity=2).run(testsuite)

@@ -2,9 +2,11 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
+import os.path
 
 from plugins.param import sppasPluginParam
+
+# ---------------------------------------------------------------------------
 
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
@@ -26,10 +28,3 @@ class TestPluginParam(unittest.TestCase):
         self.assertEqual(len(opt), 3)
         self.assertEqual(opt["Option1"].get_key(), "-b")
         self.assertEqual(opt["Option2"].get_key(), "--show-progress")
-
-# ---------------------------------------------------------------------------
-
-if __name__ == "__main__":
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestPluginParam))
-    unittest.TextTestRunner(verbosity=2).run(testsuite)
