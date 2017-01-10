@@ -4,7 +4,6 @@
 import unittest
 
 from annotationdata.tier import Tier
-
 from annotationdata.label.label import Label
 from annotationdata.ptime.point import TimePoint
 from annotationdata.ptime.interval import TimeInterval
@@ -469,10 +468,3 @@ class TestTier(unittest.TestCase):
 
         index = tier.Search(["0", "1"], function="contains", forward=True, pos=0, reverse=True)
         self.assertEquals(index, 2)
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestTier)
-    unittest.TextTestRunner(verbosity=2).run(suite)
-

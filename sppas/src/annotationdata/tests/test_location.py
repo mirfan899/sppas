@@ -64,11 +64,3 @@ class TestLocation(unittest.TestCase):
         self.assertEqual(p2, location.GetEnd())
         with self.assertRaises(AttributeError):
             location.GetPoint()
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestLocalization))
-    testsuite.addTest(unittest.makeSuite(TestLocation))
-    unittest.TextTestRunner(verbosity=2).run(testsuite)

@@ -294,13 +294,3 @@ class TestTimeDisjoint(unittest.TestCase):
         self.assertEquals(t_disjoint.End, TimePoint(11))
         with self.assertRaises(ValueError):
             t_disjoint.SetEnd(TimePoint(9))
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestTimePoint))
-    testsuite.addTest(unittest.makeSuite(TestTimeInterval))
-    testsuite.addTest(unittest.makeSuite(TestTimeDisjoint))
-    unittest.TextTestRunner(verbosity=2).run(testsuite)
-

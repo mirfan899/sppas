@@ -137,9 +137,3 @@ class TestHierarchy(unittest.TestCase):
 
         self.assertTrue(phonemes.IsSuperset(tokens))
         self.assertTrue(tokens.IsSuperset(syntax))
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestHierarchy)
-    unittest.TextTestRunner(verbosity=2).run(suite)

@@ -2,15 +2,18 @@
 # -*- coding: utf8 -*-
 
 import unittest
-import os
+import os.path
 import shutil
 
 import annotationdata.aio
 from annotationdata.aio.elan import Elan
 from annotationdata.transcription import Transcription
+import utils.fileutils
 
+# ---------------------------------------------------------------------------
+
+TEMP = utils.fileutils.gen_name()
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-TEMP = os.path.join(DATA, "Temp")
 
 # ---------------------------------------------------------------------------
 
@@ -76,11 +79,3 @@ class TestEAF(unittest.TestCase):
                     # ELAN radius is 0.02 seconds
                     p = round( a1.GetLocation().GetPoint().GetMidpoint()-0.02, 3)
                     self.assertEqual(p, round(a2.GetLocation().GetBegin().GetMidpoint(),3))
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestEAF)
-    unittest.TextTestRunner(verbosity=2).run(suite)
-
-

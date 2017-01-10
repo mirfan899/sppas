@@ -7,11 +7,12 @@ import shutil
 
 import annotationdata.aio
 from annotationdata.transcription  import Transcription
-#import utils.fileutils
+import utils.fileutils
 
-#TEMP = utils.fileutils.gen_name()
+# ---------------------------------------------------------------------------
+
+TEMP = utils.fileutils.gen_name()
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-TEMP = os.path.join(DATA, "Temp")
 
 # ---------------------------------------------------------------------------
 
@@ -45,10 +46,3 @@ class TestHTK(unittest.TestCase):
 #                 self.assertEqual(a1.GetLabel().GetValue(), a2.GetLabel().GetValue())
 #                 self.assertEqual(a1.GetLocation().GetBegin(), a2.GetLocation().GetBegin())
 #                 self.assertEqual(a1.GetLocation().GetEnd(),   a2.GetLocation().GetEnd())
-
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestHTK)
-    unittest.TextTestRunner(verbosity=2).run(suite)

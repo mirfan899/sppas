@@ -145,12 +145,3 @@ class TestLabel(unittest.TestCase):
         self.assertTrue(text.IsEmpty())
         text.UnsetValue()
         self.assertTrue(text.IsEmpty())
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestText))
-    testsuite.addTest(unittest.makeSuite(TestEvents))
-    testsuite.addTest(unittest.makeSuite(TestLabel))
-    unittest.TextTestRunner(verbosity=2).run(testsuite)

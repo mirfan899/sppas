@@ -110,14 +110,3 @@ class TestRelationFilter(unittest.TestCase):
         fY = Filter(tiery)
         relation = Rel('equals')
         new_tier = RelationFilter( relation, fX, fY ).Filter()
-        # old solution was:
-        # new_tier = tierx().Link(tiery(), Rel('equals')).Filter(replace=True)
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestRelationFilter))
-    unittest.TextTestRunner(verbosity=2).run(testsuite)
-
-

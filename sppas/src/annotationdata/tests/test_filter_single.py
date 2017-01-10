@@ -133,10 +133,3 @@ class TestSingleFilter(unittest.TestCase):
         ans = [a for a in ltc]
         self.assertEqual(len(ans), 2)
         self.assertEqual(ans[1].GetLabel().GetValue(), tier[2].GetLabel().GetValue())
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestSingleFilter)
-    unittest.TextTestRunner(verbosity=2).run(suite)
-

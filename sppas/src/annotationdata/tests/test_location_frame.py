@@ -279,12 +279,3 @@ class TestFrameDisjoint(unittest.TestCase):
         self.assertEquals(t_disjoint.GetEnd(), FramePoint(11))
         with self.assertRaises(ValueError):
             t_disjoint.SetEnd(FramePoint(9))
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestFramePoint))
-    testsuite.addTest(unittest.makeSuite(TestFrameInterval))
-    testsuite.addTest(unittest.makeSuite(TestFrameDisjoint))
-    unittest.TextTestRunner(verbosity=2).run(testsuite)

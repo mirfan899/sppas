@@ -373,14 +373,19 @@ function fct_test_bin {
 
 # Exec python unittest on a package.
 function fct_perform_unittest {
-
+    # for help:
+    # python -m unittest -h
+    # Here, we use:
+    # -v for verbosity
+    # -t top-level-project for successfull imports
+    # automatically discover tests with pattern "test*.py" from -s start-directory
     touch $TEMP
     echo " ... Test $1 "
 
     echo >> $TEMP
     echo " ================================================ " >> $TEMP
     echo " Start test of $1 " >>  $TEMP
-    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/$1" 2>> $TEMP
+    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/$1" -v -t "$SPPAS/sppas/src" 2>> $TEMP
     echo " ================================================ " >> $TEMP
     echo >> $TEMP
 

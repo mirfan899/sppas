@@ -2,16 +2,17 @@
 # -*- coding: utf8 -*-
 
 import unittest
-import os
+import os.path
 import shutil
 
 import annotationdata.aio
 from annotationdata.aio.xra import XRA
-#import utils.fileutils
+import utils.fileutils
 
-#TEMP = utils.fileutils.gen_name()
+# ---------------------------------------------------------------------------
+
+TEMP = utils.fileutils.gen_name()
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-TEMP = os.path.join(DATA, "Temp")
 
 # ---------------------------------------------------------------------------
 
@@ -62,9 +63,3 @@ class TestXRA(unittest.TestCase):
             self.assertEqual(ctrl1.GetSize(), ctrl2.GetSize())
             for entry in ctrl1:
                 self.assertTrue(ctrl2.Contains(entry.Text))
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestXRA)
-    unittest.TextTestRunner(verbosity=2).run(suite)

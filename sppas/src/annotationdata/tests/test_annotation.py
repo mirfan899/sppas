@@ -140,12 +140,3 @@ class TestAnnotation(unittest.TestCase):
         clone = a.Copy()
         a.GetLocation().SetEnd(TimePoint(10))
         self.assertTrue(clone.GetLocation().GetEnd().GetValue(), 2)
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestAnnotation))
-    unittest.TextTestRunner(verbosity=2).run(testsuite)
-
-

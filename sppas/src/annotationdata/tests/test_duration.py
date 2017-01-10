@@ -2,14 +2,11 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
-import sys
-from os.path import *
-
-SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
-sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
 from annotationdata.ptime.duration import Duration
+
+# ---------------------------------------------------------------------------
+
 
 class TestDuration(unittest.TestCase):
 
@@ -58,7 +55,6 @@ class TestDuration(unittest.TestCase):
         self.assertGreater(self.pointX, self.pointV)
         self.assertGreater(self.pointX, 1.001)
 
-
     def test__ne__(self):
         self.assertNotEqual(self.pointV, self.pointX)
 
@@ -78,7 +74,6 @@ class TestDuration(unittest.TestCase):
         self.assertGreaterEqual(self.pointV, self.pointV)
         self.assertGreaterEqual(self.pointV, self.pointW)
 
-
     def test_others(self):
         point0 = Duration(0.1, 0.2)
         self.assertEqual(point0.GetValue(), 0.1)
@@ -92,11 +87,3 @@ class TestDuration(unittest.TestCase):
         point3 = Duration(0.1, 0.2)
         point2.Set( point3 )
         self.assertFalse(point2 is point3)
-
-# End TestDuration
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestDuration)
-    unittest.TextTestRunner(verbosity=2).run(suite)
-

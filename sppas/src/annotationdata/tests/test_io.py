@@ -2,15 +2,16 @@
 # -*- coding: utf8 -*-
 
 import unittest
-import os
+import os.path
 import shutil
 
 import annotationdata.aio
-#import utils.fileutils
+import utils.fileutils
 
-#TEMP = utils.fileutils.gen_name()
+# ---------------------------------------------------------------------------
+
+TEMP = utils.fileutils.gen_name()
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-TEMP = os.path.join(DATA, "Temp")
 
 # ---------------------------------------------------------------------------
 
@@ -86,10 +87,3 @@ class TestIO(unittest.TestCase):
                 self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
 
     # TODO: test heuristic
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestIO)
-    unittest.TextTestRunner(verbosity=2).run(suite)
-

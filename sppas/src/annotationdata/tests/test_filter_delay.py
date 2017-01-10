@@ -8,7 +8,6 @@ from annotationdata.filter.delay_relations import Delay
 from annotationdata.filter.delay_relations import IntervalsDelay
 from annotationdata.filter.delay_relations import AndPredicates, OrPredicates
 
-# some import to build intervals/Annotation
 from annotationdata.ptime.point import TimePoint
 from annotationdata.ptime.interval import TimeInterval
 from annotationdata.label.label import Label
@@ -1161,11 +1160,3 @@ class TestIntervalsDelay(unittest.TestCase):
                             nbAsserts += 1
         if nbAsserts <= 0:
             raise Warning("Any assertion in the test loop")
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestDelay))
-    testsuite.addTest(unittest.makeSuite(TestIntervalsDelay))
-    unittest.TextTestRunner(verbosity=2).run(testsuite)

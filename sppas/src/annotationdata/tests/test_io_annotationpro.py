@@ -9,11 +9,12 @@ import annotationdata.aio
 from annotationdata.aio.annotationpro import Antx
 from annotationdata.aio.elan import Elan
 from annotationdata.aio.xra import XRA
-#import utils.fileutils
+import utils.fileutils
 
-#TEMP = utils.fileutils.gen_name()
+# ---------------------------------------------------------------------------
+
+TEMP = utils.fileutils.gen_name()
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-TEMP = os.path.join(DATA, "Temp")
 
 # ---------------------------------------------------------------------------
 
@@ -82,11 +83,3 @@ class TestAntx(unittest.TestCase):
         #         self.assertEqual(a1.GetLabel().GetValue(), a2.GetLabel().GetValue())
         #         self.assertEqual(a1.GetLocation().GetBegin(), a2.GetLocation().GetBegin())
         #         self.assertEqual(a1.GetLocation().GetEnd(), a2.GetLocation().GetEnd())
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestAntx))
-    unittest.TextTestRunner(verbosity=2).run(testsuite)

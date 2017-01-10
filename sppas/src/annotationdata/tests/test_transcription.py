@@ -83,10 +83,3 @@ class TestTranscription(unittest.TestCase):
         self.assertEquals(self.tier1.GetMedia(), m1)
         self.trs.RemoveMedia( m1 )
         self.assertEquals(self.tier1.GetMedia(), None)
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestTranscription)
-    unittest.TextTestRunner(verbosity=2).run(suite)
-

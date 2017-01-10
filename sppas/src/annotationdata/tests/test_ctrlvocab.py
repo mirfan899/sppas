@@ -84,11 +84,3 @@ class TestCtrlVocab(unittest.TestCase):
         self.assertEquals(voc.GetSize(), 0)
         self.assertTrue(voc.Append("definition"))
         self.assertEquals(voc.GetSize(), len(voc))
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestCtrlVocab)
-    unittest.TextTestRunner(verbosity=2).run(suite)
-
-# ---------------------------------------------------------------------------
