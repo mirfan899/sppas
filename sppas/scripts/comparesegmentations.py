@@ -59,7 +59,7 @@ SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
 from   annotationdata.transcription import Transcription
-import annotationdata.io
+import annotationdata.aio
 
 # ----------------------------------------------------------------------------
 # Constants
@@ -81,7 +81,7 @@ def get_tier( filename, tieridx ):
     or None if some error occurs..
     """
     try:
-        trsinput = annotationdata.io.read( filename )
+        trsinput = annotationdata.aio.read( filename )
     except Exception:
         return None
     if tieridx < 0 or tieridx >= trsinput.GetSize():
@@ -378,11 +378,11 @@ elif os.path.isdir( args.fh ) and os.path.isdir( args.fr ):
 
     for fr in reffiles:
         basefr,extfr = os.path.splitext( fr )
-        if not extfr.lower() in annotationdata.io.extensions:
+        if not extfr.lower() in annotationdata.aio.extensions:
             continue
         for fh in hypfiles:
             basefh,extfh = os.path.splitext( fh )
-            if not extfh.lower() in annotationdata.io.extensions:
+            if not extfh.lower() in annotationdata.aio.extensions:
                 continue
             if fh.startswith( basefr ):
                 files.append( (fr,fh) )

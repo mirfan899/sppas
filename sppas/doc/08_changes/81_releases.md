@@ -755,7 +755,7 @@ Development:
 
   - package annotationdata.filter updated to support last changes of
     annotationdata: multiple labels and numerical labels.
-  - package annotationdata.io:
+  - package annotationdata.aio:
 
       - praat.py newly created. Support of TextGrid, PitchTier and
        IntensityTier files completely re-written
@@ -784,7 +784,7 @@ GUI:
 
 Development:
 
-  - package annotationdata.io:
+  - package annotationdata.aio:
 
       - add support of subtitles: sub, srt
       - elan.py created to replace eaf.py: allows a full support of Elan annotations
@@ -832,7 +832,7 @@ Development:
      - add CtrlVocab object
      - add inheritance of MetaObject for Annotation
 
-  - package annotationdata.io:
+  - package annotationdata.aio:
 
      - complete debug of all file formats
      - add comments and documentation

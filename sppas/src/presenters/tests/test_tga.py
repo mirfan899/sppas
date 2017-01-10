@@ -4,7 +4,7 @@
 import unittest
 import os
 
-import annotationdata.io
+import annotationdata.aio
 from annotationdata.annotation  import Annotation
 from annotationdata.label.label import Label
 from annotationdata.ptime.interval import TimeInterval
@@ -47,7 +47,7 @@ class TestTGA(unittest.TestCase):
     def testTGA(self):
         # This is one of the samples proposed in-line by Dafydd
         path = os.path.join(DATA, "tga.TextGrid")
-        trs = annotationdata.io.read(path)
+        trs = annotationdata.aio.read(path)
         tier = trs.Find('Syllables')
         t = TierTGA( tier )
         t.append_separator('_')

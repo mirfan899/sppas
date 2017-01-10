@@ -44,7 +44,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import os
 import audiodata
 from annotationdata.utils.trsutils import TrsUtils
-import annotationdata.io
+import annotationdata.aio
 
 # ----------------------------------------------------------------------------
 
@@ -76,7 +76,7 @@ class AudioSlicer(object):
 
         audiospeech = audiodata.aio.open(audiofile)
 
-        transcription = annotationdata.io.read(trsfile)
+        transcription = annotationdata.aio.read(trsfile)
 
         tracks_tier = None
         for tier in transcription:
@@ -106,4 +106,4 @@ class AudioSlicer(object):
 
         for name, chunk, trs in zip(names, chunks, list_transcription):
             audiodata.aio.save(os.path.join(output_dir, name + ".wav"), chunk)
-            annotationdata.io.write(os.path.join(output_dir, name + "." + output_ext), trs)
+            annotationdata.aio.write(os.path.join(output_dir, name + "." + output_ext), trs)

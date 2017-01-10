@@ -41,8 +41,8 @@ import os
 import utils.fileutils as fileutils
 
 import audiodata.aio
-import annotationdata.io
-from annotationdata.io.utils import gen_id
+import annotationdata.aio
+from annotationdata.aio.utils import gen_id
 from annotationdata.media    import Media
 
 from sp_glob import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
@@ -195,13 +195,13 @@ class sppasChunks( sppasBase ):
         # Get the tiers to be time-aligned
         # ---------------------------------------------------------------
 
-        trsinput = annotationdata.io.read( phonesname )
+        trsinput = annotationdata.aio.read( phonesname )
         phontier = self.get_phonestier( trsinput )
         if phontier is None:
             raise IOError("No tier with the raw phonetization was found.")
 
         try:
-            trsinputtok = annotationdata.io.read( tokensname )
+            trsinputtok = annotationdata.aio.read( tokensname )
             toktier = self.get_tokenstier( trsinputtok )
         except Exception:
             raise IOError("No tier with the raw tokenization was found.")
@@ -240,7 +240,7 @@ class sppasChunks( sppasBase ):
         try:
             self.print_message("Save automatic chunk alignment: ",indent=3)
             # Save in a file
-            annotationdata.io.write( outputfilename,trsoutput )
+            annotationdata.aio.write( outputfilename,trsoutput )
         except Exception:
             if self._options['clean'] is True:
                 shutil.rmtree( workdir )

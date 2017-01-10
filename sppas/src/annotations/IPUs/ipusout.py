@@ -43,7 +43,7 @@ from sp_glob import encoding
 from audiodata.autils import frames2times
 
 import audiodata.aio
-import annotationdata.io
+import annotationdata.aio
 from audiodata.audio                import AudioPCM
 from annotationdata.transcription   import Transcription
 from annotationdata.media           import Media
@@ -340,7 +340,7 @@ class IPUsOut( object ):
         trs = Transcription()
         tier = trs.NewTier("Transcription")
         tier.Append(ann)
-        annotationdata.io.write(trackfilename, trs)
+        annotationdata.aio.write(trackfilename, trs)
 
     # ------------------------------------------------------------------
 

@@ -32,7 +32,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# annotationdata.io package
+# annotationdata.aio package
 # ----------------------------------------------------------------------------
 
 """
@@ -98,7 +98,7 @@ def read( filename ):
     @return Transcription
 
     >>> # Read an annotated file:
-    >>> transcription = annotationdata.io.read('filename')
+    >>> transcription = annotationdata.aio.read('filename')
 
     >>> # Get a tier of a transcription from its index:
     >>> tier = transcription[0]

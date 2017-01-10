@@ -43,7 +43,7 @@ from annotationdata.transcription import Transcription
 from annotationdata.annotation import Annotation
 from annotationdata.ptime.point import TimePoint
 from annotationdata.label.label import Label
-import annotationdata.io
+import annotationdata.aio
 
 from annotationdata.pitch import Pitch
 from annotations.Momel.momel import Momel
@@ -128,7 +128,7 @@ class sppasMomel( sppasBase ):
         @return A list of pitch values (one value each 10 ms).
 
         """
-        pitch = annotationdata.io.read( inputfilename )
+        pitch = annotationdata.aio.read( inputfilename )
         pitchlist = pitch.get_pitch_list()
         if len(pitchlist) == 0:
             raise IOError('Error while reading '+inputfilename+'\nEmpty pitch tier.\n')
@@ -173,7 +173,7 @@ class sppasMomel( sppasBase ):
                 trsp=Transcription()
                 trsp.Add(tier)
                 try:
-                    annotationdata.io.write(outputfile, trsp)
+                    annotationdata.aio.write(outputfile, trsp)
                 except Exception:
                     if self.logfile is not None:
                         self.logfile.print_message("Can't write PitchTier output file.",status=-1)
@@ -265,7 +265,7 @@ class sppasMomel( sppasBase ):
                 self.logfile.print_message(str(len(targets))+ " targets found.",indent=2,status=3)
 
             momeltier.SetRadius(0.005) # because one pitch estimation each 10ms...
-            annotationdata.io.write( trsoutput, trsm )
+            annotationdata.aio.write( trsoutput, trsm )
         elif outputfile:
             self.print_targets(targets, outputfile, trs=None)
         else:

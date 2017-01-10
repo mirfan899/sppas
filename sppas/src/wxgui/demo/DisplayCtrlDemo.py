@@ -43,7 +43,7 @@ import wx
 import logging
 import wave
 
-import annotationdata.io
+import annotationdata.aio
 
 from wxgui.ui.displayctrl import DisplayCtrl
 from wxgui.ui.wavectrl import WaveCtrl

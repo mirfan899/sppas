@@ -50,7 +50,7 @@ import logging
 import wave
 import os.path
 
-import annotationdata.io
+import annotationdata.aio
 import audiodata.aio
 
 # and temporary.......
@@ -322,7 +322,7 @@ class DisplayCtrl( wx.Window ):
 
         else:
             try:
-                tf = annotationdata.io.read( f )
+                tf = annotationdata.aio.read( f )
             except Exception as e:
                 ShowInformation(self, self._prefsIO,"The following error occurred while loading file "+f+".\n"+str(e), style=wx.ICON_INFORMATION)
                 raise Exception('Display. SetData. Error while loading the file: %s.'%str(e))

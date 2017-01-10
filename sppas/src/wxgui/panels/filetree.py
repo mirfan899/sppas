@@ -58,7 +58,7 @@ from wxgui.dialogs.msgdialogs  import ShowInformation
 from wxgui.dialogs.msgdialogs  import ShowYesNoQuestion
 from wxgui.dialogs.msgdialogs  import Choice
 
-import annotationdata.io
+import annotationdata.aio
 
 from wxgui.sp_icons import TREE_ROOT
 from wxgui.sp_icons import TREE_FOLDER_CLOSE
@@ -290,7 +290,7 @@ class FiletreePanel(wx.Panel):
 
         # Ask for the expected file format
         errors = False
-        extensions = annotationdata.io.extensions_out
+        extensions = annotationdata.aio.extensions_out
         dlg = Choice(self, self._prefsIO, "Select the file extension to export to:", extensions)
                      #wx.SingleChoiceDialog( self,
                      #              "Check the file format:",
@@ -305,8 +305,8 @@ class FiletreePanel(wx.Panel):
                 try:
                     oldextension = os.path.splitext(filename)[1][1:]
                     newfilename = filename.replace("."+oldextension,extensions[checked])
-                    trs = annotationdata.io.read( filename )
-                    annotationdata.io.write(newfilename, trs)
+                    trs = annotationdata.aio.read( filename )
+                    annotationdata.aio.write(newfilename, trs)
                 except Exception as e:
                     ShowInformation( self, self._prefsIO, "Export failed for file %s: %s" % (filename,e), style=wx.ICON_ERROR)
                     errors = True
@@ -338,8 +338,8 @@ class FiletreePanel(wx.Panel):
             # If it is the OK response, process the data.
             if newfilename:
                 try:
-                    trs = annotationdata.io.read(filename)
-                    annotationdata.io.write(newfilename, trs)
+                    trs = annotationdata.aio.read(filename)
+                    annotationdata.aio.write(newfilename, trs)
                 except Exception as e:
                     ShowInformation( self, self._prefsIO, "Copy/Export failed: %s" % e, style=wx.ICON_ERROR)
                 else:

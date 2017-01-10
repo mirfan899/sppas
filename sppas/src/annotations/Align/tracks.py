@@ -42,7 +42,7 @@ from sp_glob import encoding
 
 from annotations.Align.aligners.alignerio import AlignerIO
 
-import annotationdata.io
+import annotationdata.aio
 from annotationdata.transcription  import Transcription
 from annotationdata.tier           import Tier
 from annotationdata.ptime.interval import TimeInterval

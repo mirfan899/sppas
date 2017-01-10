@@ -5,7 +5,7 @@ import unittest
 import os
 
 from presenters.tiermapping import TierMapping
-from annotationdata.io.praat import TextGrid
+from annotationdata.aio.praat import TextGrid
 from annotationdata.tier import Tier
 from annotationdata.annotation import Annotation
 from annotationdata.ptime.interval import TimeInterval

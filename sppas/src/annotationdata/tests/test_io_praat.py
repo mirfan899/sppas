@@ -9,7 +9,7 @@ from annotationdata.label.label import Label
 from annotationdata.ptime.point import TimePoint
 from annotationdata.ptime.interval import TimeInterval
 from annotationdata.annotation import Annotation
-from annotationdata.io.praat import TextGrid
+from annotationdata.aio.praat import TextGrid
 #import utils.fileutils
 
 #TEMP = utils.fileutils.gen_name()

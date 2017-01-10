@@ -56,10 +56,10 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
-import annotationdata.io
+import annotationdata.aio
 from annotationdata.transcription import Transcription
 from   annotationdata.label.label import Label
-from annotationdata.io.utils import fill_gaps
+from annotationdata.aio.utils import fill_gaps
 
 # ----------------------------------------------------------------------------
 
@@ -157,7 +157,7 @@ args = parser.parse_args()
 # ----------------------------------------------------------------------------
 # Read
 
-trsinput = annotationdata.io.read( args.i )
+trsinput = annotationdata.aio.read( args.i )
 
 # Take all tiers or specified tiers
 tiersnumbs = []
@@ -191,6 +191,6 @@ for i in tiersnumbs:
 # ----------------------------------------------------------------------------
 # Write
 
-annotationdata.io.write(args.o, trsout)
+annotationdata.aio.write(args.o, trsout)
 
 # ----------------------------------------------------------------------------

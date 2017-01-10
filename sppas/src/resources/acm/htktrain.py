@@ -55,7 +55,7 @@ from annotations.Phon.sppasphon import sppasPhon
 from annotations.Token.sppastok import sppasTok
 from annotations.Align.sppasalign import sppasAlign
 
-import annotationdata.io
+import annotationdata.aio
 import annotationdata.utils.tierutils
 import audiodata.aio
 
@@ -375,7 +375,7 @@ class TrainingCorpus(object):
 
     Accepted input:
 
-        - annotated files: one of annotationdata.io.extensions_in
+        - annotated files: one of annotationdata.aio.extensions_in
         - audio files: one of audiodata.extensions
 
     """
@@ -506,7 +506,7 @@ class TrainingCorpus(object):
 
         # Get the list of transciption files from the input directory
         trsfilelist = []
-        for extension in annotationdata.io.extensions_in:
+        for extension in annotationdata.aio.extensions_in:
             if extension.lower() in [ ".hz", ".pitchtier", ".txt" ]: continue
             files = utils.fileutils.get_files(directory, extension)
             trsfilelist.extend(files)
@@ -545,7 +545,7 @@ class TrainingCorpus(object):
         if self.datatrainer.workdir is None: self.create()
 
         try:
-            trs = annotationdata.io.read(trsfilename)
+            trs = annotationdata.aio.read(trsfilename)
         except Exception:
             logging.info('Error reading file: %s'%trsfilename)
             return False
@@ -734,7 +734,7 @@ class TrainingCorpus(object):
         try:
             trs = Transcription()
             trs.Append(tier)
-            annotationdata.io.write(os.path.join(self.datatrainer.get_storetrs(), outfile+ext), trs)
+            annotationdata.aio.write(os.path.join(self.datatrainer.get_storetrs(), outfile+ext), trs)
         except Exception as e:
             print str(e)
             return False
@@ -1247,7 +1247,7 @@ class HTKModelTrainer(object):
                 trsworkfile = trsworkfile.replace('.lab','.xra')
 
             # Read input file, get tier with orthography
-            trsinput  = annotationdata.io.read(trsworkfile)
+            trsinput  = annotationdata.aio.read(trsworkfile)
             tierinput = None
             for tier in trsinput:
                 tiername = tier.GetName().lower()
@@ -1278,7 +1278,7 @@ class HTKModelTrainer(object):
 
             # Save file.
             outfile = trsworkfile.replace('.xra','.lab')
-            annotationdata.io.write(outfile,trs)
+            annotationdata.aio.write(outfile,trs)
             self.corpus.transfiles[trsfilename] = outfile
             logging.info(' ... [ SUCCESS ] Created file: %s'%outfile)
 

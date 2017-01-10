@@ -43,7 +43,7 @@ from annotations.Align.aligners.alignerio import AlignerIO
 from annotations.Chunks.spkrate import SpeakerRate
 from annotations.Chunks.anchors import AnchorTier
 
-import annotationdata.io
+import annotationdata.aio
 from annotationdata.transcription  import Transcription
 from annotationdata.tier           import Tier
 from annotationdata.ptime.interval import TimeInterval
@@ -221,7 +221,7 @@ class Chunks( object ):
             # append the anchor tier as intermediate result
             if self.ANCHORS is True and A != anchortier.GetSize():
                 self._append_tier(anchortier,trsoutput)
-                annotationdata.io.write( os.path.join(diralign,"ANCHORS-%d.xra"%anchortier.GetSize()),trsoutput )
+                annotationdata.aio.write( os.path.join(diralign,"ANCHORS-%d.xra"%anchortier.GetSize()),trsoutput )
 
             # prepare next pass
             W = max(W-1., self.WMIN)

@@ -54,7 +54,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
-import annotationdata.io
+import annotationdata.aio
 from annotationdata import Tier
 
 # ----------------------------------------------------------------------------
@@ -72,7 +72,7 @@ args = parser.parse_args()
 # ----------------------------------------------------------------------------
 # 1. Read input data file
 
-trs = annotationdata.io.read(args.i)
+trs = annotationdata.aio.read(args.i)
 
 tierphon = trs.Find('PhonAlign')
 if tierphon is None:
@@ -107,4 +107,4 @@ for anntoken in tiertoken:
 # 3. Save new version of the file
 
 trs.Append( newtier )
-annotationdata.io.write(args.i,trs)
+annotationdata.aio.write(args.i,trs)

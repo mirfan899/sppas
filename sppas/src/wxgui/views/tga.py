@@ -50,7 +50,7 @@ import wx
 import logging
 import os.path
 
-import annotationdata.io
+import annotationdata.aio
 
 from wxgui.dialogs.basedialog import spBaseDialog
 
@@ -215,7 +215,7 @@ class TGADialog( spBaseDialog ):
             infile, ext = os.path.splitext(filename)
             outfile = infile + "-tga" + ext
             logging.debug('Export file: %s'%outfile)
-            annotationdata.io.write(outfile,trs)
+            annotationdata.aio.write(outfile,trs)
             # uppdate progress bar
             i = i+1
             p.set_fraction(float((i+1))/float(total))

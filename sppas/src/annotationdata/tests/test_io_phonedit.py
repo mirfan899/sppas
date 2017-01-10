@@ -5,7 +5,7 @@ import unittest
 import os
 import shutil
 
-import annotationdata.io
+import annotationdata.aio
 #import utils.fileutils
 
 #TEMP = utils.fileutils.gen_name()
@@ -26,9 +26,9 @@ class TestPhonedit(unittest.TestCase):
 
     def test_io(self):
         path = os.path.join(DATA, "sample-irish.tdf")
-        trs = annotationdata.io.read(path)
-        annotationdata.io.write(os.path.join(TEMP, "sample.mrk"), trs)
-        trs2 = annotationdata.io.read(os.path.join(TEMP, "sample.mrk"))
+        trs = annotationdata.aio.read(path)
+        annotationdata.aio.write(os.path.join(TEMP, "sample.mrk"), trs)
+        trs2 = annotationdata.aio.read(os.path.join(TEMP, "sample.mrk"))
         self.compare(trs, trs2)
 
     def compare(self, trs1, trs2):
@@ -47,9 +47,9 @@ class TestPhonedit(unittest.TestCase):
                     self.assertEqual(text1.Value, text2.Value)
 
     def test_Import_XRA(self):
-        tg1 = annotationdata.io.read(os.path.join(DATA, "sample-1.2.xra"))
-        annotationdata.io.write(os.path.join(TEMP, "sample-1.2.mrk"), tg1)
-        tg2 = annotationdata.io.read(os.path.join(TEMP, "sample-1.2.mrk"))
+        tg1 = annotationdata.aio.read(os.path.join(DATA, "sample-1.2.xra"))
+        annotationdata.aio.write(os.path.join(TEMP, "sample-1.2.mrk"), tg1)
+        tg2 = annotationdata.aio.read(os.path.join(TEMP, "sample-1.2.mrk"))
 
         # Compare annotations of tg1 and tg2
         for t1, t2 in zip(tg1, tg2):

@@ -462,7 +462,7 @@ class NgramCounter(object):
 
         """
         for filename in datafiles:
-            trs = annotationdata.io.read( filename )
+            trs = annotationdata.aio.read( filename )
             if trs.GetSize() == 0:
                 continue
             tier = trs[0]

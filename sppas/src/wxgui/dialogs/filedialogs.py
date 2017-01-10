@@ -41,7 +41,7 @@ import wx
 from wxgui.cutils.dialogutils import create_wildcard, extend_path
 from msgdialogs import ShowYesNoQuestion
 
-import annotationdata.io
+import annotationdata.aio
 import audiodata.aio
 import sp_glob
 
@@ -54,13 +54,13 @@ def OpenAnnotationFiles(multiple=True):
     """
     Return a list of annotation file names.
     """
-    wildcard  = create_wildcard("All files", annotationdata.io.extensionsul)
-    wildcard += '|'+create_wildcard("SPPAS", annotationdata.io.ext_sppas)
-    wildcard += '|'+create_wildcard("Praat", annotationdata.io.ext_praat)
-    wildcard += '|'+create_wildcard("ELAN",  annotationdata.io.ext_elan)
-    wildcard += '|'+create_wildcard("Transcriber", annotationdata.io.ext_transcriber)
-    wildcard += '|'+create_wildcard("Phonedit", annotationdata.io.ext_phonedit)
-    wildcard += '|'+create_wildcard("ASCII", annotationdata.io.ext_ascii)
+    wildcard  = create_wildcard("All files", annotationdata.aio.extensionsul)
+    wildcard += '|'+create_wildcard("SPPAS", annotationdata.aio.ext_sppas)
+    wildcard += '|'+create_wildcard("Praat", annotationdata.aio.ext_praat)
+    wildcard += '|'+create_wildcard("ELAN",  annotationdata.aio.ext_elan)
+    wildcard += '|'+create_wildcard("Transcriber", annotationdata.aio.ext_transcriber)
+    wildcard += '|'+create_wildcard("Phonedit", annotationdata.aio.ext_phonedit)
+    wildcard += '|'+create_wildcard("ASCII", annotationdata.aio.ext_ascii)
 
     files = []
     if multiple is True:
@@ -151,14 +151,14 @@ def SaveAsAnnotationFile(defaultdir=None,
 
     file = None
 
-    wildcard  = create_wildcard("All files", annotationdata.io.extensions_out)
-    wildcard += '|'+create_wildcard("SPPAS", annotationdata.io.ext_sppas)
-    wildcard += '|'+create_wildcard("Praat", annotationdata.io.ext_praat)
-    wildcard += '|'+create_wildcard("ELAN",  annotationdata.io.ext_elan)
-    wildcard += '|'+create_wildcard("Phonedit", annotationdata.io.ext_phonedit)
-    wildcard += '|'+create_wildcard("ASCII", annotationdata.io.ext_ascii)
-    wildcard += '|'+create_wildcard("AnnotationPro", annotationdata.io.ext_annotationpro)
-    wildcard += '|'+create_wildcard("Subtitles", annotationdata.io.ext_subtitles)
+    wildcard  = create_wildcard("All files", annotationdata.aio.extensions_out)
+    wildcard += '|'+create_wildcard("SPPAS", annotationdata.aio.ext_sppas)
+    wildcard += '|'+create_wildcard("Praat", annotationdata.aio.ext_praat)
+    wildcard += '|'+create_wildcard("ELAN",  annotationdata.aio.ext_elan)
+    wildcard += '|'+create_wildcard("Phonedit", annotationdata.aio.ext_phonedit)
+    wildcard += '|'+create_wildcard("ASCII", annotationdata.aio.ext_ascii)
+    wildcard += '|'+create_wildcard("AnnotationPro", annotationdata.aio.ext_annotationpro)
+    wildcard += '|'+create_wildcard("Subtitles", annotationdata.aio.ext_subtitles)
 
     dlg = wx.FileDialog(
         None, message = "Choose a file name...",

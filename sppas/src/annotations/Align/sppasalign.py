@@ -43,12 +43,12 @@ import logging
 import utils.fileutils as fileutils
 
 import audiodata.aio
-import annotationdata.io
+import annotationdata.aio
 from annotationdata import Transcription
 from annotationdata import Tier
 from annotationdata import Media
 from annotationdata import Text
-from annotationdata.io.utils import gen_id
+from annotationdata.aio.utils import gen_id
 
 from alignio   import AlignIO
 from activity  import Activity
@@ -509,13 +509,13 @@ class sppasAlign( sppasBase ):
         # Get the tiers to be time-aligned
         # ---------------------------------------------------------------
 
-        trsinput = annotationdata.io.read( phonesname )
+        trsinput = annotationdata.aio.read( phonesname )
         phontier = self.get_phonestier( trsinput )
         if phontier is None:
             raise IOError("No tier with the phonetization was found.")
 
         try:
-            trsinputtok = annotationdata.io.read( tokensname )
+            trsinputtok = annotationdata.aio.read( tokensname )
             toktier = self.get_tokenstier( trsinputtok )
         except Exception:
             toktier = None
@@ -557,7 +557,7 @@ class sppasAlign( sppasBase ):
         try:
             self.print_message("Save automatic alignment: ",indent=3)
             # Save in a file
-            annotationdata.io.write( outputfilename,trsoutput )
+            annotationdata.aio.write( outputfilename,trsoutput )
         except Exception:
             if self._options['clean'] is True:
                 shutil.rmtree( workdir )

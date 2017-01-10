@@ -48,7 +48,7 @@ import wx
 import os.path
 import logging
 
-import annotationdata.io
+import annotationdata.aio
 from annotationdata.transcription import Transcription
 
 from wxgui.ui.CustomEvents import PanelSelectedEvent
@@ -702,7 +702,7 @@ class TrsList( wx.Panel ):
             self._transcription = Transcription("Empty")
             return
         try:
-            self._transcription = annotationdata.io.read( filename )
+            self._transcription = annotationdata.aio.read( filename )
             self._dirty = False
             self._boxtitle.SetForegroundColour( FG_FILE_COLOUR )
             self.Refresh()
@@ -720,7 +720,7 @@ class TrsList( wx.Panel ):
             return
 
         try:
-            annotationdata.io.write(self._filename, self._transcription)
+            annotationdata.aio.write(self._filename, self._transcription)
             self._dirty = False
             self._boxtitle.SetForegroundColour( FG_FILE_COLOUR )
             self.Refresh()
@@ -736,7 +736,7 @@ class TrsList( wx.Panel ):
         Keep everything un-changed in self.
         """
         try:
-            annotationdata.io.write(filename, self._transcription)
+            annotationdata.aio.write(filename, self._transcription)
         except Exception as e:
             # give information
             ShowInformation(self, self._prefs, 'File not saved: %s'%str(e), style=wx.ICON_ERROR)

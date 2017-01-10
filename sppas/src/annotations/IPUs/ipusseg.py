@@ -40,8 +40,8 @@ import logging
 
 from sp_glob import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
 
-import annotationdata.io
-from annotationdata.io.utils import gen_id
+import annotationdata.aio
+from annotationdata.aio.utils import gen_id
 import audiodata.aio
 from audiodata.audiovolume        import AudioVolume
 from audiodata.channel            import Channel
@@ -201,7 +201,7 @@ class sppasIPUs( sppasBase ):
         if inputfilename is None:
             return Transcription()
 
-        trsinput = annotationdata.io.read( inputfilename )
+        trsinput = annotationdata.aio.read( inputfilename )
         # input is a simple text file
         if inputfilename.lower().endswith("txt"):
             if trsinput.GetSize() != 1:
@@ -370,7 +370,7 @@ class sppasIPUs( sppasBase ):
         # Write the tracks into a transcription file.
         if trsoutput is not None:
             try:
-                annotationdata.io.write(trsoutput, trs)
+                annotationdata.aio.write(trsoutput, trs)
             except Exception as e:
                 raise Exception('Error while saving the transcription output.\n'+str(e)+'\n')
 

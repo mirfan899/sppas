@@ -57,7 +57,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
-import annotationdata.io
+import annotationdata.aio
 from presenters.tierstats import TierStats
 
 
@@ -112,7 +112,7 @@ tiername = None
 tiers = []
 for trs in args.i:
 
-    trsinput = annotationdata.io.read(trs)
+    trsinput = annotationdata.aio.read(trs)
 
     if tieridx < 0 or tieridx > trsinput.GetSize():
         print 'Error: Bad tier number.\n'

@@ -69,7 +69,7 @@ from wxgui.structs.prefs        import Preferences
 from wxgui.dialogs.msgdialogs import ShowInformation
 from wxgui.dialogs.msgdialogs import ShowYesNoQuestion
 
-import annotationdata.io
+import annotationdata.aio
 
 
 # ----------------------------------------------------------------------------
@@ -480,7 +480,7 @@ class IPUscribe( wx.Panel ):
 
         got = False
         name = os.path.splitext(filename)[0]
-        for ext in annotationdata.io.extensions:
+        for ext in annotationdata.aio.extensions:
             if ext in [ '.pitchtier', '.hz', '.txt']:
                 continue
             f = self.exists( name+ext )
@@ -845,7 +845,7 @@ class IPUscribeData( scrolled.ScrolledPanel ):
 
         if self._dirty is True:
             try:
-                annotationdata.io.write(self._trsname, self._trsinput)
+                annotationdata.aio.write(self._trsname, self._trsinput)
                 self._dirty = False
             except Exception as e:
                 ShowInformation( self, self._prefsIO, "Transcription %s not saved: %s" % (self._trsname, str(e)), style=wx.ICON_ERROR)
@@ -864,7 +864,7 @@ class IPUscribeData( scrolled.ScrolledPanel ):
         """
         transtier = -1
         try:
-            trsinput = annotationdata.io.read(trsname)
+            trsinput = annotationdata.aio.read(trsname)
         except:
             ShowInformation( self, self._prefsIO, "Transcription %s not loaded"%self._trsname, style=wx.ICON_ERROR)
             return None

@@ -434,7 +434,7 @@ class FrameSPPAS( wx.Frame ):
         """ Return the list of annotated files selected in the FLP. """
 
         selection = []
-        for ext in annotationdata.io.extensions:
+        for ext in annotationdata.aio.extensions:
             selection.extend(self.flp.GetSelected(ext))
         return selection
 

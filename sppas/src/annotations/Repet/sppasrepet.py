@@ -49,7 +49,7 @@ from annotationdata.tier import Tier
 from annotationdata.annotation import Annotation
 from annotationdata.ptime.interval import TimeInterval
 from annotationdata.label.label import Label
-import annotationdata.io
+import annotationdata.aio
 
 from dictlem import LemmaDict
 from resources.vocab import Vocabulary
@@ -491,14 +491,14 @@ class sppasRepet(sppasBase):
         tokentier2 = -1    # No echoing speaker
 
         # Find the token tier
-        trsinput1 = annotationdata.io.read(inputfilename1)
+        trsinput1 = annotationdata.aio.read(inputfilename1)
         for i in range(trsinput1.GetSize()):
             if "token" in trsinput1[i].GetName().lower() and "align" in trsinput1[i].GetName().lower():
                 tokentier1 = i
                 break
         if inputfilename2 is not None:
             #find the token tier
-            trsinput2 = annotationdata.io.read(inputfilename2)
+            trsinput2 = annotationdata.aio.read(inputfilename2)
             for i in range(trsinput2.GetSize()):
                 if "token" in trsinput2[i].GetName().lower() and "align" in trsinput2[i].GetName().lower():
                     tokentier2 = i
@@ -534,7 +534,7 @@ class sppasRepet(sppasBase):
         # the repeat tier is added to the input transcription
         else:
             outputfilename = inputfilename1
-            trsoutput = annotationdata.io.read(inputfilename1)
+            trsoutput = annotationdata.aio.read(inputfilename1)
 
         # Add repeats to this trsoutput
         trsoutput.Append(srctier)
@@ -544,6 +544,6 @@ class sppasRepet(sppasBase):
         trsoutput.SetMaxTime(trsinput1.GetMaxTime()) # hum, in case of OR... not sure! to be verified.
 
         # Save
-        annotationdata.io.write(outputfilename, trsoutput)
+        annotationdata.aio.write(outputfilename, trsoutput)
 
     # ------------------------------------------------------------------------

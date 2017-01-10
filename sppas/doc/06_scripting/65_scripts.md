@@ -25,7 +25,7 @@ It will allow to use the SPPAS API in your script.
 # ----------------------------------------------------------------------------
 
 # Get SPPAS API
-import annotationdata.io
+import annotationdata.aio
 from annotationdata import Transcription
 from annotationdata import Tier
 from annotationdata import Annotation
@@ -67,14 +67,14 @@ store it into a `Transcription` object instance, named `trs` in the
 following code, is mainly done as:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines}
-trs = annotationdata.io.read(filename_in)
+trs = annotationdata.aio.read(filename_in)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Save/Write a `Transcription` object instance in a file of any format 
 is mainly done as:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="2"}
-annotationdata.io.write(filename_out, trs)
+annotationdata.aio.write(filename_out, trs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 These two lines of code loads any annotation file (Elan, Praat, Transcriber...)
@@ -86,8 +86,8 @@ and so on.
 So... only both lines are used to convert a file from one format to another one!
 
 In any script, to get the list of accepted extensions as input, just call 
-"annotationdata.io.extensions_in", and the list of accepted extensions as 
-output is "annotationdata.io.extensions_out".
+"annotationdata.aio.extensions_in", and the list of accepted extensions as
+output is "annotationdata.aio.extensions_out".
 
 Currently, accepted input file extensions are:
 
@@ -158,7 +158,7 @@ use tier.GetName().
 Test the following code into a script:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="15"}
-trs = annotationdata.io.read(filename)
+trs = annotationdata.aio.read(filename)
 tier = trs[0]
 print tier.GetName()
 tier.SetName( "toto" )

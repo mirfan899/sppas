@@ -56,7 +56,7 @@ SPPAS = os.path.join( os.path.dirname( os.path.dirname( PROGRAM_PATH ) ), "src" 
 sys.path.append(SPPAS)
 
 from sp_glob import program, author, version, copyright, url
-from annotationdata.io import extensions_out #_multitiers
+from annotationdata.aio import extensions_out #_multitiers
 from annotations.param import sppasParam
 from annotations.manager import sppasAnnotationsManager
 from term.textprogress import ProcessProgressTerminal

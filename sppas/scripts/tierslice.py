@@ -55,7 +55,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
-import annotationdata.io
+import annotationdata.aio
 from annotationdata import Transcription
 from annotationdata import Tier
 from annotationdata import TimePoint
@@ -85,7 +85,7 @@ args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
 
-trsinput = annotationdata.io.read(args.i)
+trsinput = annotationdata.aio.read(args.i)
 
 if args.t <= 0 or args.t > trsinput.GetSize():
     print 'Error: Bad tier number. Must range in (%d,%d)\n'%(1,trsinput.GetSize())
@@ -122,6 +122,6 @@ if args.o:
 else:
     f,e = os.path.splitext(args.i)
     outputf = f+"_"+tierinput.GetName()+e
-annotationdata.io.write(outputf, trsout)
+annotationdata.aio.write(outputf, trsout)
 
 # ----------------------------------------------------------------------------

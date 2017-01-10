@@ -56,7 +56,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
-import annotationdata.io
+import annotationdata.aio
 from annotationdata.filter.predicate import Sel
 from annotationdata.transcription import Transcription
 from annotationdata.transcription import Tier
@@ -117,7 +117,7 @@ for m in mode:
         print "Unknown search mode :", m
         sys.exit(1)
 
-trs = annotationdata.io.read(fileinput)
+trs = annotationdata.aio.read(fileinput)
 
 if tieridx < 0 or tieridx > trs.GetSize():
     print 'Error: Bad tier number.\n'
@@ -148,6 +148,6 @@ if fileoutput is None:
 else:
     trs = Transcription()
     trs.Add( filteredtier )
-    annotationdata.io.write(fileoutput, trs)
+    annotationdata.aio.write(fileoutput, trs)
 
 # ----------------------------------------------------------------------------

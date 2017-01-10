@@ -56,7 +56,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
-import annotationdata.io
+import annotationdata.aio
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -74,7 +74,7 @@ args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
 
-trs = annotationdata.io.read(args.i)
+trs = annotationdata.aio.read(args.i)
 
 if args.t <= 0 or args.t > trs.GetSize():
     print 'Error: Bad tier number.\n'

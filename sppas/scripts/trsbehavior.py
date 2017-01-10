@@ -56,7 +56,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
-import annotationdata.io
+import annotationdata.aio
 from annotationdata import Transcription
 from annotationdata import Tier
 from annotationdata import Annotation
@@ -83,7 +83,7 @@ args = parser.parse_args()
 # ----------------------------------------------------------------------------
 # Read
 
-trsinput = annotationdata.io.read( args.i )
+trsinput = annotationdata.aio.read( args.i )
 
 # Take all tiers or specified tiers
 tiersnumbs = []
@@ -162,6 +162,6 @@ for ann in btier:
 trsinput.Append(btier)
 trsinput.Append(stier)
 
-annotationdata.io.write(args.o, trsinput)
+annotationdata.aio.write(args.o, trsinput)
 
 # ----------------------------------------------------------------------------

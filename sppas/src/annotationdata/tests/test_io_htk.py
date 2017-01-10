@@ -5,7 +5,7 @@ import unittest
 import os.path
 import shutil
 
-import annotationdata.io
+import annotationdata.aio
 from annotationdata.transcription  import Transcription
 #import utils.fileutils
 
@@ -27,9 +27,9 @@ class TestHTK(unittest.TestCase):
         shutil.rmtree(TEMP)
 
     def test_Import_XRA(self):
-        tg1 = annotationdata.io.read(os.path.join(DATA, "sample-1.2.xra"))
-        annotationdata.io.write(os.path.join(TEMP, "sample-1.2.mlf"), tg1)
-        tg2 = annotationdata.io.read(os.path.join(TEMP, "sample-1.2.mlf"))
+        tg1 = annotationdata.aio.read(os.path.join(DATA, "sample-1.2.xra"))
+        annotationdata.aio.write(os.path.join(TEMP, "sample-1.2.mlf"), tg1)
+        tg2 = annotationdata.aio.read(os.path.join(TEMP, "sample-1.2.mlf"))
 
         self.assertEqual(tg1.GetSize()-1, tg2.GetSize())
 

@@ -44,7 +44,7 @@ from resources.dictrepl import DictRepl
 
 from annotationdata.transcription import Transcription
 from annotationdata.tier import Tier
-import annotationdata.io
+import annotationdata.aio
 
 from sp_glob import RESOURCES_PATH
 
@@ -206,7 +206,7 @@ class sppasTok(sppasBase):
         Return the tier with transcription, or None.
 
         """
-        trsinput  = annotationdata.io.read(inputfilename)
+        trsinput  = annotationdata.aio.read(inputfilename)
         tierinput = None
 
         for tier in trsinput:
@@ -272,7 +272,7 @@ class sppasTok(sppasBase):
             trsoutput.Add(tierStokens)
 
         # Save in a file
-        annotationdata.io.write(outputfilename,trsoutput)
+        annotationdata.aio.write(outputfilename,trsoutput)
 
     # ------------------------------------------------------------------------
     # Private: some workers...

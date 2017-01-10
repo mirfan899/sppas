@@ -38,7 +38,7 @@
 import codecs
 import os
 
-import annotationdata.io
+import annotationdata.aio
 import audiodata.aio
 from audiodata.audio import AudioPCM
 from audiodata.channel import Channel
@@ -89,7 +89,7 @@ class sppasDiagnosis:
         if ext.lower() in audiodata.aio.extensions:
             return self.audiofile( filename )
 
-        if ext.lower() in annotationdata.io.extensions:
+        if ext.lower() in annotationdata.aio.extensions:
             return self.trsfile( filename )
 
         return (ERROR_ID,"Invalid. Unknown file extension %s."%ext)

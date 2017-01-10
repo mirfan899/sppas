@@ -57,7 +57,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
-import annotationdata.io
+import annotationdata.aio
 from annotationdata.transcription  import Transcription
 from annotationdata.transcription  import Tier
 from annotationdata.annotation     import Annotation
@@ -92,7 +92,7 @@ if args.o: fileoutput = args.o
 n = 3   # n-value of the ngram
 w = 7   # window size
 
-trs = annotationdata.io.read(fileinput)
+trs = annotationdata.aio.read(fileinput)
 
 if tieridx < 0 or tieridx > trs.GetSize():
     print 'Error: Bad tier number.\n'
@@ -234,4 +234,4 @@ else:
 #             t.Append(a)
 #     trs.Add( t )
 
-    annotationdata.io.write(fileoutput, trs)
+    annotationdata.aio.write(fileoutput, trs)

@@ -57,7 +57,7 @@ SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
 from   annotationdata.transcription import Transcription
-import annotationdata.io
+import annotationdata.aio
 
 
 # ----------------------------------------------------------------------------
@@ -82,7 +82,7 @@ args = parser.parse_args()
 # Read
 
 if not args.quiet is True: sys.stdout.write("Read input file:")
-trsinput = annotationdata.io.read( args.i )
+trsinput = annotationdata.aio.read( args.i )
 if not args.quiet is True: print " [  OK  ]"
 
 
@@ -130,7 +130,7 @@ trsoutput.metadata = trsinput.metadata
 # Write
 
 if not args.quiet is True: sys.stdout.write( "Write output file:")
-annotationdata.io.write(args.o, trsoutput)
+annotationdata.aio.write(args.o, trsoutput)
 if not args.quiet is True: print " [  OK  ]"
 
 # ----------------------------------------------------------------------------

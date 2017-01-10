@@ -37,7 +37,7 @@
 
 import logging
 
-import annotationdata.io
+import annotationdata.aio
 from annotationdata.tier import Tier
 from annotationdata.transcription import Transcription
 
@@ -283,7 +283,7 @@ class sppasPhon( sppasBase ):
         self.print_diagnosis(inputfilename)
 
         # Get the tier to be phonetized.
-        trsinput = annotationdata.io.read( inputfilename )
+        trsinput = annotationdata.aio.read( inputfilename )
         tierinput = self.get_input_tier(trsinput)
         if tierinput is None:
             raise Exception("No tier found with tokenization. "
@@ -297,6 +297,6 @@ class sppasPhon( sppasBase ):
         trsoutput.Append( tierphon )
 
         # Save in a file
-        annotationdata.io.write( outputfile,trsoutput )
+        annotationdata.aio.write( outputfile,trsoutput )
 
     # -----------------------------------------------------------------------

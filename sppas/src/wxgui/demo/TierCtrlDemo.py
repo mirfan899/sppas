@@ -41,12 +41,12 @@ import random
 import wx
 
 from wxgui.ui.tierctrl import TierCtrl
-import annotationdata.io
+import annotationdata.aio
 
 # ----------------------------------------------------------------------------
 
 import os
-trs = annotationdata.io.read( os.path.join(os.path.dirname(os.path.abspath(__file__)),"oriana1-merge.TextGrid"))
+trs = annotationdata.aio.read( os.path.join(os.path.dirname(os.path.abspath(__file__)),"oriana1-merge.TextGrid"))
 
 # ----------------------------------------------------------------------------
 

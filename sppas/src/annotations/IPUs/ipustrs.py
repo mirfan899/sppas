@@ -35,7 +35,7 @@
 # File: ipustrs.py
 # ---------------------------------------------------------------------------
 
-import annotationdata.io
+import annotationdata.aio
 from annotationdata.transcription import Transcription
 
 from utils.fileutils import format_filename

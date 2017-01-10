@@ -39,7 +39,7 @@ import os
 import wx
 from wx.lib import stattext
 
-from annotationdata.io import extensions_out_multitiers as extensions_out
+from annotationdata.aio import extensions_out_multitiers as extensions_out
 
 from wxgui.dialogs.basedialog import spBaseDialog
 from wxgui.sp_icons import SETTINGS_ICON

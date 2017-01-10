@@ -55,7 +55,7 @@ SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
 from annotations.IPUs.ipusseg import sppasIPUs
-import annotationdata.io
+import annotationdata.aio
 from utils.fileutils import setup_logging
 
 

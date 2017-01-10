@@ -72,7 +72,7 @@ SETTINGS_FILE = os.path.join(BASE_PATH, "etc", "settings.dump")
 UNKSTAMP=u"<UNK>"
 
 # Default output extension must be one of the list of
-# annotationdata.io.extensions_out_multitiers
+# annotationdata.aio.extensions_out_multitiers
 DEFAULT_OUTPUT_EXTENSION = ".xra"
 
 # Default input/output encoding

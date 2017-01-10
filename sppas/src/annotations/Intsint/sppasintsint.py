@@ -37,7 +37,7 @@
 
 from annotations.sppasbase import sppasBase
 
-import annotationdata.io
+import annotationdata.aio
 from annotationdata.transcription import Transcription
 
 from annotations.Intsint.intsint import Intsint
@@ -125,7 +125,7 @@ class sppasIntsint( sppasBase ):
 
         """
         # Get the tier to be annotated.
-        trsinput = annotationdata.io.read( inputfilename )
+        trsinput = annotationdata.aio.read( inputfilename )
         tierinput = self.get_input_tier(trsinput)
         if tierinput is None:
             raise Exception("No tier found with momel. "
@@ -141,6 +141,6 @@ class sppasIntsint( sppasBase ):
         trsoutput.Append( tierintsint )
 
         # Save in a file
-        annotationdata.io.write( outputfile,trsoutput )
+        annotationdata.aio.write( outputfile,trsoutput )
 
     # -----------------------------------------------------------------------

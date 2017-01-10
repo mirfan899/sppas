@@ -92,7 +92,7 @@ heterogeneous data sources for further analysis.
 
 To get the list of extensions currently supported for reading and writing:
 
-    >>> ext = annotationdata.io.extensions
+    >>> ext = annotationdata.aio.extensions
 
 """
 
@@ -115,7 +115,7 @@ from annotationdata.filter.filters   import Filter
 from annotationdata.filter.filters   import SingleFilter
 from annotationdata.filter.filters   import RelationFilter
 
-#import annotationdata.io
+#import annotationdata.aio
 
 __all__ = [
     'Transcription',

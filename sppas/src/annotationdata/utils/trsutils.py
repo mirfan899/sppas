@@ -20,7 +20,7 @@
 from annotationdata.utils.tierutils import TierUtils
 from annotationdata.transcription import Transcription
 from annotationdata.tier import Tier
-import annotationdata.io
+import annotationdata.aio
 
 
 def overlaps(a1, a2):

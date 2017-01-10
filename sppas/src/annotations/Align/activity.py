@@ -40,7 +40,7 @@ from annotationdata.ptime.interval import TimeInterval
 from annotationdata.ptime.point    import TimePoint
 from annotationdata.annotation     import Annotation
 from annotationdata.label.label    import Label
-from annotationdata.io.utils       import fill_gaps, unfill_gaps
+from annotationdata.aio.utils       import fill_gaps, unfill_gaps
 
 # ---------------------------------------------------------------------------
 
