@@ -411,14 +411,13 @@ function fct_test_api {
     echo >> $LOG_DIAGNOSIS
 
     fct_perform_unittest "annotationdata"
+    fct_perform_unittest "annotations"
+    fct_perform_unittest "audiodata"
     fct_perform_unittest "calculus"
     fct_perform_unittest "presenters"
     fct_perform_unittest "resources"
     fct_perform_unittest "plugins"
-    fct_perform_unittest "audiodata"
-    #fct_perform_unittest "annotations"
-    echo " ... Test annotations " >>  $TEMP
-    python $PROGRAM_DIR/sppas/src/annotations/tests/test_all.py 2>> $TEMP
+    fct_perform_unittest "structs"
 
     echo " ######### ############################ ######### " >> $LOG_DIAGNOSIS
     echo >> $LOG_DIAGNOSIS
