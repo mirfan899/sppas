@@ -2,23 +2,25 @@
 # -*- coding: utf8 -*-
 
 import unittest
-import os
+import os.path
 
 import annotations.Align.aligners as aligners
-import annotations.Align.aligners.basicalign  as basicalign
+import annotations.Align.aligners.basicalign as basicalign
 import annotations.Align.aligners.juliusalign as juliusalign
-import annotations.Align.aligners.hvitealign  as hvitealign
+import annotations.Align.aligners.hvitealign as hvitealign
 
 # ---------------------------------------------------------------------------
 
 from sp_glob import RESOURCES_PATH
 from sp_glob import SAMPLES_PATH
-from paths import TEMP
+
+# ---------------------------------------------------------------------------
 
 MODELDIR = os.path.join(RESOURCES_PATH, "models")
 sample_1 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana1.wav")  # mono; 16000Hz; 16bits
 
 # ---------------------------------------------------------------------------
+
 
 class TestBaseAligner( unittest.TestCase ):
 
@@ -48,7 +50,6 @@ class TestBaseAligner( unittest.TestCase ):
 
 # ---------------------------------------------------------------------------
 
-# ---------------------------------------------------------------------------
 
 class TestBasicAlign( unittest.TestCase ):
 
@@ -101,28 +102,26 @@ class TestBasicAlign( unittest.TestCase ):
 
 # ---------------------------------------------------------------------------
 
+
 class TestJuliusAlign( unittest.TestCase ):
 
     def setUp(self):
         self._modeldir = os.path.join(MODELDIR, "models-fra")
-        self._aligner  = juliusalign.JuliusAligner( self._modeldir )
+        self._aligner = juliusalign.JuliusAligner( self._modeldir )
 
 # ---------------------------------------------------------------------------
+
 
 class TestHviteAlign( unittest.TestCase ):
 
     def setUp(self):
         self._modeldir = os.path.join(MODELDIR, "models-fra")
-        self._aligner  = hvitealign.HviteAligner( self._modeldir )
+        self._aligner = hvitealign.HviteAligner( self._modeldir )
 
 # ---------------------------------------------------------------------------
 
-class TestAlignersPackage(unittest.TestCase):
 
-    def setUp(self):
-        pass
-    def tearDown(self):
-        pass
+class TestAlignersPackage(unittest.TestCase):
 
     def test_check(self):
         for a in aligners.aligner_names():

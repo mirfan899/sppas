@@ -2,28 +2,31 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
+import os.path
 
 from sp_glob import RESOURCES_PATH
-POL_SYLL = os.path.join(RESOURCES_PATH, "syll", "syllConfig-pol.txt")
-FRA_SYLL = os.path.join(RESOURCES_PATH, "syll", "syllConfig-fra.txt")
 
-from annotationdata.tier           import Tier
-from annotationdata.annotation     import Annotation
+from annotationdata.tier import Tier
+from annotationdata.annotation import Annotation
 from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.point    import TimePoint
-from annotationdata.label.label    import Label
-
+from annotationdata.ptime.point import TimePoint
+from annotationdata.label.label import Label
 from annotations.Syll.syllabification import Syllabification
 
 # -------------------------------------------------------------------------
+
+POL_SYLL = os.path.join(RESOURCES_PATH, "syll", "syllConfig-pol.txt")
+FRA_SYLL = os.path.join(RESOURCES_PATH, "syll", "syllConfig-fra.txt")
+
+# -------------------------------------------------------------------------
+
 
 def labels2tier(phonemes):
     # Convert a list of strings into a tier.
     if len(phonemes)==0:
         return None
     tier = Tier('Phonemes')
-    for time,p in enumerate(phonemes):
+    for time, p in enumerate(phonemes):
         begin = TimePoint(time)
         end   = TimePoint(time+1)
         label = Label(p)
@@ -32,6 +35,7 @@ def labels2tier(phonemes):
     return tier
 
 # -------------------------------------------------------------------------
+
 
 def get_syll(trs):
     tierS = trs.Find("Syllables")
@@ -44,6 +48,7 @@ def get_syll(trs):
     return line[:-1]
 
 # -------------------------------------------------------------------------
+
 
 class TestSyll(unittest.TestCase):
 
@@ -101,7 +106,6 @@ class TestSyll(unittest.TestCase):
         syll = get_syll(trsS)
         self.assertEqual("az|Za", syll)
 
-
     def testVCCCV(self):
         # general rule
         tierP = labels2tier( ['a','m','m','n','a'] )
@@ -131,7 +135,6 @@ class TestSyll(unittest.TestCase):
         syll = get_syll(trsS)
         self.assertEqual("arw|Sa", syll)
 
-
     def testVCCCCV(self):
         tierP = labels2tier( ['a','b','r','v','j','a'] )
         self.assertIsNotNone(tierP)
@@ -139,12 +142,9 @@ class TestSyll(unittest.TestCase):
         syll = get_syll(trsS)
         self.assertEqual("a|brvja", syll)
 
-
     def testVCCCCCV(self):
         tierP = labels2tier( ['a','p','s','k','m','w','a'] )
         self.assertIsNotNone(tierP)
         trsS = self.syllabifierFRA.syllabify( tierP )
         syll = get_syll(trsS)
         self.assertEqual("apsk|mwa", syll)
-
-# ---------------------------------------------------------------------------

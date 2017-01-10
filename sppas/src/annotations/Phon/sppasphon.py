@@ -52,6 +52,7 @@ from annotations.sppasbase import sppasBase
 
 # ---------------------------------------------------------------------------
 
+
 class sppasPhon( sppasBase ):
     """
     @author:       Brigitte Bigi

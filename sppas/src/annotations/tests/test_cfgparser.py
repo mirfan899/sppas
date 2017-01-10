@@ -2,17 +2,16 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
+import os.path
 
 from annotations.cfgparser import AnnotationConfigParser
-from sp_glob import RESOURCES_PATH
+from sp_glob import BASE_PATH
 
-from paths import SPPAS
-
-INITOK   = os.path.join(SPPAS, "sppas", "etc", "Token.ini")
-INIMOMEL = os.path.join(SPPAS, "sppas", "etc", "Momel.ini")
+INITOK   = os.path.join(BASE_PATH, "etc", "Token.ini")
+INIMOMEL = os.path.join(BASE_PATH, "etc", "Momel.ini")
 
 # ---------------------------------------------------------------------------
+
 
 class TestAnnotationConfigParser(unittest.TestCase):
 
@@ -42,6 +41,3 @@ class TestAnnotationConfigParser(unittest.TestCase):
         self.assertEqual(len(conf), 3)
         self.assertEqual(len(opt), 9)
         self.assertEqual(len(res), 0)
-
-# ---------------------------------------------------------------------------
-

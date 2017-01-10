@@ -192,7 +192,7 @@ class DictPhon(object):
         tab = []
 
         for entry in tokens:
-            phon   = self._pdict.unkstamp
+            phon = self._pdict.unkstamp
             status = OK_ID
 
             # Enriched Orthographic Transcription Convention:

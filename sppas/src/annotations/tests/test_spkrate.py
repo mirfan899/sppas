@@ -7,6 +7,7 @@ from annotations.Chunks.spkrate import SpeakerRate
 
 # ---------------------------------------------------------------------------
 
+
 class TestSpeakerRate( unittest.TestCase ):
 
     def setUp(self):
@@ -30,5 +31,3 @@ class TestSpeakerRate( unittest.TestCase ):
         self.assertEqual( self._s.get_value(), 10. )
         self.assertEqual( self._s.ntokens( 10. ), 100 )
         self.assertEqual( self._s.duration( 20 ), 2. )
-
-# ---------------------------------------------------------------------------

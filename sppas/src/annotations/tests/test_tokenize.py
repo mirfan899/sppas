@@ -2,13 +2,15 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
+import os.path
 
 from annotations.Token.tokenize import DictTok
 from resources.vocab import Vocabulary
 from resources.dictrepl import DictRepl
 
 from sp_glob import RESOURCES_PATH
+
+# ---------------------------------------------------------------------------
 
 
 class TestDictTok(unittest.TestCase):
@@ -144,5 +146,3 @@ class TestDictTok(unittest.TestCase):
         #self.tok.set_vocab(wds)
         #splitswitch = self.tok.tokenize(u'et il m\'a dit : "《干脆就把那部蒙人的闲法给废了拉倒！》RT @laoshipukong : 27日"')
         #self.assertEqual(splitswitch, u"et il m' a dit 干脆 就 把 那 部 蒙 人 的 闲 法 给 废 了 拉倒 rt @ laoshipukong 二十七 日")
-
-# ---------------------------------------------------------------------------

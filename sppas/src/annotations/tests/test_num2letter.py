@@ -2,7 +2,6 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
 
 from annotations.Token.num2letter import sppasNum
 
@@ -52,11 +51,12 @@ u"cuarenta",
 
 # ---------------------------------------------------------------------------
 
+
 class TestNum2Letter(unittest.TestCase):
 
     def test_num2letterFR(self):
         num = sppasNum('fra')
-        s =  num.convert("123")
+        s = num.convert("123")
         self.assertEquals(s, u"cent-vingt-trois")
 
     def test_num2letterES(self):

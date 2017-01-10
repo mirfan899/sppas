@@ -2,18 +2,19 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
+import os.path
 
 from annotations.Align.aligners.alignerio import AlignerIO
-from annotations.Chunks.anchors   import AnchorTier
+from annotations.Chunks.anchors import AnchorTier
 from annotationdata import Tier, Annotation, TimeInterval, TimePoint, Label, Text
 from resources.patterns import Patterns
 
 # --------------------------------------------------------------------------
 
-from paths import DATA
+DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 # --------------------------------------------------------------------------
+
 
 class TestAnchorTier( unittest.TestCase ):
 
@@ -203,6 +204,7 @@ class TestAnchorTier( unittest.TestCase ):
         #    print ann
 
 # --------------------------------------------------------------------------
+
 
 class TestTracksAlign( unittest.TestCase ):
 
