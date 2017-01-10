@@ -2,12 +2,15 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
+import os.path
+
+# ---------------------------------------------------------------------------
 
 from structs.lang import LangResource
 from sp_glob import RESOURCES_PATH
 
 # ---------------------------------------------------------------------------
+
 
 class TestLang(unittest.TestCase):
 
