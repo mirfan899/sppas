@@ -50,7 +50,7 @@ import utils.fileutils
 
 from annotationdata.transcription import Transcription
 
-import audiodata.io
+import audiodata.aio
 import annotationdata.io
 from annotations.infotier import sppasMetaInfoTier
 from annotations.log import sppasLog
@@ -157,10 +157,10 @@ class sppasAnnotationsManager( Thread ):
                 inputfilename, inputfileextension = os.path.splitext(sinput)
 
                 # Input is a file (and not a directory)
-                if extension.lower() in audiodata.io.extensions and os.path.isfile(sinput) is True:
+                if extension.lower() in audiodata.aio.extensions and os.path.isfile(sinput) is True:
                     filelist.append( sinput )
 
-                elif inputfileextension.lower() in audiodata.io.extensions:
+                elif inputfileextension.lower() in audiodata.aio.extensions:
                     sinput = inputfilename + extension
                     if os.path.isfile(sinput) is True:
                         filelist.append( sinput )

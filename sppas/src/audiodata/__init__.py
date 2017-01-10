@@ -36,7 +36,7 @@
 # ---------------------------------------------------------------------------
 
 """
-@author:       Brigitte Bigi, Jibril Saffi
+@author:       Brigitte Bigi
 @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
 @contact:      brigitte.bigi@gmail.com
 @license:      GPL, v3
@@ -48,10 +48,7 @@
 from audiodata.audio import AudioPCM
 from channel import Channel
 
-import audiodata.io as io
-
 __all__ = [
 'AudioPCM',
-'Channel',
-'io'
+'Channel'
 ]

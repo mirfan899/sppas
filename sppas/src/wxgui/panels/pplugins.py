@@ -376,7 +376,7 @@ class PluginsListPanel(wx.lib.scrolledpanel.ScrolledPanel):
         """
         Ask for the plugin to be removed, remove of the list.
 
-        :return: plugin identifier of the plugin to be deleted.
+        :returns: plugin identifier of the plugin to be deleted.
 
         """
         plugin_id = None

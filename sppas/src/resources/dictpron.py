@@ -130,7 +130,7 @@ class DictPron(object):
         Return the phonetization of an entry in the dictionary.
 
         :param entry: (str) A token to find in the dictionary
-        :return: pronunciations of the given token or the unknown symbol
+        :returns: pronunciations of the given token or the unknown symbol
 
         """
         return self._dict.get(rutils.to_lower(entry), self.unkstamp)
@@ -222,7 +222,7 @@ class DictPron(object):
         depending on a mapping table.
 
         :param map_table: (Mapping) A mapping table
-        :return: a DictPron with mapped phones
+        :returns: a DictPron with mapped phones
 
         """
         map_table.set_reverse(True)

@@ -55,7 +55,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
-import audiodata.io
+import audiodata.aio
 from audiodata.audiovolume   import AudioVolume
 from audiodata.channelvolume import ChannelVolume
 from audiodata.audioframes   import AudioFrames
@@ -76,7 +76,7 @@ args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
 
-audio = audiodata.io.open(args.w)
+audio = audiodata.aio.open(args.w)
 audio.frameduration = args.f
 
 print "Audio file name:     ", args.w

@@ -40,15 +40,9 @@
 @contact:      brigitte.bigi@gmail.com
 @license:      GPL, v3
 @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-@summary:      Plugin manager for SPPAS.
 
 plugins is a free and open source Python library to access and manage
 external programs to plug into SPPAS.
-
-This package requires:
- - the PYTHON_PATH variable that is defined in sp_glob
- - the Option class of structs.baseoption
- - the function get_files of utils.fileutils
 
 """
 from cfgparser import sppasPluginConfigParser

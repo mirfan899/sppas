@@ -118,7 +118,7 @@ class Hierarchy(object):
 
         :param parent_tier: (Tier) The child tier to found
         :param link_type: (str) The type of hierarchy
-        :return: List of tiers
+        :returns: List of tiers
 
         """
         if link_type is not None:
@@ -141,7 +141,7 @@ class Hierarchy(object):
         Return all the direct ancestors of a tier (parent, grand-parent, grand-grand-parent...).
 
         :param child_tier:
-        :return: List of tiers
+        :returns: List of tiers
 
         """
         if child_tier not in self.__hierarchy.keys():

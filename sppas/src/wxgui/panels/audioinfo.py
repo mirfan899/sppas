@@ -38,7 +38,7 @@
 import wx
 import logging
 
-import audiodata.io
+import audiodata.aio
 
 from wxgui.sp_consts import ERROR_COLOUR
 from wxgui.sp_consts import INFO_COLOUR
@@ -225,7 +225,7 @@ class AudioInfo( wx.Panel ):
         """
         self.fix_filename(filename)
         try:
-            _audio = audiodata.io.open( filename )
+            _audio = audiodata.aio.open( filename )
             self.fix_duration(  _audio.get_duration())
             self.fix_framerate( _audio.get_framerate())
             self.fix_sampwidth( _audio.get_sampwidth())

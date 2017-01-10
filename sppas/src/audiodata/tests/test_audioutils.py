@@ -4,20 +4,23 @@
 import unittest
 import os
 
-import audiodata
+import audiodata.aio
 from audiodata.audioutils import samples2frames
 
-from paths import SPPASSAMPLES
-sample_1 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana1.wav")
-sample_2 = os.path.join(SPPASSAMPLES, "samples-fra", "F_F_B003-P9.wav")
-sample_3 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana3.wave")
+from sp_glob import SAMPLES_PATH
+sample_1 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana1.wav")
+sample_2 = os.path.join(SAMPLES_PATH, "samples-fra", "F_F_B003-P9.wav")
+sample_3 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana3.wave")
+
+# ---------------------------------------------------------------------------
+
 
 class TestAudioUtils(unittest.TestCase):
 
     def setUp(self):
-        self._sample_1 = audiodata.io.open(sample_1)
-        self._sample_2 = audiodata.io.open(sample_2)
-        self._sample_3 = audiodata.io.open(sample_3)
+        self._sample_1 = audiodata.aio.open(sample_1)
+        self._sample_2 = audiodata.aio.open(sample_2)
+        self._sample_3 = audiodata.aio.open(sample_3)
 
     def test_Samples2Frames(self):
         s1 = samples2frames(self._sample_1.read_samples(100), self._sample_1.get_sampwidth(), self._sample_2.get_nchannels())

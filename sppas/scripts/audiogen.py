@@ -57,7 +57,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
-import audiodata.io
+import audiodata.aio
 from audiodata.channelformatter import ChannelFormatter
 from audiodata.audio import AudioPCM
 
@@ -87,7 +87,7 @@ if not args.b in [1,2,4]:
 # ----------------------------------------------------------------------------
 
 print (time.strftime("%H:%M:%S"))
-audio = audiodata.io.open(args.w)
+audio = audiodata.aio.open(args.w)
 
 # Get the expected channel
 idx = audio.extract_channel(args.c-1)

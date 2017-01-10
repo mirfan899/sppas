@@ -87,7 +87,7 @@ class sppasBaseOption(object):
         """
         Return the type of the option.
 
-        :return: normalized value of the type
+        :returns: normalized value of the type
 
         """
         return self._type
@@ -171,7 +171,7 @@ class sppasBaseOption(object):
 
         :param option_type: (str) Type of the option (i.e. 'int', 'bool', 'float', ...).
         If the option_type is not valid, type will be set to 'str'.
-        :return: True if option_type is valid and set.
+        :returns: True if option_type is valid and set.
 
         """
 

@@ -42,7 +42,7 @@ from sp_glob import encoding
 
 from audiodata.autils import frames2times
 
-import audiodata.io
+import audiodata.aio
 import annotationdata.io
 from audiodata.audio                import AudioPCM
 from annotationdata.transcription   import Transcription
@@ -319,7 +319,7 @@ class IPUsOut( object ):
             audio_out = AudioPCM()
             audio_out.append_channel(ipusaudio.get_channel())
             try:
-                audiodata.io.save_fragment(trackwavname, audio_out, split_track)
+                audiodata.aio.save_fragment(trackwavname, audio_out, split_track)
             except Exception as e:
                 raise Exception("Can't write track: %s. Error is %s"%(trackwavname,e))
 

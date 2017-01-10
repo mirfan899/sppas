@@ -158,7 +158,7 @@ class Unigram(object):
         Save a unigram into a file with two columns: word freq.
 
         :param filename (str)
-        :return: (bool)
+        :returns: (bool)
 
         """
         try:

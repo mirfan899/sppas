@@ -38,7 +38,7 @@
 from annotations.Align.aligners.basealigner import BaseAligner
 from annotations.Align.aligners.alignerio   import AlignerIO
 
-import audiodata.io
+import audiodata.aio
 
 # ----------------------------------------------------------------------------
 BASIC_EXT_OUT = ["palign"]
@@ -103,7 +103,7 @@ class BasicAligner( BaseAligner ):
             duration = inputwav
         else:
             try:
-                wavspeech = audiodata.io.open( inputwav )
+                wavspeech = audiodata.aio.open( inputwav )
                 duration  = wavspeech.get_duration()
             except Exception:
                 duration = 0.

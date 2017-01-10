@@ -980,7 +980,7 @@ class SelectionStore(object):
         :param `item`: the item to select;
         :param `select`: ``True`` to select the item, ``False`` otherwise.
 
-        :return: ``True`` if the items selection really changed.
+        :returns: ``True`` if the items selection really changed.
         """
 
         # search for the item ourselves as like this we get the index where to
@@ -1012,7 +1012,7 @@ class SelectionStore(object):
         :param `itemTo`: the last index of the selection range;
         :param `select`: ``True`` to select the items, ``False`` otherwise.
         
-        :return: ``True`` and fill the `itemsChanged` array with the indices of items
+        :returns: ``True`` and fill the `itemsChanged` array with the indices of items
          which have changed state if "few" of them did, otherwise return ``False``
          (meaning that too many items changed state to bother counting them individually).
         """
@@ -5672,7 +5672,7 @@ class UltimateListHeaderWindow(wx.PyControl):
         :param `x`: the mouse `x` position;
         :param `y`: the mouse `y` position.
 
-        :return: The column index if any column client rectangle contains the mouse
+        :returns: The column index if any column client rectangle contains the mouse
          position, ``wx.NOT_FOUND`` otherwise.
         """
         
@@ -6763,7 +6763,7 @@ class UltimateListMainWindow(wx.PyScrolledWindow):
         :param `x`: the mouse `x` position;
         :param `y`: the mouse `y` position.
 
-        :return: a tuple of values, representing the item hit and a hit flag. The
+        :returns: a tuple of values, representing the item hit and a hit flag. The
          hit flag can be one of the following bits:
 
          =============================== ========= ================================
@@ -9874,7 +9874,7 @@ class UltimateListMainWindow(wx.PyScrolledWindow):
          ============================ ========= ==============================
 
 
-        :return: The first item with given `state` following `item` or -1 if no such item found.
+        :returns: The first item with given `state` following `item` or -1 if no such item found.
 
         :note: This function may be used to find all selected items in the
          control like this::
@@ -10268,7 +10268,7 @@ class UltimateListMainWindow(wx.PyScrolledWindow):
         :param `col`: the column index at which we wish to insert a new column;
         :param `item`: an instance of :class:`UltimateListItem`.
 
-        :return: the index at which the column has been inserted.
+        :returns: the index at which the column has been inserted.
         
         :note: This method is meaningful only if :class:`UltimateListCtrl` has the ``ULC_REPORT``
          or the ``ULC_TILE`` styles set.
@@ -10667,7 +10667,7 @@ class UltimateListMainWindow(wx.PyScrolledWindow):
         """
         Returns the gradient style for gradient-style selections.
 
-        :return: 0 for horizontal gradient-style selections, 1 for vertical
+        :returns: 0 for horizontal gradient-style selections, 1 for vertical
          gradient-style selections.
         """
 
@@ -11766,7 +11766,7 @@ class UltimateListCtrl(wx.PyControl):
          ============================ ========= ==============================
 
 
-        :return: The first item with given `state` following `item` or -1 if no such item found.
+        :returns: The first item with given `state` following `item` or -1 if no such item found.
 
         :note: This function may be used to find all selected items in the
          control like this::
@@ -12118,7 +12118,7 @@ class UltimateListCtrl(wx.PyControl):
         :param `col`: the column index at which we wish to insert a column;
         :param `item`: an instance of :class:`UltimateListItem`.
 
-        :return: the index at which the column has been inserted.
+        :returns: the index at which the column has been inserted.
         """
 
         if not self._mainWin.InReportView() and not self.HasAGWFlag(ULC_HEADER_IN_ALL_VIEWS) and \
@@ -12158,7 +12158,7 @@ class UltimateListCtrl(wx.PyControl):
          ``LIST_AUTOSIZE_FILL`` will resize the column fill the remaining width
          of the window.
 
-        :return: the index at which the column has been inserted.
+        :returns: the index at which the column has been inserted.
         """
         
         item = UltimateListItem()
@@ -12505,7 +12505,7 @@ class UltimateListCtrl(wx.PyControl):
         :param `pointOrTuple`: an instance of :class:`Point` or a tuple representing the
          `x`, `y` coordinates for this point.
 
-        :return: the coordinates relative to the screen.
+        :returns: the coordinates relative to the screen.
         
         :note: Overridden from :class:`PyControl`.
         """
@@ -12520,7 +12520,7 @@ class UltimateListCtrl(wx.PyControl):
         :param `x`: an integer specifying the `x` client coordinate;        
         :param `y`: an integer specifying the `y` client coordinate.
 
-        :return: the coordinates relative to the screen.
+        :returns: the coordinates relative to the screen.
         
         :note: Overridden from :class:`PyControl`.
         """
@@ -12535,7 +12535,7 @@ class UltimateListCtrl(wx.PyControl):
         :param `pointOrTuple`: an instance of :class:`Point` or a tuple representing the
          `x`, `y` coordinates for this point.
 
-        :return: the coordinates relative to this window.
+        :returns: the coordinates relative to this window.
         
         :note: Overridden from :class:`PyControl`.
         """
@@ -12550,7 +12550,7 @@ class UltimateListCtrl(wx.PyControl):
         :param `x`: an integer specifying the `x` screen coordinate;        
         :param `y`: an integer specifying the `y` screen coordinate.
 
-        :return: the coordinates relative to this window.
+        :returns: the coordinates relative to this window.
         
         :note: Overridden from :class:`PyControl`.
         """
@@ -13186,7 +13186,7 @@ class UltimateListCtrl(wx.PyControl):
         """
         Returns the gradient style for gradient-style selections.
 
-        :return: 0 for horizontal gradient-style selections, 1 for vertical
+        :returns: 0 for horizontal gradient-style selections, 1 for vertical
          gradient-style selections.
         """
 

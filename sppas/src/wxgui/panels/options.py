@@ -109,7 +109,7 @@ class sppasOptionsPanel(wx.lib.scrolledpanel.ScrolledPanel):
         """
         Return the objects created from the given options.
 
-        :return: wx objects
+        :returns: wx objects
 
         """
         return self._items

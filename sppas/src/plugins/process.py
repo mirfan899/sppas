@@ -68,7 +68,7 @@ class sppasPluginProcess(object):
         Execute the plugin in batch mode (ie don't wait it to be finished).
 
         :param filename: (string) The file name of the file to apply the plugin
-        :return: Process output message
+        :returns: Process output message
 
         """
         # the command

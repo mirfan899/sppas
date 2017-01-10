@@ -142,7 +142,7 @@ class DictPhon(object):
         This is a pure dictionary-based method.
 
         :param entry: (str) The token to phonetize.
-        :return: A string with the phonetization of the given entry or
+        :returns: A string with the phonetization of the given entry or
         the unknown symbol.
 
         """

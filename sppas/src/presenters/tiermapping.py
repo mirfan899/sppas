@@ -90,7 +90,7 @@ class TierMapping(Mapping):
         Run the TierMapping process on an input tier.
 
         :param tier: (Tier) The tier instance to map label symbols.
-        :return: a new tier, with the same name as the given tier
+        :returns: a new tier, with the same name as the given tier
 
         """
         # Create the output tier

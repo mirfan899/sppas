@@ -444,7 +444,7 @@ class FrameSPPAS( wx.Frame ):
         """ Return the list of audio files selected in the FLP. """
 
         selection = []
-        for ext in audiodata.io.extensions:
+        for ext in audiodata.aio.extensions:
             selection.extend( self.flp.GetSelected(ext) )
         return selection
 

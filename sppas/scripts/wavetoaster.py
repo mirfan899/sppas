@@ -56,7 +56,7 @@ WAVETOASTER = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ))
 SRC = os.path.join(WAVETOASTER, "src" )
 sys.path.append(SRC)
 
-import audiodata.io
+import audiodata.aio
 from audiodata       import extensionsul, audioutils
 from audiodata.audio import AudioPCM
 
@@ -150,7 +150,7 @@ def extract_channels( settings, factor=0, channel=0, p=None ):
     for i,channelparameter in enumerate(settings):
         if p: p.update(float(i)/total, "Channel " + str(i+1) + " of " + str(total))
 
-        audio = audiodata.io.open( channelparameter['file'] )
+        audio = audiodata.aio.open( channelparameter['file'] )
 
         # CHANNEL EXTRACTION
         idx = audio.extract_channel( channel )
@@ -475,7 +475,7 @@ audio_out = AudioPCM()
 audio_out.append_channel( newchannelleft )
 audio_out.append_channel( newchannelright )
 
-audiodata.io.save( args.o, audio_out )
+audiodata.aio.save( args.o, audio_out )
 
 if verbose > 0:
     p.update(1, "")

@@ -56,7 +56,7 @@ def to_lower(entry):
     Return a unicode string with lower case.
 
     :param entry: (str or Unicode)
-    :return: Unicode
+    :returns: Unicode
 
     """
     try:
@@ -75,7 +75,7 @@ def to_strip(entry):
     (remove also multiple spaces inside the string)
 
     :param entry: (str or Unicode)
-    :return: Unicode
+    :returns: Unicode
 
     """
     try:
@@ -94,7 +94,7 @@ def get_dump_filename(filename):
     Return the file name of the dump version of filename.
 
     :param filename (String)
-    :return: dump filename
+    :returns: dump filename
 
     """
 
@@ -110,7 +110,7 @@ def has_dump(filename):
     Test if a dump file exists for filename and if it is up-to-date.
 
     :param filename: (str)
-    :return: (bool)
+    :returns: (bool)
 
     """
     dump_filename = get_dump_filename(filename)
@@ -130,7 +130,7 @@ def load_from_dump(filename):
     Load the file from a dumped file.
 
     :param filename: (str)
-    :return: loaded data or None
+    :returns: loaded data or None
 
     """
     if has_dump(filename) is False:
@@ -157,7 +157,7 @@ def save_as_dump(data, filename):
 
     :param data: The data to save
     :param filename: File name for the data
-    :return: (bool)
+    :returns: (bool)
 
     """
     dump_filename = get_dump_filename(filename)

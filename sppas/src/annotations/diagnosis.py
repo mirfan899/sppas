@@ -39,7 +39,7 @@ import codecs
 import os
 
 import annotationdata.io
-import audiodata.io
+import audiodata.aio
 from audiodata.audio import AudioPCM
 from audiodata.channel import Channel
 
@@ -86,7 +86,7 @@ class sppasDiagnosis:
         """
         ext = os.path.splitext( filename )[1]
 
-        if ext.lower() in audiodata.io.extensions:
+        if ext.lower() in audiodata.aio.extensions:
             return self.audiofile( filename )
 
         if ext.lower() in annotationdata.io.extensions:
@@ -108,7 +108,7 @@ class sppasDiagnosis:
 
         # test file format: can we support it?
         try:
-            audio = audiodata.io.open(inputname)
+            audio = audiodata.aio.open(inputname)
             fm = audio.get_framerate()
             sp = audio.get_sampwidth()*8
             nc = audio.get_nchannels()

@@ -42,7 +42,7 @@ from sp_glob import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
 
 import annotationdata.io
 from annotationdata.io.utils import gen_id
-import audiodata.io
+import audiodata.aio
 from audiodata.audiovolume        import AudioVolume
 from audiodata.channel            import Channel
 from annotationdata.transcription import Transcription
@@ -298,7 +298,7 @@ class sppasIPUs( sppasBase ):
         # ---------------
 
         # Get audio and the channel we'll work on
-        audiospeech = audiodata.io.open( audiofile )
+        audiospeech = audiodata.aio.open( audiofile )
         idx         = audiospeech.extract_channel()
         channel     = audiospeech.get_channel(idx)
         self.ipusaudio.set_channel( channel )

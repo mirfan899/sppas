@@ -149,7 +149,7 @@ class Patterns(object):
         :param hyp: (list of tuples - IN) List of hypothesis with their scores
         The scores are supposed to range in [0;1] values.
 
-        :return: List of matching indexes as tuples (i_ref, i_hyp)
+        :returns: List of matching indexes as tuples (i_ref, i_hyp)
 
         """
         matchings = []
@@ -190,7 +190,7 @@ class Patterns(object):
         :param ref: (list of tokens - IN) List of references
         :param hyp: (list of tuples - IN) List of hypothesis with their scores
         The scores are supposed to range in [0;1] values.
-        :return: List of alignments indexes as tuples (i_ref,i_hyp),
+        :returns: List of alignments indexes as tuples (i_ref,i_hyp),
 
         Example:
 

@@ -888,7 +888,7 @@ class Tier( MetaObject ):
         @param begin: (TimePoint)
         @param end:   (TimePoint)
         @param overlaps: (bool)
-        :return: the number of removed annotations
+        :returns: the number of removed annotations
 
         """
         if end <= begin:

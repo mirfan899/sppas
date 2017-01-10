@@ -183,7 +183,7 @@ class DictRepl(object):
         """
         Return the key(s) of a value or an empty string if value does not exists.
 
-        :return: a string with all keys, separated by '_'.
+        :returns: a string with all keys, separated by '_'.
 
         """
         # hum... of course, a value can have more than 1 key!
@@ -272,7 +272,7 @@ class DictRepl(object):
         Save the replacement dictionary.
 
         :param filename (str)
-        :return: (bool)
+        :returns: (bool)
 
         """
         try:

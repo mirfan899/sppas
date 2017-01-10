@@ -35,23 +35,14 @@
 # File: filedialogs.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
 import os
 import wx
 
 from wxgui.cutils.dialogutils import create_wildcard, extend_path
 from msgdialogs import ShowYesNoQuestion
 
-import annotationdata.io as io
-import audiodata.io
+import annotationdata.io
+import audiodata.aio
 import sp_glob
 
 # ----------------------------------------------------------------------------
@@ -63,13 +54,13 @@ def OpenAnnotationFiles(multiple=True):
     """
     Return a list of annotation file names.
     """
-    wildcard  = create_wildcard("All files", io.extensionsul)
-    wildcard += '|'+create_wildcard("SPPAS", io.ext_sppas)
-    wildcard += '|'+create_wildcard("Praat", io.ext_praat)
-    wildcard += '|'+create_wildcard("ELAN",  io.ext_elan)
-    wildcard += '|'+create_wildcard("Transcriber", io.ext_transcriber)
-    wildcard += '|'+create_wildcard("Phonedit", io.ext_phonedit)
-    wildcard += '|'+create_wildcard("ASCII", io.ext_ascii)
+    wildcard  = create_wildcard("All files", annotationdata.io.extensionsul)
+    wildcard += '|'+create_wildcard("SPPAS", annotationdata.io.ext_sppas)
+    wildcard += '|'+create_wildcard("Praat", annotationdata.io.ext_praat)
+    wildcard += '|'+create_wildcard("ELAN",  annotationdata.io.ext_elan)
+    wildcard += '|'+create_wildcard("Transcriber", annotationdata.io.ext_transcriber)
+    wildcard += '|'+create_wildcard("Phonedit", annotationdata.io.ext_phonedit)
+    wildcard += '|'+create_wildcard("ASCII", annotationdata.io.ext_ascii)
 
     files = []
     if multiple is True:
@@ -96,7 +87,7 @@ def OpenSoundFiles():
     Return a list of sound file names.
     """
 
-    wildcard  = create_wildcard("Sound files", audiodata.io.extensionsul)
+    wildcard  = create_wildcard("Sound files", audiodata.aio.extensionsul)
     wildcard += '|'+create_wildcard("All files", ['*', '*.*'])
 
     files = []
@@ -127,6 +118,7 @@ def OpenAnyFiles():
 
 # ----------------------------------------------------------------------------
 
+
 def OpenSpecificFiles(name, extensions):
     """
     Return a list of file names with specific extensions.
@@ -145,7 +137,9 @@ def OpenSpecificFiles(name, extensions):
 # Save
 # ----------------------------------------------------------------------------
 
-def SaveAsAnnotationFile(defaultdir=None,defaultfile=None):
+
+def SaveAsAnnotationFile(defaultdir=None,
+                         defaultfile=None):
     """
     Return an annotation file name.
     """
@@ -157,14 +151,14 @@ def SaveAsAnnotationFile(defaultdir=None,defaultfile=None):
 
     file = None
 
-    wildcard  = create_wildcard("All files", io.extensions_out)
-    wildcard += '|'+create_wildcard("SPPAS", io.ext_sppas)
-    wildcard += '|'+create_wildcard("Praat", io.ext_praat)
-    wildcard += '|'+create_wildcard("ELAN",  io.ext_elan)
-    wildcard += '|'+create_wildcard("Phonedit", io.ext_phonedit)
-    wildcard += '|'+create_wildcard("ASCII", io.ext_ascii)
-    wildcard += '|'+create_wildcard("AnnotationPro", io.ext_annotationpro)
-    wildcard += '|'+create_wildcard("Subtitles", io.ext_subtitles)
+    wildcard  = create_wildcard("All files", annotationdata.io.extensions_out)
+    wildcard += '|'+create_wildcard("SPPAS", annotationdata.io.ext_sppas)
+    wildcard += '|'+create_wildcard("Praat", annotationdata.io.ext_praat)
+    wildcard += '|'+create_wildcard("ELAN",  annotationdata.io.ext_elan)
+    wildcard += '|'+create_wildcard("Phonedit", annotationdata.io.ext_phonedit)
+    wildcard += '|'+create_wildcard("ASCII", annotationdata.io.ext_ascii)
+    wildcard += '|'+create_wildcard("AnnotationPro", annotationdata.io.ext_annotationpro)
+    wildcard += '|'+create_wildcard("Subtitles", annotationdata.io.ext_subtitles)
 
     dlg = wx.FileDialog(
         None, message = "Choose a file name...",
@@ -182,7 +176,9 @@ def SaveAsAnnotationFile(defaultdir=None,defaultfile=None):
 
 # ----------------------------------------------------------------------------
 
-def SaveAsAudioFile(defaultdir=None,defaultfile=None):
+
+def SaveAsAudioFile(defaultdir=None,
+                    defaultfile=None):
     """
     Return an audio file name.
     """
@@ -194,10 +190,10 @@ def SaveAsAudioFile(defaultdir=None,defaultfile=None):
 
     file = None
 
-    wildcard  = create_wildcard("All files", audiodata.io.extensions)
-    wildcard += '|'+create_wildcard("Wave", audiodata.io.ext_wav)
-    wildcard += '|'+create_wildcard("Aiff", audiodata.io.ext_aiff)
-    wildcard += '|'+create_wildcard("SunAu",  audiodata.io.ext_sunau)
+    wildcard  = create_wildcard("All files", audiodata.aio.extensions)
+    wildcard += '|'+create_wildcard("Wave", audiodata.aio.ext_wav)
+    wildcard += '|'+create_wildcard("Aiff", audiodata.aio.ext_aiff)
+    wildcard += '|'+create_wildcard("SunAu",  audiodata.aio.ext_sunau)
 
     dlg = wx.FileDialog(
         None, message = "Choose a file name...",
@@ -215,7 +211,9 @@ def SaveAsAudioFile(defaultdir=None,defaultfile=None):
 
 # ----------------------------------------------------------------------------
 
-def SaveAsImageFile(preferences, image):
+
+def SaveAsImageFile(preferences,
+                    image):
     """
     Save the current image as a PNG picture.
 
@@ -241,7 +239,9 @@ def SaveAsImageFile(preferences, image):
 
 # ----------------------------------------------------------------------------
 
-def SaveAsAnyFile(defaultdir=None,defaultfile=None):
+
+def SaveAsAnyFile(defaultdir=None,
+                  defaultfile=None):
     """
     """
     if defaultdir is None:

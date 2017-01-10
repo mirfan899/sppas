@@ -1,39 +1,43 @@
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2017  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: cfgparser.py
-# ----------------------------------------------------------------------------
 """
+
+This banner notice must not be removed.
+
+     ___   __    __    __    ___
+    /     |  \  |  \  |  \  /              the automatic
+    \__   |__/  |__/  |___| \__             annotation and
+       \  |     |     |   |    \             analysis
+    ___/  |     |     |   | ___/              of speech
+
+    http://www.sppas.org/
+
+    Use of this software is governed by the GNU Public License, version 3.
+
+    SPPAS is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    SPPAS is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+-----------------------------------------------------------------------------
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+:author:       Brigitte Bigi
+:contact:      brigitte.bigi@gmail.com
+-----------------------------------------------------------------------------
+
+src.plugins.cfgparser.py
+
+========================
+
     A config file consists of one or more named sections, each of which can
     contain individual options with names and values.
 
@@ -50,7 +54,7 @@
     (# and ;).
 
     Example:
-    ----------------
+    --------
 
     # This is a comment in a configuration file
     [Section]
@@ -58,7 +62,6 @@
     option2 = value2
 
 """
-# ----------------------------------------------------------------------------
 
 from ConfigParser import SafeConfigParser
 from shutil import copyfile
@@ -71,12 +74,7 @@ from structs.baseoption import Option
 
 class sppasPluginConfigParser(object):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    @summary:      Class to read a plugin configuration file.
+    Class to read a plugin configuration file.
 
     The required section "Configuration" includes an id, a name and a
     description, as for example:
@@ -124,7 +122,7 @@ class sppasPluginConfigParser(object):
         """
         Return the 'Configuration' section content.
 
-        :return: dictionary.
+        :returns: dictionary.
 
         """
         cfgdict = {}
@@ -145,7 +143,7 @@ class sppasPluginConfigParser(object):
         """
         Return the 'Command' section content.
 
-        :return: dictionary.
+        :returns: dictionary.
 
         """
         cfgdict = {}
@@ -164,7 +162,7 @@ class sppasPluginConfigParser(object):
         Return all the 'Option' section contents.
         The section name is used as key. Values are of type "Option".
 
-        :return: ordered dictionary.
+        :returns: ordered dictionary.
 
         """
         cfgdict = collections.OrderedDict()

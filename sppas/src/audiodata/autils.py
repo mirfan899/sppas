@@ -43,7 +43,7 @@
     @summary:      Audio utilities.
 """
 
-import audiodata.io
+import audiodata.aio
 from audiodata.audio            import AudioPCM
 from audiodata.channel          import Channel
 from audiodata.channelframes    import ChannelFrames
@@ -100,7 +100,7 @@ def extract_audio_channel(inputaudio, idx):
 
     """
     idx = int(idx)
-    audio = audiodata.io.open(inputaudio)
+    audio = audiodata.aio.open(inputaudio)
     i = audio.extract_channel(idx)
     channel = audio.get_channel(i)
     audio.close()
@@ -188,7 +188,7 @@ def write_channel(audioname, channel):
     """
     audio_out = AudioPCM()
     audio_out.append_channel( channel )
-    audiodata.io.save( audioname, audio_out )
+    audiodata.aio.save( audioname, audio_out )
 
 # ------------------------------------------------------------------------
 

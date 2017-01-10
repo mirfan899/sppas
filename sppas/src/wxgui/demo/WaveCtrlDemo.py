@@ -43,12 +43,12 @@ import logging
 import wx
 
 from wxgui.ui.wavectrl import WaveCtrl
-import audiodata.io
+import audiodata.aio
 
 # ----------------------------------------------------------------------------
 
 import os
-wavef = audiodata.io.open(os.path.join(os.path.dirname(os.path.abspath(__file__)),"oriana1.wav"))
+wavef = audiodata.aio.open(os.path.join(os.path.dirname(os.path.abspath(__file__)),"oriana1.wav"))
 
 # ----------------------------------------------------------------------------
 

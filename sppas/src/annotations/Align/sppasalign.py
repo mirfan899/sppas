@@ -42,7 +42,7 @@ import logging
 
 import utils.fileutils as fileutils
 
-import audiodata.io
+import audiodata.aio
 import annotationdata.io
 from annotationdata import Transcription
 from annotationdata import Tier

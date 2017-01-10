@@ -57,7 +57,7 @@ from annotations.Align.sppasalign import sppasAlign
 
 import annotationdata.io
 import annotationdata.utils.tierutils
-import audiodata.io
+import audiodata.aio
 
 from annotationdata.transcription import Transcription
 from audiodata.audio import AudioPCM
@@ -500,7 +500,7 @@ class TrainingCorpus(object):
         """
         # Get the list of audio files from the input directory
         audiofilelist = []
-        for extension in audiodata.io.extensions:
+        for extension in audiodata.aio.extensions:
             files = utils.fileutils.get_files(directory, extension)
             audiofilelist.extend(files)
 
@@ -753,7 +753,7 @@ class TrainingCorpus(object):
     def _add_audio(self, audiofilename, outfile):
         # Get the first channel
         try:
-            audio = audiodata.io.open(audiofilename)
+            audio = audiodata.aio.open(audiofilename)
             audio.extract_channel(0)
             formatter = ChannelFormatter(audio.get_channel(0))
         except Exception as e:
@@ -769,7 +769,7 @@ class TrainingCorpus(object):
         # Save the converted channel
         audio_out = AudioPCM()
         audio_out.append_channel(formatter.channel)
-        audiodata.io.save(os.path.join(self.datatrainer.get_storewav(), outfile + ".wav"), audio_out)
+        audiodata.aio.save(os.path.join(self.datatrainer.get_storewav(), outfile + ".wav"), audio_out)
 
         # Generate MFCC
         wav = os.path.join(self.datatrainer.get_storewav(), outfile + ".wav")

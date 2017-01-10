@@ -115,24 +115,23 @@ from annotationdata.filter.filters   import Filter
 from annotationdata.filter.filters   import SingleFilter
 from annotationdata.filter.filters   import RelationFilter
 
-import annotationdata.io as io
+#import annotationdata.io
 
 __all__ = [
-'Transcription',
-'Tier',
-'Media',
-'Hierarchy',
-'CtrlVocab',
-'Annotation',
-'Label',
-'Text',
-'TimeDisjoint',
-'TimeInterval',
-'TimePoint',
-'Sel',
-'Rel',
-'Filter',
-'SingleFilter',
-'RelationFilter',
-'io'
+    'Transcription',
+    'Tier',
+    'Media',
+    'Hierarchy',
+    'CtrlVocab',
+    'Annotation',
+    'Label',
+    'Text',
+    'TimeDisjoint',
+    'TimeInterval',
+    'TimePoint',
+    'Sel',
+    'Rel',
+    'Filter',
+    'SingleFilter',
+    'RelationFilter'
 ]

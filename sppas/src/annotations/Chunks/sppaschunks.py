@@ -40,7 +40,7 @@ import os
 
 import utils.fileutils as fileutils
 
-import audiodata.io
+import audiodata.aio
 import annotationdata.io
 from annotationdata.io.utils import gen_id
 from annotationdata.media    import Media

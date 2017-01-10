@@ -4,7 +4,7 @@
 import unittest
 import os
 
-import audiodata.io
+import audiodata.aio
 from audiodata.audio import AudioPCM
 from audiodata.audiodataexc import AudioDataError
 
@@ -18,16 +18,16 @@ sample_3 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana3.wave")
 class TestAudioPCM(unittest.TestCase):
 
     def test_set_get(self):
-        a1 = audiodata.io.open(sample_1)
+        a1 = audiodata.aio.open(sample_1)
         a2 = AudioPCM()
         a2.Set(a1)
         self.assertEqual(a1.get_channels(), a2.get_channels())
         self.assertEqual(a1.get_audiofp(), a2.get_audiofp())
 
     def test_channels(self):
-        a1 = audiodata.io.open(sample_1)
+        a1 = audiodata.aio.open(sample_1)
         a2 = AudioPCM()
-        a3 = audiodata.io.open(sample_3)
+        a3 = audiodata.aio.open(sample_3)
 
         # Test extract_channel
         with self.assertRaises(AudioDataError):
@@ -45,11 +45,3 @@ class TestAudioPCM(unittest.TestCase):
         self.assertEqual(1, a2.append_channel( c2 ) )
         a2.insert_channel( 0, c1 )
         self.assertTrue( a2.verify_channels())
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestAudioPCM))
-    unittest.TextTestRunner(verbosity=2).run(testsuite)

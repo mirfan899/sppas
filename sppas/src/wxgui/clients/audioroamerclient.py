@@ -68,7 +68,7 @@ from wxgui.dialogs.msgdialogs  import ShowInformation, ShowYesNoQuestion
 from wxgui.dialogs.basedialog  import spBaseDialog
 from wxgui.dialogs.choosers    import PeriodChooser
 
-import audiodata.io
+import audiodata.aio
 from audiodata.channel          import Channel
 from audiodata.channelsilence   import ChannelSilence
 from audiodata.channelformatter import ChannelFormatter
@@ -428,7 +428,7 @@ class AudioRoamerDialog( spBaseDialog ):
         return self.CreateButtonBox( [btn_save_channel,btn_save_fragment,btn_save_info],[btn_close] )
 
     def _create_content(self):
-        audio = audiodata.io.open(self._filename)
+        audio = audiodata.aio.open(self._filename)
         nchannels = audio.get_nchannels()
         audio.extract_channels()
         audio.close()
@@ -934,7 +934,7 @@ class AudioRoamerPanel( wx.Panel ):
             try:
                 audio = AudioPCM()
                 audio.append_channel(channel)
-                audiodata.io.save(newfilename, audio)
+                audiodata.aio.save(newfilename, audio)
             except Exception as e:
                 message = "File not saved. Error: %s"%str(e)
             else:
@@ -1074,7 +1074,7 @@ class AudioRoamerPanel( wx.Panel ):
 # ----------------------------------------------------------------------------
 
 def ShowAudioRoamerDialog(parent, preferences, filename):
-    audio = audiodata.io.open( filename )
+    audio = audiodata.aio.open( filename )
     if audio.get_nframes() > 15000000:
         userChoice = ShowYesNoQuestion( None, preferences, "Audio file is very large. Showing more will take a while and could generate a memory error. Really want more?" )
         if userChoice == wx.ID_NO:

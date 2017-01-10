@@ -98,7 +98,7 @@ class PhoneSet(Vocabulary):
         A phone can't start by a digit nor '-' nor '+', and must be ASCII.
 
         :param phone: (str) Phone to be checked
-        :return: (bool)
+        :returns: (bool)
 
         """
         try:

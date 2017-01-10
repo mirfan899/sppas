@@ -94,7 +94,7 @@ class Vocabulary(object):
         Add an entry into the list except if the entry is already inside.
 
         :param entry: (str - IN) The entry to add in the word list
-        :return: (bool)
+        :returns: (bool)
 
         """
         entry = entry.strip()
@@ -149,7 +149,7 @@ class Vocabulary(object):
         """
         Make a deep copy of the instance.
 
-        :return: Vocabulary
+        :returns: Vocabulary
 
         """
         s = Vocabulary()

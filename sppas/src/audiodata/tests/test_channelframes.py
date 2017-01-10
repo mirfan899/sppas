@@ -4,20 +4,23 @@
 import unittest
 import os
 
-import audiodata.io
-from audiodata.channel import Channel
+import audiodata.aio
 from audiodata.channelframes import ChannelFrames
+from sp_glob import SAMPLES_PATH
 
-from paths import SPPASSAMPLES, TEMP
-sample_1 = os.path.join(SPPASSAMPLES, "samples-eng", "oriana1.wav")  # mono; 16000Hz; 16bits
-sample_2 = os.path.join(SPPASSAMPLES, "samples-fra", "F_F_B003-P9.wav")  # mono; 44100Hz; 32bits
+# ---------------------------------------------------------------------------
+
+sample_1 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana1.wav")  # mono; 16000Hz; 16bits
+sample_2 = os.path.join(SAMPLES_PATH, "samples-fra", "F_F_B003-P9.wav")  # mono; 44100Hz; 32bits
+
+# ---------------------------------------------------------------------------
 
 
 class TestChannelFrames(unittest.TestCase):
 
     def setUp(self):
-        self._sample_1 = audiodata.io.open(sample_1)
-        self._sample_2 = audiodata.io.open(sample_2)
+        self._sample_1 = audiodata.aio.open(sample_1)
+        self._sample_2 = audiodata.aio.open(sample_2)
 
     def tearDown(self):
         self._sample_1.close()

@@ -2,15 +2,16 @@
 # -*- coding: utf8 -*-
 
 import unittest
-import os
+import os.path
 import shutil
 
 import annotationdata.io
 from annotationdata.transcription  import Transcription
-import utils.fileutils
+#import utils.fileutils
 
-TEMP = utils.fileutils.gen_name()
+#TEMP = utils.fileutils.gen_name()
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+TEMP = os.path.join(DATA, "Temp")
 
 # ---------------------------------------------------------------------------
 

@@ -125,7 +125,7 @@ class Mapping(DictRepl):
         Map an entry (a key or a value).
 
         :param entry: (str) is the input string to map
-        :return: mapped entry is a string
+        :returns: mapped entry is a string
 
         """
         if self.get_size() == 0:

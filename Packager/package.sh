@@ -371,17 +371,29 @@ function fct_test_bin {
     rm $TEMP
 }
 
-# Exec python unittest
-#  - $1: package to test
-funcfion fct_perform_unittest {
+# Exec python unittest on a package.
+function fct_perform_unittest {
+
+    touch $TEMP
     echo " ... Test $1 "
 
-    echo >> TEMP
-    echo " ================================================ " >> TEMP
+    echo >> $TEMP
+    echo " ================================================ " >> $TEMP
     echo " Start test of $1 " >>  $TEMP
-    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/$1" >& $TEMP
-    echo " ================================================ " >> TEMP
-    echo >> TEMP
+    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/$1" 2>> $TEMP
+    echo " ================================================ " >> $TEMP
+    echo >> $TEMP
+
+    local error=`grep -c '... ERROR' $TEMP`
+    if [ $error -eq 0 ]; then
+         echo " ... ... success"
+    else
+         echo " ... ... $error error(s)."
+    fi
+
+    cat $TEMP >> $LOG_DIAGNOSIS
+    echo >> $LOG_DIAGNOSIS
+    rm $TEMP
 }
 
 
@@ -393,31 +405,18 @@ function fct_test_api {
     echo "##########  ${PROGRAM_NAME} API Diagnosis - $TODAY #########" >> $LOG_DIAGNOSIS
     echo >> $LOG_DIAGNOSIS
 
-    touch $TEMP
-
-    fct_perform_unittest annotationdata
-    fct_perform_unittest calculus
-    fct_perform_unittest presenters
-    fct_perform_unittest resources
-    fct_perform_unittest plugins
-    fct_perform_unittest audiodata
-    #fct_perform_unittest annotations
+    fct_perform_unittest "annotationdata"
+    fct_perform_unittest "calculus"
+    fct_perform_unittest "presenters"
+    fct_perform_unittest "resources"
+    fct_perform_unittest "plugins"
+    fct_perform_unittest "audiodata"
+    #fct_perform_unittest "annotations"
     echo " ... Test annotations " >>  $TEMP
     python $PROGRAM_DIR/sppas/src/annotations/tests/test_all.py 2>> $TEMP
 
-    local error=`grep -c '... ERROR' $TEMP`
-    if [ $error -eq 0 ]; then
-         echo " ... Tests: Success"
-    else
-         echo " ... Tests: $error error(s)."
-    fi
-
-    cat $TEMP >> $LOG_DIAGNOSIS
-    echo >> $LOG_DIAGNOSIS
     echo " ######### ############################ ######### " >> $LOG_DIAGNOSIS
     echo >> $LOG_DIAGNOSIS
-
-    rm $TEMP
 }
 
 
@@ -452,7 +451,7 @@ function fct_api_manual {
     fi
 
     # OK... generate the API manual
-    epydoc --config $BIN_DIR/epydoc.conf --css $ETC_DIR/styles/epydoc.css --output $WEB_DIR/manual $PROGRAM_DIR/sppas/src/annotationdata >& $LOG_MANUAL
+    epydoc --config $BIN_DIR/epydoc.conf --css $ETC_DIR/styles/epydoc.css --output $WEB_DIR/manual $PROGRAM_DIR/sppas/src >& $LOG_MANUAL
     echo " The reference manual of the web directory was updated."
     echo " ... Check out the $LOG_MANUAL file for details."
 }
