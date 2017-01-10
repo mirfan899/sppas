@@ -55,9 +55,3 @@ class TestStatistics(unittest.TestCase):
 
         #coefvariation = ds.coefvariation()
         #self.assertEqual(56.773, round(coefvariation['toto'],3))
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestStatistics)
-    unittest.TextTestRunner(verbosity=2).run(suite)

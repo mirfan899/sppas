@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
+import os.path
 
 import annotationdata.aio
 from annotationdata.annotation  import Annotation
@@ -12,6 +12,8 @@ from annotationdata.ptime.point import TimePoint
 from annotationdata.tier import Tier
 
 from presenters.tiertga import TierTGA
+
+# ---------------------------------------------------------------------------
 
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
@@ -80,9 +82,3 @@ class TestTGA(unittest.TestCase):
         i,s = reglin['tg_33']
         self.assertEqual(0.156, round(i,3))
         self.assertEqual(0.026, round(s,3))
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestTGA)
-    unittest.TextTestRunner(verbosity=2).run(suite)

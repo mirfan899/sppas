@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
+import os.path
 
 from presenters.tiermapping import TierMapping
 from annotationdata.aio.praat import TextGrid
@@ -12,6 +12,8 @@ from annotationdata.ptime.interval import TimeInterval
 from annotationdata.ptime.point import TimePoint
 from annotationdata.label.label import Label
 from resources.dictpron import DictPron
+
+# ---------------------------------------------------------------------------
 
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
@@ -102,9 +104,3 @@ class TestTierMapping(unittest.TestCase):
             else:
                 self.assertEqual(a1.GetLabel().GetValue(), a2.GetLabel().GetValue())
                 self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestTierMapping)
-    unittest.TextTestRunner(verbosity=2).run(suite)
