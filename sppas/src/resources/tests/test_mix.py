@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
+import os.path
 import shutil
 
 from sp_glob import RESOURCES_PATH
@@ -66,11 +66,3 @@ class TestModelMixer(unittest.TestCase):
         acmodel2 = AcModel()
         acmodel2.load_htk(os.path.join(os.path.join(MODELDIR, "models-eng-fra"), "hmmdefs"))
         shutil.rmtree(outputdir)
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestModelMixer))
-    unittest.TextTestRunner(verbosity=2).run(testsuite)

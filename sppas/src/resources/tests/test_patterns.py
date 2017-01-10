@@ -78,11 +78,3 @@ class TestPatterns(unittest.TestCase):
         hyp = [ ("w0",0.8), ("w1",1),  ("w2",0.7),  ("wX",0.9),  ("w3",1),  ("w5",0.4),  ("w6",0.95),  ("wX",1),  ("w9",1) ]
 
         self.assertEqual([(5, 0), (6, 1), (7, 2)] , self._patterns.ngram_matches(ref,hyp))
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestPatterns))
-    unittest.TextTestRunner(verbosity=2).run(testsuite)

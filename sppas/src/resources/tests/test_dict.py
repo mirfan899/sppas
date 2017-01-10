@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
+import os.path
 
 from resources.dictpron import DictPron
 from resources.dictrepl import DictRepl
@@ -149,15 +149,3 @@ class TestMapping(unittest.TestCase):
         self.assertEqual("a9@", dict1.map("aoe@", ()))
         self.assertEqual("a-9@", dict1.map("a-oe@", ()))
         self.assertEqual("lleu ko~.bl9", dict1.map("lleu ko~.bloe", ()))
-
-# ---------------------------------------------------------------------------
-
-if __name__ == "__main__":
-    testsuite = unittest.TestSuite()
-
-    testsuite.addTest(unittest.makeSuite(TestDictPron))
-    testsuite.addTest(unittest.makeSuite(TestUnigram))
-    testsuite.addTest(unittest.makeSuite(TestDictRepl))
-    testsuite.addTest(unittest.makeSuite(TestMapping))
-
-    unittest.TextTestRunner(verbosity=2).run(testsuite)

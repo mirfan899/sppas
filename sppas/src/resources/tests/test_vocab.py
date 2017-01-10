@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 
 import unittest
-import os
+import os.path
 import shutil
 
 from resources.vocab import Vocabulary
@@ -52,11 +52,3 @@ class TestVocabulary(unittest.TestCase):
         l = Vocabulary(ITA, nodump=True)
         self.assertTrue(l.is_unk('toto'))
         self.assertFalse(l.is_unk(u'perché'))
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestVocabulary))
-    unittest.TextTestRunner(verbosity=2).run(testsuite)

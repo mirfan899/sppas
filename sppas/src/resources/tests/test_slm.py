@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 
 import unittest
-import os
+import os.path
 import math
 import shutil
 
@@ -364,13 +364,3 @@ class TestSLM(unittest.TestCase):
         m1 = slm1.model
         m2 = slm2.model
         self.assertTrue(compare(m1, m2))
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestNgramCounter))
-    testsuite.addTest(unittest.makeSuite(TestNgramsModel))
-    testsuite.addTest(unittest.makeSuite(TestSLM))
-    unittest.TextTestRunner(verbosity=2).run(testsuite)

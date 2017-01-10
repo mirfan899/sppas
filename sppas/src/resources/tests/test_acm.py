@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os
+import os.path
 import copy
 import shutil
 
@@ -13,6 +13,8 @@ from resources.acm.htktrain import HTKModelTrainer, DataTrainer, PhoneSet, Train
 from utils.type import compare
 import utils.fileutils
 from sp_glob import RESOURCES_PATH, SAMPLES_PATH
+
+# ---------------------------------------------------------------------------
 
 MODEL_PATH = os.path.join(RESOURCES_PATH, "models")
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
@@ -412,12 +414,3 @@ class TestAcModel(unittest.TestCase):
                     self.assertEqual(pdf['covariance']['variance']['dim'], 25)
                     self.assertEqual(len(pdf['covariance']['variance']['vector']), 25)
                     self.assertEqual(type(pdf['gconst']), float)
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestInterpolate))
-    testsuite.addTest(unittest.makeSuite(TestAcModel))
-    testsuite.addTest(unittest.makeSuite(TestTrainer))
-    unittest.TextTestRunner(verbosity=2).run(testsuite)

@@ -126,11 +126,3 @@ class TestRutils(unittest.TestCase):
 
     def test_strip(self):
         self.assertEqual(rutils.to_strip(u'  \n Ỹ  \t\r   ỏ  '), u'Ỹ ỏ')
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestRutils))
-    unittest.TextTestRunner(verbosity=2).run(testsuite)
