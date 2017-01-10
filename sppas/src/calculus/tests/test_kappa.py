@@ -90,11 +90,3 @@ class TestTierKappa(unittest.TestCase):
         self.assertTrue(kb.check_vector(q))
         self.assertTrue(kb.check())  # check both p and q
         self.assertEqual(kb.evaluate(), 0.)
-
-# ---------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    testsuite = unittest.TestSuite()
-    testsuite.addTest(unittest.makeSuite(TestVectorKappa))
-    testsuite.addTest(unittest.makeSuite(TestTierKappa))
-    unittest.TextTestRunner(verbosity=2).run(testsuite)
