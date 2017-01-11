@@ -1,0 +1,14 @@
+# install a "good" version of sphinx:
+sudo pip install sphinx==1.4.8
+
+# generation des fichiers rst:
+sphinx-apidoc -o manual $SPPAS/sppas/src/
+
+# generer les pages html (make html)
+sphinx-build -b html -d _build/doctrees . _build/html
+
+
+# clean all
+rm manual/*
+rm -rf _build/*
+

@@ -1,0 +1,1016 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plugins package &#8212; THE HTML title</title>
+    
+    <link rel="stylesheet" href="../_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../_static/cloud.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="THE HTML title" href="../index.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a></li>
+    <li><a href="../index.html">Short title</a> &#187;</li>
+ 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="plugins-package">
+<h1>plugins package<a class="headerlink" href="#plugins-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="module-plugins.cfgparser">
+<span id="submodules"></span><h2>Submodules<a class="headerlink" href="#module-plugins.cfgparser" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="src-plugins-cfgparser-py">
+<h3>src.plugins.cfgparser.py<a class="headerlink" href="#src-plugins-cfgparser-py" title="Permalink to this headline">¶</a></h3>
+<p>A config file consists of one or more named sections, each of which can
+contain individual options with names and values.</p>
+<p>Config file sections are identified by looking for lines starting with
+[ and ending with ]. The value between the square brackets is the section
+name, and can contain any characters except square brackets.</p>
+<p>Options are listed one per line within a section. The line starts with
+the name of the option, which is separated from the value by a colon (:)
+or equal sign (=).
+Whitespace around the separator is ignored when the file is parsed.</p>
+<p>A config file may include comments, prefixed by specific characters
+(# and ;).</p>
+<p>Here is an example with a comment, a section definition and two options:</p>
+<blockquote>
+<div># This is a comment in a configuration file
+[Section]
+option1 = value1
+option2 = value2</div></blockquote>
+<dl class="class">
+<dt id="plugins.cfgparser.sppasPluginConfigParser">
+<em class="property">class </em><code class="descclassname">plugins.cfgparser.</code><code class="descname">sppasPluginConfigParser</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Class to read a plugin configuration file.</td>
+</tr>
+</tbody>
+</table>
+<p>The required section &#8220;Configuration&#8221; includes an id, a name and a
+description, as for example:</p>
+<blockquote>
+<div>[Configuration]
+id:    pluginid
+name:  The Plugin Name
+descr: Performs something on some files.
+icon:  path (optional)</div></blockquote>
+<dl class="docutils">
+<dt>Then, a required section with the name &#8220;Command&#8221;:</dt>
+<dd>[Command]
+windows: toto.exe
+macos:   toto.command
+linux:   toto.bash</dd>
+</dl>
+<p>Finally, a set of sections with name starting by &#8220;Option&#8221; can be appended,
+as follow:</p>
+<blockquote>
+<div>[Option2]
+id:    -v
+type:  boolean
+value: False
+text:  Verbose mode</div></blockquote>
+<p>Some specific &#8216;id&#8217; or &#8216;value&#8217; of Option sections can be defined and will be
+interpreted differently:</p>
+<blockquote>
+<div><ul class="simple">
+<li>input</li>
+<li>options</li>
+</ul>
+</div></blockquote>
+<dl class="method">
+<dt id="plugins.cfgparser.sppasPluginConfigParser.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a parser.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; (string) the file name of the plugin configuration.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.cfgparser.sppasPluginConfigParser.get_command">
+<code class="descname">get_command</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.get_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser.get_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the &#8216;Command&#8217; section content.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dictionary.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.cfgparser.sppasPluginConfigParser.get_config">
+<code class="descname">get_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.get_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser.get_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the &#8216;Configuration&#8217; section content.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dictionary.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.cfgparser.sppasPluginConfigParser.get_options">
+<code class="descname">get_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.get_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser.get_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all the &#8216;Option&#8217; section contents.
+The section name is used as key. Values are of type &#8220;Option&#8221;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">ordered dictionary.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.cfgparser.sppasPluginConfigParser.parse">
+<code class="descname">parse</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a configuration file.
+This will forget all previous configurations (if any).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; (string) Configuration file name.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.cfgparser.sppasPluginConfigParser.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>backup=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the configuration file.
+Copy the old one into a backup file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.cfgparser.sppasPluginConfigParser.set_options">
+<code class="descname">set_options</code><span class="sig-paren">(</span><em>options</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.set_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser.set_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-set all the &#8216;Option&#8217; section.</p>
+<p>&#64;param options (ordered dictionary) with key=section name, and value
+if of type &#8220;Option&#8221; (with at least a &#8220;key&#8221;).</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<span class="target" id="module-plugins.manager"></span><dl class="class">
+<dt id="plugins.manager.sppasPluginsManager">
+<em class="property">class </em><code class="descclassname">plugins.manager.</code><code class="descname">sppasPluginsManager</code><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">threading.Thread</span></code></p>
+<p>&#64;author:       Brigitte Bigi
+&#64;organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+&#64;contact:      <a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a>
+&#64;license:      GPL, v3
+&#64;copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+&#64;summary:      Class to manage the list of plugins into SPPAS.</p>
+<dl class="method">
+<dt id="plugins.manager.sppasPluginsManager.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate the sppasPluginsManager and load the current plugins.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.manager.sppasPluginsManager.append">
+<code class="descname">append</code><span class="sig-paren">(</span><em>plugin_folder</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.append"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.append" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append a plugin in the list of plugins.
+It is supposed that the given plugin folder name is a folder of the
+plugin directory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin_folder</strong> &#8211; (string) The folder name of the plugin.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.manager.sppasPluginsManager.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>plugin_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a plugin of the plugins directory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin_id</strong> &#8211; (string) Identifier of the plugin to delete.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.manager.sppasPluginsManager.get_plugin">
+<code class="descname">get_plugin</code><span class="sig-paren">(</span><em>plugin_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.get_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.get_plugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the sppasPluginParam from a plugin identifier.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.manager.sppasPluginsManager.get_plugin_ids">
+<code class="descname">get_plugin_ids</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.get_plugin_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.get_plugin_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of plugin identifiers.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.manager.sppasPluginsManager.install">
+<code class="descname">install</code><span class="sig-paren">(</span><em>plugin_archive</em>, <em>plugin_folder</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.install"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.install" title="Permalink to this definition">¶</a></dt>
+<dd><p>Install a plugin into the plugin directory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>plugin_archive</strong> &#8211; (string) File name of the plugin to be installed (ZIP).</li>
+<li><strong>plugin_folder</strong> &#8211; (string) Destination folder name of the plugin to be installed.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.manager.sppasPluginsManager.load">
+<code class="descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load all installed plugins in the SPPAS directory.</p>
+<dl class="docutils">
+<dt>A plugin is not loaded if:</dt>
+<dd><ul class="first last simple">
+<li>a configuration file is not defined or corrupted,</li>
+<li>the platform system of the command does not match.</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.manager.sppasPluginsManager.run_plugin">
+<code class="descname">run_plugin</code><span class="sig-paren">(</span><em>plugin_id</em>, <em>file_names</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.run_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.run_plugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply a given plugin on a list of files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>plugin_id</strong> &#8211; (string) Identifier of the plugin to apply.</li>
+<li><strong>file_names</strong> &#8211; (list) List of files on which the plugin has to be applied.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.manager.sppasPluginsManager.set_progress">
+<code class="descname">set_progress</code><span class="sig-paren">(</span><em>progress</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.set_progress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.set_progress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fix the progress system to be used while executing a plugin.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>progress</strong> &#8211; (TextProgress or ProcessProgressDialog)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-plugins.param"></span><dl class="class">
+<dt id="plugins.param.sppasPluginParam">
+<em class="property">class </em><code class="descclassname">plugins.param.</code><code class="descname">sppasPluginParam</code><span class="sig-paren">(</span><em>directory</em>, <em>config_file</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>&#64;author:       Brigitte Bigi
+&#64;organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+&#64;contact:      <a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a>
+&#64;license:      GPL, v3
+&#64;copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+&#64;summary:      One SPPAS plugin set of parameters.</p>
+<dl class="method">
+<dt id="plugins.param.sppasPluginParam.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>directory</em>, <em>config_file</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new sppasPluginParam instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>directory</strong> &#8211; (string) the directory where to find the plugin</li>
+<li><strong>config_file</strong> &#8211; (string) the file name of the plugin configuration</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.param.sppasPluginParam.get_command">
+<code class="descname">get_command</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_command" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plugins.param.sppasPluginParam.get_descr">
+<code class="descname">get_descr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_descr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_descr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plugins.param.sppasPluginParam.get_directory">
+<code class="descname">get_directory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_directory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plugins.param.sppasPluginParam.get_icon">
+<code class="descname">get_icon</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_icon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_icon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plugins.param.sppasPluginParam.get_key">
+<code class="descname">get_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plugins.param.sppasPluginParam.get_name">
+<code class="descname">get_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plugins.param.sppasPluginParam.get_option_from_key">
+<code class="descname">get_option_from_key</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_option_from_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_option_from_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plugins.param.sppasPluginParam.get_options">
+<code class="descname">get_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plugins.param.sppasPluginParam.parse">
+<code class="descname">parse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the configuration file of the plugin.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.param.sppasPluginParam.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset all members to their default value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.param.sppasPluginParam.save">
+<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the configuration file.
+Copy the old one into a backup file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.param.sppasPluginParam.set_options">
+<code class="descname">set_options</code><span class="sig-paren">(</span><em>options_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.set_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.set_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-plugins.process"></span><dl class="class">
+<dt id="plugins.process.sppasPluginProcess">
+<em class="property">class </em><code class="descclassname">plugins.process.</code><code class="descname">sppasPluginProcess</code><span class="sig-paren">(</span><em>plugin_param</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.process.sppasPluginProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>&#64;author:       Brigitte Bigi
+&#64;organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+&#64;contact:      <a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a>
+&#64;license:      GPL, v3
+&#64;copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+&#64;summary:      Class to run a plugin.</p>
+<dl class="method">
+<dt id="plugins.process.sppasPluginProcess.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>plugin_param</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.process.sppasPluginProcess.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new sppasPluginProcess instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin_param</strong> &#8211; (sppasPluginParam)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.process.sppasPluginProcess.communicate">
+<code class="descname">communicate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.communicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.process.sppasPluginProcess.communicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait for the process and get output messages (if any) then return it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.process.sppasPluginProcess.is_running">
+<code class="descname">is_running</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.is_running"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.process.sppasPluginProcess.is_running" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if the process is running.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.process.sppasPluginProcess.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.process.sppasPluginProcess.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute the plugin in batch mode (ie don&#8217;t wait it to be finished).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; (string) The file name of the file to apply the plugin</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Process output message</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.process.sppasPluginProcess.stop">
+<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.process.sppasPluginProcess.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Terminate the process if it is running.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plugins">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-plugins" title="Permalink to this headline">¶</a></h2>
+<p>&#64;author:       Brigitte Bigi
+&#64;organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+&#64;contact:      <a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a>
+&#64;license:      GPL, v3
+&#64;copyright:    Copyright (C) 2011-2017  Brigitte Bigi</p>
+<p>plugins is a free and open source Python library to access and manage
+external programs to plug into SPPAS.</p>
+<dl class="class">
+<dt id="plugins.sppasPluginsManager">
+<em class="property">class </em><code class="descclassname">plugins.</code><code class="descname">sppasPluginsManager</code><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginsManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">threading.Thread</span></code></p>
+<p>&#64;author:       Brigitte Bigi
+&#64;organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+&#64;contact:      <a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a>
+&#64;license:      GPL, v3
+&#64;copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+&#64;summary:      Class to manage the list of plugins into SPPAS.</p>
+<dl class="method">
+<dt id="plugins.sppasPluginsManager.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginsManager.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate the sppasPluginsManager and load the current plugins.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginsManager.append">
+<code class="descname">append</code><span class="sig-paren">(</span><em>plugin_folder</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.append"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginsManager.append" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append a plugin in the list of plugins.
+It is supposed that the given plugin folder name is a folder of the
+plugin directory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin_folder</strong> &#8211; (string) The folder name of the plugin.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginsManager.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>plugin_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginsManager.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a plugin of the plugins directory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin_id</strong> &#8211; (string) Identifier of the plugin to delete.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginsManager.get_plugin">
+<code class="descname">get_plugin</code><span class="sig-paren">(</span><em>plugin_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.get_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginsManager.get_plugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the sppasPluginParam from a plugin identifier.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginsManager.get_plugin_ids">
+<code class="descname">get_plugin_ids</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.get_plugin_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginsManager.get_plugin_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of plugin identifiers.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginsManager.install">
+<code class="descname">install</code><span class="sig-paren">(</span><em>plugin_archive</em>, <em>plugin_folder</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.install"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginsManager.install" title="Permalink to this definition">¶</a></dt>
+<dd><p>Install a plugin into the plugin directory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>plugin_archive</strong> &#8211; (string) File name of the plugin to be installed (ZIP).</li>
+<li><strong>plugin_folder</strong> &#8211; (string) Destination folder name of the plugin to be installed.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginsManager.load">
+<code class="descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginsManager.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load all installed plugins in the SPPAS directory.</p>
+<dl class="docutils">
+<dt>A plugin is not loaded if:</dt>
+<dd><ul class="first last simple">
+<li>a configuration file is not defined or corrupted,</li>
+<li>the platform system of the command does not match.</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginsManager.run_plugin">
+<code class="descname">run_plugin</code><span class="sig-paren">(</span><em>plugin_id</em>, <em>file_names</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.run_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginsManager.run_plugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply a given plugin on a list of files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>plugin_id</strong> &#8211; (string) Identifier of the plugin to apply.</li>
+<li><strong>file_names</strong> &#8211; (list) List of files on which the plugin has to be applied.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginsManager.set_progress">
+<code class="descname">set_progress</code><span class="sig-paren">(</span><em>progress</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.set_progress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginsManager.set_progress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fix the progress system to be used while executing a plugin.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>progress</strong> &#8211; (TextProgress or ProcessProgressDialog)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plugins.sppasPluginConfigParser">
+<em class="property">class </em><code class="descclassname">plugins.</code><code class="descname">sppasPluginConfigParser</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginConfigParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Class to read a plugin configuration file.</td>
+</tr>
+</tbody>
+</table>
+<p>The required section &#8220;Configuration&#8221; includes an id, a name and a
+description, as for example:</p>
+<blockquote>
+<div>[Configuration]
+id:    pluginid
+name:  The Plugin Name
+descr: Performs something on some files.
+icon:  path (optional)</div></blockquote>
+<dl class="docutils">
+<dt>Then, a required section with the name &#8220;Command&#8221;:</dt>
+<dd>[Command]
+windows: toto.exe
+macos:   toto.command
+linux:   toto.bash</dd>
+</dl>
+<p>Finally, a set of sections with name starting by &#8220;Option&#8221; can be appended,
+as follow:</p>
+<blockquote>
+<div>[Option2]
+id:    -v
+type:  boolean
+value: False
+text:  Verbose mode</div></blockquote>
+<p>Some specific &#8216;id&#8217; or &#8216;value&#8217; of Option sections can be defined and will be
+interpreted differently:</p>
+<blockquote>
+<div><ul class="simple">
+<li>input</li>
+<li>options</li>
+</ul>
+</div></blockquote>
+<dl class="method">
+<dt id="plugins.sppasPluginConfigParser.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginConfigParser.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a parser.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; (string) the file name of the plugin configuration.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginConfigParser.get_command">
+<code class="descname">get_command</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.get_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginConfigParser.get_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the &#8216;Command&#8217; section content.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dictionary.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginConfigParser.get_config">
+<code class="descname">get_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.get_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginConfigParser.get_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the &#8216;Configuration&#8217; section content.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dictionary.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginConfigParser.get_options">
+<code class="descname">get_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.get_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginConfigParser.get_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all the &#8216;Option&#8217; section contents.
+The section name is used as key. Values are of type &#8220;Option&#8221;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">ordered dictionary.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginConfigParser.parse">
+<code class="descname">parse</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginConfigParser.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a configuration file.
+This will forget all previous configurations (if any).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; (string) Configuration file name.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginConfigParser.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>backup=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginConfigParser.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the configuration file.
+Copy the old one into a backup file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginConfigParser.set_options">
+<code class="descname">set_options</code><span class="sig-paren">(</span><em>options</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.set_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginConfigParser.set_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-set all the &#8216;Option&#8217; section.</p>
+<p>&#64;param options (ordered dictionary) with key=section name, and value
+if of type &#8220;Option&#8221; (with at least a &#8220;key&#8221;).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plugins.sppasPluginParam">
+<em class="property">class </em><code class="descclassname">plugins.</code><code class="descname">sppasPluginParam</code><span class="sig-paren">(</span><em>directory</em>, <em>config_file</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>&#64;author:       Brigitte Bigi
+&#64;organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+&#64;contact:      <a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a>
+&#64;license:      GPL, v3
+&#64;copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+&#64;summary:      One SPPAS plugin set of parameters.</p>
+<dl class="method">
+<dt id="plugins.sppasPluginParam.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>directory</em>, <em>config_file</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new sppasPluginParam instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>directory</strong> &#8211; (string) the directory where to find the plugin</li>
+<li><strong>config_file</strong> &#8211; (string) the file name of the plugin configuration</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginParam.get_command">
+<code class="descname">get_command</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.get_command" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginParam.get_descr">
+<code class="descname">get_descr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_descr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.get_descr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginParam.get_directory">
+<code class="descname">get_directory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.get_directory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginParam.get_icon">
+<code class="descname">get_icon</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_icon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.get_icon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginParam.get_key">
+<code class="descname">get_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.get_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginParam.get_name">
+<code class="descname">get_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.get_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginParam.get_option_from_key">
+<code class="descname">get_option_from_key</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_option_from_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.get_option_from_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginParam.get_options">
+<code class="descname">get_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.get_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginParam.parse">
+<code class="descname">parse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the configuration file of the plugin.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginParam.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset all members to their default value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginParam.save">
+<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the configuration file.
+Copy the old one into a backup file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginParam.set_options">
+<code class="descname">set_options</code><span class="sig-paren">(</span><em>options_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.set_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.set_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plugins.sppasPluginProcess">
+<em class="property">class </em><code class="descclassname">plugins.</code><code class="descname">sppasPluginProcess</code><span class="sig-paren">(</span><em>plugin_param</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>&#64;author:       Brigitte Bigi
+&#64;organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+&#64;contact:      <a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a>
+&#64;license:      GPL, v3
+&#64;copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+&#64;summary:      Class to run a plugin.</p>
+<dl class="method">
+<dt id="plugins.sppasPluginProcess.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>plugin_param</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginProcess.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new sppasPluginProcess instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin_param</strong> &#8211; (sppasPluginParam)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginProcess.communicate">
+<code class="descname">communicate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.communicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginProcess.communicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait for the process and get output messages (if any) then return it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginProcess.is_running">
+<code class="descname">is_running</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.is_running"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginProcess.is_running" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if the process is running.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginProcess.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginProcess.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute the plugin in batch mode (ie don&#8217;t wait it to be finished).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; (string) The file name of the file to apply the plugin</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Process output message</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plugins.sppasPluginProcess.stop">
+<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginProcess.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Terminate the process if it is running.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="../index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">plugins package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#module-plugins.cfgparser">Submodules</a><ul>
+<li><a class="reference internal" href="#src-plugins-cfgparser-py">src.plugins.cfgparser.py</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-plugins">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/manual/plugins.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a></li>
+    <li><a href="../index.html">Short title</a> &#187;</li>
+ 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright (C) 2011-2017 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

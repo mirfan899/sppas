@@ -1,0 +1,331 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plugins.param &#8212; THE HTML title</title>
+    
+    <link rel="stylesheet" href="../../_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../_static/cloud.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="THE HTML title" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a></li>
+    <li><a href="../../index.html">Short title</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for plugins.param</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python2</span>
+<span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1">#            ___   __    __    __    ___</span>
+<span class="c1">#           /     |  \  |  \  |  \  /              Automatic</span>
+<span class="c1">#           \__   |__/  |__/  |___| \__             Annotation</span>
+<span class="c1">#              \  |     |     |   |    \             of</span>
+<span class="c1">#           ___/  |     |     |   | ___/              Speech</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="c1">#                           http://www.sppas.org/</span>
+<span class="c1">#</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1">#            Laboratoire Parole et Langage, Aix-en-Provence, France</span>
+<span class="c1">#                   Copyright (C) 2011-2017  Brigitte Bigi</span>
+<span class="c1">#</span>
+<span class="c1">#                   This banner notice must not be removed</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Use of this software is governed by the GNU Public License, version 3.</span>
+<span class="c1">#</span>
+<span class="c1"># SPPAS is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># SPPAS is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with SPPAS. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># File: param.py</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">platform</span>
+<span class="kn">import</span> <span class="nn">shlex</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">Popen</span>
+
+<span class="kn">from</span> <span class="nn">cfgparser</span> <span class="k">import</span> <span class="n">sppasPluginConfigParser</span>
+
+<span class="c1"># ----------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="sppasPluginParam"><a class="viewcode-back" href="../../manual/plugins.html#plugins.param.sppasPluginParam">[docs]</a><span class="k">class</span> <span class="nc">sppasPluginParam</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    @author:       Brigitte Bigi</span>
+<span class="sd">    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
+<span class="sd">    @contact:      brigitte.bigi@gmail.com</span>
+<span class="sd">    @license:      GPL, v3</span>
+<span class="sd">    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
+<span class="sd">    @summary:      One SPPAS plugin set of parameters.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasPluginParam.__init__"><a class="viewcode-back" href="../../manual/plugins.html#plugins.param.sppasPluginParam.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">config_file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new sppasPluginParam instance.</span>
+
+<span class="sd">        :param directory: (string) the directory where to find the plugin</span>
+<span class="sd">        :param config_file: (string) the file name of the plugin configuration</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># The path where to find the plugin and its config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_directory</span> <span class="o">=</span> <span class="n">directory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cfgfile</span>   <span class="o">=</span> <span class="n">config_file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cfgparser</span> <span class="o">=</span> <span class="n">sppasPluginConfigParser</span><span class="p">()</span>
+
+        <span class="c1"># Declare members and initialize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+        <span class="c1"># OK... fill members from the given file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span></div>
+
+    <span class="c1"># ------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasPluginParam.reset"><a class="viewcode-back" href="../../manual/plugins.html#plugins.param.sppasPluginParam.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reset all members to their default value.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># An identifier to represent this plugin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_key</span>  <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># The name of the plugin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="c1"># The description of the plugin do</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_descr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="c1"># The icon of the plugin application</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_icon</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="c1"># The command to be executed and its options</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="p">{}</span></div>
+
+    <span class="c1"># ------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasPluginParam.parse"><a class="viewcode-back" href="../../manual/plugins.html#plugins.param.sppasPluginParam.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse the configuration file of the plugin.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_directory</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfgfile</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cfgparser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="c1"># get the command</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_command</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfgparser</span><span class="o">.</span><span class="n">get_command</span><span class="p">())</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__check_command</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Command not found: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">command</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">=</span> <span class="n">command</span>
+
+        <span class="c1"># get the configuration</span>
+        <span class="n">conf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfgparser</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_key</span>   <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>  <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_descr</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;descr&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_icon</span>  <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;icon&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="c1"># get the options</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfgparser</span><span class="o">.</span><span class="n">get_options</span><span class="p">()</span></div>
+
+    <span class="c1"># ------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasPluginParam.save"><a class="viewcode-back" href="../../manual/plugins.html#plugins.param.sppasPluginParam.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save the configuration file.</span>
+<span class="sd">        Copy the old one into a backup file.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cfgparser</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cfgparser</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">backup</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+    <span class="c1"># ------------------------------------------------------------------------</span>
+    <span class="c1"># Getters</span>
+    <span class="c1"># ------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasPluginParam.get_key"><a class="viewcode-back" href="../../manual/plugins.html#plugins.param.sppasPluginParam.get_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span></div>
+
+<div class="viewcode-block" id="sppasPluginParam.get_name"><a class="viewcode-back" href="../../manual/plugins.html#plugins.param.sppasPluginParam.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span></div>
+
+<div class="viewcode-block" id="sppasPluginParam.get_descr"><a class="viewcode-back" href="../../manual/plugins.html#plugins.param.sppasPluginParam.get_descr">[docs]</a>    <span class="k">def</span> <span class="nf">get_descr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_descr</span></div>
+
+<div class="viewcode-block" id="sppasPluginParam.get_icon"><a class="viewcode-back" href="../../manual/plugins.html#plugins.param.sppasPluginParam.get_icon">[docs]</a>    <span class="k">def</span> <span class="nf">get_icon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_icon</span></div>
+
+<div class="viewcode-block" id="sppasPluginParam.get_directory"><a class="viewcode-back" href="../../manual/plugins.html#plugins.param.sppasPluginParam.get_directory">[docs]</a>    <span class="k">def</span> <span class="nf">get_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_directory</span></div>
+
+<div class="viewcode-block" id="sppasPluginParam.get_command"><a class="viewcode-back" href="../../manual/plugins.html#plugins.param.sppasPluginParam.get_command">[docs]</a>    <span class="k">def</span> <span class="nf">get_command</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_command</span></div>
+
+<div class="viewcode-block" id="sppasPluginParam.get_option_from_key"><a class="viewcode-back" href="../../manual/plugins.html#plugins.param.sppasPluginParam.get_option_from_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_option_from_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">option</span><span class="o">.</span><span class="n">get_key</span><span class="p">()</span> <span class="o">==</span> <span class="n">key</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">option</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;No option with key </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="sppasPluginParam.get_options"><a class="viewcode-back" href="../../manual/plugins.html#plugins.param.sppasPluginParam.get_options">[docs]</a>    <span class="k">def</span> <span class="nf">get_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span></div>
+
+<div class="viewcode-block" id="sppasPluginParam.set_options"><a class="viewcode-back" href="../../manual/plugins.html#plugins.param.sppasPluginParam.set_options">[docs]</a>    <span class="k">def</span> <span class="nf">set_options</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options_dict</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">options_dict</span></div>
+
+    <span class="c1"># ------------------------------------------------------------------------</span>
+    <span class="c1"># Private</span>
+    <span class="c1"># ------------------------------------------------------------------------</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__get_command</span><span class="p">(</span><span class="n">commands</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return the appropriate command from a list of available ones. &quot;&quot;&quot;</span>
+
+        <span class="n">_system</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="s1">&#39;windows&#39;</span> <span class="ow">in</span> <span class="n">_system</span> <span class="ow">and</span> <span class="s1">&#39;windows&#39;</span> <span class="ow">in</span> <span class="n">commands</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">commands</span><span class="p">[</span><span class="s1">&#39;windows&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="s1">&#39;darwin&#39;</span> <span class="ow">in</span> <span class="n">_system</span> <span class="ow">and</span> <span class="s1">&#39;macos&#39;</span> <span class="ow">in</span> <span class="n">commands</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">commands</span><span class="p">[</span><span class="s1">&#39;macos&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="s1">&#39;linux&#39;</span> <span class="ow">in</span> <span class="n">_system</span> <span class="ow">and</span> <span class="s1">&#39;linux&#39;</span> <span class="ow">in</span> <span class="n">commands</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">commands</span><span class="p">[</span><span class="s1">&#39;linux&#39;</span><span class="p">]</span>
+
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;No command defined for the system: </span><span class="si">%s</span><span class="s2">. Supported systems are: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">_system</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">commands</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
+
+    <span class="c1"># ------------------------------------------------------------------------</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__check_command</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return True if command exists.</span>
+<span class="sd">        Test only the main command (i.e. the first string, without args).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">command_args</span> <span class="o">=</span> <span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+        <span class="n">test_command</span> <span class="o">=</span> <span class="n">command_args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">NULL</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_command</span><span class="p">,</span> <span class="n">unicode</span><span class="p">):</span>
+            <span class="n">test_command</span> <span class="o">=</span> <span class="n">test_command</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">([</span><span class="n">test_command</span><span class="p">],</span> <span class="n">shell</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">NULL</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">NULL</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">True</span></div>
+
+    <span class="c1"># ------------------------------------------------------------------------</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a></li>
+    <li><a href="../../index.html">Short title</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright (C) 2011-2017 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>
