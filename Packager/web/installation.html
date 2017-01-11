@@ -50,98 +50,158 @@
 
     <!----------------------------------------------------------------->
 
-    <h1>Install SPPAS</h1>
+    <div class="cols1 bg-white">
+        <div class="cols11"></div>
+        <div class="cols8">
+            <h1>Install SPPAS</h1>
+            <p>
+            SPPAS is ready to run, so it does not need elaborate installation. 
+            All you need to do is to copy the SPPAS package from the website
+            to somewhere on your computer.
+            </p>
+            <p>
+            The SPPAS package is compressed and zipped, so you will need to
+            decompress and unpack it once you've got it. 
+            Choose preferably a location with only US-ASCII characters 
+            in the name of the path.
+            </p>
+            <p>
+            And... that's it! You installed SPPAS!
+            </p>
+            <p>
+                <b>In order to work, external programs must be installed.</b>
+                Follow carefully the instructions of this page to download 
+                and install all of them: Python 2.7, wxPython, Julius.
+            </ul>
+        </div>
 
-    <p>The installation of SPPAS only consists to unpack the package.</p>
+        <div class="cols8">
+            <figure>
+            <video width="90%" src="./etc/screencasts/sppas-install.mp4"  controls> </video>
+            <figcaption>Video from the "Tutorial: Getting started"</figcaption>
+            </figure>
+        </div>
 
-    <p>
-        In order to work, external programs must be installed first.
-        Follow <b>carefully</b> the instructions of this page to download 
-        and install all of them: Python 2.7, wxPython, Julius.
-    </ul>
+    </div>
 
     <!----------------------------------------------------------------->
 
-    <h1>Install external programs</h1>
+    <div class="cols1 bg-lightgrey">
+        <div class="cols11"></div>
+        <div class="cols8">
+            <h1>Install external programs</h1>
+        
+            <p>
+            Other programs are required for SPPAS to operate. Of course, 
+            they must be installed before using SPPAS, and only once. 
+            This operation takes 5 up to 10 minutes depending on the 
+            operating system.
+            </p>
+            <p>
+                Notice that <i>administrator rights are required to perform these installations.</i>
+            </p>
+        </div>
+    </div>
 
-    <p>
-        Notice that <i>administrator rights are required to perform these installations.</i>
-    </p>
+    <div class="cols1 bg-lightgrey">
+        <div class="cols10"></div>
+        <div class="cols11">
+            <p><br></p>
+            <figure>
+                <img src="etc/logos/windows.jpg" width="96px"/>
+            </figure>
+        </div>
+        <div class="cols7">
+            <h2> Windows</h2>
+            <ol>
+                <li>Click the link to download Python 2.7
+                <a href="https://www.python.org/downloads/release/python-2711/">"Windows x86 MSI installer"</a>, 
+                then execute it. 
+                </li>
+
+                <li>Click the link to download wxPython with version name: 
+                <a href="http://www.wxpython.org/download.php#msw"> "-win32-py27",</a>
+                then execute it.
+                </li>
+
+                <li>Click the link to download 
+                <a href="http://sourceforge.jp/projects/julius/downloads/60273/julius-4.3.1-win32bin.zip/"> 
+                Julius (release >= 4.1)</a>. Unpack the file then go to into the directory.
+                Open the "bin" folder then select the file "julius.exe".
+                Copy this file into C:\WINDOWS\.
+                Notice that the file name must be STRICTLY julius.exe, and nothing else
+                    (you'll have to rename it by removing the version number if any).
+                </li>
+            </ol>
+        </div>
+    </div>
     
+    <div class="cols1 bg-lightgrey">
+        <div class="cols10"></div>
+        <div class="cols11">
+            <p><br></p>
+            <figure>
+                <img src="etc/logos/apple.jpg" width="96px"/>
+            </figure>
+        </div>
+        <div class="cols7">
+            <h2>MacOS</h2>
+            <ol>
+                <li>Click the link to download Python 2.7 
+                <a href="https://www.python.org/downloads/release/python-2711/">
+                "Mac OS X 64-bit/32-bit installer"</a>, then execute it. 
+                </li>
+                <li>
+                  Click the link to 
+                  <a href="http://downloads.sourceforge.net/wxpython/wxPython3.0-osx-3.0.2.0-cocoa-py2.7.dmg">
+                  download wxPython.</a>
+                  Click on the package and follow instructions. Notice that
+                  this installer is not signed by Apple, so by default your Mac 
+                  will tell you it is corrupted and will not install it. You can get 
+                  around this by temporarily relaxing the security settings in 
+                  System Preferences. In the Security &amp; Privacy section set 
+                  "Allow applications downloaded from" to "Anywhere."
+                </li>
+                <li>For Julius software, I prepared a 64-bits version which include a 
+                ready-to-use (old) version of Julius for MacOS. This version is available 
+                here: <a href="downloads/Julius-MacOS-10.7.3.tgz">Julius for MacOS</a>.
+                Download, extract the archive and drag-and-drop the package content into 
+                the <b>/usr/local/bin</b> directory.
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="cols1 bg-lightgrey">
+        <div class="cols10"></div>
+        <div class="cols11">
+            <p><br></p>
+            <figure>
+                <img src="etc/logos/linux.jpg" width="96px"/>
+            </figure>
+        </div>
+        <div class="cols7">
+            <h2>Linux</h2>
+            <ul>
+                <li>
+                    There are <i>deb</i> packages for all dependencies 
+                    (python2.7, wxpython, julius).
+                    python-wxgtk-media and gstreamer must be installed too.
+                </li>
+                <li>
+                    There are <i>rpm</i> packages for python2.7 and wxpython. 
+                    The Julius tool will have to be installed from sources.
+                </li>
+            </ul>
+        </div>
+    </div>
     
-    <h2><img src="etc/logos/windows.jpg" width="20"/> Windows</h2>
-
-    <ol>
-        <li>Click the link to download Python 2.7
-        <a href="https://www.python.org/downloads/release/python-2711/">"Windows x86 MSI installer"</a>, 
-        then execute it. 
-        </li>
-
-        <li>Click the link to download wxPython with version name: 
-        <a href="http://www.wxpython.org/download.php#msw"> "-win32-py27",</a>
-        then execute it.
-        </li>
-
-        <li>Click the link to download 
-        <a href="http://sourceforge.jp/projects/julius/downloads/60273/julius-4.3.1-win32bin.zip/"> 
-        Julius (release >= 4.1)</a>. Unpack the file then go to into the directory.
-        Open the "bin" folder then select the file "julius.exe".
-        Copy this file into C:\WINDOWS\.
-        Notice that the file name must be STRICTLY julius.exe, and nothing else
-            (you'll have to rename it by removing the version number if any).
-        </li>
-    </ol>
-
-    <!----------------------------------------------------------------->
-
-    <h2><img src="etc/logos/apple.jpg" width="20"/> MacOS</h2>
-
-    <ol>
-        <li>Click the link to download Python 2.7 
-        <a href="https://www.python.org/downloads/release/python-2711/">
-        "Mac OS X 64-bit/32-bit installer"</a>, then execute it. 
-        </li>
-        <li>
-          Click the link to 
-          <a href="http://downloads.sourceforge.net/wxpython/wxPython3.0-osx-3.0.2.0-cocoa-py2.7.dmg">
-          download wxPython.</a>
-          Click on the package and follow instructions. Notice that
-          this installer is not signed by Apple, so by default your Mac 
-          will tell you it is corrupted and will not install it. You can get 
-          around this by temporarily relaxing the security settings in 
-          System Preferences. In the Security &amp; Privacy section set 
-          "Allow applications downloaded from" to "Anywhere."
-        </li>
-        <li>For Julius software, I prepared a 64-bits version which include a 
-        ready-to-use (old) version of Julius for MacOS. This version is available 
-        here: <a href="downloads/Julius-MacOS-10.7.3.tgz">Julius for MacOS</a>.
-        Download, extract the archive and drag-and-drop the package content into 
-        the <b>/usr/local/bin</b> directory.
-        </li>
-    </ol>
-
-    <!----------------------------------------------------------------->
-
-    <h2><img src="etc/logos/linux.jpg" width="20"/> Linux</h2>
-
-    <ul>
-        <li>
-            There are <i>deb</i> packages for all dependencies 
-            (python2.7, wxpython, julius).
-            python-wxgtk-media and gstreamer must be installed too.
-        </li>
-        <li>
-            There are <i>rpm</i> packages for python2.7 and wxpython. 
-            The Julius tool will have to be installed from sources.
-        </li>
-    </ul>
-
     <!----------------------------------------------------------------->
 
     <div class="footer">
         <a href="index.html"><img src="./etc/logos/sppas-logo.png" alt="SPPAS"></a>
         <p class="copyright">
-            <a href="mailto:brigitte.bigi@gmail.com">Brigitte Bigi</a> &copy; 2011-2016
+            <a href="mailto:brigitte.bigi@gmail.com">Brigitte Bigi</a> &copy; 2011-2017
         </p>
     </div>
 
