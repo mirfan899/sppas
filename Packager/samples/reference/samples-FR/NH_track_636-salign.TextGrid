@@ -99,7 +99,7 @@ item []:
         intervals [22]:
             xmin = 2.79
             xmax = 3.1
-            text = "zEt"
+            text = "zE"
         intervals [23]:
             xmin = 3.1
             xmax = 3.23
@@ -297,7 +297,7 @@ item []:
         intervals [22]:
             xmin = 2.79
             xmax = 3.1
-            text = "FVO"
+            text = "FV"
         intervals [23]:
             xmin = 3.1
             xmax = 3.23
@@ -495,7 +495,7 @@ item []:
         intervals [22]:
             xmin = 2.79
             xmax = 3.1
-            text = "CVC"
+            text = "CV"
         intervals [23]:
             xmin = 3.1
             xmax = 3.23

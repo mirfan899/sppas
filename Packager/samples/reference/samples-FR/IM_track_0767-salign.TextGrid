@@ -71,7 +71,7 @@ item []:
         intervals [15]:
             xmin = 2.15
             xmax = 2.27
-            text = "miz"
+            text = "mi"
         intervals [16]:
             xmin = 2.27
             xmax = 2.4
@@ -178,12 +178,12 @@ item []:
             text = "sib"
         intervals [42]:
             xmin = 6.48
-            xmax = 6.74
+            xmax = 6.77
             text = "lSe"
         intervals [43]:
-            xmin = 6.74
+            xmin = 6.77
             xmax = 6.86
-            text = "zlHi"
+            text = "lHi"
         intervals [44]:
             xmin = 6.86
             xmax = 6.91
@@ -309,7 +309,7 @@ item []:
         intervals [15]:
             xmin = 2.15
             xmax = 2.27
-            text = "NVF"
+            text = "NV"
         intervals [16]:
             xmin = 2.27
             xmax = 2.4
@@ -416,12 +416,12 @@ item []:
             text = "FVO"
         intervals [42]:
             xmin = 6.48
-            xmax = 6.74
+            xmax = 6.77
             text = "LFV"
         intervals [43]:
-            xmin = 6.74
+            xmin = 6.77
             xmax = 6.86
-            text = "FLGV"
+            text = "LGV"
         intervals [44]:
             xmin = 6.86
             xmax = 6.91
@@ -547,7 +547,7 @@ item []:
         intervals [15]:
             xmin = 2.15
             xmax = 2.27
-            text = "CVC"
+            text = "CV"
         intervals [16]:
             xmin = 2.27
             xmax = 2.4
@@ -654,12 +654,12 @@ item []:
             text = "CVC"
         intervals [42]:
             xmin = 6.48
-            xmax = 6.74
+            xmax = 6.77
             text = "CCV"
         intervals [43]:
-            xmin = 6.74
+            xmin = 6.77
             xmax = 6.86
-            text = "CCCV"
+            text = "CCV"
         intervals [44]:
             xmin = 6.86
             xmax = 6.91

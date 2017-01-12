@@ -134,12 +134,12 @@ item []:
             text = "sy"
         intervals [31]:
             xmin = 4.49
-            xmax = 4.6
+            xmax = 4.64
             text = "RU~"
         intervals [32]:
-            xmin = 4.6
+            xmin = 4.64
             xmax = 4.79
-            text = "nEs"
+            text = "Es"
         intervals [33]:
             xmin = 4.79
             xmax = 4.93
@@ -300,12 +300,12 @@ item []:
             text = "FV"
         intervals [31]:
             xmin = 4.49
-            xmax = 4.6
+            xmax = 4.64
             text = "LV"
         intervals [32]:
-            xmin = 4.6
+            xmin = 4.64
             xmax = 4.79
-            text = "NVF"
+            text = "VF"
         intervals [33]:
             xmin = 4.79
             xmax = 4.93
@@ -466,12 +466,12 @@ item []:
             text = "CV"
         intervals [31]:
             xmin = 4.49
-            xmax = 4.6
+            xmax = 4.64
             text = "CV"
         intervals [32]:
-            xmin = 4.6
+            xmin = 4.64
             xmax = 4.79
-            text = "CVC"
+            text = "VC"
         intervals [33]:
             xmin = 4.79
             xmax = 4.93

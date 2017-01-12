@@ -622,10 +622,10 @@ item []:
             text = "d"
         intervals [153]:
             xmin = 13.304
-            xmax = 13.394
+            xmax = 13.454
             text = "U~"
         intervals [154]:
-            xmin = 13.394
+            xmin = 13.454
             xmax = 13.504
             text = "k"
         intervals [155]:
@@ -921,7 +921,7 @@ item []:
         name = "TokensAlign"
         xmin = 0.000000
         xmax = 21.347100
-        intervals: size = 81
+        intervals: size = 82
         intervals [1]:
             xmin = 0.0
             xmax = 2.497101
@@ -1140,109 +1140,113 @@ item []:
             text = "tout"
         intervals [55]:
             xmin = 13.274
-            xmax = 13.394
-            text = "d'un"
+            xmax = 13.304
+            text = "d'"
         intervals [56]:
-            xmin = 13.394
+            xmin = 13.304
+            xmax = 13.454
+            text = "un"
+        intervals [57]:
+            xmin = 13.454
             xmax = 13.694
             text = "coup"
-        intervals [57]:
+        intervals [58]:
             xmin = 13.694
             xmax = 13.904
             text = "+"
-        intervals [58]:
+        intervals [59]:
             xmin = 13.904
             xmax = 13.944
             text = "que"
-        intervals [59]:
+        intervals [60]:
             xmin = 13.944
             xmax = 14.034
             text = "j'"
-        intervals [60]:
+        intervals [61]:
             xmin = 14.034
             xmax = 14.284
             text = "étais"
-        intervals [61]:
+        intervals [62]:
             xmin = 14.284
             xmax = 14.684
             text = "enfermé"
-        intervals [62]:
+        intervals [63]:
             xmin = 14.684
             xmax = 15.036
             text = "dehors"
-        intervals [63]:
+        intervals [64]:
             xmin = 15.036
             xmax = 16.602
             text = "#"
-        intervals [64]:
+        intervals [65]:
             xmin = 16.602
             xmax = 16.722
             text = "le"
-        intervals [65]:
+        intervals [66]:
             xmin = 16.722
             xmax = 16.962
             text = "comble"
-        intervals [66]:
+        intervals [67]:
             xmin = 16.962
             xmax = 17.162
             text = "c'est"
-        intervals [67]:
+        intervals [68]:
             xmin = 17.162
             xmax = 17.302
             text = "que"
-        intervals [68]:
+        intervals [69]:
             xmin = 17.302
             xmax = 17.352
             text = "je"
-        intervals [69]:
+        intervals [70]:
             xmin = 17.352
             xmax = 17.462
             text = "me"
-        intervals [70]:
+        intervals [71]:
             xmin = 17.462
             xmax = 17.662
             text = "suis"
-        intervals [71]:
+        intervals [72]:
             xmin = 17.662
             xmax = 17.782
             text = "fait"
-        intervals [72]:
+        intervals [73]:
             xmin = 17.782
             xmax = 18.132
             text = "arrêter"
-        intervals [73]:
+        intervals [74]:
             xmin = 18.132
             xmax = 18.452
             text = "alors_que"
-        intervals [74]:
+        intervals [75]:
             xmin = 18.452
             xmax = 18.532
             text = "j'"
-        intervals [75]:
+        intervals [76]:
             xmin = 18.532
             xmax = 18.862
             text = "essayais"
-        intervals [76]:
+        intervals [77]:
             xmin = 18.862
             xmax = 18.892
             text = "de"
-        intervals [77]:
+        intervals [78]:
             xmin = 18.892
             xmax = 19.232
             text = "forcer"
-        intervals [78]:
+        intervals [79]:
             xmin = 19.232
             xmax = 19.342
             text = "ma"
-        intervals [79]:
+        intervals [80]:
             xmin = 19.342
             xmax = 19.712
             text = "propre"
-        intervals [80]:
+        intervals [81]:
             xmin = 19.712
             xmax = 20.01
             text = "porte"
-        intervals [81]:
+        intervals [82]:
             xmin = 20.01
             xmax = 21.3471
             text = "#"

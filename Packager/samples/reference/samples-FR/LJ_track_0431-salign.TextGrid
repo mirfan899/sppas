@@ -139,7 +139,7 @@ item []:
         intervals [32]:
             xmin = 4.46
             xmax = 4.58
-            text = "U~n"
+            text = "U~"
         intervals [33]:
             xmin = 4.58
             xmax = 4.85
@@ -357,7 +357,7 @@ item []:
         intervals [32]:
             xmin = 4.46
             xmax = 4.58
-            text = "VN"
+            text = "V"
         intervals [33]:
             xmin = 4.58
             xmax = 4.85
@@ -575,7 +575,7 @@ item []:
         intervals [32]:
             xmin = 4.46
             xmax = 4.58
-            text = "VC"
+            text = "V"
         intervals [33]:
             xmin = 4.58
             xmax = 4.85

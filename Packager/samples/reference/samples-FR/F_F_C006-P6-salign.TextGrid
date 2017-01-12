@@ -26,12 +26,12 @@ item []:
             text = "ga"
         intervals [4]:
             xmin = 1.384876
-            xmax = 1.544876
+            xmax = 1.574876
             text = "zU~"
         intervals [5]:
-            xmin = 1.544876
+            xmin = 1.574876
             xmax = 1.634876
-            text = "zRE"
+            text = "RE"
         intervals [6]:
             xmin = 1.634876
             xmax = 1.744876
@@ -334,12 +334,12 @@ item []:
             text = "#"
         intervals [81]:
             xmin = 21.751842
-            xmax = 21.921842
+            xmax = 21.951842
             text = "pul"
         intervals [82]:
-            xmin = 21.921842
+            xmin = 21.951842
             xmax = 22.141842
-            text = "zSE"
+            text = "SE"
         intervals [83]:
             xmin = 22.141842
             xmax = 22.651842
@@ -478,12 +478,12 @@ item []:
             text = "tle"
         intervals [117]:
             xmin = 30.952
-            xmax = 31.192
-            text = "zot"
+            xmax = 31.262
+            text = "zotR"
         intervals [118]:
-            xmin = 31.192
+            xmin = 31.262
             xmax = 31.472584
-            text = "Rztaj"
+            text = "taj"
         intervals [119]:
             xmin = 31.472584
             xmax = 33.2598
@@ -508,12 +508,12 @@ item []:
             text = "OV"
         intervals [4]:
             xmin = 1.384876
-            xmax = 1.544876
+            xmax = 1.574876
             text = "FV"
         intervals [5]:
-            xmin = 1.544876
+            xmin = 1.574876
             xmax = 1.634876
-            text = "FLV"
+            text = "LV"
         intervals [6]:
             xmin = 1.634876
             xmax = 1.744876
@@ -816,12 +816,12 @@ item []:
             text = "#"
         intervals [81]:
             xmin = 21.751842
-            xmax = 21.921842
+            xmax = 21.951842
             text = "OVL"
         intervals [82]:
-            xmin = 21.921842
+            xmin = 21.951842
             xmax = 22.141842
-            text = "FFV"
+            text = "FV"
         intervals [83]:
             xmin = 22.141842
             xmax = 22.651842
@@ -960,12 +960,12 @@ item []:
             text = "OLV"
         intervals [117]:
             xmin = 30.952
-            xmax = 31.192
-            text = "FVO"
+            xmax = 31.262
+            text = "FVOL"
         intervals [118]:
-            xmin = 31.192
+            xmin = 31.262
             xmax = 31.472584
-            text = "LFOVG"
+            text = "OVG"
         intervals [119]:
             xmin = 31.472584
             xmax = 33.2598
@@ -990,12 +990,12 @@ item []:
             text = "CV"
         intervals [4]:
             xmin = 1.384876
-            xmax = 1.544876
+            xmax = 1.574876
             text = "CV"
         intervals [5]:
-            xmin = 1.544876
+            xmin = 1.574876
             xmax = 1.634876
-            text = "CCV"
+            text = "CV"
         intervals [6]:
             xmin = 1.634876
             xmax = 1.744876
@@ -1298,12 +1298,12 @@ item []:
             text = "#"
         intervals [81]:
             xmin = 21.751842
-            xmax = 21.921842
+            xmax = 21.951842
             text = "CVC"
         intervals [82]:
-            xmin = 21.921842
+            xmin = 21.951842
             xmax = 22.141842
-            text = "CCV"
+            text = "CV"
         intervals [83]:
             xmin = 22.141842
             xmax = 22.651842
@@ -1442,12 +1442,12 @@ item []:
             text = "CCV"
         intervals [117]:
             xmin = 30.952
-            xmax = 31.192
-            text = "CVC"
+            xmax = 31.262
+            text = "CVCC"
         intervals [118]:
-            xmin = 31.192
+            xmin = 31.262
             xmax = 31.472584
-            text = "CCCVC"
+            text = "CVC"
         intervals [119]:
             xmin = 31.472584
             xmax = 33.2598

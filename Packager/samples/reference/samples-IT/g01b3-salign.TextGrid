@@ -1,0 +1,290 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0.0
+xmax = 3.666689
+tiers? <exists>
+size = 3
+item []:
+    item [1]:
+        class = "IntervalTier"
+        name = "Syllables"
+        xmin = 0.000000
+        xmax = 3.666689
+        intervals: size = 22
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.31
+            text = "kbE"
+        intervals [2]:
+            xmin = 0.31
+            xmax = 0.589932
+            text = "lo"
+        intervals [3]:
+            xmin = 0.589932
+            xmax = 0.939161
+            text = "#"
+        intervals [4]:
+            xmin = 0.939161
+            xmax = 0.999161
+            text = "do"
+        intervals [5]:
+            xmin = 0.999161
+            xmax = 1.109161
+            text = "ma"
+        intervals [6]:
+            xmin = 1.109161
+            xmax = 1.169161
+            text = "ni"
+        intervals [7]:
+            xmin = 1.169161
+            xmax = 1.199161
+            text = "e"
+        intervals [8]:
+            xmin = 1.199161
+            xmax = 1.299161
+            text = "do"
+        intervals [9]:
+            xmin = 1.299161
+            xmax = 1.509161
+            text = "me"
+        intervals [10]:
+            xmin = 1.509161
+            xmax = 1.589161
+            text = "ni"
+        intervals [11]:
+            xmin = 1.589161
+            xmax = 1.844036
+            text = "ka"
+        intervals [12]:
+            xmin = 1.844036
+            xmax = 2.382834
+            text = "#"
+        intervals [13]:
+            xmin = 2.382834
+            xmax = 2.472834
+            text = "dor"
+        intervals [14]:
+            xmin = 2.472834
+            xmax = 2.532834
+            text = "mi"
+        intervals [15]:
+            xmin = 2.532834
+            xmax = 2.592834
+            text = "re"
+        intervals [16]:
+            xmin = 2.592834
+            xmax = 2.652834
+            text = "mo"
+        intervals [17]:
+            xmin = 2.652834
+            xmax = 2.712834
+            text = "fi"
+        intervals [18]:
+            xmin = 2.712834
+            xmax = 2.772834
+            text = "na"
+        intervals [19]:
+            xmin = 2.772834
+            xmax = 2.872834
+            text = "me"
+        intervals [20]:
+            xmin = 2.872834
+            xmax = 3.002834
+            text = "dzo"
+        intervals [21]:
+            xmin = 3.002834
+            xmax = 3.412834
+            text = "dZor"
+        intervals [22]:
+            xmin = 3.412834
+            xmax = 3.666689
+            text = "no"
+    item [2]:
+        class = "IntervalTier"
+        name = "Classes"
+        xmin = 0.000000
+        xmax = 3.666689
+        intervals: size = 22
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.31
+            text = "OOV"
+        intervals [2]:
+            xmin = 0.31
+            xmax = 0.589932
+            text = "LV"
+        intervals [3]:
+            xmin = 0.589932
+            xmax = 0.939161
+            text = "#"
+        intervals [4]:
+            xmin = 0.939161
+            xmax = 0.999161
+            text = "OV"
+        intervals [5]:
+            xmin = 0.999161
+            xmax = 1.109161
+            text = "NV"
+        intervals [6]:
+            xmin = 1.109161
+            xmax = 1.169161
+            text = "NV"
+        intervals [7]:
+            xmin = 1.169161
+            xmax = 1.199161
+            text = "V"
+        intervals [8]:
+            xmin = 1.199161
+            xmax = 1.299161
+            text = "OV"
+        intervals [9]:
+            xmin = 1.299161
+            xmax = 1.509161
+            text = "NV"
+        intervals [10]:
+            xmin = 1.509161
+            xmax = 1.589161
+            text = "NV"
+        intervals [11]:
+            xmin = 1.589161
+            xmax = 1.844036
+            text = "OV"
+        intervals [12]:
+            xmin = 1.844036
+            xmax = 2.382834
+            text = "#"
+        intervals [13]:
+            xmin = 2.382834
+            xmax = 2.472834
+            text = "OVL"
+        intervals [14]:
+            xmin = 2.472834
+            xmax = 2.532834
+            text = "NV"
+        intervals [15]:
+            xmin = 2.532834
+            xmax = 2.592834
+            text = "LV"
+        intervals [16]:
+            xmin = 2.592834
+            xmax = 2.652834
+            text = "NV"
+        intervals [17]:
+            xmin = 2.652834
+            xmax = 2.712834
+            text = "FV"
+        intervals [18]:
+            xmin = 2.712834
+            xmax = 2.772834
+            text = "NV"
+        intervals [19]:
+            xmin = 2.772834
+            xmax = 2.872834
+            text = "NV"
+        intervals [20]:
+            xmin = 2.872834
+            xmax = 3.002834
+            text = "FV"
+        intervals [21]:
+            xmin = 3.002834
+            xmax = 3.412834
+            text = "FVL"
+        intervals [22]:
+            xmin = 3.412834
+            xmax = 3.666689
+            text = "NV"
+    item [3]:
+        class = "IntervalTier"
+        name = "Structures"
+        xmin = 0.000000
+        xmax = 3.666689
+        intervals: size = 22
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.31
+            text = "CCV"
+        intervals [2]:
+            xmin = 0.31
+            xmax = 0.589932
+            text = "CV"
+        intervals [3]:
+            xmin = 0.589932
+            xmax = 0.939161
+            text = "#"
+        intervals [4]:
+            xmin = 0.939161
+            xmax = 0.999161
+            text = "CV"
+        intervals [5]:
+            xmin = 0.999161
+            xmax = 1.109161
+            text = "CV"
+        intervals [6]:
+            xmin = 1.109161
+            xmax = 1.169161
+            text = "CV"
+        intervals [7]:
+            xmin = 1.169161
+            xmax = 1.199161
+            text = "V"
+        intervals [8]:
+            xmin = 1.199161
+            xmax = 1.299161
+            text = "CV"
+        intervals [9]:
+            xmin = 1.299161
+            xmax = 1.509161
+            text = "CV"
+        intervals [10]:
+            xmin = 1.509161
+            xmax = 1.589161
+            text = "CV"
+        intervals [11]:
+            xmin = 1.589161
+            xmax = 1.844036
+            text = "CV"
+        intervals [12]:
+            xmin = 1.844036
+            xmax = 2.382834
+            text = "#"
+        intervals [13]:
+            xmin = 2.382834
+            xmax = 2.472834
+            text = "CVC"
+        intervals [14]:
+            xmin = 2.472834
+            xmax = 2.532834
+            text = "CV"
+        intervals [15]:
+            xmin = 2.532834
+            xmax = 2.592834
+            text = "CV"
+        intervals [16]:
+            xmin = 2.592834
+            xmax = 2.652834
+            text = "CV"
+        intervals [17]:
+            xmin = 2.652834
+            xmax = 2.712834
+            text = "CV"
+        intervals [18]:
+            xmin = 2.712834
+            xmax = 2.772834
+            text = "CV"
+        intervals [19]:
+            xmin = 2.772834
+            xmax = 2.872834
+            text = "CV"
+        intervals [20]:
+            xmin = 2.872834
+            xmax = 3.002834
+            text = "CV"
+        intervals [21]:
+            xmin = 3.002834
+            xmax = 3.412834
+            text = "CVC"
+        intervals [22]:
+            xmin = 3.412834
+            xmax = 3.666689
+            text = "CV"

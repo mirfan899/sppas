@@ -11,7 +11,7 @@ item []:
         name = "PhonAlign"
         xmin = 0.000000
         xmax = 3.510000
-        intervals: size = 53
+        intervals: size = 52
         intervals [1]:
             xmin = 0.0
             xmax = 0.06
@@ -142,85 +142,81 @@ item []:
             text = "e"
         intervals [33]:
             xmin = 1.68
-            xmax = 1.73
+            xmax = 1.77
             text = "U~"
         intervals [34]:
-            xmin = 1.73
-            xmax = 1.77
-            text = "n"
-        intervals [35]:
             xmin = 1.77
             xmax = 1.83
             text = "a"
-        intervals [36]:
+        intervals [35]:
             xmin = 1.83
             xmax = 1.93
             text = "p"
-        intervals [37]:
+        intervals [36]:
             xmin = 1.93
             xmax = 2.01
             text = "a"
-        intervals [38]:
+        intervals [37]:
             xmin = 2.01
             xmax = 2.08
             text = "R"
-        intervals [39]:
+        intervals [38]:
             xmin = 2.08
             xmax = 2.16
             text = "t"
-        intervals [40]:
+        intervals [39]:
             xmin = 2.16
             xmax = 2.26
             text = "e"
-        intervals [41]:
+        intervals [40]:
             xmin = 2.26
             xmax = 2.34
             text = "t"
-        intervals [42]:
+        intervals [41]:
             xmin = 2.34
             xmax = 2.45
             text = "u"
-        intervals [43]:
+        intervals [42]:
             xmin = 2.45
             xmax = 2.48
             text = "l"
-        intervals [44]:
+        intervals [43]:
             xmin = 2.48
             xmax = 2.56
             text = "a"
-        intervals [45]:
+        intervals [44]:
             xmin = 2.56
             xmax = 2.69
             text = "o"
-        intervals [46]:
+        intervals [45]:
             xmin = 2.69
             xmax = 2.74
             text = "d"
-        intervals [47]:
+        intervals [46]:
             xmin = 2.74
             xmax = 2.85
             text = "o~"
-        intervals [48]:
+        intervals [47]:
             xmin = 2.85
             xmax = 2.9
             text = "k"
-        intervals [49]:
+        intervals [48]:
             xmin = 2.9
             xmax = 2.97
             text = "s"
-        intervals [50]:
+        intervals [49]:
             xmin = 2.97
             xmax = 3.02
             text = "e"
-        intervals [51]:
+        intervals [50]:
             xmin = 3.02
             xmax = 3.12
             text = "k"
-        intervals [52]:
+        intervals [51]:
             xmin = 3.12
             xmax = 3.17
             text = "eu"
-        intervals [53]:
+        intervals [52]:
             xmin = 3.17
             xmax = 3.51
             text = "fp"

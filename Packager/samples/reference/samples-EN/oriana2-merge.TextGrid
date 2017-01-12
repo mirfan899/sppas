@@ -953,11 +953,11 @@ item []:
         intervals [4]:
             xmin = 7.608001875
             xmax = 10.1440025
-            text = "version=1.8.0"
+            text = "version=1.8.2"
         intervals [5]:
             xmin = 10.1440025
             xmax = 12.680003125
-            text = "copyright=Copyright (C) 2011-2016 Brigitte Bigi"
+            text = "copyright=Copyright (C) 2011-2017 Brigitte Bigi"
         intervals [6]:
             xmin = 12.680003125
             xmax = 15.21600375
@@ -969,4 +969,4 @@ item []:
         intervals [8]:
             xmin = 17.752004375
             xmax = 20.288005
-            text = "date=2016-08-30"
+            text = "date=2017-01-12"

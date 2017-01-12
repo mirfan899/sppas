@@ -122,12 +122,12 @@ item []:
             text = "fp"
         intervals [28]:
             xmin = 5.08
-            xmax = 5.11
+            xmax = 5.14
             text = "i"
         intervals [29]:
-            xmin = 5.11
+            xmin = 5.14
             xmax = 5.17
-            text = "zE"
+            text = "E"
         intervals [30]:
             xmin = 5.17
             xmax = 5.25
@@ -368,12 +368,12 @@ item []:
             text = "fp"
         intervals [28]:
             xmin = 5.08
-            xmax = 5.11
+            xmax = 5.14
             text = "V"
         intervals [29]:
-            xmin = 5.11
+            xmin = 5.14
             xmax = 5.17
-            text = "FV"
+            text = "V"
         intervals [30]:
             xmin = 5.17
             xmax = 5.25
@@ -614,12 +614,12 @@ item []:
             text = "fp"
         intervals [28]:
             xmin = 5.08
-            xmax = 5.11
+            xmax = 5.14
             text = "V"
         intervals [29]:
-            xmin = 5.11
+            xmin = 5.14
             xmax = 5.17
-            text = "CV"
+            text = "V"
         intervals [30]:
             xmin = 5.17
             xmax = 5.25

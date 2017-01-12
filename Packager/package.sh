@@ -390,11 +390,8 @@ function fct_perform_unittest {
     echo >> $TEMP
 
     local error=`grep -c '... ERROR' $TEMP`
-    if [ $error -eq 0 ]; then
-         echo " ... ... success"
-    else
-         echo " ... ... $error error(s)."
-    fi
+    local fail=`grep -c '... FAIL' $TEMP`
+    echo " ... ... $error error(s) and $fail test(s) failed."
 
     cat $TEMP >> $LOG_DIAGNOSIS
     echo >> $LOG_DIAGNOSIS

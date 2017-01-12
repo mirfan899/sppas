@@ -34,12 +34,12 @@ item []:
             text = "mEm"
         intervals [6]:
             xmin = 0.99
-            xmax = 1.12
+            xmax = 1.16
             text = "so~"
         intervals [7]:
-            xmin = 1.12
+            xmin = 1.16
             xmax = 1.22
-            text = "ne"
+            text = "e"
         intervals [8]:
             xmin = 1.22
             xmax = 1.36
@@ -152,12 +152,12 @@ item []:
             text = "NVN"
         intervals [6]:
             xmin = 0.99
-            xmax = 1.12
+            xmax = 1.16
             text = "FV"
         intervals [7]:
-            xmin = 1.12
+            xmin = 1.16
             xmax = 1.22
-            text = "NV"
+            text = "V"
         intervals [8]:
             xmin = 1.22
             xmax = 1.36
@@ -270,12 +270,12 @@ item []:
             text = "CVC"
         intervals [6]:
             xmin = 0.99
-            xmax = 1.12
+            xmax = 1.16
             text = "CV"
         intervals [7]:
-            xmin = 1.12
+            xmin = 1.16
             xmax = 1.22
-            text = "CV"
+            text = "V"
         intervals [8]:
             xmin = 1.22
             xmax = 1.36

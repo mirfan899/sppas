@@ -13,7 +13,7 @@ from os.path import *
 SPPAS = dirname(dirname(dirname(abspath(__file__))))
 sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
 
-import annotationdata.io
+import annotationdata.aio
 from annotationdata import Transcription
 
 # ---------------------------------------------------------------------------

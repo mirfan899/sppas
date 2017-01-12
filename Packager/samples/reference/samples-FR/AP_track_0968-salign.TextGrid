@@ -27,7 +27,7 @@ item []:
         intervals [4]:
             xmin = 0.54
             xmax = 0.81
-            text = "ma~t"
+            text = "ma~"
         intervals [5]:
             xmin = 0.81
             xmax = 0.91
@@ -217,7 +217,7 @@ item []:
         intervals [4]:
             xmin = 0.54
             xmax = 0.81
-            text = "NVO"
+            text = "NV"
         intervals [5]:
             xmin = 0.81
             xmax = 0.91
@@ -407,7 +407,7 @@ item []:
         intervals [4]:
             xmin = 0.54
             xmax = 0.81
-            text = "CVC"
+            text = "CV"
         intervals [5]:
             xmin = 0.81
             xmax = 0.91

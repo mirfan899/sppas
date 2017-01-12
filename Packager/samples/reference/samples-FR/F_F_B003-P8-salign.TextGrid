@@ -286,10 +286,10 @@ item []:
             text = "tu"
         intervals [69]:
             xmin = 13.274
-            xmax = 13.394
+            xmax = 13.454
             text = "dU~"
         intervals [70]:
-            xmin = 13.394
+            xmin = 13.454
             xmax = 13.694
             text = "ku"
         intervals [71]:
@@ -704,10 +704,10 @@ item []:
             text = "OV"
         intervals [69]:
             xmin = 13.274
-            xmax = 13.394
+            xmax = 13.454
             text = "OV"
         intervals [70]:
-            xmin = 13.394
+            xmin = 13.454
             xmax = 13.694
             text = "OV"
         intervals [71]:
@@ -1122,10 +1122,10 @@ item []:
             text = "CV"
         intervals [69]:
             xmin = 13.274
-            xmax = 13.394
+            xmax = 13.454
             text = "CV"
         intervals [70]:
-            xmin = 13.394
+            xmin = 13.454
             xmax = 13.694
             text = "CV"
         intervals [71]:

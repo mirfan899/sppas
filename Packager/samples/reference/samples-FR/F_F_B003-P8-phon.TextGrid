@@ -43,7 +43,7 @@ item []:
         intervals [8]:
             xmin = 12.494
             xmax = 15.036
-            text = "S|Z e|E R-E-a-l-i-z-e|R-E-a-l-i-z-e t-u|t-u-t d-U~ k-u sil k|k-eu S|Z E-t-E-z|e-t-e|E-t-E|e-t-E|e-t-e-z|t-E a~-f-E-R-m-e d-eu-o-R|d-eu-o-R-z|d-eu-o-R"
+            text = "S|Z e|E R-E-a-l-i-z-e|R-E-a-l-i-z-e t-u|t-u-t d|d-eu U~|U~-n k-u sil k|k-eu S|Z E-t-E-z|e-t-e|E-t-E|e-t-E|e-t-e-z|t-E a~-f-E-R-m-e d-eu-o-R|d-eu-o-R-z|d-eu-o-R"
         intervals [9]:
             xmin = 15.036
             xmax = 16.602

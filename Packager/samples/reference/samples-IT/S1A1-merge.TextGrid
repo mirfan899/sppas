@@ -4,7 +4,7 @@ Object class = "TextGrid"
 xmin = 0.0
 xmax = 1.460687
 tiers? <exists>
-size = 8
+size = 11
 item []:
     item [1]:
         class = "IntervalTier"
@@ -135,6 +135,120 @@ item []:
             xmax = 1.460687
             text = "speech"
     item [7]:
+        class = "IntervalTier"
+        name = "Syllables"
+        xmin = 0.000000
+        xmax = 1.460687
+        intervals: size = 8
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.19
+            text = "ra"
+        intervals [2]:
+            xmin = 0.19
+            xmax = 0.42
+            text = "le"
+        intervals [3]:
+            xmin = 0.42
+            xmax = 0.6
+            text = "go"
+        intervals [4]:
+            xmin = 0.6
+            xmax = 0.73
+            text = "ve"
+        intervals [5]:
+            xmin = 0.73
+            xmax = 0.86
+            text = "de"
+        intervals [6]:
+            xmin = 0.86
+            xmax = 1.01
+            text = "la"
+        intervals [7]:
+            xmin = 1.01
+            xmax = 1.25
+            text = "do"
+        intervals [8]:
+            xmin = 1.25
+            xmax = 1.460687
+            text = "na"
+    item [8]:
+        class = "IntervalTier"
+        name = "Classes"
+        xmin = 0.000000
+        xmax = 1.460687
+        intervals: size = 8
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.19
+            text = "LV"
+        intervals [2]:
+            xmin = 0.19
+            xmax = 0.42
+            text = "LV"
+        intervals [3]:
+            xmin = 0.42
+            xmax = 0.6
+            text = "OV"
+        intervals [4]:
+            xmin = 0.6
+            xmax = 0.73
+            text = "FV"
+        intervals [5]:
+            xmin = 0.73
+            xmax = 0.86
+            text = "OV"
+        intervals [6]:
+            xmin = 0.86
+            xmax = 1.01
+            text = "LV"
+        intervals [7]:
+            xmin = 1.01
+            xmax = 1.25
+            text = "OV"
+        intervals [8]:
+            xmin = 1.25
+            xmax = 1.460687
+            text = "NV"
+    item [9]:
+        class = "IntervalTier"
+        name = "Structures"
+        xmin = 0.000000
+        xmax = 1.460687
+        intervals: size = 8
+        intervals [1]:
+            xmin = 0.0
+            xmax = 0.19
+            text = "CV"
+        intervals [2]:
+            xmin = 0.19
+            xmax = 0.42
+            text = "CV"
+        intervals [3]:
+            xmin = 0.42
+            xmax = 0.6
+            text = "CV"
+        intervals [4]:
+            xmin = 0.6
+            xmax = 0.73
+            text = "CV"
+        intervals [5]:
+            xmin = 0.73
+            xmax = 0.86
+            text = "CV"
+        intervals [6]:
+            xmin = 0.86
+            xmax = 1.01
+            text = "CV"
+        intervals [7]:
+            xmin = 1.01
+            xmax = 1.25
+            text = "CV"
+        intervals [8]:
+            xmin = 1.25
+            xmax = 1.460687
+            text = "CV"
+    item [10]:
         class = "TextTier"
         name = "INTSINT"
         xmin = 0.091678
@@ -164,7 +278,7 @@ item []:
         points [8]:
             time = 1.4228990079
             mark = "S"
-    item [8]:
+    item [11]:
         class = "IntervalTier"
         name = "MetaInformation"
         xmin = 0.000000
@@ -185,11 +299,11 @@ item []:
         intervals [4]:
             xmin = 0.547757625
             xmax = 0.7303435
-            text = "version=1.8.0"
+            text = "version=1.8.2"
         intervals [5]:
             xmin = 0.7303435
             xmax = 0.912929375
-            text = "copyright=Copyright (C) 2011-2016 Brigitte Bigi"
+            text = "copyright=Copyright (C) 2011-2017 Brigitte Bigi"
         intervals [6]:
             xmin = 0.912929375
             xmax = 1.09551525
@@ -201,4 +315,4 @@ item []:
         intervals [8]:
             xmin = 1.278101125
             xmax = 1.460687
-            text = "date=2016-08-30"
+            text = "date=2017-01-12"

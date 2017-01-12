@@ -41,7 +41,7 @@ item []:
         name = "PhonAlign"
         xmin = 0.000000
         xmax = 6.440000
-        intervals: size = 98
+        intervals: size = 97
         intervals [1]:
             xmin = 0.0
             xmax = 0.09
@@ -372,65 +372,61 @@ item []:
             text = "p"
         intervals [83]:
             xmin = 5.53
-            xmax = 5.59
+            xmax = 5.62
             text = "o"
         intervals [84]:
-            xmin = 5.59
-            xmax = 5.62
-            text = "z"
-        intervals [85]:
             xmin = 5.62
             xmax = 5.66
             text = "d"
-        intervals [86]:
+        intervals [85]:
             xmin = 5.66
             xmax = 5.71
             text = "e"
-        intervals [87]:
+        intervals [86]:
             xmin = 5.71
             xmax = 5.78
             text = "k"
-        intervals [88]:
+        intervals [87]:
             xmin = 5.78
             xmax = 5.84
             text = "E"
-        intervals [89]:
+        intervals [88]:
             xmin = 5.84
             xmax = 5.92
             text = "s"
-        intervals [90]:
+        intervals [89]:
             xmin = 5.92
             xmax = 5.95
             text = "j"
-        intervals [91]:
+        intervals [90]:
             xmin = 5.95
             xmax = 6.04
             text = "o~"
-        intervals [92]:
+        intervals [91]:
             xmin = 6.04
             xmax = 6.08
             text = "k"
-        intervals [93]:
+        intervals [92]:
             xmin = 6.08
             xmax = 6.11
             text = "w"
-        intervals [94]:
+        intervals [93]:
             xmin = 6.11
             xmax = 6.14
             text = "a"
-        intervals [95]:
+        intervals [94]:
             xmin = 6.14
             xmax = 6.17
             text = "p"
-        intervals [96]:
+        intervals [95]:
             xmin = 6.17
             xmax = 6.24
             text = "a"
-        intervals [97]:
+        intervals [96]:
             xmin = 6.24
             xmax = 6.36
             text = "s"
-        intervals [98]:
+        intervals [97]:
             xmin = 6.36
             xmax = 6.44
             text = "eu"
@@ -767,7 +763,7 @@ item []:
         intervals [36]:
             xmin = 5.47
             xmax = 5.62
-            text = "poz"
+            text = "po"
         intervals [37]:
             xmin = 5.62
             xmax = 5.71
@@ -941,7 +937,7 @@ item []:
         intervals [36]:
             xmin = 5.47
             xmax = 5.62
-            text = "OVF"
+            text = "OV"
         intervals [37]:
             xmin = 5.62
             xmax = 5.71
@@ -1115,7 +1111,7 @@ item []:
         intervals [36]:
             xmin = 5.47
             xmax = 5.62
-            text = "CVC"
+            text = "CV"
         intervals [37]:
             xmin = 5.62
             xmax = 5.71
@@ -1161,11 +1157,11 @@ item []:
         intervals [4]:
             xmin = 2.415
             xmax = 3.22
-            text = "version=1.8.0"
+            text = "version=1.8.2"
         intervals [5]:
             xmin = 3.22
             xmax = 4.025
-            text = "copyright=Copyright (C) 2011-2016 Brigitte Bigi"
+            text = "copyright=Copyright (C) 2011-2017 Brigitte Bigi"
         intervals [6]:
             xmin = 4.025
             xmax = 4.83
@@ -1177,4 +1173,4 @@ item []:
         intervals [8]:
             xmin = 5.635
             xmax = 6.44
-            text = "date=2016-08-30"
+            text = "date=2017-01-12"

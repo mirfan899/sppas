@@ -74,12 +74,12 @@ item []:
             text = "ve"
         intervals [16]:
             xmin = 1.68
-            xmax = 1.73
+            xmax = 1.77
             text = "U~"
         intervals [17]:
-            xmin = 1.73
+            xmin = 1.77
             xmax = 1.83
-            text = "na"
+            text = "a"
         intervals [18]:
             xmin = 1.83
             xmax = 2.08
@@ -184,12 +184,12 @@ item []:
             text = "FV"
         intervals [16]:
             xmin = 1.68
-            xmax = 1.73
+            xmax = 1.77
             text = "V"
         intervals [17]:
-            xmin = 1.73
+            xmin = 1.77
             xmax = 1.83
-            text = "NV"
+            text = "V"
         intervals [18]:
             xmin = 1.83
             xmax = 2.08
@@ -294,12 +294,12 @@ item []:
             text = "CV"
         intervals [16]:
             xmin = 1.68
-            xmax = 1.73
+            xmax = 1.77
             text = "V"
         intervals [17]:
-            xmin = 1.73
+            xmin = 1.77
             xmax = 1.83
-            text = "CV"
+            text = "V"
         intervals [18]:
             xmin = 1.83
             xmax = 2.08

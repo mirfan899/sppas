@@ -66,12 +66,12 @@ item []:
             text = "ga"
         intervals [14]:
             xmin = 1.89
-            xmax = 2.1
+            xmax = 2.13
             text = "mU~"
         intervals [15]:
-            xmin = 2.1
+            xmin = 2.13
             xmax = 2.23
-            text = "zloR"
+            text = "loR"
         intervals [16]:
             xmin = 2.23
             xmax = 2.35
@@ -127,7 +127,7 @@ item []:
         intervals [29]:
             xmin = 3.57
             xmax = 3.76
-            text = "fut"
+            text = "fu"
         intervals [30]:
             xmin = 3.76
             xmax = 3.87
@@ -135,7 +135,7 @@ item []:
         intervals [31]:
             xmin = 3.87
             xmax = 4.03
-            text = "zU~n"
+            text = "zU~"
         intervals [32]:
             xmin = 4.03
             xmax = 4.16
@@ -260,12 +260,12 @@ item []:
             text = "OV"
         intervals [14]:
             xmin = 1.89
-            xmax = 2.1
+            xmax = 2.13
             text = "NV"
         intervals [15]:
-            xmin = 2.1
+            xmin = 2.13
             xmax = 2.23
-            text = "FLVL"
+            text = "LVL"
         intervals [16]:
             xmin = 2.23
             xmax = 2.35
@@ -321,7 +321,7 @@ item []:
         intervals [29]:
             xmin = 3.57
             xmax = 3.76
-            text = "FVO"
+            text = "FV"
         intervals [30]:
             xmin = 3.76
             xmax = 3.87
@@ -329,7 +329,7 @@ item []:
         intervals [31]:
             xmin = 3.87
             xmax = 4.03
-            text = "FVN"
+            text = "FV"
         intervals [32]:
             xmin = 4.03
             xmax = 4.16
@@ -454,12 +454,12 @@ item []:
             text = "CV"
         intervals [14]:
             xmin = 1.89
-            xmax = 2.1
+            xmax = 2.13
             text = "CV"
         intervals [15]:
-            xmin = 2.1
+            xmin = 2.13
             xmax = 2.23
-            text = "CCVC"
+            text = "CVC"
         intervals [16]:
             xmin = 2.23
             xmax = 2.35
@@ -515,7 +515,7 @@ item []:
         intervals [29]:
             xmin = 3.57
             xmax = 3.76
-            text = "CVC"
+            text = "CV"
         intervals [30]:
             xmin = 3.76
             xmax = 3.87
@@ -523,7 +523,7 @@ item []:
         intervals [31]:
             xmin = 3.87
             xmax = 4.03
-            text = "CVC"
+            text = "CV"
         intervals [32]:
             xmin = 4.03
             xmax = 4.16
