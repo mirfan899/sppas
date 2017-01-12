@@ -1,31 +1,33 @@
 # -*- coding: UTF-8 -*-
-#     ___   __    __    __    ___
-#    /     |  \  |  \  |  \  /              the automatic
-#    \__   |__/  |__/  |___| \__             annotation and
-#       \  |     |     |   |    \             analysis
-#    ___/  |     |     |   | ___/              of speech
-#
-#    http://www.sppas.org/
-#
-#    Use of this software is governed by the GNU Public License, version 3.
-#
-#    SPPAS is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    SPPAS is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-#    This banner notice must not be removed.
-#
-#-----------------------------------------------------------------------------
 """
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
+
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
 
     src.plugins.cfgparser.py
     ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -47,10 +49,10 @@
 
     Here is an example with a comment, a section definition and two options:
 
-        # This is a comment in a configuration file
-        [Section]
-        option1 = value1
-        option2 = value2
+        | # This is a comment in a configuration file
+        | [Section]
+        | option1 = value1
+        | option2 = value2
 
 """
 
@@ -74,35 +76,38 @@ class sppasPluginConfigParser(object):
 
     The required section "Configuration" includes an id, a name and a
     description, as for example:
-        [Configuration]
-        id:    pluginid
-        name:  The Plugin Name
-        descr: Performs something on some files.
-        icon:  path (optional)
+
+        | [Configuration]
+        | id:    pluginid
+        | name:  The Plugin Name
+        | descr: Performs something on some files.
+        | icon:  path (optional)
 
     Then, a required section with the name "Command":
-        [Command]
-        windows: toto.exe
-        macos:   toto.command
-        linux:   toto.bash
+
+        | [Command]
+        | windows: toto.exe
+        | macos:   toto.command
+        | linux:   toto.bash
 
     Finally, a set of sections with name starting by "Option" can be appended,
     as follow:
-        [Option2]
-        id:    -v
-        type:  boolean
-        value: False
-        text:  Verbose mode
+
+        | [Option2]
+        | id:    -v
+        | type:  boolean
+        | value: False
+        | text:  Verbose mode
 
     Some specific 'id' or 'value' of Option sections can be defined and will be
     interpreted differently:
+
         - input
         - options
 
     """
     def __init__(self, filename=None):
-        """
-        Create a parser.
+        """ Create a parser.
 
         :param filename: (string) the file name of the plugin configuration.
 
@@ -115,8 +120,7 @@ class sppasPluginConfigParser(object):
     # ------------------------------------------------------------------------
 
     def get_config(self):
-        """
-        Return the 'Configuration' section content.
+        """ Get the 'Configuration' section content.
 
         :returns: dictionary.
 
@@ -136,8 +140,7 @@ class sppasPluginConfigParser(object):
     # ------------------------------------------------------------------------
 
     def get_command(self):
-        """
-        Return the 'Command' section content.
+        """ Get the 'Command' section content.
 
         :returns: dictionary.
 
@@ -154,8 +157,7 @@ class sppasPluginConfigParser(object):
     # ------------------------------------------------------------------------
 
     def get_options(self):
-        """
-        Return all the 'Option' section contents.
+        """ Return all the 'Option' section contents.
         The section name is used as key. Values are of type "Option".
 
         :returns: ordered dictionary.
@@ -173,11 +175,10 @@ class sppasPluginConfigParser(object):
     # ------------------------------------------------------------------------
 
     def set_options(self, options):
-        """
-        Re-set all the 'Option' section.
+        """ Re-set all the 'Option' section.
 
-        @param options (ordered dictionary) with key=section name, and value
-        if of type "Option" (with at least a "key").
+        :param options: (ordered dictionary) with key=section name, and \
+        value is of type "Option" (with at least a "key").
 
         """
         # Remove all current options of the parser.
@@ -196,8 +197,7 @@ class sppasPluginConfigParser(object):
     # ------------------------------------------------------------------------
 
     def parse(self, filename):
-        """
-        Parse a configuration file.
+        """ Parse a configuration file.
         This will forget all previous configurations (if any).
 
         :param filename: (string) Configuration file name.
@@ -218,8 +218,7 @@ class sppasPluginConfigParser(object):
     # ------------------------------------------------------------------------
 
     def save(self, backup=True):
-        """
-        Save the configuration file.
+        """ Save the configuration file.
         Copy the old one into a backup file.
 
         """
@@ -238,8 +237,7 @@ class sppasPluginConfigParser(object):
 
     @staticmethod
     def __parse_option(items):
-        """
-        Parse an option.
+        """ Parse an option.
         Convert an "Option" section of the parser into an "Option" instance.
 
         """
@@ -272,8 +270,7 @@ class sppasPluginConfigParser(object):
     # ------------------------------------------------------------------------
 
     def __set_option(self, section_name, option):
-        """
-        Set an option.
+        """ Set an option.
         Convert an "Option" instance into an "Option" section of the parser.
 
         """

@@ -1,39 +1,48 @@
 #!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2017  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: param.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
+
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.plugins.param.py
+    ~~~~~~~~~~~~~~~~~~~~~
+
+    The set of parameters of a plugin is made of a directory name, a 
+    configuration file name and a sppasPluginParser. This latter allows to
+    get all information related to the plugin from the configuration file 
+    name:
+    
+        - the plugin configuration: identifier, name, description and icon;
+        - the commands for windows, macos and linux;
+        - a set of options, each one containing at least an identifier, \
+        and optionnally a type, a value and a description text.
+
+"""
 
 import os
 import platform
@@ -47,17 +56,16 @@ from cfgparser import sppasPluginConfigParser
 
 class sppasPluginParam(object):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    @summary:      One SPPAS plugin set of parameters.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Represent the set of parameters of a plugin.
 
     """
     def __init__(self, directory, config_file):
-        """
-        Creates a new sppasPluginParam instance.
+        """ Creates a new sppasPluginParam instance.
 
         :param directory: (string) the directory where to find the plugin
         :param config_file: (string) the file name of the plugin configuration
@@ -77,10 +85,8 @@ class sppasPluginParam(object):
     # ------------------------------------------------------------------------
 
     def reset(self):
-        """
-        Reset all members to their default value.
+        """ Reset all members to their default value. """
 
-        """
         # An identifier to represent this plugin
         self._key  = None
         # The name of the plugin
@@ -97,10 +103,8 @@ class sppasPluginParam(object):
     # ------------------------------------------------------------------------
 
     def parse(self):
-        """
-        Parse the configuration file of the plugin.
+        """ Parse the configuration file of the plugin.  """
 
-        """
         self.reset()
         filename = os.path.join(self._directory,self._cfgfile)
         self._cfgparser.parse(filename)
@@ -124,8 +128,7 @@ class sppasPluginParam(object):
     # ------------------------------------------------------------------------
 
     def save(self):
-        """
-        Save the configuration file.
+        """ Save the configuration file.
         Copy the old one into a backup file.
 
         """
@@ -136,34 +139,49 @@ class sppasPluginParam(object):
     # Getters
     # ------------------------------------------------------------------------
 
+    def get_directory(self):
+        """ Get the directory name of the plugin. """
+        return self._directory
+
+    # ------------------------------------------------------------------------
+
     def get_key(self):
+        """ Get the identifier of the plugin. """
         return self._key
 
     def get_name(self):
+        """ Get the name of the plugin. """
         return self._name
 
     def get_descr(self):
+        """ Get the short description of the plugin. """
         return self._descr
 
     def get_icon(self):
+        """ Get the icon file name of the plugin. """
         return self._icon
 
-    def get_directory(self):
-        return self._directory
+    # ------------------------------------------------------------------------
 
     def get_command(self):
+        """ Get the appropriate command to execute the plugin. """
         return self._command
 
+    # ------------------------------------------------------------------------
+
     def get_option_from_key(self, key):
+        """ Get an option from its key. """
         for option in self._options.values():
             if option.get_key() == key:
                 return option
         raise KeyError("No option with key %s" % key)
 
     def get_options(self):
+        """ Get all the options. """
         return self._options
 
     def set_options(self, options_dict):
+        """ Fix the options. """
         self._options = options_dict
 
     # ------------------------------------------------------------------------
@@ -191,8 +209,7 @@ class sppasPluginParam(object):
 
     @staticmethod
     def __check_command(command):
-        """
-        Return True if command exists.
+        """ Return True if command exists.
         Test only the main command (i.e. the first string, without args).
 
         """

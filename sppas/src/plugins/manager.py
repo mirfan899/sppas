@@ -1,38 +1,41 @@
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2017  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: manager.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
+
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.plugins.manager.py
+    ~~~~~~~~~~~~~~~~~~~~~~
+
+    A manager for the set of plugins of a software: load, install, apply,
+    delete, etc.
+
+"""
 
 import os
 import shutil
@@ -50,19 +53,17 @@ from process import sppasPluginProcess
 
 class sppasPluginsManager(Thread):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    @summary:      Class to manage the list of plugins into SPPAS.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Class to manage the list of plugins into SPPAS.
 
     """
     def __init__(self):
-        """
-        Instantiate the sppasPluginsManager and load the current plugins.
+        """ Instantiate the sppasPluginsManager and load the current plugins. """
 
-        """
         Thread.__init__(self)
 
         # Load the installed plugins
@@ -79,8 +80,9 @@ class sppasPluginsManager(Thread):
     # ------------------------------------------------------------------------
 
     def get_plugin_ids(self):
-        """
-        Return the list of plugin identifiers.
+        """ Get the list of plugin identifiers.
+
+        :returns: List of plugin identifiers.
 
         """
         return self._plugins.keys()
@@ -88,17 +90,17 @@ class sppasPluginsManager(Thread):
     # ------------------------------------------------------------------------
 
     def get_plugin(self, plugin_id):
-        """
-        Return the sppasPluginParam from a plugin identifier.
+        """ Get the sppasPluginParam from a plugin identifier.
+
+        :returns: sppasPluginParam matching the plugin_id or None
 
         """
-        return self._plugins[plugin_id]
+        return self._plugins.get(plugin_id, None)
 
     # ------------------------------------------------------------------------
 
     def set_progress(self, progress):
-        """
-        Fix the progress system to be used while executing a plugin.
+        """ Fix the progress system to be used while executing a plugin.
 
         :param progress: (TextProgress or ProcessProgressDialog)
 
@@ -108,10 +110,10 @@ class sppasPluginsManager(Thread):
     # ------------------------------------------------------------------------
 
     def load(self):
-        """
-        Load all installed plugins in the SPPAS directory.
+        """ Load all installed plugins in the SPPAS directory.
 
         A plugin is not loaded if:
+
             - a configuration file is not defined or corrupted,
             - the platform system of the command does not match.
 
@@ -126,8 +128,7 @@ class sppasPluginsManager(Thread):
     # ------------------------------------------------------------------------
 
     def install(self, plugin_archive, plugin_folder):
-        """
-        Install a plugin into the plugin directory.
+        """ Install a plugin into the plugin directory.
 
         :param plugin_archive: (string) File name of the plugin to be installed (ZIP).
         :param plugin_folder: (string) Destination folder name of the plugin to be installed.
@@ -159,10 +160,9 @@ class sppasPluginsManager(Thread):
     # ------------------------------------------------------------------------
 
     def delete(self, plugin_id):
-        """
-        Delete a plugin of the plugins directory.
+        """ Delete a plugin of the plugins directory.
 
-        :param plugin_id: (string) Identifier of the plugin to delete.
+        :param plugin_id: (str) Identifier of the plugin to delete.
 
         """
         p = self._plugins.get(plugin_id, None)
@@ -175,8 +175,7 @@ class sppasPluginsManager(Thread):
     # ------------------------------------------------------------------------
 
     def append(self, plugin_folder):
-        """
-        Append a plugin in the list of plugins.
+        """ Append a plugin in the list of plugins.
         It is supposed that the given plugin folder name is a folder of the
         plugin directory.
 
@@ -207,8 +206,7 @@ class sppasPluginsManager(Thread):
     # ------------------------------------------------------------------------
 
     def run_plugin(self, plugin_id, file_names):
-        """
-        Apply a given plugin on a list of files.
+        """ Apply a given plugin on a list of files.
 
         :param plugin_id: (string) Identifier of the plugin to apply.
         :param file_names: (list) List of files on which the plugin has to be applied.

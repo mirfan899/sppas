@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>plugins.process &#8212; THE HTML title</title>
+    <title>plugins.process &mdash; THE HTML title</title>
     
     <link rel="stylesheet" href="../../_static/cloud.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -28,23 +28,23 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../_static/jquery.cookie.js"></script>
     <script type="text/javascript" src="../../_static/cloud.js"></script>
-    <link rel="search" title="Search" href="../../search.html" />
     <link rel="top" title="THE HTML title" href="../../index.html" />
-    <link rel="up" title="Module code" href="../index.html" /> 
+    <link rel="up" title="plugins" href="../plugins.html" /> 
         <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
-  <body role="document">
+  <body>
     <div class="relbar-top">
         
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a></li>
-    <li><a href="../../index.html">Short title</a> &#187;</li>
+    <li><a href="../../index.html">Short title</a> &raquo;</li>
 
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../plugins.html" accesskey="U">plugins</a> &raquo;</li> 
       </ul>
     </div>
     </div>
@@ -53,178 +53,175 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
   <h1>Source code for plugins.process</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
-<span class="c1"># ---------------------------------------------------------------------------</span>
-<span class="c1">#            ___   __    __    __    ___</span>
-<span class="c1">#           /     |  \  |  \  |  \  /              Automatic</span>
-<span class="c1">#           \__   |__/  |__/  |___| \__             Annotation</span>
-<span class="c1">#              \  |     |     |   |    \             of</span>
-<span class="c1">#           ___/  |     |     |   | ___/              Speech</span>
-<span class="c1">#</span>
-<span class="c1">#</span>
-<span class="c1">#                           http://www.sppas.org/</span>
-<span class="c1">#</span>
-<span class="c1"># ---------------------------------------------------------------------------</span>
-<span class="c1">#            Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="c1">#                   Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="c1">#</span>
-<span class="c1">#                   This banner notice must not be removed</span>
-<span class="c1"># ---------------------------------------------------------------------------</span>
-<span class="c1"># Use of this software is governed by the GNU Public License, version 3.</span>
-<span class="c1">#</span>
-<span class="c1"># SPPAS is free software: you can redistribute it and/or modify</span>
-<span class="c1"># it under the terms of the GNU General Public License as published by</span>
-<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
-<span class="c1"># (at your option) any later version.</span>
-<span class="c1">#</span>
-<span class="c1"># SPPAS is distributed in the hope that it will be useful,</span>
-<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
-<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
-<span class="c1"># GNU General Public License for more details.</span>
-<span class="c1">#</span>
-<span class="c1"># You should have received a copy of the GNU General Public License</span>
-<span class="c1"># along with SPPAS. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
-<span class="c1">#</span>
-<span class="c1"># ---------------------------------------------------------------------------</span>
-<span class="c1"># File: process.py</span>
-<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c"># -*- coding: UTF-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ..</span>
+<span class="sd">        ---------------------------------------------------------------------</span>
+<span class="sd">         ___   __    __    __    ___</span>
+<span class="sd">        /     |  \  |  \  |  \  /              the automatic</span>
+<span class="sd">        \__   |__/  |__/  |___| \__             annotation and</span>
+<span class="sd">           \  |     |     |   |    \             analysis</span>
+<span class="sd">        ___/  |     |     |   | ___/              of speech</span>
+
+<span class="sd">        http://www.sppas.org/</span>
+
+<span class="sd">        Use of this software is governed by the GNU Public License, version 3.</span>
+
+<span class="sd">        SPPAS is free software: you can redistribute it and/or modify</span>
+<span class="sd">        it under the terms of the GNU General Public License as published by</span>
+<span class="sd">        the Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">        (at your option) any later version.</span>
+
+<span class="sd">        SPPAS is distributed in the hope that it will be useful,</span>
+<span class="sd">        but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="sd">        GNU General Public License for more details.</span>
+
+<span class="sd">        You should have received a copy of the GNU General Public License</span>
+<span class="sd">        along with SPPAS. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">        This banner notice must not be removed.</span>
+
+<span class="sd">        ---------------------------------------------------------------------</span>
+
+<span class="sd">    src.plugins.process.py</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~</span>
+
+<span class="sd">    Process a plugin.</span>
+<span class="sd">    This is currently limited one file only.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">os.path</span>
 <span class="kn">import</span> <span class="nn">shlex</span>
-<span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span><span class="p">,</span> <span class="n">STDOUT</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span><span class="p">,</span> <span class="n">STDOUT</span>
 
-<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c"># ----------------------------------------------------------------------------</span>
 
 
 <div class="viewcode-block" id="sppasPluginProcess"><a class="viewcode-back" href="../../manual/plugins.html#plugins.process.sppasPluginProcess">[docs]</a><span class="k">class</span> <span class="nc">sppasPluginProcess</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    @author:       Brigitte Bigi</span>
-<span class="sd">    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    @contact:      brigitte.bigi@gmail.com</span>
-<span class="sd">    @license:      GPL, v3</span>
-<span class="sd">    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    @summary:      Class to run a plugin.</span>
+<span class="sd">    :author:       Brigitte Bigi</span>
+<span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
+<span class="sd">    :contact:      brigitte.bigi@gmail.com</span>
+<span class="sd">    :license:      GPL, v3</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
+<span class="sd">    :summary:      Class to run a plugin.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasPluginProcess.__init__"><a class="viewcode-back" href="../../manual/plugins.html#plugins.process.sppasPluginProcess.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin_param</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a new sppasPluginProcess instance.</span>
+        <span class="sd">&quot;&quot;&quot; Creates a new sppasPluginProcess instance.</span>
 
 <span class="sd">        :param plugin_param: (sppasPluginParam)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_plugin</span> <span class="o">=</span> <span class="n">plugin_param</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_process</span> <span class="o">=</span> <span class="kc">None</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_process</span> <span class="o">=</span> <span class="bp">None</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasPluginProcess.run"><a class="viewcode-back" href="../../manual/plugins.html#plugins.process.sppasPluginProcess.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Execute the plugin in batch mode (ie don&#39;t wait it to be finished).</span>
+        <span class="sd">&quot;&quot;&quot; Execute the plugin in batch mode (ie don&#39;t wait it to be finished).</span>
 
-<span class="sd">        :param filename: (string) The file name of the file to apply the plugin</span>
+<span class="sd">        :param filename: (str) The file name of the file on which to apply the plugin</span>
 <span class="sd">        :returns: Process output message</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># the command</span>
+        <span class="c"># the command</span>
         <span class="n">command</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plugin</span><span class="o">.</span><span class="n">get_command</span><span class="p">()</span>
 
-        <span class="c1"># append the options (sorted like in the configuration file)</span>
+        <span class="c"># append the options (sorted like in the configuration file)</span>
         <span class="k">for</span> <span class="n">opt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plugin</span><span class="o">.</span><span class="n">get_options</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="n">opt_id</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get_key</span><span class="p">()</span>
 
-            <span class="k">if</span> <span class="n">opt_id</span> <span class="o">==</span> <span class="s2">&quot;input&quot;</span><span class="p">:</span>
-                <span class="n">command</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">filename</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2"> &quot;</span>
+            <span class="k">if</span> <span class="n">opt_id</span> <span class="o">==</span> <span class="s">&quot;input&quot;</span><span class="p">:</span>
+                <span class="n">command</span> <span class="o">+=</span> <span class="s">&quot; </span><span class="se">\&quot;</span><span class="s">&quot;</span> <span class="o">+</span> <span class="n">filename</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\&quot;</span><span class="s"> &quot;</span>
 
-            <span class="k">elif</span> <span class="n">opt_id</span> <span class="o">==</span> <span class="s2">&quot;options&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">opt_id</span> <span class="o">==</span> <span class="s">&quot;options&quot;</span><span class="p">:</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get_untypedvalue</span><span class="p">()</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">command</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span><span class="o">+</span><span class="n">value</span>
+                    <span class="n">command</span> <span class="o">+=</span> <span class="s">&quot; &quot;</span><span class="o">+</span><span class="n">value</span>
 
-            <span class="k">elif</span> <span class="n">opt_id</span> <span class="o">==</span> <span class="s2">&quot;output&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">opt_id</span> <span class="o">==</span> <span class="s">&quot;output&quot;</span><span class="p">:</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get_untypedvalue</span><span class="p">()</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-                    <span class="n">command</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">fname</span> <span class="o">+</span> <span class="n">value</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2"> &quot;</span>
+                    <span class="n">command</span> <span class="o">+=</span> <span class="s">&quot; </span><span class="se">\&quot;</span><span class="s">&quot;</span> <span class="o">+</span> <span class="n">fname</span> <span class="o">+</span> <span class="n">value</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\&quot;</span><span class="s"> &quot;</span>
 
-            <span class="k">elif</span> <span class="n">opt</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;bool&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">opt</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">==</span> <span class="s">&quot;bool&quot;</span><span class="p">:</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-                    <span class="n">command</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">opt</span><span class="o">.</span><span class="n">get_key</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+                    <span class="n">command</span> <span class="o">+=</span> <span class="s">&quot; &quot;</span> <span class="o">+</span> <span class="n">opt</span><span class="o">.</span><span class="n">get_key</span><span class="p">()</span>
 
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">command</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span><span class="o">+</span><span class="n">opt</span><span class="o">.</span><span class="n">get_key</span><span class="p">()</span>
+                <span class="n">command</span> <span class="o">+=</span> <span class="s">&quot; &quot;</span><span class="o">+</span><span class="n">opt</span><span class="o">.</span><span class="n">get_key</span><span class="p">()</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">get_untypedvalue</span><span class="p">()</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
 
-                    <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;input&quot;</span><span class="p">:</span>
-                        <span class="n">command</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">filename</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2"> &quot;</span>
+                    <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s">&quot;input&quot;</span><span class="p">:</span>
+                        <span class="n">command</span> <span class="o">+=</span> <span class="s">&quot; </span><span class="se">\&quot;</span><span class="s">&quot;</span> <span class="o">+</span> <span class="n">filename</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\&quot;</span><span class="s"> &quot;</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">command</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span><span class="o">+</span><span class="n">value</span>
+                        <span class="n">command</span> <span class="o">+=</span> <span class="s">&quot; &quot;</span><span class="o">+</span><span class="n">value</span>
 
-        <span class="c1"># Execute the command</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">unicode</span><span class="p">):</span>
-            <span class="n">command</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="c"># Execute the command</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">):</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
 
         <span class="n">args</span> <span class="o">=</span> <span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">argument</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
-            <span class="k">if</span> <span class="s2">&quot;PLUGIN_PATH/&quot;</span> <span class="ow">in</span> <span class="n">argument</span><span class="p">:</span>
-                <span class="n">newarg</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;PLUGIN_PATH/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s">&quot;PLUGIN_PATH/&quot;</span> <span class="ow">in</span> <span class="n">argument</span><span class="p">:</span>
+                <span class="n">newarg</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;PLUGIN_PATH/&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
                 <span class="n">args</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plugin</span><span class="o">.</span><span class="n">get_directory</span><span class="p">(),</span> <span class="n">newarg</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_process</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">STDOUT</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_process</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">STDOUT</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasPluginProcess.communicate"><a class="viewcode-back" href="../../manual/plugins.html#plugins.process.sppasPluginProcess.communicate">[docs]</a>    <span class="k">def</span> <span class="nf">communicate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Wait for the process and get output messages (if any) then return it.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot; Wait for the process and get output messages (if any) then return it. &quot;&quot;&quot;</span>
 
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
-        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasPluginProcess.stop"><a class="viewcode-back" href="../../manual/plugins.html#plugins.process.sppasPluginProcess.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Terminate the process if it is running.</span>
+        <span class="sd">&quot;&quot;&quot; Terminate the process if it is running. &quot;&quot;&quot;</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasPluginProcess.is_running"><a class="viewcode-back" href="../../manual/plugins.html#plugins.process.sppasPluginProcess.is_running">[docs]</a>    <span class="k">def</span> <span class="nf">is_running</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return True if the process is running.</span>
+        <span class="sd">&quot;&quot;&quot; Return True if the process is running. &quot;&quot;&quot;</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="c1"># A None value indicates that the process hasn&#39;t terminated yet.</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span></div></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="c"># A None value indicates that the process hasn&#39;t terminated yet.</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">None</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
+    <span class="c"># ------------------------------------------------------------------------</span></div></div>
 </pre></div>
 
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
+<div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -250,22 +247,23 @@
     </div>
     <div class="relbar-bottom">
         
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a></li>
-    <li><a href="../../index.html">Short title</a> &#187;</li>
+    <li><a href="../../index.html">Short title</a> &raquo;</li>
 
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../plugins.html" >plugins</a> &raquo;</li> 
       </ul>
     </div>
     </div>
 
-    <div class="footer" role="contentinfo">
-        &#169; Copyright Copyright (C) 2011-2017 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+    <div class="footer">
+        &copy; Copyright Copyright (C) 2011-2017 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
     <!-- cloud_sptheme 1.4 -->
   </body>
