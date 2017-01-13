@@ -1,12 +1,13 @@
 .idea
-/settings
+.settings
 .project
 .pydevproject
 *.pyc
 .DS_Store
 *.dump
 *tiedlist.*
-# vim swap files
-.*sw[opq]
-Packager/web/manual
-Packager/sphinx-doc/_*
+./Packager/web/manual
+./Packager/sphinx-doc/_static
+./Packager/sphinx-doc/_modules
+./Packager/sphinx-doc/_build
+

@@ -90,25 +90,25 @@ def skip(app, what, name, obj, skip, options):
 # The theme to use for HTML and HTML Help pages. See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sppascloud"
+html_theme = "sphinx_rtd_theme"
+
+# for a custom theme
+html_theme_path = ["_themes", ]
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation. http://www.sphinx-doc.org/en/stable/theming.html
 #
-# html_theme_options = {}
+html_theme_options = {}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-# for a custom theme
-html_theme_path = ["_themes", ]
-
 #html_style="sppasdoc.css" # The style sheet to use for HTML pages. 
 html_title="THE HTML title"
-html_short_title="Short title"
+html_short_title="SPPAS API"
 html_logo=None
 html_favicon=None
 
