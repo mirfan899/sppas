@@ -9,4 +9,4 @@
 # vim swap files
 .*sw[opq]
 Packager/web/manual
-Packager/_*
+Packager/sphinx-doc/_*

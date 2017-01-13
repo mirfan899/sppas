@@ -619,13 +619,40 @@ This is currently limited one file only.</p>
 </div>
 <div class="section" id="module-plugins">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-plugins" title="Permalink to this headline">¶</a></h2>
-<p>&#64;author:       Brigitte Bigi
-&#64;organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-&#64;contact:      <a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a>
-&#64;license:      GPL, v3
-&#64;copyright:    Copyright (C) 2011-2017  Brigitte Bigi</p>
+<div class="section" id="src-plugins-init-py">
+<h3>src.plugins.__init__.py<a class="headerlink" href="#src-plugins-init-py" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+</tbody>
+</table>
 <p>plugins is a free and open source Python library to access and manage
 external programs to plug into SPPAS.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">plugins</span> <span class="kn">import</span> <span class="n">sppasPluginsManager</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Create a plugin manager (it will explore the installed plugins).</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span> <span class="o">=</span> <span class="n">sppasPluginsManager</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Install a plugin</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plugin_id</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">install</span><span class="p">(</span><span class="n">plugin_zip_filename</span><span class="p">,</span> <span class="n">plugin_destination_folder_name</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Get a plugin</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">get_plugin</span><span class="p">(</span><span class="n">plugin_id</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Apply a plugin on a list of files</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">message</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">run_plugin</span><span class="p">(</span><span class="n">plugin_id</span><span class="p">,</span> <span class="p">[</span><span class="n">some_filename1</span><span class="p">,</span> <span class="n">some_filename2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">message</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Delete an installed plugin</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">plugin_id</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="class">
 <dt id="plugins.sppasPluginsManager">
 <em class="property">class </em><tt class="descclassname">plugins.</tt><tt class="descname">sppasPluginsManager</tt><a class="headerlink" href="#plugins.sppasPluginsManager" title="Permalink to this definition">¶</a></dt>
@@ -1122,6 +1149,7 @@ Copy the old one into a backup file.</p>
 
 </div>
 </div>
+</div>
 
 
           </div>
@@ -1150,7 +1178,10 @@ Copy the old one into a backup file.</p>
 <li><a class="reference internal" href="#src-plugins-process-py">src.plugins.process.py</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-plugins">Module contents</a></li>
+<li><a class="reference internal" href="#module-plugins">Module contents</a><ul>
+<li><a class="reference internal" href="#src-plugins-init-py">src.plugins.__init__.py</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
