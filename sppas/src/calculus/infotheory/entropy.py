@@ -43,7 +43,8 @@ from utilit import symbols_to_items
 # Class Entropy
 # ----------------------------------------------------------------------------
 
-class Entropy:
+
+class Entropy(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
