@@ -35,7 +35,6 @@
     Management of the user' preferences.
 
 """
-
 import codecs
 import pickle
 

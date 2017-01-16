@@ -43,7 +43,7 @@ from wxgui.cutils.imageutils import GetCheckedBitmap, GetCheckedImage, GetNotChe
 # -------------------------------------------------------------------------
 
 
-class CheckListCtrl( wx.ListCtrl ):
+class CheckListCtrl(wx.ListCtrl):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -53,7 +53,7 @@ class CheckListCtrl( wx.ListCtrl ):
     """
     def __init__(self, parent, id=-1, pos=wx.DefaultPosition,
                  size=wx.DefaultSize, style=wx.NO_BORDER,
-                 validator=wx.DefaultValidator, name="CheckListCtrl",):
+                 validator=wx.DefaultValidator, name="CheckListCtrl"):
         """
         Initialize a new ListCtlr instance.
 
@@ -68,18 +68,19 @@ class CheckListCtrl( wx.ListCtrl ):
         @param name:      Window name.
 
         """
+        style = wx.LC_REPORT | wx.NO_BORDER | wx.FULL_REPAINT_ON_RESIZE | wx.LC_ALIGN_TOP
         wx.ListCtrl.__init__(self, parent, id, pos, size, style, validator, name)
 
         # Create a list of selected items:
         # it is required to mimic the behaviors of a checklist.
         # The use of the standard selection list is then canceled, and replaced by this one.
-        self.sel = list()     # the list of checked items (list of index)
-        self.colcheck = False # the whole column was checked
+        self.sel = []          # the list of checked items (list of index)
+        self.colcheck = False  # the whole column was checked
 
         # Create image list and assign to this list
         self.__initializeBitmaps()
         il = self.__createImageList()
-        self.AssignImageList( il, wx.IMAGE_LIST_SMALL )
+        self.AssignImageList(il, wx.IMAGE_LIST_SMALL)
 
         # Bind some events to manage properly the list of selected files
         self.Bind(wx.EVT_LIST_ITEM_SELECTED,    self.OnItemSelected,   self)
@@ -105,26 +106,28 @@ class CheckListCtrl( wx.ListCtrl ):
                          "CheckedDisable":   GrayOut(GetCheckedImage(not self.HasFlag( wx.LC_SINGLE_SEL ))).ConvertToBitmap(),
                          "UnCheckedDisable": GrayOut(GetNotCheckedImage(not self.HasFlag( wx.LC_SINGLE_SEL ))).ConvertToBitmap()}
 
+    # ---------------------------------------------------------------------
 
     def __createImageList(self):
         """ Load some images into an image list. """
 
-        il = wx.ImageList(16,16,True)
+        il = wx.ImageList(16, 16, True)
 
         # Enabled = True, Check = False
-        self.UNCHECK = il.Add(self.__getBitmap(True,False))
+        self.UNCHECK = il.Add(self.__getBitmap(True, False))
 
         # Enabled = True, Check = True
-        self.CHECK = il.Add(self.__getBitmap(True,True))
+        self.CHECK = il.Add(self.__getBitmap(True, True))
 
         # Enabled = False, Check = False
-        il.Add(self.__getBitmap(False,False))
+        il.Add(self.__getBitmap(False, False))
 
         # Enabled = False, Check = True
-        il.Add(self.__getBitmap(False,True))
+        il.Add(self.__getBitmap(False, True))
 
         return il
 
+    # ---------------------------------------------------------------------
 
     def __getBitmap(self, enabled, checked):
         """
@@ -147,7 +150,6 @@ class CheckListCtrl( wx.ListCtrl ):
             else:
                 return self._bitmaps["UnCheckedDisable"]
 
-
     # ---------------------------------------------------------------------
     # Override methods of wx.ListCtrl
     # ---------------------------------------------------------------------
@@ -168,6 +170,7 @@ class CheckListCtrl( wx.ListCtrl ):
 
         wx.ListCtrl.InsertColumn(self, colnum+1, colname)
 
+    # ---------------------------------------------------------------------
 
     def InsertStringItem(self, index, label):
         """
@@ -190,6 +193,7 @@ class CheckListCtrl( wx.ListCtrl ):
 
         return wx.ListCtrl.SetStringItem(self, index, 1, label)
 
+    # ---------------------------------------------------------------------
 
     def SetColumnWidth(self, col, width):
         """
@@ -200,6 +204,7 @@ class CheckListCtrl( wx.ListCtrl ):
         wx.ListCtrl.SetColumnWidth(self, 0, wx.LIST_AUTOSIZE_USEHEADER)
         wx.ListCtrl.SetColumnWidth(self, col+1, width)
 
+    # ---------------------------------------------------------------------
 
     def SetStringItem(self, index, col, label):
         """
@@ -217,6 +222,7 @@ class CheckListCtrl( wx.ListCtrl ):
         else:
             self.SetItemBackgroundColour(index, wx.WHITE)
 
+    # ---------------------------------------------------------------------
 
     def DeleteItem(self, index):
         """
@@ -248,7 +254,7 @@ class CheckListCtrl( wx.ListCtrl ):
 
         # we're ready to select or deselect
         if on:
-            if not index in self.sel:
+            if index not in self.sel:
                 self.sel.append( index )
                 self.SetItemColumnImage( index, 0, self.CHECK )
         else:
@@ -256,6 +262,7 @@ class CheckListCtrl( wx.ListCtrl ):
                 self.sel.remove( index )
                 self.SetItemColumnImage( index, 0, self.UNCHECK )
 
+    # ---------------------------------------------------------------------
 
     def GetFirstSelected(self):
         """
@@ -266,6 +273,7 @@ class CheckListCtrl( wx.ListCtrl ):
             return -1
         return self.sel[0]
 
+    # ---------------------------------------------------------------------
 
     def GetNextSelected(self, item):
         """
@@ -280,6 +288,7 @@ class CheckListCtrl( wx.ListCtrl ):
             i = self.GetNextItem( i )
         return -1
 
+    # ---------------------------------------------------------------------
 
     def GetSelectedItemCount(self):
         """
@@ -288,6 +297,7 @@ class CheckListCtrl( wx.ListCtrl ):
         """
         return len(self.sel)
 
+    # ---------------------------------------------------------------------
 
     def IsSelected(self, index):
         """
@@ -296,7 +306,6 @@ class CheckListCtrl( wx.ListCtrl ):
 
         """
         return index in self.sel
-
 
     # ---------------------------------------------------------------------
     # Callbacks
@@ -317,6 +326,7 @@ class CheckListCtrl( wx.ListCtrl ):
                 self.SelectAll()
         evt.Skip()
 
+    # ---------------------------------------------------------------------
 
     def OnItemSelected(self, evt):
         """
@@ -339,6 +349,7 @@ class CheckListCtrl( wx.ListCtrl ):
 
         evt.Skip()
 
+    # ---------------------------------------------------------------------
 
     def OnItemDeselected(self, evt):
         """
@@ -360,7 +371,6 @@ class CheckListCtrl( wx.ListCtrl ):
 
         evt.Skip()
 
-
     # ---------------------------------------------------------------------
     # Methods we add for convenience!
     # ---------------------------------------------------------------------
@@ -375,6 +385,8 @@ class CheckListCtrl( wx.ListCtrl ):
             for index in range(self.GetItemCount()):
                 self.Select(index, True)
 
+    # ---------------------------------------------------------------------
+
     def DeSelectAll(self):
         """
         Un-Select (i.e. uncheck) all items in the list.
@@ -386,11 +398,8 @@ class CheckListCtrl( wx.ListCtrl ):
             self.SetItemColumnImage(index, 0, self.UNCHECK)
         self.sel = list()
 
-# End CheckListCtrl
 # -------------------------------------------------------------------------
 
-
-# -------------------------------------------------------------------------
 
 class LineListCtrl( wx.ListCtrl ):
     """

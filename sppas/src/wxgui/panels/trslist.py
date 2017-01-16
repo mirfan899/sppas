@@ -52,9 +52,8 @@ import annotationdata.aio
 from annotationdata.transcription import Transcription
 
 from wxgui.ui.CustomEvents import PanelSelectedEvent
-from wxgui.structs.prefs   import Preferences
-from wxgui.structs.theme  import sppasTheme
-from wxgui.views.preview   import PreviewTierDialog
+from wxgui.structs.prefs import Preferences
+from wxgui.views.preview import PreviewTierDialog
 from wxgui.dialogs.choosers import RadiusChooser
 from wxgui.dialogs.msgdialogs import ShowInformation
 from wxgui.dialogs.msgdialogs import ShowYesNoQuestion
@@ -71,23 +70,25 @@ FG_FILE_DIRTY_COLOUR = wx.Colour(45,60,170)
 
 # -------------------------------------------------------------------------
 
-class TrsList( wx.Panel ):
+
+class TrsList(wx.Panel):
     """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: Show data about transcriptions, in a panel including a list of tiers.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Show data about transcriptions, in a panel including a list of tiers.
 
     """
-
     def __init__(self, parent, filename, trs=None, multiple=False):
         wx.Panel.__init__(self, parent, -1, size=wx.DefaultSize)
 
         # initialize the GUI
-        self._prefs     = Preferences( sppasTheme() )
-        self._filename  = filename
-        self._dirty     = False # the transcription was changed
-        self._selected  = False # the transcription is selected
+        self._prefs = Preferences()
+        self._filename = filename
+        self._dirty = False     # the transcription was changed
+        self._selected = False  # the transcription is selected
         self._protected = []    # list of the tiers that are protected (can't be modified)
 
         if len(filename) == 0:
@@ -120,13 +121,11 @@ class TrsList( wx.Panel ):
         self.SetBackgroundColour( self._prefs.GetValue( 'M_BG_COLOUR') )
         self._boxtitle.SetForegroundColour( FG_FILE_COLOUR )
 
-        self.SetSizer(sizer)
-        self.SetAutoLayout( True )
+        self.SetSizerAndFit(sizer)
+        self.SetAutoLayout(True)
         self.Layout()
 
-    # End __init__
     # ----------------------------------------------------------------------
-
 
     def _create_title(self):
         """ Create the title of the panel. """
@@ -139,19 +138,18 @@ class TrsList( wx.Panel ):
         _sizer.Add(self._boxtitle,  1, wx.EXPAND)
         return _sizer
 
-
     def _create_list(self, multiple=False):
         """ Create the list to show information of a each tier of a transcription. """
         #tier_list = wx.ListCtrl(self, -1, style=wx.LC_REPORT|wx.LC_SINGLE_SEL|wx.BORDER_NONE)
         if multiple:
-            tier_list = CheckListCtrl(self, -1, style=wx.LC_REPORT|wx.BORDER_NONE)
+            tier_list = CheckListCtrl(self, -1, style=wx.LC_REPORT | wx.BORDER_NONE)
         else:
-            tier_list = CheckListCtrl(self, -1, style=wx.LC_REPORT|wx.BORDER_NONE|wx.LC_SINGLE_SEL)
+            tier_list = CheckListCtrl(self, -1, style=wx.LC_REPORT | wx.BORDER_NONE | wx.LC_SINGLE_SEL)
 
         # Add all columns
         colnames = [" Nb ", " Name    ", " Begin   ", " End     ", " Type    ", " Size    "]
-        for i,n in enumerate(colnames):
-            tier_list.InsertColumn(i,n)
+        for i, n in enumerate(colnames):
+            tier_list.InsertColumn(i, n)
 
         # Fix column width
         for i in range(len(colnames)):
@@ -161,7 +159,7 @@ class TrsList( wx.Panel ):
 
         return tier_list
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def SetTierProperties(self, tier_idx):
         """ Display tier properties. """
@@ -180,12 +178,12 @@ class TrsList( wx.Panel ):
 
             if tier.IsEmpty() is True:
                 begin = " ... "
-                end   = " ... "
+                end = " ... "
             else:
                 begin = str(tier.GetBeginValue())
-                end   = str(tier.GetEndValue())
+                end = str(tier.GetEndValue())
 
-            self.tier_list.InsertStringItem(tier_idx, "Tier %d"%(tier_idx+1))
+            self.tier_list.InsertStringItem(tier_idx, "Tier %d" % (tier_idx+1))
             self.tier_list.SetStringItem(tier_idx, 1, tier.GetName())
             self.tier_list.SetStringItem(tier_idx, 2, begin )
             self.tier_list.SetStringItem(tier_idx, 3, end )
@@ -195,25 +193,20 @@ class TrsList( wx.Panel ):
         except Exception as e:
             self.tier_list.InsertStringItem(1, "Error: "+str(e))
 
-
     # ----------------------------------------------------------------------
     # Callbacks...
     # ----------------------------------------------------------------------
 
-
     def OnListItemSelected(self, event):
-        """
-        An item of this panel was clicked. Inform the parent.
-        """
+        """ An item of this panel was clicked. Inform the parent. """
+
         evt = PanelSelectedEvent(panel=self)
         evt.SetEventObject(self)
         wx.PostEvent(self.GetParent(), evt)
 
-
     # ----------------------------------------------------------------------
     # GUI
     # ----------------------------------------------------------------------
-
 
     def SetPreferences(self, prefs):
         """ Set new preferences. """
@@ -223,7 +216,7 @@ class TrsList( wx.Panel ):
         self.SetForegroundColour( self._prefs.GetValue("M_FG_COLOUR") )
         self.SetFont( self._prefs.GetValue("M_FONT") )
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def SetFont(self, font):
         """ Set a new font. """

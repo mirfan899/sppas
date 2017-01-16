@@ -141,16 +141,19 @@ class sppasTheme(object):
         self._choice['M_BGD_COLOUR'] = sppasWxOption('wx.Colour', sppasTheme.COLOR2_FG, "Secondary main background color")
         self._choice['M_FGD_COLOUR'] = sppasWxOption('wx.Colour', sppasTheme.COLOR2_BG, "Secondary main foreground color")
 
-        # Menu
-        self._choice['M_BGM_COLOUR'] = sppasWxOption('wx.Colour', sppasTheme.COLOR2_BG, "Menu background color")
-        self._choice['M_FGM_COLOUR'] = sppasWxOption('wx.Colour', sppasTheme.COLOR2_FG, "Menu foreground color")
-
         self._choice['F_SPACING'] = sppasWxOption('int', 2)
 
-        self._choice['M_MENU_ICONSIZE'] = sppasWxOption('int', 32)
-        self._choice['M_TOOLBAR_ICONSIZE'] = sppasWxOption('int', 24)
         self._choice['M_BUTTON_ICONSIZE'] = sppasWxOption('int', 32)
         self._choice['M_TREE_ICONSIZE'] = sppasWxOption('int', 16)
 
+        # Menu
+        self._choice['M_BGM_COLOUR'] = sppasWxOption('wx.Colour', sppasTheme.COLOR2_BG, "Menu background color")
+        self._choice['M_FGM_COLOUR'] = sppasWxOption('wx.Colour', sppasTheme.COLOR2_FG, "Menu foreground color")
+        self._choice['M_MENU_ICONSIZE'] = sppasWxOption('int', 32)
+
+        # Toolbar
+        self._choice['M_TOOLBAR_ICONSIZE'] = sppasWxOption('int', 24)
         self._choice['M_TOOLBAR_FONT'] = sppasWxOption('wx.Font', sppasTheme.TOOLBAR_FONT, "Font")
+
+        # Title
         self._choice['M_HEADER_FONT'] = sppasWxOption('wx.Font', sppasTheme.HEADER_FONT, "Font")
