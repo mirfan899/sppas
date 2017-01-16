@@ -1,46 +1,49 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: buttons.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.wxgui.panels.buttons.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      This is a base class for buttons.
+
+"""
 import wx
 
 from wxgui.cutils.imageutils import spBitmap
-from wxgui.cutils.ctrlutils  import CreateGenButton
-
-from wxgui.sp_consts import BUTTON_ICONSIZE, MENU_ICONSIZE, TB_ICONSIZE
+from wxgui.cutils.ctrlutils import CreateGenButton
 
 from wxgui.sp_icons import CLOSE_ICON
 from wxgui.sp_icons import CANCEL_ICON
@@ -52,14 +55,14 @@ from wxgui.sp_icons import OKAY_ICON
 # ---------------------------------------------------------------------------
 
 
-class ButtonCreator:
+class ButtonCreator(object):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Create buttons.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    :summary:      Create buttons.
 
     """
     def __init__(self, preferences):
@@ -79,11 +82,15 @@ class ButtonCreator:
         """
         if btnid is None:
             btnid = wx.NewId()
-        bmp = spBitmap(icon, BUTTON_ICONSIZE, theme=self.preferences.GetValue('M_ICON_THEME'))
+
+        bmp = spBitmap(icon,
+                       size=self.preferences.GetValue('M_BUTTON_ICONSIZE'),
+                       theme=self.preferences.GetValue('M_ICON_THEME'))
+
         btn = CreateGenButton(parent, btnid, bmp, text=text, tooltip=tooltip, colour=None)
-        btn.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
-        btn.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
-        btn.SetFont( self.preferences.GetValue('M_FONT') )
+        btn.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
+        btn.SetForegroundColour(self.preferences.GetValue('M_FG_COLOUR'))
+        btn.SetFont(self.preferences.GetValue('M_FONT'))
 
         return btn
 
@@ -179,7 +186,7 @@ class ButtonPanel( wx.Panel ):
         font = self.GetFont()
 
         if bmpname is not None:
-            bmp = ImgPanel(panel, BUTTON_ICONSIZE, bmpname, self._prefs)
+            bmp = ImgPanel(panel, self._prefs.GetValue('M_BUTTON_ICONSIZE'), bmpname, self._prefs)
             sizer.Add(bmp, 0, flag=wx.ALL|wx.ALIGN_CENTER, border=8)
 
         text = wx.StaticText(panel, -1, textstr)
@@ -280,7 +287,7 @@ class ButtonToolbarPanel( wx.Panel ):
         sizer = wx.BoxSizer(wx.VERTICAL)
 
         if bmpname is not None:
-            bmp = ImgPanel(panel, TB_ICONSIZE, bmpname, self._prefs)
+            bmp = ImgPanel(panel, self._prefs.GetValue('M_TOOLBAR_ICONSIZE'), bmpname, self._prefs)
             sizer.Add(bmp, 0, flag=wx.ALL|wx.ALIGN_CENTER, border=8)
 
         font = self._prefs.GetValue('M_FONT')
@@ -357,7 +364,7 @@ class ButtonMenuPanel( wx.Panel ):
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         if bmpname is not None:
-            bmp = ImgPanel(self, MENU_ICONSIZE, bmpname, self._prefs)
+            bmp = ImgPanel(self, preferences.GetValue('M_MENU_ICONSIZE'), bmpname, self._prefs)
             bmp.Bind(wx.EVT_LEFT_UP, self.OnButtonLeftUp)
             sizer.Add(bmp, flag=wx.ALIGN_CENTER_HORIZONTAL, border=0)
 

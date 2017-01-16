@@ -55,7 +55,6 @@ from wxgui.sp_icons import MENU_BUG_ICON
 from wxgui.sp_icons import MENU_FEEDBACK_ICON
 from wxgui.sp_icons import MENU_BACK_ICON
 from wxgui.sp_icons import MENU_CLOSE_ICON
-from wxgui.sp_icons import WEB_ICON
 from wxgui.sp_icons import FORWARD_ICON
 
 from wxgui.sp_consts import ID_ANNOTATIONS
@@ -63,10 +62,7 @@ from wxgui.sp_consts import ID_COMPONENTS
 from wxgui.sp_consts import ID_PLUGINS
 from wxgui.sp_consts import ID_FEEDBACK
 from wxgui.sp_consts import ID_EXT_BUG
-from wxgui.sp_consts import ID_EXT_HOME
 from wxgui.sp_consts import ID_ACTIONS
-
-from wxgui.sp_consts import MENU_ICONSIZE, TB_ICONSIZE
 
 from wxgui.views.feedback import ShowFeedbackDialog
 
@@ -95,7 +91,7 @@ class MainMenuPanel( wx.Panel ):
         self.AddButton(ID_FEEDBACK, MENU_FEEDBACK_ICON)
 
         self.SetSizer( self.sizer )
-        self.SetMinSize((MENU_ICONSIZE+8, -1))
+        self.SetMinSize((preferences.GetValue('M_MENU_ICONSIZE')+8, -1))
         self.Bind( wx.EVT_BUTTON, self.OnButtonClick )
 
     # -----------------------------------------------------------------------
@@ -158,7 +154,7 @@ class MainTitlePanel( wx.Panel ):
         s.Add(text, proportion=1, flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=10)
 
         self.SetSizer(s)
-        self.SetMinSize((-1,MENU_ICONSIZE+8))
+        self.SetMinSize((-1, preferences.GetValue('M_MENU_ICONSIZE')+8))
 
         self.Bind(wx.EVT_LEFT_UP, self.OnButtonClick)
 
@@ -194,7 +190,7 @@ class MainToolbarPanel( wx.Panel ):
         self.sizer = wx.BoxSizer( wx.HORIZONTAL )
 
         self.SetSizer( self.sizer )
-        self.SetMinSize((TB_ICONSIZE+8, -1))
+        self.SetMinSize((preferences.GetValue('M_TOOLBAR_ICONSIZE')+8, -1))
         self.Bind( wx.EVT_BUTTON, self.OnButtonClick )
 
     # -----------------------------------------------------------------------
@@ -301,7 +297,7 @@ class MainActionsMenuPanel( wx.Panel ):
         self.SetBackgroundColour( preferences.GetValue('M_BGM_COLOUR') )
         self._prefs = preferences
 
-        self.backButton = ImgPanel(self, MENU_ICONSIZE, icon, self._prefs)
+        self.backButton = ImgPanel(self, preferences.GetValue('M_MENU_ICONSIZE'), icon, self._prefs)
         font = preferences.GetValue('M_FONT')
 
         paneltext = wx.Panel(self, -1, style=wx.NO_BORDER)
@@ -321,7 +317,7 @@ class MainActionsMenuPanel( wx.Panel ):
         sizer.Add( self.backButton, proportion=0, flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=2)
         sizer.Add( paneltext, proportion=1, flag=wx.EXPAND|wx.ALL, border=2)
         self.SetSizer( sizer )
-        self.SetMinSize((-1, MENU_ICONSIZE+4))
+        self.SetMinSize((-1, preferences.GetValue('M_MENU_ICONSIZE')+4))
 
         self.Bind(wx.EVT_LEFT_UP, self.OnButtonClick)
 
@@ -368,7 +364,7 @@ class MainTooltips( wx.Panel ):
         sizer = wx.BoxSizer( wx.VERTICAL )
         sizer.Add( menu, proportion=0, flag=wx.EXPAND, border=0 )
         sizer.Add( self.text, proportion=2, flag=wx.EXPAND|wx.ALIGN_CENTER|wx.ALL, border=10 )
-        sizer.Add( button, proportion=0, flag=wx.ALIGN_CENTER, border=0 )
+        sizer.Add( button, proportion=0, flag=wx.ALIGN_CENTER|wx.BOTTOM, border=2 )
         self.SetSizerAndFit( sizer )
 
         self.Bind(wx.EVT_BUTTON, self.OnClose)

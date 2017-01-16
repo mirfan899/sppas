@@ -68,7 +68,7 @@ from wxgui.panels.trslist     import TrsList
 from wxgui.panels.mainbuttons import MainToolbarPanel
 from wxgui.structs.files     import xFiles
 from wxgui.structs.prefs     import Preferences
-from wxgui.structs.themes    import BaseTheme
+from wxgui.structs.theme    import sppasTheme
 from wxgui.cutils.imageutils import spBitmap
 import wxgui.dialogs.filedialogs as filedialogs
 from wxgui.dialogs.msgdialogs import ShowInformation
@@ -220,7 +220,7 @@ class DataRoamer( scrolled.ScrolledPanel ):
         Return the new version.
         """
         if prefs is None:
-            prefs = Preferences( BaseTheme() )
+            prefs = Preferences( sppasTheme() )
         else:
             try:
                 bg = prefs.GetValue( 'M_BG_COLOUR' )
@@ -228,7 +228,7 @@ class DataRoamer( scrolled.ScrolledPanel ):
                 font = prefs.GetValue( 'M_FONT' )
                 icons = prefs.GetValue( 'M_ICON_THEME' )
             except Exception:
-                self._prefsIO.SetTheme( BaseTheme() )
+                self._prefsIO.SetTheme( sppasTheme() )
         return prefs
 
     #-------------------------------------------------------------------------

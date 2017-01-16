@@ -45,9 +45,9 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 import wx
 from wx.lib.buttons import GenBitmapButton, GenBitmapTextButton
-from wxgui.cutils.imageutils import spBitmap
 
 # ----------------------------------------------------------------------------
+
 
 def CreateButton(parent, bmp, handler, sizer, colour=None):
     """ Create a bitmap button and bind the event. """
@@ -63,22 +63,24 @@ def CreateButton(parent, bmp, handler, sizer, colour=None):
 
 # ----------------------------------------------------------------------------
 
-def CreateGenButton(parent, id, bmp, text=None, tooltip=None, colour=None, SIZE=24, font=None):
+
+def CreateGenButton(parent, id, bmp, text=None, tooltip=None, colour=None, font=None):
     """ Create a bitmap button. """
 
     if text is None:
-        button = GenBitmapButton(parent, id, bmp)
+        button = GenBitmapButton(parent, id, bmp, style=wx.SIMPLE_BORDER)
     else:
-        button = GenBitmapTextButton(parent, id, bmp, text)
-        if font: button.SetFont( font )
-
-    button.SetBezelWidth(1)
-    button.SetUseFocusIndicator(False)
+        button = GenBitmapTextButton(parent, id, bmp, text, style=wx.SIMPLE_BORDER)
+        if font:
+            button.SetFont(font)
 
     if tooltip is not None:
-        button.SetToolTipString( tooltip )
+        button.SetToolTipString(tooltip)
     if colour is not None:
-        button.SetBackgroundColour( colour )
+        button.SetBackgroundColour(colour)
+
+    button.SetBezelWidth(0)
+    button.SetUseFocusIndicator(False)
 
     return button
 

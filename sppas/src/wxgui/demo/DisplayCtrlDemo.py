@@ -46,10 +46,8 @@ import wave
 import annotationdata.aio
 
 from wxgui.ui.displayctrl import DisplayCtrl
-from wxgui.ui.wavectrl import WaveCtrl
 
 from wxgui.structs.prefs import Preferences_IO
-from wxgui.structs.themes import BaseTheme, Themes
 from wxgui.structs.cthemes import all_themes
 
 

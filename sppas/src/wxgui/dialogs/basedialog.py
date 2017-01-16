@@ -1,78 +1,75 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: basedialog.py
-# ---------------------------------------------------------------------------
-# import sys
-# import os.path
-# sys.path.append(  os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) )
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.wxgui.dialogs.basedialogs.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      This is a base class for dialogs.
+
+"""
 import wx
 
 from wxgui.sp_icons import APP_ICON
-
-from wxgui.cutils.imageutils import spBitmap
-
-from wxgui.panels.buttons import ButtonCreator
 from wxgui.sp_consts import DIALOG_STYLE
 from wxgui.sp_consts import FRAME_TITLE
-from wxgui.sp_consts import MAIN_FONTSIZE
-from wxgui.sp_consts import BUTTON_ICONSIZE
 
+from wxgui.cutils.imageutils import spBitmap
+from wxgui.panels.buttons import ButtonCreator
 import wxgui.structs.prefs
 
-# ----------------------------------------------------------------------------
-# class BaseDialog
 # ----------------------------------------------------------------------------
 
 
 class spBaseDialog(wx.Dialog):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Base class for dialogs in SPPAS.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    :summary:      Base class for dialogs in SPPAS.
 
     """
     def __init__(self, parent, preferences=None, title=""):
         """
         Constructor.
 
-        @param parent is a wx window.
-        @param preferences (Preferences)
+        :param parent: a wx window.
+        :param preferences: (Preferences) a set of properties.
+        :param title: String to append to the title of the dialog frame.
 
         """
         wx.Dialog.__init__(self, parent, -1, title=FRAME_TITLE+title, style=DIALOG_STYLE)
@@ -87,29 +84,28 @@ class spBaseDialog(wx.Dialog):
 
         # icon
         _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(APP_ICON) )
+        _icon.CopyFromBitmap(spBitmap(APP_ICON))
         self.SetIcon(_icon)
 
         # colors
-        self.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
-        self.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR'))
-        self.SetFont( self.preferences.GetValue('M_FONT'))
+        self.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
+        self.SetForegroundColour(self.preferences.GetValue('M_FG_COLOUR'))
+        self.SetFont(self.preferences.GetValue('M_FONT'))
 
     # -----------------------------------------------------------------------
 
-    def CreateTitle(self, titleicon=APP_ICON, titletext="It's coffee time!"):
-        """
-        Create a layout including a nice bold-title with an icon.
+    def CreateTitle(self, title_icon=APP_ICON, title_text="It's coffee time!"):
+        """ Create a layout including a nice bold-title with an icon.
 
-        @param titleicon (str) Name of the icon.
-        @param titletext (str) The title
-        @return wx.Panel
+        :param title_icon: (str) Name of the icon.
+        :param title_text: (str) The title
+        :returns: wx.Panel of a customized header title
 
         """
         panel = wx.Panel(self, -1)
-        panel.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
+        panel.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
 
-        bitmap = spBitmap(titleicon, BUTTON_ICONSIZE, theme=self.preferences.GetValue('M_ICON_THEME'))
+        bitmap = spBitmap(title_icon, self.preferences.GetValue('M_BUTTON_ICONSIZE'), theme=self.preferences.GetValue('M_ICON_THEME'))
         sBmp = wx.StaticBitmap(panel, wx.ID_ANY, bitmap)
 
         font = self.preferences.GetValue('M_FONT')
@@ -117,20 +113,20 @@ class spBaseDialog(wx.Dialog):
         font.SetPointSize(font.GetPointSize() + 2)
 
         paneltext = wx.Panel(self, -1, style=wx.NO_BORDER)
-        paneltext.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
+        paneltext.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
         sizertext = wx.BoxSizer()
-        text = wx.StaticText(paneltext, label=titletext)
-        text.SetFont( font )
-        text.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
-        text.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
+        text = wx.StaticText(paneltext, label=title_text)
+        text.SetFont(font)
+        text.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
+        text.SetForegroundColour(self.preferences.GetValue('M_FG_COLOUR'))
         sizertext.Add(text, proportion=0, flag=wx.ALIGN_CENTER_VERTICAL)
-        paneltext.SetSizer( sizertext )
+        paneltext.SetSizer(sizertext)
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         sizer.Add(sBmp, proportion=0, flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=4)
         sizer.Add(paneltext, proportion=1, flag=wx.EXPAND|wx.ALL, border=4)
         panel.SetSizer(sizer)
-        panel.SetAutoLayout( True )
+        panel.SetAutoLayout(True)
 
         return panel
 
@@ -140,10 +136,10 @@ class spBaseDialog(wx.Dialog):
         """
         Create a button and return it.
 
-        @param icon (str) Path to the icon file name.
-        @param text (str) Short text to print into the button.
-        @param tooltip (str) Long text to show when mouse is entering into the button.
-        @param btnid (wx.ID) A unique ID assigned to the button.
+        :param icon: (str) Path to the icon file name.
+        :param text: (str) Short text to print into the button.
+        :param tooltip: (str) Long text to show when mouse is entering into the button.
+        :param btnid: (wx.ID) A unique ID assigned to the button.
 
         """
         return self.btncreator.CreateButton(self, icon, text, tooltip, btnid)
@@ -186,8 +182,8 @@ class spBaseDialog(wx.Dialog):
         """
         Create a button box, with buttons to put at left and others at right.
 
-        @param leftbuttons (list)
-        @param rightbuttons (list)
+        :param leftbuttons (list)
+        :param rightbuttons (list)
         @return Sizer.
 
         """
@@ -214,8 +210,8 @@ class spBaseDialog(wx.Dialog):
         txt = wx.TextCtrl(self, wx.ID_ANY, value=text, style=style)
         font = self.preferences.GetValue('M_FONT')
         txt.SetFont(font)
-        txt.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
-        txt.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
+        txt.SetForegroundColour(self.preferences.GetValue('M_FG_COLOUR'))
+        txt.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
 
         return txt
 
@@ -225,8 +221,8 @@ class spBaseDialog(wx.Dialog):
         """
         Add a toolbar to the dialog.
 
-        @param leftobjects (list)
-        @param rightobjects (list)
+        :param leftobjects (list)
+        :param rightobjects (list)
 
         """
         if len(leftobjects+rightobjects) == 0: return
@@ -268,11 +264,11 @@ class spBaseDialog(wx.Dialog):
 def DemoBaseDialog(parent, preferences=None):
 
     frame = spBaseDialog(parent, preferences)
-    title = frame.CreateTitle(APP_ICON,"This is a BaseDialog frame...")
+    title = frame.CreateTitle(APP_ICON, "This is a BaseDialog frame...")
     btnclose = frame.CreateCloseButton()
-    btnbox   = frame.CreateButtonBox( [],[btnclose] )
-    frame.AddToolbar([wx.StaticText(frame, label="toolbar is here", style=wx.ALIGN_CENTER)],[])
-    frame.LayoutComponents( title, wx.Panel(frame, -1, size=(320,200)), btnbox )
+    btnbox = frame.CreateButtonBox([], [btnclose])
+    frame.AddToolbar([wx.StaticText(frame, label="toolbar is here", style=wx.ALIGN_CENTER)], [])
+    frame.LayoutComponents(title, wx.Panel(frame, -1, size=(320, 200)), btnbox)
     frame.ShowModal()
     frame.Destroy()
 

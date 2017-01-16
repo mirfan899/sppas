@@ -1,60 +1,55 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: cthemes.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
+
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.wxgui.structs.cthemes.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Management of a set of themes, related to the look and feel of SPPAS.
+
+"""
 
 import wx
 
 from wxgui.structs.wxoption import sppasWxOption
-from wxgui.structs.themes import BaseTheme, Themes
-
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+from wxgui.structs.theme import sppasTheme
 
 # ----------------------------------------------------------------------------
-# Specific themes for SppasEdit component
-# ----------------------------------------------------------------------------
-#
 
-class ThemeDefault( BaseTheme ):
+
+class ThemeDefault(sppasTheme):
     """ The theme which assign all required options, with default values. """
 
     def __init__(self):
 
-        BaseTheme.__init__(self)
+        sppasTheme.__init__(self)
 
         # Display
         self._choice['D_TIME_MIN']      = sppasWxOption('float', 0.0,  'Minimum time value (in seconds) of the displayed period at start-up')
@@ -141,12 +136,10 @@ class ThemeBrigitte( ThemeDefault ):
         self._choice['W_BG_GRADIENT_COLOUR'] = sppasWxOption('wx.Colour', (86, 88, 84))
         self._choice['T_FONT'] = sppasWxOption('wx.Font', (8, wx.FONTFAMILY_MODERN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, '', wx.FONTENCODING_UTF8))
 
-
-
 # ----------------------------------------------------------------------------
 
 
-class ThemePaul( ThemeDefault ):
+class ThemePaul(ThemeDefault):
     """ Theme looking like Praat (more or less...). """
 
     def __init__(self):
@@ -178,11 +171,10 @@ class ThemePaul( ThemeDefault ):
         self._choice['W_BG_COLOUR'] = sppasWxOption('wx.Colour', (225,225,225))
         self._choice['W_FONT']      = sppasWxOption('wx.Font', (8, wx.FONTFAMILY_ROMAN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, '', wx.FONTENCODING_UTF8))
 
-
-
 # ----------------------------------------------------------------------------
 
-class ThemeLea( ThemeDefault ):
+
+class ThemeLea(ThemeDefault):
     """ SppasEdit author' daughter theme. """
 
     def __init__(self):
@@ -213,6 +205,45 @@ class ThemeLea( ThemeDefault ):
         self._choice['W_FG_COLOUR'] = sppasWxOption('wx.Colour', (167,42,152))
         self._choice['W_BG_COLOUR'] = sppasWxOption('wx.Colour', (255,255,255))
         self._choice['W_FONT']      = sppasWxOption('wx.Font', (8, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, '', wx.FONTENCODING_UTF8))
+
+# ----------------------------------------------------------------------------
+
+
+class Themes(object):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      This class is used to store all themes (name/class).
+
+    """
+    def __init__(self):
+        """ A Theme is a dictionary with key/option. """
+
+        self._themes = {}
+
+    # -----------------------------------------------------------------------
+
+    def get_theme(self, key):
+        """ Return a value from its key. """
+
+        return self._themes.get(key, None)
+
+    # -----------------------------------------------------------------------
+
+    def get_themes(self):
+        """ Return the dictionary with all pairs key/value. """
+
+        return self._themes
+
+    # -----------------------------------------------------------------------
+
+    def add_theme(self, key, value):
+        """ Add a pair key/value or modify the existing one. """
+
+        self._themes[key] = value
 
 # ----------------------------------------------------------------------------
 

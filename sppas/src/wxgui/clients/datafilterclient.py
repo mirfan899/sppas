@@ -63,7 +63,7 @@ from wxgui.ui.CustomEvents  import spEVT_PANEL_SELECTED
 from wxgui.ui.CustomEvents  import spEVT_SETTINGS
 
 from baseclient              import BaseClient
-from wxgui.structs.themes    import BaseTheme
+from wxgui.structs.theme    import sppasTheme
 from wxgui.structs.files     import xFiles
 from wxgui.structs.prefs     import Preferences
 from wxgui.cutils.imageutils import spBitmap
@@ -181,7 +181,7 @@ class DataFilter( scrolled.ScrolledPanel ):
 
         """
         if prefs is None:
-            prefs = Preferences( BaseTheme() )
+            prefs = Preferences( sppasTheme() )
         else:
             try:
                 bg = prefs.GetValue( 'M_BG_COLOUR' )
@@ -189,7 +189,7 @@ class DataFilter( scrolled.ScrolledPanel ):
                 font = prefs.GetValue( 'M_FONT' )
                 icons = prefs.GetValue( 'M_ICON_THEME' )
             except Exception:
-                self._prefsIO.SetTheme( BaseTheme() )
+                self._prefsIO.SetTheme( sppasTheme() )
         return prefs
 
     #-------------------------------------------------------------------------

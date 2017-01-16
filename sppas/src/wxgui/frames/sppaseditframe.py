@@ -42,7 +42,7 @@ from baseframe                  import ComponentFrame
 from wxgui.clients.sppaseditclient import SppasEditClient
 from wxgui.views.settings               import SettingsDialog
 
-from wxgui.structs.themes    import BaseTheme
+from wxgui.structs.theme    import sppasTheme
 from wxgui.structs.cthemes   import all_themes
 from wxgui.cutils.imageutils import spBitmap
 from wxgui.cutils.textutils  import TextAsNumericValidator
@@ -116,7 +116,7 @@ class SppasEditFrame( ComponentFrame ):
         """
         ComponentFrame._init_members( self,args )
 
-        if isinstance(self._prefsIO.GetTheme(), BaseTheme):
+        if isinstance(self._prefsIO.GetTheme(), sppasTheme):
             self._prefsIO.SetTheme( all_themes.get_theme(u'Default') )
 
         self._fmtype = "ANYFILES"

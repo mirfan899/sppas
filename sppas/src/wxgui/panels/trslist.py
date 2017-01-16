@@ -53,7 +53,7 @@ from annotationdata.transcription import Transcription
 
 from wxgui.ui.CustomEvents import PanelSelectedEvent
 from wxgui.structs.prefs   import Preferences
-from wxgui.structs.themes  import BaseTheme
+from wxgui.structs.theme  import sppasTheme
 from wxgui.views.preview   import PreviewTierDialog
 from wxgui.dialogs.choosers import RadiusChooser
 from wxgui.dialogs.msgdialogs import ShowInformation
@@ -84,7 +84,7 @@ class TrsList( wx.Panel ):
         wx.Panel.__init__(self, parent, -1, size=wx.DefaultSize)
 
         # initialize the GUI
-        self._prefs     = Preferences( BaseTheme() )
+        self._prefs     = Preferences( sppasTheme() )
         self._filename  = filename
         self._dirty     = False # the transcription was changed
         self._selected  = False # the transcription is selected

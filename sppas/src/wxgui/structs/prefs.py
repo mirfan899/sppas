@@ -1,71 +1,68 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: prefs.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
+
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.wxgui.structs.prefs.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Management of the user' preferences.
+
+"""
 
 import codecs
 import pickle
 
 from wxgui.structs.wxoption import sppasWxOption
-from themes import BaseTheme
+from theme import sppasTheme
 
 # ----------------------------------------------------------------------------
 
 
-class Preferences:
+class Preferences(object):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      This class is used to manage a dictionary of settings.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Management of a dictionary of settings.
 
     """
     def __init__(self, theme=None):
-        """
-        Constructor.
+        """ Creates a dict of Option() instances, with option id as key. """
 
-        Creates a dict of Option() instances, with option id as key.
-
-        """
         self._prefs = {}
 
         # Set the requested theme.
         if theme is None:
-            self.SetTheme(BaseTheme())
+            self.SetTheme(sppasTheme())
         else:
             self.SetTheme(theme)
 
@@ -113,18 +110,17 @@ class Preferences:
             if opt is not None:
                 self.SetOption(key, opt)
 
-    # ------------------------------------------------------------------------
-
 # ----------------------------------------------------------------------------
 
-class Preferences_IO( Preferences ):
+
+class Preferences_IO(Preferences):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Input/Output preferences.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    :summary:      Preferences with I/O extended features.
 
     """
     def __init__(self, filename=None):
@@ -136,10 +132,8 @@ class Preferences_IO( Preferences ):
     # ------------------------------------------------------------------------
 
     def HasFilename(self):
-        """
-        Return True is a file name was defined.
+        """ Return True is a file name was defined. """
 
-        """
         if self._filename is None:
             return False
         return True
@@ -147,9 +141,10 @@ class Preferences_IO( Preferences ):
     # ------------------------------------------------------------------------
 
     def Read(self):
-        """
-        Read user preferences from a file.
+        """ Read user preferences from a file.
         Return True if preferences have been read.
+
+        :returns: boolean
 
         """
         try:
@@ -164,9 +159,10 @@ class Preferences_IO( Preferences ):
     # ------------------------------------------------------------------------
 
     def Write(self):
-        """
-        Save user preferences into a file.
+        """ Save user preferences into a file.
         Return True if preferences have been saved.
+
+        :returns: boolean
 
         """
         if self._filename is None:
@@ -183,8 +179,9 @@ class Preferences_IO( Preferences ):
     # ------------------------------------------------------------------------
 
     def Copy(self):
-        """
-        Return a deep copy of self.
+        """ Return a deep copy of self.
+
+        :returns: (Preferences_IO)
 
         """
         #import copy
@@ -197,8 +194,8 @@ class Preferences_IO( Preferences ):
             if key == 'THEME':
                 cpref.SetTheme(self._prefs[key])
             else:
-                t   = self._prefs[key].get_type()
-                v   = self._prefs[key].get_untypedvalue()
+                t = self._prefs[key].get_type()
+                v = self._prefs[key].get_untypedvalue()
                 txt = self._prefs[key].get_text()
                 opt = sppasWxOption(t, v, txt)
                 cpref.SetOption(key, opt)

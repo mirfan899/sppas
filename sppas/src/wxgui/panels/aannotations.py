@@ -256,7 +256,11 @@ class AnnotationsPanel( wx.lib.scrolledpanel.ScrolledPanel ):
 
         # Button to annotate
         runBmp = spBitmap(ANNOTATE_ICON, BUTTON_ICONSIZE, self._prefsIO.GetValue('M_ICON_THEME'))
-        self._brun = CreateGenButton(self, RUN_ID, runBmp, text="  Perform annotations  ", tooltip="Automatically annotate selected files.", colour=wx.Colour(220,100,80), SIZE=BUTTON_ICONSIZE, font=self._prefsIO.GetValue('M_FONT'))
+        self._brun = CreateGenButton(self, RUN_ID, runBmp,
+                                     text="  Perform annotations  ",
+                                     tooltip="Automatically annotate selected files.",
+                                     colour=wx.Colour(220, 100, 80),
+                                     font=self._prefsIO.GetValue('M_FONT'))
 
         _vbox = wx.BoxSizer(wx.VERTICAL)
         _vbox.Add(_contentbox, proportion=2, flag=wx.EXPAND | wx.ALL, border=4)
@@ -284,7 +288,11 @@ class AnnotationsPanel( wx.lib.scrolledpanel.ScrolledPanel ):
             sbox.Add(p, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, border=4)
         self.steplist_panel.SetSizer(sbox)
 
-        self.link_btn = CreateGenButton(self, LINK_ID, spBitmap(LINK_ICON, theme=self._prefsIO.GetValue('M_ICON_THEME')), tooltip="Link/Unlink language selection.", colour=self._prefsIO.GetValue('M_BG_COLOUR'), SIZE=16)
+        lnk_bmp = spBitmap(LINK_ICON, theme=self._prefsIO.GetValue('M_ICON_THEME'))
+        self.link_btn = CreateGenButton(self, LINK_ID, lnk_bmp,
+                                        tooltip="Link/Unlink language selection.",
+                                        colour=self._prefsIO.GetValue('M_BG_COLOUR'),
+                                        font=self._prefsIO.GetValue('M_FONT'))
         self.Bind(wx.EVT_BUTTON, self.on_link, self.link_btn, LINK_ID)
         self.on_link(None)
 

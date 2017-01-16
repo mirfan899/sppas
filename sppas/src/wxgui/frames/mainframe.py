@@ -55,9 +55,6 @@ from wxgui.sp_consts import ID_ANNOTATIONS
 from wxgui.sp_consts import ID_COMPONENTS
 from wxgui.sp_consts import ID_PLUGINS
 from wxgui.sp_consts import ID_ACTIONS
-from wxgui.sp_consts import ID_EXT_BUG
-from wxgui.sp_consts import ID_EXT_HOME
-from wxgui.sp_consts import ID_FEEDBACK
 from wxgui.sp_consts import ID_FRAME_DATAROAMER
 from wxgui.sp_consts import ID_FRAME_SNDROAMER
 from wxgui.sp_consts import ID_FRAME_IPUSCRIBE

@@ -73,7 +73,7 @@ from wxgui.ui.CustomEvents import FileWanderEvent
 import wxgui.ui.KnobCtrl as KC
 
 from wxgui.structs.prefs   import Preferences
-from wxgui.structs.themes  import BaseTheme
+from wxgui.structs.theme  import sppasTheme
 
 from wxgui.cutils.ctrlutils  import CreateButton
 from wxgui.cutils.imageutils import spBitmap
@@ -314,7 +314,7 @@ class SndPlayer( wx.Panel ):
         Return the new version.
         """
         if prefs is None:
-            prefs = Preferences( BaseTheme() )
+            prefs = Preferences( sppasTheme() )
 
         else:
             try:
@@ -323,7 +323,7 @@ class SndPlayer( wx.Panel ):
                 prefs.GetValue( 'M_FONT' )
                 prefs.GetValue( 'M_ICON_THEME' )
             except Exception:
-                self._prefsIO.SetTheme( BaseTheme() )
+                self._prefsIO.SetTheme( sppasTheme() )
         return prefs
 
     #-------------------------------------------------------------------------

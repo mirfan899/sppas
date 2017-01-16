@@ -53,7 +53,7 @@ import os.path
 
 from wxgui.structs.files  import xFiles
 from wxgui.structs.prefs  import Preferences
-from wxgui.structs.themes import BaseTheme
+from wxgui.structs.theme import sppasTheme
 import wxgui.ui.CustomCheckBox as CCB
 
 
@@ -116,7 +116,7 @@ class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
                 fg = prefs.GetValue( 'M_FG_COLOUR' )
                 font = prefs.GetValue( 'M_FONT' )
             except Exception:
-                self._prefsIO.SetTheme( BaseTheme() )
+                self._prefsIO.SetTheme( sppasTheme() )
 
         try:
             mult = prefs.GetValue('F_CCB_MULTIPLE')

@@ -63,7 +63,7 @@ from baseclient                 import BaseClient
 import wxgui.cutils.colorutils as co
 from wxgui.panels.sndplayer     import SndPlayer
 from wxgui.ui.CustomEvents      import FileWanderEvent, spEVT_FILE_WANDER
-from wxgui.structs.themes       import BaseTheme
+from wxgui.structs.theme       import sppasTheme
 from wxgui.structs.prefs        import Preferences
 
 from wxgui.dialogs.msgdialogs import ShowInformation
@@ -272,7 +272,7 @@ class IPUscribe( wx.Panel ):
 
         """
         if prefs is None:
-            prefs = Preferences( BaseTheme() )
+            prefs = Preferences( sppasTheme() )
         else:
             try:
                 a = prefs.GetValue( 'M_BG_COLOUR' )
@@ -280,7 +280,7 @@ class IPUscribe( wx.Panel ):
                 a = prefs.GetValue( 'M_FONT' )
                 a = prefs.GetValue( 'M_ICON_THEME' )
             except Exception:
-                self._prefsIO.SetTheme( BaseTheme() )
+                self._prefsIO.SetTheme( sppasTheme() )
                 prefs = self._prefsIO
 
         prefs.SetValue('SND_AUTOREPLAY', 'bool', True)

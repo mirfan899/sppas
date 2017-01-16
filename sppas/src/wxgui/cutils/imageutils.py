@@ -104,6 +104,7 @@ def TakeScreenShot(rect, client_x=0, client_y=0):
 
 #-----------------------------------------------------------------------------
 
+
 def CreateCursorFromXPMData( xpmdata, hotspot ):
     """ Return a wx.Cursor from a vectorized image. """
 
@@ -121,6 +122,7 @@ def CreateCursorFromXPMData( xpmdata, hotspot ):
 
 # ----------------------------------------------------------------------------
 
+
 def ScaleBitmap(bitmap, width, height):
     """ Scale the bitmap image. """
 
@@ -130,12 +132,14 @@ def ScaleBitmap(bitmap, width, height):
 
 # -----------------------------------------------------------------------
 
+
 def ScaleImage(img, width, height):
     """ Scale the image. """
 
     return img.Scale(width, height, wx.IMAGE_QUALITY_HIGH)
 
 # -----------------------------------------------------------------------
+
 
 def RotateImage(bmp):
     """ Rotates the bitmap. """
@@ -147,6 +151,7 @@ def RotateImage(bmp):
     return bmp.Rotate(math.pi, (wcenter, hcenter), True)
 
 # -----------------------------------------------------------------------
+
 
 def GrayOut(anImage):
     """
@@ -177,6 +182,7 @@ def GrayOut(anImage):
 
 # -----------------------------------------------------------------------
 
+
 def MakeGray((r,g,b), factor, maskColor):
     """
     Make a pixel grayed-out. If the pixel matches the maskcolor, it won't be
@@ -189,6 +195,7 @@ def MakeGray((r,g,b), factor, maskColor):
         return (r,g,b)
 
 # -----------------------------------------------------------------------
+
 
 def get_img_file(id, theme=None):
     """
@@ -219,6 +226,7 @@ def get_img_file(id, theme=None):
 
 # ----------------------------------------------------------------------------
 
+
 def spBitmap(idb, size=None, theme=None):
     """
     Get the bitmap from its identifier.
@@ -239,6 +247,7 @@ def spBitmap(idb, size=None, theme=None):
 
 # ----------------------------------------------------------------------------
 
+
 def GetBitmap(bmppath, pattern, ext):
     """
     Get a random bitmap in a directory.
@@ -255,7 +264,6 @@ def GetBitmap(bmppath, pattern, ext):
 
 # ----------------------------------------------------------------------------
 
-#----------------------------------------------------------------------
 
 def GetCheckedBitmap( CCB_TYPE="check" ):
     """
@@ -283,6 +291,7 @@ def GetCheckedImage( CCB_TYPE="check" ):
 
 #----------------------------------------------------------------------
 
+
 def GetNotCheckedBitmap( CCB_TYPE="check" ):
     """
     Return a bitmap representing "uncheck".
@@ -305,5 +314,3 @@ def GetNotCheckedImage( CCB_TYPE="check" ):
 
     img = wx.Image(get_img_file(UNCHECKED_ICON), wx.BITMAP_TYPE_PNG)
     return ScaleImage(img, 16, 16)
-
-#----------------------------------------------------------------------

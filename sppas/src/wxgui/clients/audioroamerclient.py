@@ -48,7 +48,7 @@ from baseclient              import BaseClient
 from wxgui.panels.sndplayer  import SndPlayer
 from wxgui.panels.audioinfo  import AudioInfo
 from wxgui.structs.prefs     import Preferences
-from wxgui.structs.themes    import BaseTheme
+from wxgui.structs.theme    import sppasTheme
 
 from wxgui.cutils.imageutils import spBitmap
 from wxgui.cutils.ctrlutils  import CreateGenButton
@@ -178,7 +178,7 @@ class SndRoamer( scrolled.ScrolledPanel ):
 
         """
         if prefs is None:
-            prefs = Preferences( BaseTheme() )
+            prefs = Preferences( sppasTheme() )
         else:
             try:
                 prefs.GetValue( 'M_BG_COLOUR' )
@@ -186,7 +186,7 @@ class SndRoamer( scrolled.ScrolledPanel ):
                 prefs.GetValue( 'M_FONT' )
                 prefs.GetValue( 'M_ICON_THEME' )
             except Exception:
-                self._prefsIO.SetTheme( BaseTheme() )
+                self._prefsIO.SetTheme( sppasTheme() )
                 prefs = self._prefsIO
 
         prefs.SetValue('SND_INFO',       'bool', False)
