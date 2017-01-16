@@ -175,8 +175,8 @@ class DataRoamer(wx.Panel):
 
         # members
         self._filetrs = xFiles()  # Associate files/trsdata
-        self._clipboard = None  # Used to cut and paste
-        self._selection = None  # the index of the selected trsdata panel
+        self._selection = None    # the index of the selected trsdata panel
+        self._clipboard = None    # Used to cut and paste
         self._prefsIO = prefsIO
 
         # create the client panel
@@ -217,7 +217,11 @@ class DataRoamer(wx.Panel):
         toolbar.AddButton(PREVIEW_ID,     TIER_PREVIEW, "View",   tooltip="Preview of the selected tier.")
         return toolbar
 
+    # ----------------------------------------------------------------------
+
     def _create_content(self):
+        """ Create the panel with files content. """
+
         panel = scrolled.ScrolledPanel(self, -1)
         self._trssizer = wx.BoxSizer(wx.VERTICAL)
         panel.SetSizerAndFit(self._trssizer)
