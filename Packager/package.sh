@@ -45,10 +45,10 @@ HERE=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 # Program to package
 PROGRAM_DIR=$(dirname $HERE)
-PROGRAM_NAME=$(grep -i program: $PROGRAM_DIR/README.txt | awk '{print $2}')
-PROGRAM_AUTHOR=$(grep -i author: $PROGRAM_DIR/README.txt | awk -F":" '{print $2}')
-PROGRAM_VERSION=$(grep -i version: $PROGRAM_DIR/README.txt | awk '{print $2}')
-PROGRAM_COPYRIGHT=$(grep -i copyright: $PROGRAM_DIR/README.txt | awk -F":" '{print $2}')
+
+PROGRAM_NAME="SPPAS"
+PROGRAM_AUTHOR="Brigitte Bigi"
+PROGRAM_VERSION=$(grep -e "^version =" $PROGRAM_DIR/sppas/src/sp_glob.py | awk -F'=' '{print $2}' | cut -f2 -d'"')
 
 # Files and directories to be used
 BIN_DIR="bin"
@@ -71,7 +71,7 @@ LOG_MANUAL="manual.log"
 LOG_PACKAGE="package.log"
 
 # User-Interface
-MSG_HEADER="${PROGRAM_NAME}, a program written by ${PROGRAM_AUTHOR}."
+MSG_HEADER="SPPAS $PROGRAM_VERSION, a program written by Brigitte Bigi."
 TODAY=$(date "+%Y-%m-%d")
 
 BLACK='\e[0;30m'
@@ -643,11 +643,6 @@ function fct_documentation {
 
 function fct_package {
     fct_echo_title "${PROGRAM_NAME} - Packaging"
-
-    # Update Infos...
-    if [ -e $TEMP ]; then rm $TEMP; fi
-    cat $PROGRAM_DIR/README.txt | awk -v d=$TODAY '/[dD]ate/{printf "date:       %s\n",d; next} {print}' >> $TEMP
-    mv $TEMP $PROGRAM_DIR/README.txt
 
     # Create the package
 

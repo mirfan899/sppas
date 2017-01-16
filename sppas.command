@@ -47,14 +47,13 @@ LANG='C'
 
 # Program infos
 PROGRAM_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
-PROGRAM_NAME=$(grep -i program: $PROGRAM_DIR/README.txt | awk -F":" '{print $2}')
-PROGRAM_AUTHOR=$(grep -i author: $PROGRAM_DIR/README.txt | awk -F":" '{print $2}')
-PROGRAM_VERSION=$(grep -i version: $PROGRAM_DIR/README.txt | awk -F":" '{print $2}')
 BIN_DIR="$PROGRAM_DIR/sppas/bin"
+SRC_DIR="$PROGRAM_DIR/sppas/src"
+PROGRAM_VERSION=$(grep -e "^version =" $SRC_DIR/sp_glob.py | awk -F'=' '{print $2}' | cut -f2 -d'"')
 
 # User-Interface
-MSG_HEADER="${PROGRAM_NAME} ${PROGRAM_VERSION}, a program written by ${PROGRAM_AUTHOR}."
-MSG_FOOTER="${PROGRAM_NAME} ${PROGRAM_VERSION} finished."
+MSG_HEADER="SPPAS $PROGRAM_VERSION, a program written by Brigitte Bigi."
+MSG_FOOTER="SPPAS finished."
 TODAY=$(date "+%Y-%m-%d")
 
 BLACK='\e[0;30m'
@@ -173,7 +172,7 @@ elif [[ "$unamestr" == 'Darwin' ]]; then
     fi
 
 else
-    fct_exit_error "Your operating system is not supported, or the "uname" command\nreturns an unexpected entry.\nPlease, send an e-mail to ${PROGRAM_AUTHOR}. "
+    fct_exit_error "Your operating system is not supported, or the "uname" command\nreturns an unexpected entry.\nPlease, send an e-mail to the author. "
 fi
 
 

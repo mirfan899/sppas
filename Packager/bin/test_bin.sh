@@ -13,10 +13,6 @@
 
 # Program to package
 PROGRAM_DIR=".."
-PROGRAM_NAME=$(grep -i program: $PROGRAM_DIR/README.txt | awk '{print $2}')
-PROGRAM_AUTHOR=$(grep -i author: $PROGRAM_DIR/README.txt | awk -F":" '{print $2}')
-PROGRAM_VERSION=$(grep -i version: $PROGRAM_DIR/README.txt | awk '{print $2}')
-PROGRAM_COPYRIGHT=$(grep -i copyright: $PROGRAM_DIR/README.txt | awk -F":" '{print $2}')
 
 # Files and directories to be used
 BIN_DIR="$PROGRAM_DIR/sppas/bin"
@@ -27,7 +23,7 @@ RESOURCES_DIR="$PROGRAM_DIR/resources"
 TODO="wavsplit tokenize phonetize alignment syllabify annotation momelintsint repetition "
 
 # User-Interface
-MSG_HEADER="${PROGRAM_NAME} test_bin.sh, a program written by ${PROGRAM_AUTHOR}."
+MSG_HEADER="SPPAS test_bin.sh, a program written by Brigitte Bigi."
 TODAY=$(date "+%Y-%m-%d")
 
 BLACK='\e[0;30m'
