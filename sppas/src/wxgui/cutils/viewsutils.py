@@ -48,10 +48,8 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import wx
 
 from wxgui.sp_consts import FRAME_TITLE
-from wxgui.sp_consts import HEADER_FONTSIZE
 from wxgui.sp_icons  import APP_ICON
 from wxgui.cutils.imageutils import spBitmap
-
 
 # ----------------------------------------------------------------------------
 
@@ -104,7 +102,7 @@ class spHeaderPanel():
         icon = wx.StaticBitmap(panel, bitmap=self.bmp)
         titlesizer.Add(icon, flag=wx.TOP|wx.RIGHT|wx.ALIGN_RIGHT, border=5)
         text1 = wx.StaticText(panel, label=self.label)
-        text1.SetFont( wx.Font(HEADER_FONTSIZE, wx.SWISS, wx.NORMAL, wx.BOLD) )
+        text1.SetFont(wx.Font(self.preferences.GetValue('M_HEADER_FONTSIZE'), wx.SWISS, wx.NORMAL, wx.BOLD))
         if self.preferences:
             text1.SetForegroundColour(self.preferences.GetValue('M_FG_COLOUR'))
         titlesizer.Add(text1, flag=wx.TOP|wx.LEFT|wx.BOTTOM, border=5)

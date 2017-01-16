@@ -628,7 +628,7 @@ class TrsList( wx.Panel ):
 
         # Open a dialog to ask the new radius value
         radius = tier.GetBegin().GetRadius()
-        dlg = RadiusChooser( self, radius )
+        dlg = RadiusChooser( self, self._prefs, radius )
         if dlg.ShowModal() == wx.ID_OK:
             # Get the value
             r = dlg.GetValue()

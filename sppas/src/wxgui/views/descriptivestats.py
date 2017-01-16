@@ -50,10 +50,7 @@ from presenters.tierstats import TierStats
 
 from wxgui.dialogs.basedialog import spBaseDialog
 
-from wxgui.sp_icons import STATISTICS_APP_ICON
 from wxgui.sp_icons import SPREADSHEETS
-from wxgui.sp_consts import TB_ICONSIZE
-from wxgui.sp_consts import TB_FONTSIZE
 
 from wxgui.ui.CustomListCtrl import SortListCtrl
 from wxgui.panels.basestats import BaseStatPanel
@@ -61,6 +58,7 @@ from wxgui.panels.basestats import BaseStatPanel
 # ----------------------------------------------------------------------------
 # class DescriptivesStatsDialog
 # ----------------------------------------------------------------------------
+
 
 class DescriptivesStatsDialog( spBaseDialog ):
     """

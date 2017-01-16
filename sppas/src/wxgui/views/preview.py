@@ -50,7 +50,6 @@ import wx.lib.mixins.listctrl as listmix # for large tiers!
 
 from wxgui.dialogs.basedialog import spBaseDialog
 from wxgui.sp_icons  import TIER_PREVIEW
-from wxgui.sp_consts import MAIN_FONTSIZE
 
 from wxgui.ui.CustomListCtrl import LineListCtrl
 
@@ -314,21 +313,22 @@ class TierDetailsPanel( BaseTierPanel ):
         Fix a set of styles to be used in the RichTextCtrl.
 
         """
+        fs = self.preferences.GetValue('M_MAIN_FONTSIZE')
         # SetFont( pointSize, family, style, weight, underline, face, encoding )
         self.labelStyle = wx.richtext.RichTextAttr()
         self.labelStyle.SetBackgroundColour( LIGHT_RED )
         self.labelStyle.SetTextColour( wx.BLACK )
-        self.labelStyle.SetFont(wx.Font(MAIN_FONTSIZE, wx.SWISS, wx.NORMAL, wx.NORMAL, False, u'Courier New'))
+        self.labelStyle.SetFont(wx.Font(fs, wx.SWISS, wx.NORMAL, wx.NORMAL, False, u'Courier New'))
 
         self.nlineStyle = wx.richtext.RichTextAttr()
         self.nlineStyle.SetBackgroundColour( LIGHT_GRAY )
         self.nlineStyle.SetTextColour( DARK_GRAY )
-        self.nlineStyle.SetFont(wx.Font(MAIN_FONTSIZE+1, wx.ROMAN, wx.NORMAL, wx.BOLD, False, u'Courier New'))
+        self.nlineStyle.SetFont(wx.Font(fs+1, wx.ROMAN, wx.NORMAL, wx.BOLD, False, u'Courier New'))
 
         self.timeStyle = wx.richtext.RichTextAttr()
         self.timeStyle.SetBackgroundColour( LIGHT_BLUE )
         self.timeStyle.SetTextColour( wx.BLACK )
-        self.timeStyle.SetFont(wx.Font(MAIN_FONTSIZE, wx.SWISS, wx.NORMAL, wx.NORMAL, False, u'Courier New'))
+        self.timeStyle.SetFont(wx.Font(fs, wx.SWISS, wx.NORMAL, wx.NORMAL, False, u'Courier New'))
 
     def _create_text_content(self, tier):
         """

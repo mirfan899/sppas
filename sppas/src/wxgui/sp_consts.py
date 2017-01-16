@@ -92,20 +92,6 @@ MENU_ICONSIZE = 32
 TB_ICONSIZE = 24
 BUTTON_ICONSIZE = 32
 
-# ---------------------------------------------------------------------------
-
-if wx.Platform == '__WXMAC__':
-    MAIN_FONTSIZE = 12
-elif wx.Platform == '__WXGTK__':
-    MAIN_FONTSIZE = 8
-else:
-    MAIN_FONTSIZE = 9
-
-TB_FONTSIZE = MAIN_FONTSIZE - 2
-HEADER_FONTSIZE = MAIN_FONTSIZE + 4
-
-# ---------------------------------------------------------------------------
-
 # ----------------------------------------------------------------------------
 
 ID_ANNOTATIONS = wx.NewId()

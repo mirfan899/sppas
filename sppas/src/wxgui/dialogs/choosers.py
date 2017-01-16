@@ -45,15 +45,14 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 import wx
 
-from wxgui.cutils.dialogutils import create_wildcard, extend_path
-from wxgui.cutils.textutils   import TextAsNumericValidator
-from wxgui.sp_consts          import MAIN_FONTSIZE
+from wxgui.cutils.textutils import TextAsNumericValidator
 from wxgui.dialogs.basedialog import spBaseDialog
 from wxgui.sp_icons import INFO_ICON
 
 # ----------------------------------------------------------------------------
 
-class PeriodChooser( spBaseDialog ):
+
+class PeriodChooser(spBaseDialog):
     """
     Show a dialog to choose a new period (start/end values).
 
@@ -115,7 +114,7 @@ class PeriodChooser( spBaseDialog ):
         border.Add(gbs, 1, wx.ALL | wx.EXPAND, 10)
         return border
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def GetValues(self):
         """
@@ -126,17 +125,22 @@ class PeriodChooser( spBaseDialog ):
 
 # ----------------------------------------------------------------------------
 
+
 class RadiusChooser( wx.Dialog ):
     """
     Show a dialog to choose a new radius value.
 
     """
-    def __init__(self, parent, radius):
-        wx.Dialog.__init__(self, parent, title="Radius", size=(320,150), style=wx.DEFAULT_DIALOG_STYLE | wx.STAY_ON_TOP)
+    def __init__(self, parent, preferences, radius):
+        wx.Dialog.__init__(self, parent, title="Radius", size=(320, 150), style=wx.DEFAULT_DIALOG_STYLE | wx.STAY_ON_TOP)
 
+        self.SetBackgroundColour( preferences.GetValue("M_BG_COLOUR") )
+        self.SetForegroundColour( preferences.GetValue("M_FG_COLOUR") )
+        font = preferences.GetValue("M_FONT")
+        self.SetFont(font)
+
+        self.preferences = preferences
         self.radius = radius
-
-        font = wx.Font(MAIN_FONTSIZE, wx.SWISS, wx.NORMAL, wx.NORMAL)
 
         # create the main sizer.
         gbs = wx.GridBagSizer(hgap=5, vgap=5)
@@ -165,15 +169,15 @@ class RadiusChooser( wx.Dialog ):
         gbs.Add(Buttons, (2,0), (1,2), flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_CENTER_HORIZONTAL, border=5)
 
         self.SetMinSize((300, 120))
-        self.SetSizer( gbs )
+        self.SetSizer(gbs)
         self.Layout()
         self.Refresh()
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def GetValue(self):
         """ Return the new radius value. """
+
         return self.field.GetValue()
 
 # ----------------------------------------------------------------------------
-

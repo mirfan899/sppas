@@ -38,7 +38,6 @@
 import wx
 
 from wxgui.structs.wxoption import sppasWxOption
-from wxgui.sp_consts import MAIN_FONTSIZE, TB_FONTSIZE, HEADER_FONTSIZE
 from wxgui.sp_consts import BUTTON_ICONSIZE, MENU_ICONSIZE, TB_ICONSIZE
 
 # ----------------------------------------------------------------------------
@@ -50,16 +49,24 @@ class sppasTheme(object):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :summary:      Base class for a theme.
 
     The minimum required information, with a "classic" look.
 
     """
+    # Define a set of colors.
     COLOR1_BG = (250, 250, 245)
     COLOR1_FG = (28, 22, 22)
     COLOR2_BG = (80, 80, 100)
     COLOR2_FG = (240, 240, 230)
+
+    # Define the main font
+    MAIN_FONTSIZE = 9
+    if wx.Platform == '__WXMAC__':
+        MAIN_FONTSIZE = 12
+    elif wx.Platform == '__WXGTK__':
+        MAIN_FONTSIZE = 8
     FONT = (MAIN_FONTSIZE,
             wx.FONTFAMILY_DEFAULT,
             wx.FONTSTYLE_NORMAL,
@@ -128,6 +135,6 @@ class sppasTheme(object):
         self._choice['M_TOOLBAR_ICONSIZE'] = sppasWxOption('int', TB_ICONSIZE)
         self._choice['M_BUTTON_ICONSIZE'] = sppasWxOption('int', BUTTON_ICONSIZE)
 
-        self._choice['M_MAIN_FONTSIZE'] = sppasWxOption('int', MAIN_FONTSIZE)
-        self._choice['M_TB_FONTSIZE'] = sppasWxOption('int', TB_FONTSIZE)
-        self._choice['M_HEADER_FONTSIZE'] = sppasWxOption('int', HEADER_FONTSIZE)
+        self._choice['M_MAIN_FONTSIZE'] = sppasWxOption('int', sppasTheme.MAIN_FONTSIZE)
+        self._choice['M_TB_FONTSIZE'] = sppasWxOption('int', sppasTheme.MAIN_FONTSIZE-2)
+        self._choice['M_HEADER_FONTSIZE'] = sppasWxOption('int', sppasTheme.MAIN_FONTSIZE+4)

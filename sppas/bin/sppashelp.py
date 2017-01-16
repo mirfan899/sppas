@@ -70,7 +70,7 @@ try:
     from wxgui.structs.prefs       import Preferences
     from wxgui.dialogs.msgdialogs  import ShowInformation
     from wxgui.structs.prefs       import Preferences_IO
-    from wxgui.structs.themes      import BaseTheme
+    from wxgui.structs.theme      import sppasTheme
     from utils.fileutils           import setup_logging
     from sp_glob                   import SETTINGS_FILE
 except ImportError:
@@ -102,7 +102,7 @@ app = wx.App( redirect=True )
 # Fix preferences
 prefsIO = Preferences_IO( SETTINGS_FILE )
 if prefsIO.Read() is False:
-    prefsIO.SetTheme( BaseTheme() )
+    prefsIO.SetTheme( sppasTheme() )
 
 # Tests
 v = get_wx_version()
