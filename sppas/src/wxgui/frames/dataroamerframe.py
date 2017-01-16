@@ -60,12 +60,12 @@ SAVE_ALL_ID = wx.NewId()
 
 class DataRoamerFrame( ComponentFrame ):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      DataRoamer allows to manipulate annotated files.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      DataRoamer allows to manipulate annotated files.
 
     """
     def __init__(self, parent, idc, prefsIO):

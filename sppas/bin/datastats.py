@@ -66,7 +66,7 @@ SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.insert(0,SPPAS)
 
 try:
-    from wxgui.frames.statisticsframe import StatisticsFrame
+    from wxgui.frames.datastatsframe import DataStatsFrame
     from wxgui.sp_icons import STATISTICS_APP_ICON
     from utils.fileutils import setup_logging
     from wxgui.dialogs.msgdialogs  import ShowInformation
@@ -129,7 +129,7 @@ if v < 3:
 
 # App
 
-frame = StatisticsFrame(None, -1, prefsIO)
+frame = DataStatsFrame(None, -1, prefsIO)
 frame.AddFiles( filenames )
 
 app.SetTopWindow(frame)
