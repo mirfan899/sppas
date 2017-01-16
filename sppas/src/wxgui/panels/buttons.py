@@ -74,10 +74,10 @@ class ButtonCreator(object):
         """
         Create a button and return it.
 
-        @param icon (str) Path to the icon file name.
-        @param text (str) Short text to print into the button.
-        @param tooltip (str) Long text to show when mouse is entering into the button.
-        @param btnid (wx.ID) A unique ID assigned to the button.
+        :param icon: (str) Path to the icon file name.
+        :param text: (str) Short text to print into the button.
+        :param tooltip: (str) Long text to show when mouse is entering into the button.
+        :param btnid: (wx.ID) A unique ID assigned to the button.
 
         """
         if btnid is None:
@@ -119,12 +119,12 @@ class ButtonCreator(object):
 
 class ImgPanel( wx.Panel ):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Simple panel with an image.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Simple panel with an image.
 
     """
     def __init__(self, parent, bmpsize, bmpname, prefsIO):
@@ -151,12 +151,12 @@ class ImgPanel( wx.Panel ):
 
 class ButtonPanel( wx.Panel ):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Panel imitating behaviors of a complex button.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    :summary:      Panel imitating behaviors of a complex button.
 
     """
     def __init__(self, parent, idb, preferences, bmp, text, subtext=None, tooltip=None, activated=True):
@@ -255,12 +255,12 @@ class ButtonPanel( wx.Panel ):
 
 class ButtonToolbarPanel( wx.Panel ):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Panel imitating behaviors of a complex button.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    :summary:      Panel imitating behaviors of a complex button.
 
     """
     def __init__(self, parent, idb, preferences, bmp, text, tooltip=None, activated=True):
@@ -290,9 +290,7 @@ class ButtonToolbarPanel( wx.Panel ):
             bmp = ImgPanel(panel, self._prefs.GetValue('M_TOOLBAR_ICONSIZE'), bmpname, self._prefs)
             sizer.Add(bmp, 0, flag=wx.ALL|wx.ALIGN_CENTER, border=8)
 
-        font = self._prefs.GetValue('M_FONT')
-        s = font.GetPointSize()
-        font.SetPointSize(s-2)
+        font = self._prefs.GetValue('M_TOOLBAR_FONT')
         text = wx.StaticText(panel, -1, textstr)
         text.SetBackgroundColour( self._prefs.GetValue('M_BG_COLOUR') )
         text.SetForegroundColour( self._prefs.GetValue('M_FG_COLOUR') )

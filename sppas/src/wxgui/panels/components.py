@@ -37,16 +37,6 @@
 
 import wx
 
-from wxgui.frames.dataroamerframe  import DataRoamerFrame
-from wxgui.frames.audioroamerframe import AudioRoamerFrame
-from wxgui.frames.ipuscribeframe   import IPUscribeFrame
-from wxgui.frames.sppaseditframe   import SppasEditFrame
-from wxgui.frames.datafilterframe  import DataFilterFrame
-from wxgui.frames.statisticsframe  import StatisticsFrame
-
-from wxgui.cutils.imageutils import spBitmap
-from wxgui.cutils.ctrlutils  import CreateGenButton
-
 from wxgui.sp_icons import AUDIOROAMER_APP_ICON
 from wxgui.sp_icons import DATAROAMER_APP_ICON
 from wxgui.sp_icons import IPUSCRIBE_APP_ICON
@@ -54,20 +44,19 @@ from wxgui.sp_icons import SPPASEDIT_APP_ICON
 from wxgui.sp_icons import STATISTICS_APP_ICON
 from wxgui.sp_icons import DATAFILTER_APP_ICON
 
-from wxgui.sp_consts import BUTTON_ICONSIZE
-
 from wxgui.panels.buttons import ButtonPanel
 
-from wxgui.sp_consts          import ID_FRAME_DATAROAMER
-from wxgui.sp_consts          import ID_FRAME_SNDROAMER
-from wxgui.sp_consts          import ID_FRAME_IPUSCRIBE
-from wxgui.sp_consts          import ID_FRAME_SPPASEDIT
-from wxgui.sp_consts          import ID_FRAME_STATISTICS
-from wxgui.sp_consts          import ID_FRAME_DATAFILTER
+from wxgui.sp_consts import ID_FRAME_DATAROAMER
+from wxgui.sp_consts import ID_FRAME_SNDROAMER
+from wxgui.sp_consts import ID_FRAME_IPUSCRIBE
+from wxgui.sp_consts import ID_FRAME_SPPASEDIT
+from wxgui.sp_consts import ID_FRAME_STATISTICS
+from wxgui.sp_consts import ID_FRAME_DATAFILTER
 
 # ----------------------------------------------------------------------------
 
-class AnalyzePanel( wx.Panel ):
+
+class AnalyzePanel(wx.Panel):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France

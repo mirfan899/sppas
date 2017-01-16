@@ -108,15 +108,11 @@ class spBaseDialog(wx.Dialog):
         bitmap = spBitmap(title_icon, self.preferences.GetValue('M_BUTTON_ICONSIZE'), theme=self.preferences.GetValue('M_ICON_THEME'))
         sBmp = wx.StaticBitmap(panel, wx.ID_ANY, bitmap)
 
-        font = self.preferences.GetValue('M_FONT')
-        font.SetWeight(wx.BOLD)
-        font.SetPointSize(font.GetPointSize() + 2)
-
         paneltext = wx.Panel(self, -1, style=wx.NO_BORDER)
         paneltext.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
         sizertext = wx.BoxSizer()
         text = wx.StaticText(paneltext, label=title_text)
-        text.SetFont(font)
+        text.SetFont(self.preferences.GetValue('M_HEADER_FONT'))
         text.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
         text.SetForegroundColour(self.preferences.GetValue('M_FG_COLOUR'))
         sizertext.Add(text, proportion=0, flag=wx.ALIGN_CENTER_VERTICAL)

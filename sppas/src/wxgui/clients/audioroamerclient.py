@@ -61,15 +61,13 @@ from wxgui.sp_icons  import SAVE_AS_FILE
 from wxgui.sp_consts import INFO_COLOUR
 from wxgui.sp_consts import MIN_PANEL_W
 from wxgui.sp_consts import MIN_PANEL_H
-from wxgui.sp_consts import BUTTON_ICONSIZE
 
 from wxgui.dialogs.filedialogs import SaveAsAudioFile, SaveAsAnyFile
-from wxgui.dialogs.msgdialogs  import ShowInformation, ShowYesNoQuestion
-from wxgui.dialogs.basedialog  import spBaseDialog
-from wxgui.dialogs.choosers    import PeriodChooser
+from wxgui.dialogs.msgdialogs import ShowInformation, ShowYesNoQuestion
+from wxgui.dialogs.basedialog import spBaseDialog
+from wxgui.dialogs.choosers import PeriodChooser
 
 import audiodata.aio
-from audiodata.channel          import Channel
 from audiodata.channelsilence   import ChannelSilence
 from audiodata.channelformatter import ChannelFormatter
 from audiodata.audioframes      import AudioFrames
@@ -328,6 +326,7 @@ class SndRoamer( scrolled.ScrolledPanel ):
 
 # ----------------------------------------------------------------------------
 
+
 class AudioRoamer( wx.Panel ):
     """
     @author:       Brigitte Bigi
@@ -339,10 +338,10 @@ class AudioRoamer( wx.Panel ):
 
     """
     def __init__(self, parent, preferences):
-        """
-        Create a new AudioRoamer instance.
+        """ Create a new AudioRoamer instance.
 
-        @parent (wxWindow)
+        :param parent (wxWindow)
+        :param preferences (Preferences)
 
         """
         wx.Panel.__init__(self, parent)
@@ -352,15 +351,19 @@ class AudioRoamer( wx.Panel ):
         sizer = wx.BoxSizer( wx.HORIZONTAL )
         FONT = self._prefs.GetValue('M_FONT')
         bmproamer = spBitmap(AUDIOROAMER_APP_ICON, theme=self._prefs.GetValue('M_ICON_THEME'))
-        self.roamerButton = CreateGenButton(self, ID_DIALOG_AUDIOROAMER, bmproamer, text=" Want more? ", tooltip="Show more information, manage channels, framerate, etc.", colour=wx.Colour(220,120,180), SIZE=BUTTON_ICONSIZE, font=FONT)
-        self.Bind(wx.EVT_BUTTON, self.OnAudioRoamer,  self.roamerButton, ID_DIALOG_AUDIOROAMER)
+        self.roamerButton = CreateGenButton(self, ID_DIALOG_AUDIOROAMER,
+                                            bmproamer,
+                                            text=" Want more? ",
+                                            tooltip="More information, manage channels, framerate, etc.",
+                                            colour=wx.Colour(220, 120, 180),
+                                            font=FONT)
+        self.Bind(wx.EVT_BUTTON, self.OnAudioRoamer, self.roamerButton, ID_DIALOG_AUDIOROAMER)
 
         sizer.Add( self.roamerButton )
 
         self.SetSizer(sizer)
         self.SetAutoLayout( True )
         self.Layout()
-
 
     def FileSelected(self, filename ):
         self._filename = filename

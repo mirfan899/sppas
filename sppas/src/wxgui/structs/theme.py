@@ -38,7 +38,6 @@
 import wx
 
 from wxgui.structs.wxoption import sppasWxOption
-from wxgui.sp_consts import BUTTON_ICONSIZE, MENU_ICONSIZE, TB_ICONSIZE
 
 # ----------------------------------------------------------------------------
 
@@ -57,7 +56,7 @@ class sppasTheme(object):
     """
     # Define a set of colors.
     COLOR1_BG = (250, 250, 245)
-    COLOR1_FG = (28, 22, 22)
+    COLOR1_FG = (18, 12, 12)
     COLOR2_BG = (80, 80, 100)
     COLOR2_FG = (240, 240, 230)
 
@@ -67,7 +66,7 @@ class sppasTheme(object):
         MAIN_FONTSIZE = 12
     elif wx.Platform == '__WXGTK__':
         MAIN_FONTSIZE = 8
-    FONT = (MAIN_FONTSIZE,
+    MAIN_FONT = (MAIN_FONTSIZE,
             wx.FONTFAMILY_DEFAULT,
             wx.FONTSTYLE_NORMAL,
             wx.FONTWEIGHT_NORMAL,
@@ -76,6 +75,23 @@ class sppasTheme(object):
             wx.FONTENCODING_SYSTEM
             )
 
+    # Define other fonts
+    TOOLBAR_FONT = (MAIN_FONTSIZE-2,
+                 wx.FONTFAMILY_DEFAULT,
+                 wx.FONTSTYLE_NORMAL,
+                 wx.FONTWEIGHT_LIGHT,
+                 False,
+                 '',
+                 wx.FONTENCODING_SYSTEM
+                 )
+    HEADER_FONT = (MAIN_FONTSIZE+2,
+                 wx.FONTFAMILY_DEFAULT,
+                 wx.FONTSTYLE_NORMAL,
+                 wx.FONTWEIGHT_BOLD,
+                 False,
+                 '',
+                 wx.FONTENCODING_SYSTEM
+                 )
     # -----------------------------------------------------------------------
 
     def __init__(self):
@@ -116,7 +132,7 @@ class sppasTheme(object):
 
         self._choice['M_BG_COLOUR'] = sppasWxOption('wx.Colour', sppasTheme.COLOR1_BG, "Main background color")
         self._choice['M_FG_COLOUR'] = sppasWxOption('wx.Colour', sppasTheme.COLOR1_FG, "Main foreground color")
-        self._choice['M_FONT'] = sppasWxOption('wx.Font', sppasTheme.FONT, "Font")
+        self._choice['M_FONT'] = sppasWxOption('wx.Font', sppasTheme.MAIN_FONT, "Font")
 
         self._choice['M_TIPS'] = sppasWxOption('bool', True, 'Show tips at start-up')
         self._choice['M_OUTPUT_EXT'] = sppasWxOption('str',  '.xra', "Output file format")
@@ -131,10 +147,10 @@ class sppasTheme(object):
 
         self._choice['F_SPACING'] = sppasWxOption('int', 2)
 
-        self._choice['M_MENU_ICONSIZE'] = sppasWxOption('int', MENU_ICONSIZE)
-        self._choice['M_TOOLBAR_ICONSIZE'] = sppasWxOption('int', TB_ICONSIZE)
-        self._choice['M_BUTTON_ICONSIZE'] = sppasWxOption('int', BUTTON_ICONSIZE)
+        self._choice['M_MENU_ICONSIZE'] = sppasWxOption('int', 32)
+        self._choice['M_TOOLBAR_ICONSIZE'] = sppasWxOption('int', 24)
+        self._choice['M_BUTTON_ICONSIZE'] = sppasWxOption('int', 32)
+        self._choice['M_TREE_ICONSIZE'] = sppasWxOption('int', 16)
 
-        self._choice['M_MAIN_FONTSIZE'] = sppasWxOption('int', sppasTheme.MAIN_FONTSIZE)
-        self._choice['M_TB_FONTSIZE'] = sppasWxOption('int', sppasTheme.MAIN_FONTSIZE-2)
-        self._choice['M_HEADER_FONTSIZE'] = sppasWxOption('int', sppasTheme.MAIN_FONTSIZE+4)
+        self._choice['M_TOOLBAR_FONT'] = sppasWxOption('wx.Font', sppasTheme.TOOLBAR_FONT, "Font")
+        self._choice['M_HEADER_FONT'] = sppasWxOption('wx.Font', sppasTheme.HEADER_FONT, "Font")

@@ -110,7 +110,8 @@ class LogDialog(spBaseDialog):
 
         self.log_txt = wx.TextCtrl(self, -1, size=(620, 480), style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH2 | wx.HSCROLL)
         self.log_txt.SetDefaultStyle(wx.TextAttr(wx.BLACK, wx.WHITE))
-        self.log_txt.SetFont(wx.Font(self.preferences.GetValue('M_MAIN_FONTSIZE'), 
+        fs = self.preferences.GetValue('M_FONT').GetPointSize()
+        self.log_txt.SetFont(wx.Font(fs,
                                      wx.SWISS, 
                                      wx.NORMAL, 
                                      wx.NORMAL, 

@@ -53,16 +53,13 @@ from wxgui.sp_icons import FORWARD_ICON
 from wxgui.sp_icons import BACKWARD_ICON
 from wxgui.sp_icons import NEXT_ICON
 from wxgui.sp_icons import PREVIOUS_ICON
+from wxgui.sp_icons import APP_ICON
+
 from wxgui.cutils.imageutils import spBitmap
 
 from wxgui.sp_consts import HELP_PATH
 from wxgui.sp_consts import HELP_IMG_PATH
 from wxgui.sp_consts import DOC_IDX
-from wxgui.sp_consts import HELP_IDX_EXT
-
-from wxgui.sp_consts import BUTTON_ICONSIZE
-from wxgui.sp_icons  import APP_ICON
-
 from wxgui.sp_consts import FRAME_STYLE
 from wxgui.sp_consts import FRAME_TITLE
 

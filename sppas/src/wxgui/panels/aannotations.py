@@ -42,14 +42,13 @@ import functools
 
 from annotations.param import sppasParam
 
-from wxgui.cutils.imageutils       import spBitmap
-from wxgui.cutils.ctrlutils        import CreateGenButton
+from wxgui.cutils.imageutils import spBitmap
+from wxgui.cutils.ctrlutils import CreateGenButton
 from wxgui.views.annotationoptions import spAnnotationConfig
 from wxgui.process.annotateprocess import AnnotateProcess
 
 from wxgui.sp_consts import MIN_PANEL_W
 from wxgui.sp_consts import MIN_PANEL_H
-from wxgui.sp_consts import BUTTON_ICONSIZE
 
 from wxgui.sp_icons import LINK_ICON
 from wxgui.sp_icons import UNLINK_ICON
@@ -255,7 +254,9 @@ class AnnotationsPanel( wx.lib.scrolledpanel.ScrolledPanel ):
         _contentbox = self.__create_content()
 
         # Button to annotate
-        runBmp = spBitmap(ANNOTATE_ICON, BUTTON_ICONSIZE, self._prefsIO.GetValue('M_ICON_THEME'))
+        runBmp = spBitmap(ANNOTATE_ICON,
+                          self._prefsIO.GetValue('M_BUTTON_ICONSIZE'),
+                          self._prefsIO.GetValue('M_ICON_THEME'))
         self._brun = CreateGenButton(self, RUN_ID, runBmp,
                                      text="  Perform annotations  ",
                                      tooltip="Automatically annotate selected files.",
@@ -264,13 +265,12 @@ class AnnotationsPanel( wx.lib.scrolledpanel.ScrolledPanel ):
 
         _vbox = wx.BoxSizer(wx.VERTICAL)
         _vbox.Add(_contentbox, proportion=2, flag=wx.EXPAND | wx.ALL, border=4)
-        _vbox.Add(self._brun, proportion=0, flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, border=20)
+        _vbox.Add(self._brun, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=20)
 
         self.Bind(wx.EVT_BUTTON, self.on_sppas_run, self._brun, RUN_ID)
         self.SetSizer(_vbox)
         self.SetupScrolling(scroll_x=True, scroll_y=True)
         self.SetMinSize(wx.Size(MIN_PANEL_W,MIN_PANEL_H))
-
 
     def __create_content(self):
         """ Annotation and language choices."""

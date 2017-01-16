@@ -66,8 +66,6 @@ from wxgui.sp_icons          import NAV_PERIOD_ZOOM_OUT_ICON
 from wxgui.sp_icons          import NAV_VIEW_ZOOM_IN_ICON
 from wxgui.sp_icons          import NAV_VIEW_ZOOM_OUT_ICON
 
-from wxgui.sp_consts         import TB_ICONSIZE
-
 from baseclient              import BaseClient
 from wxgui.structs.files     import xFiles
 
@@ -457,18 +455,18 @@ class NavigatePanel( wx.Panel ):
         # create the buttons
         theme = self._prefsIO.GetValue('M_ICON_THEME')
         bgcolour = self._prefsIO.GetValue('M_BG_COLOUR')
+        tbsize = self._prefsIO.GetValue('M_TOOLBAR_ICONSIZE')
+        self._buttons['gostart'] = CreateButton( self, spBitmap(NAV_GO_START_ICON, tbsize, theme),    self.onGoStart, gbs, colour=bgcolour)
+        self._buttons['goback']  = CreateButton( self, spBitmap(NAV_GO_PREVIOUS_ICON, tbsize, theme), self.onGoBack,  gbs, colour=bgcolour)
+        self._buttons['gonext']  = CreateButton( self, spBitmap(NAV_GO_NEXT_ICON, tbsize, theme),     self.onGoNext,  gbs, colour=bgcolour)
+        self._buttons['goend']   = CreateButton( self, spBitmap(NAV_GO_END_ICON, tbsize, theme),      self.onGoEnd,   gbs, colour=bgcolour)
+        self._buttons['fitsel']  = CreateButton( self, spBitmap(NAV_FIT_SELECTION_ICON, tbsize, theme), self.onFitSelection, gbs, colour=bgcolour)
 
-        self._buttons['gostart'] = CreateButton( self, spBitmap(NAV_GO_START_ICON,TB_ICONSIZE,theme),    self.onGoStart, gbs, colour=bgcolour)
-        self._buttons['goback']  = CreateButton( self, spBitmap(NAV_GO_PREVIOUS_ICON,TB_ICONSIZE,theme), self.onGoBack,  gbs, colour=bgcolour)
-        self._buttons['gonext']  = CreateButton( self, spBitmap(NAV_GO_NEXT_ICON,TB_ICONSIZE,theme),     self.onGoNext,  gbs, colour=bgcolour)
-        self._buttons['goend']   = CreateButton( self, spBitmap(NAV_GO_END_ICON,TB_ICONSIZE,theme),      self.onGoEnd,   gbs, colour=bgcolour)
-        self._buttons['fitsel']  = CreateButton( self, spBitmap(NAV_FIT_SELECTION_ICON,TB_ICONSIZE,theme), self.onFitSelection, gbs, colour=bgcolour)
-
-        self._buttons['hzoom']    = CreateButton( self, spBitmap(NAV_PERIOD_ZOOM_ICON,TB_ICONSIZE,theme),    self.onPeriodZoom, gbs, colour=bgcolour)
-        self._buttons['hzoomin']  = CreateButton( self, spBitmap(NAV_PERIOD_ZOOM_IN_ICON,TB_ICONSIZE,theme), self.onPeriodZoomIn, gbs, colour=bgcolour)
-        self._buttons['hzoomout'] = CreateButton( self, spBitmap(NAV_PERIOD_ZOOM_OUT_ICON,TB_ICONSIZE,theme),self.onPeriodZoomOut,gbs, colour=bgcolour)
-        self._buttons['vzoomin']  = CreateButton( self, spBitmap(NAV_VIEW_ZOOM_IN_ICON,TB_ICONSIZE,theme),   self.onViewZoomIn,   gbs, colour=bgcolour)
-        self._buttons['vzoomout'] = CreateButton( self, spBitmap(NAV_VIEW_ZOOM_OUT_ICON,TB_ICONSIZE,theme),  self.onViewZoomOut,  gbs, colour=bgcolour)
+        self._buttons['hzoom']    = CreateButton( self, spBitmap(NAV_PERIOD_ZOOM_ICON, tbsize, theme),    self.onPeriodZoom, gbs, colour=bgcolour)
+        self._buttons['hzoomin']  = CreateButton( self, spBitmap(NAV_PERIOD_ZOOM_IN_ICON, tbsize, theme), self.onPeriodZoomIn, gbs, colour=bgcolour)
+        self._buttons['hzoomout'] = CreateButton( self, spBitmap(NAV_PERIOD_ZOOM_OUT_ICON, tbsize, theme),self.onPeriodZoomOut,gbs, colour=bgcolour)
+        self._buttons['vzoomin']  = CreateButton( self, spBitmap(NAV_VIEW_ZOOM_IN_ICON, tbsize, theme),   self.onViewZoomIn,   gbs, colour=bgcolour)
+        self._buttons['vzoomout'] = CreateButton( self, spBitmap(NAV_VIEW_ZOOM_OUT_ICON, tbsize, theme),  self.onViewZoomOut,  gbs, colour=bgcolour)
 
         # button placement in the sizer
         gbs.Add(self._buttons['gostart'],(0,0), flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=1)
@@ -768,9 +766,10 @@ class TrsPanel( wx.Panel ):
         # create the buttons bar
         theme = self._prefsIO.GetValue('M_ICON_THEME')
         bgcolour = self._prefsIO.GetValue('M_BG_COLOUR')
-        self._buttons['tiercheck'] = CreateButton( self, spBitmap(TIER_CHECK_DISABLED,TB_ICONSIZE,theme),  self.onTierCheck,sizer, colour=bgcolour)
-        self._buttons['tierinfo']  = CreateButton( self, spBitmap(TIER_INFO_DISABLED,TB_ICONSIZE,theme),   self.onTierInfo, sizer, colour=bgcolour)
-        self._buttons['search']    = CreateButton( self, spBitmap(TIER_SEARCH_DISABLED,TB_ICONSIZE,theme), self.onSearch,   sizer, colour=bgcolour)
+        tbsize = self._prefsIO.GetValue('M_TOOLBAR_ICONSIZE')
+        self._buttons['tiercheck'] = CreateButton( self, spBitmap(TIER_CHECK_DISABLED, tbsize, theme),  self.onTierCheck,sizer, colour=bgcolour)
+        self._buttons['tierinfo']  = CreateButton( self, spBitmap(TIER_INFO_DISABLED, tbsize, theme),   self.onTierInfo, sizer, colour=bgcolour)
+        self._buttons['search']    = CreateButton( self, spBitmap(TIER_SEARCH_DISABLED, tbsize, theme), self.onSearch,   sizer, colour=bgcolour)
 
         # sizer
         sizer.Add(self._buttons['tiercheck'], 1, flag=wx.ALL, border=2)
@@ -784,13 +783,9 @@ class TrsPanel( wx.Panel ):
         self.SetAutoLayout( True )
         self.Layout()
 
-    # End __init__
-    #-------------------------------------------------------------------------
-
-
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # Callbacks
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def onTierCheck(self, event):

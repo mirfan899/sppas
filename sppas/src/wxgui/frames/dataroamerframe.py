@@ -39,14 +39,12 @@ import wx
 
 from baseframe import ComponentFrame
 
-from wxgui.sp_icons   import DATAROAMER_APP_ICON
-from wxgui.sp_icons   import NEW_FILE
-from wxgui.sp_icons   import SAVE_FILE
-from wxgui.sp_icons   import SAVE_AS_FILE
-from wxgui.sp_icons   import SAVE_ALL_FILE
-from wxgui.sp_consts  import TB_ICONSIZE
+from wxgui.sp_icons import DATAROAMER_APP_ICON
+from wxgui.sp_icons import NEW_FILE
+from wxgui.sp_icons import SAVE_FILE
+from wxgui.sp_icons import SAVE_AS_FILE
+from wxgui.sp_icons import SAVE_ALL_FILE
 
-from wxgui.cutils.imageutils        import spBitmap
 from wxgui.clients.dataroamerclient import DataRoamerClient
 
 # ----------------------------------------------------------------------------
@@ -58,6 +56,7 @@ SAVE_AS_ID  = wx.NewId()
 SAVE_ALL_ID = wx.NewId()
 
 # ----------------------------------------------------------------------------
+
 
 class DataRoamerFrame( ComponentFrame ):
     """

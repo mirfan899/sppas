@@ -87,11 +87,6 @@ else:
     FRAME_H = 540   # expected "good" height
     PANEL_W = 380
 
-TREE_ICONSIZE = 16
-MENU_ICONSIZE = 32
-TB_ICONSIZE = 24
-BUTTON_ICONSIZE = 32
-
 # ----------------------------------------------------------------------------
 
 ID_ANNOTATIONS = wx.NewId()

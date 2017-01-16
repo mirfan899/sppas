@@ -50,24 +50,22 @@ import wx.media
 
 from wxgui.sp_images         import PLAYER_BACKGROUND
 
-from wxgui.sp_icons          import PLAYER_INFO
-from wxgui.sp_icons          import PLAYER_INFO_DISABLED
-from wxgui.sp_icons          import PLAYER_EJECT
-from wxgui.sp_icons          import PLAYER_EJECT_DISABLED
-from wxgui.sp_icons          import PLAYER_NEXT
-from wxgui.sp_icons          import PLAYER_NEXT_DISABLED
-from wxgui.sp_icons          import PLAYER_REWIND
-from wxgui.sp_icons          import PLAYER_REWIND_DISABLED
-from wxgui.sp_icons          import PLAYER_PLAY
-from wxgui.sp_icons          import PLAYER_PLAY_DISABLED
-from wxgui.sp_icons          import PLAYER_REPLAY
-from wxgui.sp_icons          import PLAYER_REPLAY_DISABLED
-from wxgui.sp_icons          import PLAYER_PAUSE
-from wxgui.sp_icons          import PLAYER_PAUSE_DISABLED
-from wxgui.sp_icons          import PLAYER_STOP
-from wxgui.sp_icons          import PLAYER_STOP_DISABLED
-
-from wxgui.sp_consts         import TB_ICONSIZE
+from wxgui.sp_icons import PLAYER_INFO
+from wxgui.sp_icons import PLAYER_INFO_DISABLED
+from wxgui.sp_icons import PLAYER_EJECT
+from wxgui.sp_icons import PLAYER_EJECT_DISABLED
+from wxgui.sp_icons import PLAYER_NEXT
+from wxgui.sp_icons import PLAYER_NEXT_DISABLED
+from wxgui.sp_icons import PLAYER_REWIND
+from wxgui.sp_icons import PLAYER_REWIND_DISABLED
+from wxgui.sp_icons import PLAYER_PLAY
+from wxgui.sp_icons import PLAYER_PLAY_DISABLED
+from wxgui.sp_icons import PLAYER_REPLAY
+from wxgui.sp_icons import PLAYER_REPLAY_DISABLED
+from wxgui.sp_icons import PLAYER_PAUSE
+from wxgui.sp_icons import PLAYER_PAUSE_DISABLED
+from wxgui.sp_icons import PLAYER_STOP
+from wxgui.sp_icons import PLAYER_STOP_DISABLED
 
 from wxgui.ui.CustomEvents import FileWanderEvent
 import wxgui.ui.KnobCtrl as KC
@@ -85,13 +83,14 @@ from wxgui.dialogs.msgdialogs import ShowInformation
 # Constants
 # ---------------------------------------------------------------------------
 
-TIMER_STEP     = 10    # timer step event (in milliseconds)
-FORWARD_STEP   = 1000  # forward step (in milliseconds)
-BACKWARD_STEP  = 1000  # backward step (in milliseconds)
+TIMER_STEP = 10    # timer step event (in milliseconds)
+FORWARD_STEP = 1000  # forward step (in milliseconds)
+BACKWARD_STEP = 1000  # backward step (in milliseconds)
 
 # ---------------------------------------------------------------------------
 
-class SndPlayer( wx.Panel ):
+
+class SndPlayer(wx.Panel):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -113,10 +112,10 @@ class SndPlayer( wx.Panel ):
         self._prefs          = self._check_prefs(prefsIO)
         self._filename       = None
         self._mediaplayer    = None
-        self._showpanel      = None  # panel to show information (clock, peakmeter, signal, ...)
-        self._playbackSlider = None  # slider (to change the position with the mouse)
-        self._knob           = None  # volume control
-        self._offsets        = (0,0) # from/to offsets
+        self._showpanel      = None    # panel to show information (clock, peakmeter, signal, ...)
+        self._playbackSlider = None    # slider (to change the position with the mouse)
+        self._knob           = None    # volume control
+        self._offsets        = (0, 0)  # from/to offsets
         self._autoreplay     = False
 
         self._init_buttons()
@@ -135,12 +134,12 @@ class SndPlayer( wx.Panel ):
         self.Bind(wx.EVT_TIMER, self.onTimer)
         self._refreshTimer = refreshtimer
 
-        self.SetBackgroundColour( self._prefs.GetValue("M_BG_COLOUR") )
-        self.SetForegroundColour( self._prefs.GetValue("M_FG_COLOUR") )
-        self.SetFont( self._prefs.GetValue("M_FONT") )
+        self.SetBackgroundColour(self._prefs.GetValue("M_BG_COLOUR"))
+        self.SetForegroundColour(self._prefs.GetValue("M_FG_COLOUR"))
+        self.SetFont(self._prefs.GetValue("M_FONT"))
 
-        self.SetSizer( sizer )
-        self.SetAutoLayout( True )
+        self.SetSizer(sizer)
+        self.SetAutoLayout(True)
         self.Layout()
 
     # -----------------------------------------------------------------------
@@ -152,27 +151,28 @@ class SndPlayer( wx.Panel ):
         Initialize members for audio button creations.
 
         """
-        self._buttons              = {}
-        self._dict_buttons_enable  = {}
+        self._buttons = {}
+        self._dict_buttons_enable = {}
         self._dict_buttons_disable = {}
 
         __theme = self._prefs.GetValue('M_ICON_THEME')
-        self.BMP_PLAYER_INFO            = spBitmap( PLAYER_INFO,            TB_ICONSIZE, theme=__theme )
-        self.BMP_PLAYER_INFO_DISABLED   = spBitmap( PLAYER_INFO_DISABLED,   TB_ICONSIZE, theme=__theme )
-        self.BMP_PLAYER_EJECT           = spBitmap( PLAYER_EJECT,           TB_ICONSIZE, theme=__theme )
-        self.BMP_PLAYER_EJECT_DISABLED  = spBitmap( PLAYER_EJECT_DISABLED,  TB_ICONSIZE, theme=__theme )
-        self.BMP_PLAYER_NEXT            = spBitmap( PLAYER_NEXT,            TB_ICONSIZE, theme=__theme )
-        self.BMP_PLAYER_NEXT_DISABLED   = spBitmap( PLAYER_NEXT_DISABLED,   TB_ICONSIZE, theme=__theme )
-        self.BMP_PLAYER_REWIND          = spBitmap( PLAYER_REWIND,          TB_ICONSIZE, theme=__theme )
-        self.BMP_PLAYER_REWIND_DISABLED = spBitmap( PLAYER_REWIND_DISABLED, TB_ICONSIZE, theme=__theme )
-        self.BMP_PLAYER_PLAY            = spBitmap( PLAYER_PLAY,            TB_ICONSIZE, theme=__theme )
-        self.BMP_PLAYER_PLAY_DISABLED   = spBitmap( PLAYER_PLAY_DISABLED,   TB_ICONSIZE, theme=__theme )
-        self.BMP_PLAYER_REPLAY          = spBitmap( PLAYER_REPLAY,          TB_ICONSIZE, theme=__theme )
-        self.BMP_PLAYER_REPLAY_DISABLED = spBitmap( PLAYER_REPLAY_DISABLED, TB_ICONSIZE, theme=__theme )
-        self.BMP_PLAYER_PAUSE           = spBitmap( PLAYER_PAUSE,           TB_ICONSIZE, theme=__theme )
-        self.BMP_PLAYER_PAUSE_DISABLED  = spBitmap( PLAYER_PAUSE_DISABLED,  TB_ICONSIZE, theme=__theme )
-        self.BMP_PLAYER_STOP            = spBitmap( PLAYER_STOP,            TB_ICONSIZE, theme=__theme )
-        self.BMP_PLAYER_STOP_DISABLED   = spBitmap( PLAYER_STOP_DISABLED,   TB_ICONSIZE, theme=__theme )
+        _tbsize = self._prefs.GetValue('M_TOOLBAR_ICONSIZE')
+        self.BMP_PLAYER_INFO            = spBitmap(PLAYER_INFO,           _tbsize, theme=__theme)
+        self.BMP_PLAYER_INFO_DISABLED   = spBitmap(PLAYER_INFO_DISABLED,  _tbsize, theme=__theme)
+        self.BMP_PLAYER_EJECT           = spBitmap(PLAYER_EJECT,          _tbsize, theme=__theme)
+        self.BMP_PLAYER_EJECT_DISABLED  = spBitmap(PLAYER_EJECT_DISABLED, _tbsize, theme=__theme)
+        self.BMP_PLAYER_NEXT            = spBitmap(PLAYER_NEXT,           _tbsize, theme=__theme)
+        self.BMP_PLAYER_NEXT_DISABLED   = spBitmap(PLAYER_NEXT_DISABLED,  _tbsize, theme=__theme)
+        self.BMP_PLAYER_REWIND          = spBitmap(PLAYER_REWIND,         _tbsize, theme=__theme)
+        self.BMP_PLAYER_REWIND_DISABLED = spBitmap(PLAYER_REWIND_DISABLED,_tbsize, theme=__theme)
+        self.BMP_PLAYER_PLAY            = spBitmap(PLAYER_PLAY,           _tbsize, theme=__theme)
+        self.BMP_PLAYER_PLAY_DISABLED   = spBitmap(PLAYER_PLAY_DISABLED,  _tbsize, theme=__theme)
+        self.BMP_PLAYER_REPLAY          = spBitmap(PLAYER_REPLAY,         _tbsize, theme=__theme)
+        self.BMP_PLAYER_REPLAY_DISABLED = spBitmap(PLAYER_REPLAY_DISABLED,_tbsize, theme=__theme)
+        self.BMP_PLAYER_PAUSE           = spBitmap(PLAYER_PAUSE,          _tbsize, theme=__theme)
+        self.BMP_PLAYER_PAUSE_DISABLED  = spBitmap(PLAYER_PAUSE_DISABLED, _tbsize, theme=__theme)
+        self.BMP_PLAYER_STOP            = spBitmap(PLAYER_STOP,           _tbsize, theme=__theme)
+        self.BMP_PLAYER_STOP_DISABLED   = spBitmap(PLAYER_STOP_DISABLED,  _tbsize, theme=__theme)
 
     # -----------------------------------------------------------------------
 
@@ -232,7 +232,7 @@ class SndPlayer( wx.Panel ):
         self.__create_audio_button('rewind', 'SND_REWIND', self.BMP_PLAYER_REWIND, self.BMP_PLAYER_REWIND_DISABLED, self.onRewind, sizer)
 
         # 2nd column
-        self._build_showpanel( None )
+        self._build_showpanel(None)
 
         # 3rd column
         self.__create_audio_button('play',   'SND_PLAY',   self.BMP_PLAYER_PLAY, self.BMP_PLAYER_PLAY_DISABLED, self.onNormalPlay, sizer)
@@ -246,7 +246,7 @@ class SndPlayer( wx.Panel ):
         self._knob = KC.KnobCtrl(self, -1, size=(80, 80))
         self._knob.SetTags(range(minvalue, maxvalue+1, therange))
         self._knob.SetAngularRange(-45, 225)
-        self._knob.SetValue( int((minvalue+maxvalue+1)/2) )
+        self._knob.SetValue(int((minvalue+maxvalue+1)/2))
         tickrange = range(minvalue, maxvalue+1, therange)
         self._knob.SetTags(tickrange)
         self.Bind(KC.KC_EVENT_ANGLE_CHANGED, self.onAngleChanged, self._knob)
@@ -283,7 +283,7 @@ class SndPlayer( wx.Panel ):
         self._knobtracker    = None
 
         # create the main sizer.
-        sizer = wx.BoxSizer( wx.HORIZONTAL )
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         self.__create_audio_button('info',   'SND_INFO',   self.BMP_PLAYER_INFO, self.BMP_PLAYER_INFO_DISABLED, self.onInfo, sizer)
         self.__create_audio_button('play',   'SND_PLAY',   self.BMP_PLAYER_PLAY, self.BMP_PLAYER_PLAY_DISABLED, self.onNormalPlay, sizer)
@@ -314,16 +314,16 @@ class SndPlayer( wx.Panel ):
         Return the new version.
         """
         if prefs is None:
-            prefs = Preferences( sppasTheme() )
+            prefs = Preferences(sppasTheme())
 
         else:
             try:
-                prefs.GetValue( 'M_BG_COLOUR' )
-                prefs.GetValue( 'M_FG_COLOUR' )
-                prefs.GetValue( 'M_FONT' )
-                prefs.GetValue( 'M_ICON_THEME' )
+                prefs.GetValue('M_BG_COLOUR')
+                prefs.GetValue('M_FG_COLOUR')
+                prefs.GetValue('M_FONT')
+                prefs.GetValue('M_ICON_THEME')
             except Exception:
-                self._prefsIO.SetTheme( sppasTheme() )
+                self._prefsIO.SetTheme(sppasTheme())
         return prefs
 
     #-------------------------------------------------------------------------
@@ -346,16 +346,16 @@ class SndPlayer( wx.Panel ):
 
         try:
             m = wx.media.MediaCtrl(self, style=wx.NO_BORDER)
-            m.Load( filename )
+            m.Load(filename)
             self._length = m.Length()
             if self._length == 0: # **** BUG of the MediaPlayer! ****
                 import wave
                 w = wave.Wave_read(filename)
-                self._length = int( 1000 * float(w.getnframes())/float(w.getframerate()) )
+                self._length = int(1000 * float(w.getnframes())/float(w.getframerate()))
             logging.info(" ... File %s successfully loaded. [  OK  ]" %(filename))
         except Exception as e:
             logging.info(" ... File %s not loaded.  [ ERROR ]" %(filename))
-            ShowInformation( self, self._prefs, 'Error loading: '+filename+': '+str(e), style=wx.ICON_ERROR)
+            ShowInformation(self, self._prefs, 'Error loading: '+filename+': '+str(e), style=wx.ICON_ERROR)
             return False
 
         # set mediaplayer with the new one
@@ -367,7 +367,7 @@ class SndPlayer( wx.Panel ):
             self._playbackSlider.SetRange(0, self._length)
             self._playbackSlider.SetTickFreq(int(self._length/10), 1)
 
-        self._timer.Start( self._refreshTimer )
+        self._timer.Start(self._refreshTimer)
         self.Refresh()
 
     #------------------------------------------------------------------------
@@ -382,7 +382,7 @@ class SndPlayer( wx.Panel ):
             self.onStop(None)
 
         if self._showpanel is not None:
-            self._build_showpanel( None )
+            self._build_showpanel(None)
         if self._mediaplayer is not None:
             self._mediaplayer.Destroy()
 
@@ -432,9 +432,9 @@ class SndPlayer( wx.Panel ):
         if self._mediaplayer is None: return
 
         try:
-            ShowAudioInfo( self, self._prefs, self._filename )
+            ShowAudioInfo(self, self._prefs, self._filename)
         except Exception as e:
-            ShowInformation( self, self._prefs, 'No information available: %s'%str(e), style=wx.ICON_ERROR)
+            ShowInformation(self, self._prefs, 'No information available: %s'%str(e), style=wx.ICON_ERROR)
 
     #-------------------------------------------------------------------------
 
@@ -450,7 +450,7 @@ class SndPlayer( wx.Panel ):
         else:
             offset = self._offsets[0]
 
-        self._mediaplayer.Seek( offset, mode=wx.FromStart )
+        self._mediaplayer.Seek(offset, mode=wx.FromStart)
 
     #----------------------------------------------------------------------
 
@@ -483,9 +483,9 @@ class SndPlayer( wx.Panel ):
             forward = omin # come back at the beginning!
 
         if self._playbackSlider is not None:
-            self._playbackSlider.SetValue( forward )
+            self._playbackSlider.SetValue(forward)
 
-        self._mediaplayer.Seek( forward, mode=wx.FromStart )
+        self._mediaplayer.Seek(forward, mode=wx.FromStart)
 
     #----------------------------------------------------------------------
 
@@ -503,9 +503,9 @@ class SndPlayer( wx.Panel ):
             backward = omax # loop
 
         if self._playbackSlider is not None:
-            self._playbackSlider.SetValue( backward )
+            self._playbackSlider.SetValue(backward)
 
-        self._mediaplayer.Seek( backward, mode=wx.FromStart )
+        self._mediaplayer.Seek(backward, mode=wx.FromStart)
 
     #----------------------------------------------------------------------
 
@@ -522,12 +522,12 @@ class SndPlayer( wx.Panel ):
 
         if state == wx.media.MEDIASTATE_PLAYING:
             self._mediaplayer.Pause()
-            if 'pause' in self._buttons.keys(): self._buttons['pause'].SetBitmapLabel( self._dict_buttons_disable[self._buttons['pause']] )
+            if 'pause' in self._buttons.keys(): self._buttons['pause'].SetBitmapLabel(self._dict_buttons_disable[self._buttons['pause']])
 
         elif state == wx.media.MEDIASTATE_PAUSED:
             self.onPlay(event)
-            if 'play'  in self._buttons.keys(): self._buttons['play'].SetBitmapLabel( self._dict_buttons_enable[self._buttons['play']] )
-            if 'pause' in self._buttons.keys(): self._buttons['pause'].SetBitmapLabel( self._dict_buttons_enable[self._buttons['pause']] )
+            if 'play'  in self._buttons.keys(): self._buttons['play'].SetBitmapLabel(self._dict_buttons_enable[self._buttons['play']])
+            if 'pause' in self._buttons.keys(): self._buttons['pause'].SetBitmapLabel(self._dict_buttons_enable[self._buttons['pause']])
 
     #----------------------------------------------------------------------
 
@@ -573,17 +573,17 @@ class SndPlayer( wx.Panel ):
 
         if not self._mediaplayer.Play():
             logging.debug('onPlay. Unable to play. offset=%d'%offset)
-            ShowInformation( self, self._prefs, "Unable to Play. Offset=%d"%offset, style=wx.ICON_ERROR)
+            ShowInformation(self, self._prefs, "Unable to Play. Offset=%d"%offset, style=wx.ICON_ERROR)
             return
 
         # force to play at the good position
-        self._mediaplayer.Seek( offset, mode=wx.FromStart ) # required!
+        self._mediaplayer.Seek(offset, mode=wx.FromStart) # required!
 
         if self._knob is not None:
-            self._mediaplayer.SetVolume( float(self._knob.GetValue())/100.0 )
+            self._mediaplayer.SetVolume(float(self._knob.GetValue())/100.0)
 
-        if 'play'  in self._buttons.keys(): self._buttons['play'].SetBitmapLabel( self._dict_buttons_enable[self._buttons['play']] )
-        if 'pause' in self._buttons.keys(): self._buttons['pause'].SetBitmapLabel( self._dict_buttons_enable[self._buttons['pause']] )
+        if 'play'  in self._buttons.keys(): self._buttons['play'].SetBitmapLabel(self._dict_buttons_enable[self._buttons['play']])
+        if 'pause' in self._buttons.keys(): self._buttons['pause'].SetBitmapLabel(self._dict_buttons_enable[self._buttons['pause']])
 
         self.Refresh()
 
@@ -599,15 +599,15 @@ class SndPlayer( wx.Panel ):
         try:
             self._mediaplayer.Stop()
             s,e = self._offsets
-            self._mediaplayer.Seek( s )
+            self._mediaplayer.Seek(s)
             if self._playbackSlider is not None:
-                self._playbackSlider.SetValue( s )
+                self._playbackSlider.SetValue(s)
         except Exception:
             # provide errors like:"ressource temporairement indisponible"
             pass
 
-        if 'play'  in self._buttons.keys(): self._buttons['play'].SetBitmapLabel( self._dict_buttons_enable[self._buttons['play']] )
-        if 'pause' in self._buttons.keys(): self._buttons['pause'].SetBitmapLabel( self._dict_buttons_enable[self._buttons['pause']] )
+        if 'play'  in self._buttons.keys(): self._buttons['play'].SetBitmapLabel(self._dict_buttons_enable[self._buttons['play']])
+        if 'pause' in self._buttons.keys(): self._buttons['pause'].SetBitmapLabel(self._dict_buttons_enable[self._buttons['pause']])
         self._autoreplay = False
 
     #----------------------------------------------------------------------
@@ -618,7 +618,7 @@ class SndPlayer( wx.Panel ):
         value = event.GetValue()
         self._knobtracker.SetLabel("Volume = " + str(value))
         if self._mediaplayer:
-            self._mediaplayer.SetVolume( float(value)/100.0 )
+            self._mediaplayer.SetVolume(float(value)/100.0)
 
     #----------------------------------------------------------------------
 
@@ -632,7 +632,7 @@ class SndPlayer( wx.Panel ):
         # It can be + or - 3 compared to the expected value!
 
         if self._mediaplayer.GetState() == wx.media.MEDIASTATE_PLAYING and self._playbackSlider is not None:
-            self._playbackSlider.SetValue( offset )
+            self._playbackSlider.SetValue(offset)
 
         omin,omax = self._offsets
         if self._mediaplayer.GetState() == wx.media.MEDIASTATE_PLAYING and (offset < omin-3 or offset > omax+3):
@@ -665,12 +665,12 @@ class SndPlayer( wx.Panel ):
 
         """
         self._prefs = prefs
-        self.SetBackgroundColour( self._prefs.GetValue("M_BG_COLOUR") )
-        self.SetForegroundColour( self._prefs.GetValue("M_FG_COLOUR") )
-        self.SetFont( self._prefs.GetValue("M_FONT") )
+        self.SetBackgroundColour(self._prefs.GetValue("M_BG_COLOUR"))
+        self.SetForegroundColour(self._prefs.GetValue("M_FG_COLOUR"))
+        self.SetFont(self._prefs.GetValue("M_FONT"))
         # apply bg on all buttons...
         for b in self._buttons.keys():
-            self._buttons[b].SetBackgroundColour( self._prefs.GetValue("M_BG_COLOUR") )
+            self._buttons[b].SetBackgroundColour(self._prefs.GetValue("M_BG_COLOUR"))
 
     #-------------------------------------------------------------------------
 
@@ -680,9 +680,9 @@ class SndPlayer( wx.Panel ):
         Change font of all texts.
 
         """
-        wx.Window.SetFont( self,font )
+        wx.Window.SetFont(self,font)
         if self._knobtracker is not None:
-            self._knobtracker.SetFont( font )
+            self._knobtracker.SetFont(font)
 
     # -----------------------------------------------------------------------
 
@@ -691,17 +691,17 @@ class SndPlayer( wx.Panel ):
         Change the background color of all objects.
 
         """
-        wx.Window.SetBackgroundColour( self,colour )
+        wx.Window.SetBackgroundColour(self,colour)
 
         for b in self._buttons:
-            self._buttons[b].SetBackgroundColour( colour )
+            self._buttons[b].SetBackgroundColour(colour)
 
         if self._showpanel is not None:
-            self._showpanel.SetBackgroundColour( colour )
+            self._showpanel.SetBackgroundColour(colour)
         if self._knobtracker is not None:
-            self._knobtracker.SetBackgroundColour( colour )
+            self._knobtracker.SetBackgroundColour(colour)
         if self._playbackSlider is not None:
-            self._playbackSlider.SetBackgroundColour( colour )
+            self._playbackSlider.SetBackgroundColour(colour)
 
         self.Refresh()
 
@@ -712,17 +712,17 @@ class SndPlayer( wx.Panel ):
         Change the foreground color of all objects.
 
         """
-        wx.Window.SetForegroundColour( self,colour )
+        wx.Window.SetForegroundColour(self,colour)
 
         for b in self._buttons:
-            self._buttons[b].SetForegroundColour( colour )
+            self._buttons[b].SetForegroundColour(colour)
 
         if self._showpanel is not None:
-            self._showpanel.SetForegroundColour( colour )
+            self._showpanel.SetForegroundColour(colour)
         if self._knobtracker is not None:
-            self._knobtracker.SetForegroundColour( colour )
+            self._knobtracker.SetForegroundColour(colour)
         if self._playbackSlider is not None:
-            self._playbackSlider.SetForegroundColour( colour )
+            self._playbackSlider.SetForegroundColour(colour)
 
         self.Refresh()
 
@@ -734,13 +734,13 @@ class SndPlayer( wx.Panel ):
 
         """
 
-        self.EnableButtons( False )
+        self.EnableButtons(False)
         if value is True:
             for b in self._buttons:
-                self._buttons[b].SetBitmapLabel( self._dict_buttons_enable[self._buttons[b]] )
+                self._buttons[b].SetBitmapLabel(self._dict_buttons_enable[self._buttons[b]])
         else:
             for b in self._buttons:
-                self._buttons[b].SetBitmapLabel( self._dict_buttons_disable[self._buttons[b]] )
+                self._buttons[b].SetBitmapLabel(self._dict_buttons_disable[self._buttons[b]])
 
     # -----------------------------------------------------------------------
 
@@ -750,6 +750,6 @@ class SndPlayer( wx.Panel ):
 
         """
         for b in self._buttons:
-            self._buttons[b].Enable( not value )
+            self._buttons[b].Enable(not value)
 
 # ----------------------------------------------------------------------------

@@ -47,45 +47,34 @@ from wxgui.sp_icons import REMOVE_ICON
 from wxgui.sp_icons import TAB_NEW_ICON
 from wxgui.sp_icons import TAB_CLOSE_ICON
 from wxgui.sp_icons import ABOUT_ICON
-from wxgui.sp_icons import LOGOUT_ICON
-from wxgui.sp_icons import EXIT_ICON
 from wxgui.sp_icons import HELP_ICON
-from wxgui.sp_icons import APP_ICON
-from wxgui.sp_icons import BUG_ICON
-from wxgui.sp_icons import FEEDBACK_ICON
-from wxgui.sp_icons import WEB_ICON
 
-from wxgui.sp_consts  import DEFAULT_APP_NAME
-from wxgui.sp_consts  import TB_ICONSIZE
-from wxgui.sp_consts  import MENU_ICONSIZE
-from wxgui.sp_consts  import MIN_PANEL_W,MIN_PANEL_H
-from wxgui.sp_consts  import MIN_FRAME_W
-from wxgui.sp_consts  import MIN_FRAME_H
-from wxgui.sp_consts  import FRAME_STYLE
-from wxgui.sp_consts  import FRAME_TITLE
+from wxgui.sp_consts import DEFAULT_APP_NAME
+from wxgui.sp_consts import MIN_PANEL_W,MIN_PANEL_H
+from wxgui.sp_consts import MIN_FRAME_W
+from wxgui.sp_consts import MIN_FRAME_H
+from wxgui.sp_consts import FRAME_STYLE
+from wxgui.sp_consts import FRAME_TITLE
 
-from wxgui.ui.CustomEvents     import FileWanderEvent, spEVT_FILE_WANDER
-from wxgui.ui.CustomEvents     import FileCheckEvent
-from wxgui.ui.CustomEvents     import NotebookNewPageEvent
-from wxgui.ui.CustomEvents     import NotebookClosePageEvent
-from wxgui.ui.CustomEvents     import SettingsEvent
-from wxgui.ui.CustomStatus     import CustomStatusBar
-from wxgui.ui.splitterpanel    import SplitterPanel
+from wxgui.ui.CustomEvents import FileWanderEvent, spEVT_FILE_WANDER
+from wxgui.ui.CustomEvents import FileCheckEvent
+from wxgui.ui.CustomEvents import NotebookNewPageEvent
+from wxgui.ui.CustomEvents import NotebookClosePageEvent
+from wxgui.ui.CustomEvents import SettingsEvent
+from wxgui.ui.splitterpanel import SplitterPanel
 
-from wxgui.dialogs.msgdialogs  import ShowYesNoQuestion, ShowInformation
-from wxgui.views.about         import ShowAboutDialog
-from wxgui.views.settings      import SettingsDialog
-from wxgui.frames.helpbrowser  import HelpBrowser
+from wxgui.dialogs.msgdialogs import ShowYesNoQuestion, ShowInformation
+from wxgui.views.about import ShowAboutDialog
+from wxgui.views.settings import SettingsDialog
+from wxgui.frames.helpbrowser import HelpBrowser
 
-from wxgui.structs.prefs       import Preferences_IO
+from wxgui.structs.prefs import Preferences_IO
 
-from wxgui.panels.filemanager   import FileManager
-from wxgui.clients.baseclient   import BaseClient
+from wxgui.panels.filemanager import FileManager
 import wxgui.dialogs.filedialogs as filedialogs
 
-from wxgui.cutils.imageutils   import spBitmap
-from wxgui.panels.mainbuttons  import MainMenuPanel,MainToolbarPanel
-from wxgui.panels.buttons      import ButtonToolbarPanel
+from wxgui.cutils.imageutils import spBitmap
+from wxgui.panels.mainbuttons import MainMenuPanel,MainToolbarPanel
 
 # ----------------------------------------------------------------------------
 # Constants

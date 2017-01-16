@@ -128,30 +128,26 @@ class MainMenuPanel( wx.Panel ):
 # ---------------------------------------------------------------------------
 
 
-class MainTitlePanel( wx.Panel ):
+class MainTitlePanel(wx.Panel):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Main frame buttons panel.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    :summary:      Main frame header panel.
 
     """
     def __init__(self, parent, preferences):
         wx.Panel.__init__(self, parent, -1, style=wx.NO_BORDER)
-        self.SetBackgroundColour( preferences.GetValue('M_BGD_COLOUR') )
-
-        font = preferences.GetValue('M_FONT')
-        font.SetWeight(wx.BOLD)
-        font.SetPointSize(font.GetPointSize() + 2)
+        self.SetBackgroundColour(preferences.GetValue('M_BGD_COLOUR'))
 
         s = wx.BoxSizer()
         text = wx.StaticText(self, label=program+" - "+title)
-        text.SetFont( font )
-        text.SetForegroundColour( preferences.GetValue('M_FG_COLOUR') )
+        text.SetFont(preferences.GetValue('M_HEADER_FONT'))
+        text.SetForegroundColour(preferences.GetValue('M_FG_COLOUR'))
         text.Bind(wx.EVT_LEFT_UP, self.OnButtonClick)
-        s.Add(text, proportion=1, flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=10)
+        s.Add(text, proportion=1, flag=wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
 
         self.SetSizer(s)
         self.SetMinSize((-1, preferences.GetValue('M_MENU_ICONSIZE')+8))
@@ -163,7 +159,7 @@ class MainTitlePanel( wx.Panel ):
     def OnButtonClick(self, evt):
         wx.BeginBusyCursor()
         try:
-            webbrowser.open("https://www.sppas.org/",1)
+            webbrowser.open("https://www.sppas.org/", 1)
         except:
             pass
         wx.EndBusyCursor()

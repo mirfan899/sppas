@@ -84,20 +84,15 @@ from wxgui.sp_icons import DELETE_ICON
 from wxgui.sp_icons import EXPORT_AS_ICON
 from wxgui.sp_icons import EXPORT_ICON
 
-from wxgui.sp_consts import TREE_ICONSIZE
-
 from wxgui.panels.mainbuttons import MainToolbarPanel
-
 
 # ----------------------------------------------------------------------------
 # Constants
 # ----------------------------------------------------------------------------
 
-ID_TB_ADDDIR  = wx.NewId()
-ID_TB_EXPORT  = wx.NewId()
+ID_TB_ADDDIR = wx.NewId()
+ID_TB_EXPORT = wx.NewId()
 
-# ----------------------------------------------------------------------------
-# class filelistPanel
 # ----------------------------------------------------------------------------
 
 
@@ -159,32 +154,31 @@ class FiletreePanel(wx.Panel):
 
         t.AddRoot('')
 
-        il = wx.ImageList(TREE_ICONSIZE, TREE_ICONSIZE)
-        self.rootidx      = il.Add(spBitmap(TREE_ROOT, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
-        self.fldridx      = il.Add(spBitmap(TREE_FOLDER_CLOSE, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
-        self.fldropenidx  = il.Add(spBitmap(TREE_FOLDER_OPEN,  TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
-        self.wavfileidx   = il.Add(spBitmap(MIME_WAV, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
-        self.txtfileidx   = il.Add(spBitmap(MIME_ASCII, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
-        self.csvfileidx   = il.Add(spBitmap(MIME_ASCII, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
-        self.ptierfileidx = il.Add(spBitmap(MIME_PITCHTIER, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
-        self.tgridfileidx = il.Add(spBitmap(MIME_TEXTGRID,  TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
-        self.trsfileidx   = il.Add(spBitmap(MIME_TRS, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
-        self.eaffileidx   = il.Add(spBitmap(MIME_EAF, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
-        self.xrafileidx   = il.Add(spBitmap(MIME_XRA, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
-        self.mrkfileidx   = il.Add(spBitmap(MIME_MRK, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
-        self.subfileidx   = il.Add(spBitmap(MIME_SUBTITLES, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
-        self.anvilfileidx = il.Add(spBitmap(MIME_ANVIL, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
-        self.antxfileidx  = il.Add(spBitmap(MIME_ANTX, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
-        self.xtransfileidx = il.Add(spBitmap(MIME_XTRANS, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
-        self.aupfileidx    = il.Add(spBitmap(MIME_AUP, TREE_ICONSIZE, theme=self._prefsIO.GetValue('M_ICON_THEME')))
+        iconsize = self._prefsIO.GetValue('M_TREE_ICONSIZE')
+        theme = self._prefsIO.GetValue('M_ICON_THEME')
+        il = wx.ImageList(iconsize, iconsize)
+
+        self.rootidx      = il.Add(spBitmap(TREE_ROOT, iconsize, theme))
+        self.fldridx      = il.Add(spBitmap(TREE_FOLDER_CLOSE, iconsize, theme))
+        self.fldropenidx  = il.Add(spBitmap(TREE_FOLDER_OPEN,  iconsize, theme))
+        self.wavfileidx   = il.Add(spBitmap(MIME_WAV, iconsize, theme))
+        self.txtfileidx   = il.Add(spBitmap(MIME_ASCII, iconsize, theme))
+        self.csvfileidx   = il.Add(spBitmap(MIME_ASCII, iconsize, theme))
+        self.ptierfileidx = il.Add(spBitmap(MIME_PITCHTIER, iconsize, theme))
+        self.tgridfileidx = il.Add(spBitmap(MIME_TEXTGRID,  iconsize, theme))
+        self.trsfileidx   = il.Add(spBitmap(MIME_TRS, iconsize, theme))
+        self.eaffileidx   = il.Add(spBitmap(MIME_EAF, iconsize, theme))
+        self.xrafileidx   = il.Add(spBitmap(MIME_XRA, iconsize, theme))
+        self.mrkfileidx   = il.Add(spBitmap(MIME_MRK, iconsize, theme))
+        self.subfileidx   = il.Add(spBitmap(MIME_SUBTITLES, iconsize, theme))
+        self.anvilfileidx = il.Add(spBitmap(MIME_ANVIL, iconsize, theme))
+        self.antxfileidx  = il.Add(spBitmap(MIME_ANTX, iconsize, theme))
+        self.xtransfileidx = il.Add(spBitmap(MIME_XTRANS, iconsize, theme))
+        self.aupfileidx    = il.Add(spBitmap(MIME_AUP, iconsize, theme))
 
         t.AssignImageList(il)
 
         return t
-
-    # End create_gui
-    # -----------------------------------------------------------------------
-
 
     # -----------------------------------------------------------------------
     # Callbacks

@@ -313,7 +313,8 @@ class TierDetailsPanel( BaseTierPanel ):
         Fix a set of styles to be used in the RichTextCtrl.
 
         """
-        fs = self.preferences.GetValue('M_MAIN_FONTSIZE')
+        fs = self.preferences.GetValue('M_FONT').GetPointSize()
+
         # SetFont( pointSize, family, style, weight, underline, face, encoding )
         self.labelStyle = wx.richtext.RichTextAttr()
         self.labelStyle.SetBackgroundColour( LIGHT_RED )
