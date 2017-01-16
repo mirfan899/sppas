@@ -1,52 +1,51 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: sppaseditframe.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.wxgui.frames.sppaseditframe.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    GUI view of files for SPPAS.
+
+"""
 import wx
 import logging
 
-from baseframe                  import ComponentFrame
+from baseframe import ComponentFrame
 from wxgui.clients.sppaseditclient import SppasEditClient
-from wxgui.views.settings               import SettingsDialog
+from wxgui.views.settings import SettingsDialog
 
-from wxgui.structs.theme    import sppasTheme
-from wxgui.structs.cthemes   import all_themes
-from wxgui.cutils.imageutils import spBitmap
-from wxgui.cutils.textutils  import TextAsNumericValidator
-from wxgui.cutils.textutils  import TextAsPercentageValidator
+from wxgui.structs.theme import sppasTheme
+from wxgui.structs.cthemes import all_themes
+from wxgui.cutils.textutils import TextAsNumericValidator
+from wxgui.cutils.textutils import TextAsPercentageValidator
 
 # Demos...
 from wxgui.demo.wizardDisplayDemo import WizardDisplayDemo
@@ -83,19 +82,20 @@ DEMO_TRS_WIZARD_ID = wx.NewId()
 
 # ----------------------------------------------------------------------------
 
-class SppasEditFrame( ComponentFrame ):
+
+class SppasEditFrame(ComponentFrame):
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: SppasEdit allows to display annotations and sound files.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      SppasEdit allows to display annotations and sound files.
 
     """
 
     def __init__(self, parent, id, prefsIO):
-        """
-        Creates a new ComponentFrame instance for SppasEdit component.
-        """
+
         arguments = {}
         arguments['files'] = []
         arguments['title'] = "SPPAS - Vizualizer"
@@ -108,26 +108,25 @@ class SppasEditFrame( ComponentFrame ):
 
     # ------------------------------------------------------------------------
 
-    def _init_members( self, args ):
-        """
-        Override.
+    def _init_members(self, args):
+        """ Override.
         Sets the members settings.
 
         """
-        ComponentFrame._init_members( self,args )
+        ComponentFrame._init_members(self, args)
 
         if isinstance(self._prefsIO.GetTheme(), sppasTheme):
-            self._prefsIO.SetTheme( all_themes.get_theme(u'Default') )
+            self._prefsIO.SetTheme(all_themes.get_theme(u'Default'))
 
         self._fmtype = "ANYFILES"
 
     # ------------------------------------------------------------------------
 
     def _append_in_menu(self):
-        """
-        Append new items in a menu or a new menu in the menubar.
+        """ Append new items in a menu or a new menu in the menubar. """
 
-        """
+        # DISABLED SINCE SPPAS-1.8.0
+
         return
         menubar = self.GetMenuBar()
         menus = menubar.GetMenus()
@@ -209,9 +208,9 @@ class SppasEditFrame( ComponentFrame ):
         elif id == DEMO_TRS_WIZARD_ID:
             self.OnDemoTrsWizard(event)
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # Demo... Callbacks
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def OnDemoDisplayWizard(self, event):
         """
@@ -220,7 +219,7 @@ class SppasEditFrame( ComponentFrame ):
         logging.info('Demo.')
         WizardDisplayDemo(self)
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def OnDemoPoint(self, event):
         """
@@ -229,7 +228,7 @@ class SppasEditFrame( ComponentFrame ):
         frame = PointCtrlFrame(self, -1, 'Time Point Demo')
         frame.Show(True)
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def OnDemoLabel(self, event):
         """
@@ -238,7 +237,7 @@ class SppasEditFrame( ComponentFrame ):
         frame = LabelCtrlFrame(self, -1, 'Label Demo')
         frame.Show(True)
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def OnDemoTier(self, event):
         """
@@ -247,7 +246,7 @@ class SppasEditFrame( ComponentFrame ):
         frame = TierCtrlFrame(self, -1, 'Tier Demo')
         frame.Show(True)
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def OnDemoTrs(self, event):
         """
@@ -256,7 +255,7 @@ class SppasEditFrame( ComponentFrame ):
         frame = TrsCtrlFrame(self, -1, 'Transcription Demo')
         frame.Show(True)
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def OnDemoWave(self, event):
         """
@@ -265,7 +264,7 @@ class SppasEditFrame( ComponentFrame ):
         frame = WaveCtrlFrame(self, -1, 'Wave Demo')
         frame.Show(True)
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def OnDemoDisplay(self, event):
         """
@@ -274,7 +273,7 @@ class SppasEditFrame( ComponentFrame ):
         frame = DisplayCtrlFrame(self, -1, 'Display Demo')
         frame.Show(True)
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def OnDemoZoomWizard(self, event):
         """
@@ -283,7 +282,7 @@ class SppasEditFrame( ComponentFrame ):
         logging.info('Demo: Zoom.')
         WizardZoomDemo(self)
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def OnDemoScrollWizard(self, event):
         """
@@ -292,7 +291,7 @@ class SppasEditFrame( ComponentFrame ):
         logging.info('Demo: Scroll.')
         WizardScrollDemo(self)
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def OnDemoSoundWizard(self, event):
         """
@@ -301,7 +300,7 @@ class SppasEditFrame( ComponentFrame ):
         logging.info('Demo: Sound.')
         WizardSoundDemo(self)
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def OnDemoTrsWizard(self, event):
         """
@@ -310,7 +309,7 @@ class SppasEditFrame( ComponentFrame ):
         logging.info('Demo: Ann. files.')
         WizardTrsDemo(self)
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def OnSettings(self, event):
         """
@@ -341,12 +340,14 @@ class SppasEditFrame( ComponentFrame ):
 # ----------------------------------------------------------------------------
 
 
-class SppasEditSettingsDialog( SettingsDialog ):
+class SppasEditSettingsDialog(SettingsDialog):
     """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: This class is used to fix all user's settings, with a Dialog.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      This class is used to fix all user's settings, with a Dialog.
 
     Dialog for the user to fix all preferences.
 
@@ -370,7 +371,12 @@ class SppasEditSettingsDialog( SettingsDialog ):
 
 class SppasEditAppearancePanel(wx.Panel):
     """
-    Drawing area settings.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Drawing area settings.
 
     """
     def __init__(self, parent, prefsIO):
@@ -471,12 +477,19 @@ class SppasEditAppearancePanel(wx.Panel):
         checked = self.wavescroll.GetValue()
         self._prefsIO.SetValue('W_AUTOSCROLL', 'bool', checked)
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 
 class SppasEditColourSchemePanel(wx.Panel):
-    """ Panel with a radiobox to choose the SppasEdit Theme-Colour. """
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:     Panel with a radiobox to choose the SppasEdit Theme-Colour.
 
+    """
     def __init__(self, parent, prefsIO):
 
         wx.Panel.__init__(self, parent)
@@ -504,7 +517,6 @@ class SppasEditColourSchemePanel(wx.Panel):
         vbox.Add(self.radiobox, 1, wx.EXPAND|wx.ALL, border=5)
         self.SetSizer(vbox)
 
-
     def radioClick(self, event):
         """ Set the new theme. """
         theme = all_themes.get_theme( self.radiobox.GetStringSelection() )
@@ -512,9 +524,16 @@ class SppasEditColourSchemePanel(wx.Panel):
 
 # ----------------------------------------------------------------------------
 
+
 class SppasEditTimePanel(wx.Panel):
     """
-    Time settings.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Time settings.
+
     """
     def __init__(self, parent, prefsIO):
 
@@ -561,10 +580,9 @@ class SppasEditTimePanel(wx.Panel):
 
         return gbs
 
-
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # Callbacks
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def onTextDurationChanged(self, event):
         """
@@ -584,7 +602,7 @@ class SppasEditTimePanel(wx.Panel):
         except Exception:
             pass
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def onHZoomChanged(self, event):
         """
@@ -604,7 +622,7 @@ class SppasEditTimePanel(wx.Panel):
         except Exception:
             pass
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def onScrollChanged(self, event):
         """

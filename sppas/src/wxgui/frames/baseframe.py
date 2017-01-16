@@ -1,40 +1,40 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: baseframe.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.wxgui.frames.baseframe.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    GUI base frame for analysis components of SPPAS.
+
+"""
 import wx
 import logging
 
@@ -85,28 +85,26 @@ ID_TB_CLOSETAB = wx.NewId()
 
 # ----------------------------------------------------------------------------
 
-class ComponentFrame( wx.Frame ):
+
+class ComponentFrame(wx.Frame):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Component main frame (base class).
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Component main frame (base class).
 
     The Component base main frame. This frames is made of:
-    - a menu
-    - a toolbar
-    - a statusbar
-    - a panel at left, which is a file manager (with check buttons)
-    - a panel at right, which contains the client.
+    
+        - a menu
+        - a toolbar
+        - a panel at left, which is a file manager (with check buttons)
+        - a panel at right, which contains the client.
 
     """
     def __init__(self, parent, idf, args={}):
-        """
-        Creates a new ComponentFrame instance.
 
-        """
         wx.Frame.__init__(self, parent, idf, title=FRAME_TITLE+" - Component", style=FRAME_STYLE)
 
         # Members
@@ -114,7 +112,7 @@ class ComponentFrame( wx.Frame ):
 
         # Create GUI
         self._init_infos(args)
-        self._mainpanel = self._create_content( )
+        self._mainpanel = self._create_content()
 
         # Events of this frame
         self.Bind(wx.EVT_CLOSE,  self.ProcessEvent)
@@ -136,16 +134,16 @@ class ComponentFrame( wx.Frame ):
     # Private methods to create the GUI and initialize members
     # ------------------------------------------------------------------------
 
-    def _init_members( self, args ):
+    def _init_members(self, args):
         """ Sets the members settings with default values. """
 
         if "prefs" in args.keys():
             self._prefsIO = args["prefs"]
         else:
             # Try to get prefs from a file, or fix default values.
-            self._prefsIO = Preferences_IO( SETTINGS_FILE )
+            self._prefsIO = Preferences_IO(SETTINGS_FILE)
             if self._prefsIO.Read() is False:
-                self._prefsIO = Preferences_IO( None )
+                self._prefsIO = Preferences_IO(None)
 
         self._fmtype = "DATAFILES"
         if "type" in args.keys():
@@ -154,15 +152,15 @@ class ComponentFrame( wx.Frame ):
 
     # ------------------------------------------------------------------------
 
-    def _init_infos( self, args ):
+    def _init_infos(self, args):
         """  Set the title and the icon. """
 
         # Set title
         _app = DEFAULT_APP_NAME
         if "title" in args.keys():
             _app = args["title"]
-        self.SetTitle( _app )
-        wx.GetApp().SetAppName( _app )
+        self.SetTitle(_app)
+        wx.GetApp().SetAppName(_app)
 
         # Set icon
         _iconname = COMPONENTS_ICON
@@ -170,13 +168,13 @@ class ComponentFrame( wx.Frame ):
             _iconname = args["icon"]
 
         _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(_iconname) )
+        _icon.CopyFromBitmap(spBitmap(_iconname))
         self.SetIcon(_icon)
 
         # colors
-        self.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR'))
-        self.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR'))
-        self.SetFont( self._prefsIO.GetValue('M_FONT'))
+        self.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
+        self.SetForegroundColour(self._prefsIO.GetValue('M_FG_COLOUR'))
+        self.SetFont(self._prefsIO.GetValue('M_FONT'))
 
     # ------------------------------------------------------------------------
 
@@ -184,22 +182,22 @@ class ComponentFrame( wx.Frame ):
         """ Organize all sub-panels into a main panel and return it. """
 
         mainpanel = wx.Panel(self, -1,  style=wx.NO_BORDER)
-        mainpanel.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR'))
-        mainpanel.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR'))
-        mainpanel.SetFont( self._prefsIO.GetValue('M_FONT'))
+        mainpanel.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
+        mainpanel.SetForegroundColour(self._prefsIO.GetValue('M_FG_COLOUR'))
+        mainpanel.SetFont(self._prefsIO.GetValue('M_FONT'))
 
         self.menu    = self._create_menu(mainpanel)
         self.toolbar = self._create_toolbar(mainpanel)
         splitpanel   = self._create_splitter(mainpanel)
 
-        vsizer = wx.BoxSizer( wx.VERTICAL )
-        vsizer.Add( self.toolbar,  proportion=0, flag=wx.ALL|wx.EXPAND, border=0 )
-        vsizer.Add( splitpanel, proportion=1, flag=wx.ALL|wx.EXPAND, border=0 )
+        vsizer = wx.BoxSizer(wx.VERTICAL)
+        vsizer.Add(self.toolbar,  proportion=0, flag=wx.ALL|wx.EXPAND, border=0)
+        vsizer.Add(splitpanel, proportion=1, flag=wx.ALL|wx.EXPAND, border=0)
 
-        sizer = wx.BoxSizer( wx.HORIZONTAL )
-        sizer.Add( self.menu, proportion=0, flag=wx.ALL|wx.EXPAND, border=0)
-        sizer.Add( vsizer, proportion=2, flag=wx.ALL|wx.EXPAND, border=0)
-        mainpanel.SetSizer( sizer )
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+        sizer.Add(self.menu, proportion=0, flag=wx.ALL|wx.EXPAND, border=0)
+        sizer.Add(vsizer, proportion=2, flag=wx.ALL|wx.EXPAND, border=0)
+        mainpanel.SetSizer(sizer)
 
         return mainpanel
 
@@ -210,9 +208,9 @@ class ComponentFrame( wx.Frame ):
 
         menu = MainMenuPanel(parent,  self._prefsIO)
         menu.AddSpacer()
-        menu.AddButton( wx.ID_PREFERENCES, SETTINGS_ICON )
-        menu.AddButton( wx.ID_ABOUT, ABOUT_ICON )
-        menu.AddButton( wx.ID_HELP,  HELP_ICON )
+        menu.AddButton(wx.ID_PREFERENCES, SETTINGS_ICON)
+        menu.AddButton(wx.ID_ABOUT, ABOUT_ICON)
+        menu.AddButton(wx.ID_HELP,  HELP_ICON)
         return menu
 
     # ------------------------------------------------------------------------
@@ -221,10 +219,10 @@ class ComponentFrame( wx.Frame ):
         """ Creates the default toolbar. """
 
         toolbar = MainToolbarPanel(parent, self._prefsIO)
-        toolbar.AddButton( wx.ID_ADD,      ADD_FILE_ICON,  "Add files", tooltip="Add files into the list.")
-        toolbar.AddButton( wx.ID_REMOVE,   REMOVE_ICON,    "Remove",    tooltip="Remove files of the list.")
-        toolbar.AddButton( ID_TB_NEWTAB,   TAB_NEW_ICON,   "New",       tooltip="Open a new page in the notebook.")
-        toolbar.AddButton( ID_TB_CLOSETAB, TAB_CLOSE_ICON, "Close",     tooltip="Close the current page in the notebook.")
+        toolbar.AddButton(wx.ID_ADD,      ADD_FILE_ICON,  "Add files", tooltip="Add files into the list.")
+        toolbar.AddButton(wx.ID_REMOVE,   REMOVE_ICON,    "Remove",    tooltip="Remove files of the list.")
+        toolbar.AddButton(ID_TB_NEWTAB,   TAB_NEW_ICON,   "New",       tooltip="Open a new page in the notebook.")
+        toolbar.AddButton(ID_TB_CLOSETAB, TAB_CLOSE_ICON, "Close",     tooltip="Close the current page in the notebook.")
         toolbar.AddSpacer()
         return toolbar
 
@@ -237,8 +235,8 @@ class ComponentFrame( wx.Frame ):
         splitpanel.SetBackgroundColour(self._prefsIO.GetValue('M_BGM_COLOUR'))
         splitpanel.SetForegroundColour(self._prefsIO.GetValue('M_BGM_COLOUR'))
 
-        self._filepanel = self.CreateFileManager( splitpanel, self._prefsIO)
-        self._clientpanel = self.CreateClient( splitpanel, self._prefsIO)
+        self._filepanel = self.CreateFileManager(splitpanel, self._prefsIO)
+        self._clientpanel = self.CreateClient(splitpanel, self._prefsIO)
 
         splitpanel.SetMinimumPaneSize(MIN_PANEL_W)
         splitpanel.SplitVertically(self._filepanel, self._clientpanel)
@@ -266,10 +264,10 @@ class ComponentFrame( wx.Frame ):
         Create the client panel and return it.
         Must be overridden.
 
-        @param parent (wx.Frame)
-        @param prefsIO (Preferences_IO)
+        :param parent: (wx.Frame)
+        :param prefsIO: (Preferences_IO)
 
-        @return wx.Panel
+        :returns: wx.Panel
 
         """
         raise NotImplementedError
@@ -281,13 +279,13 @@ class ComponentFrame( wx.Frame ):
         Create the file manager panel and return it.
         Can be overridden.
 
-        @param parent (wx.Frame)
-        @param prefsIO (Preferences_IO)
+        :param parent: (wx.Frame)
+        :param prefsIO: (Preferences_IO)
 
-        @return wx.Panel
+        :returns: wx.Panel
 
         """
-        return FileManager( parent, prefsIO=self._prefsIO)
+        return FileManager(parent, prefsIO=self._prefsIO)
 
     # ------------------------------------------------------------------------
     # Callbacks to any kind of event
@@ -302,7 +300,6 @@ class ComponentFrame( wx.Frame ):
 
         """
         ide = event.GetId()
-        #logging.debug('Event id: %d from frame id %d'%(ide, self.GetId()))
 
         if ide == wx.ID_EXIT:
             self.OnExitApp(event)
@@ -336,7 +333,7 @@ class ComponentFrame( wx.Frame ):
             return True
 
         elif ide == wx.ID_ABOUT:
-            ShowAboutDialog( self, self._prefsIO )
+            ShowAboutDialog(self, self._prefsIO)
             return True
 
         return wx.GetApp().ProcessEvent(event)
@@ -346,9 +343,8 @@ class ComponentFrame( wx.Frame ):
     def OnExitApp(self, event):
         """ Destroys the main frame which quits the wxPython application. """
 
-        response = ShowYesNoQuestion( self, self._prefsIO, "Are you sure you want to quit?")
+        response = ShowYesNoQuestion(self, self._prefsIO, "Are you sure you want to quit?")
         if response == wx.ID_YES:
-            logging.info('Analysis tool exit.')
             self.Destroy()
         else:
             event.StopPropagation()
@@ -371,13 +367,13 @@ class ComponentFrame( wx.Frame ):
         """ Received an event to add new files. """
 
         if self._fmtype == "DATAFILES":
-            self.AddFiles( filedialogs.OpenAnnotationFiles() )
+            self.AddFiles(filedialogs.OpenAnnotationFiles())
 
         elif self._fmtype == "SOUNDFILES":
-            self.AddFiles( filedialogs.OpenSoundFiles() )
+            self.AddFiles(filedialogs.OpenSoundFiles())
 
         else:
-            self.AddFiles( filedialogs.OpenAnyFiles() )
+            self.AddFiles(filedialogs.OpenAnyFiles())
 
     # ------------------------------------------------------------------------
 
@@ -388,18 +384,18 @@ class ComponentFrame( wx.Frame ):
         evt.SetEventObject(self)
         wx.PostEvent(self._filepanel, evt)
 
-
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # Client Callbacks
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def OnNewTab(self, event):
         """ Add a page in the client. """
+
         evt = NotebookNewPageEvent()
         evt.SetEventObject(self)
         wx.PostEvent(self._clientpanel, evt)
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def OnCloseTab(self, event):
         """ Close a page in the client. """
@@ -408,14 +404,14 @@ class ComponentFrame( wx.Frame ):
         evt.SetEventObject(self)
         wx.PostEvent(self._clientpanel, evt)
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def OnFileAdded(self, event):
         """ Add a file of the file manager. """
 
-        self.AddFiles( [event.filename] )
+        self.AddFiles([event.filename])
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def OnFileClosed(self, event):
         """ Remove of the file manager. """
@@ -425,13 +421,13 @@ class ComponentFrame( wx.Frame ):
 
         for f in files:
             # Remove of the file manager
-            evt = FileWanderEvent( filename=f, status=False )
+            evt = FileWanderEvent(filename=f, status=False)
             evt.SetEventObject(self)
             wx.PostEvent(self._filepanel, evt)
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # Help... Callbacks
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def OnHelp(self, evt):
         """ Open the help frame. """
@@ -441,7 +437,7 @@ class ComponentFrame( wx.Frame ):
                 c.SetFocus()
                 c.Raise()
                 return True
-        HelpBrowser( self, self._prefsIO )
+        HelpBrowser(self, self._prefsIO)
 
     # ------------------------------------------------------------------------
 
@@ -449,30 +445,29 @@ class ComponentFrame( wx.Frame ):
         """ Open the Settings box. """
 
         import copy
-        p = copy.deepcopy( self._prefsIO )
-        #p = self._prefsIO.Copy() # does not work.
+        p = copy.deepcopy(self._prefsIO)
 
-        prefdlg = SettingsDialog( self, p )
+        prefdlg = SettingsDialog(self, p)
         res = prefdlg.ShowModal()
         if res == wx.ID_OK:
-            self.SetPrefs( prefdlg.GetPreferences() )
+            self.SetPrefs(prefdlg.GetPreferences())
             if self.GetParent() is not None:
                 try:
-                    self.GetParent().SetPrefs( prefdlg.GetPreferences() )
+                    self.GetParent().SetPrefs(prefdlg.GetPreferences())
                 except Exception:
                     pass
         prefdlg.Destroy()
         self._LayoutFrame()
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # Data management
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def AddFiles(self, files):
         """
         Add files into the file manager.
 
-        @param files (list of String)
+        :param files: (list of String)
 
         """
         if len(files) > 0:
@@ -498,24 +493,22 @@ class ComponentFrame( wx.Frame ):
             event.SetEventObject(self)
             wx.PostEvent(self._clientpanel, event)
         else:
-            evt = FileCheckEvent( filename=f, status=s )
+            evt = FileCheckEvent(filename=f, status=s)
             evt.SetEventObject(self)
             wx.PostEvent(self._filepanel, evt)
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # Other
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def SetPrefs(self, prefs):
         """ Fix new preferences. """
 
         self._prefsIO = prefs
-        self.toolbar.SetPrefs( self._prefsIO )
+        self.toolbar.SetPrefs(self._prefsIO)
 
         # change to the children panels
-        evt = SettingsEvent( prefsIO=self._prefsIO )
+        evt = SettingsEvent(prefsIO=self._prefsIO)
         evt.SetEventObject(self)
         wx.PostEvent(self._filepanel, evt)
         wx.PostEvent(self._clientpanel, evt)
-
-#-----------------------------------------------------------------------------

@@ -51,14 +51,14 @@ from wxgui.clients.dataroamerclient import DataRoamerClient
 # Constants
 # ----------------------------------------------------------------------------
 
-NEW_ID      = wx.NewId()
-SAVE_AS_ID  = wx.NewId()
+NEW_ID = wx.NewId()
+SAVE_AS_ID = wx.NewId()
 SAVE_ALL_ID = wx.NewId()
 
 # ----------------------------------------------------------------------------
 
 
-class DataRoamerFrame( ComponentFrame ):
+class DataRoamerFrame(ComponentFrame):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -79,9 +79,9 @@ class DataRoamerFrame( ComponentFrame ):
         ComponentFrame.__init__(self, parent, idc, arguments)
         self._add_accelerator()
 
-        self.toolbar.AddButton(NEW_ID,      NEW_FILE,  "New")
-        self.toolbar.AddButton(wx.ID_SAVE,  SAVE_FILE, "Save")
-        self.toolbar.AddButton(SAVE_AS_ID,  SAVE_AS_FILE, "Save as")
+        self.toolbar.AddButton(NEW_ID, NEW_FILE,  "New")
+        self.toolbar.AddButton(wx.ID_SAVE, SAVE_FILE, "Save")
+        self.toolbar.AddButton(SAVE_AS_ID, SAVE_AS_FILE, "Save as")
         self.toolbar.AddButton(SAVE_ALL_ID, SAVE_ALL_FILE, "Save all")
         self.Bind(wx.EVT_BUTTON, self.DataRoamerProcessEvent)
 
@@ -99,7 +99,7 @@ class DataRoamerFrame( ComponentFrame ):
         accelS = wx.AcceleratorEntry(wx.ACCEL_CTRL, ord('S'), wx.ID_SAVE)
 
         # Save all with CTRL+SHIFT+S
-        accelSS = wx.AcceleratorEntry(wx.ACCEL_CTRL|wx.ACCEL_SHIFT, ord('S'), SAVE_ALL_ID)
+        accelSS = wx.AcceleratorEntry(wx.ACCEL_CTRL | wx.ACCEL_SHIFT, ord('S'), SAVE_ALL_ID)
         
         # Quit with ATL+F4
         accelQ = wx.AcceleratorEntry(wx.ACCEL_NORMAL, wx.WXK_F4, wx.ID_EXIT)
@@ -112,7 +112,7 @@ class DataRoamerFrame( ComponentFrame ):
     def CreateClient(self, parent, prefsIO):
         """ Override. """
 
-        return DataRoamerClient( parent,prefsIO )
+        return DataRoamerClient(parent, prefsIO)
 
     # ------------------------------------------------------------------------
 

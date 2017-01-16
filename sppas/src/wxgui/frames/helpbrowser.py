@@ -1,40 +1,40 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: helpbrowser.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.wxgui.frames.helpbrowser.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    GUI frame to display the documentation files of SPPAS (markdown).
+
+"""
 import codecs
 import os.path
 import re
@@ -43,10 +43,7 @@ import webbrowser
 
 from dependencies.markdown import markdown
 from dependencies.markdown.extensions.tables import TableExtension
-from dependencies.markdown.extensions.fenced_code import FencedCodeExtension
-from dependencies.markdown.extensions.codehilite import CodeHiliteExtension
 
-from wxgui.sp_icons import HELP_ICON
 from wxgui.sp_icons import LOGOUT_ICON
 from wxgui.sp_icons import HOME_ICON
 from wxgui.sp_icons import FORWARD_ICON
@@ -69,25 +66,32 @@ from wxgui.panels.buttons import ButtonToolbarPanel
 
 # ---------------------------------------------------------------------------
 # Functions
+# ---------------------------------------------------------------------------
+
 
 def format_title(content):
     title = ' '.join(content)
     title = title.replace('#', '').strip()
     return title
 
+
 def format_header(content):
     header = content.replace('#', '').strip()
     return header
+
 
 def format_body(content):
     body = ' '.join(content)
     return body
 
+
 def load_page(url_md):
     """
     Load a page. Expected Utf-8 encoding.
-    @param url_md Filename of a markdown file.
-    @return List of lines
+
+    :param url_md: Filename of a markdown file.
+    :returns: List of lines
+
     """
     try:
         with codecs.open(url_md, 'r', 'utf-8') as fd:
@@ -97,20 +101,19 @@ def load_page(url_md):
 
     return content
 
-# End
-# ---------------------------------------------------------------------------
-
-
 # ---------------------------------------------------------------------------
 # One page of the HelpSystem
 # ---------------------------------------------------------------------------
 
-class HelpPage( object ):
+
+class HelpPage(object):
     """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: One page of a wiki-like help system.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      One page of a wiki-like help system.
 
     Convert the original markdown file into html.
 
@@ -119,24 +122,22 @@ class HelpPage( object ):
         """
         Create a page.
 
-        @param help_system (HelpSystem) is the parent
-        @param idp (string) identifier of the page
-        @param header (string) top header of the page
-        @param body(string) body of the page (markdown format)
+        :param help_system: (HelpSystem) is the parent
+        :param idp: (string) identifier of the page
+        :param header: (string) top header of the page
+        :param body: (string) body of the page (markdown format)
 
         """
         self.help_system = help_system
-        self.id     = idp
+        self.id = idp
         self.header = header
-        self.body   = body
+        self.body = body
 
     # -----------------------------------------------------------------------
 
     def _patch_html(self, html_body):
-        """
-        Patch html for blocks of code.
+        """ Patch html for blocks of code. """
 
-        """
         # Patch for Source code
         incode = ""
         tab_body = html_body.split('\n')
@@ -192,13 +193,12 @@ class HelpPage( object ):
     # -----------------------------------------------------------------------
 
     def GetHtml(self):
-        """
-        Get the page content in html (version 3) format.
+        """ Get the page content in html (version 3) format.
 
-        @return string
+        :returns: string
 
         """
-        html_body = markdown(self.body, output_format="html4", extensions=[TableExtension()]) #,FencedCodeExtension()])
+        html_body = markdown(self.body, output_format="html4", extensions=[TableExtension()])
 
         # Change headers
         # Our link markup: Replace Help(foo) with proper link
@@ -219,7 +219,7 @@ class HelpPage( object ):
         while True:
             match = re.search(r"Color\(([^)]+)\)", html_body)
             if match:
-                replacement = "<font color=\"red\" size=\"+2\">%s</font>" %match.group(1)
+                replacement = "<font color=\"red\" size=\"+2\">%s</font>" % match.group(1)
                 html_body = html_body[0:match.start(0)] + replacement + \
                        html_body[match.end(0):]
             else:
@@ -231,29 +231,28 @@ class HelpPage( object ):
         # Code
         html_body = self._patch_html(html_body)
 
-        return u"<h1>%s</h1>\n%s" % (self.header,html_body)
-
-# ---------------------------------------------------------------------------
-
+        return u"<h1>%s</h1>\n%s" % (self.header, html_body)
 
 # ---------------------------------------------------------------------------
 # HelpSystem
 # ---------------------------------------------------------------------------
 
-class HelpSystem( object ):
+
+class HelpSystem(object):
     """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL
-    @summary: A wiki-like help system: data of the pages.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      A wiki-like help system: data of the pages.
 
     """
     def __init__(self, resources_prefix, page_prefix):
-        """
-        Create a new HelpSystem.
+        """ Create a new HelpSystem.
 
-        @param resources_prefix
-        @param page_prefix
+        :param resources_prefix:
+        :param page_prefix:
 
         """
         self.pages = {}
@@ -282,20 +281,16 @@ class HelpSystem( object ):
     # ------------------------------------------------------------------------
 
     def _install_page(self, idp, header="", body=""):
-        """
-        Create a new HelpPage and store it into the dict of pages.
+        """ Create a new HelpPage and store it into the dict of pages. """
 
-        """
         self.pages[idp] = HelpPage(self, idp, header, body)
         self.ranks.append(idp)
 
     # ------------------------------------------------------------------------
 
     def _install_sections_of_chapter(self, chapterid, body=[], whereiam=""):
-        """
-        Install all sections of a chapter: one section=one page.
+        """ Install all sections of a chapter: one section=one page. """
 
-        """
         toc = ""
         sectionid = ""
         sectionheader = ""
@@ -326,10 +321,8 @@ class HelpSystem( object ):
     # ------------------------------------------------------------------------
 
     def _install_chapter(self, url_idx, c):
-        """
-        Load a chapter of the documentation, from an index file.
+        """ Load a chapter of the documentation, from an index file. """
 
-        """
         toc = ""
         base_path = os.path.dirname(url_idx)
         try:
@@ -373,11 +366,10 @@ class HelpSystem( object ):
     # -----------------------------------------------------------------------
 
     def Install(self, doc_idx, header="Help"):
-        """
-        Load the documentation, from an index file: load all found pages.
+        """ Load the documentation, from an index file: load all found pages.
 
-        @param doc_idx (string) Documentation index file name
-        @param header (string) Header of the TOC
+        :param doc_idx: (string) Documentation index file name
+        :param header: (string) Header of the TOC
 
         """
         toc_body = ""
@@ -387,16 +379,16 @@ class HelpSystem( object ):
 
                 # Read the index (the list of chapters of this documentation, one file=one chapter)
                 lines = fd.readlines()
-                if len(lines)==0:
-                    raise Exception('No content at url: %s'%doc_idx)
+                if len(lines) == 0:
+                    raise Exception('No content at url: %s' % doc_idx)
 
                 urls = list()
                 for line in lines:
                     line = line.strip()
-                    line = os.path.join(base_path,line,line+".idx")
+                    line = os.path.join(base_path, line, line+".idx")
                     urls.append( line )
 
-                for c,chapter_idx in enumerate(urls):
+                for c, chapter_idx in enumerate(urls):
                     toc_body += self._install_chapter(chapter_idx,c)
 
         except Exception as e:
@@ -408,11 +400,10 @@ class HelpSystem( object ):
     # -----------------------------------------------------------------------
 
     def GetSearchSesultsPage(self, search):
-        """
-        Return a page, the content is the result of a search request.
+        """ Return a page, the content is the result of a search request.
 
-        @param search (string) Pattern to search in all installed pages.
-        @return string (Html)
+        :param search: (string) Pattern to search in all installed pages.
+        :returns string (Html)
 
         """
         matches = self._get_pages_matching_search(search)
@@ -432,10 +423,9 @@ class HelpSystem( object ):
     # -----------------------------------------------------------------------
 
     def GetPage(self, idp):
-        """
-        Return the page with the given id, or None.
+        """ Return the page with the given id, or None.
 
-        @return HelpPage
+        :returns: HelpPage
 
         """
         return self.pages.get(idp, None)
@@ -443,20 +433,19 @@ class HelpSystem( object ):
     # -----------------------------------------------------------------------
 
     def GetNextPageId(self, idp):
-        """
-        Return the page following the page with the given id, or None.
+        """ Return the page following the page with the given id, or None.
 
-        @return HelpPage
+        :returns: HelpPage
 
         """
         if idp == str(wx.ID_HOME):
             return None
 
-        if not idp in self.ranks:
+        if idp not in self.ranks:
             return None
 
         idx = self.ranks.index(idp)
-        if ( idx+1 < len(self.ranks) ): # not the last index!
+        if idx+1 < len(self.ranks):  # not the last index!
             return self.ranks[idx+1]
 
         return None
@@ -464,28 +453,22 @@ class HelpSystem( object ):
     # -----------------------------------------------------------------------
 
     def GetPreviousPageId(self, idp):
-        """
-        Return the page preceding the page with the given id, or None.
+        """ Return the page preceding the page with the given id, or None.
 
-        @return HelpPage
+        :returns: HelpPage
 
         """
         if idp == str(wx.ID_HOME):
             return None
 
-        if not idp in self.ranks:
+        if idp not in self.ranks:
             return None
 
         idx = self.ranks.index(idp)
-        if ( idx > 0 ): # not the first index!
+        if idx > 0:  # not the first index!
             return self.ranks[idx-1]
 
         return None
-
-    # -----------------------------------------------------------------------
-
-# End HelpSystem
-# ---------------------------------------------------------------------------
 
 
 # ---------------------------------------------------------------------------
@@ -493,12 +476,14 @@ class HelpSystem( object ):
 # ---------------------------------------------------------------------------
 
 
-class HelpBrowser( wx.Frame ):
+class HelpBrowser(wx.Frame):
     """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL
-    @summary: A wiki-like help browser.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      A wiki-like help browser.
 
     """
     def __init__(self, parent, preferences):
@@ -536,8 +521,6 @@ class HelpBrowser( wx.Frame ):
 
         self.Layout()
         self._update_buttons()
-
-    # ------------------------------------------------------------------------
 
     # ------------------------------------------------------------------------
     # Help system, help pages
