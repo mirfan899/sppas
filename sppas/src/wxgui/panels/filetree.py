@@ -45,18 +45,17 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import os.path
+import wx
+import logging
 
 import audiodata.aio
 
-import wx
-from wx.lib.buttons import GenBitmapButton, GenBitmapTextButton
-
-from wxgui.cutils.imageutils   import spBitmap
+from wxgui.cutils.imageutils import spBitmap
 from wxgui.dialogs.filedialogs import OpenSoundFiles
 from wxgui.dialogs.filedialogs import SaveAsAnnotationFile
-from wxgui.dialogs.msgdialogs  import ShowInformation
-from wxgui.dialogs.msgdialogs  import ShowYesNoQuestion
-from wxgui.dialogs.msgdialogs  import Choice
+from wxgui.dialogs.msgdialogs import ShowInformation
+from wxgui.dialogs.msgdialogs import ShowYesNoQuestion
+from wxgui.dialogs.msgdialogs import Choice
 
 import annotationdata.aio
 
@@ -98,10 +97,12 @@ ID_TB_EXPORT = wx.NewId()
 
 class FiletreePanel(wx.Panel):
     """
-    @author:  Brigitte Bigi, Cazembe Henry
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: A panel with a toolbar and a tree-style list of files.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      A panel with a toolbar and a tree-style list of files.
 
     """
     def __init__(self, parent, preferences):
@@ -113,33 +114,33 @@ class FiletreePanel(wx.Panel):
         self._prefsIO = preferences
 
         font = self._prefsIO.GetValue('M_FONT')
-        font.SetWeight( wx.BOLD )
+        font.SetWeight(wx.BOLD)
 
         self._toolbar   = self._create_toolbar()
         self._filestree = self._create_filestree()
 
         _vbox = wx.BoxSizer(wx.VERTICAL)
-        _vbox.Add(self._toolbar,   proportion=0, flag=wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, border=4)
-        _vbox.Add(self._filestree, proportion=1, flag=wx.EXPAND|wx.LEFT|wx.RIGHT, border=4)
+        _vbox.Add(self._toolbar, proportion=0, flag=wx.EXPAND | wx.TOP | wx.LEFT | wx.RIGHT, border=4)
+        _vbox.Add(self._filestree, proportion=1, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=4)
 
         self.GetTopLevelParent().Bind(wx.EVT_CHAR_HOOK, self.OnKeyPress)
-
         self.Bind(wx.EVT_BUTTON, self.OnButtonClick)
 
         self.SetSizer(_vbox)
-        self.SetMinSize((320,200))
+        self.SetMinSize((320, 200))
 
+    # ------------------------------------------------------------------------
 
     def _create_toolbar(self):
         """ Simulate the creation of a toolbar. """
 
         toolbar = MainToolbarPanel(self, self._prefsIO)
-        toolbar.AddButton( wx.ID_ADD,    ADD_FILE_ICON, "Add files", tooltip="Add files into the list.")
-        toolbar.AddButton( ID_TB_ADDDIR, ADD_DIR_ICON,  "Add dir", tooltip="Add a folder into the list.")
-        toolbar.AddButton( wx.ID_REMOVE, REMOVE_ICON,   "Remove",  tooltip="Remove files of the list.")
-        toolbar.AddButton( wx.ID_DELETE, DELETE_ICON,   "Delete",  tooltip="Delete definitively files of the computer.")
-        toolbar.AddButton( wx.ID_SAVEAS, EXPORT_AS_ICON,"Copy",    tooltip="Copy files.")
-        toolbar.AddButton( wx.ID_SAVE,   EXPORT_ICON,   "Export",  tooltip="Export files.")
+        toolbar.AddButton(wx.ID_ADD, ADD_FILE_ICON, "Add files", tooltip="Add files into the list.")
+        toolbar.AddButton(ID_TB_ADDDIR, ADD_DIR_ICON, "Add dir", tooltip="Add a folder into the list.")
+        toolbar.AddButton(wx.ID_REMOVE, REMOVE_ICON, "Remove", tooltip="Remove files of the list.")
+        toolbar.AddButton(wx.ID_DELETE, DELETE_ICON, "Delete", tooltip="Delete definitively files of the computer.")
+        toolbar.AddButton(wx.ID_SAVEAS, EXPORT_AS_ICON, "Copy", tooltip="Copy files.")
+        toolbar.AddButton(wx.ID_SAVE, EXPORT_ICON, "Export", tooltip="Export files.")
         return toolbar
 
     # ------------------------------------------------------------------------
@@ -147,10 +148,10 @@ class FiletreePanel(wx.Panel):
     def _create_filestree(self):
         """ Create the tree to store file names. """
 
-        t = wx.TreeCtrl(self, 1, wx.DefaultPosition, (-1,-1), style=wx.TR_MULTIPLE|wx.TR_HIDE_ROOT|wx.TR_HAS_BUTTONS|wx.NO_BORDER)
-        t.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
-        t.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR') )
-        t.SetFont( self._prefsIO.GetValue('M_FONT') )
+        t = wx.TreeCtrl(self, 1, wx.DefaultPosition, (-1, -1), style=wx.TR_MULTIPLE | wx.TR_HIDE_ROOT | wx.TR_HAS_BUTTONS | wx.NO_BORDER)
+        t.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
+        t.SetForegroundColour(self._prefsIO.GetValue('M_FG_COLOUR'))
+        t.SetFont(self._prefsIO.GetValue('M_FONT'))
 
         t.AddRoot('')
 
@@ -199,14 +200,14 @@ class FiletreePanel(wx.Panel):
         elif ide == wx.ID_SAVE:
             self._export()
 
+    # ------------------------------------------------------------------------
 
     def OnKeyPress(self, event):
-        """
-        Respond to a keypress event.
-        """
+        """ Respond to a keypress event. """
+
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_F5:
-            self.RefreshTree(None)
+            self.RefreshTree()
 
         event.Skip()
 
@@ -224,7 +225,7 @@ class FiletreePanel(wx.Panel):
     def _add_dir(self):
         """ Add the content of a directory. """
 
-        dlg = wx.DirDialog(self, message="Choose a directory:",defaultPath=os.getcwd())
+        dlg = wx.DirDialog(self, message="Choose a directory:", defaultPath=os.getcwd())
         self.paths = []
         if dlg.ShowModal() == wx.ID_OK:
             self._append_dir(dlg.GetPath())
@@ -248,26 +249,28 @@ class FiletreePanel(wx.Panel):
             str_list = ("Are you sure you want to delete definitively "
                         "the following file(s) of the file system?\n%s" % str_list)
 
-        dlg = ShowYesNoQuestion( self, self._prefsIO, str_list)
+        dlg = ShowYesNoQuestion(self, self._prefsIO, str_list)
         # Yes, the user wants to delete...
         if dlg == wx.ID_YES:
 
             errors = [] # list of not deleted files
             for filename in selection:
                 try:
-                    os.remove( filename )
+                    os.remove(filename)
                 except Exception as e:
-                    errors.append( filename )
+                    errors.append(filename)
                     for item in self._filestree.GetSelections():
                         f = self._filestree.GetItemText(item)
-                        if filename.endswith( f ):
-                            self._filestree.UnselectItem( item )
+                        if filename.endswith(f):
+                            self._filestree.UnselectItem(item)
 
             # some files were not deleted
             if len(errors)>0:
                 errormsg="\n".join(errors)
-                ShowInformation( self, self._prefsIO, "Some files were not deleted.\n"
-                        "Probably you don't have access right to do so...\n%s"%errormsg, style=wx.ICON_WARNING)
+                ShowInformation(self, self._prefsIO,
+                                "Some files were not deleted.\n"
+                                "Probably you don't have access right to do so...\n%s" % errormsg,
+                                style=wx.ICON_WARNING)
 
             # Remove deleted files of the tree
             self._remove()
@@ -286,10 +289,7 @@ class FiletreePanel(wx.Panel):
         errors = False
         extensions = annotationdata.aio.extensions_out
         dlg = Choice(self, self._prefsIO, "Select the file extension to export to:", extensions)
-                     #wx.SingleChoiceDialog( self,
-                     #              "Check the file format:",
-                     #              "File extension", extensions)
-        dlg.SetSelection( 0 ) # default choice (=xra)
+        dlg.SetSelection(0)  # default choice (=xra)
 
         if dlg.ShowModal() == wx.ID_OK:
             # get the index of the extension
@@ -299,10 +299,12 @@ class FiletreePanel(wx.Panel):
                 try:
                     oldextension = os.path.splitext(filename)[1][1:]
                     newfilename = filename.replace("."+oldextension,extensions[checked])
-                    trs = annotationdata.aio.read( filename )
+                    trs = annotationdata.aio.read(filename)
                     annotationdata.aio.write(newfilename, trs)
                 except Exception as e:
-                    ShowInformation( self, self._prefsIO, "Export failed for file %s: %s" % (filename,e), style=wx.ICON_ERROR)
+                    ShowInformation(self, self._prefsIO,
+                                    "Export failed for file %s: %s" % (filename, e),
+                                    style=wx.ICON_ERROR)
                     errors = True
                 else:
                     self._append_file(newfilename)
@@ -312,7 +314,7 @@ class FiletreePanel(wx.Panel):
         dlg.Destroy()
 
         if errors is False:
-            ShowInformation( self, self._prefsIO, "Export with success.", style=wx.ICON_INFORMATION)
+            ShowInformation(self, self._prefsIO, "Export with success.", style=wx.ICON_INFORMATION)
 
     # -----------------------------------------------------------------------
 
@@ -328,14 +330,14 @@ class FiletreePanel(wx.Panel):
             default_file = os.path.basename(filename)
 
             # Show the dialog and retrieve the user response.
-            newfilename = SaveAsAnnotationFile( default_dir, default_file )
+            newfilename = SaveAsAnnotationFile(default_dir, default_file)
             # If it is the OK response, process the data.
             if newfilename:
                 try:
                     trs = annotationdata.aio.read(filename)
                     annotationdata.aio.write(newfilename, trs)
                 except Exception as e:
-                    ShowInformation( self, self._prefsIO, "Copy/Export failed: %s" % e, style=wx.ICON_ERROR)
+                    ShowInformation(self, self._prefsIO, "Copy/Export failed: %s" % e, style=wx.ICON_ERROR)
                 else:
                     self._append_file(newfilename)
 
@@ -347,42 +349,52 @@ class FiletreePanel(wx.Panel):
         """ Fix new preferences. """
 
         self._prefsIO = prefs
-        self.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
-        self.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR') )
-        self.SetFont( self._prefsIO.GetValue('M_FONT') )
+        self.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
+        self.SetForegroundColour(self._prefsIO.GetValue('M_FG_COLOUR'))
+        self.SetFont(self._prefsIO.GetValue('M_FONT'))
 
         font = self._prefsIO.GetValue('M_FONT')
-        font.SetWeight( wx.BOLD )
+        font.SetWeight(wx.BOLD)
 
-        self._filestree.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
-        self._filestree.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR') )
-        self._filestree.SetFont( self._prefsIO.GetValue('M_FONT') )
+        self._filestree.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
+        self._filestree.SetForegroundColour(self._prefsIO.GetValue('M_FG_COLOUR'))
+        self._filestree.SetFont(self._prefsIO.GetValue('M_FONT'))
 
-        self._toolbar.SetPrefs( self._prefsIO )
+        self._toolbar.SetPrefs(self._prefsIO)
 
     # -----------------------------------------------------------------------
 
-    def RefreshTree(self, filelist=None):
+    def RefreshTree(self, filelist=[]):
         """ Refresh the tree, and optionally add new files. """
 
-        if filelist is None:
-            filelist = []
+        logging.debug('FLP Refresh tree:')
+        if len(filelist) == 0:
             for ext in audiodata.aio.extensions:
                 filelist.extend(self.GetSelected(ext))
 
+        if len(filelist) == 0:
+            for d in self._get_all_dirs(self._filestree.GetRootItem()):
+                d_name = self._filestree.GetItemText(d)
+                filelist.append(d_name)
+
         for f in filelist:
-            self._append_file(f)
+            if os.path.isfile(f):
+                logging.debug('... file: %s' % f)
+                self._append_file(f)
+            else:
+                logging.debug('... dir: %s' % f)
+                self._append_dir(f)
 
         self.Refresh()
 
     # -----------------------------------------------------------------------
 
     def GetSelected(self, extension=""):
-        """
-        Return a list containing the filepath of each selected regular
-        file (not folders) from the tree. Selecting a folder item equals to select all its items.
+        """ Return a list containing the filepath of each selected regular
+        file (not folders) from the tree.
+        Selecting a folder item equals to select all its items.
 
-        @param Extension of the selected file
+        :param extension: Extension of the selected file
 
         """
         sel = []
@@ -394,12 +406,12 @@ class FiletreePanel(wx.Panel):
             try:
                 IsDir = os.path.isdir(filename)
             except UnicodeEncodeError:
-                ShowInformation( None, self._prefsIO, "File names can only contain ASCII characters", style=wx.ICON_INFORMATION)
+                ShowInformation(None, self._prefsIO, "File names can only contain ASCII characters.", style=wx.ICON_INFORMATION)
                 continue
 
             if item == self._filestree.GetRootItem():
                 dir_item, cookie = self._filestree.GetFirstChild(item)
-                while(dir_item.IsOk()):
+                while dir_item.IsOk():
                     self._get_all_filepaths(dir_item, sel, extension=extension)
                     dir_item, cookie = self._filestree.GetNextChild(item, cookie)
                 return sel
@@ -409,16 +421,11 @@ class FiletreePanel(wx.Panel):
                 dir_id = self._filestree.GetItemParent(item)
                 dirname = self._filestree.GetItemText(dir_id)
                 fpath = os.path.join(dirname, filename)
-                #if the file has the right extension and is not already in the the list sel, append it to sel
-                if filename.lower().endswith(extension.lower()) and not fpath in sel:
+                # if the file has the right extension and is not already in the the list sel, append it to sel
+                if filename.lower().endswith(extension.lower()) and fpath not in sel:
                     sel.append(fpath)
 
         return sel
-
-    # -----------------------------------------------------------------------
-#     def get_filestree(self):
-#         return self._filestree
-
 
     # ------------------------------------------------------------------------
     # Private
@@ -430,14 +437,18 @@ class FiletreePanel(wx.Panel):
             if not item == self._filestree.GetRootItem():
                 self._filestree.Delete(item)
 
+    # ------------------------------------------------------------------------
+
     def _append_file(self, filename):
-        """
-        Add the file to the tree if it is not already in it.
+        """ Add the file to the tree if it is not already in it.
+
+        :param filename:
+
         """
         # Get the directory name
-        dirname   = os.path.dirname( filename )
-        basename  = os.path.basename( filename )
-        fname, fileExtension = os.path.splitext( filename )
+        dirname = os.path.dirname(filename)
+        basename = os.path.basename(filename)
+        fname, fileExtension = os.path.splitext(filename)
 
         # Add the directory as item of the tree if it isn't already done
         item = self._get_item_by_label(dirname, self._filestree.GetRootItem())
@@ -458,21 +469,22 @@ class FiletreePanel(wx.Panel):
         self._filestree.SortChildren(item)
         self._filestree.ExpandAll()
 
+    # ------------------------------------------------------------------------
 
     def _append_dir(self, txt):
-        """
-        Add the directory as item of the tree.
-        """
-        #files contains all the files in the appended dir
+        """ Add the directory as item of the tree. """
+
+        # files contains all the files in the appended dir
         files = os.listdir(txt)
         wavfile_list = []
-        #store all the wav file names in wavfile_list
+
+        # store all the wav file names in wavfile_list
         for f in files:
             filename, extension = os.path.splitext(f)
             if extension.lower() in audiodata.aio.extensions:
                 wavfile_list.append(filename)
 
-        #add all the children directories
+        # add all the children directories
         for f in files:
             try:
                 if os.path.isdir(os.path.join(txt, f)):
@@ -480,12 +492,12 @@ class FiletreePanel(wx.Panel):
             except UnicodeDecodeError:
                 pass
 
-        #if the directory 'txt' does not directly contains wav file, leave the function
+        # if the directory 'txt' does not directly contains wav file, leave the function
         if len(wavfile_list) == 0:
             self._filestree.ExpandAll()
             return
 
-        #Test if the directory is already appended
+        # test if the directory is already appended
         dir_already_appended = False
         for dir in self._get_all_dirs(self._filestree.GetRootItem()):
             if self._filestree.GetItemText(dir) == txt:
@@ -500,12 +512,12 @@ class FiletreePanel(wx.Panel):
         for f in files:
             if self._is_file_in_dirnode(f, item):
                 continue
-            #if it is a wav file, add it as item of the tree
+            # if it is a wav file, add it as item of the tree
             try:
                 if f.lower() in audiodata.aio.extensions:
                     #self._add_item(item, f)
                     #add the file only if it is not in the list
-                    child = self._get_item_by_label(os.path.basename( f ), item)
+                    child = self._get_item_by_label(os.path.basename(f), item)
                     if not child.IsOk():
                         child = self._add_item(item, f)
 
@@ -514,12 +526,12 @@ class FiletreePanel(wx.Panel):
 
             else:
                 for wav_fname in wavfile_list:
-                    #if the file is associated to a wave file, add it to the tree as a text file
+                    # if the file is associated to a wave file, add it to the tree as a text file
                     try:
                         if f.startswith(wav_fname):
                             #self._add_item(item, f)
-                            #add the file only if it is not in the list
-                            child = self._get_item_by_label(os.path.basename( f ), item)
+                            # add the file only if it is not in the list
+                            child = self._get_item_by_label(os.path.basename(f), item)
                             if not child.IsOk():
                                 child = self._add_item(item, f)
 
@@ -530,17 +542,17 @@ class FiletreePanel(wx.Panel):
         self._filestree.SortChildren(item)
         self._filestree.ExpandAll()
 
+    # ------------------------------------------------------------------------
 
     def _add_item(self, parent, son, isdir=False):
-        """
-        Add an item 'son' of type 'type' to the node 'parent'
+        """ Add an item 'son' of type 'type' to the node 'parent'
 
-        -son is text of the item to be added
-        -parent is the node to which the item will be added
-        -isdir is true if the item to add is a dir
-        -color is the background color of the item
+        :param son: is text of the item to be added
+        :param parent: is the node to which the item will be added
+        :param isdir: is true if the item to add is a dir
 
-        @return the child
+        :returns the child
+
         """
         fileName, fileExtension = os.path.splitext(son.lower())
 
@@ -625,11 +637,12 @@ class FiletreePanel(wx.Panel):
 
         return child
 
+    # ------------------------------------------------------------------------
 
     def _add_related_files(self, file_path):
-        """
-        Add all the files and directories with the same name and
+        """ Add all the files and directories with the same name and
         in the same directory as the file in parameters.
+
         """
         dirname  = os.path.dirname(file_path)
         filename = os.path.basename(file_path)
@@ -658,11 +671,12 @@ class FiletreePanel(wx.Panel):
         self._filestree.SortChildren(dir_item)
         self._filestree.ExpandAll()
 
+    # ------------------------------------------------------------------------
 
     def _get_item_by_label(self, search_text, root_item):
-        """
-        Search the item that as 'search_text' as text and returns it.
+        """ Search the item that as 'search_text' as text and returns it.
         If not found, return a new wx.TreeItemId()
+
         """
         item, cookie = self._filestree.GetFirstChild(root_item)
 
@@ -678,11 +692,11 @@ class FiletreePanel(wx.Panel):
 
         return wx.TreeItemId()
 
+    # ------------------------------------------------------------------------
 
     def _get_all_dirs(self, root_item):
-        """
-        Return all the paths of the directories in the tree.
-        """
+        """ Return all the paths of the directories in the tree. """
+
         all_dirs = []
         item, cookie = self._filestree.GetFirstChild(root_item)
         while item.IsOk():
@@ -691,7 +705,7 @@ class FiletreePanel(wx.Panel):
 
         return all_dirs
 
-
+    # ------------------------------------------------------------------------
 
     def _is_file_in_dirnode(self, filename, item):
         """
@@ -709,10 +723,10 @@ class FiletreePanel(wx.Panel):
 
         return False
 
+    # ------------------------------------------------------------------------
 
     def _get_all_filepaths(self, dir, pathlist=[], extension=""):
-        """
-        Return a list containing the filepath of each regular file
+        """ Return a list containing the filepath of each regular file
         (not folders) from the tree.
         """
         dirname = self._filestree.GetItemText(dir)
@@ -726,6 +740,5 @@ class FiletreePanel(wx.Panel):
             file_item, cookie = self._filestree.GetNextChild(dir, cookie)
 
         return pathlist
-
 
 # ----------------------------------------------------------------------------

@@ -1,40 +1,38 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: aannotations.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.wxgui.panels.aannotations.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import wx
 import wx.lib.newevent
 import wx.lib.scrolledpanel
@@ -44,6 +42,7 @@ from annotations.param import sppasParam
 
 from wxgui.cutils.imageutils import spBitmap
 from wxgui.cutils.ctrlutils import CreateGenButton
+
 from wxgui.views.annotationoptions import spAnnotationConfig
 from wxgui.process.annotateprocess import AnnotateProcess
 
@@ -55,40 +54,36 @@ from wxgui.sp_icons import UNLINK_ICON
 from wxgui.sp_icons import ANNOTATE_ICON
 import wxgui.ui.CustomCheckBox as CCB
 
-
 # ----------------------------------------------------------------------------
 # Constants
 # ----------------------------------------------------------------------------
 
 LANG_NONE = "---"
 
-RUN_ID  = wx.NewId()
+RUN_ID = wx.NewId()
 LINK_ID = wx.NewId()
-
 
 # ----------------------------------------------------------------------------
 # Events
 # ----------------------------------------------------------------------------
 
-#event launched when a step is checked or unchecked
+# event launched when a step is checked or unchecked
 stepEvent, EVT_STEP_EVENT = wx.lib.newevent.NewEvent()
 
-#event launched when a language is chosen
+# event launched when a language is chosen
 langEvent, EVT_LANG_EVENT = wx.lib.newevent.NewEvent()
 
-
-# ----------------------------------------------------------------------------
-# class sppasStepPanel
 # ----------------------------------------------------------------------------
 
-class sppasStepPanel( wx.Panel ):
+
+class sppasStepPanel(wx.Panel):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    @summary:      Panel with an annotation and the language choice.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Panel with an annotation and the language choice.
 
     Panel containing a checkbox and eventually a choice of languages for a
     given annotation.
@@ -100,45 +95,47 @@ class sppasStepPanel( wx.Panel ):
         self.SetBackgroundColour(preferences.GetValue('M_BG_COLOUR'))
 
         # Members
-        self.parameters  = parameters
-        self.step_idx    = index
-        self._prefsIO    = preferences
-        choicelist       = self.parameters.get_langlist(index)
-        self.choice      = None
+        self.parameters = parameters
+        self.step_idx = index
+        self._prefsIO = preferences
+        choicelist = self.parameters.get_langlist(index)
+        self.choice = None
         self.opened_frames = {}
         self.ID_FRAME_ANNOTATION_CFG = wx.NewId()
 
         step_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        #create the checkbox allowing to select or unselect the step
+        # create the checkbox allowing to select or unselect the step
         self.checkbox = CCB.CustomCheckBox(self, -1, self.parameters.get_step_name(index), CCB_TYPE="activecheck")
         self.checkbox.SetFont( self._prefsIO.GetValue( 'M_FONT'))
         self.checkbox.SetBackgroundColour( self._prefsIO.GetValue( 'M_BG_COLOUR' ))
         self.checkbox.SetForegroundColour( self._prefsIO.GetValue( 'M_FG_COLOUR' ))
         self.checkbox.SetSpacing( self._prefsIO.GetValue( 'F_SPACING' ))
 
-        self.checkbox.Bind(wx.EVT_CHECKBOX, functools.partial(self.on_check_changed, step_idx=index))
-        step_sizer.Add(self.checkbox, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 8)
+        self.checkbox.Bind(wx.EVT_CHECKBOX, self.on_check_changed)
+        step_sizer.Add(self.checkbox, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 8)
 
-        #create the panel allowing to show configuration panel
+        # create the panel allowing to show configuration panel
         self.choice = None
-        #if there are different languages available, add a choice to the panel
+        # if there are different languages available, add a choice to the panel
         if len(choicelist) > 0:
-            choicelist.append( LANG_NONE )
-            self.choice = wx.Choice(self, -1, choices = sorted(choicelist))
-            self.choice.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
-            self.choice.SetForegroundColour( self._prefsIO.GetValue('M_FGD_COLOUR') )
-            self.choice.SetFont( self._prefsIO.GetValue('M_FONT') )
+            choicelist.append(LANG_NONE)
+            self.choice = wx.ComboBox(self, -1, choices=sorted(choicelist))
+            self.choice.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
+            self.choice.SetForegroundColour(self._prefsIO.GetValue('M_FGD_COLOUR'))
+            self.choice.SetFont(self._prefsIO.GetValue('M_FONT'))
+            self.choice.SetSelection(self.choice.GetItems().index(LANG_NONE))
+            self.choice.Bind(wx.EVT_COMBOBOX, self.on_lang_changed)
 
-            self.choice.SetSelection(self.choice.GetItems().index( LANG_NONE ))
-            self.choice.Bind(wx.EVT_CHOICE, functools.partial(self.on_lang_changed, step_idx=index))
-            step_sizer.Add(wx.StaticLine(self, style=wx.LI_HORIZONTAL), proportion=1, flag=wx.ALIGN_CENTER_VERTICAL |wx.LEFT|wx.RIGHT, border=4)
-            step_sizer.Add(self.choice, 0,  wx.ALIGN_CENTER_VERTICAL|wx.ALL, 0)#, wx.ALIGN_RIGHT)
+            line = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
+            step_sizer.Add(line, proportion=1, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=4)
+            step_sizer.Add(self.choice, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 0)
 
         d = self.parameters.get_step_descr(index)
-        self.text = wx.TextCtrl(self, wx.ID_ANY, value=d, style=wx.TE_READONLY | wx.TE_MULTILINE | wx.NO_BORDER)
-        self.text.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR'))
-        self.text.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR'))
-        self.text.SetFont( self._prefsIO.GetValue('M_FONT') )
+        self.text = wx.TextCtrl(self, wx.ID_ANY, value=d,
+                                style=wx.TE_READONLY | wx.TE_MULTILINE | wx.NO_BORDER | wx.TE_NO_VSCROLL | wx.TE_WORDWRAP)
+        self.text.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
+        self.text.SetForegroundColour(self._prefsIO.GetValue('M_FG_COLOUR'))
+        self.text.SetFont(self._prefsIO.GetValue('M_FONT'))
 
         self.link = wx.StaticText(self, -1, "Configure...")
         self.link.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
@@ -149,21 +146,18 @@ class sppasStepPanel( wx.Panel ):
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(step_sizer, proportion=0, flag=wx.LEFT | wx.TOP, border=2)
         sizer.Add(self.link,  proportion=0, flag=wx.LEFT, border=2)
-        sizer.Add(self.text,  proportion=1, flag=wx.LEFT | wx.EXPAND, border=2)
+        sizer.Add(self.text,  proportion=1, flag=wx.LEFT | wx.TOP | wx.EXPAND, border=2)
 
+        self.SetMinSize((-1, 60))
         self.SetSizerAndFit(sizer)
 
-
-    def on_check_changed(self, evt, step_idx):
+    def on_check_changed(self, evt):
         if hasattr(evt, 'IsChecked'):
             checked = evt.IsChecked()
         else:
             checked = True
-        #create the a step event
-        event = stepEvent(step_idx=step_idx, checked=checked)
-        #post the event
+        event = stepEvent(step_idx=self.step_idx, checked=checked)
         wx.PostEvent(self, event)
-
 
     def on_click(self, event):
         self.on_check_changed(event, self.step_idx)
@@ -178,24 +172,19 @@ class sppasStepPanel( wx.Panel ):
             self.opened_frames[frameId].SetFocus()
             self.opened_frames[frameId].Raise()
 
-    def on_lang_changed(self, evt, step_idx):
-        #create the a step event
-        event = langEvent(step_idx=step_idx, lang=evt.GetString())
-        #post the event
+    def on_lang_changed(self, event):
+        event = langEvent(step_idx=self.step_idx, lang=self.choice.GetValue())
         wx.PostEvent(self, event)
 
-
     def set_lang(self, lang):
-        if self.choice != None:
+        if self.choice is not None:
                 if lang in self.choice.GetItems():
-                    #select the language in parameter
                     self.choice.SetSelection(self.choice.GetItems().index(lang))
                 else:
-                    #empty the selection
+                    # empty the selection
                     self.choice.SetSelection(self.choice.GetItems().index( LANG_NONE ))
                     self.parameters.set_lang(None, self.step_idx)
                 self.parameters.set_lang(lang, self.step_idx)
-
 
     def SetPrefs(self, prefs):
         """
@@ -221,11 +210,8 @@ class sppasStepPanel( wx.Panel ):
 
         self.Refresh()
 
-
-
 # ----------------------------------------------------------------------------
-# class AnnotationPanel
-# ----------------------------------------------------------------------------
+
 
 class AnnotationsPanel( wx.lib.scrolledpanel.ScrolledPanel ):
     """
@@ -270,7 +256,7 @@ class AnnotationsPanel( wx.lib.scrolledpanel.ScrolledPanel ):
         self.Bind(wx.EVT_BUTTON, self.on_sppas_run, self._brun, RUN_ID)
         self.SetSizer(_vbox)
         self.SetupScrolling(scroll_x=True, scroll_y=True)
-        self.SetMinSize(wx.Size(MIN_PANEL_W,MIN_PANEL_H))
+        self.SetMinSize(wx.Size(MIN_PANEL_W, MIN_PANEL_H))
 
     def __create_content(self):
         """ Annotation and language choices."""
@@ -280,10 +266,10 @@ class AnnotationsPanel( wx.lib.scrolledpanel.ScrolledPanel ):
         self.steplist_panel.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
         sbox = wx.BoxSizer(wx.VERTICAL)
         for i in range( len(self.parameters.get_steplist()) ):
-            p = sppasStepPanel( self.steplist_panel, self.parameters, self._prefsIO, i )
+            p = sppasStepPanel(self.steplist_panel, self.parameters, self._prefsIO, i)
             p.Bind(EVT_STEP_EVENT, self.on_check_changed)
             p.Bind(EVT_LANG_EVENT, self.on_lang_changed)
-            self.step_panels.append( p )
+            self.step_panels.append(p)
             self.activated.append(False)
             sbox.Add(p, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, border=4)
         self.steplist_panel.SetSizer(sbox)
@@ -296,7 +282,7 @@ class AnnotationsPanel( wx.lib.scrolledpanel.ScrolledPanel ):
         self.Bind(wx.EVT_BUTTON, self.on_link, self.link_btn, LINK_ID)
         self.on_link(None)
 
-        _box.Add(self.steplist_panel, 1, wx.EXPAND, 0)
+        _box.Add(self.steplist_panel, 2, wx.RIGHT | wx.EXPAND, 2)
         _box.Add(self.link_btn, 0, wx.LEFT | wx.EXPAND, 4)
         return _box
 

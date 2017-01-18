@@ -1,73 +1,66 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: annotateprocess.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
+        http://www.sppas.org/
 
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
+        Use of this software is governed by the GNU Public License, version 3.
 
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.wxgui.process.annotateprocess.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import os
 import wx
 import shutil
 
 from annotations.manager import sppasAnnotationsManager
 
+from wxgui.sp_consts import ID_FILES
 from wxgui.views.log import ShowLogDialog
 from wxgui.views.processprogress import ProcessProgressDialog
 from wxgui.dialogs.msgdialogs import ShowInformation
 
 # ----------------------------------------------------------------------------
 
-class AnnotateProcess( object ):
+
+class AnnotateProcess(object):
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: Automatic annotation process, with progress bar.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Automatic annotation process, with progress bar.
 
     """
     def __init__(self, preferences):
-        """
-        Constructor.
+        """ Constructor.
 
-        @param preferences (Preferences)
+        :param preferences: (Preferences)
 
         """
         self.process = None
@@ -76,10 +69,9 @@ class AnnotateProcess( object ):
     # ------------------------------------------------------------------------
 
     def IsRunning(self):
-        """
-        Return True if the process is running.
+        """ Return True if the process is running.
 
-        @return (bool)
+        :returns (bool)
 
         """
         if self.process is None:
@@ -89,14 +81,18 @@ class AnnotateProcess( object ):
     # ------------------------------------------------------------------------
 
     def Run(self, parent, filelist, activeannot, parameters):
-        """
-        Execute the automatic annotations.
+        """ Execute the automatic annotations.
+
+        :param parent: (wx.Window)
+        :param filelist:
+        :param activeannot:
+        :param parameters:
 
         """
         # Check input files
         if len(filelist) == 0:
             message = "Empty selection! Select audio file(s) to annotate."
-            ShowInformation( None, self.preferences, message )
+            ShowInformation(None, self.preferences, message)
             return
 
         # Fix options
@@ -105,17 +101,17 @@ class AnnotateProcess( object ):
             if activeannot[i]:
                 nbsteps = nbsteps + 1
                 parameters.activate_step(i)
-                #if there are languages available and none of them is selected, print an error
-                if len(parameters.get_langlist(i)) > 0 and parameters.get_lang(i) == None:
+                # if there are languages available and none of them is selected, print an error
+                if len(parameters.get_langlist(i)) > 0 and parameters.get_lang(i) is None:
                     message = "There isn't any language selected for the annotation \"%s\"" % parameters.get_step_name(i)
-                    ShowInformation( None, self.preferences, message )
+                    ShowInformation(None, self.preferences, message)
                     return
             else:
                 parameters.disable_step(i)
 
         if not nbsteps:
-            message = "No annotation selected! Check steps to annotate."
-            ShowInformation( None, self.preferences, message )
+            message = "No annotation selected!"
+            ShowInformation(None, self.preferences, message)
             return
 
         parameters.set_sppasinput(filelist)
@@ -123,34 +119,36 @@ class AnnotateProcess( object ):
 
         # Create the progress bar then run the annotations
         wx.BeginBusyCursor()
-        p = ProcessProgressDialog(parent, self.preferences)
-        p.set_title("Automatic Annotation progress...")
+        p = ProcessProgressDialog(parent, self.preferences, "Automatic annotation processing...")
         self.process = sppasAnnotationsManager(parameters)
-        self.process.run_annotations( p )
+        self.process.run_annotations(p)
         p.close()
         self.process = None
         wx.EndBusyCursor()
 
+        # Update the file tree (append new annotated files)
+        try:
+            evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, ID_FILES)
+            evt.SetEventObject(parent)
+            wx.PostEvent(parent.GetTopLevelParent(), evt)
+            parent.GetTopLevelParent().SetFocus()
+            parent.GetTopLevelParent().Raise()
+        except Exception as e:
+            import logging
+            logging.debug("%s" % str(e))
+            pass
+
         # Show report
         try:
             ShowLogDialog(parent, self.preferences, parameters.get_logfilename())
-        except Exception as e:
-            import logging
-            #import traceback
-            #print traceback.format_exc()
-            logging.debug('Log Error: %s'%str(e))
-            message = "Automatic annotation finished.\nSee " + parameters.get_logfilename() + " for details.\nThanks for using SPPAS.\n"
-            ShowInformation( None, self.preferences, message )
-
-        try:
-            os.remove(parameters.get_logfilename())
-            # eg. source or destination doesn't exist
-        except IOError, shutil.Error:
-            pass
-
-        try:
-            parent.GetTopLevelParent().SetFocus()
-            parent.GetTopLevelParent().Raise()
-            parent.GetTopLevelParent().RefreshTree()
+            try:
+                os.remove(parameters.get_logfilename())
+                # eg. source or destination doesn't exist
+            except IOError, shutil.Error:
+                pass
         except Exception:
-            pass
+            message = "Automatic annotation finished.\nSee " + \
+                      parameters.get_logfilename() + \
+                      " for details.\nThanks for using SPPAS.\n"
+            ShowInformation(None, self.preferences, message)
+

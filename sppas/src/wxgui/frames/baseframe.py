@@ -345,6 +345,9 @@ class ComponentFrame(wx.Frame):
 
         response = ShowYesNoQuestion(self, self._prefsIO, "Are you sure you want to quit?")
         if response == wx.ID_YES:
+            if self.GetParent() is not None:
+                self.GetParent().SetFocus()
+                self.GetParent().Raise()
             self.Destroy()
         else:
             event.StopPropagation()

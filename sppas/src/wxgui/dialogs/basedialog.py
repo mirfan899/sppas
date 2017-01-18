@@ -111,7 +111,7 @@ class spBaseDialog(wx.Dialog):
         paneltext = wx.Panel(self, -1, style=wx.NO_BORDER)
         paneltext.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
         sizertext = wx.BoxSizer()
-        text = wx.StaticText(paneltext, label=title_text)
+        text = wx.StaticText(paneltext, label=title_text, style=wx.ALIGN_CENTER)
         text.SetFont(self.preferences.GetValue('M_HEADER_FONT'))
         text.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
         text.SetForegroundColour(self.preferences.GetValue('M_FG_COLOUR'))
@@ -120,7 +120,7 @@ class spBaseDialog(wx.Dialog):
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         sizer.Add(sBmp, proportion=0, flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=4)
-        sizer.Add(paneltext, proportion=1, flag=wx.EXPAND|wx.ALL, border=4)
+        sizer.Add(paneltext, proportion=1, flag=wx.EXPAND | wx.ALL, border=4)
         panel.SetSizer(sizer)
         panel.SetAutoLayout(True)
 
@@ -180,7 +180,7 @@ class spBaseDialog(wx.Dialog):
 
         :param leftbuttons (list)
         :param rightbuttons (list)
-        @return Sizer.
+        :returns: Sizer.
 
         """
         button_box = wx.BoxSizer(wx.HORIZONTAL)
@@ -198,7 +198,7 @@ class spBaseDialog(wx.Dialog):
 
     # -----------------------------------------------------------------------
 
-    def CreateTextCtrl(self, text, style=wx.TE_MULTILINE|wx.NO_BORDER):
+    def CreateTextCtrl(self, text, style=wx.TE_MULTILINE | wx.NO_BORDER | wx.TE_NO_VSCROLL | wx.TE_WORDWRAP):
         """
         Return a wx.TextCtrl with appropriate font and style.
 
@@ -237,9 +237,8 @@ class spBaseDialog(wx.Dialog):
 
     # -----------------------------------------------------------------------
 
-    def LayoutComponents(self, title, content, buttonbox):
-        """
-        Layout the components of the dialog.
+    def LayoutComponents(self, title, content, buttonbox=None):
+        """ Layout the components of the dialog.
           - title at the top
           - then eventually the toolbar
           - then the content
@@ -251,7 +250,8 @@ class spBaseDialog(wx.Dialog):
         if self.toolbar is not None:
             vbox.Add(self.toolbar, 0, flag=wx.LEFT|wx.RIGHT|wx.EXPAND, border=2)
         vbox.Add(content,   2, flag=wx.ALL|wx.EXPAND, border=2)
-        vbox.Add(buttonbox, 0, flag=wx.LEFT|wx.RIGHT|wx.BOTTOM|wx.EXPAND, border=2)
+        if buttonbox is not None:
+            vbox.Add(buttonbox, 0, flag=wx.LEFT|wx.RIGHT|wx.BOTTOM|wx.EXPAND, border=2)
         self.SetSizerAndFit(vbox)
 
 # ---------------------------------------------------------------------------

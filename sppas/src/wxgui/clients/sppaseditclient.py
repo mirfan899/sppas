@@ -262,7 +262,7 @@ class SppasEdit( wx.Panel ):
 
         return prefs
 
-    #-----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
 
 
     # ------------------------------------------------------------------------
@@ -293,9 +293,9 @@ class SppasEdit( wx.Panel ):
     # ------------------------------------------------------------------------
 
 
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
     # Callbacks to keyboard events
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def OnKeyPress(self, event):
@@ -489,13 +489,13 @@ class NavigatePanel( wx.Panel ):
         self.Layout()
 
     # End __init__
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
 
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
     # Callbacks for Scrolling...
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def onGoStart(self, event):
@@ -505,7 +505,7 @@ class NavigatePanel( wx.Panel ):
         self.SetNewPeriod( 1.0, "start" )
 
     # End onGoStart
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def onGoBack(self, event):
@@ -515,7 +515,7 @@ class NavigatePanel( wx.Panel ):
         self.SetNewPeriod( 1.0 - self._scrollcoef/100.0, "scroll" )
 
     # End onGoBack
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def onGoNext(self, event):
@@ -525,7 +525,7 @@ class NavigatePanel( wx.Panel ):
         self.SetNewPeriod( 1.0 + self._scrollcoef/100.0, "scroll" )
 
     # End onGoNext
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def onGoEnd(self, event):
@@ -535,12 +535,12 @@ class NavigatePanel( wx.Panel ):
         self.SetNewPeriod( 1.0, "end" )
 
     # End onGoEnd
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
     # Callbacks for Zooming...
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def onPeriodZoom(self, event):
@@ -564,7 +564,7 @@ class NavigatePanel( wx.Panel ):
         dlg.Destroy()
 
     # End onPeriodZoom
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def onPeriodZoomIn(self, event):
@@ -574,7 +574,7 @@ class NavigatePanel( wx.Panel ):
         self.SetNewPeriod( 1.0 - self._zoomcoef/100.0, "zoom" )
 
     # End onPeriodZoomIn
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def onPeriodZoomOut(self, event):
@@ -584,7 +584,7 @@ class NavigatePanel( wx.Panel ):
         self.SetNewPeriod( 1.0 + self._zoomcoef/100.0, "zoom" )
 
     # End onPeriodZoomOut
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def onViewZoomIn(self, event):
@@ -595,7 +595,7 @@ class NavigatePanel( wx.Panel ):
         self._display.ZoomUp()
 
     # End onViewZoomIn
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def onViewZoomOut(self, event):
@@ -606,7 +606,7 @@ class NavigatePanel( wx.Panel ):
         self._display.ZoomDown()
 
     # End onViewZoomOut
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def onFitSelection(self, event):
@@ -632,7 +632,7 @@ class NavigatePanel( wx.Panel ):
         self._display.Refresh()
 
     # End onFitSelection
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def OnCenterSelection(self, event):
@@ -661,7 +661,7 @@ class NavigatePanel( wx.Panel ):
             self._display.Refresh()
 
     # End onCenterSelection
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     # ------------------------------------------------------------------------
@@ -683,9 +683,9 @@ class NavigatePanel( wx.Panel ):
     # ------------------------------------------------------------------------
 
 
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
     # Getters and Setters
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def SetNewPeriod(self, coeff, mode):
@@ -706,7 +706,7 @@ class NavigatePanel( wx.Panel ):
         self._changedrawingperiod(start,end)
 
     # End SetNewPeriod
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def SetDisplay(self, drawing):
@@ -716,12 +716,12 @@ class NavigatePanel( wx.Panel ):
         self._display = drawing
 
     # End SetDisplay
-    #------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
 
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
     # Private
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def _changedrawingperiod(self, start, end):
@@ -731,11 +731,11 @@ class NavigatePanel( wx.Panel ):
             self._display.SetPeriod( period )
 
     # End _changedrawingperiod
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
 
-#-----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 
 
 
@@ -815,9 +815,7 @@ class TrsPanel( wx.Panel ):
 
         dlg.Destroy()
 
-    # End onTierCheck
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def onTierInfo(self, event):
         """ Show details about the selected transcription file. """
@@ -827,9 +825,7 @@ class TrsPanel( wx.Panel ):
         fname = self._display.GetSelectionFilename()
         dlg = TrsInfoDialog( self, self._prefsIO, fname,  self._trsctrl.GetTranscription() )
 
-    # End onTierInfo
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def onSearch(self, event):
         """ Open a frame to search patterns into a tier. """
@@ -861,9 +857,7 @@ class TrsPanel( wx.Panel ):
             self._search.SetFocus()
             self._search.Raise()
 
-    # End onSearch
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def onSearched(self, event):
         """
@@ -876,13 +870,9 @@ class TrsPanel( wx.Panel ):
         self._display.GetRuler().SetSelectionIndicatorValues(s,e)
         self.GetParent().GetNavigPanel().OnCenterSelection(None)
 
-    #-------------------------------------------------------------------------
-
-
     # ------------------------------------------------------------------------
     # Functions...
     # ------------------------------------------------------------------------
-
 
     def SetBackgroundColour(self, colour):
         """ Change the background of the panel. """
@@ -892,14 +882,9 @@ class TrsPanel( wx.Panel ):
             self._buttons[b].SetBackgroundColour( colour )
         self.Refresh()
 
-    # End SetBackgroundColour
     # ------------------------------------------------------------------------
-
-
-    #-------------------------------------------------------------------------
     # Data management
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def SetDisplay(self, drawing):
         """
@@ -914,8 +899,7 @@ class TrsPanel( wx.Panel ):
         else:
             self.SetTrs()
 
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def SetTrs(self):
         """ Set a new transcription. """
@@ -940,9 +924,7 @@ class TrsPanel( wx.Panel ):
 
         self.Refresh()
 
-    # End SetTrs
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def UnsetData(self):
         """ Unset the current drawing. """
@@ -961,14 +943,9 @@ class TrsPanel( wx.Panel ):
 
         self.Refresh()
 
-    # End UnsetData
-    #-------------------------------------------------------------------------
-
-
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
     # Private...
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def ActivateButtons(self, value=True):
         self.EnableButtons(False)
@@ -981,19 +958,13 @@ class TrsPanel( wx.Panel ):
             self._buttons['tierinfo'].SetBitmapLabel(  spBitmap( TIER_INFO_DISABLED ) )
             self._buttons['search'].SetBitmapLabel(  spBitmap( TIER_SEARCH_DISABLED ) )
 
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def EnableButtons(self, value=True):
         for b in self._buttons:
             self._buttons[b].Enable( not value )
 
-    #-------------------------------------------------------------------------
-
-
-
-#-----------------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------
 
 
 class MediaPanel( SndPlayer ):
@@ -1021,11 +992,9 @@ class MediaPanel( SndPlayer ):
         self._display = None
         self.SetBackgroundColour( prefsIO.GetValue('M_BG_COLOUR') )
 
-    #-------------------------------------------------------------------------
-
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
     # Callbacks
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def onNext(self, event):
         """ Go forward in the music. """
@@ -1033,7 +1002,7 @@ class MediaPanel( SndPlayer ):
         SndPlayer.onNext(self,event)
         self.UpdateRuler()
 
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def onRewind(self, event):
         """ Go backward in the music. """
@@ -1041,7 +1010,7 @@ class MediaPanel( SndPlayer ):
         SndPlayer.onRewind(self,event)
         self.UpdateRuler()
 
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def onPause(self, event):
         """ Pauses the music. """
@@ -1049,7 +1018,7 @@ class MediaPanel( SndPlayer ):
         SndPlayer.onPause(self,event)
         self.UpdateRuler()
 
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def onPlay(self, event):
         """ Fix the period to play then Plays the music. """
@@ -1077,38 +1046,42 @@ class MediaPanel( SndPlayer ):
             offset = int(start*1000.)
 
         self._mediaplayer.Seek( offset, mode=wx.FromStart )
-        SndPlayer.onPlay(self,event)
+        SndPlayer.onPlay(self, event)
 
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def onStop(self, event):
         """ Stops the music and resets the play button. """
 
         if self._mediaplayer is None: return
 
-        self._offsets = (0,0)
+        self._offsets = (0, 0)
         if self._display is not None:
             self._offsets = self._display.GetPeriodValues()
 
-        SndPlayer.onStop(self,event)
+        SndPlayer.onStop(self, event)
         self.UpdateRuler()
 
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def onTimer(self, event):
         """
         Keeps the player updated.
-        OVERRIDE because we dont stop at the end of the displayed period fixed by self._offsets:
-        instead we update the period and continue to play.
+        OVERRIDE because we dont stop at the end of the displayed period fixed
+        by self._offsets: instead we update the period and continue to play.
         """
-
-        if self._mediaplayer is None: return
+        if self._mediaplayer is None:
+            return
 
         # Get current position
         offset = self._mediaplayer.Tell()
         # Allowed position
         try:
-            (s,e) = self._display.GetPeriodValues()
+            (s, e) = self._display.GetPeriodValues()
+        except Exception:  # PyDeadObjectError (on Windows only)
+            self._timer.Stop()
+            return
+        try:
             # Quick and dirty:
             delta = (e-s)*100
             maxoffset = int(e*1000)
@@ -1125,7 +1098,7 @@ class MediaPanel( SndPlayer ):
         if self._mediaplayer.GetState() != wx.media.MEDIASTATE_STOPPED:
             self.UpdateRuler()
 
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def UpdateRuler(self):
         offset = self._mediaplayer.Tell()
@@ -1133,12 +1106,12 @@ class MediaPanel( SndPlayer ):
             self._display.GetRuler().SetPlayerIndicatorValue( float(offset)/1000.0 )
             self._display.GetRuler().Refresh()
 
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
     # Data management
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def SetDisplay(self, d):
 
@@ -1150,7 +1123,7 @@ class MediaPanel( SndPlayer ):
         else:
             self.SetMedia()
 
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def SetMedia(self):
         """ Set a new mediaplayer. """
@@ -1173,7 +1146,7 @@ class MediaPanel( SndPlayer ):
 
         self.Refresh()
 
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def FileDeSelected(self):
         """ Unset the current mediaplayer. """
@@ -1182,6 +1155,6 @@ class MediaPanel( SndPlayer ):
         #self._display = None
         SndPlayer.FileDeSelected(self)
 
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------

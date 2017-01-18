@@ -79,15 +79,15 @@ class spBaseMessageDialog(spBaseDialog):
             titlebox = self.CreateTitle(DLG_INFO_ICON, "Information")
 
         contentbox = self._create_content(contentmsg)
-        buttonbox  = self._create_buttons()
+        buttonbox = self._create_buttons()
 
         self.LayoutComponents( titlebox,
                                contentbox,
                                buttonbox )
 
-    def _create_content(self,message):
-        txt = self.CreateTextCtrl(message, style=wx.TE_READONLY|wx.TE_MULTILINE|wx.NO_BORDER)
-        txt.SetMinSize((300,-1))
+    def _create_content(self, message):
+        txt = self.CreateTextCtrl(message)
+        txt.SetMinSize((300, -1))
         return txt
 
     def _create_buttons(self):
@@ -103,10 +103,10 @@ class YesNoQuestion(spBaseMessageDialog):
 
     def _create_buttons(self):
         yes = self.CreateYesButton()
-        no  = self.CreateNoButton()
-        no.Bind( wx.EVT_BUTTON, self._on_no, no )
-        self.SetAffirmativeId( wx.ID_YES )
-        return self.CreateButtonBox( [no],[yes] )
+        no = self.CreateNoButton()
+        no.Bind(wx.EVT_BUTTON, self._on_no, no)
+        self.SetAffirmativeId(wx.ID_YES)
+        return self.CreateButtonBox([no], [yes])
 
     def _on_no(self, evt):
         #self.Destroy() # does not work on MacOS
@@ -166,7 +166,6 @@ class Choice(spBaseDialog):
         self.choicectrl.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
         self.choicectrl.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
         self.choicectrl.SetFont( font )
-        txt.SetMinSize((300,-1))
 
         sizer.Add(txt, 0, wx.ALL | wx.EXPAND, 10)
         sizer.Add(self.choicectrl, 1, wx.ALL | wx.EXPAND, 10)

@@ -166,15 +166,13 @@ class FilterProcess:
             progress.set_fraction(float((i+1))/float(total))
 
         # Indicate completed!
-        progress.update(1,"Completed.\n")
+        progress.update(1, "Completed.\n")
         progress.set_header("")
-
 
     def RunRelationFilter(self, parent, tiername, annotformat):
         wx.BeginBusyCursor()
         # Create the progress bar
-        p = ProcessProgressDialog(parent, parent._prefsIO)
-        p.set_title("Filtering progress...")
+        p = ProcessProgressDialog(parent, parent._prefsIO, "Filtering progress...")
         self._runRelationFilter(tiername, p, annotformat)
         p.close()
         wx.EndBusyCursor()

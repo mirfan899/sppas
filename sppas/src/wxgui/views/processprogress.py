@@ -1,136 +1,73 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: processprogress.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+        http://www.sppas.org/
 
+        Use of this software is governed by the GNU Public License, version 3.
 
-# ----------------------------------------------------------------------------
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
 
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.wxgui.views.processprogress.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import wx
 
 from wxgui.sp_icons import APP_ICON
 from wxgui.sp_icons import ANNOTATE_ICON
 
 from wxgui.cutils.imageutils import spBitmap
-from wxgui.sp_consts import FRAME_STYLE
-from wxgui.sp_consts import FRAME_TITLE
-
+from wxgui.dialogs.basedialog import spBaseDialog
 
 # ----------------------------------------------------------------------------
 
 
-class ProcessProgressDialog( wx.MiniFrame ):
+class ProcessProgressDialog(spBaseDialog):
     """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: Frame indicating a progress, with 2 text fields.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Frame indicating a progress, with 2 text fields.
 
     """
-
-    def __init__(self, parent, preferences):
+    def __init__(self, parent, preferences, header_text="Processing..."):
+        """ Constructor.
+        
+        :param parent: (wx.Window)
+        :param preferences: (Preferences)
+        
         """
-        Constructor.
-        """
+        spBaseDialog.__init__(self, parent, preferences, title=" - Progress")
+        wx.GetApp().SetAppName("progress")
 
-        wx.MiniFrame.__init__(self, parent, title=FRAME_TITLE+" - Progress", size=(420, 220))
+        self.LayoutComponents(self.CreateTitle(ANNOTATE_ICON, header_text),
+                              self._create_content())
 
-        self.preferences = preferences
-        self._create_gui()
-
-    # End __init__
-    # ------------------------------------------------------------------------
-
-
-    # ------------------------------------------------------------------------
-    # Create the GUI
-    # ------------------------------------------------------------------------
-
-
-    def _create_gui(self):
-        self._init_infos()
-        self._create_title_label()
-        self._create_content()
-        self._layout_components()
-
-
-    def _init_infos( self ):
-        wx.GetApp().SetAppName( "progress" )
-        # icon
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap( spBitmap(APP_ICON) )
-        self.SetIcon(_icon)
-        # colors
-        self.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR'))
-        self.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR'))
-        self.SetFont( self.preferences.GetValue('M_FONT'))
-
-
-    def _create_title_label(self):
-        self.title_layout = wx.BoxSizer(wx.HORIZONTAL)
-        bmp = wx.BitmapButton(self, bitmap=spBitmap(ANNOTATE_ICON, 32, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
-        font = self.preferences.GetValue('M_FONT')
-        font.SetWeight(wx.BOLD)
-        font.SetPointSize(font.GetPointSize() + 2)
-        self.title_label = wx.StaticText(self, label="Processing...", style=wx.ALIGN_CENTER)
-        self.title_label.SetFont( font )
-        self.title_layout.Add(bmp, 0, flag=wx.TOP|wx.RIGHT|wx.ALIGN_RIGHT, border=5)
-        self.title_layout.Add(self.title_label, 1, flag=wx.EXPAND|wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
-
-
-    def _create_content(self):
-        # an header text used to print the annotation step
-        self.header      = wx.StaticText(self, id=-1, label="", style = wx.ALIGN_CENTRE)
-        # the gauge
-        self.gauProgress = wx.Gauge(self, range=100, size=(400, 24))
-        # a bottom text used to print the current file name
-        self.text        = wx.StaticText(self, id=-1, label="", style = wx.ALIGN_CENTRE)
-
-
-    def _layout_components(self):
-        vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.title_layout, 0, flag=wx.ALL|wx.EXPAND, border=4)
-        vbox.Add( self.header,      proportion=0, flag=wx.ALL|wx.EXPAND, border=4)
-        vbox.Add( self.gauProgress, proportion=1, flag=wx.ALL|wx.EXPAND, border=4)
-        vbox.Add( self.text,        proportion=1, flag=wx.ALL|wx.EXPAND, border=4)
-        self.SetSizer( vbox )
-        self.SetMinSize((420,200))
+        self.SetMinSize((420, 180))
         self.Layout()
         self.Show()
         self.Raise()
@@ -139,26 +76,31 @@ class ProcessProgressDialog( wx.MiniFrame ):
         self.Refresh()
 
     # ------------------------------------------------------------------------
+    # Create the GUI
+    # ------------------------------------------------------------------------
 
+    def _create_content(self):
+        # an header text used to print the annotation step
+        self.header = wx.StaticText(self, id=-1, label="", size=(400, -1), style=wx.ALIGN_CENTRE)
+        # the gauge
+        self.gauProgress = wx.Gauge(self, range=100, size=(400, 24))
+        # a bottom text used to print the current file name
+        self.text = wx.StaticText(self, id=-1, label="", size=(400, -1), style=wx.ALIGN_CENTRE)
 
-    def set_title(self, title):
-        """
-        Fix the title label.
-        """
-        self.title_label.SetLabel(title)
-        self.title_label.Refresh()
-
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(self.header, 0, wx.ALL, 4)
+        sizer.Add(self.gauProgress, 0, wx.ALL, 4)
+        sizer.Add(self.text, 0, wx.ALL, 4)
+        return sizer
 
     # ------------------------------------------------------------------------
 
-
     def set_new(self, label="", text="", fraction=0.):
-        """
-        Initialize a new progress box.
+        """ Initialize a new progress box.
 
-        @param label:    progress box label (default: None)
-        @param text:     progress bar text  (default: None)
-        @param fraction: progress bar value (default: 0)
+        :param label:    progress box label (default: None)
+        :param text:     progress bar text  (default: None)
+        :param fraction: progress bar value (default: 0)
 
         """
         self.set_header(label)
@@ -167,14 +109,15 @@ class ProcessProgressDialog( wx.MiniFrame ):
         self.Refresh()
         self.Update()
 
+    # ------------------------------------------------------------------------
 
-    def set_fraction(self,fraction):
+    def set_fraction(self, fraction):
+        """ Set a new progress value to the progress bar.
+
+        :param fraction: new progress value
+
         """
-        Set a new progress value to the progress bar.
-
-        @param fraction: new progress value
-
-        """
+        fraction = float(fraction)
         # convert fraction to a percentage (if necessary)
         if fraction < 1:
             fraction = int(fraction*100)
@@ -182,37 +125,37 @@ class ProcessProgressDialog( wx.MiniFrame ):
         self.Refresh()
         self.Update()
 
+    # ------------------------------------------------------------------------
 
-    def set_text(self,text):
+    def set_text(self, text):
+        """ Set a new progress text to the progress bar.
+
+        :param text: new progress text
+
         """
-        Set a new progress text to the progress bar.
-
-        @param text: new progress text
-
-        """
-        self.text.SetLabel( text )
+        self.text.SetLabel(text)
         self.Refresh()
         self.Update()
 
+    # ------------------------------------------------------------------------
 
-    def set_header(self,label):
+    def set_header(self, label):
+        """ Set a new progress label to the progress box.
+
+        :param label: new progress label
+
         """
-        Set a new progress label to the progress box.
-
-        @param label: new progress label
-
-        """
-        self.header.SetLabel( label )
+        self.header.SetLabel(label)
         self.Refresh()
         self.Update()
 
+    # ------------------------------------------------------------------------
 
-    def update(self,fraction,text):
-        """
-        Update the progress box.
+    def update(self, fraction, text):
+        """ Update the progress box.
 
-        @param text:     progress bar text  (default: None)
-        @param fraction: progress bar value (default: 0)
+        :param text:     progress bar text  (default: None)
+        :param fraction: progress bar value (default: 0)
 
         """
         self.set_text(text)
@@ -220,11 +163,11 @@ class ProcessProgressDialog( wx.MiniFrame ):
         self.Refresh()
         self.Update()
 
+    # ------------------------------------------------------------------------
 
     def close(self):
-        """
-        Close the progress box.
-        """
+        """ Close the progress box. """
+
         self.Destroy()
 
 # ----------------------------------------------------------------------------

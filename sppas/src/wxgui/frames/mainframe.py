@@ -46,8 +46,8 @@ from wxgui.cutils.imageutils import spBitmap
 from wxgui.structs.prefs import Preferences_IO
 from wxgui.sp_icons import APP_ICON
 
-from wxgui.sp_consts import MIN_FRAME_W, MIN_PANEL_W, PANEL_W
-from wxgui.sp_consts import MIN_FRAME_H, MIN_PANEL_H, FRAME_H
+from wxgui.sp_consts import MIN_FRAME_W
+from wxgui.sp_consts import MIN_FRAME_H
 from wxgui.sp_consts import FRAME_STYLE
 from wxgui.sp_consts import FRAME_TITLE
 
@@ -55,6 +55,7 @@ from wxgui.sp_consts import ID_ANNOTATIONS
 from wxgui.sp_consts import ID_COMPONENTS
 from wxgui.sp_consts import ID_PLUGINS
 from wxgui.sp_consts import ID_ACTIONS
+from wxgui.sp_consts import ID_FILES
 from wxgui.sp_consts import ID_FRAME_DATAROAMER
 from wxgui.sp_consts import ID_FRAME_SNDROAMER
 from wxgui.sp_consts import ID_FRAME_IPUSCRIBE
@@ -91,7 +92,7 @@ class FrameSPPAS(wx.Frame):
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:     SPPAS main frame based on wx library.
+    :summary:      SPPAS main frame based on wx library.
 
     """
     def __init__(self, preferencesIO=None):
@@ -113,9 +114,11 @@ class FrameSPPAS(wx.Frame):
         self.Bind(wx.EVT_CLOSE,  self.ProcessEvent)
         self.Bind(wx.EVT_BUTTON, self.ProcessEvent)
 
-        self.SetMinSize((MIN_FRAME_W, MIN_FRAME_H))
         (w, h) = wx.GetDisplaySize()
-        self.SetSize(wx.Size(w*0.6, h*0.6))
+        w *= 0.6
+        h = min(0.9*h, w*9/16)
+        self.SetMinSize((MIN_FRAME_W, MIN_FRAME_H))
+        self.SetSize(wx.Size(w, h))
         self.Centre()
         self.Enable()
         self.SetFocus()
@@ -166,17 +169,17 @@ class FrameSPPAS(wx.Frame):
     def _create_content(self):
         """ Organize all sub-panels into a main panel and return it. """
 
-        mainpanel = wx.Panel(self, -1,  style=wx.NO_BORDER)
+        mainpanel = wx.Panel(self, -1, style=wx.NO_BORDER)
         mainpanel.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
         mainpanel.SetForegroundColour(self.preferences.GetValue('M_FG_COLOUR'))
         mainpanel.SetFont(self.preferences.GetValue('M_FONT'))
 
-        mainmenu  = MainMenuPanel(mainpanel,  self.preferences)
+        mainmenu  = MainMenuPanel(mainpanel, self.preferences)
         maintitle = MainTitlePanel(mainpanel, self.preferences)
         splitpanel = self._create_splitter(mainpanel)
 
         vsizer = wx.BoxSizer(wx.VERTICAL)
-        vsizer.Add(maintitle,  proportion=0, flag=wx.ALL | wx.EXPAND, border=0)
+        vsizer.Add(maintitle, proportion=0, flag=wx.ALL | wx.EXPAND, border=0)
         vsizer.Add(splitpanel, proportion=1, flag=wx.ALL | wx.EXPAND, border=0)
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -195,8 +198,8 @@ class FrameSPPAS(wx.Frame):
         splitpanel.SetBackgroundColour(self.preferences.GetValue('M_BGM_COLOUR'))
         splitpanel.SetForegroundColour(self.preferences.GetValue('M_BGM_COLOUR'))
 
-        # Left: File explorer
-        self._leftpanel = wx.Panel(splitpanel,-1)
+        # Left: File explorer and tips
+        self._leftpanel = wx.Panel(splitpanel, -1)
         self._leftpanel.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
         self.flp = FiletreePanel(self._leftpanel, self.preferences)
         tips = MainTooltips(self._leftpanel, self.preferences)
@@ -209,23 +212,32 @@ class FrameSPPAS(wx.Frame):
             tips.Hide()
 
         # Right: Actions to perform on selected files
-        self._rightpanel = wx.Panel(splitpanel,-1)
+        self._rightpanel = wx.Panel(splitpanel, -1)
         self.actionsmenu = MainActionsMenuPanel(self._rightpanel, self.preferences)
         self.actionsmenu.ShowBack(False)
         self.actions = MainActionsPanel(self._rightpanel, self.preferences)
 
         self._rightsizer = wx.BoxSizer(wx.VERTICAL)
         self._rightsizer.Add(self.actionsmenu, proportion=0, flag=wx.ALL | wx.EXPAND, border=0)
-        self._rightsizer.Add(self.actions,     proportion=1, flag=wx.ALL | wx.EXPAND, border=0)
+        self._rightsizer.Add(self.actions, proportion=1, flag=wx.ALL | wx.EXPAND, border=0)
         self._rightpanel.SetSizer(self._rightsizer)
 
-        splitpanel.SetMinimumPaneSize(MIN_PANEL_W)
-        splitpanel.SplitVertically(self._leftpanel , self._rightpanel)
+        splitpanel.SetMinimumPaneSize(0.4*MIN_FRAME_W)
+        splitpanel.SplitVertically(self._leftpanel, self._rightpanel)
 
-        self._leftpanel.SetMinSize((MIN_PANEL_W,MIN_PANEL_H))
-        self._rightpanel.SetMinSize((MIN_PANEL_W,MIN_PANEL_H))
+        self._leftpanel.SetMinSize((0.4*MIN_FRAME_W, 0.7*MIN_FRAME_H))
+        self._rightpanel.SetMinSize((0.4*MIN_FRAME_W, 0.7*MIN_FRAME_H))
 
         return splitpanel
+
+    # ------------------------------------------------------------------------
+
+    def fix_filecontent(self):
+        """ Fix the file explorer panel content. """
+
+        self.flp.RefreshTree()
+        self._leftpanel.Layout()
+        self._leftpanel.Refresh()
 
     # ------------------------------------------------------------------------
 
@@ -307,6 +319,9 @@ class FrameSPPAS(wx.Frame):
 
         elif ide == ID_ACTIONS:
             self.fix_actioncontent(ID_ACTIONS)
+
+        elif ide == ID_FILES:
+            self.fix_filecontent()
 
         elif ide == ID_FRAME_DATAROAMER or ide == ID_FRAME_SNDROAMER or ide == ID_FRAME_IPUSCRIBE or \
              ide == ID_FRAME_SPPASEDIT or ide == ID_FRAME_DATAFILTER or ide == ID_FRAME_STATISTICS:
@@ -442,12 +457,3 @@ class FrameSPPAS(wx.Frame):
         for ext in audiodata.aio.extensions:
             selection.extend(self.flp.GetSelected(ext))
         return selection
-
-    # -----------------------------------------------------------------------
-
-    def RefreshTree(self, filelist=None):
-        """ Refresh the tree of the FLP. """
-
-        self.flp.RefreshTree(filelist)
-
-    # -----------------------------------------------------------------------

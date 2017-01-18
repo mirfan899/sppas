@@ -140,11 +140,11 @@ class FeedbackDialog( spBaseDialog ):
         return self.CreateButtonBox( [self.btn_default,self.btn_gmail,self.btn_other], [btn_close])
 
     def _create_content(self):
-        self.to_text      = self.CreateTextCtrl("", style=wx.TE_READONLY)
+        self.to_text = self.CreateTextCtrl("", style=wx.TE_READONLY)
         self.subject_text = self.CreateTextCtrl(program+" "+version+" - Feedback...", style=wx.TE_READONLY)
-        self.body_text    = self.CreateTextCtrl(DESCRIBE_TEXT, style=wx.TE_MULTILINE)
+        self.body_text = self.CreateTextCtrl(DESCRIBE_TEXT, style=wx.TE_MULTILINE)
         self.body_text.SetMinSize((300,200))
-        self.body_text.SetForegroundColour(wx.Colour(128,128,128))
+        self.body_text.SetForegroundColour(wx.Colour(128, 128, 128))
         self.body_text.Bind(wx.EVT_CHAR, self._on_char)
 
         grid = wx.FlexGridSizer(4, 2, 5, 5)

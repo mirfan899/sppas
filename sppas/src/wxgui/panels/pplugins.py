@@ -45,14 +45,15 @@ from plugins.manager import sppasPluginsManager
 
 from wxgui.sp_icons import PLUGIN_IMPORT_ICON, PLUGIN_REMOVE_ICON
 from wxgui.sp_icons import ABOUT_ICON
+from wxgui.sp_consts import ID_FILES
 
 from wxgui.dialogs.basedialog import spBaseDialog
-from wxgui.dialogs.msgdialogs  import ShowInformation
-from wxgui.dialogs.msgdialogs  import Choice
+from wxgui.dialogs.msgdialogs import ShowInformation
+from wxgui.dialogs.msgdialogs import Choice
 from wxgui.dialogs.filedialogs import OpenSpecificFiles
-from wxgui.panels.mainbuttons  import MainToolbarPanel
+from wxgui.panels.mainbuttons import MainToolbarPanel
 from wxgui.panels.about import sppasBaseAbout
-from wxgui.panels.buttons      import ButtonPanel
+from wxgui.panels.buttons import ButtonPanel
 from wxgui.views.pluginoptions import spPluginConfig
 from wxgui.views.processprogress import ProcessProgressDialog
 
@@ -74,12 +75,12 @@ PluginReadmeCommandEvent, spEVT_PLUGIN_README_COMMAND = wx.lib.newevent.NewComma
 
 class PluginsPanel(wx.Panel):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    @summary:      Main panel to work with SPPAS plugin.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Main panel to work with SPPAS plugin.
 
     """
     def __init__(self, parent, preferences):
@@ -235,8 +236,7 @@ class PluginsPanel(wx.Panel):
 
             try:
                 wx.BeginBusyCursor()
-                p = ProcessProgressDialog(self, self._preferences)
-                p.set_title("Plugin progress...")
+                p = ProcessProgressDialog(self, self._preferences, "Plugin %s is processing..." % plugin_id)
                 self._manager.set_progress(p)
 
                 log_text = self._manager.run_plugin(plugin_id, file_names)
@@ -260,12 +260,9 @@ class PluginsPanel(wx.Panel):
         dlg.Destroy()
 
         # Update the filetree of the main frame
-        try:
-            #self.GetTopLevelParent().RefreshTree(None)
-            self.GetTopLevelParent().RefreshTree(file_names)
-            self.GetTopLevelParent().Refresh()
-        except Exception as e:
-            logging.debug("%s" % str(e))
+        evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, ID_FILES)
+        evt.SetEventObject(self)
+        wx.PostEvent(self.GetTopLevelParent(), evt)
 
     # -----------------------------------------------------------------------
 
@@ -348,7 +345,9 @@ class PluginsListPanel(wx.lib.scrolledpanel.ScrolledPanel):
         d = plugin.get_descr()
         if len(d) == 0:
             d = "No description available."
-        txt_descr = wx.TextCtrl(p, wx.ID_ANY, value=d, style=wx.TE_READONLY | wx.TE_MULTILINE | wx.NO_BORDER)
+        txt_descr = wx.TextCtrl(p, wx.ID_ANY,
+                                value=d,
+                                style=wx.TE_READONLY | wx.TE_MULTILINE | wx.NO_BORDER | wx.TE_WORDWRAP | wx.TE_NO_VSCROLL)
         self.__apply_preferences(txt_descr)
 
         txt_readme = wx.StaticText(p, -1, "About...")

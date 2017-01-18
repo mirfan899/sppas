@@ -30,7 +30,7 @@
         ---------------------------------------------------------------------
 
     src.wxgui.frames.helpbrowser.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     GUI frame to display the documentation files of SPPAS (markdown).
 
@@ -159,12 +159,14 @@ class HelpPage(object):
             if incode == "python":
                 comment = ""
                 commentline = line.find('# ')
-                if commentline>-1:
+                if commentline >- 1:
                     comment = "<font color='#497747'>" + line[commentline:] + "</font>"
                     line = line[:commentline-1]
                 line = line.replace('"""', '<font color="#CA1C25">"""</font>')
                 line = line.replace('@param ', '<font color="#CA1C25">@param </font>')
                 line = line.replace('@return ', '<font color="#CA1C25">@return </font>')
+                line = line.replace(':param ', '<font color="#CA1C25">@param </font>')
+                line = line.replace(':returns ', '<font color="#CA1C25">@return </font>')
                 line = line.replace('import ', "<font color='#75A094'>import</font> ")
                 line = line.replace('from ', "<font color='#75A094'>from</font> ")
                 line = line.replace('def ', "<font color='#1C26CA'>def</font> ")
@@ -182,8 +184,8 @@ class HelpPage(object):
                 line = line + comment
 
             # Other patch for h4 titles
-            elif line.find('####')>-1:
-                line = line.replace("####","")
+            elif "####" in line:
+                line = line.replace("####", "")
                 line = "<h4>"+line+"</h4>"
 
             html_body += line+"\n"
@@ -270,8 +272,8 @@ class HelpSystem(object):
         for page in self.pages.values():
             match = True
             for content_re in content_res:
-                if (not re.search(content_re, page.header, re.IGNORECASE) and
-                    not re.search(content_re, page.body, re.IGNORECASE)):
+                if not re.search(content_re, page.header, re.IGNORECASE) and \
+                   not re.search(content_re, page.body, re.IGNORECASE):
                     match = False
                     break
             if match:
@@ -295,7 +297,7 @@ class HelpSystem(object):
         sectionid = ""
         sectionheader = ""
         sectionbody = []
-        for i,line in enumerate(body):
+        for i, line in enumerate(body):
             # new section
             if line.startswith('###') is True and line.startswith('####') is False:
                 # add the previous section as a page
@@ -337,11 +339,11 @@ class HelpSystem(object):
                 for line in lines:
                     line = line.strip()
                     line = os.path.join(base_path,line)
-                    urls.append( line )
+                    urls.append(line)
 
                 # The first page is always the title of the chapter
-                title = format_title( load_page(urls[0]) )
-                toc += "%d. Color(**%s**)\n" %(c,title)
+                title = format_title(load_page(urls[0]))
+                toc += "%d. Color(**%s**)\n" % (c, title)
 
                 # The sections/pages of this chapter
                 for i in range(1,len(urls)):
@@ -380,19 +382,19 @@ class HelpSystem(object):
                 # Read the index (the list of chapters of this documentation, one file=one chapter)
                 lines = fd.readlines()
                 if len(lines) == 0:
-                    raise Exception('No content at url: %s' % doc_idx)
+                    raise IOError('No content at url: %s' % doc_idx)
 
                 urls = list()
                 for line in lines:
                     line = line.strip()
                     line = os.path.join(base_path, line, line+".idx")
-                    urls.append( line )
+                    urls.append(line)
 
                 for c, chapter_idx in enumerate(urls):
-                    toc_body += self._install_chapter(chapter_idx,c)
+                    toc_body += self._install_chapter(chapter_idx, c)
 
         except Exception as e:
-            toc_body = "No help is available due to the following error:\n%s"%str(e)
+            toc_body = "No help is available due to the following error:\n%s" % str(e)
 
         # Then, append this TOC to main one
         self.GetPage(str(wx.ID_HOME)).body += toc_body

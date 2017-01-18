@@ -77,15 +77,8 @@ OK_COLOUR = wx.Colour(25, 160,  50)        # green
 MIN_PANEL_W = 180
 MIN_PANEL_H = 220
 
-MIN_FRAME_W = 640
-MIN_FRAME_H = 460
-
-if wx.Platform == "__WXMSW__":
-    FRAME_H = 600   # expected "good" height
-    PANEL_W = 320   # Left/Right panel (FLP)
-else:
-    FRAME_H = 540   # expected "good" height
-    PANEL_W = 380
+MIN_FRAME_W = 720
+MIN_FRAME_H = 540
 
 # ----------------------------------------------------------------------------
 
@@ -93,6 +86,7 @@ ID_ANNOTATIONS = wx.NewId()
 ID_COMPONENTS = wx.NewId()
 ID_PLUGINS = wx.NewId()
 ID_ACTIONS = wx.NewId()
+ID_FILES = wx.NewId()
 
 ID_EXT_BUG = wx.NewId()
 ID_EXT_HOME = wx.NewId()
