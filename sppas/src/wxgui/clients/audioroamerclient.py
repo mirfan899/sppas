@@ -82,8 +82,7 @@ from sp_glob import encoding
 ID_DIALOG_AUDIOROAMER  = wx.NewId()
 
 # ----------------------------------------------------------------------------
-# Main class that manage the notebook
-# ----------------------------------------------------------------------------
+
 
 class AudioRoamerClient( BaseClient ):
     """
@@ -104,9 +103,6 @@ class AudioRoamerClient( BaseClient ):
     def CreateComponent(self, parent, prefsIO ):
         return SndRoamer(parent, prefsIO)
 
-
-# ----------------------------------------------------------------------------
-# The Component is the content of one page of the notebook.
 # ----------------------------------------------------------------------------
 
 class SndRoamer( scrolled.ScrolledPanel ):
@@ -194,10 +190,9 @@ class SndRoamer( scrolled.ScrolledPanel ):
         prefs.SetValue('SND_STOP',       'bool', True)
         prefs.SetValue('SND_NEXT',       'bool', True)
         prefs.SetValue('SND_REWIND',     'bool', True)
-        prefs.SetValue('SND_EJECT',      'bool', True)
+        prefs.SetValue('SND_EJECT',      'bool', False) # CRASH. MUST CORRECT THE BUG.
 
         return prefs
-
 
     # ----------------------------------------------------------------------
     # GUI
@@ -252,7 +247,6 @@ class SndRoamer( scrolled.ScrolledPanel ):
         wx.Window.SetForegroundColour( self, color )
         self._propertyPanel.SetForegroundColour( color )
         self._playerPanel.SetForegroundColour( color )
-
 
     # ----------------------------------------------------------------------
     # Callbacks
@@ -380,8 +374,8 @@ class AudioRoamer( wx.Panel ):
     def SetPreferences(self, prefs):
         self._prefs = prefs
 
-
 # ----------------------------------------------------------------------------
+
 
 class AudioRoamerDialog( spBaseDialog ):
     """

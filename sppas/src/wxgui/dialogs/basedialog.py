@@ -92,6 +92,8 @@ class spBaseDialog(wx.Dialog):
         self.SetForegroundColour(self.preferences.GetValue('M_FG_COLOUR'))
         self.SetFont(self.preferences.GetValue('M_FONT'))
 
+        self.SetAutoLayout(True)
+
     # -----------------------------------------------------------------------
 
     def CreateTitle(self, title_icon=APP_ICON, title_text="It's coffee time!"):
@@ -225,13 +227,13 @@ class spBaseDialog(wx.Dialog):
 
         self.toolbar = wx.BoxSizer(wx.HORIZONTAL)
 
-        if len(leftobjects)>0:
+        if len(leftobjects) > 0:
             for button in leftobjects:
                 self.toolbar.Add(button, flag=wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, border=2)
             if len(rightobjects)>0:
                 self.toolbar.AddStretchSpacer()
 
-        if len(rightobjects)>0:
+        if len(rightobjects) > 0:
             for button in rightobjects:
                 self.toolbar.Add(button, flag=wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, border=2)
 
@@ -239,19 +241,20 @@ class spBaseDialog(wx.Dialog):
 
     def LayoutComponents(self, title, content, buttonbox=None):
         """ Layout the components of the dialog.
-          - title at the top
-          - then eventually the toolbar
-          - then the content
-          - and a button box at the bottom.
+
+            - title at the top
+            - then eventually the toolbar
+            - then the content
+            - and eventually a button box at the bottom.
 
         """
         vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(title,     0, flag=wx.ALL|wx.EXPAND, border=2)
+        vbox.Add(title, 0, flag=wx.ALL | wx.EXPAND, border=2)
         if self.toolbar is not None:
-            vbox.Add(self.toolbar, 0, flag=wx.LEFT|wx.RIGHT|wx.EXPAND, border=2)
-        vbox.Add(content,   2, flag=wx.ALL|wx.EXPAND, border=2)
+            vbox.Add(self.toolbar, 0, flag=wx.LEFT | wx.RIGHT | wx.EXPAND, border=2)
+        vbox.Add(content, 2, flag=wx.ALL | wx.EXPAND, border=2)
         if buttonbox is not None:
-            vbox.Add(buttonbox, 0, flag=wx.LEFT|wx.RIGHT|wx.BOTTOM|wx.EXPAND, border=2)
+            vbox.Add(buttonbox, 0, flag=wx.LEFT | wx.RIGHT | wx.BOTTOM | wx.EXPAND, border=2)
         self.SetSizerAndFit(vbox)
 
 # ---------------------------------------------------------------------------

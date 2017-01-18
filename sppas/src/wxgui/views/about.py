@@ -1,45 +1,46 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: about.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.wxgui.views.about.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    GUI frame for displaying information about a software.
+
+"""
 import wx
 
 from wxgui.sp_icons import ABOUT_ICON
 
 from wxgui.panels.about import AboutSPPASPanel
+from wxgui.panels.about import AboutPluginPanel
 from wxgui.dialogs.basedialog import spBaseDialog
 
 # ----------------------------------------------------------------------------
@@ -47,31 +48,57 @@ from wxgui.dialogs.basedialog import spBaseDialog
 
 class AboutSPPASDialog(spBaseDialog):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      This class is used to display an about frame.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Display an about frame for SPPAS software.
 
     """
     def __init__(self, parent, preferences):
         spBaseDialog.__init__(self, parent, preferences, title="About")
         wx.GetApp().SetAppName("about")
 
-        titlebox   = self.CreateTitle(ABOUT_ICON, "About")
+        titlebox = self.CreateTitle(ABOUT_ICON, "About")
         contentbox = AboutSPPASPanel(self, preferences)
-        buttonbox  = self.CreateButtonBox([], [self.CreateOkayButton()])
+        buttonbox = self.CreateButtonBox([], [self.CreateOkayButton()])
 
         self.LayoutComponents(titlebox,
                               contentbox,
                               buttonbox)
+        self.SetMinSize((520, 580))
+
+# ------------------------------------------------------------------------
+
+
+class AboutPluginDialog(spBaseDialog):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Display an about frame for a plugin.
+
+    """
+    def __init__(self, parent, preferences, plugin):
+        spBaseDialog.__init__(self, parent, preferences, title="About")
+        wx.GetApp().SetAppName("about"+plugin.get_key())
+
+        title_box = self.CreateTitle(ABOUT_ICON, "About")
+        content_box = AboutPluginPanel(self, preferences, plugin)
+        button_box = self.CreateButtonBox([], [self.CreateOkayButton()])
+
+        self.LayoutComponents(title_box,
+                              content_box,
+                              button_box)
+        self.SetMinSize((520, 580))
 
 # ------------------------------------------------------------------------
 
 
 def ShowAboutDialog(parent, preferences):
     dialog = AboutSPPASDialog(parent, preferences)
-    dialog.SetMinSize((520, 580))
     dialog.ShowModal()
     dialog.Destroy()

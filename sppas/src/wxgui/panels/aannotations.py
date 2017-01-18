@@ -103,53 +103,50 @@ class sppasStepPanel(wx.Panel):
         self.opened_frames = {}
         self.ID_FRAME_ANNOTATION_CFG = wx.NewId()
 
-        step_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        # create the checkbox allowing to select or unselect the step
-        self.checkbox = CCB.CustomCheckBox(self, -1, self.parameters.get_step_name(index), CCB_TYPE="activecheck")
-        self.checkbox.SetFont( self._prefsIO.GetValue( 'M_FONT'))
-        self.checkbox.SetBackgroundColour( self._prefsIO.GetValue( 'M_BG_COLOUR' ))
-        self.checkbox.SetForegroundColour( self._prefsIO.GetValue( 'M_FG_COLOUR' ))
-        self.checkbox.SetSpacing( self._prefsIO.GetValue( 'F_SPACING' ))
-
+        # create the checkbox allowing to select or deselect the annotation
+        annotation_name = self.parameters.get_step_name(index)
+        self.checkbox = CCB.CustomCheckBox(self, -1, annotation_name, CCB_TYPE="activecheck")
+        self.__apply_preferences(self.checkbox)
+        self.checkbox.SetSpacing(self._prefsIO.GetValue('F_SPACING'))
         self.checkbox.Bind(wx.EVT_CHECKBOX, self.on_check_changed)
-        step_sizer.Add(self.checkbox, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 8)
 
-        # create the panel allowing to show configuration panel
+        # choice of the language
         self.choice = None
         # if there are different languages available, add a choice to the panel
         if len(choicelist) > 0:
             choicelist.append(LANG_NONE)
             self.choice = wx.ComboBox(self, -1, choices=sorted(choicelist))
-            self.choice.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
-            self.choice.SetForegroundColour(self._prefsIO.GetValue('M_FGD_COLOUR'))
-            self.choice.SetFont(self._prefsIO.GetValue('M_FONT'))
+            self.__apply_preferences(self.choice)
             self.choice.SetSelection(self.choice.GetItems().index(LANG_NONE))
             self.choice.Bind(wx.EVT_COMBOBOX, self.on_lang_changed)
 
-            line = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
-            step_sizer.Add(line, proportion=1, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=4)
-            step_sizer.Add(self.choice, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 0)
-
+        # description of the annotation
         d = self.parameters.get_step_descr(index)
         self.text = wx.TextCtrl(self, wx.ID_ANY, value=d,
                                 style=wx.TE_READONLY | wx.TE_MULTILINE | wx.NO_BORDER | wx.TE_NO_VSCROLL | wx.TE_WORDWRAP)
-        self.text.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
-        self.text.SetForegroundColour(self._prefsIO.GetValue('M_FG_COLOUR'))
-        self.text.SetFont(self._prefsIO.GetValue('M_FONT'))
+        self.__apply_preferences(self.text)
 
+        # link to configure the annotation
         self.link = wx.StaticText(self, -1, "Configure...")
-        self.link.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
+        self.__apply_preferences(self.link)
         self.link.SetForegroundColour(wx.Colour(80, 100, 220))
-        self.link.SetFont( self._prefsIO.GetValue('M_FONT'))
         self.link.Bind(wx.EVT_LEFT_UP, self.on_click)
 
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(step_sizer, proportion=0, flag=wx.LEFT | wx.TOP, border=2)
-        sizer.Add(self.link,  proportion=0, flag=wx.LEFT, border=2)
-        sizer.Add(self.text,  proportion=1, flag=wx.LEFT | wx.TOP | wx.EXPAND, border=2)
+        # organize all tools
 
-        self.SetMinSize((-1, 60))
-        self.SetSizerAndFit(sizer)
+        csizer = wx.BoxSizer(wx.VERTICAL)
+        csizer.Add(self.checkbox, proportion=1, flag=wx.LEFT | wx.RIGHT | wx.EXPAND, border=5)
+        csizer.Add(self.link, proportion=0, flag=wx.LEFT | wx.TOP | wx.RIGHT, border=5)
+
+        hsizer = wx.BoxSizer(wx.HORIZONTAL)
+        hsizer.Add(csizer, proportion=0, flag=wx.ALL, border=0)
+        hsizer.Add(self.text, proportion=1, flag=wx.EXPAND, border=0)
+        if self.choice is not None:
+            hsizer.Add(self.choice, proportion=0, flag=wx.LEFT | wx.RIGHT, border=5)
+
+        self.SetSizer(hsizer)
+
+    # -----------------------------------------------------------------------
 
     def on_check_changed(self, evt):
         if hasattr(evt, 'IsChecked'):
@@ -159,8 +156,10 @@ class sppasStepPanel(wx.Panel):
         event = stepEvent(step_idx=self.step_idx, checked=checked)
         wx.PostEvent(self, event)
 
+    # -----------------------------------------------------------------------
+
     def on_click(self, event):
-        self.on_check_changed(event, self.step_idx)
+        self.on_check_changed(event)
         self.checkbox.SetValue(True)
         annotId = self.step_idx
         frameId = self.ID_FRAME_ANNOTATION_CFG + annotId
@@ -172,9 +171,13 @@ class sppasStepPanel(wx.Panel):
             self.opened_frames[frameId].SetFocus()
             self.opened_frames[frameId].Raise()
 
+    # -----------------------------------------------------------------------
+
     def on_lang_changed(self, event):
         event = langEvent(step_idx=self.step_idx, lang=self.choice.GetValue())
         wx.PostEvent(self, event)
+
+    # -----------------------------------------------------------------------
 
     def set_lang(self, lang):
         if self.choice is not None:
@@ -186,45 +189,51 @@ class sppasStepPanel(wx.Panel):
                     self.parameters.set_lang(None, self.step_idx)
                 self.parameters.set_lang(lang, self.step_idx)
 
+    # -----------------------------------------------------------------------
+
     def SetPrefs(self, prefs):
-        """
-        Fix new preferences.
-        """
+        """ Fix new preferences. """
+
         self._prefsIO = prefs
-        self.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
-        self.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR') )
-        self.SetFont( self._prefsIO.GetValue('M_FONT') )
 
-        self.checkbox.SetFont( self._prefsIO.GetValue( 'M_FONT'))
-        self.checkbox.SetBackgroundColour( self._prefsIO.GetValue( 'M_BG_COLOUR' ))
-        self.checkbox.SetForegroundColour( self._prefsIO.GetValue( 'M_FG_COLOUR' ))
-        self.text.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR'))
-        self.text.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR'))
-        self.text.SetFont( self._prefsIO.GetValue('M_FONT') )
-
+        self.__apply_preferences(self)
+        self.__apply_preferences(self.checkbox)
+        self.__apply_preferences(self.text)
         if self.choice:
-            self.choice.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
-            self.choice.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR') )
-            self.choice.SetFont( self._prefsIO.GetValue('M_FONT') )
+            self.__apply_preferences(self.choice)
             self.choice.Refresh()
 
+        self.Layout()
         self.Refresh()
+
+    # -----------------------------------------------------------------------
+
+    def __apply_preferences(self, wx_object):
+        """ Set font, background color and foreground color to an object. """
+
+        wx_object.SetFont(self._prefsIO.GetValue('M_FONT'))
+        wx_object.SetForegroundColour(self._prefsIO.GetValue('M_FG_COLOUR'))
+        wx_object.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
 
 # ----------------------------------------------------------------------------
 
 
-class AnnotationsPanel( wx.lib.scrolledpanel.ScrolledPanel ):
+class AnnotationsPanel(wx.lib.scrolledpanel.ScrolledPanel):
     """
-    @author:  Cazembe Henry, Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL
-    @summary: Panel allowing to select annotations and languages.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Panel allowing to select annotations and languages.
 
     """
-
     def __init__(self, parent, preferences):
-        """
-        Constructor.
+        """ Constructor.
+
+        :param parent:
+        :param preferences:
+
         """
         wx.lib.scrolledpanel.ScrolledPanel.__init__(self, parent, -1, size=wx.DefaultSize, style=wx.NO_BORDER)
         self.SetBackgroundColour(preferences.GetValue('M_BG_COLOUR'))
@@ -235,7 +244,7 @@ class AnnotationsPanel( wx.lib.scrolledpanel.ScrolledPanel ):
         self.linked = False
         self.parameters  = sppasParam()
         self._prefsIO = preferences
-        self.parameters.set_output_format( self._prefsIO.GetValue('M_OUTPUT_EXT') )
+        self.parameters.set_output_format(self._prefsIO.GetValue('M_OUTPUT_EXT'))
 
         _contentbox = self.__create_content()
 
@@ -250,28 +259,31 @@ class AnnotationsPanel( wx.lib.scrolledpanel.ScrolledPanel ):
                                      font=self._prefsIO.GetValue('M_FONT'))
 
         _vbox = wx.BoxSizer(wx.VERTICAL)
-        _vbox.Add(_contentbox, proportion=2, flag=wx.EXPAND | wx.ALL, border=4)
-        _vbox.Add(self._brun, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=20)
-
+        _vbox.Add(_contentbox, proportion=1, flag=wx.EXPAND, border=0)
+        _vbox.Add(self._brun,
+                  proportion=0,
+                  flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_CENTER_HORIZONTAL,
+                  border=20)
         self.Bind(wx.EVT_BUTTON, self.on_sppas_run, self._brun, RUN_ID)
         self.SetSizer(_vbox)
         self.SetupScrolling(scroll_x=True, scroll_y=True)
         self.SetMinSize(wx.Size(MIN_PANEL_W, MIN_PANEL_H))
 
+    # -----------------------------------------------------------------------
+
     def __create_content(self):
         """ Annotation and language choices."""
-        _box = wx.BoxSizer(wx.HORIZONTAL)
 
         self.steplist_panel = wx.Panel(self)
         self.steplist_panel.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
         sbox = wx.BoxSizer(wx.VERTICAL)
-        for i in range( len(self.parameters.get_steplist()) ):
+        for i in range(len(self.parameters.get_steplist())):
             p = sppasStepPanel(self.steplist_panel, self.parameters, self._prefsIO, i)
             p.Bind(EVT_STEP_EVENT, self.on_check_changed)
             p.Bind(EVT_LANG_EVENT, self.on_lang_changed)
             self.step_panels.append(p)
             self.activated.append(False)
-            sbox.Add(p, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, border=4)
+            sbox.Add(p, 0, wx.EXPAND, border=0)
         self.steplist_panel.SetSizer(sbox)
 
         lnk_bmp = spBitmap(LINK_ICON, theme=self._prefsIO.GetValue('M_ICON_THEME'))
@@ -282,27 +294,24 @@ class AnnotationsPanel( wx.lib.scrolledpanel.ScrolledPanel ):
         self.Bind(wx.EVT_BUTTON, self.on_link, self.link_btn, LINK_ID)
         self.on_link(None)
 
-        _box.Add(self.steplist_panel, 2, wx.RIGHT | wx.EXPAND, 2)
-        _box.Add(self.link_btn, 0, wx.LEFT | wx.EXPAND, 4)
+        _box = wx.BoxSizer(wx.HORIZONTAL)
+        _box.Add(self.steplist_panel, 1, wx.EXPAND, 0)
+        _box.Add(self.link_btn, 0, wx.LEFT | wx.EXPAND, 10)
         return _box
-
 
     def on_link(self, evt):
         self.linked = not self.linked
         if self.linked:
-            b=spBitmap(LINK_ICON, size=24, theme=self._prefsIO.GetValue('M_ICON_THEME'))
+            b = spBitmap(LINK_ICON, size=24, theme=self._prefsIO.GetValue('M_ICON_THEME'))
         else:
-            b=spBitmap(UNLINK_ICON, size=24, theme=self._prefsIO.GetValue('M_ICON_THEME'))
+            b = spBitmap(UNLINK_ICON, size=24, theme=self._prefsIO.GetValue('M_ICON_THEME'))
         self.link_btn.SetBitmapLabel(b)
-
 
     def on_check_changed(self, evt):
         index = evt.step_idx
         self.activated[index] = evt.checked
 
-
     def on_lang_changed(self, evt):
-
         if evt.lang == LANG_NONE:
             l = None
         else:
@@ -314,17 +323,13 @@ class AnnotationsPanel( wx.lib.scrolledpanel.ScrolledPanel ):
         else:
             self.parameters.set_lang(l, evt.step_idx)
 
-
     def on_sppas_run(self, evt):
         """
         Execute the automatic annotations.
         """
-
-        #self.GetTopLevelParent().annotate(self.activated)
         filelist = self.GetTopLevelParent().GetAudioSelection()
-        self.annprocess = AnnotateProcess( self._prefsIO)
+        self.annprocess = AnnotateProcess(self._prefsIO)
         self.annprocess.Run(self.GetParent(), filelist, self.activated, self.parameters)
-
 
     def SetPrefs(self, prefs):
         """
