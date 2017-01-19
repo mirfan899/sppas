@@ -30,13 +30,12 @@
         ---------------------------------------------------------------------
 
     src.wxgui.frames.baseframe.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     GUI base frame for analysis components of SPPAS.
 
 """
 import wx
-import logging
 
 from sp_glob import SETTINGS_FILE
 
@@ -219,10 +218,10 @@ class ComponentFrame(wx.Frame):
         """ Creates the default toolbar. """
 
         toolbar = MainToolbarPanel(parent, self._prefsIO)
-        toolbar.AddButton(wx.ID_ADD,      ADD_FILE_ICON,  "Add files", tooltip="Add files into the list.")
-        toolbar.AddButton(wx.ID_REMOVE,   REMOVE_ICON,    "Remove",    tooltip="Remove files of the list.")
-        toolbar.AddButton(ID_TB_NEWTAB,   TAB_NEW_ICON,   "New",       tooltip="Open a new page in the notebook.")
-        toolbar.AddButton(ID_TB_CLOSETAB, TAB_CLOSE_ICON, "Close",     tooltip="Close the current page in the notebook.")
+        toolbar.AddButton(wx.ID_ADD, ADD_FILE_ICON, "Add files", tooltip="Add files into the list.")
+        toolbar.AddButton(wx.ID_REMOVE, REMOVE_ICON, "Remove", tooltip="Remove files of the list.")
+        toolbar.AddButton(ID_TB_NEWTAB, TAB_NEW_ICON, "New tab", tooltip="Open a new page in the notebook.")
+        toolbar.AddButton(ID_TB_CLOSETAB, TAB_CLOSE_ICON, "Close tab", tooltip="Close the current page in the notebook.")
         toolbar.AddSpacer()
         return toolbar
 

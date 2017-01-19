@@ -49,6 +49,6 @@
 
         - Tutorials are available on the web site;
         - Explore the "documentation" folder;
-        - Suscribe to the user's group.
+        - Subscribe to the user's group.
 
     -------------------------------------------------------------------------

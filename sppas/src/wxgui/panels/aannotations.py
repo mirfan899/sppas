@@ -92,7 +92,7 @@ class sppasStepPanel(wx.Panel):
     def __init__(self, parent, parameters, preferences, index):
 
         wx.Panel.__init__(self, parent, size=wx.DefaultSize, style=wx.NO_BORDER)
-        self.SetBackgroundColour(preferences.GetValue('M_BG_COLOUR'))
+        self.SetBackgroundColour(preferences.GetValue('M_BGD_COLOUR'))
 
         # Members
         self.parameters = parameters
@@ -118,13 +118,14 @@ class sppasStepPanel(wx.Panel):
             self.choice = wx.ComboBox(self, -1, choices=sorted(choicelist))
             self.__apply_preferences(self.choice)
             self.choice.SetSelection(self.choice.GetItems().index(LANG_NONE))
+            self.choice.SetMinSize((80, -1))
             self.choice.Bind(wx.EVT_COMBOBOX, self.on_lang_changed)
 
         # description of the annotation
         d = self.parameters.get_step_descr(index)
-        self.text = wx.TextCtrl(self, wx.ID_ANY, value=d,
-                                style=wx.TE_READONLY | wx.TE_MULTILINE | wx.NO_BORDER | wx.TE_NO_VSCROLL | wx.TE_WORDWRAP)
+        self.text = wx.StaticText(self, wx.ID_ANY, d)
         self.__apply_preferences(self.text)
+        self.text.Wrap(300)
 
         # link to configure the annotation
         self.link = wx.StaticText(self, -1, "Configure...")
@@ -135,16 +136,17 @@ class sppasStepPanel(wx.Panel):
         # organize all tools
 
         csizer = wx.BoxSizer(wx.VERTICAL)
-        csizer.Add(self.checkbox, proportion=1, flag=wx.LEFT | wx.RIGHT | wx.EXPAND, border=5)
-        csizer.Add(self.link, proportion=0, flag=wx.LEFT | wx.TOP | wx.RIGHT, border=5)
+        csizer.Add(self.checkbox, proportion=0, flag=wx.LEFT | wx.RIGHT | wx.BOTTOM, border=4)
+        csizer.Add(self.link, proportion=0, flag=wx.LEFT, border=4)
 
-        hsizer = wx.BoxSizer(wx.HORIZONTAL)
-        hsizer.Add(csizer, proportion=0, flag=wx.ALL, border=0)
-        hsizer.Add(self.text, proportion=1, flag=wx.EXPAND, border=0)
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+        sizer.Add(csizer, proportion=2, flag=wx.ALIGN_CENTER_VERTICAL, border=0)
+        sizer.Add(self.text, proportion=4, flag=wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, border=4)
         if self.choice is not None:
-            hsizer.Add(self.choice, proportion=0, flag=wx.LEFT | wx.RIGHT, border=5)
+            sizer.Add(self.choice, proportion=0, flag=wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, border=4)
 
-        self.SetSizer(hsizer)
+        self.SetSizerAndFit(sizer)
+        self.SetAutoLayout(True)
 
     # -----------------------------------------------------------------------
 
@@ -213,7 +215,7 @@ class sppasStepPanel(wx.Panel):
 
         wx_object.SetFont(self._prefsIO.GetValue('M_FONT'))
         wx_object.SetForegroundColour(self._prefsIO.GetValue('M_FG_COLOUR'))
-        wx_object.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
+        wx_object.SetBackgroundColour(self._prefsIO.GetValue('M_BGD_COLOUR'))
 
 # ----------------------------------------------------------------------------
 
@@ -242,7 +244,7 @@ class AnnotationsPanel(wx.lib.scrolledpanel.ScrolledPanel):
         self.activated = []
         self.step_panels = []
         self.linked = False
-        self.parameters  = sppasParam()
+        self.parameters = sppasParam()
         self._prefsIO = preferences
         self.parameters.set_output_format(self._prefsIO.GetValue('M_OUTPUT_EXT'))
 
@@ -259,7 +261,7 @@ class AnnotationsPanel(wx.lib.scrolledpanel.ScrolledPanel):
                                      font=self._prefsIO.GetValue('M_FONT'))
 
         _vbox = wx.BoxSizer(wx.VERTICAL)
-        _vbox.Add(_contentbox, proportion=1, flag=wx.EXPAND, border=0)
+        _vbox.Add(_contentbox, proportion=1, flag=wx.EXPAND | wx.ALL, border=0)
         _vbox.Add(self._brun,
                   proportion=0,
                   flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_CENTER_HORIZONTAL,
@@ -283,7 +285,7 @@ class AnnotationsPanel(wx.lib.scrolledpanel.ScrolledPanel):
             p.Bind(EVT_LANG_EVENT, self.on_lang_changed)
             self.step_panels.append(p)
             self.activated.append(False)
-            sbox.Add(p, 0, wx.EXPAND, border=0)
+            sbox.Add(p, 1, wx.EXPAND | wx.ALL, border=4)
         self.steplist_panel.SetSizer(sbox)
 
         lnk_bmp = spBitmap(LINK_ICON, theme=self._prefsIO.GetValue('M_ICON_THEME'))
@@ -295,8 +297,8 @@ class AnnotationsPanel(wx.lib.scrolledpanel.ScrolledPanel):
         self.on_link(None)
 
         _box = wx.BoxSizer(wx.HORIZONTAL)
-        _box.Add(self.steplist_panel, 1, wx.EXPAND, 0)
-        _box.Add(self.link_btn, 0, wx.LEFT | wx.EXPAND, 10)
+        _box.Add(self.steplist_panel, 1, wx.EXPAND | wx.TOP, 4)
+        _box.Add(self.link_btn, 0, wx.RIGHT | wx.EXPAND, 4)
         return _box
 
     def on_link(self, evt):
