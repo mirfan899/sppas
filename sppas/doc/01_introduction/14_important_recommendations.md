@@ -11,15 +11,15 @@ documentation:
 
     - only `wav`, `aiff` and `au` audio files
     - only mono (= one channel)
-    - frame rates preferably: 16000hz, 32000hz, 48000hz
-    - bit rate preferably: 16 bits
+    - frame rates preferably: *16000hz*, 32000hz, 48000hz
+    - bit rate preferably: *16 bits*, 32bits
     - good recording quality is expected. It is of course required to
     never convert from a compressed file (as mp3 for example).
 
 2. Annotated data files:
 
-    - UTF-8 encoding only
-    - it is recommended to use ony US-ASCII characters in file names (including their path)
+    - *UTF-8* encoding only
+    - it is recommended to use only US-ASCII characters in file names (including their path)
 
 
 ### About automatic annotations

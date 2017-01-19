@@ -222,8 +222,11 @@
 </ul></li>
 <li><p>Plugins</p>
 <ul>
-<li><em>TierMapping-plugin</em>: Create tier by mapping annotation labels</li>
-<li><em>MarsaTag-plugin</em>: Use the POS-Tagger MarsaTag from SPPAS (French only)</li>
+<li><em>SAMPA to IPA</em>: convert SAMPA into IPA phonemes encoding</li>
+<li><em>SAMPA to Praat-IPA</em>: convert SAMPA into Praat phonemes encoding</li>
+<li><em>Classify phones</em>: create tiers with the phonemes classification (articulatory information)</li>
+<li><em>Marsatag</em>: apply MarsaTag French POS-tagger on time-aligned files</li>
+<li><em>sox</em>: call the Swiss Army Knife of sound processing utilities from SPPAS</li>
 </ul></li>
 </ol>
 <h3 id="how-to-use-sppas"><a href="#how-to-use-sppas">How to use SPPAS?</a></h3>
@@ -250,6 +253,7 @@
 <li>Subtitles: srt, sub</li>
 <li>Signaix: hz</li>
 <li>Excel/OpenOffice/R: csv</li>
+<li>Audacity: txt</li>
 </ul>
 <p>And the followings can be imported:</p>
 <ul>
@@ -268,14 +272,14 @@
 <ul>
 <li>only <code>wav</code>, <code>aiff</code> and <code>au</code> audio files</li>
 <li>only mono (= one channel)</li>
-<li>frame rates preferably: 16000hz, 32000hz, 48000hz</li>
-<li>bit rate preferably: 16 bits</li>
+<li>frame rates preferably: <em>16000hz</em>, 32000hz, 48000hz</li>
+<li>bit rate preferably: <em>16 bits</em>, 32bits</li>
 <li>good recording quality is expected. It is of course required to never convert from a compressed file (as mp3 for example).</li>
 </ul></li>
 <li><p>Annotated data files:</p>
 <ul>
-<li>UTF-8 encoding only</li>
-<li>it is recommended to use ony US-ASCII characters in file names (including their path)</li>
+<li><em>UTF-8</em> encoding only</li>
+<li>it is recommended to use only US-ASCII characters in file names (including their path)</li>
 </ul></li>
 </ol>
 <h3 id="about-automatic-annotations"><a href="#about-automatic-annotations">About automatic annotations</a></h3>

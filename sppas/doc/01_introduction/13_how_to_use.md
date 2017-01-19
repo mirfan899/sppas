@@ -19,7 +19,7 @@ speech data and to analyse annotated files:
 
 2. Analysis
 
-    - *IPUscriber*:      Manual orthographic transcription, after IPUs segmentation
+    - *IPUscriber*:     Manual orthographic transcription, after IPUs segmentation
     - *AudioRoamer*:    Play, show information and manage speech audio files
     - *Statistics*:     Estimates/Save statistics on annotated files
     - *DataRoamer*:     Manipulate annotated files
@@ -29,9 +29,12 @@ speech data and to analyse annotated files:
 
 3. Plugins
 
-    - *TierMapping-plugin*: Create tier by mapping annotation labels
-    - *MarsaTag-plugin*: Use the POS-Tagger MarsaTag from SPPAS (French only)
-
+    - *SAMPA to IPA*: convert SAMPA into IPA phonemes encoding
+    - *SAMPA to Praat-IPA*: convert SAMPA into Praat phonemes encoding
+    - *Classify phones*: create tiers with the phonemes classification (articulatory information)
+    - *Marsatag*: apply MarsaTag French POS-tagger on time-aligned files
+    - *sox*: call the Swiss Army Knife of sound processing utilities from SPPAS
+    
 
 ### How to use SPPAS?
 
@@ -78,6 +81,7 @@ SPPAS supports the following software with their file extensions:
 * Subtitles: srt, sub
 * Signaix: hz
 * Excel/OpenOffice/R: csv
+* Audacity: txt
 
 And the followings can be imported:
 

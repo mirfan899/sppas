@@ -209,12 +209,12 @@ def comparext(reference, test, extension, delta, verbose, persist):
     for i in range(len(listref)):
         if verbose>0:
             print " Reference: "+listref[i]
-        reftrs = annotationdata.io.read( listref[i] )
+        reftrs = annotationdata.aio.read( listref[i] )
 
         try:
             if verbose>0:
                 print " Test: "+listtest[i]
-            testtrs = annotationdata.io.read( listtest[i] )
+            testtrs = annotationdata.aio.read( listtest[i] )
             res = compare_trs(reftrs, testtrs, delta, verbose, persist)
             if res is False :
                 if verbose>0:
