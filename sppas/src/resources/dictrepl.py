@@ -99,7 +99,6 @@ class DictRepl(object):
     def is_key(self, entry):
         """ Return True if entry is a key in the dictionary."""
 
-        # deprecated: return self._dict.has_key(entry)
         return entry in self._dict
 
     # ------------------------------------------------------------------------

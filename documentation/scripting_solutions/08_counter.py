@@ -142,7 +142,7 @@ def zipf(ranks, item):
     @return Zipf value or -1 if the entry is missing
 
     """
-    if ranks.has_key(item):
+    if item in ranks:
         return 0.1 / ranks[item]
     return -1
 

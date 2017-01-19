@@ -73,9 +73,9 @@ if not len(lines):
 sampadict = extract_dict_from_lines(lines, 1, 2)
 mylist = ['a', 'b', 'c', 'd', 'e', 'f', 'E', 'g', 'a~', 'S']
 for phone in mylist:
-    if sampadict.has_key(phone):
-        print "Sampa phoneme",phone,"is IPA",sampadict[phone]
+    if phone in sampadict:
+        print("Sampa phoneme", phone, "is IPA", sampadict[phone])
     else:
-        print "Sampa phoneme",phone,"has no IPA!"
+        print("Sampa phoneme", phone, "has no IPA!")
 
 # ----------------------------------------------------------------------------

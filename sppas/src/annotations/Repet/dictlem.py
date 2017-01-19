@@ -87,7 +87,7 @@ class LemmaDict:
 
                 # Add (or change) the entry in the dict
                 # Find a previous token in the dictionary... or not!
-                if dictfreq.has_key(__entry) == True:
+                if __entry in dictfreq:
                     # a token already exists
                     if dictfreq[__entry] < __freq:
                         # the new one is more frequent
@@ -95,11 +95,9 @@ class LemmaDict:
                         self.lemdict[__entry] = __lemma
                 else:
                     self.lemdict[__entry] = __lemma
-                    dictfreq[__entry]  = __freq
+                    dictfreq[__entry] = __freq
 
-    # End __init__
     # ------------------------------------------------------------------
-
 
     def get_size(self):
         """ Return the number of entries in the dictionary.
@@ -110,9 +108,7 @@ class LemmaDict:
         """
         return len(self.lemdict)
 
-    # End get_size
     # ------------------------------------------------------------------
-
 
     def get_dict(self):
         """ Return the dictionary.
@@ -122,66 +118,58 @@ class LemmaDict:
         """
         return self.lemdict
 
-    # End get_dict
     # ------------------------------------------------------------------
 
-
-    def __get(self,entry):
+    def __get(self, entry):
         """ Return the lemmatization of an entry in the dictionary or "UNK".
             Parameters:  None
             Return:      int
             Exception:   None
         """
-        return self.lemdict.get( self.__lower(entry),self.unk )
+        return self.lemdict.get(self.__lower(entry), self.unk)
 
-    # End __get
     # ------------------------------------------------------------------
 
-
-    def is_unk(self,entry):
+    def is_unk(self, entry):
         """ Return True if entry is unknown (not in the dictionary).
             Parameters:
                 - entry is a string
             Return:      Boolean
-            Exception:   None
         """
-        return not self.lemdict.has_key( self.__lower(entry) )
+        return self.__lower(entry) not in self.lemdict
 
-    # End is_unk
     # ------------------------------------------------------------------
 
-
-    def get_lem(self,entry):
+    def get_lem(self, entry):
         """ Return the lemmatization of an entry.
             Parameters:
                 - entry is the string to lemmatize
             Return:      A string with the lemmatization
-            Exception:
         """
         entry = self.__clean(entry)
 
         # Specific strings... for the italian transcription...
         idx = entry.find(u"<")
-        if idx>1 and entry.find(u">")>-1:
+        if idx > 1 and entry.find(u">") > -1:
             entry = entry[:idx]
         # Specific strings... for the CID transcription...
-        if len(entry)==0 or entry.find(u"gpd_")>-1 or entry.find(u"gpf_")>-1 or entry.find(u"ipu_")>-1:
+        if len(entry) == 0 or entry.find(u"gpd_") >- 1 or entry.find(u"gpf_") > -1 or entry.find(u"ipu_") > -1:
             return ""
 
         # Find entry in the dict as it is given
-        _strlem = self.__get( entry )
+        _strlem = self.__get(entry)
 
         # OK, the entry is in the dictionary
         if _strlem != self.unk:
             return _strlem
 
         # a missing compound word
-        if entry.find(u"-")>-1 or entry.find(u"'")>-1:
+        if entry.find(u"-") > -1 or entry.find(u"'") > -1:
             _strlem = ""
-            _tabstr = re.split(u"[-']",entry)
+            _tabstr = re.split(u"[-']", entry)
 
             for _w in _tabstr:
-                _strlem = _strlem + " " + self.__get( _w )
+                _strlem = _strlem + " " + self.__get(_w)
 
         # OK, finally the entry is in the dictionary?
         if _strlem.find( self.unk )>-1:
@@ -189,9 +177,7 @@ class LemmaDict:
         else:
             return _strlem
 
-    # End get_lem
     # ------------------------------------------------------------------
-
 
     def __lower(self,entry):
         """ Lower a string.
@@ -205,9 +191,7 @@ class LemmaDict:
         #__str = __str.replace('Ù', 'ù')
         return __str
 
-    # End __lower
     # ------------------------------------------------------------------
-
 
     def __clean(self,entry):
         """ Clean a string by removing tabs, CR/LF, and some punctuation.
@@ -225,9 +209,7 @@ class LemmaDict:
 
         return __str.strip()
 
-    # End __clean
     # ------------------------------------------------------------------
-
 
     def lemmatize(self, unit, unk=False):
         """ Return the lemmatization of an utterrance.
@@ -255,9 +237,6 @@ class LemmaDict:
         # Concatenate entries into a lemmatized string
         _s = " "
         return _s.join( tablem )
-
-    # End lemmatize
-    # ------------------------------------------------------------------
 
 
 # ######################################################################### #

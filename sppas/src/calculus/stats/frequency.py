@@ -61,8 +61,6 @@ Function List
 
 """
 
-# ---------------------------------------------------------------------------
-
 def frequency(mylist, item):
     """
     Return the relative frequency of an item of a list.
@@ -76,6 +74,7 @@ def frequency(mylist, item):
 
 # ---------------------------------------------------------------------------
 
+
 def percentage(mylist, item):
     """
     Return the percentage of an item of a list.
@@ -85,12 +84,13 @@ def percentage(mylist, item):
     @return percentage (float) of item in mylist
 
     """
-    return 100.0 * frequency(mylist,item)
+    return 100.0 * frequency(mylist, item)
 
 
 # ---------------------------------------------------------------------------
 # NLP functions related to frequency
 # ---------------------------------------------------------------------------
+
 
 def hapax(counter):
     """
@@ -103,6 +103,7 @@ def hapax(counter):
     return [k for k in counter.keys() if counter[k]==1]
 
 # ---------------------------------------------------------------------------
+
 
 def occranks(counter):
     """
@@ -121,12 +122,13 @@ def occranks(counter):
             occ[v] = 1
 
     ocdict = {}
-    for r,o in enumerate(reversed(sorted(occ.keys()))):
+    for r, o in enumerate(reversed(sorted(occ.keys()))):
         ocdict[o] = r+1
 
     return ocdict
 
 # ---------------------------------------------------------------------------
+
 
 def ranks(counter):
     """
@@ -145,6 +147,7 @@ def ranks(counter):
 
 # ---------------------------------------------------------------------------
 
+
 def zipf(ranks, item):
     """
     Return the Zipf Law value of an item.
@@ -159,11 +162,12 @@ def zipf(ranks, item):
     @return Zipf value or -1 if the entry is missing
 
     """
-    if ranks.has_key(item):
+    if item in ranks:
         return 0.1 / ranks[item]
     return -1
 
 # ---------------------------------------------------------------------------
+
 
 def tfidf(documents, item):
     """
@@ -181,8 +185,8 @@ def tfidf(documents, item):
     # Estimate tf of item in the corpus
     alltokens = []
     for d in documents:
-        alltokens.extend( d )
-    tf = frequency(alltokens,item)
+        alltokens.extend(d)
+    tf = frequency(alltokens, item)
 
     # number of documents in the corpus
     D = len(documents)

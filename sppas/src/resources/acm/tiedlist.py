@@ -129,7 +129,7 @@ class TiedList(object):
         @param entry is a triphone/biphone/monophone
 
         """
-        return self.tied.has_key( entry )
+        return entry in self.tied
 
     # -----------------------------------------------------------------------
 
@@ -143,7 +143,7 @@ class TiedList(object):
         @return bool
 
         """
-        if self.tied.has_key( tied ) or tied in self.observed:
+        if tied in self.tied or tied in self.observed:
             return False
 
         if observed is None:
@@ -227,17 +227,17 @@ class TiedList(object):
         observed = ""
         frqtied = {}
         for v in self.tied.values():
-            if v.find( tied )>-1:
+            if v.find(tied) > -1:
                 # Caution: a biphone can only be tied with a biphone
-                if tied.find("-")==-1 and v.find("-")>-1:
+                if tied.find("-") == -1 and v.find("-") > -1:
                     pass
                 else:
-                    if frqtied.has_key( v ):
-                        frqtied[ v ] = frqtied[ v ]+1
+                    if v in frqtied:
+                        frqtied[v] = frqtied[v] + 1
                     else:
-                        frqtied[ v ] = 1
+                        frqtied[v] = 1
         frqmax = 0
-        for p,f in frqtied.items():
+        for p, f in frqtied.items():
             if f > frqmax:
                 frqmax = f
                 observed = p

@@ -169,12 +169,12 @@ class PhonUnk(object):
         Select the longest phonetization of an entry, from the end.
         """
         i = len(entry)
-        while (i>0):
+        while i > 0:
             # Find in the dictionary a substring from 0 to i
-            if self.prondict.has_key( entry[:i] ):
+            if entry[:i] in self.prondict:
                 # Return index for the longest string
                 return i
-            i = i-1
+            i -= 1
 
         # Did not find any pronunciation for this entry!
         return 0
@@ -203,10 +203,10 @@ class PhonUnk(object):
             # left is from the first to the leftindex character in str
             left = entry[:leftindex]
             # Phonetize
-            if not self.prondict.has_key( left ):
+            if left not in self.prondict:
                 _phonleft = ""
             else:
-                _phonleft = self.prondict.get( left )
+                _phonleft = self.prondict.get(left)
             # The entire entry can be phonetized (nothing to do at right)
             if leftindex == len(entry):
                 return _phonleft
@@ -216,15 +216,15 @@ class PhonUnk(object):
         right = entry[leftindex:len(entry)]
         if len(right) == 0:
             return _phonleft
-        if self.prondict.has_key( right ):
-            _phonright = self.prondict.get( right )
+        if right in self.prondict:
+            _phonright = self.prondict.get(right)
         else:
             # If right part of the entry is unknown...
             # Use recursivity to phonetize
             _phonright = self.__recurslr(right)
 
-        if len(_phonleft)>0 and len(_phonright)>0:
-            return _phonleft+" "+_phonright
+        if len(_phonleft) > 0 and len(_phonright) > 0:
+            return _phonleft + " " + _phonright
 
         return _phonright
 
@@ -235,12 +235,12 @@ class PhonUnk(object):
         Select the longest phonetization of an entry, from the start.
         """
         i = 0
-        while (i<len(entry)):
+        while i < len(entry):
             # Find in the dictionary a substring from i to the entry-length
-            if self.prondict.has_key( entry[i:] ):
+            if entry[i:] in self.prondict:
                 # Return index for the longest string
                 return i
-            i = i+1
+            i += 1
 
         # Did not find any pronunciation for this entry!
         return len(entry)
@@ -269,10 +269,10 @@ class PhonUnk(object):
             # right is from the end to the rightindex character in str
             right = enrty[rightindex:]
             # Phonetize
-            if not self.prondict.has_key( right ):
+            if right not in self.prondict:
                 _phonright = ""
             else:
-                _phonright = self.prondict.get( right )
+                _phonright = self.prondict.get(right)
             # The entire entry can be phonetized (nothing to do at left)
             if rightindex == 0:
                 return _phonright
@@ -282,16 +282,14 @@ class PhonUnk(object):
         left = enrty[0:rightindex]
         if len(left) == 0:
             return _phonright
-        if self.prondict.has_key( left ):
-            _phonleft = self.prondict.get( left )
+        if left in self.prondict:
+            _phonleft = self.prondict.get(left)
         else:
             # If left part of the entry is unknown...
             # Use recursivity to phonetize
-            _phonleft = self.__recursrl( left )
+            _phonleft = self.__recursrl(left)
 
-        if len(_phonleft)>0 and len(_phonright)>0:
-            return _phonleft+" "+_phonright
+        if len(_phonleft) > 0 and len(_phonright) > 0:
+            return _phonleft + " " + _phonright
 
         return _phonleft
-
-# ----------------------------------------------------------------------
