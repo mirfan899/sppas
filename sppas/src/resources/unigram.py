@@ -163,8 +163,8 @@ class Unigram(object):
         """
         try:
             with codecs.open(filename, 'w', encoding=rutils.ENCODING) as output:
-                for entry, value in sorted(self._dict.iteritems(), key=lambda x:x[0]):
-                    output.write("%s %d\n"%(entry,value))
+                for entry, value in sorted(self._dict.items(), key=lambda x: x[0]):
+                    output.write("%s %d\n" % (entry, value))
         except Exception as e:
             logging.info('Save file failed due to the following error: %s' % str(e))
             return False

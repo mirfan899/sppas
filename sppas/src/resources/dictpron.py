@@ -288,15 +288,15 @@ class DictPron(object):
         try:
             with codecs.open(filename, 'w', encoding=rutils.ENCODING) as output:
 
-                for entry, value in sorted(self._dict.iteritems(), key=lambda x: x[0]):
+                for entry, value in sorted(self._dict.items(), key=lambda x: x[0]):
                     variants = value.split(DictPron.VARIANTS_SEPARATOR)
 
                     for i, variant in enumerate(variants, 1):
                         variant = variant.replace(DictPron.PHONEMES_SEPARATOR, " ")
                         if i > 1 and withvariantnb is True:
-                            line = u"%s(%d) [%s] %s\n" % (entry, i, entry, variant)
+                            line = "%s(%d) [%s] %s\n" % (entry, i, entry, variant)
                         else:
-                            line = u"%s [%s] %s\n" % (entry, entry, variant)
+                            line = "%s [%s] %s\n" % (entry, entry, variant)
                         output.write(line)
 
         except Exception as e:

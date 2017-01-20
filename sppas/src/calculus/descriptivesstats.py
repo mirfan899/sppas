@@ -69,7 +69,7 @@ class DescriptiveStatistics(object):
         :param dict_items: a dict of tuples (key, [values])
 
         """
-        self.items = dict_items
+        self._items = dict_items
 
     # -----------------------------------------------------------------------
 
@@ -79,7 +79,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of tuples (key, len)
 
         """
-        return dict((key, len(values)) for key,values in self.items.iteritems())
+        return dict((key, len(values)) for key,values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -89,7 +89,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of tuples (key, total) of float values
 
         """
-        return dict((key, stats.central.fsum(values)) for key, values in self.items.iteritems())
+        return dict((key, stats.central.fsum(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -99,7 +99,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, min) of float values
 
         """
-        return dict((key, stats.central.fmin(values)) for key, values in self.items.iteritems())
+        return dict((key, stats.central.fmin(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -109,7 +109,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, max) of float values
 
         """
-        return dict((key, stats.central.fmax(values)) for key, values in self.items.iteritems())
+        return dict((key, stats.central.fmax(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -119,7 +119,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, mean) of float values
 
         """
-        return dict((key, stats.central.fmean(values)) for key, values in self.items.iteritems())
+        return dict((key, stats.central.fmean(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -129,7 +129,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, mean) of float values
 
         """
-        return dict((key, stats.central.fmedian(values)) for key, values in self.items.iteritems())
+        return dict((key, stats.central.fmedian(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -140,7 +140,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, variance) of float values
 
         """
-        return dict((key, stats.variability.lvariance(values)) for key, values in self.items.iteritems())
+        return dict((key, stats.variability.lvariance(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -151,7 +151,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, stddev) of float values
 
         """
-        return dict((key, stats.variability.lstdev(values)) for key, values in self.items.iteritems())
+        return dict((key, stats.variability.lstdev(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -162,7 +162,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, coefvariation) of float values
 
         """
-        return dict((key, stats.moment.lvariation(values)) for key, values in self.items.iteritems())
+        return dict((key, stats.moment.lvariation(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -173,4 +173,4 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, [z-scores]) of float values
 
         """
-        return dict((key, stats.variability.lzs(values)) for key, values in self.items.iteritems())
+        return dict((key, stats.variability.lzs(values)) for key, values in self._items.items())

@@ -472,7 +472,7 @@ class Elan( Transcription ):
     # -----------------------------------------------------------------
 
     def __write_constraints(self, root):
-        for desc,stereotype in CONSTRAINTS.iteritems():
+        for desc, stereotype in CONSTRAINTS.items():
             typeRoot = ET.SubElement(root, 'CONSTRAINT')
             typeRoot.set('DESCRIPTION', desc)
             typeRoot.set('STEREOTYPE', stereotype)

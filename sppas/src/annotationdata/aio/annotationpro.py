@@ -306,12 +306,12 @@ class Antx(Transcription):
                     if media: Antx.__format_media(root, media)
 
             # Write configurations
-            for key,value in ELT_REQUIRED_Configuration.iteritems():
-                Antx.__format_configuration(root, key, self.metadata.get(key,value))
+            for key, value in ELT_REQUIRED_Configuration.items():
+                Antx.__format_configuration(root, key, self.metadata.get(key, value))
 
-            for key,value in self.metadata.iteritems():
+            for key, value in self.metadata.items():
                 if not key in ELT_REQUIRED_Configuration.keys():
-                    Antx.__format_configuration(root, key, self.metadata.get(key,value))
+                    Antx.__format_configuration(root, key, self.metadata.get(key, value))
 
             indent(root)
 
@@ -340,7 +340,7 @@ class Antx(Transcription):
         child_id.text = media.url
 
         # Antx required elements
-        for key,value in ELT_REQUIRED_Media.iteritems():
+        for key, value in ELT_REQUIRED_Media.items():
             if not key in [ 'id','filename' ]:
                 child = ET.SubElement(media_root, UpperLowerDict[key])
                 child.text = media.metadata.get( key, value )
@@ -385,14 +385,14 @@ class Antx(Transcription):
         child_name.text = tier.GetName()
 
         # Either get metadata in tier or assign the default value
-        for key,value in ELT_REQUIRED_Layer.iteritems():
+        for key, value in ELT_REQUIRED_Layer.items():
             if not key in [ 'id', 'name' ]:
                 # here, we have to restore original upper/lower case for the key
                 child = ET.SubElement(tier_root, UpperLowerDict[key])
                 child.text = tier.metadata.get( key, value )
 
         # We also add all Antx optional elements
-        for key,value in ELT_OPTIONAL_Layer.iteritems():
+        for key, value in ELT_OPTIONAL_Layer.items():
             # here, we have to restore original upper/lower case for the key
             child = ET.SubElement(tier_root, UpperLowerDict[key])
             child.text = tier.metadata.get( key, value )
@@ -425,13 +425,13 @@ class Antx(Transcription):
         child_iddur.text = str(duration)
 
         # Antx required elements
-        for key,value in ELT_REQUIRED_Segment.iteritems():
+        for key, value in ELT_REQUIRED_Segment.items():
             if not key in [ 'id','idlayer', 'label', 'start', 'duration' ]:
                 child = ET.SubElement(segment_root, UpperLowerDict[key])
                 child.text = ann.metadata.get( key, value )
 
         # We also add all Antx optional elements
-        for key,value in ELT_OPTIONAL_Segment.iteritems():
+        for key, value in ELT_OPTIONAL_Segment.items():
             child = ET.SubElement(segment_root, UpperLowerDict[key])
             child.text = ann.metadata.get( key, value )
 

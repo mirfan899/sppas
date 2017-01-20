@@ -513,7 +513,7 @@ class NgramCounter(object):
         # we can't delete an item while iterating the dict.
         # so... 2 steps: we store keys to delete, then we pop them!
         topop = []
-        for k,c in self._datacounts.iteritems():
+        for k, c in self._datacounts.items():
             if k[0] == self._ss or k[0] == self._es:
                 continue
             if c < value:

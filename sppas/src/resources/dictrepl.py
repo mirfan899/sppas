@@ -277,7 +277,7 @@ class DictRepl(object):
         """
         try:
             with codecs.open(filename, 'w', encoding=rutils.ENCODING) as output:
-                for entry, value in sorted(self._dict.iteritems(), key=lambda x: x[0]):
+                for entry, value in sorted(self._dict.items(), key=lambda x: x[0]):
                     values = value.split(DictRepl.REPLACE_SEPARATOR)
                     for v in values:
                         output.write("%s %s\n" % (entry, v.strip()))

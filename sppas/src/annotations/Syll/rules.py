@@ -156,12 +156,12 @@ class Rules:
             classes += self.get_class(phon)
 
         #search into exception
-        for key, val in self.exception.iteritems():
+        for key, val in self.exception.items():
             if key == classes:
                 return int(val)
 
         #search into general
-        for key, val in self.general.iteritems():
+        for key, val in self.general.items():
             if len(key) == len(phonList):
                 return int(val)
 

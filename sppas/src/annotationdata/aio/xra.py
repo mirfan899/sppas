@@ -484,7 +484,7 @@ class XRA(Transcription):
 
     @staticmethod
     def __format_metadata(metadataRoot, metaObject):
-        for key, value in metaObject.metadata.iteritems():
+        for key, value in metaObject.metadata.items():
             entry = ET.SubElement(metadataRoot, 'Entry')
             entry.set('key', key)
             entry.text = unicode(value)
