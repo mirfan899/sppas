@@ -56,7 +56,7 @@ elif args.es:
 else:
     end = 0
 
-for i in xrange(audio.get_nchannels()):
+for i in range(audio.get_nchannels()):
     idx = audio.extract_channel(i)
     audio.rewind()
     channel = audio.get_channel(idx)

@@ -43,7 +43,8 @@ from audiodata.audiodataexc import AudioDataError
 
 # ---------------------------------------------------------------------------
 
-class AiffIO( AudioPCM ):
+
+class AiffIO(AudioPCM):
     """
     @authors:      Nicolas Chazeau, Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -74,11 +75,11 @@ class AiffIO( AudioPCM ):
         """
         #Passing a unicode filename to aifc.open() results in the argument
         #being treated like a filepointer instead of opening the file.
-        fp = open( unicode(filename), "r" )
+        fp = open(unicode(filename), "r")
 
         # Use the standard aifc library to load the audio file
         # open method return an Aifc_read object
-        self.audiofp = aifc.open( fp )
+        self.audiofp = aifc.open(fp)
 
     # ----------------------------------------------------------------------
     # Read content, for audiofp
@@ -138,17 +139,17 @@ class AiffIO( AudioPCM ):
 
         """
         if self.audiofp:
-            self.save_fragment( filename, self.audiofp.readframes(self.audiofp.getnframes()) )
+            self.save_fragment(filename, self.audiofp.readframes(self.audiofp.getnframes()))
         elif len(self) == 1:
             channel = self.channels[0]
-            fp = open( filename, 'w' )
-            f = aifc.open( fp )
+            fp = open(filename, 'w')
+            f = aifc.open(fp)
             f.setnchannels(1)
             f.setsampwidth(channel.get_sampwidth())
             f.setframerate(channel.get_framerate())
             f.setnframes(channel.get_nframes())
             try:
-                self._write_frames( f, channel.frames )
+                self._write_frames(f, channel.frames)
             finally:
                 f.close()
 
@@ -156,17 +157,17 @@ class AiffIO( AudioPCM ):
             self.verify_channels()
 
             frames = ""
-            for i in xrange(0, self.channels[0].get_nframes()*self.channels[0].get_sampwidth(), self.channels[0].get_sampwidth()):
-                for j in xrange(len(self.channels)):
+            for i in range(0, self.channels[0].get_nframes()*self.channels[0].get_sampwidth(), self.channels[0].get_sampwidth()):
+                for j in range(len(self.channels)):
                         frames += self.channels[j].frames[i:i+self.channels[0].get_sampwidth()]
 
-            f = aifc.open( filename, 'w')
+            f = aifc.open(filename, 'w')
             f.setnchannels(len(self.channels))
             f.setsampwidth(self.channels[0].get_sampwidth())
             f.setframerate(self.channels[0].get_framerate())
             f.setnframes(self.channels[0].get_nframes())
             try:
-                self._write_frames( f, frames )
+                self._write_frames(f, frames)
             finally:
                 f.close()
 
@@ -180,14 +181,14 @@ class AiffIO( AudioPCM ):
         @param frames (string) the frames to write
 
         """
-        fp = open( unicode(filename), "w")
-        f = aifc.Aifc_write( fp )
+        fp = open(unicode(filename), "w")
+        f = aifc.Aifc_write(fp)
         f.setnchannels(self.get_nchannels())
         f.setsampwidth(self.get_sampwidth())
         f.setframerate(self.get_framerate())
         f.setnframes(len(frames)/self.get_nchannels()/self.get_sampwidth())
         try:
-            self._write_frames( f, frames )
+            self._write_frames(f, frames)
         except Exception:
             raise
         finally:

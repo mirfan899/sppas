@@ -187,7 +187,7 @@ class TierStats( object ):
         size = len(items)
         if (size - self.__n) > 0:
             limit = size - self.__n + 1
-            for i in xrange(limit):
+            for i in range(limit):
                 l.append( items[i:i + self.__n] )
         return l
 
@@ -206,6 +206,3 @@ class TierStats( object ):
                 d[text] = []
             d[text].append(dur)
         return d
-
-# End TierStats
-# ---------------------------------------------------------------------------

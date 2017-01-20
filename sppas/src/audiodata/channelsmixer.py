@@ -163,13 +163,13 @@ class ChannelsMixer( object ):
 
         frames = ""
         if sampwidth == 4:
-            for s in xrange(0, len(self.channels[0].frames), sampwidth):
+            for s in range(0, len(self.channels[0].frames), sampwidth):
                 frames += struct.pack("<l", long(self._sampleCalculator(self.channels, s, sampwidth, self.factors, attenuator)))
         elif sampwidth == 2:
-            for s in xrange(0, len(self.channels[0].frames), sampwidth):
+            for s in range(0, len(self.channels[0].frames), sampwidth):
                 frames += struct.pack("<h", int(self._sampleCalculator(self.channels, s, sampwidth, self.factors, attenuator)))
         else:
-            for s in xrange(0, len(self.channels[0].frames), sampwidth):
+            for s in range(0, len(self.channels[0].frames), sampwidth):
                 frames += struct.pack("<b", int(self._sampleCalculator(self.channels, s, sampwidth, self.factors, attenuator)))
 
         return Channel(framerate, sampwidth, str(frames))
@@ -190,12 +190,12 @@ class ChannelsMixer( object ):
         minval = 0
         maxval = 0
         sampsum = 0
-        for s in xrange(0, len(self.channels[0].frames), sampwidth):
+        for s in range(0, len(self.channels[0].frames), sampwidth):
             sampsum = long(self._sampleCalculator(self.channels, s, sampwidth, self.factors, 1))
             maxval = max(sampsum, maxval)
             minval = min(sampsum, minval)
 
-        return (minval, maxval)
+        return minval, maxval
 
     # -----------------------------------------------------------------------
 
@@ -205,10 +205,10 @@ class ChannelsMixer( object ):
 
         """
         nframes = 0
-        for i in xrange(len(self.channels)):
+        for i in range(len(self.channels)):
             nframes = max(nframes, self.channels[i].get_nframes())
 
-        for i in xrange(len(self.channels)):
+        for i in range(len(self.channels)):
             if self.channels[i].get_nframes() < nframes:
                 fragment = ChannelFrames(self.channels[i].frames)
                 fragment.append_silence(nframes - self.channels[i].get_nframes())

@@ -41,7 +41,8 @@ from audiodata.audio import AudioPCM
 
 # ---------------------------------------------------------------------------
 
-class SunauIO( AudioPCM ):
+
+class SunauIO(AudioPCM):
     """
     @authors:      Nicolas Chazeau, Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -69,7 +70,7 @@ class SunauIO( AudioPCM ):
         """
         # Use the standard wave library to load the wave file
         # open method returns a Wave_read() object
-        self.audiofp = sunau.open( filename, "r")
+        self.audiofp = sunau.open(filename, "r")
 
     # -----------------------------------------------------------------------
 
@@ -81,16 +82,16 @@ class SunauIO( AudioPCM ):
 
         """
         if self.audiofp:
-            self.save_fragment( filename, self.audiofp.readframes(self.audiofp.getnframes()) )
+            self.save_fragment(filename, self.audiofp.readframes(self.audiofp.getnframes()))
 
         elif len(self) == 1:
             channel = self.channels[0]
-            f = sunau.Au_write( filename )
+            f = sunau.Au_write(filename)
             f.setnchannels(1)
             f.setsampwidth(channel.get_sampwidth())
             f.setframerate(channel.get_framerate())
             try:
-                f.writeframes( channel.frames )
+                f.writeframes(channel.frames)
             finally:
                 f.close()
 
@@ -98,16 +99,16 @@ class SunauIO( AudioPCM ):
             self.verify_channels()
 
             frames = ""
-            for i in xrange(0, self.channels[0].get_nframes()*self.channels[0].get_sampwidth(), self.channels[0].get_sampwidth()):
-                for j in xrange(len(self.channels)):
+            for i in range(0, self.channels[0].get_nframes()*self.channels[0].get_sampwidth(), self.channels[0].get_sampwidth()):
+                for j in range(len(self.channels)):
                         frames += self.channels[j].frames[i:i+self.channels[0].get_sampwidth()]
 
-            f = sunau.Au_write( filename )
+            f = sunau.Au_write(filename)
             f.setnchannels(len(self.channels))
             f.setsampwidth(self.channels[0].get_sampwidth())
             f.setframerate(self.channels[0].get_framerate())
             try:
-                f.writeframes( frames )
+                f.writeframes(frames)
             finally:
                 f.close()
 
@@ -121,12 +122,12 @@ class SunauIO( AudioPCM ):
         @param frames (string) the frames to write
 
         """
-        f = sunau.Au_write( filename )
+        f = sunau.Au_write(filename)
         f.setnchannels(self.get_nchannels())
         f.setsampwidth(self.get_sampwidth())
         f.setframerate(self.get_framerate())
         try:
-            f.writeframes( frames )
+            f.writeframes(frames)
         finally:
             f.close()
 

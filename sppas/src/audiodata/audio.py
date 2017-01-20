@@ -44,7 +44,7 @@ from audiodata.channelsmixer import ChannelsMixer
 
 # ---------------------------------------------------------------------------
 
-class AudioPCM( object ):
+class AudioPCM(object):
     """
     @authors:      Nicolas Chazeau, Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -234,16 +234,16 @@ class AudioPCM( object ):
             raise AudioDataError('No channel with index %d in the audio file.'%index)
 
         if nc == 1:
-            channel = Channel( self.get_framerate(), self.get_sampwidth(), data )
-            return self.append_channel( channel )
+            channel = Channel(self.get_framerate(), self.get_sampwidth(), data)
+            return self.append_channel(channel)
 
         frames = ""
         sw = self.get_sampwidth()
-        for i in xrange(index*sw, len(data), nc*sw):
+        for i in range(index*sw, len(data), nc*sw):
             frames += data[i:i+sw]
-        channel = Channel( self.get_framerate(), self.get_sampwidth(), frames )
+        channel = Channel(self.get_framerate(), self.get_sampwidth(), frames)
 
-        return self.append_channel( channel )
+        return self.append_channel(channel)
 
     # ----------------------------------------------------------------------
 
@@ -262,9 +262,9 @@ class AudioPCM( object ):
 
         for index in range(nc):
             frames = ""
-            for i in xrange(index*sw, len(data), nc*sw):
+            for i in range(index*sw, len(data), nc*sw):
                 frames += data[i:i+sw]
-            channel = Channel( self.get_framerate(), self.get_sampwidth(), frames )
+            channel = Channel(self.get_framerate(), self.get_sampwidth(), frames)
             self.append_channel(channel)
 
     # ----------------------------------------------------------------------
@@ -311,22 +311,22 @@ class AudioPCM( object ):
         data = self.read_frames(nframes)
 
         # Unpack to get all values, depending on the number of bytes of each value.
-        if self.get_sampwidth() == 4 :
+        if self.get_sampwidth() == 4:
             data = struct.unpack("<%ul" % (len(data) / 4), data)
 
         elif self.get_sampwidth() == 2 :
             data = struct.unpack("<%uh" % (len(data) / 2), data)
 
         else :
-            data = struct.unpack("%uB"  %  len(data),      data)
-            data = [ s - 128 for s in data ]
+            data = struct.unpack("%uB" % len(data), data)
+            data = [s - 128 for s in data]
 
         nc  = self.get_nchannels()
         samples = []
         if nc > 1:
             # Split channels
-            for i in xrange(nc) :
-                samples.append([ data[j] for j in xrange(i, len(data), nc) ])
+            for i in range(nc):
+                samples.append([data[j] for j in range(i, len(data), nc)])
         else:
             samples.append(list(data))
 

@@ -42,7 +42,8 @@ import audiodata.audioutils as audioutils
 
 # ---------------------------------------------------------------------------
 
-class AudioFrames( object ):
+
+class AudioFrames(object):
     """
     @authors:      Nicolas Chazeau, Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -184,10 +185,10 @@ class AudioFrames( object ):
             return audioop.rms(self.frames, self.sampwidth)
         else:
             rmssum = 0
-            for i in xrange(self.nchannels):
+            for i in range(self.nchannels):
                 newFrames = ""
-                for j in xrange(i*self.sampwidth, len(self.frames), self.sampwidth*self.nchannels):
-                    for k in xrange(self.sampwidth):
+                for j in range(i*self.sampwidth, len(self.frames), self.sampwidth*self.nchannels):
+                    for k in range(self.sampwidth):
                         newFrames = newFrames + self.frames[j+k]
                 rmssum += audioop.rms(newFrames, self.sampwidth)
 
@@ -210,7 +211,7 @@ class AudioFrames( object ):
         elif self.sampwidth == 2 :
             data = struct.unpack("<%uh" % (len(self.frames) / 2), self.frames)
         else :
-            data = struct.unpack("%uB"  %  len(self.frames),      self.frames)
+            data = struct.unpack("%uB" % len(self.frames), self.frames)
             data = [ s - 128 for s in data ]
 
         maxval = audioutils.get_maxval(self.sampwidth)*(factor/2.)
@@ -218,10 +219,8 @@ class AudioFrames( object ):
 
         nbclipping = 0
 
-        for i in xrange(len(data)):
+        for i in range(len(data)):
             if data[i] >= maxval or data[i] <= minval:
                 nbclipping = nbclipping + 1
 
         return float(nbclipping)/len(data)
-
-    # -----------------------------------------------------------------------

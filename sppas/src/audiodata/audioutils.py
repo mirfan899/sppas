@@ -38,8 +38,8 @@
 import struct
 import math
 
-
 # ---------------------------------------------------------------------------
+
 
 def unpack_data( data, sampwidth ):
     if sampwidth == 4 :
@@ -54,6 +54,7 @@ def unpack_data( data, sampwidth ):
 
 # ----------------------------------------------------------------------------
 
+
 def samples2frames(samples, sampwidth, nchannel=1):
     """
     Turn samples into frames
@@ -67,23 +68,24 @@ def samples2frames(samples, sampwidth, nchannel=1):
     nframes = len(samples[0])
     frames = ""
 
-    if sampwidth == 4 :
-        for i in xrange(nframes):
-            for j in xrange(nchannel):
+    if sampwidth == 4:
+        for i in range(nframes):
+            for j in range(nchannel):
                 frames = frames + struct.pack("<l", samples[j][i])
 
-    elif sampwidth == 2 :
-        for i in xrange(nframes):
-            for j in xrange(nchannel):
+    elif sampwidth == 2:
+        for i in range(nframes):
+            for j in range(nchannel):
                 frames = frames + struct.pack("<h", samples[j][i])
 
-    else :
-        for i in xrange(nframes):
-            for j in xrange(nchannel):
+    else:
+        for i in range(nframes):
+            for j in range(nchannel):
                 frames = frames + struct.pack("<b", samples[j][i])
     return frames
 
 # ----------------------------------------------------------------------------
+
 
 def get_maxval(size, signed=True):
     """
@@ -109,6 +111,7 @@ def get_maxval(size, signed=True):
 
 # ----------------------------------------------------------------------------
 
+
 def get_minval(size, signed=True):
     """
     Return the min value for a given sampwidth.
@@ -129,6 +132,7 @@ def get_minval(size, signed=True):
 
 # ----------------------------------------------------------------------------
 
+
 def db2mel(value):
     """
     Return the equivalent value in a mel scale, from a dB value.
@@ -140,6 +144,7 @@ def db2mel(value):
     return 2595*math.log10(1+float(value)/700)
 
 # ----------------------------------------------------------------------------
+
 
 def mel2db(value):
     """
@@ -153,6 +158,7 @@ def mel2db(value):
 
 # ----------------------------------------------------------------------------
 
+
 def amp2db(value):
     """
     Return the equivalent value in a dB scale, from an amplitude value.
@@ -163,6 +169,6 @@ def amp2db(value):
     """
     if value < 3:
         return 0.
-    return round( 10. * math.log10(value), 2)
+    return round(10. * math.log10(value), 2)
 
 # ----------------------------------------------------------------------------

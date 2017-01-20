@@ -32,7 +32,7 @@ mixer = ChannelsMixer()
 
 for inputFile in args.w:
     audio = audiodata.open(inputFile)
-    for i in xrange(audio.get_nchannels()):
+    for i in range(audio.get_nchannels()):
         idx = audio.extract_channel(i)
         audio.rewind()
         mixer.append_channel(audio.get_channel(idx))
@@ -45,4 +45,3 @@ audio_out = AudioPCM()
 audio_out.append_channel( newchannel )
 audiodata.save( args.o, audio_out )
 
-# ----------------------------------------------------------------------------

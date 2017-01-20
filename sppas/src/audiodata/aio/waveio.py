@@ -41,7 +41,8 @@ from audiodata.audio import AudioPCM
 
 # ---------------------------------------------------------------------------
 
-class WaveIO( AudioPCM ):
+
+class WaveIO(AudioPCM):
     """
     @authors:      Nicolas Chazeau, Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -74,7 +75,7 @@ class WaveIO( AudioPCM ):
         """
         # Use the standard wave library to load the wave file
         # open method returns a Wave_read() object
-        self.audiofp = wave.open( unicode(filename), "r" )
+        self.audiofp = wave.open(unicode(filename), "r")
 
     # -----------------------------------------------------------------------
 
@@ -86,16 +87,16 @@ class WaveIO( AudioPCM ):
 
         """
         if self.audiofp:
-            self.save_fragment( filename, self.audiofp.readframes(self.audiofp.getnframes()) )
+            self.save_fragment(filename, self.audiofp.readframes(self.audiofp.getnframes()))
 
         elif len(self.channels) == 1:
             channel = self.channels[0]
-            f = wave.Wave_write( unicode(filename) )
+            f = wave.Wave_write(unicode(filename))
             f.setnchannels(1)
             f.setsampwidth(channel.get_sampwidth())
             f.setframerate(channel.get_framerate())
             try:
-                f.writeframes( channel.frames )
+                f.writeframes(channel.frames)
             finally:
                 f.close()
 
@@ -103,16 +104,16 @@ class WaveIO( AudioPCM ):
             self.verify_channels()
             sw = self.channels[0].get_sampwidth()
             frames = ""
-            for i in xrange(0, self.channels[0].get_nframes()*sw, sw):
-                for j in range( len(self.channels) ):
+            for i in range(0, self.channels[0].get_nframes()*sw, sw):
+                for j in range(len(self.channels)):
                     frames += self.channels[j].frames[i:i+sw]
 
-            f = wave.Wave_write( unicode(filename) )
+            f = wave.Wave_write(unicode(filename))
             f.setnchannels(len(self.channels))
             f.setsampwidth(self.channels[0].get_sampwidth())
             f.setframerate(self.channels[0].get_framerate())
             try:
-                f.writeframes( frames )
+                f.writeframes(frames)
             finally:
                 f.close()
 
@@ -126,12 +127,12 @@ class WaveIO( AudioPCM ):
         @param frames (string) the frames to write
 
         """
-        f = wave.Wave_write( unicode(filename) )
+        f = wave.Wave_write(unicode(filename))
         f.setnchannels(self.get_nchannels())
         f.setsampwidth(self.get_sampwidth())
         f.setframerate(self.get_framerate())
         try:
-            f.writeframes( frames )
+            f.writeframes(frames)
         finally:
             f.close()
 

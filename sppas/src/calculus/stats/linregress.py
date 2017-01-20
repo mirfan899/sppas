@@ -155,7 +155,7 @@ def gradient_descent(points, starting_b, starting_m, learning_rate, num_iteratio
         return 0.
     b = starting_b
     m = starting_m
-    for i in xrange(num_iterations):
+    for i in range(num_iterations):
         b, m = step_gradient(b, m, points, learning_rate)
     return b, m
 
@@ -169,9 +169,9 @@ def gradient_descent_linear_regression(points, num_iterations=50000):
     @return intercept,slope
 
     """
-    learning_rate  = 0.0001
-    initial_b      = 0 # initial y-intercept guess
-    initial_m      = 0 # initial slope guess
+    learning_rate = 0.0001
+    initial_b = 0 # initial y-intercept guess
+    initial_m = 0 # initial slope guess
     return gradient_descent(points, initial_b, initial_m, learning_rate, num_iterations)
 
 # ---------------------------------------------------------------------------

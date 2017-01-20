@@ -46,8 +46,8 @@ class TestChannel(unittest.TestCase):
         frameschannel = ""
         # we are going to extract the channel number 2,
         # so we have to skip all frames which belong to the channel number 1
-        for i in xrange(self._sample_2.get_sampwidth(), len(frames), self._sample_2.get_sampwidth()*self._sample_2.get_nchannels()):
-            for j in xrange(self._sample_2.get_sampwidth()):
+        for i in range(self._sample_2.get_sampwidth(), len(frames), self._sample_2.get_sampwidth()*self._sample_2.get_nchannels()):
+            for j in range(self._sample_2.get_sampwidth()):
                 frameschannel += frames[i+j]
         self._sample_2.rewind()
         # Channel number 2 has index 1

@@ -87,7 +87,7 @@ class TimeGroupAnalysis(DescriptiveStatistics):
         :returns: (dict) a dictionary of (key, nPVI) of float values
 
         """
-        return dict((key, stats.variability.rPVI(values)) for key, values in self._items.iteritems())
+        return dict((key, stats.variability.rPVI(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -97,7 +97,7 @@ class TimeGroupAnalysis(DescriptiveStatistics):
         :returns: (dict) a dictionary of (key, nPVI) of float values
 
         """
-        return dict((key, stats.variability.nPVI(values)) for key, values in self._items.iteritems())
+        return dict((key, stats.variability.nPVI(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -111,7 +111,7 @@ class TimeGroupAnalysis(DescriptiveStatistics):
         #  x is the position
         #  y is the duration
         linreg = []
-        for key, values in self._items.iteritems():
+        for key, values in self._items.items():
             points = [(position, duration) for position, duration in enumerate(values)]
             linreg.append((key, (stats.linregress.tga_linear_regression(points))))
 
