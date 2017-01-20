@@ -38,9 +38,8 @@
 from ConfigParser import SafeConfigParser
 import codecs
 
-import logging
-from structs.lang       import LangResource
-from structs.baseoption import Option
+from structs.lang       import sppasLangResource
+from structs.baseoption import sppasOption
 
 """
     A config file consists of one or more named sections, each of which can
@@ -61,6 +60,7 @@ from structs.baseoption import Option
 """
 
 # ----------------------------------------------------------------------------
+
 
 class AnnotationConfigParser( object ):
     """
@@ -145,7 +145,6 @@ class AnnotationConfigParser( object ):
         else:
             raise Exception("Annotation configuration error: [Configuration] section required.")
 
-
     # ------------------------------------------------------------------------
     # Private
     # ------------------------------------------------------------------------
@@ -178,8 +177,8 @@ class AnnotationConfigParser( object ):
         rpath = ""
         rname = ""
         rext  = ""
-        lr = LangResource()
-        for name,value in items:
+        lr = sppasLangResource()
+        for name, value in items:
             if name == "type":
                 rtype = value.encode('utf-8')
             elif name == "path":
@@ -211,7 +210,7 @@ class AnnotationConfigParser( object ):
             elif name == "text":
                 otext = value.encode('utf-8')
 
-        opt = Option(oid)
+        opt = sppasOption(oid)
         opt.set_type(otype)
         opt.set_value(ovalue)
         opt.set_text(otext)

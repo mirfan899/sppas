@@ -1,86 +1,129 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: tips.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.structs.tips.py
+    ~~~~~~~~~~~~~~~~~~~~
+
+    Tips is a set of short help messages that a software tool can display 
+    when it's starting. Some users find them useful...
+
+"""
 import codecs
 import random
-from sp_glob import TIPS_FILE
+from sp_glob import TIPS_FILE, encoding
 
 # ----------------------------------------------------------------------------
 
-class Tips( object ):
+
+class sppasTips(object):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Manage SPPAS tips.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Manage the tips of SPPAS.
+
+    >>> t = sppasTips()
+    >>> print(t.get_message())
 
     """
     def __init__(self):
-        """
-        Constructor.
+        """ Construct the sppasTips instance.
+        Load the list of message tips of the software.
 
         """
-        self.current = 0
-        try:
-            with codecs.open(TIPS_FILE, 'r', 'utf-8') as f:
-                self.tips = f.readlines()
-        except Exception:
-            self.tips = ["Thanks for using SPPAS."]
+        self._current = 0
+        self._tips = []
+        self.load_tips()
 
     # ------------------------------------------------------------------------
 
-    def get(self):
-        """
-        Return a random message.
+    def load_tips(self, filename=TIPS_FILE):
+        """ Load message tips from a file.
+
+        :param filename: (str) In the file, one line is one tips!
 
         """
-        if len(self.tips) == 1:
-            self.current = 0
-            return self.tips[0]
+        try:
+            with codecs.open(filename, 'r', encoding) as f:
+                self._tips = f.readlines()
+        except Exception:
+            self._tips = ["Welcome!"]
+
+    # ------------------------------------------------------------------------
+
+    def save_tips(self, filename=TIPS_FILE):
+        """ Save tips in a file. """
+
+        with codecs.open(filename, 'w', encoding) as f:
+            for message in self._tips:
+                f.write("%s\n" % message)
+
+    # ------------------------------------------------------------------------
+
+    def add_message(self, message):
+        """ Add a new message tips in the list of tips.
+
+        :param message: (str) A help message.
+
+        """
+        message = " ".join(str(message))
+        self._tips.append(message)
+
+    # ------------------------------------------------------------------------
+
+    def get_message(self):
+        """ Return a random tips message. """
+
+        if len(self._tips) == 1:
+            self._current = 0
+            return self._tips[0]
+
+        if len(self._tips) == 2:
+            self._current = (self._current+1) % 2
+            return self._tips[self._current]
 
         pround = 0
-        new = self.current
-        while new == self.current and pround<3:
-            new = random.randint( 0, len(self.tips)-1 )
-            pround = pround + 1
+        new = self._current
+        while new == self._current and pround < 3:
+            new = random.randint(0, len(self._tips) - 1)
+            pround += 1
 
-        self.current = new
-        return self.tips[self.current]
+        self._current = new
+        return self._tips[self._current]
+
+    # ------------------------------------------------------------------------
+
+    def __len__(self):
+        return len(self._tips)
 
     # ------------------------------------------------------------------------

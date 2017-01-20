@@ -38,7 +38,7 @@
 import wx
 import webbrowser
 
-from structs.tips import Tips
+from structs.tips import sppasTips
 
 from wxgui.panels.buttons import ButtonPanel, ButtonMenuPanel, ImgPanel, ButtonCreator, ButtonToolbarPanel
 from sp_glob import program, title
@@ -352,7 +352,7 @@ class MainTooltips(wx.Panel):
         wx.Panel.__init__(self, parent, -1, style=wx.RAISED_BORDER)
         self.SetBackgroundColour(preferences.GetValue('M_BGD_COLOUR'))
         self._prefs = preferences
-        self.tips = Tips()
+        self.tips = sppasTips()
 
         menu = self._create_menu()
         self.text = self._create_content()
@@ -373,7 +373,7 @@ class MainTooltips(wx.Panel):
 
     def _create_content(self):
         txt = wx.TextCtrl(self, wx.ID_ANY,
-                          value=self.tips.get(),
+                          value=self.tips.get_message(),
                           style=wx.TE_READONLY | wx.TE_MULTILINE | wx.NO_BORDER | wx.TE_NO_VSCROLL | wx.TE_WORDWRAP)
         font = self._prefs.GetValue('M_FONT')
         txt.SetFont(font)
@@ -400,7 +400,7 @@ class MainTooltips(wx.Panel):
     # -----------------------------------------------------------------------
 
     def OnNext(self, event):
-        self.text.SetValue(self.tips.get())
+        self.text.SetValue(self.tips.get_message())
         self.Refresh()
 
     # -----------------------------------------------------------------------

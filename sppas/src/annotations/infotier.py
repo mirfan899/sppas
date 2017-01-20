@@ -39,16 +39,17 @@ import datetime
 
 from sp_glob import author, contact, program, version, copyright, url, license
 
-from annotationdata.tier           import Tier
-from annotationdata.annotation     import Annotation
-from annotationdata.label.label    import Label
-from annotationdata.ptime.point    import TimePoint
+from annotationdata.tier import Tier
+from annotationdata.annotation import Annotation
+from annotationdata.label.label import Label
+from annotationdata.ptime.point import TimePoint
 from annotationdata.ptime.interval import TimeInterval
-from structs.metainfo import MetaInfo
+from structs.metainfo import sppasMetaInfo
 
 # ---------------------------------------------------------------------------
 
-class sppasMetaInfoTier( MetaInfo):
+
+class sppasMetaInfoTier(sppasMetaInfo):
     """
     @authors:      Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -67,16 +68,16 @@ class sppasMetaInfoTier( MetaInfo):
         Add and activate all known information about SPPAS.
 
         """
-        MetaInfo.__init__( self )
+        sppasMetaInfo.__init__(self)
 
-        self.add_metainfo('author',author)
-        self.add_metainfo('contact',contact)
-        self.add_metainfo('program',program)
-        self.add_metainfo('version',version)
-        self.add_metainfo('copyright',copyright)
-        self.add_metainfo('url',url)
-        self.add_metainfo('license',license)
-        self.add_metainfo('date',str(datetime.date.today()))
+        self.add_metainfo('author', author)
+        self.add_metainfo('contact', contact)
+        self.add_metainfo('program', program)
+        self.add_metainfo('version', version)
+        self.add_metainfo('copyright', copyright)
+        self.add_metainfo('url', url)
+        self.add_metainfo('license', license)
+        self.add_metainfo('date', str(datetime.date.today()))
 
     # ------------------------------------------------------------------------
 

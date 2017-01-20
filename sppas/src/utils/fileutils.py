@@ -176,18 +176,18 @@ def gen_name( root="sppas_tmp", addtoday=True, addpid=True ):
 
 def format_filename(entry):
     # Remove multiple spaces
-    __str = re.sub(u"[\s]+", ur" ", entry)
+    __str = re.sub("[\s]+", r" ", entry)
     # Spaces at beginning and end
-    __str = re.sub(u"^[ ]+", ur"", __str)
-    __str = re.sub(u"[ ]+$", ur"", __str)
+    __str = re.sub("^[ ]+", r"", __str)
+    __str = re.sub("[ ]+$", r"", __str)
     # Replace spaces by underscores
-    __str = re.sub(u'\s', ur'_', __str)
+    __str = re.sub('\s', r'_', __str)
 
     return __str
 
 def string_to_ascii(entry):
     # Replace non-ASCII characters by underscores
-    return re.sub(r'[^\x00-\x7F]','_', entry)
+    return re.sub(r'[^\x00-\x7F]', '_', entry)
 
 # ----------------------------------------------------------------------------
 

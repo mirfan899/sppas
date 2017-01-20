@@ -1,39 +1,42 @@
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              the automatic
-#           \__   |__/  |__/  |___| \__             annotation and
-#              \  |     |     |   |    \             analysis
-#           ___/  |     |     |   | ___/              of speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2017  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: src.structs.baseoption.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.structs.baseoption.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    In many situations, we have to store an un-typed data, and its type
+    separately, ane eventually other information like a description.
+    Such data is called "option".
+
+"""
 from sp_glob import encoding
 
 # ----------------------------------------------------------------------------
@@ -41,12 +44,12 @@ from sp_glob import encoding
 
 class sppasBaseOption(object):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    @summary:      Class to deal with one option.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Class to deal with one option.
 
     An option is a set of data with a main value and its type, then 3 other
     variables to store any kind of information. By default, the type of an
@@ -63,12 +66,11 @@ class sppasBaseOption(object):
 
     """
     def __init__(self, option_type, option_value=""):
-        """
-        Creates a new option instance.
+        """ Creates a new option instance.
 
-        :param option_type: (str) Type of the option (i.e. 'int', 'bool', 'float', ...).
-        Notice that the type will be normalized. For example, 'int, 'integer', 'long or
-        'short' will be all stored into 'int' type.
+        :param option_type: (str) Type of the option (i.e. 'int', 'bool',
+        'float', ...). Notice that the type will be normalized. For example,
+        'int, 'integer', 'long or 'short' will be all stored into 'int' type.
         :param option_value (str) The value of the option.
 
         """
@@ -84,8 +86,7 @@ class sppasBaseOption(object):
     # ------------------------------------------------------------------------
 
     def get_type(self):
-        """
-        Return the type of the option.
+        """ Return the type of the option.
 
         :returns: normalized value of the type
 
@@ -95,8 +96,7 @@ class sppasBaseOption(object):
     # ------------------------------------------------------------------------
 
     def get_untypedvalue(self):
-        """
-        Return the value as it was given,
+        """ Return the value as it was given,
         i.e. without taking the given type into account.
 
         """
@@ -166,8 +166,7 @@ class sppasBaseOption(object):
     # ------------------------------------------------------------------------
 
     def set_type(self, option_type):
-        """
-        Set a new type.
+        """ Set a new type.
 
         :param option_type: (str) Type of the option (i.e. 'int', 'bool', 'float', ...).
         If the option_type is not valid, type will be set to 'str'.
@@ -204,8 +203,7 @@ class sppasBaseOption(object):
     # ------------------------------------------------------------------------
 
     def set_value(self, value):
-        """
-        Set a new value.
+        """ Set a new value.
 
         :param value: (any type) Un-typed value of the option.
 
@@ -215,8 +213,7 @@ class sppasBaseOption(object):
     # ------------------------------------------------------------------------
 
     def set_name(self, name):
-        """
-        Set a name text which describes the option.
+        """ Set a name text which describes the option.
 
         :param name: (str) Option description.
 
@@ -226,8 +223,7 @@ class sppasBaseOption(object):
     # ------------------------------------------------------------------------
 
     def set_text(self, text):
-        """
-        Set a brief text which describes the option.
+        """ Set a brief text which describes the option.
 
         :param text: (str) Option description.
 
@@ -237,8 +233,7 @@ class sppasBaseOption(object):
     # ------------------------------------------------------------------------
 
     def set_description(self, description):
-        """
-        Set a long text which describes the option.
+        """ Set a long text which describes the option.
 
         :param description: (str) Option description.
 
@@ -248,19 +243,18 @@ class sppasBaseOption(object):
 # ----------------------------------------------------------------------------
 
 
-class Option(sppasBaseOption):
+class sppasOption(sppasBaseOption):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    @summary:      Class that adds a key as identifier to a sppasBaseOption.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Adds a key to a sppasBaseOption.
 
     """
     def __init__(self, option_key, option_type="str", option_value=""):
-        """
-        Instantiate an Option.
+        """ Instantiate a sppasOption.
 
         :param option_key: (any type) An identifier for that option.
 

@@ -60,7 +60,7 @@ from ConfigParser import SafeConfigParser
 from shutil import copyfile
 import collections
 
-from structs.baseoption import Option
+from structs.baseoption import sppasOption
 
 # ----------------------------------------------------------------------------
 
@@ -260,7 +260,7 @@ class sppasPluginConfigParser(object):
             elif name == "text":
                 otext = value.encode('utf-8')
 
-        opt = Option(oid)
+        opt = sppasOption(oid)
         opt.set_type(otype)
         opt.set_value(ovalue)
         opt.set_text(otext)
@@ -271,7 +271,7 @@ class sppasPluginConfigParser(object):
 
     def __set_option(self, section_name, option):
         """ Set an option.
-        Convert an "Option" instance into an "Option" section of the parser.
+        Convert a "sppasOption" instance into an "Option" section of the parser.
 
         """
         self._parser.add_section( section_name )
