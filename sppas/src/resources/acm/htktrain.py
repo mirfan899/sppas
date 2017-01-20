@@ -736,7 +736,7 @@ class TrainingCorpus(object):
             trs.Append(tier)
             annotationdata.aio.write(os.path.join(self.datatrainer.get_storetrs(), outfile+ext), trs)
         except Exception as e:
-            print str(e)
+            logging.debug(str(e))
             return False
         return True
 
@@ -757,7 +757,7 @@ class TrainingCorpus(object):
             audio.extract_channel(0)
             formatter = ChannelFormatter(audio.get_channel(0))
         except Exception as e:
-            print str(e)
+            logging.debug(str(e))
             return False
 
         # Check/Convert

@@ -220,9 +220,9 @@ class sppasMomel( sppasBase ):
                         iputargets = self.momel.annotate( ipupitch )
                     except Exception as e:
                         if self.logfile is not None:
-                            self.logfile.print_message('No Momel annotation between time '+ str(ipustarttime*0.01) +" and "+ str(curtime*0.01)+" due to the following error: " +str(e),indent=2,status=-1)
+                            self.logfile.print_message('No Momel annotation between time ' + str(ipustarttime*0.01) +" and "+ str(curtime*0.01)+" due to the following error: " + str(e),indent=2,status=-1)
                         else:
-                            print "Momel Error: " + str(e)
+                            print("Momel Error: " + str(e))
                         iputargets = []
                         pass
                     # Adjust time values in the targets
@@ -243,7 +243,7 @@ class sppasMomel( sppasBase ):
                 if self.logfile is not None:
                     self.logfile.print_message('No Momel annotation between time '+ str(ipustarttime*0.01) +" and "+ str(curtime*0.01)+" due to the following error: " +str(e),indent=2,status=-1)
                 else:
-                    print "error: " + str(e)
+                    print("error: " + str(e))
                     iputargets = []
                 pass
             ipustarttime = curtime - ( len(ipupitch) )

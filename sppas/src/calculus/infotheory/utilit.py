@@ -102,7 +102,7 @@ def symbols_to_items( symbols, ngram ):
 
 if __name__ == "__main__":
 
-    symbols=[0,1,0,1,1,1,0]
-    print find_ngrams(symbols,2)
-    print symbols_to_items(symbols,2)
+    symbols = [0,1,0,1,1,1,0]
+    print(find_ngrams(symbols, 2))
+    print(symbols_to_items(symbols, 2))
 

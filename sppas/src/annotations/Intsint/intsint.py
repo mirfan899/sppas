@@ -316,5 +316,5 @@ class Intsint( object ):
 if __name__ == "__main__":
     intsint = Intsint()
     momeltargets = [(0.1,240), (0.4, 340), (0.6,240), (0.7,286)]
-    print intsint.annotate( momeltargets )
+    print (intsint.annotate( momeltargets ))
 

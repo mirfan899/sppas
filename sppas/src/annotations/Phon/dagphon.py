@@ -165,12 +165,12 @@ class DAG(object):
     # -----------------------------------------------------------------------
 
     def __repr__(self):
-        print "Number of nodes:", len(self.__graph.keys())
+        print("Number of nodes: {:d}".format(len(self.__graph.keys())))
         for i in self.__graph.keys():
             if self.__graph[i]:
-                print "  Node ", i, " has edge to --> ", self.__graph[i]
+                print("  Node {:d} has edge to --> {:d}".format(i, self.__graph[i]))
             else:
-                print "  Node ", i, " has no edge "
+                print("  Node {:d} has no edge ".format(i))
 
     def __len__(self):
         return len(self.__graph)

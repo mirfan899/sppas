@@ -248,11 +248,11 @@ if __name__ == "__main__":
     dictdir  = "/home/bigi/Python/SPPAS.git/vocab"
     dictfile = os.path.join(dictdir, "FR.lem")
 
-    print "Create LemmaDict instance"
+    print("Create LemmaDict instance")
     grph = LemmaDict( dictfile )
-    print "   --> "+str(grph.get_size())+" entries loaded."
+    print("   --> " + str(grph.get_size()) + " entries loaded.")
 
-    print "Lemmatization : "
-    print "   --> "+grph.lemmatize(u"Salut je fais UN essai plus Bref ça marche")
+    print("Lemmatization : ")
+    print("   --> " + grph.lemmatize("Salut je fais UN essai plus Bref ça marche"))
 
 # ######################################################################### #

@@ -46,6 +46,7 @@ import subprocess
 
 # ---------------------------------------------------------------------------
 
+
 def test_command( command ):
     """
     Test if a command is available.
@@ -60,6 +61,7 @@ def test_command( command ):
 
 # ---------------------------------------------------------------------------
 
+
 def type_dict(d):
     """
     Return True if d is of type dictionary.
@@ -73,24 +75,27 @@ def type_dict(d):
 
 # ---------------------------------------------------------------------------
 
-def compare(data1,data2,case_sensitive=False,verbose=False):
+
+def compare(data1, data2, case_sensitive=False, verbose=False):
     """
     Compare two data of any type.
 
     """
-    if data1 == None or data2 == None:
-        if verbose: print "FALSE: None instead of data."
+    if data1 is None or data2 is None:
+        if verbose:
+            print("FALSE: None instead of data.")
         return False
 
     if type(data1) is list:
-        return compare_lists(data1,data2,case_sensitive,verbose)
+        return compare_lists(data1, data2, case_sensitive, verbose)
 
     if type_dict(data1) is True:
-        return compare_dictionaries(data1,data2,case_sensitive,verbose)
+        return compare_dictionaries(data1, data2, case_sensitive, verbose)
 
-    return compare_others(data1,data2,case_sensitive,verbose)
+    return compare_others(data1, data2, case_sensitive, verbose)
 
 # ---------------------------------------------------------------------------
+
 
 def compare_others(data1,data2,case_sensitive=False,verbose=False):
     """
@@ -103,22 +108,23 @@ def compare_others(data1,data2,case_sensitive=False,verbose=False):
 
     """
     if case_sensitive is True and type(data1) is str:
-        return (data1.lower() == data2.lower())
+        return data1.lower() == data2.lower()
 
     if type(data1) is float:
-        if (round(data1,4) != round(data2,4)):
+        if round(data1, 4) != round(data2, 4):
             if verbose is True:
-                print "Float values rounded to 4 digits are not equals: %f %f"%(data1,data2)
+                print("Float values rounded to 4 digits are not equals: {:f} {:f}".format(data1, data2))
             return False
 
     if data1 != data2 is False:
         if verbose is True:
-            print "Not equals: %s %s"%(str(data1),str(data2))
+            print("Not equals: " + str(data1) + " vs " + str(data2))
         return False
 
     return True
 
 # ---------------------------------------------------------------------------
+
 
 def compare_lists(list1,list2,case_sensitive=False,verbose=False):
     """
@@ -130,30 +136,34 @@ def compare_lists(list1,list2,case_sensitive=False,verbose=False):
     @param verbose (bool) Indicates the comparisons which is False.
 
     """
-    if list1 == None or list2 == None:
-        if verbose: print "FALSE: None instead of lists."
+    if list1 is None or list2 is None:
+        if verbose:
+            print("FALSE: None instead of lists.")
         return False
 
     if type(list1) != type(list2) or type(list1) is not list or type(list2) is not list:
-        if verbose: print "FALSE: Not same types as input (expected two lists)."
+        if verbose:
+            print("FALSE: Not same types as input (expected two lists).")
         return False
 
     if not len(list1) == len(list2):
-        if verbose: print "FALSE: Not the same number of items.",len(list1),len(list2)
+        if verbose:
+            print("FALSE: Not the same number of items: {:d} vs {:d}".format(len(list1),len(list2)))
         return False
 
     lists_are_equal = True
-    for item1,item2 in zip(list1,list2):
+    for item1, item2 in zip(list1, list2):
         if type_dict(item1) is True:
-            lists_are_equal = lists_are_equal and compare_dictionaries(item1,item2)
+            lists_are_equal = lists_are_equal and compare_dictionaries(item1, item2)
         elif type(item1) is list:
-            lists_are_equal = lists_are_equal and compare_lists(item1,item2)
+            lists_are_equal = lists_are_equal and compare_lists(item1, item2)
         else:
             lists_are_equal = lists_are_equal and compare_others(item1, item2, case_sensitive, verbose)
 
     return lists_are_equal
 
 # ---------------------------------------------------------------------------
+
 
 def compare_dictionaries(dict1,dict2,case_sensitive=False,verbose=False):
     """
@@ -166,17 +176,20 @@ def compare_dictionaries(dict1,dict2,case_sensitive=False,verbose=False):
 
     """
     if dict1 == None or dict2 == None:
-        if verbose: print "FALSE: None instead of data."
+        if verbose:
+            print("FALSE: None instead of data.")
         return False
 
     if type_dict(dict1) is not True or type_dict(dict2) is not True:
-        if verbose: print "FALSE: Not same type as input (expected two dictionaries)."
+        if verbose:
+            print("FALSE: Not same type as input (expected two dictionaries).")
         return False
 
     shared_keys = set(dict2.keys()) & set(dict2.keys())
 
     if not len(shared_keys) == len(dict1.keys()) or not len(shared_keys) == len(dict2.keys()):
-        if verbose: print "FALSE: not shared keys: ",dict1.keys(),"vs",dict2.keys()
+        if verbose:
+            print("FALSE: not shared keys: " + dict1.keys() + " vs " + dict2.keys())
         return False
 
     dicts_are_equal = True

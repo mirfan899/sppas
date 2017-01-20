@@ -217,9 +217,9 @@ class sppasTok(sppasBase):
 
         if tierinput is None:
             for tier in trsinput:
-                print
-                print tier.GetName()
-                print
+                print("\n")
+                print(tier.GetName())
+                print("\n")
                 tiername = tier.GetName().lower()
                 if "trans" in tiername:
                     tierinput = tier

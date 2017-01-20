@@ -113,7 +113,7 @@ class sppasRepet(sppasBase):
             if logfile is not None:
                 logfile.print_message("Lemmatization disabled.",indent=2,status=3)
             else:
-                print " ... ... [ INFO ] Lemmatization disabled."
+                print(" ... ... [ INFO ] Lemmatization disabled.")
             self._use_lemmatize = False
 
         # Create the list of stop words (list of non-relevant words)
@@ -130,7 +130,7 @@ class sppasRepet(sppasBase):
             if logfile is not None:
                 logfile.print_message("StopWords disabled.",indent=2,status=3)
             else:
-                print " ... ... [ INFO ] StopWords disabled."
+                print(" ... ... [ INFO ] StopWords disabled.")
             #self._use_stopwords = False
 
     # ------------------------------------------------------------------
@@ -297,14 +297,14 @@ class sppasRepet(sppasBase):
             try:
                 srctier.Add(srcann)
                 if DEBUG:
-                    print "src annotation added: ",srcann
+                    print("src annotation added: " + srcann)
             except Exception:
                 continue
 
             # Repetition
             rep = repeatobj.get_repeat_repetition(i)
             for r in rep:
-                (s,e) = r
+                (s, e) = r
                 repbegin = inputtier2[tokstartrep+s].GetLocation().GetBegin()
                 repend   = inputtier2[tokstartrep+e].GetLocation().GetEnd()
                 r = reptier.Lindex(repbegin) #time)
@@ -315,9 +315,9 @@ class sppasRepet(sppasBase):
                 repann = Annotation(time, Label("R"+str(nbrepeats+n)))
                 reptier.Add(repann)
                 if DEBUG:
-                    print "rep annotation added: ",repann
+                    print("rep annotation added: " + repann)
 
-            n = n + 1
+            n += 1
         # end for
 
         return n
@@ -443,8 +443,8 @@ class sppasRepet(sppasBase):
             speaker2 = DataSpeaker(tokens2, stpw)
 
             if DEBUG is True:
-                print "SRC : ",speaker1
-                print "ECHO: ",speaker2
+                print("SRC : " + speaker1)
+                print("ECHO: " + speaker2)
 
             # Detect repeats in these data: search if the first token of spk1
             # is the first token of a source.
@@ -454,14 +454,13 @@ class sppasRepet(sppasBase):
             shift = 1
             if repeatobj.get_repeats_size()>0:
                 if DEBUG is True:
-                    print " ----> found : "
+                    print(" ----> found : ")
                     repeatobj.get_repeat(0).print_echo()
-                s,e = repeatobj.get_repeat_source(0)
+                s, e = repeatobj.get_repeat_source(0)
                 n = self._addrepetition(repeatobj, nbrepeats, inputtier1, inputtier2, tokstartsrc, tokstartrep, srctier, reptier)
                 if n > 0:
                     nbrepeats = nbrepeats + n
                 shift = e + 1
-
 
             while speaker1.is_token(speaker1.get_token(shift)) is False and shift < 20:
                 shift = shift + 1
@@ -470,7 +469,7 @@ class sppasRepet(sppasBase):
             tokstartsrc = min(tokstartsrc, inputtier1.GetSize()-1)
             tokendsrc   = min(tokstartsrc + 20, inputtier1.GetSize()-1)
 
-        return (srctier,reptier)
+        return (srctier, reptier)
 
     # ------------------------------------------------------------------------
     # Run

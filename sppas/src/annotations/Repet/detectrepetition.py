@@ -86,7 +86,7 @@ class Repetitions:
 
         # the current token
         token1 = speaker1.get_token(current1)
-        if speaker1.is_token( token1 ) is False:
+        if speaker1.is_token(token1) is False:
             return -1
 
         lastt = -1
@@ -100,7 +100,7 @@ class Repetitions:
                 param2 = current2
 
             # search
-            repeatidx = speaker1.is_token_repeat( t, param2, speaker2)
+            repeatidx = speaker1.is_token_repeat(t, param2, speaker2)
             if repeatidx > -1:
                 if current2 is None and repeatidx == t:
                     return t
@@ -125,9 +125,9 @@ class Repetitions:
 
         """
 
-        if speaker.is_token( token ) is True:
+        if speaker.is_token(token)is True:
             # stop words are not relevant
-            return not speaker.is_stopword( token )
+            return not speaker.is_stopword(token )
 
         return False
 
@@ -144,7 +144,7 @@ class Repetitions:
         """
         Apply rules to decide if ONE token is a self-repetition or not.
         """
-        token = speaker.get_token( current )
+        token = speaker.get_token(current )
         # is a repeated token?
         is_repeated = speaker.is_token_repeat(current,speaker.get_next_token(current),speaker)
         if is_repeated == -1:
@@ -153,7 +153,7 @@ class Repetitions:
         #if is_repeated == speaker.get_next_token(current):
         #    return True
         # Distance is more than 1...  Keep only a relevant token
-        return self.is_relevant_token( token, speaker )
+        return self.is_relevant_token(token, speaker )
 
 
     def apply_rules_syntagme(self, start, end, speaker1, speaker2):
@@ -164,7 +164,7 @@ class Repetitions:
         # Is there only stopwords?
         for i in range(start,end+1):
             token = speaker1.get_token(i)
-            if self.is_relevant_token( token, speaker2 ) is True:
+            if self.is_relevant_token(token, speaker2)is True:
                 nbrelevant = nbrelevant + 1
 
         return (nbrelevant > 0)
@@ -326,18 +326,18 @@ class Repetitions:
                     # Get real length (ignoring pauses, hesitations, etc)
                     sourcelen = 0
                     for i in range(current,nextt+1):
-                        if speaker1.is_token( speaker1.get_token(i)) is True:
+                        if speaker1.is_token(speaker1.get_token(i)) is True:
                             sourcelen = sourcelen + 1
 
                     if sourcelen == 1:
                         keeprepeat = False
                         for i in range(current,nextt+1):
-                            if speaker2.is_token( speaker1.get_token(i)) is True:
+                            if speaker2.is_token(speaker1.get_token(i)) is True:
                                 keeprepeat = self.apply_rules_one_token(i,speaker1)
 
                         if keeprepeat is True:
                             d = self.__datarepetition(current, current, speaker1)
-                            self.tabrepeats.append( d )
+                            self.tabrepeats.append(d )
 
                         current = current + 1
                         nextt = self.get_longest(current, speaker1, None, speaker1)
@@ -346,7 +346,7 @@ class Repetitions:
                         keeprepeat = self.apply_rules_syntagme(current, nextt, speaker1, speaker1)
                         if keeprepeat is True:
                             d = self.__datarepetition(current, nextt, speaker1)
-                            self.tabrepeats.append( d )
+                            self.tabrepeats.append(d )
                             current = nextt + 1
                             nextt = self.get_longest(current, speaker1, None, speaker1)
                         else:
@@ -367,7 +367,7 @@ class Repetitions:
 
                     if keeprepeat is True:
                         d = self.__datarepetition(current, nextt, speaker1, speaker2)
-                        self.tabrepeats.append( d )
+                        self.tabrepeats.append(d )
 
                     current = nextt + 1
                     nextt = self.get_longest(current, speaker1, None, speaker2)
@@ -380,20 +380,20 @@ class Repetitions:
 
 if __name__ == "__main__":
     r = Repetitions()
-    #l1 = u" # euh le petit garcon a l' air tres tres content # mais le papa n' a pas l' air # content du tout a l' air tres fatigue euh #"
-    l1 = u" tout et rien être insolite alors aller y # bon et si on pérorer sur ce que on voir à_travers + tout et rien"
-    l2 = u" donc euh # tout et rien être insolite # * oh oui ce être tout_à_fait insolite ouais + ouais ouais ouais ouais ouais surtout que là "
+    #l1 = " # euh le petit garcon a l' air tres tres content # mais le papa n' a pas l' air # content du tout a l' air tres fatigue euh #"
+    l1 = " tout et rien être insolite alors aller y # bon et si on pérorer sur ce que on voir à_travers + tout et rien"
+    l2 = " donc euh # tout et rien être insolite # * oh oui ce être tout_à_fait insolite ouais + ouais ouais ouais ouais ouais surtout que là "
 
-    s1 = DataSpeaker( l1.split() )
-    s2 = DataSpeaker( l2.split() )
+    s1 = DataSpeaker(l1.split() )
+    s2 = DataSpeaker(l2.split() )
 
-    r.detect( s1, len(l1.split())-1, None )
-    print " ----> got ", r.get_repeats_size(), " SELF-Repetitions"
+    r.detect(s1, len(l1.split())-1, None )
+    print(" ----> got {:d} SELF-Repetitions".format(r.get_repeats_size()))
     for i in range(r.get_repeats_size()):
         r.get_repeat(i).print_echo()
 
-    r.detect( s1, 1, s2 )
-    print " ----> got ", r.get_repeats_size(), " OTHER-Repetitions"
+    r.detect(s1, 1, s2)
+    print(" ----> got {:d} OTHER-Repetitions".format(r.get_repeats_size()))
     for i in range(r.get_repeats_size()):
         r.get_repeat(i).print_echo()
 
