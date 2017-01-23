@@ -7,14 +7,14 @@ import shutil
 
 from resources.vocab import Vocabulary
 from sp_glob import RESOURCES_PATH
-import utils.fileutils
+from utils.fileutils import sppasFileUtils
 
 # ---------------------------------------------------------------------------
 
+TEMP = sppasFileUtils().set_random()
+
 VOCAB = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "vocab.txt")
 ITA = os.path.join(RESOURCES_PATH, "vocab", "ita.vocab")
-
-TEMP = utils.fileutils.gen_name()
 VOCAB_TEST = os.path.join(TEMP, "vocab.txt")
 
 # ---------------------------------------------------------------------------

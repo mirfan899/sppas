@@ -9,7 +9,8 @@ from annotationdata.ptime.interval import TimeInterval
 from annotationdata.ptime.point import TimePoint
 from annotationdata.tier import Tier
 from annotationdata.filter.predicate import Rel
-from annotationdata.filter.filters import RelationPredicate, Filter, RelationFilter
+from annotationdata.filter.filters import Filter, RelationFilter
+from annotationdata.filter import RelationPredicate
 
 # ---------------------------------------------------------------------------
 

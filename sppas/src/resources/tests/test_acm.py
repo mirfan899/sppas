@@ -11,14 +11,14 @@ from resources.acm.hmm import HMM, HMMInterpolation
 from resources.acm.htktrain import HTKModelTrainer, DataTrainer, PhoneSet, TrainingCorpus, HTKModelInitializer
 
 from utils.type import compare
-import utils.fileutils
 from sp_glob import RESOURCES_PATH, SAMPLES_PATH
+from utils.fileutils import sppasFileUtils
 
 # ---------------------------------------------------------------------------
 
+TEMP = sppasFileUtils().set_random()
 MODEL_PATH = os.path.join(RESOURCES_PATH, "models")
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-TEMP = utils.fileutils.gen_name()
 
 # ---------------------------------------------------------------------------
 

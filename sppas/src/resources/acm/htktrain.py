@@ -48,7 +48,9 @@ import shutil
 import copy
 import collections
 
-import utils.fileutils
+from utils.fileutils import sppasFileUtils
+from utils.fileutils import sppasDirUtils
+
 from utils.type import test_command
 
 from annotations.Phon.sppasphon import sppasPhon
@@ -184,28 +186,29 @@ class DataTrainer(object):
         """
         # The working directory will be located in the system temporary directory
         if workdir is None:
-            workdir = utils.fileutils.gen_name()
+            sf = sppasFileUtils()
+            workdir = sf.set_random()
         if os.path.exists(workdir) is False:
             os.mkdir(workdir)
         self.workdir = workdir
 
         if os.path.exists(scriptsdir) is False:
-            scriptsdir = os.path.join(self.workdir,scriptsdir)
+            scriptsdir = os.path.join(self.workdir, scriptsdir)
         self.htkscripts.write_all(scriptsdir)
 
         if os.path.exists(featsdir) is False:
-            featsdir = os.path.join(self.workdir,featsdir)
+            featsdir = os.path.join(self.workdir, featsdir)
         self.features.write_all(featsdir)
 
         if os.path.exists(logdir) is False:
-            logdir = os.path.join(self.workdir,logdir)
+            logdir = os.path.join(self.workdir, logdir)
             if os.path.exists(logdir) is False:
                 os.mkdir(logdir)
 
         self.scriptsdir = scriptsdir
         self.featsdir   = featsdir
         self.logdir     = logdir
-        logging.info('Working directory is fixed to: %s'%self.workdir)
+        logging.info('Working directory is fixed to: %s' % self.workdir)
 
     # -----------------------------------------------------------------------
 
@@ -500,15 +503,17 @@ class TrainingCorpus(object):
         """
         # Get the list of audio files from the input directory
         audiofilelist = []
+        sd = sppasDirUtils(directory)
         for extension in audiodata.aio.extensions:
-            files = utils.fileutils.get_files(directory, extension)
+            files = sd.get_files(extension)
             audiofilelist.extend(files)
 
         # Get the list of transciption files from the input directory
         trsfilelist = []
         for extension in annotationdata.aio.extensions_in:
-            if extension.lower() in [ ".hz", ".pitchtier", ".txt" ]: continue
-            files = utils.fileutils.get_files(directory, extension)
+            if extension.lower() in [".hz", ".pitchtier", ".txt"]:
+                continue
+            files = sd.get_files(directory, extension)
             trsfilelist.extend(files)
 
         count = 0
@@ -658,7 +663,8 @@ class TrainingCorpus(object):
 
         # Fix current storage dir.
         self.datatrainer.fix_storage_dirs("align")
-        outfile = os.path.basename(utils.fileutils.gen_name(root="track_aligned", addtoday=False, addpid=False))
+        sf = sppasFileUtils()
+        outfile = os.path.basename(sf.set_random(root="track_aligned", add_today=False, add_pid=False))
 
         # Add the tier
         res = self._append_tier(tier, outfile, trsfilename, audiofilename)
@@ -682,7 +688,8 @@ class TrainingCorpus(object):
 
         # Fix current storage dir.
         self.datatrainer.fix_storage_dirs("phon")
-        outfile = os.path.basename(utils.fileutils.gen_name(root="track_phonetized", addtoday=False, addpid=False))
+        sf = sppasFileUtils()
+        outfile = os.path.basename(sf.set_random(root="track_phonetized", add_today=False, add_pid=False))
 
         # Add the tier
         res =  self._append_tier(tier, outfile, trsfilename, audiofilename)
@@ -697,7 +704,8 @@ class TrainingCorpus(object):
         """
         # Fix current storage dir.
         self.datatrainer.fix_storage_dirs("trans")
-        outfile = os.path.basename(utils.fileutils.gen_name(root="track_transcribed", addtoday=False, addpid=False))
+        sf = sppasFileUtils()
+        outfile = os.path.basename(sf.set_random(root="track_transcribed", add_today=False, add_pid=False))
 
         # Add the tier
         res =  self._append_tier(tier, outfile, trsfilename, audiofilename, ext=".xra")
@@ -717,7 +725,7 @@ class TrainingCorpus(object):
             ret = self._add_audio(audiofilename, outfile)
             if ret is True:
 
-                logging.info('Files %s / %s appended as %s.'%(trsfilename,audiofilename,outfile))
+                logging.info('Files %s / %s appended as %s.' % (trsfilename, audiofilename, outfile))
                 self.audiofiles[ trsfilename ] = os.path.join(self.datatrainer.get_storewav(), outfile + ".wav")
                 self.mfcfiles[ trsfilename ]   = os.path.join(self.datatrainer.get_storemfc(), outfile + ".mfc")
                 return True
@@ -774,9 +782,10 @@ class TrainingCorpus(object):
         # Generate MFCC
         wav = os.path.join(self.datatrainer.get_storewav(), outfile + ".wav")
         mfc = os.path.join(self.datatrainer.get_storemfc(), outfile + ".mfc")
-        tmpfile = utils.fileutils.gen_name(root="scp", addtoday=False, addpid=False)
+        sf = sppasFileUtils
+        tmpfile = sf.set_random(root="scp", add_today=False, add_pid=False)
         with open(tmpfile, "w") as fp:
-            fp.write('%s %s\n'%(wav,mfc))
+            fp.write('%s %s\n' % (wav, mfc))
 
         cmfc = ChannelMFCC(formatter.channel)
         cmfc.hcopy(self.datatrainer.features.wavconfigfile, tmpfile)
@@ -1347,7 +1356,8 @@ class HTKModelTrainer(object):
         logging.info("Step 1. Data preparation.")
 
         if self.corpus.datatrainer.workdir is None:
-            self.corpus.datatrainer.workdir = utils.fileutils.gen_name()
+            sf = sppasFileUtils()
+            self.corpus.datatrainer.workdir = sf.set_random()
             os.mkdir(self.corpus.datatrainer.workdir)
         if self.corpus.phonesfile is None:
             self.corpus.fix_resources()

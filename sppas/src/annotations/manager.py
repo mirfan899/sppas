@@ -46,7 +46,8 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 import os
 
-import utils.fileutils
+from utils.fileutils import sppasFileUtils
+from utils.fileutils import sppasDirUtils
 
 from annotationdata.transcription import Transcription
 
@@ -166,12 +167,12 @@ class sppasAnnotationsManager( Thread ):
                         filelist.append( sinput )
                     else:
                         if self._logfile is not None:
-                            self._logfile.print_message("Can't find file %s\n"%sinput, indent=1,status=1)
+                            self._logfile.print_message("Can't find file %s\n" % sinput, indent=1, status=1)
 
                 # Input is a directory:
                 else:
                     # Get the list of files with 'extension' from the input directory
-                    files = utils.fileutils.get_files( sinput, extension )
+                    files = sppasDirUtils(sinput).get_files( extension )
                     filelist.extend( files )
         except:
             pass
@@ -216,7 +217,7 @@ class sppasAnnotationsManager( Thread ):
         for ext in extensions:
 
             extfilename = os.path.splitext( filename )[0] + ext
-            newfilename = utils.fileutils.exists(extfilename)
+            newfilename = sppasFileUtils(extfilename).exists()
             if newfilename is not None and os.path.isfile(newfilename):
                 return newfilename
 
@@ -439,7 +440,7 @@ class sppasAnnotationsManager( Thread ):
                     pass
 
             # Execute annotation
-            tgfname = utils.fileutils.exists(outname)
+            tgfname = sppasFileUtils(outname).exists()
             if tgfname is None:
                 # No already existing IPU seg., but perhaps a txt.
                 txtfile = self._get_filename(f, [".txt"])
@@ -455,7 +456,7 @@ class sppasAnnotationsManager( Thread ):
                         self._logfile.print_message(outname, indent=2,status=0)
                 except Exception as e:
                     if self._logfile is not None:
-                        self._logfile.print_message( "%s for file %s\n"%(str(e),outname), indent=2,status=-1 )
+                        self._logfile.print_message( "%s for file %s\n" % (str(e),outname), indent=2,status=-1 )
             else:
                 if seg.get_option('dirtracks') is True:
                     self._logfile.print_message("A time-aligned transcription was found, split into multiple files", indent=2,status=3)

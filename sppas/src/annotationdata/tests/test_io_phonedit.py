@@ -6,11 +6,11 @@ import os.path
 import shutil
 
 import annotationdata.aio
-import utils.fileutils
+from utils.fileutils import sppasFileUtils
 
 # ---------------------------------------------------------------------------
 
-TEMP = utils.fileutils.gen_name()
+TEMP = sppasFileUtils().set_random()
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 # ---------------------------------------------------------------------------

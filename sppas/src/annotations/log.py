@@ -43,9 +43,10 @@ import os
 from sp_glob import program, version, copyright, url, author, contact
 from sp_glob import encoding
 
-from utils.fileutils import string_to_ascii
+from utils.fileutils import sppasFileUtils
 
 # ----------------------------------------------------------------------------
+
 
 class sppasLog( object ):
     """
@@ -119,17 +120,23 @@ class sppasLog( object ):
             strindent = " ... "*indent
             statustext= ""
             if status is not None:
-                if   status==0: statustext="[    OK   ] "
-                elif status==1: statustext="[ WARNING ] "
-                elif status==2: statustext="[ IGNORED ] "
-                elif status==3: statustext="[   INFO  ] "
-                else:           statustext="[  ERROR  ] "
+                if status == 0:
+                    statustext="[    OK   ] "
+                elif status == 1:
+                    statustext="[ WARNING ] "
+                elif status == 2:
+                    statustext="[ IGNORED ] "
+                elif status == 3:
+                    statustext="[   INFO  ] "
+                else:
+                    statustext="[  ERROR  ] "
             self.logfp.write(strindent + statustext + message + "\n")
         except Exception:
             try:
-                self.logfp.write(strindent + statustext + string_to_ascii(message) + "\n")
+                sf = sppasFileUtils()
+                self.logfp.write(strindent + statustext + sf.to_ascii(message) + "\n")
             except Exception:
-                logging.debug( "Procedure Outcome Report Message: %s"%message)
+                logging.debug( "Procedure Outcome Report Message: %s" % message)
                 self.logfp.write(strindent + statustext + "See the reason in the console.\n")
 
     # ----------------------------------------------------------------------
@@ -138,14 +145,14 @@ class sppasLog( object ):
         """
         Print a text at the end of the file.
 
-        @param  line (string) text to print
+        :param text: (string) text to print
 
         """
         try:
-            self.logfp.seek(0, 2) # write at the end of the file
+            self.logfp.seek(0, 2)  # write at the end of the file
             self.logfp.write(text)
         except Exception as e:
-            logging.debug( "log.py Print ERROR. Message: %s"%str(e))
+            logging.debug("log.py Print ERROR. Message: %s" % str(e))
 
     # ----------------------------------------------------------------------
 
@@ -174,14 +181,14 @@ class sppasLog( object ):
 
         """
         try:
-            self.logfp.seek(0, 2) # write at the end of the file
+            self.logfp.seek(0, 2)  # write at the end of the file
             self.logfp.write('  - ')
             self.logfp.write(self.parameters.get_step_name(stepnumber))
             self.logfp.write(':  ')
             self.logfp.write(str(value))
             self.logfp.write('\n')
         except Exception as e:
-            logging.debug( "log.py Print ERROR. Message: "%str(e))
+            logging.debug("log.py Print ERROR. Message: " % str(e))
 
     # ----------------------------------------------------------------------
 
@@ -190,12 +197,12 @@ class sppasLog( object ):
         Write parameters information in a log file.
 
         """
-        self.logfp.seek(0, 2) # write at the end of the file
+        self.logfp.seek(0, 2)  # write at the end of the file
         self.print_separator()
         self.print_message('\n' + program + ' - Version ' + version)
         self.print_message(copyright)
-        self.print_message('Web site: '+ url)
-        self.print_message('Contact: '+ author + "("+ contact + ")\n")
+        self.print_message('Web site: ' + url)
+        self.print_message('Contact: ' + author + "("+ contact + ")\n")
         self.print_separator()
 
         #self.print_message('\nFile:            ' + self.parameters.get_logfilename())
@@ -219,7 +226,7 @@ class sppasLog( object ):
             self.print_stat(i, value)
         self.print_separator()
         self.print_newline()
-        self.print_message("Extension: %s"%self.parameters.get_output_format())
+        self.print_message("Extension: %s" % self.parameters.get_output_format())
         self.print_separator()
         self.print_newline()
 

@@ -44,7 +44,7 @@ import zipfile
 from threading import Thread
 
 from sp_glob import PLUGIN_PATH
-import utils.fileutils as fileutils
+from utils.fileutils import sppasDirUtils
 from param import sppasPluginParam
 from process import sppasPluginProcess
 
@@ -286,7 +286,8 @@ class sppasPluginsManager(Thread):
     def __get_config_file(plugin_dir):
         """ Return the config file of a given plugin. """
 
-        files = fileutils.get_files(plugin_dir, extension=".ini", recurs=False)
+        sd = sppasDirUtils(plugin_dir)
+        files = sd.get_files(extension=".ini", recurs=False)
         # Find a file with the extension .ini, and only one
         if len(files) == 1:
             return files[0]

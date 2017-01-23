@@ -40,7 +40,7 @@
 import os.path
 
 from sp_glob import RESOURCES_PATH
-import utils.fileutils
+from utils.fileutils import sppasDirUtils
 
 # ----------------------------------------------------------------------------
 
@@ -212,7 +212,8 @@ class sppasLangResource(object):
         # Fix the list of available languages
         if rtype == "file":
             if len(rext) > 0:
-                for selectedfile in utils.fileutils.get_files(directory, self._rext):
+                sd = sppasDirUtils(directory)
+                for selectedfile in sd.get_files(self._rext):
                     filename, fext = os.path.splitext(selectedfile)
                     filename = os.path.basename(filename)
                     self.langlist.append(filename.replace(self._rname, ""))

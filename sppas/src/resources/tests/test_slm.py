@@ -13,12 +13,12 @@ from resources.slm.statlangmodel import SLM
 from resources.slm.arpaio import ArpaIO
 from resources.vocab import Vocabulary
 
-import utils.fileutils
 from utils.type import compare
+from utils.fileutils import sppasFileUtils
 
 # ---------------------------------------------------------------------------
 
-TEMP = utils.fileutils.gen_name()
+TEMP = sppasFileUtils().set_random()
 
 # ---------------------------------------------------------------------------
 

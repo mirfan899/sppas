@@ -55,8 +55,10 @@
         | option2 = value2
 
 """
-
-from ConfigParser import SafeConfigParser
+try:
+    from configparser import SafeConfigParser
+except ImportError:
+    from ConfigParser import SafeConfigParser
 from shutil import copyfile
 import collections
 
@@ -241,10 +243,10 @@ class sppasPluginConfigParser(object):
         Convert an "Option" section of the parser into an "Option" instance.
 
         """
-        oid    = ""
-        otype  = "str"
+        oid = ""
+        otype = "str"
         ovalue = ""
-        otext  = ""
+        otext = ""
 
         for name, value in items:
 

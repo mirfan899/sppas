@@ -9,11 +9,11 @@ import annotationdata.aio
 from annotationdata.aio.annotationpro import Antx
 from annotationdata.aio.elan import Elan
 from annotationdata.aio.xra import XRA
-import utils.fileutils
+from utils.fileutils import sppasFileUtils
 
 # ---------------------------------------------------------------------------
 
-TEMP = utils.fileutils.gen_name()
+TEMP = sppasFileUtils().set_random()
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 # ---------------------------------------------------------------------------

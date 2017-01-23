@@ -35,14 +35,14 @@
 # File: ipustrs.py
 # ---------------------------------------------------------------------------
 
-import annotationdata.aio
 from annotationdata.transcription import Transcription
 
-from utils.fileutils import format_filename
+from utils.fileutils import sppasFileUtils
 
 # ---------------------------------------------------------------------------
 
-class IPUsTrs( object ):
+
+class IPUsTrs(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -131,7 +131,7 @@ class IPUsTrs( object ):
         # It does not mean that there IS NOT a silence.
         # However, True means that there is a silence, for sure!
         bound_start = False
-        bound_end   = False
+        bound_end = False
 
         if len(self.trsinput) > 0:
 
@@ -146,7 +146,7 @@ class IPUsTrs( object ):
             if tier[-1].GetLabel().IsSilence() is True and tier.GetSize()>1:
                 bound_end = True
 
-        return (bound_start,bound_end)
+        return (bound_start, bound_end)
 
     # ------------------------------------------------------------------
 
@@ -196,9 +196,9 @@ class IPUsTrs( object ):
         i = 0
         for ann in tier:
             if ann.GetLabel().IsSilence() is False:
-                self.units.append( ann.GetLabel().GetValue() )
-                self.names.append( "track_%.06d" % (i+1) )
-                i = i+1
+                self.units.append(ann.GetLabel().GetValue())
+                self.names.append("track_%.06d" % (i+1))
+                i += 1
 
     # ------------------------------------------------------------------
 
@@ -238,7 +238,7 @@ class IPUsTrs( object ):
                 start = ann.GetLocation().GetBegin().GetMidpoint()
                 end   = ann.GetLocation().GetEnd().GetMidpoint()
                 trstracks.append([start,end])
-                self.units.append( ann.GetLabel().GetValue() )
+                self.units.append(ann.GetLabel().GetValue())
 
                 if nametier is not None:
                     aname = nametier.Find(ann.GetLocation().GetBegin().GetMidpoint(), ann.GetLocation().GetEnd().GetMidpoint(), True)
@@ -246,10 +246,11 @@ class IPUsTrs( object ):
                         trstracks.pop()
                         self.units.pop()
                     else:
-                        self.names.append( format_filename(aname[0].GetLabel().GetValue()) )
+                        sf = sppasFileUtils(aname[0].GetLabel().GetValue())
+                        self.names.append(sf.clear_whitespace())
 
             # Continue
-            i = i + 1
+            i += 1
 
         return (trstracks,silences)
 

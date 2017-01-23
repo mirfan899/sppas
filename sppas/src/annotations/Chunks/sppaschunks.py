@@ -38,14 +38,11 @@
 import shutil
 import os
 
-import utils.fileutils as fileutils
+import utils.fileutils
 
-import audiodata.aio
 import annotationdata.aio
 from annotationdata.aio.utils import gen_id
 from annotationdata.media    import Media
-
-from sp_glob import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
 
 from annotations.sppasbase import sppasBase
 from annotations.Chunks.chunks import Chunks
@@ -209,8 +206,8 @@ class sppasChunks( sppasBase ):
         # Prepare data
         # -------------------------------------------------------------
 
-        inputaudio = fileutils.fix_audioinput(audioname)
-        workdir    = fileutils.fix_workingdir(inputaudio)
+        inputaudio = utils.fileutils.fix_audioinput(audioname)
+        workdir    = utils.fileutils.fix_workingdir(inputaudio)
         if self._options['clean'] is False:
             self.print_message( "The working directory is: %s"%workdir, indent=3, status=None )
 

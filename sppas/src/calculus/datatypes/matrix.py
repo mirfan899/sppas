@@ -134,8 +134,8 @@ class Matrix(object):
              if self.shape != other.shape:
                  raise ValueError("matrix shapes do not match")
              return self.__class__([
-                 [a+b for a, b in izip(row_a, row_b)]
-                 for row_a, row_b in izip(self, other)
+                 [a+b for a, b in zip(row_a, row_b)]
+                 for row_a, row_b in zip(self, other)
              ])
          else:
              return self.__class__([
@@ -270,8 +270,8 @@ class Matrix(object):
              if self.shape != other.shape:
                  raise ValueError("matrix shapes do not match")
              return self.__class__([
-                 [a-b for a, b in izip(row_a, row_b)]
-                 for row_a, row_b in izip(self, other)
+                 [a-b for a, b in zip(row_a, row_b)]
+                 for row_a, row_b in zip(self, other)
               ])
          else:
              return self.__class__([

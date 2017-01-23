@@ -40,9 +40,8 @@ import os.path
 import glob
 import logging
 
-import utils.fileutils as fileutils
+import utils.fileutils
 
-import audiodata.aio
 import annotationdata.aio
 from annotationdata import Transcription
 from annotationdata import Tier
@@ -524,8 +523,8 @@ class sppasAlign( sppasBase ):
         # Prepare data
         # -------------------------------------------------------------
 
-        inputaudio = fileutils.fix_audioinput(audioname)
-        workdir    = fileutils.fix_workingdir(inputaudio)
+        inputaudio = utils.fileutils.fix_audioinput(audioname)
+        workdir    = utils.fileutils.fix_workingdir(inputaudio)
         if self._options['clean'] is False:
             self.print_message( "The working directory is: %s"%workdir, indent=3, status=None )
 

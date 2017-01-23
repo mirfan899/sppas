@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 
 import unittest
-import os
+import os.path
 
 import audiodata.aio
 from audiodata.audio import AudioPCM

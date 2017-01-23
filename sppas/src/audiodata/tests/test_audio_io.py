@@ -7,15 +7,15 @@ import shutil
 
 import audiodata.aio
 from sp_glob import SAMPLES_PATH
-import utils.fileutils
+from utils.fileutils import sppasFileUtils
 
 # ---------------------------------------------------------------------------
 
+TEMP = sppasFileUtils().set_random()
 sample_1 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana1.wav")
 sample_2 = os.path.join(SAMPLES_PATH, "samples-fra", "F_F_B003-P9.wav")
 sample_3 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana3.wave")
 sample_4 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana1.aiff")
-TEMP = utils.fileutils.gen_name()
 
 # ---------------------------------------------------------------------------
 
