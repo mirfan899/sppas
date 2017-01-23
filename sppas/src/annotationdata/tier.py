@@ -1124,11 +1124,4 @@ class Tier( MetaObject ):
     def __len__(self):
         return len(self.__ann)
 
-    @deprecated
-    def __call__(self, *args, **kwargs):
-        from filter import FilterFactory
-        return FilterFactory(self, *args, **kwargs)
-
-    # -----------------------------------------------------------------------
-
 # ---------------------------------------------------------------------------

@@ -41,7 +41,6 @@
     structs is a free and open source Python library to access and manage
     data structures used into SPPAS.
 
-
 """
 from .baseoption import sppasBaseOption
 from .baseoption import sppasOption
@@ -53,5 +52,6 @@ __all__ = [
     'sppasBaseOption',
     'sppasOption',
     'sppasLangResource',
+    'sppasMetaInfo',
     'sppasTips'
 ]

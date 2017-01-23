@@ -43,33 +43,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 from annotationdata.tier import Tier
 
-from predicate import Predicate,RelationPredicate,Sel,Rel
-
-# ----------------------------------------------------------------------------
-
-class FilterFactory(object):
-    """
-    @deprecated
-    """
-    def __new__(cls, tier, *predicate, **kwargs):
-        """
-        Create a Filter.
-        @param tier: (Tier)
-        @param predicate: (Predicate)
-        @param kwargs:
-        @return: (Filter)
-        """
-        if not predicate and not kwargs:
-            predicate = Sel(**kwargs)
-        elif kwargs:
-            predicate = Sel(**kwargs)
-        elif not isinstance(predicate[0], Predicate):
-            raise Exception("Invalid argument %s" % predicate[0])
-        else:
-            predicate = predicate[0]
-
-        f = Filter(tier)
-        return f.Label(predicate)
+from predicate import Sel,Rel
 
 # ----------------------------------------------------------------------------
 
@@ -180,8 +154,6 @@ class SingleFilter(Filter):
                 pass
         return tier
 
-    # -----------------------------------------------------------------------
-
 # ----------------------------------------------------------------------------
 
 
@@ -264,7 +236,5 @@ class RelationFilter(Filter):
                 pass
             i = i+1
         return tier
-
-    # -----------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------

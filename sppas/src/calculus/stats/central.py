@@ -36,6 +36,7 @@
 # ----------------------------------------------------------------------------
 
 import math
+import functools
 
 # ----------------------------------------------------------------------------
 
@@ -83,7 +84,7 @@ def fmult(items):
     @return (float)
 
     """
-    return reduce(lambda x, y: x*y, items)
+    return functools.reduce(lambda x, y: x*y, items)
 
 # ---------------------------------------------------------------------------
 
@@ -96,11 +97,13 @@ def fgeometricmean (items):
     @return (float)
 
     """
-    if not len(items): return 0.
+    if len(items) == 0:
+        return 0.
+
     one_over_n = 1./len(items)
     m = 1.
     for item in items:
-        m = m * pow(item,one_over_n)
+        m = m * pow(item, one_over_n)
     return m
 
 # ---------------------------------------------------------------------------
@@ -114,7 +117,9 @@ def fharmonicmean (items):
     @return (float)
 
     """
-    if not len(items): return 0.
+    if len(items) == 0:
+        return 0.
+
     # create a list with 1/xi values
     s = 0.
     for item in l:
@@ -130,7 +135,9 @@ def fmean (items):
     @param items (list) list of data values
     @return (float)
     """
-    if not len(items): return 0.
+    if len(items) == 0:
+        return 0.
+
     return (fsum(items) / float(len(items)))
 
 # ---------------------------------------------------------------------------
@@ -144,7 +151,9 @@ def fmedian (items):
     @return (float)
 
     """
-    if not len(items): return 0.
+    if len(items) == 0:
+        return 0.
+
     middle = len(items) / 2
 
     if len(items) % 2:
@@ -163,7 +172,9 @@ def fmin (items):
     @return (float)
 
     """
-    if not len(items): return 0.
+    if len(items) == 0:
+        return 0.
+
     return min(items)
 
 # ---------------------------------------------------------------------------
@@ -174,7 +185,9 @@ def fmax (items):
     @param items (list) list of data values
     @return (float)
     """
-    if not len(items): return 0.
+    if len(items) == 0:
+        return 0.
+
     return max(items)
 
 # ----------------------------------------------------------------------------

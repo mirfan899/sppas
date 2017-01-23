@@ -1,200 +1,172 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: textprogress.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+        http://www.sppas.org/
 
+        Use of this software is governed by the GNU Public License, version 3.
 
-# ----------------------------------------------------------------------------
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
 
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.term.textprogress.py
+    ~~~~~~~~~~~~~~~~~~~~~~
+
+    A 3-lines progress bar to be used while processing from a terminal.
+    
+"""
 import sys
-import re
-import math
-from terminalcontroller import TerminalController
+
+from .terminalcontroller import TerminalController
 
 
 # ----------------------------------------------------------------------------
-# Constants
-# ----------------------------------------------------------------------------
 
-WIDTH  = 74
-BAR    = '%3d%% ${GREEN}[${BOLD}%s%s${NORMAL}${GREEN}]${NORMAL}\n'
+WIDTH = 74
+BAR = '%3d%% ${GREEN}[${BOLD}%s%s${NORMAL}${GREEN}]${NORMAL}\n'
 HEADER = '${BOLD}${CYAN}%s${NORMAL}\n\n'
 
 # ----------------------------------------------------------------------------
 
-class ProcessProgressTerminal( object ):
+
+class ProcessProgressTerminal(object):
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi((AATT))lpl-aix.fr
-    @license: GPL
-    @summary: A 3-lines progress self.bar.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      A 3-lines progress bar.
 
-    It looks like::
+    It looks like:
 
-                            Header
+                            header
     20% [===========----------------------------------]
-                       progress message
+                        message text
 
-    The progress self.bar is colored, if the terminal supports color
+    The progress self._bar is colored, if the terminal supports color
     output; and adjusts to the width of the terminal.
 
     """
-
-
     def __init__(self):
-        """
-        Constructor.
-        """
+        """ Constructor. """
+
         try:
-            self.term = TerminalController()
+            self._term = TerminalController()
         except:
-            self.term = None
+            self._term = None
 
-        if not (self.term.CLEAR_EOL and self.term.UP and self.term.BOL):
-            self.term = None
+        if not (self._term.CLEAR_EOL and self._term.UP and self._term.BOL):
+            self._term = None
 
-        self.bar = BAR
-        if self.term:
-            self.bar = self.term.render(BAR)
-        self.cleared = 1 #: true if we haven't drawn the self.bar yet.
-        self.percent = 0
-        self.text    = ""
+        self._bar = BAR
+        if self._term:
+            self._bar = self._term.render(BAR)
+        
+        self._cleared = 1  # true if we haven't drawn the self._bar yet.
+        self._percent = 0
+        self._text = ""
+        self._header = ""
 
-    # End __init__
     # ------------------------------------------------------------------
 
-
     def update(self, percent, message):
-        """
-        Update the progress.
+        """ Update the progress.
 
-        @param text:     progress self.bar text  (default: None)
-        @param fraction: progress self.bar value (default: 0)
+        :param text:     progress bar text  (default: None)
+        :param fraction: progress bar value (default: 0)
 
         """
         n = int((WIDTH-10)*percent)
 
-        if self.term:
+        if self._term:
             sys.stdout.write(
-                self.term.BOL + self.term.UP + self.term.CLEAR_EOL +
-                (self.bar % (100*percent, '='*n, '-'*(WIDTH-10-n))) +
-                self.term.CLEAR_EOL + message.center(WIDTH))
+                self._term.BOL + self._term.UP + self._term.CLEAR_EOL +
+                (self._bar % (100*percent, '='*n, '-'*(WIDTH-10-n))) +
+                self._term.CLEAR_EOL + message.center(WIDTH))
         else:
-            sys.stdout.write( '  => ' + message + " \n")
+            sys.stdout.write('  => ' + message + " \n")
 
-        self.percent = percent
-        self.text    = message
+        self._percent = percent
+        self._text = message
 
-    # End update
     # ------------------------------------------------------------------
-
 
     def clear(self):
-        """
-        Clear.
-        """
-        if not self.cleared:
-            if self.term:
-                sys.stdout.write(self.term.BOL + self.term.CLEAR_EOL +
-                                 self.term.UP + self.term.CLEAR_EOL +
-                                 self.term.UP + self.term.CLEAR_EOL)
+        """ Clear. """
+
+        if not self._cleared:
+            if self._term:
+                sys.stdout.write(self._term.BOL + self._term.CLEAR_EOL +
+                                 self._term.UP + self._term.CLEAR_EOL +
+                                 self._term.UP + self._term.CLEAR_EOL)
             else:
-                sys.stdout.write('\n'*50)
-            self.cleared = 1
+                sys.stdout.write('\n' * 50)
+            self._cleared = 1
 
-    # End clear
     # ------------------------------------------------------------------
-
 
     def set_fraction(self, percent):
+        """ Set a new progress value.
+
+        :param percent: new progress value
+
         """
-        Set a new progress value.
+        self.update(percent, self._text)
 
-        @param fraction: new progress value
-
-        """
-        self.update(percent,self.text)
-
-    # End set_fraction
     # ------------------------------------------------------------------
 
+    def set_text(self, text):
+        """ Set a new progress message text.
 
-    def set_text(self,text):
-        """
-        Set a new progress text.
-
-        @param text: new progress text
+        :param text: new progress text
 
         """
-        self.update(self.percent,text)
+        self.update(self._percent, text)
 
-    # End set_text
     # ------------------------------------------------------------------
 
+    def set_header(self, header):
+        """ Set a new progress header text.
 
-    def set_header(self,header):
-        """
-        Set a new progress label.
-
-        @param label: new progress label
+        :param header: new progress header text.
 
         """
-        if self.term:
-            self.header = self.term.render(HEADER % header.center(WIDTH))
+        if self._term:
+            self._header = self._term.render(HEADER % header.center(WIDTH))
         else:
-            self.header = "          " + header
+            self._header = "          " + header
 
-        sys.stdout.write(self.header)
+        sys.stdout.write(self._header)
 
-    # End set_header
     # ------------------------------------------------------------------
-
 
     def set_new(self):
-        """
-        Initialize a new progress line.
+        """ Initialize a new progress line. """
 
-        """
         sys.stdout.write('\n')
         self.clear()
-        self.text = ""
-        self.percent = 0
+        self._text = ""
+        self._percent = 0
 
-    # End set_new
     # ------------------------------------------------------------------

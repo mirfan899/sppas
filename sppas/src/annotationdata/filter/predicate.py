@@ -41,17 +41,17 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-
 import operator
+import functools
 
 import _bools
 import _relations
 
 # ----------------------------------------------------------------------------
 
+
 class Predicate(object):
     """
-
     Predicate allows to fix if an assumption is True or False.
 
     """
@@ -95,6 +95,7 @@ class Predicate(object):
 
 # ----------------------------------------------------------------------------
 
+
 class RelationPredicate(Predicate):
     def __init__(self, pred):
         Predicate.__init__(self, pred)
@@ -102,12 +103,6 @@ class RelationPredicate(Predicate):
     def __and__(self, other):
         raise Exception("& operator exception.")
 
-# ----------------------------------------------------------------------------
-
-
-
-# ----------------------------------------------------------------------------
-# Predicates to filter Annotations
 # ----------------------------------------------------------------------------
 
 
@@ -180,7 +175,7 @@ class Sel(object):
                 function = _bools.create(func_name, arg=param, opt=opt)
                 functions.append(function)
 
-        return reduce(operator.and_, (Predicate(f) for f in functions))
+        return functools.reduce(operator.and_, (Predicate(f) for f in functions))
 
 # ----------------------------------------------------------------------------
 
@@ -261,6 +256,6 @@ class Rel(object):
             func = _relations.create(k, v)
             functions.append(func)
 
-        return reduce(operator.or_, (RelationPredicate(f) for f in functions))
+        return functools.reduce(operator.or_, (RelationPredicate(f) for f in functions))
 
 # ----------------------------------------------------------------------------

@@ -47,12 +47,12 @@ import os
 import wx
 import re
 import operator
+import functools
 
 from annotationdata.filter.predicate import Sel
 
 from wxgui.dialogs.basedialog import spBaseDialog
 
-from wxgui.sp_icons import DATAFILTER_APP_ICON
 from wxgui.sp_icons import FILTER_SINGLE
 from wxgui.sp_icons import APPLY_ICON
 from wxgui.sp_icons import FILTER_ADD_LABEL
@@ -62,13 +62,9 @@ from wxgui.sp_icons import FILTER_REMOVE
 
 from wxgui.panels.mainbuttons import MainToolbarPanel
 
-from wxgui.cutils.imageutils import spBitmap
-from wxgui.cutils.ctrlutils import CreateGenButton
 from wxgui.cutils.textutils import TextValidator
 
 from wxgui.ui.CustomListCtrl import CheckListCtrl
-
-from sp_glob import ICONS_PATH
 
 try:
     from agw import floatspin as FS
@@ -405,13 +401,14 @@ class _genPredicateSel(object):
                 kwargs[ 'opt' ] = self.opt
             preds.append( Sel(**kwargs) )
 
-        pred  = reduce(operator.or_, preds)
+        pred  = functools.reduce(operator.or_, preds)
 
         if self.reverse:
             return ~pred
         return pred
 
 # ----------------------------------------------------------------------------
+
 
 class LabelFilterDialog( spBaseDialog ):
     """
