@@ -55,10 +55,10 @@
     >>> manager.delete(plugin_id)
 
 """
-from manager import sppasPluginsManager
-from param import sppasPluginParam
-from process import sppasPluginProcess
-from cfgparser import sppasPluginConfigParser
+from .manager import sppasPluginsManager
+from .param import sppasPluginParam
+from .process import sppasPluginProcess
+from .cfgparser import sppasPluginConfigParser
 
 __all__ = [
     "sppasPluginsManager",

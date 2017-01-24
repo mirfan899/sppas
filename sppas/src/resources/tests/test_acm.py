@@ -10,7 +10,7 @@ from resources.acm.acmodel import AcModel, HtkIO
 from resources.acm.hmm import HMM, HMMInterpolation
 from resources.acm.htktrain import HTKModelTrainer, DataTrainer, PhoneSet, TrainingCorpus, HTKModelInitializer
 
-from utils.type import compare
+from utils.compare import sppasCompare
 from sp_glob import RESOURCES_PATH, SAMPLES_PATH
 from utils.fileutils import sppasFileUtils
 
@@ -98,10 +98,11 @@ class TestTrainer(unittest.TestCase):
 
         hmm1 = HMM()
         hmm2 = HMM()
+        sp = sppasCompare()
 
         hmm1.load(os.path.join(workdir, "@@.hmm"))
         hmm2.load(os.path.join(DATA, "protos", "@@.hmm"))
-        self.assertTrue(compare(hmm1.definition, hmm2.definition))
+        self.assertTrue(sp.equals(hmm1.definition, hmm2.definition))
 
         hmm1.load(os.path.join(workdir, "sil.hmm"))
         hmm2.load(os.path.join(DATA, "protos", "sil.hmm"))
@@ -110,10 +111,10 @@ class TestTrainer(unittest.TestCase):
         hmm2.load(os.path.join(DATA, "protos", "proto.hmm"))
 
         hmm1.load(os.path.join(workdir, "gb.hmm"))
-        self.assertTrue(compare(hmm1.definition, hmm2.definition))
+        self.assertTrue(sp.equals(hmm1.definition, hmm2.definition))
 
         hmm1.load(os.path.join(workdir, "dummy.hmm"))
-        self.assertTrue(compare(hmm1.definition, hmm2.definition))
+        self.assertTrue(sp.equals(hmm1.definition, hmm2.definition))
 
         acmodel = AcModel()
         acmodel.load_htk(os.path.join(workdir, "hmmdefs"))
@@ -179,34 +180,34 @@ class TestInterpolate(unittest.TestCase):
         acmodel1.load_htk(os.path.join(DATA, "1-hmmdefs"))
         acmodel2 = AcModel()
         acmodel2.load_htk(os.path.join(DATA, "2-hmmdefs"))
-        ahmm1=acmodel1.get_hmm('a')
-        ahmm2=acmodel2.get_hmm('a')
+        ahmm1 = acmodel1.get_hmm('a')
+        ahmm2 = acmodel2.get_hmm('a')
+        sp = sppasCompare()
 
         # transitions
         # (notice that the transition of 'a' in acmodel1 is in a macro.)
         a1transition = [macro["transition"] for macro in acmodel1.macros if macro.get('transition', None)][0]
         transitions = [a1transition['definition'], ahmm2.definition['transition']]
         trs = self.lin.linear_transitions(transitions, [1, 0])
-        compare(trs, a1transition['definition'])
-        self.assertTrue(compare(trs, a1transition['definition']))
+        sp.equals(trs, a1transition['definition'])
+        self.assertTrue(sp.equals(trs, a1transition['definition']))
 
         acmodel1.fill_hmms()
 
         transitions = [ahmm1.definition['transition'], ahmm2.definition['transition']]
         trs = self.lin.linear_transitions(transitions, [1, 0])
-        self.assertTrue(compare(trs,ahmm1.definition['transition']))
+        self.assertTrue(sp.equals(trs, ahmm1.definition['transition']))
 
         trs = self.lin.linear_transitions(transitions, [0, 1])
-        self.assertTrue(compare(trs,ahmm2.definition['transition']))
+        self.assertTrue(sp.equals(trs, ahmm2.definition['transition']))
 
         # states
         # (notice that the state 2 of 'a' in acmodel1 is in a macro.)
         states = [ahmm1.definition['states'], ahmm2.definition['states']]
         sts = self.lin.linear_states(states, [1, 0])
-        compare(sts, ahmm1.definition['states'], verbose=True)
-        self.assertTrue(compare(sts,ahmm1.definition['states']))
+        self.assertTrue(sp.equals(sts, ahmm1.definition['states']))
         sts = self.lin.linear_states(states, [0, 1])
-        self.assertTrue(compare(sts,ahmm2.definition['states']))
+        self.assertTrue(sp.equals(sts, ahmm2.definition['states']))
 
 # ---------------------------------------------------------------------------
 
@@ -243,13 +244,14 @@ class TestAcModel(unittest.TestCase):
         # Load the temporary file into a new model
         acmodelcopy = AcModel()
         acmodelcopy.load_htk(tmpfile)
+        sp = sppasCompare()
 
         # Compare original and copy
         self.assertEqual(len(self.acmodel.hmms),len(acmodelcopy.hmms))
         for hmm, hmmcopy in zip(self.acmodel.hmms,acmodelcopy.hmms):
             self.assertEqual(hmm.name, hmmcopy.name)
-            self.assertTrue(compare(hmm.definition,hmmcopy.definition))
-        self.assertTrue(compare(self.acmodel.macros,acmodelcopy.macros))
+            self.assertTrue(sp.equals(hmm.definition,hmmcopy.definition))
+        self.assertTrue(sp.equals(self.acmodel.macros,acmodelcopy.macros))
 
     def test_get_hmm(self):
         with self.assertRaises(ValueError):
@@ -286,22 +288,24 @@ class TestAcModel(unittest.TestCase):
         self.__test_transition(hmm.definition['transition'])
 
     def test_save_hmm(self):
+        sp = sppasCompare()
         hmm = HMM()
         hmm.load(os.path.join(DATA, "N-hmm"))
         hmm.save(os.path.join(TEMP, "N-hmm-copy"))
         newhmm = HMM()
         newhmm.load(os.path.join(TEMP, "N-hmm-copy"))
         self.assertEqual(hmm.name, newhmm.name)
-        self.assertTrue(compare(hmm.definition, newhmm.definition))
+        self.assertTrue(sp.equals(hmm.definition, newhmm.definition))
 
     def test_fill(self):
+        sp = sppasCompare()
         acmodel1 = AcModel()
         acmodel1.load_htk(os.path.join(DATA, "1-hmmdefs"))
         ahmm1=acmodel1.get_hmm('a')
         a1transition = [macro["transition"] for macro in acmodel1.macros if macro.get('transition', None)][0]
 
         acmodel1.fill_hmms()
-        self.assertTrue(compare(ahmm1.definition['transition'], a1transition['definition']))
+        self.assertTrue(sp.equals(ahmm1.definition['transition'], a1transition['definition']))
 
     def test_no_merge(self):
         nbhmms = len(self.acmodel.hmms)
@@ -350,6 +354,7 @@ class TestAcModel(unittest.TestCase):
         self.__test_transition(acmodel2.get_hmm('a').definition['transition'])
 
     def test_replace_phones(self):
+        sp = sppasCompare()
         acmodel1 = AcModel()
         acmodel1.load(os.path.join(MODEL_PATH, "models-fra"))
         acmodel1.replace_phones(reverse=False)
@@ -360,8 +365,8 @@ class TestAcModel(unittest.TestCase):
 
         for h1 in acmodel1.hmms:
             h2 = acmodel2.get_hmm(h1.name)
-            self.assertTrue(compare(h1.definition['transition'], h2.definition['transition']))
-            self.assertTrue(compare(h1.definition['states'], h2.definition['states']))
+            self.assertTrue(sp.equals(h1.definition['transition'], h2.definition['transition']))
+            self.assertTrue(sp.equals(h1.definition['states'], h2.definition['states']))
 
     def test_monophones(self):
         acmodel1 = AcModel()
@@ -376,6 +381,7 @@ class TestAcModel(unittest.TestCase):
         self.assertEqual(len(acmodel2.hmms), 38)
 
     def test_proto(self):
+        sp = sppasCompare()
         h1 = HtkIO()
         h1.write_hmm_proto(25, os.path.join(TEMP, "proto_from_htkio"))
 
@@ -389,8 +395,8 @@ class TestAcModel(unittest.TestCase):
         m2 = HMM()
         m2.load(os.path.join(TEMP, "proto_from_hmm"))
 
-        self.assertTrue(compare(m1.definition['transition'], m2.definition['transition']))
-        self.assertTrue(compare(m1.definition['states'], m2.definition['states']))
+        self.assertTrue(sp.equals(m1.definition['transition'], m2.definition['transition']))
+        self.assertTrue(sp.equals(m1.definition['states'], m2.definition['states']))
 
     def __test_transition(self, transition):
         self.assertEqual(transition['dim'], 5)
@@ -404,7 +410,7 @@ class TestAcModel(unittest.TestCase):
         for item in states:  # a dict
             state = item['state']
             streams = state['streams']
-            for s in streams: # a list
+            for s in streams:  # a list
                 mixtures = s['mixtures']
                 for mixture in mixtures: # a list of dict
                     #self.assertEqual(type(mixture['weight']),float)

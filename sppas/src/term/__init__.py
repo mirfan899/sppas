@@ -41,8 +41,8 @@
     term is a free and open source Python library to access the terminal.
 
 """
-from terminalcontroller import TerminalController
-from textprogress import ProcessProgressTerminal
+from .terminalcontroller import TerminalController
+from .textprogress import ProcessProgressTerminal
 
 __all__ = [
     'TerminalController',

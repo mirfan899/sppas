@@ -37,10 +37,10 @@
 
 import subprocess
 
-from utils.type        import test_command
-from audiodata.channel import Channel
+from utils import test_command
 
 # ---------------------------------------------------------------------------
+
 
 class ChannelMFCC( object ):
     """

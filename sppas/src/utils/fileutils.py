@@ -32,7 +32,7 @@
     src.utils.fileutils.py
     ~~~~~~~~~~~~~~~~~~~~~~
 
-    Utility functions to manage files an directories.
+    Utility functions to manage files and directories.
     
 """
 import os
@@ -200,19 +200,19 @@ class sppasDirUtils(object):
         match filenames.
 
         """
-        fileList = []
-        for file in os.listdir(dir_name):
-            dirfile = os.path.join(dir_name, file)
+        file_list = []
+        for dfile in os.listdir(dir_name):
+            dirfile = os.path.join(dir_name, dfile)
             if os.path.isfile(dirfile):
                 if not extension:
-                    fileList.append(dirfile)
+                    file_list.append(dirfile)
                 else:
                     if dirfile.lower().endswith(extension.lower()):
-                        fileList.append(dirfile)
+                        file_list.append(dirfile)
             # recursively access file names in subdirectories
             elif os.path.isdir(dirfile) and subdir:
-                fileList.extend(sppasDirUtils.dir_entries(dirfile, subdir, extension))
-        return fileList
+                file_list.extend(sppasDirUtils.dir_entries(dirfile, subdir, extension))
+        return file_list
 
 # ----------------------------------------------------------------------------
 

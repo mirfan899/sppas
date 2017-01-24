@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.utils
-    ~~~~~~~~~~~
+    src.utils.makeunicode
+    ~~~~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -38,38 +38,37 @@
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
 
-    utils is a free and open source Python library implementing utility
-    functions used into SPPAS.
+    makeunicode is useful for the compatibility of the code between python 2.7
+    and python > 3.
 
 """
-import os
-import subprocess
-
-from .fileutils import sppasFileUtils
-from .fileutils import sppasDirUtils
-from .compare import sppasCompare
-from .makeunicode import u, b
-
-__all__ = [
-    'sppasFileUtils',
-    'sppasDirUtils',
-    'sppasCompare',
-    'u',
-    'b'
-]
+from __future__ import unicode_literals
+import sys
+import codecs
 
 # ---------------------------------------------------------------------------
 
+""" Unicode conversion for python 2.7. """
 
-def test_command(command):
-    """ Test if a command is available. """
+if sys.version_info < (3,):
 
-    try:
-        NULL = open(os.devnull, "w")
-        subprocess.call([command], stdout=NULL, stderr=subprocess.STDOUT)
-    except OSError:
-        return False
+    text_type = unicode
+    binary_type = str
 
-    return True
+    def u(x):
+        return codecs.unicode_escape_decode(x)[0]
 
-# ---------------------------------------------------------------------------
+    def b(x):
+        return x
+
+else:
+    """ Unicode conversion for python > 3. """
+
+    text_type = str
+    binary_type = bytes
+
+    def u(x):
+        return x
+
+    def b(x):
+        return codecs.latin_1_encode(x)[0]

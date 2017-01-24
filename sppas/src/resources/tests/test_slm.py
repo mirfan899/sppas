@@ -13,7 +13,7 @@ from resources.slm.statlangmodel import SLM
 from resources.slm.arpaio import ArpaIO
 from resources.vocab import Vocabulary
 
-from utils.type import compare
+from utils.compare import sppasCompare
 from utils.fileutils import sppasFileUtils
 
 # ---------------------------------------------------------------------------
@@ -363,4 +363,5 @@ class TestSLM(unittest.TestCase):
 
         m1 = slm1.model
         m2 = slm2.model
-        self.assertTrue(compare(m1, m2))
+        sp = sppasCompare()
+        self.assertTrue(sp.equals(m1, m2))
