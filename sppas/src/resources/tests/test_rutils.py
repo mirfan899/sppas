@@ -120,7 +120,7 @@ LowerDict[u'Ỹ'] = u'ỹ'
 class TestRutils(unittest.TestCase):
 
     def test_lower(self):
-        for key,value in LowerDict.items():
+        for key, value in LowerDict.items():
             self.assertEqual(value, rutils.to_lower(key))
         self.assertEqual(rutils.to_lower(u'Ỹ'), rutils.to_lower('Ỹ'))
 

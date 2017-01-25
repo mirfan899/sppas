@@ -2,6 +2,7 @@
 
 import unittest
 import os.path
+import sys
 
 from utils.fileutils import sppasFileUtils, sppasDirUtils
 from sp_glob import SAMPLES_PATH
@@ -35,8 +36,10 @@ class TestFileUtils(unittest.TestCase):
         self.assertEqual(f, "filename_with_some_whitespace")
         sf = sppasFileUtils(self.sample_2)
         f = sf.to_ascii()
-        self.assertTrue(f.endswith("AG________0460.TextGrid"))
-
+        if sys.version_info < (3,):
+            self.assertTrue(f.endswith("AG________0460.TextGrid"))
+        else:
+            self.assertTrue(f.endswith("AG_____0460.TextGrid"))
 
 class TestDirUtils(unittest.TestCase):
 
