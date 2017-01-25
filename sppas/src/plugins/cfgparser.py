@@ -55,14 +55,15 @@
         | option2 = value2
 
 """
-try:
-    from configparser import SafeConfigParser
-except ImportError:
+try:  # python 3
+    from configparser import ConfigParser as SafeConfigParser
+except ImportError:  # python 2
     from ConfigParser import SafeConfigParser
 from shutil import copyfile
 import collections
 
 from structs.baseoption import sppasOption
+from utils.makeunicode import u
 
 # ----------------------------------------------------------------------------
 
@@ -117,7 +118,7 @@ class sppasPluginConfigParser(object):
         self._parser = SafeConfigParser()
         self._filename = None
         if filename is not None:
-            self.parse( filename )
+            self.parse(filename)
 
     # ------------------------------------------------------------------------
 
@@ -132,7 +133,7 @@ class sppasPluginConfigParser(object):
         for section_name in self._parser.sections():
             if section_name == "Configuration":
                 for name, value in self._parser.items(section_name):
-                    cfgdict[name] = value.encode('utf-8')
+                    cfgdict[name] = u(value)
 
         if 'id' not in cfgdict.keys():
             raise ValueError("[Configuration] section must contain an 'id' option.")
@@ -147,14 +148,14 @@ class sppasPluginConfigParser(object):
         :returns: dictionary.
 
         """
-        cfgdict = {}
+        cfg_dict = {}
 
         for section_name in self._parser.sections():
             if section_name == "Command":
                 for name, value in self._parser.items(section_name):
-                    cfgdict[name] = value.encode('utf-8')
+                    cfg_dict[name] = u(value)
 
-        return cfgdict
+        return cfg_dict
 
     # ------------------------------------------------------------------------
 
@@ -165,14 +166,14 @@ class sppasPluginConfigParser(object):
         :returns: ordered dictionary.
 
         """
-        cfgdict = collections.OrderedDict()
+        cfg_dict = collections.OrderedDict()
 
         for section_name in self._parser.sections():
             if section_name.startswith("Option") is True:
                 opt = self.__parse_option(self._parser.items(section_name))
-                cfgdict[section_name] = opt
+                cfg_dict[section_name] = opt
 
-        return cfgdict
+        return cfg_dict
 
     # ------------------------------------------------------------------------
 
@@ -207,7 +208,10 @@ class sppasPluginConfigParser(object):
         """
         # Open the file
         with open(filename, "r") as f:
-            self._parser.readfp(f)
+            try:  # python 3
+                self._parser.read_file(f)
+            except:  # python 2
+                self._parser.readfp(f)
         self._filename = filename
 
         # Check content
@@ -251,16 +255,16 @@ class sppasPluginConfigParser(object):
         for name, value in items:
 
             if name == "type":
-                otype = value.encode('utf-8')
+                otype = u(value)
 
             elif name == "id":
-                oid = value.encode('utf-8')
+                oid = u(value)
 
             elif name == "value":
-                ovalue = value.encode('utf-8')
+                ovalue = u(value)
 
             elif name == "text":
-                otext = value.encode('utf-8')
+                otext = u(value)
 
         opt = sppasOption(oid)
         opt.set_type(otype)
@@ -276,14 +280,14 @@ class sppasPluginConfigParser(object):
         Convert a "sppasOption" instance into an "Option" section of the parser.
 
         """
-        self._parser.add_section( section_name )
+        self._parser.add_section(section_name)
         self._parser.set(section_name, "id", option.get_key())
 
         if len(option.get_type()) > 0:
             self._parser.set(section_name, "type", option.get_type())
 
         if len(option.get_untypedvalue()) > 0:
-            self._parser.set(section_name, "value",option.get_untypedvalue())
+            self._parser.set(section_name, "value", option.get_untypedvalue())
 
         if len(option.get_text()) > 0:
             self._parser.set(section_name, "text", option.get_text())

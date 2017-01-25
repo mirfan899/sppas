@@ -50,7 +50,7 @@
     >>> p = manager.get_plugin(plugin_id)
     >>> # Apply a plugin on a list of files
     >>> message = manager.run_plugin(plugin_id, [some_filename1, some_filename2])
-    >>> print message
+    >>> print(message)
     >>> # Delete an installed plugin
     >>> manager.delete(plugin_id)
 

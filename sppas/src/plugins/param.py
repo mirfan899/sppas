@@ -49,7 +49,7 @@ import platform
 import shlex
 from subprocess import Popen
 
-from cfgparser import sppasPluginConfigParser
+from .cfgparser import sppasPluginConfigParser
 
 # ----------------------------------------------------------------------------
 
@@ -73,7 +73,7 @@ class sppasPluginParam(object):
         """
         # The path where to find the plugin and its config
         self._directory = directory
-        self._cfgfile   = config_file
+        self._cfgfile = config_file
         self._cfgparser = sppasPluginConfigParser()
 
         # Declare members and initialize
@@ -88,7 +88,7 @@ class sppasPluginParam(object):
         """ Reset all members to their default value. """
 
         # An identifier to represent this plugin
-        self._key  = None
+        self._key = None
         # The name of the plugin
         self._name = ""
         # The description of the plugin do
@@ -106,7 +106,7 @@ class sppasPluginParam(object):
         """ Parse the configuration file of the plugin.  """
 
         self.reset()
-        filename = os.path.join(self._directory,self._cfgfile)
+        filename = os.path.join(self._directory, self._cfgfile)
         self._cfgparser.parse(filename)
 
         # get the command
@@ -117,10 +117,10 @@ class sppasPluginParam(object):
 
         # get the configuration
         conf = self._cfgparser.get_config()
-        self._key   = conf['id']
-        self._name  = conf.get("name", "")
+        self._key = conf['id']
+        self._name = conf.get("name", "")
         self._descr = conf.get("descr", "")
-        self._icon  = conf.get("icon", "")
+        self._icon = conf.get("icon", "")
 
         # get the options
         self._options = self._cfgparser.get_options()
@@ -203,7 +203,8 @@ class sppasPluginParam(object):
         if 'linux' in _system and 'linux' in commands.keys():
             return commands['linux']
 
-        raise Exception("No command defined for the system: %s. Supported systems are: %s" % (_system, " ".join(commands.keys())))
+        raise Exception("No command defined for the system: {0}. "
+                        "Supported systems are: {1}".format(_system, " ".join(commands.keys())))
 
     # ------------------------------------------------------------------------
 
@@ -217,10 +218,9 @@ class sppasPluginParam(object):
         test_command = command_args[0]
 
         NULL = open(os.devnull, 'w')
-        if isinstance(test_command, unicode):
-            test_command = test_command.encode('utf-8')
         try:
             p = Popen([test_command], shell=False, stdout=NULL, stderr=NULL)
+            NULL.close()
         except OSError:
             return False
         else:

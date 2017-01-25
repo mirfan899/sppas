@@ -108,10 +108,6 @@ class sppasPluginProcess(object):
                     else:
                         command += " "+value
 
-        # Execute the command
-        if isinstance(command, unicode):
-            command = command.encode('utf-8')
-
         args = shlex.split(command)
         for i, argument in enumerate(args):
             if "PLUGIN_PATH/" in argument:

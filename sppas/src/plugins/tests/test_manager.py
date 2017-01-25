@@ -24,7 +24,7 @@ class TestPluginsManager(unittest.TestCase):
         self.assertEqual(len(self.manager.get_plugin_ids()), 0)
 
         # Install a plugin
-        soxid = self.manager.install( soxplugin, "SoX" )
+        soxid = self.manager.install(soxplugin, "SoX")
         self.assertEqual(len(self.manager.get_plugin_ids()), 1)
 
         # Use it!

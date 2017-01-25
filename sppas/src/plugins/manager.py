@@ -45,8 +45,8 @@ from threading import Thread
 
 from sp_glob import PLUGIN_PATH
 from utils.fileutils import sppasDirUtils
-from param import sppasPluginParam
-from process import sppasPluginProcess
+from .param import sppasPluginParam
+from .process import sppasPluginProcess
 
 # ----------------------------------------------------------------------------
 
@@ -137,7 +137,7 @@ class sppasPluginsManager(Thread):
         if zipfile.is_zipfile(plugin_archive) is False:
             raise TypeError('Unsupported plugin file type.')
 
-        plugin_dir = os.path.join(PLUGIN_PATH,plugin_folder)
+        plugin_dir = os.path.join(PLUGIN_PATH, plugin_folder)
         if os.path.exists(plugin_dir):
             raise IOError("A plugin with the same name is already existing in that folder.")
 
