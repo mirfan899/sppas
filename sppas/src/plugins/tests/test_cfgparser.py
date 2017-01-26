@@ -1,11 +1,10 @@
-#!/usr/bin/env python2
 # -*- coding:utf-8 -*-
 
 import unittest
 import os.path
 from shutil import copyfile
 
-from plugins.cfgparser import sppasPluginConfigParser
+from ..cfgparser import sppasPluginConfigParser
 
 # ---------------------------------------------------------------------------
 

@@ -2,7 +2,7 @@
 
 import unittest
 
-from structs.metainfo import sppasMetaInfo
+from ..metainfo import sppasMetaInfo
 
 # ---------------------------------------------------------------------------
 

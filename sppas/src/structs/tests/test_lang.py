@@ -3,8 +3,9 @@
 import unittest
 import os.path
 
-from structs.lang import sppasLangResource
-from sp_glob import RESOURCES_PATH
+from sppas.src.sp_glob import RESOURCES_PATH
+
+from ..lang import sppasLangResource
 
 # ---------------------------------------------------------------------------
 

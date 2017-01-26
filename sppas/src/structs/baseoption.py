@@ -37,7 +37,7 @@
     Such data is called "option".
 
 """
-from utils.makeunicode import u, text_type, binary_type
+from sppas.src.utils.makeunicode import u, text_type, binary_type
 
 # ----------------------------------------------------------------------------
 

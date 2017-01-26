@@ -43,8 +43,9 @@ import logging
 import zipfile
 from threading import Thread
 
-from sp_glob import PLUGIN_PATH
-from utils.fileutils import sppasDirUtils
+from sppas.src.sp_glob import PLUGIN_PATH
+from sppas.src.utils.fileutils import sppasDirUtils
+
 from .param import sppasPluginParam
 from .process import sppasPluginProcess
 

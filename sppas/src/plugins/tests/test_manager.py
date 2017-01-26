@@ -1,10 +1,11 @@
-#!/usr/bin/env python2
 # -*- coding:utf-8 -*-
 
 import unittest
 import os.path
-from plugins.manager import sppasPluginsManager
-from sp_glob import BASE_PATH
+
+from sppas.src.sp_glob import BASE_PATH
+
+from ..manager import sppasPluginsManager
 
 # ---------------------------------------------------------------------------
 

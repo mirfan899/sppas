@@ -38,7 +38,8 @@
 """
 import codecs
 import random
-from sp_glob import TIPS_FILE, encoding
+
+from sppas.src.sp_glob import TIPS_FILE, encoding
 
 # ----------------------------------------------------------------------------
 

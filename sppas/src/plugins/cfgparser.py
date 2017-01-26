@@ -62,8 +62,8 @@ except ImportError:  # python 2
 from shutil import copyfile
 import collections
 
-from structs.baseoption import sppasOption
-from utils.makeunicode import u
+from sppas.src.structs.baseoption import sppasOption
+from sppas.src.utils.makeunicode import u
 
 # ----------------------------------------------------------------------------
 

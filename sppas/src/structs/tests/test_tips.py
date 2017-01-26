@@ -2,7 +2,7 @@
 
 import unittest
 
-from structs.tips import sppasTips
+from ..tips import sppasTips
 
 # ---------------------------------------------------------------------------
 

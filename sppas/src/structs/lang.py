@@ -39,8 +39,8 @@
 """
 import os.path
 
-from sp_glob import RESOURCES_PATH
-from utils.fileutils import sppasDirUtils
+from sppas.src.sp_glob import RESOURCES_PATH
+from sppas.src.utils.fileutils import sppasDirUtils
 
 # ----------------------------------------------------------------------------
 

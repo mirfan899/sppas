@@ -1,10 +1,9 @@
-#!/usr/bin/env python2
 # -*- coding:utf-8 -*-
 
 import unittest
 import os.path
 
-from plugins.param import sppasPluginParam
+from ..param import sppasPluginParam
 
 # ---------------------------------------------------------------------------
 

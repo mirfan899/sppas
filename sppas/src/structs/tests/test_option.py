@@ -1,7 +1,8 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-from structs.baseoption import sppasBaseOption, sppasOption
+
+from ..baseoption import sppasBaseOption, sppasOption
 
 # ---------------------------------------------------------------------------
 
