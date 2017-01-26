@@ -40,7 +40,8 @@
 """
 
 from __future__ import division
-from geometry.distances import squared_euclidian as sq
+
+from .geometry.distances import squared_euclidian as sq
 
 # ----------------------------------------------------------------------------
 

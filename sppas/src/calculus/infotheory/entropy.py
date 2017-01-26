@@ -35,9 +35,9 @@
 # File: entropy.py
 # ----------------------------------------------------------------------------
 
-from utilit import log2
-from utilit import MAX_NGRAM
-from utilit import symbols_to_items
+from .utilit import log2
+from .utilit import MAX_NGRAM
+from .utilit import symbols_to_items
 
 # ----------------------------------------------------------------------------
 # Class Entropy

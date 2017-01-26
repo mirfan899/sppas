@@ -41,10 +41,9 @@
     where H(p) is the entropy of the distribution and x ranges over events.
 
 """
-
-from utilit import log2
-from utilit import MAX_NGRAM
-from utilit import symbols_to_items
+from .utilit import log2
+from .utilit import MAX_NGRAM
+from .utilit import symbols_to_items
 
 # ----------------------------------------------------------------------------
 

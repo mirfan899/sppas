@@ -36,8 +36,8 @@
 import operator
 import functools
 
-import _bools
-import _relations
+from ._bools import create as bools_create
+from ._relations import create as relations_create
 
 from ..tier import Tier
 
@@ -143,7 +143,7 @@ class Bool(object):
         if not kwargs:
             functions.append(lambda a: True)
         for func_name, param in kwargs.items():
-            function = _bools.create(func_name, param)
+            function = bools_create(func_name, param)
             functions.append(function)
         return functools.reduce(operator.and_, (Predicate(f) for f in functions))
 
@@ -213,10 +213,10 @@ class Rel(object):
         """
         functions = []
         for r in args:
-            func = _relations.create(r)
+            func = relations_create(r)
             functions.append(func)
         for k, v in kwargs.items():
-            func = _relations.create(k, v)
+            func = relations_create(k, v)
             functions.append(func)
         return functools.reduce(operator.or_, (RelationPredicate(f) for f in functions))
 

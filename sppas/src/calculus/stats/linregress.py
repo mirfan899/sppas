@@ -35,7 +35,8 @@
 # File: linregress.py
 # ----------------------------------------------------------------------------
 
-import central
+from central import fmean
+from central import fsum
 
 # ----------------------------------------------------------------------------
 
@@ -192,8 +193,8 @@ def tga_linear_regression(points):
         return 0.
 
     # Fix means
-    mean_x = central.fmean( [x for x,y in points] )
-    mean_y = central.fmean( [y for x,y in points] )
+    mean_x = fmean( [x for x,y in points] )
+    mean_y = fmean( [y for x,y in points] )
 
     xysum  = 0.
     xsqsum = 0.
@@ -238,10 +239,10 @@ def tansey_linear_regression(points):
         sumCodeviates += (x*y)
         sumOfXSq += (x*x)
 
-    sum_x  = central.fsum(  [x for x,y in points] )
-    sum_y  = central.fsum(  [y for x,y in points] )
-    mean_x = central.fmean( [x for x,y in points] )
-    mean_y = central.fmean( [y for x,y in points] )
+    sum_x  = fsum(  [x for x,y in points] )
+    sum_y  = fsum(  [y for x,y in points] )
+    mean_x = fmean( [x for x,y in points] )
+    mean_y = fmean( [y for x,y in points] )
 
     ssx = sumOfXSq - ((sum_x*sum_x) / n)
     sco = sumCodeviates - ((sum_x * sum_y) / n)

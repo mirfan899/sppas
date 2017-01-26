@@ -34,9 +34,17 @@
 
 """
 
-import stats.central
-import stats.variability
-import stats.moment
+from .stats.central import fsum
+from .stats.central import fmin
+from .stats.central import fmax
+from .stats.central import fmean
+from .stats.central import fmedian
+
+from .stats.variability import lvariance
+from .stats.variability import lstdev
+from .stats.variability import lzs
+
+from .stats.moment import lvariation
 
 # ----------------------------------------------------------------------------
 
@@ -89,7 +97,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of tuples (key, total) of float values
 
         """
-        return dict((key, stats.central.fsum(values)) for key, values in self._items.items())
+        return dict((key, fsum(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -99,7 +107,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, min) of float values
 
         """
-        return dict((key, stats.central.fmin(values)) for key, values in self._items.items())
+        return dict((key, fmin(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -109,7 +117,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, max) of float values
 
         """
-        return dict((key, stats.central.fmax(values)) for key, values in self._items.items())
+        return dict((key, fmax(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -119,7 +127,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, mean) of float values
 
         """
-        return dict((key, stats.central.fmean(values)) for key, values in self._items.items())
+        return dict((key, fmean(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -129,7 +137,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, mean) of float values
 
         """
-        return dict((key, stats.central.fmedian(values)) for key, values in self._items.items())
+        return dict((key, fmedian(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -140,7 +148,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, variance) of float values
 
         """
-        return dict((key, stats.variability.lvariance(values)) for key, values in self._items.items())
+        return dict((key, lvariance(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -151,7 +159,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, stddev) of float values
 
         """
-        return dict((key, stats.variability.lstdev(values)) for key, values in self._items.items())
+        return dict((key, lstdev(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -162,7 +170,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, coefvariation) of float values
 
         """
-        return dict((key, stats.moment.lvariation(values)) for key, values in self._items.items())
+        return dict((key, lvariation(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -173,4 +181,4 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, [z-scores]) of float values
 
         """
-        return dict((key, stats.variability.lzs(values)) for key, values in self._items.items())
+        return dict((key, lzs(values)) for key, values in self._items.items())

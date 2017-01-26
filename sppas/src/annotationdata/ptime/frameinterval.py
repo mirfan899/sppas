@@ -35,9 +35,9 @@
 # File: frameinterval.py
 # ----------------------------------------------------------------------------
 
-import baseplacement
-import duration
-from framepoint import FramePoint
+from .baseplacement import BasePlacement
+from .duration import Duration as duration_Duration
+from .framepoint import FramePoint
 
 # ----------------------------------------------------------------------------
 
@@ -48,7 +48,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 
-class FrameInterval(baseplacement.BasePlacement):
+class FrameInterval(BasePlacement):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -219,7 +219,7 @@ class FrameInterval(baseplacement.BasePlacement):
         # vagueness of the duration is based on begin/end radius values
         vagueness = self.__begin.GetRadius() + self.__end.GetRadius()
 
-        return duration.Duration(value,vagueness)
+        return duration_Duration(value,vagueness)
 
     # ------------------------------------------------------------------------------------
 

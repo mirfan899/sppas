@@ -35,8 +35,8 @@
 # File: point.py
 # ----------------------------------------------------------------------------
 
-import baseplacement
-import duration
+from .baseplacement import BasePlacement
+from .duration import Duration
 from ..utils.deprecated import deprecated
 
 # ----------------------------------------------------------------------------
@@ -48,7 +48,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 
-class TimePoint(baseplacement.BasePlacement):
+class TimePoint(BasePlacement):
     """
     @author:  Brigitte Bigi, Tatsuya Watanabe
     @contact: brigitte.bigi@gmail.com
@@ -224,7 +224,7 @@ class TimePoint(baseplacement.BasePlacement):
         @return (Duration) the duration and its vagueness
         """
 
-        return duration.Duration(0., 2.0*self.__radius)
+        return Duration(0., 2.0*self.__radius)
 
     # -----------------------------------------------------------------------
 
@@ -236,7 +236,6 @@ class TimePoint(baseplacement.BasePlacement):
         t = self.__midpoint
         r = self.__radius
         return TimePoint(t, r)
-
 
     # -----------------------------------------------------------------------
     # Overloads

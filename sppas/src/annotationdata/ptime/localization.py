@@ -39,7 +39,7 @@ __docformat__ = """epytext"""
 __authors__ = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-import baseplacement
+from .baseplacement import BasePlacement
 
 # ----------------------------------------------------------------------------
 
@@ -84,7 +84,7 @@ class Localization(object):
         Set a new placement.
 
         """
-        if not isinstance(placement, baseplacement.BasePlacement):
+        if not isinstance(placement, BasePlacement):
             raise TypeError("Localization: Placement argument required, not %r"
                             % placement)
 

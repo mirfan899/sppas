@@ -3,14 +3,14 @@
 
 import unittest
 
-from annotationdata.annotation import Annotation
-from annotationdata.label.label import Label
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.point import TimePoint
-from annotationdata.tier import Tier
+from sppas.src.annotationdata.annotation import Annotation
+from sppas.src.annotationdata.label.label import Label
+from sppas.src.annotationdata.ptime.interval import TimeInterval
+from sppas.src.annotationdata.ptime.point import TimePoint
+from sppas.src.annotationdata.tier import Tier
 
-from calculus.kappa import Kappa
-from presenters.tierconverter import TierConverter
+from ..kappa import Kappa
+from sppas.src.presenters.tierconverter import TierConverter
 
 # ---------------------------------------------------------------------------
 

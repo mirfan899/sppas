@@ -35,8 +35,8 @@
 # File: disjoint.py
 # ----------------------------------------------------------------------------
 
-import baseplacement
-import duration
+from .baseplacement import BasePlacement
+from .duration import Duration as duration_Duration
 
 from .point import TimePoint
 from .interval import TimeInterval
@@ -50,7 +50,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 
-class TimeDisjoint(baseplacement.BasePlacement):
+class TimeDisjoint(BasePlacement):
     """
     @author:  Brigitte Bigi, Tatsuya Watanabe
     @contact: brigitte.bigi@gmail.com
@@ -69,7 +69,6 @@ class TimeDisjoint(baseplacement.BasePlacement):
         @raise TypeError
 
         """
-
         if not intervals:
             raise TypeError(
                 "TimeDisjoint constructor requires a sequence of TimeInterval")
@@ -174,10 +173,10 @@ class TimeDisjoint(baseplacement.BasePlacement):
         Return the duration, in seconds, from Begin to End.
 
         """
-        value     = sum( interval.Duration().GetValue()  for interval in self.__intervals)
+        value = sum( interval.Duration().GetValue()  for interval in self.__intervals)
         vagueness = sum( interval.Duration().GetMargin() for interval in self.__intervals)
 
-        return duration.Duration( value,vagueness )
+        return duration_Duration( value,vagueness )
 
     # -----------------------------------------------------------------------
 

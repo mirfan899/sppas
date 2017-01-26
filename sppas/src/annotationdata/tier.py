@@ -45,8 +45,6 @@ from .annotation import Annotation
 from .ptime.point import TimePoint
 from .meta import MetaObject
 
-from utils.deprecated import deprecated
-
 # ---------------------------------------------------------------------------
 
 

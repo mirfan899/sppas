@@ -59,6 +59,7 @@ MAX_NGRAM = 8
 
 # ----------------------------------------------------------------------------
 
+
 def find_ngrams( symbols, ngram):
     """
     Return a list of ngrams from a list of symbols.
@@ -76,6 +77,7 @@ def find_ngrams( symbols, ngram):
     return zip(*[symbols[i:] for i in range(ngram)])
 
 # ----------------------------------------------------------------------------
+
 
 def symbols_to_items( symbols, ngram ):
     """
@@ -102,7 +104,7 @@ def symbols_to_items( symbols, ngram ):
 
 if __name__ == "__main__":
 
-    symbols=[0,1,0,1,1,1,0]
-    print find_ngrams(symbols,2)
-    print symbols_to_items(symbols,2)
+    symbols = [0, 1, 0, 1, 1, 1, 0]
+    print(find_ngrams(symbols, 2))
+    print(symbols_to_items(symbols, 2))
 
