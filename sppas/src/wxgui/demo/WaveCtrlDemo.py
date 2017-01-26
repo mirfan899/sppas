@@ -38,17 +38,16 @@
 # ----------------------------------------------------------------------------
 
 import random
-import wave
 import logging
 import wx
 
-from wxgui.ui.wavectrl import WaveCtrl
-import audiodata.aio
+from sppas.src.wxgui.ui.wavectrl import WaveCtrl
+import sppas.src.audiodata.aio
 
 # ----------------------------------------------------------------------------
 
 import os
-wavef = audiodata.aio.open(os.path.join(os.path.dirname(os.path.abspath(__file__)),"oriana1.wav"))
+wavef = sppas.src.audiodata.aio.open(os.path.join(os.path.dirname(os.path.abspath(__file__)),"oriana1.wav"))
 
 # ----------------------------------------------------------------------------
 

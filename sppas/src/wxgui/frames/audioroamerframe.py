@@ -35,9 +35,9 @@
     GUI management of audio files for SPPAS.
 
 """
-from wxgui.frames.baseframe import ComponentFrame
-from wxgui.clients.audioroamerclient import AudioRoamerClient
-from wxgui.sp_icons import AUDIOROAMER_APP_ICON
+from sppas.src.wxgui.frames.baseframe import ComponentFrame
+from sppas.src.wxgui.clients.audioroamerclient import AudioRoamerClient
+from sppas.src.wxgui.sp_icons import AUDIOROAMER_APP_ICON
 
 # ----------------------------------------------------------------------------
 

@@ -49,10 +49,10 @@ import wx
 import logging
 import functools
 
-from annotationdata import Filter, SingleFilter, RelationFilter
-from wxgui.views.processprogress import ProcessProgressDialog
+from sppas.src.annotationdata import Filter, SingleFilter, RelationFilter
+from sppas.src.annotationdata.filter.predicate import Rel, Sel
 
-from annotationdata.filter.predicate import Rel, Sel
+from sppas.src.wxgui.views.processprogress import ProcessProgressDialog
 
 # ----------------------------------------------------------------------------
 

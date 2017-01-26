@@ -37,12 +37,13 @@
 """
 import wx
 
-from wxgui.frames.baseframe import ComponentFrame
-from wxgui.clients.datafilterclient import DataFilterClient
-from wxgui.sp_icons import DATAFILTER_APP_ICON
-from wxgui.sp_icons import SAVE_FILE
-from wxgui.sp_icons import SAVE_AS_FILE
-from wxgui.sp_icons import SAVE_ALL_FILE
+from sppas.src.wxgui.frames.baseframe import ComponentFrame
+from sppas.src.wxgui.clients.datafilterclient import DataFilterClient
+from sppas.src.wxgui.sp_icons import DATAFILTER_APP_ICON
+from sppas.src.wxgui.sp_icons import SAVE_FILE
+from sppas.src.wxgui.sp_icons import SAVE_AS_FILE
+from sppas.src.wxgui.sp_icons import SAVE_ALL_FILE
+
 # ----------------------------------------------------------------------------
 
 SAVE_AS_ID = wx.NewId()

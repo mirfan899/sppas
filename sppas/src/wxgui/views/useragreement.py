@@ -47,11 +47,11 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 import wx
 import wx.richtext
 
-from wxgui.dialogs.basedialog import spBaseDialog
-from wxgui.sp_icons import USERCHECK
+from sppas.src.calculus.kappa           import Kappa
+from sppas.src.presenters.tierconverter import TierConverter
 
-from calculus.kappa           import Kappa
-from presenters.tierconverter import TierConverter
+from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
+from sppas.src.wxgui.sp_icons import USERCHECK
 
 # ----------------------------------------------------------------------------
 # class UserAgreementDialog

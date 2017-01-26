@@ -27,9 +27,9 @@ __docformat__ = "epytext"
 import logging
 import wx
 
-from spControl import spControl
-from wxgui.cutils.colorutils import PickRandomColour
+from sppas.src.wxgui.cutils.colorutils import PickRandomColour
 
+from spControl import spControl
 
 #----------------------------------------------------------------------------
 # Class WavePreferences

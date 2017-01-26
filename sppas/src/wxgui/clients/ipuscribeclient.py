@@ -48,28 +48,28 @@ import wx
 import wx.stc
 import wx.media
 import wx.lib.scrolledpanel as scrolled
-import wx.lib.platebtn      as platebtn
+import wx.lib.platebtn as platebtn
 import logging
 import os.path
 
-from wxgui.sp_icons               import APPLY_ICON
-from wxgui.sp_icons               import PAGE_FIRST_ICON
-from wxgui.sp_icons               import PAGE_PREV_ICON
-from wxgui.sp_icons               import PAGE_NEXT_ICON
-from wxgui.sp_icons               import PAGE_LAST_ICON
-from wxgui.cutils.imageutils      import spBitmap
+from sppas.src.wxgui.sp_icons import APPLY_ICON
+from sppas.src.wxgui.sp_icons import PAGE_FIRST_ICON
+from sppas.src.wxgui.sp_icons import PAGE_PREV_ICON
+from sppas.src.wxgui.sp_icons import PAGE_NEXT_ICON
+from sppas.src.wxgui.sp_icons import PAGE_LAST_ICON
+from sppas.src.wxgui.cutils.imageutils import spBitmap
 
-from baseclient                 import BaseClient
-import wxgui.cutils.colorutils as co
-from wxgui.panels.sndplayer     import SndPlayer
-from wxgui.ui.CustomEvents      import FileWanderEvent, spEVT_FILE_WANDER
-from wxgui.structs.theme       import sppasTheme
-from wxgui.structs.prefs        import Preferences
+from .baseclient import BaseClient
+import sppas.src.wxgui.cutils.colorutils as co
+from sppas.src.wxgui.panels.sndplayer import SndPlayer
+from sppas.src.wxgui.ui.CustomEvents import FileWanderEvent, spEVT_FILE_WANDER
+from sppas.src.wxgui.structs.theme import sppasTheme
+from sppas.src.wxgui.structs.prefs import Preferences
 
-from wxgui.dialogs.msgdialogs import ShowInformation
-from wxgui.dialogs.msgdialogs import ShowYesNoQuestion
+from sppas.src.wxgui.dialogs.msgdialogs import ShowInformation
+from sppas.src.wxgui.dialogs.msgdialogs import ShowYesNoQuestion
 
-import annotationdata.aio
+import sppas.src.annotationdata.aio
 
 
 # ----------------------------------------------------------------------------
@@ -480,7 +480,7 @@ class IPUscribe( wx.Panel ):
 
         got = False
         name = os.path.splitext(filename)[0]
-        for ext in annotationdata.aio.extensions:
+        for ext in sppas.src.annotationdata.aio.extensions:
             if ext in [ '.pitchtier', '.hz', '.txt']:
                 continue
             f = self.exists( name+ext )
@@ -845,7 +845,7 @@ class IPUscribeData( scrolled.ScrolledPanel ):
 
         if self._dirty is True:
             try:
-                annotationdata.aio.write(self._trsname, self._trsinput)
+                sppas.src.annotationdata.aio.write(self._trsname, self._trsinput)
                 self._dirty = False
             except Exception as e:
                 ShowInformation( self, self._prefsIO, "Transcription %s not saved: %s" % (self._trsname, str(e)), style=wx.ICON_ERROR)
@@ -864,7 +864,7 @@ class IPUscribeData( scrolled.ScrolledPanel ):
         """
         transtier = -1
         try:
-            trsinput = annotationdata.aio.read(trsname)
+            trsinput = sppas.src.annotationdata.aio.read(trsname)
         except:
             ShowInformation( self, self._prefsIO, "Transcription %s not loaded"%self._trsname, style=wx.ICON_ERROR)
             return None

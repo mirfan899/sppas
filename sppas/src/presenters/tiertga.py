@@ -43,17 +43,19 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import logging
-from calculus.timegroupanalysis import TimeGroupAnalysis
 
-from annotationdata.transcription import Transcription
-from annotationdata.tier          import Tier
-from annotationdata.annotation    import Annotation
-from annotationdata.label.label   import Label
-from annotationdata.ptime.interval import TimeInterval
+from sppas.src.calculus.timegroupanalysis import TimeGroupAnalysis
+
+from sppas.src.annotationdata.transcription import Transcription
+from sppas.src.annotationdata.tier import Tier
+from sppas.src.annotationdata.annotation import Annotation
+from sppas.src.annotationdata.label.label import Label
+from sppas.src.annotationdata.ptime.interval import TimeInterval
 
 # ----------------------------------------------------------------------------
 
-class TierTGA( object ):
+
+class TierTGA(object):
     """
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com

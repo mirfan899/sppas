@@ -42,13 +42,13 @@
 """
 import wx
 
-from wxgui.sp_icons import APP_ICON
-from wxgui.sp_consts import DIALOG_STYLE
-from wxgui.sp_consts import FRAME_TITLE
+from sppas.src.wxgui.sp_icons import APP_ICON
+from sppas.src.wxgui.sp_consts import DIALOG_STYLE
+from sppas.src.wxgui.sp_consts import FRAME_TITLE
 
-from wxgui.cutils.imageutils import spBitmap
-from wxgui.panels.buttons import ButtonCreator
-import wxgui.structs.prefs
+from sppas.src.wxgui.cutils.imageutils import spBitmap
+from sppas.src.wxgui.panels.buttons import ButtonCreator
+import sppas.src.wxgui.structs.prefs
 
 # ----------------------------------------------------------------------------
 
@@ -75,7 +75,7 @@ class spBaseDialog(wx.Dialog):
         wx.Dialog.__init__(self, parent, -1, title=FRAME_TITLE+title, style=DIALOG_STYLE)
 
         if preferences is None:
-            preferences = wxgui.structs.prefs.Preferences()
+            preferences = sppas.src.wxgui.structs.prefs.Preferences()
         self.preferences = preferences
 
         # menu and toolbar

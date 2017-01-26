@@ -48,61 +48,59 @@ import wx
 import wx.media
 import logging
 
-from wxgui.sp_icons          import TIER_CHECK
-from wxgui.sp_icons          import TIER_INFO
-from wxgui.sp_icons          import TIER_SEARCH
-from wxgui.sp_icons          import TIER_CHECK_DISABLED
-from wxgui.sp_icons          import TIER_INFO_DISABLED
-from wxgui.sp_icons          import TIER_SEARCH_DISABLED
+from sppas.src.wxgui.sp_icons import TIER_CHECK
+from sppas.src.wxgui.sp_icons import TIER_INFO
+from sppas.src.wxgui.sp_icons import TIER_SEARCH
+from sppas.src.wxgui.sp_icons import TIER_CHECK_DISABLED
+from sppas.src.wxgui.sp_icons import TIER_INFO_DISABLED
+from sppas.src.wxgui.sp_icons import TIER_SEARCH_DISABLED
 
-from wxgui.sp_icons          import NAV_GO_START_ICON
-from wxgui.sp_icons          import NAV_GO_PREVIOUS_ICON
-from wxgui.sp_icons          import NAV_GO_NEXT_ICON
-from wxgui.sp_icons          import NAV_GO_END_ICON
-from wxgui.sp_icons          import NAV_FIT_SELECTION_ICON
-from wxgui.sp_icons          import NAV_PERIOD_ZOOM_ICON
-from wxgui.sp_icons          import NAV_PERIOD_ZOOM_IN_ICON
-from wxgui.sp_icons          import NAV_PERIOD_ZOOM_OUT_ICON
-from wxgui.sp_icons          import NAV_VIEW_ZOOM_IN_ICON
-from wxgui.sp_icons          import NAV_VIEW_ZOOM_OUT_ICON
+from sppas.src.wxgui.sp_icons import NAV_GO_START_ICON
+from sppas.src.wxgui.sp_icons import NAV_GO_PREVIOUS_ICON
+from sppas.src.wxgui.sp_icons import NAV_GO_NEXT_ICON
+from sppas.src.wxgui.sp_icons import NAV_GO_END_ICON
+from sppas.src.wxgui.sp_icons import NAV_FIT_SELECTION_ICON
+from sppas.src.wxgui.sp_icons import NAV_PERIOD_ZOOM_ICON
+from sppas.src.wxgui.sp_icons import NAV_PERIOD_ZOOM_IN_ICON
+from sppas.src.wxgui.sp_icons import NAV_PERIOD_ZOOM_OUT_ICON
+from sppas.src.wxgui.sp_icons import NAV_VIEW_ZOOM_IN_ICON
+from sppas.src.wxgui.sp_icons import NAV_VIEW_ZOOM_OUT_ICON
 
-from baseclient              import BaseClient
-from wxgui.structs.files     import xFiles
+from sppas.src.wxgui.structs.files import xFiles
 
-from wxgui.ui.CustomEvents   import FileWanderEvent,spEVT_FILE_WANDER
-from wxgui.ui.CustomEvents   import spEVT_SETTINGS
-from wxgui.ui.CustomEvents   import spEVT_OBJECT_SELECTED
+from sppas.src.wxgui.ui.CustomEvents import FileWanderEvent,spEVT_FILE_WANDER
+from sppas.src.wxgui.ui.CustomEvents import spEVT_SETTINGS
+from sppas.src.wxgui.ui.CustomEvents import spEVT_OBJECT_SELECTED
 
-from wxgui.ui.displayctrl    import DisplayCtrl
-from wxgui.ui.trsctrl        import TranscriptionCtrl
-from wxgui.ui.wavectrl       import WaveCtrl
+from sppas.src.wxgui.ui.displayctrl import DisplayCtrl
+from sppas.src.wxgui.ui.trsctrl import TranscriptionCtrl
+from sppas.src.wxgui.ui.wavectrl import WaveCtrl
 
-from wxgui.dialogs.choosers      import PeriodChooser
-from wxgui.dialogs.trsinfodialog import TrsInfoDialog
-from wxgui.dialogs.msgdialogs    import ShowInformation
+from sppas.src.wxgui.dialogs.choosers import PeriodChooser
+from sppas.src.wxgui.dialogs.trsinfodialog import TrsInfoDialog
+from sppas.src.wxgui.dialogs.msgdialogs import ShowInformation
 
-from wxgui.views.search          import SearchDialog, spEVT_SEARCHED
-from wxgui.panels.sndplayer      import SndPlayer
-from wxgui.structs.theme        import sppasTheme
-from wxgui.structs.prefs         import Preferences
+from sppas.src.wxgui.views.search import SearchDialog, spEVT_SEARCHED
+from sppas.src.wxgui.panels.sndplayer import SndPlayer
+from sppas.src.wxgui.structs.theme import sppasTheme
+from sppas.src.wxgui.structs.prefs import Preferences
 
-from wxgui.cutils.ctrlutils  import CreateButton
-from wxgui.cutils.imageutils import spBitmap
+from sppas.src.wxgui.cutils.ctrlutils import CreateButton
+from sppas.src.wxgui.cutils.imageutils import spBitmap
 
+from .baseclient import BaseClient
 
 # ----------------------------------------------------------------------------
 # Constants
 # ----------------------------------------------------------------------------
 
-ZOOM_IN_ID  = wx.NewId()
+ZOOM_IN_ID = wx.NewId()
 ZOOM_OUT_ID = wx.NewId()
-
-# ----------------------------------------------------------------------------
-
 
 # ----------------------------------------------------------------------------
 # Main class that manage the notebook
 # ----------------------------------------------------------------------------
+
 
 class SppasEditClient( BaseClient ):
     """

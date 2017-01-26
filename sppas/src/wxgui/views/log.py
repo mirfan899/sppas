@@ -39,18 +39,17 @@ import shutil
 import codecs
 import wx
 
-from wxgui.dialogs.basedialog import spBaseDialog
-from wxgui.dialogs.msgdialogs import ShowInformation
+from sppas.src.sp_glob import encoding
 
-from wxgui.sp_icons import REPORT_ICON
+from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
+from sppas.src.wxgui.dialogs.msgdialogs import ShowInformation
+from sppas.src.wxgui.sp_icons import REPORT_ICON
+from sppas.src.wxgui.sp_consts import ERROR_COLOUR
+from sppas.src.wxgui.sp_consts import INFO_COLOUR
+from sppas.src.wxgui.sp_consts import IGNORE_COLOUR
+from sppas.src.wxgui.sp_consts import WARNING_COLOUR
+from sppas.src.wxgui.sp_consts import OK_COLOUR
 
-from wxgui.sp_consts import ERROR_COLOUR
-from wxgui.sp_consts import INFO_COLOUR
-from wxgui.sp_consts import IGNORE_COLOUR
-from wxgui.sp_consts import WARNING_COLOUR
-from wxgui.sp_consts import OK_COLOUR
-
-from sp_glob import encoding
 
 # ----------------------------------------------------------------------------
 

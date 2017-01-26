@@ -45,9 +45,9 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import wx
-import logging
 
 # ----------------------------------------------------------------------------
+
 
 class BasicTextValidator(wx.PyValidator):
     """ Check if the TextCtrl contains characters. """

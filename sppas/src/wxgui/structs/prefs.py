@@ -38,8 +38,8 @@
 import codecs
 import pickle
 
-from wxgui.structs.wxoption import sppasWxOption
-from theme import sppasTheme
+from sppas.src.wxgui.structs.wxoption import sppasWxOption
+from .theme import sppasTheme
 
 # ----------------------------------------------------------------------------
 

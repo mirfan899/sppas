@@ -62,10 +62,6 @@ Latest Revision: Andrea Gavana @ 03 Nov 2006, 22.30 CET
 Version 0.1
 
 """
-
-__docformat__ = "epytext"
-
-
 import wx
 import math
 
@@ -85,6 +81,7 @@ KC_EVENT_ANGLE_CHANGED = wx.PyEventBinder(wxKC_EVENT_ANGLE_CHANGED, 1)
 # ---------------------------------------------------------------------------- #
 # Class KnobCtrlEvent
 # ---------------------------------------------------------------------------- #
+
 
 class KnobCtrlEvent(wx.PyCommandEvent):
     """

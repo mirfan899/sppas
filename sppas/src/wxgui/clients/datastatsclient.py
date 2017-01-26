@@ -38,30 +38,28 @@
 import wx
 import wx.lib.scrolledpanel as scrolled
 
-from wxgui.sp_icons import TIMEANALYSIS
-from wxgui.sp_icons import USERCHECK
-from wxgui.sp_icons import SPREADSHEETS
-from wxgui.sp_icons import FILTER_CHECK
-from wxgui.sp_icons import FILTER_UNCHECK
-from wxgui.sp_icons import TIER_PREVIEW
+from sppas.src.wxgui.sp_icons import TIMEANALYSIS
+from sppas.src.wxgui.sp_icons import USERCHECK
+from sppas.src.wxgui.sp_icons import SPREADSHEETS
+from sppas.src.wxgui.sp_icons import FILTER_CHECK
+from sppas.src.wxgui.sp_icons import FILTER_UNCHECK
+from sppas.src.wxgui.sp_icons import TIER_PREVIEW
 
-from wxgui.ui.CustomEvents  import FileWanderEvent, spEVT_FILE_WANDER
-from wxgui.ui.CustomEvents  import spEVT_PANEL_SELECTED
-from wxgui.ui.CustomEvents  import spEVT_SETTINGS
+from sppas.src.wxgui.ui.CustomEvents  import FileWanderEvent, spEVT_FILE_WANDER
+from sppas.src.wxgui.ui.CustomEvents  import spEVT_PANEL_SELECTED
+from sppas.src.wxgui.ui.CustomEvents  import spEVT_SETTINGS
 
 from baseclient import BaseClient
-from wxgui.structs.theme    import sppasTheme
-from wxgui.structs.files import xFiles
-from wxgui.structs.prefs     import Preferences
+from sppas.src.wxgui.structs.files import xFiles
 
-from wxgui.dialogs.msgdialogs import ShowInformation
-from wxgui.dialogs.msgdialogs import ShowYesNoQuestion
+from sppas.src.wxgui.dialogs.msgdialogs import ShowInformation
+from sppas.src.wxgui.dialogs.msgdialogs import ShowYesNoQuestion
 
-from wxgui.panels.trslist import TrsList
-from wxgui.panels.mainbuttons import MainToolbarPanel
-from wxgui.views.descriptivestats import DescriptivesStatsDialog
-from wxgui.views.useragreement import UserAgreementDialog
-from wxgui.views.tga import TGADialog
+from sppas.src.wxgui.panels.trslist import TrsList
+from sppas.src.wxgui.panels.mainbuttons import MainToolbarPanel
+from sppas.src.wxgui.views.descriptivestats import DescriptivesStatsDialog
+from sppas.src.wxgui.views.useragreement import UserAgreementDialog
+from sppas.src.wxgui.views.tga import TGADialog
 
 # ----------------------------------------------------------------------------
 # Constants

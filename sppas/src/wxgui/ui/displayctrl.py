@@ -47,30 +47,28 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import wx
 import wx.lib
 import logging
-import wave
 import os.path
 
-import annotationdata.aio
-import audiodata.aio
+import sppas.src.annotationdata.aio
+import sppas.src.audiodata.aio
+from sppas.src.sp_glob import version
 
 # and temporary.......
-from  annotationdata.label.label import Label
-from  annotationdata.label.text  import Text
+from sppas.src.annotationdata.label.label import Label
+from sppas.src.annotationdata.label.text import Text
 # end temporary
 
-from wxgui.structs.files      import xFiles
-from wxgui.structs.dataperiod import DataPeriod
-from wxgui.cutils.imageutils  import TakeScreenShot
-from wxgui.dialogs.msgdialogs import ShowInformation
+from sppas.src.wxgui.structs.files import xFiles
+from sppas.src.wxgui.structs.dataperiod import DataPeriod
+from sppas.src.wxgui.cutils.imageutils import TakeScreenShot
+from sppas.src.wxgui.dialogs.msgdialogs import ShowInformation
 
 from timerulerctrl import TimeRulerCtrl
-from trsctrl       import TranscriptionCtrl
-from wavectrl      import WaveCtrl
-from spControl     import spEVT_CTRL_SELECTED
+from trsctrl import TranscriptionCtrl
+from wavectrl import WaveCtrl
+from spControl import spEVT_CTRL_SELECTED
 
-from sp_glob import version
-
-from wxgui.ui.CustomEvents import ObjectSelectedEvent, spEVT_OBJECT_SELECTED
+from sppas.src.wxgui.ui.CustomEvents import ObjectSelectedEvent, spEVT_OBJECT_SELECTED
 
 
 #-----------------------------------------------------------------------------
@@ -310,9 +308,9 @@ class DisplayCtrl( wx.Window ):
         logging.debug('DisplayCtrl.SetData: %s , %s'%(fileName, fileExtension))
 
         # Load data, create the corresponding control
-        if fileExtension.lower() in audiodata.aio.extensions:
+        if fileExtension.lower() in sppas.src.audiodata.aio.extensions:
             try:
-                wf = audiodata.aio.open( f )
+                wf = sppas.src.audiodata.aio.open( f )
             except Exception as e:
                 ShowInformation(self, self._prefsIO,"The following error occurred while loading file "+f+".\n"+str(e), style=wx.ICON_INFORMATION)
                 raise Exception('Display. SetData. Error while loading the sound: %s.'%str(e))
@@ -322,7 +320,7 @@ class DisplayCtrl( wx.Window ):
 
         else:
             try:
-                tf = annotationdata.aio.read( f )
+                tf = sppas.src.annotationdata.aio.read( f )
             except Exception as e:
                 ShowInformation(self, self._prefsIO,"The following error occurred while loading file "+f+".\n"+str(e), style=wx.ICON_INFORMATION)
                 raise Exception('Display. SetData. Error while loading the file: %s.'%str(e))

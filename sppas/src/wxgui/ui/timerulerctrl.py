@@ -40,23 +40,15 @@ __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
 import logging
 import math
 import wx
 import wx.lib.newevent
 
-from spControl import spControl, FONT_SIZE_MIN # , spEVT_CTRL_SELECTED
+from spControl import spControl, FONT_SIZE_MIN
 
-from wxgui.sp_icons import RULER_RED, RULER_GREEN, RULER_BLUE
-from wxgui.cutils.imageutils import spBitmap
-
-
-# ---------------------------------------------------------------------------
-
+from sppas.src.wxgui.sp_icons import RULER_RED, RULER_GREEN, RULER_BLUE
+from sppas.src.wxgui.cutils.imageutils import spBitmap
 
 # ----------------------------------------------------------------------------
 # Constants
@@ -64,9 +56,6 @@ from wxgui.cutils.imageutils import spBitmap
 
 TICK_HEIGHT=8
 LABEL_SPACING=4
-
-# ----------------------------------------------------------------------------
-
 
 # ---------------------------------------------------------------------------
 # Events
@@ -77,9 +66,6 @@ IndicatorChangingCommandEvent, spEVT_INDICATOR_CHANGING_COMMAND = wx.lib.neweven
 
 IndicatorChangedEvent, spEVT_INDICATOR_CHANGED = wx.lib.newevent.NewEvent()
 IndicatorChangedCommandEvent, spEVT_INDICATOR_CHANGED_COMMAND = wx.lib.newevent.NewCommandEvent()
-
-# ----------------------------------------------------------------------------
-
 
 # ---------------------------------------------------------------------------
 # Class Label

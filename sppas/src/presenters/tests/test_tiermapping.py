@@ -4,14 +4,15 @@
 import unittest
 import os.path
 
-from presenters.tiermapping import TierMapping
-from annotationdata.aio.praat import TextGrid
-from annotationdata.tier import Tier
-from annotationdata.annotation import Annotation
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.point import TimePoint
-from annotationdata.label.label import Label
-from resources.dictpron import DictPron
+from sppas.src.annotationdata.aio.praat import TextGrid
+from sppas.src.annotationdata.tier import Tier
+from sppas.src.annotationdata.annotation import Annotation
+from sppas.src.annotationdata.ptime.interval import TimeInterval
+from sppas.src.annotationdata.ptime.point import TimePoint
+from sppas.src.annotationdata.label.label import Label
+from sppas.src.resources.dictpron import DictPron
+
+from ..tiermapping import TierMapping
 
 # ---------------------------------------------------------------------------
 

@@ -38,31 +38,31 @@
 import wx
 import logging
 
-from baseframe import ComponentFrame
-from wxgui.clients.sppaseditclient import SppasEditClient
-from wxgui.views.settings import SettingsDialog
+from sppas.src.wxgui.clients.sppaseditclient import SppasEditClient
+from sppas.src.wxgui.views.settings import SettingsDialog
 
-from wxgui.structs.theme import sppasTheme
-from wxgui.structs.cthemes import all_themes
-from wxgui.cutils.textutils import TextAsNumericValidator
-from wxgui.cutils.textutils import TextAsPercentageValidator
+from sppas.src.wxgui.structs.theme import sppasTheme
+from sppas.src.wxgui.structs.cthemes import all_themes
+from sppas.src.wxgui.cutils.textutils import TextAsNumericValidator
+from sppas.src.wxgui.cutils.textutils import TextAsPercentageValidator
 
 # Demos...
-from wxgui.demo.wizardDisplayDemo import WizardDisplayDemo
-from wxgui.demo.PointCtrlDemo     import PointCtrlFrame
-from wxgui.demo.LabelCtrlDemo     import LabelCtrlFrame
-from wxgui.demo.TierCtrlDemo      import TierCtrlFrame
-from wxgui.demo.TrsCtrlDemo       import TrsCtrlFrame
-from wxgui.demo.WaveCtrlDemo      import WaveCtrlFrame
-from wxgui.demo.DisplayCtrlDemo   import DisplayCtrlFrame
+from sppas.src.wxgui.demo.wizardDisplayDemo import WizardDisplayDemo
+from sppas.src.wxgui.demo.PointCtrlDemo     import PointCtrlFrame
+from sppas.src.wxgui.demo.LabelCtrlDemo     import LabelCtrlFrame
+from sppas.src.wxgui.demo.TierCtrlDemo      import TierCtrlFrame
+from sppas.src.wxgui.demo.TrsCtrlDemo       import TrsCtrlFrame
+from sppas.src.wxgui.demo.WaveCtrlDemo      import WaveCtrlFrame
+from sppas.src.wxgui.demo.DisplayCtrlDemo   import DisplayCtrlFrame
 
-from wxgui.demo.wizardZoomDemo    import WizardZoomDemo
-from wxgui.demo.wizardScrollDemo  import WizardScrollDemo
-from wxgui.demo.wizardSoundDemo   import WizardSoundDemo
-from wxgui.demo.wizardTrsDemo     import WizardTrsDemo
+from sppas.src.wxgui.demo.wizardZoomDemo    import WizardZoomDemo
+from sppas.src.wxgui.demo.wizardScrollDemo  import WizardScrollDemo
+from sppas.src.wxgui.demo.wizardSoundDemo   import WizardSoundDemo
+from sppas.src.wxgui.demo.wizardTrsDemo     import WizardTrsDemo
 
-from wxgui.sp_icons import SPPASEDIT_APP_ICON
+from sppas.src.wxgui.sp_icons import SPPASEDIT_APP_ICON
 
+from .baseframe import ComponentFrame
 
 # ----------------------------------------------------------------------------
 # Constants

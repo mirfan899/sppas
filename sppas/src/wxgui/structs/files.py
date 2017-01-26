@@ -39,18 +39,12 @@ __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-
-# ---------------------------------------------------------------------------
-# Imports
-# ---------------------------------------------------------------------------
-
 import os
 
-
 # ---------------------------------------------------------------------------
 
 
-class xFiles:
+class xFiles(object):
     """
     Information about a list of files: the file name and an object.
     TODO: Change the data structure... use dictionaries or a list of tuples.

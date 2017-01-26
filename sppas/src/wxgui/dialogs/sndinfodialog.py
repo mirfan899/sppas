@@ -45,12 +45,13 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 import wx
 
-from wxgui.panels.audioinfo   import AudioInfo
-from wxgui.dialogs.basedialog import spBaseDialog
+from sppas.src.wxgui.panels.audioinfo   import AudioInfo
+from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
 
-from wxgui.sp_icons import INFO_ICON
+from sppas.src.wxgui.sp_icons import INFO_ICON
 
 # ----------------------------------------------------------------------------
+
 
 class AudioInfoDialog( spBaseDialog ):
     """

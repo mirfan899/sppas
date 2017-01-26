@@ -33,12 +33,8 @@
 #
 # ---------------------------------------------------------------------------
 
-# ---------------------------------------------------------------------------
-import sys
-import os.path
 import random
 import wx
-
 
 # ----------------------------------------------------------------------------
 import sys
@@ -46,18 +42,20 @@ import os.path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
-import annotationdata.aio
-from trsctrl import TranscriptionCtrl
+
+import sppas.src.annotationdata.aio
+from .trsctrl import TranscriptionCtrl
 
 # ---------------------------------------------------------------------------
+
 
 class MyFrame(wx.Frame):
     def __init__(self, parent, id, title):
         wx.Frame.__init__(self, parent, id, title, wx.DefaultPosition, wx.Size(820, 550))
         self.SetBackgroundColour( wx.WHITE )
 
-        t1 = annotationdata.aio.read("/home/bigi/Grenelle-Phonetic.TextGrid")
-        t2 = annotationdata.aio.read("/home/bigi/Grenelle-Gestures.TextGrid")
+        t1 = sppas.src.annotationdata.aio.read("/home/bigi/Grenelle-Phonetic.TextGrid")
+        t2 = sppas.src.annotationdata.aio.read("/home/bigi/Grenelle-Gestures.TextGrid")
 
         self.w1 = TranscriptionCtrl(self, id=-1, pos=wx.Point(10,50), size=wx.Size(800,250),trs=t1)
         self.w2 = TranscriptionCtrl(self, id=-1, pos=wx.Point(10,300), size=wx.Size(800,150),trs=t2)

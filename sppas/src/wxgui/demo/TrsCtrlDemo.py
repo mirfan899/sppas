@@ -41,13 +41,13 @@ import random
 import wx
 import logging
 
-from wxgui.ui.trsctrl import TranscriptionCtrl
-import annotationdata.aio
+from sppas.src.wxgui.ui.trsctrl import TranscriptionCtrl
+import sppas.src.annotationdata.aio
 
 # ----------------------------------------------------------------------------
 
 import os
-trs = annotationdata.aio.read( os.path.join(os.path.dirname(os.path.abspath(__file__)),"oriana1-merge.TextGrid"))
+trs = sppas.src.annotationdata.aio.read( os.path.join(os.path.dirname(os.path.abspath(__file__)),"oriana1-merge.TextGrid"))
 
 # ----------------------------------------------------------------------------
 

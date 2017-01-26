@@ -50,25 +50,23 @@ import wx
 import logging
 import os.path
 
-import annotationdata.aio
+import sppas.src.annotationdata.aio
 
-from wxgui.dialogs.basedialog import spBaseDialog
+from sppas.src.calculus.descriptivesstats import DescriptiveStatistics
+from sppas.src.presenters.tiertga import TierTGA
 
-from calculus.descriptivesstats import DescriptiveStatistics
-from presenters.tiertga import TierTGA
-from utils import fileutils
+from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
 
-from wxgui.sp_icons  import STATISTICS_APP_ICON
-from wxgui.sp_icons  import TIMEANALYSIS
-from wxgui.sp_icons  import BROOM_ICON
-from wxgui.sp_icons  import APPLY_ICON
-from wxgui.sp_icons  import EXPORT_ICON
+from sppas.src.wxgui.sp_icons  import TIMEANALYSIS
+from sppas.src.wxgui.sp_icons  import BROOM_ICON
+from sppas.src.wxgui.sp_icons  import APPLY_ICON
+from sppas.src.wxgui.sp_icons  import EXPORT_ICON
 
-from wxgui.cutils.imageutils import spBitmap
+from sppas.src.wxgui.cutils.imageutils import spBitmap
 
-from wxgui.ui.CustomListCtrl import SortListCtrl
-from wxgui.panels.basestats import BaseStatPanel
-from wxgui.views.processprogress import ProcessProgressDialog
+from sppas.src.wxgui.ui.CustomListCtrl import SortListCtrl
+from sppas.src.wxgui.panels.basestats import BaseStatPanel
+from sppas.src.wxgui.views.processprogress import ProcessProgressDialog
 
 # ----------------------------------------------------------------------------
 # Constants
@@ -214,7 +212,7 @@ class TGADialog( spBaseDialog ):
             infile, ext = os.path.splitext(filename)
             outfile = infile + "-tga" + ext
             logging.debug('Export file: %s' % outfile)
-            annotationdata.aio.write(outfile, trs)
+            sppas.src.annotationdata.aio.write(outfile, trs)
             # uppdate progress bar
             i = i+1
             p.set_fraction(float((i+1))/float(total))

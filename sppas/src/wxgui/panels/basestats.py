@@ -45,11 +45,13 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import wx
-from utils import fileutils
+
+from sppas.src.utils import fileutils
 
 # ----------------------------------------------------------------------------
 # Base Stat Panel
 # ----------------------------------------------------------------------------
+
 
 class BaseStatPanel( wx.Panel ):
     """

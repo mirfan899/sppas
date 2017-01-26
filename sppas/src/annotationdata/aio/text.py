@@ -195,9 +195,8 @@ class RawText(Transcription):
                         l = annotation.GetLabel().GetValue()
                         fp.write("%.3f\t%.3f\t%s\n"%(b,e,l))
 
-    # ------------------------------------------------------------------------
-
 # ----------------------------------------------------------------------------
+
 
 class CSV(Transcription):
     """

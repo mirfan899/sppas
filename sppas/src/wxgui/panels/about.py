@@ -40,10 +40,10 @@ import wx
 import wx.lib.scrolledpanel
 import webbrowser
 
-from wxgui.cutils.imageutils import spBitmap
-from wxgui.sp_icons import APP_ICON
+from sppas.src.sp_glob import program, version, author, copyright, brief, url, license_text
 
-from sp_glob import program, version, author, copyright, brief, url, license_text
+from sppas.src.wxgui.cutils.imageutils import spBitmap
+from sppas.src.wxgui.sp_icons import APP_ICON
 
 # ----------------------------------------------------------------------------
 

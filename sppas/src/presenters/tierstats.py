@@ -42,9 +42,10 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-from calculus.descriptivesstats import DescriptiveStatistics
+from sppas.src.calculus.descriptivesstats import DescriptiveStatistics
 
 # ----------------------------------------------------------------------------
+
 
 class TierStats( object ):
     """

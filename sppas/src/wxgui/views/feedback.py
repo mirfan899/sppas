@@ -47,15 +47,15 @@ import wx
 import urllib
 import webbrowser
 
-from wxgui.dialogs.basedialog import spBaseDialog
-from wxgui.dialogs.msgdialogs import ShowInformation
+from sppas.src.sp_glob import program, version
 
-from wxgui.sp_icons import FEEDBACK_ICON
-from wxgui.sp_icons import MAIL_DEFAULT_ICON
-from wxgui.sp_icons import MAIL_GMAIL_ICON
-from wxgui.sp_icons import MAIL_OTHER_ICON
+from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
+from sppas.src.wxgui.dialogs.msgdialogs import ShowInformation
 
-from sp_glob import program,version
+from sppas.src.wxgui.sp_icons import FEEDBACK_ICON
+from sppas.src.wxgui.sp_icons import MAIL_DEFAULT_ICON
+from sppas.src.wxgui.sp_icons import MAIL_GMAIL_ICON
+from sppas.src.wxgui.sp_icons import MAIL_OTHER_ICON
 
 # -------------------------------------------------------------------------
 # Constants

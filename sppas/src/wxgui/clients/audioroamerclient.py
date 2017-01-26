@@ -40,42 +40,43 @@ import codecs
 import wx
 import wx.lib.scrolledpanel as scrolled
 
-from wxgui.ui.CustomEvents  import NotebookClosePageEvent
-from wxgui.ui.CustomEvents  import FileWanderEvent, spEVT_FILE_WANDER
-from wxgui.ui.CustomEvents  import spEVT_SETTINGS
+from sppas.src.wxgui.ui.CustomEvents import NotebookClosePageEvent
+from sppas.src.wxgui.ui.CustomEvents import FileWanderEvent, spEVT_FILE_WANDER
+from sppas.src.wxgui.ui.CustomEvents import spEVT_SETTINGS
 
-from baseclient              import BaseClient
-from wxgui.panels.sndplayer  import SndPlayer
-from wxgui.panels.audioinfo  import AudioInfo
-from wxgui.structs.prefs     import Preferences
-from wxgui.structs.theme    import sppasTheme
+from sppas.src.wxgui.panels.sndplayer import SndPlayer
+from sppas.src.wxgui.panels.audioinfo import AudioInfo
+from sppas.src.wxgui.structs.prefs import Preferences
+from sppas.src.wxgui.structs.theme import sppasTheme
 
-from wxgui.cutils.imageutils import spBitmap
-from wxgui.cutils.ctrlutils  import CreateGenButton
-from wxgui.cutils.textutils   import TextAsNumericValidator
+from sppas.src.wxgui.cutils.imageutils import spBitmap
+from sppas.src.wxgui.cutils.ctrlutils import CreateGenButton
+from sppas.src.wxgui.cutils.textutils import TextAsNumericValidator
 
-from wxgui.sp_icons  import AUDIOROAMER_APP_ICON
-from wxgui.sp_icons  import SAVE_FILE
-from wxgui.sp_icons  import SAVE_AS_FILE
+from sppas.src.wxgui.sp_icons import AUDIOROAMER_APP_ICON
+from sppas.src.wxgui.sp_icons import SAVE_FILE
+from sppas.src.wxgui.sp_icons import SAVE_AS_FILE
 
-from wxgui.sp_consts import INFO_COLOUR
-from wxgui.sp_consts import MIN_PANEL_W
-from wxgui.sp_consts import MIN_PANEL_H
+from sppas.src.wxgui.sp_consts import INFO_COLOUR
+from sppas.src.wxgui.sp_consts import MIN_PANEL_W
+from sppas.src.wxgui.sp_consts import MIN_PANEL_H
 
-from wxgui.dialogs.filedialogs import SaveAsAudioFile, SaveAsAnyFile
-from wxgui.dialogs.msgdialogs import ShowInformation, ShowYesNoQuestion
-from wxgui.dialogs.basedialog import spBaseDialog
-from wxgui.dialogs.choosers import PeriodChooser
+from sppas.src.wxgui.dialogs.filedialogs import SaveAsAudioFile, SaveAsAnyFile
+from sppas.src.wxgui.dialogs.msgdialogs import ShowInformation, ShowYesNoQuestion
+from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
+from sppas.src.wxgui.dialogs.choosers import PeriodChooser
 
-import audiodata.aio
-from audiodata.channelsilence   import ChannelSilence
-from audiodata.channelformatter import ChannelFormatter
-from audiodata.audioframes      import AudioFrames
-from audiodata.audio            import AudioPCM
-from audiodata.audioutils       import amp2db as amp2db
+import sppas.src.audiodata.aio
+from sppas.src.audiodata.channelsilence import ChannelSilence
+from sppas.src.audiodata.channelformatter import ChannelFormatter
+from sppas.src.audiodata.audioframes import AudioFrames
+from sppas.src.audiodata.audio import AudioPCM
+from sppas.src.audiodata.audioutils import amp2db as amp2db
 
-from sp_glob import program, version, copyright, url, author, contact
-from sp_glob import encoding
+from sppas.src.sp_glob import program, version, copyright, url, author, contact
+from sppas.src.sp_glob import encoding
+
+from .baseclient import BaseClient
 
 # ----------------------------------------------------------------------------
 
@@ -425,7 +426,7 @@ class AudioRoamerDialog(spBaseDialog):
         return self.CreateButtonBox([btn_save_channel,btn_save_fragment,btn_save_info],[btn_close])
 
     def _create_content(self):
-        audio = audiodata.aio.open(self._filename)
+        audio = sppas.src.audiodata.aio.open(self._filename)
         nchannels = audio.get_nchannels()
         audio.extract_channels()
         audio.close()
@@ -931,7 +932,7 @@ class AudioRoamerPanel(wx.Panel):
             try:
                 audio = AudioPCM()
                 audio.append_channel(channel)
-                audiodata.aio.save(newfilename, audio)
+                sppas.src.audiodata.aio.save(newfilename, audio)
             except Exception as e:
                 message = "File not saved. Error: %s"%str(e)
             else:
@@ -1070,8 +1071,9 @@ class AudioRoamerPanel(wx.Panel):
 
 # ----------------------------------------------------------------------------
 
+
 def ShowAudioRoamerDialog(parent, preferences, filename):
-    audio = audiodata.aio.open(filename)
+    audio = sppas.src.audiodata.aio.open(filename)
     if audio.get_nframes() > 15000000:
         userChoice = ShowYesNoQuestion(None, preferences, "Audio file is very large. Showing more will take a while and could generate a memory error. Really want more?")
         if userChoice == wx.ID_NO:

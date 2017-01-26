@@ -39,21 +39,15 @@ __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
 __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
 import os.path
 import wx
 
-from presenters.tierstats import TierStats
+from sppas.src.presenters.tierstats import TierStats
 
-from wxgui.dialogs.basedialog import spBaseDialog
-
-from wxgui.sp_icons import SPREADSHEETS
-
-from wxgui.ui.CustomListCtrl import SortListCtrl
-from wxgui.panels.basestats import BaseStatPanel
+from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
+from sppas.src.wxgui.sp_icons import SPREADSHEETS
+from sppas.src.wxgui.ui.CustomListCtrl import SortListCtrl
+from sppas.src.wxgui.panels.basestats import BaseStatPanel
 
 # ----------------------------------------------------------------------------
 # class DescriptivesStatsDialog

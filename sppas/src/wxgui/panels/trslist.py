@@ -48,17 +48,17 @@ import wx
 import os.path
 import logging
 
-import annotationdata.aio
-from annotationdata.transcription import Transcription
+import sppas.src.annotationdata.aio
+from sppas.src.annotationdata.transcription import Transcription
 
-from wxgui.ui.CustomEvents import PanelSelectedEvent
-from wxgui.structs.prefs import Preferences
-from wxgui.views.preview import PreviewTierDialog
-from wxgui.dialogs.choosers import RadiusChooser
-from wxgui.dialogs.msgdialogs import ShowInformation
-from wxgui.dialogs.msgdialogs import ShowYesNoQuestion
+from sppas.src.wxgui.ui.CustomEvents import PanelSelectedEvent
+from sppas.src.wxgui.structs.prefs import Preferences
+from sppas.src.wxgui.views.preview import PreviewTierDialog
+from sppas.src.wxgui.dialogs.choosers import RadiusChooser
+from sppas.src.wxgui.dialogs.msgdialogs import ShowInformation
+from sppas.src.wxgui.dialogs.msgdialogs import ShowYesNoQuestion
 
-from wxgui.ui.CustomListCtrl import CheckListCtrl
+from sppas.src.wxgui.ui.CustomListCtrl import CheckListCtrl
 
 
 # -------------------------------------------------------------------------
@@ -713,7 +713,7 @@ class TrsList(wx.Panel):
             return
 
         try:
-            annotationdata.aio.write(self._filename, self._transcription)
+            sppas.src.annotationdata.aio.write(self._filename, self._transcription)
             self._dirty = False
             self._boxtitle.SetForegroundColour( FG_FILE_COLOUR )
             self.Refresh()
@@ -729,7 +729,7 @@ class TrsList(wx.Panel):
         Keep everything un-changed in self.
         """
         try:
-            annotationdata.aio.write(filename, self._transcription)
+            sppas.src.annotationdata.aio.write(filename, self._transcription)
         except Exception as e:
             # give information
             ShowInformation(self, self._prefs, 'File not saved: %s'%str(e), style=wx.ICON_ERROR)

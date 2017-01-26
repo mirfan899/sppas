@@ -36,17 +36,17 @@
 # ---------------------------------------------------------------------------
 import sys
 import os.path
-sys.path.append(  os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) )
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
 
 import wx
+
+from sppas.src.wxgui.sp_icons import MESSAGE_ICON
+from sppas.src.wxgui.sp_icons import DLG_INFO_ICON
+from sppas.src.wxgui.sp_icons import DLG_WARN_ICON
+from sppas.src.wxgui.sp_icons import DLG_ERR_ICON
+from sppas.src.wxgui.sp_icons import DLG_QUEST_ICON
+
 from basedialog import spBaseDialog
-
-from wxgui.sp_icons import MESSAGE_ICON
-
-from wxgui.sp_icons import DLG_INFO_ICON
-from wxgui.sp_icons import DLG_WARN_ICON
-from wxgui.sp_icons import DLG_ERR_ICON
-from wxgui.sp_icons import DLG_QUEST_ICON
 
 # ----------------------------------------------------------------------------
 

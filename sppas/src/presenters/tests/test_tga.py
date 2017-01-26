@@ -4,14 +4,14 @@
 import unittest
 import os.path
 
-import annotationdata.aio
-from annotationdata.annotation  import Annotation
-from annotationdata.label.label import Label
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.point import TimePoint
-from annotationdata.tier import Tier
+from sppas.src.annotationdata.aio import read as trsread
+from sppas.src.annotationdata.annotation import Annotation
+from sppas.src.annotationdata.label.label import Label
+from sppas.src.annotationdata.ptime.interval import TimeInterval
+from sppas.src.annotationdata.ptime.point import TimePoint
+from sppas.src.annotationdata.tier import Tier
 
-from presenters.tiertga import TierTGA
+from ..tiertga import TierTGA
 
 # ---------------------------------------------------------------------------
 
@@ -49,7 +49,7 @@ class TestTGA(unittest.TestCase):
     def testTGA(self):
         # This is one of the samples proposed in-line by Dafydd
         path = os.path.join(DATA, "tga.TextGrid")
-        trs = annotationdata.aio.read(path)
+        trs = trsread(path)
         tier = trs.Find('Syllables')
         t = TierTGA( tier )
         t.append_separator('_')

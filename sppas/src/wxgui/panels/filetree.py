@@ -48,42 +48,41 @@ import os.path
 import wx
 import logging
 
-import audiodata.aio
+import sppas.src.audiodata.aio
+import sppas.src.annotationdata.aio
 
-from wxgui.cutils.imageutils import spBitmap
-from wxgui.dialogs.filedialogs import OpenSoundFiles
-from wxgui.dialogs.filedialogs import SaveAsAnnotationFile
-from wxgui.dialogs.msgdialogs import ShowInformation
-from wxgui.dialogs.msgdialogs import ShowYesNoQuestion
-from wxgui.dialogs.msgdialogs import Choice
+from sppas.src.wxgui.cutils.imageutils import spBitmap
+from sppas.src.wxgui.dialogs.filedialogs import OpenSoundFiles
+from sppas.src.wxgui.dialogs.filedialogs import SaveAsAnnotationFile
+from sppas.src.wxgui.dialogs.msgdialogs import ShowInformation
+from sppas.src.wxgui.dialogs.msgdialogs import ShowYesNoQuestion
+from sppas.src.wxgui.dialogs.msgdialogs import Choice
 
-import annotationdata.aio
+from sppas.src.wxgui.sp_icons import TREE_ROOT
+from sppas.src.wxgui.sp_icons import TREE_FOLDER_CLOSE
+from sppas.src.wxgui.sp_icons import TREE_FOLDER_OPEN
+from sppas.src.wxgui.sp_icons import MIME_WAV
+from sppas.src.wxgui.sp_icons import MIME_ASCII
+from sppas.src.wxgui.sp_icons import MIME_PITCHTIER
+from sppas.src.wxgui.sp_icons import MIME_TEXTGRID
+from sppas.src.wxgui.sp_icons import MIME_TRS
+from sppas.src.wxgui.sp_icons import MIME_EAF
+from sppas.src.wxgui.sp_icons import MIME_XRA
+from sppas.src.wxgui.sp_icons import MIME_MRK
+from sppas.src.wxgui.sp_icons import MIME_SUBTITLES
+from sppas.src.wxgui.sp_icons import MIME_ANVIL
+from sppas.src.wxgui.sp_icons import MIME_ANTX
+from sppas.src.wxgui.sp_icons import MIME_XTRANS
+from sppas.src.wxgui.sp_icons import MIME_AUP
 
-from wxgui.sp_icons import TREE_ROOT
-from wxgui.sp_icons import TREE_FOLDER_CLOSE
-from wxgui.sp_icons import TREE_FOLDER_OPEN
-from wxgui.sp_icons import MIME_WAV
-from wxgui.sp_icons import MIME_ASCII
-from wxgui.sp_icons import MIME_PITCHTIER
-from wxgui.sp_icons import MIME_TEXTGRID
-from wxgui.sp_icons import MIME_TRS
-from wxgui.sp_icons import MIME_EAF
-from wxgui.sp_icons import MIME_XRA
-from wxgui.sp_icons import MIME_MRK
-from wxgui.sp_icons import MIME_SUBTITLES
-from wxgui.sp_icons import MIME_ANVIL
-from wxgui.sp_icons import MIME_ANTX
-from wxgui.sp_icons import MIME_XTRANS
-from wxgui.sp_icons import MIME_AUP
+from sppas.src.wxgui.sp_icons import ADD_FILE_ICON
+from sppas.src.wxgui.sp_icons import ADD_DIR_ICON
+from sppas.src.wxgui.sp_icons import REMOVE_ICON
+from sppas.src.wxgui.sp_icons import DELETE_ICON
+from sppas.src.wxgui.sp_icons import EXPORT_AS_ICON
+from sppas.src.wxgui.sp_icons import EXPORT_ICON
 
-from wxgui.sp_icons import ADD_FILE_ICON
-from wxgui.sp_icons import ADD_DIR_ICON
-from wxgui.sp_icons import REMOVE_ICON
-from wxgui.sp_icons import DELETE_ICON
-from wxgui.sp_icons import EXPORT_AS_ICON
-from wxgui.sp_icons import EXPORT_ICON
-
-from wxgui.panels.mainbuttons import MainToolbarPanel
+from sppas.src.wxgui.panels.mainbuttons import MainToolbarPanel
 
 # ----------------------------------------------------------------------------
 # Constants
@@ -287,7 +286,7 @@ class FiletreePanel(wx.Panel):
 
         # Ask for the expected file format
         errors = False
-        extensions = annotationdata.aio.extensions_out
+        extensions = sppas.src.annotationdata.aio.extensions_out
         dlg = Choice(self, self._prefsIO, "Select the file extension to export to:", extensions)
         dlg.SetSelection(0)  # default choice (=xra)
 
@@ -299,8 +298,8 @@ class FiletreePanel(wx.Panel):
                 try:
                     oldextension = os.path.splitext(filename)[1][1:]
                     newfilename = filename.replace("."+oldextension,extensions[checked])
-                    trs = annotationdata.aio.read(filename)
-                    annotationdata.aio.write(newfilename, trs)
+                    trs = sppas.src.annotationdata.aio.read(filename)
+                    sppas.src.annotationdata.aio.write(newfilename, trs)
                 except Exception as e:
                     ShowInformation(self, self._prefsIO,
                                     "Export failed for file %s: %s" % (filename, e),
@@ -334,8 +333,8 @@ class FiletreePanel(wx.Panel):
             # If it is the OK response, process the data.
             if newfilename:
                 try:
-                    trs = annotationdata.aio.read(filename)
-                    annotationdata.aio.write(newfilename, trs)
+                    trs = sppas.src.annotationdata.aio.read(filename)
+                    sppas.src.annotationdata.aio.write(newfilename, trs)
                 except Exception as e:
                     ShowInformation(self, self._prefsIO, "Copy/Export failed: %s" % e, style=wx.ICON_ERROR)
                 else:
@@ -369,7 +368,7 @@ class FiletreePanel(wx.Panel):
 
         logging.debug('FLP Refresh tree:')
         if len(filelist) == 0:
-            for ext in audiodata.aio.extensions:
+            for ext in sppas.src.audiodata.aio.extensions:
                 filelist.extend(self.GetSelected(ext))
 
         if len(filelist) == 0:
@@ -462,7 +461,7 @@ class FiletreePanel(wx.Panel):
             child = self._get_item_by_label(basename, item)
             if not child.IsOk():
                 child = self._add_item(item, basename)
-            if fileExtension.lower() in audiodata.aio.extensions:
+            if fileExtension.lower() in sppas.src.audiodata.aio.extensions:
                 self._add_related_files(os.path.join(dirname, basename))
                 self._filestree.SelectItem(child)
 
@@ -481,7 +480,7 @@ class FiletreePanel(wx.Panel):
         # store all the wav file names in wavfile_list
         for f in files:
             filename, extension = os.path.splitext(f)
-            if extension.lower() in audiodata.aio.extensions:
+            if extension.lower() in sppas.src.audiodata.aio.extensions:
                 wavfile_list.append(filename)
 
         # add all the children directories
@@ -514,7 +513,7 @@ class FiletreePanel(wx.Panel):
                 continue
             # if it is a wav file, add it as item of the tree
             try:
-                if f.lower() in audiodata.aio.extensions:
+                if f.lower() in sppas.src.audiodata.aio.extensions:
                     #self._add_item(item, f)
                     #add the file only if it is not in the list
                     child = self._get_item_by_label(os.path.basename(f), item)
@@ -562,7 +561,7 @@ class FiletreePanel(wx.Panel):
             self._filestree.SetItemImage(child, self.fldridx,     which=wx.TreeItemIcon_Normal)
             self._filestree.SetItemImage(child, self.fldropenidx, which=wx.TreeItemIcon_Expanded)
 
-        elif fileExtension in audiodata.aio.extensions:
+        elif fileExtension in sppas.src.audiodata.aio.extensions:
             child = self._filestree.AppendItem(parent, son)
             self._filestree.SetPyData(child, None)
             self._filestree.SetItemImage(child, self.wavfileidx, wx.TreeItemIcon_Normal)

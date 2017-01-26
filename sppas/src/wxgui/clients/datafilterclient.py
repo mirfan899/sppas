@@ -39,28 +39,28 @@ import os.path
 import wx
 import wx.lib.scrolledpanel as scrolled
 
-from wxgui.sp_icons import TIER_DELETE
-from wxgui.sp_icons import TIER_PREVIEW
-from wxgui.sp_icons import FILTER_CHECK
-from wxgui.sp_icons import FILTER_UNCHECK
-from wxgui.sp_icons import FILTER_SINGLE
-from wxgui.sp_icons import FILTER_RELATION
+from sppas.src.wxgui.sp_icons import TIER_DELETE
+from sppas.src.wxgui.sp_icons import TIER_PREVIEW
+from sppas.src.wxgui.sp_icons import FILTER_CHECK
+from sppas.src.wxgui.sp_icons import FILTER_UNCHECK
+from sppas.src.wxgui.sp_icons import FILTER_SINGLE
+from sppas.src.wxgui.sp_icons import FILTER_RELATION
 
-from wxgui.ui.CustomEvents import FileWanderEvent, spEVT_FILE_WANDER
-from wxgui.ui.CustomEvents import spEVT_PANEL_SELECTED
-from wxgui.ui.CustomEvents import spEVT_SETTINGS
+from sppas.src.wxgui.ui.CustomEvents import FileWanderEvent, spEVT_FILE_WANDER
+from sppas.src.wxgui.ui.CustomEvents import spEVT_PANEL_SELECTED
+from sppas.src.wxgui.ui.CustomEvents import spEVT_SETTINGS
 
-from baseclient import BaseClient
-from wxgui.structs.files import xFiles
-import wxgui.dialogs.filedialogs as filedialogs
-from wxgui.dialogs.msgdialogs import ShowInformation
-from wxgui.dialogs.msgdialogs import ShowYesNoQuestion
+from .baseclient import BaseClient
+from sppas.src.wxgui.structs.files import xFiles
+import sppas.src.wxgui.dialogs.filedialogs as filedialogs
+from sppas.src.wxgui.dialogs.msgdialogs import ShowInformation
+from sppas.src.wxgui.dialogs.msgdialogs import ShowYesNoQuestion
 
-from wxgui.panels.trslist import TrsList
-from wxgui.panels.mainbuttons import MainToolbarPanel
-from wxgui.views.singlefilter import SingleFilterDialog
-from wxgui.views.relationfilter import RelationFilterDialog
-from wxgui.process.filterprocess import FilterProcess
+from sppas.src.wxgui.panels.trslist import TrsList
+from sppas.src.wxgui.panels.mainbuttons import MainToolbarPanel
+from sppas.src.wxgui.views.singlefilter import SingleFilterDialog
+from sppas.src.wxgui.views.relationfilter import RelationFilterDialog
+from sppas.src.wxgui.process.filterprocess import FilterProcess
 
 # ----------------------------------------------------------------------------
 # Constants

@@ -39,19 +39,17 @@
 
 import wx
 import wx.wizard
-import os
-import os.path
 
-from wxgui.sp_images import WIZARD_WELCOME_MAIN_BMP
-from wxgui.cutils.imageutils import ScaleImage
+from sppas.src.wxgui.sp_images import WIZARD_WELCOME_MAIN_BMP
+from sppas.src.wxgui.cutils.imageutils import ScaleImage
 
-from PointCtrlDemo      import PointCtrlDemo
-from LabelCtrlDemo      import LabelCtrlDemo
-from TierCtrlDemo       import TierCtrlDemo
-from TrsCtrlDemo        import TrsCtrlDemo
-from WaveCtrlDemo       import WaveCtrlDemo
-from RulerCtrlDemo      import RulerCtrlDemo
-from DisplayCtrlDemo    import DisplayCtrlDemo
+from .PointCtrlDemo import PointCtrlDemo
+from .LabelCtrlDemo import LabelCtrlDemo
+from .TierCtrlDemo import TierCtrlDemo
+from .TrsCtrlDemo import TrsCtrlDemo
+from .WaveCtrlDemo import WaveCtrlDemo
+from .RulerCtrlDemo import RulerCtrlDemo
+from .DisplayCtrlDemo import DisplayCtrlDemo
 
 
 # ----------------------------------------------------------------------------

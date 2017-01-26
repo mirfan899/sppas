@@ -35,7 +35,8 @@
 # ----------------------------------------------------------------------------
 
 import wx
-from structs.baseoption import sppasBaseOption
+
+from sppas.src.structs.baseoption import sppasBaseOption
 
 # ----------------------------------------------------------------------------
 

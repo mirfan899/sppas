@@ -48,36 +48,36 @@ import wx
 import logging
 import wx.media
 
-from wxgui.sp_images         import PLAYER_BACKGROUND
+from sppas.src.wxgui.sp_images import PLAYER_BACKGROUND
 
-from wxgui.sp_icons import PLAYER_INFO
-from wxgui.sp_icons import PLAYER_INFO_DISABLED
-from wxgui.sp_icons import PLAYER_EJECT
-from wxgui.sp_icons import PLAYER_EJECT_DISABLED
-from wxgui.sp_icons import PLAYER_NEXT
-from wxgui.sp_icons import PLAYER_NEXT_DISABLED
-from wxgui.sp_icons import PLAYER_REWIND
-from wxgui.sp_icons import PLAYER_REWIND_DISABLED
-from wxgui.sp_icons import PLAYER_PLAY
-from wxgui.sp_icons import PLAYER_PLAY_DISABLED
-from wxgui.sp_icons import PLAYER_REPLAY
-from wxgui.sp_icons import PLAYER_REPLAY_DISABLED
-from wxgui.sp_icons import PLAYER_PAUSE
-from wxgui.sp_icons import PLAYER_PAUSE_DISABLED
-from wxgui.sp_icons import PLAYER_STOP
-from wxgui.sp_icons import PLAYER_STOP_DISABLED
+from sppas.src.wxgui.sp_icons import PLAYER_INFO
+from sppas.src.wxgui.sp_icons import PLAYER_INFO_DISABLED
+from sppas.src.wxgui.sp_icons import PLAYER_EJECT
+from sppas.src.wxgui.sp_icons import PLAYER_EJECT_DISABLED
+from sppas.src.wxgui.sp_icons import PLAYER_NEXT
+from sppas.src.wxgui.sp_icons import PLAYER_NEXT_DISABLED
+from sppas.src.wxgui.sp_icons import PLAYER_REWIND
+from sppas.src.wxgui.sp_icons import PLAYER_REWIND_DISABLED
+from sppas.src.wxgui.sp_icons import PLAYER_PLAY
+from sppas.src.wxgui.sp_icons import PLAYER_PLAY_DISABLED
+from sppas.src.wxgui.sp_icons import PLAYER_REPLAY
+from sppas.src.wxgui.sp_icons import PLAYER_REPLAY_DISABLED
+from sppas.src.wxgui.sp_icons import PLAYER_PAUSE
+from sppas.src.wxgui.sp_icons import PLAYER_PAUSE_DISABLED
+from sppas.src.wxgui.sp_icons import PLAYER_STOP
+from sppas.src.wxgui.sp_icons import PLAYER_STOP_DISABLED
 
-from wxgui.ui.CustomEvents import FileWanderEvent
-import wxgui.ui.KnobCtrl as KC
+from sppas.src.wxgui.ui.CustomEvents import FileWanderEvent
+import sppas.src.wxgui.ui.KnobCtrl as KC
 
-from wxgui.structs.prefs   import Preferences
-from wxgui.structs.theme  import sppasTheme
+from sppas.src.wxgui.structs.prefs import Preferences
+from sppas.src.wxgui.structs.theme import sppasTheme
 
-from wxgui.cutils.ctrlutils  import CreateButton
-from wxgui.cutils.imageutils import spBitmap
+from sppas.src.wxgui.cutils.ctrlutils import CreateButton
+from sppas.src.wxgui.cutils.imageutils import spBitmap
 
-from wxgui.dialogs.sndinfodialog import ShowAudioInfo
-from wxgui.dialogs.msgdialogs import ShowInformation
+from sppas.src.wxgui.dialogs.sndinfodialog import ShowAudioInfo
+from sppas.src.wxgui.dialogs.msgdialogs import ShowInformation
 
 # ---------------------------------------------------------------------------
 # Constants

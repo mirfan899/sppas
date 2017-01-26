@@ -37,11 +37,11 @@
 """
 import wx
 
-from wxgui.sp_icons import ABOUT_ICON
+from sppas.src.wxgui.sp_icons import ABOUT_ICON
 
-from wxgui.panels.about import AboutSPPASPanel
-from wxgui.panels.about import AboutPluginPanel
-from wxgui.dialogs.basedialog import spBaseDialog
+from sppas.src.wxgui.panels.about import AboutSPPASPanel
+from sppas.src.wxgui.panels.about import AboutPluginPanel
+from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
 
 # ----------------------------------------------------------------------------
 

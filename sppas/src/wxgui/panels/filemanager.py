@@ -47,21 +47,18 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import wx
 import wx.lib.scrolledpanel
 import logging
-
-# Make sure that we can import various objects
 import os.path
 
-from wxgui.structs.files  import xFiles
-from wxgui.structs.prefs  import Preferences
-from wxgui.structs.theme import sppasTheme
-import wxgui.ui.CustomCheckBox as CCB
+from sppas.src.wxgui.structs.files import xFiles
+from sppas.src.wxgui.structs.prefs import Preferences
+from sppas.src.wxgui.structs.theme import sppasTheme
+import sppas.src.wxgui.ui.CustomCheckBox as CCB
 
+from sppas.src.wxgui.ui.CustomEvents import FileWanderEvent, spEVT_FILE_WANDER
+from sppas.src.wxgui.ui.CustomEvents import spEVT_FILE_CHECK
+from sppas.src.wxgui.ui.CustomEvents import spEVT_SETTINGS
 
-from wxgui.ui.CustomEvents import FileWanderEvent, spEVT_FILE_WANDER
-from wxgui.ui.CustomEvents import spEVT_FILE_CHECK
-from wxgui.ui.CustomEvents import spEVT_SETTINGS
-
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 
 class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):

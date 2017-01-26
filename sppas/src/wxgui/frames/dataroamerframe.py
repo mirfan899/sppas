@@ -39,13 +39,13 @@ import wx
 
 from baseframe import ComponentFrame
 
-from wxgui.sp_icons import DATAROAMER_APP_ICON
-from wxgui.sp_icons import NEW_FILE
-from wxgui.sp_icons import SAVE_FILE
-from wxgui.sp_icons import SAVE_AS_FILE
-from wxgui.sp_icons import SAVE_ALL_FILE
+from sppas.src.wxgui.sp_icons import DATAROAMER_APP_ICON
+from sppas.src.wxgui.sp_icons import NEW_FILE
+from sppas.src.wxgui.sp_icons import SAVE_FILE
+from sppas.src.wxgui.sp_icons import SAVE_AS_FILE
+from sppas.src.wxgui.sp_icons import SAVE_ALL_FILE
 
-from wxgui.clients.dataroamerclient import DataRoamerClient
+from sppas.src.wxgui.clients.dataroamerclient import DataRoamerClient
 
 # ----------------------------------------------------------------------------
 # Constants

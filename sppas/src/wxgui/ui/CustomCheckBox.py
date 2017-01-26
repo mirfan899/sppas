@@ -44,8 +44,9 @@ __authors__   = """http://wiki.wxpython.org/CreatingCustomControls, Brigitte Big
 
 import wx
 
-from wxgui.cutils.imageutils import MakeGray, GrayOut
-from wxgui.cutils.imageutils import GetCheckedBitmap, GetCheckedImage, GetNotCheckedBitmap, GetNotCheckedImage
+from sppas.src.wxgui.cutils.imageutils import GrayOut
+from sppas.src.wxgui.cutils.imageutils import GetCheckedBitmap, GetCheckedImage, GetNotCheckedBitmap, GetNotCheckedImage
+
 
 #----------------------------------------------------------------------
 

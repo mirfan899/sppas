@@ -38,34 +38,34 @@
 import wx
 import webbrowser
 
-from structs.tips import sppasTips
+from sppas.src.sp_glob import program, title
+from sppas.src.structs.tips import sppasTips
 
-from wxgui.panels.buttons import ButtonPanel, ButtonMenuPanel, ImgPanel, ButtonCreator, ButtonToolbarPanel
-from sp_glob import program, title
+from sppas.src.wxgui.panels.buttons import ButtonPanel, ButtonMenuPanel, ImgPanel, ButtonCreator, ButtonToolbarPanel
 
-from wxgui.sp_icons import ANNOTATIONS_ICON
-from wxgui.sp_icons import COMPONENTS_ICON
-from wxgui.sp_icons import PLUGINS_ICON
-from wxgui.sp_icons import ABOUT_ICON
-from wxgui.sp_icons import HELP_ICON
-from wxgui.sp_icons import SETTINGS_ICON
+from sppas.src.wxgui.sp_icons import ANNOTATIONS_ICON
+from sppas.src.wxgui.sp_icons import COMPONENTS_ICON
+from sppas.src.wxgui.sp_icons import PLUGINS_ICON
+from sppas.src.wxgui.sp_icons import ABOUT_ICON
+from sppas.src.wxgui.sp_icons import HELP_ICON
+from sppas.src.wxgui.sp_icons import SETTINGS_ICON
 
-from wxgui.sp_icons import MENU_EXIT_ICON
-from wxgui.sp_icons import MENU_BUG_ICON
-from wxgui.sp_icons import MENU_FEEDBACK_ICON
-from wxgui.sp_icons import MENU_BACK_ICON
-from wxgui.sp_icons import MENU_CLOSE_ICON
-from wxgui.sp_icons import FORWARD_ICON
+from sppas.src.wxgui.sp_icons import MENU_EXIT_ICON
+from sppas.src.wxgui.sp_icons import MENU_BUG_ICON
+from sppas.src.wxgui.sp_icons import MENU_FEEDBACK_ICON
+from sppas.src.wxgui.sp_icons import MENU_BACK_ICON
+from sppas.src.wxgui.sp_icons import MENU_CLOSE_ICON
+from sppas.src.wxgui.sp_icons import FORWARD_ICON
 
-from wxgui.sp_consts import ID_ANNOTATIONS
-from wxgui.sp_consts import ID_COMPONENTS
-from wxgui.sp_consts import ID_PLUGINS
-from wxgui.sp_consts import ID_FEEDBACK
-from wxgui.sp_consts import ID_EXT_BUG
-from wxgui.sp_consts import ID_ACTIONS
-from wxgui.sp_consts import ID_FILES
+from sppas.src.wxgui.sp_consts import ID_ANNOTATIONS
+from sppas.src.wxgui.sp_consts import ID_COMPONENTS
+from sppas.src.wxgui.sp_consts import ID_PLUGINS
+from sppas.src.wxgui.sp_consts import ID_FEEDBACK
+from sppas.src.wxgui.sp_consts import ID_EXT_BUG
+from sppas.src.wxgui.sp_consts import ID_ACTIONS
+from sppas.src.wxgui.sp_consts import ID_FILES
 
-from wxgui.views.feedback import ShowFeedbackDialog
+from sppas.src.wxgui.views.feedback import ShowFeedbackDialog
 
 # ----------------------------------------------------------------------------
 

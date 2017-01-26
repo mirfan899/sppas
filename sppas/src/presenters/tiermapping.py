@@ -34,8 +34,7 @@
 # File: src.presenters.tiermapping.py
 # ----------------------------------------------------------------------------
 
-from annotationdata.tier import Tier
-from resources.mapping import Mapping, DEFAULT_SEP
+from sppas.src.resources.mapping import Mapping, DEFAULT_SEP
 
 # ----------------------------------------------------------------------------
 

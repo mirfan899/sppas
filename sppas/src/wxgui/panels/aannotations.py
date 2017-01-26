@@ -36,23 +36,22 @@
 import wx
 import wx.lib.newevent
 import wx.lib.scrolledpanel
-import functools
 
-from annotations.param import sppasParam
+from sppas.src.annotations.param import sppasParam
 
-from wxgui.cutils.imageutils import spBitmap
-from wxgui.cutils.ctrlutils import CreateGenButton
+from sppas.src.wxgui.cutils.imageutils import spBitmap
+from sppas.src.wxgui.cutils.ctrlutils import CreateGenButton
 
-from wxgui.views.annotationoptions import spAnnotationConfig
-from wxgui.process.annotateprocess import AnnotateProcess
+from sppas.src.wxgui.views.annotationoptions import spAnnotationConfig
+from sppas.src.wxgui.process.annotateprocess import AnnotateProcess
 
-from wxgui.sp_consts import MIN_PANEL_W
-from wxgui.sp_consts import MIN_PANEL_H
+from sppas.src.wxgui.sp_consts import MIN_PANEL_W
+from sppas.src.wxgui.sp_consts import MIN_PANEL_H
 
-from wxgui.sp_icons import LINK_ICON
-from wxgui.sp_icons import UNLINK_ICON
-from wxgui.sp_icons import ANNOTATE_ICON
-import wxgui.ui.CustomCheckBox as CCB
+from sppas.src.wxgui.sp_icons import LINK_ICON
+from sppas.src.wxgui.sp_icons import UNLINK_ICON
+from sppas.src.wxgui.sp_icons import ANNOTATE_ICON
+import sppas.src.wxgui.ui.CustomCheckBox as CCB
 
 # ----------------------------------------------------------------------------
 # Constants

@@ -40,15 +40,11 @@
 
 import random
 import wx
-import logging
-import wave
 
-import annotationdata.aio
+from sppas.src.wxgui.ui.displayctrl import DisplayCtrl
 
-from wxgui.ui.displayctrl import DisplayCtrl
-
-from wxgui.structs.prefs import Preferences_IO
-from wxgui.structs.cthemes import all_themes
+from sppas.src.wxgui.structs.prefs import Preferences_IO
+from sppas.src.wxgui.structs.cthemes import all_themes
 
 
 # ----------------------------------------------------------------------------

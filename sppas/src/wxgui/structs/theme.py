@@ -37,7 +37,7 @@
 """
 import wx
 
-from wxgui.structs.wxoption import sppasWxOption
+from sppas.src.wxgui.structs.wxoption import sppasWxOption
 
 # ----------------------------------------------------------------------------
 

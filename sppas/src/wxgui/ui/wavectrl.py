@@ -39,19 +39,12 @@ __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-
-
-# ---------------------------------------------------------------------------
-# Imports
-# ---------------------------------------------------------------------------
-
 import math
-import struct
 import logging
 
 import wx
 
-from spControl   import spControl
+from spControl import spControl
 from channelctrl import ChannelCtrl, WavePreferences
 
 # ---------------------------------------------------------------------------
