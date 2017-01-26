@@ -13,8 +13,8 @@
 
 from __future__ import print_function, division, absolute_import, unicode_literals
 
-from dependencies.grako.parsing import graken, Parser
-from dependencies.grako.util import re, RE_FLAGS  # noqa
+from sppas.src.dependencies.grako.parsing import graken, Parser
+from sppas.src.dependencies.grako.util import re, RE_FLAGS  # noqa
 
 
 __version__ = (2016, 1, 27, 17, 36, 14, 2)

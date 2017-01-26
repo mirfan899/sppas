@@ -9,7 +9,7 @@ from __future__ import (absolute_import, division, print_function,
 import itertools
 import string
 
-from dependencies.grako.util import indent, isiter, strtype, trim, ustr
+from sppas.src.dependencies.grako.util import indent, isiter, strtype, trim, ustr
 
 
 def render(item, join='', **fields):

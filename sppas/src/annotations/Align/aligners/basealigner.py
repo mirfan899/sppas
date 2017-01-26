@@ -40,12 +40,13 @@ import random
 import shutil
 from datetime import date
 
-from resources.acm.tiedlist import TiedList
+from models.acm.tiedlist import TiedList
 from resources.rutils import to_strip
 
 # ---------------------------------------------------------------------------
 
-class BaseAligner:
+
+class BaseAligner(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France

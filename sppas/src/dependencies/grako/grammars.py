@@ -17,13 +17,13 @@ import functools
 from collections import defaultdict, Mapping
 from copy import copy
 
-from dependencies.grako.util import indent, trim, ustr, urepr, strtype, compress_seq
-from dependencies.grako.util import re, RE_FLAGS
-from dependencies.grako.exceptions import FailedRef, GrammarError
-from dependencies.grako.ast import AST
-from dependencies.grako.buffering import Buffer
-from dependencies.grako.contexts import ParseContext
-from dependencies.grako.model import Node
+from sppas.src.dependencies.grako.util import indent, trim, ustr, urepr, strtype, compress_seq
+from sppas.src.dependencies.grako.util import re, RE_FLAGS
+from sppas.src.dependencies.grako.exceptions import FailedRef, GrammarError
+from sppas.src.dependencies.grako.ast import AST
+from sppas.src.dependencies.grako.buffering import Buffer
+from sppas.src.dependencies.grako.contexts import ParseContext
+from sppas.src.dependencies.grako.model import Node
 
 
 PEP8_LLEN = 72

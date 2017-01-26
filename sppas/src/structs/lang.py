@@ -63,7 +63,7 @@ class sppasLangResource(object):
         self._rtype = ""
         self._rpath = ""
         self._rname = ""
-        self._rext  = ""
+        self._rext = ""
 
         # The list of languages the resource can provide
         self.langlist = []
@@ -82,7 +82,7 @@ class sppasLangResource(object):
         self._rtype = ""
         self._rpath = ""
         self._rname = ""
-        self._rext  = ""
+        self._rext = ""
 
         self.langlist = []
         self.lang = "und"

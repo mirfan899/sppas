@@ -45,7 +45,6 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import sys
-import os
 import os.path
 from argparse import ArgumentParser
 
@@ -53,7 +52,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
-from resources.acm.acmodel import AcModel
+from models.acm.acmodel import AcModel
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:

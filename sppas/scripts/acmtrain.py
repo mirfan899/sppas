@@ -44,7 +44,6 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 # ---------------------------------------------------------------------------
 
 import sys
-import os
 import os.path
 import logging
 from argparse import ArgumentParser
@@ -53,9 +52,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
 sys.path.append(SPPAS)
 
-#sys.path.append( os.path.join(os.getenv('SPPAS'), "sppas", "src") )
-
-from resources.acm.htktrain import HTKModelTrainer, TrainingCorpus, DataTrainer
+from models.acm.htktrain import HTKModelTrainer, TrainingCorpus, DataTrainer
 from utils.fileutils        import setup_logging
 
 # ----------------------------------------------------------------------------

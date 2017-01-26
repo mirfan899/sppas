@@ -48,28 +48,11 @@ linguistic resources like lexicons, dictionaries, acoustic models, etc.
 """
 # Statistical Language Models (SLM)
 # ---------------------------------
-from slm.statlangmodel import SLM
-from slm.ngramsmodel import NgramsModel
-from slm.arpaio import ArpaIO
-
-# Acoustic Models (AcM)
-# ---------------------------------
-from acm.hmm import HMM
-from acm.features import Features
-from acm.phoneset import PhoneSet
-from acm.acmodel import AcModel
-from acm.htkscripts import HtkScripts
-from acm.acmodelhtkio import HtkIO
-
-# circular imports (requires annotations):
-# from acm.htktrain import DataTrainer, TrainingCorpus, HTKModelInitializer, HTKModelTrainer
-
-# Lexicons
-# ---------------------------------
-from mapping import Mapping
-from dictrepl import DictRepl
 from dictpron import DictPron
+from dictrepl import DictRepl
+from mapping import Mapping
 from patterns import Patterns
+from sppas.src.models.acm.acmodelhtkio import HtkIO
 from unigram import Unigram
 from vocab import Vocabulary
 

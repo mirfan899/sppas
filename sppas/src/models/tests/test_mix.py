@@ -5,11 +5,11 @@ import unittest
 import os.path
 import shutil
 
-from sp_glob import RESOURCES_PATH
+from sppas.src.sp_glob import RESOURCES_PATH
 
-from resources.acm.acmodel import AcModel
-from resources.acm.hmm import HMM
-from resources.acm.modelmixer import ModelMixer
+from sppas.src.models.acm.acmodel import AcModel
+from sppas.src.models.acm.hmm import HMM
+from sppas.src.models.acm.modelmixer import ModelMixer
 
 # ---------------------------------------------------------------------------
 

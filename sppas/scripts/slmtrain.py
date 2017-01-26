@@ -48,11 +48,11 @@ import os.path
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
-SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
+SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from resources.slm.ngramsmodel  import NgramsModel
-from resources.slm.arpaio       import ArpaIO
+from sppas.src.models.slm.ngramsmodel import NgramsModel
+from sppas.src.models.slm.arpaio import ArpaIO
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:

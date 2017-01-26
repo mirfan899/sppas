@@ -6,15 +6,14 @@ import os.path
 import math
 import shutil
 
-from resources.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL, UNKSTAMP
-from resources.slm.ngramsmodel import NgramCounter
-from resources.slm.ngramsmodel import NgramsModel
-from resources.slm.statlangmodel import SLM
-from resources.slm.arpaio import ArpaIO
-from resources.vocab import Vocabulary
-
-from utils.compare import sppasCompare
-from utils.fileutils import sppasFileUtils
+from sppas.src.models.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL, UNKSTAMP
+from sppas.src.models.slm.ngramsmodel import NgramCounter
+from sppas.src.models.slm.ngramsmodel import NgramsModel
+from sppas.src.models.slm.statlangmodel import SLM
+from sppas.src.models.slm.arpaio import ArpaIO
+from sppas.src.resources.vocab import Vocabulary
+from sppas.src.utils.compare import sppasCompare
+from sppas.src.utils.fileutils import sppasFileUtils
 
 # ---------------------------------------------------------------------------
 

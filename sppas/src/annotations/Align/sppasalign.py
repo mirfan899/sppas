@@ -49,20 +49,21 @@ from annotationdata import Media
 from annotationdata import Text
 from annotationdata.aio.utils import gen_id
 
-from alignio   import AlignIO
-from activity  import Activity
+from alignio import AlignIO
+from activity import Activity
 
 from sp_glob import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
 from sp_glob import RESOURCES_PATH
 
-from resources.mapping        import Mapping
-from resources.acm.modelmixer import ModelMixer
+from resources.mapping import Mapping
+from models.acm.modelmixer import ModelMixer
 
 from annotations.sppasbase import sppasBase
 
 # ----------------------------------------------------------------------------
 
-class sppasAlign( sppasBase ):
+
+class sppasAlign(sppasBase):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -80,7 +81,7 @@ class sppasAlign( sppasBase ):
 
     How to use sppasAlign?
 
-    >>> a = sppasAlign( modeldirname )
+    >>> a = sppasAlign(modeldirname)
     >>> a.run(inputphonesname, inputtokensname, inputaudioname, outputfilename)
 
     """
@@ -96,7 +97,7 @@ class sppasAlign( sppasBase ):
         sppasBase.__init__(self, logfile)
 
         # Members: self.alignio
-        self.fix_segmenter( model,modelL1 )
+        self.fix_segmenter(model,modelL1)
         self.reset()
 
     # ------------------------------------------------------------------
@@ -128,25 +129,25 @@ class sppasAlign( sppasBase ):
         if modelL1 is not None:
             try:
                 modelmixer = ModelMixer()
-                modelmixer.load( model,modelL1 )
+                modelmixer.load(model,modelL1)
                 outputdir = os.path.join(RESOURCES_PATH, "models", "models-mix")
-                modelmixer.mix( outputdir, gamma=1. )
+                modelmixer.mix(outputdir, gamma=1.)
                 model = outputdir
             except Exception as e:
                 self.print_message("The model is ignored: %s"%str(e), indent=3, status=WARNING_ID)
 
         # Map phoneme names from model-specific to SAMPA and vice-versa
-        mappingfilename = os.path.join( model, "monophones.repl")
-        if os.path.isfile( mappingfilename ):
+        mappingfilename = os.path.join(model, "monophones.repl")
+        if os.path.isfile(mappingfilename):
             try:
-                mapping = Mapping( mappingfilename )
+                mapping = Mapping(mappingfilename)
             except Exception:
                 mapping = Mapping()
         else:
             mapping = Mapping()
 
         # Manager of the interval tracks
-        self.alignio = AlignIO( mapping, model )
+        self.alignio = AlignIO(mapping, model)
 
     # ------------------------------------------------------------------------
     # Methods to fix options
@@ -164,25 +165,25 @@ class sppasAlign( sppasBase ):
             key = opt.get_key()
 
             if "clean" == key:
-                self.set_clean( opt.get_value() )
+                self.set_clean(opt.get_value())
 
             elif "basic" == key:
-                self.set_basic( opt.get_value() )
+                self.set_basic(opt.get_value())
 
             elif "aligner" == key:
-                self.set_aligner( opt.get_value() )
+                self.set_aligner(opt.get_value())
 
             elif "infersp" == key:
-                self.set_infersp( opt.get_value() )
+                self.set_infersp(opt.get_value())
 
             elif "activity" == key:
-                self.set_activity_tier( opt.get_value() )
+                self.set_activity_tier(opt.get_value())
 
             elif "activityduration" == key:
-                self.set_activityduration_tier( opt.get_value() )
+                self.set_activityduration_tier(opt.get_value())
 
             elif "phntok" == key:
-                self.set_phntokalign_tier( opt.get_value() )
+                self.set_phntokalign_tier(opt.get_value())
 
             else:
                 raise KeyError('Unknown key option: %s'%key)
@@ -224,7 +225,7 @@ class sppasAlign( sppasBase ):
         will infer if it is relevant.
 
         """
-        self.alignio.set_infersp( infersp )
+        self.alignio.set_infersp(infersp)
 
     # -----------------------------------------------------------------------
 
@@ -284,7 +285,7 @@ class sppasAlign( sppasBase ):
 
         """
         # Verify if the directory exists
-        if not os.path.exists( diralign ):
+        if not os.path.exists(diralign):
             raise IOError('The directory '+diralign+' does not exist.')
 
         # Get all audio tracks
@@ -324,7 +325,7 @@ class sppasAlign( sppasBase ):
 
     # ------------------------------------------------------------------------
 
-    def convert( self, phontier, toktier, inputaudio, workdir ):
+    def convert(self, phontier, toktier, inputaudio, workdir):
         """
         Perform speech segmentation of data in tiers tokenization/phonetization.
 
@@ -335,20 +336,20 @@ class sppasAlign( sppasBase ):
         @return A transcription.
 
         """
-        if os.path.exists( workdir ) is False:
-            os.mkdir( workdir )
+        if os.path.exists(workdir) is False:
+            os.mkdir(workdir)
 
         # Split input into tracks
         # --------------------------------------------------------------
 
         self.print_message("Split into intervals: ", indent=2)
-        sgmt = self.alignio.split( inputaudio, phontier, toktier, workdir )
+        sgmt = self.alignio.split(inputaudio, phontier, toktier, workdir)
 
         # Align each track
         # --------------------------------------------------------------
 
         self.print_message("Align each interval: ", indent=2)
-        self.convert_tracks( workdir, phontier )
+        self.convert_tracks(workdir, phontier)
 
         # Merge track alignment results
         # --------------------------------------------------------------
@@ -360,7 +361,7 @@ class sppasAlign( sppasBase ):
             trsoutput.Append(tier)
 
         # Create a Transcription() object with alignments
-        trs = self.alignio.read( workdir )
+        trs = self.alignio.read(workdir)
         if self.alignio.get_aligner() != 'basic':
             trs = self.rustine_liaisons(trs)
             trs = self.rustine_others(trs)
@@ -394,7 +395,7 @@ class sppasAlign( sppasBase ):
         # Activity tier
         if self._options['activity'] is True or self._options['activityduration']:
             try:
-                activity = Activity( trs )
+                activity = Activity(trs)
                 tier = activity.get_tier()
                 if self._options['activity'] is True:
                     trs.Append(tier)
@@ -402,11 +403,11 @@ class sppasAlign( sppasBase ):
 
                 if self._options['activityduration'] is True:
                     dtier = tier.Copy()
-                    dtier.SetName( "ActivityDuration" )
+                    dtier.SetName("ActivityDuration")
                     trs.Append(dtier)
                     for a in dtier:
                         d = a.GetLocation().GetDuration().GetValue()
-                        a.GetLabel().SetValue( '%.3f' % d )
+                        a.GetLabel().SetValue('%.3f' % d)
 
             except Exception as e:
                 self.print_message("Activities generation: %s"%str(e), indent=2, status=WARNING_ID)
@@ -468,7 +469,7 @@ class sppasAlign( sppasBase ):
 
         """
         newtier = Tier('PhnTokAlign')
-        newtier.SetMedia( tiertoken.GetMedia() )
+        newtier.SetMedia(tiertoken.GetMedia())
 
         for anntoken in tiertoken:
 
@@ -478,13 +479,13 @@ class sppasAlign( sppasBase ):
             beg = anntoken.GetLocation().GetBegin()
             end = anntoken.GetLocation().GetEnd()
             annphons = tierphon.Find(beg,end)
-            l = "-".join( ann.GetLabel().GetValue() for ann in annphons )
+            l = "-".join(ann.GetLabel().GetValue() for ann in annphons)
 
             # Append in the new tier
             newann = anntoken.Copy()
             score = newann.GetLabel().GetLabel().GetScore()
-            newann.GetLabel().SetValue( Text(l,score) )
-            newtier.Add( newann )
+            newann.GetLabel().SetValue(Text(l,score))
+            newtier.Add(newann)
 
         return newtier
 
@@ -508,14 +509,14 @@ class sppasAlign( sppasBase ):
         # Get the tiers to be time-aligned
         # ---------------------------------------------------------------
 
-        trsinput = annotationdata.aio.read( phonesname )
-        phontier = self.get_phonestier( trsinput )
+        trsinput = annotationdata.aio.read(phonesname)
+        phontier = self.get_phonestier(trsinput)
         if phontier is None:
             raise IOError("No tier with the phonetization was found.")
 
         try:
-            trsinputtok = annotationdata.aio.read( tokensname )
-            toktier = self.get_tokenstier( trsinputtok )
+            trsinputtok = annotationdata.aio.read(tokensname)
+            toktier = self.get_tokenstier(trsinputtok)
         except Exception:
             toktier = None
             self.print_message("Tokens alignment disabled.", indent=2, status=WARNING_ID)
@@ -526,40 +527,40 @@ class sppasAlign( sppasBase ):
         inputaudio = utils.fileutils.fix_audioinput(audioname)
         workdir    = utils.fileutils.fix_workingdir(inputaudio)
         if self._options['clean'] is False:
-            self.print_message( "The working directory is: %s"%workdir, indent=3, status=None )
+            self.print_message("The working directory is: %s"%workdir, indent=3, status=None)
 
         # Processing...
         # ---------------------------------------------------------------
 
         try:
-            trsoutput = self.convert( phontier,toktier,audioname,workdir )
+            trsoutput = self.convert(phontier,toktier,audioname,workdir)
             if toktier is not None:
                 trsoutput = self.append_extra(trsoutput)
         except Exception as e:
-            self.print_message( str(e) )
+            self.print_message(str(e))
             self.print_message("WORKDIR=%s"%workdir)
             if self._options['clean'] is True:
-                shutil.rmtree( workdir )
+                shutil.rmtree(workdir)
             raise
 
         # Set media
         # --------------------------------------------------------------
 
         extm = os.path.splitext(audioname)[1].lower()[1:]
-        media = Media( gen_id(), audioname, "audio/"+extm )
-        trsoutput.AddMedia( media )
+        media = Media(gen_id(), audioname, "audio/"+extm)
+        trsoutput.AddMedia(media)
         for tier in trsoutput:
-            tier.SetMedia( media )
+            tier.SetMedia(media)
 
         # Save results
         # --------------------------------------------------------------
         try:
             self.print_message("Save automatic alignment: ",indent=3)
             # Save in a file
-            annotationdata.aio.write( outputfilename,trsoutput )
+            annotationdata.aio.write(outputfilename,trsoutput)
         except Exception:
             if self._options['clean'] is True:
-                shutil.rmtree( workdir )
+                shutil.rmtree(workdir)
             raise
 
         # Clean!
@@ -569,7 +570,7 @@ class sppasAlign( sppasBase ):
             os.remove(inputaudio)
         # Remove the working directory we created
         if self._options['clean'] is True:
-            shutil.rmtree( workdir )
+            shutil.rmtree(workdir)
 
 
     # ------------------------------------------------------------------------
@@ -592,12 +593,12 @@ class sppasAlign( sppasBase ):
                 durnexta = nexta.GetLocation().GetDuration()
 
                 if a.GetLabel().GetValue() == "sil" and durnexta > 0.05:
-                    a.GetLocation().SetEndMidpoint( a.GetLocation().GetEndMidpoint() + 0.03 )
-                    nexta.GetLocation().SetBeginMidpoint( a.GetLocation().GetEndMidpoint() )
+                    a.GetLocation().SetEndMidpoint(a.GetLocation().GetEndMidpoint() + 0.03)
+                    nexta.GetLocation().SetBeginMidpoint(a.GetLocation().GetEndMidpoint())
 
                 if a.GetLabel().GetValue() in [ "*", "@@", "fp", "dummy" ] and durnexta > 0.04:
-                    a.GetLocation().SetEndMidpoint( a.GetLocation().GetEndMidpoint() + 0.02 )
-                    nexta.GetLocation().SetBeginMidpoint( a.GetLocation().GetEndMidpoint() )
+                    a.GetLocation().SetEndMidpoint(a.GetLocation().GetEndMidpoint() + 0.02)
+                    nexta.GetLocation().SetBeginMidpoint(a.GetLocation().GetEndMidpoint())
 
         tiertok = trs.Find("TokensAlign")
         if tiertok is None:
@@ -612,12 +613,12 @@ class sppasAlign( sppasBase ):
                 durnexta = nexta.GetLocation().GetDuration()
 
                 if a.GetLabel().GetValue() == "sil" and durnexta > 0.05:
-                    a.GetLocation().SetEndMidpoint( a.GetLocation().GetEndMidpoint() + 0.03 )
-                    nexta.GetLocation().SetBeginMidpoint( a.GetLocation().GetEndMidpoint() )
+                    a.GetLocation().SetEndMidpoint(a.GetLocation().GetEndMidpoint() + 0.03)
+                    nexta.GetLocation().SetBeginMidpoint(a.GetLocation().GetEndMidpoint())
 
                 if a.GetLabel().GetValue() in [ "*", "@", "euh", "dummy" ] and durnexta > 0.04:
-                    a.GetLocation().SetEndMidpoint( a.GetLocation().GetEndMidpoint() + 0.02 )
-                    nexta.GetLocation().SetBeginMidpoint( a.GetLocation().GetEndMidpoint() )
+                    a.GetLocation().SetEndMidpoint(a.GetLocation().GetEndMidpoint() + 0.02)
+                    nexta.GetLocation().SetBeginMidpoint(a.GetLocation().GetEndMidpoint())
 
         return trs
 
@@ -652,8 +653,8 @@ class sppasAlign( sppasBase ):
                         logging.debug(' ... liaison removed %s in token %s'%(a,t.GetLabel().GetValue()))
                         prev = tierphon[i-1]
                         a = tierphon.Pop(i)
-                        prev.GetLocation().SetEndMidpoint( a.GetLocation().GetEndMidpoint() )
-                        #self.logfile.print_message( "Liaison removed: %s " % a)
+                        prev.GetLocation().SetEndMidpoint(a.GetLocation().GetEndMidpoint())
+                        #self.logfile.print_message("Liaison removed: %s " % a)
                         # Enlever le phoneme de tierphntok!
                         # TODO
         return trs

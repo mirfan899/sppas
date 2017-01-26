@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 # -*- coding:utf-8 -*-
 
 import unittest
@@ -6,13 +5,13 @@ import os.path
 import copy
 import shutil
 
-from resources.acm.acmodel import AcModel, HtkIO
-from resources.acm.hmm import HMM, HMMInterpolation
-from resources.acm.htktrain import HTKModelTrainer, DataTrainer, PhoneSet, TrainingCorpus, HTKModelInitializer
+from sppas.src.models.acm.acmodel import AcModel, HtkIO
+from sppas.src.models.acm.hmm import HMM, HMMInterpolation
+from sppas.src.models.acm.htktrain import HTKModelTrainer, DataTrainer, PhoneSet, TrainingCorpus, HTKModelInitializer
 
-from utils.compare import sppasCompare
-from sp_glob import RESOURCES_PATH, SAMPLES_PATH
-from utils.fileutils import sppasFileUtils
+from sppas.src.utils.compare import sppasCompare
+from sppas.src.sp_glob import RESOURCES_PATH, SAMPLES_PATH
+from sppas.src.utils.fileutils import sppasFileUtils
 
 # ---------------------------------------------------------------------------
 

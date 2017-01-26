@@ -8,9 +8,9 @@ from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 import collections
 
-from dependencies.grako.util import asjson, asjsons, Mapping
-from dependencies.grako.exceptions import SemanticError
-from dependencies.grako.ast import AST
+from sppas.src.dependencies.grako.util import asjson, asjsons, Mapping
+from sppas.src.dependencies.grako.exceptions import SemanticError
+from sppas.src.dependencies.grako.ast import AST
 
 EOLCOL = 50
 

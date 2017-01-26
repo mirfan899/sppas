@@ -9,7 +9,7 @@ from __future__ import print_function, division, absolute_import, unicode_litera
 import yaml
 from collections import OrderedDict
 
-from dependencies.grako.ast import AST
+from sppas.src.dependencies.grako.ast import AST
 
 
 def dump(data, stream=None, Dumper=yaml.SafeDumper, object_pairs_hook=OrderedDict, **kwds):

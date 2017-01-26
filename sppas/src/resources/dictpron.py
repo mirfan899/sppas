@@ -38,7 +38,7 @@ import codecs
 import logging
 import rutils
 
-from sp_glob import UNKSTAMP
+from sppas.src.sp_glob import UNKSTAMP
 
 # ---------------------------------------------------------------------------
 
