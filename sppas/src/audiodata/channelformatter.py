@@ -35,13 +35,14 @@
 # File: channelformatter.py
 # ----------------------------------------------------------------------------
 
-from audiodata.channelframes import ChannelFrames
-from audiodata.channel       import Channel
-from audiodata.audioframes   import AudioFrames
+from .channelframes import ChannelFrames
+from .channel import Channel
+from .audioframes import AudioFrames
 
 # ----------------------------------------------------------------------------
 
-class ChannelFormatter( object ):
+
+class ChannelFormatter(object):
     """
     @authors:      Nicolas Chazeau, Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France

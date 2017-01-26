@@ -43,14 +43,17 @@
     @summary:      Audio utilities.
 """
 
-import audiodata.aio
-from audiodata.audio            import AudioPCM
-from audiodata.channel          import Channel
-from audiodata.channelframes    import ChannelFrames
-from audiodata.channelformatter import ChannelFormatter
-from audiodata.channelsilence   import ChannelSilence
+from audiodata.aio import open as audio_open
+from audiodata.aio import save as audio_save
+
+from .audio import AudioPCM
+from .channel import Channel
+from .channelframes import ChannelFrames
+from .channelformatter import ChannelFormatter
+from .channelsilence import ChannelSilence
 
 # ------------------------------------------------------------------------
+
 
 def frames2times(listframes, framerate):
     """
@@ -72,6 +75,7 @@ def frames2times(listframes, framerate):
 
 # ------------------------------------------------------------------
 
+
 def times2frames(listtimes, framerate):
     """
     Convert a list of time' into a list of frame' values.
@@ -91,6 +95,7 @@ def times2frames(listtimes, framerate):
 
 # ------------------------------------------------------------------
 
+
 def extract_audio_channel(inputaudio, idx):
     """
     Return the channel of a specific index from an audio file name.
@@ -100,7 +105,7 @@ def extract_audio_channel(inputaudio, idx):
 
     """
     idx = int(idx)
-    audio = audiodata.aio.open(inputaudio)
+    audio = audio_open(inputaudio)
     i = audio.extract_channel(idx)
     channel = audio.get_channel(i)
     audio.close()
@@ -108,6 +113,7 @@ def extract_audio_channel(inputaudio, idx):
     return channel
 
 # ------------------------------------------------------------------------
+
 
 def extract_channel_fragment(channel, fromtime, totime, silence=0.):
     """
@@ -140,6 +146,7 @@ def extract_channel_fragment(channel, fromtime, totime, silence=0.):
 
 # ------------------------------------------------------------------------
 
+
 def search_channel_speech(channel, winlenght=0.010, minsildur=0.200, mintrackdur=0.300, shiftdurstart=0.010, shiftdurend=0.010 ):
     """
     Return a list of tracks (i.e. speech intervals where energy is high enough).
@@ -160,6 +167,7 @@ def search_channel_speech(channel, winlenght=0.010, minsildur=0.200, mintrackdur
 
 # ------------------------------------------------------------------------
 
+
 def format_channel(channel, framerate, sampwith):
     """
     Return a channel with the requested framerate and sampwidth.
@@ -178,6 +186,7 @@ def format_channel(channel, framerate, sampwith):
 
 # ------------------------------------------------------------------------
 
+
 def write_channel(audioname, channel):
     """
     Write a channel as an audio file.
@@ -188,7 +197,7 @@ def write_channel(audioname, channel):
     """
     audio_out = AudioPCM()
     audio_out.append_channel( channel )
-    audiodata.aio.save( audioname, audio_out )
+    audio_save( audioname, audio_out )
 
 # ------------------------------------------------------------------------
 

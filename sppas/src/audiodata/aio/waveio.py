@@ -37,7 +37,8 @@
 
 import wave
 
-from audiodata.audio import AudioPCM
+from ..audio import AudioPCM
+from sppas.src.utils.makeunicode import u
 
 # ---------------------------------------------------------------------------
 
@@ -75,7 +76,7 @@ class WaveIO(AudioPCM):
         """
         # Use the standard wave library to load the wave file
         # open method returns a Wave_read() object
-        self.audiofp = wave.open(unicode(filename), "r")
+        self.audiofp = wave.open(u(filename), "r")
 
     # -----------------------------------------------------------------------
 
@@ -91,7 +92,7 @@ class WaveIO(AudioPCM):
 
         elif len(self.channels) == 1:
             channel = self.channels[0]
-            f = wave.Wave_write(unicode(filename))
+            f = wave.Wave_write(u(filename))
             f.setnchannels(1)
             f.setsampwidth(channel.get_sampwidth())
             f.setframerate(channel.get_framerate())
@@ -108,7 +109,7 @@ class WaveIO(AudioPCM):
                 for j in range(len(self.channels)):
                     frames += self.channels[j].frames[i:i+sw]
 
-            f = wave.Wave_write(unicode(filename))
+            f = wave.Wave_write(u(filename))
             f.setnchannels(len(self.channels))
             f.setsampwidth(self.channels[0].get_sampwidth())
             f.setframerate(self.channels[0].get_framerate())
@@ -127,7 +128,7 @@ class WaveIO(AudioPCM):
         @param frames (string) the frames to write
 
         """
-        f = wave.Wave_write(unicode(filename))
+        f = wave.Wave_write(u(filename))
         f.setnchannels(self.get_nchannels())
         f.setsampwidth(self.get_sampwidth())
         f.setframerate(self.get_framerate())

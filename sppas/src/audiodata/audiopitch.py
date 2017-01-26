@@ -41,6 +41,7 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
+
 class WavePitch(object):
     """
     A pitch wav utility class.

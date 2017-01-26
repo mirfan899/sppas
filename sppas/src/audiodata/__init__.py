@@ -45,10 +45,10 @@
 
 """
 
-from audiodata.audio import AudioPCM
-from channel import Channel
+from .audio import AudioPCM
+from .channel import Channel
 
 __all__ = [
-'AudioPCM',
-'Channel'
+    'AudioPCM',
+    'Channel'
 ]

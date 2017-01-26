@@ -3,9 +3,9 @@
 import unittest
 import os.path
 
-import audiodata.aio
-from audiodata.channelformatter import ChannelFormatter
-from sp_glob import SAMPLES_PATH
+from ..aio import open as audio_open
+from ..channelformatter import ChannelFormatter
+from sppas.src.sp_glob import SAMPLES_PATH
 
 # ---------------------------------------------------------------------------
 
@@ -18,8 +18,8 @@ sample_2 = os.path.join(SAMPLES_PATH, "samples-fra", "F_F_B003-P9.wav")  # mono;
 class TestChannelFormatter(unittest.TestCase):
 
     def setUp(self):
-        self._sample_1 = audiodata.aio.open(sample_1)
-        self._sample_2 = audiodata.aio.open(sample_2)
+        self._sample_1 = audio_open(sample_1)
+        self._sample_2 = audio_open(sample_2)
 
     def tearDown(self):
         self._sample_1.close()

@@ -37,7 +37,7 @@
 
 import sunau
 
-from audiodata.audio import AudioPCM
+from ..audio import AudioPCM
 
 # ---------------------------------------------------------------------------
 

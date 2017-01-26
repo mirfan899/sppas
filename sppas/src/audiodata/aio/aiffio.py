@@ -38,8 +38,9 @@
 import struct
 import aifc
 
-from audiodata.audio        import AudioPCM
-from audiodata.audiodataexc import AudioDataError
+from ..audio import AudioPCM
+from ..audiodataexc import AudioDataError
+from sppas.src.utils.makeunicode import u
 
 # ---------------------------------------------------------------------------
 
@@ -73,9 +74,9 @@ class AiffIO(AudioPCM):
         @param filename: input file name.
 
         """
-        #Passing a unicode filename to aifc.open() results in the argument
-        #being treated like a filepointer instead of opening the file.
-        fp = open(unicode(filename), "r")
+        # Passing a unicode filename to aifc.open() results in the argument
+        # being treated like a filepointer instead of opening the file.
+        fp = open(u(filename), "r")
 
         # Use the standard aifc library to load the audio file
         # open method return an Aifc_read object
@@ -181,7 +182,7 @@ class AiffIO(AudioPCM):
         @param frames (string) the frames to write
 
         """
-        fp = open(unicode(filename), "w")
+        fp = open(u(filename), "w")
         f = aifc.Aifc_write(fp)
         f.setnchannels(self.get_nchannels())
         f.setsampwidth(self.get_sampwidth())

@@ -35,11 +35,12 @@
 # File: audiofactory.py
 # ----------------------------------------------------------------------------
 
-from waveio  import WaveIO
-from aiffio  import AiffIO
-from sunauio import SunauIO
+from .waveio import WaveIO
+from .aiffio import AiffIO
+from .sunauio import SunauIO
 
 # ----------------------------------------------------------------------------
+
 
 class AudioFactory(object):
     """

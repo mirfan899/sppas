@@ -35,11 +35,12 @@
 # File: basevolume.py
 # ---------------------------------------------------------------------------
 
-import calculus.stats.central      as central
-import calculus.stats.variability  as variability
-import calculus.stats.moment       as moment
+import sppas.src.calculus.stats.central as central
+import sppas.src.calculus.stats.variability as variability
+import sppas.src.calculus.stats.moment as moment
 
 # ---------------------------------------------------------------------------
+
 
 class BaseVolume( object ):
     """
@@ -59,8 +60,8 @@ class BaseVolume( object ):
 
         """
         self.volumes = []
-        self.rms     = 0
-        self.winlen  = 0.01
+        self.rms = 0
+        self.winlen = 0.01
 
     # -----------------------------------------------------------------------
 

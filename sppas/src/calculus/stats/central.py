@@ -198,38 +198,38 @@ if __name__=="__main__":
 
     l = [x*x for x in range(1,500)]
 
-    print 'geometricmean:'
-    print datetime.datetime.now().isoformat()
+    print ('geometricmean:')
+    print (datetime.datetime.now().isoformat())
     one_over_n = 1./len(l)
     m = 1.0
     for item in l:
         m = m * pow(item,one_over_n)
-    print m
-    print datetime.datetime.now().isoformat()
+    print (m)
+    print (datetime.datetime.now().isoformat())
     one_over_n = 1.0/float(len(l))
     powlist = [ pow(i,one_over_n) for i in l ]
-    print fmult(powlist)
-    print datetime.datetime.now().isoformat()
+    print (fmult(powlist))
+    print (datetime.datetime.now().isoformat())
     print
 
-    print 'harmonician:'
-    print datetime.datetime.now().isoformat()
+    print ('harmonician:')
+    print (datetime.datetime.now().isoformat())
     s = 0
     for item in l:
         s = s + 1.0/item
-    print len(l)/s
-    print datetime.datetime.now().isoformat()
-    print fharmonicmean(l)
-    print datetime.datetime.now().isoformat()
+    print (len(l)/s)
+    print (datetime.datetime.now().isoformat())
+    print (fharmonicmean(l))
+    print (datetime.datetime.now().isoformat())
     print
 
-    print 'mean:'
-    print datetime.datetime.now().isoformat()
+    print ('mean:')
+    print (datetime.datetime.now().isoformat())
     s = 0
     for item in l:
         s = s + item
-    print s / float(len(l))
-    print datetime.datetime.now().isoformat()
-    print fmean(l)
-    print datetime.datetime.now().isoformat()
+    print (s / float(len(l)))
+    print (datetime.datetime.now().isoformat())
+    print (fmean(l))
+    print (datetime.datetime.now().isoformat())
     print

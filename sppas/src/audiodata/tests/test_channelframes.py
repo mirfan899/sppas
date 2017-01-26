@@ -1,12 +1,11 @@
-#!/usr/bin/env python2
 # -*- coding: utf8 -*-
 
 import unittest
 import os
 
-import audiodata.aio
-from audiodata.channelframes import ChannelFrames
-from sp_glob import SAMPLES_PATH
+from ..aio import open as audio_open
+from ..channelframes import ChannelFrames
+from sppas.src.sp_glob import SAMPLES_PATH
 
 # ---------------------------------------------------------------------------
 
@@ -19,8 +18,8 @@ sample_2 = os.path.join(SAMPLES_PATH, "samples-fra", "F_F_B003-P9.wav")  # mono;
 class TestChannelFrames(unittest.TestCase):
 
     def setUp(self):
-        self._sample_1 = audiodata.aio.open(sample_1)
-        self._sample_2 = audiodata.aio.open(sample_2)
+        self._sample_1 = audio_open(sample_1)
+        self._sample_2 = audio_open(sample_2)
 
     def tearDown(self):
         self._sample_1.close()

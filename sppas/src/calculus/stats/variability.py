@@ -36,7 +36,10 @@
 # ----------------------------------------------------------------------------
 
 import math
-import central
+
+from .central import fmean
+from .central import fsum
+from .central import fmedian
 
 # ----------------------------------------------------------------------------
 
@@ -72,10 +75,10 @@ def lunbiasedvariance (items):
     @return (float)
 
     """
-    if len(items)<2:
+    if len(items) < 2:
         return 0.
-    mn = central.fmean(items)
-    return central.fsum(pow(i-mn, 2) for i in items) / (len(items)-1)
+    mn = fmean(items)
+    return fsum(pow(i-mn, 2) for i in items) / (len(items)-1)
 
 # ----------------------------------------------------------------------------
 
@@ -91,8 +94,8 @@ def lvariance (items):
     """
     if len(items)<2:
         return 0.
-    mn = central.fmean(items)
-    return central.fsum(pow(i-mn, 2) for i in items) / (len(items))
+    mn = fmean(items)
+    return fsum(pow(i-mn, 2) for i in items) / (len(items))
 
 # ----------------------------------------------------------------------------
 
@@ -151,7 +154,7 @@ def lz (items, score):
     """
     if len(items)<2:
         return 0.
-    return (score - central.fmean(items)) / lstdev(items)
+    return (score - fmean(items)) / lstdev(items)
 
 # ----------------------------------------------------------------------------
 
@@ -178,7 +181,7 @@ def rPVI(items):
     if len(items)<2:
         return 0.
     n = len(items)-1
-    sumd = central.fsum( [ math.fabs(items[i]-items[i+1]) for i in range(n) ]  )
+    sumd = fsum( [ math.fabs(items[i]-items[i+1]) for i in range(n) ]  )
     return sumd / n
 
 # ----------------------------------------------------------------------------
@@ -209,10 +212,10 @@ def nPVI(items):
 if __name__=="__main__":
 
     l = [x*x for x in range(1,11)]
-    print l
-    print 'mean:',central.fmean(l)
-    print 'median:',central.fmedian(l)
-    print 'variance:',lvariance(l)
-    print 'standard deviation:',lstdev(l)
-    print 'rPVI:',rPVI(l)
-    print 'nPVI:',nPVI(l)
+    print(l)
+    print('mean:',fmean(l))
+    print('median:',fmedian(l))
+    print('variance:',lvariance(l))
+    print('standard deviation:',lstdev(l))
+    print('rPVI:',rPVI(l))
+    print('nPVI:',nPVI(l))

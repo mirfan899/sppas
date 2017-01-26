@@ -37,7 +37,7 @@
 
 import subprocess
 
-from utils import test_command
+from sppas.src.utils import test_command
 
 # ---------------------------------------------------------------------------
 

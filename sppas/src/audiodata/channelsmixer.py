@@ -37,11 +37,13 @@
 
 import struct
 
-from audiodata.channel       import Channel
-from audiodata.channelframes import ChannelFrames
-from audiodata.audiodataexc  import AudioDataError
+from .channel import Channel
+from .channelframes import ChannelFrames
+from .audiodataexc import AudioDataError
 
-import audiodata.audioutils as audioutils
+from .audioutils import get_minval as audio_get_minval
+from .audioutils import get_maxval as audio_get_maxval
+from .audioutils import unpack_data as audio_unpack_data
 
 # ---------------------------------------------------------------------------
 
@@ -125,14 +127,14 @@ class ChannelsMixer( object ):
 
         """
         # variables to compare the value of the result sample to avoid clipping
-        minval = audioutils.get_minval(sampwidth)
-        maxval = audioutils.get_maxval(sampwidth)
+        minval = audio_get_minval(sampwidth)
+        maxval = audio_get_maxval(sampwidth)
 
         # the result sample is the sum of each sample with the application of the factors
         sampsum = 0
         for factor,channel in zip(factors,channels):
             data = channel.frames[pos:pos+sampwidth]
-            data = audioutils.unpack_data(data, sampwidth)
+            data = audio_unpack_data(data, sampwidth)
             # without a cast, sum is a float!
             sampsum += data[0]*factor*attenuator
 

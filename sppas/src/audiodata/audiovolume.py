@@ -35,12 +35,13 @@
 # File: audiovolume.py
 # ---------------------------------------------------------------------------
 
-from audioframes import AudioFrames
-from basevolume  import BaseVolume
+from .audioframes import AudioFrames
+from .basevolume import BaseVolume
 
 # ----------------------------------------------------------------------------
 
-class AudioVolume( BaseVolume ) :
+
+class AudioVolume(BaseVolume):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France

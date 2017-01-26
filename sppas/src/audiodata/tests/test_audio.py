@@ -1,14 +1,13 @@
-#!/usr/bin/env python2
 # -*- coding: utf8 -*-
 
 import unittest
 import os.path
 
-import audiodata.aio
-from audiodata.audio import AudioPCM
-from audiodata.audiodataexc import AudioDataError
+from ..aio import open as audio_open
+from ..audio import AudioPCM
+from ..audiodataexc import AudioDataError
 
-from sp_glob import SAMPLES_PATH
+from sppas.src.sp_glob import SAMPLES_PATH
 sample_1 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana1.wav")
 sample_3 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana3.wave")
 
@@ -18,16 +17,16 @@ sample_3 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana3.wave")
 class TestAudioPCM(unittest.TestCase):
 
     def test_set_get(self):
-        a1 = audiodata.aio.open(sample_1)
+        a1 = audio_open(sample_1)
         a2 = AudioPCM()
         a2.Set(a1)
         self.assertEqual(a1.get_channels(), a2.get_channels())
         self.assertEqual(a1.get_audiofp(), a2.get_audiofp())
 
     def test_channels(self):
-        a1 = audiodata.aio.open(sample_1)
+        a1 = audio_open(sample_1)
         a2 = AudioPCM()
-        a3 = audiodata.aio.open(sample_3)
+        a3 = audio_open(sample_3)
 
         # Test extract_channel
         with self.assertRaises(AudioDataError):

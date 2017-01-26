@@ -4,10 +4,10 @@
 import unittest
 import os
 
-import audiodata.aio
-from audiodata.audioutils import samples2frames
+from ..aio import open as audio_open
+from ..audioutils import samples2frames
 
-from sp_glob import SAMPLES_PATH
+from sppas.src.sp_glob import SAMPLES_PATH
 sample_1 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana1.wav")
 sample_2 = os.path.join(SAMPLES_PATH, "samples-fra", "F_F_B003-P9.wav")
 sample_3 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana3.wave")
@@ -18,9 +18,9 @@ sample_3 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana3.wave")
 class TestAudioUtils(unittest.TestCase):
 
     def setUp(self):
-        self._sample_1 = audiodata.aio.open(sample_1)
-        self._sample_2 = audiodata.aio.open(sample_2)
-        self._sample_3 = audiodata.aio.open(sample_3)
+        self._sample_1 = audio_open(sample_1)
+        self._sample_2 = audio_open(sample_2)
+        self._sample_3 = audio_open(sample_3)
 
     def test_Samples2Frames(self):
         s1 = samples2frames(self._sample_1.read_samples(100), self._sample_1.get_sampwidth(), self._sample_2.get_nchannels())
@@ -34,4 +34,3 @@ class TestAudioUtils(unittest.TestCase):
         self.assertItemsEqual(self._sample_1.read_frames(100), s1)
         self.assertItemsEqual(self._sample_2.read_frames(100), s2)
         self.assertItemsEqual(self._sample_3.read_frames(100), s3)
-

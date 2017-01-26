@@ -35,9 +35,10 @@
 # File: channelframes.py
 # ---------------------------------------------------------------------------
 
-from audioframes import AudioFrames
+from .audioframes import AudioFrames
 
 # ---------------------------------------------------------------------------
+
 
 class ChannelFrames( object ):
     """

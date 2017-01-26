@@ -35,11 +35,12 @@
 # File: channel.py
 # ----------------------------------------------------------------------------
 
-from audioframes import AudioFrames
+from .audioframes import AudioFrames
 
 # ----------------------------------------------------------------------------
 
-class Channel( object ):
+
+class Channel(object):
     """
     @authors:      Nicolas Chazeau, Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France

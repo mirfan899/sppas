@@ -51,12 +51,13 @@
 
 from os.path import splitext
 
-from audiofactory import AudioFactory
-
+from .audiofactory import AudioFactory
+from sppas.src.utils.makeunicode import u
 
 # ----------------------------------------------------------------------------
 # Variables
 # ----------------------------------------------------------------------------
+
 
 ext_wav  = ['.wav', '.wave', '.[wWaAvV]', '.[wWaAvVeE]']
 ext_aiff = ['.aif', '.aiff', '.[aAiIfF]']
@@ -67,6 +68,7 @@ extensionsul = ext_wav + ext_aiff + ext_sunau
 
 # ----------------------------------------------------------------------------
 
+
 def get_extension(filename):
     return splitext(filename)[1][1:]
 
@@ -74,7 +76,8 @@ def get_extension(filename):
 # Functions for opening and saving audio files.
 # ----------------------------------------------------------------------------
 
-def open( filename ):
+
+def open(filename):
     """
     Open an audio file.
 
@@ -87,12 +90,12 @@ def open( filename ):
 
     """
     ext = get_extension(filename).lower()
-    aud = AudioFactory.NewAudio( ext )
+    aud = AudioFactory.NewAudio(ext)
 
     try:
-        aud.open( unicode(filename) )
+        aud.open(u(filename))
     except UnicodeError as e:
-        raise UnicodeError('Encoding error: the file %r contains non-UTF-8 characters: %s' % (filename,e))
+        raise UnicodeError('Encoding error: the file %r contains non-UTF-8 characters: %s' % (filename, e))
     except IOError:
         raise
 #    except Exception as e:
@@ -100,8 +103,10 @@ def open( filename ):
 
     return aud
 
+# ----------------------------------------------------------------------------
 
-def save( filename, audio ):
+
+def save(filename, audio):
     """
     Write an audio file.
 
@@ -113,11 +118,13 @@ def save( filename, audio ):
     ext = get_extension(filename).lower()
     output = AudioFactory.NewAudio(ext)
 
-    output.Set( audio  )
-    output.save( unicode(filename) )
+    output.Set(audio)
+    output.save(u(filename))
+
+# ----------------------------------------------------------------------------
 
 
-def save_fragment( filename, audio, frames ):
+def save_fragment(filename, audio, frames):
     """
     Write a fragment of frames of an audio file.
 
@@ -130,7 +137,7 @@ def save_fragment( filename, audio, frames ):
     ext = get_extension(filename).lower()
     output = AudioFactory.NewAudio(ext)
 
-    output.Set( audio  )
-    output.save_fragment( filename, frames )
+    output.Set(audio)
+    output.save_fragment(filename, frames)
 
 # ----------------------------------------------------------------------------

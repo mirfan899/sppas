@@ -37,12 +37,13 @@
 
 import struct
 
-from audiodata.audioframes   import AudioFrames
-from audiodata.audiodataexc  import AudioDataError
-from audiodata.channel       import Channel
-from audiodata.channelsmixer import ChannelsMixer
+from .audioframes import AudioFrames
+from .audiodataexc import AudioDataError
+from .channel import Channel
+from .channelsmixer import ChannelsMixer
 
 # ---------------------------------------------------------------------------
+
 
 class AudioPCM(object):
     """

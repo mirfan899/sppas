@@ -35,12 +35,13 @@
 # File: channelvolume.py
 # ----------------------------------------------------------------------------
 
-from audiodata.audioframes import AudioFrames
-from basevolume import BaseVolume
+from .audioframes import AudioFrames
+from .basevolume import BaseVolume
 
 # ----------------------------------------------------------------------------
 
-class ChannelVolume( BaseVolume ):
+
+class ChannelVolume(BaseVolume):
     """
     @authors:      Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France

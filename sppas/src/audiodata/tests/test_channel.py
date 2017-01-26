@@ -1,14 +1,15 @@
-#!/usr/bin/env python2
 # -*- coding: utf8 -*-
 
 import unittest
 import os.path
 import shutil
 
-import audiodata.aio
-from audiodata.audio import AudioPCM
-from utils.fileutils import sppasFileUtils
-from sp_glob import SAMPLES_PATH
+from ..aio import open as audio_open
+from ..aio import save as audio_save
+
+from ..audio import AudioPCM
+from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.sp_glob import SAMPLES_PATH
 
 # ---------------------------------------------------------------------------
 
@@ -25,9 +26,9 @@ class TestChannel(unittest.TestCase):
     def setUp(self):
         if os.path.exists(TEMP) is False:
             os.mkdir(TEMP)
-        self._sample_1 = audiodata.aio.open(sample_1)
-        self._sample_2 = audiodata.aio.open(sample_2)
-        self._sample_3 = audiodata.aio.open(sample_3)
+        self._sample_1 = audio_open(sample_1)
+        self._sample_2 = audio_open(sample_2)
+        self._sample_3 = audio_open(sample_3)
 
     def tearDown(self):
         self._sample_1.close()
@@ -74,8 +75,8 @@ class TestChannel(unittest.TestCase):
         audio = AudioPCM()
         audio.append_channel( channel )
         sample_new = os.path.join(TEMP, "converted.wav")
-        audiodata.aio.save( sample_new, audio )
-        savedaudio = audiodata.aio.open( sample_new )
+        audio_save( sample_new, audio )
+        savedaudio = audio_open( sample_new )
 
         self._sample_1.rewind()
         frames = self._sample_1.read_frames( self._sample_1.get_nframes() )

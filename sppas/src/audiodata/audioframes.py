@@ -38,7 +38,8 @@
 import audioop
 import struct
 
-import audiodata.audioutils as audioutils
+from .audioutils import get_maxval as audio_get_maxval
+from .audioutils import get_minval as audio_get_minval
 
 # ---------------------------------------------------------------------------
 
@@ -206,21 +207,21 @@ class AudioFrames(object):
         @return the clipping rate
 
         """
-        if self.sampwidth == 4 :
+        if self.sampwidth == 4:
             data = struct.unpack("<%ul" % (len(self.frames) / 4), self.frames)
-        elif self.sampwidth == 2 :
+        elif self.sampwidth == 2:
             data = struct.unpack("<%uh" % (len(self.frames) / 2), self.frames)
         else :
             data = struct.unpack("%uB" % len(self.frames), self.frames)
             data = [ s - 128 for s in data ]
 
-        maxval = audioutils.get_maxval(self.sampwidth)*(factor/2.)
-        minval = audioutils.get_minval(self.sampwidth)*(factor/2.)
+        maxval = audio_get_maxval(self.sampwidth)*(factor/2.)
+        minval = audio_get_minval(self.sampwidth)*(factor/2.)
 
         nbclipping = 0
 
         for i in range(len(data)):
             if data[i] >= maxval or data[i] <= minval:
-                nbclipping = nbclipping + 1
+                nbclipping += 1
 
         return float(nbclipping)/len(data)

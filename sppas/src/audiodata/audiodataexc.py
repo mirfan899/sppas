@@ -37,8 +37,11 @@
 
 NO_AUDIO_MSG = "No audio file."
 
+
 class AudioDataError(Exception):
+
     def __init__(self, message=NO_AUDIO_MSG):
         self.parameter = message
+
     def __str__(self):
         return repr(self.parameter)

@@ -35,13 +35,14 @@
 # File: channelsilence.py
 # ----------------------------------------------------------------------------
 
-from audiodata.audioframes   import AudioFrames
-from audiodata.channel       import Channel
-from audiodata.channelvolume import ChannelVolume
+from .audioframes import AudioFrames
+from .channel import Channel
+from .channelvolume import ChannelVolume
 
 # ----------------------------------------------------------------------------
 
-class ChannelSilence( object ):
+
+class ChannelSilence(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -59,8 +60,8 @@ class ChannelSilence( object ):
         @param winlenght (float) duration of a window for the estimation of the volume
 
         """
-        self.channel    = channel
-        self.volstats   = ChannelVolume( channel, winlenght )
+        self.channel = channel
+        self.volstats = ChannelVolume(channel, winlenght)
         self.__silences = []
 
     # ------------------------------------------------------------------

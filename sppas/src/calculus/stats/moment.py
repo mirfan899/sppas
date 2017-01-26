@@ -35,8 +35,8 @@
 # File: moment.py
 # ----------------------------------------------------------------------------
 
-import central
-import variability
+from .central import fmean
+from .variability import lstdev
 
 # ----------------------------------------------------------------------------
 
@@ -73,7 +73,7 @@ def lmoment(items,moment=1):
     """
     if moment == 1:
         return 0.
-    mn = central.fmean(items)
+    mn = fmean(items)
     momentlist = [ (i-mn)**moment for i in items ]
     return sum(momentlist) / float(len(items))
 
@@ -89,7 +89,7 @@ def lvariation(items):
     @return (float)
 
     """
-    return variability.lstdev(items) / float(central.fmean(items)) * 100.
+    return lstdev(items) / float(fmean(items)) * 100.
 
 # ---------------------------------------------------------------------------
 
@@ -130,17 +130,17 @@ if __name__=="__main__":
 
     l = [x*x for x in range(1,500)]
 
-    print 'moment:'
-    print datetime.datetime.now().isoformat()
+    print('moment:')
+    print(datetime.datetime.now().isoformat())
     moment = 10
-    mn = central.fmean(l)
+    mn = fmean(l)
     s = 0
     for x in l:
         s = s + (x-mn)**moment
-    print s/float(len(l))
+    print(s/float(len(l)))
 
-    print datetime.datetime.now().isoformat()
-    print lmoment(l,moment)
-    print datetime.datetime.now().isoformat()
-    print
+    print("{0}".format(datetime.datetime.now().isoformat()))
+    print(lmoment(l,moment))
+    print("{0}".format(datetime.datetime.now().isoformat()))
+    print()
 
