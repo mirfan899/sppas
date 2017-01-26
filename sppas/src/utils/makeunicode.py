@@ -46,6 +46,7 @@ from __future__ import unicode_literals
 import sys
 import codecs
 import re
+from sp_glob import encoding
 
 # ---------------------------------------------------------------------------
 
@@ -57,7 +58,8 @@ if sys.version_info < (3,):
     binary_type = str
 
     def u(x):
-        return codecs.unicode_escape_decode(x)[0]
+        return x.decode(encoding)
+        # return codecs.unicode_escape_decode(x)[0]
 
     def b(x):
         return x
@@ -72,7 +74,8 @@ else:
         return x
 
     def b(x):
-        return codecs.utf_8_encode(x)[0]
+        return codecs.encode(x, encoding, errors='strict')
+        # return codecs.utf_8_encode(x)[0]
 
 # ---------------------------------------------------------------------------
 

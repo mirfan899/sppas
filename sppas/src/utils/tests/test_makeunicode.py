@@ -127,10 +127,7 @@ class TestMakeUnicode(unittest.TestCase):
 
     def test_to_ascii(self):
         s = "  ée  àa  çc  "
-        if sys.version_info < (3,):
-            self.assertEqual(sppasUnicode(s).to_ascii(), u("  __e  __a  __c  "))
-        else:
-            self.assertEqual(sppasUnicode(s).to_ascii(), u("  _e  _a  _c  "))
+        self.assertEqual(sppasUnicode(s).to_ascii(), u("  _e  _a  _c  "))
 
     def test_lower(self):
         for key, value in LowerDict.items():

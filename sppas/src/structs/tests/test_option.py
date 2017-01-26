@@ -43,3 +43,6 @@ class TestOption(unittest.TestCase):
         self.assertEqual(o.get_name(), "")
         self.assertEqual(o.get_text(), "")
         self.assertEqual(o.get_description(), "")
+
+        o = sppasBaseOption("str", 3)
+        self.assertEqual(o.get_value(), "3")

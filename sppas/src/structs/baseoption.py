@@ -37,7 +37,7 @@
     Such data is called "option".
 
 """
-from sp_glob import encoding
+from utils.makeunicode import u, text_type, binary_type
 
 # ----------------------------------------------------------------------------
 
@@ -114,14 +114,18 @@ class sppasBaseOption(object):
                 return True
             return False
 
-        elif self._type == 'int':
+        elif self._type == "int":
             return int(self._value)
 
-        elif self._type == 'float':
+        elif self._type == "float":
             return float(self._value)
 
-        elif self._type == 'str' or self._type.startswith("file"):
-            return self._value.decode(encoding)
+        elif self._type == "str" or self._type.startswith("file"):
+            if isinstance(self._value, (text_type, binary_type)) is False:
+                v = str(self._value)
+            else:
+                v = self._value
+            return u(v)
 
         return None
 
