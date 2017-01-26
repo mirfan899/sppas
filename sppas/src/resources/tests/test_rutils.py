@@ -3,7 +3,7 @@
 
 import unittest
 
-import resources.rutils as rutils
+from ..rutils import to_lower, to_strip
 
 LowerDict = {}
 LowerDict[u'A'] = u'a'
@@ -121,8 +121,8 @@ class TestRutils(unittest.TestCase):
 
     def test_lower(self):
         for key, value in LowerDict.items():
-            self.assertEqual(value, rutils.to_lower(key))
-        self.assertEqual(rutils.to_lower(u'Ỹ'), rutils.to_lower('Ỹ'))
+            self.assertEqual(value, to_lower(key))
+        self.assertEqual(to_lower(u'Ỹ'), to_lower('Ỹ'))
 
     def test_strip(self):
-        self.assertEqual(rutils.to_strip(u'  \n Ỹ  \t\r   ỏ  '), u'Ỹ ỏ')
+        self.assertEqual(to_strip(u'  \n Ỹ  \t\r   ỏ  '), u'Ỹ ỏ')

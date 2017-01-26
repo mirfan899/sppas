@@ -4,12 +4,12 @@
 import unittest
 import os.path
 
-from resources.dictpron import DictPron
-from resources.dictrepl import DictRepl
-from resources.mapping import Mapping
-from resources.unigram import Unigram
+from sppas.src.sp_glob import RESOURCES_PATH
 
-from sp_glob import RESOURCES_PATH
+from ..dictpron import DictPron
+from ..dictrepl import DictRepl
+from ..mapping import Mapping
+from ..unigram import Unigram
 
 # ---------------------------------------------------------------------------
 

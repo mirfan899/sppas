@@ -2,7 +2,7 @@
 
 import unittest
 
-from utils.compare import sppasCompare
+from ..compare import sppasCompare
 
 # ---------------------------------------------------------------------------
 

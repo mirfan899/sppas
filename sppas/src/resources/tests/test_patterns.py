@@ -3,7 +3,7 @@
 
 import unittest
 
-from resources.patterns import Patterns
+from ..patterns import Patterns
 
 # ---------------------------------------------------------------------------
 

@@ -36,7 +36,12 @@
 
 import codecs
 import logging
-import rutils
+
+from .rutils import load_from_dump
+from .rutils import save_as_dump
+from .rutils import ENCODING
+from .rutils import to_lower
+from .rutils import to_strip
 
 from sppas.src.sp_glob import UNKSTAMP
 
@@ -107,14 +112,14 @@ class DictPron(object):
             data = None
             if nodump is False:
                 # Try first to get the dict from a dump file (at least 2 times faster)
-                data = rutils.load_from_dump(dict_filename)
+                data = load_from_dump(dict_filename)
 
             # Load from ascii if:
             # 1st load, or, dump load error, or dump older than ascii
             if data is None:
                 self.load_from_ascii(dict_filename)
                 if nodump is False:
-                    rutils.save_as_dump(self._dict, dict_filename)
+                    save_as_dump(self._dict, dict_filename)
                 logging.info('Get dictionary from ASCII file.')
 
             else:
@@ -133,7 +138,7 @@ class DictPron(object):
         :returns: pronunciations of the given token or the unknown symbol
 
         """
-        return self._dict.get(rutils.to_lower(entry), self.unkstamp)
+        return self._dict.get(to_lower(entry), self.unkstamp)
 
     # -----------------------------------------------------------------------
 
@@ -144,7 +149,7 @@ class DictPron(object):
         :param entry: (str) A token to find in the dictionary
 
         """
-        return rutils.to_lower(entry) not in self._dict.keys()
+        return to_lower(entry) not in self._dict.keys()
 
     # -----------------------------------------------------------------------
 
@@ -156,7 +161,7 @@ class DictPron(object):
         :param pron: (str) A pronunciation
 
         """
-        prons = self._dict.get(rutils.to_lower(entry), None)
+        prons = self._dict.get(to_lower(entry), None)
         if prons is None:
             return False
 
@@ -196,9 +201,9 @@ class DictPron(object):
 
         """
         # Remove the CR/LF, tabs, multiple spaces and others... and lowerise
-        entry = rutils.to_strip(token)
-        entry = rutils.to_lower(entry)
-        new_pron = rutils.to_strip(pron)
+        entry = to_strip(token)
+        entry = to_lower(entry)
+        new_pron = to_strip(pron)
         new_pron = new_pron.replace(" ", DictPron.PHONEMES_SEPARATOR)
 
         # Already a pronunciation for this token?
@@ -246,7 +251,7 @@ class DictPron(object):
 
         """
         try:
-            with codecs.open(filename, 'r', rutils.ENCODING) as fd:
+            with codecs.open(filename, 'r', ENCODING) as fd:
                 lines = fd.readlines()
         except ValueError as e:
             raise ValueError('Expected HTK ASCII dictionary format.'
@@ -286,7 +291,7 @@ class DictPron(object):
 
         """
         try:
-            with codecs.open(filename, 'w', encoding=rutils.ENCODING) as output:
+            with codecs.open(filename, 'w', encoding=ENCODING) as output:
 
                 for entry, value in sorted(self._dict.items(), key=lambda x: x[0]):
                     variants = value.split(DictPron.VARIANTS_SEPARATOR)

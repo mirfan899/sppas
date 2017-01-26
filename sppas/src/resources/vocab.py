@@ -37,7 +37,10 @@
 import codecs
 import logging
 
-import rutils
+from .rutils import load_from_dump
+from .rutils import save_as_dump
+from .rutils import ENCODING
+from .rutils import to_lower
 
 # ---------------------------------------------------------------------------
 
@@ -72,13 +75,13 @@ class Vocabulary(object):
 
             # Try first to get the dict from a dump file
             # (at least 2 times faster than the ascii one)
-            data = rutils.load_from_dump(filename)
+            data = load_from_dump(filename)
 
             # Load from ascii if: 1st load, or, dump load error, or dump older than ascii
             if data is None:
                 self.load_from_ascii(filename)
                 if nodump is False:
-                    rutils.save_as_dump(self._stw, filename)
+                    save_as_dump(self._stw, filename)
                 logging.info('Got word list from ASCII file.')
 
             else:
@@ -99,7 +102,7 @@ class Vocabulary(object):
         """
         entry = entry.strip()
         if self.case_sensitive is False:
-            entry = rutils.to_lower(entry)
+            entry = to_lower(entry)
 
         if entry not in self._stw:
             self._stw[entry] = 0
@@ -169,7 +172,7 @@ class Vocabulary(object):
         :param filename: (str - IN)
 
         """
-        with codecs.open(filename, 'r', rutils.ENCODING) as fd:
+        with codecs.open(filename, 'r', ENCODING) as fd:
             for nbl, line in enumerate(fd, 1):
                 try:
                     self.add(line)
@@ -187,7 +190,7 @@ class Vocabulary(object):
 
         """
         try:
-            with codecs.open(filename, 'w', rutils.ENCODING) as fd:
+            with codecs.open(filename, 'w', ENCODING) as fd:
                 for word in sorted(self._stw.keys()):
                     fd.write("%s\n" % word)
 

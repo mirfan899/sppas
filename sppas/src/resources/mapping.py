@@ -36,7 +36,7 @@
 
 import re
 
-from dictrepl import DictRepl
+from .dictrepl import DictRepl
 
 # ----------------------------------------------------------------------------
 

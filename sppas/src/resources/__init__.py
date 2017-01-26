@@ -48,30 +48,16 @@ linguistic resources like lexicons, dictionaries, acoustic models, etc.
 """
 # Statistical Language Models (SLM)
 # ---------------------------------
-from dictpron import DictPron
-from dictrepl import DictRepl
-from mapping import Mapping
-from patterns import Patterns
-from sppas.src.models.acm.acmodelhtkio import HtkIO
-from unigram import Unigram
-from vocab import Vocabulary
+from .dictpron import DictPron
+from .dictrepl import DictRepl
+from .mapping import Mapping
+from .patterns import Patterns
+from .unigram import Unigram
+from .vocab import Vocabulary
 
 # ---------------------------------
 
 __all__ = [
-    "SLM",
-    "NgramsModel",
-    "ArpaIO",
-    "HMM",
-    "Features",
-    "PhoneSet",
-    "AcModel",
-    #"DataTrainer",
-    #"TrainingCorpus",
-    "HtkScripts",
-    "HtkIO",
-    #"HTKModelInitializer",
-    #"HTKModelTrainer",
     "Mapping",
     "DictRepl",
     "DictPron",

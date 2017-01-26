@@ -37,7 +37,9 @@
 import codecs
 import logging
 
-import rutils
+from .rutils import load_from_dump
+from .rutils import save_as_dump
+from .rutils import ENCODING
 
 # ----------------------------------------------------------------------------
 
@@ -81,13 +83,13 @@ class DictRepl(object):
             data = None
             if nodump is False:
                 # Try first to get the dict from a dump file (at least 2 times faster)
-                data = rutils.load_from_dump(dict_filename)
+                data = load_from_dump(dict_filename)
 
             # Load from ascii if: 1st load, or dump load error, or dump older than ascii
             if data is None:
                 self.load_from_ascii(dict_filename)
                 if nodump is False:
-                    rutils.save_as_dump(self._dict, dict_filename)
+                    save_as_dump(self._dict, dict_filename)
 
             else:
                 self._dict = data
@@ -248,7 +250,7 @@ class DictRepl(object):
         :param filename (str)
 
         """
-        with codecs.open(filename, 'r', rutils.ENCODING) as fd:
+        with codecs.open(filename, 'r', ENCODING) as fd:
             lines = fd.readlines()
 
         for line in lines:
@@ -276,7 +278,7 @@ class DictRepl(object):
 
         """
         try:
-            with codecs.open(filename, 'w', encoding=rutils.ENCODING) as output:
+            with codecs.open(filename, 'w', encoding=ENCODING) as output:
                 for entry, value in sorted(self._dict.items(), key=lambda x: x[0]):
                     values = value.split(DictRepl.REPLACE_SEPARATOR)
                     for v in values:

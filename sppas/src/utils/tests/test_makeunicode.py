@@ -1,10 +1,9 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import sys
 
-from utils.makeunicode import sppasUnicode
-from utils.makeunicode import u, b
+from ..makeunicode import sppasUnicode
+from ..makeunicode import u, b
 
 # ---------------------------------------------------------------------------
 

@@ -4,8 +4,9 @@ import unittest
 import os.path
 import sys
 
-from utils.fileutils import sppasFileUtils, sppasDirUtils
-from sp_glob import SAMPLES_PATH
+from sppas.src.sp_glob import SAMPLES_PATH
+
+from ..fileutils import sppasFileUtils, sppasDirUtils
 
 # ---------------------------------------------------------------------------
 

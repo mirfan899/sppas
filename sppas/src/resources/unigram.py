@@ -37,7 +37,9 @@
 import codecs
 import logging
 
-import rutils
+from .rutils import load_from_dump
+from .rutils import save_as_dump
+from .rutils import ENCODING
 
 # ----------------------------------------------------------------------------
 
@@ -68,13 +70,13 @@ class Unigram(object):
             data = None
             if nodump is False:
                 # Try first to get the dict from a dump file (at least 2 times faster)
-                data = rutils.load_from_dump(filename)
+                data = load_from_dump(filename)
 
             # Load from ascii if: 1st load, or, dump load error, or dump older than ascii
             if data is None:
                 self.load_from_ascii(filename)
                 if nodump is False:
-                    rutils.save_as_dump(self._dict, filename)
+                    save_as_dump(self._dict, filename)
             else:
                 self._dict = data
 
@@ -134,7 +136,7 @@ class Unigram(object):
         :param filename (str)
 
         """
-        with codecs.open(filename, 'r', rutils.ENCODING) as fd:
+        with codecs.open(filename, 'r', ENCODING) as fd:
             lines = fd.readlines()
 
         for line in lines:
@@ -162,7 +164,7 @@ class Unigram(object):
 
         """
         try:
-            with codecs.open(filename, 'w', encoding=rutils.ENCODING) as output:
+            with codecs.open(filename, 'w', encoding=ENCODING) as output:
                 for entry, value in sorted(self._dict.items(), key=lambda x: x[0]):
                     output.write("%s %d\n" % (entry, value))
         except Exception as e:
