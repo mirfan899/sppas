@@ -39,14 +39,12 @@ __docformat__ = """epytext"""
 __authors__   = """Tatsuya Watanabe, Brigitte Bigi (brigitte.bigi@gmail.com), Grégoire Montcheuil"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-# import TimePoint for intervals
 from ..ptime.point import TimePoint
-# import Decimal
 from decimal import *
 
-#---------------------------------------------------------------
+# ---------------------------------------------------------------
 # Utils
-#---------------------------------------------------------------
+# ---------------------------------------------------------------
 
 
 def joinWithQuote(sep, *args, **kwargs):
@@ -60,9 +58,9 @@ def joinWithQuote(sep, *args, **kwargs):
     else:
         return sep.join(map(lambda k: "'%s'" % k, args))
 
+# ---------------------------------------------------------------
 
 
-#---------------------------------------------------------------
 class JoinList(list):
     """
     A list with customizable str() method
@@ -103,7 +101,9 @@ class JoinList(list):
         # default
         return str(self)
 
-#---------------------------------------------------------------
+# ---------------------------------------------------------------
+
+
 class OrPredicates(JoinList):
     """
     A Predicates disjunction
@@ -133,7 +133,6 @@ class OrPredicates(JoinList):
     #-- '&' and '|' operators
     #---------------------------------------------
 
-    #---------------------------------------------
     def __or__(self, other):
         """
         Allow to combine 2 predicates with the '|' operator
@@ -141,7 +140,6 @@ class OrPredicates(JoinList):
         """
         return OrPredicates(self, other)
 
-    #---------------------------------------------
     def __and__(self, other):
         """
         Allow to combine 2 predicates with the '&' operator
@@ -149,8 +147,9 @@ class OrPredicates(JoinList):
         """
         return AndPredicates(self, other)
 
+# ---------------------------------------------------------------
 
-#---------------------------------------------------------------
+
 class AndPredicates(JoinList):
     """
     A Predicates conjunction
@@ -185,7 +184,6 @@ class AndPredicates(JoinList):
     #-- '&' and '|' operators
     #---------------------------------------------
 
-    #---------------------------------------------
     def __or__(self, other):
         """
         Allow to combine 2 predicates with the '|' operator
@@ -193,7 +191,6 @@ class AndPredicates(JoinList):
         """
         return OrPredicates(self, other)
 
-    #---------------------------------------------
     def __and__(self, other):
         """
         Allow to combine 2 predicates with the '&' operator
@@ -207,6 +204,7 @@ class AndPredicates(JoinList):
 # Delay : a value with a margin/vagueness/radius
 # (similar to ..ptime.Duration but allowing negative values)
 #---------------------------------------------------------------
+
 
 class Delay(object):
 

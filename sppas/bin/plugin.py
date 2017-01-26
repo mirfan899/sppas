@@ -60,21 +60,21 @@ import sys
 import os
 from argparse import ArgumentParser
 
-PROGRAM_PATH = os.path.abspath(__file__)
-SPPAS = os.path.join(os.path.dirname(os.path.dirname(PROGRAM_PATH)), "src")
+PROGRAM = os.path.abspath(__file__)
+SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sp_glob import program, author, version, copyright, url
-from term.terminalcontroller import TerminalController
+from sppas.src.sp_glob import program, author, version, copyright, url
+from sppas.src.term.terminalcontroller import TerminalController
 
-from plugins import sppasPluginsManager
+from sppas.src.plugins import sppasPluginsManager
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s [actions] [options]" % os.path.basename(PROGRAM_PATH),
-                        prog=PROGRAM_PATH,
+parser = ArgumentParser(usage="%s [actions] [options]" % os.path.basename(PROGRAM),
+                        prog=PROGRAM,
                         description="Plugin command line interface.")
 
 parser.add_argument("--install", action='store_true', help="Install a new plugin from a plugin package.")

@@ -1,12 +1,11 @@
-#!/usr/bin/env python2
 # -*- coding:utf-8 -*-
 
 import unittest
 
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.point import TimePoint
-from annotationdata.label.label import Label
-from annotationdata.annotation import Annotation
+from ..ptime.interval import TimeInterval
+from ..ptime.point import TimePoint
+from ..label.label import Label
+from ..annotation import Annotation
 
 # ---------------------------------------------------------------------------
 

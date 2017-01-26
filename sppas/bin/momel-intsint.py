@@ -48,15 +48,15 @@ __copyright__ = """Copyright (C) 2011-2014  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import sys
-import os
 import os.path
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
-SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
+SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
-from annotations.Momel.sppasmomel     import sppasMomel
-from annotations.Intsint.sppasintsint import sppasIntsint
+
+from sppas.src.annotations.Momel.sppasmomel     import sppasMomel
+from sppas.src.annotations.Intsint.sppasintsint import sppasIntsint
 
 
 # ----------------------------------------------------------------------------

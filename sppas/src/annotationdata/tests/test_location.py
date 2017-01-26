@@ -3,10 +3,10 @@
 
 import unittest
 
-from annotationdata.ptime.point import TimePoint
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.localization import Localization
-from annotationdata.ptime.location import Location
+from ..ptime.point import TimePoint
+from ..ptime.interval import TimeInterval
+from ..ptime.localization import Localization
+from ..ptime.location import Location
 
 # ---------------------------------------------------------------------------
 

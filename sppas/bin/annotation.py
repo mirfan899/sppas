@@ -47,21 +47,20 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import sys
-import os
 import os.path
 from argparse import ArgumentParser
 
-PROGRAM_PATH = os.path.abspath(__file__)
-SPPAS = os.path.join( os.path.dirname( os.path.dirname( PROGRAM_PATH ) ), "src" )
+PROGRAM = os.path.abspath(__file__)
+SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sp_glob import program, author, version, copyright, url
-from annotationdata.aio import extensions_out #_multitiers
-from annotations.param import sppasParam
-from annotations.manager import sppasAnnotationsManager
-from term.textprogress import ProcessProgressTerminal
-from term.terminalcontroller import TerminalController
-from sp_glob import DEFAULT_OUTPUT_EXTENSION
+from sppas.src.sp_glob import program, author, version, copyright, url
+from sppas.src.annotationdata.aio import extensions_out  #_multitiers
+from sppas.src.annotations.param import sppasParam
+from sppas.src.annotations.manager import sppasAnnotationsManager
+from sppas.src.term.textprogress import ProcessProgressTerminal
+from sppas.src.term.terminalcontroller import TerminalController
+from sppas.src.sp_glob import DEFAULT_OUTPUT_EXTENSION
 
 
 # ----------------------------------------------------------------------------
@@ -69,7 +68,9 @@ from sp_glob import DEFAULT_OUTPUT_EXTENSION
 # ----------------------------------------------------------------------------
 
 parameters = sppasParam()
-parser = ArgumentParser(usage="%s -w file|folder [options]" % os.path.basename(PROGRAM_PATH), prog=PROGRAM_PATH, description="Automatic annotations command line interface.")
+parser = ArgumentParser(usage="%s -w file|folder [options]" % os.path.basename(PROGRAM),
+                        prog=PROGRAM,
+                        description="Automatic annotations command line interface.")
 
 parser.add_argument("-w", required=True, metavar="file|folder", help='Input wav file name, or directory')
 

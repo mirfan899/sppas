@@ -48,6 +48,7 @@ import operator
 # Functions to compare 2 strings
 # ----------------------------------------------------------------------------
 
+
 def exact(text1, text2):
     """
     Return True text1 and text2 contain the same characters.

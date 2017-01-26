@@ -41,9 +41,10 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-from annotationdata.tier import Tier
+from ..tier import Tier
 
-from predicate import Sel,Rel
+from .predicate import Sel
+from .predicate import Rel
 
 # ----------------------------------------------------------------------------
 

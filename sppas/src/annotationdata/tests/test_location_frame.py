@@ -3,9 +3,9 @@
 
 import unittest
 
-from annotationdata.ptime.framepoint import FramePoint
-from annotationdata.ptime.frameinterval import FrameInterval
-from annotationdata.ptime.framedisjoint import FrameDisjoint
+from ..ptime.framepoint import FramePoint
+from ..ptime.frameinterval import FrameInterval
+from ..ptime.framedisjoint import FrameDisjoint
 
 # ---------------------------------------------------------------------------
 

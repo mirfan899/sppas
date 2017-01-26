@@ -38,29 +38,29 @@
 import codecs
 import mimetypes
 
-from annotationdata.transcription import Transcription
-from annotationdata.tier import Tier
-from annotationdata.media               import Media
+from ..transcription import Transcription
+from ..tier import Tier
+from ..media import Media
 
-from annotationdata.annotation     import Annotation
-from annotationdata.label.label    import Label
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.point    import TimePoint
-import annotationdata.ptime.point
-from utils import gen_id
+from ..annotation import Annotation
+from ..label.label import Label
+from ..ptime.interval import TimeInterval
+from ..ptime.point import TimePoint
+
+from .utils import gen_id
 
 # ----------------------------------------------------------------------------
 
 TEXT_RADIUS = 0.0005
 
+
+def XtransTimePoint(time):
+    return TimePoint(time, TEXT_RADIUS)
+
 # ----------------------------------------------------------------------------
 
-def TimePoint(time):
-    return annotationdata.ptime.point.TimePoint(time, TEXT_RADIUS)
 
-# ----------------------------------------------------------------------------
-
-class Xtrans( Transcription ):
+class Xtrans(Transcription):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -139,20 +139,20 @@ class Xtrans( Transcription ):
                         medias[mediaurl] = mediaid
                     mediaid = medias[mediaurl]
                     (mediamime,mediaencoding) = mimetypes.guess_type(mediaurl)
-                    media = Media( mediaid, mediaurl, mediamime )
+                    media = Media(mediaid, mediaurl, mediamime)
                     if mediaencoding is not None:
                         media.metadata[ "encoding" ] = mediaencoding
 
-                    tier.SetMedia( media )
+                    tier.SetMedia(media)
                     tier.metadata[ "speakerName" ]    = speaker
                     tier.metadata[ "speakerType" ]    = line[ rownames.index('speakerType;unicode') ]
                     tier.metadata[ "speakerDialect" ] = line[ rownames.index('speakerDialect;unicode') ]
                     tier.metadata[ "mediaChannel" ]   = channel
-                    self.Append( tier )
+                    self.Append(tier)
 
                 # Add the new annotation
-                label = Label( line[rownames.index('transcript;unicode')] )
-                begin = TimePoint( float( line[rownames.index('start;float')] ) )
-                end   = TimePoint( float( line[rownames.index('end;float')] ) )
+                label = Label(line[rownames.index('transcript;unicode')])
+                begin = XtransTimePoint(float(line[rownames.index('start;float')]))
+                end = XtransTimePoint(float(line[rownames.index('end;float')]))
                 new_ann = Annotation(TimeInterval(begin,end), label)
-                tier.Add( new_ann )
+                tier.Add(new_ann)

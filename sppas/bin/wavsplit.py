@@ -51,19 +51,19 @@ import os.path
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
-SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
+SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from annotations.IPUs.ipusseg import sppasIPUs
-import annotationdata.aio
-from utils.fileutils import setup_logging
+from sppas.src.annotations.IPUs.ipusseg import sppasIPUs
+from sppas.src.utils.fileutils import setup_logging
 
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -w file [options]" % os.path.basename(PROGRAM), description="IPUs segmentation command line interface.")
+parser = ArgumentParser(usage="%s -w file [options]" % os.path.basename(PROGRAM),
+                        description="IPUs segmentation command line interface.")
 
 parser.add_argument("-w", metavar="file", required=True,  help='Input wav file name')
 

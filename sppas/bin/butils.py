@@ -46,10 +46,11 @@ import sys
 import time
 import subprocess
 
-EXIT_DELAY=20
-EXIT_STATUS=1
+EXIT_DELAY = 20
+EXIT_STATUS = 1
 
 # ----------------------------------------------------------------------------
+
 
 def exit_error( msg="Unknown." ):
     """
@@ -64,6 +65,7 @@ def exit_error( msg="Unknown." ):
 
 # ----------------------------------------------------------------------------
 
+
 def check_python():
     """
     Check if the current python in use is the right one: 2.7.something.
@@ -77,6 +79,7 @@ def check_python():
         exit_error( "The version of Python is not the right one: SPPAS requires exactly the version 2.7.something.")
 
 # ----------------------------------------------------------------------------
+
 
 def check_aligner():
     """
@@ -101,6 +104,7 @@ def check_aligner():
     return (julius or hvite)
 
 # ----------------------------------------------------------------------------
+
 
 def install_gettext():
     def _(message):

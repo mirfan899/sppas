@@ -65,7 +65,7 @@ parser.add_argument("-n", metavar="order",  required=False, default=3, type=int,
 parser.add_argument("-m", metavar="method", required=False, default="logml", type=str, help='Method to estimates probabilities (one of: raw, lograw, ml, logml).')
 parser.add_argument("-o", metavar="output", required=True,  help='Output file name.')
 
-parser.add_argument("--quiet", action='store_true', help="Disable the verbosity." )
+parser.add_argument("--quiet", action='store_true', help="Disable the verbosity.")
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -79,25 +79,25 @@ args = parser.parse_args()
 # ---------------------------------
 # 1. Create a NgramsModel
 
-model = NgramsModel( args.n )
+model = NgramsModel(args.n)
 if args.r:
-    model.set_vocab( args.r )
+    model.set_vocab(args.r)
 
 # ---------------------------------
 # 2. Estimate counts of each n-gram
 
-model.count( *(args.i) )
+model.count(*(args.i))
 
 # ---------------------------------
 # 3. Estimate probabilities
 
-probas = model.probabilities( args.m )
+probas = model.probabilities(args.m)
 
 # ---------------------------------
 # 4. Write in an ARPA file
 
 arpaio = ArpaIO()
-arpaio.set( probas )
-arpaio.save( args.o )
+arpaio.set(probas)
+arpaio.save(args.o)
 
 # ---------------------------------------------------------------------------

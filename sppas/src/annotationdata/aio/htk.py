@@ -45,12 +45,12 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import codecs
-from annotationdata.transcription    import Transcription
-from annotationdata.label.label      import Label
-import annotationdata.ptime.point
-from annotationdata.ptime.framepoint import FramePoint
-from annotationdata.ptime.interval   import TimeInterval
-from annotationdata.annotation       import Annotation
+
+from ..transcription import Transcription
+from ..label.label import Label
+from ..ptime.point import TimePoint
+from ..ptime.interval import TimeInterval
+from ..annotation import Annotation
 
 #TODO: check whether lab and mlf files can support time overlaps
 #from utils import merge_overlapping_annotations
@@ -66,10 +66,11 @@ TIME_UNIT = pow(10, -7)
 # Useful functions
 # ----------------------------------------------------------------------------
 
-def TimePoint(time):
-    return annotationdata.ptime.point.TimePoint(time, HTK_RADIUS)
+def HTKTimePoint(time):
+    return TimePoint(time, HTK_RADIUS)
 
 # ----------------------------------------------------------------------------
+
 
 def line_from_annotation(annotation):
     """
@@ -87,9 +88,9 @@ def line_from_annotation(annotation):
         if not ' ' in label:
             return "%s %s %s\n" % (begin, end, label)
         else:
-            s = "%s " % (begin)
-            s = s + label.replace(' ','\n')
-            return s+"\n"
+            s = "%s " % begin
+            s = s + label.replace(' ', '\n')
+            return s + "\n"
     else:
         point = str(int(1/TIME_UNIT * annotation.GetLocation().GetPointMidpoint()))
         return "%s %s\n" % (point, label)
@@ -97,7 +98,7 @@ def line_from_annotation(annotation):
 # ---------------------------------------------------------------------------
 
 
-class HTKLabel( Transcription ):
+class HTKLabel(Transcription):
     """
     @authors: Jibril Saffi, Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -108,7 +109,6 @@ class HTKLabel( Transcription ):
     The previous one was totally wrong...
 
     """
-
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
         super(HTKLabel, self).__init__(name, mintime, maxtime)
 
@@ -120,7 +120,7 @@ class HTKLabel( Transcription ):
 
             tier = self.NewTier()
             label = ""
-            prevend = TimePoint(0.)
+            prevend = HTKTimePoint(0.)
 
             for line in fp:
                 line = line.strip().split()
@@ -129,14 +129,14 @@ class HTKLabel( Transcription ):
 
                 if hasBegin and hasEnd:
                     if len(label)>0:
-                        time = TimeInterval(prevend, TimePoint(float(line[0]) * TIME_UNIT))
+                        time = TimeInterval(prevend, HTKTimePoint(float(line[0]) * TIME_UNIT))
                         tier.Add(Annotation(time, Label(label)))
 
-                    time = TimeInterval(TimePoint(float(line[0]) * TIME_UNIT), TimePoint(float(line[1]) * TIME_UNIT))
+                    time = TimeInterval(HTKTimePoint(float(line[0]) * TIME_UNIT), HTKTimePoint(float(line[1]) * TIME_UNIT))
                     label = " ".join(line[2:])
                     tier.Add(Annotation(time, Label(label)))
                     label = ""
-                    prevend = TimePoint(float(line[1]) * TIME_UNIT)
+                    prevend = HTKTimePoint(float(line[1]) * TIME_UNIT)
 
                 elif hasBegin:
                     label = label +" "+ " ".join(line[1:])
@@ -195,7 +195,7 @@ class MasterLabel( Transcription ):
                     tierName = line.strip()[1:-1]
                     tier = self.NewTier(tierName)
                     label = ""
-                    prevend = TimePoint(0.)
+                    prevend = HTKTimePoint(0.)
 
                     line = fp.next()
                     while(line and
@@ -208,14 +208,14 @@ class MasterLabel( Transcription ):
 
                         if hasBegin and hasEnd:
                             if len(label)>0:
-                                time = TimeInterval(prevend, TimePoint(float(line[0]) * TIME_UNIT))
+                                time = TimeInterval(prevend, HTKTimePoint(float(line[0]) * TIME_UNIT))
                                 tier.Add(Annotation(time, Label(label)))
 
-                            time = TimeInterval(TimePoint(float(line[0]) * TIME_UNIT), TimePoint(float(line[1]) * TIME_UNIT))
+                            time = TimeInterval(HTKTimePoint(float(line[0]) * TIME_UNIT), HTKTimePoint(float(line[1]) * TIME_UNIT))
                             label = " ".join(line[2:])
                             tier.Add(Annotation(time, Label(label)))
                             label = ""
-                            prevend = TimePoint(float(line[1]) * TIME_UNIT)
+                            prevend = HTKTimePoint(float(line[1]) * TIME_UNIT)
 
                         elif hasBegin:
                             label = label +" "+ " ".join(line[1:])

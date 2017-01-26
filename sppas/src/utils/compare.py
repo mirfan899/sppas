@@ -35,9 +35,9 @@
     Utilities to compare data contents.
 
 """
-from utils.makeunicode import u
-from utils.makeunicode import text_type
-from utils.makeunicode import binary_type
+from .makeunicode import u
+from .makeunicode import text_type
+from .makeunicode import binary_type
 
 # ----------------------------------------------------------------------------
 

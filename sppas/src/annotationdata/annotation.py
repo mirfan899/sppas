@@ -46,9 +46,9 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 import copy
 
-from label.label         import Label
-from ptime.location      import Location
-from meta import MetaObject
+from .label.label import Label
+from .ptime.location import Location
+from .meta import MetaObject
 
 # ----------------------------------------------------------------------------
 

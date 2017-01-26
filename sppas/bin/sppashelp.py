@@ -46,7 +46,6 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 import sys
 import os.path
 import traceback
-from argparse import ArgumentParser
 
 from butils import exit_error, check_python, install_gettext
 from checkwx import get_wx_version
@@ -56,23 +55,25 @@ check_python()
 try:
     import wx
 except ImportError:
-    exit_error( "WxPython is not installed on your system\n. The Graphical User Interface of SPPAS can't work. Refer to the installation instructions of the SPPAS web site.")
+    exit_error( "WxPython is not installed on your system\n. "
+                "The Graphical User Interface of SPPAS can't work. "
+                "Refer to the installation instructions of the SPPAS web site.")
 
 # import SPPAS Application Programming Interface
 # ----------------------------------------------
 
 PROGRAM = os.path.abspath(__file__)
-SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
-sys.path.insert(0,SPPAS)
+SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
+sys.path.append(SPPAS)
 
 try:
-    from wxgui.frames.helpbrowser  import HelpBrowser
-    from wxgui.structs.prefs       import Preferences
-    from wxgui.dialogs.msgdialogs  import ShowInformation
-    from wxgui.structs.prefs       import Preferences_IO
-    from wxgui.structs.theme      import sppasTheme
-    from utils.fileutils           import setup_logging
-    from sp_glob                   import SETTINGS_FILE
+    from sppas.src.wxgui.frames.helpbrowser  import HelpBrowser
+    from sppas.src.wxgui.structs.prefs       import Preferences
+    from sppas.src.wxgui.dialogs.msgdialogs  import ShowInformation
+    from sppas.src.wxgui.structs.prefs       import Preferences_IO
+    from sppas.src.wxgui.structs.theme      import sppasTheme
+    from sppas.src.utils.fileutils           import setup_logging
+    from sppas.src.sp_glob                   import SETTINGS_FILE
 except ImportError:
     exit_error( "An error occurred.\nVerify the SPPAS installation and try again. Full error message is: %s"%traceback.format_exc() )
 
@@ -107,7 +108,10 @@ if prefsIO.Read() is False:
 # Tests
 v = get_wx_version()
 if v < 3:
-    message = "The version of WxPython is too old.\n\tThe Graphical User Interface will not display properly.\n\tUpdate at http://wxpython.org/ and restart SPPAS.\n\tFor any help, see SPPAS installation page.\n"
+    message = "The version of WxPython is too old.\n" \
+              "The Graphical User Interface will not display properly.\n" \
+              "Update at http://wxpython.org/ and restart SPPAS.\n" \
+              "For any help, see SPPAS installation page.\n"
     ShowInformation( None, prefsIO, message, style=wx.ICON_WARNING)
 
 frame = HelpBrowser( None, prefsIO )

@@ -47,33 +47,35 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import datetime
 import xml.etree.cElementTree as ET
 
-from annotationdata.transcription  import Transcription
-from annotationdata.ctrlvocab      import CtrlVocab
-from annotationdata.media          import Media
-from annotationdata.label.label    import Label
-import annotationdata.ptime.point
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.annotation     import Annotation
+from ..transcription import Transcription
+from ..ctrlvocab import CtrlVocab
+from ..media import Media
+from ..label.label import Label
+from ..ptime.point import TimePoint
+from ..ptime.interval import TimeInterval
+from ..annotation import Annotation
 
-from utils import indent
-from utils import gen_id
-from utils import merge_overlapping_annotations
-from utils import point2interval
+from .utils import indent
+from .utils import gen_id
+from .utils import merge_overlapping_annotations
+from .utils import point2interval
 
 # -----------------------------------------------------------------
 
 CONSTRAINTS = {}
-CONSTRAINTS["Time subdivision of parent annotation's time interval, no time gaps allowed within this interval"]="Time_Subdivision"
-CONSTRAINTS["Symbolic subdivision of a parent annotation. Annotations refering to the same parent are ordered"]="Symbolic_Subdivision"
-CONSTRAINTS["1-1 association with a parent annotation"]="Symbolic_Association"
-CONSTRAINTS["Time alignable annotations within the parent annotation's time interval, gaps are allowed"]="Included_In"
-
-ELAN_RADIUS = 0.02
+CONSTRAINTS["Time subdivision of parent annotation's time interval, no time gaps allowed within this interval"] = "Time_Subdivision"
+CONSTRAINTS["Symbolic subdivision of a parent annotation. Annotations refering to the same parent are ordered"] = "Symbolic_Subdivision"
+CONSTRAINTS["1-1 association with a parent annotation"] = "Symbolic_Association"
+CONSTRAINTS["Time alignable annotations within the parent annotation's time interval, gaps are allowed"] = "Included_In"
 
 # -----------------------------------------------------------------
 
-def TimePoint(time, radius=ELAN_RADIUS):
-    return annotationdata.ptime.point.TimePoint(time, radius)
+ELAN_RADIUS = 0.02
+
+
+def ElanTimePoint(time, radius=ELAN_RADIUS):
+    return TimePoint(time, radius)
+
 
 def linguistic_type_from_tier(tier):
     return (tier.metadata['LINGUISTIC_TYPE_REF']
@@ -81,6 +83,7 @@ def linguistic_type_from_tier(tier):
             'SPPAS_%s' % tier.GetName())
 
 # -----------------------------------------------------------------
+
 
 class Elan( Transcription ):
     """
@@ -138,7 +141,6 @@ class Elan( Transcription ):
         del self.unit
         del self.timeSlots
 
-    # End read
     # -----------------------------------------------------------------
 
     def __read_media(self, mediaRoot):
@@ -271,7 +273,7 @@ class Elan( Transcription ):
             x2 = begin + increment
             for annotationRoot in batches[ref]:
                 label = annotationRoot[0].find('ANNOTATION_VALUE').text
-                tier.Add(Annotation(TimeInterval(TimePoint(x1),TimePoint(x2)),
+                tier.Add(Annotation(TimeInterval(ElanTimePoint(x1),ElanTimePoint(x2)),
                                     Label(label)))
                 x1 += increment
                 x2 += increment
@@ -326,7 +328,7 @@ class Elan( Transcription ):
             id = timeSlotNode.attrib['TIME_SLOT_ID']
 
             if 'TIME_VALUE' in timeSlotNode.attrib:
-                value = TimePoint(
+                value = ElanTimePoint(
                     float(timeSlotNode.attrib['TIME_VALUE']) * self.unit)
             else:
                 value = None
@@ -340,7 +342,7 @@ class Elan( Transcription ):
                 if val is None:
                     midPoint = (prevVal.GetMidpoint() +
                                 nextVal.GetMidpoint()) / 2
-                    newVal = TimePoint(midPoint, midPoint -
+                    newVal = ElanTimePoint(midPoint, midPoint -
                                        prevVal.GetMidpoint())
                     timeSlotCouples[i] = (id, newVal)
 

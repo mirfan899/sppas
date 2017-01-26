@@ -41,11 +41,11 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ---------------------------------------------------------------------------
 
-from annotationdata.tier import Tier
-from annotationdata.annotation import Annotation
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.point import TimePoint
-from annotationdata.label.label import Label
+from ..tier import Tier
+from ..annotation import Annotation
+from ..ptime.interval import TimeInterval
+from ..ptime.point import TimePoint
+from ..label.label import Label
 
 # ---------------------------------------------------------------------------
 

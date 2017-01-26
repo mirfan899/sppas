@@ -56,26 +56,29 @@ check_python()
 try:
     import wx
 except ImportError:
-    exit_error( "WxPython is not installed on your system\n. The Graphical User Interface of SPPAS can't work. Refer to the installation instructions of the SPPAS web site.")
+    exit_error( "WxPython is not installed on your system\n. "
+                "The Graphical User Interface of SPPAS can't work. "
+                "Refer to the installation instructions of the SPPAS web site.")
 
 # import SPPAS Application Programming Interface
 # ----------------------------------------------
 
 PROGRAM = os.path.abspath(__file__)
-SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
-sys.path.insert(0,SPPAS)
+SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
+sys.path.append(SPPAS)
 
 try:
-    from wxgui.frames.ipuscribeframe import IPUscribeFrame
-    from wxgui.sp_icons import IPUSCRIBE_APP_ICON
-    from utils.fileutils import setup_logging
-    from wxgui.dialogs.msgdialogs  import ShowInformation
-    from wxgui.structs.prefs       import Preferences_IO
-    from wxgui.structs.theme      import sppasTheme
-    from utils.fileutils           import setup_logging
-    from sp_glob                   import SETTINGS_FILE
+    from sppas.src.wxgui.frames.ipuscribeframe import IPUscribeFrame
+    from sppas.src.wxgui.sp_icons import IPUSCRIBE_APP_ICON
+    from sppas.src.utils.fileutils import setup_logging
+    from sppas.src.wxgui.dialogs.msgdialogs  import ShowInformation
+    from sppas.src.wxgui.structs.prefs       import Preferences_IO
+    from sppas.src.wxgui.structs.theme      import sppasTheme
+    from sppas.src.utils.fileutils           import setup_logging
+    from sppas.src.sp_glob                   import SETTINGS_FILE
 except ImportError:
-    exit_error( "An error occurred.\nVerify the SPPAS installation and try again. Full error message is: %s"%traceback.format_exc() )
+    exit_error( "An error occurred.\nVerify the SPPAS installation and try again. "
+                "Full error message is: %s" % traceback.format_exc() )
 
 # ---------------------------------------------------------------------------
 # Main application

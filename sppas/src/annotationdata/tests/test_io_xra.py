@@ -5,9 +5,9 @@ import unittest
 import os.path
 import shutil
 
-import annotationdata.aio
-from annotationdata.aio.xra import XRA
-from utils.fileutils import sppasFileUtils
+from ..aio import write as trswrite
+from ..aio.xra import XRA
+from sppas.src.utils.fileutils import sppasFileUtils
 
 # ---------------------------------------------------------------------------
 
@@ -39,7 +39,7 @@ class TestXRA(unittest.TestCase):
     def test_ReadWrite(self):
         tg1 = XRA()
         tg1.read(os.path.join(DATA, "sample-1.2.xra"))
-        annotationdata.aio.write(os.path.join(TEMP, "sample-1.2.xra"), tg1)
+        trswrite(os.path.join(TEMP, "sample-1.2.xra"), tg1)
         tg2 = XRA()
         tg2.read(os.path.join(TEMP, "sample-1.2.xra"))
         # Compare annotations of tg1 and tg2

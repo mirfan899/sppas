@@ -5,11 +5,11 @@ import unittest
 import os
 import shutil
 
-import annotationdata.aio
-from annotationdata.aio.annotationpro import Antx
-from annotationdata.aio.elan import Elan
-from annotationdata.aio.xra import XRA
-from utils.fileutils import sppasFileUtils
+from ..aio import write as trswrite
+from ..aio.annotationpro import Antx
+from ..aio.elan import Elan
+from ..aio.xra import XRA
+from sppas.src.utils.fileutils import sppasFileUtils
 
 # ---------------------------------------------------------------------------
 
@@ -38,7 +38,7 @@ class TestAntx(unittest.TestCase):
     def test_Read_Write_Read(self):
         tg1 = Antx()
         tg1.read(os.path.join(DATA, "sample-TGA.antx"))
-        annotationdata.aio.write( os.path.join(TEMP, "sample.antx"), tg1 )
+        trswrite( os.path.join(TEMP, "sample.antx"), tg1 )
         tg2 = Antx()
         tg2.read(os.path.join(TEMP, "sample.antx"))
 
@@ -54,7 +54,7 @@ class TestAntx(unittest.TestCase):
     def test_Read_ExportSppas_Read(self):
         tg1 = Antx()
         tg1.read(os.path.join(DATA, "sample-TGA.antx"))
-        annotationdata.aio.write( os.path.join(TEMP, "sample.xra"), tg1 )
+        trswrite( os.path.join(TEMP, "sample.xra"), tg1 )
         tg2 = XRA()
         tg2.read(os.path.join(TEMP, "sample.xra"))
 
@@ -69,7 +69,7 @@ class TestAntx(unittest.TestCase):
     def test_Read_ExportElan_Read(self):
         tg1 = Antx()
         tg1.read(os.path.join(DATA, "sample-TGA.antx"))
-        annotationdata.aio.write( os.path.join(TEMP, "sample.eaf"), tg1 )
+        trswrite( os.path.join(TEMP, "sample.eaf"), tg1 )
         tg2 = Elan()
         tg2.read(os.path.join(TEMP, "sample.eaf"))
 

@@ -43,12 +43,12 @@ import os.path
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
-SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
+SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import annotations.Align.aligners as aligners
-from annotations.Align.sppasalign import sppasAlign
-from utils.fileutils              import setup_logging
+import sppas.src.annotations.Align.aligners as aligners
+from sppas.src.annotations.Align.sppasalign import sppasAlign
+from sppas.src.utils.fileutils import setup_logging
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -64,12 +64,12 @@ parser.add_argument("-R", metavar="file", required=False, help='Directory of the
 parser.add_argument("-o", metavar="file", required=True,  help='Output file name with estimated alignments')
 
 parser.add_argument("-a", metavar="name", required=False, choices=aligners.aligner_names(), default="julius", help='Speech automatic aligner system: julius, hvite, basic (default: julius)')
-parser.add_argument("--basic",   action='store_true', help="Perform basic alignment if the aligner fails" )
-parser.add_argument("--noclean", action='store_true', help="Do not remove working directory" )
-parser.add_argument("--noactivity", action='store_true', help="Do not generate Activity tier" )
-parser.add_argument("--nophntok",  action='store_true',  help="Do not generate PhnTokAlign tier" )
+parser.add_argument("--basic",   action='store_true', help="Perform basic alignment if the aligner fails")
+parser.add_argument("--noclean", action='store_true', help="Do not remove working directory")
+parser.add_argument("--noactivity", action='store_true', help="Do not generate Activity tier")
+parser.add_argument("--nophntok",  action='store_true',  help="Do not generate PhnTokAlign tier")
 
-parser.add_argument("--quiet",  action='store_true',  help="Disable verbose." )
+parser.add_argument("--quiet",  action='store_true',  help="Disable verbose.")
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -79,7 +79,7 @@ args = parser.parse_args()
 # ----------------------------------------------------------------------------
 
 if not args.quiet:
-    setup_logging(1,None)
+    setup_logging(1, None)
 
 # ----------------------------------------------------------------------------
 # Automatic alignment is here:
@@ -89,28 +89,28 @@ if not args.quiet:
 modelText = args.r # Acoustic model of the language of the text (required)
 modelSpk = args.R  # Acoustic model of the mother language of the speaker (optional)
 
-a = sppasAlign( modelText, modelSpk )
+a = sppasAlign(modelText, modelSpk)
 
 # Fix options
-a.set_clean( True )
+a.set_clean(True)
 if args.noclean:
-    a.set_clean( False )
+    a.set_clean(False)
 
-a.set_basic( False )
+a.set_basic(False)
 if args.basic:
-    a.set_basic( True )
+    a.set_basic(True)
 
-a.set_activity_tier( True )
+a.set_activity_tier(True)
 if args.noactivity:
-    a.set_activity_tier( False )
+    a.set_activity_tier(False)
 
-a.set_phntokalign_tier( True )
+a.set_phntokalign_tier(True)
 if args.nophntok:
-    a.set_phntokalign_tier( False )
+    a.set_phntokalign_tier(False)
 
-a.set_aligner( args.a )
+a.set_aligner(args.a)
 
 # Run speech segmentation
-a.run( args.i, args.I, args.w, args.o )
+a.run(args.i, args.I, args.w, args.o)
 
 # ----------------------------------------------------------------------------

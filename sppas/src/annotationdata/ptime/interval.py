@@ -36,9 +36,10 @@
 # ----------------------------------------------------------------------------
 
 import logging
+
 import baseplacement
 import duration
-from point import TimePoint
+from .point import TimePoint
 
 # ----------------------------------------------------------------------------
 

@@ -44,12 +44,13 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # Imports
 # ----------------------------------------------------------------------------
 
-from annotationdata.pitch       import Pitch
-from annotationdata.label.label import Label
-from annotationdata.ptime.point import TimePoint
-from annotationdata.annotation  import Annotation
+from ..pitch import Pitch
+from ..label.label import Label
+from ..ptime.point import TimePoint
+from ..annotation import Annotation
 
 # ----------------------------------------------------------------------------
+
 
 class HzPitch( Pitch ):
     """

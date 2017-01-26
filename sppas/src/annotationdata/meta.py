@@ -41,6 +41,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
+
 class MetaObject(object):
     """
     @authors: Jibril Saffi, Brigitte Bigi

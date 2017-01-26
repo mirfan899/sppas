@@ -3,8 +3,8 @@
 
 import unittest
 
-from annotationdata.label.text import Text
-from annotationdata.label.label import Label
+from ..label.text import Text
+from ..label.label import Label
 
 # ---------------------------------------------------------------------------
 

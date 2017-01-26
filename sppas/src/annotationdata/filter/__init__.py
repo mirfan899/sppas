@@ -38,7 +38,8 @@ import functools
 
 import _bools
 import _relations
-from annotationdata.tier import Tier
+
+from ..tier import Tier
 
 # ---------------------------------------------------------------------------
 

@@ -52,16 +52,17 @@ import os.path
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
-SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
+SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from annotations.Repet.sppasrepet import sppasRepet
+from sppas.src.annotations.Repet.sppasrepet import sppasRepet
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -i file [options]" % os.path.basename(PROGRAM), description="Self- and Other- repetitions detection.")
+parser = ArgumentParser(usage="%s -i file [options]" % os.path.basename(PROGRAM),
+                        description="Self- and Other- repetitions detection.")
 
 parser.add_argument("-i", metavar="file", required=True, help='Input file name with time-aligned tokens of the main speaker')
 

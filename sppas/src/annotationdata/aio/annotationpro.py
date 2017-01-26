@@ -47,25 +47,19 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import xml.etree.cElementTree as ET
 import datetime
 
-from annotationdata.transcription  import Transcription
-from annotationdata.tier           import Tier
-from annotationdata.label.label    import Label
-from annotationdata.label.text     import Text
-from annotationdata.ptime.location import Location
-import annotationdata.ptime.point
-from annotationdata.ptime.interval      import TimeInterval
-from annotationdata.ptime.disjoint      import TimeDisjoint
-from annotationdata.ptime.framepoint    import FramePoint
-from annotationdata.ptime.frameinterval import FrameInterval
-from annotationdata.ptime.framedisjoint import FrameDisjoint
-from annotationdata.ptime.localization  import Localization
-from annotationdata.annotation          import Annotation
-from annotationdata.media               import Media
+from ..transcription import Transcription
+from ..label.label import Label
+from ..ptime.location import Location
+from ..ptime.interval import TimeInterval
+from ..ptime.localization import Localization
+from ..annotation import Annotation
+from ..media import Media
+from ..ptime.point import TimePoint
 
-from utils import indent
-from utils import gen_id
-from utils import merge_overlapping_annotations
-from utils import point2interval
+from .utils import indent
+from .utils import gen_id
+from .utils import merge_overlapping_annotations
+from .utils import point2interval
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -140,10 +134,11 @@ UpperLowerDict['projectnoises']="ProjectNoises"
 
 # ---------------------------------------------------------------------------
 
-def TimePoint(time):
-    return annotationdata.ptime.point.TimePoint(time, ANTX_RADIUS)
+def AntxTimePoint(time):
+    return TimePoint(time, ANTX_RADIUS)
 
 # ---------------------------------------------------------------------------
+
 
 class Antx(Transcription):
     """
@@ -260,9 +255,9 @@ class Antx(Transcription):
             start = start / float( self.metadata.get('samplerate', 44100) )
             end   = end   / float( self.metadata.get('samplerate', 44100) )
             if end > start:
-                location = Location(Localization(TimeInterval(TimePoint(start), TimePoint(end))))
+                location = Location(Localization(TimeInterval(AntxTimePoint(start), AntxTimePoint(end))))
             else:
-                location = Location(Localization(TimePoint(start)))
+                location = Location(Localization(AntxTimePoint(start)))
             annotation = Annotation(location, label)
 
             # Put the other information in metadata

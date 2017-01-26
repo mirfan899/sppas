@@ -44,20 +44,22 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 import sys
 
 try:
-	import wx
+    import wx
 except ImportError:
-	exit(2)
+    sys.exit(2)
 
 # ----------------------------------------------------------------------------
+
 
 def get_wx_version():
     try:
         wxv = wx.version().split()[0]
     except Exception:
         wxv = '2'
-    return int( wxv[0] )
+    return int(wxv[0])
 
 # ----------------------------------------------------------------------------
+
 
 if __name__=="__main__":
     version = get_wx_version()

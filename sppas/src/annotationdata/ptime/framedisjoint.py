@@ -38,8 +38,8 @@
 import baseplacement
 import duration
 
-from framepoint import FramePoint
-from frameinterval import FrameInterval
+from .framepoint import FramePoint
+from .frameinterval import FrameInterval
 
 # ----------------------------------------------------------------------------
 

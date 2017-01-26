@@ -3,13 +3,13 @@
 
 import unittest
 
-from annotationdata.tier import Tier
-from annotationdata.label.label import Label
-from annotationdata.ptime.point import TimePoint
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.annotation import Annotation
-from annotationdata.media import Media
-from annotationdata.ctrlvocab import CtrlVocab
+from ..tier import Tier
+from ..label.label import Label
+from ..ptime.point import TimePoint
+from ..ptime.interval import TimeInterval
+from ..annotation import Annotation
+from ..media import Media
+from ..ctrlvocab import CtrlVocab
 
 # ---------------------------------------------------------------------------
 

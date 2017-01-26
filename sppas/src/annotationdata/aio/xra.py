@@ -37,24 +37,24 @@ import logging
 from datetime import datetime
 import xml.etree.cElementTree as ET
 
-from annotationdata.transcription       import Transcription
-from annotationdata.media               import Media
-from annotationdata.ctrlvocab           import CtrlVocab
+from ..transcription import Transcription
+from ..media import Media
+from ..ctrlvocab import CtrlVocab
 
-from annotationdata.annotation          import Annotation
-from annotationdata.label.label         import Label
-from annotationdata.label.text          import Text
-from annotationdata.ptime.location      import Location
-from annotationdata.ptime.localization  import Localization
-from annotationdata.ptime.point         import TimePoint
-from annotationdata.ptime.interval      import TimeInterval
-from annotationdata.ptime.disjoint      import TimeDisjoint
-from annotationdata.ptime.framepoint    import FramePoint
-from annotationdata.ptime.frameinterval import FrameInterval
-from annotationdata.ptime.framedisjoint import FrameDisjoint
+from ..annotation import Annotation
+from ..label.label import Label
+from ..label.text import Text
+from ..ptime.location import Location
+from ..ptime.localization import Localization
+from ..ptime.point import TimePoint
+from ..ptime.interval import TimeInterval
+from ..ptime.disjoint import TimeDisjoint
+from ..ptime.framepoint import FramePoint
+from ..ptime.frameinterval import FrameInterval
+from ..ptime.framedisjoint import FrameDisjoint
 
-from utils import indent
-from utils import gen_id
+from .utils import indent
+from .utils import gen_id
 
 # ---------------------------------------------------------------------------
 
@@ -80,9 +80,6 @@ class XRA(Transcription):
 
         """
         Transcription.__init__(self, name, mintime, maxtime)
-
-    # -----------------------------------------------------------------
-
 
     # -----------------------------------------------------------------
     # Read XRA 1.1 and 1.2

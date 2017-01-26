@@ -41,6 +41,7 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
+
 class Text(object):
 
     def __init__(self, text, score=1., data_type="str"):

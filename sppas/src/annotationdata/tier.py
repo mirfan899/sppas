@@ -41,15 +41,16 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ---------------------------------------------------------------------------
 
-from annotation  import Annotation
-from ptime.point import TimePoint
-from meta        import MetaObject
+from .annotation import Annotation
+from .ptime.point import TimePoint
+from .meta import MetaObject
 
 from utils.deprecated import deprecated
 
 # ---------------------------------------------------------------------------
 
-class Tier( MetaObject ):
+
+class Tier(MetaObject):
     """
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com

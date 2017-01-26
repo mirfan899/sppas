@@ -47,11 +47,11 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import codecs
 import datetime
 
-from annotationdata.transcription  import Transcription
-from annotationdata.label.label    import Label
-import annotationdata.ptime.point
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.annotation     import Annotation
+from ..transcription import Transcription
+from ..label.label import Label
+from ..ptime.point import TimePoint
+from ..ptime.interval import TimeInterval
+from ..annotation import Annotation
 
 # ----------------------------------------------------------------------------
 
@@ -59,10 +59,11 @@ SUBTITLE_RADIUS = 0.005
 
 # ----------------------------------------------------------------------------
 
-def TimePoint(time):
-    return annotationdata.ptime.point.TimePoint(time, SUBTITLE_RADIUS)
+def SubTimePoint(time):
+    return TimePoint(time, SUBTITLE_RADIUS)
 
 # ----------------------------------------------------------------------------
+
 
 class SubRip(Transcription):
     """
@@ -111,8 +112,8 @@ class SubRip(Transcription):
                     line = fp.next()  # skip number
 
                     start, stop = map(SubRip.__parseTime, line.split('-->'))
-                    time = TimeInterval(TimePoint(float(start)),
-                                        TimePoint(float(stop)))
+                    time = TimeInterval(SubTimePoint(float(start)),
+                                        SubTimePoint(float(stop)))
 
                     line = fp.next()
                     label = line.strip()
@@ -235,8 +236,8 @@ class SubViewer(Transcription):
             try:
                 while True:
                     start, stop = map(SubViewer.__parseTime, line.split(','))
-                    time = TimeInterval(TimePoint(delay + float(start)),
-                                        TimePoint(delay + float(stop)))
+                    time = TimeInterval(SubTimePoint(delay + float(start)),
+                                        SubTimePoint(delay + float(stop)))
                     line = fp.next()
 
                     label = ''

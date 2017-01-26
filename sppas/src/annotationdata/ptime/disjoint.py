@@ -38,8 +38,8 @@
 import baseplacement
 import duration
 
-from point    import TimePoint
-from interval import TimeInterval
+from .point import TimePoint
+from .interval import TimeInterval
 
 # ----------------------------------------------------------------------------
 
@@ -48,6 +48,7 @@ __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
+
 
 class TimeDisjoint(baseplacement.BasePlacement):
     """

@@ -48,14 +48,14 @@ __copyright__ = """Copyright (C) 2011-2014  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import sys
-import os
 import os.path
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
-SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
+SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
-from annotations.Syll.sppassyll import sppasSyll
+
+from sppas.src.annotations.Syll.sppassyll import sppasSyll
 
 
 # ----------------------------------------------------------------------------
@@ -64,7 +64,9 @@ from annotations.Syll.sppassyll import sppasSyll
 
 epilogue = "!!!!!!!  if no output is given, the output is the input  !!!!!!!"
 
-parser = ArgumentParser(usage="%s -r config [options]" % os.path.basename(PROGRAM), prog=PROGRAM, description="Automatic Syllabification command line interface.", epilog=epilogue)
+parser = ArgumentParser(usage="%s -r config [options]" % os.path.basename(PROGRAM), prog=PROGRAM,
+                        description="Automatic Syllabification command line interface.",
+                        epilog=epilogue)
 
 parser.add_argument("-r", "--config", required=True, help='Rules configuration file name')
 parser.add_argument("-i", metavar="file", required=True, help='Input file name (time-aligned phonemes)')

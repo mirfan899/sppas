@@ -47,6 +47,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
+
 class FrameInterval(baseplacement.BasePlacement):
     """
     @author:  Brigitte Bigi

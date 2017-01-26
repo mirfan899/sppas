@@ -1,14 +1,13 @@
-#!/usr/bin/env python2
 # -*- coding:utf-8 -*-
 
 import unittest
 
-from annotationdata.label.label import Label
-from annotationdata.ptime.point import TimePoint
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.annotation import Annotation
-from annotationdata.transcription import Transcription
-from annotationdata.tier import Tier
+from ..label.label import Label
+from ..ptime.point import TimePoint
+from ..ptime.interval import TimeInterval
+from ..annotation import Annotation
+from ..transcription import Transcription
+from ..tier import Tier
 
 # ---------------------------------------------------------------------------
 

@@ -1,15 +1,14 @@
-#!/usr/bin/env python2
 # -*- coding:utf-8 -*-
 
 import unittest
 
-from annotationdata.ctrlvocab import CtrlVocab
-from annotationdata.tier import Tier
-from annotationdata.label.label import Label
-from annotationdata.label.text import Text
-from annotationdata.ptime.point import TimePoint
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.annotation import Annotation
+from ..ctrlvocab import CtrlVocab
+from ..tier import Tier
+from ..label.label import Label
+from ..label.text import Text
+from ..ptime.point import TimePoint
+from ..ptime.interval import TimeInterval
+from ..annotation import Annotation
 
 # ---------------------------------------------------------------------------
 

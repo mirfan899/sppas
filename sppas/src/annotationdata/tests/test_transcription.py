@@ -3,10 +3,10 @@
 
 import unittest
 
-from annotationdata.tier import Tier
-from annotationdata.transcription import Transcription
-from annotationdata.ctrlvocab import CtrlVocab
-from annotationdata.media import Media
+from ..tier import Tier
+from ..transcription import Transcription
+from ..ctrlvocab import CtrlVocab
+from ..media import Media
 
 # ---------------------------------------------------------------------------
 

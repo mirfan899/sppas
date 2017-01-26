@@ -43,22 +43,24 @@ import os.path
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
-SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
+SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from annotations.Phon.sppasphon import sppasPhon
-from annotations.Phon.phonetize import DictPhon
-from resources.dictpron         import DictPron
-from resources.mapping          import Mapping
-from utils.fileutils            import setup_logging
+from sppas.src.annotations.Phon.sppasphon import sppasPhon
+from sppas.src.annotations.Phon.phonetize import DictPhon
+from sppas.src.resources.dictpron         import DictPron
+from sppas.src.resources.mapping          import Mapping
+from sppas.src.utils.fileutils            import setup_logging
 
-from sp_glob import UNKSTAMP
+from sppas.src.sp_glob import UNKSTAMP
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -r dict [options]" % os.path.basename(PROGRAM), prog=PROGRAM, description="Phonetization automatic annotation.")
+parser = ArgumentParser(usage="%s -r dict [options]" % os.path.basename(PROGRAM),
+                        prog=PROGRAM,
+                        description="Phonetization automatic annotation.")
 
 parser.add_argument("-r", "--dict", required=True, help='Pronunciation dictionary file name (HTK-ASCII format).')
 parser.add_argument("-m", "--map", required=False, help='Pronunciation mapping table. It is used to generate new pronunciations by mapping phonemes of the dictionary.')

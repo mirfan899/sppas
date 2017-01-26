@@ -5,12 +5,12 @@ import unittest
 import os
 import shutil
 
-from annotationdata.label.label import Label
-from annotationdata.ptime.point import TimePoint
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.annotation import Annotation
-from annotationdata.aio.praat import TextGrid
-from utils.fileutils import sppasFileUtils
+from ..label.label import Label
+from ..ptime.point import TimePoint
+from ..ptime.interval import TimeInterval
+from ..annotation import Annotation
+from ..aio.praat import TextGrid
+from sppas.src.utils.fileutils import sppasFileUtils
 
 # ---------------------------------------------------------------------------
 

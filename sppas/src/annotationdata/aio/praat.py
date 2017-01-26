@@ -47,26 +47,27 @@ import codecs
 import re
 import logging
 
-from utils import merge_overlapping_annotations
-from utils import fill_gaps
-from annotationdata.transcription import Transcription
-from annotationdata.pitch import Pitch
-from annotationdata.label.label import Label
-import annotationdata.ptime.point
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.annotation import Annotation
-from annotationdata.tier import Tier
+from ..transcription import Transcription
+from ..pitch import Pitch
+from ..label.label import Label
+from ..ptime.point import TimePoint
+from ..ptime.interval import TimeInterval
+from ..annotation import Annotation
+from ..tier import Tier
+
+from .utils import merge_overlapping_annotations
+from .utils import fill_gaps
 
 # ----------------------------------------------------------------------------
 
 PRAAT_RADIUS = 0.0005
 
+
+def PraatTimePoint(time):
+    return TimePoint(time, PRAAT_RADIUS)
+
 # ----------------------------------------------------------------------------
 
-def TimePoint(time):
-    return annotationdata.ptime.point.TimePoint(time, PRAAT_RADIUS)
-
-# ----------------------------------------------------------------------------
 
 def parse_int(line):
     """
@@ -83,6 +84,7 @@ def parse_int(line):
 
 # ----------------------------------------------------------------------------
 
+
 def parse_float(line):
     """
     Parse a floating point value from a line of a Praat formatted file.
@@ -97,6 +99,7 @@ def parse_float(line):
             repr(line))
 
 # ----------------------------------------------------------------------------
+
 
 def parse_string(iterator):
     """
@@ -122,6 +125,7 @@ def parse_string(iterator):
 
 # ----------------------------------------------------------------------------
 
+
 def detect_praat_file(filename, ftype):
     with codecs.open(filename, 'r', 'utf-8') as it:
         fileType = parse_string(it)
@@ -129,6 +133,7 @@ def detect_praat_file(filename, ftype):
         return (fileType == "ooTextFile" and objectClass == ftype)
 
 # ----------------------------------------------------------------------------
+
 
 class TextGrid(Transcription):
     """
@@ -253,7 +258,7 @@ class TextGrid(Transcription):
         loc_s = parse_float(it.next())
         label = parse_string(it)
 
-        tier.Add(Annotation(TimePoint(loc_s), Label(label)))
+        tier.Add(Annotation(PraatTimePoint(loc_s), Label(label)))
 
     # ------------------------------------------------------------------------
 
@@ -267,8 +272,8 @@ class TextGrid(Transcription):
              pointing where the annotation starts
         @param tier  the tier where we will add the read annotation
         """
-        beg = TimePoint(parse_float(it.next()))
-        end = TimePoint(parse_float(it.next()))
+        beg = PraatTimePoint(parse_float(it.next()))
+        end = PraatTimePoint(parse_float(it.next()))
         label = parse_string(it)
         label = label.replace('""', '"') # praat double quotes.
         interval = TimeInterval(beg, end)
@@ -318,8 +323,8 @@ class TextGrid(Transcription):
         # Fill empty tiers because TextGrid does not support empty tiers.
         if tier.IsEmpty():
             tier.Append(Annotation(
-                TimeInterval(TimePoint(self.GetMinTime()),
-                             TimePoint(self.GetMaxTime()))))
+                TimeInterval(PraatTimePoint(self.GetMinTime()),
+                             PraatTimePoint(self.GetMaxTime()))))
 
         if tier.IsTimeInterval() is False and tier.IsTimePoint() is False:
             for ann in tier:
@@ -449,7 +454,7 @@ class PitchTier(Pitch):
                     value = parse_float(it.next())
 
                     self._tier.Append(
-                        Annotation(TimePoint(number), Label(value, 'float')))
+                        Annotation(PraatTimePoint(number), Label(value, 'float')))
             except StopIteration:
                 pass
                 # FIXME: we should probably warn the user
@@ -582,7 +587,7 @@ class IntensityTier(Transcription):
                     value = parse_float(it.next())
 
                     self._tier.Append(
-                        Annotation(TimePoint(number), Label(value, 'float')))
+                        Annotation(PraatTimePoint(number), Label(value, 'float')))
             except StopIteration:
                 pass
                 # FIXME: we should probably warn the user
@@ -654,7 +659,7 @@ class IntensityTier(Transcription):
         tier = self.NewTier()
         number = 0
         for v in range(values):
-            tier.Append(Annotation(TimePoint(number), Label(v, 'float')))
+            tier.Append(Annotation(PraatTimePoint(number), Label(v, 'float')))
             number = number + delta
 
         self._tier = tier

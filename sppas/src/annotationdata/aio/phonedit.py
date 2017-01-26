@@ -48,24 +48,24 @@ import codecs
 from datetime import datetime
 import re
 
-from annotationdata.transcription  import Transcription
-from annotationdata.annotation     import Annotation
-from annotationdata.label.label    import Label
-from annotationdata.ptime.interval import TimeInterval
-import annotationdata.ptime.point
+from ..transcription import Transcription
+from ..annotation import Annotation
+from ..label.label import Label
+from ..ptime.interval import TimeInterval
+from ..ptime.point import TimePoint
 
 # ----------------------------------------------------------------------------
 
 PHONEDIT_RADIUS = 0.0005
 
+
+def PhoneditTimePoint(time):
+    return TimePoint(time, PHONEDIT_RADIUS)
+
 # ----------------------------------------------------------------------------
 
-def TimePoint(time):
-    return annotationdata.ptime.point.TimePoint(time, PHONEDIT_RADIUS)
 
-# ----------------------------------------------------------------------------
-
-class Phonedit( Transcription ):
+class Phonedit(Transcription):
     """
     @authors: Tatusya Watanabe, Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -116,13 +116,13 @@ class Phonedit( Transcription ):
                     line = line.replace(section_tier, "")
                     line = line.strip().strip('"')
                     if new_tier is not None:
-                        new_tier.SetName( line )
+                        new_tier.SetName(line)
                 elif line.startswith("LBL_LEVEL"):
                     match = re.match(self.PATTERN_ANNOTATION, line)
                     if match:
                         label = Label(match.group(1).strip('"'))
-                        begin = TimePoint(float(match.group(2)) / 1000)
-                        end   = TimePoint(float(match.group(3)) / 1000)
+                        begin = PhoneditTimePoint(float(match.group(2)) / 1000)
+                        end = PhoneditTimePoint(float(match.group(3)) / 1000)
                         # annotationdata does not support degenerated intervals.
                         # then we replace interval by point
                         if begin == end:
@@ -136,9 +136,8 @@ class Phonedit( Transcription ):
 
         # Update
         self.SetMinTime(0)
-        self.SetMaxTime( self.GetEnd() )
+        self.SetMaxTime(self.GetEnd())
 
-    # End read
     # ------------------------------------------------------------------------
 
     def write(self, filename, encoding="iso8859-1"):
@@ -148,16 +147,16 @@ class Phonedit( Transcription ):
         @param encoding: encoding.
         """
         code_a = ord("A")
-        lastmodified = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+        last_modified = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
         with codecs.open(filename, mode="w", encoding=encoding) as fp:
             for index_tier, tier in enumerate(self):
                 level = "LEVEL_%s%s" % (
                         chr(code_a + index_tier / 26),
                         chr(code_a + index_tier % 26))
                 fp.write("[DSC_%s]\n" % level)
-                fp.write("DSC_LEVEL_NAME=\"%s\"\n" %  tier.GetName())
-                fp.write("DSC_LEVEL_SOFTWARE=%s\n" %  "SPPAS")
-                fp.write("DSC_LEVEL_LASTMODIF_DATE=%s\n" % lastmodified)
+                fp.write("DSC_LEVEL_NAME=\"%s\"\n" % tier.GetName())
+                fp.write("DSC_LEVEL_SOFTWARE=%s\n" % "SPPAS")
+                fp.write("DSC_LEVEL_LASTMODIF_DATE=%s\n" % last_modified)
                 fp.write("[LBL_%s]\n" % level)
                 for index_ann, ann in enumerate(tier):
                     fp.write("LBL_%s_%06d= \"%s\" " % (
@@ -165,11 +164,10 @@ class Phonedit( Transcription ):
                     if ann.GetLocation().IsPoint():
                         # Phonedit supports degenerated intervals
                         begin = ann.GetLocation().GetPointMidpoint() * 1000
-                        end   = begin
+                        end = begin
                     else:
                         begin = ann.GetLocation().GetBeginMidpoint() * 1000
-                        end   = ann.GetLocation().GetEndMidpoint() * 1000
-                    fp.write("%f %f\n" %  (begin, end))
+                        end = ann.GetLocation().GetEndMidpoint() * 1000
+                    fp.write("%f %f\n" % (begin, end))
 
-    # End write
     # ------------------------------------------------------------------------

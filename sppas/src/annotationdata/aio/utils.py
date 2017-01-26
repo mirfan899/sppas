@@ -33,32 +33,35 @@
 #
 # ---------------------------------------------------------------------------
 
-from annotationdata.ptime.point    import TimePoint
-from annotationdata.label.label    import Label
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.interval import TimePoint
-from annotationdata.annotation     import Annotation
-from annotationdata.tier           import Tier
-
 import random
 import string
 
+from ..label.label import Label
+from ..ptime.interval import TimeInterval
+from ..ptime.interval import TimePoint
+from ..annotation import Annotation
+from ..tier import Tier
+
 # ---------------------------------------------------------------------------
+
 
 def random_hexachar(y, lowercase=True):
     if lowercase:
         return ''.join(random.choice('abcdef') for x in range(y))
     return ''.join(random.choice('ABCDEF') for x in range(y))
 
+
 def random_char(y, lowercase=True):
     if lowercase:
         return ''.join(random.choice(string.ascii_lowercase) for x in range(y))
     return ''.join(random.choice(string.ascii_letters) for x in range(y))
 
+
 def random_int(y):
     return ''.join(str(random.randint(0,9)) for x in range(y))
 
 # ---------------------------------------------------------------------------
+
 
 def indent(elem, level=0):
     """
@@ -79,10 +82,10 @@ def indent(elem, level=0):
         if level and (not elem.tail or not elem.tail.strip()):
             elem.tail = i
 
-# End indent
 # -----------------------------------------------------------------
 
-def gen_id( ):
+
+def gen_id():
     """
     Generate a unique ID, of type GUID - globally unique identifier.
 
@@ -122,10 +125,12 @@ def gen_id( ):
 
 # -----------------------------------------------------------------
 
+
 def format_float( f ):
-    return round(float(f),4)
+    return round(float(f), 4)
 
 # -----------------------------------------------------------------
+
 
 def fill_gaps(tier, mintime, maxtime):
     """
@@ -161,7 +166,6 @@ def fill_gaps(tier, mintime, maxtime):
 
     return new_tier
 
-# End fill_gaps
 # ------------------------------------------------------------------------
 
 
@@ -184,7 +188,6 @@ def unfill_gaps(tier):
 
     return new_tier
 
-# End unfill_gaps
 # ------------------------------------------------------------------------
 
 
@@ -285,8 +288,8 @@ def merge_overlapping_annotations(tier, separator=' '):
 
     return new_tier
 
-# End merge_overlapping_annotations
 # ------------------------------------------------------------------------
+
 
 def point2interval(tier, fixradius=None):
     """

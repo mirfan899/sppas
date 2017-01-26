@@ -35,11 +35,13 @@
 # File: localization.py
 # ----------------------------------------------------------------------------
 
-import baseplacement
-
 __docformat__ = """epytext"""
 __authors__ = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+
+import baseplacement
+
+# ----------------------------------------------------------------------------
 
 
 class Localization(object):

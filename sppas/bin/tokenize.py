@@ -51,22 +51,24 @@ import os.path
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
-SPPAS = os.path.join(os.path.dirname(os.path.dirname(PROGRAM)), "src")
+SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from annotations.Token.sppastok import sppasTok
-from annotations.Token.tokenize import DictTok
-from resources.vocab import Vocabulary
-from resources.dictrepl import DictRepl
-from utils.fileutils import setup_logging
+from sppas.src.annotations.Token.sppastok import sppasTok
+from sppas.src.annotations.Token.tokenize import DictTok
+from sppas.src.resources.vocab import Vocabulary
+from sppas.src.resources.dictrepl import DictRepl
+from sppas.src.utils.fileutils import setup_logging
 
-from sp_glob import RESOURCES_PATH
+from sppas.src.sp_glob import RESOURCES_PATH
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -r vocab [options]" % os.path.basename(PROGRAM), prog=PROGRAM, description="Text normalization command line interface.")
+parser = ArgumentParser(usage="%s -r vocab [options]" % os.path.basename(PROGRAM),
+                        prog=PROGRAM,
+                        description="Text normalization command line interface.")
 
 parser.add_argument("-r", "--vocab",      required=True, help='Vocabulary file name')
 parser.add_argument("-i", metavar="file", required=False, help='Input file name')

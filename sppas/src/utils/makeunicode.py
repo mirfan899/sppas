@@ -46,7 +46,8 @@ from __future__ import unicode_literals
 import sys
 import codecs
 import re
-from sp_glob import encoding
+
+from sppas.src.sp_glob import encoding
 
 # ---------------------------------------------------------------------------
 

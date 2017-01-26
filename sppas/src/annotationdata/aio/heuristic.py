@@ -33,19 +33,21 @@
 #
 # ---------------------------------------------------------------------------
 
+from .text import RawText, CSV
+from .praat import TextGrid, PitchTier, IntensityTier
+from .signaix import HzPitch
+from .transcriber import Transcriber
+from .xra import XRA
+from .phonedit import Phonedit
+from .htk import Label, MasterLabel
+from .subtitle import SubRip, SubViewer
+from .sclite import TimeMarkedConversation, SegmentTimeMark
+from .elan import Elan
+from .xtrans import Xtrans
+from .annotationpro import Antx
 
-from text import RawText, CSV
-from praat import TextGrid, PitchTier, IntensityTier
-from signaix import HzPitch
-from transcriber import Transcriber
-from xra import XRA
-from phonedit import Phonedit
-from htk import Label, MasterLabel
-from subtitle import SubRip, SubViewer
-from sclite import TimeMarkedConversation, SegmentTimeMark
-from elan import Elan
-from xtrans import Xtrans
-from annotationpro import Antx
+# ---------------------------------------------------------------------------
+
 
 class HeuristicFactory(object):
     __OPTS = [
@@ -85,6 +87,3 @@ class HeuristicFactory(object):
                     return type()
             except Exception:
                 continue
-
-    # End NewTrs
-    # -----------------------------------------------------------------

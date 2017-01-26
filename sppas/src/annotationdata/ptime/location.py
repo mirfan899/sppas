@@ -41,6 +41,7 @@ import copy
 
 # ----------------------------------------------------------------------------
 
+
 class Location(object):
     """
     @author:       Brigitte Bigi

@@ -43,17 +43,18 @@ import os.path
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
-SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
+SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from annotations.Chunks.sppaschunks import sppasChunks
-from utils.fileutils                import setup_logging
+from sppas.src.annotations.Chunks.sppaschunks import sppasChunks
+from sppas.src.utils.fileutils import setup_logging
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -w file -i file -r dir -o file [options]" % os.path.basename(PROGRAM), description="Speech segmentation at chunks level.")
+parser = ArgumentParser(usage="%s -w file -i file -r dir -o file [options]" % os.path.basename(PROGRAM),
+                        description="Speech segmentation at chunks level.")
 
 parser.add_argument("-w", metavar="file", required=True,  help='Input audio file name')
 parser.add_argument("-i", metavar="file", required=True,  help='Input file name with raw phonetization')
