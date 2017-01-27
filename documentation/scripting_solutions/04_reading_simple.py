@@ -26,7 +26,7 @@ myfile="phonemes.csv"
 f = open(myfile)
 for l in f:
     # do something with the line stored in variable l
-    print l.strip()
+    print(l.strip())
 f.close()
 
 # ----------------------------------------------------------------------------

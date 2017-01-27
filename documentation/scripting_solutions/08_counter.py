@@ -29,8 +29,7 @@ corpus2 = 'corpus2.txt'
 # ---------------------------------------------------------------------------
 
 def read_file(filename):
-    """
-    Read the whole file, return lines into a list.
+    """ Read the whole file, return lines into a list.
 
     @param filename (string) Name of the file to read, including path.
     @return List of lines
@@ -39,7 +38,7 @@ def read_file(filename):
     with codecs.open(filename, 'r', encoding="utf8") as f:
         lines = f.readlines()
 
-    mylist = []
+    mylist = list()
     for l in lines:
         mylist.append(l.strip())
     return mylist
@@ -47,8 +46,7 @@ def read_file(filename):
 # ---------------------------------------------------------------------------
 
 def total(mylist, item):
-    """
-    Return the total number of the item in the list.
+    """ Return the total number of the item in the list.
 
     @param mylist (list) list of elements
     @param item (any) an element of the list (or not!)
@@ -88,8 +86,7 @@ def percentage(mylist, item):
 # ---------------------------------------------------------------------------
 
 def get_occranks(counter):
-    """
-    Return a dictionary with key=occurrence, value=rank.
+    """ Return a dictionary with key=occurrence, value=rank.
 
     @param counter (Counter)
     @return dict
@@ -112,8 +109,7 @@ def get_occranks(counter):
 # ---------------------------------------------------------------------------
 
 def get_ranks(counter):
-    """
-    Return a dictionary with key=token, value=rank.
+    """ Return a dictionary with key=token, value=rank.
 
     @param counter (Counter)
     @return dict
@@ -129,8 +125,7 @@ def get_ranks(counter):
 # ---------------------------------------------------------------------------
 
 def zipf(ranks, item):
-    """
-    Return the Zipf Law value of an item.
+    """ Return the Zipf Law value of an item.
     Zipf's law states that given some corpus of natural language utterances,
     the frequency of any word is inversely proportional to its rank in the
     frequency table. Thus the most frequent word will occur approximately
@@ -142,15 +137,14 @@ def zipf(ranks, item):
     @return Zipf value or -1 if the entry is missing
 
     """
-    if ranks.has_key(item):
+    if item in ranks:
         return 0.1 / ranks[item]
     return -1
 
 # ---------------------------------------------------------------------------
 
 def tfidf(documents, item):
-    """
-    Return the tf.idf of an item.
+    """ Return the tf.idf of an item.
     Term frequency–inverse document frequency, is a numerical statistic
     that is intended to reflect how important a word is to a document in a
     collection or corpus. The tf.idf value increases proportionally to the
@@ -193,20 +187,20 @@ counter2 = collections.Counter(phones2)
 # Hapax
 hapax1 = [k for k in counter1.keys() if counter1[k]==1]
 hapax2 = [k for k in counter2.keys() if counter2[k]==1]
-print "Corpus 1, Number of hapax: ", len(hapax1)
-print "Corpus 2, Number of hapax: ", len(hapax2)
+print("Corpus 1, Number of hapax: {:d}.".format(len(hapax1)))
+print("Corpus 2, Number of hapax: {:d}.".format(len(hapax2)))
 
 # Zipf law
 ranks1 = get_ranks(counter1)
 ranks2 = get_ranks(counter2)
 for t in ['@', 'e', "E"]:
-    print "Corpus 1: ",t,total(phones1,t),frequency(phones1,t),ranks1.get(t,-1),zipf(ranks1,t)
-    print "Corpus 2: ",t,total(phones2,t),frequency(phones2,t),ranks2.get(t,-1),zipf(ranks2,t)
+    print("Corpus 1: {:s} {:d} {:f} {:d} {:f}".format(t,total(phones1,t),frequency(phones1,t),ranks1.get(t,-1),zipf(ranks1,t)))
+    print("Corpus 2: {:s} {:d} {:f} {:d} {:f}".format(t,total(phones2,t),frequency(phones2,t),ranks2.get(t,-1),zipf(ranks2,t)))
 
 # TF.IDF
-print "TF.IDF @: ",tfidf([phones1,phones2], '@')
-print "TF.IDF e: ",tfidf([phones1,phones2], 'e')
-print "TF.IDF E: ",tfidf([phones1,phones2], 'E')
+print("TF.IDF @: {0}".format(tfidf([phones1,phones2], '@')))
+print("TF.IDF e: {0}".format(tfidf([phones1,phones2], 'e')))
+print("TF.IDF E: {0}".format(tfidf([phones1,phones2], 'E')))
 
 # ---------------------------------------------------------------------------
 

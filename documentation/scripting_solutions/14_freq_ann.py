@@ -10,26 +10,14 @@
 @summary:      Open an annotated file and print information about tiers.
 
 """
-
-# ----------------------------------------------------------------------------
-# Get SPPAS API
-# ----------------------------------------------------------------------------
-
-import sys
-import os
-from os.path import *
-sys.path.append( join("..","..", "sppas", "src") )
-
-import annotationdata.io
-from annotationdata import Transcription
-from annotationdata import Tier
-
-# ----------------------------------------------------------------------------
-# Python imports
-# ----------------------------------------------------------------------------
-
 import wx
+import sys
+import os.path
+sys.path.append(os.path.join("..",".."))
 
+import sppas.src.annotationdata.aio as aio
+from sppas.src.annotationdata import Transcription
+from sppas.src.annotationdata import Tier
 
 # ----------------------------------------------------------------------------
 # WX Functions
@@ -89,7 +77,7 @@ def checkExtension(filename):
     """ Check if filename is supported by SPPAS. """
 
     # List of accepted extensions
-    extensions = annotationdata.io.extensions
+    extensions = aio.extensions
 
     # Split the extension from the path and normalise it to lowercase.
     ext = os.path.splitext(filename)[-1].lower()
@@ -102,7 +90,7 @@ def printFreqAnn(filename, pattern):
     """ Print the number of occurrences of a pattern in each tier of a file. """
 
     print filename
-    trs = annotationdata.io.read( filename )
+    trs = aio.read( filename )
     pattern = pattern.strip()
 
     for tier in trs:

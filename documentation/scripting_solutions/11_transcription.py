@@ -12,6 +12,16 @@
 """  
 
 # ----------------------------------------------------------------------------
+# Get SPPAS API
+# ----------------------------------------------------------------------------
+import sys
+import os.path
+sys.path.append(os.path.join("..",".."))
+
+import sppas.src.annotationdata.aio as aio
+from sppas.src.annotationdata import Transcription
+
+# ----------------------------------------------------------------------------
 # Variables
 # ----------------------------------------------------------------------------
 
@@ -24,25 +34,13 @@ tiernames=['PhonAlign','TokensAlign', 'toto']
 # The output file name
 outputfilename='F_F_B003-P9-selection.TextGrid'
 
-
-# ----------------------------------------------------------------------------
-# Get SPPAS API
-# ----------------------------------------------------------------------------
-import sys
-import os
-from os.path import *
-sys.path.append( join("..","..", "sppas", "src") )
-
-import annotationdata.io
-from annotationdata import Transcription
-
 # ----------------------------------------------------------------------------
 # Main
 # ----------------------------------------------------------------------------
 
 # Read an annotated file.
-trs = annotationdata.io.read(filename)
-print "Number of tiers: ",len(trs)
+trs = aio.read(filename)
+print("Number of tiers: {:d}.".format(trs.GetSize()))
 
 # Create a new Transcription to add selected tiers.
 newtrs = Transcription()
@@ -51,12 +49,12 @@ newtrs = Transcription()
 for name in tiernames:
     tier = trs.Find(name, case_sensitive=False)
     if tier is not None:
-        newtrs.Append( tier )
-        print "Tier ",tier.GetName(),"successfully added."
+        newtrs.Append(tier)
+        print("Tier {:s} successfully added.".format(tier.GetName()))
     else:
-        print "Error: the file does not contain a tier with name =",name
+        print("Error: the file does not contain a tier with name = {:s}".format(name))
 
 # Save the Transcription into a file.
-annotationdata.io.write(outputfilename, newtrs)
+aio.write(outputfilename, newtrs)
 
 # ----------------------------------------------------------------------------

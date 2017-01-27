@@ -11,14 +11,13 @@
 
 """ 
 
-# Tell python whereis SPPAS API
+# Tell python where is SPPAS API
 import sys
-import os
-from os.path import *
-sys.path.append( join("..","..", "sppas", "src") )
+import os.path
+sys.path.append( os.path.join("..","..") )
 
 # Import SPPAS API
-import annotationdata.io
+import sppas.src.annotationdata.aio as aio
 
 
 # ----------------------------------------------------------------------------
@@ -33,9 +32,9 @@ outputfilename=inputfilename.replace('.TextGrid', '.csv')
 # ----------------------------------------------------------------------------
 
 # Read an annotated file, put content in a Transcription object.
-trs = annotationdata.io.read(inputfilename)
+trs = aio.read(inputfilename)
 
 # Save the Transcription object into a file.
-annotationdata.io.write(outputfilename, trs)
+aio.write(outputfilename, trs)
 
 # ----------------------------------------------------------------------------

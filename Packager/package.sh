@@ -385,7 +385,7 @@ function fct_perform_unittest {
     echo >> $TEMP
     echo " ================================================ " >> $TEMP
     echo " Start test of $1 " >>  $TEMP
-    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/$1" -v -t "$SPPAS/sppas/src" 2>> $TEMP
+    python -m unittest discover -s "$PROGRAM_DIR/sppas/src/$1" -v -t "$SPPAS" -p "test_*.py" 2>> $TEMP
     echo " ================================================ " >> $TEMP
     echo >> $TEMP
 

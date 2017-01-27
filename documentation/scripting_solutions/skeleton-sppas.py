@@ -10,24 +10,22 @@
 @summary:      This is the skeleton of a python script using SPPAS.
 
 """
-
-# Get SPPAS API for reading/writing/modifying annotated files
-import annotationdata.io
-from annotationdata import Transcription
-from annotationdata import Tier
-from annotationdata import Annotation
-from annotationdata import Label
-from annotationdata import TimePoint
-from annotationdata import TimeInterval
-from annotationdata import Sel
-from annotationdata import Rel
-from annotationdata import Filter, SingleFilter, RelationFilter
-
 # Python libraries:
 import os
 import sys
 import codecs
 
+# Get SPPAS API for reading/writing/modifying annotated files
+import sppas.src.annotationdata.aio as aio
+from sppas.src.annotationdata import Transcription
+from sppas.src.annotationdata import Tier
+from sppas.src.annotationdata import Annotation
+from sppas.src.annotationdata import Label
+from sppas.src.annotationdata import TimePoint
+from sppas.src.annotationdata import TimeInterval
+from sppas.src.annotationdata import Sel
+from sppas.src.annotationdata import Rel
+from sppas.src.annotationdata import Filter, SingleFilter, RelationFilter
 
 # ----------------------------------------------------------------------------
 # Global variables

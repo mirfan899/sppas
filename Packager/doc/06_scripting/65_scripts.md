@@ -24,18 +24,18 @@ It will allow to use the SPPAS API in your script.
 # Brief:  Script using the SPPAS API
 # ----------------------------------------------------------------------------
 
-# Get SPPAS API
-import annotationdata.io
-from annotationdata import Transcription
-from annotationdata import Tier
-from annotationdata import Annotation
-from annotationdata import Label
-from annotationdata import TimePoint
-from annotationdata import TimeInterval
-from annotationdata import Bool, Rel
-
 import os
 import sys
+
+# Get SPPAS API
+import sppas.src.annotationdata.aio as aio
+from sppas.src.annotationdata import Transcription
+from sppas.src.annotationdata import Tier
+from sppas.src.annotationdata import Annotation
+from sppas.src.annotationdata import Label
+from sppas.src.annotationdata import TimePoint
+from sppas.src.annotationdata import TimeInterval
+from sppas.src.annotationdata import Bool, Rel
 
 # ----------------------------------------------------------------------------
 
@@ -67,14 +67,14 @@ store it into a `Transcription` object instance, named `trs` in the
 following code, is mainly done as:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines}
-trs = annotationdata.io.read(filename_in)
+trs = aio.read(filename_in)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Save/Write a `Transcription` object instance in a file of any format 
 is mainly done as:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="2"}
-annotationdata.io.write(filename_out, trs)
+aio.write(filename_out, trs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 These two lines of code loads any annotation file (Elan, Praat, Transcriber...)
@@ -141,7 +141,7 @@ For example, `trs[0]` returns the first tier,
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="15"}
 for tier in trs:
     # do something with the tier
-    print tier.GetName()
+    print(tier.GetName())
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 
 >Practice:
@@ -158,14 +158,13 @@ use tier.GetName().
 Test the following code into a script:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="15"}
-trs = annotationdata.io.read(filename)
+trs = aio.read(filename)
 tier = trs[0]
-print tier.GetName()
-tier.SetName( "toto" )
-print tier.GetName()
-print trs[0].GetName()
+print(tier.GetName())
+tier.SetName("toto")
+print(tier.GetName())
+print(trs[0].GetName())
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-
 
 The most useful functions used to manage a Tier object are:
 
@@ -205,14 +204,14 @@ to an annotation:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines}
 if ann.GetLabel().IsEmpty():
-    ann.GetLabel().SetValue( "dummy" )
+    ann.GetLabel().SetValue("dummy")
 if ann.GetLocation().IsPoint():
     p = ann.GetLocation().GetPoint()
-    p.SetValue( 0.234 )
-    p.SetRadius( 0.02 )
+    p.SetMidPoint(0.234)
+    p.SetRadius(0.02)
 if ann.GetLocation().IsInterval():
-    ann.GetLocation().GetBegin().SetValue( 0.123 )
-    ann.GetLocation().GetEnd().SetValue( 0.234 )    
+    ann.GetLocation().GetBegin().SetMidPoint(0.123)
+    ann.GetLocation().GetEnd().SetMidPoint(0.234)    
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 
 If something forbidden is attempted, the object will raise an Exception. 
@@ -284,14 +283,14 @@ does not contain, does not start with or does not end with, as for example:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
 tier = trs.Find("PhonAlign")
 ft = Filter(tier)
-f1 = LabelFilter( Bool(exact='a'), ft)
-f2 = LabelFilter( ~Bool(iexact='a'), ft)
+f1 = LabelFilter(Bool(exact='a'), ft)
+f2 = LabelFilter(~Bool(iexact='a'), ft)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In this example, `f1` is a filter used to get all phonemes with the exact label
 'a'. On the other side, `f2` is a filter that ignores all phonemes matching 
 with 'a' (mentioned by the symbol '~') with a case insensitive comparison
-(iexact means insensite-exact).
+(iexact means insensitive-exact).
 
 For complex search, a selection based on regular expressions is available 
 for advanced users, as `pr = Bool(regexp=R)`.
@@ -328,11 +327,11 @@ predicate = (Bool(icontains="a") | Bool(icontains="e")) & Bool(duration_ge=0.08)
 
 # to create a filter:
 ft = Filter(tier)
-flab = LabelFilter(predicate,ft)
+flab = LabelFilter(predicate, ft)
 
 # to get filtered data from the filter:
 tier = flab.Filter()
-tier.SetName( 'Filtered with a-e-0.8' )
+tier.SetName('Filtered with a-e-0.8')
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 

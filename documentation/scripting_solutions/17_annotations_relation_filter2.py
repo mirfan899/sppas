@@ -12,13 +12,12 @@
 """
 
 import sys
-import os
-from os.path import *
-sys.path.append( join("..","..", "sppas", "src") )
+import os.path
+sys.path.append(os.path.join("..",".."))
 
-import annotationdata.io
-from annotationdata import Transcription
-from annotationdata import Sel, Rel, Filter, SingleFilter, RelationFilter
+import sppas.src.annotationdata.aio as aio
+from sppas.src.annotationdata import Transcription
+from sppas.src.annotationdata import Sel, Rel, Filter, SingleFilter, RelationFilter
 
 # ----------------------------------------------------------------------------
 # Variables
@@ -31,7 +30,7 @@ filename='F_F_B003-P9-merge.TextGrid'
 # ----------------------------------------------------------------------------
 
 # Read an annotated file.
-trs = annotationdata.io.read(filename)
+trs = aio.read(filename)
 
 # Get the expected tier
 tier = trs.Find("TokensAlign", case_sensitive=False)

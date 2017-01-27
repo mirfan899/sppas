@@ -13,14 +13,12 @@
 """
 
 import sys
-import os
-from os.path import *
-sys.path.append( join("..","..", "sppas", "src") )
+import os.path
+sys.path.append(os.path.join("..",".."))
 
-import annotationdata.io
-from annotationdata import Transcription
+import sppas.src.annotationdata.aio as aio
+from sppas.src.annotationdata import Transcription
 
-import sys
 
 # ----------------------------------------------------------------------------
 # Variables
@@ -34,11 +32,11 @@ tiername="PhonAlign"
 # ----------------------------------------------------------------------------
 
 # Read an annotated file.
-trs = annotationdata.io.read(filename)
+trs = aio.read(filename)
 tier = trs.Find(tiername, case_sensitive=False)
 
 if tier is None:
-    print "No tier", tiername, " in file ", filename
+    print("No tier {:s} in file {:s} ".format(tiername,filename))
     sys.exit(1)
 
 # Check the tier type

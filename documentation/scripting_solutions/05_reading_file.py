@@ -24,8 +24,7 @@ myfile="phonemes.csv"
 # ----------------------------------------------------------------------------
 
 def read_file(filename):
-    """
-    Read the whole file, return lines into a list.
+    """ Read the whole file, return lines into a list.
 
     @param filename (string) Name of the file to read, including path.
     @return List of str
@@ -39,15 +38,17 @@ def read_file(filename):
 lines = read_file(myfile)
 
 # before doing something, check the data!
-if not len(lines):
-    print 'Hum... the file was empty!'
+if len(lines) == 0:
+    print('Hum... the file was empty!')
     sys.exit(0)
 
 # do something with the lines
-vowels = []
+vowels = list()
 for l in lines:
     columns = l.split(';')
     if columns[0] == "vowels":
         vowels.append(columns[1])
+
+# then do something on the list of vowels...
 
 # ----------------------------------------------------------------------------

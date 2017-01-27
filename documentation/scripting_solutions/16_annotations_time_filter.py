@@ -12,15 +12,12 @@
 """
 
 import sys
-import os
-from os.path import *
-sys.path.append( join("..","..", "sppas", "src") )
+import os.path
+sys.path.append(os.path.join("..",".."))
 
-import annotationdata.io
-from annotationdata import Transcription
-from annotationdata import Sel, Filter, SingleFilter
-
-import sys
+import sppas.src.annotationdata.aio as aio
+from sppas.src.annotationdata import Transcription
+from sppas.src.annotationdata import Sel, Filter, SingleFilter
 
 # ----------------------------------------------------------------------------
 # Variables
@@ -38,7 +35,7 @@ verbose=True
 
 # Read an annotated file.
 if verbose: print "Read file: ",filename
-trs = annotationdata.io.read(filename)
+trs = aio.read(filename)
 if verbose: print " ... [  OK  ] "
 
 # Get the expected tier
@@ -67,7 +64,7 @@ if verbose: print tier2.GetName(),"has",len(tier2),"annotations."
 t = Transcription()
 t.Append(tier1)
 t.Append(tier2)
-annotationdata.io.write(outputfilename, t)
+aio.write(outputfilename, t)
 if verbose: print outputfilename," saved."
 
 # ----------------------------------------------------------------------------

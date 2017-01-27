@@ -16,15 +16,13 @@
 # Get SPPAS API
 # ----------------------------------------------------------------------------
 
-import sys
-import os
-from os.path import *
-sys.path.append( join("..","..", "sppas", "src") )
-
-import annotationdata.io
-from annotationdata import Transcription
-
 import wx
+import sys
+import os.path
+sys.path.append(os.path.join("..",".."))
+
+import sppas.src.annotationdata.aio as aio
+from sppas.src.annotationdata import Transcription
 
 # ----------------------------------------------------------------------------
 # WX Functions
@@ -84,24 +82,27 @@ def checkExtension(filename):
     ext = os.path.splitext(filename)[-1].lower()
 
     # Check
-    return ext in annotationdata.io.extensions
+    return ext in aio.extensions
 
 
 def checkFile(filename):
     """ Return True if everything is normal. """
 
-    if not len(filename): return False
-    if not checkExtension(filename): return False
+    if len(filename) == 0: 
+        return False
+    if not checkExtension(filename): 
+        return False
+    
     return True
 
 
 def printInfo(filename):
     """ Print information about tiers of a file. """
 
-    print filename
+    print(filename)
 
     # Read the file.
-    trs = annotationdata.io.read(filename)
+    trs = aio.read(filename)
 
     # Print information about tiers
     for tier in trs:
@@ -114,13 +115,12 @@ def printInfo(filename):
         else:
             tiertype = "Unknown"
 
-        # Print all information
-        print " * Name: ", tier.GetName()
-        print "    - Type: ", tiertype
-        print "    - Number of annotations: ", len(tier)
-        print "    - From time: ", tier.GetBegin()
-        print "    - To time: ", tier.GetEnd()
-
+        # Print all informations
+        print(" * Name: {:s}".format(tier.GetName()))
+        print("    - Type: {:s}".format(tiertype))
+        print("    - Number of annotations: {:d}".format(len(tier)))
+        print("    - From time: {:.4f}".format(tier.GetBeginValue()))
+        print("    - To time: {:.4f} ".format(tier.GetEndValue()))
 
 # ----------------------------------------------------------------------------
 # Main
@@ -142,11 +142,11 @@ def main():
         # Get a filename
         filename = wxGetFile()
         # the user said OK or Cancel?
-        if not len(filename):
+        if len(filename) == 0:
             sys.exit(0)
         # Verify if the extension is correct
         if not checkExtension(filename):
-            wxShowErrorMessage( "Un-recognized file extension." )
+            wxShowErrorMessage( "Unknown file extension." )
             sys.exit(1)
         # Now, do the job!
         printInfo(filename)
