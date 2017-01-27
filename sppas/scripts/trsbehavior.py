@@ -1,74 +1,62 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /        Automatic
-#           \__   |__/  |__/  |___| \__      Annotation
-#              \  |     |     |   |    \     of
-#           ___/  |     |     |   | ___/     Speech
-#           =============================
-#
-#           http://www.lpl-aix.fr/~bigi/sppas
-#
-# ---------------------------------------------------------------------------
-# developed at:
-#
-#       Laboratoire Parole et Langage
-#
-#       Copyright (C) 2011-2014  Brigitte Bigi
-#
-#       Use of this software is governed by the GPL, v3
-#       This banner notice must not be removed
-# ---------------------------------------------------------------------------
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: trsbehavior.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-__docformat__ = """epytext"""
-__authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
+        http://www.sppas.org/
 
+        Use of this software is governed by the GNU Public License, version 3.
 
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
 
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    scripts.trsbehavior.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    ... a script to annotate behavior of tiers of an annotated file.
+
+"""
 import sys
-import os
 import os.path
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
-SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
+SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import annotationdata.aio
-from annotationdata import Transcription
-from annotationdata import Tier
-from annotationdata import Annotation
-from annotationdata import Label
-from annotationdata import TimePoint
-from annotationdata import TimeInterval
+import sppas.src.annotationdata.aio
+from sppas.src.annotationdata import Tier
+from sppas.src.annotationdata import Annotation
+from sppas.src.annotationdata import Label
+from sppas.src.annotationdata import TimePoint
+from sppas.src.annotationdata import TimeInterval
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM), description="... a script to annotate behavior of tiers of an annotated file.")
+parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM),
+                        description="... a script to annotate behavior of tiers of an annotated file.")
 
 parser.add_argument("-i", metavar="file",  required=True,  help='Input annotated file name')
 parser.add_argument("-t", metavar="value", required=False, action='append', type=int, help='A tier number (use as many -t options as wanted). Positive or negative value: 1=first tier, -1=last tier.')
@@ -83,7 +71,7 @@ args = parser.parse_args()
 # ----------------------------------------------------------------------------
 # Read
 
-trsinput = annotationdata.aio.read( args.i )
+trsinput = sppas.src.annotationdata.aio.read( args.i )
 
 # Take all tiers or specified tiers
 tiersnumbs = []
@@ -94,13 +82,13 @@ elif args.t:
 
 # ----------------------------------------------------------------------------
 
-delta  = args.d
-start  = int(trsinput.GetMinTime() / delta)
+delta = args.d
+start = int(trsinput.GetMinTime() / delta)
 finish = int(trsinput.GetMaxTime() / delta)
 
 btier = Tier("Behavior")
 
-for i in range(start,finish):
+for i in range(start, finish):
     texts = []
     b = (i+start)*delta
     e = b+delta
@@ -108,8 +96,8 @@ for i in range(start,finish):
     for t in tiersnumbs:
         tier = trsinput[t-1]
         # get only ONE annotation in our range
-        anns = tier.Find( b, e, overlaps=True )
-        if len(anns)>1:
+        anns = tier.Find(b, e, overlaps=True)
+        if len(anns) > 1:
             anni = tier.Near(b+int(delta/2.), direction=0)
             ann = tier[anni]
         else:
@@ -117,25 +105,24 @@ for i in range(start,finish):
         texts.append(ann.GetLabel().GetValue())
 
     # Append in new tier
-    ti = TimeInterval(TimePoint(b,0.0001),TimePoint(e,0.0001))
-    if len(texts)>1:
+    ti = TimeInterval(TimePoint(b, 0.0001), TimePoint(e, 0.0001))
+    if len(texts) > 1:
         missing = False
         for t in texts:
             if len(t.strip()) == 0:
                 # missing annotation label...
-                missing=True
+                missing = True
         if missing is True:
             text = ""
         else:
             text = ";".join(texts)
     else:
         text = str(texts[0])
-    ann = Annotation( ti, Label( text ) )
+    ann = Annotation(ti, Label(text))
     btier.Append(ann)
 
+# ----------------------------------------------------------------------------
 
-#stier = None
-#if len(tiersnumbs) == 2:
 stier = Tier("Synchronicity")
 for ann in btier:
     sann = ann.Copy()
@@ -162,6 +149,6 @@ for ann in btier:
 trsinput.Append(btier)
 trsinput.Append(stier)
 
-annotationdata.aio.write(args.o, trsinput)
+sppas.src.annotationdata.aio.write(args.o, trsinput)
 
 # ----------------------------------------------------------------------------

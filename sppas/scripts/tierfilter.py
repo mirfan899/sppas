@@ -1,3 +1,4 @@
+#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 """
     ..
@@ -29,8 +30,10 @@
 
         ---------------------------------------------------------------------
 
-    tierfilter.py
-    ~~~~~~~~~~~~~
+    scripts.tierfilter.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    ... a script to filter labels of a tier of an annotated file.
 
 """
 import sys
@@ -40,13 +43,13 @@ import functools
 import operator
 
 PROGRAM = os.path.abspath(__file__)
-SPPAS = os.path.join(os.path.dirname(os.path.dirname(PROGRAM)), "src")
+SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import annotationdata.aio
-from annotationdata.filter.predicate import Sel
-from annotationdata.transcription import Transcription
-from annotationdata.transcription import Tier
+import sppas.src.annotationdata.aio
+from sppas.src.annotationdata.filter.predicate import Sel
+from sppas.src.annotationdata.transcription import Transcription
+from sppas.src.annotationdata.transcription import Tier
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -103,10 +106,10 @@ for m in mode:
         print "Unknown search mode :", m
         sys.exit(1)
 
-trs = annotationdata.aio.read(fileinput)
+trs = sppas.src.annotationdata.aio.read(fileinput)
 
 if tieridx < 0 or tieridx > trs.GetSize():
-    print 'Error: Bad tier number.\n'
+    print('Error: Bad tier number.\n')
     sys.exit(1)
 
 tier = trs[tieridx]
@@ -130,10 +133,10 @@ for a in filtered_annotations:
 
 if fileoutput is None:
     for a in filteredtier:
-        print a
+        print(a)
 else:
     trs = Transcription()
     trs.Add(filteredtier)
-    annotationdata.aio.write(fileoutput, trs)
+    sppas.src.annotationdata.aio.write(fileoutput, trs)
 
 # ----------------------------------------------------------------------------

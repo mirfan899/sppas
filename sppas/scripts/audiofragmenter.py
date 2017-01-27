@@ -30,37 +30,33 @@
 
         ---------------------------------------------------------------------
 
-    scripts.audiogen.py
+    scripts.audiofragmenter.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    ... a script to reformat audio files.
+    ... a script to extract a fragment of an audio file.
 
 """
-import sys
-import time
-import os.path
 from argparse import ArgumentParser
+import os
+import sys
 
 PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import sppas.scr.audiodata.aio
-from sppas.scr.audiodata.channelformatter import ChannelFormatter
-from sppas.scr.audiodata.audio import AudioPCM
+import sppas.src.audiodata
+from sppas.src.audiodata.audio import AudioPCM
 
 # ----------------------------------------------------------------------------
-# Verify and extract args:
-# ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -w input file -o output file [options]" % os.path.basename(PROGRAM),
-                        description="A script to reformat audio file")
+parser = ArgumentParser(usage="%s -w input file -o output file [OPTIONS]" % os.path.basename(PROGRAM), description="... a script to extract a fragment of an audio file.")
 
 parser.add_argument("-w", metavar="file", required=True,  help='Audio Input file name')
 parser.add_argument("-o", metavar="file", required=True,  help='Audio Output file name')
-parser.add_argument("-b", metavar="value", type=int, help='Possible values are 1,2,4')
-parser.add_argument("-c", metavar="value", default=1, type=int, help='the channel to extract (default: 1)')
-parser.add_argument("-r", metavar="value", type=int, help='Value of the new framerate')
+parser.add_argument("-bs", default=0, metavar="value", type=float, help='The position (in seconds) when begins the mix, don\'t use with -bf')
+parser.add_argument("-es", default=0, metavar="value", type=float, help='The position (in seconds) when ends the mix, don\'t use with -ef')
+parser.add_argument("-bf", default=0, metavar="value", type=float, help='The position (in number of frames) when begins the mix, don\'t use with -bs')
+parser.add_argument("-ef", default=0, metavar="value", type=float, help='The position (in number of frames) when ends the mix, don\'t use with -es')
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -69,35 +65,35 @@ args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
 
-if args.b not in [1, 2 ,4]:
-    print "Wrong bitrate value"
+audio_out = AudioPCM()
+audio = sppas.src.audiodata.open(args.w)
+
+if args.bf and args.bs:
+    print "bf option and bs option can't be used at the same time !"
     sys.exit(1)
 
-# ----------------------------------------------------------------------------
+if args.ef and args.es:
+    print "ef option and es option can't be used at the same time !"
+    sys.exit(1)
 
-print(time.strftime("%H:%M:%S"))
-audio = sppas.src.audiodata.aio.open(args.w)
+if args.bf:
+    begin = args.bf
+elif args.bs:
+    begin = args.bs*audio.get_framerate()
+else:
+    begin = 0
+if args.ef:
+    end = args.ef
+elif args.es:
+    end = args.es*audio.get_framerate()
+else:
+    end = 0
 
-# Get the expected channel
-idx = audio.extract_channel(args.c-1)
-# no more need of input data, can close
-audio.close()
-print(time.strftime("%H:%M:%S"))
+for i in range(audio.get_nchannels()):
+    idx = audio.extract_channel(i)
+    audio.rewind()
+    channel = audio.get_channel(idx)
+    extracter = channel.extract_fragment(begin, end)
+    audio_out.append_channel(extracter)
 
-# Do the job (do not modify the initial channel).
-formatter = ChannelFormatter( audio.get_channel(idx) )
-if args.r:
-    formatter.set_framerate(args.r)
-if args.b:
-    formatter.set_sampwidth(args.b)
-formatter.convert()
-print(time.strftime("%H:%M:%S"))
-
-# Save the converted channel
-audio_out = AudioPCM()
-audio_out.append_channel( formatter.channel )
-sppas.src.audiodata.save( args.o, audio_out )
-print(time.strftime("%H:%M:%S"))
-
-# ----------------------------------------------------------------------------
-
+sppas.src.audiodata.save(args.o, audio_out)

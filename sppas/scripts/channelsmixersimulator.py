@@ -1,24 +1,57 @@
+#!/usr/bin/env python2
+# -*- coding: UTF-8 -*-
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
+
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    scripts.trsconvert.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    ... a script to get the maximum value of a mix between mono audio files.
+
+"""
 from argparse import ArgumentParser
 import os
 import sys
 
-
 PROGRAM = os.path.abspath(__file__)
-WAVETOASTER = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ))
-SRC = os.path.join(WAVETOASTER, "src" )
-sys.path.append(SRC)
+SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
+sys.path.append(SPPAS)
 
-import audiodata
-from audiodata.channelsmixer import ChannelsMixer
-
-sys.path.remove(SRC)
-
-parser = ArgumentParser(usage="%s -w input files" % os.path.basename(PROGRAM), description="A script to get the maximum value of a mix between mono audio files")
-
-parser.add_argument("-w", metavar="file", nargs='+', required=True,  help='Audio Input file names')
-
+import sppas.src.audiodata
+from sppas.src.audiodata.channelsmixer import ChannelsMixer
 
 # ----------------------------------------------------------------------------
+
+parser = ArgumentParser(usage="%s -w input files" % os.path.basename(PROGRAM),
+                        description="... a script to get the maximum value of a mix between mono audio files.")
+parser.add_argument("-w", metavar="file", nargs='+', required=True,  help='Audio Input file names')
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -27,14 +60,11 @@ args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
 
-
 mixer = ChannelsMixer()
 
 for inputFile in args.w:
-    audio = audiodata.open(inputFile)
+    audio = sppas.src.audiodata.open(inputFile)
     idx = audio.extract_channel(0)
     mixer.append_channel(audio.get_channel(idx))
 
-print mixer.get_max()
-
-# ----------------------------------------------------------------------------
+print(mixer.get_max())

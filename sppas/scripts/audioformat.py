@@ -30,14 +30,13 @@
 
         ---------------------------------------------------------------------
 
-    scripts.audiogen.py
+    scripts.audioformat.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
     ... a script to reformat audio files.
 
 """
 import sys
-import time
 import os.path
 from argparse import ArgumentParser
 
@@ -45,22 +44,22 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import sppas.scr.audiodata.aio
-from sppas.scr.audiodata.channelformatter import ChannelFormatter
-from sppas.scr.audiodata.audio import AudioPCM
+# ----------------------------------------------------------------------------
 
-# ----------------------------------------------------------------------------
-# Verify and extract args:
-# ----------------------------------------------------------------------------
+import sppas.src.audiodata
+from sppas.src.audiodata.channelformatter import ChannelFormatter
+from sppas.src.audiodata.audio import AudioPCM
 
 parser = ArgumentParser(usage="%s -w input file -o output file [options]" % os.path.basename(PROGRAM),
-                        description="A script to reformat audio file")
+                        description="... a script to reformat audio files.")
 
 parser.add_argument("-w", metavar="file", required=True,  help='Audio Input file name')
 parser.add_argument("-o", metavar="file", required=True,  help='Audio Output file name')
-parser.add_argument("-b", metavar="value", type=int, help='Possible values are 1,2,4')
+parser.add_argument("-s", metavar="value", type=int, help='Sample width for the output file. Possible values are 1,2,4')
 parser.add_argument("-c", metavar="value", default=1, type=int, help='the channel to extract (default: 1)')
-parser.add_argument("-r", metavar="value", type=int, help='Value of the new framerate')
+parser.add_argument("-r", metavar="value", type=int, help='The framerate expected of the output audio file')
+parser.add_argument("-m", metavar="value", type=int, help='Multiply the frames of the channel by the factor')
+parser.add_argument("-b", metavar="value", type=int, help='Bias the frames of the channel by the factor')
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -69,35 +68,39 @@ args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
 
-if args.b not in [1, 2 ,4]:
-    print "Wrong bitrate value"
-    sys.exit(1)
-
-# ----------------------------------------------------------------------------
-
-print(time.strftime("%H:%M:%S"))
-audio = sppas.src.audiodata.aio.open(args.w)
+audio = sppas.src.audiodata.open(args.w)
 
 # Get the expected channel
 idx = audio.extract_channel(args.c-1)
-# no more need of input data, can close
-audio.close()
-print(time.strftime("%H:%M:%S"))
 
 # Do the job (do not modify the initial channel).
-formatter = ChannelFormatter( audio.get_channel(idx) )
+formatter = ChannelFormatter(audio.get_channel(idx))
+
 if args.r:
     formatter.set_framerate(args.r)
+else:
+    formatter.set_framerate(audio.get_framerate())
+
 if args.b:
+    if args.b not in [1, 2, 4]:
+        print "Wrong bitrate value"
+        sys.exit(1)
     formatter.set_sampwidth(args.b)
+else:
+    formatter.set_sampwidth(audio.get_sampwidth())
+
 formatter.convert()
-print(time.strftime("%H:%M:%S"))
+
+# no more need of input data, can close
+audio.close()
+
+if args.m:
+    formatter.mul(args.m)
+
+if args.b:
+    formatter.bias(args.b)
 
 # Save the converted channel
 audio_out = AudioPCM()
-audio_out.append_channel( formatter.channel )
-sppas.src.audiodata.save( args.o, audio_out )
-print(time.strftime("%H:%M:%S"))
-
-# ----------------------------------------------------------------------------
-
+audio_out.append_channel(formatter.channel)
+sppas.src.audiodata.save(args.o, audio_out)

@@ -1,79 +1,60 @@
 #!/usr/bin/env python2
-# -*- coding: utf8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /        Automatic
-#           \__   |__/  |__/  |___| \__      Annotation
-#              \  |     |     |   |    \     of
-#           ___/  |     |     |   | ___/     Speech
-#           =============================
-#
-#           http://www.lpl-aix.fr/~bigi/sppas
-#
-# ---------------------------------------------------------------------------
-# developed at:
-#
-#       Laboratoire Parole et Langage
-#
-#       Copyright (C) 2011-2014  Brigitte Bigi
-#
-#       Use of this software is governed by the GPL, v3
-#       This banner notice must not be removed
-# ---------------------------------------------------------------------------
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: audiotoaster.py
-# ----------------------------------------------------------------------------
+# -*- coding: UTF-8 -*-
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-__docformat__ = """epytext"""
-__authors___  = """Nicolas Chazeau, Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+        http://www.sppas.org/
 
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
+        Use of this software is governed by the GNU Public License, version 3.
 
-from argparse import ArgumentParser
-import os
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    scripts.audiotoaster.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    ... a script to mix mono channel audio files.
+
+"""
 import sys
+import os.path
+from argparse import ArgumentParser
 import time
 
 PROGRAM = os.path.abspath(__file__)
-WAVETOASTER = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ))
-SRC = os.path.join(WAVETOASTER, "src" )
-sys.path.append(SRC)
+SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
+sys.path.append(SPPAS)
 
-import audiodata.aio
-from audiodata       import extensionsul, audioutils
-from audiodata.audio import AudioPCM
-
-from audiodata.audioframes import AudioFrames
-from audiodata.channel           import Channel
-from audiodata.channelsmixer     import ChannelsMixer
-from audiodata.channelformatter  import ChannelFormatter
-
-from term.textprogress       import TextProgress
-from term.terminalcontroller import TerminalController
-
-sys.path.remove(SRC)
-
+import sppas.src.audiodata.aio
+from sppas.src.audiodata import extensionsul, audioutils
+from sppas.src.audiodata.audio import AudioPCM
+from sppas.src.audiodata.channelsmixer import ChannelsMixer
+from sppas.src.term.textprogress import TextProgress
 
 # ----------------------------------------------------------------------------
 # Functions
 # ----------------------------------------------------------------------------
+
 
 def read_settings(filename):
     """
@@ -122,7 +103,8 @@ def read_settings(filename):
 
 # ----------------------------------------------------------------------------
 
-def check_files( settings ):
+
+def check_files(settings):
     """
     Check filenames of a list of channel parameters.
     @param settings: a list of dictionaries with extracted information from a settings file.
@@ -136,7 +118,8 @@ def check_files( settings ):
 
 # ----------------------------------------------------------------------------
 
-def extract_channels( settings, factor=0, channel=0, p=None ):
+
+def extract_channels(settings, factor=0, channel=0, p=None):
     """
     Extract the first channel for each sound file of the settings.
     @param settings: a list of dictionaries with extracted information from a settings file.
@@ -148,9 +131,10 @@ def extract_channels( settings, factor=0, channel=0, p=None ):
     total = len( settings )
 
     for i,channelparameter in enumerate(settings):
-        if p: p.update(float(i)/total, "Channel " + str(i+1) + " of " + str(total))
+        if p:
+            p.update(float(i)/total, "Channel " + str(i+1) + " of " + str(total))
 
-        audio = audiodata.aio.open( channelparameter['file'] )
+        audio = sppas.src.audiodata.aio.open( channelparameter['file'] )
 
         # CHANNEL EXTRACTION
         idx = audio.extract_channel( channel )
@@ -158,7 +142,7 @@ def extract_channels( settings, factor=0, channel=0, p=None ):
 
         # RMS EXTRACTION
         if factor > 0:
-            rms = channelparameter['channel'].rms() #audioutils.get_rms(channelparameter['channel'].frames, audio.get_sampwidth())
+            rms = channelparameter['channel'].rms()  #audioutils.get_rms(channelparameter['channel'].frames, audio.get_sampwidth())
             rmswanted = audioutils.mel2db(audioutils.db2mel(rms)*factor)
             channelparameter['factor'] = rmswanted/rms
 
@@ -167,7 +151,8 @@ def extract_channels( settings, factor=0, channel=0, p=None ):
 
 # ----------------------------------------------------------------------------
 
-def normalize_channels( settings, p=None ):
+
+def normalize_channels(settings, p=None):
     """
     Normalize the length of channels of the settings.
 
@@ -190,7 +175,8 @@ def normalize_channels( settings, p=None ):
 
 # ----------------------------------------------------------------------------
 
-def fragment_channels( settings, begin, end, p=None ):
+
+def fragment_channels(settings, begin, end, p=None):
     """
     Fragment channels of the settings.
     @param settings: a list of dictionaries with extracted information from a settings file.
@@ -203,6 +189,7 @@ def fragment_channels( settings, begin, end, p=None ):
         channel['channel'] = extracter.extract_fragment(begin*extracter.get_framerate(), end*extracter.get_framerate())
 
 # ----------------------------------------------------------------------------
+
 
 def mix_channels( settings, p=None ):
     """
@@ -236,6 +223,7 @@ def mix_channels( settings, p=None ):
 
 # ----------------------------------------------------------------------------
 
+
 def show_channels( settings ):
     """
     Print channel's information of the settings.
@@ -243,7 +231,7 @@ def show_channels( settings ):
     """
     print "Show channels: "
     for channel in settings:
-        print " - ",channel['file']
+        print " - ", channel['file']
         print "     * sampwidth:    ",channel['channel'].get_sampwidth()
         print "     * framerate:    ",channel['channel'].get_framerate()
         print "     * nframes:      ",channel['channel'].get_nframes()
@@ -255,7 +243,8 @@ def show_channels( settings ):
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -s settingfile -o outputfile [options]" % os.path.basename(PROGRAM), description="A script mix mono channel audio files")
+parser = ArgumentParser(usage="%s -s settingfile -o outputfile [options]" % os.path.basename(PROGRAM),
+                        description="... a script mix mono channel audio files.")
 
 parser.add_argument("-o", metavar="file", required=True, help='Audio Output file name')
 parser.add_argument("-s", metavar="file", required=True, help='The file which contains settings')
@@ -271,21 +260,21 @@ args = parser.parse_args()
 
 fileName, fileExtension = os.path.splitext(args.o)
 if not fileExtension in extensionsul:
-    print "Error: Unsupported output extension %s (must be one of: %s)"%(fileExtension,",".join(extensionsul))
+    print "Error: Unsupported output extension %s (must be one of: %s)" % (fileExtension, ",".join(extensionsul))
     sys.exit(1)
 
 verbose = args.v
 
-#======================== READING THE PARAMETERS ============================#
+# ======================== READING THE PARAMETERS ============================#
 
 if verbose > 1:
-    print "Start process at: %s"%time.strftime('%d/%m/%y %H:%M:%S',time.localtime())
+    print "Start process at: %s" % time.strftime('%d/%m/%y %H:%M:%S', time.localtime())
 p=None
 if verbose > 0:
     p = TextProgress()
     p.set_new()
     p.set_header("Reading parameters")
-    p.update(0,"")
+    p.update(0, "")
 
 try:
     settings = read_settings( args.s )
@@ -297,9 +286,9 @@ if verbose > 0:
     p.update(1, "")
     del p
 if verbose > 1:
-    print "\nEnd reading at %s"%time.strftime('%d/%m/%y %H:%M:%S',time.localtime())
+    print "\nEnd reading at %s" % time.strftime('%d/%m/%y %H:%M:%S', time.localtime())
 
-#========================  CHECKING FILENAMES   ============================#
+# ========================  CHECKING FILENAMES   ============================#
 
 try:
     check_files( settings )
@@ -307,9 +296,9 @@ except Exception as e:
     print e
     sys.exit(1)
 
-#========================EXTRACTING THE CHANNELS============================#
+# ========================EXTRACTING THE CHANNELS============================#
 
-#variables for displaying
+# variables for displaying
 p = None
 if verbose > 0:
     p = TextProgress()
@@ -318,7 +307,7 @@ if verbose > 0:
     p.update(0,"")
 
 if verbose > 1:
-    print "\nBegin extracting channels at %s"%time.strftime('%d/%m/%y %H:%M:%S',time.localtime())
+    print "\nBegin extracting channels at %s" % time.strftime('%d/%m/%y %H:%M:%S', time.localtime())
 
 try:
     extract_channels( settings, factor=args.l, channel=0, p=p )
@@ -330,10 +319,10 @@ if verbose > 0:
     p.update(1, "")
     del p
 if verbose > 1:
-    print "\nEnd extracting channels at %s"%time.strftime('%d/%m/%y %H:%M:%S',time.localtime())
+    print "\nEnd extracting channels at %s"%time.strftime('%d/%m/%y %H:%M:%S', time.localtime())
     show_channels( settings )
 
-#========================CHANNELS EQUALIZATION============================#
+# ========================CHANNELS EQUALIZATION============================#
 
 if verbose > 0:
     p = TextProgress()
@@ -342,7 +331,7 @@ if verbose > 0:
     p.update(0,"")
 
 if verbose > 1:
-    print "\nBegin equalizing channels at %s"%time.strftime('%d/%m/%y %H:%M:%S',time.localtime())
+    print "\nBegin equalizing channels at %s"%time.strftime('%d/%m/%y %H:%M:%S', time.localtime())
 
 try:
     normalize_channels( settings, p )
@@ -354,10 +343,10 @@ if verbose > 0:
     p.update(1, "")
     del p
 if verbose > 1:
-    print "\nEnd equalizing channels at %s"%time.strftime('%d/%m/%y %H:%M:%S',time.localtime())
+    print "\nEnd equalizing channels at %s"%time.strftime('%d/%m/%y %H:%M:%S', time.localtime())
     show_channels( settings )
 
-#========================FRAGMENT EXTRACTION============================#
+# ========================FRAGMENT EXTRACTION============================#
 
 if args.b != 0 or args.e != 0:
     p = None
@@ -377,16 +366,16 @@ if args.b != 0 or args.e != 0:
         p.update(1, "")
         del p
 
-#========================OUTPUT CHANNELS LEFT AND RIGHT============================#
+# ========================OUTPUT CHANNELS LEFT AND RIGHT============================#
 p = None
 if verbose > 0:
     p = TextProgress()
     p.set_new()
     p.set_header("Preparing left and right output channels")
-    p.update(0,"")
+    p.update(0, "")
 
 if verbose > 1:
-    print "\nBegin preparing L/R channels at %s"%time.strftime('%d/%m/%y %H:%M:%S',time.localtime())
+    print "\nBegin preparing L/R channels at %s"%time.strftime('%d/%m/%y %H:%M:%S', time.localtime())
 
 try:
     mixerleft,mixerright = mix_channels( settings, p )
@@ -399,9 +388,9 @@ if verbose > 0:
     p.update(1, "")
     del p
 if verbose > 1:
-    print "\nEnd preparing L/R channels at %s"%time.strftime('%d/%m/%y %H:%M:%S',time.localtime())
+    print "\nEnd preparing L/R channels at %s"%time.strftime('%d/%m/%y %H:%M:%S', time.localtime())
 
-#========================VERIFY CLIPPING============================#
+# ========================VERIFY CLIPPING============================#
 
 p = None
 if verbose > 0:
@@ -410,14 +399,17 @@ if verbose > 0:
     p.set_header("Getting the factor to avoid clipping")
 
 if verbose > 1:
-    print "\nBegin getting factor at %s"%time.strftime('%d/%m/%y %H:%M:%S',time.localtime())
+    print "\nBegin getting factor at %s"%time.strftime('%d/%m/%y %H:%M:%S', time.localtime())
 
-if p: p.update(0.1, "Left")
+if p:
+    p.update(0.1, "Left")
 maxleft  = mixerleft.get_max()
-if p: p.update(0.5, "Right")
+if p:
+    p.update(0.5, "Right")
 maxright = mixerright.get_max()
 
-if p: p.update(0.9, "Attenuator estimation")
+if p:
+    p.update(0.9, "Attenuator estimation")
 maxval   = max(maxleft, maxright)
 maxvalth = audioutils.get_maxval( sampleswidth )
 
@@ -430,13 +422,12 @@ if verbose > 0:
     p.update(1, "")
     del p
 if verbose > 1:
-    print "\nEnd getting factor at %s"%time.strftime('%d/%m/%y %H:%M:%S',time.localtime())
+    print "\nEnd getting factor at %s"%time.strftime('%d/%m/%y %H:%M:%S', time.localtime())
 
 # what's for????
 #attenuator = 1
 
-
-#========================MIX============================#
+# ========================MIX============================#
 
 if verbose > 0:
     p = TextProgress()
@@ -445,12 +436,15 @@ if verbose > 0:
     p.set_fraction(0)
     p.update(0,"")
 
-if p: p.set_text("Left")
+if p:
+    p.set_text("Left")
 newchannelleft = mixerleft.mix(attenuator)
-if p: p.set_fraction(0.5)
+if p:
+    p.set_fraction(0.5)
 del mixerleft
 
-if p: p.set_text("Right")
+if p:
+    p.set_text("Right")
 newchannelright = mixerright.mix(attenuator)
 del mixerright
 
@@ -462,7 +456,7 @@ if verbose > 0:
 if verbose > 1:
     print "\nEnd mixing channels at %s"%time.strftime('%d/%m/%y %H:%M:%S',time.localtime())
 
-#========================SAVE THE RESULT============================#
+# ========================SAVE THE RESULT============================#
 p = None
 if verbose > 0:
     p = TextProgress()
@@ -475,7 +469,7 @@ audio_out = AudioPCM()
 audio_out.append_channel( newchannelleft )
 audio_out.append_channel( newchannelright )
 
-audiodata.aio.save( args.o, audio_out )
+sppas.src.audiodata.aio.save( args.o, audio_out )
 
 if verbose > 0:
     p.update(1, "")
@@ -483,6 +477,6 @@ if verbose > 0:
 # ----------------------------------------------------------------------------
 
 if verbose > 1:
-    print "\nEnd process at %s", time.strftime('%d/%m/%y %H:%M:%S',time.localtime())
+    print "\nEnd process at %s", time.strftime('%d/%m/%y %H:%M:%S', time.localtime())
 
 # ----------------------------------------------------------------------------

@@ -30,31 +30,33 @@
 
         ---------------------------------------------------------------------
 
-    scripts.tierinfo.py
+    scripts.audiopassfilter.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    ... a script to get information about a tier of an annotated file.
+    ... a script to apply high-pass filter (development version).
 
 """
 import sys
 import os.path
 from argparse import ArgumentParser
+import struct, math
 
 PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import sppas.src.annotationdata.aio
+import sppas.src.audiodata
+from sppas.src.audiodata.channel import Channel
+from sppas.src.audiodata.audio import AudioPCM
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -i file [options]" % os.path.basename(PROGRAM),
-                        description="... a script to get information about a tier of an annotated file.")
+parser = ArgumentParser(usage="%s -o output file [options]" % os.path.basename(PROGRAM), description="... a script to apply high-pass filter (development version).")
 
-parser.add_argument("-i", metavar="file", required=True,  help='Input annotated file name')
-parser.add_argument("-t", metavar="value", default=1, type=int, help='Tier number (default: 1)')
+parser.add_argument("-i", metavar="file", required=True,  help='Audio Input file name')
+parser.add_argument("-o", metavar="file", required=True,  help='Audio Output file name')
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -63,35 +65,39 @@ args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
 
-trs = sppas.src.annotationdata.aio.read(args.i)
+audioin = sppas.src.audiodata.open( args.i )
+SAMPLE_RATE = audioin.get_framerate()
 
-if args.t <= 0 or args.t > trs.GetSize():
-    print 'Error: Bad tier number.\n'
-    sys.exit(1)
-tier = trs[args.t-1]
+# ----------------------------------------------------------------------------
 
-if tier.IsPoint() is True:
-    tier_type = "Point"
-elif tier.IsInterval() is True:
-    tier_type = "Interval"
-elif tier.IsDisjoint() is True:
-    tier_type = "Disjoint"
-else:
-    tier_type = "Unknown"
+# IIR filter coefficients
+freq = 2000 # Hz
+r = 0.98
+a1 = -2.0 * r * math.cos(freq / (SAMPLE_RATE / 2.0) * math.pi)
+a2 = r * r
+filter = [a1, a2]
+print filter
 
-nb_silence = len([a for a in tier if a.GetLabel().IsSilence()])
-nb_empty = len([a for a in tier if a.GetLabel().IsEmpty()])
-dur_silence = sum(a.GetLocation().GetValue().Duration().GetValue() for a in tier if a.GetLabel().IsSilence())
-dur_empty = sum(a.GetLocation().GetValue().Duration().GetValue() for a in tier if a.GetLabel().IsEmpty())
+n = audioin.get_nframes()
+original = struct.unpack('%dh' % n, audioin.read_frames(n))
+original = [s / 2.0**15 for s in original]
 
-print "Tier name: ", tier.GetName()
-print "Tier type: ", tier_type
-print "Tier size: ", tier.GetSize()
-print "   - Number of silences:         ", nb_silence
-print "   - Number of empty intervals:  ", nb_empty
-print "   - Number of speech intervals: ", tier.GetSize() - (nb_empty + nb_silence)
-print "   - silence duration: ", dur_silence
-print "   - empties duration: ", dur_empty
-print "   - speech duration:  ", (tier.GetEndValue() - tier.GetBeginValue()) - (dur_empty + dur_silence)
+result = [ 0 for i in range(0, len(filter)) ]
+biggest = 1
+for sample in original:
+        for cpos in range(0, len(filter)):
+            sample -= result[len(result) - 1 - cpos] * filter[cpos]
+        result.append(sample)
+        biggest = max(abs(sample), biggest)
+
+result = [ sample / biggest for sample in result ]
+result = [ int(sample * (2.0**15 - 1)) for sample in result ]
+
+# ----------------------------------------------------------------------------
+
+audioout = AudioPCM()
+channel = Channel(framerate=SAMPLE_RATE, sampwidth=audioin.get_sampwidth(), frames=struct.pack('%dh' % len(result), *result) )
+audioout.append_channel( channel )
+sppas.src.audiodata.save( args.o, audioout)
 
 # ----------------------------------------------------------------------------
