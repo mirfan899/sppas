@@ -1,20 +1,19 @@
-#!/usr/bin/env python2
 # -*- coding:utf-8 -*-
 
 import unittest
 import os.path
 
-from annotations.Phon.phonetize import DictPhon
-from annotations.Phon.dagphon import DAGPhon
-from annotations.Phon.phonunk import PhonUnk
-from annotations.Phon.sppasphon import sppasPhon
+from ..Phon.phonetize import DictPhon
+from ..Phon.dagphon import DAGPhon
+from ..Phon.phonunk import PhonUnk
+from ..Phon.sppasphon import sppasPhon
 
-from resources.dictpron import DictPron
-from resources.mapping import Mapping
+from sppas.src.resources.dictpron import DictPron
+from sppas.src.resources.mapping import Mapping
 
-from sp_glob import RESOURCES_PATH
-from sp_glob import UNKSTAMP
-from sp_glob import ERROR_ID, WARNING_ID, OK_ID
+from sppas.src.sp_glob import RESOURCES_PATH
+from sppas.src.sp_glob import UNKSTAMP
+from sppas.src.sp_glob import ERROR_ID, WARNING_ID, OK_ID
 
 # ---------------------------------------------------------------------------
 

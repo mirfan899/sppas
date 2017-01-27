@@ -37,18 +37,15 @@
 
 import os.path
 
-from tokenize import DictTok
+from sppas.src.sp_glob import RESOURCES_PATH
+from sppas.src.resources.vocab import Vocabulary
+from sppas.src.resources.dictrepl import DictRepl
+from sppas.src.annotationdata.transcription import Transcription
+from sppas.src.annotationdata.tier import Tier
+import sppas.src.annotationdata.aio
 
-from resources.vocab import Vocabulary
-from resources.dictrepl import DictRepl
-
-from annotationdata.transcription import Transcription
-from annotationdata.tier import Tier
-import annotationdata.aio
-
-from sp_glob import RESOURCES_PATH
-
-from annotations.sppasbase import sppasBase
+from ..sppasbase import sppasBase
+from .tokenize import DictTok
 
 # ---------------------------------------------------------------------------
 
@@ -206,7 +203,7 @@ class sppasTok(sppasBase):
         Return the tier with transcription, or None.
 
         """
-        trsinput  = annotationdata.aio.read(inputfilename)
+        trsinput  = sppas.src.annotationdata.aio.read(inputfilename)
         tierinput = None
 
         for tier in trsinput:
@@ -272,7 +269,7 @@ class sppasTok(sppasBase):
             trsoutput.Add(tierStokens)
 
         # Save in a file
-        annotationdata.aio.write(outputfilename,trsoutput)
+        sppas.src.annotationdata.aio.write(outputfilename,trsoutput)
 
     # ------------------------------------------------------------------------
     # Private: some workers...

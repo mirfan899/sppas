@@ -37,12 +37,15 @@
 
 import re
 
-from dagphon import DAGPhon
-import resources.rutils as rutils
+import sppas.src.resources.rutils as rutils
+from .dagphon import DAGPhon
+
+# ---------------------------------------------------------------------------
 
 LIMIT_SIZE = 40  # Max nb of characters of an unknown entry
 
 # ---------------------------------------------------------------------------
+
 
 class PhonUnk(object):
     """

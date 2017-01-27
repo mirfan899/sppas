@@ -38,26 +38,23 @@
 import os
 import logging
 
-from sp_glob import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
+from sppas.src.sp_glob import INFO_ID
+import sppas.src.annotationdata.aio
+import sppas.src.audiodata.aio
+from sppas.src.annotationdata.aio.utils import gen_id
+from sppas.src.annotationdata.transcription import Transcription
+from sppas.src.annotationdata.media import Media
+from sppas.src.audiodata.autils import times2frames
 
-import annotationdata.aio
-from annotationdata.aio.utils import gen_id
-import audiodata.aio
-from audiodata.audiovolume        import AudioVolume
-from audiodata.channel            import Channel
-from annotationdata.transcription import Transcription
-from annotationdata.media         import Media
-
-from annotations.IPUs.ipusaudio import IPUsAudio # find IPUs/tracks from audio
-from annotations.IPUs.ipustrs   import IPUsTrs   # find IPUs/tracks/utterances from transcription
-from annotations.IPUs.ipusout   import IPUsOut   # IPUs Output (writer)
-from audiodata.autils import frames2times, times2frames
-
-from annotations.sppasbase import sppasBase
+from ..sppasbase import sppasBase
+from .ipusaudio import IPUsAudio  # find IPUs/tracks from audio
+from .ipustrs import IPUsTrs   # find IPUs/tracks/utterances from transcription
+from .ipusout import IPUsOut   # IPUs Output (writer)
 
 # ------------------------------------------------------------------
 # Main class
 # ------------------------------------------------------------------
+
 
 class sppasIPUs( sppasBase ):
     """
@@ -201,7 +198,7 @@ class sppasIPUs( sppasBase ):
         if inputfilename is None:
             return Transcription()
 
-        trsinput = annotationdata.aio.read( inputfilename )
+        trsinput = sppas.src.annotationdata.aio.read( inputfilename )
         # input is a simple text file
         if inputfilename.lower().endswith("txt"):
             if trsinput.GetSize() != 1:
@@ -298,9 +295,9 @@ class sppasIPUs( sppasBase ):
         # ---------------
 
         # Get audio and the channel we'll work on
-        audiospeech = audiodata.aio.open( audiofile )
-        idx         = audiospeech.extract_channel()
-        channel     = audiospeech.get_channel(idx)
+        audiospeech = sppas.src.audiodata.aio.open( audiofile )
+        idx = audiospeech.extract_channel()
+        channel = audiospeech.get_channel(idx)
         self.ipusaudio.set_channel( channel )
 
         # Fix transcription (if a transcription is given)
@@ -315,7 +312,7 @@ class sppasIPUs( sppasBase ):
 
         # Set the Transcription
         self.ipustrs.set_transcription( trs )
-        (trackslist,silences) = self.ipustrs.extract()
+        (trackslist, silences) = self.ipustrs.extract()
 
         # Process the data.
         # -----------------
@@ -370,7 +367,7 @@ class sppasIPUs( sppasBase ):
         # Write the tracks into a transcription file.
         if trsoutput is not None:
             try:
-                annotationdata.aio.write(trsoutput, trs)
+                sppas.src.annotationdata.aio.write(trsoutput, trs)
             except Exception as e:
                 raise Exception('Error while saving the transcription output.\n'+str(e)+'\n')
 

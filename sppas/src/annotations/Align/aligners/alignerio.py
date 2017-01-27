@@ -43,13 +43,14 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 import os
 import codecs
-from sp_glob import encoding
 
-from resources.rutils import to_strip
+from sppas.src.sp_glob import encoding
+from sppas.src.resources.rutils import to_strip
 
 # ----------------------------------------------------------------------------
 
-class AlignerIO( object ):
+
+class AlignerIO(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -228,8 +229,8 @@ class AlignerIO( object ):
             - (start-time end-time word score)
 
         """
-        tokens     = [""]
-        scores     = [0]
+        tokens = [""]
+        scores = [0]
         _wordalign = []
         wordidx = -1
         with codecs.open(filename, 'r', encoding) as fp:
@@ -308,7 +309,7 @@ class AlignerIO( object ):
 
         with codecs.open(filename, 'r', encoding) as source:
 
-            line = source.readline() # header
+            line = source.readline()  # header
             while True: # loop over text
                 #name = re.match('\"(.*)\"', source.readline().rstrip())
                 name = source.readline().rstrip()

@@ -55,15 +55,14 @@
         | option2 = value2
 
 """
-import codecs
-try:
-    from configparser import SafeConfigParser
-except ImportError:
+try:  # python 3
+    from configparser import ConfigParser as SafeConfigParser
+except ImportError:  # python 2
     from ConfigParser import SafeConfigParser
 
-from structs.lang import sppasLangResource
-from structs.baseoption import sppasOption
-from sp_glob import encoding
+from sppas.src.structs.lang import sppasLangResource
+from sppas.src.structs.baseoption import sppasOption
+from sppas.src.utils.makeunicode import u
 
 # ----------------------------------------------------------------------------
 
@@ -110,7 +109,7 @@ class AnnotationConfigParser(object):
         self._config = {}
         self._resources = []
         self._options = []
-        self.parser = SafeConfigParser()
+        self._parser = SafeConfigParser()
 
     # ------------------------------------------------------------------------
 
@@ -149,11 +148,14 @@ class AnnotationConfigParser(object):
         self.reset()
 
         # Open the file with the correct encoding
-        with codecs.open(filename, 'r', encoding) as f:
-            self.parser.readfp(f)
+        with open(filename, 'r') as f:
+            try:  # python 3
+                self._parser.read_file(f)
+            except:  # python 2
+                self._parser.readfp(f)
 
         # Analyze content and set to appropriate data structures
-        if self.parser.has_section("Configuration"):
+        if self._parser.has_section("Configuration"):
             self._parse()
         else:
             raise Exception("Annotation configuration error: [Configuration] section required.")
@@ -164,23 +166,23 @@ class AnnotationConfigParser(object):
 
     def _parse(self):
 
-        for section_name in self.parser.sections():
+        for section_name in self._parser.sections():
 
             if section_name == "Configuration":
-                self._parse_config(self.parser.items(section_name))
+                self._parse_config(self._parser.items(section_name))
 
             if section_name.startswith("Resource"):
-                self._resources.append(self._parse_resource(self.parser.items(section_name)))
+                self._resources.append(self._parse_resource(self._parser.items(section_name)))
 
             if section_name.startswith("Option"):
-                self._options.append(self._parse_option(self.parser.items(section_name)))
+                self._options.append(self._parse_option(self._parser.items(section_name)))
 
     # ------------------------------------------------------------------------
 
     def _parse_config(self, items):
 
-        for name,value in items:
-            self._config[name] = value.encode(encoding)
+        for name, value in items:
+            self._config[name] = u(value)
 
     # ------------------------------------------------------------------------
 
@@ -189,17 +191,17 @@ class AnnotationConfigParser(object):
         rtype = ""
         rpath = ""
         rname = ""
-        rext  = ""
+        rext = ""
         lr = sppasLangResource()
         for name, value in items:
             if name == "type":
-                rtype = value.encode(encoding)
+                rtype = u(value)
             elif name == "path":
-                rpath = value.encode(encoding)
+                rpath = u(value)
             elif name == "name":
-                rname = value.encode(encoding)
+                rname = u(value)
             elif name == "ext":
-                rext  = value.encode(encoding)
+                rext  = u(value)
         lr.set(rtype, rpath, rname, rext)
 
         return lr
@@ -215,13 +217,13 @@ class AnnotationConfigParser(object):
 
         for name, value in items:
             if name == "type":
-                otype = value.encode(encoding)
+                otype = u(value)
             elif name == "id":
-                oid = value.encode(encoding)
+                oid = u(value)
             elif name == "value":
-                ovalue = value.encode(encoding)
+                ovalue = u(value)
             elif name == "text":
-                otext = value.encode(encoding)
+                otext = u(value)
 
         opt = sppasOption(oid)
         opt.set_type(otype)

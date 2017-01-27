@@ -46,11 +46,11 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 import re
 
-from resources.vocab import Vocabulary
-from resources.dictrepl import DictRepl
-import resources.rutils as rutils
+from sppas.src.resources.vocab import Vocabulary
+from sppas.src.resources.dictrepl import DictRepl
+import sppas.src.resources.rutils as rutils
 
-from num2letter import sppasNum
+from .num2letter import sppasNum
 
 # ---------------------------------------------------------------------------
 

@@ -44,22 +44,22 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # Imports
 # ----------------------------------------------------------------------------
 
-from annotationdata.transcription import Transcription
-from annotationdata.tier import Tier
-from annotationdata.annotation import Annotation
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.label.label import Label
-import annotationdata.aio
+import sppas.src.annotationdata.aio
+from sppas.src.annotationdata.transcription import Transcription
+from sppas.src.annotationdata.tier import Tier
+from sppas.src.annotationdata.annotation import Annotation
+from sppas.src.annotationdata.ptime.interval import TimeInterval
+from sppas.src.annotationdata.label.label import Label
+from sppas.src.resources.vocab import Vocabulary
+from sppas.src.resources.unigram import Unigram
 
-from dictlem import LemmaDict
-from resources.vocab import Vocabulary
-from resources.unigram import Unigram
-from detectrepetition import Repetitions
-from detectrepetition import DataSpeaker
+from ..sppasbase import sppasBase
 
-from annotations.sppasbase import sppasBase
+from .dictlem import LemmaDict
+from .detectrepetition import Repetitions
+from .detectrepetition import DataSpeaker
 
-DEBUG=False
+DEBUG = False
 
 # ---------------------------------------------------------------------------
 
@@ -491,14 +491,14 @@ class sppasRepet(sppasBase):
         tokentier2 = -1    # No echoing speaker
 
         # Find the token tier
-        trsinput1 = annotationdata.aio.read(inputfilename1)
+        trsinput1 = sppas.src.annotationdata.aio.read(inputfilename1)
         for i in range(trsinput1.GetSize()):
             if "token" in trsinput1[i].GetName().lower() and "align" in trsinput1[i].GetName().lower():
                 tokentier1 = i
                 break
         if inputfilename2 is not None:
             #find the token tier
-            trsinput2 = annotationdata.aio.read(inputfilename2)
+            trsinput2 = sppas.src.annotationdata.aio.read(inputfilename2)
             for i in range(trsinput2.GetSize()):
                 if "token" in trsinput2[i].GetName().lower() and "align" in trsinput2[i].GetName().lower():
                     tokentier2 = i
@@ -534,7 +534,7 @@ class sppasRepet(sppasBase):
         # the repeat tier is added to the input transcription
         else:
             outputfilename = inputfilename1
-            trsoutput = annotationdata.aio.read(inputfilename1)
+            trsoutput = sppas.src.annotationdata.aio.read(inputfilename1)
 
         # Add repeats to this trsoutput
         trsoutput.Append(srctier)
@@ -544,6 +544,6 @@ class sppasRepet(sppasBase):
         trsoutput.SetMaxTime(trsinput1.GetMaxTime()) # hum, in case of OR... not sure! to be verified.
 
         # Save
-        annotationdata.aio.write(outputfilename, trsoutput)
+        sppas.src.annotationdata.aio.write(outputfilename, trsoutput)
 
     # ------------------------------------------------------------------------

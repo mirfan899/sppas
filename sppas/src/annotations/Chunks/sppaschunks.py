@@ -38,18 +38,17 @@
 import shutil
 import os
 
-import utils.fileutils
-
-import annotationdata.aio
-from annotationdata.aio.utils import gen_id
-from annotationdata.media    import Media
-
-from annotations.sppasbase import sppasBase
-from annotations.Chunks.chunks import Chunks
+import sppas.src.utils.fileutils
+import sppas.src.annotationdata.aio
+from sppas.src.annotationdata.aio.utils import gen_id
+from sppas.src.annotationdata.media import Media
+from sppas.src.annotations.sppasbase import sppasBase
+from sppas.src.annotations.Chunks.chunks import Chunks
 
 # ----------------------------------------------------------------------------
 
-class sppasChunks( sppasBase ):
+
+class sppasChunks(sppasBase):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -70,15 +69,15 @@ class sppasChunks( sppasBase ):
         """
         sppasBase.__init__(self, logfile)
 
-        self.chunks = Chunks( model )
-        self._options['clean']      = True  # Remove temporary files
-        self._options['silences']    = self.chunks.get_silences()
-        self._options['anchors']     = self.chunks.get_anchors()
-        self._options['ngram']       = self.chunks.get_ngram_init()
-        self._options['ngrammin']    = self.chunks.get_ngram_min()
-        self._options['windelay']    = self.chunks.get_windelay_init()
+        self.chunks = Chunks(model)
+        self._options['clean'] = True  # Remove temporary files
+        self._options['silences'] = self.chunks.get_silences()
+        self._options['anchors'] = self.chunks.get_anchors()
+        self._options['ngram'] = self.chunks.get_ngram_init()
+        self._options['ngrammin'] = self.chunks.get_ngram_min()
+        self._options['windelay'] = self.chunks.get_windelay_init()
         self._options['windelaymin'] = self.chunks.get_windelay_min()
-        self._options['chunksize']   = self.chunks.get_chunk_maxsize()
+        self._options['chunksize'] = self.chunks.get_chunk_maxsize()
 
     # ------------------------------------------------------------------------
     # Methods to fix options
@@ -96,34 +95,34 @@ class sppasChunks( sppasBase ):
             key = opt.get_key()
 
             if "clean" == key:
-                self.set_clean( opt.get_value() )
+                self.set_clean(opt.get_value())
 
             elif "silences" == key:
-                self.chunks.set_silences( opt.get_value() )
+                self.chunks.set_silences(opt.get_value())
                 self._options['silences'] = opt.get_value()
 
             elif "anchors" == key:
-                self.chunks.set_anchors( opt.get_value() )
+                self.chunks.set_anchors(opt.get_value())
                 self._options['anchors'] = opt.get_value()
 
             elif "ngram" == key:
-                self.chunks.set_ngram_init( opt.get_value() )
+                self.chunks.set_ngram_init(opt.get_value())
                 self._options['ngram'] = opt.get_value()
 
             elif "ngrammin" == key:
-                self.chunks.set_ngram_min( opt.get_value() )
+                self.chunks.set_ngram_min(opt.get_value())
                 self._options['ngrammin'] = opt.get_value()
 
             elif "windelay" == key:
-                self.chunks.set_windelay_init( opt.get_value() )
+                self.chunks.set_windelay_init(opt.get_value())
                 self._options['windelay'] = opt.get_value()
 
             elif "windelaymin" == key:
-                self.chunks.set_windelay_min( opt.get_value() )
+                self.chunks.set_windelay_min(opt.get_value())
                 self._options['windelaymin'] = opt.get_value()
 
             elif "chunksize" == key:
-                self.chunks.set_chunk_maxsize( opt.get_value() )
+                self.chunks.set_chunk_maxsize(opt.get_value())
                 self._options['chunksize'] = opt.get_value()
 
             else:
@@ -192,55 +191,55 @@ class sppasChunks( sppasBase ):
         # Get the tiers to be time-aligned
         # ---------------------------------------------------------------
 
-        trsinput = annotationdata.aio.read( phonesname )
-        phontier = self.get_phonestier( trsinput )
+        trsinput = sppas.src.annotationdata.aio.read(phonesname)
+        phontier = self.get_phonestier(trsinput)
         if phontier is None:
             raise IOError("No tier with the raw phonetization was found.")
 
         try:
-            trsinputtok = annotationdata.aio.read( tokensname )
-            toktier = self.get_tokenstier( trsinputtok )
+            trsinputtok = sppas.src.annotationdata.aio.read(tokensname)
+            toktier = self.get_tokenstier(trsinputtok)
         except Exception:
             raise IOError("No tier with the raw tokenization was found.")
 
         # Prepare data
         # -------------------------------------------------------------
 
-        inputaudio = utils.fileutils.fix_audioinput(audioname)
-        workdir    = utils.fileutils.fix_workingdir(inputaudio)
+        inputaudio = sppas.src.utils.fileutils.fix_audioinput(audioname)
+        workdir    = sppas.src.utils.fileutils.fix_workingdir(inputaudio)
         if self._options['clean'] is False:
-            self.print_message( "The working directory is: %s"%workdir, indent=3, status=None )
+            self.print_message("The working directory is: %s" % workdir, indent=3, status=None)
 
         # Processing...
         # ---------------------------------------------------------------
 
         try:
-            trsoutput = self.chunks.create_chunks( inputaudio,phontier,toktier,workdir )
+            trsoutput = self.chunks.create_chunks(inputaudio, phontier, toktier, workdir)
         except Exception as e:
-            self.print_message( str(e) )
-            self.print_message("WORKDIR=%s"%workdir)
+            self.print_message(str(e))
+            self.print_message("WORKDIR=%s" % workdir)
             if self._options['clean'] is True:
-                shutil.rmtree( workdir )
+                shutil.rmtree(workdir)
             raise
 
         # Set media
         # --------------------------------------------------------------
 
         extm = os.path.splitext(audioname)[1].lower()[1:]
-        media = Media( gen_id(), audioname, "audio/"+extm )
-        trsoutput.AddMedia( media )
+        media = Media(gen_id(), audioname, "audio/"+extm)
+        trsoutput.AddMedia(media)
         for tier in trsoutput:
-            tier.SetMedia( media )
+            tier.SetMedia(media)
 
         # Save results
         # --------------------------------------------------------------
         try:
             self.print_message("Save automatic chunk alignment: ",indent=3)
             # Save in a file
-            annotationdata.aio.write( outputfilename,trsoutput )
+            sppas.src.annotationdata.aio.write(outputfilename,trsoutput)
         except Exception:
             if self._options['clean'] is True:
-                shutil.rmtree( workdir )
+                shutil.rmtree(workdir)
             raise
 
         # Clean!
@@ -250,5 +249,5 @@ class sppasChunks( sppasBase ):
             os.remove(inputaudio)
         # Remove the working directory we created
         if self._options['clean'] is True:
-            shutil.rmtree( workdir )
+            shutil.rmtree(workdir)
 

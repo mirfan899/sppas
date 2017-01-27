@@ -39,20 +39,20 @@ import os
 import codecs
 from subprocess import Popen, PIPE, STDOUT
 
-from sp_glob import encoding
+from sppas.src.sp_glob import encoding
+from sppas.src.models.slm.ngramsmodel import NgramsModel
+from sppas.src.models.slm.arpaio import ArpaIO
+from sppas.src.models.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
+from sppas.src.resources.rutils import to_strip
+from sppas.src.resources.dictpron import DictPron
 
-from annotations.Align.aligners.basealigner import BaseAligner
-
-from resources.slm.ngramsmodel import NgramsModel
-from resources.slm.arpaio import ArpaIO
-from resources.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
-from resources.rutils import to_strip
-from resources.dictpron import DictPron
+from .basealigner import BaseAligner
 
 # ----------------------------------------------------------------------------
-JULIUS_EXT_OUT = ["palign","walign"]
+JULIUS_EXT_OUT = ["palign", "walign"]
 DEFAULT_EXT_OUT = JULIUS_EXT_OUT[0]
 # ----------------------------------------------------------------------------
+
 
 class JuliusAligner( BaseAligner ):
     """

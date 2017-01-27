@@ -35,9 +35,10 @@
 # File: ipusaudio.py
 # ---------------------------------------------------------------------------
 
-from audiodata.channelsilence import ChannelSilence
+from sppas.src.audiodata.channelsilence import ChannelSilence
 
 # ---------------------------------------------------------------------------
+
 
 class IPUsAudio( object ):
     """

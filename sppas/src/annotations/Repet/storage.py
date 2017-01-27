@@ -39,7 +39,6 @@ __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
@@ -50,49 +49,42 @@ import re
 
 # ######################################################################### #
 
-class DataRepetition:
+
+class DataRepetition(object):
     """
     Class to store a repetition (the source and the echo).
     """
 
-    def __init__(self, s1,s2, r1,r2):
-        self.s = (s1,s2)
+    def __init__(self, s1, s2, r1, r2):
+        self.s = (s1, s2)
 
         self.r = list()
         if r1 != -1 and r2 != -1:
-            self.r.append((r1,r2))
+            self.r.append((r1, r2))
 
-    # End __init__
     # ------------------------------------------------------------------
-
 
     def get_source(self):
         return self.s
 
-
     def get_repetition(self):
         return self.r
-
 
     def add_repetition(self, r1, r2):
         if (r1,r2) not in self.r:
             self.r.append((r1,r2))
 
-
     def print_echo(self):
-        sys.stdout.write( "source: (%d,%d) ; "%(self.s[0],self.s[1]))
+        sys.stdout.write( "source: (%d,%d) ; " % (self.s[0],self.s[1]))
         sys.stdout.write( "repetitions: ")
         for rep in self.r:
-            sys.stdout.write("(%d,%d)"%(rep[0],rep[1]))
+            sys.stdout.write("(%d,%d)" % (rep[0],rep[1]))
         print
-
 
     # ------------------------------------------------------------------
 
 
-
-
-class DataSpeaker:
+class DataSpeaker(object):
     """
     Class to store data of a speaker.
     """
@@ -101,9 +93,7 @@ class DataSpeaker:
         self._stopwords  = stopwords
         self._tokens     = tokens
 
-    # End __init__
     # ------------------------------------------------------------------
-
 
     def get_token(self, idx):
         if idx >= len(self._tokens):
@@ -115,14 +105,12 @@ class DataSpeaker:
 
     # ------------------------------------------------------------------
 
-
     def is_stopword(self, token):
         if self._stopwords is None:
             return False
         return not self._stopwords.is_unk( token )
 
     # ------------------------------------------------------------------
-
 
     def is_token(self, token):
         """
@@ -165,9 +153,7 @@ class DataSpeaker:
             return False
         return True
 
-    # End is_token
     # ------------------------------------------------------------------
-
 
     def get_next_token(self, current):
         """
@@ -185,9 +171,7 @@ class DataSpeaker:
 
         return -1
 
-    # End get_next_token
     # ------------------------------------------------------------------
-
 
     def is_token_repeat(self, current, othercurrent, otherspeaker):
         """
@@ -214,9 +198,7 @@ class DataSpeaker:
 
         return -1
 
-    # End is_token_other_repeat
     # ------------------------------------------------------------------
-
 
     def __clean(self, entry):
         """ Clean a string by removing tabs, CR/LF, and some punctuation.
@@ -237,9 +219,7 @@ class DataSpeaker:
 
         return __str.strip()
 
-    # End __clean
     # ------------------------------------------------------------------
-
 
     def __str__(self):
         return ' '.join(self._tokens).encode('utf8')

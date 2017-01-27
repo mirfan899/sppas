@@ -38,18 +38,19 @@
 import os
 import codecs
 
-from aligntrack import AlignTrack
-from tracks import TracksReader, TrackSplitter, TrackNamesGenerator
+from sppas.src.sp_glob import encoding
+from sppas.src.resources.mapping import Mapping
+from sppas.src.resources.rutils import to_strip
 
-from resources.mapping import Mapping
-from resources.rutils import to_strip
-from sp_glob import encoding
+from .aligntrack import AlignTrack
+from .tracks import TracksReader, TrackSplitter, TrackNamesGenerator
 
 # ------------------------------------------------------------------
 # Main class
 # ------------------------------------------------------------------
 
-class AlignIO:
+
+class AlignIO(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France

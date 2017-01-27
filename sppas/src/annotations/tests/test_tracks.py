@@ -4,10 +4,10 @@
 import unittest
 import os.path
 
-from annotations.Align.aligners.alignerio import AlignerIO
-from annotations.Chunks.anchors import AnchorTier
-from annotationdata import Tier, Annotation, TimeInterval, TimePoint, Label, Text
-from resources.patterns import Patterns
+from ..Align.aligners.alignerio import AlignerIO
+from ..Chunks.anchors import AnchorTier
+from sppas.src.annotationdata import Annotation, TimeInterval, TimePoint, Label, Text
+from sppas.src.resources.patterns import Patterns
 
 # --------------------------------------------------------------------------
 

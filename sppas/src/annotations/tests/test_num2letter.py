@@ -1,9 +1,8 @@
-#!/usr/bin/env python2
 # -*- coding:utf-8 -*-
 
 import unittest
 
-from annotations.Token.num2letter import sppasNum
+from ..Token.num2letter import sppasNum
 
 ref_es = [
 u"cero",

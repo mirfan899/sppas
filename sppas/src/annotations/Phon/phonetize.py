@@ -36,14 +36,13 @@
 
 import re
 
-from phonunk import PhonUnk
-from dagphon import DAGPhon
+from sppas.src.sp_glob import ERROR_ID, WARNING_ID, OK_ID
+from sppas.src.resources.rutils import to_strip
+from sppas.src.resources.mapping import Mapping
+from sppas.src.resources.dictpron import DictPron
 
-from resources.rutils import to_strip
-from resources.mapping import Mapping
-from resources.dictpron import DictPron
-
-from sp_glob import ERROR_ID, WARNING_ID, OK_ID
+from .phonunk import PhonUnk
+from .dagphon import DAGPhon
 
 # ---------------------------------------------------------------------------
 

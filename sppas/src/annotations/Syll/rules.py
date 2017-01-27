@@ -41,12 +41,12 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-import sys
 import re
 
-# ######################################################################### #
+# ----------------------------------------------------------------------------
 
-class Rules:
+
+class Rules(object):
     """ SPPAS syllabification set of rules.
     """
 
@@ -57,9 +57,7 @@ class Rules:
         """
         self.load( filename )
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def __initialize( self ):
         self.general   = {} # list of general rules
@@ -106,9 +104,7 @@ class Rules:
             if len(self.general) == 0:
                 raise IOError('Syll::rules.py. Error: rule file corrupted: No rules found.\n')
 
-    # End load
     # ------------------------------------------------------------------------
-
 
     def get_class(self, phoneme):
         """ Return the value of "phoneme" in phonclass.
@@ -123,10 +119,7 @@ class Rules:
         #sys.stderr.write("Unknown phoneme: " + phoneme)
         return self.phonclass["UNK"]
 
-
-    # End get_class
     # ------------------------------------------------------------------------
-
 
     def is_exception(self, rule):
         """ Return True if the rule is an exception rule.
@@ -138,9 +131,7 @@ class Rules:
                 return True
         return False
 
-    # End is_exception
     # ------------------------------------------------------------------------
-
 
     def get_boundary(self, phonemes):
         """ Get the index of the syllable boundary (EXCRULES or GENRULES).
@@ -167,9 +158,7 @@ class Rules:
 
         return -1
 
-    # End get_boundary
     # ------------------------------------------------------------------------
-
 
     def get_gap(self, phonemes):
         """ Return the shift to apply (OTHRULES).
@@ -199,9 +188,7 @@ class Rules:
                     return self.gap[gp]
         return 0
 
-    # End get_gap
     # ------------------------------------------------------------------------
-
 
     def print_rules(self):
         """ Used to debug!.
@@ -217,5 +204,4 @@ class Rules:
         for gp in self.gap.keys():
             print(gp + " %d" % self.gap[gp] + " %r" % self.is_exception(gp))
 
-    # End get_gap
     # ------------------------------------------------------------------------

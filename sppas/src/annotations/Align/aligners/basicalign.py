@@ -35,15 +35,16 @@
 # File: basicalign.py
 # ----------------------------------------------------------------------------
 
-from annotations.Align.aligners.basealigner import BaseAligner
-from annotations.Align.aligners.alignerio   import AlignerIO
+import sppas.src.audiodata.aio
 
-import audiodata.aio
+from .basealigner import BaseAligner
+from .alignerio import AlignerIO
 
 # ----------------------------------------------------------------------------
 BASIC_EXT_OUT = ["palign"]
 DEFAULT_EXT_OUT = BASIC_EXT_OUT[0]
 # ----------------------------------------------------------------------------
+
 
 class BasicAligner( BaseAligner ):
     """
@@ -103,7 +104,7 @@ class BasicAligner( BaseAligner ):
             duration = inputwav
         else:
             try:
-                wavspeech = audiodata.aio.open( inputwav )
+                wavspeech = sppas.src.audiodata.aio.open( inputwav )
                 duration  = wavspeech.get_duration()
             except Exception:
                 duration = 0.

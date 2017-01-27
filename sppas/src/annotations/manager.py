@@ -45,28 +45,26 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import os
-
-from utils.fileutils import sppasFileUtils
-from utils.fileutils import sppasDirUtils
-
-from annotationdata.transcription import Transcription
-
-import audiodata.aio
-import annotationdata.aio
-from annotations.infotier import sppasMetaInfoTier
-from annotations.log import sppasLog
-
-from annotations.Momel.sppasmomel import sppasMomel
-from annotations.Intsint.sppasintsint import sppasIntsint
-from annotations.IPUs.ipusseg import sppasIPUs
-from annotations.Token.sppastok import sppasTok
-from annotations.Phon.sppasphon import sppasPhon
-from annotations.Chunks.sppaschunks import sppasChunks
-from annotations.Align.sppasalign import sppasAlign
-from annotations.Syll.sppassyll import sppasSyll
-from annotations.Repet.sppasrepet import sppasRepet
-
 from threading import Thread
+
+from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.utils.fileutils import sppasDirUtils
+from sppas.src.annotationdata.transcription import Transcription
+
+import sppas.src.audiodata.aio
+import sppas.src.annotationdata.aio
+from sppas.src.annotations.infotier import sppasMetaInfoTier
+from sppas.src.annotations.log import sppasLog
+
+from sppas.src.annotations.Momel.sppasmomel import sppasMomel
+from sppas.src.annotations.Intsint.sppasintsint import sppasIntsint
+from sppas.src.annotations.IPUs.ipusseg import sppasIPUs
+from sppas.src.annotations.Token.sppastok import sppasTok
+from sppas.src.annotations.Phon.sppasphon import sppasPhon
+from sppas.src.annotations.Chunks.sppaschunks import sppasChunks
+from sppas.src.annotations.Align.sppasalign import sppasAlign
+from sppas.src.annotations.Syll.sppassyll import sppasSyll
+from sppas.src.annotations.Repet.sppasrepet import sppasRepet
 
 # ----------------------------------------------------------------------------
 
@@ -158,10 +156,10 @@ class sppasAnnotationsManager( Thread ):
                 inputfilename, inputfileextension = os.path.splitext(sinput)
 
                 # Input is a file (and not a directory)
-                if extension.lower() in audiodata.aio.extensions and os.path.isfile(sinput) is True:
+                if extension.lower() in sppas.src.audiodata.aio.extensions and os.path.isfile(sinput) is True:
                     filelist.append( sinput )
 
-                elif inputfileextension.lower() in audiodata.aio.extensions:
+                elif inputfileextension.lower() in sppas.src.audiodata.aio.extensions:
                     sinput = inputfilename + extension
                     if os.path.isfile(sinput) is True:
                         filelist.append( sinput )
@@ -243,7 +241,7 @@ class sppasAnnotationsManager( Thread ):
         self._progress.update(0,"")
 
         # Get the list of input file names, with the ".wav" (or ".wave") extension
-        filelist = self.set_filelist(".wav")#,not_start=["track_"])
+        filelist = self.set_filelist(".wav")  #,not_start=["track_"])
         if len(filelist) == 0:
             return 0
         total = len(filelist)
@@ -253,7 +251,7 @@ class sppasAnnotationsManager( Thread ):
             m = sppasMomel( self._logfile )
         except Exception as e:
             if self._logfile is not None:
-                self._logfile.print_message( "%s\n"%str(e), indent=1,status=1 )
+                self._logfile.print_message( "%s\n" % str(e), indent=1, status=1 )
             return 0
 
         # Execute annotation for each file in the list
@@ -280,13 +278,14 @@ class sppasAnnotationsManager( Thread ):
                     m.run(inname, trsoutput=textgridoutname, outputfile=outname)
                     files_processed_success += 1
                     if self._logfile is not None:
-                        self._logfile.print_message(textgridoutname,indent=2,status=0)
+                        self._logfile.print_message(textgridoutname, indent=2, status=0)
                 except Exception as e:
                     if self._logfile is not None:
-                        self._logfile.print_message(textgridoutname+": %s"%str(e),indent=2,status=-1)
+                        self._logfile.print_message(textgridoutname+": %s" % str(e), indent=2, status=-1)
             else:
                 if self._logfile is not None:
-                    self._logfile.print_message("Failed to find a file with pitch values. Read the documentation for details.",indent=2,status=2)
+                    self._logfile.print_message("Failed to find a file with pitch values. "
+                                                "Read the documentation for details.", indent=2, status=2)
 
             # Indicate progress
             self._progress.set_fraction(float((i+1))/float(total))
@@ -294,7 +293,7 @@ class sppasAnnotationsManager( Thread ):
                 self._logfile.print_newline()
 
         # Indicate completed!
-        self._progress.update(1,"Completed (%d files successfully over %d files).\n"%(files_processed_success,total))
+        self._progress.update(1, "Completed (%d files successfully over %d files).\n" % (files_processed_success,total))
         self._progress.set_header("")
 
         return files_processed_success
@@ -314,7 +313,7 @@ class sppasAnnotationsManager( Thread ):
         stepname = self.parameters.get_step_name(stepidx)
         files_processed_success = 0
         self._progress.set_header(stepname)
-        self._progress.update(0,"")
+        self._progress.update(0, "")
 
         # Get the list of input file names, with the ".wav" (or ".wave") extension
         filelist = self.set_filelist(".wav")#,not_start=["track_"])
@@ -340,7 +339,7 @@ class sppasAnnotationsManager( Thread ):
 
             # Get the input file
             ext = ['-momel'+self.parameters.get_output_format()]
-            for e in annotationdata.aio.extensions_out:
+            for e in sppas.src.annotationdata.aio.extensions_out:
                 ext.append( '-momel'+e )
 
             inname = self._get_filename(f, ext)
@@ -357,7 +356,7 @@ class sppasAnnotationsManager( Thread ):
                         self._logfile.print_message(outname,indent=2,status=0)
                 except Exception as e:
                     if self._logfile is not None:
-                        self._logfile.print_message(outname+": %s"%str(e),indent=2,status=-1)
+                        self._logfile.print_message(outname+": %s" % str(e), indent=2, status=-1)
             else:
                 if self._logfile is not None:
                     self._logfile.print_message("Failed to find a file with momel targets. Read the documentation for details.",indent=2,status=2)
@@ -421,7 +420,7 @@ class sppasAnnotationsManager( Thread ):
 
             # Is there already an existing IPU-seg (in any format)!
             ext = []
-            for e in annotationdata.aio.extensions_in:
+            for e in sppas.src.annotationdata.aio.extensions_in:
                 if not e in ['.txt','.hz', '.PitchTier']:
                     ext.append(e)
             existoutname = self._get_filename(f, ext)
@@ -433,8 +432,8 @@ class sppasAnnotationsManager( Thread ):
                     self._logfile.print_message('Export '+existoutname, indent=2)
                     self._logfile.print_message('into '+outname, indent=2)
                 try:
-                    t = annotationdata.aio.read(existoutname)
-                    annotationdata.aio.write(outname,t)
+                    t = sppas.src.annotationdata.aio.read(existoutname)
+                    sppas.src.annotationdata.aio.write(outname,t)
                     # OK, now outname is as expected! (or not...)
                 except Exception:
                     pass
@@ -527,7 +526,7 @@ class sppasAnnotationsManager( Thread ):
                 self._logfile.print_message(stepname+" of file " + f, indent=1 )
 
             # Get the input file
-            inname = self._get_filename(f, [self.parameters.get_output_format()] + annotationdata.aio.extensions_out)
+            inname = self._get_filename(f, [self.parameters.get_output_format()] + sppas.src.annotationdata.aio.extensions_out)
             if inname is not None:
 
                 # Fix output file name
@@ -604,7 +603,7 @@ class sppasAnnotationsManager( Thread ):
 
             # Get the input file
             ext = ['-token'+self.parameters.get_output_format()]
-            for e in annotationdata.aio.extensions_out_multitiers:
+            for e in sppas.src.annotationdata.aio.extensions_out_multitiers:
                 ext.append( '-token'+e )
 
             inname = self._get_filename(f, ext)
@@ -762,7 +761,7 @@ class sppasAnnotationsManager( Thread ):
             # Get the input file
             extt = ['-token'+self.parameters.get_output_format()]
             extp = ['-phon'+self.parameters.get_output_format()]
-            for e in annotationdata.aio.extensions_out:
+            for e in sppas.src.annotationdata.aio.extensions_out:
                 extt.append( '-token'+e )
                 extp.append( '-phon'+e )
             extt.append('-chunks'+self.parameters.get_output_format())
@@ -843,7 +842,7 @@ class sppasAnnotationsManager( Thread ):
 
             # Get the input file
             ext = ['-palign'+self.parameters.get_output_format()]
-            for e in annotationdata.aio.extensions_out_multitiers:
+            for e in sppas.src.annotationdata.aio.extensions_out_multitiers:
                 ext.append( '-palign'+e )
 
             inname = self._get_filename(f,ext)
@@ -919,7 +918,7 @@ class sppasAnnotationsManager( Thread ):
 
             # Get the input file
             ext = ['-palign'+self.parameters.get_output_format()]
-            for e in annotationdata.aio.extensions_out_multitiers:
+            for e in sppas.src.annotationdata.aio.extensions_out_multitiers:
                 ext.append( '-palign'+e )
 
             inname = self._get_filename(f, ext)
@@ -957,7 +956,7 @@ class sppasAnnotationsManager( Thread ):
     # ------------------------------------------------------------------------
 
     def __add_trs(self, trs, trsinputfile):
-        trsinput = annotationdata.aio.read( trsinputfile )
+        trsinput = sppas.src.annotationdata.aio.read( trsinputfile )
         for tier in trsinput:
             alreadin = False
             if trs.IsEmpty() is False:
@@ -1052,7 +1051,7 @@ class sppasAnnotationsManager( Thread ):
                     infotier = sppasMetaInfoTier()
                     tier = infotier.create_time_tier(trs.GetBegin(),trs.GetEnd())
                     trs.Add(tier)
-                    annotationdata.aio.write( basef + "-merge.TextGrid", trs)
+                    sppas.src.annotationdata.aio.write( basef + "-merge.TextGrid", trs)
                     if self._logfile is not None:
                         self._logfile.print_message( basef + "-merge.TextGrid", indent=2,status=0)
                 elif self._logfile is not None:
@@ -1149,5 +1148,4 @@ class sppasAnnotationsManager( Thread ):
             self._logfile.print_separator()
             self._logfile.close()
 
-    # End run
     # ------------------------------------------------------------------------

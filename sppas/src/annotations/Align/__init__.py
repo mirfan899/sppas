@@ -87,5 +87,14 @@
     Thirdly, Julius Grammar-based system skip short pauses! We do not
     implemented a solution to solve this problem.
 """
-# Fix the list of public classes
-__all__ = ['align']
+from .activity import Activity
+from .alignio import AlignIO
+from .aligntrack import AlignTrack
+from .sppasalign import sppasAlign
+
+__all__ = [
+    'Activity',
+    'AlignIO',
+    'AlignTrack',
+    'sppasAlign'
+]

@@ -38,27 +38,25 @@
 import os
 import logging
 
-import annotations.Align.aligners as aligners
-from annotations.Align.aligners.alignerio import AlignerIO
-from annotations.Chunks.spkrate import SpeakerRate
-from annotations.Chunks.anchors import AnchorTier
 
-import annotationdata.aio
-from annotationdata.transcription  import Transcription
-from annotationdata.tier           import Tier
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.point    import TimePoint
-from annotationdata.annotation     import Annotation
-from annotationdata.label.label    import Label
-from annotationdata.label.text     import Text
+from sppas.src.sp_glob import UNKSTAMP
+import sppas.src.annotationdata.aio
+import sppas.src.audiodata.autils as autils
+from sppas.src.annotationdata.transcription import Transcription
+from sppas.src.annotationdata.tier import Tier
+from sppas.src.annotationdata.ptime.interval import TimeInterval
+from sppas.src.annotationdata.ptime.point import TimePoint
+from sppas.src.annotationdata.annotation import Annotation
+from sppas.src.annotationdata.label.label import Label
+from sppas.src.annotationdata.label.text import Text
+from sppas.src.resources.patterns import Patterns
+from sppas.src.resources.rutils import to_strip
+from sppas.src.resources.mapping import Mapping
+import sppas.src.annotations.Align.aligners as aligners
+from sppas.src.annotations.Align.aligners.alignerio import AlignerIO
 
-import audiodata.autils as autils
-
-from resources.patterns import Patterns
-from resources.rutils import to_strip
-from resources.mapping import Mapping
-
-from sp_glob import UNKSTAMP
+from .spkrate import SpeakerRate
+from .anchors import AnchorTier
 
 # ----------------------------------------------------------------------------
 
@@ -221,7 +219,7 @@ class Chunks( object ):
             # append the anchor tier as intermediate result
             if self.ANCHORS is True and A != anchortier.GetSize():
                 self._append_tier(anchortier,trsoutput)
-                annotationdata.aio.write( os.path.join(diralign,"ANCHORS-%d.xra"%anchortier.GetSize()),trsoutput )
+                sppas.src.annotationdata.aio.write( os.path.join(diralign,"ANCHORS-%d.xra"%anchortier.GetSize()),trsoutput )
 
             # prepare next pass
             W = max(W-1., self.WMIN)

@@ -40,19 +40,13 @@ __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 
+from .storage import DataSpeaker
+from .storage import DataRepetition
+
 # ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
-import sys
-from os.path import *
-import re
-
-from storage import DataSpeaker
-from storage import DataRepetition
 
 
-class Repetitions:
+class Repetitions(object):
     """
     Repetition automatic detection.
     DETECT THE SOURCE, then find where is the repetition.

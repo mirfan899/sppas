@@ -695,12 +695,12 @@ class TrsList(wx.Panel):
             self._transcription = Transcription("Empty")
             return
         try:
-            self._transcription = annotationdata.aio.read( filename )
+            self._transcription = sppas.src.annotationdata.aio.read( filename )
             self._dirty = False
             self._boxtitle.SetForegroundColour( FG_FILE_COLOUR )
             self.Refresh()
         except Exception as e:
-            logging.info('Error loading file %s: %s'%(filename,str(e)))
+            logging.info('Error loading file %s: %s' % (filename, str(e)))
             self._transcription = Transcription("IO-Error")
             #raise
 

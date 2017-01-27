@@ -35,20 +35,17 @@
 # File: phon.py
 # ---------------------------------------------------------------------------
 
-import logging
+from sppas.src.sp_glob import ERROR_ID, WARNING_ID, INFO_ID, OK_ID
+from sppas.src.sp_glob import UNKSTAMP
 
-import annotationdata.aio
-from annotationdata.tier import Tier
-from annotationdata.transcription import Transcription
+import sppas.src.annotationdata.aio
+from sppas.src.annotationdata.tier import Tier
+from sppas.src.annotationdata.transcription import Transcription
+from sppas.src.resources.dictpron import DictPron
+from sppas.src.resources.mapping import Mapping
 
-from resources.dictpron import DictPron
-from resources.mapping  import Mapping
-from phonetize import DictPhon
-
-from sp_glob import ERROR_ID, WARNING_ID, INFO_ID, OK_ID
-from sp_glob import UNKSTAMP
-
-from annotations.sppasbase import sppasBase
+from ..sppasbase import sppasBase
+from .phonetize import DictPhon
 
 # ---------------------------------------------------------------------------
 
@@ -284,7 +281,7 @@ class sppasPhon( sppasBase ):
         self.print_diagnosis(inputfilename)
 
         # Get the tier to be phonetized.
-        trsinput = annotationdata.aio.read( inputfilename )
+        trsinput = sppas.src.annotationdata.aio.read( inputfilename )
         tierinput = self.get_input_tier(trsinput)
         if tierinput is None:
             raise Exception("No tier found with tokenization. "
@@ -298,6 +295,6 @@ class sppasPhon( sppasBase ):
         trsoutput.Append( tierphon )
 
         # Save in a file
-        annotationdata.aio.write( outputfile,trsoutput )
+        sppas.src.annotationdata.aio.write( outputfile,trsoutput )
 
     # -----------------------------------------------------------------------

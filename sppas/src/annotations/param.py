@@ -37,12 +37,12 @@
 
 import os.path
 
-from sp_glob import SPPAS_CONFIG_DIR
-from sp_glob import DEFAULT_OUTPUT_EXTENSION
-
-from annotations.cfgparser import AnnotationConfigParser
+from sppas.src.sp_glob import SPPAS_CONFIG_DIR
+from sppas.src.sp_glob import DEFAULT_OUTPUT_EXTENSION
+from sppas.src.annotations.cfgparser import AnnotationConfigParser
 
 # ----------------------------------------------------------------------------
+
 
 class annotationParam( object ):
     """

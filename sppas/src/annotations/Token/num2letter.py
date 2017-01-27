@@ -63,7 +63,7 @@ ZERO['por'] = u"zero"
 # -------------------------------------------------------------------------
 
 
-class sppasNum:
+class sppasNum(object):
     """
     Numerical conversion using a multilingual algorithm.
 
@@ -1180,6 +1180,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
     nb = sppasNum( args.lang )
     for line in sys.stdin:
-        print nb.convert( line ).encode('utf8')
+        print(nb.convert( line ).encode('utf8'))
 
 # ------------------------------------------------------------------

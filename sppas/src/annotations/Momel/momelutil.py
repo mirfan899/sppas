@@ -41,9 +41,8 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-import os
-import sys
 from random import randrange
+
 
 def quicksortcib(ciblist):
     """ Implement quicksort (ie "partition-exchange" sort).
@@ -55,17 +54,16 @@ def quicksortcib(ciblist):
     # an empty list is already sorted, so just return it
     if ciblist == []:
         return ciblist
-    else:
-        # Select a random pivot value and remove it from the list
-        pivot = ciblist.pop( randrange(len(ciblist)) )
-        # Filter all items less than the pivot and quicksort them
-        lesser = quicksortcib([l for l in ciblist if l.get_x() < pivot.get_x()])
-        # Filter all items greater than the pivot and quicksort them
-        greater = quicksortcib([l for l in ciblist if l.get_x() >= pivot.get_x()])
-        # Return the sorted results
-        return lesser + [pivot] + greater
 
-# End quicksortcib
+    # Select a random pivot value and remove it from the list
+    pivot = ciblist.pop( randrange(len(ciblist)) )
+    # Filter all items less than the pivot and quicksort them
+    lesser = quicksortcib([l for l in ciblist if l.get_x() < pivot.get_x()])
+    # Filter all items greater than the pivot and quicksort them
+    greater = quicksortcib([l for l in ciblist if l.get_x() >= pivot.get_x()])
+    # Return the sorted results
+    return lesser + [pivot] + greater
+
 # ----------------------------------------------------------------------
 
 
@@ -76,13 +74,11 @@ def compare(val1, val2, seuil=0.05):
             - 1 si val1 > val2
             - -1 si val1 < val2
     """
-    if ( (val1 - val2)/val1 > seuil):
+    if (val1 - val2)/val1 > seuil:
         return 1
-    elif ( (val2 - val1)/val1 > seuil):
+    elif (val2 - val1)/val1 > seuil:
         return -1
-    else:
-        return 0
 
-# End compare
+    return 0
+
 # ----------------------------------------------------------------------
-

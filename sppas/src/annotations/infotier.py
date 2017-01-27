@@ -37,14 +37,14 @@
 
 import datetime
 
-from sp_glob import author, contact, program, version, copyright, url, license
+from sppas.src.sp_glob import author, contact, program, version, copyright, url, license
 
-from annotationdata.tier import Tier
-from annotationdata.annotation import Annotation
-from annotationdata.label.label import Label
-from annotationdata.ptime.point import TimePoint
-from annotationdata.ptime.interval import TimeInterval
-from structs.metainfo import sppasMetaInfo
+from sppas.src.annotationdata.tier import Tier
+from sppas.src.annotationdata.annotation import Annotation
+from sppas.src.annotationdata.label.label import Label
+from sppas.src.annotationdata.ptime.point import TimePoint
+from sppas.src.annotationdata.ptime.interval import TimeInterval
+from sppas.src.structs.metainfo import sppasMetaInfo
 
 # ---------------------------------------------------------------------------
 

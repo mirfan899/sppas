@@ -36,10 +36,13 @@
 # ---------------------------------------------------------------------------
 
 import logging
-from sp_glob import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
-from annotations.diagnosis import sppasDiagnosis
+
+from sppas.src.sp_glob import ERROR_ID, WARNING_ID, INFO_ID
+
+from .diagnosis import sppasDiagnosis
 
 # ---------------------------------------------------------------------------
+
 
 class sppasBase( object ):
     """

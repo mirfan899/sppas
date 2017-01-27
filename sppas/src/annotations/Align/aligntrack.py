@@ -37,14 +37,17 @@
 
 import codecs
 
-from sp_glob import encoding
-from resources.rutils import to_strip
+from sppas.src.sp_glob import encoding
+from sppas.src.resources.rutils import to_strip
 
-import aligners
+from .aligners import DEFAULT_ALIGNER
+from .aligners import instantiate as aligners_instantiate
+from .aligners import check as aligners_check
 
 # ----------------------------------------------------------------------------
 
-class AlignTrack( object ):
+
+class AlignTrack(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -68,9 +71,8 @@ class AlignTrack( object ):
         - both the tokenization and phonetization contain the same number of words.
 
     """
-    def __init__(self, model, alignername=aligners.DEFAULT_ALIGNER):
-        """
-        Constructor.
+    def __init__(self, model, alignername=DEFAULT_ALIGNER):
+        """ Constructor.
 
         @param model is the acoustic model directory name. It is expected
         to contain at least a file with name "hmmdefs". It can also contain:
@@ -92,14 +94,13 @@ class AlignTrack( object ):
         #   - when the track segment contains only one phoneme;
         #   - when the track segment does not contain phonemes.
         self.set_aligner(alignername)
-        self._basicaligner = aligners.instantiate(None)
+        self._basicaligner = aligners_instantiate(None)
         self._instantiate_aligner()
 
     # ------------------------------------------------------------------------
 
     def set_model(self, model):
-        """
-        Fix an acoustic model to perform time-alignment.
+        """ Fix an acoustic model to perform time-alignment.
 
         @param model (str - IN) Directory that contains the Acoustic Model.
 
@@ -110,21 +111,19 @@ class AlignTrack( object ):
     # ----------------------------------------------------------------------
 
     def set_aligner(self, alignername):
-        """
-        Fix the name of the aligner, one of aligners.ALIGNERS_TYPES.
+        """ Fix the name of the aligner, one of aligners.ALIGNERS_TYPES.
 
         @param alignername (str - IN) Case-insensitive name of an aligner system.
 
         """
-        alignername = aligners.check(alignername)
+        alignername = aligners_check(alignername)
         self._alignerid = alignername
         self._instantiate_aligner()
 
     # ----------------------------------------------------------------------
 
     def set_infersp(self, infersp):
-        """
-        Fix the automatic inference of short pauses.
+        """ Fix the automatic inference of short pauses.
 
         @param infersp (bool - IN) If infersp is set to True, a short pause is
         added at the end of each token, and the automatic aligner will infer
@@ -132,49 +131,40 @@ class AlignTrack( object ):
 
         """
         self._infersp = infersp
-        self._aligner.set_infersp( infersp )
+        self._aligner.set_infersp(infersp)
 
     # ----------------------------------------------------------------------
 
     def get_aligner(self):
-        """
-        Return the aligner name identifier.
+        """ Return the aligner name identifier. """
 
-        """
         return self._alignerid
 
     # ----------------------------------------------------------------------
 
     def get_aligner_ext(self):
-        """
-        Return the output file extension the aligner will use.
+        """ Return the output file extension the aligner will use. """
 
-        """
         return self._aligner.get_outext()
 
     # ----------------------------------------------------------------------
 
     def set_aligner_ext(self, ext):
-        """
-        Fix the output file extension the aligner will use.
+        """ Fix the output file extension the aligner will use. """
 
-        """
-        self._aligner.set_outext( ext )
+        self._aligner.set_outext(ext)
 
     # ----------------------------------------------------------------------
 
     def get_model(self):
-        """
-        Return the model directory name.
+        """ Return the model directory name. """
 
-        """
         return self._modeldir
 
     # ------------------------------------------------------------------------
 
     def segmenter(self, audiofilename, phonname, tokenname, alignname):
-        """
-        Call an aligner to perform speech segmentation and manage errors.
+        """ Call an aligner to perform speech segmentation and manage errors.
 
         @param audiofilename (str - IN) the audio file name of an IPU
         @param phonname (str - IN) the file name with the phonetization
@@ -191,13 +181,13 @@ class AlignTrack( object ):
 
         if phonname is not None:
             phones = self._readline(phonname)
-        self._aligner.set_phones( phones )
-        self._basicaligner.set_phones( phones )
+        self._aligner.set_phones(phones)
+        self._basicaligner.set_phones(phones)
 
         if tokenname is not None:
             tokens = self._readline(tokenname)
-        self._aligner.set_tokens( tokens )
-        self._basicaligner.set_tokens( tokens )
+        self._aligner.set_tokens(tokens)
+        self._basicaligner.set_tokens(tokens)
 
         # Do not align nothing!
         if len(phones) == 0:
@@ -220,26 +210,22 @@ class AlignTrack( object ):
     # ------------------------------------------------------------------------
 
     def _instantiate_aligner(self):
-        """
-        Instantiate self._aligner to the appropriate Aligner system.
+        """ Instantiate self._aligner to the appropriate Aligner system. """
 
-        """
-        self._aligner = aligners.instantiate( self._modeldir,self._alignerid )
-        self._aligner.set_infersp( self._infersp )
+        self._aligner = aligners_instantiate(self._modeldir, self._alignerid)
+        self._aligner.set_infersp(self._infersp)
 
     # ------------------------------------------------------------------------
 
     def _readline(self, filename):
-        """
-        Read the first line of filename, and return it as a formatted string.
+        """ Read the first line of filename, and return it as a formatted string. """
 
-        """
         line = ""
         try:
             with codecs.open(filename, 'r', encoding) as fp:
                 line = to_strip(fp.readline())
         except Exception:
-            return "" # IOError, Encoding error...
+            return ""  # IOError, Encoding error...
 
         return line
 

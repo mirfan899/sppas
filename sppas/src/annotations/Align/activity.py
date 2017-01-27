@@ -35,14 +35,14 @@
 # File: activity.py
 # ---------------------------------------------------------------------------
 
-from annotationdata.tier           import Tier
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.point    import TimePoint
-from annotationdata.annotation     import Annotation
-from annotationdata.label.label    import Label
-from annotationdata.aio.utils       import fill_gaps, unfill_gaps
+from sppas.src.annotationdata.tier import Tier
+from sppas.src.annotationdata.ptime.interval import TimeInterval
+from sppas.src.annotationdata.annotation import Annotation
+from sppas.src.annotationdata.label.label import Label
+from sppas.src.annotationdata.aio.utils import fill_gaps, unfill_gaps
 
 # ---------------------------------------------------------------------------
+
 
 class Activity(object):
     """

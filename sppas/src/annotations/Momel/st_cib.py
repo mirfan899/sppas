@@ -42,7 +42,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 
-class Targets:
+class Targets(object):
     """ A class to store one selected target.
         A target is made of 2 or 3 values:
             - x: float ; required
@@ -57,11 +57,9 @@ class Targets:
         self.__y = 0.
         self.__p = 0
 
-    # End init
     # ------------------------------------------------------------------
 
-
-    def set(self,x,y,p=0):
+    def set(self, x, y, p=0):
         """ Set new values to a target.
             Parameters:
                 - x is a float
@@ -74,11 +72,9 @@ class Targets:
         if p:
             self.set_p(p)
 
-    # End set
     # ------------------------------------------------------------------
 
-
-    def set_x(self,x):
+    def set_x(self, x):
         """ Set a new x value to a target.
             Parameters:
                 - x is a float value
@@ -86,11 +82,9 @@ class Targets:
         """
         self.__x = float(x)
 
-    # End set_x
     # ------------------------------------------------------------------
 
-
-    def set_y(self,y):
+    def set_y(self, y):
         """ Set a new y value to a target.
             Parameters:
                 - y is a float value
@@ -98,11 +92,9 @@ class Targets:
         """
         self.__y = float(y)
 
-    # End set_y
     # ------------------------------------------------------------------
 
-
-    def set_p(self,p):
+    def set_p(self, p):
         """ Set a new p value to a target.
             Parameters:
                 - p is an int value
@@ -110,9 +102,7 @@ class Targets:
         """
         self.__p = int(p)
 
-    # End set_p
     # ------------------------------------------------------------------
-
 
     def get_x(self):
         """ Return the x value of a target.
@@ -122,9 +112,7 @@ class Targets:
         """
         return self.__x
 
-    # End get_x
     # ------------------------------------------------------------------
-
 
     def get_y(self):
         """ Return the y value of a target.
@@ -134,9 +122,7 @@ class Targets:
         """
         return self.__y
 
-    # End get_y
     # ------------------------------------------------------------------
-
 
     def get_p(self):
         """ Return the p value of a target.
@@ -146,14 +132,10 @@ class Targets:
         """
         return self.__p
 
-    # End get_p
     # ------------------------------------------------------------------
 
+    def print_cib(self, output, pasx=1, pasy=1):
+        toprint = str(self.__x * pasx) + " " + str(self.__y * pasy)
+        output.write(toprint + "\n")
 
-    def print_cib(self,output,pasx=1,pasy=1):
-        toprint = str(self.__x * pasx)+" "+str(self.__y * pasy)
-        output.write(toprint+"\n")
-
-    # End print
     # ------------------------------------------------------------------
-

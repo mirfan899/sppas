@@ -35,15 +35,16 @@
 # File: syll.py
 # ----------------------------------------------------------------------------
 
-from sp_glob import ERROR_ID, WARNING_ID, INFO_ID, OK_ID
+from sppas.src.sp_glob import WARNING_ID
 
-from annotations.Syll.syllabification import Syllabification
-import annotationdata.aio
-from annotationdata.transcription import Transcription
+from sppas.src.annotations.Syll.syllabification import Syllabification
+import sppas.src.annotationdata.aio
+from sppas.src.annotationdata.transcription import Transcription
 
-from annotations.sppasbase import sppasBase
+from ..sppasbase import sppasBase
 
 # ----------------------------------------------------------------------------
+
 
 class sppasSyll( sppasBase ):
     """
@@ -223,7 +224,7 @@ class sppasSyll( sppasBase ):
         self.print_diagnosis(inputfilename)
 
         # Get the tier to syllabify
-        trsinput = annotationdata.aio.read(inputfilename)
+        trsinput = sppas.src.annotationdata.aio.read(inputfilename)
         phonemes = self.get_input_tier(trsinput)
         if phonemes is None:
             raise Exception("No tier found with time-aligned phonemes. "
@@ -238,6 +239,6 @@ class sppasSyll( sppasBase ):
         syllables = self.convert( phonemes, intervals )
 
         # Save in a file
-        annotationdata.aio.write( outputfilename,syllables )
+        sppas.src.annotationdata.aio.write( outputfilename,syllables )
 
     # ------------------------------------------------------------------------

@@ -4,14 +4,14 @@
 import unittest
 import os.path
 
-from sp_glob import RESOURCES_PATH
+from sppas.src.sp_glob import RESOURCES_PATH
 
-from annotationdata.tier import Tier
-from annotationdata.annotation import Annotation
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.point import TimePoint
-from annotationdata.label.label import Label
-from annotations.Syll.syllabification import Syllabification
+from sppas.src.annotationdata.tier import Tier
+from sppas.src.annotationdata.annotation import Annotation
+from sppas.src.annotationdata.ptime.interval import TimeInterval
+from sppas.src.annotationdata.ptime.point import TimePoint
+from sppas.src.annotationdata.label.label import Label
+from sppas.src.annotations.Syll.syllabification import Syllabification
 
 # -------------------------------------------------------------------------
 
@@ -28,7 +28,7 @@ def labels2tier(phonemes):
     tier = Tier('Phonemes')
     for time, p in enumerate(phonemes):
         begin = TimePoint(time)
-        end   = TimePoint(time+1)
+        end = TimePoint(time+1)
         label = Label(p)
         a = Annotation( TimeInterval(begin,end), label)
         tier.Append(a)

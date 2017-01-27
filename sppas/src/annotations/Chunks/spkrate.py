@@ -35,7 +35,8 @@
 # File: spkrate.py
 # ----------------------------------------------------------------------------
 
-class SpeakerRate:
+
+class SpeakerRate(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France

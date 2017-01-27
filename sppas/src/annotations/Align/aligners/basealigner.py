@@ -40,8 +40,8 @@ import random
 import shutil
 from datetime import date
 
-from models.acm.tiedlist import TiedList
-from resources.rutils import to_strip
+from sppas.src.models.acm.tiedlist import TiedList
+from sppas.src.resources.rutils import to_strip
 
 # ---------------------------------------------------------------------------
 

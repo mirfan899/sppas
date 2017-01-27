@@ -37,20 +37,19 @@
 
 import sys
 
-from annotations.sppasbase import sppasBase
+from sppas.src.annotationdata.transcription import Transcription
+from sppas.src.annotationdata.annotation import Annotation
+from sppas.src.annotationdata.ptime.point import TimePoint
+from sppas.src.annotationdata.label.label import Label
+import sppas.src.annotationdata.aio
 
-from annotationdata.transcription import Transcription
-from annotationdata.annotation import Annotation
-from annotationdata.ptime.point import TimePoint
-from annotationdata.label.label import Label
-import annotationdata.aio
-
-from annotationdata.pitch import Pitch
-from annotations.Momel.momel import Momel
+from ..sppasbase import sppasBase
+from .momel import Momel
 
 # ---------------------------------------------------------------------------
 
-class sppasMomel( sppasBase ):
+
+class sppasMomel(sppasBase):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -88,35 +87,35 @@ class sppasMomel( sppasBase ):
             key = opt.get_key()
 
             if "lfen1" == key:
-                self.momel.set_option_win1( opt.get_value() )
+                self.momel.set_option_win1(opt.get_value())
                 self._options['lfen1'] = opt.get_value()
 
             elif "hzinf" == key:
-                self.momel.set_option_lo( opt.get_value() )
+                self.momel.set_option_lo(opt.get_value())
                 self._options['hzinf'] = opt.get_value()
 
             elif "hzsup" == key:
-                self.momel.set_option_hi( opt.get_value() )
+                self.momel.set_option_hi(opt.get_value())
                 self._options['hzsup'] = opt.get_value()
 
             elif "maxec" == opt.get_key():
-                self.momel.set_option_maxerr( opt.get_value() )
+                self.momel.set_option_maxerr(opt.get_value())
                 self._options['maxec'] = opt.get_value()
 
             elif "lfen2" == opt.get_key():
-                self.momel.set_option_win2( opt.get_value() )
+                self.momel.set_option_win2(opt.get_value())
                 self._options['lfen2'] = opt.get_value()
 
             elif "seuildiff_x" == opt.get_key():
-                self.momel.set_option_mind( opt.get_value() )
+                self.momel.set_option_mind(opt.get_value())
                 self._options['seuildiff_x'] = opt.get_value()
 
             elif "seuildiff_y" == opt.get_key():
-                self.momel.set_option_minr( opt.get_value() )
+                self.momel.set_option_minr(opt.get_value())
                 self._options['seuildiff_y'] = opt.get_value()
 
             elif "glitch" == opt.get_key():
-                self.momel.set_option_elim_glitch( opt.get_value() )
+                self.momel.set_option_elim_glitch(opt.get_value())
                 self._options['glitch'] = opt.get_value()
 
     # ------------------------------------------------------------------------
@@ -128,7 +127,7 @@ class sppasMomel( sppasBase ):
         @return A list of pitch values (one value each 10 ms).
 
         """
-        pitch = annotationdata.aio.read( inputfilename )
+        pitch = sppas.src.annotationdata.aio.read(inputfilename)
         pitchlist = pitch.get_pitch_list()
         if len(pitchlist) == 0:
             raise IOError('Error while reading '+inputfilename+'\nEmpty pitch tier.\n')
@@ -138,10 +137,10 @@ class sppasMomel( sppasBase ):
 
     def __print_tgts(self, targets, output):
         for i in range(len(targets)):
-            output.write( str( "%g"%(targets[i].get_x() * self.PAS_TRAME) ) )
-            output.write( " " )
-            output.write( str( "%g"%targets[i].get_y() ) )
-            output.write( "\n" )
+            output.write(str("%g" % (targets[i].get_x() * self.PAS_TRAME)))
+            output.write(" ")
+            output.write(str("%g" % targets[i].get_y()))
+            output.write("\n")
 
     def print_targets(self, targets, outputfile=None, trs=None):
         """
@@ -150,10 +149,10 @@ class sppasMomel( sppasBase ):
         """
         if outputfile is not None:
             if outputfile is "STDOUT":
-                output=sys.stdout
+                output = sys.stdout
                 self.__print_tgts(targets, output)
             elif outputfile.lower().endswith('momel') is True:
-                output = open(outputfile,"w")
+                output = open(outputfile, "w")
                 self.__print_tgts(targets, output)
                 output.close()
 
@@ -163,7 +162,7 @@ class sppasMomel( sppasBase ):
             for i in range(len(targets)):
                 try:
                     _time  = targets[i].get_x() * (0.001*self.PAS_TRAME)
-                    _label = str("%d"%(targets[i].get_y()))
+                    _label = str("%d" % (targets[i].get_y()))
                     tier.Append(Annotation(TimePoint(_time), Label(_label)))
                 except Exception:
                     if self.logfile is not None:
@@ -173,7 +172,7 @@ class sppasMomel( sppasBase ):
                 trsp=Transcription()
                 trsp.Add(tier)
                 try:
-                    annotationdata.aio.write(outputfile, trsp)
+                    sppas.src.annotationdata.aio.write(outputfile, trsp)
                 except Exception:
                     if self.logfile is not None:
                         self.logfile.print_message("Can't write PitchTier output file.",status=-1)
@@ -187,10 +186,10 @@ class sppasMomel( sppasBase ):
 
         """
         self.print_options()
-        self.print_diagnosis( inputfilename )
+        self.print_diagnosis(inputfilename)
 
         # Get pitch values from the input
-        pitch = self.set_pitch( inputfilename )
+        pitch = self.set_pitch(inputfilename)
         # Selected values (Target points) for this set of pitch values
         targets = []
 
@@ -206,18 +205,18 @@ class sppasMomel( sppasBase ):
                 nbzero += 1
             else:
                 nbzero = 0
-            ipupitch.append( p )
+            ipupitch.append(p)
 
             # If the number of null values exceed 300ms,
             # we consider this is a silence and estimate Momel
             # on the recorded list of pitch values of the **estimated** IPU.
             if (nbzero*self.PAS_TRAME) > 299:
-                if len(ipupitch)>0 and ( len(ipupitch) > nbzero):
+                if len(ipupitch)>0 and (len(ipupitch) > nbzero):
                     # Estimates the real start time of the IPU
-                    ipustarttime = curtime - ( len(ipupitch) ) + 1
+                    ipustarttime = curtime - (len(ipupitch)) + 1
                     try:
                         # It is supposed ipupitch starts at time = 0.
-                        iputargets = self.momel.annotate( ipupitch )
+                        iputargets = self.momel.annotate(ipupitch)
                     except Exception as e:
                         if self.logfile is not None:
                             self.logfile.print_message('No Momel annotation between time '+ str(ipustarttime*0.01) +" and "+ str(curtime*0.01)+" due to the following error: " +str(e),indent=2,status=-1)
@@ -226,9 +225,9 @@ class sppasMomel( sppasBase ):
                         iputargets = []
                         pass
                     # Adjust time values in the targets
-                    for i in range( len(iputargets) ):
+                    for i in range(len(iputargets)):
                         x = iputargets[i].get_x()
-                        iputargets[i].set_x( ipustarttime + x )
+                        iputargets[i].set_x(ipustarttime + x)
                     # add this targets to the targets list
                     targets = targets + iputargets
                     del ipupitch[:]
@@ -236,19 +235,21 @@ class sppasMomel( sppasBase ):
             curtime += 1
 
         # last ipu
-        if len(ipupitch)>0 and ( len(ipupitch) > nbzero):
+        if len(ipupitch)>0 and (len(ipupitch) > nbzero):
             try:
-                iputargets = self.momel.annotate( ipupitch )
+                iputargets = self.momel.annotate(ipupitch)
             except Exception as e:
                 if self.logfile is not None:
-                    self.logfile.print_message('No Momel annotation between time '+ str(ipustarttime*0.01) +" and "+ str(curtime*0.01)+" due to the following error: " +str(e),indent=2,status=-1)
+                    self.logfile.print_message('No Momel annotation between time ' + str(ipustarttime*0.01) + 
+                                               " and " + str(curtime*0.01) + " due to the following error: " +
+                                               str(e), indent=2, status=-1)
                 else:
                     print "error: " + str(e)
                     iputargets = []
                 pass
-            ipustarttime = curtime - ( len(ipupitch) )
+            ipustarttime = curtime - (len(ipupitch))
             # Adjust time values
-            for i in range( len(iputargets) ):
+            for i in range(len(iputargets)):
                 x = iputargets[i].get_x()
                 iputargets[i].set_x(ipustarttime + x)
             targets = targets + iputargets
@@ -265,7 +266,7 @@ class sppasMomel( sppasBase ):
                 self.logfile.print_message(str(len(targets))+ " targets found.",indent=2,status=3)
 
             momeltier.SetRadius(0.005) # because one pitch estimation each 10ms...
-            annotationdata.aio.write( trsoutput, trsm )
+            sppas.src.annotationdata.aio.write(trsoutput, trsm)
         elif outputfile:
             self.print_targets(targets, outputfile, trs=None)
         else:

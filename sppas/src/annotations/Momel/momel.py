@@ -37,12 +37,13 @@
 
 import math
 
-from st_cib import Targets
-import momelutil
+from .st_cib import Targets
+from .momelutil import quicksortcib
 
 # ----------------------------------------------------------------------------
 
-class Momel:
+
+class Momel(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -462,7 +463,7 @@ class Momel:
             2eme filtrage des cibles trop proches en t [et Hz]
         """
         # classe ordre temporel croissant les cibred
-        c = momelutil.quicksortcib(self.cibred)
+        c = quicksortcib(self.cibred)
         self.cibred = c
 
         self.cibred2.append(self.cibred[0])

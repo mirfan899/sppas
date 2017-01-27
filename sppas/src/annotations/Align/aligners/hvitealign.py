@@ -39,15 +39,16 @@ import os
 import codecs
 from subprocess import Popen, PIPE, STDOUT
 
-from annotations.Align.aligners.basealigner import BaseAligner
+from sppas.src.sp_glob import encoding
+from sppas.src.resources.dictpron import DictPron
 
-from sp_glob import encoding
-from resources.dictpron import DictPron
+from .basealigner import BaseAligner
 
 # ----------------------------------------------------------------------------
 HVITE_EXT_OUT = ["mlf"]
 DEFAULT_EXT_OUT = HVITE_EXT_OUT[0]
 # ----------------------------------------------------------------------------
+
 
 class HviteAligner( BaseAligner ):
     """

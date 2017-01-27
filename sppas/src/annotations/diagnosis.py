@@ -38,17 +38,16 @@
 import codecs
 import os
 
-import annotationdata.aio
-import audiodata.aio
-from audiodata.audio import AudioPCM
-from audiodata.channel import Channel
+from sppas.src.sp_glob import encoding
+from sppas.src.sp_glob import ERROR_ID, WARNING_ID, OK_ID
 
-from sp_glob import encoding
-from sp_glob import ERROR_ID, WARNING_ID, INFO_ID, OK_ID
+import sppas.src.annotationdata.aio
+import sppas.src.audiodata.aio
 
 # ----------------------------------------------------------------------------
 
-class sppasDiagnosis:
+
+class sppasDiagnosis(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -67,8 +66,8 @@ class sppasDiagnosis:
 
         # for audio
         self._reqSamplewidth = 2
-        self._reqFramerate   = 16000
-        self._reqChannels    = 1
+        self._reqFramerate = 16000
+        self._reqChannels = 1
 
         # for transcriptions
         self._encoding = encoding
@@ -86,13 +85,13 @@ class sppasDiagnosis:
         """
         ext = os.path.splitext( filename )[1]
 
-        if ext.lower() in audiodata.aio.extensions:
+        if ext.lower() in sppas.src.audiodata.aio.extensions:
             return self.audiofile( filename )
 
-        if ext.lower() in annotationdata.aio.extensions:
+        if ext.lower() in sppas.src.annotationdata.aio.extensions:
             return self.trsfile( filename )
 
-        return (ERROR_ID,"Invalid. Unknown file extension %s."%ext)
+        return (ERROR_ID, "Invalid. Unknown file extension %s." % ext)
 
     # ------------------------------------------------------------------------
 
@@ -103,18 +102,18 @@ class sppasDiagnosis:
         @param inputname (string) name of the inputfile
 
         """
-        status  = OK_ID
+        status = OK_ID
         message = "Valid."
 
         # test file format: can we support it?
         try:
-            audio = audiodata.aio.open(inputname)
+            audio = sppas.src.audiodata.aio.open(inputname)
             fm = audio.get_framerate()
             sp = audio.get_sampwidth()*8
             nc = audio.get_nchannels()
             audio.close()
         except Exception as e:
-            return (ERROR_ID,str(e))
+            return (ERROR_ID, str(e))
 
         if nc > 1:
             status = ERROR_ID
@@ -138,7 +137,7 @@ class sppasDiagnosis:
 
         # append in message: test whitespace and accents in filename
 
-        return (status,message)
+        return (status, message)
 
     # ------------------------------------------------------------------------
 
@@ -151,22 +150,22 @@ class sppasDiagnosis:
         """
         # test encoding
         try:
-            codecs.open(inputname,"r",encoding)
+            codecs.open(inputname, "r", encoding)
         except UnicodeDecodeError:
-            return (ERROR_ID,"Invalid. Bad file encoding: only %s is accepted."%encoding)
+            return (ERROR_ID, "Invalid. Bad file encoding: only %s is accepted." % encoding)
         except Exception as e:
-            return (ERROR_ID,"Invalid. %s."%str(e))
+            return (ERROR_ID, "Invalid. %s." % str(e))
 
         # test US_ASCII  in filename
         try:
             str( inputname )
         except Exception:
-            return (WARNING_ID,"Admit. File name should contain only US-ASCII characters.")
+            return (WARNING_ID, "Admit. File name should contain only US-ASCII characters.")
 
         # test whitespace and accents in filename
         if " " in inputname:
-            return (WARNING_ID,"Admit. File name should not contain whitespace.")
+            return (WARNING_ID, "Admit. File name should not contain whitespace.")
 
-        return (OK_ID,"Valid.")
+        return (OK_ID, "Valid.")
 
     # ------------------------------------------------------------------------

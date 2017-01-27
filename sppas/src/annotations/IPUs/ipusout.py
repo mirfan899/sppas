@@ -38,21 +38,19 @@
 import codecs
 import os
 
-from sp_glob import encoding
-
-from audiodata.autils import frames2times
-
-import audiodata.aio
-import annotationdata.aio
-from audiodata.audio                import AudioPCM
-from annotationdata.transcription   import Transcription
-from annotationdata.media           import Media
-from annotationdata.ptime.point     import TimePoint
-from annotationdata.ptime.interval  import TimeInterval
-from annotationdata.label.label     import Label
-from annotationdata.annotation      import Annotation
+from sppas.src.sp_glob import encoding
+from sppas.src.audiodata.autils import frames2times
+import sppas.src.audiodata.aio
+import sppas.src.annotationdata.aio
+from sppas.src.audiodata.audio import AudioPCM
+from sppas.src.annotationdata.transcription import Transcription
+from sppas.src.annotationdata.ptime.point import TimePoint
+from sppas.src.annotationdata.ptime.interval import TimeInterval
+from sppas.src.annotationdata.label.label import Label
+from sppas.src.annotationdata.annotation import Annotation
 
 # ---------------------------------------------------------------------------
+
 
 class IPUsOut( object ):
     """
@@ -319,7 +317,7 @@ class IPUsOut( object ):
             audio_out = AudioPCM()
             audio_out.append_channel(ipusaudio.get_channel())
             try:
-                audiodata.aio.save_fragment(trackwavname, audio_out, split_track)
+                sppas.src.audiodata.aio.save_fragment(trackwavname, audio_out, split_track)
             except Exception as e:
                 raise Exception("Can't write track: %s. Error is %s"%(trackwavname,e))
 
@@ -335,12 +333,12 @@ class IPUsOut( object ):
 
     def __write_trstrack(self, trackfilename, trackcontent, duration):
         begin = TimePoint( 0. )
-        end   = TimePoint( duration )
-        ann   = Annotation(TimeInterval(begin,end), Label(trackcontent))
+        end = TimePoint( duration )
+        ann = Annotation(TimeInterval(begin,end), Label(trackcontent))
         trs = Transcription()
         tier = trs.NewTier("Transcription")
         tier.Append(ann)
-        annotationdata.aio.write(trackfilename, trs)
+        sppas.src.annotationdata.aio.write(trackfilename, trs)
 
     # ------------------------------------------------------------------
 

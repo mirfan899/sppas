@@ -38,22 +38,20 @@
 import os
 import codecs
 
-from sp_glob import encoding
+from sppas.src.sp_glob import encoding
 
-from annotations.Align.aligners.alignerio import AlignerIO
+from sppas.src.annotationdata.transcription import Transcription
+from sppas.src.annotationdata.ptime.interval import TimeInterval
+from sppas.src.annotationdata.ptime.point import TimePoint
+from sppas.src.annotationdata.annotation import Annotation
+from sppas.src.annotationdata.label.label import Label
+from sppas.src.annotationdata.label.text import Text
+import sppas.src.audiodata.autils as autils
 
-import annotationdata.aio
-from annotationdata.transcription  import Transcription
-from annotationdata.tier           import Tier
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.point    import TimePoint
-from annotationdata.annotation     import Annotation
-from annotationdata.label.label    import Label
-from annotationdata.label.text     import Text
-
-import audiodata.autils as autils
+from .aligners.alignerio import AlignerIO
 
 # ---------------------------------------------------------------------------
+
 
 class TrackNamesGenerator():
     def __init__(self):

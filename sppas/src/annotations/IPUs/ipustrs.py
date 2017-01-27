@@ -35,9 +35,8 @@
 # File: ipustrs.py
 # ---------------------------------------------------------------------------
 
-from annotationdata.transcription import Transcription
-
-from utils.fileutils import sppasFileUtils
+from sppas.src.annotationdata.transcription import Transcription
+from sppas.src.utils.fileutils import sppasFileUtils
 
 # ---------------------------------------------------------------------------
 

@@ -37,18 +37,19 @@
 
 import logging
 
-from annotationdata import Tier
-from annotationdata import Annotation
-from annotationdata import TimeInterval
-from annotationdata import TimePoint
-from annotationdata import Label
-from annotationdata import Text
+from sppas.src.annotationdata import Tier
+from sppas.src.annotationdata import Annotation
+from sppas.src.annotationdata import TimeInterval
+from sppas.src.annotationdata import TimePoint
+from sppas.src.annotationdata import Label
+from sppas.src.annotationdata import Text
 
-import audiodata.autils as autils
+import sppas.src.audiodata.autils as autils
 
 # --------------------------------------------------------------------------
 
-class AnchorTier( Tier ):
+
+class AnchorTier(Tier):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France

@@ -1,11 +1,10 @@
-#!/usr/bin/env python2
 # -*- coding:utf-8 -*-
 
 import unittest
 import os.path
 
-from annotations.cfgparser import AnnotationConfigParser
-from sp_glob import BASE_PATH
+from ..cfgparser import AnnotationConfigParser
+from sppas.src.sp_glob import BASE_PATH
 
 INITOK   = os.path.join(BASE_PATH, "etc", "Token.ini")
 INIMOMEL = os.path.join(BASE_PATH, "etc", "Momel.ini")

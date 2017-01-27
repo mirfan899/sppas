@@ -43,8 +43,8 @@
     @summary:      Audio utilities.
 """
 
-from audiodata.aio import open as audio_open
-from audiodata.aio import save as audio_save
+from .aio import open as audio_open
+from .aio import save as audio_save
 
 from .audio import AudioPCM
 from .channel import Channel

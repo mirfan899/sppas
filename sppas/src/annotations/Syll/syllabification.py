@@ -37,17 +37,19 @@
 
 import sys
 
-from rules import Rules
-from annotationdata.transcription import Transcription
-from annotationdata.annotation import Annotation
-from annotationdata.ptime.point import TimePoint
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.label.label import Label
-from annotationdata.tier import Tier
+from sppas.src.annotationdata.transcription import Transcription
+from sppas.src.annotationdata.annotation import Annotation
+from sppas.src.annotationdata.ptime.point import TimePoint
+from sppas.src.annotationdata.ptime.interval import TimeInterval
+from sppas.src.annotationdata.label.label import Label
+from sppas.src.annotationdata.tier import Tier
+
+from .rules import Rules
 
 # ----------------------------------------------------------------------------
 
-class Syllabification:
+
+class Syllabification(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France

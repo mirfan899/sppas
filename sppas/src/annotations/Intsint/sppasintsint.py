@@ -35,18 +35,17 @@
 # File: sppasintsint.py
 # ---------------------------------------------------------------------------
 
-from annotations.sppasbase import sppasBase
 
-import annotationdata.aio
-from annotationdata.transcription import Transcription
+import sppas.src.annotationdata.aio
+from sppas.src.annotationdata.transcription import Transcription
 
-from annotations.Intsint.intsint import Intsint
-
-from sp_glob import ERROR_ID, WARNING_ID, INFO_ID, OK_ID
+from ..sppasbase import sppasBase
+from .intsint import Intsint
 
 # ---------------------------------------------------------------------------
 
-class sppasIntsint( sppasBase ):
+
+class sppasIntsint(sppasBase):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -64,7 +63,6 @@ class sppasIntsint( sppasBase ):
 
         self.intsint = Intsint()
 
-
     # -----------------------------------------------------------------------
     # Methods to annotate
     # -----------------------------------------------------------------------
@@ -76,8 +74,8 @@ class sppasIntsint( sppasBase ):
         """
         targets = []
         for target in momeltier:
-            f0 = float( target.GetLabel().GetValue() )
-            targets.append( (target.GetLocation().GetPointMidpoint(),f0) )
+            f0 = float(target.GetLabel().GetValue())
+            targets.append((target.GetLocation().GetPointMidpoint(),f0))
 
         return targets
 
@@ -92,7 +90,7 @@ class sppasIntsint( sppasBase ):
         intsinttier.SetName("INTSINT")
 
         for tone,target in zip(toneslist,intsinttier):
-            target.GetLabel().SetValue( tone )
+            target.GetLabel().SetValue(tone)
 
         return intsinttier
 
@@ -116,7 +114,7 @@ class sppasIntsint( sppasBase ):
 
     # -----------------------------------------------------------------------
 
-    def run( self, inputfilename, outputfile ):
+    def run(self, inputfilename, outputfile):
         """
         Run the INTSINT annotation process on an input file.
 
@@ -125,22 +123,22 @@ class sppasIntsint( sppasBase ):
 
         """
         # Get the tier to be annotated.
-        trsinput = annotationdata.aio.read( inputfilename )
+        trsinput = sppas.src.annotationdata.aio.read(inputfilename)
         tierinput = self.get_input_tier(trsinput)
         if tierinput is None:
             raise Exception("No tier found with momel. "
                             "One of the tier names must contain 'momel'.")
 
         # Annotate the tier
-        targets = self.targets_from_tier( tierinput )
-        toneslist = self.intsint.annotate( targets )
-        tierintsint = self.tones_to_tier( toneslist, tierinput )
+        targets = self.targets_from_tier(tierinput)
+        toneslist = self.intsint.annotate(targets)
+        tierintsint = self.tones_to_tier(toneslist, tierinput)
 
         # Save
         trsoutput = Transcription("sppasIntsint")
-        trsoutput.Append( tierintsint )
+        trsoutput.Append(tierintsint)
 
         # Save in a file
-        annotationdata.aio.write( outputfile,trsoutput )
+        sppas.src.annotationdata.aio.write(outputfile,trsoutput)
 
     # -----------------------------------------------------------------------

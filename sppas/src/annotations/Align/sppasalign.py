@@ -40,25 +40,21 @@ import os.path
 import glob
 import logging
 
-import utils.fileutils
+from sppas.src.sp_glob import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
+from sppas.src.sp_glob import RESOURCES_PATH
+import sppas.src.utils.fileutils
+import sppas.src.annotationdata.aio
+from sppas.src.annotationdata import Transcription
+from sppas.src.annotationdata import Tier
+from sppas.src.annotationdata import Media
+from sppas.src.annotationdata import Text
+from sppas.src.annotationdata.aio.utils import gen_id
+from sppas.src.resources.mapping import Mapping
+from sppas.src.models.acm.modelmixer import ModelMixer
 
-import annotationdata.aio
-from annotationdata import Transcription
-from annotationdata import Tier
-from annotationdata import Media
-from annotationdata import Text
-from annotationdata.aio.utils import gen_id
-
-from alignio import AlignIO
-from activity import Activity
-
-from sp_glob import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
-from sp_glob import RESOURCES_PATH
-
-from resources.mapping import Mapping
-from models.acm.modelmixer import ModelMixer
-
-from annotations.sppasbase import sppasBase
+from ..sppasbase import sppasBase
+from .alignio import AlignIO
+from .activity import Activity
 
 # ----------------------------------------------------------------------------
 
@@ -509,13 +505,13 @@ class sppasAlign(sppasBase):
         # Get the tiers to be time-aligned
         # ---------------------------------------------------------------
 
-        trsinput = annotationdata.aio.read(phonesname)
+        trsinput = sppas.src.annotationdata.aio.read(phonesname)
         phontier = self.get_phonestier(trsinput)
         if phontier is None:
             raise IOError("No tier with the phonetization was found.")
 
         try:
-            trsinputtok = annotationdata.aio.read(tokensname)
+            trsinputtok = sppas.src.annotationdata.aio.read(tokensname)
             toktier = self.get_tokenstier(trsinputtok)
         except Exception:
             toktier = None
@@ -524,8 +520,8 @@ class sppasAlign(sppasBase):
         # Prepare data
         # -------------------------------------------------------------
 
-        inputaudio = utils.fileutils.fix_audioinput(audioname)
-        workdir    = utils.fileutils.fix_workingdir(inputaudio)
+        inputaudio = sppas.src.utils.fileutils.fix_audioinput(audioname)
+        workdir    = sppas.src.utils.fileutils.fix_workingdir(inputaudio)
         if self._options['clean'] is False:
             self.print_message("The working directory is: %s"%workdir, indent=3, status=None)
 
@@ -557,7 +553,7 @@ class sppasAlign(sppasBase):
         try:
             self.print_message("Save automatic alignment: ",indent=3)
             # Save in a file
-            annotationdata.aio.write(outputfilename,trsoutput)
+            sppas.src.annotationdata.aio.write(outputfilename,trsoutput)
         except Exception:
             if self._options['clean'] is True:
                 shutil.rmtree(workdir)
@@ -571,7 +567,6 @@ class sppasAlign(sppasBase):
         # Remove the working directory we created
         if self._options['clean'] is True:
             shutil.rmtree(workdir)
-
 
     # ------------------------------------------------------------------------
     # Private: some very bad hack...

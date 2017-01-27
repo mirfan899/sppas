@@ -39,7 +39,6 @@ __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
@@ -48,11 +47,12 @@ import os
 import re
 import codecs
 
-from sp_glob import UNKSTAMP
+from sppas.src.sp_glob import UNKSTAMP
 
 # ----------------------------------------------------------------------------
 
-class LemmaDict:
+
+class LemmaDict(object):
     """ Perform a simple dictionary-based lemmatization.
     """
 
@@ -97,9 +97,7 @@ class LemmaDict:
                     self.lemdict[__entry] = __lemma
                     dictfreq[__entry]  = __freq
 
-    # End __init__
     # ------------------------------------------------------------------
-
 
     def get_size(self):
         """ Return the number of entries in the dictionary.
@@ -110,9 +108,7 @@ class LemmaDict:
         """
         return len(self.lemdict)
 
-    # End get_size
     # ------------------------------------------------------------------
-
 
     def get_dict(self):
         """ Return the dictionary.
@@ -122,23 +118,19 @@ class LemmaDict:
         """
         return self.lemdict
 
-    # End get_dict
     # ------------------------------------------------------------------
 
-
-    def __get(self,entry):
+    def __get(self, entry):
         """ Return the lemmatization of an entry in the dictionary or "UNK".
             Parameters:  None
             Return:      int
             Exception:   None
         """
-        return self.lemdict.get( self.__lower(entry),self.unk )
+        return self.lemdict.get( self.__lower(entry), self.unk )
 
-    # End __get
     # ------------------------------------------------------------------
 
-
-    def is_unk(self,entry):
+    def is_unk(self, entry):
         """ Return True if entry is unknown (not in the dictionary).
             Parameters:
                 - entry is a string
@@ -147,11 +139,9 @@ class LemmaDict:
         """
         return not self.lemdict.has_key( self.__lower(entry) )
 
-    # End is_unk
     # ------------------------------------------------------------------
 
-
-    def get_lem(self,entry):
+    def get_lem(self, entry):
         """ Return the lemmatization of an entry.
             Parameters:
                 - entry is the string to lemmatize
@@ -189,9 +179,7 @@ class LemmaDict:
         else:
             return _strlem
 
-    # End get_lem
     # ------------------------------------------------------------------
-
 
     def __lower(self,entry):
         """ Lower a string.
@@ -205,9 +193,7 @@ class LemmaDict:
         #__str = __str.replace('Ù', 'ù')
         return __str
 
-    # End __lower
     # ------------------------------------------------------------------
-
 
     def __clean(self,entry):
         """ Clean a string by removing tabs, CR/LF, and some punctuation.
@@ -225,9 +211,7 @@ class LemmaDict:
 
         return __str.strip()
 
-    # End __clean
     # ------------------------------------------------------------------
-
 
     def lemmatize(self, unit, unk=False):
         """ Return the lemmatization of an utterrance.
@@ -256,7 +240,6 @@ class LemmaDict:
         _s = " "
         return _s.join( tablem )
 
-    # End lemmatize
     # ------------------------------------------------------------------
 
 
@@ -269,11 +252,11 @@ if __name__ == "__main__":
     dictdir  = "/home/bigi/Python/SPPAS.git/vocab"
     dictfile = os.path.join(dictdir, "FR.lem")
 
-    print "Create LemmaDict instance"
+    print("Create LemmaDict instance")
     grph = LemmaDict( dictfile )
-    print "   --> "+str(grph.get_size())+" entries loaded."
+    print("   --> "+str(grph.get_size())+" entries loaded.")
 
-    print "Lemmatization : "
-    print "   --> "+grph.lemmatize(u"Salut je fais UN essai plus Bref ça marche")
+    print("Lemmatization : ")
+    print("   --> "+grph.lemmatize(u"Salut je fais UN essai plus Bref ça marche"))
 
 # ######################################################################### #
