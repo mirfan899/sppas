@@ -29,15 +29,15 @@
 
         ---------------------------------------------------------------------
 
-    calculus.datatypes.matrix
-    ~~~~~~~~~~~~~~~~~~~~~~~~~
+    calculus.datatypes.matrix.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    NOT FULLY IMPLEMENTED.
-    TO BE VALIDATED.
+    *NOT FULLY IMPLEMENTED.*
+    *TO BE VALIDATED.*
 
 """
 class Matrix(object):
-     """Simple matrix data type.
+     """ Simple matrix data type.
 
      Of course there are much more advanced matrix data types for Python (for
      instance, the C{ndarray} data type of Numeric Python) and this implementation
@@ -47,7 +47,7 @@ class Matrix(object):
      matrices and so on).
      """
      def __init__(self, data=None):
-         """Initializes a matrix.
+         """ Initializes a matrix.
 
          @param data: the elements of the matrix as a list of lists, or C{None} to
          create a 0x0 matrix.
@@ -188,7 +188,7 @@ class Matrix(object):
              if self.shape != other.shape:
                  raise ValueError("matrix shapes do not match")
              for row_a, row_b in zip(self._data, other):
-                 for i in xrange(len(row_a)):
+                 for i in range(len(row_a)):
                      row_a[i] += row_b[i]
          else:
              for row in self._data:

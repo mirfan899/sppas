@@ -46,11 +46,11 @@
 """
 
 from .entropy import Entropy
-from .kullback import Kullback
+from .kullbackleibler import KullbackLeibler
 from .perplexity import Perplexity
 
 __all__ = [
         "Entropy",
-        "Kullback",
+        "KullbackLeibler",
         "Perplexity"
 ]

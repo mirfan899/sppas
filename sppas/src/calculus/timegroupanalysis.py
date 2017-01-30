@@ -38,12 +38,11 @@
     See: <http://wwwhomes.uni-bielefeld.de/gibbon/TGA/>
 
 """
-
-from descriptivesstats import DescriptiveStatistics
-
 from .stats.linregress import tga_linear_regression
 from .stats.variability import rPVI
 from .stats.variability import nPVI
+
+from .descriptivesstats import DescriptiveStatistics
 
 # ----------------------------------------------------------------------------
 
@@ -80,7 +79,7 @@ class TimeGroupAnalysis(DescriptiveStatistics):
         DescriptiveStatistics.__init__(self, dict_items)
 
     # -----------------------------------------------------------------------
-    # Specific estimators for rythm analysis
+    # Specific estimators for speech rythm analysis
     # -----------------------------------------------------------------------
 
     def rPVI(self):
@@ -137,6 +136,6 @@ class TimeGroupAnalysis(DescriptiveStatistics):
             for duration in values:
                 points.append((timestamp, duration))
                 timestamp += duration
-            linreg.append((key, (stats.linregress.tga_linear_regression(points))))
+            linreg.append((key, (tga_linear_regression(points))))
 
         return dict(linreg)

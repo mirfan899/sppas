@@ -53,11 +53,12 @@ def squared_euclidian(x, y):
 
     :param x: a tuple of float values
     :param y: a tuple of float values
+    :returns: a float value
 
     x and y must have the same length.
 
-    >>> x=(1.0, 0.0)
-    >>> y=(0.0, 1.0)
+    >>> x = (1.0, 0.0)
+    >>> y = (0.0, 1.0)
     >>> squared_euclidian(x, y)
     >>> 2.0
 

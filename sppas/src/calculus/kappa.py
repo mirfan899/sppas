@@ -64,9 +64,12 @@ class Kappa(object):
     >>> p = [ (1., 0.), (0., 1.), (0., 1.), (1., 0.), (1., 0.) ]
     >>> q = [ (1., 0.), (0., 1.), (1., 0.), (1., 0.), (1., 0.) ]
     >>> kappa = Kappa(p, q)
-    >>> print p, "is ok? (expect true):", kappa.check_vector(p)
-    >>> print q, "is ok? (expect true):", kappa.check_vector(q)
-    >>> print "Kappa value:",kappa.evaluate()
+    >>> Kappa.check_vector(p)
+    >>> True
+    >>> Kappa.check_vector(q)
+    >>> True
+    >>> kappa.evaluate()
+    >>> 0.54545
 
     """
     def __init__(self, p, q):
@@ -129,7 +132,7 @@ class Kappa(object):
         :returns: bool
 
         """
-        return self.check_vector(self.p) and self.check_vector(self.q)
+        return Kappa.check_vector(self.p) and Kappa.check_vector(self.q)
 
     # -----------------------------------------------------------------------
 
@@ -154,9 +157,9 @@ class Kappa(object):
 
     # -----------------------------------------------------------------------
 
-    def check_vector(self, v):
-        """
-        Check if the vector is correct to be used.
+    @staticmethod
+    def check_vector(v):
+        """ Check if the vector is correct to be used.
 
         :param v: a vector of tuples of probabilities.
 
