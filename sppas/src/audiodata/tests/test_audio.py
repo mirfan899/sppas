@@ -35,12 +35,12 @@ class TestAudioPCM(unittest.TestCase):
             a1.extract_channel(2)
 
         cidx1 = a3.extract_channel()
-        cidx2 = a3.extract_channel( 1 )
+        cidx2 = a3.extract_channel(1)
 
         c1 = a3.get_channel(cidx1)
         c2 = a3.get_channel(cidx2)
 
-        self.assertEqual(0, a2.append_channel( c1 ) )
-        self.assertEqual(1, a2.append_channel( c2 ) )
-        a2.insert_channel( 0, c1 )
-        self.assertTrue( a2.verify_channels())
+        self.assertEqual(0, a2.append_channel(c1))
+        self.assertEqual(1, a2.append_channel(c2))
+        a2.insert_channel(0, c1)
+        self.assertTrue(a2.verify_channels())

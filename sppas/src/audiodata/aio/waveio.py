@@ -76,7 +76,7 @@ class WaveIO(AudioPCM):
         """
         # Use the standard wave library to load the wave file
         # open method returns a Wave_read() object
-        self.audiofp = wave.open(u(filename), "r")
+        self._audio_fp = wave.open(u(filename), "r")
 
     # -----------------------------------------------------------------------
 
@@ -87,8 +87,8 @@ class WaveIO(AudioPCM):
         @param filename (string) output filename.
 
         """
-        if self.audiofp:
-            self.save_fragment(filename, self.audiofp.readframes(self.audiofp.getnframes()))
+        if self._audio_fp:
+            self.save_fragment(filename, self._audio_fp.readframes(self._audio_fp.getnframes()))
 
         elif len(self.channels) == 1:
             channel = self.channels[0]

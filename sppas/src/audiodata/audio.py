@@ -1,58 +1,36 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: audio.py
-# ---------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-import struct
+        http://www.sppas.org/
 
-from .audioframes import AudioFrames
-from .audiodataexc import AudioDataError
-from .channel import Channel
-from .channelsmixer import ChannelsMixer
+        Use of this software is governed by the GNU Public License, version 3.
 
-# ---------------------------------------------------------------------------
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
 
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
 
-class AudioPCM(object):
-    """
-    @authors:      Nicolas Chazeau, Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      An audio file reader/writer utility class.
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.audiodata.audio.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Pulse-code modulation (PCM) is a method used to digitally represent sampled
     analog signals. A PCM signal is a sequence of digital audio samples
@@ -69,8 +47,28 @@ class AudioPCM(object):
 
     For speech analysis, recommended sampling rate are 16000 (for automatic
     analysis) or 48000 (for manual analysis); and recommended sample depths
-    are 16 (for automatic analysis) or 24 bits (for both automatic and manual
+    are 16 (for automatic analysis) or 32 bits (for both automatic and manual
     analysis) per sample.
+
+"""
+import struct
+
+from .audioframes import AudioFrames
+from .audiodataexc import AudioDataError
+from .channel import Channel
+from .channelsmixer import ChannelsMixer
+
+# ---------------------------------------------------------------------------
+
+
+class AudioPCM(object):
+    """
+    :author:       Nicolas Chazeau, Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      An audio reader/writer utility class.
 
     These variables are user gettable through appropriate methods:
         - nchannels -- the number of audio channels
@@ -94,135 +92,128 @@ class AudioPCM(object):
 
     """
     def __init__(self):
-        """
-        Creates a new AudioPCM instance.
-
-        """
+        """ Creates a new AudioPCM instance. """
         super(AudioPCM, self).__init__()
-        self.__reset()
+
+        # The audio file pointer
+        self._audio_fp = None
 
         # The list of loaded channels of this audio
-        self.channels = []
+        self._channels = list()
 
     # ----------------------------------------------------------------------
 
-    def Set(self, audio):
-        """
-        Set a new AudioPCM() instance either with an audiofp, or channels or both.
+    def Set(self, other):
+        """ Set a new AudioPCM() instance.
 
-        @param audio (AudioPCM) AudioPCM to set
+        It can be set either with an audio file pointer, or a list of
+        channels or both.
+
+        :param other: (AudioPCM) AudioPCM to set
 
         """
-        self.audiofp  = audio.get_audiofp()
-        self.channels = audio.get_channels()
+        self._audio_fp = other.get_audiofp()
+        self._channels = other.get_channels()
 
     # ----------------------------------------------------------------------
 
     def get_channels(self):
-        """
-        Return the list of uploaded channels.
+        """ Return the list of uploaded channels.
 
-        @return the list of channels
+        :returns: (list) channels
 
         """
-        return self.channels
+        return self._channels
 
     # ----------------------------------------------------------------------
 
     def get_audiofp(self):
+        """ Return the audio file pointer.
+
+        :returns: audio file pointer
+
         """
-        Return the audio file pointer.
-
-        @return the audio file pointer
-
-        """
-        return self.audiofp
-
+        return self._audio_fp
 
     # ----------------------------------------------------------------------
     # Uploaded channels
     # ----------------------------------------------------------------------
 
     def remove_channel(self, channel):
-        """
-        Remove the channel from the list of uploaded channels
+        """ Remove a channel from the list of uploaded channels.
 
-        @param channel (Channel) the channel to remove
+        :param channel: (Channel) the channel to remove
 
         """
-        self.channels.pop(channel)
+        self._channels.pop(channel)
 
     # ----------------------------------------------------------------------
 
     def pop_channel(self, idx):
-        """
-        Pop the channel at the position given from the list of uploaded channels
+        """ Pop a channel at the position given from the list of uploaded channels.
 
-        @param idx (int) the index of the channel to remove
+        :param idx: (int) the index of the channel to remove
 
         """
         idx = int(idx)
-        self.channels.pop(idx)
+        self._channels.pop(idx)
 
     # ----------------------------------------------------------------------
 
     def insert_channel(self, idx, channel):
-        """
-        Insert a channel at the position given in the list of uploaded channels
+        """ Insert a channel at the position given in the list of uploaded channels.
 
-        @param channel (Channel) the channel to insert
-        @param idx (int) the index where the channel has to be inserted
+        :param idx: (int) the index where the channel has to be inserted
+        :param channel: (Channel) the channel to insert
 
         """
         idx = int(idx)
-        self.channels.insert(idx, channel)
+        self._channels.insert(idx, channel)
 
     # ----------------------------------------------------------------------
 
     def get_channel(self, idx):
-        """
-        Get an uploaded channel.
+        """ Get an uploaded channel.
 
-        @param idx (int) the index of the channel to return
-        @return channel (Channel) the channel wanted
+        :param idx: (int) the index of the channel to return
+        :returns: (Channel)
 
         """
         idx = int(idx)
-        return self.channels[idx]
+        return self._channels[idx]
 
     # ----------------------------------------------------------------------
 
     def append_channel(self, channel):
-        """
-        Append a channel to the list of uploaded channels.
+        """ Append a channel to the list of uploaded channels.
 
-        @param channel (Channel) the channel to append
-        @return index of the channel
+        :param channel: (Channel) the channel to append
+        :returns: index of the channel
 
         """
-        self.channels.append(channel)
-        return len(self.channels) - 1
+        self._channels.append(channel)
+        return len(self._channels) - 1
 
     # ----------------------------------------------------------------------
 
     def extract_channel(self, index=0):
-        """
-        Extract a channel from the Audio File Pointer and append in the list of channels.
+        """ Extract a channel from the Audio File Pointer,
+         and append it into the list of channels.
 
         Frames are stored into a Channel() instance.
         Index of the channel in the audio file:
         0 = 1st channel (left); 1 = 2nd channel (right); 2 = 3rd channel...
 
-        @param index (int) The index of the channel to extract
-        @return the index of the new Channel() appended in the list
+        :param index: (int) The index of the channel to extract
+        :returns: the index of the Channel() in the list
 
         """
-        if not self.audiofp:
+        if self._audio_fp is None:
             raise AudioDataError
 
         index = int(index)
         if index < 0:
-            raise AudioDataError('Expected the index of channels to extract. Got: %d'%index)
+            raise AudioDataError('Expected the index of channels to extract. Got: %d' % index)
 
         nc = self.get_nchannels()
         self.seek(0)
@@ -232,7 +223,7 @@ class AudioPCM(object):
             raise AudioDataError('No channel in the audio file.')
 
         if index+1 > nc:
-            raise AudioDataError('No channel with index %d in the audio file.'%index)
+            raise AudioDataError('No channel with index %d in the audio file.' % index)
 
         if nc == 1:
             channel = Channel(self.get_framerate(), self.get_sampwidth(), data)
@@ -249,11 +240,11 @@ class AudioPCM(object):
     # ----------------------------------------------------------------------
 
     def extract_channels(self):
-        """
-        Extract all channels from the Audio File Pointer and append them the list of channels.
+        """ Extract all channels from the Audio File Pointer,
+         and append them to the list of channels.
 
         """
-        if not self.audiofp:
+        if self._audio_fp is None:
             raise AudioDataError
 
         nc = self.get_nchannels()
@@ -273,40 +264,37 @@ class AudioPCM(object):
     # ----------------------------------------------------------------------
 
     def read(self):
-        """
-        Read a certain amount of frames, depending on frame-duration value.
+        """ Read a certain amount of frames, depending on frame-duration value.
 
-        @return the frames
+        :returns: (str) frames
 
         """
-        return self.read_frames(self.nbreadframes)
+        return self.read_frames(self.get_nframes())
 
     # ----------------------------------------------------------------------
 
     def read_frames(self, nframes):
-        """
-        Read the frames from the audio file.
+        """ Read n frames from the audio file.
 
-        @param nframes (int) the number of frames to read
-        @return the frames
+        :param nframes: (int) the number of frames to read
+        :returns: (str) frames
 
         """
-        if not self.audiofp:
+        if self._audio_fp is None:
             raise AudioDataError
 
-        return self.audiofp.readframes(nframes)
+        return self._audio_fp.readframes(nframes)
 
     # ----------------------------------------------------------------------
 
     def read_samples(self, nframes):
-        """
-        Read the samples from the audio file.
+        """ Read the samples from the audio file.
 
-        @param nframes (int) the number of frames to read
-        @return the samples
+        :param nframes: (int) the number of frames to read
+        :returns: (list) samples
 
         """
-        if not self.audiofp:
+        if self._audio_fp is None:
             raise AudioDataError
 
         data = self.read_frames(nframes)
@@ -315,15 +303,15 @@ class AudioPCM(object):
         if self.get_sampwidth() == 4:
             data = struct.unpack("<%ul" % (len(data) / 4), data)
 
-        elif self.get_sampwidth() == 2 :
+        elif self.get_sampwidth() == 2:
             data = struct.unpack("<%uh" % (len(data) / 2), data)
 
-        else :
+        else:
             data = struct.unpack("%uB" % len(data), data)
             data = [s - 128 for s in data]
 
-        nc  = self.get_nchannels()
-        samples = []
+        nc = self.get_nchannels()
+        samples = list()
         if nc > 1:
             # Split channels
             for i in range(nc):
@@ -338,83 +326,78 @@ class AudioPCM(object):
     # ----------------------------------------------------------------------
 
     def get_sampwidth(self):
-        """
-        Return the sample width of the Audio File Pointer.
+        """ Return the sample width of the Audio File Pointer.
 
-        @return the sample width of the audio file
+        :returns: (int) sample width of the audio file
 
         """
-        if not self.audiofp:
-            if len(self.channels) > 0:
-                return self.channels[0].get_sampwidth()
+        if self._audio_fp is None:
+            if len(self._channels) > 0:
+                return self._channels[0].get_sampwidth()
             else:
                 raise AudioDataError('No data in audio file.')
 
-        return self.audiofp.getsampwidth()
+        return self._audio_fp.getsampwidth()
 
     # ----------------------------------------------------------------------
 
     def get_framerate(self):
-        """
-        Return the frame rate of the Audio File Pointer.
+        """ Return the frame rate of the Audio File Pointer.
 
-        @return the frame rate of the audio file
+        :returns: (int) frame rate of the audio file
 
         """
-        if not self.audiofp:
-            if len(self.channels) > 0:
-                return self.channels[0].get_framerate()
+        if not self._audio_fp:
+            if len(self._channels) > 0:
+                return self._channels[0].get_framerate()
             else:
                 raise AudioDataError('No data in audio file.')
 
-        return self.audiofp.getframerate()
+        return self._audio_fp.getframerate()
 
     # ----------------------------------------------------------------------
 
     def get_nframes(self):
-        """
-        Return the number of frames of the Audio File Pointer.
+        """ Return the number of frames of the Audio File Pointer.
 
-        @return the number of frames of the audio file
+        :returns: (int) number of frames of the audio file
 
         """
-        if not self.audiofp:
-            if len(self.channels) > 0:
-                return self.channels[0].get_nframes()
+        if not self._audio_fp:
+            if len(self._channels) > 0:
+                return self._channels[0].get_nframes()
             else:
                 raise AudioDataError('No data in audio file.')
 
-        return self.audiofp.getnframes()
+        return self._audio_fp.getnframes()
 
     # ----------------------------------------------------------------------
 
     def get_nchannels(self):
-        """
-        Return the number of channels of the Audio File Pointer.
+        """ Return the number of channels of the Audio File Pointer.
 
-        @return the number of channels of the audio file
+        :returns: (int) number of channels of the audio file
 
         """
-        if not self.audiofp:
-            if len(self.channels) > 0:
-                return len(self.channels)
+        if not self._audio_fp:
+            if len(self._channels) > 0:
+                return len(self._channels)
             else:
                 raise AudioDataError('No data in audio file.')
 
-        return self.audiofp.getnchannels()
+        return self._audio_fp.getnchannels()
 
     # ----------------------------------------------------------------------
 
     def get_duration(self):
-        """
-        Return the duration of the Audio File Pointer.
+        """ Return the duration of the Audio File Pointer.
 
-        @return the duration of the audio file (in seconds)
+        :returns: (float) duration of the audio file (in seconds)
 
         """
-        if not self.audiofp:
-            if len(self.channels) > 0:
-                return self.channels[0].get_duration()
+        if not self._audio_fp:
+            if len(self._channels) > 0:
+                return self._channels[0].get_duration()
             else:
                 raise AudioDataError('No data in audio file.')
 
@@ -423,10 +406,9 @@ class AudioPCM(object):
     # ----------------------------------------------------------------------
 
     def rms(self):
-        """
-        Return the root mean square of the whole file
+        """ Return the root mean square of the whole file.
 
-        @return the root mean square of the audio file
+        :returns: (int) rms of the audio file
 
         """
         pos = self.tell()
@@ -439,12 +421,12 @@ class AudioPCM(object):
     # ----------------------------------------------------------------------
 
     def clipping_rate(self, factor):
-        """
-        Return the clipping rate of the frames
+        """ Return the clipping rate of the frames.
 
-        @param factor (float) An interval to be more precise on clipping rate.
+        :param factor: (float) An interval to be more precise on clipping rate.
         It will consider that all frames outside the interval are clipped.
         Factor has to be between 0 and 1.
+        :returns: (float)
 
         """
         pos = self.tell()
@@ -458,79 +440,61 @@ class AudioPCM(object):
     # Navigate into the audiofp
     # ----------------------------------------------------------------------
 
-    def set_pos(self, pos):
-        """
-        Fix reader position.
-        @deprecated: Use seek instead.
-        @param pos (int) the position to set
-
-        """
-        if not self.audiofp:
-            raise AudioDataError
-
-        self.audiofp.setpos(pos)
-
-    # ----------------------------------------------------------------------
-
     def seek(self, pos):
-        """
-        Fix reader position.
+        """ Fix the reader pointer position.
 
-        @param pos (int) the position to set
+        :param pos: (int) the position to set.
 
         """
-        if not self.audiofp:
+        if self._audio_fp is None:
             raise AudioDataError
 
-        self.audiofp.setpos(pos)
+        self._audio_fp.setpos(pos)
 
     # ----------------------------------------------------------------------
 
     def tell(self):
-        """
-        Get reader position.
+        """ Get the reader pointer position.
 
-        @return the current position
+        :returns: (int) the current position
 
         """
-        if not self.audiofp:
+        if self._audio_fp is None:
             raise AudioDataError
 
-        return self.audiofp.tell()
+        return self._audio_fp.tell()
 
     # ----------------------------------------------------------------------
 
     def rewind(self):
-        """
-        Get reader position at the beginning of the file.
+        """ Set reader position at the beginning of the file. """
 
-        """
-        if not self.audiofp:
+        if self._audio_fp is None:
             raise AudioDataError
 
-        return self.audiofp.rewind()
-
+        return self._audio_fp.rewind()
 
     # ----------------------------------------------------------------------
     # Verify the compatibility between the channels
     # ----------------------------------------------------------------------
 
     def verify_channels(self):
-        """
-        Check that the channels have the same parameters.
-        Check framerate, sample width and number of frames.
+        """ Check that the uploaded channels have the same parameters.
 
-        @return bool
+        Check the frame rate, sample width and number of frames.
+
+        :returns: (bool)
 
         """
         mixer = ChannelsMixer()
-        f = 1./len(self.channels)
-        for c in self.channels:
-            mixer.append_channel(c,f)
+        f = 1./len(self._channels)
+        for c in self._channels:
+            mixer.append_channel(c, f)
         try:
             mixer.check_channels()
         except AudioDataError:
             return False
+
         return True
 
     # ------------------------------------------------------------------------
@@ -538,62 +502,51 @@ class AudioPCM(object):
     # ------------------------------------------------------------------------
 
     def open(self):
+        """ Open an audio file. """
         name = self.__class__.__name__
         raise NotImplementedError("%s does not support open()." % name)
 
     # ------------------------------------------------------------------------
 
     def save(self):
+        """ Save an audio file. """
         name = self.__class__.__name__
         raise NotImplementedError("%s does not support save()." % name)
 
     # ------------------------------------------------------------------------
 
     def save_fragments(self):
+        """ Save a fragment of an audio file. """
         name = self.__class__.__name__
         raise NotImplementedError("%s does not support save_fragments()." % name)
 
     # ------------------------------------------------------------------------
 
     def close(self):
-        """
-        Close the audiofp.
+        """ Close the audio file. """
 
-        """
-        if not self.audiofp:
+        if not self._audio_fp:
             raise AudioDataError
 
-        self.audiofp.close()
-        self.__reset()
-
-    # ----------------------------------------------------------------------
-    # Private
-    # ----------------------------------------------------------------------
-
-    def __reset(self):
-        """
-        Reset all members to a default value.
-
-        """
-        # The audio file pointer
-        self.audiofp = None
+        self._audio_fp.close()
+        self._audio_fp = None
 
     # ----------------------------------------------------------------------
     # Overloads
     # ----------------------------------------------------------------------
 
     def __len__(self):
-        return len(self.channels)
+        return len(self._channels)
 
     # ------------------------------------------------------------------------------------
 
     def __iter__(self):
-        for x in self.channels:
+        for x in self._channels:
             yield x
 
     # ------------------------------------------------------------------------------------
 
     def __getitem__(self, i):
-        return self.channels[i]
+        return self._channels[i]
 
     # ------------------------------------------------------------------------

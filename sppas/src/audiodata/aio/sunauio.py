@@ -1,40 +1,39 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: sunau.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.audiodata.aio.sunauio.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+"""
 import sunau
 
 from ..audio import AudioPCM
@@ -44,45 +43,41 @@ from ..audio import AudioPCM
 
 class SunauIO(AudioPCM):
     """
-    @authors:      Nicolas Chazeau, Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      An Sun AU file open/save utility class.
+    :author:      Nicolas Chazeau, Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      A Sun AU file open/save utility class.
 
     """
     def __init__(self):
-        """
-        Constructor.
+        """ Constructor. """
 
-        """
         AudioPCM.__init__(self)
 
     # ------------------------------------------------------------------------
 
     def open(self, filename):
-        """
-        Get an audio from a Audio Interchange File Format file.
+        """ Get an audio from a Audio Interchange File Format file.
 
-        @param filename (string) input file name.
+        :param filename: (str) input file name.
 
         """
         # Use the standard wave library to load the wave file
         # open method returns a Wave_read() object
-        self.audiofp = sunau.open(filename, "r")
+        self._audio_fp = sunau.open(filename, "r")
 
     # -----------------------------------------------------------------------
 
     def save(self, filename):
-        """
-        Write an audio content as a Audio Interchange File Format file.
+        """ Write an audio content as a Audio Interchange File Format file.
 
-        @param filename (string) output filename.
+        :param filename: (str) output filename.
 
         """
-        if self.audiofp:
-            self.save_fragment(filename, self.audiofp.readframes(self.audiofp.getnframes()))
+        if self._audio_fp:
+            self.save_fragment(filename, self._audio_fp.readframes(self._audio_fp.getnframes()))
 
         elif len(self) == 1:
             channel = self.channels[0]
@@ -115,11 +110,10 @@ class SunauIO(AudioPCM):
     # -----------------------------------------------------------------------
 
     def save_fragment(self, filename, frames):
-        """
-        Write an audio content as a Audio Interchange File Format file.
+        """ Write an audio content as a Audio Interchange File Format file.
 
-        @param filename (string) output filename.
-        @param frames (string) the frames to write
+        :param filename: (str) output filename.
+        :param frames: (str) the frames to write
 
         """
         f = sunau.Au_write(filename)
