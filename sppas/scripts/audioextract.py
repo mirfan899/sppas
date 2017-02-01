@@ -44,10 +44,11 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import sppas.src.audiodata
+import sppas.src.audiodata.aio
 from sppas.src.audiodata.audio import AudioPCM
 
 # ----------------------------------------------------------------------------
+# Parse command-line
 
 parser = ArgumentParser(usage="%s -w input file -o output file -c channel" % os.path.basename(PROGRAM),
                         description="... a script to extract a channel from an audio file.")
@@ -64,10 +65,10 @@ args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
 
-audio = sppas.src.audiodata.open(args.w)
+audio = sppas.src.audiodata.aio.open(args.w)
 
 if args.c == 0 or args.c > audio.get_nchannels():
-    print "Wrong channel value (must be > 0 and < number of channels)"
+    print("Wrong channel value (must be > 0 and < number of channels)")
     sys.exit(1)
 
 idx = audio.extract_channel(args.c-1)
@@ -75,4 +76,4 @@ idx = audio.extract_channel(args.c-1)
 # Save the converted channel
 audio_out = AudioPCM()
 audio_out.append_channel(audio.get_channel(idx))
-sppas.src.audiodata.save(args.o, audio_out)
+sppas.src.audiodata.aio.save(args.o, audio_out)

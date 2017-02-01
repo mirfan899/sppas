@@ -40,7 +40,6 @@
     :summary:      This is the list of SPPAS global variables.
 
 """
-
 import os.path
 
 # ---------------------------------------------------------------------------

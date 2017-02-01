@@ -47,6 +47,7 @@ from .audioutils import unpack_data as audio_unpack_data
 
 # ---------------------------------------------------------------------------
 
+
 class ChannelsMixer( object ):
     """
     @authors:      Brigitte Bigi
@@ -102,7 +103,7 @@ class ChannelsMixer( object ):
 
         sampwidth = self.channels[0].get_sampwidth()
         framerate = self.channels[0].get_framerate()
-        nframes   = self.channels[0].get_nframes()
+        nframes = self.channels[0].get_nframes()
 
         for i in range(1, len(self.channels)):
             if self.channels[i].get_sampwidth() != sampwidth:

@@ -38,7 +38,7 @@
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
 
-    makeunicode is a free package useful for the compatibility of strings
+    makeunicode is useful for the compatibility of strings
     between python 2.7 and python > 3.2.
 
 """

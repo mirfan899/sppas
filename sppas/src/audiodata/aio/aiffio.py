@@ -139,7 +139,7 @@ class AiffIO(AudioPCM):
         if self._audio_fp:
             self.save_fragment(filename, self._audio_fp.readframes(self._audio_fp.getnframes()))
         elif len(self) == 1:
-            channel = self.channels[0]
+            channel = self._channels[0]
             fp = open(filename, 'w')
             f = aifc.open(fp)
             f.setnchannels(1)
@@ -155,15 +155,15 @@ class AiffIO(AudioPCM):
             self.verify_channels()
 
             frames = ""
-            for i in range(0, self.channels[0].get_nframes()*self.channels[0].get_sampwidth(), self.channels[0].get_sampwidth()):
-                for j in range(len(self.channels)):
-                        frames += self.channels[j].frames[i:i+self.channels[0].get_sampwidth()]
+            for i in range(0, self._channels[0].get_nframes()*self._channels[0].get_sampwidth(), self._channels[0].get_sampwidth()):
+                for j in range(len(self._channels)):
+                        frames += self._channels[j].frames[i:i+self._channels[0].get_sampwidth()]
 
             f = aifc.open(filename, 'w')
-            f.setnchannels(len(self.channels))
-            f.setsampwidth(self.channels[0].get_sampwidth())
-            f.setframerate(self.channels[0].get_framerate())
-            f.setnframes(self.channels[0].get_nframes())
+            f.setnchannels(len(self._channels))
+            f.setsampwidth(self._channels[0].get_sampwidth())
+            f.setframerate(self._channels[0].get_framerate())
+            f.setnframes(self._channels[0].get_nframes())
             try:
                 self._write_frames(f, frames)
             finally:

@@ -54,7 +54,7 @@
 import struct
 
 from .audioframes import AudioFrames
-from .audiodataexc import AudioDataError
+from .audiodataexc import AudioError, AudioDataError, AudioIOError, AudioValueError
 from .channel import Channel
 from .channelsmixer import ChannelsMixer
 
@@ -209,21 +209,21 @@ class AudioPCM(object):
 
         """
         if self._audio_fp is None:
-            raise AudioDataError
+            raise AudioError
 
         index = int(index)
         if index < 0:
-            raise AudioDataError('Expected the index of channels to extract. Got: %d' % index)
+            raise AudioValueError(index)
 
         nc = self.get_nchannels()
         self.seek(0)
         data = self.read_frames(self.get_nframes())
 
         if nc == 0:
-            raise AudioDataError('No channel in the audio file.')
+            raise AudioDataError
 
         if index+1 > nc:
-            raise AudioDataError('No channel with index %d in the audio file.' % index)
+            raise AudioValueError(index)
 
         if nc == 1:
             channel = Channel(self.get_framerate(), self.get_sampwidth(), data)
@@ -245,12 +245,15 @@ class AudioPCM(object):
 
         """
         if self._audio_fp is None:
-            raise AudioDataError
+            raise AudioError
 
         nc = self.get_nchannels()
         sw = self.get_sampwidth()
         self.seek(0)
         data = self.read_frames(self.get_nframes())
+
+        if nc == 0:
+            raise AudioDataError
 
         for index in range(nc):
             frames = ""
@@ -264,7 +267,7 @@ class AudioPCM(object):
     # ----------------------------------------------------------------------
 
     def read(self):
-        """ Read a certain amount of frames, depending on frame-duration value.
+        """ Read all frames of the audio file.
 
         :returns: (str) frames
 
@@ -281,7 +284,7 @@ class AudioPCM(object):
 
         """
         if self._audio_fp is None:
-            raise AudioDataError
+            raise AudioError
 
         return self._audio_fp.readframes(nframes)
 
@@ -295,7 +298,7 @@ class AudioPCM(object):
 
         """
         if self._audio_fp is None:
-            raise AudioDataError
+            raise AudioError
 
         data = self.read_frames(nframes)
 
@@ -335,7 +338,7 @@ class AudioPCM(object):
             if len(self._channels) > 0:
                 return self._channels[0].get_sampwidth()
             else:
-                raise AudioDataError('No data in audio file.')
+                raise AudioDataError
 
         return self._audio_fp.getsampwidth()
 
@@ -347,11 +350,11 @@ class AudioPCM(object):
         :returns: (int) frame rate of the audio file
 
         """
-        if not self._audio_fp:
+        if self._audio_fp is None:
             if len(self._channels) > 0:
                 return self._channels[0].get_framerate()
             else:
-                raise AudioDataError('No data in audio file.')
+                raise AudioDataError
 
         return self._audio_fp.getframerate()
 
@@ -363,11 +366,11 @@ class AudioPCM(object):
         :returns: (int) number of frames of the audio file
 
         """
-        if not self._audio_fp:
+        if self._audio_fp is None:
             if len(self._channels) > 0:
                 return self._channels[0].get_nframes()
             else:
-                raise AudioDataError('No data in audio file.')
+                raise AudioDataError
 
         return self._audio_fp.getnframes()
 
@@ -379,11 +382,11 @@ class AudioPCM(object):
         :returns: (int) number of channels of the audio file
 
         """
-        if not self._audio_fp:
+        if self._audio_fp is None:
             if len(self._channels) > 0:
                 return len(self._channels)
             else:
-                raise AudioDataError('No data in audio file.')
+                raise AudioDataError
 
         return self._audio_fp.getnchannels()
 
@@ -395,11 +398,11 @@ class AudioPCM(object):
         :returns: (float) duration of the audio file (in seconds)
 
         """
-        if not self._audio_fp:
+        if self._audio_fp is None:
             if len(self._channels) > 0:
                 return self._channels[0].get_duration()
             else:
-                raise AudioDataError('No data in audio file.')
+                raise AudioDataError
 
         return float(self.get_nframes())/float(self.get_framerate())
 
@@ -447,7 +450,7 @@ class AudioPCM(object):
 
         """
         if self._audio_fp is None:
-            raise AudioDataError
+            raise AudioError
 
         self._audio_fp.setpos(pos)
 
@@ -460,7 +463,7 @@ class AudioPCM(object):
 
         """
         if self._audio_fp is None:
-            raise AudioDataError
+            raise AudioError
 
         return self._audio_fp.tell()
 
@@ -470,7 +473,7 @@ class AudioPCM(object):
         """ Set reader position at the beginning of the file. """
 
         if self._audio_fp is None:
-            raise AudioDataError
+            raise AudioError
 
         return self._audio_fp.rewind()
 
@@ -492,7 +495,7 @@ class AudioPCM(object):
             mixer.append_channel(c, f)
         try:
             mixer.check_channels()
-        except AudioDataError:
+        except Exception:
             return False
 
         return True
@@ -525,8 +528,8 @@ class AudioPCM(object):
     def close(self):
         """ Close the audio file. """
 
-        if not self._audio_fp:
-            raise AudioDataError
+        if self._audio_fp is None:
+            raise AudioError
 
         self._audio_fp.close()
         self._audio_fp = None
@@ -538,15 +541,9 @@ class AudioPCM(object):
     def __len__(self):
         return len(self._channels)
 
-    # ------------------------------------------------------------------------------------
-
     def __iter__(self):
         for x in self._channels:
             yield x
 
-    # ------------------------------------------------------------------------------------
-
     def __getitem__(self, i):
         return self._channels[i]
-
-    # ------------------------------------------------------------------------
