@@ -58,7 +58,7 @@ parser = ArgumentParser(usage="%s -w input file -o output file [options]" % os.p
 
 parser.add_argument("-w", metavar="file", required=True,  help='Audio Input file name')
 parser.add_argument("-o", metavar="file", required=True,  help='Audio Output file name')
-parser.add_argument("-b", metavar="value", type=int, help='Possible values are 1,2,4')
+parser.add_argument("-b", metavar="value", type=int, help='Possible values are 1, 2, 4')
 parser.add_argument("-c", metavar="value", default=1, type=int, help='the channel to extract (default: 1)')
 parser.add_argument("-r", metavar="value", type=int, help='Value of the new framerate')
 
@@ -66,12 +66,6 @@ if len(sys.argv) <= 1:
     sys.argv.append('-h')
 
 args = parser.parse_args()
-
-# ----------------------------------------------------------------------------
-
-if args.b not in [1, 2 ,4]:
-    print "Wrong bitrate value"
-    sys.exit(1)
 
 # ----------------------------------------------------------------------------
 
@@ -85,7 +79,7 @@ audio.close()
 print(time.strftime("%H:%M:%S"))
 
 # Do the job (do not modify the initial channel).
-formatter = ChannelFormatter( audio.get_channel(idx) )
+formatter = ChannelFormatter(audio.get_channel(idx))
 if args.r:
     formatter.set_framerate(args.r)
 if args.b:
@@ -95,8 +89,8 @@ print(time.strftime("%H:%M:%S"))
 
 # Save the converted channel
 audio_out = AudioPCM()
-audio_out.append_channel( formatter.channel )
-sppas.src.audiodata.save( args.o, audio_out )
+audio_out.append_channel(formatter.channel)
+sppas.src.audiodata.save(args.o, audio_out)
 print(time.strftime("%H:%M:%S"))
 
 # ----------------------------------------------------------------------------

@@ -5,7 +5,7 @@ import os.path
 
 from ..aio import open as audio_open
 from ..audio import AudioPCM
-from ..audiodataexc import AudioDataError
+from ..audiodataexc import ChannelIndexError, AudioError
 
 from sppas.src.sp_glob import SAMPLES_PATH
 sample_1 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana1.wav")
@@ -29,9 +29,9 @@ class TestAudioPCM(unittest.TestCase):
         a3 = audio_open(sample_3)
 
         # Test extract_channel
-        with self.assertRaises(AudioDataError):
+        with self.assertRaises(AudioError):
             a2.extract_channel(0)
-        with self.assertRaises(AudioDataError):
+        with self.assertRaises(ChannelIndexError):
             a1.extract_channel(2)
 
         cidx1 = a3.extract_channel()

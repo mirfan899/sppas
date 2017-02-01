@@ -30,7 +30,7 @@
 
         ---------------------------------------------------------------------
 
-    scripts.audioextract.py
+    scripts.audiomixer.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
     ... a script to mix all channels from multi audio files in one channel.

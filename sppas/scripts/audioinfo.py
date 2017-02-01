@@ -70,33 +70,33 @@ args = parser.parse_args()
 audio = sppas.src.audiodata.aio.open(args.w)
 audio.frameduration = args.f
 
-print("Audio file name:     ", args.w)
-print("Duration (seconds):  ", audio.get_duration())
-print("Frame rate (Hz):     ", audio.get_framerate())
-print("Sample width (bits): ", audio.get_sampwidth()*8)
+print("Audio file name:     {:s}".format(args.w))
+print("Duration (seconds):  {:f}".format(audio.get_duration()))
+print("Frame rate (Hz):     {:d}".format(audio.get_framerate()))
+print("Sample width (bits): {:d}".format(audio.get_sampwidth()*8))
 nc = audio.get_nchannels()
-print("Number of channels:  ", nc)
+print("Number of channels:  {:d}".format(nc))
 
 if nc == 1:
     print("Clipping rate (in %):")
     for i in range(2, 9, 2):
         f = float(i)/10.
         c = audio.clipping_rate(f) * 100.
-        print("  - factor=%.1f:      %.3f" % (f, c))
+        print("  - factor={:.1f}:      {:.3f}".format(f, c))
 
     audiovol = AudioVolume(audio, args.f)
     print("Volume:")
-    print("  - min:           ", audiovol.min())
-    print("  - max:           ", audiovol.max())
-    print("  - mean:          ", round(audiovol.mean(), 2))
-    print("  - median:        ", round(audiovol.median(), 2))
-    print("  - stdev:         ", round(audiovol.stdev(), 2))
-    print("  - coefvariation: ", round(audiovol.coefvariation(), 2))
+    print("  - min:           {:d}".format(audiovol.min()))
+    print("  - max:           {:d}".format(audiovol.max()))
+    print("  - mean:          {:.2f}".format(audiovol.mean()))
+    print("  - median:        {:.2f}".format(audiovol.median()))
+    print("  - stdev:         {:.2f}".format(audiovol.stdev()))
+    print("  - coefvariation: {:.2f}".format(audiovol.coefvariation()))
 
 else:
 
     for n in range(nc):
-        print("Channel %d:" % (n))
+        print("Channel {:d}".format(n))
         cidx = audio.extract_channel(n)
         channel = audio.get_channel(cidx)
 
@@ -106,16 +106,14 @@ else:
         for i in range(2, 9, 2):
             f = float(i)/10.
             c = ca.clipping_rate(f) * 100.
-            print("  - factor=%.1f:      %.3f" % (f, c))
+            print("  - factor={:.1f}:      {:.3f}".format(f, c))
 
         # RMS (=volume)
         cv = ChannelVolume(channel)
         print("  Volume:")
-        print("    - min:           ", cv.min())
-        print("    - max:           ", cv.max())
-        print("    - mean:          ", round(cv.mean(), 2))
-        print("    - median:        ", round(cv.median(), 2))
-        print("    - stdev:         ", round(cv.stdev(), 2))
-        print("    - coefvariation: ", round(cv.coefvariation(), 2))
-
-# ----------------------------------------------------------------------------
+        print("  - min:           {:d}".format(cv.min()))
+        print("  - max:           {:d}".format(cv.max()))
+        print("  - mean:          {:.2f}".format(cv.mean()))
+        print("  - median:        {:.2f}".format(cv.median()))
+        print("  - stdev:         {:.2f}".format(cv.stdev()))
+        print("  - coefvariation: {:.2f}".format(cv.coefvariation()))

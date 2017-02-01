@@ -147,7 +147,7 @@ class AiffIO(AudioPCM):
             f.setframerate(channel.get_framerate())
             f.setnframes(channel.get_nframes())
             try:
-                self._write_frames(f, channel.frames)
+                self._write_frames(f, channel.get_frames())
             finally:
                 f.close()
 
@@ -155,13 +155,15 @@ class AiffIO(AudioPCM):
             self.verify_channels()
 
             frames = ""
-            for i in range(0, self._channels[0].get_nframes()*self._channels[0].get_sampwidth(), self._channels[0].get_sampwidth()):
+            sp = self._channels[0].get_sampwidth()
+            for i in range(0, self._channels[0].get_nframes()*sp, sp):
                 for j in range(len(self._channels)):
-                        frames += self._channels[j].frames[i:i+self._channels[0].get_sampwidth()]
+                    fc = self._channels[j].get_frames()
+                    frames += fc[i:i+sp]
 
             f = aifc.open(filename, 'w')
             f.setnchannels(len(self._channels))
-            f.setsampwidth(self._channels[0].get_sampwidth())
+            f.setsampwidth(sp)
             f.setframerate(self._channels[0].get_framerate())
             f.setnframes(self._channels[0].get_nframes())
             try:

@@ -1,48 +1,38 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: autils.py
-# ----------------------------------------------------------------------------
 """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Audio utilities.
-"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.audiodata.autils.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 from .aio import open as audio_open
 from .aio import save as audio_save
 
@@ -55,57 +45,54 @@ from .channelsilence import ChannelSilence
 # ------------------------------------------------------------------------
 
 
-def frames2times(listframes, framerate):
-    """
-    Convert a list of frame' into a list of time' values.
+def frames2times(frames, framerate):
+    """ Convert a list of frame' into a list of time' values.
 
-    @param listframes (list) tuples (from_pos,to_pos)
-    @return a list of tuples (from_time,to_time)
+    :param frames: (list) tuples (from_pos,to_pos)
+    :returns: a list of tuples (from_time,to_time)
 
     """
-    listtimes = []
+    list_times = []
     fm = float(framerate)
 
-    for (s,e) in listframes:
+    for (s, e) in frames:
         fs = float(s) / fm
         fe = float(e) / fm
-        listtimes.append( (fs, fe) )
+        list_times.append((fs, fe))
 
-    return listtimes
+    return list_times
 
 # ------------------------------------------------------------------
 
 
-def times2frames(listtimes, framerate):
-    """
-    Convert a list of time' into a list of frame' values.
+def times2frames(times, framerate):
+    """ Convert a list of time' into a list of frame' values.
 
-    @param listframes (list) tuples (from_time,to_time)
-    @return a list of tuples (from_pos,to_pos)
+    :param listframes: (list) tuples (from_time,to_time)
+    :returns: a list of tuples (from_pos,to_pos)
 
     """
-    listframes = []
+    list_frames = []
     fm = float(framerate)
-    for (s,e) in listtimes:
+    for (s, e) in times:
         fs = int(s*fm)
         fe = int(e*fm)
-        listframes.append( (fs, fe) )
+        list_frames.append((fs, fe))
 
-    return listframes
+    return list_frames
 
 # ------------------------------------------------------------------
 
 
-def extract_audio_channel(inputaudio, idx):
-    """
-    Return the channel of a specific index from an audio file name.
+def extract_audio_channel(input_audio, idx):
+    """ Return the channel of a specific index from an audio file name.
 
-    @param inputaudio (str - IN) Audio file name.
-    @param idx (int - IN) Channel index
+    :param inputaudio: (str) Audio file name.
+    :param idx: (int) Channel index
 
     """
     idx = int(idx)
-    audio = audio_open(inputaudio)
+    audio = audio_open(input_audio)
     i = audio.extract_channel(idx)
     channel = audio.get_channel(i)
     audio.close()
@@ -116,51 +103,49 @@ def extract_audio_channel(inputaudio, idx):
 
 
 def extract_channel_fragment(channel, fromtime, totime, silence=0.):
-    """
-    Extract a fragment of a channel in the interval [fromtime,totime].
+    """ Extract a fragment of a channel in the interval [fromtime,totime].
     Eventually, surround it by silences.
 
-    @param channel  (Channel - IN)
-    @param fromtime (float - IN) From time value in seconds.
-    @param totime   (float - IN) To time value in seconds.
-    @param silence  (float - IN) Duration value in seconds.
+    :param channel:  (Channel)
+    :param fromtime: (float) From time value in seconds.
+    :param totime:   (float) To time value in seconds.
+    :param silence:  (float) Duration value in seconds.
 
     """
     framerate = channel.get_framerate()
 
     # Extract the fragment of the channel
     startframe = int(fromtime*framerate)
-    toframe    = int(totime*framerate)
+    toframe = int(totime*framerate)
     fragmentchannel = channel.extract_fragment(begin=startframe, end=toframe)
 
     # Get all the frames of this fragment
     nbframes = fragmentchannel.get_nframes()
-    cf = ChannelFrames( fragmentchannel.get_frames( nbframes ) )
+    cf = ChannelFrames(fragmentchannel.get_frames(nbframes))
 
     # surround by silences
     if silence > 0.:
-        cf.prepend_silence( silence*framerate )
-        cf.append_silence(  silence*framerate )
+        cf.prepend_silence(silence*framerate)
+        cf.append_silence(silence*framerate)
 
-    return Channel( 16000, 2, cf.get_frames() )
+    return Channel(16000, 2, cf.get_frames())
 
 # ------------------------------------------------------------------------
 
 
-def search_channel_speech(channel, winlenght=0.010, minsildur=0.200, mintrackdur=0.300, shiftdurstart=0.010, shiftdurend=0.010 ):
-    """
-    Return a list of tracks (i.e. speech intervals where energy is high enough).
+def search_channel_speech(channel, winlenght=0.010, minsildur=0.200, mintrackdur=0.300, shiftdurstart=0.010, shiftdurend=0.010):
+    """ Return a list of tracks (i.e. speech intervals where energy is high enough).
     Use only default parameters.
 
-    @param channel (Channel - IN) The channel we'll try to find tracks
-    @return A list of tuples (fromtime,totime)
+    :param channel: (Channel) The channel we'll try to find tracks
+    :returns: A list of tuples (fromtime,totime)
 
     """
-    chansil = ChannelSilence( channel, winlenght )
-    chansil.search_silences( threshold=0, mintrackdur=0.08 )
-    chansil.filter_silences( minsildur )
-    tracks = chansil.extract_tracks( mintrackdur, shiftdurstart, shiftdurend )
-    tracks.append( (channel.get_nframes(),channel.get_nframes()) )
+    chansil = ChannelSilence(channel, winlenght)
+    chansil.search_silences(threshold=0, mintrackdur=0.08)
+    chansil.filter_silences(minsildur)
+    tracks = chansil.extract_tracks(mintrackdur, shiftdurstart, shiftdurend)
+    tracks.append((channel.get_nframes(), channel.get_nframes()))
     trackstimes = frames2times(tracks, channel.get_framerate())
 
     return trackstimes
@@ -169,16 +154,13 @@ def search_channel_speech(channel, winlenght=0.010, minsildur=0.200, mintrackdur
 
 
 def format_channel(channel, framerate, sampwith):
-    """
-    Return a channel with the requested framerate and sampwidth.
-
-    """
+    """ Return a channel with the requested framerate and sampwidth. """
     fm = channel.get_framerate()
     sp = channel.get_sampwidth()
     if fm != framerate or sp != sampwith:
-        formatter = ChannelFormatter( channel )
-        formatter.set_framerate( framerate )
-        formatter.set_sampwidth( sampwith )
+        formatter = ChannelFormatter(channel)
+        formatter.set_framerate(framerate)
+        formatter.set_sampwidth(sampwith)
         formatter.convert()
         return formatter.get_channel()
 
@@ -188,16 +170,15 @@ def format_channel(channel, framerate, sampwith):
 
 
 def write_channel(audioname, channel):
-    """
-    Write a channel as an audio file.
+    """ Write a channel as an audio file.
 
-    @param audioname (str - IN) Audio file name to write
-    @param channel (Channel - IN) Channel to be saved
+    :param audioname: (str) Audio file name to write
+    :param channel: (Channel) Channel to be saved
 
     """
     audio_out = AudioPCM()
-    audio_out.append_channel( channel )
-    audio_save( audioname, audio_out )
+    audio_out.append_channel(channel)
+    audio_save(audioname, audio_out)
 
 # ------------------------------------------------------------------------
 

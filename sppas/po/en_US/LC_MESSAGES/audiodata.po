@@ -7,27 +7,35 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SPPAS\n"
 "Report-Msgid-Bugs-To: brigitte.bigi@gmail.com\n"
-"POT-Creation-Date: 2017-02-01 09:03+1100\n"
-"PO-Revision-Date: 2017-02-01 09:03+1100\n"
-"Last-Translator: Brigitte Bigi <brigitte.bigi@gmail.com>\n"
-"Language-Team: \n"
-"MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/audiodata/audiodataexc:39
 msgid ":ERROR 2000: "
-msgstr "No audio file is defined."
+msgstr "No audio file defined."
 
-#: src/audiodata/audiodataexc:39
 msgid ":ERROR 2010: "
 msgstr "{:s} reading or writing error: {:s}."
 
-#: src/audiodata/audiodataexc:40
 msgid ":ERROR 2015: "
 msgstr "No data or corrupted data in the audio file."
 
-#: src/audiodata/audiodataexc:40
 msgid ":ERROR 2020: "
 msgstr "{:d} is not a right index of channel."
 
+msgid ":ERROR 2025: "
+msgstr "From {:d} to {:d} is not a proper interval."
+
+msgid ":ERROR 2050: "
+msgstr "No channel defined."
+
+msgid ":ERROR 2060: "
+msgstr "Channels have not the same sample width."
+
+msgid ":ERROR 2061: "
+msgstr "Channels have not the same frame rate."
+
+msgid ":ERROR 2062: "
+msgstr "Channels have not the same number of frames."
+
+msgid ":ERROR 2070: "
+msgstr "Invalid sample width. Expect 1, 2 or 4. Get {:d}."

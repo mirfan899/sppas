@@ -40,7 +40,7 @@ class TestChannel(unittest.TestCase):
         cidx = self._sample_1.extract_channel(0)
         channel = self._sample_1.get_channel(cidx)
         self.assertEqual(len(frames)/self._sample_1.get_sampwidth(), channel.get_nframes())
-        self.assertEqual(frames, channel.frames)
+        self.assertEqual(frames, channel.get_frames())
         self.assertEqual(frames, channel.get_frames(channel.get_nframes()))
 
         frames = self._sample_2.read_frames( self._sample_2.get_nframes() )
@@ -55,11 +55,11 @@ class TestChannel(unittest.TestCase):
         cidx = self._sample_2.extract_channel(1)
         channel = self._sample_2.get_channel(cidx)
         self.assertEqual(len(frameschannel)/self._sample_2.get_sampwidth(), channel.get_nframes())
-        self.assertEqual(frameschannel, channel.frames)
+        self.assertEqual(frameschannel, channel.get_frames())
         self.assertEqual(frameschannel, channel.get_frames(channel.get_nframes()))
 
     def test_GetFrames(self):
-        self._sample_1.set_pos(1000)
+        self._sample_1.seek(1000)
         frames = self._sample_1.read_frames( 500 )
         self._sample_1.rewind()
         cidx = self._sample_1.extract_channel(0)

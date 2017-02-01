@@ -1,50 +1,44 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: wavpitch.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
+        http://www.sppas.org/
 
-# ----------------------------------------------------------------------------
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.audiodata.audiopitch.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    TO BE IMPLEMENTED.
+"""
 
 
-class WavePitch(object):
+class AudioPitch(object):
     """
-    A pitch wav utility class.
+    A pitch audio utility class.
     ToDo:
     Implements 3 different methods (at least) to estimate pitch and
     an algorithm to "vote" (exactly as in Signaix, by R. Espesser).
@@ -57,17 +51,13 @@ class WavePitch(object):
         self.pitch = []
         self.delta = delta
 
-
-    # ##################################################################### #
-    # Getters and Setters
-    # ##################################################################### #
+    # ------------------------------------------------------------------
 
     def get_pitch(self, time):
-        """
-        Return the pitch value at a given time.
+        """ Return the pitch value at a given time.
 
-        @param time: a float value representing the time in seconds.
-        @return float
+        :param time: a float value representing the time in seconds.
+        :returns: float
 
         """
         idx = int(time/self.delta) + 1
@@ -79,39 +69,29 @@ class WavePitch(object):
     # ------------------------------------------------------------------
 
     def get_pitch_list(self):
-        """
-        Return pitch values.
-
-        """
+        """ Return pitch values. """
         return self.pitch
 
     # ------------------------------------------------------------------
 
     def get_pitch_delta(self):
-        """
-        Return the delta used to estimate pitch.
-
-        """
+        """ Return the delta used to estimate pitch. """
         return self.delta
 
     # ------------------------------------------------------------------
 
     def get_size(self):
-        """
-        Return the number of pitch values.
-
-        """
+        """ Return the number of pitch values. """
         return len(self.pitch)
 
     # ------------------------------------------------------------------
 
-    def eval_pitch(self, filename, delta=0.01):
+    def eval_pitch(self, filename):
         """
         Eval pitch values... (TODO)
         At this stage, this will do: NOTHING!
 
         """
-        self.delta = delta
-        pass
+        raise NotImplementedError
 
     # ------------------------------------------------------------------

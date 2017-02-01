@@ -66,11 +66,6 @@ args = parser.parse_args()
 # ----------------------------------------------------------------------------
 
 audio = sppas.src.audiodata.aio.open(args.w)
-
-if args.c == 0 or args.c > audio.get_nchannels():
-    print("Wrong channel value (must be > 0 and < number of channels)")
-    sys.exit(1)
-
 idx = audio.extract_channel(args.c-1)
 
 # Save the converted channel

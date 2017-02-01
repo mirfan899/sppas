@@ -54,7 +54,7 @@
 import struct
 
 from .audioframes import AudioFrames
-from .audiodataexc import AudioError, AudioDataError, AudioIOError, AudioValueError
+from .audiodataexc import AudioError, AudioDataError, ChannelIndexError, MixChannelError
 from .channel import Channel
 from .channelsmixer import ChannelsMixer
 
@@ -213,7 +213,7 @@ class AudioPCM(object):
 
         index = int(index)
         if index < 0:
-            raise AudioValueError(index)
+            raise ChannelIndexError(index)
 
         nc = self.get_nchannels()
         self.seek(0)
@@ -223,7 +223,7 @@ class AudioPCM(object):
             raise AudioDataError
 
         if index+1 > nc:
-            raise AudioValueError(index)
+            raise ChannelIndexError(index)
 
         if nc == 1:
             channel = Channel(self.get_framerate(), self.get_sampwidth(), data)
@@ -495,7 +495,7 @@ class AudioPCM(object):
             mixer.append_channel(c, f)
         try:
             mixer.check_channels()
-        except Exception:
+        except MixChannelError:
             return False
 
         return True

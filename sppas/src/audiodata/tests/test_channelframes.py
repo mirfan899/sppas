@@ -30,6 +30,6 @@ class TestChannelFrames(unittest.TestCase):
         self._sample_2.extract_channel(0)
 
         channel = self._sample_1.get_channel(0)
-        monofrag = ChannelFrames(channel.frames)
+        monofrag = ChannelFrames(channel.get_frames())
         monofrag.append_silence(1000)
         self.assertEqual(channel.get_nframes()+1000, len(monofrag.get_frames())/channel.get_sampwidth())

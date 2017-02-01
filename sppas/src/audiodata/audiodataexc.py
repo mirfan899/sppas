@@ -37,20 +37,30 @@
 """
 from . import t
 
-ERROR = ":ERROR 2000: "
+AUDIO_ERROR = ":ERROR 2000: "
 IO_ERROR = ":ERROR 2010: "
 DATA_ERROR = ":ERROR 2015: "
 INDEX_ERROR = ":ERROR 2020: "
+INTERVAL_ERROR = ":ERROR 2025: "
+CHANNEL_ERROR = ":ERROR 2050: "
+MIX_SAMPLEWIDTH = ":ERROR 2060: "
+MIX_FRAMERATE = ":ERROR 2061: "
+MIX_NFRAMES = ":ERROR 2062: "
+SAMPLEWIDTH_ERROR = ":ERROR 2070: "
+
+# -----------------------------------------------------------------------
 
 
 class AudioError(Exception):
     """ :ERROR 2000: No audio file is defined. """
 
     def __init__(self):
-        self.parameter = ERROR + (t.ugettext(ERROR))
+        self.parameter = AUDIO_ERROR + (t.ugettext(AUDIO_ERROR))
 
     def __str__(self):
         return repr(self.parameter)
+
+# -----------------------------------------------------------------------
 
 
 class AudioIOError(IOError):
@@ -67,24 +77,91 @@ class AudioIOError(IOError):
     def __str__(self):
         return repr(self.parameter)
 
+# -----------------------------------------------------------------------
+
 
 class AudioDataError(Exception):
     """ :ERROR 2015: No data or corrupted data in the audio file. """
 
     def __init__(self, filename):
-        self.parameter = ERROR + \
-                         (t.gettext(ERROR)).format(filename)
+        self.parameter = DATA_ERROR + \
+                         (t.gettext(DATA_ERROR)).format(filename)
 
     def __str__(self):
         return repr(self.parameter)
 
+# -----------------------------------------------------------------------
 
-class AudioValueError(ValueError):
-    """ :ERROR 2020: {:d} is not a right index of channel." """
+
+class ChannelIndexError(ValueError):
+    """ :ERROR 2020: {:d} is not a right index of channel. """
 
     def __init__(self, index):
-        self.parameter = INDEX_ERROR + \
-                         (t.gettext(INDEX_ERROR)).format(index)
+        index = int(index)
+        self.parameter = INDEX_ERROR + (t.gettext(INDEX_ERROR)).format(index)
 
     def __str__(self):
         return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class IntervalError(ValueError):
+    """ :ERROR 2025: From {:d} to {:d} is not a proper interval. """
+
+    def __init__(self, value1, value2):
+        value1 = int(value1)
+        value2 = int(value2)
+        self.parameter = INTERVAL_ERROR + \
+                         (t.gettext(INTERVAL_ERROR)).format(value1, value2)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class ChannelError(Exception):
+    """ :ERROR 2050: No channel defined. """
+
+    def __init__(self):
+        self.parameter = CHANNEL_ERROR + (t.ugettext(CHANNEL_ERROR))
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class MixChannelError(ValueError):
+    """ :ERROR 2060 to 2062: """
+
+    def __init__(self, value=0):
+        value = int(value)
+        if value == 1:
+            self.parameter = MIX_SAMPLEWIDTH + (t.ugettext(MIX_SAMPLEWIDTH))
+        elif value == 2:
+            self.parameter = MIX_FRAMERATE + (t.ugettext(MIX_FRAMERATE))
+        elif value == 3:
+            self.parameter = MIX_NFRAMES + (t.ugettext(MIX_NFRAMES))
+        else:
+            self.parameter = CHANNEL_ERROR + (t.ugettext(CHANNEL_ERROR))
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class SampleWidthError(ValueError):
+    """ :ERROR 2070: Invalid sample width. """
+
+    def __init__(self, value):
+        value = int(value)
+        self.parameter = SAMPLEWIDTH_ERROR +\
+                         (t.gettext(SAMPLEWIDTH_ERROR)).format(value)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------

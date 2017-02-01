@@ -65,7 +65,7 @@ args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
 
-audioin = sppas.src.audiodata.open( args.i )
+audioin = sppas.src.audiodata.open(args.i)
 SAMPLE_RATE = audioin.get_framerate()
 
 # ----------------------------------------------------------------------------
@@ -76,13 +76,13 @@ r = 0.98
 a1 = -2.0 * r * math.cos(freq / (SAMPLE_RATE / 2.0) * math.pi)
 a2 = r * r
 filter = [a1, a2]
-print filter
+print(filter)
 
 n = audioin.get_nframes()
 original = struct.unpack('%dh' % n, audioin.read_frames(n))
 original = [s / 2.0**15 for s in original]
 
-result = [ 0 for i in range(0, len(filter)) ]
+result = [ 0 for i in range(0, len(filter))]
 biggest = 1
 for sample in original:
         for cpos in range(0, len(filter)):
@@ -90,14 +90,14 @@ for sample in original:
         result.append(sample)
         biggest = max(abs(sample), biggest)
 
-result = [ sample / biggest for sample in result ]
-result = [ int(sample * (2.0**15 - 1)) for sample in result ]
+result = [sample / biggest for sample in result]
+result = [int(sample * (2.0**15 - 1)) for sample in result]
 
 # ----------------------------------------------------------------------------
 
 audioout = AudioPCM()
-channel = Channel(framerate=SAMPLE_RATE, sampwidth=audioin.get_sampwidth(), frames=struct.pack('%dh' % len(result), *result) )
-audioout.append_channel( channel )
-sppas.src.audiodata.save( args.o, audioout)
+channel = Channel(framerate=SAMPLE_RATE, sampwidth=audioin.get_sampwidth(), frames=struct.pack('%dh' % len(result), *result))
+audioout.append_channel(channel)
+sppas.src.audiodata.save(args.o, audioout)
 
 # ----------------------------------------------------------------------------

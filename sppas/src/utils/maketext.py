@@ -56,15 +56,17 @@ class T(object):
 
 
 def translate(domain):
+    lang = []
     try:
         locale.setlocale(locale.LC_ALL, '')
         lc, encoding = locale.getdefaultlocale()
+        lang.append(lc)
     except:
-        # Can happen if user passed a bogus LANG
-        lc = "en_US"
+        pass
+    lang.append("en_US")
 
     try:
-        t = gettext.translation(domain, os.path.join(BASE_PATH, "po"), [lc, "en_US"])
+        t = gettext.translation(domain, os.path.join(BASE_PATH, "po"), lang)
         t.install()
         return t
     except IOError:

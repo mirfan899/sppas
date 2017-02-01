@@ -44,11 +44,11 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-# ----------------------------------------------------------------------------
-
 import sppas.src.audiodata
 from sppas.src.audiodata.channelformatter import ChannelFormatter
 from sppas.src.audiodata.audio import AudioPCM
+
+# ----------------------------------------------------------------------------
 
 parser = ArgumentParser(usage="%s -w input file -o output file [options]" % os.path.basename(PROGRAM),
                         description="... a script to reformat audio files.")
@@ -82,9 +82,6 @@ else:
     formatter.set_framerate(audio.get_framerate())
 
 if args.b:
-    if args.b not in [1, 2, 4]:
-        print "Wrong bitrate value"
-        sys.exit(1)
     formatter.set_sampwidth(args.b)
 else:
     formatter.set_sampwidth(audio.get_sampwidth())

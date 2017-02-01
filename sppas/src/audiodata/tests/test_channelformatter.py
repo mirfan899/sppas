@@ -34,5 +34,5 @@ class TestChannelFormatter(unittest.TestCase):
         formatter = ChannelFormatter(self._sample_2.get_channel(0))
         formatter.sync(channel)
 
-        self.assertEqual(channel.get_framerate(), formatter.channel.get_framerate())
-        self.assertEqual(channel.get_sampwidth(), formatter.channel.get_sampwidth())
+        self.assertEqual(channel.get_framerate(), formatter.get_channel().get_framerate())
+        self.assertEqual(channel.get_sampwidth(), formatter.get_channel().get_sampwidth())
