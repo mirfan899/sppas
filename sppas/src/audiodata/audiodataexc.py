@@ -55,7 +55,7 @@ class AudioError(Exception):
     """ :ERROR 2000: No audio file is defined. """
 
     def __init__(self):
-        self.parameter = AUDIO_ERROR + (t.ugettext(AUDIO_ERROR))
+        self.parameter = AUDIO_ERROR + (t.gettext(AUDIO_ERROR))
 
     def __str__(self):
         return repr(self.parameter)
@@ -125,7 +125,7 @@ class ChannelError(Exception):
     """ :ERROR 2050: No channel defined. """
 
     def __init__(self):
-        self.parameter = CHANNEL_ERROR + (t.ugettext(CHANNEL_ERROR))
+        self.parameter = CHANNEL_ERROR + (t.gettext(CHANNEL_ERROR))
 
     def __str__(self):
         return repr(self.parameter)
@@ -139,13 +139,13 @@ class MixChannelError(ValueError):
     def __init__(self, value=0):
         value = int(value)
         if value == 1:
-            self.parameter = MIX_SAMPLEWIDTH + (t.ugettext(MIX_SAMPLEWIDTH))
+            self.parameter = MIX_SAMPLEWIDTH + (t.gettext(MIX_SAMPLEWIDTH))
         elif value == 2:
-            self.parameter = MIX_FRAMERATE + (t.ugettext(MIX_FRAMERATE))
+            self.parameter = MIX_FRAMERATE + (t.gettext(MIX_FRAMERATE))
         elif value == 3:
-            self.parameter = MIX_NFRAMES + (t.ugettext(MIX_NFRAMES))
+            self.parameter = MIX_NFRAMES + (t.gettext(MIX_NFRAMES))
         else:
-            self.parameter = CHANNEL_ERROR + (t.ugettext(CHANNEL_ERROR))
+            self.parameter = CHANNEL_ERROR + (t.gettext(CHANNEL_ERROR))
 
     def __str__(self):
         return repr(self.parameter)

@@ -29,7 +29,7 @@
 
         ---------------------------------------------------------------------
 
-    src.utils.makeunicode
+    src.utils.audiodata
     ~~~~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi

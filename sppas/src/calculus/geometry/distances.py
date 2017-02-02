@@ -46,6 +46,7 @@
         - squared_euclidian
 
 """
+from ..calculusexc import VectorsError
 
 
 def squared_euclidian(x, y):
@@ -64,8 +65,7 @@ def squared_euclidian(x, y):
 
     """
     if len(x) != len(y):
-        raise ValueError('Both x and y must have the same length '
-                         '(got respectively %d and %d).' % (len(x), len(y)))
+        raise VectorsError
 
     return sum([(a-b)**2 for (a, b) in zip(x, y)])
 

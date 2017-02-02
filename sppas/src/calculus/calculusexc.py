@@ -29,20 +29,41 @@
 
         ---------------------------------------------------------------------
 
-    src.calculus.__init__.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~
+    src.calculus.calculusexc.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-
-    calculus is a free and open source Python library to perform some math
-    on data. Basically, calculus package was created to estimates descriptive
-    statistics on annotated data.
+    Exceptions for calculus package.
 
 """
-from sppas.src.utils.maketext import translate
-t = translate("calculus")
+from . import t
 
+# -----------------------------------------------------------------------
+
+VECTORS_ERROR = ":ERROR 3010: "
+EUCLIDIAN_DISTANCE_ERROR = ":ERROR 3020: "
+
+# -----------------------------------------------------------------------
+
+
+class VectorsError(Exception):
+    """ :ERROR 3010: Both vectors p and q must have the same length and must contain probabilities. """
+
+    def __init__(self):
+        self.parameter = VECTORS_ERROR + (t.gettext(VECTORS_ERROR))
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class EuclidianDistanceError(ValueError):
+    """ :ERROR 3020: Error while estimating Euclidian distances of rows and columns. """
+
+    def __init__(self):
+        self.parameter = EUCLIDIAN_DISTANCE_ERROR + (t.gettext(EUCLIDIAN_DISTANCE_ERROR))
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------

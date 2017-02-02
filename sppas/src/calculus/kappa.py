@@ -37,11 +37,14 @@
     statistic seems the most commonly used measure of inter-rater agreement
     in Computational Linguistics.
 
-"""
+    Kappa is intended to give the reader a quantitative measure of the
+    magnitude of agreement between observers.
 
+"""
 from __future__ import division
 
 from .geometry.distances import squared_euclidian as sq
+from .calculusexc import VectorsError, EuclidianDistanceError
 
 # ----------------------------------------------------------------------------
 
@@ -55,72 +58,94 @@ class Kappa(object):
     :copyright:    Copyright (C) 2011-2016  Brigitte Bigi
     :summary:      Inter-observer variation estimation.
 
-    Kappa is intended to give the reader a quantitative measure of the
-    magnitude of agreement between observers.
     The calculation is based on the difference between how much agreement is
     actually present (“observed” agreement) compared to how much agreement
     would be expected to be present by chance alone (“expected” agreement).
 
-    >>> p = [ (1., 0.), (0., 1.), (0., 1.), (1., 0.), (1., 0.) ]
-    >>> q = [ (1., 0.), (0., 1.), (1., 0.), (1., 0.), (1., 0.) ]
-    >>> kappa = Kappa(p, q)
+    Imagine a situation in which annotators have to answer Yes or No to
+    5 questions.
+
+        - Person "P" answered: Yes, No, No, Yes, Yes
+        - Person "Q" answered: Yes, No, Yes, Yes, Yes
+
+    This results in the following vectors of probabilities:
+
+    >>> p = [(1., 0.), (0., 1.), (0., 1.), (1., 0.), (1., 0.)]
+    >>> q = [(1., 0.), (0., 1.), (1., 0.), (1., 0.), (1., 0.)]
+
+    The Cohen's Kappa is then evaluated as follow:
+
     >>> Kappa.check_vector(p)
     >>> True
     >>> Kappa.check_vector(q)
     >>> True
+    >>> kappa = Kappa(p, q)
     >>> kappa.evaluate()
     >>> 0.54545
 
     """
-    def __init__(self, p, q):
+    def __init__(self, p=list(), q=list()):
         """ Create a Kappa instance with two lists of tuples p and q.
 
-        >>> p=[ (1., 0.), (1.,0.), (0.8,0.2) ]
+        >>> p=[(1., 0.), (1., 0.), (0.8, 0.2)]
 
         :param p: a vector of tuples of float values
         :param q: a vector of tuples of float values
 
         """
-        self.p = p
-        self.q = q
+        self._p = list()
+        self._q = list()
+        if len(p) > 0 and len(q) > 0:
+            self.set_vectors(p, q)
+    
+    # -----------------------------------------------------------------------
+
+    def set_vectors(self, p, q):
+        """ Set the vectors of probabilities to estimate the Kappa value.
+        
+        :param p: a vector of tuples of float values
+        :param q: a vector of tuples of float values
+
+        """
+        if Kappa.check_vector(p) and Kappa.check_vector(q) is False:
+            raise VectorsError
+        self._p = p
+        self._q = q
 
     # -----------------------------------------------------------------------
 
     def sqv(self):
         """ Estimates the Euclidian distance between two vectors.
 
-        :param p: a vector of tuples of float values
-        :param q: a vector of tuples of float values
         :returns: v
 
         """
-        if len(self.p) != len(self.q):
-            raise Exception('Both vectors p and q must have the same length '
-                            '(got respectively %d and %d).' % 
-                            (len(self.p), len(self.q)))
+        if len(self._p) != len(self._q):
+            raise VectorsError
 
-        return sum([sq(x, y) for (x, y) in zip(self.p, self.q)])
+        return sum([sq(x, y) for (x, y) in zip(self._p, self._q)])
 
     # -----------------------------------------------------------------------
 
     def sqm(self):
         """ Estimates the Euclidian distance between two vectors.
 
-        :returns: row and col
+        :returns: row, col
 
         """
-        if len(self.p) != len(self.q):
-            raise Exception('Both vectors p and q must have the same length '
-                            '(got respectively %d and %d).' % 
-                            (len(self.p), len(self.q)))
+        if len(self._p) != len(self._q):
+            raise VectorsError
 
         row = list()
-        for x in self.p:
-            row.append(sum(sq(x, y) for y in self.q))
+        for x in self._p:
+            row.append(sum(sq(x, y) for y in self._q))
 
         col = list()
-        for y in self.q:
-            col.append(sum(sq(y, x) for x in self.p))
+        for y in self._q:
+            col.append(sum(sq(y, x) for x in self._p))
+
+        if sum(row) != sum(col):
+            raise EuclidianDistanceError
 
         return row, col
 
@@ -132,7 +157,7 @@ class Kappa(object):
         :returns: bool
 
         """
-        return Kappa.check_vector(self.p) and Kappa.check_vector(self.q)
+        return Kappa.check_vector(self._p) and Kappa.check_vector(self._q)
 
     # -----------------------------------------------------------------------
 
@@ -145,11 +170,10 @@ class Kappa(object):
         :returns: float value
 
         """
-        v = self.sqv() / float(len(self.p))
+        v = self.sqv() / float(len(self._p))
         row, col = self.sqm()
-        if sum(row) != sum(col):
-            raise Exception('Hum... error while estimating Euclidian distances.')
-        r = sum(row) / float(len(self.p)**2)
+
+        r = sum(row) / float(len(self._p)**2)
         if r == 0.:
             return 1.
 
@@ -169,21 +193,23 @@ class Kappa(object):
             return False
 
         for t in v:
+
             # Must contain tuples only.
             if not type(t) is tuple:
                 return False
+
             # All tuples have the same size (more than 1).
             if len(t) != len(v[0]) or len(t) < 2:
                 return False
+
             # Tuple values are probabilities.
-            s = 0
+            s = 0.
             for p in t:
-                if p < 0. or p > 1.0:
+                if p < 0. or p > 1.:
                     return False
                 s += p
+            s = round(s, 3)
             if s < 0.999 or s > 1.001:
                 return False
 
         return True
-
-# ----------------------------------------------------------------------------

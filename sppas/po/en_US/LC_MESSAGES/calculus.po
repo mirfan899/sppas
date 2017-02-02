@@ -1,0 +1,18 @@
+# English translation for SPPAS
+# Copyright (c) 2011-2017 Brigitte Bigi
+# This file is distributed under the same license as the SPPAS package.
+# Brigitte Bigi <brigitte.bigi@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: SPPAS\n"
+"Report-Msgid-Bugs-To: brigitte.bigi@gmail.com\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid ":ERROR 3010: "
+msgstr "Both vectors p and q must have the same length and must contain probabilities."
+
+msgid ":ERROR 3020: "
+msgstr "Error while estimating the Euclidian distances of rows and columns."
+
