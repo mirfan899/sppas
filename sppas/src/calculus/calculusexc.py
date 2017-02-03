@@ -40,7 +40,11 @@ from . import t
 # -----------------------------------------------------------------------
 
 VECTORS_ERROR = ":ERROR 3010: "
-EUCLIDIAN_DISTANCE_ERROR = ":ERROR 3020: "
+PROBABILITY_VALUE_ERROR = ":ERROR 3015: "
+PROBABILITY_SUM_ERROR = ":ERROR 3015: "
+EUCLIDIAN_DISTANCE_ERROR = ":ERROR 3025: "
+EMPTY_LIST = ":ERROR 3030: "
+IN_INTERVAL_ERROR = ":ERROR 3040: "
 
 # -----------------------------------------------------------------------
 
@@ -57,8 +61,40 @@ class VectorsError(Exception):
 # -----------------------------------------------------------------------
 
 
+class ProbabilityError(Exception):
+    """ :ERROR 3015: Value must range between 0 and 1. Got {:f}. """
+
+    def __init__(self, value=None):
+        if value is not None:
+            value = float(value)
+            self.parameter = PROBABILITY_VALUE_ERROR + (t.gettext(PROBABILITY_VALUE_ERROR)).format(value)
+        else:
+            self.parameter = PROBABILITY_VALUE_ERROR + t.gettext(PROBABILITY_VALUE_ERROR).replace("{:f}", "")
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class SumProbabilityError(Exception):
+    """ :ERROR 3016: Probabilities must sum to 1. Got {:f}. """
+
+    def __init__(self, value=None):
+        if value is not None:
+            value = float(value)
+            self.parameter = PROBABILITY_SUM_ERROR + (t.gettext(PROBABILITY_SUM_ERROR)).format(value)
+        else:
+            self.parameter = PROBABILITY_SUM_ERROR + t.gettext(PROBABILITY_SUM_ERROR).replace("{:f}", "")
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
 class EuclidianDistanceError(ValueError):
-    """ :ERROR 3020: Error while estimating Euclidian distances of rows and columns. """
+    """ :ERROR 3025: Error while estimating Euclidian distances of rows and columns. """
 
     def __init__(self):
         self.parameter = EUCLIDIAN_DISTANCE_ERROR + (t.gettext(EUCLIDIAN_DISTANCE_ERROR))
@@ -67,3 +103,30 @@ class EuclidianDistanceError(ValueError):
         return repr(self.parameter)
 
 # -----------------------------------------------------------------------
+
+
+class EmptyError(Exception):
+    """ :ERROR 3030: The given list must not be empty. """
+
+    def __init__(self):
+        self.parameter = EMPTY_LIST + (t.gettext(EMPTY_LIST))
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class InsideIntervalError(ValueError):
+    """ :ERROR 2030: Value {:d} is out of range: expected value in range [{:d},{:d}]. """
+
+    def __init__(self, value, min_value, max_value):
+        min_value = int(min_value)
+        max_value = int(max_value)
+        value = int(value)
+        self.parameter = IN_INTERVAL_ERROR + \
+                         (t.gettext(IN_INTERVAL_ERROR)).format(value, min_value, max_value)
+
+    def __str__(self):
+        return repr(self.parameter)
+

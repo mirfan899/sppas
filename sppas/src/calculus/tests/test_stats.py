@@ -32,8 +32,11 @@ class TestStats(unittest.TestCase):
         self.assertEqual(freq(l, 'a'), 0.15)
         self.assertEqual(percent(l, 'a'), 15.)
         self.assertEqual(percent(l, 'z'), 0.)
-        self.assertEqual(round(percentile([15, 20, 40, 35, 50], 40), 2), 26.0)
-        self.assertEqual(round(quantile([15, 20, 40, 35, 50], 0.4), 2), 26.0)
+        mylist = [15, 20, 40, 35, 50]
+        per = percentile(mylist, p=40)
+        self.assertEqual(round(per, 2), 26.0)
+        qua = quantile(mylist, q=0.4)
+        self.assertEqual(round(qua, 2), 26.0)
 
     def test_moment(self):
         pass

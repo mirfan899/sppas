@@ -13,6 +13,14 @@ msgstr ""
 msgid ":ERROR 3010: "
 msgstr "Both vectors p and q must have the same length and must contain probabilities."
 
-msgid ":ERROR 3020: "
+msgid ":ERROR 3015: "
+msgstr "Value must range between 0 and 1. Got {:f}."
+
+msgid ":ERROR 3025: "
 msgstr "Error while estimating the Euclidian distances of rows and columns."
 
+msgid ":ERROR 3030: "
+msgstr "The data must not be empty."
+
+msgid ":ERROR 3040: "
+msgstr "Value {:d} is out of range: expected value in range [{:d},{:d}]."

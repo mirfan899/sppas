@@ -53,6 +53,7 @@
 
 """
 import math
+from ..calculusexc import EmptyError, ProbabilityError
 
 # ---------------------------------------------------------------------------
 
@@ -133,9 +134,9 @@ def quantile(mylist, q=(0.25, 0.5, 0.75), sort=True):
 
     """
     if len(mylist) == 0:
-        raise ValueError("The list must not be empty.")
+        raise EmptyError
 
-    if sort:
+    if sort is True:
         mylist = sorted(mylist)
 
     if hasattr(q, "__iter__"):
@@ -145,11 +146,14 @@ def quantile(mylist, q=(0.25, 0.5, 0.75), sort=True):
         qs = [q]
         return_single = True
 
+    for p in qs:
+        if p < 0. or p > 1.:
+            raise ProbabilityError(p)
+
     result = list()
-    for q in qs:
-        if q < 0 or q > 1:
-            raise ValueError("Values in q must be between 0 and 1")
-        n = float(q) * (len(mylist)+1)
+    for p in qs:
+
+        n = float(p) * (len(mylist)+1)
         k, d = int(n), n-int(n)
         if k >= len(mylist):
             result.append(mylist[-1])
@@ -157,6 +161,7 @@ def quantile(mylist, q=(0.25, 0.5, 0.75), sort=True):
             result.append(mylist[0])
         else:
             result.append((1-d) * mylist[k-1] + d * mylist[k])
+
     if return_single:
         result = result[0]
 
@@ -262,16 +267,16 @@ def tfidf(documents, item):
     alltokens = []
     for d in documents:
         alltokens.extend(d)
-    tf = frequency(alltokens, item)
+    tf = freq(alltokens, item)
 
     # number of documents in the corpus
     D = len(documents)
 
     # number of documents with at least one occurrence of item
-    dw = 0.0
+    dw = 0.
     for d in documents:
         if item in d:
-            dw += 1.0
+            dw += 1.
     if dw == 0.:
         return 0.
 

@@ -64,6 +64,8 @@
         | pages 305--319, Pisa (Italy).
 
 """
+from ..calculusexc import EmptyError, InsideIntervalError
+from ..calculusexc import SumProbabilityError, ProbabilityError
 from .utilit import log2
 
 # ----------------------------------------------------------------------------
@@ -113,15 +115,16 @@ class KullbackLeibler(object):
 
         """
         # check the model before assigning to the member
-        if model is None:
-            raise TypeError('A model must be assigned. Got NoneType.')
+        if model is None or len(model) == 0:
+            raise EmptyError
 
-        if len(model) == 0:
-            raise ValueError('A model must contain at least one symbol.')
+        for v in model.values():
+            if v < 0. or v > 1.:
+                raise ProbabilityError(v)
 
         p_sum = sum(model.values())
         if round(p_sum, 6) != 1.:
-            raise ValueError('A model must contain probabilities (must sum to 1.).')
+            raise SumProbabilityError(p_sum)
 
         self._model = model
 
@@ -134,7 +137,7 @@ class KullbackLeibler(object):
 
         """
         if data is None or len(data) == 0:
-            raise ValueError('The input data must contain at least one observation.')
+            raise EmptyError
 
         model = dict()
         for obs in data:
@@ -156,7 +159,7 @@ class KullbackLeibler(object):
 
         """
         if observations is None or len(observations) == 0:
-            raise ValueError('The input data must contain at least one observation.')
+            raise EmptyError
 
         self._observations = observations
 
@@ -175,8 +178,7 @@ class KullbackLeibler(object):
         """
         eps = float(eps)
         if eps < 0. or eps > 0.1:
-            raise ValueError('The linear back-off value for unknown observations '
-                             'is expected to be a -small- probability value.')
+            raise InsideIntervalError(eps, 0., 0.1)
 
         if len(self._model) > 0:
             # Find the minimum...
@@ -197,10 +199,11 @@ class KullbackLeibler(object):
         :returns: float value
 
         """
-        if self._model is None:
-            raise Exception('A probability model must be fixed to estimate the distance.')
-        if self._observations is None:
-            raise Exception('A list of observed n-grams must be fixed to estimate the KL distance.')
+        if self._model is None or self._observations is None:
+            raise EmptyError
+
+        if len(self._model) == 0 or len(self._observations) == 0:
+            raise EmptyError
 
         na = 0
         nb = 0

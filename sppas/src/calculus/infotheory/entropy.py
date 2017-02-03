@@ -36,6 +36,7 @@
     Entropy is one of several ways to measure diversity.
 
 """
+from ..calculusexc import EmptyError, InsideIntervalError
 from .utilit import log2
 from .utilit import MAX_NGRAM
 from .utilit import symbols_to_items
@@ -81,7 +82,7 @@ class Entropy(object):
 
         """
         if len(symbols) == 0:
-            raise ValueError("No given symbols.")
+            raise EmptyError
 
         self._symbols = symbols
 
@@ -97,7 +98,7 @@ class Entropy(object):
         if 0 < n <= MAX_NGRAM:
             self._ngram = n
         else:
-            raise ValueError("The ngram value must range from 1 to %d. Got %d" % (MAX_NGRAM, n))
+            raise InsideIntervalError(n, 1, MAX_NGRAM)
 
     # -----------------------------------------------------------------------
 
@@ -112,7 +113,7 @@ class Entropy(object):
 
         """
         if len(self._symbols) == 0:
-            raise ValueError("No symbols given to evaluate the entropy.")
+            raise EmptyError
 
         exr = symbols_to_items(self._symbols, self._ngram)
         total = len(self._symbols) - self._ngram + 1
