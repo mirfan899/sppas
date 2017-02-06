@@ -48,8 +48,7 @@ except:
 
 
 class TerminalController(object):
-    """
-    A class that can be used to portably generate formatted output to a
+    """ A class that can be used to portably generate formatted output to a
     terminal. `TerminalController` defines a set of instance variables whose
     values are initialized to the control sequence necessary to perform a
     given action.  These can be simply included in normal output to the

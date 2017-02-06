@@ -93,8 +93,8 @@ class ProcessProgressTerminal(object):
     def update(self, percent, message):
         """ Update the progress.
 
-        :param text:     progress bar text  (default: None)
-        :param fraction: progress bar value (default: 0)
+        :param message: (str) progress bar value (default: 0)
+        :param percent: (float) progress bar text  (default: None)
 
         """
         n = int((WIDTH-10)*percent)
@@ -129,7 +129,7 @@ class ProcessProgressTerminal(object):
     def set_fraction(self, percent):
         """ Set a new progress value.
 
-        :param percent: new progress value
+        :param percent: (float) new progress value
 
         """
         self.update(percent, self._text)
@@ -139,7 +139,7 @@ class ProcessProgressTerminal(object):
     def set_text(self, text):
         """ Set a new progress message text.
 
-        :param text: new progress text
+        :param text: (str) new progress text
 
         """
         self.update(self._percent, text)
@@ -149,7 +149,7 @@ class ProcessProgressTerminal(object):
     def set_header(self, header):
         """ Set a new progress header text.
 
-        :param header: new progress header text.
+        :param header: (str) new progress header text.
 
         """
         if self._term:
@@ -168,5 +168,3 @@ class ProcessProgressTerminal(object):
         self.clear()
         self._text = ""
         self._percent = 0
-
-    # ------------------------------------------------------------------
