@@ -1,61 +1,64 @@
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              the automatic
-#           \__   |__/  |__/  |___| \__             annotation and
-#              \  |     |     |   |    \             analysis
-#           ___/  |     |     |   | ___/              of speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2017  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: src.resources.dictpron.py
-# ---------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.resources.dictpron.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Class to manage pronunciation dictionaries.
+
+"""
 import codecs
 import logging
 
+from sppas.src.sp_glob import UNKSTAMP
+
+from .resourcesexc import FileIOError, FileFormatError
 from .rutils import load_from_dump
 from .rutils import save_as_dump
 from .rutils import ENCODING
 from .rutils import to_lower
 from .rutils import to_strip
 
-from sppas.src.sp_glob import UNKSTAMP
 
 # ---------------------------------------------------------------------------
 
 
 class DictPron(object):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    @summary:      Pronunciation dictionary manager.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Pronunciation dictionary manager for HTK-ASCII format.
 
     A pronunciation dictionary contains a list of words, each one with a list
     of possible pronunciations. DictPron gets the dictionary from an HTK-ASCII
@@ -69,8 +72,8 @@ class DictPron(object):
     DictPron is instantiated as:
 
         >>> d = DictPron('eng.dict')
-        >>> d.add_pron( 'acted', '{ k t e' )
-        >>> d.add_pron( 'acted', '{ k t i' )
+        >>> d.add_pron('acted', '{ k t e')
+        >>> d.add_pron('acted', '{ k t i')
 
     In this class, the following convention is adopted to represent the
     pronunciation variants:
@@ -88,8 +91,7 @@ class DictPron(object):
     PHONEMES_SEPARATOR = "-"
 
     def __init__(self, dict_filename=None, unkstamp=UNKSTAMP, nodump=False):
-        """
-        Constructor.
+        """ Constructor.
 
         :param dict_filename: (str) The dictionary file name (HTK-ASCII format)
         :param unkstamp: (str) Represent a missing pronunciation
@@ -100,10 +102,10 @@ class DictPron(object):
         self._filename = dict_filename
 
         # Symbol to represent missing entries in the dictionary
-        self.unkstamp = unkstamp
+        self._unk_stamp = unkstamp
 
         # The pronunciation dictionary
-        self._dict = {}
+        self._dict = dict()
 
         # Either read the dictionary from a dumped file or from the original
         # ASCII one.
@@ -131,20 +133,18 @@ class DictPron(object):
     # -----------------------------------------------------------------------
 
     def get_pron(self, entry):
-        """
-        Return the phonetization of an entry in the dictionary.
+        """ Return the phonetization of an entry in the dictionary.
 
         :param entry: (str) A token to find in the dictionary
         :returns: pronunciations of the given token or the unknown symbol
 
         """
-        return self._dict.get(to_lower(entry), self.unkstamp)
+        return self._dict.get(to_lower(entry), self._unk_stamp)
 
     # -----------------------------------------------------------------------
 
     def is_unk(self, entry):
-        """
-        Return True if entry is unknown (not in the dictionary).
+        """ Return True if entry is unknown (not in the dictionary).
 
         :param entry: (str) A token to find in the dictionary
 
@@ -154,8 +154,7 @@ class DictPron(object):
     # -----------------------------------------------------------------------
 
     def is_pron_of(self, entry, pron):
-        """
-        Return True if pron is a pronunciation of entry.
+        """ Return True if pron is a pronunciation of entry.
 
         :param entry: (str) A token to find in the dictionary
         :param pron: (str) A pronunciation
@@ -193,8 +192,7 @@ class DictPron(object):
     # -----------------------------------------------------------------------
 
     def add_pron(self, token, pron):
-        """
-        Add a token/pron to the dict.
+        """ Add a token/pron to the dict.
 
         :param token: (str) Unicode string of the token to add
         :param pron: (str) The pronunciation with phonemes separated by spaces
@@ -222,12 +220,11 @@ class DictPron(object):
     # -----------------------------------------------------------------------
 
     def map_phones(self, map_table):
-        """
-        Create a new dictionary by changing the phoneme strings
+        """ Create a new dictionary by changing the phoneme strings,
         depending on a mapping table.
 
         :param map_table: (Mapping) A mapping table
-        :returns: a DictPron with mapped phones
+        :returns: a DictPron instance with mapped phones
 
         """
         map_table.set_reverse(True)
@@ -244,8 +241,7 @@ class DictPron(object):
     # -----------------------------------------------------------------------
 
     def load_from_ascii(self, filename):
-        """
-        Load a pronunciation dictionary from an HTK-ASCII file.
+        """ Load a pronunciation dictionary from an HTK-ASCII file.
 
         :param filename: (str) Pronunciation dictionary file name.
 
@@ -253,9 +249,8 @@ class DictPron(object):
         try:
             with codecs.open(filename, 'r', ENCODING) as fd:
                 lines = fd.readlines()
-        except ValueError as e:
-            raise ValueError('Expected HTK ASCII dictionary format.'
-                             'Error while trying to open and read the file: %s' % str(e))
+        except Exception:
+            raise FileIOError(filename)
 
         for l, line in enumerate(lines):
             if len(line.strip()) == 0:
@@ -264,8 +259,7 @@ class DictPron(object):
                 line.index(u"[")
                 line.index(u"]")
             except ValueError:
-                raise ValueError('Expected HTK ASCII dictionary format. '
-                                 'Error at line number %d: %s' % (l, line))
+                raise FileFormatError(l, line)
 
             # The entry is before the "[" and the pronunciation is after the "]"
             entry = line[:line.find(u"[")]
@@ -283,8 +277,7 @@ class DictPron(object):
     # -----------------------------------------------------------------------
 
     def save_as_ascii(self, filename, withvariantnb=True):
-        """
-        Save the pronunciation dictionary in HTK-ASCII format.
+        """ Save the pronunciation dictionary in HTK-ASCII format.
 
         :param filename: (str) Dictionary file name
         :param withvariantnb: (bool) Write the variant number or not.
@@ -309,5 +302,3 @@ class DictPron(object):
             return False
 
         return True
-
-    # -----------------------------------------------------------------------

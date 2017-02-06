@@ -1,48 +1,44 @@
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              the automatic
-#           \__   |__/  |__/  |___| \__             annotation and
-#              \  |     |     |   |    \             analysis
-#           ___/  |     |     |   | ___/              of speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2017  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: src.resources.rutils.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.resources.rutils.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import codecs
 import pickle
 import logging
 import os
 import os.path
 
-
-# ----------------------------------------------------------------------------
-# Constants
 # ----------------------------------------------------------------------------
 
 DUMP_FILENAME_EXT = ".dump"
@@ -52,8 +48,7 @@ ENCODING = "utf-8"
 
 
 def to_lower(entry):
-    """
-    Return a unicode string with lower case.
+    """ Return a unicode string with lower case.
 
     :param entry: (str or Unicode)
     :returns: Unicode
@@ -70,8 +65,7 @@ def to_lower(entry):
 
 
 def to_strip(entry):
-    """
-    Strip a string.
+    """ Strip a string.
     (remove also multiple spaces inside the string)
 
     :param entry: (str or Unicode)
@@ -90,8 +84,7 @@ def to_strip(entry):
 
 
 def get_dump_filename(filename):
-    """
-    Return the file name of the dump version of filename.
+    """ Return the file name of the dump version of filename.
 
     :param filename (String)
     :returns: dump filename
@@ -106,8 +99,7 @@ def get_dump_filename(filename):
 
 
 def has_dump(filename):
-    """
-    Test if a dump file exists for filename and if it is up-to-date.
+    """ Test if a dump file exists for filename and if it is up-to-date.
 
     :param filename: (str)
     :returns: (bool)
@@ -126,8 +118,7 @@ def has_dump(filename):
 
 
 def load_from_dump(filename):
-    """
-    Load the file from a dumped file.
+    """ Load the file from a dumped file.
 
     :param filename: (str)
     :returns: loaded data or None
@@ -152,8 +143,7 @@ def load_from_dump(filename):
 
 
 def save_as_dump(data, filename):
-    """
-    Save the data as a dumped file.
+    """ Save the data as a dumped file.
 
     :param data: The data to save
     :param filename: File name for the data
@@ -170,5 +160,3 @@ def save_as_dump(data, filename):
         return False
 
     return True
-
-# ----------------------------------------------------------------------------

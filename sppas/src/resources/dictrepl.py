@@ -1,39 +1,40 @@
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              the automatic
-#           \__   |__/  |__/  |___| \__             annotation and
-#              \  |     |     |   |    \             analysis
-#           ___/  |     |     |   | ___/              of speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2017  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: src.resources.dictrepl.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.resources.dictrepl.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~
+
+    A dictionary to manage automated replacements.
+
+"""
 import codecs
 import logging
 
@@ -46,15 +47,15 @@ from .rutils import ENCODING
 
 class DictRepl(object):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    @summary:      A dictionary with specific features for language resources.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      A dictionary with specific features for language resources.
     
     The main feature is that values are "accumulated".
-    Example:
+
         >>>d = DictRepl()
         >>>d.add("key", "v1")
         >>>d.add("key", "v2")
@@ -69,8 +70,7 @@ class DictRepl(object):
     REPLACE_SEPARATOR = "|"
 
     def __init__(self, dict_filename=None, nodump=False):
-        """
-        Constructor.
+        """ Constructor.
 
         :param dict_filename: (str) The dictionary file name (2 columns)
         :param nodump: (bool) Disable the creation of a dump file
@@ -182,8 +182,7 @@ class DictRepl(object):
     # ------------------------------------------------------------------------
 
     def replace_reversed(self, value):
-        """
-        Return the key(s) of a value or an empty string if value does not exists.
+        """ Return the key(s) of a value or an empty string if value does not exists.
 
         :returns: a string with all keys, separated by '_'.
 
@@ -206,12 +205,11 @@ class DictRepl(object):
     # ------------------------------------------------------------------------
 
     def add(self, token, repl):
-        """
-        Add a new key,value into the dict, or append value to the existing
+        """ Add a new key,value into the dict, or append value to the existing
         one with a "|" used as separator.
 
-        :param token: (string) unicode string of the token to add
-        :param repl: (string) the replacement token
+        :param token: (str) unicode string of the token to add
+        :param repl: (str) the replacement token
 
         """
         # Remove multiple spaces
@@ -229,10 +227,9 @@ class DictRepl(object):
     # ------------------------------------------------------------------------
 
     def remove(self, entry):
-        """
-        Remove an entry, as key or value.
+        """ Remove an entry, as key or value.
 
-        :param entry: (string) unicode string of the entry to remove
+        :param entry: (str) unicode string of the entry to remove
 
         """
         for k in self._dict.keys():
@@ -244,10 +241,9 @@ class DictRepl(object):
     # ------------------------------------------------------------------------
 
     def load_from_ascii(self, filename):
-        """
-        Load a replacement dictionary from an ascii file.
+        """ Load a replacement dictionary from an ascii file.
 
-        :param filename (str)
+        :param filename: (str)
 
         """
         with codecs.open(filename, 'r', ENCODING) as fd:
@@ -270,10 +266,9 @@ class DictRepl(object):
     # ------------------------------------------------------------------------
 
     def save_as_ascii(self, filename):
-        """
-        Save the replacement dictionary.
+        """ Save the replacement dictionary.
 
-        :param filename (str)
+        :param filename: (str)
         :returns: (bool)
 
         """
