@@ -45,8 +45,7 @@ from threading import Thread
 
 from sppas.src.sp_glob import PLUGIN_PATH
 from sppas.src.utils.fileutils import sppasDirUtils
-
-#from . import t
+from . import get_info
 from .pluginsexc import PluginArchiveFileError
 from .pluginsexc import PluginArchiveIOError
 from .pluginsexc import PluginDuplicateError
@@ -56,12 +55,6 @@ from .pluginsexc import PluginFolderError
 from .pluginsexc import PluginKeyError
 from .param import sppasPluginParam
 from .process import sppasPluginProcess
-
-# ----------------------------------------------------------------------------
-
-
-def get_info(msg_id):
-    return "" #t.gettext(":INFO " + msg_id + ": ")
 
 # ----------------------------------------------------------------------------
 
@@ -241,14 +234,17 @@ class sppasPluginsManager(Thread):
             # Indicate the file to be processed
             if self._progress is not None:
                 self._progress.set_text(os.path.basename(pfile)+" ("+str(i+1)+"/"+str(total)+")")
-            output_lines += ""#get_info("4010").format(pfile)
+            output_lines += get_info("4010").format(pfile)
 
             # Apply the plugin
             process = sppasPluginProcess(self._plugins[plugin_id])
-            process.run(pfile)
-            result = process.communicate()
+            try:
+                process.run(pfile)
+                result = process.communicate()
+            except Exception as e:
+                result = str(e)
             if len(result) == 0:
-                output_lines += ""#get_info("4015")
+                output_lines += get_info("4015")
             else:
                 output_lines += result
 
@@ -259,7 +255,7 @@ class sppasPluginsManager(Thread):
 
         # Indicate completed!
         if self._progress is not None:
-            self._progress.update(1, "")#get_info("4020")+"\n")
+            self._progress.update(1, get_info("4020")+"\n")
             self._progress.set_header("")
 
         return output_lines

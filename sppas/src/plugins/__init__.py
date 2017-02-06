@@ -55,7 +55,12 @@
 
 """
 from sppas.src.utils.maketext import translate
+from sppas.src.utils.makeunicode import u
 t = translate("plugins")
+
+
+def get_info(msg_id):
+    return u(t.gettext(":INFO " + msg_id + ": "))
 
 from .manager import sppasPluginsManager
 from .param import sppasPluginParam
