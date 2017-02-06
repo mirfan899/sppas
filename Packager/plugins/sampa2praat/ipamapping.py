@@ -23,35 +23,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# trsmapping.py
-# ---------------------------------------------------------------------------
-
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#       Laboratoire Parole et Langage
-#
-#       Copyright (C) 2017  Brigitte Bigi
-#
-#       Use of this software is governed by the GPL, v3
-#       This banner notice must not be removed
-# ---------------------------------------------------------------------------
-#
-# this program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# this program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# trsmapping.py
+# ipamapping.py
 # ---------------------------------------------------------------------------
 
 import sys
@@ -66,25 +38,32 @@ if SPPAS is None:
 if os.path.exists(SPPAS) is False:
     print "ERROR: SPPAS not found."
     sys.exit(1)
+sys.path.append(SPPAS)
 
-SPPASSRC = os.path.join(SPPAS, "sppas", "src")
-sys.path.append(SPPASSRC)
-
-import annotationdata.io
-from presenters.tiermapping import TierMapping
-from annotationdata.transcription import Transcription
+import sppas.src.annotationdata.aio as aio
+from sppas.src.presenters.tiermapping import TierMapping
+from sppas.src.annotationdata.transcription import Transcription
 
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -i file -m table" %
-                        os.path.basename(PROGRAM),
+parser = ArgumentParser(usage="%s -i file -m table" % os.path.basename(PROGRAM),
                         description="... a program to convert labels.")
-parser.add_argument("-i", metavar="file", required=True,  help='Input annotated file name.')
-parser.add_argument("-m", metavar="file", required=True,  help='Mapping table file name.')
-parser.add_argument("-n", metavar="tiername", required=True, type=str, help='One or several tier name separated by commas.')
+parser.add_argument("-i",
+                    metavar="file",
+                    required=True,
+                    help='Input annotated file name.')
+parser.add_argument("-m",
+                    metavar="file",
+                    required=True,
+                    help='Mapping table file name.')
+parser.add_argument("-n",
+                    metavar="tiername",
+                    required=True,
+                    type=str,
+                    help='One or several tier name separated by commas.')
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -101,7 +80,7 @@ mapping.set_miss_symbol("")   # not used!
 mapping.set_delimiters([])    # longest matching
 
 # read content
-trs_input = annotationdata.io.read(args.i)
+trs_input = aio.read(args.i)
 
 # ----------------------------------------------------------------------------
 # Convert input file
@@ -109,14 +88,14 @@ trs_input = annotationdata.io.read(args.i)
 trs = Transcription(name=trs_input.GetName()+"-IPA")
 
 for n in args.n.split(','):
-    print " -> Tier %s:" % n
+    print(" -> Tier {:s}:".format(n))
     tier = trs_input.Find(n, case_sensitive=False)
     if tier is not None:
         new_tier = mapping.map_tier(tier)
         new_tier.SetName(n+"-IPA")
         trs.Append(new_tier)
     else:
-        print " [IGNORED] Wrong tier name."
+        print(" [IGNORED] Wrong tier name.")
 
 # Set the other members (no need, we'll write a TextGrid)
 # trs.metadata = trs_input.metadata
@@ -125,10 +104,10 @@ for n in args.n.split(','):
 # Write converted tiers
 
 if trs.GetSize() == 0:
-    print "No tier converted. No file created."
+    print("No tier converted. No file created.")
     sys.exit(1)
 
 infile, inext = os.path.splitext(args.i)
 filename = infile + "-praat-ipa.TextGrid"
-annotationdata.io.write(filename, trs)
-print "File %s created." % filename
+aio.write(filename, trs)
+print("File {:s} created.".format(filename))

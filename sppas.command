@@ -136,7 +136,7 @@ if [ $? != "0" ]; then
 fi
 
 # Get the name of the system
-unamestr="`uname`"
+unamestr="`uname | cut -f1 -d'_'`"
 
 echo "Command: "$PYTHON
 echo "System:  "$unamestr
@@ -145,17 +145,10 @@ echo "System:  "$unamestr
 if [[ "$unamestr" == 'Linux' ]]; then
     $PYTHON $BIN_DIR/checkwx.py
     wxstatus="$?"
-    if [[ $wxstatus == "1" ]]; then
-        fct_echo_warning "It seems you are using SPPAS with an old version of wxPython.\nUpdate it at: <http://www.wxpython.org/>."
-    elif [[ $wxstatus == "2" ]]; then
+    if [[ $wxstatus == "2" ]]; then
         fct_exit_error "Wxpython is not installed. Get it at: <http://www.wxpython.org/> "
     fi
     $PYTHON $BIN_DIR/sppasgui.py
-
-# Cygwin
-elif [[ "$unamestr" == 'CYGWIN_*' ]]; then
-   fct_echo_warning "It seems you are using SPPAS under Cygwin... Some troubles can occur with the GUI!"
-   $PYTHON $BIN_DIR/sppasgui.py
 
 # MacOS
 elif [[ "$unamestr" == 'Darwin' ]]; then
@@ -170,6 +163,18 @@ elif [[ "$unamestr" == 'Darwin' ]]; then
     else
         $PYTHON $BIN_DIR/sppasgui.py
     fi
+
+# Cygwin
+elif [[ "$unamestr" == 'CYGWIN' ]]; then
+   if [ -z $DISPLAY ]; then
+       fct_exit_error "Unable to access the X Display. Did you enabled XWin server?"
+   fi
+   $PYTHON $BIN_DIR/checkwx.py
+   wxstatus="$?"
+   if [[ $wxstatus == "2" ]]; then
+       fct_exit_error "Wxpython is not installed. Get it at: <http://www.wxpython.org/> "
+   fi
+   $PYTHON $BIN_DIR/sppasgui.py
 
 else
     fct_exit_error "Your operating system is not supported, or the "uname" command\nreturns an unexpected entry.\nPlease, send an e-mail to the author. "

@@ -43,6 +43,8 @@
     facing one. The higher perplexity, the better model.
 
 """
+from ..calculusexc import EmptyError, InsideIntervalError
+from ..calculusexc import SumProbabilityError, ProbabilityError
 from .utilit import log2
 from .utilit import MAX_NGRAM
 from .utilit import symbols_to_items
@@ -62,7 +64,7 @@ class Perplexity(object):
     A model is represented as a distribution of probabilities: the key is
     representing the symbol and the value is the the probability.
 
-    >>>model = {}
+    >>>model = dict()
     >>>model["peer"] = 0.1
     >>>model["pineapple"] = 0.2
     >>>model["tomato"] = 0.3
@@ -119,14 +121,13 @@ class Perplexity(object):
         """
         eps = float(eps)
         if eps < 0. or eps > 0.1:
-            raise ValueError('The linear back-off value for unknown observations '
-                             'is expected to be a -small- probability value.')
+            raise InsideIntervalError(eps, 0., 0.1)
 
         if self._model is not None:
             # Find the minimum...
-            pmin = round(min(proba for proba in self._model.values()), 6)
-            if eps > pmin/2.:
-                eps = pmin/3.
+            p_min = round(min(proba for proba in self._model.values()), 6)
+            if eps > p_min/2.:
+                eps = p_min/3.
 
         if eps == 0.:
             self._epsilon = self.DEFAULT_EPSILON
@@ -143,15 +144,16 @@ class Perplexity(object):
 
         """
         # check the model before assigning to the member
-        if model is None:
-            raise TypeError('A model must be assigned. Got NoneType.')
+        if model is None or len(model) == 0:
+            raise EmptyError
 
-        if len(model) == 0:
-            raise ValueError('A model must contain at least one symbols.')
-        
+        for v in model.values():
+            if v < 0. or v > 1.:
+                raise ProbabilityError(v)
+
         p_sum = sum(model.values())
         if round(p_sum, 6) != 1.:
-            raise ValueError("A model must contain probabilities.")
+            raise SumProbabilityError(p_sum)
 
         self._model = model
         self.set_epsilon()
@@ -168,7 +170,7 @@ class Perplexity(object):
         if 0 < n <= MAX_NGRAM:
             self._ngram = n
         else:
-            raise ValueError('The n value must range from 1 to %d. Got %d' % (MAX_NGRAM, n))
+            raise InsideIntervalError(n, 1, MAX_NGRAM)
 
     # -----------------------------------------------------------------------
 

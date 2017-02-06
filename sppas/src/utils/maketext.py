@@ -56,20 +56,26 @@ class T(object):
 
 
 def translate(domain):
-    lang = []
+
     try:
-        locale.setlocale(locale.LC_ALL, '')
         lc, encoding = locale.getdefaultlocale()
-        lang.append(lc)
+        if lc is not None:
+            lang = [lc, "en_US"]
     except:
-        pass
-    lang.append("en_US")
+        lang = ["en_US"]
 
     try:
         t = gettext.translation(domain, os.path.join(BASE_PATH, "po"), lang)
         t.install()
         return t
-    except IOError:
-        pass
+    except Exception:
+        try:
+            #print("Problem with the domain: {:s}. Enable English only.".format(domain))
+            t = gettext.translation(domain, os.path.join(BASE_PATH, "po"), ["en_US"])
+            t.install()
+            return t
+        except IOError:
+            pass
 
+    #print("Error of gettext. No messages will be available!")
     return T()

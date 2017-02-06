@@ -116,7 +116,7 @@ def fharmonicmean(items):
     # create a list with 1/xi values
     s = 0.
     for item in items:
-        s = s + 1./item
+        s += 1./item
 
     return float(len(items)) / s
 

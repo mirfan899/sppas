@@ -30,7 +30,7 @@
         ---------------------------------------------------------------------
 
     src.plugins.param.py
-    ~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~
 
     The set of parameters of a plugin is made of a directory name, a 
     configuration file name and a sppasPluginParser. This latter allows to
@@ -40,7 +40,7 @@
         - the plugin configuration: identifier, name, description and icon;
         - the commands for windows, macos and linux;
         - a set of options, each one containing at least an identifier, \
-        and optionnally a type, a value and a description text.
+        and optionally a type, a value and a description text.
 
 """
 
@@ -49,6 +49,9 @@ import platform
 import shlex
 from subprocess import Popen
 
+from .pluginsexc import CommandExecError
+from .pluginsexc import CommandSystemError
+from .pluginsexc import OptionKeyError
 from .cfgparser import sppasPluginConfigParser
 
 # ----------------------------------------------------------------------------
@@ -67,8 +70,8 @@ class sppasPluginParam(object):
     def __init__(self, directory, config_file):
         """ Creates a new sppasPluginParam instance.
 
-        :param directory: (string) the directory where to find the plugin
-        :param config_file: (string) the file name of the plugin configuration
+        :param directory: (str) the directory where to find the plugin
+        :param config_file: (str) the file name of the plugin configuration
 
         """
         # The path where to find the plugin and its config
@@ -112,7 +115,7 @@ class sppasPluginParam(object):
         # get the command
         command = self.__get_command(self._cfgparser.get_command())
         if not self.__check_command(command):
-            raise IOError("Command not found: %s" % command)
+            raise CommandExecError(command)
         self._command = command
 
         # get the configuration
@@ -174,7 +177,7 @@ class sppasPluginParam(object):
         for option in self._options.values():
             if option.get_key() == key:
                 return option
-        raise KeyError("No option with key %s" % key)
+        raise OptionKeyError(key)
 
     def get_options(self):
         """ Get all the options. """
@@ -190,11 +193,11 @@ class sppasPluginParam(object):
 
     @staticmethod
     def __get_command(commands):
-        """ Return the appropriate command from a list of available ones. """
+        """ Returns the appropriate command from a list of available ones. """
 
         _system = platform.system().lower()
 
-        if 'windows' in _system and 'windows' in commands.keys():
+        if ('windows' in _system or 'cygwin' in _system) and 'windows' in commands.keys():
             return commands['windows']
 
         if 'darwin' in _system and 'macos' in commands.keys():
@@ -203,14 +206,13 @@ class sppasPluginParam(object):
         if 'linux' in _system and 'linux' in commands.keys():
             return commands['linux']
 
-        raise Exception("No command defined for the system: {0}. "
-                        "Supported systems are: {1}".format(_system, " ".join(commands.keys())))
+        raise CommandSystemError(_system, commands.keys())
 
     # ------------------------------------------------------------------------
 
     @staticmethod
     def __check_command(command):
-        """ Return True if command exists.
+        """ Returns True if command exists.
         Test only the main command (i.e. the first string, without args).
 
         """
@@ -226,5 +228,3 @@ class sppasPluginParam(object):
         else:
             p.kill()
             return True
-
-    # ------------------------------------------------------------------------

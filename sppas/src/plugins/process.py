@@ -33,7 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~
 
     Process a plugin.
-    This is currently limited one file only.
+    This is currently restricted to one file only.
 
 """
 

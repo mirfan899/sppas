@@ -106,7 +106,7 @@ class EuclidianDistanceError(ValueError):
 
 
 class EmptyError(Exception):
-    """ :ERROR 3030: The given list must not be empty. """
+    """ :ERROR 3030: The given data must be defined or must not be empty. """
 
     def __init__(self):
         self.parameter = EMPTY_LIST + (t.gettext(EMPTY_LIST))

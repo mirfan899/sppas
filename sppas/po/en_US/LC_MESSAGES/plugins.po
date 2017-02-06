@@ -1,0 +1,56 @@
+# English translation for SPPAS
+# Copyright (c) 2011-2017 Brigitte Bigi
+# This file is distributed under the same license as the SPPAS package.
+# Brigitte Bigi <brigitte.bigi@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: SPPAS\n"
+"Report-Msgid-Bugs-To: brigitte.bigi@gmail.com\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid ":ERROR 4010: "
+msgstr "Missing plugin configuration file."
+
+msgid ":ERROR 4014: "
+msgstr "Missing section {:s} in the configuration file."
+
+msgid ":ERROR 4016: "
+msgstr "Missing option {:s} in section {:s} of the configuration file."
+
+msgid ":ERROR 4020: "
+msgstr "Unsupported plugin file type."
+
+msgid ":ERROR 4024: "
+msgstr "Plugin archive file corrupted."
+
+msgid ":ERROR 4030: "
+msgstr "A plugin with the same name is already existing in the plugins folder."
+
+msgid ":ERROR 4040: "
+msgstr "No plugin with identifier {:s} is available."
+
+msgid ":ERROR 4050: "
+msgstr "No such plugin folder: {:s}."
+
+msgid ":ERROR 4060: "
+msgstr "A plugin with the same key is already existing or plugin already loaded."
+
+msgid ":ERROR 4070: "
+msgstr "{:s} is not a valid command of your operating system."
+
+msgid ":ERROR 4075: "
+msgstr "No command was defined for the system: {:s}. Supported systems of this plugin are: {:s}."
+
+msgid ":ERROR 4080: "
+msgstr "No option with key {:s}."
+
+msgid ":INFO 4010: "
+msgstr "Apply plugin on file: {:s}."
+
+msgid ":INFO 4015: "
+msgstr "Plugin task done."
+
+msgid ":INFO 4020: "
+msgstr "Plugin task completed."

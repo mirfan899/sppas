@@ -47,7 +47,7 @@ import sys
 import os.path
 import traceback
 from argparse import ArgumentParser
-from butils import exit_error, check_python, install_gettext, check_aligner
+from butils import exit_error, check_python, check_aligner
 check_python()
 
 try:
@@ -101,7 +101,7 @@ for f in args.files:
         p = os.getcwd()
     filenames.append(os.path.abspath(os.path.join(p,b)))
 
-# Logging and Gettext
+# Logging
 # ----------------------------------------------------------------------------
 
 log_level = 1
@@ -112,8 +112,6 @@ except Exception:
     # stdin is not available if pythonw is used instead of python, on Windows!
     log_file = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM))), "sppas.log")
     setup_logging(log_level, log_file)
-
-install_gettext()
 
 # GUI is here:
 # ----------------------------------------------------------------------------

@@ -65,6 +65,10 @@ import collections
 from sppas.src.structs.baseoption import sppasOption
 from sppas.src.utils.makeunicode import u
 
+from .pluginsexc import PluginConfigFileError
+from .pluginsexc import PluginSectionConfigFileError
+from .pluginsexc import PluginOptionConfigFileError
+
 # ----------------------------------------------------------------------------
 
 
@@ -136,7 +140,7 @@ class sppasPluginConfigParser(object):
                     cfgdict[name] = u(value)
 
         if 'id' not in cfgdict.keys():
-            raise ValueError("[Configuration] section must contain an 'id' option.")
+            raise PluginOptionConfigFileError("[Configuration]", "id")
 
         return cfgdict
 
@@ -217,9 +221,9 @@ class sppasPluginConfigParser(object):
         # Check content
         if self._parser.has_section("Configuration"):
             if not self._parser.has_section("Command"):
-                raise ValueError("[Command] section is required.")
+                raise PluginSectionConfigFileError("[Command]")
         else:
-            raise ValueError("[Configuration] section is required.")
+            raise PluginSectionConfigFileError("[Configuration]")
 
     # ------------------------------------------------------------------------
 
@@ -229,7 +233,7 @@ class sppasPluginConfigParser(object):
 
         """
         if self._filename is None:
-            raise Exception('This parser is not linked to a configuration file.')
+            raise PluginConfigFileError
 
         if backup is True:
             copyfile(self._filename, self._filename+".backup")
@@ -291,5 +295,3 @@ class sppasPluginConfigParser(object):
 
         if len(option.get_text()) > 0:
             self._parser.set(section_name, "text", option.get_text())
-
-    # ------------------------------------------------------------------------

@@ -55,7 +55,7 @@ def find_ngrams(symbols, ngram):
     """ Return a list of n-grams from a list of symbols.
 
     :param symbols: (list)
-    :param n-gram: (int) n value for the ngrams
+    :param ngram: (int) n value for the ngrams
     :returns: list of tuples
 
     Example:
@@ -75,7 +75,7 @@ def symbols_to_items(symbols, ngram):
 
     Example:
 
-        >>>symbols=[0,1,0,1,1,1,0]
+        >>>symbols=[0, 1, 0, 1, 1, 1, 0]
         >>>print symbols_to_items(symbols,2)
         >>>{(0, 1): 2, (1, 0): 2, (1, 1): 2}
 

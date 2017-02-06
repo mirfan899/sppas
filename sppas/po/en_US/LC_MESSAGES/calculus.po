@@ -20,7 +20,7 @@ msgid ":ERROR 3025: "
 msgstr "Error while estimating the Euclidian distances of rows and columns."
 
 msgid ":ERROR 3030: "
-msgstr "The data must not be empty."
+msgstr "The given data must be defined or must not be empty."
 
 msgid ":ERROR 3040: "
 msgstr "Value {:d} is out of range: expected value in range [{:d},{:d}]."
