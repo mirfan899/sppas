@@ -45,6 +45,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 
 import datetime
+import logging
 import xml.etree.cElementTree as ET
 
 from ..transcription import Transcription
@@ -203,7 +204,6 @@ class Elan( Transcription ):
         if 'PARENT_REF' in tierRoot.attrib:
             parentRef = tierRoot.attrib['PARENT_REF']
             self.__read_ref_tier(tier, tierRoot, parentRef, root)
-
         else:
             self.__read_alignable_tier(tier, tierRoot)
 
@@ -273,7 +273,7 @@ class Elan( Transcription ):
             x2 = begin + increment
             for annotationRoot in batches[ref]:
                 label = annotationRoot[0].find('ANNOTATION_VALUE').text
-                tier.Add(Annotation(TimeInterval(ElanTimePoint(x1),ElanTimePoint(x2)),
+                tier.Add(Annotation(TimeInterval(ElanTimePoint(x1), ElanTimePoint(x2)),
                                     Label(label)))
                 x1 += increment
                 x2 += increment
@@ -294,9 +294,22 @@ class Elan( Transcription ):
     # -----------------------------------------------------------------
 
     def __read_alignable_tier(self, tier, tierRoot):
+        new_a = Annotation(TimePoint(0))
         for annotationRoot in tierRoot.findall('ANNOTATION'):
-            new_a = self.__parse_alignable_annotation(annotationRoot.find('ALIGNABLE_ANNOTATION'))
-            tier.Add( new_a )
+            annroot = annotationRoot.find('ALIGNABLE_ANNOTATION')
+            if annroot is not None:
+                new_a = self.__parse_alignable_annotation(annroot)
+                tier.Add(new_a)
+            else:
+                annroot = annotationRoot.find('REF_ANNOTATION')
+                if annroot is not None:
+                    raise IOError('Corrupted ELAN file. '
+                        'Expected an ALIGNABLE_ANNOTATION and got a REF_ANNOTATION: '
+                        'PARENT_REF was not defined for tier {:s}. '.format(tier.GetName()))
+                else:
+                    logging.info('[ERROR] ELAN file error: tier {:s} contains a '
+                        ' corrupted annotation after the annotation: '
+                        '{:s}.'.format(tier.GetName(), new_a))
 
     # -----------------------------------------------------------------
 
@@ -309,7 +322,9 @@ class Elan( Transcription ):
         endKey = alignableAnnotationRoot.attrib['TIME_SLOT_REF2']
         end = self.timeSlots[endKey]
 
-        return Annotation(TimeInterval(begin,end), Label(label))
+        # TODO: store attrib "SVG_RE" in metadata
+
+        return Annotation(TimeInterval(begin, end), Label(label))
 
     # -----------------------------------------------------------------
 

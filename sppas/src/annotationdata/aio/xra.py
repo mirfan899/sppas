@@ -124,7 +124,7 @@ class XRA(Transcription):
         mediamime = ''
         if 'mimetype' in mediaRoot.attrib:
             mediamime = mediaRoot.attrib['mimetype']
-        media = Media( mediaid,mediaurl,mediamime )
+        media = Media(mediaid,mediaurl,mediamime)
 
         # Add content if any
         contentRoot = mediaRoot.find('Content')
@@ -134,7 +134,7 @@ class XRA(Transcription):
         # link to tiers
         for tierNode in mediaRoot.findall('Tier'):
             tier = self.__id_tier_map[tierNode.attrib['id']]
-            tier.SetMedia( media )
+            tier.SetMedia(media)
 
     # -----------------------------------------------------------------
 
@@ -182,7 +182,7 @@ class XRA(Transcription):
             entrydesc = ""
             if "description" in entryNode.attrib:
                 entrydesc = entryNode.attrib['description']
-            ctrlvocab.Append( entrytext,entrydesc )
+            ctrlvocab.Append(entrytext,entrydesc)
 
         # link to tiers
         for tierNode in vocabularyRoot.findall('Tier'):
@@ -192,7 +192,7 @@ class XRA(Transcription):
                 # XRA < 1.2
                 idtier = tierNode.attrib['ID']
             tier = self.__id_tier_map[idtier]
-            tier.SetCtrlVocab( ctrlvocab )
+            tier.SetCtrlVocab(ctrlvocab)
 
     # -----------------------------------------------------------------
 
@@ -329,7 +329,7 @@ class XRA(Transcription):
             disjointRoot.findall('TimeInterval' if
                                  isTimeDisjoint else
                                  'FrameInterval')
-        ):
+       ):
             interval = XRA.__parse_interval(intervalRoot)
             intervalList.append(interval)
 
