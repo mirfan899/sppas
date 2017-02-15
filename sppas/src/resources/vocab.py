@@ -37,8 +37,7 @@ import codecs
 import logging
 
 from .resourcesexc import FileFormatError
-from .rutils import load_from_dump
-from .rutils import save_as_dump
+from .dumpfile import DumpFile
 from .rutils import ENCODING
 from .rutils import to_lower
 
@@ -72,15 +71,17 @@ class Vocabulary(object):
 
         if filename is not None:
 
+            dp = DumpFile(filename)
+
             # Try first to get the dict from a dump file
             # (at least 2 times faster than the ascii one)
-            data = load_from_dump(filename)
+            data = dp.load_from_dump()
 
             # Load from ascii if: 1st load, or, dump load error, or dump older than ascii
             if data is None:
                 self.load_from_ascii(filename)
                 if nodump is False:
-                    save_as_dump(self._stw, filename)
+                    dp.save_as_dump(self._stw)
                 logging.info('Got word list from ASCII file.')
 
             else:

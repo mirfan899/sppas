@@ -169,10 +169,10 @@ class DictPhon(object):
         _strphon = self._pdict.get_pron(entry)
 
         # OK, the entry is properly phonetized.
-        if _strphon != self._pdict.unkstamp:
+        if _strphon != self._pdict.get_unkstamp():
             return self._map_phonentry(_strphon)
 
-        return self._pdict.unkstamp
+        return self._pdict.get_unkstamp()
 
     # -----------------------------------------------------------------------
 
@@ -191,7 +191,7 @@ class DictPhon(object):
         tab = []
 
         for entry in tokens:
-            phon = self._pdict.unkstamp
+            phon = self._pdict.get_unkstamp()
             status = OK_ID
 
             # Enriched Orthographic Transcription Convention:
@@ -204,7 +204,7 @@ class DictPhon(object):
 
                 phon = self.get_phon_entry(entry)
 
-                if phon == self._pdict.unkstamp:
+                if phon == self._pdict.get_unkstamp():
                     status = ERROR_ID
 
                     # A missing compound word?
@@ -212,13 +212,13 @@ class DictPhon(object):
                         _tabpron = [self.get_phon_entry(w) for w in re.split(u"[-'_]", entry)]
 
                         # OK, finally the entry is in the dictionary?
-                        if not self._pdict.unkstamp in _tabpron:
+                        if self._pdict.get_unkstamp() not in _tabpron:
                             # ATTENTION: each part can have variants! must be decomposed.
                             self._dag_phon.variants = 4
                             phon = to_strip(self._dag_phon.decompose(" ".join(_tabpron)))
                             status = WARNING_ID
 
-                    if phon == self._pdict.unkstamp and phonunk is True:
+                    if phon == self._pdict.get_unkstamp() and phonunk is True:
                         try:
                             phon = self._phonunk.get_phon(entry)
                             status = WARNING_ID

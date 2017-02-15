@@ -36,8 +36,7 @@
 import codecs
 import logging
 
-from .rutils import load_from_dump
-from .rutils import save_as_dump
+from .dumpfile import DumpFile
 from .rutils import ENCODING
 
 # ----------------------------------------------------------------------------
@@ -66,15 +65,17 @@ class Unigram(object):
         if filename is not None:
 
             data = None
+            dp = DumpFile(filename)
+
+            # Try first to get the dict from a dump file (at least 2 times faster)
             if nodump is False:
-                # Try first to get the dict from a dump file (at least 2 times faster)
-                data = load_from_dump(filename)
+                data = dp.load_from_dump()
 
             # Load from ascii if: 1st load, or, dump load error, or dump older than ascii
             if data is None:
                 self.load_from_ascii(filename)
                 if nodump is False:
-                    save_as_dump(self._dict, filename)
+                    dp.save_as_dump(self._dict)
             else:
                 self._dict = data
 

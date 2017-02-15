@@ -44,6 +44,7 @@ FILE_FORMAT_ERROR = ":ERROR 5015: "
 NGRAM_RANGE_ERROR = ":ERROR 5020: "
 GAP_RANGE_ERROR = ":ERROR 5022: "
 SCORE_RANGE_ERROR = ":ERROR 5024: "
+DUMP_EXTENSION_ERROR = ":ERROR 5030: "
 
 # -----------------------------------------------------------------------
 
@@ -110,3 +111,17 @@ class ScoreRangeError(ValueError):
 
     def __str__(self):
         return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class DumpExtensionError(ValueError):
+    """ :ERROR 5030: The dump file can't have the same extension as the ASCII file ({:s}). """
+
+    def __init__(self, extension):
+        self.parameter = DUMP_EXTENSION_ERROR + (t.gettext(DUMP_EXTENSION_ERROR)).format(extension)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------

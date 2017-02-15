@@ -40,9 +40,8 @@ import logging
 
 from sppas.src.sp_glob import UNKSTAMP
 
+from .dumpfile import DumpFile
 from .resourcesexc import FileIOError, FileFormatError
-from .rutils import load_from_dump
-from .rutils import save_as_dump
 from .rutils import ENCODING
 from .rutils import to_lower
 from .rutils import to_strip
@@ -111,25 +110,34 @@ class DictPron(object):
         # ASCII one.
         if dict_filename is not None:
 
+            dp = DumpFile(dict_filename)
             data = None
+
+            # Try first to get the dict from a dump file (at least 2 times faster)
             if nodump is False:
-                # Try first to get the dict from a dump file (at least 2 times faster)
-                data = load_from_dump(dict_filename)
+                data = dp.load_from_dump()
 
             # Load from ascii if:
             # 1st load, or, dump load error, or dump older than ascii
             if data is None:
                 self.load_from_ascii(dict_filename)
                 if nodump is False:
-                    save_as_dump(self._dict, dict_filename)
-                logging.info('Get dictionary from ASCII file.')
+                    dp.save_as_dump(self._dict)
+                logging.info('Dictionary loaded from the original file.')
 
             else:
                 self._dict = data
-                logging.info('Get dictionary from dumped file.')
+                logging.info('Dictionary loaded from the dump file.')
 
     # -----------------------------------------------------------------------
     # Getters
+    # -----------------------------------------------------------------------
+
+    def get_unkstamp(self):
+        """ Returns the unknown words stamp. """
+
+        return self._unk_stamp
+
     # -----------------------------------------------------------------------
 
     def get_pron(self, entry):
@@ -298,7 +306,7 @@ class DictPron(object):
                         output.write(line)
 
         except Exception as e:
-            logging.info('Save the dict in ASCII failed: %s' % str(e))
+            logging.info('Save the dictionary in ASCII failed: %s' % str(e))
             return False
 
         return True
