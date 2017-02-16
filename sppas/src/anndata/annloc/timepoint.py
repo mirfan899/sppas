@@ -38,7 +38,7 @@
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AnnDataNegValueError
 
-from .localization import sppasLocalization
+from .localization import sppasBaseLocalization
 from .duration import sppasDuration
 
 # ---------------------------------------------------------------------------
@@ -151,6 +151,16 @@ class sppasTimePoint(object):
 
     # -----------------------------------------------------------------------
 
+    def duration(self):
+        """ Overrides. Return the duration of the time point.
+
+        :returns: (sppasDuration) Duration and its vagueness.
+
+        """
+        return sppasDuration(0., 2.0*self.get_radius())
+
+    # -----------------------------------------------------------------------
+
     def __repr__(self):
         return "sppasTimePoint: {:f}, {:f}".format(self.get_midpoint(), self.get_radius())
 
@@ -232,7 +242,7 @@ class sppasTimePoint(object):
 # ---------------------------------------------------------------------------
 
 
-class sppasLocTimePoint(sppasLocalization, sppasTimePoint):
+class sppasLocTimePoint(sppasBaseLocalization, sppasTimePoint):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -250,7 +260,7 @@ class sppasLocTimePoint(sppasLocalization, sppasTimePoint):
         :param score: (float) localization score.
 
         """
-        sppasLocalization.__init__(self, score)
+        sppasBaseLocalization.__init__(self, score)
         sppasTimePoint.__init__(self, time_value, radius)
 
     # -----------------------------------------------------------------------
@@ -288,16 +298,6 @@ class sppasLocTimePoint(sppasLocalization, sppasTimePoint):
         """ Overrides. Return True, because self is a point as time value. """
 
         return True
-
-    # -----------------------------------------------------------------------
-
-    def duration(self):
-        """ Overrides. Return the duration of the time point.
-
-        :returns: (sppasDuration) Duration and its vagueness.
-
-        """
-        return sppasDuration(0., 2.0*self.get_radius())
 
     # -----------------------------------------------------------------------
 

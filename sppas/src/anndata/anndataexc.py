@@ -40,6 +40,7 @@ from . import t
 ANN_DATA_ERROR = ":ERROR 1000: "
 ANN_DATA_TYPE_ERROR = ":ERROR 1100: "
 ANN_DATA_NEG_VALUE_ERROR = ":ERROR 1110: "
+INTERVAL_BOUNDS_ERROR = ":ERROR 1120: "
 
 # -----------------------------------------------------------------------
 
@@ -74,6 +75,19 @@ class AnnDataNegValueError(ValueError):
     def __init__(self, value):
         self.parameter = ANN_DATA_NEG_VALUE_ERROR + \
                          (t.gettext(ANN_DATA_NEG_VALUE_ERROR)).format(value)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class IntervalBoundsError(ValueError):
+    """ :ERROR 1120: The begin must be strictly lesser than the end in an interval. Got: [{:s};{:s}]. """
+
+    def __init__(self, begin, end):
+        self.parameter = INTERVAL_BOUNDS_ERROR + \
+                         (t.gettext(INTERVAL_BOUNDS_ERROR)).format(begin, end)
 
     def __str__(self):
         return repr(self.parameter)

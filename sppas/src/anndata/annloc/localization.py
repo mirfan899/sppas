@@ -38,7 +38,7 @@ from ..anndataexc import AnnDataTypeError
 # ---------------------------------------------------------------------------
 
 
-class sppasLocalization(object):
+class sppasBaseLocalization(object):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -77,25 +77,6 @@ class sppasLocalization(object):
         except Exception:
             raise AnnDataTypeError(score, "float")
 
-    # -----------------------------------------------------------------------
-
-    def strict_equal(self, other):
-        """ Return True if self is strictly equal to other.
-
-        :param other: (sppasLocalization) to compare with.
-
-        """
-        raise NotImplementedError
-
-    # -----------------------------------------------------------------------
-
-    def duration(self):
-        """ Return the duration of this localization.
-        Must be overridden.
-
-        """
-        raise NotImplementedError
-
     # ---------------------------------------------------------------------
 
     def is_point(self):
@@ -109,6 +90,15 @@ class sppasLocalization(object):
 
     def is_interval(self):
         """ Return True if this object is an instance of sppasTimeInterval or sppasFrameInterval.
+        Should be overridden.
+
+        """
+        return False
+
+    # ---------------------------------------------------------------------
+
+    def is_disjoint(self):
+        """ Return True if this object is an instance of sppasTimeDisjoint or sppasFrameDisjoint.
         Should be overridden.
 
         """

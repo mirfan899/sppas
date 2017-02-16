@@ -118,7 +118,7 @@ class EmptyError(Exception):
 
 
 class InsideIntervalError(ValueError):
-    """ :ERROR 2030: Value {:d} is out of range: expected value in range [{:d},{:d}]. """
+    """ :ERROR 3040: Value {:d} is out of range: expected value in range [{:d},{:d}]. """
 
     def __init__(self, value, min_value, max_value):
         min_value = int(min_value)
