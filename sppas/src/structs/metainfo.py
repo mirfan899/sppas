@@ -39,12 +39,14 @@
 """
 import collections
 
+from .structsexc import MetaKeyError
+
 # ----------------------------------------------------------------------------
 
 
 class sppasMetaInfo(object):
     """
-    :authors:      Brigitte Bigi
+    :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
@@ -52,7 +54,7 @@ class sppasMetaInfo(object):
     :summary:      Meta information manager.
 
     Manage meta information of type (key,value) and allow to enable/disable
-    each one.
+    each one. Keys are strings, and values can be of any type.
 
     >>> m = sppasMetaInfo()
     >>> m.add_metainfo('author', 'Brigitte Bigi')
@@ -60,83 +62,83 @@ class sppasMetaInfo(object):
 
     """
     def __init__(self):
-        """ Creates a new MetaInfo instance. """
+        """ Creates a new sppasMetaInfo instance. """
 
         super(sppasMetaInfo, self).__init__()
         self._metainfo = collections.OrderedDict()
 
     # ------------------------------------------------------------------------
 
-    def is_active_metainfo(self, key):
-        """ Return the status of a given key or raise a KeyError exception.
+    def is_enable_metainfo(self, key):
+        """ Return the status of a given key or raise a MetaKeyError exception.
 
         :param key (str)
 
         """
         if str(key) not in self._metainfo:
-            raise KeyError('%s is not a known meta information.' % key)
+            raise MetaKeyError(key)
 
         return self._metainfo[key][0]
 
     # ------------------------------------------------------------------------
 
     def get_metainfo(self, key):
-        """ Return the value of a given key or raise a KeyError exception.
+        """ Return the value of a given key or raise a MetaKeyError exception.
 
         :param key (str)
 
         """
         if str(key) not in self._metainfo:
-            raise KeyError('%s is not a known meta information.' % key)
+            raise MetaKeyError(key)
 
         return self._metainfo[key][1]
 
     # ------------------------------------------------------------------------
 
-    def activate_metainfo(self, key, value=True):
-        """ Activate/Disable a meta information or raise a KeyError exception.
+    def enable_metainfo(self, key, value=True):
+        """ Enable/Disable a meta information or raise a MetaKeyError exception.
 
         :param key (str)
         :param value (bool)
 
         """
         if str(key) not in self._metainfo.keys():
-            raise KeyError('%s is not a known meta information.' % key)
+            raise MetaKeyError(key)
 
         self._metainfo[str(key)][0] = bool(value)
 
     # ------------------------------------------------------------------------
 
     def add_metainfo(self, key, strv):
-        """ Fix a meta information or raise a KeyError exception.
-        The meta information is then activated.
+        """ Fix a meta information or raise a MetaKeyError exception.
+        The meta information is then enabled.
 
         :param key (str)
         :param strv (str)
 
         """
         if str(key) in self._metainfo.keys():
-            raise KeyError('%s is already a known meta information.' % key)
+            raise MetaKeyError(key)
 
         self._metainfo[str(key)] = [True, strv]
 
     # ------------------------------------------------------------------------
 
     def pop_metainfo(self, key):
-        """ Pop a meta information or raise a KeyError exception.
+        """ Pop a meta information or raise a MetaKeyError exception.
 
         :param key (str)
 
         """
         if str(key) not in self._metainfo.keys():
-            raise KeyError('%s is not a known meta information.' % key)
+            raise MetaKeyError(key)
 
         del self._metainfo[str(key)]
 
     # ------------------------------------------------------------------------
 
-    def keys_activated(self):
-        """ Return a list of the keys of activated meta information.
+    def keys_enabled(self):
+        """ Return a list of the keys of enabled meta information.
 
         :returns: list of str
 
@@ -147,5 +149,3 @@ class sppasMetaInfo(object):
 
     def __len__(self):
         return len(self._metainfo)
-
-    # ------------------------------------------------------------------------

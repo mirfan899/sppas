@@ -38,8 +38,11 @@
 """
 import codecs
 import random
+import logging
 
 from sppas.src.sp_glob import TIPS_FILE, encoding
+from sppas.src.utils.makeunicode import sppasUnicode
+from sppas.src.utils.makeunicode import b
 
 # ----------------------------------------------------------------------------
 
@@ -51,7 +54,10 @@ class sppasTips(object):
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Manage the tips of SPPAS.
+    :summary:      Manage a set of tips.
+
+    Tips are stored into a file with name TIPS_FILE. This file format is
+    with one tip a line.
 
     >>> t = sppasTips()
     >>> print(t.get_message())
@@ -70,24 +76,33 @@ class sppasTips(object):
 
     def load_tips(self, filename=TIPS_FILE):
         """ Load message tips from a file.
+        Remove the existing tips of the list (if any).
 
-        :param filename: (str) In the file, one line is one tips!
+        :param filename: (str) Name of the file to get message tips.
 
         """
         try:
             with codecs.open(filename, 'r', encoding) as f:
-                self._tips = f.readlines()
-        except Exception:
+                for line in f.readlines():
+                    self.add_message(line)
+        except Exception as e:
+            logging.info('Error while reading tips: {:s}'.format(str(e)))
+
+        if len(self._tips) == 0:
             self._tips = ["Welcome!"]
 
     # ------------------------------------------------------------------------
 
     def save_tips(self, filename=TIPS_FILE):
-        """ Save tips in a file. """
+        """ Save tips in a file.
 
+        :param filename: (str) Name of the file to store message tips.
+
+        """
         with codecs.open(filename, 'w', encoding) as f:
             for message in self._tips:
-                f.write("%s\n" % message)
+                b_message = b(message)
+                f.write("{:s}\n".format(b_message))
 
     # ------------------------------------------------------------------------
 
@@ -97,14 +112,18 @@ class sppasTips(object):
         :param message: (str) A help message.
 
         """
-        message = " ".join(str(message))
-        self._tips.append(message)
+        su = sppasUnicode(message)
+        u_message = su.to_strip()
+        if len(u_message) > 0:
+            self._tips.append(u_message)
 
     # ------------------------------------------------------------------------
 
     def get_message(self):
-        """ Return a random tips message. """
+        """ Return a random tips message.
+        :returns: unicode
 
+        """
         if len(self._tips) == 1:
             self._current = 0
             return self._tips[0]
@@ -113,11 +132,11 @@ class sppasTips(object):
             self._current = (self._current+1) % 2
             return self._tips[self._current]
 
-        pround = 0
+        p_round = 0
         new = self._current
-        while new == self._current and pround < 3:
+        while new == self._current and p_round < 3:
             new = random.randint(0, len(self._tips) - 1)
-            pround += 1
+            p_round += 1
 
         self._current = new
         return self._tips[self._current]
@@ -126,5 +145,3 @@ class sppasTips(object):
 
     def __len__(self):
         return len(self._tips)
-
-    # ------------------------------------------------------------------------

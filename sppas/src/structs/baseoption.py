@@ -155,8 +155,7 @@ class sppasBaseOption(object):
     # ------------------------------------------------------------------------
 
     def set(self, other):
-        """
-        Set self from another instance.
+        """ Set self from another instance.
 
         :param other: (baseoption) The option from which to get information.
 
@@ -272,5 +271,3 @@ class sppasOption(sppasBaseOption):
         """ Return the key of that option. """
 
         return self._key
-
-# ----------------------------------------------------------------------------

@@ -42,6 +42,10 @@ import os.path
 from sppas.src.sp_glob import RESOURCES_PATH
 from sppas.src.utils.fileutils import sppasDirUtils
 
+from .structsexc import LangTypeError
+from .structsexc import LangPathError
+from .structsexc import LangNameError
+
 # ----------------------------------------------------------------------------
 
 
@@ -58,7 +62,9 @@ class sppasLangResource(object):
     RESOURCES_TYPES = ["file", "directory"]
 
     def __init__(self):
+        """ Construct the sppasLangResource instance.
 
+        """
         # All available language resources (type, path, filename, extension)
         self._rtype = ""
         self._rpath = ""
@@ -66,7 +72,7 @@ class sppasLangResource(object):
         self._rext = ""
 
         # The list of languages the resource can provide
-        self.langlist = []
+        self.langlist = list()
 
         # The selected language
         self.lang = "und"
@@ -94,6 +100,7 @@ class sppasLangResource(object):
 
     def get_lang(self):
         """ Returns the language name.
+
         Language names in SPPAS are commonly represented in iso-639-3.
         It is a code that aims to define three-letter identifiers for all
         known human languages. "und" is representing an undetermined language.
@@ -141,14 +148,14 @@ class sppasLangResource(object):
         resource_type = str(resource_type)
         if resource_type not in sppasLangResource.RESOURCES_TYPES:
             self.reset()
-            raise TypeError("Unknown resource type.")
+            raise LangTypeError(resource_type)
 
         self._rtype = resource_type
 
     # ------------------------------------------------------------------------
 
     def set_path(self, resource_path):
-        """ Fix the language resource path/file.
+        """ Fix the language resource path.
 
         :param resource_path: (str) Relative path to find the resource.
 
@@ -158,7 +165,7 @@ class sppasLangResource(object):
         folder = os.path.join(RESOURCES_PATH, resource_path)
         if os.path.exists(folder) is False:
             self.reset()
-            raise IOError("The resource folder %s does not exists." % folder)
+            raise LangPathError(folder)
 
         self._rpath = resource_path
 
@@ -230,12 +237,10 @@ class sppasLangResource(object):
     def set_lang(self, lang):
         """ Set the language.
 
-        :param lang (str) The language must be "und" or one of the language list.
+        :param lang: (str) The language must be "und" or one of the language list.
 
         """
         if lang.lower() != "und" and lang not in self.langlist:
-            raise ValueError('Unknown language %s.' % lang)
+            raise LangNameError(lang)
 
         self.lang = lang
-
-    # ------------------------------------------------------------------------

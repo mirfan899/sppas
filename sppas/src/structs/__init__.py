@@ -42,6 +42,9 @@
     data structures used into SPPAS.
 
 """
+from sppas.src.utils.maketext import translate
+t = translate("structs")
+
 from .baseoption import sppasBaseOption
 from .baseoption import sppasOption
 from .lang import sppasLangResource
