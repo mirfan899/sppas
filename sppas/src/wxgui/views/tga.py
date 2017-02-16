@@ -245,7 +245,7 @@ class TGADialog( spBaseDialog ):
                 return
         # update infos of TierTGA objects
         for ts in self._data:
-            ts.set_withradius( self.withradius )
+            ts.set_with_radius( self.withradius )
         page = self.notebook.GetPage( self.notebook.GetSelection() )
         page.ShowStats( self._data )
 
@@ -464,7 +464,7 @@ class DeltaDurationsPanel( BaseStatPanel ):
             # estimates TGA
             #ds = tg.tga()    # durations data
             #ls = tg.labels() # labels data
-            dd = tg.deltadurations()
+            dd = tg.delta_durations()
             # fill rows
             for key in dd.keys():
                 # create the row, as a list of column items

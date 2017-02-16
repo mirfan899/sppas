@@ -7,9 +7,9 @@ from sppas.src.annotationdata.label.label import Label
 from sppas.src.annotationdata.ptime.interval import TimeInterval
 from sppas.src.annotationdata.ptime.point import TimePoint
 from sppas.src.annotationdata.tier import Tier
+from sppas.src.annotationdata.utils.tierutils import TierConverter
 
 from ..kappa import Kappa
-from sppas.src.presenters.tierconverter import TierConverter
 
 # ---------------------------------------------------------------------------
 

@@ -1,49 +1,38 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: tiertga.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+        http://www.sppas.org/
 
+        Use of this software is governed by the GNU Public License, version 3.
 
-# ----------------------------------------------------------------------------
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
 
-import logging
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
 
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.presenters.tiertga.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 from sppas.src.calculus.timegroupanalysis import TimeGroupAnalysis
 
 from sppas.src.annotationdata.transcription import Transcription
@@ -57,306 +46,295 @@ from sppas.src.annotationdata.ptime.interval import TimeInterval
 
 class TierTGA(object):
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: Estimates TGA on a tier.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Estimates TGA on a tier.
 
     Create time groups then map them into a dictionary where:
-    - key is a label assigned to the time group
-    - value is the list of observed durations of segments in this time group
+
+        - key is a label assigned to the time group;
+        - value is the list of observed durations of segments in this time group.
 
     """
     TG_LABEL = "tg_"
 
-    def __init__(self, tier=None, withradius=0):
+    def __init__(self, tier=None, with_radius=0):
+        """ Create a new TierTGA instance.
+
+        :param tier: (Tier)
+        :param with_radius: (int) 0 to use Midpoint, negative value to use R-, positive value to use R+
+
         """
-        Create a new TierTGA instance.
-
-        @param tier (Tier)
-        @param withradius (int): 0 means to use Midpoint, negative value means to use R-, positive radius means to use R+
-
-        """
-        self.tier         = tier
-        self.__withradius = withradius
-        self.__separators = []
-
-    # ------------------------------------------------------------------
+        self.tier = tier
+        self._with_radius = with_radius
+        self.__separators = list()
 
     # ------------------------------------------------------------------
     # Getters
     # ------------------------------------------------------------------
 
-    def get_withradius(self):
-        return self.__withradius
+    def get_with_radius(self):
+        """ Returns how to use the radius in duration estimations.
+        0 means to use Midpoint, negative value means to use R-, and
+        positive value means to use R+.
+
+        """
+        return self._with_radius
 
     # ------------------------------------------------------------------
     # Setters
     # ------------------------------------------------------------------
 
-    def set_withradius(self, withradius):
+    def set_with_radius(self, with_radius):
+        """ Set the with_radius option, used to estimate the duration.
+
+        :param with_radius: (int)
+            - 0 means to use Midpoint;
+            - negative value means to use R-;
+            - positive radius means to use R+.
+
         """
-        Set the withradius option, used to estimate the duration:
-            - 0 means to use Midpoint,
-            - negative value means to use R-,
-            - positive radius means to use R+
-        """
-        self.__withradius = int(withradius)
+        self._with_radius = int(with_radius)
+
+    # ------------------------------------------------------------------
 
     def remove_separators(self):
-        """
-        Remove all time group separators.
-        """
-        self.__separators = []
+        """ Remove all time group separators. """
 
-    def append_separator(self, sepstr):
+        self.__separators = list()
+
+    # ------------------------------------------------------------------
+
+    def append_separator(self, symbol):
+        """ Append a time group separator.
+
+        :param symbol: (str) A symbol separator.
         """
-        Append a time group separator.
-        """
-        if not sepstr in self.__separators:
-            self.__separators.append(sepstr)
+        if symbol not in self.__separators:
+            self.__separators.append(symbol)
 
     # ------------------------------------------------------------------
     # Workers
     # ------------------------------------------------------------------
 
     def tga(self):
-        """
-        Create then return the TimeGroupAnalysis object corresponding to the tier.
-        @return TimeGroupAnalysis
-        """
-        items = self.__tier_to_tg()
-        return TimeGroupAnalysis( items )
+        """ Create a TimeGroupAnalysis object corresponding to the tier.
 
-    def labels(self):
-        """
-        Create then return the sequence of labels of each tg of the tier.
-        @return dict: a dictionary with key=time group name and value=list of labels
-        """
-        lbls = self.__tier_to_labels()
-        return lbls
+        :returns: (TimeGroupAnalysis)
 
-    def deltadurations(self):
-        """
-        Create then return the sequence of deltadurations of each tg of the tier.
-        @return dict: a dictionary with key=time group name and value=list of delta values
-        """
-        lbls = self.__tier_to_deltadurations()
-        return lbls
-
-    def tga_as_transcription(self):
-        """
-        Create then return the sequence of labels of each tg of the tier as a Transcription() object.
-        @return Transcription()
-        """
-        trs = self.__tier_to_transcription()
-        return trs
-
-    # ------------------------------------------------------------------
-
-    # ------------------------------------------------------------------
-    # Private
-    # ------------------------------------------------------------------
-
-    def __tier_to_tg(self):
-        """
-        Return a dict of tg_label/duration pairs.
         """
         i = 1
-        tglabel = "tg_1"
-        tg = {}
+        tg_label = "tg_1"
+        tg = dict()
 
-        for a in self.tier:
-            alabel = a.GetLabel().GetValue()
+        for ann in self.tier:
+            ann_label = ann.GetLabel().GetValue()
 
             # a TG separator (create a new tg if previous tg was used!)
-            if a.GetLabel().IsSilence() or a.GetLabel().IsDummy() or alabel in self.__separators:
-                if tglabel in tg.keys():
-                    i = i+1
-                    tglabel = TierTGA.TG_LABEL+str(i)
+            if ann.GetLabel().IsSilence() or ann.GetLabel().IsDummy() or ann_label in self.__separators:
+                if tg_label in tg.keys():
+                    i += 1
+                    tg_label = TierTGA.TG_LABEL + str(i)
 
             # a TG continuum
             else:
                 # Get the duration
-                duration = a.GetLocation().GetDuration().GetValue()
-                if a.GetLocation().IsInterval():
-                    if self.__withradius < 0:
-                        duration = duration + a.GetLocation().GetDuration().GetMargin()
-                    elif self.__withradius > 0:
-                        duration = duration - a.GetLocation().GetDuration().GetMargin()
+                duration = ann.GetLocation().GetDuration().GetValue()
+                if ann.GetLocation().IsInterval():
+                    if self._with_radius < 0:
+                        duration = duration + ann.GetLocation().GetDuration().GetMargin()
+                    elif self._with_radius > 0:
+                        duration = duration - ann.GetLocation().GetDuration().GetMargin()
                 # Append in the list of values of this TG
-                if not tglabel in tg.keys():
-                    tg[tglabel] = []
-                tg[tglabel].append( duration )
+                if tg_label not in tg.keys():
+                    tg[tg_label] = []
+                tg[tg_label].append(duration)
 
-        return tg
+        return TimeGroupAnalysis(tg)
 
-    def __tier_to_labels(self):
-        """
-        Return a dict of tg_label/labels pairs.
+    # ------------------------------------------------------------------
+
+    def labels(self):
+        """ Create the sequence of labels of each tg of the tier.
+
+        :returns: a dictionary with key=time group name and value=list of labels
+
         """
         i = 1
-        tglabel = "tg_1"
+        tg_label = "tg_1"
         labels = {}
 
-        for a in self.tier:
-            alabel = a.GetLabel().GetValue()
+        for ann in self.tier:
+            ann_label = ann.GetLabel().GetValue()
 
             # a TG separator (create a new tg if previous tg was used!)
-            if a.GetLabel().IsSilence() or a.GetLabel().IsDummy() or alabel in self.__separators:
-                if tglabel in labels.keys():
-                    i = i+1
-                    tglabel = TierTGA.TG_LABEL+str(i)
+            if ann.GetLabel().IsSilence() or ann.GetLabel().IsDummy() or ann_label in self.__separators:
+                if tg_label in labels.keys():
+                    i += 1
+                    tg_label = TierTGA.TG_LABEL + str(i)
 
             # a TG continuum
             else:
-                if not tglabel in labels.keys():
-                    labels[tglabel] = []
-                labels[tglabel].append( alabel )
+                if tg_label not in labels.keys():
+                    labels[tg_label] = list()
+                labels[tg_label].append(ann_label)
 
         return labels
 
-    def __tier_to_deltadurations(self):
-        """
-        Return a dict of tg_label/delta pairs.
+    # ------------------------------------------------------------------
+
+    def delta_durations(self):
+        """ Create the sequence of delta durations of each tg of the tier.
+
+        :returns:  dictionary with key=time group name and value=list of delta values
+
         """
         i = 1
-        tglabel = "tg_1"
-        labels = {}
-        previousduration = 0.
+        tg_label = "tg_1"
+        labels = dict()
+        previous_duration = 0.
 
-        for a in self.tier:
-            alabel = a.GetLabel().GetValue()
+        for ann in self.tier:
+            ann_label = ann.GetLabel().GetValue()
 
             # a TG separator (create a new tg if previous tg was used!)
-            if a.GetLabel().IsSilence() or a.GetLabel().IsDummy() or alabel in self.__separators:
-                if tglabel in labels.keys():
-                    i = i+1
-                    tglabel = TierTGA.TG_LABEL+str(i)
-                previousduration = 0.
+            if ann.GetLabel().IsSilence() or ann.GetLabel().IsDummy() or ann_label in self.__separators:
+                if tg_label in labels.keys():
+                    i += 1
+                    tg_label = TierTGA.TG_LABEL + str(i)
+                previous_duration = 0.
 
             # a TG continuum
             else:
                 # Get the duration
-                duration = a.GetLocation().GetDuration()
-                if a.GetLocation().IsInterval():
-                    if self.__withradius < 0:
-                        duration = duration + a.GetLocation().GetBegin().GetRadius() + a.GetLocation().GetEnd().GetRadius()
-                    elif self.__withradius > 0:
-                        duration = duration - a.GetLocation().GetBegin().GetRadius() - a.GetLocation().GetEnd().GetRadius()
+                duration = ann.GetLocation().GetDuration()
+                if ann.GetLocation().IsInterval():
+                    if self._with_radius < 0:
+                        duration = duration + \
+                                   ann.GetLocation().GetBegin().GetRadius() + \
+                                   ann.GetLocation().GetEnd().GetRadius()
+                    elif self._with_radius > 0:
+                        duration = duration - \
+                                   ann.GetLocation().GetBegin().GetRadius() - \
+                                   ann.GetLocation().GetEnd().GetRadius()
 
-                if not tglabel in labels.keys():
-                    labels[tglabel] = []
-                    logging.debug('... %s is first segment of this TG'%alabel)
+                if tg_label not in labels.keys():
+                    labels[tg_label] = list()
                 else:
-                    logging.debug('... %s is segment prec=%f dur=%f'%(alabel,previousduration.GetValue(),duration.GetValue()))
                     # delta=duration(i)-duration(i+1)
                     #   positive => deceleration
                     #   negative => acceleration
-                    labels[tglabel].append( previousduration.GetValue()-duration.GetValue() )
+                    labels[tg_label].append(previous_duration.GetValue()-duration.GetValue())
 
-                previousduration = duration
+                previous_duration = duration
 
         return labels
 
-    def __tier_to_transcription(self):
-        """
-        Return a Transcription() of tiers with tg_labels.
+    # ------------------------------------------------------------------
+
+    def tga_as_transcription(self):
+        """ Create the sequence of labels of each tg of the tier as a Transcription() object.
+
+        :returns: (Transcription)
+
         """
         i = 1
-        tglabel = "tg_1"
-        seglabels = ""
-        tgann = None
-        tgtier   = Tier('TGA-TimeGroups')
-        segstier = Tier('TGA-Segments')
+        tg_label = "tg_1"
+        seg_labels = ""
+        tg_ann = None
+        tg_tier = Tier('TGA-TimeGroups')
+        segs_tier = Tier('TGA-Segments')
 
-        for a in self.tier:
-            alabel = a.GetLabel().GetValue()
+        for ann in self.tier:
+            ann_label = ann.GetLabel().GetValue()
 
             # a TG separator (create a new tg if previous tg was used!)
-            if a.GetLabel().IsSilence() or a.GetLabel().IsDummy() or alabel in self.__separators:
-                if len(seglabels)>0:
-                    if tgann is not None:
-                        newa = Annotation(TimeInterval(tgann.GetLocation().GetEnd(),a.GetLocation().GetBegin()), Label(tglabel))
-                        tgtier.Append( newa )
-                        newa = Annotation(TimeInterval(tgann.GetLocation().GetEnd(),a.GetLocation().GetBegin()), Label( " ".join( seglabels )))
-                        segstier.Append( newa )
-                        i = i+1
-                        tglabel = TierTGA.TG_LABEL+str(i)
-                    seglabels = ""
-                tgann = a
+            if ann.GetLabel().IsSilence() or ann.GetLabel().IsDummy() or ann_label in self.__separators:
+                if len(seg_labels) > 0:
+                    if tg_ann is not None:
+                        new_a = Annotation(TimeInterval(tg_ann.GetLocation().GetEnd(), ann.GetLocation().GetBegin()), 
+                                           Label(tg_label))
+                        tg_tier.Append(new_a)
+                        new_a = Annotation(TimeInterval(tg_ann.GetLocation().GetEnd(), ann.GetLocation().GetBegin()), 
+                                           Label(" ".join(seg_labels)))
+                        segs_tier.Append(new_a)
+                        i += 1
+                        tg_label = TierTGA.TG_LABEL+str(i)
+                    seg_labels = ""
+                tg_ann = ann
             # a TG continuum
             else:
-                seglabels += alabel + " "
+                seg_labels += ann_label + " "
 
         ds = self.tga()
         occurrences = ds.len()
-        total       = ds.total()
-        mean        = ds.mean()
-        median      = ds.median()
-        stdev       = ds.stdev()
-        npvi        = ds.nPVI()
-        regressp    = ds.intercept_slope_original()
-        regresst    = ds.intercept_slope()
+        total = ds.total()
+        mean = ds.mean()
+        median = ds.median()
+        stdev = ds.stdev()
+        npvi = ds.nPVI()
+        regressp = ds.intercept_slope_original()
+        regresst = ds.intercept_slope()
 
-        lentier    = Tier('TGA-occurrences')
-        totaltier  = Tier('TGA-total')
-        meantier   = Tier('TGA-mean')
-        mediantier = Tier('TGA-median')
-        stdevtier  = Tier('TGA-stdev')
-        npvitier   = Tier('TGA-npvi')
-        interceptptier = Tier('TGA-intercept-with-X-as-position')
-        slopeptier     = Tier('TGA-slope-with-X-as-position')
-        interceptttier = Tier('TGA-intercept-with-X-as-timestamp')
-        slopettier     = Tier('TGA-slope-with-X-as-timestamp')
+        len_tier = Tier('TGA-occurrences')
+        total_tier = Tier('TGA-total')
+        mean_tier = Tier('TGA-mean')
+        median_tier = Tier('TGA-median')
+        stdev_tier = Tier('TGA-stdev')
+        npvi_tier = Tier('TGA-npvi')
+        interceptp_tier = Tier('TGA-intercept-with-X-as-position')
+        slopep_tier = Tier('TGA-slope-with-X-as-position')
+        interceptt_tier = Tier('TGA-intercept-with-X-as-timestamp')
+        slopet_tier = Tier('TGA-slope-with-X-as-timestamp')
 
-        for a in tgtier:
-            alabel = a.GetLabel().GetValue()
-            anew = a.Copy()
-            anew.GetLabel().SetValue( str(occurrences[alabel]) )
-            lentier.Append( anew )
-            anew = a.Copy()
-            anew.GetLabel().SetValue( str(total[alabel]) )
-            totaltier.Append( anew )
-            anew = a.Copy()
-            anew.GetLabel().SetValue( str(mean[alabel]) )
-            meantier.Append( anew )
-            anew = a.Copy()
-            anew.GetLabel().SetValue( str(median[alabel]) )
-            mediantier.Append( anew )
-            anew = a.Copy()
-            anew.GetLabel().SetValue( str(stdev[alabel]) )
-            stdevtier.Append( anew )
-            anew = a.Copy()
-            anew.GetLabel().SetValue( str(npvi[alabel]) )
-            npvitier.Append( anew )
-            anew = a.Copy()
-            anew.GetLabel().SetValue( str(regressp[alabel][0]) )
-            interceptptier.Append( anew )
-            anew = a.Copy()
-            anew.GetLabel().SetValue( str(regressp[alabel][1]) )
-            slopeptier.Append( anew )
-            anew = a.Copy()
-            anew.GetLabel().SetValue( str(regresst[alabel][0]) )
-            interceptttier.Append( anew )
-            anew = a.Copy()
-            anew.GetLabel().SetValue( str(regresst[alabel][1]) )
-            slopettier.Append( anew )
+        for a in tg_tier:
+            ann_label = a.GetLabel().GetValue()
+            ann_new = a.Copy()
+            ann_new.GetLabel().SetValue(str(occurrences[ann_label]))
+            len_tier.Append(ann_new)
+            ann_new = a.Copy()
+            ann_new.GetLabel().SetValue(str(total[ann_label]))
+            total_tier.Append(ann_new)
+            ann_new = a.Copy()
+            ann_new.GetLabel().SetValue(str(mean[ann_label]))
+            mean_tier.Append(ann_new)
+            ann_new = a.Copy()
+            ann_new.GetLabel().SetValue(str(median[ann_label]))
+            median_tier.Append(ann_new)
+            ann_new = a.Copy()
+            ann_new.GetLabel().SetValue(str(stdev[ann_label]))
+            stdev_tier.Append(ann_new)
+            ann_new = a.Copy()
+            ann_new.GetLabel().SetValue(str(npvi[ann_label]))
+            npvi_tier.Append(ann_new)
+            ann_new = a.Copy()
+            ann_new.GetLabel().SetValue(str(regressp[ann_label][0]))
+            interceptp_tier.Append(ann_new)
+            ann_new = a.Copy()
+            ann_new.GetLabel().SetValue(str(regressp[ann_label][1]))
+            slopep_tier.Append(ann_new)
+            ann_new = a.Copy()
+            ann_new.GetLabel().SetValue(str(regresst[ann_label][0]))
+            interceptt_tier.Append(ann_new)
+            ann_new = a.Copy()
+            ann_new.GetLabel().SetValue(str(regresst[ann_label][1]))
+            slopet_tier.Append(ann_new)
 
         trs = Transcription("TGA")
-        trs.Append( tgtier )
-        trs.Append( segstier )
-        trs.Append( lentier )
-        trs.Append( totaltier )
-        trs.Append( meantier )
-        trs.Append( mediantier )
-        trs.Append( stdevtier )
-        trs.Append( npvitier )
-        trs.Append( interceptptier )
-        trs.Append( slopeptier )
-        trs.Append( interceptttier )
-        trs.Append( slopettier )
+        trs.Append(tg_tier)
+        trs.Append(segs_tier)
+        trs.Append(len_tier)
+        trs.Append(total_tier)
+        trs.Append(mean_tier)
+        trs.Append(median_tier)
+        trs.Append(stdev_tier)
+        trs.Append(npvi_tier)
+        trs.Append(interceptp_tier)
+        trs.Append(slopep_tier)
+        trs.Append(interceptt_tier)
+        trs.Append(slopet_tier)
 
         return trs
-
-# ---------------------------------------------------------------------------
