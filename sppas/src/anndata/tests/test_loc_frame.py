@@ -3,9 +3,9 @@
 
 import unittest
 
-from ..annloc.framepoint import sppasFramePoint
-from ..annloc.frameinterval import sppasFrameInterval
-from ..annloc.framedisjoint import sppasFrameDisjoint
+from ..location.framepoint import sppasFramePoint
+from ..location.frameinterval import sppasFrameInterval
+from ..location.framedisjoint import sppasFrameDisjoint
 from ..anndataexc import AnnDataTypeError, IntervalBoundsError
 
 # ---------------------------------------------------------------------------
