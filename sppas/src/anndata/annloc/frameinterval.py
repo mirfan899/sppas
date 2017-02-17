@@ -29,10 +29,10 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.annloc.timeinterval.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.anndata.annloc.frameinterval.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Localization of an interval in time.
+    Localization of an interval in number of frames or rank.
 
 """
 import logging
@@ -40,48 +40,43 @@ from ..anndataexc import AnnDataTypeError
 from ..anndataexc import IntervalBoundsError
 
 from .localization import sppasBaseLocalization
-from .timepoint import sppasTimePoint
+from .framepoint import sppasFramePoint
 from .duration import sppasDuration
 
 # ---------------------------------------------------------------------------
 
 
-class sppasTimeInterval(sppasBaseLocalization):
+class sppasFrameInterval(sppasBaseLocalization):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Representation of a localization as an interval in time.
-
-    A time interval is identified by two sppasTimePoint objects:
-
-        - one is representing the beginning of the interval;
-        - the other is representing the end of the interval.
+    :summary:      Representation of a localization as an interval.
 
     """
     def __init__(self, begin, end):
-        """ Create a new sppasTimeInterval instance.
+        """ Create a new sppasFrameInterval instance.
 
-        :param begin: (sppasTimePoint) start time in seconds
-        :param end: (sppasTimePoint) end time in seconds
+        :param begin: (sppasFramePoint) start frame
+        :param end: (sppasFramePoint) end frame
 
         """
         sppasBaseLocalization.__init__(self)
 
-        if isinstance(begin, sppasTimePoint) is False:
-            AnnDataTypeError(begin, "sppasTimePoint")
+        if isinstance(begin, sppasFramePoint) is False:
+            AnnDataTypeError(begin, "sppasFramePoint")
 
-        if isinstance(end, sppasTimePoint) is False:
-            AnnDataTypeError(end, "sppasTimePoint")
+        if isinstance(end, sppasFramePoint) is False:
+            AnnDataTypeError(end, "sppasFramePoint")
 
         if begin.get_midpoint() >= end.get_midpoint() or (
                 begin.get_midpoint() - begin.get_radius() >
                 end.get_midpoint() - end.get_radius()):
             raise IntervalBoundsError(begin, end)
         elif begin >= end:
-            logging.info('[WARNING] begin >= end with ({:s}, {:s})'.format(begin, end))
+            logging.info('[WARNING] begin >= end with ({!s:s}, {!s:s})'.format(begin, end))
 
         self.__begin = begin
         self.__end = end
@@ -89,13 +84,13 @@ class sppasTimeInterval(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def set(self, other):
-        """ Set self members from another sppasTimeInterval instance.
+        """ Set self members from another sppasFramePoint instance.
 
-        :param other: (sppasTimeInterval)
+        :param other: (sppasFramePoint)
 
         """
-        if isinstance(other, sppasTimeInterval) is False:
-            raise AnnDataTypeError(other, "sppasTimeInterval")
+        if isinstance(other, sppasFrameInterval) is False:
+            raise AnnDataTypeError(other, "sppasFrameInterval")
 
         self.set_begin(other.get_begin())
         self.set_end(other.get_end())
@@ -109,8 +104,8 @@ class sppasTimeInterval(sppasBaseLocalization):
 
     # -----------------------------------------------------------------------
 
-    def is_time_interval(self):
-        """ Overrides. Return True, because self is an interval of time points. """
+    def is_frame_interval(self):
+        """ Overrides. Return True, because self is an interval of frames. """
 
         return True
 
@@ -121,7 +116,7 @@ class sppasTimeInterval(sppasBaseLocalization):
 
         b = self.get_begin()
         e = self.get_end()
-        return sppasTimeInterval(b, e)
+        return sppasFrameInterval(b, e)
 
     # -----------------------------------------------------------------------
 
@@ -133,14 +128,14 @@ class sppasTimeInterval(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def set_begin(self, tp):
-        """ Set the begin of the interval instance to a new sppasTimePoint.
+        """ Set the begin of the interval instance to a new sppasFramePoint.
         Attention: it is a reference assignment.
 
-        :param tp: (sppasTimePoint)
+        :param tp: (sppasFramePoint)
 
         """
-        if isinstance(tp, sppasTimePoint) is False:
-            raise AnnDataTypeError(tp, "sppasTimePoint")
+        if isinstance(tp, sppasFramePoint) is False:
+            raise AnnDataTypeError(tp, "sppasFramePoint")
 
         if tp.get_midpoint() >= self.__end.get_midpoint() or \
                 (tp.get_midpoint() - tp.get_radius() >
@@ -152,21 +147,21 @@ class sppasTimeInterval(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def get_end(self):
-        """ Return the end sppasTimePoint instance. """
+        """ Return the end sppasFramePoint instance. """
 
         return self.__end
 
     # -----------------------------------------------------------------------
 
     def set_end(self, tp):
-        """ Set the end of the interval to a new sppasTimePoint.
+        """ Set the end of the interval to a new sppasFramePoint.
         Attention: it is a reference assignment.
 
         :param tp: (sppasTimePoint)
 
         """
-        if isinstance(tp, sppasTimePoint) is False:
-            raise AnnDataTypeError(tp, "sppasTimePoint")
+        if isinstance(tp, sppasFramePoint) is False:
+            raise AnnDataTypeError(tp, "sppasFramePoint")
 
         if self.__begin.get_midpoint() >= tp.get_midpoint() or \
                 (self.__begin.get_midpoint() - self.__begin.get_radius() >
@@ -179,43 +174,43 @@ class sppasTimeInterval(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def combine(self, other):
-        """ Return a sppasTimeInterval, the combination of two intervals.
+        """ Return a sppasFrameInterval, the combination of two intervals.
 
-        :param other: (sppasTimeInterval) is the other time interval
+        :param other: (sppasFrameInterval) is the other interval
         to be combined with.
 
         """
-        if isinstance(other, sppasTimeInterval) is False:
-            AnnDataTypeError(other, "sppasTimeInterval")
+        if isinstance(other, sppasFrameInterval) is False:
+            AnnDataTypeError(other, "sppasFrameInterval")
 
         if self > other:
             other, self = self, other
 
         if self.__end <= other.get_begin():
-            return sppasTimeInterval(self.__begin, other.get_end())
+            return sppasFrameInterval(self.__begin, other.get_end())
 
-        return sppasTimeInterval(other.get_begin(), self.__end)
+        return sppasFrameInterval(other.get_begin(), self.__end)
 
     # -----------------------------------------------------------------------
 
     def union(self, other):
-        """ Return a sppasTimeInterval representing the union of two intervals.
+        """ Return a sppasFrameInterval representing the union of two intervals.
 
-        :param other: (sppasTimeInterval) is the interval to merge with.
+        :param other: (sppasFrameInterval) is the interval to merge with.
 
         """
-        if isinstance(other, sppasTimeInterval) is False:
-            AnnDataTypeError(other, "sppasTimeInterval")
+        if isinstance(other, sppasFrameInterval) is False:
+            AnnDataTypeError(other, "sppasFrameInterval")
 
         if self > other:
             other, self = self, other
 
-        return sppasTimeInterval(self.__begin, other.get_end())
+        return sppasFrameInterval(self.__begin, other.get_end())
 
     # -----------------------------------------------------------------------
 
     def duration(self):
-        """ Overrides. Return the duration of the time interval.
+        """ Overrides. Return the duration of the interval in number of frames.
 
         :returns: (sppasDuration) Duration and its vagueness.
 
@@ -232,7 +227,7 @@ class sppasTimeInterval(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def __repr__(self):
-        return "sppasTimeInterval: [{:s},{:s}]".format(self.get_begin(), self.get_end())
+        return "sppasFrameInterval: [{:s},{:s}]".format(self.get_begin(), self.get_end())
 
     def __str__(self):
         return "[{:s},{:s}]".format(self.get_begin(), self.get_end())
@@ -245,10 +240,10 @@ class sppasTimeInterval(sppasBaseLocalization):
         :param tp: the time point to verify.
 
         """
-        if isinstance(tp, (sppasTimeInterval, sppasTimePoint, float, int,)) is False:
-            raise AnnDataTypeError(tp, "sppasTimeInterval, sppasTimePoint, float, int")
+        if isinstance(tp, (sppasFrameInterval, sppasFramePoint, int,)) is False:
+            raise AnnDataTypeError(tp, "sppasFrameInterval, sppasFramePoint, int")
 
-        if isinstance(tp, sppasTimeInterval):
+        if isinstance(tp, sppasFrameInterval):
             return (self.__begin <= tp.get_begin() and
                     tp.get_end() <= self.__end)
 
@@ -259,10 +254,10 @@ class sppasTimeInterval(sppasBaseLocalization):
     def __eq__(self, other):
         """ Equal.
 
-        :param other: (sppasTimeInterval) the other interval to compare with.
+        :param other: (sppasFrameInterval) the other interval to compare with.
 
         """
-        if isinstance(other, sppasTimeInterval) is False:
+        if isinstance(other, sppasFrameInterval) is False:
             return False
 
         return (self.__begin == other.get_begin() and
@@ -273,13 +268,13 @@ class sppasTimeInterval(sppasBaseLocalization):
     def __lt__(self, other):
         """ LowerThan.
 
-        :param other: (sppasTimeInterval, sppasTimePoint, float, int) the other to compare with.
+        :param other: (sppasFrameInterval, sppasFramePoint, int) the other to compare with.
 
         """
-        if isinstance(other, (sppasTimePoint, float, int)):
+        if isinstance(other, (sppasFramePoint, int)):
             return self.__end < other
 
-        if isinstance(other, sppasTimeInterval) is False:
+        if isinstance(other, sppasFrameInterval) is False:
             return False
 
         return self.__begin < other.get_begin()
@@ -289,13 +284,13 @@ class sppasTimeInterval(sppasBaseLocalization):
     def __gt__(self, other):
         """ GreaterThan.
 
-        :param other: (sppasTimeInterval, sppasTimePoint, float, int) the other to compare with.
+        :param other: (sppasFrameInterval, sppasFramePoint, int) the other to compare with.
 
         """
-        if isinstance(other, (int, float, sppasTimePoint)):
+        if isinstance(other, (int, sppasFramePoint)):
             return self.__begin > other
 
-        if isinstance(other, sppasTimeInterval) is False:
+        if isinstance(other, sppasFrameInterval) is False:
             return False
 
         return self.__begin > other.get_begin()

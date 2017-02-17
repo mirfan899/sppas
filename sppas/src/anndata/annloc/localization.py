@@ -33,9 +33,6 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from ..anndataexc import AnnDataTypeError
-
-# ---------------------------------------------------------------------------
 
 
 class sppasBaseLocalization(object):
@@ -48,34 +45,27 @@ class sppasBaseLocalization(object):
     :summary:      Represents a Localization of an Annotation.
 
     """
-    def __init__(self, score=1.):
-        """ Create a sppasLocalization instance.
-
-        :param score: (float) Score of the localization.
-
-        """
-        self.__score = 1.
-        self.set_score(score)
+    def __init__(self):
+        """ Create a sppasLocalization instance. """
+        pass
 
     # -----------------------------------------------------------------------
 
-    def get_score(self):
-        """ Return the score of the localization. """
+    def get(self):
+        """ Return myself. """
 
-        return self.__score
+        return self
 
     # -----------------------------------------------------------------------
 
-    def set_score(self, score):
-        """ Set a new score.
+    def duration(self):
+        """ Return the duration of the localization.
+        Must be overridden
 
-        :param score: (float)
+        :returns: (sppasDuration) Duration and its vagueness.
 
         """
-        try:
-            self.__score = float(score)
-        except Exception:
-            raise AnnDataTypeError(score, "float")
+        raise NotImplementedError
 
     # ---------------------------------------------------------------------
 

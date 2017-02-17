@@ -3,9 +3,9 @@
 
 import unittest
 
-from ..annloc.timepoint import sppasTimePoint, sppasLocTimePoint
-from ..annloc.timeinterval import sppasTimeInterval, sppasLocTimeInterval
-from ..annloc.timedisjoint import sppasTimeDisjoint, sppasLocTimeDisjoint
+from ..annloc.timepoint import sppasTimePoint
+from ..annloc.timeinterval import sppasTimeInterval
+from ..annloc.timedisjoint import sppasTimeDisjoint
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AnnDataNegValueError
 
@@ -71,7 +71,7 @@ class TestTimePoint(unittest.TestCase):
         self.assertGreaterEqual(self.pointV, self.pointW)
 
     def test_others(self):
-        point0 = sppasLocTimePoint(0.1, 0.2)
+        point0 = sppasTimePoint(0.1, 0.2)
         self.assertEqual(point0.get_midpoint(), 0.1)
         self.assertEqual(point0.get_radius(),   0.1)
         point1 = point0
@@ -82,16 +82,16 @@ class TestTimePoint(unittest.TestCase):
         self.assertEqual(point0.get_midpoint(), point2.get_midpoint())
         self.assertEqual(point0.get_radius(), point2.get_radius())
         self.assertFalse(point2 is point0)
-        point3 = sppasLocTimePoint(0.1, 0.2)
+        point3 = sppasTimePoint(0.1, 0.2)
         point2.set(point3)
         self.assertFalse(point2 is point3)
         self.assertEqual(point0.duration(), 0.)
-        pointd = sppasLocTimePoint(0.3, 0.1)
+        pointd = sppasTimePoint(0.3, 0.1)
         self.assertEqual(pointd.duration(), 0.)
         self.assertEqual(pointd.duration(), 0.1)
 
         # now, test errors
-        point0 = sppasLocTimePoint(0.1)
+        point0 = sppasTimePoint(0.1)
         with self.assertRaises(AnnDataTypeError):
             point0.set([9])
         with self.assertRaises(AnnDataTypeError):
@@ -244,7 +244,7 @@ class TestTimeInterval(unittest.TestCase):
     def test_Duration(self):
         point1 = sppasTimePoint(1, 0.001)
         point3 = sppasTimePoint(3, 0.001)
-        interval13 = sppasLocTimeInterval(point1, point3)
+        interval13 = sppasTimeInterval(point1, point3)
         self.assertEqual(interval13.duration(), 2)
         self.assertEqual(interval13.duration(), 2.0)
         self.assertEqual(interval13.duration(), 1.999)
@@ -256,7 +256,7 @@ class TestTimeInterval(unittest.TestCase):
         point1 = sppasTimePoint(1, 0.001)
         point2 = sppasTimePoint(2)
         point3 = sppasTimePoint(3, 0.001)
-        interval01 = sppasLocTimeInterval(point0, point1)
+        interval01 = sppasTimeInterval(point0, point1)
         interval001 = interval01
         self.assertEqual(interval01.get_begin(), interval001.get_begin())
         self.assertEqual(interval01.get_end(), interval001.get_end())
@@ -265,7 +265,7 @@ class TestTimeInterval(unittest.TestCase):
         self.assertEqual(interval01.get_begin(), interval0001.get_begin())
         self.assertEqual(interval01.get_end(), interval0001.get_end())
         self.assertFalse(interval01 is interval0001)
-        interval23 = sppasLocTimeInterval(point2, point3)
+        interval23 = sppasTimeInterval(point2, point3)
         interval23.set(interval01)
         self.assertFalse(interval23 is interval001)
 
@@ -285,7 +285,7 @@ class TestTimeDisjoint(unittest.TestCase):
 
     def test_Duration(self):
         intervals = [sppasTimeInterval(sppasTimePoint(i), sppasTimePoint(i+1)) for i in range(5)]
-        t_disjoint = sppasLocTimeDisjoint(intervals)
+        t_disjoint = sppasTimeDisjoint(intervals)
         self.assertEqual(t_disjoint.duration().get_value(), 5)
         self.assertEqual(t_disjoint.duration().get_margin(), 0)
 
@@ -295,7 +295,7 @@ class TestTimeDisjoint(unittest.TestCase):
             self.assertEqual(t_disjoint.get_interval(i), sppasTimeInterval(sppasTimePoint(i), sppasTimePoint(i+1)))
 
     def test_Is(self):
-        t_disjoint = sppasLocTimeDisjoint([sppasTimeInterval(sppasTimePoint(i), sppasTimePoint(i+1)) for i in range(10)])
+        t_disjoint = sppasTimeDisjoint([sppasTimeInterval(sppasTimePoint(i), sppasTimePoint(i+1)) for i in range(10)])
         self.assertFalse(t_disjoint.is_time_point())
         self.assertFalse(t_disjoint.is_time_interval())
         self.assertTrue(t_disjoint.is_disjoint())
@@ -305,7 +305,6 @@ class TestTimeDisjoint(unittest.TestCase):
         t_disjoint = sppasTimeDisjoint([sppasTimeInterval(sppasTimePoint(i), sppasTimePoint(i+1)) for i in range(10)])
         t_disjoint.set_begin(sppasTimePoint(0.5))
         self.assertEqual(t_disjoint.get_begin(), sppasTimePoint(0.5))
-
         with self.assertRaises(ValueError):
             t_disjoint.set_begin(sppasTimePoint(1))
 

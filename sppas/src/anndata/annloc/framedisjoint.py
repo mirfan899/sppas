@@ -29,36 +29,36 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.annloc.timedisjoint.py
+    src.anndata.annloc.framedisjoint.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Localization of a serie of intervals in time.
+    Localization of a serie of intervals.
 
 """
 from ..anndataexc import AnnDataTypeError
 
 from .localization import sppasBaseLocalization
-from .timepoint import sppasTimePoint
-from .timeinterval import sppasTimeInterval
+from .framepoint import sppasFramePoint
+from .frameinterval import sppasFrameInterval
 from .duration import sppasDuration
 
 # ---------------------------------------------------------------------------
 
 
-class sppasTimeDisjoint(sppasBaseLocalization):
+class sppasFrameDisjoint(sppasBaseLocalization):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Representation of a serie of intervals in time.
+    :summary:      Representation of a serie of intervals.
 
     """
     def __init__(self, intervals):
-        """ Creates a new sppasTimeDisjoint instance.
+        """ Creates a new sppasFrameDisjoint instance.
 
-        :param intervals: (list of sppasTimeInterval)
+        :param intervals: (list of sppasFrameInterval)
 
         """
         sppasBaseLocalization.__init__(self)
@@ -69,15 +69,15 @@ class sppasTimeDisjoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def set(self, other):
-        """ Set self members from another sppasTimeDisjoint instance.
+        """ Set self members from another sppasFrameDisjoint instance.
 
-        :param other: (sppasTimeDisjoint)
+        :param other: (sppasFrameDisjoint)
 
         """
-        if isinstance(other, (sppasTimeDisjoint, sppasTimeInterval)) is False:
-            raise AnnDataTypeError(other, "sppasTimeDisjoint, sppasTimeInterval")
+        if isinstance(other, (sppasFrameDisjoint, sppasFrameInterval)) is False:
+            raise AnnDataTypeError(other, "sppasFrameDisjoint, sppasFrameInterval")
 
-        if isinstance(other, sppasTimeInterval) is False:
+        if isinstance(other, sppasFrameInterval) is False:
             self.set_intervals([other])
         else:
             self.set_intervals(other.get_intervals())
@@ -91,8 +91,8 @@ class sppasTimeDisjoint(sppasBaseLocalization):
 
     # -----------------------------------------------------------------------
 
-    def is_time_disjoint(self):
-        """ Return True because self is an instance of sppasTimeDisjoint. """
+    def is_frame_disjoint(self):
+        """ Return True because self is an instance of sppasFrameDisjoint. """
 
         return True
 
@@ -105,21 +105,22 @@ class sppasTimeDisjoint(sppasBaseLocalization):
         for i in self.get_intervals():
             intervals.append(i.copy())
 
-        return sppasTimeDisjoint(intervals)
+        return sppasFrameDisjoint(intervals)
 
     # -----------------------------------------------------------------------
 
     def get_begin(self):
-        """ Return the first sppasTimePoint instance. """
+        """ Return the first sppasFramePoint instance. """
 
-        return min(interval.get_begin() for interval in self.__intervals)
+        _min = min(interval for interval in self.__intervals)
+        return _min.get_begin()
 
     # -----------------------------------------------------------------------
 
     def set_begin(self, tp):
-        """ Set the begin sppasTimePoint instance to new sppasTimePoint.
+        """ Set the begin sppasFramePoint instance to new sppasFramePoint.
 
-        :param tp: (sppasTimePoint)
+        :param tp: (sppasFramePoint)
 
         """
         _min = self.get_begin()
@@ -130,16 +131,16 @@ class sppasTimeDisjoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def get_end(self):
-        """ Return the last sppasTimePoint instance. """
+        """ Return the last sppasFramePoint instance. """
 
         return max(interval.get_end() for interval in self.__intervals)
 
     # -----------------------------------------------------------------------
 
     def set_end(self, tp):
-        """ Set the end sppasTimePoint instance to new sppasTimePoint.
+        """ Set the end sppasFramePoint instance to new sppasFramePoint.
 
-        :param tp: (sppasTimePoint)
+        :param tp: (sppasFramePoint)
 
         """
         _max = self.get_end()
@@ -150,19 +151,19 @@ class sppasTimeDisjoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def append_interval(self, interval):
-        """ Return the sppasTimeInterval at the given index.
+        """ Return the sppasFrameInterval at the given index.
 
-        :param interval: (sppasTimeInterval)
+        :param interval: (sppasFrameInterval)
 
         """
-        if isinstance(interval, sppasTimeInterval) is False:
-            raise AnnDataTypeError(interval, "sppasTimeInterval")
+        if isinstance(interval, sppasFrameInterval) is False:
+            raise AnnDataTypeError(interval, "sppasFrameInterval")
         self.__intervals.append(interval)
 
     # -----------------------------------------------------------------------
 
     def get_interval(self, index):
-        """ Return the sppasTimeInterval at the given index.
+        """ Return the sppasFrameInterval at the given index.
 
         :param index: (int)
 
@@ -181,9 +182,12 @@ class sppasTimeDisjoint(sppasBaseLocalization):
     def set_intervals(self, intervals):
         """ Set a new list of intervals.
 
-        :param intervals: list of sppasTimeInterval.
+        :param intervals: list of sppasFrameInterval.
 
         """
+        if isinstance(intervals, list) is False:
+            raise AnnDataTypeError(intervals, "list")
+
         self.__intervals = list()
         for interval in intervals:
             self.append_interval(interval)
@@ -204,18 +208,18 @@ class sppasTimeDisjoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def __repr__(self):
-        return "sppasTimeDisjoint: {:s}".format("".join([str(i) for i in self.get_intervals()]))
+        return "sppasFrameDisjoint: {:s}".format("".join([str(i) for i in self.get_intervals()]))
 
     # -----------------------------------------------------------------------
 
     def __eq__(self, other):
-        """ Equal is required to use '==' between 2 sppasTimeDisjoint instances.
+        """ Equal is required to use '==' between 2 sppasFrameDisjoint instances.
         Two disjoint instances are equals iff all its intervals are equals.
 
-        :param other: (sppasTimeDisjoint) is the other time disjoint to compare with.
+        :param other: (sppasFrameDisjoint) is the other time disjoint to compare with.
 
         """
-        if not isinstance(other, sppasTimeDisjoint):
+        if not isinstance(other, sppasFrameDisjoint):
             return False
 
         if len(self) != len(other):
@@ -227,15 +231,15 @@ class sppasTimeDisjoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def __lt__(self, other):
-        """ LowerThan is required to use '<' between 2 sppasTimeDisjoint instances.
+        """ LowerThan is required to use '<' between 2 sppasFrameDisjoint instances.
 
-        :param other: (sppasTimeDisjoint) is the other time point to compare with.
+        :param other: (sppasFrameDisjoint) is the other time point to compare with.
 
         """
-        if isinstance(other, (sppasTimePoint, float, int)):
+        if isinstance(other, (sppasFramePoint, int)):
             return self.get_end() < other
 
-        if isinstance(other, (sppasTimeInterval, sppasTimeDisjoint)) is False:
+        if isinstance(other, (sppasFrameInterval, sppasFrameDisjoint)) is False:
             return False
 
         return self.get_begin() < other.get_begin()
@@ -244,15 +248,15 @@ class sppasTimeDisjoint(sppasBaseLocalization):
 
     def __gt__(self, other):
         """
-        GreaterThan is required to use '>' between 2 TimeDisjoint instances.
+        GreaterThan is required to use '>' between 2 FrameDisjoint instances.
 
-        :param other: (sppasTimeDisjoint) is the other time point to compare with.
+        :param other: (sppasFrameDisjoint) is the other time point to compare with.
 
         """
-        if isinstance(other, (int, float, sppasTimePoint)):
+        if isinstance(other, (int, sppasFramePoint)):
             return self.get_begin() > other
 
-        if isinstance(other, (sppasTimeInterval, sppasTimeDisjoint)) is False:
+        if isinstance(other, (sppasFrameInterval, sppasFrameDisjoint)) is False:
             return False
 
         return self.get_begin() > other.get_begin()
