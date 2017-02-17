@@ -2,7 +2,7 @@
 
 import unittest
 
-from ..location.duration import sppasDuration
+from ..annlocation.duration import sppasDuration
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AnnDataNegValueError
 

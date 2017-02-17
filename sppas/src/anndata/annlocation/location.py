@@ -52,10 +52,11 @@ class sppasLocation(object):
     def __init__(self, localization, score=None):
         """ Create a new sppasLocation instance and add the entry.
 
-        :param localization: (Localization or list of Localization)
+        :param localization: (Localization)
+        :param score: (float)
 
         """
-        self.__locations = list()
+        self.__localizations = list()
         self.__fct = max
 
         self.append(localization, score)
@@ -86,13 +87,14 @@ class sppasLocation(object):
         """ Add a localization into the list.
 
         :param localization: (Localization) the localization to append
+        :param score: (float)
 
         """
-        if isinstance(sppasBaseLocalization) is False:
+        if isinstance(localization, sppasBaseLocalization) is False:
             raise AnnDataTypeError(localization, "sppasBaseLocalization")
 
-        if localization not in self.__locations:
-            self.__locations.append((localization, score))
+        if localization not in self.__localizations:
+            self.__localizations.append((localization, score))
 
     # -----------------------------------------------------------------------
 
@@ -103,41 +105,47 @@ class sppasLocation(object):
         :returns: a localization
 
         """
-        if len(self.__locations) == 0:
-            return self.__locations[0][0]
+        if len(self.__localizations) == 1:
+            return self.__localizations[0][0]
 
-        best = max([x for x in self.__locations if x[1] is not None])
-        return best[0]
+        _maxt = self.__localizations[0][0]
+        _maxscore = self.__localizations[0][1]
+        for (t, s) in reversed(self.__localizations):
+            if s is not None and s > _maxscore:
+                _maxscore = s
+                _maxt = t
+
+        return _maxt
 
     # -----------------------------------------------------------------------
 
     def get(self):
         """ Return the list of localizations and their scores. """
 
-        return self.__locations
+        return self.__localizations
 
     # -----------------------------------------------------------------------
 
     def __repr__(self, *args, **kwargs):
-        return "Locations: {:s}".format("; ".join([str(i) for i in self.__locations]))
+        return "Locations: {:s}".format("; ".join([str(i) for i in self.__localizations]))
 
     # ------------------------------------------------------------------------
 
     def __str__(self, *args, **kwargs):
-        return "{:s}".format("; ".join([str(i) for i in self.__locations]))
+        return "{:s}".format("; ".join([l for l in self.__localizations]))
 
     # -----------------------------------------------------------------------
 
     def __iter__(self):
-        for a in self.__locations:
+        for a in self.__localizations:
             yield a
 
     # -----------------------------------------------------------------------
 
     def __getitem__(self, i):
-        return self.__locations[i]
+        return self.__localizations[i]
 
     # -----------------------------------------------------------------------
 
     def __len__(self):
-        return len(self.__locations)
+        return len(self.__localizations)

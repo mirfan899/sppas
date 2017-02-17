@@ -63,7 +63,7 @@ if sys.version_info < (3,):
         # return codecs.unicode_escape_decode(x)[0]
 
     def b(x):
-        return x
+        return x.encode(encoding)
 
 else:
     """ Unicode conversion for python > 3. """
@@ -76,7 +76,7 @@ else:
 
     def b(x):
         return codecs.encode(x, encoding, errors='strict')
-        # return codecs.utf_8_encode(x)[0]
+        #return codecs.utf_8_encode(x)[0]
 
 # ---------------------------------------------------------------------------
 

@@ -3,9 +3,9 @@
 
 import unittest
 
-from ..location.timepoint import sppasTimePoint
-from ..location.timeinterval import sppasTimeInterval
-from ..location.timedisjoint import sppasTimeDisjoint
+from ..annlocation.timepoint import sppasTimePoint
+from ..annlocation.timeinterval import sppasTimeInterval
+from ..annlocation.timedisjoint import sppasTimeDisjoint
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AnnDataNegValueError
 
