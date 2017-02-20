@@ -125,14 +125,14 @@ class Elan( Transcription ):
 
         # manage hierarchyLinks
         for parentTierRef in self.hierarchyLinks:
-            child = self.hierarchyLinks[parentTierRef]
-            parent = self.Find(parentTierRef)
-            # Elan's hierarchy
-            try:
-                self._hierarchy.add_link('TimeAlignment', child, parent)
-            except:
-                # TODO: to send a warning
-                pass
+            for child in self.hierarchyLinks[parentTierRef]:  # a parent tier could have various children
+                parent = self.Find(parentTierRef)
+                # Elan's hierarchy
+                try:
+                    self._hierarchy.add_link('TimeAlignment', child, parent)
+                except:
+                    # TODO: to send a warning
+                    pass
 
         del self.hierarchyLinks
         del self.unit
@@ -239,7 +239,9 @@ class Elan( Transcription ):
 
     def __read_ref_tier(self, tier, tierRoot, parentTierRef, root):
         # add a link to process later
-        self.hierarchyLinks[parentTierRef] = tier
+        if parentTierRef not in self.hierarchyLinks:
+            self.hierarchyLinks[parentTierRef] = []
+        self.hierarchyLinks[parentTierRef].append(tier)
 
         # group annotations in batches
         batches = {}
