@@ -110,6 +110,7 @@ class Elan( Transcription ):
         self.__read_time_slots(timeOrderRoot)
 
         self.hierarchyLinks = {}
+        self.annotIndex = {}    #TODO: index annotation elements
 
         # Read all controlled vocabularies, stored in self
         for vocabularyRoot in root.findall('CONTROLLED_VOCABULARY'):
@@ -135,6 +136,7 @@ class Elan( Transcription ):
                     pass
 
         del self.hierarchyLinks
+        del self.annotIndex
         del self.unit
         del self.timeSlots
 
@@ -258,7 +260,7 @@ class Elan( Transcription ):
                 batches[ref].append(annotationRoot)
 
         for ref in batches:
-            realRefRoot = Elan.__find_real_ref(ref, root)
+            realRefRoot = self.__find_real_ref(ref, root)
 
             beginKey = realRefRoot.attrib['TIME_SLOT_REF1']
             begin = self.timeSlots[beginKey].GetMidpoint()
@@ -280,14 +282,26 @@ class Elan( Transcription ):
 
     # -----------------------------------------------------------------
 
-    @staticmethod
-    def __find_real_ref(ref, root):
+    def __find_real_ref(self, ref, root):
         while True:
+            # first look in annotIndex
+            if ref in self.annotIndex:
+                #check recursive references
+                annotationRoot = self.annotIndex[ref]
+                if annotationRoot[0].tag == 'REF_ANNOTATION':
+                    ref = annotationRoot[0].attrib['ANNOTATION_REF']
+                    continue    # go back to the while True:
+                else:
+                    return annotationRoot[0]
+            # loop on all 'ANNOTATION' elements
             for annotationRoot in root.iter('ANNOTATION'):
+                annot_id = annotationRoot[0].attrib['ANNOTATION_ID']
+                self.annotIndex[annot_id] = annotationRoot
+                #check recursive references
                 if annotationRoot[0].attrib['ANNOTATION_ID'] == ref:
                     if annotationRoot[0].tag == 'REF_ANNOTATION':
                         ref = annotationRoot[0].attrib['ANNOTATION_REF']
-                        break
+                        break   # break the for loop (and go back to the while True:)
                     else:
                         return annotationRoot[0]
 
