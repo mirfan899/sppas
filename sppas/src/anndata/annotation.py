@@ -61,16 +61,15 @@ class sppasAnnotation(sppasMetaData):
     >>> ann = sppasAnnotation(t, p)
     >>> ann.get_location().get_best().get_point()
     1.5
-    >>> ann.get_label().get_best().get_value()
+    >>> ann.get_label().get_best().get_content()
     foo
 
     """
-    def __init__(self, location, label=None, parent_tier=None):
+    def __init__(self, location, label=None):
         """ Creates a new sppasAnnotation instance.
 
         :param location (sppasLocation) the location(s) where the annotation happens
         :param label (sppasLabel) the label(s) to stamp this annotation
-        :param parent_tier (sppasTier) the parent of this annotation
 
         """
         super(sppasAnnotation, self).__init__()
@@ -86,13 +85,6 @@ class sppasAnnotation(sppasMetaData):
 
         # Assign the location
         self.__location = location
-
-    # -----------------------------------------------------------------------
-
-    def get_parent(self):
-        """ Return the parent sppasTier. """
-
-        return self.__tier
 
     # -----------------------------------------------------------------------
 

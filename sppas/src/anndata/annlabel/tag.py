@@ -209,3 +209,6 @@ class sppasTag(object):
 
     def __eq__(self, other):
         return self.get_typed_content() == other.get_typed_content()
+
+    def __hash__(self):
+        return hash((self.__tag_content, self.__tag_type))
