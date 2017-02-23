@@ -44,7 +44,6 @@
 """
 from __future__ import unicode_literals
 import sys
-import codecs
 import re
 
 from sppas.src.sp_glob import encoding
@@ -65,6 +64,7 @@ if sys.version_info < (3,):
     def b(x):
         return x.encode(encoding)
 
+
 else:
     """ Unicode conversion for python > 3. """
 
@@ -75,14 +75,22 @@ else:
         return x
 
     def b(x):
-        return codecs.encode(x, encoding, errors='strict')
-        #return codecs.utf_8_encode(x)[0]
+        return x.encode(encoding)
+        # return codecs.utf_8_encode(x)[0]
 
 # ---------------------------------------------------------------------------
 
 
 class sppasUnicode(object):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Make a string as unicode and operates on it.
 
+    """
     def __init__(self, entry):
         """ Unicode maker for SPPAS.
 

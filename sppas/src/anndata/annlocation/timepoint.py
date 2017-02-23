@@ -257,4 +257,3 @@ class sppasTimePoint(sppasBaseLocalization):
             return self != other and self.__midpoint > other.get_midpoint()
 
         return (self != other) and (self.__midpoint > other)
-

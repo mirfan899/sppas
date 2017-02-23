@@ -35,7 +35,7 @@
 """
 from ..anndataexc import AnnDataTypeError
 
-from .text import sppasText
+from .tag import sppasTag
 
 # ----------------------------------------------------------------------------
 
@@ -49,18 +49,18 @@ class sppasLabel(object):
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :summary:      Represents the label of an Annotation.
 
-    A label is a list of possible sppasText(), represented as a UNICODE string.
-    A data type can be associated, as sppasText() can be 'int', 'float' or 'bool'.
+    A label is a list of possible sppasTag(), represented as a UNICODE string.
+    A data type can be associated, as sppasTag() can be 'int', 'float' or 'bool'.
 
     """
     def __init__(self, text=None, score=None):
         """ Creates a new Label instance.
 
-        :param text: (sppasText)
+        :param text: (sppasTag)
         :param score: (float)
 
         """
-        self.__texts = list()
+        self.__tags = list()
         self.__fct = max
 
         if text is not None:
@@ -96,22 +96,22 @@ class sppasLabel(object):
         :param score: (float)
 
         """
-        text = sppasText(content, data_type)
+        text = sppasTag(content, data_type)
         self.append(text, score)
 
     # -----------------------------------------------------------------------
 
     def append(self, text, score=None):
-        """ Add a sppasText into the list.
+        """ Add a sppasTag into the list.
 
         :param text: (Text)
         :param score: (float)
 
         """
-        if not isinstance(text, sppasText):
-            raise AnnDataTypeError(text, "sppasText")
+        if not isinstance(text, sppasTag):
+            raise AnnDataTypeError(text, "sppasTag")
 
-        self.__texts.append((text, score))
+        self.__tags.append((text, score))
 
     # -----------------------------------------------------------------------
 
@@ -121,47 +121,47 @@ class sppasLabel(object):
         :param text: (Text)
 
         """
-        if not isinstance(text, sppasText):
-            raise AnnDataTypeError(text, "sppasText")
+        if not isinstance(text, sppasTag):
+            raise AnnDataTypeError(text, "sppasTag")
 
-        for (t, s) in self.__texts:
+        for (t, s) in self.__tags:
             if t == text:
-                self.__texts.remove((t, s))
+                self.__tags.remove((t, s))
 
     # -----------------------------------------------------------------------
 
     def set_score(self, text, score):
         """ Set a score to a given text.
 
-        :param text: (sppasText)
+        :param text: (sppasTag)
         :param score: (float)
 
         """
-        if not isinstance(text, sppasText):
-            raise AnnDataTypeError(text, "sppasText")
+        if not isinstance(text, sppasTag):
+            raise AnnDataTypeError(text, "sppasTag")
 
-        for (t, s) in self.__texts:
+        for (t, s) in self.__tags:
             if t == text:
                 s = score
 
     # -----------------------------------------------------------------------
 
     def get_best(self):
-        """ Return the best sppasText, i.e. the one with the better score.
+        """ Return the best sppasTag, i.e. the one with the better score.
 
-        :returns: (sppasText or None)
+        :returns: (sppasTag or None)
 
         """
-        if len(self.__texts) == 0:
+        if len(self.__tags) == 0:
             return None
 
-        if len(self.__texts) == 1:
-            return self.__texts[0][0]
+        if len(self.__tags) == 1:
+            return self.__tags[0][0]
 
-        _maxt = self.__texts[0][0]
-        _maxscore = self.__texts[0][1]
-        for (t, s) in reversed(self.__texts):
-            if s is not None and s > _maxscore:
+        _maxt = self.__tags[0][0]
+        _maxscore = self.__tags[0][1]
+        for (t, s) in reversed(self.__tags):
+            if _maxscore is None or (s is not None and s > _maxscore):
                 _maxscore = s
                 _maxt = t
 
@@ -170,9 +170,9 @@ class sppasLabel(object):
     # -----------------------------------------------------------------------
 
     def get(self):
-        """ Return the list of sppasText and their scores. """
+        """ Return the list of sppasTag and their scores. """
 
-        return self.__texts
+        return self.__tags
 
     # -----------------------------------------------------------------------
     # Overloads
@@ -180,27 +180,27 @@ class sppasLabel(object):
 
     def __repr__(self):
         st = ""
-        for t, s in self.__texts:
-            st += "sppasText({:s}, score={:f}), ".format(t, s)
+        for t, s in self.__tags:
+            st += "sppasTag({:s}, score={:f}), ".format(t, s)
         return st
 
     # -----------------------------------------------------------------------
 
     def __str__(self):
-        return "{:s}".format("; ".join([t for t in self.__texts]))
+        return "{:s}".format("; ".join([t for t in self.__tags]))
 
     # -----------------------------------------------------------------------
 
     def __iter__(self):
-        for a in self.__texts:
+        for a in self.__tags:
             yield a
 
     # -----------------------------------------------------------------------
 
     def __getitem__(self, i):
-        return self.__texts[i]
+        return self.__tags[i]
 
     # -----------------------------------------------------------------------
 
     def __len__(self):
-        return len(self.__texts)
+        return len(self.__tags)

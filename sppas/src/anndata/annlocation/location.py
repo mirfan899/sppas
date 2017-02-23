@@ -111,7 +111,7 @@ class sppasLocation(object):
         _maxt = self.__localizations[0][0]
         _maxscore = self.__localizations[0][1]
         for (t, s) in reversed(self.__localizations):
-            if s is not None and s > _maxscore:
+            if _maxscore is None or (s is not None and s > _maxscore):
                 _maxscore = s
                 _maxt = t
 
