@@ -33,20 +33,25 @@
     ~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+from sppas.src.utils.makeunicode import sppasUnicode
+
+# ---------------------------------------------------------------------------
 
 
 class sppasMetaData(object):
     """
-    :author:       Brigitte Bigi, Jibril Saffi
+    :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :summary:      Dictionary of meta data.
 
+    Meta data keys and values are unicode strings.
+
     """
     def __init__(self):
-        self.metadata = {}
+        self.metadata = dict()
 
     # ------------------------------------------------------------------------
 
@@ -63,5 +68,11 @@ class sppasMetaData(object):
 
     def set_meta(self, key, value):
         """ Set or update a tuple key/value of metadata. """
+
+        su = sppasUnicode(key)
+        key = su.to_strip()
+
+        su = sppasUnicode(value)
+        value = su.to_strip()
 
         self.metadata[key] = value
