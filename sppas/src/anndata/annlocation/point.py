@@ -124,6 +124,7 @@ class sppasPoint(sppasBaseLocalization):
         """ Overrides. Return True, because self is representing a point. """
 
         return True
+
     # -----------------------------------------------------------------------
 
     def copy(self):
@@ -223,15 +224,15 @@ class sppasPoint(sppasBaseLocalization):
 
     def __repr__(self):
         if self.__radius is None:
-            return "sppasPoint: {:f}".format(self.get_midpoint())
-        return "sppasPoint: {:f}, {:f}".format(self.get_midpoint(), self.get_radius())
+            return "sppasPoint: {:s}".format(self.get_midpoint())
+        return "sppasPoint: {!s:s}, {!s:s}".format(self.get_midpoint(), self.get_radius())
 
     # -----------------------------------------------------------------------
 
     def __str__(self):
         if self.__radius is None:
-            return "{:f}".format(self.get_midpoint())
-        return "({:f}, {:f})".format(self.get_midpoint(), self.get_radius())
+            return "{!s:s}".format(self.get_midpoint())
+        return "({!s:s}, {!s:s})".format(self.get_midpoint(), self.get_radius())
 
     # -----------------------------------------------------------------------
 

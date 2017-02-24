@@ -34,6 +34,7 @@
 
 """
 from ..anndataexc import AnnDataTypeError
+from ..anndataexc import AnnDataEqTypeError
 from .localization import sppasBaseLocalization
 
 # ---------------------------------------------------------------------------
@@ -47,6 +48,8 @@ class sppasLocation(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :summary:      Represents the location of an Annotation.
+
+    The location is a set of alternative localizations.
 
     """
     def __init__(self, localization, score=None):
@@ -94,6 +97,13 @@ class sppasLocation(object):
             raise AnnDataTypeError(localization, "sppasBaseLocalization")
 
         if localization not in self.__localizations:
+            # check types consistency.
+            if len(self.__localizations) > 0:
+                l = self.__localizations[0][0]
+                if l.is_point() != localization.is_point() or\
+                    l.is_interval() != localization.is_interval() or\
+                    l.is_disjoint() != localization.is_disjoint():
+                    raise AnnDataEqTypeError(localization, l)
             self.__localizations.append((localization, score))
 
     # -----------------------------------------------------------------------

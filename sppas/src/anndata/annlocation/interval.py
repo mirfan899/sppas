@@ -37,6 +37,7 @@
 """
 import logging
 from ..anndataexc import AnnDataTypeError
+from ..anndataexc import AnnDataEqTypeError
 from ..anndataexc import IntervalBoundsError
 
 from .localization import sppasBaseLocalization
@@ -75,6 +76,9 @@ class sppasInterval(sppasBaseLocalization):
 
         if isinstance(end, sppasPoint) is False:
             AnnDataTypeError(end, "sppasPoint")
+
+        if sppasInterval.check_types(begin, end) is False:
+            raise AnnDataEqTypeError(begin, end)
 
         if sppasInterval.check_interval_bounds(begin, end) is False:
             raise IntervalBoundsError(begin, end)
@@ -132,6 +136,9 @@ class sppasInterval(sppasBaseLocalization):
         if isinstance(tp, sppasPoint) is False:
             raise AnnDataTypeError(tp, "sppasPoint")
 
+        if sppasInterval.check_types(tp, self.__end) is False:
+            raise AnnDataEqTypeError(tp, self.__end)
+
         if sppasInterval.check_interval_bounds(tp, self.__end) is False:
             raise IntervalBoundsError(tp, self.__end)
 
@@ -156,6 +163,9 @@ class sppasInterval(sppasBaseLocalization):
         """
         if isinstance(tp, sppasPoint) is False:
             raise AnnDataTypeError(tp, "sppasPoint")
+
+        if sppasInterval.check_types(self.__begin, tp) is False:
+            raise AnnDataEqTypeError(self.__begin, tp)
 
         if sppasInterval.check_interval_bounds(self.__begin, tp) is False:
             raise IntervalBoundsError(self.__begin, tp)
@@ -231,6 +241,12 @@ class sppasInterval(sppasBaseLocalization):
                 return False
 
         return True
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def check_types(begin, end):
+        return type(begin.get_midpoint()) == type(end.get_midpoint())
 
     # -----------------------------------------------------------------------
     # Overloads

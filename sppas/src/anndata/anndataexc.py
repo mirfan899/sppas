@@ -39,6 +39,7 @@ from . import t
 
 ANN_DATA_ERROR = ":ERROR 1000: "
 ANN_DATA_TYPE_ERROR = ":ERROR 1100: "
+ANN_DATA_EQ_TYPE_ERROR = ":ERROR 1105: "
 ANN_DATA_NEG_VALUE_ERROR = ":ERROR 1110: "
 INTERVAL_BOUNDS_ERROR = ":ERROR 1120: "
 
@@ -68,6 +69,17 @@ class AnnDataTypeError(TypeError):
 
 # -----------------------------------------------------------------------
 
+
+class AnnDataEqTypeError(TypeError):
+    """ :ERROR 1105: {!s:s} is not of the same type as {!s:s}. """
+
+    def __init__(self, obj, obj_ref):
+        self.parameter = ANN_DATA_EQ_TYPE_ERROR + (t.gettext(ANN_DATA_EQ_TYPE_ERROR)).format(obj, obj_ref)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
 
 class AnnDataNegValueError(ValueError):
     """ :ERROR 1110: Expected a positive value. Got '{:f}'. """
