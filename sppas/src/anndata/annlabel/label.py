@@ -101,31 +101,31 @@ class sppasLabel(object):
 
     # -----------------------------------------------------------------------
 
-    def append(self, text, score=None):
+    def append(self, tag, score=None):
         """ Add a sppasTag into the list.
 
-        :param text: (Text)
+        :param tag: (sppasTag)
         :param score: (float)
 
         """
-        if not isinstance(text, sppasTag):
-            raise AnnDataTypeError(text, "sppasTag")
+        if not isinstance(tag, sppasTag):
+            raise AnnDataTypeError(tag, "sppasTag")
 
-        self.__tags.append((text, score))
+        self.__tags.append((tag, score))
 
     # -----------------------------------------------------------------------
 
-    def remove(self, text):
-        """ Remove a text of the list.
+    def remove(self, tag):
+        """ Remove a tag of the list.
 
-        :param text: (Text)
+        :param tag: (sppasTag) the tag to be removed of the list.
 
         """
-        if not isinstance(text, sppasTag):
-            raise AnnDataTypeError(text, "sppasTag")
+        if not isinstance(tag, sppasTag):
+            raise AnnDataTypeError(tag, "sppasTag")
 
         for (t, s) in self.__tags:
-            if t == text:
+            if t == tag:
                 self.__tags.remove((t, s))
 
     # -----------------------------------------------------------------------
@@ -193,7 +193,7 @@ class sppasLabel(object):
 
     def __iter__(self):
         for a in self.__tags:
-            yield a
+            yield a[0]
 
     # -----------------------------------------------------------------------
 

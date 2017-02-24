@@ -40,6 +40,8 @@ from sppas.src.utils.makeunicode import sppasUnicode
 
 from .anndataexc import AnnDataTypeError
 from .anndataexc import IntervalBoundsError
+from .anndataexc import CtrlVocabContainsError
+
 from .annotation import sppasAnnotation
 from .metadata import sppasMetaData
 from .ctrlvocab import sppasCtrlVocab
@@ -66,22 +68,26 @@ class sppasTier(sppasMetaData):
         - a media.
 
     """
-    def __init__(self, name=None):
+    def __init__(self, name=None, ctrl_vocab=None, media=None):
         """ Creates a new sppasTier instance.
 
-        :param name: (str) Name of the. It is used as identifier.
+        :param name: (str) Name of the tier. It is used as identifier.
+        :param ctrl_vocab: (sppasCtrlVocab or None)
+        :param media: (sppasMedia)
 
         """
         super(sppasTier, self).__init__()
 
         self.__name = None
         self.__ann = []
-        self.__parent = None
-        self.__reference_tier = None
         self.__ctrl_vocab = None
         self.__media = None
+        self.__parent = None
+        self.__reference_tier = None
 
         self.set_name(name)
+        self.set_ctrl_vocab(ctrl_vocab)
+        self.set_media(media)
 
     # -----------------------------------------------------------------------
     # Getters
@@ -120,7 +126,7 @@ class sppasTier(sppasMetaData):
         if name is None:
             name = sppasGUID().get()
         su = sppasUnicode(name)
-        self.__name = su.to_strip(name)
+        self.__name = su.to_strip()
 
         return self.__name
 
@@ -130,6 +136,7 @@ class sppasTier(sppasMetaData):
         """ Set a controlled vocabulary to this tier.
 
         :param ctrl_vocab: (sppasCtrlVocab or None)
+        :raises: AnnDataTypeError, CtrlVocabContainsError
 
         """
         # In case we just want to disable the controlled vocabulary
@@ -141,7 +148,7 @@ class sppasTier(sppasMetaData):
             for annotation in self.__ann:
                 for tag in annotation.get_label():
                     if ctrl_vocab.contains(tag) is False:
-                        raise Exception("Trying to set an invalid controlled vocabulary: the word %s is not in the dictionary %s"%(tag,ctrl_vocab.get_name()))
+                        raise CtrlVocabContainsError(tag)
 
         self.__ctrl_vocab = ctrl_vocab
 
@@ -153,8 +160,9 @@ class sppasTier(sppasMetaData):
         :param media: (sppasMedia)
 
         """
-        if isinstance(media, sppasMedia) is False:
-            raise AnnDataTypeError(media, "sppasMedia")
+        if media is not None:
+            if isinstance(media, sppasMedia) is False:
+                raise AnnDataTypeError(media, "sppasMedia")
 
         self.__media = media
 
@@ -175,36 +183,9 @@ class sppasTier(sppasMetaData):
         :param annotation: (sppasAnnotation)
 
         """
-        self.__validate_annotation(annotation)
+        self.validate_annotation(annotation)
 
-        # Check if hierarchy
-        if self.__reference_tier is not None:
-            refpoints = self.__reference_tier.get_all_points()
-
-        # Append:
-        if len(self.__ann) == 0:
-            if self.__reference_tier is not None:
-                if annotation.get_location().get_best().is_point():
-                    for localization in annotation.get_location().get():
-                        if localization not in refpoints:
-                            raise ValueError("Attempt to append an annotation in a child tier, but the reference tier has no corresponding localization: {:s}".format(localization))
-                    self.__ann.append(annotation)
-                else:
-                    for localization in annotation.get_location().get():
-                        if localization.get_begin() not in refpoints:
-                            raise ValueError("Attempt to append an annotation in a child tier, but the reference tier has no corresponding localization: {:s}".format(localization.get_begin()))
-                        if localization.get_end() not in refpoints:
-                            raise ValueError("Attempt to append an annotation in a child tier, but the reference tier has no corresponding localization: {:s}".format(localization.get_end()))
-                    self.__ann.append(annotation)
-            else:
-                self.__ann.append(annotation)
-
-        else:
-            # same localization type?
-            if (annotation.get_location().get_best().is_point() is True and self._is_point() is False) or \
-                    (annotation.get_location().get_best().is_interval() is True and self._is_interval() is False) or \
-                    (annotation.get_location().get_best().is_disjoint() is True and self._is_disjoint() is False):
-                raise TypeError("Attempt to append an annotation with localization of bad type.")
+        if len(self.__ann) > 0:
 
             last = self.__ann[-1]
             if last.get_location().get_best().is_point():
@@ -226,16 +207,14 @@ class sppasTier(sppasMetaData):
                     for localization in annotation.get_location().get():
                         if localization not in refpoints:
                             raise ValueError("Attempt to append an annotation in a child tier, but the reference tier has no corresponding localization: {:s}".format(localization))
-                    self.__ann.append(annotation)
                 else:
                     for localization in annotation.get_location().get():
                         if localization.get_begin() not in refpoints:
                             raise ValueError("Attempt to append an annotation in a child tier, but the reference tier has no corresponding localization: {:s}".format(localization.get_begin()))
                         if localization.get_end() not in refpoints:
                             raise ValueError("Attempt to append an annotation in a child tier, but the reference tier has no corresponding localization: {:s}".format(localization.get_end()))
-                    self.__ann.append(annotation)
-            else:
-                self.__ann.append(annotation)
+
+        self.__ann.append(annotation)
 
     # -----------------------------------------------------------------------
 
@@ -245,7 +224,7 @@ class sppasTier(sppasMetaData):
         :param annotation: (sppasAnnotation)
 
         """
-        self.__validate_annotation(annotation)
+        self.validate_annotation(annotation)
 
         if len(self.__ann) == 0:
             lo = 0
@@ -263,7 +242,7 @@ class sppasTier(sppasMetaData):
                 else:
                     hi = mid
 
-            if lo != size and not annotation.get_location().get_best().IsPoint():
+            if lo != size and not annotation.get_location().get_best().is_point():
                 tmp = lo
                 for ann in self.__ann[tmp:]:
                     if ann.get_location().get_best().get_begin() != annotation.get_location().get_best().get_begin():
@@ -873,30 +852,66 @@ class sppasTier(sppasMetaData):
 
     # -----------------------------------------------------------------------
 
-    # -----------------------------------------------------------------------
-
-    def __validate_annotation(self, annotation):
-
+    def validate_annotation(self, annotation):
         # Check instance:
-
         if isinstance(annotation, sppasAnnotation) is False:
             raise AnnDataTypeError(annotation, "sppasAnnotation")
 
-        # Check Label:
+        # Check if annotation is relevant for this tier
+        #  - same localization type?
+        #  - label consistency
+        #  - location consistency
+        if len(self.__ann) > 0:
+            if (annotation.get_location().get_best().is_point() is True and self.is_point() is False) or \
+                    (annotation.get_location().get_best().is_interval() is True and self.is_interval() is False) or \
+                    (annotation.get_location().get_best().is_disjoint() is True and self.is_disjoint() is False):
+                raise TypeError("Attempt to append an annotation with localization of bad type.")
 
+        # Assigning a parent will validate the label and the location
+        annotation.set_parent(self)
+
+    # -----------------------------------------------------------------------
+
+    def validate_annotation_label(self, label):
+        """ Validate the label of an annotation.
+
+        :raises: CtrlVocabContainsError
+
+        """
         # Check if controlled vocabulary
-        if self.__ctrlvocab is not None:
-            for word in annotation.GetLabel().GetLabels():
-                if self.__ctrlvocab.Contains(word.GetValue()) is False and word.GetValue() != '':
-                    # hum... praat needs empty values
-                    raise ValueError(
-                        "Attempt to append a free-annotation-label %s "
-                        "in a controlled vocabulary tier." % (word.GetValue()))
+        if self.__ctrl_vocab is not None:
+            for tag in label:
+                if tag.is_empty() is False and self.__ctrl_vocab.contains(tag) is False:
+                    raise CtrlVocabContainsError(tag)
 
-        # Check Location:
+    # -----------------------------------------------------------------------
+
+    def validate_annotation_location(self, location):
 
         # Check if hierarchy is preserved
-        if self.__parent() is not None:
+        if self.__parent is not None:
+            if self.__reference_tier is not None:
+                refpoints = self.__reference_tier.get_all_points()
+
+            if len(self.__ann) == 0:
+                if self.__reference_tier is not None:
+                    if location.get_best().is_point():
+                        for localization in location:
+                            if localization not in refpoints:
+                                raise ValueError(
+                                    "Attempt to append an annotation in a child tier, but the reference tier has no corresponding localization: {:s}".format(
+                                        localization))
+                    else:
+                        for localization in location:
+                            if localization.get_begin() not in refpoints:
+                                raise ValueError(
+                                    "Attempt to append an annotation in a child tier, but the reference tier has no corresponding localization: {:s}".format(
+                                        localization.get_begin()))
+                            if localization.get_end() not in refpoints:
+                                raise ValueError(
+                                    "Attempt to append an annotation in a child tier, but the reference tier has no corresponding localization: {:s}".format(
+                                        localization.get_end()))
+
             hierarchy = self.__parent().GetHierarchy()
 
             # if current tier is a child
@@ -907,16 +922,16 @@ class sppasTier(sppasMetaData):
                     raise Exception("Attempt a modification in a Tier that invalidates its hierarchy.")
                 if link_type == "TimeAlignment":
                     # The parent must have such location...
-                    if annotation.get_location().get_best().is_point():
-                        i = parent_tier.index(annotation.get_location().get_best())
+                    if location.get_best().is_point():
+                        i = parent_tier.index(location.get_best())
                         if i == -1:
                             raise Exception("Attempt a modification in a Tier that invalidates its hierarchy.")
                     else:
-                        l = parent_tier.lindex(annotation.get_location().get_best().get_begin())
+                        l = parent_tier.lindex(location.get_best().get_begin())
                         if l == -1:
                             raise Exception("Attempt a modification in a Tier that invalidates its hierarchy.")
 
-                        r = parent_tier.rindex(annotation.get_location().get_best().get_end())
+                        r = parent_tier.rindex(location.get_best().get_end())
                         if r == -1:
                             raise Exception("Attempt a modification in a Tier that invalidates its hierarchy.")
 
@@ -925,3 +940,19 @@ class sppasTier(sppasMetaData):
                 link_type = hierarchy.get_hierarchy_type(child_tier)
                 if link_type == "TimeAssociation":
                     raise Exception("Attempt a modification in a Tier that invalidates its hierarchy.")
+
+    # -----------------------------------------------------------------------
+    # Overloads
+    # -----------------------------------------------------------------------
+
+    def __iter__(self):
+        for a in self.__ann:
+            yield a
+
+    def __getitem__(self, i):
+        return self.__ann[i]
+
+    def __len__(self):
+        return len(self.__ann)
+
+# ---------------------------------------------------------------------------

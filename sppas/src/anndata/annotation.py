@@ -35,10 +35,10 @@
 """
 import copy
 
+from .anndataexc import AnnDataTypeError
 from .annlabel.label import sppasLabel
 from .annlocation.location import sppasLocation
 from .metadata import sppasMetaData
-from .anndataexc import AnnDataTypeError
 
 # ----------------------------------------------------------------------------
 
@@ -56,9 +56,9 @@ class sppasAnnotation(sppasMetaData):
         - a sppasLocation()
         - a sppasLabel()
 
-    >>> p = sppasLocation(sppasTimePoint(1.5, radius=0.01))
-    >>> l = sppasLabel(sppasText("foo"))
-    >>> ann = sppasAnnotation(t, p)
+    >>> location = sppasLocation(sppasTimePoint(1.5, radius=0.01))
+    >>> label = sppasLabel(sppasText("foo"))
+    >>> ann = sppasAnnotation(location, label)
     >>> ann.get_location().get_best().get_point()
     1.5
     >>> ann.get_label().get_best().get_content()
@@ -68,8 +68,8 @@ class sppasAnnotation(sppasMetaData):
     def __init__(self, location, label=None):
         """ Creates a new sppasAnnotation instance.
 
-        :param location (sppasLocation) the location(s) where the annotation happens
-        :param label (sppasLabel) the label(s) to stamp this annotation
+        :param location: (sppasLocation) the location(s) where the annotation happens
+        :param label: (sppasLabel) the label(s) to stamp this annotation
 
         """
         super(sppasAnnotation, self).__init__()
@@ -81,10 +81,9 @@ class sppasAnnotation(sppasMetaData):
             if isinstance(label, sppasLabel) is False:
                 raise AnnDataTypeError(label, "sppasLabel")
 
-        self.__label = label
-
-        # Assign the location
+        self.__parent = None
         self.__location = location
+        self.__label = label
 
     # -----------------------------------------------------------------------
 
@@ -109,6 +108,93 @@ class sppasAnnotation(sppasMetaData):
         """ Return a deep copy of the annotation. """
 
         return copy.deepcopy(self)
+
+    # -----------------------------------------------------------------------
+    # Setters
+    # -----------------------------------------------------------------------
+
+    def set_parent(self, parent=None):
+        """ Set a parent tier.
+
+        :param parent: (sppasTier) The parent tier of this annotation.
+
+        """
+        if parent is not None:
+            parent.validate_annotation_label(self.__label)
+            parent.validate_annotation_location(self.__label)
+
+        self.__parent = parent
+
+    # -----------------------------------------------------------------------
+
+    def set_best_tag(self, tag):
+        """ Set the best tag of the label.
+        It will replace the tag with the highest score by the given one,
+        and do not change the score.
+
+        :param tag: (sppasTag)
+
+        """
+        if self.__parent is not None:
+            old_tag = self.__label.get_best().copy()
+            self.__label.get_best().set(tag)
+            try:
+                self.__parent.validate_annotation_label(self.__label)
+            except Exception:
+                self.__label.get_best().set(old_tag)
+                raise
+        else:
+            self.__label.get_best().set(tag)
+
+    # -----------------------------------------------------------------------
+
+    def add_tag(self, tag, score=None):
+        """ Append an alternative tag in the label.
+
+        :param tag: (sppasTag)
+        :param score: (float)
+        :raises: AnnDataTypeError
+
+        """
+        self.__label.append(tag, score)
+        if self.__parent is not None:
+            try:
+                self.__parent.validate_annotation_label(self.__label)
+            except ValueError:
+                self.__label.remove(tag)
+                raise
+
+    # -----------------------------------------------------------------------
+
+    def remove_tag(self, tag):
+        """ Remove an alternative tag of the label.
+
+        :param tag: (sppasTag) the tag to be removed of the list.
+
+        """
+        self.__label.remove(tag)
+
+    # -----------------------------------------------------------------------
+
+    def set_best_localization(self, localization):
+        """ Set the best localization of the location.
+
+        :param localization: (sppasBaseLocalization)
+
+        """
+        old_loc = self.__location.get_best()
+        self.__location.get_best().set(localization)
+        if self.__parent is not None:
+            try:
+                self.__parent.validate_annotation_location(self.__location)
+            except ValueError:
+                self.__location.get_best().set(old_loc)
+                raise
+
+    # -----------------------------------------------------------------------
+    # Getters
+    # -----------------------------------------------------------------------
+
 
     # -----------------------------------------------------------------------
     # Overloads

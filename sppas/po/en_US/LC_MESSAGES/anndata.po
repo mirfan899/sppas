@@ -31,3 +31,6 @@ msgstr "Expected a positive value. Got '{:f}'."
 
 msgid ":ERROR 1120: "
 msgstr "The begin must be strictly lesser than the end in an interval. Got: [{!s:s};{!s:s}]."
+
+msgid ":ERROR 1130: "
+msgstr "{!s:s} is not included in the controlled vocabulary."

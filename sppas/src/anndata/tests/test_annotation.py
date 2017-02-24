@@ -13,11 +13,7 @@ from ..annotation import sppasAnnotation
 
 
 class TestAnnotation(unittest.TestCase):
-    """
-    An annotation in SPPAS is:
-        - a location;
-        - a label (or not!).
-    """
+
     def setUp(self):
         self.p1 = sppasPoint(1)
         self.p2 = sppasPoint(2)
@@ -27,16 +23,12 @@ class TestAnnotation(unittest.TestCase):
         self.annotationP = sppasAnnotation(sppasLocation(self.p1), sppasLabel(sppasTag("mark")))
 
     def test_get_begin(self):
-        """
-        Raise AttributeError if the attribute  is an instance of Point.
-        """
+        """ Raise AttributeError if the attribute is an instance of Point. """
         with self.assertRaises(AttributeError):
             self.annotationP.get_location().get_begin()
 
     def test_set_begin(self):
-        """
-        Raise ValueError if the given time point is greater than the end time value
-        of the annotation.
+        """ Raise ValueError if the given time point is greater than the end time value of the annotation.
         Raise AttributeError if the attribute  is an instance of Point.
         """
         with self.assertRaises(ValueError):
@@ -46,8 +38,7 @@ class TestAnnotation(unittest.TestCase):
             self.annotationP.get_location().get_best().set_begin(self.p2)
 
     def test_get_begin_value(self):
-        """
-        Raise AttributeError if the attribute  is an instance of Point.
+        """ Raise AttributeError if the attribute  is an instance of Point.
         Raise ValueError if the the given time is greater than the end time.
         """
         with self.assertRaises(AttributeError):
@@ -58,16 +49,12 @@ class TestAnnotation(unittest.TestCase):
         self.annotationI.get_location().get_best().get_begin().set_midpoint(4) #### MUST BE FORBIDDEN...
 
     def test_get_end(self):
-        """
-        Raise AttributeError if the attribute  is an instance of Point.
-        """
+        """ Raise AttributeError if the attribute  is an instance of Point. """
         with self.assertRaises(AttributeError):
             self.annotationP.get_location().get_best().get_end()
 
     def test_get_end_value(self):
-        """
-        Raise AttributeError if the attribute  is an instance of Point.
-        """
+        """ Raise AttributeError if the attribute  is an instance of Point. """
         with self.assertRaises(AttributeError):
             self.annotationP.get_location().get_best().get_end().set_midpoint()
 

@@ -253,10 +253,10 @@ class sppasInterval(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def __repr__(self):
-        return "sppasInterval: [{:s},{:s}]".format(self.get_begin(), self.get_end())
+        return "sppasInterval: [{!s:s},{!s:s}]".format(self.get_begin(), self.get_end())
 
     def __str__(self):
-        return "[{:s},{:s}]".format(self.get_begin(), self.get_end())
+        return "[{!s:s},{!s:s}]".format(self.get_begin(), self.get_end())
 
     # -----------------------------------------------------------------------
 

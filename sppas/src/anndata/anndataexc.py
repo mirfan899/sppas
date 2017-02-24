@@ -42,6 +42,7 @@ ANN_DATA_TYPE_ERROR = ":ERROR 1100: "
 ANN_DATA_EQ_TYPE_ERROR = ":ERROR 1105: "
 ANN_DATA_NEG_VALUE_ERROR = ":ERROR 1110: "
 INTERVAL_BOUNDS_ERROR = ":ERROR 1120: "
+CTRL_VOCAB_CONTAINS_ERROR = ":ERROR 1130: "
 
 # -----------------------------------------------------------------------
 
@@ -62,7 +63,8 @@ class AnnDataTypeError(TypeError):
     """ :ERROR 1100: {!s:s} is not of the expected type '{:s}'. """
 
     def __init__(self, rtype, expected):
-        self.parameter = ANN_DATA_TYPE_ERROR + (t.gettext(ANN_DATA_TYPE_ERROR)).format(rtype, expected)
+        self.parameter = ANN_DATA_TYPE_ERROR + \
+                         (t.gettext(ANN_DATA_TYPE_ERROR)).format(rtype, expected)
 
     def __str__(self):
         return repr(self.parameter)
@@ -74,12 +76,14 @@ class AnnDataEqTypeError(TypeError):
     """ :ERROR 1105: {!s:s} is not of the same type as {!s:s}. """
 
     def __init__(self, obj, obj_ref):
-        self.parameter = ANN_DATA_EQ_TYPE_ERROR + (t.gettext(ANN_DATA_EQ_TYPE_ERROR)).format(obj, obj_ref)
+        self.parameter = ANN_DATA_EQ_TYPE_ERROR + \
+                         (t.gettext(ANN_DATA_EQ_TYPE_ERROR)).format(obj, obj_ref)
 
     def __str__(self):
         return repr(self.parameter)
 
 # -----------------------------------------------------------------------
+
 
 class AnnDataNegValueError(ValueError):
     """ :ERROR 1110: Expected a positive value. Got '{:f}'. """
@@ -100,6 +104,19 @@ class IntervalBoundsError(ValueError):
     def __init__(self, begin, end):
         self.parameter = INTERVAL_BOUNDS_ERROR + \
                          (t.gettext(INTERVAL_BOUNDS_ERROR)).format(begin, end)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class CtrlVocabContainsError(ValueError):
+    """ :ERROR 1130: {:s} is not part of the controlled vocabulary. """
+
+    def __init__(self, tag):
+        self.parameter = CTRL_VOCAB_CONTAINS_ERROR + \
+                         (t.gettext(CTRL_VOCAB_CONTAINS_ERROR)).format(tag)
 
     def __str__(self):
         return repr(self.parameter)

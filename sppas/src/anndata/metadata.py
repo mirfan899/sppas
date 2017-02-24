@@ -51,7 +51,7 @@ class sppasMetaData(object):
 
     """
     def __init__(self):
-        self.metadata = dict()
+        self.__metadata = dict()
 
     # ------------------------------------------------------------------------
 
@@ -62,7 +62,7 @@ class sppasMetaData(object):
         :param key:
 
         """
-        return self.metadata.get(key, "")
+        return self.__metadata.get(key, "")
 
     # ------------------------------------------------------------------------
 
@@ -75,4 +75,4 @@ class sppasMetaData(object):
         su = sppasUnicode(value)
         value = su.to_strip()
 
-        self.metadata[key] = value
+        self.__metadata[key] = value

@@ -148,7 +148,7 @@ class sppasLocation(object):
 
     def __iter__(self):
         for a in self.__localizations:
-            yield a
+            yield a[0]
 
     # -----------------------------------------------------------------------
 

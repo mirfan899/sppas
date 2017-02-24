@@ -135,6 +135,13 @@ class sppasTag(object):
 
     # ------------------------------------------------------------------------
 
+    def copy(self):
+        """ Return a deep copy of self. """
+
+        return sppasTag(self.__tag_content, self.__tag_type)
+
+    # ------------------------------------------------------------------------
+
     def get_type(self):
         """ Return the type of the tag content. """
         
