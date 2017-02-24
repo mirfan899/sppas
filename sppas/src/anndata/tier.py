@@ -181,38 +181,17 @@ class sppasTier(sppasMetaData):
         """ Append the given annotation to the end of the tier.
 
         :param annotation: (sppasAnnotation)
+        :raises:
 
         """
         self.validate_annotation(annotation)
 
         if len(self.__ann) > 0:
-
-            last = self.__ann[-1]
-            if last.get_location().get_best().is_point():
-                end = last.get_location().get_best()
-            else:
-                end = last.get_location().get_best().get_end()
-
-            if annotation.get_location().get_best().is_point():
-                new = annotation.get_location().get_best()
-            else:
-                new = annotation.get_location().get_best().get_begin()
-
+            end = self.__ann[-1].get_highest_localization()
+            new = annotation.get_lowest_localization()
+            print(" ... ... current end={:s}, new={:s}".format(end, new))
             if end > new:
-                error = (last.get_location().get_best(), annotation.get_location().get_best())
-                raise ValueError("The tier already has an annotation at: %s. Can't append annotation at: %s" % error)
-
-            if self.__reference_tier:
-                if annotation.get_location().get_best().is_point():
-                    for localization in annotation.get_location().get():
-                        if localization not in refpoints:
-                            raise ValueError("Attempt to append an annotation in a child tier, but the reference tier has no corresponding localization: {:s}".format(localization))
-                else:
-                    for localization in annotation.get_location().get():
-                        if localization.get_begin() not in refpoints:
-                            raise ValueError("Attempt to append an annotation in a child tier, but the reference tier has no corresponding localization: {:s}".format(localization.get_begin()))
-                        if localization.get_end() not in refpoints:
-                            raise ValueError("Attempt to append an annotation in a child tier, but the reference tier has no corresponding localization: {:s}".format(localization.get_end()))
+                raise ValueError("Can't append annotation. Current end {!s:s} is highest than {!s:s}.".format(end, new))
 
         self.__ann.append(annotation)
 
@@ -225,38 +204,30 @@ class sppasTier(sppasMetaData):
 
         """
         self.validate_annotation(annotation)
+        print("Add annotation: {:s}".format(annotation))
+        try:
+            self.append(annotation)
+            print(" ... append success.")
+        except Exception:
+            index = self.__find(annotation.get_lowest_localization(), direction=-1)
+            print(" ... prev is at index={:d}.".format(index))
+            if index == -1:
+                self.__ann.insert(0, annotation)
 
-        if len(self.__ann) == 0:
-            lo = 0
-            self.__ann.insert(lo, annotation)
-        else:
-            size = len(self.__ann)
-            lo = 0
-            hi = size
-            while lo < hi:
-                mid = (lo + hi) // 2
-                if self.__ann[mid].get_location().get_best() < annotation.get_location().get_best():
-                    lo = mid + 1
-                elif self.__ann[mid].get_location().get_best() <= annotation.get_location().get_best():
-                    lo = mid + 1
-                else:
-                    hi = mid
+            elif annotation.location_is_point():
+                self.__ann.insert(index+1, annotation)
 
-            if lo != size and not annotation.get_location().get_best().is_point():
-                tmp = lo
+            else:
+                tmp = index
                 for ann in self.__ann[tmp:]:
-                    if ann.get_location().get_best().get_begin() != annotation.get_location().get_best().get_begin():
+                    if ann.get_lowest_localization() > annotation.get_lowest_localization():
                         break
-                    if ann.get_location().get_best().get_end() < annotation.get_location().get_best().get_end():
-                        lo += 1
-
-            self.__ann.insert(lo, annotation)
-
-        if self.__reference_tier is None or self.__reference_tier.is_superset(self):
-            return True
-
-        self.__ann.pop(lo)
-        return False
+                    if ann.get_highest_localization() < annotation.get_highest_localization():
+                        index += 1
+                print(" ... insert at index={:d}.".format(index+1))
+                self.__ann.insert(index+1, annotation)
+        for ann in self.__ann:
+            print(ann)
 
     # -----------------------------------------------------------------------
 
@@ -322,9 +293,6 @@ class sppasTier(sppasMetaData):
                     for interval in localization.get_intervals():
                         points.append(interval.get_begin())
                         points.append(interval.get_end())
-
-        else:
-            raise Exception('Unknown tier type: Not Point, or Interval nor Disjoint!')
 
         return points
 
@@ -460,7 +428,7 @@ class sppasTier(sppasMetaData):
                     return anns
                 if is_point is False and ann.get_location().get_best().get_begin() >= end:
                     return anns
-                anns.append(a)
+                anns.append(ann)
             return anns
 
         if is_point is True:
@@ -472,7 +440,8 @@ class sppasTier(sppasMetaData):
                 a = self.__ann[i]
                 if a.get_location().get_best() == end:
                     tmp = i
-                else:break
+                else:
+                    break
             hi = tmp
         else:
             lo = self.lindex(begin)
@@ -483,7 +452,8 @@ class sppasTier(sppasMetaData):
                 a = self.__ann[i]
                 if a.get_location().get_best().get_end() == end:
                     tmp = i
-                else:break
+                else:
+                    break
             hi = tmp
 
         return [] if -1 in (lo, hi) else self.__ann[lo:hi+1]
@@ -730,7 +700,7 @@ class sppasTier(sppasMetaData):
 
         # forward
         if direction == 1:
-            if moment < min([p.get_begin() for p in a.get_location().get()]):
+            if moment < a.get_lowest_localization():
                 return index
             if index + 1 < len(self.__ann):
                 return index + 1
@@ -738,7 +708,8 @@ class sppasTier(sppasMetaData):
 
         # backward
         elif direction == -1:
-            if moment > max([p.get_end() for p in a.get_location().get()]):
+            print(" ... ... found index={:d}".format(index))
+            if moment > a.get_highest_localization():
                 return index
             if index-1 > 0:
                 return index-1
@@ -748,7 +719,7 @@ class sppasTier(sppasMetaData):
 
         # if time is during an annotation
         a = self.__ann[index]
-        if min([p.get_begin() for p in a.get_location().get()]) <= moment <= max([p.get_end() for p in a.get_location().get()]):
+        if a.get_lowest_localization() <= moment <= a.get_highest_localization():
             return index
 
         # then, the nearest is either the current or the next annotation
@@ -758,8 +729,8 @@ class sppasTier(sppasMetaData):
             return index
 
         time = moment.get_midpoint()
-        prev_time = max([p.get_end().get_midpoint() for p in self.__ann[index].get_location().get()])
-        next_time = min([p.get_begin().get_midpoint() for p in self.__ann[_next].get_location().get()])
+        prev_time = max([p.get_end().get_midpoint() for p in self.__ann[index].get_location()])
+        next_time = min([p.get_begin().get_midpoint() for p in self.__ann[_next].get_location()])
         if abs(time - prev_time) > abs(next_time - time):
             return _next
 
@@ -823,12 +794,13 @@ class sppasTier(sppasMetaData):
         """
         is_point = self.is_point()
         lo = 0
-        hi = len(self.__ann) - 1
+        hi = len(self.__ann)  # - 1
+        mid = (lo + hi) // 2
         while lo < hi:
-            mid = (lo + hi) / 2
+            mid = (lo + hi) // 2
             a = self.__ann[mid]
             if is_point is True:
-                p = a.get_location().get_best().get_point()
+                p = a.get_location().get_best()
                 if p == x:
                     return mid
                 if x < p:
@@ -836,8 +808,8 @@ class sppasTier(sppasMetaData):
                 else:
                     lo = mid + 1
             else:  # Interval or Disjoint
-                b = a.get_location().get_best().get_begin()
-                e = a.get_location().get_best().get_end()
+                b = a.get_lowest_localization()
+                e = a.get_highest_localization()
                 if b == x or b < x < e:
                     return mid
                 if x < e:
@@ -847,12 +819,18 @@ class sppasTier(sppasMetaData):
 
         # We failed to find an annotation at time=x. return the closest...
         if direction == 1:
-            return hi
+            return min(hi, len(self.__ann) - 1)
         return mid
 
     # -----------------------------------------------------------------------
 
     def validate_annotation(self, annotation):
+        """ Validate the annotation, set its parent to this tier.
+
+        :param annotation:
+        :raises: AnnDataTypeError, CtrlVocabContainsError, HierarchyContainsError, HierarchyTypeError
+
+        """
         # Check instance:
         if isinstance(annotation, sppasAnnotation) is False:
             raise AnnDataTypeError(annotation, "sppasAnnotation")
@@ -862,19 +840,23 @@ class sppasTier(sppasMetaData):
         #  - label consistency
         #  - location consistency
         if len(self.__ann) > 0:
-            if (annotation.get_location().get_best().is_point() is True and self.is_point() is False) or \
-                    (annotation.get_location().get_best().is_interval() is True and self.is_interval() is False) or \
-                    (annotation.get_location().get_best().is_disjoint() is True and self.is_disjoint() is False):
-                raise TypeError("Attempt to append an annotation with localization of bad type.")
+            if annotation.location_is_point() is True and self.is_point() is False:
+                raise AnnDataTypeError(annotation, "sppasPoint")
+            if annotation.location_is_interval() is True and self.is_interval() is False:
+                raise AnnDataTypeError(annotation, "sppasInterval")
+            if annotation.location_is_disjoint() is True and self.is_disjoint() is False:
+                raise AnnDataTypeError(annotation, "sppasDisjoint")
 
         # Assigning a parent will validate the label and the location
-        annotation.set_parent(self)
+        if self.__ctrl_vocab is not None or self.__parent is not None:
+            annotation.set_parent(self)
 
     # -----------------------------------------------------------------------
 
     def validate_annotation_label(self, label):
         """ Validate the label of an annotation.
 
+        :param label: (sppasLabel)
         :raises: CtrlVocabContainsError
 
         """
@@ -887,8 +869,12 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def validate_annotation_location(self, location):
+        """ Validate the location of an annotation.
 
-        # Check if hierarchy is preserved
+        :param location: (sppasLocation)
+        :raises: HierarchyContainsError, HierarchyTypeError
+
+        """
         if self.__parent is not None:
             if self.__reference_tier is not None:
                 refpoints = self.__reference_tier.get_all_points()

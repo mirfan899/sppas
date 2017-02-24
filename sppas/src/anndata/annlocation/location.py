@@ -34,7 +34,6 @@
 
 """
 from ..anndataexc import AnnDataTypeError
-from ..anndataexc import AnnDataEqTypeError
 from .localization import sppasBaseLocalization
 
 # ---------------------------------------------------------------------------
@@ -99,11 +98,13 @@ class sppasLocation(object):
         if localization not in self.__localizations:
             # check types consistency.
             if len(self.__localizations) > 0:
-                l = self.__localizations[0][0]
-                if l.is_point() != localization.is_point() or\
-                    l.is_interval() != localization.is_interval() or\
-                    l.is_disjoint() != localization.is_disjoint():
-                    raise AnnDataEqTypeError(localization, l)
+                if self.is_point() != localization.is_point():
+                    raise AnnDataTypeError(localization, "sppasPoint")
+                if self.is_interval() != localization.is_interval():
+                    raise AnnDataTypeError(localization, "sppasInterval")
+                if self.is_disjoint() != localization.is_disjoint():
+                    raise AnnDataTypeError(localization, "sppasDisjoint")
+
             self.__localizations.append((localization, score))
 
     # -----------------------------------------------------------------------
@@ -136,13 +137,37 @@ class sppasLocation(object):
 
     # -----------------------------------------------------------------------
 
+    def is_point(self):
+        """ Return True if the location is made of sppasPoint localizations. """
+
+        l = self.__localizations[0][0]
+        return l.is_point()
+
+    # -----------------------------------------------------------------------
+
+    def is_interval(self):
+        """ Return True if the location is made of sppasInterval localizations. """
+
+        l = self.__localizations[0][0]
+        return l.is_interval()
+
+    # -----------------------------------------------------------------------
+
+    def is_disjoint(self):
+        """ Return True if the location is made of sppasDisjoint localizations. """
+
+        l = self.__localizations[0][0]
+        return l.is_disjoint()
+
+    # -----------------------------------------------------------------------
+
     def __repr__(self, *args, **kwargs):
-        return "Locations: {:s}".format("; ".join([str(i) for i in self.__localizations]))
+        return "Locations: {!s:s}".format("; ".join([str(l) for l in self.__localizations]))
 
     # ------------------------------------------------------------------------
 
     def __str__(self, *args, **kwargs):
-        return "{:s}".format("; ".join([l for l in self.__localizations]))
+        return "{!s:s}".format("; ".join([str(l) for l in self.__localizations]))
 
     # -----------------------------------------------------------------------
 

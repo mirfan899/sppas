@@ -160,7 +160,7 @@ class sppasAnnotation(sppasMetaData):
         if self.__parent is not None:
             try:
                 self.__parent.validate_annotation_label(self.__label)
-            except ValueError:
+            except Exception:
                 self.__label.remove(tag)
                 raise
 
@@ -192,6 +192,45 @@ class sppasAnnotation(sppasMetaData):
                 raise
 
     # -----------------------------------------------------------------------
+
+    def location_is_point(self):
+        """ Return True if the location is made of sppasPoint localizations. """
+
+        return self.__location.is_point()
+
+    # -----------------------------------------------------------------------
+
+    def location_is_interval(self):
+        """ Return True if the location is made of sppasInterval localizations. """
+
+        return self.__location.is_interval()
+
+    # -----------------------------------------------------------------------
+
+    def location_is_disjoint(self):
+        """ Return True if the location is made of sppasDisjoint localizations. """
+
+        return self.__location.is_disjoint()
+
+    # -----------------------------------------------------------------------
+
+    def get_highest_localization(self):
+        """ Return the sppasPoint with the highest localization. """
+
+        if self.location_is_point():
+            return max([l for l in self.__location])
+        return max([l.get_end() for l in self.__location])
+
+    # -----------------------------------------------------------------------
+
+    def get_lowest_localization(self):
+        """ Return the sppasPoint with the lowest localization. """
+
+        if self.location_is_point():
+            return min([l for l in self.__location])
+        return min([l.get_begin() for l in self.__location])
+
+    # -----------------------------------------------------------------------
     # Getters
     # -----------------------------------------------------------------------
 
@@ -200,8 +239,8 @@ class sppasAnnotation(sppasMetaData):
     # Overloads
     # -----------------------------------------------------------------------
 
-    def __str__(self):
+    def __repr__(self):
         return "Annotation: {:s} {:s}".format(self.__location, self.__label)
 
-    def __repr__(self):
+    def __str__(self):
         return "{:s} {:s}".format(self.__location, self.__label)
