@@ -42,7 +42,7 @@ class sppasBaseLocalization(object):
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Represents a Localization of an Annotation.
+    :summary:      Represents a base class for any kind of localization.
 
     """
     def __init__(self):
@@ -55,6 +55,16 @@ class sppasBaseLocalization(object):
         """ Return myself. """
 
         return self
+
+    # -----------------------------------------------------------------------
+
+    def set(self, other):
+        """ Set self members from another localization.
+
+        :param other: (sppasBaseLocalization)
+
+        """
+        raise NotImplementedError
 
     # -----------------------------------------------------------------------
 
@@ -89,60 +99,6 @@ class sppasBaseLocalization(object):
 
     def is_disjoint(self):
         """ Return True if this object is an instance of sppasTimeDisjoint or sppasFrameDisjoint.
-        Should be overridden.
-
-        """
-        return False
-
-    # ---------------------------------------------------------------------
-
-    def is_time_point(self):
-        """ Return True if this object is an instance of sppasTimePoint.
-        Should be overridden.
-
-        """
-        return False
-
-    # ---------------------------------------------------------------------
-
-    def is_time_interval(self):
-        """ Return True if this object is an instance of sppasTimeInterval.
-        Should be overridden.
-
-        """
-        return False
-
-    # ---------------------------------------------------------------------
-
-    def is_time_disjoint(self):
-        """ Return True if this object is an instance of sppasTimeDisjoint.
-        Should be overridden.
-
-        """
-        return False
-
-    # ---------------------------------------------------------------------
-
-    def is_frame_point(self):
-        """ Return True if this object is an instance of sppasFramePoint.
-        Should be overridden.
-
-        """
-        return False
-
-    # ---------------------------------------------------------------------
-
-    def is_frame_interval(self):
-        """ Return True if this object is an instance of sppasFrameInterval.
-        Should be overridden.
-
-        """
-        return False
-
-    # ---------------------------------------------------------------------
-
-    def is_frame_disjoint(self):
-        """ Return True if this object is an instance of sppasFrameDisjoint.
         Should be overridden.
 
         """

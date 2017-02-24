@@ -29,10 +29,10 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.annloc.timepoint.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.anndata.annloc.point.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Localization of a point in time.
+    Localization of a point in time, frame, etc.
 
 """
 from ..anndataexc import AnnDataTypeError
@@ -44,21 +44,24 @@ from .duration import sppasDuration
 # ---------------------------------------------------------------------------
 
 
-class sppasTimePoint(sppasBaseLocalization):
+class sppasPoint(sppasBaseLocalization):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Point in time.
-    Represents a time point identified by a time value and a radius value.
-    Generally, time is represented in seconds, as a float value.
+    :summary:      Point in time, frame, etc.
 
-    In the sppasTimePoint instance, the 3 relations <, = and > take into
-    account a radius value, that represents the uncertainty of the
-    localization. For a point x, with a radius value of dx, and a point y
-    with a radius value of dy, these relations are defined as:
+    Represents a point identified by a midpoint value and a radius value.
+    Generally, time is represented in seconds, as a float value ; frames
+    are represented by integers like ranks.
+
+    In this class, the 3 relations <, = and > take into account a radius
+    value, that represents the uncertainty of the localization. For a point x,
+    with a radius value of dx, and a point y with a radius value of dy, these
+    relations are defined as:
+
         - x = y iff |x - y| <= dx + dy
         - x < y iff not(x = y) and x < y
         - x > y iff not(x = y) and x > y
@@ -86,31 +89,31 @@ class sppasTimePoint(sppasBaseLocalization):
             - x = y is false
 
     """
-    def __init__(self, time_value, radius=0.0):
-        """ Create a sppasTimePoint instance.
+    def __init__(self, midpoint, radius=None):
+        """ Create a sppasPoint instance.
 
-        :param time_value: (float) time value in seconds.
-        :param radius: (float) represents the vagueness of the point.
+        :param midpoint: (float, int) midpoint value.
+        :param radius: (float, int) represents the vagueness of the point.
+        Radius must be of the same type as midpoint.
 
         """
         sppasBaseLocalization.__init__(self)
+        self.__midpoint = 0
+        self.__radius = None
 
-        self.__midpoint = 0.
-        self.__radius = 0.
-
-        self.set_midpoint(time_value)
+        self.set_midpoint(midpoint)
         self.set_radius(radius)
 
     # -----------------------------------------------------------------------
 
     def set(self, other):
-        """ Set self members from another sppasTimePoint instance.
+        """ Set self members from another sppasPoint instance.
 
-        :param other: (sppasTimePoint)
+        :param other: (sppasPoint)
 
         """
-        if isinstance(other, sppasTimePoint) is False:
-            raise AnnDataTypeError(other, "sppasTimePoint")
+        if isinstance(other, sppasPoint) is False:
+            raise AnnDataTypeError(other, "sppasPoint")
 
         self.set_midpoint(other.get_midpoint())
         self.set_radius(other.get_radius())
@@ -121,22 +124,12 @@ class sppasTimePoint(sppasBaseLocalization):
         """ Overrides. Return True, because self is representing a point. """
 
         return True
-
-    # -----------------------------------------------------------------------
-
-    def is_time_point(self):
-        """ Overrides. Return True, because self is a point as time value. """
-
-        return True
-
     # -----------------------------------------------------------------------
 
     def copy(self):
         """ Return a deep copy of self. """
 
-        t = self.get_midpoint()
-        r = self.get_radius()
-        return sppasTimePoint(t, r)
+        return sppasPoint(self.__midpoint, self.__radius)
 
     # -----------------------------------------------------------------------
 
@@ -147,19 +140,30 @@ class sppasTimePoint(sppasBaseLocalization):
 
     # -----------------------------------------------------------------------
 
-    def set_midpoint(self, value):
+    def set_midpoint(self, midpoint):
         """ Set the midpoint value.
 
-        :param value: (float) is the new time to set the midpoint.
+        :param midpoint: (float, int) is the new midpoint value.
 
         """
-        try:
-            self.__midpoint = float(value)
-            if self.__midpoint < 0.:
-                self.__midpoint = 0.
-                raise AnnDataNegValueError(value)
-        except TypeError:
-            raise AnnDataTypeError(value, "float")
+        if isinstance(midpoint, float):
+            try:
+                self.__midpoint = float(midpoint)
+                if self.__midpoint < 0.:
+                    self.__midpoint = 0.
+                    raise AnnDataNegValueError(midpoint)
+            except TypeError:
+                raise AnnDataTypeError(midpoint, "float")
+        elif isinstance(midpoint, int):
+            try:
+                self.__midpoint = int(midpoint)
+                if self.__midpoint < 0:
+                    self.__midpoint = 0
+                    raise AnnDataNegValueError(midpoint)
+            except TypeError:
+                raise AnnDataTypeError(midpoint, "int")
+        else:
+            raise AnnDataTypeError(midpoint, "float, int")
 
     # -----------------------------------------------------------------------
 
@@ -170,23 +174,37 @@ class sppasTimePoint(sppasBaseLocalization):
 
     # -----------------------------------------------------------------------
 
-    def set_radius(self, value):
+    def set_radius(self, radius=None):
         """ Fix the radius value, ie. the vagueness of the point.
+        The midpoint value must be set first.
 
-        :param value: (float) the radius value
+        :param radius: (float, int, None) the radius value
 
         """
-        try:
-            value = float(value)
-            if value < 0.:
-                raise AnnDataNegValueError(value)
-        except TypeError:
-            raise AnnDataTypeError(value, "float")
+        if radius is not None:
+            if type(radius) != type(self.__midpoint):
+                raise AnnDataTypeError(radius, "float, int")
 
-        if self.__midpoint < value:
-            value = self.__midpoint
+            if isinstance(radius, float):
+                try:
+                    radius = float(radius)
+                    if radius < 0.:
+                        raise AnnDataNegValueError(radius)
+                except TypeError:
+                    raise AnnDataTypeError(radius, "float")
+            
+            elif isinstance(radius, int):
+                try:
+                    radius = int(radius)
+                    if radius < 0:
+                        raise AnnDataNegValueError(radius)
+                except TypeError:
+                    raise AnnDataTypeError(radius, "int")
 
-        self.__radius = value
+            if self.__midpoint < radius:
+                radius = self.__midpoint
+    
+        self.__radius = radius
 
     # -----------------------------------------------------------------------
 
@@ -196,34 +214,49 @@ class sppasTimePoint(sppasBaseLocalization):
         :returns: (sppasDuration) Duration and its vagueness.
 
         """
+        if self.__radius is None:
+            return sppasDuration(0., 0.)
+        
         return sppasDuration(0., 2.0*self.get_radius())
 
     # -----------------------------------------------------------------------
 
     def __repr__(self):
-        return "sppasTimePoint: {:f}, {:f}".format(self.get_midpoint(), self.get_radius())
+        if self.__radius is None:
+            return "sppasPoint: {:f}".format(self.get_midpoint())
+        return "sppasPoint: {:f}, {:f}".format(self.get_midpoint(), self.get_radius())
 
     # -----------------------------------------------------------------------
 
     def __str__(self):
+        if self.__radius is None:
+            return "{:f}".format(self.get_midpoint())
         return "({:f}, {:f})".format(self.get_midpoint(), self.get_radius())
 
     # -----------------------------------------------------------------------
 
     def __eq__(self, other):
-        """ Equal is required to use '==' between 2 sppasTimePoint instances or
-        between a sppasTimePoint and an other object representing time.
+        """ Equal is required to use '==' between 2 sppasPoint instances or
+        between a sppasPoint and an other object representing time.
         This relationship takes into account the radius.
 
-        :param other: (sppasTimePoint, float, int) the other time point to compare with.
+        :param other: (sppasPoint, float, int) the other time point to compare with.
 
-        """
-        if isinstance(other, sppasTimePoint) is True:
+        """        
+        if isinstance(other, sppasPoint) is True:
+
             delta = abs(self.__midpoint - other.get_midpoint())
-            radius = self.__radius + other.get_radius()
+            radius = 0
+            if self.__radius is not None:
+                radius += self.__radius
+            if other.get_radius() is not None:
+                radius += other.get_radius()
             return delta <= radius
 
         if isinstance(other, (int, float)):
+            if self.__radius is None:
+                return self.__midpoint == other
+
             delta = abs(self.__midpoint - other)
             radius = self.__radius
             return delta <= radius
@@ -233,13 +266,13 @@ class sppasTimePoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def __lt__(self, other):
-        """ LowerThan is required to use '<' between 2 sppasTimePoint instances
-        or between a sppasTimePoint and an other time object.
+        """ LowerThan is required to use '<' between 2 sppasPoint instances
+        or between a sppasPoint and an other time object.
 
-        :param other: (sppasTimePoint, float, int) the other time point to compare with.
+        :param other: (sppasPoint, float, int) the other time point to compare with.
 
         """
-        if isinstance(other, sppasTimePoint) is True:
+        if isinstance(other, sppasPoint) is True:
             return self != other and self.__midpoint < other.get_midpoint()
 
         return (self != other) and (self.__midpoint < other)
@@ -247,13 +280,13 @@ class sppasTimePoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def __gt__(self, other):
-        """ GreaterThan is required to use '>' between 2 sppasTimePoint instances
-        or between a sppasTimePoint and an other time object.
+        """ GreaterThan is required to use '>' between 2 sppasPoint instances
+        or between a sppasPoint and an other time object.
 
-        :param other: (sppasTimePoint, float, int) the other time point to compare with.
+        :param other: (sppasPoint, float, int) the other time point to compare with.
 
         """
-        if isinstance(other, sppasTimePoint) is True:
+        if isinstance(other, sppasPoint) is True:
             return self != other and self.__midpoint > other.get_midpoint()
 
         return (self != other) and (self.__midpoint > other)
