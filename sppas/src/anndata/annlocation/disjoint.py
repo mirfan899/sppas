@@ -195,6 +195,13 @@ class sppasDisjoint(sppasBaseLocalization):
         return sppasDuration(value, vagueness)
 
     # -----------------------------------------------------------------------
+
+    def is_bound(self, point):
+        """ Return True if point is a bound of an interval. """
+
+        return any([i.is_bound(point) for i in self.__intervals])
+
+    # -----------------------------------------------------------------------
     # Overloads
     # -----------------------------------------------------------------------
 

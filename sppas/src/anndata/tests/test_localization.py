@@ -332,7 +332,7 @@ class TestTimeInterval(unittest.TestCase):
         interval2 = sppasInterval(self.point1002, self.point1004)
         self.assertFalse(interval1 >= interval2)
 
-    def test_Duration(self):
+    def test_duration(self):
         point1 = sppasPoint(1., 0.001)
         point3 = sppasPoint(3., 0.001)
         interval13 = sppasInterval(point1, point3)
@@ -359,6 +359,11 @@ class TestTimeInterval(unittest.TestCase):
         interval23 = sppasInterval(point2, point3)
         interval23.set(interval01)
         self.assertFalse(interval23 is interval001)
+        interval23 = sppasInterval(point2, point3)
+        self.assertTrue(interval23.is_bound(point2))
+        self.assertTrue(interval23.is_bound(point3))
+        self.assertTrue(interval23.is_bound(sppasPoint(2.)))
+        self.assertFalse(interval23.is_bound(point0))
 
 # ---------------------------------------------------------------------------
 
@@ -496,7 +501,7 @@ class TestFrameInterval(unittest.TestCase):
         interval2 = sppasInterval(self.point1002, self.point1004)
         self.assertFalse(interval1 >= interval2)
 
-    def test_Duration(self):
+    def test_duration(self):
         interval1 = sppasInterval(self.point1000, self.point1007)
         self.assertEqual(interval1.duration().get_value(), 7)
         self.assertEqual(interval1.duration(), 6)
@@ -537,24 +542,24 @@ class TestTimeDisjoint(unittest.TestCase):
         intervals2 = sppasDisjoint([sppasInterval(sppasPoint(i), sppasPoint(i+1)) for i in range(10)])
         self.assertEqual(intervals1, intervals2)
 
-    def test_Duration(self):
+    def test_duration(self):
         intervals = [sppasInterval(sppasPoint(i), sppasPoint(i+1)) for i in range(5)]
         t_disjoint = sppasDisjoint(intervals)
         self.assertEqual(t_disjoint.duration().get_value(), 5)
         self.assertEqual(t_disjoint.duration().get_margin(), 0)
 
-    def test_GetInterval(self):
+    def test_get_interval(self):
         t_disjoint = sppasDisjoint([sppasInterval(sppasPoint(i), sppasPoint(i+1)) for i in range(10)])
         for i in range(10):
             self.assertEqual(t_disjoint.get_interval(i), sppasInterval(sppasPoint(i), sppasPoint(i+1)))
 
-    def test_Is(self):
+    def test_is(self):
         t_disjoint = sppasDisjoint([sppasInterval(sppasPoint(i), sppasPoint(i+1)) for i in range(10)])
         self.assertFalse(t_disjoint.is_point())
         self.assertFalse(t_disjoint.is_interval())
         self.assertTrue(t_disjoint.is_disjoint())
 
-    def test_Set(self):
+    def test_set(self):
         t_disjoint = sppasDisjoint([sppasInterval(sppasPoint(float(i)), sppasPoint(float(i)+1.)) for i in range(10)])
         t_disjoint.set_begin(sppasPoint(0.5))
         self.assertEqual(t_disjoint.get_begin(), sppasPoint(0.5))
@@ -565,6 +570,11 @@ class TestTimeDisjoint(unittest.TestCase):
         self.assertEqual(t_disjoint.End, sppasPoint(11))
         with self.assertRaises(ValueError):
             t_disjoint.set_end(sppasPoint(9.))
+
+    def test_is_bound(self):
+        t_disjoint = sppasDisjoint([sppasInterval(sppasPoint(i), sppasPoint(i+1)) for i in range(10)])
+        self.assertTrue(t_disjoint.is_bound(sppasPoint(2)))
+        self.assertFalse(t_disjoint.is_bound(sppasPoint(11)))
 
 # ---------------------------------------------------------------------------
 
@@ -583,24 +593,24 @@ class TestFrameDisjoint(unittest.TestCase):
         intervals2 = sppasDisjoint([sppasInterval(sppasPoint(i), sppasPoint(i+1)) for i in range(10)])
         self.assertEqual(intervals1, intervals2)
 
-    def test_Duration(self):
+    def test_duration(self):
         intervals = [sppasInterval(sppasPoint(i), sppasPoint(i+1)) for i in range(5)]
         t_disjoint = sppasDisjoint(intervals)
         self.assertEqual(t_disjoint.duration().get_value(), 5)
         self.assertEqual(t_disjoint.duration().get_margin(), 0)
 
-    def test_GetInterval(self):
+    def test_get_interval(self):
         t_disjoint = sppasDisjoint([sppasInterval(sppasPoint(i), sppasPoint(i+1)) for i in range(10)])
         for i in range(10):
             self.assertEqual(t_disjoint.get_interval(i), sppasInterval(sppasPoint(i), sppasPoint(i+1)))
 
-    def test_Is(self):
+    def test_is(self):
         t_disjoint = sppasDisjoint([sppasInterval(sppasPoint(i), sppasPoint(i+1)) for i in range(10)])
         self.assertFalse(t_disjoint.is_point())
         self.assertFalse(t_disjoint.is_interval())
         self.assertTrue(t_disjoint.is_disjoint())
 
-    def test_Set(self):
+    def test_set(self):
         t_disjoint = sppasDisjoint([sppasInterval(sppasPoint(i), sppasPoint(i+1)) for i in range(10)])
         t_disjoint.set_begin(sppasPoint(0))
         self.assertEqual(t_disjoint.get_begin(), sppasPoint(0))

@@ -41,6 +41,7 @@ from sppas.src.utils.makeunicode import sppasUnicode
 from .anndataexc import AnnDataTypeError
 from .anndataexc import IntervalBoundsError
 from .anndataexc import CtrlVocabContainsError
+from .anndataexc import TierAppendError
 
 from .annotation import sppasAnnotation
 from .metadata import sppasMetaData
@@ -83,7 +84,6 @@ class sppasTier(sppasMetaData):
         self.__ctrl_vocab = None
         self.__media = None
         self.__parent = None
-        self.__reference_tier = None
 
         self.set_name(name)
         self.set_ctrl_vocab(ctrl_vocab)
@@ -158,6 +158,7 @@ class sppasTier(sppasMetaData):
         """ Set a media to the tier.
 
         :param media: (sppasMedia)
+        :raises: AnnDataTypeError
 
         """
         if media is not None:
@@ -178,10 +179,10 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def append(self, annotation):
-        """ Append the given annotation to the end of the tier.
+        """ Append the given annotation at the end of the tier.
 
         :param annotation: (sppasAnnotation)
-        :raises:
+        :raises: AnnDataTypeError, CtrlVocabContainsError, HierarchyContainsError, HierarchyTypeError, TierAppendError
 
         """
         self.validate_annotation(annotation)
@@ -189,9 +190,8 @@ class sppasTier(sppasMetaData):
         if len(self.__ann) > 0:
             end = self.__ann[-1].get_highest_localization()
             new = annotation.get_lowest_localization()
-            print(" ... ... current end={:s}, new={:s}".format(end, new))
             if end > new:
-                raise ValueError("Can't append annotation. Current end {!s:s} is highest than {!s:s}.".format(end, new))
+                raise TierAppendError(end, new)
 
         self.__ann.append(annotation)
 
@@ -201,6 +201,7 @@ class sppasTier(sppasMetaData):
         """ Add an annotation to the tier in sorted order.
 
         :param annotation: (sppasAnnotation)
+        :raises: AnnDataTypeError, CtrlVocabContainsError, HierarchyContainsError, HierarchyTypeError
 
         """
         self.validate_annotation(annotation)
@@ -209,7 +210,7 @@ class sppasTier(sppasMetaData):
             self.append(annotation)
             print(" ... append success.")
         except Exception:
-            index = self.__find(annotation.get_lowest_localization(), direction=-1)
+            index = self.mindex(annotation.get_lowest_localization(), bound=-1)
             print(" ... prev is at index={:d}.".format(index))
             if index == -1:
                 self.__ann.insert(0, annotation)
@@ -218,14 +219,18 @@ class sppasTier(sppasMetaData):
                 self.__ann.insert(index+1, annotation)
 
             else:
-                tmp = index
-                for ann in self.__ann[tmp:]:
-                    if ann.get_lowest_localization() > annotation.get_lowest_localization():
-                        break
-                    if ann.get_highest_localization() < annotation.get_highest_localization():
-                        index += 1
-                print(" ... insert at index={:d}.".format(index+1))
-                self.__ann.insert(index+1, annotation)
+                # We go further to look at the next localizations until the begin is smaller.
+                while index + 1 < len(self.__ann) and \
+                        self.__ann[index + 1].get_lowest_localization() <= annotation.get_lowest_localization():
+                    index += 1
+                # We go further to look at the next localizations until the end is smaller.
+                while index + 1 < len(self.__ann) and \
+                        self.__ann[index + 1].get_lowest_localization() <= annotation.get_lowest_localization() and \
+                        self.__ann[index + 1].get_highest_localization() < annotation.get_highest_localization():
+                    index += 1
+
+                print(" ... insert at index={:d}.".format(index))
+                self.__ann.insert(index + 1, annotation)
         for ann in self.__ann:
             print(ann)
 
@@ -240,7 +245,7 @@ class sppasTier(sppasMetaData):
         :returns: the number of removed annotations
 
         """
-        if end <= begin:
+        if end < begin:
             raise IntervalBoundsError(begin, end)
 
         annotations = self.find(begin, end, overlaps)
@@ -424,9 +429,9 @@ class sppasTier(sppasMetaData):
             index = self.__find(begin)
             anns = list()
             for ann in self.__ann[index:]:
-                if is_point is True and ann.get_location().get_best() > end:
+                if is_point is True and ann.get_highest_localization() > end:
                     return anns
-                if is_point is False and ann.get_location().get_best().get_begin() >= end:
+                if is_point is False and ann.get_lowest_localization() >= end:
                     return anns
                 anns.append(ann)
             return anns
@@ -437,8 +442,7 @@ class sppasTier(sppasMetaData):
             if -1 in (lo, hi):
                 return []
             for i in range(hi, len(self.__ann)):
-                a = self.__ann[i]
-                if a.get_location().get_best() == end:
+                if self.__ann[i].get_highest_localization() == end:
                     tmp = i
                 else:
                     break
@@ -448,72 +452,15 @@ class sppasTier(sppasMetaData):
             hi = self.rindex(end)
             if -1 in (lo, hi):
                 return []
+            tmp = hi
             for i in range(hi, len(self.__ann)):
-                a = self.__ann[i]
-                if a.get_location().get_best().get_end() == end:
+                if self.__ann[i].get_highest_localization() == end:
                     tmp = i
                 else:
                     break
             hi = tmp
 
         return [] if -1 in (lo, hi) else self.__ann[lo:hi+1]
-
-    # -----------------------------------------------------------------------
-
-    def get_annotations_start_at(self, moment):
-        """ Return a list of annotations, starting at the specified moment.
-
-        :param moment: A moment in time, frame, rank, etc. (i.e. a midpoint value).
-
-        """
-        annotations = list()
-        if self.is_point():
-            index = self.index(moment)
-            if index == -1:
-                return annotations
-            for i in range(index, len(self.__ann)):
-                a = self._ann[i]
-                if moment in [p.get_point() for p in a.get_location().get()]:
-                    annotations.append(a)
-                else:
-                    break
-        else:
-            index = self.lindex(moment)
-            if index == -1:
-                return []
-            for i in range(index, len(self.__ann)):
-                a = self.__ann[i]
-                if moment in [p.get_begin() for p in a.get_location().get()]:
-                    annotations.append(a)
-                else:
-                    break
-
-        return annotations
-
-    # -----------------------------------------------------------------------
-
-    def get_annotations_end_at(self, moment):
-        """ Return a list of annotations, ending at the specified moment.
-
-        :param moment: A moment in time, frame, rank, etc. (i.e. a midpoint value).
-
-        """
-        annotations = []
-        if self.is_point():
-            return self.get_annotations_start_at(moment)
-
-        index = self.rindex(moment)
-        if index == -1:
-            return []
-
-        for i in range(index, len(self.__ann)):
-            a = self.__ann[i]
-            if moment in [p.get_end() for p in a.get_location().get()]:
-                annotations.append(a)
-            else:
-                return annotations
-
-        return annotations
 
     # -----------------------------------------------------------------------
 
@@ -533,33 +480,25 @@ class sppasTier(sppasMetaData):
         while lo < hi:
             mid = (lo + hi) // 2
             a = self.__ann[mid]
-            if moment < min([p for p in a.get_location().get()]):
+            if moment < a.get_lowest_localization():
                 hi = mid
-            elif moment > max([p for p in a.get_location().get()]):
+            elif moment > a.get_lowest_localization():
                 lo = mid + 1
             else:
                 found = True
                 break
 
-        if not found:
+        if found is False:
             return -1
 
-        # if the tier contains more than one annotation with the same point value,
-        # the method returns the first one
-        first = mid
-        for i in range(mid, -1, -1):
-            a = self.__ann[i]
-            if moment in [p for p in a.get_location().get()]:
-                first = i
-            else:
-                break
-
-        return first
+        return mid
 
     # ------------------------------------------------------------------------
 
     def lindex(self, moment):
-        """ Return the index of the interval starting at the given moment, or -1.
+        """ Return the index of the interval starting at a given moment, or -1.
+        If the tier contains more than one annotation starting at the same moment,
+        the method returns the first one.
         Only for tier with intervals or disjoint.
 
         :param moment: (sppasPoint)
@@ -573,50 +512,51 @@ class sppasTier(sppasMetaData):
         found = False
         while lo < hi:
             mid = (lo + hi) // 2
-            a = self.__ann[mid]
-            if moment < min([p.get_begin() for p in a.get_location().get()]):
+            begin = self.__ann[mid].get_lowest_localization()
+            if moment < begin:
                 hi = mid
-            elif moment > max([p.get_begin() for p in a.get_location().get()]):
+            elif moment > begin:
                 lo = mid + 1
             else:
                 found = True
                 break
-
-        if not found:
+        if found is False:
             return -1
+        if mid == 0:
+            return 0
 
-        # if the tier contains more than one annotation with the same begin value,
-        # the method returns the first one
-        first = mid
-        for i in range(mid, -1, -1):
-            a = self.__ann[i]
-            if moment in [p.get_begin() for p in a.get_location().get()]:
-                first = i
-            else:
-                break
-        return first
+        # We go back to look at the previous localizations until they are different.
+        while mid >= 0 and self.__ann[mid].get_lowest_localization() == moment:
+            mid -= 1
+
+        return mid + 1
 
     # ------------------------------------------------------------------------
 
-    def mindex(self, moment, direction):
+    def mindex(self, moment, bound=0):
         """ Return the index of the interval containing the given moment, or -1.
+        If the tier contains more than one annotation at the same moment,
+        the method returns the first one.
         Only for tier with intervals or disjoint.
-        ATTENTION: Only on the localization with the best score.
 
         :param moment: (sppasPoint)
-        :param direction: (int)
+        :param bound: (int)
+            - 0 to exclude bounds of the interval.
+            - -1 to include begin bound.
+            - +1 to include end bound.
+        :returns: (int) Index of the annotation containing a moment
 
         """
         if self.is_point() is True:
             return -1
 
         for i, a in enumerate(self.__ann):
-            b = a.get_location().get_best().get_begin()
-            e = a.get_location().get_best().get_end()
-            if direction == -1:
+            b = a.get_lowest_localization()
+            e = a.get_highest_localization()
+            if bound < 0:
                 if b <= moment < e:
                     return i
-            elif direction == 1:
+            elif bound > 0:
                 if b < moment <= e:
                     return i
             else:
@@ -629,6 +569,8 @@ class sppasTier(sppasMetaData):
 
     def rindex(self, moment):
         """ Return the index of the interval ending at the given moment.
+        If the tier contains more than one annotation ending at the same moment,
+        the method returns the last one.
         Only for tier with intervals or disjoint.
 
         :param moment: (sppasPoint)
@@ -644,28 +586,24 @@ class sppasTier(sppasMetaData):
         while lo < hi:
             mid = (lo + hi) // 2
             a = self.__ann[mid]
-            if moment < min([p.get_end() for p in a.get_location().get()]):
+            if moment < a.get_highest_localization():
                 hi = mid
-            elif moment > max([p.get_end() for p in a.get_location().get()]):
+            elif moment > a.get_highest_localization():
                 lo = mid + 1
             else:
                 found = True
                 break
 
-        if not found:
+        if found is False:
             return -1
+        if mid == len(self.__ann) - 1:
+            return mid
 
-        # if the tier contains more than one annotation with the same end value,
-        # the method returns the first one
-        first = mid
-        for i in range(mid, -1, -1):
-            a = self.__ann[i]
-            if moment in [p.get_end() for p in a.get_location().get()]:
-                first = i
-            else:
-                break
+        # We go further to look at the next localizations until they are different.
+        while mid+1 < len(self.__ann) and self.__ann[mid+1].get_highest_localization() == moment:
+            mid += 1
 
-        return first
+        return mid
 
     # ------------------------------------------------------------------------
 
@@ -787,7 +725,6 @@ class sppasTier(sppasMetaData):
 
     def __find(self, x, direction=1):
         """ Return the index of the annotation whose moment value contains x.
-        ATTENTION: only compare to the localization with the highest score
 
         :param x: (sppasPoint)
 
@@ -819,7 +756,9 @@ class sppasTier(sppasMetaData):
 
         # We failed to find an annotation at time=x. return the closest...
         if direction == 1:
-            return min(hi, len(self.__ann) - 1)
+            return hi #min(hi, len(self.__ann) - 1)
+        if direction == -1:
+            return lo
         return mid
 
     # -----------------------------------------------------------------------

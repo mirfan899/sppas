@@ -231,6 +231,13 @@ class sppasAnnotation(sppasMetaData):
         return min([l.get_begin() for l in self.__location])
 
     # -----------------------------------------------------------------------
+
+    def contains_localization(self, localization):
+        """ Return True if the given localization is in the location. """
+
+        return self.__location.contains(localization)
+
+    # -----------------------------------------------------------------------
     # Getters
     # -----------------------------------------------------------------------
 

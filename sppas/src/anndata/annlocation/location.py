@@ -161,6 +161,16 @@ class sppasLocation(object):
 
     # -----------------------------------------------------------------------
 
+    def contains(self, point):
+        """ Return True if the localization is in the list. """
+
+        if self.is_point():
+            return any([point == l[0] for l in self.__localizations])
+        else:
+            return any([l[0].is_bound(point) for l in self.__localizations])
+
+    # -----------------------------------------------------------------------
+
     def __repr__(self, *args, **kwargs):
         return "Locations: {!s:s}".format("; ".join([str(l) for l in self.__localizations]))
 

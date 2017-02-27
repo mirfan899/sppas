@@ -175,6 +175,13 @@ class sppasInterval(sppasBaseLocalization):
 
     # -----------------------------------------------------------------------
 
+    def is_bound(self, point):
+        """ Return True if point is the begin or the end of the interval. """
+
+        return self.__begin == point or self.__end == point
+
+    # -----------------------------------------------------------------------
+
     def combine(self, other):
         """ Return a sppasInterval, the combination of two intervals.
 

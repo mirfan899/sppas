@@ -59,10 +59,6 @@ class TestAnnotation(unittest.TestCase):
             self.annotationP.get_location().get_best().get_end().set_midpoint()
 
     def test_set_end(self):
-        """
-        Raise ValueError if the given time point is less than the begin time value of the annotation.
-        Raise AttributeError if the attribute  is not an instance of Interval.
-        """
         with self.assertRaises(ValueError):
             self.annotationI.get_location().get_best().set_end(self.p1)
 
@@ -70,44 +66,29 @@ class TestAnnotation(unittest.TestCase):
             self.annotationP.get_location().get_best().set_end(self.p2)
 
     def test_get_point(self):
-        """
-        Raise AttributeError if the attribute  is an instance of Interval.
-        """
         with self.assertRaises(AttributeError):
             self.annotationI.get_location().get_best().get_point()
 
     def test_get_point_value(self):
-        """
-        Raise AttributeError if the attribute  is an instance of Interval.
-        """
         with self.assertRaises(AttributeError):
             self.annotationI.get_location().get_best().get_point().get_content()
 
     def test_set_point(self):
-        """
-        Raise AttributeError if the attribute  is an instance of Interval.
-        """
         with self.assertRaises(AttributeError):
             self.annotationI.get_location().get_best().set_point(self.p3)
 
     def test_is_point(self):
-        """
-        Return True if the attribute  is an instance of Point.
-        """
+        """ Return True if the attribute  is an instance of Point. """
         self.assertFalse(self.annotationI.get_location().get_best().is_point())
         self.assertTrue(self.annotationP.get_location().get_best().is_point())
 
     def test_is_interval(self):
-        """
-        Return True if the attribute  is an instance of Interval.
-        """
+        """ Return True if the attribute  is an instance of Interval. """
         self.assertTrue(self.annotationI.get_location().get_best().is_interval())
         self.assertFalse(self.annotationP.get_location().get_best().is_interval())
 
     def test_is_silence(self):
-        """
-        Return True if the attribute Text is an instance of Silence.
-        """
+        """ Return True if the attribute Text is an instance of Silence. """
         self.assertFalse(self.annotationP.get_label().get_best().is_silence())
         self.assertFalse(self.annotationI.get_label().get_best().is_silence())
 
@@ -125,3 +106,7 @@ class TestAnnotation(unittest.TestCase):
         clone = a.copy()
         a.get_location().get_best().set_end(sppasPoint(10))
         self.assertTrue(clone.get_location().get_best().get_end().get_midpoint(), 2)
+
+    def test_contains(self):
+        self.assertTrue(self.annotationI.contains_localization(sppasPoint(1)))
+        self.assertFalse(self.annotationI.contains_localization(sppasPoint(10)))

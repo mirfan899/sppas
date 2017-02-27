@@ -43,6 +43,7 @@ ANN_DATA_EQ_TYPE_ERROR = ":ERROR 1105: "
 ANN_DATA_NEG_VALUE_ERROR = ":ERROR 1110: "
 INTERVAL_BOUNDS_ERROR = ":ERROR 1120: "
 CTRL_VOCAB_CONTAINS_ERROR = ":ERROR 1130: "
+TIER_APPEND_ERROR = ":ERROR 1140: "
 
 # -----------------------------------------------------------------------
 
@@ -117,6 +118,19 @@ class CtrlVocabContainsError(ValueError):
     def __init__(self, tag):
         self.parameter = CTRL_VOCAB_CONTAINS_ERROR + \
                          (t.gettext(CTRL_VOCAB_CONTAINS_ERROR)).format(tag)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class TierAppendError(ValueError):
+    """ :ERROR 1140: Can't append annotation. Current end {!s:s} is highest than the given one {!s:s}. """
+
+    def __init__(self, cur_end, ann_end):
+        self.parameter = TIER_APPEND_ERROR + \
+                         (t.gettext(TIER_APPEND_ERROR)).format(cur_end, ann_end)
 
     def __str__(self):
         return repr(self.parameter)
