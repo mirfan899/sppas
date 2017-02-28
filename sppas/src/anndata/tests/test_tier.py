@@ -225,6 +225,21 @@ class TestTier(unittest.TestCase):
             self.assertEqual(len(tierrandom), i+1)
         self.assertEqual(len(tier), len(tierrandom))
         for a, ar in zip(tier, tierrandom):
-            print("a={:s}".format(a))
-            print("ar={:s}".format(ar))
             self.assertEqual(a, ar)
+
+    def test_pop(self):
+        tier = sppasTier()
+        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(3))))
+        a2 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(3), sppasPoint(9))))
+        tier.append(a1)
+        tier.pop()
+        self.assertEqual(len(tier), 0)
+        tier.append(a1)
+        tier.append(a2)
+        tier.pop(0)
+        a = tier.find(sppasPoint(0), sppasPoint(3))
+        self.assertEqual(len(a), 0)
+        a = tier.find(sppasPoint(2), sppasPoint(7))
+        self.assertEqual(len(a), 1)
+
+

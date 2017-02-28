@@ -44,6 +44,7 @@ ANN_DATA_NEG_VALUE_ERROR = ":ERROR 1110: "
 INTERVAL_BOUNDS_ERROR = ":ERROR 1120: "
 CTRL_VOCAB_CONTAINS_ERROR = ":ERROR 1130: "
 TIER_APPEND_ERROR = ":ERROR 1140: "
+TIER_POP_ERROR = ":ERROR 1144: "
 
 # -----------------------------------------------------------------------
 
@@ -131,6 +132,19 @@ class TierAppendError(ValueError):
     def __init__(self, cur_end, ann_end):
         self.parameter = TIER_APPEND_ERROR + \
                          (t.gettext(TIER_APPEND_ERROR)).format(cur_end, ann_end)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class TierPopError(IndexError):
+    """ :ERROR 1144: Can't pop annotation. Invalid index value {:d}. """
+
+    def __init__(self, index):
+        self.parameter = TIER_POP_ERROR + \
+                         (t.gettext(TIER_POP_ERROR)).format(index)
 
     def __str__(self):
         return repr(self.parameter)

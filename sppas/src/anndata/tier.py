@@ -42,6 +42,7 @@ from .anndataexc import AnnDataTypeError
 from .anndataexc import IntervalBoundsError
 from .anndataexc import CtrlVocabContainsError
 from .anndataexc import TierAppendError
+from .anndataexc import TierPopError
 
 from .annotation import sppasAnnotation
 from .metadata import sppasMetaData
@@ -202,37 +203,32 @@ class sppasTier(sppasMetaData):
 
         :param annotation: (sppasAnnotation)
         :raises: AnnDataTypeError, CtrlVocabContainsError, HierarchyContainsError, HierarchyTypeError
+        :returns: the index of the annotation in the tier
 
         """
         self.validate_annotation(annotation)
-        print("Add annotation: {:s}".format(annotation))
         try:
             self.append(annotation)
-            print(" ... append success.")
+            return len(self.__ann) - 1
         except Exception:
-            index = self.mindex(annotation.get_lowest_localization(), bound=-1)
-            print(" ... prev is at index={:d}.".format(index))
-            if index == -1:
-                self.__ann.insert(0, annotation)
+            index = self.mindex(annotation.get_lowest_localization(), bound=0)
 
-            elif annotation.location_is_point():
-                self.__ann.insert(index+1, annotation)
-
-            else:
-                # We go further to look at the next localizations until the begin is smaller.
-                while index + 1 < len(self.__ann) and \
-                        self.__ann[index + 1].get_lowest_localization() <= annotation.get_lowest_localization():
-                    index += 1
-                # We go further to look at the next localizations until the end is smaller.
-                while index + 1 < len(self.__ann) and \
-                        self.__ann[index + 1].get_lowest_localization() <= annotation.get_lowest_localization() and \
-                        self.__ann[index + 1].get_highest_localization() < annotation.get_highest_localization():
-                    index += 1
-
-                print(" ... insert at index={:d}.".format(index))
+            if annotation.location_is_point():
                 self.__ann.insert(index + 1, annotation)
-        for ann in self.__ann:
-            print(ann)
+                return index + 1
+
+            # We go further to look at the next localizations until the begin is smaller.
+            while index + 1 < len(self.__ann) and \
+                    self.__ann[index + 1].get_lowest_localization() < annotation.get_lowest_localization():
+                index += 1
+            # We go further to look at the next localizations until the end is smaller.
+            while index + 1 < len(self.__ann) and \
+                    self.__ann[index + 1].get_lowest_localization() == annotation.get_lowest_localization() and \
+                    self.__ann[index + 1].get_highest_localization() < annotation.get_highest_localization():
+                index += 1
+
+            self.__ann.insert(index + 1, annotation)
+            return index + 1
 
     # -----------------------------------------------------------------------
 
@@ -240,7 +236,7 @@ class sppasTier(sppasMetaData):
         """ Remove intervals between begin and end.
 
         :param begin: (sppasPoint)
-        :param end:   (sppasPoint)
+        :param end: (sppasPoint)
         :param overlaps: (bool)
         :returns: the number of removed annotations
 
@@ -256,18 +252,18 @@ class sppasTier(sppasMetaData):
 
     # -----------------------------------------------------------------------
 
-    def pop(self, i=-1):
+    def pop(self, index=-1):
         """ Remove the annotation at the given position in the tier,
         and return it. If no index is specified, pop() removes
         and returns the last annotation in the tier.
 
-        :param i: (int) Index of the annotation to remove.
+        :param index: (int) Index of the annotation to remove.
 
         """
         try:
-            return self.__ann.pop(i)
+            self.__ann.pop(index)
         except IndexError:
-            raise IndexError("Can not pop annotation at index %d." % i)
+            raise TierPopError(index)
 
     # -----------------------------------------------------------------------
     # Localizations
@@ -309,11 +305,7 @@ class sppasTier(sppasMetaData):
         if len(self.__ann) == 0:
             return None
 
-        if self.__ann[0].get_location().get_best().is_point() is True:
-            return self.__ann[0].get_location().get_best()
-
-        # Interval or Disjoint
-        return self.__ann[0].get_location().get_best().get_begin()
+        return self.__ann[0].get_lowest_localization()
 
     # -----------------------------------------------------------------------
 
@@ -323,11 +315,7 @@ class sppasTier(sppasMetaData):
         if len(self.__ann) == 0:
             return None
 
-        if self.__ann[-1].get_location().get_best().is_point() is True:
-            return self.__ann[-1].get_location().get_best()
-
-        # Interval or Disjoint
-        return self.__ann[-1].get_location().get_best().get_begin()
+        return self.__ann[-1].get_highest_localization()
 
     # -----------------------------------------------------------------------
 
@@ -339,36 +327,6 @@ class sppasTier(sppasMetaData):
 
         """
         return point in self.get_all_points()
-
-    # -----------------------------------------------------------------------
-
-    def is_superset(self, other):
-        """ Return True if this tier contains all points of the other tier.
-
-        :param other: (sppasTier)
-        :returns: Boolean
-
-        """
-        if len(self.__ann) == 0:
-            return False
-
-        if self.is_point() is True:
-            for ann in other:
-                for localization in ann.get_location().get():
-                    i = self.index(localization)
-                    if i == -1:
-                        return False
-        else:
-            for ann in other:
-                for localization in ann.get_location().get():
-                        i = self.lindex(localization.get_begin())
-                        if i == -1:
-                            return False
-                        i = self.rindex(localization.get_end())
-                        if i == -1:
-                            return False
-
-        return True
 
     # -----------------------------------------------------------------------
 
@@ -605,11 +563,41 @@ class sppasTier(sppasMetaData):
 
         return mid
 
+    # -----------------------------------------------------------------------
+
+    def is_superset(self, other):
+        """ Return True if this tier contains all points of the other tier.
+
+        :param other: (sppasTier)
+        :returns: Boolean
+
+        """
+        if len(self.__ann) == 0:
+            return False
+
+        if self.is_point() is True:
+            for ann in other:
+                for localization in ann.get_location().get():
+                    i = self.index(localization[0])
+                    if i == -1:
+                        return False
+        else:
+            for ann in other:
+                for localization in ann.get_location().get():
+                        i = self.lindex(localization[0].get_begin())
+                        if i == -1:
+                            return False
+                        i = self.rindex(localization[0].get_end())
+                        if i == -1:
+                            return False
+
+        return True
+
     # ------------------------------------------------------------------------
 
     def near(self, moment, direction=1):
-        """ Return the index of the annotation whose localization is
-        closest to the given moment.
+        """ Return the index of the annotation whose localization is closest
+        to the given moment.
 
         :param moment: (sppasPoint)
         :param direction: (int)
@@ -646,7 +634,6 @@ class sppasTier(sppasMetaData):
 
         # backward
         elif direction == -1:
-            print(" ... ... found index={:d}".format(index))
             if moment > a.get_highest_localization():
                 return index
             if index-1 > 0:
@@ -667,8 +654,8 @@ class sppasTier(sppasMetaData):
             return index
 
         time = moment.get_midpoint()
-        prev_time = max([p.get_end().get_midpoint() for p in self.__ann[index].get_location()])
-        next_time = min([p.get_begin().get_midpoint() for p in self.__ann[_next].get_location()])
+        prev_time = self.__ann[index].get_highest_localization().get_midpoint()
+        next_time = self.__ann[_next].get_lowest_localization().get_midpoint()
         if abs(time - prev_time) > abs(next_time - time):
             return _next
 
@@ -681,7 +668,7 @@ class sppasTier(sppasMetaData):
     def search(self, patterns, function='exact', pos=0, forward=True, reverse=False):
         """ Return the index in the tier of the first annotation whose tag matches patterns.
 
-        :param patterns: (list) is the list of strings to search
+        :param patterns: (list) the list of strings to search
         :param pos: (int)
         :param forward: (bool)
         :param reverse: (bool)
@@ -718,48 +705,6 @@ class sppasTier(sppasMetaData):
                 return pos
             pos += inc
         return -1
-
-    # -----------------------------------------------------------------------
-    # Private
-    # -----------------------------------------------------------------------
-
-    def __find(self, x, direction=1):
-        """ Return the index of the annotation whose moment value contains x.
-
-        :param x: (sppasPoint)
-
-        """
-        is_point = self.is_point()
-        lo = 0
-        hi = len(self.__ann)  # - 1
-        mid = (lo + hi) // 2
-        while lo < hi:
-            mid = (lo + hi) // 2
-            a = self.__ann[mid]
-            if is_point is True:
-                p = a.get_location().get_best()
-                if p == x:
-                    return mid
-                if x < p:
-                    hi = mid
-                else:
-                    lo = mid + 1
-            else:  # Interval or Disjoint
-                b = a.get_lowest_localization()
-                e = a.get_highest_localization()
-                if b == x or b < x < e:
-                    return mid
-                if x < e:
-                    hi = mid
-                else:
-                    lo = mid + 1
-
-        # We failed to find an annotation at time=x. return the closest...
-        if direction == 1:
-            return hi #min(hi, len(self.__ann) - 1)
-        if direction == -1:
-            return lo
-        return mid
 
     # -----------------------------------------------------------------------
 
@@ -867,6 +812,48 @@ class sppasTier(sppasMetaData):
                     raise Exception("Attempt a modification in a Tier that invalidates its hierarchy.")
 
     # -----------------------------------------------------------------------
+    # Private
+    # -----------------------------------------------------------------------
+
+    def __find(self, x, direction=1):
+        """ Return the index of the annotation whose moment value contains x.
+
+        :param x: (sppasPoint)
+
+        """
+        is_point = self.is_point()
+        lo = 0
+        hi = len(self.__ann)  # - 1
+        mid = (lo + hi) // 2
+        while lo < hi:
+            mid = (lo + hi) // 2
+            a = self.__ann[mid]
+            if is_point is True:
+                p = a.get_location().get_best()
+                if p == x:
+                    return mid
+                if x < p:
+                    hi = mid
+                else:
+                    lo = mid + 1
+            else:  # Interval or Disjoint
+                b = a.get_lowest_localization()
+                e = a.get_highest_localization()
+                if b == x or b < x < e:
+                    return mid
+                if x < e:
+                    hi = mid
+                else:
+                    lo = mid + 1
+
+        # We failed to find an annotation at time=x. return the closest...
+        if direction == 1:
+            return min(hi, len(self.__ann) - 1)
+        if direction == -1:
+            return lo
+        return mid
+
+    # -----------------------------------------------------------------------
     # Overloads
     # -----------------------------------------------------------------------
 
@@ -880,4 +867,3 @@ class sppasTier(sppasMetaData):
     def __len__(self):
         return len(self.__ann)
 
-# ---------------------------------------------------------------------------
