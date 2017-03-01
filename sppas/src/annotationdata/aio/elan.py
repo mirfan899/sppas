@@ -110,7 +110,8 @@ class Elan( Transcription ):
         self.__read_time_slots(timeOrderRoot)
 
         self.hierarchyLinks = {}
-        self.annotIndex = {}    #TODO: index annotation elements
+        self.tierIndex = {}    # index of <TIER> elements
+        self.annotIndex = {}    # index of <ANNOTATION> elements (for reference annotation)
 
         # Read all controlled vocabularies, stored in self
         for vocabularyRoot in root.findall('CONTROLLED_VOCABULARY'):
@@ -136,6 +137,7 @@ class Elan( Transcription ):
                     pass
 
         del self.hierarchyLinks
+        del self.tierIndex
         del self.annotIndex
         del self.unit
         del self.timeSlots
@@ -191,6 +193,7 @@ class Elan( Transcription ):
     # -----------------------------------------------------------------
 
     def __read_tier(self, tierRoot, root):
+        self.tierIndex[tierRoot.attrib['TIER_ID']] = tierRoot # <TIER> index
         tier = self.NewTier(tierRoot.attrib['TIER_ID'])
 
         linguisticType = tierRoot.attrib['LINGUISTIC_TYPE_REF']
@@ -259,6 +262,10 @@ class Elan( Transcription ):
                 # and suppose the tier is sorted
                 batches[ref].append(annotationRoot)
 
+        # build parent ref index before to call __find_real_ref
+        if batches and (parentTierRef in self.tierIndex):
+            self.__quickbuild_annot_index(self.tierIndex[parentTierRef])
+
         for ref in batches:
             realRefRoot = self.__find_real_ref(ref, root)
 
@@ -282,6 +289,14 @@ class Elan( Transcription ):
 
     # -----------------------------------------------------------------
 
+    def __quickbuild_annot_index(self, tierRoot):
+        # loop on all 'ANNOTATION' elements inside tierRoot
+        for annotationRoot in tierRoot.iter('ANNOTATION'):
+            annot_id = annotationRoot[0].attrib['ANNOTATION_ID']
+            if annot_id in self.annotIndex:
+                break   # if an annotation is yet in the index, we consider the full index is build
+            self.annotIndex[annot_id] = annotationRoot
+            
     def __find_real_ref(self, ref, root):
         while True:
             # first look in annotIndex
