@@ -224,7 +224,7 @@ class sppasPoint(sppasBaseLocalization):
 
     def __repr__(self):
         if self.__radius is None:
-            return "sppasPoint: {:s}".format(self.get_midpoint())
+            return "sppasPoint: {!s:s}".format(self.get_midpoint())
         return "sppasPoint: {!s:s}, {!s:s}".format(self.get_midpoint(), self.get_radius())
 
     # -----------------------------------------------------------------------

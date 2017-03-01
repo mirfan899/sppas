@@ -44,14 +44,17 @@ ANN_DATA_NEG_VALUE_ERROR = ":ERROR 1110: "
 INTERVAL_BOUNDS_ERROR = ":ERROR 1120: "
 CTRL_VOCAB_CONTAINS_ERROR = ":ERROR 1130: "
 TIER_APPEND_ERROR = ":ERROR 1140: "
-TIER_POP_ERROR = ":ERROR 1144: "
+TIER_ADD_ERROR = ":ERROR 1142: "
+TIER_INDEX_ERROR = ":ERROR 1144: "
 
 # -----------------------------------------------------------------------
 
 
 class AnnDataError(Exception):
-    """ :ERROR 1000: No annotated data file is defined. """
+    """ :ERROR 1000: ANN_DATA_ERROR
+    No annotated data file is defined.
 
+    """
     def __init__(self):
         self.parameter = ANN_DATA_ERROR + (t.gettext(ANN_DATA_ERROR))
 
@@ -62,8 +65,10 @@ class AnnDataError(Exception):
 
 
 class AnnDataTypeError(TypeError):
-    """ :ERROR 1100: {!s:s} is not of the expected type '{:s}'. """
+    """ :ERROR 1100: ANN_DATA_TYPE_ERROR
+    {!s:s} is not of the expected type '{:s}'.
 
+    """
     def __init__(self, rtype, expected):
         self.parameter = ANN_DATA_TYPE_ERROR + \
                          (t.gettext(ANN_DATA_TYPE_ERROR)).format(rtype, expected)
@@ -75,8 +80,10 @@ class AnnDataTypeError(TypeError):
 
 
 class AnnDataEqTypeError(TypeError):
-    """ :ERROR 1105: {!s:s} is not of the same type as {!s:s}. """
+    """ :ERROR 1105: ANN_DATA_EQ_TYPE_ERROR
+    {!s:s} is not of the same type as {!s:s}.
 
+    """
     def __init__(self, obj, obj_ref):
         self.parameter = ANN_DATA_EQ_TYPE_ERROR + \
                          (t.gettext(ANN_DATA_EQ_TYPE_ERROR)).format(obj, obj_ref)
@@ -88,8 +95,10 @@ class AnnDataEqTypeError(TypeError):
 
 
 class AnnDataNegValueError(ValueError):
-    """ :ERROR 1110: Expected a positive value. Got '{:f}'. """
+    """ :ERROR 1110: ANN_DATA_NEG_VALUE_ERROR
+    Expected a positive value. Got '{:f}'.
 
+    """
     def __init__(self, value):
         self.parameter = ANN_DATA_NEG_VALUE_ERROR + \
                          (t.gettext(ANN_DATA_NEG_VALUE_ERROR)).format(value)
@@ -101,8 +110,10 @@ class AnnDataNegValueError(ValueError):
 
 
 class IntervalBoundsError(ValueError):
-    """ :ERROR 1120: The begin must be strictly lesser than the end in an interval. Got: [{:s};{:s}]. """
+    """ :ERROR 1120: INTERVAL_BOUNDS_ERROR
+    The begin must be strictly lesser than the end in an interval. Got: [{:s};{:s}].
 
+    """
     def __init__(self, begin, end):
         self.parameter = INTERVAL_BOUNDS_ERROR + \
                          (t.gettext(INTERVAL_BOUNDS_ERROR)).format(begin, end)
@@ -114,8 +125,10 @@ class IntervalBoundsError(ValueError):
 
 
 class CtrlVocabContainsError(ValueError):
-    """ :ERROR 1130: {:s} is not part of the controlled vocabulary. """
+    """ :ERROR 1130: CTRL_VOCAB_CONTAINS_ERROR
+    {:s} is not part of the controlled vocabulary.
 
+    """
     def __init__(self, tag):
         self.parameter = CTRL_VOCAB_CONTAINS_ERROR + \
                          (t.gettext(CTRL_VOCAB_CONTAINS_ERROR)).format(tag)
@@ -127,8 +140,10 @@ class CtrlVocabContainsError(ValueError):
 
 
 class TierAppendError(ValueError):
-    """ :ERROR 1140: Can't append annotation. Current end {!s:s} is highest than the given one {!s:s}. """
+    """ :ERROR 1140: TIER_APPEND_ERROR
+    Can't append annotation. Current end {!s:s} is highest than the given one {!s:s}.
 
+    """
     def __init__(self, cur_end, ann_end):
         self.parameter = TIER_APPEND_ERROR + \
                          (t.gettext(TIER_APPEND_ERROR)).format(cur_end, ann_end)
@@ -139,14 +154,32 @@ class TierAppendError(ValueError):
 # -----------------------------------------------------------------------
 
 
-class TierPopError(IndexError):
-    """ :ERROR 1144: Can't pop annotation. Invalid index value {:d}. """
+class TierAddError(ValueError):
+    """ :ERROR 1142: TIER_ADD_ERROR
+    Can't add annotation. An annotation with the same location is already in the tier at index {:d}.
 
+    """
     def __init__(self, index):
-        self.parameter = TIER_POP_ERROR + \
-                         (t.gettext(TIER_POP_ERROR)).format(index)
+        self.parameter = TIER_ADD_ERROR + \
+                         (t.gettext(TIER_ADD_ERROR)).format(index)
 
     def __str__(self):
         return repr(self.parameter)
 
 # -----------------------------------------------------------------------
+
+
+class TierIndexError(IndexError):
+    """ :ERROR 1144: TIER_INDEX_ERROR
+    Invalid index value {:d}.
+
+    """
+    def __init__(self, index):
+        self.parameter = TIER_INDEX_ERROR + \
+                         (t.gettext(TIER_INDEX_ERROR)).format(index)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+

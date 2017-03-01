@@ -130,13 +130,6 @@ class sppasLocation(object):
 
     # -----------------------------------------------------------------------
 
-    def get(self):
-        """ Return the list of localizations and their scores. """
-
-        return self.__localizations
-
-    # -----------------------------------------------------------------------
-
     def is_point(self):
         """ Return True if the location is made of sppasPoint localizations. """
 
@@ -182,8 +175,8 @@ class sppasLocation(object):
     # -----------------------------------------------------------------------
 
     def __iter__(self):
-        for a in self.__localizations:
-            yield a[0]
+        for l in self.__localizations:
+            yield l
 
     # -----------------------------------------------------------------------
 
@@ -194,3 +187,13 @@ class sppasLocation(object):
 
     def __len__(self):
         return len(self.__localizations)
+
+    # -----------------------------------------------------------------------
+
+    def __eq__(self, other):
+        if len(self.__localizations) != len(other):
+            return False
+        for (l1, l2) in zip(self.__localizations, other):
+            if l1[0] != l2[0] or l1[1] != l2[1]:
+                return False
+        return True

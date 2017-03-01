@@ -23,14 +23,10 @@ class TestAnnotation(unittest.TestCase):
         self.annotationP = sppasAnnotation(sppasLocation(self.p1), sppasLabel(sppasTag("mark")))
 
     def test_get_begin(self):
-        """ Raise AttributeError if the attribute is an instance of Point. """
         with self.assertRaises(AttributeError):
             self.annotationP.get_location().get_begin()
 
     def test_set_begin(self):
-        """ Raise ValueError if the given time point is greater than the end time value of the annotation.
-        Raise AttributeError if the attribute  is an instance of Point.
-        """
         with self.assertRaises(ValueError):
             self.annotationI.get_location().get_best().set_begin(self.p3)
 
@@ -38,9 +34,6 @@ class TestAnnotation(unittest.TestCase):
             self.annotationP.get_location().get_best().set_begin(self.p2)
 
     def test_get_begin_value(self):
-        """ Raise AttributeError if the attribute  is an instance of Point.
-        Raise ValueError if the the given time is greater than the end time.
-        """
         with self.assertRaises(AttributeError):
             self.annotationP.get_location().get_best().get_begin().get_content()
 
@@ -49,12 +42,10 @@ class TestAnnotation(unittest.TestCase):
         self.annotationI.get_location().get_best().get_begin().set_midpoint(4) #### MUST BE FORBIDDEN...
 
     def test_get_end(self):
-        """ Raise AttributeError if the attribute  is an instance of Point. """
         with self.assertRaises(AttributeError):
             self.annotationP.get_location().get_best().get_end()
 
     def test_get_end_value(self):
-        """ Raise AttributeError if the attribute  is an instance of Point. """
         with self.assertRaises(AttributeError):
             self.annotationP.get_location().get_best().get_end().set_midpoint()
 
@@ -78,17 +69,14 @@ class TestAnnotation(unittest.TestCase):
             self.annotationI.get_location().get_best().set_point(self.p3)
 
     def test_is_point(self):
-        """ Return True if the attribute  is an instance of Point. """
         self.assertFalse(self.annotationI.get_location().get_best().is_point())
         self.assertTrue(self.annotationP.get_location().get_best().is_point())
 
     def test_is_interval(self):
-        """ Return True if the attribute  is an instance of Interval. """
         self.assertTrue(self.annotationI.get_location().get_best().is_interval())
         self.assertFalse(self.annotationP.get_location().get_best().is_interval())
 
     def test_is_silence(self):
-        """ Return True if the attribute Text is an instance of Silence. """
         self.assertFalse(self.annotationP.get_label().get_best().is_silence())
         self.assertFalse(self.annotationI.get_label().get_best().is_silence())
 
@@ -110,3 +98,15 @@ class TestAnnotation(unittest.TestCase):
     def test_contains(self):
         self.assertTrue(self.annotationI.contains_localization(sppasPoint(1)))
         self.assertFalse(self.annotationI.contains_localization(sppasPoint(10)))
+
+    def test_equal(self):
+        p1 = sppasPoint(1)
+        p2 = sppasPoint(2)
+        it = sppasLocation(sppasInterval(p1, p2))
+        label = sppasLabel(sppasTag("#"))
+        a = sppasAnnotation(it, label)
+        self.assertTrue(a == a)
+        self.assertEqual(a, a)
+        self.assertEqual(a, sppasAnnotation(it, label))
+        self.assertNotEqual(a, sppasAnnotation(it, sppasLabel(sppasTag("#"), score=0.2)))
+        self.assertNotEqual(a, sppasAnnotation(sppasLocation(sppasInterval(p1, p2), score=0.3), label))

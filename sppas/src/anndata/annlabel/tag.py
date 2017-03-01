@@ -219,3 +219,6 @@ class sppasTag(object):
 
     def __hash__(self):
         return hash((self.__tag_content, self.__tag_type))
+
+    def __ne__(self, other):
+        return self.get_typed_content() != other.get_typed_content()

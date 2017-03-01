@@ -38,5 +38,8 @@ msgstr "{!s:s} is not included in the controlled vocabulary."
 msgid ":ERROR 1140: "
 msgstr "Can't append annotation. Current end {!s:s} is highest than the given one {!s:s}."
 
+msgid ":ERROR 1142: "
+msgstr "Can't add annotation. An annotation with the same location is already in the tier at index {:d}."
+
 msgid ":ERROR 1144: "
-msgstr "Can't remove annotation. Invalid index value {:d}."
+msgstr "Invalid index value {:d}."

@@ -42,13 +42,14 @@ from .anndataexc import AnnDataTypeError
 from .anndataexc import IntervalBoundsError
 from .anndataexc import CtrlVocabContainsError
 from .anndataexc import TierAppendError
-from .anndataexc import TierPopError
+from .anndataexc import TierAddError
+from .anndataexc import TierIndexError
 
+from .annlocation.point import sppasPoint
 from .annotation import sppasAnnotation
 from .metadata import sppasMetaData
 from .ctrlvocab import sppasCtrlVocab
 from .media import sppasMedia
-#from .filter.filters import Sel
 
 # ----------------------------------------------------------------------------
 
@@ -169,6 +170,19 @@ class sppasTier(sppasMetaData):
         self.__media = media
 
     # -----------------------------------------------------------------------
+
+    def copy(self):
+        """ Return a deep copy of the tier. """
+        
+        new_tier = sppasTier(self.__name)
+        new_tier.set_ctrl_vocab(self.__ctrl_vocab)
+        new_tier.set_media(self.__media)
+        for a in self.__ann:
+            new_tier.add(a.copy())
+
+        return new_tier
+
+    # -----------------------------------------------------------------------
     # Annotations
     # -----------------------------------------------------------------------
 
@@ -191,6 +205,8 @@ class sppasTier(sppasMetaData):
         if len(self.__ann) > 0:
             end = self.__ann[-1].get_highest_localization()
             new = annotation.get_lowest_localization()
+            if annotation.location_is_point() and end == new:
+                raise TierAppendError(end, new)
             if end > new:
                 raise TierAppendError(end, new)
 
@@ -209,11 +225,13 @@ class sppasTier(sppasMetaData):
         self.validate_annotation(annotation)
         try:
             self.append(annotation)
-            return len(self.__ann) - 1
+
         except Exception:
             index = self.mindex(annotation.get_lowest_localization(), bound=0)
 
             if annotation.location_is_point():
+                if self.__ann[index].get_location() == annotation.get_location():
+                    raise TierAddError(index)
                 self.__ann.insert(index + 1, annotation)
                 return index + 1
 
@@ -227,8 +245,13 @@ class sppasTier(sppasMetaData):
                     self.__ann[index + 1].get_highest_localization() < annotation.get_highest_localization():
                 index += 1
 
+            if self.__ann[index].get_location() == annotation.get_location():
+                raise TierAddError(index)
+
             self.__ann.insert(index + 1, annotation)
             return index + 1
+
+        return len(self.__ann) - 1
 
     # -----------------------------------------------------------------------
 
@@ -263,7 +286,7 @@ class sppasTier(sppasMetaData):
         try:
             self.__ann.pop(index)
         except IndexError:
-            raise TierPopError(index)
+            raise TierIndexError(index)
 
     # -----------------------------------------------------------------------
     # Localizations
@@ -279,18 +302,18 @@ class sppasTier(sppasMetaData):
 
         if self.is_point():
             for ann in self.__ann:
-                for localization in ann.get_location():
-                    points.append(localization.get_point())
+                for localization, score in ann.get_location():
+                    points.append(localization)
 
         elif self.is_interval():
             for ann in self.__ann:
-                for localization in ann.get_location():
+                for localization, score in ann.get_location():
                     points.append(localization.get_begin())
                     points.append(localization.get_end())
 
         elif self.is_disjoint():
             for ann in self.__ann:
-                for localization in ann.get_location():
+                for localization, score in ann.get_location():
                     for interval in localization.get_intervals():
                         points.append(interval.get_begin())
                         points.append(interval.get_end())
@@ -326,6 +349,8 @@ class sppasTier(sppasMetaData):
         :returns: Boolean
 
         """
+        if isinstance(point, sppasPoint) is False:
+            raise AnnDataTypeError(point, "sppasPoint")
         return point in self.get_all_points()
 
     # -----------------------------------------------------------------------
@@ -397,6 +422,7 @@ class sppasTier(sppasMetaData):
         if is_point is True:
             lo = self.index(begin)
             hi = self.index(end)
+            tmp = hi
             if -1 in (lo, hi):
                 return []
             for i in range(hi, len(self.__ann)):
@@ -408,9 +434,9 @@ class sppasTier(sppasMetaData):
         else:
             lo = self.lindex(begin)
             hi = self.rindex(end)
+            tmp = hi
             if -1 in (lo, hi):
                 return []
-            tmp = hi
             for i in range(hi, len(self.__ann)):
                 if self.__ann[i].get_highest_localization() == end:
                     tmp = i
@@ -434,6 +460,7 @@ class sppasTier(sppasMetaData):
 
         lo = 0
         hi = len(self.__ann)
+        mid = (lo + hi) // 2
         found = False
         while lo < hi:
             mid = (lo + hi) // 2
@@ -467,6 +494,7 @@ class sppasTier(sppasMetaData):
 
         lo = 0
         hi = len(self.__ann)
+        mid = (lo + hi) // 2
         found = False
         while lo < hi:
             mid = (lo + hi) // 2
@@ -539,8 +567,8 @@ class sppasTier(sppasMetaData):
 
         lo = 0
         hi = len(self.__ann)
+        mid = (lo + hi) // 2
         found = False
-
         while lo < hi:
             mid = (lo + hi) // 2
             a = self.__ann[mid]
@@ -575,21 +603,11 @@ class sppasTier(sppasMetaData):
         if len(self.__ann) == 0:
             return False
 
-        if self.is_point() is True:
-            for ann in other:
-                for localization in ann.get_location().get():
-                    i = self.index(localization[0])
-                    if i == -1:
-                        return False
-        else:
-            for ann in other:
-                for localization in ann.get_location().get():
-                        i = self.lindex(localization[0].get_begin())
-                        if i == -1:
-                            return False
-                        i = self.rindex(localization[0].get_end())
-                        if i == -1:
-                            return False
+        tierpoints = self.get_all_points()
+        otherpoints = other.get_all_points()
+        for op in other.get_all_points():
+            if op not in tierpoints:
+                return False
 
         return True
 
@@ -597,13 +615,13 @@ class sppasTier(sppasMetaData):
 
     def near(self, moment, direction=1):
         """ Return the index of the annotation whose localization is closest
-        to the given moment.
+        to the given moment for a given direction.
 
         :param moment: (sppasPoint)
         :param direction: (int)
-                - near 0
-                - forward 1
-                - backward -1
+                - nearest 0
+                - nereast forward 1
+                - nereast backward -1
 
         """
         if len(self.__ann) == 0:
@@ -617,13 +635,6 @@ class sppasTier(sppasMetaData):
 
         a = self.__ann[index]
 
-        # POINTS
-        # TODO: Not Implemented
-        if self.is_point():
-            return index
-
-        # INTERVALS
-
         # forward
         if direction == 1:
             if moment < a.get_lowest_localization():
@@ -636,7 +647,7 @@ class sppasTier(sppasMetaData):
         elif direction == -1:
             if moment > a.get_highest_localization():
                 return index
-            if index-1 > 0:
+            if index-1 >= 0:
                 return index-1
             return -1
 
@@ -665,45 +676,44 @@ class sppasTier(sppasMetaData):
     # Labels
     # -----------------------------------------------------------------------
 
-    def search(self, patterns, function='exact', pos=0, forward=True, reverse=False):
-        """ Return the index in the tier of the first annotation whose tag matches patterns.
+    def search(self, tags, pos=0, forward=True, any_tag=True, function='exact', reverse=False):
+        """ Return the index in the tier of the first annotation whose a tag matches.
 
-        :param patterns: (list) the list of strings to search
-        :param pos: (int)
-        :param forward: (bool)
-        :param reverse: (bool)
+        :param tags: (list) the list of sppasTag to search
+        :param pos: (int) the index of the annotation to start to search
+        :param forward: (bool) Search backward or forward from pos
         :param function: (str) is:
                 -    exact (str): exact match
                 -    iexact (str): Case-insensitive exact match
                 -    startswith (str):
                 -    istartswith (str): Case-insensitive startswith
                 -    endswith (str):
-                -    iendswith: Case-insensitive endswith
+                -    iendswith: (str) Case-insensitive endswith
                 -    contains (str):
-                -    icontains: Case-insensitive contains
-                -    regexp (str): regular expression
+                -    icontains: (str) Case-insensitive contains
+                -    equal (str): is equal
+                -    greater (str): is greater then
+                -    lower (str): is lower than
+        :param reverse: (bool) to apply "not function"
 
         """
-        hi = len(self.__ann)
-        lo = -1
+        if pos < 0 or pos >= len(self.__ann):
+            raise TierIndexError(pos)
 
-        if pos < 0 or pos > hi - 1:
-            raise IndexError("Tier index out of range")
-
-        p = patterns.pop(0)
-        match = Sel(**{function:p})
-        for p in patterns:
-            match = match | Sel(**{function:p})
-
-        if reverse:
-            match = ~match
-
-        inc = 1 if forward else -1
-        while pos not in (lo, hi):
-            annotation = self.__ann[pos]
-            if match(annotation):
+        while len(self.__ann) > pos >= 0:
+            contains = [self.__ann[pos].contains_tag(tag, function, reverse) for tag in tags]
+            if any_tag is True:
+                found = any(contains)
+            else:
+                found = all(contains)
+            if found is True:
                 return pos
-            pos += inc
+
+            if forward:
+                pos += 1
+            else:
+                pos -= 1
+
         return -1
 
     # -----------------------------------------------------------------------
@@ -746,7 +756,7 @@ class sppasTier(sppasMetaData):
         """
         # Check if controlled vocabulary
         if self.__ctrl_vocab is not None:
-            for tag in label:
+            for tag, score in label:
                 if tag.is_empty() is False and self.__ctrl_vocab.contains(tag) is False:
                     raise CtrlVocabContainsError(tag)
 

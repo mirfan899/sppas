@@ -98,12 +98,12 @@ class TestLabel(unittest.TestCase):
         self.assertIsInstance(label.get_best().get_content(), text_type)
         self.assertIsInstance(label.get_best().get_typed_content(), int)
 
-    def test_IsLabel(self):
+    def test_is_label(self):
         label = sppasLabel(sppasTag("#"))
         text = label.get_best()
         self.assertFalse(text.is_speech())
 
-    def test_AddText(self):
+    def test_add_tag(self):
         label = sppasLabel(sppasTag("score0.5"), score=0.5)
         self.assertEqual(label.get_best().get_content(), u("score0.5"))
 
@@ -113,9 +113,17 @@ class TestLabel(unittest.TestCase):
         label.append(sppasTag("score1.0"), score=1.0)
         self.assertEqual(label.get_best().get_content(), u("score1.0"))
 
-    def test_IsEmpty(self):
+    def test_is_empty(self):
         label = sppasLabel(sppasTag(""), score=0.5)
         self.assertTrue(label.get_best().is_empty())
 
         label.append(sppasTag("text"), score=0.8)
         self.assertFalse(label.get_best().is_empty())
+
+    def test_equal(self):
+        label = sppasLabel(sppasTag(""), score=0.5)
+        self.assertTrue(label == label)
+        self.assertEqual(label, label)
+        self.assertTrue(label == sppasLabel(sppasTag(""), score=0.5))
+        self.assertFalse(label == sppasLabel(sppasTag(""), score=0.7))
+        self.assertFalse(label == sppasLabel(sppasTag("a"), score=0.5))

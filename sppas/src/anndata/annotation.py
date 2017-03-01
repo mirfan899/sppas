@@ -36,6 +36,7 @@
 import copy
 
 from .anndataexc import AnnDataTypeError
+from .annlabel.tag import sppasTag
 from .annlabel.label import sppasLabel
 from .annlocation.location import sppasLocation
 from .metadata import sppasMetaData
@@ -93,7 +94,7 @@ class sppasAnnotation(sppasMetaData):
         if self.__label is not None:
             return self.__label
 
-        return sppasLabel("")
+        return None  # sppasLabel(sppasTag(""))
 
     # -----------------------------------------------------------------------
 
@@ -125,6 +126,8 @@ class sppasAnnotation(sppasMetaData):
 
         self.__parent = parent
 
+    # -----------------------------------------------------------------------
+    # Tags
     # -----------------------------------------------------------------------
 
     def set_best_tag(self, tag):
@@ -176,6 +179,23 @@ class sppasAnnotation(sppasMetaData):
 
     # -----------------------------------------------------------------------
 
+    def contains_tag(self, tag, function='exact', reverse=False):
+        """ Return True if the given tag is in the label.
+
+        :param tag: (sppasTag)
+        :param function: Search function
+        :param reverse: Reverse the function.
+
+        """
+        r = self.__label.contains(tag, function)
+        if reverse is False:
+            return r
+        return not r
+
+    # -----------------------------------------------------------------------
+    # Localization
+    # -----------------------------------------------------------------------
+
     def set_best_localization(self, localization):
         """ Set the best localization of the location.
 
@@ -218,8 +238,8 @@ class sppasAnnotation(sppasMetaData):
         """ Return the sppasPoint with the highest localization. """
 
         if self.location_is_point():
-            return max([l for l in self.__location])
-        return max([l.get_end() for l in self.__location])
+            return max([l[0] for l in self.__location])
+        return max([l[0].get_end() for l in self.__location])
 
     # -----------------------------------------------------------------------
 
@@ -227,8 +247,8 @@ class sppasAnnotation(sppasMetaData):
         """ Return the sppasPoint with the lowest localization. """
 
         if self.location_is_point():
-            return min([l for l in self.__location])
-        return min([l.get_begin() for l in self.__location])
+            return min([l[0] for l in self.__location])
+        return min([l[0].get_begin() for l in self.__location])
 
     # -----------------------------------------------------------------------
 
@@ -236,11 +256,6 @@ class sppasAnnotation(sppasMetaData):
         """ Return True if the given localization is in the location. """
 
         return self.__location.contains(localization)
-
-    # -----------------------------------------------------------------------
-    # Getters
-    # -----------------------------------------------------------------------
-
 
     # -----------------------------------------------------------------------
     # Overloads
@@ -251,3 +266,6 @@ class sppasAnnotation(sppasMetaData):
 
     def __str__(self):
         return "{:s} {:s}".format(self.__location, self.__label)
+
+    def __eq__(self, other):
+        return self.__location == other.get_location() and self.__label == other.get_label()

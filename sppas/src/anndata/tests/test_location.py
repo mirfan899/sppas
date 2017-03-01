@@ -12,7 +12,7 @@ from ..annlocation.location import sppasLocation
 
 class TestLocation(unittest.TestCase):
 
-    def test_equal(self):
+    def test_apppend(self):
         loc0 = sppasPoint(1)
         loc1 = sppasPoint(1.8)
         loc2 = sppasPoint(1.8)
@@ -40,3 +40,11 @@ class TestLocation(unittest.TestCase):
         self.assertEqual(p2, location.get_best().get_end())
         with self.assertRaises(AttributeError):
             location.get_best().get_point()
+
+    def test_equal(self):
+        loc = sppasLocation(sppasPoint(0), score=0.5)
+        self.assertTrue(loc == loc)
+        self.assertEqual(loc, loc)
+        self.assertEqual(loc, sppasLocation(sppasPoint(0), score=0.5))
+        self.assertFalse(loc == sppasLocation(sppasPoint(0), score=1.))
+        self.assertFalse(loc == sppasLocation(sppasPoint(1), score=0.5))
