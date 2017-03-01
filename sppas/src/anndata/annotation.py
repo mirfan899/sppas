@@ -122,7 +122,7 @@ class sppasAnnotation(sppasMetaData):
         """
         if parent is not None:
             parent.validate_annotation_label(self.__label)
-            parent.validate_annotation_location(self.__label)
+            parent.validate_annotation_location(self.__location)
 
         self.__parent = parent
 

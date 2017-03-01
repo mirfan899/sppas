@@ -177,7 +177,7 @@ class sppasHierarchy(object):
             parent, link = self.__hierarchy[child_tier]
             raise Exception("%s has already a parent in the hierarchy."
                             "Its parent is %s, with link of type %s." %
-                            (child_tier.GetName(), parent.Get_Name(), link))
+                            (child_tier.get_name(), parent.get_name(), link))
 
         # A tier can't be its own child/parent
         if parent_tier == child_tier:
@@ -185,20 +185,20 @@ class sppasHierarchy(object):
 
         # Check for TimeAlignment
         if link_type == "TimeAlignment":
-            if parent_tier.IsSuperset(child_tier) is False:
+            if parent_tier.is_superset(child_tier) is False:
                 raise Exception(
                     "Can't align values, %s is not a superset of %s" % (
-                        parent_tier.GetName(),
-                        child_tier.GetName()))
+                        parent_tier.get_name(),
+                        child_tier.get_name()))
 
         # Check for TimeAssociation
         if link_type == "TimeAssociation":
-            if parent_tier.IsSuperset(child_tier) is False and child_tier.IsSuperset(parent_tier) is False:
+            if parent_tier.is_superset(child_tier) is False and child_tier.is_superset(parent_tier) is False:
                 raise Exception(
                     "Can't associate values, "
                     "%s and %s are not supersets of each other" % (
-                        parent_tier.GetName(),
-                        child_tier.GetName()))
+                        parent_tier.get_name(),
+                        child_tier.get_name()))
 
         # No circular hierarchy allowed.
         ancestors = self.get_ancestors(parent_tier)
@@ -209,7 +209,7 @@ class sppasHierarchy(object):
         family.extend(ancestors)
         if child_tier in family:
             raise Exception("%s is an ancestor of %s in the hierarchy." %
-                            (child_tier.GetName(), parent_tier.Get_Name()))
+                            (child_tier.get_name(), parent_tier.get_name()))
 
         # OK!
         self.__hierarchy[child_tier] = (parent_tier, link_type)
@@ -270,10 +270,10 @@ class sppasHierarchy(object):
         :returns: One of hierarchy types or an empty string
 
         """
-        if tier1.IsSuperset(tier2) is False:
+        if tier1.is_superset(tier2) is False:
             return ""
 
-        if tier2.IsSuperset(tier1) is True:
+        if tier2.is_superset(tier1) is True:
             return "TimeAssociation"
 
         return "TimeAlignment"

@@ -43,7 +43,7 @@ from .anndataexc import IntervalBoundsError
 from .anndataexc import CtrlVocabContainsError
 from .anndataexc import TierAppendError
 from .anndataexc import TierAddError
-from .anndataexc import TierIndexError
+from .anndataexc import AnnDataIndexError
 
 from .annlocation.point import sppasPoint
 from .annotation import sppasAnnotation
@@ -71,11 +71,11 @@ class sppasTier(sppasMetaData):
         - a media.
 
     """
-    def __init__(self, name=None, ctrl_vocab=None, media=None):
+    def __init__(self, name=None, ctrl_vocab=None, media=None, parent=None):
         """ Creates a new sppasTier instance.
 
         :param name: (str) Name of the tier. It is used as identifier.
-        :param ctrl_vocab: (sppasCtrlVocab or None)
+        :param ctrl_vocab: (sppasCtrlVocab)
         :param media: (sppasMedia)
 
         """
@@ -168,6 +168,16 @@ class sppasTier(sppasMetaData):
                 raise AnnDataTypeError(media, "sppasMedia")
 
         self.__media = media
+
+    # -----------------------------------------------------------------------
+
+    def set_parent(self, parent):
+        """ Set the parent of the tier.
+
+        :param parent: (sppasTranscription)
+
+        """
+        self.__parent = parent
 
     # -----------------------------------------------------------------------
 
@@ -286,7 +296,7 @@ class sppasTier(sppasMetaData):
         try:
             self.__ann.pop(index)
         except IndexError:
-            raise TierIndexError(index)
+            raise AnnDataIndexError(index)
 
     # -----------------------------------------------------------------------
     # Localizations
@@ -717,6 +727,8 @@ class sppasTier(sppasMetaData):
         return -1
 
     # -----------------------------------------------------------------------
+    # Annotation validation
+    # -----------------------------------------------------------------------
 
     def validate_annotation(self, annotation):
         """ Validate the annotation, set its parent to this tier.
@@ -792,7 +804,7 @@ class sppasTier(sppasMetaData):
                                     "Attempt to append an annotation in a child tier, but the reference tier has no corresponding localization: {:s}".format(
                                         localization.get_end()))
 
-            hierarchy = self.__parent().GetHierarchy()
+            hierarchy = self.__parent.get_hierarchy()
 
             # if current tier is a child
             parent_tier = hierarchy.get_parent(self)

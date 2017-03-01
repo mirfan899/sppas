@@ -41,11 +41,13 @@ ANN_DATA_ERROR = ":ERROR 1000: "
 ANN_DATA_TYPE_ERROR = ":ERROR 1100: "
 ANN_DATA_EQ_TYPE_ERROR = ":ERROR 1105: "
 ANN_DATA_NEG_VALUE_ERROR = ":ERROR 1110: "
+ANN_DATA_INDEX_ERROR = ":ERROR 1200: "
 INTERVAL_BOUNDS_ERROR = ":ERROR 1120: "
 CTRL_VOCAB_CONTAINS_ERROR = ":ERROR 1130: "
 TIER_APPEND_ERROR = ":ERROR 1140: "
 TIER_ADD_ERROR = ":ERROR 1142: "
-TIER_INDEX_ERROR = ":ERROR 1144: "
+TRS_ADD_ERROR = ":ERROR 1150: "
+TRS_REMOVE_ERROR = ":ERROR 1152: "
 
 # -----------------------------------------------------------------------
 
@@ -72,6 +74,21 @@ class AnnDataTypeError(TypeError):
     def __init__(self, rtype, expected):
         self.parameter = ANN_DATA_TYPE_ERROR + \
                          (t.gettext(ANN_DATA_TYPE_ERROR)).format(rtype, expected)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class AnnDataIndexError(IndexError):
+    """ :ERROR 1200: ANN_DATA_INDEX_ERROR
+    Invalid index value {:d}.
+
+    """
+    def __init__(self, index):
+        self.parameter = ANN_DATA_INDEX_ERROR + \
+                         (t.gettext(ANN_DATA_INDEX_ERROR)).format(index)
 
     def __str__(self):
         return repr(self.parameter)
@@ -169,14 +186,29 @@ class TierAddError(ValueError):
 # -----------------------------------------------------------------------
 
 
-class TierIndexError(IndexError):
-    """ :ERROR 1144: TIER_INDEX_ERROR
-    Invalid index value {:d}.
+class TrsAddError(ValueError):
+    """ :ERROR 1150: TRS_ADD_ERROR
+    Can't add: '{:s}' is already in the transcription.
 
     """
-    def __init__(self, index):
-        self.parameter = TIER_INDEX_ERROR + \
-                         (t.gettext(TIER_INDEX_ERROR)).format(index)
+    def __init__(self, name):
+        self.parameter = TRS_ADD_ERROR + \
+                         (t.gettext(TRS_ADD_ERROR)).format(name)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class TrsRemoveError(ValueError):
+    """ :ERROR 1152: TRS_REMOVE_ERROR
+    Can't remove: '{:s}' is not in the transcription.
+
+    """
+    def __init__(self, name):
+        self.parameter = TRS_REMOVE_ERROR + \
+                         (t.gettext(TRS_REMOVE_ERROR)).format(name)
 
     def __str__(self):
         return repr(self.parameter)

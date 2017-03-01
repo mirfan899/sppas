@@ -23,6 +23,9 @@ msgstr "No annotated file defined."
 msgid ":ERROR 1100: "
 msgstr "{!s:s} is not of the expected type '{:s}'."
 
+msgid ":ERROR 1200: "
+msgstr "Invalid index value {:d}."
+
 msgid ":ERROR 1105: "
 msgstr "The object {!s:s} is not of the same type as the object {!s:s}."
 
@@ -41,5 +44,8 @@ msgstr "Can't append annotation. Current end {!s:s} is highest than the given on
 msgid ":ERROR 1142: "
 msgstr "Can't add annotation. An annotation with the same location is already in the tier at index {:d}."
 
-msgid ":ERROR 1144: "
-msgstr "Invalid index value {:d}."
+msgid ":ERROR 1150: "
+msgstr "Can't add: '{:s}' is already in the transcription."
+
+msgid ":ERROR 1152: "
+msgstr "Can't remove: '{:s}' is not in the transcription."
