@@ -338,6 +338,7 @@ class Elan( Transcription ):
 
     def __read_time_slots(self, timeOrderRoot):
         timeSlotCouples = []
+        # read the <TIME_SLOT> element
         for timeSlotNode in timeOrderRoot.findall('TIME_SLOT'):
             id = timeSlotNode.attrib['TIME_SLOT_ID']
 
@@ -349,18 +350,19 @@ class Elan( Transcription ):
 
             timeSlotCouples.append((id, value))
 
-            for i in range(1, len(timeSlotCouples)-1):
+        # create a midpoint value for undefined TIME_VALUE
+        for i in range(1, len(timeSlotCouples)-1):
+            (id, val) = timeSlotCouples[i]
+            if val is None:
                 (prevId, prevVal) = timeSlotCouples[i-1]
-                (id, val) = timeSlotCouples[i]
                 (nextId, nextVal) = timeSlotCouples[i+1]
-                if val is None:
-                    midPoint = (prevVal.GetMidpoint() +
-                                nextVal.GetMidpoint()) / 2
-                    newVal = TimePoint(midPoint, midPoint -
-                                       prevVal.GetMidpoint())
-                    timeSlotCouples[i] = (id, newVal)
+                midPoint = (prevVal.GetMidpoint() +
+                            nextVal.GetMidpoint()) / 2 # /!\ failed if nextVal is None
+                newVal = TimePoint(midPoint, midPoint -
+                                   prevVal.GetMidpoint())
+                timeSlotCouples[i] = (id, newVal)
 
-            self.timeSlots = dict(timeSlotCouples)
+        self.timeSlots = dict(timeSlotCouples)
 
     # -----------------------------------------------------------------
     # Writer
