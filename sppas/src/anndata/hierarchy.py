@@ -83,7 +83,9 @@ class sppasHierarchy(object):
         """ Creates a new sppasHierarchy instance. """
 
         super(sppasHierarchy, self).__init__()
-        self.__hierarchy = {}  # key = child tier ; value = tuple(parent, link)
+
+        # key = child tier ; value = tuple(parent, link_type)
+        self.__hierarchy = {}
 
     # -----------------------------------------------------------------------
     # Getters
@@ -111,6 +113,7 @@ class sppasHierarchy(object):
         """
         if child_tier not in self.__hierarchy.keys():
             return ""
+
         parent, link = self.__hierarchy[child_tier]
         return link
 
@@ -140,7 +143,8 @@ class sppasHierarchy(object):
     # -----------------------------------------------------------------------
 
     def get_ancestors(self, child_tier):
-        """ Return all the direct ancestors of a tier (parent, grand-parent, grand-grand-parent...).
+        """ Return all the direct ancestors of a tier.
+         Returns a list with parent, grand-parent, grand-grand-parent...
 
         :param child_tier: (Tier)
         :returns: List of tiers
@@ -164,7 +168,7 @@ class sppasHierarchy(object):
     def add_link(self, link_type, parent_tier, child_tier):
         """ Add a hierarchy link between 2 tiers.
 
-        :param link_type: (constant) is one of the hierarchy types
+        :param link_type: (constant) One of the hierarchy types
         :param parent_tier: (Tier) The reference tier
         :param child_tier: (Tier) The child tier to be linked to reftier
 
@@ -175,19 +179,19 @@ class sppasHierarchy(object):
         # A child has only one parent
         if child_tier in self.__hierarchy.keys():
             parent, link = self.__hierarchy[child_tier]
-            raise Exception("%s has already a parent in the hierarchy."
+            raise Exception("Can't add tier: %s has already a parent in the hierarchy."
                             "Its parent is %s, with link of type %s." %
                             (child_tier.get_name(), parent.get_name(), link))
 
         # A tier can't be its own child/parent
         if parent_tier == child_tier:
-            raise Exception("A tier can't be whether the parent and its own child.")
+            raise Exception("Can't add tier: %s can't be whether the parent and its own child." % child_tier.get_name())
 
         # Check for TimeAlignment
         if link_type == "TimeAlignment":
             if parent_tier.is_superset(child_tier) is False:
                 raise Exception(
-                    "Can't align values, %s is not a superset of %s" % (
+                    "Can't align tiers: %s is not a superset of %s" % (
                         parent_tier.get_name(),
                         child_tier.get_name()))
 
@@ -195,7 +199,7 @@ class sppasHierarchy(object):
         if link_type == "TimeAssociation":
             if parent_tier.is_superset(child_tier) is False and child_tier.is_superset(parent_tier) is False:
                 raise Exception(
-                    "Can't associate values, "
+                    "Can't create an association between tiers: "
                     "%s and %s are not supersets of each other" % (
                         parent_tier.get_name(),
                         child_tier.get_name()))
@@ -208,7 +212,7 @@ class sppasHierarchy(object):
             family.extend(uncles)
         family.extend(ancestors)
         if child_tier in family:
-            raise Exception("%s is an ancestor of %s in the hierarchy." %
+            raise Exception("Can't add tier: %s is an ancestor of %s in the hierarchy." %
                             (child_tier.get_name(), parent_tier.get_name()))
 
         # OK!

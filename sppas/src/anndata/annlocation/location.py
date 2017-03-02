@@ -165,12 +165,18 @@ class sppasLocation(object):
     # -----------------------------------------------------------------------
 
     def __repr__(self, *args, **kwargs):
-        return "Locations: {!s:s}".format("; ".join([str(l) for l in self.__localizations]))
+        st = ""
+        for t, s in self.__localizations:
+            st += "sppasLocalization({!s:s}, score={:s}), ".format(t, s)
+        return st
 
     # ------------------------------------------------------------------------
 
     def __str__(self, *args, **kwargs):
-        return "{!s:s}".format("; ".join([str(l) for l in self.__localizations]))
+        st = ""
+        for t, s in self.__localizations:
+            st += "{!s:s}, {:s} ; ".format(t, s)
+        return st
 
     # -----------------------------------------------------------------------
 

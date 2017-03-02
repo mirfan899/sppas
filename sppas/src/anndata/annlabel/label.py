@@ -230,13 +230,16 @@ class sppasLabel(object):
     def __repr__(self):
         st = ""
         for t, s in self.__tags:
-            st += "sppasTag({:s}, score={:f}), ".format(t, s)
+            st += "sppasTag({!s:s}, score={:s}), ".format(t, s)
         return st
 
     # -----------------------------------------------------------------------
 
     def __str__(self):
-        return "{:s}".format("; ".join([t for t in self.__tags]))
+        st = ""
+        for t, s in self.__tags:
+            st += "{!s:s}, {:s} ; ".format(t, s)
+        return st
 
     # -----------------------------------------------------------------------
 

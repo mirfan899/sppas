@@ -46,6 +46,7 @@ INTERVAL_BOUNDS_ERROR = ":ERROR 1120: "
 CTRL_VOCAB_CONTAINS_ERROR = ":ERROR 1130: "
 TIER_APPEND_ERROR = ":ERROR 1140: "
 TIER_ADD_ERROR = ":ERROR 1142: "
+TIER_HIERARCHY_ERROR = ":ERROR 1144: "
 TRS_ADD_ERROR = ":ERROR 1150: "
 TRS_REMOVE_ERROR = ":ERROR 1152: "
 
@@ -179,6 +180,21 @@ class TierAddError(ValueError):
     def __init__(self, index):
         self.parameter = TIER_ADD_ERROR + \
                          (t.gettext(TIER_ADD_ERROR)).format(index)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class TierHierarchyError(ValueError):
+    """ :ERROR 1144: TIER_HIERARCHY_ERROR
+    Attempt a modification in tier '{:s}' that invalidates its hierarchy.
+
+    """
+    def __init__(self, name):
+        self.parameter = TIER_HIERARCHY_ERROR + \
+                         (t.gettext(TIER_HIERARCHY_ERROR)).format(name)
 
     def __str__(self):
         return repr(self.parameter)

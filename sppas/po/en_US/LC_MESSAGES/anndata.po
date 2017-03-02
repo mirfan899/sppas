@@ -15,7 +15,7 @@ msgstr ""
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 1.5.4\n"
 
 msgid ":ERROR 1000: "
 msgstr "No annotated file defined."
@@ -33,19 +33,25 @@ msgid ":ERROR 1110: "
 msgstr "Expected a positive value. Got '{:f}'."
 
 msgid ":ERROR 1120: "
-msgstr "The begin must be strictly lesser than the end in an interval. Got: [{!s:s};{!s:s}]."
+msgstr ""
+"The begin must be strictly lesser than the end in an interval. Got: [{!s:s};"
+"{!s:s}]."
 
 msgid ":ERROR 1130: "
 msgstr "{!s:s} is not included in the controlled vocabulary."
 
 msgid ":ERROR 1140: "
-msgstr "Can't append annotation. Current end {!s:s} is highest than the given one {!s:s}."
+msgstr ""
+"Can't append annotation. Current end {!s:s} is highest than the given one {!"
+"s:s}."
 
 msgid ":ERROR 1142: "
-msgstr "Can't add annotation. An annotation with the same location is already in the tier at index {:d}."
+msgstr ""
+"Can't add annotation. An annotation with the same location is already in the "
+"tier at index {:d}."
+
+msgid ":ERROR 1144: "
+msgstr "Attempt a modification in tier '{:s}' that invalidates its hierarchy."
 
 msgid ":ERROR 1150: "
 msgstr "Can't add: '{:s}' is already in the transcription."
-
-msgid ":ERROR 1152: "
-msgstr "Can't remove: '{:s}' is not in the transcription."

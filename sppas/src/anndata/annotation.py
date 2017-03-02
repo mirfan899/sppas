@@ -60,10 +60,6 @@ class sppasAnnotation(sppasMetaData):
     >>> location = sppasLocation(sppasTimePoint(1.5, radius=0.01))
     >>> label = sppasLabel(sppasText("foo"))
     >>> ann = sppasAnnotation(location, label)
-    >>> ann.get_location().get_best().get_point()
-    1.5
-    >>> ann.get_label().get_best().get_content()
-    foo
 
     """
     def __init__(self, location, label=None):
@@ -125,6 +121,19 @@ class sppasAnnotation(sppasMetaData):
             parent.validate_annotation_location(self.__location)
 
         self.__parent = parent
+
+    # -----------------------------------------------------------------------
+
+    def validate(self):
+        """ Validate the annotation.
+        Check if the annotation matches the requirements of its parent.
+
+        :raises: CtrlVocabContainsError, HierarchyContainsError, HierarchyTypeError
+
+        """
+        if self.__parent is not None:
+            self.__parent.validate_annotation_label(self.__label)
+            self.__parent.validate_annotation_location(self.__location)
 
     # -----------------------------------------------------------------------
     # Tags
@@ -193,6 +202,17 @@ class sppasAnnotation(sppasMetaData):
         return not r
 
     # -----------------------------------------------------------------------
+
+    def validate_label(self):
+        """ Validate the label of the annotation.
+
+        :raises: CtrlVocabContainsError
+
+        """
+        if self.__parent is not None:
+            self.__parent.validate_annotation_label(self.__label)
+
+    # -----------------------------------------------------------------------
     # Localization
     # -----------------------------------------------------------------------
 
@@ -237,7 +257,7 @@ class sppasAnnotation(sppasMetaData):
     def get_highest_localization(self):
         """ Return the sppasPoint with the highest localization. """
 
-        if self.location_is_point():
+        if self.__location.is_point():
             return max([l[0] for l in self.__location])
         return max([l[0].get_end() for l in self.__location])
 
@@ -246,9 +266,32 @@ class sppasAnnotation(sppasMetaData):
     def get_lowest_localization(self):
         """ Return the sppasPoint with the lowest localization. """
 
-        if self.location_is_point():
+        if self.__location.is_point():
             return min([l[0] for l in self.__location])
         return min([l[0].get_begin() for l in self.__location])
+
+    # -----------------------------------------------------------------------
+
+    def get_all_points(self):
+        """ Return the list of all points of this annotation. """
+
+        points = list()
+        if self.__location.is_point():
+            for localization, score in self.__location:
+                points.append(localization)
+
+        elif self.__location.is_interval():
+            for localization, score in self.__location:
+                points.append(localization.get_begin())
+                points.append(localization.get_end())
+
+        elif self.__location.is_disjoint():
+            for localization, score in self.__location:
+                for interval in localization.get_intervals():
+                    points.append(interval.get_begin())
+                    points.append(interval.get_end())
+
+        return points
 
     # -----------------------------------------------------------------------
 
@@ -256,6 +299,17 @@ class sppasAnnotation(sppasMetaData):
         """ Return True if the given localization is in the location. """
 
         return self.__location.contains(localization)
+
+    # -----------------------------------------------------------------------
+
+    def validate_location(self):
+        """ Validate the location of the annotation.
+
+        :raises: 
+
+        """
+        if self.__parent is not None:
+            self.__parent.validate_annotation_location(self.__location)
 
     # -----------------------------------------------------------------------
     # Overloads

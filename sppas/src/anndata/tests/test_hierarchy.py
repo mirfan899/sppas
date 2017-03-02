@@ -17,30 +17,6 @@ from ..transcription import sppasTranscription
 
 class TestHierarchy(unittest.TestCase):
 
-    def test_superset(self):
-        """
-        Return True if the sppasTier contains all sppasPoints of the given sppasTier.
-        """
-        reftier = sppasTier()
-        subtier = sppasTier()
-
-        self.assertTrue(reftier.is_superset(subtier))
-        self.assertTrue(subtier.is_superset(reftier))
-
-        reftier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(1.5)))))
-        reftier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.5), sppasPoint(2.)))))
-        reftier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(2.), sppasPoint(2.5)))))
-        reftier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(2.5), sppasPoint(3)))))
-
-        self.assertTrue(reftier.is_superset(subtier))
-        self.assertFalse(subtier.is_superset(reftier))
-
-        subtier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(2)))))
-        subtier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(2), sppasPoint(3)))))
-
-        self.assertTrue(reftier.is_superset(subtier))
-        self.assertFalse(subtier.is_superset(reftier))
-
     def test_hierarchy(self):
         trs = sppasTranscription()
         reftier = trs.create_tier('reftier')
@@ -66,19 +42,19 @@ class TestHierarchy(unittest.TestCase):
             trs.hierarchy.add_link("TimeAlignment", reftier, outtier)
         with self.assertRaises(Exception):
             trs.hierarchy.add_link("TimeAssociation", reftier, outtier)
-
         # Normal:
         trs.hierarchy.add_link("TimeAlignment", reftier, subtier)
 
-        reftier[3].GetLocation().SetEnd(sppasPoint(4))
-        self.assertEquals(reftier[3].GetLocation().GetEnd(), sppasPoint(4))
-        # this is something we have to do: guaranty of the hierarchy when modif!!!!!!
-        #self.assertEquals(subtier[1].GetLocation().GetEndMidpoint(), 4.0)
+        # this is something we have to do: guaranty of the hierarchy when modifications !!!!!!
+        # or to forbid modifications...
 
-        #IDEM: Modif of parent's/children locations must be validated!!!!!
+        # Modification of parent's/children:
+        reftier[3].get_highest_localization().set(sppasPoint(4.))
+        self.assertEquals(reftier[3].get_highest_localization(), sppasPoint(4.))
+        #self.assertEquals(subtier[1].get_highest_localization(), sppasPoint(4.))
         #with self.assertRaises(TypeError):
-        #    subtier[1].GetLocation().SetEnd(sppasPoint(5))
-        #self.assertEquals(subtier[1].GetLocation().GetEnd(), sppasPoint(4))
+        #    subtier[1].get_highest_localization().set(sppasPoint(5))
+        #self.assertEquals(subtier[1].get_highest_localization(), sppasPoint(4.))
 
     def test_append(self):
         trs = sppasTranscription()
@@ -90,49 +66,48 @@ class TestHierarchy(unittest.TestCase):
         with self.assertRaises(Exception):
             subtier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(2.)))))
 
-        reftier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(1.5)))))
+        reftier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(1.5)))))
         reftier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.5), sppasPoint(2.)))))
         self.assertEqual(len(reftier), 2)
 
         self.assertTrue(subtier.is_empty())
-        subtier.append(sppasAnnotation(sppasInterval(sppasPoint(1), sppasPoint(2))))
+        subtier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(2.)))))
         self.assertEqual(len(subtier), 1)
 
-    def test_Add(self):
+    def test_add(self):
         trs = sppasTranscription()
         reftier = trs.create_tier('reftier')
         subtier = trs.create_tier('subtier')
 
         trs.hierarchy.add_link("TimeAlignment", reftier, subtier)
 
-        self.assertTrue(reftier.Add(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(1.5))))))
-        self.assertTrue(reftier.Add(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.5), sppasPoint(2))))))
-        self.assertTrue(reftier.GetSize(), 2)
+        reftier.add(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(1.5)))))
+        reftier.add(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.5), sppasPoint(2.)))))
+        self.assertTrue(len(reftier), 2)
 
-        self.assertTrue(subtier.Add(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(2))))))
-        self.assertEqual(subtier.GetSize(), 1)
+        subtier.add(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(2.)))))
+        self.assertEqual(len(subtier), 1)
 
-    def test(self):
+    def test_trs(self):
         trs = sppasTranscription("test")
         phonemes = trs.create_tier('phonemes')
         tokens = trs.create_tier('tokens')
         syntax = trs.create_tier('syntax')
-
         trs.hierarchy.add_link("TimeAlignment", phonemes, tokens)
 
         for i in range(0, 11):
             phonemes.append(sppasAnnotation(
-                sppasLocation(sppasInterval(sppasPoint(i * 0.1, 0.001), sppasPoint(i * 0.1 + 0.1, 0.001))),
-                sppasLabel(sppasTag("p%d" % i)))
+                sppasLocation(sppasInterval(sppasPoint(i * 0.1), sppasPoint(i * 0.1 + 0.1))),
+                sppasLabel(sppasTag("phon %d" % i)))
             )
 
         for i in range(0, 5):
-            tokens.append(sppasAnnotation(
-                sppasLocation(sppasInterval(sppasPoint(i * 0.2, 0.001), sppasPoint(i * 0.2 + 0.2, 0.0001))),
-                sppasLabel(sppasTag("token label"))))
-            syntax.Add(sppasAnnotation(
-                sppasLocation(sppasInterval(sppasPoint(i * 0.2, 0.001), sppasPoint(i * 0.2 + 0.2, 0.0001))),
+            syntax.append(sppasAnnotation(
+                sppasLocation(sppasInterval(sppasPoint(i * 0.2), sppasPoint(i * 0.2 + 0.2))),
                 sppasLabel(sppasTag("syntax label"))))
+            tokens.append(sppasAnnotation(
+                sppasLocation(sppasInterval(sppasPoint(i * 0.2), sppasPoint(i * 0.2 + 0.2))),
+                sppasLabel(sppasTag("token label"))))
         trs.hierarchy.add_link("TimeAssociation", tokens, syntax)
 
         self.assertTrue(phonemes.is_superset(tokens))

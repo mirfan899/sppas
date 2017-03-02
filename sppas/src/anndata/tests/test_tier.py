@@ -544,6 +544,21 @@ class TestTier(unittest.TestCase):
         self.assertTrue(tier.is_superset(other))
         self.assertTrue(other.is_superset(tier))
 
+        reftier = sppasTier()
+        subtier = sppasTier()
+        self.assertTrue(reftier.is_superset(subtier))
+        self.assertTrue(subtier.is_superset(reftier))
+        reftier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(1.5)))))
+        reftier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.5), sppasPoint(2.)))))
+        reftier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(2.), sppasPoint(2.5)))))
+        reftier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(2.5), sppasPoint(3.)))))
+        self.assertTrue(reftier.is_superset(subtier))
+        self.assertFalse(subtier.is_superset(reftier))
+        subtier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(2.)))))
+        subtier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(2.), sppasPoint(3.)))))
+        self.assertTrue(reftier.is_superset(subtier))
+        self.assertFalse(subtier.is_superset(reftier))
+
     def test_search(self):
         # search strings
         tier = sppasTier()
