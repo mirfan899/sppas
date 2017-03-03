@@ -1,0 +1,119 @@
+# -*- coding:utf-8 -*-
+
+import unittest
+from ..anndataexc import TrsAddError
+
+from ..annlabel.label import sppasTag
+from ..tier import sppasTier
+from ..transcription import sppasTranscription
+
+from ..media import sppasMedia
+from ..ctrlvocab import sppasCtrlVocab
+
+
+class TestTranscription(unittest.TestCase):
+
+    def setUp(self):
+        self.trs = sppasTranscription()
+        self.tier1 = self.trs.create_tier(name="tier")
+        self.tier2 = self.trs.create_tier(name=" Tier")
+        self.tier3 = self.trs.create_tier(name=" Tier2")
+
+    def test_metadata(self):
+        trsP = sppasTranscription()
+        trsI = sppasTranscription()
+        trsP.set_meta("key", "value")
+        trsI.set_meta('key', "value")
+        self.assertEqual(trsI.get_meta('key'), trsP.get_meta('key'))
+        self.assertEqual(trsI.get_meta('toto'), '')
+
+    def test_name(self):
+        trsP = sppasTranscription()
+        self.assertEqual(len(trsP.get_name()), 36)
+        trsP.set_name('test')
+        self.assertEqual(trsP.get_name(), 'test')
+        trsP.set_name('    \r\t\ntest    \r\t\n')
+        self.assertEqual(trsP.get_name(), 'test')
+        trsP = sppasTier('    \r\t\ntest    \r\t\n')
+        self.assertEqual(trsP.get_name(), 'test')
+
+    def test_tier_is_empty(self):
+        trs = sppasTranscription()
+        self.assertTrue(trs.is_empty())
+        trs.append(sppasTier())
+        self.assertFalse(trs.is_empty())
+
+    def test_find(self):
+        self.assertEquals(self.trs.find(name="Tier "), self.tier2)
+        self.assertEquals(self.trs.find(name="tier2 ", case_sensitive=True), None)
+        self.assertEquals(self.trs.find(name="tier2 ", case_sensitive=False), self.tier3)
+
+    def test_tier_append_pop(self):
+        trs = sppasTranscription()
+        tierA = sppasTier()
+        self.assertEqual(len(trs), 0)
+        trs.append(tierA)
+        self.assertEqual(len(trs), 1)
+        with self.assertRaises(TrsAddError):
+            trs.append(tierA)
+        tier = trs.pop(0)
+        self.assertEqual(tier, tierA)
+        voc = sppasCtrlVocab("Verbal Strategies")
+        m = sppasMedia('filename.wav')
+        tierB = sppasTier(ctrl_vocab=voc, media=m)
+        trs.append(tierB)
+        self.assertEquals(trs.get_ctrl_vocab_from_name("Verbal_Strategies"), voc)
+        self.assertEquals(len(trs.get_media_list()), 1)
+
+    def test_rename(self):
+        trs = sppasTranscription()
+        trs.append(sppasTier("tier"))
+        trs.append(sppasTier("tier"))
+        trs.create_tier(name="tier")
+        self.assertEquals(trs[0].get_name(), u"tier")
+        self.assertEquals(trs[1].get_name(), u"tier(2)")
+        self.assertEquals(trs[2].get_name(), u"tier(3)")
+
+    def test_ctrlvocab(self):
+        voc1 = sppasCtrlVocab("Verbal Strategies")
+        self.assertTrue(voc1.add(sppasTag("definition")))
+        self.assertTrue(voc1.add(sppasTag("example")))
+        self.assertTrue(voc1.add(sppasTag("comparison")))
+        self.assertTrue(voc1.add(sppasTag("gap filling with sound")))
+        self.assertTrue(voc1.add(sppasTag("contrast")))
+        voc2 = sppasCtrlVocab("N'importe quoi")
+        self.assertTrue(voc2.add(sppasTag("toto")))
+        self.assertTrue(voc2.add(sppasTag("titi")))
+        self.assertTrue(voc2.add(sppasTag("tutu")))
+        trs = sppasTranscription()
+        t1 = sppasTier("tier1")
+        t2 = sppasTier("tier2")
+        trs.append(t1)
+        trs.append(t2)
+        trs.add_ctrl_vocab(voc1)
+        trs.add_ctrl_vocab(voc2)
+        t1.set_ctrl_vocab(voc1)
+        t2.set_ctrl_vocab(trs.get_ctrl_vocab_from_name("N'importe_quoi"))
+
+        self.assertEquals(t1.get_ctrl_vocab(), voc1)
+        self.assertEquals(t2.get_ctrl_vocab(), voc2)
+        voc1.add(sppasTag('New entry'))
+        self.assertTrue(t1.get_ctrl_vocab().contains(sppasTag('New entry')))
+        t2.get_ctrl_vocab().add(sppasTag('Hello'))
+        self.assertTrue(t2.get_ctrl_vocab().contains(sppasTag('Hello')))
+        self.assertTrue(trs.get_ctrl_vocab_from_name("N'importe_quoi").contains(sppasTag('Hello')))
+        self.assertEquals(trs.get_ctrl_vocab_from_name("N'importe_quoi"), voc2)
+
+    def test_media(self):
+        m1 = sppasMedia('filename.wav')
+        self.trs.add_media(m1)
+        self.assertEquals(len(self.trs.get_media_list()), 1)
+        m2 = sppasMedia('filename.avi')
+        self.trs.add_media(m2)
+        self.assertEquals(len(self.trs.get_media_list()), 2)
+        with self.assertRaises(ValueError):
+            self.trs.add_media(m1)
+        self.tier1.set_media(m1)
+        self.assertEquals(self.tier1.get_media(), m1)
+        self.trs.remove_media(m1)
+        self.assertEquals(self.tier1.get_media(), None)

@@ -76,7 +76,7 @@ class sppasTranscription(sppasMetaData):
           included in those of annotations of tier B.
 
     """
-    def __init__(self, name="NoName", min_point=None, max_point=None):
+    def __init__(self, name=None, min_point=None, max_point=None):
         """ Creates a new Transcription instance.
 
         :param name: (str) Name of the tier. It is used as identifier.
@@ -397,8 +397,11 @@ class sppasTranscription(sppasMetaData):
 
         """
         try:
-            self.hierarchy.remove_tier(self.__tiers[index])
+            tier = self.__tiers[index]
+            self.hierarchy.remove_tier(tier)
             self.__tiers.pop(index)
+            tier.set_parent(None)
+            return tier
         except IndexError:
             raise AnnDataIndexError(index)
 
