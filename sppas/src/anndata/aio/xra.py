@@ -39,6 +39,7 @@ import logging
 from datetime import datetime
 import xml.etree.cElementTree as ET
 
+from sppas.src.utils.makeunicode import u
 from ..transcription import sppasTranscription
 from ..media import sppasMedia
 from ..ctrlvocab import sppasCtrlVocab
@@ -83,6 +84,8 @@ class sppasXRA(sppasTranscription):
 
         """
         sppasTranscription.__init__(self, name)
+        self.__tier_id_map = {}
+        self.__tier_counter = 0
 
     # -----------------------------------------------------------------
 
@@ -160,8 +163,6 @@ class sppasXRA(sppasTranscription):
         # Set metadata
         sppasXRA.__read_metadata(tier, tier_root.find('Metadata'))
         tier.set_meta("id", tid)
-
-        # TODO: read medias somehow
 
         for annotation_root in tier_root.findall('Annotation'):
             sppasXRA.__read_annotation(tier, annotation_root)
@@ -504,5 +505,301 @@ class sppasXRA(sppasTranscription):
         :param filename: (str)
 
         """
-        raise NotImplementedError
+        root = ET.Element('Document')
+        root.set('Author', 'SPPAS')
+        root.set('Date', datetime.now().strftime("%Y-%m-%d"))
+        root.set('Format', sppasXRA.__format)
 
+        self.__tier_id_map = {}
+        self.__tier_counter = 0
+
+        metadata_root = ET.SubElement(root, 'Metadata')
+        sppasXRA.__format_metadata(metadata_root, self)
+        if len(metadata_root.findall('Entry')) == 0:
+            root.remove(metadata_root)
+
+        for tier in self:
+            tier_root = ET.SubElement(root, 'Tier')
+            self.__format_tier(tier_root, tier)
+
+        for media in self.get_media_list():
+            media_root = ET.SubElement(root, 'Media')
+            self.__format_media(media_root, media)
+
+        hierarchy_root = ET.SubElement(root, 'Hierarchy')
+        self.__format_hierarchy(hierarchy_root, self.hierarchy)
+
+        for vocabulary in self.get_ctrl_vocab_list():
+            vocabulary_root = ET.SubElement(root, 'Vocabulary')
+            self.__format_vocabulary(vocabulary_root, vocabulary)
+
+        sppasXRA.indent(root)
+        tree = ET.ElementTree(root)
+        tree.write(filename, encoding="UTF-8", method="xml")
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def __format_metadata(metadata_root, meta_object):
+        """ Add metadata of a sppasMetaData object in the tree.
+
+        :param metadata_root: (ET) XML Element tree root.
+        :param meta_object: (sppasMetadata)
+
+        """
+        for key in meta_object.get_meta_keys():
+            value = meta_object.get_meta(key)
+
+            entry = ET.SubElement(metadata_root, 'Entry')
+            entry.set('key', key)
+            entry.text = value
+
+    # -----------------------------------------------------------------
+
+    def __format_tier(self, tier_root, tier):
+        """ Add a tier object in the tree.
+
+        :param tier_root: (ET) XML Element tree root.
+        :param tier: (sppasTier)
+
+        """
+        # Tier identifier
+        tier_id = tier.get_meta('id')
+        tier_root.set("id", tier_id)
+
+        # Tier name
+        tier_root.set("tiername", tier.get_name())
+
+        # Tier Metadata
+        tier.pop_meta('id')
+        metadata_root = ET.SubElement(tier_root, 'Metadata')
+        sppasXRA.__format_metadata(metadata_root, tier)
+        if len(metadata_root.findall('Entry')) == 0:
+            tier_root.remove(metadata_root)
+        tier.set_meta('id', tier_id)
+
+        # Tier annotations list
+        for annotation in tier:
+            annotation_root = ET.SubElement(tier_root, 'Annotation')
+            sppasXRA.__format_annotation(annotation_root, annotation)
+
+        self.__tier_counter += 1
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def __format_annotation(annotation_root, annotation):
+        """ Add an annotation object in the tree.
+
+        :param annotation_root: (ET) XML Element tree root.
+        :param annotation: (sppasAnnotation)
+
+        """
+        location_root = ET.SubElement(annotation_root, 'Location')
+        sppasXRA.__format_location(location_root, annotation.get_location())
+
+        label_root = ET.SubElement(annotation_root, 'Label')
+        sppasXRA.__format_label(label_root, annotation.get_label())
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def __format_location(location_root, location):
+        """ Add a location object in the tree.
+
+        :param location_root: (ET) XML Element tree root.
+        :param location: (sppasLocation)
+
+        """
+        location_root.set('scoremode', location.get_function_score().__name__)
+
+        for localization, score in location:
+            if localization.is_point():
+                point_node = ET.SubElement(location_root, 'Point')
+                sppasXRA.__format_point(point_node, localization)
+                if score is not None:
+                    point_node.set('score', u(str(score)))
+
+            elif localization.is_interval():
+                interval_root = ET.SubElement(location_root, 'Interval')
+                sppasXRA.__format_interval(interval_root, localization)
+                if score is not None:
+                    interval_root.set('score', u(str(score)))
+
+            elif localization.IsTimeDisjoint():
+                disjoint_root = ET.SubElement(location_root, 'Disjoint')
+                sppasXRA.__format_disjoint(disjoint_root, localization)
+                if score is not None:
+                    disjoint_root.set('score', u(str(score)))
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def __format_point(point_node, point):
+        """ Add a point object in the tree.
+
+        :param point_node: (ET) XML Element node.
+        :param point: (sppasPoint)
+
+        """
+        point_node.set('midpoint', u(str(point.get_midpoint())))
+        if point.get_radius() is not None:
+            point_node.set('radius', u(str(point.get_radius())))
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def __format_interval(interval_root, interval):
+        """ Add an interval object in the tree.
+
+        :param interval_root: (ET) XML Element node.
+        :param interval: (sppasInterval)
+
+        """
+        begin = ET.SubElement(interval_root, 'Begin')
+        sppasXRA.__format_point(begin, interval.get_begin())
+
+        end = ET.SubElement(interval_root, 'End')
+        sppasXRA.__format_point(end, interval.get_end())
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def __format_disjoint(disjoint_root, disjoint):
+        """ Add a disjoint object in the tree.
+
+        :param disjoint_root: (ET) XML Element node.
+        :param disjoint: (sppasDisjoint)
+
+        """
+        for interval in disjoint:
+            interval_root = ET.SubElement(disjoint_root, 'Interval')
+            sppasXRA.__format_interval(interval_root, interval)
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def __format_label(label_root, label):
+        """ Add a label object in the tree.
+
+        :param label_root: (ET) XML Element tree root.
+        :param label: (sppasLabel)
+
+        """
+        label_root.set('scoremode', label.get_function_score().__name__)
+
+        for tag, score in label:
+            tag_node = ET.SubElement(label_root, 'Tag')
+            sppasXRA.__format_tag(tag_node, tag)
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def __format_tag(tag_node, tag):
+        """ Add a tag object in the tree.
+
+        :param tag_node: (ET) XML Element node.
+        :param tag: (sppasTag)
+
+        """
+        tag_node.set('type', tag.get_type())
+        tag_node.text = tag.get_content()
+
+    # -----------------------------------------------------------------
+
+    def __format_media(self, media_root, media):
+        """ Add a media object in the tree.
+
+        :param media_root: (ET) XML Element tree root.
+        :param media: (sppasMedia)
+
+        """
+        # Set attribute
+        media_root.set('id', media.get_name())
+        media_root.set('url', media.get_filename())
+        media_root.set('mimetype', media.get_mime_type())
+
+        # Element Tier
+        for tier in self:
+            if tier.get_media() == media:
+                tier_node = ET.SubElement(media_root, 'Tier')
+                tier_node.set('id', tier.get_meta('id'))
+
+        # Element Metadata
+        if len(media.get_meta_keys()) > 0:
+            metadata_root = ET.SubElement(media_root, 'Metadata')
+            self.__format_metadata(metadata_root, media)
+
+        # Element Content
+        if len(media.get_content()) > 0:
+            content_node = ET.SubElement(media_root, 'Content')
+            content_node.text = media.get_content()
+
+    # -----------------------------------------------------------------
+
+    def __format_hierarchy(self, hierarchy_root, hierarchy):
+        """ Add a hierarchy object in the tree.
+
+        :param hierarchy_root: (ET) XML Element tree root.
+        :param hierarchy: (sppasHierarchy)
+
+        """
+        for child_tier in self:
+            parent_tier = hierarchy.get_parent(child_tier)
+            if parent_tier is not None:
+                link_type = hierarchy.get_hierarchy_type(child_tier)
+                link = ET.SubElement(hierarchy_root, 'Link')
+                link.set('type', link_type)
+                link.set('from', self.__tier_id_map[parent_tier])
+                link.set('to', self.__tier_id_map[child_tier])
+
+    # -----------------------------------------------------------------
+
+    def __format_vocabulary(self, vocabulary_root, vocabulary):
+        """ Add a controlled vocabulary object in the tree.
+
+         :param vocabulary_root: (ET) XML Element tree root.
+         :param vocabulary: (sppasCtrlVocab)
+
+        TODO: XRA 1.3 must contain sppasTAG as entries of vocab...
+
+        """
+        # Set attribute
+        vocabulary_root.set('id', vocabulary.get_name())
+        if len(vocabulary.get_description()) > 0:
+            vocabulary_root.set('description', vocabulary.get_description())
+
+        # Write the list of entries
+        for entry in vocabulary:
+            entry_node = ET.SubElement(vocabulary_root, 'Entry')
+            entry_node.text = entry.get_content()
+            #if len(entry.desc) > 0:
+            #    entry_node.set('description', entry.desc)
+
+        # Element Tier
+        for tier in self:
+            if tier.get_ctrl_vocab() == vocabulary:
+                tier_node = ET.SubElement(vocabulary_root, 'Tier')
+                tier_node.set('id', tier.get_meta('id'))
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def indent(elem, level=0):
+        """ Pretty indent.
+        http://effbot.org/zone/element-lib.htm#prettyprint
+
+        """
+        i = "\n" + level*"\t"
+        if len(elem):
+            if not elem.text or not elem.text.strip():
+                elem.text = i + "\t"
+            if not elem.tail or not elem.tail.strip():
+                elem.tail = i
+            for elem in elem:
+                sppasXRA.indent(elem, level+1)
+            if not elem.tail or not elem.tail.strip():
+                elem.tail = i
+        else:
+            if level and (not elem.tail or not elem.tail.strip()):
+                elem.tail = i

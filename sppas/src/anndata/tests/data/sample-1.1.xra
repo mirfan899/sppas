@@ -92,9 +92,9 @@
 
      <Media URL="file:///file.wav" MimeType="audio/wav" />
 
-     <Annotation>
-        <Location>
-            <Localization score="0.8">
+    <Annotation>
+      <Location>
+           <Localization score="0.8">
                  <TimeInterval>
                      <Begin midpoint="0.1234" radius="0.001" />
                      <End   midpoint="0.2340" radius="0.001" />
@@ -106,30 +106,30 @@
                      <End   midpoint="0.7890" radius="0.001" />
                  </TimeInterval>
             </Localization>
-        </Location>
-        <Label scoremode="min">
+         </Location>
+         <Label scoremode="min">
              <Text score="-0.632">le texte supposé</Text>
              <Text score="-0.568">le texte alternatif</Text>
-        </Label>
-     </Annotation>
+         </Label>
+    </Annotation>
   </Tier>
 
   <Hierarchy>
-      <Link Type="TimeAlignment"   From="t1" To="t3" />
-      <Link Type="TimeAssociation" From="t1" To="t2" />
+    <Link Type="TimeAlignment"   From="t1" To="t3" />
+    <Link Type="TimeAssociation" From="t1" To="t2" />
   </Hierarchy>
 
   <Vocabulary ID="v0" description="une courte description">
-      <Entry>
-        le
-      </Entry>
-      <Entry>
-        label
-      </Entry>
-      <Entry>
-        supposé
-      </Entry>
-      <Tier ID="t2"/>
+    <Entry>
+      le
+    </Entry>
+    <Entry>
+      label
+    </Entry>
+    <Entry>
+      supposé
+    </Entry>
+    <Tier ID="t2"/>
   </Vocabulary>
 
 </Document>

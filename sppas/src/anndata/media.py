@@ -36,6 +36,8 @@
 import mimetypes
 
 from sppas.src.utils.fileutils import sppasGUID
+from sppas.src.utils.makeunicode import u
+
 from .metadata import sppasMetaData
 
 # ----------------------------------------------------------------------------
@@ -102,9 +104,19 @@ class sppasMedia(sppasMetaData):
 
     # -----------------------------------------------------------------------
 
-    def set_content(self, content):
-        """ Set the content of the media. """
+    def get_content(self):
+        """ Return the content of the media. """
 
-        self.__content = content
+        return self.__content
+
+    # -----------------------------------------------------------------------
+
+    def set_content(self, content):
+        """ Set the content of the media.
+
+        :param content: (str)
+        """
+
+        self.__content = u(content)
 
     # -----------------------------------------------------------------------

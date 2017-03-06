@@ -125,6 +125,18 @@ class sppasTier(sppasMetaData):
     # Setters
     # -----------------------------------------------------------------------
 
+    def create_meta_id(self):
+        """ Create a metadata with 'id' as key and a GUID as value.
+
+        :returns: GUID identifier
+
+        """
+        guid = sppasGUID().get()
+        self.set_meta("id", guid)
+        return guid
+
+    # -----------------------------------------------------------------------
+
     def set_name(self, name=None):
         """ Set the name of the tier.
         If no name is given, an GUID is randomly assigned.
@@ -134,7 +146,9 @@ class sppasTier(sppasMetaData):
 
         """
         if name is None:
-            name = sppasGUID().get()
+            if self.get_meta("id") == "":
+                self.create_meta_id()
+            name = self.get_meta("id")
         su = sppasUnicode(name)
         self.__name = su.to_strip()
 

@@ -59,16 +59,27 @@ class sppasMetaData(object):
         """ Return the value of the given key.
         Return an empty string if key if not a key of metadata.
 
-        :param key:
+        :param key: (str)
 
         """
         return self.__metadata.get(key, "")
 
     # ------------------------------------------------------------------------
 
-    def set_meta(self, key, value):
-        """ Set or update a tuple key/value of metadata. """
+    def get_meta_keys(self):
+        """ Return the list of metadata keys. """
 
+        return self.__metadata.keys()
+
+    # ------------------------------------------------------------------------
+
+    def set_meta(self, key, value):
+        """ Set or update a tuple key/value of metadata.
+
+        :param key: (str)
+        :param value: (str)
+
+        """
         su = sppasUnicode(key)
         key = su.to_strip()
 
@@ -76,3 +87,14 @@ class sppasMetaData(object):
         value = su.to_strip()
 
         self.__metadata[key] = value
+
+    # ------------------------------------------------------------------------
+
+    def pop_meta(self, key):
+        """ Remove a metadata from its key.
+
+        :param key: (str)
+
+        """
+        if key in self.__metadata:
+            del self.__metadata[key]

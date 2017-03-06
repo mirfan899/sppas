@@ -87,10 +87,7 @@ class sppasAnnotation(sppasMetaData):
     def get_label(self):
         """ Return the sppasLabel instance. """
 
-        if self.__label is not None:
-            return self.__label
-
-        return None  # sppasLabel(sppasTag(""))
+        return self.__label
 
     # -----------------------------------------------------------------------
 
