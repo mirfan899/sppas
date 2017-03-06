@@ -52,7 +52,7 @@ class sppasMedia(sppasMetaData):
     
     """
     def __init__(self, filename, media_name=None, mime_type=None):
-        """ Creates a new sppasHierarchy instance. 
+        """ Creates a new sppasMedia instance.
 
         :param filename: (str) File name of the media
         :param media_name: (str) Identifier of the media
@@ -64,9 +64,12 @@ class sppasMedia(sppasMetaData):
         self.__url = filename
         self.__name = None
         self.__mime = ""
+        self.__content = ""
 
         if media_name is None:
             self.__name = sppasGUID().get()
+        else:
+            self.__name = media_name
 
         if mime_type is None:
             m = mimetypes.guess_type(self.__url)
@@ -96,3 +99,12 @@ class sppasMedia(sppasMetaData):
         """ Return the mime type of the media. """
 
         return self.__mime
+
+    # -----------------------------------------------------------------------
+
+    def set_content(self, content):
+        """ Set the content of the media. """
+
+        self.__content = content
+
+    # -----------------------------------------------------------------------

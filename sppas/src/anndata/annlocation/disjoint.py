@@ -55,7 +55,7 @@ class sppasDisjoint(sppasBaseLocalization):
     :summary:      Representation of a serie of intervals in time.
 
     """
-    def __init__(self, intervals):
+    def __init__(self, intervals=None):
         """ Creates a new sppasDisjoint instance.
 
         :param intervals: (list of sppasInterval)
@@ -64,7 +64,8 @@ class sppasDisjoint(sppasBaseLocalization):
         sppasBaseLocalization.__init__(self)
 
         self.__intervals = list()
-        self.set_intervals(intervals)
+        if intervals is not None:
+            self.set_intervals(intervals)
 
     # -----------------------------------------------------------------------
 

@@ -63,23 +63,29 @@ class sppasTranscription(sppasMetaData):
     :summary:      Representation of a transcription.
 
     Transcriptions in SPPAS are represented with:
-        - meta data: a list of tuple key/value
-        - a name (used as Id)
-        - tiers
-        - a hierarchy
+        - metadata: a list of tuple key/value;
+        - a name (used to identify the transcription);
+        - a list of tiers;
+        - a hierarchy between tiers.
 
     Inter-tier relations are managed by establishing alignment or association
     links between 2 tiers:
-        - alignment: annotations of a tier A (child) have only Time instances
-          included in those of annotations of tier B (parent);
-        - association: annotations of a tier A have exactly Time instances
-          included in those of annotations of tier B.
+        - alignment: annotations of a tier A (child) have only localization
+          instances included in those of annotations of tier B (parent);
+        - association: annotations of a tier A have exactly localization
+         instances included in those of annotations of tier B.
+
+    >>> # Create an instance
+    >>> trs = sppasTranscription()
+
+    >>> # Get a tier of a transcription from its index:
+    >>> tier = trs[0]
 
     """
     def __init__(self, name=None, min_point=None, max_point=None):
-        """ Creates a new Transcription instance.
+        """ Creates a new sppasTranscription instance.
 
-        :param name: (str) Name of the tier. It is used as identifier.
+        :param name: (str) Name of the transcription. It is used as identifier.
         :param min_point: (sppasPoint)
         :param max_point: (sppasPoint)
 
@@ -153,7 +159,7 @@ class sppasTranscription(sppasMetaData):
         :raises: AnnDataTypeError, TrsAddError
 
         """
-        if not isinstance(new_media, sppasMedia):
+        if isinstance(new_media, sppasMedia) is False:
             raise AnnDataTypeError(new_media, "sppasMedia")
 
         ids = [m.get_name() for m in self.__media]

@@ -47,6 +47,7 @@ from .anndataexc import CtrlVocabContainsError
 from .anndataexc import TierAppendError
 from .anndataexc import TierAddError
 from .anndataexc import TierHierarchyError
+from .anndataexc import TrsAddError
 
 from .annlocation.point import sppasPoint
 from .annotation import sppasAnnotation
@@ -95,6 +96,7 @@ class sppasTier(sppasMetaData):
         self.set_name(name)
         self.set_ctrl_vocab(ctrl_vocab)
         self.set_media(media)
+        self.set_parent(parent)
 
     # -----------------------------------------------------------------------
     # Getters
@@ -155,6 +157,12 @@ class sppasTier(sppasMetaData):
             for annotation in self.__ann:
                 annotation.validate_label()
 
+            if self.__parent is not None:
+                try:
+                    self.__parent.add_ctrl_vocab(ctrl_vocab)
+                except TrsAddError:
+                    pass
+
         self.__ctrl_vocab = ctrl_vocab
 
     # -----------------------------------------------------------------------
@@ -169,6 +177,11 @@ class sppasTier(sppasMetaData):
         if media is not None:
             if isinstance(media, sppasMedia) is False:
                 raise AnnDataTypeError(media, "sppasMedia")
+            if self.__parent is not None:
+                try:
+                    self.__parent.add_media(media)
+                except TrsAddError:
+                    pass
 
         self.__media = media
 
@@ -181,6 +194,20 @@ class sppasTier(sppasMetaData):
 
         """
         self.__parent = parent
+
+        # add the media to the parent
+        if self.__media is not None:
+            try:
+                self.__parent.add_media(self.__media)
+            except TrsAddError:
+                pass
+
+        # add the controlled vocabulary to the parent
+        if self.__ctrl_vocab is not None:
+            try:
+                self.__parent.add_ctrl_vocab(self.__ctrl_vocab)
+            except TrsAddError:
+                pass
 
     # -----------------------------------------------------------------------
 

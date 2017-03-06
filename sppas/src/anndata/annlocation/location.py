@@ -51,7 +51,7 @@ class sppasLocation(object):
     The location is a set of alternative localizations.
 
     """
-    def __init__(self, localization, score=None):
+    def __init__(self, localization=None, score=None):
         """ Create a new sppasLocation instance and add the entry.
 
         :param localization: (Localization)
@@ -61,7 +61,8 @@ class sppasLocation(object):
         self.__localizations = list()
         self.__fct = max
 
-        self.append(localization, score)
+        if localization is not None:
+            self.append(localization, score)
 
     # -----------------------------------------------------------------------
 

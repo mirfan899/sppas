@@ -281,3 +281,10 @@ class sppasHierarchy(object):
             return "TimeAssociation"
 
         return "TimeAlignment"
+
+    # ------------------------------------------------------------------------
+    # Overloads
+    # ------------------------------------------------------------------------
+
+    def __len__(self):
+        return len(self.__hierarchy)
