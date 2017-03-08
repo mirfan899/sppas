@@ -33,6 +33,8 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+from collections import OrderedDict
+
 from .anndataexc import AnnDataTypeError
 
 # ----------------------------------------------------------------------------
@@ -85,7 +87,7 @@ class sppasHierarchy(object):
         super(sppasHierarchy, self).__init__()
 
         # key = child tier ; value = tuple(parent, link_type)
-        self.__hierarchy = {}
+        self.__hierarchy = OrderedDict()
 
     # -----------------------------------------------------------------------
     # Getters
@@ -288,3 +290,7 @@ class sppasHierarchy(object):
 
     def __len__(self):
         return len(self.__hierarchy)
+
+    def __iter__(self):
+        for a in self.__hierarchy:
+            yield a

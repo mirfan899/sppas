@@ -37,20 +37,24 @@
 """
 import os.path
 
-from .text import RawText, CSV
-from .praat import TextGrid, PitchTier, IntensityTier
-from .signaix import HzPitch
-from .transcriber import Transcriber
-from .xra import XRA
-from .phonedit import Phonedit
-from .htk import HTKLabel, MasterLabel
-from .subtitle import SubRip, SubViewer
-from .sclite import TimeMarkedConversation, SegmentTimeMark
-from .elan import Elan
-from .anvil import Anvil
-from .annotationpro import Antx
-from .xtrans import Xtrans
-from .audacity import Audacity
+from sppas.src.utils.makeunicode import u
+
+from ..anndataexc import AioEncodingError
+
+from .xra import sppasXRA
+# from .text import RawText, CSV
+# from .praat import TextGrid, PitchTier, IntensityTier
+# from .signaix import HzPitch
+# from .transcriber import Transcriber
+# from .phonedit import Phonedit
+# from .htk import HTKLabel, MasterLabel
+# from .subtitle import SubRip, SubViewer
+# from .sclite import TimeMarkedConversation, SegmentTimeMark
+# from .elan import Elan
+# from .anvil import Anvil
+# from .annotationpro import Antx
+# from .xtrans import Xtrans
+# from .audacity import Audacity
 
 # ----------------------------------------------------------------------------
 
@@ -62,40 +66,62 @@ class sppasRW(object):
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Readers and writers of annotated data.
+    :summary:      Main parser of annotated data.
 
     """
     TRANSCRIPTION_TYPES = {
-        "csv": CSV,
-        "intensitytier": IntensityTier,
-        "pitchtier": PitchTier,
-        "hz": HzPitch,
-        "textgrid": TextGrid,
-        "trs": Transcriber,
-        "xra": XRA,
-        "mrk": Phonedit,
-        "lab": HTKLabel,
-        "mlf": MasterLabel,
-        "srt": SubRip,
-        "sub": SubViewer,
-        "ctm": TimeMarkedConversation,
-        "stm": SegmentTimeMark,
-        "eaf": Elan,
-        "anvil": Anvil,
-        "antx": Antx,
-        "tdf": Xtrans,
-        "aup": Audacity,
-        "txt": RawText
+        "xra": sppasXRA,
+        # "textgrid": TextGrid,
+        # "eaf": Elan,
+        # "trs": Transcriber,
+        # "mrk": Phonedit,
+        # "lab": HTKLabel,
+        # "mlf": MasterLabel,
+        # "srt": SubRip,
+        # "sub": SubViewer,
+        # "ctm": TimeMarkedConversation,
+        # "stm": SegmentTimeMark,
+        # "anvil": Anvil,
+        # "antx": Antx,
+        # "tdf": Xtrans,
+        # "aup": Audacity,
+        # "csv": CSV,
+        # "intensitytier": IntensityTier,
+        # "pitchtier": PitchTier,
+        # "hz": HzPitch,
+        # "txt": RawText
     }
 
     # -----------------------------------------------------------------------
 
-    def __init__(self):
-        pass
+    def __init__(self, filename):
+        """ Create a Transcription reader-writer.
+
+        :param filename: (str)
+
+        """
+        self.__filename = u(filename)
 
     # -----------------------------------------------------------------------
 
-    def read(self, filename):
+    def get_filename(self):
+        """ Return the filename. """
+
+        return self.__filename
+
+    # -----------------------------------------------------------------------
+
+    def set_filename(self, filename):
+        """ Set a new filename. 
+
+        :param filename: (str)
+
+        """
+        self.__filename = u(filename)
+        
+    # -----------------------------------------------------------------------
+
+    def read(self):
         """ Read a transcription from a file.
 
         :param filename: (str) the file name (including path)
@@ -104,24 +130,16 @@ class sppasRW(object):
 
         """
         try:
-            trs = sppasRW.create_trs_from_extension(filename)
+            trs = sppasRW.create_trs_from_extension(self.__filename)
         except KeyError:
-            trs = sppasRW.create_trs_from_heuristic(filename)
+            trs = sppasRW.create_trs_from_heuristic(self.__filename)
 
         try:
-            #transcription.read(unicode(filename))
-            trs.read(filename)
+            trs.read(self.__filename)
         except IOError:
             raise
         except UnicodeError as e:
-            raise UnicodeError('Encoding error: the file %r contains non-UTF-8 characters: %s' % (filename, e))
-
-        # Each reader has its own solution to assign min and max.
-        # Anyway, here we take care, if one missed to assign the values!
-        # if transcription.GetMinTime() is None:
-        #    transcription.SetMinTime(transcription.GetBegin())
-        # if transcription.GetMaxTime() is None:
-        #    transcription.SetMaxTime(transcription.GetEnd())
+            raise AioEncodingError(self.__filename, e)
 
         return trs
 
@@ -129,7 +147,7 @@ class sppasRW(object):
 
     @staticmethod
     def create_trs_from_extension(filename):
-        """ Return a new Transcription() according to a given filename.
+        """ Return a transcription according to a given filename.
         Only the extension of the filename is used.
 
         :param filename: (str)
@@ -146,7 +164,7 @@ class sppasRW(object):
 
     @staticmethod
     def create_trs_from_heuristic(filename):
-        """ Return a new Transcription() according to a given filename.
+        """ Return a transcription according to a given filename.
         The given file is opened and an heuristic allows to fix the format.
 
         :param filename: (str)
@@ -160,3 +178,15 @@ class sppasRW(object):
             except Exception:
                 continue
         return RawText()
+
+    # -----------------------------------------------------------------------
+
+    def write(self, transcription):
+        """ Write a transcription into a file.
+
+        :param transcription: (str)
+
+        """
+        trs_rw = sppasRW.create_trs_from_extension(self.__filename)
+        trs_rw.set(transcription)
+        trs_rw.write(self.__filename)

@@ -30,7 +30,7 @@
         ---------------------------------------------------------------------
 
     src.anndata.anndataexc.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Exceptions for anndata package.
 
@@ -49,6 +49,7 @@ TIER_ADD_ERROR = ":ERROR 1142: "
 TIER_HIERARCHY_ERROR = ":ERROR 1144: "
 TRS_ADD_ERROR = ":ERROR 1150: "
 TRS_REMOVE_ERROR = ":ERROR 1152: "
+AIO_ENCODING_ERROR = ":ERROR 1500: "
 
 # -----------------------------------------------------------------------
 
@@ -231,3 +232,17 @@ class TrsRemoveError(ValueError):
 
 # -----------------------------------------------------------------------
 
+
+class AioEncodingError(UnicodeDecodeError):
+    """ :ERROR 1500: AIO_ENCODING_ERROR
+    The file {!s:s} contains non UTF-8 characters: {:s}.
+
+    """
+    def __init__(self, filename, error):
+        self.parameter = AIO_ENCODING_ERROR + \
+                         (t.gettext(AIO_ENCODING_ERROR)).format(filename, error)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------

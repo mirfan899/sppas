@@ -44,9 +44,9 @@ class TestTranscription(unittest.TestCase):
         self.assertFalse(trs.is_empty())
 
     def test_find(self):
-        self.assertEquals(self.trs.find(name="Tier "), self.tier2)
-        self.assertEquals(self.trs.find(name="tier2 ", case_sensitive=True), None)
-        self.assertEquals(self.trs.find(name="tier2 ", case_sensitive=False), self.tier3)
+        self.assertEqual(self.trs.find(name="Tier "), self.tier2)
+        self.assertEqual(self.trs.find(name="tier2 ", case_sensitive=True), None)
+        self.assertEqual(self.trs.find(name="tier2 ", case_sensitive=False), self.tier3)
 
     def test_tier_append_pop(self):
         trs = sppasTranscription()
@@ -62,17 +62,17 @@ class TestTranscription(unittest.TestCase):
         m = sppasMedia('filename.wav')
         tierB = sppasTier(ctrl_vocab=voc, media=m)
         trs.append(tierB)
-        self.assertEquals(trs.get_ctrl_vocab_from_name("Verbal_Strategies"), voc)
-        self.assertEquals(len(trs.get_media_list()), 1)
+        self.assertEqual(trs.get_ctrl_vocab_from_name("Verbal_Strategies"), voc)
+        self.assertEqual(len(trs.get_media_list()), 1)
 
     def test_rename(self):
         trs = sppasTranscription()
         trs.append(sppasTier("tier"))
         trs.append(sppasTier("tier"))
         trs.create_tier(name="tier")
-        self.assertEquals(trs[0].get_name(), u"tier")
-        self.assertEquals(trs[1].get_name(), u"tier(2)")
-        self.assertEquals(trs[2].get_name(), u"tier(3)")
+        self.assertEqual(trs[0].get_name(), u"tier")
+        self.assertEqual(trs[1].get_name(), u"tier(2)")
+        self.assertEqual(trs[2].get_name(), u"tier(3)")
 
     def test_ctrlvocab(self):
         voc1 = sppasCtrlVocab("Verbal Strategies")
@@ -95,25 +95,25 @@ class TestTranscription(unittest.TestCase):
         t1.set_ctrl_vocab(voc1)
         t2.set_ctrl_vocab(trs.get_ctrl_vocab_from_name("N'importe_quoi"))
 
-        self.assertEquals(t1.get_ctrl_vocab(), voc1)
-        self.assertEquals(t2.get_ctrl_vocab(), voc2)
+        self.assertEqual(t1.get_ctrl_vocab(), voc1)
+        self.assertEqual(t2.get_ctrl_vocab(), voc2)
         voc1.add(sppasTag('New entry'))
         self.assertTrue(t1.get_ctrl_vocab().contains(sppasTag('New entry')))
         t2.get_ctrl_vocab().add(sppasTag('Hello'))
         self.assertTrue(t2.get_ctrl_vocab().contains(sppasTag('Hello')))
         self.assertTrue(trs.get_ctrl_vocab_from_name("N'importe_quoi").contains(sppasTag('Hello')))
-        self.assertEquals(trs.get_ctrl_vocab_from_name("N'importe_quoi"), voc2)
+        self.assertEqual(trs.get_ctrl_vocab_from_name("N'importe_quoi"), voc2)
 
     def test_media(self):
         m1 = sppasMedia('filename.wav')
         self.trs.add_media(m1)
-        self.assertEquals(len(self.trs.get_media_list()), 1)
+        self.assertEqual(len(self.trs.get_media_list()), 1)
         m2 = sppasMedia('filename.avi')
         self.trs.add_media(m2)
-        self.assertEquals(len(self.trs.get_media_list()), 2)
+        self.assertEqual(len(self.trs.get_media_list()), 2)
         with self.assertRaises(ValueError):
             self.trs.add_media(m1)
         self.tier1.set_media(m1)
-        self.assertEquals(self.tier1.get_media(), m1)
+        self.assertEqual(self.tier1.get_media(), m1)
         self.trs.remove_media(m1)
-        self.assertEquals(self.tier1.get_media(), None)
+        self.assertEqual(self.tier1.get_media(), None)

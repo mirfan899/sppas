@@ -51,7 +51,7 @@
 
         >>> ext = anndata.aio.extensions
 
-    Details can be found in the following publication:
+    Some details can be found in the following publication:
 
         | Brigitte Bigi, Tatsuya Watanabe, Laurent Prévot (2014).
         | Representing Multimodal Linguistics Annotated data,
@@ -61,4 +61,3 @@
 """
 from sppas.src.utils.maketext import translate
 t = translate("anndata")
-

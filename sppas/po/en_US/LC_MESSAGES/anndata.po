@@ -15,7 +15,7 @@ msgstr ""
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.8.11\n"
 
 msgid ":ERROR 1000: "
 msgstr "No annotated file defined."
@@ -55,3 +55,6 @@ msgstr "Attempt a modification in tier '{:s}' that invalidates its hierarchy."
 
 msgid ":ERROR 1150: "
 msgstr "Can't add: '{:s}' is already in the transcription."
+
+msgid ":ERROR 1500: "
+msgstr "The file {!s:s} contains non UTF-8 characters: {:s}."

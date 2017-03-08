@@ -209,19 +209,20 @@ class sppasTier(sppasMetaData):
         """
         self.__parent = parent
 
-        # add the media to the parent
-        if self.__media is not None:
-            try:
-                self.__parent.add_media(self.__media)
-            except TrsAddError:
-                pass
+        if parent is not None:
+            # add the media to the parent
+            if self.__media is not None:
+                try:
+                    self.__parent.add_media(self.__media)
+                except TrsAddError:
+                    pass
 
-        # add the controlled vocabulary to the parent
-        if self.__ctrl_vocab is not None:
-            try:
-                self.__parent.add_ctrl_vocab(self.__ctrl_vocab)
-            except TrsAddError:
-                pass
+            # add the controlled vocabulary to the parent
+            if self.__ctrl_vocab is not None:
+                try:
+                    self.__parent.add_ctrl_vocab(self.__ctrl_vocab)
+                except TrsAddError:
+                    pass
 
     # -----------------------------------------------------------------------
 

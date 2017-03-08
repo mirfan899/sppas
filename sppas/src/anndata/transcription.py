@@ -49,7 +49,6 @@ from .media import sppasMedia
 from .tier import sppasTier
 from .hierarchy import sppasHierarchy
 
-
 # ----------------------------------------------------------------------------
 
 
@@ -82,7 +81,7 @@ class sppasTranscription(sppasMetaData):
     >>> tier = trs[0]
 
     """
-    def __init__(self, name=None, min_point=None, max_point=None):
+    def __init__(self, name=None):
         """ Creates a new sppasTranscription instance.
 
         :param name: (str) Name of the transcription. It is used as identifier.
@@ -93,8 +92,6 @@ class sppasTranscription(sppasMetaData):
         super(sppasTranscription, self).__init__()
 
         self.__name = None
-        self.__min_point = min_point
-        self.__max_point = max_point
         self.__media = list()      # a list of sppasMedia() instances
         self.__ctrlvocab = list()  # a list of sppasCtrlVocab() instances
         self.__tiers = list()      # a list of sppasTier() instances
@@ -410,18 +407,6 @@ class sppasTranscription(sppasMetaData):
             return tier
         except IndexError:
             raise AnnDataIndexError(index)
-
-    # ------------------------------------------------------------------------
-    # Input/Output
-    # ------------------------------------------------------------------------
-
-    def read(self):
-        raise NotImplementedError
-
-    # ------------------------------------------------------------------------
-
-    def write(self):
-        raise NotImplementedError
 
     # ------------------------------------------------------------------------
     # Overloads

@@ -40,10 +40,9 @@ from datetime import datetime
 import xml.etree.cElementTree as ET
 
 from sppas.src.utils.makeunicode import u
-from ..transcription import sppasTranscription
+
 from ..media import sppasMedia
 from ..ctrlvocab import sppasCtrlVocab
-
 from ..annotation import sppasAnnotation
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
@@ -52,10 +51,12 @@ from ..annlocation.disjoint import sppasDisjoint
 from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
 
+from .basetrs import sppasBaseIO
+
 # ----------------------------------------------------------------------------
 
 
-class sppasXRA(sppasTranscription):
+class sppasXRA(sppasBaseIO):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -74,8 +75,6 @@ class sppasXRA(sppasTranscription):
         return root.find('Tier') is not None
 
     # -----------------------------------------------------------------
-    __format = '1.3'
-    # -----------------------------------------------------------------
 
     def __init__(self, name=None):
         """ Initialize a new XRA instance.
@@ -83,9 +82,8 @@ class sppasXRA(sppasTranscription):
         :param name: (str) This transcription name.
 
         """
-        sppasTranscription.__init__(self, name)
-        self.__tier_id_map = {}
-        self.__tier_counter = 0
+        sppasBaseIO.__init__(self, name)
+        self.__format = "1.3"
 
     # -----------------------------------------------------------------
 
@@ -514,10 +512,7 @@ class sppasXRA(sppasTranscription):
         root = ET.Element('Document')
         root.set('Author', 'SPPAS')
         root.set('Date', datetime.now().strftime("%Y-%m-%d"))
-        root.set('Format', sppasXRA.__format)
-
-        self.__tier_id_map = {}
-        self.__tier_counter = 0
+        root.set('Format', self.__format)
 
         metadata_root = ET.SubElement(root, 'Metadata')
         sppasXRA.__format_metadata(metadata_root, self)
@@ -526,7 +521,7 @@ class sppasXRA(sppasTranscription):
 
         for tier in self:
             tier_root = ET.SubElement(root, 'Tier')
-            self.__format_tier(tier_root, tier)
+            sppasXRA.__format_tier(tier_root, tier)
 
         for media in self.get_media_list():
             media_root = ET.SubElement(root, 'Media')
@@ -562,7 +557,8 @@ class sppasXRA(sppasTranscription):
 
     # -----------------------------------------------------------------
 
-    def __format_tier(self, tier_root, tier):
+    @staticmethod
+    def __format_tier(tier_root, tier):
         """ Add a tier object in the tree.
 
         :param tier_root: (ET) XML Element tree root.
@@ -588,8 +584,6 @@ class sppasXRA(sppasTranscription):
         for annotation in tier:
             annotation_root = ET.SubElement(tier_root, 'Annotation')
             sppasXRA.__format_annotation(annotation_root, annotation)
-
-        self.__tier_counter += 1
 
     # -----------------------------------------------------------------
 
@@ -760,8 +754,8 @@ class sppasXRA(sppasTranscription):
                 link_type = hierarchy.get_hierarchy_type(child_tier)
                 link = ET.SubElement(hierarchy_root, 'Link')
                 link.set('type', link_type)
-                link.set('from', self.__tier_id_map[parent_tier])
-                link.set('to', self.__tier_id_map[child_tier])
+                link.set('from', parent_tier.get_meta('id'))
+                link.set('to', child_tier.get_meta('id'))
 
     # -----------------------------------------------------------------
 

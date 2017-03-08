@@ -33,6 +33,8 @@
     ~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+from collections import OrderedDict
+
 from sppas.src.utils.makeunicode import sppasUnicode
 
 # ---------------------------------------------------------------------------
@@ -51,7 +53,7 @@ class sppasMetaData(object):
 
     """
     def __init__(self):
-        self.__metadata = dict()
+        self.__metadata = OrderedDict()
 
     # ------------------------------------------------------------------------
 
