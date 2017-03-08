@@ -115,8 +115,9 @@ class TestXRA(unittest.TestCase):
         self.assertEqual(xra3[2].get_meta("id"), "t3")
         self.assertTrue(xra3[2].is_interval())
         # Controlled vocabulary
-        self.assertEqual(len(xra3.get_ctrl_vocab_list()), 1)
+        self.assertEqual(len(xra3.get_ctrl_vocab_list()), 2)
         self.assertIsNotNone(xra3.get_ctrl_vocab_from_name("v0"))
+        self.assertIsNotNone(xra3.get_ctrl_vocab_from_name("intensity"))
         # Hierarchy
         #self.assertEqual(len(xra3.hierarchy), 2)
 
@@ -124,7 +125,6 @@ class TestXRA(unittest.TestCase):
         xra = sppasXRA()
         xra.read(os.path.join(DATA, "sample-1.3.xra"))
         xra.write(os.path.join(TEMP, "sample-1.3.xra"))
-
         xra2 = sppasXRA()
         xra2.read(os.path.join(TEMP, "sample-1.3.xra"))
 

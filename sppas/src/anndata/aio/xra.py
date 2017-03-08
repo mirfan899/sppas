@@ -471,6 +471,7 @@ class sppasXRA(sppasTranscription):
             # XRA < 1.2
             id_vocab = vocabulary_root.attrib['ID']
         ctrl_vocab = sppasCtrlVocab(id_vocab)
+        self.add_ctrl_vocab(ctrl_vocab)
 
         # Description
         if "description" in vocabulary_root.attrib:
@@ -478,7 +479,12 @@ class sppasXRA(sppasTranscription):
 
         # Add the list of entries
         for entry_node in vocabulary_root.findall('Entry'):
-            entry_text = sppasTag(entry_node.text)
+            # Type of the entry
+            if "type" in entry_node.attrib:
+                tag_type = entry_node.attrib['type']
+            else:
+                tag_type = "str"
+            entry_text = sppasTag(entry_node.text, tag_type)
             entry_desc = ""
             if "description" in entry_node.attrib:
                 entry_desc = entry_node.attrib['description']
@@ -611,7 +617,8 @@ class sppasXRA(sppasTranscription):
         :param location: (sppasLocation)
 
         """
-        location_root.set('scoremode', location.get_function_score().__name__)
+        if location.get_function_score() != max:
+            location_root.set('scoremode', location.get_function_score().__name__)
 
         for localization, score in location:
             if localization.is_point():
@@ -686,10 +693,13 @@ class sppasXRA(sppasTranscription):
         :param label: (sppasLabel)
 
         """
-        label_root.set('scoremode', label.get_function_score().__name__)
+        if label.get_function_score() != max:
+            label_root.set('scoremode', label.get_function_score().__name__)
 
         for tag, score in label:
             tag_node = ET.SubElement(label_root, 'Tag')
+            if score is not None:
+                tag_node.set("score", str(score))
             sppasXRA.__format_tag(tag_node, tag)
 
     # -----------------------------------------------------------------
@@ -761,20 +771,20 @@ class sppasXRA(sppasTranscription):
          :param vocabulary_root: (ET) XML Element tree root.
          :param vocabulary: (sppasCtrlVocab)
 
-        TODO: XRA 1.3 must contain sppasTAG as entries of vocab...
-
         """
         # Set attribute
         vocabulary_root.set('id', vocabulary.get_name())
         if len(vocabulary.get_description()) > 0:
             vocabulary_root.set('description', vocabulary.get_description())
 
-        # Write the list of entries
+        # Write the list of entries (an entry is a sppasTag instance)
         for entry in vocabulary:
             entry_node = ET.SubElement(vocabulary_root, 'Entry')
             entry_node.text = entry.get_content()
-            #if len(entry.desc) > 0:
-            #    entry_node.set('description', entry.desc)
+            if entry.get_type() != "str":
+                entry_node.set('type', entry.get_type())
+            if len(vocabulary.get_tag_description(entry)) > 0:
+                entry_node.set('description', vocabulary.get_tag_description(entry))
 
         # Element Tier
         for tier in self:
@@ -790,12 +800,15 @@ class sppasXRA(sppasTranscription):
         http://effbot.org/zone/element-lib.htm#prettyprint
 
         """
-        i = "\n" + level*"\t"
-        if len(elem):
+        i = "\n" + level * "\t"
+        if len(elem) > 0:
             if not elem.text or not elem.text.strip():
                 elem.text = i + "\t"
             if not elem.tail or not elem.tail.strip():
-                elem.tail = i
+                if level < 2:
+                    elem.tail = "\n" + i
+                else:
+                    elem.tail = i
             for elem in elem:
                 sppasXRA.indent(elem, level+1)
             if not elem.tail or not elem.tail.strip():

@@ -36,8 +36,11 @@
     of tags in a label: only the accepted tags can be set to a label.
 
 """
+from collections import OrderedDict
+
 from sppas.src.utils.makeunicode import sppasUnicode
 from .anndataexc import AnnDataTypeError
+from .anndataexc import CtrlVocabContainsError
 from .annlabel.tag import sppasTag
 
 # ----------------------------------------------------------------------------
@@ -74,7 +77,7 @@ class sppasCtrlVocab(object):
             self.set_description(description)
 
         # The set of tags:
-        self.__entries = dict()
+        self.__entries = OrderedDict()
 
     # -----------------------------------------------------------------------
 
@@ -89,6 +92,21 @@ class sppasCtrlVocab(object):
         """ Return the unicode string of the description of the controlled vocabulary. """
 
         return self.__desc
+
+    # -----------------------------------------------------------------------
+
+    def get_tag_description(self, tag):
+        """ Return the unicode string of the description of an entry of the
+        controlled vocabulary.
+
+        :param tag: (sppasTag) the tag to get the description.
+        :returns: (str)
+
+        """
+        if self.contains(tag) is False:
+            raise CtrlVocabContainsError(tag)
+
+        return self.__entries[tag]
 
     # ------------------------------------------------------------------------
 
@@ -118,7 +136,7 @@ class sppasCtrlVocab(object):
     # -----------------------------------------------------------------------
 
     def add(self, tag, description=""):
-        """ Add a tag in the controlled vocab.
+        """ Add a tag to the controlled vocab.
 
         :param tag: (sppasTag): the tag to add.
         :param description: (str)
@@ -152,6 +170,23 @@ class sppasCtrlVocab(object):
 
         del self.__entries[tag]
         return True
+
+    # ------------------------------------------------------------------------
+
+    def set_tag_description(self, tag, description):
+        """ Set the unicode string of the description of an entry of the
+        controlled vocabulary.
+
+        :param tag: (sppasTag) the tag to get the description.
+        :param description: (str)
+        :returns: (str)
+
+        """
+        if self.contains(tag) is False:
+            raise CtrlVocabContainsError(tag)
+
+        su = sppasUnicode(description)
+        self.__entries[tag] = su.to_strip()
 
     # -----------------------------------------------------------------------
     # Overloads
