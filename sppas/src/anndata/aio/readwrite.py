@@ -42,7 +42,8 @@ from sppas.src.utils.makeunicode import u
 from ..anndataexc import AioEncodingError
 
 from .xra import sppasXRA
-# from .text import RawText, CSV
+from .text import sppasRawText
+# from .text import CSV
 # from .praat import TextGrid, PitchTier, IntensityTier
 # from .signaix import HzPitch
 # from .transcriber import Transcriber
@@ -89,7 +90,7 @@ class sppasRW(object):
         # "intensitytier": IntensityTier,
         # "pitchtier": PitchTier,
         # "hz": HzPitch,
-        # "txt": RawText
+        # "txt": sppasRawText
     }
 
     # -----------------------------------------------------------------------
@@ -177,7 +178,7 @@ class sppasRW(object):
                     return file_reader()
             except Exception:
                 continue
-        return RawText()
+        return sppasRawText()
 
     # -----------------------------------------------------------------------
 

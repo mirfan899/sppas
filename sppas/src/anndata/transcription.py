@@ -91,10 +91,10 @@ class sppasTranscription(sppasMetaData):
         """
         super(sppasTranscription, self).__init__()
 
-        self.__name = None
-        self.__media = list()      # a list of sppasMedia() instances
-        self.__ctrlvocab = list()  # a list of sppasCtrlVocab() instances
-        self.__tiers = list()      # a list of sppasTier() instances
+        self._name = None
+        self._media = list()      # a list of sppasMedia() instances
+        self._ctrlvocab = list()  # a list of sppasCtrlVocab() instances
+        self._tiers = list()      # a list of sppasTier() instances
         self.hierarchy = sppasHierarchy()
 
         self.set_name(name)
@@ -106,7 +106,7 @@ class sppasTranscription(sppasMetaData):
     def get_name(self):
         """ Return the identifier name of the transcription. """
 
-        return self.__name
+        return self._name
 
     # -----------------------------------------------------------------------
 
@@ -120,9 +120,9 @@ class sppasTranscription(sppasMetaData):
         if name is None:
             name = sppasGUID().get()
         su = sppasUnicode(name)
-        self.__name = su.to_strip()
+        self._name = su.to_strip()
 
-        return self.__name
+        return self._name
 
     # ------------------------------------------------------------------------
     # Media
@@ -131,7 +131,7 @@ class sppasTranscription(sppasMetaData):
     def get_media_list(self):
         """ Return the list of sppasMedia. """
 
-        return self.__media
+        return self._media
 
     # ------------------------------------------------------------------------
 
@@ -142,7 +142,7 @@ class sppasTranscription(sppasMetaData):
 
         """
         idt = media_name.strip()
-        for m in self.__media:
+        for m in self._media:
             if m.get_name() == idt:
                 return m
         return None
@@ -159,11 +159,11 @@ class sppasTranscription(sppasMetaData):
         if isinstance(new_media, sppasMedia) is False:
             raise AnnDataTypeError(new_media, "sppasMedia")
 
-        ids = [m.get_name() for m in self.__media]
+        ids = [m.get_name() for m in self._media]
         if new_media.get_name() in ids:
             raise TrsAddError(new_media.get_name())
 
-        self.__media.append(new_media)
+        self._media.append(new_media)
 
     # ------------------------------------------------------------------------
 
@@ -177,11 +177,11 @@ class sppasTranscription(sppasMetaData):
         if not isinstance(old_media, sppasMedia):
             raise AnnDataTypeError(old_media, "sppasMedia")
 
-        if old_media not in self.__media:
+        if old_media not in self._media:
             raise TrsRemoveError(old_media.get_name())
 
-        self.__media.remove(old_media)
-        for tier in self.__tiers:
+        self._media.remove(old_media)
+        for tier in self._tiers:
             if tier.get_media() == old_media:
                 tier.set_media(None)
 
@@ -194,7 +194,7 @@ class sppasTranscription(sppasMetaData):
         :returns: list of rejected media
 
         """
-        self.__media = list()
+        self._media = list()
         rejected = list()
         for m in media_list:
             try:
@@ -211,7 +211,7 @@ class sppasTranscription(sppasMetaData):
     def get_ctrl_vocab_list(self):
         """ Return the list of controlled vocabularies. """
 
-        return self.__ctrlvocab
+        return self._ctrlvocab
 
     # ------------------------------------------------------------------------
 
@@ -222,7 +222,7 @@ class sppasTranscription(sppasMetaData):
 
         """
         idt = ctrl_vocab_name.strip()
-        for c in self.__ctrlvocab:
+        for c in self._ctrlvocab:
             if c.get_name() == idt:
                 return c
 
@@ -240,11 +240,11 @@ class sppasTranscription(sppasMetaData):
         if not isinstance(new_ctrl_vocab, sppasCtrlVocab):
             raise AnnDataTypeError(new_ctrl_vocab, "sppasCtrlVocab")
 
-        ids = [c.get_name() for c in self.__ctrlvocab]
+        ids = [c.get_name() for c in self._ctrlvocab]
         if new_ctrl_vocab.get_name() in ids:
             raise TrsAddError(new_ctrl_vocab.get_name())
 
-        self.__ctrlvocab.append(new_ctrl_vocab)
+        self._ctrlvocab.append(new_ctrl_vocab)
 
     # ------------------------------------------------------------------------
 
@@ -258,11 +258,11 @@ class sppasTranscription(sppasMetaData):
         if not isinstance(old_ctrl_vocab, sppasCtrlVocab):
             raise AnnDataTypeError(old_ctrl_vocab, "sppasCtrlVocab")
 
-        if old_ctrl_vocab not in self.__ctrlvocab:
+        if old_ctrl_vocab not in self._ctrlvocab:
             raise TrsRemoveError(old_ctrl_vocab.get_name())
 
-        self.__ctrlvocab.remove(old_ctrl_vocab)
-        for tier in self.__tiers:
+        self._ctrlvocab.remove(old_ctrl_vocab)
+        for tier in self._tiers:
             if tier.get_ctrl_vocab() == old_ctrl_vocab:
                 tier.set_ctrl_vocab(None)
 
@@ -275,7 +275,7 @@ class sppasTranscription(sppasMetaData):
         :returns: list of rejected ctrl_vocab
 
         """
-        self.__ctrlvocab = list()
+        self._ctrlvocab = list()
         rejected = list()
         for c in ctrl_vocab_list:
             try:
@@ -289,10 +289,17 @@ class sppasTranscription(sppasMetaData):
     # Tiers
     # ------------------------------------------------------------------------
 
+    def get_tier_list(self):
+        """ Return the list of tiers. """
+
+        return self._tiers
+
+    # ------------------------------------------------------------------------
+
     def is_empty(self):
         """ Return True if the transcription does not contains tiers. """
 
-        return len(self.__tiers) == 0
+        return len(self._tiers) == 0
 
     # ------------------------------------------------------------------------
 
@@ -304,7 +311,7 @@ class sppasTranscription(sppasMetaData):
         :returns: sppasTier or None
 
         """
-        for tier in self.__tiers:
+        for tier in self._tiers:
             if case_sensitive:
                 if tier.get_name() == name.strip():
                     return tier
@@ -327,7 +334,7 @@ class sppasTranscription(sppasMetaData):
         t = self.find(name, case_sensitive)
         if t is None:
             return -1
-        return self.__tiers.index(t)
+        return self._tiers.index(t)
 
     # ------------------------------------------------------------------------
 
@@ -371,7 +378,7 @@ class sppasTranscription(sppasMetaData):
         :param tier: (sppasTier) the tier to append
 
         """
-        if tier in self.__tiers:
+        if tier in self._tiers:
             raise TrsAddError(tier.get_name())
 
         self.rename_tier(tier)
@@ -386,7 +393,7 @@ class sppasTranscription(sppasMetaData):
             except TrsAddError:
                 pass
 
-        self.__tiers.append(tier)
+        self._tiers.append(tier)
         tier.set_parent(self)
 
     # ------------------------------------------------------------------------
@@ -400,9 +407,9 @@ class sppasTranscription(sppasMetaData):
 
         """
         try:
-            tier = self.__tiers[index]
+            tier = self._tiers[index]
             self.hierarchy.remove_tier(tier)
-            self.__tiers.pop(index)
+            self._tiers.pop(index)
             tier.set_parent(None)
             return tier
         except IndexError:
@@ -413,15 +420,15 @@ class sppasTranscription(sppasMetaData):
     # ------------------------------------------------------------------------
 
     def __len__(self):
-        return len(self.__tiers)
+        return len(self._tiers)
 
     # ------------------------------------------------------------------------
 
     def __iter__(self):
-        for x in self.__tiers:
+        for x in self._tiers:
             yield x
 
     # ------------------------------------------------------------------------
 
     def __getitem__(self, i):
-        return self.__tiers[i]
+        return self._tiers[i]

@@ -39,6 +39,7 @@ import logging
 from datetime import datetime
 import xml.etree.cElementTree as ET
 
+from sppas.src.sp_glob import encoding
 from sppas.src.utils.makeunicode import u
 
 from ..media import sppasMedia
@@ -536,7 +537,7 @@ class sppasXRA(sppasBaseIO):
 
         sppasXRA.indent(root)
         tree = ET.ElementTree(root)
-        tree.write(filename, encoding="UTF-8", method="xml")
+        tree.write(filename, encoding, method="xml")
 
     # -----------------------------------------------------------------
 

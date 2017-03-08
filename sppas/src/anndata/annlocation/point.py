@@ -184,7 +184,7 @@ class sppasPoint(sppasBaseLocalization):
         """
         if radius is not None:
             if type(radius) != type(self.__midpoint):
-                raise AnnDataTypeError(radius, "float, int")
+                raise AnnDataTypeError(radius, str(type(self.__midpoint)))
 
             if isinstance(radius, float):
                 try:

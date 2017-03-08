@@ -78,10 +78,10 @@ class sppasBaseIO(sppasTranscription):
 
         for key in other.get_meta_keys():
             self.set_meta(key, other.get_meta(key))
-        self.__name = other.get_name()
-        self.__media = other.get_media_list()
-        self.__ctrlvocab = other.get_ctrl_vocab_list()
-        self.__tiers = [tier for tier in other]
+        self._name = other.get_name()
+        self._media = other.get_media_list()
+        self._ctrlvocab = other.get_ctrl_vocab_list()
+        self._tiers = other.get_tier_list()
         self.hierarchy = other.hierarchy
 
     # -----------------------------------------------------------------------
