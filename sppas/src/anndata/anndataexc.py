@@ -50,6 +50,10 @@ TIER_HIERARCHY_ERROR = ":ERROR 1144: "
 TRS_ADD_ERROR = ":ERROR 1150: "
 TRS_REMOVE_ERROR = ":ERROR 1152: "
 AIO_ENCODING_ERROR = ":ERROR 1500: "
+AIO_MULTI_TIERS_ERROR = ":ERROR 1510: "
+AIO_NO_TIERS_ERROR = ":ERROR 1515: "
+AIO_LINE_FORMAT_ERROR = ":ERROR 1520: "
+AIO_EMPTY_TIER_ERROR = ":ERROR 1525: "
 
 # -----------------------------------------------------------------------
 
@@ -246,3 +250,64 @@ class AioEncodingError(UnicodeDecodeError):
         return repr(self.parameter)
 
 # -----------------------------------------------------------------------
+
+
+class AioMultiTiersError(IOError):
+    """ :ERROR 1510: AIO_MULTI_TIERS_ERROR
+    The file format {!s:s} does not support multi-tiers.
+
+    """
+    def __init__(self, file_format):
+        self.parameter = AIO_MULTI_TIERS_ERROR + \
+                         (t.gettext(AIO_MULTI_TIERS_ERROR)).format(file_format)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class AioNoTiersError(IOError):
+    """ :ERROR 1515: AIO_NO_TIERS_ERROR
+    The file format {!s:s} does not support to save no tiers.
+
+    """
+    def __init__(self, file_format):
+        self.parameter = AIO_NO_TIERS_ERROR + \
+                         (t.gettext(AIO_NO_TIERS_ERROR)).format(file_format)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class AioLineFormatError(IOError):
+    """ :ERROR 1520: AIO_LINE_FORMAT_ERROR
+    Unexpected format string at line {:d}: '{!s:s}'.
+
+    """
+    def __init__(self, number, line):
+        self.parameter = AIO_LINE_FORMAT_ERROR + \
+                         (t.gettext(AIO_LINE_FORMAT_ERROR)).format(number, line)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class AioEmptyTierError(IOError):
+    """ :ERROR 1525: AIO_EMPTY_TIER_ERROR
+    The file format {!s:s} does not support to save empty tiers: {:s}.
+
+    """
+    def __init__(self, file_format, tier_name):
+        self.parameter = AIO_EMPTY_TIER_ERROR + \
+                         (t.gettext(AIO_EMPTY_TIER_ERROR)).format(file_format, tier_name)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+

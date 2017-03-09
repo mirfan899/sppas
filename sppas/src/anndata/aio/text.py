@@ -40,6 +40,8 @@ import re
 
 from sppas.src.sp_glob import encoding
 
+from ..anndataexc import AioMultiTiersError
+from ..anndataexc import AioLineFormatError
 from ..annotation import sppasAnnotation
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
@@ -51,7 +53,14 @@ from .basetrs import sppasBaseIO
 
 # ----------------------------------------------------------------------------
 
+
 def make_point(data):
+    """ Convert data into the appropriate type.
+
+    :param data: (str)
+    :returns: data converted into int, float or unchanged.
+
+    """
     if data.isdigit():
         return int(data)
     try:
@@ -59,6 +68,24 @@ def make_point(data):
     except Exception:
         d = data
     return d
+
+# ----------------------------------------------------------------------------
+
+
+def format_quotation_marks(text):
+    """ Clean text data...
+
+    :param text: (str)
+    :returns: the text without initial and final quotation mark.
+
+    """
+    if len(text) >= 2 and text.startswith('"') and text.endswith('"'):
+        text = text[1:-1]
+
+    if len(text) >= 2 and text.startswith("'") and text.endswith("'"):
+        text = text[1:-1]
+
+    return text
 
 # ----------------------------------------------------------------------------
 
@@ -71,6 +98,17 @@ class sppasRawText(sppasBaseIO):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :summary:      SPPAS raw text reader and writer.
+
+    RawText does not support alternatives labels nor locations. Only the ones
+    with the best score are saved.
+    RawText can save only one tier.
+    RawText does not support controlled vocabularies.
+    RawText does not support hierarchy.
+    RawText does not support metadata.
+    RawText does not support media assignment.
+    RawText supports points and intervals. It does not support disjoint intervals.
+    RawText does not support alternative tags.
+    RawText does not support radius.
 
     """
     @staticmethod
@@ -87,7 +125,24 @@ class sppasRawText(sppasBaseIO):
         :param name: (str) This transcription name.
 
         """
+        if name is None:
+            name = self.__class__.__name__
         sppasBaseIO.__init__(self, name)
+
+        self._accept_multi_tiers = False
+        self._accept_no_tiers = True
+        self._accept_metadata = False
+        self._accept_ctrl_vocab = False
+        self._accept_media = False
+        self._accept_hierarchy = False
+        self._accept_point = True
+        self._accept_interval = True
+        self._accept_disjoint = False
+        self._accept_alt_localization = False
+        self._accept_alt_tag = False
+        self._accept_radius = False
+        self._accept_gaps = True
+        self._accept_overlaps = True
 
     # -----------------------------------------------------------------
 
@@ -168,9 +223,32 @@ class sppasRawText(sppasBaseIO):
         :param filename: (str)
 
         """
-        pass
+        if len(self._tiers) > 1:
+            raise AioMultiTiersError(self.__class__.__name__)
 
-    # -----------------------------------------------------------------
+        with codecs.open(filename, 'w', encoding, buffering=8096) as fp:
+
+            if self.is_empty() is True:
+                return
+
+            tier = self[0]
+            point = tier.is_point()
+            if tier.is_empty():
+                return
+
+            if tier.get_name() == "RawTranscription":
+                for annotation in tier:
+                    fp.write(annotation.get_label().get_best().get_content() + '\n')
+            else:
+                for annotation in tier:
+                    t = annotation.get_label().get_best().get_content()
+                    if point:
+                        mp = annotation.get_lowest_localization().get_midpoint()
+                        fp.write("{}\t{}\t{}\n".format(mp, t))
+                    else:
+                        b = annotation.get_lowest_localization().get_midpoint()
+                        e = annotation.get_highest_localization().get_midpoint()
+                        fp.write("{}\t{}\t{}\n".format(b, e, t))
 
 # ----------------------------------------------------------------------------
 
@@ -211,7 +289,7 @@ class sppasCSV(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def read(self, filename, separator=','):
-        """ Read a CSV file and fill the Transcription.
+        """ Read a CSV file in UTF-8 signed encoding.
 
         :param filename: (str)
         :param separator: (char)
@@ -232,13 +310,15 @@ class sppasCSV(sppasBaseIO):
 
         """
         for i, line in enumerate(lines):
-            # DOIT PRENDRE LES GUILLEMETS EN CONSIDERATION...
 
             row = line.split(separator)
-            if len(row) != 4:
-                raise IOError('Invalid line number %d: %r.' % (i+1, line))
+            if len(row) < 4:
+                raise AioLineFormatError(i+1, line)
 
-            name, begin, end, text = row
+            name = format_quotation_marks(row[0])
+            begin = format_quotation_marks(row[1])
+            end = format_quotation_marks(row[2])
+            text = format_quotation_marks(row[3:])
 
             # The following does not suppose that the file is sorted by tiers
             tier = self.find(name)
@@ -263,8 +343,30 @@ class sppasCSV(sppasBaseIO):
                 localization = sppasPoint(make_point(end))
 
             else:
-                raise IOError('Invalid line number %d: %r.' % (i, line))
+                raise AioLineFormatError(i+1, line)
 
             tier.add(sppasAnnotation(sppasLocation(localization), sppasLabel(sppasTag(text))))
 
+    # -----------------------------------------------------------------
 
+    def write(self, filename):
+        """ Write a CSV file in UTF-8 signed encoding.
+
+        :param filename: (str)
+
+        """
+        with codecs.open(filename, 'w', 'utf-8-sig', buffering=8096) as fp:
+
+            for tier in self._tiers:
+                name = tier.get_name()
+                point = tier.is_point()
+
+                for annotation in tier:
+                    t = annotation.get_label().get_best().get_content()
+                    if point:
+                        mp = annotation.get_lowest_localization().get_midpoint()
+                        fp.write('"{}",{},,{},"{}"\n'.format(name, mp, t))
+                    else:
+                        b = annotation.get_lowest_localization().get_midpoint()
+                        e = annotation.get_highest_localization().get_midpoint()
+                        fp.write('"{}",{},{},"{}"\n'.format(name, b, e, t))

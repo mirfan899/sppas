@@ -83,7 +83,25 @@ class sppasXRA(sppasBaseIO):
         :param name: (str) This transcription name.
 
         """
+        if name is None:
+            name = self.__class__.__name__
         sppasBaseIO.__init__(self, name)
+
+        self._accept_multi_tiers = True
+        self._accept_no_tiers = True
+        self._accept_metadata = True
+        self._accept_ctrl_vocab = True
+        self._accept_media = True
+        self._accept_hierarchy = True
+        self._accept_point = True
+        self._accept_interval = True
+        self._accept_disjoint = True
+        self._accept_alt_localization = True
+        self._accept_alt_label = True
+        self._accept_radius = True
+        self._accept_gaps = False
+        self._accept_overlaps = False
+
         self.__format = "1.3"
 
     # -----------------------------------------------------------------
@@ -96,6 +114,8 @@ class sppasXRA(sppasBaseIO):
         """
         tree = ET.parse(filename)
         root = tree.getroot()
+        if "name" in root.attrib:
+            self.set_name(root.attrib['name'])
 
         metadata_root = root.find('Metadata')
         if metadata_root is not None:
@@ -144,10 +164,8 @@ class sppasXRA(sppasBaseIO):
 
         """
         name = None
-        try:
+        if "tiername" in tier_root.attrib:
             name = tier_root.attrib['tiername']
-        except Exception:
-            pass
 
         try:
             tid = tier_root.attrib['id']
@@ -511,9 +529,10 @@ class sppasXRA(sppasBaseIO):
 
         """
         root = ET.Element('Document')
-        root.set('Author', 'SPPAS')
-        root.set('Date', datetime.now().strftime("%Y-%m-%d"))
-        root.set('Format', self.__format)
+        root.set('author', 'SPPAS')
+        root.set('date', datetime.now().strftime("%Y-%m-%d"))
+        root.set('format', self.__format)
+        root.set('name', self.get_name())
 
         metadata_root = ET.SubElement(root, 'Metadata')
         sppasXRA.__format_metadata(metadata_root, self)

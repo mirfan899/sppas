@@ -85,8 +85,6 @@ class sppasTranscription(sppasMetaData):
         """ Creates a new sppasTranscription instance.
 
         :param name: (str) Name of the transcription. It is used as identifier.
-        :param min_point: (sppasPoint)
-        :param max_point: (sppasPoint)
 
         """
         super(sppasTranscription, self).__init__()

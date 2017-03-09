@@ -15,7 +15,7 @@ msgstr ""
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 1.5.4\n"
 
 msgid ":ERROR 1000: "
 msgstr "No annotated file defined."
@@ -58,3 +58,15 @@ msgstr "Can't add: '{:s}' is already in the transcription."
 
 msgid ":ERROR 1500: "
 msgstr "The file {!s:s} contains non UTF-8 characters: {:s}."
+
+msgid ":ERROR 1510: "
+msgstr "The file format {!s:s} does not support multi-tiers."
+
+msgid ":ERROR 1515: "
+msgstr "The file format {!s:s} does not support to save no tiers."
+
+msgid ":ERROR 1520: "
+msgstr "Unexpected format string at line {:d}: '{!s:s}'."
+
+msgid ":ERROR 1525: "
+msgstr "The file format {!s:s} does not support to save empty tiers: {:s}."

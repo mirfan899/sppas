@@ -61,10 +61,161 @@ class sppasBaseIO(sppasTranscription):
         """ Initialize a new Transcription reader-writer instance.
 
         :param name: (str) A transcription name.
+        :param multi_tiers: (bool) The IO supports (or not) to read and write several tiers.
+        :param no_tiers: (bool) The IO supports (or not) to write no tiers.
 
         """
         sppasTranscription.__init__(self, name)
 
+        self._accept_multi_tiers = True
+        self._accept_no_tiers = True
+        self._accept_metadata = False
+        self._accept_ctrl_vocab = False
+        self._accept_media = False
+        self._accept_hierarchy = False
+        self._accept_point = False
+        self._accept_interval = True
+        self._accept_disjoint = True
+        self._accept_alt_localization = False
+        self._accept_alt_tag = False
+        self._accept_radius = True
+        self._accept_gaps = False
+        self._accept_overlaps = False
+
+    # -----------------------------------------------------------------------
+    # Getters
+    # -----------------------------------------------------------------------
+
+    def multi_tiers_support(self):
+        """ Return True if this reader-writer supports to read and write
+        several tiers.
+
+        :returns: boolean
+
+        """
+        return self._accept_multi_tiers
+
+    # -----------------------------------------------------------------------
+
+    def no_tiers_support(self):
+        """ Return True if this reader-writer supports to write no tier.
+
+        :returns: boolean
+
+        """
+        return self._accept_no_tiers
+
+    # -----------------------------------------------------------------------
+
+    def metadata_support(self):
+        """ Return True if this reader-writer supports to read and write metadata.
+
+        :returns: boolean
+
+        """
+        return self._accept_metadata
+
+    # -----------------------------------------------------------------------
+
+    def ctrl_vocab_support(self):
+        """ Return True if this reader-writer supports to read and write
+        a controlled vocabulary.
+
+        :returns: boolean
+
+        """
+        return self._accept_ctrl_vocab
+
+    # -----------------------------------------------------------------------
+
+    def media_support(self):
+        """ Return True if this reader-writer supports to read and write
+        a link to a media.
+
+        :returns: boolean
+
+        """
+        return self._accept_media
+
+    # -----------------------------------------------------------------------
+
+    def hierarchy_support(self):
+        """ Return True if this reader-writer supports to read and write
+        a hierarchy between tiers.
+
+        :returns: boolean
+
+        """
+        return self._accept_hierarchy
+
+    # -----------------------------------------------------------------------
+
+    def point_support(self):
+        """ Return True if this reader-writer supports to read and write
+        tiers with localizations as points.
+
+        :returns: boolean
+
+        """
+        return self._accept_point
+
+    # -----------------------------------------------------------------------
+
+    def interval_support(self):
+        """ Return True if this reader-writer supports to read and write
+        tiers with localizations as intervals.
+
+        :returns: boolean
+
+        """
+        return self._accept_interval
+
+    # -----------------------------------------------------------------------
+
+    def disjoint_support(self):
+        """ Return True if this reader-writer supports to read and write
+        tiers with localizations as disjoint intervals.
+
+        :returns: boolean
+
+        """
+        return self._accept_disjoint
+
+    # -----------------------------------------------------------------------
+
+    def alternative_localization_support(self):
+        """ Return True if this reader-writer supports to read and write
+        alternative localizations (with a score or not).
+
+        :returns: boolean
+
+        """
+        return self._accept_alt_localization
+
+    # -----------------------------------------------------------------------
+
+    def alternative_tag_support(self):
+        """ Return True if this reader-writer supports to read and write
+        alternative tags (with a score or not).
+
+        :returns: boolean
+
+        """
+        return self._accept_alt_tag
+
+    # -----------------------------------------------------------------------
+
+    def radius_support(self):
+        """ Return True if this reader-writer supports to read and write
+        the radius value (the vagueness or a point).
+
+        :returns: boolean
+
+        """
+        return self._accept_radius
+
+    # -----------------------------------------------------------------------
+    # Setters
     # -----------------------------------------------------------------------
 
     def set(self, other):

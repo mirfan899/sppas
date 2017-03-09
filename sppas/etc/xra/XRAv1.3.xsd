@@ -64,6 +64,7 @@
             </xsd:sequence>
             <xsd:attribute name="date"          type="xsd:date"     use="required"/>
             <xsd:attribute name="author"        type="stringType"   use="required"/>
+            <xsd:attribute name="name"          type="stringType"   use="optional"/>
             <xsd:attribute name="version"       type="stringType"   use="optional"/>
             <xsd:attribute name="format"        type="stringType"   use="optional" default="1.3"/>
         </xsd:complexType>
