@@ -662,7 +662,7 @@ class WaveCtrl( spControl ):
 
         # Read samples
         duration = self._maxtime - self._mintime
-        self._audio.set_pos( pos )
+        self._audio.seek( pos )
         nframes = int( duration * self._audio.get_framerate() )
         data = self._audio.read_samples( nframes )
 

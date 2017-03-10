@@ -90,7 +90,7 @@ class sppasMetaInfoTier(sppasMetaInfo):
         @return Tier
 
         """
-        activekeys = self.keys_activated()
+        activekeys = self.keys_enabled()
         if len(activekeys) == 0:
             return None
 
