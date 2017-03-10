@@ -12,7 +12,7 @@
 """
 
 # Get SPPAS API for reading/writing/modifying annotated files
-import annotationdata.io
+import annotationdata.aio
 from annotationdata import Transcription
 from annotationdata import Tier
 from annotationdata import Annotation

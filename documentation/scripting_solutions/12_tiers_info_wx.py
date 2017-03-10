@@ -21,7 +21,7 @@ import os
 from os.path import *
 sys.path.append( join("..","..", "sppas", "src") )
 
-import annotationdata.io
+import annotationdata.aio
 from annotationdata import Transcription
 
 import wx
@@ -84,7 +84,7 @@ def checkExtension(filename):
     ext = os.path.splitext(filename)[-1].lower()
 
     # Check
-    return ext in annotationdata.io.extensions
+    return ext in annotationdata.aio.extensions
 
 
 def checkFile(filename):
@@ -101,7 +101,7 @@ def printInfo(filename):
     print filename
 
     # Read the file.
-    trs = annotationdata.io.read(filename)
+    trs = annotationdata.aio.read(filename)
 
     # Print information about tiers
     for tier in trs:

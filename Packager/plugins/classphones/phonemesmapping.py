@@ -44,7 +44,7 @@ if os.path.exists(SPPAS) is False:
 SPPASSRC = os.path.join(SPPAS, "sppas", "src")
 sys.path.append(SPPASSRC)
 
-import annotationdata.io
+import annotationdata.aio
 from presenters.tiermapping import TierMapping
 from annotationdata.transcription import Transcription
 from sp_glob import encoding
@@ -78,7 +78,7 @@ if fname.endswith("-palign") is False:
     sys.exit(1)
 
 # read content
-trs_input = annotationdata.io.read(args.i)
+trs_input = annotationdata.aio.read(args.i)
 tier = trs_input.Find("PhonAlign", case_sensitive=False)
 if tier is None:
     print "A tier with name PhonAlign is required."
@@ -132,5 +132,5 @@ print "done..."
 
 if not args.quiet: print "Saving..."
 filename = fname + "-class" + fext
-annotationdata.io.write(filename, trs)
+annotationdata.aio.write(filename, trs)
 print "File %s created." % filename.encode('utf8')

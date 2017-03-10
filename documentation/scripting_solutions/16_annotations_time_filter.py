@@ -16,7 +16,7 @@ import os
 from os.path import *
 sys.path.append( join("..","..", "sppas", "src") )
 
-import annotationdata.io
+import annotationdata.aio
 from annotationdata import Transcription
 from annotationdata import Sel, Filter, SingleFilter
 
@@ -67,7 +67,7 @@ if verbose: print tier2.GetName(),"has",len(tier2),"annotations."
 t = Transcription()
 t.Append(tier1)
 t.Append(tier2)
-annotationdata.io.write(outputfilename, t)
+annotationdata.aio.write(outputfilename, t)
 if verbose: print outputfilename," saved."
 
 # ----------------------------------------------------------------------------

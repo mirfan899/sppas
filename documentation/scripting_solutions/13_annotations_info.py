@@ -17,7 +17,7 @@ import os
 from os.path import *
 sys.path.append( join("..","..", "sppas", "src") )
 
-import annotationdata.io
+import annotationdata.aio
 from annotationdata import Transcription
 
 import sys
@@ -34,7 +34,7 @@ tiername="PhonAlign"
 # ----------------------------------------------------------------------------
 
 # Read an annotated file.
-trs = annotationdata.io.read(filename)
+trs = annotationdata.aio.read(filename)
 tier = trs.Find(tiername, case_sensitive=False)
 
 if tier is None:

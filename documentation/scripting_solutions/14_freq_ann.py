@@ -20,7 +20,7 @@ import os
 from os.path import *
 sys.path.append( join("..","..", "sppas", "src") )
 
-import annotationdata.io
+import annotationdata.aio
 from annotationdata import Transcription
 from annotationdata import Tier
 
@@ -89,7 +89,7 @@ def checkExtension(filename):
     """ Check if filename is supported by SPPAS. """
 
     # List of accepted extensions
-    extensions = annotationdata.io.extensions
+    extensions = annotationdata.aio.extensions
 
     # Split the extension from the path and normalise it to lowercase.
     ext = os.path.splitext(filename)[-1].lower()
@@ -102,7 +102,7 @@ def printFreqAnn(filename, pattern):
     """ Print the number of occurrences of a pattern in each tier of a file. """
 
     print filename
-    trs = annotationdata.io.read( filename )
+    trs = annotationdata.aio.read( filename )
     pattern = pattern.strip()
 
     for tier in trs:

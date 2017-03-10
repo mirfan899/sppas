@@ -16,7 +16,7 @@ import os
 from os.path import *
 sys.path.append( join("..","..", "sppas", "src") )
 
-import annotationdata.io
+import annotationdata.aio
 from annotationdata import Transcription
 from annotationdata import Sel, Rel, Filter, SingleFilter, RelationFilter
 
@@ -31,7 +31,7 @@ filename='F_F_B003-P9-merge.TextGrid'
 # ----------------------------------------------------------------------------
 
 # Read an annotated file.
-trs = annotationdata.io.read(filename)
+trs = annotationdata.aio.read(filename)
 
 # Get the expected tier
 tier = trs.Find("TokensAlign", case_sensitive=False)

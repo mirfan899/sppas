@@ -33,7 +33,7 @@ import os
 from os.path import *
 sys.path.append( join("..","..", "sppas", "src") )
 
-import annotationdata.io
+import annotationdata.aio
 from annotationdata import Transcription
 
 # ----------------------------------------------------------------------------
@@ -41,7 +41,7 @@ from annotationdata import Transcription
 # ----------------------------------------------------------------------------
 
 # Read an annotated file.
-trs = annotationdata.io.read(filename)
+trs = annotationdata.aio.read(filename)
 print "Number of tiers: ",len(trs)
 
 # Create a new Transcription to add selected tiers.
@@ -57,6 +57,6 @@ for name in tiernames:
         print "Error: the file does not contain a tier with name =",name
 
 # Save the Transcription into a file.
-annotationdata.io.write(outputfilename, newtrs)
+annotationdata.aio.write(outputfilename, newtrs)
 
 # ----------------------------------------------------------------------------

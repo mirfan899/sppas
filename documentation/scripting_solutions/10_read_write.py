@@ -18,7 +18,7 @@ from os.path import *
 sys.path.append( join("..","..", "sppas", "src") )
 
 # Import SPPAS API
-import annotationdata.io
+import annotationdata.aio
 
 
 # ----------------------------------------------------------------------------
@@ -33,9 +33,9 @@ outputfilename=inputfilename.replace('.TextGrid', '.csv')
 # ----------------------------------------------------------------------------
 
 # Read an annotated file, put content in a Transcription object.
-trs = annotationdata.io.read(inputfilename)
+trs = annotationdata.aio.read(inputfilename)
 
 # Save the Transcription object into a file.
-annotationdata.io.write(outputfilename, trs)
+annotationdata.aio.write(outputfilename, trs)
 
 # ----------------------------------------------------------------------------

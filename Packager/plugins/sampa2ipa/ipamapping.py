@@ -42,7 +42,7 @@ if os.path.exists(SPPAS) is False:
 SPPASSRC = os.path.join(SPPAS, "sppas", "src")
 sys.path.append(SPPASSRC)
 
-import annotationdata.io
+import annotationdata.aio
 from presenters.tiermapping import TierMapping
 from annotationdata.transcription import Transcription
 
@@ -73,7 +73,7 @@ mapping.set_miss_symbol("")   # not used!
 mapping.set_delimiters([])    # longest matching
 
 # read content
-trs_input = annotationdata.io.read(args.i)
+trs_input = annotationdata.aio.read(args.i)
 
 # ----------------------------------------------------------------------------
 # Convert input file
@@ -102,5 +102,5 @@ if trs.GetSize() == 0:
 
 infile, inext = os.path.splitext(args.i)
 filename = infile + "-ipa.TextGrid"
-annotationdata.io.write(filename, trs)
+annotationdata.aio.write(filename, trs)
 print "File %s created." % filename
