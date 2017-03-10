@@ -47,7 +47,7 @@ import codecs
 import re
 
 from sppas.src.sp_glob import encoding
-from sppas.src.utils.makeunicode import b
+from sppas.src.utils.makeunicode import u
 
 from ..anndataexc import AioNoTiersError
 from ..anndataexc import AioEmptyTierError
@@ -169,6 +169,8 @@ class sppasBasePraat(sppasBaseIO):
         self._accept_radius = False
         self._accept_gaps = False
         self._accept_overlaps = False
+        self._accept_gaps = False
+        self._accept_overlaps = False
 
 # ----------------------------------------------------------------------------
 
@@ -195,7 +197,7 @@ class sppasTextGrid(sppasBasePraat):
     """
     @staticmethod
     def detect(filename):
-        sppasBasePraat.parse_string(filename, "TextGrid")
+        return sppasBasePraat.detect(filename, "TextGrid")
 
     # -----------------------------------------------------------------
 
@@ -213,7 +215,7 @@ class sppasTextGrid(sppasBasePraat):
         """
         if name is None:
             name = self.__class__.__name__
-        sppasBaseIO.__init__(self, name)
+        sppasBasePraat.__init__(self, name)
 
         self._accept_point = True
         self._accept_interval = True
@@ -353,90 +355,76 @@ class sppasTextGrid(sppasBasePraat):
                     len(self._tiers)))
 
             for i, tier in enumerate(self._tiers):
-                fp.write(self.__format_tier(tier, i))
+                # Fill empty tiers because TextGrid does not support it.
+                if tier.is_empty():
+                    tier.append(sppasAnnotation(sppasLocation(sppasInterval(min_point, max_point))))
 
-    # ------------------------------------------------------------------------
+                if tier.is_interval() is True:
+                    tier = aioutils.fill_gaps(tier, min_point, max_point)
+                    tier = aioutils.merge_overlapping_annotations(tier)
+                    format_annotation = sppasTextGrid.__format_interval_annotation
+                else:
+                    format_annotation = sppasTextGrid.__format_point_annotation
 
-    def __format_tier(self, tier, number):
-        """ Format a tier from a transcription to the TextGrid format.
+                fp.write((
+                    '    item [{:d}]:\n'
+                    '        class = "{:s}"\n'
+                    '        name = "{:s}"\n'
+                    '        xmin = {}\n'
+                    '        xmax = {}\n'
+                    '        intervals: size = {:d}\n').format(
+                        i+1,
+                        'IntervalTier' if tier.is_interval() else 'TextTier',
+                        tier.get_name(),
+                        tier.get_first_point().get_midpoint(),
+                        tier.get_last_point().get_midpoint(),
+                        len(tier)))
 
-        :param number: The position of the tier in the list of all tiers.
-
-        """
-        min_point = min([t.get_first_point() for t in self._tiers if t.is_empty() is False])
-        max_point = min([t.get_last_point() for t in self._tiers if t.is_empty() is False])
-
-        # Fill empty tiers because TextGrid does not support empty tiers.
-        if tier.is_empty():
-            tier.append(sppasAnnotation(sppasLocation(sppasInterval(min_point, max_point))))
-
-        if tier.is_interval() is True:
-            tier = aioutils.fill_gaps(tier, min_point, max_point)
-            tier = aioutils.merge_overlapping_annotations(tier)
-
-        result = (
-            '    item [{:d}]:\n'
-            '        class = "{:s}"\n'
-            '        name = "{:s}"\n'
-            '        xmin = {}\n'
-            '        xmax = {}\n'
-            '        intervals: size = {:d}\n').format(
-                number,
-                'IntervalTier' if tier.is_interval() else 'TextTier',
-                tier.get_name(),
-                tier.get_first_point().get_midpoint(),
-                tier.get_last_point().get_midpoint(),
-                len(tier))
-
-        if tier.is_interval():
-            format_annotation = sppasTextGrid.__format_interval_annotation
-        else:
-            format_annotation = sppasTextGrid.__format_point_annotation
-
-        for j, an in enumerate(tier):
-            result += format_annotation(an, j)
-
-        return result
+                for a, annotation in enumerate(tier):
+                    fp.write(format_annotation(annotation, a+1))
 
     # ------------------------------------------------------------------------
 
     @staticmethod
     def __format_interval_annotation(annotation, number):
-        """ Formats an annotation consisting of intervals to the TextGrid format.
+        """ Converts an annotation consisting of intervals to the TextGrid format.
 
-        :param number: The position of the annotation in the list of all annotations.
+        :param annotation: (sppasAnnotation)
+        :param number: (int) the position of the annotation in the list of all annotations.
 
         """
-        text = b(annotation.get_label().get_best().get_content())
-        if '"' in text:
-            text = re.sub('([^"])["]([^"])', '\\1""\\2', text)
-            text = re.sub('([^"])["]([^"])', '\\1""\\2', text)  # miss occurrences if 2 " are separated by only 1 character
-            text = re.sub('([^"])["]$', '\\1""', text)  # miss occurrences if " is at the end of the label!
-            text = re.sub('^["]([^"])', '""\\1', text)  # miss occurrences if " is at the beginning of the label!
+        if annotation.get_label() is None:
+            text = ""
+        else:
+            text = annotation.get_label().get_best().get_content()
+            if '"' in text:
+                text = re.sub('([^"])["]([^"])', '\\1""\\2', text)
+                text = re.sub('([^"])["]([^"])', '\\1""\\2', text)  # miss occurrences if 2 " are separated by only 1 character
+                text = re.sub('([^"])["]$', '\\1""', text)  # miss occurrences if " is at the end of the label!
+                text = re.sub('^["]([^"])', '""\\1', text)  # miss occurrences if " is at the beginning of the labe
 
-        return (
+        b = annotation.get_lowest_localization().get_midpoint()
+        e = annotation.get_highest_localization().get_midpoint()
+        return u(
             '        intervals [{:d}]:\n'
-            '            xmin = {}\n'
-            '            xmax = {}\n'
-            '            text = "{:s}"\n').format(
-                number,
-                annotation.get_lowest_localization().get_midpoint(),
-                annotation.get_highest_localization().get_midpoint(),
-                text)
+            '            xmin = {:.18}\n'
+            '            xmax = {:.18}\n'
+            '            text = "{}"\n').format(number, b, e, text)
 
     # ------------------------------------------------------------------------
 
     @staticmethod
     def __format_point_annotation(annotation, number):
-        """ Formats an annotation consisting of points to the TextGrid format.
+        """ Converts an annotation consisting of points to the TextGrid format.
 
-        :param number: The position of the annotation in the list of all annotations.
+        :param annotation: (sppasAnnotation)
+        :param number: (int) the position of the annotation in the list of all annotations.
 
         """
         text = annotation.get_label().get_best().get_content()
-        return (
+        return u(
             '        points [{:d}]:\n'
-            '            time = {}\n'
+            '            time = {:.18}\n'
             '            mark = "{:s}"\n').format(
                 number,
                 annotation.get_lowest_localization().get_midpoint(),

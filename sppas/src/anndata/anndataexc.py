@@ -50,6 +50,7 @@ TIER_HIERARCHY_ERROR = ":ERROR 1144: "
 TRS_ADD_ERROR = ":ERROR 1150: "
 TRS_REMOVE_ERROR = ":ERROR 1152: "
 AIO_ENCODING_ERROR = ":ERROR 1500: "
+AIO_FILE_EXTENSION_ERROR = ":ERROR 1505: "
 AIO_MULTI_TIERS_ERROR = ":ERROR 1510: "
 AIO_NO_TIERS_ERROR = ":ERROR 1515: "
 AIO_LINE_FORMAT_ERROR = ":ERROR 1520: "
@@ -252,6 +253,21 @@ class AioEncodingError(UnicodeDecodeError):
 # -----------------------------------------------------------------------
 
 
+class AioFileExtensionError(IOError):
+    """ :ERROR 1505: AIO_FILE_EXTENSION_ERROR
+    Fail formats: unrecognized extension for file {:s}.
+
+    """
+    def __init__(self, filename):
+        self.parameter = AIO_FILE_EXTENSION_ERROR + \
+                         (t.gettext(AIO_FILE_EXTENSION_ERROR)).format(filename)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
 class AioMultiTiersError(IOError):
     """ :ERROR 1510: AIO_MULTI_TIERS_ERROR
     The file format {!s:s} does not support multi-tiers.
@@ -310,4 +326,3 @@ class AioEmptyTierError(IOError):
         return repr(self.parameter)
 
 # -----------------------------------------------------------------------
-

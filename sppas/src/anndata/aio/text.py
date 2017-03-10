@@ -143,6 +143,8 @@ class sppasRawText(sppasBaseIO):
         self._accept_radius = False
         self._accept_gaps = True
         self._accept_overlaps = True
+        self._accept_gaps = True
+        self._accept_overlaps = True
 
     # -----------------------------------------------------------------
 
@@ -241,7 +243,10 @@ class sppasRawText(sppasBaseIO):
                     fp.write(annotation.get_label().get_best().get_content() + '\n')
             else:
                 for annotation in tier:
-                    t = annotation.get_label().get_best().get_content()
+                    if annotation.get_label() is None:
+                        t = ""
+                    else:
+                        t = annotation.get_label().get_best().get_content()
                     if point:
                         mp = annotation.get_lowest_localization().get_midpoint()
                         fp.write("{}\t{}\t{}\n".format(mp, t))

@@ -61,24 +61,27 @@ class sppasBaseIO(sppasTranscription):
         """ Initialize a new Transcription reader-writer instance.
 
         :param name: (str) A transcription name.
-        :param multi_tiers: (bool) The IO supports (or not) to read and write several tiers.
+        :param multi_tiers: (bool) The IO supports (or not) to read and write
+        several tiers.
         :param no_tiers: (bool) The IO supports (or not) to write no tiers.
 
         """
         sppasTranscription.__init__(self, name)
 
-        self._accept_multi_tiers = True
-        self._accept_no_tiers = True
+        self._accept_multi_tiers = False
+        self._accept_no_tiers = False
         self._accept_metadata = False
         self._accept_ctrl_vocab = False
         self._accept_media = False
         self._accept_hierarchy = False
         self._accept_point = False
-        self._accept_interval = True
-        self._accept_disjoint = True
+        self._accept_interval = False
+        self._accept_disjoint = False
         self._accept_alt_localization = False
         self._accept_alt_tag = False
         self._accept_radius = True
+        self._accept_gaps = False
+        self._accept_overlaps = False
         self._accept_gaps = False
         self._accept_overlaps = False
 
@@ -108,7 +111,8 @@ class sppasBaseIO(sppasTranscription):
     # -----------------------------------------------------------------------
 
     def metadata_support(self):
-        """ Return True if this reader-writer supports to read and write metadata.
+        """ Return True if this reader-writer supports to read and write
+        metadata.
 
         :returns: boolean
 
@@ -213,6 +217,28 @@ class sppasBaseIO(sppasTranscription):
 
         """
         return self._accept_radius
+
+    # -----------------------------------------------------------------------
+
+    def gaps_support(self):
+        """ Return True if this reader-writer supports gaps between
+        annotations of a tier (i.e. gaps = holes).
+
+        :returns: boolean
+
+        """
+        return self._accept_gaps
+
+    # -----------------------------------------------------------------------
+
+    def overlaps_support(self):
+        """ Return True if this reader-writer supports overlaps between
+        annotations of a tier.
+
+        :returns: boolean
+
+        """
+        return self._accept_overlaps
 
     # -----------------------------------------------------------------------
     # Setters

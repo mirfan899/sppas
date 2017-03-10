@@ -26,6 +26,23 @@ class TestXRA(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(TEMP)
 
+    def test_members(self):
+        xra = sppasXRA()
+        self.assertTrue(xra.multi_tiers_support())
+        self.assertTrue(xra.no_tiers_support())
+        self.assertTrue(xra.metadata_support())
+        self.assertTrue(xra.ctrl_vocab_support())
+        self.assertTrue(xra.media_support())
+        self.assertTrue(xra.hierarchy_support())
+        self.assertTrue(xra.point_support())
+        self.assertTrue(xra.interval_support())
+        self.assertTrue(xra.disjoint_support())
+        self.assertTrue(xra.alternative_localization_support())
+        self.assertTrue(xra.alternative_tag_support())
+        self.assertTrue(xra.radius_support())
+        self.assertTrue(xra.gaps_support())
+        self.assertTrue(xra.overlaps_support())
+
     def test_read1(self):
         xra3 = sppasXRA()
         xra3.read(os.path.join(DATA, "sample-1.1.xra"))

@@ -59,6 +59,9 @@ msgstr "Can't add: '{:s}' is already in the transcription."
 msgid ":ERROR 1500: "
 msgstr "The file {!s:s} contains non UTF-8 characters: {:s}."
 
+msgid ":ERROR 1505: "
+msgstr "Fail formats: unrecognized extension for file {:s}."
+
 msgid ":ERROR 1510: "
 msgstr "The file format {!s:s} does not support multi-tiers."
 

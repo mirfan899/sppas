@@ -26,6 +26,23 @@ class TestRawText(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(TEMP)
 
+    def test_members(self):
+        txt = sppasRawText()
+        self.assertFalse(txt.multi_tiers_support())
+        self.assertTrue(txt.no_tiers_support())
+        self.assertFalse(txt.metadata_support())
+        self.assertFalse(txt.ctrl_vocab_support())
+        self.assertFalse(txt.media_support())
+        self.assertFalse(txt.hierarchy_support())
+        self.assertTrue(txt.point_support())
+        self.assertTrue(txt.interval_support())
+        self.assertFalse(txt.disjoint_support())
+        self.assertFalse(txt.alternative_localization_support())
+        self.assertFalse(txt.alternative_tag_support())
+        self.assertFalse(txt.radius_support())
+        self.assertTrue(txt.gaps_support())
+        self.assertTrue(txt.overlaps_support())
+
     def test_read1(self):
         txt = sppasRawText()
         txt.read(os.path.join(DATA, "sample-irish-1.txt"))
@@ -48,11 +65,12 @@ class TestRawText(unittest.TestCase):
     def test_write(self):
         txt = sppasRawText()
         txt.write(os.path.join(TEMP, "sample.txt"))
-        self.assertFalse(os.path.exists(os.path.join(TEMP, "sample.txt")))
-        txt.create_tier()
-        txt.write(os.path.join(TEMP, "sample.txt"))
         self.assertTrue(os.path.exists(os.path.join(TEMP, "sample.txt")))
-        self.assertEqual(os.stat("file").st_size, 0)
+        self.assertEqual(os.stat(os.path.join(TEMP, "sample.txt")).st_size, 0)
+        txt.create_tier()
+        txt.write(os.path.join(TEMP, "sample-2.txt"))
+        self.assertTrue(os.path.exists(os.path.join(TEMP, "sample-2.txt")))
+        self.assertEqual(os.stat(os.path.join(TEMP, "sample.txt")).st_size, 0)
         txt.create_tier()
         with self.assertRaises(AioMultiTiersError):
             txt.write(os.path.join(TEMP, "sample.txt"))

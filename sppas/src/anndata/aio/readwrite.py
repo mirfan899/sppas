@@ -29,22 +29,24 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.aio.rw.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.anndata.aio.readwrite.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Readers and writers of annotated data.
 
 """
 import os.path
+from collections import OrderedDict
 
 from sppas.src.utils.makeunicode import u
 
 from ..anndataexc import AioEncodingError
+from ..anndataexc import AioFileExtensionError
 
 from .xra import sppasXRA
 from .text import sppasRawText
 # from .text import CSV
-# from .praat import TextGrid, PitchTier, IntensityTier
+from .praat import sppasTextGrid  #, PitchTier, IntensityTier
 # from .signaix import HzPitch
 # from .transcriber import Transcriber
 # from .phonedit import Phonedit
@@ -70,9 +72,9 @@ class sppasRW(object):
     :summary:      Main parser of annotated data.
 
     """
-    TRANSCRIPTION_TYPES = {
-        "xra": sppasXRA,
-        # "textgrid": TextGrid,
+    TRANSCRIPTION_TYPES = OrderedDict()
+    TRANSCRIPTION_TYPES["xra"] = sppasXRA
+    TRANSCRIPTION_TYPES["textgrid"] = sppasTextGrid
         # "eaf": Elan,
         # "trs": Transcriber,
         # "mrk": Phonedit,
@@ -90,8 +92,15 @@ class sppasRW(object):
         # "intensitytier": IntensityTier,
         # "pitchtier": PitchTier,
         # "hz": HzPitch,
-        # "txt": sppasRawText
-    }
+    TRANSCRIPTION_TYPES["txt"] = sppasRawText
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def extensions():
+        """ Return the list of supported extensions in lower case. """
+
+        return sppasRW.TRANSCRIPTION_TYPES.keys()
 
     # -----------------------------------------------------------------------
 
@@ -122,25 +131,29 @@ class sppasRW(object):
         
     # -----------------------------------------------------------------------
 
-    def read(self):
+    def read(self, heuristic=True):
         """ Read a transcription from a file.
 
         :param filename: (str) the file name (including path)
-        :raises: IOError, UnicodeError, Exception
-        :returns: Transcription
+        :param heuristic: (bool) if the extension of the file is unknown,
+        use an heuristic to detect the format, then to choose the reader-writer.
+        :returns: sppasTranscription reader-writer
 
         """
         try:
             trs = sppasRW.create_trs_from_extension(self.__filename)
-        except KeyError:
-            trs = sppasRW.create_trs_from_heuristic(self.__filename)
+        except AioFileExtensionError:
+            if heuristic is True:
+                trs = sppasRW.create_trs_from_heuristic(self.__filename)
+            else:
+                raise
 
         try:
             trs.read(self.__filename)
-        except IOError:
-            raise
         except UnicodeError as e:
             raise AioEncodingError(self.__filename, e)
+        except Exception:
+            raise
 
         return trs
 
@@ -156,10 +169,11 @@ class sppasRW(object):
 
         """
         extension = os.path.splitext(filename)[1][1:]
-        try:
-            return sppasRW.TRANSCRIPTION_TYPES[extension.lower()]()
-        except KeyError:
-            raise KeyError("Unrecognized file extension: %s" % extension)
+        extension = extension.lower()
+        if extension in sppasRW.extensions():
+            return sppasRW.TRANSCRIPTION_TYPES[extension]()
+
+        raise AioFileExtensionError(filename)
 
     # -----------------------------------------------------------------------
 
@@ -190,4 +204,10 @@ class sppasRW(object):
         """
         trs_rw = sppasRW.create_trs_from_extension(self.__filename)
         trs_rw.set(transcription)
-        trs_rw.write(self.__filename)
+
+        try:
+            trs_rw.write(self.__filename)
+        except UnicodeError as e:
+            raise AioEncodingError(self.__filename, e)
+        except Exception:
+            raise

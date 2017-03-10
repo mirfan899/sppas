@@ -97,10 +97,10 @@ class sppasXRA(sppasBaseIO):
         self._accept_interval = True
         self._accept_disjoint = True
         self._accept_alt_localization = True
-        self._accept_alt_label = True
+        self._accept_alt_tag = True
         self._accept_radius = True
-        self._accept_gaps = False
-        self._accept_overlaps = False
+        self._accept_gaps = True
+        self._accept_overlaps = True
 
         self.__format = "1.3"
 

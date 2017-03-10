@@ -28,10 +28,29 @@ class TestTextGrid(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(TEMP)
 
+    def test_members(self):
+        tg = sppasTextGrid()
+        self.assertTrue(tg.multi_tiers_support())
+        self.assertFalse(tg.no_tiers_support())
+        self.assertFalse(tg.metadata_support())
+        self.assertFalse(tg.ctrl_vocab_support())
+        self.assertFalse(tg.media_support())
+        self.assertFalse(tg.hierarchy_support())
+        self.assertTrue(tg.point_support())
+        self.assertTrue(tg.interval_support())
+        self.assertFalse(tg.disjoint_support())
+        self.assertFalse(tg.alternative_localization_support())
+        self.assertFalse(tg.alternative_tag_support())
+        self.assertFalse(tg.radius_support())
+        self.assertFalse(tg.gaps_support())
+        self.assertFalse(tg.overlaps_support())
+
     def test_read(self):
         txt = sppasTextGrid()
         txt.read(os.path.join(DATA, "sample.TextGrid"))
         self.assertEqual(len(txt), 2)
+        self.assertEqual(txt[0].get_name(), "transcription")
+        self.assertEqual(txt[1].get_name(), "P-Tones")
         self.assertEqual(len(txt[0]), 1)
         self.assertEqual(len(txt[1]), 2)
 
@@ -48,8 +67,6 @@ class TestTextGrid(unittest.TestCase):
         txt = sppasTextGrid()
         txt.read(os.path.join(DATA, "sample.TextGrid"))
         txt.write(os.path.join(TEMP, "sample.TextGrid"))
-        txt.write(os.path.join(DATA, "sample-write.TextGrid"))
-
         txt2 = sppasTextGrid()
         txt2.read(os.path.join(TEMP, "sample.TextGrid"))
         self.assertEqual(len(txt), len(txt2))
