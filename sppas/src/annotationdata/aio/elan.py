@@ -110,6 +110,8 @@ class Elan( Transcription ):
         self.__read_time_slots(timeOrderRoot)
 
         self.hierarchyLinks = {}
+        self.tierIndex = {}    # index of <TIER> elements
+        self.annotIndex = {}    # index of <ANNOTATION> elements (for reference annotation)
 
         # Read all controlled vocabularies, stored in self
         for vocabularyRoot in root.findall('CONTROLLED_VOCABULARY'):
@@ -125,16 +127,18 @@ class Elan( Transcription ):
 
         # manage hierarchyLinks
         for parentTierRef in self.hierarchyLinks:
-            child = self.hierarchyLinks[parentTierRef]
-            parent = self.Find(parentTierRef)
-            # Elan's hierarchy
-            try:
-                self._hierarchy.add_link('TimeAlignment', child, parent)
-            except:
-                # TODO: to send a warning
-                pass
+            for child in self.hierarchyLinks[parentTierRef]:  # a parent tier could have various children
+                parent = self.Find(parentTierRef)
+                # Elan's hierarchy
+                try:
+                    self._hierarchy.add_link('TimeAlignment', child, parent)
+                except:
+                    # TODO: to send a warning
+                    pass
 
         del self.hierarchyLinks
+        del self.tierIndex
+        del self.annotIndex
         del self.unit
         del self.timeSlots
 
@@ -189,6 +193,7 @@ class Elan( Transcription ):
     # -----------------------------------------------------------------
 
     def __read_tier(self, tierRoot, root):
+        self.tierIndex[tierRoot.attrib['TIER_ID']] = tierRoot # <TIER> index
         tier = self.NewTier(tierRoot.attrib['TIER_ID'])
 
         linguisticType = tierRoot.attrib['LINGUISTIC_TYPE_REF']
@@ -239,7 +244,9 @@ class Elan( Transcription ):
 
     def __read_ref_tier(self, tier, tierRoot, parentTierRef, root):
         # add a link to process later
-        self.hierarchyLinks[parentTierRef] = tier
+        if parentTierRef not in self.hierarchyLinks:
+            self.hierarchyLinks[parentTierRef] = []
+        self.hierarchyLinks[parentTierRef].append(tier)
 
         # group annotations in batches
         batches = {}
@@ -255,8 +262,12 @@ class Elan( Transcription ):
                 # and suppose the tier is sorted
                 batches[ref].append(annotationRoot)
 
+        # build parent ref index before to call __find_real_ref
+        if batches and (parentTierRef in self.tierIndex):
+            self.__quickbuild_annot_index(self.tierIndex[parentTierRef])
+
         for ref in batches:
-            realRefRoot = Elan.__find_real_ref(ref, root)
+            realRefRoot = self.__find_real_ref(ref, root)
 
             beginKey = realRefRoot.attrib['TIME_SLOT_REF1']
             begin = self.timeSlots[beginKey].GetMidpoint()
@@ -278,14 +289,34 @@ class Elan( Transcription ):
 
     # -----------------------------------------------------------------
 
-    @staticmethod
-    def __find_real_ref(ref, root):
+    def __quickbuild_annot_index(self, tierRoot):
+        # loop on all 'ANNOTATION' elements inside tierRoot
+        for annotationRoot in tierRoot.iter('ANNOTATION'):
+            annot_id = annotationRoot[0].attrib['ANNOTATION_ID']
+            if annot_id in self.annotIndex:
+                break   # if an annotation is yet in the index, we consider the full index is build
+            self.annotIndex[annot_id] = annotationRoot
+            
+    def __find_real_ref(self, ref, root):
         while True:
+            # first look in annotIndex
+            if ref in self.annotIndex:
+                #check recursive references
+                annotationRoot = self.annotIndex[ref]
+                if annotationRoot[0].tag == 'REF_ANNOTATION':
+                    ref = annotationRoot[0].attrib['ANNOTATION_REF']
+                    continue    # go back to the while True:
+                else:
+                    return annotationRoot[0]
+            # loop on all 'ANNOTATION' elements
             for annotationRoot in root.iter('ANNOTATION'):
+                annot_id = annotationRoot[0].attrib['ANNOTATION_ID']
+                self.annotIndex[annot_id] = annotationRoot
+                #check recursive references
                 if annotationRoot[0].attrib['ANNOTATION_ID'] == ref:
                     if annotationRoot[0].tag == 'REF_ANNOTATION':
                         ref = annotationRoot[0].attrib['ANNOTATION_REF']
-                        break
+                        break   # break the for loop (and go back to the while True:)
                     else:
                         return annotationRoot[0]
 
@@ -322,6 +353,7 @@ class Elan( Transcription ):
 
     def __read_time_slots(self, timeOrderRoot):
         timeSlotCouples = []
+        # read the <TIME_SLOT> element
         for timeSlotNode in timeOrderRoot.findall('TIME_SLOT'):
             id = timeSlotNode.attrib['TIME_SLOT_ID']
 
@@ -333,18 +365,19 @@ class Elan( Transcription ):
 
             timeSlotCouples.append((id, value))
 
-            for i in range(1, len(timeSlotCouples)-1):
+        # create a midpoint value for undefined TIME_VALUE
+        for i in range(1, len(timeSlotCouples)-1):
+            (id, val) = timeSlotCouples[i]
+            if val is None:
                 (prevId, prevVal) = timeSlotCouples[i-1]
-                (id, val) = timeSlotCouples[i]
                 (nextId, nextVal) = timeSlotCouples[i+1]
-                if val is None:
-                    midPoint = (prevVal.GetMidpoint() +
-                                nextVal.GetMidpoint()) / 2
-                    newVal = TimePoint(midPoint, midPoint -
-                                       prevVal.GetMidpoint())
-                    timeSlotCouples[i] = (id, newVal)
+                midPoint = (prevVal.GetMidpoint() +
+                            nextVal.GetMidpoint()) / 2 # /!\ failed if nextVal is None
+                newVal = TimePoint(midPoint, midPoint -
+                                   prevVal.GetMidpoint())
+                timeSlotCouples[i] = (id, newVal)
 
-            self.timeSlots = dict(timeSlotCouples)
+        self.timeSlots = dict(timeSlotCouples)
 
     # -----------------------------------------------------------------
     # Writer
