@@ -92,7 +92,8 @@ class sppasWxOption(sppasBaseOption):
 
         if self._type == 'wx.font':
             (size, family, style, weight, u, face, enc) = self._value
-            return wx.Font(size, family, style, weight, u, face, enc)
+            font = wx.Font(size, family, style, weight, u, face, enc)
+            return font
 
         if self._type == 'wx.align':
             if self._value.lower() == 'left':

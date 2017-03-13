@@ -187,12 +187,12 @@ class SndPlayer(wx.Panel):
         except Exception:
             info = False
         if info is True:
-            logging.info(' ... Sndplayer: create button: %s'%(name))
+            #logging.info(' ... Sndplayer: create button: %s'%(name))
             self._buttons[name] = CreateButton(self, bmpd, method, sizer, colour=bgcolour)
             self._dict_buttons_enable[self._buttons[name]]  = bmpe
             self._dict_buttons_disable[self._buttons[name]] = bmpd
-        else:
-            logging.info(' ... Sndplayer: ignore button: %s'%(name))
+        #else:
+        #    logging.info(' ... Sndplayer: ignore button: %s'%(name))
 
     # -----------------------------------------------------------------------
 
@@ -263,10 +263,10 @@ class SndPlayer(wx.Panel):
         if 'stop'   in self._buttons.keys(): sizer.Add(self._buttons['stop'],   (1,2), flag=wx.ALL, border=4)
         if 'pause'  in self._buttons.keys(): sizer.Add(self._buttons['pause'],  (2,2), flag=wx.ALL, border=4)
 
-        sizer.Add(self._showpanel,      (0,1),(3,1), flag=wx.EXPAND|wx.ALL, border=4)
-        sizer.Add(self._knob,           (0,3),(2,1), flag=wx.EXPAND|wx.TOP, border=4)
+        sizer.Add(self._showpanel,      (0,1), (3,1), flag=wx.EXPAND|wx.ALL, border=4)
+        sizer.Add(self._knob,           (0,3), (2,1), flag=wx.EXPAND|wx.TOP, border=4)
         sizer.Add(self._knobtracker,    (2,3), flag=wx.TOP, border=4)
-        sizer.Add(self._playbackSlider, (3,0),(1,4), flag=wx.ALL|wx.EXPAND, border=4)
+        sizer.Add(self._playbackSlider, (3,0), (1,4), flag=wx.ALL|wx.EXPAND, border=4)
 
         return sizer
 
@@ -326,11 +326,9 @@ class SndPlayer(wx.Panel):
                 self._prefsIO.SetTheme(sppasTheme())
         return prefs
 
-    #-------------------------------------------------------------------------
-
-    #----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Public methods
-    #----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def FileSelected(self, filename):
         """
@@ -341,7 +339,7 @@ class SndPlayer(wx.Panel):
         """
         # we already opened the same file
         if filename == self._filename and self._mediaplayer is not None:
-            logging.info(' ... SndPlayer: file %s was already opened. [WARNING]'%(filename))
+            logging.info(' ... SndPlayer: file %s was already opened. [WARNING]' % (filename))
             return
 
         try:
@@ -352,9 +350,9 @@ class SndPlayer(wx.Panel):
                 import wave
                 w = wave.Wave_read(filename)
                 self._length = int(1000 * float(w.getnframes())/float(w.getframerate()))
-            logging.info(" ... File %s successfully loaded. [  OK  ]" %(filename))
+            logging.info(" ... File %s successfully loaded. [  OK  ]" % (filename))
         except Exception as e:
-            logging.info(" ... File %s not loaded.  [ ERROR ]" %(filename))
+            logging.info(" ... File %s not loaded.  [ ERROR ]" % (filename))
             ShowInformation(self, self._prefs, 'Error loading: '+filename+': '+str(e), style=wx.ICON_ERROR)
             return False
 
@@ -370,7 +368,7 @@ class SndPlayer(wx.Panel):
         self._timer.Start(self._refreshTimer)
         self.Refresh()
 
-    #------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def FileDeSelected(self):
         """
@@ -417,12 +415,9 @@ class SndPlayer(wx.Panel):
         if self._playbackSlider is not None:
             self._playbackSlider.SetRange(start,end)
 
-    #----------------------------------------------------------------------
-
-
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     # Callbacks
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
 
     def onInfo(self, event):
         """
@@ -436,7 +431,7 @@ class SndPlayer(wx.Panel):
         except Exception as e:
             ShowInformation(self, self._prefs, 'No information available: %s'%str(e), style=wx.ICON_ERROR)
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def onSeek(self,event):
         """
@@ -452,7 +447,7 @@ class SndPlayer(wx.Panel):
 
         self._mediaplayer.Seek(offset, mode=wx.FromStart)
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
 
     def onEject(self, event):
         """
@@ -467,7 +462,7 @@ class SndPlayer(wx.Panel):
 
         self.FileDeSelected()
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
 
     def onNext(self, event):
         """
@@ -487,27 +482,28 @@ class SndPlayer(wx.Panel):
 
         self._mediaplayer.Seek(forward, mode=wx.FromStart)
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
 
     def onRewind(self, event):
         """
         Go backward in the music.
 
         """
-        if self._mediaplayer is None: return
+        if self._mediaplayer is None:
+            return
 
         offset = self._mediaplayer.Tell()
         backward = offset - BACKWARD_STEP
-        (omin,omax) = self._offsets
+        (omin, omax) = self._offsets
         if backward < omin:
-            backward = omax # loop
+            backward = omax  # loop
 
         if self._playbackSlider is not None:
             self._playbackSlider.SetValue(backward)
 
         self._mediaplayer.Seek(backward, mode=wx.FromStart)
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
 
     def onPause(self, event):
         """
@@ -529,17 +525,18 @@ class SndPlayer(wx.Panel):
             if 'play'  in self._buttons.keys(): self._buttons['play'].SetBitmapLabel(self._dict_buttons_enable[self._buttons['play']])
             if 'pause' in self._buttons.keys(): self._buttons['pause'].SetBitmapLabel(self._dict_buttons_enable[self._buttons['pause']])
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
 
     def onAutoPlay(self, event):
         """
         Plays the music and re-play from the beginning.
 
         """
+        offset = self._mediaplayer.Tell()
         self._autoreplay = True
         self.onPlay(event)
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
 
     def onNormalPlay(self, event):
         """
@@ -549,7 +546,7 @@ class SndPlayer(wx.Panel):
         self._autoreplay = False
         self.onPlay(event)
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
 
     def onPlay(self, event):
         """
@@ -565,7 +562,7 @@ class SndPlayer(wx.Panel):
 
         # save current position
         offset = self._mediaplayer.Tell()
-        omin,omax = self._offsets
+        omin, omax = self._offsets
         if self._playbackSlider is not None:
             offset = self._playbackSlider.GetValue()
         elif (offset < omin or offset > omax):
@@ -587,18 +584,19 @@ class SndPlayer(wx.Panel):
 
         self.Refresh()
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
 
     def onStop(self, event):
         """
         Stops the music and resets the play button.
 
         """
-        if self._mediaplayer is None: return
+        if self._mediaplayer is None:
+            return
 
         try:
             self._mediaplayer.Stop()
-            s,e = self._offsets
+            s, e = self._offsets
             self._mediaplayer.Seek(s)
             if self._playbackSlider is not None:
                 self._playbackSlider.SetValue(s)
@@ -610,7 +608,7 @@ class SndPlayer(wx.Panel):
         if 'pause' in self._buttons.keys(): self._buttons['pause'].SetBitmapLabel(self._dict_buttons_enable[self._buttons['pause']])
         self._autoreplay = False
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
 
     def onAngleChanged(self, event):
         """ Change the volume value. """
@@ -620,7 +618,7 @@ class SndPlayer(wx.Panel):
         if self._mediaplayer:
             self._mediaplayer.SetVolume(float(value)/100.0)
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
 
     def onTimer(self, event):
         """ Keeps the player slider updated. """
@@ -634,15 +632,16 @@ class SndPlayer(wx.Panel):
         if self._mediaplayer.GetState() == wx.media.MEDIASTATE_PLAYING and self._playbackSlider is not None:
             self._playbackSlider.SetValue(offset)
 
-        omin,omax = self._offsets
+        omin, omax = self._offsets
         if self._mediaplayer.GetState() == wx.media.MEDIASTATE_PLAYING and (offset < omin-3 or offset > omax+3):
-            if self._autoreplay is True:
-                self.onStop(event)
+            offset = self._mediaplayer.Tell()
+            replay = self._autoreplay
+            self.onStop(event)
+            if replay is True:
+                offset = self._mediaplayer.Tell()
                 self.onAutoPlay(event)
-            else:
-                self.onStop(event)
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
 
     def onClose(self, event):
         """
@@ -651,8 +650,6 @@ class SndPlayer(wx.Panel):
         """
         self._timer.Stop()
         self.Destroy()
-
-    # ------------------------------------------------------------------------
 
     # -----------------------------------------------------------------------
     # GUI

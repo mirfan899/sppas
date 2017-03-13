@@ -149,11 +149,11 @@ class DataRoamerClient(BaseClient):
     # ------------------------------------------------------------------------
 
     def SaveAll(self):
-        """ Save all files (one per page). """
+        """ Save all files of a page. """
         
         for i in range(self._xfiles.GetSize()):
             o = self._xfiles.GetObject(i)
-            o.Save()
+            o.SaveAll()
 
 # ----------------------------------------------------------------------------
 # The Component is the content of one page of the notebook.

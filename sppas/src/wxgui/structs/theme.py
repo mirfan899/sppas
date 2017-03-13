@@ -92,6 +92,7 @@ class sppasTheme(object):
                  '',
                  wx.FONTENCODING_SYSTEM
                  )
+
     # -----------------------------------------------------------------------
 
     def __init__(self):

@@ -84,7 +84,7 @@ class sppasBaseAbout(wx.lib.scrolledpanel.ScrolledPanel):
         if len(self.logo) > 0:
             bitmap = spBitmap(self.logo, size=48)
             logo_bmp = wx.StaticBitmap(self, wx.ID_ANY, bitmap)
-            sizer.Add(logo_bmp, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=8)
+            sizer.Add(logo_bmp, proportion=1, flag=wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=8)
 
         # Program name
         if len(self.program) > 0:
@@ -95,22 +95,22 @@ class sppasBaseAbout(wx.lib.scrolledpanel.ScrolledPanel):
             font.SetPointSize(fontsize+4)
             font.SetWeight(wx.BOLD)
             textprogramversion.SetFont(font)
-            sizer.Add(textprogramversion, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
+            sizer.Add(textprogramversion, proportion=1, flag=wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
         # Description
         if len(self.brief) > 0:
             textdescr = wx.StaticText(self, -1, self.brief)
             self.__apply_preferences(textdescr)
-            sizer.Add(textdescr, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
+            sizer.Add(textdescr, proportion=1, flag=wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
         # Copyright
         if len(self.copyright) > 0:
             textcopy = wx.StaticText(self, -1, self.copyright)
-            self.__apply_preferences(textprogramversion)
+            self.__apply_preferences(textcopy)
             font = self._preferences.GetValue('M_FONT')
             font.SetWeight(wx.BOLD)
             textcopy.SetFont(font)
-            sizer.Add(textcopy, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
+            sizer.Add(textcopy, proportion=1, flag=wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
         # URL
         if len(self.url) > 0:
@@ -118,24 +118,22 @@ class sppasBaseAbout(wx.lib.scrolledpanel.ScrolledPanel):
             self.__apply_preferences(texturl)
             texturl.SetForegroundColour(wx.Colour(80, 100, 220))
             texturl.Bind(wx.EVT_LEFT_UP, self.OnLink)
-            sizer.Add(texturl, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
+            sizer.Add(texturl, proportion=1, flag=wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
         # License
         if len(self.license) > 0:
             textlicense = wx.StaticText(self, -1, self.license)
-            self.__apply_preferences(textgpl)
-            sizer.Add(textlicense, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
+            self.__apply_preferences(textlicense)
+            sizer.Add(textlicense, proportion=1, flag=wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
         # License text content
         if len(self.license_text) > 0:
             textgpl = wx.StaticText(self, -1, self.license_text)
             self.__apply_preferences(textgpl)
-            sizer.Add(textgpl, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
+            sizer.Add(textgpl, proportion=1, flag=wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
-        self.SetSizer(sizer)
-        self.FitInside()
+        self.SetSizerAndFit(sizer)
         self.SetupScrolling(scroll_x=True, scroll_y=True)
-        self.SetAutoLayout(True)
 
     # ------------------------------------------------------------------------
 
@@ -182,6 +180,8 @@ class AboutSPPASPanel(sppasBaseAbout):
         self.logo = APP_ICON
 
         self.Create()
+        self.SetAutoLayout(True)
+        self.SetMinSize(wx.Size(320, 200))
 
 # ------------------------------------------------------------------------
 

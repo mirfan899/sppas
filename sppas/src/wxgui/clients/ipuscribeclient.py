@@ -306,7 +306,7 @@ class IPUscribe( wx.Panel ):
             self._current_page = self._trsPanel.LoadPage(1)
             self.__set_footer()
             self._trsPanel.KillFocus()
-            self._mediaPanel.SetOffsetPeriod(0,0)
+            self._mediaPanel.SetOffsetPeriod(0, 0)
 
     # ----------------------------------------------------------------------
 
@@ -318,7 +318,7 @@ class IPUscribe( wx.Panel ):
             self._current_page = self._trsPanel.LoadPage(self._trsPanel.GetPageCount())
             self.__set_footer()
             self._trsPanel.KillFocus()
-            self._mediaPanel.SetOffsetPeriod(0,0)
+            self._mediaPanel.SetOffsetPeriod(0, 0)
 
     # ----------------------------------------------------------------------
 
@@ -330,7 +330,7 @@ class IPUscribe( wx.Panel ):
             self._current_page = self._trsPanel.LoadPage(self._current_page-1)
             self.__set_footer()
             self._trsPanel.KillFocus()
-            self._mediaPanel.SetOffsetPeriod(0,0)
+            self._mediaPanel.SetOffsetPeriod(0, 0)
 
     # ----------------------------------------------------------------------
 
