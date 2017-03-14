@@ -5,9 +5,8 @@ import unittest
 import os.path
 import shutil
 
-from sppas.src.sp_glob import RESOURCES_PATH
+from sppas import RESOURCES_PATH
 from sppas.src.utils.fileutils import sppasFileUtils
-
 from ..vocab import Vocabulary
 
 # ---------------------------------------------------------------------------

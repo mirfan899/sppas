@@ -4,7 +4,7 @@
 import unittest
 import os.path
 
-from sppas.src.sp_glob import RESOURCES_PATH
+from sppas import RESOURCES_PATH
 
 from sppas.src.annotationdata.tier import Tier
 from sppas.src.annotationdata.annotation import Annotation

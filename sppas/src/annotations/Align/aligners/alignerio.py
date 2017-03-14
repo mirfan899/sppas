@@ -44,7 +44,7 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 import os
 import codecs
 
-from sppas.src.sp_glob import encoding
+from sppas import encoding
 from sppas.src.resources.rutils import to_strip
 
 # ----------------------------------------------------------------------------

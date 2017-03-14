@@ -35,15 +35,14 @@
 # File: phon.py
 # ---------------------------------------------------------------------------
 
-from sppas.src.sp_glob import ERROR_ID, WARNING_ID, INFO_ID, OK_ID
-from sppas.src.sp_glob import UNKSTAMP
-
 import sppas.src.annotationdata.aio
 from sppas.src.annotationdata.tier import Tier
 from sppas.src.annotationdata.transcription import Transcription
 from sppas.src.resources.dictpron import DictPron
 from sppas.src.resources.mapping import Mapping
 
+from .. import ERROR_ID, WARNING_ID, INFO_ID, OK_ID
+from .. import UNKSTAMP
 from ..sppasbase import sppasBase
 from .phonetize import DictPhon
 

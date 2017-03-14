@@ -39,15 +39,14 @@ import os
 import wx
 from wx.lib import stattext
 
-from sppas.src.annotationdata.aio import extensions_out_multitiers as extensions_out
-from sppas.src.sp_glob import ICONS_PATH
+from sppas import ICONS_PATH
 
+from sppas.src.annotationdata.aio import extensions_out_multitiers as extensions_out
 from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
 from sppas.src.wxgui.sp_icons import SETTINGS_ICON
 from sppas.src.wxgui.sp_icons import BG_COLOR_ICON
 from sppas.src.wxgui.sp_icons import FG_COLOR_ICON
 from sppas.src.wxgui.sp_icons import FONT_ICON
-
 from sppas.src.wxgui.cutils.imageutils import spBitmap
 
 

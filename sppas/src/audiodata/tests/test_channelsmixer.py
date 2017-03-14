@@ -3,10 +3,10 @@
 import unittest
 import os.path
 
+from sppas import SAMPLES_PATH
 from ..aio import open as audio_open
 from ..channelformatter import ChannelFormatter
 from ..channelsmixer import ChannelsMixer
-from sppas.src.sp_glob import SAMPLES_PATH
 
 # ---------------------------------------------------------------------------
 

@@ -38,11 +38,10 @@
 import codecs
 import os
 
-from sppas.src.sp_glob import encoding
-from sppas.src.sp_glob import ERROR_ID, WARNING_ID, OK_ID
-
+from sppas import encoding
 import sppas.src.annotationdata.aio
 import sppas.src.audiodata.aio
+from . import ERROR_ID, WARNING_ID, OK_ID
 
 # ----------------------------------------------------------------------------
 

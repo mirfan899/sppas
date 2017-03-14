@@ -73,8 +73,8 @@ from sppas.src.audiodata.audioframes import AudioFrames
 from sppas.src.audiodata.audio import AudioPCM
 from sppas.src.audiodata.audioutils import amp2db as amp2db
 
-from sppas.src.sp_glob import program, version, copyright, url, author, contact
-from sppas.src.sp_glob import encoding
+from sppas import program, version, copyright, url, author, contact
+from sppas import encoding
 
 from .baseclient import BaseClient
 

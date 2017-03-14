@@ -37,7 +37,7 @@
 
 import codecs
 
-from sppas.src.sp_glob import encoding
+from sppas import encoding
 from sppas.src.resources.rutils import to_strip
 
 from .aligners import DEFAULT_ALIGNER

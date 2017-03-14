@@ -37,8 +37,7 @@
 
 import logging
 
-from sppas.src.sp_glob import ERROR_ID, WARNING_ID, INFO_ID
-
+from . import ERROR_ID, WARNING_ID, INFO_ID
 from .diagnosis import sppasDiagnosis
 
 # ---------------------------------------------------------------------------

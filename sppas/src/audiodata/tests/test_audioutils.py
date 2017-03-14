@@ -4,10 +4,10 @@
 import unittest
 import os
 
+from sppas import SAMPLES_PATH
 from ..aio import open as audio_open
 from ..audioutils import samples2frames
 
-from sppas.src.sp_glob import SAMPLES_PATH
 sample_1 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana1.wav")
 sample_2 = os.path.join(SAMPLES_PATH, "samples-fra", "F_F_B003-P9.wav")
 sample_3 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana3.wave")

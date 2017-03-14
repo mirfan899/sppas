@@ -47,7 +47,7 @@ import os
 import re
 import codecs
 
-from sppas.src.sp_glob import UNKSTAMP
+from .. import UNKSTAMP
 
 # ----------------------------------------------------------------------------
 

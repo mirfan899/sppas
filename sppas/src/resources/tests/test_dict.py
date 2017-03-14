@@ -4,7 +4,7 @@
 import unittest
 import os.path
 
-from sppas.src.sp_glob import RESOURCES_PATH
+from sppas import RESOURCES_PATH
 
 from ..dictpron import DictPron
 from ..dictrepl import DictRepl

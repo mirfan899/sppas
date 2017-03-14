@@ -51,7 +51,7 @@ import os.path
 
 import sppas.src.annotationdata.aio
 import sppas.src.audiodata.aio
-from sppas.src.sp_glob import version
+from sppas import version
 
 # and temporary.......
 from sppas.src.annotationdata.label.label import Label

@@ -45,7 +45,7 @@ import os.path
 import gettext
 import locale
 
-from sppas.src.sp_glob import BASE_PATH
+from sppas import BASE_PATH
 from .makeunicode import u
 
 

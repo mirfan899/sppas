@@ -4,12 +4,11 @@ import unittest
 import os.path
 import shutil
 
+from sppas import SAMPLES_PATH
+from sppas.src.utils.fileutils import sppasFileUtils
 from ..aio import open as audio_open
 from ..aio import save as audio_save
-
 from ..audio import AudioPCM
-from sppas.src.utils.fileutils import sppasFileUtils
-from sppas.src.sp_glob import SAMPLES_PATH
 
 # ---------------------------------------------------------------------------
 

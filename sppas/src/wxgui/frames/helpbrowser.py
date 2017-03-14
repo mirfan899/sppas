@@ -41,7 +41,7 @@ import re
 import wx.html
 import webbrowser
 
-from sppas.src.sp_glob import encoding
+from sppas import encoding
 from sppas.src.dependencies.markdown import markdown
 from sppas.src.dependencies.markdown.extensions.tables import TableExtension
 

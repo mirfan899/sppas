@@ -3,9 +3,9 @@
 import unittest
 import os
 
+from sppas import SAMPLES_PATH
 from ..aio import open as audio_open
 from ..channelframes import ChannelFrames
-from sppas.src.sp_glob import SAMPLES_PATH
 
 # ---------------------------------------------------------------------------
 

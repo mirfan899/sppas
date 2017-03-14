@@ -38,7 +38,6 @@
 import os
 import logging
 
-from sppas.src.sp_glob import INFO_ID
 import sppas.src.annotationdata.aio
 import sppas.src.audiodata.aio
 from sppas.src.annotationdata.aio.utils import gen_id
@@ -46,6 +45,7 @@ from sppas.src.annotationdata.transcription import Transcription
 from sppas.src.annotationdata.media import Media
 from sppas.src.audiodata.autils import times2frames
 
+from .. import INFO_ID
 from ..sppasbase import sppasBase
 from .ipusaudio import IPUsAudio  # find IPUs/tracks from audio
 from .ipustrs import IPUsTrs   # find IPUs/tracks/utterances from transcription

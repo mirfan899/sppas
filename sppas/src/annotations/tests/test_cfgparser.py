@@ -3,10 +3,11 @@
 import unittest
 import os.path
 
-from ..cfgparser import AnnotationConfigParser
-from sppas.src.sp_glob import BASE_PATH
+from sppas import BASE_PATH
 
-INITOK   = os.path.join(BASE_PATH, "etc", "Token.ini")
+from ..cfgparser import AnnotationConfigParser
+
+INITOK = os.path.join(BASE_PATH, "etc", "Token.ini")
 INIMOMEL = os.path.join(BASE_PATH, "etc", "Momel.ini")
 
 # ---------------------------------------------------------------------------

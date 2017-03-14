@@ -47,7 +47,7 @@ import sys
 import codecs
 import re
 
-from sppas.src.sp_glob import encoding
+from sppas import encoding
 
 # ---------------------------------------------------------------------------
 

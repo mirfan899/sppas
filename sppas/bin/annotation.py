@@ -54,13 +54,13 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.sp_glob import program, author, version, copyright, url
-from sppas.src.annotationdata.aio import extensions_out  #_multitiers
+from sppas import program, author, version, copyright, url
+from sppas.src.annotations import DEFAULT_OUTPUT_EXTENSION
 from sppas.src.annotations.param import sppasParam
 from sppas.src.annotations.manager import sppasAnnotationsManager
+from sppas.src.annotationdata.aio import extensions_out  #_multitiers
 from sppas.src.term.textprogress import ProcessProgressTerminal
 from sppas.src.term.terminalcontroller import TerminalController
-from sppas.src.sp_glob import DEFAULT_OUTPUT_EXTENSION
 
 
 # ----------------------------------------------------------------------------

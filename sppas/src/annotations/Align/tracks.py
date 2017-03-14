@@ -38,7 +38,7 @@
 import os
 import codecs
 
-from sppas.src.sp_glob import encoding
+from sppas import encoding
 
 from sppas.src.annotationdata.transcription import Transcription
 from sppas.src.annotationdata.ptime.interval import TimeInterval

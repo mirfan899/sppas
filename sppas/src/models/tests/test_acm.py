@@ -5,12 +5,11 @@ import os.path
 import copy
 import shutil
 
+from sppas import RESOURCES_PATH, SAMPLES_PATH
 from sppas.src.models.acm.acmodel import AcModel, HtkIO
 from sppas.src.models.acm.hmm import HMM, HMMInterpolation
 from sppas.src.models.acm.htktrain import HTKModelTrainer, DataTrainer, PhoneSet, TrainingCorpus, HTKModelInitializer
-
 from sppas.src.utils.compare import sppasCompare
-from sppas.src.sp_glob import RESOURCES_PATH, SAMPLES_PATH
 from sppas.src.utils.fileutils import sppasFileUtils
 
 # ---------------------------------------------------------------------------

@@ -51,12 +51,11 @@ import wx
 import math
 import random
 
+from sppas import ICONS_PATH
 from sppas.src.wxgui.sp_icons import THEME_DEFAULT
-
 from sppas.src.wxgui.sp_icons import CHECKED_ICON, ACTIVATED_ICON, RADIOCHECKED_ICON
 from sppas.src.wxgui.sp_icons import UNCHECKED_ICON, DISABLED_ICON, RADIOUNCHECKED_ICON
 
-from sppas.src.sp_glob import ICONS_PATH
 
 # ----------------------------------------------------------------------------
 

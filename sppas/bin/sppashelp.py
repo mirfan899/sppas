@@ -67,13 +67,13 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 try:
+    from sppas import SETTINGS_FILE
     from sppas.src.wxgui.frames.helpbrowser  import HelpBrowser
     from sppas.src.wxgui.structs.prefs       import Preferences
     from sppas.src.wxgui.dialogs.msgdialogs  import ShowInformation
     from sppas.src.wxgui.structs.prefs       import Preferences_IO
     from sppas.src.wxgui.structs.theme      import sppasTheme
     from sppas.src.utils.fileutils           import setup_logging
-    from sppas.src.sp_glob                   import SETTINGS_FILE
 except ImportError:
     exit_error( "An error occurred.\nVerify the SPPAS installation and try again. Full error message is: %s"%traceback.format_exc() )
 

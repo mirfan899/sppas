@@ -4,11 +4,11 @@ import unittest
 import os.path
 import shutil
 
+from sppas import SAMPLES_PATH
 from ..aio import open as audio_open
 from ..aio import save as audio_save
 from ..aio import save_fragment as audio_save_fragment
 
-from sppas.src.sp_glob import SAMPLES_PATH
 from sppas.src.utils.fileutils import sppasFileUtils
 
 # ---------------------------------------------------------------------------

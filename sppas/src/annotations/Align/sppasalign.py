@@ -40,8 +40,8 @@ import os.path
 import glob
 import logging
 
-from sppas.src.sp_glob import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
-from sppas.src.sp_glob import RESOURCES_PATH
+from sppas import RESOURCES_PATH
+
 import sppas.src.utils.fileutils
 import sppas.src.annotationdata.aio
 from sppas.src.annotationdata import Transcription
@@ -52,6 +52,7 @@ from sppas.src.annotationdata.aio.utils import gen_id
 from sppas.src.resources.mapping import Mapping
 from sppas.src.models.acm.modelmixer import ModelMixer
 
+from .. import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
 from ..sppasbase import sppasBase
 from .alignio import AlignIO
 from .activity import Activity

@@ -32,15 +32,13 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: syll.py
+# File: sppasyll.py
 # ----------------------------------------------------------------------------
-
-from sppas.src.sp_glob import WARNING_ID
 
 from sppas.src.annotations.Syll.syllabification import Syllabification
 import sppas.src.annotationdata.aio
 from sppas.src.annotationdata.transcription import Transcription
-
+from .. import WARNING_ID
 from ..sppasbase import sppasBase
 
 # ----------------------------------------------------------------------------

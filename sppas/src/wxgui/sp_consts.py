@@ -37,8 +37,8 @@
 import os.path
 import wx
 
-from sppas.src.sp_glob import BASE_PATH
-from sppas.src.sp_glob import program, version
+from sppas import BASE_PATH
+from sppas import program, version
 
 # ---------------------------------------------------------------------------
 # Define all paths (relatively to SPPAS base path)

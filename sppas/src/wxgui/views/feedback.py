@@ -47,7 +47,7 @@ import wx
 import urllib
 import webbrowser
 
-from sppas.src.sp_glob import program, version
+from sppas import program, version
 
 from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
 from sppas.src.wxgui.dialogs.msgdialogs import ShowInformation

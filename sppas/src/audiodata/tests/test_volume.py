@@ -4,10 +4,10 @@
 import unittest
 import os.path
 
+from sppas import SAMPLES_PATH
 from ..aio import open as audio_open
 from ..channelvolume import ChannelVolume
 from ..audiovolume import AudioVolume
-from sppas.src.sp_glob import SAMPLES_PATH
 
 # ---------------------------------------------------------------------------
 

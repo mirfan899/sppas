@@ -38,9 +38,9 @@
 import os
 import wx
 
+import sppas
 import sppas.src.annotationdata.aio
 import sppas.src.audiodata.aio
-import sppas.src.sp_glob
 
 from sppas.src.wxgui.cutils.dialogutils import create_wildcard, extend_path
 from .msgdialogs import ShowYesNoQuestion
@@ -69,9 +69,9 @@ def OpenAnnotationFiles(multiple=True):
             files = dlg.GetPaths()
 
     else:
-        dlg = wx.FileDialog(None, "Select annotation file", sppas.src.sp_glob.SAMPLES_PATH, "", wildcard, wx.FD_OPEN | wx.FD_CHANGE_DIR)
+        dlg = wx.FileDialog(None, "Select annotation file", sppas.SAMPLES_PATH, "", wildcard, wx.FD_OPEN | wx.FD_CHANGE_DIR)
         if dlg.ShowModal() == wx.ID_OK:
-            files.append( dlg.GetPath() )
+            files.append(dlg.GetPath())
 
     dlg.Destroy()
 
@@ -87,11 +87,11 @@ def OpenSoundFiles():
     Return a list of sound file names.
     """
 
-    wildcard  = create_wildcard("Sound files", sppas.src.audiodata.aio.extensionsul)
+    wildcard = create_wildcard("Sound files", sppas.src.audiodata.aio.extensionsul)
     wildcard += '|'+create_wildcard("All files", ['*', '*.*'])
 
     files = []
-    dlg = wx.FileDialog(None, "Select sound file(s)", sppas.src.sp_glob.SAMPLES_PATH, "", wildcard, wx.FD_OPEN | wx.MULTIPLE | wx.FD_CHANGE_DIR)
+    dlg = wx.FileDialog(None, "Select sound file(s)", sppas.SAMPLES_PATH, "", wildcard, wx.FD_OPEN | wx.MULTIPLE | wx.FD_CHANGE_DIR)
     if dlg.ShowModal() == wx.ID_OK:
         files = dlg.GetPaths()
 
@@ -109,7 +109,7 @@ def OpenAnyFiles():
     wildcard  = create_wildcard("All files", ['*', '*.*'])
 
     files = []
-    dlg = wx.FileDialog(None, "Select file(s)", sppas.src.sp_glob.SAMPLES_PATH, "", wildcard, wx.FD_OPEN | wx.MULTIPLE | wx.FD_CHANGE_DIR)
+    dlg = wx.FileDialog(None, "Select file(s)", sppas.SAMPLES_PATH, "", wildcard, wx.FD_OPEN | wx.MULTIPLE | wx.FD_CHANGE_DIR)
     if dlg.ShowModal() == wx.ID_OK:
         files = dlg.GetPaths()
 
@@ -123,7 +123,7 @@ def OpenSpecificFiles(name, extensions):
     """
     Return a list of file names with specific extensions.
     """
-    wildcard  = create_wildcard(name, extensions)
+    wildcard = create_wildcard(name, extensions)
 
     afile = ""
     dlg = wx.FileDialog(None, "Select a file", os.getcwd(), "", wildcard, wx.FD_OPEN | wx.FD_CHANGE_DIR)
@@ -144,7 +144,7 @@ def SaveAsAnnotationFile(defaultdir=None,
     Return an annotation file name.
     """
     if defaultdir is None:
-        defaultdir = os.path.dirname(sppas.src.sp_glob.BASE_PATH)
+        defaultdir = os.path.dirname(sppas.BASE_PATH)
 
     if defaultfile is None:
         defaultfile = "newfile.xra"
@@ -183,14 +183,14 @@ def SaveAsAudioFile(defaultdir=None,
     Return an audio file name.
     """
     if defaultdir is None:
-        defaultdir = os.path.dirname(sppas.src.sp_glob.BASE_PATH)
+        defaultdir = os.path.dirname(sppas.BASE_PATH)
 
     if defaultfile is None:
         defaultfile = "newfile.wav"
 
     file = None
 
-    wildcard  = create_wildcard("All files", sppas.src.audiodata.aio.extensions)
+    wildcard = create_wildcard("All files", sppas.src.audiodata.aio.extensions)
     wildcard += '|'+create_wildcard("Wave", sppas.src.audiodata.aio.ext_wav)
     wildcard += '|'+create_wildcard("Aiff", sppas.src.audiodata.aio.ext_aiff)
     wildcard += '|'+create_wildcard("SunAu",  sppas.src.audiodata.aio.ext_sunau)
@@ -199,7 +199,7 @@ def SaveAsAudioFile(defaultdir=None,
         None, message = "Choose a file name...",
         defaultDir  = defaultdir,
         defaultFile = defaultfile,
-        wildcard    = wildcard,
+        wildcard = wildcard,
         style = wx.FD_SAVE | wx.FD_CHANGE_DIR )
 
     if dlg.ShowModal() == wx.ID_OK:
@@ -219,8 +219,8 @@ def SaveAsImageFile(preferences,
 
     """
     extension_map = {"png": wx.BITMAP_TYPE_PNG}
-    extensions    = extension_map.keys()
-    wildcard      = create_wildcard("Image files", extensions)
+    extensions = extension_map.keys()
+    wildcard = create_wildcard("Image files", extensions)
 
     dialog = wx.FileDialog(None, message="Export to Image",
                            wildcard=wildcard, style=wx.FD_SAVE)
@@ -245,18 +245,18 @@ def SaveAsAnyFile(defaultdir=None,
     """
     """
     if defaultdir is None:
-        defaultdir = os.path.dirname(sppas.src.sp_glob.BASE_PATH)
+        defaultdir = os.path.dirname(sppas.BASE_PATH)
 
     if defaultfile is None:
         defaultfile = "newfile.txt"
 
     file = None
-    wildcard  = create_wildcard("All files", ['*', '*.*'])
+    wildcard = create_wildcard("All files", ['*', '*.*'])
     dlg = wx.FileDialog(
         None, message = "Choose a file name...",
-        defaultDir  = defaultdir,
+        defaultDir = defaultdir,
         defaultFile = defaultfile,
-        wildcard    = wildcard,
+        wildcard = wildcard,
         style = wx.FD_SAVE | wx.FD_CHANGE_DIR )
 
     if dlg.ShowModal() == wx.ID_OK:
@@ -265,5 +265,3 @@ def SaveAsAnyFile(defaultdir=None,
     dlg.Destroy()
 
     return file
-
-# ----------------------------------------------------------------------------

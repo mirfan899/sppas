@@ -39,7 +39,7 @@
 """
 import os.path
 
-from sppas.src.sp_glob import RESOURCES_PATH
+from sppas import RESOURCES_PATH
 from sppas.src.utils.fileutils import sppasDirUtils
 
 from .structsexc import LangTypeError

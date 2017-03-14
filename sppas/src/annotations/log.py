@@ -40,8 +40,8 @@ import codecs
 import logging
 import os
 
-from sppas.src.sp_glob import program, version, copyright, url, author, contact
-from sppas.src.sp_glob import encoding
+from sppas import program, version, copyright, url, author, contact
+from sppas import encoding
 from sppas.src.utils.fileutils import sppasFileUtils
 
 # ----------------------------------------------------------------------------

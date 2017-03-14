@@ -70,7 +70,7 @@ from sppas.src.resources.dictpron import DictPron
 from sppas.src.resources.vocab import Vocabulary
 from sppas.src.resources.mapping import Mapping
 
-from sppas.src.sp_glob import UNKSTAMP
+from sppas.src.annotations import UNKSTAMP
 
 from .hmm import HMM
 from .htkscripts import HtkScripts

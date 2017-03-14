@@ -4,11 +4,11 @@
 import unittest
 import os.path
 
-from ..Token.tokenize import DictTok
+from sppas import RESOURCES_PATH
 from sppas.src.resources.vocab import Vocabulary
 from sppas.src.resources.dictrepl import DictRepl
 
-from sppas.src.sp_glob import RESOURCES_PATH
+from ..Token.tokenize import DictTok
 
 # ---------------------------------------------------------------------------
 

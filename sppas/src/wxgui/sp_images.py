@@ -37,7 +37,7 @@
 
 import os.path
 
-from sppas.src.sp_glob import BASE_PATH
+from sppas import BASE_PATH
 
 # ----------------------------------------------------------------------------
 

@@ -39,7 +39,7 @@ import os
 import codecs
 from subprocess import Popen, PIPE, STDOUT
 
-from sppas.src.sp_glob import encoding
+from sppas import encoding
 from sppas.src.models.slm.ngramsmodel import NgramsModel
 from sppas.src.models.slm.arpaio import ArpaIO
 from sppas.src.models.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL

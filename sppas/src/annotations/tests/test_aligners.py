@@ -3,6 +3,9 @@
 import unittest
 import os.path
 
+from sppas import RESOURCES_PATH
+from sppas import SAMPLES_PATH
+
 from ..Align.aligners import instantiate as aligners_instantiate
 from ..Align.aligners import check as aligners_check
 from ..Align.aligners import aligner_names
@@ -10,11 +13,6 @@ from ..Align.aligners.basealigner import BaseAligner
 from ..Align.aligners.basicalign import BasicAligner
 from ..Align.aligners.juliusalign import JuliusAligner
 from ..Align.aligners.hvitealign import HviteAligner
-
-# ---------------------------------------------------------------------------
-
-from sppas.src.sp_glob import RESOURCES_PATH
-from sppas.src.sp_glob import SAMPLES_PATH
 
 # ---------------------------------------------------------------------------
 

@@ -40,7 +40,7 @@ import math
 
 import sppas.src.annotationdata as annotationdata
 from sppas.src.resources.vocab import Vocabulary
-from sppas.src.sp_glob import UNKSTAMP
+from sppas.src.annotations import UNKSTAMP
 
 # ---------------------------------------------------------------------------
 

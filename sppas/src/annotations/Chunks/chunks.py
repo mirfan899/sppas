@@ -39,7 +39,6 @@ import os
 import logging
 
 
-from sppas.src.sp_glob import UNKSTAMP
 import sppas.src.annotationdata.aio
 import sppas.src.audiodata.autils as autils
 from sppas.src.annotationdata.transcription import Transcription
@@ -52,9 +51,10 @@ from sppas.src.annotationdata.label.text import Text
 from sppas.src.resources.patterns import Patterns
 from sppas.src.resources.rutils import to_strip
 from sppas.src.resources.mapping import Mapping
-import sppas.src.annotations.Align.aligners as aligners
-from sppas.src.annotations.Align.aligners.alignerio import AlignerIO
 
+import sppas.src.annotations.Align.aligners as aligners
+from ..Align.aligners.alignerio import AlignerIO
+from .. import UNKSTAMP
 from .spkrate import SpeakerRate
 from .anchors import AnchorTier
 

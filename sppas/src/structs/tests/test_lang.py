@@ -3,7 +3,7 @@
 import unittest
 import os.path
 
-from sppas.src.sp_glob import RESOURCES_PATH
+from sppas import RESOURCES_PATH
 
 from ..lang import sppasLangResource
 from ..structsexc import LangTypeError, LangNameError, LangPathError

@@ -39,7 +39,7 @@ import os
 import codecs
 from subprocess import Popen, PIPE, STDOUT
 
-from sppas.src.sp_glob import encoding
+from sppas import encoding
 from sppas.src.resources.dictpron import DictPron
 
 from .basealigner import BaseAligner

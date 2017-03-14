@@ -43,7 +43,7 @@ import logging
 import zipfile
 from threading import Thread
 
-from sppas.src.sp_glob import PLUGIN_PATH
+from sppas import PLUGIN_PATH
 from sppas.src.utils.fileutils import sppasDirUtils
 from . import get_info
 from .pluginsexc import PluginArchiveFileError

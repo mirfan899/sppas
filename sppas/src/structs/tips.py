@@ -40,7 +40,8 @@ import codecs
 import random
 import logging
 
-from sppas.src.sp_glob import TIPS_FILE, encoding
+from sppas import encoding
+from sppas import TIPS_FILE
 from sppas.src.utils.makeunicode import sppasUnicode
 from sppas.src.utils.makeunicode import b
 

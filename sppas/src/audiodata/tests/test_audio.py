@@ -3,11 +3,11 @@
 import unittest
 import os.path
 
+from sppas import SAMPLES_PATH
 from ..aio import open as audio_open
 from ..audio import AudioPCM
 from ..audiodataexc import ChannelIndexError, AudioError
 
-from sppas.src.sp_glob import SAMPLES_PATH
 sample_1 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana1.wav")
 sample_3 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana3.wave")
 

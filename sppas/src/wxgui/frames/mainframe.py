@@ -38,9 +38,10 @@
 import wx
 import logging
 
+from sppas import SETTINGS_FILE
+
 import sppas.src.annotationdata.aio
 import sppas.src.audiodata.aio
-from sppas.src.sp_glob import SETTINGS_FILE
 
 from sppas.src.wxgui.cutils.imageutils import spBitmap
 from sppas.src.wxgui.structs.prefs import Preferences_IO

@@ -38,14 +38,13 @@
 import codecs
 import logging
 
-from sppas.src.sp_glob import UNKSTAMP
+from sppas import encoding
+from sppas.src.annotations import UNKSTAMP
 
 from .dumpfile import DumpFile
 from .resourcesexc import FileIOError, FileFormatError
-from .rutils import ENCODING
 from .rutils import to_lower
 from .rutils import to_strip
-
 
 # ---------------------------------------------------------------------------
 
@@ -255,7 +254,7 @@ class DictPron(object):
 
         """
         try:
-            with codecs.open(filename, 'r', ENCODING) as fd:
+            with codecs.open(filename, 'r', encoding) as fd:
                 lines = fd.readlines()
         except Exception:
             raise FileIOError(filename)
@@ -292,7 +291,7 @@ class DictPron(object):
 
         """
         try:
-            with codecs.open(filename, 'w', encoding=ENCODING) as output:
+            with codecs.open(filename, 'w', encoding=encoding) as output:
 
                 for entry, value in sorted(self._dict.items(), key=lambda x: x[0]):
                     variants = value.split(DictPron.VARIANTS_SEPARATOR)

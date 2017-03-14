@@ -37,9 +37,9 @@
 
 import os.path
 
-from sppas.src.sp_glob import SPPAS_CONFIG_DIR
-from sppas.src.sp_glob import DEFAULT_OUTPUT_EXTENSION
+from sppas import SPPAS_CONFIG_DIR
 from sppas.src.annotations.cfgparser import AnnotationConfigParser
+from . import DEFAULT_OUTPUT_EXTENSION
 
 # ----------------------------------------------------------------------------
 

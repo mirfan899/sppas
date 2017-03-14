@@ -38,7 +38,7 @@
 import codecs
 import os
 
-from sppas.src.sp_glob import encoding
+from sppas import encoding
 from sppas.src.audiodata.autils import frames2times
 import sppas.src.audiodata.aio
 import sppas.src.annotationdata.aio

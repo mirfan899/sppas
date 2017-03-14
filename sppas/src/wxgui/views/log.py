@@ -39,7 +39,7 @@ import shutil
 import codecs
 import wx
 
-from sppas.src.sp_glob import encoding
+from sppas import encoding
 
 from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
 from sppas.src.wxgui.dialogs.msgdialogs import ShowInformation

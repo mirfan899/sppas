@@ -37,7 +37,7 @@
 
 import datetime
 
-from sppas.src.sp_glob import author, contact, program, version, copyright, url, license
+from sppas import author, contact, program, version, copyright, url, license
 
 from sppas.src.annotationdata.tier import Tier
 from sppas.src.annotationdata.annotation import Annotation

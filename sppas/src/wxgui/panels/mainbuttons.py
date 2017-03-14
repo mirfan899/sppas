@@ -38,7 +38,7 @@
 import wx
 import webbrowser
 
-from sppas.src.sp_glob import program, title
+from sppas import program, title
 from sppas.src.structs.tips import sppasTips
 
 from sppas.src.wxgui.panels.buttons import ButtonPanel, ButtonMenuPanel, ImgPanel, ButtonCreator, ButtonToolbarPanel

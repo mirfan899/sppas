@@ -3,17 +3,15 @@
 import unittest
 import os.path
 
+from sppas import RESOURCES_PATH
+from sppas.src.resources.dictpron import DictPron
+from sppas.src.resources.mapping import Mapping
+from .. import UNKSTAMP
+from .. import ERROR_ID, WARNING_ID, OK_ID
 from ..Phon.phonetize import DictPhon
 from ..Phon.dagphon import DAGPhon
 from ..Phon.phonunk import PhonUnk
 from ..Phon.sppasphon import sppasPhon
-
-from sppas.src.resources.dictpron import DictPron
-from sppas.src.resources.mapping import Mapping
-
-from sppas.src.sp_glob import RESOURCES_PATH
-from sppas.src.sp_glob import UNKSTAMP
-from sppas.src.sp_glob import ERROR_ID, WARNING_ID, OK_ID
 
 # ---------------------------------------------------------------------------
 
