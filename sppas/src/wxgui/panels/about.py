@@ -77,67 +77,67 @@ class sppasBaseAbout(wx.lib.scrolledpanel.ScrolledPanel):
 
     # ------------------------------------------------------------------------
 
-    def Create(self):
+    def create(self):
         sizer = wx.BoxSizer(wx.VERTICAL)
 
         # Logo
         if len(self.logo) > 0:
             bitmap = spBitmap(self.logo, size=48)
             logo_bmp = wx.StaticBitmap(self, wx.ID_ANY, bitmap)
-            sizer.Add(logo_bmp, proportion=1, flag=wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=8)
+            sizer.Add(logo_bmp, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=8)
 
         # Program name
         if len(self.program) > 0:
-            textprogramversion = wx.StaticText(self, -1, self.program + " " + version)
-            self.__apply_preferences(textprogramversion)
+            text_program_version = wx.StaticText(self, -1, self.program + " " + version)
+            self.__apply_preferences(text_program_version)
             font = self._preferences.GetValue('M_FONT')
-            fontsize = font.GetPointSize()
-            font.SetPointSize(fontsize+4)
+            font_size = font.GetPointSize()
+            font.SetPointSize(font_size + 4)
             font.SetWeight(wx.BOLD)
-            textprogramversion.SetFont(font)
-            sizer.Add(textprogramversion, proportion=1, flag=wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
+            text_program_version.SetFont(font)
+            sizer.Add(text_program_version, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
         # Description
         if len(self.brief) > 0:
-            textdescr = wx.StaticText(self, -1, self.brief)
-            self.__apply_preferences(textdescr)
-            sizer.Add(textdescr, proportion=1, flag=wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
+            text_descr = wx.StaticText(self, -1, self.brief)
+            self.__apply_preferences(text_descr)
+            sizer.Add(text_descr, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
         # Copyright
         if len(self.copyright) > 0:
-            textcopy = wx.StaticText(self, -1, self.copyright)
-            self.__apply_preferences(textcopy)
+            text_copy = wx.StaticText(self, -1, self.copyright)
+            self.__apply_preferences(text_copy)
             font = self._preferences.GetValue('M_FONT')
             font.SetWeight(wx.BOLD)
-            textcopy.SetFont(font)
-            sizer.Add(textcopy, proportion=1, flag=wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
+            text_copy.SetFont(font)
+            sizer.Add(text_copy, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
         # URL
         if len(self.url) > 0:
-            texturl = wx.StaticText(self, -1, self.url)
-            self.__apply_preferences(texturl)
-            texturl.SetForegroundColour(wx.Colour(80, 100, 220))
-            texturl.Bind(wx.EVT_LEFT_UP, self.OnLink)
-            sizer.Add(texturl, proportion=1, flag=wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
+            text_url = wx.StaticText(self, -1, self.url)
+            self.__apply_preferences(text_url)
+            text_url.SetForegroundColour(wx.Colour(80, 100, 220))
+            text_url.Bind(wx.EVT_LEFT_UP, self.on_link)
+            sizer.Add(text_url, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
         # License
         if len(self.license) > 0:
             textlicense = wx.StaticText(self, -1, self.license)
             self.__apply_preferences(textlicense)
-            sizer.Add(textlicense, proportion=1, flag=wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
+            sizer.Add(textlicense, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
         # License text content
         if len(self.license_text) > 0:
-            textgpl = wx.StaticText(self, -1, self.license_text)
-            self.__apply_preferences(textgpl)
-            sizer.Add(textgpl, proportion=1, flag=wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
+            text_gpl = wx.StaticText(self, -1, self.license_text)
+            self.__apply_preferences(text_gpl)
+            sizer.Add(text_gpl, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
         self.SetSizerAndFit(sizer)
         self.SetupScrolling(scroll_x=True, scroll_y=True)
 
     # ------------------------------------------------------------------------
 
-    def OnLink(self, event):
+    def on_link(self, event):
         try:
             webbrowser.open(url, 1)
         except:
@@ -179,9 +179,8 @@ class AboutSPPASPanel(sppasBaseAbout):
         self.license_text = license_text
         self.logo = APP_ICON
 
-        self.Create()
+        self.create()
         self.SetAutoLayout(True)
-        self.SetMinSize(wx.Size(320, 200))
 
 # ------------------------------------------------------------------------
 
@@ -217,4 +216,4 @@ class AboutPluginPanel(sppasBaseAbout):
             except Exception:
                 pass
 
-        self.Create()
+        self.create()
