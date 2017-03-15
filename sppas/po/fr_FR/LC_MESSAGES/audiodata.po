@@ -21,16 +21,16 @@ msgid ":ERROR 2000: "
 msgstr "Aucun fichier audio n'a été défini."
 
 msgid ":ERROR 2010: "
-msgstr "{:s} lecture ou écriture: {:s}."
+msgstr "L'erreur suivante s'est produite à la lecture ou à l'écriture du fichier {filename} : {message}."
 
 msgid ":ERROR 2015: "
-msgstr "Le fichier audio {:s} est vide ou ses données sont corrompues."
+msgstr "Le fichier audio {filename} est vide ou ses données sont corrompues."
 
 msgid ":ERROR 2020: "
-msgstr "Aucun canal d'index {:d} dans le fichier audio."
+msgstr "Aucun canal d'index {number} dans le fichier audio."
 
 msgid ":ERROR 2025: "
-msgstr "De {:d} à {:d} ne constitue pas un intervale valide."
+msgstr "De {value1} à {value2} ne constitue pas un intervale valide."
 
 msgid ":ERROR 2050: "
 msgstr "Aucun canal audio n'a été défini."
@@ -45,4 +45,4 @@ msgid ":ERROR 2062: "
 msgstr "Les canaux ne font pas la même taille."
 
 msgid ":ERROR 2070: "
-msgstr "La taille d'échantillon {:d} est invalide. Il est attendu 1, 2 ou 4."
+msgstr "La taille d'échantillon {value} est invalide. Il est attendu 1, 2 ou 4."

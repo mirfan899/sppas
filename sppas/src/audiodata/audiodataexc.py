@@ -69,10 +69,10 @@ class AudioIOError(IOError):
     def __init__(self, message="", filename=None):
         if filename:
             self.parameter = IO_ERROR + \
-                             (t.gettext(IO_ERROR)).format((filename, message))
+                             (t.gettext(IO_ERROR)).format(filename=filename, message=message)
         else:
             self.parameter = IO_ERROR + \
-                             (t.gettext(IO_ERROR)).format(message)
+                             (t.gettext(IO_ERROR)).format(filename="", message=message)
 
     def __str__(self):
         return repr(self.parameter)
@@ -81,11 +81,11 @@ class AudioIOError(IOError):
 
 
 class AudioDataError(Exception):
-    """ :ERROR 2015: No data or corrupted data in the audio file. """
+    """ :ERROR 2015: No data or corrupted data in the audio file {filename}. """
 
     def __init__(self, filename):
         self.parameter = DATA_ERROR + \
-                         (t.gettext(DATA_ERROR)).format(filename)
+                         (t.gettext(DATA_ERROR)).format(filename=filename)
 
     def __str__(self):
         return repr(self.parameter)
@@ -94,11 +94,11 @@ class AudioDataError(Exception):
 
 
 class ChannelIndexError(ValueError):
-    """ :ERROR 2020: {:d} is not a right index of channel. """
+    """ :ERROR 2020: {number} is not a right index of channel. """
 
     def __init__(self, index):
         index = int(index)
-        self.parameter = INDEX_ERROR + (t.gettext(INDEX_ERROR)).format(index)
+        self.parameter = INDEX_ERROR + (t.gettext(INDEX_ERROR)).format(number=index)
 
     def __str__(self):
         return repr(self.parameter)
@@ -107,13 +107,13 @@ class ChannelIndexError(ValueError):
 
 
 class IntervalError(ValueError):
-    """ :ERROR 2025: From {:d} to {:d} is not a proper interval. """
+    """ :ERROR 2025: From {value1} to {value2} is not a proper interval. """
 
     def __init__(self, value1, value2):
         value1 = int(value1)
         value2 = int(value2)
         self.parameter = INTERVAL_ERROR + \
-                         (t.gettext(INTERVAL_ERROR)).format(value1, value2)
+                         (t.gettext(INTERVAL_ERROR)).format(value1=value1, value2=value2)
 
     def __str__(self):
         return repr(self.parameter)
@@ -154,12 +154,12 @@ class MixChannelError(ValueError):
 
 
 class SampleWidthError(ValueError):
-    """ :ERROR 2070: Invalid sample width. """
+    """ :ERROR 2070: Invalid sample width {value}. """
 
     def __init__(self, value):
         value = int(value)
         self.parameter = SAMPLEWIDTH_ERROR +\
-                         (t.gettext(SAMPLEWIDTH_ERROR)).format(value)
+                         (t.gettext(SAMPLEWIDTH_ERROR)).format(value=value)
 
     def __str__(self):
         return repr(self.parameter)

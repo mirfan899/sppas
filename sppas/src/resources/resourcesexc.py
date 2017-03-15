@@ -50,10 +50,10 @@ DUMP_EXTENSION_ERROR = ":ERROR 5030: "
 
 
 class FileIOError(Exception):
-    """ :ERROR 5010: Error while trying to open and read the file: {:s}. """
+    """ :ERROR 5010: Error while trying to open and read the file: {name}. """
 
     def __init__(self, filename):
-        self.parameter = FILE_IO_ERROR + (t.gettext(FILE_IO_ERROR)).format(filename)
+        self.parameter = FILE_IO_ERROR + (t.gettext(FILE_IO_ERROR)).format(name=filename)
 
     def __str__(self):
         return repr(self.parameter)
@@ -62,11 +62,11 @@ class FileIOError(Exception):
 
 
 class FileFormatError(ValueError):
-    """ :ERROR 5015: Read file failed due to the following error at line number {:d}: {:s}. """
+    """ :ERROR 5015: Read file failed at line number {number}: {string}. """
 
-    def __init__(self, line, filename):
-        line = int(line)
-        self.parameter = FILE_FORMAT_ERROR + (t.gettext(FILE_FORMAT_ERROR)).format(line, filename)
+    def __init__(self, line_number, filename):
+        line_number = int(line_number)
+        self.parameter = FILE_FORMAT_ERROR + (t.gettext(FILE_FORMAT_ERROR)).format(number=line_number, string=filename)
 
     def __str__(self):
         return repr(self.parameter)
@@ -75,12 +75,12 @@ class FileFormatError(ValueError):
 
 
 class NgramRangeError(ValueError):
-    """ :ERROR 5020: The n value of n-grams pattern matching must range [1;{:d}]. Got {:d}. """
+    """ :ERROR 5020: The n value of n-grams pattern matching must range [1;{maximum}]. Got {observed}. """
 
     def __init__(self, maxi, value):
         maxi = int(maxi)
         value = int(value)
-        self.parameter = NGRAM_RANGE_ERROR + (t.gettext(NGRAM_RANGE_ERROR)).format(maxi, value)
+        self.parameter = NGRAM_RANGE_ERROR + (t.gettext(NGRAM_RANGE_ERROR)).format(maximum=maxi, observed=value)
 
     def __str__(self):
         return repr(self.parameter)
@@ -89,12 +89,12 @@ class NgramRangeError(ValueError):
 
 
 class GapRangeError(ValueError):
-    """ :ERROR 5022: The gap value of pattern matching must range [0;{:d}]. Got {:d}. """
+    """ :ERROR 5022: The gap value of pattern matching must range [0;{maximum}]. Got {observed}. """
 
     def __init__(self, maxi, value):
         maxi = int(maxi)
         value = int(value)
-        self.parameter = GAP_RANGE_ERROR + (t.gettext(GAP_RANGE_ERROR)).format(maxi, value)
+        self.parameter = GAP_RANGE_ERROR + (t.gettext(GAP_RANGE_ERROR)).format(maximum=maxi, observed=value)
 
     def __str__(self):
         return repr(self.parameter)
@@ -103,11 +103,11 @@ class GapRangeError(ValueError):
 
 
 class ScoreRangeError(ValueError):
-    """ :ERROR 5024: The score value of unigrams pattern matching must range [0;1]. Got {:f}. """
+    """ :ERROR 5024: The score value of unigrams pattern matching must range [0;1]. Got {observed}. """
 
     def __init__(self, value):
         value = float(value)
-        self.parameter = SCORE_RANGE_ERROR + (t.gettext(SCORE_RANGE_ERROR)).format(value)
+        self.parameter = SCORE_RANGE_ERROR + (t.gettext(SCORE_RANGE_ERROR)).format(observed=value)
 
     def __str__(self):
         return repr(self.parameter)
@@ -116,10 +116,10 @@ class ScoreRangeError(ValueError):
 
 
 class DumpExtensionError(ValueError):
-    """ :ERROR 5030: The dump file can't have the same extension as the ASCII file ({:s}). """
+    """ :ERROR 5030: The dump file can't have the same extension as the ASCII file ({extension}). """
 
     def __init__(self, extension):
-        self.parameter = DUMP_EXTENSION_ERROR + (t.gettext(DUMP_EXTENSION_ERROR)).format(extension)
+        self.parameter = DUMP_EXTENSION_ERROR + (t.gettext(DUMP_EXTENSION_ERROR)).format(extension=extension)
 
     def __str__(self):
         return repr(self.parameter)

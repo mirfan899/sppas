@@ -44,13 +44,13 @@ from sppas.src.annotationdata.transcription import Transcription
 from sppas.src.annotationdata.tier import Tier
 import sppas.src.annotationdata.aio
 
-from ..sppasbase import sppasBase
+from ..baseannot import sppasBaseAnnotation
 from .tokenize import DictTok
 
 # ---------------------------------------------------------------------------
 
 
-class sppasTok(sppasBase):
+class sppasTok(sppasBaseAnnotation):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -77,7 +77,7 @@ class sppasTok(sppasBase):
         @param logfile (sppasLog)
 
         """
-        sppasBase.__init__(self, logfile)
+        sppasBaseAnnotation.__init__(self, logfile)
 
         self.fix_tokenizer(vocab, lang)
 

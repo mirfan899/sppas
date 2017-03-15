@@ -46,7 +46,7 @@ from sppas.src.annotationdata.media import Media
 from sppas.src.audiodata.autils import times2frames
 
 from .. import INFO_ID
-from ..sppasbase import sppasBase
+from ..baseannot import sppasBaseAnnotation
 from .ipusaudio import IPUsAudio  # find IPUs/tracks from audio
 from .ipustrs import IPUsTrs   # find IPUs/tracks/utterances from transcription
 from .ipusout import IPUsOut   # IPUs Output (writer)
@@ -56,7 +56,7 @@ from .ipusout import IPUsOut   # IPUs Output (writer)
 # ------------------------------------------------------------------
 
 
-class sppasIPUs( sppasBase ):
+class sppasIPUs( sppasBaseAnnotation ):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -74,7 +74,7 @@ class sppasIPUs( sppasBase ):
                 to the user.
 
         """
-        sppasBase.__init__(self, logfile)
+        sppasBaseAnnotation.__init__(self, logfile)
 
         self.ipusaudio = IPUsAudio(None) # Find IPUs from an audio file
         self.ipustrs   = IPUsTrs(None)   # Get IPUs from a transcription file

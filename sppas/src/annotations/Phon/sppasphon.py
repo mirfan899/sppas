@@ -43,13 +43,13 @@ from sppas.src.resources.mapping import Mapping
 
 from .. import ERROR_ID, WARNING_ID, INFO_ID, OK_ID
 from .. import UNKSTAMP
-from ..sppasbase import sppasBase
+from ..baseannot import sppasBaseAnnotation
 from .phonetize import DictPhon
 
 # ---------------------------------------------------------------------------
 
 
-class sppasPhon( sppasBase ):
+class sppasPhon( sppasBaseAnnotation ):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -78,7 +78,7 @@ class sppasPhon( sppasBase ):
         @raise ValueError if loading the dictionary fails
 
         """
-        sppasBase.__init__(self, logfile)
+        sppasBaseAnnotation.__init__(self, logfile)
 
         # Pronunciation dictionary
         self.maptable = None

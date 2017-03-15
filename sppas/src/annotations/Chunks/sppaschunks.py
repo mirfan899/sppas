@@ -42,13 +42,13 @@ import sppas.src.utils.fileutils
 import sppas.src.annotationdata.aio
 from sppas.src.annotationdata.aio.utils import gen_id
 from sppas.src.annotationdata.media import Media
-from sppas.src.annotations.sppasbase import sppasBase
+from sppas.src.annotations.baseannot import sppasBaseAnnotation
 from sppas.src.annotations.Chunks.chunks import Chunks
 
 # ----------------------------------------------------------------------------
 
 
-class sppasChunks(sppasBase):
+class sppasChunks(sppasBaseAnnotation):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -67,7 +67,7 @@ class sppasChunks(sppasBase):
         @param logfile (sppasLog)
 
         """
-        sppasBase.__init__(self, logfile)
+        sppasBaseAnnotation.__init__(self, logfile)
 
         self.chunks = Chunks(model)
         self._options['clean'] = True  # Remove temporary files

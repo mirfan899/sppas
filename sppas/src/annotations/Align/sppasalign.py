@@ -53,14 +53,14 @@ from sppas.src.resources.mapping import Mapping
 from sppas.src.models.acm.modelmixer import ModelMixer
 
 from .. import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
-from ..sppasbase import sppasBase
+from ..baseannot import sppasBaseAnnotation
 from .alignio import AlignIO
 from .activity import Activity
 
 # ----------------------------------------------------------------------------
 
 
-class sppasAlign(sppasBase):
+class sppasAlign(sppasBaseAnnotation):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -91,7 +91,7 @@ class sppasAlign(sppasBase):
         @param logfile (sppasLog)
 
         """
-        sppasBase.__init__(self, logfile)
+        sppasBaseAnnotation.__init__(self, logfile)
 
         # Members: self.alignio
         self.fix_segmenter(model,modelL1)

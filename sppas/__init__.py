@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.__init__.py
-    ~~~~~~~~~~~~~~~
+    __init__.py
+    ~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -41,7 +41,6 @@
 
 """
 import os.path
-# SPPAS Metadata
 from .meta import *
 
 # ---------------------------------------------------------------------------
@@ -59,7 +58,7 @@ DOCUMENTATION_PATH = os.path.join(os.path.dirname(BASE_PATH), "documentation")
 
 # etcetera
 SPPAS_CONFIG_DIR = os.path.join(BASE_PATH, "etc")
-ICONS_PATH = os.path.join(BASE_PATH, "etc", "icons" )
+ICONS_PATH = os.path.join(BASE_PATH, "etc", "icons")
 TIPS_FILE = os.path.join(BASE_PATH, "etc", "tips.txt")
 SETTINGS_FILE = os.path.join(BASE_PATH, "etc", "settings.dump")
 

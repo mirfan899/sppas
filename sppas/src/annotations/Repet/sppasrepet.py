@@ -53,7 +53,7 @@ from sppas.src.annotationdata.label.label import Label
 from sppas.src.resources.vocab import Vocabulary
 from sppas.src.resources.unigram import Unigram
 
-from ..sppasbase import sppasBase
+from ..baseannot import sppasBaseAnnotation
 
 from .dictlem import LemmaDict
 from .detectrepetition import Repetitions
@@ -64,7 +64,7 @@ DEBUG = False
 # ---------------------------------------------------------------------------
 
 
-class sppasRepet(sppasBase):
+class sppasRepet(sppasBaseAnnotation):
     """
     SPPAS Automatic Repetition Detection
     (either self-repetitions or other-repetitions).
@@ -91,7 +91,7 @@ class sppasRepet(sppasBase):
         must be ".stp" for stop-words and ".lem" for lemmas (case-sensitive)!
 
         """
-        sppasBase.__init__(self, logfile)
+        sppasBaseAnnotation.__init__(self, logfile)
 
         # Members
         self._use_lemmatize = True   # Lemmatize the input

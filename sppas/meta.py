@@ -37,9 +37,11 @@
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Metadata about SPAPS.
+    :summary:      Metadata about SPPAS.
 
     See https://github.com/boisgera/about
+    Define the metadata of SPPAS project in a single place, then make it
+    available at setup-time and at runtime.
 
 """
 metadata = dict(
@@ -51,11 +53,9 @@ metadata = dict(
     __docformat__='reStructedText en',
     __name__="SPPAS",
     __url__="http://www.sppas.org/",
-    __summary__="""
-      SPPAS produces automatically annotations
-from a recorded speech sound and its transcription
-  and performs the analysis of any annotated data.
-""",
+    __summary__="SPPAS produces automatically annotations\n \
+        from a recorded speech sound and its transcription\n \
+        and performs the analysis of any annotated data.",
     __title__="the automatic annotation and analysis of speech"
 )
 

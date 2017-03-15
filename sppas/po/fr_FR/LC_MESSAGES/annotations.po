@@ -1,0 +1,57 @@
+# English translation for SPPAS
+# Copyright (c) 2011-2017 Brigitte Bigi
+# This file is distributed under the same license as the SPPAS package.
+# Brigitte Bigi <brigitte.bigi@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: SPPAS\n"
+"Report-Msgid-Bugs-To: brigitte.bigi@gmail.com\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Brigitte Bigi <brigitte.bigi@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Language: en_US\n"
+"X-Generator: Poedit 1.8.11\n"
+
+msgid ":INFO 1000: "
+msgstr "Valide. "
+
+msgid ":INFO 1002: "
+msgstr "Admit. "
+
+msgid ":INFO 1004: "
+msgstr "Invalide. "
+
+msgid ":INFO 1006: "
+msgstr "Echec. "
+
+msgid ":INFO 1010: "
+msgstr "Un fichier audio ne doit contenir qu'un seul canal. Ce fichier en contient {number}."
+
+msgid ":INFO 1012: "
+msgstr "La taille d'échantillonage d'un fichier audio doit être d'au moins 16 bits. La taille d'échantillons de ce fichier est de {sampwidth} bits."
+
+msgid ":INFO 1014: "
+msgstr "La taux d'échantillonage d'un fichier audio doit être d'au moins 16000 Hz. Ce fichier est échantilloné à {framerate} Hz."
+
+msgid ":INFO 1016: "
+msgstr "La taille d'échantillonage d'un fichier audio est de préférence à 16 bits. La taille d'échantillons de ce fichier étant de {sampwidth} bits, SPPAS créera une copie et travaillera sur celle-ci."
+
+msgid ":INFO 1018: "
+msgstr "La taux d'échantillonage d'un fichier audio est de préférence à 16000 Hz. Ce fichier est échantilloné à {framerate} Hz, SPPAS créera une copie et travaillera sur celle-ci."
+
+msgid ":INFO 1020: "
+msgstr "L'extension de fichier {extension} est inconnue."
+
+msgid ":INFO 1022: "
+msgstr "De préférence, les noms de fichiers ne devraient contenir que des caractères US-ASCII."
+
+msgid ":INFO 1024: "
+msgstr "De préférence, les noms de fichiers ne devraient pas contenir d'espaces."
+
+msgid ":INFO 1026: "
+msgstr "Encodage de fichier non supporté. SPPAS ne reconnait que {encoding}."

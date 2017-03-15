@@ -55,6 +55,7 @@
         | option2 = value2
 
 """
+from collections import OrderedDict
 try:  # python 3
     from configparser import ConfigParser as SafeConfigParser
 except ImportError:  # python 2
@@ -67,13 +68,13 @@ from sppas.src.utils.makeunicode import u
 # ----------------------------------------------------------------------------
 
 
-class AnnotationConfigParser(object):
+class sppasAnnotationConfigParser(object):
     """
+    :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :author:       Brigitte Bigi
-    :contact:      brigitte.bigi@gmail.com
     :summary:      Class to read an annotation configuration file.
 
     The required section "Configuration" includes an id, a name and a
@@ -106,9 +107,9 @@ class AnnotationConfigParser(object):
     def __init__(self):
         """ Creates a new instance. """
 
-        self._config = {}
-        self._resources = []
-        self._options = []
+        self._config = OrderedDict()
+        self._resources = list()
+        self._options = list()
         self._parser = SafeConfigParser()
 
     # ------------------------------------------------------------------------
@@ -116,9 +117,9 @@ class AnnotationConfigParser(object):
     def reset(self):
         """ Set all members to their default value. """
 
-        self._config = {}
-        self._resources = []
-        self._options = []
+        self._config = OrderedDict()
+        self._resources = list()
+        self._options = list()
 
     # ------------------------------------------------------------------------
 
@@ -172,10 +173,10 @@ class AnnotationConfigParser(object):
                 self._parse_config(self._parser.items(section_name))
 
             if section_name.startswith("Resource"):
-                self._resources.append(self._parse_resource(self._parser.items(section_name)))
+                self._resources.append(sppasAnnotationConfigParser._parse_resource(self._parser.items(section_name)))
 
             if section_name.startswith("Option"):
-                self._options.append(self._parse_option(self._parser.items(section_name)))
+                self._options.append(sppasAnnotationConfigParser._parse_option(self._parser.items(section_name)))
 
     # ------------------------------------------------------------------------
 
@@ -186,7 +187,8 @@ class AnnotationConfigParser(object):
 
     # ------------------------------------------------------------------------
 
-    def _parse_resource(self, items):
+    @staticmethod
+    def _parse_resource(items):
 
         rtype = ""
         rpath = ""
@@ -208,7 +210,8 @@ class AnnotationConfigParser(object):
 
     # ------------------------------------------------------------------------
 
-    def _parse_option(self, items):
+    @staticmethod
+    def _parse_option(items):
 
         oid = ""
         otype = ""
@@ -231,5 +234,3 @@ class AnnotationConfigParser(object):
         opt.set_text(otext)
 
         return opt
-
-# ----------------------------------------------------------------------------

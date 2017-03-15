@@ -39,12 +39,12 @@ from sppas.src.annotations.Syll.syllabification import Syllabification
 import sppas.src.annotationdata.aio
 from sppas.src.annotationdata.transcription import Transcription
 from .. import WARNING_ID
-from ..sppasbase import sppasBase
+from ..baseannot import sppasBaseAnnotation
 
 # ----------------------------------------------------------------------------
 
 
-class sppasSyll( sppasBase ):
+class sppasSyll( sppasBaseAnnotation ):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -91,7 +91,7 @@ class sppasSyll( sppasBase ):
         @param logfile (sppasLog)
 
         """
-        sppasBase.__init__(self, logfile)
+        sppasBaseAnnotation.__init__(self, logfile)
 
         self.syllabifier = Syllabification(config, logfile)
 

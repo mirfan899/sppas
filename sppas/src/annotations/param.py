@@ -38,7 +38,7 @@
 import os.path
 
 from sppas import SPPAS_CONFIG_DIR
-from sppas.src.annotations.cfgparser import AnnotationConfigParser
+from sppas.src.annotations.cfgparser import sppasAnnotationConfigParser
 from . import DEFAULT_OUTPUT_EXTENSION
 
 # ----------------------------------------------------------------------------
@@ -80,7 +80,7 @@ class annotationParam( object ):
     # ------------------------------------------------------------------------
 
     def parse(self, filename):
-        p = AnnotationConfigParser()
+        p = sppasAnnotationConfigParser()
         p.parse( filename )
         self.options = p.get_options()
         self.langres = p.get_resources()

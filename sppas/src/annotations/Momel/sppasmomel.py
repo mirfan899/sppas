@@ -43,13 +43,13 @@ from sppas.src.annotationdata.ptime.point import TimePoint
 from sppas.src.annotationdata.label.label import Label
 import sppas.src.annotationdata.aio
 
-from ..sppasbase import sppasBase
+from ..baseannot import sppasBaseAnnotation
 from .momel import Momel
 
 # ---------------------------------------------------------------------------
 
 
-class sppasMomel(sppasBase):
+class sppasMomel(sppasBaseAnnotation):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -66,7 +66,7 @@ class sppasMomel(sppasBase):
         @param logfile (sppasLog) is a log file utility class member.
 
         """
-        sppasBase.__init__(self, logfile)
+        sppasBaseAnnotation.__init__(self, logfile)
 
         self.momel = Momel()
         self.PAS_TRAME = 10.

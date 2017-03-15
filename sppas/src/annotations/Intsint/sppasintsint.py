@@ -39,13 +39,13 @@
 import sppas.src.annotationdata.aio
 from sppas.src.annotationdata.transcription import Transcription
 
-from ..sppasbase import sppasBase
+from ..baseannot import sppasBaseAnnotation
 from .intsint import Intsint
 
 # ---------------------------------------------------------------------------
 
 
-class sppasIntsint(sppasBase):
+class sppasIntsint(sppasBaseAnnotation):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -59,7 +59,7 @@ class sppasIntsint(sppasBase):
         """
 
         """
-        sppasBase.__init__(self, logfile)
+        sppasBaseAnnotation.__init__(self, logfile)
 
         self.intsint = Intsint()
 

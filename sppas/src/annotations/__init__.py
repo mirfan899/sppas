@@ -40,6 +40,8 @@
     :summary:      SPPAS Automatic annotations global variables.
 
 """
+from sppas.src.utils.maketext import translate
+t = translate("annotations")
 
 # ---------------------------------------------------------------------------
 # Define configuration for annotations
@@ -62,4 +64,3 @@ INFO_ID = 3
 IGNORE_ID = 2
 WARNING_ID = 1
 OK_ID = 0
-

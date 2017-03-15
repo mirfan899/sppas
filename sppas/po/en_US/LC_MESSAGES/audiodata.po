@@ -9,21 +9,28 @@ msgstr ""
 "Report-Msgid-Bugs-To: brigitte.bigi@gmail.com\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Brigitte Bigi <brigitte.bigi@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Language: en_US\n"
+"X-Generator: Poedit 1.8.11\n"
 
 msgid ":ERROR 2000: "
 msgstr "No audio file defined."
 
 msgid ":ERROR 2010: "
-msgstr "{:s} reading or writing error: {:s}."
+msgstr "{filename} reading or writing error: {message}."
 
 msgid ":ERROR 2015: "
-msgstr "No data or corrupted data in the audio file."
+msgstr "No data or corrupted data in the audio file {filename}."
 
 msgid ":ERROR 2020: "
-msgstr "{:d} is not a right index of channel."
+msgstr "{number} is not a right index of channel."
 
 msgid ":ERROR 2025: "
-msgstr "From {:d} to {:d} is not a proper interval."
+msgstr "From {value1} to {value2} is not a proper interval."
 
 msgid ":ERROR 2050: "
 msgstr "No channel defined."
@@ -38,4 +45,4 @@ msgid ":ERROR 2062: "
 msgstr "Channels have not the same number of frames."
 
 msgid ":ERROR 2070: "
-msgstr "Invalid sample width. Expect 1, 2 or 4. Get {:d}."
+msgstr "Invalid sample width. Expect 1, 2 or 4. Got {value}."

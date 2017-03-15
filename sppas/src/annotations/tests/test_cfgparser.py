@@ -5,7 +5,7 @@ import os.path
 
 from sppas import BASE_PATH
 
-from ..cfgparser import AnnotationConfigParser
+from ..cfgparser import sppasAnnotationConfigParser
 
 INITOK = os.path.join(BASE_PATH, "etc", "Token.ini")
 INIMOMEL = os.path.join(BASE_PATH, "etc", "Momel.ini")
@@ -16,9 +16,9 @@ INIMOMEL = os.path.join(BASE_PATH, "etc", "Momel.ini")
 class TestAnnotationConfigParser(unittest.TestCase):
 
     def setUp(self):
-        self.cfg = AnnotationConfigParser()
+        self.cfg = sppasAnnotationConfigParser()
 
-    def test_parsetok(self):
+    def test_parse_tok(self):
         self.cfg.parse(INITOK)
 
         conf = self.cfg.get_config()
@@ -31,7 +31,7 @@ class TestAnnotationConfigParser(unittest.TestCase):
 
         self.assertEqual(conf['id'], "tok")
 
-    def test_parsemomel(self):
+    def test_parse_momel(self):
 
         self.cfg.parse(INIMOMEL)
         conf = self.cfg.get_config()

@@ -67,9 +67,9 @@ class ProbabilityError(Exception):
     def __init__(self, value=None):
         if value is not None:
             value = float(value)
-            self.parameter = PROBABILITY_VALUE_ERROR + (t.gettext(PROBABILITY_VALUE_ERROR)).format(value)
+            self.parameter = PROBABILITY_VALUE_ERROR + (t.gettext(PROBABILITY_VALUE_ERROR)).format(value=value)
         else:
-            self.parameter = PROBABILITY_VALUE_ERROR + t.gettext(PROBABILITY_VALUE_ERROR).replace("{:f}", "")
+            self.parameter = PROBABILITY_VALUE_ERROR + t.gettext(PROBABILITY_VALUE_ERROR).replace("{value}", "")
 
     def __str__(self):
         return repr(self.parameter)
@@ -83,9 +83,9 @@ class SumProbabilityError(Exception):
     def __init__(self, value=None):
         if value is not None:
             value = float(value)
-            self.parameter = PROBABILITY_SUM_ERROR + (t.gettext(PROBABILITY_SUM_ERROR)).format(value)
+            self.parameter = PROBABILITY_SUM_ERROR + (t.gettext(PROBABILITY_SUM_ERROR)).format(value=value)
         else:
-            self.parameter = PROBABILITY_SUM_ERROR + t.gettext(PROBABILITY_SUM_ERROR).replace("{:f}", "")
+            self.parameter = PROBABILITY_SUM_ERROR + t.gettext(PROBABILITY_SUM_ERROR).replace("{value}", "")
 
     def __str__(self):
         return repr(self.parameter)
@@ -118,14 +118,14 @@ class EmptyError(Exception):
 
 
 class InsideIntervalError(ValueError):
-    """ :ERROR 2030: Value {:d} is out of range: expected value in range [{:d},{:d}]. """
+    """ :ERROR 3040: Value {value} is out of range: expected value in range [{min_value},{max_value}]. """
 
     def __init__(self, value, min_value, max_value):
         min_value = int(min_value)
         max_value = int(max_value)
         value = int(value)
         self.parameter = IN_INTERVAL_ERROR + \
-                         (t.gettext(IN_INTERVAL_ERROR)).format(value, min_value, max_value)
+                         (t.gettext(IN_INTERVAL_ERROR)).format(value=value, min_value=min_value, max_value=max_value)
 
     def __str__(self):
         return repr(self.parameter)

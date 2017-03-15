@@ -48,10 +48,10 @@ LANG_NAME_ERROR = ":ERROR 6028: "
 
 
 class MetaKeyError(KeyError):
-    """ :ERROR 6010: {:s} is not a known meta information. """
+    """ :ERROR 6010: {meta} is not a known meta information. """
 
     def __init__(self, key):
-        self.parameter = META_KEY_ERROR + (t.gettext(META_KEY_ERROR)).format(key)
+        self.parameter = META_KEY_ERROR + (t.gettext(META_KEY_ERROR)).format(meta=key)
 
     def __str__(self):
         return repr(self.parameter)
@@ -60,10 +60,10 @@ class MetaKeyError(KeyError):
 
 
 class LangTypeError(TypeError):
-    """ :ERROR 6020: Unknown resource type: expected file or directory. Got: {:s}. """
+    """ :ERROR 6020: Unknown resource type: expected file or directory. Got: {string}. """
 
     def __init__(self, lang_type):
-        self.parameter = LANG_TYPE_ERROR + (t.gettext(LANG_TYPE_ERROR)).format(lang_type)
+        self.parameter = LANG_TYPE_ERROR + (t.gettext(LANG_TYPE_ERROR)).format(string=lang_type)
 
     def __str__(self):
         return repr(self.parameter)
@@ -72,10 +72,10 @@ class LangTypeError(TypeError):
 
 
 class LangPathError(TypeError):
-    """ :ERROR 6024: The resource folder {:s} does not exists. """
+    """ :ERROR 6024: The resource folder {dirname} does not exists. """
 
     def __init__(self, folder):
-        self.parameter = LANG_PATH_ERROR + (t.gettext(LANG_PATH_ERROR)).format(folder)
+        self.parameter = LANG_PATH_ERROR + (t.gettext(LANG_PATH_ERROR)).format(dirname=folder)
 
     def __str__(self):
         return repr(self.parameter)
@@ -84,10 +84,10 @@ class LangPathError(TypeError):
 
 
 class LangNameError(ValueError):
-    """ :ERROR 6028: The language must be "und" or one of the language list. Unknown language {:s}. """
+    """ :ERROR 6028: The language must be "und" or one of the language list. Unknown language {lang}. """
 
     def __init__(self, lang):
-        self.parameter = LANG_NAME_ERROR + (t.gettext(LANG_NAME_ERROR)).format(lang)
+        self.parameter = LANG_NAME_ERROR + (t.gettext(LANG_NAME_ERROR)).format(lang=lang)
 
     def __str__(self):
         return repr(self.parameter)
