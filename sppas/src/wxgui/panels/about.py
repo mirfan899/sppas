@@ -40,8 +40,7 @@ import wx
 import wx.lib.scrolledpanel
 import webbrowser
 
-from sppas import program, version, author, copyright, brief, url, license_text
-
+import sppas
 from sppas.src.wxgui.cutils.imageutils import spBitmap
 from sppas.src.wxgui.sp_icons import APP_ICON
 
@@ -88,7 +87,7 @@ class sppasBaseAbout(wx.lib.scrolledpanel.ScrolledPanel):
 
         # Program name
         if len(self.program) > 0:
-            text_program_version = wx.StaticText(self, -1, self.program + " " + version)
+            text_program_version = wx.StaticText(self, -1, self.program + " " + sppas.__version__)
             self.__apply_preferences(text_program_version)
             font = self._preferences.GetValue('M_FONT')
             font_size = font.GetPointSize()
@@ -122,9 +121,9 @@ class sppasBaseAbout(wx.lib.scrolledpanel.ScrolledPanel):
 
         # License
         if len(self.license) > 0:
-            textlicense = wx.StaticText(self, -1, self.license)
-            self.__apply_preferences(textlicense)
-            sizer.Add(textlicense, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
+            text_license = wx.StaticText(self, -1, self.license)
+            self.__apply_preferences(text_license)
+            sizer.Add(text_license, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
         # License text content
         if len(self.license_text) > 0:
@@ -139,7 +138,7 @@ class sppasBaseAbout(wx.lib.scrolledpanel.ScrolledPanel):
 
     def on_link(self, event):
         try:
-            webbrowser.open(url, 1)
+            webbrowser.open(sppas.__url__, 1)
         except:
             pass
 
@@ -170,13 +169,13 @@ class AboutSPPASPanel(sppasBaseAbout):
     def __init__(self, parent, preferences):
         sppasBaseAbout.__init__(self, parent, preferences)
 
-        self.program = program
-        self.version = version
-        self.author = author
-        self.copyright = copyright
-        self.brief = brief
-        self.url = url
-        self.license_text = license_text
+        self.program = sppas.__name__
+        self.version = sppas.__version__
+        self.author = sppas.__author__
+        self.copyright = sppas.__copyright__
+        self.brief = sppas.__summary__
+        self.url = sppas.__url__
+        self.license_text = sppas.description
         self.logo = APP_ICON
 
         self.create()

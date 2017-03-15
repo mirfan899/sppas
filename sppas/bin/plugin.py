@@ -64,7 +64,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas import program, author, version, copyright, url
+import sppas  # import program, author, version, copyright, url
 from sppas.src.term.terminalcontroller import TerminalController
 
 from sppas.src.plugins import sppasPluginsManager
@@ -96,17 +96,17 @@ args = parser.parse_args()
 
 try:
     term = TerminalController()
-    print term.render('${GREEN}-----------------------------------------------------------------------${NORMAL}')
-    print term.render('${RED}'+program+' - Version '+version+'${NORMAL}')
-    print term.render('${BLUE}'+copyright+'${NORMAL}')
-    print term.render('${BLUE}'+url+'${NORMAL}')
-    print term.render('${GREEN}-----------------------------------------------------------------------${NORMAL}\n')
+    print(term.render('${GREEN}-----------------------------------------------------------------------${NORMAL}'))
+    print(term.render('${RED}'+sppas.__name__+' - Version '+sppas.__version__+'${NORMAL}'))
+    print(term.render('${BLUE}'+sppas.__copyright__+'${NORMAL}'))
+    print(term.render('${BLUE}'+sppas.__url__+'${NORMAL}'))
+    print(term.render('${GREEN}-----------------------------------------------------------------------${NORMAL}\n'))
 except Exception:
-    print '-----------------------------------------------------------------------\n'
-    print program+'   -  Version '+version
-    print copyright
-    print url+'\n'
-    print '-----------------------------------------------------------------------\n'
+    print('-----------------------------------------------------------------------\n')
+    print(sppas.__name__+'   -  Version '+sppas.__version__)
+    print(sppas.__copyright__)
+    print(sppas.__url__+'\n')
+    print('-----------------------------------------------------------------------\n')
 
 manager = sppasPluginsManager()
 plugin_id = args.p
@@ -114,7 +114,7 @@ plugin_id = args.p
 
 if args.install:
 
-    print "Plugin installation"
+    print("Plugin installation")
 
     # fix a name for the plugin directory
     plugin_folder = os.path.splitext(os.path.basename(args.p))[0]
@@ -138,11 +138,11 @@ if args.apply and args.i:
 
     # Run
     message = manager.run_plugin(plugin_id, [args.i])
-    print message
+    print(message)
 
 
 if args.remove:
 
     manager.delete(plugin_id)
 
-print "-----------------------------------------------------------------------\n"
+print("-----------------------------------------------------------------------\n")

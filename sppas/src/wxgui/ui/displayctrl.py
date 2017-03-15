@@ -49,9 +49,9 @@ import wx.lib
 import logging
 import os.path
 
+import sppas
 import sppas.src.annotationdata.aio
 import sppas.src.audiodata.aio
-from sppas import version
 
 # and temporary.......
 from sppas.src.annotationdata.label.label import Label
@@ -322,9 +322,9 @@ class DisplayCtrl( wx.Window ):
             try:
                 tf = sppas.src.annotationdata.aio.read( f )
             except Exception as e:
-                ShowInformation(self, self._prefsIO,"The following error occurred while loading file "+f+".\n"+str(e), style=wx.ICON_INFORMATION)
+                ShowInformation(self, self._prefsIO, "The following error occurred while loading file "+f+".\n"+str(e), style=wx.ICON_INFORMATION)
                 raise Exception('Display. SetData. Error while loading the file: %s.'%str(e))
-            if "devel" in version:
+            if "devel" in sppas.__version__:
                 self.__uncertaintyCooking(tf)
             h = self.FixTranscriptionHeight(tf)
             logging.debug(' Transcription height: %d'%h)

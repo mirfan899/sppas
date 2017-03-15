@@ -47,7 +47,7 @@ import wx
 import urllib
 import webbrowser
 
-from sppas import program, version
+import sppas
 
 from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
 from sppas.src.wxgui.dialogs.msgdialogs import ShowInformation
@@ -131,9 +131,9 @@ class FeedbackDialog( spBaseDialog ):
 
     def _create_buttons(self):
         self.btn_default = self.CreateButton(MAIL_DEFAULT_ICON, " Default ", "Send with your default email client.")
-        self.btn_gmail   = self.CreateButton(MAIL_GMAIL_ICON,   " Gmail ",   "Send with Gmail.")
-        self.btn_other   = self.CreateButton(MAIL_OTHER_ICON,   " Other ",   "Send with another email client.")
-        btn_close        = self.CreateCloseButton()
+        self.btn_gmail = self.CreateButton(MAIL_GMAIL_ICON,   " Gmail ",   "Send with Gmail.")
+        self.btn_other = self.CreateButton(MAIL_OTHER_ICON,   " Other ",   "Send with another email client.")
+        btn_close = self.CreateCloseButton()
         self.Bind(wx.EVT_BUTTON, self._on_send, self.btn_default)
         self.Bind(wx.EVT_BUTTON, self._on_send, self.btn_other)
         self.Bind(wx.EVT_BUTTON, self._on_send, self.btn_gmail)
@@ -141,7 +141,7 @@ class FeedbackDialog( spBaseDialog ):
 
     def _create_content(self):
         self.to_text = self.CreateTextCtrl("", style=wx.TE_READONLY)
-        self.subject_text = self.CreateTextCtrl(program+" "+version+" - Feedback...", style=wx.TE_READONLY)
+        self.subject_text = self.CreateTextCtrl(sppas.__name__ + " " + sppas.__version__ + " - Feedback...", style=wx.TE_READONLY)
         self.body_text = self.CreateTextCtrl(DESCRIBE_TEXT, style=wx.TE_MULTILINE)
         self.body_text.SetMinSize((300,200))
         self.body_text.SetForegroundColour(wx.Colour(128, 128, 128))

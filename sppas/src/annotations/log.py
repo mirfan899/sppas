@@ -40,14 +40,14 @@ import codecs
 import logging
 import os
 
-from sppas import program, version, copyright, url, author, contact
+import sppas  #import program, version, copyright, url, author, contact
 from sppas import encoding
 from sppas.src.utils.fileutils import sppasFileUtils
 
 # ----------------------------------------------------------------------------
 
 
-class sppasLog( object ):
+class sppasLog(object):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -61,8 +61,7 @@ class sppasLog( object ):
 
     """
     def __init__(self, parameters):
-        """
-        Constructor.
+        """ Constructor.
 
         @param parameters (sppasParam)
 
@@ -88,25 +87,23 @@ class sppasLog( object ):
     # ----------------------------------------------------------------------
 
     def print_step(self, stepnumber):
-        """
-        Print the annotation step name.
+        """ Print the annotation step name.
 
         @param stepnumber (1..N)
 
         """
         try:
-            self.logfp.seek(0, 2) # force to write at the end of the file
+            self.logfp.seek(0, 2)  # force to write at the end of the file
             self.logfp.write('-----------------------------------------------------------------------\n')
             self.logfp.write('                       ' + self.parameters.get_step_name(stepnumber) + '\n')
             self.logfp.write('-----------------------------------------------------------------------\n')
         except Exception as e:
-            logging.debug( "log.py Print ERROR. Message: %s" % e)
+            logging.info("ERROR. %s" % e)
 
     # ----------------------------------------------------------------------
 
     def print_message(self, message, indent=0, status=None):
-        """
-        Print a message at the end of the file.
+        """ Print a message at the end of the file.
 
         @param  message (string) text to print
         @param  indent (int) is the number of indentation to apply to message
@@ -141,8 +138,7 @@ class sppasLog( object ):
     # ----------------------------------------------------------------------
 
     def print_rawtext(self, text):
-        """
-        Print a text at the end of the file.
+        """ Print a text at the end of the file.
 
         :param text: (string) text to print
 
@@ -151,7 +147,7 @@ class sppasLog( object ):
             self.logfp.seek(0, 2)  # write at the end of the file
             self.logfp.write(text)
         except Exception as e:
-            logging.debug("log.py Print ERROR. Message: %s" % str(e))
+            logging.info("ERROR. %s" % str(e))
 
     # ----------------------------------------------------------------------
 
@@ -172,8 +168,7 @@ class sppasLog( object ):
     # ----------------------------------------------------------------------
 
     def print_stat(self, stepnumber, value):
-        """
-        Print the value for a step.
+        """ Print the value for a step.
 
         @param stepnumber (1..6)
         @param value (0..n)
@@ -198,10 +193,10 @@ class sppasLog( object ):
         """
         self.logfp.seek(0, 2)  # write at the end of the file
         self.print_separator()
-        self.print_message('\n' + program + ' - Version ' + version)
-        self.print_message(copyright)
-        self.print_message('Web site: ' + url)
-        self.print_message('Contact: ' + author + "("+ contact + ")\n")
+        self.print_message('\n' + sppas.__name__ + ' - Version ' + sppas.__version__)
+        self.print_message(sppas.__copyright__)
+        self.print_message('Web site: ' + sppas.__url__)
+        self.print_message('Contact: ' + sppas.__author__ + "("+ sppas.__contact__ + ")\n")
         self.print_separator()
 
         #self.print_message('\nFile:            ' + self.parameters.get_logfilename())
@@ -228,5 +223,3 @@ class sppasLog( object ):
         self.print_message("Extension: %s" % self.parameters.get_output_format())
         self.print_separator()
         self.print_newline()
-
-# ----------------------------------------------------------------------------

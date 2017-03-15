@@ -30,17 +30,19 @@
         ---------------------------------------------------------------------
 
     src.__init__.py
-    ~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      This some of the SPPAS global variables.
+    :summary:      SPPAS global variables.
 
 """
 import os.path
+# SPPAS Metadata
+from .meta import *
 
 # ---------------------------------------------------------------------------
 # Define paths
@@ -66,22 +68,11 @@ SETTINGS_FILE = os.path.join(BASE_PATH, "etc", "settings.dump")
 # Default input/output encoding
 encoding = 'utf-8'
 
-
 # ---------------------------------------------------------------------------
 # Constants: SPPAS information
 # ---------------------------------------------------------------------------
 
-author = "Brigitte Bigi"
-contact = "brigite.bigi@gmail.com"
-program = "SPPAS"
-title = "the automatic annotation and analysis of speech"
-version = "1.9"
-copyright = "Copyright (C) 2011-2017 Brigitte Bigi"
-url = "http://www.sppas.org/"
-brief = "SPPAS produces automatically annotations\nfrom a recorded speech sound and its transcription\nand performs the analysis of any annotated data."
-docformat = "epytext"
-license = "GNU Public License, version 3"
-license_text = """
+description = """
 ------------------------------------------------------------
 
 By using SPPAS, you agree to cite the reference in your publications:

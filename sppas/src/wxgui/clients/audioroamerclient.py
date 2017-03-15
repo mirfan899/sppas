@@ -40,6 +40,8 @@ import codecs
 import wx
 import wx.lib.scrolledpanel as scrolled
 
+import sppas
+
 from sppas.src.wxgui.ui.CustomEvents import NotebookClosePageEvent
 from sppas.src.wxgui.ui.CustomEvents import FileWanderEvent, spEVT_FILE_WANDER
 from sppas.src.wxgui.ui.CustomEvents import spEVT_SETTINGS
@@ -73,7 +75,6 @@ from sppas.src.audiodata.audioframes import AudioFrames
 from sppas.src.audiodata.audio import AudioPCM
 from sppas.src.audiodata.audioutils import amp2db as amp2db
 
-from sppas import program, version, copyright, url, author, contact
 from sppas import encoding
 
 from .baseclient import BaseClient
@@ -960,12 +961,12 @@ class AudioRoamerPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def _infos_content(self, parentfilename):
-        content  = ""
+        content = ""
         content += self.__separator()
-        content += self.__line(program + ' - Version ' + version)
-        content += self.__line(copyright)
-        content += self.__line("Web site: "+ url)
-        content += self.__line("Contact: "+ author + "("+ contact + ")")
+        content += self.__line(sppas.__name__ + ' - Version ' + sppas.__version__)
+        content += self.__line(sppas.__copyright__)
+        content += self.__line("Web site: " + sppas.__url__)
+        content += self.__line("Contact: " + sppas.__author__ + "(" + sppas.__contact__ + ")")
         content += self.__separator()
         content += self.__newline()
         content += self.__line("Date: " + str(datetime.datetime.now()))
@@ -976,7 +977,7 @@ class AudioRoamerPanel(wx.Panel):
         content += self.__line("Channel extracted from file: "+parentfilename)
         content += self.__line("Duration: %s sec."%self._channel.get_duration())
         content += self.__line("Framerate: %d Hz"%self._channel.get_framerate())
-        content += self.__line("Samp. width: %d bits"%(int(self._channel.get_sampwidth())*8))
+        content += self.__line("Samp. width: %d bits" % (int(self._channel.get_sampwidth())*8))
 
         # Amplitude
         content += self.__section("Amplitude")

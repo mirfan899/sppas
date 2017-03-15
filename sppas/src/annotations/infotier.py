@@ -37,7 +37,7 @@
 
 import datetime
 
-from sppas import author, contact, program, version, copyright, url, license
+import sppas  #import author, contact, program, version, copyright, url, license
 
 from sppas.src.annotationdata.tier import Tier
 from sppas.src.annotationdata.annotation import Annotation
@@ -51,63 +51,59 @@ from sppas.src.structs.metainfo import sppasMetaInfo
 
 class sppasMetaInfoTier(sppasMetaInfo):
     """
-    @authors:      Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Meta informations manager about SPPAS.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Meta informations manager about SPPAS.
 
     Manager of meta information about SPPAS that allows to create a tier with
     such activated information.
 
     """
     def __init__(self):
-        """
-        Creates a new sppasMetaInfoTier instance.
+        """ Creates a new sppasMetaInfoTier instance.
         Add and activate all known information about SPPAS.
 
         """
         sppasMetaInfo.__init__(self)
 
-        self.add_metainfo('author', author)
-        self.add_metainfo('contact', contact)
-        self.add_metainfo('program', program)
-        self.add_metainfo('version', version)
-        self.add_metainfo('copyright', copyright)
-        self.add_metainfo('url', url)
-        self.add_metainfo('license', license)
+        self.add_metainfo('author', sppas.__author__)
+        self.add_metainfo('contact', sppas.__contact__)
+        self.add_metainfo('program', sppas.__name__)
+        self.add_metainfo('version', sppas.__version__)
+        self.add_metainfo('copyright', sppas.__copyright__)
+        self.add_metainfo('url', sppas.__url__)
+        self.add_metainfo('license', sppas.__license__)
         self.add_metainfo('date', str(datetime.date.today()))
 
     # ------------------------------------------------------------------------
 
     def create_time_tier(self, begin, end):
-        """
-        Return a tier with activated information as annotations.
+        """ Return a tier with activated information as annotations.
 
-        @param begin (float) Begin time value (seconds)
-        @param end (float) End time value (seconds)
-        @return Tier
+        :param begin: (float) Begin time value (seconds)
+        :param end: (float) End time value (seconds)
+        :returns: Tier
 
         """
-        activekeys = self.keys_enabled()
-        if len(activekeys) == 0:
+        active_keys = self.keys_enabled()
+        if len(active_keys) == 0:
             return None
 
-        tierdur = float(end) - float(begin)
-        anndur  = tierdur / float(len(activekeys))
+        tier_dur = float(end) - float(begin)
+        ann_dur = tier_dur / float(len(active_keys))
 
         tier = Tier("MetaInformation")
-        annbegin = begin
-        annend   = begin+anndur
-        for key in activekeys:
+        ann_begin = begin
+        ann_end = begin + ann_dur
+        for key in active_keys:
             value = self.get_metainfo(key)
-            label = key+"="+value
-            tier.Append(Annotation(TimeInterval(TimePoint(annbegin), TimePoint(annend)), Label(label)))
-            annbegin = annend
-            annend = annbegin + anndur
+            label = key + "=" + value
+            tier.Append(Annotation(TimeInterval(TimePoint(ann_begin), TimePoint(ann_end)), Label(label)))
+            ann_begin = ann_end
+            ann_end = ann_begin + ann_dur
 
         tier[-1].GetLocation().SetEnd(TimePoint(end))
         return tier
-
-    # ------------------------------------------------------------------------

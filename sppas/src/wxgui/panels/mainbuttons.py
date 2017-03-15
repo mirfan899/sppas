@@ -38,7 +38,7 @@
 import wx
 import webbrowser
 
-from sppas import program, title
+import sppas
 from sppas.src.structs.tips import sppasTips
 
 from sppas.src.wxgui.panels.buttons import ButtonPanel, ButtonMenuPanel, ImgPanel, ButtonCreator, ButtonToolbarPanel
@@ -144,7 +144,7 @@ class MainTitlePanel(wx.Panel):
         self.SetBackgroundColour(preferences.GetValue('M_BGD_COLOUR'))
 
         s = wx.BoxSizer()
-        text = wx.StaticText(self, label=program+" - "+title)
+        text = wx.StaticText(self, label=sppas.__name__+" - "+sppas.__title__)
         text.SetFont(preferences.GetValue('M_HEADER_FONT'))
         text.SetForegroundColour(preferences.GetValue('M_FG_COLOUR'))
         text.Bind(wx.EVT_LEFT_UP, self.OnButtonClick)
