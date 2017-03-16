@@ -136,7 +136,7 @@ class sppasLog(object):
     # ----------------------------------------------------------------------
 
     def print_step(self, step_number):
-        """ Print a step name from its number.
+        """ Print a step name in the output stream from its number.
 
         :param step_number: (1..N) Number of an annotation defined in a sppasParam instance.
 
@@ -208,7 +208,7 @@ class sppasLog(object):
     # ----------------------------------------------------------------------
 
     def print_stat(self, step_number, value=None):
-        """ Print the statistics values for a step.
+        """ Print the statistics values in the output stream for a given step.
 
         :param step_number: (1..N)
         :param value: (str) A statistic value. Instead, print the status (enabled or disabled).

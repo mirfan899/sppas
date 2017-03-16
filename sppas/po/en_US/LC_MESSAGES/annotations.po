@@ -113,3 +113,16 @@ msgstr "[ IGNORE  ]"
 
 msgid ":INFO 1045: "
 msgstr "[  ERROR  ]"
+
+msgid ":INFO 1050: "
+msgstr "Options"
+
+msgid ":INFO 1052: "
+msgstr "Diagnosis"
+
+msgid ":ERROR 4014: "
+msgstr "Missing section {section_name} in the configuration file."
+
+msgid ":ERROR 1010: "
+msgstr "Unknown option with key {key}."
+

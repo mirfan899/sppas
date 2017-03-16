@@ -1,49 +1,40 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: tokenize.py
-# ---------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+        http://www.sppas.org/
 
+        Use of this software is governed by the GNU Public License, version 3.
 
-# ---------------------------------------------------------------------------
-# Imports
-# ---------------------------------------------------------------------------
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
 
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.annotations.tokenize.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Multilingual text normalization system.
+
+"""
 import re
 
 from sppas.src.resources.vocab import Vocabulary
@@ -56,60 +47,54 @@ from .num2letter import sppasNum
 
 
 class DictReplUTF8(DictRepl):
-    """
-    Replacement dictionary of UTF8 characters that cause problems.
-    """
+    """ Replacement dictionary of UTF8 characters that previously caused problems. """
 
     def __init__(self):
         DictRepl.__init__(self, None, nodump=True)
 
-        self.add(u"æ",u"ae")
-        self.add(u"œ",u"oe")
-        self.add(u"，",u", ")
-        self.add(u"”",u'"')
-        self.add(u"“",u'"')
-        self.add(u"。",u". ")
-        self.add(u"》",u'"')
-        self.add(u"《",u'"')
-        self.add(u"«",u'"')
-        self.add(u"»",u'"')
-        self.add(u"’",u"'")
+        self.add(u"æ", u"ae")
+        self.add(u"œ", u"oe")
+        self.add(u"，", u", ")
+        self.add(u"”", u'"')
+        self.add(u"“", u'"')
+        self.add(u"。", u". ")
+        self.add(u"》", u'"')
+        self.add(u"《", u'"')
+        self.add(u"«", u'"')
+        self.add(u"»", u'"')
+        self.add(u"’", u"'")
 
 # ---------------------------------------------------------------------------
 
+
 def character_based(lang):
+    """ Return true if lang is known as a character-based language.
+    Mandarin Chinese or Japanese languages return True, but English
+    or French language return False.
+
+    :param lang: (str) iso639-3 language code or a string containing such
+        code, like "yue" or "yue-chars" for example.
+    :returns: (bool)
+
     """
-    Return true if lang is known as a character-based language,
-    as Mandarin Chinese or Japanese for example.
-    """
-    langlist = [ "cmn", "jpn", "yue" ] # TODO: add languages
-    for l in langlist:
+    lang_list = ["cmn", "jpn", "yue"]  # TODO: add languages
+    for l in lang_list:
         if l in lang:
             return True
+
     return False
 
 # ---------------------------------------------------------------------------
 
 
-# ---------------------------------------------------------------------------
-# DictTok main class
-# ---------------------------------------------------------------------------
-
-
 class DictTok(object):
     """
-    @authors: Brigitte Bigi, Tatsuya Watanabe
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: Tokenization automatic annotation.
-
-    The creation of text corpora requires a sequence of processing steps in
-    order to constitute, normalize, and then to directly exploit it by a given
-    application. This class implements a generic approach for text normalization
-    and concentrates on the aspects of methodology and linguistic engineering,
-    which serve to develop a multi-purpose multilingual text corpus.
-    This approach consists in splitting the text normalization problem in a set
-    of minor sub-problems as language-independent as possible.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Multilingual text normalization
 
     From the manual Enriched Orthographic Transcription, two derived ortho.
     transcriptions are generated automatically by the tokenizer: the "standard"
@@ -125,19 +110,12 @@ class DictTok(object):
     - Resulting Standard tokens:  j' ai on a j' ai p- enfin j' ai trouvé le meilleur moyen c'était de loger  chez  des amis
     - Resulting Faked tokens:     j' ai on a j' ai p-   fin j' ai trouvé l  meilleur moyen c'était d  loche  chez  des amis
 
-    See the whole description of the algorithm in the following reference:
-        Brigitte Bigi (2011).
-        A Multilingual Text Normalization Approach.
-        2nd Less-Resourced Languages workshop,
-        5th Language & Technology Conference, Poznan (Poland).
-
     """
     def __init__(self, vocab=None, lang="und"):
-        """
-        Create a new DictTok instance.
+        """ Create a new DictTok instance.
 
-        @param vocab (Vocabulary)
-        @param lang is the language code in iso639-3.
+        :param vocab: (Vocabulary)
+        :param lang: the language code in iso639-3.
 
         """
         # resources
@@ -152,17 +130,16 @@ class DictTok(object):
         # members
         self.lang = lang
         self.num2letter = sppasNum(lang)
-        self.delimiter = u' '
+        self.delimiter = ' '
 
     # ------------------------------------------------------------------
     # Options
     # ------------------------------------------------------------------
 
     def set_delim(self, delim):
-        """
-        Set the delimiter, used to separate tokens.
+        """ Set the delimiter, used to separate tokens.
 
-        @param delim is a unicode character.
+        :param delim: (str) a unicode character.
 
         """
         self.delimiter = delim
@@ -170,43 +147,45 @@ class DictTok(object):
     # -------------------------------------------------------------------------
 
     def set_vocab(self, vocab):
-        """
-        Set the lexicon.
+        """ Set the lexicon.
 
-        @param vocab is a Vocabulary().
+        :param vocab: (Vocabulary).
 
         """
+        # TODO: test instance
+
         self.vocab = vocab
 
     # -------------------------------------------------------------------------
 
     def set_repl(self, repl):
-        """
-        Set the dictionary of replacements.
+        """ Set the dictionary of replacements.
 
-        @param repl (ReplDict)
+        :param repl: (DictRepl)
 
         """
+        # TODO: test instance
+
         self.repl = repl
 
     # -------------------------------------------------------------------------
 
     def set_punct(self, punct):
-        """
-        Set the list of punctuation.
+        """ Set the list of punctuation.
 
-        @param punct (Vocabulary)
+        :param punct: (Vocabulary)
 
         """
+        # TODO: test instance
+
         self.punct = punct
 
     # -------------------------------------------------------------------------
 
     def set_lang(self, lang):
-        """
-        Set the language.
+        """ Set the language.
 
-        @param lang is the language code in iso639-3 (fra, eng, vie, cmn...).
+        :param lang: (str) the language code in iso639-3 (fra, eng, vie, cmn...).
 
         """
         self.lang = lang
@@ -216,11 +195,10 @@ class DictTok(object):
     # -------------------------------------------------------------------------
 
     def split_characters(self, utt):
-        """
-        Split an utterance by characters.
+        """ Split an utterance by characters.
 
-        @param utt is the utterance (a transcription, a sentence, ...) in utf-8
-        @return A string (split character by character, using spaces)
+        :param utt: (str) the utterance (a transcription, a sentence, ...) in utf-8
+        :returns: A string (split character by character, using spaces)
 
         """
         try:
@@ -241,17 +219,15 @@ class DictTok(object):
     # -------------------------------------------------------------------------
 
     def split(self, utt, std=False):
-        """
-        Split an utterance using spaces or split each character, depending
+        """ Split an utterance using spaces or split each character, depending
         on the language.
 
-        @param utt (string): the utterance (a transcription, a sentence, ...)
-        @param std (Boolean)
+        :param utt: (str) the utterance (a transcription, a sentence, ...)
+        :param std: (bool)
 
-        @return A list (array of string)
+        :returns: A list (array of string)
 
         """
-
         s = utt
         if character_based(self.lang):
             s = self.split_characters(s)
@@ -291,8 +267,9 @@ class DictTok(object):
 
     # ------------------------------------------------------------------
 
-    def __stick_longest(self, utt, attachement = "_"):
+    def __stick_longest(self, utt, attachement="_"):
         """ Longest matching algorithm. """
+
         tabtoks = utt.split(" ")
         i = len(tabtoks)
         while i>0:
@@ -306,7 +283,7 @@ class DictTok(object):
 
     # -------------------------------------------------------------------------
 
-    def stick(self, utt, attachement = "_"):
+    def stick(self, utt, attachement="_"):
         """
         Stick tokens of an utterance using '_'.
         Language independent.

@@ -28,30 +28,42 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.Token.__init__.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.calculus.annotationsexc.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-
-    The creation of text corpora requires a sequence of processing steps in
-    order to constitute, normalize, and then to directly exploit it by a given
-    application. This package implements a generic approach for text
-    normalization that can be applied on a multipurpose multilingual text or
-    transcribed corpus.
-    It consists in splitting the text normalization problem in a set of minor
-    sub-problems as language-independent as possible. The portability to a new
-    language consists of heritage of all language independent methods and
-    rapid adaptation of other language dependent methods or classes.
+    Exceptions for annotations package.
 
 """
-#from .tokenize import MultilingualTokenizer
-from .sppastok import sppasTok
+from . import t
 
-__all__ = [
-    'sppasTok',
-    #'MultilingualTokenizer'
-]
+# -----------------------------------------------------------------------
+
+SECT_CFG_FILE_ERROR = ":ERROR 4014: "
+OPTION_KEY_ERROR = ":ERROR 1010: "
+
+# -----------------------------------------------------------------------
+
+
+class AnnotationSectionConfigFileError(ValueError):
+    """ :ERROR 4014: Missing section {section_name} in the configuration file. """
+
+    def __init__(self, section_name):
+        self.parameter = SECT_CFG_FILE_ERROR + (t.gettext(SECT_CFG_FILE_ERROR)).format(section_name=section_name)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class AnnotationOptionError(KeyError):
+    """ :ERROR 1060: Unknown option with key {key}. """
+
+    def __init__(self, key):
+        self.parameter = OPTION_KEY_ERROR + (t.gettext(OPTION_KEY_ERROR)).format(key=key)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
