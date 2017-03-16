@@ -53,9 +53,9 @@ metadata = dict(
     __docformat__='reStructedText en',
     __name__="SPPAS",
     __url__="http://www.sppas.org/",
-    __summary__="SPPAS produces automatically annotations\n \
-        from a recorded speech sound and its transcription\n \
-        and performs the analysis of any annotated data.",
+    __summary__="SPPAS produces automatically annotations\n\
+from a recorded speech sound and its transcription\n\
+and performs the analysis of any annotated data.",
     __title__="the automatic annotation and analysis of speech"
 )
 

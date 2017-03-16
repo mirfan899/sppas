@@ -15,13 +15,13 @@ msgstr ""
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 1.5.4\n"
 
 msgid ":INFO 1000: "
 msgstr "Valide. "
 
 msgid ":INFO 1002: "
-msgstr "Admit. "
+msgstr "Admis. "
 
 msgid ":INFO 1004: "
 msgstr "Invalide. "
@@ -30,28 +30,91 @@ msgid ":INFO 1006: "
 msgstr "Echec. "
 
 msgid ":INFO 1010: "
-msgstr "Un fichier audio ne doit contenir qu'un seul canal. Ce fichier en contient {number}."
+msgstr ""
+"Un fichier audio ne doit contenir qu'un seul canal. Ce fichier en contient "
+"{number}."
 
 msgid ":INFO 1012: "
-msgstr "La taille d'échantillonage d'un fichier audio doit être d'au moins 16 bits. La taille d'échantillons de ce fichier est de {sampwidth} bits."
+msgstr ""
+"La taille d'échantillonage d'un fichier audio doit être d'au moins 16 bits. "
+"La taille d'échantillons de ce fichier est de {sampwidth} bits."
 
 msgid ":INFO 1014: "
-msgstr "La taux d'échantillonage d'un fichier audio doit être d'au moins 16000 Hz. Ce fichier est échantilloné à {framerate} Hz."
+msgstr ""
+"La taux d'échantillonage d'un fichier audio doit être d'au moins 16000 Hz. "
+"Ce fichier est échantilloné à {framerate} Hz."
 
 msgid ":INFO 1016: "
-msgstr "La taille d'échantillonage d'un fichier audio est de préférence à 16 bits. La taille d'échantillons de ce fichier étant de {sampwidth} bits, SPPAS créera une copie et travaillera sur celle-ci."
+msgstr ""
+"La taille d'échantillonage d'un fichier audio est de préférence à 16 bits. "
+"La taille d'échantillons de ce fichier étant de {sampwidth} bits, SPPAS "
+"créera une copie et travaillera sur celle-ci."
 
 msgid ":INFO 1018: "
-msgstr "La taux d'échantillonage d'un fichier audio est de préférence à 16000 Hz. Ce fichier est échantilloné à {framerate} Hz, SPPAS créera une copie et travaillera sur celle-ci."
+msgstr ""
+"La taux d'échantillonage d'un fichier audio est de préférence à 16000 Hz. Ce "
+"fichier est échantilloné à {framerate} Hz, SPPAS créera une copie et "
+"travaillera sur celle-ci."
 
 msgid ":INFO 1020: "
 msgstr "L'extension de fichier {extension} est inconnue."
 
 msgid ":INFO 1022: "
-msgstr "De préférence, les noms de fichiers ne devraient contenir que des caractères US-ASCII."
+msgstr ""
+"De préférence, les noms de fichiers ne devraient contenir que des caractères "
+"US-ASCII."
 
 msgid ":INFO 1024: "
-msgstr "De préférence, les noms de fichiers ne devraient pas contenir d'espaces."
+msgstr ""
+"De préférence, les noms de fichiers ne devraient pas contenir d'espaces."
 
 msgid ":INFO 1026: "
 msgstr "Encodage de fichier non supporté. SPPAS ne reconnait que {encoding}."
+
+msgid ":INFO 1030: "
+msgstr "sélectionné"
+
+msgid ":INFO 1031: "
+msgstr "désactivé"
+
+msgid ":INFO 1032: "
+msgstr "version"
+
+msgid ":INFO 1033: "
+msgstr "Site web"
+
+msgid ":INFO 1034: "
+msgstr "Contact"
+
+msgid ":INFO 1035: "
+msgstr "Annotations automatiques"
+
+msgid ":INFO 1036: "
+msgstr "Date"
+
+msgid ":INFO 1037: "
+msgstr "Langages selectionnés"
+
+msgid ":INFO 1038: "
+msgstr "Fichiers sélectionnés"
+
+msgid ":INFO 1039: "
+msgstr "Annotations sélectionnées"
+
+msgid ":INFO 1040: "
+msgstr "Extension de fichiers"
+
+msgid ":INFO 1041: "
+msgstr "[    OK    ]"
+
+msgid ":INFO 1042: "
+msgstr "[   INFO   ]"
+
+msgid ":INFO 1043: "
+msgstr "[ WARNING  ]"
+
+msgid ":INFO 1044: "
+msgstr "[ IGNORE  ]"
+
+msgid ":INFO 1045: "
+msgstr "[  ERREUR ]"

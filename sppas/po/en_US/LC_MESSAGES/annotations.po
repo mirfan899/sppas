@@ -15,7 +15,7 @@ msgstr ""
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 1.5.4\n"
 
 msgid ":INFO 1000: "
 msgstr "Valid. "
@@ -30,19 +30,29 @@ msgid ":INFO 1006: "
 msgstr "Failed. "
 
 msgid ":INFO 1010: "
-msgstr "An audio file must contain only 1 channel but this file contains {number} channels."
+msgstr ""
+"An audio file must contain only 1 channel but this file contains {number} "
+"channels."
 
 msgid ":INFO 1012: "
-msgstr "The sample width of an audio file must be at least 16 bits but this file is {sampwidth} bits."
+msgstr ""
+"The sample width of an audio file must be at least 16 bits but this file is "
+"{sampwidth} bits."
 
 msgid ":INFO 1014: "
-msgstr "The frame rate of an audio file must be at least 16000 Hz but this file is {framerate} Hz."
+msgstr ""
+"The frame rate of an audio file must be at least 16000 Hz but this file is "
+"{framerate} Hz."
 
 msgid ":INFO 1016: "
-msgstr "The sample width of an audio file is preferably 16 bits but this file is {sampwidth} bits. SPPAS will work on a converted file."
+msgstr ""
+"The sample width of an audio file is preferably 16 bits but this file is "
+"{sampwidth} bits. SPPAS will work on a converted file."
 
 msgid ":INFO 1018: "
-msgstr "The frame rate of an audio file is preferably 16000 Hz but this file is {framerate} Hz. SPPAS will work on a converted file."
+msgstr ""
+"The frame rate of an audio file is preferably 16000 Hz but this file is "
+"{framerate} Hz. SPPAS will work on a converted file."
 
 msgid ":INFO 1020: "
 msgstr "Unknown file extension {extension}."
@@ -55,3 +65,51 @@ msgstr "File name should not contain whitespace."
 
 msgid ":INFO 1026: "
 msgstr "Bad file encoding: only {encoding} is accepted."
+
+msgid ":INFO 1030: "
+msgstr "enabled"
+
+msgid ":INFO 1031: "
+msgstr "disabled"
+
+msgid ":INFO 1032: "
+msgstr "version"
+
+msgid ":INFO 1033: "
+msgstr "Web site"
+
+msgid ":INFO 1034: "
+msgstr "Contact"
+
+msgid ":INFO 1035: "
+msgstr "Automatic annotations"
+
+msgid ":INFO 1036: "
+msgstr "Date"
+
+msgid ":INFO 1037: "
+msgstr "Input languages"
+
+msgid ":INFO 1038: "
+msgstr "Selected files"
+
+msgid ":INFO 1039: "
+msgstr "Selected annotations"
+
+msgid ":INFO 1040: "
+msgstr "File extension"
+
+msgid ":INFO 1041: "
+msgstr "[    OK    ]"
+
+msgid ":INFO 1042: "
+msgstr "[   INFO   ]"
+
+msgid ":INFO 1043: "
+msgstr "[ WARNING  ]"
+
+msgid ":INFO 1044: "
+msgstr "[ IGNORE  ]"
+
+msgid ":INFO 1045: "
+msgstr "[  ERROR  ]"

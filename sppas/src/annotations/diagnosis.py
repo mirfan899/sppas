@@ -1,19 +1,3 @@
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -91,6 +75,8 @@ class sppasDiagnosis(object):
     EXPECTED_CHANNELS = 1
     EXPECTED_FRAME_RATE = 16000
     EXPECTED_SAMPLE_WIDTH = 2
+
+    # ------------------------------------------------------------------------
 
     def __init__(self, logfile=None):
         """ SPPAS files diagnosis.
@@ -175,10 +161,8 @@ class sppasDiagnosis(object):
                 status = WARNING_ID
                 message += (t.gettext(DX_AUDIO_FRAMERATE_WARN)).format(framerate=fm)
 
-        # test whitespace and US-ASCII chars
-        try:
-            str(filename)
-        except Exception:
+        # test US-ASCII chars
+        if all(ord(x) < 128 for x in filename) is False:
             status = WARNING_ID
             message += t.gettext(DX_FILE_NON_ASCII)
 
@@ -186,6 +170,7 @@ class sppasDiagnosis(object):
             status = WARNING_ID
             message += t.gettext(DX_FILE_WHITESPACE)
 
+        # test whitespace
         if status == ERROR_ID:
             message = t.gettext(DX_INVALID) + message
         elif status == WARNING_ID:
@@ -220,13 +205,11 @@ class sppasDiagnosis(object):
             return (ERROR_ID, message)
 
         # test US_ASCII in filename
-        try:
-            str(filename)
-        except Exception:
+        if all(ord(x) < 128 for x in filename) is False:
             message = t.gettext(DX_ADMIT) + t.gettext(DX_FILE_NON_ASCII)
             return (WARNING_ID, message)
 
-        # test whitespace and accents in filename
+        # test whitespace in filename
         if " " in filename:
             message = t.gettext(DX_ADMIT) + t.gettext(DX_FILE_WHITESPACE)
             return (WARNING_ID, message)

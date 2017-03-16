@@ -1083,7 +1083,7 @@ class sppasAnnotationsManager( Thread ):
         # ##################################################################### #
         try:
             self._logfile = sppasLog( self.parameters )
-            self._logfile.open_new( self.parameters.get_logfilename() )
+            self._logfile.create(self.parameters.get_logfilename())
             self._logfile.print_header()
         except Exception:
             self._logfile=None
@@ -1143,8 +1143,8 @@ class sppasAnnotationsManager( Thread ):
             self._logfile.print_separator()
             self._logfile.print_message('Result statistics:')
             self._logfile.print_separator()
-            for i in range( self.parameters.get_step_numbers() ):
-                self._logfile.print_stat( i,nbruns[i] )
+            for i in range(self.parameters.get_step_numbers()):
+                self._logfile.print_stat(i, str(nbruns[i]))
             self._logfile.print_separator()
             self._logfile.close()
 

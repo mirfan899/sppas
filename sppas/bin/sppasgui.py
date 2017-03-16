@@ -42,7 +42,6 @@
     This is the main program to execute the Graphical User Interface of SPPAS.
     
 """
-
 import sys
 import os.path
 import traceback
@@ -77,9 +76,6 @@ except ImportError:
     exit_error("An unexpected error occurred.\n"
                "Verify the SPPAS installation and try again. "
                "The error message is: %s" % traceback.format_exc())
-
-reload(sys)
-sys.setdefaultencoding(encoding)
 
 # ---------------------------------------------------------------------------
 # Main application

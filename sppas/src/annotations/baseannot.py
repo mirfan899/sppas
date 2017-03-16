@@ -37,6 +37,7 @@
 """
 import logging
 
+from sppas.src.utils.makeunicode import u, b
 from . import ERROR_ID, WARNING_ID, INFO_ID
 from .diagnosis import sppasDiagnosis
 
@@ -124,7 +125,7 @@ class sppasBaseAnnotation(object):
         
         self.print_message("Options: ", indent=2, status=None)
         for k, v in self._options.items():
-            self.print_message(" - %s: %s" % (k, v), indent=3, status=None)
+            self.print_message(" - {}: {}".format(k, v), indent=3, status=None)
 
     # -----------------------------------------------------------------------
 
@@ -138,4 +139,4 @@ class sppasBaseAnnotation(object):
         for filename in filenames:
             if filename is not None:
                 (s, m) = self.diagnosis.check_file(filename)
-                self.print_message(" - %s: %s" % (filename, m), indent=3, status=None)
+                self.print_message(u(" - {!s:s}: {!s:s}").format(filename, m), indent=3, status=None)
