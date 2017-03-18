@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -64,6 +63,7 @@ except ImportError:  # python 2
 from sppas.src.structs.lang import sppasLangResource
 from sppas.src.structs.baseoption import sppasOption
 from sppas.src.utils.makeunicode import u
+from .annotationsexc import AnnotationSectionConfigFileError
 
 # ----------------------------------------------------------------------------
 
@@ -128,10 +128,14 @@ class sppasAnnotationConfigParser(object):
         
         return self._config
 
+    # ------------------------------------------------------------------------
+
     def get_resources(self):
         """ Return the list of language resources. """
         
         return self._resources
+
+    # ------------------------------------------------------------------------
 
     def get_options(self):
         """ Return the list of options. """
@@ -159,7 +163,7 @@ class sppasAnnotationConfigParser(object):
         if self._parser.has_section("Configuration"):
             self._parse()
         else:
-            raise Exception("Annotation configuration error: [Configuration] section required.")
+            raise AnnotationSectionConfigFileError("[Configuration]")
 
     # ------------------------------------------------------------------------
     # Private

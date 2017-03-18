@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -29,36 +28,42 @@
 
         ---------------------------------------------------------------------
 
-    src.meta.py
-    ~~~~~~~~~~~
+    src.calculus.annotationsexc.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Metadata about SPPAS.
-
-    See https://github.com/boisgera/about
-    Define the metadata of SPPAS project in a single place, then make it
-    available at setup-time and at runtime.
+    Exceptions for annotations package.
 
 """
-metadata = dict(
-    __version__="1.9.0",
-    __author__="Brigitte Bigi",
-    __contact__="brigite.bigi@gmail.com",
-    __copyright__="Copyright (C) 2011-2017 Brigitte Bigi",
-    __license__="GNU Public License, version 3",
-    __docformat__='reStructedText en',
-    __name__="SPPAS",
-    __url__="http://www.sppas.org/",
-    __summary__="SPPAS produces automatically annotations\n\
-from a recorded speech sound and its transcription\n\
-and performs the analysis of any annotated data.",
-    __title__="the automatic annotation and analysis of speech"
-)
+from . import t
 
-globals().update(metadata)
+# -----------------------------------------------------------------------
 
-__all__ = metadata.keys()
+SECT_CFG_FILE_ERROR = ":ERROR 4014: "
+OPTION_KEY_ERROR = ":ERROR 1010: "
+
+# -----------------------------------------------------------------------
+
+
+class AnnotationSectionConfigFileError(ValueError):
+    """ :ERROR 4014: Missing section {section_name} in the configuration file. """
+
+    def __init__(self, section_name):
+        self.parameter = SECT_CFG_FILE_ERROR + (t.gettext(SECT_CFG_FILE_ERROR)).format(section_name=section_name)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class AnnotationOptionError(KeyError):
+    """ :ERROR 1060: Unknown option with key {key}. """
+
+    def __init__(self, key):
+        self.parameter = OPTION_KEY_ERROR + (t.gettext(OPTION_KEY_ERROR)).format(key=key)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+

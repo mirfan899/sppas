@@ -155,9 +155,9 @@ except:
 p = ProcessProgressTerminal()
 process = sppasAnnotationsManager(parameters)
 if args.nomerge:
-    process.set_domerge(False)
+    process.set_do_merge(False)
 if args.merge:
-    process.set_domerge(True)
+    process.set_do_merge(True)
 process.run_annotations(p)
 
 try:
