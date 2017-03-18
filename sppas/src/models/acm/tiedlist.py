@@ -100,8 +100,7 @@ class TiedList(object):
     # -----------------------------------------------------------------------
 
     def is_empty(self):
-        """
-        Return True if the TiedList() is empty.
+        """ Return True if the TiedList() is empty.
 
         """
         return len(self.observed)==0 and len(self.tied)==0
