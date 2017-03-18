@@ -5,7 +5,6 @@
 *.pyc
 .DS_Store
 *.dump
-*tiedlist.*
 ./Packager/web/manual
 ./Packager/sphinx-doc/_static
 ./Packager/sphinx-doc/_modules
