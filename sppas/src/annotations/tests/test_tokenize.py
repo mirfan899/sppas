@@ -8,7 +8,7 @@ from sppas import RESOURCES_PATH
 from sppas.src.resources.vocab import Vocabulary
 from sppas.src.resources.dictrepl import DictRepl
 
-from ..TextNorm.tokenize import DictTok
+from ..TextNorm.tokenize import DictTok, sppasTranscription, sppasTokenizer
 
 # ---------------------------------------------------------------------------
 
@@ -33,10 +33,13 @@ class TestDictTok(unittest.TestCase):
         self.assertEquals(s, u"un virgule vingt-quatre")
 
     def test_stick(self):
-        s =  self.tok.stick([u"123"])
+        t = sppasTokenizer(self.tok.vocab)
+        s = t.bind([u"123"])
         self.assertEquals(s, [u"123"])
-        s =  self.tok.stick([u"au fur et à mesure"])
+        s = t.bind([u"au fur et à mesure"])
         self.assertEquals(s, [u"au_fur_et_à_mesure"])
+        s = t.bind([u"rock'n roll"])
+        self.assertEquals(s, [u"rock'n_roll"])
 
     def test_replace(self):
         repl = DictRepl(os.path.join(RESOURCES_PATH, "repl", "fra.repl"), nodump=True)
@@ -72,46 +75,47 @@ class TestDictTok(unittest.TestCase):
         self.assertEquals(" ".join(s), u"的平方 个百分比 摄氏度 公里每小时 etc € ¥ $")
 
     def test_clean_toe(self):
-        s = self.tok.clean_toe(u'(il) (ne) faut pas rêver')
+        t = sppasTranscription()
+        s = t.clean_toe(u'(il) (ne) faut pas rêver')
         self.assertEqual(s, u"faut pas rêver")
 
-        s = self.tok.clean_toe(u'i(l) (ne) faut pas réver')
+        s = t.clean_toe(u'i(l) (ne) faut pas réver')
         self.assertEqual(s, u"i(l) faut pas réver")
 
-        s = self.tok.clean_toe(u'i(l) (ne) faut pas réver')
+        s = t.clean_toe(u'i(l) (ne) faut pas réver')
         self.assertEqual(s, u"i(l) faut pas réver")
 
-        s = self.tok.clean_toe(u' (il) faut pas réver i(l)')
+        s = t.clean_toe(u' (il) faut pas réver i(l)')
         self.assertEqual(s, u"faut pas réver i(l)")
 
-        s = self.tok.clean_toe(u' euh [je sais, ché] pas ')
+        s = t.clean_toe(u' euh [je sais, ché] pas ')
         self.assertEqual(s, u"euh [je_sais,ché] pas")
 
-        s = self.tok.clean_toe(u"  j'[ avais,  avé ] ")
+        s = t.clean_toe(u"  j'[ avais,  avé ] ")
         self.assertEqual(s, u"j' [avais,avé]")
 
-        s = self.tok.clean_toe(u"  [j(e) sais,  ché ] ")
+        s = t.clean_toe(u"  [j(e) sais,  ché ] ")
         self.assertEqual(s, u"[je_sais,ché]")
 
-        s = self.tok.clean_toe(u"  [peut-êt(re),  pe êt] ")
+        s = t.clean_toe(u"  [peut-êt(re),  pe êt] ")
         self.assertEqual(s, u"[peut-être,peêt]")
 
-        s = self.tok.clean_toe(u" (pu)tai(n) j'ai")
+        s = t.clean_toe(u" (pu)tai(n) j'ai")
         self.assertEqual(s, u"(pu)tai(n) j'ai")
 
-        s = self.tok.clean_toe(u"gpd_100y en a un  qu(i) est devenu complèt(e)ment  ")
+        s = t.clean_toe(u"gpd_100y en a un  qu(i) est devenu complèt(e)ment  ")
         self.assertEqual(s, u"y en a un qu(i) est devenu complèt(e)ment")
 
-        s = self.tok.clean_toe(u"[$Londre, T/$, Londreu]")
+        s = t.clean_toe(u"[$Londre, T/$, Londreu]")
         self.assertEqual(s, u"[Londre,Londreu]")
 
-        s = self.tok.clean_toe(u"t(u) vois [$Isabelle,P /$, isabelleu] $Armelle,P /$ t(out) ça")
+        s = t.clean_toe(u"t(u) vois [$Isabelle,P /$, isabelleu] $Armelle,P /$ t(out) ça")
         self.assertEqual(s, u"t(u) vois [Isabelle,isabelleu] Armelle t(out) ça")
 
-        s = self.tok.clean_toe(u"gpd_1324ah euh")
+        s = t.clean_toe(u"gpd_1324ah euh")
         self.assertEqual(s, u"ah euh")
 
-        s = self.tok.clean_toe(u"ah a/b euh")
+        s = t.clean_toe(u"ah a/b euh")
         self.assertEqual(s, u"ah a/b euh")
 
     def test_sampa(self):
@@ -123,7 +127,8 @@ class TestDictTok(unittest.TestCase):
         s = self.tok.tokenize(u"[le mot,/lemot/]", std=True)
         self.assertEqual(u"le_mot", s)
 
-        s = self.tok.clean_toe(u"ah a/b euh")
+        t = sppasTranscription()
+        s = t.clean_toe(u"ah a/b euh")
         self.assertEqual(s, u"ah a/b euh")
 
     def test_tokenize(self):

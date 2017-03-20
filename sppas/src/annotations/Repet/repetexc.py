@@ -1,4 +1,3 @@
-GOTO EndHeader
 """
     ..
         ---------------------------------------------------------------------
@@ -29,19 +28,11 @@ GOTO EndHeader
 
         ---------------------------------------------------------------------
 
-    sppas.bat
-    ~~~~~~~~~
+    src.annotations.Repet.repetexc.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      SPPAS for Windows.
+    Exceptions for the automatic annotation: Repet.
 
 """
-:EndHeader
+from .. import t
 
-@echo off
-start "" .\sppas\bin\sppasgui.py
-exit

@@ -7,7 +7,7 @@ from sppas import BASE_PATH
 
 from ..cfgparser import sppasAnnotationConfigParser
 
-INITOK = os.path.join(BASE_PATH, "etc", "Token.ini")
+INITOK = os.path.join(BASE_PATH, "etc", "TextNorm.ini")
 INIMOMEL = os.path.join(BASE_PATH, "etc", "Momel.ini")
 
 # ---------------------------------------------------------------------------

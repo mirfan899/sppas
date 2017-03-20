@@ -522,20 +522,20 @@ class sppasAlign(sppasBaseAnnotation):
         # -------------------------------------------------------------
 
         inputaudio = sppas.src.utils.fileutils.fix_audioinput(audioname)
-        workdir    = sppas.src.utils.fileutils.fix_workingdir(inputaudio)
+        workdir = sppas.src.utils.fileutils.fix_workingdir(inputaudio)
         if self._options['clean'] is False:
-            self.print_message("The working directory is: %s"%workdir, indent=3, status=None)
+            self.print_message("The working directory is: %s" % workdir, indent=3, status=None)
 
         # Processing...
         # ---------------------------------------------------------------
 
         try:
-            trsoutput = self.convert(phontier,toktier,audioname,workdir)
+            trsoutput = self.convert(phontier, toktier, audioname, workdir)
             if toktier is not None:
                 trsoutput = self.append_extra(trsoutput)
         except Exception as e:
             self.print_message(str(e))
-            self.print_message("WORKDIR=%s"%workdir)
+            self.print_message("WORKDIR=%s" % workdir)
             if self._options['clean'] is True:
                 shutil.rmtree(workdir)
             raise
@@ -552,9 +552,9 @@ class sppasAlign(sppasBaseAnnotation):
         # Save results
         # --------------------------------------------------------------
         try:
-            self.print_message("Save automatic alignment: ",indent=3)
+            self.print_message("Save automatic alignment: ", indent=3)
             # Save in a file
-            sppas.src.annotationdata.aio.write(outputfilename,trsoutput)
+            sppas.src.annotationdata.aio.write(outputfilename, trsoutput)
         except Exception:
             if self._options['clean'] is True:
                 shutil.rmtree(workdir)

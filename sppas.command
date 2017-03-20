@@ -119,7 +119,7 @@ function fct_clean_temp {
 # ===========================================================================
 # MAIN
 # ===========================================================================
-
+export PYTHONIOENCODING=UTF-8
 
 fct_echo_title $MSG_HEADER  # Print the header message on stdout
 fct_clean_temp              # Remove temporary files (if any)

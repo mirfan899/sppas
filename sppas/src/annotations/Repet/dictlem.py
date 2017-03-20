@@ -43,10 +43,10 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # Imports
 # ----------------------------------------------------------------------------
 
-import os
 import re
 import codecs
 
+from sppas import encoding
 from .. import UNKSTAMP
 
 # ----------------------------------------------------------------------------
@@ -68,7 +68,6 @@ class LemmaDict(object):
         self.unk = UNKSTAMP
         # Load the dictionary:
         self.lemdict = {}
-        encoding='utf-8'
         with codecs.open(dictfilename, 'r', encoding) as fd:
 
             dictfreq = {}
@@ -95,7 +94,7 @@ class LemmaDict(object):
                         self.lemdict[__entry] = __lemma
                 else:
                     self.lemdict[__entry] = __lemma
-                    dictfreq[__entry]  = __freq
+                    dictfreq[__entry] = __freq
 
     # ------------------------------------------------------------------
 
@@ -239,24 +238,3 @@ class LemmaDict(object):
         # Concatenate entries into a lemmatized string
         _s = " "
         return _s.join( tablem )
-
-    # ------------------------------------------------------------------
-
-
-# ######################################################################### #
-# A main used to debug!
-# ######################################################################### #
-
-if __name__ == "__main__":
-
-    dictdir  = "/home/bigi/Python/SPPAS.git/vocab"
-    dictfile = os.path.join(dictdir, "FR.lem")
-
-    print("Create LemmaDict instance")
-    grph = LemmaDict( dictfile )
-    print("   --> "+str(grph.get_size())+" entries loaded.")
-
-    print("Lemmatization : ")
-    print("   --> "+grph.lemmatize(u"Salut je fais UN essai plus Bref ça marche"))
-
-# ######################################################################### #

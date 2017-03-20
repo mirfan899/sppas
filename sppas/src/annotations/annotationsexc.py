@@ -28,8 +28,8 @@
 
         ---------------------------------------------------------------------
 
-    src.calculus.annotationsexc.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.annotations.annotationsexc.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Exceptions for annotations package.
 

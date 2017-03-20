@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -42,7 +41,26 @@
 """
 import sys
 import os.path
-from .meta import *
+try:
+    reload  # Python 2.7
+except NameError:
+    try:
+        from importlib import reload  # Python 3.4+
+    except ImportError:
+        from imp import reload  # Python 3.0 - 3.3
+
+from .meta import __version__
+from .meta import __author__
+from .meta import __contact__
+from .meta import __copyright__
+from .meta import __license__
+from .meta import __docformat__
+from .meta import __name__
+from .meta import __url__
+from .meta import __summary__
+from .meta import __title__
+
+#from .meta import *
 
 # ---------------------------------------------------------------------------
 # Define paths
@@ -68,4 +86,7 @@ SETTINGS_FILE = os.path.join(BASE_PATH, "etc", "settings.dump")
 # Default input/output encoding
 encoding = 'utf-8'
 reload(sys)
-sys.setdefaultencoding(encoding)
+try:
+    sys.setdefaultencoding(encoding)
+except AttributeError:  # Python 2.7
+    pass
