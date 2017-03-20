@@ -29,7 +29,7 @@ class TestAnnotationConfigParser(unittest.TestCase):
         self.assertEqual(len(opt), 1)
         self.assertEqual(len(res), 1)
 
-        self.assertEqual(conf['id'], "tok")
+        self.assertEqual(conf['id'], "textnorm")
 
     def test_parse_momel(self):
 

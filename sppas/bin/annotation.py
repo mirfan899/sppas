@@ -112,7 +112,7 @@ if args.l:
 ext = args.e
 if not ext.startswith("."):
     ext = "."+ext
-extensions = [e.lower() for e in extensions_out] #_multitiers]
+extensions = [e.lower() for e in extensions_out]  #_multitiers]
 if not ext.lower() in extensions:
     print("\n")
     print("[WARNING] Unknown extension:", args.e, ". Extension is set to its default value.")
@@ -120,15 +120,24 @@ if not ext.lower() in extensions:
     ext = DEFAULT_OUTPUT_EXTENSION
 parameters.set_output_format( ext )
 
-if args.momel:  parameters.activate_annotation("momel")
-if args.intsint:parameters.activate_annotation("intsint")
-if args.ipus:   parameters.activate_annotation("ipus")
-if args.tok:    parameters.activate_annotation("tok")
-if args.phon:   parameters.activate_annotation("phon")
-if args.chunks: parameters.activate_annotation("chunks")
-if args.align:  parameters.activate_annotation("align")
-if args.syll:   parameters.activate_annotation("syll")
-if args.repet:  parameters.activate_annotation("repet")
+if args.momel:
+    parameters.activate_annotation("momel")
+if args.intsint:
+    parameters.activate_annotation("intsint")
+if args.ipus:
+    parameters.activate_annotation("ipus")
+if args.tok:
+    parameters.activate_annotation("textnorm")
+if args.phon:
+    parameters.activate_annotation("phon")
+if args.chunks:
+    parameters.activate_annotation("chunks")
+if args.align:
+    parameters.activate_annotation("align")
+if args.syll:
+    parameters.activate_annotation("syll")
+if args.repet:
+    parameters.activate_annotation("repet")
 if args.all:
     for step in range(parameters.get_step_numbers()):
         parameters.activate_step(step)

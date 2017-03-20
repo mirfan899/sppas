@@ -15,7 +15,7 @@ msgstr ""
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.8.11\n"
 
 msgid ":INFO 1000: "
 msgstr "Valide. "
@@ -105,16 +105,16 @@ msgid ":INFO 1040: "
 msgstr "Extension de fichiers"
 
 msgid ":INFO 1041: "
-msgstr "[    OK    ]"
+msgstr "[    OK    ] "
 
 msgid ":INFO 1042: "
-msgstr "[   INFO   ]"
+msgstr "[   INFO   ] "
 
 msgid ":INFO 1043: "
-msgstr "[ WARNING  ]"
+msgstr "[ WARNING  ] "
 
 msgid ":INFO 1044: "
-msgstr "[ IGNORE  ]"
+msgstr "[ IGNORE  ] "
 
 msgid ":INFO 1045: "
-msgstr "[  ERREUR ]"
+msgstr "[  ERREUR ] "

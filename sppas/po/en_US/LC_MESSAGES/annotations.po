@@ -15,7 +15,7 @@ msgstr ""
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.8.11\n"
 
 msgid ":INFO 1000: "
 msgstr "Valid. "
@@ -100,19 +100,19 @@ msgid ":INFO 1040: "
 msgstr "File extension"
 
 msgid ":INFO 1041: "
-msgstr "[    OK    ]"
+msgstr "[    OK    ] "
 
 msgid ":INFO 1042: "
-msgstr "[   INFO   ]"
+msgstr "[   INFO   ] "
 
 msgid ":INFO 1043: "
-msgstr "[ WARNING  ]"
+msgstr "[ WARNING  ] "
 
 msgid ":INFO 1044: "
-msgstr "[ IGNORE  ]"
+msgstr "[ IGNORE  ] "
 
 msgid ":INFO 1045: "
-msgstr "[  ERROR  ]"
+msgstr "[  ERROR  ] "
 
 msgid ":INFO 1050: "
 msgstr "Options"
@@ -125,4 +125,3 @@ msgstr "Missing section {section_name} in the configuration file."
 
 msgid ":ERROR 1010: "
 msgstr "Unknown option with key {key}."
-

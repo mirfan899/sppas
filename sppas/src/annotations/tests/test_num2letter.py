@@ -2,7 +2,7 @@
 
 import unittest
 
-from ..Token.num2letter import sppasNum
+from ..TextNorm.num2letter import sppasNum
 
 ref_es = [
 u"cero",

@@ -54,7 +54,7 @@ from sppas.src.utils.fileutils import sppasDirUtils
 from sppas.src.utils import test_command
 
 from sppas.src.annotations.Phon.sppasphon import sppasPhon
-from sppas.src.annotations.Token.sppastok import sppasTok
+from sppas.src.annotations.TextNorm.sppastok import sppasTok
 from sppas.src.annotations.Align.sppasalign import sppasAlign
 
 import sppas.src.annotationdataio as annotationdataio

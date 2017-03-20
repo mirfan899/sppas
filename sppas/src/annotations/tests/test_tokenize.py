@@ -8,7 +8,7 @@ from sppas import RESOURCES_PATH
 from sppas.src.resources.vocab import Vocabulary
 from sppas.src.resources.dictrepl import DictRepl
 
-from ..Token.tokenize import DictTok
+from ..TextNorm.tokenize import DictTok
 
 # ---------------------------------------------------------------------------
 

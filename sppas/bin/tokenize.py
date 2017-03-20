@@ -56,8 +56,8 @@ sys.path.append(SPPAS)
 
 from sppas import RESOURCES_PATH
 
-from sppas.src.annotations.Token.sppastok import sppasTok
-from sppas.src.annotations.Token.tokenize import DictTok
+from sppas.src.annotations.TextNorm.sppastok import sppasTok
+from sppas.src.annotations.TextNorm.tokenize import DictTok
 from sppas.src.resources.vocab import Vocabulary
 from sppas.src.resources.dictrepl import DictRepl
 from sppas.src.utils.fileutils import setup_logging

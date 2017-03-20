@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -131,7 +130,7 @@ class sppasBaseAnnotation(object):
         
         self.print_message(t.gettext(OPTIONS) + ": ", indent=2, status=None)
         for k, v in self._options.items():
-            self.print_message(u(" - {}: {})").format(k, v), indent=3, status=None)
+            self.print_message(u(" - {}: {}").format(k, v), indent=3, status=None)
 
     # -----------------------------------------------------------------------
 

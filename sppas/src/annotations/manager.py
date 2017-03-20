@@ -47,7 +47,7 @@ from sppas.src.annotations.log import sppasLog
 from sppas.src.annotations.Momel.sppasmomel import sppasMomel
 from sppas.src.annotations.Intsint.sppasintsint import sppasIntsint
 from sppas.src.annotations.IPUs.ipusseg import sppasIPUs
-from sppas.src.annotations.Token.sppastok import sppasTok
+from sppas.src.annotations.TextNorm.sppastok import sppasTok
 from sppas.src.annotations.Phon.sppasphon import sppasPhon
 from sppas.src.annotations.Chunks.sppaschunks import sppasChunks
 from sppas.src.annotations.Align.sppasalign import sppasAlign
@@ -1088,7 +1088,7 @@ class sppasAnnotationsManager(Thread):
                     nbruns[i] = self.run_intsint(i)
                 elif self.parameters.get_step_key(i) == "ipus":
                     nbruns[i] = self.run_ipusegmentation(i)
-                elif self.parameters.get_step_key(i) == "tok":
+                elif self.parameters.get_step_key(i) == "textnorm":
                     nbruns[i] = self.run_tokenization(i)
                 elif self.parameters.get_step_key(i) == "phon":
                     nbruns[i] = self.run_phonetization(i)
