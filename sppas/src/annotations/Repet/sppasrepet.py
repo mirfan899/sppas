@@ -48,8 +48,6 @@ from .dictlem import LemmaDict
 from .detectrepet import Repetitions
 from .datastructs import DataSpeaker
 
-DEBUG = False
-
 # ---------------------------------------------------------------------------
 
 
@@ -68,11 +66,6 @@ class sppasRepet(sppasBaseAnnotation):
     The tokens can be lemmatized from a dictionary.
 
     The output is made of 2 tiers including intervals with sources and echos.
-
-    How to use sppasRepetition?
-
-    >>> p = sppasRepetition(dictpath, lang)
-    >>> p.run(inputtrsname, outputfilename)
 
     """
     MAX_SPAN = 20
@@ -96,7 +89,6 @@ class sppasRepet(sppasBaseAnnotation):
         self._use_stopwords = True   # Add specific stopwords of the input
         self._empan = 5              # Detection length (nb of IPUs; 1=current IPU)
         self._alpha = 0.5            # Specific stop-words threshold coefficient
-        self.logfile = logfile
         self.lemmatizer = None
         self.__stop_words = None
 
@@ -125,7 +117,7 @@ class sppasRepet(sppasBaseAnnotation):
 
         if self._use_stopwords is False:
             if logfile is not None:
-                logfile.print_message("StopWords disabled.",indent=2,status=3)
+                logfile.print_message("StopWords disabled.", indent=2, status=3)
             else:
                 print(" ... ... [ INFO ] StopWords disabled.")
 
@@ -134,7 +126,7 @@ class sppasRepet(sppasBaseAnnotation):
     def fix_options(self, options):
         """ Fix all options.
 
-        :param options: list of sppsOption instances
+        :param options: list of sppasOption instances
 
         """
         for opt in options:
@@ -236,22 +228,34 @@ class sppasRepet(sppasBaseAnnotation):
 
         return lemma_tier
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+    # Automatic Detection search 
+    # -----------------------------------------------------------------------
+    
+    def get_stop_list(self, tier=None):
+        """ Return the expected list of stop-words.
+        It is either:
 
-    def relevancy(self, tier):
-        """ Add very frequent tokens in a copy of the stopwords list.
+            - the loaded list or,
+            - the loaded list + un-relevant tokens, estimated on the basis
+            of the given tier.
 
-        Estimate the relevance of each term by using the number of
-        occurrences of this term in the input and compare this value
-        to a threshold, to add the term (or not) in the stopwords list.
+        A token 'w' is relevant for the speaker if its probability is
+        less than a threshold:
 
-        :param tier: (Tier)
-        :returns: a Vocabulary instance
+            | P(w) <= 1 / (alpha * V)
 
+        where 'alpha' is an empirical coefficient and 'V' is the vocabulary
+        size of the speaker.
+
+        :param tier: (Tier) A tier with entries to be analyzed.
+        
         """
-        l = self.__stop_words.copy()
+        if self._use_stopwords is False:
+            return Vocabulary()
+
         if tier is None:
-            return l
+            return self.__stop_words
 
         # Create the Unigram and put data
         u = Unigram()
@@ -259,70 +263,57 @@ class sppasRepet(sppasBaseAnnotation):
             if a.GetLabel().IsSpeech() is True:
                 u.add(a.GetLabel().GetValue())
 
-        # Estimate if a token is relevant, put in the stoplist
+        # Estimate values for relevance
+        _v = float(u.get_size())
+        threshold = 1. / (self._alpha * _v)
+
+        # Estimate if a token is relevant; if not: put in the stop-list
+        stop_list = self.__stop_words.copy()
         for token in u.get_tokens():
-            freq = u.get_count(token)
-            proba = float(freq) / float(u.get_sum())
-            relevant = 1.0 / (float(u.get_size())*float(self._alpha))
-            if proba > relevant:
-                l.add(token)
+            p_w = float(u.get_count(token)) / float(u.get_sum())
+            if p_w > threshold:
+                stop_list.add(token)
                 if self.logfile is not None:
-                    self.logfile.print_message('Add in the stoplist: {:s}'.format(token), indent=3)
+                    self.logfile.print_message('Add in the stop-list: {:s}'.format(token), indent=3)
 
-        return l
-
-    # ------------------------------------------------------------------
-    # Automatic Detection search 
-    # ------------------------------------------------------------------
-    
-    def get_stop_list(self, tier=None):
-        """ Return the expected list of stop-words. 
-        
-        :param tier: (Tier) A tier with entries to be analyzed.
-        
-        """
-        if self._use_stopwords is True:
-            return self.relevancy(tier)
-
-        return self.__stop_words.copy()
+        return stop_list
 
     # ------------------------------------------------------------------
 
-    def _addrepetition(self, repeatobj, nb_repets, inputtier1, inputtier2, tokstartsrc, tokstartrep, src_tier, echo_tier):
-        """ Add sources and repetitions from repeatobj to the tiers.
+    def _addrepetition(self, repetition, spk1_tier, spk2_tier, start_spk1, start_spk2, src_tier, echo_tier):
+        """ Add a repetition - source and echos - in tiers.
+
+        :param repetition: (DataRepetition)
+        :param spk1_tier: (Tier) The tier of speaker 1 (to detect sources)
+        :param spk2_tier: (Tier) The tier of speaker 2 (to detect echos)
+        :param start_spk1: start index of the interval in spk1_tier
+        :param start_spk2: start index of the interval in spk2_tier
+        :param src_tier: (Tier) The resulting tier with sources
+        :param echo_tier: (Tier) The resulting tier with echos
+        :returns: (bool) the repetition was added or not
 
         """
-        n = 0
-        for i in range(len(repeatobj)):
+        index = len(spk1_tier)
+        # Source
+        s, e = repetition.get_source()
+        src_begin = spk1_tier[start_spk1+s].GetLocation().GetBegin()
+        src_end = spk1_tier[start_spk1+e].GetLocation().GetEnd()
+        time = TimeInterval(src_begin.Copy(), src_end.Copy())
+        src_ann = Annotation(time, Label("S"+str(index+1)))
+        try:
+            src_tier.Add(src_ann)
+        except Exception:
+            return False
 
-            # Source
-            s, e = repeatobj.get_source(i)
-            srcbegin = inputtier1[tokstartsrc+s].GetLocation().GetBegin()
-            srcend = inputtier1[tokstartsrc+e].GetLocation().GetEnd()
-            time = TimeInterval(srcbegin.Copy(), srcend.Copy())
-            srcann = Annotation(time, Label("S"+str(nb_repets+n)))
-            try:
-                src_tier.Add(srcann)
-            except Exception:
-                continue
+        # Echos
+        for (s, e) in repetition.get_echos():
+            rep_begin = spk2_tier[start_spk2+s].GetLocation().GetBegin()
+            rep_end = spk2_tier[start_spk2+e].GetLocation().GetEnd()
+            time = TimeInterval(rep_begin.Copy(), rep_end.Copy())
+            rep_ann = Annotation(time, Label("R"+str(index+1)))
+            echo_tier.Add(rep_ann)
 
-            # Repetition
-            rep = repeatobj.get_echos(i)
-            for r in rep:
-                (s, e) = r
-                repbegin = inputtier2[tokstartrep+s].GetLocation().GetBegin()
-                repend   = inputtier2[tokstartrep+e].GetLocation().GetEnd()
-                r = echo_tier.Lindex(repbegin)
-                l = echo_tier.Rindex(repend)
-
-                # all other cases (no repetition, overlap)
-                time = TimeInterval(repbegin.Copy(), repend.Copy())
-                repann = Annotation(time, Label("R"+str(nb_repets+n)))
-                echo_tier.Add(repann)
-
-            n += 1
-
-        return n
+        return True
 
     # ------------------------------------------------------------------
 
@@ -334,14 +325,11 @@ class sppasRepet(sppasBaseAnnotation):
         """
         # Use the appropriate stop-list
         stop_words = self.get_stop_list(tier)
-
-        # Create repeat objects (a data structure to store sources and echos)
-        repeatobj = Repetitions()
-
+        # Create a data structure to detect and store a source and its echos
+        repetition = Repetitions(stop_words)
         # Create output data
-        src_tier = Tier("Sources")
-        echo_tier = Tier("Repetitions")
-        nb_repets = 1
+        src_tier = Tier("SR-Source")
+        echo_tier = Tier("SR-Echo")
 
         # Initialization of tokstart and tokend
         tokstart = 0
@@ -357,15 +345,14 @@ class sppasRepet(sppasBaseAnnotation):
             tokens1 = list()
             for i in range(tokstart, tokend+1):
                 tokens1.append(tier[i].GetLabel().GetValue())
-            speaker1 = DataSpeaker(tokens1, stop_words)
+            speaker1 = DataSpeaker(tokens1)
 
             # Detect repeats in these data
-            repeatobj.detect(speaker1, toksearch-tokstart, None)
+            repetition.detect(speaker1, toksearch-tokstart, None)
 
             # Save repeats
-            if len(repeatobj) > 0:
-                n = self._addrepetition(repeatobj, nb_repets, tier, tier, tokstart, tokstart, src_tier, echo_tier)
-                nb_repets += n
+            if repetition.get_source() is not None:
+                self._addrepetition(repetition, tier, tier, tokstart, tokstart, src_tier, echo_tier)
 
             # Prepare next search
             tokstart = toksearch
@@ -383,21 +370,13 @@ class sppasRepet(sppasBaseAnnotation):
         :param inputtier2: (Tier)
 
         """
-        # Update the stoplist
-        if self._use_stopwords is True:
-            # other-repetition: relevance of the echoing-speaker
-            stop_words = self.relevancy(inputtier2)
-        else:
-            stop_words = self.__stop_words
-
+        # Use the appropriate stop-list: add un-relevant tokens of the echoing speaker
+        stop_words = self.get_stop_list(inputtier2)
         # Create repeat objects
-        repeatobj = Repetitions()
-
+        repetition = Repetitions(stop_words)
         # Create output data
         src_tier = Tier("OR-Source")
-        echo_tier = Tier("OR-Repetition")
-
-        nb_repets = 1
+        echo_tier = Tier("OR-Echo")
 
         # Initialization of tokstart, and tokend
         tokstartsrc = 0
@@ -413,7 +392,7 @@ class sppasRepet(sppasBaseAnnotation):
             tokens1 = list()
             for i in range(tokstartsrc, tokendsrc):
                 tokens1.append(inputtier1[i].GetLabel().GetValue())
-            speaker1 = DataSpeaker(tokens1, stop_words)
+            speaker1 = DataSpeaker(tokens1)
 
             # Create speaker2
             tokens2 = list()
@@ -421,7 +400,7 @@ class sppasRepet(sppasBaseAnnotation):
             tokstartrep = -1
             a = inputtier1[tokstartsrc]
 
-            for (r,b) in enumerate(inputtier2):
+            for (r, b) in enumerate(inputtier2):
                 if b.GetLocation().GetBeginMidpoint() >= a.GetLocation().GetBeginMidpoint():
                     if tokstartrep == -1:
                         tokstartrep = r
@@ -430,29 +409,26 @@ class sppasRepet(sppasBaseAnnotation):
                     if nbbreaks == self._empan:
                         break
                     tokens2.append(b.GetLabel().GetValue())
-            speaker2 = DataSpeaker(tokens2, stop_words)
+            speaker2 = DataSpeaker(tokens2)
 
             # Detect repeats in these data: search if the first token of spk1
             # is the first token of a source.
-            repeatobj.detect(speaker1, 1, speaker2)
+            repetition.detect(speaker1, 1, speaker2)
 
             # Save repeats
             shift = 1
-            if len(repeatobj) > 0:
-                s, e = repeatobj.get_source(0)
-                n = self._addrepetition(repeatobj, nb_repets, inputtier1, inputtier2, tokstartsrc, tokstartrep, src_tier, echo_tier)
-                if n > 0:
-                    nb_repets +=n
+            if repetition.get_source() is not None > 0:
+                s, e = repetition.get_source()
+                self._addrepetition(repetition, inputtier1, inputtier2, tokstartsrc, tokstartrep, src_tier, echo_tier)
                 shift = e + 1
 
             while speaker1.is_token(speaker1.get_token(shift)) is False and shift < 20:
                 shift += 1
 
-            tokstartsrc = tokstartsrc + shift
-            tokstartsrc = min(tokstartsrc, inputtier1.GetSize()-1)
+            tokstartsrc = min(tokstartsrc + shift, inputtier1.GetSize()-1)
             tokendsrc = min(tokstartsrc + 20, inputtier1.GetSize()-1)
 
-        return (src_tier,echo_tier)
+        return src_tier, echo_tier
 
     # ------------------------------------------------------------------------
 

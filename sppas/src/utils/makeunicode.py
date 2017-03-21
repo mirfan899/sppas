@@ -93,8 +93,8 @@ class sppasUnicode(object):
 
     # -----------------------------------------------------------------------
 
-    def to_lower(self):
-        """ Return the unicode string with lower case.
+    def unicode(self):
+        """ Return the unicode string of the given entry.
 
         :returns: unicode
 
@@ -102,7 +102,17 @@ class sppasUnicode(object):
         e = self._entry
         if isinstance(self._entry, binary_type):
             e = u(self._entry)
+        return e
 
+    # -----------------------------------------------------------------------
+
+    def to_lower(self):
+        """ Return the unicode string with lower case.
+
+        :returns: unicode
+
+        """
+        e = self.unicode()
         self._entry = e.lower()
         return self._entry
 
@@ -115,12 +125,11 @@ class sppasUnicode(object):
         :returns: unicode
 
         """
-        e = self._entry
-        if isinstance(self._entry, binary_type):
-            e = u(self._entry)
+        e = self.unicode()
 
         # Remove multiple spaces
         __str = re.sub("[\s]+", r" ", e)
+
         # Remove spaces at beginning and end
         __str = re.sub("^[ ]+", r"", __str)
         __str = re.sub("[ ]+$", r"", __str)
@@ -151,9 +160,7 @@ class sppasUnicode(object):
         :returns: unicode
 
         """
-        e = self._entry
-        if isinstance(self._entry, binary_type):
-            e = u(self._entry)
+        e = self.unicode()
 
         e = re.sub(r'[^\x00-\x7F]', "_", e)
         self._entry = e

@@ -62,7 +62,7 @@ class Vocabulary(object):
         :param case_sensitive: (bool) the list of word is case-sensitive or not
 
         """
-        self._stw = {}
+        self._stw = dict()
         # with a dictionary it is faster to read tokens from a file and is
         # also faster to find a token in it!
 

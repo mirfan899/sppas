@@ -44,23 +44,29 @@ from sppas.src.utils.maketext import translate
 t = translate("annotations")
 
 # ---------------------------------------------------------------------------
-# Define configuration for annotations
-# ---------------------------------------------------------------------------
+# Default output extension:
 
-UNKSTAMP=u"<UNK>"
-
-# Default output extension must be one of the list of
-# annotationdata.aio.extensions_out_multitiers
 DEFAULT_OUTPUT_EXTENSION = ".xra"
 
-
 # ---------------------------------------------------------------------------
-# Constants: ID
-# ---------------------------------------------------------------------------
+# Annotation status, mainly used for log:
 
-# Annotation status, mainly used for log
 ERROR_ID = -1
 INFO_ID = 3
 IGNORE_ID = 2
 WARNING_ID = 1
 OK_ID = 0
+
+# ---------------------------------------------------------------------------
+# Symbols used by SPPAS annotations to represent an event:
+
+UNKSTAMP = "<UNK>"
+
+SYMBOLS = {
+    '#': "silence",
+    '+': "pause",
+    '*': "noise",
+    '@': "laugh",
+    '@@': "laugh",
+    'dummy': 'dummy'
+}

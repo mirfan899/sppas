@@ -37,6 +37,9 @@
 import sys
 import re
 
+from .. import SYMBOLS
+from sppas.src.utils.makeunicode import sppasUnicode
+
 # ----------------------------------------------------------------------------
 
 
@@ -53,27 +56,36 @@ class DataRepetition(object):
     The echos of this latter are stored as a list of tuples (start, end).
 
     """
-    def __init__(self, s1, s2, r1=-1, r2=-1):
+    def __init__(self, s1=None, s2=None, r1=None, r2=None):
         """ Create a DataRepetition data structure.
 
         :param s1: start position of the source.
         :param s2: end position of the source.
-        :param r1: start position of an echo (or -1)
-        :param r2: end position of an echo (or -1)
+        :param r1: start position of an echo
+        :param r2: end position of an echo
 
         """
         self.__source = None
-        self.set_source(s1, s2)
+        if s1 is not None and s2 is not None:
+            self.set_source(s1, s2)
         self.__echos = list()
-        try:
+        if r1 is not None and r2 is not None:
             self.add_echo(r1, r2)
-        except ValueError:
-            pass
+
+    # -----------------------------------------------------------------------
+
+    def reset(self):
+        """ Fix the source to None and the echos to an empty list. """
+
+        self.__source = None
+        self.__echos = list()
 
     # -----------------------------------------------------------------------
 
     def set_source(self, start, end):
         """ Set the positions of the source.
+
+        To reset the source, fix start or end to None.
 
         :param start: Start position of the source.
         :param end: End position of the source.
@@ -136,6 +148,84 @@ class DataRepetition(object):
 # ---------------------------------------------------------------------------
 
 
+class Entry(object):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Class to check unicode entries.
+
+    """
+
+    def __init__(self, entry):
+        """ Creates a Token instance. """
+
+        if entry is None:
+            self.__entry = ""
+        else:
+            self.__entry = sppasUnicode(entry)
+
+    # -----------------------------------------------------------------------
+
+    def get(self):
+        """ Return the unicode entry. """
+
+        return self.__entry.unicode()
+
+    # -----------------------------------------------------------------------
+
+    def get_formatted(self):
+        """ Return the unicode formatted entry. """
+
+        return self.__clean()
+
+    # -----------------------------------------------------------------------
+
+    def is_token(self):
+        """ Ask a string to be a token or not.
+        Silences, pauses, noises and laughs are not considered as tokens.
+
+        :returns: (bool)
+
+        """
+        if len(self.__entry.unicode()) == 0:
+            return False
+
+        token = self.__clean()
+
+        # Symbols used by SPPAS annotations to represent an event
+        if token in SYMBOLS:
+            return False
+
+        # Hesitations (language dependent !!!)
+        # if token in ['euh', 'heu', 'hum', 'pf', 'pff']:
+        #    return False
+        return True
+
+    # ------------------------------------------------------------------
+
+    def __clean(self):
+        """ Clean a string by removing tabs, CR/LF, and some punctuation.
+
+        :param entry: (str) unicode string to clean
+        :returns: unicode string without special chars
+
+        """
+        __str = self.__entry.to_strip()
+
+        # Punctuation at end or beginning
+        __str = re.sub("\~$", "", __str)
+        __str = re.sub("\-+$", "", __str)
+        __str = re.sub(">$", "", __str)
+        __str = re.sub("^<", "", __str)
+
+        return __str
+
+# ---------------------------------------------------------------------------
+
+
 class DataSpeaker(object):
     """
     :author:       Brigitte Bigi
@@ -145,29 +235,27 @@ class DataSpeaker(object):
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :summary:      Class to store data of a speaker.
     
-    Data stored are:
-    
-        - a list of entries (tokens, lemmas, ...)
-        - a list of stop-entries
+    Data stored are a list of entries.
 
     """
-    def __init__(self, entries, stop_entries=None):
+    def __init__(self, entries):
         """ Create a DataSpeaker instance.
         
-        :param entries: (list)
-        :param stop_entries: (Vocabulary)
-        
+        :param entries: (list) List of observed entries.
+
         """
-        self.__stoplist = stop_entries
-        self.__entries = entries
+        self.__entries = list()
+        for e in entries:
+            self.__entries.append(Entry(e))
 
     # -----------------------------------------------------------------------
 
     def get_token(self, idx):
-        """ Return the "token" at the given index or None.
+        """ Return the "token" at the given index.
+        Return None if index is wrong.
 
         :param idx: (int) Index of the entry to get
-        :returns: (str) formatted entry or None
+        :returns: (str) unicode formatted entry, or None
 
         """
         if idx < 0:
@@ -175,62 +263,7 @@ class DataSpeaker(object):
         if idx >= len(self.__entries):
             return None
 
-        return self.__clean(self.__entries[idx])
-
-    # -----------------------------------------------------------------------
-
-    def is_stopword(self, token):
-        """ Check if the given token is in the stop-list.
-
-        :param token: (str)
-        :returns: (bool)
-
-        """
-        if self.__stoplist is None:
-            return False
-        return not self.__stoplist.is_unk(token)
-
-    # -----------------------------------------------------------------------
-
-    def is_token(self, entry):
-        """ Ask a string to be a token or not.
-        Hesitations, silences, pauses and laughs are not considered as
-        tokens.
-
-        :param entry: (str)
-
-        """
-        if entry is None:
-            return False
-
-        # Ensure all regexp will be efficient
-        __tok = " " + self.__clean(entry) + " "
-
-        # Breaks, laughs...
-        __tok = __tok.replace(" # ", " ")
-        __tok = __tok.replace(" + ", " ")
-        __tok = __tok.replace(" * ", " ")
-        __tok = __tok.replace(" @@ ", " ")
-        __tok = __tok.replace(" @ ", " ")
-        __tok = __tok.replace(" __ ", " ")
-        __tok = __tok.replace(" sp ", " ")
-        __tok = __tok.replace(" dummy ", " ")
-
-        # Hesitations
-        __tok = __tok.replace(" [m]?euh ", " ")
-        __tok = __tok.replace(" euh ", " ")
-        __tok = __tok.replace(" heu ", " ")
-        __tok = __tok.replace(" hum ", " ")
-        __tok = __tok.replace(" eeh ", " ")
-        __tok = __tok.replace(" pff ", " ")
-        __tok = __tok.replace(" pf ", " ")
-
-        # Others
-        __tok = self.__clean(__tok)
-
-        if len(__tok) == 0:
-            return False
-        return True
+        return self.__entries[idx].get_formatted()
 
     # ------------------------------------------------------------------
 
@@ -249,7 +282,7 @@ class DataSpeaker(object):
 
         c_next = current + 1
         while c_next < len(self.__entries):
-            if self.is_token(self.__entries[c_next]) is True:
+            if self.__entries[c_next].is_token() is True:
                 return c_next
             c_next += 1
 
@@ -259,22 +292,22 @@ class DataSpeaker(object):
 
     def is_token_repeated(self, current, other_current, other_speaker):
         """ Ask for a token to be repeated by the other speaker.
-        Return the index of the repetition or -1.
 
-        :param current: (int)
-        :param other_current: (int)
-        :param other_speaker: (DataSpeaker)
+        :param current: (int) From index, in current speaker
+        :param other_current: (int) From index, in the other speaker
+        :param other_speaker: (DataSpeaker) Data of the other speaker
+        :returns: index of the echo or -1
 
         """
-        # the token to search
-        __c1 = self.__clean(self.__entries[current])
-        # is it a token?
-        if self.is_token(__c1) is False:
+        # Does the current entry is a token?
+        if self.__entries[current].is_token() is False:
             return -1
 
-        while 0 < other_current < len(other_speaker):
-            other_token = other_speaker.get_token(other_current)
-            __c2 = self.__clean(other_token)
+        # the token to search
+        __c1 = self.__entries[current].get_formatted()
+        while 0 <= other_current < len(other_speaker):
+            # the other token
+            __c2 = other_speaker.get_token(other_current)
             if __c1 == __c2:
                 return other_current
             # try next one
@@ -283,34 +316,11 @@ class DataSpeaker(object):
         return -1
 
     # ------------------------------------------------------------------
-
-    def __clean(self, entry):
-        """ Clean a string by removing tabs, CR/LF, and some punctuation.
-
-        :param entry: (str) unicode string to clean
-        :returns: unicode string without special chars
-
-        """
-        # Remove multiple whitespace
-        __str = re.sub("[\s]+", " ", entry)
-
-        # Punctuation at end or beginning
-        __str = re.sub("\-+$", "", __str)
-        __str = re.sub(">$", "", __str)
-        __str = re.sub("^<", "", __str)
-
-        # Whitespace at beginning and end
-        __str = re.sub("^[ ]+", "", __str)
-        __str = re.sub("[ ]+$", "", __str)
-
-        return __str.strip()
-
-    # ------------------------------------------------------------------
     # Overloads
     # ------------------------------------------------------------------
 
     def __str__(self):
-        return " ".join(self.__entries)
+        return " ".join([e.get() for e in self.__entries])
 
     def __iter__(self):
         for a in self.__entries:

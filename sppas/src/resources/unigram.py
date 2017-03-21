@@ -105,18 +105,21 @@ class Unigram(object):
 
     def get_sum(self):
         """ Return the sum of all counts (of all tokens). """
+
         return self._sum
 
     # -------------------------------------------------------------------------
 
     def get_tokens(self):
         """ Return a list with all tokens. """
+
         return self._dict.keys()
 
     # -------------------------------------------------------------------------
 
     def get_size(self):
         """ Return the number of tokens (vocab size). """
+
         return len(self._dict)
 
     # ------------------------------------------------------------------------
