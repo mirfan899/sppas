@@ -1,12 +1,19 @@
 # -*- coding:utf-8 -*-
 
+import os
 import unittest
+
+from sppas import RESOURCES_PATH
 
 from ..Repet.datastructs import DataRepetition, Entry, DataSpeaker
 from ..Repet.rules import Rules
 from ..Repet.detectrepet import Repetitions
+from ..Repet.sppasrepet import sppasRepet
+
+# ---------------------------------------------------------------------------
 
 STOP_LIST = ["ah", "aller", "alors", "après", "avec", "avoir", "bon", "ce", "comme", "c'est", "dans", "de", "de+le", "dire", "donc", "eeh", "eh", "en", "en_fait", "et", "etc", "euh", "hein", "heu", "hum", "hm", "il", "le", "lui", "là", "mais", "meuh", "mh", "mhmh", "mmh", "moi", "mon", "ne", "non", "null", "on", "ou", "ouais", "oui", "où", "pas", "peu", "pf", "pff", "plus", "pour", "quand", "que", "qui", "quoi", "se", "si", "sur", "tout", "très", "un", "voilà", "voir", "y", "à", "ça", "être"]
+STOP_LIST_FRA = os.path.join(RESOURCES_PATH, "vocab", "fra.stp")
 
 # ---------------------------------------------------------------------------
 
@@ -185,7 +192,7 @@ class TestRepetitions(unittest.TestCase):
         r = Repetitions(['euh'])
         d1 = DataSpeaker(["tok1", "euh", "euh", "euh", "tok2", "euh"])
         n = r.get_longest(1, d1)  # n=3
-        self.assertEqual(r.select_self_repetition(1, n, d1), 3)  # "euh euh euh" is not accepted as source
+        self.assertEqual(r.select_self_repetition(1, n, d1), 4)  # "euh euh euh" is not accepted as source
         self.assertIsNone(r.get_source())
 
     def test_select_other_repetition(self):
@@ -204,6 +211,11 @@ class TestRepetitions(unittest.TestCase):
         self.assertEqual(len(r.get_echos()), 2)
         self.assertTrue((3, 3) in r.get_echos())
         self.assertTrue((5, 5) in r.get_echos())
+
+        d = DataSpeaker(["sur", "la", "bouffe", "#", "après", "etc", "la", "etc", "#", "etc", "bouffe", "etc"])
+        r = Repetitions(STOP_LIST)
+        r.detect(d, limit=3)
+        self.assertEqual(r.get_source(), (1, 2))
 
     def test_detect_or(self):
 
@@ -242,3 +254,27 @@ class TestRepetitions(unittest.TestCase):
         self.assertEqual(r.get_source(), (1, 5))
         self.assertEqual(len(r.get_echos()), 1)
         self.assertTrue((5, 9) in r.get_echos())  # un foyer
+
+# ---------------------------------------------------------------------------
+
+
+class TestsppasRepet(unittest.TestCase):
+
+    def test_init(self):
+        s = sppasRepet()
+        self.assertEqual(s.stop_words.get_size(), 0)
+        self.assertEqual(s.lemmatizer.get_size(), 0)
+        s = sppasRepet(STOP_LIST_FRA)
+        self.assertEqual(s.stop_words.get_size(), 65)
+        self.assertGreater(s.lemmatizer.get_size(), 0)
+
+    def test_set_options(self):
+        s = sppasRepet()
+        with self.assertRaises(ValueError):
+            s.set_span(0)
+        with self.assertRaises(ValueError):
+            s.set_span(30)
+        with self.assertRaises(ValueError):
+            s.set_alpha(-2)
+        with self.assertRaises(ValueError):
+            s.set_alpha(10)

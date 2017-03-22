@@ -148,23 +148,16 @@ class Repetitions(DataRepetition):
 
         if source_len == 0:
             keep_me = self.__rules.apply_rules_one_token(start, speaker1)
-
             if keep_me is True:
                 self.set_source(start, start)
                 self.find_echos(start, start, speaker1)
-
             current = start + 1
 
         else:
-            while end > start+1:
-                keep_me = self.__rules.apply_rules_syntagme(start, end, speaker1)
-                if keep_me is True:
-                    self.set_source(start, end)
-                    self.find_echos(start, end, speaker1)
-                    break
-                else:
-                    # Try with a shorter source (ignore last token)
-                    end -= 1
+            keep_me = self.__rules.apply_rules_syntagme(start, end, speaker1)
+            if keep_me is True:
+                self.set_source(start, end)
+                self.find_echos(start, end, speaker1)
             current = end + 1
 
         return current
@@ -251,21 +244,21 @@ class Repetitions(DataRepetition):
             path_repeats[i].append(repeats[start][i])
 
             for j in range(start+1, len(repeats)):
-                precvalue = path_repeats[-1][-1]
+                prec_value = path_repeats[-1][-1]
                 v = 0
-                if precvalue not in repeats[j]:
-                    if (precvalue+1) not in repeats[j]:
-                        if (precvalue+2) not in repeats[j]:
-                            if (precvalue-1) not in repeats[j]:
+                if prec_value not in repeats[j]:
+                    if (prec_value+1) not in repeats[j]:
+                        if (prec_value+2) not in repeats[j]:
+                            if (prec_value-1) not in repeats[j]:
                                 break
                             else:
-                                v = repeats[j].index(precvalue-1)
+                                v = repeats[j].index(prec_value-1)
                         else:
-                            v = repeats[j].index(precvalue+2)
+                            v = repeats[j].index(prec_value+2)
                     else:
-                        v = repeats[j].index(precvalue+1)
+                        v = repeats[j].index(prec_value+1)
                 else:
-                    v = repeats[j].index(precvalue)
+                    v = repeats[j].index(prec_value)
                 path_repeats[i].append(repeats[j][v])
 
         # return the (first of the) longest path:

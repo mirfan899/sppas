@@ -56,18 +56,22 @@ class LemmaDict(object):
     """ Perform a simple dictionary-based lemmatization.
     """
 
-    def __init__(self, dictfilename):
+    def __init__(self):
         """ Create a new LemmaDict instance.
-            The dictionary file contains at least 3 columns: the 1st column
-            indicates the token, the second column indicates the nb of occ.,
-            the last column indicates the lemma.
-            Parameters:
-                - dictfilename is the dictionary file name.
 
         """
         self.unk = UNKSTAMP
         # Load the dictionary:
-        self.lemdict = {}
+        self.lemdict = dict()
+
+    # ------------------------------------------------------------------
+
+    def load(self, dictfilename):
+        """ Load a dictionary with "token occurrence lemma" as columns.
+
+        :param dictfilename: the dictionary file name.
+
+        """
         with codecs.open(dictfilename, 'r', encoding) as fd:
 
             dictfreq = {}
@@ -86,7 +90,7 @@ class LemmaDict(object):
 
                 # Add (or change) the entry in the dict
                 # Find a previous token in the dictionary... or not!
-                if dictfreq.has_key(__entry) == True:
+                if dictfreq.has_key(__entry) is True:
                     # a token already exists
                     if dictfreq[__entry] < __freq:
                         # the new one is more frequent
