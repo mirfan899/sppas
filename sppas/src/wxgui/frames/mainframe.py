@@ -119,7 +119,7 @@ class FrameSPPAS(wx.Frame):
         w *= 0.6
         h = min(0.9*h, w*9/16)
         self.SetMinSize((MIN_FRAME_W, MIN_FRAME_H))
-        self.SetSize(wx.Size(w, h))
+        self.SetSize(wx.Size(max(int(w), MIN_FRAME_W), max(int(h), MIN_FRAME_H)))
         self.Centre()
         self.Enable()
         self.SetFocus()
