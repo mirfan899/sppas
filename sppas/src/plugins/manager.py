@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -131,7 +130,7 @@ class sppasPluginsManager(Thread):
             try:
                 self.append(plugin_folder)
             except Exception as e:
-                logging.info("Plugin %s loading error: %s" % (plugin_folder, str(e)))
+                logging.info("Plugin {:s} loading error: {:s}".format(plugin_folder, str(e)))
 
     # ------------------------------------------------------------------------
 
@@ -234,7 +233,7 @@ class sppasPluginsManager(Thread):
             # Indicate the file to be processed
             if self._progress is not None:
                 self._progress.set_text(os.path.basename(pfile)+" ("+str(i+1)+"/"+str(total)+")")
-            output_lines += get_info("4010").format(pfile)
+            output_lines += get_info("4010").format(filename=pfile)
 
             # Apply the plugin
             process = sppasPluginProcess(self._plugins[plugin_id])
