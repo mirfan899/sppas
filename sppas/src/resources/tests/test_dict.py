@@ -5,6 +5,7 @@ import unittest
 import os.path
 
 from sppas import RESOURCES_PATH
+from sppas.src.utils.makeunicode import u
 
 from ..dictpron import DictPron
 from ..dictrepl import DictRepl
@@ -24,9 +25,9 @@ class TestDictPron(unittest.TestCase):
         d = DictPron(DICT_FRA)
         self.assertTrue(d.is_unk('azerty'))
         self.assertFalse(d.is_unk('il_y_a'))
-        self.assertFalse(d.is_unk(u'être'))
-        self.assertEqual(d.get_pron(u'sil'), "s-i-l")
-        self.assertEqual(d.get_pron(u'azerty'), "<UNK>")
+        self.assertFalse(d.is_unk(u('être')))
+        self.assertEqual(d.get_pron(u('sil')), "s-i-l")
+        self.assertEqual(d.get_pron(u('azerty')), "<UNK>")
 
     def test_save(self):
         d = DictPron(DICT_FRA)
@@ -66,6 +67,8 @@ class TestDictRepl(unittest.TestCase):
 
     def test_init_with_dict(self):
         dict1 = DictRepl(self.replfile, nodump=True)
+        dict2 = DictRepl()
+        self.assertEqual(len(dict2), 0)
 
     def test_dict_simple(self):
         d = DictRepl()
@@ -81,6 +84,9 @@ class TestDictRepl(unittest.TestCase):
         self.assertFalse(d.is_value("v1|v2"))
         self.assertTrue(d.is_value_of("key2", "v2"))
         self.assertFalse(d.is_value_of("key2", "v1"))
+
+        d.add("  éé \t ", "ee")
+        self.assertTrue(u("éé") in d)
 
 # ---------------------------------------------------------------------------
 

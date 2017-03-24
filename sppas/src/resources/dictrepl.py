@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -30,7 +29,7 @@
         ---------------------------------------------------------------------
 
     src.resources.dictrepl.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     A dictionary to manage automated replacements.
 
@@ -38,8 +37,9 @@
 import codecs
 import logging
 
+from sppas import encoding
+from sppas.src.utils.makeunicode import sppasUnicode
 from .dumpfile import DumpFile
-from .rutils import ENCODING
 
 # ----------------------------------------------------------------------------
 
@@ -55,15 +55,15 @@ class DictRepl(object):
     
     The main feature is that values are "accumulated".
 
-        >>>d = DictRepl()
-        >>>d.add("key", "v1")
-        >>>d.add("key", "v2")
-        >>>print d.get("key")
-        >>>v1|v2
-        >>>print d.is_value("v1")
-        >>>True
-        >>>print d.is_value("v1|v2")
-        >>>False
+    >>>d = DictRepl()
+    >>>d.add("key", "v1")
+    >>>d.add("key", "v2")
+    >>>print d.get("key")
+    >>>v1|v2
+    >>>print d.is_value("v1")
+    >>>True
+    >>>print d.is_value("v1|v2")
+    >>>False
 
     """
     REPLACE_SEPARATOR = "|"
@@ -91,7 +91,6 @@ class DictRepl(object):
                 self.load_from_ascii(dict_filename)
                 if nodump is False:
                     dp.save_as_dump(self._dict)
-
             else:
                 self._dict = data
 
@@ -100,16 +99,21 @@ class DictRepl(object):
     # ------------------------------------------------------------------------
 
     def is_key(self, entry):
-        """ Return True if entry is a key in the dictionary."""
+        """ Return True if entry is a key in the dictionary.
 
-        # deprecated: return self._dict.has_key(entry)
+        :param entry: (str) Unicode string.
+
+        """
         return entry in self._dict
 
     # ------------------------------------------------------------------------
 
     def is_value(self, entry):
-        """ Return True if entry is a value in the dictionary. """
+        """ Return True if entry is a value in the dictionary.
 
+        :param entry: (str) Unicode string.
+
+        """
         for v in self._dict.values():
             values = v.split(DictRepl.REPLACE_SEPARATOR)
             for val in values:
@@ -121,8 +125,12 @@ class DictRepl(object):
     # ------------------------------------------------------------------------
 
     def is_value_of(self, key, entry):
-        """ Return True if entry is a value of a given key in the dictionary. """
+        """ Return True if entry is a value of a given key in the dictionary.
 
+        :param key: (str) Unicode string.
+        :param entry: (str) Unicode string.
+
+        """
         v = self._dict.get(key, "")
         values = v.split(DictRepl.REPLACE_SEPARATOR)
         for val in values:
@@ -134,8 +142,11 @@ class DictRepl(object):
     # ------------------------------------------------------------------------
 
     def is_unk(self, entry):
-        """ Return True if entry is not a key in the dictionary. """
+        """ Return True if entry is not a key in the dictionary.
 
+        :param entry: (str) Unicode string.
+
+        """
         return entry not in self._dict
 
     # ------------------------------------------------------------------------
@@ -185,7 +196,7 @@ class DictRepl(object):
     def replace_reversed(self, value):
         """ Return the key(s) of a value or an empty string if value does not exists.
 
-        :returns: a string with all keys, separated by '_'.
+        :returns: a unicode string with all keys, separated by '_'.
 
         """
         # hum... of course, a value can have more than 1 key!
@@ -209,18 +220,21 @@ class DictRepl(object):
         """ Add a new key,value into the dict, or append value to the existing
         one with a "|" used as separator.
 
-        :param token: (str) unicode string of the token to add
+        :param token: (str) string of the token to add
         :param repl: (str) the replacement token
 
+        Both token and repl are converted to unicode (if any) and strip.
+
         """
-        # Remove multiple spaces
-        key = " ".join(token.split())
-        value = " ".join(repl.split())
+        s = sppasUnicode(token)
+        key = s.to_strip()
+        s = sppasUnicode(repl)
+        value = s.to_strip()
 
         # Check key,value in the dict
         if self.is_key(key):
             if self.is_value_of(key, value) is False:
-                value = u"{0}|{1}".format(self._dict.get(key), value)
+                value = "{0}|{1}".format(self._dict.get(key), value)
 
         # Append
         self._dict[key] = value
@@ -247,7 +261,7 @@ class DictRepl(object):
         :param filename: (str)
 
         """
-        with codecs.open(filename, 'r', ENCODING) as fd:
+        with codecs.open(filename, 'r', encoding) as fd:
             lines = fd.readlines()
 
         for line in lines:
@@ -274,18 +288,30 @@ class DictRepl(object):
 
         """
         try:
-            with codecs.open(filename, 'w', encoding=ENCODING) as output:
+            with codecs.open(filename, 'w', encoding=encoding) as output:
                 for entry, value in sorted(self._dict.items(), key=lambda x: x[0]):
                     values = value.split(DictRepl.REPLACE_SEPARATOR)
                     for v in values:
                         output.write("%s %s\n" % (entry, v.strip()))
         except Exception as e:
-            logging.info('Save file failed due to the following error: %s' % str(e))
+            logging.info('Save file failed due to the following error: {:s}'.format(str(e)))
             return False
 
         return True
 
     # ------------------------------------------------------------------------
+    # Overloads
+    # ------------------------------------------------------------------------
 
     def __str__(self):
         return str(self._dict)
+
+    # ------------------------------------------------------------------------
+
+    def __len__(self):
+        return len(self._dict)
+
+    # ------------------------------------------------------------------------
+
+    def __contains__(self, item):
+        return item in self._dict
