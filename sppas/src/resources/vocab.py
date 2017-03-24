@@ -81,11 +81,8 @@ class Vocabulary(object):
                 self.load_from_ascii(filename)
                 if nodump is False:
                     dp.save_as_dump(self.__entries)
-                logging.info('Vocabulary loaded from ASCII file.')
-
             else:
                 self.__entries = data
-                logging.info('Vocabulary loaded from dump file.')
 
     # -----------------------------------------------------------------------
     # Data management

@@ -15,7 +15,7 @@ msgstr ""
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 1.8.12\n"
 
 msgid ":ERROR 5010: "
 msgstr "Error while trying to open and read the file: {name}."
@@ -34,3 +34,6 @@ msgstr "The score value of unigrams pattern matching must range [0;1]. Got {obse
 
 msgid ":ERROR 5030: "
 msgstr "The dump file can't have the same extension as the ASCII file ({extension})."
+
+msgid ":ERROR 5040: "
+msgstr "The count value must be positive. Got ({count})."

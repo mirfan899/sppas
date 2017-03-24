@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -45,6 +44,7 @@ NGRAM_RANGE_ERROR = ":ERROR 5020: "
 GAP_RANGE_ERROR = ":ERROR 5022: "
 SCORE_RANGE_ERROR = ":ERROR 5024: "
 DUMP_EXTENSION_ERROR = ":ERROR 5030: "
+POSITIVE_VALUE_ERROR = ":ERROR 5040: "
 
 # -----------------------------------------------------------------------
 
@@ -120,6 +120,18 @@ class DumpExtensionError(ValueError):
 
     def __init__(self, extension):
         self.parameter = DUMP_EXTENSION_ERROR + (t.gettext(DUMP_EXTENSION_ERROR)).format(extension=extension)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class PositiveValueError(ValueError):
+    """ :ERROR 5040: The count value must be positive. Got ({count}). """
+
+    def __init__(self, count):
+        self.parameter = POSITIVE_VALUE_ERROR + (t.gettext(POSITIVE_VALUE_ERROR)).format(count=count)
 
     def __str__(self):
         return repr(self.parameter)

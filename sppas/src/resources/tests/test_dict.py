@@ -45,13 +45,16 @@ class TestUnigram(unittest.TestCase):
         gram = Unigram()
         gram.add('a')
         self.assertEqual(gram.get_size(), 1)
+        self.assertEqual(gram.get_size(), len(gram))
         self.assertEqual(gram.get_count('a'), 1)
         gram.add('a')
         self.assertEqual(gram.get_size(), 1)
         self.assertEqual(gram.get_count('a'), 2)
-        gram.add('a',3)
+        gram.add('  a \t', 3)
         self.assertEqual(gram.get_size(), 1)
         self.assertEqual(gram.get_count('a'), 5)
+        with self.assertRaises(ValueError):
+            gram.add('b', 0)
 
 # ---------------------------------------------------------------------------
 

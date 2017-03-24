@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -30,14 +29,17 @@
         ---------------------------------------------------------------------
 
     src.resources.unigram.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import codecs
 import logging
 
+from sppas import encoding
+from sppas.src.utils.makeunicode import sppasUnicode
+
 from .dumpfile import DumpFile
-from .rutils import ENCODING
+from .resourcesexc import PositiveValueError
 
 # ----------------------------------------------------------------------------
 
@@ -53,14 +55,14 @@ class Unigram(object):
 
     """
     def __init__(self, filename=None, nodump=True):
-        """ Constructor.
+        """ Create a Unigram.
 
-        :param filename: (str) The unigram file name (2 columns)
+        :param filename: (str) Name of the file with words and counts (2 columns)
         :param nodump: (bool) Disable the creation of a dump file
 
         """
-        self._sum = 0
-        self._dict = {}
+        self.__sum = 0
+        self.__entries = dict()
 
         if filename is not None:
 
@@ -75,21 +77,29 @@ class Unigram(object):
             if data is None:
                 self.load_from_ascii(filename)
                 if nodump is False:
-                    dp.save_as_dump(self._dict)
+                    dp.save_as_dump(self.__entries)
             else:
-                self._dict = data
+                self.__entries = data
 
     # -------------------------------------------------------------------------
 
-    def add(self, token, value=1):
+    def add(self, entry, value=1):
         """ Add or increment a token in the unigram.
 
-        :param token: (str) The string of the token to add
-        :param value: (int) The value to increment
+        :param entry: (str) String of the token to add
+        :param value: (int) Value to increment the count
 
         """
-        self._dict[token] = self._dict.get(token, 0) + value
-        self._sum += value
+        s = sppasUnicode(entry)
+        entry = s.to_strip()
+
+        value = int(value)
+        if value <= 0:
+            raise PositiveValueError(count=value)
+        count = self.__entries.get(entry, 0) + value
+
+        self.__entries[entry] = count
+        self.__sum += value
 
     # -------------------------------------------------------------------------
 
@@ -99,28 +109,28 @@ class Unigram(object):
         :param token: (str) The string of the token
 
         """
-        return self._dict.get(token, 0)
+        return self.__entries.get(token, 0)
 
     # -------------------------------------------------------------------------
 
     def get_sum(self):
         """ Return the sum of all counts (of all tokens). """
 
-        return self._sum
+        return self.__sum
 
     # -------------------------------------------------------------------------
 
     def get_tokens(self):
         """ Return a list with all tokens. """
 
-        return self._dict.keys()
+        return self.__entries.keys()
 
     # -------------------------------------------------------------------------
 
     def get_size(self):
         """ Return the number of tokens (vocab size). """
 
-        return len(self._dict)
+        return len(self.__entries)
 
     # ------------------------------------------------------------------------
     # File
@@ -132,7 +142,7 @@ class Unigram(object):
         :param filename: (str)
 
         """
-        with codecs.open(filename, 'r', ENCODING) as fd:
+        with codecs.open(filename, 'r', encoding) as fd:
             lines = fd.readlines()
 
         for line in lines:
@@ -159,11 +169,23 @@ class Unigram(object):
 
         """
         try:
-            with codecs.open(filename, 'w', encoding=ENCODING) as output:
-                for entry, value in sorted(self._dict.items(), key=lambda x: x[0]):
-                    output.write("%s %d\n" % (entry, value))
+            with codecs.open(filename, 'w', encoding=encoding) as output:
+                for entry, value in sorted(self.__entries.items(), key=lambda x: x[0]):
+                    output.write("{:s} {:d}\n".format(entry, value))
         except Exception as e:
-            logging.info('Save file failed due to the following error: %s' % str(e))
+            logging.info('Save file failed due to the following error: {:s}'.format(str(e)))
             return False
 
         return True
+
+    # -----------------------------------------------------------------------
+    # Overloads
+    # -----------------------------------------------------------------------
+
+    def __len__(self):
+        return len(self.__entries)
+
+    # ------------------------------------------------------------------------
+
+    def __contains__(self, item):
+        return item in self.__entries
