@@ -40,7 +40,6 @@ import re
 from sppas.src.utils.makeunicode import u, sppasUnicode
 from sppas.src.resources.vocab import Vocabulary
 from sppas.src.resources.dictrepl import DictRepl
-import sppas.src.resources.rutils as rutils
 
 from .num2letter import sppasNum
 
@@ -340,7 +339,7 @@ class sppasTokSplitter(object):
         s = " ".join(toks)
 
         # Then split each time there is a space and return result
-        s = rutils.to_strip(s)
+        s = sppasUnicode(s).to_strip()
 
         return s.split()
 
@@ -435,7 +434,7 @@ class sppasTokenizer(object):
             # use a longest matching to aggregate the current token with the next ones
             idx_end = min(len(utt), idx_start+self.aggregate_max+1)
             phrase = " ".join(utt[idx_start:idx_end])
-            idx_end, word = self.__stick_longest_lr(rutils.to_strip(phrase))
+            idx_end, word = self.__stick_longest_lr(sppasUnicode(phrase).to_strip())
 
             new_utt.append(word)
             idx_start += idx_end + 1
@@ -482,12 +481,12 @@ class sppasTokenizer(object):
                             _token = _tabtoks[t1]
                         i -= 1
                     t1 += i_ok
-                    t2 = rutils.to_strip(_token)
+                    t2 = sppasUnicode(_token).to_strip()
                     if len(t2) > 0:
                         _utt.append(t2)
 
             else:
-                _utt.append(rutils.to_strip(tok))
+                _utt.append(sppasUnicode(tok).to_strip())
 
         return _utt
 
@@ -613,9 +612,9 @@ class DictTok(object):
         """
         # Specific case of float numbers
         sent = ' '.join(utt)
-        sent = re.sub(u'([0-9])\.([0-9])', ur'\1 NUMBER_SEP_POINT \2', sent)
-        sent = re.sub(u'([0-9])\,([0-9])', ur'\1 NUMBER_SEP \2', sent)
-        sent = rutils.to_strip(sent)
+        sent = re.sub('([0-9])\.([0-9])', r'\1 NUMBER_SEP_POINT \2', sent)
+        sent = re.sub('([0-9])\,([0-9])', r'\1 NUMBER_SEP \2', sent)
+        sent = sppasUnicode(sent).to_strip()
         _utt = sent.split()
 
         # Other generic replacements
@@ -623,7 +622,7 @@ class DictTok(object):
         for s in _utt:
             if self.repl.is_key(s):
                 s = s.replace(s, self.repl.replace(s))
-            _result.append(rutils.to_strip(s))
+            _result.append(sppasUnicode(s).to_strip())
 
         return _result
 
@@ -638,7 +637,7 @@ class DictTok(object):
         _utt = []
         for tok in utt:
             if "/" not in tok:
-                _utt.append(rutils.to_lower(tok))
+                _utt.append(sppasUnicode(tok).to_lower())
             else:
                 _utt.append(tok)
 
@@ -721,14 +720,14 @@ class DictTok(object):
         # Finally, prepare the result
         strres = ""
         for s in utt:
-            s = rutils.to_strip(s)
-            strres = strres + u" " + s.replace(u" ", u"_")
+            s = sppasUnicode(s).to_strip()
+            strres = strres + " " + s.replace(" ", "_")
 
-        strres = rutils.to_strip(strres)
+        strres = sppasUnicode(strres).to_strip()
         if len(strres) == 0:
             return ""  # Nothing valid!
 
-        return strres.replace(u" ", self.delimiter)
+        return strres.replace(" ", self.delimiter)
 
     # ------------------------------------------------------------------
 
@@ -747,7 +746,7 @@ class DictTok(object):
         """
         # THE ENTRY (a transcription, a text...) IS A UTF8-STRING
         # -------------------------------------------------------
-        _str = rutils.to_strip(entry)
+        _str = sppasUnicode(entry).to_strip()
 
         # Remove UTF-8 specific characters that are not in our dictionaries!
         try:

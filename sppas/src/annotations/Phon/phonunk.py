@@ -37,7 +37,7 @@
 
 import re
 
-import sppas.src.resources.rutils as rutils
+from sppas.src.utils.makeunicode import sppasUnicode
 from .dagphon import DAGPhon
 
 # ---------------------------------------------------------------------------
@@ -116,11 +116,11 @@ class PhonUnk(object):
         @raise Exception if the word can NOT be phonetized
 
         """
-        _str = rutils.to_strip( entry )
-        _str = rutils.to_lower( _str )
-        if len(_str)>0 and _str[-1].isalnum() is False:
+        _str = sppasUnicode(entry).to_strip()
+        _str = sppasUnicode(_str).to_lower()
+        if len(_str) > 0 and _str[-1].isalnum() is False:
             _str = _str[:-1]
-        if len(_str)>0 and _str[0].isalnum() is False:
+        if len(_str) > 0 and _str[0].isalnum() is False:
             _str = _str[1:]
         if len(_str) == 0:
             return ""
@@ -129,7 +129,7 @@ class PhonUnk(object):
             raise Exception('Unable to phonetize the unknown token (too long): '+entry)
 
         # Find all pronunciations of segments with a longest matching algo.
-        _tabstr = re.split(u"[-'_\s]",_str)
+        _tabstr = re.split("[-'_\s]", _str)
         pronlr = ""
         pronrl = ""
 

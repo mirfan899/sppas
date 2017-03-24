@@ -38,7 +38,7 @@
 import codecs
 
 from sppas import encoding
-from sppas.src.resources.rutils import to_strip
+from sppas.src.utils.makeunicode import sppasUnicode
 
 from .aligners import DEFAULT_ALIGNER
 from .aligners import instantiate as aligners_instantiate
@@ -218,15 +218,14 @@ class AlignTrack(object):
     # ------------------------------------------------------------------------
 
     def _readline(self, filename):
-        """ Read the first line of filename, and return it as a formatted string. """
+        """ Read the first line of filename, and return it as a unicode formatted string. """
 
         line = ""
         try:
             with codecs.open(filename, 'r', encoding) as fp:
-                line = to_strip(fp.readline())
+                s = sppasUnicode(fp.readline())
+                line = s.to_strip()
         except Exception:
             return ""  # IOError, Encoding error...
 
         return line
-
-    # ----------------------------------------------------------------------

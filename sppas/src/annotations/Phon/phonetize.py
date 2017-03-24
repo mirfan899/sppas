@@ -36,7 +36,7 @@
 
 import re
 
-from sppas.src.resources.rutils import to_strip
+from sppas.src.utils.makeunicode import sppasUnicode, u
 from sppas.src.resources.mapping import Mapping
 from sppas.src.resources.dictpron import DictPron
 from .. import ERROR_ID, WARNING_ID, OK_ID
@@ -144,11 +144,11 @@ class DictPhon(object):
         the unknown symbol.
 
         """
-        entry = to_strip(entry)
+        entry = sppasUnicode(entry).to_strip()
 
         # Specific strings... for the italian transcription...
         # For the participation at the CLIPS-Evalita 2011 campaign.
-        if entry.startswith(u"<") is True and entry.endswith(u">") is True:
+        if entry.startswith(u("<")) is True and entry.endswith(u(">")) is True:
             entry = entry[1:-1]
 
         # No entry! Nothing to do.
@@ -157,11 +157,11 @@ class DictPhon(object):
 
         # Specific strings used in the CID transcription...
         # CID is Corpus of Interactional Data, http://sldr.org/sldr000720
-        if entry.startswith(u"gpd_") is True or entry.startswith(u"gpf_") is True:
+        if entry.startswith(u("gpd_")) is True or entry.startswith(u("gpf_")) is True:
             return ""
 
         # Specific strings used in SPPAS IPU segmentation...
-        if entry.startswith(u"ipu_"):
+        if entry.startswith(u("ipu_")):
             return ""
 
         # Find entry in the dict as it is given
@@ -208,13 +208,13 @@ class DictPhon(object):
 
                     # A missing compound word?
                     if "-" in entry or "'" in entry or "_" in entry:
-                        _tabpron = [self.get_phon_entry(w) for w in re.split(u"[-'_]", entry)]
+                        _tabpron = [self.get_phon_entry(w) for w in re.split("[-'_]", entry)]
 
                         # OK, finally the entry is in the dictionary?
                         if self._pdict.get_unkstamp() not in _tabpron:
                             # ATTENTION: each part can have variants! must be decomposed.
                             self._dag_phon.variants = 4
-                            phon = to_strip(self._dag_phon.decompose(" ".join(_tabpron)))
+                            phon = sppasUnicode(self._dag_phon.decompose(" ".join(_tabpron))).to_strip()
                             status = WARNING_ID
 
                     if phon == self._pdict.get_unkstamp() and phonunk is True:
@@ -287,7 +287,7 @@ class DictPhon(object):
                 subs.append(p)
 
         self._dag_phon.variants = 0
-        phon = to_strip(self._dag_phon.decompose(" ".join(subs)))
+        phon = sppasUnicode(self._dag_phon.decompose(" ".join(subs))).to_strip()
 
         # Remove un-pronounced phonemes!!!
         # By convention, they are represented by an underscore in the

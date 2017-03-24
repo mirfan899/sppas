@@ -22,6 +22,9 @@ DICT_FRA = os.path.join(RESOURCES_PATH, "dict", "fra.dict")
 class TestDictPron(unittest.TestCase):
 
     def test_dict(self):
+        d = DictPron()
+        self.assertEqual(len(d), 0)
+
         d = DictPron(DICT_FRA)
         self.assertTrue(d.is_unk('azerty'))
         self.assertFalse(d.is_unk('il_y_a'))

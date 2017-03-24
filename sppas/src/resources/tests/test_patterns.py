@@ -38,12 +38,12 @@ class TestPatterns(unittest.TestCase):
             self._patterns.set_gap(5)
 
     def test_ngram_alignments(self):
-        ref = [ "w0", "w1",  "w2",  "w3",  "w4",  "w5",  "w6",  "w7",  "w8",  "w9",  "w10",  "w11",  "w12" ]
-        hyp = [ ("w0",0.8), ("w1",1),  ("w2",0.7),  ("wX",0.9),  ("w3",1),  ("w5",0.4),  ("w6",0.95),  ("wX",1),  ("w9",1) ]
+        ref = ["w0", "w1", "w2", "w3", "w4", "w5", "w6", "w7", "w8", "w9", "w10", "w11", "w12"]
+        hyp = [("w0",0.8), ("w1",1), ("w2",0.7), ("wX",0.9), ("w3",1), ("w5",0.4), ("w6",0.95), ("wX",1), ("w9",1)]
 
         self._patterns.set_ngram(3)
         self._patterns.set_gap(1)
-        self.assertEqual([ (0,0), (1,1), (2,2) ], self._patterns.ngram_alignments(ref,hyp))
+        self.assertEqual([(0,0), (1,1), (2,2)], self._patterns.ngram_alignments(ref, hyp))
 
         self._patterns.set_ngram(2)
         self._patterns.set_gap(1)

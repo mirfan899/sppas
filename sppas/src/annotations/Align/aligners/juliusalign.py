@@ -43,7 +43,7 @@ from sppas import encoding
 from sppas.src.models.slm.ngramsmodel import NgramsModel
 from sppas.src.models.slm.arpaio import ArpaIO
 from sppas.src.models.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
-from sppas.src.resources.rutils import to_strip
+from sppas.src.utils.makeunicode import sppasUnicode
 from sppas.src.resources.dictpron import DictPron
 
 from .basealigner import BaseAligner
@@ -339,11 +339,11 @@ class JuliusAligner( BaseAligner ):
 
         entries = []
         for line in lines:
-            if line.find("Error: voca_load_htkdict")>-1 and line.find("not found")>-1:
-                line = to_strip( line )
+            if line.find("Error: voca_load_htkdict") > -1 and line.find("not found") > -1:
+                line = sppasUnicode(line).to_strip()
                 line = line[line.find('"')+1:]
                 line = line[:line.find('"')]
-                if len(line)>0:
+                if len(line) > 0:
                     entries = line.split()
 
         if len(entries) > 0:

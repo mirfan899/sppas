@@ -36,7 +36,7 @@
 # ---------------------------------------------------------------------------
 
 import codecs
-import sppas.src.resources.rutils as rutils
+from sppas import encoding
 
 # ---------------------------------------------------------------------------
 
@@ -69,7 +69,7 @@ class TiedList(object):
         @param filename (str)
 
         """
-        with codecs.open(filename, 'r', rutils.ENCODING) as fd:
+        with codecs.open(filename, 'r', encoding) as fd:
             for nbl, line in enumerate(fd, 1):
                 line=line.strip()
                 try:
@@ -91,7 +91,7 @@ class TiedList(object):
         @param filename is the tiedlist file name
 
         """
-        with codecs.open(filename, 'w', rutils.ENCODING) as fp:
+        with codecs.open(filename, 'w', encoding) as fp:
             for triphone in self.observed:
                 fp.write( triphone + "\n" )
             for k,v in sorted(self.tied.items()):

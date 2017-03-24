@@ -180,8 +180,8 @@ class Patterns(object):
         An interstice value ensure the gap between an item in the ref and
         in the hyp won't be too far.
 
-        :param ref: (list of tokens - IN) List of references
-        :param hyp: (list of tuples - IN) List of hypothesis with their scores
+        :param ref: (list of tokens) List of references
+        :param hyp: (list of tuples) List of hypothesis with their scores
         The scores are supposed to range in [0;1] values.
         :returns: List of alignments indexes as tuples (i_ref,i_hyp),
 
@@ -278,13 +278,13 @@ class Patterns(object):
         """ Create ngrams of the reference and the hypothesis. """
 
         # create n-gram sequences of the reference
-        nman = zip(*[ref[i:] for i in range(self._ngram)])
+        nman = list(zip(*[ref[i:] for i in range(self._ngram)]))
 
         # create n-gram sequences of the hypothesis
         # if ngram=1, keep only items with a high confidence score
         if self._ngram > 1:
             tab = [token for (token,score) in hyp]
-            nasr = zip(*[tab[i:] for i in range(self._ngram)])
+            nasr = list(zip(*[tab[i:] for i in range(self._ngram)]))
         else:
             nasr = []
             for (token, score) in hyp:

@@ -40,7 +40,7 @@ import codecs
 
 from sppas import encoding
 from sppas.src.resources.mapping import Mapping
-from sppas.src.resources.rutils import to_strip
+from sppas.src.utils.makeunicode import sppasUnicode
 
 from .aligntrack import AlignTrack
 from .tracks import TracksReader, TrackSplitter, TrackNamesGenerator
@@ -239,10 +239,11 @@ class ListIO():
         # Each line corresponds to a track,
         # with a couple 'start end' of float values.
         for line in lines:
-            line = to_strip(line)
+            s = sppasUnicode(line)
+            line = s.to_strip()
             _tab = line.split()
             if len(_tab) >= 2:
-                _units.append( (float(_tab[0]),float(_tab[1])) )
+                _units.append((float(_tab[0]), float(_tab[1])))
 
         return _units
 

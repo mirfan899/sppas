@@ -45,7 +45,7 @@ import os
 import codecs
 
 from sppas import encoding
-from sppas.src.resources.rutils import to_strip
+from sppas.src.utils.makeunicode import sppasUnicode
 
 # ----------------------------------------------------------------------------
 
@@ -126,7 +126,7 @@ class AlignerIO(object):
 
         for line in lines:
             # Each line is either a new annotation or nothing interesting!
-            line = to_strip(line)
+            line = sppasUnicode(line).to_strip()
 
             if line.startswith("=== begin forced alignment ==="):
                 phonidx = 0
@@ -135,8 +135,8 @@ class AlignerIO(object):
                 phonidx = -1
 
             elif line.startswith("phseq1:"):
-                line = line[7:]
-                line = to_strip(line)
+                s = sppasUnicode(line[7:])
+                line = s.to_strip()
 
                 wordseq = line.split('|')
                 # get indexes of each word
@@ -147,8 +147,8 @@ class AlignerIO(object):
                     _idx += len(_wrdphseq)
                     wordlist.append( _idx )
                 # get the list of phonemes (without word segmentation)
-                line = line.replace('|','')
-                line = to_strip(line)
+                line = line.replace('|', '')
+                line = sppasUnicode(line).to_strip()
                 phonlist = line.split()
 
             elif line.startswith('cmscore1:'):
@@ -165,11 +165,11 @@ class AlignerIO(object):
                 if len(tokens)==0:
                     tokens = [""]
 
-            elif line.startswith('[') and phonidx>-1:
+            elif line.startswith('[') and phonidx > -1:
                 # New phonemes
-                line = line.replace("[","")
-                line = line.replace("]","")
-                line = to_strip(line)
+                line = line.replace("[", "")
+                line = line.replace("]", "")
+                line = sppasUnicode(line).to_strip()
                 tab = line.split(" ")
                 # tab 0: first frame
                 # tab 1: last frame
@@ -238,7 +238,7 @@ class AlignerIO(object):
 
         for line in lines:
             # Each line is either a new annotation or nothing interesting!
-            line = to_strip(line)
+            line = sppasUnicode(line).to_strip()
 
             if line.startswith("=== begin forced alignment ==="):
                 wordidx = 0
@@ -250,7 +250,7 @@ class AlignerIO(object):
                 line = line[6:]
                 # each token
                 tokens = line.split()
-                if len(tokens)==0:
+                if len(tokens) == 0:
                     tokens = [""]
 
             elif line.startswith('cmscore1:'):
@@ -260,11 +260,11 @@ class AlignerIO(object):
                 if len(scores)==0:
                     scores = [0]
 
-            elif line.startswith('[') and wordidx>-1:
+            elif line.startswith('[') and wordidx >- 1:
                 # New phonemes
-                line = line.replace("[","")
-                line = line.replace("]","")
-                line = to_strip(line)
+                line = line.replace("[", "")
+                line = line.replace("]", "")
+                line = sppasUnicode(line).to_strip()
                 tab = line.split(" ")
                 # tab 0: first frame
                 # tab 1: last frame

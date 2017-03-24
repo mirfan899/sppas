@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -30,7 +29,7 @@
         ---------------------------------------------------------------------
 
     src.resources.dictpron.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Class to manage pronunciation dictionaries.
 
@@ -39,12 +38,11 @@ import codecs
 import logging
 
 from sppas import encoding
+from sppas.src.utils.makeunicode import sppasUnicode
 from sppas.src.annotations import UNKSTAMP
 
 from .dumpfile import DumpFile
 from .resourcesexc import FileIOError, FileFormatError
-from .rutils import to_lower
-from .rutils import to_strip
 
 # ---------------------------------------------------------------------------
 
@@ -92,7 +90,7 @@ class DictPron(object):
         """ Constructor.
 
         :param dict_filename: (str) The dictionary file name (HTK-ASCII format)
-        :param unkstamp: (str) Represent a missing pronunciation
+        :param unkstamp: (str) String to represent a missing pronunciation
         :param nodump: (bool) Create or not a dump file (binary version of the
         dictionary)
 
@@ -122,11 +120,8 @@ class DictPron(object):
                 self.load_from_ascii(dict_filename)
                 if nodump is False:
                     dp.save_as_dump(self._dict)
-                logging.info('Dictionary loaded from the original file.')
-
             else:
                 self._dict = data
-                logging.info('Dictionary loaded from the dump file.')
 
     # -----------------------------------------------------------------------
     # Getters
@@ -146,7 +141,8 @@ class DictPron(object):
         :returns: pronunciations of the given token or the unknown symbol
 
         """
-        return self._dict.get(to_lower(entry), self._unk_stamp)
+        s = sppasUnicode(entry)
+        return self._dict.get(s.to_lower(), self._unk_stamp)
 
     # -----------------------------------------------------------------------
 
@@ -156,7 +152,8 @@ class DictPron(object):
         :param entry: (str) A token to find in the dictionary
 
         """
-        return to_lower(entry) not in self._dict.keys()
+        s = sppasUnicode(entry)
+        return s.to_lower() not in self._dict.keys()
 
     # -----------------------------------------------------------------------
 
@@ -167,7 +164,8 @@ class DictPron(object):
         :param pron: (str) A pronunciation
 
         """
-        prons = self._dict.get(to_lower(entry), None)
+        s = sppasUnicode(entry)
+        prons = self._dict.get(s.to_lower(), None)
         if prons is None:
             return False
 
@@ -206,9 +204,10 @@ class DictPron(object):
 
         """
         # Remove the CR/LF, tabs, multiple spaces and others... and lowerise
-        entry = to_strip(token)
-        entry = to_lower(entry)
-        new_pron = to_strip(pron)
+        t = sppasUnicode(token).to_strip()
+        entry = sppasUnicode(t).to_lower()
+
+        new_pron = sppasUnicode(pron).to_strip()
         new_pron = new_pron.replace(" ", DictPron.PHONEMES_SEPARATOR)
 
         # Already a pronunciation for this token?
@@ -263,14 +262,14 @@ class DictPron(object):
             if len(line.strip()) == 0:
                 continue
             try:
-                line.index(u"[")
-                line.index(u"]")
+                line.index("[")
+                line.index("]")
             except ValueError:
                 raise FileFormatError(l, line)
 
             # The entry is before the "[" and the pronunciation is after the "]"
-            entry = line[:line.find(u"[")]
-            new_pron = line[line.find(u"]")+1:]
+            entry = line[:line.find("[")]
+            new_pron = line[line.find("]")+1:]
 
             # Find if it is a new entry or a phonetic variant
             i = entry.find("(")
@@ -299,13 +298,25 @@ class DictPron(object):
                     for i, variant in enumerate(variants, 1):
                         variant = variant.replace(DictPron.PHONEMES_SEPARATOR, " ")
                         if i > 1 and withvariantnb is True:
-                            line = "%s(%d) [%s] %s\n" % (entry, i, entry, variant)
+                            line = "{:s}({:d}) [{:s}] {:s}\n".format(entry, i, entry, variant)
                         else:
-                            line = "%s [%s] %s\n" % (entry, entry, variant)
+                            line = "{:s} [{:s}] {:s}\n".format(entry, entry, variant)
                         output.write(line)
 
         except Exception as e:
-            logging.info('Save the dictionary in ASCII failed: %s' % str(e))
+            logging.info('Save the dictionary in ASCII failed: {:s}'.format(str(e)))
             return False
 
         return True
+
+    # ------------------------------------------------------------------------
+    # Overloads
+    # ------------------------------------------------------------------------
+
+    def __len__(self):
+        return len(self._dict)
+
+    # ------------------------------------------------------------------------
+
+    def __contains__(self, item):
+        return item in self._dict

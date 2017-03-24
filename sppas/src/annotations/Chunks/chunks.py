@@ -49,8 +49,8 @@ from sppas.src.annotationdata.annotation import Annotation
 from sppas.src.annotationdata.label.label import Label
 from sppas.src.annotationdata.label.text import Text
 from sppas.src.resources.patterns import Patterns
-from sppas.src.resources.rutils import to_strip
 from sppas.src.resources.mapping import Mapping
+from sppas.src.utils.makeunicode import sppasUnicode
 
 import sppas.src.annotations.Align.aligners as aligners
 from ..Align.aligners.alignerio import AlignerIO
@@ -573,6 +573,4 @@ class Chunks( object ):
                     besttext = besttext.replace(UNKSTAMP, "sil")
                 raw = raw + " " + besttext
 
-        return to_strip(raw)
-
-# --------------------------------------------------------------------------
+        return sppasUnicode(raw).to_strip()
