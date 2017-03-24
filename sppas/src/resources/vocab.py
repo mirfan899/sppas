@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -30,16 +29,17 @@
         ---------------------------------------------------------------------
 
     src.resources.vocab.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import codecs
 import logging
 
+from sppas import encoding
+from sppas.src.utils.makeunicode import sppasUnicode
+
 from .resourcesexc import FileFormatError
 from .dumpfile import DumpFile
-from .rutils import ENCODING
-from .rutils import to_lower
 
 # ---------------------------------------------------------------------------
 
@@ -51,23 +51,22 @@ class Vocabulary(object):
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Class to represent a simple list of words.
+    :summary:      Class to represent a list of words.
 
     """
     def __init__(self, filename=None, nodump=False, case_sensitive=False):
         """ Create a Vocabulary instance.
 
-        :param filename: (str) The word list file name, i.e. a file with 1 column.
+        :param filename: (str) Name of the file with the list of words.
         :param nodump: (bool) Allows to disable the creation of a dump file.
         :param case_sensitive: (bool) the list of word is case-sensitive or not
 
         """
-        self._stw = dict()
-        # with a dictionary it is faster to read tokens from a file and is
-        # also faster to find a token in it!
+        # A list of (unicode) entries
+        self.__entries = dict()
 
-        # Set the list of word to be case-sensitive or not.
-        self.case_sensitive = case_sensitive
+        # Set the list of entries to be case-sensitive or not.
+        self.__case_sensitive = case_sensitive
 
         if filename is not None:
 
@@ -81,12 +80,12 @@ class Vocabulary(object):
             if data is None:
                 self.load_from_ascii(filename)
                 if nodump is False:
-                    dp.save_as_dump(self._stw)
-                logging.info('Got word list from ASCII file.')
+                    dp.save_as_dump(self.__entries)
+                logging.info('Vocabulary loaded from ASCII file.')
 
             else:
-                self._stw = data
-                logging.info('Got word list from dumped file.')
+                self.__entries = data
+                logging.info('Vocabulary loaded from dump file.')
 
     # -----------------------------------------------------------------------
     # Data management
@@ -99,12 +98,14 @@ class Vocabulary(object):
         :returns: (bool)
 
         """
-        entry = entry.strip()
-        if self.case_sensitive is False:
-            entry = to_lower(entry)
+        s = sppasUnicode(entry)
+        entry = s.to_strip()
+        if self.__case_sensitive is False:
+            s = sppasUnicode(entry)
+            entry = s.to_lower()
 
-        if entry not in self._stw:
-            self._stw[entry] = 0
+        if entry not in self.__entries:
+            self.__entries[entry] = None
             return True
 
         return False
@@ -113,13 +114,15 @@ class Vocabulary(object):
 
     def get_size(self):
         """ Return the number of entries in the list. """
-        return len(self._stw)
+
+        return len(self.__entries)
 
     # -----------------------------------------------------------------------
 
     def get_list(self):
-        """ Return the list of words, sorted in alpha-numeric order. """
-        return sorted(self._stw.keys())
+        """ Return the list of entries, sorted in alpha-numeric order. """
+
+        return sorted(self.__entries.keys())
 
     # -----------------------------------------------------------------------
 
@@ -129,7 +132,7 @@ class Vocabulary(object):
         :param entry: (str)
 
         """
-        return entry in self._stw
+        return entry in self.__entries
 
     # -----------------------------------------------------------------------
 
@@ -139,7 +142,7 @@ class Vocabulary(object):
         :param entry: (str)
 
         """
-        return entry not in self._stw
+        return entry not in self.__entries
 
     # -----------------------------------------------------------------------
 
@@ -150,7 +153,7 @@ class Vocabulary(object):
 
         """
         s = Vocabulary()
-        for i in self._stw:
+        for i in self.__entries:
             s.add(i)
 
         return s
@@ -165,7 +168,7 @@ class Vocabulary(object):
         :param filename: (str)
 
         """
-        with codecs.open(filename, 'r', ENCODING) as fd:
+        with codecs.open(filename, 'r', encoding) as fd:
             for nbl, line in enumerate(fd, 1):
                 try:
                     self.add(line)
@@ -182,12 +185,24 @@ class Vocabulary(object):
 
         """
         try:
-            with codecs.open(filename, 'w', ENCODING) as fd:
-                for word in sorted(self._stw.keys()):
-                    fd.write("%s\n" % word)
+            with codecs.open(filename, 'w', encoding) as fd:
+                for word in sorted(self.__entries.keys()):
+                    fd.write("{:s}\n".format(word))
 
         except Exception as e:
-            logging.info('Save file failed due to the following error: %s' % str(e))
+            logging.info('Save file failed due to the following error: {:s}'.format(str(e)))
             return False
 
         return True
+
+    # -----------------------------------------------------------------------
+    # Overloads
+    # -----------------------------------------------------------------------
+
+    def __len__(self):
+        return len(self.__entries)
+
+    # ------------------------------------------------------------------------
+
+    def __contains__(self, item):
+        return item in self.__entries

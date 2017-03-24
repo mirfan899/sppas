@@ -7,6 +7,7 @@ import shutil
 
 from sppas import RESOURCES_PATH
 from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.utils.makeunicode import u
 from ..vocab import Vocabulary
 
 # ---------------------------------------------------------------------------
@@ -32,12 +33,14 @@ class TestVocabulary(unittest.TestCase):
     def test_all(self):
         l = Vocabulary(VOCAB, nodump=True)
         self.assertEqual(l.get_size(), 20)
+        self.assertEqual(l.get_size(), len(l))
         self.assertTrue(l.is_unk('toto'))
         self.assertFalse(l.is_unk('normale'))
         self.assertFalse(l.is_unk("isn't"))
-        self.assertFalse(l.is_unk(u"đ"))
-        l.add(u"être")
-        self.assertTrue(l.is_in(u"être"))
+        self.assertFalse(l.is_unk(u("đ")))
+        l.add("être")
+        self.assertTrue(l.is_in(u("être")))
+        self.assertTrue(u("être") in l)
         self.assertTrue(l.is_unk("être"))
 
     def test_save(self):
@@ -51,4 +54,4 @@ class TestVocabulary(unittest.TestCase):
     def test_ita(self):
         l = Vocabulary(ITA, nodump=True)
         self.assertTrue(l.is_unk('toto'))
-        self.assertFalse(l.is_unk(u'perché'))
+        self.assertFalse(l.is_unk(u('perché')))
