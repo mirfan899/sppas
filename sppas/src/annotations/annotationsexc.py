@@ -40,6 +40,8 @@ from . import t
 
 SECT_CFG_FILE_ERROR = ":ERROR 4014: "
 OPTION_KEY_ERROR = ":ERROR 1010: "
+EMPTY_INPUT_ERROR = ":ERROR 1020: "
+NO_INPUT_ERROR = ":ERROR 1030: "
 
 # -----------------------------------------------------------------------
 
@@ -57,7 +59,7 @@ class AnnotationSectionConfigFileError(ValueError):
 
 
 class AnnotationOptionError(KeyError):
-    """ :ERROR 1060: Unknown option with key {key}. """
+    """ :ERROR 1010: Unknown option with key {key}. """
 
     def __init__(self, key):
         self.parameter = OPTION_KEY_ERROR + (t.gettext(OPTION_KEY_ERROR)).format(key=key)
@@ -67,3 +69,26 @@ class AnnotationOptionError(KeyError):
 
 # -----------------------------------------------------------------------
 
+
+class EmptyInputError(IOError):
+    """ :ERROR 1020: Empty input tier {name}. """
+
+    def __init__(self, name):
+        self.parameter = EMPTY_INPUT_ERROR + (t.gettext(EMPTY_INPUT_ERROR)).format(name=name)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class NoInputError(IOError):
+    """ :ERROR 1030: Missing input tier. Please read the documentation. """
+
+    def __init__(self):
+        self.parameter = NO_INPUT_ERROR + t.gettext(NO_INPUT_ERROR)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------

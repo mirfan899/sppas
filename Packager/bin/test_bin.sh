@@ -336,36 +336,36 @@ function wavsplit {
 
 # ---------------------------------------------------------------------------
 
-function tokenize {
+function normalize {
 
-    fct_echo_subtitle "Test tokenize.py (Tokenization)"
+    fct_echo_subtitle "Test normalize.py (Text normalization)"
 
     echo -n " ... command exists: "
-    $BIN_DIR/tokenize.py >> /dev/null &> /dev/null
+    $BIN_DIR/normalize.py >> /dev/null &> /dev/null
     if [ $? != "0" ]; then
         echo "error"
         return
     fi
     echo "ok"
 
-    echo -n " ... inline tokenization (1): "
-    inline=`echo "This is my test number 1." | $BIN_DIR/tokenize.py -r $RESOURCES_DIR/vocab/eng.vocab --quiet`
+    echo -n " ... inline normalization (1): "
+    inline=`echo "This is my test number 1." | $BIN_DIR/normalize.py -r $RESOURCES_DIR/vocab/eng.vocab --quiet`
     if [ "$inline" == "this is my test number one" ]; then
         fct_echo_status 0
     else
         fct_echo_status 1
     fi
 
-    echo -n " ... inline tokenization (2): "
-    inline=`echo "《干脆就把那部蒙人的闲法给废了拉倒！》RT @laoshipukong : 27日，全国人大常委会第三次审议侵权责任法草案，删除了有关医疗损害责任“举证倒置”的规定。" | $BIN_DIR/tokenize.py -r $RESOURCES_DIR/vocab/cmn.vocab --quiet`
+    echo -n " ... inline normalization (2): "
+    inline=`echo "《干脆就把那部蒙人的闲法给废了拉倒！》RT @laoshipukong : 27日，全国人大常委会第三次审议侵权责任法草案，删除了有关医疗损害责任“举证倒置”的规定。" | $BIN_DIR/normalize.py -r $RESOURCES_DIR/vocab/cmn.vocab --quiet`
     if [ "$inline" == "干脆 就 把 那 部 蒙 人 的 闲 法 给 废 了 拉倒 rt @ laoshipukong 二十七 日 全国人大常委会 第 三次 审议 侵权 责任 法 草案 删除 了 有关 医疗 损害 责任 举证 倒置 的 规定" ]; then
         fct_echo_status 0
     else
         fct_echo_status 1
     fi
 
-    echo -n " ... tokenization of a file: "
-    inline=`$BIN_DIR/tokenize.py -r $RESOURCES_DIR/vocab/eng.vocab -i $SAMPLES_DIR/oriana1.TextGrid -o oriana1-token.TextGrid --quiet`
+    echo -n " ... normalization of a file: "
+    inline=`$BIN_DIR/normalize.py -r $RESOURCES_DIR/vocab/eng.vocab -i $SAMPLES_DIR/oriana1.TextGrid -o oriana1-token.TextGrid --quiet`
     if [ -e oriana1-token.TextGrid ]; then
         rm oriana1-token.TextGrid
         fct_echo_status 0

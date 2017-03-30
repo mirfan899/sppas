@@ -8,7 +8,7 @@ from sppas import RESOURCES_PATH
 from sppas.src.resources.vocab import Vocabulary
 from sppas.src.resources.dictrepl import DictRepl
 
-from ..TextNorm.tokenize import DictTok, sppasTranscription, sppasTokenizer
+from ..TextNorm.tokenize import TextNormalizer, sppasTranscription, sppasTokenizer
 
 # ---------------------------------------------------------------------------
 
@@ -16,20 +16,20 @@ from ..TextNorm.tokenize import DictTok, sppasTranscription, sppasTokenizer
 class TestDictTok(unittest.TestCase):
 
     def setUp(self):
-        dictdir  = os.path.join(RESOURCES_PATH, "vocab")
+        dictdir = os.path.join(RESOURCES_PATH, "vocab")
         vocabfile = os.path.join(dictdir, "fra.vocab")
         wds = Vocabulary(vocabfile)
-        self.tok = DictTok(wds, "fra")
+        self.tok = TextNormalizer(wds, "fra")
 
     def test_num2letter(self):
         repl = DictRepl(os.path.join(RESOURCES_PATH, "repl", "fra.repl"), nodump=True)
         self.tok.set_repl(repl)
         self.tok.set_lang("fra")
 
-        s =  self.tok.tokenize(u"123")
+        s = self.tok.normalize(u"123")
         self.assertEquals(s, u"cent-vingt-trois")
 
-        s =  self.tok.tokenize(u"1,24")
+        s =  self.tok.normalize(u"1,24")
         self.assertEquals(s, u"un virgule vingt-quatre")
 
     def test_stick(self):
@@ -38,8 +38,8 @@ class TestDictTok(unittest.TestCase):
         self.assertEquals(s, [u"123"])
         s = t.bind([u"au fur et à mesure"])
         self.assertEquals(s, [u"au_fur_et_à_mesure"])
-        s = t.bind([u"rock'n roll"])
-        self.assertEquals(s, [u"rock'n_roll"])
+        s = t.bind([u"rock'n roll"])   # not in lexicon
+        self.assertEquals(s, [u"rock'n"])
 
     def test_replace(self):
         repl = DictRepl(os.path.join(RESOURCES_PATH, "repl", "fra.repl"), nodump=True)
@@ -122,9 +122,9 @@ class TestDictTok(unittest.TestCase):
         repl = DictRepl(os.path.join(RESOURCES_PATH, "repl", "fra.repl"), nodump=True)
         self.tok.set_repl(repl)
 
-        s = self.tok.tokenize(u"[le mot,/lemot/]", std=False)
+        s = self.tok.normalize(u"[le mot,/lemot/]", [])
         self.assertEqual(u"/lemot/", s)
-        s = self.tok.tokenize(u"[le mot,/lemot/]", std=True)
+        s = self.tok.normalize(u"[le mot,/lemot/]", ["std"])
         self.assertEqual(u"le_mot", s)
 
         t = sppasTranscription()
@@ -133,10 +133,10 @@ class TestDictTok(unittest.TestCase):
 
     def test_tokenize(self):
         self.tok.set_lang("fra")
-        splitfra = self.tok.tokenize(u"l'assiette l'abat-jour et le paris-brest et Paris-Marseille")
-        self.assertEqual(splitfra, u"l' assiette l' abat-jour et le paris-brest et paris - marseille")
+        splitfra = self.tok.tokenize(u"l'assiette l'abat-jour et le paris-brest et paris-marseille".split())
+        self.assertEqual(splitfra, u"l' assiette l' abat-jour et le paris-brest et paris - marseille".split())
 
-        s = self.tok.tokenize(u"ah a/b euh")
+        s = self.tok.normalize(u"ah a/b euh")
         self.assertEqual(s, u"ah a/b euh")
 
     def test_code_switching(self):

@@ -15,7 +15,7 @@ msgstr ""
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 1.5.4\n"
 
 msgid ":INFO 1000: "
 msgstr "Valid. "
@@ -125,3 +125,9 @@ msgstr "Missing section {section_name} in the configuration file."
 
 msgid ":ERROR 1010: "
 msgstr "Unknown option with key {key}."
+
+msgid ":ERROR 1020: "
+msgstr "Empty input tier {name}."
+
+msgid ":ERROR 1030: "
+msgstr "Missing input tier. Please read the documentation."

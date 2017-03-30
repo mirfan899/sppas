@@ -15,7 +15,7 @@ msgstr ""
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 1.5.4\n"
 
 msgid ":INFO 1000: "
 msgstr "Valide. "
@@ -118,3 +118,21 @@ msgstr "[ IGNORE  ] "
 
 msgid ":INFO 1045: "
 msgstr "[  ERREUR ] "
+
+msgid ":INFO 1050: "
+msgstr "Options"
+
+msgid ":INFO 1052: "
+msgstr "Diagnostic"
+
+msgid ":ERROR 4014: "
+msgstr "Il manque la section {section_name} dans le fichier de configuration."
+
+msgid ":ERROR 1010: "
+msgstr "Option inconnue avec la clé {key}."
+
+msgid ":ERROR 1020: "
+msgstr "La tier {name} ne contient pas d'annotations."
+
+msgid ":ERROR 1030: "
+msgstr "Aucune tier trouvée. La documentation indique pourquoi."

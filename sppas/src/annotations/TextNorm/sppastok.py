@@ -1,40 +1,46 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: tok.py
-# ---------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.annotations.sppastok.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    SPPAS integration of Text Normalization.
+    For details, read the following reference:
+
+        | Brigitte Bigi (2011).
+        | A Multilingual Text Normalization Approach.
+        | 2nd Less-Resourced Languages workshop,
+        | 5th Language & Technology Conference, Poznan (Poland).
+
+"""
 import os.path
 
 from sppas import RESOURCES_PATH
@@ -45,251 +51,274 @@ from sppas.src.annotationdata.tier import Tier
 import sppas.src.annotationdata.aio
 
 from ..baseannot import sppasBaseAnnotation
-from .tokenize import DictTok
+from ..annotationsexc import AnnotationOptionError
+from ..annotationsexc import EmptyInputError
+from ..annotationsexc import NoInputError
+
+from .tokenize import TextNormalizer
 
 # ---------------------------------------------------------------------------
 
 
 class sppasTok(sppasBaseAnnotation):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Tokenization automatic annotation.
-
-    Tokenization is a text normalization task.
-
-    For details, read the following reference:
-        - Brigitte Bigi (2011).
-        - A Multilingual Text Normalization Approach.
-        - 2nd Less-Resourced Languages workshop,
-        - 5th Language & Technology Conference, Poznan (Poland).
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Text normalization automatic annotation.
 
     """
     def __init__(self, vocab, lang="und", logfile=None):
-        """
-        Create a sppasTok instance.
+        """ Create a sppasTok instance.
 
-        @param vocab (str - IN) the file name with the orthographic transcription
-        @param lang (str - IN) the language code
-        @param logfile (sppasLog)
+        :param vocab: (str) name of the file with the orthographic transcription
+        :param lang: (str) the language code
+        :param logfile: (sppasLog)
 
         """
         sppasBaseAnnotation.__init__(self, logfile)
 
-        self.fix_tokenizer(vocab, lang)
+        self.normalizer = None
+        voc = Vocabulary(vocab)
+        self.normalizer = TextNormalizer(voc, lang)
+
+        # Replacement dictionary
+        replace_filename = os.path.join(RESOURCES_PATH, "repl", lang + ".repl")
+        if os.path.exists(replace_filename):
+            dict_replace = DictRepl(replace_filename, nodump=True)
+        else:
+            dict_replace = DictRepl()
+        self.normalizer.set_repl(dict_replace)
+
+        # Punctuations dictionary
+        punct_filename = os.path.join(RESOURCES_PATH, "vocab", "Punctuations.txt")
+        if os.path.exists(replace_filename):
+            vocab_punct = Vocabulary(punct_filename, nodump=True)
+        else:
+            vocab_punct = Vocabulary()
+        self.normalizer.set_punct(vocab_punct)
 
         # List of options to configure this automatic annotation
+        self._options['faked'] = True
         self._options['std'] = False
-
-    # -----------------------------------------------------------------------
-
-    def fix_tokenizer(self, vocab, lang):
-        """
-        Fix the tokenizer.
-
-        @param vocab (str - IN) the file name with the orthographic transcription
-        @param lang (str - IN) the language code
-
-        """
-        pvoc = Vocabulary(vocab)
-        self.tokenizer = DictTok(pvoc, lang)
-
-        try:
-            repl = DictRepl(os.path.join(RESOURCES_PATH, "repl", lang + ".repl"), nodump=True)
-            self.tokenizer.set_repl(repl)
-        except Exception:
-            pass
-
-        try:
-            punct = Vocabulary(os.path.join(RESOURCES_PATH, "vocab", "Punctuations.txt"), nodump=True)
-            self.tokenizer.set_punct(punct)
-        except Exception:
-            pass
+        self._options['custom'] = False
 
     # -----------------------------------------------------------------------
     # Methods to fix options
     # -----------------------------------------------------------------------
 
     def fix_options(self, options):
-        """
-        Fix all options.
-        Available options are:
-            - std
+        """ Fix all options. Available options are:
 
-        @param options (option)
+            - faked
+            - std
+            - custom
+
+        :param options: (sppasOption)
 
         """
         for opt in options:
 
             key = opt.get_key()
-
-            if key == "std":
+            if key == "faked":
+                self.set_faked(opt.get_value())
+            elif key == "std":
                 self.set_std(opt.get_value())
+            elif key == "custom":
+                self.set_custom(opt.get_value())
 
             else:
-                raise Exception('Unknown key option: %s'%key)
+                raise AnnotationOptionError(key)
 
     # -----------------------------------------------------------------------
 
-    def set_std(self, std):
-        """
-        Fix the std option.
+    def set_faked(self, value):
+        """ Fix the faked option.
 
-        @param std (bool - IN) If std is set to True, a standard tokenization
-        is created.
+        :param value: (bool) Create a faked tokenization
 
         """
-        self._options['std'] = std
+        self._options['faked'] = value
+
+    # -----------------------------------------------------------------------
+
+    def set_std(self, value):
+        """ Fix the std option.
+
+        :param value: (bool) Create a standard tokenization
+
+        """
+        self._options['std'] = value
+
+    # -----------------------------------------------------------------------
+
+    def set_custom(self, value):
+        """ Fix the custom option.
+
+        :param value: (bool) Create a customized tokenization
+
+        """
+        self._options['custom'] = value
 
     # -----------------------------------------------------------------------
     # Methods to tokenize series of data
     # -----------------------------------------------------------------------
 
     def convert(self, tier):
-        """
-        Tokenization of all labels of a tier.
+        """ Tokenization of all labels of a tier.
 
-        @param tier (Tier - IN) contains the orthographic transcription
-        @return A tuple with 2 tiers named "Tokens-Std" and "Tokens-Faked"
+        :param tier: (Tier) contains the orthographic transcription
+        :returns: A tuple with 3 tiers named "Tokens-Faked", "Tokens-Std" and "Tokens-Custom"
 
         """
         if tier.IsEmpty() is True:
-            raise IOError("Empty input tier %s.\n" % tier.GetName())
+            raise EmptyInputError(name=tier.GetName())
 
-        tokensStd = None
+        tokens_faked = None
+        if self._options['faked'] is True:
+            tokens_faked = self.__convert(tier, [])
+            tokens_faked.SetName("Tokens")
+
+        tokens_std = None
         if self._options['std'] is True:
-            tokensStd = self.__convert(tier, True)
-        tokensFaked = self.__convert(tier, False)
+            actions = ['std']
+            tokens_std = self.__convert(tier, actions)
+            tokens_std.SetName("Tokens-Std")
 
-        return (tokensFaked, tokensStd)
+        tokens_custom = None
+        if self._options['custom'] is True:
+            actions = ['std', 'tokenize']
+            tokens_custom = self.__convert(tier, actions)
+            tokens_custom.SetName("Tokens-Custom")
+
+        return tokens_faked, tokens_std, tokens_custom
 
     # ------------------------------------------------------------------------
 
-    def align_tiers(self, stdtier, fakedtier):
-        """
-        Force standard spelling and faked spelling to share the same number of tokens.
+    def align_tiers(self, std_tier, faked_tier):
+        """ Force standard spelling and faked spelling to share the same
+        number of tokens.
 
-        @param stdtier (Tier - IN)
-        @param fakedtier (Tier - IN)
+        :param std_tier: (Tier)
+        :param faked_tier: (Tier)
 
         """
         if self._options['std'] is False:
             return
 
-        for astd, afaked in zip(stdtier, fakedtier):
+        i = 0
+        for astd, afaked in zip(std_tier, faked_tier):
+                i += 1
 
-                for textstd,textfaked in zip(astd.GetLabel().GetLabels(),afaked.GetLabel().GetLabels()):
+                for text_std, text_faked in zip(astd.GetLabel().GetLabels(),afaked.GetLabel().GetLabels()):
 
                     try:
-                        texts, textf = self.__align_tiers(textstd.GetValue(), textfaked.GetValue())
-                        textstd.SetValue(texts)
-                        textfaked.SetValue(textf)
+                        texts, textf = self.__align_tiers(text_std.GetValue(), text_faked.GetValue())
+                        text_std.SetValue(texts)
+                        text_faked.SetValue(textf)
 
                     except Exception:
-                        self.print_message(u"StdTokens and FakedTokens matching error, at %s\n" %
-                                           astd.GetLocation().GetValue(), indent=2, status=1)
+                        self.print_message("Standard/Faked tokens matching error, at interval {:d}\n".format(i), indent=2, status=1)
                         self.print_message(astd.GetLabel().GetValue(), indent=3)
                         self.print_message(afaked.GetLabel().GetValue(), indent=3)
-                        self.print_message(u"Fall back on faked.", indent=3, status=3)
-                        textstd.SetValue(textf)
+                        self.print_message("Fall back on faked.", indent=3, status=3)
+                        text_std.SetValue(textf)
 
     # ------------------------------------------------------------------------
 
-    def get_transtier(self, inputfilename):
-        """
-        Return the tier with transcription, or None.
+    def get_trans_tier(self, trs_input):
+        """ Return the tier with transcription, or None.
+
+        :param trs_input: (Transcription)
+        :returns: (tier)
 
         """
-        trsinput  = sppas.src.annotationdata.aio.read(inputfilename)
-        tierinput = None
+        for tier in trs_input:
+            tier_name = tier.GetName().lower()
+            if "transcription" in tier_name:
+                return tier
 
-        for tier in trsinput:
-            tiername = tier.GetName().lower()
-            if "transcription" in tiername:
-                tierinput = tier
-                break
+        for tier in trs_input:
+            tier_name = tier.GetName().lower()
+            if "trans" in tier_name:
+                return tier
+            elif "trs" in tier_name:
+                return tier
+            elif "ipu" in tier_name:
+                return tier
+            elif "ortho" in tier_name:
+                return tier
+            elif "toe" in tier_name:
+                return tier
 
-        if tierinput is None:
-            for tier in trsinput:
-                print
-                print tier.GetName()
-                print
-                tiername = tier.GetName().lower()
-                if "trans" in tiername:
-                    tierinput = tier
-                    break
-                elif "trs" in tiername:
-                    tierinput = tier
-                    break
-                elif "ipu" in tiername:
-                    tierinput = tier
-                    break
-                elif "ortho" in tiername:
-                    tierinput = tier
-                elif "toe" in tiername:
-                    tierinput = tier
-                    break
-
-        return tierinput
+        return None
 
     # ------------------------------------------------------------------------
 
-    def run(self, inputfilename, outputfilename):
-        """
-        Run the Tokenization process on an input file.
+    def run(self, input_filename, output_filename):
+        """ Run the Text Normalization process on an input file.
 
-        @param inputfilename (str - IN) the input file name of the transcription
-        @param outputfilename (str - IN) the output file name of the tokenization
+        :param input_filename: (str) Name of the input file with the transcription
+        :param output_filename: (str) Name of the resulting file with normalization
 
         """
         self.print_options()
-        self.print_diagnosis(inputfilename)
+        self.print_diagnosis(input_filename)
 
         # Get input tier to tokenize
-        tierinput = self.get_transtier(inputfilename)
-        if tierinput is None:
-            raise IOError("Transcription tier not found. "
-                          "Tier name must contain "
-                          "'trans' or 'trs' or 'ipu' 'ortho' or 'toe'.")
+        trs_input = sppas.src.annotationdata.aio.read(input_filename)
+        tier_input = self.get_trans_tier(trs_input)
+        if tier_input is None:
+            raise NoInputError
 
         # Tokenize the tier
-        tiertokens, tierStokens = self.convert(tierinput)
+        tier_faked_tokens, tier_std_tokens, tier_custom = self.convert(tier_input)
 
         # Align Faked and Standard
-        if tierStokens is not None:
-            self.align_tiers(tierStokens, tiertokens)
+        if tier_faked_tokens is not None and tier_std_tokens is not None:
+            self.align_tiers(tier_std_tokens, tier_faked_tokens)
 
         # Save
-        trsoutput = Transcription()
-        trsoutput.Add(tiertokens)
-        if tierStokens is not None:
-            trsoutput.Add(tierStokens)
+        trs_output = Transcription("SPPAS Text Normalization")
+        if tier_faked_tokens is not None:
+            trs_output.Add(tier_faked_tokens)
+        if tier_std_tokens is not None:
+            trs_output.Add(tier_std_tokens)
+        if tier_custom is not None:
+            trs_output.Add(tier_custom)
 
         # Save in a file
-        sppas.src.annotationdata.aio.write(outputfilename,trsoutput)
+        if len(trs_output) > 0:
+            sppas.src.annotationdata.aio.write(output_filename, trs_output)
+        else:
+            raise IOError("No resulting tier. No file created.")    
 
     # ------------------------------------------------------------------------
     # Private: some workers...
     # ------------------------------------------------------------------------
 
-    def __convert(self, tier, std):
-        """
-        Tokenize all labels of an annotation, not only the one with the best score.
+    def __convert(self, tier, actions):
+        """ Normalize all labels of an annotation.
+        (normalize not only the one with the best score!).
 
         """
-        tiername = "Tokenization-Standard" if std is True else "Tokenization"
-        tokens = Tier(tiername)
-        for a in tier:
-
-            af = a.Copy()
+        tokens = Tier("Tokens")
+        for i, ann in enumerate(tier):
+            af = ann.Copy()
             for text in af.GetLabel().GetLabels():
                 # Do not tokenize an empty label, noises, laughter...
                 if text.IsSpeech() is True:
-                    tokenized = self.tokenizer.tokenize(text.GetValue(), std=std)
-                    text.SetValue(tokenized)
+                    try:
+                        normalized = self.normalizer.normalize(text.GetValue(), actions)
+                    except Exception as e:
+                        normalized = ""
+                        if self.logfile is not None:
+                            self.logfile.print_message("Error while normalizing interval {:d}: {:s}".format(i, str(e)), indent=3)
+                        else:
+                            print("Error while normalizing interval {:d}: {:s}".format(i, str(e)))
+                    text.SetValue(normalized)
             tokens.Append(af)
 
         return tokens
@@ -297,18 +326,17 @@ class sppasTok(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def __align_tiers(self, std, faked):
-        """
-        Align standard spelling tokens with faked spelling tokens.
+        """ Align standard spelling tokens with faked spelling tokens.
 
-        @param std (string)
-        @param faked (string)
-        @return a tuple of std and faked
+        :param std: (str)
+        :param faked: (str)
+        :returns: a tuple of std and faked
 
         """
-        stds   = std.split()
+        stds = std.split()
         fakeds = faked.split()
         if len(stds) == len(fakeds):
-            return (std, faked)
+            return std,faked
 
         tmp = []
         for f in fakeds:
@@ -333,7 +361,7 @@ class sppasTok(sppasBaseAnnotation):
 
             num_underscores = stds[i].count('_')
             if num_underscores > 0:
-                if not self.tokenizer.vocab.is_unk(stds[i]):
+                if not self.normalizer.vocab.is_unk(stds[i]):
                     n = num_underscores + 1
                     fakeds[i] = "_".join(fakeds[i:i+n])
                     del fakeds[i+1:i+n]
@@ -341,9 +369,5 @@ class sppasTok(sppasBaseAnnotation):
             i += 1
 
         if len(stds) != len(fakeds):
-            raise Exception('Standard and Faked alignment Error: %s\n'
-                            '                 %s' % (std, faked))
-
-        return (std, " ".join(fakeds))
-
-# ---------------------------------------------------------------------------
+            raise
+        return std, " ".join(fakeds)

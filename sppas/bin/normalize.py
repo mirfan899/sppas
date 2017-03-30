@@ -57,7 +57,7 @@ sys.path.append(SPPAS)
 from sppas import RESOURCES_PATH
 
 from sppas.src.annotations.TextNorm.sppastok import sppasTok
-from sppas.src.annotations.TextNorm.tokenize import DictTok
+from sppas.src.annotations.TextNorm.tokenize import TextNormalizer
 from sppas.src.resources.vocab import Vocabulary
 from sppas.src.resources.dictrepl import DictRepl
 from sppas.src.utils.fileutils import setup_logging
@@ -74,7 +74,18 @@ parser.add_argument("-r", "--vocab",      required=True, help='Vocabulary file n
 parser.add_argument("-i", metavar="file", required=False, help='Input file name')
 parser.add_argument("-o", metavar="file", required=False, help='Output file name (required only if -i is fixed)')
 
-parser.add_argument("--std",    action='store_true', help="Add the standard tokenization (available only if -i is fixed)")
+parser.add_argument("--nofaked",
+                    action='store_true',
+                    help="Do not add the tier with faked orthography (available only if -i is fixed)")
+
+parser.add_argument("--std",
+                    action='store_true',
+                    help="Add a tier with the standard orthography (available only if -i is fixed)")
+
+parser.add_argument("--custom",
+                    action='store_true',
+                    help="Add a customized text normalization (available only if -i is fixed)")
+
 parser.add_argument("--quiet",  action='store_true', help="Disable verbose.")
 
 if len(sys.argv) <= 1:
@@ -88,35 +99,38 @@ if not args.quiet:
     setup_logging(1,None)
 
 # ----------------------------------------------------------------------------
-# Automatic Tokenization is here:
+# Automatic Text Normalization is here:
 # ----------------------------------------------------------------------------
 
 base = os.path.basename(args.vocab)
 lang = base[:3]
 
 if args.i:
-    p = sppasTok(args.vocab,lang)
+
+    p = sppasTok(args.vocab, lang)
+    if args.nofaked:
+        p.set_faked(False)
     if args.std:
         p.set_std(True)
+    if args.custom:
+        p.set_custom(True)
     p.run(args.i, args.o)
 
 else:
 
     vocab = Vocabulary(args.vocab)
-    tokenizer = DictTok(vocab,lang)
+    normalizer = TextNormalizer(vocab, lang)
 
-    try:
-        repl = DictRepl(os.path.join(RESOURCES_PATH, "repl", lang + ".repl"), nodump=True)
-        tokenizer.set_repl(repl)
-    except Exception as e:
-        print "[warning] No replacement dictionary: ",str(e)
-    try:
-        punct = Vocabulary(os.path.join(RESOURCES_PATH, "vocab", "Punctuations.txt"), nodump=True)
-        tokenizer.set_punct(punct)
-    except Exception as e:
-        print "[warning] No punctuation dictionary: ",str(e)
+    replace_file = os.path.join(RESOURCES_PATH, "repl", lang + ".repl")
+    if os.path.exists(replace_file):
+        repl = DictRepl(replace_file, nodump=True)
+        normalizer.set_repl(repl)
 
+    punct_file = os.path.join(RESOURCES_PATH, "vocab", "Punctuations.txt")
+    if os.path.exists(punct_file):
+        punct = Vocabulary(punct_file, nodump=True)
+        normalizer.set_punct(punct)
+
+    # Will output the faked orthography
     for line in sys.stdin:
-        print tokenizer.tokenize(line).encode('utf8')
-
-# ----------------------------------------------------------------------------
+        print(normalizer.normalize(line).encode('utf8'))
