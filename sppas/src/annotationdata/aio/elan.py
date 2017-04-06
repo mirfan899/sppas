@@ -43,9 +43,10 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
-
+import logging
 import datetime
 import xml.etree.cElementTree as ET
+from collections import OrderedDict
 
 from annotationdata.transcription  import Transcription
 from annotationdata.ctrlvocab      import CtrlVocab
@@ -109,7 +110,6 @@ class Elan( Transcription ):
         timeOrderRoot = root.find('TIME_ORDER')
         self.__read_time_slots(timeOrderRoot)
 
-        self.hierarchyLinks = {}
         self.tierIndex = {}    # index of <TIER> elements
         self.annotIndex = {}    # index of <ANNOTATION> elements (for reference annotation)
 
@@ -118,6 +118,7 @@ class Elan( Transcription ):
             self.__read_ctrl_vocab(vocabularyRoot, root)
 
         # Read tiers
+        self.hierarchyLinks = {}
         for tierRoot in root.findall('TIER'):
             self.__read_tier(tierRoot, root)
 
@@ -132,9 +133,9 @@ class Elan( Transcription ):
                 # Elan's hierarchy
                 try:
                     self._hierarchy.add_link('TimeAlignment', child, parent)
-                except:
-                    # TODO: to send a warning
-                    pass
+                except Exception as e:
+                    logging.info("Error while creating hierarchy link between parent: {:s} and child: {:s}".format(parent.GetName(), child.GetName()))
+                    logging.info("{:s}".format(str(e)))
 
         del self.hierarchyLinks
         del self.tierIndex
@@ -193,7 +194,7 @@ class Elan( Transcription ):
     # -----------------------------------------------------------------
 
     def __read_tier(self, tierRoot, root):
-        self.tierIndex[tierRoot.attrib['TIER_ID']] = tierRoot # <TIER> index
+        self.tierIndex[tierRoot.attrib['TIER_ID']] = tierRoot  # <TIER> index
         tier = self.NewTier(tierRoot.attrib['TIER_ID'])
 
         linguisticType = tierRoot.attrib['LINGUISTIC_TYPE_REF']
@@ -513,8 +514,8 @@ class Elan( Transcription ):
     # -----------------------------------------------------------------
 
     def __format_timeslots(self, timeOrderRoot):
-        for timeSlot in self.timeSlotIds:
-            timeSlotId = self.timeSlotIds[timeSlot]
+        for timeSlot, annotation in self.timeSlotIds:
+            timeSlotId = self.timeSlotIds[timeSlot, annotation]
             timeSlotNode = ET.SubElement(timeOrderRoot, 'TIME_SLOT')
             timeSlotNode.set('TIME_SLOT_ID', timeSlotId)
             timeSlotNode.set('TIME_VALUE', str(int(timeSlot*1000)))
@@ -593,8 +594,8 @@ class Elan( Transcription ):
 
     def __format_alignable_annotation(self, annotationRoot, annotation):
         # the interval is too small???
-        begin = str(self.timeSlotIds[round(annotation.GetLocation().GetBeginMidpoint(),4)])
-        end   = str(self.timeSlotIds[round(annotation.GetLocation().GetEndMidpoint(),4)])
+        begin = str(self.timeSlotIds[round(annotation.GetLocation().GetBeginMidpoint(), 4), annotation])
+        end   = str(self.timeSlotIds[round(annotation.GetLocation().GetEndMidpoint(), 4), annotation])
         if begin == end:
             return False
         alignableRoot = ET.SubElement(annotationRoot, 'ALIGNABLE_ANNOTATION')
@@ -620,28 +621,27 @@ class Elan( Transcription ):
     # -----------------------------------------------------------------
 
     def __build_timeslots(self):
-        timevalues = []
+        from operator import itemgetter
+        self.timeSlotIds = OrderedDict()
+        timeSlotIds = list()
 
         for tier in self:
 
             if tier.IsPoint():
-                tier = point2interval(tier,ELAN_RADIUS)
+                tier = point2interval(tier, ELAN_RADIUS)
             tier = merge_overlapping_annotations(tier)
 
             for annotation in tier:
                 location = annotation.GetLocation()
-                #What about PointTiers???????
-                #TODO !!
-                begin = round(location.GetBeginMidpoint(),4)
-                end   = round(location.GetEndMidpoint(),4)
-                if not begin in timevalues:
-                    timevalues.append(begin)
+                begin = round(location.GetBeginMidpoint(), 4)
+                end = round(location.GetEndMidpoint(), 4)
 
-                if not end in timevalues:
-                    timevalues.append(end)
+                timeSlotIds.append((begin, annotation))
+                timeSlotIds.append((end, annotation))
 
-        self.timeSlotIds = {}
-        for i,v in enumerate(timevalues):
-            self.timeSlotIds[v] = 't%s' % i
-
-    # -----------------------------------------------------------------
+        # sort by time values and assign the TS
+        i = 0
+        for key in sorted(timeSlotIds, key=itemgetter(0)):
+            i += 1
+            ts = 'ts%s' % i
+            self.timeSlotIds[key] = ts
