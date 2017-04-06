@@ -250,10 +250,14 @@ def merge_overlapping_annotations(tier, separator=' '):
                 prev = a
 
             elif a.GetLocation().GetEnd() < prev.GetLocation().GetEnd():
-                a2 = Annotation(TimeInterval(a.GetLocation().GetEnd(),prev.GetLocation().GetEnd()),Label(prev.GetLabel().GetValue()))
-                prev.GetLocation().SetEnd( a.GetLocation().GetEnd() )
+                a2 = Annotation(TimeInterval(a.GetLocation().GetEnd(), prev.GetLocation().GetEnd()), Label(prev.GetLabel().GetValue()))
+                if prev.GetLocation().GetBegin() < a.GetLocation().GetEnd():
+                    prev.GetLocation().SetEnd( a.GetLocation().GetEnd() )
                 prev.GetLabel().SetValue( prev.GetLabel().GetValue() + separator + a.GetLabel().GetValue())
-                new_tier.Append(a2)
+                try:
+                    new_tier.Append(a2)
+                except Exception:
+                    pass
                 prev = a2
 
             else:

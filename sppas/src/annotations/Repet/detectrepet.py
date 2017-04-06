@@ -200,7 +200,6 @@ class Repetitions(DataRepetition):
         :returns: DataRepetition()
         
         """
-
         # Find all repeated tokens of each token of the source
         repeats = list()
 

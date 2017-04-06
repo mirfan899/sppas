@@ -196,8 +196,12 @@ class TestRepetitions(unittest.TestCase):
         self.assertIsNone(r.get_source())
 
     def test_select_other_repetition(self):
-        pass
-        # TODO
+        r = Repetitions(['euh'])
+        d1 = DataSpeaker(["tok1", "tok2", "tok2", "tok2", "blah", "tok1", "blah"])
+        d2 = DataSpeaker(["tok1", "euh", "euh", "tok1", "tok2", "euh"])
+        n = r.get_longest(1, d1, d2)
+        self.assertEqual(r.select_other_repetition(0, n, d1, d2), 4)
+        self.assertEqual(r.get_source(), (0, 3))
 
     def test_find_echos(self):
         pass

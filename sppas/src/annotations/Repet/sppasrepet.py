@@ -87,7 +87,7 @@ class sppasRepet(sppasBaseAnnotation):
         # Members
         self._use_lemmatize = True   # Lemmatize the input
         self._use_stopwords = True   # Add specific stopwords of the input
-        self._span = 5              # Detection length (nb of IPUs; 1=current IPU)
+        self._span = 5               # Detection length (nb of IPUs; 1=current IPU)
         self._alpha = 0.5            # Specific stop-words threshold coefficient
         self.lemmatizer = LemmaDict()
         self.stop_words = Vocabulary()
@@ -96,7 +96,7 @@ class sppasRepet(sppasBaseAnnotation):
         try:
             lemma_file = resource_file.replace(".stp", ".lem")
             self.lemmatizer.load(lemma_file)
-        except Exception:
+        except:
             self._use_lemmatize = False
 
         if self._use_lemmatize is False:
@@ -114,7 +114,7 @@ class sppasRepet(sppasBaseAnnotation):
         try:
             stop_file = resource_file.replace(".lem", ".stp")
             self.stop_words.load_from_ascii(stop_file)
-        except Exception:
+        except:
             pass
 
         if self._use_stopwords is False:
@@ -341,6 +341,8 @@ class sppasRepet(sppasBaseAnnotation):
         :param inputtier2: (Tier)
 
         """
+        inputtier1.SetRadius(0.04)
+        inputtier2.SetRadius(0.04)
         # Use the appropriate stop-list: add un-relevant tokens of the echoing speaker
         stop_words = self.get_stop_list(inputtier2)
         # Create repeat objects
@@ -354,6 +356,8 @@ class sppasRepet(sppasBaseAnnotation):
         tok_end_src = min(20, inputtier1.GetSize()-1)
         tok_start_echo = 0
 
+        tokens1 = list()
+        tokens2 = list()
         # Detection is here:
         # detect() is applied work by word, from tok_start to tok_end
         while tok_start_src < tok_end_src:
@@ -365,21 +369,24 @@ class sppasRepet(sppasBaseAnnotation):
             speaker1 = DataSpeaker(tokens1)
 
             # Create speaker2
-            tokens2 = list()
-            nb_breaks = 0
-            old_tok_start_echo = tok_start_echo
+            src_begin = inputtier1[tok_start_src].GetLocation().GetBeginMidpoint()
+            # re-create only if different of the previous step...
+            if len(tokens2) == 0 or inputtier2[tok_start_echo].GetLocation().GetBeginMidpoint() < src_begin:
+                tokens2 = list()
+                nb_breaks = 0
+                old_tok_start_echo = tok_start_echo
 
-            for i in range(old_tok_start_echo, len(inputtier2)):
-                ann = inputtier2[i]
-                if ann.GetLocation().GetBeginMidpoint() >= inputtier1[tok_start_src].GetLocation().GetBeginMidpoint():
-                    if tok_start_echo == old_tok_start_echo:
-                        tok_start_echo = i
-                    if ann.GetLabel().IsSilence():
-                        nb_breaks += 1
-                    if nb_breaks == self._span:
-                        break
-                    tokens2.append(ann.GetLabel().GetValue())
-            speaker2 = DataSpeaker(tokens2)
+                for i in range(old_tok_start_echo, len(inputtier2)):
+                    ann = inputtier2[i]
+                    if ann.GetLocation().GetBeginMidpoint() >= src_begin:
+                        if tok_start_echo == old_tok_start_echo:
+                            tok_start_echo = i
+                        if ann.GetLabel().IsSilence():
+                            nb_breaks += 1
+                        if nb_breaks == self._span:
+                            break
+                        tokens2.append(ann.GetLabel().GetValue())
+                speaker2 = DataSpeaker(tokens2)
 
             # We can't go too further due to the required time-alignment of tokens between src/echo
             # Check only if the first token is the first token of a source!!
@@ -389,8 +396,9 @@ class sppasRepet(sppasBaseAnnotation):
             shift = 1
             if repetition.get_source() is not None:
                 s, e = repetition.get_source()
-                sppasRepet.__add_repetition(repetition, inputtier1, inputtier2, tok_start_src, tok_start_echo, src_tier, echo_tier)
-                shift += e
+                saved = sppasRepet.__add_repetition(repetition, inputtier1, inputtier2, tok_start_src, tok_start_echo, src_tier, echo_tier)
+                if saved is True:
+                    shift = e + 1
 
             tok_start_src = min(tok_start_src + shift, inputtier1.GetSize()-1)
             tok_end_src = min(tok_start_src + 20, inputtier1.GetSize()-1)
