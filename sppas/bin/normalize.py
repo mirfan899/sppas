@@ -1,51 +1,44 @@
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /        Automatic
-#           \__   |__/  |__/  |___| \__      Annotation
-#              \  |     |     |   |    \     of
-#           ___/  |     |     |   | ___/     Speech
-#           =============================
-#
-#           http://www.lpl-aix.fr/~bigi/sppas
-#
-# ---------------------------------------------------------------------------
-# developed at:
-#
-#       Laboratoire Parole et Langage
-#
-#       Copyright (C) 2011-2014  Brigitte Bigi
-#
-#       Use of this software is governed by the GPL, v3
-#       This banner notice must not be removed
-# ---------------------------------------------------------------------------
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: tokenize.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-__docformat__ = """epytext"""
-__authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
+        http://www.sppas.org/
 
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
+        Use of this software is governed by the GNU Public License, version 3.
 
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    bin.normalize.py
+    ~~~~~~~~~~~~~~~~
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Text normalization automatic annotation.
+
+"""
 import sys
 import os.path
 from argparse import ArgumentParser
@@ -57,7 +50,7 @@ sys.path.append(SPPAS)
 from sppas import RESOURCES_PATH
 
 from sppas.src.annotations.TextNorm.sppastok import sppasTok
-from sppas.src.annotations.TextNorm.tokenize import TextNormalizer
+from sppas.src.annotations.TextNorm.normalize import TextNormalizer
 from sppas.src.resources.vocab import Vocabulary
 from sppas.src.resources.dictrepl import DictRepl
 from sppas.src.utils.fileutils import setup_logging
@@ -70,9 +63,19 @@ parser = ArgumentParser(usage="%s -r vocab [options]" % os.path.basename(PROGRAM
                         prog=PROGRAM,
                         description="Text normalization command line interface.")
 
-parser.add_argument("-r", "--vocab",      required=True, help='Vocabulary file name')
-parser.add_argument("-i", metavar="file", required=False, help='Input file name')
-parser.add_argument("-o", metavar="file", required=False, help='Output file name (required only if -i is fixed)')
+parser.add_argument("-r", "--vocab",
+                    required=True,
+                    help='Vocabulary file name')
+
+parser.add_argument("-i",
+                    metavar="file",
+                    required=False,
+                    help='Input file name')
+
+parser.add_argument("-o",
+                    metavar="file",
+                    required=False,
+                    help='Output file name (required only if -i is fixed)')
 
 parser.add_argument("--nofaked",
                     action='store_true',
@@ -96,7 +99,7 @@ args = parser.parse_args()
 # ----------------------------------------------------------------------------
 
 if not args.quiet:
-    setup_logging(1,None)
+    setup_logging(1, None)
 
 # ----------------------------------------------------------------------------
 # Automatic Text Normalization is here:

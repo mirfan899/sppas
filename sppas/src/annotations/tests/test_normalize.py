@@ -8,7 +8,9 @@ from sppas import RESOURCES_PATH
 from sppas.src.resources.vocab import Vocabulary
 from sppas.src.resources.dictrepl import DictRepl
 
-from ..TextNorm.tokenize import TextNormalizer, sppasTranscription, sppasTokenizer
+from ..TextNorm.normalize import TextNormalizer
+from ..TextNorm.transcription import sppasTranscription
+from ..TextNorm.tokenize import sppasTokenizer
 
 # ---------------------------------------------------------------------------
 
@@ -146,7 +148,7 @@ class TestDictTok(unittest.TestCase):
 
         wds = Vocabulary(vocabfra)
         wds.load_from_ascii(vocabcmn)
-        self.assertEquals(wds.get_size(), 457933)
+        self.assertEquals(wds.get_size(), 457934)
 
         #self.tok.set_vocab(wds)
         #splitswitch = self.tok.tokenize(u'et il m\'a dit : "《干脆就把那部蒙人的闲法给废了拉倒！》RT @laoshipukong : 27日"')

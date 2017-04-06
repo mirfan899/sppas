@@ -1,71 +1,54 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: num2letter.py
-# ---------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+        http://www.sppas.org/
 
-# -------------------------------------------------------------------------
+        Use of this software is governed by the GNU Public License, version 3.
 
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.annotations.TextNorm.num2letter.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Module to convert numbers to their written form the multilingual text
+    normalization system.
+
+"""
 import re
-
-# -------------------------------------------------------------------------
-
-ZERO = dict()
-ZERO["und"] = "0"
-ZERO["yue"] = u"零"
-ZERO["cmn"] = u"零"
-ZERO["fra"] = u"zéro"
-ZERO["ita"] = u"zero"
-ZERO["eng"] = u"zero"
-ZERO["spa"] = u"cero"
-ZERO["khm"] = u"ស្សូន  "
-ZERO["vie"] = u"không"
-ZERO["jpn"] = u"ゼロ"
-ZERO['pol'] = u"zerowej"
-ZERO['por'] = u"zero"
-
 
 # -------------------------------------------------------------------------
 
 
 class sppasNum(object):
     """
-    Numerical conversion using a multilingual algorithm.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Numerical conversion using a multilingual algorithm.
 
     For details, read the following reference:
         - Brigitte Bigi (2011).
@@ -78,58 +61,63 @@ class sppasNum(object):
     The language names used in this class are based on iso639-3.
 
     """
+    LANGUAGES = ["und", "yue", "cmn", "fra", "ita", "eng", "spa", "khm", "vie", "jpn", "pol", "por"]
 
-    def __init__(self, lang="und"):
-        """
-        Create a new sppasNum instance.
+    ZERO = dict()
+    ZERO["und"] = "0"
+    ZERO["yue"] = u"零"
+    ZERO["cmn"] = u"零"
+    ZERO["fra"] = u"zéro"
+    ZERO["ita"] = u"zero"
+    ZERO["eng"] = u"zero"
+    ZERO["spa"] = u"cero"
+    ZERO["khm"] = u"ស្សូន  "
+    ZERO["vie"] = u"không"
+    ZERO["jpn"] = u"ゼロ"
+    ZERO['pol'] = u"zerowej"
+    ZERO['por'] = u"zero"
 
-        @param lang (string): the language code in ISO639-3 (fra, eng, spa,
-        khm, ita, ...). If lang is set to "und" (undeterminated), no conversion
+    def __init__(self, lang):
+        """ Create a new sppasNum instance.
+
+        :param lang: (str) the language code in ISO639-3 (fra, eng, spa,
+        khm, ita, ...). If lang is set to "und" (undetermined), no conversion
         is performed.
 
         """
-        self._lang = lang
+        self._lang = "und"
+        self.set_lang(lang)
 
-    # End __init__
     # -------------------------------------------------------------------------
-
 
     def set_lang(self, lang):
-        """
-        Set the language.
+        """ Set the language.
 
-        @param lang (string): the language code in ISO639-3 (fra, eng, spa, khm, ita, ...).
+        :param lang: (str) the language code in ISO639-3.
 
         """
+        if lang not in sppasNum.LANGUAGES:
+            raise ValueError("Unknown language {:s}".format(lang))
         self._lang = lang
-
-
-    def get_lang(self):
-        """
-        Return the current language code.
-        """
-        return self._lang
 
     # -------------------------------------------------------------------------
 
+    def get_lang(self):
+        """ Return the current language code. """
+
+        return self._lang
 
     # -------------------------------------------------------------------------
     # Number 0
     # -------------------------------------------------------------------------
 
     def zero(self):
+        """ Convert the zero number.
+
+        :param number: (int) the number to convert to letters.
+
         """
-        Convert the zero number.
-
-        @param number (int) the number to convert to letters.
-
-        """
-        try:
-            _str = ZERO[self._lang]
-        except Exception:
-            raise Exception('Num2Letter. Unrecognized language: '+self._lang)
-
-        return _str
+        return sppasNum.ZERO[self._lang]
 
     # -------------------------------------------------------------------------
     # Numbers from 1 to 9
@@ -137,135 +125,134 @@ class sppasNum(object):
 
     def __unite_khm(self, number):
         _r = ""
-        if (number == 9): _r = u"ប្រាំបួន "
-        if (number == 8): _r = u"ប្រាំបី "
-        if (number == 7): _r = u"ប្រាំពីរ "
-        if (number == 6): _r = u"ប្រាំមួយ "
-        if (number == 5): _r = u"ប្រាំ "
-        if (number == 4): _r = u"បួន "
-        if (number == 3): _r = u"បី "
-        if (number == 2): _r = u"ពីរ "
-        if (number == 1): _r = u"មួយ "
-        if (number == 0): _r = self.zero()
+        if number == 9: _r = u"ប្រាំបួន "
+        if number == 8: _r = u"ប្រាំបី "
+        if number == 7: _r = u"ប្រាំពីរ "
+        if number == 6: _r = u"ប្រាំមួយ "
+        if number == 5: _r = u"ប្រាំ "
+        if number == 4: _r = u"បួន "
+        if number == 3: _r = u"បី "
+        if number == 2: _r = u"ពីរ "
+        if number == 1: _r = u"មួយ "
+        if number == 0: _r = self.zero()
         return _r
 
     def __unite_por(self, number):
         _r = ""
-        if (number == 9): _r = u"nove"
-        if (number == 8): _r = u"oito"
-        if (number == 7): _r = u"sete"
-        if (number == 6): _r = u"seis"
-        if (number == 5): _r = u"cinco"
-        if (number == 4): _r = u"quatro"
-        if (number == 3): _r = u"três"
-        if (number == 2): _r = u"dois"
-        if (number == 1): _r = u"um"
-        if (number == 0): _r = self.zero()
+        if number == 9: _r = u"nove"
+        if number == 8: _r = u"oito"
+        if number == 7: _r = u"sete"
+        if number == 6: _r = u"seis"
+        if number == 5: _r = u"cinco"
+        if number == 4: _r = u"quatro"
+        if number == 3: _r = u"três"
+        if number == 2: _r = u"dois"
+        if number == 1: _r = u"um"
+        if number == 0: _r = self.zero()
         return _r
 
     def __unite_spa(self, number):
         _r = ""
-        if (number == 9): _r = u"nueve"
-        if (number == 8): _r = u"ocho"
-        if (number == 7): _r = u"siete"
-        if (number == 6): _r = u"seis"
-        if (number == 5): _r = u"cinco"
-        if (number == 4): _r = u"cuatro"
-        if (number == 3): _r = u"tres"
-        if (number == 2): _r = u"dos"
-        if (number == 1): _r = u"uno"
-        if (number == 0): _r = self.zero()
+        if number == 9: _r = u"nueve"
+        if number == 8: _r = u"ocho"
+        if number == 7: _r = u"siete"
+        if number == 6: _r = u"seis"
+        if number == 5: _r = u"cinco"
+        if number == 4: _r = u"cuatro"
+        if number == 3: _r = u"tres"
+        if number == 2: _r = u"dos"
+        if number == 1: _r = u"uno"
+        if number == 0: _r = self.zero()
         return _r
 
     def __unite_vie(self, number):
         _r = u""
-        if (number == 9): _r = u"chín"
-        if (number == 8): _r = u"tám"
-        if (number == 7): _r = u"bảy"
-        if (number == 6): _r = u"sáu"
-        if (number == 5): _r = u"năm"
-        if (number == 4): _r = u"bốn"
-        if (number == 3): _r = u"ba"
-        if (number == 2): _r = u"hai"
-        if (number == 1): _r = u"một"
-        if (number == 0): _r = self.zero()
+        if number == 9: _r = u"chín"
+        if number == 8: _r = u"tám"
+        if number == 7: _r = u"bảy"
+        if number == 6: _r = u"sáu"
+        if number == 5: _r = u"năm"
+        if number == 4: _r = u"bốn"
+        if number == 3: _r = u"ba"
+        if number == 2: _r = u"hai"
+        if number == 1: _r = u"một"
+        if number == 0: _r = self.zero()
         return _r
 
     def __unite_cmn(self, number):
         _r = ""
-        if (number == 9): _r = u"九"
-        if (number == 8): _r = u"八"
-        if (number == 7): _r = u"七"
-        if (number == 6): _r = u"六"
-        if (number == 5): _r = u"五"
-        if (number == 4): _r = u"四"
-        if (number == 3): _r = u"三"
-        if (number == 2): _r = u"二"
-        if (number == 1): _r = u"一"
-        if (number == 0): _r = self.zero()
+        if number == 9: _r = u"九"
+        if number == 8: _r = u"八"
+        if number == 7: _r = u"七"
+        if number == 6: _r = u"六"
+        if number == 5: _r = u"五"
+        if number == 4: _r = u"四"
+        if number == 3: _r = u"三"
+        if number == 2: _r = u"二"
+        if number == 1: _r = u"一"
+        if number == 0: _r = self.zero()
         return _r
 
     def __unite_fra(self, number):
         _r = ""
-        if (number == 9): _r = u"neuf"
-        if (number == 8): _r = u"huit"
-        if (number == 7): _r = u"sept"
-        if (number == 6): _r = u"six"
-        if (number == 5): _r = u"cinq"
-        if (number == 4): _r = u"quatre"
-        if (number == 3): _r = u"trois"
-        if (number == 2): _r = u"deux"
-        if (number == 1): _r = u"un"
-        if (number == 0): self.zero()
+        if number == 9: _r = u"neuf"
+        if number == 8: _r = u"huit"
+        if number == 7: _r = u"sept"
+        if number == 6: _r = u"six"
+        if number == 5: _r = u"cinq"
+        if number == 4: _r = u"quatre"
+        if number == 3: _r = u"trois"
+        if number == 2: _r = u"deux"
+        if number == 1: _r = u"un"
+        if number == 0: _r = self.zero()
         return _r
 
     def __unite_ita(self, number):
         _r = ""
-        if (number == 9): _r = u"nove"
-        if (number == 8): _r = u"otto"
-        if (number == 7): _r = u"sette"
-        if (number == 6): _r = u"sei"
-        if (number == 5): _r = u"cinque"
-        if (number == 4): _r = u"quattro"
-        if (number == 3): _r = u"tré"
-        if (number == 2): _r = u"due"
-        if (number == 1): _r = u"uno"
-        if (number == 0): self.zero()
+        if number == 9: _r = u"nove"
+        if number == 8: _r = u"otto"
+        if number == 7: _r = u"sette"
+        if number == 6: _r = u"sei"
+        if number == 5: _r = u"cinque"
+        if number == 4: _r = u"quattro"
+        if number == 3: _r = u"tré"
+        if number == 2: _r = u"due"
+        if number == 1: _r = u"uno"
+        if number == 0: _r = self.zero()
         return _r
 
     def __unite_eng(self, number):
         _r = ""
-        if (number == 9): _r = u"nine"
-        if (number == 8): _r = u"eight"
-        if (number == 7): _r = u"seven"
-        if (number == 6): _r = u"six"
-        if (number == 5): _r = u"five"
-        if (number == 4): _r = u"four"
-        if (number == 3): _r = u"three"
-        if (number == 2): _r = u"two"
-        if (number == 1): _r = u"one"
-        if (number == 0): self.zero()
+        if number == 9: _r = u"nine"
+        if number == 8: _r = u"eight"
+        if number == 7: _r = u"seven"
+        if number == 6: _r = u"six"
+        if number == 5: _r = u"five"
+        if number == 4: _r = u"four"
+        if number == 3: _r = u"three"
+        if number == 2: _r = u"two"
+        if number == 1: _r = u"one"
+        if number == 0: _r = self.zero()
         return _r
 
     def __unite_pol(self, number):
         _r = ""
-        if (number == 9): _r = u"września"
-        if (number == 8): _r = u"osiem"
-        if (number == 7): _r = u"siedem"
-        if (number == 6): _r = u"sześć"
-        if (number == 5): _r = u"pięć"
-        if (number == 4): _r = u"cztery"
-        if (number == 3): _r = u"trzy"
-        if (number == 2): _r = u"dwa"
-        if (number == 1): _r = u"stycznia"
-        if (number == 0): self.zero()
+        if number == 9: _r = u"września"
+        if number == 8: _r = u"osiem"
+        if number == 7: _r = u"siedem"
+        if number == 6: _r = u"sześć"
+        if number == 5: _r = u"pięć"
+        if number == 4: _r = u"cztery"
+        if number == 3: _r = u"trzy"
+        if number == 2: _r = u"dwa"
+        if number == 1: _r = u"stycznia"
+        if number == 0: _r = self.zero()
         return _r
 
-    def unite(self,number):
-        """
-        Convert a number from 0 to 9.
+    def unite(self, number):
+        """ Convert a number from 0 to 9.
 
-        @param (int) the number to convert to letters.
+        :param number: (int) the number to convert to letters.
 
         """
         if self._lang=="khm":
@@ -289,8 +276,7 @@ class sppasNum(object):
         if self._lang=="por":
             return self.__unite_por(number)
 
-        raise Exception('Unrecognized language: '+self._lang)
-
+        raise ValueError("Unknown language {:s}".format(self._lang))
 
     # -------------------------------------------------------------------------
     # Numbers from 10 to 99
@@ -299,8 +285,6 @@ class sppasNum(object):
     def __dizaine_pol(self, number):
         if number < 10:
             return self.unite(number)
-        n = (number / 10) * 10
-        r = number % 10
         if number < 22:
             if number == 10: _r = u"dziesięć"
             elif number == 11: _r = u"jedenaście"
@@ -316,6 +300,8 @@ class sppasNum(object):
             elif number == 21: _r = u"dwadzieścia jeden"
             return _r
 
+        n = (number / 10) * 10
+        r = number % 10
         if number < 50:
             dizaine = u"dzieścia"
         else:
@@ -389,185 +375,185 @@ class sppasNum(object):
         return u"%s-y-%s" % (dizaine, self.unite(r))
 
     def __dizaine_cmn(self,number):
-        if (number < 10):
+        if number < 10:
             _str = self.unite(number)
-        elif (number >= 10 and number < 100):
-            if ( (number%10) == 0 ):
-                _str = self.unite(int (number/10)) + u"十"
+        elif 10 >= number < 100:
+            if (number%10) == 0:
+                _str = self.unite(int(number/10)) + u"十"
             else:
-                _str = self.unite(int (number/10)) + u"十" + self.unite(number%10)
+                _str = self.unite(int(number/10)) + u"十" + self.unite(number%10)
         return _str
 
     def __dizaine_fra(self,number):
-        if (number >= 90 and number <= 99):
+        if 90 <= number <= 99:
             _str = u"quatre-vingt-" + self.dizaine(number-80)
-        elif (number >= 80 and number <= 89):
+        elif 80 <= number <= 89:
             _str = u"quatre-vingt "
-            if (number > 80):
+            if number > 80:
                 _str = u"quatre-vingt-" + self.unite(number-80)
-        elif (number >= 70 and number <= 79):
+        elif 70 <= number <= 79:
             _str = u"soixante-" + self.dizaine(number-60)
-        elif (number >= 60 and number <= 69):
+        elif 60 <= number <= 69:
             _str = u"soixante "
-            if (number == 61):
+            if number == 61:
                 _str = u"soixante-et-un "
-            if (number > 61):
+            if number > 61:
                 _str = u"soixante-" + self.unite(number-60)
-        elif (number >= 50 and number <= 59):
+        elif 50 <= number <= 59:
             _str = u"cinquante "
-            if (number == 51):
+            if number == 51:
                 _str = u"cinquante-et-un "
-            if (number > 51):
+            if number > 51:
                 _str = u"cinquante-" + self.unite(number-50)
-        elif (number >= 40 and number <= 49):
+        elif 40 <= number <= 49:
             _str = u"quarante "
-            if (number == 41):
+            if number == 41:
                 _str = u"quarante-et-un "
-            if (number > 41):
+            if number > 41:
                 _str = u"quarante-" + self.unite(number-40)
-        elif (number >= 30 and number <= 39):
+        elif 30 <= number <= 39:
             _str = u"trente "
-            if (number == 31):
+            if number == 31:
                 _str = u"trente-et-un "
-            if (number > 31):
+            if number > 31:
                 _str = u"trente-" + self.unite(number-30)
-        elif (number >= 20 and number <= 29):
+        elif 20 <= number <= 29:
             _str = u"vingt "
-            if (number == 21):
+            if number == 21:
                 _str = u"vingt-et-un "
-            if (number > 21):
+            if number > 21:
                 _str = u"vingt-" + self.unite(number-20)
-        elif (number >= 10 and number <= 19):
-            if (number == 10): _r = u"dix"
-            if (number == 11): _r = u"onze"
-            if (number == 12): _r = u"douze"
-            if (number == 13): _r = u"treize"
-            if (number == 14): _r = u"quatorze"
-            if (number == 15): _r = u"quinze"
-            if (number == 16): _r = u"seize"
-            if (number == 17): _r = u"dix-sept"
-            if (number == 18): _r = u"dix-huit"
-            if (number == 19): _r = u"dix-neuf"
+        elif 10 <= number <= 19:
+            if number == 10: _r = u"dix"
+            if number == 11: _r = u"onze"
+            if number == 12: _r = u"douze"
+            if number == 13: _r = u"treize"
+            if number == 14: _r = u"quatorze"
+            if number == 15: _r = u"quinze"
+            if number == 16: _r = u"seize"
+            if number == 17: _r = u"dix-sept"
+            if number == 18: _r = u"dix-huit"
+            if number == 19: _r = u"dix-neuf"
             return _r
         else:
             _str = self.unite(number)
         return _str
 
     def __dizaine_eng(self,number):
-        if (number > 90 and number <= 99):
+        if 90 < number <= 99:
             _str = u"ninety-" + self.dizaine(number-90)
         elif number == 90:
             _str = u"ninety"
-        elif (number > 80 and number <= 89):
+        elif 80 < number <= 89:
             _str = u"eighty-" + self.dizaine(number-80)
-        elif (number == 80):
+        elif number == 80:
             _str = u"eighty"
-        elif (number > 70 and number <= 79):
+        elif 70 < number <= 79:
             _str = u"seventy-" + self.dizaine(number-70)
-        elif (number == 70):
+        elif number == 70:
             _str = u"seventy"
-        elif (number > 60 and number <= 69):
+        elif 60 < number <= 69:
             _str = u"sixty-" + self.unite(number-60)
-        elif (number == 60):
+        elif number == 60:
             _str = u"sixty "
-        elif (number > 50 and number <= 59):
+        elif 50 < number <= 59:
             _str = u"fifty-" + self.unite(number-50)
-        elif (number == 50):
+        elif number == 50:
             _str = u"fifty"
-        elif (number > 40 and number <= 49):
+        elif 40 < number <= 49:
             _str = u"fourty-" + self.unite(number-40)
-        elif (number == 40):
+        elif number == 40:
             _str = u"fourty"
-        elif (number > 30 and number <= 39):
+        elif 30 < number <= 39:
             _str = u"thirty-" + self.unite(number-30)
-        elif (number == 30):
+        elif number == 30:
             _str = u"thirty"
-        elif (number > 20 and number <= 29):
+        elif 20 < number <= 29:
             _str = u"twenty-" + self.unite(number-20)
-        elif (number == 20):
+        elif number == 20:
             _str = u"twenty "
-        elif (number >= 10 and number <= 19):
-            if (number == 10): _r = u"ten"
-            if (number == 11): _r = u"eleven"
-            if (number == 12): _r = u"twelve"
-            if (number == 13): _r = u"thirteen"
-            if (number == 14): _r = u"fourteen"
-            if (number == 15): _r = u"fifteen"
-            if (number == 16): _r = u"sixteen"
-            if (number == 17): _r = u"seventeen"
-            if (number == 18): _r = u"eigteen"
-            if (number == 19): _r = u"nineteen"
+        elif 10 <= number <= 19:
+            if number == 10: _r = u"ten"
+            if number == 11: _r = u"eleven"
+            if number == 12: _r = u"twelve"
+            if number == 13: _r = u"thirteen"
+            if number == 14: _r = u"fourteen"
+            if number == 15: _r = u"fifteen"
+            if number == 16: _r = u"sixteen"
+            if number == 17: _r = u"seventeen"
+            if number == 18: _r = u"eigteen"
+            if number == 19: _r = u"nineteen"
             return _r
         else:
             _str = self.unite(number)
         return _str
 
     def __dizaine_ita(self,number):
-        if (number == 91) or (number == 98):
+        if number == 91 or number == 98:
             _str = u"novant" + self.dizaine(number-90).strip() + " "
-        elif (number > 90 and number <= 99):
+        elif 90 < number <= 99:
             _str = u"novanti-" + self.dizaine(number-90).strip() + " "
         elif number == 90:
             _str = u"novanti"
-        elif (number == 81) or (number == 88):
+        elif number == 81 or number == 88:
             _str = u"ottant" + self.dizaine(number-80).strip() + " "
-        elif (number > 81 and number <= 89):
+        elif 81 < number <= 89:
             _str = u"ottanta-" + self.dizaine(number-80).strip() + " "
-        elif (number == 80):
+        elif number == 80:
             _str = u"ottanta"
-        elif (number == 71) or (number == 78):
+        elif number == 71 or number == 78:
             _str = u"settant" + self.dizaine(number-70).strip() + " "
-        elif (number >= 71 and number <= 79):
+        elif number >= 71 and number <= 79:
             _str = u"settanta-" + self.dizaine(number-70).strip() + " "
-        elif (number == 70):
+        elif number == 70:
             _str = u"settanta"
-        elif (number == 61) or (number == 68):
+        elif number == 61 or number == 68:
             _str = u"sessant" + self.unite(number-60).strip() + " "
-        elif (number > 61 and number <= 69):
+        elif number > 61 and number <= 69:
             _str = u"sessanta-" + self.unite(number-60).strip() + " "
-        elif (number == 60):
+        elif number == 60:
             _str = u"sessanta"
-        elif (number == 51) or (number == 58):
+        elif number == 51 or number == 58:
             _str = u"cinquant" + self.unite(number-50).strip() + " "
-        elif (number > 50 and number <= 59):
+        elif number > 50 and number <= 59:
             _str = u"cinquanta-" + self.unite(number-50).strip() + " "
-        elif (number == 50):
+        elif number == 50:
             _str = u"cinquanta"
-        elif (number == 41) or (number == 48):
+        elif number == 41 or number == 48:
             _str = u"quarant" + self.unite(number-40).strip() + " "
-        elif (number > 41 and number <= 49):
+        elif number > 41 and number <= 49:
             _str = u"quaranta-" + self.unite(number-40).strip() + " "
-        elif (number == 40):
+        elif number == 40:
             _str = u"quaranta"
-        elif (number == 31) or (number == 38):
+        elif number == 31 or number == 38:
             _str = u"trent" + self.unite(number-30).strip() + " "
-        elif (number > 31 and number <= 39):
+        elif number > 31 and number <= 39:
             _str = u"trenta-" + self.unite(number-30).strip() + " "
-        elif (number == 30):
+        elif number == 30:
             _str = u"trenta"
-        elif (number == 21) or (number == 28):
+        elif number == 21 or number == 28:
             _str = u"vent" + self.unite(number-20).strip() + " "
-        elif (number > 21 and number <= 29):
+        elif number > 21 and number <= 29:
             _str = u"venti-" + self.unite(number-20).strip() + " "
-        elif (number == 20):
+        elif number == 20:
             _str = u"venti"
-        elif (number >= 10 and number <= 19):
-            if (number == 10): _r = u"dieci"
-            if (number == 11): _r = u"undici"
-            if (number == 12): _r = u"dodici"
-            if (number == 13): _r = u"tredici"
-            if (number == 14): _r = u"quattordici"
-            if (number == 15): _r = u"quindici"
-            if (number == 16): _r = u"sedici"
-            if (number == 17): _r = u"diciassette"
-            if (number == 18): _r = u"diciotto"
-            if (number == 19): _r = u"diciannove"
+        elif number >= 10 and number <= 19:
+            if number == 10: _r = u"dieci"
+            if number == 11: _r = u"undici"
+            if number == 12: _r = u"dodici"
+            if number == 13: _r = u"tredici"
+            if number == 14: _r = u"quattordici"
+            if number == 15: _r = u"quindici"
+            if number == 16: _r = u"sedici"
+            if number == 17: _r = u"diciassette"
+            if number == 18: _r = u"diciotto"
+            if number == 19: _r = u"diciannove"
             return _r
         else:
             _str = self.unite(number)
         return _str
 
-    def dizaine(self,number):
+    def dizaine(self, number):
         """
         Convert a number from 10 to 99.
         """
@@ -628,36 +614,36 @@ class sppasNum(object):
         return u"%s-%s" % (s, self.dizaine(r))
 
     def __centaine_cmn(self,number):
-        if (number < 100):
+        if number < 100:
             return self.dizaine(number)
-        if (number >= 100 and number < 1000):
-            if ( (number%100) != 0 ):
-                if ( (number%100) > 0 and (number%100) < 10 ):
-                    return self.dizaine(int (number/100)) + u"百零" + self.dizaine(number%100)
-                return self.dizaine(int (number/100)) + u"百" + self.dizaine(number%100)
+        if number >= 100 and number < 1000:
+            if (number%100) != 0:
+                if (number%100) > 0 and (number%100) < 10:
+                    return self.dizaine(int(number/100)) + u"百零" + self.dizaine(number%100)
+                return self.dizaine(int(number/100)) + u"百" + self.dizaine(number%100)
             else:
-                return self.dizaine(int (number/100)) + u"百"
+                return self.dizaine(int(number/100)) + u"百"
         return str(number)
 
     def __centaine_fra(self,number):
-        if (number < 100):   return self.dizaine(number)
-        if (number == 100):  return u"cent"
-        if (number > 100) and (number <= 199):
+        if number < 100:   return self.dizaine(number)
+        if number == 100:  return u"cent"
+        if number > 100 and number <= 199:
             return u"cent-" + self.dizaine(number%100)
-        if ( (number%100) == 0 ):
+        if (number%100) == 0:
             return self.unite(number%100) + u"-cents"
-        return self.unite(int (number/100)) + u"-cent-" + self.dizaine(number%100)
+        return self.unite(int(number/100)) + u"-cent-" + self.dizaine(number%100)
 
     def __centaine_ita(self,number):
         if number < 100:
             return self.dizaine(number)
         if number == 100:
             return u"cento"
-        if (number > 100) and (number <= 199):
+        if number > 100 and number <= 199:
             return u"cento-" + self.dizaine(number%100)
         if (number%100) == 0:
             return " " + self.unite(number%100) + u"-cento"
-        return " " + self.unite(int (number/100)) + u"-cento-" + self.dizaine(number%100)
+        return " " + self.unite(int(number/100)) + u"-cento-" + self.dizaine(number%100)
 
     def __centaine_eng(self, number):
         if number < 100:
@@ -674,41 +660,41 @@ class sppasNum(object):
         if number < 100:
             return self.dizaine(number)
 
-        if (number == 100):
+        if number == 100:
             return u"sto"
-        if (number > 100) and (number <= 199):
+        if number > 100 and number <= 199:
             return u"sto " + self.dizaine(number%100)
-        if (number == 200):
+        if number == 200:
             return u"dwieście"
-        if (number > 200) and (number <= 299):
+        if number > 200 and number <= 299:
             return u"dwieście " + self.dizaine(number%100)
-        if (number == 300):
+        if number == 300:
             return u"trzysta"
-        if (number > 300) and (number <= 399):
+        if number > 300 and number <= 399:
             return u"trzysta " + self.dizaine(number%100)
-        if (number == 400):
+        if number == 400:
             return u"czterysta"
-        if (number > 400) and (number <= 499):
+        if number > 400 and number <= 499:
             return u"czterysta " + self.dizaine(number%100)
-        if (number == 500):
+        if number == 500:
             return u"pięćset"
-        if (number > 500) and (number <= 599):
+        if number > 500 and number <= 599:
             return u"pięćset " + self.dizaine(number%100)
-        if (number == 600):
+        if number == 600:
             return u"sześćset"
-        if (number > 600) and (number <= 699):
+        if number > 600 and number <= 699:
             return u"sześćset " + self.dizaine(number%100)
-        if (number == 700):
+        if number == 700:
             return u"siedemset"
-        if (number > 700) and (number <= 799):
+        if number > 700 and number <= 799:
             return u"siedemset " + self.dizaine(number%100)
-        if (number == 800):
+        if number == 800:
             return u"osiemset"
-        if (number > 800) and (number <= 899):
+        if number > 800 and number <= 899:
             return u"osiemset " + self.dizaine(number%100)
-        if (number == 900):
+        if number == 900:
             return u"osiemset"
-        if (number > 900) and (number <= 999):
+        if number > 900 and number <= 999:
             return u"osiemset " + self.dizaine(number%100)
 
 
@@ -770,62 +756,62 @@ class sppasNum(object):
         return u"%s-%s" % (s, self.centaine(r))
 
     def __millier_cmn(self,number):
-        if (number < 1000):
+        if number < 1000:
             return self.centaine(number)
 
-        if (number >= 1000 and number < 10000):
-            if ( (number%1000) != 0 ):
-                if ( (number%1000) > 0 and (number%1000) < 100 ):
-                    return self.centaine(int (number/1000)) + u"千零" + self.centaine(number%1000)
+        if number >= 1000 and number < 10000:
+            if (number%1000) != 0:
+                if (number%1000) > 0 and (number%1000) < 100:
+                    return self.centaine(int(number/1000)) + u"千零" + self.centaine(number%1000)
                 else:
-                    return self.centaine(int (number/1000)) + u"千" + self.centaine(number%1000)
-            return self.centaine(int (number/1000)) + u"千"
+                    return self.centaine(int(number/1000)) + u"千" + self.centaine(number%1000)
+            return self.centaine(int(number/1000)) + u"千"
         return str(number)
 
     def __milliers_cmn(self, number):
-        if (number < 10000):
+        if number < 10000:
             return self.__millier_cmn(number)
 
-        if ( (number%10000) == 0 ):
-            return self.unite(int (number/10000)) + u"万"
-        if (number >= 10000 and number < 100000000):
-            if ( (number%10000) != 0 ):
-                if ( (number%10000) > 0 and (number%10000) < 1000 ):
-                    return self.unite(int (number/10000)) + u"万零" + self.__millier_cmn(number%10000)
-                return self.unite(int (number/10000)) + u"万" + self.__millier_cmn(number%10000)
+        if (number%10000) == 0:
+            return self.unite(int(number/10000)) + u"万"
+        if number >= 10000 and number < 100000000:
+            if (number%10000) != 0:
+                if (number%10000) > 0 and (number%10000) < 1000:
+                    return self.unite(int(number/10000)) + u"万零" + self.__millier_cmn(number%10000)
+                return self.unite(int(number/10000)) + u"万" + self.__millier_cmn(number%10000)
             else:
                 return  u"万"
         return str(number)
 
     def __milliers_fra(self,number):
-        if (number < 1000):
+        if number < 1000:
             return self.centaine(number)
 
         # Milliers
-        if ( number == 1000 ):
+        if number == 1000:
             return u"mille "
-        elif ( ( number > 1000 ) and ( number < 2000 ) ):
+        elif number > 1000 and number < 2000:
             return u"mille-" + self.centaine(number%1000)
-        elif ( ( number >= 2000 ) and ( number < 10000 ) ):
-            if ( (number%1000) == 0 ):
-                return self.unite(int (number/1000)) + u"-mille-"
-            return self.unite(int (number/1000)) + u"-mille-" + self.centaine(number%1000)
+        elif number >= 2000 and number < 10000:
+            if (number%1000) == 0:
+                return self.unite(int(number/1000)) + u"-mille-"
+            return self.unite(int(number/1000)) + u"-mille-" + self.centaine(number%1000)
 
         # Dizaines de milliers
-        if (number == 10000):
+        if number == 10000:
             return u"dix-mille"
-        elif (number > 10000 and number < 100000):
-            if ( (number%1000) == 0 ):
-                return self.dizaine(int (number/1000)) + u"-mille "
-            return self.dizaine(int (number/1000)) + u"-mille-" + self.centaine(number%1000)
+        elif number > 10000 and number < 100000:
+            if (number%1000) == 0:
+                return self.dizaine(int(number/1000)) + u"-mille "
+            return self.dizaine(int(number/1000)) + u"-mille-" + self.centaine(number%1000)
 
         # Centaines de milliers
-        if (number == 100000):
+        if number == 100000:
             return u"cent-mille"
-        elif (number >= 100000 and number < 1000000):
-            if ( (number%1000) == 0 ):
-                return self.centaine(int (number/1000)) + u"-mille "
-            return self.centaine(int (number/1000)) + u"-mille-" + self.centaine(int (number%1000))
+        elif number >= 100000 and number < 1000000:
+            if (number%1000) == 0:
+                return self.centaine(int(number/1000)) + u"-mille "
+            return self.centaine(int(number/1000)) + u"-mille-" + self.centaine(int(number%1000))
 
         return str(number)
 
@@ -836,28 +822,28 @@ class sppasNum(object):
         # Milliers
         if number == 1000:
             return u"mille"
-        if ( number > 1000 ) and ( number < 2000 ):
+        if number > 1000 and number < 2000:
             return u"mille-" + self.centaine(number%1000)
-        if ( number >= 2000 ) and ( number < 10000 ):
-            if ( (number%1000) != 0 ):
-                return self.unite(int (number/1000)).strip() + u"-mila-" + self.centaine(number%1000)
-            return self.unite(int (number/1000)).strip() + u"-mila"
+        if number >= 2000 and number < 10000:
+            if (number%1000) != 0:
+                return self.unite(int(number/1000)).strip() + u"-mila-" + self.centaine(number%1000)
+            return self.unite(int(number/1000)).strip() + u"-mila"
 
         # Dizaines de milliers
         if number == 10000:
             return u"diecimila"
-        if (number > 10000) and (number < 100000):
+        if number > 10000 and number < 100000:
             if (number%1000) != 0:
-                return self.dizaine(int (number/1000)).strip() + u"-mila-" + self.centaine(number%1000)
-            return self.dizaine(int (number/1000)) + u"-mila"
+                return self.dizaine(int(number/1000)).strip() + u"-mila-" + self.centaine(number%1000)
+            return self.dizaine(int(number/1000)) + u"-mila"
 
         # Centaines de milliers
         if number == 100000:
             return u"centomila"
-        if (number >= 100000) and (number < 1000000):
+        if number >= 100000 and number < 1000000:
             if (number%1000) != 0:
-                return self.centaine(int (number/1000)).strip() + u"-mila-" + self.centaine(int (number%1000))
-            return self.centaine(int (number/1000)).strip() + u"mila-"
+                return self.centaine(int(number/1000)).strip() + u"-mila-" + self.centaine(int(number%1000))
+            return self.centaine(int(number/1000)).strip() + u"mila-"
 
         return str(number)
 
@@ -867,9 +853,7 @@ class sppasNum(object):
 
         n = number / 1000
         r = number % 1000
-
         s = u"%s thousand" % self.centaine(n)
-
         if r == 0:
             return s
         else:
@@ -881,7 +865,6 @@ class sppasNum(object):
 
         n = number / 1000
         r = number % 1000
-
         if number < 2000:
             s = u"tysięcy"
         else:
@@ -945,43 +928,43 @@ class sppasNum(object):
         return u"%s-%s" % (s, self.milliers(r))
 
     def __millions_cmn(self,number):
-        if (number < 100000000):
+        if number < 100000000:
             return self.__milliers_cmn(number)
 
-        if ( (number%100000000) == 0 ):
-            return self.__millier_cmn(int (number/100000000)) + u"亿"
+        if (number%100000000) == 0:
+            return self.__millier_cmn(int(number/100000000)) + u"亿"
 
-        if ( (number%100000000) != 0 ):
-            if ( (number%100000000) > 0 and (number%100000000) < 10000000 ):
-                return self.__millier_cmn(int (number/100000000)) + u"亿零" + self.__millier_cmn(number%100000000)
-            return self.__millier_cmn(int (number/100000000)) + u"亿" + self.__millier_cmn(number%100000000)
+        if (number%100000000) != 0:
+            if (number%100000000) > 0 and (number%100000000) < 10000000:
+                return self.__millier_cmn(int(number/100000000)) + u"亿零" + self.__millier_cmn(number%100000000)
+            return self.__millier_cmn(int(number/100000000)) + u"亿" + self.__millier_cmn(number%100000000)
         else:
             return u"亿"
 
         return str(number)
 
     def __millions_fra(self,number):
-        if (number < 1000000):
+        if number < 1000000:
             return self.milliers(number)
 
-        if (number >= 1000000 and number < 2000000):
-            return u"un-million-" + self.milliers(int (number%1000000))
+        if number >= 1000000 and number < 2000000:
+            return u"un-million-" + self.milliers(int(number%1000000))
 
-        if (number >= 2000000 and number < 1000000000):
-            return self.centaine(int (number/1000000)) + u"-millions-" + self.milliers(int (number%1000000))
+        if number >= 2000000 and number < 1000000000:
+            return self.centaine(int(number/1000000)) + u"-millions-" + self.milliers(int(number%1000000))
 
         return str(number)
 
 
     def __millions_ita(self,number):
-        if (number < 1000000):
+        if number < 1000000:
             return self.milliers(number)
 
-        if (number >= 1000000 and number < 2000000):
-            return u"un-milione-" + self.milliers(int (number%1000000))
+        if number >= 1000000 and number < 2000000:
+            return u"un-milione-" + self.milliers(int(number%1000000))
 
-        if (number >= 2000000 and number < 1000000000):
-            return self.centaine(int (number/1000000)).strip() + u"-milioni-" + self.milliers(int (number%1000000))
+        if number >= 2000000 and number < 1000000000:
+            return self.centaine(int(number/1000000)).strip() + u"-milioni-" + self.milliers(int(number%1000000))
 
         return str(number)
 
@@ -991,9 +974,7 @@ class sppasNum(object):
 
         n = number / 1000000
         r = number % 1000000
-
         s = u"%s million" % self.centaine(n)
-
         if r == 0:
             return s
         else:
@@ -1001,14 +982,14 @@ class sppasNum(object):
 
 
     def __millions_pol(self, number):
-        if (number < 1000000):
+        if number < 1000000:
             return self.milliers(number)
 
-        if (number >= 1000000 and number < 2000000):
-            return u"milion " + self.milliers(int (number%1000000))
+        if number >= 1000000 and number < 2000000:
+            return u"milion " + self.milliers(int(number%1000000))
 
-        if (number >= 2000000 and number < 1000000000):
-            return self.centaine(int (number/1000000)).strip() + u" miliony " + self.milliers(int (number%1000000))
+        if number >= 2000000 and number < 1000000000:
+            return self.centaine(int(number/1000000)).strip() + u" miliony " + self.milliers(int(number%1000000))
 
         return str(number)
 
@@ -1047,26 +1028,26 @@ class sppasNum(object):
         else:
             return u"%s-%s" % (s, self.millions(r))
 
-    def __milliards_fra(self,number):
-        if (number < 1000000000):
+    def __milliards_fra(self, number):
+        if number < 1000000000:
             return self.millions(number)
 
-        if (number >= 1000000000 and number < 2000000000):
-            return u"un-milliard-" + self.millions(int (number%1000000000))
+        if number >= 1000000000 and number < 2000000000:
+            return u"un-milliard-" + self.millions(int(number%1000000000))
 
-        if (number >= 2000000000 and number < 1000000000000):
-            return self.centaine(int (number/1000000000)) + u"-milliards-" + self.millions(int (number%1000000000))
+        if number >= 2000000000 and number < 1000000000000:
+            return self.centaine(int(number/1000000000)) + u"-milliards-" + self.millions(int(number%1000000000))
 
         return str(number)
 
-    def __milliards_ita(self,number):
-        if (number < 1000000000):
+    def __milliards_ita(self, number):
+        if number < 1000000000:
             _str = self.millions(number)
         # Millions
-        elif (number >= 1000000000 and number < 2000000000):
-            _str = u"un-miliardo-" + self.millions(int (number%1000000000))
-        elif (number >= 2000000000 and number < 1000000000000):
-            _str = "-" + self.centaine(int (number/1000000000)).strip() + u"-miliardi-" + self.millions(int (number%1000000000))
+        elif number >= 1000000000 and number < 2000000000:
+            _str = u"un-miliardo-" + self.millions(int(number%1000000000))
+        elif number >= 2000000000 and number < 1000000000000:
+            _str = "-" + self.centaine(int(number/1000000000)).strip() + u"-miliardi-" + self.millions(int(number%1000000000))
         else:
             return str(number)
         return _str
@@ -1077,32 +1058,30 @@ class sppasNum(object):
 
         n = number / 1000000000
         r = number % 1000000000
-
         s = u"%s billion" % self.centaine(n)
-
         if r == 0:
             return s
         else:
             return "%s %s" % (s, self.millions(r))
 
-    def __milliards_pol(self,number):
-        if (number < 1000000000):
+    def __milliards_pol(self, number):
+        if number < 1000000000:
             return self.millions(number)
 
-        if (number >= 1000000000 and number < 2000000000):
-            return u"miliard" + self.millions(int (number%1000000000))
+        if number >= 1000000000 and number < 2000000000:
+            return u"miliard" + self.millions(int(number%1000000000))
 
-        if (number >= 2000000000 and number < 1000000000000):
-            return self.centaine(int (number/1000000000)) + u" miliardy " + self.millions(int (number%1000000000))
+        if number >= 2000000000 and number < 1000000000000:
+            return self.centaine(int(number/1000000000)) + u" miliardy " + self.millions(int(number%1000000000))
 
         return str(number)
 
 
-    def __milliards_por(self,number):
-        if (number < 1000000000):
+    def __milliards_por(self, number):
+        if number < 1000000000:
             return self.millions(number)
 
-        return self.milliers(int (number/1000000)) +"-"+ self.millions(int (number%1000000))
+        return self.milliers(int(number/1000000)) +"-"+ self.millions(int(number%1000000))
 
         return str(number)
 
@@ -1110,28 +1089,28 @@ class sppasNum(object):
 
 
     def __convert(self,number):
-        if self._lang=="spa":
+        if self._lang == "spa":
             return self.__milliards_spa(number)
 
         if "cmn" in self._lang  or  "yue" in self._lang  or  "jpn" in self._lang:
             return self.__millions_cmn(number)
 
-        if self._lang=="fra":
+        if self._lang == "fra":
             return self.__milliards_fra(number)
 
-        if self._lang=="eng":
+        if self._lang == "eng":
             return self.__milliards_eng(number)
 
-        if self._lang=="ita":
+        if self._lang == "ita":
             res = self.__milliards_ita(number)
             res = re.sub("oo", "o", res) #ex: centoottanta -> centottanta
             return res
 
-        if self._lang=="pol":
+        if self._lang == "pol":
             res = self.__milliards_pol(number)
             return res
 
-        if self._lang=="por":
+        if self._lang == "por":
             res = self.__milliards_por(number)
             return res
 

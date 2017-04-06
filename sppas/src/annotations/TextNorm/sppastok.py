@@ -55,7 +55,7 @@ from ..annotationsexc import AnnotationOptionError
 from ..annotationsexc import EmptyInputError
 from ..annotationsexc import NoInputError
 
-from .tokenize import TextNormalizer
+from .normalize import TextNormalizer
 
 # ---------------------------------------------------------------------------
 

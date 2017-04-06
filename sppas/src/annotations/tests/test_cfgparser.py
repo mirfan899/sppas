@@ -26,7 +26,7 @@ class TestAnnotationConfigParser(unittest.TestCase):
         res = self.cfg.get_resources()
 
         self.assertEqual(len(conf), 3)
-        self.assertEqual(len(opt), 1)
+        self.assertEqual(len(opt), 3)
         self.assertEqual(len(res), 1)
 
         self.assertEqual(conf['id'], "textnorm")
