@@ -193,6 +193,10 @@ class sppasTok(sppasBaseAnnotation):
             tokens_custom = self.__convert(tier, actions)
             tokens_custom.SetName("Tokens-Custom")
 
+        # Align Faked and Standard
+        if tokens_faked is not None and tokens_std is not None:
+            self.align_tiers(tokens_std, tokens_faked)
+
         return tokens_faked, tokens_std, tokens_custom
 
     # ------------------------------------------------------------------------
@@ -275,10 +279,6 @@ class sppasTok(sppasBaseAnnotation):
 
         # Tokenize the tier
         tier_faked_tokens, tier_std_tokens, tier_custom = self.convert(tier_input)
-
-        # Align Faked and Standard
-        if tier_faked_tokens is not None and tier_std_tokens is not None:
-            self.align_tiers(tier_std_tokens, tier_faked_tokens)
 
         # Save
         trs_output = Transcription("SPPAS Text Normalization")

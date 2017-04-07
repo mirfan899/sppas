@@ -20,7 +20,7 @@ SAMPLES_DIR="samples"
 RESOURCES_DIR="$PROGRAM_DIR/resources"
 
 # Test functions
-TODO="wavsplit tokenize phonetize alignment syllabify annotation momelintsint repetition "
+TODO="wavsplit normalize phonetize alignment syllabify annotation momelintsint repetition "
 
 # User-Interface
 MSG_HEADER="SPPAS test_bin.sh, a program written by Brigitte Bigi."
@@ -412,7 +412,7 @@ function phonetize {
     fi
 
     echo -n " ... phonetization of a file: "
-    $BIN_DIR/tokenize.py -r $RESOURCES_DIR/vocab/eng.vocab -i $SAMPLES_DIR/oriana1.TextGrid -o $SAMPLES_DIR/oriana1-token.TextGrid --quiet;
+    $BIN_DIR/normalize.py -r $RESOURCES_DIR/vocab/eng.vocab -i $SAMPLES_DIR/oriana1.TextGrid -o $SAMPLES_DIR/oriana1-token.TextGrid --quiet;
     inline=`$BIN_DIR/phonetize.py -r $RESOURCES_DIR/dict/eng.dict -i $SAMPLES_DIR/oriana1-token.TextGrid -o oriana1-phon.TextGrid --quiet`;
     if [ -e oriana1-phon.TextGrid ]; then
         rm oriana1-phon.TextGrid
@@ -438,7 +438,7 @@ function alignment {
     fi
     echo "ok"
 
-    $BIN_DIR/tokenize.py -r $RESOURCES_DIR/vocab/eng.vocab -i $SAMPLES_DIR/oriana1.TextGrid -o $SAMPLES_DIR/oriana1-token.TextGrid --quiet;
+    $BIN_DIR/normalize.py -r $RESOURCES_DIR/vocab/eng.vocab -i $SAMPLES_DIR/oriana1.TextGrid -o $SAMPLES_DIR/oriana1-token.TextGrid --quiet;
     $BIN_DIR/phonetize.py -r $RESOURCES_DIR/dict/eng.dict -i $SAMPLES_DIR/oriana1-token.TextGrid -o $SAMPLES_DIR/oriana1-phon.TextGrid --quiet;
 
     echo -n " ... simply align phonemes with julius: "

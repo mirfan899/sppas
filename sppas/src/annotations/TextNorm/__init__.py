@@ -28,7 +28,7 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.Token.__init__.py
+    src.annotations.TextNorm.__init__.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
@@ -48,10 +48,8 @@
     rapid adaptation of other language dependent methods or classes.
 
 """
-#from .tokenize import MultilingualTokenizer
 from .sppastok import sppasTok
 
 __all__ = [
     'sppasTok',
-    #'MultilingualTokenizer'
 ]

@@ -120,6 +120,15 @@ msgstr "Options"
 msgid ":INFO 1052: "
 msgstr "Diagnosis"
 
+msgid ":INFO 1110: "
+msgstr "{:s} is missing of the dictionary and "
+
+msgid ":INFO 1112: "
+msgstr "was automatically phonetized as {:s}"
+
+msgid ":INFO 1114: "
+msgstr "wasn't phonetized."
+
 msgid ":ERROR 4014: "
 msgstr "Missing section {section_name} in the configuration file."
 
@@ -131,3 +140,6 @@ msgstr "Empty input tier {name}."
 
 msgid ":ERROR 1030: "
 msgstr "Missing input tier. Please read the documentation."
+
+msgid ":ERROR 1110: "
+msgstr "Unable to phonetize the unknown token {:s}."

@@ -374,10 +374,10 @@ class sppasNum(object):
         if r == 0: return dizaine
         return u"%s-y-%s" % (dizaine, self.unite(r))
 
-    def __dizaine_cmn(self,number):
+    def __dizaine_cmn(self, number):
         if number < 10:
             _str = self.unite(number)
-        elif 10 >= number < 100:
+        elif 10 <= number < 100:
             if (number%10) == 0:
                 _str = self.unite(int(number/10)) + u"十"
             else:
@@ -439,7 +439,7 @@ class sppasNum(object):
             _str = self.unite(number)
         return _str
 
-    def __dizaine_eng(self,number):
+    def __dizaine_eng(self, number):
         if 90 < number <= 99:
             _str = u"ninety-" + self.dizaine(number-90)
         elif number == 90:
@@ -576,7 +576,6 @@ class sppasNum(object):
             return str(number)
         raise Exception('Unrecognized language: '+self._lang)
 
-
     # -------------------------------------------------------------------------
     # Numbers from 100 to 999
     # -------------------------------------------------------------------------
@@ -600,8 +599,10 @@ class sppasNum(object):
         return u"%s-e-%s" % (s, self.dizaine(r))
 
     def __centaine_spa(self, number):
-        if number < 100:  return self.dizaine(number)
-        if number == 100: return u"cien"
+        if number < 100:
+            return self.dizaine(number)
+        if number == 100:
+            return u"cien"
         n = number / 100
         r = number % 100
         s = u""
@@ -610,7 +611,8 @@ class sppasNum(object):
         elif 699 < number < 800:  s = u"setecientos"
         elif 899 < number < 1000: s = u"novecientos"
         else: s = u"%scientos" % self.unite(n)
-        if r == 0:  return s
+        if r == 0:
+            return s
         return u"%s-%s" % (s, self.dizaine(r))
 
     def __centaine_cmn(self,number):

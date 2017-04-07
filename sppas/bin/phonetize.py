@@ -48,10 +48,10 @@ sys.path.append(SPPAS)
 
 from sppas.src.annotations import UNKSTAMP
 from sppas.src.annotations.Phon.sppasphon import sppasPhon
-from sppas.src.annotations.Phon.phonetize import DictPhon
-from sppas.src.resources.dictpron         import DictPron
-from sppas.src.resources.mapping          import Mapping
-from sppas.src.utils.fileutils            import setup_logging
+from sppas.src.annotations.Phon.phonetize import sppasDictPhonetizer
+from sppas.src.resources.dictpron import DictPron
+from sppas.src.resources.mapping import Mapping
+from sppas.src.utils.fileutils import setup_logging
 
 
 # ----------------------------------------------------------------------------
@@ -94,17 +94,15 @@ if args.map:
     mapfile = args.map
 
 if args.i:
-    p = sppasPhon( args.dict, mapfile )
-    p.set_unk( unkopt )
-    p.set_usestdtokens( False )
-    p.run( args.i,args.o )
+    p = sppasPhon(args.dict, mapfile)
+    p.set_unk(unkopt)
+    p.set_usestdtokens(False)
+    p.run(args.i, args.o)
 else:
-    pdict    = DictPron( args.dict, unkstamp=UNKSTAMP, nodump=False )
+    pdict = DictPron(args.dict, unkstamp=UNKSTAMP, nodump=False)
     maptable = Mapping()
     if mapfile is not None:
-        maptable = Mapping( mapfile )
-    phonetizer = DictPhon( pdict, maptable )
+        maptable = Mapping(mapfile)
+    phonetizer = sppasDictPhonetizer(pdict, maptable)
     for line in sys.stdin:
-        print phonetizer.phonetize( line, unkopt )
-
-# ----------------------------------------------------------------------------
+        print("{:s}".format(phonetizer.phonetize(line, unkopt)))

@@ -38,7 +38,7 @@ import logging
 
 from sppas.src.utils.makeunicode import u
 from . import ERROR_ID, WARNING_ID, INFO_ID
-from .import t
+from . import t
 from .diagnosis import sppasDiagnosis
 
 # ---------------------------------------------------------------------------
@@ -69,7 +69,7 @@ class sppasBaseAnnotation(object):
         self.logfile = logfile
 
         # List of options to configure the automatic annotation
-        self._options = {}
+        self._options = dict()
 
         # A file diagnostician
         self.diagnosis = sppasDiagnosis()
