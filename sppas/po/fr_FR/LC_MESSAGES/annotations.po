@@ -125,6 +125,15 @@ msgstr "Options"
 msgid ":INFO 1052: "
 msgstr "Diagnostic"
 
+msgid ":INFO 1110: "
+msgstr "{:s} est absent du dictionnaire et "
+
+msgid ":INFO 1112: "
+msgstr "a été phonétisé automatiquement {:s}"
+
+msgid ":INFO 1114: "
+msgstr "n'a pas pu être phonétisé automatiquement."
+
 msgid ":ERROR 4014: "
 msgstr "Il manque la section {section_name} dans le fichier de configuration."
 
@@ -136,3 +145,6 @@ msgstr "La tier {name} ne contient pas d'annotations."
 
 msgid ":ERROR 1030: "
 msgstr "Aucune tier trouvée. La documentation indique pourquoi."
+
+msgid ":ERROR 1110: "
+msgstr "Phonétisation impossble de {:s}."

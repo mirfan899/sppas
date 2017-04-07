@@ -23,14 +23,14 @@ FRA_SYLL = os.path.join(RESOURCES_PATH, "syll", "syllConfig-fra.txt")
 
 def labels2tier(phonemes):
     # Convert a list of strings into a tier.
-    if len(phonemes)==0:
+    if len(phonemes) == 0:
         return None
     tier = Tier('Phonemes')
     for time, p in enumerate(phonemes):
         begin = TimePoint(time)
         end = TimePoint(time+1)
         label = Label(p)
-        a = Annotation( TimeInterval(begin,end), label)
+        a = Annotation(TimeInterval(begin, end), label)
         tier.Append(a)
     return tier
 
@@ -57,36 +57,36 @@ class TestSyll(unittest.TestCase):
         self.syllabifierFRA = Syllabification(FRA_SYLL, None)
 
     def testVV(self):
-        tierP = labels2tier( ['a','a'] )
+        tierP = labels2tier(['a', 'a'])
         self.assertIsNotNone(tierP)
         trsS = self.syllabifierPOL.syllabify( tierP )
         syll = get_syll(trsS)
         self.assertEqual("a|a", syll)
 
     def testVCV(self):
-        tierP = labels2tier( ['a','b','a'] )
+        tierP = labels2tier(['a', 'b', 'a'])
         self.assertIsNotNone(tierP)
-        trsS = self.syllabifierPOL.syllabify( tierP )
+        trsS = self.syllabifierPOL.syllabify(tierP)
         syll = get_syll(trsS)
         self.assertEqual("a|ba", syll)
 
     def testVCCV(self):
         # general rule
-        tierP = labels2tier( ['a','n','c','a'] )
+        tierP = labels2tier(['a', 'n', 'c', 'a'])
         self.assertIsNotNone(tierP)
-        trsS = self.syllabifierPOL.syllabify( tierP )
+        trsS = self.syllabifierPOL.syllabify(tierP)
         syll = get_syll(trsS)
         self.assertEqual("an|ca", syll)
 
         # exception rule
-        tierP = labels2tier( ['a','g','j','a'] )
+        tierP = labels2tier(['a', 'g', 'j', 'a'])
         self.assertIsNotNone(tierP)
         trsS = self.syllabifierPOL.syllabify( tierP )
         syll = get_syll(trsS)
         self.assertEqual("a|gja", syll)
 
         # specific (shift to left)
-        tierP = labels2tier( ['a','d','g','a'] )
+        tierP = labels2tier(['a', 'd', 'g', 'a'])
         self.assertIsNotNone(tierP)
         trsS = self.syllabifierPOL.syllabify( tierP )
         syll = get_syll(trsS)
@@ -136,15 +136,15 @@ class TestSyll(unittest.TestCase):
         self.assertEqual("arw|Sa", syll)
 
     def testVCCCCV(self):
-        tierP = labels2tier( ['a','b','r','v','j','a'] )
+        tierP = labels2tier(['a', 'b', 'r', 'v', 'j', 'a'])
         self.assertIsNotNone(tierP)
         trsS = self.syllabifierPOL.syllabify( tierP )
         syll = get_syll(trsS)
         self.assertEqual("a|brvja", syll)
 
     def testVCCCCCV(self):
-        tierP = labels2tier( ['a','p','s','k','m','w','a'] )
+        tierP = labels2tier(['a', 'p', 's', 'k', 'm', 'w', 'a'])
         self.assertIsNotNone(tierP)
-        trsS = self.syllabifierFRA.syllabify( tierP )
+        trsS = self.syllabifierFRA.syllabify(tierP)
         syll = get_syll(trsS)
         self.assertEqual("apsk|mwa", syll)

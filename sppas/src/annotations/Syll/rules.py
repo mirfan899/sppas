@@ -1,160 +1,155 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: rules.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+        http://www.sppas.org/
 
-# ----------------------------------------------------------------------------
+        Use of this software is governed by the GNU Public License, version 3.
 
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.annotations.rules.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import re
+
+from sppas.src.utils.makeunicode import sppasUnicode
 
 # ----------------------------------------------------------------------------
 
 
 class Rules(object):
-    """ SPPAS syllabification set of rules.
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      SPPAS syllabification set of rules.
     """
 
-    def __init__(self, filename):
-        """ Create a new rules instance.
-            Parameters:
-                - filename is the file indicating syllabification rules.
+    def __init__(self, filename=None):
+        """ Create a new Rules instance.
+
+        :param filename: (str) Name of the file with the syllabification rules.
         """
-        self.load( filename )
+        self.general = dict()    # list of general rules
+        self.exception = dict()  # list of exception rules
+        self.gap = dict()        # list of gap rules
+        self.phonclass = dict()  # list of couples phoneme/classe
+
+        if filename is not None:
+            self.load(filename)
 
     # ------------------------------------------------------------------------
 
-    def __initialize( self ):
-        self.general   = {} # list of general rules
-        self.exception = {} # list of exception rules
-        self.gap       = {} # list of gap rules
-        self.phonclass = {} # list of couples phoneme/classe
-
-
-    def load (self, filename):
+    def load(self, filename):
         """ Load the rules using the file "filename".
-            Parameters:
-                - filename is the name of the file where the rules are
-            Return:      none
+
+        :param filename: (str) Name of the file with the syllabification rules.
+
         """
-        self.__initialize()
+        self.general = dict()    # list of general rules
+        self.exception = dict()  # list of exception rules
+        self.gap = dict()        # list of gap rules
+        self.phonclass = dict()  # list of couples phoneme/classe
         with open(filename, "r") as file_in:
 
             for line_nb, line in enumerate(file_in, 1):
-                line = re.sub("[ ]+", " ", line)
-                line = line.strip()
+                sp = sppasUnicode(line)
+                line = sp.to_strip()
+
                 wds = line.split()
-                if len(wds) > 2:
+                if len(wds) == 3:
                     if wds[0] == "PHONCLASS":
-                        if len(wds) != 3:
-                            raise IOError('Syll::rules.py. Error: rule file corrupted at line number %d\n' % line_nb)
-                        else:
-                            self.phonclass[wds[1]] = wds[2]
+                        self.phonclass[wds[1]] = wds[2]
                     elif wds[0] == "GENRULE":
-                        if len(wds) != 3:
-                            raise IOError('Syll::rules.py. Error: rule file corrupted at line number %d\n' % line_nb)
-                        else:
-                            self.general[wds[1]] = int(wds[2])
+                        self.general[wds[1]] = int(wds[2])
                     elif wds[0] == "EXCRULE":
-                        if len(wds) != 3:
-                            raise IOError('Syll::rules.py. Error: rule file corrupted at line number %d\n' % line_nb)
-                        else:
-                            self.exception[wds[1]] = int(wds[2])
-                    elif wds[0] == "OTHRULE":
-                        if len(wds) != 7:
-                            raise IOError('Syll::rules.py. Error: rule file corrupted at line number %d\n' % line_nb)
-                        else:
-                            s = wds[1] + " " + wds[2] + " " + wds[3] + " " + wds[4] + " " + wds[5]
-                            self.gap[s] = int(wds[6])
-            if len(self.general) == 0:
-                raise IOError('Syll::rules.py. Error: rule file corrupted: No rules found.\n')
+                        self.exception[wds[1]] = int(wds[2])
+                if len(wds) == 7:
+                    if wds[0] == "OTHRULE":
+                        s = " ".join(wds[1:6])
+                        self.gap[s] = int(wds[6])
+
+        if len(self.general) < 4:
+            raise IOError('Syllabification rules file corrupted. '
+                          'Got {:d} general rules, {:d} exceptions '
+                          'and {:d} other rules.'.format(len(self.general), len(self.exception), len(self.gap)))
+
+        if "UNK" not in self.phonclass:
+            self.phonclass["UNK"] = "#"
 
     # ------------------------------------------------------------------------
 
     def get_class(self, phoneme):
-        """ Return the value of "phoneme" in phonclass.
-            Parameters:  phoneme (string)
-            Return:      the value of "phoneme" in phonclass
-        """
-        for key in self.phonclass.keys():
-            if  key == phoneme:
-                return self.phonclass[key]
+        """ Return the class identifier of the phoneme.
 
-        # If phoneme is not in phonclass
-        #sys.stderr.write("Unknown phoneme: " + phoneme)
+        :param phoneme: (str)
+        :returns: class of the phoneme
+
+        """
+        if phoneme in self.phonclass:
+            return self.phonclass[phoneme]
+
         return self.phonclass["UNK"]
 
     # ------------------------------------------------------------------------
 
     def is_exception(self, rule):
         """ Return True if the rule is an exception rule.
-            Parameters:  rule
-            Return:      boolean
+
+        :param rule:
+
         """
-        for exc in self.exception.keys():
-            if exc == rule:
-                return True
-        return False
+        return rule in self.exception
 
     # ------------------------------------------------------------------------
 
     def get_boundary(self, phonemes):
         """ Get the index of the syllable boundary (EXCRULES or GENRULES).
-            Parameters:
-                - phonemes to syllabify
-            Return: boundary index (int value)
+
+        :param phonemes: (str) Phonemes to syllabify
+        :returns: (int) boundary index or -1 if phonemes does not match any rule.
+
         """
-        #sys.stderr.write("getting boundaries...\n") #c%
+        sp = sppasUnicode(phonemes)
+        phonemes = sp.to_strip()
+        phon_list = phonemes.split(" ")
         classes = ""
-        phonemes = phonemes.strip()
-        phonList = phonemes.split(" ")
-        for phon in phonList:
+        for phon in phon_list:
             classes += self.get_class(phon)
 
-        #search into exception
-        for key, val in self.exception.items():
-            if key == classes:
-                return int(val)
+        # search into exception
+        if classes in self.exception:
+            return self.exception[classes]
 
-        #search into general
+        # search into general
         for key, val in self.general.items():
-            if len(key) == len(phonList):
-                return int(val)
+            if len(key) == len(phon_list):
+                return val
 
         return -1
 
@@ -162,18 +157,19 @@ class Rules(object):
 
     def get_gap(self, phonemes):
         """ Return the shift to apply (OTHRULES).
-            Parameters:
-                - phonemes to syllabify
-            Return: the boundary shift (int value)
+
+        :param phonemes: (str) Phonemes to syllabify
+        :returns: (int) boundary shift
+
         """
-        for gp in self.gap.keys():
+        for gp in self.gap:
             if gp == phonemes:
                 return self.gap[gp]
 
             # Search by replacing a phoneme by "ANY"
             if gp.find("ANY") > -1:
-                r = gp.split(" ")
-                phons = phonemes.split(" ")
+                r = gp.split()
+                phons = phonemes.split()
                 new_phonemes = ""
                 if len(r) == len(phons):
                     # For each phoneme, replace the ANY
@@ -186,22 +182,5 @@ class Rules(object):
 
                 if gp == new_phonemes:
                     return self.gap[gp]
+
         return 0
-
-    # ------------------------------------------------------------------------
-
-    def print_rules(self):
-        """ Used to debug!.
-        """
-        print("Association phonemes/classes: \n")
-        for phon in self.phonclass.keys():
-            print("Phoneme " + phon + ", Class %d\n" % self.phonclass[phon])
-        print("General rules: ")
-        for gen in self.general.keys():
-            print(gen + " %d" % self.general[gen] + " %r" % self.is_exception(gen))
-        for exc in self.exception.keys():
-            print(exc + " %d" % self.exception[exc] + " %r" % self.is_exception(exc))
-        for gp in self.gap.keys():
-            print(gp + " %d" % self.gap[gp] + " %r" % self.is_exception(gp))
-
-    # ------------------------------------------------------------------------

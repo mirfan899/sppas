@@ -77,6 +77,6 @@
         - pipes separate phonetic variants.
 
 """
-from sppasphon import sppasPhon
+from .sppasphon import sppasPhon
 
 __all__ = ['sppasPhon']

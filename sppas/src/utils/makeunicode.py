@@ -120,7 +120,7 @@ class sppasUnicode(object):
 
     def to_strip(self):
         """ Strip the string.
-        Remove also multiple spaces inside the string.
+        Remove also multiple whitespace inside the string.
 
         :returns: unicode
 
