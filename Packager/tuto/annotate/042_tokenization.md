@@ -54,7 +54,7 @@
     - 1st column: symbol; 2nd column: token
     - UTF-8 encoding
     - ".repl" extension
-* Optionnaly: Add the number to letter conversion in "num2letter.py" source file
+* Optionally: Add the number to letter conversion in "num2letter.py" source file
 
 -----------------
 

@@ -44,7 +44,7 @@ maximum of phonological knowledge in a lexicon.
 
 ### Add a new language in Phonetization
 
-* Create a pronuncation dictionary and:
+* Create a pronunciation dictionary and:
     - add it in the folder "dict" of the "resources" directory
     - "one word at a line"
     - second columns is brackets
