@@ -1,0 +1,28 @@
+﻿WEBVTT
+
+00:00:00.100 --> 00:00:04.100
+Check the transcription and IPUs with Praat or Phonedit, or AnnotationPro, ...
+
+00:00:04.100 --> 00:00:08.500
+Praat: *first of all* check "Text writing preferences..."
+
+00:00:10.300 --> 00:00:14.300
+Set to UTF-8
+
+00:00:40.000 --> 00:00:42.000
+Adjust font size
+
+00:00:54.467 --> 00:00:56.467
+Fix properly the sound scaling
+
+00:00:59.000 --> 00:01:05.000
+Scaling strategy: fixed height
+
+00:01:32.500 --> 00:01:34.500
+Adjust IPUs boundaries
+
+00:01:43.000 --> 00:01:47.000
+Play sound and validate the transcription
+
+00:04:06.267 --> 00:04:09.267
+then save the TextGrid file

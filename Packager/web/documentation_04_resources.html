@@ -7,10 +7,10 @@
   <meta name="author" content="Brigitte Bigi">
   <title>SPPAS Documentation</title>
   <style type="text/css">code{white-space: pre;}</style>
-  <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
   <link rel="stylesheet" href="etc/styles/sppas.css">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
       <link rel="icon" href="./etc/icons/sppas.png" />
   
       <script type="text/javascript">
@@ -52,8 +52,8 @@
     <!----------------------------------------------------------------->
 <header>
 <h1 class="title">SPPAS Documentation</h1>
-<h2 class="author">Brigitte Bigi</h2>
-<h3 class="date">Version 1.8.0</h3>
+<p class="author">Brigitte Bigi</p>
+<p class="date">Version 1.8.0</p>
 </header>
 <nav id="TOC">
 <ul>
@@ -77,9 +77,9 @@
 </ul>
 </nav>
 <hr />
-<h1 id="resources-for-automatic-annotations"><a href="#resources-for-automatic-annotations">Resources for Automatic Annotations</a></h1>
-<h2 id="what-are-sppas-resources-and-where-they-come-from"><a href="#what-are-sppas-resources-and-where-they-come-from">What are SPPAS resources and where they come from?</a></h2>
-<h3 id="overview"><a href="#overview">Overview</a></h3>
+<h1 id="resources-for-automatic-annotations">Resources for Automatic Annotations</h1>
+<h2 id="what-are-sppas-resources-and-where-they-come-from">What are SPPAS resources and where they come from?</h2>
+<h3 id="overview">Overview</h3>
 <p>All automatic annotations included in SPPAS are implemented with language-independent algorithms... this means that adding a new language in SPPAS only consists in adding resources related to the annotation (like lexicons, dictionaries, models, set of rules, etc).</p>
 <p>All available resources to perform automatic annotations are located in the sub-directory 'resources'. There are 5 sub-directories:</p>
 <ul>
@@ -95,7 +95,7 @@
 <blockquote>
 <p>Caution: all the files are in UTF-8, and this encoding must not be changed.</p>
 </blockquote>
-<p>The language names are based on the ISO639-3 international standard. See <a href="http://www-01.sil.org/iso639-3/">http://www-01.sil.org/iso639-3/</a> for the list of all languages and codes. Here is the list of some available languages in SPPAS resources:</p>
+<p>The language names are based on the ISO639-3 international standard. See <a href="http://www-01.sil.org/iso639-3/" class="uri">http://www-01.sil.org/iso639-3/</a> for the list of all languages and codes. Here is the list of some available languages in SPPAS resources:</p>
 <ul>
 <li>French: fra</li>
 <li>English: eng</li>
@@ -112,15 +112,15 @@
 <p>SPPAS can deal with a new language by simply adding the language resources to the appropriate sub-directories. Of course, file formats must corresponds to which expected by SPPAS! Lexicon and dictionaries can be edited/modified/saved with a simple-editor as <strong>Notepad++</strong> for example (<em>under Windows: above all, don't use the windows' notepad</em>). Idem for the syllabification rules.</p>
 <p>The only step in the procedure which is probably beyond the means of a linguist without external aid is the creation of a new acoustic model when it does not yet exist for the language being analysed. This only needs to carried out once for each language, though, and we provide detailed specifications of the information needed to train an acoustic model on an appropriate set of recordings and dictionaries or transcriptions. Acoustic models obtained by such a collaborative process will be made freely available to the scientific community.</p>
 <p>The current acoustic models can be improved too (except for eng and jpn): send your data (wav and transcription files) to the author. Notice that such data will not be published in any form without your authorization. They will be included in the training procedure to create a new (and better) acoustic model, that will be distributed in the next version of SPPAS.</p>
-<h3 id="about-the-phonemes"><a href="#about-the-phonemes">About the phonemes</a></h3>
-<p>Most of the dictionaries are using the international standard X-SAMPA to represent phonemes. See <a href="https://en.wikipedia.org/wiki/X-SAMPA">https://en.wikipedia.org/wiki/X-SAMPA</a> for details. The list of all phonemes for each language is available in this documentation, in the section related to a given language.</p>
+<h3 id="about-the-phonemes">About the phonemes</h3>
+<p>Most of the dictionaries are using the international standard X-SAMPA to represent phonemes. See <a href="https://en.wikipedia.org/wiki/X-SAMPA" class="uri">https://en.wikipedia.org/wiki/X-SAMPA</a> for details. The list of all phonemes for each language is available in this documentation, in the section related to a given language.</p>
 <p>In addition, all models (except eng, jpn and yue) include the following fillers:</p>
 <ul>
 <li>dummy: untranscribed speech</li>
 <li>gb: garbage</li>
 <li>@@: laughter</li>
 </ul>
-<h3 id="how-to-add-a-new-language"><a href="#how-to-add-a-new-language">How to add a new language</a></h3>
+<h3 id="how-to-add-a-new-language">How to add a new language</h3>
 <ol type="1">
 <li><p>Dictionary and lexicon:</p>
 <p>1.1 Copy the phonetic dictionary <code>LANG.dict</code> in the <code>dict</code> directory</p>
@@ -134,8 +134,8 @@
 <li>Acoustic models are in HTK ASCII format (16bits,16000hz).</li>
 </ul>
 <p>Notice that the Graphical User Interface dynamically creates the list of available languages by exploring the sub-directory &quot;resources&quot; included in the SPPAS package. This means that all changes in the &quot;resources&quot; directory will be automatically take into account.</p>
-<h2 id="french-resources"><a href="#french-resources">French Resources</a></h2>
-<h4 id="list-of-phonemes"><a href="#list-of-phonemes">List of phonemes</a></h4>
+<h2 id="french-resources">French Resources</h2>
+<h4 id="list-of-phonemes">List of phonemes</h4>
 <table>
 <thead>
 <tr class="header">
@@ -352,23 +352,23 @@
 </tr>
 </tbody>
 </table>
-<h4 id="pronunciation-dictionary"><a href="#pronunciation-dictionary">Pronunciation Dictionary</a></h4>
+<h4 id="pronunciation-dictionary">Pronunciation Dictionary</h4>
 <p><em>(c) Laboratoire Parole et Langage, Aix-en-Provence, France</em></p>
 <p><em>GNU Public License</em></p>
 <p>The French pronunciation dictionary was created by Brigitte Bigi by merging a some free dictionaries loaded from the web. Some word pronunciations were added using the LIA_Phon tool. Many words were manually corrected and a large set of missing words and pronunciation variants were added manually.</p>
-<h4 id="acoustic-model"><a href="#acoustic-model">Acoustic Model</a></h4>
+<h4 id="acoustic-model">Acoustic Model</h4>
 <p><em>(c) Laboratoire Parole et Langage, Aix-en-Provence, France</em></p>
 <p><em>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License</em></p>
 <p>The French acoustic model was created by Brigitte Bigi from various corpora mainly recorded at Laboratoire Parole et Langage. For example, it includes:</p>
 <ul>
-<li>CID - Corpus of Interactional Data <a href="http://www.sldr.org/sldr000027/">http://www.sldr.org/sldr000027/</a>,</li>
-<li>Grenelle <a href="http://www.sldr.org/sldr000729/">http://www.sldr.org/sldr000729/</a>,</li>
+<li>CID - Corpus of Interactional Data <a href="http://www.sldr.org/sldr000027/" class="uri">http://www.sldr.org/sldr000027/</a>,</li>
+<li>Grenelle <a href="http://www.sldr.org/sldr000729/" class="uri">http://www.sldr.org/sldr000729/</a>,</li>
 <li>Broadcast news and Read speech (not public).</li>
 </ul>
-<h4 id="syllabification-configuration"><a href="#syllabification-configuration">Syllabification configuration</a></h4>
+<h4 id="syllabification-configuration">Syllabification configuration</h4>
 <p>The syllabification configuration file corresponds to the rules defined in the paper (Bigi et al. 2010).</p>
-<h2 id="italian-resources"><a href="#italian-resources">Italian resources</a></h2>
-<h4 id="list-of-phonemes-1"><a href="#list-of-phonemes-1">List of phonemes</a></h4>
+<h2 id="italian-resources">Italian resources</h2>
+<h4 id="list-of-phonemes-1">List of phonemes</h4>
 <table>
 <thead>
 <tr class="header">
@@ -555,18 +555,18 @@
 </tr>
 </tbody>
 </table>
-<h4 id="pronunciation-dictionary-1"><a href="#pronunciation-dictionary-1">Pronunciation dictionary</a></h4>
+<h4 id="pronunciation-dictionary-1">Pronunciation dictionary</h4>
 <p><em>(c) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
 <p><em>GNU Public License</em></p>
 <p>The Italian dictionary was downloaded from the Festival synthetizer tool. A part of the phonetization were manually corrected by Brigitte Bigi and a large set of missing words and pronunciation variants were added manually.</p>
-<h4 id="acoustic-model-1"><a href="#acoustic-model-1">Acoustic Model</a></h4>
+<h4 id="acoustic-model-1">Acoustic Model</h4>
 <p><em>(c) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
 <p><em>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License</em></p>
 <p>The Italian acoustic model were created during the Evalita 2011 evaluation campaign, from the CLIPS MapTask corpus (3h30), and updated during the Evalita 2014 evaluation campaign.</p>
-<h4 id="syllabification-configuration-1"><a href="#syllabification-configuration-1">Syllabification configuration</a></h4>
+<h4 id="syllabification-configuration-1">Syllabification configuration</h4>
 <p>The syllabification configuration file corresponds to the rules defined in the paper (Bigi and Petrone, 2014).</p>
-<h2 id="spanish-resources"><a href="#spanish-resources">Spanish resources</a></h2>
-<h4 id="list-of-phonemes-2"><a href="#list-of-phonemes-2">List of phonemes</a></h4>
+<h2 id="spanish-resources">Spanish resources</h2>
+<h4 id="list-of-phonemes-2">List of phonemes</h4>
 <table>
 <thead>
 <tr class="header">
@@ -743,17 +743,17 @@
 </tr>
 </tbody>
 </table>
-<h4 id="pronunciation-dictionary-2"><a href="#pronunciation-dictionary-2">Pronunciation Dictionary</a></h4>
+<h4 id="pronunciation-dictionary-2">Pronunciation Dictionary</h4>
 <p>The pronunciation dictionary was downloaded from the CMU web page. Brigitte Bigi converted this CMU phoneset to X-SAMPA, and changed the file format.</p>
-<h4 id="acoustic-model-2"><a href="#acoustic-model-2">Acoustic Model</a></h4>
+<h4 id="acoustic-model-2">Acoustic Model</h4>
 <p><em>(C) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
 <p><em>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License</em></p>
 <p>The acoustic model was trained from Glissando corpus. We address special thanks to Juan-Maria Garrido for giving us access to this corpus.</p>
 <blockquote>
 <p><strong>GARRIDO, J. M. - ESCUDERO, D. - AGUILAR, L. -CARDEÑOSO, V. - RODERO, E. - DE-LA-MOTA, C. - GONZÁLEZ, C. - RUSTULLET, S. - LARREA, O. - LAPLAZA, Y. - VIZCAÍNO, F. - CABRERA, M. - BONAFONTE, A.</strong> (2013). <em>Glissando: a corpus for multidisciplinary prosodic studies in Spanish and Catalan</em>, Language Resources and Evaluation, DOI 10.1007/s10579-012-9213-0.</p>
 </blockquote>
-<h2 id="catalan-resources"><a href="#catalan-resources">Catalan resources</a></h2>
-<h4 id="list-of-phonemes-3"><a href="#list-of-phonemes-3">List of phonemes</a></h4>
+<h2 id="catalan-resources">Catalan resources</h2>
+<h4 id="list-of-phonemes-3">List of phonemes</h4>
 <table>
 <thead>
 <tr class="header">
@@ -970,18 +970,18 @@
 </tr>
 </tbody>
 </table>
-<h4 id="pronunciation-dictionary-3"><a href="#pronunciation-dictionary-3">Pronunciation dictionary</a></h4>
+<h4 id="pronunciation-dictionary-3">Pronunciation dictionary</h4>
 <p><em>GNU Public License</em></p>
-<p>The catalan pronunciation dictionary was downloaded from the Ralf catalog of dictionaries for the Simon ASR system at <a href="http://spirit.blau.in/simon/import-pls-dictionary/">http://spirit.blau.in/simon/import-pls-dictionary/</a>. It was then converted (format and phoneset) by Brigitte Bigi. Some new words were also added and phonetized manually (thank you Eva!). New entries were then added from observed pronunciations in Glissando corpus.</p>
-<h4 id="acoustic-model-3"><a href="#acoustic-model-3">Acoustic Model</a></h4>
+<p>The catalan pronunciation dictionary was downloaded from the Ralf catalog of dictionaries for the Simon ASR system at <a href="http://spirit.blau.in/simon/import-pls-dictionary/" class="uri">http://spirit.blau.in/simon/import-pls-dictionary/</a>. It was then converted (format and phoneset) by Brigitte Bigi. Some new words were also added and phonetized manually (thank you Eva!). New entries were then added from observed pronunciations in Glissando corpus.</p>
+<h4 id="acoustic-model-3">Acoustic Model</h4>
 <p><em>(C) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
 <p><em>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License</em></p>
 <p>The acoustic model was trained from Glissando corpus. We address special thanks to Juan-Maria Garrido for giving us access to this corpus.</p>
 <blockquote>
 <p><strong>GARRIDO, J. M. - ESCUDERO, D. - AGUILAR, L. -CARDEÑOSO, V. - RODERO, E. - DE-LA-MOTA, C. - GONZÁLEZ, C. - RUSTULLET, S. - LARREA, O. - LAPLAZA, Y. - VIZCAÍNO, F. - CABRERA, M. - BONAFONTE, A.</strong> (2013). <em>Glissando: a corpus for multidisciplinary prosodic studies in Spanish and Catalan</em>, Language Resources and Evaluation, DOI 10.1007/s10579-012-9213-0.</p>
 </blockquote>
-<h2 id="english"><a href="#english">English</a></h2>
-<h4 id="list-of-phonemes-4"><a href="#list-of-phonemes-4">List of phonemes</a></h4>
+<h2 id="english">English</h2>
+<h4 id="list-of-phonemes-4">List of phonemes</h4>
 <table>
 <thead>
 <tr class="header">
@@ -1213,15 +1213,15 @@
 </tr>
 </tbody>
 </table>
-<h4 id="pronunciation-dictionary-4"><a href="#pronunciation-dictionary-4">Pronunciation dictionary</a></h4>
-<p>The CMU Pronouncing Dictionary (also known as CMUdict) is a public domain pronouncing dictionary created by Carnegie Mellon University (CMU). It defines a mapping from English words to their North American pronunciations; it contains over 125,000 words and their transcriptions. See <a href="http://www.speech.cs.cmu.edu/cgi-bin/cmudict">http://www.speech.cs.cmu.edu/cgi-bin/cmudict</a> for details.</p>
+<h4 id="pronunciation-dictionary-4">Pronunciation dictionary</h4>
+<p>The CMU Pronouncing Dictionary (also known as CMUdict) is a public domain pronouncing dictionary created by Carnegie Mellon University (CMU). It defines a mapping from English words to their North American pronunciations; it contains over 125,000 words and their transcriptions. See <a href="http://www.speech.cs.cmu.edu/cgi-bin/cmudict" class="uri">http://www.speech.cs.cmu.edu/cgi-bin/cmudict</a> for details.</p>
 <p>The Carnegie Mellon Pronouncing Dictionary, in its current and previous versions is Copyright (C) 1993-2008 by Carnegie Mellon University. Use of this dictionary for any research or commercial purpose is completely unrestricted. If you make use of or redistribute this material, the CMU requests that you acknowledge its origin in your descriptions.</p>
 <p>Brigitte Bigi converted the original CMUdict into X-SAMPA.</p>
-<h4 id="acoustic-model-4"><a href="#acoustic-model-4">Acoustic Model</a></h4>
-<p>The acoustic model distributed in SPPAS resources were downloaded (in 2014) from the VoxForge project at <a href="http://www.voxforge.org/">http://www.voxforge.org/</a>. It was then converted to X-SAMPA by Brigitte Bigi.</p>
+<h4 id="acoustic-model-4">Acoustic Model</h4>
+<p>The acoustic model distributed in SPPAS resources were downloaded (in 2014) from the VoxForge project at <a href="http://www.voxforge.org/" class="uri">http://www.voxforge.org/</a>. It was then converted to X-SAMPA by Brigitte Bigi.</p>
 <p>The English acoustic model is under the terms of the &quot;GNU Public License&quot;.</p>
-<h2 id="mandarin-chinese"><a href="#mandarin-chinese">Mandarin Chinese</a></h2>
-<h4 id="list-of-phonemes-5"><a href="#list-of-phonemes-5">List of phonemes</a></h4>
+<h2 id="mandarin-chinese">Mandarin Chinese</h2>
+<h4 id="list-of-phonemes-5">List of phonemes</h4>
 <table>
 <thead>
 <tr class="header">
@@ -1413,19 +1413,19 @@
 </tr>
 </tbody>
 </table>
-<h4 id="pronunciation-dictionary-5"><a href="#pronunciation-dictionary-5">Pronunciation dictionary</a></h4>
+<h4 id="pronunciation-dictionary-5">Pronunciation dictionary</h4>
 <p><em>(C) Laboratoire Parole et Langage, Aix-en-Provence, France.</em></p>
 <p><em>GNU Public License</em></p>
 <p>The pronunciation dictionary was manually created for the syllables by Zhi Na.</p>
-<h4 id="acoustic-model-5"><a href="#acoustic-model-5">Acoustic model</a></h4>
+<h4 id="acoustic-model-5">Acoustic model</h4>
 <p>The acoustic model was created by Brigitte Bigi from data recorded at Shanghai by Zhi Na, and another one by Hongwei Ding. We address special thanks to hers for giving us access to the corpus. These recordings are a Chinese version of the Eurom1 corpus. See the following publication for details:</p>
 <blockquote>
 <p><strong>Daniel Hirst, Brigitte Bigi, Hyongsil Cho, Hongwei Ding, Sophie Herment, Ting Wang</strong> (2013). <em>Building OMProDat: an open multilingual prosodic database</em>, Proceedings of Tools ans Resources for the Analysis of Speech Prosody, Aix-en-Provence, France, Eds B. Bigi and D. Hirst, ISBN: 978-2-7466-6443-2, pp. 11-14.</p>
 </blockquote>
 <p>Notice that the current model was trained from a very small amount of data: this will impact on the results. Do not expect to get good performances for the automatic alignment.</p>
 <p><strong>More Mandarin Chinese data are welcome!</strong> Because more data implies a better acoustic model then better alignments...</p>
-<h2 id="southern-min-or-min-nan-resources"><a href="#southern-min-or-min-nan-resources">Southern Min (or Min Nan) resources</a></h2>
-<h4 id="list-of-phonemes-6"><a href="#list-of-phonemes-6">List of phonemes</a></h4>
+<h2 id="southern-min-or-min-nan-resources">Southern Min (or Min Nan) resources</h2>
+<h4 id="list-of-phonemes-6">List of phonemes</h4>
 <table>
 <thead>
 <tr class="header">
@@ -1647,18 +1647,18 @@
 </tr>
 </tbody>
 </table>
-<h4 id="pronunciation-dictionary-6"><a href="#pronunciation-dictionary-6">Pronunciation Dictionary</a></h4>
+<h4 id="pronunciation-dictionary-6">Pronunciation Dictionary</h4>
 <p><em>(c) Laboratoire Parole et Langage, Aix-en-Provence, France</em></p>
 <p><em>GNU Public License</em></p>
-<h4 id="acoustic-model-6"><a href="#acoustic-model-6">Acoustic Model</a></h4>
+<h4 id="acoustic-model-6">Acoustic Model</h4>
 <p><em>(c) Laboratoire Parole et Langage, Aix-en-Provence, France</em></p>
 <p><em>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License</em></p>
 <p>We address special thanks to S-F Wang for giving us access to a corpus.</p>
 <blockquote>
 <p><strong>S-F Wang, J. Fon</strong> (2013). <em>A Taiwan Southern Min spontaneous speech corpus for discourse prosody</em>, Proceedings of Tools ans Resources for the Analysis of Speech Prosody, Aix-en-Provence, France, Eds B. Bigi and D. Hirst, ISBN: 978-2-7466-6443-2, pp. 20-23.</p>
 </blockquote>
-<h2 id="cantonese-resources"><a href="#cantonese-resources">Cantonese resources</a></h2>
-<h4 id="list-of-phonemes-7"><a href="#list-of-phonemes-7">List of phonemes</a></h4>
+<h2 id="cantonese-resources">Cantonese resources</h2>
+<h4 id="list-of-phonemes-7">List of phonemes</h4>
 <table>
 <thead>
 <tr class="header">
@@ -1850,7 +1850,7 @@
 </tr>
 </tbody>
 </table>
-<h4 id="acoustic-model-7"><a href="#acoustic-model-7">Acoustic Model</a></h4>
+<h4 id="acoustic-model-7">Acoustic Model</h4>
 <p><em>(C) DSP and Speech Technology Laboratory, Department of Electronic Engineering, the Chinese University of Hong Kong.</em></p>
 <p>This is a monophone Cantonese acoustic model, based on Jyutping of the Linguistic Society of Hong Kong (LSHK). Each state is trained with 32 Gaussian mixtures. The model is trained with HTK 3.4.1. The corpus for training is CUSENT, also developed in our laboratory.</p>
 <p>Generally speaking, you may use the model for non-commercial, academic or personal use.</p>
@@ -1863,12 +1863,17 @@
 <p><strong>Tan Lee, W.K. Lo, P.C. Ching, Helen Meng</strong> (2002). <em>Spoken language resources for Cantonese speech processing</em>, Speech Communication, Volume 36, Issues 3–4, Pages 327-342</p>
 </blockquote>
 <ul>
-<li>Website: <a href="http://dsp.ee.cuhk.edu.hk">http://dsp.ee.cuhk.edu.hk</a></li>
+<li>Website: <a href="http://dsp.ee.cuhk.edu.hk" class="uri">http://dsp.ee.cuhk.edu.hk</a></li>
 <li>Email: tanlee@ee.cuhk.edu.hk</li>
 </ul>
-<h2 id="polish-resources"><a href="#polish-resources">Polish Resources</a></h2>
-<h4 id="list-of-phonemes-8"><a href="#list-of-phonemes-8">List of phonemes</a></h4>
-<table>
+<h2 id="polish-resources">Polish Resources</h2>
+<h4 id="list-of-phonemes-8">List of phonemes</h4>
+<table style="width:57%;">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 13%" />
+<col style="width: 31%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: center;">SPPAS</th>
@@ -2039,15 +2044,15 @@
 </tr>
 </tbody>
 </table>
-<h4 id="pronunciation-dictionary-7"><a href="#pronunciation-dictionary-7">Pronunciation Dictionary</a></h4>
+<h4 id="pronunciation-dictionary-7">Pronunciation Dictionary</h4>
 <p><em>GNU Public License</em></p>
-<p>The Polish pronunciation dictionary was downloaded from the Ralf catalog of dictionaries for the Simon ASR system at <a href="http://spirit.blau.in/simon/import-pls-dictionary/">http://spirit.blau.in/simon/import-pls-dictionary/</a>. It was then converted (format and phoneset) and corrected by Brigitte Bigi, thanks to the help of Katarzyna Klessa <a href="http://katarzyna.klessa.pl/">http://katarzyna.klessa.pl/</a>.</p>
-<h4 id="acoustic-model-8"><a href="#acoustic-model-8">Acoustic Model</a></h4>
+<p>The Polish pronunciation dictionary was downloaded from the Ralf catalog of dictionaries for the Simon ASR system at <a href="http://spirit.blau.in/simon/import-pls-dictionary/" class="uri">http://spirit.blau.in/simon/import-pls-dictionary/</a>. It was then converted (format and phoneset) and corrected by Brigitte Bigi, thanks to the help of Katarzyna Klessa <a href="http://katarzyna.klessa.pl/" class="uri">http://katarzyna.klessa.pl/</a>.</p>
+<h4 id="acoustic-model-8">Acoustic Model</h4>
 <p><em>(c) Laboratoire Parole et Langage, Aix-en-Provence, France</em></p>
 <p><em>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License</em></p>
 <p>The acoustic model was created by Brigitte Bigi. We address special thanks to Katarzyna Klessa for giving us access to a corpus.</p>
-<h2 id="portuguese-resources"><a href="#portuguese-resources">Portuguese Resources</a></h2>
-<h4 id="list-of-phonemes-9"><a href="#list-of-phonemes-9">List of phonemes</a></h4>
+<h2 id="portuguese-resources">Portuguese Resources</h2>
+<h4 id="list-of-phonemes-9">List of phonemes</h4>
 <table>
 <thead>
 <tr class="header">
@@ -2249,10 +2254,10 @@
 </tr>
 </tbody>
 </table>
-<h4 id="pronunciation-dictionary-8"><a href="#pronunciation-dictionary-8">Pronunciation Dictionary</a></h4>
+<h4 id="pronunciation-dictionary-8">Pronunciation Dictionary</h4>
 <p><em>GNU Public License</em></p>
-<p>The Portuguese pronunciation dictionary was downloaded from the Ralf catalog of dictionaries for the Simon ASR system at <a href="http://spirit.blau.in/simon/import-pls-dictionary/">http://spirit.blau.in/simon/import-pls-dictionary/</a>. It was then converted (format and phoneset) and corrected by Brigitte Bigi.</p>
-<h4 id="acoustic-model-9"><a href="#acoustic-model-9">Acoustic Model</a></h4>
+<p>The Portuguese pronunciation dictionary was downloaded from the Ralf catalog of dictionaries for the Simon ASR system at <a href="http://spirit.blau.in/simon/import-pls-dictionary/" class="uri">http://spirit.blau.in/simon/import-pls-dictionary/</a>. It was then converted (format and phoneset) and corrected by Brigitte Bigi.</p>
+<h4 id="acoustic-model-9">Acoustic Model</h4>
 <p><em>(c) Laboratoire Parole et Langage, Aix-en-Provence, France</em></p>
 <p><em>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License</em></p>
 <p>The acoustic model was <em>not</em> trained from data. Monophones of other models were cut and pasted to create this one, maily the Spanish and French models.</p>

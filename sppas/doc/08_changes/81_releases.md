@@ -186,7 +186,7 @@ comments!
 GUI:
 
   - Frames and Dialog design is more uniform.
-  - User's preferences changed. Themes and colors introduced.
+  - Users preferences changed. Themes and colors introduced.
   - Help is available.
 
 Annotations:
@@ -360,7 +360,7 @@ Resources:
   - New French dictionary: use the new phoneset!
   - New Taiwanese acoustic model. Attention: phoneset changed: accept some chinese...
   - New Taiwanese dictionary: use the new phoneset + some chinese syllabes added.
-  - Vietnamese removed: due to the lack of data, the model can't be improved.
+  - Vietnamese removed: due to the lack of data, the model cant be improved.
 
 
 #### SPPAS 1.5.1 (2013-08-29)
@@ -998,6 +998,7 @@ GUI:
 #### SPPAS-1.7.9 (2016-06-03)
 
 GUI:
+
     - Some debug in SppasEdit
     - SndPlayer renamed AudioRoamer because new functionnalities were added:
 
@@ -1049,10 +1050,72 @@ Automatic annotations:
     - Acoustic models training validated.
 
 Resources:
+
     - Catalan: new pronunciation dictionary and new acoustic model.
+
+
+
+#### SPPAS-1.8.2 (2017-01-18)
+
+Analysis:
+
+    - debug of DataFilter
+
+Resources:
+
+    - French vocabulary and dictionary updated
+
+Development:
+
+    - new plugins package with a new plugin manager
+    - GUI integration of this new plugins system
+    - some unittest appended and all existing ones updated
+    - annotationdata.io renamed annotationdata.aio
+    - docstrings of some packages converted from epytext to reST syntax
+
+GUI: 
+
+    - DataStats, DataFilter and DataRoamer toolbars dont scroll anymore
+    - Themes management changed.
+    - Main font is managed by the Themes.
+
+
+
+#### SPPAS-1.8.3 (2017-03-10)
+
+Development:
+
+    - Elan reader highly improved.
+
+
+
+#### SPPAS 1.9 (2017-03-00)
+
+Development:
+
+    For the packages utils, term, structs, resources, presenters, plugins, 
+    calculus and audiodata: the migration from python 2.7 to python > 3.0 
+    is done:
+        
+        * xrange replaced by range
+        * use items() instead of iteritems()
+        * print is used as a function
+        * add a class to make unicode in the same way in both versions
+        * unittest verified, improved, etc.
+    
+    For the packages utils, term, structs, resources, plugins and calculus:
+
+        - The migration from epydoc to reST syntax is started...
+        - Code is re-written to be as PEP8-compatible as possible
+        - Exceptions are separately managed
+        - Internationalization of the messages
+
+    Relative imports used as the standard way in python!
 
 
 ## the Modern period
 
-... it will be the case when SPPAS will be based on Python 3.x which is not currently the plan!
+... it will be the case when SPPAS will be based on Python 3.x (instead of 2.7)
+and Phoenix instead of wxpython!
+
 

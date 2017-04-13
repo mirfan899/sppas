@@ -20,7 +20,7 @@ Then, create a new empty file:
 Copy the following code in this newly created file.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines}
-print 'Hello world!'
+print('Hello world!')
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ![Hello world! in a Python script](./etc/screenshots/python_idle_00.png)
@@ -105,9 +105,10 @@ Then, the function print each item of the list, by means of a loop.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="21"}
 def print_vowels():
     """ Print the list of French vowels on the screen. """
-    vowels = [ 'a', 'e', 'E', 'i', 'o', 'u', 'y', '@', '2', '9', 'a~', 'o~', 'U~' ]
+    
+    vowels = ['a', 'e', 'E', 'i', 'o', 'u', 'y', '@', '2', '9', 'a~', 'o~', 'U~']
     for v in vowels:
-        print v
+        print(v)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The `main()` function must be changed: 
@@ -156,16 +157,14 @@ be converted to string to be printed out.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="21"}
 def print_list(mylist, message=""):
-    """
-    Print a list on the screen.
+    """ Print a list on the screen.
 
     @param mylist (list) is the list to print
     @param message (string) is an optional message to print before each element 
 
     """
-
     for element in mylist:
-        print message,str(element)
+        print("{0} {1}".format(message, element))
 
 # ----------------------------------------------------------------------------
 
@@ -185,7 +184,8 @@ the given string has no character).
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="21"}
 def is_empty(mystr):
     """ Return True if mystr is empty. """
-    return not len(mystr.strip())
+    
+    return len(mystr.strip()) == 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 >Practice: Add this funtion in a new script and try to print various lists
@@ -220,10 +220,10 @@ opening mode ('r' is the default value, used for reading).
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="21"}
 def main():
-    f = open("C:\Users\Me\Desktop\pythonscripts\phonemes.csv", 'r')
-    for l in f:
+    fp = open("C:\Users\Me\Desktop\pythonscripts\phonemes.csv", 'r')
+    for l in fp:
         # do something with the line stored in variable l
-        print l
+        print(l)
     f.close()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 
@@ -236,15 +236,14 @@ various file encodings, thanks to the `codecs` library:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="21"}
 def read_file(filename):
-    """
-    Read the whole file, return lines into a list.
+    """ Read the whole file, return lines into a list.
 
     @param filename (string) Name of the file to read, including path.
     @return List of lines
 
     """
-    with codecs.open(filename, 'r', encoding="utf8") as f:
-        return f.readlines()
+    with codecs.open(filename, 'r', encoding="utf8") as fp:
+        return fp.readlines()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 
 In the previous code, the `codecs.open` functions got 3 arguments: the file 
@@ -262,12 +261,12 @@ def main():
 
     # before doing something, check the data!
     if not len(lines):
-        print 'Hum... the file is empty!'
+        print('Hum... the file is empty!')
         sys.exit(1)
 
     # do something with the lines
     for l in lines:
-        print l.strip()
+        print(l.strip())
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 
 See the file 05_reading_file.py for the whole program, and try-it
@@ -287,7 +286,7 @@ Writing a file requires to open it in a writing mode:
 
 A file can be opened in an encoding and saved in another one. This could be
 useful to write a script to convert the encoding of a set of files in a 
-given forlder to UTF-8 for example. The following could help to create 
+given folder to UTF-8 for example. The following could help to create 
 such a script:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="10"}

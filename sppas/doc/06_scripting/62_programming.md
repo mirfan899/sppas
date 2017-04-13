@@ -100,7 +100,7 @@ Complex data types are often used, for example: arrays, lists, tree,
 hash-tables, etc. For example, with Python:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
- lst = ['a', 'bb', 'ccc', 'dddd', 'eeeee' ]
+ lst = ['a', 'bb', 'ccc', 'dddd', 'eeeee']
  sublst = lst[1:2]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -116,7 +116,7 @@ Python Arithmetic Operators:
  a - b  # Subtraction
  a * b  # Multiplication
  a / b  # Division
- float(a) / float(b) # try it! and compare with the previous one
+ float(a) / float(b)  # try it! and compare with the previous one
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -136,7 +136,8 @@ In the following, we give example of conditions/comparisons in Python.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
  var = 100
- if var == 100: print "Value of expression is 100"
+ if var == 100: 
+     print("Value of expression is 100")
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Python programming language assumes any non-zero and non-null values as `True`,
@@ -144,11 +145,11 @@ and if it is either zero or null, then it is assumed as `False` value.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
  if a == b:
-     print 'equals'
+     print('equals')
  elif a > b:
-    print 'a greater than b'
+    print('a greater than b')
  else:
-    print 'b greater than a'
+    print('b greater than a')
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Python Comparison Operators:
@@ -190,5 +191,5 @@ a list on the screen:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
  l = ['fruits', 'viande', 'poisson', 'oeufs']
  for item in l:
-    print item
+    print(item)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

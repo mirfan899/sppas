@@ -48,7 +48,7 @@ PROGRAM_DIR=$(dirname $HERE)
 
 PROGRAM_NAME="SPPAS"
 PROGRAM_AUTHOR="Brigitte Bigi"
-PROGRAM_VERSION=$(grep -e "^version =" $PROGRAM_DIR/sppas/src/sp_glob.py | awk -F'=' '{print $2}' | cut -f2 -d'"')
+PROGRAM_VERSION=$(grep -e "__version__=" $PROGRAM_DIR/sppas/meta.py | awk -F'=' '{print $2}' | cut -f2 -d'"')
 
 # Files and directories to be used
 BIN_DIR="bin"
@@ -597,7 +597,8 @@ function fct_sppas_doc {
                 awk 'BEGIN{infigure=0}\
                 /<figure>/{infigure=1}\
                 /<\/figure>/{infigure=0}\
-                /<embed /{if (infigure==1) {if (match($0,".wav")){gsub("<embed ", "<audio ", $0); gsub("/>", " controls> </audio>",$0);} else {gsub("<embed ", "<video width=480 ", $0); gsub("/>", " controls> </video>",$0);}}}\
+                /<embed /{if (infigure==1) {if (match($0,".wav")){gsub("<embed ", "<audio ", $0); gsub("/>", " controls> </audio>",$0);} \
+                                            else {gsub("<embed ", "", $0);gsub("/>","",$0); lab=$0; vid=$0; sub(".mp4",".vtt",lab); $0="<video width=480 controls " vid "><track label=\"English\" kind=\"subtitles\" srclang=\"en\" " lab " default></video>";}}}\
                 {print}'  > $WEB_DIR/tutorial_${outfile}.html
 
             rm toto.html

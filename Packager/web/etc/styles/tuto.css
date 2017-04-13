@@ -160,7 +160,7 @@ section.level1 h1 {
 }
 
 /* Title at the top of each slide */
-section.level2 h1 { 
+section.level2 h2 {
     font-family:    TitleFont, serif;
     font-weight:    normal;
     font-style:     normal;

@@ -1,89 +1,499 @@
 <!DOCTYPE html>
 <head>
-<meta charset="utf-8">
-  <meta name="author" content="Brigitte Bigi" />
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Brigitte Bigi">
   <title>SPPAS Tutorial</title>
-  <style type="text/css">code{white-space: pre;}</style>
-  <link rel="stylesheet" href="etc/styles/tuto.css" />
-  <link rel="icon" href="./etc/icons/sppas.png" />
+  <style type="text/css">code{white-space: pre-wrap;}</style>
+  <link rel="stylesheet" href="etc/styles/tuto.css">
+      <link rel="icon" href="./etc/icons/sppas.png" />
   
-  <script type="text/javascript">
-	var _gaq = _gaq || [];
-	_gaq.push(['_setAccount', 'UA-38055333-4']);
-	_gaq.push(['_trackPageview']);
-  
-	(function() {
-	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	})();
-  </script>
+      <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-38055333-4']);
+        _gaq.push(['_trackPageview']);
+      
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      </script>
 </head>
-
 <body>
 <section class="title">
   <h1 class="title">SPPAS Tutorial</h1>
-  <h2 class="author">Brigitte Bigi</h2>
-  <h3 class="date">Use the left/right arrow keys to show slides</h3>
+  <footer>
+    <span class="author">Brigitte Bigi</span> · <span class="date">Use the left/right arrow keys to show slides</span>
+  </footer>
 </section>
 <section id="sppas-full-demonstration" class="titleslide slide level1">
 <h1>SPPAS full demonstration</h1>
 </section>
-<section id="package-sppas" class="slide level2">
-<h1>SPPAS Package</h1>
+<section id="install-sppas" class="slide level2">
+<h2>Install SPPAS</h2>
+<ul>
+<li>Unzip in a directory of your computer</li>
+</ul>
 <figure>
-	<video width=480 controls src="./etc/screencasts/sppas-package.mp4" type="video/mp4"> 
-	<track kind="subtitle" src="./etc/screencasts/sppas-package.vtt" srclang="en-US" label="English" />
-	Your browser does not support HTML5 video.Use Firefox instead!
-	</video>
+<video width=480 controls src="./etc/screencasts/sppas-install.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-install.vtt"  default></video>
 </figure>
+</section>
+<section class="slide level2">
+
+<h3 id="install-sppas-1">Install SPPAS</h3>
+<ul>
+<li>Right-click on the SPPAS package</li>
+<li>Click on &quot;Extract All&quot;</li>
+<li>Choose the folder where to install SPPAS</li>
+<li>That's it. SPPAS is installed!</li>
+</ul>
+</section>
+<section id="launch-sppas-for-the-first-time" class="slide level2">
+<h2>Launch SPPAS for the first time</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-launch-first.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-launch-first.vtt"  default></video>
+</figure>
+</section>
+<section class="slide level2">
+
+<h3 id="launch-sppas-for-the-first-time-1">Launch SPPAS for the first time</h3>
+<ul>
+<li>Open the SPPAS folder</li>
+<li>Double-click on &quot;sppas.bat&quot; file (Windows) or &quot;sppas.command&quot; file (Linux/MacOS)</li>
+<li>A security alert may occur...</li>
+<li>Ignore the message and start SPPAS anyway</li>
+<li>Python opens a black frame</li>
+<li>SPPAS Graphical User Interface then arises</li>
+</ul>
 </section>
 <section id="launch-sppas" class="slide level2">
-<h1>Launch SPPAS</h1>
+<h2>Launch SPPAS</h2>
 <figure>
-<video width=480 src="./etc/screencasts/sppas-demo1.mp4"  controls> </video>
+<video width=480 controls src="./etc/screencasts/sppas-launch.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-launch.vtt"  default></video>
+</figure>
+<ul>
+<li>Open the SPPAS folder</li>
+<li>Python opens a black frame (and... don't close it!)</li>
+<li>SPPAS Graphical User Interface then arises</li>
+</ul>
+</section>
+<section id="install-a-plugin" class="slide level2">
+<h2>Install a plugin</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-install-plugin.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-install-plugin.vtt"  default></video>
 </figure>
 </section>
-<section id="add-file" class="slide level2">
-<h1>Add file</h1>
+<section class="slide level2">
+
+<h3 id="install-a-plugin-1">Install a plugin</h3>
+<ul>
+<li>Open SPPAS folder then launch SPPAS</li>
+<li>Click on &quot;Plugins&quot; action icon</li>
+<li>Click on the &quot;Install&quot; button</li>
+<li>Set the plugin package</li>
+<li>The plugin is added into the list of plugins</li>
+</ul>
+</section>
+<section id="check-audio-files" class="slide level2">
+<h2>Check audio files</h2>
 <figure>
-<video width=480 src="./etc/screencasts/sppas-demo2.mp4"  controls> </video>
+<video width=480 controls src="./etc/screencasts/sppas-demo01-audioroamer-selectchannel.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo01-audioroamer-selectchannel.vtt"  default></video>
 </figure>
 </section>
-<section id="perform-ipus-segmentation" class="slide level2">
-<h1>Perform IPUs Segmentation</h1>
+<section id="check-audio-files-1" class="slide level2">
+<h2>Check audio files</h2>
 <figure>
-<video width=480 src="./etc/screencasts/sppas-demo3.mp4"  controls> </video>
+<video width=480 controls src="./etc/screencasts/sppas-demo02-audioroamer.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo02-audioroamer.vtt"  default></video>
+</figure>
+<ul>
+<li>Type F5 to refresh the list of files</li>
+</ul>
+</section>
+<section id="visualize-files" class="slide level2">
+<h2>Visualize files</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo03-vizualizer.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo03-vizualizer.vtt"  default></video>
 </figure>
 </section>
-<section id="take-a-quick-look-on-the-result" class="slide level2">
-<h1>Take a quick look on the result</h1>
+<section class="slide level2">
+
+<h3 id="visualize-files-1">Visualize files</h3>
+<ul>
+<li>Select the files</li>
+<li>Click on the Visualizer</li>
+<li>
+<p>Click on the files to open</p>
+<ul>
+<li>Tabs allow to open files separately</li>
+<li>Green buttons allow to display information and play the sound</li>
+<li>Blue buttons allow to scroll and zoom</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="remove-files" class="slide level2">
+<h2>Remove files</h2>
 <figure>
-<video width=480 src="./etc/screencasts/sppas-demo4.mp4"  controls> </video>
+<video width=480 controls src="./etc/screencasts/sppas-demo04-remove.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo04-remove.vtt"  default></video>
 </figure>
 </section>
-<section id="transcribe" class="slide level2">
-<h1>Transcribe</h1>
+<section id="silencespeech-segmentation" class="slide level2">
+<h2>Silence/Speech segmentation</h2>
 <figure>
-<video width=480 src="./etc/screencasts/sppas-demo5.mp4"  controls> </video>
+<video width=480 controls src="./etc/screencasts/sppas-demo05-ipus.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo05-ipus.vtt"  default></video>
 </figure>
 </section>
-<section id="change-manually-with-praat" class="slide level2">
-<h1>Change manually (with Praat)</h1>
+<section class="slide level2">
+
+<h3 id="silencespeech-segmentation-1">Silence/Speech segmentation</h3>
+<ul>
+<li>Select the audio files, or the whole directory</li>
+<li>Click on &quot;Annotate&quot; action button</li>
+<li>Enable &quot;IPUs Segmentation&quot; automatic annotation</li>
+<li>Click on &quot;Configure&quot; blue text</li>
+<li>Fix carefully each option: READ DOCUMENTATION</li>
+<li>Click on &quot;Performs annotations&quot; button</li>
+<li>
+<p>A &quot;Procedure Outcome Report&quot; is displayed:</p>
+<ul>
+<li>read it!</li>
+<li>... and save it.</li>
+</ul>
+</li>
+<li>
+<p>Newly created files are automatically added into the list</p>
+</li>
+</ul>
+</section>
+<section id="visualize-ipus" class="slide level2">
+<h2>Visualize IPUs</h2>
 <figure>
-<video width=480 src="./etc/screencasts/sppas-demo6.mp4"  controls> </video>
+<video width=480 controls src="./etc/screencasts/sppas-demo06-ipus-vizualize.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo06-ipus-vizualize.vtt"  default></video>
 </figure>
 </section>
-<section id="annotate-automatically" class="slide level2">
-<h1>Annotate automatically</h1>
+<section id="ipuscriber" class="slide level2">
+<h2>IPUscriber</h2>
 <figure>
-<video width=480 src="./etc/screencasts/sppas-demo7.mp4"  controls> </video>
+<video width=480 controls src="./etc/screencasts/sppas-demo07-ipuscribe.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo07-ipuscribe.vtt"  default></video>
 </figure>
 </section>
-<section id="estimate-statistics" class="slide level2">
-<h1>Estimate statistics</h1>
+<section class="slide level2">
+
+<h3 id="ipuscriber-1">IPUscriber</h3>
+<ul>
+<li>Select the audio files and click on &quot;IPUscriber&quot;</li>
+<li>Click on the file to open</li>
+<li>Click on the IPU to transcribe and play the sound</li>
+<li>Perform manually the orthographic transcription of each IPU</li>
+<li>Tabs allow to transcribe several files in parallel</li>
+<li>Copy/Paste transcription is allowed (CTRL-C/CTRL-V)</li>
+<li>Save the displayed files or save all</li>
+</ul>
+</section>
+<section id="transcription-1" class="slide level2">
+<h2>Transcription (1)</h2>
 <figure>
-<video width=480 src="./etc/screencasts/sppas-demo8.mp4"  controls> </video>
+<video width=480 controls src="./etc/screencasts/sppas-demo08-transcription1.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo08-transcription1.vtt"  default></video>
+</figure>
+</section>
+<section class="slide level2">
+
+<h3 id="transcription">Transcription</h3>
+<ul>
+<li>Transcription requirements and the convention are in the help</li>
+<li>It must includes: silent pauses, filled pauses, repeats, truncated words, etc...</li>
+<li>It must strictly follow the convention</li>
+<li>The same information is also in the documentation</li>
+<li>the full convention and advices is here:</li>
+</ul>
+<p>
+<a href="https://hdl.handle.net/11403/sldr000873/toe-sppas.pdf" class="uri">https://hdl.handle.net/11403/sldr000873/toe-sppas.pdf</a>
+</p>
+</section>
+<section id="transcription-2" class="slide level2">
+<h2>Transcription (2)</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo09-transcription2.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo09-transcription2.vtt"  default></video>
+</figure>
+</section>
+<section id="convert-xra-to-textgrid" class="slide level2">
+<h2>Convert XRA to TextGrid</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo10-convert-xra-textgrid.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo10-convert-xra-textgrid.vtt"  default></video>
+</figure>
+</section>
+<section class="slide level2">
+
+<h3 id="convert-xra-to-textgrid-1">Convert XRA to TextGrid</h3>
+<ul>
+<li>By default, SPPAS creates XRA files</li>
+<li>Files can be exported in several formats</li>
+<li>Select files and click on &quot;Export&quot; button</li>
+<li>Select the file extension in the list</li>
+<li>Newly created files are added into the list</li>
+<li>Regardless of the format files can be visualized, annotated, etc.</li>
+</ul>
+</section>
+<section id="check-transcription-and-ipus-1" class="slide level2">
+<h2>Check transcription and ipus (1)</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo11-praat-correction1.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo11-praat-correction1.vtt"  default></video>
+</figure>
+</section>
+<section class="slide level2">
+
+<h3 id="check-transcription-and-ipus">Check transcription and ipus</h3>
+<ul>
+<li>Check the transcription and IPUs with Praat or Phonedit, or AnnotationPro, ...</li>
+<li>
+<p>Praat:</p>
+<ul>
+<li>
+<em>first of all</em> check &quot;Text writing preferences...&quot;: Set to UTF-8</li>
+<li>Adjust font size</li>
+<li>Fix properly the sound scaling: Scaling strategy: fixed height</li>
+</ul>
+</li>
+<li>Adjust IPUs boundaries</li>
+<li>Play sound and validate the transcription</li>
+<li>
+<p>Save the TextGrid file</p>
+</li>
+</ul>
+</section>
+<section id="check-transcription-and-ipus-2" class="slide level2">
+<h2>Check transcription and ipus (2)</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo12-praat-correction2.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo12-praat-correction2.vtt"  default></video>
+</figure>
+</section>
+<section class="slide level2">
+
+<h3 id="check-transcription-and-ipus-3">Check transcription and ipus</h3>
+<ul>
+<li>
+<p>For an audio file of 50 seconds:</p>
+<ul>
+<li>less than 1 minute to perform automatic IPUs segmentation;</li>
+<li>about 4 minutes to transcribe with IPUscriber;</li>
+<li>about 4 minutes to check both the transcription and IPUs (with an external program).</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="generates-a-pitchtier-file" class="slide level2">
+<h2>Generates a PitchTier file</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo13-praat-pitchtier.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo13-praat-pitchtier.vtt"  default></video>
+</figure>
+</section>
+<section id="manage-files" class="slide level2">
+<h2>Manage files</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo14-files.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo14-files.vtt"  default></video>
+</figure>
+</section>
+<section id="text-normalization" class="slide level2">
+<h2>Text normalization</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo15-tokenization.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo15-tokenization.vtt"  default></video>
+</figure>
+</section>
+<section class="slide level2">
+
+<h3 id="text-normalization-1">Text normalization</h3>
+<ul>
+<li>Select audio files or the whole directory</li>
+<li>Enable &quot;Tokenization&quot;</li>
+<li>Click on the &quot;Configure&quot; blue text</li>
+<li>Fix the options</li>
+<li>Choose the language in the list</li>
+<li>Click on &quot;Perform annotations&quot; button</li>
+<li>The &quot;Procedure Outcome Report&quot; is displayed</li>
+<li>Newly created files are automatically added into the list</li>
+</ul>
+</section>
+<section id="phonetization" class="slide level2">
+<h2>Phonetization</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo16-phonetization.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo16-phonetization.vtt"  default></video>
+</figure>
+</section>
+<section class="slide level2">
+
+<h3 id="phonetization-1">Phonetization</h3>
+<ul>
+<li>Select audio files or the whole directory</li>
+<li>Enable &quot;Phonetization&quot;</li>
+<li>Click on the &quot;Configure&quot; blue text</li>
+<li>Fix the options</li>
+<li>Choose the language in the list</li>
+<li>Click on &quot;Perform annotations&quot; button</li>
+<li>The &quot;Procedure Outcome Report&quot; is displayed</li>
+<li>Newly created files are automatically added into the list</li>
+</ul>
+</section>
+<section id="alignment" class="slide level2">
+<h2>Alignment</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo17-alignment.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo17-alignment.vtt"  default></video>
+</figure>
+</section>
+<section class="slide level2">
+
+<h3 id="alignment-1">Alignment</h3>
+<ul>
+<li>Select audio files or the whole directory</li>
+<li>Enable &quot;Alignment&quot;</li>
+<li>Click on the &quot;Configure&quot; blue text</li>
+<li>Fix the options</li>
+<li>Choose the language in the list</li>
+<li>Click on &quot;Perform annotations&quot; button</li>
+<li>The &quot;Procedure Outcome Report&quot; is displayed</li>
+<li>Newly created files are automatically added into the list</li>
+</ul>
+</section>
+<section id="syllabification" class="slide level2">
+<h2>Syllabification</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo18-syllabification.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo18-syllabification.vtt"  default></video>
+</figure>
+</section>
+<section class="slide level2">
+
+<h3 id="syllabification-1">Syllabification</h3>
+<ul>
+<li>Select audio files or the whole directory</li>
+<li>Enable &quot;Syllabification&quot;</li>
+<li>Click on the &quot;Configure&quot; blue text</li>
+<li>Fix the options</li>
+<li>Choose the language in the list</li>
+<li>Click on &quot;Perform annotations&quot; button</li>
+<li>The &quot;Procedure Outcome Report&quot; is displayed</li>
+<li>Newly created files are automatically added into the list</li>
+</ul>
+</section>
+<section id="momel-and-intsint" class="slide level2">
+<h2>Momel and INTSINT</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo19-momel-intsint.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo19-momel-intsint.vtt"  default></video>
+</figure>
+</section>
+<section class="slide level2">
+
+<h3 id="momel-and-intsint-1">Momel and INTSINT</h3>
+<ul>
+<li>Select audio files or the whole directory</li>
+<li>Enable &quot;Momel&quot;</li>
+<li>Enable &quot;INTSINT&quot;</li>
+<li>Click on the &quot;Configure&quot; blue text of &quot;Momel&quot;</li>
+<li>Fix the options</li>
+<li>Click on &quot;Perform annotations&quot; button</li>
+<li>The &quot;Procedure Outcome Report&quot; is displayed</li>
+<li>Newly created files are automatically added into the list</li>
+</ul>
+</section>
+<section id="views-of-the-merged-file" class="slide level2">
+<h2>Views of the merged file</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo20-view-merge.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo20-view-merge.vtt"  default></video>
+</figure>
+</section>
+<section id="apply-plugins" class="slide level2">
+<h2>Apply plugins</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo21-plugins.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo21-plugins.vtt"  default></video>
+</figure>
+</section>
+<section class="slide level2">
+
+<h3 id="apply-a-plugin">Apply a plugin</h3>
+<ul>
+<li>Select the files</li>
+<li>Click on Plugins</li>
+<li>Click on the button of the plugin</li>
+<li>Verify options</li>
+<li>Press OK to apply the plugin</li>
+<li>Newly created files are automatically added to the list of files</li>
+</ul>
+</section>
+<section id="dataroamer-annotated-files-manager" class="slide level2">
+<h2>DataRoamer: annotated files manager</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo22-dataroamer.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo22-dataroamer.vtt"  default></video>
+</figure>
+</section>
+<section id="copy-a-file" class="slide level2">
+<h2>Copy a file</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo23-copy.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo23-copy.vtt"  default></video>
+</figure>
+</section>
+<section id="export-files" class="slide level2">
+<h2>Export files</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo24-export.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo24-export.vtt"  default></video>
+</figure>
+</section>
+<section id="the-time-group-analyzer" class="slide level2">
+<h2>the Time Group Analyzer</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo25-tga.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo25-tga.vtt"  default></video>
+</figure>
+</section>
+<section id="statistical-distributions" class="slide level2">
+<h2>Statistical distributions</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo26-distrib.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo26-distrib.vtt"  default></video>
+</figure>
+</section>
+<section id="data-filter-1" class="slide level2">
+<h2>Data Filter (1)</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo27-filter-toto.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo27-filter-toto.vtt"  default></video>
+</figure>
+</section>
+<section id="data-filter-2" class="slide level2">
+<h2>Data Filter (2)</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo28-filter-ptkbdg.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo28-filter-ptkbdg.vtt"  default></video>
+</figure>
+</section>
+<section id="data-filter-3" class="slide level2">
+<h2>Data Filter (3)</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo29-filter-duration.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo29-filter-duration.vtt"  default></video>
+</figure>
+</section>
+<section id="data-filter-4" class="slide level2">
+<h2>Data Filter (4)</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo30-duration-ptkbdg.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo30-duration-ptkbdg.vtt"  default></video>
+</figure>
+</section>
+<section id="data-filter-5" class="slide level2">
+<h2>Data Filter (5)</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo31-filter-first-phon-in-syll.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo31-filter-first-phon-in-syll.vtt"  default></video>
+</figure>
+</section>
+<section id="view-result" class="slide level2">
+<h2>View result</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo32-filter-verif.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo32-filter-verif.vtt"  default></video>
+</figure>
+</section>
+<section id="fix-settings" class="slide level2">
+<h2>Fix settings</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo33-settings.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo33-settings.vtt"  default></video>
+</figure>
+</section>
+<section id="getting-help" class="slide level2">
+<h2>Getting help</h2>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo34-help.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo34-help.vtt"  default></video>
 </figure>
 </section>
 <section class="slide level2">
@@ -114,21 +524,50 @@
 <!-- Default Style -->
 <style>
   * { margin: 0; padding: 0; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
-  details { display: none; }
+  [role="note"] { display: none; }
   body {
     width: 800px; height: 600px;
     margin-left: -400px; margin-top: -300px;
     position: absolute; top: 50%; left: 50%;
     overflow: hidden;
+    display: none;
   }
+  .view body {
+    position: static;
+    margin: 0; padding: 0;
+    width: 100%; height: 100%;
+    display: inline-block;
+    overflow: visible; overflow-x: hidden;
+    /* undo Dz.onresize */
+    transform: none !important;
+    -moz-transform: none !important;
+    -webkit-transform: none !important;
+    -o-transform: none !important;
+    -ms-transform: none !important;
+  }
+  .view head, .view head > title { display: block }
   section {
     position: absolute;
     pointer-events: none;
     width: 100%; height: 100%;
   }
+  .view section {
+    pointer-events: auto;
+    position: static;
+    width: 800px; height: 600px;
+    margin: -150px -200px;
+    float: left;
+
+    transform: scale(.4);
+    -moz-transform: scale(.4);
+    -webkit-transform: scale(.4);
+    -o-transform: scale(.4);
+    -ms-transform: scale(.4);
+  }
+  .view section > * { pointer-events: none; }
   section[aria-selected] { pointer-events: auto; }
   html { overflow: hidden; }
-  body { display: none; }
+  html.view { overflow: visible; }
   body.loaded { display: block; }
   .incremental {visibility: hidden; }
   .incremental[active] {visibility: visible; }
@@ -140,6 +579,9 @@
     -ms-transition: width 400ms linear 0s;
     transition: width 400ms linear 0s;
   }
+  .view #progress-bar {
+    display: none;
+  }
 </style>
 
 <script>
@@ -147,6 +589,7 @@
     remoteWindows: [],
     idx: -1,
     step: 0,
+    html: null,
     slides: null,
     progressBar : null,
     params: {
@@ -156,14 +599,16 @@
 
   Dz.init = function() {
     document.body.className = "loaded";
-    this.slides = $$("body > section");
+    this.slides = Array.prototype.slice.call($$("body > section"));
     this.progressBar = $("#progress-bar");
+    this.html = document.body.parentNode;
     this.setupParams();
     this.onhashchange();
     this.setupTouchEvents();
     this.onresize();
+    this.setupView();
   }
-  
+
   Dz.setupParams = function() {
     var p = window.location.search.substr(1).split('&');
     p.forEach(function(e, i, a) {
@@ -213,6 +658,10 @@
       aEvent.preventDefault();
       this.goFullscreen();
     }
+    if (aEvent.keyCode == 79) { // o
+      aEvent.preventDefault();
+      this.toggleView();
+    }
   }
 
   /* Touch Events */
@@ -246,6 +695,16 @@
     }
   }
 
+  Dz.setupView = function() {
+    document.body.addEventListener("click", function ( e ) {
+      if (!Dz.html.classList.contains("view")) return;
+      if (!e.target || e.target.nodeName != "SECTION") return;
+
+      Dz.html.classList.remove("view");
+      Dz.setCursor(Dz.slides.indexOf(e.target) + 1);
+    }, false);
+  }
+
   /* Adapt the size of the slides to the window */
 
   Dz.onresize = function() {
@@ -262,9 +721,9 @@
   }
 
 
-  Dz.getDetails = function(aIdx) {
+  Dz.getNotes = function(aIdx) {
     var s = $("section:nth-of-type(" + aIdx + ")");
-    var d = s.$("details");
+    var d = s.$("[role='note']");
     return d ? d.innerHTML : "";
   }
 
@@ -293,7 +752,7 @@
     if (argv[0] === "GET_CURSOR" && argc === 1)
       this.postMsg(win, "CURSOR", this.idx + "." + this.step);
     if (argv[0] === "GET_NOTES" && argc === 1)
-      this.postMsg(win, "NOTES", this.getDetails(this.idx));
+      this.postMsg(win, "NOTES", this.getNotes(this.idx));
   }
 
   Dz.toggleContent = function() {
@@ -377,6 +836,14 @@
     this.setCursor(lastIdx, lastStep);
   }
 
+  Dz.toggleView = function() {
+    this.html.classList.toggle("view");
+
+    if (this.html.classList.contains("view")) {
+      $("section[aria-selected]").scrollIntoView(true);
+    }
+  }
+
   Dz.setSlide = function(aIdx) {
     this.idx = aIdx;
     var old = $("section[aria-selected]");
@@ -390,6 +857,9 @@
     }
     if (next) {
       next.setAttribute("aria-selected", "true");
+      if (this.html.classList.contains("view")) {
+        next.scrollIntoView();
+      }
       var video = next.$("video");
       if (video && !!+this.params.autoplay) {
         video.play();

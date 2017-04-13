@@ -17,7 +17,6 @@ in Aix-en-Provence, France..
     1. Multimodal corpora
     2. Multilinguality.
 
-
 -------------------------------
 
 ## Corpus and annotation
