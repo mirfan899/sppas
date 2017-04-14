@@ -85,7 +85,7 @@ class AnalyzePanel(wx.Panel):
         annotateButton = ButtonPanel(self, ID_FRAME_DATAROAMER, self._prefs, DATAROAMER_APP_ICON,  "DataRoamer")
         analyzeButton  = ButtonPanel(self, ID_FRAME_SNDROAMER,  self._prefs, AUDIOROAMER_APP_ICON, "AudioRoamer")
         pluginsButton  = ButtonPanel(self, ID_FRAME_IPUSCRIBE,  self._prefs, IPUSCRIBE_APP_ICON,   "IPUscriber")
-        settingsButton = ButtonPanel(self, ID_FRAME_SPPASEDIT,  self._prefs, SPPASEDIT_APP_ICON,   "Vizualizer")
+        settingsButton = ButtonPanel(self, ID_FRAME_SPPASEDIT,  self._prefs, SPPASEDIT_APP_ICON,   "Visualizer")
         helpButton     = ButtonPanel(self, ID_FRAME_DATAFILTER, self._prefs, DATAFILTER_APP_ICON,  "DataFilter")
         aboutButton    = ButtonPanel(self, ID_FRAME_STATISTICS, self._prefs, STATISTICS_APP_ICON,  "DataStats")
 
