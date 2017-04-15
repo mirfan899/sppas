@@ -35,16 +35,9 @@
 # File: tga.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
 import sys
 import os.path
-sys.path.append(  os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) )
+sys.path.append( os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import wx
 import logging
@@ -58,7 +51,6 @@ from calculus.descriptivesstats import DescriptiveStatistics
 from presenters.tiertga import TierTGA
 from utils import fileutils
 
-from wxgui.sp_icons  import STATISTICS_APP_ICON
 from wxgui.sp_icons  import TIMEANALYSIS
 from wxgui.sp_icons  import BROOM_ICON
 from wxgui.sp_icons  import APPLY_ICON
@@ -77,62 +69,60 @@ from wxgui.views.processprogress import ProcessProgressDialog
 DEFAULT_SEP = 'sep1, sep2, etc'
 
 # ----------------------------------------------------------------------------
-# class TGADialog
-# ----------------------------------------------------------------------------
 
-class TGADialog( spBaseDialog ):
+
+class TGADialog(spBaseDialog):
     """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: This class is used to display TGA results of tiers.
+    :author:  Brigitte Bigi
+    :contact: brigitte.bigi@gmail.com
+    :license: GPL, v3
+    :summary: This class is used to display TGA results of tiers.
 
     Dialog for the user to display and save Time Group Analysis results
     of a set of tiers.
 
     """
-
     def __init__(self, parent, preferences, tiers={}):
-        """
-        Create a new dialog.
+        """ Create a new dialog.
 
-        @param tiers: a dictionary with key=filename, value=list of selected tiers
+        :param parent:
+        :param preferences: (structs.Preferences)
+        :param tiers: a dictionary with key=filename, value=list of selected tiers
 
         """
         spBaseDialog.__init__(self, parent, preferences, title=" - Time Group Analysis")
-        wx.GetApp().SetAppName( "tga" )
+        wx.GetApp().SetAppName("tga")
 
         # Members
         # Options to evaluate stats:
-        self.withradius=0
+        self.withradius = 0
 
-        self._data = {} # to store stats
-        for k,v in tiers.items():
+        self._data = {}  # to store stats
+        for k, v in tiers.items():
             for tier in v:
-                ts = TierTGA( tier, self.withradius)
-                self._data[ts]=k
+                ts = TierTGA(tier, self.withradius)
+                self._data[ts] = k
                 # remark: TGA are not estimated yet.
 
-        titlebox   = self.CreateTitle(TIMEANALYSIS, "Time Group Analysis of a set of tiers")
+        titlebox = self.CreateTitle(TIMEANALYSIS, "Time Group Analysis of a set of tiers")
         contentbox = self._create_content()
-        buttonbox  = self._create_buttons()
+        buttonbox = self._create_buttons()
 
-        self.LayoutComponents( titlebox,
-                               contentbox,
-                               buttonbox )
+        self.LayoutComponents(titlebox,
+                              contentbox,
+                              buttonbox)
 
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
 
     def _create_buttons(self):
-        btn_export = self.CreateButton( EXPORT_ICON, "Export", tooltip="Show a random tip")
-        btn_save   = self.CreateSaveButton()
-        btn_close  = self.CreateCloseButton( )
+        btn_export = self.CreateButton(EXPORT_ICON, "Export", tooltip="Show a random tip")
+        btn_save = self.CreateSaveButton()
+        btn_close = self.CreateCloseButton()
         self.Bind(wx.EVT_BUTTON, self._on_save, btn_save)
         self.Bind(wx.EVT_BUTTON, self._on_export, btn_export)
-        return self.CreateButtonBox( [btn_save,btn_export],[btn_close] )
-
+        return self.CreateButtonBox([btn_save, btn_export], [btn_close])
 
         self._create_toolbar()
         self._create_content()
@@ -143,30 +133,40 @@ class TGADialog( spBaseDialog ):
         self._layout_components()
         self._set_focus_component()
 
+    # ------------------------------------------------------------------------
 
     def _create_toolbar(self):
         """ Simulate a toolbar."""
+
         font = self.preferences.GetValue('M_FONT')
         font.SetPointSize(font.GetPointSize() - 2)
 
         sep_label = wx.StaticText(self, label="Time group separators:", style=wx.ALIGN_CENTER)
-        sep_label.SetFont( font )
+        sep_label.SetFont(font)
 
         self.septext = wx.TextCtrl(self, -1, size=(150,24))
-        self.septext.SetFont( font )
+        self.septext.SetFont(font)
         self.septext.SetInsertionPoint(0)
         self.septext.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
         self.septext.SetForegroundColour(wx.Colour(128,128,128))
         self.septext.SetValue(DEFAULT_SEP)
 
-        broomb = wx.BitmapButton(self, bitmap=spBitmap(BROOM_ICON, 24, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
-        applyb = wx.BitmapButton(self, bitmap=spBitmap(APPLY_ICON, 24, theme=self.preferences.GetValue('M_ICON_THEME')), style=wx.NO_BORDER)
+        broomb = wx.BitmapButton(self,
+                                 bitmap=spBitmap(BROOM_ICON, 24, theme=self.preferences.GetValue('M_ICON_THEME')),
+                                 style=wx.NO_BORDER)
+        applyb = wx.BitmapButton(self,
+                                 bitmap=spBitmap(APPLY_ICON, 24, theme=self.preferences.GetValue('M_ICON_THEME')),
+                                 style=wx.NO_BORDER)
 
         durlist = ['Use only Midpoint value', 'Add the Radius value', 'Deduct the Radius value']
-        withradiusbox = wx.RadioBox(self, -1, label="Annotation durations:", choices=durlist, majorDimension=1, style=wx.RA_SPECIFY_COLS)
-        withradiusbox.SetFont( font )
+        withradiusbox = wx.RadioBox(self, -1,
+                                    label="Annotation durations:",
+                                    choices=durlist,
+                                    majorDimension=1,
+                                    style=wx.RA_SPECIFY_COLS)
+        withradiusbox.SetFont(font)
 
-        self.AddToolbar( [sep_label, broomb, self.septext, applyb],[withradiusbox] )
+        self.AddToolbar([sep_label, broomb, self.septext, applyb], [withradiusbox])
 
         self.septext.Bind(wx.EVT_TEXT, self.OnTextChanged)
         self.septext.Bind(wx.EVT_SET_FOCUS, self.OnTextClick)
@@ -177,25 +177,25 @@ class TGADialog( spBaseDialog ):
     def _create_content(self):
         self._create_toolbar()
         self.notebook = wx.Notebook(self)
-        page1 = TotalPanel(  self.notebook, self.preferences, "total")
+        page1 = TotalPanel( self.notebook, self.preferences, "total")
         page2 = MeansPanel(self.notebook, self.preferences, "means")
         page3 = DeltaDurationsPanel(self.notebook, self.preferences, "delta")
         # add the pages to the notebook with the label to show on the tab
-        self.notebook.AddPage(page1, "   Total   " )
-        self.notebook.AddPage(page2, "   Means  " )
-        self.notebook.AddPage(page3, " DeltaDurations " )
-        page1.ShowStats( self._data )
+        self.notebook.AddPage(page1, "   Total   ")
+        self.notebook.AddPage(page2, "   Means  ")
+        self.notebook.AddPage(page3, " DeltaDurations ")
+        page1.ShowStats(self._data)
         self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.OnNotebookPageChanged)
         return self.notebook
 
-    #-------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Callbacks
-    #-------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _on_save(self, event):
         idx = self.notebook.GetSelection()
-        page = self.notebook.GetPage( idx )
-        page.SaveAs(outfilename="tga-%s.csv"%page.name)
+        page = self.notebook.GetPage(idx)
+        page.SaveAs(outfilename="tga-%s.csv" % page.name)
 
     def _on_export(self, event):
         # Create the progress bar then run the annotations
@@ -206,17 +206,17 @@ class TGADialog( spBaseDialog ):
         total = len(self._data.items())
         i = 0
         # Work: Generate TGA annotations for each of the given files
-        for tg,filename in self._data.items():
-            p.set_text( filename )
+        for tg, filename in self._data.items():
+            p.set_text(filename)
             # estimates TGA
             trs = tg.tga_as_transcription()
             # save as file
             infile, ext = os.path.splitext(filename)
             outfile = infile + "-tga" + ext
-            logging.debug('Export file: %s' % outfile)
+            logging.info('Export file: %s' % outfile)
             annotationdata.aio.write(outfile, trs)
             # uppdate progress bar
-            i = i+1
+            i += 1
             p.set_fraction(float((i+1))/float(total))
         # Close progress bar
         p.close()
@@ -226,8 +226,8 @@ class TGADialog( spBaseDialog ):
         oldselection = event.GetOldSelection()
         newselection = event.GetSelection()
         if oldselection != newselection:
-            page = self.notebook.GetPage( newselection )
-            page.ShowStats( self._data )
+            page = self.notebook.GetPage(newselection)
+            page.ShowStats(self._data)
 
     def OnWithRadius(self, event):
         if event.GetSelection()==0:
@@ -247,13 +247,13 @@ class TGADialog( spBaseDialog ):
                 return
         # update infos of TierTGA objects
         for ts in self._data:
-            ts.set_withradius( self.withradius )
-        page = self.notebook.GetPage( self.notebook.GetSelection() )
-        page.ShowStats( self._data )
+            ts.set_withradius(self.withradius)
+        page = self.notebook.GetPage(self.notebook.GetSelection())
+        page.ShowStats(self._data)
 
 
     def OnTextClick(self, event):
-        self.septext.SetForegroundColour( wx.BLACK )
+        self.septext.SetForegroundColour(wx.BLACK)
         if self.septext.GetValue() == DEFAULT_SEP:
             self.OnTextErase(event)
         event.Skip()
@@ -272,9 +272,9 @@ class TGADialog( spBaseDialog ):
         for ts in self._data:
             ts.remove_separators()
             for sep in seps:
-                ts.append_separator( sep )
-        page = self.notebook.GetPage( self.notebook.GetSelection() )
-        page.ShowStats( self._data )
+                ts.append_separator(sep)
+        page = self.notebook.GetPage(self.notebook.GetSelection())
+        page.ShowStats(self._data)
 
     def OnTextErase(self, event):
         self.septext.SetValue('')
@@ -291,7 +291,7 @@ class TGADialog( spBaseDialog ):
 # Panels
 # ----------------------------------------------------------------------------
 
-class TotalPanel( BaseStatPanel ):
+class TotalPanel(BaseStatPanel):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -343,7 +343,7 @@ class TotalPanel( BaseStatPanel ):
                 segs = " ".join(ls[key])
                 row = [ filename, tg.tier.GetName(), key, segs, occurrences[key], total[key], mean[key], median[key], stdev[key], npvi[key], regressp[key][0], regressp[key][1], regresst[key][0], regresst[key][1] ]
                 # add the data content in rowdata
-                self.rowdata.append( row )
+                self.rowdata.append(row)
                 # add into the listctrl
                 self.AppendRow(i, row, self.statctrl)
                 i = i+1
@@ -357,7 +357,7 @@ class TotalPanel( BaseStatPanel ):
 
 # ----------------------------------------------------------------------------
 
-class MeansPanel( BaseStatPanel ):
+class MeansPanel(BaseStatPanel):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -408,13 +408,13 @@ class MeansPanel( BaseStatPanel ):
             tgdict['interceptt'] = [intercept for intercept,slope in list(regresst.values())]
             tgdict['slopet']     = [slope     for intercept,slope in list(regresst.values())]
 
-            stats = DescriptiveStatistics( tgdict )
+            stats = DescriptiveStatistics(tgdict)
             means = stats.mean()
 
             # fill rows
             row = [ filename, tg.tier.GetName(), means['len'], means['total'], means['mean'], means['median'], means['stdev'], means['npvi'], means['interceptp'], means['slopep'], means['interceptt'], means['slopet'] ]
             # add the data content in rowdata
-            self.rowdata.append( row )
+            self.rowdata.append(row)
             # add into the listctrl
             self.AppendRow(i, row, self.statctrl)
             i = i+1
@@ -429,7 +429,7 @@ class MeansPanel( BaseStatPanel ):
 
 # ----------------------------------------------------------------------------
 
-class DeltaDurationsPanel( BaseStatPanel ):
+class DeltaDurationsPanel(BaseStatPanel):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -470,10 +470,10 @@ class DeltaDurationsPanel( BaseStatPanel ):
             # fill rows
             for key in dd.keys():
                 # create the row, as a list of column items
-                segs = " ".join( "%10.3f" % x for x in dd[key] )
+                segs = " ".join("%10.3f" % x for x in dd[key])
                 row = [ filename, tg.tier.GetName(), key, segs ]
                 # add the data content in rowdata
-                self.rowdata.append( row )
+                self.rowdata.append(row)
                 # add into the listctrl
                 self.AppendRow(i, row, self.statctrl)
                 i = i+1

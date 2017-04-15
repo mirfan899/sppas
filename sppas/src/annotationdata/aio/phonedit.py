@@ -35,22 +35,13 @@
 # File: phonedit.py
 # ---------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
 import codecs
 from datetime import datetime
 import re
 
-from annotationdata.transcription  import Transcription
-from annotationdata.annotation     import Annotation
-from annotationdata.label.label    import Label
+from annotationdata.transcription import Transcription
+from annotationdata.annotation import Annotation
+from annotationdata.label.label import Label
 from annotationdata.ptime.interval import TimeInterval
 import annotationdata.ptime.point
 
@@ -60,12 +51,14 @@ PHONEDIT_RADIUS = 0.0005
 
 # ----------------------------------------------------------------------------
 
+
 def TimePoint(time):
     return annotationdata.ptime.point.TimePoint(time, PHONEDIT_RADIUS)
 
 # ----------------------------------------------------------------------------
 
-class Phonedit( Transcription ):
+
+class Phonedit(Transcription):
     """
     @authors: Tatusya Watanabe, Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -93,40 +86,47 @@ class Phonedit( Transcription ):
     # -----------------------------------------------------------------------
 
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
-        """
-        Creates a new Phonedit Transcription instance.
-        """
+        """ Creates a new Phonedit Transcription instance. """
+
         Transcription.__init__(self, name, mintime, maxtime)
 
     # -----------------------------------------------------------------------
 
     def read(self, filename, encoding="iso8859-1"):
-        """
-        Read a Phonedit mark file.
-        @param filename: intput filename.
-        @param encoding: encoding.
+        """ Read a Phonedit mark file.
+
+        :param filename: intput filename.
+        :param encoding: encoding.
+
         """
         with codecs.open(filename, mode="r", encoding=encoding) as fp:
             new_tier = None
             section_tier = "DSC_LEVEL_NAME="
+            reading_section = False
             for line in fp:
-                if line.startswith("[DSC_LEVEL_"):
+                if line.startswith("[DSC_LEVEL_") is True:
                     new_tier = self.NewTier()
+
                 elif section_tier in line:
                     line = line.replace(section_tier, "")
                     line = line.strip().strip('"')
                     if new_tier is not None:
-                        new_tier.SetName( line )
-                elif line.startswith("LBL_LEVEL"):
+                        new_tier.SetName(line)
+                        reading_section = True
+
+                elif line.startswith("[LINK_LEVEL") is True:
+                    reading_section = False
+
+                elif line.startswith("LBL_LEVEL") is True and reading_section is True:
                     match = re.match(self.PATTERN_ANNOTATION, line)
                     if match:
                         label = Label(match.group(1).strip('"'))
                         begin = TimePoint(float(match.group(2)) / 1000)
-                        end   = TimePoint(float(match.group(3)) / 1000)
+                        end = TimePoint(float(match.group(3)) / 1000)
                         # annotationdata does not support degenerated intervals.
-                        # then we replace interval by point
                         if begin == end:
-                            time = begin
+                            end = TimePoint(float(match.group(3))+PHONEDIT_RADIUS / 1000)
+                            time = TimeInterval(begin, end)
                         else:
                             time = TimeInterval(begin, end)
                         new_ann = Annotation(time, label)
@@ -136,16 +136,16 @@ class Phonedit( Transcription ):
 
         # Update
         self.SetMinTime(0)
-        self.SetMaxTime( self.GetEnd() )
+        self.SetMaxTime(self.GetEnd())
 
-    # End read
     # ------------------------------------------------------------------------
 
     def write(self, filename, encoding="iso8859-1"):
-        """
-        Write a Phonedit mark file.
-        @param filename: output filename.
-        @param encoding: encoding.
+        """ Write a Phonedit mark file.
+
+        :param filename: output filename.
+        :param encoding: encoding.
+
         """
         code_a = ord("A")
         lastmodified = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
@@ -155,8 +155,8 @@ class Phonedit( Transcription ):
                         chr(code_a + index_tier / 26),
                         chr(code_a + index_tier % 26))
                 fp.write("[DSC_%s]\n" % level)
-                fp.write("DSC_LEVEL_NAME=\"%s\"\n" %  tier.GetName())
-                fp.write("DSC_LEVEL_SOFTWARE=%s\n" %  "SPPAS")
+                fp.write("DSC_LEVEL_NAME=\"%s\"\n" % tier.GetName())
+                fp.write("DSC_LEVEL_SOFTWARE=%s\n" % "SPPAS")
                 fp.write("DSC_LEVEL_LASTMODIF_DATE=%s\n" % lastmodified)
                 fp.write("[LBL_%s]\n" % level)
                 for index_ann, ann in enumerate(tier):
@@ -165,11 +165,8 @@ class Phonedit( Transcription ):
                     if ann.GetLocation().IsPoint():
                         # Phonedit supports degenerated intervals
                         begin = ann.GetLocation().GetPointMidpoint() * 1000
-                        end   = begin
+                        end = begin
                     else:
                         begin = ann.GetLocation().GetBeginMidpoint() * 1000
-                        end   = ann.GetLocation().GetEndMidpoint() * 1000
-                    fp.write("%f %f\n" %  (begin, end))
-
-    # End write
-    # ------------------------------------------------------------------------
+                        end = ann.GetLocation().GetEndMidpoint() * 1000
+                    fp.write("%f %f\n" % (begin, end))
