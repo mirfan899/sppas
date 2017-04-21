@@ -1,40 +1,38 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: intsint.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.annotations.Intsint.intsint.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import math
 
 # ----------------------------------------------------------------------------
@@ -42,30 +40,34 @@ import math
 BIG_NUMBER = 32764
 
 # List of "absolute" tones
-TONES_ABSOLUTE = [ 'T', 'M', 'B' ]
+TONES_ABSOLUTE = ['T', 'M', 'B']
+
 # List of "relative" tones
-TONES_RELATIVE = [ 'H', 'L', 'U', 'D', 'S' ]
+TONES_RELATIVE = ['H', 'L', 'U', 'D', 'S']
 
 # ----------------------------------------------------------------------------
+
 
 def octave(value):
     return math.log(value) / math.log(2)
 
 # ----------------------------------------------------------------------------
 
+
 def linear(value):
     return 2 ** value
 
 # -------------------------------------------------------------------
 
-class Intsint( object ):
+
+class Intsint(object):
     """
-    @author:       Tatsuya Watanabe, Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Provide optimal INTSINT coding for sequence of target points.
+    :author:       Tatsuya Watanabe, Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Provide optimal INTSINT coding for sequence of target points.
 
     INTSINT is an acronym for INternational Transcription System for INTonation.
     It was originally developed by Daniel Hirst in his 1987 thesis as a
@@ -94,10 +96,8 @@ class Intsint( object ):
 
     """
     def __init__(self):
-        """
-        Create a new INTSINT instance.
-
-        """
+        """ Create a new INTSINT instance. """
+        
         # parameters for data checking.
         self.MIN_F0 = 60   # (Hz)
         self.MAX_F0 = 600  # (Hz)
@@ -112,23 +112,38 @@ class Intsint( object ):
 
         # parameters for target estimation.
         self.HIGHER = 0.5
-        self.LOWER  = 0.5
-        self.UP     = 0.25
-        self.DOWN   = 0.25
+        self.LOWER = 0.5
+        self.UP = 0.25
+        self.DOWN = 0.25
 
         # All tones
         self.TONES = TONES_ABSOLUTE + TONES_RELATIVE
 
-        self.reset()
+        self.best_intsint = None
+        self.best_estimate = None
+
+        self.intsint = []
+        self.estimates = []
+        self.targets = []
+        self.time = []
+
+        self.mid = 0
+        self.top = 0
+        self.bottom = 0
+        self.last_estimate = 0
+
+        self.best_mid = 0
+        self.best_range = 0
+        self.min_mean = 0
+        self.max_mean = 0
+        self.min_ss_error = 0
 
     # -------------------------------------------------------------------
 
     def reset(self):
-        """
-        Fix all member to their initial value.
-
-        """
-        self.best_intsint  = None
+        """ Fix all member to their initial value. """
+        
+        self.best_intsint = None
         self.best_estimate = None
 
         self.intsint = []
@@ -150,15 +165,14 @@ class Intsint( object ):
     # -------------------------------------------------------------------
 
     def adjust_f0(self, f0):
-        """
-        Return F0 value within self range of values.
+        """ Return F0 value within self range of values.
 
-        @param f0 (float) Input pitch value.
-        @return Normalized pitch value.
+        :param f0: (float) Input pitch value.
+        :returns: Normalized pitch value.
 
         """
         if f0 < self.MIN_F0:
-            return  self.MIN_F0
+            return self.MIN_F0
 
         if f0 > self.MAX_F0:
             return self.MAX_F0
@@ -167,25 +181,24 @@ class Intsint( object ):
 
     # -------------------------------------------------------------------
 
-    def init(self, momeltargets):
-        """
-        Initialize INTSINT attributes from a list of targets.
+    def init(self, momel_anchors):
+        """ Initialize INTSINT attributes from a list of targets.
 
-        @param momeltargets (list) List of tuples with time (in seconds) and target (Hz).
+        :param momel_anchors: (list) List of tuples with time (in seconds) and target (Hz).
 
         """
         self.reset()
-        for (time,target) in momeltargets:
+        for (time, target) in momel_anchors:
             # Convert f0 to octave scale
-            self.targets.append( octave(self.adjust_f0(target)) )
-            self.time.append( time )
+            self.targets.append(octave(self.adjust_f0(target)))
+            self.time.append(time)
 
         self.intsint = [""]*len(self.targets)
         self.estimates = [0]*len(self.targets)
 
-        sum_octave = sum( self.targets )
+        sum_octave = sum(self.targets)
         mean_f0 = float(sum_octave) / float(len(self.targets))
-        linear_mean_f0 = round( linear(mean_f0) )
+        linear_mean_f0 = round(linear(mean_f0))
         self.min_mean = linear_mean_f0 - self.MEAN_SHIFT
         self.max_mean = linear_mean_f0 + self.MEAN_SHIFT
         self.min_ss_error = BIG_NUMBER
@@ -193,8 +206,10 @@ class Intsint( object ):
     # -------------------------------------------------------------------
 
     def optimise(self, mid, _range):
-        """
-        Fix tones.
+        """ Fix tones.
+
+        :param mid:
+        :param _range:
 
         """
         self.top = mid + _range / 2
@@ -254,35 +269,37 @@ class Intsint( object ):
 
     # -------------------------------------------------------------------
 
-    def estimate(self, tone, last_target):
-        """
-        Estimates f0 from current tone and last target.
+    def estimate(self, tone, last_anchor):
+        """ Estimates f0 from current tone and last target.
 
+        :param tone:
+        :param last_anchor:
+        
         """
+        estimated = ""
         if tone == "M":
-            estimate = self.mid
+            estimated = self.mid
         elif tone == "S":
-            estimate = last_target
+            estimated = last_anchor
         elif tone == "T":
-            estimate = self.top
+            estimated = self.top
         elif tone == "H":
-            estimate = last_target + (self.top - last_target) * self.HIGHER
+            estimated = last_anchor + (self.top - last_anchor) * self.HIGHER
         elif tone == "U":
-            estimate = last_target + (self.top - last_target) * self.UP
+            estimated = last_anchor + (self.top - last_anchor) * self.UP
         elif tone == "B":
-            estimate = self.bottom
+            estimated = self.bottom
         elif tone == "L":
-            estimate = last_target - (last_target - self.bottom) * self.LOWER
+            estimated = last_anchor - (last_anchor - self.bottom) * self.LOWER
         elif tone == "D":
-            estimate = last_target - (last_target - self.bottom) * self.DOWN
+            estimated = last_anchor - (last_anchor - self.bottom) * self.DOWN
 
-        return estimate
+        return estimated
 
     # -------------------------------------------------------------------
 
     def recode(self):
-        """
-        Recode within the parameters space.
+        """ Recode within the parameters space.
         mean +/- 50 Hz for key and [0.5..2.5 octaves] for range.
 
         """
@@ -299,15 +316,16 @@ class Intsint( object ):
 
     # -------------------------------------------------------------------
 
-    def annotate(self, momeltargets):
-        """
-        Provide optimal INTSINT coding for sequence of target points.
+    def annotate(self, momel_anchors):
+        """ Provide optimal INTSINT coding for sequence of target points.
+
+        :param momel_anchors:
 
         """
-        if len(momeltargets) < 2:
-            raise IOError("Not enough targets to estimate INTSINT.")
+        if len(momel_anchors) < 2:
+            raise IOError("Not enough anchors to estimate INTSINT.")
 
-        self.init(momeltargets)
+        self.init(momel_anchors)
         self.recode()
         return self.best_intsint
 
@@ -315,6 +333,5 @@ class Intsint( object ):
 
 if __name__ == "__main__":
     intsint = Intsint()
-    momeltargets = [(0.1,240), (0.4, 340), (0.6,240), (0.7,286)]
-    print intsint.annotate( momeltargets )
-
+    momel_anchors = [(0.1, 240), (0.4, 340), (0.6, 240), (0.7, 286)]
+    print(intsint.annotate(momel_anchors))
