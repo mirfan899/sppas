@@ -341,7 +341,7 @@ function normalize {
     fct_echo_subtitle "Test normalize.py (Text normalization)"
 
     echo -n " ... command exists: "
-    $BIN_DIR/normalize.py >> /dev/null &> /dev/null
+    python $BIN_DIR/normalize.py >> /dev/null &> /dev/null
     if [ $? != "0" ]; then
         echo "error"
         return
@@ -349,7 +349,7 @@ function normalize {
     echo "ok"
 
     echo -n " ... inline normalization (1): "
-    inline=`echo "This is my test number 1." | $BIN_DIR/normalize.py -r $RESOURCES_DIR/vocab/eng.vocab --quiet`
+    inline=`echo "This is my test number 1." | python $BIN_DIR/normalize.py -r $RESOURCES_DIR/vocab/eng.vocab --quiet`
     if [ "$inline" == "this is my test number one" ]; then
         fct_echo_status 0
     else
@@ -357,7 +357,7 @@ function normalize {
     fi
 
     echo -n " ... inline normalization (2): "
-    inline=`echo "《干脆就把那部蒙人的闲法给废了拉倒！》RT @laoshipukong : 27日，全国人大常委会第三次审议侵权责任法草案，删除了有关医疗损害责任“举证倒置”的规定。" | $BIN_DIR/normalize.py -r $RESOURCES_DIR/vocab/cmn.vocab --quiet`
+    inline=`echo "《干脆就把那部蒙人的闲法给废了拉倒！》RT @laoshipukong : 27日，全国人大常委会第三次审议侵权责任法草案，删除了有关医疗损害责任“举证倒置”的规定。" | python $BIN_DIR/normalize.py -r $RESOURCES_DIR/vocab/cmn.vocab --quiet`
     if [ "$inline" == "干脆 就 把 那 部 蒙 人 的 闲 法 给 废 了 拉倒 rt @ laoshipukong 二十七 日 全国人大常委会 第 三次 审议 侵权 责任 法 草案 删除 了 有关 医疗 损害 责任 举证 倒置 的 规定" ]; then
         fct_echo_status 0
     else
@@ -365,7 +365,7 @@ function normalize {
     fi
 
     echo -n " ... normalization of a file: "
-    inline=`$BIN_DIR/normalize.py -r $RESOURCES_DIR/vocab/eng.vocab -i $SAMPLES_DIR/oriana1.TextGrid -o oriana1-token.TextGrid --quiet`
+    inline=`python $BIN_DIR/normalize.py -r $RESOURCES_DIR/vocab/eng.vocab -i $SAMPLES_DIR/oriana1.TextGrid -o oriana1-token.TextGrid --quiet`
     if [ -e oriana1-token.TextGrid ]; then
         rm oriana1-token.TextGrid
         fct_echo_status 0
@@ -388,7 +388,7 @@ function phonetize {
     fi
 
     echo -n " ... command exists: "
-    $BIN_DIR/phonetize.py >> /dev/null &> /dev/null
+    python $BIN_DIR/phonetize.py >> /dev/null &> /dev/null
     if [ $? != "0" ]; then
         echo "error"
         return
@@ -396,7 +396,7 @@ function phonetize {
     echo "ok"
 
     echo -n " ... inline phonetization (1): "
-    inline=`echo "test num one" | $BIN_DIR/phonetize.py -r $RESOURCES_DIR/dict/eng.dict --nounk --quiet`;
+    inline=`echo "test num one" | python $BIN_DIR/phonetize.py -r $RESOURCES_DIR/dict/eng.dict --nounk --quiet`;
     if [ "$inline" == "t-E-s-t <UNK> w-V-n|h-w-V-n" ]; then
           fct_echo_status 0
     else
@@ -404,7 +404,7 @@ function phonetize {
     fi
 
     echo -n " ... inline phonetization (2): "
-    inline=`echo "test num one" | $BIN_DIR/phonetize.py -r $RESOURCES_DIR/dict/eng.dict --quiet`;
+    inline=`echo "test num one" | python $BIN_DIR/phonetize.py -r $RESOURCES_DIR/dict/eng.dict --quiet`;
     if [ "$inline" == "t-E-s-t n-V-m|n-u-m|n-u-@-m|E-n-V-m w-V-n|h-w-V-n" ]; then
           fct_echo_status 0
     else
@@ -412,8 +412,8 @@ function phonetize {
     fi
 
     echo -n " ... phonetization of a file: "
-    $BIN_DIR/normalize.py -r $RESOURCES_DIR/vocab/eng.vocab -i $SAMPLES_DIR/oriana1.TextGrid -o $SAMPLES_DIR/oriana1-token.TextGrid --quiet;
-    inline=`$BIN_DIR/phonetize.py -r $RESOURCES_DIR/dict/eng.dict -i $SAMPLES_DIR/oriana1-token.TextGrid -o oriana1-phon.TextGrid --quiet`;
+    python $BIN_DIR/normalize.py -r $RESOURCES_DIR/vocab/eng.vocab -i $SAMPLES_DIR/oriana1.TextGrid -o $SAMPLES_DIR/oriana1-token.TextGrid --quiet;
+    inline=`python $BIN_DIR/phonetize.py -r $RESOURCES_DIR/dict/eng.dict -i $SAMPLES_DIR/oriana1-token.TextGrid -o oriana1-phon.TextGrid --quiet`;
     if [ -e oriana1-phon.TextGrid ]; then
         rm oriana1-phon.TextGrid
         fct_echo_status 0
@@ -438,8 +438,8 @@ function alignment {
     fi
     echo "ok"
 
-    $BIN_DIR/normalize.py -r $RESOURCES_DIR/vocab/eng.vocab -i $SAMPLES_DIR/oriana1.TextGrid -o $SAMPLES_DIR/oriana1-token.TextGrid --quiet;
-    $BIN_DIR/phonetize.py -r $RESOURCES_DIR/dict/eng.dict -i $SAMPLES_DIR/oriana1-token.TextGrid -o $SAMPLES_DIR/oriana1-phon.TextGrid --quiet;
+    python $BIN_DIR/normalize.py -r $RESOURCES_DIR/vocab/eng.vocab -i $SAMPLES_DIR/oriana1.TextGrid -o $SAMPLES_DIR/oriana1-token.TextGrid --quiet;
+    python $BIN_DIR/phonetize.py -r $RESOURCES_DIR/dict/eng.dict -i $SAMPLES_DIR/oriana1-token.TextGrid -o $SAMPLES_DIR/oriana1-phon.TextGrid --quiet;
 
     echo -n " ... simply align phonemes with julius: "
     $BIN_DIR/alignment.py -w $SAMPLES_DIR/oriana1.WAV -r $RESOURCES_DIR/models/models-eng -i $SAMPLES_DIR/oriana1-phon.TextGrid -o oriana1-palign.TextGrid >> /dev/null &> /dev/null

@@ -232,7 +232,8 @@ class sppasTok(sppasBaseAnnotation):
 
     # ------------------------------------------------------------------------
 
-    def get_trans_tier(self, trs_input):
+    @staticmethod
+    def get_trans_tier(trs_input):
         """ Return the tier with transcription, or None.
 
         :param trs_input: (Transcription)
@@ -273,7 +274,7 @@ class sppasTok(sppasBaseAnnotation):
 
         # Get input tier to tokenize
         trs_input = sppas.src.annotationdata.aio.read(input_filename)
-        tier_input = self.get_trans_tier(trs_input)
+        tier_input = sppasTok.get_trans_tier(trs_input)
         if tier_input is None:
             raise NoInputError
 
@@ -336,7 +337,7 @@ class sppasTok(sppasBaseAnnotation):
         stds = std.split()
         fakeds = faked.split()
         if len(stds) == len(fakeds):
-            return std,faked
+            return std, faked
 
         tmp = []
         for f in fakeds:

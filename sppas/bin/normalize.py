@@ -1,4 +1,5 @@
 #!/usr/bin/env python2
+# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -138,3 +139,4 @@ else:
     # Will output the faked orthography
     for line in sys.stdin:
         print(normalizer.normalize(line).encode('utf8'))
+

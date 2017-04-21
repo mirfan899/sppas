@@ -1,40 +1,38 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: sppaschunks.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.annotations.Chuncks.sppaschunks.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import shutil
 import os
 
@@ -45,31 +43,33 @@ from sppas.src.annotationdata.media import Media
 from sppas.src.annotations.baseannot import sppasBaseAnnotation
 from sppas.src.annotations.Chunks.chunks import Chunks
 
+from ..annotationsexc import AnnotationOptionError
+
 # ----------------------------------------------------------------------------
 
 
 class sppasChunks(sppasBaseAnnotation):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      SPPAS integration of the Chunk Alignment automatic annotation.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      SPPAS integration of the Chunk Alignment automatic annotation.
 
     """
     def __init__(self, model, logfile=None):
-        """
-        Create a new sppasChunks instance.
+        """ Create a new sppasChunks instance.
 
-        @param model (str) the acoustic model directory name of the language of the text
-        @param modelL1 (str) the acoustic model directory name of the mother language of the speaker
-        @param logfile (sppasLog)
+        :param model: (str) the acoustic model directory name of the language of the text
+        :param logfile: (sppasLog)
 
         """
         sppasBaseAnnotation.__init__(self, logfile)
 
         self.chunks = Chunks(model)
+
+        # List of options to configure this automatic annotation
         self._options['clean'] = True  # Remove temporary files
         self._options['silences'] = self.chunks.get_silences()
         self._options['anchors'] = self.chunks.get_anchors()
@@ -84,10 +84,18 @@ class sppasChunks(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def fix_options(self, options):
-        """
-        Fix all options.
+        """ Fix all options. Available options are:
 
-        @param options (option)
+            - clean
+            - silences
+            - anchors
+            - ngram
+            - ngrammin
+            - windelay
+            - windelaymin
+            - chunksize
+
+        :param options: (sppasOption)
 
         """
         for opt in options:
@@ -126,15 +134,14 @@ class sppasChunks(sppasBaseAnnotation):
                 self._options['chunksize'] = opt.get_value()
 
             else:
-                raise KeyError('Unknown key option: %s'%key)
+                raise AnnotationOptionError(key)
 
     # ----------------------------------------------------------------------
 
     def set_clean(self, clean):
-        """
-        Fix the clean option.
+        """ Fix the clean option.
 
-        @param clean (bool - IN) If clean is set to True then temporary files
+        :param clean: (bool) If clean is set to True then temporary files
         will be removed.
 
         """
@@ -142,47 +149,59 @@ class sppasChunks(sppasBaseAnnotation):
 
     # ----------------------------------------------------------------------
 
-    def get_phonestier(self, trsinput):
-        """
-        Return the tier with phonetization or None.
+    @staticmethod
+    def get_phonestier(trs_input):
+        """ Return the tier with phonetization, or None.
+
+        :param trs_input: (Transcription)
+        :returns: (tier)
 
         """
-        if trsinput.GetSize() == 1 and trsinput[0].GetName().lower() == "rawtranscription":
-            return trsinput[0]
-        if trsinput.GetSize() == 1 and trsinput[0].GetName().lower() == "phonetization":
-            if trsinput[0].IsTimeInterval():
+        if trs_input.GetSize() == 1 and trs_input[0].GetName().lower() == "rawtranscription":
+            return trs_input[0]
+        if trs_input.GetSize() == 1 and trs_input[0].GetName().lower() == "phonetization":
+            if trs_input[0].IsTimeInterval():
                 return None
-            return trsinput[0]
+            return trs_input[0]
 
         return None
 
     # ------------------------------------------------------------------------
 
-    def get_tokenstier(self, trsinput):
-        """
-        Return the tier with tokens, or None.
+    @staticmethod
+    def get_tokenstier(trs_input):
+        """ Return the tier with tokens, or None.
+        In case of EOT, several tiers with tokens are available.
+        Priority is given to the standard one.
 
-        In case of EOT, 2 tiers with tokens are available: std and faked.
-        Priority is given to std.
+        :param trs_input: (Transcription)
+        :returns: (tier)
 
         """
-        if trsinput.GetSize() == 1 and trsinput[0].GetName().lower() == "tokenization":
-            return trsinput[0]
+        if trs_input.GetSize() == 1 and "tokens" in trs_input[0].GetName().lower():
+            return trs_input[0]
+
+        for tier in trs_input:
+            if tier.GetName() == "Tokens-Std":
+                return tier
+
+        for tier in trs_input:
+            if tier.GetName() == "Tokens":
+                return tier
 
         return None
 
     # ------------------------------------------------------------------------
 
     def run(self, phonesname, tokensname, audioname, outputfilename):
-        """
-        Execute SPPAS Chunks alignment.
+        """ Execute SPPAS Chunks alignment.
 
-        @param phonesname (str - IN) file containing the phonetization
-        @param tokensname (str - IN) file containing the tokenization
-        @param audioname (str - IN) Audio file name
-        @param outputfilename (str - IN) the file name with the result
+        :param phonesname (str) file containing the phonetization
+        :param tokensname (str) file containing the tokenization
+        :param audioname (str) Audio file name
+        :param outputfilename (str) the file name with the result
 
-        @return Transcription
+        :returns: Transcription
 
         """
         self.print_options()
@@ -191,14 +210,14 @@ class sppasChunks(sppasBaseAnnotation):
         # Get the tiers to be time-aligned
         # ---------------------------------------------------------------
 
-        trsinput = sppas.src.annotationdata.aio.read(phonesname)
-        phontier = self.get_phonestier(trsinput)
+        trs_input = sppas.src.annotationdata.aio.read(phonesname)
+        phontier = sppasChunks.get_phonestier(trs_input)
         if phontier is None:
             raise IOError("No tier with the raw phonetization was found.")
 
         try:
-            trsinputtok = sppas.src.annotationdata.aio.read(tokensname)
-            toktier = self.get_tokenstier(trsinputtok)
+            trs_inputtok = sppas.src.annotationdata.aio.read(tokensname)
+            toktier = self.get_tokenstier(trs_inputtok)
         except Exception:
             raise IOError("No tier with the raw tokenization was found.")
 
@@ -206,7 +225,7 @@ class sppasChunks(sppasBaseAnnotation):
         # -------------------------------------------------------------
 
         inputaudio = sppas.src.utils.fileutils.fix_audioinput(audioname)
-        workdir    = sppas.src.utils.fileutils.fix_workingdir(inputaudio)
+        workdir = sppas.src.utils.fileutils.fix_workingdir(inputaudio)
         if self._options['clean'] is False:
             self.print_message("The working directory is: %s" % workdir, indent=3, status=None)
 
@@ -234,9 +253,9 @@ class sppasChunks(sppasBaseAnnotation):
         # Save results
         # --------------------------------------------------------------
         try:
-            self.print_message("Save automatic chunk alignment: ",indent=3)
+            self.print_message("Save automatic chunk alignment: ", indent=3)
             # Save in a file
-            sppas.src.annotationdata.aio.write(outputfilename,trsoutput)
+            sppas.src.annotationdata.aio.write(outputfilename, trsoutput)
         except Exception:
             if self._options['clean'] is True:
                 shutil.rmtree(workdir)
@@ -250,4 +269,3 @@ class sppasChunks(sppasBaseAnnotation):
         # Remove the working directory we created
         if self._options['clean'] is True:
             shutil.rmtree(workdir)
-
