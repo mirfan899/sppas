@@ -93,12 +93,12 @@ class ChannelSilence(object):
 
     # ------------------------------------------------------------------
 
-    def refine(self, pos, threshold, winlenght=0.005, direction=1):
+    def refine(self, pos, threshold, win_length=0.005, direction=1):
         """ Refine the position of a silence around a given position.
 
         :param pos: (int) Initial position of the silence
         :param threshold: (int) RMS threshold value for a silence
-        :param winlenght: (float) Windows duration to estimate the RMS
+        :param win_length: (float) Windows duration to estimate the RMS
         :param direction: (int)
         :returns: new position
 
@@ -108,17 +108,17 @@ class ChannelSilence(object):
         self._channel.seek(from_pos)
         frames = self._channel.get_frames(delta*2)
         c = Channel(self._channel.get_framerate(), self._channel.get_sampwidth(), frames)
-        volstats = ChannelVolume(c, winlenght)
+        vol_stats = ChannelVolume(c, win_length)
 
         if direction == 1:
-            for i, v in enumerate(volstats):
+            for i, v in enumerate(vol_stats):
                 if v > threshold:
-                    return (from_pos + i*(int(winlenght*self._channel.get_framerate())))
+                    return from_pos + i*(int(win_length*self._channel.get_framerate()))
         if direction == -1:
-            i = len(volstats)
-            for v in reversed(volstats):
+            i = len(vol_stats)
+            for v in reversed(vol_stats):
                 if v > threshold:
-                    return (from_pos + (i*(int(winlenght*self._channel.get_framerate()))))
+                    return from_pos + (i*(int(win_length*self._channel.get_framerate())))
                 i -= 1
 
         return pos
@@ -224,7 +224,7 @@ class ChannelSilence(object):
                         to_pos = int(idxend * self._volume_stats.get_winlen() * self._channel.get_framerate())
 
                         # Find the boundaries with a better precision
-                        w = self._volume_stats.get_winlen()/4.
+                        w = self._volume_stats.get_winlen() / 4.
                         from_pos = self.refine(from_pos, threshold, w, direction=-1)
                         to_pos = self.refine(to_pos, threshold, w, direction=1)
 
@@ -292,5 +292,3 @@ class ChannelSilence(object):
 
     def __getitem__(self, i):
         return self.__silences[i]
-
-    # -----------------------------------------------------------------------

@@ -46,7 +46,7 @@ from sppas.src.annotations.log import sppasLog
 
 from sppas.src.annotations.Momel.sppasmomel import sppasMomel
 from sppas.src.annotations.Intsint.sppasintsint import sppasIntsint
-from sppas.src.annotations.IPUs.ipusseg import sppasIPUs
+from sppas.src.annotations.IPUs.sppasipusseg import sppasIPUseg
 from sppas.src.annotations.TextNorm.sppastok import sppasTok
 from sppas.src.annotations.Phon.sppasphon import sppasPhon
 from sppas.src.annotations.Chunks.sppaschunks import sppasChunks
@@ -371,7 +371,7 @@ class sppasAnnotationsManager(Thread):
 
         # Create annotation instance, and fix options
         try:
-            seg = sppasIPUs(self._logfile)
+            seg = sppasIPUseg(self._logfile)
         except Exception as e:
             if self._logfile is not None:
                 self._logfile.print_message("%s\n"%str(e), indent=1,status=4)

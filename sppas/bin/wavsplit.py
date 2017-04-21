@@ -54,7 +54,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.annotations.IPUs.ipusseg import sppasIPUs
+from sppas.src.annotations.IPUs.sppasipusseg import sppasIPUseg
 from sppas.src.utils.fileutils import setup_logging
 
 
@@ -112,18 +112,18 @@ except Exception:
 if args.o and not os.path.exists(args.o):
     os.mkdir(args.o)
 
-w = sppasIPUs()
+w = sppasIPUseg()
 
-if args.shiftstart: w.ipusaudio.set_shift_start( args.shiftstart )
-if args.shiftend:   w.ipusaudio.set_shift_start( args.shiftend )
-if args.minipu:     w.ipusaudio.set_min_speech( args.minipu )
-if args.minsil:     w.ipusaudio.set_min_silence( args.minsil )
-if args.minrms:     w.ipusaudio.set_min_vol_threshold( args.minrms )
-if args.winrms:     w.ipusaudio.set_vol_win_lenght( args.winrms )
+if args.shiftstart: w.ipusaudio.set_shift_start(args.shiftstart)
+if args.shiftend:   w.ipusaudio.set_shift_start(args.shiftend)
+if args.minipu:     w.ipusaudio.set_min_speech(args.minipu)
+if args.minsil:     w.ipusaudio.set_min_silence(args.minsil)
+if args.minrms:     w.ipusaudio.set_min_vol_threshold(args.minrms)
+if args.winrms:     w.ipusaudio.set_vol_win_lenght(args.winrms)
 
-if args.o: w.set_dirtracks( True )
-if args.p: w.set_save_as_trs( True )
-if args.e: w.set_save_as_trs( True )
+if args.o: w.set_dirtracks(True)
+if args.p: w.set_save_as_trs(True)
+if args.e: w.set_save_as_trs(True)
 if args.n == -1:
     tieridx = None
 else:
