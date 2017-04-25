@@ -136,7 +136,7 @@ function fct_exit_error {
 function fct_test_running {
     isrun=`ps ax | grep -v "$BASHPID" | awk '{print $5}' | grep -c "$1"`
     if [ $isrun -gt 1 ]; then
-        fct_exit_error "Another instance of the program $1 is running, it must be stopped before using it again."
+        fct_exit_error "Another instance of the program $1 is running. It must be stopped before using it again."
     fi
 }
 

@@ -379,13 +379,41 @@
 
 -----------------------------
 
+### the Time Group Analyzer
+
+- proposed by D. Gibbon and implemented into DataStats of SPPAS
+- Time Group Analysis requires syllables
+- Each line of the displayed gris are the results of a Time Group
+- The "Means" tab displays information of each file
+- The "Delta Duration" tab compares the duration of each syllable with the previous one
+- TGA results can be exported as an annotated file
+- TGA results can be saved in a CSV file
+
+-----------------------------
+
 ## Statistical distributions
 
 ![](./etc/screencasts/sppas-demo26-distrib.mp4)
 
 -----------------------------
 
+### Statistical distributions
+
+- Information about statistical distributions
+
+    - Summary Tab displays occurrences and total/mean/media/stdev duration of each label
+    - Occurrences tab: occurrences of each label in each file
+    - Total durations tab: total duration of each label in each file
+    - Mean durations tab: mean duration of each label in each file
+    
+- Distributions of sequences of labels: change Ngram value
+- Any of the displayed grid can be saved in a CSV file
+
+-----------------------------
+
 ## Data Filter (1)
+
+Request 1: Get all "toto" tokens
 
 ![](./etc/screencasts/sppas-demo27-filter-toto.mp4)
 
@@ -393,11 +421,15 @@
 
 ## Data Filter (2)
 
+Request 2: Get "p, t, k, b, d, g" time-aligned phonemes
+
 ![](./etc/screencasts/sppas-demo28-filter-ptkbdg.mp4)
 
 -----------------------------
 
 ## Data Filter (3)
+
+Request 3: Get time-aligned phonemes during more than 80ms
 
 ![](./etc/screencasts/sppas-demo29-filter-duration.mp4)
 
@@ -405,11 +437,15 @@
 
 ## Data Filter (4)
 
+Request 4: Get time-aligned "p, t, k, b, d, g" during more than 80ms
+
 ![](./etc/screencasts/sppas-demo30-duration-ptkbdg.mp4)
           
 -----------------------------
 
 ## Data Filter (5)
+
+Request 5: Get the first phoneme of each syllable
 
 ![](./etc/screencasts/sppas-demo31-filter-first-phon-in-syll.mp4)
 
