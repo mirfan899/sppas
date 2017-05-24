@@ -134,7 +134,7 @@ def fct_clean(tier, filler, duration):
 parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM),
                         description="... a script to fill empty labels of a tier of an annotated file.")
 
-parser.add_argument("-i", metavar="file", required=True,  help='Input annotated file file name')
+parser.add_argument("-i", metavar="file", required=True,  help='Input annotated file name')
 parser.add_argument("-t", metavar="value", required=False, action='append', type=int, help='A tier number (use as many -t options as wanted). Positive or negative value: 1=first tier, -1=last tier.')
 parser.add_argument("-o", metavar="file", required=True, help='Output file name')
 parser.add_argument("-f", metavar="text", required=False, default="#", help='Text to fill with (default:#)')
