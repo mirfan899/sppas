@@ -218,6 +218,9 @@ class DictPron(object):
             # ... don't append an already known pronunciation
             if self.is_pron_of(entry, new_pron) is False:
                 cur_pron = self.get_pron(entry) + DictPron.VARIANTS_SEPARATOR
+            else:
+                cur_pron = self.get_pron(entry)
+                new_pron = ""
 
         # Get the current pronunciation and append the new one
         new_pron = cur_pron + new_pron
@@ -275,7 +278,6 @@ class DictPron(object):
             if i == -1:
                 i = uline.find(" ")
             entry = uline[:i]
-
             endline = uline[i:]
             j = endline.find("]")
             if j == -1:
@@ -286,7 +288,7 @@ class DictPron(object):
             i = entry.find("(")
             if i > -1:
                 if ")" in entry[i:]:
-                    entry = sppasUnicode(entry[:i]).to_strip()
+                    entry = entry[:i]
 
             self.add_pron(entry, new_pron)
 

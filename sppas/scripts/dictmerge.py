@@ -88,7 +88,7 @@ if args.no_variant_numbers:
     with_variant_nb = False
 if args.no_filled_brackets:
     with_filled_brackets = False
-merge_dict = None
+merge_dict = DictPron()
 
 # ----------------------------------------------------------------------------
 
@@ -100,12 +100,11 @@ for dict_file in args.i:
     pron_dict = DictPron(dict_file, nodump=True)
     if not args.quiet:
         print(" [  OK  ]")
-    if merge_dict is None:
-        merge_dict = pron_dict
-    else:
-        for entry in pron_dict.get_keys():
-            prons = pron_dict.get_pron(entry)
-            for pron in prons.split(DictPron.VARIANTS_SEPARATOR):
-                merge_dict.add_pron(entry, pron)
+
+    for entry in pron_dict.get_keys():
+        prons = pron_dict.get_pron(entry)
+        for pron in prons.split(DictPron.VARIANTS_SEPARATOR):
+            merge_dict.add_pron(entry, pron)
+    del pron_dict
 
 merge_dict.save_as_ascii(args.o, with_variant_nb, with_filled_brackets)
