@@ -14,7 +14,8 @@ from ..unigram import Unigram
 
 # ---------------------------------------------------------------------------
 
-DICT_FRA = os.path.join(RESOURCES_PATH, "dict", "fra.dict")
+DICT_TEST = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "dict.txt")
+DICT_TEST_OK = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "dict_ok.txt")
 
 # ---------------------------------------------------------------------------
 
@@ -25,20 +26,30 @@ class TestDictPron(unittest.TestCase):
         d = DictPron()
         self.assertEqual(len(d), 0)
 
-        d = DictPron(DICT_FRA)
+        d = DictPron(DICT_TEST, nodump=True)
         self.assertTrue(d.is_unk('azerty'))
-        self.assertFalse(d.is_unk('il_y_a'))
+        self.assertFalse(d.is_unk('ab'))
         self.assertFalse(d.is_unk(u('être')))
+
+        self.assertTrue(d.is_pron_of("abc", "a-b-c"))
+
         self.assertEqual(d.get_pron(u('sil')), "s-i-l")
         self.assertEqual(d.get_pron(u('azerty')), "<UNK>")
+        self.assertEqual(d.get_pron(u('abc')), "a-b-c|a-c")
+        self.assertEqual(d.get_pron(u('toto')), "t-o-t-o")
+        self.assertEqual(d.get_pron(u('titi')), "t-i-t-i")
+        self.assertEqual(d.get_pron(u('tata')), "t-a-t-a")
+        self.assertEqual(d.get_pron(u('tutu')), "t-u-t-u")
+        self.assertEqual(d.get_pron(u('tyty')), "t-y-t-y")
+        self.assertEqual(d.get_pron(u('tete')), "t-e-t-e")
 
     def test_save(self):
-        d = DictPron(DICT_FRA)
-        d.save_as_ascii(DICT_FRA+".copy")
-        d2 = DictPron(DICT_FRA+".copy", nodump=True)
+        d = DictPron(DICT_TEST_OK, nodump=True)
+        d.save_as_ascii(DICT_TEST+".copy")
+        d2 = DictPron(DICT_TEST+".copy", nodump=True)
         for w in d.get_keys():
             self.assertEqual(d.get_pron(w), d2.get_pron(w))
-        os.remove(DICT_FRA+".copy")
+        os.remove(DICT_TEST+".copy")
 
 # ---------------------------------------------------------------------------
 

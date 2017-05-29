@@ -30,10 +30,10 @@
 
         ---------------------------------------------------------------------
 
-    scripts.trsmerge.py
-    ~~~~~~~~~~~~~~~~~~~
+    scripts.dictmerge.py
+    ~~~~~~~~~~~~~~~~~~~~
 
-    ... a script to merge annotation files.
+    ... a script to merge dictionaries.
 
 """
 import sys
@@ -44,26 +44,33 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.annotationdata.transcription import Transcription
-import sppas.src.annotationdata.aio
+from sppas.src.resources.dictpron import DictPron
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
 parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM),
-                        description="... a script to merge annotation files.")
+                        description="... a script to merge pronunciation dictionaries.")
 
 parser.add_argument("-i",
                     metavar="file",
                     action='append',
                     required=True,
-                    help='Input annotated file name (as many as wanted)')
+                    help='Input dictionary file name (as many as wanted)')
 
 parser.add_argument("-o",
                     metavar="file",
                     required=True,
-                    help='Output annotated file name')
+                    help='Output dictionary file name')
+
+parser.add_argument("--no_variant_numbers",
+                    action='store_true',
+                    help="Do not save the variant number")
+
+parser.add_argument("--no_filled_brackets",
+                    action='store_true',
+                    help="Do not save with filled brackets")
 
 parser.add_argument("--quiet",
                     action='store_true',
@@ -75,25 +82,30 @@ if len(sys.argv) <= 1:
 args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
+with_variant_nb = True
+with_filled_brackets = True
+if args.no_variant_numbers:
+    with_variant_nb = False
+if args.no_filled_brackets:
+    with_filled_brackets = False
+merge_dict = None
 
-trs_output = Transcription("SPPAS Merge")
+# ----------------------------------------------------------------------------
 
-for trs_input_file in args.i:
+args = parser.parse_args()
+for dict_file in args.i:
 
     if not args.quiet:
-        print("Read input annotated file:")
-    trs_input = sppas.src.annotationdata.aio.read(trs_input_file)
+        print("Read input dictionary file: ")
+    pron_dict = DictPron(dict_file, nodump=True)
+    if not args.quiet:
+        print(" [  OK  ]")
+    if merge_dict is None:
+        merge_dict = pron_dict
+    else:
+        for entry in pron_dict.get_keys():
+            prons = pron_dict.get_pron(entry)
+            for pron in prons.split(DictPron.VARIANTS_SEPARATOR):
+                merge_dict.add_pron(entry, pron)
 
-    # Take all tiers
-    for i in range(trs_input.GetSize()):
-        if not args.quiet:
-            sys.stdout.write(" -> Tier "+str(i+1)+": ")
-        trs_output.Append(trs_input[i])
-        if not args.quiet:
-            print(" [  OK  ]")
-
-if not args.quiet:
-    sys.stdout.write("Write output file: ")
-sppas.src.annotationdata.aio.write(args.o, trs_output)
-if not args.quiet:
-    print(" [  OK  ]")
+merge_dict.save_as_ascii(args.o, with_variant_nb, with_filled_brackets)

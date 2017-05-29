@@ -114,28 +114,29 @@ class sppasUnicode(object):
         """
         e = self.unicode()
         self._entry = e.lower()
+
         return self._entry
 
     # -----------------------------------------------------------------------
 
     def to_strip(self):
         """ Strip the string.
-        Remove also multiple whitespace inside the string.
+        Remove also multiple whitespace, tab and CR inside the string.
 
         :returns: unicode
 
         """
+        # Remove multiple whitespace
         e = self.unicode()
-
-        # Remove multiple spaces
         __str = re.sub("[\s]+", r" ", e)
 
-        # Remove spaces at beginning and end
+        # Remove whitespace at beginning and end
         __str = re.sub("^[ ]+", r"", __str)
         __str = re.sub("[ ]+$", r"", __str)
         __str = re.sub("\ufeff", r"", __str)
 
         self._entry = __str
+
         return self._entry
 
     # ----------------------------------------------------------------------------
@@ -147,9 +148,9 @@ class sppasUnicode(object):
 
         """
         e = self.to_strip()
-        # Replace spaces by underscores
         e = re.sub('\s', r'_', e)
         self._entry = e
+
         return self._entry
 
     # ------------------------------------------------------------------------
@@ -161,9 +162,7 @@ class sppasUnicode(object):
 
         """
         e = self.unicode()
-
         e = re.sub(r'[^\x00-\x7F]', "_", e)
         self._entry = e
-        return self._entry
 
-    # ------------------------------------------------------------------------
+        return self._entry

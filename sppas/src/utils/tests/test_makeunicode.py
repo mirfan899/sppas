@@ -8,7 +8,7 @@ from ..makeunicode import u, b
 # ---------------------------------------------------------------------------
 
 
-LowerDict = {}
+LowerDict = dict()
 LowerDict['A'] = u('a')
 LowerDict['B'] = u('b')
 LowerDict['C'] = u('c')
@@ -52,7 +52,7 @@ LowerDict['Ì'] = u('ì')
 LowerDict['Í'] = u('í')
 LowerDict['Î'] = u('î')
 LowerDict['Ï'] = u('ï')
-#LowerDict['Ñ'] = u('n')
+# LowerDict['Ñ'] = u('n')
 LowerDict['Ò'] = u('ò')
 LowerDict['Ó'] = u('ó')
 LowerDict['Ô'] = u('ô')
