@@ -67,8 +67,7 @@ class AcModel(object):
 
     """
     def __init__(self):
-        """
-        Constructor.
+        """ AcModel constructor.
 
         """
         self.macros = None
@@ -81,194 +80,185 @@ class AcModel(object):
     # -----------------------------------------------------------------------
 
     def load(self, directory):
-        """
-        Load all known data from a directory.
+        """ Load all known data from a directory.
+        
         The default file names are:
             - hmmdefs for an HTK-ASCII acoustic model
             - tiedlist
             - monophones.repl
 
-        @param directory (str)
-        @return list of loaded file names
+        :param directory: (str) Folder name of the acoustic model
+        :returns: list of loaded file names
 
         """
         l = []
-        hmmdefsfiles = glob.glob(os.path.join(directory,'hmmdefs'))
-        if len( hmmdefsfiles ) == 0:
+        hmmdefsfiles = glob.glob(os.path.join(directory, 'hmmdefs'))
+        if len(hmmdefsfiles) == 0:
             raise IOError('Missing hmmdefs file in %s' % directory)
-        self.load_htk( hmmdefsfiles[0] )
-        l.append( hmmdefsfiles[0] )
+        self.load_htk(hmmdefsfiles[0])
+        l.append(hmmdefsfiles[0])
 
-        tiedlistfiles = glob.glob(os.path.join(directory,'tiedlist'))
-        if len( tiedlistfiles ) == 1:
-            self.load_tiedlist( tiedlistfiles[0] )
-            l.append( tiedlistfiles[0] )
+        tiedlistfiles = glob.glob(os.path.join(directory, 'tiedlist'))
+        if len(tiedlistfiles) == 1:
+            self.load_tiedlist(tiedlistfiles[0])
+            l.append(tiedlistfiles[0])
 
-        replfiles = glob.glob(os.path.join(directory,'monophones.repl'))
-        if len( replfiles ) == 1:
-            self.load_phonesrepl( replfiles[0] )
-            l.append( replfiles[0] )
+        replfiles = glob.glob(os.path.join(directory, 'monophones.repl'))
+        if len(replfiles) == 1:
+            self.load_phonesrepl(replfiles[0])
+            l.append(replfiles[0])
 
         return l
 
     # -----------------------------------------------------------------------
 
     def save(self, directory):
-        """
-        Save all data into a directory.
+        """ Save all data into a directory.
+
         The default file names are:
             - hmmdefs for an HTK-ASCII acoustic model
             - tiedlist
             - monophones.repl
 
-        @param directory (str)
-        @return list of saved file names
+        :param directory: (str)
+        :returns: list of saved file names
 
         """
-        if os.path.isdir( directory ) is False:
-            os.mkdir( directory )
+        if os.path.isdir(directory) is False:
+            os.mkdir(directory)
 
-        l = []
-        self.save_htk( os.path.join(directory,'hmmdefs') )
-        l.append( os.path.join(directory,'hmmdefs') )
+        l = list()
+        self.save_htk(os.path.join(directory, 'hmmdefs'))
+        l.append(os.path.join(directory, 'hmmdefs'))
 
         if self.tiedlist.is_empty() is False:
-            self.save_tiedlist( os.path.join(directory,'tiedlist') )
-            l.append( os.path.join(directory,'tiedlist') )
+            self.save_tiedlist(os.path.join(directory, 'tiedlist'))
+            l.append(os.path.join(directory, 'tiedlist'))
 
         if self.repllist.is_empty() is False:
-            self.save_phonesrepl( os.path.join(directory,'monophones.repl') )
-            l.append( os.path.join(directory,'monophones.repl') )
+            self.save_phonesrepl(os.path.join(directory, 'monophones.repl'))
+            l.append(os.path.join(directory, 'monophones.repl'))
 
         return l
 
     # -----------------------------------------------------------------------
 
     def load_phonesrepl(self, filename):
-        """
-        Load a replacement table of phone names from a file.
+        """ Load a replacement table of phone names from a file.
 
-        @param filename (str)
+        :param filename: (str)
 
         """
         try:
-            self.repllist.load_from_ascii( filename )
+            self.repllist.load_from_ascii(filename)
             # Some HACK...
             # because '+' and '-' are the biphones/triphones delimiters,
             # they can't be used as phone name.
             self.repllist.remove('+')
             self.repllist.remove('-')
-
         except Exception:
             pass
 
     # -----------------------------------------------------------------------
 
     def save_phonesrepl(self, filename):
-        """
-        Save a replacement table of phone names into a file.
+        """ Save a replacement table of phone names into a file.
 
-        @param filename (str)
+        :param filename: (str)
 
         """
         try:
-            self.repllist.save_as_ascii( filename )
+            self.repllist.save_as_ascii(filename)
         except Exception:
             pass
 
     # -----------------------------------------------------------------------
 
     def load_tiedlist(self, filename):
-        """
-        Load a tiedlist from a file.
+        """ Load a tiedlist from a file.
 
-        @param filename (str)
+        :param filename: (str)
 
         """
         try:
-            self.tiedlist.load( filename )
+            self.tiedlist.load(filename)
         except Exception:
             pass
 
     # -----------------------------------------------------------------------
 
     def save_tiedlist(self, filename):
-        """
-        Save a tiedlist into a file.
+        """ Save a tiedlist into a file.
 
-        @param filename (str)
+        :param filename: (str)
 
         """
         try:
-            self.tiedlist.save( filename )
+            self.tiedlist.save(filename)
         except Exception:
             pass
 
     # -----------------------------------------------------------------------
 
     def load_htk(self, *args):
-        """
-        Load an HTK model from one or more files.
+        """ Load an HTK model from one or more files.
 
-        @param args: Filenames of the model (e.g. macros and/or hmmdefs)
+        :param args: Filenames of the model (e.g. macros and/or hmmdefs)
 
         """
-        htkmodel = HtkIO( *args )
+        htkmodel = HtkIO(*args)
         self.macros = htkmodel.macros
-        self.hmms   = htkmodel.hmms
+        self.hmms = htkmodel.hmms
 
     # -----------------------------------------------------------------------
 
     def save_htk(self, filename):
-        """
-        Save the model into a file, in HTK-ASCII standard format.
+        """ Save the model into a file, in HTK-ASCII standard format.
 
-        @param filename: File where to save the model.
+        :param filename: File where to save the model.
 
         """
         htkmodel = HtkIO()
-        htkmodel.set(self.macros,self.hmms)
-        htkmodel.save( filename )
+        htkmodel.set(self.macros, self.hmms)
+        htkmodel.save(filename)
 
     # -----------------------------------------------------------------------
     # HMM
     # -----------------------------------------------------------------------
 
     def get_hmm(self, phone):
-        """
-        Return the hmm corresponding to the given phoneme.
+        """ Return the hmm corresponding to the given phoneme.
 
-        @param phone (str) the phoneme name to get hmm
-        @raise ValueError if phoneme is not in the model
+        :param phone: (str) the phoneme name to get hmm
+        :raises: ValueError if phoneme is not in the model
 
         """
-        hmms = [h for h in self.hmms if h.name==phone]
+        hmms = [h for h in self.hmms if h.name == phone]
         if len(hmms) == 1:
             return hmms[0]
-        raise ValueError('%s not in the model'%phone)
+        raise ValueError('%s not in the model' % phone)
 
     # -----------------------------------------------------------------------
 
     def append_hmm(self, hmm):
-        """
-        Append an HMM to the model.
+        """ Append an HMM to the model.
 
-        @param hmm (OrderedDict)
-        @raise TypeError, ValueError
+        :param hmm: (OrderedDict)
+        :raises: TypeError, ValueError
 
         """
-        if isinstance(hmm,HMM) is False:
-            raise TypeError('Expected an HMM instance. Got %s'%type(hmm))
+        if isinstance(hmm, HMM) is False:
+            raise TypeError('Expected an HMM instance. Got %s' % type(hmm))
 
         if hmm.name is None:
             raise TypeError('Expected an hmm with a name as key.')
         for h in self.hmms:
             if h.name == hmm.name:
-                raise ValueError('Duplicate HMM is forbidden. %s already in the model.'%hmm.name)
+                raise ValueError('Duplicate HMM is forbidden. %s already in the model.' % hmm.name)
 
         if hmm.definition is None:
             raise TypeError('Expected an hmm with a definition as key.')
-        if hmm.definition.get('states',None) is None or hmm.definition.get('transition',None) is None:
+        if hmm.definition.get('states', None) is None or hmm.definition.get('transition', None) is None:
             raise TypeError('Expected an hmm with a definition including states and transitions.')
 
         self.hmms.append(hmm)
@@ -276,11 +266,10 @@ class AcModel(object):
     # -----------------------------------------------------------------------
 
     def pop_hmm(self, phone):
-        """
-        Remove an HMM of the model.
+        """ Remove an HMM of the model.
 
-        @param phone (str) the phoneme name to get hmm
-        @raise ValueError if phoneme is not in the model
+        :param phone: (str) the phoneme name to get hmm
+        :raises: ValueError if phoneme is not in the model
 
         """
         hmm = self.get_hmm(phone)
@@ -291,9 +280,8 @@ class AcModel(object):
     # Manage the model
     # -----------------------------------------------------------------------
 
-    def replace_phones(self, reverse=False ):
-        """
-        Replace the phones by using a mapping table.
+    def replace_phones(self, reverse=False):
+        """ Replace the phones by using a mapping table.
 
         This is mainly useful due to restrictions in some acoustic model toolkits:
         X-SAMPA can't be fully used and a "mapping" is required.
@@ -303,12 +291,12 @@ class AcModel(object):
 
         Notice that '+' and '-' can't be used as a phone name.
 
-        @param reverse (bool) reverse the replacement direction.
+        :param reverse: (bool) reverse the replacement direction.
 
         """
         if self.repllist.get_size() == 0:
             return
-        delimiters = ["-","+"]
+        delimiters = ["-", "+"]
 
         oldreverse = self.repllist.get_reverse()
         self.repllist.set_reverse(reverse)
@@ -317,30 +305,30 @@ class AcModel(object):
         newtied = TiedList()
 
         for observed in self.tiedlist.observed:
-            mapped = self.repllist.map( observed,delimiters )
-            newtied.add_observed( mapped )
+            mapped = self.repllist.map(observed,delimiters)
+            newtied.add_observed(mapped)
         for tied,observed in self.tiedlist.tied.items():
-            mappedtied     = self.repllist.map( tied, delimiters)
-            mappedobserved = self.repllist.map( observed, delimiters)
+            mappedtied = self.repllist.map(tied, delimiters)
+            mappedobserved = self.repllist.map(observed, delimiters)
             newtied.add_tied(mappedtied, mappedobserved)
         self.tiedlist = newtied
 
         # Replace in HMMs
         for hmm in self.hmms:
-            hmm.set_name( self.repllist.map( hmm.name, delimiters) )
+            hmm.set_name(self.repllist.map(hmm.name, delimiters))
 
             states = hmm.definition['states']
-            if all(isinstance(state['state'], (collections.OrderedDict,collections.defaultdict)) for state in states) is False:
+            if all(isinstance(state['state'], (collections.OrderedDict, collections.defaultdict)) for state in states) is False:
                 for state in states:
-                    if isinstance(state['state'], (collections.OrderedDict,collections.defaultdict)) is False:
+                    if isinstance(state['state'], (collections.OrderedDict, collections.defaultdict)) is False:
                         tab = state['state'].split('_')
-                        tab[1] = self.repllist.map_entry( tab[1] )
+                        tab[1] = self.repllist.map_entry(tab[1])
                         state['state'] = "_".join(tab)
 
             transition = hmm.definition['transition']
-            if isinstance(transition, (collections.OrderedDict,collections.defaultdict)) is False:
+            if isinstance(transition, (collections.OrderedDict, collections.defaultdict)) is False:
                 tab = transition.split('_')
-                tab[1] = self.repllist.map_entry( tab[1] )
+                tab[1] = self.repllist.map_entry(tab[1])
                 transition = "_".join(tab)
 
         self.repllist.set_reverse(oldreverse)
@@ -348,90 +336,86 @@ class AcModel(object):
     # -----------------------------------------------------------------------
 
     def fill_hmms(self):
-        """
-        Fill HMM states and transitions, i.e.:
+        """ Fill HMM states and transitions, i.e.:
+
            - replace all the "ST_..." by the corresponding macro, for states.
            - replace all the "T_..." by the corresponding macro, for transitions.
 
         """
         for hmm in self.hmms:
 
-            states     = hmm.definition['states']
+            states = hmm.definition['states']
             transition = hmm.definition['transition']
 
-            if all(isinstance(state['state'],(collections.OrderedDict,collections.defaultdict)) for state in states) is False:
-                newstates = self._fill_states( states )
+            if all(isinstance(state['state'],(collections.OrderedDict, collections.defaultdict)) for state in states) is False:
+                newstates = self._fill_states(states)
                 if all(s is not None for s in newstates):
                     hmm.definition['states'] = newstates
                 else:
                     raise ValueError('No corresponding macro for states: %s'%states)
 
-            if isinstance(transition, (collections.OrderedDict,collections.defaultdict)) is False:
-                newtrs = self._fill_transition( transition )
+            if isinstance(transition, (collections.OrderedDict, collections.defaultdict)) is False:
+                newtrs = self._fill_transition(transition)
                 if newtrs is not None:
                     hmm.definition['transition'] = newtrs
                 else:
-                    raise ValueError('No corresponding macro for transition: %s'%transition)
+                    raise ValueError('No corresponding macro for transition: %s' % transition)
 
         # No more need of states and transitions in macros
-        newmacros = []
+        newmacros = list()
         if self.macros is not None:
             for m in self.macros:
-                if m.get('transition',None) is None and m.get('state',None) is None:
-                    newmacros.append( m )
+                if m.get('transition', None) is None and m.get('state', None) is None:
+                    newmacros.append(m)
         self.macros = newmacros
 
     # -----------------------------------------------------------------------
 
     def create_model(self, macros, hmms):
-        """
-        Create an empty AcModel and return it.
+        """ Create an empty AcModel and return it.
 
-        @param macros is an OrderedDict of options, transitions, states, ...
-        @param hmms models (one per phone/biphone/triphone) is a list of HMM instances
+        :param macros: OrderedDict of options, transitions, states, ...
+        :param hmms: models (one per phone/biphone/triphone) is a list of HMM instances
 
         """
         model = AcModel()
         model.macros = macros
-        model.hmms   = hmms
+        model.hmms = hmms
         return model
 
     # -----------------------------------------------------------------------
 
     def extract_monophones(self):
-        """
-        Return an Acoustic Model that includes only monophones:
+        """ Return an Acoustic Model that includes only monophones:
             - hmms and macros are selected,
             - repllist is copied,
             - tiedlist is ignored.
 
-        @return AcModel
+        :returns: AcModel
 
         """
         ac = AcModel()
 
         # The macros
         if self.macros is not None:
-            ac.macros = copy.deepcopy( self.macros )
+            ac.macros = copy.deepcopy(self.macros)
 
         # The HMMs
         for h in self.hmms:
-            if not "+" in h.name and not "-" in h.name:
-                ac.append_hmm( copy.deepcopy(h) )
+            if "+" not in h.name and "-" not in h.name:
+                ac.append_hmm(copy.deepcopy(h))
         ac.fill_hmms()
 
         # The repl mapping table
-        ac.repllist = copy.deepcopy( self.repllist )
+        ac.repllist = copy.deepcopy(self.repllist)
 
         return ac
 
     # -----------------------------------------------------------------------
 
     def get_mfcc_parameter_kind(self):
-        """
-        Return the MFCC parameter kind, as a string, or an empty string.
+        """ Return the MFCC parameter kind, as a string, or an empty string. """
 
-        """
         if self.macros is None:
             return ""
 
@@ -457,19 +441,19 @@ class AcModel(object):
         All new phones/biphones/triphones are added and the shared ones are
         combined using a static linear interpolation.
 
-        @param other (AcModel) the AcModel to be merged with.
-        @param gamma (float) coefficient to apply to the model: between 0.
+        :param other: (AcModel) the AcModel to be merged with.
+        :param gamma: (float) coefficient to apply to the model: between 0.
         and 1. This means that a coefficient value of 1. indicates to keep
         the current version of each shared hmm.
 
-        @raise TypeError, ValueError
-        @return a tuple indicating the number of hmms that was
+        :raises: TypeError, ValueError
+        :returns: a tuple indicating the number of hmms that was
         appended, interpolated, keeped, changed.
 
         """
         # Check the given input data
         if gamma < 0. or gamma > 1.:
-            raise ValueError('Gamma coefficient must be between 0. and 1. Got %f'%gamma)
+            raise ValueError('Gamma coefficient must be between 0. and 1. Got %f' % gamma)
         if isinstance(other, AcModel) is False:
             raise TypeError('Expected an AcModel instance.')
 
@@ -482,14 +466,14 @@ class AcModel(object):
         #   - replace all the "ST_..." by the corresponding macro, for states.
         #   - replace all the "T_..." by the corresponding macro, for transitions.
         self.fill_hmms()
-        othercopy = copy.deepcopy( other )
+        othercopy = copy.deepcopy(other)
         othercopy.fill_hmms()
 
         # Merge the list of HMMs
-        appended     = 0
+        appended = 0
         interpolated = 0
-        keeped       = len(self.hmms)
-        changed      = 0
+        keeped = len(self.hmms)
+        changed = 0
         for hmm in othercopy.hmms:
             got = False
             for h in self.hmms:
@@ -498,38 +482,38 @@ class AcModel(object):
                     if gamma == 1.0:
                         pass
                     elif gamma == 0.:
-                        self.pop_hmm( hmm.name )
-                        self.append_hmm( hmm )
+                        self.pop_hmm(hmm.name)
+                        self.append_hmm(hmm)
                         changed = changed + 1
-                        keeped  = keeped  - 1
+                        keeped = keeped - 1
                     else:
-                        selfhmm = self.get_hmm( hmm.name )
+                        selfhmm = self.get_hmm(hmm.name)
                         res = selfhmm.static_linear_interpolation(hmm, gamma)
                         if res is True:
                             interpolated = interpolated + 1
-                            keeped       = keeped       - 1
+                            keeped = keeped - 1
                     break
             if got is False:
                 self.append_hmm(hmm)
                 appended = appended + 1
 
         # Merge the tiedlists
-        self.tiedlist.merge( other.tiedlist )
+        self.tiedlist.merge(other.tiedlist)
 
         for k,v in other.repllist.get_dict().items():
             if self.repllist.is_key(k) is False and self.repllist.is_value(v) is False:
-                self.repllist.add(k,v)
+                self.repllist.add(k, v)
 
-        return (appended,interpolated,keeped,changed)
+        return appended, interpolated, keeped, changed
 
     # -----------------------------------------------------------------------
     # Private
     # -----------------------------------------------------------------------
 
     def __str__(self):
-        strmacros=json.dumps(self.macros,indent=2)
-        strhmms="\n".join( [str(h) for h in self.hmms] )
-        return "MACROS:"+strmacros+"\nHMMS:"+strhmms
+        strmacros = json.dumps(self.macros, indent=2)
+        strhmms = "\n".join([str(h) for h in self.hmms])
+        return "MACROS:" + strmacros + "\nHMMS:" + strhmms
 
     # ----------------------------------
 
@@ -537,11 +521,11 @@ class AcModel(object):
         newstates = []
         for state in states:
             if isinstance(state['state'], (collections.OrderedDict,collections.defaultdict)) is True:
-                newstates.append( state )
+                newstates.append(state)
                 continue
             news = copy.deepcopy(state)
-            news['state'] = self._fill_state( state['state'] )
-            newstates.append( news )
+            news['state'] = self._fill_state(state['state'])
+            newstates.append(news)
         return newstates
 
     # ----------------------------------
@@ -552,7 +536,7 @@ class AcModel(object):
             for macro in self.macros:
                 if macro.get('state', None):
                     if macro['state']['name'] == state:
-                        newstate = copy.deepcopy( macro['state']['definition'] )
+                        newstate = copy.deepcopy(macro['state']['definition'])
         return newstate
 
     # ----------------------------------
@@ -563,7 +547,7 @@ class AcModel(object):
             for macro in self.macros:
                 if macro.get('transition', None):
                     if macro['transition']['name'] == transition:
-                        newtransition = copy.deepcopy( macro['transition']['definition'] )
+                        newtransition = copy.deepcopy(macro['transition']['definition'])
         return newtransition
 
     # ----------------------------------
@@ -612,5 +596,3 @@ class AcModel(object):
         macro['options'] = {'definition': options}
 
         return macro
-
-# ---------------------------------------------------------------------------

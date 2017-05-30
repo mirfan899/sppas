@@ -52,9 +52,24 @@ from sppas.src.models.acm.acmodel import AcModel
 parser = ArgumentParser(usage="%s -i hmmdef -o dir" % os.path.basename(PROGRAM),
                         description="... a script to split a hmmdef file into hmms.")
 
-parser.add_argument("-i", metavar="file", required=True,  help='Input file name')
-parser.add_argument("-o", metavar="dir", required=True,  help='Output directory name')
-parser.add_argument("--quiet", action='store_true', help="Disable the verbosity")
+parser.add_argument("-i",
+                    metavar="file",
+                    required=True,
+                    help='Input file name (commonly hmmdefs)')
+
+parser.add_argument("-r",
+                    metavar="file",
+                    required=False,
+                    help='Optional: Input mapping file name (commonly monophones.repl).')
+
+parser.add_argument("-o",
+                    metavar="dir",
+                    required=True,
+                    help='Output directory name')
+
+parser.add_argument("--quiet",
+                    action='store_true',
+                    help="Disable the verbosity")
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -72,22 +87,23 @@ if not os.path.isfile(args.i):
     sys.exit(1)
 
 if args.quiet is False:
-    print "Loading AC:",
+    print("Loading AC:")
 acmodel1 = AcModel()
 acmodel1.load_htk(args.i)
+if args.r:
+    acmodel1.load_phonesrepl(args.r)
 if args.quiet is False:
-    print "... done"
+    print("... done")
 
 # ----------------------------------------------------------------------------
 
 acmodel = acmodel1.extract_monophones()
+acmodel.replace_phones()
 
 for hmm in acmodel.hmms:
-   
+
     filename = os.path.join(args.o, hmm.name)
     filename = filename + ".hmm"
     if args.quiet is False:
-        print(hmm.name, filename)
+        print(hmm.name+": "+filename)
     hmm.save(filename)
-
-# ----------------------------------------------------------------------------
