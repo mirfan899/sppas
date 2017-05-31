@@ -57,9 +57,9 @@ from sppas.src.annotations.Phon.sppasphon import sppasPhon
 from sppas.src.annotations.TextNorm.sppastok import sppasTok
 from sppas.src.annotations.Align.sppasalign import sppasAlign
 
-import sppas.src.annotationdataio as annotationdataio
-import sppas.src.tierutils as tierutils
-import sppas.src.audiodataio as audiodataio
+import sppas.src.annotationdata.aio as annotationdataio
+import sppas.src.annotationdata.utils.tierutils as tierutils
+import sppas.src.audiodata.aio as audiodataio
 
 from sppas.src.annotationdata.transcription import Transcription
 from sppas.src.audiodata.audio import AudioPCM
