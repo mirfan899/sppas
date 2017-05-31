@@ -194,7 +194,9 @@ class AlignerIO(object):
             # Fix the end of this annotation to the begin of the next one.
             loc_e = _phonalign[phonidx][1]
             if phonidx < (len(_phonalign)-1):
-                nextloc_s = _phonalign[phonidx+1][0]
+                # some hack because julius has a tendency to always be... ahead! 
+                nextloc_s = _phonalign[phonidx+1][0] + 0.01
+                _phonalign[phonidx+1][0] = nextloc_s
             else:
                 nextloc_s = 0.
             if loc_e < nextloc_s:
