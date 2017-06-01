@@ -1253,6 +1253,7 @@ class HTKModelTrainer(object):
             logging.info('Error while creating automatic annotations: %s' % e)
             return False
 
+        success = 0
         for trsfilename, trsworkfile in self.corpus.transfiles.items():
             # we are re-aligning...
             if trsworkfile.endswith(".lab"):
@@ -1274,12 +1275,23 @@ class HTKModelTrainer(object):
 
             # Annotate the tier: tokenization, phonetization, time-alignment
             try:
-                tiertokens, tierStokens = tokenizer.convert(tierinput)
+                tiertokens, tierStokens, tierCustom = tokenizer.convert(tierinput)
+            except Exception as e:
+                logging.info(' ... [ERROR] Text normalization failed for file: %s. %s' % (trsworkfile, str(e)))
+                # return False
+                continue
+            try:
                 tierphones = phonetizer.convert(tiertokens)
+            except Exception as e:
+                logging.info(' ... [ERROR] Phonetization failed for file: %s. %s' % (trsworkfile, str(e)))
+                # return False
+                continue
+            try:
                 trsalign = aligner.convert(tierphones, None, audioworkfile, alignerdir)
             except Exception as e:
-                logging.info(' ... [ERROR] Annotation error for file: %s. %s' % (trsworkfile, str(e)))
-                return False
+                logging.info(' ... [ERROR] Alignment error failed file: %s. %s' % (trsworkfile, str(e)))
+                 # return False
+                continue
 
             # Get only the phonetization from the time-alignment
             tiera = trsalign.Find('PhonAlign')
@@ -1293,8 +1305,11 @@ class HTKModelTrainer(object):
             annotationdataio.write(outfile, trs)
             self.corpus.transfiles[trsfilename] = outfile
             logging.info(' ... [SUCCESS] Created file: %s' % outfile)
+            success += 1
 
-        return True
+        if success > 0:
+            return True
+        return False
 
     # -----------------------------------------------------------------------
 
@@ -1330,7 +1345,7 @@ class HTKModelTrainer(object):
             pruning.append("1000.0")
 
         for _ in range(rounds):
-            logging.info("Training iteration {}.".format(self.epochs))
+            logging.info("Training iteration {:d}.".format(self.epochs))
             self.init_epoch_dir()
 
             try:

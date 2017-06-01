@@ -61,7 +61,7 @@ class sppasNum(object):
     The language names used in this class are based on iso639-3.
 
     """
-    LANGUAGES = ["und", "yue", "cmn", "fra", "ita", "eng", "spa", "khm", "vie", "jpn", "pol", "por"]
+    LANGUAGES = ["und", "yue", "cmn", "fra", "ita", "eng", "spa", "khm", "vie", "jpn", "pol", "por", "pcm"]
 
     ZERO = dict()
     ZERO["und"] = "0"
@@ -98,6 +98,8 @@ class sppasNum(object):
         """
         if lang not in sppasNum.LANGUAGES:
             raise ValueError("Unknown language {:s}".format(lang))
+        if lang == "pcm":
+            lang = "eng"
         self._lang = lang
 
     # -------------------------------------------------------------------------
