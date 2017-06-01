@@ -49,7 +49,7 @@ LANG='C'
 PROGRAM_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
 BIN_DIR="$PROGRAM_DIR/sppas/bin"
 SRC_DIR="$PROGRAM_DIR/sppas/src"
-PROGRAM_VERSION=$(grep -e "^version =" $SRC_DIR/sp_glob.py | awk -F'=' '{print $2}' | cut -f2 -d'"')
+PROGRAM_VERSION=$(grep -e "__version__" $PROGRAM_DIR/sppas/meta.py | awk -F'=' '{print $2}' | cut -f2 -d'"')
 
 # User-Interface
 MSG_HEADER="SPPAS $PROGRAM_VERSION, a program written by Brigitte Bigi."
