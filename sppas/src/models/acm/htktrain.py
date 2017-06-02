@@ -559,7 +559,7 @@ class TrainingCorpus(object):
 
         :param trsfilename: (str) The annotated file.
         :param audiofilename: (str) The audio file.
-        :param Bool
+        :returns: Bool
 
         """
         if self.datatrainer.workdir is None: self.create()
@@ -1173,7 +1173,7 @@ class HTKModelTrainer(object):
 
         self.prevdir = self.curdir
         self.curdir = nextdir
-        self.epochs += self.epochs
+        self.epochs += 1
 
     # -----------------------------------------------------------------------
 
@@ -1236,6 +1236,7 @@ class HTKModelTrainer(object):
         try:
             tokenizer = sppasTok(self.corpus.vocabfile, self.corpus.lang, logfile=None)
             tokenizer.set_std(False)
+            tokenizer.set_custom(False)
 
             phonetizer = sppasPhon(self.corpus.dictfile)
             phonetizer.set_unk(True)
@@ -1406,7 +1407,7 @@ class HTKModelTrainer(object):
         """ Step 3 of the training procedure: Monophones training.
 
             1. Train phonemes from time-aligned data.
-            2. Create sp model
+            2. Create sp model.
             3. Train from phonetized data.
             4. Align transcribed data.
             5. Train from all data.
@@ -1499,8 +1500,8 @@ class HTKModelTrainer(object):
     # -----------------------------------------------------------------------
 
     def training_recipe(self, outdir=None, delete=False):
-        """
-        Create an acoustic model and return it.
+        """ Create an acoustic model and return it.
+
         A corpus (TrainingCorpus) must be previously defined.
 
         :param outdir: (str) Directory to save the final model and related files
@@ -1508,7 +1509,8 @@ class HTKModelTrainer(object):
         :returns: AcModel
 
         """
-        if self.corpus is None: return AcModel()
+        if self.corpus is None: 
+            return AcModel()
 
         # Step 1: Data preparation
         self.training_step1()

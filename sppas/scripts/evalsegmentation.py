@@ -67,10 +67,11 @@ consonants = [ "b","b_<","c","d","d`","f","g","g_<","h","j","k","l","l`","m","n"
 # ----------------------------------------------------------------------------
 # Functions to manage input annotated files
 
+
 def get_tier(filename, tieridx):
-    """
-    Returns the tier of the given index in an annotated filename,
+    """ Returns the tier of the given index in an annotated filename,
     or None if some error occurs..
+
     """
     try:
         trsinput = sppas.src.annotationdata.aio.read(filename)
@@ -78,43 +79,47 @@ def get_tier(filename, tieridx):
         return None
     if tieridx < 0 or tieridx >= trsinput.GetSize():
         return None
-    return trsinput[ tieridx ]
 
-def get_tiers(reffilename,hypfilename,refidx,hypidx):
-    """
-    Returns 2 tiers: reference and hypothesis from 2 given annotated files,
+    return trsinput[tieridx]
+
+
+def get_tiers(reffilename, hypfilename, refidx, hypidx):
+    """ Returns 2 tiers: reference and hypothesis from 2 given annotated files,
     or None if some error occurs.
+
     """
     reftier = get_tier(reffilename, refidx)
     hyptier = get_tier(hypfilename, hypidx)
-    if reftier.GetSize() != hyptier.GetSize():
-        return (None,None)
-    return reftier,hyptier
+
+    return reftier, hyptier
+
 
 # ----------------------------------------------------------------------------
 # Functions to estimate the Unit Boundary Positioning Accuracy.
 
-def _eval_index(step,value):
+def _eval_index(step, value):
     m = (value % step)  # Estimate the rest
     d = (value-m)       # Make "d" an entire value
     index = d/step      # evaluate the index depending on step
     return int(index)
 
-def _inc(vector,idx):
-    if idx >= len(vector):
-        toadd = idx-len(vector)+1
-        vector.extend([0]*toadd)
-    vector[idx] = vector[idx] + 1
 
-def ubpa(vector,text,filename,summary=False):
-    """
-    Estimates the Unit Boundary Positioning Accuracy,
+def _inc(vector, idx):
+    if idx >= len(vector):
+        toadd = idx - len(vector) + 1
+        vector.extend([0]*toadd)
+    vector[idx] += 1
+
+
+def ubpa(vector, text, filename, summary=False):
+    """ Estimates the Unit Boundary Positioning Accuracy,
     and write the result into a file.
 
-    @param vector contains the list of the delta values.
-    @param text is one of "Duration", "Position Start", ...
-    @param filename is the file to write the result.
-    @param summary (bool) print a summary on stdout.
+    :param vector: contains the list of the delta values.
+    :param text: one of "Duration", "Position Start", ...
+    :param filename: is the file to write the result.
+    :param summary: (bool) print a summary on stdout.
+
     """
     step = 0.01
     tabNeg = []
@@ -122,63 +127,61 @@ def ubpa(vector,text,filename,summary=False):
 
     for delta in vector:
         if delta > 0.:
-            idx = _eval_index(step,delta)
-            _inc(tabPos,idx)
+            idx = _eval_index(step, delta)
+            _inc(tabPos, idx)
         else:
-            idx = _eval_index(step,delta*-1.)
-            _inc(tabNeg,idx)
+            idx = _eval_index(step, delta*-1.)
+            _inc(tabNeg, idx)
 
     with codecs.open(filename, "w", "utf8") as fp:
         fp.write("|--------------------------------------------| \n")
         fp.write("|      Unit Boundary Positioning Accuracy    | \n")
         fp.write("|            Delta=T(hyp)-T(ref)             | \n")
         fp.write("|--------------------------------------------| \n")
-        i=len(tabNeg)-1
+        i = len(tabNeg)-1
         for value in reversed(tabNeg):
             percent = ((value*100.)/(len(vector)-1))
-            fp.write("|  Delta-%s < -%.3f: "%(text,((i+1)*step)))
-            fp.write("%d (%.2f%%) \n"%(value,percent))
-            i = i - 1
+            fp.write("|  Delta-%s < -%.3f: " % (text, ((i+1)*step)))
+            fp.write("%d (%.2f%%) \n" % (value, percent))
+            i -= 1
         fp.write("|--------------------------------------------| \n")
-        for i,value in enumerate(tabPos):
-            percent = round(((value*100.)/(len(vector)-1)),3)
-            fp.write("|  Delta-%s < +%.3f: "%(text,((i+1)*step)))
-            fp.write("%d (%.2f%%)\n"%(value,percent))
+        for i, value in enumerate(tabPos):
+            percent = round(((value*100.)/(len(vector)-1)), 3)
+            fp.write("|  Delta-%s < +%.3f: " % (text, ((i+1)*step)))
+            fp.write("%d (%.2f%%)\n" % (value, percent))
         fp.write("|--------------------------------------------| \n")
 
     if summary is True:
-        print "|--------------------------------------------| "
-        print "|      Unit Boundary Positioning Accuracy    | "
-        print "|            Delta=T(hyp)-T(ref)             | "
-        print "|--------------------------------------------| "
-        i=len(tabNeg)-1
+        print("|--------------------------------------------| ")
+        print("|      Unit Boundary Positioning Accuracy    | ")
+        print("|            Delta=T(hyp)-T(ref)             | ")
+        print("|--------------------------------------------| ")
+        i = len(tabNeg)-1
         percentsum = 0
         for value in reversed(tabNeg):
             if (i+1)*step < 0.05:
                 percent = ((value*100.)/(len(vector)-1))
-                print "|  Delta-%s < -%.3f: "%(text,((i+1)*step)),
-                print "%d (%.2f%%)"%(value,percent)
-                percentsum = percentsum+percent
-            i = i - 1
-        print "|--------------------------------------------| "
-        for i,value in enumerate(tabPos):
+                print("|  Delta-{:s} < -{:f}: {:d} ({:f}%)".format(text, (i+1)*step, value, percent))
+                percentsum += percent
+            i -= 1
+        print("|--------------------------------------------| ")
+        for i, value in enumerate(tabPos):
             if (i+1)*step < 0.05:
-                percent = round(((value*100.)/(len(vector)-1)),3)
-                print "|  Delta-%s < +%.3f: "%(text,((i+1)*step)),
-                print "%d (%.2f%%)"%(value,percent)
-                percentsum = percentsum+percent
-        print "|--------------------------------------------| "
-        print "| Total:",round(percentsum,3),"%%"
-        print "|--------------------------------------------| "
+                percent = round(((value*100.)/(len(vector)-1)), 3)
+                print("|  Delta-{:s} < +{:f}: {:d} ({:f}%)".format(text, (i+1)*step, value, percent))
+                percentsum += percent
+        print("|--------------------------------------------| ")
+        print("| Total: {0:.2f} %".format(round(percentsum, 3)))
+        print("|--------------------------------------------| ")
 
 
 # ----------------------------------------------------------------------------
 # Function to draw the evaluation as BoxPlots (using an R script)
 
+
 def test_R():
-    """
-    Test if Rscript is available as a command of the system.
-    """
+    """ Test if Rscript is available as a command of the system. """
+
     try:
         NULL = open(os.devnull, "w")
         subprocess.call(['Rscript'], stdout=NULL, stderr=subprocess.STDOUT)
@@ -187,23 +190,23 @@ def test_R():
     return True
 
 
-def exec_Rscript(filenamed,filenames,filenamee,rscriptname,pdffilename):
-    """
-    Write the R script to draw boxplots from the given files, then
+def exec_Rscript(filenamed, filenames, filenamee, rscriptname, pdffilename):
+    """ Write the R script to draw boxplots from the given files, then
     execute it, and delete it.
 
-    @param pdffilename is the file with the result.
+    :param pdffilename: the file with the result.
+
     """
-    with codecs.open(rscriptname,"w","utf8") as fp:
+    with codecs.open(rscriptname, "w", "utf8") as fp:
         fp.write("#!/usr/bin/env Rscript \n")
         fp.write("# Title: Boxplot for phoneme alignments evaluation \n")
         fp.write("\n")
         fp.write("args <- commandArgs(trailingOnly = TRUE) \n")
         fp.write("\n")
         fp.write("# Get datasets \n")
-        fp.write('dataD <- read.csv("%s",header=TRUE,sep=",") \n'%filenamed)
-        fp.write('dataPS <- read.csv("%s",header=TRUE,sep=",") \n'%filenames)
-        fp.write('dataPE <- read.csv("%s",header=TRUE,sep=",") \n'%filenamee)
+        fp.write('dataD <- read.csv("%s",header=TRUE,sep=",") \n' % filenamed)
+        fp.write('dataPS <- read.csv("%s",header=TRUE,sep=",") \n' % filenames)
+        fp.write('dataPE <- read.csv("%s",header=TRUE,sep=",") \n' % filenamee)
         fp.write("\n")
         fp.write("# Define Output file \n")
         fp.write('pdf(file="%s", paper="a4") \n'%pdffilename)
@@ -262,10 +265,10 @@ def exec_Rscript(filenamed,filenames,filenamee,rscriptname,pdffilename):
 
 
 def boxplot(deltaposB, deltaposE, deltaposD, extras, outname, vector, name):
-    """
-    Create a PDF file with boxplots, but selecting only a subset of phonemes.
+    """ Create a PDF file with boxplots, but selecting only a subset of phonemes.
 
-    @param vector is the list of phonemes
+    :param vector: the list of phonemes
+
     """
     filenamed = outname+"-delta-duration-"+name+".csv"
     filenames = outname+"-delta-position-start-"+name+".csv"
@@ -277,20 +280,20 @@ def boxplot(deltaposB, deltaposE, deltaposD, extras, outname, vector, name):
     fpb.write("PhoneS,DeltaS\n")
     fpe.write("PhoneE,DeltaE\n")
     fpd.write("PhoneD,DeltaD\n")
-    for i,extra in enumerate(extras):
+    for i, extra in enumerate(extras):
         etiquette = extra[0]
-        tag       = extra[2]
+        tag = extra[2]
         if etiquette in vector:
             if tag != 0:
-                fpb.write("%s,%f\n"%(etiquette,deltaposB[i]))
+                fpb.write("%s,%f\n" % (etiquette, deltaposB[i]))
             if tag != -1:
-                fpe.write("%s,%f\n"%(etiquette,deltaposE[i]))
-            fpd.write("%s,%f\n"%(etiquette,deltadur[i]))
+                fpe.write("%s,%f\n" % (etiquette, deltaposE[i]))
+            fpd.write("%s,%f\n" % (etiquette, deltadur[i]))
     fpb.close()
     fpe.close()
     fpd.close()
 
-    message = exec_Rscript(filenamed,filenames,filenamee,outname+".R",outname+"-delta-"+name+".pdf")
+    message = exec_Rscript(filenamed, filenames, filenamee, outname+".R", outname+"-delta-"+name+".pdf")
 
     os.remove(filenamed)
     os.remove(filenames)
@@ -309,12 +312,38 @@ parser = ArgumentParser(usage="%s -fr ref -fh hyp [options]" % os.path.basename(
                         description="... a script to compare two segmentation boundaries, "
                                     "in the scope of evaluating an hypothesis vs a reference.")
 
-parser.add_argument("-fr", metavar="file", required=True,  help='Input annotated file/directory name of the reference.')
-parser.add_argument("-fh", metavar="file", required=True,  help='Input annotated file/directory name of the hypothesis.')
-parser.add_argument("-tr", metavar="file", type=int, default=1, required=False, help='Tier number of the reference (default=1).')
-parser.add_argument("-th", metavar="file", type=int, default=1, required=False, help='Tier number of the hypothesis (default=1).')
-parser.add_argument("-o",  metavar="path", required=False, help='Path for the output files.')
-parser.add_argument("--quiet", action='store_true', help="Disable the verbosity.")
+parser.add_argument("-fr",
+                    metavar="file",
+                    required=True,
+                    help='Input annotated file/directory name of the reference.')
+
+parser.add_argument("-fh",
+                    metavar="file",
+                    required=True,
+                    help='Input annotated file/directory name of the hypothesis.')
+
+parser.add_argument("-tr",
+                    metavar="file",
+                    type=int,
+                    default=1,
+                    required=False,
+                    help='Tier number of the reference (default=1).')
+
+parser.add_argument("-th",
+                    metavar="file",
+                    type=int,
+                    default=1,
+                    required=False,
+                    help='Tier number of the hypothesis (default=1).')
+
+parser.add_argument("-o",
+                    metavar="path",
+                    required=False,
+                    help='Path for the output files.')
+
+parser.add_argument("--quiet",
+                    action='store_true',
+                    help="Disable the verbosity.")
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -326,8 +355,8 @@ args = parser.parse_args()
 
 idxreftier = args.tr - 1
 idxhyptier = args.th - 1
-files = []      # List of tuples: (reffilename,hypfilename)
-deltadur  = []  # Duration of each phoneme
+files = []      # List of tuples: (reffilename, hypfilename)
+deltadur = []   # Duration of each phoneme
 deltaposB = []  # Position of the beginning boundary of each phoneme
 deltaposE = []  # Position of the end boundary of each phoneme
 deltaposM = []  # Position of the center of each phoneme
@@ -343,13 +372,13 @@ if args.o:
         os.mkdir(outpath)
 
 if os.path.isfile(args.fh) and os.path.isfile(args.fr):
-    hypfilename,extension = os.path.splitext(args.fh)
+    hypfilename, extension = os.path.splitext(args.fh)
     outbasename = os.path.basename(hypfilename)
     if outpath is None:
         outpath = os.path.dirname(hypfilename)
     outname = os.path.join(outpath, outbasename)
 
-    files.append((os.path.basename(args.fr),os.path.basename(args.fh)))
+    files.append((os.path.basename(args.fr), os.path.basename(args.fh)))
     refdir = os.path.dirname(args.fr)
     hypdir = os.path.dirname(args.fh)
 
@@ -361,31 +390,32 @@ elif os.path.isdir(args.fh) and os.path.isdir(args.fr):
     refdir = args.fr
     hypdir = args.fh
 
-    reffiles=[]
-    hypfiles=[]
+    reffiles = []
+    hypfiles = []
     for fr in os.listdir(args.fr):
-        if os.path.isfile(os.path.join(refdir,fr)):
+        if os.path.isfile(os.path.join(refdir, fr)):
             reffiles.append(fr)
     for fh in os.listdir(args.fh):
-        if os.path.isfile(os.path.join(hypdir,fh)):
+        if os.path.isfile(os.path.join(hypdir, fh)):
             hypfiles.append(os.path.basename(fh))
 
     for fr in reffiles:
-        basefr,extfr = os.path.splitext(fr)
+        basefr, extfr = os.path.splitext(fr)
         if not extfr.lower() in sppas.src.annotationdata.aio.extensions:
             continue
         for fh in hypfiles:
-            basefh,extfh = os.path.splitext(fh)
+            basefh, extfh = os.path.splitext(fh)
             if not extfh.lower() in sppas.src.annotationdata.aio.extensions:
                 continue
             if fh.startswith(basefr):
-                files.append((fr,fh))
+                files.append((fr, fh))
 
 else:
-    print "Both reference and hypothesis must be of the same type: file or directory."
+    print("Both reference and hypothesis must be of the same type: file or directory.")
     sys.exit(1)
 
-if args.quiet is False: print "Results will be stored in:", outname
+if not args.quiet:
+    print("Results will be stored in: {}".format(outname))
 
 # ----------------------------------------------------------------------------
 # Evaluate the delta from the hypothesis to the reference
@@ -395,12 +425,15 @@ for f in files:
 
     fr = os.path.join(refdir, f[0])
     fh = os.path.join(hypdir, f[1])
-
     reftier, hyptier = get_tiers(fr, fh, idxreftier, idxhyptier)
     if reftier is None or hyptier is None:
+        print("[ INFO ] No aligned phonemes found in tiers. Nothing to do. ")
         continue
-    if args.quiet is False:
-        print "Hypothesis:",f[1],"vs Reference:",f[0],"->",reftier.GetSize()," phonemes."
+    if reftier.GetSize() != hyptier.GetSize():
+        print("[ ERROR ] Hypothesis: {} -> {} vs Reference: {} -> {} phonemes.".format(f[1], hyptier.GetSize(), f[0], reftier.GetSize()))
+        continue
+    if not args.quiet:
+        print("[ OK ] Hypothesis: {} vs Reference: {} -> {} phonemes.".format(f[1], f[0], reftier.GetSize()))
 
     # ----------------------------------------------------------------------------
     # Compare boundaries and durations of annotations.
@@ -428,9 +461,9 @@ for f in files:
         deltad = hd-rd
 
         tag = 1
-        if i==0:
+        if i == 0:
             tag = 0
-        elif i==imax:
+        elif i == imax:
             tag = -1
 
         # Add new values into vectors, to evaluate the accuracy
@@ -438,9 +471,9 @@ for f in files:
         deltaposE.append(deltae)
         deltaposM.append(deltam)
         deltadur.append(deltad)
-        extras.append((etiquette,fh,tag))
+        extras.append((etiquette, fh, tag))
 
-        i = i + 1
+        i += 1
 
 # ----------------------------------------------------------------------------
 # Save delta values into output files
@@ -455,16 +488,16 @@ fpe.write("Phone Delta Filename\n")
 fpm.write("Phone Delta Filename\n")
 fpd.write("Phone Delta Filename\n")
 
-for i,extra in enumerate(extras):
+for i, extra in enumerate(extras):
     etiquette = extra[0]
-    filename  = extra[1]
+    filename = extra[1]
     tag = extra[2]
     if tag != 0:
-        fpb.write("%s %f %s\n" % (etiquette,deltaposB[i],filename))
+        fpb.write("%s %f %s\n" % (etiquette, deltaposB[i], filename))
     if tag != -1:
-        fpe.write("%s %f %s\n" % (etiquette,deltaposE[i],filename))
-    fpm.write("%s %f %s\n" % (etiquette,deltaposM[i],filename))
-    fpd.write("%s %f %s\n" % (etiquette,deltadur[i],filename))
+        fpe.write("%s %f %s\n" % (etiquette, deltaposE[i], filename))
+    fpm.write("%s %f %s\n" % (etiquette, deltaposM[i], filename))
+    fpd.write("%s %f %s\n" % (etiquette, deltadur[i], filename))
 
 fpb.close()
 fpe.close()
@@ -474,10 +507,10 @@ fpd.close()
 # ----------------------------------------------------------------------------
 # Estimates the Unit Boundary Positioning Accuracy
 
-ubpa(deltaposB,"PositionStart", outname+"-eval-position-start.txt", summary=not args.quiet)
-ubpa(deltaposE,"PositionEnd",   outname+"-eval-position-end.txt",   summary=False)
-ubpa(deltaposM,"PositionMiddle",outname+"-eval-position-middle.txt",summary=False)
-ubpa(deltadur, "Duration",      outname+"-eval-duration.txt",       summary=False)
+ubpa(deltaposB, "PositionStart", outname+"-eval-position-start.txt", summary=not args.quiet)
+ubpa(deltaposE, "PositionEnd", outname+"-eval-position-end.txt", summary=False)
+ubpa(deltaposM, "PositionMiddle", outname+"-eval-position-middle.txt", summary=False)
+ubpa(deltadur, "Duration", outname+"-eval-duration.txt", summary=False)
 
 # ----------------------------------------------------------------------------
 # Draw BoxPlots of the accuracy via an R script
@@ -486,12 +519,12 @@ if test_R() is False:
     sys.exit(0)
 
 message = boxplot(deltaposB, deltaposE, deltadur, extras, outname, vowels, "vowels")
-if len(message)>0 and args.quiet is False:
-    print message
+if len(message) > 0 and not args.quiet:
+    print("{:s}".format(message))
 
 message = boxplot(deltaposB, deltaposE, deltadur, extras, outname, consonants, "consonants")
-if len(message)>0 and args.quiet is False:
-    print message
+if len(message) > 0 and not args.quiet:
+    print("{:s}".format(message))
 
 others = []
 for extra in extras:
@@ -499,9 +532,7 @@ for extra in extras:
     if not (etiquette in vowels or etiquette in consonants or etiquette in others):
         others.append(etiquette)
 
-if len(others)>0:
+if len(others) > 0:
     message = boxplot(deltaposB, deltaposE, deltadur, extras, outname, others, "others")
-    if len(message)>0 and args.quiet is False:
-        print message
-
-# ----------------------------------------------------------------------------
+    if len(message) > 0 and not args.quiet:
+        print("{:s}".format(message))

@@ -86,7 +86,7 @@ class sppasTok(sppasBaseAnnotation):
 
         # Replacement dictionary
         replace_filename = os.path.join(RESOURCES_PATH, "repl", lang + ".repl")
-        if os.path.exists(replace_filename):
+        if os.path.exists(replace_filename) is True:
             dict_replace = DictRepl(replace_filename, nodump=True)
         else:
             dict_replace = DictRepl()
@@ -94,7 +94,7 @@ class sppasTok(sppasBaseAnnotation):
 
         # Punctuations dictionary
         punct_filename = os.path.join(RESOURCES_PATH, "vocab", "Punctuations.txt")
-        if os.path.exists(replace_filename):
+        if os.path.exists(punct_filename) is True:
             vocab_punct = Vocabulary(punct_filename, nodump=True)
         else:
             vocab_punct = Vocabulary()
