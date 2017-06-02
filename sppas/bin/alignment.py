@@ -56,14 +56,43 @@ from sppas.src.utils.fileutils import setup_logging
 
 parser = ArgumentParser(usage="%s -w file -i file -r dir -o file [options]" % os.path.basename(PROGRAM), description="Speech segmentation command line interface.")
 
-parser.add_argument("-w", metavar="file", required=True,  help='Input audio file name')
-parser.add_argument("-i", metavar="file", required=True,  help='Input file name with the phonetization')
-parser.add_argument("-I", metavar="file", required=False, help='Input file name with the tokenization')
-parser.add_argument("-r", metavar="file", required=True,  help='Directory of the acoustic model of the language of the text')
-parser.add_argument("-R", metavar="file", required=False, help='Directory of the acoustic model of the mother language of the speaker')
-parser.add_argument("-o", metavar="file", required=True,  help='Output file name with estimated alignments')
+parser.add_argument("-w",
+                    metavar="file",
+                    required=True,
+                    help='Input audio file name')
 
-parser.add_argument("-a", metavar="name", required=False, choices=aligners.aligner_names(), default="julius", help='Speech automatic aligner system: julius, hvite, basic (default: julius)')
+parser.add_argument("-i",
+                    metavar="file",
+                    required=True,
+                    help='Input file name with the phonetization')
+
+parser.add_argument("-I",
+                    metavar="file",
+                    required=False,
+                    help='Input file name with the tokenization')
+
+parser.add_argument("-r",
+                    metavar="file",
+                    required=True,
+                    help='Directory of the acoustic model of the language of the text')
+
+parser.add_argument("-R",
+                    metavar="file",
+                    required=False,
+                    help='Directory of the acoustic model of the mother language of the speaker')
+
+parser.add_argument("-o",
+                    metavar="file",
+                    required=True,
+                    help='Output file name with estimated alignments')
+
+parser.add_argument("-a",
+                    metavar="name",
+                    required=False,
+                    choices=aligners.aligner_names(),
+                    default="julius",
+                    help='Speech automatic aligner system: julius, hvite, basic (default: julius)')
+
 parser.add_argument("--basic",   action='store_true', help="Perform basic alignment if the aligner fails")
 parser.add_argument("--noclean", action='store_true', help="Do not remove working directory")
 parser.add_argument("--noactivity", action='store_true', help="Do not generate Activity tier")
