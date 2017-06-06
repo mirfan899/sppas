@@ -38,8 +38,8 @@
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
 
-    makeunicode is useful for the compatibility of strings
-    between python 2.7 and python > 3.2.
+    makeunicode is useful for the compatibility of strings between
+    Python 2.7 and Python > 3.2.
 
 """
 from __future__ import unicode_literals
@@ -51,7 +51,7 @@ from sppas import encoding
 
 # ---------------------------------------------------------------------------
 
-""" Unicode conversion for python 2.7. """
+""" Unicode conversion for Python 2.7. """
 
 if sys.version_info < (3,):
 
@@ -66,7 +66,7 @@ if sys.version_info < (3,):
         return x
 
 else:
-    """ Unicode conversion for python > 3. """
+    """ Unicode conversion for Python > 3.2 """
 
     text_type = str
     binary_type = bytes
@@ -82,7 +82,15 @@ else:
 
 
 class sppasUnicode(object):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Make unicode strings.
 
+    """
     def __init__(self, entry):
         """ Unicode maker for SPPAS.
 

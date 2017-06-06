@@ -35,6 +35,7 @@
     Utilities to compare data contents.
 
 """
+import logging
 from .makeunicode import u
 from .makeunicode import text_type
 from .makeunicode import binary_type
@@ -106,7 +107,7 @@ class sppasCompare(object):
 
         if data1 is None or data2 is None:
             if self._verbose:
-                print("TypeError: None instead of data.")
+                logging.info("TypeError: None instead of data.")
             return False
 
         if type(data1) is list:
@@ -129,17 +130,17 @@ class sppasCompare(object):
         """
         if list1 is None or list2 is None:
             if self._verbose is True:
-                print("TypeError: None instead of lists.")
+                logging.info("TypeError: None instead of lists.")
             return False
 
         if type(list1) != type(list2) or type(list1) is not list or type(list2) is not list:
             if self._verbose is True:
-                print("TypeError: Not same types (expected two lists).")
+                logging.info("TypeError: Not same types (expected two lists).")
             return False
 
         if len(list1) != len(list2):
             if self._verbose is True:
-                print("FALSE: Not the same number of items: {0} {1}.".format(len(list1), len(list2)))
+                logging.info("FALSE: Not the same number of items: {0} {1}.".format(len(list1), len(list2)))
             return False
 
         for item1, item2 in zip(list1, list2):
@@ -168,19 +169,19 @@ class sppasCompare(object):
         """
         if dict1 is None or dict2 is None:
             if self._verbose is True:
-                print("TypeError: None instead of lists.")
+                logging.info("TypeError: None instead of lists.")
             return False
 
         if sppasCompare.is_dict(dict1) is not True or sppasCompare.is_dict(dict2) is not True:
             if self._verbose is True:
-                print("TypeError: Not same types (expected two dictionaries).")
+                logging.info("TypeError: Not same types (expected two dictionaries).")
             return False
 
         shared_keys = set(dict2.keys()) & set(dict2.keys())
 
         if not len(shared_keys) == len(dict1.keys()) or not len(shared_keys) == len(dict2.keys()):
             if self._verbose is True:
-                print("FALSE: not shared keys: {0} vs {1}".format(dict1.keys(), dict2.keys()))
+                logging.info("FALSE: not shared keys: {0} vs {1}".format(dict1.keys(), dict2.keys()))
             return False
 
         for key in dict1:
@@ -213,14 +214,14 @@ class sppasCompare(object):
         if type(item1) is float or type(item2) is float:
             if round(item1, 4) != round(item2, 4):
                 if self._verbose is True:
-                    print("Float values rounded to 4 digits are not equals: "
-                          "{:0.4f} != {:0.4f}".format(item1, item2))
-                return False
+                    logging.info("Float values rounded to 4 digits are not equals: "
+                                 "{:0.4f} != {:0.4f}".format(item1, item2))
+                    return False
             return True
 
         if item1 != item2:
             if self._verbose is True:
-                print("Not equals: {0} {1}".format(item1, item2))
+                logging.info("Not equals: {0} {1}".format(item1, item2))
             return False
 
         return True
@@ -238,7 +239,7 @@ class sppasCompare(object):
         if isinstance(item1, (text_type, binary_type)) is False or \
            isinstance(item2, (text_type, binary_type)) is False:
             if self._verbose is True:
-                print("TypeError: Not same types (expected two strings).")
+                logging.info("TypeError: Not same types (expected two strings).")
             return False
 
         if isinstance(item1, binary_type):
@@ -262,5 +263,3 @@ class sppasCompare(object):
             return True
 
         return False
-
-# ----------------------------------------------------------------------------

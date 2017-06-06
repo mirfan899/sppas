@@ -48,9 +48,25 @@
         5. The MFCCs are the amplitudes of the resulting spectrum.
 
 """
+import os
 import subprocess
 
-from sppas.src.utils import test_command
+# ---------------------------------------------------------------------------
+
+
+def test_command(command):
+    """ Test if a command is available.
+
+    :param command: (str) The command to execute as a sub-process.
+
+    """
+    try:
+        NULL = open(os.devnull, "w")
+        subprocess.call([command], stdout=NULL, stderr=subprocess.STDOUT)
+    except OSError:
+        return False
+
+    return True
 
 # ---------------------------------------------------------------------------
 

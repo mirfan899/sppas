@@ -30,7 +30,7 @@
         ---------------------------------------------------------------------
 
     src.utils
-    ~~~~~~~~~~~
+    ~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -42,9 +42,6 @@
     functions used into SPPAS.
 
 """
-import os
-import subprocess
-
 from .fileutils import sppasFileUtils
 from .fileutils import sppasDirUtils
 from .compare import sppasCompare
@@ -57,19 +54,3 @@ __all__ = [
     'u',
     'b'
 ]
-
-# ---------------------------------------------------------------------------
-
-
-def test_command(command):
-    """ Test if a command is available. """
-
-    try:
-        NULL = open(os.devnull, "w")
-        subprocess.call([command], stdout=NULL, stderr=subprocess.STDOUT)
-    except OSError:
-        return False
-
-    return True
-
-# ---------------------------------------------------------------------------

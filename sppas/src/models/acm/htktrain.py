@@ -43,8 +43,6 @@ import collections
 from sppas.src.utils.fileutils import sppasFileUtils
 from sppas.src.utils.fileutils import sppasDirUtils
 
-from sppas.src.utils import test_command
-
 from sppas.src.annotations.Phon.sppasphon import sppasPhon
 from sppas.src.annotations.TextNorm.sppastok import sppasTok
 from sppas.src.annotations.Align.sppasalign import sppasAlign
@@ -86,6 +84,23 @@ DEFAULT_PROTO_DIR = "protos"
 DEFAULT_SCRIPTS_DIR = "scripts"
 DEFAULT_FEATURES_DIR = "features"
 DEFAULT_LOG_DIR = "log"
+
+# ---------------------------------------------------------------------------
+
+
+def test_command(command):
+    """ Test if a command is available.
+
+    :param command: (str) The command to execute as a sub-process.
+
+    """
+    try:
+        NULL = open(os.devnull, "w")
+        subprocess.call([command], stdout=NULL, stderr=subprocess.STDOUT)
+    except OSError:
+        return False
+
+    return True
 
 # ---------------------------------------------------------------------------
 

@@ -59,15 +59,30 @@ class sppasFileUtils(object):
     >>> sf = sppasFileUtils("path/myfile.txt")
     >>> print(sf.exists())
 
+    >>> sf = sppasFileUtils()
+    >>> sf.set_random()
+    >>> fn = sf.get_filename() + ".txt"
+
     """
     def __init__(self, filename=None):
-        """ Create a sppasFileUtils and set the current filename. """
+        """ sppasFileUtils constructor.
+
+        :param filename: (str) Name of the current file
+
+        """
         self._filename = filename
 
     # ------------------------------------------------------------------------
 
+    def get_filename(self):
+        """ Returns the current filename. """
+
+        return self._filename
+
+    # ------------------------------------------------------------------------
+
     def set_random(self, root="sppas_tmp", add_today=True, add_pid=True):
-        """ Set a random basename.
+        """ Set a random basename, i.e. a filename without extension.
 
         :param root: (str) String to start the filename
         :param add_today: (bool) Add today's information to the filename
@@ -102,7 +117,7 @@ class sppasFileUtils(object):
     # ------------------------------------------------------------------------
 
     def exists(self, directory=None):
-        """ Does the file exists, or exists in a given directory.
+        """ Check if the file exists, or exists in a given directory.
         Case-insensitive test on all platforms.
 
         :param directory: (str) Optional directory to test if a file exists.
@@ -121,8 +136,11 @@ class sppasFileUtils(object):
     # ------------------------------------------------------------------------
 
     def clear_whitespace(self):
-        """ Replace whitespace by underscores. """
+        """ Set filename without whitespace.
 
+        :returns: new filename with spaces replaced by underscores.
+
+        """
         # Remove multiple spaces
         __str = re.sub("[\s]+", r" ", self._filename)
         # Spaces at beginning and end
@@ -137,17 +155,24 @@ class sppasFileUtils(object):
     # ------------------------------------------------------------------------
 
     def to_ascii(self):
-        """ Replace non-ASCII characters by underscores. """
+        """ Set filename with only US-ASCII characters.
 
+        :returns: new filename with non-ASCII characters replaced by underscores.
+
+        """
         __str = re.sub(r'[^\x00-\x7F]', '_', self._filename)
+
         self._filename = __str
         return __str
 
     # ------------------------------------------------------------------------
 
     def format(self):
-        """ Replace both whitespace and non-ascii characters by underscores. """
+        """ Set filename without whitespace and with only US-ASCII characters.
 
+        :returns: new filename with non-ASCII characters and spaces replaced by underscores.
+
+        """
         self.clear_whitespace()
         self.to_ascii()
         return self._filename
@@ -169,7 +194,11 @@ class sppasDirUtils(object):
 
     """
     def __init__(self, dirname):
-        """ Create a sppasFileUtils and set the current filename. """
+        """ sppasDirUtils constructor.
+
+        :param dirname: (str) Name of the current directory
+
+        """
         self._dirname = dirname
 
     # ------------------------------------------------------------------------
@@ -177,12 +206,15 @@ class sppasDirUtils(object):
     def get_files(self, extension, recurs=True):
         """ Returns the list of files of the directory.
 
-        :param extension: (str) the file extension to filter the directory
-        content
-        :param recurs: (bool)
+        :param extension: (str) extension of files to filter the directory content
+        :param recurs: (bool) Find files recursively
         :returns: a list of files
+        :raises: IOError
 
         """
+        if self._dirname is None:
+            return []
+
         if os.path.exists(self._dirname) is False:
             message = "The directory " + self._dirname + " does not exists."
             raise IOError(message)
@@ -242,18 +274,17 @@ def setup_logging(log_level, filename):
         logging.getLogger().addHandler(console_handler)
 
     logging.getLogger().setLevel(log_level)
-    logging.info("Logging set up with log level=%s, filename=%s", log_level,filename)
+    logging.info("Logging set up with log level=%s, filename=%s", log_level, filename)
 
 # ----------------------------------------------------------------------------
 
 
 def fix_audioinput(inputaudioname):
-    """
-    Fix the audio file name that will be used.
+    """ Fix the audio file name that will be used.
     An only-ascii-based file name without whitespace is set if the
     current audio file name does not fit in these requirements.
 
-    @param inputaudioname (str - IN) Given audio file name
+    :param inputaudioname: (str) Given audio file name
 
     """
     sf = sppasFileUtils(inputaudioname)
@@ -267,8 +298,7 @@ def fix_audioinput(inputaudioname):
 
 
 def fix_workingdir(inputaudio):
-    """
-    Fix the working directory to store temporarily the data.
+    """ Fix the working directory to store temporarily the data.
 
     """
     if len(inputaudio) == 0:
@@ -289,8 +319,7 @@ def fix_workingdir(inputaudio):
 
 
 def writecsv(filename, rows, separator="\t", encoding="utf-8-sig"):
-    """
-    Write the rows to the file.
+    """ Write the rows to the file.
     Args:
         filename (string):
         rows (list):
@@ -308,5 +337,3 @@ def writecsv(filename, rows, separator="\t", encoding="utf-8-sig"):
                     s = '"%s"' % s
                 tmp.append(s)
             f.write('%s\n' % separator.join(tmp))
-
-# ----------------------------------------------------------------------------

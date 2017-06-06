@@ -38,7 +38,9 @@
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
 
-    maketext is useful for the internationalization of texts.
+    maketext is useful for the internationalization of texts for both
+    Python 2 and Python 3.
+    The locale is used to set the language and English is the default.
 
 """
 import os.path
@@ -48,11 +50,15 @@ import locale
 from sppas import BASE_PATH
 from .makeunicode import u
 
+# ----------------------------------------------------------------------------
+
 
 class T(object):
     @staticmethod
     def gettext(msg):
         return u(msg)
+
+# ----------------------------------------------------------------------------
 
 
 def translate(domain):
@@ -70,12 +76,10 @@ def translate(domain):
         return t
     except Exception:
         try:
-            #print("Problem with the domain: {:s}. Enable English only.".format(domain))
             t = gettext.translation(domain, os.path.join(BASE_PATH, "po"), ["en_US"])
             t.install()
             return t
         except IOError:
             pass
 
-    #print("Error of gettext. No messages will be available!")
     return T()
