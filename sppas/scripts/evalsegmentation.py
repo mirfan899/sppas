@@ -57,8 +57,12 @@ import sppas.src.annotationdata.aio
 # Constants
 # ----------------------------------------------------------------------------
 
-vowels = [ "a","e","i","o","u","y","A","E","I","M","O","Q","U","V","Y","a~","e~","i~","o~","O~","u~","U~","eu","EU","{","}","@","1","2","3","6","7","8","9","&","3:r","OI","@U","eI","ai","aI","au","aU","aj","aw","ei","ew","ia","ie","io","ja","je","jo","ju","oj","ou","ua","uo","wa","we","wi","wo","ya","ye","yu" ]
-consonants = [ "b","b_<","c","d","d`","f","g","g_<","h","j","k","l","l`","m","n","n`","p","q","r","r`","s","s`","t","t`","v","w","x","z","z`","B","C","D","F","G","H","J","K","L","M","N","R","S","T","W","X","Z","4","5","?","ts","tS","dz","dZ","tK","kp","Nm","rr","ss","ts_h","k_h","p_h","t_h","ts_hs","tss" ]
+vowels = ["a","e","i","i:","o","u","y","A","E","I","M","O","Q","U","V","Y","a~","A~", "E~", "e~","i~","o~","O~","O:",
+          "u~","U~","eu","EU","{","}","@","1","2","3","6","7","8","9","&","3:r","OI","@U","eI","ai","aI","au","aU",
+          "aj","aw","ei","ew","ia","ie","io","ja","je","jo","ju","oj","ou","ua","uo","wa","we","wi","wo","ya","ye","yu"]
+consonants = ["b","b_<","c","d","d`","f","g","g_<","h","j","k","l","l`","m","n","n`","p","q","r","r`","r\\", "rr",
+              "s","s`","t","t`","v","w","x","z","z`","B","C","D","F","G","H","J","K","L","M","N","R","S","T","W","X","Z",
+              "4","5","?","ts","tS","dz","dZ","tK","kp","Nm","rr","ss","ts_h","k_h","p_h","t_h","ts_hs","tss"]
 
 # ----------------------------------------------------------------------------
 # Functions
@@ -68,30 +72,39 @@ consonants = [ "b","b_<","c","d","d`","f","g","g_<","h","j","k","l","l`","m","n"
 # Functions to manage input annotated files
 
 
-def get_tier(filename, tieridx):
-    """ Returns the tier of the given index in an annotated filename,
-    or None if some error occurs..
+def get_tier(filename, tier_idx):
+    """ Returns the tier of the given index in an annotated file.
+
+    :param filename: Name of the annotated file
+    :param tier_idx: Index of the tier to get
+    :returns: Tier or None
 
     """
     try:
-        trsinput = sppas.src.annotationdata.aio.read(filename)
+        trs_input = sppas.src.annotationdata.aio.read(filename)
     except Exception:
         return None
-    if tieridx < 0 or tieridx >= trsinput.GetSize():
+    if tier_idx < 0 or tier_idx >= trs_input.GetSize():
         return None
 
-    return trsinput[tieridx]
+    return trs_input[tier_idx]
 
 
-def get_tiers(reffilename, hypfilename, refidx, hypidx):
-    """ Returns 2 tiers: reference and hypothesis from 2 given annotated files,
-    or None if some error occurs.
+def get_tiers(ref_filename, hyp_filename, ref_idx=0, hyp_idx=0):
+    """ Returns a reference and an hypothesis tier from annotated files.
+
+    :param ref_filename: Name of the annotated file with the reference
+    :param hyp_filename: Name of the annotated file with the hypothesis
+    :param ref_idx: (int)
+    :param hyp_idx: (int)
+
+    :returns: a tuple with Tier or None for both ref and hyp
 
     """
-    reftier = get_tier(reffilename, refidx)
-    hyptier = get_tier(hypfilename, hypidx)
+    ref_tier = get_tier(ref_filename, ref_idx)
+    hyp_tier = get_tier(hyp_filename, hyp_idx)
 
-    return reftier, hyptier
+    return ref_tier, hyp_tier
 
 
 # ----------------------------------------------------------------------------
@@ -106,8 +119,8 @@ def _eval_index(step, value):
 
 def _inc(vector, idx):
     if idx >= len(vector):
-        toadd = idx - len(vector) + 1
-        vector.extend([0]*toadd)
+        to_add = idx - len(vector) + 1
+        vector.extend([0]*to_add)
     vector[idx] += 1
 
 
@@ -140,13 +153,13 @@ def ubpa(vector, text, filename, summary=False):
         fp.write("|--------------------------------------------| \n")
         i = len(tabNeg)-1
         for value in reversed(tabNeg):
-            percent = ((value*100.)/(len(vector)-1))
+            percent = ((value*100.)/len(vector))
             fp.write("|  Delta-%s < -%.3f: " % (text, ((i+1)*step)))
             fp.write("%d (%.2f%%) \n" % (value, percent))
             i -= 1
         fp.write("|--------------------------------------------| \n")
         for i, value in enumerate(tabPos):
-            percent = round(((value*100.)/(len(vector)-1)), 3)
+            percent = round(((value*100.)/len(vector)), 3)
             fp.write("|  Delta-%s < +%.3f: " % (text, ((i+1)*step)))
             fp.write("%d (%.2f%%)\n" % (value, percent))
         fp.write("|--------------------------------------------| \n")
@@ -160,14 +173,14 @@ def ubpa(vector, text, filename, summary=False):
         percentsum = 0
         for value in reversed(tabNeg):
             if (i+1)*step < 0.05:
-                percent = ((value*100.)/(len(vector)-1))
+                percent = ((value*100.)/len(vector))
                 print("|  Delta-{:s} < -{:f}: {:d} ({:f}%)".format(text, (i+1)*step, value, percent))
                 percentsum += percent
             i -= 1
         print("|--------------------------------------------| ")
         for i, value in enumerate(tabPos):
             if (i+1)*step < 0.05:
-                percent = round(((value*100.)/(len(vector)-1)), 3)
+                percent = round(((value*100.)/len(vector)), 3)
                 print("|  Delta-{:s} < +{:f}: {:d} ({:f}%)".format(text, (i+1)*step, value, percent))
                 percentsum += percent
         print("|--------------------------------------------| ")
@@ -443,6 +456,8 @@ for f in files:
 
     for rann, hann in zip(reftier, hyptier):
         etiquette = rann.GetLabel().GetValue()
+        if etiquette == "#":
+            continue
         # begin
         rb = rann.GetLocation().GetBegin().GetValue()
         hb = hann.GetLocation().GetBegin().GetValue()

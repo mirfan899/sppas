@@ -435,9 +435,25 @@ class AcModel(object):
 
     # -----------------------------------------------------------------------
 
-    def merge_model(self, other, gamma=1.):
+    def compare_mfcc(self, other):
+        """ Compare MFCC parameter kind with another one.
+
+        :param other: (AcModel)
+        :returns: bool
+
         """
-        Merge another model with self.
+        my_param = self.get_mfcc_parameter_kind().lower()
+        other_param = other.get_mfcc_parameter_kind().lower()
+
+        my_params = sorted(my_param.split('_'))
+        other_params = sorted(other_param.split('_'))
+        return my_params == other_params
+
+    # -----------------------------------------------------------------------
+
+    def merge_model(self, other, gamma=1.):
+        """ Merge another model with self.
+
         All new phones/biphones/triphones are added and the shared ones are
         combined using a static linear interpolation.
 
@@ -459,7 +475,7 @@ class AcModel(object):
 
         # Check the MFCC parameter kind:
         # we can only interpolate identical models.
-        if self.get_mfcc_parameter_kind() != other.get_mfcc_parameter_kind() :
+        if self.compare_mfcc(other) is False:
             raise TypeError('Can only merge models of identical MFCC parameter kind.')
 
         # Fill HMM states and transitions, i.e.:
