@@ -1,0 +1,74 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0 
+xmax = 13.7734920635 
+tiers? <exists> 
+size = 1 
+item []: 
+    item [1]:
+        class = "IntervalTier" 
+        name = "Transcription" 
+        xmin = 0 
+        xmax = 13.773492 
+        intervals: size = 15 
+        intervals [1]:
+            xmin = 0 
+            xmax = 0.589977324263 
+            text = "#" 
+        intervals [2]:
+            xmin = 0.589977324263 
+            xmax = 1.5215204066967212 
+            text = "Mey I tell you dat one." 
+        intervals [3]:
+            xmin = 1.5215204066967212 
+            xmax = 2.08993197279 
+            text = "#" 
+        intervals [4]:
+            xmin = 2.08993197279 
+            xmax = 3.1142859609548954 
+            text = "Dat one sef na lie." 
+        intervals [5]:
+            xmin = 3.1142859609548954 
+            xmax = 3.72494331066 
+            text = "#" 
+        intervals [6]:
+            xmin = 3.72494331066 
+            xmax = 6.22997732426 
+            text = "Dat one na lie, na people wey be sey de no wan" 
+        intervals [7]:
+            xmin = 6.22997732426 
+            xmax = 6.54494331066 
+            text = "#" 
+        intervals [8]:
+            xmin = 6.54494331066 
+            xmax = 7.698083517412871 
+            text = "mey mey I catch you." 
+        intervals [9]:
+            xmin = 7.698083517412871 
+            xmax = 8.314875089406952 
+            text = "#" 
+        intervals [10]:
+            xmin = 8.314875089406952 
+            xmax = 10.417154355914384 
+            text = "Na dem dey go spread dat kind rumour." 
+        intervals [11]:
+            xmin = 10.417154355914384 
+            xmax = 10.6349659864 
+            text = "#" 
+        intervals [12]:
+            xmin = 10.6349659864 
+            xmax = 11.00801899701016 
+            text = "forget." 
+        intervals [13]:
+            xmin = 11.00801899701016 
+            xmax = 12.2749659864 
+            text = "#" 
+        intervals [14]:
+            xmin = 12.2749659864 
+            xmax = 12.94 
+            text = "That girl ehn," 
+        intervals [15]:
+            xmin = 12.94 
+            xmax = 13.7734920635 
+            text = "#" 
