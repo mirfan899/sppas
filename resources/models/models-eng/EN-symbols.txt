@@ -29,7 +29,7 @@ ng  ; N     ; velar nasal                      ; thing
 ow  ; @U    ;                                  ; nose
 oy  ; OI    ;                                  ; noise
 p   ; p     ; voiceless bilabial plosive       ; pot
-r   ; r     ; alveolar trill                   ; wrong
+r   ; r\    ; alveolar approximant             ; red
 s   ; s     ; voiceless alveolar fricative     ; salt
 sh  ; S     ; voiceless postalveolar fricative ; shin
 t   ; t     ; voiceless alveolar plosive       ; top

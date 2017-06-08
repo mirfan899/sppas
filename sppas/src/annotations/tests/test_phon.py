@@ -101,14 +101,14 @@ class TestDictPhon( unittest.TestCase ):
         dd = DictPron(dictfile)
         grph = sppasDictPhonetizer(dd)
         self.assertEqual(grph.get_phon_entry("THE"), "D-@|D-V|D-i:")
-        self.assertEqual(grph.get_phon_entry("UR"), "3:r|U-r")
-        self.assertEqual(grph.get_phon_entry("ARE"), "A-r|3:r")
+        self.assertEqual(grph.get_phon_entry("UR"), "3:r|U-r\\")
+        self.assertEqual(grph.get_phon_entry("ARE"), "A-r\|3:r")
         self.assertEqual(grph.get_phon_entry("BANC"), "b-{-N-k")
 
-        grph.set_maptable( mapt )
+        grph.set_maptable(mapt)
         the = "z-@|D-@|v-@|v-V|D-V|z-V|z-9|D-9|v-9|z-i:|z-i|D-i|v-i|D-i:|v-i:"
-        ur = "3:r|9-R|u-r|U-w|u-w|U-R|U-r|u-R"
-        are = "a-R|A-R|a-w|A-w|a-r|A-r|3:r|9-R"
+        ur = "3:r|9-R|u-r\|U-w|u-w|U-R|U-r\|u-R"
+        are = "a-R|A-R|a-w|A-w|a-r\|A-r\|3:r|9-R"
         self.assertEqual(set(grph.get_phon_entry("THE").split("|")), set(the.split("|")))
         self.assertEqual(set(grph.get_phon_entry("UR").split("|")), set(ur.split("|")))
         self.assertEqual(set(grph.get_phon_entry("ARE").split("|")), set(are.split("|")))
