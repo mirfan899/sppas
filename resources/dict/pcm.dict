@@ -47945,6 +47945,7 @@ girija [] g I r\ i: dZ @
 giriki [] g i r\ i k i 
 girl [] g E l 
 girl(2) [] g 3:r l 
+girl(3) [] g E 
 girl's [] g 3:r l z 
 girlfriend [] g E l f r\ E n d 
 girlfriend(2) [] g E f r\ E n d 
@@ -57834,6 +57835,7 @@ hyundai's [] h V n d eI z
 hyundais [] h j V n d eI z 
 i [] aI 
 i(2) [] i 
+i(3) [] a 
 i'd [] aI d 
 i'ers [] aI 3:r z 
 i'll [] aI l 
@@ -64842,6 +64844,7 @@ kincheloe [] k I n tS i l @U
 kinchen [] k I N k @ n 
 kincy [] k I n s i: 
 kind [] k aI n d 
+kind(2) [] k i~ 
 kinda [] k I n d @ 
 kindall [] k I n d @ l 
 kindel [] k I n d @ l 
@@ -70260,6 +70263,7 @@ lidgerwood [] l I dZ 3:r w U d
 lido [] l i: 4 @U 
 lids [] l I d z 
 lie [] l aI 
+lie(2) [] l a 
 lieb [] l i: b 
 liebe [] l i: b 
 liebel [] l i: b @ l 
@@ -86506,7 +86510,8 @@ ondo [] O: n d @U
 ondracek [] A n d r\ @ s E k 
 one [] w O n 
 one(2) [] w V n 
-one(3) [] h w V n 
+one(3) [] w  O~
+one(4) [] w O
 one's [] w V n z 
 one-legged [] w V n l E g @ d 
 one-up-manship [] w V n V p m { n S I p 
@@ -114201,7 +114206,7 @@ sprayers [] s p r\ eI 3:r z
 spraying [] s p r\ eI i N 
 sprays [] s p r\ eI z 
 spread [] s p r\ E d 
-spread(2) [] s p r\ E d 
+spread(2) [] s p r\ E
 spreader [] s p r\ E 4 3:r 
 spreading [] s p r\ E 4 i N 
 spreads [] s p r\ E d z 
