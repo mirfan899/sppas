@@ -1,4 +1,4 @@
-## Korean Resources
+## Korean
 
 #### List of phonemes
 

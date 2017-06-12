@@ -1,4 +1,4 @@
-## Spanish resources
+## Spanish
 
 #### List of phonemes
 

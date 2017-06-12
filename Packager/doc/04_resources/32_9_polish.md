@@ -1,30 +1,30 @@
-## Polish Resources
+## Polish
 
 #### List of phonemes
 
-| SPPAS | - IPA - | Examples             |
-|:-----:|:-------:|:---------------------|
-|   a   |   a     | |
+| SPPAS | - IPA - | Examples           |
+|:-----:|:-------:|:-------------------|
+|   a   |   a     | pat |
 |   b   |   b     | |
 |   c   |   c     | |
-|   x   |   ç     | |
 |   d   |   d     | |
-|   dz  |   d͡z    | |
-|   dZ  |   d͡ʒ    | |
-|   E   |   ɛ     | |
+|   dz  |   d͡z   | dzwon |
+|   dZ  |   d͡ʒ   | |
+|   E   |   ɛ     | test |
 |   E~  |   ɛ̃     | |
 |   f   |   f     | |
 |   g   |   g     | |
 |   x   |   h     | |
-|   i   |   i     | |
-|   j   |   j     | |
+|   i   |   i     | pit, bit |
+|   i   |   ɨ̞     | ryba |
+|   j   |   j     | jak |
 |   n   |   ɲ     | |
 |   k   |   k     | |
 |   l   |   l     | |
 |   m   |   m     | |
 |   n   |   n     | |
 |   N   |   ŋ     | |
-|   O   |   ɔ     | |
+|   O   |   ɔ     | pot |
 |   O   |   ɔː    | |
 |   o~  |   ɔ̃     | |
 |   p   |   p     | |
@@ -32,19 +32,20 @@
 |   r   |   r     | |
 |   r   |   ʀ     | |
 |   s   |   s     | |
-|   s`  |   ɕ     | |
+|   s\  |   ɕ     | świerszcz |
 |   S   |   ʃ     | |
 |   t   |   t     | |
 |   v   |   v     | |
 |   w   |   w     | |
 |   x   |   x     | |
+|   x   |   ç     | |
 |   y   |   y     | |
 |   z   |   z     | |
-|   ts  |   t͡s    | |
-|   tS  |   t͡ʃ    | |
+|   ts  |   t͡s   | |
+|   tS  |   t͡ʃ   | |
 |   s`  |   ʂ     | |
 |   u   |   u     | |
-|   z`  |   ʑ     | |
+|   z\  |   ʑ     | źrebak |
 |   Z   |   ʒ     | |
 
 

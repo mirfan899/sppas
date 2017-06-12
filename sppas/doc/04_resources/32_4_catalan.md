@@ -1,4 +1,4 @@
-## Catalan resources
+## Catalan
 
 #### List of phonemes
 

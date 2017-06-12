@@ -19,7 +19,7 @@
 |   N   |   ŋ   | sang  sink  singer   |
 |   T   |   θ   | thigh  math          |
 |   p   |   p   | pie  spy  cap        |
-|   r   |   r   | rye  try  very       |
+|   r\  |   ɹ   | red  try  very       |
 |   s   |   s   | sigh  mass           |
 |   S   |   ʃ   | shy  cash  emotion   |
 |   t   |   t   | tie  sty  cat  atom  |

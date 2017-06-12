@@ -1,4 +1,4 @@
-## Cantonese resources
+## Cantonese
 
 
 #### List of phonemes

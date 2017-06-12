@@ -1,4 +1,4 @@
-## French Resources
+## French
 
 #### List of phonemes
 
@@ -10,18 +10,18 @@
 |  E    |    ɛ    |  crème  est  faite  peine  |
 |  E    |    ɛː   |  fête  maître  mètre  reître  reine  caisse  Lemaistre  Lévesque  |
 | eu    |    ə    |  le  reposer  monsieur  faisons    |
-| eu    |    ø    |  ceux  jeûner  queue  deux    |
+| eu    |    ø    |  ceux  jeûner deux   |
 |  9    |    œ    |  sœur  jeune  neuf   |
 |  i    |    i    |  si  île  régie  y   |
 |  o    |    o    |  sot  hôtel  haut    |
 |  o    |    ɔ    |  sort  minimum       |
 |  u    |    u    |  coup  clown  roue   |
 |  y    |    y    |  tu  sûr  rue        |
-| a~    |    ɑ̃    |  sans  champ  vent  temps  Jean  taon   |
-| U~    |    ɛ̃    |  vin  impair  pain  daim  plein  Reims  synthèse  sympa  |
-| U~    |    œ̃    |  un  parfum          |
-| o~    |    ɔ̃    |  son  nom            |
-|  b    |    b    |  beau                |
+| a~    |    ɑ̃    |  sans  champ  vent  temps  Jean  taon |
+| U~    |    ɛ̃    |  vin pain brin printemps |
+| U~    |    œ̃    |  un  parfum  brun    |
+| o~    |    ɔ̃    |  son  nom bon        |
+|  b    |    b    |  beau bruit bébé     |
 |  d    |    d    |  doux                |
 |  f    |    f    |  fête   pharmacie    |
 |  g    |    ɡ    |  gain guerre  second |

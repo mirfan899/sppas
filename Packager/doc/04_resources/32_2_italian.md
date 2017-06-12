@@ -1,4 +1,4 @@
-## Italian resources
+## Italian
 
 #### List of phonemes
 

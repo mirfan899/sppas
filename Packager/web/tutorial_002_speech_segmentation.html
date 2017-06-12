@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <head>
-  <meta charset="utf-8">
-  <meta name="generator" content="pandoc">
-  <meta name="author" content="Brigitte Bigi">
+<meta charset="utf-8">
+  <meta name="author" content="Brigitte Bigi" />
   <title>SPPAS Tutorial</title>
-  <style type="text/css">code{white-space: pre-wrap;}</style>
-  <link rel="stylesheet" href="etc/styles/tuto.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="etc/styles/tuto.css" />
       <link rel="icon" href="./etc/icons/sppas.png" />
   
       <script type="text/javascript">
@@ -23,15 +22,14 @@
 <body>
 <section class="title">
   <h1 class="title">SPPAS Tutorial</h1>
-  <footer>
-    <span class="author">Brigitte Bigi</span> · <span class="date">Use the left/right arrow keys to show slides</span>
-  </footer>
+  <h2 class="author">Brigitte Bigi</h2>
+  <h3 class="date">Use the left/right arrow keys to show slides</h3>
 </section>
 <section id="phonemes-and-words-segmentation" class="titleslide slide level1">
 <h1>Phonemes and words segmentation</h1>
 </section>
 <section id="definition" class="slide level2">
-<h2>Definition</h2>
+<h1>Definition</h1>
 <ul>
 <li>the process of taking the orthographic transcription text of an audio speech segment, like <em>IPUs</em>, and determining where particular phonemes/words occur in this speech segment.</li>
 </ul>
@@ -39,7 +37,7 @@
 <em>IPUs</em> = Inter-Pausal Units</p>
 </section>
 <section id="data-preparation" class="slide level2">
-<h2>Data preparation</h2>
+<h1>Data preparation</h1>
 <ul>
 <li>Audio file with the following recommended conditions:
 <ul>
@@ -68,7 +66,7 @@
 </figure>
 </section>
 <section id="expected-result" class="slide level2">
-<h2>Expected result</h2>
+<h1>Expected result</h1>
 <ul>
 <li>Time-aligned phonemes and tokens and events like noises or laughter</li>
 </ul>
@@ -77,7 +75,7 @@
 </figure>
 </section>
 <section id="phonemes-and-words-segmentation-my-approach" class="slide level2">
-<h2>Phonemes and words segmentation: my approach</h2>
+<h1>Phonemes and words segmentation: my approach</h1>
 <ol type="1">
 <li>tokenization
 <ul>
@@ -291,7 +289,7 @@ LNAI 8387, Springer, Heidelberg. ISBN: 978-3-319-14120-6. Pages 515-526.</code>
 </figure>
 </section>
 <section id="phonetization" class="slide level2">
-<h2>Phonetization</h2>
+<h1>Phonetization</h1>
 <ul>
 <li>Phonetization is also known as grapheme-phoneme conversion</li>
 <li>Phonetization is the process of representing sounds with phonetic signs.</li>
@@ -393,7 +391,7 @@ LNAI 9561, Springer, Heidelberg. </code>
 </figure>
 </section>
 <section id="alignment" class="slide level2">
-<h2>Alignment</h2>
+<h1>Alignment</h1>
 <ul>
 <li>Alignment is also called phonetic segmentation</li>
 <li>The alignment problem consists in a time-matching between a given speech unit along with a phonetic representation of the unit.</li>
@@ -479,8 +477,8 @@ In 2nd Asian Pacific Corpus Linguistics Conference, pp. 32, Hong Kong.</code>
 </pre>
 </section>
 <section id="section" class="slide level2">
-<h2>
-</h2>
+<h1>
+</h1>
 <p>
 <a href="tutorial.html">Back to tutorials</a>
 </p>
@@ -505,50 +503,21 @@ In 2nd Asian Pacific Corpus Linguistics Conference, pp. 32, Hong Kong.</code>
 <!-- Default Style -->
 <style>
   * { margin: 0; padding: 0; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
-  [role="note"] { display: none; }
+  details { display: none; }
   body {
     width: 800px; height: 600px;
     margin-left: -400px; margin-top: -300px;
     position: absolute; top: 50%; left: 50%;
     overflow: hidden;
-    display: none;
   }
-  .view body {
-    position: static;
-    margin: 0; padding: 0;
-    width: 100%; height: 100%;
-    display: inline-block;
-    overflow: visible; overflow-x: hidden;
-    /* undo Dz.onresize */
-    transform: none !important;
-    -moz-transform: none !important;
-    -webkit-transform: none !important;
-    -o-transform: none !important;
-    -ms-transform: none !important;
-  }
-  .view head, .view head > title { display: block }
   section {
     position: absolute;
     pointer-events: none;
     width: 100%; height: 100%;
   }
-  .view section {
-    pointer-events: auto;
-    position: static;
-    width: 800px; height: 600px;
-    margin: -150px -200px;
-    float: left;
-
-    transform: scale(.4);
-    -moz-transform: scale(.4);
-    -webkit-transform: scale(.4);
-    -o-transform: scale(.4);
-    -ms-transform: scale(.4);
-  }
-  .view section > * { pointer-events: none; }
   section[aria-selected] { pointer-events: auto; }
   html { overflow: hidden; }
-  html.view { overflow: visible; }
+  body { display: none; }
   body.loaded { display: block; }
   .incremental {visibility: hidden; }
   .incremental[active] {visibility: visible; }
@@ -560,9 +529,6 @@ In 2nd Asian Pacific Corpus Linguistics Conference, pp. 32, Hong Kong.</code>
     -ms-transition: width 400ms linear 0s;
     transition: width 400ms linear 0s;
   }
-  .view #progress-bar {
-    display: none;
-  }
 </style>
 
 <script>
@@ -570,7 +536,6 @@ In 2nd Asian Pacific Corpus Linguistics Conference, pp. 32, Hong Kong.</code>
     remoteWindows: [],
     idx: -1,
     step: 0,
-    html: null,
     slides: null,
     progressBar : null,
     params: {
@@ -580,16 +545,14 @@ In 2nd Asian Pacific Corpus Linguistics Conference, pp. 32, Hong Kong.</code>
 
   Dz.init = function() {
     document.body.className = "loaded";
-    this.slides = Array.prototype.slice.call($$("body > section"));
+    this.slides = $$("body > section");
     this.progressBar = $("#progress-bar");
-    this.html = document.body.parentNode;
     this.setupParams();
     this.onhashchange();
     this.setupTouchEvents();
     this.onresize();
-    this.setupView();
   }
-
+  
   Dz.setupParams = function() {
     var p = window.location.search.substr(1).split('&');
     p.forEach(function(e, i, a) {
@@ -639,10 +602,6 @@ In 2nd Asian Pacific Corpus Linguistics Conference, pp. 32, Hong Kong.</code>
       aEvent.preventDefault();
       this.goFullscreen();
     }
-    if (aEvent.keyCode == 79) { // o
-      aEvent.preventDefault();
-      this.toggleView();
-    }
   }
 
   /* Touch Events */
@@ -676,16 +635,6 @@ In 2nd Asian Pacific Corpus Linguistics Conference, pp. 32, Hong Kong.</code>
     }
   }
 
-  Dz.setupView = function() {
-    document.body.addEventListener("click", function ( e ) {
-      if (!Dz.html.classList.contains("view")) return;
-      if (!e.target || e.target.nodeName != "SECTION") return;
-
-      Dz.html.classList.remove("view");
-      Dz.setCursor(Dz.slides.indexOf(e.target) + 1);
-    }, false);
-  }
-
   /* Adapt the size of the slides to the window */
 
   Dz.onresize = function() {
@@ -702,9 +651,9 @@ In 2nd Asian Pacific Corpus Linguistics Conference, pp. 32, Hong Kong.</code>
   }
 
 
-  Dz.getNotes = function(aIdx) {
+  Dz.getDetails = function(aIdx) {
     var s = $("section:nth-of-type(" + aIdx + ")");
-    var d = s.$("[role='note']");
+    var d = s.$("details");
     return d ? d.innerHTML : "";
   }
 
@@ -733,7 +682,7 @@ In 2nd Asian Pacific Corpus Linguistics Conference, pp. 32, Hong Kong.</code>
     if (argv[0] === "GET_CURSOR" && argc === 1)
       this.postMsg(win, "CURSOR", this.idx + "." + this.step);
     if (argv[0] === "GET_NOTES" && argc === 1)
-      this.postMsg(win, "NOTES", this.getNotes(this.idx));
+      this.postMsg(win, "NOTES", this.getDetails(this.idx));
   }
 
   Dz.toggleContent = function() {
@@ -817,14 +766,6 @@ In 2nd Asian Pacific Corpus Linguistics Conference, pp. 32, Hong Kong.</code>
     this.setCursor(lastIdx, lastStep);
   }
 
-  Dz.toggleView = function() {
-    this.html.classList.toggle("view");
-
-    if (this.html.classList.contains("view")) {
-      $("section[aria-selected]").scrollIntoView(true);
-    }
-  }
-
   Dz.setSlide = function(aIdx) {
     this.idx = aIdx;
     var old = $("section[aria-selected]");
@@ -838,9 +779,6 @@ In 2nd Asian Pacific Corpus Linguistics Conference, pp. 32, Hong Kong.</code>
     }
     if (next) {
       next.setAttribute("aria-selected", "true");
-      if (this.html.classList.contains("view")) {
-        next.scrollIntoView();
-      }
       var video = next.$("video");
       if (video && !!+this.params.autoplay) {
         video.play();

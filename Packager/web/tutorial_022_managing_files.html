@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <head>
-  <meta charset="utf-8">
-  <meta name="generator" content="pandoc">
-  <meta name="author" content="Brigitte Bigi">
+<meta charset="utf-8">
+  <meta name="author" content="Brigitte Bigi" />
   <title>SPPAS Tutorial</title>
-  <style type="text/css">code{white-space: pre-wrap;}</style>
-  <link rel="stylesheet" href="etc/styles/tuto.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="etc/styles/tuto.css" />
       <link rel="icon" href="./etc/icons/sppas.png" />
   
       <script type="text/javascript">
@@ -23,15 +22,14 @@
 <body>
 <section class="title">
   <h1 class="title">SPPAS Tutorial</h1>
-  <footer>
-    <span class="author">Brigitte Bigi</span> · <span class="date">Use the left/right arrow keys to show slides</span>
-  </footer>
+  <h2 class="author">Brigitte Bigi</h2>
+  <h3 class="date">Use the left/right arrow keys to show slides</h3>
 </section>
 <section id="manage-files" class="titleslide slide level1">
 <h1>Manage files</h1>
 </section>
 <section id="overview" class="slide level2">
-<h2>Overview</h2>
+<h1>Overview</h1>
 <figure>
 <img src="./etc/screenshots/FLP.png" alt="File List Panel (FLP)" />
 <figcaption>File List Panel (FLP)</figcaption>
@@ -41,37 +39,37 @@
 </ul>
 </section>
 <section id="add-files" class="slide level2">
-<h2>Add file(s)</h2>
+<h1>Add file(s)</h1>
 <figure>
 <video width=480 controls src="./etc/screencasts/sppas-flp-add.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-flp-add.vtt"  default></video>
 </figure>
 </section>
 <section id="add-dir" class="slide level2">
-<h2>Add dir</h2>
+<h1>Add dir</h1>
 <figure>
 <video width=480 controls src="./etc/screencasts/sppas-flp-adddir.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-flp-adddir.vtt"  default></video>
 </figure>
 </section>
 <section id="remove-files" class="slide level2">
-<h2>Remove file(s)</h2>
+<h1>Remove file(s)</h1>
 <figure>
 <video width=480 controls src="./etc/screencasts/sppas-flp-remove.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-flp-remove.vtt"  default></video>
 </figure>
 </section>
 <section id="copy-file" class="slide level2">
-<h2>Copy file</h2>
+<h1>Copy file</h1>
 <figure>
 <video width=480 controls src="./etc/screencasts/sppas-flp-copy.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-flp-copy.vtt"  default></video>
 </figure>
 </section>
 <section id="exportconvert-files" class="slide level2">
-<h2>Export/Convert file(s)</h2>
+<h1>Export/Convert file(s)</h1>
 <figure>
 <video width=480 controls src="./etc/screencasts/sppas-flp-export.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-flp-export.vtt"  default></video>
 </figure>
 </section>
 <section id="delete-files" class="slide level2">
-<h2>Delete file(s)</h2>
+<h1>Delete file(s)</h1>
 <figure>
 <video width=480 controls src="./etc/screencasts/sppas-flp-delete.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-flp-delete.vtt"  default></video>
 </figure>
@@ -104,50 +102,21 @@
 <!-- Default Style -->
 <style>
   * { margin: 0; padding: 0; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
-  [role="note"] { display: none; }
+  details { display: none; }
   body {
     width: 800px; height: 600px;
     margin-left: -400px; margin-top: -300px;
     position: absolute; top: 50%; left: 50%;
     overflow: hidden;
-    display: none;
   }
-  .view body {
-    position: static;
-    margin: 0; padding: 0;
-    width: 100%; height: 100%;
-    display: inline-block;
-    overflow: visible; overflow-x: hidden;
-    /* undo Dz.onresize */
-    transform: none !important;
-    -moz-transform: none !important;
-    -webkit-transform: none !important;
-    -o-transform: none !important;
-    -ms-transform: none !important;
-  }
-  .view head, .view head > title { display: block }
   section {
     position: absolute;
     pointer-events: none;
     width: 100%; height: 100%;
   }
-  .view section {
-    pointer-events: auto;
-    position: static;
-    width: 800px; height: 600px;
-    margin: -150px -200px;
-    float: left;
-
-    transform: scale(.4);
-    -moz-transform: scale(.4);
-    -webkit-transform: scale(.4);
-    -o-transform: scale(.4);
-    -ms-transform: scale(.4);
-  }
-  .view section > * { pointer-events: none; }
   section[aria-selected] { pointer-events: auto; }
   html { overflow: hidden; }
-  html.view { overflow: visible; }
+  body { display: none; }
   body.loaded { display: block; }
   .incremental {visibility: hidden; }
   .incremental[active] {visibility: visible; }
@@ -159,9 +128,6 @@
     -ms-transition: width 400ms linear 0s;
     transition: width 400ms linear 0s;
   }
-  .view #progress-bar {
-    display: none;
-  }
 </style>
 
 <script>
@@ -169,7 +135,6 @@
     remoteWindows: [],
     idx: -1,
     step: 0,
-    html: null,
     slides: null,
     progressBar : null,
     params: {
@@ -179,16 +144,14 @@
 
   Dz.init = function() {
     document.body.className = "loaded";
-    this.slides = Array.prototype.slice.call($$("body > section"));
+    this.slides = $$("body > section");
     this.progressBar = $("#progress-bar");
-    this.html = document.body.parentNode;
     this.setupParams();
     this.onhashchange();
     this.setupTouchEvents();
     this.onresize();
-    this.setupView();
   }
-
+  
   Dz.setupParams = function() {
     var p = window.location.search.substr(1).split('&');
     p.forEach(function(e, i, a) {
@@ -238,10 +201,6 @@
       aEvent.preventDefault();
       this.goFullscreen();
     }
-    if (aEvent.keyCode == 79) { // o
-      aEvent.preventDefault();
-      this.toggleView();
-    }
   }
 
   /* Touch Events */
@@ -275,16 +234,6 @@
     }
   }
 
-  Dz.setupView = function() {
-    document.body.addEventListener("click", function ( e ) {
-      if (!Dz.html.classList.contains("view")) return;
-      if (!e.target || e.target.nodeName != "SECTION") return;
-
-      Dz.html.classList.remove("view");
-      Dz.setCursor(Dz.slides.indexOf(e.target) + 1);
-    }, false);
-  }
-
   /* Adapt the size of the slides to the window */
 
   Dz.onresize = function() {
@@ -301,9 +250,9 @@
   }
 
 
-  Dz.getNotes = function(aIdx) {
+  Dz.getDetails = function(aIdx) {
     var s = $("section:nth-of-type(" + aIdx + ")");
-    var d = s.$("[role='note']");
+    var d = s.$("details");
     return d ? d.innerHTML : "";
   }
 
@@ -332,7 +281,7 @@
     if (argv[0] === "GET_CURSOR" && argc === 1)
       this.postMsg(win, "CURSOR", this.idx + "." + this.step);
     if (argv[0] === "GET_NOTES" && argc === 1)
-      this.postMsg(win, "NOTES", this.getNotes(this.idx));
+      this.postMsg(win, "NOTES", this.getDetails(this.idx));
   }
 
   Dz.toggleContent = function() {
@@ -416,14 +365,6 @@
     this.setCursor(lastIdx, lastStep);
   }
 
-  Dz.toggleView = function() {
-    this.html.classList.toggle("view");
-
-    if (this.html.classList.contains("view")) {
-      $("section[aria-selected]").scrollIntoView(true);
-    }
-  }
-
   Dz.setSlide = function(aIdx) {
     this.idx = aIdx;
     var old = $("section[aria-selected]");
@@ -437,9 +378,6 @@
     }
     if (next) {
       next.setAttribute("aria-selected", "true");
-      if (this.html.classList.contains("view")) {
-        next.scrollIntoView();
-      }
       var video = next.$("video");
       if (video && !!+this.params.autoplay) {
         video.play();

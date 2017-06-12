@@ -1,4 +1,4 @@
-## Portuguese Resources
+## Portuguese
 
 #### List of phonemes
 

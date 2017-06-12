@@ -1,4 +1,4 @@
-## Southern Min (or Min Nan) resources
+## Southern Min (or Min Nan)
 
 #### List of phonemes
 
