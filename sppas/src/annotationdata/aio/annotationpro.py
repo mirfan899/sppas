@@ -303,7 +303,6 @@ class Antx(Transcription):
 
             for key, value in self.metadata.items():
                 if key not in ELT_REQUIRED_Configuration.keys():
-                    print(key, value)
                     Antx.__format_configuration(root, key, self.metadata.get(key, value))
 
             indent(root)
