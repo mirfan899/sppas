@@ -29,7 +29,7 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.tokenize.py
+    src.annotations.normalize.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Multilingual text normalization system.

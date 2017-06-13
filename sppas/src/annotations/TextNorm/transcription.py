@@ -63,19 +63,19 @@ class sppasTranscription(object):
     - Transcription:   j'ai on a j'ai p- (en)fin j'ai trouvé l(e) meilleur moyen c'était d(e) [loger,locher] chez  des amis
     (English translation is: I've we've I've - well I found the best way was to live in friends' apartment')
 
-    - Resulting Standard tokens:  j' ai on a j' ai p- enfin j' ai trouvé le meilleur moyen c'était de loger  chez  des amis
-    - Resulting Faked tokens:     j' ai on a j' ai p-   fin j' ai trouvé l  meilleur moyen c'était d  loche  chez  des amis
+    - Resulting Standard tokens:  j' ai on a j' ai p- enfin j' ai trouvé le meilleur moyen c' était de loger  chez  des amis
+    - Resulting Faked tokens:     j' ai on a j' ai p-   fin j' ai trouvé l  meilleur moyen c' était d  loche  chez  des amis
 
     """
     def __init__(self):
         pass
 
     def __replace(self, obj):
-        """
-        Callback for clean_toe.
+        """ Callback for clean_toe.
 
-        @param obj (MatchObject)
-        @return string
+        :param obj: (MatchObject)
+        :returns: (str)
+
         """
         # Left part
         # Remove parentheses
@@ -91,12 +91,11 @@ class sppasTranscription(object):
         return " [{:s},{:s}]".format(left, right)
 
     def clean_toe(self, entry):
-        """
-        Clean Enriched Orthographic Transcription.
+        """ Clean Enriched Orthographic Transcription.
         The convention includes information that must be removed.
 
-        @param entry (string)
-        @return string
+        :param entry: (str)
+        :returns: (str)
 
         """
         # Proper names: $ name ,P\$
@@ -118,17 +117,18 @@ class sppasTranscription(object):
     # ------------------------------------------------------------------
 
     def toe_spelling(self, entry, std=False):
-        """
-        Create a specific spelling from an Enriched Orthographic Transcription.
+        """ Create a specific spelling from an Enriched Orthographic Transcription.
 
-        @param entry (string): the EOT string
-        @return a string.
+        :param entry: (str) the EOT string
+        :param std: (bool) Standard spelling expected instead of the Faked one.
+        :returns: (str)
 
         DevNote: Python’s regular expression engine supports Unicode.
         It can apply the same pattern to either 8-bit (encoded) or
         Unicode strings. To create a regular expression pattern that
         uses Unicode character classes for \w (and \s, and \b), use
         the “(?u)” flag prefix, or the re.UNICODE flag.
+
         """
         # Ensure all regexp will work!
         _fentry = " " + u(entry) + " "
@@ -155,8 +155,6 @@ class sppasTranscription(object):
         _fentry = re.sub(u'\\{[\s\w\xaa-\xff\-:]+\\}', ur'', _fentry, re.UNICODE)
         # Transcriptor comment's: [comment]
         _fentry = re.sub(u'\\[[\s\w\xaa-\xff\-:]+\\]', ur'', _fentry, re.UNICODE)
-        # Transcription comment's: (comment)
-        # _fentry = re.sub(u' \\([\s\w\xaa-\xff\-:]+\\) ', ur'', _fentry, re.UNICODE) # .... warning!
 
         if std is False:
             # Special elisions (remove parenthesis content)
@@ -182,20 +180,22 @@ class sppasTranscription(object):
         _fentry = re.sub(u',\s?[PTS]+\s?[\\/\\\]+\s?\\$', ur'', _fentry, re.UNICODE)
         _fentry = re.sub(u'\\$', ur'', _fentry, re.UNICODE)
 
-        # Add a space if some punctuation are sticked to a word
+        # Add a whitespace if some punctuation are sticked to a word
         # TODO: do the same with the whole list of punctuations (in rutils).
         #        _fentry = re.sub(u'([:+^@}\(\){~|=]+)([\xaa-\xff]+)', ur'\1 \2', _fentry, re.UNICODE)
-        _fentry = re.sub(u'([\w\xaa-\xff]+),', ur'\1 ,', _fentry, re.UNICODE)
-        _fentry = re.sub(u'([\w\xaa-\xff]+)\+', ur'\1 +', _fentry, re.UNICODE)
-        _fentry = re.sub(u'([\w\xaa-\xff]+);', ur'\1 ,', _fentry, re.UNICODE)
-        _fentry = re.sub(u'([\w\xaa-\xff]+):', ur'\1 :', _fentry, re.UNICODE)
-        _fentry = re.sub(u'([\w\xaa-\xff]+)\(', ur'\1 (', _fentry, re.UNICODE)
-        _fentry = re.sub(u'([\w\xaa-\xff]+)\)', ur'\1)', _fentry, re.UNICODE)
-        _fentry = re.sub(u'([\w\xaa-\xff]+)\{', ur'\1 {', _fentry, re.UNICODE)
-        _fentry = re.sub(u'([\w\xaa-\xff]+)\}', ur'\1 }', _fentry, re.UNICODE)
-        _fentry = re.sub(u'([\w\xaa-\xff]+)=', ur'\1 =', _fentry, re.UNICODE)
-        _fentry = re.sub(u'([\w\xaa-\xff]+)\?', ur'\1 ?', _fentry, re.UNICODE)
-        _fentry = re.sub(u'([\w\xaa-\xff]+)\!', ur'\1 !', _fentry, re.UNICODE)
+        _fentry = re.sub(u'([\w\xaa-\xff]+),', ur'\1 ,', _fentry, re.UNICODE)   # ,
+        _fentry = re.sub(u'([\w\xaa-\xff]+)\+', ur'\1 +', _fentry, re.UNICODE)  # +
+        _fentry = re.sub(u'([\w\xaa-\xff]+);', ur'\1 ,', _fentry, re.UNICODE)   # ;
+        _fentry = re.sub(u'([\w\xaa-\xff]+):', ur'\1 :', _fentry, re.UNICODE)   # :
+        _fentry = re.sub(u'([\w\xaa-\xff]+)\(', ur'\1 (', _fentry, re.UNICODE)  # (
+        _fentry = re.sub(u'([\w\xaa-\xff]+)\)', ur'\1)', _fentry, re.UNICODE)   # )
+        _fentry = re.sub(u'([\w\xaa-\xff]+)\{', ur'\1 {', _fentry, re.UNICODE)  # {
+        _fentry = re.sub(u'([\w\xaa-\xff]+)\}', ur'\1 }', _fentry, re.UNICODE)  # }
+        _fentry = re.sub(u'([\w\xaa-\xff]+)=', ur'\1 =', _fentry, re.UNICODE)   # =
+        _fentry = re.sub(u'([\w\xaa-\xff]+)\?', ur'\1 ?', _fentry, re.UNICODE)  # ?
+        _fentry = re.sub(u'([\w\xaa-\xff]+)\!', ur'\1 !', _fentry, re.UNICODE)  # !
+        _fentry = re.sub(u'([\w\xaa-\xff]+)"', ur'\1 "', _fentry, re.UNICODE)   # "
+        _fentry = re.sub(u'"([\w\xaa-\xff,.?:\(\)\{\}=]+)', ur'" \1', _fentry, re.UNICODE)   # "
         # _fentry = re.sub(u'([\w\xaa-\xff]+)\/', ur'\1 !', _fentry, re.UNICODE) # no: if sampa in special pron.
         _fentry = re.sub(u"\s(?=,[0-9]+)", "", _fentry, re.UNICODE)
 

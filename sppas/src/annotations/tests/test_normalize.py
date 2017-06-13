@@ -76,6 +76,11 @@ class TestDictTok(unittest.TestCase):
         s = self.tok.replace(text)
         self.assertEquals(" ".join(s), u"的平方 个百分比 摄氏度 公里每小时 etc € ¥ $")
 
+    def test_toe_spelling(self):
+        t = sppasTranscription()
+        s = t.toe_spelling(u'je, fais: "un essai".')
+        self.assertEqual(s, u'je , fais : " un essai " .')
+
     def test_clean_toe(self):
         t = sppasTranscription()
         s = t.clean_toe(u'(il) (ne) faut pas rêver')
