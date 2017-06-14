@@ -1,40 +1,38 @@
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: sppasalign.py
-# ----------------------------------------------------------------------------
+# -*- coding: utf8 -*-
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.annotations.Align.sppasalign.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import shutil
 import os.path
 import glob
@@ -54,6 +52,8 @@ from sppas.src.models.acm.modelmixer import ModelMixer
 
 from .. import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
 from ..baseannot import sppasBaseAnnotation
+from ..annotationsexc import AnnotationOptionError
+
 from .alignio import AlignIO
 from .activity import Activity
 
@@ -62,82 +62,82 @@ from .activity import Activity
 
 class sppasAlign(sppasBaseAnnotation):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      SPPAS integration of the Alignment automatic annotation.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      SPPAS integration of the Alignment automatic annotation.
 
-    This class can produce 1 up to 4 tiers with names:
+    This class can produce 1 up to 5 tiers with names:
 
-        - PhonAlign,
-        - TokensAlign (if tokens are given in the input).
-        - PhnTokAlign - option (if tokens are given in the input),
-        - Activity    - option (if tokens are given in the input),
+        - PhonAlign
+        - TokensAlign (if tokens are given in the input)
+        - PhnTokAlign - option (if tokens are given in the input)
+        - Activity - option (if tokens are given in the input)
+        - ActivityDuration - option (if tokens are given in the input)
 
     How to use sppasAlign?
 
-    >>> a = sppasAlign(modeldirname)
-    >>> a.run(inputphonesname, inputtokensname, inputaudioname, outputfilename)
+    >>> a = sppasAlign(model_dirname)
+    >>> a.run(input_phones_filename, input_tokens_filename, input_audio_filename, output_filename)
 
     """
     def __init__(self, model, modelL1=None, logfile=None):
-        """
-        Create a new sppasAlign instance.
+        """ Create a new sppasAlign instance.
 
-        @param model (str) the acoustic model directory name of the language of the text
-        @param modelL1 (str) the acoustic model directory name of the mother language of the speaker
-        @param logfile (sppasLog)
+        :param model: (str) Name of the directory of the acoustic model of the language of the text
+        :param modelL1: (str) Name of the directory of the acoustic model of the mother language of the speaker
+        :param logfile: (sppasLog)
 
         """
         sppasBaseAnnotation.__init__(self, logfile)
 
         # Members: self.alignio
-        self.fix_segmenter(model,modelL1)
+        self.fix_segmenter(model, modelL1)
         self.reset()
+        mapping = Mapping()
+        self.alignio = None
 
     # ------------------------------------------------------------------
 
     def reset(self):
-        """
-        Set default values.
+        """ Set default values.
 
         """
         # List of options to configure this automatic annotation
-        self._options = {}
-        self._options['clean']    = True  # Remove temporary files
-        self._options['infersp']  = False # Add 'sp' at the end of each token
-        self._options['basic']    = False # Perform a basic alignment if error
-        self._options['activity'] = True
+        self._options = dict()
+        self._options['clean'] = True     # Remove temporary files
+        self._options['infersp'] = False  # Add 'sp' at the end of each token
+        self._options['basic'] = False    # Perform a basic alignment if error
+        self._options['activity'] = True  # Add the Activity tier
         self._options['activityduration'] = False
-        self._options['phntok']   = False
+        self._options['phntok'] = False   # Add the PhnTokAlign tier
 
     # -----------------------------------------------------------------------
 
     def fix_segmenter(self, model, modelL1):
-        """
-        Fix the acoustic model directory, then create a SpeechSegmenter and AlignerIO.
+        """ Fix the acoustic model directory, then create a SpeechSegmenter and AlignerIO.
 
-        @param model is the acoustic model directory name of the language of the text,
-        @param modelL1 is the acoustic model directory name of the mother language of the speaker,
+        :param model: (str) Name of the directory of the acoustic model of the language of the text
+        :param modelL1: (str) Name of the directory of the acoustic model of the mother language of the speaker
 
         """
         if modelL1 is not None:
             try:
-                modelmixer = ModelMixer()
-                modelmixer.load(model,modelL1)
-                outputdir = os.path.join(RESOURCES_PATH, "models", "models-mix")
-                modelmixer.mix(outputdir, gamma=1.)
-                model = outputdir
+                model_mixer = ModelMixer()
+                model_mixer.load(model, modelL1)
+                output_dir = os.path.join(RESOURCES_PATH, "models", "models-mix")
+                model_mixer.mix(output_dir, gamma=0.5)
+                model = output_dir
             except Exception as e:
-                self.print_message("The model is ignored: %s"%str(e), indent=3, status=WARNING_ID)
+                self.print_message("The model of L1 is ignored: %s" % str(e), indent=3, status=WARNING_ID)
 
         # Map phoneme names from model-specific to SAMPA and vice-versa
-        mappingfilename = os.path.join(model, "monophones.repl")
-        if os.path.isfile(mappingfilename):
+        mapping_filename = os.path.join(model, "monophones.repl")
+        if os.path.isfile(mapping_filename):
             try:
-                mapping = Mapping(mappingfilename)
+                mapping = Mapping(mapping_filename)
             except Exception:
                 mapping = Mapping()
         else:
@@ -151,10 +151,17 @@ class sppasAlign(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def fix_options(self, options):
-        """
-        Fix all options.
+        """ Fix all options. Available options are:
 
-        @param options (option)
+            - clean
+            - basic
+            - aligner
+            - infersp
+            - activity
+            - activityduration
+            - phntok
+
+        :param options: (sppasOption)
 
         """
         for opt in options:
@@ -183,15 +190,14 @@ class sppasAlign(sppasBaseAnnotation):
                 self.set_phntokalign_tier(opt.get_value())
 
             else:
-                raise KeyError('Unknown key option: %s'%key)
+                raise AnnotationOptionError(key)
 
     # ----------------------------------------------------------------------
 
     def set_clean(self, clean):
-        """
-        Fix the clean option.
+        """ Fix the clean option.
 
-        @param clean (bool - IN) If clean is set to True then temporary files
+        :param clean: (bool) If clean is set to True then temporary files
         will be removed.
 
         """
@@ -200,12 +206,12 @@ class sppasAlign(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def set_aligner(self, alignername):
-        """
-        Fix the name of the aligner.
+        """ Fix the name of the aligner.
+
         The list of accepted aligner names is available in:
         >>> aligners.aligner_names()
 
-        @param alignername (str - IN) Case-insensitive name of the aligner.
+        :param alignername: (str) Case-insensitive name of the aligner.
 
         """
         self.alignio.set_aligner(alignername)
@@ -214,12 +220,11 @@ class sppasAlign(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def set_infersp(self, infersp):
-        """
-        Fix the infersp option.
+        """ Fix the infersp option.
 
-        @param infersp (bool - IN) If infersp is set to True, the aligner
-        will add an optional short pause at the end of each token, and the
-        will infer if it is relevant.
+        :param infersp: (bool) When set to True, the aligner adds an optional
+        short pause at the end of each token, and it will infer it.
+        Unfortunately... it does not really work as we expected!
 
         """
         self.alignio.set_infersp(infersp)
@@ -227,11 +232,10 @@ class sppasAlign(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def set_basic(self, basic):
-        """
-        Fix the basic option.
+        """ Fix the basic option.
 
-        @param basic (bool - IN) If basic is set to True, a basic segmentation
-        will be performer if the main aligner fails.
+        :param basic: (bool) If basic is set to True, a basic segmentation
+        will be performed if the main aligner fails.
 
         """
         self._options['basic'] = basic
@@ -239,10 +243,9 @@ class sppasAlign(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def set_activity_tier(self, value):
-        """
-        Fix the activity option.
+        """ Fix the activity option.
 
-        @param value (bool - IN) Activity tier generation.
+        :param value: (bool) Activity tier generation.
 
         """
         self._options['activity'] = bool(value)
@@ -250,10 +253,9 @@ class sppasAlign(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def set_activityduration_tier(self, value):
-        """
-        Fix the activity duration option.
+        """ Fix the activity duration option.
 
-        @param value (bool - IN) Activity tier generation.
+        :param value: (bool) Activity tier generation.
 
         """
         self._options['activityduration'] = bool(value)
@@ -261,10 +263,9 @@ class sppasAlign(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def set_phntokalign_tier(self, value):
-        """
-        Fix the phntok option.
+        """ Fix the phntok option.
 
-        @param value (bool - IN) PhnTokAlign tier generation.
+        :param value: (bool) PhnTokAlign tier generation.
 
         """
         self._options['phntok'] = bool(value)
@@ -274,11 +275,10 @@ class sppasAlign(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def convert_tracks(self, diralign, trstier):
-        """
-        Call the Aligner to align each unit of a directory.
+        """ Call the Aligner to align each unit of a directory.
 
-        @param diralign is the directory to get units and put alignments.
-        @param trstier (Tier) required only if basic alignment.
+        :param diralign: the directory to get units and put alignments.
+        :param trstier: (Tier) required only if basic alignment.
 
         """
         # Verify if the directory exists
@@ -297,7 +297,7 @@ class sppasAlign(sppasBaseAnnotation):
 
             try:
                 msg = self.alignio.segment_track(track,diralign)
-                if len(msg)>0:
+                if len(msg) > 0:
                     self.print_message(msg, indent=3, status=INFO_ID)
 
             except Exception as e:
@@ -312,25 +312,24 @@ class sppasAlign(sppasBaseAnnotation):
                         self.logfile.print_message('Execute a Basic Alignment - same duration for each phoneme:', indent=3)
                     alignerid = self.alignio.get_aligner()
                     self.alignio.set_aligner('basic')
-                    msg = self.alignio.segment_track(track,diralign)
+                    msg = self.alignio.segment_track(track, diralign)
                     self.alignio.set_aligner(alignerid)
                 # or Create an empty alignment, to get an empty interval in the final tier
                 else:
-                    msg = self.alignio.segment_track(track,diralign,segment=False)
+                    msg = self.alignio.segment_track(track, diralign, segment=False)
 
             track = track + 1
 
     # ------------------------------------------------------------------------
 
     def convert(self, phontier, toktier, inputaudio, workdir):
-        """
-        Perform speech segmentation of data in tiers tokenization/phonetization.
+        """ Perform speech segmentation of data in tiers tokenization/phonetization.
 
-        @param phontier (Tier - IN) The phonetization.
-        @param toktier (Tier - IN) The tokenization, or None.
-        @param audioname (str - IN) Audio file name.
+        :param phontier: (Tier) The phonetization.
+        :param toktier: (Tier) The tokenization, or None.
+        :param audioname: (str) Audio file name.
 
-        @return A transcription.
+        :returns: A transcription.
 
         """
         if os.path.exists(workdir) is False:
@@ -370,8 +369,9 @@ class sppasAlign(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def append_extra(self, trs):
-        """
-        Append extra tiers in trs: Activity and PhnTokAlign.
+        """ Append extra tiers in trs.
+
+        :param trs: (Transcription)
 
         """
         tokenalign = trs.Find("TokensAlign")
@@ -387,7 +387,7 @@ class sppasAlign(sppasBaseAnnotation):
                 trs.Append(tier)
                 trs.GetHierarchy().add_link("TimeAssociation", tokenalign, tier)
             except Exception as e:
-                self.print_message("PhnTokAlign generation: %s"%str(e), indent=2, status=WARNING_ID)
+                self.print_message("PhnTokAlign generation: %s" % str(e), indent=2, status=WARNING_ID)
 
         # Activity tier
         if self._options['activity'] is True or self._options['activityduration']:
@@ -407,24 +407,25 @@ class sppasAlign(sppasBaseAnnotation):
                         a.GetLabel().SetValue('%.3f' % d)
 
             except Exception as e:
-                self.print_message("Activities generation: %s"%str(e), indent=2, status=WARNING_ID)
+                self.print_message("Activities generation: %s" % str(e), indent=2, status=WARNING_ID)
 
         return trs
 
     # ------------------------------------------------------------------------
 
-    def get_phonestier(self, trsinput):
-        """
-        Return the tier with phonetization or None.
+    def get_phonestier(self, trs):
+        """ Return the tier with phonetization or None.
+
+        :param trs: (Transcription)
 
         """
         # Search for a tier starting with "phon"
-        for tier in trsinput:
+        for tier in trs:
             if tier.GetName().lower().startswith("phon") is True:
                 return tier
 
         # Search for a tier containing "phon"
-        for tier in trsinput:
+        for tier in trs:
             if "phon" in tier.GetName().lower():
                 return tier
 
@@ -432,19 +433,20 @@ class sppasAlign(sppasBaseAnnotation):
 
     # ------------------------------------------------------------------------
 
-    def get_tokenstier(self, trsinput):
-        """
-        Return the tier with tokens, or None.
+    def get_tokenstier(self, trs):
+        """ Return the tier with tokens, or None.
 
         In case of EOT, 2 tiers with tokens are available: std and faked.
         Priority is given to std.
 
-        """
-        toktier   = None # None tier with tokens
-        stdtier   = None # index of stdtoken tier
-        fakedtier = None # index of fakedtoken tier
+        :param trs: (Transcription)
 
-        for tier in trsinput:
+        """
+        toktier = None    # None tier with tokens
+        stdtier = None    # index of stdtoken tier
+        fakedtier = None  # index of fakedtoken tier
+
+        for tier in trs:
             tiername = tier.GetName().lower()
             if "std" in tiername and "token" in tiername:
                 return stdtier
@@ -461,8 +463,10 @@ class sppasAlign(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def phntokalign_tier(self, tierphon, tiertoken):
-        """
-        Generates the PhnTokAlignTier from PhonAlign and TokensAlign.
+        """ Generates the PhnTokAlignTier from PhonAlign and TokensAlign.
+
+        :param tierphon: (Tier)
+        :param tiertoken: (Tier)
 
         """
         newtier = Tier('PhnTokAlign')
@@ -489,15 +493,14 @@ class sppasAlign(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def run(self, phonesname, tokensname, audioname, outputfilename):
-        """
-        Execute SPPAS Alignment.
+        """ Execute SPPAS Alignment.
 
-        @param phonesname (str - IN) file containing the phonetization
-        @param tokensname (str - IN) file containing the tokenization
-        @param audioname (str - IN) Audio file name
-        @param outputfilename (str - IN) the file name with the result
+        :param phonesname: (str) file containing the phonetization
+        :param tokensname: (str) file containing the tokenization
+        :param audioname: (str) Audio file name
+        :param outputfilename: (str) the file name with the result
 
-        @return Transcription
+        :returns: (Transcription)
 
         """
         self.print_options()
@@ -592,7 +595,7 @@ class sppasAlign(sppasBaseAnnotation):
                     a.GetLocation().SetEndMidpoint(a.GetLocation().GetEndMidpoint() + 0.03)
                     nexta.GetLocation().SetBeginMidpoint(a.GetLocation().GetEndMidpoint())
 
-                if a.GetLabel().GetValue() in [ "*", "@@", "fp", "dummy" ] and durnexta > 0.04:
+                if a.GetLabel().GetValue() in ["*", "@@", "fp", "dummy"] and durnexta > 0.04:
                     a.GetLocation().SetEndMidpoint(a.GetLocation().GetEndMidpoint() + 0.02)
                     nexta.GetLocation().SetBeginMidpoint(a.GetLocation().GetEndMidpoint())
 
@@ -612,7 +615,7 @@ class sppasAlign(sppasBaseAnnotation):
                     a.GetLocation().SetEndMidpoint(a.GetLocation().GetEndMidpoint() + 0.03)
                     nexta.GetLocation().SetBeginMidpoint(a.GetLocation().GetEndMidpoint())
 
-                if a.GetLabel().GetValue() in [ "*", "@", "euh", "dummy" ] and durnexta > 0.04:
+                if a.GetLabel().GetValue() in ["*", "@", "euh", "dummy"] and durnexta > 0.04:
                     a.GetLocation().SetEndMidpoint(a.GetLocation().GetEndMidpoint() + 0.02)
                     nexta.GetLocation().SetBeginMidpoint(a.GetLocation().GetEndMidpoint())
 
@@ -636,7 +639,7 @@ class sppasAlign(sppasBaseAnnotation):
 
         # supprime les /z/ et /t/ de fin de mot si leur duree est < 65ms.
         for i, a in reversed(list(enumerate(tierphon))):
-            if a.GetLocation().GetDuration().GetValue() < 0.055 and a.GetLabel().GetValue() in [ "z", "n", "t" ]:
+            if a.GetLocation().GetDuration().GetValue() < 0.055 and a.GetLabel().GetValue() in ["z", "n", "t"]:
                 # get the corresponding token
                 for t in tiertokens:
                     # this is not the only phoneme in this token!
@@ -646,13 +649,10 @@ class sppasAlign(sppasBaseAnnotation):
                         lastchar = lastchar[-1]
                     if a.GetLocation().GetEnd() == t.GetLocation().GetEnd() and a.GetLocation().GetBegin() != t.GetLocation().GetBegin() and not lastchar in ["a", "e", "i", "o", "u", u"é", u"à", u"è"] :
                         # Remove a and extend previous annotation
-                        logging.debug(' ... liaison removed %s in token %s'%(a,t.GetLabel().GetValue()))
+                        logging.debug(' ... liaison removed %s in token %s' % (a, t.GetLabel().GetValue()))
                         prev = tierphon[i-1]
                         a = tierphon.Pop(i)
                         prev.GetLocation().SetEndMidpoint(a.GetLocation().GetEndMidpoint())
                         #self.logfile.print_message("Liaison removed: %s " % a)
-                        # Enlever le phoneme de tierphntok!
-                        # TODO
-        return trs
 
-    # ------------------------------------------------------------------------
+        return trs

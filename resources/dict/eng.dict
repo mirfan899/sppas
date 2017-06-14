@@ -25809,6 +25809,7 @@ critically(2) [] k r\ I 4 i k l i:
 criticism [] k r\ I 4 i s I z @ m
 criticisms [] k r\ I 4 i s I z @ m z
 criticize [] k r\ I 4 i s aI z
+criticize(2) [] k r\ I t i s aI z
 criticized [] k r\ I 4 @ s aI z d
 criticizes [] k r\ I 4 i s aI z i z
 criticizing [] k r\ I 4 i s aI z i N
@@ -88347,6 +88348,7 @@ personage [] p 3:r s @ n i dZ
 personal [] p 3:r s i n i l
 personalink [] p 3:r s @ n @ l I N k
 personalities [] p 3:r s @ n { l i 4 i: z
+personalities(2) [] p 3:r s @ n { l i t i: z
 personality [] p 3:r s @ n { l i 4 i:
 personalization [] p 3:r s @ n @ l @ z eI S @ n
 personalize [] p 3:r s @ n @ l aI z
