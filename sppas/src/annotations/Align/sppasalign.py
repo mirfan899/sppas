@@ -92,12 +92,11 @@ class sppasAlign(sppasBaseAnnotation):
 
         """
         sppasBaseAnnotation.__init__(self, logfile)
+        self.mapping = Mapping()
+        self.alignio = None
 
-        # Members: self.alignio
         self.fix_segmenter(model, modelL1)
         self.reset()
-        mapping = Mapping()
-        self.alignio = None
 
     # ------------------------------------------------------------------
 
@@ -128,7 +127,7 @@ class sppasAlign(sppasBaseAnnotation):
                 model_mixer = ModelMixer()
                 model_mixer.load(model, modelL1)
                 output_dir = os.path.join(RESOURCES_PATH, "models", "models-mix")
-                model_mixer.mix(output_dir, gamma=0.5)
+                model_mixer.mix(output_dir, gamma=0.6)
                 model = output_dir
             except Exception as e:
                 self.print_message("The model of L1 is ignored: %s" % str(e), indent=3, status=WARNING_ID)
@@ -205,17 +204,17 @@ class sppasAlign(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def set_aligner(self, alignername):
+    def set_aligner(self, aligner_name):
         """ Fix the name of the aligner.
 
         The list of accepted aligner names is available in:
         >>> aligners.aligner_names()
 
-        :param alignername: (str) Case-insensitive name of the aligner.
+        :param aligner_name: (str) Case-insensitive name of the aligner.
 
         """
-        self.alignio.set_aligner(alignername)
-        self._options['aligner'] = alignername
+        self.alignio.set_aligner(aligner_name)
+        self._options['aligner'] = aligner_name
 
     # -----------------------------------------------------------------------
 
