@@ -139,6 +139,9 @@ msgstr "Le modèle donné pour la langue L1 {:s} a été ignoré."
 msgid ":INFO 1220: "
 msgstr "Alignement de l'intervalle numéro {number}."
 
+msgid ":INFO 1222: "
+msgstr "L'intervalle est vide."
+
 msgid ":INFO 1230: "
 msgstr "L'aligneur '{name}' a échoué dans la tâche de segmentation."
 
@@ -180,6 +183,12 @@ msgstr "La tier {name} ne contient pas d'annotations."
 
 msgid ":ERROR 1030: "
 msgstr "Aucune tier trouvée. La documentation indique pourquoi."
+
+msgid ":ERROR 1040: "
+msgstr "La tier donnée en entrée n'est pas du type requis. Des intervalles alignés étaient attendus."
+
+msgid ":ERROR 1050: "
+msgstr "Inconsistence entre le nombre d'intervalles des tiers données en entrée: {:d} vs {:d}."
 
 msgid ":ERROR 1110: "
 msgstr "Phonétisation impossble de {:s}."

@@ -42,6 +42,8 @@ SECT_CFG_FILE_ERROR = ":ERROR 4014: "
 OPTION_KEY_ERROR = ":ERROR 1010: "
 EMPTY_INPUT_ERROR = ":ERROR 1020: "
 NO_INPUT_ERROR = ":ERROR 1030: "
+BAD_INPUT_ERROR = ":ERROR 1040: "
+SIZE_INPUT_ERROR = ":ERROR 1050: "
 NO_DIR_ERROR = ":ERROR 1210: "
 EMPTY_DIR_ERROR = ":ERROR 1220: "
 
@@ -89,6 +91,30 @@ class NoInputError(IOError):
 
     def __init__(self):
         self.parameter = NO_INPUT_ERROR + t.gettext(NO_INPUT_ERROR)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class BadInputError(TypeError):
+    """ :ERROR 1040: Bad input tier type. Expected time-aligned intervals. """
+
+    def __init__(self):
+        self.parameter = BAD_INPUT_ERROR + t.gettext(BAD_INPUT_ERROR)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class SizeInputsError(IOError):
+    """ :ERROR 1050: Inconsistency between the number of intervals of the input tiers. Got: {:d} and {:d}. """
+
+    def __init__(self, number1, number2):
+        self.parameter = SIZE_INPUT_ERROR + (t.gettext(SIZE_INPUT_ERROR)).format(number1, number2)
 
     def __str__(self):
         return repr(self.parameter)

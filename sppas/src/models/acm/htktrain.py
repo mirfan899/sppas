@@ -556,11 +556,11 @@ class TrainingCorpus(object):
             if trsbasename.endswith("-phon"):
                 trsbasename = trsbasename[:-5]
 
-            for audiofilename in audiofilelist:
-                audiobasename = os.path.splitext(audiofilename)[0]
+            for audio_filename in audiofilelist:
+                audiobasename = os.path.splitext(audio_filename)[0]
 
                 if audiobasename == trsbasename:
-                    ret = self.add_file(trsfilename, audiofilename)
+                    ret = self.add_file(trsfilename, audio_filename)
                     if ret is True:
                         count += 1
 
@@ -568,12 +568,12 @@ class TrainingCorpus(object):
 
     # -----------------------------------------------------------------------
 
-    def add_file(self, trsfilename, audiofilename):
+    def add_file(self, trsfilename, audio_filename):
         """ Add a new couple of files to deal with.
         If such files are already in the data, they will be added again.
 
         :param trsfilename: (str) The annotated file.
-        :param audiofilename: (str) The audio file.
+        :param audio_filename: (str) The audio file.
         :returns: Bool
 
         """
@@ -587,15 +587,15 @@ class TrainingCorpus(object):
 
         tier = trs.Find('PhonAlign', case_sensitive=False)
         if tier is not None:
-            return self._append_phonalign(tier, trsfilename, audiofilename)
+            return self._append_phonalign(tier, trsfilename, audio_filename)
         else:
             tier = trs.Find('Phonetization', case_sensitive=False)
             if tier is not None:
-                return self._append_phonetization(tier, trsfilename, audiofilename)
+                return self._append_phonetization(tier, trsfilename, audio_filename)
             else:
                 for tier in trs:
                     if "trans" in tier.GetName().lower():
-                        return self._append_transcription(tier, trsfilename, audiofilename)
+                        return self._append_transcription(tier, trsfilename, audio_filename)
 
         logging.info('None of the expected tier was found in %s' % trsfilename)
         return False
@@ -685,7 +685,7 @@ class TrainingCorpus(object):
 
     # -----------------------------------------------------------------------
 
-    def _append_phonalign(self, tier, trsfilename, audiofilename):
+    def _append_phonalign(self, tier, trsfilename, audio_filename):
         """ Append a PhonAlign tier in the set of known data. """
 
         tier = self.map_phonemes(tier)
@@ -696,14 +696,14 @@ class TrainingCorpus(object):
         outfile = os.path.basename(sf.set_random(root="track_aligned", add_today=False, add_pid=False))
 
         # Add the tier
-        res = self._append_tier(tier, outfile, trsfilename, audiofilename)
+        res = self._append_tier(tier, outfile, trsfilename, audio_filename)
         if res is True:
             self.alignfiles[trsfilename] = os.path.join(self.datatrainer.get_storetrs(), outfile+".lab")
         return res
 
     # -----------------------------------------------------------------------
 
-    def _append_phonetization(self, tier, trsfilename, audiofilename):
+    def _append_phonetization(self, tier, trsfilename, audio_filename):
         """ Append a Phonetization tier in the set of known data. """
 
         # Map phonemes.
@@ -721,14 +721,14 @@ class TrainingCorpus(object):
         outfile = os.path.basename(sf.set_random(root="track_phonetized", add_today=False, add_pid=False))
 
         # Add the tier
-        res = self._append_tier(tier, outfile, trsfilename, audiofilename)
+        res = self._append_tier(tier, outfile, trsfilename, audio_filename)
         if res is True:
             self.phonfiles[trsfilename] = os.path.join(self.datatrainer.get_storetrs(), outfile+".lab")
         return res
 
     # -----------------------------------------------------------------------
 
-    def _append_transcription(self, tier, trsfilename, audiofilename):
+    def _append_transcription(self, tier, trsfilename, audio_filename):
         """ Append a Transcription tier in the set of known data. """
 
         # Fix current storage dir.
@@ -737,7 +737,7 @@ class TrainingCorpus(object):
         outfile = os.path.basename(sf.set_random(root="track_transcribed", add_today=False, add_pid=False))
 
         # Add the tier
-        res =  self._append_tier(tier, outfile, trsfilename, audiofilename, ext=".xra")
+        res =  self._append_tier(tier, outfile, trsfilename, audio_filename, ext=".xra")
         if res is True:
             # no lab file created (it needs sppas... a vocab, a dict and an acoustic model).
             self.transfiles[trsfilename] = os.path.join(self.datatrainer.get_storetrs(), outfile+".xra")
@@ -745,16 +745,16 @@ class TrainingCorpus(object):
 
     # -----------------------------------------------------------------------
 
-    def _append_tier(self, tier, outfile, trsfilename, audiofilename, ext=".lab"):
+    def _append_tier(self, tier, outfile, trsfilename, audio_filename, ext=".lab"):
         """ Append a Transcription (orthography) tier in the set of known data. """
 
         ret = self._add_tier(tier, outfile, ext)
         if ret is True:
 
-            ret = self._add_audio(audiofilename, outfile)
+            ret = self._add_audio(audio_filename, outfile)
             if ret is True:
 
-                logging.info('Files %s / %s appended as %s.' % (trsfilename, audiofilename, outfile))
+                logging.info('Files %s / %s appended as %s.' % (trsfilename, audio_filename, outfile))
                 self.audiofiles[trsfilename] = os.path.join(self.datatrainer.get_storewav(), outfile + ".wav")
                 self.mfcfiles[trsfilename] = os.path.join(self.datatrainer.get_storemfc(), outfile + ".mfc")
                 return True
@@ -762,7 +762,7 @@ class TrainingCorpus(object):
             else:
                 self._pop_tier(outfile)
 
-        logging.info('Files %s / %s rejected.'%(trsfilename, audiofilename))
+        logging.info('Files %s / %s rejected.'%(trsfilename, audio_filename))
         return False
 
     # -----------------------------------------------------------------------
@@ -787,14 +787,13 @@ class TrainingCorpus(object):
 
     # -----------------------------------------------------------------------
 
-    def _add_audio(self, audiofilename, outfile):
+    def _add_audio(self, audio_filename, outfile):
         # Get the first channel
         try:
-            audio = audiodataio.open(audiofilename)
+            audio = audiodataio.open(audio_filename)
             audio.extract_channel(0)
             formatter = ChannelFormatter(audio.get_channel(0))
-        except Exception as e:
-            # print str(e)
+        except Exception:
             return False
 
         # Check/Convert
