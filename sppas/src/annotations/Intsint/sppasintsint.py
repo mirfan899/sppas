@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -38,6 +37,7 @@ import sppas.src.annotationdata.aio
 from sppas.src.annotationdata.transcription import Transcription
 
 from ..baseannot import sppasBaseAnnotation
+from ..searchtier import sppasSearchTier
 from ..annotationsexc import NoInputError
 from ..annotationsexc import EmptyInputError
 
@@ -102,25 +102,6 @@ class sppasIntsint(sppasBaseAnnotation):
 
         return intsint_tier
 
-    # -------------------------------------------------------------------
-
-    @staticmethod
-    def get_input_tier(trs_input):
-        """ Return the tier with anchors.
-
-        :param trs_input: (Transcription)
-        :returns: Tier
-
-        """
-        for tier in trs_input:
-            if "momel" in tier.GetName().lower():
-                return tier
-        for tier in trs_input:
-            if "anchors" in tier.GetName().lower():
-                return tier
-
-        return None
-
     # -----------------------------------------------------------------------
 
     def run(self, input_filename, output_filename):
@@ -132,7 +113,7 @@ class sppasIntsint(sppasBaseAnnotation):
         """
         # Get the tier to be annotated.
         trs_input = sppas.src.annotationdata.aio.read(input_filename)
-        tier_input = self.get_input_tier(trs_input)
+        tier_input = sppasSearchTier.pitch_anchors(trs_input)
         if tier_input is None:
             raise NoInputError
         if tier_input.IsEmpty() is True:

@@ -95,6 +95,7 @@ class sppasAnnotationsManager(Thread):
         """ Fix all options.
 
         Available options are:
+
             - domerge (bool) create a merged TextGrid file.
 
         :param options: (option)

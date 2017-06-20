@@ -43,8 +43,8 @@ from .diagnosis import sppasDiagnosis
 
 # ---------------------------------------------------------------------------
 
-OPTIONS = ":INFO 1050: "
-DIAGNOSIS = ":INFO 1052: "
+MSG_OPTIONS = t.gettext(":INFO 1050: ")
+MSG_DIAGNOSIS = t.gettext(":INFO 1052: ")
 
 # ---------------------------------------------------------------------------
 
@@ -128,7 +128,7 @@ class sppasBaseAnnotation(object):
     def print_options(self):
         """ Print the list of options in the user log. """
         
-        self.print_message(t.gettext(OPTIONS) + ": ", indent=2, status=None)
+        self.print_message(MSG_OPTIONS + ": ", indent=2, status=None)
         for k, v in self._options.items():
             self.print_message(u(" - {}: {}").format(k, v), indent=3, status=None)
 
@@ -140,8 +140,8 @@ class sppasBaseAnnotation(object):
         :param filenames: (list) List of files.
         
         """
-        self.print_message(t.gettext(DIAGNOSIS) + ": ", indent=2, status=None)
+        self.print_message(MSG_DIAGNOSIS + ": ", indent=2, status=None)
         for filename in filenames:
             if filename is not None:
-                (s, m) = self.diagnosis.check_file(filename)
+                (s, m) = sppasDiagnosis.check_file(filename)
                 self.print_message(u(" - {}: {}").format(filename, m), indent=3, status=None)

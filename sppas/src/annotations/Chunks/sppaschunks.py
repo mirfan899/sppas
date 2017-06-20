@@ -44,6 +44,7 @@ from sppas.src.annotations.baseannot import sppasBaseAnnotation
 from sppas.src.annotations.Chunks.chunks import Chunks
 
 from ..annotationsexc import AnnotationOptionError
+from ..searchtier import sppasSearchTier
 
 # ----------------------------------------------------------------------------
 
@@ -168,31 +169,6 @@ class sppasChunks(sppasBaseAnnotation):
 
     # ------------------------------------------------------------------------
 
-    @staticmethod
-    def get_tokenstier(trs_input):
-        """ Return the tier with tokens, or None.
-        In case of EOT, several tiers with tokens are available.
-        Priority is given to the standard one.
-
-        :param trs_input: (Transcription)
-        :returns: (tier)
-
-        """
-        if trs_input.GetSize() == 1 and "tokens" in trs_input[0].GetName().lower():
-            return trs_input[0]
-
-        for tier in trs_input:
-            if tier.GetName() == "Tokens-Std":
-                return tier
-
-        for tier in trs_input:
-            if tier.GetName() == "Tokens":
-                return tier
-
-        return None
-
-    # ------------------------------------------------------------------------
-
     def run(self, phonesname, tokensname, audioname, outputfilename):
         """ Execute SPPAS Chunks alignment.
 
@@ -217,7 +193,7 @@ class sppasChunks(sppasBaseAnnotation):
 
         try:
             trs_inputtok = sppas.src.annotationdata.aio.read(tokensname)
-            toktier = self.get_tokenstier(trs_inputtok)
+            toktier = sppasSearchTier.tokenization(trs_inputtok)
         except Exception:
             raise IOError("No tier with the raw tokenization was found.")
 

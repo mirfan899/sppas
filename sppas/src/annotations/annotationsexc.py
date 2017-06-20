@@ -42,6 +42,8 @@ SECT_CFG_FILE_ERROR = ":ERROR 4014: "
 OPTION_KEY_ERROR = ":ERROR 1010: "
 EMPTY_INPUT_ERROR = ":ERROR 1020: "
 NO_INPUT_ERROR = ":ERROR 1030: "
+NO_DIR_ERROR = ":ERROR 1210: "
+EMPTY_DIR_ERROR = ":ERROR 1220: "
 
 # -----------------------------------------------------------------------
 
@@ -92,3 +94,28 @@ class NoInputError(IOError):
         return repr(self.parameter)
 
 # -----------------------------------------------------------------------
+
+
+class NoDirectoryError(IOError):
+    """ :ERROR 1210: The directory {dirname} does not exist. """
+
+    def __init__(self, dirname):
+        self.parameter = NO_DIR_ERROR + (t.gettext(NO_DIR_ERROR)).format(dirname=dirname)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class EmptyDirectoryError(IOError):
+    """ :ERROR 1220: The directory {dirname} does not contain relevant data. """
+
+    def __init__(self, dirname):
+        self.parameter = EMPTY_DIR_ERROR + (t.gettext(EMPTY_DIR_ERROR)).format(dirname=dirname)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+

@@ -15,7 +15,7 @@ msgstr ""
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.8.11\n"
 
 msgid ":INFO 1000: "
 msgstr "Valide. "
@@ -36,19 +36,19 @@ msgstr ""
 
 msgid ":INFO 1012: "
 msgstr ""
-"La taille d'échantillonage d'un fichier audio doit être d'au moins 16 bits. "
-"La taille d'échantillons de ce fichier est de {sampwidth} bits."
+"La taille d'échantillonage d'un fichier audio doit être d'au moins 16 bits. La "
+"taille d'échantillons de ce fichier est de {sampwidth} bits."
 
 msgid ":INFO 1014: "
 msgstr ""
-"La taux d'échantillonage d'un fichier audio doit être d'au moins 16000 Hz. "
-"Ce fichier est échantilloné à {framerate} Hz."
+"La taux d'échantillonage d'un fichier audio doit être d'au moins 16000 Hz. Ce "
+"fichier est échantilloné à {framerate} Hz."
 
 msgid ":INFO 1016: "
 msgstr ""
-"La taille d'échantillonage d'un fichier audio est de préférence à 16 bits. "
-"La taille d'échantillons de ce fichier étant de {sampwidth} bits, SPPAS "
-"créera une copie et travaillera sur celle-ci."
+"La taille d'échantillonage d'un fichier audio est de préférence à 16 bits. La "
+"taille d'échantillons de ce fichier étant de {sampwidth} bits, SPPAS créera une "
+"copie et travaillera sur celle-ci."
 
 msgid ":INFO 1018: "
 msgstr ""
@@ -61,12 +61,11 @@ msgstr "L'extension de fichier {extension} est inconnue."
 
 msgid ":INFO 1022: "
 msgstr ""
-"De préférence, les noms de fichiers ne devraient contenir que des caractères "
-"US-ASCII."
+"De préférence, les noms de fichiers ne devraient contenir que des caractères US-"
+"ASCII."
 
 msgid ":INFO 1024: "
-msgstr ""
-"De préférence, les noms de fichiers ne devraient pas contenir d'espaces."
+msgstr "De préférence, les noms de fichiers ne devraient pas contenir d'espaces."
 
 msgid ":INFO 1026: "
 msgstr "Encodage de fichier non supporté. SPPAS ne reconnait que {encoding}."
@@ -134,6 +133,42 @@ msgstr "a été phonétisé automatiquement {:s}"
 msgid ":INFO 1114: "
 msgstr "n'a pas pu être phonétisé automatiquement."
 
+msgid ":INFO 1210: "
+msgstr "Le modèle donné pour la langue L1 {:s} a été ignoré."
+
+msgid ":INFO 1220: "
+msgstr "Alignement de l'intervalle numéro {number}."
+
+msgid ":INFO 1230: "
+msgstr "L'aligneur '{name}' a échoué dans la tâche de segmentation."
+
+msgid ":INFO 1240: "
+msgstr "La même durée est assignée à chaque phonème."
+
+msgid ":INFO 1250: "
+msgstr "Découpage en intervalles"
+
+msgid ":INFO 1252: "
+msgstr "Alignement de chaque intervalle"
+
+msgid ":INFO 1254: "
+msgstr "Fusion des alignements"
+
+msgid ":INFO 1256: "
+msgstr "Sauvegarde"
+
+msgid ":INFO 1260: "
+msgstr "Alignement des tokens désactivé."
+
+msgid ":INFO 1262: "
+msgstr "Pas de Tokens alignés trouvé. Aucune extra tier ne pourra être créée."
+
+msgid ":INFO 1270: "
+msgstr "Génération de la tier {tiername} : {message}"
+
+msgid ":INFO 1280: "
+msgstr "Répertoire de travail : {dirname}."
+
 msgid ":ERROR 4014: "
 msgstr "Il manque la section {section_name} dans le fichier de configuration."
 
@@ -148,3 +183,9 @@ msgstr "Aucune tier trouvée. La documentation indique pourquoi."
 
 msgid ":ERROR 1110: "
 msgstr "Phonétisation impossble de {:s}."
+
+msgid ":ERROR 1210: "
+msgstr "Le dossier {dirname} n'existe pas."
+
+msgid ":ERROR 1220: "
+msgstr "Le dossier {dirname} ne contient aucun fichier qui pourrait être utilisé."

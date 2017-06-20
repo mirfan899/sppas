@@ -44,22 +44,22 @@ from .import t
 
 # ----------------------------------------------------------------------------
 
-ENABLED = ":INFO 1030: "
-DISABLED = ":INFO 1031: "
-VERSION = ":INFO 1032: "
-URL = ":INFO 1033: "
-CONTACT = ":INFO 1034: "
-AUTO_ANNS = ":INFO 1035: "
-DATE = ":INFO 1036: "
-LANGUAGES = ":INFO 1037: "
-SEL_FILES = ":INFO 1038: "
-SEL_ANNS = ":INFO 1039: "
-FILE_EXT = ":INFO 1040: "
-STATUS_OK = ":INFO 1041: "
-STATUS_INFO = ":INFO 1042: "
-STATUS_WARNING = ":INFO 1043: "
-STATUS_IGNORE = ":INFO 1044: "
-STATUS_ERROR = ":INFO 1045: "
+MSG_ENABLED = t.gettext(":INFO 1030: ")
+MSG_DISABLED = t.gettext(":INFO 1031: ")
+MSG_VERSION = (t.gettext(":INFO 1032: "))
+MSG_URL = (t.gettext(":INFO 1033: "))
+MSG_CONTACT = (t.gettext(":INFO 1034: "))
+MSG_AUTO_ANNS = (t.gettext(":INFO 1035: "))
+MSG_DATE = (t.gettext(":INFO 1036: "))
+MSG_LANGUAGES = (t.gettext(":INFO 1037: "))
+MSG_SEL_FILES = (t.gettext(":INFO 1038: "))
+MSG_SEL_ANNS = (t.gettext(":INFO 1039: "))
+MSG_FILE_EXT = (t.gettext(":INFO 1040: "))
+MSG_STATUS_OK = (t.gettext(":INFO 1041: "))
+MSG_STATUS_INFO = (t.gettext(":INFO 1042: "))
+MSG_STATUS_WARNING = (t.gettext(":INFO 1043: "))
+MSG_STATUS_IGNORE = (t.gettext(":INFO 1044: "))
+MSG_STATUS_ERROR = (t.gettext(":INFO 1045: "))
 
 # ----------------------------------------------------------------------------
 
@@ -217,9 +217,9 @@ class sppasLog(object):
         try:
             if value is None:
                 if self.parameters.get_step_status(step_number):
-                    value = t.gettext(ENABLED)
+                    value = MSG_ENABLED
                 else:
-                    value = t.gettext(DISABLED)
+                    value = MSG_DISABLED
             self.print_item(self.parameters.get_step_name(step_number), str(value))
         except Exception as e:
             logging.info(str(e))
@@ -250,19 +250,19 @@ class sppasLog(object):
         """ Print the parameters information in the output stream. """
 
         self.logfp.seek(0, 2)  # write at the end of the file
-        self.print_message(sppas.__name__ + ' ' + t.gettext(VERSION) + ' ' + sppas.__version__)
+        self.print_message(sppas.__name__ + ' ' + MSG_VERSION + ' ' + sppas.__version__)
         self.print_message(sppas.__copyright__)
-        self.print_message(t.gettext(URL) + ': ' + sppas.__url__)
-        self.print_message(t.gettext(CONTACT) + ': ' + sppas.__author__ + "(" + sppas.__contact__ + ")")
+        self.print_message(MSG_URL + ': ' + sppas.__url__)
+        self.print_message(MSG_CONTACT + ': ' + sppas.__author__ + "(" + sppas.__contact__ + ")")
         self.print_newline()
         self.print_separator()
 
-        self.print_message(' '*24 + t.gettext(AUTO_ANNS) + ': ')
+        self.print_message(' '*24 + MSG_AUTO_ANNS + ': ')
         self.print_separator()
         self.print_newline()
 
-        self.print_message(t.gettext(DATE) + ': ' + str(datetime.datetime.now()))
-        self.print_message(t.gettext(LANGUAGES) + ': ')
+        self.print_message(MSG_DATE + ': ' + str(datetime.datetime.now()))
+        self.print_message(MSG_LANGUAGES + ': ')
         for i in range(self.parameters.get_step_numbers()):
             if self.parameters.get_lang(i) is not None:
                 self.print_item(self.parameters.get_step_name(i), self.parameters.get_lang(i))
@@ -271,19 +271,19 @@ class sppasLog(object):
         self.print_separator()
         self.print_newline()
 
-        self.print_message(t.gettext(SEL_FILES) + ': ')
+        self.print_message(MSG_SEL_FILES + ': ')
         for sinput in self.parameters.get_sppasinput():
             self.print_item(sinput)
         self.print_separator()
         self.print_newline()
 
-        self.print_message(t.gettext(SEL_ANNS) + ': ')
+        self.print_message(MSG_SEL_ANNS + ': ')
         for i in range(self.parameters.get_step_numbers()):
             self.print_stat(i)
         self.print_separator()
         self.print_newline()
 
-        self.print_message(t.gettext(FILE_EXT) + ': ' + self.parameters.get_output_format())
+        self.print_message(MSG_FILE_EXT + ': ' + self.parameters.get_output_format())
         self.print_newline()
 
     # ----------------------------------------------------------------------
@@ -298,23 +298,24 @@ class sppasLog(object):
         if status_id is None:
             return ""
 
-        status = ""
+        status_id = int(status_id)
+
         if status_id == OK_ID:
-            status = STATUS_OK
+            return MSG_STATUS_OK
 
-        elif status_id == WARNING_ID:
-            status = STATUS_WARNING
+        if status_id == WARNING_ID:
+            return MSG_STATUS_WARNING
 
-        elif status_id == IGNORE_ID:
-            status = STATUS_IGNORE
+        if status_id == IGNORE_ID:
+            return MSG_STATUS_IGNORE
 
-        elif status_id == INFO_ID:
-            status = STATUS_INFO
+        if status_id == INFO_ID:
+            return MSG_STATUS_INFO
 
-        elif status_id == ERROR_ID:
-            status = STATUS_ERROR
+        if status_id == ERROR_ID:
+            return MSG_STATUS_ERROR
 
-        return t.gettext(status)
+        return ""
 
     # ----------------------------------------------------------------------
 
@@ -326,8 +327,11 @@ class sppasLog(object):
 
         """
         number = int(number)
+
         if number > sppasLog.MAX_INDENT:
             number = sppasLog.MAX_INDENT
+
         if number < 0:
             number = 0
+
         return sppasLog.STR_INDENT * number

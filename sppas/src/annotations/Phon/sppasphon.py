@@ -47,11 +47,13 @@ from sppas.src.annotationdata.transcription import Transcription
 from sppas.src.resources.dictpron import DictPron
 from sppas.src.resources.mapping import Mapping
 
-from .. import ERROR_ID, WARNING_ID, INFO_ID, OK_ID
+from .. import ERROR_ID, WARNING_ID
 from .. import UNKSTAMP
 from .. import t
-from ..annotationsexc import AnnotationOptionError, NoInputError
+from ..annotationsexc import AnnotationOptionError
 from ..baseannot import sppasBaseAnnotation
+from ..searchtier import sppasSearchTier
+
 from .phonetize import sppasDictPhonetizer
 
 # ---------------------------------------------------------------------------
@@ -115,10 +117,12 @@ class sppasPhon(sppasBaseAnnotation):
         for opt in options:
 
             key = opt.get_key()
+
             if key == "unk":
                 self.set_unk(opt.get_value())
+
             elif key == "usestdtokens":
-                self.set_usestdtokens( opt.get_value() )
+                self.set_usestdtokens(opt.get_value())
 
             else:
                 raise AnnotationOptionError(key)
@@ -229,40 +233,6 @@ class sppasPhon(sppasBaseAnnotation):
 
         return new_tier
 
-    # -----------------------------------------------------------------------
-
-    def get_input_tier(self, trs_input):
-        """ Return the tier to be phonetized.
-
-        :param trs_input: (Transcription)
-        :returns: Tier
-
-        """
-        tier_input = None
-
-        pattern = "tokens"
-        if self._options['usestdtokens'] is True:
-            pattern = "tokens-std"
-
-        for tier in trs_input:
-            if pattern == tier.GetName().lower():
-                tier_input = tier
-                break
-
-        if tier_input is None:
-            for tier in trs_input:
-                if "tok" in tier.GetName().lower():
-                    tier_input = tier
-                    break
-
-        if tier_input is None:
-            for tier in trs_input:
-                if "trans" in tier.GetName().lower():
-                    tier_input = tier
-                    break
-
-        return tier_input
-
     # ------------------------------------------------------------------------
 
     def run(self, input_filename, output_filename):
@@ -276,10 +246,11 @@ class sppasPhon(sppasBaseAnnotation):
         self.print_diagnosis(input_filename)
 
         # Get the tier to be phonetized.
+        pattern = "faked"
+        if self._options['usestdtokens'] is True:
+            pattern = "std"
         trs_input = sppas.src.annotationdata.aio.read(input_filename)
-        tier_input = self.get_input_tier(trs_input)
-        if tier_input is None:
-            raise NoInputError
+        tier_input = sppasSearchTier.tokenization(trs_input, pattern)
 
         # Phonetize the tier
         tier_phon = self.convert(tier_input)

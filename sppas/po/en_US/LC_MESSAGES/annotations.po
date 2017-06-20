@@ -15,7 +15,7 @@ msgstr ""
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.8.11\n"
 
 msgid ":INFO 1000: "
 msgstr "Valid. "
@@ -129,6 +129,42 @@ msgstr "was automatically phonetized as {:s}"
 msgid ":INFO 1114: "
 msgstr "wasn't phonetized."
 
+msgid ":INFO 1210: "
+msgstr "The model of L1 {:s} was ignored."
+
+msgid ":INFO 1220: "
+msgstr "Align interval number {number}."
+
+msgid ":INFO 1230: "
+msgstr "The automatic aligner '{name}' failed to perform segmentation."
+
+msgid ":INFO 1240: "
+msgstr "The same duration is assigned to each phoneme."
+
+msgid ":INFO 1250: "
+msgstr "Split into intervals: "
+
+msgid ":INFO 1252: "
+msgstr "Align each interval: "
+
+msgid ":INFO 1254: "
+msgstr "Merge interval's alignment:"
+
+msgid ":INFO 1256: "
+msgstr "Save automatic alignment: "
+
+msgid ":INFO 1260: "
+msgstr "Tokens alignment disabled."
+
+msgid ":INFO 1262: "
+msgstr "No time-aligned tokens found. No extra tier can be generated."
+
+msgid ":INFO 1270: "
+msgstr "{tiername} tier generation: {message}"
+
+msgid ":INFO 1280: "
+msgstr "The working directory is {dirname}."
+
 msgid ":ERROR 4014: "
 msgstr "Missing section {section_name} in the configuration file."
 
@@ -143,3 +179,9 @@ msgstr "Missing input tier. Please read the documentation."
 
 msgid ":ERROR 1110: "
 msgstr "Unable to phonetize the unknown token {:s}."
+
+msgid ":ERROR 1210: "
+msgstr "The directory {dirname} does not exist."
+
+msgid ":ERROR 1220: "
+msgstr "The directory {dirname} does not contain relevant data."

@@ -110,31 +110,33 @@ class sppasIPUseg(sppasBaseAnnotation):
         """
         for opt in options:
 
-            if "shift" == opt.get_key():
+            key = opt.get_key()
+
+            if "shift" == key:
                 self.ipusaudio.set_shift(opt.get_value())
 
-            elif "shift_start" == opt.get_key():
+            elif "shift_start" == key:
                 self.ipusaudio.set_shift_start(opt.get_value())
 
-            elif "shift_end" == opt.get_key():
+            elif "shift_end" == key:
                 self.ipusaudio.set_shift_end(opt.get_value())
 
-            elif "min_speech" == opt.get_key():
+            elif "min_speech" == key:
                 self.ipusaudio.set_min_speech(opt.get_value())
 
-            elif "min_sil" == opt.get_key():
+            elif "min_sil" == key:
                 self.ipusaudio.set_min_silence(opt.get_value())
 
-            elif "min_vol" == opt.get_key():
+            elif "min_vol" == key:
                 self.ipusaudio.set_vol_threshold(opt.get_value())
 
-            elif "tracks" == opt.get_key():
+            elif "tracks" == key:
                 self.set_dirtracks(opt.get_value())
 
-            elif "save_as_trs" == opt.get_key():
+            elif "save_as_trs" == key:
                 self.set_save_as_trs(opt.get_value())
 
-            elif "add_ipu_idx" == opt.get_key():
+            elif "add_ipu_idx" == key:
                 self.set_addipuidx(opt.get_value())
 
             else:
@@ -248,7 +250,7 @@ class sppasIPUseg(sppasBaseAnnotation):
     def split(self, nbipus=0):
         """ Blind or controlled speech/silence segmentation.
 
-        :param nbtracks: (int) Expected number of IPUs. 0=automatic.
+        :param nbipus: (int) Expected number of IPUs. 0=automatic.
 
         """
         if self.ipusaudio.get_channel() is None:

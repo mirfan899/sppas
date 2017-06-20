@@ -44,9 +44,11 @@
 from sppas.src.annotations.Syll.syllabification import Syllabification
 import sppas.src.annotationdata.aio
 from sppas.src.annotationdata.transcription import Transcription
+
 from .. import WARNING_ID
 from ..baseannot import sppasBaseAnnotation
-from ..annotationsexc import AnnotationOptionError, NoInputError
+from ..searchtier import sppasSearchTier
+from ..annotationsexc import AnnotationOptionError
 
 # ----------------------------------------------------------------------------
 
@@ -115,8 +117,10 @@ class sppasSyll(sppasBaseAnnotation):
             key = opt.get_key()
             if "usesintervals" == key:
                 self.set_usesintervals(opt.get_value())
+
             elif "usesphons" == key:
                 self.set_usesphons(opt.get_value())
+
             elif "tiername" == key:
                 self.set_tiername(opt.get_value())
 
@@ -157,24 +161,6 @@ class sppasSyll(sppasBaseAnnotation):
 
     # ------------------------------------------------------------------------
 
-    def get_input_tier(self, trs_input):
-        """ Return the tier with time-aligned phonemes or None.
-
-        :param trs_input: (Transcription)
-
-        """
-        for tier in trs_input:
-            if "align" in tier.GetName().lower() and "phon" in tier.GetName().lower():
-                return tier
-
-        for tier in trs_input:
-            if "phon" in tier.GetName().lower():
-                return tier
-
-        return None
-
-    # ------------------------------------------------------------------------
-
     def convert(self, phonemes, intervals=None):
         """ Syllabify labels of a time-aligned phones tier.
 
@@ -208,15 +194,13 @@ class sppasSyll(sppasBaseAnnotation):
 
         # Get the tier to syllabify
         trs_input = sppas.src.annotationdata.aio.read(input_filename)
-        phonemes = self.get_input_tier(trs_input)
-        if phonemes is None:
-            raise NoInputError
+        phonemes = sppasSearchTier.aligned_phones(trs_input)
 
         intervals = None
         if self._options['usesintervals'] is True:
             intervals = trs_input.Find(self._options['tiername'])
             if intervals is None and self.logfile:
-                message = "The use of %s is disabled. Tier not found."%(self._options['tiername'])
+                message = "The use of %s is disabled. Tier not found." % (self._options['tiername'])
                 self.logfile.print_message(message, indent=2, status=WARNING_ID)
 
         syllables = self.convert(phonemes, intervals)

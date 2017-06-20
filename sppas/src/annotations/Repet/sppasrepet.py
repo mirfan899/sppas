@@ -42,6 +42,7 @@ from sppas.src.resources.vocab import Vocabulary
 from sppas.src.resources.unigram import Unigram
 
 from ..baseannot import sppasBaseAnnotation
+from ..searchtier import sppasSearchTier
 from ..annotationsexc import AnnotationOptionError
 
 from .dictlem import LemmaDict
@@ -406,21 +407,6 @@ class sppasRepet(sppasBaseAnnotation):
         return src_tier, echo_tier
 
     # ------------------------------------------------------------------------
-
-    @staticmethod
-    def get_input_tier(trs):
-        """ Return the tier with time-aligned tokens or None.
-
-        :param trs: (Transcription)
-        :returns: Tier
-
-        """
-        for tier in trs:
-            if "align" in tier.GetName().lower() and "token" in tier.GetName().lower():
-                return tier
-        return None
-
-    # ------------------------------------------------------------------------
     # Run
     # ------------------------------------------------------------------
 
@@ -445,10 +431,7 @@ class sppasRepet(sppasBaseAnnotation):
 
         # Tokens of main speaker
         trs_input1 = sppas.src.annotationdata.aio.read(input_filename1)
-        tier1 = sppasRepet.get_input_tier(trs_input1)
-        if tier1 is None:
-            raise Exception("No tier found with time-aligned tokens. "
-                            "One of the tier names must contain both 'token' and 'align'.")
+        tier1 = sppasSearchTier.aligned_tokens(trs_input1)
         if tier1.IsEmpty() is True:
             raise Exception("Empty tokens tier (main speaker).\n")
 
@@ -456,7 +439,7 @@ class sppasRepet(sppasBaseAnnotation):
         tier2 = None
         if input_filename2 is not None:
             trs_input2 = sppas.src.annotationdata.aio.read(input_filename2)
-            tier2 = sppasRepet.get_input_tier(trs_input2)
+            tier2 = sppasSearchTier.aligned_tokens(trs_input2)
             if tier2.IsEmpty() is True:
                 raise Exception("Empty tokens tier (echoing speaker).\n")
 

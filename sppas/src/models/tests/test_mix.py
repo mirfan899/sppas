@@ -22,8 +22,8 @@ class TestModelMixer(unittest.TestCase):
 
     def setUp(self):
         # a French speaker reading an English text...
-        self._modelL2dir = os.path.join(MODELDIR, "models-eng")
-        self._modelL1dir = os.path.join(MODELDIR, "models-fra")
+        self._model_L2dir = os.path.join(MODELDIR, "models-eng")
+        self._model_L1dir = os.path.join(MODELDIR, "models-fra")
 
     def testMix(self):
         acmodel1 = AcModel()
@@ -56,12 +56,12 @@ class TestModelMixer(unittest.TestCase):
 
     def testMixData(self):
         modelmixer = ModelMixer()
-        modelmixer.load(self._modelL2dir, self._modelL1dir)
+        modelmixer.load(self._model_L2dir, self._model_L1dir)
         outputdir = os.path.join(MODELDIR, "models-eng-fra")
         modelmixer.mix(outputdir, gamma=0.5)
         self.assertTrue(os.path.exists(outputdir))
         acmodel1 = AcModel()
-        acmodel1.load_htk(os.path.join(self._modelL2dir, "hmmdefs"))
+        acmodel1.load_htk(os.path.join(self._model_L2dir, "hmmdefs"))
         acmodel1 = acmodel1.extract_monophones()
         acmodel2 = AcModel()
         acmodel2.load_htk(os.path.join(os.path.join(MODELDIR, "models-eng-fra"), "hmmdefs"))

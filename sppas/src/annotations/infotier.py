@@ -55,8 +55,8 @@ class sppasMetaInfoTier(sppasMetaInfo):
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :summary:      Meta information manager about SPPAS.
 
-    Manager of meta information about SPPAS that allows to create a tier with
-    such activated information.
+    Manager of meta information about SPPAS.
+    Allows to create a tier with activated meta-information.
 
     """
     def __init__(self):
@@ -90,15 +90,16 @@ class sppasMetaInfoTier(sppasMetaInfo):
             return None
 
         tier_dur = float(end) - float(begin)
-        ann_dur = tier_dur / float(len(active_keys))
+        ann_dur = round(tier_dur / float(len(active_keys)), 3)
+        radius = 0.001
 
         tier = Tier("MetaInformation")
-        ann_begin = begin
+        ann_begin = round(begin, 3)
         ann_end = begin + ann_dur
         for key in active_keys:
             value = self.get_metainfo(key)
             label = key + "=" + value
-            tier.Append(Annotation(TimeInterval(TimePoint(ann_begin), TimePoint(ann_end)), Label(label)))
+            tier.Append(Annotation(TimeInterval(TimePoint(ann_begin, radius), TimePoint(ann_end, radius)), Label(label)))
             ann_begin = ann_end
             ann_end = ann_begin + ann_dur
 

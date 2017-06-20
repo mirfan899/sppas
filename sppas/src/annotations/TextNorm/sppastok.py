@@ -51,9 +51,9 @@ from sppas.src.annotationdata.tier import Tier
 import sppas.src.annotationdata.aio
 
 from ..baseannot import sppasBaseAnnotation
+from ..searchtier import sppasSearchTier
 from ..annotationsexc import AnnotationOptionError
 from ..annotationsexc import EmptyInputError
-from ..annotationsexc import NoInputError
 
 from .normalize import TextNormalizer
 
@@ -232,36 +232,6 @@ class sppasTok(sppasBaseAnnotation):
 
     # ------------------------------------------------------------------------
 
-    @staticmethod
-    def get_trans_tier(trs_input):
-        """ Return the tier with transcription, or None.
-
-        :param trs_input: (Transcription)
-        :returns: (tier)
-
-        """
-        for tier in trs_input:
-            tier_name = tier.GetName().lower()
-            if "transcription" in tier_name:
-                return tier
-
-        for tier in trs_input:
-            tier_name = tier.GetName().lower()
-            if "trans" in tier_name:
-                return tier
-            elif "trs" in tier_name:
-                return tier
-            elif "ipu" in tier_name:
-                return tier
-            elif "ortho" in tier_name:
-                return tier
-            elif "toe" in tier_name:
-                return tier
-
-        return None
-
-    # ------------------------------------------------------------------------
-
     def run(self, input_filename, output_filename):
         """ Run the Text Normalization process on an input file.
 
@@ -274,9 +244,7 @@ class sppasTok(sppasBaseAnnotation):
 
         # Get input tier to tokenize
         trs_input = sppas.src.annotationdata.aio.read(input_filename)
-        tier_input = sppasTok.get_trans_tier(trs_input)
-        if tier_input is None:
-            raise NoInputError
+        tier_input = sppasSearchTier.transcription(trs_input)
 
         # Tokenize the tier
         tier_faked_tokens, tier_std_tokens, tier_custom = self.convert(tier_input)

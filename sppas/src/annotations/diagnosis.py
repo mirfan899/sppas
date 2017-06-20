@@ -43,19 +43,19 @@ from .import t
 
 # ----------------------------------------------------------------------------
 
-DX_VALID = ":INFO 1000: "
-DX_ADMIT = ":INFO 1002: "
-DX_INVALID = ":INFO 1004: "
-DX_FAILED = ":INFO 1006: "
-DX_AUDIO_CHANNELS_ERROR = ":INFO 1010: "
-DX_AUDIO_SAMPWIDTH_ERROR = ":INFO 1012: "
-DX_AUDIO_FRAMERATE_ERROR = ":INFO 1014: "
-DX_AUDIO_SAMPWIDTH_WARN = ":INFO 1016: "
-DX_AUDIO_FRAMERATE_WARN = ":INFO 1018: "
-DX_UNKNOWN_FILE = ":INFO 1020: "
-DX_FILE_NON_ASCII = ":INFO 1022: "
-DX_FILE_WHITESPACE = ":INFO 1024: "
-DX_FILE_ENCODING = ":INFO 1026: "
+MSG_VALID = t.gettext(":INFO 1000: ")
+MSG_ADMIT = t.gettext(":INFO 1002: ")
+MSG_INVALID = t.gettext(":INFO 1004: ")
+MSG_FAILED = t.gettext(":INFO 1006: ")
+MSG_AUDIO_CHANNELS_ERROR = (t.gettext(":INFO 1010: "))
+MSG_AUDIO_SAMPWIDTH_ERROR = (t.gettext(":INFO 1012: "))
+MSG_AUDIO_FRAMERATE_ERROR = (t.gettext(":INFO 1014: "))
+MSG_AUDIO_SAMPWIDTH_WARN = (t.gettext(":INFO 1016: "))
+MSG_AUDIO_FRAMERATE_WARN = (t.gettext(":INFO 1018: "))
+MSG_UNKNOWN_FILE = (t.gettext(":INFO 1020: "))
+MSG_FILE_NON_ASCII = (t.gettext(":INFO 1022: "))
+MSG_FILE_WHITESPACE = (t.gettext(":INFO 1024: "))
+MSG_FILE_ENCODING = (t.gettext(":INFO 1026: "))
 
 # ----------------------------------------------------------------------------
 
@@ -78,22 +78,17 @@ class sppasDiagnosis(object):
 
     # ------------------------------------------------------------------------
 
-    def __init__(self, logfile=None):
-        """ SPPAS files diagnosis.
-        
-        :param logfile: (sppasLog)
+    def __init__(self):
+        """ SPPAS files diagnosis. """
 
-        """
-        self._logfile = logfile
-
-        # for transcriptions
-        self._encoding = encoding
+        pass
 
     # ------------------------------------------------------------------------
     # Workers
     # ------------------------------------------------------------------------
 
-    def check_file(self, filename):
+    @staticmethod
+    def check_file(filename):
         """ Return a status and a message depending on the fact that the file
         is matching the requirements.
 
@@ -109,8 +104,8 @@ class sppasDiagnosis(object):
         if ext.lower() in sppas.src.annotationdata.aio.extensions:
             return sppasDiagnosis.check_trs_file(filename)
 
-        message = t.gettext(DX_FAILED) + (t.gettext(DX_UNKNOWN_FILE)).format(extension=ext)
-        return (ERROR_ID, message)
+        message = MSG_FAILED + MSG_UNKNOWN_FILE.format(extension=ext)
+        return ERROR_ID, message
 
     # ------------------------------------------------------------------------
 
@@ -134,51 +129,51 @@ class sppasDiagnosis(object):
             nc = audio.get_nchannels()
             audio.close()
         except UnicodeDecodeError:
-            message = t.gettext(DX_INVALID) + (t.gettext(DX_FILE_ENCODING)).format(encoding=encoding)
-            return (ERROR_ID, message)
+            message = MSG_INVALID + MSG_FILE_ENCODING.format(encoding=encoding)
+            return ERROR_ID, message
         except Exception as e:
-            message = t.gettext(DX_INVALID) + str(e)
-            return (ERROR_ID, message)
+            message = MSG_INVALID + str(e)
+            return ERROR_ID, message
 
         if nc > sppasDiagnosis.EXPECTED_CHANNELS:
             status = ERROR_ID
-            message += (t.gettext(DX_AUDIO_CHANNELS_ERROR)).format(number=audio.get_nchannels())
+            message += MSG_AUDIO_CHANNELS_ERROR.format(number=audio.get_nchannels())
 
         if sp < sppasDiagnosis.EXPECTED_SAMPLE_WIDTH*8:
             status = ERROR_ID
-            message += (t.gettext(DX_AUDIO_SAMPWIDTH_ERROR)).format(sampwidth=sp)
+            message += MSG_AUDIO_SAMPWIDTH_ERROR.format(sampwidth=sp)
 
         if fm < sppasDiagnosis.EXPECTED_FRAME_RATE:
             status = ERROR_ID
-            message += (t.gettext(DX_AUDIO_FRAMERATE_ERROR)).format(framerate=fm)
+            message += MSG_AUDIO_FRAMERATE_ERROR.format(framerate=fm)
 
         if status != ERROR_ID:
             if sp > sppasDiagnosis.EXPECTED_SAMPLE_WIDTH*8:
                 status = WARNING_ID
-                message += (t.gettext(DX_AUDIO_SAMPWIDTH_WARN)).format(sampwidth=sp)
+                message += MSG_AUDIO_SAMPWIDTH_WARN.format(sampwidth=sp)
 
             if fm > sppasDiagnosis.EXPECTED_FRAME_RATE:
                 status = WARNING_ID
-                message += (t.gettext(DX_AUDIO_FRAMERATE_WARN)).format(framerate=fm)
+                message += MSG_AUDIO_FRAMERATE_WARN.format(framerate=fm)
 
         # test US-ASCII chars
         if all(ord(x) < 128 for x in filename) is False:
             status = WARNING_ID
-            message += t.gettext(DX_FILE_NON_ASCII)
+            message += MSG_FILE_NON_ASCII
 
         if " " in filename:
             status = WARNING_ID
-            message += t.gettext(DX_FILE_WHITESPACE)
+            message += MSG_FILE_WHITESPACE
 
         # test whitespace
         if status == ERROR_ID:
-            message = t.gettext(DX_INVALID) + message
+            message = MSG_INVALID + message
         elif status == WARNING_ID:
-            message = t.gettext(DX_ADMIT) + message
+            message = MSG_ADMIT + message
         else:
-            message = t.gettext(DX_VALID)
+            message = MSG_VALID
 
-        return (status, message)
+        return status, message
 
     # ------------------------------------------------------------------------
 
@@ -192,26 +187,26 @@ class sppasDiagnosis(object):
 
         """
         status = OK_ID
-        message = t.gettext(DX_VALID)
+        message = MSG_VALID
 
         # test encoding
         try:
             codecs.open(filename, "r", encoding)
         except UnicodeDecodeError:
-            message = t.gettext(DX_INVALID) + (t.gettext(DX_FILE_ENCODING)).format(encoding=encoding)
-            return (ERROR_ID, message)
+            message = MSG_INVALID + MSG_FILE_ENCODING.format(encoding=encoding)
+            return ERROR_ID, message
         except Exception as e:
-            message = t.gettext(DX_INVALID) + str(e)
-            return (ERROR_ID, message)
+            message = MSG_INVALID + str(e)
+            return ERROR_ID, message
 
         # test US_ASCII in filename
         if all(ord(x) < 128 for x in filename) is False:
-            message = t.gettext(DX_ADMIT) + t.gettext(DX_FILE_NON_ASCII)
-            return (WARNING_ID, message)
+            message = MSG_ADMIT + MSG_FILE_NON_ASCII
+            return WARNING_ID, message
 
         # test whitespace in filename
         if " " in filename:
-            message = t.gettext(DX_ADMIT) + t.gettext(DX_FILE_WHITESPACE)
-            return (WARNING_ID, message)
+            message = MSG_ADMIT + MSG_FILE_WHITESPACE
+            return WARNING_ID, message
 
-        return (status, message)
+        return status, message

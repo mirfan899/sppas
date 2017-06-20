@@ -50,12 +50,32 @@ from sppas.src.annotationdata.aio.utils import gen_id
 from sppas.src.resources.mapping import Mapping
 from sppas.src.models.acm.modelmixer import ModelMixer
 
-from .. import ERROR_ID, WARNING_ID, OK_ID, INFO_ID
+from .. import t
+from .. import ERROR_ID, WARNING_ID, INFO_ID
 from ..baseannot import sppasBaseAnnotation
+from ..searchtier import sppasSearchTier
 from ..annotationsexc import AnnotationOptionError
+from ..annotationsexc import NoDirectoryError
+from ..annotationsexc import EmptyDirectoryError
+from ..annotationsexc import NoInputError
 
 from .alignio import AlignIO
 from .activity import Activity
+
+# ----------------------------------------------------------------------------
+
+MSG_MODEL_L1_FAILED = (t.gettext(":INFO 1210: "))
+MSG_ALIGN_TRACK = (t.gettext(":INFO 1220: "))
+MSG_ALIGN_FAILED = (t.gettext(":INFO 1230: "))
+MSG_BASIC = (t.gettext(":INFO 1240: "))
+MSG_ACTION_SPLIT_INTERVALS = (t.gettext(":INFO 1250: "))
+MSG_ACTION_ALIGN_INTERVALS = (t.gettext(":INFO 1252: "))
+MSG_ACTION_MERGE_INTERVALS = (t.gettext(":INFO 1254: "))
+MSG_ACTION_SAVE = (t.gettext(":INFO 1256: "))
+MSG_TOKENS_DISABLED = (t.gettext(":INFO 1260: "))
+MSG_NO_TOKENS_ALIGN = (t.gettext(":INFO 1262: "))
+MSG_EXTRA_TIER = (t.gettext(":INFO 1270: "))
+MSG_WORKDIR = (t.gettext(":INFO 1280: "))
 
 # ----------------------------------------------------------------------------
 
@@ -83,11 +103,11 @@ class sppasAlign(sppasBaseAnnotation):
     >>> a.run(input_phones_filename, input_tokens_filename, input_audio_filename, output_filename)
 
     """
-    def __init__(self, model, modelL1=None, logfile=None):
+    def __init__(self, model, model_L1=None, logfile=None):
         """ Create a new sppasAlign instance.
 
         :param model: (str) Name of the directory of the acoustic model of the language of the text
-        :param modelL1: (str) Name of the directory of the acoustic model of the mother language of the speaker
+        :param model_L1: (str) Name of the directory of the acoustic model of the mother language of the speaker
         :param logfile: (sppasLog)
 
         """
@@ -95,16 +115,14 @@ class sppasAlign(sppasBaseAnnotation):
         self.mapping = Mapping()
         self.alignio = None
 
-        self.fix_segmenter(model, modelL1)
+        self.fix_segmenter(model, model_L1)
         self.reset()
 
     # ------------------------------------------------------------------
 
     def reset(self):
-        """ Set default values.
+        """ Reset the options to configure this automatic annotation. """
 
-        """
-        # List of options to configure this automatic annotation
         self._options = dict()
         self._options['clean'] = True     # Remove temporary files
         self._options['infersp'] = False  # Add 'sp' at the end of each token
@@ -115,22 +133,22 @@ class sppasAlign(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def fix_segmenter(self, model, modelL1):
+    def fix_segmenter(self, model, model_L1):
         """ Fix the acoustic model directory, then create a SpeechSegmenter and AlignerIO.
 
         :param model: (str) Name of the directory of the acoustic model of the language of the text
-        :param modelL1: (str) Name of the directory of the acoustic model of the mother language of the speaker
+        :param model_L1: (str) Name of the directory of the acoustic model of the mother language of the speaker
 
         """
-        if modelL1 is not None:
+        if model_L1 is not None:
             try:
                 model_mixer = ModelMixer()
-                model_mixer.load(model, modelL1)
+                model_mixer.load(model, model_L1)
                 output_dir = os.path.join(RESOURCES_PATH, "models", "models-mix")
                 model_mixer.mix(output_dir, gamma=0.6)
                 model = output_dir
             except Exception as e:
-                self.print_message("The model of L1 is ignored: %s" % str(e), indent=3, status=WARNING_ID)
+                self.print_message(MSG_MODEL_L1_FAILED.format(str(e)), indent=3, status=WARNING_ID)
 
         # Map phoneme names from model-specific to SAMPA and vice-versa
         mapping_filename = os.path.join(model, "monophones.repl")
@@ -183,7 +201,7 @@ class sppasAlign(sppasBaseAnnotation):
                 self.set_activity_tier(opt.get_value())
 
             elif "activityduration" == key:
-                self.set_activityduration_tier(opt.get_value())
+                self.set_activity_duration_tier(opt.get_value())
 
             elif "phntok" == key:
                 self.set_phntokalign_tier(opt.get_value())
@@ -206,9 +224,6 @@ class sppasAlign(sppasBaseAnnotation):
 
     def set_aligner(self, aligner_name):
         """ Fix the name of the aligner.
-
-        The list of accepted aligner names is available in:
-        >>> aligners.aligner_names()
 
         :param aligner_name: (str) Case-insensitive name of the aligner.
 
@@ -251,7 +266,7 @@ class sppasAlign(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def set_activityduration_tier(self, value):
+    def set_activity_duration_tier(self, value):
         """ Fix the activity duration option.
 
         :param value: (bool) Activity tier generation.
@@ -273,51 +288,49 @@ class sppasAlign(sppasBaseAnnotation):
     # Methods to time-align series of data
     # -----------------------------------------------------------------------
 
-    def convert_tracks(self, diralign, trstier):
+    def convert_tracks(self, diralign):
         """ Call the Aligner to align each unit of a directory.
 
         :param diralign: the directory to get units and put alignments.
-        :param trstier: (Tier) required only if basic alignment.
 
         """
         # Verify if the directory exists
-        if not os.path.exists(diralign):
-            raise IOError('The directory '+diralign+' does not exist.')
+        if os.path.exists(diralign) is False:
+            raise NoDirectoryError(diralign)
 
         # Get all audio tracks
         dirlist = glob.glob(os.path.join(diralign, "track_*.wav"))
         ntracks = len(dirlist)
         if ntracks == 0:
-            raise IOError('The directory '+diralign+' does not contain data.')
+            raise EmptyDirectoryError(diralign)
 
         track = 1
         while track <= ntracks:
-            self.print_message('Align interval number '+str(track), indent=3)
+            self.print_message(MSG_ALIGN_TRACK.format(number=track), indent=3)
 
             try:
-                msg = self.alignio.segment_track(track,diralign)
+                msg = self.alignio.segment_track(track, diralign)
                 if len(msg) > 0:
                     self.print_message(msg, indent=3, status=INFO_ID)
 
             except Exception as e:
-                self.print_message(self.alignio.get_aligner()+' failed to perform segmentation.', indent=3, status=ERROR_ID)
+                self.print_message(MSG_ALIGN_FAILED.format(name=self.alignio.get_aligner()), indent=3, status=ERROR_ID)
                 self.print_message(str(e), indent=4, status=INFO_ID)
-                #import traceback
-                #print(traceback.format_exc())
 
                 # Execute BasicAlign
                 if self._options['basic'] is True:
                     if self.logfile:
-                        self.logfile.print_message('Execute a Basic Alignment - same duration for each phoneme:', indent=3)
-                    alignerid = self.alignio.get_aligner()
+                        self.logfile.print_message(MSG_BASIC, indent=3)
+                    aligner_id = self.alignio.get_aligner()
                     self.alignio.set_aligner('basic')
-                    msg = self.alignio.segment_track(track, diralign)
-                    self.alignio.set_aligner(alignerid)
+                    self.alignio.segment_track(track, diralign)
+                    self.alignio.set_aligner(aligner_id)
+
                 # or Create an empty alignment, to get an empty interval in the final tier
                 else:
-                    msg = self.alignio.segment_track(track, diralign, segment=False)
+                    self.alignio.segment_track(track, diralign, segment=False)
 
-            track = track + 1
+            track += 1
 
     # ------------------------------------------------------------------------
 
@@ -326,7 +339,8 @@ class sppasAlign(sppasBaseAnnotation):
 
         :param phontier: (Tier) The phonetization.
         :param toktier: (Tier) The tokenization, or None.
-        :param audioname: (str) Audio file name.
+        :param inputaudio: (str) Audio file name.
+        :param workdir: (str) The working directory
 
         :returns: A transcription.
 
@@ -337,23 +351,23 @@ class sppasAlign(sppasBaseAnnotation):
         # Split input into tracks
         # --------------------------------------------------------------
 
-        self.print_message("Split into intervals: ", indent=2)
+        self.print_message(MSG_ACTION_SPLIT_INTERVALS, indent=2)
         sgmt = self.alignio.split(inputaudio, phontier, toktier, workdir)
 
         # Align each track
         # --------------------------------------------------------------
 
-        self.print_message("Align each interval: ", indent=2)
-        self.convert_tracks(workdir, phontier)
+        self.print_message(MSG_ACTION_ALIGN_INTERVALS, indent=2)
+        self.convert_tracks(workdir)
 
         # Merge track alignment results
         # --------------------------------------------------------------
 
-        self.print_message("Merge interval's alignment:", indent=2)
+        self.print_message(MSG_ACTION_MERGE_INTERVALS, indent=2)
 
-        trsoutput = Transcription("AutomaticAlignment")
+        trs_output = Transcription("AutomaticAlignment")
         for tier in sgmt:
-            trsoutput.Append(tier)
+            trs_output.Append(tier)
 
         # Create a Transcription() object with alignments
         trs = self.alignio.read(workdir)
@@ -361,9 +375,9 @@ class sppasAlign(sppasBaseAnnotation):
             trs = self.rustine_liaisons(trs)
             trs = self.rustine_others(trs)
         for tier in trs:
-            trsoutput.Append(tier)
+            trs_output.Append(tier)
 
-        return trsoutput
+        return trs_output
 
     # ------------------------------------------------------------------------
 
@@ -373,29 +387,32 @@ class sppasAlign(sppasBaseAnnotation):
         :param trs: (Transcription)
 
         """
-        tokenalign = trs.Find("TokensAlign")
-        if tokenalign is None:
-            self.print_message("No time-aligned tokens found. No extra tier can be generated.", indent=2, status=WARNING_ID)
+        token_align = trs.Find("TokensAlign")
+        if token_align is None:
+            self.print_message(MSG_NO_TOKENS_ALIGN, indent=2, status=WARNING_ID)
             return trs
 
         # PhnTokAlign tier
         if self._options['phntok'] is True:
             try:
                 phonalign = trs.Find("PhonAlign")
-                tier = self.phntokalign_tier(phonalign,tokenalign)
+                tier = sppasAlign.phntokalign_tier(phonalign, token_align)
                 trs.Append(tier)
-                trs.GetHierarchy().add_link("TimeAssociation", tokenalign, tier)
+                trs.GetHierarchy().add_link("TimeAssociation", token_align, tier)
             except Exception as e:
-                self.print_message("PhnTokAlign generation: %s" % str(e), indent=2, status=WARNING_ID)
+                self.print_message(
+                    MSG_EXTRA_TIER.format(tiername="PhnTokAlign", message=str(e)), 
+                    indent=2, 
+                    status=WARNING_ID)
 
         # Activity tier
-        if self._options['activity'] is True or self._options['activityduration']:
+        if self._options['activity'] is True or self._options['activityduration'] is True:
             try:
                 activity = Activity(trs)
                 tier = activity.get_tier()
                 if self._options['activity'] is True:
                     trs.Append(tier)
-                    trs.GetHierarchy().add_link("TimeAlignment", tokenalign, tier)
+                    trs.GetHierarchy().add_link("TimeAlignment", token_align, tier)
 
                 if self._options['activityduration'] is True:
                     dtier = tier.Copy()
@@ -406,88 +423,43 @@ class sppasAlign(sppasBaseAnnotation):
                         a.GetLabel().SetValue('%.3f' % d)
 
             except Exception as e:
-                self.print_message("Activities generation: %s" % str(e), indent=2, status=WARNING_ID)
+                self.print_message(
+                    MSG_EXTRA_TIER.format(tiername="Activities", message=str(e)), 
+                    indent=2, 
+                    status=WARNING_ID)
 
         return trs
 
     # ------------------------------------------------------------------------
 
-    def get_phonestier(self, trs):
-        """ Return the tier with phonetization or None.
-
-        :param trs: (Transcription)
-
-        """
-        # Search for a tier starting with "phon"
-        for tier in trs:
-            if tier.GetName().lower().startswith("phon") is True:
-                return tier
-
-        # Search for a tier containing "phon"
-        for tier in trs:
-            if "phon" in tier.GetName().lower():
-                return tier
-
-        return None
-
-    # ------------------------------------------------------------------------
-
-    def get_tokenstier(self, trs):
-        """ Return the tier with tokens, or None.
-
-        In case of EOT, 2 tiers with tokens are available: std and faked.
-        Priority is given to std.
-
-        :param trs: (Transcription)
-
-        """
-        toktier = None    # None tier with tokens
-        stdtier = None    # index of stdtoken tier
-        fakedtier = None  # index of fakedtoken tier
-
-        for tier in trs:
-            tiername = tier.GetName().lower()
-            if "std" in tiername and "token" in tiername:
-                return stdtier
-            elif "faked" in tiername and "token" in tiername:
-                fakedtier = tier
-            elif "token" in tiername:
-                toktier = tier
-
-        if fakedtier is not None:
-            return fakedtier
-
-        return toktier
-
-    # ------------------------------------------------------------------------
-
-    def phntokalign_tier(self, tierphon, tiertoken):
+    @staticmethod
+    def phntokalign_tier(tierphon, tiertoken):
         """ Generates the PhnTokAlignTier from PhonAlign and TokensAlign.
 
         :param tierphon: (Tier)
         :param tiertoken: (Tier)
 
         """
-        newtier = Tier('PhnTokAlign')
-        newtier.SetMedia(tiertoken.GetMedia())
+        new_tier = Tier('PhnTokAlign')
+        new_tier.SetMedia(tiertoken.GetMedia())
 
-        for anntoken in tiertoken:
+        for ann_token in tiertoken:
 
             # Create the sequence of phonemes
             # Use only the phoneme with the best score.
             # Don't generate alternatives, and won't never do it.
-            beg = anntoken.GetLocation().GetBegin()
-            end = anntoken.GetLocation().GetEnd()
-            annphons = tierphon.Find(beg,end)
-            l = "-".join(ann.GetLabel().GetValue() for ann in annphons)
+            beg = ann_token.GetLocation().GetBegin()
+            end = ann_token.GetLocation().GetEnd()
+            ann_phons = tierphon.Find(beg, end)
+            l = "-".join(ann.GetLabel().GetValue() for ann in ann_phons)
 
             # Append in the new tier
-            newann = anntoken.Copy()
-            score = newann.GetLabel().GetLabel().GetScore()
-            newann.GetLabel().SetValue(Text(l,score))
-            newtier.Add(newann)
+            new_ann = ann_token.Copy()
+            score = new_ann.GetLabel().GetLabel().GetScore()
+            new_ann.GetLabel().SetValue(Text(l, score))
+            new_tier.Add(new_ann)
 
-        return newtier
+        return new_tier
 
     # ------------------------------------------------------------------------
 
@@ -509,16 +481,16 @@ class sppasAlign(sppasBaseAnnotation):
         # ---------------------------------------------------------------
 
         trsinput = sppas.src.annotationdata.aio.read(phonesname)
-        phontier = self.get_phonestier(trsinput)
+        phontier = sppasSearchTier.phonetization(trsinput)
         if phontier is None:
-            raise IOError("No tier with the phonetization was found.")
+            raise NoInputError
 
         try:
             trsinputtok = sppas.src.annotationdata.aio.read(tokensname)
-            toktier = self.get_tokenstier(trsinputtok)
-        except Exception:
+            toktier = sppasSearchTier.tokenization(trsinputtok)
+        except IOError:
             toktier = None
-            self.print_message("Tokens alignment disabled.", indent=2, status=WARNING_ID)
+            self.print_message(MSG_TOKENS_DISABLED, indent=2, status=WARNING_ID)
 
         # Prepare data
         # -------------------------------------------------------------
@@ -526,18 +498,17 @@ class sppasAlign(sppasBaseAnnotation):
         inputaudio = sppas.src.utils.fileutils.fix_audioinput(audioname)
         workdir = sppas.src.utils.fileutils.fix_workingdir(inputaudio)
         if self._options['clean'] is False:
-            self.print_message("The working directory is: %s" % workdir, indent=3, status=None)
+            self.print_message(MSG_WORKDIR.format(dirname=workdir), indent=3, status=None)
 
         # Processing...
         # ---------------------------------------------------------------
 
         try:
-            trsoutput = self.convert(phontier, toktier, audioname, workdir)
+            trs_output = self.convert(phontier, toktier, audioname, workdir)
             if toktier is not None:
-                trsoutput = self.append_extra(trsoutput)
+                trs_output = self.append_extra(trs_output)
         except Exception as e:
             self.print_message(str(e))
-            self.print_message("WORKDIR=%s" % workdir)
             if self._options['clean'] is True:
                 shutil.rmtree(workdir)
             raise
@@ -547,16 +518,16 @@ class sppasAlign(sppasBaseAnnotation):
 
         extm = os.path.splitext(audioname)[1].lower()[1:]
         media = Media(gen_id(), audioname, "audio/"+extm)
-        trsoutput.AddMedia(media)
-        for tier in trsoutput:
+        trs_output.AddMedia(media)
+        for tier in trs_output:
             tier.SetMedia(media)
 
         # Save results
         # --------------------------------------------------------------
         try:
-            self.print_message("Save automatic alignment: ", indent=3)
+            self.print_message(MSG_ACTION_SAVE, indent=3)
             # Save in a file
-            sppas.src.annotationdata.aio.write(outputfilename, trsoutput)
+            sppas.src.annotationdata.aio.write(outputfilename, trs_output)
         except Exception:
             if self._options['clean'] is True:
                 shutil.rmtree(workdir)
@@ -629,24 +600,27 @@ class sppasAlign(sppasBaseAnnotation):
         if self.alignio.aligntrack.get_model().endswith("fra") is False:
             return trs
 
-        logging.debug('SPPAS patch for the selection of liaisons...')
+        logging.debug('LIAISONS patch...')
 
-        tierphon   = trs.Find("PhonAlign")
+        tierphon = trs.Find("PhonAlign")
         tiertokens = trs.Find("TokensAlign")
         if tiertokens is None or tierphon is None:
             return trs
 
         # supprime les /z/ et /t/ de fin de mot si leur duree est < 65ms.
         for i, a in reversed(list(enumerate(tierphon))):
-            if a.GetLocation().GetDuration().GetValue() < 0.055 and a.GetLabel().GetValue() in ["z", "n", "t"]:
+            if a.GetLocation().GetDuration().GetValue() < 0.055 and \
+               a.GetLabel().GetValue() in ["z", "n", "t"]:
                 # get the corresponding token
                 for t in tiertokens:
                     # this is not the only phoneme in this token!
                     # and the token is not finishing by a vowel...
-                    lastchar = t.GetLabel().GetValue()
-                    if len(lastchar)>0:
-                        lastchar = lastchar[-1]
-                    if a.GetLocation().GetEnd() == t.GetLocation().GetEnd() and a.GetLocation().GetBegin() != t.GetLocation().GetBegin() and not lastchar in ["a", "e", "i", "o", "u", u"é", u"à", u"è"] :
+                    last_char = t.GetLabel().GetValue()
+                    if len(last_char) > 0:
+                        last_char = last_char[-1]
+                    if a.GetLocation().GetEnd() == t.GetLocation().GetEnd() and \
+                       a.GetLocation().GetBegin() != t.GetLocation().GetBegin() and \
+                       last_char not in ["a", "e", "i", "o", "u", u"é", u"à", u"è"]:
                         # Remove a and extend previous annotation
                         logging.debug(' ... liaison removed %s in token %s' % (a, t.GetLabel().GetValue()))
                         prev = tierphon[i-1]

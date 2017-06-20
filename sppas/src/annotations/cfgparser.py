@@ -207,7 +207,7 @@ class sppasAnnotationConfigParser(object):
             elif name == "name":
                 rname = u(value)
             elif name == "ext":
-                rext  = u(value)
+                rext = u(value)
         lr.set(rtype, rpath, rname, rext)
 
         return lr
