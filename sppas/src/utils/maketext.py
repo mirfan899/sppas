@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.utils.makeunicode
-    ~~~~~~~~~~~~~~~~~~~~~
+    src.utils.maketext
+    ~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -42,6 +42,12 @@
     Python 2 and Python 3.
     The locale is used to set the language and English is the default.
 
+    Example:
+
+        from sppas.src.utils.maketext import translate
+        t = translate("domain")
+        my_string = t.gettext("Some string in the domain.")
+
 """
 import os.path
 import gettext
@@ -50,19 +56,34 @@ import locale
 from sppas import BASE_PATH
 from .makeunicode import u
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class T(object):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Utility class used to return an unicode message.
+
+    """
     @staticmethod
     def gettext(msg):
         return u(msg)
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 def translate(domain):
+    """ Fix the domain to translate messages and activate the gettext method.
 
+    :param domain: (str) Name of the domain.
+    A domain corresponds to a ".po" file of the language. The language is
+    automatically fixed with the default locale. English is used by default.
+
+    """
     try:
         lc, encoding = locale.getdefaultlocale()
         if lc is not None:
@@ -74,7 +95,7 @@ def translate(domain):
         t = gettext.translation(domain, os.path.join(BASE_PATH, "po"), lang)
         t.install()
         return t
-    except Exception:
+    except:
         try:
             t = gettext.translation(domain, os.path.join(BASE_PATH, "po"), ["en_US"])
             t.install()
