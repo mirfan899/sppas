@@ -48,6 +48,11 @@ from .structsexc import LangNameError
 
 # ----------------------------------------------------------------------------
 
+# iso639-3 code for an undetermined language.
+UNDETERMINED = "und"
+
+# ----------------------------------------------------------------------------
+
 
 class sppasLangResource(object):
     """
@@ -62,9 +67,8 @@ class sppasLangResource(object):
     RESOURCES_TYPES = ["file", "directory"]
 
     def __init__(self):
-        """ Construct the sppasLangResource instance.
+        """ Create a sppasLangResource instance. """
 
-        """
         # All available language resources (type, path, filename, extension)
         self._rtype = ""
         self._rpath = ""
@@ -75,7 +79,7 @@ class sppasLangResource(object):
         self.langlist = list()
 
         # The selected language
-        self.lang = "und"
+        self.lang = UNDETERMINED
 
         # The language resource of the selected language
         self.langresource = ""
@@ -91,7 +95,7 @@ class sppasLangResource(object):
         self._rext = ""
 
         self.langlist = []
-        self.lang = "und"
+        self.lang = UNDETERMINED
         self.langresource = ""
 
     # ------------------------------------------------------------------------
@@ -237,10 +241,10 @@ class sppasLangResource(object):
     def set_lang(self, lang):
         """ Set the language.
 
-        :param lang: (str) The language must be "und" or one of the language list.
+        :param lang: (str) The language must be UNDETERMINED or one of the language list.
 
         """
-        if lang.lower() != "und" and lang not in self.langlist:
+        if lang.lower() != UNDETERMINED and lang not in self.langlist:
             raise LangNameError(lang)
 
         self.lang = lang

@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.structs
-    ~~~~~~~~~~~
+    src.structs.__init__.py
+    ~~~~~~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France

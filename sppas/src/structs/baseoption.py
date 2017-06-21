@@ -32,8 +32,8 @@
     src.structs.baseoption.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    In many situations, we have to store an un-typed data, and its type
-    separately, ane eventually other information like a description.
+    In many situations, we have to store an un-typed data and its type
+    separately, plus eventually other information like a description.
     Such data is called "option".
 
 """
@@ -51,7 +51,7 @@ class sppasBaseOption(object):
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :summary:      Class to deal with one option.
 
-    An option is a set of data with a main value and its type, then 3 other
+    An option is a set of data with a main value and its type, plus 3 other
     variables to store any kind of information. By default, the type of an
     option is "str", the value is an empty string and the name, text and
     description are all empty strings.
@@ -66,12 +66,12 @@ class sppasBaseOption(object):
 
     """
     def __init__(self, option_type, option_value=""):
-        """ Creates a new option instance.
+        """ Creates a sppasBaseOption instance.
 
         :param option_type: (str) Type of the option (i.e. 'int', 'bool',
         'float', ...). Notice that the type will be normalized. For example,
         'int, 'integer', 'long or 'short' will be all stored into 'int' type.
-        :param option_value (str) The value of the option.
+        :param option_value: (str) The value of the option.
 
         """
         self._type = ""
@@ -157,7 +157,7 @@ class sppasBaseOption(object):
     def set(self, other):
         """ Set self from another instance.
 
-        :param other: (baseoption) The option from which to get information.
+        :param other: (sppasBaseOption) The option from which to get information.
 
         """
         self._type = other.get_type()
@@ -176,7 +176,6 @@ class sppasBaseOption(object):
         :returns: True if option_type is valid and set.
 
         """
-
         option_type = option_type.lower()
 
         if option_type.startswith('bool'):
@@ -216,7 +215,7 @@ class sppasBaseOption(object):
     # ------------------------------------------------------------------------
 
     def set_name(self, name):
-        """ Set a name text which describes the option.
+        """ Set a name to describe the option.
 
         :param name: (str) Option description.
 
@@ -226,7 +225,7 @@ class sppasBaseOption(object):
     # ------------------------------------------------------------------------
 
     def set_text(self, text):
-        """ Set a brief text which describes the option.
+        """ Set a brief text to describe the option.
 
         :param text: (str) Option description.
 
@@ -236,7 +235,7 @@ class sppasBaseOption(object):
     # ------------------------------------------------------------------------
 
     def set_description(self, description):
-        """ Set a long text which describes the option.
+        """ Set a long text to describe the option.
 
         :param description: (str) Option description.
 
@@ -257,9 +256,13 @@ class sppasOption(sppasBaseOption):
 
     """
     def __init__(self, option_key, option_type="str", option_value=""):
-        """ Instantiate a sppasOption.
+        """ Create a sppasOption instance.
 
         :param option_key: (any type) An identifier for that option.
+        :param option_type: (str) Type of the option (i.e. 'int', 'bool',
+        'float', ...). Notice that the type will be normalized. For example,
+        'int, 'integer', 'long or 'short' will be all stored into 'int' type.
+        :param option_value: (str) The value of the option.
 
         """
         sppasBaseOption.__init__(self, option_type, option_value)

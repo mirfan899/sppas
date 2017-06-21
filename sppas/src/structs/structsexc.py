@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.calculus.structssexc.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.structs.structsexc.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Exceptions for structs package.
 
@@ -91,5 +91,3 @@ class LangNameError(ValueError):
 
     def __str__(self):
         return repr(self.parameter)
-
-# -----------------------------------------------------------------------

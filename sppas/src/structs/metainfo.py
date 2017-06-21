@@ -39,9 +39,11 @@
 """
 import collections
 
+from sppas.src.utils.makeunicode import u
+
 from .structsexc import MetaKeyError
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasMetaInfo(object):
@@ -53,8 +55,8 @@ class sppasMetaInfo(object):
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :summary:      Meta information manager.
 
-    Manage meta information of type (key,value) and allow to enable/disable
-    each one. Keys are strings, and values can be of any type.
+    Manage meta information of type (key,value). Allows to enable/disable
+    each one. Keys are unicode strings, and values can be of any type.
 
     >>> m = sppasMetaInfo()
     >>> m.add_metainfo('author', 'Brigitte Bigi')
@@ -67,85 +69,83 @@ class sppasMetaInfo(object):
         super(sppasMetaInfo, self).__init__()
         self._metainfo = collections.OrderedDict()
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def is_enable_metainfo(self, key):
         """ Return the status of a given key or raise a MetaKeyError exception.
 
-        :param key (str)
+        :param key: (str) The key of the meta-information
 
         """
-        if str(key) not in self._metainfo:
+        if u(key) not in self._metainfo:
             raise MetaKeyError(key)
 
-        return self._metainfo[key][0]
+        return self._metainfo[u(key)][0]
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_metainfo(self, key):
         """ Return the value of a given key or raise a MetaKeyError exception.
 
-        :param key (str)
+        :param key: (str) The key of the meta-information
 
         """
-        if str(key) not in self._metainfo:
+        if u(key) not in self._metainfo:
             raise MetaKeyError(key)
 
-        return self._metainfo[key][1]
+        return self._metainfo[u(key)][1]
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def enable_metainfo(self, key, value=True):
         """ Enable/Disable a meta information or raise a MetaKeyError exception.
 
-        :param key (str)
-        :param value (bool)
+        :param key: (str) The key of the meta-information
+        :param value: (bool) Status of the meta-information
 
         """
-        if str(key) not in self._metainfo.keys():
+        if u(key) not in self._metainfo.keys():
             raise MetaKeyError(key)
 
-        self._metainfo[str(key)][0] = bool(value)
+        self._metainfo[u(key)][0] = bool(value)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def add_metainfo(self, key, strv):
-        """ Fix a meta information or raise a MetaKeyError exception.
-        The meta information is then enabled.
+        """ Fix a meta information or update it.
 
-        :param key (str)
-        :param strv (str)
+        :param key: (str) The key of the meta-information
+        :param strv: (str)
 
         """
-        if str(key) in self._metainfo.keys():
-            raise MetaKeyError(key)
+        self._metainfo[u(key)] = [True, strv]
 
-        self._metainfo[str(key)] = [True, strv]
-
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def pop_metainfo(self, key):
         """ Pop a meta information or raise a MetaKeyError exception.
 
-        :param key (str)
+        :param key: (str) The key of the meta-information
 
         """
-        if str(key) not in self._metainfo.keys():
+        if u(key) not in self._metainfo.keys():
             raise MetaKeyError(key)
 
-        del self._metainfo[str(key)]
+        del self._metainfo[u(key)]
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def keys_enabled(self):
         """ Return a list of the keys of enabled meta information.
 
-        :returns: list of str
+        :returns: list of unicode strings
 
         """
         return [key for key in self._metainfo.keys() if self._metainfo[key][0] is True]
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+    # Overloads
+    # -----------------------------------------------------------------------
 
     def __len__(self):
         return len(self._metainfo)
