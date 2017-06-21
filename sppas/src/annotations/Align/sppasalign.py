@@ -40,7 +40,6 @@ import logging
 
 from sppas import RESOURCES_PATH
 
-import sppas.src.utils.fileutils
 import sppas.src.annotationdata.aio
 from sppas.src.annotationdata import Transcription
 from sppas.src.annotationdata import Tier
@@ -58,6 +57,7 @@ from ..annotationsexc import AnnotationOptionError
 from ..annotationsexc import NoDirectoryError
 from ..annotationsexc import EmptyDirectoryError
 from ..annotationsexc import NoInputError
+from ..annutils import fix_audioinput, fix_workingdir
 
 from .alignio import AlignIO
 from .activity import Activity
@@ -495,8 +495,8 @@ class sppasAlign(sppasBaseAnnotation):
         # Prepare data
         # -------------------------------------------------------------
 
-        inputaudio = sppas.src.utils.fileutils.fix_audioinput(audioname)
-        workdir = sppas.src.utils.fileutils.fix_workingdir(inputaudio)
+        inputaudio = fix_audioinput(audioname)
+        workdir = fix_workingdir(inputaudio)
         if self._options['clean'] is False:
             self.print_message(MSG_WORKDIR.format(dirname=workdir), indent=3, status=None)
 

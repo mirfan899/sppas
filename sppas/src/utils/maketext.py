@@ -42,11 +42,9 @@
     Python 2 and Python 3.
     The locale is used to set the language and English is the default.
 
-    Example:
-
-        from sppas.src.utils.maketext import translate
-        t = translate("domain")
-        my_string = t.gettext("Some string in the domain.")
+    >>>from sppas.src.utils.maketext import translate
+    >>>t = translate("domain")
+    >>>my_string = t.gettext("Some string in the domain.")
 
 """
 import os.path
@@ -66,41 +64,73 @@ class T(object):
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Utility class used to return an unicode message.
+    :summary:      Utility class to simulate the GNUTranslations class.
 
     """
     @staticmethod
     def gettext(msg):
         return u(msg)
 
+    @staticmethod
+    def ugettext(msg):
+        return u(msg)
+
 # ---------------------------------------------------------------------------
 
 
-def translate(domain):
-    """ Fix the domain to translate messages and activate the gettext method.
+def get_lang_list():
+    """ Return the list of languages depending on the default locale.
 
-    :param domain: (str) Name of the domain.
-    A domain corresponds to a ".po" file of the language. The language is
-    automatically fixed with the default locale. English is used by default.
+    At a first stage, the language is fixed with the default locale.
+    English is then either appended to the list or used by default.
 
     """
     try:
         lc, encoding = locale.getdefaultlocale()
         if lc is not None:
-            lang = [lc, "en_US"]
+            return [lc, "en_US"]
     except:
-        lang = ["en_US"]
+        pass
+
+    return ["en_US"]
+
+# ---------------------------------------------------------------------------
+
+
+def translate(domain, language=None):
+    """ Fix the domain to translate messages and to activate the gettext method.
+
+    :param domain: (str) Name of the domain.
+    A domain corresponds to a ".po" file of the language in the 'po' folder
+    of the SPPAS package.
+    :param language: (list) Preferred language for the translation system.
+    :returns: (GNUTranslations)
+
+    """
+    if language is None:
+        # Get the list of languages to be installed.
+        lang = get_lang_list()
+    else:
+        lang = [language]
+        if "en_US" not in lang:
+            lang.append('en_US')
 
     try:
+        # Install translation for the local language and English
         t = gettext.translation(domain, os.path.join(BASE_PATH, "po"), lang)
         t.install()
         return t
+
     except:
         try:
+            # Install translation for English only
             t = gettext.translation(domain, os.path.join(BASE_PATH, "po"), ["en_US"])
             t.install()
             return t
+
         except IOError:
             pass
 
+    # No language installed. The messages won't be translated;
+    # at least they are converted to unicode.
     return T()

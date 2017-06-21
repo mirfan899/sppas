@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# -*- coding:utf-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -29,30 +29,49 @@
 
         ---------------------------------------------------------------------
 
-    src.utils
-    ~~~~~~~~~
+    src.utils.tests.test_maketest.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-
-    utils is a free and open source Python library implementing utility
-    functions used into SPPAS.
+    :summary:      Test internationalization text maker.
 
 """
-from .fileutils import sppasFileUtils
-from .fileutils import sppasDirUtils
-from .compare import sppasCompare
-from .makeunicode import u, b
-from .maketext import translate
+import unittest
 
-__all__ = [
-    'sppasFileUtils',
-    'sppasDirUtils',
-    'sppasCompare',
-    'u',
-    'b',
-    'translate'
-]
+from ..makeunicode import u
+from ..maketext import get_lang_list, translate, T
+
+# ---------------------------------------------------------------------------
+
+
+class TestMakeText(unittest.TestCase):
+
+    def test_T(self):
+        t = T()
+        self.assertEqual("abc", t.gettext("abc"))
+        self.assertEqual(u("éàù"), t.gettext("éàù"))
+
+    def test_get_lang_list(self):
+        lang = get_lang_list()
+        self.assertEqual(lang, ["fr_FR", "en_US"])
+
+    def test_translate_invalid_domain(self):
+        t = translate('invalid')
+        self.assertEqual(t.gettext(":INFO 1000: "), ":INFO 1000: ")
+
+    def test_translate_valid_domain(self):
+        # Translate in English
+        t = translate('annotations', 'en_EN')
+        self.assertEqual(t.gettext(":INFO 1000: "), "Valid. ")
+
+        # Translate in French
+        t = translate('annotations', 'fr_FR')
+        self.assertEqual(t.gettext(":INFO 1000: "), "Valide. ")
+
+        # Translate in an unknown language (then... English)
+        t = translate('annotations', 'de_DE')
+        self.assertEqual(t.gettext(":INFO 1000: "), "Valid. ")

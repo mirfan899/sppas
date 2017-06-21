@@ -40,7 +40,7 @@ from .makeunicode import u
 from .makeunicode import text_type
 from .makeunicode import binary_type
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasCompare(object):
@@ -65,7 +65,7 @@ class sppasCompare(object):
 
     """
     def __init__(self, verbose=False, case_sensitive=False):
-        """ Create a sppasCompare and set options.
+        """ Create a sppasCompare instance and set options.
 
         :param verbose: (bool) Print comparison results on stdout
         :param case_sensitive: (bool) Only to compare strings
@@ -74,7 +74,7 @@ class sppasCompare(object):
         self._verbose = verbose
         self._case_sensitive = case_sensitive
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_verbose(self, v):
         """ Print comparison results on stdout or not.
@@ -84,7 +84,7 @@ class sppasCompare(object):
         """
         self._verbose = bool(v)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_case_sensitive(self, v):
         """ Compare strings with lower/upper case.
@@ -94,7 +94,7 @@ class sppasCompare(object):
         """
         self._case_sensitive = bool(v)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def equals(self, data1, data2):
         """ Compare two data sets of any type.
@@ -118,7 +118,7 @@ class sppasCompare(object):
 
         return self.equals_items(data1, data2)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def equals_lists(self, list1, list2):
         """ Compare two lists.
@@ -157,7 +157,7 @@ class sppasCompare(object):
 
         return True
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def equals_dictionaries(self, dict1, dict2):
         """ Compare two dictionaries.
@@ -216,7 +216,7 @@ class sppasCompare(object):
                 if self._verbose is True:
                     logging.info("Float values rounded to 4 digits are not equals: "
                                  "{:0.4f} != {:0.4f}".format(item1, item2))
-                    return False
+                return False
             return True
 
         if item1 != item2:
@@ -248,6 +248,7 @@ class sppasCompare(object):
             item2 = u(item2)
         if self._case_sensitive is False:
             return item1.lower() == item2.lower()
+
         return item1 == item2
 
     # -----------------------------------------------------------------------

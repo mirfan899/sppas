@@ -32,17 +32,56 @@
     src.utils.fileutils.py
     ~~~~~~~~~~~~~~~~~~~~~~
 
-    Utility functions to manage files and directories.
+    Utility classes to manage files and directories.
     
 """
 import os
 import random
-import shutil
-import codecs
-import re
 import logging
 import tempfile
 from datetime import date
+
+from .makeunicode import sppasUnicode
+from .utilsexc import NoDirectoryError
+
+# ----------------------------------------------------------------------------
+
+
+def setup_logging(log_level, filename=None):
+    """ Setup default logger to log to stderr or and possible also to a file.
+
+    :param log_level: Sets the threshold for this logger. Logging messages
+    which are less severe than this value will be ignored.
+    :param filename: Specifies that a FileHandler be created, using the
+    specified filename, rather than a StreamHandler.
+
+    The numeric values of logging levels are given in the following:
+
+        - CRITICAL 	50
+        - ERROR 	40
+        - WARNING 	30
+        - INFO 	    20
+        - DEBUG 	10
+        - NOTSET 	 0
+
+    """
+    formatmsg = "%(asctime)s [%(levelname)s] %(message)s"
+
+    # Setup logging to file if filename is specified
+    if filename is not None:
+        file_handler = logging.FileHandler(filename, "a+")
+        file_handler.setFormatter(logging.Formatter(formatmsg))
+        file_handler.setLevel(log_level)
+        logging.getLogger().addHandler(file_handler)
+    else:
+        # Setup logging to stderr
+        console_handler = logging.StreamHandler()
+        console_handler.setFormatter(logging.Formatter(formatmsg))
+        console_handler.setLevel(log_level)
+        logging.getLogger().addHandler(console_handler)
+
+    logging.getLogger().setLevel(log_level)
+    logging.info("Logging set up level=%s, filename=%s", log_level, filename)
 
 # ----------------------------------------------------------------------------
 
@@ -65,7 +104,7 @@ class sppasFileUtils(object):
 
     """
     def __init__(self, filename=None):
-        """ sppasFileUtils constructor.
+        """ Create a sppasFileUtils instance.
 
         :param filename: (str) Name of the current file
 
@@ -82,7 +121,7 @@ class sppasFileUtils(object):
     # ------------------------------------------------------------------------
 
     def set_random(self, root="sppas_tmp", add_today=True, add_pid=True):
-        """ Set a random basename, i.e. a filename without extension.
+        """ Set randomly a basename, i.e. a filename without extension.
 
         :param root: (str) String to start the filename
         :param add_today: (bool) Add today's information to the filename
@@ -141,16 +180,9 @@ class sppasFileUtils(object):
         :returns: new filename with spaces replaced by underscores.
 
         """
-        # Remove multiple spaces
-        __str = re.sub("[\s]+", r" ", self._filename)
-        # Spaces at beginning and end
-        __str = re.sub("^[ ]+", r"", __str)
-        __str = re.sub("[ ]+$", r"", __str)
-        # Replace spaces by underscores
-        __str = re.sub('\s', r'_', __str)
-
-        self._filename = __str
-        return __str
+        sp = sppasUnicode(self._filename)
+        self._filename = sp.clear_whitespace()
+        return self._filename
 
     # ------------------------------------------------------------------------
 
@@ -160,10 +192,9 @@ class sppasFileUtils(object):
         :returns: new filename with non-ASCII characters replaced by underscores.
 
         """
-        __str = re.sub(r'[^\x00-\x7F]', '_', self._filename)
-
-        self._filename = __str
-        return __str
+        sp = sppasUnicode(self._filename)
+        self._filename = sp.to_ascii()
+        return self._filename
 
     # ------------------------------------------------------------------------
 
@@ -194,7 +225,7 @@ class sppasDirUtils(object):
 
     """
     def __init__(self, dirname):
-        """ sppasDirUtils constructor.
+        """ Create a sppasDirUtils instance.
 
         :param dirname: (str) Name of the current directory
 
@@ -216,8 +247,7 @@ class sppasDirUtils(object):
             return []
 
         if os.path.exists(self._dirname) is False:
-            message = "The directory " + self._dirname + " does not exists."
-            raise IOError(message)
+            raise NoDirectoryError(dirname=self._dirname)
 
         return sppasDirUtils.dir_entries(self._dirname, extension, recurs)
 
@@ -244,96 +274,5 @@ class sppasDirUtils(object):
             # recursively access file names in subdirectories
             elif os.path.isdir(dirfile) and subdir:
                 file_list.extend(sppasDirUtils.dir_entries(dirfile, subdir, extension))
+
         return file_list
-
-# ----------------------------------------------------------------------------
-
-
-def setup_logging(log_level, filename):
-    """
-    Setup default logger to log to stderr or and possible also to a file.
-
-    The default logger is used like this:
-        >>> import logging
-        >>> logging.error(text message)
-
-    """
-    formatmsg = "%(asctime)s [%(levelname)s] %(message)s"
-
-    # Setup logging to file if filename is specified
-    if filename is not None:
-        file_handler = logging.FileHandler(filename, "a+")
-        file_handler.setFormatter(logging.Formatter(formatmsg))
-        file_handler.setLevel(log_level)
-        logging.getLogger().addHandler(file_handler)
-    else:
-        # Setup logging to stderr
-        console_handler = logging.StreamHandler()
-        console_handler.setFormatter(logging.Formatter(formatmsg))
-        console_handler.setLevel(log_level)
-        logging.getLogger().addHandler(console_handler)
-
-    logging.getLogger().setLevel(log_level)
-    logging.info("Logging set up with log level=%s, filename=%s", log_level, filename)
-
-# ----------------------------------------------------------------------------
-
-
-def fix_audioinput(inputaudioname):
-    """ Fix the audio file name that will be used.
-    An only-ascii-based file name without whitespace is set if the
-    current audio file name does not fit in these requirements.
-
-    :param inputaudioname: (str) Given audio file name
-
-    """
-    sf = sppasFileUtils(inputaudioname)
-    inputaudio = sf.format()
-    if inputaudio != inputaudioname:
-        shutil.copy(inputaudioname, inputaudio)
-
-    return inputaudio
-
-# ------------------------------------------------------------------------
-
-
-def fix_workingdir(inputaudio):
-    """ Fix the working directory to store temporarily the data.
-
-    """
-    if len(inputaudio) == 0:
-        # Notice that the following generates a directory that the
-        # aligners won't be able to access under Windows.
-        # No problem with MacOS or Linux.
-        sf = sppasFileUtils()
-        workdir = sf.set_random()
-        while os.path.exists(workdir) is True:
-            workdir = sf.set_random()
-    else:
-        workdir = os.path.splitext(inputaudio)[0]+"-temp"
-
-    os.mkdir(workdir)
-    return workdir
-
-# ------------------------------------------------------------------------
-
-
-def writecsv(filename, rows, separator="\t", encoding="utf-8-sig"):
-    """ Write the rows to the file.
-    Args:
-        filename (string):
-        rows (list):
-        separator (string):
-        encoding (string):
-
-    """
-    with codecs.open(filename, "w+", encoding) as f:
-        for row in rows:
-            tmp = []
-            for s in row:
-                if isinstance(s, (float, int)):
-                    s = str(s)
-                else:
-                    s = '"%s"' % s
-                tmp.append(s)
-            f.write('%s\n' % separator.join(tmp))

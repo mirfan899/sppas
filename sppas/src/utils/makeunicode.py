@@ -92,7 +92,7 @@ class sppasUnicode(object):
 
     """
     def __init__(self, entry):
-        """ Unicode maker for SPPAS.
+        """ Create a sppasUnicode instance.
 
         :param entry: (str or unicode or bytes)
 
@@ -129,7 +129,7 @@ class sppasUnicode(object):
 
     def to_strip(self):
         """ Strip the string.
-        Remove also multiple whitespace, tab and CR inside the string.
+        Remove also multiple whitespace, tab and CR/LF inside the string.
 
         :returns: unicode
 

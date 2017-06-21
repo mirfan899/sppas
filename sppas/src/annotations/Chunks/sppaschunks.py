@@ -36,13 +36,13 @@
 import shutil
 import os
 
-import sppas.src.utils.fileutils
 import sppas.src.annotationdata.aio
 from sppas.src.annotationdata.aio.utils import gen_id
 from sppas.src.annotationdata.media import Media
 from sppas.src.annotations.baseannot import sppasBaseAnnotation
 from sppas.src.annotations.Chunks.chunks import Chunks
 
+from ..annutils import fix_audioinput, fix_workingdir
 from ..annotationsexc import AnnotationOptionError
 from ..searchtier import sppasSearchTier
 
@@ -200,8 +200,8 @@ class sppasChunks(sppasBaseAnnotation):
         # Prepare data
         # -------------------------------------------------------------
 
-        inputaudio = sppas.src.utils.fileutils.fix_audioinput(audioname)
-        workdir = sppas.src.utils.fileutils.fix_workingdir(inputaudio)
+        inputaudio = fix_audioinput(audioname)
+        workdir = fix_workingdir(inputaudio)
         if self._options['clean'] is False:
             self.print_message("The working directory is: %s" % workdir, indent=3, status=None)
 

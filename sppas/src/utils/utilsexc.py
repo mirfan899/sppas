@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -29,30 +28,27 @@
 
         ---------------------------------------------------------------------
 
-    src.utils
-    ~~~~~~~~~
+    src.utils.utilsexc.py
+    ~~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-
-    utils is a free and open source Python library implementing utility
-    functions used into SPPAS.
+    Exceptions for utils package.
 
 """
-from .fileutils import sppasFileUtils
-from .fileutils import sppasDirUtils
-from .compare import sppasCompare
-from .makeunicode import u, b
 from .maketext import translate
+t = translate("utils")
 
-__all__ = [
-    'sppasFileUtils',
-    'sppasDirUtils',
-    'sppasCompare',
-    'u',
-    'b',
-    'translate'
-]
+# -----------------------------------------------------------------------
+
+NO_DIR_ERROR = ":ERROR 1210: "
+
+# -----------------------------------------------------------------------
+
+
+class NoDirectoryError(IOError):
+    """ :ERROR 1210: The directory {dirname} does not exist. """
+
+    def __init__(self, dirname):
+        self.parameter = NO_DIR_ERROR + (t.gettext(NO_DIR_ERROR)).format(dirname=dirname)
+
+    def __str__(self):
+        return repr(self.parameter)
