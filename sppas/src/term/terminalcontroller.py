@@ -32,7 +32,11 @@
     src.term.terminalcontroller.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    See http://igraph.org/python/doc/igraph.app.shell.TerminalController-class.html
+    A pacage that can be used to portably generate formatted output to a
+    terminal.
+
+    This package was originally created by Edward Loper and downloaded from:
+    http://igraph.org/python/doc/igraph.app.shell.TerminalController-class.html
 
 """
 import sys

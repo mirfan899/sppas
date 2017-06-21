@@ -30,7 +30,7 @@
         ---------------------------------------------------------------------
 
     src.term.textprogress.py
-    ~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~
 
     A 3-lines progress bar to be used while processing from a terminal.
     
@@ -69,7 +69,7 @@ class ProcessProgressTerminal(object):
 
     """
     def __init__(self):
-        """ Constructor. """
+        """ Create a ProcessProgressTerminal instance. """
 
         try:
             self._term = TerminalController()
