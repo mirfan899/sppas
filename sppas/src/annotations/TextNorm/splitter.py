@@ -37,7 +37,7 @@
 """
 import re
 
-from sppas.src.resources.dictrepl import DictRepl
+from sppas.src.resources.dictrepl import sppasDictRepl
 from sppas.src.utils.makeunicode import u, sppasUnicode
 from .language import without_whitespace
 
@@ -69,7 +69,7 @@ class sppasTokSplitter(object):
         if dict_replace is not None:
             self.__repl = dict_replace
         else:
-            self.__repl = DictRepl(None)
+            self.__repl = sppasDictRepl(None)
 
     # ------------------------------------------------------------------
 
@@ -130,7 +130,7 @@ class sppasTokSplitter(object):
                 t = re.sub(u'^\.([\w-])', ur' . \1', t)
 
                 # Split replacement characters
-                for r in self.__repl.get_keys():
+                for r in self.__repl:
                     if t.endswith(r):
                         t = t[:-len(r)]
                         t = t + ' ' + r

@@ -34,7 +34,7 @@
     The set of rules to accept or reject a repetition.
 
 """
-from sppas.src.resources.vocab import Vocabulary
+from sppas.src.resources.vocab import sppasVocabulary
 from .datastructs import Entry
 
 # ----------------------------------------------------------------------------
@@ -67,12 +67,12 @@ class Rules(object):
     def __init__(self, stop_list=None):
         """ Creates a Rules instance.
 
-        :param stop_list: (Vocabulary) List of un-relevant tokens.
+        :param stop_list: (sppasVocabulary) List of un-relevant tokens.
 
         """
-        self.__stoplist = Vocabulary()
+        self.__stoplist = sppasVocabulary()
         if stop_list is not None:
-            if isinstance(stop_list, Vocabulary):
+            if isinstance(stop_list, sppasVocabulary):
                 self.__stoplist = stop_list
             else:
                 for token in stop_list:

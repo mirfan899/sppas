@@ -30,9 +30,12 @@
         ---------------------------------------------------------------------
 
     src.resources.dumpfile.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Class to manage dump files.
+    A dump file is a binary version of an ASCII file. Its size is greater
+    than the original ASCII one but the time to load it is divided by two
+    or three.
 
 """
 import os
@@ -45,7 +48,7 @@ from .resourcesexc import DumpExtensionError
 # ---------------------------------------------------------------------------
 
 
-class DumpFile(object):
+class sppasDumpFile(object):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -54,19 +57,19 @@ class DumpFile(object):
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :summary:      Manager for dump files.
 
-    A dump file is a binary version of an ASCII file.
-
     """
     DUMP_FILENAME_EXT = ".dump"
 
+    # -----------------------------------------------------------------------
+
     def __init__(self, filename, dump_extension=""):
-        """ Create a DumpFile instance.
+        """ Create a sppasDumpFile instance.
 
         :param filename: (str) Name of the ASCII file.
         :param dump_extension: (str) Extension of the dump file.
 
         """
-        self._dump_ext = DumpFile.DUMP_FILENAME_EXT
+        self._dump_ext = sppasDumpFile.DUMP_FILENAME_EXT
         self._filename = filename
         self.set_dump_extension(dump_extension)
 
@@ -86,18 +89,18 @@ class DumpFile(object):
 
     def set_dump_extension(self, extension=""):
         """ Fix the extension of the dump file.
-        Set to the default dump extension if the given extension is an empty
-        string,
+        Set to the default extension if the given extension is an empty
+        string.
 
         :param extension: (str) Extension of the dump file (starting with or without the .).
-        :raises: Error if extension of the dump file is the same as the ASCII file.
+        :raises: DumpExtensionError if extension of the dump file is the same as the ASCII file.
 
         """
         if extension.startswith('.') is False:
             extension = "." + extension
 
         if len(extension) == 1:
-            extension = DumpFile.DUMP_FILENAME_EXT
+            extension = sppasDumpFile.DUMP_FILENAME_EXT
 
         file_name, file_ext = os.path.splitext(self._filename)
         if extension.lower() == file_ext.lower():
@@ -186,5 +189,3 @@ class DumpFile(object):
             return False
 
         return True
-
-    # ----------------------------------------------------------------------------

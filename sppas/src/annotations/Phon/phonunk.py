@@ -73,7 +73,7 @@ class sppasPhonUnk(object):
     def __init__(self, pron_dict):
         """ Create a sppasPhonUnk instance.
 
-        :param pron_dict: (dict) Dictionary of a set of tuples:
+        :param pron_dict: (sppasPronDict) Dictionary of a set of tuples:
         token=key, phon=value.
 
         """

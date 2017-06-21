@@ -44,7 +44,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.resources.dictpron import DictPron
+from sppas.src.resources.dictpron import sppasDictPron
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -88,7 +88,7 @@ if args.no_variant_numbers:
     with_variant_nb = False
 if args.no_filled_brackets:
     with_filled_brackets = False
-merge_dict = DictPron()
+merge_dict = sppasDictPron()
 
 # ----------------------------------------------------------------------------
 
@@ -97,13 +97,13 @@ for dict_file in args.i:
 
     if not args.quiet:
         print("Read input dictionary file: ")
-    pron_dict = DictPron(dict_file, nodump=True)
+    pron_dict = sppasDictPron(dict_file, nodump=True)
     if not args.quiet:
         print(" [  OK  ]")
 
-    for entry in pron_dict.get_keys():
+    for entry in pron_dict:
         prons = pron_dict.get_pron(entry)
-        for pron in prons.split(DictPron.VARIANTS_SEPARATOR):
+        for pron in prons.split(sppasDictPron.VARIANTS_SEPARATOR):
             merge_dict.add_pron(entry, pron)
     del pron_dict
 

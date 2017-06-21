@@ -28,7 +28,7 @@
 
         ---------------------------------------------------------------------
 
-    src.calculus.resourcesexc.py
+    src.resources.resourcesexc.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Exceptions for resources package.
@@ -135,5 +135,3 @@ class PositiveValueError(ValueError):
 
     def __str__(self):
         return repr(self.parameter)
-
-# -----------------------------------------------------------------------

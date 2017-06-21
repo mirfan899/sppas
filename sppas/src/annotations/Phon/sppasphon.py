@@ -41,14 +41,15 @@
         | Linguistics, LNAI 9561, Springer, pp. 515–526.
 
 """
+from sppas import unk_stamp
+
 import sppas.src.annotationdata.aio
 from sppas.src.annotationdata.tier import Tier
 from sppas.src.annotationdata.transcription import Transcription
-from sppas.src.resources.dictpron import DictPron
-from sppas.src.resources.mapping import Mapping
+from sppas.src.resources.dictpron import sppasDictPron
+from sppas.src.resources.mapping import sppasMapping
 
 from .. import ERROR_ID, WARNING_ID
-from .. import UNKSTAMP
 from .. import t
 from ..annotationsexc import AnnotationOptionError
 from ..baseannot import sppasBaseAnnotation
@@ -91,7 +92,7 @@ class sppasPhon(sppasBaseAnnotation):
         # Pronunciation dictionary
         self.maptable = None
         if map_filename is not None:
-            self.maptable = Mapping(map_filename)
+            self.maptable = sppasMapping(map_filename)
 
         self.phonetizer = None
         self.set_dict(dict_filename)
@@ -164,7 +165,7 @@ class sppasPhon(sppasBaseAnnotation):
         format with UTF-8 encoding.
 
         """
-        pdict = DictPron(dict_filename, unkstamp=UNKSTAMP, nodump=False)
+        pdict = sppasDictPron(dict_filename, nodump=False)
         self.phonetizer = sppasDictPhonetizer(pdict, self.maptable)
 
     # -----------------------------------------------------------------------
@@ -173,7 +174,7 @@ class sppasPhon(sppasBaseAnnotation):
         """ Phonetize a text.
         Because we absolutely need to match with the number of tokens, this
         method will always return a string: either the automatic phonetization
-        (from dict or from phonunk) or the UNKSTAMP.
+        (from dict or from phonunk) or the unk_stamp.
 
         :param entry: (str) The string to be phonetized.
         :returns: phonetization of the given entry
@@ -186,7 +187,7 @@ class sppasPhon(sppasBaseAnnotation):
             if s == ERROR_ID:
                 message = (t.gettext(MISSING)).format(tex) + t.gettext(NOT_PHONETIZED)
                 self.print_message(message, indent=3, status=s)
-                return UNKSTAMP
+                return unk_stamp
             else:
                 if s == WARNING_ID:
                     message = (t.gettext(MISSING)).format(tex)
@@ -194,7 +195,7 @@ class sppasPhon(sppasBaseAnnotation):
                         message = message + (t.gettext(PHONETIZED)).format(p)
                     else:
                         message = message + t.gettext(NOT_PHONETIZED)
-                        p = UNKSTAMP
+                        p = unk_stamp
                 tabphon.append(p)
 
             if message:

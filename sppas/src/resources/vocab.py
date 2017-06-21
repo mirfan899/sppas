@@ -39,12 +39,12 @@ from sppas import encoding
 from sppas.src.utils.makeunicode import sppasUnicode
 
 from .resourcesexc import FileFormatError
-from .dumpfile import DumpFile
+from .dumpfile import sppasDumpFile
 
 # ---------------------------------------------------------------------------
 
 
-class Vocabulary(object):
+class sppasVocabulary(object):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -55,7 +55,7 @@ class Vocabulary(object):
 
     """
     def __init__(self, filename=None, nodump=False, case_sensitive=False):
-        """ Create a Vocabulary instance.
+        """ Create a sppasVocabulary instance.
 
         :param filename: (str) Name of the file with the list of words.
         :param nodump: (bool) Allows to disable the creation of a dump file.
@@ -70,7 +70,7 @@ class Vocabulary(object):
 
         if filename is not None:
 
-            dp = DumpFile(filename)
+            dp = sppasDumpFile(filename)
 
             # Try first to get the dict from a dump file
             # (at least 2 times faster than the ascii one)
@@ -109,13 +109,6 @@ class Vocabulary(object):
 
     # -----------------------------------------------------------------------
 
-    def get_size(self):
-        """ Return the number of entries in the list. """
-
-        return len(self.__entries)
-
-    # -----------------------------------------------------------------------
-
     def get_list(self):
         """ Return the list of entries, sorted in alpha-numeric order. """
 
@@ -146,10 +139,10 @@ class Vocabulary(object):
     def copy(self):
         """ Make a deep copy of the instance.
 
-        :returns: Vocabulary
+        :returns: sppasVocabulary
 
         """
-        s = Vocabulary()
+        s = sppasVocabulary()
         for i in self.__entries:
             s.add(i)
 

@@ -38,8 +38,8 @@ from sppas.src.annotationdata.tier import Tier
 from sppas.src.annotationdata.annotation import Annotation
 from sppas.src.annotationdata.ptime.interval import TimeInterval
 from sppas.src.annotationdata.label.label import Label
-from sppas.src.resources.vocab import Vocabulary
-from sppas.src.resources.unigram import Unigram
+from sppas.src.resources.vocab import sppasVocabulary
+from sppas.src.resources.unigram import sppasUnigram
 
 from ..baseannot import sppasBaseAnnotation
 from ..searchtier import sppasSearchTier
@@ -91,7 +91,7 @@ class sppasRepet(sppasBaseAnnotation):
         self._span = 5               # Detection length (nb of IPUs; 1=current IPU)
         self._alpha = 0.5            # Specific stop-words threshold coefficient
         self.lemmatizer = LemmaDict()
-        self.stop_words = Vocabulary()
+        self.stop_words = sppasVocabulary()
 
         # Create the lemmatizer instance
         try:
@@ -125,9 +125,9 @@ class sppasRepet(sppasBaseAnnotation):
                 print(" ... ... [ INFO ] StopWords disabled.")
         else:
             if logfile is not None:
-                logfile.print_message("StopWords: {:d}".format(self.stop_words.get_size()), indent=2, status=3)
+                logfile.print_message("StopWords: {:d}".format(len(self.stop_words)), indent=2, status=3)
             else:
-                print(" ... ... [ INFO ] StopWords: {:d}".format(self.stop_words.get_size()))
+                print(" ... ... [ INFO ] StopWords: {:d}".format(len(self.stop_words)))
 
     # -----------------------------------------------------------------------
 
@@ -228,7 +228,7 @@ class sppasRepet(sppasBaseAnnotation):
             return
 
         lemma_tier = tokens_tier.Copy()
-        if self.lemmatizer.get_size() > 0:
+        if len(self.lemmatizer) > 0:
             for ann in lemma_tier:
                 token = ann.GetLabel().GetValue()
                 lemma = self.lemmatizer.get_lem(token)
@@ -260,19 +260,19 @@ class sppasRepet(sppasBaseAnnotation):
 
         """
         if self._use_stopwords is False:
-            return Vocabulary()
+            return sppasVocabulary()
 
         if tier is None:
             return self.stop_words
 
-        # Create the Unigram and put data
-        u = Unigram()
+        # Create the sppasUnigram and put data
+        u = sppasUnigram()
         for a in tier:
             if a.GetLabel().IsSpeech() is True:
                 u.add(a.GetLabel().GetValue())
 
         # Estimate values for relevance
-        _v = float(u.get_size())
+        _v = float(len(u))
         threshold = 1. / (self._alpha * _v)
 
         # Estimate if a token is relevant; if not: put in the stop-list

@@ -46,7 +46,7 @@ from sppas.src.annotationdata import Tier
 from sppas.src.annotationdata import Media
 from sppas.src.annotationdata import Text
 from sppas.src.annotationdata.aio.utils import gen_id
-from sppas.src.resources.mapping import Mapping
+from sppas.src.resources.mapping import sppasMapping
 from sppas.src.models.acm.modelmixer import ModelMixer
 
 from .. import t
@@ -112,7 +112,7 @@ class sppasAlign(sppasBaseAnnotation):
 
         """
         sppasBaseAnnotation.__init__(self, logfile)
-        self.mapping = Mapping()
+        self.mapping = sppasMapping()
         self.alignio = None
 
         self.fix_segmenter(model, model_L1)
@@ -154,11 +154,11 @@ class sppasAlign(sppasBaseAnnotation):
         mapping_filename = os.path.join(model, "monophones.repl")
         if os.path.isfile(mapping_filename):
             try:
-                mapping = Mapping(mapping_filename)
+                mapping = sppasMapping(mapping_filename)
             except Exception:
-                mapping = Mapping()
+                mapping = sppasMapping()
         else:
-            mapping = Mapping()
+            mapping = sppasMapping()
 
         # Manager of the interval tracks
         self.alignio = AlignIO(mapping, model)
@@ -488,7 +488,7 @@ class sppasAlign(sppasBaseAnnotation):
         try:
             trsinputtok = sppas.src.annotationdata.aio.read(tokensname)
             toktier = sppasSearchTier.tokenization(trsinputtok)
-        except IOError:
+        except Exception:   # IOError, AttributeError:
             toktier = None
             self.print_message(MSG_TOKENS_DISABLED, indent=2, status=WARNING_ID)
 

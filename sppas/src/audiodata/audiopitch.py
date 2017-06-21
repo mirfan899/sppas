@@ -80,12 +80,6 @@ class AudioPitch(object):
 
     # ------------------------------------------------------------------
 
-    def get_size(self):
-        """ Return the number of pitch values. """
-        return len(self.pitch)
-
-    # ------------------------------------------------------------------
-
     def eval_pitch(self, filename):
         """
         Eval pitch values... (TODO)
@@ -94,4 +88,9 @@ class AudioPitch(object):
         """
         raise NotImplementedError
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+    # Overloads
+    # -----------------------------------------------------------------------
+
+    def __len__(self):
+        return len(self.pitch)

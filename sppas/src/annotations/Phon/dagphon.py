@@ -36,7 +36,7 @@
 
 """
 import re
-from sppas.src.resources.dictpron import DictPron
+from sppas.src.resources.dictpron import sppasDictPron
 
 # ----------------------------------------------------------------------------
 
@@ -234,7 +234,7 @@ class sppasDAGPhonetizer(object):
         # Get all longest-segments of a token
         for i in range(len(tabpron)):
 
-            variants = tabpron[i].split(DictPron.VARIANTS_SEPARATOR)
+            variants = tabpron[i].split(sppasDictPron.VARIANTS_SEPARATOR)
             # Get all variants of this part-of-token
             for v in range(len(variants)):
 
@@ -274,9 +274,9 @@ class sppasDAGPhonetizer(object):
         for variant in pathslist:
             p = ""
             for i in variant[1:len(variant)-1]:  # do not include Start and End nodes
-                p = p + DictPron.PHONEMES_SEPARATOR + pron_graph[i]
+                p = p + sppasDictPron.PHONEMES_SEPARATOR + pron_graph[i]
             p = re.sub('^.', "", p)
-            pron[p] = len(p.split(DictPron.PHONEMES_SEPARATOR))
+            pron[p] = len(p.split(sppasDictPron.PHONEMES_SEPARATOR))
 
         return pron
 
@@ -313,7 +313,7 @@ class sppasDAGPhonetizer(object):
 
         # Output selection
 
-        v = DictPron.VARIANTS_SEPARATOR
+        v = sppasDictPron.VARIANTS_SEPARATOR
 
         # Return all variants
         if self.variants == 0:

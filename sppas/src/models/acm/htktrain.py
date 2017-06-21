@@ -40,6 +40,8 @@ import shutil
 import copy
 import collections
 
+from sppas import unk_stamp
+
 from sppas.src.utils.fileutils import sppasFileUtils
 from sppas.src.utils.fileutils import sppasDirUtils
 
@@ -56,11 +58,9 @@ from sppas.src.audiodata.audio import AudioPCM
 from sppas.src.audiodata.channelformatter import ChannelFormatter
 from sppas.src.audiodata.channelmfcc import ChannelMFCC
 
-from sppas.src.resources.dictpron import DictPron
-from sppas.src.resources.vocab import Vocabulary
-from sppas.src.resources.mapping import Mapping
-
-from sppas.src.annotations import UNKSTAMP
+from sppas.src.resources.dictpron import sppasDictPron
+from sppas.src.resources.vocab import sppasVocabulary
+from sppas.src.resources.mapping import sppasMapping
 
 from .hmm import HMM
 from .htkscripts import HtkScripts
@@ -454,7 +454,7 @@ class TrainingCorpus(object):
         self.dictfile = None
         self.phonesfile = None
         self.monophones = PhoneSet()
-        self.phonemap = Mapping()
+        self.phonemap = sppasMapping()
 
     # -----------------------------------------------------------------------
 
@@ -487,17 +487,16 @@ class TrainingCorpus(object):
         # The pronunciation dictionary (also used to construct the vocab if required)
         if dictfile is not None and os.path.exists(dictfile) is True:
             # Map the phoneme strings of the dictionary. Save the mapped version.
-            pdict = DictPron(dictfile)
+            pdict = sppasDictPron(dictfile)
             if self.datatrainer.workdir is not None:
                 mapdict = pdict.map_phones(self.phonemap)
                 dictfile = os.path.join(self.datatrainer.workdir, self.lang+".dict")
                 mapdict.save_as_ascii(dictfile)
             if vocabfile is None:
-                tokenslist = pdict.get_keys()
                 vocabfile = os.path.join(self.datatrainer.workdir, self.lang+".vocab")
-                w = Vocabulary()
-                for token in tokenslist:
-                    if not '(' in token and not ')' in token:
+                w = sppasVocabulary()
+                for token in pdict:
+                    if '(' not in token and ')' not in token:
                         w.add(token)
                 w.save(vocabfile)
             logging.info(' - pronunciation dictionary: %s' % dictfile)
@@ -666,7 +665,7 @@ class TrainingCorpus(object):
 
     # -----------------------------------------------------------------------
 
-    def map_phonemes(self, tier, unkstamp=UNKSTAMP):
+    def map_phonemes(self, tier, unkstamp=unk_stamp):
         """ Map phonemes of a tier. """
 
         # Map phonemes.
@@ -851,7 +850,7 @@ class TrainingCorpus(object):
     def _create_phonemap(self, mapfile):
         """ Create the default mapping table, and/or get from a file. """
 
-        self.phonemap = Mapping(mapfile)
+        self.phonemap = sppasMapping(mapfile)
 
         if self.phonemap.is_key("sil") is False:
             self.phonemap.add('sil', '#')
@@ -1310,7 +1309,7 @@ class HTKModelTrainer(object):
 
             # Get only the phonetization from the time-alignment
             tiera = trsalign.Find('PhonAlign')
-            tiera = self.corpus.map_phonemes(tiera, unkstamp=UNKSTAMP)
+            tiera = self.corpus.map_phonemes(tiera, unkstamp=unk_stamp)
             tier = tierutils.align2phon(tiera)
             trs = Transcription()
             trs.Add(tier)

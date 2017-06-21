@@ -31,6 +31,12 @@
     src.resources.unigram.py
     ~~~~~~~~~~~~~~~~~~~~~~~~
 
+    An unigram is commonly a data structure with tokens and their probabilities,
+    and a back-off value. Is is a statistical language model.
+    This class is a simplified version with only tokens and their occurrences.
+
+    Notice that tokens are case-sensitive.
+
 """
 import codecs
 import logging
@@ -38,13 +44,13 @@ import logging
 from sppas import encoding
 from sppas.src.utils.makeunicode import sppasUnicode
 
-from .dumpfile import DumpFile
+from .dumpfile import sppasDumpFile
 from .resourcesexc import PositiveValueError
 
 # ----------------------------------------------------------------------------
 
 
-class Unigram(object):
+class sppasUnigram(object):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -55,7 +61,7 @@ class Unigram(object):
 
     """
     def __init__(self, filename=None, nodump=True):
-        """ Create a Unigram.
+        """ Create a sppasUnigram instance.
 
         :param filename: (str) Name of the file with words and counts (2 columns)
         :param nodump: (bool) Disable the creation of a dump file
@@ -67,7 +73,7 @@ class Unigram(object):
         if filename is not None:
 
             data = None
-            dp = DumpFile(filename)
+            dp = sppasDumpFile(filename)
 
             # Try first to get the dict from a dump file (at least 2 times faster)
             if nodump is False:
@@ -88,10 +94,10 @@ class Unigram(object):
 
         :param entry: (str) String of the token to add
         :param value: (int) Value to increment the count
+        :raises: PositiveValueError
 
         """
-        s = sppasUnicode(entry)
-        entry = s.to_strip()
+        entry = sppasUnicode(entry).to_strip()
 
         value = int(value)
         if value <= 0:
@@ -109,7 +115,8 @@ class Unigram(object):
         :param token: (str) The string of the token
 
         """
-        return self.__entries.get(token, 0)
+        s = sppasUnicode(token).to_strip()
+        return self.__entries.get(s, 0)
 
     # -------------------------------------------------------------------------
 
@@ -125,21 +132,14 @@ class Unigram(object):
 
         return self.__entries.keys()
 
-    # -------------------------------------------------------------------------
-
-    def get_size(self):
-        """ Return the number of tokens (vocab size). """
-
-        return len(self.__entries)
-
     # ------------------------------------------------------------------------
     # File
     # ------------------------------------------------------------------------
 
     def load_from_ascii(self, filename):
-        """ Load a unigram from a file with two columns: word freq.
+        """ Load a unigram from a file with two columns: word count.
 
-        :param filename: (str)
+        :param filename: (str) Name of the unigram ASCII file to read
 
         """
         with codecs.open(filename, 'r', encoding) as fd:
@@ -164,7 +164,7 @@ class Unigram(object):
     def save_as_ascii(self, filename):
         """ Save a unigram into a file with two columns: word freq.
 
-        :param filename: (str)
+        :param filename: (str) Name of the unigram ASCII file to write
         :returns: (bool)
 
         """
@@ -188,4 +188,5 @@ class Unigram(object):
     # ------------------------------------------------------------------------
 
     def __contains__(self, item):
-        return item in self.__entries
+        s = sppasUnicode(item).to_strip()
+        return s in self.__entries

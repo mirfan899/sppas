@@ -33,12 +33,12 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from sppas.src.resources.mapping import Mapping, DEFAULT_SEP
+from sppas.src.resources.mapping import sppasMapping, DEFAULT_SEP
 
 # ----------------------------------------------------------------------------
 
 
-class TierMapping(Mapping):
+class TierMapping(sppasMapping):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -60,7 +60,7 @@ class TierMapping(Mapping):
         :param dict_name: (str) The mapping dictionary.
 
         """
-        Mapping.__init__(self, dict_name)
+        sppasMapping.__init__(self, dict_name)
         self._delimiters = DEFAULT_SEP
 
     # ------------------------------------------------------------------
@@ -94,7 +94,7 @@ class TierMapping(Mapping):
         new_tier = tier.Copy()
 
         # if nothing to do
-        if tier.GetSize() == 0 or self.get_size() == 0:
+        if tier.GetSize() == 0 or self.is_empty() is True:
             return new_tier
 
         # map

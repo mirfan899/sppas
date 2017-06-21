@@ -47,7 +47,7 @@ import re
 import codecs
 
 from sppas import encoding
-from .. import UNKSTAMP
+from sppas import unk_stamp
 
 # ----------------------------------------------------------------------------
 
@@ -60,7 +60,7 @@ class LemmaDict(object):
         """ Create a new LemmaDict instance.
 
         """
-        self.unk = UNKSTAMP
+        self.unk = unk_stamp
         # Load the dictionary:
         self.lemdict = dict()
 
@@ -99,27 +99,6 @@ class LemmaDict(object):
                 else:
                     self.lemdict[__entry] = __lemma
                     dictfreq[__entry] = __freq
-
-    # ------------------------------------------------------------------
-
-    def get_size(self):
-        """ Return the number of entries in the dictionary.
-            (without the number of variants)
-            Parameters:  None
-            Return:      int
-            Exception:   None
-        """
-        return len(self.lemdict)
-
-    # ------------------------------------------------------------------
-
-    def get_dict(self):
-        """ Return the dictionary.
-            Parameters:  None
-            Return:      a dictionary
-            Exception:   None
-        """
-        return self.lemdict
 
     # ------------------------------------------------------------------
 
@@ -235,10 +214,19 @@ class LemmaDict(object):
             entry = self.__lower(entry)
             _lem = self.get_lem( entry )
             if len(_lem)>0 and _lem.find(self.unk)>-1:
-                if unk==True:
+                if unk is True:
                     _lem = entry
             tablem.append( _lem )
 
         # Concatenate entries into a lemmatized string
         _s = " "
         return _s.join( tablem )
+
+    # -----------------------------------------------------------------------
+    # Overloads
+    # -----------------------------------------------------------------------
+
+    def __len__(self):
+        return len(self.lemdict)
+
+    # -----------------------------------------------------------------------

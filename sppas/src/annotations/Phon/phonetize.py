@@ -38,8 +38,8 @@
 import re
 
 from sppas.src.utils.makeunicode import sppasUnicode, u
-from sppas.src.resources.mapping import Mapping
-from sppas.src.resources.dictpron import DictPron
+from sppas.src.resources.mapping import sppasMapping
+from sppas.src.resources.dictpron import sppasDictPron
 
 from .. import ERROR_ID, WARNING_ID, OK_ID
 from .phonunk import sppasPhonUnk
@@ -87,13 +87,13 @@ class sppasDictPhonetizer(object):
     def __init__(self, pdict, maptable=None):
         """ Create a sppasDictPhonetizer instance.
 
-        :param pdict: (DictPron) The pronunciation dictionary.
+        :param pdict: (sppasDictPron) The pronunciation dictionary.
         :param maptable: (Mapping) A mapping table for phones.
 
         """
         self._pdict = None
         self._phonunk = None
-        self._map_table = Mapping()
+        self._map_table = sppasMapping()
         self._dag_phon = sppasDAGPhonetizer()
 
         self.set_dict(pdict)
@@ -104,14 +104,14 @@ class sppasDictPhonetizer(object):
     def set_dict(self, pron_dict):
         """ Set the pronunciation dictionary.
 
-        :param pron_dict: (DictPron) The pronunciation dictionary.
+        :param pron_dict: (sppasDictPron) The pronunciation dictionary.
 
         """
-        if isinstance(pron_dict, DictPron) is False:
-            raise TypeError('Expected a DictPron instance.')
+        if isinstance(pron_dict, sppasDictPron) is False:
+            raise TypeError('Expected a sppasDictPron instance.')
 
         self._pdict = pron_dict
-        self._phonunk = sppasPhonUnk(self._pdict.get_dict())
+        self._phonunk = sppasPhonUnk(self._pdict)
 
     # -----------------------------------------------------------------------
 
@@ -122,10 +122,10 @@ class sppasDictPhonetizer(object):
 
         """
         if map_table is not None:
-            if isinstance(map_table, Mapping) is False:
+            if isinstance(map_table, sppasMapping) is False:
                 raise TypeError('Expected a Mapping instance.')
         else:
-            map_table = Mapping()
+            map_table = sppasMapping()
 
         self._map_table = map_table
         self._map_table.set_keep_miss(False)
@@ -260,9 +260,9 @@ class sppasDictPhonetizer(object):
         if self._map_table.is_empty() is True:
             return phonentry
 
-        tab = [self._map_variant(v) for v in phonentry.split(DictPron.VARIANTS_SEPARATOR)]
+        tab = [self._map_variant(v) for v in phonentry.split(sppasDictPron.VARIANTS_SEPARATOR)]
 
-        return DictPron.VARIANTS_SEPARATOR.join(tab)
+        return sppasDictPron.VARIANTS_SEPARATOR.join(tab)
 
     # -----------------------------------------------------------------------
 
@@ -278,7 +278,7 @@ class sppasDictPhonetizer(object):
         for p in phones:
             mapped = self._map_table.map_entry(p)
             if len(mapped) > 0:
-                subs.append(p + DictPron.VARIANTS_SEPARATOR + mapped)
+                subs.append(p + sppasDictPron.VARIANTS_SEPARATOR + mapped)
             else:
                 subs.append(p)
 
@@ -289,11 +289,11 @@ class sppasDictPhonetizer(object):
         # By convention, they are represented by an underscore in the
         # mapping table.
         tmp = []
-        for p in phon.split(DictPron.VARIANTS_SEPARATOR):
-            r = [x for x in p.split(DictPron.PHONEMES_SEPARATOR) if x != "_"]
-            tmp.append(DictPron.PHONEMES_SEPARATOR.join(r))
+        for p in phon.split(sppasDictPron.VARIANTS_SEPARATOR):
+            r = [x for x in p.split(sppasDictPron.PHONEMES_SEPARATOR) if x != "_"]
+            tmp.append(sppasDictPron.PHONEMES_SEPARATOR.join(r))
 
-        return DictPron.VARIANTS_SEPARATOR.join(set(tmp))
+        return sppasDictPron.VARIANTS_SEPARATOR.join(set(tmp))
 
     # -----------------------------------------------------------------------
 
@@ -303,7 +303,7 @@ class sppasDictPhonetizer(object):
         :param phon_variant: (str) One phonetization variant of an entry.
 
         """
-        phones = phon_variant.split(DictPron.PHONEMES_SEPARATOR)
+        phones = phon_variant.split(sppasDictPron.PHONEMES_SEPARATOR)
         if len(phones) == 1:
             return phones
 
@@ -315,7 +315,7 @@ class sppasDictPhonetizer(object):
             # Find the index of the longest phone sequence that can be mapped
             left_index = self.__longestlr(phones[idx:maxidx])
             # Append such a longest sequence in tab
-            s = DictPron.PHONEMES_SEPARATOR
+            s = sppasDictPron.PHONEMES_SEPARATOR
             tab.append(s.join(phones[idx:idx+left_index]))
             idx += left_index
 
@@ -329,7 +329,7 @@ class sppasDictPhonetizer(object):
         i = len(tabentry)
         while i > 0:
             # Find in the map table a substring from 0 to i
-            entry = DictPron.PHONEMES_SEPARATOR.join(tabentry[:i])
+            entry = sppasDictPron.PHONEMES_SEPARATOR.join(tabentry[:i])
             if self._map_table.is_key(entry):
                 return i
             i -= 1

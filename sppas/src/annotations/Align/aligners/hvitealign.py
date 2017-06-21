@@ -37,7 +37,7 @@ import codecs
 from subprocess import Popen, PIPE, STDOUT
 
 from sppas import encoding
-from sppas.src.resources.dictpron import DictPron
+from sppas.src.resources.dictpron import sppasDictPron
 
 from .basealigner import BaseAligner
 
@@ -101,7 +101,7 @@ class HviteAligner(BaseAligner):
         :param dictname: (str) the dictionary file name
 
         """
-        dictpron = DictPron()
+        dictpron = sppasDictPron()
 
         with codecs.open(grammarname, 'w', encoding) as flab:
 

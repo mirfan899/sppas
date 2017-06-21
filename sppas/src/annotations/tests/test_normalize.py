@@ -5,8 +5,8 @@ import unittest
 import os.path
 
 from sppas import RESOURCES_PATH
-from sppas.src.resources.vocab import Vocabulary
-from sppas.src.resources.dictrepl import DictRepl
+from sppas.src.resources.vocab import sppasVocabulary
+from sppas.src.resources.dictrepl import sppasDictRepl
 
 from ..TextNorm.normalize import TextNormalizer
 from ..TextNorm.transcription import sppasTranscription
@@ -20,11 +20,11 @@ class TestDictTok(unittest.TestCase):
     def setUp(self):
         dictdir = os.path.join(RESOURCES_PATH, "vocab")
         vocabfile = os.path.join(dictdir, "fra.vocab")
-        wds = Vocabulary(vocabfile)
+        wds = sppasVocabulary(vocabfile)
         self.tok = TextNormalizer(wds, "fra")
 
     def test_num2letter(self):
-        repl = DictRepl(os.path.join(RESOURCES_PATH, "repl", "fra.repl"), nodump=True)
+        repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "fra.repl"), nodump=True)
         self.tok.set_repl(repl)
         self.tok.set_lang("fra")
 
@@ -44,34 +44,34 @@ class TestDictTok(unittest.TestCase):
         self.assertEquals(s, [u"rock'n"])
 
     def test_replace(self):
-        repl = DictRepl(os.path.join(RESOURCES_PATH, "repl", "fra.repl"), nodump=True)
+        repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "fra.repl"), nodump=True)
         self.tok.set_repl(repl)
         s = self.tok.replace([u"un", u"taux", u"de", u"croissance", u"de", u"0,5", u"%"])
         self.assertEquals(s, [u"un", u"taux", u"de", u"croissance", u"de", u"0", u"virgule", u"5", u"pourcents"])
 
         text = [u"² % °c  km/h  etc   €  ¥ $ "]
 
-        repl = DictRepl(os.path.join(RESOURCES_PATH, "repl", "eng.repl"), nodump=True)
+        repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "eng.repl"), nodump=True)
         self.tok.set_repl(repl)
         s = self.tok.replace(text)
         self.assertEquals(" ".join(s), u"square percent degrees_Celsius km/h etc euros yens dollars")
 
-        repl = DictRepl(os.path.join(RESOURCES_PATH, "repl", "spa.repl"), nodump=True)
+        repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "spa.repl"), nodump=True)
         self.tok.set_repl(repl)
         s = self.tok.replace(text)
         self.assertEquals(" ".join(s), u"quadrados por_ciento grados_Celsius km/h etc euros yens dollars")
 
-        repl = DictRepl(os.path.join(RESOURCES_PATH, "repl", "fra.repl"), nodump=True)
+        repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "fra.repl"), nodump=True)
         self.tok.set_repl(repl)
         s = self.tok.replace(text)
         self.assertEquals(" ".join(s), u"carrés pourcents degrés_celcius kilomètres_heure etcetera euros yens dollars")
 
-        repl = DictRepl(os.path.join(RESOURCES_PATH, "repl", "ita.repl"), nodump=True)
+        repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "ita.repl"), nodump=True)
         self.tok.set_repl(repl)
         s = self.tok.replace(text)
         self.assertEquals(" ".join(s), u"quadrato percento gradi_Celsius km/h etc euros yens dollars")
 
-        repl = DictRepl(os.path.join(RESOURCES_PATH, "repl", "cmn.repl"), nodump=True)
+        repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "cmn.repl"), nodump=True)
         self.tok.set_repl(repl)
         s = self.tok.replace(text)
         self.assertEquals(" ".join(s), u"的平方 个百分比 摄氏度 公里每小时 etc € ¥ $")
@@ -126,7 +126,7 @@ class TestDictTok(unittest.TestCase):
         self.assertEqual(s, u"ah a/b euh")
 
     def test_sampa(self):
-        repl = DictRepl(os.path.join(RESOURCES_PATH, "repl", "fra.repl"), nodump=True)
+        repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "fra.repl"), nodump=True)
         self.tok.set_repl(repl)
 
         s = self.tok.normalize(u"[le mot,/lemot/]", [])
@@ -151,9 +151,9 @@ class TestDictTok(unittest.TestCase):
         vocabfra = os.path.join(dictdir, "fra.vocab")
         vocabcmn = os.path.join(dictdir, "cmn.vocab")
 
-        wds = Vocabulary(vocabfra)
+        wds = sppasVocabulary(vocabfra)
         wds.load_from_ascii(vocabcmn)
-        self.assertEquals(wds.get_size(), 457934)
+        self.assertEquals(len(wds), 457934)
 
         #self.tok.set_vocab(wds)
         #splitswitch = self.tok.tokenize(u'et il m\'a dit : "《干脆就把那部蒙人的闲法给废了拉倒！》RT @laoshipukong : 27日"')

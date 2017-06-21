@@ -39,12 +39,14 @@
 """
 import math
 
-from .resourcesexc import NgramRangeError, GapRangeError, ScoreRangeError
+from .resourcesexc import NgramRangeError
+from .resourcesexc import GapRangeError
+from .resourcesexc import ScoreRangeError
 
 # ----------------------------------------------------------------------------
 
 
-class Patterns(object):
+class sppasPatterns(object):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -63,7 +65,7 @@ class Patterns(object):
     # ------------------------------------------------------------------------
 
     def __init__(self):
-        """ Create a new Pattern instance with default members value. """
+        """ Create a new Pattern instance. """
 
         self._ngram = 3
         self._score = 1.
@@ -94,13 +96,14 @@ class Patterns(object):
         """ Fix the value of n of the n-grams.
 
         :param n: (int) Value of n (1<n<MAX_NGRAM)
+        :raises: NgramRangeError
 
         """
         n = int(n)
-        if 0 < n < Patterns.MAX_NGRAM:
+        if 0 < n < sppasPatterns.MAX_NGRAM:
             self._ngram = n
         else:
-            raise NgramRangeError(Patterns.MAX_NGRAM, n)
+            raise NgramRangeError(sppasPatterns.MAX_NGRAM, n)
 
     # ------------------------------------------------------------------------
 
@@ -108,14 +111,15 @@ class Patterns(object):
         """ Fix the value of the gap.
 
         :param g: (int) Value of the gap (0<g<MAX_GAP)
+        :raises: GapRangeError
 
         """
         g = int(g)
-        if 0 <= g < Patterns.MAX_GAP:
+        if 0 <= g < sppasPatterns.MAX_GAP:
             self._gap = g
             self._interstice = 2*g
         else:
-            raise GapRangeError(Patterns.MAX_GAP, g)
+            raise GapRangeError(sppasPatterns.MAX_GAP, g)
 
     # ------------------------------------------------------------------------
 
@@ -123,10 +127,11 @@ class Patterns(object):
         """ Fix the value of the score.
 
         :param s: (float) Value of the score (0<s<1)
+        :raises: ScoreRangeError
 
         """
         s = float(s)
-        if 0 <= s <= 1.:
+        if 0. <= s <= 1.:
             self._score = s
         else:
             raise ScoreRangeError(s)
@@ -275,8 +280,12 @@ class Patterns(object):
     # ------------------------------------------------------------------------
 
     def _create_ngrams(self, ref, hyp):
-        """ Create ngrams of the reference and the hypothesis. """
+        """ Create ngrams of the reference and the hypothesis.
 
+        :param ref: (list of tokens) List of references
+        :param hyp: (list of tuples) List of hypothesis with their scores
+
+        """
         # create n-gram sequences of the reference
         nman = list(zip(*[ref[i:] for i in range(self._ngram)]))
 

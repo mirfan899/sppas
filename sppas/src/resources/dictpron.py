@@ -38,67 +38,72 @@ import codecs
 import logging
 
 from sppas import encoding
+from sppas import unk_stamp
 from sppas.src.utils.makeunicode import sppasUnicode
-from sppas.src.annotations import UNKSTAMP
 
-from .dumpfile import DumpFile
+from .dumpfile import sppasDumpFile
 from .resourcesexc import FileIOError, FileFormatError
 
 # ---------------------------------------------------------------------------
 
 
-class DictPron(object):
+class sppasDictPron(object):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Pronunciation dictionary manager for HTK-ASCII format.
+    :summary:      Pronunciation dictionary manager.
 
     A pronunciation dictionary contains a list of tokens, each one with a list
-    of possible pronunciations. DictPron gets the dictionary from an HTK-ASCII
-    file, as for example, the following lines:
+    of possible pronunciations.
+
+    sppasDictPron can load the dictionary from an HTK-ASCII file. Each line of
+    such file looks like the following:
         acted [acted] { k t e d
         acted(2) [acted] { k t i d
     The first columns indicates the tokens, eventually followed by the variant
     number into braces. The second column (with brackets) is ignored. It should
     contain the token. Other columns are the phones separated by whitespace.
+    sppasDictPron accepts missing variant numbers, empty brackets, or  missing
+    brackets.
 
-    DictPron is instantiated as:
-
-        >>> d = DictPron('eng.dict')
+        >>> d = sppasDictPron('eng.dict')
         >>> d.add_pron('acted', '{ k t e')
         >>> d.add_pron('acted', '{ k t i')
-
-    In this class, the following convention is adopted to represent the
-    pronunciation variants:
-
-        - '-' separates the phones (X-SAMPA standard)
-        - '|' separates the variants
 
     Then, the phonetization of a token can be accessed with get_pron() method:
 
         >>> print(d.get_pron('acted'))
-        {-k-t-e-d|{-k-t-i-d|{-k-t-e|{-k-t-i
+        >>>{-k-t-e-d|{-k-t-i-d|{-k-t-e|{-k-t-i
+
+    The following convention is adopted to represent the pronunciation
+    variants:
+
+        - '-' separates the phones (X-SAMPA standard)
+        - '|' separates the variants
+
+    Notice that tokens in the dict are case-insensitive.
 
     """
     PHONEMES_SEPARATOR = "-"
     VARIANTS_SEPARATOR = "|"
 
-    def __init__(self, dict_filename=None, unkstamp=UNKSTAMP, nodump=False):
-        """ DictPron constructor.
+    # -----------------------------------------------------------------------
 
-        :param dict_filename: (str) The dictionary file name
-        :param unkstamp: (str) String to represent a missing pronunciation
-        :param nodump: (bool) Create or not a dump file (binary version of the
-        dictionary)
+    def __init__(self, dict_filename=None, nodump=False):
+        """ Create a sppasDictPron instance.
+
+        :param dict_filename: (str) Name of the file of the pronunciation dictionary
+        :param nodump: (bool) Create or not a dump file.
+
+        A dump file is a binary version of the dictionary. Its size is greater
+        than the original ASCII dictionary but the time to load it is divided
+        by two or three.
 
         """
         self._filename = dict_filename
-
-        # Symbol to represent missing entries in the dictionary
-        self._unk_stamp = unkstamp
 
         # The pronunciation dictionary
         self._dict = dict()
@@ -107,7 +112,7 @@ class DictPron(object):
         # ASCII one.
         if dict_filename is not None:
 
-            dp = DumpFile(dict_filename)
+            dp = sppasDumpFile(dict_filename)
             data = None
 
             # Try first to get the dict from a dump file (at least 2 times faster)
@@ -130,19 +135,32 @@ class DictPron(object):
     def get_unkstamp(self):
         """ Returns the unknown words stamp. """
 
-        return self._unk_stamp
+        return unk_stamp
+
+    # -----------------------------------------------------------------------
+
+    def get(self, entry, substitution=unk_stamp):
+        """ Return the pronunciations of an entry in the dictionary.
+
+        :param entry: (str) A token to find in the dictionary
+        :param substitution: (str) String to return if token is missing of the dict
+        :returns: unicode of the pronunciations or the substitution.
+
+        """
+        s = sppasDictPron.format_token(entry)
+        return self._dict.get(s, substitution)
 
     # -----------------------------------------------------------------------
 
     def get_pron(self, entry):
-        """ Return the phonetization of an entry in the dictionary or the unknown symbol.
+        """ Return the pronunciations of an entry in the dictionary.
 
         :param entry: (str) A token to find in the dictionary
-        :returns: unicode of the phonetization
+        :returns: unicode of the pronunciations or the unknown stamp.
 
         """
-        s = sppasUnicode(entry)
-        return self._dict.get(s.to_lower(), self._unk_stamp)
+        s = sppasDictPron.format_token(entry)
+        return self._dict.get(s, unk_stamp)
 
     # -----------------------------------------------------------------------
 
@@ -153,46 +171,39 @@ class DictPron(object):
         :returns: bool
 
         """
-        s = sppasUnicode(entry)
-        return s.to_lower() not in self._dict.keys()
+        return sppasDictPron.format_token(entry) not in self._dict
 
     # -----------------------------------------------------------------------
 
     def is_pron_of(self, entry, pron):
         """ Return True if pron is a pronunciation of entry.
-        Phones of pron are separated by "-".
+        Phonemes of pron are separated by "-".
 
         :param entry: (str) A unicode token to find in the dictionary
         :param pron: (str) A unicode pronunciation
         :returns: bool
 
         """
-        s = sppasUnicode(entry).to_lower()
+        s = sppasDictPron.format_token(entry)
+
         if s in self._dict:
             p = sppasUnicode(pron).to_strip()
-            return p in self._dict[s].split(DictPron.VARIANTS_SEPARATOR)
+            return p in self._dict[s].split(sppasDictPron.VARIANTS_SEPARATOR)
+
         return False
 
     # -----------------------------------------------------------------------
 
-    def get_dictsize(self):
-        """ Return the number of entries in the dictionary. """
+    @staticmethod
+    def format_token(entry):
+        """ Remove the CR/LF, tabs, multiple spaces and others... and lowerise.
 
-        return len(self._dict)
+        :param entry: (str) a token
+        :returns: formatted token
 
-    # -----------------------------------------------------------------------
-
-    def get_dict(self):
-        """ Return the pronunciation dictionary. """
-
-        return self._dict
-
-    # -----------------------------------------------------------------------
-
-    def get_keys(self):
-        """ Return the list of entries of the dictionary. """
-
-        return self._dict.keys()
+        """
+        t = sppasUnicode(entry).to_strip()
+        return sppasUnicode(t).to_lower()
 
     # -----------------------------------------------------------------------
     # Setters
@@ -202,22 +213,20 @@ class DictPron(object):
         """ Add a token/pron to the dict.
 
         :param token: (str) Unicode string of the token to add
-        :param pron: (str) The pronunciation with phonemes separated by spaces
+        :param pron: (str) A pronunciation in which the phonemes are separated by whitespace
 
         """
-        # Remove the CR/LF, tabs, multiple spaces and others... and lowerise
-        t = sppasUnicode(token).to_strip()
-        entry = sppasUnicode(t).to_lower()
+        entry = sppasDictPron.format_token(token)
 
         new_pron = sppasUnicode(pron).to_strip()
-        new_pron = new_pron.replace(" ", DictPron.PHONEMES_SEPARATOR)
+        new_pron = new_pron.replace(" ", sppasDictPron.PHONEMES_SEPARATOR)
 
         # Already a pronunciation for this token?
         cur_pron = ""
         if entry in self._dict:
             # ... don't append an already known pronunciation
             if self.is_pron_of(entry, new_pron) is False:
-                cur_pron = self.get_pron(entry) + DictPron.VARIANTS_SEPARATOR
+                cur_pron = self.get_pron(entry) + sppasDictPron.VARIANTS_SEPARATOR
             else:
                 cur_pron = self.get_pron(entry)
                 new_pron = ""
@@ -235,12 +244,12 @@ class DictPron(object):
         depending on a mapping table.
 
         :param map_table: (Mapping) A mapping table
-        :returns: a DictPron instance with mapped phones
+        :returns: a sppasDictPron instance with mapped phones
 
         """
         map_table.set_reverse(True)
-        delimiters = [DictPron.VARIANTS_SEPARATOR, DictPron.PHONEMES_SEPARATOR]
-        new_dict = DictPron()
+        delimiters = [sppasDictPron.VARIANTS_SEPARATOR, sppasDictPron.PHONEMES_SEPARATOR]
+        new_dict = sppasDictPron()
 
         for key, value in self._dict.items():
             new_dict._dict[key] = map_table.map(value, delimiters)
@@ -254,7 +263,7 @@ class DictPron(object):
     def load_from_ascii(self, filename):
         """ Load a pronunciation dictionary from an HTK-ASCII file.
 
-        :param filename: (str) Pronunciation dictionary file name.
+        :param filename: (str) Pronunciation dictionary file name
 
         """
         try:
@@ -298,17 +307,18 @@ class DictPron(object):
         """ Save the pronunciation dictionary in HTK-ASCII format.
 
         :param filename: (str) Dictionary file name
-        :param with_variant_nb: (bool) Write the variant number or not.
+        :param with_variant_nb: (bool) Write the variant number or not
+        :param with_filled_brackets: (bool) Fill the bracket with the token or not
 
         """
         try:
             with codecs.open(filename, 'w', encoding=encoding) as output:
 
                 for entry, value in sorted(self._dict.items(), key=lambda x: x[0]):
-                    variants = value.split(DictPron.VARIANTS_SEPARATOR)
+                    variants = value.split(sppasDictPron.VARIANTS_SEPARATOR)
 
                     for i, variant in enumerate(variants, 1):
-                        variant = variant.replace(DictPron.PHONEMES_SEPARATOR, " ")
+                        variant = variant.replace(sppasDictPron.PHONEMES_SEPARATOR, " ")
                         brackets = entry
                         if with_filled_brackets is False:
                             brackets = ""
@@ -319,7 +329,7 @@ class DictPron(object):
                         output.write(line)
 
         except Exception as e:
-            logging.info('Save the dictionary in ASCII failed: {:s}'.format(str(e)))
+            logging.info('Saving the dictionary in ASCII failed: {:s}'.format(str(e)))
             return False
 
         return True
@@ -334,4 +344,11 @@ class DictPron(object):
     # ------------------------------------------------------------------------
 
     def __contains__(self, item):
-        return item in self._dict
+        s = sppasDictPron.format_token(item)
+        return s in self._dict
+
+    # ------------------------------------------------------------------------
+
+    def __iter__(self):
+        for a in self._dict:
+            yield a

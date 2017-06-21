@@ -45,7 +45,7 @@ from .acmodelhtkio import HtkIO
 from .hmm import HMM
 from .tiedlist import TiedList
 
-from sppas.src.resources.mapping import Mapping
+from sppas.src.resources.mapping import sppasMapping
 
 # ---------------------------------------------------------------------------
 
@@ -73,7 +73,7 @@ class AcModel(object):
         self.macros = None
         self.hmms = []
         self.tiedlist = TiedList()
-        self.repllist = Mapping()
+        self.repllist = sppasMapping()
 
     # -----------------------------------------------------------------------
     # Files
@@ -294,7 +294,7 @@ class AcModel(object):
         :param reverse: (bool) reverse the replacement direction.
 
         """
-        if self.repllist.get_size() == 0:
+        if self.repllist.is_empty() is True:
             return
         delimiters = ["-", "+"]
 
@@ -516,8 +516,9 @@ class AcModel(object):
         # Merge the tiedlists
         self.tiedlist.merge(other.tiedlist)
 
-        for k,v in other.repllist.get_dict().items():
-            if self.repllist.is_key(k) is False and self.repllist.is_value(v) is False:
+        for k in other.repllist:
+            v = other.repllist.get(k)
+            if k not in self.repllist and self.repllist.is_value(v) is False:
                 self.repllist.add(k, v)
 
         return appended, interpolated, keeped, changed

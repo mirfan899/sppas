@@ -266,11 +266,11 @@ class TestsppasRepet(unittest.TestCase):
 
     def test_init(self):
         s = sppasRepet()
-        self.assertEqual(s.stop_words.get_size(), 0)
-        self.assertEqual(s.lemmatizer.get_size(), 0)
+        self.assertEqual(len(s.stop_words), 0)
+        self.assertEqual(len(s.lemmatizer), 0)
         s = sppasRepet(STOP_LIST_FRA)
-        self.assertEqual(s.stop_words.get_size(), 65)
-        self.assertGreater(s.lemmatizer.get_size(), 0)
+        self.assertEqual(len(s.stop_words), 65)
+        self.assertGreater(len(s.lemmatizer), 0)
 
     def test_set_options(self):
         s = sppasRepet()

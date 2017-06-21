@@ -442,7 +442,7 @@ function alignment {
     python $BIN_DIR/phonetize.py -r $RESOURCES_DIR/dict/eng.dict -i $SAMPLES_DIR/oriana1-token.TextGrid -o $SAMPLES_DIR/oriana1-phon.TextGrid --quiet;
 
     echo -n " ... simply align phonemes with julius: "
-    $BIN_DIR/alignment.py -w $SAMPLES_DIR/oriana1.WAV -r $RESOURCES_DIR/models/models-eng -i $SAMPLES_DIR/oriana1-phon.TextGrid -o oriana1-palign.TextGrid >> /dev/null &> /dev/null
+    python $BIN_DIR/alignment.py -w $SAMPLES_DIR/oriana1.WAV -r $RESOURCES_DIR/models/models-eng -i $SAMPLES_DIR/oriana1-phon.TextGrid -o oriana1-palign.TextGrid >> /dev/null &> /dev/null
     if [ -e oriana1-palign.TextGrid ]; then
         size=`cat oriana1-palign.TextGrid | head -n 7 | tail -n 1`
         rm oriana1-palign.TextGrid
@@ -456,9 +456,9 @@ function alignment {
     fi
 
     echo -n " ... align phonemes and tokens with julius: "
-    $BIN_DIR/alignment.py -w $SAMPLES_DIR/oriana1.WAV -r $RESOURCES_DIR/models/models-eng -i $SAMPLES_DIR/oriana1-phon.TextGrid -I $SAMPLES_DIR/oriana1-token.TextGrid -o oriana1-palign.TextGrid >> /dev/null &> /dev/null
+    python $BIN_DIR/alignment.py -w $SAMPLES_DIR/oriana1.WAV -r $RESOURCES_DIR/models/models-eng -i $SAMPLES_DIR/oriana1-phon.TextGrid -I $SAMPLES_DIR/oriana1-token.TextGrid -o oriana1-palign.TextGrid >> /dev/null &> /dev/null
     if [ -e oriana1-palign.TextGrid ]; then
-        size=`cat oriana1-palign.TextGrid | grep -c "^size = 4"`
+        size=`cat oriana1-palign.TextGrid | grep -c "^size = 3"`
         rm oriana1-palign.TextGrid
         if [ "$size" == "1" ]; then
             fct_echo_status 0
@@ -470,9 +470,9 @@ function alignment {
     fi
 
     echo -n " ... align phonemes and tokens with basic aligner: "
-    $BIN_DIR/alignment.py -w $SAMPLES_DIR/oriana1.WAV -r $RESOURCES_DIR/models/models-eng -i $SAMPLES_DIR/oriana1-phon.TextGrid -I $SAMPLES_DIR/oriana1-token.TextGrid -o oriana1-palign.TextGrid -a basic >> /dev/null &> /dev/null
+    python $BIN_DIR/alignment.py -w $SAMPLES_DIR/oriana1.WAV -r $RESOURCES_DIR/models/models-eng -i $SAMPLES_DIR/oriana1-phon.TextGrid -I $SAMPLES_DIR/oriana1-token.TextGrid -o oriana1-palign.TextGrid -a basic >> /dev/null &> /dev/null
     if [ -e oriana1-palign.TextGrid ]; then
-        size=`cat oriana1-palign.TextGrid | grep -c "^size = 4"`
+        size=`cat oriana1-palign.TextGrid | grep -c "^size = 3"`
         rm oriana1-palign.TextGrid
         if [ "$size" == "1" ]; then
             fct_echo_status 0
@@ -493,7 +493,7 @@ function syllabify {
     fct_echo_subtitle "Test syllabify.py (Syllabification)"
 
     echo -n " ... command exists: "
-    $BIN_DIR/syllabify.py >> /dev/null &> /dev/null
+    python $BIN_DIR/syllabify.py >> /dev/null &> /dev/null
     if [ $? != "0" ]; then
         echo "error"
         return
@@ -501,7 +501,7 @@ function syllabify {
     echo "ok"
 
     echo -n " ... simple syllabification of a file: "
-    inline=`$BIN_DIR/syllabify.py -r $RESOURCES_DIR/syll/syllConfig-ita.txt -i $SAMPLES_DIR/DGtdA05Np1_95-palign.TextGrid -o DGtdA05Np1_95-salign.TextGrid`
+    inline=`python $BIN_DIR/syllabify.py -r $RESOURCES_DIR/syll/syllConfig-ita.txt -i $SAMPLES_DIR/DGtdA05Np1_95-palign.TextGrid -o DGtdA05Np1_95-salign.TextGrid`
     if [ -e DGtdA05Np1_95-salign.TextGrid ]; then
         size=`cat DGtdA05Np1_95-salign.TextGrid | grep -c "size = 3"`
         rm DGtdA05Np1_95-salign.TextGrid
@@ -515,7 +515,7 @@ function syllabify {
     fi
 
     echo -n " ... syllabification inside tokens: "
-    inline=`$BIN_DIR/syllabify.py -r $RESOURCES_DIR/syll/syllConfig-ita.txt -i $SAMPLES_DIR/DGtdA05Np1_95-palign.TextGrid -t TokensAlign -o DGtdA05Np1_95-salign.TextGrid`
+    inline=`python $BIN_DIR/syllabify.py -r $RESOURCES_DIR/syll/syllConfig-ita.txt -i $SAMPLES_DIR/DGtdA05Np1_95-palign.TextGrid -t TokensAlign -o DGtdA05Np1_95-salign.TextGrid`
     if [ -e DGtdA05Np1_95-salign.TextGrid ]; then
         size=`cat DGtdA05Np1_95-salign.TextGrid | grep -c "size = 6"`
         rm DGtdA05Np1_95-salign.TextGrid
@@ -529,7 +529,7 @@ function syllabify {
     fi
 
     echo -n " ... syllabification inside tokens with --nophn option: "
-    inline=`$BIN_DIR/syllabify.py -r $RESOURCES_DIR/syll/syllConfig-ita.txt -i $SAMPLES_DIR/DGtdA05Np1_95-palign.TextGrid  -t TokensAlign --nophn -o DGtdA05Np1_95-salign.TextGrid`
+    inline=`python $BIN_DIR/syllabify.py -r $RESOURCES_DIR/syll/syllConfig-ita.txt -i $SAMPLES_DIR/DGtdA05Np1_95-palign.TextGrid  -t TokensAlign --nophn -o DGtdA05Np1_95-salign.TextGrid`
     if [ -e DGtdA05Np1_95-salign.TextGrid ]; then
         size=`cat DGtdA05Np1_95-salign.TextGrid | grep -c "size = 3"`
         rm DGtdA05Np1_95-salign.TextGrid
@@ -557,7 +557,7 @@ function annotation {
     fi
 
     echo -n " ... command exists: "
-    $BIN_DIR/annotation.py >> /dev/null &> /dev/null
+    python $BIN_DIR/annotation.py >> /dev/null &> /dev/null
     if [ $? != "0" ]; then
         echo "error"
         return
@@ -565,7 +565,7 @@ function annotation {
     echo "ok"
 
     echo -n " ... test ipu, tok, phon, align: "
-    $BIN_DIR/annotation.py -w $SAMPLES_DIR/oriana1.WAV -l eng --ipu --tok --phon --align -e TextGrid >> /dev/null &> /dev/null
+    python $BIN_DIR/annotation.py -w $SAMPLES_DIR/oriana1.WAV -l eng --ipu --tok --phon --align -e TextGrid >> /dev/null &> /dev/null
     if [ -e $SAMPLES_DIR/oriana1-merge.TextGrid ]; then
         rm $SAMPLES_DIR/oriana1-palign.TextGrid
         fct_echo_status 0
@@ -574,7 +574,7 @@ function annotation {
     fi
 
     echo -n " ... test all: "
-    $BIN_DIR/annotation.py -w $SAMPLES_DIR/oriana1.WAV -l eng --all -e "xra" >> /dev/null &> /dev/null
+    python $BIN_DIR/annotation.py -w $SAMPLES_DIR/oriana1.WAV -l eng --all -e "xra" >> /dev/null &> /dev/null
     if [ -e $SAMPLES_DIR/oriana1-palign.xra ]; then
         rm $SAMPLES_DIR/oriana1*.xra
         fct_echo_status 0
@@ -597,7 +597,7 @@ function momelintsint {
     fi
 
     echo -n " ... command exists: "
-    $BIN_DIR/momel-intsint.py >> /dev/null &> /dev/null
+    python $BIN_DIR/momel-intsint.py >> /dev/null &> /dev/null
     if [ $? != "0" ]; then
         echo "error"
         return
@@ -605,7 +605,7 @@ function momelintsint {
     echo "ok"
 
     echo -n " ... only Momel, inline output: "
-    inline=`$BIN_DIR/momel-intsint.py -i $SAMPLES_DIR/F_F_B003-P9.hz | wc -l`
+    inline=`python $BIN_DIR/momel-intsint.py -i $SAMPLES_DIR/F_F_B003-P9.hz | wc -l`
     if [ "$inline" == "71" ]; then
           fct_echo_status 0
     else
@@ -613,7 +613,7 @@ function momelintsint {
     fi
 
     echo -n " ... Momel and INTSINT, output file: "
-    $BIN_DIR/momel-intsint.py -i $SAMPLES_DIR/F_F_B003-P9.hz -o F_F_B003-P9-momel.TextGrid -O F_F_B003-P9-intsint.TextGrid 
+    python $BIN_DIR/momel-intsint.py -i $SAMPLES_DIR/F_F_B003-P9.hz -o F_F_B003-P9-momel.TextGrid -O F_F_B003-P9-intsint.TextGrid
     if [ -e F_F_B003-P9-momel.TextGrid ]; then
         
         size=`cat F_F_B003-P9-momel.TextGrid | grep -c "^size = 1"`
@@ -654,7 +654,7 @@ function repetition {
     fi
 
     echo -n " ... command exists: "
-    $BIN_DIR/repetition.py >> /dev/null &> /dev/null
+    python $BIN_DIR/repetition.py >> /dev/null &> /dev/null
     if [ $? != "0" ]; then
         echo "error"
         return
@@ -662,7 +662,7 @@ function repetition {
     echo "ok"
 
     echo -n " ... self-repetition, language-independent: "
-    $BIN_DIR/repetition.py -i $SAMPLES_DIR/DGtdA05Np1_95-palign.TextGrid -o DGtdA05Np1_95-ralign.TextGrid >> /dev/null &> /dev/null
+    python $BIN_DIR/repetition.py -i $SAMPLES_DIR/DGtdA05Np1_95-palign.TextGrid -o DGtdA05Np1_95-ralign.TextGrid >> /dev/null &> /dev/null
     if [ -e DGtdA05Np1_95-ralign.TextGrid ]; then
         size=`cat DGtdA05Np1_95-ralign.TextGrid | grep -c "^size = 2"`
         rm DGtdA05Np1_95-ralign.TextGrid

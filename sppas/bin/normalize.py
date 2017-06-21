@@ -53,8 +53,8 @@ from sppas import RESOURCES_PATH
 
 from sppas.src.annotations.TextNorm.sppastok import sppasTok
 from sppas.src.annotations.TextNorm.normalize import TextNormalizer
-from sppas.src.resources.vocab import Vocabulary
-from sppas.src.resources.dictrepl import DictRepl
+from sppas.src.resources.vocab import sppasVocabulary
+from sppas.src.resources.dictrepl import sppasDictRepl
 from sppas.src.utils.fileutils import setup_logging
 
 # ----------------------------------------------------------------------------
@@ -123,17 +123,17 @@ if args.i:
 
 else:
 
-    vocab = Vocabulary(args.vocab)
+    vocab = sppasVocabulary(args.vocab)
     normalizer = TextNormalizer(vocab, lang)
 
     replace_file = os.path.join(RESOURCES_PATH, "repl", lang + ".repl")
     if os.path.exists(replace_file):
-        repl = DictRepl(replace_file, nodump=True)
+        repl = sppasDictRepl(replace_file, nodump=True)
         normalizer.set_repl(repl)
 
     punct_file = os.path.join(RESOURCES_PATH, "vocab", "Punctuations.txt")
     if os.path.exists(punct_file):
-        punct = Vocabulary(punct_file, nodump=True)
+        punct = sppasVocabulary(punct_file, nodump=True)
         normalizer.set_punct(punct)
 
     # Will output the faked orthography

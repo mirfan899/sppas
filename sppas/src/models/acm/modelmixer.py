@@ -76,8 +76,8 @@ class ModelMixer(object):
         modelSpk  = AcModel()
 
         # Load the acoustic models.
-        modelText.load( modelTextDir )
-        modelSpk.load( modelSpkDir )
+        modelText.load(modelTextDir)
+        modelSpk.load(modelSpkDir)
 
         self.set_models(modelText, modelSpk)
 
@@ -103,8 +103,8 @@ class ModelMixer(object):
         # Map the phonemes names.
         # Why? Because the same phoneme can have a different name
         # in each model. Fortunately, we have the mapping table!
-        self.modelText.replace_phones( reverse=False )
-        self.modelSpk.replace_phones(  reverse=False )
+        self.modelText.replace_phones(reverse=False)
+        self.modelSpk.replace_phones( reverse=False)
 
     # ------------------------------------------------------------------------
 
@@ -129,18 +129,21 @@ class ModelMixer(object):
         if self.modelText is None or self.modelSpk is None:
             raise TypeError('No model to mix.')
 
-        self.modelmix = copy.deepcopy( self.modelText )
+        self.modelmix = copy.deepcopy(self.modelText)
 
         # Manage both mapping table to provide conflicts.
         # Because a key in modelText can be a value in modelSpk
         # i.e. in modelText, a WRONG symbol is used!
-        for k,v in self.modelmix.repllist.get_dict().items():
+        for k in self.modelmix.repllist:
+            v = self.modelmix.repllist.get(k)
 
-            for key,value in self.modelSpk.repllist.get_dict().items():
+            for key in self.modelSpk.repllist:
+                value = self.modelSpk.repllist.get(key)
 
                 if k == value and v != key:
                     if self.modelSpk.repllist.is_value(v):
-                        for key2,value2 in self.modelSpk.repllist.get_dict().items():
+                        for key2 in self.modelSpk.repllist:
+                            value2 = self.modelSpk.repllist.get(key2)
                             if v == value2:
                                 newkey = key2
                                 while self.modelmix.repllist.is_key(newkey) is True:
@@ -151,12 +154,10 @@ class ModelMixer(object):
                             newkey = newkey+k
 
                     self.modelmix.repllist.remove(k)
-                    self.modelmix.repllist.add( newkey, v )
+                    self.modelmix.repllist.add(newkey, v)
 
-        (appended,interpolated,keeped,changed) = self.modelmix.merge_model( self.modelSpk, gamma )
-        self.modelmix.replace_phones( reverse=True )
+        (appended,interpolated,keeped,changed) = self.modelmix.merge_model(self.modelSpk, gamma)
+        self.modelmix.replace_phones(reverse=True)
 
-        self.modelmix.save( outputdir )
-        return (appended,interpolated,keeped,changed)
-
-    # ------------------------------------------------------------------------
+        self.modelmix.save(outputdir)
+        return appended, interpolated, keeped, changed

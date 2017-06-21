@@ -10,7 +10,7 @@ from sppas.src.annotationdata.annotation import Annotation
 from sppas.src.annotationdata.ptime.interval import TimeInterval
 from sppas.src.annotationdata.ptime.point import TimePoint
 from sppas.src.annotationdata.label.label import Label
-from sppas.src.resources.dictpron import DictPron
+from sppas.src.resources.dictpron import sppasDictPron
 
 from ..tiermapping import TierMapping
 
@@ -67,8 +67,8 @@ class TestTierMapping(unittest.TestCase):
             self.assertEqual(a1.GetLabel().GetValue(), a2.GetLabel().GetValue())
             self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
         for a1, a2 in zip(tI, self.tierI):
-            l1 = a1.GetLabel().GetValue().split(DictPron.VARIANTS_SEPARATOR)
-            l2 = a2.GetLabel().GetValue().split(DictPron.VARIANTS_SEPARATOR)
+            l1 = a1.GetLabel().GetValue().split(sppasDictPron.VARIANTS_SEPARATOR)
+            l2 = a2.GetLabel().GetValue().split(sppasDictPron.VARIANTS_SEPARATOR)
             self.assertEqual(sorted(list(set(l1))), sorted(l2))
             self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
 

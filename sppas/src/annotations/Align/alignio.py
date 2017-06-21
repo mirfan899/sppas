@@ -36,7 +36,7 @@ import os
 import codecs
 
 from sppas import encoding
-from sppas.src.resources.mapping import Mapping
+from sppas.src.resources.mapping import sppasMapping
 from sppas.src.utils.makeunicode import sppasUnicode
 
 from .aligntrack import AlignTrack
@@ -126,8 +126,8 @@ class AlignIO(object):
         """
         # Mapping system for the phonemes
         if mapping is None:
-            mapping = Mapping()
-        if isinstance(mapping, Mapping) is False:
+            mapping = sppasMapping()
+        if isinstance(mapping, sppasMapping) is False:
             raise TypeError('Aligner expected a Mapping() as argument.')
         self._mapping = mapping
 

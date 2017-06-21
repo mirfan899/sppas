@@ -34,20 +34,20 @@
 # File: resources.acm.phoneset.py
 # ---------------------------------------------------------------------------
 
-from sppas.src.resources.dictpron import DictPron
-from sppas.src.resources.vocab import Vocabulary
+from sppas.src.resources.dictpron import sppasDictPron
+from sppas.src.resources.vocab import sppasVocabulary
 
 # ---------------------------------------------------------------------------
 
 
-class PhoneSet(Vocabulary):
+class PhoneSet(sppasVocabulary):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    @summary:      Manager of the list of phonemes.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Manager of the list of phonemes.
 
     This class allows to manage the list of phonemes:
 
@@ -58,14 +58,13 @@ class PhoneSet(Vocabulary):
 
     """
     def __init__(self, filename=None):
-        """
-        Constructor.
+        """ Create a PhoneSet instance.
         Add events to the list: laughter, dummy, noise, silence.
 
         :param filename (str) A file with 1 column containing the list of phonemes.
 
         """
-        Vocabulary.__init__(self, filename, nodump=True, case_sensitive=True)
+        sppasVocabulary.__init__(self, filename, nodump=True, case_sensitive=True)
 
         self.add("@@")
         self.add("dummy")
@@ -75,17 +74,17 @@ class PhoneSet(Vocabulary):
     # -----------------------------------------------------------------------
 
     def add_from_dict(self, dict_filename):
-        """
-        Add the list of phones from a pronunciation dictionary.
+        """ Add the list of phones from a pronunciation dictionary.
 
         :param dict_filename: (str) Name of an HTK-ASCII pronunciation dictionary
 
         """
-        d = DictPron(dict_filename).get_dict()
-        for value in d.values():
-            variants = value.split(DictPron.VARIANTS_SEPARATOR)
+        d = sppasDictPron(dict_filename)
+        for key in d:
+            value = d.get_pron(key)
+            variants = value.split(sppasDictPron.VARIANTS_SEPARATOR)
             for variant in variants:
-                phones = variant.split(DictPron.PHONEMES_SEPARATOR)
+                phones = variant.split(sppasDictPron.PHONEMES_SEPARATOR)
                 for phone in phones:
                     self.add(phone)
 
@@ -93,8 +92,7 @@ class PhoneSet(Vocabulary):
 
     @staticmethod
     def check_as_htk_phone(phone):
-        """
-        Check if a phone is correct to be used with HTK toolkit.
+        """ Check if a phone is correct to be used with HTK toolkit.
         A phone can't start by a digit nor '-' nor '+', and must be ASCII.
 
         :param phone: (str) Phone to be checked
@@ -126,5 +124,3 @@ class PhoneSet(Vocabulary):
             return False
 
         return True
-
-    # -----------------------------------------------------------------------

@@ -11,7 +11,7 @@ SPPAS = dirname(dirname(dirname(dirname(abspath(__file__)))))
 sys.path.append(os.path.join(SPPAS, 'sppas'))
 
 from sppas.src.annotations.Phon.phonetize import sppasDictPhonetizer
-from sppas.src.resources.dictpron import DictPron
+from sppas.src.resources.dictpron import sppasDictPron
 
 
 class TestDictPhon(unittest.TestCase):
@@ -19,7 +19,7 @@ class TestDictPhon(unittest.TestCase):
     def test_phonetizeFR(self):
         dictdir = os.path.join(SPPAS, "resources", "dict")
         dictfile = os.path.join(dictdir, "fra.dict")
-        dd = DictPron(dictfile)
+        dd = sppasDictPron(dictfile)
         grph = sppasDictPhonetizer(dd)
         result = grph.phonetize('pas_encore', phonunk=False)
         self.assertEqual(result, 'UNK')

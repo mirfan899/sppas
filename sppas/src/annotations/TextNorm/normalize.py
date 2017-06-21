@@ -37,9 +37,9 @@
 """
 import re
 
-from sppas.src.utils.makeunicode import u, sppasUnicode
-from sppas.src.resources.vocab import Vocabulary
-from sppas.src.resources.dictrepl import DictRepl
+from sppas.src.utils.makeunicode import sppasUnicode
+from sppas.src.resources.vocab import sppasVocabulary
+from sppas.src.resources.dictrepl import sppasDictRepl
 
 from .transcription import sppasTranscription
 from .tokenize import sppasTokenizer
@@ -50,11 +50,11 @@ from .splitter import sppasTokSplitter
 # ---------------------------------------------------------------------------
 
 
-class DictReplUTF8(DictRepl):
+class DictReplUTF8(sppasDictRepl):
     """ Replacement dictionary of UTF8 characters that caused problems. """
 
     def __init__(self):
-        DictRepl.__init__(self, None, nodump=True)
+        sppasDictRepl.__init__(self, None, nodump=True)
 
         self.add(u"æ", u"ae")
         self.add(u"œ", u"oe")
@@ -84,17 +84,17 @@ class TextNormalizer(object):
     def __init__(self, vocab=None, lang="und"):
         """ Create a new DictTok instance.
 
-        :param vocab: (Vocabulary)
+        :param vocab: (sppasVocabulary)
         :param lang: the language code in iso639-3.
 
         """
         # resources
         self.dicoutf = DictReplUTF8()
-        self.repl = DictRepl(None)
-        self.punct = Vocabulary()
+        self.repl = sppasDictRepl(None)
+        self.punct = sppasVocabulary()
         self.vocab = vocab
         if vocab is None:
-            self.vocab = Vocabulary()
+            self.vocab = sppasVocabulary()
 
         # members
         self.lang = lang
@@ -117,7 +117,7 @@ class TextNormalizer(object):
     def set_vocab(self, vocab):
         """ Set the lexicon.
 
-        :param vocab: (Vocabulary).
+        :param vocab: (sppasVocabulary).
 
         """
         # TODO: test instance
@@ -129,7 +129,7 @@ class TextNormalizer(object):
     def set_repl(self, repl):
         """ Set the dictionary of replacements.
 
-        :param repl: (DictRepl)
+        :param repl: (sppasDictRepl)
 
         """
         # TODO: test instance
@@ -141,7 +141,7 @@ class TextNormalizer(object):
     def set_punct(self, punct):
         """ Set the list of punctuation.
 
-        :param punct: (Vocabulary)
+        :param punct: (sppasVocabulary)
 
         """
         # TODO: test instance
@@ -289,7 +289,7 @@ class TextNormalizer(object):
         _str = sppasUnicode(entry).to_strip()
 
         # Remove UTF-8 specific characters that are not in our dictionaries!
-        for key in self.dicoutf.get_keys():
+        for key in self.dicoutf:
             _str = _str.replace(key, self.dicoutf.replace(key))
 
         # Clean the Enriched Orthographic Transcription

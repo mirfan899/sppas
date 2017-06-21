@@ -44,8 +44,8 @@
 import os.path
 
 from sppas import RESOURCES_PATH
-from sppas.src.resources.vocab import Vocabulary
-from sppas.src.resources.dictrepl import DictRepl
+from sppas.src.resources.vocab import sppasVocabulary
+from sppas.src.resources.dictrepl import sppasDictRepl
 from sppas.src.annotationdata.transcription import Transcription
 from sppas.src.annotationdata.tier import Tier
 import sppas.src.annotationdata.aio
@@ -81,23 +81,23 @@ class sppasTok(sppasBaseAnnotation):
         sppasBaseAnnotation.__init__(self, logfile)
 
         self.normalizer = None
-        voc = Vocabulary(vocab)
+        voc = sppasVocabulary(vocab)
         self.normalizer = TextNormalizer(voc, lang)
 
         # Replacement dictionary
         replace_filename = os.path.join(RESOURCES_PATH, "repl", lang + ".repl")
         if os.path.exists(replace_filename) is True:
-            dict_replace = DictRepl(replace_filename, nodump=True)
+            dict_replace = sppasDictRepl(replace_filename, nodump=True)
         else:
-            dict_replace = DictRepl()
+            dict_replace = sppasDictRepl()
         self.normalizer.set_repl(dict_replace)
 
         # Punctuations dictionary
         punct_filename = os.path.join(RESOURCES_PATH, "vocab", "Punctuations.txt")
         if os.path.exists(punct_filename) is True:
-            vocab_punct = Vocabulary(punct_filename, nodump=True)
+            vocab_punct = sppasVocabulary(punct_filename, nodump=True)
         else:
-            vocab_punct = Vocabulary()
+            vocab_punct = sppasVocabulary()
         self.normalizer.set_punct(vocab_punct)
 
         # List of options to configure this automatic annotation

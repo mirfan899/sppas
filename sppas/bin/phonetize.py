@@ -49,11 +49,11 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.annotations import UNKSTAMP
+from sppas import unk_stamp
 from sppas.src.annotations.Phon.sppasphon import sppasPhon
 from sppas.src.annotations.Phon.phonetize import sppasDictPhonetizer
-from sppas.src.resources.dictpron import DictPron
-from sppas.src.resources.mapping import Mapping
+from sppas.src.resources.dictpron import sppasDictPron
+from sppas.src.resources.mapping import sppasMapping
 from sppas.src.utils.fileutils import setup_logging
 
 
@@ -120,10 +120,10 @@ if args.i:
     p.set_usestdtokens(False)
     p.run(args.i, args.o)
 else:
-    pdict = DictPron(args.dict, unkstamp=UNKSTAMP, nodump=False)
-    maptable = Mapping()
+    pdict = sppasDictPron(args.dict, nodump=False)
+    maptable = sppasMapping()
     if mapfile is not None:
-        maptable = Mapping(mapfile)
+        maptable = sppasMapping(mapfile)
     phonetizer = sppasDictPhonetizer(pdict, maptable)
     for line in sys.stdin:
         print("{:s}".format(phonetizer.phonetize(line, unkopt)))

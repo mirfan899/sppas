@@ -34,6 +34,7 @@
     TODO: Migrate Activity into a plugin of SPPAS.
 
 """
+from sppas import unk_stamp
 from sppas.src.annotationdata.tier import Tier
 from sppas.src.annotationdata.ptime.interval import TimeInterval
 from sppas.src.annotationdata.annotation import Annotation
@@ -42,7 +43,7 @@ from sppas.src.annotationdata.aio.utils import fill_gaps, unfill_gaps
 
 from sppas.src.utils.makeunicode import sppasUnicode
 
-from .. import SYMBOLS, UNKSTAMP
+from .. import SYMBOLS
 from ..searchtier import sppasSearchTier
 
 # ---------------------------------------------------------------------------
@@ -85,7 +86,7 @@ class Activity(object):
             self.append_activity(token, activity)
 
         # For empty intervals... activity is unknown
-        self.append_activity(UNKSTAMP, "")
+        self.append_activity(unk_stamp, "")
 
     # -----------------------------------------------------------------------
 
@@ -120,7 +121,7 @@ class Activity(object):
 
             # Fix the activity name of this new token
             if ann.GetLabel().IsEmpty():
-                l = UNKSTAMP
+                l = unk_stamp
             else:
                 l = ann.GetLabel().GetValue()
             new_activity = self.activities.get(l, "speech")

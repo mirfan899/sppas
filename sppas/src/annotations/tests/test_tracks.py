@@ -7,7 +7,7 @@ import os.path
 from ..Align.aligners.alignerio import AlignerIO
 from ..Chunks.anchors import AnchorTier
 from sppas.src.annotationdata import Annotation, TimeInterval, TimePoint, Label, Text
-from sppas.src.resources.patterns import Patterns
+from sppas.src.resources.patterns import sppasPatterns
 
 # --------------------------------------------------------------------------
 
@@ -222,7 +222,7 @@ class TestTracksAlign(unittest.TestCase):
                u"非常之", u"膚", u"淺", u"及", u"幼稚", u"呀", u"哦", u"即", u"khut6", u"嘩", u"咁"]
         hyp = [(token, score) for (start, end, token, score) in wordalign]
 
-        pattern = Patterns()
+        pattern = sppasPatterns()
         pattern.set_ngram(3)
         m3 = pattern.ngram_matches(ref, hyp)
 
@@ -234,7 +234,7 @@ class TestTracksAlign(unittest.TestCase):
         maxh = max([v[1] for v in m3])
         newhyp = hyp[minh:maxh+1]
 
-        pattern = Patterns()
+        pattern = sppasPatterns()
         pattern.set_ngram(3)
         newm3 = pattern.ngram_alignments(newref, newhyp)
 
@@ -242,7 +242,7 @@ class TestTracksAlign(unittest.TestCase):
 
         self.assertEqual(newm3, [(5, 5), (6, 6), (7, 7), (17, 16), (18, 17), (19, 18)])
 
-        pattern = Patterns()
+        pattern = sppasPatterns()
         pattern.set_score(0.6)
         pattern.set_ngram(1)
         m1 = pattern.ngram_alignments(newref, newhyp)

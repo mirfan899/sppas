@@ -54,9 +54,9 @@ class TestTrainer(unittest.TestCase):
 
     def test_phoneset(self):
         pho = PhoneSet()
-        self.assertEqual(pho.get_size(), 4)
+        self.assertEqual(len(pho), 4)
         pho.add_from_dict(os.path.join(RESOURCES_PATH, "dict", "nan.dict"))
-        self.assertEqual(pho.get_size(), 44)
+        self.assertEqual(len(pho), 44)
         pho.save(os.path.join(TEMP, "monophones"))
 
         pho2 = PhoneSet(os.path.join(TEMP, "monophones"))
@@ -73,7 +73,7 @@ class TestTrainer(unittest.TestCase):
         self.assertEqual(corpus.phonemap.map_entry('#'), "#")
 
         corpus.fix_resources(dictfile=os.path.join(RESOURCES_PATH, "dict", "nan.dict"))
-        self.assertEqual(corpus.monophones.get_size(), 44)
+        self.assertEqual(len(corpus.monophones), 44)
 
         corpus.fix_resources(dictfile=os.path.join(RESOURCES_PATH, "dict", "nan.dict"),
                              mappingfile=os.path.join(RESOURCES_PATH, "models", "models-nan", "monophones.repl"))

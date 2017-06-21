@@ -39,20 +39,20 @@
 from sppas.src.utils.maketext import translate
 t = translate("resources")
 
-from .dictpron import DictPron
-from .dictrepl import DictRepl
-from .mapping import Mapping
-from .patterns import Patterns
-from .unigram import Unigram
-from .vocab import Vocabulary
+from .dictpron import sppasDictPron
+from .dictrepl import sppasDictRepl
+from .mapping import sppasMapping
+from .patterns import sppasPatterns
+from .unigram import sppasUnigram
+from .vocab import sppasVocabulary
 
 # ---------------------------------
 
 __all__ = [
-    "Mapping",
-    "DictRepl",
-    "DictPron",
-    "Patterns",
-    "Unigram",
-    "Vocabulary"
+    "sppasMapping",
+    "sppasDictRepl",
+    "sppasDictPron",
+    "sppasPatterns",
+    "sppasUnigram",
+    "sppasVocabulary"
 ]

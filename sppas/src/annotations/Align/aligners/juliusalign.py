@@ -41,7 +41,7 @@ from sppas.src.models.slm.ngramsmodel import NgramsModel
 from sppas.src.models.slm.arpaio import ArpaIO
 from sppas.src.models.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
 from sppas.src.utils.makeunicode import sppasUnicode
-from sppas.src.resources.dictpron import DictPron
+from sppas.src.resources.dictpron import sppasDictPron
 
 from .basealigner import BaseAligner
 
@@ -162,7 +162,7 @@ class JuliusAligner(BaseAligner):
         phoneslist = self._phones.split()
         tokenslist = self._tokens.split()
 
-        dictpron = DictPron()
+        dictpron = sppasDictPron()
 
         for token, pron in zip(tokenslist, phoneslist):
             for variant in pron.split("|"):

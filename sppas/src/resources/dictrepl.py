@@ -38,13 +38,13 @@ import codecs
 import logging
 
 from sppas import encoding
-from sppas.src.utils.makeunicode import sppasUnicode
-from .dumpfile import DumpFile
+from sppas.src.utils.makeunicode import sppasUnicode, u
+from .dumpfile import sppasDumpFile
 
 # ----------------------------------------------------------------------------
 
 
-class DictRepl(object):
+class sppasDictRepl(object):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -55,32 +55,37 @@ class DictRepl(object):
     
     The main feature is that values are "accumulated".
 
-    >>>d = DictRepl()
+    >>>d = sppasDictRepl()
     >>>d.add("key", "v1")
     >>>d.add("key", "v2")
-    >>>print d.get("key")
+    >>>d.get("key")
     >>>v1|v2
-    >>>print d.is_value("v1")
+    >>>d.is_value("v1")
     >>>True
-    >>>print d.is_value("v1|v2")
+    >>>d.is_value("v1|v2")
     >>>False
 
     """
     REPLACE_SEPARATOR = "|"
 
+    # -----------------------------------------------------------------------
+
     def __init__(self, dict_filename=None, nodump=False):
-        """ Constructor.
+        """ Create a sppasDictRepl instance.
 
         :param dict_filename: (str) The dictionary file name (2 columns)
         :param nodump: (bool) Disable the creation of a dump file
+        A dump file is a binary version of the dictionary. Its size is greater
+        than the original ASCII dictionary but the time to load it is divided
+        by two or three.
 
         """
-        self._dict = {}
+        self._dict = dict()
 
         if dict_filename is not None:
 
             data = None
-            dp = DumpFile(dict_filename)
+            dp = sppasDumpFile(dict_filename)
 
             # Try first to get the dict from a dump file (at least 2 times faster)
             if nodump is False:
@@ -94,19 +99,31 @@ class DictRepl(object):
             else:
                 self._dict = data
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Getters
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def is_key(self, entry):
-        """ Return True if entry is a key in the dictionary.
+        """ Return True if entry is exactly a key in the dictionary.
+        This method can sometimes return a different value compared to "in".
+
+        >>>d = sppasMapping()
+        >>>d.add("a", " & ")
+        >>>" a " in d
+        >>>True
+        >>>" A " in d
+        >>> True
+        >>>d.is_key("a ")
+        >>>False
+        >>>d.is_key("A")
+        >>>False
 
         :param entry: (str) Unicode string.
 
         """
-        return entry in self._dict
+        return u(entry) in self._dict
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def is_value(self, entry):
         """ Return True if entry is a value in the dictionary.
@@ -114,15 +131,17 @@ class DictRepl(object):
         :param entry: (str) Unicode string.
 
         """
+        s = sppasDictRepl.format_token(entry)
+
         for v in self._dict.values():
-            values = v.split(DictRepl.REPLACE_SEPARATOR)
+            values = v.split(sppasDictRepl.REPLACE_SEPARATOR)
             for val in values:
-                if val == entry:
+                if val == s:
                     return True
 
         return False
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def is_value_of(self, key, entry):
         """ Return True if entry is a value of a given key in the dictionary.
@@ -131,15 +150,16 @@ class DictRepl(object):
         :param entry: (str) Unicode string.
 
         """
-        v = self._dict.get(key, "")
-        values = v.split(DictRepl.REPLACE_SEPARATOR)
+        s = sppasDictRepl.format_token(entry)
+        v = self.get(key, "")
+        values = v.split(sppasDictRepl.REPLACE_SEPARATOR)
         for val in values:
-            if val == entry:
+            if val == s:
                 return True
 
         return False
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def is_unk(self, entry):
         """ Return True if entry is not a key in the dictionary.
@@ -147,51 +167,37 @@ class DictRepl(object):
         :param entry: (str) Unicode string.
 
         """
-        return entry not in self._dict
+        s = sppasDictRepl.format_token(entry)
+        return s not in self._dict
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def is_empty(self):
         """ Return True if there is no entry in the dictionary. """
 
         return len(self._dict) == 0
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
-    def get_size(self):
-        """ Return the number of entries in the dictionary. """
+    def get(self, entry, substitution=None):
+        """ Return the value of a key of the dictionary or substitution.
 
-        return len(self._dict)
+        :param entry: (str) A token to find in the dictionary
+        :param substitution: (str) String to return if token is missing of the dict
+        :returns: unicode of the replacement or the substitution.
 
-    # ------------------------------------------------------------------------
+        """
+        s = sppasDictRepl.format_token(entry)
+        return self._dict.get(s, substitution)
 
-    def get_dict(self):
-        """ Return the replacements dictionary. """
-
-        return self._dict
-
-    # ------------------------------------------------------------------------
-
-    def get_keys(self):
-        """ Return the list of keys of the dictionary. """
-
-        return self._dict.keys()
-
-    # ------------------------------------------------------------------------
-
-    def get(self, key):
-        """ Return the value of a key of the dictionary or None. """
-
-        return self._dict.get(key, None)
-
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def replace(self, key):
         """ Return the value of a key or None if key has no replacement. """
 
-        return self._dict.get(key, None)
+        return self.get(key)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def replace_reversed(self, value):
         """ Return the key(s) of a value or an empty string if value does not exists.
@@ -199,22 +205,35 @@ class DictRepl(object):
         :returns: a unicode string with all keys, separated by '_'.
 
         """
+        s = sppasDictRepl.format_token(value)
         # hum... of course, a value can have more than 1 key!
         keys = []
         for k, v in self._dict.items():
-            values = v.split(DictRepl.REPLACE_SEPARATOR)
+            values = v.split(sppasDictRepl.REPLACE_SEPARATOR)
             for val in values:
-                if val == value:
+                if val == s:
                     keys.append(k)
 
         if len(keys) == 0:
             return ""
 
-        return DictRepl.REPLACE_SEPARATOR.join(keys)
+        return sppasDictRepl.REPLACE_SEPARATOR.join(keys)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def format_token(entry):
+        """ Remove the CR/LF, tabs, multiple spaces and others... and lowerise.
+
+        :param entry: (str) a token
+        :returns: formatted token
+
+        """
+        return sppasUnicode(entry).to_strip()
+
+    # -----------------------------------------------------------------------
     # Setters
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def add(self, token, repl):
         """ Add a new key,value into the dict, or append value to the existing
@@ -226,20 +245,18 @@ class DictRepl(object):
         Both token and repl are converted to unicode (if any) and strip.
 
         """
-        s = sppasUnicode(token)
-        key = s.to_strip()
-        s = sppasUnicode(repl)
-        value = s.to_strip()
+        key = sppasDictRepl.format_token(token)
+        value = sppasDictRepl.format_token(repl)
 
         # Check key,value in the dict
-        if self.is_key(key):
+        if key in self._dict:
             if self.is_value_of(key, value) is False:
                 value = "{0}|{1}".format(self._dict.get(key), value)
 
         # Append
         self._dict[key] = value
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def remove(self, entry):
         """ Remove an entry, as key or value.
@@ -247,18 +264,23 @@ class DictRepl(object):
         :param entry: (str) unicode string of the entry to remove
 
         """
+        s = sppasDictRepl.format_token(entry)
+        to_pop = list()
         for k in self._dict.keys():
-            if k == entry or self.is_value_of(k, entry):
-                self._dict.pop(k)
+            if k == s or self.is_value_of(k, entry):
+                to_pop.append(k)
 
-    # ------------------------------------------------------------------------
+        for k in to_pop:
+            self._dict.pop(k)
+
+    # -----------------------------------------------------------------------
     # File
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def load_from_ascii(self, filename):
         """ Load a replacement dictionary from an ascii file.
 
-        :param filename: (str)
+        :param filename: (str) Replacement dictionary file name
 
         """
         with codecs.open(filename, 'r', encoding) as fd:
@@ -269,16 +291,16 @@ class DictRepl(object):
             if len(line) == 0:
                 continue
 
-            tabline = line.split()
-            if len(tabline) < 2:
+            tab_line = line.split()
+            if len(tab_line) < 2:
                 continue
 
             # Add (or modify) the entry in the dict
-            key = tabline[0]
-            value = DictRepl.REPLACE_SEPARATOR.join(tabline[1:])
+            key = tab_line[0]
+            value = sppasDictRepl.REPLACE_SEPARATOR.join(tab_line[1:])
             self.add(key, value)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def save_as_ascii(self, filename):
         """ Save the replacement dictionary.
@@ -290,28 +312,35 @@ class DictRepl(object):
         try:
             with codecs.open(filename, 'w', encoding=encoding) as output:
                 for entry, value in sorted(self._dict.items(), key=lambda x: x[0]):
-                    values = value.split(DictRepl.REPLACE_SEPARATOR)
+                    values = value.split(sppasDictRepl.REPLACE_SEPARATOR)
                     for v in values:
                         output.write("%s %s\n" % (entry, v.strip()))
         except Exception as e:
-            logging.info('Save file failed due to the following error: {:s}'.format(str(e)))
+            logging.info('Saving file failed due to the following error: {:s}'.format(str(e)))
             return False
 
         return True
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Overloads
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __str__(self):
         return str(self._dict)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __len__(self):
         return len(self._dict)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __contains__(self, item):
-        return item in self._dict
+        s = sppasDictRepl.format_token(item)
+        return s in self._dict
+
+    # ------------------------------------------------------------------------
+
+    def __iter__(self):
+        for a in self._dict:
+            yield a

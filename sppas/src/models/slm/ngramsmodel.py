@@ -38,9 +38,9 @@
 import collections
 import math
 
+from sppas import unk_stamp
 import sppas.src.annotationdata as annotationdata
-from sppas.src.resources.vocab import Vocabulary
-from sppas.src.annotations import UNKSTAMP
+from sppas.src.resources.vocab import sppasVocabulary
 
 # ---------------------------------------------------------------------------
 
@@ -175,7 +175,7 @@ class NgramsModel(object):
         @param filename (str - IN) List of tokens.
 
         """
-        self.wrdlist = Vocabulary(filename, nodump=True, case_sensitive=False)
+        self.wrdlist = sppasVocabulary(filename, nodump=True, case_sensitive=False)
 
     # -----------------------------------------------------------------------
 
@@ -392,7 +392,7 @@ class NgramCounter(object):
         Constructor.
 
         @param n (int) n-gram order, between 1 and MAX_ORDER.
-        @param wordslist (Vocabulary) a list of accepted tokens.
+        @param wordslist (sppasVocabulary) a list of accepted tokens.
 
         """
         n = int(n)
@@ -543,7 +543,7 @@ class NgramCounter(object):
                 if self._wordslist.is_in(token):
                     tokens.append(token)
                 else:
-                    tokens.append(UNKSTAMP)
+                    tokens.append(unk_stamp)
 
         if tokens[0] != self._ss:
             tokens.insert(0, self._ss)

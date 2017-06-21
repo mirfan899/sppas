@@ -60,8 +60,6 @@ OK_ID = 0
 # ---------------------------------------------------------------------------
 # Symbols used by SPPAS annotations to represent an event:
 
-UNKSTAMP = "<UNK>"
-
 SYMBOLS = {
     '#': "silence",
     '+': "pause",

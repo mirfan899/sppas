@@ -82,6 +82,8 @@ TIPS_FILE = os.path.join(BASE_PATH, "etc", "tips.txt")
 SETTINGS_FILE = os.path.join(BASE_PATH, "etc", "settings.dump")
 
 # ---------------------------------------------------------------------------
+# Global variables
+# ---------------------------------------------------------------------------
 
 # Default input/output encoding
 encoding = 'utf-8'
@@ -90,3 +92,6 @@ try:
     sys.setdefaultencoding(encoding)
 except AttributeError:  # Python 2.7
     pass
+
+# Default symbols used by annotations and resources
+unk_stamp = "<UNK>"

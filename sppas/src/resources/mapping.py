@@ -37,7 +37,7 @@
 """
 import re
 
-from .dictrepl import DictRepl
+from .dictrepl import sppasDictRepl
 
 # ----------------------------------------------------------------------------
 
@@ -46,25 +46,26 @@ DEFAULT_SEP = (";", ",", " ", ".", "|", "+", "-")
 # ----------------------------------------------------------------------------
 
 
-class Mapping(DictRepl):
+class sppasMapping(sppasDictRepl):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Mapping table of any set of strings.
+    :summary:      A mapping is an extended replacement dictionary.
 
-    A mapping is an extended replacement dictionary.
+    sppasMapping is used for the management of a mapping table of any set
+    of strings.
 
     """
     def __init__(self, dict_name=None):
-        """ Create a new Mapping instance.
+        """ Create a new sppasMapping instance.
 
         :param dict_name: (str) is the file name with the mapping data (2 columns)
 
         """
-        DictRepl.__init__(self, dict_name, nodump=True)
+        sppasDictRepl.__init__(self, dict_name, nodump=True)
 
         self._keep_miss = True  # remove or not missing values
         self._reverse = False   # will replace value by key instead of replacing key by value
@@ -96,8 +97,8 @@ class Mapping(DictRepl):
     def set_reverse(self, reverse):
         """ Fix the reverse option.
 
-        :param reverse (bool) If replace is set to True, mapping will replace
-        value by key instead of replacing key by value.
+        :param reverse: (bool) If replace is set to True, the mapping will
+        replace value by key instead of replacing key by value.
 
         """
         self._reverse = reverse
@@ -124,7 +125,7 @@ class Mapping(DictRepl):
         :returns: mapped entry is a string
 
         """
-        if self.get_size() == 0:
+        if self.is_empty() is True:
             return entry
 
         if self._reverse is False:
@@ -148,10 +149,10 @@ class Mapping(DictRepl):
         :param mstr: is the input string to map
         :param delimiters: (list) list of character delimiters. Default is:
                [';', ',', ' ', '.', '|', '+', '-']
-        @return a string
+        :returns: a string
 
         """
-        if self.get_size() == 0:
+        if self.is_empty() is True:
             return mstr
 
         tab = []

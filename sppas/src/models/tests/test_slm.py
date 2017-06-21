@@ -6,12 +6,13 @@ import os.path
 import math
 import shutil
 
-from sppas.src.models.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL, UNKSTAMP
+from sppas import unk_stamp
+from sppas.src.models.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
 from sppas.src.models.slm.ngramsmodel import NgramCounter
 from sppas.src.models.slm.ngramsmodel import NgramsModel
 from sppas.src.models.slm.statlangmodel import SLM
 from sppas.src.models.slm.arpaio import ArpaIO
-from sppas.src.resources.vocab import Vocabulary
+from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.utils.compare import sppasCompare
 from sppas.src.utils.fileutils import sppasFileUtils
 
@@ -115,7 +116,7 @@ class TestNgramCounter(unittest.TestCase):
         self.assertEqual(ngramcounter.get_count(END_SENT_SYMBOL), 3)
 
     def testVocab(self):
-        wds = Vocabulary()
+        wds = sppasVocabulary()
         wds.add("a")
         wds.add("b")
         wds.add("c")
@@ -126,7 +127,7 @@ class TestNgramCounter(unittest.TestCase):
         self.assertEqual(ngramcounter.get_count('b'), 10)
         self.assertEqual(ngramcounter.get_count('c'), 4)
         self.assertEqual(ngramcounter.get_count('d'), 0)
-        self.assertEqual(ngramcounter.get_count(UNKSTAMP), 3)
+        self.assertEqual(ngramcounter.get_count(unk_stamp), 3)
         self.assertEqual(ngramcounter.get_count(START_SENT_SYMBOL), 0)
         self.assertEqual(ngramcounter.get_count(END_SENT_SYMBOL), 3)
 

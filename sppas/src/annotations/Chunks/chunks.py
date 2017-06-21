@@ -36,7 +36,7 @@
 import os
 import logging
 
-
+from sppas import unk_stamp
 import sppas.src.annotationdata.aio
 import sppas.src.audiodata.autils as autils
 from sppas.src.annotationdata.transcription import Transcription
@@ -46,13 +46,12 @@ from sppas.src.annotationdata.ptime.point import TimePoint
 from sppas.src.annotationdata.annotation import Annotation
 from sppas.src.annotationdata.label.label import Label
 from sppas.src.annotationdata.label.text import Text
-from sppas.src.resources.patterns import Patterns
-from sppas.src.resources.mapping import Mapping
+from sppas.src.resources.patterns import sppasPatterns
+from sppas.src.resources.mapping import sppasMapping
 from sppas.src.utils.makeunicode import sppasUnicode
 
 import sppas.src.annotations.Align.aligners as aligners
 from ..Align.aligners.alignerio import AlignerIO
-from .. import UNKSTAMP
 from .spkrate import SpeakerRate
 from .anchors import AnchorTier
 
@@ -83,11 +82,11 @@ class Chunks(object):
         mappingfilename = os.path.join(model, "monophones.repl")
         if os.path.isfile(mappingfilename):
             try:
-                self._mapping = Mapping(mappingfilename)
+                self._mapping = sppasMapping(mappingfilename)
             except Exception:
-                self._mapping = Mapping()
+                self._mapping = sppasMapping()
         else:
-            self._mapping = Mapping()
+            self._mapping = sppasMapping()
 
         self._alignerio = AlignerIO()
         self._spkrate = SpeakerRate()
@@ -449,7 +448,7 @@ class Chunks(object):
         """ Create the list of matches between ref and hyp.
 
         """
-        pattern = Patterns()
+        pattern = sppasPatterns()
         pattern.set_ngram(N)
         m3 = pattern.ngram_matches(ref, hyp)
 
@@ -481,7 +480,7 @@ class Chunks(object):
 
         m1 = []
         if len(hyp) < N:
-            pattern = Patterns()
+            pattern = sppasPatterns()
             pattern.set_score(0.9)
             pattern.set_ngram(1)
             pattern.set_gap(1)
@@ -578,8 +577,8 @@ class Chunks(object):
                 if mapp is True:
                     besttext = self._mapping.map(besttext)
 
-                if UNKSTAMP in besttext:
-                    besttext = besttext.replace(UNKSTAMP, "sil")
+                if unk_stamp in besttext:
+                    besttext = besttext.replace(unk_stamp, "sil")
                 raw = raw + " " + besttext
 
         return sppasUnicode(raw).to_strip()
