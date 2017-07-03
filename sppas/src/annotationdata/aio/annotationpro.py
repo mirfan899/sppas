@@ -38,19 +38,19 @@
 import xml.etree.cElementTree as ET
 import datetime
 
-from ..transcription import Transcription
-from ..label.label import Label
-from ..ptime.location import Location
-from ..ptime.interval import TimeInterval
-from ..ptime.localization import Localization
-from ..annotation import Annotation
-from ..media import Media
-from ..ptime.point import TimePoint
+from sppas.src.annotationdata.transcription import Transcription
+from sppas.src.annotationdata.label.label import Label
+from sppas.src.annotationdata.ptime.location import Location
+import sppas.src.annotationdata.ptime.point
+from sppas.src.annotationdata.ptime.interval import TimeInterval
+from sppas.src.annotationdata.ptime.localization import Localization
+from sppas.src.annotationdata.annotation import Annotation
+from sppas.src.annotationdata.media import Media
 
-from .utils import indent
-from .utils import gen_id
-from .utils import merge_overlapping_annotations
-from .utils import point2interval
+from utils import indent
+from utils import gen_id
+from utils import merge_overlapping_annotations
+from utils import point2interval
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -125,8 +125,9 @@ UpperLowerDict['projectnoises'] = "ProjectNoises"
 
 # ---------------------------------------------------------------------------
 
-def AntxTimePoint(time):
-    return TimePoint(time, ANTX_RADIUS)
+
+def TimePoint(time):
+    return sppas.src.annotationdata.ptime.point.TimePoint(time, ANTX_RADIUS)
 
 # ---------------------------------------------------------------------------
 
@@ -171,7 +172,7 @@ class Antx(Transcription):
         """ Import a transcription from a .antx file.
 
         :param filename:
-
+        
         """
         self.__id_tier_map = {}
         tree = ET.parse(filename)
@@ -247,9 +248,9 @@ class Antx(Transcription):
             start /= float(self.metadata.get('samplerate', 44100))
             end /= float(self.metadata.get('samplerate', 44100))
             if end > start:
-                location = Location(Localization(TimeInterval(AntxTimePoint(start), AntxTimePoint(end))))
+                location = Location(Localization(TimeInterval(TimePoint(start), TimePoint(end))))
             else:
-                location = Location(Localization(AntxTimePoint(start)))
+                location = Location(Localization(TimePoint(start)))
             annotation = Annotation(location, label)
 
             # Put the other information in metadata
@@ -301,7 +302,7 @@ class Antx(Transcription):
                 Antx.__format_configuration(root, key, self.metadata.get(key, value))
 
             for key, value in self.metadata.items():
-                if not key in ELT_REQUIRED_Configuration.keys():
+                if key not in ELT_REQUIRED_Configuration.keys():
                     Antx.__format_configuration(root, key, self.metadata.get(key, value))
 
             indent(root)
@@ -332,7 +333,7 @@ class Antx(Transcription):
 
         # Antx required elements
         for key, value in ELT_REQUIRED_Media.items():
-            if not key in [ 'id','filename' ]:
+            if key not in ['id', 'filename']:
                 child = ET.SubElement(media_root, UpperLowerDict[key])
                 child.text = media.metadata.get(key, value)
 
@@ -379,7 +380,7 @@ class Antx(Transcription):
 
         # Either get metadata in tier or assign the default value
         for key, value in ELT_REQUIRED_Layer.items():
-            if not key in [ 'id', 'name' ]:
+            if key not in ['id', 'name']:
                 # here, we have to restore original upper/lower case for the key
                 child = ET.SubElement(tier_root, UpperLowerDict[key])
                 child.text = tier.metadata.get(key, value)
@@ -419,7 +420,7 @@ class Antx(Transcription):
 
         # Antx required elements
         for key, value in ELT_REQUIRED_Segment.items():
-            if not key in [ 'id','idlayer', 'label', 'start', 'duration' ]:
+            if not key in ['id', 'idlayer', 'label', 'start', 'duration']:
                 child = ET.SubElement(segment_root, UpperLowerDict[key])
                 child.text = ann.metadata.get(key, value)
 

@@ -45,10 +45,11 @@ import os.path
 
 import sppas.src.annotationdata.aio
 
+from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
+
 from sppas.src.calculus.descriptivesstats import DescriptiveStatistics
 from sppas.src.presenters.tiertga import TierTGA
-
-from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
+from sppas.src.utils import fileutils
 
 from sppas.src.wxgui.sp_icons  import TIMEANALYSIS
 from sppas.src.wxgui.sp_icons  import BROOM_ICON
@@ -96,19 +97,19 @@ class TGADialog(spBaseDialog):
         # Options to evaluate stats:
         self.withradius = 0
 
-        self._data = {} # to store stats
+        self._data = {}  # to store stats
         for k, v in tiers.items():
             for tier in v:
                 ts = TierTGA(tier, self.withradius)
                 self._data[ts] = k
                 # remark: TGA are not estimated yet.
 
-        titlebox   = self.CreateTitle(TIMEANALYSIS, "Time Group Analysis of a set of tiers")
+        titlebox = self.CreateTitle(TIMEANALYSIS, "Time Group Analysis of a set of tiers")
         contentbox = self._create_content()
-        buttonbox  = self._create_buttons()
+        buttonbox = self._create_buttons()
 
         self.LayoutComponents(titlebox,
-                               contentbox,
+                              contentbox,
                               buttonbox)
 
     # ------------------------------------------------------------------------
@@ -117,7 +118,7 @@ class TGADialog(spBaseDialog):
 
     def _create_buttons(self):
         btn_export = self.CreateButton(EXPORT_ICON, "Export", tooltip="Show a random tip")
-        btn_save   = self.CreateSaveButton()
+        btn_save = self.CreateSaveButton()
         btn_close = self.CreateCloseButton()
         self.Bind(wx.EVT_BUTTON, self._on_save, btn_save)
         self.Bind(wx.EVT_BUTTON, self._on_export, btn_export)
@@ -176,7 +177,7 @@ class TGADialog(spBaseDialog):
     def _create_content(self):
         self._create_toolbar()
         self.notebook = wx.Notebook(self)
-        page1 = TotalPanel(  self.notebook, self.preferences, "total")
+        page1 = TotalPanel( self.notebook, self.preferences, "total")
         page2 = MeansPanel(self.notebook, self.preferences, "means")
         page3 = DeltaDurationsPanel(self.notebook, self.preferences, "delta")
         # add the pages to the notebook with the label to show on the tab
@@ -212,7 +213,7 @@ class TGADialog(spBaseDialog):
             # save as file
             infile, ext = os.path.splitext(filename)
             outfile = infile + "-tga" + ext
-            logging.debug('Export file: %s' % outfile)
+            logging.info('Export file: %s' % outfile)
             sppas.src.annotationdata.aio.write(outfile, trs)
             # uppdate progress bar
             i += 1
@@ -246,9 +247,9 @@ class TGADialog(spBaseDialog):
                 return
         # update infos of TierTGA objects
         for ts in self._data:
-            ts.set_with_radius( self.withradius )
-        page = self.notebook.GetPage( self.notebook.GetSelection() )
-        page.ShowStats( self._data )
+            ts.set_withradius(self.withradius)
+        page = self.notebook.GetPage(self.notebook.GetSelection())
+        page.ShowStats(self._data)
 
 
     def OnTextClick(self, event):
@@ -465,7 +466,7 @@ class DeltaDurationsPanel(BaseStatPanel):
             # estimates TGA
             #ds = tg.tga()    # durations data
             #ls = tg.labels() # labels data
-            dd = tg.delta_durations()
+            dd = tg.deltadurations()
             # fill rows
             for key in dd.keys():
                 # create the row, as a list of column items

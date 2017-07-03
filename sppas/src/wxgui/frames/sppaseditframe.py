@@ -98,7 +98,7 @@ class SppasEditFrame(ComponentFrame):
 
         arguments = {}
         arguments['files'] = []
-        arguments['title'] = "SPPAS - Visualizer"
+        arguments['title'] = "SPPAS - Vizualizer"
         arguments['type']  = "ANYFILES"
         arguments['icon']  = SPPASEDIT_APP_ICON
         arguments['prefs'] = prefsIO

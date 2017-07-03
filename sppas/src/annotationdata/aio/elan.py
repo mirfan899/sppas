@@ -45,39 +45,36 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # ----------------------------------------------------------------------------
 import logging
 import datetime
-import logging
 import xml.etree.cElementTree as ET
 from collections import OrderedDict
 
-from ..transcription import Transcription
-from ..ctrlvocab import CtrlVocab
-from ..media import Media
-from ..label.label import Label
-from ..ptime.point import TimePoint
-from ..ptime.interval import TimeInterval
-from ..annotation import Annotation
+from sppas.src.annotationdata.transcription  import Transcription
+from sppas.src.annotationdata.ctrlvocab      import CtrlVocab
+from sppas.src.annotationdata.media          import Media
+from sppas.src.annotationdata.label.label    import Label
+import sppas.src.annotationdata.ptime.point
+from sppas.src.annotationdata.ptime.interval import TimeInterval
+from sppas.src.annotationdata.annotation     import Annotation
 
-from .utils import indent
-from .utils import gen_id
-from .utils import merge_overlapping_annotations
-from .utils import point2interval
+from utils import indent
+from utils import gen_id
+from utils import merge_overlapping_annotations
+from utils import point2interval
 
 # -----------------------------------------------------------------
 
 CONSTRAINTS = {}
-CONSTRAINTS["Time subdivision of parent annotation's time interval, no time gaps allowed within this interval"] = "Time_Subdivision"
-CONSTRAINTS["Symbolic subdivision of a parent annotation. Annotations refering to the same parent are ordered"] = "Symbolic_Subdivision"
-CONSTRAINTS["1-1 association with a parent annotation"] = "Symbolic_Association"
-CONSTRAINTS["Time alignable annotations within the parent annotation's time interval, gaps are allowed"] = "Included_In"
-
-# -----------------------------------------------------------------
+CONSTRAINTS["Time subdivision of parent annotation's time interval, no time gaps allowed within this interval"]="Time_Subdivision"
+CONSTRAINTS["Symbolic subdivision of a parent annotation. Annotations refering to the same parent are ordered"]="Symbolic_Subdivision"
+CONSTRAINTS["1-1 association with a parent annotation"]="Symbolic_Association"
+CONSTRAINTS["Time alignable annotations within the parent annotation's time interval, gaps are allowed"]="Included_In"
 
 ELAN_RADIUS = 0.02
 
+# -----------------------------------------------------------------
 
-def ElanTimePoint(time, radius=ELAN_RADIUS):
-    return TimePoint(time, radius)
-
+def TimePoint(time, radius=ELAN_RADIUS):
+    return sppas.src.annotationdata.ptime.point.TimePoint(time, radius)
 
 def linguistic_type_from_tier(tier):
     return (tier.metadata['LINGUISTIC_TYPE_REF']
@@ -85,7 +82,6 @@ def linguistic_type_from_tier(tier):
             'SPPAS_%s' % tier.GetName())
 
 # -----------------------------------------------------------------
-
 
 class Elan( Transcription ):
     """
@@ -133,10 +129,10 @@ class Elan( Transcription ):
         # manage hierarchyLinks
         for parentTierRef in self.hierarchyLinks:
             for child in self.hierarchyLinks[parentTierRef]:  # a parent tier could have various children
-            parent = self.Find(parentTierRef)
-            # Elan's hierarchy
-            try:
-                self._hierarchy.add_link('TimeAlignment', child, parent)
+                parent = self.Find(parentTierRef)
+                # Elan's hierarchy
+                try:
+                    self._hierarchy.add_link('TimeAlignment', child, parent)
                 except Exception as e:
                     logging.info("Error while creating hierarchy link between parent: {:s} and child: {:s}".format(parent.GetName(), child.GetName()))
                     logging.info("{:s}".format(str(e)))
@@ -147,6 +143,7 @@ class Elan( Transcription ):
         del self.unit
         del self.timeSlots
 
+    # End read
     # -----------------------------------------------------------------
 
     def __read_media(self, mediaRoot):
@@ -210,6 +207,7 @@ class Elan( Transcription ):
         if 'PARENT_REF' in tierRoot.attrib:
             parentRef = tierRoot.attrib['PARENT_REF']
             self.__read_ref_tier(tier, tierRoot, parentRef, root)
+
         else:
             self.__read_alignable_tier(tier, tierRoot)
 
@@ -285,7 +283,7 @@ class Elan( Transcription ):
             x2 = begin + increment
             for annotationRoot in batches[ref]:
                 label = annotationRoot[0].find('ANNOTATION_VALUE').text
-                tier.Add(Annotation(TimeInterval(ElanTimePoint(x1), ElanTimePoint(x2)),
+                tier.Add(Annotation(TimeInterval(TimePoint(x1),TimePoint(x2)),
                                     Label(label)))
                 x1 += increment
                 x2 += increment
@@ -326,22 +324,9 @@ class Elan( Transcription ):
     # -----------------------------------------------------------------
 
     def __read_alignable_tier(self, tier, tierRoot):
-        new_a = Annotation(TimePoint(0))
         for annotationRoot in tierRoot.findall('ANNOTATION'):
-            annroot = annotationRoot.find('ALIGNABLE_ANNOTATION')
-            if annroot is not None:
-                new_a = self.__parse_alignable_annotation(annroot)
-                tier.Add(new_a)
-            else:
-                annroot = annotationRoot.find('REF_ANNOTATION')
-                if annroot is not None:
-                    raise IOError('Corrupted ELAN file. '
-                        'Expected an ALIGNABLE_ANNOTATION and got a REF_ANNOTATION: '
-                        'PARENT_REF was not defined for tier {:s}. '.format(tier.GetName()))
-                else:
-                    logging.info('[ERROR] ELAN file error: tier {:s} contains a '
-                        ' corrupted annotation after the annotation: '
-                        '{:s}.'.format(tier.GetName(), new_a))
+            new_a = self.__parse_alignable_annotation(annotationRoot.find('ALIGNABLE_ANNOTATION'))
+            tier.Add( new_a )
 
     # -----------------------------------------------------------------
 
@@ -354,9 +339,7 @@ class Elan( Transcription ):
         endKey = alignableAnnotationRoot.attrib['TIME_SLOT_REF2']
         end = self.timeSlots[endKey]
 
-        # TODO: store attrib "SVG_RE" in metadata
-
-        return Annotation(TimeInterval(begin, end), Label(label))
+        return Annotation(TimeInterval(begin,end), Label(label))
 
     # -----------------------------------------------------------------
 
@@ -376,7 +359,7 @@ class Elan( Transcription ):
             id = timeSlotNode.attrib['TIME_SLOT_ID']
 
             if 'TIME_VALUE' in timeSlotNode.attrib:
-                value = ElanTimePoint(
+                value = TimePoint(
                     float(timeSlotNode.attrib['TIME_VALUE']) * self.unit)
             else:
                 value = None
@@ -384,18 +367,18 @@ class Elan( Transcription ):
             timeSlotCouples.append((id, value))
 
         # create a midpoint value for undefined TIME_VALUE
-            for i in range(1, len(timeSlotCouples)-1):
-                (id, val) = timeSlotCouples[i]
-                if val is None:
+        for i in range(1, len(timeSlotCouples)-1):
+            (id, val) = timeSlotCouples[i]
+            if val is None:
                 (prevId, prevVal) = timeSlotCouples[i-1]
                 (nextId, nextVal) = timeSlotCouples[i+1]
-                    midPoint = (prevVal.GetMidpoint() +
-                                nextVal.GetMidpoint()) / 2
-                    newVal = ElanTimePoint(midPoint, midPoint -
-                                       prevVal.GetMidpoint())
-                    timeSlotCouples[i] = (id, newVal)
+                midPoint = (prevVal.GetMidpoint() +
+                            nextVal.GetMidpoint()) / 2 # /!\ failed if nextVal is None
+                newVal = TimePoint(midPoint, midPoint -
+                                   prevVal.GetMidpoint())
+                timeSlotCouples[i] = (id, newVal)
 
-            self.timeSlots = dict(timeSlotCouples)
+        self.timeSlots = dict(timeSlotCouples)
 
     # -----------------------------------------------------------------
     # Writer
@@ -523,7 +506,7 @@ class Elan( Transcription ):
     # -----------------------------------------------------------------
 
     def __write_constraints(self, root):
-        for desc, stereotype in CONSTRAINTS.items():
+        for desc,stereotype in CONSTRAINTS.iteritems():
             typeRoot = ET.SubElement(root, 'CONSTRAINT')
             typeRoot.set('DESCRIPTION', desc)
             typeRoot.set('STEREOTYPE', stereotype)

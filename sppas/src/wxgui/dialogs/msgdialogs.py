@@ -228,7 +228,7 @@ def DemoBaseDialog(parent, preferences=None):
         dlg = Choice( frame, preferences,"This is the message to describe choices:", ['choice 0','choice 1','choice 2'])
         if dlg.ShowModal() == wx.ID_OK:
             c = dlg.GetSelection()
-            ShowInformation( frame, preferences, "Your choice is: %d"%c)
+            ShowInformation( frame, preferences, "Your choice is: %d" % c)
         else:
             ShowInformation( frame, preferences, "You clicked the ""Cancel"" button")
         dlg.Destroy()
@@ -251,7 +251,7 @@ def DemoBaseDialog(parent, preferences=None):
     btnchoice = frame.CreateButton(DLG_QUEST_ICON,"Test choice", "This is a tooltip!", btnid=wx.NewId())
 
     btnclose  = frame.CreateCloseButton()
-    btnbox    = frame.CreateButtonBox( [btnyesno,btninfo,btnwarn,btnerror,btnchoice],[btnclose] )
+    btnbox    = frame.CreateButtonBox( [btnyesno,btninfo,btnwarn,btnerror,btnchoice], [btnclose] )
 
     frame.LayoutComponents( title, wx.Panel(frame, -1, size=(320,200)), btnbox )
 

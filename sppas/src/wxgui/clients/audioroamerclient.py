@@ -918,8 +918,8 @@ class AudioRoamerPanel(wx.Panel):
         new_filename = SaveAsAudioFile()
 
         # If it is the OK response, process the data.
-        if newfilename is not None:
-            if newfilename == parentfilename:
+        if new_filename is not None:
+            if new_filename == parent_filename:
                 ShowInformation(self, self._prefs, "Assigning the current file name is forbidden. Choose a new file name.", style=wx.ICON_ERROR)
                 return
 
@@ -927,7 +927,7 @@ class AudioRoamerPanel(wx.Panel):
             try:
                 channel = self.ApplyChanges(s, e)
             except Exception as e:
-                ShowInformation(self, self._prefs, "Error while formatting the channel: %s"%str(e), style=wx.ICON_ERROR)
+                ShowInformation(self, self._prefs, "Error while formatting the channel: %s" % str(e), style=wx.ICON_ERROR)
                 return
 
             message = "File {:s} saved successfully.".format(new_filename)
@@ -940,14 +940,14 @@ class AudioRoamerPanel(wx.Panel):
             try:
                 audio = AudioPCM()
                 audio.append_channel(channel)
-                sppas.src.audiodata.aio.save(newfilename, audio)
+                sppas.src.audiodata.aio.save(new_filename, audio)
             except Exception as e:
                 message = "File not saved. Error: {:s}".format(str(e))
             else:
                 # Update members
                 self._filename = new_filename
 
-            ShowInformation(self, self._prefs, message, style=wx.ICON_ERROR)
+            ShowInformation(self, self._prefs, message, style=wx.ICON_INFORMATION)
 
     # -----------------------------------------------------------------------
 
@@ -982,7 +982,7 @@ class AudioRoamerPanel(wx.Panel):
         # General information
         content += self.__section("General information")
         content += self.__line("Channel filename: %s"%self._filename)
-        content += self.__line("Channel extracted from file: "+parentfilename)
+        content += self.__line("Channel extracted from file: "+parent_filename)
         content += self.__line("Duration: %s sec."%self._channel.get_duration())
         content += self.__line("Framerate: %d Hz"%self._channel.get_framerate())
         content += self.__line("Samp. width: %d bits" % (int(self._channel.get_sampwidth())*8))
@@ -997,7 +997,7 @@ class AudioRoamerPanel(wx.Panel):
         content += self.__section("Amplitude clipping")
         for i in range(1,10):
             f = self._ca.clipping_rate(float(i)/10.) * 100.
-            content += self.__item("  factor "+str(float(i)/10.)+": "+str(round(f,2))+"%")
+            content += self.__item("  factor "+str(float(i)/10.)+": "+str(round(f, 2))+"%")
 
         # Volume
         content += self.__section("Root-mean square")

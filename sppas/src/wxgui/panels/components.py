@@ -112,5 +112,3 @@ class AnalyzePanel(wx.Panel):
         evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, obj.GetId())
         evt.SetEventObject(self)
         wx.PostEvent(self.GetParent(), evt)
-
-# ---------------------------------------------------------------------------

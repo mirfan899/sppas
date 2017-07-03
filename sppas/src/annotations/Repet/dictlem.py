@@ -90,7 +90,7 @@ class LemmaDict(object):
 
                 # Add (or change) the entry in the dict
                 # Find a previous token in the dictionary... or not!
-                if dictfreq.has_key(__entry) is True:
+                if __entry in dictfreq:
                     # a token already exists
                     if dictfreq[__entry] < __freq:
                         # the new one is more frequent
