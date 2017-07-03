@@ -254,7 +254,7 @@ class sppasDirUtils(object):
     # ------------------------------------------------------------------------
 
     @staticmethod
-    def dir_entries(dir_name, extension, subdir):
+    def dir_entries(dir_name, extension=None, subdir=True):
         """ Return a list of file names found in directory 'dir_name'.
 
         If 'subdir' is True, recursively access subdirectories under
@@ -262,17 +262,23 @@ class sppasDirUtils(object):
         match filenames.
 
         """
+        if extension is None:
+            extension = "*"
+        if extension.startswith(".") is False:
+            extension = "." + extension
+
         file_list = []
         for dfile in os.listdir(dir_name):
             dirfile = os.path.join(dir_name, dfile)
-            if os.path.isfile(dirfile):
-                if not extension:
+            if os.path.isfile(dirfile) is True:
+                if extension == "*":
                     file_list.append(dirfile)
                 else:
-                    if dirfile.lower().endswith(extension.lower()):
+                    fname, fext = os.path.splitext(dirfile)
+                    if fext.lower() == extension.lower():
                         file_list.append(dirfile)
             # recursively access file names in subdirectories
-            elif os.path.isdir(dirfile) and subdir:
-                file_list.extend(sppasDirUtils.dir_entries(dirfile, subdir, extension))
+            elif os.path.isdir(dirfile) is True and subdir is True:
+                file_list.extend(sppasDirUtils.dir_entries(dirfile, extension, subdir))
 
         return file_list

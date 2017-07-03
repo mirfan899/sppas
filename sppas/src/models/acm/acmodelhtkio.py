@@ -1,43 +1,41 @@
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: src.resources.acm.acmodelhtkio.py
-# ---------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.models.acm.acmodelhtkio.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+"""
 import collections
 
 from sppas.src.dependencies.grako.parsing import graken, Parser
+
 import hmm
 
 # ---------------------------------------------------------------------------
@@ -53,36 +51,36 @@ def _to_ordered_dict(ast):
 # ---------------------------------------------------------------------------
 
 
-class HtkIO(object):
+class sppasHtkIO(object):
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: HTK-ASCII acoustic models reader/writer.
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :author:       Brigitte Bigi
+    :contact:      brigitte.bigi@gmail.com
+    :summary:      HTK-ASCII acoustic models reader/writer.
 
     This class is able to load and save HMM-based acoustic models from
     HTK-ASCII files.
 
     """
     def __init__(self, *args):
-        """
-        Create an HtkIO instance, and optionnaly load a model from some files.
+        """ Create an sppasHtkIO instance, and optionnaly load a model from some files.
 
-        @param args: Filenames of the model (e.g. macros and/or hmmdefs)
+        :param args: Filenames of the model (e.g. macros and/or hmmdefs)
 
         """
-        self.macros = None
-        self.hmms   = None
+        self._macros = None
+        self._hmms = None
         if args:
             self.load(*args)
 
     # -----------------------------------------------------------------------
 
     def load(self, *args):
-        """
-        Load an HTK model from one or more files.
+        """ Load an HTK model from one or more files.
 
-        @param args: Filenames of the model (e.g. macros and/or hmmdefs)
+        :param args: Filenames of the model (e.g. macros and/or hmmdefs)
 
         """
         text = ''
@@ -90,90 +88,99 @@ class HtkIO(object):
             text += open(fnm).read()
             text += '\n'
 
-        parser   = HtkModelParser()
-        htkmodel = HtkModelSemantics()  # OrderedDict()
+        parser = HtkModelParser()
+        htk_model = HtkModelSemantics()  # OrderedDict()
         model = parser.parse(text,
-                    rule_name='model',
-                    ignorecase=True,
-                    semantics=htkmodel,
-                    comments_re="\(\*.*?\*\)",
-                    trace=False)
+                             rule_name='model',
+                             ignorecase=True,
+                             semantics=htk_model,
+                             comments_re="\(\*.*?\*\)",
+                             trace=False)
 
-        self.macros = model['macros']
-        self.hmms   = []
+        self._macros = model['macros']
+        self._hmms = []
         for h in model['hmms']:
-            newhmm = hmm.HMM()
-            newhmm.set_name(h['name'])
-            newhmm.set_definition(h['definition'])
-            self.hmms.append(newhmm)
+            new_hmm = hmm.sppasHMM()
+            new_hmm.set_name(h['name'])
+            new_hmm.set_definition(h['definition'])
+            self._hmms.append(new_hmm)
 
     # -----------------------------------------------------------------------
 
     def save(self, filename):
-        """
-        Save the model into a file, in HTK-ASCII standard format.
+        """ Save the model into a file, in HTK-ASCII standard format.
 
-        @param filename: File where to save the model.
+        :param filename: File where to save the model.
 
         """
         with open(filename, 'w') as f:
-            if self.macros:
+            if self._macros:
                 f.write(self.serialize_macros())
 
-            if self.hmms:
+            if self._hmms:
                 f.write(self.serialize_hmms())
 
     # -----------------------------------------------------------------------
 
-    def set(self,macros,hmms):
-        """
-        Set the model of the HMM.
+    def get_macros(self):
+        """ Return the macros of the acoustic model. """
 
-        @param macros (OrderedDict)
-        @param hmms (list) List of HMM instances
+        return self._macros
+
+    # -----------------------------------------------------------------------
+
+    def get_hmms(self):
+        """ Return the list of hmms of the acoustic mdoel. """
+
+        return self._hmms
+
+    # -----------------------------------------------------------------------
+
+    def set(self, macros, hmms):
+        """ Set the model of the HMM.
+
+        :param macros: (OrderedDict)
+        :param hmms: (list) List of HMM instances
 
         """
-        self.macros = macros
-        self.hmms = hmms
+        self.set_macros(macros)
+        self.set_hmms(hmms)
 
     # -----------------------------------------------------------------------
 
     def set_macros(self,macros):
-        """
-        Set the macros of the model.
+        """ Set the macros of the model.
 
-        @param macros (OrderedDict)
+        :param macros: (OrderedDict)
 
         """
-        self.macros = macros
+        self._macros = macros
 
     # -----------------------------------------------------------------------
 
     def set_hmms(self,hmms):
-        """
-        Set the list of HMMs the model.
+        """ Set the list of HMMs the model.
 
-        @param hmms (list) List of HMM instances
+        :param hmms: (list) List of HMM instances
 
         """
-        if not (isinstance(hmms, list) and all([isinstance(h, hmm.HMM) for h in hmms])):
+        if not (isinstance(hmms, list) and all([isinstance(h, hmm.sppasHMM) for h in hmms])):
             raise TypeError('Expected a list of HMMs instances.')
 
-        self.hmms = hmms
+        self._hmms = hmms
 
     # -----------------------------------------------------------------------
 
     def serialize_macros(self):
-        """
-        Serialize macros into a string, in HTK-ASCII standard format.
+        """ Serialize macros into a string, in HTK-ASCII standard format.
 
-        @return The HTK-ASCII macros as a string.
+        :returns: The HTK-ASCII macros as a string.
 
         """
         result = ''
 
         # First serialize the macros
-        for macro in self.macros:
+        for macro in self._macros:
 
             if macro.get('options', None):
                 result += '~o '
@@ -208,33 +215,31 @@ class HtkIO(object):
     # -----------------------------------------------------------------------
 
     def serialize_hmms(self):
-        """
-        Serialize macros into a string, in HTK-ASCII standard format.
+        """ Serialize macros into a string, in HTK-ASCII standard format.
 
-        @return The HTK-ASCII model as a string.
+        :returns: The HTK-ASCII model as a string.
 
         """
         result= ''
-        for hmm in self.hmms:
+        for hmm in self._hmms:
             if hmm.name is not None:
-                result += self._serialize_name( hmm.name )
-            result += self._serialize_definition( hmm.definition )
+                result += self._serialize_name(hmm.name)
+            result += self._serialize_definition(hmm.definition)
 
         return result
 
     # -----------------------------------------------------------------------
 
     def write_hmm_proto(self, protosize, protofilename):
-        """
-        Write a `proto` file. The proto is based on a 5-states HMM.
+        """ Write a `proto` file. The proto is based on a 5-states HMM.
 
-        @param protosize (int) Number of mean and variance values. It's commonly
+        :param protosize: (int) Number of mean and variance values. It's commonly
         either 25 or 39, it depends on the MFCC parameters.
-        @param protofilename (str) Full name of the prototype to write.
+        :param protofilename: (str) Full name of the prototype to write.
 
         """
         with open(protofilename, "w") as fp:
-            means     = "0.0 "*protosize
+            means = "0.0 "*protosize
             variances = "1.0 "*protosize
             means = means.strip()
             variances = variances.strip()
@@ -246,10 +251,10 @@ class HtkIO(object):
                 fp.write("<State> {}\n".format(i))
                 fp.write("<NumMixes> 1\n")
                 fp.write("<Mixture> 1 1.0\n")
-                fp.write("<Mean> %d\n"%protosize)
-                fp.write("%s\n"%means)
-                fp.write("<Variance> %d\n"%protosize)
-                fp.write("%s\n"%variances)
+                fp.write("<Mean> %d\n" % protosize)
+                fp.write("%s\n" % means)
+                fp.write("<Variance> %d\n" % protosize)
+                fp.write("%s\n" % variances)
             fp.write("<Transp> 5\n")
             fp.write(" 0.0 1.0 0.0 0.0 0.0\n")
             fp.write(" 0.0 0.6 0.4 0.0 0.0\n")
@@ -262,12 +267,12 @@ class HtkIO(object):
     # Private
     # -----------------------------------------------------------------------
 
-    def _serialize_name(self,name):
-        return '~h "{}"\n'.format( name )
+    def _serialize_name(self, name):
+        return '~h "{}"\n'.format(name)
 
     # ----------------------------------
 
-    def _serialize_definition(self,definition):
+    def _serialize_definition(self, definition):
         result = ''
 
         result += '<BeginHMM>\n'
@@ -486,14 +491,14 @@ class HtkIO(object):
 # Semantic of an HTK acoustic model. Used to parse files.
 # ---------------------------------------------------------------------------
 
+
 class HtkModelSemantics(object):
     """
-    @authors: Ricard Marxer.
-    @license: GPL, v2
-    @summary: Part of the Inspire package: https://github.com/rikrd/inspire.
+    :author: Ricard Marxer.
+    :license: GPL, v2
+    :summary: Part of the Inspire package: https://github.com/rikrd/inspire.
 
     """
-
     def __init__(self):
         pass
 
@@ -546,6 +551,7 @@ class HtkModelSemantics(object):
 # ---------------------------------------------------------------------------
 # HTK-ASCII Acoustic Model: Set of rules for the parser
 # ---------------------------------------------------------------------------
+
 
 class HtkModelParser(Parser):
 
@@ -1449,5 +1455,3 @@ class HtkModelParser(Parser):
     @graken()
     def _int_(self):
         self._pattern(r'[-+]?(0[xX][\dA-Fa-f]+|0[0-7]*|\d+)')
-
-# ---------------------------------------------------------------------------

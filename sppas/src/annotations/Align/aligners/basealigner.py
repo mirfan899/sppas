@@ -37,7 +37,7 @@ import random
 import shutil
 from datetime import date
 
-from sppas.src.models.acm.tiedlist import TiedList
+from sppas.src.models.acm.tiedlist import sppasTiedList
 from sppas.src.utils.makeunicode import sppasUnicode
 
 # ---------------------------------------------------------------------------
@@ -129,7 +129,7 @@ class BaseAligner(object):
         if os.path.exists(tiedfile) is False:
             return []
 
-        tie = TiedList()
+        tie = sppasTiedList()
         tie.load(tiedfile)
         addentries = []
         for entry in entries:

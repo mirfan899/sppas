@@ -31,8 +31,8 @@
 
     src.models.acm.htktrain.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
 """
-
 import logging
 import os
 import subprocess
@@ -62,12 +62,12 @@ from sppas.src.resources.dictpron import sppasDictPron
 from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.resources.mapping import sppasMapping
 
-from .hmm import HMM
-from .htkscripts import HtkScripts
-from .acmodel import AcModel
-from .acmodelhtkio import HtkIO
-from .features import Features
-from .phoneset import PhoneSet
+from .hmm import sppasHMM
+from .htkscripts import sppasHtkScripts
+from .acmodel import sppasAcModel
+from .acmodelhtkio import sppasHtkIO
+from .features import sppasAcFeatures
+from .phoneset import sppasPhoneSet
 
 
 # ---------------------------------------------------------------------------
@@ -105,7 +105,7 @@ def test_command(command):
 # ---------------------------------------------------------------------------
 
 
-class DataTrainer(object):
+class sppasDataTrainer(object):
     """
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
@@ -124,9 +124,9 @@ class DataTrainer(object):
 
     """
     def __init__(self):
-        """ DataTrainer constructor.
+        """ Create a sppasDataTrainer instance.
         
-        Initialize all members to None.
+        Initialize all members to None or empty lists.
 
         """
         # The working directory.
@@ -134,8 +134,8 @@ class DataTrainer(object):
         self.featsdir = None
         self.scriptsdir = None
         self.logdir = None
-        self.htkscripts = HtkScripts()
-        self.features = Features()
+        self.htkscripts = sppasHtkScripts()
+        self.features = sppasAcFeatures()
 
         # The data storage directories, for transcribed speech and audio files.
         self.storetrs = []
@@ -146,7 +146,7 @@ class DataTrainer(object):
         # The directory with all HMM prototypes, and the default proto file.
         self.protodir = None
         self.protofile = None
-        self.proto = HMM()
+        self.proto = sppasHMM()
         self.proto.create_proto(self.features.nbmv)
 
     # -----------------------------------------------------------------------
@@ -159,8 +159,8 @@ class DataTrainer(object):
         self.featsdir = None
         self.scriptsdir = None
         self.logdir = None
-        self.htkscripts = HtkScripts()
-        self.features = Features()
+        self.htkscripts = sppasHtkScripts()
+        self.features = sppasAcFeatures()
 
         # The data storage directories, for transcribed speech and audio files.
         self.storetrs = []
@@ -171,7 +171,7 @@ class DataTrainer(object):
         # The directory with all HMM prototypes, and the default proto file.
         self.protodir = None
         self.protofile = None
-        self.proto = HMM()
+        self.proto = sppasHMM()
         self.proto.create_proto(self.features.nbmv)
 
     # -----------------------------------------------------------------------
@@ -185,6 +185,12 @@ class DataTrainer(object):
                protofilename=DEFAULT_PROTO_FILENAME):
         """ Create all folders and their content (if possible) with their
         default names.
+
+        :param workdir: (str) Name of the working directory
+        :param scriptsdir: (str) The folder for HTK scripts
+        :param featsdir: (str) The folder for features
+        :param protodir: (str) Name of the prototypes directory
+        :param protofilename: (str) Name of the file for the HMM prototype.
 
         :raises: IOError
 
@@ -259,21 +265,21 @@ class DataTrainer(object):
         if self.workdir is None:
             raise IOError("A working directory must be fixed before defining its folders.")
 
-        storetrs = os.path.join(self.workdir, "trs-"+basename)
-        storewav = os.path.join(self.workdir, "wav-"+basename)
-        storemfc = os.path.join(self.workdir, "mfc-"+basename)
+        store_trs = os.path.join(self.workdir, "trs-"+basename)
+        store_wav = os.path.join(self.workdir, "wav-"+basename)
+        store_mfc = os.path.join(self.workdir, "mfc-"+basename)
 
-        if os.path.exists(storetrs) is False:
-            os.mkdir(storetrs)
-            os.mkdir(storewav)
-            os.mkdir(storemfc)
+        if os.path.exists(store_trs) is False:
+            os.mkdir(store_trs)
+            os.mkdir(store_wav)
+            os.mkdir(store_mfc)
 
-        if not storetrs in self.storetrs:
-            self.storetrs.append(storetrs)
-            self.storewav.append(storewav)
-            self.storemfc.append(storemfc)
+        if store_trs not in self.storetrs:
+            self.storetrs.append(store_trs)
+            self.storewav.append(store_wav)
+            self.storemfc.append(store_mfc)
 
-        self.storeidx = self.storetrs.index(storetrs)
+        self.storeidx = self.storetrs.index(store_trs)
 
     # -----------------------------------------------------------------------
 
@@ -325,7 +331,7 @@ class DataTrainer(object):
                     os.mkdir(proto_dir)
 
         if proto_dir is not None and os.path.exists(proto_dir):
-            self.proto_dir = proto_dir
+            self.protodir = proto_dir
 
         if self.protodir is not None:
             self.protofile = os.path.join(self.protodir, proto_filename)
@@ -333,18 +339,21 @@ class DataTrainer(object):
             if os.path.exists(self.protofile) is False:
                 logging.info('Write proto file: %s' % self.protofile)
 
-                protomodel = AcModel()
+                protomodel = sppasAcModel()
 
                 vectorsize = self.features.nbmv
                 targetkind = self.features.targetkind
                 paramkind = protomodel.create_parameter_kind("mfcc", targetkind[4:])
 
-                protomodel.macros = [protomodel.create_options(vector_size=vectorsize, parameter_kind=paramkind, stream_info=[vectorsize])]
+                opt = protomodel.create_options(vector_size=vectorsize,
+                                                parameter_kind=paramkind,
+                                                stream_info=[vectorsize])
+                protomodel.macros = [opt]
                 protomodel.append_hmm(self.proto)
                 protomodel.save_htk(self.protofile)
             else:
                 logging.info('Read proto file: %s' % self.protofile)
-                self.proto = HMM()
+                self.proto = sppasHMM()
                 self.proto.load(self.protofile)
                 self.features.nbmv = self.proto.get_vecsize()
                 logging.info(' ... [OK] Vector size: %d' % self.features.nbmv)
@@ -391,7 +400,7 @@ class DataTrainer(object):
 # ---------------------------------------------------------------------------
 
 
-class TrainingCorpus(object):
+class sppasTrainingCorpus(object):
     """
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
@@ -415,28 +424,35 @@ class TrainingCorpus(object):
 
     """
     def __init__(self, datatrainer=None, lang="und"):
-        """ TrainingCorpus constructor.
+        """ sppasTrainingCorpus constructor.
 
-        :param datatrainer: (DataTrainer)
+        :param datatrainer: (sppasDataTrainer)
 
         """
         self.datatrainer = None
         self.lang = lang
-        self.reset()
+        self.transfiles = {}  # Time-aligned at the utterance level, orthography
+        self.phonfiles = {}   # Time-aligned at the utterance level, phonetization
+        self.alignfiles = {}  # Time-aligned at the phone level
+        self.audiofiles = {}  #
+        self.mfcfiles = {}    #
+        self.vocabfile = None
+        self.dictfile = None
+        self.phonesfile = None
+        self.monophones = sppasPhoneSet()
+        self.phonemap = sppasMapping()
 
         self.datatrainer = datatrainer
         if datatrainer is None:
-            self.datatrainer = DataTrainer()
+            self.datatrainer = sppasDataTrainer()
 
         self.create()
 
     # -----------------------------------------------------------------------
 
     def reset(self):
-        """
-        Fix all members to None or to their default values.
+        """ Fix all members to None or to their default values. """
 
-        """
         if self.datatrainer is not None:
             self.datatrainer.reset()
 
@@ -453,7 +469,7 @@ class TrainingCorpus(object):
         self.vocabfile = None
         self.dictfile = None
         self.phonesfile = None
-        self.monophones = PhoneSet()
+        self.monophones = sppasPhoneSet()
         self.phonemap = sppasMapping()
 
     # -----------------------------------------------------------------------
@@ -576,7 +592,8 @@ class TrainingCorpus(object):
         :returns: Bool
 
         """
-        if self.datatrainer.workdir is None: self.create()
+        if self.datatrainer.workdir is None:
+            self.create()
 
         try:
             trs = annotationdataio.read(trsfilename)
@@ -708,11 +725,11 @@ class TrainingCorpus(object):
         # Map phonemes.
         for ann in tier:
             label = ann.GetLabel().GetValue()
-            newlabel = label.replace('sp',"sil")
-            newlabel = self.phonemap.map(newlabel, delimiters=[" ", "-", "|"])
-            newlabel = self._format_phonetization(newlabel)
-            if label != newlabel:
-                ann.GetLabel().SetValue(newlabel)
+            new_label = label.replace('sp', "sil")
+            new_label = self.phonemap.map(new_label, delimiters=[" ", "-", "|"])
+            new_label = sppasTrainingCorpus._format_phonetization(new_label)
+            if label != new_label:
+                ann.GetLabel().SetValue(new_label)
 
         # Fix current storage dir.
         self.datatrainer.fix_storage_dirs("phon")
@@ -736,7 +753,7 @@ class TrainingCorpus(object):
         outfile = os.path.basename(sf.set_random(root="track_transcribed", add_today=False, add_pid=False))
 
         # Add the tier
-        res =  self._append_tier(tier, outfile, trsfilename, audio_filename, ext=".xra")
+        res = self._append_tier(tier, outfile, trsfilename, audio_filename, ext=".xra")
         if res is True:
             # no lab file created (it needs sppas... a vocab, a dict and an acoustic model).
             self.transfiles[trsfilename] = os.path.join(self.datatrainer.get_storetrs(), outfile+".xra")
@@ -761,7 +778,7 @@ class TrainingCorpus(object):
             else:
                 self._pop_tier(outfile)
 
-        logging.info('Files %s / %s rejected.'%(trsfilename, audio_filename))
+        logging.info('Files %s / %s rejected.' % (trsfilename, audio_filename))
         return False
 
     # -----------------------------------------------------------------------
@@ -771,8 +788,7 @@ class TrainingCorpus(object):
             trs = Transcription()
             trs.Append(tier)
             annotationdataio.write(os.path.join(self.datatrainer.get_storetrs(), outfile+ext), trs)
-        except Exception as e:
-            # print str(e)
+        except Exception:
             return False
         return True
 
@@ -865,7 +881,8 @@ class TrainingCorpus(object):
 
     # -----------------------------------------------------------------------
 
-    def _format_phonetization(self, ipu):
+    @staticmethod
+    def _format_phonetization(ipu):
         """ Remove variants of a phonetized ipu, replace dots by whitespaces.
 
         :returns: the ipu without pronunciation variants.
@@ -881,12 +898,13 @@ class TrainingCorpus(object):
                     i = n
                     m = len(p)
             selectlist.append(tab[i].replace("-", " "))
+
         return " ".join(selectlist)
 
 # ---------------------------------------------------------------------------
 
 
-class HTKModelInitializer(object):
+class sppasHTKModelInitializer(object):
     """
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
@@ -922,9 +940,9 @@ class HTKModelInitializer(object):
 
     """
     def __init__(self, trainingcorpus, directory):
-        """ HTKModelInitializer constructor.
+        """ sppasHTKModelInitializer constructor.
 
-        :param trainingcorpus: (TrainingCorpus) The data prepared during strep 1.
+        :param trainingcorpus: (sppasTrainingCorpus) The data prepared during strep 1.
         :param directory: (str) The current directory to write the result of this step.
 
         """
@@ -1023,7 +1041,7 @@ class HTKModelInitializer(object):
                 self._create_flat_start_model()
                 if os.path.exists(os.path.join(self.directory, "proto")):
                     self.trainingcorpus.datatrainer.protofile = os.path.join(self.directory, "proto")
-                    self.trainingcorpus.datatrainer.proto = HMM()
+                    self.trainingcorpus.datatrainer.proto = sppasHMM()
                     self.trainingcorpus.datatrainer.proto.load(self.trainingcorpus.datatrainer.protofile)
                     self.trainingcorpus.datatrainer.features.nbmv = self.trainingcorpus.datatrainer.proto.get_vecsize()
                     logging.info(' ... ... [ OK ] ')
@@ -1042,13 +1060,13 @@ class HTKModelInitializer(object):
 
             # If a proto is existing, just keep it.
             if self.trainingcorpus.datatrainer.protodir is not None:
-                protophone = os.path.join(self.trainingcorpus.datatrainer.protodir, phone + ".hmm")
-                if os.path.exists(protophone):
-                    infile = os.path.join(protophone)
-                    h = HMM()
+                proto_phone = os.path.join(self.trainingcorpus.datatrainer.protodir, phone + ".hmm")
+                if os.path.exists(proto_phone):
+                    infile = os.path.join(proto_phone)
+                    h = sppasHMM()
                     h.load(infile)
                     if h.get_vecsize() != self.trainingcorpus.datatrainer.features.nbmv:
-                        logging.info(' ... ... [FAIL] Bad HMM vector size. Got %d.'%h.get_vecsize())
+                        logging.info(' ... ... [FAIL] Bad HMM vector size. Got %d.' % h.get_vecsize())
                     else:
                         h.set_name(phone)
                         h.save(outfile)
@@ -1069,7 +1087,7 @@ class HTKModelInitializer(object):
                 h.set_name("proto")
             else:
                 # HInit gives a bad name (it's the filename, including path!!)!
-                h = HMM()
+                h = sppasHMM()
                 h.load(outfile)
                 h.set_name(phone)
                 h.save(outfile)
@@ -1080,17 +1098,20 @@ class HTKModelInitializer(object):
     def create_hmmdefs(self):
         """ Create an hmmdefs file from a set of separated hmm files. """
 
-        acmodel = AcModel()
+        acmodel = sppasAcModel()
 
         vectorsize = self.trainingcorpus.datatrainer.features.nbmv
         targetkind = self.trainingcorpus.datatrainer.features.targetkind
         paramkind = acmodel.create_parameter_kind("mfcc", targetkind[4:])
 
-        acmodel.macros = [acmodel.create_options(vector_size=vectorsize, parameter_kind=paramkind, stream_info=[vectorsize])]
+        opt = acmodel.create_options(vector_size=vectorsize,
+                                     parameter_kind=paramkind,
+                                     stream_info=[vectorsize])
+        acmodel.macros = [opt]
 
         for phone in self.trainingcorpus.monophones.get_list():
             filename = os.path.join(self.directory, phone + ".hmm")
-            h = HMM()
+            h = sppasHMM()
             h.load(filename)
             acmodel.append_hmm(h)
 
@@ -1104,22 +1125,26 @@ class HTKModelInitializer(object):
         vfloors = os.path.join(self.directory, "vFloors")
         if os.path.exists(vfloors):
 
-            acmodel = AcModel()
+            ac_model = sppasAcModel()
 
-            vectorsize = self.trainingcorpus.datatrainer.features.nbmv
-            targetkind = self.trainingcorpus.datatrainer.features.targetkind
-            paramkind = acmodel.create_parameter_kind("mfcc", targetkind[4:])
+            vector_size = self.trainingcorpus.datatrainer.features.nbmv
+            target_kind = self.trainingcorpus.datatrainer.features.targetkind
+            param_kind = ac_model.create_parameter_kind("mfcc", target_kind[4:])
 
-            acmodel.macros = [acmodel.create_options(vector_size=vectorsize, parameter_kind=paramkind, stream_info=[vectorsize])]
-            h = HtkIO(vfloors)
-            acmodel.macros.append(h.macros[0])
+            opt = ac_model.create_options(vector_size=vector_size,
+                                          parameter_kind=param_kind,
+                                          stream_info=[vector_size])
+            ac_model.macros = [opt]
+            h = sppasHtkIO(vfloors)
+            m = h.get_macros()
+            ac_model.macros.append(m[0])
 
-            acmodel.save_htk(os.path.join(self.directory, DEFAULT_MACROS_FILENAME))
+            ac_model.save_htk(os.path.join(self.directory, DEFAULT_MACROS_FILENAME))
 
 # ---------------------------------------------------------------------------
 
 
-class HTKModelTrainer(object):
+class sppasHTKModelTrainer(object):
     """
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
@@ -1159,33 +1184,33 @@ class HTKModelTrainer(object):
 
     """
     def __init__(self, corpus=None):
-        """ HTKModelTrainer constructor.
+        """ Create a sppasHTKModelTrainer instance.
 
-        :param corpus: (TrainingCorpus)
+        :param corpus: (sppasTrainingCorpus)
 
         """
         self.corpus = corpus
 
         # Epoch directories (the content of one round of train)
-        self.epochs = 0    # Number of the current epoch
-        self.prevdir = None # Directory of the previous epoch
-        self.curdir = None # Directory we're currently working in
+        self.epochs = 0      # Number of the current epoch
+        self.prevdir = None  # Directory of the previous epoch
+        self.curdir = None   # Directory we're currently working in
 
     # -----------------------------------------------------------------------
 
     def init_epoch_dir(self):
         """ Create an epoch directory to work with. """
 
-        nextdir = os.path.join(self.corpus.datatrainer.workdir, "hmm" + str(self.epochs).zfill(2))
-        if os.path.exists(nextdir) is False:
-            os.mkdir(nextdir)
+        next_dir = os.path.join(self.corpus.datatrainer.workdir, "hmm" + str(self.epochs).zfill(2))
+        if os.path.exists(next_dir) is False:
+            os.mkdir(next_dir)
 
         if self.curdir is not None:
             if os.path.exists(os.path.join(self.curdir, DEFAULT_MACROS_FILENAME)):
-                shutil.copy(os.path.join(self.curdir, DEFAULT_MACROS_FILENAME), nextdir)
+                shutil.copy(os.path.join(self.curdir, DEFAULT_MACROS_FILENAME), next_dir)
 
         self.prevdir = self.curdir
-        self.curdir = nextdir
+        self.curdir = next_dir
         self.epochs += 1
 
     # -----------------------------------------------------------------------
@@ -1201,7 +1226,7 @@ class HTKModelTrainer(object):
 
         """
         # Load current acoustic model and prepare the new working directory
-        model = AcModel()
+        model = sppasAcModel()
         model.load_htk(os.path.join(self.curdir, DEFAULT_HMMDEFS_FILENAME))
         self.init_epoch_dir()
 
@@ -1221,7 +1246,7 @@ class HTKModelTrainer(object):
         model.macros.append(macro)
 
         # Manage sp
-        sp = HMM()
+        sp = sppasHMM()
         sp.create_sp()
         model.append_hmm(sp)
 
@@ -1260,8 +1285,8 @@ class HTKModelTrainer(object):
 
             alignerdir = os.path.join(self.corpus.datatrainer.workdir, "alignerio")
 
-            #aligner.set_aligner("hvite")
-            #aligner.set_clean(False)
+            # aligner.set_aligner("hvite")
+            # aligner.set_clean(False)
 
         except Exception as e:
             logging.info('Error while creating automatic annotations: %s' % e)
@@ -1363,7 +1388,8 @@ class HTKModelTrainer(object):
             self.init_epoch_dir()
 
             try:
-                subprocess.check_call(["HERest", "-T", "2",
+                subprocess.check_call([
+                            "HERest", "-T", "2",
                             "-I", self.corpus.get_mlf(),
                             "-C", self.corpus.datatrainer.features.configfile,
                             "-S", scpfile,
@@ -1396,13 +1422,11 @@ class HTKModelTrainer(object):
     # -----------------------------------------------------------------------
 
     def training_step2(self):
-        """
-        Step 2 of the training procedure: Monophones initialization.
+        """ Step 2 of the training procedure: Monophones initialization. """
 
-        """
         logging.info("Step 2. Monophones initialization.")
         self.init_epoch_dir()
-        initial = HTKModelInitializer(self.corpus, self.curdir)
+        initial = sppasHTKModelInitializer(self.corpus, self.curdir)
         initial.create_model()
 
         if os.path.exists(os.path.join(self.curdir,DEFAULT_HMMDEFS_FILENAME)) is False:
@@ -1491,7 +1515,7 @@ class HTKModelTrainer(object):
     def get_current_model(self):
         """ Return the model of the current epoch, or None. """
 
-        model = AcModel()
+        model = sppasAcModel()
         try:
             model.load_htk(os.path.join(self.curdir,DEFAULT_HMMDEFS_FILENAME))
         except Exception:
@@ -1503,7 +1527,7 @@ class HTKModelTrainer(object):
     def get_current_macro(self):
         """ Return the macros of the current epoch, or None. """
 
-        model = AcModel()
+        model = sppasAcModel()
         try:
             model.load_htk(os.path.join(self.curdir, DEFAULT_MACROS_FILENAME))
         except Exception:
@@ -1515,15 +1539,15 @@ class HTKModelTrainer(object):
     def training_recipe(self, outdir=None, delete=False):
         """ Create an acoustic model and return it.
 
-        A corpus (TrainingCorpus) must be previously defined.
+        A corpus (sppasTrainingCorpus) must be previously defined.
 
         :param outdir: (str) Directory to save the final model and related files
         :param delete: (bool) Delete the working directory.
-        :returns: AcModel
+        :returns: sppasAcModel
 
         """
         if self.corpus is None: 
-            return AcModel()
+            return sppasAcModel()
 
         # Step 1: Data preparation
         self.training_step1()

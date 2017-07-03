@@ -1,65 +1,62 @@
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: src.resources.acm.acmodel.py
-# ---------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.models.acm.acmodel.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import collections
 import json
 import copy
 import glob
 import os.path
 
-from .acmodelhtkio import HtkIO
-from .hmm import HMM
-from .tiedlist import TiedList
-
 from sppas.src.resources.mapping import sppasMapping
+
+from .acmodelhtkio import sppasHtkIO
+from .hmm import sppasHMM
+from .tiedlist import sppasTiedList
 
 # ---------------------------------------------------------------------------
 
 
-class AcModel(object):
+class sppasAcModel(object):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Acoustic model representation.
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :author:       Brigitte Bigi
+    :contact:      brigitte.bigi@gmail.com
+    :summary:      Acoustic model representation.
 
-    A model is made of:
+    An acoustic model is made of:
        - 'macros' is an OrderedDict of options, transitions, states, ...
        - 'hmms' models (one per phone/biphone/triphone): list of HMM instances
        - a tiedlist (if any)
@@ -67,12 +64,11 @@ class AcModel(object):
 
     """
     def __init__(self):
-        """ AcModel constructor.
+        """ Create an sppasAcModel instance. """
 
-        """
         self.macros = None
         self.hmms = []
-        self.tiedlist = TiedList()
+        self.tiedlist = sppasTiedList()
         self.repllist = sppasMapping()
 
     # -----------------------------------------------------------------------
@@ -206,9 +202,9 @@ class AcModel(object):
         :param args: Filenames of the model (e.g. macros and/or hmmdefs)
 
         """
-        htkmodel = HtkIO(*args)
-        self.macros = htkmodel.macros
-        self.hmms = htkmodel.hmms
+        htk_model = sppasHtkIO(*args)
+        self.macros = htk_model.get_macros()
+        self.hmms = htk_model.get_hmms()
 
     # -----------------------------------------------------------------------
 
@@ -218,9 +214,9 @@ class AcModel(object):
         :param filename: File where to save the model.
 
         """
-        htkmodel = HtkIO()
-        htkmodel.set(self.macros, self.hmms)
-        htkmodel.save(filename)
+        htk_model = sppasHtkIO()
+        htk_model.set(self.macros, self.hmms)
+        htk_model.save(filename)
 
     # -----------------------------------------------------------------------
     # HMM
@@ -247,7 +243,7 @@ class AcModel(object):
         :raises: TypeError, ValueError
 
         """
-        if isinstance(hmm, HMM) is False:
+        if isinstance(hmm, sppasHMM) is False:
             raise TypeError('Expected an HMM instance. Got %s' % type(hmm))
 
         if hmm.name is None:
@@ -302,7 +298,7 @@ class AcModel(object):
         self.repllist.set_reverse(reverse)
 
         # Replace in the tiedlist
-        newtied = TiedList()
+        newtied = sppasTiedList()
 
         for observed in self.tiedlist.observed:
             mapped = self.repllist.map(observed,delimiters)
@@ -372,13 +368,13 @@ class AcModel(object):
     # -----------------------------------------------------------------------
 
     def create_model(self, macros, hmms):
-        """ Create an empty AcModel and return it.
+        """ Create an empty sppasAcModel and return it.
 
         :param macros: OrderedDict of options, transitions, states, ...
         :param hmms: models (one per phone/biphone/triphone) is a list of HMM instances
 
         """
-        model = AcModel()
+        model = sppasAcModel()
         model.macros = macros
         model.hmms = hmms
         return model
@@ -391,10 +387,10 @@ class AcModel(object):
             - repllist is copied,
             - tiedlist is ignored.
 
-        :returns: AcModel
+        :returns: sppasAcModel
 
         """
-        ac = AcModel()
+        ac = sppasAcModel()
 
         # The macros
         if self.macros is not None:
@@ -438,7 +434,7 @@ class AcModel(object):
     def compare_mfcc(self, other):
         """ Compare MFCC parameter kind with another one.
 
-        :param other: (AcModel)
+        :param other: (sppasAcModel)
         :returns: bool
 
         """
@@ -457,7 +453,7 @@ class AcModel(object):
         All new phones/biphones/triphones are added and the shared ones are
         combined using a static linear interpolation.
 
-        :param other: (AcModel) the AcModel to be merged with.
+        :param other: (sppasAcModel) the sppasAcModel to be merged with.
         :param gamma: (float) coefficient to apply to the model: between 0.
         and 1. This means that a coefficient value of 1. indicates to keep
         the current version of each shared hmm.
@@ -470,8 +466,8 @@ class AcModel(object):
         # Check the given input data
         if gamma < 0. or gamma > 1.:
             raise ValueError('Gamma coefficient must be between 0. and 1. Got %f' % gamma)
-        if isinstance(other, AcModel) is False:
-            raise TypeError('Expected an AcModel instance.')
+        if isinstance(other, sppasAcModel) is False:
+            raise TypeError('Expected an sppasAcModel instance.')
 
         # Check the MFCC parameter kind:
         # we can only interpolate identical models.

@@ -39,7 +39,7 @@ import collections
 import math
 
 from sppas import unk_stamp
-import sppas.src.annotationdata as annotationdata
+import sppas.src.annotationdata
 from sppas.src.resources.vocab import sppasVocabulary
 
 # ---------------------------------------------------------------------------
@@ -462,7 +462,7 @@ class NgramCounter(object):
 
         """
         for filename in datafiles:
-            trs = annotationdata.aio.read(filename)
+            trs = sppas.src.annotationdata.aio.read(filename)
             if trs.GetSize() == 0:
                 continue
             tier = trs[0]

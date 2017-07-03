@@ -1,52 +1,51 @@
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: tiedlist.py
-# ---------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.models.acm.tiedlist.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import codecs
 from sppas import encoding
 
 # ---------------------------------------------------------------------------
 
 
-class TiedList(object):
+class sppasTiedList(object):
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: Tiedlist of an acoustic model.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Tiedlist of an acoustic model.
 
     This class is used to manage the tiedlist of a triphone acoustic model, i.e:
         - the list of observed phones, biphones, triphones,
@@ -54,24 +53,22 @@ class TiedList(object):
 
     """
     def __init__(self):
-        """
-        Constructor.
+        """ Create a sppasTiedList instance. """
 
-        """
         self.observed = list()
         self.tied = dict()
 
     # -----------------------------------------------------------------------
 
     def load(self, filename):
-        """ Load a tiedlist from a file.
+        """ Load a tiedlist from a file and set it.
 
-        @param filename (str)
+        :param filename: (str)
 
         """
         with codecs.open(filename, 'r', encoding) as fd:
             for nbl, line in enumerate(fd, 1):
-                line=line.strip()
+                line = line.strip()
                 try:
                     tab = line.split(' ')
                     if len(tab) == 1:
@@ -79,39 +76,39 @@ class TiedList(object):
                     elif len(tab) == 2:
                         self.add_tied(tab[0].strip(), tab[1].strip())
                     else:
-                        raise ValueError('Unexpected entry at line %d: %r' %(nbl,tab))
+                        raise ValueError('Unexpected entry at line %d: %r' % (nbl, tab))
                 except Exception as e:
-                    raise Exception("Read file failed due to the following error at line %d: %s" % (nbl,str(e)))
+                    raise IOError("Read file failed due to the following error at line %d: %s" % (nbl, str(e)))
 
     # -----------------------------------------------------------------------
 
     def save(self, filename):
         """ Save the tiedlist into a file.
 
-        @param filename is the tiedlist file name
+        :param filename: Name of the file of the tiedlist
 
         """
         with codecs.open(filename, 'w', encoding) as fp:
+
             for triphone in self.observed:
-                fp.write( triphone + "\n" )
-            for k,v in sorted(self.tied.items()):
-                fp.write( k + " " + v + "\n")
+                fp.write(triphone + "\n")
+
+            for k, v in sorted(self.tied.items()):
+                fp.write(k + " " + v + "\n")
 
     # -----------------------------------------------------------------------
 
     def is_empty(self):
-        """ Return True if the TiedList() is empty.
+        """ Return True if the sppasTiedList() is empty. """
 
-        """
-        return len(self.observed)==0 and len(self.tied)==0
+        return len(self.observed) == 0 and len(self.tied) == 0
 
     # -----------------------------------------------------------------------
 
     def is_observed(self, entry):
-        """
-        Return True if entry is really observed (not tied!).
+        """ Return True if entry is really observed (not tied!).
 
-        @param entry is a triphone/biphone/monophone
+        :param entry: (str) triphone/biphone/monophone
 
         """
         return entry in self.observed
@@ -119,10 +116,9 @@ class TiedList(object):
     # -----------------------------------------------------------------------
 
     def is_tied(self, entry):
-        """
-        Return True if entry is tied.
+        """ Return True if entry is tied.
 
-        @param entry is a triphone/biphone/monophone
+        :param entry: (str) a triphone/biphone/monophone
 
         """
         return entry in self.tied
@@ -130,13 +126,12 @@ class TiedList(object):
     # -----------------------------------------------------------------------
 
     def add_tied(self, tied, observed=None):
-        """
-        Add an entry into the tiedlist.
+        """ Add an entry into the tiedlist.
         If observed is None, an heuristic will assign one.
 
-        @param tied is the biphone/triphone to add,
-        @param observed is the biphone/triphone to tie with.
-        @return bool
+        :param tied: (str) the biphone/triphone to add,
+        :param observed: (str) the biphone/triphone to tie with.
+        :returns: bool
 
         """
         if tied in self.tied or tied in self.observed:
@@ -148,76 +143,73 @@ class TiedList(object):
                 # NOT either a biphone or triphone
                 return False
             if tied.find("-") == -1:
-                return self.__add_biphone( tied )
-            return self.__add_triphone( tied )
+                return self.__add_biphone(tied)
+            return self.__add_triphone(tied)
 
-        self.tied[ tied ] = observed
+        self.tied[tied] = observed
         return True
 
     # -----------------------------------------------------------------------
 
     def add_observed(self, entry):
-        """
-        Add an entry.
+        """ Add an observed entry.
 
-        @param entry (str)
-        @return bool
+        :param entry: (str)
+        :returns: bool
 
         """
-        if not entry in self.observed:
-            self.observed.append( entry )
+        if entry not in self.observed:
+            self.observed.append(entry)
             return True
         return False
 
     # -----------------------------------------------------------------------
 
     def merge(self, other):
-        """
-        Merge self with another tiedlist.
+        """ Merge self with another tiedlist.
 
-        @param other (TiedList)
+        :param other: (sppasTiedList)
 
         """
-        if isinstance(other,TiedList) is False:
-            raise TypeError('A TiedList can only be merged with another TiedList. Got %s.'%type(other))
+        if isinstance(other, sppasTiedList) is False:
+            raise TypeError('A sppasTiedList can only be merged with another sppasTiedList. '
+                            'Got %s.' % type(other))
 
         for obs in other.observed:
-            self.add_observed( obs )
+            self.add_observed(obs)
 
-        for tie,obs in other.tied.items():
+        for tie, obs in other.tied.items():
             self.add_tied(tie, obs)
 
     # -----------------------------------------------------------------------
 
     def remove(self, entry, propagate=False):
-        """
-        Remove an entry of the list of observed or tied entries.
+        """ Remove an entry of the list of observed or tied entries.
 
-        @param entry (str) the entry to be removed
-        @param propagate (bool) if entry is an observed item, remove all tied
+        :param entry: (str) the entry to be removed
+        :param propagate: (bool) if entry is an observed item, remove all tied
         that are using this observed item.
 
         """
         if entry in self.observed:
-            self.observed.remove( entry )
+            self.observed.remove(entry)
             if propagate is True:
-                for k,v in self.tied.items():
+                for k, v in self.tied.items():
                     if v == entry:
-                        self.tied.pop( k )
+                        self.tied.pop(k)
 
         if entry in self.tied.keys():
-            self.tied.pop( entry )
+            self.tied.pop(entry)
 
     # -----------------------------------------------------------------------
     # Private
     # -----------------------------------------------------------------------
 
     def __find(self, tied):
-        """
-        Find which observed model will match to tie the given entry.
+        """ Find which observed model will match to tie the given entry.
 
-        @param tied (str) the model to be tied
-        @return the observed model to tie with.
+        :param tied: (str) the model to be tied
+        :returns: the observed model to tie with.
 
         """
         observed = ""
@@ -242,47 +234,43 @@ class TiedList(object):
 
     # -----------------------------------------------------------------------
 
-    def __add_triphone( self, entry ):
-        """
-        Add an observed model to tie with the given entry.
+    def __add_triphone(self, entry):
+        """ Add an observed model to tie with the given entry.
 
-        @param entry (str) the model to be tied
-        @return bool
+        :param entry: (str) the model to be tied
+        :returns: (bool)
 
         """
         # Get the biphone to tie
-        biphone = entry[ entry.find('-')+1: ]
-        observed = self.__find( biphone )
+        biphone = entry[entry.find('-')+1:]
+        observed = self.__find(biphone)
 
         if len(observed) == 0:
             # Get the monophone to tie
-            monophone = entry[ entry.find('-'):entry.find('+')+1 ]
-            observed = self.__find( monophone )
+            monophone = entry[entry.find('-'):entry.find('+')+1]
+            observed = self.__find(monophone)
             if len(observed) == 0:
                 return False
 
-        self.tied[ entry ] = observed
+        self.tied[entry] = observed
 
         return True
 
     # -----------------------------------------------------------------------
 
-    def __add_biphone( self, entry ):
-        """
-        Add an observed model to tie with the given entry.
+    def __add_biphone(self, entry):
+        """ Add an observed model to tie with the given entry.
 
-        @param entry (str) the model to be tied
-        @return bool
+        :param entry: (str) the model to be tied
+        :returns: (bool)
 
         """
         # Get the monophone to tie
-        monophone = entry[ :entry.find('+')+1 ]
-        observed = self.__find( monophone )
+        monophone = entry[:entry.find('+')+1]
+        observed = self.__find(monophone)
         if len(observed) == 0:
             return False
 
-        self.tied[ entry ] = observed
+        self.tied[entry] = observed
 
         return True
-
-    # -----------------------------------------------------------------------

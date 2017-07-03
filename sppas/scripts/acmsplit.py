@@ -43,7 +43,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.models.acm.acmodel import AcModel
+from sppas.src.models.acm.acmodel import sppasAcModel
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -88,7 +88,7 @@ if not os.path.isfile(args.i):
 
 if args.quiet is False:
     print("Loading AC:")
-acmodel1 = AcModel()
+acmodel1 = sppasAcModel()
 acmodel1.load_htk(args.i)
 if args.r:
     acmodel1.load_phonesrepl(args.r)

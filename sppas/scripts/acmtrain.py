@@ -45,7 +45,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.models.acm.htktrain import HTKModelTrainer, TrainingCorpus, DataTrainer
+from sppas.src.models.acm.htktrain import sppasHTKModelTrainer, sppasTrainingCorpus, sppasDataTrainer
 from sppas.src.utils.fileutils import setup_logging
 
 
@@ -71,7 +71,7 @@ def train(pron_dict,
     #  - protodir=None (in)
     #  - protofilename=DEFAULT_PROTO_FILENAME (out)
 
-    datatrainer = DataTrainer()
+    datatrainer = sppasDataTrainer()
     # we could either use:
     #  datatrainer.create( workdir=args.t, protodir=args.p )
     # or:
@@ -86,7 +86,7 @@ def train(pron_dict,
     #   - converts the input annotated data into the HTK-specific data format;
     #   - codes the audio data.
 
-    corpus = TrainingCorpus(datatrainer, lang=lang)
+    corpus = sppasTrainingCorpus(datatrainer, lang=lang)
     corpus.fix_resources(dictfile=pron_dict, mappingfile=mapping_table)
 
     if corpus_dir_list:
@@ -99,7 +99,7 @@ def train(pron_dict,
     # ---------------------------------
     # 3. Acoustic Model Training
 
-    trainer = HTKModelTrainer(corpus)
+    trainer = sppasHTKModelTrainer(corpus)
     DELETE = False
     if args.t is None:
         DELETE = True

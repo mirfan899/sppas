@@ -44,7 +44,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.models.acm.acmodel import AcModel
+from sppas.src.models.acm.acmodel import sppasAcModel
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -71,30 +71,30 @@ args = parser.parse_args()
 
 if args.quiet is False:
     print("Loading AC 1:")
-acmodel1 = AcModel()
+acmodel1 = sppasAcModel()
 if os.path.isfile(args.i):
     acmodel1.load_htk(args.i)
 else:
     acmodel1.load(args.i)
 if args.quiet is False:
-    print "... done"
+    print("... done")
 
 if args.quiet is False:
-    print "Loading AC 2:",
-acmodel2 = AcModel()
+    print("Loading AC 2:")
+acmodel2 = sppasAcModel()
 if os.path.isfile(args.I):
     acmodel2.load_htk(args.I)
 else:
     acmodel2.load(args.I)
 if args.quiet is False:
-    print "... done"
+    print("... done")
 
 (appended, interpolated, keeped, changed) = acmodel1.merge_model(acmodel2, gamma=args.g)
 if args.quiet is False:
-    print("Number of appended HMMs:     ", appended)
-    print("Number of interpolated HMMs: ", interpolated)
-    print("Number of keeped HMMs:       ", keeped)
-    print("Number of changed HMMs:      ", changed)
+    print("Number of appended HMMs:     {:d}".format(appended))
+    print("Number of interpolated HMMs: {:d}".format(interpolated))
+    print("Number of keeped HMMs:       {:d}".format(keeped))
+    print("Number of changed HMMs:      {:d}".format(changed))
 
 if args.o:
     acmodel1.save_htk(args.o)

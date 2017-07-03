@@ -1,40 +1,37 @@
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: src.resources.acm.features.py
-# ---------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.models.acm.features.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import logging
 import os
 
@@ -145,98 +142,97 @@ ParameterKind = {
 # ---------------------------------------------------------------------------
 
 
-class Features(object):
+class sppasAcFeatures(object):
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: Acoustic model features.
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :author:       Brigitte Bigi
+    :contact:      brigitte.bigi@gmail.com
+    :summary:      Acoustic model features.
 
     """
     def __init__(self):
-        """
-        Constructor.
-
-        """
+        """ Create a sppasAcFeatures instance. """
+        
         self.win_length_ms = 25   # The window length of the cepstral analysis in milliseconds
-        self.win_shift_ms  = 10   # The window shift of the cepstral analysis in milliseconds
-        self.num_chans     = 26   # Number of filterbank channels
+        self.win_shift_ms = 10    # The window shift of the cepstral analysis in milliseconds
+        self.num_chans = 26       # Number of filterbank channels
         self.num_lift_ceps = 22   # Length of cepstral liftering
-        self.num_ceps      = 12   # The number of cepstral coefficients
-        self.pre_em_coef   = 0.97 # The coefficient used for the pre-emphasis
-        self.targetkindw   = "MFCC_0_D"     #"MFCC_0_E"
-        self.targetkind    = "MFCC_0_D_N_Z" # "MFCC_E_D_A_Z"
-        self.nbmv          = 25   # The number of means and variances. It's commonly either 25 or 39.
+        self.num_ceps = 12        # The number of cepstral coefficients
+        self.pre_em_coef = 0.97   # The coefficient used for the pre-emphasis
+        self.targetkindw = "MFCC_0_D"     # "MFCC_0_E"
+        self.targetkind = "MFCC_0_D_N_Z"  # "MFCC_E_D_A_Z"
+        self.nbmv = 25            # The number of means and variances. It's commonly either 25 or 39.
 
         self.wavconfigfile = ""
         self.configfile = ""
 
-        self.framerate     = 16000 # Hz
-        self.sampwidth     = 2     # 16 bits
+        self.framerate = 16000  # Hz
+        self.sampwidth = 2      # 16 bits
 
     # -----------------------------------------------------------------------
 
     def write_all(self, dirname):
-        """
-        Write all files at once, with their default name, in the given
+        """ Write all files at once, with their default name, in the given
         directory.
 
-        @param dirname (str) a directory name (existing or to be created).
+        :param dirname: (str) a directory name (existing or to be created).
 
         """
-        if os.path.exists( dirname ) is False:
-            os.mkdir( dirname )
+        if os.path.exists(dirname) is False:
+            os.mkdir(dirname)
 
-        self.write_wav_config( os.path.join( dirname, "wav_config") )
-        self.write_config( os.path.join( dirname, "config") )
+        self.write_wav_config(os.path.join(dirname, "wav_config"))
+        self.write_config(os.path.join(dirname, "config"))
 
     # -----------------------------------------------------------------------
 
     def write_wav_config(self, filename):
-        """
-        Write the wav config into a file.
+        """ Write the wav config into a file.
+
+        :param filename: (str) Name of the file to save the features.
 
         """
-        logging.info('Write wav config file: %s'%filename)
-        with open( filename, "w") as fp:
+        logging.info('Write wav config file: %s ' % filename)
+        with open(filename, "w") as fp:
             fp.write("SOURCEFORMAT = WAV\n")
             fp.write("SOURCEKIND = WAVEFORM\n")
-            fp.write("SOURCERATE = %d\n"%( (1000./float(self.framerate))*10000) )
+            fp.write("SOURCERATE = %d\n" % ((1000./float(self.framerate))*10000))
             fp.write("TARGETFORMAT = HTK\n")
-            fp.write("TARGETKIND = %s\n"%self.targetkindw)
-            fp.write("TARGETRATE = %.1f\n"%(self.win_shift_ms*10000))
+            fp.write("TARGETKIND = %s\n" % self.targetkindw)
+            fp.write("TARGETRATE = %.1f\n" % (self.win_shift_ms*10000))
             fp.write("SAVECOMPRESSED = T\n")
             fp.write("SAVEWITHCRC = T\n")
-            fp.write("WINDOWSIZE = %.1f\n"%(self.win_length_ms*10000))
+            fp.write("WINDOWSIZE = %.1f\n" % (self.win_length_ms*10000))
             fp.write("USEHAMMING = T\n")
-            fp.write("PREEMCOEF = %f\n"%self.pre_em_coef)
-            fp.write("NUMCHANS = %d\n"%self.num_chans)
-            fp.write("CEPLIFTER = %d\n"%self.num_lift_ceps)
-            fp.write("NUMCEPS = %d\n"%self.num_ceps)
+            fp.write("PREEMCOEF = %f\n" % self.pre_em_coef)
+            fp.write("NUMCHANS = %d\n" % self.num_chans)
+            fp.write("CEPLIFTER = %d\n" % self.num_lift_ceps)
+            fp.write("NUMCEPS = %d\n" % self.num_ceps)
             fp.write("ENORMALISE = F\n")
         self.wavconfigfile = filename
 
     # -----------------------------------------------------------------------
 
     def write_config(self, filename):
-        """
-        Write the config into a file.
+        """ Write the config into a file.
+
+        :param filename: (str) Name of the file to save the features.
 
         """
-        logging.info('Write config file: %s'%filename)
-        with open( filename, "w") as fp:
-            #fp.write("SOURCEFORMAT = WAV\n") ??? Required by HVite for alignment
-            fp.write("SOURCERATE = %d\n"%( (1000./float(self.framerate))*10000) )
-            fp.write("TARGETKIND = %s\n"%self.targetkind)
-            fp.write("TARGETRATE = %.1f\n"%(self.win_shift_ms*100000))
+        logging.info('Write config file: %s' % filename)
+        with open(filename, "w") as fp:
+            # fp.write("SOURCEFORMAT = WAV\n") ??? Required by HVite for alignment
+            fp.write("SOURCERATE = %d\n" % ((1000./float(self.framerate))*10000))
+            fp.write("TARGETKIND = %s\n" % self.targetkind)
+            fp.write("TARGETRATE = %.1f\n" % (self.win_shift_ms*100000))
             fp.write("SAVECOMPRESSED = T\n")
             fp.write("SAVEWITHCRC = T\n")
-            fp.write("WINDOWSIZE = %.1f\n"%(self.win_length_ms*100000))
+            fp.write("WINDOWSIZE = %.1f\n" % (self.win_length_ms*100000))
             fp.write("USEHAMMING = T\n")
-            fp.write("PREEMCOEF = %f\n"%self.pre_em_coef)
-            fp.write("NUMCHANS = %d\n"%self.num_chans)
-            fp.write("CEPLIFTER = %d\n"%self.num_lift_ceps)
+            fp.write("PREEMCOEF = %f\n" % self.pre_em_coef)
+            fp.write("NUMCHANS = %d\n" % self.num_chans)
+            fp.write("CEPLIFTER = %d\n" % self.num_lift_ceps)
             fp.write("ENORMALISE = F\n")
         self.configfile = filename
-
-    # -----------------------------------------------------------------------

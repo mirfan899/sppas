@@ -6,9 +6,9 @@ import copy
 import shutil
 
 from sppas import RESOURCES_PATH, SAMPLES_PATH
-from sppas.src.models.acm.acmodel import AcModel, HtkIO
-from sppas.src.models.acm.hmm import HMM, HMMInterpolation
-from sppas.src.models.acm.htktrain import HTKModelTrainer, DataTrainer, PhoneSet, TrainingCorpus, HTKModelInitializer
+from sppas.src.models.acm.acmodel import sppasAcModel, sppasHtkIO
+from sppas.src.models.acm.hmm import sppasHMM, HMMInterpolation
+from sppas.src.models.acm.htktrain import sppasHTKModelTrainer, sppasDataTrainer, PhoneSet, sppasTrainingCorpus, sppasHTKModelInitializer
 from sppas.src.utils.compare import sppasCompare
 from sppas.src.utils.fileutils import sppasFileUtils
 
@@ -33,10 +33,12 @@ class TestTrainer(unittest.TestCase):
         shutil.rmtree(TEMP)
 
     def test_add_corpus(self):
-        corpus = TrainingCorpus()
-        nb = corpus.add_corpus(os.path.join(SAMPLES_PATH, "samples-eng"))
+        corpus = sppasTrainingCorpus()
+        corpus1 = os.path.join(SAMPLES_PATH, "samples-eng")
+        corpus2 = os.path.join(SAMPLES_PATH, "samples-ita")
+        nb = corpus.add_corpus(corpus1)
         self.assertEqual(nb, 0)
-        nb = corpus.add_corpus(os.path.join(SAMPLES_PATH, "samples-ita"))
+        nb = corpus.add_corpus(corpus2)
         self.assertEqual(nb, 4)
         corpus.add_corpus(SAMPLES_PATH)
         self.assertGreater(len(corpus.transfiles), 10)
@@ -44,7 +46,7 @@ class TestTrainer(unittest.TestCase):
         self.assertEqual(len(corpus.alignfiles), 0)
 
     def test_datatrainer(self):
-        datatrainer = DataTrainer()
+        datatrainer = sppasDataTrainer()
         datatrainer.create()
         self.assertEqual(datatrainer.check(), None)
         dire = datatrainer.workdir
@@ -68,7 +70,7 @@ class TestTrainer(unittest.TestCase):
         os.remove(os.path.join(TEMP, "monophones"))
 
     def test_trainingcorpus(self):
-        corpus = TrainingCorpus()
+        corpus = sppasTrainingCorpus()
 
         self.assertEqual(corpus.phonemap.map_entry('#'), "#")
 
@@ -84,18 +86,18 @@ class TestTrainer(unittest.TestCase):
         corpus.datatrainer.delete()
 
     def test_initializer_without_corpus(self):
-        corpus = TrainingCorpus()
+        corpus = sppasTrainingCorpus()
         workdir = os.path.join(TEMP, "working")
         os.mkdir(workdir)
         shutil.copy(os.path.join(DATA, "protos", "vFloors"), workdir)
 
-        initial = HTKModelInitializer(corpus, workdir)
+        initial = sppasHTKModelInitializer(corpus, workdir)
 
         corpus.datatrainer.protodir = os.path.join(DATA, "protos")
         initial.create_model()
 
-        hmm1 = HMM()
-        hmm2 = HMM()
+        hmm1 = sppasHMM()
+        hmm2 = sppasHMM()
         sp = sppasCompare()
 
         hmm1.load(os.path.join(workdir, "@@.hmm"))
@@ -105,7 +107,7 @@ class TestTrainer(unittest.TestCase):
         hmm1.load(os.path.join(workdir, "sil.hmm"))
         hmm2.load(os.path.join(DATA, "protos", "sil.hmm"))
 
-        corpus.datatrainer.fix_proto(protofilename=os.path.join(DATA, "protos", "proto.hmm"))
+        corpus.datatrainer.fix_proto(proto_filename=os.path.join(DATA, "protos", "proto.hmm"))
         hmm2.load(os.path.join(DATA, "protos", "proto.hmm"))
 
         hmm1.load(os.path.join(workdir, "gb.hmm"))
@@ -114,23 +116,23 @@ class TestTrainer(unittest.TestCase):
         hmm1.load(os.path.join(workdir, "dummy.hmm"))
         self.assertTrue(sp.equals(hmm1.definition, hmm2.definition))
 
-        acmodel = AcModel()
+        acmodel = sppasAcModel()
         acmodel.load_htk(os.path.join(workdir, "hmmdefs"))
 
     def test_trainer_without_data(self):
-        trainer = HTKModelTrainer()
+        trainer = sppasHTKModelTrainer()
         model = trainer.training_recipe()
         self.assertEqual(len(model.hmms), 0)
 
-        trainer.corpus = TrainingCorpus()
+        trainer.corpus = sppasTrainingCorpus()
         model = trainer.training_recipe()
-        self.assertEqual(len(model.hmms),4)
+        self.assertEqual(len(model.hmms), 4)
 
     # def test_trainer_with_data(self):
     # TODO: Test the model
     #     #from utils.fileutils import setup_logging
     #     #setup_logging(1,None)
-    #     corpus = TrainingCorpus()
+    #     corpus = sppasTrainingCorpus()
     #     corpus.fix_resources(dictfile=os.path.join(RESOURCES_PATH, "dict", "fra.dict"),
     #                          mappingfile=os.path.join(RESOURCES_PATH, "models", "models-fra", "monophones.repl"))
     #     corpus.lang = "fra"
@@ -139,7 +141,7 @@ class TestTrainer(unittest.TestCase):
     #     corpus.add_file(os.path.join(DATA, "track_0001-phon.xra"), os.path.join(DATA, "track_0001.wav"))
     #     corpus.add_corpus(os.path.join(SAMPLES_PATH, "samples-fra"))
     #
-    #     trainer = HTKModelTrainer(corpus)
+    #     trainer = sppasHTKModelTrainer(corpus)
     #     acmodel = trainer.training_recipe(delete=True)
 
 
@@ -153,30 +155,30 @@ class TestInterpolate(unittest.TestCase):
         self.lin = HMMInterpolation()
 
     def test_interpolate_vector(self):
-        v = self.lin._linear_interpolate_vectors([self.vec1,self.vec2], [1, 0])
+        v = self.lin.linear_interpolate_vectors([self.vec1, self.vec2], [1, 0])
         self.assertEqual(v, self.vec1)
-        v = self.lin._linear_interpolate_vectors([self.vec1,self.vec2], [0, 1])
+        v = self.lin.linear_interpolate_vectors([self.vec1, self.vec2], [0, 1])
         self.assertEqual(v, self.vec2)
-        v = self.lin._linear_interpolate_vectors([self.vec1,self.vec2], [0.5, 0.5])
+        v = self.lin.linear_interpolate_vectors([self.vec1, self.vec2], [0.5, 0.5])
         v = [round(value, 1) for value in v]
         self.assertEqual(v, [0, 0.3, 0.7, 0])
 
     def test_interpolate_matrix(self):
         mat1 = [self.vec1, self.vec1]
         mat2 = [self.vec2, self.vec2]
-        m = self.lin._linear_interpolate_matrix([mat1,mat2], [1, 0])
+        m = self.lin.linear_interpolate_matrix([mat1, mat2], [1, 0])
         self.assertEqual(m, mat1)
-        m = self.lin._linear_interpolate_matrix([mat1,mat2], [0, 1])
+        m = self.lin.linear_interpolate_matrix([mat1, mat2], [0, 1])
         self.assertEqual(m, mat2)
-        m = self.lin._linear_interpolate_matrix([mat1,mat2], [0.5, 0.5])
-        m[0] = [round(value,1) for value in m[0]]
-        m[1] = [round(value,1) for value in m[1]]
+        m = self.lin.linear_interpolate_matrix([mat1, mat2], [0.5, 0.5])
+        m[0] = [round(value, 1) for value in m[0]]
+        m[1] = [round(value, 1) for value in m[1]]
         self.assertEqual(m, [[0, 0.3, 0.7, 0], [0, 0.3, 0.7, 0]])
 
     def test_interpolate_hmm(self):
-        acmodel1 = AcModel()
+        acmodel1 = sppasAcModel()
         acmodel1.load_htk(os.path.join(DATA, "1-hmmdefs"))
-        acmodel2 = AcModel()
+        acmodel2 = sppasAcModel()
         acmodel2.load_htk(os.path.join(DATA, "2-hmmdefs"))
         ahmm1 = acmodel1.get_hmm('a')
         ahmm2 = acmodel2.get_hmm('a')
@@ -210,18 +212,18 @@ class TestInterpolate(unittest.TestCase):
 # ---------------------------------------------------------------------------
 
 
-class TestAcModel(unittest.TestCase):
+class TestsppasAcModel(unittest.TestCase):
 
-    #This one takes too much time to be tested each time....
+# This one takes too much time to be tested each time....
 #     def test_load_all_models(self):
 #         models = glob.glob(os.path.join(MODEL_PATH,"models-*","hmmdefs"))
 #         for hmmdefs in models:
-#             acmodel = AcModel(hmmdefs)
+#             acmodel = sppasAcModel(hmmdefs)
 #             self._test_load_save(acmodel)
 
     def setUp(self):
         self.hmmdefs = os.path.join(MODEL_PATH, "models-jpn", "hmmdefs")
-        self.acmodel = AcModel()
+        self.acmodel = sppasAcModel()
         self.acmodel.load_htk(self.hmmdefs)
         if os.path.exists(TEMP) is True:
             shutil.rmtree(TEMP)
@@ -240,16 +242,16 @@ class TestAcModel(unittest.TestCase):
         self.acmodel.save_htk(tmpfile)
 
         # Load the temporary file into a new model
-        acmodelcopy = AcModel()
+        acmodelcopy = sppasAcModel()
         acmodelcopy.load_htk(tmpfile)
         sp = sppasCompare()
 
         # Compare original and copy
         self.assertEqual(len(self.acmodel.hmms),len(acmodelcopy.hmms))
-        for hmm, hmmcopy in zip(self.acmodel.hmms,acmodelcopy.hmms):
+        for hmm, hmmcopy in zip(self.acmodel.hmms, acmodelcopy.hmms):
             self.assertEqual(hmm.name, hmmcopy.name)
-            self.assertTrue(sp.equals(hmm.definition,hmmcopy.definition))
-        self.assertTrue(sp.equals(self.acmodel.macros,acmodelcopy.macros))
+            self.assertTrue(sp.equals(hmm.definition, hmmcopy.definition))
+        self.assertTrue(sp.equals(self.acmodel.macros, acmodelcopy.macros))
 
     def test_get_hmm(self):
         with self.assertRaises(ValueError):
@@ -261,7 +263,7 @@ class TestAcModel(unittest.TestCase):
     def test_append_hmm(self):
         with self.assertRaises(TypeError):
             self.acmodel.append_hmm({'toto': None})
-        hmm = HMM()
+        hmm = sppasHMM()
 
         with self.assertRaises(TypeError):
             self.acmodel.append_hmm(hmm)
@@ -280,26 +282,26 @@ class TestAcModel(unittest.TestCase):
             self.acmodel.get_hmm("N")
 
     def test_load_hmm(self):
-        hmm = HMM()
+        hmm = sppasHMM()
         hmm.load(os.path.join(DATA, "N-hmm"))
         self.__test_states(hmm.definition['states'])
         self.__test_transition(hmm.definition['transition'])
 
     def test_save_hmm(self):
         sp = sppasCompare()
-        hmm = HMM()
+        hmm = sppasHMM()
         hmm.load(os.path.join(DATA, "N-hmm"))
         hmm.save(os.path.join(TEMP, "N-hmm-copy"))
-        newhmm = HMM()
+        newhmm = sppasHMM()
         newhmm.load(os.path.join(TEMP, "N-hmm-copy"))
         self.assertEqual(hmm.name, newhmm.name)
         self.assertTrue(sp.equals(hmm.definition, newhmm.definition))
 
     def test_fill(self):
         sp = sppasCompare()
-        acmodel1 = AcModel()
+        acmodel1 = sppasAcModel()
         acmodel1.load_htk(os.path.join(DATA, "1-hmmdefs"))
-        ahmm1=acmodel1.get_hmm('a')
+        ahmm1 = acmodel1.get_hmm('a')
         a1transition = [macro["transition"] for macro in acmodel1.macros if macro.get('transition', None)][0]
 
         acmodel1.fill_hmms()
@@ -309,40 +311,40 @@ class TestAcModel(unittest.TestCase):
         nbhmms = len(self.acmodel.hmms)
 
         # Try to merge with the same model!
-        acmodel2 = AcModel()
+        acmodel2 = sppasAcModel()
         acmodel2.load_htk(self.hmmdefs)
 
-        (appended,interpolated,keeped,changed) = acmodel2.merge_model(self.acmodel, gamma=1.)
+        (appended, interpolated, keeped, changed) = acmodel2.merge_model(self.acmodel, gamma=1.)
         self.assertEqual(interpolated, 0)
         self.assertEqual(appended, 0)
         self.assertEqual(keeped, nbhmms)
         self.assertEqual(changed, 0)
 
-        (appended,interpolated,keeped,changed) = acmodel2.merge_model(self.acmodel,gamma=0.5)
+        (appended, interpolated, keeped, changed) = acmodel2.merge_model(self.acmodel, gamma=0.5)
         self.assertEqual(interpolated, nbhmms)
         self.assertEqual(appended, 0)
         self.assertEqual(keeped, 0)
         self.assertEqual(changed, 0)
 
-        (appended,interpolated,keeped,changed) = acmodel2.merge_model(self.acmodel,gamma=0.)
+        (appended, interpolated, keeped, changed) = acmodel2.merge_model(self.acmodel, gamma=0.)
         self.assertEqual(interpolated, 0)
         self.assertEqual(appended, 0)
         self.assertEqual(keeped, 0)
         self.assertEqual(changed, nbhmms)
 
         # Try to merge with a different MFCC parameter kind model...
-        acmodel2 = AcModel()
+        acmodel2 = sppasAcModel()
         acmodel2.load_htk(os.path.join(MODEL_PATH, "models-cat", "hmmdefs"))
         with self.assertRaises(TypeError):
             acmodel2.merge_model(self.acmodel, gamma=1.)
 
     def test_merge(self):
-        acmodel1 = AcModel()
+        acmodel1 = sppasAcModel()
         acmodel1.load_htk(os.path.join(DATA, "1-hmmdefs"))
-        acmodel2 = AcModel()
+        acmodel2 = sppasAcModel()
         acmodel2.load_htk(os.path.join(DATA, "2-hmmdefs"))
 
-        (appended,interpolated,keeped,changed) = acmodel2.merge_model(acmodel1, gamma=0.5)
+        (appended, interpolated, keeped, changed) = acmodel2.merge_model(acmodel1, gamma=0.5)
         self.assertEqual(interpolated, 2)  # acopy, a
         self.assertEqual(appended, 1)      # i
         self.assertEqual(keeped, 1)        # e
@@ -353,12 +355,12 @@ class TestAcModel(unittest.TestCase):
 
     def test_replace_phones(self):
         sp = sppasCompare()
-        acmodel1 = AcModel()
+        acmodel1 = sppasAcModel()
         acmodel1.load(os.path.join(MODEL_PATH, "models-fra"))
         acmodel1.replace_phones(reverse=False)
         acmodel1.replace_phones(reverse=True)
 
-        acmodel2 = AcModel()
+        acmodel2 = sppasAcModel()
         acmodel2.load(os.path.join(MODEL_PATH, "models-fra"))
 
         for h1 in acmodel1.hmms:
@@ -367,7 +369,7 @@ class TestAcModel(unittest.TestCase):
             self.assertTrue(sp.equals(h1.definition['states'], h2.definition['states']))
 
     def test_monophones(self):
-        acmodel1 = AcModel()
+        acmodel1 = sppasAcModel()
         acmodel1.load(os.path.join(MODEL_PATH, "models-fra"))
 
         acmodel2 = acmodel1.extract_monophones()
@@ -380,17 +382,17 @@ class TestAcModel(unittest.TestCase):
 
     def test_proto(self):
         sp = sppasCompare()
-        h1 = HtkIO()
+        h1 = sppasHtkIO()
         h1.write_hmm_proto(25, os.path.join(TEMP, "proto_from_htkio"))
 
-        h2 = HMM()
+        h2 = sppasHMM()
         h2.create_proto(25)
         h2.save(os.path.join(TEMP, "proto_from_hmm"))
 
-        m1 = HMM()
+        m1 = sppasHMM()
         m1.load(os.path.join(TEMP, "proto_from_htkio"))
 
-        m2 = HMM()
+        m2 = sppasHMM()
         m2.load(os.path.join(TEMP, "proto_from_hmm"))
 
         self.assertTrue(sp.equals(m1.definition['transition'], m2.definition['transition']))
@@ -410,11 +412,11 @@ class TestAcModel(unittest.TestCase):
             streams = state['streams']
             for s in streams:  # a list
                 mixtures = s['mixtures']
-                for mixture in mixtures: # a list of dict
-                    #self.assertEqual(type(mixture['weight']),float)
+                for mixture in mixtures:  # a list of dict
+                    # self.assertEqual(type(mixture['weight']),float)
                     pdf = mixture['pdf']
                     self.assertEqual(pdf['mean']['dim'], 25)
-                    self.assertEqual(len(pdf['mean']['vector']),25)
+                    self.assertEqual(len(pdf['mean']['vector']), 25)
                     self.assertEqual(pdf['covariance']['variance']['dim'], 25)
                     self.assertEqual(len(pdf['covariance']['variance']['vector']), 25)
                     self.assertEqual(type(pdf['gconst']), float)

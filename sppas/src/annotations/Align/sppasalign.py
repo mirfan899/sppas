@@ -47,7 +47,7 @@ from sppas.src.annotationdata import Media
 from sppas.src.annotationdata import Text
 from sppas.src.annotationdata.aio.utils import gen_id
 from sppas.src.resources.mapping import sppasMapping
-from sppas.src.models.acm.modelmixer import ModelMixer
+from sppas.src.models.acm.modelmixer import sppasModelMixer
 
 from .. import t
 from .. import ERROR_ID, WARNING_ID, INFO_ID
@@ -142,7 +142,7 @@ class sppasAlign(sppasBaseAnnotation):
         """
         if model_L1 is not None:
             try:
-                model_mixer = ModelMixer()
+                model_mixer = sppasModelMixer()
                 model_mixer.load(model, model_L1)
                 output_dir = os.path.join(RESOURCES_PATH, "models", "models-mix")
                 model_mixer.mix(output_dir, gamma=0.6)
