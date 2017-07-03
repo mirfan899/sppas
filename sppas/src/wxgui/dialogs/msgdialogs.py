@@ -221,7 +221,7 @@ def DemoBaseDialog(parent, preferences=None):
         elif res == wx.ID_NO:
             ShowInformation( frame, preferences, "You clicked the ""No"" button")
         else:
-            print "there's a bug! return value is %s"%res
+            print("there's a bug! return value is " + res)
         dlg.Destroy()
 
     def _on_choice(evt):

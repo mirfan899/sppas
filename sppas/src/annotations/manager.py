@@ -273,7 +273,6 @@ class sppasAnnotationsManager(Thread):
 
         return files_processed_success
 
-    # End run_momel
     # ------------------------------------------------------------------------
 
     def run_intsint(self, stepidx):
@@ -347,7 +346,6 @@ class sppasAnnotationsManager(Thread):
 
         return files_processed_success
 
-    # End run_intsint
     # ------------------------------------------------------------------------
 
     def run_ipusegmentation(self, stepidx):
@@ -457,7 +455,6 @@ class sppasAnnotationsManager(Thread):
 
         return files_processed_success
 
-    # End run_ipusegmentation
     # ------------------------------------------------------------------------
 
     def run_tokenization(self, stepidx):
@@ -533,7 +530,6 @@ class sppasAnnotationsManager(Thread):
 
         return files_processed_success
 
-    # End run_tokenization
     # ------------------------------------------------------------------------
 
     def run_phonetization(self, stepidx):
@@ -591,8 +587,8 @@ class sppasAnnotationsManager(Thread):
                 try:
                     p.run(inname, outname)
                 except Exception as e:
-                    import traceback
-                    print traceback.format_exc()
+                    #import traceback
+                    #print traceback.format_exc()
                     if self._logfile is not None:
                         self._logfile.print_message("%s for file %s\n"%(str(e),outname), indent=2,status=-1)
                 else:
@@ -615,7 +611,6 @@ class sppasAnnotationsManager(Thread):
 
         return files_processed_success
 
-    # End run_phonetization
     # ------------------------------------------------------------------------
 
     def run_chunks_alignment(self, stepidx):
@@ -645,7 +640,7 @@ class sppasAnnotationsManager(Thread):
             return 0
 
         # Execute the annotation for each file in the list
-        for i,f in enumerate(filelist):
+        for i, f in enumerate(filelist):
 
             # fix the default values
             a.fix_options(step.get_options())
@@ -693,7 +688,6 @@ class sppasAnnotationsManager(Thread):
 
         return files_processed_success
 
-    # End run_alignment
     # ------------------------------------------------------------------------
 
     def run_alignment(self, stepidx):
@@ -776,7 +770,6 @@ class sppasAnnotationsManager(Thread):
 
         return files_processed_success
 
-    # End run_alignment
     # ------------------------------------------------------------------------
 
     def run_syllabification(self, stepidx):
@@ -851,7 +844,6 @@ class sppasAnnotationsManager(Thread):
 
         return files_processed_success
 
-    # End run_syllabification
     # ------------------------------------------------------------------------
 
     def run_repetition(self, stepidx):
@@ -881,7 +873,7 @@ class sppasAnnotationsManager(Thread):
                 self._logfile.print_message("%s\n"%str(e), indent=1,status=4)
             return 0
 
-        for i,f in enumerate(filelist):
+        for i, f in enumerate(filelist):
 
             # fix the default values
             r.fix_options(step.get_options())
@@ -927,7 +919,6 @@ class sppasAnnotationsManager(Thread):
 
         return files_processed_success
 
-    # End run_repetition
     # ------------------------------------------------------------------------
 
     def __add_trs(self, trs, trsinputfile):
@@ -955,7 +946,7 @@ class sppasAnnotationsManager(Thread):
 
         """
         self._progress.set_header("Create a merged TextGrid file...")
-        self._progress.update(0,"")
+        self._progress.update(0, "")
 
         # Get the list of files with the ".wav" extension
         filelist = self.set_filelist(".wav", ["track_"])
@@ -963,7 +954,7 @@ class sppasAnnotationsManager(Thread):
 
         output_format = self.parameters.get_output_format()
 
-        for i,f in enumerate(filelist):
+        for i, f in enumerate(filelist):
 
             nbfiles = 0
 
@@ -1039,10 +1030,9 @@ class sppasAnnotationsManager(Thread):
             if self._logfile is not None:
                 self._logfile.print_newline()
 
-        self._progress.update(1,"Completed.")
+        self._progress.update(1, "Completed.")
         self._progress.set_header("")
 
-    # End merge
     # ------------------------------------------------------------------------
 
     def run_annotations(self, progress):
@@ -1102,7 +1092,7 @@ class sppasAnnotationsManager(Thread):
                 elif self.parameters.get_step_key(i) == "repet":
                     nbruns[i] = self.run_repetition(i)
                 elif self._logfile is not None:
-                    self._logfile.print_message('Unrecognized annotation step:%s'%self.parameters.get_step_name(i))
+                    self._logfile.print_message('Unrecognized annotation step:%s' % self.parameters.get_step_name(i))
 
         if self._logfile is not None:
             self._logfile.print_separator()

@@ -113,7 +113,7 @@ class DAG(object):
         path += [start]
         if start == end:
             return [path]
-        if not self.__graph.has_key(start):
+        if start not in self.__graph:
             return []
 
         for node in self.__graph[start]:
@@ -129,7 +129,7 @@ class DAG(object):
         path = path + [start]
         if start == end:
             return [path]
-        if not self.__graph.has_key(start):
+        if start not in self.__graph:
             return []
 
         paths = []

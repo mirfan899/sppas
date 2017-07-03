@@ -35,15 +35,6 @@
 # File: phonedit.py
 # ---------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
 import codecs
 from datetime import datetime
 import re
@@ -93,25 +84,27 @@ class Phonedit(Transcription):
     # -----------------------------------------------------------------------
 
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
-        """
-        Creates a new Phonedit Transcription instance.
-        """
+        """ Creates a new Phonedit Transcription instance. """
+
         Transcription.__init__(self, name, mintime, maxtime)
 
     # -----------------------------------------------------------------------
 
     def read(self, filename, encoding="iso8859-1"):
-        """
-        Read a Phonedit mark file.
-        @param filename: intput filename.
-        @param encoding: encoding.
+        """ Read a Phonedit mark file.
+
+        :param filename: intput filename.
+        :param encoding: encoding.
+
         """
         with codecs.open(filename, mode="r", encoding=encoding) as fp:
             new_tier = None
             section_tier = "DSC_LEVEL_NAME="
+            reading_section = False
             for line in fp:
-                if line.startswith("[DSC_LEVEL_"):
+                if line.startswith("[DSC_LEVEL_") is True:
                     new_tier = self.NewTier()
+
                 elif section_tier in line:
                     line = line.replace(section_tier, "")
                     line = line.strip().strip('"')
@@ -124,9 +117,9 @@ class Phonedit(Transcription):
                         begin = PhoneditTimePoint(float(match.group(2)) / 1000)
                         end = PhoneditTimePoint(float(match.group(3)) / 1000)
                         # annotationdata does not support degenerated intervals.
-                        # then we replace interval by point
                         if begin == end:
-                            time = begin
+                            end = TimePoint(float(match.group(3))+PHONEDIT_RADIUS / 1000)
+                            time = TimeInterval(begin, end)
                         else:
                             time = TimeInterval(begin, end)
                         new_ann = Annotation(time, label)
@@ -141,10 +134,11 @@ class Phonedit(Transcription):
     # ------------------------------------------------------------------------
 
     def write(self, filename, encoding="iso8859-1"):
-        """
-        Write a Phonedit mark file.
-        @param filename: output filename.
-        @param encoding: encoding.
+        """ Write a Phonedit mark file.
+
+        :param filename: output filename.
+        :param encoding: encoding.
+
         """
         code_a = ord("A")
         last_modified = datetime.now().strftime("%Y/%m/%d %H:%M:%S")

@@ -117,9 +117,8 @@ class LemmaDict(object):
             Parameters:
                 - entry is a string
             Return:      Boolean
-            Exception:   None
         """
-        return not self.lemdict.has_key( self.__lower(entry) )
+        return self.__lower(entry) not in self.lemdict
 
     # ------------------------------------------------------------------
 
@@ -128,32 +127,31 @@ class LemmaDict(object):
             Parameters:
                 - entry is the string to lemmatize
             Return:      A string with the lemmatization
-            Exception:
         """
         entry = self.__clean(entry)
 
         # Specific strings... for the italian transcription...
         idx = entry.find(u"<")
-        if idx>1 and entry.find(u">")>-1:
+        if idx > 1 and entry.find(u">") > -1:
             entry = entry[:idx]
         # Specific strings... for the CID transcription...
-        if len(entry)==0 or entry.find(u"gpd_")>-1 or entry.find(u"gpf_")>-1 or entry.find(u"ipu_")>-1:
+        if len(entry) == 0 or entry.find(u"gpd_") >- 1 or entry.find(u"gpf_") > -1 or entry.find(u"ipu_") > -1:
             return ""
 
         # Find entry in the dict as it is given
-        _strlem = self.__get( entry )
+        _strlem = self.__get(entry)
 
         # OK, the entry is in the dictionary
         if _strlem != self.unk:
             return _strlem
 
         # a missing compound word
-        if entry.find(u"-")>-1 or entry.find(u"'")>-1:
+        if entry.find(u"-") > -1 or entry.find(u"'") > -1:
             _strlem = ""
-            _tabstr = re.split(u"[-']",entry)
+            _tabstr = re.split(u"[-']", entry)
 
             for _w in _tabstr:
-                _strlem = _strlem + " " + self.__get( _w )
+                _strlem = _strlem + " " + self.__get(_w)
 
         # OK, finally the entry is in the dictionary?
         if _strlem.find( self.unk )>-1:
