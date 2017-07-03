@@ -56,7 +56,6 @@ except ImportError:
                "The Graphical User Interface of SPPAS can't work.")
 from checkwx import get_wx_version
 
-
 # import SPPAS Application Programming Interface
 # ----------------------------------------------
 
@@ -133,10 +132,8 @@ if check_aligner() is False:
 # Main frame
 frame = FrameSPPAS(prefsIO)
 if len(filenames) > 0:
-    frame.RefreshTree(filenames)
+    frame.flp.RefreshTree(filenames)
 
 frame.Show()
 sppas.SetTopWindow(frame)
 sppas.MainLoop()
-
-# ---------------------------------------------------------------------------
