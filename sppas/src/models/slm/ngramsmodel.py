@@ -1,45 +1,42 @@
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: ngramsmodel.py
-# ---------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.models.slm.ngramsmodel.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import collections
 import math
 
 from sppas import unk_stamp
-import sppas.src.annotationdata
+import sppas.src.annotationdata.aio
 from sppas.src.resources.vocab import sppasVocabulary
 
 # ---------------------------------------------------------------------------
@@ -51,17 +48,17 @@ END_SENT_SYMBOL = "</s>"
 # ---------------------------------------------------------------------------
 
 
-class NgramsModel(object):
+class sppasNgramsModel(object):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Statistical language model trainer.
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :author:       Brigitte Bigi
+    :contact:      brigitte.bigi@gmail.com
+    :summary:      Statistical language model trainer.
 
     A model is made of:
-       - n-gram counts: a list of NgramCounter instances.
+       - n-gram counts: a list of sppasNgramCounter instances.
        - n-gram probabilities.
 
     How to estimate n-gram probabilities?
@@ -103,21 +100,21 @@ class NgramsModel(object):
 
     How to use this class?
 
-    >>> model = NgramsModel(3)                       # create a 3-gram model
-    >>> model.count(*corpusfiles)                    # count n-grams from data
-    >>> probas = model.probabilities(method="logml")   # estimates probas
+    >>> model = sppasNgramsModel(3)                   # create a 3-gram model
+    >>> model.count(*corpusfiles)                     # count n-grams from data
+    >>> probas = model.probabilities(method="logml")  # estimates probas
 
     """
     def __init__(self, norder=1):
-        """
-        Constructor.
+        """ Create a sppasNgramsModel instance.
 
-        @param norder (int) n-gram order, between 1 and MAX_ORDER.
+        :param norder: (int) n-gram order, between 1 and MAX_ORDER.
 
         """
         n = int(norder)
         if n < 1:
-            raise ValueError('Expected order between 1 and %d. Got: %d.' % (MAX_ORDER, n))
+            raise ValueError('Expected order between 1 and %d. '
+                             'Got: %d.' % (MAX_ORDER, n))
         self.order = n
         self._ngramcounts = []
 
@@ -125,17 +122,16 @@ class NgramsModel(object):
         self._es = END_SENT_SYMBOL
 
         # Options
-        self.vocab = None    # list of tokens of the unigram model
-        self.mincount = 1       # minimum number of occurrences
+        self.vocab = None      # list of tokens of the unigram model
+        self.mincount = 1      # minimum number of occurrences
         self.wrdlist = None    # vocabulary
 
     # -----------------------------------------------------------------------
 
     def get_order(self):
-        """
-        Return the n-gram order value.
+        """ Return the n-gram order value.
 
-        @return N-gram order integer value to assign.
+        :returns: N-gram order integer value to assign.
 
         """
         return self.order
@@ -143,10 +139,9 @@ class NgramsModel(object):
     # -----------------------------------------------------------------------
 
     def set_start_symbol(self, symbol):
-        """
-        Set the start sentence symbol.
+        """ Set the start sentence symbol.
 
-        @param symbol (str - IN)
+        :param symbol: (str) String to represent the beginning of a sentence.
 
         """
         s = str(symbol).strip()
@@ -156,10 +151,9 @@ class NgramsModel(object):
     # -----------------------------------------------------------------------
 
     def set_end_symbol(self, symbol):
-        """
-        Set the end sentence symbol.
+        """ Set the end sentence symbol.
 
-        @param symbol (str - IN)
+        :param symbol: (str) String to represent the end of a sentence.
 
         """
         e = str(symbol).strip()
@@ -169,10 +163,9 @@ class NgramsModel(object):
     # -----------------------------------------------------------------------
 
     def set_vocab(self, filename):
-        """
-        Fix a list of accepted tokens; others are mentioned as unknown.
+        """ Fix a list of accepted tokens; others are mentioned as unknown.
 
-        @param filename (str - IN) List of tokens.
+        :param filename: (str) List of tokens.
 
         """
         self.wrdlist = sppasVocabulary(filename, nodump=True, case_sensitive=False)
@@ -180,10 +173,9 @@ class NgramsModel(object):
     # -----------------------------------------------------------------------
 
     def count(self, *datafiles):
-        """
-        Count ngrams from data files.
+        """ Count ngrams from data files.
 
-        @param datafiles (*args - IN) is a set of file names, with UTF-8 encoding.
+        :param datafiles: (*args) is a set of file names, with UTF-8 encoding.
         If the file contains more than one tier, only the first one is used.
 
         """
@@ -199,10 +191,9 @@ class NgramsModel(object):
     # -----------------------------------------------------------------------
 
     def append_sentences(self, sentences):
-        """
-        Append a list of sentences in data counts.
+        """ Append a list of sentences in data counts.
 
-        @param sentence (list - IN) sentences with tokens separated by whitespace.
+        :param sentences: (list) sentences with tokens separated by whitespace.
 
         """
         self._create_counters()
@@ -214,16 +205,16 @@ class NgramsModel(object):
     # -----------------------------------------------------------------------
 
     def set_min_count(self, value):
-        """
-        Fix a minimum count values, applied only to the max order.
+        """ Fix a minimum count values, applied only to the max order.
         Any observed n-gram with a count under the value is removed.
 
-        @param value (int - IN) Threshold for minimum count
+        :param value: (int) Threshold for minimum count
 
         """
         value = int(value)
         if value < 1:
-            raise Exception('Expected a count value > 1. Got %d' % value)
+            raise Exception('Expected a count value > 1. '
+                            'Got %d' % value)
 
         # We already have counts
         if len(self._ngramcounts) > 0:
@@ -234,10 +225,9 @@ class NgramsModel(object):
     # -----------------------------------------------------------------------
 
     def probabilities(self, method="lograw"):
-        """
-        Return a list of probabilities.
+        """ Return a list of probabilities.
 
-        @param method (str) method to estimate probabilities, i.e. one of:
+        :param method: (str) method to estimate probabilities, i.e. one of:
 
             - raw:    return counts instead of probabilities
             - lograw: idem with log values
@@ -245,11 +235,12 @@ class NgramsModel(object):
             - ml:     return maximum likelihood (un-smoothed probabilities)
             - logml:  idem with log values
 
-        @return list of n-gram probabilities.
+        :returns: list of n-gram probabilities.
+
         Example:
             >>> probas = probabilities("logml")
             >>> for t in probas[0]:
-            >>>      print t
+            >>>      print(t)
             ('</s>', -1.066946789630613, None)
             ('<s>', -99.0, None)
             (u'a', -0.3679767852945944, None)
@@ -272,28 +263,29 @@ class NgramsModel(object):
         if method == "logml":
             return self._probas_as_ml(tolog=True)
 
-        raise ValueError('Expected a method name. Got: %s' % (method))
+        raise ValueError('Expected a method name. '
+                         'Got: %s' % method)
 
     # -----------------------------------------------------------------------
     # Private
     # -----------------------------------------------------------------------
 
     def _create_counters(self):
-        """
-        Create empty counters.
+        """ Create empty counters.
         Erase existing ones if any (except if order didn't changed)!
 
         """
         if len(self._ngramcounts) != self.order:
             for n in range(self.order):
-                ngramcounter = NgramCounter(n+1, self.wrdlist)
+                ngramcounter = sppasNgramCounter(n+1, self.wrdlist)
                 self._ngramcounts.append(ngramcounter)
 
     # -----------------------------------------------------------------------
 
     def _probas_as_raw(self, tolog=True):
-        """
-        Do not estimate probas... just return raw counts.
+        """ Do not estimate probas... just return raw counts.
+
+        :param tolog: (bool)
 
         """
         models = []
@@ -315,22 +307,26 @@ class NgramsModel(object):
 
         return models
 
+    # -----------------------------------------------------------------------
+
     def _probas_as_ml(self, tolog=True):
-        """
-        Estimates probas with maximum likekihood method.
+        """ Estimates probas with maximum likelihood method.
 
         (1) p(a_z) = c(a_z)/c(a_)
+
+        :param tolog: (bool)
 
         """
         models = []
 
         for n in range(len(self._ngramcounts)):
-        # n is the index in ngramcounts, i.e. the expected order-1.
+            # n is the index in ngramcounts, i.e. the expected order-1.
 
             ngram = []
             oldhist = ""
             for entry in self._ngramcounts[n].get_ngrams():
 
+                total = 0
                 # Estimates c(a_)
                 if n == 0:
                     # unigrams
@@ -377,42 +373,42 @@ class NgramsModel(object):
 # ---------------------------------------------------------------------------
 
 
-class NgramCounter(object):
+class sppasNgramCounter(object):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      N-gram representation.
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :author:       Brigitte Bigi
+    :contact:      brigitte.bigi@gmail.com
+    :summary:      N-gram representation.
 
     """
     def __init__(self, n=1, wordslist=None):
-        """
-        Constructor.
+        """ Create a sppasNgramSounter instance.
 
-        @param n (int) n-gram order, between 1 and MAX_ORDER.
-        @param wordslist (sppasVocabulary) a list of accepted tokens.
+        :param n: (int) n-gram order, between 1 and MAX_ORDER.
+        :param wordslist: (sppasVocabulary) a list of accepted tokens.
 
         """
         n = int(n)
         if n < 1:
-            raise ValueError('Expected order between 1 and %d. Got: %d.' % (MAX_ORDER, n))
+            raise ValueError('Expected order between 1 and %d. '
+                             'Got: %d.' % (MAX_ORDER, n))
+
         self._n = n   # n-gram order to count
         self._ss = START_SENT_SYMBOL
         self._es = END_SENT_SYMBOL
         self._datacounts = collections.defaultdict(lambda: None)
         self._wordslist = wordslist
-        self._nsent  = 0   # number of sentences (estimated)
+        self._nsent = 0   # number of sentences (estimated)
         self._ncount = 0   # number of observed n-grams (estimated)
 
     # -----------------------------------------------------------------------
 
     def get_ngrams(self):
-        """
-        Get the list of alphabetically-ordered n-grams.
+        """ Get the list of alphabetically-ordered n-grams.
 
-        @return list of tuples
+        :returns: list of tuples
 
         """
         return sorted(self._datacounts.keys())
@@ -420,10 +416,10 @@ class NgramCounter(object):
     # -----------------------------------------------------------------------
 
     def get_ngram_count(self, ngram):
-        """
-        Get the count of a specific ngram.
+        """ Get the count of a specific ngram.
 
-        @param ngram (tuple of str - IN) Tuple of tokens.
+        :param ngram: (tuple of str) Tuple of tokens.
+        :returns: (int)
 
         """
         return self._datacounts.get(ngram, 0)
@@ -431,10 +427,10 @@ class NgramCounter(object):
     # -----------------------------------------------------------------------
 
     def get_count(self, sequence):
-        """
-        Get the count of a specific sequence.
+        """ Get the count of a specific sequence.
 
-        @param sequence (str - IN) tokens separated by whitespace.
+        :param sequence: (str) tokens separated by whitespace.
+        :returns: (int)
 
         """
         tt = tuple(sequence.split())
@@ -443,10 +439,9 @@ class NgramCounter(object):
     # -----------------------------------------------------------------------
 
     def get_ncount(self):
-        """
-        Get the number of observed n-grams, excluding start symbols if unigrams.
+        """ Get the number of observed n-grams, excluding start symbols if unigrams.
 
-        @return int
+        :returns: (int)
 
         """
         return self._ncount
@@ -454,10 +449,9 @@ class NgramCounter(object):
     # -----------------------------------------------------------------------
 
     def count(self, *datafiles):
-        """
-        Count ngrams of order n from data files.
+        """ Count ngrams of order n from data files.
 
-        @param datafiles (*args - IN) is a set of file names, with UTF-8 encoding.
+        :param datafiles: (*args) is a set of file names, with UTF-8 encoding.
         If the file contains more than one tier, only the first one is used.
 
         """
@@ -477,10 +471,9 @@ class NgramCounter(object):
     # -----------------------------------------------------------------------
 
     def append_sentence(self, sentence):
-        """
-        Append a sentence in a dictionary of data counts.
+        """ Append a sentence in a dictionary of data counts.
 
-        @param sentence (str - IN) with tokens separated by whitespace.
+        :param sentence: (str) A sentence with tokens separated by whitespace.
 
         """
         # get the list of observed tokens
@@ -506,8 +499,9 @@ class NgramCounter(object):
     # -----------------------------------------------------------------------
 
     def shave(self, value):
-        """
-        Remove data if count is lower than the given value.
+        """ Remove data if count is lower than the given value.
+
+        :param value: (int) Threshold value
 
         """
         # we can't delete an item while iterating the dict.
@@ -526,11 +520,10 @@ class NgramCounter(object):
     # -----------------------------------------------------------------------
 
     def _sentence_to_tokens(self, sentence):
-        """
-        Return the (ordered) list of tokens of the given sentence.
+        """ Return the (ordered) list of tokens of the given sentence.
 
-        @param sentence (str - IN)
-        @return list of str
+        :param sentence (str)
+        :returns: list of str
 
         """
         # We are not using a  vocabulary
@@ -550,5 +543,3 @@ class NgramCounter(object):
         if tokens[-1] != self._es:
             tokens.append(self._es)
         return tokens
-
-    # -----------------------------------------------------------------------

@@ -8,7 +8,7 @@ import shutil
 from sppas import RESOURCES_PATH, SAMPLES_PATH
 from sppas.src.models.acm.acmodel import sppasAcModel, sppasHtkIO
 from sppas.src.models.acm.hmm import sppasHMM, HMMInterpolation
-from sppas.src.models.acm.htktrain import sppasHTKModelTrainer, sppasDataTrainer, PhoneSet, sppasTrainingCorpus, sppasHTKModelInitializer
+from sppas.src.models.acm.htktrain import sppasHTKModelTrainer, sppasDataTrainer, sppasPhoneSet, sppasTrainingCorpus, sppasHTKModelInitializer
 from sppas.src.utils.compare import sppasCompare
 from sppas.src.utils.fileutils import sppasFileUtils
 
@@ -55,13 +55,13 @@ class TestTrainer(unittest.TestCase):
         self.assertFalse(os.path.exists(dire))
 
     def test_phoneset(self):
-        pho = PhoneSet()
+        pho = sppasPhoneSet()
         self.assertEqual(len(pho), 4)
         pho.add_from_dict(os.path.join(RESOURCES_PATH, "dict", "nan.dict"))
         self.assertEqual(len(pho), 44)
         pho.save(os.path.join(TEMP, "monophones"))
 
-        pho2 = PhoneSet(os.path.join(TEMP, "monophones"))
+        pho2 = sppasPhoneSet(os.path.join(TEMP, "monophones"))
         for phone in pho.get_list():
             self.assertTrue(pho2.is_in(phone))
         for phone in pho2.get_list():

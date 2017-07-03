@@ -44,8 +44,8 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.models.slm.ngramsmodel import NgramsModel
-from sppas.src.models.slm.arpaio import ArpaIO
+from sppas.src.models.slm.ngramsmodel import sppasNgramsModel
+from sppas.src.models.slm.arpaio import sppasArpaIO
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -71,9 +71,9 @@ args = parser.parse_args()
 # ----------------------------------------------------------------------------
 
 # ---------------------------------
-# 1. Create a NgramsModel
+# 1. Create a sppasNgramsModel
 
-model = NgramsModel(args.n)
+model = sppasNgramsModel(args.n)
 if args.r:
     model.set_vocab(args.r)
 
@@ -90,8 +90,6 @@ probas = model.probabilities(args.m)
 # ---------------------------------
 # 4. Write in an ARPA file
 
-arpaio = ArpaIO()
+arpaio = sppasArpaIO()
 arpaio.set(probas)
 arpaio.save(args.o)
-
-# ---------------------------------------------------------------------------

@@ -1,46 +1,37 @@
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: acmodelhtkio.py
-# ---------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-__docformat__ = """epytext"""
-__authors___ = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
+        http://www.sppas.org/
 
-# ---------------------------------------------------------------------------
+        Use of this software is governed by the GNU Public License, version 3.
 
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.models.slm.arpaio.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import codecs
 
 from sppas import encoding
@@ -48,31 +39,30 @@ from sppas import encoding
 # ---------------------------------------------------------------------------
 
 
-class ArpaIO(object):
+class sppasArpaIO(object):
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: ARPA statistical language models reader/writer.
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :author:       Brigitte Bigi
+    :contact:      brigitte.bigi@gmail.com
+    :summary:      ARPA statistical language models reader/writer.
 
     This class is able to load and save statistical language models from
     ARPA-ASCII files.
 
     """
     def __init__(self):
-        """
-        Create an ArpaIO instance.
+        """ Create an sppasArpaIO instance. """
 
-        """
         self.slm = None
 
     # -----------------------------------------------------------------------
 
     def set(self, slm):
-        """
-        Set the model of the SLM.
+        """ Set the model of the sppasSLM.
 
-        @param slm (list) List of tuples for 1-gram, 2-grams, ...
+        :param slm: (list) List of tuples for 1-gram, 2-grams, ...
 
         """
         if not (isinstance(slm, list) and all([isinstance(m, list) for m in slm])):
@@ -83,13 +73,12 @@ class ArpaIO(object):
     # -----------------------------------------------------------------------
 
     def load(self, filename):
-        """
-        Load an ARPA model from a file.
+        """ Load a model from an ARPA file.
 
-        @param filename (str - IN) Filename of the model.
+        :param filename: (str) Name of the file of the model.
 
         """
-        # we expect small models, so we can read the whole file in one
+        # we expect small models, so we can read the whole file in one!
         with codecs.open(filename, 'r', encoding) as f:
             lines = f.readlines()
 
@@ -102,7 +91,7 @@ class ArpaIO(object):
                 pass
             elif line.startswith('\\end'):
                 break
-            elif line.startswith('\\') and not "data" in line:
+            elif line.startswith('\\') and "data" not in line:
                 if n > 0:
                     self.slm.append(lm)
                 n += 1
@@ -129,8 +118,8 @@ class ArpaIO(object):
     # -----------------------------------------------------------------------
 
     def save(self, filename):
-        """
-        Save the model into a file, in ARPA-ASCII format.
+        """ Save the model into a file, in ARPA-ASCII format.
+
         The ARPA format:
 
              \data\
@@ -153,7 +142,7 @@ class ArpaIO(object):
 
              \end\
 
-        @param filename (str - IN) File where to save the model.
+        :param filename: (str) File where to save the model.
 
         """
         with codecs.open(filename, 'w', encoding) as f:
@@ -165,24 +154,23 @@ class ArpaIO(object):
     # -----------------------------------------------------------------------
 
     def _serialize_slm(self):
-        """
-        Serialize a model into a string, in ARPA-ASCII format.
+        """ Serialize a model into a string, in ARPA-ASCII format.
 
-        @return The ARPA-ASCII model as a string.
+        :returns: The ARPA-ASCII model as a string.
 
         """
         result = self._serialize_header()
         for n, m in enumerate(self.slm):
-            newngram = self._serialize_ngram(m, n+1)
-            result = result + newngram
-        result += self._serialize_footer()
+            new_ngram = sppasArpaIO._serialize_ngram(m, n+1)
+            result = result + new_ngram
+        result += sppasArpaIO._serialize_footer()
 
         return result
 
     # -----------------------------------------------------------------------
 
     def _serialize_header(self):
-        """
+        """ Serialize the header of an ARPA file.
 
              \data\
              ngram 1=nb1
@@ -195,12 +183,14 @@ class ArpaIO(object):
         for i, m in enumerate(self.slm):
             r += "ngram " + str(i+1) + "=" + str(len(m)) + "\n"
         r += "\n"
+
         return r
 
     # -----------------------------------------------------------------------
 
-    def _serialize_ngram(self, model, order):
-        """
+    @staticmethod
+    def _serialize_ngram(model, order):
+        """ Serialize one of the ngrams of an ARPA file.
 
              \2-grams:
              p(a_z)  a_z  bow(a_z)
@@ -214,14 +204,16 @@ class ArpaIO(object):
                 r += "\t"+str(round(bo, 6))
             r += "\n"
         r += "\n"
+
         return r
 
     # -----------------------------------------------------------------------
 
-    def _serialize_footer(self):
-        """
+    @staticmethod
+    def _serialize_footer():
+        """ Serialize the footer of an ARPA file.
+
              \end
+
         """
         return "\\end\n"
-
-    # -----------------------------------------------------------------------

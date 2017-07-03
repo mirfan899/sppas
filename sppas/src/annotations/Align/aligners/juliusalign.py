@@ -37,8 +37,8 @@ import codecs
 from subprocess import Popen, PIPE, STDOUT
 
 from sppas import encoding
-from sppas.src.models.slm.ngramsmodel import NgramsModel
-from sppas.src.models.slm.arpaio import ArpaIO
+from sppas.src.models.slm.ngramsmodel import sppasNgramsModel
+from sppas.src.models.slm.arpaio import sppasArpaIO
 from sppas.src.models.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
 from sppas.src.utils.makeunicode import sppasUnicode
 from sppas.src.resources.dictpron import sppasDictPron
@@ -176,10 +176,10 @@ class JuliusAligner(BaseAligner):
         dictpron.save_as_ascii(dictname, False)
 
         # Write the SLM
-        model = NgramsModel(N)
+        model = sppasNgramsModel(N)
         model.append_sentences([self._tokens])
         probas = model.probabilities(method="logml")
-        arpaio = ArpaIO()
+        arpaio = sppasArpaIO()
         arpaio.set(probas)
         arpaio.save(slmname)
 

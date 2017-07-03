@@ -8,10 +8,10 @@ import shutil
 
 from sppas import unk_stamp
 from sppas.src.models.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
-from sppas.src.models.slm.ngramsmodel import NgramCounter
-from sppas.src.models.slm.ngramsmodel import NgramsModel
-from sppas.src.models.slm.statlangmodel import SLM
-from sppas.src.models.slm.arpaio import ArpaIO
+from sppas.src.models.slm.ngramsmodel import sppasNgramCounter
+from sppas.src.models.slm.ngramsmodel import sppasNgramsModel
+from sppas.src.models.slm.statlangmodel import sppasSLM
+from sppas.src.models.slm.arpaio import sppasArpaIO
 from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.utils.compare import sppasCompare
 from sppas.src.utils.fileutils import sppasFileUtils
@@ -42,7 +42,7 @@ class TestNgramCounter(unittest.TestCase):
         shutil.rmtree(TEMP)
 
     def testAppendSentence1(self):
-        ngramcounter = NgramCounter()  # default is unigram
+        ngramcounter = sppasNgramCounter()  # default is unigram
         ngramcounter.append_sentence(self.sent1)
         self.assertEqual(ngramcounter.get_count('a'), 6)
         self.assertEqual(ngramcounter.get_count('b'), 4)
@@ -61,7 +61,7 @@ class TestNgramCounter(unittest.TestCase):
         self.assertEqual(ngramcounter.get_count(END_SENT_SYMBOL), 3)
 
     def testAppendSentence2(self):
-        ngramcounter = NgramCounter(2) # bigram
+        ngramcounter = sppasNgramCounter(2)  # bigram
         ngramcounter.append_sentence(self.sent1)
         self.assertEqual(ngramcounter.get_count('a b'), 3)
         self.assertEqual(ngramcounter.get_count('b a'), 2)
@@ -79,7 +79,7 @@ class TestNgramCounter(unittest.TestCase):
         self.assertEqual(ngramcounter.get_count('b '+END_SENT_SYMBOL), 3)
 
     def testCount1(self):
-        ngramcounter = NgramCounter() # default is unigram
+        ngramcounter = sppasNgramCounter()  # default is unigram
         ngramcounter.count(self.corpusfile)
         self.assertEqual(ngramcounter.get_count('a'), 15)
         self.assertEqual(ngramcounter.get_count('b'), 10)
@@ -87,7 +87,7 @@ class TestNgramCounter(unittest.TestCase):
         self.assertEqual(ngramcounter.get_count('d'), 3)
         self.assertEqual(ngramcounter.get_count(START_SENT_SYMBOL), 0)
         self.assertEqual(ngramcounter.get_count(END_SENT_SYMBOL), 3)
-        ngramcounter = NgramCounter(1)
+        ngramcounter = sppasNgramCounter(1)
         ngramcounter.count(self.corpusfile, self.corpusfile)
         self.assertEqual(ngramcounter.get_count('a'), 30)
         self.assertEqual(ngramcounter.get_count('b'), 20)
@@ -97,7 +97,7 @@ class TestNgramCounter(unittest.TestCase):
         self.assertEqual(ngramcounter.get_count(END_SENT_SYMBOL), 6)
 
     def testCount2(self):
-        ngramcounter = NgramCounter(2)
+        ngramcounter = sppasNgramCounter(2)
         ngramcounter.count(self.corpusfile)
         self.assertEqual(ngramcounter.get_count('a b'), 7)
         self.assertEqual(ngramcounter.get_count('b a'), 4)
@@ -105,7 +105,7 @@ class TestNgramCounter(unittest.TestCase):
         self.assertEqual(ngramcounter.get_count('b '+END_SENT_SYMBOL), 3)
 
     def testShave(self):
-        ngramcounter = NgramCounter(1)
+        ngramcounter = sppasNgramCounter(1)
         ngramcounter.count(self.corpusfile)
         ngramcounter.shave(4)
         self.assertEqual(ngramcounter.get_count('a'), 15)
@@ -120,7 +120,7 @@ class TestNgramCounter(unittest.TestCase):
         wds.add("a")
         wds.add("b")
         wds.add("c")
-        ngramcounter = NgramCounter(1, wds)
+        ngramcounter = sppasNgramCounter(1, wds)
         ngramcounter.count(self.corpusfile)
 
         self.assertEqual(ngramcounter.get_count('a'), 15)
@@ -153,7 +153,7 @@ class TestNgramsModel(unittest.TestCase):
         shutil.rmtree(TEMP)
 
     def testCount(self):
-        model = NgramsModel(2)
+        model = sppasNgramsModel(2)
         model.count(self.corpusfile)
         self.assertEqual(len(model._ngramcounts), 2)
         ngramcounter = model._ngramcounts[0]
@@ -172,7 +172,7 @@ class TestNgramsModel(unittest.TestCase):
         self.assertEqual(ngramcounter.get_count('b '+END_SENT_SYMBOL), 3)
 
     def testShave(self):
-        model = NgramsModel(2)
+        model = sppasNgramsModel(2)
         model.count(self.corpusfile)
         self.assertEqual(len(model._ngramcounts), 2)
         model.set_min_count(2)
@@ -192,35 +192,35 @@ class TestNgramsModel(unittest.TestCase):
         self.assertEqual(ngramcounter.get_count('b '+END_SENT_SYMBOL), 3)
 
     def testRawProbabilities(self):
-        model = NgramsModel(2)
+        model = sppasNgramsModel(2)
         model.count(self.corpusfile)
         probas = model.probabilities(method="raw")
         self.assertEqual(len(probas), 2)
 
         unigram = probas[0]
         for token, value, bo in unigram:
-            if token=="a":
+            if token == "a":
                 self.assertEqual(value, 15)
-            if token=='b':
+            if token == 'b':
                 self.assertEqual(value, 10)
-            if token=='c':
+            if token == 'c':
                 self.assertEqual(value, 4)
-            if token=='d':
+            if token == 'd':
                 self.assertEqual(value, 3)
-            if token==START_SENT_SYMBOL:
+            if token == START_SENT_SYMBOL:
                 self.assertEqual(value, 0)
-            if token==END_SENT_SYMBOL:
+            if token == END_SENT_SYMBOL:
                 self.assertEqual(value, 3)
 
         bigram = probas[1]
         for token, value, bo in bigram:
-            if token=="a b":
+            if token == "a b":
                 self.assertEqual(value, 7)
-            if token=="b a":
+            if token == "b a":
                 self.assertEqual(value, 4)
-            if token==START_SENT_SYMBOL+' a':
+            if token == START_SENT_SYMBOL+' a':
                 self.assertEqual(value, 3)
-            if token=='b '+END_SENT_SYMBOL:
+            if token == 'b '+END_SENT_SYMBOL:
                 self.assertEqual(value, 3)
 
         probas = model.probabilities(method="lograw")
@@ -228,49 +228,49 @@ class TestNgramsModel(unittest.TestCase):
 
         unigram = probas[0]
         for token, value, bo in unigram:
-            if token=="a":
+            if token == "a":
                 self.assertEqual(value, math.log(15, 10))
-            if token=='b':
+            if token == 'b':
                 self.assertEqual(value, math.log(10, 10))
-            if token=='c':
+            if token == 'c':
                 self.assertEqual(value, math.log(4, 10))
-            if token=='d':
+            if token == 'd':
                 self.assertEqual(value, math.log(3, 10))
-            if token==START_SENT_SYMBOL:
+            if token == START_SENT_SYMBOL:
                 self.assertEqual(value, -99)
-            if token==END_SENT_SYMBOL:
+            if token == END_SENT_SYMBOL:
                 self.assertEqual(value, math.log(3, 10))
 
         bigram = probas[1]
         for token, value, bo in bigram:
-            if token=="a b":
+            if token == "a b":
                 self.assertEqual(value, math.log(7, 10))
-            if token=="b a":
+            if token == "b a":
                 self.assertEqual(value, math.log(4, 10))
-            if token==START_SENT_SYMBOL+' a':
+            if token == START_SENT_SYMBOL+' a':
                 self.assertEqual(value, math.log(3, 10))
-            if token=='b '+END_SENT_SYMBOL:
+            if token == 'b '+END_SENT_SYMBOL:
                 self.assertEqual(value, math.log(3, 10))
 
     def testMaximumLikelihoodProbabilities(self):
-        model = NgramsModel(3)
+        model = sppasNgramsModel(3)
         model.count(self.corpusfile)
         probas = model.probabilities(method="ml")
         self.assertEqual(len(probas), 3)
 
         unigram = probas[0]
         for token, value, bo in unigram:
-            if token=="a":
+            if token == "a":
                 self.assertEqual(round(value, 6), 0.428571)
-            if token=="b":
+            if token == "b":
                 self.assertEqual(round(value, 6), 0.285714)
-            if token=="c":
+            if token == "c":
                 self.assertEqual(round(value, 6), 0.114286)
-            if token=="d":
+            if token == "d":
                 self.assertEqual(round(value, 6), 0.085714)
-            if token==START_SENT_SYMBOL:
+            if token == START_SENT_SYMBOL:
                 self.assertEqual(round(value, 6), 0.)
-            if token==END_SENT_SYMBOL:
+            if token == END_SENT_SYMBOL:
                 self.assertEqual(round(value, 6), 0.085714)
 
         bigram = probas[1]
@@ -347,18 +347,18 @@ class TestSLM(unittest.TestCase):
     def testARPA(self):
         fn1 = os.path.join(TEMP, "model1.arpa")
         fn2 = os.path.join(TEMP, "model2.arpa")
-        model = NgramsModel(3)
+        model = sppasNgramsModel(3)
         model.count(self.corpusfile)
         probas = model.probabilities("logml")
-        arpaio = ArpaIO()
+        arpaio = sppasArpaIO()
         arpaio.set(probas)
         arpaio.save(fn1)
 
-        slm1 = SLM()
+        slm1 = sppasSLM()
         slm1.load_from_arpa(fn1)
         slm1.save_as_arpa(fn2)
 
-        slm2 = SLM()
+        slm2 = sppasSLM()
         slm2.load_from_arpa(fn2)
 
         m1 = slm1.model
