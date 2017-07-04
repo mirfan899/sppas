@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -29,7 +28,7 @@
 
         ---------------------------------------------------------------------
 
-    src.calculus.infotheory.entrop.py
+    src.calculus.infotheory.entropy.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Entropy is a measure of unpredictability of information content.
@@ -44,7 +43,7 @@ from .utilit import symbols_to_items
 # ----------------------------------------------------------------------------
 
 
-class Entropy(object):
+class sppasEntropy(object):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -61,7 +60,7 @@ class Entropy(object):
 
     """
     def __init__(self, symbols, n=1):
-        """ Create a Entropy instance with a list of symbols.
+        """ Create a sppasEntropy instance with a list of symbols.
 
         :param symbols: (list) a vector of symbols of any type.
         :param n: (int) n value for n-gram estimation. n ranges 1..MAX_NGRAM

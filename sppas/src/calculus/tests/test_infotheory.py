@@ -1,9 +1,42 @@
 # -*- coding:utf-8 -*-
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.calculus.tests.test_infotheory.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import unittest
 
-from ..infotheory.entropy import Entropy
-from ..infotheory.kullbackleibler import KullbackLeibler
+from ..infotheory.entropy import sppasEntropy
+from ..infotheory.kullbackleibler import sppasKullbackLeibler
 from ..infotheory.perplexity import Perplexity
 
 # ---------------------------------------------------------------------------
@@ -12,7 +45,7 @@ from ..infotheory.perplexity import Perplexity
 class TestInformationTheory(unittest.TestCase):
 
     def test_entropy(self):
-        entropy = Entropy(list("1223334444"))
+        entropy = sppasEntropy(list("1223334444"))
 
         self.assertEqual(round(entropy.eval(), 5), 1.84644)
         entropy.set_symbols(list("0000000000"))
@@ -55,7 +88,7 @@ class TestInformationTheory(unittest.TestCase):
 
     def test_kl1(self):
         data = list('00000011000101010000100101000101000001000100000001100000')
-        kl = KullbackLeibler()
+        kl = sppasKullbackLeibler()
         kl.set_epsilon(1.0 / (10.*len(data)))
         kl.set_model_from_data(data)
         kl.set_observations(list('000'))
@@ -73,7 +106,7 @@ class TestInformationTheory(unittest.TestCase):
         modell["b"] = 0.08
         modell["c"] = 0.08
         modell["d"] = 0.04
-        kll = KullbackLeibler(modell)
+        kll = sppasKullbackLeibler(modell)
         kll.set_epsilon(1. / 1000.)
         observation = list()
         observation.append("a")
@@ -92,7 +125,7 @@ class TestInformationTheory(unittest.TestCase):
         model[(0, 1)] = 0.08
         model[(1, 0)] = 0.08
         model[(1, 1)] = 0.04
-        kl = KullbackLeibler(model)
+        kl = sppasKullbackLeibler(model)
         kl.set_epsilon(1. / 1000.)
         observation = list()
         observation.append((0, 0))

@@ -33,7 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from sppas.src.calculus.descriptivesstats import DescriptiveStatistics
+from sppas.src.calculus.descriptivesstats import sppasDescriptiveStatistics
 from sppas.src.calculus.infotheory.utilit import MAX_NGRAM
 from sppas.src.calculus.calculusexc import InsideIntervalError
 
@@ -159,7 +159,7 @@ class TierStats(object):
             ngrams.extend(self.__ngrams(t))
         items = TierStats.tuple_to_dict(ngrams)
         
-        return DescriptiveStatistics(items)
+        return sppasDescriptiveStatistics(items)
 
     # ------------------------------------------------------------------
     # Private

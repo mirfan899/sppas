@@ -42,12 +42,12 @@ from .stats.linregress import tga_linear_regression
 from .stats.variability import rPVI
 from .stats.variability import nPVI
 
-from .descriptivesstats import DescriptiveStatistics
+from .descriptivesstats import sppasDescriptiveStatistics
 
 # ----------------------------------------------------------------------------
 
 
-class TimeGroupAnalysis(DescriptiveStatistics):
+class sppasTimeGroupAnalysis(sppasDescriptiveStatistics):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -62,12 +62,11 @@ class TimeGroupAnalysis(DescriptiveStatistics):
         - value is the list of durations of each segments in the time group.
 
     >>> d = { 'tg1':[1.0, 1.2, 3.2, 4.1] , 'tg2':[2.9, 3.3, 3.6, 5.8] }
-    >>> tga = TimeGroupAnalysis(d)
+    >>> tga = sppasTimeGroupAnalysis(d)
     >>> total = tga.total()
     >>> slope = tga.slope()
-    >>> print slope['tg_1']
-    >>> print slope['tg_2']
-    >>>
+    >>> print(slope['tg_1'])
+    >>> print(slope['tg_2'])
 
     """
     def __init__(self, dict_items):
@@ -76,7 +75,7 @@ class TimeGroupAnalysis(DescriptiveStatistics):
         :param dict_items: (dict) a dict of a list of durations.
 
         """
-        DescriptiveStatistics.__init__(self, dict_items)
+        sppasDescriptiveStatistics.__init__(self, dict_items)
 
     # -----------------------------------------------------------------------
     # Specific estimators for speech rythm analysis

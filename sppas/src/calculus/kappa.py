@@ -49,7 +49,7 @@ from .calculusexc import VectorsError, EuclidianDistanceError
 # ----------------------------------------------------------------------------
 
 
-class Kappa(object):
+class sppasKappa(object):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -75,17 +75,17 @@ class Kappa(object):
 
     The Cohen's Kappa is then evaluated as follow:
 
-    >>> Kappa.check_vector(p)
+    >>> sppasKappa.check_vector(p)
     >>> True
-    >>> Kappa.check_vector(q)
+    >>> sppasKappa.check_vector(q)
     >>> True
-    >>> kappa = Kappa(p, q)
+    >>> kappa = sppasKappa(p, q)
     >>> kappa.evaluate()
     >>> 0.54545
 
     """
     def __init__(self, p=list(), q=list()):
-        """ Create a Kappa instance with two lists of tuples p and q.
+        """ Create a sppasKappa instance with two lists of tuples p and q.
 
         >>> p=[(1., 0.), (1., 0.), (0.8, 0.2)]
 
@@ -101,13 +101,13 @@ class Kappa(object):
     # -----------------------------------------------------------------------
 
     def set_vectors(self, p, q):
-        """ Set the vectors of probabilities to estimate the Kappa value.
+        """ Set the vectors of probabilities to estimate the sppasKappa value.
         
         :param p: a vector of tuples of float values
         :param q: a vector of tuples of float values
 
         """
-        if Kappa.check_vector(p) and Kappa.check_vector(q) is False:
+        if sppasKappa.check_vector(p) and sppasKappa.check_vector(q) is False:
             raise VectorsError
         self._p = p
         self._q = q
@@ -157,7 +157,7 @@ class Kappa(object):
         :returns: bool
 
         """
-        return Kappa.check_vector(self._p) and Kappa.check_vector(self._q)
+        return sppasKappa.check_vector(self._p) and sppasKappa.check_vector(self._q)
 
     # -----------------------------------------------------------------------
 

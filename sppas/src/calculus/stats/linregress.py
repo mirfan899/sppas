@@ -42,7 +42,7 @@
     Equation of the line is y = mx + b
     where m is slope, b is y-intercept.
 
-    Function List
+    Function list
     =============
 
         - slope

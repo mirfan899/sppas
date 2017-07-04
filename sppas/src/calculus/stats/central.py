@@ -40,7 +40,7 @@
 
     A collection of basic statistical functions for python.
 
-    Function List
+    Function list
     =============
 
         - fsum

@@ -51,7 +51,7 @@ from sppas.src.annotationdata.annotation import Annotation
 from sppas.src.annotationdata.ptime.interval import TimeInterval
 from sppas.src.annotationdata.label.label import Label
 
-from sppas.src.calculus.infotheory.kullback import KullbackLeibler
+from sppas.src.calculus.infotheory.kullback import sppasKullbackLeibler
 from sppas.src.calculus.infotheory.utilit import find_ngrams
 
 # ----------------------------------------------------------------------------
@@ -111,7 +111,7 @@ for ann in tier:
 # ---------------------------------------------
 
 data = find_ngrams(values,n)
-kl = KullbackLeibler()
+kl = sppasKullbackLeibler()
 kl.set_epsilon(1.0/(len(data)))
 kl.set_model_from_data(data)
 

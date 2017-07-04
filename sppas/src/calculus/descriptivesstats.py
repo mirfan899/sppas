@@ -49,7 +49,7 @@ from .stats.moment import lvariation
 # ----------------------------------------------------------------------------
 
 
-class DescriptiveStatistics(object):
+class sppasDescriptiveStatistics(object):
     """
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
@@ -65,9 +65,9 @@ class DescriptiveStatistics(object):
         - the value is the list of data values for this data set.
 
     >>> d = {'apples':[1, 2, 3, 4], 'peers':[2, 3, 3, 5]}
-    >>> s = DescriptiveStatistics(d)
+    >>> s = sppasDescriptiveStatistics(d)
     >>> total = s.total()
-    >>> print total
+    >>> print(total)
     >>> (('peers', 13.0), ('apples', 10.0))
 
     """

@@ -33,7 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from sppas.src.calculus.timegroupanalysis import TimeGroupAnalysis
+from sppas.src.calculus.timegroupanalysis import sppasTimeGroupAnalysis
 
 from sppas.src.annotationdata.transcription import Transcription
 from sppas.src.annotationdata.tier import Tier
@@ -121,9 +121,9 @@ class TierTGA(object):
     # ------------------------------------------------------------------
 
     def tga(self):
-        """ Create a TimeGroupAnalysis object corresponding to the tier.
+        """ Create a sppasTimeGroupAnalysis object corresponding to the tier.
 
-        :returns: (TimeGroupAnalysis)
+        :returns: (sppasTimeGroupAnalysis)
 
         """
         i = 1
@@ -153,7 +153,7 @@ class TierTGA(object):
                     tg[tg_label] = []
                 tg[tg_label].append(duration)
 
-        return TimeGroupAnalysis(tg)
+        return sppasTimeGroupAnalysis(tg)
 
     # ------------------------------------------------------------------
 

@@ -40,7 +40,7 @@
 
     A collection of basic frequency functions for python.
 
-    Function List
+    Function list
     =============
 
         - frequency
@@ -281,5 +281,3 @@ def tfidf(documents, item):
         return 0.
 
     return tf * (math.log(D / dw))
-
-# ---------------------------------------------------------------------------

@@ -47,7 +47,7 @@ import sppas.src.annotationdata.aio
 
 from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
 
-from sppas.src.calculus.descriptivesstats import DescriptiveStatistics
+from sppas.src.calculus.descriptivesstats import sppasDescriptiveStatistics
 from sppas.src.presenters.tiertga import TierTGA
 from sppas.src.utils import fileutils
 
@@ -408,7 +408,7 @@ class MeansPanel(BaseStatPanel):
             tgdict['interceptt'] = [intercept for intercept,slope in list(regresst.values())]
             tgdict['slopet']     = [slope     for intercept,slope in list(regresst.values())]
 
-            stats = DescriptiveStatistics(tgdict)
+            stats = sppasDescriptiveStatistics(tgdict)
             means = stats.mean()
 
             # fill rows
@@ -425,9 +425,8 @@ class MeansPanel(BaseStatPanel):
         self.sizer.FitInside(self)
         self.SendSizeEvent()
 
-    # ------------------------------------------------------------------------
-
 # ----------------------------------------------------------------------------
+
 
 class DeltaDurationsPanel(BaseStatPanel):
     """

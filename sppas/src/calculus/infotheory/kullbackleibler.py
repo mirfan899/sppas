@@ -30,7 +30,7 @@
         ---------------------------------------------------------------------
 
     src.calculus.infotheory.kullbackleibler.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     In probability theory and information theory, the Kullback–Leibler
     divergence (also called relative entropy) is a measure of the difference
@@ -41,10 +41,10 @@
     the prior probability distribution Q to the posterior probability
     distribution P.
 
-    However, the KullbackLeibler class estimates the KL distance, i.e. the
+    However, the sppasKullbackLeibler class estimates the KL distance, i.e. the
     *symmetric Kullback-Leibler divergence*.
 
-    This KullbackLeibler class implements the distance estimation
+    This sppasKullbackLeibler class implements the distance estimation
     between a model and the content of a moving window on data,
     as described in:
 
@@ -71,7 +71,7 @@ from .utilit import log2
 # ----------------------------------------------------------------------------
 
 
-class KullbackLeibler(object):
+class sppasKullbackLeibler(object):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -91,7 +91,7 @@ class KullbackLeibler(object):
     DEFAULT_EPSILON = 0.000001
 
     def __init__(self, model=None, observations=None):
-        """ Create a KullbackLeibler instance from a list of symbols.
+        """ Create a sppasKullbackLeibler instance from a list of symbols.
 
         :param model: (dict) a dictionary with key=item, value=probability
         :param observations: list ob observed items
@@ -99,7 +99,7 @@ class KullbackLeibler(object):
         """
         self._observations = list()
         self._model = dict()
-        self._epsilon = KullbackLeibler.DEFAULT_EPSILON
+        self._epsilon = sppasKullbackLeibler.DEFAULT_EPSILON
 
         if model is not None:
             self.set_model(model)
