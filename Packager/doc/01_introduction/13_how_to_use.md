@@ -3,14 +3,14 @@
 ### What SPPAS can do?
 
 Here is the list of functionalities available to annotate automatically
-speech data and to analyse annotated files:
+speech data and to analyze annotated files:
 
 1. Automatic and semi-automatic annotations
 
     - *Momel*: modelling melody
     - *INTSINT*: Intonation    
     - *IPUs segmentation*: speech/silence segmentation
-    - *Tokenization*:      text normalization
+    - *Text normalization*:  tokenization, remove punctuation, etc
     - *Phonetization*:     grapheme to phoneme conversion
     - *Alignment*:         phonetic segmentation
     - *Syllabification*:   group phonemes into syllables
@@ -24,7 +24,7 @@ speech data and to analyse annotated files:
     - *Statistics*:     Estimates/Save statistics on annotated files
     - *DataRoamer*:     Manipulate annotated files
     - *DataFilter*:     Extract data from annotated files (i.e. querying data)
-    - *Vizualizer*:     Display sound and annotated files 
+    - *Visualizer*:     Display sound and annotated files 
 
 
 3. Plugins
