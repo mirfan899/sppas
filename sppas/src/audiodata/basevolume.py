@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -42,7 +41,7 @@ import sppas.src.calculus.stats.moment as moment
 # ---------------------------------------------------------------------------
 
 
-class BaseVolume(object):
+class sppasBaseVolume(object):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -53,7 +52,7 @@ class BaseVolume(object):
 
     """
     def __init__(self, win_len=0.01):
-        """ Constructor. """
+        """ Create a sppasBaseVolume instance. """
         
         self._volumes = []
         self._rms = 0
@@ -82,7 +81,7 @@ class BaseVolume(object):
     # -----------------------------------------------------------------------
 
     def volume_at(self, index):
-        """ Return the value of the volume at a given index (rms).
+        """ Return the value of the volume at a given index.
         
         :returns: (int)
 
@@ -94,7 +93,7 @@ class BaseVolume(object):
     def volumes(self):
         """ Return the list of volume values (rms).
         
-        :returns: (int)
+        :returns: (list)
 
         """
         return self._volumes
@@ -201,6 +200,3 @@ class BaseVolume(object):
 
     def __getitem__(self, i):
         return self._volumes[i]
-
-    # -----------------------------------------------------------------------
-

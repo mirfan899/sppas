@@ -54,9 +54,9 @@ import sppas.src.annotationdata.utils.tierutils as tierutils
 import sppas.src.audiodata.aio as audiodataio
 
 from sppas.src.annotationdata.transcription import Transcription
-from sppas.src.audiodata.audio import AudioPCM
-from sppas.src.audiodata.channelformatter import ChannelFormatter
-from sppas.src.audiodata.channelmfcc import ChannelMFCC
+from sppas.src.audiodata.audio import sppasAudioPCM
+from sppas.src.audiodata.channelformatter import sppasChannelFormatter
+from sppas.src.audiodata.channelmfcc import sppasChannelMFCC
 
 from sppas.src.resources.dictpron import sppasDictPron
 from sppas.src.resources.vocab import sppasVocabulary
@@ -807,7 +807,7 @@ class sppasTrainingCorpus(object):
         try:
             audio = audiodataio.open(audio_filename)
             audio.extract_channel(0)
-            formatter = ChannelFormatter(audio.get_channel(0))
+            formatter = sppasChannelFormatter(audio.get_channel(0))
         except Exception:
             return False
 
@@ -818,7 +818,7 @@ class sppasTrainingCorpus(object):
         audio.close()
 
         # Save the converted channel
-        audio_out = AudioPCM()
+        audio_out = sppasAudioPCM()
         audio_out.append_channel(formatter.get_channel())
         audiodataio.save(os.path.join(self.datatrainer.get_storewav(), outfile + ".wav"), audio_out)
 
@@ -830,7 +830,7 @@ class sppasTrainingCorpus(object):
         with open(tmpfile, "w") as fp:
             fp.write('%s %s\n' % (wav, mfc))
 
-        cmfc = ChannelMFCC(formatter.get_channel())
+        cmfc = sppasChannelMFCC(formatter.get_channel())
         cmfc.hcopy(self.datatrainer.features.wavconfigfile, tmpfile)
         os.remove(tmpfile)
 

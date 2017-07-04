@@ -45,8 +45,8 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 import sppas.src.audiodata
-from sppas.src.audiodata.channelformatter import ChannelFormatter
-from sppas.src.audiodata.audio import AudioPCM
+from sppas.src.audiodata.channelformatter import sppasChannelFormatter
+from sppas.src.audiodata.audio import sppasAudioPCM
 
 # ----------------------------------------------------------------------------
 
@@ -74,7 +74,7 @@ audio = sppas.src.audiodata.open(args.w)
 idx = audio.extract_channel(args.c-1)
 
 # Do the job (do not modify the initial channel).
-formatter = ChannelFormatter(audio.get_channel(idx))
+formatter = sppasChannelFormatter(audio.get_channel(idx))
 
 if args.r:
     formatter.set_framerate(args.r)
@@ -98,6 +98,6 @@ if args.b:
     formatter.bias(args.b)
 
 # Save the converted channel
-audio_out = AudioPCM()
+audio_out = sppasAudioPCM()
 audio_out.append_channel(formatter.channel)
 sppas.src.audiodata.save(args.o, audio_out)

@@ -158,7 +158,7 @@ class AnchorTier(Tier):
     def append_silences(self, channel):
         """ Append silences as anchors.
 
-        :param channel: (Channel)
+        :param channel: (sppasChannel)
 
         """
         logging.debug(" ... Search silences:")

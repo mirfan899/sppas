@@ -32,7 +32,7 @@
     src.audiodata.aio.audiofactory.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Factory class for creating an AudioPCM.
+    Factory class for creating an sppasAudioPCM.
 
 """
 from .waveio import WaveIO
@@ -49,7 +49,7 @@ class AudioFactory(object):
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Factory for AudioPCM.
+    :summary:      Factory for sppasAudioPCM.
 
     """
     AUDIO_TYPES = {
@@ -62,13 +62,13 @@ class AudioFactory(object):
 
     @staticmethod
     def new_audio_pcm(audio_type):
-        """ Return a new AudioPCM according to the format.
+        """ Return a new sppasAudioPCM according to the format.
 
         :param audio_type: (str) a file extension.
-        :returns: AudioPCM
+        :returns: sppasAudioPCM
 
         """
         try:
             return AudioFactory.AUDIO_TYPES[audio_type.lower()]()
         except KeyError:
-            raise Exception("Unrecognized AudioPCM type: %s" % audio_type)
+            raise Exception("Unrecognized sppasAudioPCM type: %s" % audio_type)

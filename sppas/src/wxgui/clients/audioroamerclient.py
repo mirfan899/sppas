@@ -69,11 +69,11 @@ from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
 from sppas.src.wxgui.dialogs.choosers import PeriodChooser
 
 import sppas.src.audiodata.aio
-from sppas.src.audiodata.channelsilence import ChannelSilence
-from sppas.src.audiodata.channelformatter import ChannelFormatter
-from sppas.src.audiodata.audioframes import AudioFrames
-from sppas.src.audiodata.audio import AudioPCM
-from sppas.src.audiodata.audioutils import amp2db as amp2db
+from sppas.src.audiodata.channelsilence import sppasChannelSilence
+from sppas.src.audiodata.channelformatter import sppasChannelFormatter
+from sppas.src.audiodata.audioframes import sppasAudioFrames
+from sppas.src.audiodata.audio import sppasAudioPCM
+from sppas.src.audiodata.audioconvert import sppasAudioConverter
 
 from sppas import encoding
 
@@ -525,9 +525,9 @@ class AudioRoamerPanel(wx.Panel):
         wx.Panel.__init__(self, parent)
         self._channel  = channel  # Channel
         self._filename = None     # Fixed when "Save as" is clicked
-        self._cv = None           # ChannelSilence, fixed by ShowInfos
+        self._cv = None           # sppasChannelSilence, fixed by ShowInfos
         self._tracks = None       # the IPUs we found automatically
-        self._ca = None           # AudioFrames with only this channel, fixed by ShowInfos
+        self._ca = None           # sppasAudioFrames with only this channel, fixed by ShowInfos
         self._wxobj = {}          # Dict of wx objects
         self._prefs = None
 
@@ -798,9 +798,12 @@ class AudioRoamerPanel(wx.Panel):
         vmin = self._cv.get_volstats().min()
         vmax = self._cv.get_volstats().max()
         vavg = self._cv.get_volstats().mean()
-        self._wxobj["volmin"][1].ChangeValue(" "+str(vmin)+" ("+str(amp2db(vmin))+" dB) ")
-        self._wxobj["volmax"][1].ChangeValue(" "+str(vmax)+" ("+str(amp2db(vmax))+" dB) ")
-        self._wxobj["volavg"][1].ChangeValue(" "+str(int(vavg))+" ("+str(amp2db(vavg))+" dB) ")
+        vmin_db = sppasAudioConverter().amp2db(vmin)
+        vmax_db = sppasAudioConverter().amp2db(vmax)
+        vavg_db = sppasAudioConverter().amp2db(vavg)
+        self._wxobj["volmin"][1].ChangeValue(" "+str(vmin)+" ("+str(vmin_db)+" dB) ")
+        self._wxobj["volmax"][1].ChangeValue(" "+str(vmax)+" ("+str(vmax_db)+" dB) ")
+        self._wxobj["volavg"][1].ChangeValue(" "+str(int(vavg))+" ("+str(vavg_db)+" dB) ")
         self._wxobj["volsil"][1].ChangeValue(" "+str(self._cv.search_threshold_vol())+" ")
         self._wxobj["nbipus"][1].ChangeValue(" "+str(len(self._tracks))+" ")
         d = sum([(e-s) for (s,e) in self._tracks])
@@ -811,7 +814,7 @@ class AudioRoamerPanel(wx.Panel):
     def SetChannel(self, new_channel):
         """ Set a new channel, estimates the values to be displayed.
 
-        :param new_channel: (Channel)
+        :param new_channel: (sppasChannel)
 
         """
         # Set the channel
@@ -822,10 +825,10 @@ class AudioRoamerPanel(wx.Panel):
 
         # To estimate values related to amplitude
         frames = self._channel.get_frames(self._channel.get_nframes())
-        self._ca = AudioFrames(frames, self._channel.get_sampwidth(), 1)
+        self._ca = sppasAudioFrames(frames, self._channel.get_sampwidth(), 1)
 
         # Estimates the RMS (=volume), then find where are silences, then IPUs
-        self._cv = ChannelSilence(self._channel)
+        self._cv = sppasChannelSilence(self._channel)
         self._cv.search_silences()               # threshold=0, mintrackdur=0.08
         self._cv.filter_silences()               # minsildur=0.2
         self._tracks = self._cv.extract_tracks() # mintrackdur=0.3
@@ -841,7 +844,7 @@ class AudioRoamerPanel(wx.Panel):
 
         :param from_time: (float)
         :param to_time: (float)
-        :returns: (Channel) new channel or None if nothing changed
+        :returns: (sppasChannel) new channel or None if nothing changed
 
         """
         # Get the list of modifiable values from wx objects
@@ -869,7 +872,7 @@ class AudioRoamerPanel(wx.Panel):
         if fm != self._channel.get_framerate() or sp != self._channel.get_sampwidth() or mul != 1. or bias != 0 or offset is True:
             wx.BeginBusyCursor()
             b = wx.BusyInfo("Please wait while formatting data...")
-            channelfmt = ChannelFormatter(channel)
+            channelfmt = sppasChannelFormatter(channel)
             channelfmt.set_framerate(fm)
             channelfmt.set_sampwidth(sp)
             channelfmt.convert()
@@ -938,7 +941,7 @@ class AudioRoamerPanel(wx.Panel):
 
             # Save the channel
             try:
-                audio = AudioPCM()
+                audio = sppasAudioPCM()
                 audio.append_channel(channel)
                 sppas.src.audiodata.aio.save(new_filename, audio)
             except Exception as e:

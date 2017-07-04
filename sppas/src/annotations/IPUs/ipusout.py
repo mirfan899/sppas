@@ -40,7 +40,7 @@ from sppas import encoding
 from sppas.src.audiodata.autils import frames2times
 import sppas.src.audiodata.aio
 import sppas.src.annotationdata.aio
-from sppas.src.audiodata.audio import AudioPCM
+from sppas.src.audiodata.audio import sppasAudioPCM
 from sppas.src.annotationdata.transcription import Transcription
 from sppas.src.annotationdata.ptime.point import TimePoint
 from sppas.src.annotationdata.ptime.interval import TimeInterval
@@ -137,7 +137,7 @@ class IPUsOut(object):
         tieripu = trs.NewTier("IPUs")
         tier = trs.NewTier("Transcription")
         radius = ipusaudio.get_win_length() / 8.
-        # vagueness is win_length divided by 4 (see "refine" method of ChannelSilence class)
+        # vagueness is win_length divided by 4 (see "refine" method of sppasChannelSilence class)
         # radius is vagueness divided by 2
 
         # Convert the tracks: from frames to times
@@ -333,7 +333,7 @@ class IPUsOut(object):
                 track_basename = os.path.join(output, "track_%.06d" % (i+1))
 
             track_wavname = track_basename+"."+extension
-            audio_out = AudioPCM()
+            audio_out = sppasAudioPCM()
             audio_out.append_channel(ipusaudio.get_channel())
             try:
                 sppas.src.audiodata.aio.save_fragment(track_wavname, audio_out, split_track)

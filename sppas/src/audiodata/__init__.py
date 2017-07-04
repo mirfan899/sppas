@@ -44,10 +44,10 @@
 from sppas.src.utils.maketext import translate
 t = translate("audiodata")
 
-from .audio import AudioPCM
-from .channel import Channel
+from .audio import sppasAudioPCM
+from .channel import sppasChannel
 
 __all__ = [
-    'AudioPCM',
+    'sppasAudioPCM',
     'Channel'
 ]

@@ -33,13 +33,13 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from .audioframes import AudioFrames
-from .basevolume import BaseVolume
+from .audioframes import sppasAudioFrames
+from .basevolume import sppasBaseVolume
 
 # ----------------------------------------------------------------------------
 
 
-class ChannelVolume(BaseVolume):
+class sppasChannelVolume(sppasBaseVolume):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -54,11 +54,11 @@ class ChannelVolume(BaseVolume):
     def __init__(self, channel, win_len=0.01):
         """ Constructor.
 
-        :param channel: (Channel) The channel to work on.
+        :param channel: (sppasChannel) The channel to work on.
         :param win_len: (float) Window length to estimate the volume.
 
         """
-        BaseVolume.__init__(self, win_len)
+        sppasBaseVolume.__init__(self, win_len)
 
         # Remember current position
         pos = channel.tell()
@@ -73,7 +73,7 @@ class ChannelVolume(BaseVolume):
 
         for i in range(nbvols):
             frames = channel.get_frames(nbframes)
-            a = AudioFrames(frames, channel.get_sampwidth(), 1)
+            a = sppasAudioFrames(frames, channel.get_sampwidth(), 1)
             self._volumes[i] = a.rms()
 
         if self._volumes[-1] == 0:

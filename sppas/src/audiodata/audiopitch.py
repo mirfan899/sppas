@@ -38,16 +38,17 @@
 
 class AudioPitch(object):
     """
-    A pitch audio utility class.
-    ToDo:
-    Implements 3 different methods (at least) to estimate pitch and
-    an algorithm to "vote" (exactly as in Signaix, by R. Espesser).
+    :author:       Nicolas Chazeau, Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      A pitch audio utility class. NOT IMPLEMENTED!!!!
 
     """
     def __init__(self, delta=0.01):
-        """
-        Creates a new WavePitch instance with empty pith values.
-        """
+        """ Create a new AudioPitch instance. """
+
         self.pitch = []
         self.delta = delta
 
@@ -70,20 +71,20 @@ class AudioPitch(object):
 
     def get_pitch_list(self):
         """ Return pitch values. """
+
         return self.pitch
 
     # ------------------------------------------------------------------
 
     def get_pitch_delta(self):
-        """ Return the delta used to estimate pitch. """
+        """ Return the delta time used to estimate pitch. """
+
         return self.delta
 
     # ------------------------------------------------------------------
 
     def eval_pitch(self, filename):
-        """
-        Eval pitch values... (TODO)
-        At this stage, this will do: NOTHING!
+        """ WILL evaluate pitch values...
 
         """
         raise NotImplementedError

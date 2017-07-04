@@ -35,13 +35,13 @@
     The volume is the estimation of RMS values, sampled with a window of 10ms.
 
 """
-from .audioframes import AudioFrames
-from .basevolume import BaseVolume
+from .audioframes import sppasAudioFrames
+from .basevolume import sppasBaseVolume
 
 # ----------------------------------------------------------------------------
 
 
-class AudioVolume(BaseVolume):
+class sppasAudioVolume(sppasBaseVolume):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -52,13 +52,13 @@ class AudioVolume(BaseVolume):
 
     """
     def __init__(self, audio, win_len=0.01):
-        """ Constructor.
+        """ Create a sppasAudioVolume instance.
 
-        :param audio: (AudioPCM) The audio to work on.
+        :param audio: (sppasAudioPCM) The audio to work on.
         :param win_len: (float) Window length to estimate the volume.
 
         """
-        BaseVolume.__init__(self, win_len)
+        sppasBaseVolume.__init__(self, win_len)
 
         # Remember current position
         pos = audio.tell()
@@ -71,7 +71,7 @@ class AudioVolume(BaseVolume):
 
         while audio.tell() < audio.get_nframes():
             frames = audio.read_frames(nb_frames)
-            a = AudioFrames(frames, audio.get_sampwidth(), audio.get_nchannels())
+            a = sppasAudioFrames(frames, audio.get_sampwidth(), audio.get_nchannels())
             self._volumes.append(a.rms())
 
         # Returns to the position where we was before

@@ -1,17 +1,17 @@
 // AudioData Class Diagram
 
 // Nodes
-[AudioPCM|+audiofp;+channels;{bg:orange}]
-[Channel|+framerate;+sampwidth;+frames;+position;{bg:lightblue}]
-[ChannelVolumeStats|+channel;+rms;]
-[ChannelFormatter|+channel;+framerate;+sampwidth;]
-[ChannelFrames|+frames;]
-[ChannelMFCC|+channel;]
-[ChannelsMixer|+channels;]
+[sppasAudioPCM|+audiofp;+channels;{bg:orange}]
+[sppasChannel|+framerate;+sampwidth;+frames;+position;{bg:lightblue}]
+[sppasChannelVolume|+channel;+rms;]
+[sppasChannelFormatter|+channel;+framerate;+sampwidth;]
+[sppasChannelFrames|+frames;]
+[sppasChannelMFCC|+channel;]
+[sppasChannelMixer|+channels;]
 
 // Edges
-[AudioPCM]++-0..*>[Channel],
-[Channel]<1-[ChannelVolumeStats]
-[Channel]<1-[ChannelFormatter]
-[Channel]<1-[ChannelMFCC]
-[Channel]<1..*-[ChannelsMixer]
+[sppasAudioPCM]++-0..*>[Channel],
+[sppasChannel]<1-[sppasChannelVolume]
+[sppasChannel]<1-[sppasChannelFormatter]
+[sppasChannel]<1-[sppasChannelMFCC]
+[sppasChannel]<1..*-[sppasChannelMixer]

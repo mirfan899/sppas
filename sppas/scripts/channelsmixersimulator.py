@@ -45,7 +45,7 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 import sppas.src.audiodata
-from sppas.src.audiodata.channelsmixer import ChannelsMixer
+from sppas.src.audiodata.channelsmixer import sppasChannelMixer
 
 # ----------------------------------------------------------------------------
 
@@ -60,7 +60,7 @@ args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
 
-mixer = ChannelsMixer()
+mixer = sppasChannelMixer()
 
 for inputFile in args.w:
     audio = sppas.src.audiodata.open(inputFile)

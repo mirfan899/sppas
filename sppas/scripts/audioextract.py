@@ -45,7 +45,7 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 import sppas.src.audiodata.aio
-from sppas.src.audiodata.audio import AudioPCM
+from sppas.src.audiodata.audio import sppasAudioPCM
 
 # ----------------------------------------------------------------------------
 # Parse command-line
@@ -69,6 +69,6 @@ audio = sppas.src.audiodata.aio.open(args.w)
 idx = audio.extract_channel(args.c-1)
 
 # Save the converted channel
-audio_out = AudioPCM()
+audio_out = sppasAudioPCM()
 audio_out.append_channel(audio.get_channel(idx))
 sppas.src.audiodata.aio.save(args.o, audio_out)

@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -71,7 +70,7 @@ def test_command(command):
 # ---------------------------------------------------------------------------
 
 
-class ChannelMFCC( object ):
+class sppasChannelMFCC(object):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -82,9 +81,9 @@ class ChannelMFCC( object ):
 
     """
     def __init__(self, channel=None):
-        """ Constructor.
+        """ Create a sppasChannelMFCC instance.
 
-        :param channel: (Channel) The channel to work on. Currently not used...!!!
+        :param channel: (sppasChannel) The channel to work on. Currently not used...!!!
 
         """
         self._channel = channel
@@ -103,8 +102,8 @@ class ChannelMFCC( object ):
 
         try:
             subprocess.check_call(["HCopy", "-T", "0",
-                                  "-C", wavconfigfile,
-                                  "-S", scpfile])
+                                   "-C", wavconfigfile,
+                                   "-S", scpfile])
         except subprocess.CalledProcessError:
             return False
 

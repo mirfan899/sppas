@@ -30,8 +30,8 @@
 
         ---------------------------------------------------------------------
 
-    scripts.trsconvert.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~
+    scripts.audioinfo.py
+    ~~~~~~~~~~~~~~~~~~~~
 
     ... a script to get information about an audio file.
 
@@ -45,9 +45,9 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 import sppas.src.audiodata.aio
-from sppas.src.audiodata.audiovolume import AudioVolume
-from sppas.src.audiodata.channelvolume import ChannelVolume
-from sppas.src.audiodata.audioframes import AudioFrames
+from sppas.src.audiodata.audiovolume import sppasAudioVolume
+from sppas.src.audiodata.channelvolume import sppasChannelVolume
+from sppas.src.audiodata.audioframes import sppasAudioFrames
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -84,7 +84,7 @@ if nc == 1:
         c = audio.clipping_rate(f) * 100.
         print("  - factor={:.1f}:      {:.3f}".format(f, c))
 
-    audiovol = AudioVolume(audio, args.f)
+    audiovol = sppasAudioVolume(audio, args.f)
     print("Volume:")
     print("  - min:           {:d}".format(audiovol.min()))
     print("  - max:           {:d}".format(audiovol.max()))
@@ -102,14 +102,14 @@ else:
 
         # Values related to amplitude
         frames = channel.get_frames(channel.get_nframes())
-        ca = AudioFrames(frames, channel.get_sampwidth(), 1)
+        ca = sppasAudioFrames(frames, channel.get_sampwidth(), 1)
         for i in range(2, 9, 2):
             f = float(i)/10.
             c = ca.clipping_rate(f) * 100.
             print("  - factor={:.1f}:      {:.3f}".format(f, c))
 
         # RMS (=volume)
-        cv = ChannelVolume(channel)
+        cv = sppasChannelVolume(channel)
         print("  Volume:")
         print("  - min:           {:d}".format(cv.min()))
         print("  - max:           {:d}".format(cv.max()))

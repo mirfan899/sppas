@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -33,14 +32,14 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from .channelframes import ChannelFrames
-from .channel import Channel
-from .audioframes import AudioFrames
+from .channelframes import sppasChannelFrames
+from .channel import sppasChannel
+from .audioframes import sppasAudioFrames
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
-class ChannelFormatter(object):
+class sppasChannelFormatter(object):
     """
     :author:       Nicolas Chazeau, Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -51,21 +50,25 @@ class ChannelFormatter(object):
 
     """
     def __init__(self, channel):
-        """ Constructor.
+        """ Create a sppasChannelFormatter instance.
 
-        :param channel: (Channel) The channel to work on.
+        :param channel: (sppasChannel) The channel to work on.
 
         """
         self._channel = channel
         self._framerate = channel.get_framerate()
         self._sampwidth = channel.get_sampwidth()
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Getters
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_channel(self):
+        """ Return the sppasChannel. """
+
         return self._channel
+
+    # -----------------------------------------------------------------------
 
     def get_framerate(self):
         """ Return the expected frame rate for the channel.
@@ -77,6 +80,8 @@ class ChannelFormatter(object):
         """
         return self._framerate
 
+    # -----------------------------------------------------------------------
+
     def get_sampwidth(self):
         """ Return the expected sample width for the channel.
         Notice that while convert is not applied, it can be different of the
@@ -87,12 +92,12 @@ class ChannelFormatter(object):
         """
         return self._sampwidth
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Setters
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_framerate(self, framerate):
-        """ Return the expected frame rate for the channel.
+        """ Fix the expected frame rate for the channel.
         Notice that while convert is not applied, it can be different of the
         current one  of the channel.
 
@@ -101,7 +106,7 @@ class ChannelFormatter(object):
         """
         self._framerate = int(framerate)
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_sampwidth(self, sampwidth):
         """ Fix the expected sample width for the channel.
@@ -113,23 +118,23 @@ class ChannelFormatter(object):
         """
         self._sampwidth = int(sampwidth)
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def convert(self):
         """ Convert the channel.
         Convert to the expected (already) given sample width and frame rate.
 
         """
-        newchannel = Channel()
-        newchannel.set_frames(self.__convert_frames(self._channel.get_frames()))
-        newchannel.set_sampwidth(self._sampwidth)
-        newchannel.set_framerate(self._framerate)
+        new_channel = sppasChannel()
+        new_channel.set_frames(self.__convert_frames(self._channel.get_frames()))
+        new_channel.set_sampwidth(self._sampwidth)
+        new_channel.set_framerate(self._framerate)
 
-        self._channel = newchannel
+        self._channel = new_channel
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Workers
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def bias(self, bias_value):
         """ Convert the channel with a bias added to each frame.
@@ -140,15 +145,15 @@ class ChannelFormatter(object):
         """
         if bias_value == 0:
             return
-        newchannel = Channel()
-        newchannel.set_sampwidth(self._sampwidth)
-        newchannel.set_framerate(self._framerate)
-        a = AudioFrames(self._channel.get_frames(self._channel.get_nframes()), self._channel.get_sampwidth(), 1)
-        newchannel.set_frames(a.bias(bias_value))
+        new_channel = sppasChannel()
+        new_channel.set_sampwidth(self._sampwidth)
+        new_channel.set_framerate(self._framerate)
+        a = sppasAudioFrames(self._channel.get_frames(self._channel.get_nframes()), self._channel.get_sampwidth(), 1)
+        new_channel.set_frames(a.bias(bias_value))
 
-        self._channel = newchannel
+        self._channel = new_channel
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def mul(self, factor):
         """ Convert the channel.
@@ -161,37 +166,37 @@ class ChannelFormatter(object):
         """
         if factor == 1.:
             return
-        newchannel = Channel()
-        newchannel.set_sampwidth(self._sampwidth)
-        newchannel.set_framerate(self._framerate)
-        a = AudioFrames(self._channel.get_frames(self._channel.get_nframes()), self._channel.get_sampwidth(), 1)
-        newchannel.set_frames(a.mul(factor))
+        new_channel = sppasChannel()
+        new_channel.set_sampwidth(self._sampwidth)
+        new_channel.set_framerate(self._framerate)
+        a = sppasAudioFrames(self._channel.get_frames(self._channel.get_nframes()), self._channel.get_sampwidth(), 1)
+        new_channel.set_frames(a.mul(factor))
 
-        self._channel = newchannel
+        self._channel = new_channel
 
     # ----------------------------------------------------------------------
 
     def remove_offset(self):
         """ Convert the channel by removing the offset in the channel. """
 
-        newchannel = Channel()
-        newchannel.set_sampwidth(self._sampwidth)
-        newchannel.set_framerate(self._framerate)
-        a = AudioFrames(self._channel.get_frames(self._channel.get_nframes()), self._channel.get_sampwidth(), 1)
+        new_channel = sppasChannel()
+        new_channel.set_sampwidth(self._sampwidth)
+        new_channel.set_framerate(self._framerate)
+        a = sppasAudioFrames(self._channel.get_frames(self._channel.get_nframes()), self._channel.get_sampwidth(), 1)
         avg = a.avg()
-        newchannel.set_frames(a.bias(- avg))
+        new_channel.set_frames(a.bias(- avg))
 
-        self._channel = newchannel
+        self._channel = new_channel
 
     # ----------------------------------------------------------------------
 
     def sync(self, channel):
         """ Convert the channel with the parameters from the channel put in input.
 
-        @param channel (Channel) the channel used as a model
+        :param channel: (sppasChannel) the channel used as a model
 
         """
-        if isinstance(channel, Channel) is not True:
+        if isinstance(channel, sppasChannel) is not True:
             raise TypeError("Expected a channel, got %s" % type(channel))
 
         self._sampwidth = channel.get_sampwidth()
@@ -211,12 +216,12 @@ class ChannelFormatter(object):
             return
         if end < begin:
             raise ValueError
-        newchannel = Channel()
+        new_channel = sppasChannel()
         f = self._channel.get_frames()
-        newchannel.set_frames(f[:begin*self._sampwidth] + f[end*self._sampwidth:])
-        newchannel.set_sampwidth(self._sampwidth)
-        newchannel.set_framerate(self._framerate)
-        self._channel = newchannel
+        new_channel.set_frames(f[:begin*self._sampwidth] + f[end*self._sampwidth:])
+        new_channel.set_sampwidth(self._sampwidth)
+        new_channel.set_framerate(self._framerate)
+        self._channel = new_channel
 
     # ----------------------------------------------------------------------
 
@@ -229,12 +234,12 @@ class ChannelFormatter(object):
         """
         if len(frames) == 0:
             return
-        newchannel = Channel()
+        new_channel = sppasChannel()
         f = self._channel.get_frames()
-        newchannel.set_frames(f[:position*self._sampwidth] + frames + f[position*self._sampwidth:])
-        newchannel.set_sampwidth(self._sampwidth)
-        newchannel.set_framerate(self._framerate)
-        self._channel = newchannel
+        new_channel.set_frames(f[:position*self._sampwidth] + frames + f[position*self._sampwidth:])
+        new_channel.set_sampwidth(self._sampwidth)
+        new_channel.set_framerate(self._framerate)
+        self._channel = new_channel
 
     # ----------------------------------------------------------------------
 
@@ -246,11 +251,11 @@ class ChannelFormatter(object):
         """
         if len(frames) == 0:
             return
-        newchannel = Channel()
-        newchannel.set_frames(self._channel.get_frames() + frames)
-        newchannel.set_sampwidth(self._sampwidth)
-        newchannel.set_framerate(self._framerate)
-        self._channel = newchannel
+        new_channel = sppasChannel()
+        new_channel.set_frames(self._channel.get_frames() + frames)
+        new_channel.set_sampwidth(self._sampwidth)
+        new_channel.set_framerate(self._framerate)
+        self._channel = new_channel
 
     # ----------------------------------------------------------------------
     # Private
@@ -263,7 +268,7 @@ class ChannelFormatter(object):
 
         """
         f = frames
-        fragment = ChannelFrames(f)
+        fragment = sppasChannelFrames(f)
 
         # Convert the sample width if it needs to
         if self._channel.get_sampwidth() != self._sampwidth:
@@ -274,5 +279,3 @@ class ChannelFormatter(object):
             fragment.resample(self._sampwidth, self._channel.get_framerate(), self._framerate)
 
         return fragment.get_frames()
-
-# --------------------------------------------------------------------------

@@ -46,3 +46,6 @@ msgstr "Les canaux ne font pas la même taille."
 
 msgid ":ERROR 2070: "
 msgstr "La taille d'échantillon {value} est invalide. Il est attendu 1, 2 ou 4."
+
+msgid ":ERROR 2080: "
+msgstr "{value} n'est pas une valeur correcte de taux d'echantillonage."

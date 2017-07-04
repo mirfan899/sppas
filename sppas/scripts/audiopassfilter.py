@@ -46,8 +46,8 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 import sppas.src.audiodata
-from sppas.src.audiodata.channel import Channel
-from sppas.src.audiodata.audio import AudioPCM
+from sppas.src.audiodata.channel import sppasChannel
+from sppas.src.audiodata.audio import sppasAudioPCM
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -95,8 +95,8 @@ result = [int(sample * (2.0**15 - 1)) for sample in result]
 
 # ----------------------------------------------------------------------------
 
-audioout = AudioPCM()
-channel = Channel(framerate=SAMPLE_RATE, sampwidth=audioin.get_sampwidth(), frames=struct.pack('%dh' % len(result), *result))
+audioout = sppasAudioPCM()
+channel = sppasChannel(framerate=SAMPLE_RATE, sampwidth=audioin.get_sampwidth(), frames=struct.pack('%dh' % len(result), *result))
 audioout.append_channel(channel)
 sppas.src.audiodata.save(args.o, audioout)
 

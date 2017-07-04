@@ -163,7 +163,7 @@ class WaveCtrl( spControl ):
         Constructor.
 
         Non-wxPython related parameter:
-          - audio (AudioPCM): the audio instance.
+          - audio (sppasAudioPCM): the audio instance.
 
         """
         spControl.__init__(self, parent, id, pos, size)

@@ -1,5 +1,38 @@
-# -*- coding: utf8 -*-
+# -*- coding:utf-8 -*-
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.audiodata.tests.test_channel.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import unittest
 import os.path
 import shutil
@@ -8,7 +41,7 @@ from sppas import SAMPLES_PATH
 from sppas.src.utils.fileutils import sppasFileUtils
 from ..aio import open as audio_open
 from ..aio import save as audio_save
-from ..audio import AudioPCM
+from ..audio import sppasAudioPCM
 
 # ---------------------------------------------------------------------------
 
@@ -34,7 +67,7 @@ class TestChannel(unittest.TestCase):
         shutil.rmtree(TEMP)
 
     def test_Extract(self):
-        frames = self._sample_1.read_frames( self._sample_1.get_nframes() )
+        frames = self._sample_1.read_frames(self._sample_1.get_nframes())
         self._sample_1.rewind()
         cidx = self._sample_1.extract_channel(0)
         channel = self._sample_1.get_channel(cidx)
@@ -42,7 +75,7 @@ class TestChannel(unittest.TestCase):
         self.assertEqual(frames, channel.get_frames())
         self.assertEqual(frames, channel.get_frames(channel.get_nframes()))
 
-        frames = self._sample_2.read_frames( self._sample_2.get_nframes() )
+        frames = self._sample_2.read_frames(self._sample_2.get_nframes())
         frameschannel = ""
         # we are going to extract the channel number 2,
         # so we have to skip all frames which belong to the channel number 1
@@ -59,7 +92,7 @@ class TestChannel(unittest.TestCase):
 
     def test_GetFrames(self):
         self._sample_1.seek(1000)
-        frames = self._sample_1.read_frames( 500 )
+        frames = self._sample_1.read_frames(500)
         self._sample_1.rewind()
         cidx = self._sample_1.extract_channel(0)
         channel = self._sample_1.get_channel(cidx)
@@ -71,25 +104,25 @@ class TestChannel(unittest.TestCase):
     def test_Save(self):
         cidx = self._sample_1.extract_channel(0)
         channel = self._sample_1.get_channel(cidx)
-        audio = AudioPCM()
-        audio.append_channel( channel )
+        audio = sppasAudioPCM()
+        audio.append_channel(channel)
         sample_new = os.path.join(TEMP, "converted.wav")
-        audio_save( sample_new, audio )
-        savedaudio = audio_open( sample_new )
+        audio_save(sample_new, audio)
+        savedaudio = audio_open(sample_new)
 
         self._sample_1.rewind()
-        frames = self._sample_1.read_frames( self._sample_1.get_nframes() )
-        savedframes = savedaudio.read_frames( self._sample_1.get_nframes() )
+        frames = self._sample_1.read_frames(self._sample_1.get_nframes())
+        savedframes = savedaudio.read_frames(self._sample_1.get_nframes())
         self.assertEqual(len(frames), len(savedframes))
         self.assertEqual(frames, savedframes)
 
         savedaudio.close()
-        os.remove( sample_new )
+        os.remove(sample_new)
 
     def test_ExtractFragment(self):
         self._sample_1.extract_channel(0)
         self._sample_3.extract_channel(0)
 
         channel = self._sample_1.get_channel(0)
-        newchannel = channel.extract_fragment(1*channel.get_framerate(),2*channel.get_framerate())
+        newchannel = channel.extract_fragment(1*channel.get_framerate(), 2*channel.get_framerate())
         self.assertEqual(newchannel.get_nframes()/newchannel.get_framerate(), 1)

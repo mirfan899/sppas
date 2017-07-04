@@ -35,7 +35,7 @@
     Silence/speech automatic segmentation system.
 
 """
-from sppas.src.audiodata.channelsilence import ChannelSilence
+from sppas.src.audiodata.channelsilence import sppasChannelSilence
 
 # ---------------------------------------------------------------------------
 
@@ -110,7 +110,7 @@ class IPUsAudio(object):
         
         """
         if channel is not None:
-            self._channel_sil = ChannelSilence(channel, self._win_length)
+            self._channel_sil = sppasChannelSilence(channel, self._win_length)
         else:
             self._channel_sil = None
 

@@ -33,13 +33,13 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from .channel import Channel
-from .channelvolume import ChannelVolume
+from .channel import sppasChannel
+from .channelvolume import sppasChannelVolume
 
 # ----------------------------------------------------------------------------
 
 
-class ChannelSilence(object):
+class sppasChannelSilence(object):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -50,27 +50,33 @@ class ChannelSilence(object):
 
     """
     def __init__(self, channel, win_len=0.01):
-        """ Constructor.
+        """ Create a sppasChannelSilence instance.
 
-        :param channel (Channel) the input channel object
+        :param channel (sppasChannel) the input channel object
         :param win_len (float) duration of a window for the estimation of the volume
 
         """
         self._channel = channel
-        self._volume_stats = ChannelVolume(channel, win_len)
+        self._volume_stats = sppasChannelVolume(channel, win_len)
         self.__silences = []
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_channel(self):
+        """ Return the sppasChannel. """
+
         return self._channel
 
+    # -----------------------------------------------------------------------
+
     def get_volstats(self):
+        """ Return the sppasChannelVolume of the sppasChannel. """
+
         return self._volume_stats
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Utility method
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def track_data(self, tracks):
         """ Get the track data: a set of frames for each track.
@@ -91,7 +97,7 @@ class ChannelSilence(object):
             # Keep in mind the related frames
             yield self._channel.get_frames(to_pos - from_pos)
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def refine(self, pos, threshold, win_length=0.005, direction=1):
         """ Refine the position of a silence around a given position.
@@ -107,8 +113,8 @@ class ChannelSilence(object):
         from_pos = max(pos-delta, 0)
         self._channel.seek(from_pos)
         frames = self._channel.get_frames(delta*2)
-        c = Channel(self._channel.get_framerate(), self._channel.get_sampwidth(), frames)
-        vol_stats = ChannelVolume(c, win_length)
+        c = sppasChannel(self._channel.get_framerate(), self._channel.get_sampwidth(), frames)
+        vol_stats = sppasChannelVolume(c, win_length)
 
         if direction == 1:
             for i, v in enumerate(vol_stats):
@@ -123,7 +129,7 @@ class ChannelSilence(object):
 
         return pos
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def extract_tracks(self, mintrackdur=0.300, shiftdurstart=0.010, shiftdurend=0.010):
         """ Return a list of tuples (from_pos,to_pos) of the tracks.
@@ -165,9 +171,9 @@ class ChannelSilence(object):
 
         return tracks
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # New silence detection
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def search_threshold_vol(self):
         """ Try to fix optimally the threshold for speech/silence segmentation.
@@ -185,7 +191,7 @@ class ChannelSilence(object):
 
         return vmin + int((vmean - vcvar))
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def search_silences(self, threshold=0, mintrackdur=0.08):
         """ Search windows with a volume lesser than a given threshold.
@@ -241,7 +247,7 @@ class ChannelSilence(object):
 
         return threshold
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def filter_silences(self, minsildur=0.200):
         """ Filtered the current silences.
@@ -262,7 +268,7 @@ class ChannelSilence(object):
 
         return len(self.__silences)
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_silences(self, silences):
         """ Fix manually silences!
@@ -272,7 +278,7 @@ class ChannelSilence(object):
         """
         self.__silences = silences
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def reset_silences(self):
         """ Reset silences. """
@@ -280,7 +286,7 @@ class ChannelSilence(object):
         self.__silences = []
 
     # -----------------------------------------------------------------------
-    #
+    # overloads
     # -----------------------------------------------------------------------
 
     def __len__(self):

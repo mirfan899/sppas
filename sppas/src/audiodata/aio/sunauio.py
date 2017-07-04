@@ -36,12 +36,12 @@
 """
 import sunau
 
-from ..audio import AudioPCM
+from ..audio import sppasAudioPCM
 
 # ---------------------------------------------------------------------------
 
 
-class SunauIO(AudioPCM):
+class SunauIO(sppasAudioPCM):
     """
     :author:      Nicolas Chazeau, Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -54,7 +54,7 @@ class SunauIO(AudioPCM):
     def __init__(self):
         """ Constructor. """
 
-        AudioPCM.__init__(self)
+        sppasAudioPCM.__init__(self)
 
     # ------------------------------------------------------------------------
 

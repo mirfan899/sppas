@@ -29,7 +29,7 @@
         ---------------------------------------------------------------------
 
     src.audiodata.audio.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~
 
     Pulse-code modulation (PCM) is a method used to digitally represent sampled
     analog signals. A PCM signal is a sequence of digital audio samples
@@ -52,15 +52,16 @@
 """
 import struct
 
-from .audioframes import AudioFrames
+from .audioframes import sppasAudioFrames
+from .audioconvert import sppasAudioConverter
 from .audiodataexc import AudioError, AudioDataError, ChannelIndexError, MixChannelError
-from .channel import Channel
-from .channelsmixer import ChannelsMixer
+from .channel import sppasChannel
+from .channelsmixer import sppasChannelMixer
 
 # ---------------------------------------------------------------------------
 
 
-class AudioPCM(object):
+class sppasAudioPCM(object):
     """
     :author:       Nicolas Chazeau, Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -91,8 +92,9 @@ class AudioPCM(object):
 
     """
     def __init__(self):
-        """ Creates a new AudioPCM instance. """
-        super(AudioPCM, self).__init__()
+        """ Creates a new sppasAudioPCM instance. """
+
+        super(sppasAudioPCM, self).__init__()
 
         # The audio file pointer
         self._audio_fp = None
@@ -102,13 +104,13 @@ class AudioPCM(object):
 
     # ----------------------------------------------------------------------
 
-    def Set(self, other):
-        """ Set a new AudioPCM() instance.
+    def set(self, other):
+        """ Set a new sppasAudioPCM() instance.
 
         It can be set either with an audio file pointer, or a list of
         channels or both.
 
-        :param other: (AudioPCM) AudioPCM to set
+        :param other: (sppasAudioPCM) the other sppasAudioPCM to set
 
         """
         self._audio_fp = other.get_audiofp()
@@ -141,10 +143,10 @@ class AudioPCM(object):
     def remove_channel(self, channel):
         """ Remove a channel from the list of uploaded channels.
 
-        :param channel: (Channel) the channel to remove
+        :param channel: (sppasChannel) the channel to remove
 
         """
-        self._channels.pop(channel)
+        self._channels.remove(channel)
 
     # ----------------------------------------------------------------------
 
@@ -163,7 +165,7 @@ class AudioPCM(object):
         """ Insert a channel at the position given in the list of uploaded channels.
 
         :param idx: (int) the index where the channel has to be inserted
-        :param channel: (Channel) the channel to insert
+        :param channel: (sppasChannel) the channel to insert
 
         """
         idx = int(idx)
@@ -175,7 +177,7 @@ class AudioPCM(object):
         """ Get an uploaded channel.
 
         :param idx: (int) the index of the channel to return
-        :returns: (Channel)
+        :returns: (sppasChannel)
 
         """
         idx = int(idx)
@@ -186,7 +188,7 @@ class AudioPCM(object):
     def append_channel(self, channel):
         """ Append a channel to the list of uploaded channels.
 
-        :param channel: (Channel) the channel to append
+        :param channel: (sppasChannel) the channel to append
         :returns: index of the channel
 
         """
@@ -199,12 +201,12 @@ class AudioPCM(object):
         """ Extract a channel from the Audio File Pointer,
          and append it into the list of channels.
 
-        Frames are stored into a Channel() instance.
+        Frames are stored into a sppasChannel() instance.
         Index of the channel in the audio file:
         0 = 1st channel (left); 1 = 2nd channel (right); 2 = 3rd channel...
 
         :param index: (int) The index of the channel to extract
-        :returns: the index of the Channel() in the list
+        :returns: the index of the sppasChannel() in the list
 
         """
         if self._audio_fp is None:
@@ -225,14 +227,14 @@ class AudioPCM(object):
             raise ChannelIndexError(index)
 
         if nc == 1:
-            channel = Channel(self.get_framerate(), self.get_sampwidth(), data)
+            channel = sppasChannel(self.get_framerate(), self.get_sampwidth(), data)
             return self.append_channel(channel)
 
         frames = ""
         sw = self.get_sampwidth()
         for i in range(index*sw, len(data), nc*sw):
             frames += data[i:i+sw]
-        channel = Channel(self.get_framerate(), self.get_sampwidth(), frames)
+        channel = sppasChannel(self.get_framerate(), self.get_sampwidth(), frames)
 
         return self.append_channel(channel)
 
@@ -257,8 +259,8 @@ class AudioPCM(object):
         for index in range(nc):
             frames = ""
             for i in range(index*sw, len(data), nc*sw):
-                frames += data[i:i+sw]
-            channel = Channel(self.get_framerate(), self.get_sampwidth(), frames)
+                frames = frames + data[i:i+sw]
+            channel = sppasChannel(self.get_framerate(), self.get_sampwidth(), frames)
             self.append_channel(channel)
 
     # ----------------------------------------------------------------------
@@ -293,35 +295,15 @@ class AudioPCM(object):
         """ Read the samples from the audio file.
 
         :param nframes: (int) the number of frames to read
-        :returns: (list) samples
+        :returns: (list of list) list of samples of each channel
 
         """
         if self._audio_fp is None:
             raise AudioError
 
-        data = self.read_frames(nframes)
-
-        # Unpack to get all values, depending on the number of bytes of each value.
-        if self.get_sampwidth() == 4:
-            data = struct.unpack("<%ul" % (len(data) / 4), data)
-
-        elif self.get_sampwidth() == 2:
-            data = struct.unpack("<%uh" % (len(data) / 2), data)
-
-        else:
-            data = struct.unpack("%uB" % len(data), data)
-            data = [s - 128 for s in data]
-
-        nc = self.get_nchannels()
-        samples = list()
-        if nc > 1:
-            # Split channels
-            for i in range(nc):
-                samples.append([data[j] for j in range(i, len(data), nc)])
-        else:
-            samples.append(list(data))
-
-        return samples
+        return sppasAudioConverter().unpack_data(self.read_frames(nframes),
+                                                 self.get_sampwidth(),
+                                                 self.get_nchannels())
 
     # ----------------------------------------------------------------------
     # Getters, for audiofp
@@ -415,7 +397,7 @@ class AudioPCM(object):
         """
         pos = self.tell()
         self.seek(0)
-        a = AudioFrames(self.read_frames(self.get_nframes()), self.get_sampwidth(), self.get_nchannels())
+        a = sppasAudioFrames(self.read_frames(self.get_nframes()), self.get_sampwidth(), self.get_nchannels())
         self.seek(pos)
 
         return a.rms()
@@ -433,7 +415,7 @@ class AudioPCM(object):
         """
         pos = self.tell()
         self.seek(0)
-        a = AudioFrames(self.read_frames(self.get_nframes()), self.get_sampwidth())
+        a = sppasAudioFrames(self.read_frames(self.get_nframes()), self.get_sampwidth())
         self.seek(pos)
 
         return a.clipping_rate(factor)
@@ -488,7 +470,7 @@ class AudioPCM(object):
         :returns: (bool)
 
         """
-        mixer = ChannelsMixer()
+        mixer = sppasChannelMixer()
         f = 1./len(self._channels)
         for c in self._channels:
             mixer.append_channel(c, f)

@@ -30,36 +30,46 @@
         ---------------------------------------------------------------------
 
     src.audiodata.audioframes.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import audioop
 import struct
 
-from .audioutils import get_maxval as audio_get_maxval
-from .audioutils import get_minval as audio_get_minval
+from .audiodataexc import SampleWidthError, ChannelIndexError
 
 # ---------------------------------------------------------------------------
 
 
-class AudioFrames(object):
+class sppasAudioFrames(object):
     """
-    :author:      Nicolas Chazeau, Brigitte Bigi
+    :author:       Nicolas Chazeau, Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    :summary:      An utility for frames of audio frames.
+    :summary:      An utility class for audio frames.
+
+    TODO: There's no unittests of this class.
 
     """
     def __init__(self, frames="", sampwidth=2, nchannels=1):
-        """ Constructor.
+        """ Create an sppasAudioFrames instance.
 
         :param frames: (str) input frames.
         :param sampwidth: (int) sample width of the frames.
         :param nchannels: (int) number of channels in the samples
 
         """
+        # Check the type and if values are appropriate
+        frames = str(frames)
+        if sampwidth not in [1, 2, 4]:
+            raise SampleWidthError
+        nchannels = int(nchannels)
+        if nchannels < 1:
+            raise ChannelIndexError(nchannels)
+
+        # Set data
         self._frames = frames
         self._sampwidth = sampwidth
         self._nchannels = nchannels
@@ -86,19 +96,22 @@ class AudioFrames(object):
         :returns: (str) converted frames
 
         """
+        if new_sampwidth not in [1, 2, 4]:
+            raise SampleWidthError
         return audioop.lin2lin(self._frames, self._sampwidth, new_sampwidth)
 
     # -----------------------------------------------------------------------
 
-    def bias(self, bias_value):
+    def bias(self, value):
         """ Return frames that is the original fragment with a bias added to each sample.
         Samples wrap around in case of overflow.
 
-        :param bias_value: (int) the bias which will be applied to each sample.
+        :param value: (int) the bias which will be applied to each sample.
         :returns: (str) converted frames
 
         """
-        return audioop.bias(self._frames, self._sampwidth, bias_value)
+        value = int(value)
+        return audioop.bias(self._frames, self._sampwidth, value)
 
     # -----------------------------------------------------------------------
 
@@ -169,7 +182,7 @@ class AudioFrames(object):
                         new_frames = new_frames + self._frames[j+k]
                 rms_sum += audioop.rms(new_frames, self._sampwidth)
 
-            return rms_sum/self._nchannels
+            return int(rms_sum/self._nchannels)
 
     # -----------------------------------------------------------------------
 
@@ -190,8 +203,8 @@ class AudioFrames(object):
             data = struct.unpack("%uB" % len(self._frames), self._frames)
             data = [s - 128 for s in data]
 
-        max_val = audio_get_maxval(self._sampwidth)*(factor/2.)
-        min_val = audio_get_minval(self._sampwidth)*(factor/2.)
+        max_val = int(sppasAudioFrames.get_maxval(self._sampwidth) * (factor/2.))
+        min_val = int(sppasAudioFrames.get_minval(self._sampwidth) * (factor/2.))
 
         nb_clipping = 0
         for i in range(len(data)):
@@ -199,3 +212,47 @@ class AudioFrames(object):
                 nb_clipping += 1
 
         return float(nb_clipping)/len(data)
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def get_maxval(size, signed=True):
+        """ Return the max value for a given sampwidth.
+
+        :param size: (int) the sampwidth
+        :param signed: (bool) if the values will be signed or not
+        :returns: (int) the max value
+
+        """
+        if signed and size == 1:
+            return 0x7f
+        elif size == 1:
+            return 0xff
+        elif signed and size == 2:
+            return 0x7fff
+        elif size == 2:
+            return 0xffff
+        elif signed and size == 4:
+            return 0x7fffffff
+        elif size == 4:
+            return 0xffffffff
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def get_minval(size, signed=True):
+        """ Return the min value for a given sampwidth.
+
+        :param size: (int) the sampwidth
+        :param signed: (bool) if the values will be signed or not
+        :returns: (int) the min value
+
+        """
+        if not signed:
+            return 0
+        elif size == 1:
+            return -0x80
+        elif size == 2:
+            return -0x8000
+        elif size == 4:
+            return -0x80000000

@@ -30,7 +30,7 @@
         ---------------------------------------------------------------------
 
     src.audiodata.audiodataexc.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Exceptions for audiodata package.
 
@@ -47,6 +47,7 @@ MIX_SAMPLEWIDTH = ":ERROR 2060: "
 MIX_FRAMERATE = ":ERROR 2061: "
 MIX_NFRAMES = ":ERROR 2062: "
 SAMPLEWIDTH_ERROR = ":ERROR 2070: "
+FRAMERATE_ERROR = ":ERROR 2080: "
 
 # -----------------------------------------------------------------------
 
@@ -163,5 +164,16 @@ class SampleWidthError(ValueError):
 
     def __str__(self):
         return repr(self.parameter)
-
 # -----------------------------------------------------------------------
+
+
+class FrameRateError(ValueError):
+    """ :ERROR 2080: Invalid framerate {value}. """
+
+    def __init__(self, value):
+        value = int(value)
+        self.parameter = FRAMERATE_ERROR +\
+                         (t.gettext(FRAMERATE_ERROR)).format(value=value)
+
+    def __str__(self):
+        return repr(self.parameter)

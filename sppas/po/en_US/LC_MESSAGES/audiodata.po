@@ -46,3 +46,6 @@ msgstr "Channels have not the same number of frames."
 
 msgid ":ERROR 2070: "
 msgstr "Invalid sample width. Expect 1, 2 or 4. Got {value}."
+
+msgid ":ERROR 2080: "
+msgstr "Invalid framerate. Got {value}."

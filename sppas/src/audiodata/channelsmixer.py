@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -35,18 +34,15 @@
 """
 import struct
 
-from .channel import Channel
-from .channelframes import ChannelFrames
+from .channel import sppasChannel
+from .channelframes import sppasChannelFrames
 from .audiodataexc import MixChannelError
-
-from .audioutils import get_minval as audio_get_minval
-from .audioutils import get_maxval as audio_get_maxval
-from .audioutils import unpack_data as audio_unpack_data
+from .audioconvert import sppasAudioConverter
 
 # ---------------------------------------------------------------------------
 
 
-class ChannelsMixer(object):
+class sppasChannelMixer(object):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -57,7 +53,7 @@ class ChannelsMixer(object):
 
     """
     def __init__(self):
-        """ Constructor. """
+        """ Create a ChannelMixer instance. """
         
         self._channels = []
         self._factors = []
@@ -68,7 +64,7 @@ class ChannelsMixer(object):
         """ Return the channel of a given index.
 
         :param idx: (int) the index of the channel to return
-        :returns: (Channel)
+        :returns: (sppasChannel)
 
         """
         return self._channels[idx]
@@ -110,7 +106,8 @@ class ChannelsMixer(object):
 
     # -----------------------------------------------------------------------
 
-    def _sample_calculator(self, channels, pos, sampwidth, factors, attenuator):
+    @staticmethod
+    def _sample_calculator(channels, pos, sampwidth, factors, attenuator):
         """ Return the sample value, applying a factor and an attenuator.
 
         :param channels: (Channel[]) the list of channels
@@ -118,20 +115,22 @@ class ChannelsMixer(object):
         :param sampwidth: (int) the sample width
         :param factors: (float[]) the list of factors to apply to each sample of a channel (1 channel = 1 factor)
         :param attenuator: (float) a factor to apply to each sum of samples
-        :returns: the value of the sample calculated (float)
+
+        :returns: (float) the value of the sample calculated
 
         """
         # variables to compare the value of the result sample to avoid clipping
-        minval = audio_get_minval(sampwidth)
-        maxval = audio_get_maxval(sampwidth)
+        minval = float(sppasChannelFrames().get_minval(sampwidth))
+        maxval = float(sppasChannelFrames().get_maxval(sampwidth))
 
         # the result sample is the sum of each sample with the application of the factors
         sampsum = 0
         for factor, channel in zip(factors, channels):
             data = channel.get_frames()[pos:pos+sampwidth]
-            data = audio_unpack_data(data, sampwidth)
+            data = sppasAudioConverter().unpack_data(data, sampwidth, 1)
+            data = data[0]
             # without a cast, sum is a float!
-            sampsum += data[0]*factor*attenuator
+            sampsum += (data[0] * factor * attenuator)
 
         # truncate the values if there is clipping
         if sampsum < 0:
@@ -140,7 +139,7 @@ class ChannelsMixer(object):
         elif sampsum > 0:
             return min(sampsum, maxval)
 
-        return 0
+        return 0.
 
     # -----------------------------------------------------------------------
 
@@ -159,15 +158,18 @@ class ChannelsMixer(object):
         frames = ""
         if sampwidth == 4:
             for s in range(0, len(self._channels[0].get_frames()), sampwidth):
-                frames += struct.pack("<l", long(self._sample_calculator(self._channels, s, sampwidth, self._factors, attenuator)))
+                value = sppasChannelMixer._sample_calculator(self._channels, s, sampwidth, self._factors, attenuator)
+                frames += struct.pack("<l", long(value))
         elif sampwidth == 2:
             for s in range(0, len(self._channels[0].get_frames()), sampwidth):
-                frames += struct.pack("<h", int(self._sample_calculator(self._channels, s, sampwidth, self._factors, attenuator)))
+                value = sppasChannelMixer._sample_calculator(self._channels, s, sampwidth, self._factors, attenuator)
+                frames += struct.pack("<h", int(value))
         else:
             for s in range(0, len(self._channels[0].get_frames()), sampwidth):
-                frames += struct.pack("<b", int(self._sample_calculator(self._channels, s, sampwidth, self._factors, attenuator)))
+                value = sppasChannelMixer._sample_calculator(self._channels, s, sampwidth, self._factors, attenuator)
+                frames += struct.pack("<b", int(value))
 
-        return Channel(framerate, sampwidth, str(frames))
+        return sppasChannel(framerate, sampwidth, str(frames))
 
     # -----------------------------------------------------------------------
 
@@ -185,7 +187,8 @@ class ChannelsMixer(object):
         maxval = 0
         sampsum = 0
         for s in range(0, len(self._channels[0].get_frames()), sampwidth):
-            sampsum = long(self._sample_calculator(self._channels, s, sampwidth, self._factors, 1))
+            value = sppasChannelMixer._sample_calculator(self._channels, s, sampwidth, self._factors, 1)
+            sampsum = long(value)
             maxval = max(sampsum, maxval)
             minval = min(sampsum, minval)
 
@@ -204,8 +207,8 @@ class ChannelsMixer(object):
 
         for i in range(len(self._channels)):
             if self._channels[i].get_nframes() < nframes:
-                fragment = ChannelFrames(self._channels[i].get_frames())
+                fragment = sppasChannelFrames(self._channels[i].get_frames())
                 fragment.append_silence(nframes - self._channels[i].get_nframes())
-                self._channels[i] = Channel(self._channels[i].get_framerate(), self._channels[i].get_sampwidth(), fragment.get_frames())
-
-    # -----------------------------------------------------------------------
+                self._channels[i] = sppasChannel(self._channels[i].get_framerate(),
+                                                 self._channels[i].get_sampwidth(),
+                                                 fragment.get_frames())

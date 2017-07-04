@@ -46,8 +46,8 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 import sppas.scr.audiodata.aio
-from sppas.scr.audiodata.channelformatter import ChannelFormatter
-from sppas.scr.audiodata.audio import AudioPCM
+from sppas.scr.audiodata.channelformatter import sppasChannelFormatter
+from sppas.scr.audiodata.audio import sppasAudioPCM
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -79,7 +79,7 @@ audio.close()
 print(time.strftime("%H:%M:%S"))
 
 # Do the job (do not modify the initial channel).
-formatter = ChannelFormatter(audio.get_channel(idx))
+formatter = sppasChannelFormatter(audio.get_channel(idx))
 if args.r:
     formatter.set_framerate(args.r)
 if args.b:
@@ -88,7 +88,7 @@ formatter.convert()
 print(time.strftime("%H:%M:%S"))
 
 # Save the converted channel
-audio_out = AudioPCM()
+audio_out = sppasAudioPCM()
 audio_out.append_channel(formatter.channel)
 sppas.src.audiodata.save(args.o, audio_out)
 print(time.strftime("%H:%M:%S"))

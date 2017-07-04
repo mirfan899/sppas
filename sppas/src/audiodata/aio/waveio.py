@@ -37,20 +37,20 @@
 
 import wave
 
-from ..audio import AudioPCM
+from ..audio import sppasAudioPCM
 from sppas.src.utils.makeunicode import u
 
 # ---------------------------------------------------------------------------
 
 
-class WaveIO(AudioPCM):
+class WaveIO(sppasAudioPCM):
     """
     @authors:      Nicolas Chazeau, Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      A wave file open/save AudioPCM class.
+    @summary:      A wave file open/save sppasAudioPCM class.
 
     Waveform Audio File Format is a Microsoft and IBM audio file format
     standard for storing an audio bitstream on PCs. It is an application of
@@ -63,15 +63,14 @@ class WaveIO(AudioPCM):
         Constructor.
 
         """
-        AudioPCM.__init__(self)
+        sppasAudioPCM.__init__(self)
 
     # -----------------------------------------------------------------------
 
     def open(self, filename):
-        """
-        Get an audio from a Waveform Audio File Format file.
+        """ Get an audio from a Waveform Audio File Format file.
 
-        @param filename (string) input file name.
+        :param filename (str) input file name.
 
         """
         # Use the standard wave library to load the wave file
@@ -81,10 +80,9 @@ class WaveIO(AudioPCM):
     # -----------------------------------------------------------------------
 
     def save(self, filename):
-        """
-        Write an audio content as a Waveform Audio File Format file.
+        """ Write an audio content as a Waveform Audio File Format file.
 
-        @param filename (string) output filename.
+        :param filename (str) output filename.
 
         """
         if self._audio_fp:

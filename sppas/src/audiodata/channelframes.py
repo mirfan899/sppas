@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -33,12 +32,12 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from .audioframes import AudioFrames
+from .audioframes import sppasAudioFrames
 
 # ---------------------------------------------------------------------------
 
 
-class ChannelFrames( object ):
+class sppasChannelFrames(object):
     """
     :author:       Nicolas Chazeau, Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -49,7 +48,7 @@ class ChannelFrames( object ):
 
     """
     def __init__(self, frames=""):
-        """ Constructor.
+        """ Create a sppasChannelFrames instance.
 
         :param frames: (str) Frames that must be MONO ONLY.
 
@@ -116,7 +115,7 @@ class ChannelFrames( object ):
         :param newrate: (int) new frame rate of the frames
 
         """
-        a = AudioFrames(self._frames, sampwidth, 1)
+        a = sppasAudioFrames(self._frames, sampwidth, 1)
         self._frames = a.resample(rate, newrate)
 
     # ----------------------------------------------------------------------------
@@ -130,5 +129,17 @@ class ChannelFrames( object ):
         (1 for 8 bits, 2 for 16 bits, 4 for 32 bits)
 
         """
-        a = AudioFrames(self._frames, sampwidth, 1)
+        a = sppasAudioFrames(self._frames, sampwidth, 1)
         self._frames = a.change_sampwidth(newsampwidth)
+
+    # ----------------------------------------------------------------------------
+
+    @staticmethod
+    def get_minval(size, signed=True):
+        return sppasAudioFrames().get_minval(size, signed)
+
+    # ----------------------------------------------------------------------------
+
+    @staticmethod
+    def get_maxval(size, signed=True):
+        return sppasAudioFrames().get_maxval(size, signed)

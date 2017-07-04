@@ -47,9 +47,10 @@ sys.path.append(SPPAS)
 
 import sppas.src.audiodata.aio
 from sppas.src.audiodata.aio import extensionsul
-from sppas.src.audiodata.audioutils import mel2db, db2mel, get_maxval
-from sppas.src.audiodata.audio import AudioPCM
-from sppas.src.audiodata.channelsmixer import ChannelsMixer
+from sppas.src.audiodata.audio import sppasAudioPCM
+from sppas.src.audiodata.audioframes import sppasAudioFrames
+from sppas.src.audiodata.audioconvert import sppasAudioConverter
+from sppas.src.audiodata.channelsmixer import sppasChannelMixer
 from sppas.src.term.textprogress import ProcessProgressTerminal
 
 # ----------------------------------------------------------------------------
@@ -144,9 +145,11 @@ def extract_channels(settings, factor=0, channel=0, p=None):
 
         # RMS EXTRACTION
         if factor > 0:
-            rms = channelparameter['channel'].rms()  # audioutils.get_rms(channelparameter['channel'].frames, audio.get_sampwidth())
-            rmswanted = mel2db(db2mel(rms)*factor)
-            channelparameter['factor'] = rmswanted/rms
+            rms = channelparameter['channel'].rms()
+            mel = sppasAudioConverter().hz2mel(rms)
+            mel_wanted = mel * factor
+            rms_wanted = sppasAudioConverter().mel2hz(mel_wanted)
+            channelparameter['factor'] = rms_wanted/rms
 
         audio.close()
         del audio
@@ -162,7 +165,7 @@ def normalize_channels(settings, p=None):
     @param p is a progress dialog
 
     """
-    norm = ChannelsMixer()
+    norm = sppasChannelMixer()
 
     if p:
         p.update(0.25, "Load channels to normalize. ")
@@ -206,8 +209,8 @@ def mix_channels(settings, p=None):
     # variables for displaying
     total = len(settings)
 
-    mixerleft = ChannelsMixer()
-    mixerright = ChannelsMixer()
+    mixerleft = sppasChannelMixer()
+    mixerright = sppasChannelMixer()
 
     for i, channel in enumerate(settings):
         if p:
@@ -417,7 +420,7 @@ maxright = mixerright.get_max()
 if p:
     p.update(0.9, "Attenuator estimation")
 maxval = max(maxleft, maxright)
-maxvalth = get_maxval(sampleswidth)
+maxvalth = sppasAudioFrames().get_maxval(sampleswidth)
 
 if maxval > maxvalth:
     attenuator = float(maxvalth)/maxval*0.95
@@ -468,7 +471,7 @@ if verbose > 0:
     p.set_fraction(0)
     p.update(0, "")
 
-audio_out = AudioPCM()
+audio_out = sppasAudioPCM()
 audio_out.append_channel(newchannelleft)
 audio_out.append_channel(newchannelright)
 

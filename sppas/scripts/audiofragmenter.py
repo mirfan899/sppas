@@ -45,7 +45,7 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 import sppas.src.audiodata
-from sppas.src.audiodata.audio import AudioPCM
+from sppas.src.audiodata.audio import sppasAudioPCM
 
 # ----------------------------------------------------------------------------
 
@@ -65,7 +65,7 @@ args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
 
-audio_out = AudioPCM()
+audio_out = sppasAudioPCM()
 audio = sppas.src.audiodata.open(args.w)
 
 if args.bf and args.bs:

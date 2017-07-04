@@ -30,7 +30,7 @@
         ---------------------------------------------------------------------
 
     src.audiodata.aio.__init__.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Readers and writers of audio data.
 
@@ -67,7 +67,7 @@ def open(filename):
 
     :param filename: (str) the file name (including path)
     :raise: IOError, UnicodeError, Exception
-    :returns: AudioPCM()
+    :returns: sppasAudioPCM()
 
     >>> Open an audio file:
     >>> audio = audiodata.aio.open(filename)
@@ -94,14 +94,14 @@ def save(filename, audio):
     """ Write an audio file.
 
     :param filename: (str) the file name (including path)
-    :param audio: (AudioPCM) the Audio to write.
+    :param audio: (sppasAudioPCM) the Audio to write.
     :raises: IOError
 
     """
     ext = get_extension(filename).lower()
     output = AudioFactory.new_audio_pcm(ext)
 
-    output.Set(audio)
+    output.set(audio)
     output.save(u(filename))
 
 # ----------------------------------------------------------------------------
@@ -111,7 +111,7 @@ def save_fragment(filename, audio, frames):
     """ Write a fragment of frames of an audio file.
 
     :param filename: (str) the file name (including path)
-    :param audio: (AudioPCM) the Audio to write.
+    :param audio: (sppasAudioPCM) the Audio to write.
     :param frames: (str)
     :raises: IOError
 
@@ -119,5 +119,5 @@ def save_fragment(filename, audio, frames):
     ext = get_extension(filename).lower()
     output = AudioFactory.new_audio_pcm(ext)
 
-    output.Set(audio)
+    output.set(audio)
     output.save_fragment(filename, frames)

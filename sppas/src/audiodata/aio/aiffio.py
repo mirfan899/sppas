@@ -41,13 +41,13 @@ import aifc
 
 from sppas.src.utils.makeunicode import u
 
-from ..audio import AudioPCM
+from ..audio import sppasAudioPCM
 from ..audiodataexc import AudioDataError
 
 # ---------------------------------------------------------------------------
 
 
-class AiffIO(AudioPCM):
+class AiffIO(sppasAudioPCM):
     """
     :author:      Nicolas Chazeau, Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -60,7 +60,7 @@ class AiffIO(AudioPCM):
     def __init__(self):
         """ Constructor. """
 
-        AudioPCM.__init__(self)
+        sppasAudioPCM.__init__(self)
 
     # ------------------------------------------------------------------------
 
@@ -113,7 +113,7 @@ class AiffIO(AudioPCM):
 
         Data is in little endian and aiff files need big endian.
 
-        :aram fp: (AudioPCM) the audio file pointer to write in
+        :aram fp: (sppasAudioPCM) the audio file pointer to write in
         :param data: (str) frames to write
 
         """
