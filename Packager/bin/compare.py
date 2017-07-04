@@ -11,19 +11,21 @@ import getopt
 from os.path import *
 
 SPPAS = dirname(dirname(dirname(abspath(__file__))))
-sys.path.append(os.path.join(SPPAS, 'sppas', 'src'))
+sys.path.append(SPPAS)
 
-import annotationdata.aio
-from annotationdata import Transcription
+import sppas.src.annotationdata.aio
 
 # ---------------------------------------------------------------------------
 # Generic Functions
 # ---------------------------------------------------------------------------
 
+
 def usage(output):
     """
-    Write the usage on an output .
-    @param output is a string representing the output (for example: sys.stdout)
+    Write the usage on an output.
+
+    :param output is a string representing the output (for example: sys.stdout)
+
     """
     output.write('compare.py \n')
     output.write('      -r folder     Input for the Reference\n')
@@ -33,22 +35,22 @@ def usage(output):
     output.write('      --persist     Do not stop after the first error: print all errors.\n')
     output.write('      --help        Print help then exit the program.\n')
 
-# End usage
 # ----------------------------------------------------------------------
 
+
 def quit(message, status):
-    """
-    Exit this program.
-    @param message is a text to communicate to the user on sys.stderr.
-    @param status is an integer of the status exit value
+    """ Exit this program.
+    :param message is a text to communicate to the user on sys.stderr.
+    :param status is an integer of the status exit value
+
     """
     sys.stderr.write('compare.py. '+message)
     sys.exit(status)
 
-# End quit
 # ----------------------------------------------------------------------
 
-def get_files(directory,extension):
+
+def get_files(directory, extension):
     """
     Get the list of files of a specific extension.
     """
@@ -56,24 +58,20 @@ def get_files(directory,extension):
     for r, d, f in os.walk(directory):
         for files in f:
             if files.lower().endswith(extension.lower()) is True:
-                mylist.append(join(r,files))
+                mylist.append(join(r, files))
     return mylist
-
-# End get_files
-# ----------------------------------------------------------------------
-
-
 
 # ---------------------------------------------------------------------------
 # Compare is here
 # ---------------------------------------------------------------------------
 
+
 def printerrors(verbose, aref, ahyp, message):
-    if verbose>1:
-        print " ... ...",aref
-        print " ... ...",ahyp
+    if verbose > 1:
+        print " ... ...", aref
+        print " ... ...", ahyp
     if verbose>0:
-        print " ... ...",message
+        print " ... ...", message
 
 
 def compare_annotations(aref, ahyp, delta=0.2, verbose=1):
@@ -109,10 +107,12 @@ def compare_annotations(aref, ahyp, delta=0.2, verbose=1):
 
     return True
 
+# ---------------------------------------------------------------------------
+
 
 def compare_tiers(Tierref, Tierhyp, delta=0.2, verbose=1, persist=False):
-    """
-    Compare two tiers.
+    """ Compare two tiers.
+
     Comparison is performed using (in this order):
         1. tier' sizes (nb of intervals);
         2. annotations: type, then:
@@ -125,8 +125,9 @@ def compare_tiers(Tierref, Tierhyp, delta=0.2, verbose=1, persist=False):
     @param verbose is the verbosity level (0=None, 1=Medium, 2=High),
            used to print a diagnosis on stdout
     @return True if both tiers (ref and hyp) are identical
+
     """
-    if verbose>1:
+    if verbose > 1:
         print " ... ... Reference  tier name: ",Tierref.GetName()
         print " ... ... Hypothesis tier name: ",Tierhyp.GetName()
 
@@ -147,6 +148,8 @@ def compare_tiers(Tierref, Tierhyp, delta=0.2, verbose=1, persist=False):
              return False
 
     return diagnosis
+
+# ---------------------------------------------------------------------------
 
 
 def compare_trs(Trsref, Trshyp, delta=0.2, verbose=1, persist=False):
@@ -185,6 +188,7 @@ def compare_trs(Trsref, Trshyp, delta=0.2, verbose=1, persist=False):
 
     return diagnosis
 
+# ---------------------------------------------------------------------------
 
 
 def comparext(reference, test, extension, delta, verbose, persist):
@@ -209,12 +213,12 @@ def comparext(reference, test, extension, delta, verbose, persist):
     for i in range(len(listref)):
         if verbose>0:
             print " Reference: "+listref[i]
-        reftrs = annotationdata.aio.read( listref[i] )
+        reftrs = sppas.src.annotationdata.aio.read( listref[i] )
 
         try:
             if verbose>0:
                 print " Test: "+listtest[i]
-            testtrs = annotationdata.aio.read( listtest[i] )
+            testtrs = sppas.src.annotationdata.aio.read( listtest[i] )
             res = compare_trs(reftrs, testtrs, delta, verbose, persist)
             if res is False :
                 if verbose>0:
@@ -279,7 +283,6 @@ if __name__ == "__main__":
     if verbose < 0:
         verbose = 1
 
-
     # Now, compare...
 
     errors = 0
@@ -297,6 +300,3 @@ if __name__ == "__main__":
     errors += comparext(reference, test, ".momel.TextGrid", delta, verbose, persist)
 
     sys.exit(errors)
-
-# ---------------------------------------------------------------------------
-
