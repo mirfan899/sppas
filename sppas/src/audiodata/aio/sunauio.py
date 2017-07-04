@@ -32,7 +32,6 @@
     src.audiodata.aio.sunauio.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
 """
 import sunau
 
@@ -77,7 +76,9 @@ class SunauIO(sppasAudioPCM):
 
         """
         if self._audio_fp:
-            self.save_fragment(filename, self._audio_fp.readframes(self._audio_fp.getnframes()))
+            self.rewind()
+            frames = self._audio_fp.readframes(self._audio_fp.getnframes())
+            self.save_fragment(filename, frames)
 
         elif len(self) == 1:
             channel = self._channels[0]
@@ -126,5 +127,3 @@ class SunauIO(sppasAudioPCM):
             f.writeframes(frames)
         finally:
             f.close()
-
-# ---------------------------------------------------------------------------

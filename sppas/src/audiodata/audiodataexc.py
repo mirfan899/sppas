@@ -38,6 +38,7 @@
 from . import t
 
 AUDIO_ERROR = ":ERROR 2000: "
+AUDIO_TYPE_ERROR = ":ERROR 2005: "
 IO_ERROR = ":ERROR 2010: "
 DATA_ERROR = ":ERROR 2015: "
 INDEX_ERROR = ":ERROR 2020: "
@@ -60,6 +61,20 @@ class AudioError(Exception):
 
     def __str__(self):
         return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class AudioTypeError(TypeError):
+    """ :ERROR 2005: Audio type error: not supported file format {extension}. """
+
+    def __init__(self, extension):
+        self.parameter = AUDIO_TYPE_ERROR + \
+                         (t.gettext(AUDIO_TYPE_ERROR)).format(extension=extension)
+
+    def __str__(self):
+        return repr(self.parameter)
+
 
 # -----------------------------------------------------------------------
 

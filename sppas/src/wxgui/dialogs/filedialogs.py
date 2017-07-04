@@ -192,7 +192,6 @@ def SaveAsAudioFile(defaultdir=None,
 
     wildcard = create_wildcard("All files", sppas.src.audiodata.aio.extensions)
     wildcard += '|'+create_wildcard("Wave", sppas.src.audiodata.aio.ext_wav)
-    wildcard += '|'+create_wildcard("Aiff", sppas.src.audiodata.aio.ext_aiff)
     wildcard += '|'+create_wildcard("SunAu",  sppas.src.audiodata.aio.ext_sunau)
 
     dlg = wx.FileDialog(

@@ -36,13 +36,13 @@
 
 """
 from .waveio import WaveIO
-from .aiffio import AiffIO
 from .sunauio import SunauIO
+from ..audiodataexc import AudioTypeError
 
 # ----------------------------------------------------------------------------
 
 
-class AudioFactory(object):
+class sppasAudioFactory(object):
     """
     :author:       Nicolas Chazeau, Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -55,8 +55,6 @@ class AudioFactory(object):
     AUDIO_TYPES = {
         "wav": WaveIO,
         "wave": WaveIO,
-        "aif": AiffIO,
-        "aiff": AiffIO,
         "au": SunauIO
         }
 
@@ -69,6 +67,6 @@ class AudioFactory(object):
 
         """
         try:
-            return AudioFactory.AUDIO_TYPES[audio_type.lower()]()
+            return sppasAudioFactory.AUDIO_TYPES[audio_type.lower()]()
         except KeyError:
-            raise Exception("Unrecognized sppasAudioPCM type: %s" % audio_type)
+            raise AudioTypeError(audio_type)

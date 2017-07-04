@@ -67,7 +67,7 @@ In all cases, **the name of the tiers are fixed and can't be changed**!
 
 First of all:
 
->Only `wav`, `aiff` and `au` audio files and only as mono are supported by SPPAS.
+>Only `wav` and `au` audio files and only as mono are supported by SPPAS.
 
 SPPAS verifies if the audio file is 16 bits and 16000 Hz sample rate. 
 Otherwise it automatically converts to this configuration.

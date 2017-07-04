@@ -485,21 +485,21 @@ class sppasAudioPCM(object):
     # Input/Output
     # ------------------------------------------------------------------------
 
-    def open(self):
+    def open(self, filename):
         """ Open an audio file. """
         name = self.__class__.__name__
         raise NotImplementedError("%s does not support open()." % name)
 
     # ------------------------------------------------------------------------
 
-    def save(self):
+    def save(self, filename):
         """ Save an audio file. """
         name = self.__class__.__name__
         raise NotImplementedError("%s does not support save()." % name)
 
     # ------------------------------------------------------------------------
 
-    def save_fragments(self):
+    def save_fragments(self, filename):
         """ Save a fragment of an audio file. """
         name = self.__class__.__name__
         raise NotImplementedError("%s does not support save_fragments()." % name)

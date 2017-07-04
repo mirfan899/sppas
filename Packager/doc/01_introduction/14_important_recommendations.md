@@ -9,7 +9,7 @@ documentation:
 
 1. Speech audio files:
 
-    - only `wav`, `aiff` and `au` audio files
+    - only `wav` and `au` audio files
     - only mono (= one channel)
     - frame rates preferably: *16000hz*, 32000hz, 48000hz
     - bit rate preferably: *16 bits*, 32bits

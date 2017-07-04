@@ -36,8 +36,11 @@
 
 """
 from os.path import splitext
+
 from sppas.src.utils.makeunicode import u
-from .audiofactory import AudioFactory
+
+from ..audiodataexc import AudioIOError
+from .audiofactory import sppasAudioFactory
 
 # ----------------------------------------------------------------------------
 # Variables
@@ -48,8 +51,8 @@ ext_wav = ['.wav', '.wave', '.[wWaAvV]', '.[wWaAvVeE]']
 ext_aiff = ['.aif', '.aiff', '.[aAiIfF]']
 ext_sunau = ['.au', '.[aAuU]']
 
-extensions = ['.wav', '.wave', '.aif', '.aiff', '.au']
-extensionsul = ext_wav + ext_aiff + ext_sunau
+extensions = ['.wav', '.wave', '.au']
+extensionsul = ext_wav + ext_sunau
 
 # ----------------------------------------------------------------------------
 
@@ -74,16 +77,11 @@ def open(filename):
 
     """
     ext = get_extension(filename).lower()
-    aud = AudioFactory.new_audio_pcm(ext)
-
+    aud = sppasAudioFactory.new_audio_pcm(ext)
     try:
         aud.open(u(filename))
-    except UnicodeError as e:
-        raise UnicodeError('Encoding error: the file %r contains non-UTF-8 characters: %s' % (filename, e))
-    except IOError:
-        raise
-#    except Exception as e:
-#        raise Exception('Invalid audio file: %s' % e)
+    except IOError as e:
+        raise AudioIOError(message=str(e), filename=None)
 
     return aud
 
@@ -99,7 +97,7 @@ def save(filename, audio):
 
     """
     ext = get_extension(filename).lower()
-    output = AudioFactory.new_audio_pcm(ext)
+    output = sppasAudioFactory.new_audio_pcm(ext)
 
     output.set(audio)
     output.save(u(filename))
@@ -117,7 +115,7 @@ def save_fragment(filename, audio, frames):
 
     """
     ext = get_extension(filename).lower()
-    output = AudioFactory.new_audio_pcm(ext)
+    output = sppasAudioFactory.new_audio_pcm(ext)
 
     output.set(audio)
     output.save_fragment(filename, frames)

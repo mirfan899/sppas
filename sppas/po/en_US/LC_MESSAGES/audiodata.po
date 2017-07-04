@@ -20,8 +20,11 @@ msgstr ""
 msgid ":ERROR 2000: "
 msgstr "No audio file defined."
 
+msgid ":ERROR 2005: "
+msgstr "Audio type error: not supported file format {extension}. "
+
 msgid ":ERROR 2010: "
-msgstr "{filename} reading or writing error: {message}."
+msgstr "{filename} opening, reading or writing error: {message}."
 
 msgid ":ERROR 2015: "
 msgstr "No data or corrupted data in the audio file {filename}."

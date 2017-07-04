@@ -1,56 +1,55 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: wave_io.py
-# ---------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.audiodata.aio.waveio.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import wave
 
-from ..audio import sppasAudioPCM
 from sppas.src.utils.makeunicode import u
+
+from ..audio import sppasAudioPCM
 
 # ---------------------------------------------------------------------------
 
 
 class WaveIO(sppasAudioPCM):
     """
-    @authors:      Nicolas Chazeau, Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      A wave file open/save sppasAudioPCM class.
+    :author:      Nicolas Chazeau, Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      A wave file open/save sppasAudioPCM class.
 
     Waveform Audio File Format is a Microsoft and IBM audio file format
     standard for storing an audio bitstream on PCs. It is an application of
@@ -59,10 +58,8 @@ class WaveIO(sppasAudioPCM):
 
     """
     def __init__(self):
-        """
-        Constructor.
+        """ Constructor. """
 
-        """
         sppasAudioPCM.__init__(self)
 
     # -----------------------------------------------------------------------
@@ -85,8 +82,10 @@ class WaveIO(sppasAudioPCM):
         :param filename (str) output filename.
 
         """
-        if self._audio_fp:
-            self.save_fragment(filename, self._audio_fp.readframes(self._audio_fp.getnframes()))
+        if self._audio_fp is not None:
+            self.rewind()
+            frames = self._audio_fp.readframes(self._audio_fp.getnframes())
+            self.save_fragment(filename, frames)
 
         elif len(self._channels) == 1:
             channel = self._channels[0]
@@ -105,7 +104,7 @@ class WaveIO(sppasAudioPCM):
             frames = ""
             for i in range(0, self._channels[0].get_nframes()*sw, sw):
                 for j in range(len(self._channels)):
-                    frames += self._channels[j]._frames[i:i+sw]
+                    frames = frames + self._channels[j].get_frames(sw)
 
             f = wave.Wave_write(u(filename))
             f.setnchannels(len(self._channels))
@@ -119,11 +118,10 @@ class WaveIO(sppasAudioPCM):
     # -----------------------------------------------------------------------
 
     def save_fragment(self, filename, frames):
-        """
-        Write an audio content as a Waveform Audio File Format file.
+        """ Write an audio content as a Waveform Audio File Format file.
 
-        @param filename (string) output filename.
-        @param frames (string) the frames to write
+        :param filename: (str) output filename.
+        :param frames: (str) the frames to write
 
         """
         f = wave.Wave_write(u(filename))
@@ -134,5 +132,3 @@ class WaveIO(sppasAudioPCM):
             f.writeframes(frames)
         finally:
             f.close()
-
-# ---------------------------------------------------------------------------

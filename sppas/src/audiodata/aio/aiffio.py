@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -30,7 +29,7 @@
         ---------------------------------------------------------------------
 
     src.audiodata.aio.aiffio.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Audio Interchange File Format (AIFF) is an audio file format developed by
     Apple Inc. in 1988.
@@ -101,28 +100,29 @@ class AiffIO(sppasAudioPCM):
             return struct.pack("<%ul" % (len(data)), *data)
 
         elif self.get_sampwidth() == 2:
-            data = struct.unpack(">%uh" % (len(data) / 2), data)
+            data = struct.unpack(">%uh" % (len(data)/2), data)
             return struct.pack("<%uh" % (len(data)), *data)
 
         return data
 
     # ----------------------------------------------------------------------
 
-    def _write_frames(self, fp, data):
+    @staticmethod
+    def _write_frames(fp, data):
         """ Specific writer for aiff files.
 
         Data is in little endian and aiff files need big endian.
 
-        :aram fp: (sppasAudioPCM) the audio file pointer to write in
+        :param fp: (sppasAudioPCM) the audio file pointer to write in
         :param data: (str) frames to write
 
         """
         if fp.getsampwidth() == 4:
-            data = struct.unpack("<%ul" % (len(data) / 4), data)
+            data = struct.unpack("<%ul" % (len(data)/4), data)
             fp.writeframes(struct.pack(">%ul" % (len(data)), *data))
 
         elif fp.getsampwidth() == 2:
-            data = struct.unpack("<%uh" % (len(data) / 2), data)
+            data = struct.unpack("<%uh" % (len(data)/2), data)
             fp.writeframes(struct.pack(">%uh" % (len(data)), *data))
 
         else:
@@ -136,8 +136,11 @@ class AiffIO(sppasAudioPCM):
         :param filename: (str) output filename.
 
         """
-        if self._audio_fp:
-            self.save_fragment(filename, self._audio_fp.readframes(self._audio_fp.getnframes()))
+        if self._audio_fp is not None:
+            self.rewind()
+            frames = self._audio_fp.readframes(self._audio_fp.getnframes())
+            self.save_fragment(filename, frames)
+
         elif len(self) == 1:
             channel = self._channels[0]
             fp = open(filename, 'w')
@@ -147,7 +150,7 @@ class AiffIO(sppasAudioPCM):
             f.setframerate(channel.get_framerate())
             f.setnframes(channel.get_nframes())
             try:
-                self._write_frames(f, channel.get_frames())
+                AiffIO._write_frames(f, channel.get_frames())
             finally:
                 f.close()
 
@@ -167,7 +170,7 @@ class AiffIO(sppasAudioPCM):
             f.setframerate(self._channels[0].get_framerate())
             f.setnframes(self._channels[0].get_nframes())
             try:
-                self._write_frames(f, frames)
+                AiffIO._write_frames(f, frames)
             finally:
                 f.close()
 
@@ -187,7 +190,7 @@ class AiffIO(sppasAudioPCM):
         f.setframerate(self.get_framerate())
         f.setnframes(len(frames)/self.get_nchannels()/self.get_sampwidth())
         try:
-            self._write_frames(f, frames)
+            AiffIO._write_frames(f, frames)
         except Exception:
             raise
         finally:
