@@ -1,6 +1,6 @@
 ## What is SPPAS?
 
-### Main features
+### Overview
 
 **SPPAS - the automatic annotation and analyses of speech** is a scientific 
 computer software package written and maintained by Brigitte Bigi of
