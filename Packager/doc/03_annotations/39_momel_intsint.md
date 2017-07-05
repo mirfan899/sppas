@@ -2,17 +2,14 @@
 
 ### Momel (modelling melody)
 
-Momel is an algorithm for the automatic modelling of fundamental frequency (F0)
-curves using a technique called assymetric modal quaratic regression.
+Momel is an algorithm for the automatic modeling of fundamental frequency (F0)
+curves using a technique called asymetric modal quadratic regression.
 
 This technique makes it possible by an appropriate choice of parameters to 
 factor an F0 curve into two components:
 
-* a macroprosodic component represented by a a quadratic spline function defined by a sequence of target points < ms, hz >.
-* a microprosodic component represented by the ratio of each point on the F0 curve to the corresponding point on the quadratic spline function.
-
-The algorithm which we call Asymmetrical Modal Regression comprises the
-following four stages:
+* a macro-prosodic component represented by a a quadratic spline function defined by a sequence of target points < ms, hz >.
+* a micro-prosodic component represented by the ratio of each point on the F0 curve to the corresponding point on the quadratic spline function.
 
 For details, see the following reference:
 
@@ -20,11 +17,11 @@ For details, see the following reference:
 >*Automatic modelling of fundamental frequency using a quadratic spline function.*
 >Travaux de l’Institut de Phonétique d’Aix. vol. 15, pages 71-85.
 
-The SPPAS implementation of Momel requires a file with the F0 values. It must
-be **sampled at 10 ms**. Two extensions are supported:
+The SPPAS implementation of Momel requires a file with the F0 values
+**sampled at 10 ms**. Two file formats are supported:
 
-- .PitchTier, from Praat.
-- .hz, from any tool, is a file with one value per line.
+- ".PitchTier", from Praat.
+- ".hz", from any tool. It is a file with one F0 value per line.
 
 
 The following options can be fixed:

@@ -13,19 +13,39 @@ issue. The main steps of the text normalization implemented in SPPAS
 * Replace symbols by their written form, thanks to a "replacement" dictionary,
   located into the folder "repl" in the "resources" directory.
 * Word segmentation based on the content of a lexicon.
-* Convert numbers to their written form;
-* Remove punctuation;
-* Lower the text;
+* Convert numbers to their written form.
+* Remove punctuation.
+* Lower the text.
+
 
 ### Adapt Text normalization
 
 Word segmentation of SPPAS is mainly based on the use of a lexicon.
 If a segmentation is not as expected, it is up to the user to modify
-the lexicon. Lexicons of all supported languages are all located in the folder
+the lexicon: Lexicons of all supported languages are all located in the folder
 "vocab" of the "resources" directory. They are in the form of "one
-word at a line".
+word at a line" with [UTF-8 encoding](https://en.wikipedia.org/wiki/UTF-8) 
+and ["LF" for newline](https://en.wikipedia.org/wiki/Newline).
 
-### Perform normalization with the GUI
+
+### Support of a new language
+
+Adding a new language in Text Normalization consists in the following steps:
+
+1. Create a lexicon. Fix properly its encoding (utf-8), its newlines (LF), 
+and fix the name and extension of the file as follow: 
+    - language name with iso639-3 standard
+    - extension ".vocab"
+2. Put this lexicon in the `resources/vocab` folder
+3. Create a replacement dictionary for that language (take a look on the ones of the other language!)
+4. Optionally, the language can be added into the num2letter.py program 
+
+That's it for most of the languages! If the language requires more steps,
+simply write to the author to collaborate, find some funding, etc. like it
+was already done for Cantonese (Bigi & Fung 2015) for example.
+
+
+### Perform Text Normalization with the GUI
 
 The SPPAS Text normalization system takes as input a file (or a list of files) 
 for which the name strictly match the name of the audio file except the extension.
@@ -36,8 +56,8 @@ found.
 
 This file must include a tier with an orthographic transcription.
 At a first stage, SPPAS tries to find a tier with `transcription` as name.
-If such a tier does not exist, SPPAS searches for a tier that contains
-one of the following strings:
+If such a tier does not exist, the first tier that is matching
+one of the following strings is used (case-insensitive search):
 
 1. `trans`
 2. `trs`
@@ -45,27 +65,26 @@ one of the following strings:
 4. `ortho`
 5. `toe`
 
-The first tier that is matching is used (case-insensitive search).
-
-Text normalization produces a file with "-tokens" appended to its name,
-i.e. "oriana1-tokens.xra" for the previous example.
-By default, this file is including only one tier with the resulting normalization
-and with name "Tokens". To get other versions of the normalized transcription,
-click on the "Configure" text then check the expected tiers. 
+Text normalization produces a file with "-token" appended to its name,
+i.e. "oriana1-token.xra" for the previous example.
+By default, this file is including only one tier with the resulting 
+normalization and with name "Tokens". To get other versions of the 
+normalized transcription, click on the "Configure" text then check 
+the expected tiers. 
 
 Read the "Introduction" of this chapter for a better understanding of the
 difference between "standard" and "faked" results.
 
 ![Text normalization workflow](./etc/figures/tokworkflow.bmp)
 
-To perform the text normalization process, click on the Text normalization
+To perform the text normalization process, click on the Text Normalization
 activation button, select the language and click on the "Configure..." blue 
 text to fix options.
 
 
-### Perform Text normalization with the CLI
+### Perform Text Normalization with the CLI
 
-`normalize.py` is the program to perform Text normalization, i.e. the 
+`normalize.py` is the program to perform Text Normalization, i.e. the 
 text normalization of a given file or a raw text.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

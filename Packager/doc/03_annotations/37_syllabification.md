@@ -10,35 +10,22 @@ on 2 main principles:
 * a pause is a syllable boundary.
 
 These two principles focus the problem of the task of finding a syllabic
-boundary between two vowels. As in state-of-the-art systems, phonemes were
-grouped into classes and rules established to deal with these classes.
-We defined general rules followed by a small number of exceptions.
-Consequently, the identification of relevant classes is important
-for such a system.
-
-We propose the following classes, for both French and Italian set of rules:
-
-* V - Vowels,
-* G - Glides,
-* L - Liquids,
-* O - Occlusives,
-* F - Fricatives,
-* N - Nasals.
+boundary between two vowels. Phonemes were grouped into classes and rules were
+established to deal with these classes.
 
 ![Syllabification example](./etc/screenshots/syll-example.png)
 
-The rules we propose follow usual phonological statements for most of the
-corpus. A configuration file indicates phonemes, classes and rules.
-This file can be edited and modified to adapt the syllabification
-(Bigi et al. 2010).
+
+Syllabification requires a configuration file to indicate phonemes, classes 
+and rules.
 
 ### Adapt Syllabification
 
-If the syllabification is not as expected, any user can change the set of rules.
-The configuration file is located in the folder "syll" of the "resources"
-directory.
-The syllable configuration file is a simple ASCII text file that can be edited
-with Notepad++ (Windows) or TextEdit (MacOS) or any other text editor.
+Any user can change the set of rules by editing and modifying the 
+configuration file of a given language. Files are located in the folder 
+"syll" of the "resources" directory. Files are all with
+[UTF-8 encoding](https://en.wikipedia.org/wiki/UTF-8) 
+and ["LF" for newline](https://en.wikipedia.org/wiki/Newline).
 
 At first, the list of phonemes and the class symbol associated with each of the
 phonemes are described as, for example:
@@ -48,26 +35,25 @@ phonemes are described as, for example:
 
 The couples phoneme/class are made of 3 columns: the first column is the
 key-word PHONCLASS, the second column is the phoneme symbol, the third column
-is the class symbol.The constraints on this definition are:
+is the class symbol. The constraints on this definition are:
 
 * a pause is mentioned with the class-symbol #,
 * a class-symbol is only one upper-case character, except:
     * the character X if forbidden;
-    * the characters V and W are used for vowels.
+    * the characters V and W are reserved for vowels.
 
 The second part of the configuration file contains the rules.
 The first column is a keyword, the second column describes the classes between
 two vowels and the third column is the boundary location.
 The first column can be:
 
-* `GENRULE`,
-* `EXCRULE`, or
+* `GENRULE`
+* `EXCRULE`
 * `OTHRULE`.
 
 In the third column, a 0 means the boundary is just after the first vowel,
 1 means the boundary is one phoneme after the first vowel, etc.
-Here are some examples, corresponding to the rules described in this paper
-for spontaneous French:
+Here are some examples of the file for French language:
 
 * `GENRULE VXV 0`
 * `GENRULE VXXV 1`
@@ -83,6 +69,19 @@ applied to the third one by the rules, the last column is the shift to apply
 to this boundary. In the following example:
 
 `OTHRULE ANY ANY p s k -2`
+
+More information are available in (Bigi et al. 2010).
+
+
+### Support of a new language
+
+The support of a new language in Syllabification only consists in adding
+its configuration file (see previous section).
+Fix properly its encoding (utf-8), its newlines (LF), 
+and fix the name and extension of the file as follow: 
+- "syllConfig-" followed by language name with iso639-3 standard
+- extension ".syll"
+
 
 ### Perform Syllabification with the GUI
 
