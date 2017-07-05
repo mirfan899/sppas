@@ -45,25 +45,24 @@
 | x | x |  |
 | x | ɣ |  |
 | z | z |  |
+| @@    |         | laugh item        |
+| gb    |         | (garbage: for noises) |
+| dummy |         | (dummy: for un-transcribed speech) |
 
 
 #### Pronunciation dictionary
 
-*GNU Public License*
-
-The catalan pronunciation dictionary was downloaded from the Ralf catalog
-of dictionaries for the Simon ASR system at
+The catalan pronunciation dictionary was downloaded in 2014 from the Ralf 
+catalog of dictionaries for the Simon ASR system at
 <http://spirit.blau.in/simon/import-pls-dictionary/>.
 It was then converted (format and phoneset) by Brigitte Bigi.
 Some new words were also added and phonetized manually (thank you Eva!).
 New entries were then added from observed pronunciations in Glissando corpus.
 
+It is distributed under the terms of the *GNU General Public License*.
+
 
 #### Acoustic Model
-
-*(C) Laboratoire Parole et Langage, Aix-en-Provence, France.*
-
-*Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License*
 
 The acoustic model was trained from Glissando corpus. We address special
 thanks to Juan-Maria Garrido for giving us access to this corpus.
@@ -72,3 +71,5 @@ thanks to Juan-Maria Garrido for giving us access to this corpus.
 >*Glissando: a corpus for multidisciplinary prosodic studies in Spanish and Catalan*,
 >Language Resources and Evaluation, DOI 10.1007/s10579-012-9213-0.
 
+It is distributed under the terms of the 
+*Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License*

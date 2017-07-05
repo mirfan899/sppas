@@ -1,5 +1,7 @@
 ## French
 
+All French resources are *(c) Laboratoire Parole et Langage, Aix-en-Provence, France*
+
 #### List of phonemes
 
 | SPPAS |   IPA   | Examples             |
@@ -8,7 +10,7 @@
 |  a    |    ɑ    |  pâte  glas          |
 |  e    |    e    |  clé  les  chez  aller  pied  journée  |
 |  E    |    ɛ    |  crème  est  faite  peine  |
-|  E    |    ɛː   |  fête  maître  mètre  reître  reine  caisse  Lemaistre  Lévesque  |
+|  E    |    ɛː   |  fête  maître  mètre  reître  reine  caisse |
 | eu    |    ə    |  le  reposer  monsieur  faisons    |
 | eu    |    ø    |  ceux  jeûner deux   |
 |  9    |    œ    |  sœur  jeune  neuf   |
@@ -41,41 +43,36 @@
 |  j    |    j    |  fief  payer  fille  travail     |
 |  w    |    w    |  oui  loi  moyen  web  whisky  wagon  |
 |  h    |    ɥ    |  huit  Puy         |
-| fp    |         | euh (filled pause)   |
-| @@    |         | laughter item        |
+| fp    |         |  euh (filled pause)   |
+| @@    |         |  laugh item        |
 | gb    |         | (garbage: for noises) |
-| dummy |         | (dummy: for untranscribed speech) |
+| dummy |         | (dummy: for un-transcribed speech) |
 
 
-#### Pronunciation Dictionary
+#### Pronunciation dictionary
 
+The French pronunciation dictionary was created by Brigitte Bigi by collecting
+and merging several free dictionaries loaded from the web. Some pronunciations
+were added using the LIA_Phon tool. Many words were manually corrected and a 
+large set of missing words and pronunciation variants were manually added.
 
-*(c) Laboratoire Parole et Langage, Aix-en-Provence, France*
-
-*GNU Public License*
-
-The French pronunciation dictionary was created by Brigitte Bigi by merging a
-some free dictionaries loaded from the web. Some word pronunciations were
-added using the LIA_Phon tool. Many words were manually corrected and a large
-set of missing words and pronunciation variants were added manually.
+It is distributed under the terms of the *GNU General Public License*.
 
 
 #### Acoustic Model
 
-*(c) Laboratoire Parole et Langage, Aix-en-Provence, France*
+The French acoustic model was created by Brigitte Bigi from various corpora
+mainly recorded at Laboratoire Parole et Langage. 
+Special thanks are addressed to Roxane Bertrand, Béatrice Priego-Valverde, 
+Sophie Herment, Amandine Michelas, Muriel Lalain and Christel Portes 
+for kindly sharing their corpora.
 
+It is distributed under the terms of the 
 *Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License*
 
-The French acoustic model was created by Brigitte Bigi from various corpora
-mainly recorded at Laboratoire Parole et Langage. For example, it includes:
 
-- CID - Corpus of Interactional Data <http://www.sldr.org/sldr000027/>,
-- Grenelle <http://www.sldr.org/sldr000729/>,
-- Broadcast news and Read speech (not public).
+#### Syllabification configuration file
 
-
-#### Syllabification configuration
-
-The syllabification configuration file corresponds to the rules defined
-in the paper (Bigi et al. 2010).
-
+The syllabification configuration file corresponds to the one described
+in the paper (Bigi et al. 2010). It is distributed under the terms of the 
+*GNU General Public License*.

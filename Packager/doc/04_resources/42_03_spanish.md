@@ -20,8 +20,8 @@
 |   J   |   ɲ     | ñandú  cañón  enyesar       |
 |   N   |   ŋ     | cinco  venga  conquista     |
 |   p   |   p     | pozo  topo                  |
-|   rr  |   r     | rumbo  carro  honra  subrayo  amor |
-|   r   |   ʁ     | caro  bravo  amor  eterno |
+|   r   |   r     | rumbo  carro  honra  subrayo  amor |
+|   4   |   ɾ     | caro  bravo  amor  eterno |
 |   s   |   s     | saco  zapato  cientos  espita  xenón  |
 |   T   |   θ     | xenón cereal  encima  zorro  enzima  paz |
 |   t   |   t     | tamiz  átomo |
@@ -37,20 +37,22 @@
 |   i   |   i     | dimitir  mío                      |
 |   o   |   o     | boscoso                           |
 |   u   |   u     | cucurucho  dúo                    |
+| @@    |         | laugh item        |
+| gb    |         | (garbage: for noises) |
+| dummy |         | (dummy: for un-transcribed speech) |
 
 
 #### Pronunciation Dictionary
 
-The pronunciation dictionary was downloaded from the CMU web page.
-Brigitte Bigi converted this CMU phoneset to X-SAMPA, and changed
+The pronunciation dictionary was downloaded from the 
+[CMU web page](http://www.speech.cs.cmu.edu/)
+in 2013. Brigitte Bigi converted this CMU phoneset to X-SAMPA, and changed
 the file format.
+
+It is distributed under the terms of the *GNU General Public License*.
 
 
 #### Acoustic Model
-
-*(C) Laboratoire Parole et Langage, Aix-en-Provence, France.*
-
-*Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License*
 
 The acoustic model was trained from Glissando corpus. We address special
 thanks to Juan-Maria Garrido for giving us access to this corpus.
@@ -59,3 +61,5 @@ thanks to Juan-Maria Garrido for giving us access to this corpus.
 >*Glissando: a corpus for multidisciplinary prosodic studies in Spanish and Catalan*,
 >Language Resources and Evaluation, DOI 10.1007/s10579-012-9213-0.
 
+It is distributed under the terms of the 
+*Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License*

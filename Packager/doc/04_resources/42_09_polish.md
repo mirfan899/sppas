@@ -29,7 +29,7 @@
 |   o~  |   ɔ̃     | |
 |   p   |   p     | |
 |   Q   |   Q     | |
-|   r   |   r     | |
+|   r   |   r     | krok |
 |   r   |   ʀ     | |
 |   s   |   s     | |
 |   s\  |   ɕ     | świerszcz |

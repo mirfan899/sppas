@@ -18,10 +18,15 @@ of these statistical representations.
 The quality of the alignment result only depends on both this resource and 
 on the aligner. From our past experiences, we got better results with Julius.
 
-Speech segmentation was evaluated for French (using Julius): 
-in average, automatic speech segmentation is 95% of times within 40ms 
-compared to the manual segmentation and was tested on read speech and 
-on conversational speech (Bigi 2014).
+In addition, all acoustic models (except English, Japanese and Cantonese) 
+include the following fillers:
+- dummy: un-transcribed speech
+- gb: garbage, for noises
+- @@: laughter
+
+They allow SPPAS to time-align automatically these phenomena whose can be 
+very frequent in speech, like laugh items (Bigi and Bertrand 2015).
+No other system is able to achieves this task!
 
 ![SPPAS alignment output example](./etc/screenshots/alignment.png)
 
