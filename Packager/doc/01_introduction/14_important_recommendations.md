@@ -43,6 +43,7 @@ quality of the linguistic resources**. The users can contribute to improve them.
 They can contribute to improve them, and the author releases the improvements 
 to the public, so that the whole community benefits. Resources are distributed 
 under the terms of public licenses, so that SPPAS users are "free": 
+
 - free to study the source code and the resources of the software they use, 
 - free to share the software and resources with other people, 
 - free to modify the software and resources, and 

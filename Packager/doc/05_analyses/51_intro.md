@@ -16,7 +16,7 @@ Six tools are available:
 1. `DataRoamer` allows to explore the annotated files: cut/copy/paste/rename/duplicate tiers, move a tier from one file to another one, etc. 
 2. `AudioRoamer` allows to play and manage audio files: extract a channel, see clipping rates, change framerate, etc.
 3. `IPUscriber` is useful to perform manual orthographic transcription.
-4. `Vizualizer` displays audio files and annotated files, and is very useful to take a screenshot! Easy way to zoom/scroll, change colours, choose the tiers to display, etc;
+4. `Visualizer` displays audio files and annotated files, and is very useful to take a screenshot! Easy way to zoom/scroll, change colours, choose the tiers to display, etc;
 5. `DataFilter` allows to select annotations: fix a set of filters to create new tiers with only the annotations you are interested in!
 6. `Statistics` estimates the number of occurrences, the duration, etc. of the annotations, and allows to save in CSV (for Excel, OpenOffice, R, MatLab,...).
 

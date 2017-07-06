@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="author" content="Brigitte Bigi">
+  <title>SPPAS Documentation</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="etc/styles/sppas.css">
+      <link rel="icon" href="./etc/icons/sppas.png" />
+  
+      <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-38055333-4']);
+        _gaq.push(['_trackPageview']);
+      
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      </script>
+</head>
+<body>
+
+    <!----------------------------------------------------------------->
+
+    <div class="header">
+        <div class="title">
+            <div class="h1title">SPPAS</div>
+            <div class="h2title">the automatic annotation and analysis of speech</div>
+            <div class="h3title">a software tool by Brigitte Bigi, researcher at</div>
+            <div class="h3title">Laboratoire Parole et Langage - Aix-en-Provence - France</div>
+        </div>
+    </div>
+
+    <!----------------------------------------------------------------->
+
+    <div class="menu">
+        <a class="home"     href="index.html">Home</a>
+        <a class="install"  href="installation.html">Installation</a>
+        <a class="download" href="download.html">Download</a>
+        <a class="tutorial" href="tutorial.html">Tutorials</a>
+        <a class="documentation" href="documentation.html">Documentation</a>
+        <a class="group"    href="https://groups.google.com/forum/?fromgroups#!forum/sppas-users">User's group</a>
+    </div>
+
+    <!----------------------------------------------------------------->
+<header>
+<h1 class="title">SPPAS Documentation</h1>
+<h2 class="author">Brigitte Bigi</h2>
+<h3 class="date">Version 1.8.0</h3>
+</header>
+<nav id="TOC">
+<ul>
+<li><a href="#appendix">Appendix</a></li>
+<li><a href="#appendix-1">Appendix</a><ul>
+<li><a href="#list-of-error-messages">List of error messages</a></li>
+</ul></li>
+</ul>
+</nav>
+<hr />
+<h1 id="appendix"><a href="#appendix">Appendix</a></h1>
+<h1 id="appendix-1"><a href="#appendix-1">Appendix</a></h1>
+<h2 id="list-of-error-messages"><a href="#list-of-error-messages">List of error messages</a></h2>
+<p>Since version 1.9.0, SPPAS introduced a system for internationalization of the messages. In the same time, a quality and a number was assigned progressively to each of them in the packages. The following indicates the list of error messages that can occur while using SPPAS.</p>
+<p>:ERROR 1010: Unknown option with key {key}.</p>
+<p>:ERROR 1020: Empty input tier {name}.</p>
+<p>:ERROR 1030: Missing input tier. Please read the documentation.</p>
+<p>:ERROR 1040: Bad input tier type. Expected time-aligned intervals.</p>
+<p>:ERROR 1050: Inconsistency between the number of intervals of the input tiers. Got: {:d} and {:d}.</p>
+<p>:ERROR 1210: The directory {dirname} does not exist.</p>
+<p>:ERROR 1220: The directory {dirname} does not contain relevant data.</p>
+<p>:ERROR 2000: No audio file is defined.</p>
+<p>:ERROR 2005: Audio type error: not supported file format {extension}.</p>
+<p>:ERROR 2010: Opening, reading or writing error.</p>
+<p>:ERROR 2015: No data or corrupted data in the audio file {filename}.</p>
+<p>:ERROR 2020: {number} is not a right index of channel.</p>
+<p>:ERROR 2025: From {value1} to {value2} is not a proper interval.</p>
+<p>:ERROR 2050: No channel defined.</p>
+<p>:ERROR 2060: Channels have not the same sample width.</p>
+<p>:ERROR 2061: Channels have not the same frame rate.</p>
+<p>:ERROR 2062: Channels have not the same number of frames.</p>
+<p>:ERROR 2070: Invalid sample width {value}.</p>
+<p>:ERROR 2080: Invalid frame rate {value}.</p>
+<p>:ERROR 3010: Both vectors p and q must have the same length and must contain probabilities.</p>
+<p>:ERROR 3015: Value must range between 0 and 1. Got {:f}.</p>
+<p>:ERROR 3016: Probabilities must sum to 1. Got {:f}.</p>
+<p>:ERROR 3025: Error while estimating Euclidian distances of rows and columns.</p>
+<p>:ERROR 3030: The given data must be defined or must not be empty.</p>
+<p>:ERROR 3040: Value {value} is out of range: expected value in range [{min_value},{max_value}].</p>
+<p>:ERROR 4010: Missing plugin configuration file.</p>
+<p>:ERROR 4014: Missing section {section_name} in the configuration file.</p>
+<p>:ERROR 4016: Missing option {:s} in section {:s} of the configuration file.</p>
+<p>:ERROR 4020: Unsupported plugin file type.</p>
+<p>:ERROR 4024: Unsupported plugin file type.</p>
+<p>:ERROR 4030: A plugin with the same name is already existing in the plugins folder.</p>
+<p>:ERROR 4040: No plugin with identifier {plugin_id} is available.</p>
+<p>:ERROR 4050: No such plugin folder: {:s}.</p>
+<p>:ERROR 4060: A plugin with the same key is already existing or plugin already loaded.</p>
+<p>:ERROR 4070: {command_name} is not a valid command on your operating system.</p>
+<p>:ERROR 4075: No command was defined for the system: {:s}. Supported systems of this plugin are: {:s}.&quot;&quot;&quot;</p>
+<p>:ERROR 4080: No option with key {:s}.</p>
+<p>:ERROR 6010: {meta} is not a known meta information.</p>
+<p>:ERROR 6020: Unknown resource type: expected file or directory. Got: {string}.</p>
+<p>:ERROR 6024: The resource folder {dirname} does not exists.</p>
+<p>:ERROR 6028: The language must be &quot;und&quot; or one of the language list. Unknown language {lang}.</p>
+<hr />
+    <!----------------------------------------------------------------->
+
+    <div class="footer">
+        <a href="index.html"><img src="./etc/logos/sppas-logo.png" alt="SPPAS"></a>
+        <p class="copyright">
+            <a href="mailto:brigitte.bigi@gmail.com">Brigitte Bigi</a> &copy; 2011-2016
+        </p>
+    </div>
+
+    <!----------------------------------------------------------------->
+
+    <span class="scrollT"></span>
+    <script type="text/javascript" src="./etc/scripts/jquery.min.js"></script>
+    <script type="text/javascript" src="./etc/scripts/scrollT.js"></script>
+    <script type="text/javascript">
+        // On active la fonction permettant de faire apparaitre l'indicateur 
+        // de scroll pour remonter en haut de page.
+        $(document).ready(function() 
+        {
+            $(this).scrollT();
+        });
+    </script>
+
+    <!----------------------------------------------------------------->
+</body>
+</html>

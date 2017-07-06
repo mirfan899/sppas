@@ -150,8 +150,11 @@ class ChannelError(Exception):
 
 
 class MixChannelError(ValueError):
-    """ :ERROR 2060 to 2062: """
+    """ :ERROR 2060: Channels have not the same sample width.
+        :ERROR 2061: Channels have not the same frame rate.
+        :ERROR 2062: Channels have not the same number of frames.
 
+    """
     def __init__(self, value=0):
         value = int(value)
         if value == 1:

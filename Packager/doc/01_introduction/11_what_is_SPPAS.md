@@ -115,7 +115,7 @@ documentation. This documentation is available in-line - see the SPPAS website,
 it is also included in the package in PDF format, and it can also be explored
 with the Graphical User Interface by clicking on the `Help` button.
 
-3. There is a F.A.Q. in the SPPAS wrb site. Topics can range from elementary 
+3. There is a F.A.Q. in the SPPAS web site. Topics can range from elementary 
 "how do I" queries to advanced issues in scriptwriting. There's (or there will 
 be) something there for everybody. 
 
@@ -124,15 +124,16 @@ using the Graphical User Interface: click the `Feedback` button.
 Another option is that you may send e-mail to the author. 
 In both cases, it is very important to indicate clearly:
 
-    1/ your operating system and its version,
-    2/ the version of SPPAS (supposed to be the last one), and
-    3/ for automatic annotations, send the log file, and a sample of the data
+    1. your operating system and its version,
+    2. the version of SPPAS (supposed to be the last one), and
+    3. for automatic annotations, send the log file, and a sample of the data
     on which a problem occurs.
 
 
 ### Supports
 
 It is possible to contribute to SPPAS:
+
 - to improve the quality of the linguistic resources, 
 - to add new linguistic resources, 
 - to help in development, 
@@ -181,6 +182,7 @@ author of SPPAS. She is a researcher at CNRS -
 Know more about the author: <http://www.lpl-aix.fr/~bigi>
 
 Here is the list of other contributors in programming:
+
 * April 2012-June 2012: Alexandre Ranson;
 * April 2012-July 2012: Cazembé Henry;
 * April 2012-June 2013: Bastien Herbaut;

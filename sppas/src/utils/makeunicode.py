@@ -41,6 +41,12 @@
     makeunicode is useful for the compatibility of strings between
     Python 2.7 and Python > 3.2.
 
+    >>> token = "  \n Ỹ  \t\r   ỏ  "
+    >>> sp = sppasUnicode(token)
+    >>> token = sp.to_strip()
+    >>> token == u('Ỹ ỏ')
+    >>> True
+
 """
 from __future__ import unicode_literals
 import sys

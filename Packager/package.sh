@@ -485,7 +485,7 @@ function fct_uml_diagrams {
 #  $2: folder name (without path) of the documentation
 function fct_get_md_idx {
 
-    # Get all files mentionned in the idx
+    # Get all files mentioned in the idx
     local f="`cat $1/$2/${2}.idx`"
 
     # Add its path to each file name
@@ -554,7 +554,7 @@ function fct_sppas_doc {
     local files=$(fct_get_all_md $DOC_DIR)
 
     echo ' Version PDF';
-    pandoc -N --template=$DOC_DIR/mytemplate.tex --variable toc-depth=2 -V geometry:a4paper -V geometry:"top=3cm, bottom=3cm, left=3cm, right=2.5cm" --variable documentclass="report" --variable classoption="twoside, openright" --variable mainfont="FreeSerif" --variable sansfont="FreeSans" --variable monofont="FreeMono" --variable fontsize=11pt --variable version="$PROGRAM_VERSION" --variable frontpage="`pwd`/doc/frontpage.pdf" $files --latex-engine=xelatex --toc -o $PROGRAM_DIR/documentation/Documentation.pdf
+    pandoc -N --template="$DOC_DIR/mytemplate.tex" --variable toc-depth=2 -V geometry:a4paper -V geometry:"top=3cm, bottom=3cm, left=3cm, right=2.5cm" --variable documentclass="report" --variable classoption="twoside, openright" --variable mainfont="FreeSerif" --variable sansfont="FreeSans" --variable monofont="FreeMono" --variable fontsize=11pt --variable version="$PROGRAM_VERSION" --variable frontpage="$DOC_DIR/frontpage.pdf" $files --latex-engine=xelatex --toc -o $PROGRAM_DIR/documentation/Documentation.pdf
     cp $PROGRAM_DIR/documentation/Documentation.pdf $WEB_DIR/doc/Documentation.pdf
 
     echo ' Tutorials for the web';
