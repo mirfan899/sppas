@@ -1,6 +1,6 @@
 ## DataFilter
 
-`DataFilter` allows to select annotations: fix a set of filters to create new 
+`DataFilter` allows to select annotations: define a set of filters to create new 
 tiers with only the annotations you are interested in!
 This system is based on the creation of 2 different types of filters:
 
