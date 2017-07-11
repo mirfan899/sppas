@@ -1,8 +1,8 @@
 ## Statistics
 
-`Statistics` allows to get descriptives statistics about a set of selected
-tiers and includes TGA (Time Group Analyzer), originaly available at 
-<http://wwwhomes.uni-bielefeld.de/gibbon/TGA/>, a tool developped
+`Statistics` allows to get descriptive statistics about a set of selected
+tiers and includes TGA (Time Group Analyzer), originally available at 
+<http://wwwhomes.uni-bielefeld.de/gibbon/TGA/>, a tool developed
 by Dafydd Gibbon, emeritus professor of English and General Linguistics at
 Bielefeld University. 
 It also allows to estimate a user agreement rate (Kappa as a first stage).
@@ -27,7 +27,7 @@ The followings are estimated:
 - std dev. durations: the standard deviation value of the distribution of durations 
 
 All of them can be estimated on a single annotation label or on a serie of them.
-The lengh of this context can be optionally changed while fixing the "N-gram"
+The length of this context can be optionally changed while fixing the "N-gram"
 value (available from 1 to 5), just above the sheets.
 
 Each displayed sheet can be saved as a CSV file, which is a useful file format
@@ -39,7 +39,7 @@ probably the most relevant.
 
 The annotation durations are commonly estimated on the Midpoint value,
 without taking the radius into account; see (Bigi et al, 2012) for 
-explanations about the Midpoint/Radius. Optionnally, the duration can
+explanations about the Midpoint/Radius. Optionally, the duration can
 either be estimated by taking the vagueness into account, then check "Add the
 radius value" button, or by ignoring the vagueness and estimating only on the
 central part of the annotation, then check "Deduct the radius value".
@@ -62,7 +62,7 @@ provides  a  parametrised  mapping  from  time-stamps  in
 speech annotation files in various formats to a detailed
 analysis   report   with   statistics   and   visualisations. 
 TGA software calculates, inter alia, mean, median, rPVI, nPVI, slope and 
-intercept functions within interpausal groups, provides visualisations of
+intercept functions within inter-pausal groups, provides visualisations of
 timing patterns, as well as correlations between these, and parses interpausal 
 groups into hierarchies based on duration relations.
 Linear regression is selected mainly for the slope function, as a first 

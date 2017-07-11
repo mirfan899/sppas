@@ -1,4 +1,4 @@
-## IPUs segmentation
+## Step 7: IPUs segmentation
 
 ![](./etc/screencasts/sppas-demo05-ipus.mp4)
 
@@ -25,3 +25,4 @@
 
 ![](./etc/screencasts/sppas-demo06-ipus-vizualize.mp4)
 
+[Next step: Orthographic transcription](./tutorial_108_orthographic_transcription.html)

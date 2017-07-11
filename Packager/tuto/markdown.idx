@@ -3,4 +3,4 @@ prepare;Corpus_design
 beginners;SPPAS_for_beginners
 annotate;Annotate_with_SPPAS
 analyse;Analyze_annotated_data_with_SPPAS
-demo;SPPAS_Demonstration
+demo;Full_demonstration:_explore_step-by-step_SPPAS_features

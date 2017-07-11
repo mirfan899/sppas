@@ -1,4 +1,4 @@
-## IPUscriber
+## Step 8: Orthographic transcription (IPUscriber)
 
 ![](./etc/screencasts/sppas-demo07-ipuscribe.mp4)
 
@@ -38,3 +38,4 @@
 
 ![](./etc/screencasts/sppas-demo09-transcription2.mp4)
 
+[Next step: XRA to TextGrid](./tutorial_109_xra_to_textgrid.html)

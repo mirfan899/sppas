@@ -25,160 +25,32 @@
   <h2 class="author">Brigitte Bigi</h2>
   <h3 class="date">Use the left/right arrow keys to show slides</h3>
 </section>
-<section id="tutorial-1-corpus-creation-methodology" class="titleslide slide level1">
-<h1>Tutorial 1: Corpus creation methodology</h1>
+<section id="step-22-statistical-distributions" class="slide level2">
+<h1>Step 22: Statistical distributions</h1>
+<figure>
+<video width=480 controls src="./etc/screencasts/sppas-demo26-distrib.mp4" ><track label="English" kind="subtitles" srclang="en" src="./etc/screencasts/sppas-demo26-distrib.vtt"  default></video>
+</figure>
 </section>
-<section id="the-context" class="slide level2">
-<h1>The context</h1>
-<ul>
-<li>SPPAS was created in the scope of annotating automatically and exploring large multi-modal corpora</li>
-<li>A workflow was defined while creating CID - Corpus of Interactional Data
+<section class="slide level2">
+
+<h3 id="statistical-distributions">Statistical distributions</h3>
 <ul>
 <li>
-<a href="http://sldr.org/sldr000027/">http://sldr.org/sldr000027/</a> and <a href="http://sldr.org/sldr000720/">http://sldr.org/sldr000720/</a>
-</li>
-</ul>
-</li>
-<li>It was then applied to create new corpora:
+<p>Information about statistical distributions</p>
 <ul>
-<li>GrenelleII <a href="http://sldr.org/sldr000744">http://sldr.org/sldr000744</a>
-</li>
-<li>Aix MapTask (face-to-face condition) <a href="http://sldr.org/sldr000875">http://sldr.org/sldr000875</a>
-</li>
-<li>DVD <a href="http://sldr.org/sldr000891">http://sldr.org/sldr000891</a>
-</li>
+<li>Summary Tab displays occurrences and total/mean/media/stdev duration of each label</li>
+<li>Occurrences tab: occurrences of each label in each file</li>
+<li>Total durations tab: total duration of each label in each file</li>
+<li>Mean durations tab: mean duration of each label in each file</li>
 </ul>
 </li>
-</ul>
-<figure>
-<img src="./etc/screenshots/corpora.png" alt="Screenshots of 4 corpora (left to right): CID, GrenelleII, Aix MapTask, DVD" />
-<figcaption>Screenshots of 4 corpora (left to right): CID, GrenelleII, Aix MapTask, DVD</figcaption>
-</figure>
-</section>
-<section id="the-corpus-creation-workflow" class="slide level2">
-<h1>The corpus creation workflow</h1>
-<figure>
-<img src="./etc/figures/methodo.png" alt="Corpus creation and annotation: methodology" />
-<figcaption>Corpus creation and annotation: methodology</figcaption>
-</figure>
-</section>
-<section id="step-1-recording-speech" class="slide level2">
-<h1>Step 1: Recording speech</h1>
-<ul>
-<li>One channel per speaker</li>
-<li>Anechoic room, or an environment with no/low noise</li>
-<li>Audio: for automatic annotation tools:
-<ul>
-<li>Any un-compressed file format, commonly WAVE</li>
-<li>16000Hz / 16bits is enough</li>
-</ul>
-</li>
-<li>Audio: for manual annotation tools:
-<ul>
-<li>Any un-compressed file format</li>
-<li>48000Hz / 32bits is of high quality</li>
-</ul>
+<li>Distributions of sequences of labels: change Ngram value</li>
+<li>
+<p>Any of the displayed grid can be saved in a CSV file</p>
 </li>
 </ul>
-</section>
-<section id="step-2-ipus-segmentation" class="slide level2">
-<h1>Step 2: IPUs Segmentation</h1>
-<ul>
-<li>Automatic segmentation in Inter-Pausal Units
-<ul>
-<li>is also called Silence/Speech segmentation</li>
-</ul>
-</li>
-<li>Parameters to define manually:
-<ul>
-<li>fix the minimum silence duration</li>
-<li>fix the minimum speech duration</li>
-</ul>
-</li>
-<li>As results:
-<ul>
-<li>speech and silences are time-aligned automatically</li>
-<li>a manual verification is highly recommended</li>
-</ul>
-</li>
-</ul>
-</section>
-<section id="step-3-orthographic-transcription" class="slide level2">
-<h1>Step 3: Orthographic Transcription</h1>
-<ul>
-<li>Any transcription must follow a convention</li>
-<li>In speech (particularly in spontaneous speech), many phonetic variations occur:
-<ul>
-<li>some of these phonologically known variants are predictable</li>
-<li>but many others are still unpredictable (especially invented words, regional words or words borrowed from another language)</li>
-</ul>
-</li>
-<li>The orthographic transcription must be enriched:
-<ul>
-<li>it must be a representation of what is “perceived” in the signal.</li>
-</ul>
-</li>
-</ul>
-</section>
-<section id="step-4-phonemestokens-time-alignment" class="slide level2">
-<h1>Step 4: Phonemes/Tokens time-alignment</h1>
-<ul>
-<li>In SPPAS, this problem is divided into 3 tasks:
-<ol type="1">
-<li>tokenization
-<ul>
-<li>text normalization</li>
-</ul>
-</li>
-<li>phonetization
-<ul>
-<li>grapheme to phoneme conversion</li>
-</ul>
-</li>
-<li>alignment
-<ul>
-<li>speech segmentation</li>
-</ul>
-</li>
-</ol>
-</li>
-</ul>
-</section>
-<section id="other-steps" class="slide level2">
-<h1>Other steps:</h1>
-<ul>
-<li>On the basis of the time-aligned phonemes/tokens, other automatic annotations:
-<ul>
-<li>Syntax</li>
-<li>Syllables</li>
-<li>Repetitions</li>
-<li>TGA</li>
-<li>...</li>
-</ul>
-</li>
-<li>Analysis:
-<ul>
-<li>Filter data</li>
-<li>Statistics</li>
-<li>...</li>
-</ul>
-</li>
-</ul>
-</section>
-<section id="wants-more" class="slide level2">
-<h1>Wants more?</h1>
-<h3 id="more-about-cid-corpus">More about CID corpus:</h3>
 <p>
-<a href="http://www.lpl-aix.fr/~bigi/Doc/2015-SPPAS-Tutorial-HongKong/SPPAS-tutorial_02_introduction.html#11.0">Click here for a description</a>
-</p>
-<h3 id="more-about-the-annotation-workflow">More about the annotation workflow:</h3>
-<p>
-<a href="http://www.lpl-aix.fr/~bigi/Doc/2015-SPPAS-Tutorial-HongKong/SPPAS-tutorial_04_methodo.html">Click here for a description</a>
-</p>
-<h3 id="section">
-</h3>
-<p>
-<a href="./tutorial.html">Back to tutorials</a>
+<a href="./tutorial_123_filter.html">Next step: DataFilter</a>
 </p>
 </section>
 <!-- {{{{ dzslides core

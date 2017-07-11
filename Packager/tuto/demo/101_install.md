@@ -1,4 +1,4 @@
-## Install SPPAS
+## Step 1: Install SPPAS
 
 * Unzip in a directory of your computer
 
@@ -12,3 +12,5 @@
 * Click on "Extract All"
 * Choose the folder where to install SPPAS
 * That's it. SPPAS is installed!
+
+[Next step: Launch](./tutorial_102_launch.html)

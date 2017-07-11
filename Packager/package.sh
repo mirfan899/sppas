@@ -602,7 +602,7 @@ function fct_sppas_doc {
                 {print}'  > $WEB_DIR/tutorial_${outfile}.html
 
             rm toto.html
-            echo '<p><a href="tutorial_'${outfile}'.html">'`head -n1 $file | sed -e "s/#//"`'</a></p>' >> $WEB_DIR/tutorial.html
+            echo '<p><a href="tutorial_'${outfile}'.html">'`head -n1 $file | sed -e "s/[#]*//"`'</a></p>' >> $WEB_DIR/tutorial.html
         done
         i=$((i+1))
         echo '<p><br></p>' >> $WEB_DIR/tutorial.html

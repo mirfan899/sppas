@@ -120,9 +120,9 @@
 </ul>
 </nav>
 <hr />
-<h1 id="automatic-annotations"><a href="#automatic-annotations">Automatic Annotations</a></h1>
-<h2 id="introduction"><a href="#introduction">Introduction</a></h2>
-<h3 id="about-this-chapter"><a href="#about-this-chapter">About this chapter</a></h3>
+<h1 id="automatic-annotations">Automatic Annotations</h1>
+<h2 id="introduction">Introduction</h2>
+<h3 id="about-this-chapter">About this chapter</h3>
 <p>This chapter is not a description on how each automatic annotation is implemented and how it's working: references are available for that in chapter 7.</p>
 <p>Instead, this chapter describes how each automatic annotation can be used in SPPAS, i.e. what is the goal of the annotation, what are the requirements, what kind of resources are used, what is the expected result and how to perform it within SPPAS.</p>
 <p>Each automatic annotation process is illustrated as a workflow schema, where:</p>
@@ -132,7 +132,7 @@
 <li>green boxes indicate the resource;</li>
 <li>yellow boxes indicate the annotated file either given as input or produced as result.</li>
 </ul>
-<h3 id="annotations-methodology"><a href="#annotations-methodology">Annotations methodology</a></h3>
+<h3 id="annotations-methodology">Annotations methodology</h3>
 <p>The kind of process to implement in the perspective of obtaining rich and broad-coverage multimodal/multi-levels annotations of a corpus is illustrated in next Figure. It describes each step of the annotation workflow. This Figure must be read from top to bottom and from left to right, starting by the recordings and ending to the analysis of annotated files. Yellow boxes represent manual annotations, blue boxes represent automatic ones.</p>
 <figure>
 <img src="./etc/figures/methodo.png" alt="Annotation methodology" /><figcaption>Annotation methodology</figcaption>
@@ -140,11 +140,11 @@
 <p>After the recording, the first annotation to perform is IPUs segmentation. Indeed, at a first stage, the audio signal must be automatically segmented into Inter-Pausal Units (IPUs) which are blocks of speech bounded by silent pauses of more than X ms, and time-aligned on the speech signal. <strong>An orthographic transcription has to be performed manually inside the IPUs</strong>. Then text normalization automatic annotation will normalize the orthographic transcription. The phonetization process will convert the normalized text in a set of pronunciations using X-SAMPA standard. Alignment will perform segmentation at phonemes and tokens levels, etc.</p>
 <p>At the end of each automatic annotation process, SPPAS produces a <em>Procedure Outcome Report</em> that contains important information about the annotations. This window opens in the scope to be read by users (!) and can be saved with the annotated corpus. It mentions all parameters and eventually warnings and errors that occurred during the annotation process.</p>
 <p>Among others, SPPAS is able to produce automatically annotations from a recorded speech sound and its orthographic transcription. Let us first introduce what is required in terms of files, and what is the exactly meaning of &quot;recorded speech&quot; and &quot;orthographic transcription&quot;.</p>
-<h3 id="file-formats-and-tier-names"><a href="#file-formats-and-tier-names">File formats and tier names</a></h3>
+<h3 id="file-formats-and-tier-names">File formats and tier names</h3>
 <p>When using the Graphical User Interface, the file format for input and output can be fixed in the Settings and is applied to all annotations. However, while using the GUI to annotate, the file names of each annotation is already fixed and can't be changed.</p>
 <p>When using the Command-Line interface, or when using scripts, each annotation can be configured independently (both file format and file names).</p>
 <p>In all cases, <strong>the name of the tiers are fixed and can't be changed</strong>!</p>
-<h3 id="recorded-speech"><a href="#recorded-speech">Recorded speech</a></h3>
+<h3 id="recorded-speech">Recorded speech</h3>
 <blockquote>
 <p>Only <code>wav</code> and <code>au</code> audio file formats are supported by SPPAS.</p>
 </blockquote>
@@ -160,7 +160,7 @@
 <figure>
 <img src="./etc/screenshots/signal.png" alt="Example of expected recorded speech" /><figcaption>Example of expected recorded speech</figcaption>
 </figure>
-<h3 id="automatic-annotations-with-gui"><a href="#automatic-annotations-with-gui">Automatic Annotations with GUI</a></h3>
+<h3 id="automatic-annotations-with-gui">Automatic Annotations with GUI</h3>
 <p>To perform automatic annotations with SPPAS Graphical User Interface, select first the list of audio files and/or a directory, then click on the &quot;Annotate&quot; button.</p>
 <figure>
 <img src="./etc/screenshots/AAP.png" alt="The annotate panel" /><figcaption>The annotate panel</figcaption>
@@ -172,7 +172,7 @@
 <li><p>Click on the <em>Perform annotations</em> button, and wait. Be patient! Particularly for Text Normalization or Phonetization: loading resources (lexicons or dictionaries) can be very long. Sometimes, the progress bar does not really show the progress... it depends on the operating system and the power of the computer. So, just wait!</p></li>
 <li><p>It is important to read the Procedure Outcome report to check that everything happened normally during the automatic annotations.</p></li>
 </ol>
-<h3 id="automatic-annotations-with-cli"><a href="#automatic-annotations-with-cli">Automatic Annotations with CLI</a></h3>
+<h3 id="automatic-annotations-with-cli">Automatic Annotations with CLI</h3>
 <p>To perform automatic annotations with SPPAS Command-line User Interface, there is a main program <code>annotation.py</code>. Each annotation has also its own program with more options than the previous one.</p>
 <p>This main program performs automatic annotations on a given file or on all files of a directory. It strictly corresponds to the button <code>Perform annotations</code> of the GUI. All annotations are pre-configured: no specific option can be specified. The options of annotations are fixed files with extension <code>.ini</code> in <code>sppas/etc</code> folder.</p>
 <pre><code>usage: annotation.py -w file|folder [options]</code></pre>
@@ -200,7 +200,7 @@
 <figure>
 <img src="./etc/screenshots/CLI-example.png" alt="CLI: annotation.py output example" /><figcaption>CLI: annotation.py output example</figcaption>
 </figure>
-<h3 id="the-procedure-outcome-report"><a href="#the-procedure-outcome-report">The procedure outcome report</a></h3>
+<h3 id="the-procedure-outcome-report">The procedure outcome report</h3>
 <p>It is very important to read conscientiously this report: it mentions exactly what happened during the automatic annotation process. This text can be saved: it is recommended to be kept it with the related data because it contains information that are interesting to know for anyone using the annotations.</p>
 <p>The text first indicates the version of SPPAS that was used. This information is very important. Annotations in SPPAS and their related resources are regularly improved and then, the result of the automatic process can change from one version to the other one.</p>
 <p>Example:</p>
@@ -276,7 +276,7 @@ Extension de fichiers: .xra</code></pre>
 <figure>
 <img src="./etc/screenshots/log.png" alt="Procedure outcome report" /><figcaption>Procedure outcome report</figcaption>
 </figure>
-<h2 id="orthographic-transcription"><a href="#orthographic-transcription">Orthographic Transcription</a></h2>
+<h2 id="orthographic-transcription">Orthographic Transcription</h2>
 <p>An orthographic transcription is often the minimum requirement for a speech corpus so it is at the top of the annotation procedure, and it is the entry point for most of the automatic annotations. <em>Transcription conventions</em> are then designed to provide rules for writing speech corpora. These conventions establish which are the phenomena to transcribe and also how to mention them in the orthography.</p>
 <p>In speech, many phonetic variations occur. Some of these phonologically known variants are predictable and can be included in the pronunciation dictionary but many others are still unpredictable like invented words, regional words or words borrowed from another language. These specifics have a direct consequence on the automatic phonetization procedure (Bigi 2012). As a consequence, from the beginning of its development it was considered to be essential for SPPAS to deal with an <strong>Enriched Orthographic Transcription</strong>.</p>
 <p>The transcription convention is summarized below. Notice that all the symbols must be surrounded by whitespace. The file <code>TOE-SPPAS.pdf</code> available in the <code>documentation</code> folder gives details of the convention, including examples of what is recommended.</p>
@@ -312,8 +312,8 @@ Extension de fichiers: .xra</code></pre>
 <li>noises and laugh items (not available for: English, Japanese and Cantonese).</li>
 </ul>
 <p>Finally, it has to be noticed that this convention is not software-dependent. The orthographic transcription can be performed with IPUscriber tool of SPPAS, Praat, Annotation Pro, Audacity, ...</p>
-<h2 id="inter-pausal-units-ipus-segmentation"><a href="#inter-pausal-units-ipus-segmentation">Inter-Pausal Units (IPUs) segmentation</a></h2>
-<h3 id="overview"><a href="#overview">Overview</a></h3>
+<h2 id="inter-pausal-units-ipus-segmentation">Inter-Pausal Units (IPUs) segmentation</h2>
+<h3 id="overview">Overview</h3>
 <p>After recording, the first annotation to perform is IPUs segmentation. At the early first stage, the Inter-Pausal Units (IPUs) must be automatically detected in the audio signal. IPUs are blocks of speech bounded by silent pauses of more than X ms. An annotated file with the bounds of IPUs is then created. This segmentation should be verified manually: the better recording quality, thus the better IPUs segmentation.</p>
 <p>The &quot;IPUs segmentation&quot; automatic annotation can perform 3 actions:</p>
 <ol type="1">
@@ -327,7 +327,7 @@ Extension de fichiers: .xra</code></pre>
 <blockquote>
 <p>Notice that all time values are indicated in seconds.</p>
 </blockquote>
-<h3 id="silencespeech-segmentation"><a href="#silencespeech-segmentation">Silence/Speech segmentation</a></h3>
+<h3 id="silencespeech-segmentation">Silence/Speech segmentation</h3>
 <p>The IPUs Segmentation annotation performs a silence detection from a recorded file. This segmentation provides an annotated file with one tier named &quot;IPU&quot;. The silence intervals are labelled with the &quot;#&quot; symbol, as ipus intervals are labelled with &quot;ipu_&quot; followed by the IPU number.</p>
 <p>The following parameters must be properly fixed:</p>
 <ul>
@@ -359,7 +359,7 @@ Extension de fichiers: .xra</code></pre>
 <figure>
 <img src="./etc/screenshots/IPUscribe-2.png" alt="Orthographic transcription based on IPUs Segmentation" /><figcaption>Orthographic transcription based on IPUs Segmentation</figcaption>
 </figure>
-<h3 id="silencespeech-segmentation-time-aligned-with-a-transcription"><a href="#silencespeech-segmentation-time-aligned-with-a-transcription">Silence/Speech segmentation time-aligned with a transcription</a></h3>
+<h3 id="silencespeech-segmentation-time-aligned-with-a-transcription">Silence/Speech segmentation time-aligned with a transcription</h3>
 <p>Inter-Pausal Units segmentation can also consist in aligning macro-units of a document with the corresponding sound.</p>
 <p>SPPAS identifies silent pauses in the signal and attempts to align them with the utterances proposed in the transcription file, under the assumption that each such unit is separated by a silent pause. This algorithm is language-independent: it can work on any language.</p>
 <p>In the transcription file, <strong>silent pauses must be indicated</strong> using both solutions, which can be combined:</p>
@@ -375,7 +375,7 @@ Extension de fichiers: .xra</code></pre>
 <figure>
 <img src="./etc/screenshots/ipu-seg-result2.png" alt="Silence/Speech segmentation with orthographic transcription" /><figcaption>Silence/Speech segmentation with orthographic transcription</figcaption>
 </figure>
-<h3 id="split-into-multiple-files"><a href="#split-into-multiple-files">Split into multiple files</a></h3>
+<h3 id="split-into-multiple-files">Split into multiple files</h3>
 <p>IPUs segmentation can split the sound into multiple files (one per IPU), and it creates a text file for each of the tracks. By default, the names of the output files are &quot;track_0001&quot;, &quot;track_0002&quot;, etc. Optionally, if the input annotated file contains a tier with name exactly &quot;Name&quot;, then the content of this tier will be used to fix output file names.</p>
 <figure>
 <img src="./etc/screenshots/ipu-seg-result3.png" alt="Data to split" /><figcaption>Data to split</figcaption>
@@ -384,9 +384,9 @@ Extension de fichiers: .xra</code></pre>
 <figure>
 <img src="./etc/screenshots/ipu-seg-result3-files.png" alt="Data split" /><figcaption>Data split</figcaption>
 </figure>
-<h3 id="perform-ipus-segmentation-with-the-gui"><a href="#perform-ipus-segmentation-with-the-gui">Perform IPUs Segmentation with the GUI</a></h3>
+<h3 id="perform-ipus-segmentation-with-the-gui">Perform IPUs Segmentation with the GUI</h3>
 <p>Click on the IPUs Segmentation activation button and on the &quot;Configure...&quot; blue text to fix options.</p>
-<h3 id="perform-ipus-segmentation-with-the-cli"><a href="#perform-ipus-segmentation-with-the-cli">Perform IPUs Segmentation with the CLI</a></h3>
+<h3 id="perform-ipus-segmentation-with-the-cli">Perform IPUs Segmentation with the CLI</h3>
 <p><code>wavsplit.py</code> is the program to perform the IPUs segmentation, i.e. silence/ipus segmentation.</p>
 <pre><code>usage: wavsplit.py -w file [options]</code></pre>
 <p>Generic options:</p>
@@ -417,8 +417,8 @@ Extension de fichiers: .xra</code></pre>
 <p>Examples of use to get each IPU in a separate wav file and its corresponding transcription in a textgrid file:</p>
 <p>Step1: find silences/ipus <sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub>~</sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub>~<sub><sub><sub><sub><sub>~</sub></sub></sub></sub></sub></sub>~ ./sppas/bin/wavsplit.py -w ./samples/samples-eng/oriana1.wav -d 0.01 -D 0.01 -t ./samples/samples-eng/oriana1.txt -p ./samples/samples-eng/oriana1.xra <sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub>~</sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub>~<sub><sub><sub><sub><sub>~</sub></sub></sub></sub></sub></sub>~</p>
 <p>Step2: split ipus into individual tracks <sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub>~</sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub>~<sub><sub><sub><sub><sub>~</sub></sub></sub></sub></sub></sub>~ ./sppas/bin/wavsplit.py -w ./samples/samples-eng/oriana1.wav -t ./samples/samples-eng/oriana1.xra -o ./samples/samples-eng/oriana1 -e textgrid <sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub><sub>~</sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub></sub>~<sub><sub><sub><sub><sub>~</sub></sub></sub></sub></sub></sub>~</p>
-<h2 id="text-normalization"><a href="#text-normalization">Text normalization</a></h2>
-<h3 id="overview-1"><a href="#overview-1">Overview</a></h3>
+<h2 id="text-normalization">Text normalization</h2>
+<h3 id="overview-1">Overview</h3>
 <p>In principle, any system that deals with unrestricted text need the text to be normalized. Texts contain a variety of &quot;non-standard&quot; token types such as digit sequences, words, acronyms and letter sequences in all capitals, mixed case words, abbreviations, roman numerals, URL's and e-mail addresses... Normalizing or rewriting such texts using ordinary words is then an important issue. The main steps of the text normalization implemented in SPPAS (Bigi 2011) are:</p>
 <ul>
 <li>Replace symbols by their written form, thanks to a &quot;replacement&quot; dictionary, located into the folder &quot;repl&quot; in the &quot;resources&quot; directory.</li>
@@ -427,9 +427,9 @@ Extension de fichiers: .xra</code></pre>
 <li>Remove punctuation.</li>
 <li>Lower the text.</li>
 </ul>
-<h3 id="adapt-text-normalization"><a href="#adapt-text-normalization">Adapt Text normalization</a></h3>
+<h3 id="adapt-text-normalization">Adapt Text normalization</h3>
 <p>Word segmentation of SPPAS is mainly based on the use of a lexicon. If a segmentation is not as expected, it is up to the user to modify the lexicon: Lexicons of all supported languages are all located in the folder &quot;vocab&quot; of the &quot;resources&quot; directory. They are in the form of &quot;one word at a line&quot; with <a href="https://en.wikipedia.org/wiki/UTF-8">UTF-8 encoding</a> and <a href="https://en.wikipedia.org/wiki/Newline">&quot;LF&quot; for newline</a>.</p>
-<h3 id="support-of-a-new-language"><a href="#support-of-a-new-language">Support of a new language</a></h3>
+<h3 id="support-of-a-new-language">Support of a new language</h3>
 <p>Adding a new language in Text Normalization consists in the following steps:</p>
 <ol type="1">
 <li>Create a lexicon. Fix properly its encoding (utf-8), its newlines (LF), and fix the name and extension of the file as follow:
@@ -442,7 +442,7 @@ Extension de fichiers: .xra</code></pre>
 <li>Optionally, the language can be added into the num2letter.py program</li>
 </ol>
 <p>That's it for most of the languages! If the language requires more steps, simply write to the author to collaborate, find some funding, etc. like it was already done for Cantonese (Bigi &amp; Fung 2015) for example.</p>
-<h3 id="perform-text-normalization-with-the-gui"><a href="#perform-text-normalization-with-the-gui">Perform Text Normalization with the GUI</a></h3>
+<h3 id="perform-text-normalization-with-the-gui">Perform Text Normalization with the GUI</h3>
 <p>The SPPAS Text normalization system takes as input a file (or a list of files) for which the name strictly match the name of the audio file except the extension. For example, if a file with name &quot;oriana1.wav&quot; is given, SPPAS will search for a file with name &quot;oriana1.xra&quot; at a first stage if &quot;.xra&quot; is set as the default extension, then it will search for other supported extensions until a file is found.</p>
 <p>This file must include a tier with an orthographic transcription. At a first stage, SPPAS tries to find a tier with <code>transcription</code> as name. If such a tier does not exist, the first tier that is matching one of the following strings is used (case-insensitive search):</p>
 <ol type="1">
@@ -458,7 +458,7 @@ Extension de fichiers: .xra</code></pre>
 <img src="./etc/figures/tokworkflow.bmp" alt="Text normalization workflow" /><figcaption>Text normalization workflow</figcaption>
 </figure>
 <p>To perform the text normalization process, click on the Text Normalization activation button, select the language and click on the &quot;Configure...&quot; blue text to fix options.</p>
-<h3 id="perform-text-normalization-with-the-cli"><a href="#perform-text-normalization-with-the-cli">Perform Text Normalization with the CLI</a></h3>
+<h3 id="perform-text-normalization-with-the-cli">Perform Text Normalization with the CLI</h3>
 <p><code>normalize.py</code> is the program to perform Text Normalization, i.e. the text normalization of a given file or a raw text.</p>
 <pre><code>usage: normalize.py -r vocab [options]
 
@@ -483,11 +483,11 @@ $ the te to normalize one_hundred_twenty-three</code></pre>
 <pre><code>$ ./sppas/bin/normalize.py -r ./resources/vocab/eng.vocab
   -i ./samples/samples-eng/oriana1.xra
   -o ./samples/samples-eng/oriana1-token.xra</code></pre>
-<h2 id="phonetization"><a href="#phonetization">Phonetization</a></h2>
-<h3 id="overview-2"><a href="#overview-2">Overview</a></h3>
+<h2 id="phonetization">Phonetization</h2>
+<h3 id="overview-2">Overview</h3>
 <p>Phonetization, also called grapheme-phoneme conversion, is the process of representing sounds with phonetic signs. However, converting from written text into actual sounds, for any language, cause several problems that have their origins in the relative lack of correspondence between the spelling of the lexical items and their sound contents. As a consequence, SPPAS implements a dictionary based-solution which consists in storing a maximum of phonological knowledge in a lexicon. This approach is then language-independent. SPPAS phonetization process is the equivalent of a sequence of dictionary look-ups.</p>
 <p>Most of the other systems assume that all words of the speech transcription are mentioned in the pronunciation dictionary. On the contrary, SPPAS includes a language-independent algorithm which is able to phonetize unknown words of any language as long as a (minimum) dictionary is available (Bigi 2013). The Procedure Outcome Report reports on such cases with a WARNING message.</p>
-<h3 id="adapt-phonetization"><a href="#adapt-phonetization">Adapt Phonetization</a></h3>
+<h3 id="adapt-phonetization">Adapt Phonetization</h3>
 <p>Since Phonetization is only based on the use of a pronunciation dictionary, the quality of the result only depends on this resource. If a pronunciation is not as expected, it is up to the user to change it in the dictionary: Dictionaries are located in the folder &quot;dict&quot; of the &quot;resources&quot; directory. They are all with <a href="https://en.wikipedia.org/wiki/UTF-8">UTF-8 encoding</a> and <a href="https://en.wikipedia.org/wiki/Newline">&quot;LF&quot; for newline</a>. The format of the dictionaries is HTK-like. As example, below is a piece of the <code>eng.dict</code> file:</p>
 <pre><code>    THE             [THE]           D @
     THE(2)          [THE]           D V
@@ -505,9 +505,9 @@ $ the te to normalize one_hundred_twenty-three</code></pre>
 <li>Text Normalization: <code>the flight was twelve hours long</code></li>
 <li>Phonetization: <code>D-@|D-V|D-i: f-l-aI-t w-A-z|w-V-z|w-@-z|w-O:-z t-w-E-l-v aU-3:r-z|aU-r-z l-O:-N</code></li>
 </ul>
-<h3 id="support-of-a-new-language-1"><a href="#support-of-a-new-language-1">Support of a new language</a></h3>
+<h3 id="support-of-a-new-language-1">Support of a new language</h3>
 <p>The support of a new language in Phonetization only consists in: 1. creating the pronunciation dictionary. The following constraints on the file must be respected: - its format (HTK-like), - its encoding (UTF-8), - its newlines (LF), - its phone set (X-SAMPA), - its file name (iso639-3 of the language and &quot;.dict&quot; extension). 2. adding the dictionary in the &quot;dict&quot; folder of the &quot;resources&quot; directory.</p>
-<h3 id="perform-phonetization-with-the-gui"><a href="#perform-phonetization-with-the-gui">Perform Phonetization with the GUI</a></h3>
+<h3 id="perform-phonetization-with-the-gui">Perform Phonetization with the GUI</h3>
 <p>The Phonetization process takes as input a file that strictly match the audio file name except for the extension and that &quot;-token&quot; is appended. For example, if the audio file name is &quot;oriana1.wav&quot;, the expected input file name is &quot;oriana1-token.xra&quot; if .xra is the default extension for annotations. This file must include a <strong>normalized</strong> orthographic transcription. The name of such tier must contains one of the following strings:</p>
 <ol type="1">
 <li>&quot;tok&quot;</li>
@@ -519,7 +519,7 @@ $ the te to normalize one_hundred_twenty-three</code></pre>
 <img src="./etc/figures/phonworkflow.bmp" alt="Phonetization workflow" /><figcaption>Phonetization workflow</figcaption>
 </figure>
 <p>To perform the annotation, click on the Phonetization activation button, select the language and click on the &quot;Configure...&quot; blue text to fix options.</p>
-<h3 id="perform-phonetization-with-the-cli"><a href="#perform-phonetization-with-the-cli">Perform Phonetization with the CLI</a></h3>
+<h3 id="perform-phonetization-with-the-cli">Perform Phonetization with the CLI</h3>
 <p><code>phonetize.py</code> is the program to perform Phonetization on a given file.</p>
 <pre><code>usage: phonetize.py -r dict [options]
 
@@ -553,8 +553,8 @@ $ D-@|z-@|v-@|z-9|D-V|v-9|v-V|D-9|z-V|D-i:|z-i|v-i|D-i|v-i:|z-i:
 -d ./resources/dict/eng.dict
 -i ./samples/samples-eng/oriana1-token.xra
 -o ./samples/samples-eng/oriana1-phon.xra</code></pre>
-<h2 id="alignment"><a href="#alignment">Alignment</a></h2>
-<h3 id="overview-3"><a href="#overview-3">Overview</a></h3>
+<h2 id="alignment">Alignment</h2>
+<h3 id="overview-3">Overview</h3>
 <p>Alignment, also called phonetic segmentation, is the process of aligning speech with its corresponding transcription at the phone level. The alignment problem consists in a time-matching between a given speech unit along with a phonetic representation of the unit.</p>
 <p><strong>SPPAS Alignment does not perform the segmentation itself. It is a wrapper either for the <code>Julius</code> Speech Recognition Engine (SRE) or the <code>HVite</code> command of HTK-Toolkit.</strong></p>
 <p>Speech Alignment requires an Acoustic Model in order to align speech. An acoustic model is a file that contains statistical representations of each of the distinct sounds of one language. Each phoneme is represented by one of these statistical representations. The quality of the alignment result only depends on both this resource and on the aligner. From our past experiences, we got better results with Julius.</p>
@@ -563,10 +563,10 @@ $ D-@|z-@|v-@|z-9|D-V|v-9|v-V|D-9|z-V|D-i:|z-i|v-i|D-i|v-i:|z-i:
 <figure>
 <img src="./etc/screenshots/alignment.png" alt="SPPAS alignment output example" /><figcaption>SPPAS alignment output example</figcaption>
 </figure>
-<h3 id="adapt-alignment"><a href="#adapt-alignment">Adapt Alignment</a></h3>
+<h3 id="adapt-alignment">Adapt Alignment</h3>
 <p>The better Acoustic Model, the better alignment results. Any user can append or replace the acoustic models included in the &quot;models&quot; folder of the &quot;resources&quot; directory. Be aware that SPPAS only supports HTK-ASCII acoustic models, trained from 16 bits, 16000 Hz wave files.</p>
 <p>The existing models can be improved if they are re-trained with more data. To get a better alignment result, any new data is then welcome: send an e-mail to the author to share your recordings and transcripts.</p>
-<h3 id="support-of-a-new-language-2"><a href="#support-of-a-new-language-2">Support of a new language</a></h3>
+<h3 id="support-of-a-new-language-2">Support of a new language</h3>
 <p>The support of a new language in Alignment only consists in adding a new acoustic model of the appropriate format, in the appropriate directory, with the appropriate phone set.</p>
 <p>The articulatory representations of phonemes are so similar across languages that phonemes can be considered as units which are independent from the underlying language (Schultz et al. 2001). In SPPAS package, 9 acoustic models of the same type - i.e. same HMMs definition and acoustic parameters, are already available so that the phoneme prototypes can be extracted and reused to create an initial model for a new language.</p>
 <p>Any new model can also be trained by the author, as soon as enough data is available. It is difficult to estimate exactly the amount of data a given language requires. That is said, we can approximate the minimum as follow:</p>
@@ -575,7 +575,7 @@ $ D-@|z-@|v-@|z-9|D-V|v-9|v-V|D-9|z-V|D-i:|z-i|v-i|D-i|v-i:|z-i:
 <li>10 minutes altogether of various speakers, time-aligned at the ipus level with the enriched orthographic transcription.</li>
 <li>more data is good data.</li>
 </ul>
-<h3 id="perform-alignment-with-the-gui"><a href="#perform-alignment-with-the-gui">Perform Alignment with the GUI</a></h3>
+<h3 id="perform-alignment-with-the-gui">Perform Alignment with the GUI</h3>
 <p>The Alignment process takes as input one or two files that strictly match the audio file name except for the extension and that &quot;-phon&quot; is appended for the first one and &quot;-token&quot; for the optional second one. For example, if the audio file name is &quot;oriana1.wav&quot;, the expected input file name is &quot;oriana1-phon.xra&quot; with phonetization and optionally &quot;oriana1-token.xra&quot; with text normalization, if .xra is the default extension for annotations.</p>
 <p>The speech segmentation process provides one file with name &quot;-palign&quot; appended to its name, i.e. &quot;oriana1-palign.xra&quot; for the previous example. This file includes one or two tiers:</p>
 <ul>
@@ -594,7 +594,7 @@ $ D-@|z-@|v-@|z-9|D-V|v-9|v-V|D-9|z-V|D-i:|z-i|v-i|D-i|v-i:|z-i:
 <li>create the PhnTokAlign will append anoter tier with intervals of the phonetization of each word.</li>
 </ul>
 <p>To perform the annotation, click on the Alignment activation button, select the language and click on the &quot;Configure...&quot; blue text to fix options.</p>
-<h3 id="perform-alignment-with-the-cli"><a href="#perform-alignment-with-the-cli">Perform Alignment with the CLI</a></h3>
+<h3 id="perform-alignment-with-the-cli">Perform Alignment with the CLI</h3>
 <p><code>alignment.py</code> is the program to perform automatic speech segmentation of a given file.</p>
 <pre><code>usage: alignment.py -w file -i file -r file -o file [options]
 
@@ -620,8 +620,8 @@ optional arguments:
 -i ./samples/samples-eng/oriana1-phon.xra
 -I ./samples/samples-eng/oriana1-token.xra
 -o ./samples/samples-eng/oriana1-palign.xra</code></pre>
-<h2 id="syllabification"><a href="#syllabification">Syllabification</a></h2>
-<h3 id="overview-4"><a href="#overview-4">Overview</a></h3>
+<h2 id="syllabification">Syllabification</h2>
+<h3 id="overview-4">Overview</h3>
 <p>The syllabification of phonemes is performed with a rule-based system from time-aligned phonemes. This phoneme-to-syllable segmentation system is based on 2 main principles:</p>
 <ul>
 <li>a syllable contains a vowel, and only one;</li>
@@ -632,7 +632,7 @@ optional arguments:
 <img src="./etc/screenshots/syll-example.png" alt="Syllabification example" /><figcaption>Syllabification example</figcaption>
 </figure>
 <p>Syllabification requires a configuration file to indicate phonemes, classes and rules.</p>
-<h3 id="adapt-syllabification"><a href="#adapt-syllabification">Adapt Syllabification</a></h3>
+<h3 id="adapt-syllabification">Adapt Syllabification</h3>
 <p>Any user can change the set of rules by editing and modifying the configuration file of a given language. Files are located in the folder &quot;syll&quot; of the &quot;resources&quot; directory. Files are all with <a href="https://en.wikipedia.org/wiki/UTF-8">UTF-8 encoding</a> and <a href="https://en.wikipedia.org/wiki/Newline">&quot;LF&quot; for newline</a>.</p>
 <p>At first, the list of phonemes and the class symbol associated with each of the phonemes are described as, for example:</p>
 <ul>
@@ -664,20 +664,20 @@ optional arguments:
 <p>Finally, to adapt the rules to specific situations that the rules failed to model, we introduced some phoneme sequences and the boundary definition. Specific rules contain only phonemes or the symbol &quot;ANY&quot; which means any phoneme. It consists of 7 columns: the first one is the key-word OTHRULE, the 5 following columns are a phoneme sequence where the boundary should be applied to the third one by the rules, the last column is the shift to apply to this boundary. In the following example:</p>
 <p><code>OTHRULE ANY ANY p s k -2</code></p>
 <p>More information are available in (Bigi et al. 2010).</p>
-<h3 id="support-of-a-new-language-3"><a href="#support-of-a-new-language-3">Support of a new language</a></h3>
+<h3 id="support-of-a-new-language-3">Support of a new language</h3>
 <p>The support of a new language in Syllabification only consists in adding its configuration file (see previous section). Fix properly its encoding (utf-8), its newlines (LF), and fix the name and extension of the file as follow:</p>
 <ul>
 <li>&quot;syllConfig-&quot; followed by language name with iso639-3 standard</li>
 <li>extension &quot;.syll&quot;</li>
 </ul>
-<h3 id="perform-syllabification-with-the-gui"><a href="#perform-syllabification-with-the-gui">Perform Syllabification with the GUI</a></h3>
+<h3 id="perform-syllabification-with-the-gui">Perform Syllabification with the GUI</h3>
 <p>The Syllabification process takes as input a file that strictly match the audio file name except for the extension and that &quot;-palign&quot; is appended. For example, if the audio file name is &quot;oriana1.wav&quot;, the expected input file name is &quot;oriana1-palign.xra&quot; if .xra is the default extension for annotations. This file must include a tier containing the time-aligned phonemes with name &quot;PhonAlign&quot;.</p>
 <p>The annotation provides an annotated file with &quot;-salign&quot; appended to its name, i.e. &quot;oriana1-salign.xra&quot; for the previous example. This file is including 3 tiers: Syllables, Classes and Structures.</p>
 <figure>
 <img src="./etc/figures/syllworkflow.bmp" alt="Syllabification workflow" /><figcaption>Syllabification workflow</figcaption>
 </figure>
 <p>Click on the Syllabification activation button, select the language and click on the &quot;Configure...&quot; blue text to fix options.</p>
-<h3 id="perform-syllabification-with-the-cli"><a href="#perform-syllabification-with-the-cli">Perform Syllabification with the CLI</a></h3>
+<h3 id="perform-syllabification-with-the-cli">Perform Syllabification with the CLI</h3>
 <p><code>syllabify.py</code> is the program performs automatic syllabification of a given file with time-aligned phones.</p>
 <pre><code>usage: syllabify.py -r config [options]
 
@@ -689,21 +689,21 @@ optional arguments:
     -t string   Reference tier name to syllabify between intervals
     --nophn     Disable the output of the result that does not use the reference  tier
     -h, --help   Show the help message and exit</code></pre>
-<h2 id="repetitions"><a href="#repetitions">Repetitions</a></h2>
-<h3 id="overview-5"><a href="#overview-5">Overview</a></h3>
+<h2 id="repetitions">Repetitions</h2>
+<h3 id="overview-5">Overview</h3>
 <p>This automatic detection focus on word repetitions, which can be an exact repetition (named strict echo) or a repetition with variation (named non-strict echo).</p>
 <p>SPPAS implements <em>self-repetitions</em> and <em>other-repetitions</em> detection (Bigi et al. 2014). The system is based only on lexical criteria. The proposed algorithm is focusing on the detection of the source.</p>
 <p>This process requires a list of stop-words, and a dictionary with lemmas but the system can process without them.</p>
-<h3 id="adapt-repetitions-and-support-of-a-new-language"><a href="#adapt-repetitions-and-support-of-a-new-language">Adapt Repetitions and support of a new language</a></h3>
+<h3 id="adapt-repetitions-and-support-of-a-new-language">Adapt Repetitions and support of a new language</h3>
 <p>The result is significantly better if the right list of stop-words and a good dictionary of lemmas are available. Both are located in the &quot;vocab&quot; folder of the &quot;resources&quot; directory respectively with &quot;.stp&quot; and &quot;.lem&quot; extensions. These files are with <a href="https://en.wikipedia.org/wiki/UTF-8">UTF-8 encoding</a> and <a href="https://en.wikipedia.org/wiki/Newline">&quot;LF&quot; for newline</a>.</p>
-<h3 id="perform-repetitions-with-the-gui"><a href="#perform-repetitions-with-the-gui">Perform Repetitions with the GUI</a></h3>
+<h3 id="perform-repetitions-with-the-gui">Perform Repetitions with the GUI</h3>
 <p>The Graphical User Interface only allows to detect self-repetitions.</p>
 <p>The automatic annotation takes as input a file with (at least) one tier containing the time-aligned tokens of the main speaker, and another file/tier for other-repetitions. The annotation provides one annotated file with 2 tiers: Sources and Repetitions.</p>
 <figure>
 <img src="./etc/figures/repetworkflow.bmp" alt="Repetition detection workflow" /><figcaption>Repetition detection workflow</figcaption>
 </figure>
 <p>Click on the Self-Repetitions activation button, select the language and click on the &quot;Configure...&quot; blue text to fix options.</p>
-<h3 id="perform-repetitions-with-the-cli"><a href="#perform-repetitions-with-the-cli">Perform Repetitions with the CLI</a></h3>
+<h3 id="perform-repetitions-with-the-cli">Perform Repetitions with the CLI</h3>
 <p><code>repetition.py</code> is the program to perform automatic detection of self-repetitions or other-repetitions if data of a second speaker is given.</p>
 <pre><code>usage: repetition.py -i file [options]
 
@@ -715,8 +715,8 @@ optional arguments:
   -I file     Input file name with time-aligned tokens of the echoing-speaker
               (if ORs)
   -o file     Output file name</code></pre>
-<h2 id="momel-and-intsint"><a href="#momel-and-intsint">Momel and INTSINT</a></h2>
-<h3 id="momel-modelling-melody"><a href="#momel-modelling-melody">Momel (modelling melody)</a></h3>
+<h2 id="momel-and-intsint">Momel and INTSINT</h2>
+<h3 id="momel-modelling-melody">Momel (modelling melody)</h3>
 <p>Momel is an algorithm for the automatic modeling of fundamental frequency (F0) curves using a technique called asymetric modal quadratic regression.</p>
 <p>This technique makes it possible by an appropriate choice of parameters to factor an F0 curve into two components:</p>
 <ul>
@@ -743,7 +743,7 @@ optional arguments:
 <li>Minimal frequency ratio</li>
 <li>Eliminate glitch option: Filter f0 values before 'cible'</li>
 </ul>
-<h3 id="encoding-of-f0-target-points-using-the-intsint-system"><a href="#encoding-of-f0-target-points-using-the-intsint-system">Encoding of F0 target points using the &quot;INTSINT&quot; system</a></h3>
+<h3 id="encoding-of-f0-target-points-using-the-intsint-system">Encoding of F0 target points using the &quot;INTSINT&quot; system</h3>
 <p>INTSINT assumes that pitch patterns can be adequately described using a limited set of tonal symbols, T,M,B,H,S,L,U,D (standing for : Top, Mid, Bottom, Higher, Same, Lower, Up-stepped, Down-stepped respectively) each one of which characterises a point on the fundamental frequency curve.</p>
 <p>The rationale behind the INTSINT system is that the F0 values of pitch targets are programmed in one of two ways : either as absolute tones T, M, B which are assumed to refer to the speaker’s overall pitch range (within the current Intonation Unit), or as relative tones H, S, L, U, D assumed to refer only to the value of the preceding target point.</p>
 <figure>
@@ -757,9 +757,9 @@ optional arguments:
 <blockquote>
 <p><strong>D.-J. Hirst</strong> (2011). <em>The analysis by synthesis of speech melody: from data to models</em>, Journal of Speech Sciences, vol. 1(1), pages 55-83.</p>
 </blockquote>
-<h3 id="perform-momel-and-intsint-with-the-gui"><a href="#perform-momel-and-intsint-with-the-gui">Perform Momel and INTSINT with the GUI</a></h3>
+<h3 id="perform-momel-and-intsint-with-the-gui">Perform Momel and INTSINT with the GUI</h3>
 <p>Click on the Momel activation button, select the language and click on the &quot;Configure...&quot; blue text to fix options. And click on the INTSINT activation button.</p>
-<h3 id="perform-momel-and-intsint-with-the-cli"><a href="#perform-momel-and-intsint-with-the-cli">Perform Momel and INTSINT with the CLI</a></h3>
+<h3 id="perform-momel-and-intsint-with-the-cli">Perform Momel and INTSINT with the CLI</h3>
 <p><code>momel-intsint.py</code> is the program perform both momel and INTSINT.</p>
 <pre><code>usage: momel-intsint.py [options] -i file
 

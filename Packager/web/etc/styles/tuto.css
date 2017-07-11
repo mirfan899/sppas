@@ -160,6 +160,27 @@ section.level1 h1 {
 }
 
 /* Title at the top of each slide */
+section.level2 h1 {
+    font-family:    TitleFont, serif;
+    font-weight:    normal;
+    font-style:     normal;
+    font-variant:   normal;
+    font-size:      130%; 
+    text-align:     left;
+    letter-spacing: 1px;
+    margin-top:     10px;
+    margin-right:   20px;
+    margin-left:    20px;
+    margin-bottom:  10px;
+    padding-top:    15px;
+    padding-right:  15px;
+    padding-bottom: 15px;
+    padding-left:   15px;
+    border-bottom:  2px solid rgb(60,60,120);
+    color:          rgb(60,60,120);
+}
+
+/* Title at the top of each slide */
 section.level2 h2 {
     font-family:    TitleFont, serif;
     font-weight:    normal;
