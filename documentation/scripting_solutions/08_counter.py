@@ -1,17 +1,16 @@
 ﻿#!/usr/bin python
 """
 
-@author:       Brigitte Bigi
-@date:         2016-May-07
-@contact:      brigitte.bigi@gmail.com
-@license:      GPL, v3
-@copyright:    Copyright (C) 2016  Brigitte Bigi
+:author:       Brigitte Bigi
+:date:         2016-May-07
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2016  Brigitte Bigi
 
-@summary:      Simple script to compare 2 sets of data using NLP techniques.
+:summary:      Simple script to compare 2 sets of data using NLP techniques.
 
 """
 
-import sys
 import codecs
 import collections
 import math
@@ -28,68 +27,70 @@ corpus2 = 'corpus2.txt'
 # General functions
 # ---------------------------------------------------------------------------
 
+
 def read_file(filename):
     """ Read the whole file, return lines into a list.
 
-    @param filename (string) Name of the file to read, including path.
-    @return List of lines
+    :param filename: (str) Name of the file to read, including path.
+    :returns: List of lines
 
     """
-    with codecs.open(filename, 'r', encoding="utf8") as f:
-        lines = f.readlines()
+    my_list = list()
+    with codecs.open(filename, 'r', encoding="utf8") as fp:
+        for l in fp.readlines():
+            my_list.append(l.strip())
 
-    mylist = list()
-    for l in lines:
-        mylist.append(l.strip())
-    return mylist
+    return my_list
 
 # ---------------------------------------------------------------------------
 
-def total(mylist, item):
-    """ Return the total number of the item in the list.
 
-    @param mylist (list) list of elements
-    @param item (any) an element of the list (or not!)
-    @return number (int) of item in mylist
+def total(my_list, item):
+    """ Return the number of occurrences of an item in the list.
+
+    :param my_list: (list) list of items
+    :param item: (any) an item of the list (or not!)
+    :returns: (int) number of occurrences of an item in my list
 
     """
-    return mylist.count(item)
+    return my_list.count(item)
 
 # ---------------------------------------------------------------------------
 
-def frequency(mylist, item):
-    """
-    Return the relative frequency of an item of a list.
 
-    @param mylist (list) list of elements
-    @param item (any) an element of the list (or not!)
-    @return frequency (float) of item in mylist
+def frequency(my_list, item):
+    """ Return the relative frequency of an item of a list.
+
+    :param my_list: (list) list of items
+    :param item: (any) an item of the list (or not!)
+    :returns: (float) frequency of an item in my list
 
     """
-    return float(mylist.count(item)) / float(len(mylist))
+    return float(my_list.count(item)) / float(len(my_list))
 
 # ---------------------------------------------------------------------------
 
-def percentage(mylist, item):
-    """
-    Return the percentage of an item of a list.
 
-    @param mylist (list) list of elements
-    @param item (any) an element of the list (or not!)
-    @return percentage (float) of item in mylist
+def percentage(my_list, item):
+    """ Return the percentage of an item of a list.
+
+    :param my_list: (list) list of items
+    :param item: (any) an item of the list (or not!)
+    :returns: (float) percentage of an item in my list
 
     """
-    return 100.0 * frequency(mylist,item)
+    return 100.0 * frequency(my_list, item)
 
 # ---------------------------------------------------------------------------
 # NLP functions
 # ---------------------------------------------------------------------------
 
+
 def get_occranks(counter):
     """ Return a dictionary with key=occurrence, value=rank.
 
-    @param counter (Counter)
-    @return dict
+    :param counter: (Counter)
+    :returns: dict
 
     """
     occ = {}
@@ -108,11 +109,12 @@ def get_occranks(counter):
 
 # ---------------------------------------------------------------------------
 
+
 def get_ranks(counter):
     """ Return a dictionary with key=token, value=rank.
 
-    @param counter (Counter)
-    @return dict
+    :param counter: (Counter)
+    :returns: dict
 
     """
     ranks = {}
@@ -123,6 +125,7 @@ def get_ranks(counter):
     return ranks
 
 # ---------------------------------------------------------------------------
+
 
 def zipf(ranks, item):
     """ Return the Zipf Law value of an item.
@@ -142,6 +145,7 @@ def zipf(ranks, item):
     return -1
 
 # ---------------------------------------------------------------------------
+
 
 def tfidf(documents, item):
     """ Return the tf.idf of an item.
@@ -177,30 +181,29 @@ def tfidf(documents, item):
 # Main program
 # ---------------------------------------------------------------------------
 
+if __name__ == '__main__':
 
-phones1 = read_file( corpus1 )
-phones2 = read_file( corpus2 )
+    phones1 = read_file( corpus1 )
+    phones2 = read_file( corpus2 )
 
-counter1 = collections.Counter(phones1)
-counter2 = collections.Counter(phones2)
+    counter1 = collections.Counter(phones1)
+    counter2 = collections.Counter(phones2)
 
-# Hapax
-hapax1 = [k for k in counter1.keys() if counter1[k]==1]
-hapax2 = [k for k in counter2.keys() if counter2[k]==1]
-print("Corpus 1, Number of hapax: {:d}.".format(len(hapax1)))
-print("Corpus 2, Number of hapax: {:d}.".format(len(hapax2)))
+    # Hapax
+    hapax1 = [k for k in counter1.keys() if counter1[k]==1]
+    hapax2 = [k for k in counter2.keys() if counter2[k]==1]
+    print("Corpus 1, Number of hapax: {:d}.".format(len(hapax1)))
+    print("Corpus 2, Number of hapax: {:d}.".format(len(hapax2)))
 
-# Zipf law
-ranks1 = get_ranks(counter1)
-ranks2 = get_ranks(counter2)
-for t in ['@', 'e', "E"]:
-    print("Corpus 1: {:s} {:d} {:f} {:d} {:f}".format(t,total(phones1,t),frequency(phones1,t),ranks1.get(t,-1),zipf(ranks1,t)))
-    print("Corpus 2: {:s} {:d} {:f} {:d} {:f}".format(t,total(phones2,t),frequency(phones2,t),ranks2.get(t,-1),zipf(ranks2,t)))
+    # Zipf law
+    ranks1 = get_ranks(counter1)
+    ranks2 = get_ranks(counter2)
+    for t in ['@', 'e', "E"]:
+        print("Corpus 1: {:s} {:d} {:f} {:d} {:f}".format(t,total(phones1,t),frequency(phones1,t),ranks1.get(t,-1),zipf(ranks1,t)))
+        print("Corpus 2: {:s} {:d} {:f} {:d} {:f}".format(t,total(phones2,t),frequency(phones2,t),ranks2.get(t,-1),zipf(ranks2,t)))
 
-# TF.IDF
-print("TF.IDF @: {0}".format(tfidf([phones1,phones2], '@')))
-print("TF.IDF e: {0}".format(tfidf([phones1,phones2], 'e')))
-print("TF.IDF E: {0}".format(tfidf([phones1,phones2], 'E')))
-
-# ---------------------------------------------------------------------------
+    # TF.IDF
+    print("TF.IDF @: {0}".format(tfidf([phones1,phones2], '@')))
+    print("TF.IDF e: {0}".format(tfidf([phones1,phones2], 'e')))
+    print("TF.IDF E: {0}".format(tfidf([phones1,phones2], 'E')))
 

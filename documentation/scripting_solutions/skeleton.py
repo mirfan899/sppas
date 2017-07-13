@@ -1,16 +1,15 @@
 #!/usr/bin python
 """
 
-@author:       Fix Me
-@date:         Now
-@contact:      me@me.org
-@license:      GPL, v3
-@copyright:    Copyright (C) 2016  Fixme
+:author:       Fix Me
+:date:         Now
+:contact:      me@me.org
+:license:      GPL, v3
+:copyright:    Copyright (C) 2017  Fixme
 
-@summary:      This is the skeleton of a python script.
+:summary:      This is the skeleton of a python script.
 
 """
-
 import os
 import sys
 import codecs
@@ -39,5 +38,4 @@ def main():
 # This is the python entry point:
 # Here, we just ask to execute the main function.
 if __name__ == '__main__':
-	main()
-# ----------------------------------------------------------------------------
+    main()

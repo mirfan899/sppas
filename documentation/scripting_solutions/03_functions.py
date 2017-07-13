@@ -1,51 +1,54 @@
 #!/usr/bin python
 """
 
-@author:       Brigitte Bigi
-@date:         2016-May-07
-@contact:      brigitte.bigi@gmail.com
-@license:      GPL, v3
-@copyright:    Copyright (C) 2016  Brigitte Bigi
+:author:       Brigitte Bigi
+:date:         2016-May-07
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2016  Brigitte Bigi
 
-@summary:      Simple script to print lists.
+:summary:      Simple script to print lists.
 
 """ 
 
-def is_empty(mystr):
-    """ Return True if mystr is an empty string.
+
+def is_empty(string):
+    """ Return True if the given string contains no characters.
     
-    @param mystr (str) is a string
-    @return bool 
+    :param string: (str) a string to check
+    :returns: bool
     
     """
-    s = mystr.strip()
+    # Clean the string: remove tabs, carriage returns...
+    s = string.strip()
+    # Check the length of the cleaned string
     return len(s) == 0
 
 
 def print_list(mylist, message=""):
     """ Print a list on the screen.
 
-    @param mylist (list) is the list to print
-    @param message (string) is an optional message to print before each element
+    :param mylist: (list) the list to print
+    :param message: (str) an optional message to print before each item
 
     """
-    for element in mylist:
-        strelement = str(element)
-        if not is_empty(strelement):
-            print(message,strelement)
+    for item in mylist:
+        str_item = str(item)
+        if is_empty(str_item) is False:
+            print(message, str_item)
         else:
-            print(message,"Empty item.")
+            print(message, "Empty item.")
 
 # ----------------------------------------------------------------------------
 # Main
 # ----------------------------------------------------------------------------
 
-vowels = ['a', 'e', 'E', 'i', 'o', 'u', 'y', '@', '2', '9', 'a~', 'o~', 'U~']
-plosives = ['p', 't', 'k', 'b', 'd', 'g']
-numbers = [1, 2, "", 3, "4"]
+if __name__ == '__main__':
 
-print_list(vowels,   "Vowel:   ")
-print_list(plosives, "Plosive: ")
-print_list(numbers,  "Number:  ")
+    vowels = ['a', 'e', 'E', 'i', 'o', 'u', 'y', '@', '2', '9', 'a~', 'o~', 'U~']
+    plosives = ['p', 't', 'k', 'b', 'd', 'g']
+    numbers = [1, 2, "", 3, "4"]
 
-# ----------------------------------------------------------------------------
+    print_list(vowels,   "Vowel:   ")
+    print_list(plosives, "Plosive: ")
+    print_list(numbers,  "Number:  ")

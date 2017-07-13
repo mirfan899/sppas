@@ -1,16 +1,15 @@
 #!/usr/bin python
 """
 
-@author:       Brigitte Bigi
-@date:         2016-May-07
-@contact:      brigitte.bigi@gmail.com
-@license:      GPL, v3
-@copyright:    Copyright (C) 2016  Brigitte Bigi
+:author:       Brigitte Bigi
+:date:         2016-May-07
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2016  Brigitte Bigi
 
-@summary:      Simple script to manipulate dictionaries: SAMPA to IPA converter.
+:summary:      Simple script to manipulate dictionaries: SAMPA to IPA converter.
 
-"""  
-
+"""
 import codecs
 import sys
 
@@ -19,15 +18,16 @@ import sys
 # ----------------------------------------------------------------------------
 
 #myfile="C:\phonemes.csv"
-myfile="phonemes.csv"
+myfile = "phonemes.csv"
 
 # ----------------------------------------------------------------------------
 
-def read_file(filename):
-    """ Read the whole file, return lines into a list.
 
-    @param filename (string) Name of the file to read, including path.
-    @return List of lines
+def read_file(filename):
+    """ Get the content of a file.
+
+    :param filename: (str) Name of the file to read, including path.
+    :returns: List of lines
 
     """
     with codecs.open(filename, 'r', encoding="utf8") as f:
@@ -35,44 +35,51 @@ def read_file(filename):
 
 # ----------------------------------------------------------------------------
 
-def extract_dict_from_lines(lines, colkey, colvalue):
-    """ Extract a dictionary from the columns of a list of lines. """
 
+def extract_dict_from_lines(lines, col_key, col_value):
+    """ Extract a dictionary from the columns of a list of lines.
+
+    :param lines: (list)
+    :param col_key: (str)
+    :param col_value: (str)
+
+    """
     # Check if everything is normal:
-    mydict = {}
-    if colkey < 0 or colvalue < 0:
+    my_dict = dict()
+    if col_key < 0 or col_value < 0:
         print("Error. Bad column number.")
-        return mydict
+        return my_dict
 
-    for l in lines:
-        # Get columns
-        columns = l.split(';')
-        # Check if the given columns values are normal!
-        if len(columns) > colkey and len(columns) > colvalue:
-            thekey = columns[colkey].strip()
-            thevalue = columns[colvalue].strip()
+    for line in lines:
+        # Get columns in a list
+        columns = line.split(';')
+        # Check if the given column values are normal!
+        if len(columns) > col_key and len(columns) > col_value:
+            the_key = columns[col_key].strip()
+            the_value = columns[col_value].strip()
             # Add the new pair in the dict. If the key is already
             # existing, it will be updated with the new value!
-            mydict[thekey] = thevalue
+            my_dict[the_key] = the_value
         else:
-            print("Warning. Bad number of columns for line: {0}".format(l))
-    return mydict
+            print("Warning. Bad number of columns for line: {0}".format(line))
+
+    return my_dict
 
 # ----------------------------------------------------------------------------
 
-lines = read_file(myfile)
+if __name__ == '__main__':
 
-# before doing something, check the data!
-if not len(lines):
-    print('Hum... the file was empty!')
-    sys.exit(0)
+    lines = read_file(myfile)
 
-sampadict = extract_dict_from_lines(lines, 1, 2)
-mylist = ['a', 'b', 'c', 'd', 'e', 'f', 'E', 'g', 'a~', 'S']
-for phone in mylist:
-    if phone in sampadict:
-        print("Sampa phoneme{0} is IPA {1}.".format(phone, sampadict[phone]))
-    else:
-        print("Sampa phoneme {0} has no IPA!".format(phone))
+    # before doing something, check the data!
+    if not len(lines):
+        print('Hum... the file was empty!')
+        sys.exit(0)
 
-# ----------------------------------------------------------------------------
+    sampa_dict = extract_dict_from_lines(lines, 1, 2)
+    my_list = ['a', 'b', 'c', 'd', 'e', 'f', 'E', 'g', 'a~', 'S']
+    for phone in my_list:
+        if phone in sampa_dict:
+            print("Sampa phoneme {:s} is IPA {:s}.".format(phone, sampa_dict[phone]))
+        else:
+            print("Sampa phoneme {:s} has no IPA!".format(phone))

@@ -1,23 +1,20 @@
 ## Scripting with Python
 
-
-### Hello World!
-
-We are going to create a very simple Python script and then run it.
-First of all, create a new folder (on your Desktop for example); you
-can name it "pythonscripts" for example.
-
-Execute the python IDLE (available in the Application-Menu of your operating
-system).
+We are going to create simple Python scripts and then run them.
+Create a new folder - on your Desktop for example;
+with name "pythonscripts" for example.
+Execute the python IDLE which is available in the Application-Menu 
+of your operating system.
 
 ![The Python IDLE logo](./etc/img/python_idle.png)
 
-Then, create a new empty file: 
 
-- by clicking on "File" menu, then "New File", 
-- or with the shortcut "CTRL"+N.
+### Hello World!
 
-Copy the following code in this newly created file.
+First of all, create a new empty file either by clicking on "File" 
+menu, then "New File", or with the shortcut "CTRL"+N. 
+
+Copy the following code in this newly created file:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines}
 print('Hello world!')
@@ -27,13 +24,7 @@ print('Hello world!')
 
 Then, save the file in the "pythonscripts" folder. 
 By convention, Python source files end with a *.py* extension, 
-so I suggest the name `01_helloworld.py`.
-
-Notice that `main` (in the code above) is a function.  
-A function does something. This particular function prints, or outputs 
-to the screen, the text, or string, between apostrophes or quotation marks. 
-We've decided to call this function main: the name main is just a convention.
-We could have called it anything.
+so the name `01_helloworld.py` could be fine.
 
 To execute the program, you can do one of:
 
@@ -45,141 +36,95 @@ The expected output is as follow:
 ![Output of the first script](./etc/screenshots/python_idle_01.png)
 
 A better practice while writing scripts is to describe by who, what and why 
-this script was done.
-I suggest to create a skeleton for your future scripts, it is useful each time 
-a new script will have to be written. 
-
-Here is an example:
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines}
-# ----------------------------------------------------------------------------
-# Author: Me
-# Date:   Today
-# Brief:  Simple script to do nothing.
-# ----------------------------------------------------------------------------
-
-import os
-import sys
-
-# ----------------------------------------------------------------------------
-
-def main():
-    """ This is the main function to do something. """
-    pass
-
-# ----------------------------------------------------------------------------
-# This is the python entry point:
-# Here, we just ask to execute the main function.
-if __name__ == '__main__':
-    main()
-# ----------------------------------------------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-This ready-to-use script is available in the SPPAS package, 
-its name is `skeleton.py`. 
-
-In the example above, the main function is documented: documentation is the
-text between """. In this chapter, all these "docstrings" follow a convention, 
-named  "The Epytext Markup Language". 
-Epytext is a simple lightweight markup language that lets you add
-formatting and structure to docstrings. The software Epydoc uses that 
-formatting and structure to produce nicely formatted API documentation.
-For details, see:
-
-> Epydoc web site: <http://epydoc.sourceforge.net/manual-epytext.html>
-
+this script was done. A good practice is to create a skeleton for any future 
+script which has to be written. Such ready-to-use script is available in the 
+SPPAS package with the name `skeleton.py`. 
 
 
 ### Functions
 
 #### Simple function
 
-Now, we'll play with functions!
-So, create a copy of the file `skeleton.py`, and add the following function
-`print_vowels()`.
-This function declare a list named `vowels`. Each item of the list is a string 
-representing a vowel in French encoded in SAMPA (at the phonetic level). 
-Of course, such list can be overridden with any other set of phonemes.
-Then, the function print each item of the list, by means of a loop.
+A function does something: it stats with its definition then is followed by its
+lines of code in a block.
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="21"}
+Here is an example of function:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="27"}
 def print_vowels():
     """ Print the list of French vowels on the screen. """
     
     vowels = ['a', 'e', 'E', 'i', 'o', 'u', 'y', '@', '2', '9', 'a~', 'o~', 'U~']
+    print("List of French vowels:")
     for v in vowels:
         print(v)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The `main()` function must be changed: 
-instead of printing 'Hello World!', it will call the newly created 
-function `print_vowels()`.
+What the `print_vowels()` function is doing?
+This function declares a list with name `vowels`. Each item of the list is a 
+string representing a vowel in French encoded in X-SAMPA. Of course, this list 
+can be overridden with any other set of strings. The next line prints
+a message. Then, a loop prints each item of the list.
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="31"}
-def main():
-    """ This is the main function. """
+At this stage, if a script including this function is executed, it will do... 
+nothing! Actually, the function is created, but it must be invoked in the main 
+function to be interpreted by Python. 
+The new version is as follow:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="40"}
+if __name__ == '__main__':
     print_vowels()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Then, save the file in the "pythonscripts" folder and execute the program. 
 
+>*Standalone Practice:* create a copy of the file `skeleton.py`, then
+>make a function to print Hello World.
+>(solution: 01_hello_world.py).
 
->*Practice*: 
->Add a function to print plosives and call it in the main function
+>*Standalone Practice*: 
+>add a function to print plosives and call it in the main function
 >(solution: 02_functions.py).
 
 ![Output of the second script](./etc/screenshots/python_idle_02.png)
 
  
 One can also create a function to print glides, another one to print 
-affricates, and so on.
-Hum... this sounds a little bit fastidious!
+affricates, and so on. Hum... this sounds a little bit fastidious!
 Lets update, or refactor, our printing function to *make it more generic*. 
 
 
 #### Function with parameters
 
-There are times when we need to do something different with only slight 
-variation each time. Rather than writing the same code with only minor 
-differences over and over, we group the code together and use a mechanism 
-to allow slight variations each time we use it.
-A function is a smaller program with a specific job. In most languages 
-they can be "passed" data, called parameters, which allow us to change 
-the values they deal with.
-
+Rather than writing the same lines of code with only a minor difference
+over and over, we can declare *parameters* to the function.
 Notice that the number of parameters of a function is not limited!
 
 In the example, we can replace the `print_vowels()` function and the
 `print_plosives()` function by a single function `print_list(mylist)`
 where `mylist` can be any list containing strings or characters.
-If the list contains other typed-variables (as int or float), they must
-be converted to string to be printed out.
+If the list contains other typed-variables like numerical values, they 
+must be converted to string to be printed out.
+This can result in the following function:
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="21"}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="27"}
 def print_list(mylist, message=""):
     """ Print a list on the screen.
 
-    @param mylist (list) is the list to print
-    @param message (string) is an optional message to print before each element 
+    :param mylist: (list) is the list to print
+    :param message: (string) is an optional message to print before each element 
 
     """
-    for element in mylist:
-        print("{0} {1}".format(message, element))
-
-# ----------------------------------------------------------------------------
-
+    for item in mylist:
+        print("{0} {1}".format(message, item))
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 #### Function return values
 
-Languages usually have a way to return information from a function, 
-and this is called the return data. 
-This is done with the `return` key-word. The function stops at this stage, even
-if some code is following in the block.
-
-In the following example, the function would return a boolean value (True if
-the given string has no character).
+Functions are used to do a specific job and the result of the function can be
+captured by the program.
+In the following example, the function would return a boolean value, i.e. 
+True if the given string has no character.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="21"}
 def is_empty(mystr):
@@ -188,7 +133,7 @@ def is_empty(mystr):
     return len(mystr.strip()) == 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
->Practice: Add this funtion in a new script and try to print various lists
+>Practice: Add this function in a new script and try to print various lists
 >(solution: 03_functions.py)
 
 ![Expected output of the 3rd script](./etc/screenshots/python_idle_03.png)
@@ -199,8 +144,8 @@ def is_empty(mystr):
 #### Reading data from a file
 
 Now, we'll try to get data from a file. Create a new empty file with the 
-following lines (and add as many lines as you want), then, save it with
-the name "phonemes.csv" (by using UTF-8 encoding):
+following lines - and add as many lines as you want; then, save it with
+the name "phonemes.csv" by using UTF-8 encoding:
 
     occlusives ; b ; b 
     occlusives ; d ; d 
@@ -214,66 +159,45 @@ the name "phonemes.csv" (by using UTF-8 encoding):
     vowels ; e ; e 
 
 The following statements are typical statements used to read the content 
-of a file. The  first parameter of the function `open` is the file name, 
+of a file. The first parameter of the `open` function is the name of the file, 
 including the path (relative or absolute); and the second argument is the
 opening mode ('r' is the default value, used for reading).
 
+>*Standalone Practice:* Add this lines of code in a new script and try it
+>(solution: 04_reading_simple.py)
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="21"}
-def main():
-    fp = open("C:\Users\Me\Desktop\pythonscripts\phonemes.csv", 'r')
-    for l in fp:
-        # do something with the line stored in variable l
-        print(l)
-    f.close()
+fp = open("C:\Users\Me\Desktop\pythonscripts\phonemes.csv", 'r')
+for line in fp:
+    # do something with the line stored in variable l
+    print(line.strip())
+f.close()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 
-See the file 04_reading_simple.py for the whole program and try-it
-(do not forget to change the file name to your own file!).
-
-Like any program... it exists more than one way to solve the problem.
 The following is a more generic solution, with the ability to deal with 
 various file encodings, thanks to the `codecs` library:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="21"}
 def read_file(filename):
-    """ Read the whole file, return lines into a list.
+    """ Get the content of file.
 
-    @param filename (string) Name of the file to read, including path.
-    @return List of lines
+    :param filename: (string) Name of the file to read, including path.
+    :returns: List of lines
 
     """
     with codecs.open(filename, 'r', encoding="utf8") as fp:
         return fp.readlines()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 
-In the previous code, the `codecs.open` functions got 3 arguments: the file 
-name, the mode (in that case, 'r' means 'read'), and the encoding.
-The `readlines()` function get each line of the file `f` and store it into 
-a list.
+In the previous code, the `codecs.open` functions got 3 parameters: 
+the name of the file, the mode to open, and the encoding. The `readlines()` 
+function gets each line of the file and store it into a list.
 
-The main function can be as follow:
+>*Standalone Practice:* Write a script to print the content of a file
+>(solution: 05_reading_file.py)
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="35"}
-def main():
-    """ This is the main function. """
-
-    lines = read_file("C:\Users\Me\Desktop\pythonscripts\phonemes.csv")
-
-    # before doing something, check the data!
-    if not len(lines):
-        print('Hum... the file is empty!')
-        sys.exit(1)
-
-    # do something with the lines
-    for l in lines:
-        print(l.strip())
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-
-See the file 05_reading_file.py for the whole program, and try-it
-(do not forget to change the file name to your own file!).
-
-Notice that Python `os` module provides methods that can help you to perform 
-file-processing operations, such as renaming and deleting files.
+Notice that Python `os` module provides useful methods to perform 
+file-processing operations, such as renaming and deleting.
 See Python documentation for details: <https://docs.python.org/2/>
 
 
@@ -281,13 +205,12 @@ See Python documentation for details: <https://docs.python.org/2/>
 
 Writing a file requires to open it in a writing mode: 
 
-* 'w' is the mode used to write; it will erase any existing file;
-* 'a' is the mode used to append data in an existing file.
+* 'w' is the mode to write data; it will erase any existing file;
+* 'a' is the mode to append data in an existing file.
 
 A file can be opened in an encoding and saved in another one. This could be
-useful to write a script to convert the encoding of a set of files in a 
-given folder to UTF-8 for example. The following could help to create 
-such a script:
+useful to write a script to convert the encoding of a set of files. 
+The following could help to create such script:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="10"}
 # getting all files of a given folder:
@@ -297,41 +220,43 @@ dirs = os.listdir( path )
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="15"}
-# Converting encoding of a file:
+# Converting the encoding of a file:
 file_stream = codecs.open(file_location, 'r', file_encoding)
 file_output = codecs.open(file_location+'utf8', 'w', 'utf-8')
 
-for l in file_stream:
-    file_output.write(l)
+for line in file_stream:
+    file_output.write(line)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 
 
 ### Dictionaries
 
-A dictionary is another container type that can store any number of 
-Python objects, including other container types. Dictionaries consist 
-of pairs (called items) of keys and their corresponding values.
-Each key is separated from its value by a colon (:), the items are 
-separated by commas, and the whole thing is enclosed in curly braces. 
-An empty dictionary without any items is written with just two curly 
-braces, like this: {}.
-To access dictionary elements, you can use the familiar square brackets 
-along with the key to obtain its value.
 
-The next example is a portion of a program that can be used to convert a list
-of phonemes from SAMPA to IPA.
+A dictionary is a very useful data type. It consists of pairs of keys and 
+their corresponding values.
 
-To get values from a dictionary, one way is to use directly `dict[key]`,
-but it is required to test if key is really in dict, otherwise, Python will
-stop the program and send an error.
-Alternatively, the `get` function can be used, as `dict.get(key, default=None)`
-where default is the value to return if the key is missing. In the previous
-example, it is possible to replace `sampadict[phone]` by 
-`sampadict.get(phone, phone)`.
-Two other functions are useful while using dictionaries:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
+fruits = dict()
+fruits['apples'] = 3
+fruits['peers'] = 5
+fruits['tomatoas'] = 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 
-* dict.keys() return a list with the keys
-* dict.values() return a list with values
+`fruits['apples']` is a way to the the value - i.e. 3, of the `apple` key.
+However, an error is sent if the key is unknown, like `fruits[bananas]`.
+Alternatively, the `get` function can be used, like `fruits.get("bananas", 0)`
+that will return 0.
+
+The next example is showing how use a dictionary:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
+for key in ['apples', 'peers', 'tomatoes', 'babanas']:
+    value = fruits.get(key, 0)
+    if value < 3:
+        print("You have to buy new {:s}".format(key))
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Other examples are available in the Python documentation:
+<https://docs.python.org/2/tutorial/datastructures.html>
 
 
 ### Exercises to practice
@@ -340,10 +265,9 @@ Two other functions are useful while using dictionaries:
 (solution: 06_list.py)
 
     
->Exercise 2: Write a SAMPA to IPA converter.
+>Exercise 2: Write a X-SAMPA to IPA converter.
 (solution: 07_dict.py)
 
     
 >Exercise 3: Compare 2 sets of data using NLP techniques (Zipf law, Tf.Idf)
 (solution: 08_counter.py)
-    

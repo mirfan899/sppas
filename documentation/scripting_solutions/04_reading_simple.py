@@ -1,13 +1,13 @@
 #!/usr/bin python
 """
 
-@author:       Brigitte Bigi
-@date:         2016-May-07
-@contact:      brigitte.bigi@gmail.com
-@license:      GPL, v3
-@copyright:    Copyright (C) 2016  Brigitte Bigi
+:author:       Brigitte Bigi
+:date:         2016-May-07
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2016  Brigitte Bigi
 
-@summary:      Simple script to open and read a file.
+:summary:      Simple script to open a file, then read and print its content.
 
 """ 
 
@@ -23,10 +23,12 @@ myfile="phonemes.csv"
 # Main
 # ----------------------------------------------------------------------------
 
-f = open(myfile)
-for l in f:
-    # do something with the line stored in variable l
-    print(l.strip())
-f.close()
+if __name__ == '__main__':
 
-# ----------------------------------------------------------------------------
+    # Open the file
+    f = open(myfile)
+    # Read the content line by line wit a loop
+    for line in f:
+        # do something with the line stored in variable "line"
+        print(line.strip())
+    f.close()

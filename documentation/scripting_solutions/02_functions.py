@@ -1,21 +1,19 @@
 #!/usr/bin python
 """
 
-@author:       Brigitte Bigi
-@date:         2016-May-07
-@contact:      brigitte.bigi@gmail.com
-@license:      GPL, v3
-@copyright:    Copyright (C) 2016  Brigitte Bigi
+:author:       Brigitte Bigi
+:date:         2016-May-07
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2016  Brigitte Bigi
 
-@summary:      Simple script to print(phonetics.
+:summary:      Simple script to print(phonetics.
 
 """ 
 
+
 def print_vowels():
-    """ 
-    Print the list of French vowels on the screen. 
-    
-    """
+    """ Print the list of French vowels on the screen. """
     print("a")
     print("e")
     print("E")
@@ -32,10 +30,7 @@ def print_vowels():
 
 
 def print_plosives():
-    """ 
-    Print a list of plosives on the screen. 
-    
-    """
+    """ Print a list of plosives on the screen.  """
     print("p")
     print("t")
     print("k")
@@ -45,20 +40,11 @@ def print_plosives():
 
 # ----------------------------------------------------------------------------
 
-def main():
-    """ 
-    This is the main function. 
-    
-    """
+if __name__ == '__main__':
+
     print("French vowels: ")
     print_vowels()
-    
+
     print("French plosives: ")
     print_plosives()
-
-
-if __name__ == '__main__':
-    main()
-
-# ----------------------------------------------------------------------------
 
