@@ -1,53 +1,26 @@
-## Publications about SPPAS
+## References about SPPAS
 
-**By using SPPAS, you agree to cite any of these references.**
+### How to cite SPPAS?
+
+**By using SPPAS, you agree to cite any of the references in this chapter.**
 For a general citation of SPPAS, simply use the main reference below.
-For a specific purpose of SPPAS, like for example automatic syllabification,
-or forced-alignment, or the request system, etc, please refer to the
-related specific publication.
-
-Notice that a PDF version of the main publication is available in the folder
-`documentation` of the SPPAS package. All the publications are available on the
-author website, at the following URL:
-<http://www.lpl-aix.fr/~bigi/publications.html>
-
-
-### Main reference
-
-#### How to cite SPPAS?
+A PDF version of this publication is available in the folder
+`documentation` of the SPPAS package. 
 
 > *Brigitte Bigi (2015).*
 > **SPPAS - Multi-lingual Approaches to the Automatic Annotation of Speech**.
 > In "the Phonetician" - International Society of Phonetic Sciences, 
 > ISSN 0741-6164, Number 111-112 / 2015-I-II, pages 54-69. 
 
-#### Summary
 
-The first step of most acoustic analyses unavoidably involves the alignment of
-recorded speech sounds with their phonetic annotation. This step is very
-labor-intensive and cost-ineffective since it has to be performed manually by
-experienced phoneticians during many hours of work.
-
-This paper describes the main features of SPPAS, a software tool designed for
-the needs of automatically producing annotations of speech at the level of
-utterance, word, syllable and phoneme based on the recorded speech sound and
-its orthographic transcription. In other words, it can automatize the phonetic
-transcription task for speech materials, as well as the alignment task of
-transcription with speech recordings for further acoustic analyses.
-
-Special attention will be given to the methodology implemented in SPPAS, based
-on algorithms which are as language-and-task-independent as possible. This
-procedure allows for the addition of new languages quickly and for the
-adaptation of this tool to the user's specific needs. Consequently, the
-quality of the automatic annotations is largely influenced by external
-resources, and the users can modify the process as needed. In that sense,
-phoneticians need automatic tools and these tools can be significantly
-improved by phonetician input.
+For a specific purpose of SPPAS, like for automatic syllabification,
+forced-alignment, or for the request system, please refer to the
+related specific publication. All the papers are available on
+[the author website](http://www.lpl-aix.fr/~bigi), at the following URL:
+<http://www.lpl-aix.fr/~bigi/publications.html>
 
 
-### Specific references
-
-#### SPPAS software description...
+### SPPAS software description
 
 >*Brigitte Bigi* (2012).
 >**SPPAS: a tool for the phonetic segmentations of Speech**,
@@ -66,7 +39,7 @@ improved by phonetician input.
 France, pp. 62-65.
 
 
-#### About Tokenization...
+### About Text Normalization
 
 >*Brigitte Bigi* (2011).
 >**A Multilingual Text Normalization Approach**,
@@ -83,7 +56,7 @@ France, pp. 62-65.
 >and Standardization of Speech Databases and Assessment Techniques).
 
 
-#### About Phonetization...
+### About Phonetization
 
 >*Brigitte Bigi, Pauline Péri, Roxane Bertrand* (2012).
 >**Orthographic Transcription: Which Enrichment is required for Phonetization?**,
@@ -94,13 +67,13 @@ France, pp. 62-65.
 >**A phonetization approach for the forced-alignment task**,
 >3rd Less-Resourced Languages workshop, 6th Language & Technology Conference, Poznan (Poland).
 
->*Brigitte Bigi* (to appear).
+>*Brigitte Bigi* (2016).
 >**A phonetization approach for the forced-alignment task in SPPAS**,
->Human Language Technologies Challenges for Computer Science and Linguistics LNAI 8387,
+>Human Language Technologies Challenges for Computer Science and Linguistics, LNAI 9561, , pp. 515–526,
 >Springer, Heidelberg. ISBN: 978-3-319-14120-6.
 
 
-#### About Forced-Alignment...
+### About Forced-Alignment
 
 >*Brigitte Bigi* (2012).
 >**The SPPAS participation to Evalita 2011**,
@@ -118,7 +91,7 @@ France, pp. 62-65.
 >Volume 2. Pages 127-130.
 
 
-#### About Syllabification...
+### About Syllabification
 
 >*Brigitte Bigi, Christine Meunier, Irina Nesterenko, Roxane Bertrand* (2010).
 >**Automatic detection of syllable boundaries in spontaneous speech**,
@@ -135,26 +108,26 @@ France, pp. 62-65.
 >Editors R. Basili, A. Lenci, B. Magnini. ISBN 978-886741-472-7.
 >Volume 1. Pages 73-77.
 
+>*Brigitte Bigi, Katarzyna Klessa* (2015).
+>**Automatic Syllabification of Polish**,
+>7th Language and Technology Conference: Human Language Technologies as a Challenge for Computer Science and Linguistics, pp. 262–266, Poznan, Poland.
 
-#### About Repetitions...
+
+### About Repetitions
 
 >*Brigitte Bigi, Roxane Bertrand, Mathilde Guardiola* (2014).
 >**Automatic detection of other-repetition occurrences: application to French conversational speech**,
 >9th International conference on Language Resources and Evaluation (LREC), Reykjavik (Iceland), pages 2648-2652. ISBN: 978-2-9517408-8-4.
 
 
-#### About the components...
-
->*Dafydd Gibbon* (2013).
->**TGA: a web tool for Time Group Analysis**,
-> Tools ans Resources for the Analysis of Speech Prosody, Aix-en-Provence, France, pp. 66-69.
+### About analyses tools
 
 >*Brigitte Bigi, Jorane Saubesty* (2015).
 >**Searching and retrieving multi-levels annotated data**,
 >Proceedings of Gesture and Speech in Interaction, Nantes (France).
 
 
-#### About the data...
+#### About the API
 
 >*Brigitte Bigi, Tatsuya Watanabe, Laurent Prévot* (2014).
 >**Representing Multimodal Linguistics Annotated Data**,
@@ -163,7 +136,7 @@ France, pp. 62-65.
 
 ### Related references
 
-#### Some results and analyses...
+#### Some results of analyses
 
 >*Marion Tellier, Gale Stam, Brigitte Bigi* (2012).
 >**Same speech, different gestures?**,
@@ -187,8 +160,12 @@ France, pp. 62-65.
 >16th Annual Meeting of the Special Interest Group on Discourse and Dialogue,
 >Prague (Czech Republic), pp. 149–153.
 
+>*Brigitte Bigi, Roxane Bertrand* (2016).
+>**Laughter in French Spontaneous Conversational Dialogs**,
+>Tenth International Conference on Language Resources and Evaluation (LREC 2016), pp. 2168-2174, Portoroz, Slovenia.
 
-#### Some corpora...
+
+#### Some corpora
 
 >*Sophie Herment, Anastasia Loukina, Anne Tortel, Daniel Hirst, Brigitte Bigi* (2012).
 >**AixOx, a multi-layered learners corpus: automatic annotation**,
@@ -209,3 +186,21 @@ France, pp. 62-65.
 >9th International conference on Language Resources and Evaluation (LREC),
 >Reykjavik (Iceland), pages 2648-2652. ISBN: 978-2-9517408-8-4.
 
+>*Christine Meunier, Cécile Fougeron, Corinne Fredouille, Brigitte Bigi, Lise Crevier-Buchman, Elisabeth Delais-Roussarie, Laurianne Georgeton, Alain Ghio, Imed Laaridh, Thierry Legou, Claire Pillot-Loiseau, Gilles Pouchoulin* (2016).
+>**The TYPALOC Corpus: A Collection of Various Dysarthric Speech Recordings in Read and Spontaneous Styles**,
+>Tenth International Conference on Language Resources and Evaluation (LREC 2016), pp. 4658-4665, Portoroz, Slovenia.
+
+
+#### Tools re-implemented into SPPAS
+
+>**Daniel Hirst and Robert Espesser** (1993).
+>*Automatic modelling of fundamental frequency using a quadratic spline function.*
+>Travaux de l’Institut de Phonétique d’Aix. vol. 15, pages 71-85.
+
+>**D.-J. Hirst** (2011).
+>*The analysis by synthesis of speech melody: from data to models*, 
+>Journal of Speech Sciences, vol. 1(1), pages 55-83.
+
+>*Dafydd Gibbon* (2013).
+>**TGA: a web tool for Time Group Analysis**,
+> Tools ans Resources for the Analysis of Speech Prosody, Aix-en-Provence, France, pp. 66-69.
