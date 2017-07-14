@@ -26,16 +26,6 @@ import codecs
 
 
 # ----------------------------------------------------------------------------
-# Main
-# ----------------------------------------------------------------------------
-
-def main():
-    """ This is the main function. """
-    pass
-
-
-# ----------------------------------------------------------------------------
 # This is the python entry point:
-# Here, we just ask to execute the main function.
 if __name__ == '__main__':
-    main()
+    pass

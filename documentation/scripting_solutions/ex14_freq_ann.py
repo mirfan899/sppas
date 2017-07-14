@@ -1,62 +1,27 @@
 #!/usr/bin python
 """
 
-@author:       Brigitte Bigi
-@date:         2016-May-07
-@contact:      brigitte.bigi@gmail.com
-@license:      GPL, v3
-@copyright:    Copyright (C) 2016  Brigitte Bigi
+:author:       Fix Me
+:date:         Now
+:contact:      me@me.org
+:license:      GPL, v3
+:copyright:    Copyright (C) 2017  Fixme
 
-@summary:      Open an annotated file and print information about tiers.
+:summary:      Open an annotated file and print information about tiers.
 
 """
 import wx
 import sys
 import os.path
-sys.path.append(os.path.join("..",".."))
+sys.path.append(os.path.join("..", ".."))
 
-import sppas.src.annotationdata.aio as aio
-from sppas.src.annotationdata import Transcription
-from sppas.src.annotationdata import Tier
+import sppas.src.annotationdata.aio as trsaio
+from ex12_tiers_info_wx import wxAskItem, wxGetDir, wxGetFile, checkExtension, wxShowErrorMessage
 
 # ----------------------------------------------------------------------------
 # WX Functions
 # ----------------------------------------------------------------------------
 
-def wxAskItem( message, choices ):
-    """ Return the index of the selected item in choices, or -1 if the user cancelled. """
-
-    selection = -1
-    dialog = wx.SingleChoiceDialog(None, message, "Script: Tier information", choices)
-    if dialog.ShowModal() == wx.ID_OK:
-        selection = dialog.GetSelection()
-    dialog.Destroy()
-    return selection
-
-
-def wxGetDir():
-    """ Open a DirDialog and return a directory name with its path. """
-
-    dirname = ''
-    dialog = wx.DirDialog(None, "Choose a directory:",style=wx.DD_DEFAULT_STYLE | wx.DD_NEW_DIR_BUTTON)
-    if dialog.ShowModal() == wx.ID_OK:
-        dirname = dialog.GetPath()
-    dialog.Destroy()
-    return dirname
-
-
-def wxGetFile():
-    """ Open a FileDialog and return a filename with its path. """
-
-    dirname = ''
-    filename = ''
-
-    dlg = wx.FileDialog(None, "Choose a file", dirname, "", "*.*", wx.OPEN)
-    if dlg.ShowModal() == wx.ID_OK:
-        filename = dlg.GetFilename()
-        dirname = dlg.GetDirectory()
-    dlg.Destroy()
-    return os.path.join(dirname, filename)
 
 def wxGetPattern():
     """ Open a TextEntryDialog and return a string. """
@@ -73,32 +38,20 @@ def wxGetPattern():
 # Functions
 # ----------------------------------------------------------------------------
 
-def checkExtension(filename):
-    """ Check if filename is supported by SPPAS. """
-
-    # List of accepted extensions
-    extensions = aio.extensions
-
-    # Split the extension from the path and normalise it to lowercase.
-    ext = os.path.splitext(filename)[-1].lower()
-
-    # Check
-    return ext in extensions
-
 
 def printFreqAnn(filename, pattern):
     """ Print the number of occurrences of a pattern in each tier of a file. """
 
-    print filename
-    trs = aio.read( filename )
+    print("Take a look at file {:s}:".format(filename))
+    trs = trsaio.read(filename)
     pattern = pattern.strip()
 
     for tier in trs:
         c = 0
         for ann in tier:
             if ann.GetLabel().GetValue() == pattern:
-                c = c + 1
-        print " - ",tier.GetName(),c
+                c += 1
+        print(" Tier {:s}: {:d}".format(tier.GetName(), c))
 
 
 # ----------------------------------------------------------------------------
@@ -117,7 +70,7 @@ def main():
     # on all files of a directory.
     message = "Apply the script on:"
     choices = ['a single file', 'all files in a directory']
-    item = wxAskItem(message,choices)
+    item = wxAskItem(message, choices)
 
     if item == -1:
         sys.exit(0)
@@ -130,7 +83,7 @@ def main():
             sys.exit(0)
         # Verify if the extension is correct
         if not checkExtension(filename):
-            wxShowErrorMessage( "Un-recognized file extension." )
+            wxShowErrorMessage("Un-recognized file extension.")
             sys.exit(1)
         # Now, do the job!
         printFreqAnn(filename, pattern)
@@ -139,10 +92,10 @@ def main():
         # Get a directory name
         dirname = wxGetDir()
         # Get the list of expected files in this directory
-        files = [ f for f in os.listdir(dirname) if checkExtension(f) ]
+        files = [f for f in os.listdir(dirname) if checkExtension(f)]
         # Now, do the job, for each file!
         for f in files:
-            printFreqAnn(os.path.join(dirname,f), pattern)
+            printFreqAnn(os.path.join(dirname, f), pattern)
             # Let the result until a key is pressed.
             raw_input("Press a key to continue")
 
@@ -157,5 +110,3 @@ if __name__ == '__main__':
     app = wx.App()
     main()
     app.MainLoop()
-
-# ----------------------------------------------------------------------------

@@ -1,30 +1,56 @@
 ## Scripting with Python
 
-We are going to create simple Python scripts and then run them.
-Create a new folder - on your Desktop for example;
-with name "pythonscripts" for example.
-Execute the python IDLE which is available in the Application-Menu 
-of your operating system.
+This section describes how to create simple Python lines of code in 
+separated files commonly called *scripts*, and run them.
+Some practical exercises, appropriate to the content of each action, are
+proposed and test exercises are suggested at the end of the section.
 
-![The Python IDLE logo](./etc/img/python_idle.png)
+To practice, you have first to create a new folder in your computer 
+- on your Desktop for example; with name "pythonscripts" for example,
+and to execute the python IDLE.
 
 
-### Hello World!
+### Comments and documentation
 
-First of all, create a new empty file either by clicking on "File" 
+Comments are not required by the program to work. But comments are necessary!
+Comments are expected to be appropriate, useful, relevant, adequate
+and always reasonable.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
+ # This script is doing this and that.
+ # It is under the terms of a license.
+ # and I can continue to write what I want after the # symbol
+ # except that it's not the right way to tell the story of my life
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The documentation of a program complements the comments. Both are not sharing
+the same goal: comments are used in all kind of programs but documentation is 
+appended to comments for the biggest programs and/or projects. Documentation 
+is automatically extracted and formatted thanks to dedicated tools. 
+Documentation is required for sharing the program. See the
+[Docstring Conventions](https://www.python.org/dev/peps/pep-0257/)
+for details.
+Documentation must follow a convention like for example the markup language
+[reST - reStructured Text](https://en.wikipedia.org/wiki/ReStructuredText).
+Both conventions are used into SPPAS programs.
+
+
+### Getting started with scripting in Python
+
+In the IDLE, create a new empty file either by clicking on "File" 
 menu, then "New File", or with the shortcut "CTRL"+N. 
 
-Copy the following code in this newly created file:
+Copy the following line of code in this newly created file:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines}
-print('Hello world!')
+print("Hello world!")
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ![Hello world! in a Python script](./etc/screenshots/python_idle_00.png)
 
 Then, save the file in the "pythonscripts" folder. 
 By convention, Python source files end with a *.py* extension, 
-so the name `01_helloworld.py` could be fine.
+and so the name `01_helloworld.py` could be fine.
 
 To execute the program, you can do one of:
 
@@ -36,8 +62,8 @@ The expected output is as follow:
 ![Output of the first script](./etc/screenshots/python_idle_01.png)
 
 A better practice while writing scripts is to describe by who, what and why 
-this script was done. A good practice is to create a skeleton for any future 
-script which has to be written. Such ready-to-use script is available in the 
+this script was done. A nifty trick is to create a skeleton for any future 
+script that will be written. Such ready-to-use script is available in the 
 SPPAS package with the name `skeleton.py`. 
 
 
@@ -77,13 +103,13 @@ if __name__ == '__main__':
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
->*Standalone Practice:* create a copy of the file `skeleton.py`, then
->make a function to print Hello World.
->(solution: 01_hello_world.py).
+>*Practice:* create a copy of the file `skeleton.py`, then
+>make a function to print "Hello World!".
+>(solution: ex01_hello_world.py).
 
->*Standalone Practice*: 
+>*Practice*: 
 >add a function to print plosives and call it in the main function
->(solution: 02_functions.py).
+>(solution: ex02_functions.py).
 
 ![Output of the second script](./etc/screenshots/python_idle_02.png)
 
@@ -126,15 +152,15 @@ captured by the program.
 In the following example, the function would return a boolean value, i.e. 
 True if the given string has no character.
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="21"}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="27"}
 def is_empty(mystr):
     """ Return True if mystr is empty. """
     
     return len(mystr.strip()) == 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
->Practice: Add this function in a new script and try to print various lists
->(solution: 03_functions.py)
+>*Practice:* Add this function in a new script and try to print various lists
+>(solution: ex03_functions.py)
 
 ![Expected output of the 3rd script](./etc/screenshots/python_idle_03.png)
 
@@ -163,8 +189,8 @@ of a file. The first parameter of the `open` function is the name of the file,
 including the path (relative or absolute); and the second argument is the
 opening mode ('r' is the default value, used for reading).
 
->*Standalone Practice:* Add this lines of code in a new script and try it
->(solution: 04_reading_simple.py)
+>*Practice:* Add this lines of code in a new script and try it
+>(solution: ex04_reading_simple.py)
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="21"}
 fp = open("C:\Users\Me\Desktop\pythonscripts\phonemes.csv", 'r')
@@ -193,15 +219,15 @@ In the previous code, the `codecs.open` functions got 3 parameters:
 the name of the file, the mode to open, and the encoding. The `readlines()` 
 function gets each line of the file and store it into a list.
 
->*Standalone Practice:* Write a script to print the content of a file
->(solution: 05_reading_file.py)
+>*Practice:* Write a script to print the content of a file
+>(solution: ex05_reading_file.py)
 
 Notice that Python `os` module provides useful methods to perform 
 file-processing operations, such as renaming and deleting.
 See Python documentation for details: <https://docs.python.org/2/>
 
 
-#### Writing files
+#### Writing data to a file
 
 Writing a file requires to open it in a writing mode: 
 
@@ -229,45 +255,25 @@ for line in file_stream:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 
 
-### Dictionaries
+### Python tutorials
 
+Here is a list of web sites with tutorials, from the easiest to the most
+complete:
 
-A dictionary is a very useful data type. It consists of pairs of keys and 
-their corresponding values.
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
-fruits = dict()
-fruits['apples'] = 3
-fruits['peers'] = 5
-fruits['tomatoas'] = 1
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-
-`fruits['apples']` is a way to the the value - i.e. 3, of the `apple` key.
-However, an error is sent if the key is unknown, like `fruits[bananas]`.
-Alternatively, the `get` function can be used, like `fruits.get("bananas", 0)`
-that will return 0.
-
-The next example is showing how use a dictionary:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
-for key in ['apples', 'peers', 'tomatoes', 'babanas']:
-    value = fruits.get(key, 0)
-    if value < 3:
-        print("You have to buy new {:s}".format(key))
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Other examples are available in the Python documentation:
-<https://docs.python.org/2/tutorial/datastructures.html>
+1. [Learn Python, by DataCamp](http://www.learnpython.org/)
+2. [Tutorial Points](https://www.tutorialspoint.com/python/)
+3. [The Python documentation](https://docs.python.org/2/tutorial/)
 
 
 ### Exercises to practice
 
 >Exercise 1: How many vowels are in a list of phonemes?
-(solution: 06_list.py)
+(solution: ex06_list.py)
 
     
 >Exercise 2: Write a X-SAMPA to IPA converter.
-(solution: 07_dict.py)
+(solution: ex07_dict.py)
 
-    
+
 >Exercise 3: Compare 2 sets of data using NLP techniques (Zipf law, Tf.Idf)
-(solution: 08_counter.py)
+(solution: ex08_counter.py)

@@ -1,11 +1,11 @@
 #!/usr/bin python
 """
 
-:author:       Brigitte Bigi
-:date:         2016-May-07
-:contact:      brigitte.bigi@gmail.com
+:author:       Fix Me
+:date:         Now
+:contact:      me@me.org
 :license:      GPL, v3
-:copyright:    Copyright (C) 2016  Brigitte Bigi
+:copyright:    Copyright (C) 2017  Fixme
 
 :summary:      Simple script to open a file, then read and print its content.
 

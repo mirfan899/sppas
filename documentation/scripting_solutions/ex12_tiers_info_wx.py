@@ -1,13 +1,13 @@
 #!/usr/bin python
 """
 
-@author:       Brigitte Bigi
-@date:         2016-May-07
-@contact:      brigitte.bigi@gmail.com
-@license:      GPL, v3
-@copyright:    Copyright (C) 2016  Brigitte Bigi
+:author:       Fix Me
+:date:         Now
+:contact:      me@me.org
+:license:      GPL, v3
+:copyright:    Copyright (C) 2017  Fixme
 
-@summary:      Open an annotated file and print information about tiers, 
+:summary:      Open an annotated file and print information about tiers,
                with GUI.
 
 """
@@ -19,14 +19,14 @@
 import wx
 import sys
 import os.path
-sys.path.append(os.path.join("..",".."))
+sys.path.append(os.path.join("..", ".."))
 
-import sppas.src.annotationdata.aio as aio
-from sppas.src.annotationdata import Transcription
+import sppas.src.annotationdata.aio as trsaio
 
 # ----------------------------------------------------------------------------
 # WX Functions
 # ----------------------------------------------------------------------------
+
 
 def wxShowErrorMessage(message):
     """ Open a MessageDialog to print an error. """
@@ -35,7 +35,7 @@ def wxShowErrorMessage(message):
     dlg.ShowModal()
 
 
-def wxAskItem( message, choices ):
+def wxAskItem(message, choices):
     """ Return the index of the selected item in choices, or -1 if the user cancelled. """
 
     selection = -1
@@ -70,10 +70,10 @@ def wxGetFile():
     dlg.Destroy()
     return os.path.join(dirname, filename)
 
-
 # ----------------------------------------------------------------------------
 # Functions
 # ----------------------------------------------------------------------------
+
 
 def checkExtension(filename):
     """ Check if filename is supported by SPPAS. """
@@ -82,7 +82,7 @@ def checkExtension(filename):
     ext = os.path.splitext(filename)[-1].lower()
 
     # Check
-    return ext in aio.extensions
+    return ext in trsaio.extensions
 
 
 def checkFile(filename):
@@ -99,28 +99,26 @@ def checkFile(filename):
 def printInfo(filename):
     """ Print information about tiers of a file. """
 
-    print(filename)
-
     # Read the file.
-    trs = aio.read(filename)
+    print("Take a look at file {:s}:".format(filename))
+    trs = trsaio.read(filename)
 
-    # Print information about tiers
     for tier in trs:
 
         # Get the tier type
+        tier_type = "Unknown"
         if tier.IsPoint() is True:
-           tiertype = "Point"
+            tier_type = "Point"
         elif tier.IsInterval() is True:
-           tiertype = "Interval"
-        else:
-            tiertype = "Unknown"
+            tier_type = "Interval"
 
-        # Print all informations
-        print(" * Name: {:s}".format(tier.GetName()))
-        print("    - Type: {:s}".format(tiertype))
+        # Print all information
+        print(" * Tier: {:s}".format(tier.GetName()))
+        print("    - Type: {:s}".format(tier_type))
         print("    - Number of annotations: {:d}".format(len(tier)))
         print("    - From time: {:.4f}".format(tier.GetBeginValue()))
         print("    - To time: {:.4f} ".format(tier.GetEndValue()))
+
 
 # ----------------------------------------------------------------------------
 # Main
@@ -133,7 +131,7 @@ def main():
     # on all files of a directory.
     message = "Apply the script on:"
     choices = ['a single file', 'all files in a directory']
-    item = wxAskItem(message,choices)
+    item = wxAskItem(message, choices)
 
     if item == -1:
         sys.exit(0)
@@ -146,19 +144,19 @@ def main():
             sys.exit(0)
         # Verify if the extension is correct
         if not checkExtension(filename):
-            wxShowErrorMessage( "Unknown file extension." )
+            wxShowErrorMessage("Unknown file extension.")
             sys.exit(1)
         # Now, do the job!
         printInfo(filename)
 
     elif item == 1:
         # Get a directory name
-        dirname = wxGetDir()
+        dir_name = wxGetDir()
         # Get the list of expected files in this directory
-        files = [ f for f in os.listdir(dirname) if checkExtension(f) ]
+        files = [f for f in os.listdir(dir_name) if checkExtension(f)]
         # Now, do the job, for each file!
         for f in files:
-            printInfo(os.path.join(dirname,f))
+            printInfo(os.path.join(dir_name, f))
             # Let the result until a key is pressed.
             raw_input("Press a key to continue")
 
@@ -172,5 +170,3 @@ if __name__ == '__main__':
     app = wx.App()
     main()
     app.MainLoop()
-
-# ----------------------------------------------------------------------------

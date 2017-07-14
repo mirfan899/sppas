@@ -1,11 +1,11 @@
 #!/usr/bin python
 """
 
-:author:       Brigitte Bigi
-:date:         2016-May-07
-:contact:      brigitte.bigi@gmail.com
+:author:       Fix Me
+:date:         Now
+:contact:      me@me.org
 :license:      GPL, v3
-:copyright:    Copyright (C) 2016  Brigitte Bigi
+:copyright:    Copyright (C) 2017  Fixme
 
 :summary:      Simple script to open and read a file.
 
@@ -18,7 +18,7 @@ import sys
 # ----------------------------------------------------------------------------
 
 #myfile="C:\phonemes.csv"
-myfile="phonemes.csv"
+myfile = "phonemes.csv"
 
 # ----------------------------------------------------------------------------
 
@@ -30,8 +30,12 @@ def read_file(filename):
     :returns: List of strings
 
     """
+    my_list = list()
     with codecs.open(filename, 'r', encoding="utf8") as fp:
-        return fp.readlines()
+        for l in fp.readlines():
+            my_list.append(l.strip())
+
+    return my_list
 
 # ----------------------------------------------------------------------------
 

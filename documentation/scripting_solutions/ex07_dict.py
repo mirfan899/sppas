@@ -1,37 +1,24 @@
 #!/usr/bin python
 """
 
-:author:       Brigitte Bigi
-:date:         2016-May-07
-:contact:      brigitte.bigi@gmail.com
+:author:       Fix Me
+:date:         Now
+:contact:      me@me.org
 :license:      GPL, v3
-:copyright:    Copyright (C) 2016  Brigitte Bigi
+:copyright:    Copyright (C) 2017  Fixme
 
 :summary:      Simple script to manipulate dictionaries: SAMPA to IPA converter.
 
 """
-import codecs
 import sys
+from ex05_reading_file import read_file
 
 # ----------------------------------------------------------------------------
 # Variables
 # ----------------------------------------------------------------------------
 
-#myfile="C:\phonemes.csv"
-myfile = "phonemes.csv"
-
-# ----------------------------------------------------------------------------
-
-
-def read_file(filename):
-    """ Get the content of a file.
-
-    :param filename: (str) Name of the file to read, including path.
-    :returns: List of lines
-
-    """
-    with codecs.open(filename, 'r', encoding="utf8") as f:
-        return f.readlines()
+#my_file="C:\phonemes.csv"
+my_file = "phonemes.csv"
 
 # ----------------------------------------------------------------------------
 
@@ -69,7 +56,7 @@ def extract_dict_from_lines(lines, col_key, col_value):
 
 if __name__ == '__main__':
 
-    lines = read_file(myfile)
+    lines = read_file(my_file)
 
     # before doing something, check the data!
     if not len(lines):
