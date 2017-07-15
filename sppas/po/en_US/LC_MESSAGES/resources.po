@@ -15,7 +15,10 @@ msgstr ""
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
-"X-Generator: Poedit 1.8.12\n"
+"X-Generator: Poedit 1.8.11\n"
+
+msgid ":ERROR 5005: "
+msgstr "Encoding error while trying to read the file: {name}."
 
 msgid ":ERROR 5010: "
 msgstr "Error while trying to open and read the file: {name}."

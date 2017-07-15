@@ -38,6 +38,7 @@ from . import t
 
 # -----------------------------------------------------------------------
 
+FILE_UNICODE_ERROR = ":ERROR 5005: "
 FILE_IO_ERROR = ":ERROR 5010: "
 FILE_FORMAT_ERROR = ":ERROR 5015: "
 NGRAM_RANGE_ERROR = ":ERROR 5020: "
@@ -45,6 +46,18 @@ GAP_RANGE_ERROR = ":ERROR 5022: "
 SCORE_RANGE_ERROR = ":ERROR 5024: "
 DUMP_EXTENSION_ERROR = ":ERROR 5030: "
 POSITIVE_VALUE_ERROR = ":ERROR 5040: "
+
+# -----------------------------------------------------------------------
+
+
+class FileUnicodeError(UnicodeDecodeError):
+    """ :ERROR 5005: Encoding error while trying to read the file: {name}. """
+
+    def __init__(self, filename):
+        self.parameter = FILE_UNICODE_ERROR + (t.gettext(FILE_UNICODE_ERROR)).format(name=filename)
+
+    def __str__(self):
+        return repr(self.parameter)
 
 # -----------------------------------------------------------------------
 

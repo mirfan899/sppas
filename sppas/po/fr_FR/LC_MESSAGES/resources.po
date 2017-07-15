@@ -17,6 +17,9 @@ msgstr ""
 "Language: en_US\n"
 "X-Generator: Poedit 1.8.11\n"
 
+msgid ":ERROR 5005: "
+msgstr "Le fichier {name} n'est pas au format d'encodage attendu."
+
 msgid ":ERROR 5010: "
 msgstr "Erreur à l'ouverture ou à la lecture du fichier {name}."
 

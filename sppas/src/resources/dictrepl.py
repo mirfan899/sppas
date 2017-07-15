@@ -40,6 +40,7 @@ import logging
 from sppas import encoding
 from sppas.src.utils.makeunicode import sppasUnicode, u
 from .dumpfile import sppasDumpFile
+from .resourcesexc import FileUnicodeError
 
 # ----------------------------------------------------------------------------
 
@@ -284,7 +285,10 @@ class sppasDictRepl(object):
 
         """
         with codecs.open(filename, 'r', encoding) as fd:
-            lines = fd.readlines()
+            try:
+                lines = fd.readlines()
+            except UnicodeDecodeError:
+                raise FileUnicodeError(filename=filename)
 
         for line in lines:
             line = " ".join(line.split())

@@ -1,6 +1,6 @@
 ## Spanish
 
-#### List of phonemes
+### List of phonemes
 
 | SPPAS | - IPA - | Examples             |
 |:-----:|:-------:|:---------------------|
@@ -42,24 +42,22 @@
 | dummy |         | (dummy: for un-transcribed speech) |
 
 
-#### Pronunciation Dictionary
+### Pronunciation Dictionary
 
 The pronunciation dictionary was downloaded from the 
-[CMU web page](http://www.speech.cs.cmu.edu/)
-in 2013. Brigitte Bigi converted this CMU phoneset to X-SAMPA, and changed
-the file format.
-
+[CMU web page](http://www.speech.cs.cmu.edu/) in 2013. 
+Brigitte Bigi converted the CMU phoneset to X-SAMPA, and changed the format
+of the file.
 It is distributed under the terms of the *GNU General Public License*.
 
 
-#### Acoustic Model
+### Acoustic Model
 
 The acoustic model was trained from Glissando corpus. We address special
 thanks to Juan-Maria Garrido for giving us access to this corpus.
+It is distributed under the terms of the 
+*Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License*.
 
 >**GARRIDO, J. M. - ESCUDERO, D. - AGUILAR, L. -CARDEÑOSO, V. - RODERO, E. - DE-LA-MOTA, C. - GONZÁLEZ, C. - RUSTULLET, S. - LARREA, O. - LAPLAZA, Y. - VIZCAÍNO, F. - CABRERA, M. - BONAFONTE, A.** (2013).
 >*Glissando: a corpus for multidisciplinary prosodic studies in Spanish and Catalan*,
 >Language Resources and Evaluation, DOI 10.1007/s10579-012-9213-0.
-
-It is distributed under the terms of the 
-*Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License*

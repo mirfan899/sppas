@@ -1,6 +1,6 @@
 ## Italian
 
-#### List of phonemes
+### List of phonemes
 
 | SPPAS | - IPA - | Examples             |
 |:-----:|:-------:|:---------------------|
@@ -41,7 +41,7 @@
 | dummy |         | (dummy: for un-transcribed speech) |
 
 
-#### Pronunciation dictionary
+### Pronunciation dictionary
 
 The Italian dictionary was downloaded in 2011 from the 
 [Festival synthetizer tool](http://www.cstr.ed.ac.uk/projects/festival/).
@@ -52,19 +52,18 @@ manually.
 It is distributed under the terms of the *GNU General Public License*.
 
 
-#### Acoustic Model
+### Acoustic Model
 
 The Italian acoustic model was created during the Evalita 2011 evaluation
 campaign, from the CLIPS MapTask corpus (3h30), and updated during the
 Evalita 2014 evaluation campaign.
 
 It is distributed under the terms of the 
-*Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License*
+*Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License*.
 
 
-#### Syllabification configuration file
+### Syllabification configuration file
 
 The syllabification configuration file corresponds to the rules defined
 in the paper (Bigi and Petrone, 2014).
-
 It is distributed under the terms of the *GNU General Public License*.

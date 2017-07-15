@@ -51,7 +51,6 @@ Search can also starts and/or ends at specific time values in a tier.
 ![Frame to create a filter on annotation time values. In that case, filtering annotations that are starting after the 5th minute.](./etc/screenshots/DataFilter-time.png)
 
 
-
 All the given filters are then summarized in the "SingleFilter" frame.
 To complete the filtering process, it must be clicked on one of the apply
 buttons and the new resulting tiers are added in the annotation file(s).
