@@ -1,71 +1,110 @@
 ## Polish
 
-#### List of phonemes
+### List of phonemes
 
-| SPPAS | - IPA - | Examples           |
-|:-----:|:-------:|:-------------------|
-|   a   |   a     | pat |
-|   b   |   b     | |
-|   c   |   c     | |
-|   d   |   d     | |
-|   dz  |   d͡z   | dzwon |
-|   dZ  |   d͡ʒ   | |
-|   E   |   ɛ     | test |
-|   E~  |   ɛ̃     | |
-|   f   |   f     | |
-|   g   |   g     | |
-|   x   |   h     | |
-|   i   |   i     | pit, bit |
-|   i   |   ɨ̞     | ryba |
-|   j   |   j     | jak |
-|   n   |   ɲ     | |
-|   k   |   k     | |
-|   l   |   l     | |
-|   m   |   m     | |
-|   n   |   n     | |
-|   N   |   ŋ     | |
-|   O   |   ɔ     | pot |
-|   O   |   ɔː    | |
-|   o~  |   ɔ̃     | |
-|   p   |   p     | |
-|   Q   |   Q     | |
-|   r   |   r     | krok |
-|   r   |   ʀ     | |
-|   s   |   s     | |
-|   s\  |   ɕ     | świerszcz |
-|   S   |   ʃ     | |
-|   t   |   t     | |
-|   v   |   v     | |
-|   w   |   w     | |
-|   x   |   x     | |
-|   x   |   ç     | |
-|   y   |   y     | |
-|   z   |   z     | |
-|   ts  |   t͡s   | |
-|   tS  |   t͡ʃ   | |
-|   s`  |   ʂ     | |
-|   u   |   u     | |
-|   z\  |   ʑ     | źrebak |
-|   Z   |   ʒ     | |
+#### Consonant Plosives
+
+| SPPAS |  IPA  | Description           | Examples             |
+|:-----:|:-----:|:---------------------:|:---------------------|
+|   p   |   p   | voiceless bilabial    | pas    |
+|   b   |   b   | voiced bilabial       |     |
+|   t   |   t   | voiceless alveolar    |     |
+|   d   |   d   | voiced alveolar       |     |
+|   k   |   k   | voiceless velar       |     |
+|   g   |   g   | voiced velar          |     |
+|   c   |   c   | voiceless palatal     |     |
+
+#### Consonant Fricatives
+
+| SPPAS |  IPA  | Description               | Examples       |
+|:-----:|:-----:|:-------------------------:|:---------------|
+|   f   |   f   | voiceless labiodental     | fac, feedback  |
+|   s   |   s   | voiceless alveolar        | sabat, subaru  |
+|   s\\ |   ɕ   | voiceless alveolo-palatal | świerszcz, śam |
+|   s\` |   ʂ   | voiceless alveolar with retroflex hook | |
+|   S   |   ʃ   | voiceless postalveolar    |   |
+|   z   |   z   | voiced alveolar           |   |
+|   z\\ |   ʑ   | voiced alveolo-palatal    | źrebak |
+|   Z   |   ʒ   | voiced postalveolar       |   |
+|   v   |   v   | voiced labiodental        |   |
+|   x   |   x   | voiceless velar           | hak, chór  |
+|   x   |   ç   | | |
+|   x   |   h   | | |
 
 
-#### Pronunciation Dictionary
+#### Consonant Nasals
 
-*GNU Public License*
+| SPPAS |  IPA  | Description            | Examples         |
+|:-----:|:-----:|:----------------------:|:-----------------|
+|   m   |   m   | bilabial               |      |
+|   n   |   n   | alveolar               |      |
+|   N   |   ŋ   | voiced velar           |      |
 
-The Polish pronunciation dictionary was downloaded from the Ralf catalog
-of dictionaries for the Simon ASR system at
+
+#### Consonant Liquids
+
+| SPPAS |  IPA  | Description            | Examples        |
+|:-----:|:-----:|:----------------------:|:----------------|
+|   l   |   l   | alveolar lateral       |       |
+|   r   |   r   | alveolar trill         | krok  |
+
+
+#### Semivowels
+
+| SPPAS |  IPA  | Description            | Examples      |
+|:-----:|:-----:|:----------------------:|:--------------|
+|   j   |   j   | palatal                | jak  |
+|   w   |   w   | voiced labiovelar      |  | 
+
+
+#### Vowels
+
+| SPPAS |  IPA  | Description                  | Examples           |
+|:-----:|:-----:|:----------------------------:|:-------------------|
+|   E   |   ɛ   | open-mid front unrounded     | test, ten  |
+|   a   |   a   | open front unrounded         | pat, ptak  |
+|   O   |   ɔ   | open-mid back rounded        | pot, kot   |
+|   i   |   i   | close front unrounded        | pit, bit, miś |
+|   i   |   ɨ̞   | near-close central unrounded | ryba   |
+|   u   |   u   | close back rounded           | bum    |
+|   y   |   y   | close front rounded          | mysz   |
+
+
+#### Nasal vowels
+
+| SPPAS |  IPA  | Examples     |
+|:-----:|:-----:|--------------|
+|  E~  |   ɛ̃    | węże         |
+|  o~   |  ɔ̃    | wąż          |
+
+
+#### Affricates
+
+| SPPAS |  IPA  | Description               | Examples                |
+|:-----:|:-----:|:-------------------------:|:------------------------|
+|  tS   |  t͡ʃ   | voiceless postalveolar   |    |
+|  ts   |  t͡s   | voiceless alveolar       | co    |
+|  dz   |  d͡z   | voiced alveolar          | dzwon |
+|  dZ   |  d͡ʒ   | voiced postalveolar      |    | 
+
+
+### Pronunciation Dictionary
+
+The Polish pronunciation dictionary was downloaded in 2015 from the Ralf 
+catalog of dictionaries for the Simon ASR system at
 <http://spirit.blau.in/simon/import-pls-dictionary/>.
+
 It was then converted (format and phoneset) and corrected by Brigitte Bigi,
 thanks to the help of Katarzyna Klessa <http://katarzyna.klessa.pl/>.
+An update was done in 2017 to correct systematic errors.
+
+It is distributed under the terms of the *GNU General Public License*.
 
 
-#### Acoustic Model
-
-*(c) Laboratoire Parole et Langage, Aix-en-Provence, France*
-
-*Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License*
+### Acoustic Model
 
 The acoustic model was created by Brigitte Bigi.
 We address special thanks to Katarzyna Klessa for giving us access to a corpus.
 
+It is distributed under the terms of the 
+*Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License*.

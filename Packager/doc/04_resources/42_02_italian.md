@@ -69,10 +69,10 @@
 
 | SPPAS |  IPA  | Description               | Examples                |
 |:-----:|:-----:|:-------------------------:|:------------------------|
-|  tS   |  tʃ   | voiceless postalveolar    | Cennini, cinque, ciao   |
-|  ts   |  ts   | voiceless alveolar        | sozzo  canzone  marzo   |
-|  dz   |  dz   | voiced alveolar           | zaino  zelare  mezzo    |
-|  dZ   |  dʒ   | voiced postalveolar       | giungla, magia, fingere | 
+|  tS   |  t͡ʃ   | voiceless postalveolar    | Cennini, cinque, ciao   |
+|  ts   |  t͡s   | voiceless alveolar        | sozzo  canzone  marzo   |
+|  dz   |  d͡z   | voiced alveolar           | zaino  zelare  mezzo    |
+|  dZ   |  d͡ʒ   | voiced postalveolar       | giungla, magia, fingere | 
 
 
 #### Fillers

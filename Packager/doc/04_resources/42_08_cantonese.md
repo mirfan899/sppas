@@ -1,7 +1,7 @@
 ## Cantonese
 
 
-#### List of phonemes
+### List of phonemes
 
 | SPPAS  | - IPA - | Examples           |
 |:------:|:-------:|:-------------------|
@@ -44,7 +44,7 @@
 
 
 
-#### Acoustic Model
+### Acoustic Model
 
 *(C) DSP and Speech Technology Laboratory, Department of Electronic Engineering,
 the Chinese University of Hong Kong.*

@@ -67,10 +67,10 @@ Both are distributed without any warranty.
 #### Affricates
 
 | SPPAS |  IPA  | Description                 | Examples          |
-|:-----:|:-----:|:----------------------------:|:------------------|
-|  ts   |  ts   | voiceless alveolar           | 孖, 字  |
+|:-----:|:-----:|:----------------------------:|:-----------------|
+|  ts   |  t͡s   | voiceless alveolar           | 孖, 字  |
 |  tss  |       |                              | 讵,  讲 |
-| ts_h  |  tsʰ  | voiceless alveolar aspirated | 䌽, 吹  |
+| ts_h  |  t͡sʰ  | voiceless alveolar aspirated | 䌽, 吹  |
 |  ts\` |       | voiceless alveolar retroflex hook | 证, 诊  |
 | ts_h\` |      |    | 串 吹  |
 | ts_hs  |      |    | 诎, 㐤  |

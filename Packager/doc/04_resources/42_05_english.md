@@ -44,7 +44,7 @@
 |:-----:|:-----:|:----------------------:|:--------------------|
 |   l   |   l   | alveolar lateral       | lie, sly, gal       |
 |   4   |   ɾ   | alveolar flap          | lyda, maddy, makita |
-|   r\  |   ɹ   | alveolar approximant   | red, try, very      |
+|   r\\ |   ɹ   | alveolar approximant   | red, try, very      |
 
 
 #### Semivowels
@@ -77,8 +77,8 @@
 
 | SPPAS |  IPA  | Description               | Examples          |
 |:-----:|:-----:|:-------------------------:|:------------------|
-|  dZ   |  dʒ   | voiced postalveolar       | giant, badge, jam | 
-|  tS   |  tʃ   | voiceless postalveolar    | China, catch      |
+|  dZ   |  d͡ʒ   | voiced postalveolar       | giant, badge, jam | 
+|  tS   |  t͡ʃ   | voiceless postalveolar    | China, catch      |
 
 
 #### Others

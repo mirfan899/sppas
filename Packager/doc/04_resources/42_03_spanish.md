@@ -72,8 +72,8 @@
 
 | SPPAS |  IPA  | Description               | Examples                |
 |:-----:|:-----:|:-------------------------:|:------------------------|
-|  tS   |  tʃ   | voiceless postalveolar    | chubasco, acechar       |
-|  ts   |  ts   | voiceless alveolar        | Ertzaintza, abertzale   |
+|  tS   |  t͡ʃ   | voiceless postalveolar    | chubasco, acechar       |
+|  ts   |  t͡s   | voiceless alveolar        | Ertzaintza, abertzale   |
 
 
 #### Fillers

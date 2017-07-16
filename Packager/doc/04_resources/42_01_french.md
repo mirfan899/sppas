@@ -43,7 +43,7 @@ All French resources are *(c) Laboratoire Parole et Langage, Aix-en-Provence, Fr
 | SPPAS |  IPA  | Description            | Examples        |
 |:-----:|:-----:|:----------------------:|:----------------|
 |   l   |   l   | alveolar lateral       | lit, ville, fil |
-|   R   |   R   | voiced uvular          | roue, rhume, arrive |
+|   R   |   ʀ   | voiced uvular          | roue, rhume, arrive |
 
 
 #### Semivowels

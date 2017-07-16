@@ -2,47 +2,93 @@
 
 #### List of phonemes
 
-| SPPAS  | - IPA - | Examples           |
-|:------:|:-------:|:-------------------|
-|   @    |   ə     |                    |
-|   N    |   ŋ     |                    |
-|   O    |   ɔ     |                    |
-|   O~   |   ɔ̃     |                    |
-|   S    |   ʃ     |                    |
-|   a    |   a     |                      |
-|   a~   |   ɑ̃     |                      |
-|   b    |   b     |                      |
-|   d    |   d     |                      |
-|   dz   |   dz    |                      |
-|   e    |   e     |                      |
-|   e~   |         |                      |
-|   f    |   f     |                      |
-|   g    |   g     |                      |
-|   h    |   h     |                      |
-|   i    |   i     |                      |
-|   i~   |         |                      |
-|   k    |   k     |                      |
-|   k_h  |         |                      |
-|   l    |   l     |                      |
-|   m    |   m     |                      |
-|   n    |   n     |                      |
-|   o    |   o     |                      |
-|   o~   |         |                      |
-|   p    |   p     |                      |
-|   p_h  |         |                      |
-|   s    |   s     |                      |
-|   ss   |         |                      |
-|   t    |   t     |                      |
-|   t_h  |         |                      |
-|   ts   |  ts     |                      |
-|   ts_h |         |                      |
-|   u    |  u      |                      |
-|   u~   |         |                      |
-|   v    |   v     |                      |
-|   w    |   w     |                      |
-|   x    |   x     |                      |
-|   y    |   y     |                      |
-|   z    |   z     |                      |
+
+#### Consonant Plosives
+
+| SPPAS |  IPA  | Description                  | 
+|:-----:|:-----:|:-----------------------------|
+|   b   |   b   | voiced bilabial              |
+|   d   |   d   | voiced alveolar              |
+|   p   |   p   | voiceless bilabial           |
+|   p_h |   pʰ  | voiceless bilabial aspirated | 
+|   t   |   t   | voiceless alveolar           |
+|   t_h |   tʰ  | voiceless alveolar aspirated |
+|   k   |   k   | voiceless velar              | 
+|   k_h |   kʰ  | voiceless velar aspirated    |
+|   g   |   g   | voiced velar                 |
+
+
+#### Consonant Fricatives
+
+| SPPAS |  IPA  | Description            |
+|:-----:|:-----:|:-----------------------|
+|   f   |   f   | voiceless labiodental  |
+|   s   |   s   | voiceless alveolar     |
+|   S   |   ʃ   | voiceless postalveolar |
+|   x   |   x   | voiceless velar        |
+|  ss   |       |                        | 
+|   v   |   v   | voiced labiodental     |
+|   z   |   z   | voiced alveolar        |
+|   h   |   h   | voiceless glottal      |
+
+
+#### Consonant Nasals
+
+| SPPAS |  IPA  | Description            | 
+|:-----:|:-----:|:-----------------------|
+|   m   |   m   | bilabial               |
+|   n   |   n   | alveolar               | 
+|   N   |   ŋ   | voiced velar           | 
+
+
+#### Consonant Liquids
+
+| SPPAS |  IPA  | Description            | 
+|:-----:|:-----:|:-----------------------|
+|   l   |   l   | alveolar lateral       |
+
+
+#### Semivowels
+
+| SPPAS |  IPA  | Description            | 
+|:-----:|:-----:|:-----------------------|
+|   w   |   w   | voiced labiovelar      |
+
+
+#### Vowels
+
+| SPPAS |  IPA  | Description                 | 
+|:-----:|:-----:|:----------------------------|
+|   a   |   a   | open front unrounded        |
+|   o   |   o   | close-mid back rounded      |
+|   O   |   ɔ   | open-mid back rounded       | 
+|   e   |   e   | close-mid front unrounded   |
+|   i   |   i   | close front unrounded       |
+|   u   |   u   | close back rounded          |
+|   y   |   y   | close front rounded         | 
+|   @   |   ə   | schwa                       |
+
+
+#### Nasal vowels
+
+| SPPAS |  IPA  | 
+|:-----:|:------|
+|  a~   |  ɑ̃    |
+|  e~   |  ɛ̃    |  
+|  o~   |  õ    | 
+|  O~   |  ɔ̃    | 
+|  u~   |  ũ    | 
+|  i~   |  ĩ    | 
+
+
+#### Affricates
+
+| SPPAS |  IPA  | Description                  | 
+|:-----:|:-----:|:-----------------------------|
+|  ts   |  ts   | voiceless alveolar           |
+|  ts_h |  tsʰ  | voiceless alveolar aspirated |
+|  dz   |  dz   | voiced alveolar              |
+
 
 
 #### Fillers
@@ -56,13 +102,18 @@
 
 #### Pronunciation Dictionary
 
-*GNU Public License*
+The pronunciation dictionary was constructed from the most frequent 
+observed pronunciations of the corpus described below.
+
+It is distributed under the terms of the *GNU General Public License*.
 
 
 #### Acoustic Model
 
-*Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License*
+It is distributed under the terms of the 
+*Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License*.
 
+The acoustic model was trained from a corpus of spontaneous speech. 
 We address special thanks to Sheng-Fu Wang for giving us access to his corpus.
 
 >**S-F Wang, J. Fon** (2013).

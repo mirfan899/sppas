@@ -76,8 +76,8 @@
 
 | SPPAS |  IPA  | Description               | Examples  |
 |:-----:|:-----:|:-------------------------:|:----------|
-|  dZ   |  dʒ   | voiced postalveolar       | metge     | 
-|  tS   |  tʃ   | voiceless postalveolar    | cotxe     |
+|  dZ   |  d͡ʒ   | voiced postalveolar       | metge     | 
+|  tS   |  t͡ʃ   | voiceless postalveolar    | cotxe     |
 
 
 #### Fillers
