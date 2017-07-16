@@ -8,40 +8,34 @@
 |:-----:|:-----:|:---------------------:|:----------|
 |   p   |   p   | voiceless bilabial    | pala      |
 |   b   |   b   | voiced bilabial       | bala, via |
-|   t   |   t   | voiceless alveolar    | tela   |
-|   d   |   d   | voiced alveolar       | donar  |
-|   k   |   k   | voiceless velar       | cala   |
-|   g   |   g   | voiced velar          | gala   |
+|   t   |   t   | voiceless alveolar    | tela      |
+|   d   |   d   | voiced alveolar       | donar     |
+|   k   |   k   | voiceless velar       | cala      |
+|   g   |   g   | voiced velar          | gala      |
 
 
 #### Consonant Fricatives
 
-| SPPAS |  IPA  | Description            | Examples    |
-|:-----:|:-----:|:----------------------:|:------------|
-|   D   |   ð   | voiced dental          | cada        |
-|   f   |   f   | voiceless labiodental  | fals        |
-|   s   |   s   | voiceless alveolar     | si, sala    |
-|   z   |   z   | voiced alveolar        | desde       |
-|   S   |   ʃ   | voiceless postalveolar | caixa       |
-|   Z   |   ʒ   | voiced postalveolar    | mújol       |
-|   v   |   v   | voiced labiodental     | va, vol     |
-|   T   |   θ   | voiceless dental       | circus      |
-|   x   |   x   | voiceless velar        | rigal, mages |
-
-Questions to linguists:
- 
-1. Do /S/ should be /s\/ to represent the sound /ɕ/?
-2. Do /Z/ should be /z\/ to represent the sound /ʑ/?
-3. Do /x/ should be /G/ to represent the sound /ɣ/?
+| SPPAS |  IPA  | Description            | Examples     |
+|:-----:|:-----:|:----------------------:|:-------------|
+|   D   |   ð   | voiced dental          | cada         |
+|   G   |   ɣ   | voiceless velar        | alga, mages  |
+|   f   |   f   | voiceless labiodental  | fals         |
+|   s   |   s   | voiceless alveolar     | si, sala     |
+|   z   |   z   | voiced alveolar        | desde        |
+|   S   |   ʃ   | voiceless postalveolar | caixa        |
+|   Z   |   ʒ   | voiced postalveolar    | mújol        |
+|   v   |   v   | voiced labiodental     | va, vol      |
+|   T   |   θ   | voiceless dental       | circus       |
 
 
 #### Consonant Nasals
 
 | SPPAS |  IPA  | Description            | Examples         |
 |:-----:|:-----:|:----------------------:|:-----------------|
-|   m   |   m   | bilabial               | mena   |
-|   n   |   n   | alveolar               | nena   |
-|   J   |   ɲ   | palatal                | any    |
+|   m   |   m   | bilabial               | mena             |
+|   n   |   n   | alveolar               | nena             |
+|   J   |   ɲ   | palatal                | any              |
 |   N   |   ŋ   | voiced velar           | lingot, lingual  |
 
 
@@ -49,54 +43,48 @@ Questions to linguists:
 
 | SPPAS |  IPA  | Description            | Examples  |
 |:-----:|:-----:|:----------------------:|:----------|
-|   l   |   l   | alveolar lateral       | líquid |
-|   L   |   ʎ   | palatal lateral        | llamp  |
-|   R   |   R   | voiced uvular          | carro  |
-|   4   |   ɾ   | alveolar flap          | cara   |
-
-Question to linguists:
-Do the /R/ should be /r/ instead?
+|   l   |   l   | alveolar lateral       | líquid    |
+|   L   |   ʎ   | palatal lateral        | llamp     |
+|   r   |   r   | alveolar trill         | carro     |
+|   4   |   ɾ   | alveolar flap          | cara      |
 
 
 #### Semivowels
 
-| SPPAS |  IPA  | Description            | Examples      |
-|:-----:|:-----:|:----------------------:|:--------------|
-|   j   |   j   | palatal                | iaia, naciós  |
-|   w   |   w   | voiced labiovelar      | veu, veuran   | 
-
-Question to linguists:
-Do /j/ should be /j\/ (i.e. the voiced palatal /ʝ/)?
+| SPPAS |  IPA  | Description            | Examples             |
+|:-----:|:-----:|:----------------------:|:---------------------|
+|   j   |   j   | voiced palatal         | iaia, naciós, iogurt |
+|   w   |   w   | voiced labiovelar      | veu, veuran          | 
 
 
 #### Vowels
 
-| SPPAS |  IPA  | Description               | Examples   |
-|:-----:|:-----:|:-------------------------:|:----------:|
-|   i   |   i   | close front unrounded     | sic, ric   |
-|   e   |   e   | close-mid front unrounded | séc, cec   |
-|   E   |   ɛ   | open-mid front unrounded  | sec, veça  |
-|   a   |   a   | open front unrounded      | sac      |
-|   O   |   ɔ   | open-mid back rounded     | soc      |
-|   o   |   o   | close-mid back rounded    | sóc      |
-|   u   |   u   | close back rounded        | suc      |
-|   @   |   ə   | schwa                     | contra, estada    |
-|   U   |   ʊ   | near-close near-back rounded | òpols |
+| SPPAS |  IPA  | Description               | Examples       |
+|:-----:|:-----:|:-------------------------:|:---------------|
+|   E   |   ɛ   | open-mid front unrounded  | sec, veça      |
+|   a   |   a   | open front unrounded      | sac            |
+|   O   |   ɔ   | open-mid back rounded     | soc            |
+|   o   |   o   | close-mid back rounded    | sóc            |
+|   e   |   e   | close-mid front unrounded | séc, cec       |
+|   i   |   i   | close front unrounded     | sic, ric       |
+|   u   |   u   | close back rounded        | suc            |
+|   @   |   ə   | schwa                     | contra, estada |
+|   U   |   ʊ   | near-close near-back rounded | òpols       |
 
 
 #### Affricates
 
 | SPPAS |  IPA  | Description               | Examples  |
 |:-----:|:-----:|:-------------------------:|:----------|
-|  dZ   |  dʒ   | voiced postalveolar       | metge | 
-|  tS   |  tʃ   | voiceless postalveolar    | cotxe  |
+|  dZ   |  dʒ   | voiced postalveolar       | metge     | 
+|  tS   |  tʃ   | voiceless postalveolar    | cotxe     |
 
 
 #### Fillers
 
-| SPPAS | Description               | 
-|:-----:|:-------------------------:|
-| @@    |  laughter                 |
+| SPPAS | Description                     | 
+|:-----:|:--------------------------------|
+| @@    |  laughter                       |
 | gb    |  noises,  unintelligible speech |
 | dummy |  un-transcribed speech          |
 

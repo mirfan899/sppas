@@ -2,44 +2,87 @@
 
 ### List of phonemes
 
-| SPPAS | - IPA - | Examples             |
-|:-----:|:-------:|:---------------------|
-|   b   |   b     | bestia  embuste  vaca      |
-|   b   |   β     | bebé  obtuso  vivir  curva  |
-|   d   |   d     | dedo  cuando  aldaba        |
-|   d   |   ð     | dádiva  arder  anddmirar    |
-|   f   |   f     | fase  café                  |
-|   g   |   ɡ     | gato  lengua  gatouerra     |
-|   g   |   ɣ     | trigo  amargo  sigue  signo |
-|   h   |   h     | jamón  eje  reloj  general  México |
-|   k   |   k     | caña  laca  quise  kilo     |
-|   l   |   l     | lino  alhaja  principal     |
-|   L   |   ʎ     | llave  pollo roughly        |
-|   m   |   m     | madre  completelymer  campo  convertir |
-|   n   |   n     | nido  anillo  anhelo  sin  álbum  |
-|   J   |   ɲ     | ñandú  cañón  enyesar       |
-|   N   |   ŋ     | cinco  venga  conquista     |
-|   p   |   p     | pozo  topo                  |
-|   r   |   r     | rumbo  carro  honra  subrayo  amor |
-|   4   |   ɾ     | caro  bravo  amor  eterno |
-|   s   |   s     | saco  zapato  cientos  espita  xenón  |
-|   T   |   θ     | xenón cereal  encima  zorro  enzima  paz |
-|   t   |   t     | tamiz  átomo |
-|   tS  |   tʃ    | chubasco  acechar   |
-|   x   |   x     | jamón  eje  reloj general  México  |
-|   z   |   z     | isla  mismo  deshuesar     |
-|   S   |   ʃ     | English abacaxi  Shakira   |
-|   ts  |   ts    | Ertzaintza  abertzale  Pátzcuaro |
-|   j   |   j     | aliada  cielo  amplio  ciudad     |
-|   w   |   w     | cuadro  fuego                     |
-|   a   |   a     | azahar                            |
-|   e   |   e     | vehemente                         |
-|   i   |   i     | dimitir  mío                      |
-|   o   |   o     | boscoso                           |
-|   u   |   u     | cucurucho  dúo                    |
-| @@    |         | laugh item        |
-| gb    |         | (garbage: for noises) |
-| dummy |         | (dummy: for un-transcribed speech) |
+#### Consonant Plosives
+
+| SPPAS |  IPA  | Description           | Examples                |
+|:-----:|:-----:|:---------------------:|:------------------------|
+|   p   |   p   | voiceless bilabial    | pozo, topo, perro       |
+|   b   |   b   | voiced bilabial       | bestia, embuste, vaca   |
+|   t   |   t   | voiceless alveolar    | tamiz, átomo            |
+|   d   |   d   | voiced alveolar       | dedo, cuando, aldaba    |
+|   k   |   k   | voiceless velar       | caña, laca, quise, kilo |
+|   g   |   g   | voiced velar          | gato, lengua, gatouerra |
+
+
+#### Consonant Fricatives
+
+| SPPAS |  IPA  | Description            | Examples     |
+|:-----:|:-----:|:----------------------:|:-------------|
+|   b   |   β   | voiced bilabial        | bebé  obtuso  vivir  curva  |
+|   d   |   ð   | voiced dental          | dádiva, arder, anddmirar      |
+|   g   |   ɣ   | voiceless velar        | trigo, amargo, sigue, signo   |
+|   f   |   f   | voiceless labiodental  | fase, café                    |
+|   s   |   s   | voiceless alveolar     | saco, zapato, cientos, espita |
+|   z   |   z   | voiced alveolar        | isla, mismo, deshuesar        |
+|   S   |   ʃ   | voiceless postalveolar | English, abacaxi, Shakira     |
+|   T   |   θ   | voiceless dental       | cereal, encima, zorro, enzima, paz |
+|   x   |   x   | voiceless velar        | jamón, eje, reloj, general    |
+
+
+#### Consonant Nasals
+
+| SPPAS |  IPA  | Description            | Examples                  |
+|:-----:|:-----:|:----------------------:|:--------------------------|
+|   m   |   m   | bilabial               | madre, campo, convertir   |
+|   n   |   n   | alveolar               | nido, anhelo, sin, álbum  |
+|   J   |   ɲ   | palatal                | ñandú, cañón, enyesar     |
+|   N   |   ŋ   | voiced velar           | cinco, venga, conquista   |
+
+
+#### Consonant Liquids
+
+| SPPAS |  IPA  | Description            | Examples  |
+|:-----:|:-----:|:----------------------:|:----------|
+|   l   |   l   | alveolar lateral       | lino, alhaja, principal |
+|   L   |   ʎ   | palatal lateral        | llave, pollo, roughly   |
+|   r   |   r   | alveolar trill         | rumbo, carro, amor      |
+|   4   |   ɾ   | alveolar flap          | caro, bravo, eterno     |
+
+
+#### Semivowels
+
+| SPPAS |  IPA  | Description            | Examples              |
+|:-----:|:-----:|:----------------------:|:----------------------|
+|   j   |   j   | voiced palatal         | aliada, cielo, amplio |
+|   w   |   w   | voiced labiovelar      | cuadro, fuego         | 
+
+
+#### Vowels
+
+| SPPAS |  IPA  | Description               | Examples        |
+|:-----:|:-----:|:-------------------------:|:----------------|
+|   a   |   a   | open front unrounded      | azahar          |
+|   o   |   o   | close-mid back rounded    | boscoso         |
+|   e   |   e   | close-mid front unrounded | vehemente       |
+|   i   |   i   | close front unrounded     | dimitir, mío    |
+|   u   |   u   | close back rounded        | cucurucho, dúo  |
+
+
+#### Affricates
+
+| SPPAS |  IPA  | Description               | Examples                |
+|:-----:|:-----:|:-------------------------:|:------------------------|
+|  tS   |  tʃ   | voiceless postalveolar    | chubasco, acechar       |
+|  ts   |  ts   | voiceless alveolar        | Ertzaintza, abertzale   |
+
+
+#### Fillers
+
+| SPPAS | Description                     | 
+|:-----:|:--------------------------------|
+| @@    |  laughter                       |
+| gb    |  noises,  unintelligible speech |
+| dummy |  un-transcribed speech          |
 
 
 ### Pronunciation Dictionary

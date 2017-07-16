@@ -23,9 +23,9 @@ All French resources are *(c) Laboratoire Parole et Langage, Aix-en-Provence, Fr
 |:-----:|:-----:|:----------------------:|:------------|
 |   f   |   f   | voiceless labiodental  | fête, pharmacie |
 |   s   |   s   | voiceless alveolar     | sa, hausse, ce, garçon, option, scie |
-|   z   |   z   | voiced alveolar        | hasard, zéro, transit       |
 |   S   |   ʃ   | voiceless postalveolar | choux, schème, shampooing   |
-|   Z   |   ʒ   | voiced postalveolar    | joue  geai       |
+|   z   |   z   | voiced alveolar        | hasard, zéro, transit       |
+|   Z   |   ʒ   | voiced postalveolar    | joue  geai                  |
 |   v   |   v   | voiced labiodental     | vous, wagon, neuf heures    |
 
 
@@ -57,25 +57,34 @@ All French resources are *(c) Laboratoire Parole et Langage, Aix-en-Provence, Fr
 
 #### Vowels
 
-| SPPAS |   IPA   | Examples             |
-|:-----:|:-------:|:---------------------|
-|  a    |    a    |  patte  là           |
-|  a    |    ɑ    |  pâte  glas          |
-|  e    |    e    |  clé  les  chez  aller  pied  journée  |
-|  E    |    ɛ    |  crème  est  faite  peine  |
-|  E    |    ɛː   |  fête  maître  mètre  reître  reine  caisse |
-| eu    |    ə    |  le  reposer  monsieur  faisons    |
-| eu    |    ø    |  ceux  jeûner deux   |
-|  9    |    œ    |  sœur  jeune  neuf   |
-|  i    |    i    |  si  île  régie  y   |
-|  o    |    o    |  sot  hôtel  haut    |
-|  o    |    ɔ    |  sort  minimum       |
-|  u    |    u    |  coup  clown  roue   |
-|  y    |    y    |  tu  sûr  rue        |
-| a~    |    ɑ̃    |  sans  champ  vent  temps  Jean  taon |
-| U~    |    ɛ̃    |  vin pain brin printemps |
-| U~    |    œ̃    |  un  parfum  brun    |
-| o~    |    ɔ̃    |  son  nom bon        |
+| SPPAS |  IPA  | Description               | Examples           |
+|:-----:|:-----:|:-------------------------:|:-------------------|
+|   E   |   ɛ   | open-mid front unrounded  | crème, faite, peine, fête, maître, mètre, reine |
+|   a   |   a   | open front unrounded      | patte, là          |
+|   a   |   ɑ   | open back unrounded       | pâte  glas         |
+|   9   |   œ   | open-mid front rounded    | sœur, neuf, œuf    |
+|   O   |   ɔ   | open-mid back rounded     | sort, minimum      |
+|   i   |   i   | close front unrounded     | si, île, régie, y  |
+|   e   |   e   | close-mid front unrounded | clé, les, chez, aller, pied, journée |
+|   o   |   o   | close-mid back rounded    | sot, hôtel, haut   |
+|   u   |   u   | close back rounded        | cou, clown, roue   |
+|   y   |   y   | close front rounded       | tu, sûr, rue       |
+|  eu   |   ø   | close-mid front rounded   | ceux, jeûner, deux |
+|  eu   |   ə   | schwa                     | le, reposer, monsieur, faisons |
+
+Notice that /eu/ is not an X-SAMPA symbol.
+
+
+#### Nasal vowels
+
+| SPPAS |  IPA  | Examples                             |
+|:-----:|:-----:|--------------------------------------|
+|  a~   |  ɑ̃    | sans, champ, vent, temps, Jean, taon |
+|  U~   |  ɛ̃    | vin, pain, brin, printemps           |
+|  U~   |  œ̃    | un, parfum, brun                     |
+|  o~   |  ɔ̃    | son, nom, bon                        |
+
+
 
 
 #### Fillers
