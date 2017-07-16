@@ -43,26 +43,27 @@
 |   x    |   x     |                      |
 |   y    |   y     |                      |
 |   z    |   z     |                      |
-| @@     |         | laughter item        |
-| gb     |         | (garbage: for noises) |
-| dummy  |         | (dummy: for untranscribed speech) |
+
+
+#### Fillers
+
+| SPPAS | Description                     | 
+|:-----:|:--------------------------------|
+| @@    |  laughter                       |
+| gb    |  noises,  unintelligible speech |
+| dummy |  un-transcribed speech          |
 
 
 #### Pronunciation Dictionary
-
-
-*(c) Laboratoire Parole et Langage, Aix-en-Provence, France*
 
 *GNU Public License*
 
 
 #### Acoustic Model
 
-*(c) Laboratoire Parole et Langage, Aix-en-Provence, France*
-
 *Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License*
 
-We address special thanks to Sheng-Fu Wang for giving us access to a corpus.
+We address special thanks to Sheng-Fu Wang for giving us access to his corpus.
 
 >**S-F Wang, J. Fon** (2013).
 >*A Taiwan Southern Min spontaneous speech corpus for discourse prosody*,

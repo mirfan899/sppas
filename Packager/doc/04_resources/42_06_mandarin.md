@@ -1,62 +1,104 @@
 ## Mandarin Chinese
 
-#### List of phonemes
+### List of phonemes
 
-| SPPAS |   IPA   | Examples           |
-|:-----:|:-------:|:-------------------|
-|  N    |   ŋ     |      |
-|  S    |   ʃ     |      |
-|  a    |   a     |      |
-|  e    |   e     |      |
-|  f    |   f     | 访      |
-|  i    |   i     | 一 诒   |
-|  i_d  |         | 三次    |
-|  k    |   k     | 诰      |
-|  k_h  |         |        |
-|  l    |   l     | 论     |
-|  m    |   m     |        |
-|  n    |   n     |        |
-|  o    |   o     | 讴     |
-|  p    |   p     | 诐     |
-|  p_h  |         |        |
-|  s    |   s     | 诉     |
-|  ts   |   ts    | 诅     |
-| ts_h  |         | 䌽 吹  |
-|  S    |   ʃ     | 讹     |
-|  ss   |         | 许     |
-|  t    |   t     | 掉 诋  |
-|  tss  |         | 讵  讲 |
-|  u    |    u    | 诬     |
-|  x    |    x    | 诨 诲  |
-|  y    |    y    | 诩 语  |
-| ts_hs |         | 诎 㐤  |
-|  t_h  |         | 一统  一通 |
-|  @\`   |         |        |
-|  i\`   |         | 三河市  |
-|  s\`   |         | 识 说  |
-| ts_h\` |         | 串 吹  |
-|  ts\`  |         | 证 诊  |
-|  z\`   |         |        |
-| @@    |         | laughter item        |
-| gb    |         | (garbage: for noises) |
-| dummy |         | (dummy: for untranscribed speech) |
+Any help is welcome to improve the quality of both 
+Mandarin Chinese resources and of this documentation.
+Both are distributed without any warranty.
 
 
-#### Pronunciation dictionary
+#### Consonant Plosives
 
-*(C) Laboratoire Parole et Langage, Aix-en-Provence, France.*
+| SPPAS |  IPA  | Description                  | Examples   |
+|:-----:|:-----:|:----------------------------:|:-----------|
+|   p   |   p   | voiceless bilabial           | 诐, 一把手  |
+|   p_h |   pʰ  | voiceless bilabial aspirated | 仳, 伾, 佩  |
+|   t   |   t   | voiceless alveolar           | 掉, 诋      |
+|   t_h |   tʰ  | voiceless alveolar aspirated | 条心        |
+|   k   |   k   | voiceless velar              | 诰, 仡      |
+|   k_h |   kʰ  | voiceless velar aspirated    | 丂, 亢      |
 
-*GNU Public License*
+
+
+#### Consonant Fricatives
+
+| SPPAS |  IPA  | Description            | Examples   |
+|:-----:|:-----:|:----------------------:|:-----------|
+|   f   |   f   | voiceless labiodental  | 访, 佱, 俘  |
+|   s   |   s   | voiceless alveolar     | 诉, 偲      |
+|   s\` |   ʂ   | voiceless alveolar with retroflex hook | 识 说       | 
+|   z\` |   ʐ   | voiced alveolar with retroflex hook    | 儒, 入      |
+|   S   |   ʃ   | voiceless postalveolar | 厄, 呃      |
+|   x   |   x   | voiceless velar        | 和, 和      |
+|  ss   |       |                        | 笑, 咸      |
+
+
+#### Consonant Nasals
+
+| SPPAS |  IPA  | Description            | Examples    |
+|:-----:|:-----:|:----------------------:|:------------|
+|   m   |   m   | bilabial               | 哤, 咩, 喵   |
+|   n   |   n   | alveolar               | 噛, 哝, 咛   |
+|   N   |   ŋ   | voiced velar           | 尝, 嚝, 嚷   |
+
+
+#### Consonant Liquids
+
+| SPPAS |  IPA  | Description            | Examples            |
+|:-----:|:-----:|:----------------------:|:--------------------|
+|   l   |   l   | alveolar lateral       | 咾, 哢      |
+
+
+#### Vowels
+
+| SPPAS |  IPA  | Description                     | Examples        |
+|:-----:|:-----:|:-------------------------------:|:----------------|
+|   a   |   a   | open front unrounded            | 垵, 奡, 壒, 墺, 埏 |
+|   o   |   o   | close-mid back rounded          | 怄, 欧           |
+|   e   |   e   | close-mid front unrounded       | A, 诶        |
+|   i   |   i   | close front unrounded           | 〡, 㐆, 一 诒 |
+|   i_d |   i̪   | close front unrounded dental    | 子, 孖       |
+|   i\` |   ᶖ   |  close front unrounded retroflex | 估值, 似     |
+|   u   |   u   | close back rounded              | 诬, 罔, 五    |
+|   y   |   y   | close front rounded             | 诩, 语, 伝    |
+|   @\` |   ᶕ  | schwa with retroflex hook        | 佴, 儿 |
+
+
+#### Affricates
+
+| SPPAS |  IPA  | Description                 | Examples          |
+|:-----:|:-----:|:----------------------------:|:------------------|
+|  ts   |  ts   | voiceless alveolar           | 孖, 字  |
+|  tss  |       |                              | 讵,  讲 |
+| ts_h  |  tsʰ  | voiceless alveolar aspirated | 䌽, 吹  |
+|  ts\` |       | voiceless alveolar retroflex hook | 证, 诊  |
+| ts_h\` |      |    | 串 吹  |
+| ts_hs  |      |    | 诎, 㐤  |
+
+
+#### Fillers
+
+| SPPAS | Description                     | 
+|:-----:|:--------------------------------|
+| @@    |  laughter                       |
+| gb    |  noises,  unintelligible speech |
+| dummy |  un-transcribed speech          |
+
+
+### Pronunciation dictionary
 
 The pronunciation dictionary was manually created for the syllables by Zhi Na.
+We address special thanks to her for sharing her work.
+
+It is distributed under the terms of the *GNU General Public License*.
 
 
-#### Acoustic model
+### Acoustic model
 
-The acoustic model was created by Brigitte Bigi from data recorded at Shanghai
-by Zhi Na, and another one by Hongwei Ding.
-We address special thanks to hers for giving us access to the corpus.
-These recordings are a Chinese version of the Eurom1 corpus.
+The acoustic model was created by Brigitte Bigi from 2 corpora: the first 
+one at Shanghai by Zhi Na, and another one by Hongwei Ding.
+We address special thanks to hers for giving us access to their corpus.
+Both recordings are a Chinese version of the Eurom1 corpus.
 See the following publication for details:
 
 >**Daniel Hirst, Brigitte Bigi, Hyongsil Cho, Hongwei Ding, Sophie Herment, Ting Wang** (2013).
@@ -69,3 +111,6 @@ Do not expect to get good performances for the automatic alignment.
 
 **More Mandarin Chinese data are welcome!**
 Because more data implies a better acoustic model then better alignments...
+
+The model is distributed under the terms of the 
+*Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License*.
