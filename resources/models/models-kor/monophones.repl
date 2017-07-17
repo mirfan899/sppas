@@ -18,12 +18,11 @@ e e
 m m
 N N
 t_h t_h
-ae {
 dz dz
 k k
 p p
 t t
-r r
+dx 4
 tS tS
 p_h p_h
 k_h k_h
