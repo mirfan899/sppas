@@ -1,7 +1,10 @@
-##SPPAS in research projects
+## SPPAS in research projects
+
+You used SPPAS into your research project?
+Send an e-mail to the author to append it into this section!
 
 
-###MULTIPHONIA
+### MULTIPHONIA
 
 SPPAS was used to annotate the MULTIPHONIA corpus (MULTImodal 
 database of PHONetics teaching methods in classroom InterActions) 
@@ -25,7 +28,7 @@ MULTIPHONIA: <http://www.sldr.org/sldr000780/en>
 
 
 
-###Amennpro
+### Amennpro
  
 SPPAS was used for the annotation of the French part of the AixOx corpus.
 
@@ -40,7 +43,7 @@ Download the AixOx corpus: <http://www.sldr.fr/sldr000784/>
     in the samples-eng (files E_E*.*).
 
 
-###Evalita 2011: Italian phonetization and alignment
+### Evalita 2011: Italian phonetization and alignment
 
 Evalita 2011 was the third evaluation campaign of Natural Language Processing 
 and Speech tools for Italian, supported by the NLP working group of AI*IA 
@@ -59,7 +62,7 @@ The corpus was a set of Dialogues, map-tasks:
 * 15% phones are: "sil", filled-pauses, garbage.
 
 
-###Cofee: Conversational Feedback 
+### Cofee: Conversational Feedback 
 
 In a conversation, feedback is mostly performed through short utterances 
 produced by another participant than the main current speaker. 
@@ -80,7 +83,7 @@ Cofee corpora and the use of SPPAS on such corpora is presented in:
 >9th International conference on Language Resources and Evaluation (LREC), Reykjavik (Iceland).
 
 
-###Variamu: Variations in Action: a MUltilingual approach
+### Variamu: Variations in Action: a MUltilingual approach
 
 Variamu is an international collaborative joint project co-funded by Amidex. 
 The scientific object of the collaboration is the issue of language variation 

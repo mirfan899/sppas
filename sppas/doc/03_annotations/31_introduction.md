@@ -312,3 +312,23 @@ number of files that was annotated for each step, or -1 if the annotation
 was disabled. 
 
 ![Procedure outcome report](./etc/screenshots/log.png)
+
+
+## New language support
+
+Some of the annotations are requiring linguistic resources in order to work
+efficiently on a given language: text normalization requires a lexicon,
+phonetization requires a pronunciation dictionary, etc. Each section of this
+chapter which is describing an annotation is also including *the way to 
+create the related resource*. 
+The next chapter contains details about the existing resources 
+- list of phonemes, authors, licenses, etc.
+
+While starting SPPAS, the Graphical User Interface dynamically creates the 
+list of available languages of each annotation by exploring the related folder.
+This means that:
+
+* appended resources are automatically taken into account 
+  (ie. there's no need to modify the program itself);
+* SPPAS needs to be re-started if new resources are appended 
+  while it was already being running.

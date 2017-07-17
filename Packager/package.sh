@@ -53,7 +53,6 @@ PROGRAM_VERSION=$(grep -e "__version__=" $PROGRAM_DIR/sppas/meta.py | awk -F'=' 
 # Files and directories to be used
 BIN_DIR="bin"
 TESTS_DIR="tests"
-DOC_DIR="doc"
 TUTO_DIR="tuto"
 ETC_DIR="etc"
 SAMPLES_DIR="samples"
@@ -486,22 +485,23 @@ function fct_uml_diagrams {
 function fct_get_md_idx {
 
     # Get all files mentioned in the idx
-    local f="`cat $1/$2/${2}.idx`"
+    local f="`cat $1/$2/$2.idx`"
 
     # Add its path to each file name
-    local files="`for i in $f; do echo "$1/$2/"$i; done`"
+    local mdfiles="`for i in $f; do echo "$1/$2/"$i; done`"
 
     # return the list of files
-    echo $files
+    echo $mdfiles
 }
 
 
-# Return the list of sub-folders of the documentation
+# Return the list of folders of the documentation
 # Parameters:
 #  $1: directory of the documentation
 function fct_get_docfolders {
-    local folders="`cat $1/markdown.idx`"
-    echo $folders
+
+    local docfolders="`cat $1/markdown.idx`"
+    echo $docfolders
 }
 
 
@@ -509,6 +509,7 @@ function fct_get_docfolders {
 # Parameters:
 # - $1: directory with the documentation
 function fct_get_all_md {
+
     # take a look if an header is existing (the title/author/date of the doc)
     if [ -e "$1/header.md" ] ; then
         local files="$1/header.md";
@@ -527,35 +528,9 @@ function fct_get_all_md {
     echo $files
 }
 
-# Generate a new version of the documentation
-function fct_sppas_doc {
-    echo -e "${BROWN} - $PROGRAM_NAME documentation${NC}"
 
-    # test if pandoc is ok.
-    type pandoc >& /dev/null
-    if [ $? -eq 1 ] ; then
-        echo -e "${RED}pandoc is missing. Please, install it and try again.${NC}"
-        return 1
-    fi
-
-    echo ' Version for the web (add header and footer)'
-    # An HTML file is generated for each sub-folder of the documentation
-    local folders=$(fct_get_docfolders $DOC_DIR)
-    for folder in $folders;
-    do
-        echo " ... $folder"
-        local files="$DOC_DIR/header.md"
-        files="$files $(fct_get_md_idx $DOC_DIR $folder)"
-        files="$files $DOC_DIR/footer.md"
-        pandoc -s --toc --mathjax -t html5 --css $ETC_DIR/styles/sppas.css -H $DOC_DIR/include-scripts.txt -B $DOC_DIR/header.txt -A $DOC_DIR/footer.txt $files --highlight-style haddock -o $WEB_DIR/documentation_${folder}.html
-    done
-
-    # A Unique file is generated from all files of the documentation
-    local files=$(fct_get_all_md $DOC_DIR)
-
-    echo ' Version PDF';
-    pandoc -N --template="$DOC_DIR/mytemplate.tex" --variable toc-depth=2 -V geometry:a4paper -V geometry:"top=3cm, bottom=3cm, left=3cm, right=2.5cm" --variable documentclass="report" --variable classoption="twoside, openright" --variable mainfont="FreeSerif" --variable sansfont="FreeSans" --variable monofont="FreeMono" --variable fontsize=11pt --variable version="$PROGRAM_VERSION" --variable frontpage="$DOC_DIR/frontpage.pdf" $files --latex-engine=xelatex --toc -o $PROGRAM_DIR/documentation/Documentation.pdf
-    cp $PROGRAM_DIR/documentation/Documentation.pdf $WEB_DIR/doc/Documentation.pdf
+# Generate a new version of the tutorials
+function fct_sppas_tuto {
 
     echo ' Tutorials for the web';
     cat $TUTO_DIR/tutorial_header.html > $WEB_DIR/tutorial.html
@@ -615,26 +590,15 @@ function fct_sppas_doc {
     rm -rf $WEB_DIR/$ETC_DIR
     cp -r $ETC_DIR $WEB_DIR
 
-    rm -rf $PROGRAM_DIR/sppas/doc
-    mkdir $PROGRAM_DIR/sppas/doc
-    mkdir $PROGRAM_DIR/sppas/doc/img
-    cp -r $DOC_DIR/??_* $PROGRAM_DIR/sppas/doc
-    cp $DOC_DIR/markdown.idx   $PROGRAM_DIR/sppas/doc
-    cp -r $ETC_DIR/logos       $PROGRAM_DIR/sppas/doc/img/
-    cp -r $ETC_DIR/img         $PROGRAM_DIR/sppas/doc/img/
-    cp -r $ETC_DIR/figures     $PROGRAM_DIR/sppas/doc/img/
-    cp -r $ETC_DIR/screenshots $PROGRAM_DIR/sppas/doc/img/
-
-    echo " The ${PROGRAM_NAME} documentation folder and the web directory were both updated."
 }
 
 
 # Main function for the documentation
 function fct_documentation {
     fct_echo_title "${PROGRAM_NAME} - API Manual and Documentation (package and web)"
-    #fct_api_manual
-    #fct_uml_diagrams
-    fct_sppas_doc
+    # fct_api_manual
+    # fct_uml_diagrams
+    fct_sppas_tuto
 }
 
 

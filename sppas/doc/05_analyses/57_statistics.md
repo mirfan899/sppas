@@ -1,12 +1,5 @@
 ## Statistics
 
-`Statistics` allows to get descriptive statistics about a set of selected
-tiers and includes TGA (Time Group Analyzer), originally available at 
-<http://wwwhomes.uni-bielefeld.de/gibbon/TGA/>, a tool developed
-by Dafydd Gibbon, emeritus professor of English and General Linguistics at
-Bielefeld University. 
-It also allows to estimate a user agreement rate (Kappa as a first stage).
-
 ![Statistics: descriptive statistics and TGA](./etc/screenshots/Statistics.png)
 
 
@@ -53,9 +46,10 @@ i.e. the best label and all its alternatives (if any).
 
 ### TGA - Time Group Analyzer
 
->*Dafydd Gibbon* (2013).
->**TGA: a web tool for Time Group Analysis**,
-> Tools ans Resources for the Analysis of Speech Prosody, Aix-en-Provence, France, pp. 66-69.
+TGA is originally available at 
+<http://wwwhomes.uni-bielefeld.de/gibbon/TGA/>. It's a tool developed
+by Dafydd Gibbon, emeritus professor of English and General Linguistics at
+Bielefeld University. 
 
 The  TGA   is   an   online   batch   processing   tool  which
 provides  a  parametrised  mapping  from  time-stamps  in
@@ -63,7 +57,7 @@ speech annotation files in various formats to a detailed
 analysis   report   with   statistics   and   visualisations. 
 TGA software calculates, inter alia, mean, median, rPVI, nPVI, slope and 
 intercept functions within inter-pausal groups, provides visualisations of
-timing patterns, as well as correlations between these, and parses interpausal 
+timing patterns, as well as correlations between these, and parses inter-pausal 
 groups into hierarchies based on duration relations.
 Linear regression is selected mainly for the slope function, as a first 
 approximation to examining acceleration and deceleration over large data sets.
@@ -89,11 +83,11 @@ existing  AnnotationPro  phonetic workbench,   for   supporting   experimental
 analysis   and   modelling   of   speech   timing.
 
 
-So... What's the novelty...
+So, what's the novelty...
 
 TGA is partly implemented in SPPAS.
-The Statistics component of SPPAS allows to estimates TGA within the SPPAS 
-framework. It results in the following advantages:
+The Statistics analyses tool of SPPAS allows to estimates TGA within the 
+SPPAS framework. It results in the following advantages:
 
 - it can read either TextGrid, csv, Elan, HTK, or Sclite, or any file format supported by SPPAS,
 - it can save TGA results either as a table in a CSV file or as an annotation file (of any of the format supported by SPPAS),
@@ -105,7 +99,7 @@ framework. It results in the following advantages:
 
 ### User agreement
 
-SPPAS integrates the estimation of the Cohen's Kappa.
+SPPAS implements the estimation of the Cohen's Kappa.
 It is currently limited to the evaluation of this user agreement between 
 labels of 2 tiers with the same number of intervals.
-
+It is under-development...
