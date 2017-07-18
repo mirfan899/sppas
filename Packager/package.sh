@@ -595,7 +595,7 @@ function fct_sppas_tuto {
 
 # Main function for the documentation
 function fct_documentation {
-    fct_echo_title "${PROGRAM_NAME} - API Manual and Documentation (package and web)"
+    fct_echo_title "${PROGRAM_NAME} - API Manual and Tutorials"
     # fct_api_manual
     # fct_uml_diagrams
     fct_sppas_tuto
