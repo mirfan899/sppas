@@ -1,5 +1,8 @@
 \documentclass[$if(classoption)$$classoption$,$endif$$if(fontsize)$$fontsize$,$endif$$if(lang)$$lang$,$endif$]{$documentclass$}
 
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
 % -----------------------
 % Define a set of colors
 
@@ -285,7 +288,7 @@ $endif$
         \hypersetup{linkcolor=violet}
         \setcounter{tocdepth}{$toc-depth$}
         \tableofcontents
-        %\newpage
+        \newpage
     }
     $endif$
 

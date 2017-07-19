@@ -583,6 +583,10 @@ if __name__ == "__main__":
                         action='store_true',
                         help="Enable the generation of the PDF")
 
+    parser.add_argument("--tuto",
+                        action='store_true',
+                        help="Enable the generation of the tutorials")
+
     if len(sys.argv) <= 1:
         sys.argv.append('-h')
 
@@ -590,21 +594,27 @@ if __name__ == "__main__":
 
     # -----------------------------------------------------------------------
 
-    # test if documentation directory for markdown files is ok.
-    doc_dir = os.path.join(SPPAS, "sppas", "doc")
-    if os.path.exists(doc_dir) is False:
-        raise IOError("Directory {:s} of the documentation is missing. Program halted.".format(doc_dir))
-
-    # test if documentation directory for external files is ok.
+    # fix directory for external files is ok.
     doc_temp = os.path.join(SPPAS, "Packager", "doc")
     if os.path.exists(doc_temp) is False:
         raise IOError("Directory {:s} of the documentation is missing. Program halted.".format(doc_temp))
 
-    # test if tutorial directory for markdown files is ok.
-    tuto_dir = os.path.join(SPPAS, "Packager", "tuto")
-    if os.path.exists(tuto_dir) is False:
-        raise IOError("Directory {:s} of the tutorials is missing. Program halted.".format(tuto_dir))
+    if args.doc or args.web:
+        # test if documentation directory for markdown files is ok.
+        doc_dir = os.path.join(SPPAS, "sppas", "doc")
+        if os.path.exists(doc_dir) is False:
+            raise IOError("Directory {:s} of the documentation is missing. Program halted.".format(doc_dir))
 
-    # generate_pdf(doc_dir, doc_temp)
-    generate_tuto(tuto_dir, doc_temp)
+        if args.doc:
+            generate_pdf(doc_dir, doc_temp)
+        else:
+            generate_web(doc_dir, doc_temp)
 
+    if args.tuto:
+        # test if tutorial directory for markdown files is ok.
+        tuto_dir = os.path.join(SPPAS, "Packager", "tuto")
+        if os.path.exists(tuto_dir) is False:
+            raise IOError("Directory {:s} of the tutorials is missing. Program halted.".format(tuto_dir))
+
+        # generate_tuto(tuto_dir, doc_temp)
+        print("NOT IMPLEMENTED")
