@@ -49,7 +49,6 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas import unk_stamp
 from sppas.src.annotations.Phon.sppasphon import sppasPhon
 from sppas.src.annotations.Phon.phonetize import sppasDictPhonetizer
 from sppas.src.resources.dictpron import sppasDictPron

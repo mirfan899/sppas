@@ -96,7 +96,7 @@ for f in args.files:
         p = os.getcwd()
     filenames.append(os.path.abspath(os.path.join(p, b)))
 
-# Logging and Gettext
+# Logging
 # ----------------------------------------------------------------------------
 
 log_level = 1

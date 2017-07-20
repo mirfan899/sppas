@@ -139,4 +139,3 @@ else:
     # Will output the faked orthography
     for line in sys.stdin:
         print(normalizer.normalize(line).encode('utf8'))
-

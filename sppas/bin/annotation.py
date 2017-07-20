@@ -1,51 +1,45 @@
 #!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /        Automatic
-#           \__   |__/  |__/  |___| \__      Annotation
-#              \  |     |     |   |    \     of
-#           ___/  |     |     |   | ___/     Speech
-#           =============================
-#
-#           http://www.lpl-aix.fr/~bigi/sppas
-#
-# ---------------------------------------------------------------------------
-# developed at:
-#
-#       Laboratoire Parole et Langage
-#
-#       Copyright (C) 2011-2016  Brigitte Bigi
-#
-#       Use of this software is governed by the GPL, v3
-#       This banner notice must not be removed
-# ---------------------------------------------------------------------------
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: annotation.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-__docformat__ = """epytext"""
-__authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
+        http://www.sppas.org/
 
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
+        Use of this software is governed by the GNU Public License, version 3.
 
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    bin.alignment.py
+    ~~~~~~~~~~~~~~~~
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Run the any or all automatic annotations.
+
+"""
 import sys
 import os.path
 from argparse import ArgumentParser
@@ -54,11 +48,11 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import sppas  # import program, author, version, copyright, url
+import sppas 
 from sppas.src.annotations import DEFAULT_OUTPUT_EXTENSION
 from sppas.src.annotations.param import sppasParam
 from sppas.src.annotations.manager import sppasAnnotationsManager
-from sppas.src.annotationdata.aio import extensions_out  #_multitiers
+from sppas.src.annotationdata.aio import extensions_out
 from sppas.src.term.textprogress import ProcessProgressTerminal
 from sppas.src.term.terminalcontroller import TerminalController
 
@@ -70,30 +64,40 @@ from sppas.src.term.terminalcontroller import TerminalController
 parameters = sppasParam()
 parser = ArgumentParser(usage="%s -w file|folder [options]" % os.path.basename(PROGRAM),
                         prog=PROGRAM,
-                        description="Automatic annotations command line interface.")
+                        description="Automatic annotations.")
 
-parser.add_argument("-w", required=True, metavar="file|folder", help='Input wav file name, or directory')
+parser.add_argument("-w", 
+                    required=True, 
+                    metavar="file|folder", 
+                    help='Input wav file name, or directory')
 
-parser.add_argument("-l", metavar="lang", help='Input language, using iso639-3 code')
-parser.add_argument("-e", default=DEFAULT_OUTPUT_EXTENSION,
+parser.add_argument("-l", 
+                    metavar="lang",
+                    help='Input language, using iso639-3 code')
+
+parser.add_argument("-e", 
+                    default=DEFAULT_OUTPUT_EXTENSION,
                     metavar="extension",
-                    help='Output extension. One of: %s' % " ".join(extensions_out))  #_multitiers))
-parser.add_argument("--momel",   action='store_true', help="Activate Momel" )
-parser.add_argument("--intsint", action='store_true', help="Activate INTSINT" )
-parser.add_argument("--ipus",    action='store_true', help="Activate IPUs Segmentation" )
-parser.add_argument("--tok",     action='store_true', help="Activate Tokenization" )
-parser.add_argument("--phon",    action='store_true', help="Activate Phonetization" )
-parser.add_argument("--chunks",  action='store_true', help="Activate Chunks alignment" )
-parser.add_argument("--align",   action='store_true', help="Activate Phones alignment" )
-parser.add_argument("--syll",    action='store_true', help="Activate Syllabification" )
-parser.add_argument("--repet",   action='store_true', help="Activate Self-Repetitions" )
-parser.add_argument("--all",     action='store_true', help="Activate ALL automatic annotations" )
+                    help='Output extension. One of: %s' % " ".join(extensions_out))
+
+parser.add_argument("--momel",   action='store_true', help="Activate Momel")
+parser.add_argument("--intsint", action='store_true', help="Activate INTSINT")
+parser.add_argument("--ipus",    action='store_true', help="Activate IPUs Segmentation")
+parser.add_argument("--tok",     action='store_true', help="Activate Tokenization")
+parser.add_argument("--phon",    action='store_true', help="Activate Phonetization")
+parser.add_argument("--chunks",  action='store_true', help="Activate Chunks alignment")
+parser.add_argument("--align",   action='store_true', help="Activate Phones alignment")
+parser.add_argument("--syll",    action='store_true', help="Activate Syllabification")
+parser.add_argument("--repet",   action='store_true', help="Activate Self-Repetitions")
+parser.add_argument("--all",     action='store_true', help="Activate ALL automatic annotations")
+
 parser.add_argument("--merge",
                     action='store_true',
-                    help="Create a merged TextGrid file, if more than two automatic annotations. (this is the default)" )
+                    help="Create a merged TextGrid file, if more than two automatic annotations. (this is the default)")
+
 parser.add_argument("--nomerge",
                     action='store_true',
-                    help="Do not create a merged TextGrid file." )
+                    help="Do not create a merged TextGrid file.")
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -111,14 +115,14 @@ if args.l:
     parameters.set_lang(args.l)
 ext = args.e
 if not ext.startswith("."):
-    ext = "."+ext
+    ext = "." + ext
 extensions = [e.lower() for e in extensions_out]  #_multitiers]
 if not ext.lower() in extensions:
     print("\n")
     print("[WARNING] Unknown extension:", args.e, ". Extension is set to its default value.")
     print("\n")
     ext = DEFAULT_OUTPUT_EXTENSION
-parameters.set_output_format( ext )
+parameters.set_output_format(ext)
 
 if args.momel:
     parameters.activate_annotation("momel")

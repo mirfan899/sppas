@@ -61,7 +61,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import sppas  # import program, author, version, copyright, url
+import sppas
 from sppas.src.term.terminalcontroller import TerminalController
 
 from sppas.src.plugins import sppasPluginsManager
