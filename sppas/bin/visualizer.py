@@ -29,7 +29,7 @@
 
         ---------------------------------------------------------------------
 
-    bin.audioroamer.py
+    bin.sppasedit.py
     ~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
@@ -37,7 +37,7 @@
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Run the AudioRoamer analysis tool
+    :summary:      Run the Visualizer analysis tool
 
 """
 import sys
@@ -46,7 +46,6 @@ import traceback
 from argparse import ArgumentParser
 
 from butils import exit_error, check_python
-
 check_python()
 
 try:
@@ -65,8 +64,8 @@ sys.path.append(SPPAS)
 
 try:
     from sppas import SETTINGS_FILE
-    from sppas.src.wxgui.frames.audioroamerframe import AudioRoamerFrame
-    from sppas.src.wxgui.sp_icons import AUDIOROAMER_APP_ICON
+    from sppas.src.wxgui.frames.sppaseditframe import SppasEditFrame
+    from sppas.src.wxgui.sp_icons import SPPASEDIT_APP_ICON
     from sppas.src.utils.fileutils import setup_logging
     from sppas.src.wxgui.dialogs.msgdialogs import ShowInformation
     from sppas.src.wxgui.structs.prefs import Preferences_IO
@@ -85,17 +84,17 @@ except ImportError:
 # ------------------------------------------------------------------------
 
 parser = ArgumentParser(usage="%s files" % os.path.basename(PROGRAM),
-                        description="SPPAS AudioRoamer graphical user interface.")
+                        description="SppasEdit graphical user interface.")
 parser.add_argument("files", nargs="*", help='Input file name(s)')
 args = parser.parse_args()
 
 # force to add path
 filenames = []
 for f in args.files:
-    p, b = os.path.split(f)
+    p,b = os.path.split(f)
     if not p:
         p = os.getcwd()
-    filenames.append(os.path.abspath(os.path.join(p, b)))
+    filenames.append(os.path.abspath(os.path.join(p,b)))
 
 # Logging
 # ----------------------------------------------------------------------------
@@ -115,14 +114,13 @@ except Exception:
 app = wx.App(redirect=True)
 
 # Fix preferences
-
 prefsIO = Preferences_IO(SETTINGS_FILE)
 if prefsIO.Read() is False:
     prefsIO.SetTheme(sppasTheme())
 
 # App
 
-frame = AudioRoamerFrame(None, -1, prefsIO)
+frame = SppasEditFrame(None, -1, prefsIO)
 frame.AddFiles(filenames)
 
 app.SetTopWindow(frame)

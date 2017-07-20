@@ -121,7 +121,8 @@ if prefsIO.Read() is False:
 # Tests
 v = get_wx_version()
 if v < 3:
-    message = "The version of WxPython is too old.\nThe Graphical User Interface will not display properly.\n"
+    message = "The version of WxPython is too old.\n" \
+              "The Graphical User Interface will not display properly.\n"
     ShowInformation(None, prefsIO, message, style=wx.ICON_WARNING)
 
 if check_aligner() is False:

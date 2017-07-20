@@ -53,7 +53,6 @@
     >>> ./sppas/bin/plugin.py --install --apply --remove -p sppas/src/plugins/tests/data/soxplugin.zip -i samples/samples-eng/oriana1.wav -o resampled.wav
 
 """
-
 import sys
 import os
 from argparse import ArgumentParser
@@ -75,12 +74,32 @@ parser = ArgumentParser(usage="%s [actions] [options]" % os.path.basename(PROGRA
                         prog=PROGRAM,
                         description="Plugin command line interface.")
 
-parser.add_argument("--install", action='store_true', help="Install a new plugin from a plugin package.")
-parser.add_argument("--remove",  action='store_true', help="Remove an existing plugin.")
-parser.add_argument("--apply",   action='store_true', help="Apply a plugin on a file.")
-parser.add_argument("-p", metavar="string", required=True, help="Plugin (either an identifier, or an archive file).")
-parser.add_argument("-i", metavar="string", required=False, help="Input file to apply a plugin on it.")
-parser.add_argument("-o", metavar="string", required=False, help="Output file, ie the result of the plugin.")
+parser.add_argument("--install",
+                    action='store_true',
+                    help="Install a new plugin from a plugin package.")
+
+parser.add_argument("--remove",
+                    action='store_true',
+                    help="Remove an existing plugin.")
+
+parser.add_argument("--apply",
+                    action='store_true',
+                    help="Apply a plugin on a file.")
+
+parser.add_argument("-p",
+                    metavar="string",
+                    required=True,
+                    help="Plugin (either an identifier, or an archive file).")
+
+parser.add_argument("-i",
+                    metavar="string",
+                    required=False,
+                    help="Input file to apply a plugin on it.")
+
+parser.add_argument("-o",
+                    metavar="string",
+                    required=False,
+                    help="Output file, ie the result of the plugin.")
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
