@@ -19,12 +19,12 @@ speech data and to analyze annotated files:
 
 2. Analysis
 
-    - *IPUscriber*:     Manual orthographic transcription, after IPUs segmentation
+    - *IPUscriber*:     Manual orthographic transcription
     - *AudioRoamer*:    Play, show information and manage speech audio files
     - *Statistics*:     Estimates/Save statistics on annotated files
     - *DataRoamer*:     Manipulate annotated files
-    - *DataFilter*:     Extract data from annotated files (i.e. querying data)
-    - *Visualizer*:     Display sound and annotated files 
+    - *DataFilter*:     Extract data from annotated files (i.e. searching in data)
+    - *Visualizer*:     Display sound and annotated files in a time-line
 
 
 3. Plugins

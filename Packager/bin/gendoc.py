@@ -340,7 +340,7 @@ def exec_external_command(command, result_filename):
 
     # Check output file
     if os.path.exists(result_filename) is False:
-        raise Exception("Error: {:s}.".format(line[0]))
+        raise Exception("Error: {}.".format(line[0]))
 
 # ---------------------------------------------------------------------------
 # Generate a documentation file from some markdown sources
@@ -381,8 +381,7 @@ def gen_pdf_file(doc, files, result_filename):
     command += ' --variable monofont="FreeMono"'
     command += ' --variable fontsize=11pt'
     command += ' --variable version="' + sppas.__version__ + '"'
-    if front_page is not None:
-        command += ' --variable frontpage="' + front_page + '"'
+    command += ' --variable frontpage="' + front_page + '"'
 
     # the files and LaTeX options
     command += " "

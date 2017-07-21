@@ -61,7 +61,7 @@ The SPPAS package is compressed and zipped, so you will need to
 
 ### The SPPAS package
 
-Unlike many other software tool, SPPAS is not what is called a "black box".
+Unlike many other software tool, SPPAS is not distributed as an executable program only.
 Instead, everything is done so that users can check / change operation.
 It is particularly suitable for automatic annotations: it allows any user
 to adapt automatic annotations to its own needs.
@@ -71,7 +71,7 @@ The package of SPPAS is then a directory with content as files and folders.
 
 The SPPAS package contains:
 
-- the `README.txt` file, which aims to be read by users
+- the `README.txt` file, which aims to be read
 - the files `sppas.bat` and `sppas.command` to execute the Graphical User Interface
 - the `resources` directory contains data that are used by automatic annotations (lexicons, dictionaries, ...)
 - the `samples` directory contains folders of data of various languages, they are sets of annotations freely distributed to test features of SPPAS
