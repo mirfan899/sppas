@@ -31,8 +31,6 @@
     src.annotations.Align.activity.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    TODO: Migrate Activity into a plugin of SPPAS.
-
 """
 from sppas import unk_stamp
 from sppas.src.annotationdata.tier import Tier
@@ -49,7 +47,7 @@ from ..searchtier import sppasSearchTier
 # ---------------------------------------------------------------------------
 
 
-class Activity(object):
+class sppasActivity(object):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -59,18 +57,11 @@ class Activity(object):
     :summary:      Create an activity tier from time-aligned tokens.
 
     """
-    def __init__(self, trs):
-        """ Create an Activity instance.
+    def __init__(self):
+        """ Create a sppasActivity instance with the default symbols. """
 
-        :param trs: (Transcription) a Transcription containing a tier
-        with exactly the name 'TokensAlign'.
-
-        """
-        self.activities = dict()
+        self._activities = dict()
         self.set_activities()
- 
-        tokens_tier = sppasSearchTier.aligned_tokens(trs)
-        self.tokens = fill_gaps(tokens_tier, trs.GetMinTime(), trs.GetMaxTime())
 
     # -----------------------------------------------------------------------
 
@@ -81,9 +72,9 @@ class Activity(object):
         The key is the token; the value is the name of the activity.
 
         """
-        self.activities = dict()
-        for token, activity in activities:
-            self.append_activity(token, activity)
+        self._activities = dict()
+        for token in activities:
+            self.append_activity(token, activities[token])
 
         # For empty intervals... activity is unknown
         self.append_activity(unk_stamp, "")
@@ -103,28 +94,34 @@ class Activity(object):
         sp = sppasUnicode(activity)
         activity = sp.to_strip()
         
-        if self.activities.get(token, None) is None:
-            self.activities[token] = activity
+        if token not in self._activities:
+            self._activities[token] = activity
 
     # -----------------------------------------------------------------------
 
-    def get_tier(self):
+    def get_tier(self, trs):
         """ Create and return the activity tier.
 
+        :param trs: (Transcription) a Transcription containing a tier
+        with exactly the name 'TokensAlign'.
         :returns: Tier
+        :raises: NoInputError
 
         """
+        tokens_tier = sppasSearchTier.aligned_tokens(trs)
+        tokens = fill_gaps(tokens_tier, trs.GetMinTime(), trs.GetMaxTime())
+
         new_tier = Tier('Activity')
         activity = "<INIT>"  # initial activity
 
-        for ann in self.tokens:
+        for ann in tokens:
 
             # Fix the activity name of this new token
             if ann.GetLabel().IsEmpty():
                 l = unk_stamp
             else:
                 l = ann.GetLabel().GetValue()
-            new_activity = self.activities.get(l, "speech")
+            new_activity = self._activities.get(l, "speech")
 
             # The activity has changed
             if activity != new_activity and activity != "<INIT>":
@@ -135,7 +132,31 @@ class Activity(object):
             activity = new_activity
 
         # Last interval
-        if new_tier.GetEnd() < self.tokens.GetEnd():
-            new_tier.Append(Annotation(TimeInterval(new_tier.GetEnd(), self.tokens.GetEnd()), Label(activity)))
+        if new_tier.GetEnd() < tokens.GetEnd():
+            new_tier.Append(Annotation(TimeInterval(new_tier.GetEnd(), tokens.GetEnd()),
+                                       Label(activity)))
 
         return unfill_gaps(new_tier)
+
+    # -----------------------------------------------------------------------
+    # overloads
+    # -----------------------------------------------------------------------
+    
+    def __str__(self):
+        return str(self._activities)
+
+    # -----------------------------------------------------------------------
+
+    def __len__(self):
+        return len(self._activities)
+
+    # -----------------------------------------------------------------------
+
+    def __contains__(self, item):
+        return item in self._activities
+
+    # ------------------------------------------------------------------------
+
+    def __iter__(self):
+        for a in self._activities:
+            yield a

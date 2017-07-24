@@ -28,3 +28,17 @@ This Extended Speech Assessment Methods Phonetic Alphabet was developed in
 X-SAMPA is a language-independent notation covering the entire 
 International Phonetic Alphabet - IPA repertoire.
 A plugin allows to convert time-aligned phonemes from X-SAMPA to IPA.
+
+The acoustic models created by the author, Brigitte Bigi, were trained using
+the HTK toolbox, version 3.4.1. 
+"HTK has been developed by the Machine Intelligence Laboratory
+(formerly know as the Speech Vision Robotics Group) at the
+[Cambridge University Engineering Department](http://mi.eng.cam.ac.uk) (CUED)
+and [Entropic Ltd](http://www.entropic.com).
+Microsoft has now licensed HTK back to CUED and is providing support so 
+that CUED can redistribute HTK and provide development support via the 
+HTK3 web site." (source: <http://htk.eng.cam.ac.uk/>)
+Notice that HTK is available for free download after registration and users 
+must first agree to the license. Notice that the section 2.2 of the license 
+terms mentions that HTK "either in whole or in part can not be distributed
+or sub-licensed to any third party in any form."

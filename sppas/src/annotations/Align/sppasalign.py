@@ -60,7 +60,7 @@ from ..annotationsexc import NoInputError
 from ..annutils import fix_audioinput, fix_workingdir
 
 from .alignio import AlignIO
-from .activity import Activity
+from .activity import sppasActivity
 
 # ----------------------------------------------------------------------------
 
@@ -408,8 +408,8 @@ class sppasAlign(sppasBaseAnnotation):
         # Activity tier
         if self._options['activity'] is True or self._options['activityduration'] is True:
             try:
-                activity = Activity(trs)
-                tier = activity.get_tier()
+                activity = sppasActivity()
+                tier = activity.get_tier(trs)
                 if self._options['activity'] is True:
                     trs.Append(tier)
                     trs.GetHierarchy().add_link("TimeAlignment", token_align, tier)

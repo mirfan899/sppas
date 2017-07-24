@@ -64,13 +64,13 @@
     SPPAS is based on the use of HTK-ASCII acoustic models.
 
 """
-from .activity import Activity
+from .activity import sppasActivity
 from .alignio import AlignIO
 from .aligntrack import AlignTrack
 from .sppasalign import sppasAlign
 
 __all__ = [
-    'Activity',
+    'sppasActivity',
     'AlignIO',
     'AlignTrack',
     'sppasAlign'
