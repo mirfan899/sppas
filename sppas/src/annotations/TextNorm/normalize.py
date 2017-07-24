@@ -37,7 +37,7 @@
 """
 import re
 
-from sppas.src.utils.makeunicode import sppasUnicode
+from sppas.src.utils.makeunicode import sppasUnicode, u
 from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.resources.dictrepl import sppasDictRepl
 
@@ -51,22 +51,24 @@ from .splitter import sppasTokSplitter
 
 
 class DictReplUTF8(sppasDictRepl):
-    """ Replacement dictionary of UTF8 characters that caused problems. """
+    """ Replacement dictionary of UTF8 characters that caused problems.
+    TODO: This class should read an external replacement file...
 
+    """
     def __init__(self):
         sppasDictRepl.__init__(self, None, nodump=True)
 
-        self.add(u"æ", u"ae")
-        self.add(u"œ", u"oe")
-        self.add(u"，", u", ")
-        self.add(u"”", u'"')
-        self.add(u"“", u'"')
-        self.add(u"。", u". ")
-        self.add(u"》", u'"')
-        self.add(u"《", u'"')
-        self.add(u"«", u'"')
-        self.add(u"»", u'"')
-        self.add(u"’", u"'")
+        self.add(u("æ"), u("ae"))
+        self.add(u("œ"), u("oe"))
+        self.add(u("，"), u(", "))
+        self.add(u("”"), u('"'))
+        self.add(u("“"), u('"'))
+        self.add(u("。"), u(". "))
+        self.add(u("》"), u('"'))
+        self.add(u("《"), u('"'))
+        self.add(u("«"), u('"'))
+        self.add(u("»"), u('"'))
+        self.add(u("’"), u("'"))
 
 # ---------------------------------------------------------------------------
 
@@ -82,7 +84,7 @@ class TextNormalizer(object):
 
     """
     def __init__(self, vocab=None, lang="und"):
-        """ Create a new DictTok instance.
+        """ Create a TextNormalizer instance.
 
         :param vocab: (sppasVocabulary)
         :param lang: the language code in iso639-3.
@@ -219,12 +221,13 @@ class TextNormalizer(object):
 
         """
         num2letter = sppasNum(self.lang)
+
         _result = []
-        for i in utt:
-            if "/" not in i:
-                _result.append(num2letter.convert(i))
+        for token in utt:
+            if token.isdigit():
+                _result.append(num2letter.convert(token))
             else:
-                _result.append(i)
+                _result.append(token)
 
         return _result
 
@@ -238,6 +241,7 @@ class TextNormalizer(object):
         """
         _utt = []
         for tok in utt:
+            # if it's not an already phonetized string:
             if "/" not in tok:
                 _utt.append(sppasUnicode(tok).to_lower())
             else:
@@ -257,6 +261,7 @@ class TextNormalizer(object):
         """
         _utt = []
         for tok in utt:
+            tok = sppasUnicode(tok).to_strip()
             if wlist.is_unk(tok) is True and "gpd_" not in tok and "ipu_" not in tok:
                 _utt.append(tok)
 

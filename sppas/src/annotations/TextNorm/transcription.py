@@ -37,6 +37,7 @@
 
 """
 import re
+from unicodedata import category
 
 from sppas.src.utils.makeunicode import u, sppasUnicode
 
@@ -70,6 +71,8 @@ class sppasTranscription(object):
     def __init__(self):
         pass
 
+    # ------------------------------------------------------------------
+
     def __replace(self, obj):
         """ Callback for clean_toe.
 
@@ -89,6 +92,8 @@ class sppasTranscription(object):
         right = obj.group(2)
         right = "".join(right.split())
         return " [{:s},{:s}]".format(left, right)
+
+    # ------------------------------------------------------------------
 
     def clean_toe(self, entry):
         """ Clean Enriched Orthographic Transcription.
@@ -166,8 +171,6 @@ class sppasTranscription(object):
         # Morphological variants are ignored for phonetization (same pronunciation!)
         _fentry = re.sub(u'\s+\\<([\-\'\s\w\xaa-\xff]+),[\-\'\s\w\xaa-\xff]+\\>', ur' \1', _fentry, re.UNICODE)
         _fentry = re.sub(u'\s+\\{([\-\'\s\w\xaa-\xff]+),[\-\'\s\w\xaa-\xff]+\\}', ur' \1', _fentry, re.UNICODE)
-        _fentry = re.sub(u'\s+\\/([\-\'\s\w0-9\xaa-\xff]+),[\-\'\s\w0-9\xaa-\xff]+\\/', ur' \1', _fentry,
-                         re.UNICODE)
 
         if std is False:
             # Special pronunciations (keep right part)
@@ -180,33 +183,48 @@ class sppasTranscription(object):
         _fentry = re.sub(u',\s?[PTS]+\s?[\\/\\\]+\s?\\$', ur'', _fentry, re.UNICODE)
         _fentry = re.sub(u'\\$', ur'', _fentry, re.UNICODE)
 
-        # Add a whitespace if some punctuation are sticked to a word
-        # TODO: do the same with the whole list of punctuations (in rutils).
-        #        _fentry = re.sub(u'([:+^@}\(\){~|=]+)([\xaa-\xff]+)', ur'\1 \2', _fentry, re.UNICODE)
-        _fentry = re.sub(u'([\w\xaa-\xff]+),', ur'\1 ,', _fentry, re.UNICODE)   # ,
-        _fentry = re.sub(u'([\w\xaa-\xff]+)\+', ur'\1 +', _fentry, re.UNICODE)  # +
-        _fentry = re.sub(u'([\w\xaa-\xff]+);', ur'\1 ,', _fentry, re.UNICODE)   # ;
-        _fentry = re.sub(u'([\w\xaa-\xff]+):', ur'\1 :', _fentry, re.UNICODE)   # :
-        _fentry = re.sub(u'([\w\xaa-\xff]+)\(', ur'\1 (', _fentry, re.UNICODE)  # (
-        _fentry = re.sub(u'([\w\xaa-\xff]+)\)', ur'\1)', _fentry, re.UNICODE)   # )
-        _fentry = re.sub(u'([\w\xaa-\xff]+)\{', ur'\1 {', _fentry, re.UNICODE)  # {
-        _fentry = re.sub(u'([\w\xaa-\xff]+)\}', ur'\1 }', _fentry, re.UNICODE)  # }
-        _fentry = re.sub(u'([\w\xaa-\xff]+)=', ur'\1 =', _fentry, re.UNICODE)   # =
-        _fentry = re.sub(u'([\w\xaa-\xff]+)\?', ur'\1 ?', _fentry, re.UNICODE)  # ?
-        _fentry = re.sub(u'([\w\xaa-\xff]+)\!', ur'\1 !', _fentry, re.UNICODE)  # !
-        _fentry = re.sub(u'([\w\xaa-\xff]+)"', ur'\1 "', _fentry, re.UNICODE)   # "
-        _fentry = re.sub(u'"([\w\xaa-\xff,.?:\(\)\{\}=]+)', ur'" \1', _fentry, re.UNICODE)   # "
-        # _fentry = re.sub(u'([\w\xaa-\xff]+)\/', ur'\1 !', _fentry, re.UNICODE) # no: if sampa in special pron.
+        # specific case with numbers
         _fentry = re.sub(u"\s(?=,[0-9]+)", "", _fentry, re.UNICODE)
 
-        # Correction of errors
-        s = ""
-        inpron = False
-        for c in _fentry:
-            if c == "/":
-                inpron = not inpron
+        # ok, now stop regexp and work with unicode:
+        _fentry = sppasUnicode(_fentry).to_strip()
+
+        # Punctuations at the end of a token
+
+        s = []
+        in_sampa = False
+        entries = _fentry.split()
+        for i, c in enumerate(entries):
+            # Check for the SAMPA sequence to assign properly "in_sampa"
+            if c.startswith("/") and c.endswith('/'):
+                in_sampa = True
             else:
-                if c == " " and inpron is True:
-                    continue
-            s += c
-        return sppasUnicode(s).to_strip()
+                in_sampa = False
+
+            # if not in_sampa, add a whitespace if some punctuations are stick to a word
+            if in_sampa is False:
+
+                # if there is a serie of punctuations at the beginning
+                while category(c[0])[0] in ('P', 'S'):
+                    s.append(c[0])
+                    c = c[1:]
+
+                # if there is a serie of punctuations at the end
+                end_punct = []
+                while category(c[-1])[0] in ('P', 'S'):
+                    end_punct.append(c[-1])
+                    c = c[:-1]
+                if len(end_punct) == 1 and end_punct[0] == u("."):
+                    s.append(c+u("."))
+                else:
+                    s.append(c)
+                    if len(end_punct) > 0:
+                        s.extend(reversed(end_punct))
+
+            else:
+                if len(s) == 0:
+                    s.append(c)
+                else:
+                    s[-1] += c
+
+        return " ".join(s)

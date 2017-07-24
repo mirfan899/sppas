@@ -149,11 +149,18 @@ class sppasTokenizer(object):
         """
         new_utt = list()
         for tok in utt:
+            is_unknown = self.__vocab.is_unk(tok.lower().strip())
+            is_sampa = tok.startswith('/') and tok.endswith('/')
+            is_trunc = tok.endswith('-')
             # a missing compound word?
             #   --> an unknown token
             #   --> containing a special character
-            #   --> that is not a truncated word!
-            if self.__vocab.is_unk(tok.lower().strip()) is True and ("-" in tok or "'" in tok or "." in tok) and not tok.endswith('-'):
+            #   --> that is not a truncated word
+            #   --> not in a sampa sequence!
+            if is_unknown is True \
+                    and ("-" in tok or "'" in tok or "." in tok) \
+                    and is_sampa is False\
+                    and is_trunc is False:
 
                 # KEEP special chars in the array!
                 tab_split = re.split("([-'.])", tok)
