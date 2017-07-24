@@ -5,7 +5,7 @@
        \  |     |     |   |    \             analysis
     ___/  |     |     |   | ___/              of speech
 
-    http://www.sppas.org/
+    <http://www.sppas.org/>
 
     Use of this software is governed by the GNU Public License, version 3.
 
@@ -29,17 +29,18 @@
     the Laboratoire Parole et Langage, in Aix-en-Provence, France.
 
     Any and all constructive comments are welcome. Contact the author:
-        - brigitte.bigi@gmail.com
-        - http://www.lpl-aix.fr/~bigi
+
+    - `brigitte.bigi@gmail.com`
+    - <http://www.lpl-aix.fr/~bigi>
 
     -------------------------------------------------------------------------
 
     By using SPPAS, you agree to cite a reference in your publications.
 
-        Brigitte BIGI (2015).
-        SPPAS - Multi-lingual Approaches to the Automatic Annotation of Speech.
-        the Phonetician - International Society of Phonetic Sciences,
-        ISSN 0741-6164, Number 111-112 / 2015-I-II, pages 54-69.
+        >Brigitte BIGI (2015).
+        >SPPAS - Multi-lingual Approaches to the Automatic Annotation of Speech.
+        >the Phonetician - International Society of Phonetic Sciences,
+        >ISSN 0741-6164, Number 111-112 / 2015-I-II, pages 54-69.
 
     Other references are available in the documentation.
 
@@ -47,8 +48,8 @@
 
     Need help?
 
-        - Tutorials are available on the web site;
-        - Explore the "documentation" folder;
-        - Subscribe to the user's group.
+    - Tutorials are available on the web site
+    - Explore the "documentation" folder of this package
+      or the documentation on the web
 
     -------------------------------------------------------------------------

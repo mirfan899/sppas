@@ -458,7 +458,7 @@ function alignment {
     echo -n " ... align phonemes and tokens with julius: "
     python $BIN_DIR/alignment.py -w $SAMPLES_DIR/oriana1.WAV -r $RESOURCES_DIR/models/models-eng -i $SAMPLES_DIR/oriana1-phon.TextGrid -I $SAMPLES_DIR/oriana1-token.TextGrid -o oriana1-palign.TextGrid >> /dev/null &> /dev/null
     if [ -e oriana1-palign.TextGrid ]; then
-        size=`cat oriana1-palign.TextGrid | grep -c "^size = 3"`
+        size=`cat oriana1-palign.TextGrid | grep -c "^size = 4"`
         rm oriana1-palign.TextGrid
         if [ "$size" == "1" ]; then
             fct_echo_status 0
@@ -472,7 +472,7 @@ function alignment {
     echo -n " ... align phonemes and tokens with basic aligner: "
     python $BIN_DIR/alignment.py -w $SAMPLES_DIR/oriana1.WAV -r $RESOURCES_DIR/models/models-eng -i $SAMPLES_DIR/oriana1-phon.TextGrid -I $SAMPLES_DIR/oriana1-token.TextGrid -o oriana1-palign.TextGrid -a basic >> /dev/null &> /dev/null
     if [ -e oriana1-palign.TextGrid ]; then
-        size=`cat oriana1-palign.TextGrid | grep -c "^size = 3"`
+        size=`cat oriana1-palign.TextGrid | grep -c "^size = 4"`
         rm oriana1-palign.TextGrid
         if [ "$size" == "1" ]; then
             fct_echo_status 0

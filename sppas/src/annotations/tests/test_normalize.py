@@ -94,6 +94,9 @@ class TestNormalizer(unittest.TestCase):
         s = t.toe_spelling(u('/le mot/'))
         self.assertEqual(s, u('/ le mot /'))
 
+        s = t.toe_spelling(u('(/'))
+        self.assertEqual(s, u('( / '))
+
     def test_toe(self):
 
         t = sppasTranscription()

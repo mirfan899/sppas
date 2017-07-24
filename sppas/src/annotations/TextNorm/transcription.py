@@ -192,7 +192,6 @@ class sppasTranscription(object):
         # Punctuations at the end of a token
 
         s = []
-        in_sampa = False
         entries = _fentry.split()
         for i, c in enumerate(entries):
             # Check for the SAMPA sequence to assign properly "in_sampa"
@@ -205,13 +204,13 @@ class sppasTranscription(object):
             if in_sampa is False:
 
                 # if there is a serie of punctuations at the beginning
-                while category(c[0])[0] in ('P', 'S'):
+                while len(c) > 0 and category(c[0])[0] in ('P', 'S'):
                     s.append(c[0])
                     c = c[1:]
 
                 # if there is a serie of punctuations at the end
                 end_punct = []
-                while category(c[-1])[0] in ('P', 'S'):
+                while len(c) > 0 and category(c[-1])[0] in ('P', 'S'):
                     end_punct.append(c[-1])
                     c = c[:-1]
                 if len(end_punct) == 1 and end_punct[0] == u("."):
