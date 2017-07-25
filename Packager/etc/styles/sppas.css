@@ -250,6 +250,7 @@ h4 {
     margin-top:     10px;
     margin-bottom:  10px;
     font-size:      100%;
+    padding-left:   20px;
 }
 
 h5 {
@@ -372,7 +373,7 @@ blockquote {
     clear:          none;
     text-align:     justify;
     vertical-align: middle;
-    font-family:    TitleFont;
+    font-family:    NormalFont;
     font-size:      100%;
     line-height:    180%;
 
