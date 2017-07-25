@@ -19,7 +19,7 @@
 
 -----------------------------
 
-## Launch SPPAS
+### Launch SPPAS
 
 ![](./etc/screencasts/sppas-launch.mp4)
 
