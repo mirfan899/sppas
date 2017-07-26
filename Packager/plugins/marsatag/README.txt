@@ -6,7 +6,7 @@ contact:    brigite.bigi@gmail.com
 date:       2016-12-27
 version:    1.0
 copyright:  Copyright (C) 2017  Brigitte Bigi
-license:    GNU Public License, v3
+license:    GNU Public License version 3 or any later version
 brief:      SPPAS plugin for MarsaTag.
 
 MarsaTag is a Part-Of-Speech tagging for French, e.g. Det, Noun, ... 

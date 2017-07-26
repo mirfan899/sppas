@@ -6,7 +6,7 @@ contact:    brigite.bigi@gmail.com
 date:       2017-01-03
 version:    1.1
 copyright:  Copyright (C) 2017  Brigitte Bigi
-license:    GNU Public License, v3
+license:    GNU Public License version 3 or any later version
 brief:      SPPAS plugin to convert SAMPA into Praat phonemes encoding.
 
 This plugin allows to convert transcriptions between the SAMPA (Speech

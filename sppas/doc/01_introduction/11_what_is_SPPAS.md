@@ -65,12 +65,15 @@ Contact the author by e-mail to contribute to SPPAS:
 
 ### Licenses
 
-SPPAS software - source code and all documents except resources, are distributed 
-under the terms of the [GNU GENERAL PUBLIC LICENSE](https://www.gnu.org/licenses/gpl-3.0.en.html).
+SPPAS software, except documentation and resources, are distributed 
+under the terms of the [GNU GENERAL PUBLIC LICENSE v3](https://www.gnu.org/licenses/gpl-3.0.en.html).
+
+Documentation is governed by 
+[GNU Free Documentation License, version 1.3](https://www.gnu.org/licenses/fdl-1.3.en.html).
 
 Linguistic resources of SPPAS are either distributed:
 
-* under the terms of the "GNU GENERAL PUBLIC LICENSE", or
+* under the terms of the "GNU GENERAL PUBLIC LICENSE, v3", or
 * on the terms of the "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License".
 
 A copy of both licenses is available in the package. See the chapter 4 of 

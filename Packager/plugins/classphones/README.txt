@@ -6,7 +6,7 @@ contact:    brigite.bigi@gmail.com
 date:       2017-01-04
 version:    1.0
 copyright:  Copyright (C) 2017  Brigitte Bigi
-license:    GNU Public License, v3
+license:    GNU Public License version 3 or any later version
 brief:      SPPAS plugin to create tiers with the phonemes classification.
 
 This plugin allows to create annotations of the classification of phonemes:

@@ -7,7 +7,10 @@
 
     <http://www.sppas.org/>
 
-    Use of this software is governed by the GNU Public License, version 3.
+    * Use of this software is governed by GPL version 3 or any later version.
+    * Documentation of this software is governed by GNU Free Documentation
+    License, version 1.3.
+    * Resources of this software have individual licenses (see documentation).
 
     SPPAS is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
