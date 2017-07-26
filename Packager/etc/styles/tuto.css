@@ -6,13 +6,12 @@
  * This style expect the following files to be available...
  *
  * Fonts:
- *  - etc/font/Jura-DemiBold.ttf
- *  - etc/font/MavenPro-Regular.ttf
- *  - etc/font/data-latin.ttf
+ *  - etc/font/HandOfSean.ttf
+ *  - etc/font/MavenPro.ttf
+ *  - etc/font/FreeMono.ttf
  *
  * Images:
- *  - etc/img/background-motif.png
- *  - etc/img/background-motif.png
+ *  - etc/images/background-motif.png
  *
  *==========================================================================*/
 
@@ -101,7 +100,7 @@ h1, h2, h3 {
 /* Titlepage */
 
 section.title { 
-    background:     url('../../etc/img/background-header.png') repeat-x center;
+    background:     url('../../etc/images/background-header.png') repeat-x center;
 
     margin-top:    100px;
     margin-right:   auto;

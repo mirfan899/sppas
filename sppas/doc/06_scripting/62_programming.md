@@ -9,7 +9,7 @@ description. In order to do this, execute the Python IDLE -
 available in the Application-Menu of your operating system),
 and write the examples after the prompt ">>>".
 
-![The Python IDLE logo](./etc/img/python_idle.png)
+![The Python IDLE logo](./etc/logos/python_idle.png)
 
 To get information about the IDLE, get access to 
 [the IDLE documentation](https://docs.python.org/2/library/idle.html)

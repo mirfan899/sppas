@@ -49,7 +49,7 @@ assumed to refer to the speaker’s overall pitch range (within the current
 Intonation Unit), or as relative tones H, S, L, U, D assumed to refer only to 
 the value of the preceding target point.
 
-![INTSINT example](./etc/img/INTSINT-tones.png)
+![INTSINT example](./etc/images/INTSINT-tones.png)
 
 The rationale behind the INTSINT system is that the F0 values of pitch targets 
 are programmed in one of two ways : either as absolute tones T, M, B which are 
