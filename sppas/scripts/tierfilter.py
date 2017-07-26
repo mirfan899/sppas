@@ -31,7 +31,7 @@
         ---------------------------------------------------------------------
 
     scripts.tierfilter.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~
 
     ... a script to filter labels of a tier of an annotated file.
 
@@ -55,26 +55,57 @@ from sppas.src.annotationdata.transcription import Tier
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-modeshelp =  "Pattern search mode, in:"
+modeshelp = "Pattern search mode, in:"
 modeshelp += " 0 = EXACT:      the label of the tier strictly corresponds to the pattern,\n"
 modeshelp += ' 1 = CONTAINS:   the label of the tier contains the given pattern,\n'
 modeshelp += ' 2 = STARTSWITH: the label of the tier starts with the given pattern,\n'
 modeshelp += ' 3 = ENDSWITH:   the label of the tier ends with the given pattern.\n'
 modeshelp += ' 4 = REGEXP'
 
-parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM), description="... a script to filter labels of a tier of an annotated file.")
+parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM),
+                        description="... a script to filter labels of a tier of an annotated file.")
 
-parser.add_argument("-i", metavar="file", required=True,  help='Input annotated file file name')
-parser.add_argument("-t", metavar="value", default=1, type=int, help='Tier number (default: 1)')
-parser.add_argument("-o", metavar="file", required=True, help='Output file name')
-parser.add_argument("-n", metavar="str",  default="filtered", help='Output tier name')
+parser.add_argument("-i",
+                    metavar="file",
+                    required=True,
+                    help='Input annotated file file name')
 
-parser.add_argument("-p", metavar="pattern", required=True, action="append", help='One pattern to find (as many -p options as needed)')
+parser.add_argument("-t",
+                    metavar="value",
+                    default=1,
+                    type=int,
+                    help='Tier number (default: 1)')
+
+parser.add_argument("-o",
+                    metavar="file",
+                    required=True,
+                    help='Output file name')
+
+parser.add_argument("-n",
+                    metavar="str",
+                    default="filtered",
+                    help='Output tier name')
+
+parser.add_argument("-p",
+                    metavar="pattern",
+                    required=True,
+                    action="append",
+                    help='One pattern to find (as many -p options as needed)')
+
 parser.add_argument("-m", metavar="value", type=int, help=modeshelp)
 
-parser.add_argument("--reverse", action='store_true', help="Reverse the result")
-parser.add_argument("--no-case-sensitive", dest="nocasesensitive", action='store_true')
-parser.add_argument("--no-merge", dest="nomerge", action='store_true', help="Keep only the first pattern in the result")
+parser.add_argument("--reverse",
+                    action='store_true',
+                    help="Reverse the result")
+
+parser.add_argument("--no-case-sensitive",
+                    dest="nocasesensitive",
+                    action='store_true')
+
+parser.add_argument("--no-merge",
+                    dest="nomerge",
+                    action='store_true',
+                    help="Keep only the first pattern in the result")
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -103,7 +134,7 @@ if args.nomerge:
 search_mode = (0, 1, 2, 3, 4)
 for m in mode:
     if m not in search_mode:
-        print "Unknown search mode :", m
+        print("Unknown search mode : {}".format(m))
         sys.exit(1)
 
 trs = sppas.src.annotationdata.aio.read(fileinput)
@@ -124,7 +155,7 @@ pred = ~pred if "REVERSE" in options else pred
 
 filtered_annotations = filter(pred, tier)
 if not filtered_annotations:
-    print "NO RESULT"
+    print("NO RESULT")
     sys.exit(0)
 
 filteredtier = Tier(tier.Name)
@@ -138,5 +169,3 @@ else:
     trs = Transcription()
     trs.Add(filteredtier)
     sppas.src.annotationdata.aio.write(fileoutput, trs)
-
-# ----------------------------------------------------------------------------

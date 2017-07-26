@@ -31,7 +31,7 @@
         ---------------------------------------------------------------------
 
     scripts.tierfiller.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~
 
     ... a script to fill empty labels of a tier of an annotated file.
 
@@ -53,8 +53,10 @@ from sppas.src.annotationdata.aio.utils import fill_gaps
 
 
 def fct_fill(tier, filler):
-    """
-    Fill empty annotations with a specific filler.
+    """ Fill empty annotations with a specific filler.
+
+    :param tier: (Tier)
+    :param filler: (str)
     
     """
     labelfiller = Label(filler)
@@ -134,11 +136,36 @@ def fct_clean(tier, filler, duration):
 parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM),
                         description="... a script to fill empty labels of a tier of an annotated file.")
 
-parser.add_argument("-i", metavar="file", required=True,  help='Input annotated file name')
-parser.add_argument("-t", metavar="value", required=False, action='append', type=int, help='A tier number (use as many -t options as wanted). Positive or negative value: 1=first tier, -1=last tier.')
-parser.add_argument("-o", metavar="file", required=True, help='Output file name')
-parser.add_argument("-f", metavar="text", required=False, default="#", help='Text to fill with (default:#)')
-parser.add_argument("-d", metavar="duration", required=False, default=0.02, type=float, help='Minimum duration of a filled interval (default:0.02)')
+parser.add_argument("-i",
+                    metavar="file",
+                    required=True,
+                    help='Input annotated file name')
+
+parser.add_argument("-t",
+                    metavar="value",
+                    required=False,
+                    action='append',
+                    type=int,
+                    help='A tier number (use as many -t options as wanted). '
+                         'Positive or negative value: 1=first tier, -1=last tier.')
+
+parser.add_argument("-o",
+                    metavar="file",
+                    required=True,
+                    help='Output file name')
+
+parser.add_argument("-f",
+                    metavar="text",
+                    required=False,
+                    default="#",
+                    help='Text to fill with (default:#)')
+
+parser.add_argument("-d",
+                    metavar="duration",
+                    required=False,
+                    default=0.02,
+                    type=float,
+                    help='Minimum duration of a filled interval (default:0.02)')
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -183,5 +210,3 @@ for i in tiersnumbs:
 # Write
 
 sppas.src.annotationdata.aio.write(args.o, trsout)
-
-# ----------------------------------------------------------------------------

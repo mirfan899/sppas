@@ -44,7 +44,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import sppas.src.audiodata
+import sppas.src.audiodata.aio
 from sppas.src.audiodata.channelsmixer import sppasChannelMixer
 from sppas.src.audiodata.audio import sppasAudioPCM
 
@@ -52,8 +52,17 @@ from sppas.src.audiodata.audio import sppasAudioPCM
 
 parser = ArgumentParser(usage="%s -w input file -o output file [options]" % os.path.basename(PROGRAM),
                         description="... a script to mix channels from mono audio files in one channel.")
-parser.add_argument("-w", metavar="file", nargs='+', required=True,  help='Audio Input file name')
-parser.add_argument("-o", metavar="file", required=True,  help='Audio Output file name')
+
+parser.add_argument("-w",
+                    metavar="file",
+                    nargs='+',
+                    required=True,
+                    help='Audio Input file name')
+
+parser.add_argument("-o",
+                    metavar="file",
+                    required=True,
+                    help='Audio Output file name')
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -65,13 +74,13 @@ args = parser.parse_args()
 mixer = sppasChannelMixer()
 
 for inputFile in args.w:
-    audio = sppas.src.audiodata.open(inputFile)
+    audio = sppas.src.audiodata.aio.open(inputFile)
     idx = audio.extract_channel(0)
     mixer.append_channel(audio.get_channel(idx))
 
-newchannel = mixer.mix()
+new_channel = mixer.mix()
 
 # Save the converted channel
 audio_out = sppasAudioPCM()
-audio_out.append_channel(newchannel)
-sppas.src.audiodata.save(args.o, audio_out)
+audio_out.append_channel(new_channel)
+sppas.src.audiodata.aio.save(args.o, audio_out)

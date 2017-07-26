@@ -51,7 +51,7 @@ from sppas.src.resources.dictpron import sppasDictPron
 # ----------------------------------------------------------------------------
 
 parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM),
-                        description="... a script to merge pronunciation dictionaries.")
+                        description="... a script to merge or re-format pronunciation dictionaries.")
 
 parser.add_argument("-i",
                     metavar="file",
@@ -82,6 +82,7 @@ if len(sys.argv) <= 1:
 args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
+
 with_variant_nb = True
 with_filled_brackets = True
 if args.no_variant_numbers:

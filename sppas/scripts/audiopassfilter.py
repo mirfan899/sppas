@@ -45,7 +45,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import sppas.src.audiodata
+import sppas.src.audiodata.aio
 from sppas.src.audiodata.channel import sppasChannel
 from sppas.src.audiodata.audio import sppasAudioPCM
 
@@ -53,10 +53,18 @@ from sppas.src.audiodata.audio import sppasAudioPCM
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -o output file [options]" % os.path.basename(PROGRAM), description="... a script to apply high-pass filter (development version).")
+parser = ArgumentParser(usage="%s -o output file [options]" % os.path.basename(PROGRAM),
+                        description="... a script to apply high-pass filter (development version).")
 
-parser.add_argument("-i", metavar="file", required=True,  help='Audio Input file name')
-parser.add_argument("-o", metavar="file", required=True,  help='Audio Output file name')
+parser.add_argument("-i",
+                    metavar="file",
+                    required=True,
+                    help='Audio Input file name')
+
+parser.add_argument("-o",
+                    metavar="file",
+                    required=True,
+                    help='Audio Output file name')
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -65,7 +73,7 @@ args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
 
-audioin = sppas.src.audiodata.open(args.i)
+audioin = sppas.src.audiodata.aio.open(args.i)
 SAMPLE_RATE = audioin.get_framerate()
 
 # ----------------------------------------------------------------------------
@@ -82,7 +90,7 @@ n = audioin.get_nframes()
 original = struct.unpack('%dh' % n, audioin.read_frames(n))
 original = [s / 2.0**15 for s in original]
 
-result = [ 0 for i in range(0, len(filter))]
+result = [0 for i in range(0, len(filter))]
 biggest = 1
 for sample in original:
         for cpos in range(0, len(filter)):
@@ -96,8 +104,8 @@ result = [int(sample * (2.0**15 - 1)) for sample in result]
 # ----------------------------------------------------------------------------
 
 audioout = sppasAudioPCM()
-channel = sppasChannel(framerate=SAMPLE_RATE, sampwidth=audioin.get_sampwidth(), frames=struct.pack('%dh' % len(result), *result))
+channel = sppasChannel(framerate=SAMPLE_RATE,
+                       sampwidth=audioin.get_sampwidth(),
+                       frames=struct.pack('%dh' % len(result), *result))
 audioout.append_channel(channel)
-sppas.src.audiodata.save(args.o, audioout)
-
-# ----------------------------------------------------------------------------
+sppas.src.audiodata.aio.save(args.o, audioout)

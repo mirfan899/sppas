@@ -53,8 +53,16 @@ import sppas.src.annotationdata.aio
 parser = ArgumentParser(usage="%s -i file [options]" % os.path.basename(PROGRAM),
                         description="... a script to get information about a tier of an annotated file.")
 
-parser.add_argument("-i", metavar="file", required=True,  help='Input annotated file name')
-parser.add_argument("-t", metavar="value", default=1, type=int, help='Tier number (default: 1)')
+parser.add_argument("-i",
+                    metavar="file",
+                    required=True,
+                    help='Input annotated file name')
+
+parser.add_argument("-t",
+                    metavar="value",
+                    default=1,
+                    type=int,
+                    help='Tier number (default: 1)')
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -66,7 +74,7 @@ args = parser.parse_args()
 trs = sppas.src.annotationdata.aio.read(args.i)
 
 if args.t <= 0 or args.t > trs.GetSize():
-    print 'Error: Bad tier number.\n'
+    print('Error: Bad tier number.\n')
     sys.exit(1)
 tier = trs[args.t-1]
 
@@ -84,14 +92,12 @@ nb_empty = len([a for a in tier if a.GetLabel().IsEmpty()])
 dur_silence = sum(a.GetLocation().GetValue().Duration().GetValue() for a in tier if a.GetLabel().IsSilence())
 dur_empty = sum(a.GetLocation().GetValue().Duration().GetValue() for a in tier if a.GetLabel().IsEmpty())
 
-print "Tier name: ", tier.GetName()
-print "Tier type: ", tier_type
-print "Tier size: ", tier.GetSize()
-print "   - Number of silences:         ", nb_silence
-print "   - Number of empty intervals:  ", nb_empty
-print "   - Number of speech intervals: ", tier.GetSize() - (nb_empty + nb_silence)
-print "   - silence duration: ", dur_silence
-print "   - empties duration: ", dur_empty
-print "   - speech duration:  ", (tier.GetEndValue() - tier.GetBeginValue()) - (dur_empty + dur_silence)
-
-# ----------------------------------------------------------------------------
+print("Tier name: {:s}".format(tier.GetName()))
+print("Tier type: {:s}".format(tier_type))
+print("Tier size: {:d}".format(tier.GetSize()))
+print("   - Number of silences:         {:d}".format(nb_silence))
+print("   - Number of empty intervals:  {:d}".format(nb_empty))
+print("   - Number of speech intervals: {:d}".format(tier.GetSize() - (nb_empty + nb_silence)))
+print("   - silence duration: {:.3f}".format(dur_silence))
+print("   - empties duration: {:.3f}".format(dur_empty))
+print("   - speech duration:  {:.3f}".format((tier.GetEndValue() - tier.GetBeginValue()) - (dur_empty + dur_silence)))

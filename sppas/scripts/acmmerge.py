@@ -31,7 +31,7 @@
         ---------------------------------------------------------------------
 
     scripts.acmmerge.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~
 
     ... a script to merge 2 hmmdefs files.
 
@@ -53,14 +53,35 @@ from sppas.src.models.acm.acmodel import sppasAcModel
 parser = ArgumentParser(usage="%s -i file1/dir1 -I file2/dir2 -g gamma -o file" % os.path.basename(PROGRAM), 
                         description="... a script to merge 2 hmmdefs files.")
 
-parser.add_argument("-i", metavar="file", required=True,  help='Input file/directory name')
-parser.add_argument("-I", metavar="file", required=True,  help='Input file/directory name')
-parser.add_argument("-g", metavar="value", type=float, default=0.5, help='Gamma coefficient, for the file of -i option')
-parser.add_argument("--quiet", action='store_true', help="Disable the verbosity")
+parser.add_argument("-i",
+                    metavar="file",
+                    required=True,
+                    help='Input file/directory name')
+
+parser.add_argument("-I",
+                    metavar="file",
+                    required=True,
+                    help='Input file/directory name')
+
+parser.add_argument("-g",
+                    metavar="value",
+                    type=float,
+                    default=0.5,
+                    help='Gamma coefficient, for the file of -i option')
+
+parser.add_argument("--quiet",
+                    action='store_true',
+                    help="Disable the verbosity")
 
 mxg = parser.add_mutually_exclusive_group(required=True)
-mxg.add_argument("-o", metavar="file", required=False,  help='Output file name')
-mxg.add_argument("-O", metavar="file", required=False,  help='Output directory name')
+mxg.add_argument("-o",
+                 metavar="file",
+                 required=False,
+                 help='Output file name')
+mxg.add_argument("-O",
+                 metavar="file",
+                 required=False,
+                 help='Output directory name')
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')

@@ -62,12 +62,34 @@ modeshelp += '  5 = Standard deviation duration.'
 parser = ArgumentParser(usage="%s -i file [options]" % os.path.basename(PROGRAM),
                         description="... a script to estimates stats of a tier of an/several annotated file.")
 
-parser.add_argument("-i", metavar="file",  action='append', required=True,  help='Input annotated file name (as many as wanted)')
-parser.add_argument("-t", metavar="value", default=1, type=int, help='Tier number (default: 1=first tier)')
-parser.add_argument("-s", metavar="stat",  type=int, action="append", help=modeshelp)
-parser.add_argument("-n", metavar="ngram", default=1, type=int, help='Value of N of the Ngram sequence (default: 1)')
-parser.add_argument("-o", metavar="file",  required=False,  help='Output annotated file name')
+parser.add_argument("-i",
+                    metavar="file",
+                    action='append',
+                    required=True,
+                    help='Input annotated file name (as many as wanted)')
 
+parser.add_argument("-t",
+                    metavar="value",
+                    default=1,
+                    type=int,
+                    help='Tier number (default: 1=first tier)')
+
+parser.add_argument("-s",
+                    metavar="stat",
+                    type=int,
+                    action="append",
+                    help=modeshelp)
+
+parser.add_argument("-n",
+                    metavar="ngram",
+                    default=1,
+                    type=int,
+                    help='Value of N of the Ngram sequence (default: 1)')
+
+parser.add_argument("-o",
+                    metavar="file",
+                    required=False,
+                    help='Output annotated file name')
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -87,7 +109,7 @@ stats_mode = (0, 1, 2, 3, 4, 5)
 if mode:
     for m in stats_mode:
         if m not in stats_mode:
-            print "Unknown stat:", m
+            print("Unknown stat: {}".format(m))
             sys.exit(1)
 else:
     mode = list()
@@ -103,7 +125,7 @@ for trs in args.i:
     trsinput = sppas.src.annotationdata.aio.read(trs)
 
     if tieridx < 0 or tieridx > trsinput.GetSize():
-        print 'Error: Bad tier number.\n'
+        print('Error: Bad tier number.')
         sys.exit(1)
 
     tier = trsinput[tieridx]
@@ -118,7 +140,7 @@ t = TierStats(tiers)
 t.set_ngram(ngram)
 
 ds = t.ds()
-title = [ "filename", "tier", "annotation label" ]
+title = ["filename", "tier", "annotation label"]
 stats = {}  # used just to get the list of keys
 if 0 in mode or 1 in mode:
     occurrences = ds.len()
@@ -151,21 +173,21 @@ if 0 in mode or 5 in mode:
 rowdata = list()
 rowdata.append(title)
 
-for i,key in enumerate(stats.keys()):
-    if len(key)==0: # ignore empty label
+for i, key in enumerate(stats.keys()):
+    if len(key) == 0:  # ignore empty label
         continue
-    row = [ filename, tiername, key ]
+    row = [filename, tiername, key]
     if 0 in mode or 1 in mode:
-        row.append( str(occurrences[key]) )
+        row.append(str(occurrences[key]))
     if 0 in mode or 2 in mode:
-        row.append( str(round(total[key],3)) )
+        row.append(str(round(total[key], 3)))
     if 0 in mode or 3 in mode:
-        row.append( str(round(mean[key],3)) )
+        row.append(str(round(mean[key], 3)))
     if 0 in mode or 4 in mode:
-        row.append( str(round(median[key],3)) )
+        row.append(str(round(median[key], 3)))
     if 0 in mode or 5 in mode:
-        row.append( str(round(stdev[key],3)) )
-    rowdata.append( row )
+        row.append(str(round(stdev[key], 3)))
+    rowdata.append(row)
 
 # ----------------------------------------------------------------------------
 # Save stats
@@ -175,8 +197,6 @@ else:
     fileoutput = filename + "-" + tiername + "-stats-" + str(ngram) + ".csv"
 with codecs.open(fileoutput, 'w', encoding="utf-8") as fp:
     for row in rowdata:
-        s = ','.join( row )
+        s = ','.join(row)
         fp.write(s)
         fp.write('\n')
-
-# ----------------------------------------------------------------------------

@@ -56,8 +56,15 @@ from sppas.src.audiodata.audioframes import sppasAudioFrames
 parser = ArgumentParser(usage="%s -w file [options]" % os.path.basename(PROGRAM),
                         description="... a script to get information about an audio file.")
 
-parser.add_argument("-w", metavar="file", required=True,  help='Input audio file name')
-parser.add_argument("-f", metavar="value", default=0.01, type=float,
+parser.add_argument("-w",
+                    metavar="file",
+                    required=True,
+                    help='Input audio file name')
+
+parser.add_argument("-f",
+                    metavar="value",
+                    default=0.01,
+                    type=float,
                     help='Frame duration to estimate rms values (default: 0.01)')
 
 if len(sys.argv) <= 1:

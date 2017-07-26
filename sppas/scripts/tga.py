@@ -55,10 +55,27 @@ from sppas.src.presenters.tiertga import TierTGA
 parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM),
                         description="... a script to estimates TGA of syllables from a tier of an annotated file.")
 
-parser.add_argument("-i", metavar="file",      required=True,  help='Input annotated file file name')
-parser.add_argument("-o", metavar="file",      required=True,  help='Output file name (csv or annotated file)')
-parser.add_argument("-t", metavar="value",     default=1, type=int, help='Tier number (default: 1=first tier)')
-parser.add_argument("-s", metavar="separator", type=str, action="append", help="Add a Time Group separator (already included: silence,dummy,laughter,noise)")
+parser.add_argument("-i",
+                    metavar="file",
+                    required=True,
+                    help='Input annotated file file name')
+
+parser.add_argument("-o",
+                    metavar="file",
+                    required=True,
+                    help='Output file name (csv or annotated file)')
+
+parser.add_argument("-t",
+                    metavar="value",
+                    default=1,
+                    type=int,
+                    help='Tier number (default: 1=first tier)')
+
+parser.add_argument("-s",
+                    metavar="separator",
+                    type=str,
+                    action="append",
+                    help="Add a Time Group separator (already included: silence,dummy,laughter,noise)")
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -71,7 +88,7 @@ tieridx = args.t-1
 fileinput = args.i
 fileoutput = args.o
 filename, fileextension = os.path.splitext(fileinput)
-separators = ['*', 'gb','@@', '+']
+separators = ['*', 'gb', '@@', '+']
 if args.s:
     separators = set(separators + args.s)
 
@@ -80,7 +97,7 @@ if args.s:
 trs = sppas.src.annotationdata.aio.read(fileinput)
 
 if tieridx < 0 or tieridx > trs.GetSize():
-    print 'Error: Bad tier number.\n'
+    print('Error: Bad tier number.\n')
     sys.exit(1)
 
 tier = trs[tieridx]
@@ -108,7 +125,9 @@ regresst = ds.intercept_slope()
 filename, fileextension = os.path.splitext(fileoutput)
 
 if fileextension.lower() == '.csv':
-    title = ["Filename", "Tier", "TG name", "TG segments", "Length", "Total", "Mean", "Median", "Std dev.", "nPVI", "Intercept-Pos","Slope-Pos", "Intercept-Time","Slope-Time"]
+    title = ["Filename", "Tier", "TG name", "TG segments",
+             "Length", "Total", "Mean", "Median", "Std dev.",
+             "nPVI", "Intercept-Pos","Slope-Pos", "Intercept-Time", "Slope-Time"]
 
     rowdata = list()
     rowdata.append(title)
@@ -142,4 +161,4 @@ if fileextension.lower() == '.csv':
 
 else:
     trs = tg.tga_as_transcription()
-    sppas.src.annotationdata.aio.write(fileoutput,trs)
+    sppas.src.annotationdata.aio.write(fileoutput, trs)

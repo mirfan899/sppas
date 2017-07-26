@@ -31,7 +31,7 @@
         ---------------------------------------------------------------------
 
     scripts.slmtrain.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~
 
     ... a script to train a statistical language model.
 
@@ -53,13 +53,40 @@ from sppas.src.models.slm.arpaio import sppasArpaIO
 
 parser = ArgumentParser(usage="%s -i file " % os.path.basename(PROGRAM),
                         description="... a script to train a statistical language model.")
-parser.add_argument("-i", metavar="input",  required=True,  action='append', help='Input file name of the training corpus.')
-parser.add_argument("-r", metavar="vocab",  required=False, help='List of known words.')
-parser.add_argument("-n", metavar="order",  required=False, default=3, type=int,  help='N-gram order value (default=1).')
-parser.add_argument("-m", metavar="method", required=False, default="logml", type=str, help='Method to estimates probabilities (one of: raw, lograw, ml, logml).')
-parser.add_argument("-o", metavar="output", required=True,  help='Output file name.')
 
-parser.add_argument("--quiet", action='store_true', help="Disable the verbosity.")
+parser.add_argument("-i",
+                    metavar="input",
+                    required=True,
+                    action='append',
+                    help='Input file name of the training corpus.')
+
+parser.add_argument("-r",
+                    metavar="vocab",
+                    required=False,
+                    help='List of known words.')
+
+parser.add_argument("-n",
+                    metavar="order",
+                    required=False,
+                    default=3,
+                    type=int,
+                    help='N-gram order value (default=1).')
+
+parser.add_argument("-m",
+                    metavar="method",
+                    required=False,
+                    default="logml",
+                    type=str,
+                    help='Method to estimates probabilities (one of: raw, lograw, ml, logml).')
+
+parser.add_argument("-o",
+                    metavar="output",
+                    required=True,
+                    help='Output file name.')
+
+parser.add_argument("--quiet",
+                    action='store_true',
+                    help="Disable the verbosity.")
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')

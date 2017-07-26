@@ -31,7 +31,7 @@
         ---------------------------------------------------------------------
 
     scripts.audioextract.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~
 
     ... a script to extract a channel from an audio file.
 
@@ -53,9 +53,21 @@ from sppas.src.audiodata.audio import sppasAudioPCM
 parser = ArgumentParser(usage="%s -w input file -o output file -c channel" % os.path.basename(PROGRAM),
                         description="... a script to extract a channel from an audio file.")
 
-parser.add_argument("-w", metavar="file", required=True,  help='Audio Input file name')
-parser.add_argument("-o", metavar="file", required=True,  help='Audio Output file name')
-parser.add_argument("-c", metavar="value", default=1, type=int, required=False,
+parser.add_argument("-w",
+                    metavar="file",
+                    required=True,
+                    help='Audio Input file name')
+
+parser.add_argument("-o",
+                    metavar="file",
+                    required=True,
+                    help='Audio Output file name')
+
+parser.add_argument("-c",
+                    metavar="value",
+                    default=1,
+                    type=int,
+                    required=False,
                     help='Number of the channel to extract (default: 1=first=left)')
 
 if len(sys.argv) <= 1:

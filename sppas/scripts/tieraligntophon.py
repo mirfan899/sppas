@@ -110,9 +110,19 @@ def unalign(aligned_tier):
 parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM),
                         description="... a script to convert time-aligned phonemes into their phonetization.")
 
-parser.add_argument("-i", metavar="file", required=True, help='Input annotated file name')
-parser.add_argument("-o", metavar="file", required=True, help='Output file name')
-parser.add_argument("--quiet", action='store_true', help="Disable the verbosity.")
+parser.add_argument("-i",
+                    metavar="file",
+                    required=True,
+                    help='Input annotated file name')
+
+parser.add_argument("-o",
+                    metavar="file",
+                    required=True,
+                    help='Output file name')
+
+parser.add_argument("--quiet",
+                    action='store_true',
+                    help="Disable the verbosity.")
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')

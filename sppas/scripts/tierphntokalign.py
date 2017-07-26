@@ -52,7 +52,11 @@ from sppas.src.annotationdata import Tier
 
 parser = ArgumentParser(usage="%s -i file [options]" % os.path.basename(PROGRAM),
                         description="... a script to append the tier PhnTokAlign in a time-aligned file.")
-parser.add_argument("-i", metavar="file", required=True,  help='Input annotated file name')
+
+parser.add_argument("-i",
+                    metavar="file",
+                    required=True,
+                    help='Input annotated file name')
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -67,12 +71,12 @@ trs = sppas.src.annotationdata.aio.read(args.i)
 
 tierphon = trs.Find('PhonAlign')
 if tierphon is None:
-    print "Error: can't find the tier PhonAlign."
+    print("Error: can't find the tier PhonAlign.")
     sys.exit(1)
 
 tiertoken = trs.Find('TokensAlign')
 if tiertoken is None:
-    print "Error: can't find the tier TokensAlign."
+    print("Error: can't find the tier TokensAlign.")
     sys.exit(1)
 
 

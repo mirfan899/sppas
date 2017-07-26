@@ -31,9 +31,9 @@
         ---------------------------------------------------------------------
 
     scripts.trsbehavior.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~
 
-    ... a script to annotate behavior of tiers of an annotated file.
+    ... a script to annotate behavior & synchronicity of tiers of an annotated file.
 
 """
 import sys
@@ -56,12 +56,32 @@ from sppas.src.annotationdata import TimeInterval
 # ----------------------------------------------------------------------------
 
 parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM),
-                        description="... a script to annotate behavior of tiers of an annotated file.")
+                        description="... a script to annotate behavior and synchronicity of tiers of an annotated file.")
 
-parser.add_argument("-i", metavar="file",  required=True,  help='Input annotated file name')
-parser.add_argument("-t", metavar="value", required=False, action='append', type=int, help='A tier number (use as many -t options as wanted). Positive or negative value: 1=first tier, -1=last tier.')
-parser.add_argument("-o", metavar="file",  required=True,  help='Output file name')
-parser.add_argument("-d", metavar="delta", required=False, default=0.04, type=float, help='Framerate to create intervals (default:0.04)')
+parser.add_argument("-i",
+                    metavar="file",
+                    required=True,
+                    help='Input annotated file name')
+
+parser.add_argument("-t",
+                    metavar="value",
+                    required=False,
+                    action='append',
+                    type=int,
+                    help='A tier number (use as many -t options as wanted). '
+                         'Positive or negative value: 1=first tier, -1=last tier.')
+
+parser.add_argument("-o",
+                    metavar="file",
+                    required=True,
+                    help='Output file name')
+
+parser.add_argument("-d",
+                    metavar="delta",
+                    required=False,
+                    default=0.04,
+                    type=float,
+                    help='Framerate to create intervals (default:0.04)')
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -150,5 +170,3 @@ trsinput.Append(btier)
 trsinput.Append(stier)
 
 sppas.src.annotationdata.aio.write(args.o, trsinput)
-
-# ----------------------------------------------------------------------------

@@ -54,14 +54,34 @@ import sppas.src.annotationdata.aio
 parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM),
                         description="... a script to export annotations files.")
 
-parser.add_argument("-i", metavar="file",  required=True,  help='Input annotated file name')
-parser.add_argument("-o", metavar="file",  required=True,  help='Output annotated file name')
-parser.add_argument("-t", metavar="value", required=False, action='append', type=int,
+parser.add_argument("-i",
+                    metavar="file",
+                    required=True,
+                    help='Input annotated file name')
+
+parser.add_argument("-o",
+                    metavar="file",
+                    required=True,
+                    help='Output annotated file name')
+
+parser.add_argument("-t",
+                    metavar="value",
+                    required=False,
+                    action='append',
+                    type=int,
                     help='A tier number (use as many -t options as wanted). '
                          'Positive or negative value: 1=first tier, -1=last tier.')
-parser.add_argument("-n", metavar="tiername", required=False, action='append', type=str,
+
+parser.add_argument("-n",
+                    metavar="tiername",
+                    required=False,
+                    action='append',
+                    type=str,
                     help='A tier name (use as many -n options as wanted).')
-parser.add_argument("--quiet", action='store_true', help="Disable the verbosity")
+
+parser.add_argument("--quiet",
+                    action='store_true',
+                    help="Disable the verbosity")
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -75,7 +95,7 @@ if args.quiet is False:
     sys.stdout.write("Read input file:")
 trsinput = sppas.src.annotationdata.aio.read(args.i)
 if args.quiet is False:
-    print " [  OK  ]"
+    print(" [  OK  ]")
 
 # ----------------------------------------------------------------------------
 # Select tiers
@@ -103,10 +123,10 @@ for i in tiersnumbs:
     if idx<trsinput.GetSize():
         trsoutput.Append(trsinput[idx])
         if args.quiet is False:
-            print " [  OK  ]"
+            print(" [  OK  ]")
     else:
         if not args.quiet is True:
-            print " [IGNORED] Wrong tier number."
+            print(" [IGNORED] Wrong tier number.")
 
 if args.n:
     for n in args.n:
@@ -115,7 +135,7 @@ if args.n:
             trsoutput.Append(t)
         else:
             if not args.quiet is True:
-                print " [IGNORED] Wrong tier name."
+                print(" [IGNORED] Wrong tier name.")
 
 # Set the other members
 trsoutput.metadata = trsinput.metadata
@@ -128,6 +148,4 @@ if args.quiet is False:
     sys.stdout.write("Write output file:")
 sppas.src.annotationdata.aio.write(args.o, trsoutput)
 if args.quiet is False:
-    print " [  OK  ]"
-
-# ----------------------------------------------------------------------------
+    print(" [  OK  ]")

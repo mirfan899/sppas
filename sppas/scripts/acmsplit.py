@@ -1,3 +1,4 @@
+#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 """
     ..
@@ -30,9 +31,9 @@
         ---------------------------------------------------------------------
 
     scripts.acmsplit.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~
 
-    ... a script to split a hmmdef file into hmms.
+    ... a script to split a hmmdefs file into individual hmm files.
 
 """
 import sys
@@ -105,5 +106,5 @@ for hmm in acmodel.hmms:
     filename = os.path.join(args.o, hmm.name)
     filename = filename + ".hmm"
     if args.quiet is False:
-        print(hmm.name+": "+filename)
+        print("{:s}: {:s}".format(hmm.name, filename))
     hmm.save(filename)
