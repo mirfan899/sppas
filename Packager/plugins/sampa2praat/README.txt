@@ -3,8 +3,8 @@
 program:    sampa2praat
 author:     Brigitte Bigi
 contact:    brigite.bigi@gmail.com
-date:       2017-01-03
-version:    1.1
+date:       2017-07-26
+version:    1.2
 copyright:  Copyright (C) 2017  Brigitte Bigi
 license:    GNU Public License version 3 or any later version
 brief:      SPPAS plugin to convert SAMPA into Praat phonemes encoding.
@@ -23,9 +23,11 @@ are not replaced.
 Changes:
 
 Version 1.0:
-    - first version, compatibility with SPPAS-1.8.2 only.
+    - compatibility with SPPAS-1.8.2.
 Version 1.1:
-    - compatibility: from SPPAS-1.8.3.
+    - compatibility: from SPPAS-1.8.x (x>2) and SPPAS-1.9.x
+Version 1.2:
+    - better package license explanations
 
 ------------------------------------------------------------------------------
 

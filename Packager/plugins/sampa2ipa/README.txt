@@ -4,7 +4,7 @@ program:    sampa2ipa
 author:     Brigitte Bigi
 contact:    brigite.bigi@gmail.com
 date:       2017-01-03
-version:    1.0
+version:    1.2
 copyright:  Copyright (C) 2017  Brigitte Bigi
 license:    GNU Public License version 3 or any later version
 brief:      SPPAS plugin to convert SAMPA into IPA phonemes encoding.

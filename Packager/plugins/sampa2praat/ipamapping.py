@@ -5,7 +5,7 @@
 #
 #       Copyright (C) 2017  Brigitte Bigi
 #
-#       Use of this software is governed by the GPL, v3
+#       Use of this software is governed by the GPL v3 or any later version
 #       This banner notice must not be removed
 # ---------------------------------------------------------------------------
 #
@@ -36,7 +36,7 @@ if SPPAS is None:
     SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 
 if os.path.exists(SPPAS) is False:
-    print "ERROR: SPPAS not found."
+    print("ERROR: SPPAS not found.")
     sys.exit(1)
 sys.path.append(SPPAS)
 
@@ -51,14 +51,17 @@ from sppas.src.annotationdata.transcription import Transcription
 
 parser = ArgumentParser(usage="%s -i file -m table" % os.path.basename(PROGRAM),
                         description="... a program to convert labels.")
+
 parser.add_argument("-i",
                     metavar="file",
                     required=True,
                     help='Input annotated file name.')
+
 parser.add_argument("-m",
                     metavar="file",
                     required=True,
                     help='Mapping table file name.')
+
 parser.add_argument("-n",
                     metavar="tiername",
                     required=True,

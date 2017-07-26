@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -28,8 +30,8 @@
 
         ---------------------------------------------------------------------
 
-    bin.plugins.py
-    ~~~~~~~~~~~~~~
+    bin.plugin.py
+    ~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
