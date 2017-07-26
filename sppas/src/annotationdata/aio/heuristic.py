@@ -87,3 +87,4 @@ class HeuristicFactory(object):
                     return type()
             except Exception:
                 continue
+        raise IOError("Unsupported file format.")

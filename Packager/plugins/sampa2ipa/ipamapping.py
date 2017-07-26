@@ -40,9 +40,6 @@ if os.path.exists(SPPAS) is False:
     sys.exit(1)
 sys.path.append(SPPAS)
 
-SPPASSRC = os.path.join(SPPAS, "sppas", "src")
-sys.path.append(SPPASSRC)
-
 import sppas.src.annotationdata.aio as aio
 from sppas.src.presenters.tiermapping import TierMapping
 from sppas.src.annotationdata.transcription import Transcription

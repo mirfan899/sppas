@@ -43,7 +43,6 @@
         and optionally a type, a value and a description text.
 
 """
-
 import os
 import platform
 import shlex
@@ -79,16 +78,7 @@ class sppasPluginParam(object):
         self._cfgfile = config_file
         self._cfgparser = sppasPluginConfigParser()
 
-        # Declare members and initialize
-        self.reset()
-
-        # OK... fill members from the given file
-        self.parse()
-
-    # ------------------------------------------------------------------------
-
-    def reset(self):
-        """ Reset all members to their default value. """
+        # Declare members and initialize:
 
         # An identifier to represent this plugin
         self._key = None
@@ -101,7 +91,22 @@ class sppasPluginParam(object):
 
         # The command to be executed and its options
         self._command = ""
-        self._options = {}
+        self._options = dict()
+        # OK... fill members from the given file
+        self.parse()
+
+    # ------------------------------------------------------------------------
+
+    def reset(self):
+        """ Reset all members to their default value. """
+
+        self._key = None
+        self._name = ""
+        self._descr = ""
+        self._icon = ""
+
+        self._command = ""
+        self._options = dict()
 
     # ------------------------------------------------------------------------
 

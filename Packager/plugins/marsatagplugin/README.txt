@@ -1,22 +1,19 @@
 ------------------------------------------------------------------------------
 
-program:    sampa2ipa
+program:    marsatagplugin
 author:     Brigitte Bigi
 contact:    brigite.bigi@gmail.com
 date:       2017-07-26
 version:    1.2
 copyright:  Copyright (C) 2017  Brigitte Bigi
 license:    GNU Public License version 3 or any later version
-brief:      SPPAS plugin to convert SAMPA into IPA phonemes encoding.
+brief:      SPPAS plugin for MarsaTag.
 
-This plugin allows to convert transcriptions between the SAMPA (Speech
-Assessment Methods Phonetic Alphabet) annotation and the International
-Phonetic Alphabet.
+MarsaTag is a Part-Of-Speech tagging for French, e.g. Det, Noun, ... 
+MarsaTag is developed at Laboratoire Parole et Langage,
+by S. Rauzy and G. De Moncheuil.
 
-It can convert either individual phonemes or strings of phonemes (syllables,
-words, ...). The converted transcription is saved in a new file.
-Any symbols in the transcription tier which are not in the conversion file
-are not replaced.
+Download MarsaTag: https://www.ortolang.fr/market/tools/sldr000841
 
 ------------------------------------------------------------------------------
 

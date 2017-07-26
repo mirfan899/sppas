@@ -264,7 +264,7 @@ class sppasDirUtils(object):
         """
         if extension is None:
             extension = "*"
-        if extension.startswith(".") is False:
+        if extension.startswith(".") is False and extension != "*":
             extension = "." + extension
 
         file_list = []
