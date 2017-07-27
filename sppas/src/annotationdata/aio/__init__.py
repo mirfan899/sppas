@@ -139,7 +139,7 @@ def read(filename):
     except IOError:
         raise
     except UnicodeError as e:
-        raise UnicodeError('Encoding error: the file %r contains non-UTF-8 characters: %s' % (filename,e))
+        raise UnicodeError('The file %r contains non-UTF-8 characters: %s' % (filename, e))
 
     # Each reader has its own solution to assign min and max, anyway
     # take care, if one missed to assign the values!

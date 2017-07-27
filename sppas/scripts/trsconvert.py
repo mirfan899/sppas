@@ -92,8 +92,8 @@ args = parser.parse_args()
 # Read
 
 if args.quiet is False:
-    sys.stdout.write("Read input file:")
-trsinput = sppas.src.annotationdata.aio.read(args.i)
+    print("Read input file:")
+trs_input = sppas.src.annotationdata.aio.read(args.i)
 if args.quiet is False:
     print(" [  OK  ]")
 
@@ -101,51 +101,51 @@ if args.quiet is False:
 # Select tiers
 
 # Take all tiers or specified tiers
-tiersnumbs = []
+tier_numbers = []
 if not args.t and not args.n:
-    tiersnumbs = range(1, (trsinput.GetSize() + 1))
+    tier_numbers = range(1, (trs_input.GetSize() + 1))
 elif args.t:
-    tiersnumbs = args.t
+    tier_numbers = args.t
 
 # Select tiers to create output
-trsoutput = Transcription(name=trsinput.GetName())
+trs_output = Transcription(name=trs_input.GetName())
 
 # Add selected tiers into output
-for i in tiersnumbs:
+for i in tier_numbers:
     if args.quiet is False:
-        sys.stdout.write(" -> Tier "+str(i)+":")
+        print(" -> Tier "+str(i)+":")
     if i > 0:
         idx = i-1
     elif i < 0:
         idx = i
     else:
-        idx = trsinput.GetSize()
-    if idx<trsinput.GetSize():
-        trsoutput.Append(trsinput[idx])
+        idx = trs_input.GetSize()
+    if idx < trs_input.GetSize():
+        trs_output.Append(trs_input[idx])
         if args.quiet is False:
             print(" [  OK  ]")
     else:
-        if not args.quiet is True:
+        if not args.quiet:
             print(" [IGNORED] Wrong tier number.")
 
 if args.n:
     for n in args.n:
-        t = trsinput.Find(n, case_sensitive=False)
+        t = trs_input.Find(n, case_sensitive=False)
         if t is not None:
-            trsoutput.Append(t)
+            trs_output.Append(t)
         else:
-            if not args.quiet is True:
+            if not args.quiet:
                 print(" [IGNORED] Wrong tier name.")
 
 # Set the other members
-trsoutput.metadata = trsinput.metadata
-#TODO: copy relevant hierarchy links
+trs_output.metadata = trs_input.metadata
+# TODO: copy relevant hierarchy links
 
 # ----------------------------------------------------------------------------
 # Write
 
 if args.quiet is False:
-    sys.stdout.write("Write output file:")
-sppas.src.annotationdata.aio.write(args.o, trsoutput)
+    print("Write output file:")
+sppas.src.annotationdata.aio.write(args.o, trs_output)
 if args.quiet is False:
     print(" [  OK  ]")

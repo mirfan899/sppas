@@ -81,10 +81,11 @@ class HeuristicFactory(object):
         @return Transcription
 
         """
-        for type in HeuristicFactory.__OPTS:
+        for reader in HeuristicFactory.__OPTS:
             try:
-                if type.detect(filename):
-                    return type()
+                is_correct = reader.detect(filename)
+                if is_correct is True:
+                    return reader()
             except Exception:
                 continue
         raise IOError("Unsupported file format.")

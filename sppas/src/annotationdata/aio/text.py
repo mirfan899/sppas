@@ -80,8 +80,12 @@ class RawText(Transcription):
 
     @staticmethod
     def detect(filename):
-        with codecs.open(filename, 'r', 'utf-8'):
-            pass
+        try:
+            with codecs.open(filename, 'r', 'utf-8') as fp:
+                fp.readline()
+                pass
+        except Exception:
+            return False
         return True
 
     # ------------------------------------------------------------------------
