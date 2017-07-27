@@ -9,8 +9,10 @@ a [] eI
 a(2) [] a
 abacha [] a b a tS a
 abakaliki [] a b a k a l i k i
+abaki [] a b a k i
 abeg [] a b E g
 abegi [] a b E g i
+abegi(2) [] a b E g i
 abeokuta [] a b E o k u t a
 abi [] a b i
 abia [] a b i a
@@ -18,6 +20,8 @@ abiola [] a b i O l a
 able [] e b u
 abort [] a b O t
 abortion [] a b O S a~
+abound [] a b a n
+abounds [] a b a n s
 about [] a b aU t
 about(2) [] a b a t
 above [] a b o f
@@ -29,12 +33,17 @@ abstain [] a b s t e n
 abubakar [] a b u b a k a
 abuja [] a b u dZ a
 abule [] a b u l e
-abuse [] a b u z
-abuse(2) [] a b i u s
+abuse [] a b j u z
+abuse(2) [] a b u z
+abuse(3) [] a b i u s
 acada [] a k a d a
-academic [] a k E d E m i k
+academic [] a k a d E m i k
+academic(2) [] a k E d E m i k
+academics [] a k a d E m i k s
 accent [] a s E~ t
+accept [] a s E t
 accident [] a s i d E n t
+accidents [] a s i d E n t s
 acclaiming [] a k l e m i n
 according [] a k O d i n
 account [] a k a n t
@@ -49,12 +58,17 @@ activity [] a k t i v i t i
 actu [] a k t u
 actually [] a k tS u a l i
 ada [] a d a
+adam [] a d a m
 adamawa [] a d a m a w a
 adams [] a d a m z
 add [] a d
 additional [] a d i S O n a
 address [] a d r\ E s
+ade [] a d e
+adebayo [] a d e b a j O
+adesino [] a d e S i n o
 adeyemi [] a d e j E m i
+adeyinka [] a d e j i n k a
 adheke [] a d e k e
 admin [] a d m i~
 administration [] a d m i n i s r\ e S a~
@@ -65,6 +79,7 @@ adolphus [] a d O f O s
 adolphus(2) [] a d O l f O s
 adult [] a d O l t
 adult(2) [] a d O t
+adurogboye [] a d u r\ o g b O j e
 advance [] a d v a n s
 advanced [] a d v a n s d
 advantage [] a d v a n t e dZ
@@ -74,6 +89,7 @@ advice [] a d v aI s
 advise [] a d v aI s
 advised [] a d v aI s d
 adviser [] a d v aI z a
+advocate [] a d v o k E t
 aeroplane [] E r\ o p l e n
 affair [] a f i E
 affect [] a f E k t
@@ -85,8 +101,9 @@ after [] a f t a
 afternoon [] a f t a n u n
 again [] a g eI n
 again(2) [] E g e n
-against [] a g e~ s t
-against(2) [] a g e i~ s t
+against [] E g e~ s
+against(2) [] a g e~ s t
+against(3) [] a g e i~ s t
 agbero [] a g b e r\ o
 age [] eI dZ
 age(2) [] e dZ
@@ -97,6 +114,7 @@ agent [] e dZ E n t
 ago [] E g o
 agree [] a g r\ i
 agreement [] a g r\ i m E n t
+agric [] a g r\ i k
 agriculture [] a g r\ i k O tS O
 agriculture(2) [] a g r\ i k O l tS O
 ah [] a
@@ -108,9 +126,10 @@ aids [] eI d z
 aids(2) [] e d z
 air [] E r\
 air(2) [] E
-airports [] E r\ p O r\ t s
-airports(2) [] i E p O t s
-airports(3) [] E p O t s
+airport [] E p O t
+airports [] E p O t s
+airports(2) [] E r\ p O r\ t s
+airports(3) [] i E p O t s
 airspace [] E s p e s
 airspace(2) [] E r\ s p eI s
 aisha [] aI S a
@@ -132,6 +151,7 @@ alhaja [] a l a j a
 alhaja(2) [] a l h a j a
 alhaji [] a l a j i
 alhaji(2) [] a l h a j i
+alhamdulila [] a l h a m d u l i l a
 alignment [] a l aI n m E n t
 alimosho [] a l i m O~ S O
 alive [] a l aI f
@@ -146,6 +166,7 @@ allowances [] a l a w a~ s i z
 almighty [] O m aI t i
 almost [] O l m o s t
 almost(2) [] O m o s t
+alms [] a m z
 aloka [] a l o k a
 aloku [] a l o k u
 alone [] e l O~
@@ -153,14 +174,16 @@ along [] a l O~ g
 alongside [] a l O~ g s aI d
 already [] O l r\ E d i
 already(2) [] O r\ E d i
+alright [] O r\ aI t
 also [] O l s o
 altogeder [] O l t o g E d a
 always [] O l w eI z
 always(2) [] O l w e z
 always(3) [] O l w i z
 alwell [] O l w E l
-am [] eI E m
+am [] a~
 am(2) [] a m
+am(3) [] eI E m
 ambassador [] a m b a s a d O
 ambush [] a m b u S
 amechi [] a m e tS i
@@ -177,13 +200,17 @@ analyse [] a n a l aI z
 analysis [] a n a l i s i s
 anambra [] a n a m b r\ a
 and [] a n d
+and(2) [] a n
 anenyeonu [] a n e n i e O n u~
+angry [] a N g r\ i
 ani [] a n i~
 animal [] a n i m a
 anniversary [] a n i v a s r\ i
 announce [] a n a n s
 annoyance [] a n O j a n s
+anoda [] a n O d a
 anoder [] a n O d a
+another [] a n O d a
 answer [] a n s a
 ant [] a n t
 anti [] a n t i
@@ -194,8 +221,10 @@ anyan [] a n i a n
 anybody [] E n i b O d i
 anyhow [] E n i h a
 anyhow(2) [] E n i h aU
+anyi [] a j i
 anything [] E n i T i N
 anything(2) [] E n i t i n
+anytin [] E n i t i n
 anyway [] E n i w eI
 anyway(2) [] E n i w e
 anywhere [] E n i w E r\
@@ -227,16 +256,19 @@ armed [] a m d
 armi [] a m i
 arms [] a m z
 army [] a m i
+aroma [] a r\ o m a
 around [] a r\ a n d
 arrange [] a r\ e n dZ
 arrangement [] a r\ e n dZ m E n t
 arrest [] a r\ E s t
 arrogant [] a r\ o g a n t
+artist [] a t i s
 arts [] a t s
 as [] a s
 as(2) [] a z
 asaba [] a S a b a
 asabe [] a S a b e
+ash [] a S
 ashamed [] a S e m d
 ashes [] a S i z
 aside [] a s a d
@@ -244,6 +276,8 @@ aside(2) [] a s aI d
 ask [] a s k
 aso [] a s o
 assembly [] a s E m b l i
+assess [] a s E s
+assessment [] a s E s m E n tS
 assignment [] a s aI n m E n t
 assignments [] a s aI n m E n t
 assistance [] a s i s t a n s
@@ -255,6 +289,8 @@ atiku [] a t i k u
 atmosphere [] a t m o s f E
 atrocity [] a t r\ o s i t i
 attempt [] a t E m p t
+attempted [] a t E m t E d
+attempting [] a t E m p t i n
 attend [] a t E n d
 attention [] a t E n S a n
 attitude [] a t i t u d
@@ -264,6 +300,7 @@ auntie(2) [] O n t i
 aunty [] a~ t i
 authorities [] O t O r\ i t i s
 authority [] O t O r\ i t i s
+available [] a v E l e b u
 avenue [] a v E n j u
 average [] a v r\ e dZ
 aviation [] a v i e S a n
@@ -279,12 +316,14 @@ ay [] eI
 ay(2) [] aI
 ayaya [] a j a j a
 ayi [] a j i
+ayim [] a j i m
 ayo [] a j o
 ayobami [] a j O b a m i~
 b [] b
 b(2) [] b i
 ba [] b a
 baba [] b a b a
+babe [] b e b
 babes [] b eI b z
 babes(2) [] b e b z
 baby [] b eI b i
@@ -294,6 +333,7 @@ background [] b a g r\ a n d
 background(2) [] b a k g r\ a n d
 backyard [] b a k j a d
 bad [] b a d
+badness [] b a d n E s
 baf [] b a f
 bag [] b a g
 baga [] b a g a
@@ -308,6 +348,8 @@ ball [] b O l
 ball(2) [] b O
 bam [] b a m
 banana [] b a n a n a
+band [] b a n t
+banga [] b a N g a
 bank [] b a n k
 banker [] b a N k a
 barawo [] b a r\ a w o
@@ -315,13 +357,16 @@ barawos [] b a r\ a w o s
 barb [] b a b
 barber [] b a b a
 bark [] b a k
+barrack [] b a r\ a k
 barracks [] b a r\ a k s
 barrel [] b a r\ E l
 barrel(2) [] b a r\ E
 barrister [] b a r\ i s t a
+base [] b E z
 bashir [] b a S i r\
 basic [] b eI s i k
 basic(2) [] b e s i k
+basically [] b eI z i k l i
 bassey [] b a s i
 bastard [] b a s t a d
 bastards [] b a s t a d z
@@ -332,6 +377,7 @@ bathroom [] b a f r\ u m
 battalion [] b a t a l j O n
 battery [] b a t r\ i
 bature [] b a t u r\ e
+bauchi [] b aU tS i
 be [] b i
 beans [] b i n z
 bear [] b E r\
@@ -342,6 +388,7 @@ beautiful [] b j u t i f u l
 beauty [] b j u t i
 became [] b i k eI m
 became(2) [] b i k e m
+becau- [] b i k O
 because [] b i k O z
 because(2) [] b i k O s
 become [] b i k O m
@@ -350,8 +397,8 @@ bee [] b i
 been [] b i n
 beer [] b i r\
 beer(2) [] b j E
-before [] b i f O r\
-before(2) [] b i f O
+before [] b i f O
+before(2) [] b i f O r\
 beg [] b E g
 begin [] b i g i n
 beginners [] b i g i n a
@@ -365,6 +412,7 @@ being [] b i i N
 being(2) [] b i n
 beings [] b i i N z
 beings(2) [] b i n z
+beletete [] b E l E t E t E
 believe [] b i l i v
 believe(2) [] b i l i f
 belittle [] b i l i t u
@@ -381,6 +429,7 @@ benue [] b e n j u e
 benz [] b E n z
 berekete [] b E r\ E k E t E
 best [] b E s t
+bestman [] b E s m a n
 better [] b E t a
 between [] b i t w i n
 bi [] b aI
@@ -401,8 +450,11 @@ biology [] b a O l O dZ i
 biro [] b aI r\ o
 biro(2) [] b i r\ o
 birth [] b a t
+birthday [] b E d e
+biscuit [] b i s k i t
 bit [] b i t
 bite [] b aI t
+bitter [] b i t a
 bitterleaf [] b i t a l i f
 bl [] b i E l
 black [] b l a k
@@ -413,6 +465,7 @@ bleach [] b l i t S
 bleaching [] b l i t S i n
 bleed [] b l i d
 bleeding [] b l i d i n
+blender [] b l E n d a
 bless [] b l E s
 blessing [] b l E s i n
 blindness [] b l aI d n E s
@@ -430,6 +483,7 @@ boder [] b O d a
 body [] b O d i
 boil [] b OI l
 bojuboju [] b o dZ u b o dZ u
+boko [] b o k O
 boku [] b o k u
 bola [] b O l a
 bolarinwa [] b O l a r\ i~ w a
@@ -458,9 +512,12 @@ bottles [] b O t u z
 bottom [] b O t O m
 bound [] b aU n d
 bound(2) [] b a n d
+bow [] b aU
 boy [] b OI
 boyfriend [] b OI f r\ E n d
 boys [] b OI z
+bracelet [] b r\ eI z l E t
+bracelets [] b r\ eI z l E t s
 brag [] b r\ a g
 brain [] b r\ e n
 brains [] b r\ e n z
@@ -491,11 +548,14 @@ britain [] b r\ i t e~
 bro [] b r\ O
 broad [] b r\ O d
 broadcasting [] b r\ O d k a s t i n
+broda [] b r\ O d a
 broder [] b r\ O d a
 broders [] b r\ O d a s
 broke [] b r\ o k
 broken [] b r\ o k u~
+brother [] b r\ O d a
 brought [] b r\ O t
+brush [] b r\ O S
 bu [] b u
 buba [] b u b a
 bucket [] b O k E t
@@ -523,6 +583,7 @@ businessmen [] b i z n E s m E n
 busy [] b i z i
 busybody [] b i z i b O d i
 but [] b O t
+but(2) [] b O
 butcher [] b O tS a
 butter [] b O t a
 button [] b O t i n
@@ -530,10 +591,16 @@ buy [] b aI
 bwari [] b w a r\ i
 by [] b aI
 bye [] b aI
-c [] s i
+bye-bye [] b aI b aI
+b~ [] b
+c [] k
+c(2) [] s i
+c- [] k
+cable [] k e b u
 caf [] k a f
 cage [] k e dZ
 calabar [] k a l a b a
+calabash [] k a l a b a S
 calculation [] k a k u l e S a n
 calendar [] k a l E~ d a
 california [] k a l i f o n i a
@@ -581,6 +648,7 @@ cassette [] k a s E t
 catch [] k a tS
 category [] k a t i g o r\ i
 caterpillar [] k a t a p i l a
+catfish [] k a t f i S
 cathedral [] k a t i d r\ a
 catholic [] k a t O l i k
 cause [] k O s
@@ -593,12 +661,16 @@ celebration [] s E l E b r\ e S a n
 cell [] s E l
 cellophane [] s E l o f e n
 cent [] s E n t
+center [] s E n t a
 central [] s E n t r\ a
 centre [] s E n t a
 cerebral [] s E r\ E b r\ a
 ceremony [] s E r\ i m o n i
+cerfiticate [] s a f i t i k e t
 certain [] s E t e n
-certificate [] s E t i f i k e t
+certi [] s a t i
+certificate [] s a t i f i k e t
+certificate(2) [] s E t i f i k e t
 chabe [] tS a b e
 chain [] tS e n
 chair [] tS E r\
@@ -615,7 +687,11 @@ chancellor(2) [] tS a n s e l O
 change [] tS e n dZ
 channel [] tS a n E l
 chapter [] tS a p t a
-character [] k a r\ a k t a
+character [] k r\ a k a
+character(2) [] k a r\ a k t a
+characters [] k r\ a k t a s
+characters(2) [] k a r\ a k t a z
+charcoal [] S a k O
 charge [] tS a dZ
 charity [] S a r\ i t i
 charles [] tS a s
@@ -640,6 +716,8 @@ chest [] tS E s t
 chest(2) [] S E s t
 chew [] tS u
 chew(2) [] S u
+chi [] tS i
+chibok [] tS i b o k
 chidinma [] tS i d i m m a
 chief [] tS i f
 chief(2) [] S i f
@@ -650,9 +728,10 @@ chikanayo [] tS i k a n a j O
 chike [] tS i k e
 chikwe [] tS i k w e
 chikwe(2) [] S i k w e
-child [] tS aI l d
+child [] tS aI d
 child(2) [] S aI d
 child(3) [] S aI l d
+child(4) [] tS aI l d
 children [] tS i d r\ E n
 children(2) [] S i l d r\ E n
 childrens [] tS i d r\ E n s
@@ -672,8 +751,10 @@ chop [] S O p
 chris [] k r\ i s
 christ [] k r\ aI s t
 christian [] k r\ i s t E n
-christian(2) [] k r\ i s tS i n
-christmas [] k r\ i m a s
+christian(2) [] k r\ i s t j E~
+christian(3) [] k r\ i s tS i n
+christmas [] k r\ i s m a s
+christmas(2) [] k r\ i m a s
 christy [] k r\ i s t i
 chuba [] tS u b a
 chuku [] tS u k u
@@ -683,6 +764,7 @@ church [] tS O tS
 chuy [] tS u j
 ci [] s i
 cigar [] s i g a
+circle [] s E k u l
 circulate [] s a k j u l e t
 circulation [] s a k j u l e S a n
 circumcise [] s a k O m s aI s
@@ -700,6 +782,8 @@ clear [] k l i r\
 clear(2) [] k l i a
 clementina [] k l E m E n t i n a
 cliff [] k l i f
+climb [] k l aI m
+climbing [] k l aI b i n
 clinic [] k l i n i k
 clinton [] k l i n t i n
 clipper [] k l i p a
@@ -708,8 +792,10 @@ close [] k l o s
 cloth [] k l O T
 cloth(2) [] k l O t
 clothes [] k l O t s
+clothing [] k l o D i n
 club [] k l O b
 co [] k o
+co- [] k o
 coach [] k o tS
 coat [] k o t
 coca [] k o k a
@@ -719,6 +805,7 @@ coco [] k o k o
 cocoa [] k o k o
 coconut [] k o k o n O t
 cocoyam [] k o k o j a m
+cod- [] k o d
 codine [] k o d aI n
 coffee [] k O f i
 coffin [] k O f i n
@@ -734,9 +821,14 @@ coma [] k o m a
 combination [] k O m b i n e S a n
 combine [] k O m b aI n
 come [] k O m
-comman [] k o m a n
+come(2) [] k O~
+come(3) [] k O n
+comma [] k O m a
+comman [] k O m a n
+comman(2) [] k o m a n
 commander [] k O m a~ d a
 commandment [] k O m a n d m E n t
+commend [] k o m E n d
 commission [] k O m i S a n
 commissioner [] k O m i S a n a
 commissioners [] k O m i S a n a z
@@ -775,6 +867,7 @@ conduct [] k O n d O k t
 conductor [] k O n d O k t O
 conference [] k O n f r\ E~ s
 confess [] k O n f E s
+confirm [] k O~ f a m
 confuse [] k O n f j u z
 congo [] k o N g o
 congratulations [] k O n g r\ a t j u l e S a n z
@@ -820,6 +913,7 @@ cooperation [] k O p i r\ e S a n
 cooperative [] k O p i r\ e t i v
 coordinator [] k O d i n e t O
 copy [] k O p i
+corinthians [] k O r\ i n T j a n s
 corner [] k O n a
 corper [] k O p a
 corporation [] k O p u r\ e S a n
@@ -848,11 +942,14 @@ courses [] k O r\ s i z
 courses(2) [] k O s i z
 court [] k O r\ t
 court(2) [] k O t
+courtu [] k O t u
 cousin [] k O s i n
 cover [] k O v a
 cow [] k aU
 cowbell [] k aU b E l
 cowbell(2) [] k aU b E
+cr [] k r\
+crack [] k r\ a k
 cram [] k r\ a m
 crash [] k r\ a S
 crates [] k r\ e t s
@@ -864,15 +961,18 @@ cream [] k r\ i m
 create [] k r\ i e t
 credible [] k r\ E d i b u
 credit [] k r\ E d i t
+crew [] k r\ u
 criminal [] k r\ i m i n a
 criminals [] k r\ i m i n a z
 crook [] k r\ u k
 cross [] k r\ O s
 crowd [] k r\ aU d
 crowd(2) [] k r\ a d
+crown [] k r\ aU n
 crusoe [] k r\ u s o
 cry [] k r\ aI
 cu [] k u
+cube [] k j u b
 cult [] k O t
 cultism [] k O t i s m
 cults [] k O t s
@@ -885,6 +985,7 @@ cure [] k j O
 curfew [] k O f j u
 current [] k O r\ E n t
 curse [] k O s
+custodian [] k O s t o d j a n
 custom [] k O s t O m
 customer [] k O s t O m a
 customers [] k O s t O m a z
@@ -892,8 +993,9 @@ customs [] k O s t O m
 cut [] k O t
 cutlass [] k O t l a s
 cutter [] k O t a
-d [] d i
-d(2) [] d
+d [] d
+d(2) [] d i
+d- [] d
 da [] d a
 dabaru [] d a b a r\ u
 daddy [] d a d i
@@ -917,19 +1019,21 @@ daughters [] d O t a z
 daura [] d a O r\ a
 day [] d e
 days [] d e z
-de [] d i
-de(2) [] d e
-de(3) [] d E
+de [] d E
+de(2) [] d i
+de(3) [] d e
 dead [] d E d
 deaf [] d E f
 deal [] d i l
 dean [] d i n
-dear [] d i a
+dear [] d i E
+dear(2) [] d i a
 death [] d E T
 death(2) [] d E t
 debt [] d E t
 debt(2) [] d E b t
 deceive [] d i s i v
+december [] d i z E m b a
 decide [] d i s aI d
 decision [] d i s i S a n
 deck [] d E k
@@ -937,8 +1041,10 @@ decorate [] d E k o r\ e t
 decree [] d i k r\ i
 dedication [] d E d i k e S a n
 dedication(2) [] d E d i k e S O~
+deep [] d i p
 degree [] d i g r\ i
-deir [] d i a
+deir [] d i E
+deir(2) [] d i a
 delay [] d i l e
 delegation [] d E l i g e S a n
 deliver [] d i l i v a
@@ -951,32 +1057,39 @@ democ [] d E m o k
 democracy [] d E m o k r\ e s i
 democratic [] d E m o k r\ a t i k
 demonstration [] d E m O n s t r\ e S a n
+demsef [] d E m s E f
 demself [] d E m s E f
 demselves [] d E m s E v s
 den [] d E n
 deny [] d i n aI
 deny(2) [] d E n i
+deodorants [] d i O d O r\ a~ s
 department [] d i p a t m E n t
 depend [] d i p E n d
 deposit [] d i p O s i t
-dere [] d i E
-dere(2) [] d E
-derefore [] d i a f O
+deprive [] d i p r\ aI v
+dere [] d E
+dere(2) [] d i E
+derefore [] d E f O
+derefore(2) [] d i a f O
 describe [] d i s k r\ aI b
 dese [] d i s
 dese(2) [] d i z
+desert [] d E z a t
 deserve [] d i s a v
 design [] d i s aI n
 designated [] d E z i g n e t E d
+desk [] d E s
 desperation [] d E s p E r\ e S O n
 destiny [] d E s t i n i
 destroy [] d i s t r\ OI
+determine [] d i t a m aI n
 develop [] d E v E l o p
 development [] d E v E l o p m E n t
 devil [] d E v u l
 devil(2) [] d E v u
-dey [] d eI
-dey(2) [] d e
+dey [] d e
+dey(2) [] d eI
 di [] d i
 diagram [] d a j a g r\ a m
 diamond [] d a j a m O n d
@@ -985,7 +1098,9 @@ die [] d aI
 diesel [] d i z u l
 diesel(2) [] d i z u
 diet [] d aI E t
-different [] d i f E r\ E n t
+difference [] d i f r\ E~ s
+different [] d i f r\ E~
+different(2) [] d i f E r\ E n t
 differentiate [] d i f E r\ E n S i eI t
 difficult [] d i f i k O l t
 dig [] d i g
@@ -1010,11 +1125,13 @@ disco [] d i s k o
 discount [] d i s k aU n t
 discount(2) [] d i s k a n t
 discourage [] d i s k O r\ e dZ
+discouraged [] d i s k O r\ e dZ d
 discuss [] d i s k O s
 disease [] d i z i z
 disgracing [] d i s g r\ e s i n
 disguise [] d i s g aI z
 disguise(2) [] d i z g aI z
+disheartening [] d i s a t n i n
 dispenser [] d i s p E n s a
 display [] d i s p l e
 disposal [] d i s p o z a l
@@ -1025,6 +1142,7 @@ distribute [] d i s t r\ i b u t
 distributors [] d i s t r\ i b u t O r\ z
 disturb [] d i s t O b
 divide [] d i v aI d
+divine [] d i v aI n
 do [] d u
 doctor [] d O k t O
 doctors [] d O k t O z
@@ -1035,6 +1153,9 @@ dog [] d O g
 doing [] d u i N
 dokinta [] d O k i n t a
 don [] d O n
+don(2) [] d O~
+don't [] d O n t
+don't(2) [] d O n
 donate [] d o n e t
 donation [] d o n e S O n
 done [] d O n
@@ -1042,7 +1163,9 @@ donkey [] d O N k i
 doom [] d u m
 door [] d O r\
 door(2) [] d O
-doormouth [] d O m O t
+doormouth [] d O m o t
+doormouth(2) [] d O m O t
+dormot [] d O m o t
 dose [] d o z
 double [] d O b u l
 double(2) [] d O b u
@@ -1056,6 +1179,7 @@ downstairs(3) [] d aU n s t E z
 dowry [] d aU r\ i
 dr [] d O k t O
 drag [] d r\ a g
+dragging [] d r\ a g i n
 drain [] d r\ eI n
 drain(2) [] d r\ e n
 drainage [] d r\ eI n e dZ
@@ -1081,12 +1205,15 @@ drug [] d r\ O g
 drums [] d r\ O m z
 drunk [] d r\ O n k
 dry [] d r\ aI
+dss [] d i E s E s
+dugbe [] d u g b E
 dull [] d O l
 duma [] d u m a
 dumping [] d O m p i n
 dun [] d O n
 dupe [] d u p
 dupe(2) [] d j u p
+duration [] d u r\ E S O n
 during [] d j u r\ i n
 during(2) [] d u r\ i n
 dust [] d O s t
@@ -1095,6 +1222,7 @@ duties [] d u t i z
 duty [] d u t i
 dying [] d aI n
 dying(2) [] d a j i n
+d~ [] d
 e [] i
 each [] i tS
 eager [] i g a
@@ -1106,6 +1234,7 @@ early [] E l i
 earn [] E n
 ears [] i r\ z
 ears(2) [] i E z
+earth [] E t
 earthquake [] E t k w e k
 easier [] e z i a
 east [] i s t
@@ -1117,6 +1246,7 @@ ebong [] E b o N g
 ebony [] E b O n i
 ebonyi [] E b O
 ebute [] e b u t e
+eche [] e tS e
 echetram [] e tS e t r\ a m
 economic [] i k O n O m i k
 economic(2) [] E k O n O m i k
@@ -1136,6 +1266,7 @@ eeeeh [] e
 eeeh [] e
 eeh [] e
 een [] e~
+efcc [] i E f s i s i
 effect [] i f E k t
 efficiency [] E f i S E n s i
 effico [] E f i k o
@@ -1185,6 +1316,7 @@ elewe [] E l E w e
 elizabeth [] E l i z a b e t
 elizabeth(2) [] e l i z a b e t
 else [] E l s
+em [] E~
 embarrass [] E m b a r\ a s
 embezzle [] E m b E z u l
 emerenwah [] E m E r\ e n w a
@@ -1192,8 +1324,8 @@ emi [] E m i
 emmanuel [] i m a n u E l
 empty [] E m p t i
 empty(2) [] E m t i
-en [] E n
-en(2) [] e~
+en [] e~
+en(2) [] E n
 enact [] e n a k t
 encourage [] e n k O r\ e dZ
 encouragement [] e n k O r\ e dZ m E n t
@@ -1212,15 +1344,19 @@ engineering(2) [] i n dZ i n i a r\ i n
 english [] i N g l i S
 englishman [] i N g l i S m a n
 enhance [] E n h a n s
+enhen [] e~ h e~
 enjoy [] E n dZ OI
 enjoy(2) [] i n dZ OI
 enjoyment [] E n dZ OI m E n t
 enjoyment(2) [] i n dZ OI m E n t
 enmity [] E n E m i t i
 enough [] E n O f
+enroll [] E n r\ o
 ensure [] E n S O
+enta [] E n t a
 enter [] E n t a
 entire [] E n t a j a
+entrance [] E n t r\ a n s
 enugu [] E n u g w u
 enugu(2) [] E n u g u
 environment [] i n v aI r\ O m E n t
@@ -1234,6 +1370,7 @@ equipment [] E k w i p m e n t
 equipment(2) [] i k w i p m E n t
 eradicate [] e r\ a d i k e t
 eradication [] E r\ a d i k e S O n
+err [] E
 errand [] E r\ a n d
 error [] E r\ O
 escape [] i s k eI p
@@ -1256,6 +1393,7 @@ ethics(2) [] E t i k s
 ethnic [] E T n i k
 ethnic(2) [] E t n i k
 etim [] E t i m
+eucharistic [] u k a r\ i s t i k
 eugene [] j u dZ i n
 europe [] j u r\ o p
 europe(2) [] e r\ o p
@@ -1266,6 +1404,7 @@ evacuate(2) [] i v a k j u e t
 evacuate(3) [] E v a k j u e t
 evacuate(4) [] E v a k u e t
 evaristus [] E v a r\ i s t u s
+eve [] i f
 even [] i v i n
 even(2) [] i v u~
 even(3) [] i v u n
@@ -1278,7 +1417,12 @@ everybod [] E v r\ i b O d
 everybody [] E v r\ i b O d i
 everyone [] E v r\ i w O n
 everything [] E v r\ i t i n
+everything(2) [] E v r\ i T i n
+everyting [] E v r\ i t i n
 everywhere [] E v r\ i w E r\
+evil [] i v u
+ewere [] E w e r\ E
+ex [] e k s
 exactly [] E g z a k t l i
 exam [] E g z a m
 examination [] i g z a m i n e S O n
@@ -1330,6 +1474,7 @@ extra [] E k s t r\ a
 extra(2) [] E s t r\ a
 ey [] e j
 ey(2) [] e
+eyah [] e j a
 eye [] aI
 eyes [] aI z
 eyes(2) [] aI s
@@ -1338,11 +1483,13 @@ eze [] E z E
 ezedinachi [] E z E d i n a tS i
 ezuche [] E z u tS e
 ezza [] E z a
+e~ [] i
 f [] f
 f(2) [] E f
 fa [] f a
-face [] f eI s
-face(2) [] f e s
+face [] f e s
+face(2) [] f eI s
+facebook [] f eI s b u k
 fact [] f a k t
 factories [] f a k t r\ i z
 factories(2) [] f a k t o r\ i z
@@ -1362,6 +1509,7 @@ faith [] f eI T
 faith(2) [] f e t
 fall [] f O l
 fall(2) [] f O
+falomo [] f a l O m O
 false [] f O l s
 false(2) [] f O s
 family [] f a m i l i
@@ -1375,9 +1523,13 @@ farmland [] f a m l a n d
 farouk [] f a r\ u k
 fashion [] f a S O n
 fast [] f a s t
+fasted [] f a s t E d
+fasting [] f a s t i~
+fat [] f a t
 fault [] f O l t
 favour [] f eI v O
 favour(2) [] f e v O
+fe [] f E
 feader [] f e d a
 feaders [] f e d a s
 fear [] f i r\
@@ -1396,12 +1548,15 @@ felix [] f E l i k s
 felix(2) [] f E l i s
 fellow [] f E l o
 female [] f i m e l
+femi [] f E m i
 fence [] f E n s
 fertilizer [] f E t i l aI z a
 fertilizer(2) [] f a t i l aI z a
+festival [] f E s t i v a
 fetch [] f E tS
 fever [] f i v a
 few [] f j u
+fi [] f i
 fiam [] f i a m
 field [] f i l d
 fields [] f i l d z
@@ -1414,10 +1569,12 @@ file [] f aI l
 fill [] f i l
 filling [] f i l i N
 fin [] f i n
+finally [] f aI n a l i
 financial [] f aI n a n S a l
 financial(2) [] f aI n a n S i a l
 find [] f aI n d
 find(2) [] f aI n
+fine [] f aI n
 finger [] f i N g a
 finish [] f i n i S
 finishing [] f i n i S i N
@@ -1431,6 +1588,7 @@ fiscal [] f i s k u l
 fiscal(2) [] f i s k a l
 fish [] f i S
 fit [] f i t
+fit(2) [] f i
 five [] f aI v
 five(2) [] f aI f
 fix [] f i k s
@@ -1439,6 +1597,8 @@ fiyen [] f i j e~
 flag [] f l a g
 flat [] f l a t
 flaws [] f l O z
+flesh [] f l E S
+flog [] f l O g
 floor [] f l O r\
 floor(2) [] f l O
 flow [] f l o
@@ -1448,6 +1608,7 @@ fluctuate [] f l O k tS u eI t
 fluctuate(2) [] f l O k tS u e t
 flush [] f l O S
 fly [] f l aI
+fo [] f O
 foe [] f o
 fola [] f O l a
 follow [] f o l o
@@ -1457,11 +1618,12 @@ foolish [] f u l i S
 foolishment [] f u l i S m E n t
 football [] f u t b O l
 football(2) [] f u t b O
-for [] f O r\
-for(2) [] f O
+for [] f O
+for(2) [] f O r\
 forbid [] f O b i d
 force [] f O r\ s
 force(2) [] f O s
+forehead [] f O E dZ
 forest [] f O r\ E s t
 forever [] f O E v a
 forever(2) [] f O r\ E v a
@@ -1506,6 +1668,9 @@ friendship(2) [] f r\ E n S i p
 frog [] f r\ O g
 from [] f r\ O m
 front [] f r\ O n t
+frsc [] e f a r\ e s s i
+fruit [] f r\ u t
+frying [] f r\ a j i n
 fu [] f u
 fuck [] f O k
 fuel [] f j u l
@@ -1521,8 +1686,8 @@ fund [] f O n d
 funny [] f O n i
 furniture [] f O n i tS O
 future [] f j u t O
-g [] dZ i
-g(2) [] g
+g [] g
+g(2) [] dZ i
 gader [] g a d a
 gadgets [] g a dZ E t s
 gain [] g eI n
@@ -1540,9 +1705,12 @@ ganja [] g a n dZ a
 gari [] g a r\ i
 garki [] g a r\ i k i
 garki(2) [] g a r\ k i
+garments [] g a m E n t s
 gas [] g a s
 gate [] g eI t
 gate(2) [] g e t
+gats [] g a s
+gazillion [] g a z i l j O n
 gba [] g b a
 gbab [] g r\ a b
 gbam [] g b a m
@@ -1555,6 +1723,7 @@ general [] dZ E n E r\ a l
 generally [] dZ E n E r\ a l i
 generate [] dZ E n E r\ a t e
 generate(2) [] dZ e n e r\ a t e
+generation [] dZ e n e r\ e S O~
 generator [] dZ E n E r\ a l i
 generator(2) [] dZ e n e r\ a t O
 gentle [] dZ E n t u l
@@ -1567,7 +1736,11 @@ germany(2) [] dZ E r\ m a n i
 get [] g E t
 gets [] g E t s
 ghana [] g a n a
+ghandi [] g a n d i
 gift [] g i f t
+gifts [] g i f t s
+gin [] dZ i n
+ginger [] dZ i n dZ a
 giriki [] g i r\ i k i
 girl [] g E l
 girl(2) [] g E
@@ -1582,15 +1755,18 @@ give [] g i v
 give(2) [] g i
 giving [] g i v i n
 gloat [] g l o t
+glorious [] g l o r\ j O s
 glory [] g l O r\ i
 glory(2) [] g l o r\ i
 go [] g o
 goal [] g o l
 goat [] g o t
 god [] g O d
+gods [] g O d s
 gonorrhea [] g o n O~ r\ i a
 good [] g u d
 goods [] g u d z
+goons [] g u n z
 gossip [] g O s i p
 got [] g O t
 gov [] g O v
@@ -1634,6 +1810,8 @@ great [] g r\ eI t
 great(2) [] g r\ e t
 greater [] g r\ e t a
 gree [] g r\ i
+greed [] g r\ i d
+greedy [] g r\ i d i
 green [] g r\ i n
 greeny [] g r\ i n i
 greet [] g r\ i t
@@ -1642,6 +1820,7 @@ grey(2) [] g r\ e
 grind [] g r\ aI n d
 ground [] g r\ aU n d
 ground(2) [] g r\ a n d
+grounding [] g r\ aU n d i n
 group [] g r\ u p
 groups [] g r\ u p s
 grow [] g r\ o
@@ -1665,6 +1844,7 @@ ha(2) [] e tS e
 haba [] h a b a
 habit [] h a b i t
 had [] h a d
+had(2) [] h a
 hah [] h a
 hail [] h eI l
 hail(2) [] h e l
@@ -1684,12 +1864,14 @@ happen [] h a p u n
 happily [] h a p i l i
 happiness [] h a p i n E s
 happy [] h a p i
+haram [] a r\ a m
 harassment [] h a r\ a s m E n t
 harcourt [] a k O t
 harcourt(2) [] h a k O t
 hard [] h a d
 harden [] h a r\ d e n
 harden(2) [] h a d e n
+harry [] a r\ i
 harvest [] h a v E s t
 hausa [] h aU s a
 hausa(2) [] h a w u s a
@@ -1718,9 +1900,11 @@ hear [] h i r\
 hear(2) [] h i E
 heart [] h a t
 heart(2) [] h a r\ t
+hearts [] h a t s
 heaven [] h E v n
 heaven(2) [] h E v u n
 heavy [] h E v i
+hebrew [] i b r\ u
 heh [] h E
 helep [] h E l E p
 heleth [] h E l E t
@@ -1731,21 +1915,25 @@ henceforth [] h E n s f O r\ T
 henceforth(2) [] h E n s f O t
 henry [] h E n r\ i
 her [] h a
+her(2) [] a
 herbs [] h a b s
 here [] h i E
 hey [] h eI
 hide [] h aI d
+hiding [] h aI d i n
 high [] h aI
 higher [] h a j a
 highway [] h aI w eI
 highway(2) [] h aI w e
 him [] i m
 him(2) [] i~
+him(3) [] h i m
 himself [] h i m s E l f
 himself(2) [] i m s E f
 himself(3) [] i s E f
 himself(4) [] i~ s E f
 hippopotamus [] h i p o p o t a m u s
+hire [] a j a
 his [] h i z
 his(2) [] i z
 his(3) [] i s
@@ -1756,6 +1944,8 @@ ho [] h o
 hold [] h o l d
 hole [] h o l
 holes [] h o l z
+holiday [] h O l i d e
+hollywood [] h O l i w u d
 home [] h o m
 homosexual [] h o m o s E k S w a l
 honey [] h o n i
@@ -1764,6 +1954,7 @@ honourable [] O n O r\ a b u l
 honourable(2) [] O n O r\ a b l
 hooligans [] h u l i g a n z
 hope [] h o p
+hopeful [] w o p f u
 hospital [] h O s p i t a l
 hospital(2) [] h O s p i t a
 hospitalize [] h O s p i t a l aI z
@@ -1792,8 +1983,10 @@ housework(2) [] a s w O k
 housing [] h aU z i N
 housing(2) [] h aU s i n
 how [] h aU
+hug [] h O g
 huh [] h u~
 human [] h u m a n
+humble [] O m b u
 hundred [] h O n d r\ E d
 hunger [] h O n g a
 hungry [] h O n g r\ i
@@ -1801,6 +1994,7 @@ hunter [] h O n t a
 hunters [] h O n t a z
 husband [] h O s b a n d
 husbands [] h O s b a n d z
+hustle [] h a s t u
 hut [] h O t
 hut(2) [] h u t
 hygiene [] h aI dZ i n
@@ -1809,6 +2003,7 @@ hypertension(2) [] h aI p a t E n S O~
 i [] aI
 i(2) [] i
 i(3) [] a
+i'm [] a m
 ibadan [] i b a d a~
 ibom [] i b O m
 ibrahim [] i b r\ a h i m
@@ -1816,11 +2011,17 @@ idea [] aI d i a
 idowu [] i d o w u
 idumota [] i d u m O t a
 if [] i f
+ifesinachi [] i f E s i n a tS i
 ifinye [] i f i n i E
+igala [] i g a l a
 igbo [] i g b o
+igbo(2) [] i b o
 igbobi [] i g b o b i
 igbos [] i g b o z
+igbos(2) [] i b o z
 ignorant [] i g n O r\ a n t
+igp [] aI dZ i p i
+igue [] i g w E
 ijaw [] i dZ O
 ijebu [] i dZ E b u
 ijesha [] i dZ E S a
@@ -1834,6 +2035,7 @@ ilasamaja [] i l a s a m a n dZ a
 ile [] i l e
 illegal [] i l i g a l
 im [] i m
+im(2) [] i~
 image [] i m e dZ
 imagine [] i m a dZ i n
 imitate [] i m i t e t
@@ -1859,6 +2061,8 @@ imself(2) [] i~ s E f
 imu [] i m u
 imuoh [] i m u o
 in [] i n
+incantation [] i~ k a~ t E S O~
+incantations [] i~ k a~ t E S O~ z
 incinerators [] i n s i n a r\ e t O z
 including [] i n k l j u d i n
 including(2) [] i N k l u d i n
@@ -1867,24 +2071,34 @@ increase [] i n k r\ i s
 increase(2) [] i N k r\ i z
 increment [] i N k r\ e m E n t
 independent [] i n d i p E n d E n t
+indiscipline [] i n d i s i p l i n
 individual [] i n d i v i dZ u w a l
 industry [] i n d o s t r\ i
+infact [] i~ f a
 infection [] i n f E k S O n
 infections [] i n f E k S O n z
 inflammatory [] i n f l a m a t o r\ i
+influence [] i n f l E n s
+informate [] i n f O m E t
 information [] i n f O m e S O n
 initially [] i n i S a l i
 initially(2) [] i n i S j a l i
+injury [] i n dZ u r\ i
 innocent [] i n O s E n t
 inquiry [] i n k w aI r\ i
 inquiry(2) [] i N k w a j a r\ i
 ins [] aI E n E s
+ins- [] i n s
 inside [] i n s aI d
+instagram [] i n s t a g r\ a m
+instagrant [] i n s t a g r\ a n t
 instance [] i n s t a n s
+instant [] i n s t a n t
 instead [] i n s t E d
 institute [] i n s t i t j u t
 institute(2) [] i n s t i t u t
 institution [] i n s t i t u S O n
+institution(2) [] i n s t u S O n
 instruction [] i n s t r\ O k S O n
 insult [] i n s O l t
 insurance [] i n S O r\ a n s
@@ -1892,8 +2106,12 @@ insure [] i n S O
 integration [] i n t i g r\ a S O n
 intellectual [] i n t E l E k tS w a l
 interconnectivity [] i n t a k O n E k t i v i t i
-interest [] i n t r\ i s t
+interest [] i n t r\ E s t
 interest(2) [] i n t E r\ E s t
+interest(3) [] i n t r\ E s
+interest(4) [] i n t r\ i s t
+interesting [] i n t r\ E s t i n
+intermediary [] i n t a m i d j a r\ i
 internal [] i n t a n a l
 international [] i n t a n a S O n a l
 interview [] i n t a v j u
@@ -1904,14 +2122,18 @@ intimidate(2) [] i n t i m i d e t
 into [] i n t u
 introduce [] i n t r\ o d u s
 introduce(2) [] i n t r\ o d j u s
+invasion [] i n v E S O~
 invest [] i n v E s t
 investigate [] i n v E s t i g e t
 investment [] i n v E s m E n t
 invitation [] i n v i t e t S O n
 invite [] i n v aI t
+inyanyan [] i n j a~ n j a~
+ipad [] aI p a t
 ipaja [] i k p a dZ a
 iro [] i r\ o
 iro(2) [] i r\ O
+irogoje [] i r\ o g o dZ E
 iroh [] i r\ o
 iroko [] i r\ o k o
 irrelevant [] i r\ E l i v a n t
@@ -1965,16 +2187,20 @@ jiving [] dZ aI v i N
 jo [] dZ O
 job [] dZ o b
 jobs [] dZ O b z
+joel [] dZ O E
 johnson [] dZ O n s o n
 join [] dZ OI n
+joinbody [] dZ O m b o d i
 joined [] dZ OI n d
 joint [] dZ OI n t
 joke [] dZ o k
 joke(2) [] dZ O k
+jombody [] dZ o m b o d i
 jos [] dZ O s
 joseph [] dZ o s E f
 joshua [] dZ o S u a
 journey [] dZ O n i
+joy [] dZ OI
 jubilee [] dZ u b i l i
 judge [] dZ O dZ
 judgment [] dZ O dZ m E n t
@@ -1985,11 +2211,14 @@ jump [] dZ O m p
 june [] dZ u n
 junior [] dZ u n j O
 jupiter [] dZ u p i t a
-just [] dZ i s t
-just(2) [] dZ O s t
+just [] dZ O s t
+just(2) [] dZ O s
+just(3) [] dZ O
+just(4) [] dZ i s t
 k [] k
 k(2) [] k e
 k(3) [] k eI
+ka [] k a
 kaduna [] k a d u n a
 kafanchan [] k a f a n tS a n
 kaikai [] k aI k aI
@@ -1997,6 +2226,7 @@ kamkpe [] k a m k p e
 kanda [] k a n d a
 kano [] k a n o
 katakata [] k a t a k a t a
+kaya [] k a j a
 ke [] k E
 keep [] k i p
 kefas [] k e f a s
@@ -2007,10 +2237,15 @@ kemi [] k E m i
 kerosene [] k e r\ o z i n
 ketu [] k E t u
 khaki [] k a k i
+ki [] k i
 kick [] k i k
+kidnap [] k i d n a p
+kidnapper [] k i d n a p a
 kill [] k i l
-kind [] k aI n d
-kind(2) [] k i~
+kin [] k i n
+kind [] k E~
+kind(2) [] k aI n d
+kind(3) [] k i~
 kinds [] k aI n d z
 kinds(2) [] k aI n z
 king [] k i N g
@@ -2031,7 +2266,9 @@ know [] n o
 knowledge [] n O l e dZ
 ko [] k O
 kobo [] k o b o
+kogi [] k o g i
 kokoma [] k o k o m a
+kolobi [] k o l o b i
 kombi [] k O m b i
 konko [] k O N k O
 korokoro [] k o r\ o k o r\ o
@@ -2040,6 +2277,7 @@ kpa [] k p a
 kpai [] k p aI
 kpakpa [] k p a k p a
 kpakpakpakpa [] k p a k p a k p a k p a
+kpalasa [] k p a l a s a
 kpam [] k p a m
 kpashere [] k p a S e r\ e
 kpata [] k p a t a
@@ -2066,6 +2304,7 @@ la [] E l a
 lab [] l a b
 laboratory [] l a b O r\ e t r\ i
 labour [] l e b O
+lack [] l a k
 ladies [] l e d i s
 ladies(2) [] l e d i z
 lady [] l e d i
@@ -2082,12 +2321,14 @@ land [] l a n d
 landlord [] l a n l O d
 lane [] l eI n
 lane(2) [] l e n
-language [] l a n N g w e dZ
+language [] l E~ g w e dZ
+language(2) [] l a n N g w e dZ
+languages [] l E~ g w e dZ i z
 lantern [] l a n t a
 lantern(2) [] l a n t a n
-last [] l O s t
-last(2) [] l a s t
-last(3) [] l a s
+last [] l a s
+last(2) [] l O s t
+last(3) [] l a s t
 late [] l eI t
 late(2) [] l e t
 later [] l e t a
@@ -2133,7 +2374,9 @@ left [] l E f t
 leg [] l E g
 legislative [] l E dZ i s l e t i f
 lego [] l E g o
+length [] l E~ T
 leniency [] l e n e n s i
+lent [] l E n t
 leone [] l i O n
 less [] l E s
 lesson [] l E s i n
@@ -2149,6 +2392,7 @@ lever(2) [] l E v a
 levy [] l E v i
 levy(2) [] l e f i
 levy(3) [] l i v i
+le~ [] l e
 liar [] l a j a
 liberia [] l aI b e r\ i a
 library [] l aI b r\ a r\ i
@@ -2164,8 +2408,11 @@ life [] l aI f
 lifestyle [] l aI f s t aI l
 lifestyle(2) [] l a f s t a
 lifestyle(3) [] l aI f s t a i
+lifetime [] l aI f t aI m
 light [] l aI t
 like [] l aI k
+like(2) [] l aI
+likeness [] l aI k n E s
 likewise [] l aI k w aI z
 likewise(2) [] l aI k w aI s
 limit [] l i m i t
@@ -2177,6 +2424,7 @@ little [] l i t u
 live [] l aI v
 live(2) [] l i v
 live(3) [] l i f
+lived [] l i v d
 living [] l i v i N
 lizard [] l i z a d
 lizard(2) [] l i s a d
@@ -2204,9 +2452,11 @@ lost(2) [] l O s
 lot [] l O t
 loud [] l aU d
 love [] l O v
+lovely [] l O v l i
 loving [] l O v i n
 low [] l o
 lucas [] l u k a s
+luchi [] l u tS i
 luck [] l O k
 lucky [] l O k i
 lugard [] l u g a d
@@ -2230,20 +2480,23 @@ made(2) [] m e d
 maggi [] m a g i
 magician [] m a dZ i S a n
 magomago [] m a g o m a g o
+mah [] m a
+mahatma [] m a a t m a
 mai [] m aI
-main [] m eI n
-main(2) [] m e n
+main [] m e n
+main(2) [] m eI n
 mainland [] m e n l a n d
 maintain [] m E~ t e n
 major [] m e dZ O
 makanjuola [] m a k a n dZ u O l a
 makarfi [] m a k a f i
-make [] m eI k
+make [] m e k
 make(2) [] m e
-make(3) [] m eI
-making [] m eI k i N
+make(3) [] m eI k
+make(4) [] m eI
+making [] m e k i n
 making(2) [] m eI k i n
-making(3) [] m e k i n
+making(3) [] m eI k i N
 makurdi [] m a k u d i
 malaria [] m a l e r\ i a
 male [] m eI l
@@ -2251,6 +2504,7 @@ male(2) [] m e l
 mallam [] m a l a m
 malpractices [] m a l p r\ a t i s i s
 mama [] m a m a
+mamama [] m a m a m a
 man [] m a n
 man(2) [] m a~
 manage [] m a n e dZ
@@ -2286,6 +2540,7 @@ masquerade [] m a s k u r\ e d
 mass [] m a s
 masses [] m a s i s
 master [] m a s t a
+masters [] m a s t a s
 match [] m a S
 matches [] m a S i s
 matchet [] m a S e t
@@ -2307,6 +2562,7 @@ maybe(2) [] m e b i
 mba [] E m b i E
 mbamalu [] m b a m a l u
 mboto [] m b a t u
+mc [] E m s i
 me [] m i
 meal [] m i l
 mean [] m i n
@@ -2323,6 +2579,9 @@ mechanic(2) [] m i k a n i k
 mechanic(3) [] m e k a n i k
 mechanics [] m i k a n i k s
 mechanics(2) [] m e k a n i k s
+media [] m i d j a
+medical [] m E d i k a l
+medicals [] m E d i k a l s
 medicine [] m e d i s i n
 medium [] m i d j o m
 meet [] m i t
@@ -2335,8 +2594,8 @@ member [] m E m b a
 member(2) [] m E~ b a
 members [] m E n b a s
 members(2) [] m E m b a s
-men [] m E n
-men(2) [] m E~
+men [] m E~
+men(2) [] m E n
 meningitis [] m e n i dZ a t i s
 meningitis(2) [] m E n i dZ aI t i s
 mental [] m E~ t a
@@ -2370,6 +2629,7 @@ microphone [] m a k r\ o f O~
 middle [] m i d u
 midnight [] m i d n a t
 midnight(2) [] m i d n aI t
+might [] m aI t
 mike [] m aI k
 mike(2) [] m a k
 mile [] m aI l
@@ -2404,10 +2664,12 @@ mirror [] m i r\ O
 mis [] m i s
 misbehave [] m i s b i e f
 misbehave(2) [] m i s b i h eI v
+mislead [] m i s l i d
 miss [] m i s
 mistake [] m i s t eI k
 mistake(2) [] m i s t e k
 mistakenly [] m i s t e k i n l i
+mister [] m i s t a
 mix [] m i k s
 mix(2) [] m i s
 mkpa [] E m k e p i e
@@ -2426,12 +2688,14 @@ molue [] m o l u E
 momoh [] m O m O
 momowra [] m O m O r\ a
 monday [] m O n d e
-money [] m O n i
+money [] m O n E
+money(2) [] m O n i
 monitor [] m O n i t O
 monkey [] m O n k i
 month [] m O n t
 monthly [] m O n t l i
 months [] m O n t s
+moral [] m O r\ O l
 more [] m O r\
 more(2) [] m O
 morning [] m O r\ n i N
@@ -2447,6 +2711,7 @@ motion(2) [] m o S O~
 motor [] m O t o
 mould [] m o d
 mountain [] m O~ t e n
+mounti [] m a~ t i
 mourn [] m O r\ n
 mourn(2) [] m O n
 moustache [] m o s t a S
@@ -2460,13 +2725,16 @@ mrs [] m i s i s
 mu [] m u
 much [] m O tS
 mufti [] m O f t i
+muhammadu [] m u h a m a d u
 murmur [] m O m O
+musa [] m u s a
 muscle [] m O s u
 mushin [] m u S i n
 music [] m j u z i k
 music(2) [] m j u s i k
 muslim [] m j u s l i m
 must [] m O s t
+must(2) [] m O s
 my [] m aI
 my(2) [] m a
 myself [] m a s E f
@@ -2474,9 +2742,11 @@ myself(2) [] m aI s E l f
 myself(3) [] m a s e f
 n [] n
 n(2) [] E n
-na [] E n e
-na(2) [] n a
+n- [] n
+na [] n a
+na(2) [] E n e
 naija [] n aI dZ a
+naim [] n a i m
 naira [] n aI r\ a
 naira(2) [] n a r\ a
 naked [] n E k E d
@@ -2497,22 +2767,29 @@ ne [] n O t i s t
 ne(2) [] E n i
 ne(3) [] n i
 near [] n i r\
-near(2) [] n i a
-nearly [] n i a l i
+near(2) [] n i E~
+near(3) [] n i a
+nearly [] n i E l i
+nearly(2) [] n i a l i
 necessary [] n E s E s r\ i
 neck [] n E k
 neco [] n E k o
+nedu [] n e d u
 need [] n i d
 needs [] n i d z
 needs(2) [] n i d s
+negotiation [] n E g O s E S O~
 neighbour [] n eI b O
 neighbour(2) [] n e b O
+neighbours [] n eI b O z
 nepa [] n E p a
 net [] n E t
+neutral [] n j u t r\ a
 never [] n E v a
-new [] n i u
-new(2) [] n j u
+new [] n j u
+new(2) [] n i u
 newest [] n j u E s t
+newly [] n j u l i
 news [] n j u s
 news(2) [] n j u z
 newsmen [] n u z m i n
@@ -2534,6 +2811,7 @@ nigerian [] n aI dZ i r\ i a n s
 nigerians [] n a dZ i r\ i a n s
 night [] n aI t
 nightline [] n aI t l aI n
+nights [] n aI t s
 nine [] n aI n
 nine(2) [] n aI
 nineteen [] n aI n t i n
@@ -2553,23 +2831,28 @@ noise(2) [] n O i S
 non [] n O n
 nonsense [] n O n s E n s
 nonu [] n O n u
+noon [] n u n
 normal [] n O m a
 normally [] n O m a l i
 north [] n O r\ T
 north(2) [] n O t
+northern [] n O t a n
 nose [] n o s
 not [] n O t
 note [] n o t
 notes [] n o t s
 nothing [] n O t i n
+nothing(2) [] n O T i n
 notice [] n o t i s
 noto [] n o t o
 notwithstanding [] n O t w i s t a n d i n
-now [] n aU
+now [] n a
+now(2) [] n aU
 nowadays [] n aU a d eI s
 nowadays(2) [] n a w a d e s
 number [] n O m b a
 nurse [] n O s
+nut [] n O t
 nwam [] n w a m
 nwonwu [] n w O n w u
 nwurukum [] n w u r\ u k u m
@@ -2580,6 +2863,8 @@ nyash [] j a n S
 nylon [] n aI l O n
 nzeribe [] n z e r\ i b e
 o [] o
+o'clock [] o k l O k
+o. [] o
 oba [] O b a
 obafemi [] O b a f E m i
 obalende [] O b a l e n d e
@@ -2599,6 +2884,7 @@ occupants [] O k u p a n t s
 occupants(2) [] O k u p a n t
 occupy [] O k u p aI
 ochebe [] o tS e b e
+oda [] O d a
 ode [] o d
 oder [] O d a
 oders [] O d a s
@@ -2632,6 +2918,7 @@ ogiri [] o g i r\ i
 ogochukwu [] O g O tS u k u
 ogoni [] o g o n i
 ogun [] o g u n
+ogunlade [] o g u n l a d e
 oguta [] o g u t a
 oh [] o
 ohaneze [] O h a n e s e
@@ -2643,14 +2930,18 @@ ojo [] o dZ o
 ojota [] O dZ O t a
 oju [] o dZ u
 ojukwu [] o dZ u k u
+ok [] o k E
 okada [] O k a d a
 okadigbo [] o k a d i g b o
 okamuka [] o k a m u k a
-okay [] o k eI
+okay [] o k E
+okay(2) [] o k eI
 okazi [] o k a s i
-okey [] o k e
+okey [] o k E
+okey(2) [] o k e
 oko [] O k o
 okon [] o k o n
+okorafor [] o k o r\ a f O
 okoro [] o k o r\ o
 okpoka [] o k p o k a
 okpolo [] o k p o l o
@@ -2662,6 +2953,7 @@ ola [] O l a
 olaiya [] O l a i j a
 olanrewaju [] O l a n r\ e w a dZ u
 old [] o d
+oldest [] o d E s
 oliver [] o l i v a
 ologun [] o l o g u n
 olokpa [] O l O p a
@@ -2692,11 +2984,15 @@ ooh [] u
 ooh(2) [] o
 ooogbeleoo [] o g b e l e o
 opara [] O p a r\ a
+open [] O p u n
+opendential [] O p u d E~ S a
 openezuche [] O p u n
 operation [] O p r\ e S O~
 opportunity [] O p O S u n i t i
 oppress [] O p r\ E s
-options [] O p S O n
+option [] O p S O n
+options [] O p S O n s
+options(2) [] O p S O n
 opupu [] o p u p u
 or [] O r\
 or(2) [] O
@@ -2712,14 +3008,17 @@ orijo [] o r\ i j o
 oshiomhole [] o S o m O l E
 oshodi [] o S o d i
 oshun [] O S u n
+osibanjo [] O s i b a n dZ O
 osoba [] O S O b a
 osun [] O S u n
+otaiko [] O t aI k o
 otemu [] o t e m u
 other [] O d a
 oti [] o t i
 oturugbeke [] o t u r\ u g b e k e
 our [] a w a
 our(2) [] aU r\
+our(3) [] a
 ourself [] a w a s e f
 ourselves [] O w a s e f s
 out [] aU t
@@ -2728,10 +3027,12 @@ outside [] aU t s aI d
 outsider [] aU t s a i d a
 over [] o f a
 overall [] o f a r\ O
+overcome [] o v a k O m
 overlook [] o v a l u k
 overlook(2) [] o f a l u k
 overnight [] o v a n aI t
 overnight(2) [] o f a n aI t
+overspeeding [] o v a s p i d i n
 owe [] o
 owerri [] o w e r\ e
 owerri(2) [] o w e r\ i
@@ -2763,8 +3064,11 @@ pain(2) [] p e n
 paint [] p E n t
 paint(2) [] p e n t
 paint(3) [] p eI n t
+pakan [] p a k a n
 palace [] p a l a s
 palaver [] p a l a f a
+palm [] p a m
+pan [] p a n
 pant [] p a n t
 papa [] p a p a
 papapa [] p a p a p a
@@ -2787,12 +3091,15 @@ parts [] p a t s
 party [] p a t i
 pass [] p a s
 passenger [] p a s e n dZ a
+passion [] p a S O n
 past [] p a s t
+pastor [] p a s t O
 patashi [] p a t a S i
 patch [] p a S
 patience [] p e S e n s
 patient [] p e S e n t
 patients [] p e S e n t s
+paul [] p O l
 pay [] p e
 pay(2) [] p eI
 payers [] p e j a s
@@ -2810,6 +3117,7 @@ pele [] p E l eI
 pele(2) [] p E l E
 pelvic [] p E l v i k
 pen [] p E n
+pencil [] p E n s u
 pension [] p E n S O n
 pentecostal [] p E n t i k o s t a
 people [] p i p u l
@@ -2820,18 +3128,21 @@ perfect [] p a f E t
 perform [] p a f O m
 performance [] p a f O m a s
 performance(2) [] p a f O m a n s
+perfume [] p e f j u m
 period [] p i r\ j O d
 permission [] p a m i S O n
 permit [] p a m i t
 pers [] p a s
 person [] p e s i n
 pertaining [] p a t e n i n
+pet [] p E t
 peter [] p i t a
 petrol [] p E t r\ o
 petroleum [] p e t r\ o l i O m
 ph [] p i eI tS
 ph(2) [] p i E tS
 ph(3) [] f
+phd [] p i e S d i
 phil [] f i l
 philosophy [] f i l O s O f i
 philosophy(2) [] p i l O s O f i
@@ -2843,6 +3154,7 @@ pickering [] p i k r\ i~
 pickering(2) [] p i k r\ i n
 picki [] p i k i
 pickpockets [] p i k p O k E t s
+picture [] p i k tS u
 pidgin [] p i dZ i n
 pieces [] p i s i s
 pieces(2) [] p i s i z
@@ -2850,6 +3162,7 @@ pikin [] p i k i n
 pilgrim [] p i g r\ i m
 pilgrim(2) [] p i l g r\ i m
 pilgrims [] p i g r\ i m s
+pillars [] p i l a z
 pineapple [] p E n a p u
 pineapple(2) [] p eI n a p u
 pineapple(3) [] p e n a p u
@@ -2878,6 +3191,8 @@ play(2) [] p l e
 player [] p l e j a
 please [] p l i z
 please(2) [] p l i s
+pleasurable [] p l E Z O r\ E b u
+pleasure [] p l E Z O
 plebeians [] p l e b i a n s
 pledge [] p l E dZ
 plenty [] p l E n t i
@@ -2886,6 +3201,7 @@ plot [] p l O t
 pluck [] p l O k
 plus [] p l O s
 pocket [] p O k E t
+pockets [] p O k E t s
 poem [] p u E m
 poem(2) [] p o E m
 point [] p OI n t
@@ -2903,6 +3219,7 @@ politics [] p O l i t i k s
 poly [] p o l i
 polytechnics [] p o l i t e k n i k s
 polythenes [] p o l i t i n s
+pond [] p o n d
 pool [] p u l
 pools [] p u l z
 pools(2) [] p u l s
@@ -2943,21 +3260,27 @@ pray [] p r\ e
 pray(2) [] p r\ eI
 prayer [] p r\ E r\
 prayer(2) [] p r\ e j a
-preach [] p r\ i tS
+preach [] p r\ i S
+preach(2) [] p r\ i tS
+predator [] p r\ i d e t O
+predators [] p r\ i d e t O s
 pregnancy [] p r\ E g n a n s i
 pregnant [] p r\ E g n a n t
-preparation [] p r\ e p a r\ e S O n
+preparation [] p r\ i p E r\ e S O n
 preparation(2) [] p r\ i p i a r\ e S O n
 preparation(3) [] p r\ E p a r\ e S O n
+preparation(4) [] p r\ e p a r\ e S O n
 prepare [] p r\ i p E r\
 prepare(2) [] p r\ i p i a
 present [] p r\ i s E n t
 present(2) [] p r\ i z E n t
 present(3) [] p r\ e s E n t
+presenting [] p r\ e z E n t i n
 presidency [] p r\ E s i d E n s i
 presidency(2) [] p r\ e s i d E n s i
 president [] p r\ E s i d E n t
 presidential [] p r\ E s i d E n S i a
+presido [] p r\ E s i d o
 press [] p r\ E s
 pressure [] p r\ E S O r\
 pressure(2) [] p r\ E S O
@@ -2988,8 +3311,10 @@ process(2) [] p r\ o s E s
 produce [] p r\ o d j u s
 producer [] p r\ o d j u s a
 product [] p r\ o d O k t
+profe- [] p r\ o f E
 profession [] p r\ o f E s O n a
 professional [] p r\ o f E S O n a
+professionally [] p r\ o f E S O n a l i
 professionals [] p r\ o f E S O n a s
 professor [] p r\ o f E s O
 programme [] p r\ o g r\ a m
@@ -3005,24 +3330,31 @@ property [] p r\ O p a t i
 prophet [] p r\ o f E t
 proposes [] p r\ o p o s i s
 proposition [] p r\ o p o s i S O n
+prosecute [] p r\ o s E k j u t
+prosecuting [] p r\ o s E k j u t i n
 protection [] p r\ o t E k S O n
 protest [] p r\ o t E s t
 proud [] p r\ aU d
 prove [] p r\ u f
 prove(2) [] p r\ u v
 proverb [] p r\ o v a b
-provide [] p r\ o v a i d
+provide [] p r\ o v aI d
+provide(2) [] p r\ o f aI d
+provide(3) [] p r\ o v a i d
 provision [] p r\ o v i S O n
 provost [] p r\ o v o s t
 provost(2) [] p r\ o f o s t
 psychological [] s aI k O l O dZ i k
 psychologically [] s aI k O l O dZ i k a
-pu [] p u
+pu [] p O
+pu(2) [] p u
 public [] p O b l i k
+publicity [] p O b l i s i t i
 pull [] p u l
 pump [] p O m p
 punish [] p O n i S
 punishment [] p O n i S m E n t
+pupils [] p j u p j O z
 pure [] p j u r\
 pure(2) [] p i j O
 purge [] p O dZ
@@ -3031,6 +3363,7 @@ purse [] p O s
 pursue [] p O S u
 push [] p u S
 put [] p u t
+put(2) [] p u
 quadratic [] k O d r\ a t i k
 quadruple [] k o d r\ O p u
 qualified [] k w a l i f aI d
@@ -3046,7 +3379,9 @@ question [] k w E s S O n
 questions [] k w E s S O n s
 queue [] k j u
 quick [] k w i k
-quiet [] k w aI E t
+quickly [] k w i k l i
+quiet [] k w a j E t
+quiet(2) [] k w aI E t
 quit [] k w i t
 quiz [] k w i s
 quiz(2) [] k w i z
@@ -3058,6 +3393,7 @@ rabbit [] r\ a b i t
 radars [] r\ a d a s
 rader [] r\ e d a
 radio [] r\ e d i o
+rag [] r\ a g
 ragamuffin [] r\ a g a m o f i n
 railing [] r\ eI l i N
 railing(2) [] r\ e l i n
@@ -3070,6 +3406,8 @@ raise [] r\ eI z
 raise(2) [] r\ e s
 rally [] r\ a l i
 ram [] r\ a m
+rape [] r\ E p
+raping [] r\ E p i n
 rascals [] r\ a s k a s
 rat [] r\ a t
 rate [] r\ eI t
@@ -3080,6 +3418,7 @@ reach [] r\ i tS
 reach(2) [] r\ i S
 read [] r\ i d
 read(2) [] r\ E d
+readings [] r\ i d i n z
 ready [] r\ E d i
 real [] r\ i l
 realised [] r\ i a l aI s d
@@ -3095,6 +3434,7 @@ receipt [] r\ i s i t
 receive [] r\ i s i v
 recent [] r\ i s E n t
 recently [] r\ i s E n t l i
+reception [] r\ i s E p S O n
 record [] r\ i k O d
 record(2) [] r\ i k O r\ d
 recording [] r\ E k O d i n
@@ -3125,9 +3465,13 @@ regular [] r\ E g u l a l i
 regularly [] r\ E g u l a l i
 reign [] r\ eI n
 reign(2) [] r\ e n
-rejection [] r\ i dZ E k s a~
-rejection(2) [] r\ i dZ E s a~
+rejection [] r\ i dZ E k S a~
+rejection(2) [] r\ i dZ E S a~
+rejection(3) [] r\ i dZ E k s a~
+rejection(4) [] r\ i dZ E s a~
 relation [] r\ i l e S a~
+relations [] r\ i l e S a~ z
+relationship [] r\ i l e S a~ S i p
 relax [] r\ i l a k s
 relax(2) [] r\ i l a s
 relaxer [] r\ i l aI z a
@@ -3150,10 +3494,12 @@ remind [] r\ i m a n d
 remind(2) [] r\ i m aI n d
 remove [] r\ i m u~ f
 remove(2) [] r\ i m u v
+render [] r\ E n d a
 rent [] r\ E n t
 rep [] r\ E p
 repair [] r\ i p E r\
-repair(2) [] r\ i p i a
+repair(2) [] r\ i p i E
+repair(3) [] r\ i p i a
 repeat [] r\ i p i t
 repent [] r\ i p E n t
 replace [] r\ i p l eI s
@@ -3173,9 +3519,12 @@ republic [] r\ i p O b l i k
 request [] r\ i k w E s t
 required [] r\ i k w aI r\ d
 required(2) [] r\ i k u a j a d
+rescue [] r\ E s k j u
+rescued [] r\ E s k j u d
 research [] r\ i s a tS
 resemble [] r\ i s E m b u l
 resemble(2) [] r\ i s E m b u
+residence [] r\ E z i d E n s
 resolve [] r\ i s O f
 resolve(2) [] r\ i s O v
 resources [] r\ i s O r\ s i z
@@ -3219,6 +3568,8 @@ riots [] r\ a j O t s
 rise [] r\ aI z
 rise(2) [] r\ aI s
 risk [] r\ i s k
+ritual [] r\ i tS u a
+rituals [] r\ i tS u a s
 river [] r\ i f a
 river(2) [] r\ i v a
 riverine [] r\ i f a r\ aI n
@@ -3234,6 +3585,7 @@ robo [] r\ o b o
 rock [] r\ O k
 rodeo [] r\ o d i o
 roger [] r\ o dZ a
+rogoje [] r\ o g o dZ E
 roll [] r\ o
 roll(2) [] r\ o l
 roof [] r\ u f
@@ -3255,11 +3607,14 @@ rumour [] r\ u m O
 run [] r\ O n
 rural [] r\ u r\ a
 rush [] r\ O S
+rust [] r\ O s t
 s [] s
 s(2) [] E s
+s- [] s
 sabi [] S a b i
 sachet [] s a tS E t
 sack [] s a k
+sacrifice [] s a k r\ i f aI s
 safe [] s eI f
 safe(2) [] s e f
 safety [] s eI f t i
@@ -3291,19 +3646,24 @@ saratou [] s a r\ a t u
 sardine [] s a d i n
 sardine(2) [] s a n d i n
 sarumi [] s a r\ u m i
+satan [] s e t a n
 satisfy [] s a t i s f aI
+saturday [] s a t O d e
 saudi [] s aU d i
 save [] s eI v
 save(2) [] s e f
 save(3) [] s e v
 saw [] s O
-say [] s eI
-say(2) [] s e
+say [] s e
+say(2) [] s eI
+says [] s e s
 sc [] E s s i
 sca [] E s s i e
 scale [] s k e l
 scale(2) [] s k eI l
 scandal [] s k a n d a
+scapegoat [] s k E p g o t
+scarcity [] s k a s t i
 scare [] s k E
 scare(2) [] s k E r\
 scary [] s k E r\ i
@@ -3316,6 +3676,7 @@ schools [] s k u l z
 schools(2) [] s k u s
 science [] s a j E n s
 sciences [] s a j E n s i s
+scissors [] s i z O s
 score [] s k O r\
 score(2) [] s k O
 scrape [] s k r\ eI p
@@ -3326,7 +3687,9 @@ se(2) [] E s i
 se(3) [] s eI
 sea [] s i
 search [] s a tS
-season [] s i s i n
+searching [] s a tS i n
+season [] s i z i n
+season(2) [] s i s i n
 seat [] s i t
 second [] s E k O n
 second(2) [] s E k O n d
@@ -3351,6 +3714,7 @@ segun [] S E g u~
 seize [] s i z
 seize(2) [] s i s
 seke [] s E k E
+sele [] S E l E
 select [] s i l E k t
 self [] s E l f
 self(2) [] s E f
@@ -3378,6 +3742,7 @@ servant [] s a f a n t
 servants [] s a v a n t
 serve [] s a f
 service [] s a f i s
+services [] s a f i s i s
 sesan [] S E s a n
 session [] S E s a n
 set [] s E t
@@ -3411,13 +3776,16 @@ shame(2) [] S e m
 shameful [] S e m f u
 shameless [] S e m l E s
 share [] S E r\
-share(2) [] S i a
+share(2) [] S i E
+share(3) [] S i a
 sharia [] S a r\ i a
+sharp [] S a p
 she [] S i
 sheba [] S e b a
 shebi [] S e b i
 shege [] S E g E
 shehu [] S e u
+shekele [] S E k E l E
 shele [] S E l E
 shell [] S E l
 sheraton [] S E r\ a t i n
@@ -3428,6 +3796,7 @@ shio [] S i O
 ship [] S i p
 shirt [] S E t
 shit [] S i t
+shock [] S O k
 shoe [] S u
 shomolu [] S o m o l u
 shoo [] S u
@@ -3437,6 +3806,7 @@ shop [] S O p
 shops [] S O p s
 short [] S O r\ t
 short(2) [] S O t
+shortcut [] S O t k O t
 shot [] S O t
 should [] S u d
 shout [] S aU t
@@ -3448,14 +3818,18 @@ shun [] S O n
 shut [] S O t
 si [] E s aI
 si(2) [] s i
+sick [] s i k
 sickness [] s i k n E s
 siddon [] s i d O n
 side [] s aI d
 sierra [] s i r\ a
 sign [] s aI n
-signboard [] s aI n b O d
+signboard [] s aI n
+signboard(2) [] s aI n b O d
+signify [] s i g n i f aI
 silent [] s aI l E n t
 silos [] s aI l o
+similar [] s i m i l a
 simple [] s i m p u
 simple(2) [] s i m p u l
 sin [] s i n
@@ -3464,6 +3838,7 @@ sing [] s i N
 sing(2) [] s i n
 sings [] s i N z
 sings(2) [] s i n s
+sins [] s i n z
 sir [] s a
 sisi [] s i s i
 sister [] s i s t a
@@ -3485,11 +3860,15 @@ slave(2) [] s l e v
 slave(3) [] s l e f
 sleep [] s l i p
 slice [] s l aI s
+slide [] s l aI d
 slow [] s l o
+sm- [] s m
 small [] s m O l
 small(2) [] s m O
 smart [] s m a t
 smell [] s m E l
+smelling [] s m E l i n
+smile [] s m aI
 smoke [] s m o k
 smoked [] s m o k t
 smooth [] s m u t
@@ -3499,12 +3878,14 @@ snail [] s n eI l
 snail(2) [] s n e l
 snake [] s n eI k
 snake(2) [] s n e k i
+snapchat [] s n a p tS a t
 so [] s o
 soak [] s o k
 soap [] s o p
 sobowale [] S o b O w a l e
 soccer [] s O k a
-social [] s o s i a
+social [] s o S a l
+social(2) [] s o s i a
 society [] s o s a E t i
 soft [] s O f t
 softly [] s O f t l i
@@ -3515,6 +3896,7 @@ sokoto [] s o k o t o
 sola [] S O l a
 solarin [] S o l a r\ i n
 soldier [] s o dZ a
+soldiers [] s o dZ a z
 solomon [] s o l o m O n
 solution [] s o l u S a n
 solve [] s O f
@@ -3527,7 +3909,8 @@ somersault [] s O m a s O t
 something [] s O m t i n
 sometime [] s O m t aI m
 sometimes [] s O m t aI m s
-somewhere [] s O m w i a
+somewhere [] s O m w i E
+somewhere(2) [] s O m w i a
 son [] s O n
 song [] s O N
 songs [] s O N z
@@ -3552,15 +3935,20 @@ space [] s p eI s
 space(2) [] s p e s
 spark [] s p a k
 sparkling [] s p a k l i n
+spe [] s p E
 speak [] s p i k
 speaker [] s p i k a
 special [] s p E S i a
 specific [] s p i s i f i k
 specific(2) [] s p E s i f i k
+speed [] s p i d
 spend [] s p E n d
 spending [] s p E n d i N
 spending(2) [] s p E n d i n
 spice [] s p aI s
+spices [] s p aI s i s
+spie [] s p aI
+spies [] s p aI z
 spirit [] s p i r\ i t
 spit [] s p i t
 spoil [] s p OI l
@@ -3570,6 +3958,7 @@ spoon [] s p u n
 spot [] s p O t
 spread [] s p r\ E d
 spread(2) [] s p r\ E
+sprinkle [] s p r\ i N k u
 square [] s k w E r\
 square(2) [] s k w a
 squeeze [] s k w i z
@@ -3579,6 +3968,7 @@ st [] s t r\ i t
 st(2) [] E s t i
 st(3) [] s eI n t
 st(4) [] s E n t
+stab [] s t a b
 stable [] s t e b u
 stadium [] s t e d i O m
 staff [] s t a f
@@ -3594,6 +3984,7 @@ stand [] s t a n d
 stand(2) [] s t a n
 standa [] s t a n d a
 standard [] s t a n d a d
+starch [] s t a S
 start [] s t a t
 starve [] s t a f
 starve(2) [] s t a v
@@ -3603,6 +3994,8 @@ statement [] s t e t m E n t
 states [] s t eI t s
 states(2) [] s t e t s
 station [] s t e S a n
+status [] s t E t O s
+staunch [] s t O~ S
 stay [] s t eI
 stay(2) [] s t e
 steady [] s t E d i
@@ -3619,12 +4012,14 @@ stock [] s t O k
 stockfish [] s t O k f i S
 stone [] s t o n
 stop [] s t O p
+stops [] s t O p s
 stores [] s t O r\ z
 stores(2) [] s t O s
 stories [] s t O r\ i z
 stories(2) [] s t o r\ i s
 story [] s t O r\ i
 story(2) [] s t o r\ i
+stove [] s t o v
 straight [] s t r\ eI t
 straight(2) [] s r\ eI t
 street [] s t r\ i t
@@ -3635,8 +4030,10 @@ stress [] s t r\ E s
 stress(2) [] s r\ E s
 strike [] s t r\ aI k
 strike(2) [] s r\ aI k
+stroll [] s t r\ O
 strong [] s t r\ O N
 strong(2) [] s r\ O n
+stronghold [] s t r\ o N h o d
 structure [] s r\ O k tS O
 structures [] s r\ O k tS O s
 structures(2) [] s t r\ O k tS O s
@@ -3644,9 +4041,12 @@ struggle [] s r\ O g u
 stubborn [] s t O b O n
 student [] s t u d E n t
 students [] s t u d E n t s
+studies [] s t O d i s
 study [] s t O d i
 stuff [] s t O f
+stumble [] s t O m b u
 stunning [] s t u n i n
+stupid [] s t u p i d
 style [] s t aI l
 style(2) [] s t aI
 su [] s u
@@ -3659,6 +4059,7 @@ subvention [] s O b f E n S a n
 succeed [] s O s i d
 success [] s O s E s
 such [] s O tS
+sue [] s u
 suffer [] s O f a
 suffered [] s O f a
 suffering [] s O f r\ i n
@@ -3690,24 +4091,29 @@ sweat [] s w E t
 sweep [] s w i p
 sweet [] s w i t
 sweet(2) [] s w i
+swe~ [] s w E
 swill [] s w i l
 swim [] s w i m
 switzerland [] s w i s a l a n d
+sy [] s i
 system [] s i s t E m
 t [] t
 t(2) [] t i
 ta [] t a
 tabi [] t a b i
 table [] t e b u
+taboo [] t a b u
 tackle [] t a k u
 tafawa [] t a f a w a
 tai [] t aI
 tail [] t eI l
 tailor [] t e l O
+tailoring [] t e l O r\ i n
 taiwo [] t aI w o
 taju [] t a dZ u
 take [] t eI k
 take(2) [] t e k
+take(3) [] t e
 tale [] t eI l
 tale(2) [] t e l
 talk [] t O k
@@ -3727,6 +4133,7 @@ taste(2) [] t e s t
 tax [] t a s
 taxi [] t a s i
 taxi(2) [] t a k s i
+taxi(3) [] t a g z i
 taxpayer [] t a s p e j a
 tay [] t e
 tay(2) [] t eI
@@ -3737,12 +4144,18 @@ teaches [] t i tS i s
 teaches(2) [] t i tS i z
 teaching [] t i tS i N
 teaching(2) [] t i tS i n
+team [] t i m
 tear [] t E r\
 tear(2) [] t i r\
-tear(3) [] t i a
+tear(3) [] t i E
+tear(4) [] t i a
+tearing [] t i a r\ i n
+tears [] t i E z
 technology [] t E k n o l o dZ i
 teeth [] t i T
 teeth(2) [] t i t
+telco [] t E l k O
+telegraph [] t E l i g r\ a f
 telephone [] t E l i f o n
 television [] t E l i f i S a n
 tell [] t E l
@@ -3750,7 +4163,10 @@ tell(2) [] t E
 telling [] t E l i N
 telling(2) [] t E l i n
 telly [] t E l i
-temptation [] t E m t e S a n
+tempt [] t E m t
+temptation [] t E m t e S a~
+temptation(2) [] t E m t e S a n
+tempted [] t E m t E d
 ten [] t E n
 tenant [] t E n a n t
 tenants [] t E n a n t s
@@ -3775,18 +4191,25 @@ th(4) [] T
 th(5) [] D
 than [] d a n
 than(2) [] D a n
-thank [] t a n k
+thank [] t E~ k
+thank(2) [] t a n k
 that [] D a t
 that(2) [] d a t
+that(3) [] D a
 thatcher [] t a tS a
 the [] d i
 the(2) [] D i
 theatre [] t i a t a
 their [] D E r\
-their(2) [] d i a
+their(2) [] d i E
+their(3) [] d i a
+them [] d e m
+them(2) [] D e m
 theoretical [] t i O r\ E t i k a
 there [] D E r\
-there(2) [] D i a
+there(2) [] D i E
+there(3) [] D i a
+these [] D i z
 they [] D eI
 they(2) [] D e
 thick [] T i k
@@ -3794,10 +4217,12 @@ thick(2) [] t i k
 thief [] T i f
 thief(2) [] t i f
 thiefi [] t i f i
-thing [] T i N
+thing [] T i n
 thing(2) [] t i n
+thing(3) [] T i N
 things [] T i N z
 things(2) [] t i n s
+things(3) [] T i n s
 think [] T i N k
 think(2) [] t i n k
 third [] t O d
@@ -3806,7 +4231,8 @@ thirty [] t a t i
 this [] D i s
 this(2) [] d i s
 thomas [] t O m O s
-those [] D o s
+those [] D o z
+those(2) [] D o s
 though [] D o
 three [] T r\ i
 three(2) [] t r\ i
@@ -3819,6 +4245,8 @@ thug [] t O g
 thursday [] t O s d e
 thy [] D aI
 thy(2) [] d aI
+ti [] t i
+tian [] t j e~
 ticket [] t i k E t
 tiding [] t aI d i n
 tie [] t aI
@@ -3827,17 +4255,24 @@ time [] t aI m
 times [] t aI m z
 times(2) [] t aI m s
 tin [] t i n
+tings [] t i n s
+tins [] t i n s
 tinubu [] t i n u b u
 tire [] t a j a
+titi [] t i t i
 title [] t a
 to [] t u
-to(2) [] t i o
-to(3) [] t o
+to(2) [] t o
+to(3) [] t i o
+toast [] t o s
 today [] t o d e
 today(2) [] t u d eI
 toe [] t o
+togeda [] t o g E d a
 togeder [] t o g E d a
+together [] t u g E D a
 togo [] t o g o
+toh [] t o
 toilet [] t O l E t
 tom [] t O m
 tomato [] t o m a t o
@@ -3849,12 +4284,16 @@ tons [] t O n s
 too [] t u
 top [] t O p
 topic [] t O p i k
+tori [] t O r\ i
+tori(2) [] t o r\ i
 tormentor [] t O m e n t O
+torn [] t O n
 toronto [] t o r\ o n t o
 tortoise [] t O t O i s
 tory [] t O r\ i
 tory(2) [] t o r\ i
 tosin [] t o s i n
+toss [] t O s
 total [] t o t a
 totally [] t o t a l i
 touch [] t O tS
@@ -3863,6 +4302,7 @@ touches [] t O S i s
 touches(2) [] t O tS i s
 tout [] t aU t
 tow [] t o
+towards [] t u w E z
 towel [] t aU l
 towel(2) [] t o w E l
 towers [] t o w a s
@@ -3878,6 +4318,7 @@ trader [] t r\ e d a
 traders [] t r\ e d a s
 trading [] t r\ e d i n
 traditional [] t r\ a d i S a n a
+traditionalist [] t r\ a d i S a n a l i s
 traffic [] t r\ a f i k
 trailer [] t r\ e l a
 train [] t r\ eI n
@@ -3924,6 +4365,8 @@ trying [] t r\ aI i N
 trying(2) [] t r\ aI N
 trying(3) [] t r\ aI n
 turn [] t O n
+tv [] t i v i
+tweeter [] t w i t a
 twelve [] t w E l v
 twelve(2) [] t w E f
 twenty [] t w E n t i
@@ -3967,6 +4410,7 @@ unisex [] j u n i s E k s
 unisex(2) [] u n i s E s
 unite [] j u n aI t
 united [] j u n aI t E d
+unity [] j u n i t i
 universal [] j u n i f a s a
 universities [] j u n i f a s i t i s
 university [] j u n i f a s i t i
@@ -3990,10 +4434,13 @@ used [] j u z d
 used(2) [] j u s
 useful [] j u s f u
 useless [] j u s l E s
+using [] j u z i~
 usual [] j u S u w a
 uziza [] j u s i s a
 v [] v
 v(2) [] v i
+valuable [] v a l u e b u
+value [] v a l j u
 values [] f a l u s
 values(2) [] v a l u s
 vamoose [] f a m u s
@@ -4073,6 +4520,8 @@ wall(2) [] w O
 wallahi [] w a l a j i
 wan [] w O n
 want [] w O n t
+want(2) [] w O~
+want(3) [] w O n
 wanted [] w O n t E d
 wanted(2) [] w O n i d
 wanted(3) [] w O n t i d
@@ -4101,10 +4550,12 @@ wealth(2) [] w E t
 weapon [] w E p O n
 wear [] w E r\
 wear(2) [] w i a
+weda [] w E d a
 wedding [] w E d i n
-wednesday [] w E n z d i
-wednesday(2) [] w E n s d e
-wednesday(3) [] w E n z d eI
+wednesday [] w E n z d e
+wednesday(2) [] w E n z d i
+wednesday(3) [] w E n s d e
+wednesday(4) [] w E n z d eI
 week [] w i k
 weekend [] w i k E n d
 weeks [] w i k s
@@ -4114,9 +4565,12 @@ weight(2) [] w e t
 welcome [] w E k O m
 welder [] w E d a
 welfare [] w E l f E r\
-welfare(2) [] w E f i a
-well [] w E l
-well(2) [] w E
+welfare(2) [] w E f i E
+welfare(3) [] w E f i a
+well [] w E
+well(2) [] w E l
+wen [] w E n
+weodore [] w i O d O r\
 were [] w a
 were(2) [] w E
 west [] w E s t
@@ -4126,32 +4580,42 @@ wetin [] w e t i n
 wey [] w e
 wey(2) [] w eI
 what [] w O t
+what's [] w O t s
 whatever [] w O t E f a
 wheder [] w E d a
-when [] w E n
+when [] w e~
+when(2) [] w E n
 where [] w E r\
-where(2) [] w i a
-whereas [] w i a r\ a s
+where(2) [] w i E
+where(3) [] w i a
+whereas [] w i E r\ a s
+whereas(2) [] w i a r\ a s
 whereby [] w E r\ b aI
-whereby(2) [] w i a b aI
-wherever [] w i a E f a
+whereby(2) [] w i E b aI
+whereby(3) [] w i a b aI
+wherever [] w i E E f a
+wherever(2) [] w i a E f a
 whi [] w i
 which [] w i tS
 while [] w aI l
 while(2) [] w aI
 white [] w aI t
-who [] h u
-who(2) [] w u
+who [] u
+who(2) [] h u
+who(3) [] w u
 whoever [] h u E f a
 whole [] h o
 whosai [] w o s aI
 whose [] h u z
 whose(2) [] h u s
 why [] w aI
+wi [] w i
 wicked [] w i k E d
 wickedness [] w i k E d n E s
 widow [] w i d o
+widows [] w i d o s
 wife [] w aI f
+wike [] w i k e
 will [] w i l
 win [] w i n
 window [] w i n d o
@@ -4160,10 +4624,13 @@ wine [] w aI n
 wipe [] w aI p
 wire [] w a j a
 wire(2) [] w aI r\
+wiring [] w a j a r\ i~
 wisdom [] w i s d O m
 wise [] w aI s
 wise(2) [] w aI z
 wish [] w i S
+wishes [] w i S i Z
+wit [] w i t
 witch [] w i tS
 witchpower [] w i tS p a w a
 with [] w i t
@@ -4176,10 +4643,12 @@ within [] w i t i n
 without [] w i T aU t
 without(2) [] w i t aU t
 without(3) [] w i D aU t
+witness [] w i t n E s
 wive [] w aI f
 wives [] w aI v z
 wives(2) [] w aI f s
 wizard [] w i s a d
+wi~ [] w i
 wo [] w o
 woman [] w u m a n
 women [] w i m E n
@@ -4202,16 +4671,20 @@ worse [] w O s
 worship [] w O S i p
 worst [] w O s t
 worth [] w O t
+would [] w u d
 wound [] w aU n d
 wound(2) [] w u n d
 wowo [] w o w o
+wo~ [] w o
 wr [] w i a r\
 wrap [] r\ a p
 wrapper [] r\ a p a
 wristwatch [] r\ i s t w O tS
 write [] r\ aI t
+writing [] r\ aI t i n
 wrong [] r\ O N
 wrong(2) [] r\ O n g
+www [] d O b u j u d O b u j u d O b u j u
 x [] k s
 x(2) [] E s
 x(3) [] E k s
@@ -4230,12 +4703,16 @@ ye [] j i
 ye(2) [] j e
 ye(3) [] j E
 yeah [] j a
-year [] j i a
-yearly [] j i a l i
+year [] j E
+year(2) [] j i a
+yearly [] j i E l i
+yearly(2) [] j i a l i
 years [] j i r\ z
-years(2) [] j i a s
+years(2) [] j i E s
+years(3) [] j i a s
 yeees [] j E s
 yellow [] j E l o
+yemi [] j E m i
 yes [] j E s
 yesterday [] j E s t a d e
 yet [] j E t
@@ -4246,10 +4723,13 @@ yoruba [] j o r\ u b a
 yorubaland [] j o r\ u b a l a n d
 yorubas [] j o r\ u b a s
 you [] j u
+you'll [] j u l
 young [] j O n g
+younger [] j O n g a
 your [] j O r\
 your(2) [] j u r\
 your(3) [] j O
+yoursef [] j O s E f
 yourself [] j O s E f
 yourself(2) [] j u r\ s E l f
 yourself(3) [] j O r\ s E l f
