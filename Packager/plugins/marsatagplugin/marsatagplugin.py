@@ -30,6 +30,7 @@ import sys
 import os
 import shlex
 from argparse import ArgumentParser
+import subprocess
 from subprocess import Popen, PIPE, STDOUT
 
 PROGRAM = os.path.abspath(__file__)
@@ -38,12 +39,29 @@ if SPPAS is None:
     SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 
 if os.path.exists(SPPAS) is False:
-    print("ERROR: SPPAS not found.")
+    print("ERROR: SPPAS not found in directory: {:s}.".format(SPPAS))
     sys.exit(1)
 sys.path.append(SPPAS)
 
 import sppas.src.annotationdata.aio as aio
 from sppas.src.annotationdata.transcription import Transcription
+
+# ---------------------------------------------------------------------------
+
+
+def test_command(command):
+    """ Test if a command is available.
+
+    :param command: (str) The command to execute as a sub-process.
+
+    """
+    try:
+        NULL = open(os.devnull, "w")
+        subprocess.call([command], stdout=NULL, stderr=subprocess.STDOUT)
+    except OSError:
+        return False
+
+    return True
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -68,6 +86,14 @@ if len(sys.argv) <= 1:
 
 args = parser.parse_args()
 
+
+# ----------------------------------------------------------------------------
+# test java
+
+java_ok = test_command("java")
+if java_ok is False:
+    print("ERROR: Java must be installed for MarsaTag to operate.")
+    sys.exit(1)
 
 # ----------------------------------------------------------------------------
 # Convert input file if not TextGrid
@@ -98,21 +124,31 @@ if fext.lower() != "textgrid":
 # ----------------------------------------------------------------------------
 # Get MarsaTag path 
 
-MARSATAG = args.p
-
-if len(MARSATAG) == 0:
+if len(args.p) == 0:
     print("ERROR: No given directory for MarsaTag software tool.")
     sys.exit(1)
 
-if os.path.isdir(MARSATAG) is False:
-    print("ERROR: {:s} is not a valid directory.".format(MARSATAG))
+if os.path.isdir(args.p) is False:
+    print("ERROR: {:s} is not a valid directory.".format(args.p))
+    sys.exit(1)
+
+MARSATAG = os.path.join(args.p, "lib", "MarsaTag-UI.jar")
+if os.path.exists(MARSATAG) is False:
+    print("ERROR: MarsaTag is not properly installed: {:s} is not existing.".format(MARSATAG))
+    sys.exit(1)
+
+# ----------------------------------------------------------------------------
+# Check the given filename
+
+if os.path.exists(filename) is False:
+    print("ERROR: The given file can't be found: {s}.".format(filename))
     sys.exit(1)
 
 # ----------------------------------------------------------------------------
 # Call MarsaTag
 
-command = "java -Xms300M -Xmx600M -Dortolang.home=" + MARSATAG
-command += ' -jar "' + os.path.join(MARSATAG, "lib", "MarsaTag-UI.jar") + '" '
+command = "java -Xms300M -Xmx600M -Dortolang.home=" + args.p
+command += ' -jar "' + MARSATAG + '" '
 command += ' --cli '
 command += ' -tier TokensAlign '
 command += ' -reader praat-textgrid '

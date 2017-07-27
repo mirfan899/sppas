@@ -358,6 +358,9 @@ class PluginsListPanel(wx.lib.scrolledpanel.ScrolledPanel):
         self.GetSizer().Add(box, flag=wx.ALL | wx.EXPAND, border=0)
         self._plugins[plugin_id] = (button_id, box, txt_readme)
 
+        self.Layout()
+        self.Refresh()
+
     # -----------------------------------------------------------------------
 
     def Remove(self):

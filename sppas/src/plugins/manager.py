@@ -44,6 +44,7 @@ from threading import Thread
 
 from sppas import PLUGIN_PATH
 from sppas.src.utils.fileutils import sppasDirUtils
+from sppas.src.utils.makeunicode import u
 from . import get_info
 from .pluginsexc import PluginArchiveFileError
 from .pluginsexc import PluginArchiveIOError
@@ -245,7 +246,12 @@ class sppasPluginsManager(Thread):
             if len(result) == 0:
                 output_lines += get_info("4015")
             else:
-                output_lines += result
+                try:
+                    output_lines += u(result)
+                except Exception as e:
+                    output_lines += get_info("4100")
+                    logging.info(str(e))
+                    logging.info(result)
 
             # Indicate progress
             if self._progress is not None:

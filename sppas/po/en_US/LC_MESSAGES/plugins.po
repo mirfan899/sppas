@@ -15,7 +15,7 @@ msgstr ""
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.0.2\n"
 
 msgid ":ERROR 4010: "
 msgstr "Missing plugin configuration file."
@@ -61,3 +61,6 @@ msgstr "Plugin task done."
 
 msgid ":INFO 4020: "
 msgstr "Plugin task completed."
+
+msgid ":INFO 4100: "
+msgstr "An unexpected error occurred. See the logging windows for details."

@@ -98,7 +98,8 @@ class sppasChannelMFCC(object):
         :param scpfile: (str)
 
         """
-        if test_command("HCopy") is False: return False
+        if test_command("HCopy") is False:
+            return False
 
         try:
             subprocess.check_call(["HCopy", "-T", "0",
@@ -115,5 +116,3 @@ class sppasChannelMFCC(object):
         """ Evaluate MFCC of the given channel. """
 
         raise NotImplementedError
-
-    # ----------------------------------------------------------------------
