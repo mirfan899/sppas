@@ -8,8 +8,7 @@
     <http://www.sppas.org/>
 
     * Use of this software is governed by GPL version 3 or any later version.
-    * Documentation of this software is governed by GNU Free Documentation
-    License, version 1.3.
+    * Documentation of this software is governed by GNU Free Documentation License, version 1.3.
     * Resources of this software have individual licenses (see documentation).
 
     SPPAS is free software: you can redistribute it and/or modify
@@ -23,7 +22,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+    along with SPPAS. If not, see http://www.gnu.org/licenses/.
 
     -------------------------------------------------------------------------
 
@@ -34,16 +33,16 @@
     Any and all constructive comments are welcome. Contact the author:
 
     - `brigitte.bigi@gmail.com`
-    - <http://www.lpl-aix.fr/~bigi>
+    - http://www.lpl-aix.fr/~bigi/
 
     -------------------------------------------------------------------------
 
     By using SPPAS, you agree to cite a reference in your publications.
 
-        >Brigitte BIGI (2015).
-        >SPPAS - Multi-lingual Approaches to the Automatic Annotation of Speech.
-        >the Phonetician - International Society of Phonetic Sciences,
-        >ISSN 0741-6164, Number 111-112 / 2015-I-II, pages 54-69.
+        Brigitte BIGI (2015).
+        SPPAS - Multi-lingual Approaches to the Automatic Annotation of Speech.
+        the Phonetician - International Society of Phonetic Sciences,
+        ISSN 0741-6164, Number 111-112 / 2015-I-II, pages 54-69.
 
     Other references are available in the documentation.
 

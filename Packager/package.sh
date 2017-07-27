@@ -339,6 +339,8 @@ function fct_compare_sppas_results {
     rm -rf $SAMPLES_DIR/hypothesis/*/*-phon.*
     rm -rf $SAMPLES_DIR/hypothesis/*/*-palign.*
     rm -rf $SAMPLES_DIR/hypothesis/*/*-salign.*
+    rm -rf $SAMPLES_DIR/hypothesis/*/*-momel.*
+    rm -rf $SAMPLES_DIR/hypothesis/*/*-intsint.*
     rm -rf $SAMPLES_DIR/hypothesis/*.log
 
     echo " ######### ############################ ######### " >> $LOG_DIAGNOSIS
@@ -423,8 +425,8 @@ function fct_test_api {
 # Main function for the diagnosis
 function fct_diagnosis {
     fct_echo_title "${PROGRAM_NAME} - Diagnosis"
-    fct_test_api
-    fct_test_bin
+    #fct_test_api
+    #fct_test_bin
     fct_compare_sppas_results
     echo "Check out the $LOG_DIAGNOSIS file for details."
 }
