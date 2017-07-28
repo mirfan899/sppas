@@ -428,7 +428,7 @@ def gen_html_file(doc, css_filename, files, result_filename):
     command += " -s"
     command += " --toc"
     command += " --mathjax"
-    command += " --html5"
+    command += " --html"   # " --html5"
     command += " --css " + css_filename
     command += " -H " + head_html_file
     command += " -B " + body_header_html_file
@@ -523,7 +523,7 @@ def generate_web(doc_dir, doc_temp):
 
     # get the list of all indexed folders in the documentation directory
     base_doc = sppasDocFiles(doc_dir, doc_temp)
-    folders, titles = base_doc.get_doc_folders()
+    folders = base_doc.get_doc_folders()
 
     for folder in folders:
         print(folder)

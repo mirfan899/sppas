@@ -95,13 +95,13 @@ Resources:
 - Polish dictionary and acoustic model updated.
 
 
-### SPPAS 1.9 (2017, 16th August)
+### SPPAS 1.9.0 (2017, 28th July)
 
-Development:
+#### Programming:
 
 - Relative imports used in the standard way for Python
-- PEP 8 code style (except for wxgui)
-- PEP 257 reST code documentation style (except for wxqui)
+- PEP 8 code style (except for wxgui/annotationdata)
+- PEP 257 reST code documentation style (except for wxqui/annotationdata)
 - Unittests:
 
       - existing tests verified, improved, extended
@@ -115,7 +115,7 @@ Development:
       migration is done
       
 - Exceptions are separately managed
-- introduction of a system for the internationalization of the messages. Done
+- Introduction of a system for the internationalization of the messages. Done
   in English and French for the packages: audiodata, calculus, plugins, 
   resources, structs, term, utils
 - Package re-organization:
@@ -123,33 +123,37 @@ Development:
     - new package "models", with acm and slm
     - utils 
     - resources
+    - ...
     
 - meta.py is replacing sp_glob.py
 - new scripts: tieraligntophon.py, dictmerge.py
+- new bin: pluginbuild.py
 - Robustness to read malformed HTK-ASCII pronunciation dictionaries.
 - Bug corrected in the management of pronunciation variants
+- re-structured package TextNormalization
+- re-structured package Repetitions
+- new version of the plugins: updated and debugged.
 
-Resources: 
+#### Resources: 
 
 - Add support of Naija language (pcm)
 - English-French mapping table updated
 
-Annotations:
+#### Annotations:
 
 - Tokenizer renamed into Text Normalization:
 
-    - re-structured package
-    - debug: mainly for English language, and punctuations
-    - new option: output a customized tier.
+    - a lot of debug mainly for English language, and punctuation managements
+    - new option: can output a customized tier.
     
 - Repetitions:
 
-    - re-structured package
-    - debug
+    - some debug
   
-Communication:
+#### Communication:
 
 - Add a description document of the orthographic transcription convention
   in the package.
 - Web page updated, new tutorials available
 - Documentation updated
+- Better information about the licenses

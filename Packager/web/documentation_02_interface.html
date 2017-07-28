@@ -7,7 +7,7 @@
   <meta name="author" content="Brigitte Bigi" />
   <title>SPPAS Documentation</title>
   <style type="text/css">code{white-space: pre;}</style>
-  <link rel="stylesheet" href="./etc/styles/sppas.css" />
+  <link rel="stylesheet" href="./etc/styles/sppas.css" type="text/css" />
       <!----------------------------------------------------------------->
   
       <div class="footer">
@@ -54,7 +54,7 @@
         <a class="download" href="download.html">Download</a>
         <a class="tutorial" href="tutorial.html">Tutorials</a>
         <a class="documentation" href="documentation.html">Documentation</a>
-        <a class="group"    href="https://groups.google.com/forum/?fromgroups#!forum/sppas-users">User's group</a>
+        <a class="group"    href="faq.html">F.A.Q.</a>
     </div>
 
     <!----------------------------------------------------------------->
@@ -82,41 +82,45 @@
 </ul>
 </div>
 <hr />
-<h1 id="interface"><a href="#interface">Interface</a></h1>
-<h2 id="introduction"><a href="#introduction">Introduction</a></h2>
+<h1 id="interface">Interface</h1>
+<h2 id="introduction">Introduction</h2>
 <p>The current chapter describes how to use SPPAS with the Graphical User Interface (GUI) and with the Command-line User Interface (CLI). Each feature implemented in SPPAS corresponds to a program that can be invoked by the GUI or the CLI.</p>
-<h2 id="gui-main-frame"><a href="#gui-main-frame">GUI Main frame</a></h2>
-<h3 id="launch-sppas"><a href="#launch-sppas">Launch SPPAS</a></h3>
+<h2 id="gui-main-frame">GUI Main frame</h2>
+<h3 id="launch-sppas">Launch SPPAS</h3>
 <p>Under Windows, once the SPPAS package is opened in the File Explorer, double-click on the <code>sppas.bat</code> file. In recent versions of Windows (e.g. 10), the first time you try to run SPPAS you may get a window with title &quot;Windows protected your PC&quot; and the following message: &quot;Windows SmartScreen prevented an unrecognized app from starting. Running this app might put your PC at risk. More info&quot;. Click <code>More info</code> message and then <code>Run anyway</code> button. The file will now run SPPAS, and you will now no longer get a Windows protected your PC prompt when you run this specific file next time. This warning message comes from the fact that SPPAS is a free software and we did not paid to Microsoft commercial fees which would remove the &quot;Unknown Publisher&quot; warnings.</p>
 <p>Under MacOS, once the SPPAS package is opened in the Finder, double-click on the <code>sppas.command</code> file. In recent versions of MacOs X (e.g. from 10.11 El Capitan), the first time you try to run SPPAS you may get a message: &quot;sppas.command can't be opened because it is from an unidentified developer.&quot;. This warning message comes from the fact that SPPAS is a free software and we did not paid to Apple commercial fees. The solution is to run SPPAS with a right click (alt-click) on sppas.command file. This time you will get a message: &quot;sppas.command is from an unidentified developer. Are you sure you want to open it?&quot; Then click on <code>Open</code>. It will also now work each time you run it.</p>
 <p>Under Linux, once the SPPAS package is opened in the Finder/File Explorer, double-click on the <code>sppas.command</code> file.</p>
 <p>The program will first check the version of wxpython and eventually ask to update. It will then check if the julius program can be accessed.</p>
 <p>The main windows will open automatically. It is made of a menu (left), a title (top), the tips (middle), the list of files (left-middle), and the action buttons (right).</p>
-<figure>
-<img src="./etc/screenshots/sppas-1-8-0.png" alt="Main Frame of version 1.9.0" /><figcaption>Main Frame of version 1.9.0</figcaption>
-</figure>
-<h3 id="the-tips"><a href="#the-tips">The tips</a></h3>
-<figure>
-<img src="./etc/screenshots/tips.png" alt="The tips included in the main frame" /><figcaption>The tips included in the main frame</figcaption>
-</figure>
+<div class="figure">
+<img src="./etc/screenshots/sppas-1-8-0.png" alt="Main Frame of version 1.9.0" />
+<p class="caption">Main Frame of version 1.9.0</p>
+</div>
+<h3 id="the-tips">The tips</h3>
+<div class="figure">
+<img src="./etc/screenshots/tips.png" alt="The tips included in the main frame" />
+<p class="caption">The tips included in the main frame</p>
+</div>
 <p>The frame includes message tips that are picked up randomly and printed to help users. Click on the button <code>Next Tip</code> to read another message, or click on the top-left button to close the tips frame. The <code>Settings</code> allows to show/hide tips at start-up. Anyone can suggest new tips to help other users. They have to be sent to the author by e-mail so that they will be included in the next version.</p>
-<h3 id="the-menu"><a href="#the-menu">The menu</a></h3>
+<h3 id="the-menu">The menu</h3>
 <p>The menu is located at the left-side of the window. At top, a button allows to exit the program, and at bottom you can declare an issue or contact the author.</p>
 <p>The <code>Exit</code> button closes all SPPAS frames properly.</p>
 <p>To declare an issue, click on the bug button of the menu, then your default web browser will be opened at the appropriate URL. Take a quick look at the list of already declared issues and if any, click on the green button &quot;New Issue&quot;.</p>
 <p>To contact the author, replace the text &quot;Describe what you did here...&quot; by your own comment, question or suggestion and choose how to send the e-mail: with your own default mailer, with gmail opened in your web browser, or by another e-mail client. Then, close the frame by clicking on the &quot;Close&quot; button.</p>
-<figure>
-<img src="./etc/screenshots/feedback.png" alt="The Feedback Frame" /><figcaption>The Feedback Frame</figcaption>
-</figure>
-<h3 id="the-file-explorer"><a href="#the-file-explorer">The file explorer</a></h3>
-<figure>
-<img src="./etc/screenshots/FLP.png" alt="File explorer" /><figcaption>File explorer</figcaption>
-</figure>
+<div class="figure">
+<img src="./etc/screenshots/feedback.png" alt="The Feedback Frame" />
+<p class="caption">The Feedback Frame</p>
+</div>
+<h3 id="the-file-explorer">The file explorer</h3>
+<div class="figure">
+<img src="./etc/screenshots/FLP.png" alt="File explorer" />
+<p class="caption">File explorer</p>
+</div>
 <p>The list contains directories and files the user added. However, only files that SPPAS can deal with, e.g. depending on the file extension, can be appended to the list. Files with an unknown extension are rejected.</p>
 <blockquote>
 <p>Remark: The files are added in the list, but they are not opened.</p>
 </blockquote>
-<h4 id="select-files"><a href="#select-files">Select file(s)</a></h4>
+<h4 id="select-files">Select file(s)</h4>
 <p>To select a single file, all files of a directory or several files:</p>
 <ul>
 <li>a single click on a file name highlights and selects the chosen file. If other files or directories were previously selected, they are deselected.</li>
@@ -124,79 +128,84 @@
 <li>to select several files or directories, the <code>ctrl</code> key (Linux/Windows) or <code>CMD</code> key (Apple) must be pressed while clicking each file or directory.</li>
 <li>to select several files or directories, the <code>shift</code> key can be pressed while clicking two files or directories.</li>
 </ul>
-<h4 id="add-files"><a href="#add-files">Add file(s)</a></h4>
+<h4 id="add-files">Add file(s)</h4>
 <p>A single-click on the <code>Add files</code> button opens a window that allows to select the files to get. By default, only files with &quot;.wav&quot; extensions are proposed. When audio file(s) is/are selected, all files with the same name are automatically added into the file explorer.</p>
 <p>The wildcard of this window can be changed to some other specific file extensions and then other files can be selected.</p>
 <p>In both cases, only files with an appropriate extension will be added in the file explorer.</p>
-<figure>
-<img src="./etc/screenshots/FLP-Add.png" alt="Adding specific files" /><figcaption>Adding specific files</figcaption>
-</figure>
-<h4 id="add-a-directory"><a href="#add-a-directory">Add a directory</a></h4>
+<div class="figure">
+<img src="./etc/screenshots/FLP-Add.png" alt="Adding specific files" />
+<p class="caption">Adding specific files</p>
+</div>
+<h4 id="add-a-directory">Add a directory</h4>
 <p>A single-click on the <code>Add dir</code> button opens a window that allows to select the directory to get. Each audio file, and all related files - i.e. with the same name and with an appropriate extension, will be added into the file explorer.</p>
-<h4 id="remove-files"><a href="#remove-files">Remove file(s)</a></h4>
+<h4 id="remove-files">Remove file(s)</h4>
 <p>A single-click on the <code>Remove</code> button removes the selected files/directories of the list. Notice that files are not deleted from the disk.</p>
-<h4 id="delete-files"><a href="#delete-files">Delete file(s)</a></h4>
+<h4 id="delete-files">Delete file(s)</h4>
 <p>A single-click on the <code>Delete</code> button deletes <em>definitively</em> the selected files/directories of your computer, and remove them of the list. Notice that there is no way to get them back!</p>
 <p>A dialogue window will open, and you have to confirm or cancel the definitive file(s) deletion.</p>
-<h4 id="copy-files"><a href="#copy-files">Copy file(s)</a></h4>
+<h4 id="copy-files">Copy file(s)</h4>
 <p>A single-click on the <code>Copy</code> button allows to copy the selected file(s), change their name and/or change the location. It is also possible to change the file format by assigning the appropriate file extension.</p>
-<h4 id="export-files"><a href="#export-files">Export file(s)</a></h4>
+<h4 id="export-files">Export file(s)</h4>
 <p>Export annotated files in an other format (csv, txt, ...):</p>
-<figure>
-<img src="./etc/screenshots/FLP-Export.png" alt="Export: Check the expected format in the list" /><figcaption>Export: Check the expected format in the list</figcaption>
-</figure>
+<div class="figure">
+<img src="./etc/screenshots/FLP-Export.png" alt="Export: Check the expected format in the list" />
+<p class="caption">Export: Check the expected format in the list</p>
+</div>
 <p>After the export, a new window opens to report whether the file(s) were exported successfully or not. Actually, an export fails if: - the given file is not in UTF-8 encoding; - the given file contains several tiers and the output format supports only one; - the given file contains corrupted annotations.</p>
-<h3 id="settings"><a href="#settings">Settings</a></h3>
+<h3 id="settings">Settings</h3>
 <p>To change user preferences, click on the <code>Settings</code> icon, then choose your preferred options in the tabs:</p>
 <ul>
 <li>General: fix background color, font color and font of the GUI, and enable/disable tips at start-up.</li>
 <li>Theme: fix how the icons of the GUI will look like.</li>
 <li>Annotations: fix automatic annotations parameters.</li>
 </ul>
-<figure>
-<img src="./etc/screenshots/settings.png" alt="Settings is used to manage user preferences" /><figcaption>Settings is used to manage user preferences</figcaption>
-</figure>
+<div class="figure">
+<img src="./etc/screenshots/settings.png" alt="Settings is used to manage user preferences" />
+<p class="caption">Settings is used to manage user preferences</p>
+</div>
 <p>These preferences can be saved in a file to be used each time SPPAS is executed. Finally, to close the settings window, click on:</p>
 <ul>
 <li>&quot;Cancel&quot; button to ignore changes;</li>
 <li>&quot;Close&quot; to apply changes then close the window.</li>
 </ul>
-<h3 id="about"><a href="#about">About</a></h3>
+<h3 id="about">About</h3>
 <p>The <code>About</code> action button allows to display the main information about SPPAS: author, license, a link to the web site, etc.</p>
-<h3 id="help"><a href="#help">Help</a></h3>
+<h3 id="help">Help</h3>
 <p>The <code>Help</code> action button opens the documentation and allows to browse in the chapters and sections.</p>
-<figure>
-<img src="./etc/screenshots/help.png" alt="The Help browser window" /><figcaption>The Help browser window</figcaption>
-</figure>
-<h3 id="plugins"><a href="#plugins">Plugins</a></h3>
+<div class="figure">
+<img src="./etc/screenshots/help.png" alt="The Help browser window" />
+<p class="caption">The Help browser window</p>
+</div>
+<h3 id="plugins">Plugins</h3>
 <p>Installing plugins is a very useful solution to extend the features of SPPAS. Several plugins are available for download in the main site of SPPAS. The plugins of SPPAS are installed in a folder with name &quot;plugins&quot; in the main directory of SPPAS.</p>
 <blockquote>
 <p>The plugin system of SPPAS was fully changed at version 1.8.2; and plugins were all updated at version 1.9.0. Old plugins and new ones are not compatibles.</p>
 </blockquote>
-<h4 id="installing-a-plugin"><a href="#installing-a-plugin">Installing a plugin</a></h4>
+<h4 id="installing-a-plugin">Installing a plugin</h4>
 <p>To install a plugin, simply follow this workflow:</p>
-<ol type="1">
+<ol style="list-style-type: decimal">
 <li>Download the plugin package - e.g. a zip file.</li>
 <li>Execute SPPAS.</li>
 <li>Click on the 'Plugin' icon then click on the 'Install' button of the toolbar.</li>
 <li>Browse to indicate the plugin package.</li>
 <li>See the new plugin icon in the plugins list.</li>
 </ol>
-<figure>
-<img src="./etc/figures/plugin-workflow.png" alt="Installing a new Plugin" /><figcaption>Installing a new Plugin</figcaption>
-</figure>
-<h4 id="deleting-a-plugin"><a href="#deleting-a-plugin">Deleting a plugin</a></h4>
+<div class="figure">
+<img src="./etc/figures/plugin-workflow.png" alt="Installing a new Plugin" />
+<p class="caption">Installing a new Plugin</p>
+</div>
+<h4 id="deleting-a-plugin">Deleting a plugin</h4>
 <p>To delete a plugin, click on the &quot;Delete&quot; button of the toolbar. Choose the plugin in the given list then click on the &quot;OK&quot; button. Notice that the plugin is definitively deleted of the disk.</p>
-<h4 id="using-a-plugin"><a href="#using-a-plugin">Using a plugin</a></h4>
+<h4 id="using-a-plugin">Using a plugin</h4>
 <p>To execute a plug-in, select file(s) in the File explorer, click on the icon of the plug-in and follow instructions of the plugged program.</p>
-<h2 id="cli"><a href="#cli">CLI</a></h2>
+<h2 id="cli">CLI</h2>
 <p>A command-line interface (CLI), also known as command-line user interface, is a means of interacting with a computer program where the user issues commands to the program in the form of successive lines of text (command lines). Command-line interfaces provide a more concise and powerful means to control the program than the GUI.</p>
 <p>Operating system command line interfaces are called a command-line interpreter, command processor or shell. It displays a prompt, accept a &quot;command line&quot; typed by the user terminated by the Enter key, then execute the specified command and provide textual display of results or error messages. When a shell is active a program is typically invoked by typing its name followed by command-line arguments (if any).</p>
 <p>Such programs are located in the <code>bin</code> folder of the <code>sppas</code> directory included in the SPPAS package. All these programs are written with the programming language Python 2.7.</p>
 <p>It is usual for a program to be able to display a brief summary of its parameters. Each program included in SPPAS provides its usage by using the option <code>--help</code>, as for example:</p>
 <pre><code>prompt&gt; annotation.py --help</code></pre>
 <p>There are 2 types of programs in the <code>sppas/bin</code> folder:</p>
-<ol type="1">
+<ol style="list-style-type: decimal">
 <li>programs to execute an automatic annotation. These programs only requires Python 2.7 to be installed, and <code>julius</code> or <code>hvite</code> for the alignment program. They do not use a GUI so that installing wxPython is not required.</li>
 <li>programs to execute an analysis tool. They take as argument the files to work on and they open the corresponding window. The GUI is launch.</li>
 </ol>
