@@ -162,13 +162,25 @@ command += ' -out-ext -pos.TextGrid '
 command += ' --oral '
 command += ' -M -P -Q '
 command += ' ' + filename
-
 command_args = shlex.split(command)
+
+# Marsatag 0.8.5 is using marsatag.home instead of ortolang.home, without retro-compatibility.
 p = Popen(command_args, shell=False, stdout=PIPE, stderr=STDOUT)
-message = p.communicate()
+message = p.communicate()[0]
+if message is not None:
+    message = u(message)
+    if u("Can't found morpholexical dictionnary") in message:
+        command = command.replace("-Dortolang", "-Dmarsatag")
+        command_args = shlex.split(command)
+        p = Popen(command_args, shell=False, stdout=PIPE, stderr=STDOUT)
+        message = p.communicate()[0]
+        if message is not None:
+            message = u(message)
+
 if message is None:
-    message = ["Done."]
-print("".join(message[0]))
+    print("Done.")
+else:
+    print(message.encode('utf8'))
 
 # ----------------------------------------------------------------------------
 # Clean
