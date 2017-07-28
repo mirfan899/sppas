@@ -1,0 +1,75 @@
+# English translation for SPPAS
+# Copyright (c) 2011-2017 Brigitte Bigi
+# This file is distributed under the same license as the SPPAS package.
+# Brigitte Bigi <brigitte.bigi@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: SPPAS\n"
+"Report-Msgid-Bugs-To: brigitte.bigi@gmail.com\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Brigitte Bigi <brigitte.bigi@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Language: en_US\n"
+"X-Generator: Poedit 1.5.4\n"
+
+msgid ":ERROR 1000: "
+msgstr "No annotated file defined."
+
+msgid ":ERROR 1100: "
+msgstr "{!s:s} is not of the expected type '{:s}'."
+
+msgid ":ERROR 1200: "
+msgstr "Invalid index value {:d}."
+
+msgid ":ERROR 1105: "
+msgstr "The object {!s:s} is not of the same type as the object {!s:s}."
+
+msgid ":ERROR 1110: "
+msgstr "Expected a positive value. Got '{:f}'."
+
+msgid ":ERROR 1120: "
+msgstr ""
+"The begin must be strictly lesser than the end in an interval. Got: [{!s:s};"
+"{!s:s}]."
+
+msgid ":ERROR 1130: "
+msgstr "{!s:s} is not included in the controlled vocabulary."
+
+msgid ":ERROR 1140: "
+msgstr ""
+"Can't append annotation. Current end {!s:s} is highest than the given one {!"
+"s:s}."
+
+msgid ":ERROR 1142: "
+msgstr ""
+"Can't add annotation. An annotation with the same location is already in the "
+"tier at index {:d}."
+
+msgid ":ERROR 1144: "
+msgstr "Attempt a modification in tier '{:s}' that invalidates its hierarchy."
+
+msgid ":ERROR 1150: "
+msgstr "Can't add: '{:s}' is already in the transcription."
+
+msgid ":ERROR 1500: "
+msgstr "The file {!s:s} contains non UTF-8 characters: {:s}."
+
+msgid ":ERROR 1505: "
+msgstr "Fail formats: unrecognized extension for file {:s}."
+
+msgid ":ERROR 1510: "
+msgstr "The file format {!s:s} does not support multi-tiers."
+
+msgid ":ERROR 1515: "
+msgstr "The file format {!s:s} does not support to save no tiers."
+
+msgid ":ERROR 1520: "
+msgstr "Unexpected format string at line {:d}: '{!s:s}'."
+
+msgid ":ERROR 1525: "
+msgstr "The file format {!s:s} does not support to save empty tiers: {:s}."

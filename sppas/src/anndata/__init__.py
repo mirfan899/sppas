@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # -*- coding: UTF-8 -*-
 """
     ..
@@ -30,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.utils.audiodata
-    ~~~~~~~~~~~~~~~~~~~~~
+    src.anndata
+    ~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -39,16 +38,26 @@
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
 
-    Management of digital audio data.
+    Management of transcribed data.
+
+    anndata is a free and open source Python library to access and search
+    data from annotated data. It can convert file formats like Elan’s EAF,
+    Praat's TextGrid and others into a Transcription() object and convert into
+    any of these formats. Those objects allow unified access to linguistic
+    data from a wide range sources.
+    This API then supports to merge data and annotation from a wide range of
+    heterogeneous data sources for further analysis. To get the list of
+    file extensions currently supported for reading and writing:
+
+        >>> ext = anndata.aio.extensions
+
+    Some details can be found in the following publication:
+
+        | Brigitte Bigi, Tatsuya Watanabe, Laurent Prévot (2014).
+        | Representing Multimodal Linguistics Annotated data,
+        | Proceedings of the 9th edition of the Language Resources and
+        | Evaluation Conference, 26-31 May 2014, Reykjavik, Iceland.
 
 """
 from sppas.src.utils.maketext import translate
-t = translate("audiodata")
-
-from .audio import sppasAudioPCM
-from .channel import sppasChannel
-
-__all__ = [
-    'sppasAudioPCM',
-    'Channel'
-]
+t = translate("anndata")

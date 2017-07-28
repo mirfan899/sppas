@@ -86,6 +86,90 @@ def setup_logging(log_level, filename=None):
 # ----------------------------------------------------------------------------
 
 
+class sppasGUID(object):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Utility tool to generate an id.
+
+    This class is a manager for GUID - globally unique identifier.
+
+    GUIDs are usually stored as 128-bit values, and are commonly
+    displayed as 32 hexadecimal digits with groups separated by hyphens,
+    such as {21EC2020-3AEA-4069-A2DD-08002B30309D}.
+
+    """
+    def __init__(self):
+        self.__guid = sppasGUID.generates()
+
+    # ---------------------------------------------------------------------------
+
+    def get(self):
+        return self.__guid
+
+    # ---------------------------------------------------------------------------
+
+    @staticmethod
+    def random_hexachar(y, lowercase=True):
+        if lowercase:
+            return ''.join(random.choice('abcdef') for x in range(y))
+        return ''.join(random.choice('ABCDEF') for x in range(y))
+
+    # ---------------------------------------------------------------------------
+
+    @staticmethod
+    def random_char(y, lowercase=True):
+        if lowercase:
+            return ''.join(random.choice(string.ascii_lowercase) for x in range(y))
+        return ''.join(random.choice(string.ascii_letters) for x in range(y))
+
+    # ---------------------------------------------------------------------------
+
+    @staticmethod
+    def random_int(y):
+        return ''.join(str(random.randint(0, 9)) for x in range(y))
+
+    # ---------------------------------------------------------------------------
+
+    @staticmethod
+    def generates():
+        """ Generate a GUID - globally unique identifier. """
+
+        s = ''
+        s += sppasGUID.random_int(1)
+        s += sppasGUID.random_hexachar(1)
+        s += sppasGUID.random_int(3)
+        s += sppasGUID.random_hexachar(1)
+        s += sppasGUID.random_int(1)
+        s += sppasGUID.random_hexachar(1)
+        s += "-"
+        s += sppasGUID.random_int(1)
+        s += sppasGUID.random_hexachar(1)
+        s += sppasGUID.random_int(2)
+        s += "-"
+        s += sppasGUID.random_int(1)
+        s += sppasGUID.random_hexachar(1)
+        s += sppasGUID.random_int(2)
+        s += "-"
+        s += sppasGUID.random_int(1)
+        s += sppasGUID.random_hexachar(2)
+        s += sppasGUID.random_int(1)
+        s += "-"
+        s += sppasGUID.random_int(4)
+        s += sppasGUID.random_hexachar(2)
+        s += sppasGUID.random_int(1)
+        s += sppasGUID.random_hexachar(1)
+        s += sppasGUID.random_int(3)
+        s += sppasGUID.random_hexachar(1)
+
+        return s
+
+# ----------------------------------------------------------------------------
+
+
 class sppasFileUtils(object):
     """
     :author:       Brigitte Bigi

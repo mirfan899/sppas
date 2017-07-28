@@ -174,3 +174,8 @@ class TestMakeUnicode(unittest.TestCase):
 
     def test_strip(self):
         self.assertEqual(sppasUnicode('  \n Ỹ  \t\r   ỏ  ').to_strip(), u('Ỹ ỏ'))
+
+    def test_b(self):
+        s = "  ée  àa  çc  "
+        #print(u(s))
+        #print(b(u(s)))

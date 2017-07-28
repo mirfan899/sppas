@@ -50,7 +50,6 @@
 """
 from __future__ import unicode_literals
 import sys
-import codecs
 import re
 
 from sppas import encoding
@@ -81,7 +80,7 @@ else:
         return x
 
     def b(x):
-        return codecs.encode(x, encoding, errors='strict')
+        return x.encode(encoding)
         # return codecs.utf_8_encode(x)[0]
 
 # ---------------------------------------------------------------------------
@@ -94,7 +93,7 @@ class sppasUnicode(object):
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Make unicode strings.
+    :summary:      Make a string as unicode and operates on it.
 
     """
     def __init__(self, entry):
