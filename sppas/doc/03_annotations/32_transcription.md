@@ -23,8 +23,8 @@ what is recommended.
 Convention overview:
 
 * truncated words, noted as a '-' at the end of the token string (an ex- example);
-* noises, noted by a '*' (not available for: English, Japanese and Cantonese);
-* laughs, noted by a '@' (not available for: English, Japanese and Cantonese);
+* noises, noted by a '*' (not available for Japanese and Cantonese);
+* laughs, noted by a '@' (not available for Japanese and Cantonese);
 * short pauses, noted by a '+';
 * elisions, mentioned in parenthesis;
 * specific pronunciations, noted with brackets [example,eczap];

@@ -3,7 +3,8 @@
 + [] sil
 </s> [] sil
 <s> [] sil
-<unk> [] sil
+<unk> [] dummy
+dummy [] dummy
 @ [] @@
 a [] eI
 a(2) [] a

@@ -1,8 +1,11 @@
 # [] sil
+* [] gb
 + [] sil
 </s> [] sil
 <s> [] sil
-<unk> [] sil
+<unk> [] dummy
+dummy [] dummy
+@ [] @@
 a [] @
 a(2) [] eI
 a'ready [] @ r\ E d i:
