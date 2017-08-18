@@ -126,6 +126,11 @@ class XRA(Transcription):
             mediamime = mediaRoot.attrib['mimetype']
         media = Media(mediaid,mediaurl,mediamime)
 
+	# Read metadata if any
+        metadataRoot = mediaRoot.find('Metadata')
+        if metadataRoot is not None:
+            XRA.__read_metadata(media, metadataRoot)
+
         # Add content if any
         contentRoot = mediaRoot.find('Content')
         if contentRoot:
@@ -228,6 +233,11 @@ class XRA(Transcription):
         label = XRA.__parse_label(labelRoot)
 
         annotation = Annotation(location, label)
+	# Read metadata if any
+        metadataRoot = annotationRoot.find('Metadata')
+        if metadataRoot is not None:
+            XRA.__read_metadata(annotation, metadataRoot)
+
         tier.Add(annotation)
 
     # -----------------------------------------------------------------
