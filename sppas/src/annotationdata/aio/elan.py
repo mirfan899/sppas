@@ -447,8 +447,9 @@ class Elan( Transcription ):
                 mediaRoot.set( 'MEDIA_URL', media.url )
                 mediaRoot.set( 'MIME_TYPE', media.mime )
                 # other...
-                if 'RELATIVE_MEDIA_URL' in media.metadata.keys():
-                    mediaRoot.set( 'RELATIVE_MEDIA_URL', media.metadata['RELATIVE_MEDIA_URL'] )
+                rel_url = media.metadata.get('RELATIVE_MEDIA_URL') or media.metadata.get('RELATIVE_MEDIA_URL'.lower()) # some reader transform metadata keys to lowercase
+		if rel_url:
+                    mediaRoot.set( 'RELATIVE_MEDIA_URL', rel_url )
 
     # -----------------------------------------------------------------
 
