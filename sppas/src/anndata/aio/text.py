@@ -38,7 +38,7 @@
 import codecs
 import re
 
-from sppas.src.sp_glob import encoding
+from sppas import encoding
 
 from ..anndataexc import AioMultiTiersError
 from ..anndataexc import AioLineFormatError
@@ -113,8 +113,12 @@ class sppasRawText(sppasBaseIO):
     """
     @staticmethod
     def detect(filename):
-        with codecs.open(filename, 'r', encoding):
-            pass
+        try:
+            with codecs.open(filename, 'r', 'utf-8') as fp:
+                fp.readline()
+                pass
+        except Exception:
+            return False
         return True
 
     # -----------------------------------------------------------------

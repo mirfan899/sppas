@@ -51,7 +51,7 @@ class TestTextGrid(unittest.TestCase):
         self.assertEqual(len(txt), 2)
         self.assertEqual(txt[0].get_name(), "transcription")
         self.assertEqual(txt[1].get_name(), "P-Tones")
-        self.assertEqual(len(txt[0]), 1)
+        self.assertEqual(len(txt[0]), 4)
         self.assertEqual(len(txt[1]), 2)
 
     def test_write(self):

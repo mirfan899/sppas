@@ -30,7 +30,7 @@
         ---------------------------------------------------------------------
 
     src.anndata.aio.praat.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~
 
     Praat - Doing phonetic with computers, is a GPL tool developed by:
 
@@ -46,7 +46,7 @@
 import codecs
 import re
 
-from sppas.src.sp_glob import encoding
+from sppas import encoding
 from sppas.src.utils.makeunicode import u
 
 from ..anndataexc import AioNoTiersError
@@ -105,7 +105,7 @@ class sppasBasePraat(sppasBaseIO):
             sline = line.strip()
             val = sline[sline.rfind(' ') + 1:]
             return float(val)
-            #return round(float(val), 10)
+            # return round(float(val), 10)
         except:
             raise Exception("could not parse float value on line: %s" % repr(line))
 
@@ -278,7 +278,7 @@ class sppasTextGrid(sppasBasePraat):
         elif tier_type == "TextTier":
             read_annotation = sppasTextGrid.__read_point_annotation
         else:
-            raise Exception("Tier type "+tier_type+" cannot be parsed.")
+            raise Exception("Tier type " + tier_type + " cannot be parsed.")
 
         for i in range(item_count):
             if is_long:
@@ -402,6 +402,8 @@ class sppasTextGrid(sppasBasePraat):
                 text = re.sub('([^"])["]([^"])', '\\1""\\2', text)  # miss occurrences if 2 " are separated by only 1 character
                 text = re.sub('([^"])["]$', '\\1""', text)  # miss occurrences if " is at the end of the label!
                 text = re.sub('^["]([^"])', '""\\1', text)  # miss occurrences if " is at the beginning of the labe
+                text = re.sub('^""$', '""""', text)
+                text = re.sub('^"$', '""', text)
 
         b = annotation.get_lowest_localization().get_midpoint()
         e = annotation.get_highest_localization().get_midpoint()

@@ -369,9 +369,11 @@ class TextGrid(Transcription):
         label = annotation.GetLabel().GetValue()
         if '"' in label:
             label = re.sub('([^"])["]([^"])', '\\1""\\2', label)
-            label = re.sub('([^"])["]([^"])', '\\1""\\2', label) # miss occurrences if 2 " are separated by only 1 character
-            label = re.sub('([^"])["]$', '\\1""', label) # miss occurrences if " are at the end of the label!
-            label = re.sub('^["]([^"])', '""\\1', label) # miss occurrences if " are at the beginning of the label!
+            label = re.sub('([^"])["]([^"])', '\\1""\\2', label)  # miss occurrences if 2 " are separated by only 1 character
+            label = re.sub('([^"])["]$', '\\1""', label)  # miss occurrences if " are at the end of the label!
+            label = re.sub('^["]([^"])', '""\\1', label)  # miss occurrences if " are at the beginning of the label!
+            label = re.sub('^""$', '""""', label)
+            label = re.sub('^"$', '""', label)
 
         return (
             '        intervals [%d]:\n'

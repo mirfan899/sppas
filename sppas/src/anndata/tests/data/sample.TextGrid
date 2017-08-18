@@ -11,11 +11,23 @@ item []:
         name = "transcription"
         xmin = 0.0
         xmax = 2.328813
-        intervals: size = 1
+        intervals: size = 4
         intervals [1]:
             xmin = 0.0
-            xmax = 2.328813
+            xmax = 2.30
             text = "une classe entière qui a bien vu comment ça s'est passé"
+        intervals [2]:
+            xmin = 2.30
+            xmax = 2.31
+            text = """"
+        intervals [3]:
+            xmin = 2.31
+            xmax = 2.32
+            text = """a"""
+        intervals [4]:
+            xmin = 2.32
+            xmax = 2.328813
+            text = """"""
     item [2]:
         class = "TextTier"
         name = "P-Tones"

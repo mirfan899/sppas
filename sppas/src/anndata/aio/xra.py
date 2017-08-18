@@ -39,7 +39,7 @@ import logging
 from datetime import datetime
 import xml.etree.cElementTree as ET
 
-from sppas.src.sp_glob import encoding
+from sppas import encoding
 from sppas.src.utils.makeunicode import u
 
 from ..media import sppasMedia

@@ -38,7 +38,6 @@
 from ..tier import sppasTier
 from ..annotation import sppasAnnotation
 from ..annlocation.location import sppasLocation
-from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
 from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
