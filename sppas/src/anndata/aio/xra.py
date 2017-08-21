@@ -201,6 +201,7 @@ class sppasXRA(sppasBaseIO):
         label = sppasXRA.__parse_label(label_root)
 
         annotation = sppasAnnotation(location, label)
+        sppasXRA.__read_metadata(annotation, annotation_root.find('Metadata'))	# read Metadata if any
         tier.add(annotation)
 
     # -----------------------------------------------------------------
@@ -430,6 +431,7 @@ class sppasXRA(sppasBaseIO):
             media_mime = media_root.attrib['mimetype']
 
         media = sppasMedia(media_url, media_id, media_mime)
+        sppasXRA.__read_metadata(media, media_root.find('Metadata'))	# read Metadata if any
         self.add_media(media)
 
         # Add content if any
