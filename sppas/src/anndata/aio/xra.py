@@ -44,6 +44,7 @@ from sppas.src.utils.makeunicode import u
 
 from ..media import sppasMedia
 from ..ctrlvocab import sppasCtrlVocab
+from ..annotation import sppasAnnotation
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
@@ -199,7 +200,8 @@ class sppasXRA(sppasBaseIO):
         label_root = annotation_root.find('Label')
         label = sppasXRA.__parse_label(label_root)
 
-        tier.create_annotation(location, label)
+        annotation = sppasAnnotation(location, label)
+        tier.add(annotation)
 
     # -----------------------------------------------------------------
 
