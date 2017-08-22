@@ -42,7 +42,6 @@ from sppas import encoding
 
 from ..anndataexc import AioMultiTiersError
 from ..anndataexc import AioLineFormatError
-from ..annotation import sppasAnnotation
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
@@ -202,24 +201,16 @@ class sppasRawText(sppasBaseIO):
                 # The separator '#' is included in the tab
                 for phrase in phrases:
                     if len(phrase) > 0:
-                        tier.append(sppasRawText.__read_annotation(phrase, n))
+                        location = sppasLocation(sppasPoint(n))
+                        label = sppasLabel(sppasTag(phrase))
+                        tier.create_annotation(location, label)
                         n += 1
 
             elif len(line) > 0:
-                tier.append(sppasRawText.__read_annotation(line, n))
+                location = sppasLocation(sppasPoint(n))
+                label = sppasLabel(sppasTag(line))
+                tier.create_annotation(location, label)
                 n += 1
-
-    # -----------------------------------------------------------------
-
-    @staticmethod
-    def __read_annotation(phrase, number):
-        """ Return an annotation.
-
-        :param phrase: (str)
-        :param number: (int) rank of the phrase
-
-        """
-        return sppasAnnotation(sppasLocation(sppasPoint(number)), sppasLabel(sppasTag(phrase)))
 
     # -----------------------------------------------------------------
 
@@ -253,7 +244,7 @@ class sppasRawText(sppasBaseIO):
                         t = annotation.get_label().get_best().get_content()
                     if point:
                         mp = annotation.get_lowest_localization().get_midpoint()
-                        fp.write("{}\t{}\t{}\n".format(mp, t))
+                        fp.write("{}\t\t{}\n".format(mp, t))
                     else:
                         b = annotation.get_lowest_localization().get_midpoint()
                         e = annotation.get_highest_localization().get_midpoint()
@@ -354,7 +345,7 @@ class sppasCSV(sppasBaseIO):
             else:
                 raise AioLineFormatError(i+1, line)
 
-            tier.add(sppasAnnotation(sppasLocation(localization), sppasLabel(sppasTag(text))))
+            tier.create_annotation(sppasLocation(localization), sppasLabel(sppasTag(text)))
 
     # -----------------------------------------------------------------
 

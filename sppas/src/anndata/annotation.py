@@ -57,8 +57,8 @@ class sppasAnnotation(sppasMetaData):
         - a sppasLocation()
         - a sppasLabel()
 
-    >>> location = sppasLocation(sppasTimePoint(1.5, radius=0.01))
-    >>> label = sppasLabel(sppasText("foo"))
+    >>> location = sppasLocation(sppasPoint(1.5, radius=0.01))
+    >>> label = sppasLabel(sppasTag("foo"))
     >>> ann = sppasAnnotation(location, label)
 
     """

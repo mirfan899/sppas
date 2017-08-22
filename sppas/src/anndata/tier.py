@@ -248,6 +248,20 @@ class sppasTier(sppasMetaData):
     # Annotations
     # -----------------------------------------------------------------------
 
+    def create_annotation(self, location, label):
+        """ Create and add a new annotation into the tier.
+
+        :param location: (sppasLocation) the location(s) where the annotation happens
+        :param label: (sppasLabel) the label(s) to stamp this annotation
+        :returns: sppasAnnotation
+
+        """
+        ann = sppasAnnotation(location, label)
+        self.add(ann)
+        return ann
+
+    # -----------------------------------------------------------------------
+
     def is_empty(self):
         """ Return True if the tier does not contain annotations. """
 
@@ -257,6 +271,7 @@ class sppasTier(sppasMetaData):
 
     def append(self, annotation):
         """ Append the given annotation at the end of the tier.
+        Assign this tier as parent to the annotation.
 
         :param annotation: (sppasAnnotation)
         :raises: AnnDataTypeError, CtrlVocabContainsError, HierarchyContainsError, HierarchyTypeError, TierAppendError
@@ -278,6 +293,7 @@ class sppasTier(sppasMetaData):
 
     def add(self, annotation):
         """ Add an annotation to the tier in sorted order.
+        Assign this tier as parent to the annotation.
 
         :param annotation: (sppasAnnotation)
         :raises: AnnDataTypeError, CtrlVocabContainsError, HierarchyContainsError, HierarchyTypeError

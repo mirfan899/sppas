@@ -355,7 +355,7 @@ class sppasTranscription(sppasMetaData):
     # ------------------------------------------------------------------------
 
     def create_tier(self, name=None, ctrl_vocab=None, media=None):
-        """ Append a new empty tier.
+        """ Create and append a new empty tier.
 
         :param name: (str) the name of the tier to create
         :param ctrl_vocab: (sppasCtrlVocab)

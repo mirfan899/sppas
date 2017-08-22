@@ -134,7 +134,6 @@ class sppasRW(object):
     def read(self, heuristic=True):
         """ Read a transcription from a file.
 
-        :param filename: (str) the file name (including path)
         :param heuristic: (bool) if the extension of the file is unknown,
         use an heuristic to detect the format, then to choose the reader-writer.
         :returns: sppasTranscription reader-writer

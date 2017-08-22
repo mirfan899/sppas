@@ -51,7 +51,6 @@ from sppas.src.utils.makeunicode import u
 
 from ..anndataexc import AioNoTiersError
 from ..anndataexc import AioEmptyTierError
-from ..annotation import sppasAnnotation
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
@@ -300,8 +299,8 @@ class sppasTextGrid(sppasBasePraat):
         midpoint = sppasBasePraat.parse_float(it.next())
         tag_content = sppasBasePraat.parse_string(it)
 
-        tier.add(sppasAnnotation(sppasLocation(sppasTextGrid.make_point(midpoint)),
-                                 sppasLabel(sppasTag(tag_content))))
+        tier.create_annotation(sppasLocation(sppasTextGrid.make_point(midpoint)),
+                               sppasLabel(sppasTag(tag_content)))
 
     # ------------------------------------------------------------------------
 
@@ -320,8 +319,8 @@ class sppasTextGrid(sppasBasePraat):
         interval = sppasInterval(begin, end)
         tag_content = sppasBasePraat.parse_string(it)
         tag_content = tag_content.replace('""', '"')  # praat double quotes.
-        tier.add(sppasAnnotation(sppasLocation(interval),
-                                 sppasLabel(sppasTag(tag_content))))
+        tier.create_annotation(sppasLocation(interval),
+                               sppasLabel(sppasTag(tag_content)))
 
     # ------------------------------------------------------------------------
 
@@ -357,7 +356,7 @@ class sppasTextGrid(sppasBasePraat):
             for i, tier in enumerate(self._tiers):
                 # Fill empty tiers because TextGrid does not support it.
                 if tier.is_empty():
-                    tier.append(sppasAnnotation(sppasLocation(sppasInterval(min_point, max_point))))
+                    tier.create_annotation(sppasLocation(sppasInterval(min_point, max_point)))
 
                 if tier.is_interval() is True:
                     tier = aioutils.fill_gaps(tier, min_point, max_point)
