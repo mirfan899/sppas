@@ -36,6 +36,11 @@
 from collections import OrderedDict
 
 from .anndataexc import AnnDataTypeError
+from .anndataexc import HierarchyAlignmentError
+from .anndataexc import HierarchyAssociationError
+from .anndataexc import HierarchyParentTierError
+from .anndataexc import HierarchyChildTierError
+from .anndataexc import HierarchyAncestorTierError
 
 # ----------------------------------------------------------------------------
 
@@ -173,13 +178,11 @@ class sppasHierarchy(object):
 
         :param parent_tier: (Tier) The reference tier
         :param child_tier: (Tier) The child tier to be linked to reftier
+        :raises: HierarchyAlignmentError
 
         """
         if parent_tier.is_superset(child_tier) is False:
-            raise Exception(
-                "Can't align tiers: %s is not a superset of %s" % (
-                    parent_tier.get_name(),
-                    child_tier.get_name()))
+            raise HierarchyAlignmentError(parent_tier.get_name(), child_tier.get_name())
 
     # -----------------------------------------------------------------------
 
@@ -189,14 +192,11 @@ class sppasHierarchy(object):
 
         :param parent_tier: (Tier) The reference tier
         :param child_tier: (Tier) The child tier to be linked to reftier
+        :raises: HierarchyAssociationError
 
         """
         if parent_tier.is_superset(child_tier) is False and child_tier.is_superset(parent_tier) is False:
-            raise Exception(
-                "Can't create an association between tiers: "
-                "%s and %s are not supersets of each other" % (
-                    parent_tier.get_name(),
-                    child_tier.get_name()))
+            raise HierarchyAssociationError(parent_tier.get_name(), child_tier.get_name())
 
     # -----------------------------------------------------------------------
 
@@ -206,6 +206,9 @@ class sppasHierarchy(object):
         :param link_type: (constant) One of the hierarchy types
         :param parent_tier: (Tier) The reference tier
         :param child_tier: (Tier) The child tier to be linked to reftier
+        :raises: AnnDataTypeError, HierarchyParentTierError,
+        HierarchyChildTierError, HierarchyAncestorTierError,
+        HierarchyAlignmentError, HierarchyAssociationError
 
         """
         if link_type not in sppasHierarchy.types:
@@ -214,21 +217,23 @@ class sppasHierarchy(object):
         # A child has only one parent
         if child_tier in self.__hierarchy.keys():
             parent, link = self.__hierarchy[child_tier]
-            raise Exception("Can't add tier: %s has already a parent in the hierarchy."
-                            "Its parent is %s, with link of type %s." %
-                            (child_tier.get_name(), parent.get_name(), link))
+            raise HierarchyParentTierError(child_tier.get_name(),
+                                           parent.get_name(),
+                                           link)
 
         # A tier can't be its own child/parent
         if parent_tier == child_tier:
-            raise Exception("Can't add tier: %s can't be whether the parent and its own child." % child_tier.get_name())
+            raise HierarchyChildTierError(child_tier.get_name())
 
         # Check for TimeAlignment
         if link_type == "TimeAlignment":
-            sppasHierarchy.validate_time_alignment(parent_tier, child_tier)
+            sppasHierarchy.validate_time_alignment(parent_tier,
+                                                   child_tier)
 
         # Check for TimeAssociation
         if link_type == "TimeAssociation":
-            sppasHierarchy.validate_time_association(parent_tier, child_tier)
+            sppasHierarchy.validate_time_association(parent_tier,
+                                                     child_tier)
 
         # No circular hierarchy allowed.
         ancestors = self.get_ancestors(parent_tier)
@@ -238,8 +243,8 @@ class sppasHierarchy(object):
             family.extend(uncles)
         family.extend(ancestors)
         if child_tier in family:
-            raise Exception("Can't add tier: %s is an ancestor of %s in the hierarchy." %
-                            (child_tier.get_name(), parent_tier.get_name()))
+            raise HierarchyAncestorTierError(child_tier.get_name(),
+                                             parent_tier.get_name())
 
     # -----------------------------------------------------------------------
     # Setters
@@ -265,7 +270,7 @@ class sppasHierarchy(object):
 
         """
         if child_tier in self.__hierarchy.keys():
-            del self.__hierarchies[child_tier]
+            del self.__hierarchy[child_tier]
 
     # -----------------------------------------------------------------------
 

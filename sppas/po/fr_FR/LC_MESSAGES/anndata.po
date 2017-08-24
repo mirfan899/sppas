@@ -15,7 +15,7 @@ msgstr ""
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 2.0.3\n"
 
 msgid ":ERROR 1000: "
 msgstr "Aucun fichier annoté n'a été défini."
@@ -34,34 +34,48 @@ msgstr "Une valeur positive été attendue, mais la valeur observée est '{:f}'.
 
 msgid ":ERROR 1120: "
 msgstr ""
-"La valeur de début d'un intervalle doit être strictement supérieure à la "
-"valeur de fin. Intervalle invalide: [{!s:s};{!s:s}]."
+"La valeur de début d'un intervalle doit être strictement supérieure à la valeur de fin. Intervalle invalide: [{!s:s};{!s:s}]."
 
 msgid ":ERROR 1130: "
 msgstr "{!s:s} ne fait pas parti des entrées connus du vocabulaire controllé."
 
 msgid ":ERROR 1140: "
 msgstr ""
-"Echec de l'ajout de l'annotation en fin de tier. La valeur de fin actuelle {!"
-"s:s} est supérieure à celle de l'annotation à ajouter: {!s:s}."
+"Echec de l'ajout de l'annotation en fin de tier. La valeur de fin actuelle {!s:s} est supérieure à celle de l'annotation à "
+"ajouter: {!s:s}."
 
 msgid ":ERROR 1142: "
-msgstr ""
-"Echec de l'ajout de l'annotation. Une annotation avec le même emplacement "
-"existe déjà dans la tier à l'index {:d}."
+msgstr "Echec de l'ajout de l'annotation. Une annotation avec le même emplacement existe déjà dans la tier à l'index {:d}."
 
 msgid ":ERROR 1144: "
-msgstr ""
-"Modification impossible dans la tier '{:s}' car celle-ci invaliderait sa "
-"hierarchie."
+msgstr "Modification impossible dans la tier '{:s}' car celle-ci invaliderait sa hierarchie."
 
 msgid ":ERROR 1150: "
 msgstr "Impossible d'ajouter '{:s}' qui se trouve déjà dans la transcription."
 
+msgid ":ERROR 1152: "
+msgstr "Impossible de supprimer '{:s}' qui n'est pas dans '{:s}'."
+
+msgid ":ERROR 1160: "
+msgstr "'{:s} n'est pas une tier de '{:s}'. Cette tier ne peut pas être incluse dans la hierarchie."
+
+msgid ":ERROR 1170: "
+msgstr "Alignement temporel entre tiers impossible: '{:s}' n'est pas un sur-ensemble de '{:s}'."
+
+msgid ":ERROR 1172: "
+msgstr "Association temporelle entre tiers impossible: '{:s}' et '{:s}' n'ont pas toutes leurs valeurs temporelles identiques."
+
+msgid ":ERROR 1174: "
+msgstr "La tier ne peut pas être ajoutée dans la hierarchie: '{:s}' a déjà un lien de type {:s} avec sa tier parent '{:s}'."
+
+msgid ":ERROR 1176: "
+msgstr "La tier '{:s}' ne peut pas être ajoutée dans la hierarchie: une tier ne peut pas être son propre enfant."
+
+msgid ":ERROR 1178: "
+msgstr "La tier ne peut pas être ajoutée dans la hierarchie: '{:s}' est un parent de '{:s}'"
+
 msgid ":ERROR 1500: "
-msgstr ""
-"Le fichier {!s:s} contient des caractères invalides pour l'encodage UTF-8: {:"
-"s}."
+msgstr "Le fichier {!s:s} contient des caractères invalides pour l'encodage UTF-8: {:s}."
 
 msgid ":ERROR 1505: "
 msgstr "L'extension du fichier {:s} n'est pas une extension connue."
@@ -70,12 +84,10 @@ msgid ":ERROR 1510: "
 msgstr "Le format du fichier {:s} ne supporte pas le multi-tiers."
 
 msgid ":ERROR 1515: "
-msgstr ""
-"Le format de fichier {:s} ne supporte pas la sauvegarde sans aucune tier."
+msgstr "Le format de fichier {:s} ne supporte pas la sauvegarde sans aucune tier."
 
 msgid ":ERROR 1520: "
 msgstr "Format de la ligne {:d} inconnu : '{!s:s}'."
 
 msgid ":ERROR 1525: "
-msgstr ""
-"Le format de fichier {:s} ne supporte pas la sauvegarde de tiers vides: {:s}."
+msgstr "Le format de fichier {:s} ne supporte pas la sauvegarde de tiers vides: {:s}."

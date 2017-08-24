@@ -472,9 +472,9 @@ class sppasXRA(sppasBaseIO):
                     child_tier = tier
 
             try:
-                self.hierarchy.add_link(hierarchy_type, parent_tier, child_tier)
+                self.add_hierarchy_link(hierarchy_type, parent_tier, child_tier)
             except Exception as e:
-                print(e)
+                # print(e)
                 logging.info("Corrupted hierarchy link: %s" % str(e))
                 pass
 
@@ -548,7 +548,7 @@ class sppasXRA(sppasBaseIO):
             self.__format_media(media_root, media)
 
         hierarchy_root = ET.SubElement(root, 'Hierarchy')
-        self.__format_hierarchy(hierarchy_root, self.hierarchy)
+        self.__format_hierarchy(hierarchy_root, self._hierarchy)
 
         for vocabulary in self.get_ctrl_vocab_list():
             vocabulary_root = ET.SubElement(root, 'Vocabulary')

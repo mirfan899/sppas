@@ -259,7 +259,7 @@ class sppasBaseIO(sppasTranscription):
         self._media = other.get_media_list()
         self._ctrlvocab = other.get_ctrl_vocab_list()
         self._tiers = other.get_tier_list()
-        self.hierarchy = other.hierarchy
+        self._hierarchy = other.get_hierarchy()
 
     # -----------------------------------------------------------------------
 

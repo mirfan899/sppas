@@ -15,7 +15,7 @@ msgstr ""
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 2.0.3\n"
 
 msgid ":ERROR 1000: "
 msgstr "No annotated file defined."
@@ -33,28 +33,43 @@ msgid ":ERROR 1110: "
 msgstr "Expected a positive value. Got '{:f}'."
 
 msgid ":ERROR 1120: "
-msgstr ""
-"The begin must be strictly lesser than the end in an interval. Got: [{!s:s};"
-"{!s:s}]."
+msgstr "The begin must be strictly lesser than the end in an interval. Got: [{!s:s};{!s:s}]."
 
 msgid ":ERROR 1130: "
 msgstr "{!s:s} is not included in the controlled vocabulary."
 
 msgid ":ERROR 1140: "
-msgstr ""
-"Can't append annotation. Current end {!s:s} is highest than the given one {!"
-"s:s}."
+msgstr "Can't append annotation. Current end {!s:s} is highest than the given one {!s:s}."
 
 msgid ":ERROR 1142: "
-msgstr ""
-"Can't add annotation. An annotation with the same location is already in the "
-"tier at index {:d}."
+msgstr "Can't add annotation. An annotation with the same location is already in the tier at index {:d}."
 
 msgid ":ERROR 1144: "
 msgstr "Attempt a modification in tier '{:s}' that invalidates its hierarchy."
 
 msgid ":ERROR 1150: "
-msgstr "Can't add: '{:s}' is already in the transcription."
+msgstr "Can't add: '{:s}' is already in '{:s}'."
+
+msgid ":ERROR 1152: "
+msgstr "Can't remove: '{:s}' is not in '{:s}'."
+
+msgid ":ERROR 1160: "
+msgstr "'{:s} is not a tier of '{:s}'. It can't be included in its hierarchy."
+
+msgid ":ERROR 1170: "
+msgstr "Can't create a time alignment between tiers: '{:s}' is not a superset of '{:s}'."
+
+msgid ":ERROR 1172: "
+msgstr "Can't create a time association between tiers: '{:s}' and '{:s}' are not supersets of each other."
+
+msgid ":ERROR 1174: "
+msgstr "The tier can't be added into the hierarchy: '{:s}' has already a link of type {:s} with its parent tier '{:s}'."
+
+msgid ":ERROR 1176: "
+msgstr "The tier '{:s}' can't be added into the hierarchy: a tier can't be its own child."
+
+msgid ":ERROR 1178: "
+msgstr "The tier can't be added into the hierarchy: '{:s}' is a parent of '{:s}'"
 
 msgid ":ERROR 1500: "
 msgstr "The file {!s:s} contains non UTF-8 characters: {:s}."

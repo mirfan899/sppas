@@ -15,7 +15,7 @@ class TestMedia(unittest.TestCase):
     def test_media_audio(self):
         m = sppasMedia("toto.wav")
         self.assertEqual(m.get_filename(), "toto.wav")
-        self.assertEqual(m.get_mime_type(), "audio/x-wav")
+        self.assertEqual(m.get_mime_type(), "audio/wav")
         self.assertEqual(len(m.get_name()), 36)
 
     def test_media_video(self):

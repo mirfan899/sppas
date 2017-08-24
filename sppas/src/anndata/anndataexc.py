@@ -47,8 +47,17 @@ CTRL_VOCAB_CONTAINS_ERROR = ":ERROR 1130: "
 TIER_APPEND_ERROR = ":ERROR 1140: "
 TIER_ADD_ERROR = ":ERROR 1142: "
 TIER_HIERARCHY_ERROR = ":ERROR 1144: "
+
 TRS_ADD_ERROR = ":ERROR 1150: "
 TRS_REMOVE_ERROR = ":ERROR 1152: "
+TRS_INVALID_TIER_ERROR = ":ERROR 1160: "
+
+HIERARCHY_ALIGNMENT_ERROR = ":ERROR 1170: "
+HIERARCHY_ASSOCIATION_ERROR = ":ERROR 1172: "
+HIERARCHY_PARENT_TIER_ERROR = ":ERROR 1174: "
+HIERARCHY_CHILD_TIER_ERROR = ":ERROR 1176: "
+HIERARCHY_ANCESTOR_TIER_ERROR = ":ERROR 1178: "
+
 AIO_ENCODING_ERROR = ":ERROR 1500: "
 AIO_FILE_EXTENSION_ERROR = ":ERROR 1505: "
 AIO_MULTI_TIERS_ERROR = ":ERROR 1510: "
@@ -210,12 +219,12 @@ class TierHierarchyError(ValueError):
 
 class TrsAddError(ValueError):
     """ :ERROR 1150: TRS_ADD_ERROR
-    Can't add: '{:s}' is already in the transcription.
+    Can't add: '{:s}' is already in '{:s}'.
 
     """
-    def __init__(self, name):
+    def __init__(self, tier_name, transcription_name):
         self.parameter = TRS_ADD_ERROR + \
-                         (t.gettext(TRS_ADD_ERROR)).format(name)
+                         (t.gettext(TRS_ADD_ERROR)).format(tier_name, transcription_name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -225,15 +234,109 @@ class TrsAddError(ValueError):
 
 class TrsRemoveError(ValueError):
     """ :ERROR 1152: TRS_REMOVE_ERROR
-    Can't remove: '{:s}' is not in the transcription.
+    Can't remove: '{:s}' is not in '{:s}'.
 
     """
-    def __init__(self, name):
+    def __init__(self, tier_name, transcription_name):
         self.parameter = TRS_REMOVE_ERROR + \
-                         (t.gettext(TRS_REMOVE_ERROR)).format(name)
+                         (t.gettext(TRS_REMOVE_ERROR)).format(tier_name, transcription_name)
 
     def __str__(self):
         return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class TrsInvalidTierError(ValueError):
+    """ :ERROR 1160: TRS_INVALID_TIER_ERROR
+    {:s} is not a tier of {:s}. It can't be included in its hierarchy."
+
+    """
+    def __init__(self, tier_name, transcription_name):
+        self.parameter = TRS_INVALID_TIER_ERROR + \
+                         (t.gettext(TRS_INVALID_TIER_ERROR)).format(tier_name, transcription_name)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class HierarchyAlignmentError(ValueError):
+    """ :ERROR 1170: HIERARCHY_ALIGNMENT_ERROR
+    Can't create a time alignment between tiers: '{:s}' is not a superset of '{:s}'."
+
+    """
+    def __init__(self, parent_tier_name, child_tier_name):
+        self.parameter = HIERARCHY_ALIGNMENT_ERROR + \
+                         (t.gettext(HIERARCHY_ALIGNMENT_ERROR)).format(parent_tier_name, child_tier_name)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class HierarchyAssociationError(ValueError):
+    """ :ERROR 1172: HIERARCHY_ASSOCIATION_ERROR
+    Can't create a time association between tiers: '{:s}' and '{:s}' are not supersets of each other.."
+
+    """
+    def __init__(self, parent_tier_name, child_tier_name):
+        self.parameter = HIERARCHY_ASSOCIATION_ERROR + \
+                         (t.gettext(HIERARCHY_ASSOCIATION_ERROR)).format(parent_tier_name, child_tier_name)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class HierarchyParentTierError(ValueError):
+    """ :ERROR 1174: HIERARCHY_PARENT_TIER_ERROR
+    The tier can't be added into the hierarchy: '{:s}' has already a link of type {:s} with its parent tier '{:s}'.
+
+    """
+    def __init__(self, child_tier_name, parent_tier_name, link_type):
+        self.parameter = HIERARCHY_PARENT_TIER_ERROR + \
+                         (t.gettext(HIERARCHY_PARENT_TIER_ERROR)).format(child_tier_name, parent_tier_name, link_type)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class HierarchyChildTierError(ValueError):
+    """ :ERROR 1176: HIERARCHY_CHILD_TIER_ERROR
+    The tier '{:s}' can't be added into the hierarchy: a tier can't be its own child.
+
+    """
+
+    def __init__(self, tier_name):
+        self.parameter = HIERARCHY_CHILD_TIER_ERROR + \
+                         (t.gettext(HIERARCHY_CHILD_TIER_ERROR)).format(tier_name)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+
+# -----------------------------------------------------------------------
+
+
+class HierarchyAncestorTierError(ValueError):
+    """ :ERROR 1178: HIERARCHY_ANCESTOR_TIER_ERROR
+    The tier can't be added into the hierarchy: '{:s}' is an ancestor of '{:s}'.
+
+    """
+
+    def __init__(self, child_tier_name, parent_tier_name):
+        self.parameter = HIERARCHY_ANCESTOR_TIER_ERROR + \
+                         (t.gettext(HIERARCHY_ANCESTOR_TIER_ERROR)).format(child_tier_name, parent_tier_name)
+
+    def __str__(self):
+        return repr(self.parameter)
+
 
 # -----------------------------------------------------------------------
 

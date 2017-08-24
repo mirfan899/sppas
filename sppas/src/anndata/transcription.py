@@ -43,6 +43,7 @@ from .anndataexc import TrsAddError
 from .anndataexc import TrsRemoveError
 from .anndataexc import AnnDataIndexError
 from .anndataexc import TierHierarchyError
+from .anndataexc import TrsInvalidTierError
 
 from .metadata import sppasMetaData
 from .ctrlvocab import sppasCtrlVocab
@@ -161,7 +162,7 @@ class sppasTranscription(sppasMetaData):
 
         ids = [m.get_name() for m in self._media]
         if new_media.get_name() in ids:
-            raise TrsAddError(new_media.get_name())
+            raise TrsAddError(new_media.get_name(), self._name)
 
         self._media.append(new_media)
 
@@ -242,7 +243,7 @@ class sppasTranscription(sppasMetaData):
 
         ids = [c.get_name() for c in self._ctrlvocab]
         if new_ctrl_vocab.get_name() in ids:
-            raise TrsAddError(new_ctrl_vocab.get_name())
+            raise TrsAddError(new_ctrl_vocab.get_name(), self._name)
 
         self._ctrlvocab.append(new_ctrl_vocab)
 
@@ -298,11 +299,11 @@ class sppasTranscription(sppasMetaData):
 
         """
         if parent_tier not in self._tiers:
-            raise Exception("%s is not a tier of %s. It can't be included in its hierarchy."
-                            "".format(parent_tier.get_name(), self._name))
+            raise TrsInvalidTierError(parent_tier.get_name(), self._name)
+
         if child_tier not in self._tiers:
-            raise Exception("%s is not a tier of %s. It can't be included in its hierarchy."
-                            "".format(parent_tier.get_name(), self._name))
+            raise TrsInvalidTierError(parent_tier.get_name(), self._name)
+
         self._hierarchy.add_link(link_type, parent_tier, child_tier)
 
     # -----------------------------------------------------------------------
@@ -361,18 +362,10 @@ class sppasTranscription(sppasMetaData):
 
     # -----------------------------------------------------------------------
 
-    def propagate_annotation_location(self, tier, old_location, new_location):
-        """ Propagate a location.
+    def get_hierarchy(self):
+        """ Return the hierarchy. """
 
-        :param tier: (sppasTier)
-        :param old_location: (sppasLocation)
-        :param new_location: (sppasLocation)
-
-        """
-        # if current tier is a parent
-        for child_tier in self._hierarchy.get_children(self):
-            link_type = self._hierarchy.get_hierarchy_type(child_tier)
-
+        return self._hierarchy
 
     # -----------------------------------------------------------------------
     # Tiers
@@ -468,7 +461,7 @@ class sppasTranscription(sppasMetaData):
 
         """
         if tier in self._tiers:
-            raise TrsAddError(tier.get_name())
+            raise TrsAddError(tier.get_name(), self._name)
 
         self.rename_tier(tier)
         if tier.get_ctrl_vocab() is not None:
