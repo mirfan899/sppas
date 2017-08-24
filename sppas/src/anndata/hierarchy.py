@@ -164,11 +164,44 @@ class sppasHierarchy(object):
         return ancestors
 
     # -----------------------------------------------------------------------
-    # Setters
+    # Validators
     # -----------------------------------------------------------------------
 
-    def add_link(self, link_type, parent_tier, child_tier):
-        """ Add a hierarchy link between 2 tiers.
+    @staticmethod
+    def validate_time_alignment(parent_tier, child_tier):
+        """ Validate a time alignment hierarchy link between 2 tiers.
+
+        :param parent_tier: (Tier) The reference tier
+        :param child_tier: (Tier) The child tier to be linked to reftier
+
+        """
+        if parent_tier.is_superset(child_tier) is False:
+            raise Exception(
+                "Can't align tiers: %s is not a superset of %s" % (
+                    parent_tier.get_name(),
+                    child_tier.get_name()))
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def validate_time_association(parent_tier, child_tier):
+        """ Validate a time association hierarchy link between 2 tiers.
+
+        :param parent_tier: (Tier) The reference tier
+        :param child_tier: (Tier) The child tier to be linked to reftier
+
+        """
+        if parent_tier.is_superset(child_tier) is False and child_tier.is_superset(parent_tier) is False:
+            raise Exception(
+                "Can't create an association between tiers: "
+                "%s and %s are not supersets of each other" % (
+                    parent_tier.get_name(),
+                    child_tier.get_name()))
+
+    # -----------------------------------------------------------------------
+
+    def validate_link(self, link_type, parent_tier, child_tier):
+        """ Validate a hierarchy link between 2 tiers.
 
         :param link_type: (constant) One of the hierarchy types
         :param parent_tier: (Tier) The reference tier
@@ -191,20 +224,11 @@ class sppasHierarchy(object):
 
         # Check for TimeAlignment
         if link_type == "TimeAlignment":
-            if parent_tier.is_superset(child_tier) is False:
-                raise Exception(
-                    "Can't align tiers: %s is not a superset of %s" % (
-                        parent_tier.get_name(),
-                        child_tier.get_name()))
+            sppasHierarchy.validate_time_alignment(parent_tier, child_tier)
 
         # Check for TimeAssociation
         if link_type == "TimeAssociation":
-            if parent_tier.is_superset(child_tier) is False and child_tier.is_superset(parent_tier) is False:
-                raise Exception(
-                    "Can't create an association between tiers: "
-                    "%s and %s are not supersets of each other" % (
-                        parent_tier.get_name(),
-                        child_tier.get_name()))
+            sppasHierarchy.validate_time_association(parent_tier, child_tier)
 
         # No circular hierarchy allowed.
         ancestors = self.get_ancestors(parent_tier)
@@ -217,7 +241,19 @@ class sppasHierarchy(object):
             raise Exception("Can't add tier: %s is an ancestor of %s in the hierarchy." %
                             (child_tier.get_name(), parent_tier.get_name()))
 
-        # OK!
+    # -----------------------------------------------------------------------
+    # Setters
+    # -----------------------------------------------------------------------
+
+    def add_link(self, link_type, parent_tier, child_tier):
+        """ Validate and add a hierarchy link between 2 tiers.
+
+        :param link_type: (constant) One of the hierarchy types
+        :param parent_tier: (Tier) The reference tier
+        :param child_tier: (Tier) The child tier to be linked to reftier
+
+        """
+        self.validate_link(link_type, parent_tier, child_tier)
         self.__hierarchy[child_tier] = (parent_tier, link_type)
 
     # -----------------------------------------------------------------------

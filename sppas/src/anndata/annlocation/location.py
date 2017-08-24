@@ -54,15 +54,22 @@ class sppasLocation(object):
     def __init__(self, localization=None, score=None):
         """ Create a new sppasLocation instance and add the entry.
 
-        :param localization: (Localization)
+        :param localization: (Localization or list of localizations)
         :param score: (float)
+
+        If a list of alternative localizations are given, the same score
+        is assigned to all items.
 
         """
         self.__localizations = list()
         self.__fct = max
 
         if localization is not None:
-            self.append(localization, score)
+            if isinstance(localization, list):
+                for loc in localization:
+                    self.append(loc, 1./len(localization))
+            else:
+                self.append(localization, score)
 
     # -----------------------------------------------------------------------
 

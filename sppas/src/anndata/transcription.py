@@ -42,12 +42,14 @@ from .anndataexc import AnnDataTypeError
 from .anndataexc import TrsAddError
 from .anndataexc import TrsRemoveError
 from .anndataexc import AnnDataIndexError
+from .anndataexc import TierHierarchyError
 
 from .metadata import sppasMetaData
 from .ctrlvocab import sppasCtrlVocab
 from .media import sppasMedia
 from .tier import sppasTier
 from .hierarchy import sppasHierarchy
+from .annotation import sppasAnnotation
 
 # ----------------------------------------------------------------------------
 
@@ -93,7 +95,7 @@ class sppasTranscription(sppasMetaData):
         self._media = list()      # a list of sppasMedia() instances
         self._ctrlvocab = list()  # a list of sppasCtrlVocab() instances
         self._tiers = list()      # a list of sppasTier() instances
-        self.hierarchy = sppasHierarchy()
+        self._hierarchy = sppasHierarchy()
 
         self.set_name(name)
 
@@ -283,6 +285,95 @@ class sppasTranscription(sppasMetaData):
 
         return rejected
 
+    # ------------------------------------------------------------------------
+    # Hierarchy
+    # ------------------------------------------------------------------------
+
+    def add_hierarchy_link(self, link_type, parent_tier, child_tier):
+        """ Validate and add a hierarchy link between 2 tiers.
+
+        :param link_type: (constant) One of the hierarchy types
+        :param parent_tier: (Tier) The reference tier
+        :param child_tier: (Tier) The child tier to be linked to reftier
+
+        """
+        if parent_tier not in self._tiers:
+            raise Exception("%s is not a tier of %s. It can't be included in its hierarchy."
+                            "".format(parent_tier.get_name(), self._name))
+        if child_tier not in self._tiers:
+            raise Exception("%s is not a tier of %s. It can't be included in its hierarchy."
+                            "".format(parent_tier.get_name(), self._name))
+        self._hierarchy.add_link(link_type, parent_tier, child_tier)
+
+    # -----------------------------------------------------------------------
+
+    def validate_annotation_location(self, tier, location):
+        """ Validate a location.
+
+        :param tier: (Tier) The reference tier
+        :param location: (sppasLocation)
+        :raises: AnnDataTypeError, HierarchyContainsError, HierarchyTypeError
+
+        """
+        # if tier is a child
+        parent_tier = self._hierarchy.get_parent(tier)
+        if parent_tier is not None:
+            link_type = self._hierarchy.get_hierarchy_type(tier)
+
+            if link_type == "TimeAssociation":
+                raise TierHierarchyError(tier.get_name())
+
+            # The parent must have such location...
+            if link_type == "TimeAlignment":
+                # Find annotations in the parent, matching with our location
+                if location.is_point():
+                    lowest = min([l[0] for l in location])
+                    highest = max([l[0] for l in location])
+                else:
+                    lowest = min([l[0].get_begin() for l in location])
+                    highest = max([l[0].get_end() for l in location])
+                anns = parent_tier.find(lowest, highest)
+
+                # Check if all localization are matching, so without checking the scores.
+                if len(anns) == 0:
+                    raise TierHierarchyError(tier.get_name())
+
+                points = list()
+                for ann in anns:
+                    points.extend(ann.get_all_points())
+                a = sppasAnnotation(location)
+                find_points = a.get_all_points()
+                for point in find_points:
+                    if point not in points:
+                        # print("{} not in {}. {}.".format(point, points, type(point)))
+                        raise TierHierarchyError(tier.get_name())
+
+        else:
+            # if current tier is a parent
+            for child_tier in self._hierarchy.get_children(tier):
+                link_type = self._hierarchy.get_hierarchy_type(child_tier)
+
+                # Ensure the hierarchy is still valid with children
+                if link_type == "TimeAssociation":
+                    sppasHierarchy.validate_time_association(tier, child_tier)
+                elif link_type == "TimeAlignment":
+                    sppasHierarchy.validate_time_alignment(tier, child_tier)
+
+    # -----------------------------------------------------------------------
+
+    def propagate_annotation_location(self, tier, old_location, new_location):
+        """ Propagate a location.
+
+        :param tier: (sppasTier)
+        :param old_location: (sppasLocation)
+        :param new_location: (sppasLocation)
+
+        """
+        # if current tier is a parent
+        for child_tier in self._hierarchy.get_children(self):
+            link_type = self._hierarchy.get_hierarchy_type(child_tier)
+
+
     # -----------------------------------------------------------------------
     # Tiers
     # ------------------------------------------------------------------------
@@ -406,7 +497,7 @@ class sppasTranscription(sppasMetaData):
         """
         try:
             tier = self._tiers[index]
-            self.hierarchy.remove_tier(tier)
+            self._hierarchy.remove_tier(tier)
             self._tiers.pop(index)
             tier.set_parent(None)
             return tier

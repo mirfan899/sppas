@@ -427,7 +427,6 @@ class TestTier(unittest.TestCase):
         self.assertTrue(tier[0] is a)
         self.assertEqual(tier[0], a)
 
-
     def test_near(self):
         # IntervalTier
         tier = sppasTier()

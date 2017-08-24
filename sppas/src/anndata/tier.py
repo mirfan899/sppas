@@ -46,7 +46,6 @@ from .anndataexc import IntervalBoundsError
 from .anndataexc import CtrlVocabContainsError
 from .anndataexc import TierAppendError
 from .anndataexc import TierAddError
-from .anndataexc import TierHierarchyError
 from .anndataexc import TrsAddError
 
 from .annlocation.point import sppasPoint
@@ -248,7 +247,7 @@ class sppasTier(sppasMetaData):
     # Annotations
     # -----------------------------------------------------------------------
 
-    def create_annotation(self, location, label):
+    def create_annotation(self, location, label=None):
         """ Create and add a new annotation into the tier.
 
         :param location: (sppasLocation) the location(s) where the annotation happens
@@ -303,7 +302,6 @@ class sppasTier(sppasMetaData):
         self.validate_annotation(annotation)
         try:
             self.append(annotation)
-
         except Exception:
             index = self.mindex(annotation.get_lowest_localization(), bound=0)
 
@@ -746,6 +744,7 @@ class sppasTier(sppasMetaData):
         :param tags: (list) the list of sppasTag to search
         :param pos: (int) the index of the annotation to start to search
         :param forward: (bool) Search backward or forward from pos
+        :param: any_tag: (bool) "any" vs "all" tags of the list
         :param function: (str) is:
                 -    exact (str): exact match
                 -    iexact (str): Case-insensitive exact match
@@ -828,58 +827,14 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def validate_annotation_location(self, location):
-        """ Validate a location.
+        """ Ask the parent to validate a location.
 
         :param location: (sppasLocation)
         :raises: AnnDataTypeError, HierarchyContainsError, HierarchyTypeError
 
         """
         if self.__parent is not None:
-
-            try:
-                hierarchy = self.__parent.hierarchy
-            except Exception:
-                raise AnnDataTypeError(self.__parent, "sppasTranscription")
-
-            # if current tier is a child
-            parent_tier = hierarchy.get_parent(self)
-            if parent_tier is not None:
-                link_type = hierarchy.get_hierarchy_type(self)
-
-                if link_type == "TimeAssociation":
-                    raise TierHierarchyError(self.__name)
-
-                # The parent must have such location...
-                if link_type == "TimeAlignment":
-                    # Find annotations in the parent, matching with our location
-                    if location.is_point():
-                        lowest = min([l[0] for l in location])
-                        highest = max([l[0] for l in location])
-                    else:
-                        lowest = min([l[0].get_begin() for l in location])
-                        highest = max([l[0].get_end() for l in location])
-                    anns = parent_tier.find(lowest, highest)
-
-                    # Check if all localization are matching, so without checking the scores.
-                    if len(anns) == 0:
-                        raise TierHierarchyError(self.__name)
-
-                    points = list()
-                    for ann in anns:
-                        points.extend(ann.get_all_points())
-                    a = sppasAnnotation(location)
-                    find_points = a.get_all_points()
-                    for point in find_points:
-                        if point not in points:
-                            #print("{} not in {}. {}.".format(point, points, type(point)))
-                            raise TierHierarchyError(self.__name)
-
-            # if current tier is a parent
-            for child_tier in hierarchy.get_children(self):
-                link_type = hierarchy.get_hierarchy_type(child_tier)
-
-                if link_type == "TimeAssociation":
-                    raise TierHierarchyError(self.__name)
+            self.__parent.validate_annotation_location(self, location)
 
     # -----------------------------------------------------------------------
     # Private
@@ -936,4 +891,3 @@ class sppasTier(sppasMetaData):
 
     def __len__(self):
         return len(self.__ann)
-

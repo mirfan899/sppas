@@ -219,12 +219,12 @@ class sppasAnnotation(sppasMetaData):
         :param localization: (sppasBaseLocalization)
 
         """
-        old_loc = self.__location.get_best()
+        old_loc = self.__location.get_best().copy()
         self.__location.get_best().set(localization)
         if self.__parent is not None:
             try:
                 self.__parent.validate_annotation_location(self.__location)
-            except ValueError:
+            except Exception:
                 self.__location.get_best().set(old_loc)
                 raise
 
@@ -252,41 +252,49 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_highest_localization(self):
-        """ Return the sppasPoint with the highest localization. """
+        """ Return a copy of the sppasPoint with the highest localization. """
 
         if self.__location.is_point():
-            return max([l[0] for l in self.__location])
-        return max([l[0].get_end() for l in self.__location])
+            max_localization = max([l[0] for l in self.__location])
+        else:
+            max_localization = max([l[0].get_end() for l in self.__location])
+
+        # We return a copy to be sure the original localization won't be modified
+        return max_localization.copy()
 
     # -----------------------------------------------------------------------
 
     def get_lowest_localization(self):
-        """ Return the sppasPoint with the lowest localization. """
+        """ Return a copy of the sppasPoint with the lowest localization. """
 
         if self.__location.is_point():
-            return min([l[0] for l in self.__location])
-        return min([l[0].get_begin() for l in self.__location])
+            min_localization = min([l[0] for l in self.__location])
+        else:
+            min_localization = min([l[0].get_begin() for l in self.__location])
+
+        # We return a copy to be sure the original localization won't be modified
+        return min_localization.copy()
 
     # -----------------------------------------------------------------------
 
     def get_all_points(self):
-        """ Return the list of all points of this annotation. """
+        """ Return the list of a copy of all points of this annotation. """
 
         points = list()
         if self.__location.is_point():
             for localization, score in self.__location:
-                points.append(localization)
+                points.append(localization.copy())
 
         elif self.__location.is_interval():
             for localization, score in self.__location:
-                points.append(localization.get_begin())
-                points.append(localization.get_end())
+                points.append(localization.get_begin().copy())
+                points.append(localization.get_end().copy())
 
         elif self.__location.is_disjoint():
             for localization, score in self.__location:
                 for interval in localization.get_intervals():
-                    points.append(interval.get_begin())
-                    points.append(interval.get_end())
+                    points.append(interval.get_begin().copy())
+                    points.append(interval.get_end().copy())
 
         return points
 

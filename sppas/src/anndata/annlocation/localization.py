@@ -77,6 +77,12 @@ class sppasBaseLocalization(object):
         """
         raise NotImplementedError
 
+    # -----------------------------------------------------------------------
+
+    def copy(self):
+        """ Return a deep copy of self. """
+        raise NotImplementedError
+
     # ---------------------------------------------------------------------
 
     def is_point(self):

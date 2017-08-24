@@ -56,7 +56,7 @@ class sppasLabel(object):
     def __init__(self, tag=None, score=None):
         """ Creates a new Label instance.
 
-        :param tag: (sppasTag)
+        :param tag: (sppasTag or list of sppasTag)
         :param score: (float)
 
         """
@@ -64,7 +64,11 @@ class sppasLabel(object):
         self.__fct = max
 
         if tag is not None:
-            self.append(tag, score)
+            if isinstance(tag, list):
+                for t in tag:
+                    self.append(t, 1./len(tag))
+            else:
+                self.append(tag, score)
 
     # -----------------------------------------------------------------------
 

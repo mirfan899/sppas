@@ -110,3 +110,16 @@ class TestAnnotation(unittest.TestCase):
         self.assertEqual(a, sppasAnnotation(it, label))
         self.assertNotEqual(a, sppasAnnotation(it, sppasLabel(sppasTag("#"), score=0.2)))
         self.assertNotEqual(a, sppasAnnotation(sppasLocation(sppasInterval(p1, p2), score=0.3), label))
+
+    def test_get_highest_localization(self):
+        p1 = sppasPoint(1)
+        p2 = sppasPoint(2)
+        p3 = sppasPoint(3)
+        it = sppasLocation([sppasInterval(p1, p2), sppasInterval(p1, p3)])
+        a = sppasAnnotation(it)
+        highest = a.get_highest_localization()
+        self.assertEqual(highest, p3)
+        # get_highest_localization returns a copy so we won't change the point!
+        a.get_highest_localization().set(sppasPoint(4.))
+        self.assertEqual(a.get_highest_localization(), highest)
+
