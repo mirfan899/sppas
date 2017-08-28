@@ -41,6 +41,7 @@ from ..annlocation.location import sppasLocation
 from ..annlocation.interval import sppasInterval
 from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
+from ..anndataexc import TierAppendError
 
 # ------------------------------------------------------------------------
 
@@ -135,94 +136,129 @@ def merge_overlapping_annotations(tier, separator=' '):
 
     prev = None
 
+    # At a first stage, we create the annotations without labels
     for a in tier:
+
+        # first interval
         if prev is None:
-            new_tier.append(a)
-            prev = a
+            a2 = sppasAnnotation(
+                    sppasLocation(sppasInterval(a.get_lowest_localization(),
+                                                a.get_highest_localization())))
+            new_tier.append(a2)
+            prev = a2
             continue
 
         if a.get_lowest_localization() < prev.get_lowest_localization():
-            # normally it can't happen!
+            # normally it can't happen:
+            # annotations are sorted by "append" and "add" methods.
             continue
 
-        # a is after prev: normal.
+        # a is after prev
         if a.get_lowest_localization() >= prev.get_highest_localization():
-            new_tier.append(a)
-            prev = a
+            # either:   |   prev   |  a   |
+            # or:       |   prev   |   |  a  |
+
+            a2 = sppasAnnotation(
+                    sppasLocation(sppasInterval(a.get_lowest_localization(),
+                                                a.get_highest_localization())))
+            new_tier.append(a2)
+            prev = a2
 
         # prev and a, both start at the same time
         elif a.get_lowest_localization() == prev.get_lowest_localization():
+
+            # we must disable CtrlVocab because new entries are created...
             new_tier.set_ctrl_vocab(None)
-            # must disable CtrlVocab or, eventually, add new labels in its entries...
 
             if a.get_highest_localization() > prev.get_highest_localization():
-                a.get_location().get_best().set_begin(prev.get_highest_localization())
-                #prev_content = prev.get_label().get_best().get_content() + \
-                #               separator + \
-                #               a.get_label().get_best().get_content()
-                #prev.get_label().get_best().set_content(prev_content)
-                new_tier.append(a)
-                prev = a
+                #   |   prev  |
+                #   |   a        |
+
+                a2 = sppasAnnotation(
+                    sppasLocation(sppasInterval(prev.get_highest_localization(),
+                                                a.get_highest_localization())))
+                new_tier.append(a2)
+                prev = a2
 
             elif a.get_highest_localization() < prev.get_highest_localization():
+                #   |   prev    |
+                #   |   a    |
+
                 a2 = sppasAnnotation(
-                        sppasLocation(sppasInterval(a.get_highest_localization(), prev.get_highest_localization())),
-                        sppasLabel(prev.get_label())
-                )
-                #prev.get_highest_localization().set(a.get_highest_localization())
-                #prev_content = prev.get_label().get_best().get_content() + \
-                #               separator + \
-                #               a.get_label().get_best().get_content()
-                #prev.get_label().get_best().set_content(prev_content)
+                        sppasLocation(sppasInterval(a.get_highest_localization(),
+                                                    prev.get_highest_localization())))
+                prev_loc = prev.get_location().get_best()
+                prev_loc.set_end(a.get_highest_localization())
+                prev.set_best_localization(prev_loc)
                 new_tier.append(a2)
                 prev = a2
 
             else:
-                prev_content = prev.get_label().get_best().get_content() + \
-                               separator + \
-                               a.get_label().get_best().get_content()
-                prev.get_label().get_best().set_content(prev_content)
+                #   |   prev   |
+                #   |   a      |
+                continue
 
         # a starts inside prev
         elif a.get_lowest_localization() < prev.get_highest_localization():
+
+            # we must disable CtrlVocab because new entries are created...
             new_tier.set_ctrl_vocab(None)
-            # must disable CtrlVocab or, eventually, add new labels in its entries...
 
             if a.get_highest_localization() < prev.get_highest_localization():
+                #  |      prev       |
+                #      |   a      |
+
                 a2 = sppasAnnotation(
-                            sppasLocation(sppasInterval(a.get_highest_localization(), prev.get_highest_localization())),
-                            sppasLabel(prev.get_label().get_best())
-                )
-                a_content = a.get_label().get_best().get_content() + \
-                            separator + \
-                            prev.get_label().get_best().get_content()
-                a.get_label().get_best().set_content(a_content)
-                #prev.GetLocation().SetEnd( a.get_lowest_localization() )
+                            sppasLocation(sppasInterval(a.get_highest_localization(),
+                                                        prev.get_highest_localization())))
+                prev_loc = prev.get_location().get_best()
+                prev_loc.set_end(a.get_lowest_localization())
+                prev.set_best_localization(prev_loc)
                 new_tier.append(a)
                 new_tier.append(a2)
                 prev = a2
 
             elif a.get_highest_localization() > prev.get_highest_localization():
-                a2_content = prev.get_label().get_best().get_content() + \
-                            separator + \
-                            a.get_label().get_best().get_content()
+                #  |  prev   |
+                #       |   a    |
+
                 a2 = sppasAnnotation(
-                            sppasLocation(sppasInterval(a.get_lowest_localization(), prev.get_highest_localization())),
-                            sppasLabel(sppasTag(a2_content))
-                )
-                #prev.GetLocation().SetEnd( a2.get_lowest_localization() )
-                a.get_lowest_localization().set(a2.get_highest_localization())
+                            sppasLocation(sppasInterval(a.get_lowest_localization(),
+                                                        prev.get_highest_localization())))
+                prev_loc = prev.get_location().get_best()
+                prev_loc.set_end(a2.get_lowest_localization())
+                prev.set_best_localization(prev_loc)
                 new_tier.append(a2)
-                new_tier.append(a)
-                prev = a
+
+                a3 = sppasAnnotation(
+                       sppasLocation(sppasInterval(a2.get_highest_localization(),
+                                                   a.get_highest_localization())))
+                new_tier.append(a3)
+                prev = a3
 
             else:
-                a_content = a.get_label().get_best().get_content() + \
-                            separator + \
-                            prev.get_label().get_best().get_content()
-                a.get_label().get_best().set_content(a_content)
-                #prev.GetLocation().SetEnd( a.get_lowest_localization() )
-                new_tier.append(a)
-                prev = a
+                # |    prev   |
+                #    |   a    |
+
+                prev_loc = prev.get_location().get_best()
+                prev_loc.set_end(a.get_lowest_localization())
+                prev.set_best_localization(prev_loc)
+                a2 = sppasAnnotation(
+                            sppasLocation(sppasInterval(a.get_lowest_localization(),
+                                                        a.get_highest_localization())))
+                new_tier.append(a2)
+                prev = a2
+
+    # At a second stage, we assign the labels to the new tier
+    for new_ann in new_tier:
+
+        begin = new_ann.get_lowest_localization()
+        end = new_ann.get_highest_localization()
+        anns = tier.find(begin, end, overlaps=True)
+        new_content = []
+        for ann in anns:
+            new_content.append(ann.get_label().get_best().get_content())
+
+        new_ann.set_best_tag(sppasTag(separator.join(new_content)))
 
     return new_tier

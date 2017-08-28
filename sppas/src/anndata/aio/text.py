@@ -318,9 +318,9 @@ class sppasCSV(sppasBaseIO):
             name = format_quotation_marks(row[0])
             begin = format_quotation_marks(row[1])
             end = format_quotation_marks(row[2])
-            text = format_quotation_marks(row[3:])
+            text = format_quotation_marks(" ".join(row[3:]))
 
-            # The following does not suppose that the file is sorted by tiers
+            # The following code does not suppose that the file is sorted by tiers
             tier = self.find(name)
             if tier is None:
                 tier = self.create_tier(name)

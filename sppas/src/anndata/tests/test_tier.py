@@ -304,6 +304,44 @@ class TestTier(unittest.TestCase):
         annotations = tier.find(sppasPoint(6), sppasPoint(7), overlaps=False)
         self.assertEqual(annotations, [])
 
+    # -----------------------------------------------------------------------
+
+    def test_find_overlapped_intervals(self):
+        tier = sppasTier()
+        localizations = [sppasInterval(sppasPoint(1.), sppasPoint(2.)),    # 0
+                         sppasInterval(sppasPoint(1.5), sppasPoint(2.)),   # 1
+                         sppasInterval(sppasPoint(1.8), sppasPoint(2.)),   # 2
+                         sppasInterval(sppasPoint(1.8), sppasPoint(2.5)),  # 3
+                         sppasInterval(sppasPoint(2.), sppasPoint(2.3)),   # 4
+                         sppasInterval(sppasPoint(2.), sppasPoint(2.5)),   # 5
+                         sppasInterval(sppasPoint(2.), sppasPoint(3.)),    # 6
+                         sppasInterval(sppasPoint(2.4), sppasPoint(4.)),   # 7
+                         sppasInterval(sppasPoint(2.5), sppasPoint(3.))    # 8
+                         ]
+        annotations = [sppasAnnotation(sppasLocation(t), sppasLabel(sppasTag(i))) for i, t in enumerate(localizations)]
+        for i, a in enumerate(annotations):
+            tier.add(a)
+            self.assertEqual(len(tier), i + 1)
+
+        anns = tier.find(sppasPoint(1.0), sppasPoint(1.5), overlaps=True)
+        self.assertEqual(len(anns), 1)  # 0
+        anns = tier.find(sppasPoint(1.5), sppasPoint(1.8), overlaps=True)
+        self.assertEqual(len(anns), 2)  # 0 1
+        anns = tier.find(sppasPoint(1.8), sppasPoint(2.0), overlaps=True)
+        self.assertEqual(len(anns), 4)  # 0 1 2 3
+        anns = tier.find(sppasPoint(2.0), sppasPoint(2.3), overlaps=True)
+        self.assertEqual(len(anns), 4)  # 3 4 5 6
+        anns = tier.find(sppasPoint(2.3), sppasPoint(2.4), overlaps=True)
+        self.assertEqual(len(anns), 3)  # 3 5 6
+        anns = tier.find(sppasPoint(2.4), sppasPoint(2.5), overlaps=True)
+        self.assertEqual(len(anns), 4)  # 3 5 6 7
+        anns = tier.find(sppasPoint(2.5), sppasPoint(3.0), overlaps=True)
+        self.assertEqual(len(anns), 3)  # 6 7 8
+        anns = tier.find(sppasPoint(3.0), sppasPoint(4.0), overlaps=True)
+        self.assertEqual(len(anns), 1)  # 7
+
+    # -----------------------------------------------------------------------
+
     def test_find_point(self):
         tier = sppasTier()
         _anns = [

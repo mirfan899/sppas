@@ -5,6 +5,7 @@ import os.path
 import shutil
 
 from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.utils.makeunicode import u
 
 from ..anndataexc import AioEncodingError
 from ..aio.readwrite import sppasRW
@@ -32,7 +33,7 @@ class TestAIO(unittest.TestCase):
         trs_r = parser.read(heuristic=False)
         parser.set_filename(os.path.join(TEMP, "sampléà-1.3.xra"))
         parser.write(trs_r)
-        self.assertTrue(os.path.exists(os.path.join(TEMP, "sampléà-1.3.xra")))
+        self.assertTrue(os.path.exists(os.path.join(TEMP, u("sampléà-1.3.xra"))))
         trs_w = parser.read(heuristic=False)
         # Compare annotations of reader and writer
         for t1, t2 in zip(trs_r, trs_w):

@@ -97,18 +97,45 @@ class TestUtils(unittest.TestCase):
 
     def test_merge_overlapping_annotations(self):
         tier = sppasTier()
-        localizations = [sppasInterval(sppasPoint(1.), sppasPoint(2.)),
-                         sppasInterval(sppasPoint(1.5), sppasPoint(2.)),
-                         sppasInterval(sppasPoint(1.8), sppasPoint(2.)),
-                         sppasInterval(sppasPoint(1.8), sppasPoint(2.5)),
-                         sppasInterval(sppasPoint(2.), sppasPoint(2.3)),
-                         sppasInterval(sppasPoint(2.), sppasPoint(2.5)),
-                         sppasInterval(sppasPoint(2.), sppasPoint(3.)),
-                         sppasInterval(sppasPoint(2.4), sppasPoint(4.)),
-                         sppasInterval(sppasPoint(2.5), sppasPoint(3.))
+        localizations = [sppasInterval(sppasPoint(1.), sppasPoint(2.)),    # 0
+                         sppasInterval(sppasPoint(1.5), sppasPoint(2.)),   # 1
+                         sppasInterval(sppasPoint(1.8), sppasPoint(2.)),   # 2
+                         sppasInterval(sppasPoint(1.8), sppasPoint(2.5)),  # 3
+                         sppasInterval(sppasPoint(2.), sppasPoint(2.3)),   # 4
+                         sppasInterval(sppasPoint(2.), sppasPoint(2.5)),   # 5
+                         sppasInterval(sppasPoint(2.), sppasPoint(3.)),    # 6
+                         sppasInterval(sppasPoint(2.4), sppasPoint(4.)),   # 7
+                         sppasInterval(sppasPoint(2.5), sppasPoint(3.))    # 8
                          ]
         annotations = [sppasAnnotation(sppasLocation(t), sppasLabel(sppasTag(i))) for i, t in enumerate(localizations)]
         for i, a in enumerate(annotations):
             tier.add(a)
             self.assertEqual(len(tier), i + 1)
+
+        copy_tier = tier.copy()
         new_tier = merge_overlapping_annotations(tier)
+
+        # we expect the original tier was not modified
+        for ann, copy_ann in zip(tier, copy_tier):
+            self.assertEqual(ann, copy_ann)
+
+        expected_tier = sppasTier()
+        expected_tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(1.5))),
+                                        sppasLabel(sppasTag("0")))
+        expected_tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(1.5), sppasPoint(1.8))),
+                                        sppasLabel(sppasTag("0 1")))
+        expected_tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(1.8), sppasPoint(2.0))),
+                                        sppasLabel(sppasTag("0 1 2 3")))
+        expected_tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(2.0), sppasPoint(2.3))),
+                                        sppasLabel(sppasTag("3 4 5 6")))
+        expected_tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(2.3), sppasPoint(2.4))),
+                                        sppasLabel(sppasTag("3 5 6")))
+        expected_tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(2.4), sppasPoint(2.5))),
+                                        sppasLabel(sppasTag("3 5 6 7")))
+        expected_tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(2.5), sppasPoint(3.))),
+                                        sppasLabel(sppasTag("6 7 8")))
+        expected_tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(3.), sppasPoint(4.))),
+                                        sppasLabel(sppasTag("7")))
+        self.assertEqual(len(expected_tier), len(new_tier))
+        for new_ann, expected_ann in zip(new_tier, expected_tier):
+            self.assertEqual(new_ann, expected_ann)

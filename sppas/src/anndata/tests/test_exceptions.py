@@ -72,13 +72,13 @@ class TestExceptions(unittest.TestCase):
 
     def test_exc_Trs(self):
         try:
-            raise TrsAddError("name")
+            raise TrsAddError("tier_name", "transcription_name")
         except Exception as e:
             self.assertTrue(isinstance(e, TrsAddError))
             self.assertTrue(TRS_ADD_ERROR in str(e))
 
         try:
-            raise TrsRemoveError("name")
+            raise TrsRemoveError("tier_name", "transcription_name")
         except Exception as e:
             self.assertTrue(isinstance(e, TrsRemoveError))
             self.assertTrue(TRS_REMOVE_ERROR in str(e))

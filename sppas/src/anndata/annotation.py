@@ -85,8 +85,11 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_label(self):
-        """ Return the sppasLabel instance. """
+        """ Return the sppasLabel instance.
 
+        It could be None if no label were previously assigned.
+
+        """
         return self.__label
 
     # -----------------------------------------------------------------------
@@ -136,6 +139,18 @@ class sppasAnnotation(sppasMetaData):
     # Tags
     # -----------------------------------------------------------------------
 
+    def get_best_tag(self):
+        """ Return the tag with the highest score.
+
+        If no label was previously assigned, returns an empty tag.
+
+        """
+        if self.__label is None:
+            return sppasTag("")
+        return self.__label.get_best()
+
+    # -----------------------------------------------------------------------
+
     def set_best_tag(self, tag):
         """ Set the best tag of the label.
         It will replace the tag with the highest score by the given one,
@@ -144,8 +159,11 @@ class sppasAnnotation(sppasMetaData):
         :param tag: (sppasTag)
 
         """
+        if self.__label is None:
+            self.__label = sppasLabel(sppasTag(""))
+
         if self.__parent is not None:
-            old_tag = self.__label.get_best().copy()
+            old_tag = self.get_best_tag().copy()
             self.__label.get_best().set(tag)
             try:
                 self.__parent.validate_annotation_label(self.__label)
@@ -165,6 +183,9 @@ class sppasAnnotation(sppasMetaData):
         :raises: AnnDataTypeError
 
         """
+        if self.__label is None:
+            self.__label = sppasLabel()
+
         self.__label.append(tag, score)
         if self.__parent is not None:
             try:

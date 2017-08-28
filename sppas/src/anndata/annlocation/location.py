@@ -118,10 +118,10 @@ class sppasLocation(object):
     # -----------------------------------------------------------------------
 
     def get_best(self):
-        """ Return the best Localization, i.e.
+        """ Return a copy of the best Localization, i.e.
         the localization with the better score.
 
-        :returns: a localization
+        :returns: (sppasLocalization)
 
         """
         if len(self.__localizations) == 1:
@@ -134,7 +134,7 @@ class sppasLocation(object):
                 _maxscore = s
                 _maxt = t
 
-        return _maxt
+        return _maxt.copy()
 
     # -----------------------------------------------------------------------
 
