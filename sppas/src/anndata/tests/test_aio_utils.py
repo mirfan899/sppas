@@ -1,10 +1,6 @@
 # -*- coding:utf-8 -*-
 
 import unittest
-import os.path
-import shutil
-
-from sppas.src.utils.fileutils import sppasFileUtils
 
 from ..tier import sppasTier
 from ..annotation import sppasAnnotation
@@ -94,6 +90,8 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(tier.get_last_point().get_midpoint(), 6)
         new_tier = unfill_gaps(tier)
         self.assertEqual(len(new_tier), 3)
+
+    # -----------------------------------------------------------------------
 
     def test_merge_overlapping_annotations(self):
         tier = sppasTier()

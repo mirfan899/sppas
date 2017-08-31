@@ -451,7 +451,8 @@ class sppasTier(sppasMetaData):
 
         :param begin: sppasPoint or None to start from the beginning of the tier
         :param end: sppasPoint or None to end at the end of the tier
-        :param overlaps: (bool)
+        :param overlaps: (bool) Return also overlapped annotations. Not relevant for tiers with points.
+        :returns: List of sppasAnnotation
 
         """
         if len(self.__ann) == 0:
@@ -467,45 +468,59 @@ class sppasTier(sppasMetaData):
         if begin > self.get_last_point() or end < self.get_first_point():
             return []
 
-        is_point = self.is_point()
+        annotations = list()
 
-        if overlaps is True:
-            index = self.__find(begin)
-            anns = list()
-            for ann in self.__ann[index:]:
-                if is_point is True and ann.get_highest_localization() > end:
-                    return anns
-                if is_point is False and ann.get_lowest_localization() >= end:
-                    return anns
-                anns.append(ann)
-            return anns
+        if self.is_point() is True:
 
-        if is_point is True:
             lo = self.index(begin)
-            hi = self.index(end)
-            tmp = hi
-            if -1 in (lo, hi):
-                return []
-            for i in range(hi, len(self.__ann)):
-                if self.__ann[i].get_highest_localization() == end:
-                    tmp = i
-                else:
+            if lo == -1:
+                lo = self.near(begin, direction=1)
+            for ann in self.__ann[lo:]:
+                print(ann)
+                lowest = ann.get_lowest_localization()
+                highest = ann.get_highest_localization()
+                if lowest > end and highest > end:
                     break
-            hi = tmp
-        else:
-            lo = self.lindex(begin)
-            hi = self.rindex(end)
-            tmp = hi
-            if -1 in (lo, hi):
-                return []
-            for i in range(hi, len(self.__ann)):
-                if self.__ann[i].get_highest_localization() == end:
-                    tmp = i
-                else:
-                    break
-            hi = tmp
+                if lowest >= begin and highest <= end:
+                    print(" --> append")
+                    annotations.append(ann)
 
-        return [] if -1 in (lo, hi) else self.__ann[lo:hi+1]
+        else:
+            lo = self.__find(begin)
+
+            if overlaps is True:
+
+                if lo > 0:
+                    tmp_annotations = list()
+                    for ann in reversed(self.__ann[:lo]):
+                        b = ann.get_lowest_localization()
+                        e = ann.get_highest_localization()
+                        if b < begin < e:
+                            tmp_annotations.append(ann)
+                        if b > begin:
+                            break
+                    for ann in reversed(tmp_annotations):
+                        annotations.append(ann)
+                else:
+                    annotations = list()
+                for ann in self.__ann[lo:]:
+                    b = ann.get_lowest_localization()
+                    e = ann.get_highest_localization()
+                    if b >= end:
+                        break
+                    if end > b and begin < e:
+                        annotations.append(ann)
+            else:
+                annotations = list()
+                for ann in self.__ann[lo:]:
+                    b = ann.get_lowest_localization()
+                    e = ann.get_highest_localization()
+                    if b >= begin and e <= end:
+                        annotations.append(ann)
+                    if b >= end:
+                        break
+
+        return annotations
 
     # -----------------------------------------------------------------------
 
@@ -865,6 +880,17 @@ class sppasTier(sppasMetaData):
                 b = a.get_lowest_localization()
                 e = a.get_highest_localization()
                 if b == x or b < x < e:
+                    # print("FOUND: mid="+str(mid))
+                    # if direction != 1:
+                    #     # We go back to look at the previous localizations until they are greater.
+                    #     while mid >= 0 and self.__ann[mid].get_lowest_localization() >= x:
+                    #         mid -= 1
+                    #
+                    # else:
+                    #     # We go further to look at the next localizations until they are lowest.
+                    #     while mid + 1 < len(self.__ann) and self.__ann[mid + 1].get_highest_localization() <= x:
+                    #         mid += 1
+                    #
                     return mid
                 if x < e:
                     hi = mid

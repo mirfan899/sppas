@@ -75,13 +75,16 @@ class TestRawText(unittest.TestCase):
         with self.assertRaises(AioMultiTiersError):
             txt.write(os.path.join(TEMP, "sample.txt"))
 
+        # Empty files:
         csv = sppasCSV()
         csv.write(os.path.join(TEMP, "sample.csv"))
-        self.assertFalse(os.path.exists(os.path.join(TEMP, "sample.csv")))
-        csv.create_tier()
-        csv.write(os.path.join(TEMP, "sample.csv"))
         self.assertTrue(os.path.exists(os.path.join(TEMP, "sample.csv")))
-        self.assertEqual(os.stat("file").st_size, 0)
+        self.assertEqual(os.stat(os.path.join(TEMP, "sample.csv")).st_size, 0)
+
+        csv.create_tier()
+        csv.write(os.path.join(TEMP, "sample2.csv"))
+        self.assertTrue(os.path.exists(os.path.join(TEMP, "sample2.csv")))
+        self.assertEqual(os.stat(os.path.join(TEMP, "sample2.csv")).st_size, 0)
 
     def test_read_write(self):
         txt = sppasRawText()

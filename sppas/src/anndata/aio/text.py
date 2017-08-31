@@ -250,6 +250,8 @@ class sppasRawText(sppasBaseIO):
                         e = annotation.get_highest_localization().get_midpoint()
                         fp.write("{}\t{}\t{}\n".format(b, e, t))
 
+            fp.close()
+
 # ----------------------------------------------------------------------------
 
 
@@ -298,7 +300,8 @@ class sppasCSV(sppasBaseIO):
         with codecs.open(filename, "r", 'utf-8-sig') as fp:
             lines = fp.readlines()
 
-        self.format_columns_lines(lines, separator)
+        if len(lines) > 0:
+            self.format_columns_lines(lines, separator)
 
     # -----------------------------------------------------------------
 
@@ -358,6 +361,7 @@ class sppasCSV(sppasBaseIO):
         with codecs.open(filename, 'w', 'utf-8-sig', buffering=8096) as fp:
 
             for tier in self._tiers:
+
                 name = tier.get_name()
                 point = tier.is_point()
 
@@ -365,8 +369,12 @@ class sppasCSV(sppasBaseIO):
                     t = annotation.get_label().get_best().get_content()
                     if point:
                         mp = annotation.get_lowest_localization().get_midpoint()
-                        fp.write('"{}",{},,{},"{}"\n'.format(name, mp, t))
+                        fp.write('"{}",{},,"{}"\n'.format(name, mp, t))
+                        print('"{}",{},,"{}"\n'.format(name, mp, t))
                     else:
                         b = annotation.get_lowest_localization().get_midpoint()
                         e = annotation.get_highest_localization().get_midpoint()
                         fp.write('"{}",{},{},"{}"\n'.format(name, b, e, t))
+                        print('"{}",{},{},"{}"\n'.format(name, b, e, t))
+
+            fp.close()

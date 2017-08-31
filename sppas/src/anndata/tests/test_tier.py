@@ -244,14 +244,8 @@ class TestTier(unittest.TestCase):
 
     def test_find_interval(self):
         tier = sppasTier()
-        _anns = [
-                sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(0), sppasPoint(1)))),
-                sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(2)))),
-                sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(2), sppasPoint(3)))),
-                sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(4), sppasPoint(5))))
-                ]
-        for a in _anns:
-            tier.append(a)
+        for i in range(0, 5):
+            tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(i), sppasPoint(i+1))))
 
         annotations = tier.find(sppasPoint(0), sppasPoint(5))
         self.assertEqual(len(annotations), len(tier))
@@ -269,34 +263,32 @@ class TestTier(unittest.TestCase):
             self.assertTrue(x is y)
 
         annotations = tier.find(sppasPoint(0.5), sppasPoint(5), overlaps=False)
-        self.assertEqual(annotations, [])
+        self.assertEqual(len(annotations), len(tier)-1)
 
-        annotations = tier.find(sppasPoint(0.5), sppasPoint(4.5))
+        annotations = tier.find(sppasPoint(0.5), sppasPoint(5.5))
         self.assertEqual(len(annotations), len(tier))
         for x, y in zip(tier, annotations):
             self.assertTrue(x is y)
 
         annotations = tier.find(sppasPoint(0.5), sppasPoint(4.5), overlaps=False)
-        self.assertEqual(annotations, [])
+        self.assertEqual(len(annotations), len(tier)-2)
 
         annotations = tier.find(sppasPoint(3.5), sppasPoint(4.5))
-        self.assertEqual(len(annotations), 1)
-        self.assertTrue(annotations[0] is tier[-1])
-
-        annotations = tier.find(sppasPoint(0.5), sppasPoint(4.5), overlaps=False)
-        self.assertEqual(annotations, [])
+        self.assertEqual(len(annotations), 2)
+        self.assertTrue(annotations[0] is tier[-2])
+        self.assertTrue(annotations[1] is tier[-1])
 
         annotations = tier.find(sppasPoint(3.5), sppasPoint(3.8))
-        self.assertEqual(annotations, [])
+        self.assertEqual(len(annotations), 1)
 
         annotations = tier.find(sppasPoint(3.5), sppasPoint(3.8), overlaps=False)
         self.assertEqual(annotations, [])
 
         annotations = tier.find(sppasPoint(3), sppasPoint(4))
-        self.assertEqual(annotations, [])
+        self.assertTrue(annotations[0] is tier[-2])
 
         annotations = tier.find(sppasPoint(3), sppasPoint(4), overlaps=False)
-        self.assertEqual(annotations, [])
+        self.assertTrue(annotations[0] is tier[-2])
 
         annotations = tier.find(sppasPoint(6), sppasPoint(7), overlaps=True)
         self.assertEqual(annotations, [])
@@ -307,7 +299,7 @@ class TestTier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_find_overlapped_intervals(self):
-        tier = sppasTier()
+        tier = sppasTier("IntervalsTier")
         localizations = [sppasInterval(sppasPoint(1.), sppasPoint(2.)),    # 0
                          sppasInterval(sppasPoint(1.5), sppasPoint(2.)),   # 1
                          sppasInterval(sppasPoint(1.8), sppasPoint(2.)),   # 2
@@ -329,6 +321,8 @@ class TestTier(unittest.TestCase):
         self.assertEqual(len(anns), 2)  # 0 1
         anns = tier.find(sppasPoint(1.8), sppasPoint(2.0), overlaps=True)
         self.assertEqual(len(anns), 4)  # 0 1 2 3
+        anns = tier.find(sppasPoint(2.0), sppasPoint(2.3), overlaps=False)
+        self.assertEqual(len(anns), 1)  # 4
         anns = tier.find(sppasPoint(2.0), sppasPoint(2.3), overlaps=True)
         self.assertEqual(len(anns), 4)  # 3 4 5 6
         anns = tier.find(sppasPoint(2.3), sppasPoint(2.4), overlaps=True)
@@ -343,26 +337,22 @@ class TestTier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_find_point(self):
-        tier = sppasTier()
-        _anns = [
-                sppasAnnotation(sppasLocation(sppasPoint(0))),
-                sppasAnnotation(sppasLocation(sppasPoint(1))),
-                sppasAnnotation(sppasLocation(sppasPoint(2))),
-                sppasAnnotation(sppasLocation(sppasPoint(4)))
-                ]
-        for a in _anns:
-            tier.append(a)
+        tier = sppasTier("PointsTier")
+        for i in range(5):
+            tier.create_annotation(sppasLocation(sppasPoint(i)))
+            print(tier[i])
 
-        annotations = tier.find(sppasPoint(0), sppasPoint(5))
-        self.assertEqual(len(annotations), len(tier))
-        for x, y in zip(tier, annotations):
-            self.assertTrue(x is y)
+        # annotations = tier.find(sppasPoint(0), sppasPoint(5))
+        # self.assertEqual(len(annotations), len(tier))
+        # for x, y in zip(tier, annotations):
+        #     self.assertTrue(x is y)
 
         annotations = tier.find(sppasPoint(0.5), sppasPoint(5))
-        self.assertEqual(len(annotations), 3)
+        self.assertEqual(len(annotations), 4)
         self.assertTrue(annotations[0].contains_localization(sppasPoint(1)))
         self.assertTrue(annotations[1].contains_localization(sppasPoint(2)))
-        self.assertTrue(annotations[2].contains_localization(sppasPoint(4)))
+        self.assertTrue(annotations[2].contains_localization(sppasPoint(3)))
+        self.assertTrue(annotations[3].contains_localization(sppasPoint(4)))
 
         annotations = tier.find(sppasPoint(0.5), sppasPoint(2.5))
         self.assertEqual(len(annotations), 2)
@@ -381,13 +371,13 @@ class TestTier(unittest.TestCase):
             self.assertTrue(x is y)
 
         annotations = tier.find(sppasPoint(0), sppasPoint(5), overlaps=False)
-        self.assertEqual(len(annotations), 0)
+        self.assertEqual(len(annotations), 5)
 
         annotations = tier.find(sppasPoint(0.5), sppasPoint(5), overlaps=False)
-        self.assertEqual(len(annotations), 0)
+        self.assertEqual(len(annotations), 4)
 
         annotations = tier.find(sppasPoint(0.5), sppasPoint(2.5), overlaps=False)
-        self.assertEqual(len(annotations), 0)
+        self.assertEqual(len(annotations), 2)
 
         annotations = tier.find(sppasPoint(0.5), sppasPoint(0.8), overlaps=False)
         self.assertEqual(len(annotations), 0)
