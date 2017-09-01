@@ -60,8 +60,6 @@ from .meta import __url__
 from .meta import __summary__
 from .meta import __title__
 
-#from .meta import *
-
 # ---------------------------------------------------------------------------
 # Define paths
 # ---------------------------------------------------------------------------
